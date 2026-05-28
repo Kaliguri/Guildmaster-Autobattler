@@ -1,0 +1,85 @@
+---
+description: Git commit conventions and branch strategy for Guildmaster Autobattler
+alwaysApply: true
+---
+
+# Git Conventions
+
+## Commit Format
+
+```
+<type>(<scope>): <short description>
+
+[optional body]
+```
+
+### Types
+
+| Type | When |
+|---|---|
+| `feat` | New game mechanic, system, or feature |
+| `fix` | Bug fix |
+| `refactor` | Code refactor without behavior change |
+| `data` | ScriptableObject, config, balance changes |
+| `art` | Sprites, animations, UI assets |
+| `test` | Tests |
+| `ci` | GitHub Actions, build scripts |
+| `docs` | Documentation, README |
+| `chore` | Package dependencies, project settings |
+
+### Scopes (optional)
+
+`combat`, `units`, `ui`, `inventory`, `guild`, `ai`, `audio`, `scene`
+
+### Rules
+
+- Language: **English**
+- Use imperative: "add", "fix", "remove" — not "added", "fixes"
+- No period at the end
+- Max 72 characters in subject line
+
+### Examples
+
+```
+feat(combat): add poison damage over time mechanic
+fix(units): fix archer not targeting nearest enemy
+data(combat): rebalance warrior base stats
+refactor(ai): extract targeting logic into separate class
+chore: update Unity packages
+```
+
+---
+
+## Branch Strategy
+
+### Structure
+
+```
+master        ← stable, released versions only
+dev           ← main development branch
+feature/*     ← new mechanics and systems
+fix/*         ← bug fixes
+data/*        ← balance/content-only changes
+refactor/*    ← code cleanup without new functionality
+ci/*          ← CI/CD changes
+```
+
+### When to Create Branches
+
+| Branch | When | Example |
+|---|---|---|
+| `feature/*` | Any new system or mechanic | `feature/combat-poison-effect` |
+| `fix/*` | Fixing a specific bug | `fix/archer-targeting` |
+| `data/*` | Data/balance changes only, no logic | `data/warrior-rebalance` |
+| `refactor/*` | Code cleanup only | `refactor/targeting-system` |
+| `ci/*` | CI/CD or build pipeline changes | `ci/add-test-workflow` |
+
+### Rules
+
+- All branches are created **from `dev`**, never from `master`
+- `master` is updated only via PR from `dev` — when the version is stable
+- Branch names: lowercase, hyphen-separated, concise
+  - Good: `feature/guild-management`
+  - Bad: `feature/add_new_guild_management_system`
+- No broken compilation in any commit
+- Delete branches after merging
