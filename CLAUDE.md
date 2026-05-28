@@ -13,11 +13,21 @@
 
 ---
 
+## Правила и конвенции
+
+Детальные правила вынесены в отдельные файлы:
+
+| Файл | Содержание |
+|---|---|
+| `.cursor/rules/git-conventions.mdc` | Формат коммитов, стратегия веток |
+| `.cursor/rules/project-context.mdc` | Стандарты кода C#/Unity, рабочий процесс агента |
+| `docs/agent-pipeline.md` | Как устроена работа агентов, настройка MCP, чеклист задач |
+
+---
+
 ## Доступные MCP-инструменты
 
 Все серверы настроены в `.cursor/mcp.json` и активны автоматически.
-
-### Когда какой MCP использовать
 
 | Задача | MCP-сервер | Инструменты |
 |---|---|---|
@@ -31,7 +41,7 @@
 
 1. **Unity MCP** — для любых операций с Editor (сцены, объекты, тесты через редактор)
 2. **Git/GitHub MCP** — для всех git-операций вместо Shell-команд, когда возможно
-3. **Context7** — перед ответами о Unity API, C# или зависимостях из `Packages/manifest.json` — всегда проверяй актуальную документацию
+3. **Context7** — перед ответами о Unity API, C# или зависимостях из `Packages/manifest.json`
 4. **Filesystem MCP** — как альтернатива Shell для файловых операций
 
 ---
@@ -41,35 +51,18 @@
 ```
 Guildmaster - Autobattler/
 ├── .cursor/
-│   ├── mcp.json          # MCP-серверы
-│   └── rules/            # Правила для Cursor AI
+│   ├── mcp.json                      # MCP-серверы
+│   └── rules/
+│       ├── project-context.mdc       # Стандарты кода, рабочий процесс
+│       └── git-conventions.mdc       # Коммиты и ветки
 ├── .github/
-│   └── workflows/ci.yml  # GameCI pipeline (тесты + сборка)
-├── Assets/               # Игровые ассеты и скрипты Unity
-├── Packages/             # Unity Package Manager
-├── ProjectSettings/      # Настройки Unity
+│   └── workflows/ci.yml              # GameCI pipeline (тесты + сборка)
+├── Assets/                           # Игровые ассеты и скрипты Unity
+├── Packages/                         # Unity Package Manager
+├── ProjectSettings/                  # Настройки Unity
 └── scripts/
-    └── run-tests.ps1     # Локальный запуск тестов
+    └── run-tests.ps1                 # Локальный запуск тестов
 ```
-
----
-
-## Стандарты кода C# / Unity
-
-- **Именование**: PascalCase для публичных членов и классов, `_camelCase` для приватных полей
-- **Компоненты**: `MonoBehaviour` для логики GameObject, `ScriptableObject` для данных
-- **Кэширование**: всегда кэшировать ссылки на компоненты в `Awake()` — никогда `GetComponent` в `Update()`
-- **Пулинг объектов**: использовать `ObjectPool<T>` вместо `Instantiate`/`Destroy` в горячих путях
-- **Данные**: хардкод значений запрещён — только `ScriptableObject` или конфиг-файлы
-- **Input**: использовать Unity Input System, не Legacy Input
-- **Async**: Coroutines для time-based операций; `async/await` с `UniTask` если подключён
-
-### Запрещено
-
-- `GetComponent`, `Find`, `FindObjectOfType` в `Update()` / `FixedUpdate()`
-- `Instantiate`/`Destroy` в циклах
-- Выделение памяти (LINQ с аллокациями, строки) в горячих путях
-- Хардкод игровых значений в коде
 
 ---
 
@@ -78,17 +71,7 @@ Guildmaster - Autobattler/
 Сборки и тесты через GameCI (GitHub Actions).
 
 ```powershell
-# Локальный запуск тестов
 ./scripts/run-tests.ps1
 ```
 
 Для GameCI нужны секреты в GitHub: `UNITY_LICENSE`, `UNITY_EMAIL`, `UNITY_PASSWORD`.
-
----
-
-## Рабочий процесс агента
-
-1. Перед ответами об Unity API — используй **Context7** для актуальной документации
-2. Изменения в Unity-сцене/объектах — через **Unity MCP**, не напрямую редактируя `.unity` файлы
-3. Git-операции — через **Git MCP** или стандартные Shell-команды
-4. После изменений кода — запускай тесты через `scripts/run-tests.ps1`
