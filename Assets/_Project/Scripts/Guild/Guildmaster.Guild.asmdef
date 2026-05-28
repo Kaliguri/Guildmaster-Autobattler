@@ -1,0 +1,17 @@
+{
+  "name": "Guildmaster.Guild",
+  "rootNamespace": "Guildmaster.Guild",
+  "references": [
+    "Guildmaster.Core",
+    "Guildmaster.Units"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Guildmaster.Tests.PlayMode",
+  "rootNamespace": "Guildmaster.Tests.PlayMode",
+  "references": [
+    "UnityEngine.TestRunner",
+    "Guildmaster.Core",
+    "Guildmaster.Units",
+    "Guildmaster.Combat",
+    "Guildmaster.Guild"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
