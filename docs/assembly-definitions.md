@@ -1,0 +1,80 @@
+# Assembly Definitions — Guildmaster Autobattler
+
+Актуальная карта сборок проекта. Обновлять при добавлении новых модулей или изменении зависимостей.
+
+---
+
+## Граф зависимостей
+
+```
+Core
+ ├── Units
+ │    ├── Combat
+ │    └── Guild
+ │         └── UI
+ └── (нет зависимостей вверх)
+```
+
+Стрелка означает "зависит от". `UI` зависит от `Guild`, `Units` и `Core`. `Core` ни от чего не зависит.
+
+---
+
+## Текущие сборки
+
+| Сборка | Путь | Зависит от | Назначение |
+|---|---|---|---|
+| `Guildmaster.Core` | `Assets/_Project/Scripts/Core/` | — | Интерфейсы, базовые типы, утилиты, общий код |
+| `Guildmaster.Units` | `Assets/_Project/Scripts/Units/` | Core | ScriptableObject юнитов, статы, поведение |
+| `Guildmaster.Combat` | `Assets/_Project/Scripts/Combat/` | Core, Units | Боевая система, урон, статус-эффекты, AI |
+| `Guildmaster.Guild` | `Assets/_Project/Scripts/Guild/` | Core, Units | Управление гильдией, ресурсы, найм |
+| `Guildmaster.UI` | `Assets/_Project/Scripts/UI/` | Core, Units, Guild | Все UI-компоненты и экраны |
+| `Guildmaster.Tests.EditMode` | `Assets/Tests/EditMode/` | Core, Units, Combat, Guild | Юнит-тесты без play mode |
+| `Guildmaster.Tests.PlayMode` | `Assets/Tests/PlayMode/` | Core, Units, Combat, Guild | Интеграционные тесты в play mode |
+
+---
+
+## Правила
+
+### Куда класть новый скрипт
+
+1. **Данные и общие интерфейсы** (`IUnit`, `IDamageable`, `GameConfig`) → `Core`
+2. **Всё про юнита** (характеристики, классы, анимации юнита) → `Units`
+3. **Всё про бой** (расчёт урона, очерёдность ходов, AI-таргетинг) → `Combat`
+4. **Всё про гильдию** (ресурсы, здания, найм, квесты) → `Guild`
+5. **Всё про интерфейс** (кнопки, панели, HUD) → `UI`
+
+### Запрещённые зависимости
+
+- `Core` не может зависеть ни от чего в проекте
+- `Units` не может зависеть от `Combat`, `Guild`, `UI`
+- `Combat` не может зависеть от `Guild`, `UI`
+- `Guild` не может зависеть от `Combat`, `UI`
+- Циклические зависимости запрещены
+
+> Если зависимость кажется нужной в обратную сторону (например, `Combat` хочет знать о `Guild`) — вынеси общий интерфейс в `Core`.
+
+### Добавление нового модуля
+
+1. Создать папку в `Assets/_Project/Scripts/<ModuleName>/`
+2. Создать `.asmdef` файл: `Create → Assembly Definition` в Unity
+3. Имя сборки: `Guildmaster.<ModuleName>`
+4. Namespace: `Guildmaster.<ModuleName>`
+5. Добавить зависимости только те, что реально нужны
+6. Обновить таблицу в **этом файле**
+7. Обновить `.asmdef` тестовых сборок, если тесты покрывают новый модуль
+
+### Именование
+
+- Файл `.asmdef`: `Guildmaster.<ModuleName>.asmdef`
+- Имя сборки (`name`): `Guildmaster.<ModuleName>`
+- Корневой namespace (`rootNamespace`): `Guildmaster.<ModuleName>`
+- Папка: `PascalCase`, совпадает с именем модуля
+
+---
+
+## История изменений
+
+| Дата | Изменение |
+|---|---|
+| 2026-05-28 | Начальная структура: Core, Units, Combat, Guild, UI |
+
