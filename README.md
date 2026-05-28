@@ -1,114 +1,104 @@
 # Guildmaster — Autobattler
 
-Пошаговая автобатлер-игра, разрабатываемая в Unity.
+> Пошаговый автобатлер-рогалик с кооперативным управлением гильдией. В разработке.
+
+![Unity](https://img.shields.io/badge/Unity-6000.4.8f1-black?logo=unity) ![Platform](https://img.shields.io/badge/Platform-Windows%20%2F%20PC-blue) ![Status](https://img.shields.io/badge/Status-In%20Development-yellow) ![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red)
 
 ---
 
-## Версия движка
+## Об игре
 
-| Параметр | Значение |
+**Guildmaster** — это пошаговый автобатлер с элементами рогалика, вдохновлённый *Slay the Spire*, *Across the Obelisk* и *Teamfight Manager*.
+
+Вы возглавляете гильдию авантюристов, готовящихся к великому чемпионату. Перед каждой битвой вы распределяете осколки героев между бойцами, расставляете их на поле и настраиваете тактику — а дальше смотрите, как они сражаются сами. Управление исходом боя осуществляется через заклинания Гильдмастера.
+
+Игра поддерживает **1–4 игроков**: соло — и вы управляете всей гильдией, в кооперативе — каждый отвечает за своих бойцов.
+
+### Ключевые механики
+
+- **Осколки героев** — экипируемые артефакты, превращающие обычного гильдийца в бойца с уникальными способностями
+- **Гильдмастер** — не сражается, но кастует заклинания во время боя; его слоты ограничены и перезаряжаются между сражениями
+- **Автобой** — бой идёт сам, без микроменеджмента атак
+- **Карта в стиле STS** — ивенты, магазины, тренировки, боссы в конце акта
+- **Кооператив** — от 1 до 4 игроков делят гильдийцев между собой
+
+---
+
+## Технический стек
+
+| | |
 |---|---|
-| **Unity** | 6000.4.8f1 (Unity 6) |
+| **Движок** | Unity 6 (6000.4.8f1) |
+| **Язык** | C# |
 | **Платформа** | Windows / PC |
+| **CI/CD** | GitHub Actions + [GameCI](https://game.ci) |
 
 ---
 
-## Подключённые инструменты и интеграции
-
-### MCP-серверы (Model Context Protocol)
-
-Конфигурация находится в `.cursor/mcp.json`. Серверы активны в Cursor IDE автоматически.
-
-| Сервер | Пакет | Назначение |
-|---|---|---|
-| **Unity MCP** | `mcp-unity` | Прямое взаимодействие с Unity Editor — сцены, объекты, компоненты, запуск play mode |
-| **GitHub MCP** | `@modelcontextprotocol/server-github` | Работа с репозиторием: PR, issues, workflows, releases |
-| **Git MCP** | `mcp-server-git` (uvx) | Локальные git-операции: коммиты, ветки, diff, история |
-| **Context7** | `@upstash/context7-mcp` | Актуальная документация библиотек прямо в контексте агента |
-| **Filesystem MCP** | `@modelcontextprotocol/server-filesystem` | Чтение и запись файлов проекта через AI-агент |
-
-#### Первоначальная настройка
-
-**Unity MCP** требует установки Unity-пакета в проект:
-```
-https://github.com/CoderGamester/mcp-unity.git
-```
-Добавить через `Window → Package Manager → Add package from git URL`.
-
-**GitHub MCP** требует токен. В `.cursor/mcp.json` заменить `<YOUR_GITHUB_TOKEN>` на Personal Access Token с правами `repo` и `workflow`:
-```
-GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens
-```
-
----
-
-### CI/CD — GameCI
-
-Сборки и тесты автоматизированы через [GameCI](https://game.ci) на базе GitHub Actions.
-
-Конфигурация: `.github/workflows/`
-
-| Файл | Назначение |
-|---|---|
-| `ci.yml` | Запуск тестов (Unity Test Runner) и сборка проекта при push/PR |
-
-Для работы GameCI необходимо добавить следующие секреты в репозиторий (`Settings → Secrets and variables → Actions`):
-
-| Секрет | Описание |
-|---|---|
-| `UNITY_LICENSE` | Содержимое `.ulf` файла лицензии Unity |
-| `UNITY_EMAIL` | Email аккаунта Unity |
-| `UNITY_PASSWORD` | Пароль аккаунта Unity |
-
----
-
-### Unity Test Runner via CLI
-
-Запуск тестов локально без открытия редактора:
-
-```powershell
-# EditMode тесты
-& "C:\Program Files\Unity\Hub\Editor\6000.4.8f1\Editor\Unity.exe" `
-  -runTests -testPlatform EditMode `
-  -projectPath "c:\Gamedev\Guildmaster - Autobattler" `
-  -testResults "TestResults-EditMode.xml" `
-  -batchmode -quit
-
-# PlayMode тесты
-& "C:\Program Files\Unity\Hub\Editor\6000.4.8f1\Editor\Unity.exe" `
-  -runTests -testPlatform PlayMode `
-  -projectPath "c:\Gamedev\Guildmaster - Autobattler" `
-  -testResults "TestResults-PlayMode.xml" `
-  -batchmode -quit
-```
-
-Скрипт-обёртка доступен в `scripts/run-tests.ps1`.
-
----
-
-## Структура проекта
+## Архитектура проекта
 
 ```
 Guildmaster - Autobattler/
-├── .cursor/
-│   ├── mcp.json          # MCP-серверы для Cursor IDE
-│   └── rules/            # Правила для AI-агента
-├── .github/
-│   └── workflows/
-│       └── ci.yml        # GameCI pipeline
-├── Assets/               # Игровые ассеты и скрипты
-├── Packages/             # Unity Package Manager
-├── ProjectSettings/      # Настройки Unity проекта
+├── Assets/
+│   └── _Project/           # Весь игровой код и контент
+│       ├── Scripts/         # C# — логика игры
+│       ├── ScriptableObjects/ # Данные: юниты, осколки, настройки
+│       ├── Prefabs/         # Игровые объекты
+│       ├── Scenes/          # Сцены
+│       └── UI/              # UI-ассеты
+├── Assets/Tests/
+│   ├── EditMode/            # Юнит-тесты
+│   └── PlayMode/            # Интеграционные тесты
+├── guildmaster-wiki/        # GDD и техническая документация (Obsidian Vault)
+├── .github/workflows/       # CI: тесты и сборка
+├── .cursor/                 # Конфигурация AI-агента (Cursor IDE)
+│   ├── mcp.json             # MCP-серверы
+│   └── rules/               # Стандарты кода и git-конвенции
 └── scripts/
-    └── run-tests.ps1     # Запуск тестов через CLI
+    └── run-tests.ps1        # Локальный запуск тестов
+```
+
+**Принципы кода:**
+- `ScriptableObject` для всех игровых данных — никакого хардкода
+- `ObjectPool<T>` вместо `Instantiate`/`Destroy` в горячих путях
+- Компонентные ссылки кэшируются в `Awake()`, никогда в `Update()`
+- Unity Input System (не Legacy Input)
+
+---
+
+## Документация
+
+GDD и техническая документация находятся в папке [`guildmaster-wiki/`](guildmaster-wiki/) — открывать как Obsidian Vault.
+
+| Документ | Содержание |
+|---|---|
+| [GDD/01-overview.md](guildmaster-wiki/GDD/01-overview.md) | Концепция, жанр, целевая аудитория |
+| [GDD/02-стадии реализации проекта.md](guildmaster-wiki/GDD/02-стадии%20реализации%20проекта.md) | Дорожная карта разработки |
+| [assembly-definitions.md](guildmaster-wiki/assembly-definitions.md) | Карта сборок C# |
+| [agent-pipeline.md](guildmaster-wiki/agent-pipeline.md) | Настройка AI-агента и MCP |
+
+---
+
+## CI/CD
+
+Тесты и сборка автоматизированы через [GameCI](https://game.ci) (GitHub Actions).
+
+| Файл | Назначение |
+|---|---|
+| `.github/workflows/ci.yml` | Запуск Unity Test Runner и сборка при push/PR |
+
+Локальный запуск тестов:
+```powershell
+./scripts/run-tests.ps1
 ```
 
 ---
 
-## Быстрый старт
+## Лицензия
 
-1. Клонировать репозиторий
-2. Открыть проект в Unity Hub (версия `6000.4.8f1`)
-3. Открыть проект в Cursor IDE — MCP-серверы подключатся автоматически
-4. Установить Unity MCP пакет через Package Manager (см. выше)
-5. Добавить `GITHUB_TOKEN` в `.cursor/mcp.json`
+**© 2026 Max Gaida. Все права защищены.**
+
+Проект опубликован в открытом доступе исключительно в целях демонстрации в портфолио.  
+Использование, копирование, распространение или создание производных работ **без письменного разрешения автора запрещено**.
+
+See [LICENSE](LICENSE) for details.
