@@ -54,21 +54,23 @@ Assets/Tests/
 
 ### Assembly Definitions
 
-Карта сборок проекта — **`docs/assembly-definitions.md`**. Всегда проверяй её перед созданием нового скрипта, чтобы определить правильную сборку. При добавлении нового модуля — обновляй этот файл.
+Карта сборок проекта — **`guildmaster-wiki/assembly-definitions.md`**. Всегда проверяй её перед созданием нового скрипта, чтобы определить правильную сборку. При добавлении нового модуля — обновляй этот файл.
 
-### Документация (GDD)
+### Документация (GDD и Wiki)
 
-Все геймдизайн-документы хранятся в **`docs/GDD/`** — работа ведётся через Obsidian.
+Все документы хранятся в **`guildmaster-wiki/`** — Obsidian Vault проекта.
 
 | Файл | Содержание |
 |---|---|
-| `docs/GDD/README.md` | Индекс всех GDD-документов |
-| `docs/GDD/01-overview.md` | Общая концепция игры |
-| `docs/GDD/02-core-loop.md` | Игровой цикл |
-| `docs/GDD/03-units.md` | Юниты и классы |
-| `docs/GDD/04-combat.md` | Механики боя |
-| `docs/GDD/05-guild.md` | Управление гильдией |
-| `docs/GDD/06-progression.md` | Прогрессия и мета |
+| `guildmaster-wiki/index.md` | Главная страница Vault |
+| `guildmaster-wiki/assembly-definitions.md` | Карта сборок и зависимостей |
+| `guildmaster-wiki/GDD/README.md` | Индекс всех GDD-документов |
+| `guildmaster-wiki/GDD/01-overview.md` | Общая концепция игры |
+| `guildmaster-wiki/GDD/02-core-loop.md` | Игровой цикл |
+| `guildmaster-wiki/GDD/03-units.md` | Юниты и классы |
+| `guildmaster-wiki/GDD/04-combat.md` | Механики боя |
+| `guildmaster-wiki/GDD/05-guild.md` | Управление гильдией |
+| `guildmaster-wiki/GDD/06-progression.md` | Прогрессия и мета |
 
 > Перед реализацией новой механики — сверяйся с соответствующим GDD-документом. Если документа нет или он Draft — уточни у пользователя.
 

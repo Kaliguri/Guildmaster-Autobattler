@@ -21,7 +21,7 @@
 |---|---|
 | `.cursor/rules/git-conventions.mdc` | Формат коммитов, стратегия веток |
 | `.cursor/rules/project-context.mdc` | Стандарты кода C#/Unity, рабочий процесс агента |
-| `docs/agent-pipeline.md` | Как устроена работа агентов, настройка MCP, чеклист задач |
+| `guildmaster-wiki/agent-pipeline.md` | Как устроена работа агентов, настройка MCP, чеклист задач |
 
 ---
 
