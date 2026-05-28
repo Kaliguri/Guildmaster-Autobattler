@@ -6,11 +6,11 @@
 
 ## Шаг 1 — Git и GitHub
 
-- [x] Создать репозиторий на GitHub
-- [x] Добавить `.gitignore` для Unity ([шаблон](https://github.com/github/gitignore/blob/main/Unity.gitignore))
-- [x] Сделать первый коммит с базовой структурой проекта
-- [x] Создать ветку `dev` от `master` и переключиться на неё
-- [x] Запушить обе ветки в remote
+- [ ] Создать репозиторий на GitHub
+- [ ] Добавить `.gitignore` для Unity ([шаблон](https://github.com/github/gitignore/blob/main/Unity.gitignore))
+- [ ] Сделать первый коммит с базовой структурой проекта
+- [ ] Создать ветку `dev` от `master` и переключиться на неё
+- [ ] Запушить обе ветки в remote
 
 ```powershell
 git checkout -b dev
@@ -22,8 +22,8 @@ git push -u origin dev
 
 ## Шаг 2 — Структура папок в Assets/
 
-- [x] Создать `Assets/_Project/` со всеми подпапками
-- [x] Создать `Assets/Tests/EditMode/` и `Assets/Tests/PlayMode/`
+- [ ] Создать `Assets/_Project/` со всеми подпапками
+- [ ] Создать `Assets/Tests/EditMode/` и `Assets/Tests/PlayMode/`
 
 ```
 Assets/
@@ -47,61 +47,79 @@ Assets/
     └── PlayMode/         ← Guildmaster.Tests.PlayMode.asmdef
 ```
 
-> Карта сборок и правила: `guildmaster-wiki/assembly-definitions.md`
+---
+
+## Шаг 3 — Assembly Definitions
+
+- [ ] Создать `.asmdef` файлы для каждого модуля в `Scripts/`
+- [ ] Создать `.asmdef` для `Tests/EditMode/` и `Tests/PlayMode/`
+- [ ] Создать `wiki/assembly-definitions.md` с картой сборок и правилами
+
+Зависимости:
+```
+Core ← Units ← Combat
+               Guild ← UI
+```
 
 ---
 
-## Шаг 3 — Unity пакеты
+## Шаг 4 — Unity пакеты
 
-- [x] **Input System** — `com.unity.inputsystem`
-- [x] **Test Framework** — `com.unity.test-framework`
-- [x] **mcp-unity** — для интеграции с Cursor AI
+- [ ] **Input System** — `com.unity.inputsystem`
+- [ ] **Test Framework** — `com.unity.test-framework`
+- [ ] **mcp-unity** — для интеграции с Cursor AI
 
 > После установки mcp-unity: `Window → MCP Unity → Server Window` → запустить сервер.
 
 ---
 
-## Шаг 4 — Cursor AI
+## Шаг 5 — Cursor AI
 
-- [x] Создать `.cursor/mcp.json` с серверами: unity, github, git, context7, filesystem
-- [x] Создать `CLAUDE.md` — точка входа для агентов
-- [x] Создать `.cursor/rules/project-context.mdc` — стандарты кода, рабочий процесс
-- [x] Создать `.cursor/rules/git-conventions.mdc` — правила коммитов и веток
-- [x] Создать `guildmaster-wiki/agent-pipeline.md` — этот файл
-
----
-
-## Шаг 5 — Документация
-
-- [x] Создать Obsidian Vault в папке `guildmaster-wiki/`
-- [x] Создать GDD-документы: overview, core-loop, units, combat, guild, progression
-- [x] Создать `guildmaster-wiki/assembly-definitions.md` — карта сборок
+- [ ] Создать `.cursor/mcp.json` с серверами: unity, github, git, context7, filesystem
+- [ ] Создать `CLAUDE.md` — точка входа для агентов
+- [ ] Создать `.cursor/rules/project-context.mdc` — стандарты кода, рабочий процесс
+- [ ] Создать `.cursor/rules/git-conventions.mdc` — правила коммитов и веток
+- [ ] Создать `wiki/agent-pipeline.md` — этот файл
 
 ---
 
-## Шаг 6 — CI/CD
+## Шаг 6 — Документация (Obsidian Vault)
 
-- [x] Создать `.github/workflows/ci.yml` на основе [GameCI](https://game.ci)
-- [x] Добавить секреты в GitHub репозитории: `UNITY_LICENSE`, `UNITY_EMAIL`, `UNITY_PASSWORD`
-- [x] Настроить branch protection: `master` и `dev` требуют прохождения CI
-- [x] Создать `scripts/run-tests.ps1` для локального запуска тестов
-- [x] Убедиться, что CI pipeline проходит зелёным ✅
+- [ ] Создать папку `wiki/` как Obsidian Vault
+- [ ] Создать `wiki/.obsidian/app.json` с базовыми настройками
+- [ ] Создать `wiki/index.md` — главная страница Vault
+- [ ] Создать GDD-документы: `GDD/01-overview`, `02-core-loop`, `03-units`, `04-combat`, `05-guild`, `06-progression`
+- [ ] Добавить в `.gitignore`: `wiki/.obsidian/workspace.json`, `workspace-mobile.json`, `cache`
 
-### Активация Unity License для CI
+---
 
-Лицензия уже есть локально: `C:\ProgramData\Unity\Unity_lic.ulf`
+## Шаг 7 — CI/CD
+
+- [ ] Создать `.github/workflows/ci.yml` на основе [GameCI](https://game.ci)
+- [ ] Добавить секреты в GitHub: `UNITY_LICENSE`, `UNITY_EMAIL`, `UNITY_PASSWORD`
+- [ ] Настроить branch protection на `master` и `dev` (требует прохождения CI)
+- [ ] Создать `scripts/run-tests.ps1` для локального запуска тестов
+- [ ] Сделать тестовый push и убедиться, что pipeline проходит
+
+### Активация Unity License
+
+Лицензия находится локально: `C:\ProgramData\Unity\Unity_lic.ulf`
+
+Если файла нет: Unity Hub → Preferences → Licenses → Add → Get a free personal license.
 
 Добавить секреты: `GitHub → Settings → Secrets and Variables → Actions`
 
 | Секрет | Значение |
 |---|---|
-| `UNITY_LICENSE` | Содержимое `.ulf` файла |
+| `UNITY_LICENSE` | Содержимое `.ulf` файла (весь XML) |
 | `UNITY_EMAIL` | Email Unity аккаунта |
 | `UNITY_PASSWORD` | Пароль Unity аккаунта |
 
+> Branch protection требует публичного репозитория или GitHub Pro.
+
 ---
 
-## Шаг 7 — Финальный коммит
+## Шаг 8 — Финальный коммит
 
 ```
 chore: initial project setup with CI, MCP, and Cursor rules
