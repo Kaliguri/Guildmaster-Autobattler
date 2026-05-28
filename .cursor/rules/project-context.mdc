@@ -1,0 +1,26 @@
+---
+description: Project context, MCP servers, and agent workflow for Guildmaster Autobattler
+alwaysApply: true
+---
+
+# Guildmaster — Autobattler
+
+Unity 6 пошаговая автобатлер-игра (C#, Windows/PC). Полный гайд агента: `CLAUDE.md`.
+
+## Доступные MCP-серверы
+
+| MCP | Когда использовать |
+|---|---|
+| **unity** | Операции с Unity Editor: сцены, объекты, компоненты, play mode |
+| **github** | PR, issues, GitHub Actions workflows |
+| **git** | Коммиты, ветки, diff, история — предпочитать Shell-командам |
+| **context7** | Документация Unity API и любых библиотек — ВСЕГДА перед ответом об API |
+| **filesystem** | Чтение/запись файлов проекта |
+
+## Ключевые правила
+
+- Изменения в сценах — только через Unity MCP, не редактировать `.unity` файлы напрямую
+- Перед ответом об Unity/C# API — запросить документацию через Context7
+- `GetComponent`/`Find` — только в `Awake()`/`Start()`, никогда в `Update()`
+- Данные игры — в `ScriptableObject`, не хардкодить
+- После изменений кода — `./scripts/run-tests.ps1`

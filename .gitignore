@@ -81,6 +81,9 @@ yarn-error.log
 .env
 .env.*
 
+# Cursor MCP config (contains secrets)
+.cursor/mcp.json
+
 # OS generated files
 desktop.ini
 ehthumbs.db
