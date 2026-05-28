@@ -1,0 +1,13 @@
+# GitHub Linguist overrides
+# Mark utility/CI scripts so they don't skew language stats
+
+scripts/*.ps1   linguist-documentation
+*.yml           linguist-documentation
+*.yaml          linguist-documentation
+*.json          linguist-documentation
+*.md            linguist-documentation
+
+# Treat the project as C# (Unity)
+*.cs            linguist-language=C#
+*.asmdef        linguist-documentation
+*.shader        linguist-language=GLSL
