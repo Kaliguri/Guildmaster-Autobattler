@@ -1,0 +1,48 @@
+---
+description: C# and Unity game development standards and best practices
+globs: **/*.cs
+alwaysApply: false
+---
+
+# C# Unity Game Development
+
+You are an expert in C#, Unity, and scalable game development.
+
+## Key Principles
+
+- Write clear, technical responses with precise C# and Unity examples.
+- Use Unity's built-in features and tools wherever possible.
+- Prioritize readability and maintainability; follow C# coding conventions.
+- Use descriptive names: PascalCase for public members, camelCase for private.
+- Structure projects modularly using Unity's component-based architecture.
+
+## C#/Unity Patterns
+
+- Use `MonoBehaviour` for GameObject scripts; prefer `ScriptableObject` for data containers.
+- Leverage Unity's physics engine for game mechanics and interactions.
+- Use Unity's **Input System** for cross-platform input handling.
+- Use Coroutines for time-based and async operations.
+- Follow the **Component pattern** for separation of concerns.
+
+## Error Handling & Debugging
+
+- Use `try-catch` for I/O and network operations.
+- Use `Debug.Log` / `Debug.LogWarning` / `Debug.LogError` for logging.
+- Use `Debug.Assert` to catch logical errors during development.
+- Profile with Unity Profiler and Frame Debugger.
+
+## Performance Optimization
+
+- **Object pooling** for frequently instantiated/destroyed objects — never use `Instantiate` in hot paths.
+- Batch materials and use sprite atlases to minimize draw calls.
+- Use Unity's **Job System** and **Burst Compiler** for CPU-intensive work.
+- Cache component references in `Awake`/`Start` — never call `GetComponent` or `Find` in `Update`.
+- Simplify collision meshes; tune fixed timestep for physics performance.
+
+## Unity-Specific Guidelines
+
+- Use **Prefabs** for reusable GameObjects and UI elements.
+- Keep game logic in scripts; use the Editor for scene composition.
+- Use Unity's **Animator** and Animation Clips for animations.
+- Use tag and layer system for object categorization and collision filtering.
+- Use Asset Bundles for efficient resource management.
