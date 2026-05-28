@@ -87,3 +87,8 @@ yarn-error.log
 # OS generated files
 desktop.ini
 ehthumbs.db
+
+# Obsidian personal state (keep app.json and graph.json, ignore workspace state)
+docs/.obsidian/workspace.json
+docs/.obsidian/workspace-mobile.json
+docs/.obsidian/cache
