@@ -1,0 +1,22 @@
+name: Unity License Activation (run once)
+
+# Р—Р°РїСѓСЃРєР°РµС‚СЃСЏ РІСЂСѓС‡РЅСѓСЋ: Actions в†’ Unity License Activation в†’ Run workflow
+on:
+  workflow_dispatch: {}
+
+jobs:
+  activation:
+    name: Request Unity License File
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request manual activation file (.alf)
+        uses: game-ci/unity-request-activation-file@v2
+        with:
+          unityVersion: 6000.4.8f1
+
+      - name: Upload .alf file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: unity-license-request
+          path: "*.alf"
+          retention-days: 1
