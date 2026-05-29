@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build *)",
+      "Bash(dotnet test *)",
+      "Bash(dotnet run *)",
+      "Bash(dotnet format --verify-no-changes *)",
+      "Bash(powershell *)",
+      "Bash(./scripts/run-tests.ps1)"
+    ]
+  }
+}

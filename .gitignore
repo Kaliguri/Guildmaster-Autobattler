@@ -100,3 +100,6 @@ guildmaster-wiki/.obsidian/plugins/*/styles.css
 # Docs site build artifacts
 quartz-build/
 site/
+
+# Claude Code local settings (per-user, not shared)
+.claude/settings.local.json

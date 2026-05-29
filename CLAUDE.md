@@ -1,6 +1,6 @@
 # Guildmaster — Autobattler: AI Agent Guide
 
-Пошаговая автобатлер-игра на Unity 6. Этот файл читается Claude Code и Cursor AI автоматически.
+Кооперативный автобатлер-рогалик в реальном времени (с паузой) на Unity 6. Этот файл читается Claude Code и Cursor AI автоматически.
 
 ## Проект
 
