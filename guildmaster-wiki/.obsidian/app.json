@@ -7,5 +7,9 @@
   "strictLineBreaks": false,
   "showFrontmatter": false,
   "promptDelete": false,
-  "alwaysUpdateLinks": true
+  "alwaysUpdateLinks": true,
+  "enabledPlugins": [
+    "templater-obsidian",
+    "obsidian-excalidraw-plugin"
+  ]
 }

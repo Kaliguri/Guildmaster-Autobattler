@@ -27,6 +27,24 @@ Unity 6 пошаговая автобатлер-игра (C#, Windows/PC).
 - **Input**: использовать Unity Input System, не Legacy Input
 - **Async**: Coroutines для time-based операций; `async/await` с `UniTask` если подключён
 
+### Документирование кода
+
+- **Публичные методы и свойства** во всех сборках — XML Doc (`///`)
+- **Поля ScriptableObject** — атрибут `[Tooltip("...")]` (виден в Inspector)
+- **Приватные поля и внутренняя логика** — комментарии только для неочевидных алгоритмов
+- Не документировать очевидное (`// increment counter` и т.п.)
+
+```csharp
+/// <summary>Применяет урон с учётом брони и активных эффектов.</summary>
+/// <param name="damage">Базовый урон до модификаторов.</param>
+/// <param name="source">Источник урона — для триггеров реликвий.</param>
+/// <returns>Фактически нанесённый урон.</returns>
+public int TakeDamage(int damage, IUnit source) { ... }
+
+[Tooltip("Базовая скорость атаки: секунды между ударами.")]
+[SerializeField] private float _attackInterval = 1.5f;
+```
+
 ### Запрещено
 
 - `GetComponent`, `Find`, `FindObjectOfType` в `Update()` / `FixedUpdate()`

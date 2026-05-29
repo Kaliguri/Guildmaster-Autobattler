@@ -92,3 +92,7 @@ ehthumbs.db
 guildmaster-wiki/.obsidian/workspace.json
 guildmaster-wiki/.obsidian/workspace-mobile.json
 guildmaster-wiki/.obsidian/cache
+
+# Obsidian community plugins — track manifest.json only, not compiled bundles
+guildmaster-wiki/.obsidian/plugins/*/main.js
+guildmaster-wiki/.obsidian/plugins/*/styles.css
