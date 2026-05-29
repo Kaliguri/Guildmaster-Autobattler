@@ -1,0 +1,69 @@
+name: Docs
+
+on:
+  push:
+    branches: [dev, master]
+    paths:
+      - "guildmaster-wiki/**"
+      - "Assets/_Project/Scripts/**"
+      - "quartz-config/**"
+      - "doxygen/**"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Clone Quartz v4.5.2
+        run: git clone --depth 1 --branch v4.5.2 https://github.com/jackyzha0/quartz.git quartz-build
+
+      - name: Configure Quartz
+        run: |
+          cp quartz-config/quartz.config.ts quartz-build/quartz.config.ts
+          cp quartz-config/quartz.layout.ts quartz-build/quartz.layout.ts
+          rm -rf quartz-build/content
+          cp -r guildmaster-wiki quartz-build/content
+
+      - name: Cache Quartz node_modules
+        uses: actions/cache@v4
+        with:
+          path: quartz-build/node_modules
+          key: quartz-v4.5.2-${{ hashFiles('quartz-build/package-lock.json') }}
+
+      - name: Install Quartz dependencies
+        working-directory: quartz-build
+        run: npm ci
+
+      - name: Build Quartz
+        working-directory: quartz-build
+        run: npx quartz build -o ../site
+
+      - name: Install Doxygen and Graphviz
+        run: sudo apt-get install -y doxygen graphviz
+
+      - name: Build Doxygen
+        working-directory: doxygen
+        run: doxygen Doxyfile
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          cname: ""

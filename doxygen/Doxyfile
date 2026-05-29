@@ -1,0 +1,71 @@
+# Doxyfile — Guildmaster Autobattler C# API Reference
+# Run from the doxygen/ directory: doxygen Doxyfile
+
+#---------------------------------------------------------------------------
+# Project
+#---------------------------------------------------------------------------
+PROJECT_NAME           = "Guildmaster — Autobattler"
+PROJECT_BRIEF          = "C# API Reference"
+PROJECT_NUMBER         =
+OUTPUT_DIRECTORY       = ../site/api
+
+#---------------------------------------------------------------------------
+# Input
+#---------------------------------------------------------------------------
+INPUT                  = ../Assets/_Project/Scripts
+RECURSIVE              = YES
+FILE_PATTERNS          = *.cs
+EXTENSION_MAPPING      = cs=csharp
+
+#---------------------------------------------------------------------------
+# Extraction
+#---------------------------------------------------------------------------
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+JAVADOC_AUTOBRIEF      = YES
+MULTILINE_CPP_IS_BRIEF = NO
+
+#---------------------------------------------------------------------------
+# HTML output
+#---------------------------------------------------------------------------
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_XML           = NO
+GENERATE_MAN           = NO
+
+# Doxygen Awesome theme
+HTML_EXTRA_STYLESHEET  = doxygen-awesome-css/doxygen-awesome.css
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = NO
+FULL_SIDEBAR           = NO
+HTML_COLORSTYLE        = AUTO_LIGHT
+TREEVIEW_WIDTH         = 335
+
+#---------------------------------------------------------------------------
+# Diagrams (requires Graphviz)
+#---------------------------------------------------------------------------
+HAVE_DOT               = YES
+DOT_NUM_THREADS        = 0
+UML_LOOK               = YES
+DOT_UML_DETAILS        = NO
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+CLASS_GRAPH            = YES
+COLLABORATION_GRAPH    = YES
+INCLUDE_GRAPH          = YES
+MAX_DOT_GRAPH_DEPTH    = 3
+DOT_IMAGE_FORMAT       = svg
+INTERACTIVE_SVG        = YES
+
+#---------------------------------------------------------------------------
+# Misc
+#---------------------------------------------------------------------------
+QUIET                  = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = NO
+WARN_NO_PARAMDOC       = NO
+SHOW_USED_FILES        = NO
+SHOW_FILES             = YES
+ALPHABETICAL_INDEX     = YES
+SORT_MEMBERS_CTORS_1ST = YES
