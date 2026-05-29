@@ -38,6 +38,12 @@ MonoBehaviour:
     - Guildmaster.Combat
     - Guildmaster.Core
     - Guildmaster.Units
+    - UniTask
+    - UniTask.Addressables
+    - UniTask.DOTween
+    - UniTask.Linq
+    - UniTask.TextMeshPro
+    - VContainer
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
