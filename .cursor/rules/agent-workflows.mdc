@@ -1,0 +1,57 @@
+---
+description: Конкретные кейсы и порядок действий агента в этом проекте
+alwaysApply: true
+---
+
+# Рабочие процессы агента
+
+## Создание новых C# скриптов
+
+После записи любого `.cs` файла — **всегда** вызывать `recompile_scripts` через Unity MCP перед коммитом. Unity генерирует `.meta` файлы при компиляции; без них Unity теряет настройки ассетов.
+
+**Порядок действий:**
+1. Записать `.cs` файл(ы)
+2. Вызвать `recompile_scripts` (Unity MCP) — дождаться завершения
+3. Добавить в коммит и `.cs`, и `.meta` вместе
+
+```
+# Неправильно — коммитить .cs без .meta
+git add Assets/_Project/Scripts/Core/IUnit.cs
+
+# Правильно — коммитить вместе
+git add Assets/_Project/Scripts/Core/IUnit.cs
+git add Assets/_Project/Scripts/Core/IUnit.cs.meta
+```
+
+---
+
+## Ручной запуск Docs workflow
+
+Если docs сайт не обновился после пуша — запустить workflow вручную через `gh` CLI:
+
+```powershell
+gh workflow run docs.yml --ref dev
+```
+
+---
+
+## Новые Markdown-файлы в guildmaster-wiki
+
+Файлы не должны начинаться с пустой строки, за которой следует `---`. Quartz интерпретирует такой `---` как начало YAML frontmatter и падает при парсинге.
+
+**Правильная структура** (по конвенции Obsidian):
+```markdown
+**Статус:** 🟡 Draft
+
+---
+
+Содержимое документа.
+```
+
+**Неправильно** — вызовет ошибку в Quartz:
+```markdown
+
+---
+
+> Текст документа...
+```
