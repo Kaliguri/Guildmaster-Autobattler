@@ -35,9 +35,18 @@ MonoBehaviour:
     serializationDepthLimit: 64
     assemblyNames:
     - Assembly-CSharp-firstpass
+    - FMODUnity
+    - FMODUnityHaptics
+    - FMODUnityResonance
     - Guildmaster.Combat
     - Guildmaster.Core
     - Guildmaster.Units
+    - LitMotion
+    - LitMotion.Extensions
+    - MessagePipe
+    - MessagePipe.VContainer
+    - Sirenix.OdinInspector.Modules.Unity.Addressables
+    - Sirenix.OdinInspector.Modules.UnityLocalization
     - UniTask
     - UniTask.Addressables
     - UniTask.DOTween
