@@ -1,6 +1,6 @@
 # Guildmaster — Autobattler: AI Agent Guide
 
-Пошаговая автобатлер-игра на Unity 6. Этот файл читается Claude Code и Cursor AI автоматически.
+Кооперативный автобатлер-рогалик в реальном времени (с паузой) на Unity 6. Этот файл читается Claude Code и Cursor AI автоматически.
 
 ## Проект
 
@@ -10,6 +10,55 @@
 | Язык | C# |
 | Платформа | Windows / PC |
 | Репозиторий | GitHub |
+
+---
+
+## Технологический стек
+
+Все пакеты установлены. Полное обоснование — `guildmaster-wiki/Игровая документация - Техническая часть/5. Технологический стек и архитектура.md`.
+
+### Архитектура / DI
+
+| Пакет | Где лежит | Назначение |
+|---|---|---|
+| **VContainer** 1.18.0 | `Packages/manifest.json` | DI-контейнер. Никаких синглтонов. Зависимости — только через инъекцию. |
+| **MessagePipe** | `Packages/manifest.json` | Pub/sub EventBus через VContainer. Развязка Combat → UI/Audio/VFX. |
+
+### Async / Анимации
+
+| Пакет | Назначение |
+|---|---|
+| **UniTask** | Zero-alloc async/await. Использовать вместо корутин для всего time-based. |
+| **LitMotion** | Zero-alloc твины. UI-анимации, HP-бары, damage numbers, фидбэк. |
+
+### Сохранения / Данные
+
+| Пакет | Назначение |
+|---|---|
+| **Easy Save 3** | Плумбинг сейвов (диск + Steam Cloud). Сами пишем DTO-слой. |
+| **Newtonsoft.Json** 3.2.2 | JSON-сериализация DTO. |
+| **Addressables** 2.3.1 | Загрузка контента по адресу. Основа для Localization. |
+| **Unity Localization** 1.5.3 | Локализация EN + RU. Ключи закладывать в SO сразу. |
+
+### Мультиплеер / Steam
+
+| Пакет | Где лежит | Назначение |
+|---|---|---|
+| **NGO** 2.11.2 | `Packages/manifest.json` | Netcode for GameObjects — host-authoritative сетевой слой. |
+| **Facepunch.Steamworks** 2.5.2 | `Assets/Plugins/Facepunch.Steamworks/` | Steam-интеграция. `steam_api64.dll` в `redistributable_bin/win64/`. |
+| **MPPM** 1.3.2 | `Packages/manifest.json` | Тест кооп в редакторе (до 4 виртуальных игроков). |
+
+### Редактор / Инспектор
+
+| Пакет | Где лежит | Назначение |
+|---|---|---|
+| **Odin Inspector** 3.x | `Assets/Plugins/Sirenix/` | Расширенный Inspector. `[SerializeReference]`-дропдауны для полиморфных данных. |
+
+### Аудио
+
+| Пакет | Где лежит | Назначение |
+|---|---|---|
+| **FMOD** | `Assets/Plugins/FMOD/` | Адаптивная музыка и звук. **Всегда за интерфейсом `IAudioService`** — не дёргать FMOD API напрямую из игровой логики. |
 
 ---
 

@@ -83,3 +83,16 @@ ci/*          ← CI/CD changes
   - Bad: `feature/add_new_guild_management_system`
 - No broken compilation in any commit
 - Delete branches after merging
+- Keep `dev` always green and buildable: do breaking/WIP work on `feature/*`, merge into `dev` only when CI is green
+- `CI Gate` is the required status check on `dev` and `master`; docs/wiki/markdown pass instantly, code requires green tests
+
+---
+
+## Releases (Tags)
+
+Testable/release versions are pinned with **tags**, not a separate branch.
+
+- Tag format: `vMAJOR.MINOR.PATCH` (e.g. `v0.1.0`); milestones get a suffix (`v0.1.0-festival`)
+- Tag a stable commit (usually on `master`, after a PR from `dev`)
+- Build/test any version anytime: `git checkout <tag>` → build. Pin Steam builds to tags for reproducibility
+- A `release/*` branch is created **only** when parallel stabilization is needed (freeze a release while `dev` keeps moving) — usually unnecessary for solo

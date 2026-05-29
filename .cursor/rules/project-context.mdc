@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Guildmaster — Autobattler
 
-Unity 6 пошаговая автобатлер-игра (C#, Windows/PC).
+Unity 6 кооперативный автобатлер-рогалик в реальном времени с паузой (C#, Windows/PC). Бой — детерминированная тиковая симуляция на непрерывном 2D-поле.
 
 ## MCP-серверы
 
@@ -45,12 +45,24 @@ public int TakeDamage(int damage, IUnit source) { ... }
 [SerializeField] private float _attackInterval = 1.5f;
 ```
 
+### Архитектура и детерминизм
+
+- **DI вместо синглтонов.** Зависимости — через VContainer; никаких `static instance` и `Find*ObjectOfType` в рантайме.
+- **Рандом — только через `IRngService`** (seeded). Глобальный `UnityEngine.Random` в игровой логике запрещён.
+- **Боевая симуляция детерминирована:** фиксированный тик (не `Time.deltaTime`), без `Physics2D` / `Rigidbody2D`, детерминированный порядок итерации (не `foreach` по `Dictionary` / `HashSet` без сортировки), отделена от презентации.
+- **Интерфейсы — на швах, не для вида.** `IFoo` оправдан при ≥2 реализациях или границе для теста/мока/подмены; `IFoo`→`Foo` 1:1 без этого — не плодить.
+
+Полная архитектура и обоснования — `guildmaster-wiki/Игровая документация - Техническая часть/5. Технологический стек и архитектура.md`.
+
 ### Запрещено
 
 - `GetComponent`, `Find`, `FindObjectOfType` в `Update()` / `FixedUpdate()`
 - `Instantiate`/`Destroy` в циклах
 - Выделение памяти (LINQ с аллокациями, строки) в горячих путях
 - Хардкод игровых значений в коде
+- `UnityEngine.Random` в игровой логике (только `IRngService`)
+- `Physics2D` / `Rigidbody2D` / `Time.deltaTime` в боевой симуляции (ломает детерминизм)
+- Синглтоны (`static instance`) как замена DI
 
 ## Структура проекта
 

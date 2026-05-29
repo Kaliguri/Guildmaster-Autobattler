@@ -1,5 +1,37 @@
 {
   "dependencies": {
+    "com.annulusgames.lit-motion": {
+      "version": "https://github.com/annulusgames/LitMotion.git?path=src/LitMotion/Assets/LitMotion",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.burst": "1.6.0",
+        "com.unity.collections": "1.5.1",
+        "com.unity.mathematics": "1.0.1"
+      },
+      "hash": "2053ef5c23f2ae755dd85d5865b698c542c351b6"
+    },
+    "com.cysharp.messagepipe": {
+      "version": "https://github.com/Cysharp/MessagePipe.git?path=src/MessagePipe.Unity/Assets/Plugins/MessagePipe",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "7f7ac8619942849c92eee160118998534a1529df"
+    },
+    "com.cysharp.messagepipe.vcontainer": {
+      "version": "https://github.com/Cysharp/MessagePipe.git?path=src/MessagePipe.Unity/Assets/Plugins/MessagePipe.VContainer",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "7f7ac8619942849c92eee160118998534a1529df"
+    },
+    "com.cysharp.unitask": {
+      "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "e5acc106ee196bc5a32fb14cdf2987b0f96d11e0"
+    },
     "com.gamelovers.mcp-unity": {
       "version": "https://github.com/CoderGamester/mcp-unity.git",
       "depth": 0,
@@ -110,9 +142,24 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.addressables": {
+      "version": "2.3.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.profiling.core": "1.0.2",
+        "com.unity.modules.assetbundle": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.scriptablebuildpipeline": "2.1.5",
+        "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.burst": {
       "version": "1.8.29",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.mathematics": "1.2.1",
@@ -179,6 +226,16 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.localization": {
+      "version": "1.5.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.addressables": "1.22.2",
+        "com.unity.nuget.newtonsoft-json": "3.0.2"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.mathematics": {
       "version": "1.3.3",
       "depth": 1,
@@ -194,15 +251,41 @@
         "com.unity.modules.uielements": "1.0.0"
       }
     },
+    "com.unity.multiplayer.playmode": {
+      "version": "1.3.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "2.0.2"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.netcode.gameobjects": {
+      "version": "2.11.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.transport": "2.6.0",
+        "com.unity.nuget.mono-cecil": "1.11.4"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.6",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.nuget.newtonsoft-json": {
       "version": "3.2.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.profiling.core": {
+      "version": "1.0.3",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -238,6 +321,16 @@
       "dependencies": {
         "com.unity.render-pipelines.core": "17.4.0"
       }
+    },
+    "com.unity.scriptablebuildpipeline": {
+      "version": "2.6.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.4.5",
+        "com.unity.modules.assetbundle": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.searcher": {
       "version": "4.9.4",
@@ -287,6 +380,17 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.transport": {
+      "version": "2.7.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.burst": "1.8.24",
+        "com.unity.collections": "2.2.1",
+        "com.unity.mathematics": "1.3.2"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.ugui": {
       "version": "2.0.0",
       "depth": 0,
@@ -305,6 +409,13 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "jp.hadashikick.vcontainer": {
+      "version": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.18.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "6e6972730ce316fab2408f20e7a160aec070e48b"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
