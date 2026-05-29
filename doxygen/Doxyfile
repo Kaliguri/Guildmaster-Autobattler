@@ -30,6 +30,7 @@ MULTILINE_CPP_IS_BRIEF = NO
 # HTML output
 #---------------------------------------------------------------------------
 GENERATE_HTML          = YES
+HTML_OUTPUT            = .
 GENERATE_LATEX         = NO
 GENERATE_XML           = NO
 GENERATE_MAN           = NO

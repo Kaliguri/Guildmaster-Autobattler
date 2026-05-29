@@ -8,7 +8,7 @@ export const sharedPageComponents: SharedLayout = {
   footer: Component.Footer({
     links: {
       GitHub: "https://github.com/Kaliguri/Guildmaster-Autobattler",
-      "C# API Reference": "/api/index.html",
+      "C# API Reference": "/Guildmaster-Autobattler/api/",
     },
   }),
 }

@@ -4,7 +4,11 @@
 
 ![Unity](https://img.shields.io/badge/Unity-6000.4.8f1-black?logo=unity) ![Platform](https://img.shields.io/badge/Platform-Windows%20%2F%20PC-blue) ![Status](https://img.shields.io/badge/Status-In%20Development-yellow) ![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red) [![CI](https://github.com/Kaliguri/Guildmaster-Autobattler/actions/workflows/ci.yml/badge.svg)](https://github.com/Kaliguri/Guildmaster-Autobattler/actions/workflows/ci.yml) [![Docs](https://img.shields.io/badge/Docs-GitHub%20Pages-blueviolet?logo=github)](https://kaliguri.github.io/Guildmaster-Autobattler/)
 
-### [📖 Документация и Wiki](https://kaliguri.github.io/Guildmaster-Autobattler/)
+<p align="center">
+  <a href="https://kaliguri.github.io/Guildmaster-Autobattler/"><b>🌐 Wiki и документация</b></a>
+  &nbsp;&nbsp;·&nbsp;&nbsp;
+  <a href="https://kaliguri.github.io/Guildmaster-Autobattler/api/"><b>🔧 C# API Reference</b></a>
+</p>
 
 ---
 
@@ -29,20 +33,6 @@
 ## Screenshots
 
 > Coming soon — проект в ранней стадии разработки.
-
----
-
-## Документация
-
-Полная документация доступна онлайн: **[kaliguri.github.io/Guildmaster-Autobattler](https://kaliguri.github.io/Guildmaster-Autobattler/)**
-
-| Раздел | Содержание |
-|---|---|
-| [Геймдизайн](https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F%20-%20%D0%93%D0%B5%D0%B9%D0%BC%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD/0.0.-README) | Концепция, лор, механики, прогрессия |
-| [Техническая часть](https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F%20%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F%20-%20%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D1%87%D0%B0%D1%81%D1%82%D1%8C/0.0.-README) | Системы, сборки, CI/CD, docs сайт |
-| [C# API Reference](https://kaliguri.github.io/Guildmaster-Autobattler/api/) | Архитектура классов и зависимостей |
-
-> Документация также доступна локально в [`guildmaster-wiki/`](guildmaster-wiki/) — открывать как Obsidian Vault.
 
 ---
 
