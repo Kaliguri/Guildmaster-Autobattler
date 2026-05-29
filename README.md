@@ -49,6 +49,24 @@
 | **CI/CD** | GitHub Actions + [GameCI](https://game.ci) |
 | **Docs** | Quartz v4 + Doxygen + GitHub Pages |
 
+**Пакеты и плагины:**
+
+| Пакет | Назначение |
+|---|---|
+| [VContainer](https://github.com/hadashiA/VContainer) | DI-контейнер — замена синглтонам |
+| [UniTask](https://github.com/Cysharp/UniTask) | Zero-alloc async/await |
+| [MessagePipe](https://github.com/Cysharp/MessagePipe) | Типизированный pub/sub EventBus через DI |
+| [LitMotion](https://github.com/annulusgames/LitMotion) | Zero-alloc твины для UI и VFX |
+| [Odin Inspector](https://odininspector.com) | Расширенный инспектор, `[SerializeReference]`-дропдауны |
+| [Easy Save 3](https://assetstore.unity.com/packages/tools/utilities/easy-save-the-complete-save-data-serializer-system-768) | Сохранения (диск + Steam Cloud) |
+| Newtonsoft.Json | JSON-сериализация DTO сейвов |
+| Addressables | Загрузка контента по адресу |
+| Unity Localization | Локализация EN + RU |
+| MPPM | Тест кооп в редакторе (до 4 виртуальных игроков) |
+| NGO (Netcode for GameObjects) | Сетевой слой (host-authoritative) |
+| [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) | Steam-интеграция и транспорт для NGO |
+| FMOD | Адаптивная музыка (за интерфейсом `IAudioService`) |
+
 ## Архитектура проекта
 
 ```
