@@ -6,65 +6,65 @@
       <description>Последние 10 заметок on Guildmaster — Autobattler</description>
       <generator>Quartz -- quartz.jzhao.xyz</generator>
       <item>
-    <title>6. Мультиплеер</title>
-    <link>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%93%D0%B5%D0%B9%D0%BC%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD/6.-%D0%9C%D1%83%D0%BB%D1%8C%D1%82%D0%B8%D0%BF%D0%BB%D0%B5%D0%B5%D1%80</link>
-    <guid>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%93%D0%B5%D0%B9%D0%BC%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD/6.-%D0%9C%D1%83%D0%BB%D1%8C%D1%82%D0%B8%D0%BF%D0%BB%D0%B5%D0%B5%D1%80</guid>
-    <description><![CDATA[ Статус: 🟡 Draft Общие правила В гильдии всегда 4 «Сосуда» Играть можно от 1 до 4 игроков Хост выбирает, сколькими «Сосудами» управляет каждый игрок Распределение можно менять в любой момент забега Примеры распределения Игроков«Сосудов» на игрока142по 24по 1 Референс: Across the Obelisk / Baldurs Ga... ]]></description>
-    <pubDate>Fri, 29 May 2026 13:12:35 GMT</pubDate>
-  </item><item>
-    <title>7. Ивенты и мини-игры</title>
-    <link>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%93%D0%B5%D0%B9%D0%BC%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD/7.-%D0%98%D0%B2%D0%B5%D0%BD%D1%82%D1%8B-%D0%B8-%D0%BC%D0%B8%D0%BD%D0%B8-%D0%B8%D0%B3%D1%80%D1%8B</link>
-    <guid>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%93%D0%B5%D0%B9%D0%BC%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD/7.-%D0%98%D0%B2%D0%B5%D0%BD%D1%82%D1%8B-%D0%B8-%D0%BC%D0%B8%D0%BD%D0%B8-%D0%B8%D0%B3%D1%80%D1%8B</guid>
-    <description><![CDATA[ Статус: 🟡 Draft Карта Структура карты — как в Slay the Spire: акты, ветвления, выбор следующего шага. ]]></description>
-    <pubDate>Fri, 29 May 2026 13:12:35 GMT</pubDate>
-  </item><item>
     <title>0.0. README</title>
     <link>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/0.0.-README</link>
     <guid>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/0.0.-README</guid>
     <description><![CDATA[ Индекс технических документов проекта. Здесь описываются технические системы и их поведение — не геймдизайн, а реализация. ]]></description>
-    <pubDate>Fri, 29 May 2026 13:12:35 GMT</pubDate>
+    <pubDate>Fri, 29 May 2026 13:26:15 GMT</pubDate>
   </item><item>
     <title>0.1. Открытые вопросы</title>
     <link>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/0.1.-%D0%9E%D1%82%D0%BA%D1%80%D1%8B%D1%82%D1%8B%D0%B5-%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81%D1%8B</link>
     <guid>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/0.1.-%D0%9E%D1%82%D0%BA%D1%80%D1%8B%D1%82%D1%8B%D0%B5-%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81%D1%8B</guid>
     <description><![CDATA[ Статус: 🟡 Draft Нерешённые вопросы по реализации. Ответы вносить здесь же или переносить в соответствующий документ. ]]></description>
-    <pubDate>Fri, 29 May 2026 13:12:35 GMT</pubDate>
+    <pubDate>Fri, 29 May 2026 13:26:15 GMT</pubDate>
   </item><item>
     <title>0.2. Черновик</title>
     <link>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/0.2.-%D0%A7%D0%B5%D1%80%D0%BD%D0%BE%D0%B2%D0%B8%D0%BA</link>
     <guid>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/0.2.-%D0%A7%D0%B5%D1%80%D0%BD%D0%BE%D0%B2%D0%B8%D0%BA</guid>
     <description><![CDATA[ Статус: 🟡 Draft Сырые технические заметки и идеи «на будущее». Не являются утверждённым решением. ]]></description>
-    <pubDate>Fri, 29 May 2026 13:12:35 GMT</pubDate>
+    <pubDate>Fri, 29 May 2026 13:26:15 GMT</pubDate>
   </item><item>
     <title>0.3. Подготовка проекта (Unity)</title>
     <link>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/0.3.-%D0%9F%D0%BE%D0%B4%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BA%D0%B0-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0-(Unity)</link>
     <guid>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/0.3.-%D0%9F%D0%BE%D0%B4%D0%B3%D0%BE%D1%82%D0%BE%D0%B2%D0%BA%D0%B0-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0-(Unity)</guid>
     <description><![CDATA[ Статус: ✅ Выполнено (2026-05-28) Пошаговый чеклист. Проходить по порядку. ]]></description>
-    <pubDate>Fri, 29 May 2026 13:12:35 GMT</pubDate>
+    <pubDate>Fri, 29 May 2026 13:26:15 GMT</pubDate>
   </item><item>
     <title>1. Сборки (Assembly Definitions)</title>
     <link>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/1.-%D0%A1%D0%B1%D0%BE%D1%80%D0%BA%D0%B8-(Assembly-Definitions)</link>
     <guid>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/1.-%D0%A1%D0%B1%D0%BE%D1%80%D0%BA%D0%B8-(Assembly-Definitions)</guid>
     <description><![CDATA[ Статус: 🟡 Draft Актуальная карта сборок проекта. Обновлять при добавлении новых модулей или изменении зависимостей. ]]></description>
-    <pubDate>Fri, 29 May 2026 13:12:35 GMT</pubDate>
+    <pubDate>Fri, 29 May 2026 13:26:15 GMT</pubDate>
   </item><item>
     <title>2. Сохранения (Save)</title>
     <link>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/2.-%D0%A1%D0%BE%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F-(Save)</link>
     <guid>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/2.-%D0%A1%D0%BE%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F-(Save)</guid>
     <description><![CDATA[ Статус: 🟡 Draft Принцип Сохранение привязано к хосту: файл сохранения хранится у него. ]]></description>
-    <pubDate>Fri, 29 May 2026 13:12:35 GMT</pubDate>
+    <pubDate>Fri, 29 May 2026 13:26:15 GMT</pubDate>
   </item><item>
     <title>3. Рандомизация забега (Seed)</title>
     <link>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/3.-%D0%A0%D0%B0%D0%BD%D0%B4%D0%BE%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D0%B7%D0%B0%D0%B1%D0%B5%D0%B3%D0%B0-(Seed)</link>
     <guid>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/3.-%D0%A0%D0%B0%D0%BD%D0%B4%D0%BE%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D0%B7%D0%B0%D0%B1%D0%B5%D0%B3%D0%B0-(Seed)</guid>
     <description><![CDATA[ Статус: 🟡 Draft Принцип Раздел ещё не заполнен. Здесь будут описаны механизмы рандомизации забега, система сидов и воспроизводимость результатов. ]]></description>
-    <pubDate>Fri, 29 May 2026 13:12:35 GMT</pubDate>
+    <pubDate>Fri, 29 May 2026 13:26:15 GMT</pubDate>
   </item><item>
     <title>4. Docs Site (GitHub Pages)</title>
     <link>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/4.-Docs-Site-(GitHub-Pages)</link>
     <guid>https://kaliguri.github.io/Guildmaster-Autobattler/%D0%98%D0%B3%D1%80%D0%BE%D0%B2%D0%B0%D1%8F-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D1%8F---%D0%A2%D0%B5%D1%85%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F-%D1%87%D0%B0%D1%81%D1%82%D1%8C/4.-Docs-Site-(GitHub-Pages)</guid>
     <description><![CDATA[ Статус: 🟢 Ready Публичный сайт документации на GitHub Pages. Два независимых раздела с автодеплоем через GitHub Actions. ]]></description>
-    <pubDate>Fri, 29 May 2026 13:12:35 GMT</pubDate>
+    <pubDate>Fri, 29 May 2026 13:26:15 GMT</pubDate>
+  </item><item>
+    <title>README</title>
+    <link>https://kaliguri.github.io/Guildmaster-Autobattler/README</link>
+    <guid>https://kaliguri.github.io/Guildmaster-Autobattler/README</guid>
+    <description><![CDATA[ Guildmaster — Autobattler: Wiki Документация проекта. ]]></description>
+    <pubDate>Fri, 29 May 2026 13:26:15 GMT</pubDate>
+  </item><item>
+    <title>index</title>
+    <link>https://kaliguri.github.io/Guildmaster-Autobattler/</link>
+    <guid>https://kaliguri.github.io/Guildmaster-Autobattler/</guid>
+    <description><![CDATA[ Vault документации проекта Guildmaster — Autobattler. ]]></description>
+    <pubDate>Fri, 29 May 2026 13:26:15 GMT</pubDate>
   </item>
     </channel>
   </rss>
