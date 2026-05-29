@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.UnitData" name="Guildmaster.Core.UnitData">
+<area shape="rect" id="Node000001" title="ScriptableObject с базовыми характеристиками юнита." alt="" coords="5,119,195,284"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="39,5,161,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,84,103,118,97,118,97,84"/>
+</map>

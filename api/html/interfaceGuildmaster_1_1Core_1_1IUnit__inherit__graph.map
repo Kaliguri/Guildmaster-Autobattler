@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.IUnit" name="Guildmaster.Core.IUnit">
+<area shape="rect" id="Node000001" title="Общий контракт для всех боевых единиц на поле боя." alt="" coords="21,5,184,211"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Units_1_1BaseUnit.html" title="Базовая реализация боевой единицы." alt="" coords="5,259,200,524"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,225,105,258,100,258,100,225"/>
+</map>
