@@ -7,8 +7,27 @@ on:
     branches: [dev, master]
 
 jobs:
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            code:
+              - 'Assets/**'
+              - 'Packages/**'
+              - 'ProjectSettings/**'
+              - '.github/workflows/ci.yml'
+
   test:
     name: Run Tests (Unity ${{ matrix.unityVersion }})
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     permissions:
       checks: write
@@ -66,3 +85,21 @@ jobs:
         with:
           name: test-results
           path: test-results/
+
+  # Single required status check. Passes instantly for docs-only changes
+  # (test skipped); for code changes it requires the tests to succeed.
+  ci-gate:
+    name: CI Gate
+    needs: [changes, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify result
+        run: |
+          echo "code changed: ${{ needs.changes.outputs.code }}"
+          echo "test result:  ${{ needs.test.result }}"
+          if [ "${{ needs.changes.outputs.code }}" = "true" ] && [ "${{ needs.test.result }}" != "success" ]; then
+            echo "::error::Code changed but tests did not pass (result: ${{ needs.test.result }})"
+            exit 1
+          fi
+          echo "CI Gate passed"
