@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Co
 </div><!--header-->
 <div class="contents">
 
-<p>Мост «симуляция → вид боя».  
+<p>Мост «симуляция → презентация».  
  <a href="classGuildmaster_1_1Presentation_1_1CombatPresenter.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.CombatPresenter:</div>
@@ -113,15 +113,15 @@ Collaboration diagram for Guildmaster.Presentation.CombatPresenter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a6405ee3feb7ff844fc37029cf446ec41" id="r_a6405ee3feb7ff844fc37029cf446ec41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatPresenter.html#a6405ee3feb7ff844fc37029cf446ec41">Construct</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation)</td></tr>
-<tr class="separator:a6405ee3feb7ff844fc37029cf446ec41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63418389790f6cb76161f1795a756570" id="r_a63418389790f6cb76161f1795a756570"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatPresenter.html#a63418389790f6cb76161f1795a756570">Construct</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html">UnitSpawnedEvent</a> &gt; unitSpawnedPublisher, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html">UnitDiedEvent</a> &gt; unitDiedPublisher, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html">DamageDealtEvent</a> &gt; damageDealtPublisher, IPublisher&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a> &gt; battleEndedPublisher)</td></tr>
+<tr class="separator:a63418389790f6cb76161f1795a756570"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Мост «симуляция → вид боя». </p>
-<p>Подписывается на C#-события CombatSimulation, спавнит/деспавнит UnitView и распространяет события в Presentation-слой. Только читает состояние симуляции — никогда не мутирует (вики «10» §7). </p>
+<div class="textblock"><p>Мост «симуляция → презентация». </p>
+<p>Подписывается на C#-события CombatSimulation, спавнит/деспавнит UnitView и ретранслирует события в MessagePipe, чтобы Audio/VFX/UI подписывались независимо от симуляции (вики «10» §7, стек — CLAUDE.md). Только читает состояние симуляции — никогда не мутирует. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a6405ee3feb7ff844fc37029cf446ec41" name="a6405ee3feb7ff844fc37029cf446ec41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6405ee3feb7ff844fc37029cf446ec41">&#9670;&#160;</a></span>Construct()</h2>
+<a id="a63418389790f6cb76161f1795a756570" name="a63418389790f6cb76161f1795a756570"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63418389790f6cb76161f1795a756570">&#9670;&#160;</a></span>Construct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -133,8 +133,36 @@ Public Member Functions</h2></td></tr>
           <td class="memname">void Guildmaster.Presentation.CombatPresenter.Construct </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a>&#160;</td>
-          <td class="paramname"><em>simulation</em></td><td>)</td>
+          <td class="paramname"><em>simulation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html">UnitSpawnedEvent</a> &gt;&#160;</td>
+          <td class="paramname"><em>unitSpawnedPublisher</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html">UnitDiedEvent</a> &gt;&#160;</td>
+          <td class="paramname"><em>unitDiedPublisher</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html">DamageDealtEvent</a> &gt;&#160;</td>
+          <td class="paramname"><em>damageDealtPublisher</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IPublisher&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a> &gt;&#160;</td>
+          <td class="paramname"><em>battleEndedPublisher</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
