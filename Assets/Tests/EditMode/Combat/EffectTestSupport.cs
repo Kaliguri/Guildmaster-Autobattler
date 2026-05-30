@@ -48,6 +48,30 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
     }
 
+    /// <summary>Билдер <see cref="AbilityData"/> для тестов (приватные поля через рефлексию).</summary>
+    internal static class TestAbility
+    {
+        public static AbilityData Make(
+            EffectData[] effects = null,
+            float cooldown = 5f,
+            float cost = 0f,
+            AbilityTargetMode mode = AbilityTargetMode.Self)
+        {
+            var a = new AbilityData();
+            Set(a, "_effects", effects ?? System.Array.Empty<EffectData>());
+            Set(a, "_baseCooldown", cooldown);
+            Set(a, "_resourceCost", cost);
+            Set(a, "_targetMode", mode);
+            return a;
+        }
+
+        private static void Set(object target, string field, object value)
+        {
+            FieldInfo fi = typeof(AbilityData).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
+            fi.SetValue(target, value);
+        }
+    }
+
     /// <summary>Юнит-фабрика для тестов эффектов.</summary>
     internal static class TestUnit
     {
@@ -87,7 +111,8 @@ namespace Guildmaster.Tests.EditMode.Combat
         public int QueryUnitsInRadius(
             Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam) => 0;
 
-        public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) { }
+        public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source)
+            => _effects?.Apply(target, def, source, this);
 
         public void Dispel(in DispelRequest req) => _effects?.Dispel(in req, this);
 

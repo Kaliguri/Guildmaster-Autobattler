@@ -43,6 +43,7 @@ namespace Guildmaster.Game
             float cellSize = _spatialHashCellSize;
             builder.Register<SpatialHash>(_ => new SpatialHash(cellSize), Lifetime.Scoped);
             builder.Register<TargetingSystem>(Lifetime.Scoped);
+            builder.Register<AbilitySystem>(Lifetime.Scoped);
             builder.Register<MovementSystem>(Lifetime.Scoped);
             builder.Register<AutoAttackSystem>(Lifetime.Scoped);
             builder.Register<ProjectileSystem>(Lifetime.Scoped);
@@ -58,6 +59,7 @@ namespace Guildmaster.Game
                 armorK,
                 r.Resolve<SpatialHash>(),
                 r.Resolve<TargetingSystem>(),
+                r.Resolve<AbilitySystem>(),
                 r.Resolve<MovementSystem>(),
                 r.Resolve<AutoAttackSystem>(),
                 r.Resolve<ProjectileSystem>(),

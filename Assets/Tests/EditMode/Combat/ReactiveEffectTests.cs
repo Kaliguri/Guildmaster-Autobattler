@@ -114,6 +114,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             100f,
             new SpatialHash(3f),
             new TargetingSystem(),
+            new AbilitySystem(),
             new MovementSystem(),
             new AutoAttackSystem(),
             new ProjectileSystem(),

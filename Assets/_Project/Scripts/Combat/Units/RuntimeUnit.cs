@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
@@ -58,6 +59,9 @@ namespace Guildmaster.Combat
 
         /// <summary>Битовая маска тегов активных эффектов. Обновляется при add/remove — быстрый запрос для AI (Фаза 3) и диспела.</summary>
         public EffectTag EffectTagMask;
+
+        /// <summary>Активные способности (кулдаун/ресурс). Заполняет <see cref="RuntimeUnitFactory"/> из реликвии.</summary>
+        public readonly List<AbilityRuntime> Abilities = new List<AbilityRuntime>();
 
         // --- Флаги контроля (Фаза 2) ---
         // Пересчитываются EffectSystem из активных ControlComponent. Системы движения/атаки/каста только читают.

@@ -26,9 +26,13 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private StatModifier[] _stats;
 
         // --- Фаза 2: даруемые эффекты/способности ---
-        [Header("Abilities (Фаза 2)")]
-        [Tooltip("Пассивные/активные эффекты, даруемые реликвией. Наполнение — Фаза 2.")]
+        [Header("Passives")]
+        [Tooltip("Пассивные эффекты (накладываются при сборке юнита, обычно постоянные).")]
         [SerializeField] private EffectData[] _grantedEffects;
+
+        [Header("Active abilities")]
+        [Tooltip("Активные способности (кулдаун/ресурс). Слотов — по редкости (Common 1 → Rare 2 → Epic 3).")]
+        [SerializeField] private AbilityData[] _abilities;
 
         public string DisplayNameKey => _displayNameKey;
         public string[] Tags => _tags;
@@ -37,5 +41,6 @@ namespace Guildmaster.Data.Definitions
         public ResourceType ResourceType => _resourceType;
         public StatModifier[] Stats => _stats;
         public EffectData[] GrantedEffects => _grantedEffects;
+        public AbilityData[] Abilities => _abilities;
     }
 }

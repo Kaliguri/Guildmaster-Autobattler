@@ -22,6 +22,7 @@ namespace Guildmaster.Combat
         private readonly float               _armorK;
         private readonly SpatialHash         _spatialHash;
         private readonly TargetingSystem     _targetingSystem;
+        private readonly AbilitySystem       _abilitySystem;
         private readonly MovementSystem      _movementSystem;
         private readonly AutoAttackSystem    _autoAttackSystem;
         private readonly ProjectileSystem    _projectileSystem;
@@ -72,6 +73,7 @@ namespace Guildmaster.Combat
             float             armorK,
             SpatialHash       spatialHash,
             TargetingSystem   targetingSystem,
+            AbilitySystem     abilitySystem,
             MovementSystem    movementSystem,
             AutoAttackSystem  autoAttackSystem,
             ProjectileSystem  projectileSystem,
@@ -82,6 +84,7 @@ namespace Guildmaster.Combat
             _armorK           = armorK;
             _spatialHash      = spatialHash;
             _targetingSystem  = targetingSystem;
+            _abilitySystem    = abilitySystem;
             _movementSystem   = movementSystem;
             _autoAttackSystem = autoAttackSystem;
             _projectileSystem = projectileSystem;
@@ -118,6 +121,7 @@ namespace Guildmaster.Combat
             }
 
             _targetingSystem.Tick(_units);
+            _abilitySystem.Tick(_units, this, dt);
             _movementSystem.Tick(_units, dt);
             _spatialHash.Rebuild(_units);
             _autoAttackSystem.Tick(_units, this, dt);
