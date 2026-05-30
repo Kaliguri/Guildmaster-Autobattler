@@ -66,6 +66,20 @@
 | NGO (Netcode for GameObjects) | Сетевой слой (host-authoritative) |
 | [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) | Steam-интеграция и транспорт для NGO |
 | FMOD | Адаптивная музыка (за интерфейсом `IAudioService`) |
+| [Feel (More Mountains)](https://assetstore.unity.com/packages/tools/particles-effects/feel-183370) | Game feel: вибрация, тряска камеры, эффекты |
+| [Shapes (Freya Holmer)](https://acegikmo.com/shapes/) | Процедурная векторная графика для UI и дебага |
+| [Quantum Console](https://assetstore.unity.com/packages/tools/utilities/quantum-console-211046) | In-game dev-консоль |
+
+**AI-инструменты (контент-пайплайн):**
+
+| Инструмент | Назначение | Лицензия |
+|---|---|---|
+| [Suno](https://suno.com) | Генерация музыки (платный тир) | Коммерческое использование разрешено |
+| [PixelLab](https://www.pixellab.ai) | Пиксельные спрайты, анимация юнитов | Уточнить тир |
+| [ElevenLabs](https://elevenlabs.io) | Генерация SFX и голоса для трейлера | Уточнить тир |
+| [DeepL](https://deepl.com) | Финальная вычитка локализации EN ↔ RU | — |
+
+> ⚠️ **Steam Disclosure:** проект использует AI-контент. При публикации в Steam обязательно заполнить раздел AI-контента в анкете (требование платформы с 2024 года).
 
 ## Архитектура проекта
 
