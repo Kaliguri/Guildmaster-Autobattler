@@ -18,6 +18,7 @@ namespace Guildmaster.Combat
         // Переиспользуемые буферы — итерируем по копии refs, чтобы Apply/Dispel во время
         // тика не ломали коллекцию (вики «6» §7: добавления/удаления вне итерации).
         private readonly List<RuntimeEffect> _tickBuffer = new List<RuntimeEffect>();
+        private readonly List<RuntimeEffect> _dispatchBuffer = new List<RuntimeEffect>();
 
         /// <summary>
         /// Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение.
@@ -142,6 +143,37 @@ namespace Guildmaster.Combat
         public void Remove(RuntimeUnit unit, RuntimeEffect effect, ICombatContext combat)
         {
             Expire(unit, effect, combat);
+        }
+
+        /// <summary>
+        /// Доставить боевое событие реактивным компонентам носителя (вампиризм/шипы). Вызывается
+        /// из <see cref="CombatSimulation"/> при дренаже event-queue. Итерация по копии — реакция
+        /// может добавить/снять эффекты (вики «12» §3.4).
+        /// </summary>
+        public void Dispatch(RuntimeUnit carrier, in CombatEventData ev, ICombatContext combat)
+        {
+            if (carrier == null || carrier.ActiveEffects.Count == 0) return;
+
+            _dispatchBuffer.Clear();
+            _dispatchBuffer.AddRange(carrier.ActiveEffects);
+
+            for (int e = 0; e < _dispatchBuffer.Count; e++)
+            {
+                RuntimeEffect eff = _dispatchBuffer[e];
+                if (!carrier.ActiveEffects.Contains(eff)) continue;
+
+                IEffectComponent[] comps = eff.Def.Components;
+                if (comps == null) continue;
+
+                for (int i = 0; i < comps.Length; i++)
+                {
+                    if (comps[i] is IReactiveComponent reactive && (reactive.Events & ev.Type) != 0)
+                    {
+                        EffectContext ctx = MakeContext(carrier, eff.Source, combat, eff, i, 0f);
+                        reactive.OnEvent(in ctx, in ev);
+                    }
+                }
+            }
         }
 
         /// <summary>Длительность эффекта в тиках. -1 = постоянный, 0 = мгновенный, иначе с учётом эфф-эффективностей.</summary>

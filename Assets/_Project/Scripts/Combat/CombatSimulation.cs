@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
@@ -31,6 +32,11 @@ namespace Guildmaster.Combat
         private readonly List<RuntimeUnit>  _pendingAdd  = new List<RuntimeUnit>();
         private readonly List<Projectile>   _projectiles = new List<Projectile>();
         private readonly List<ICombatCommand> _commandQueue = new List<ICombatCommand>();
+        private readonly Queue<CombatEventData> _eventQueue = new Queue<CombatEventData>();
+
+        // Защита от бесконечной реентрантности реактивных компонентов (шипы↔шипы): дренаж
+        // капается детерминированно — остаток отбрасывается (вики «12» §3.4, спайк S2).
+        private const int MaxEventsPerDrain = 512;
 
         private int           _currentTick;
         private bool          _isPaused;
@@ -117,6 +123,7 @@ namespace Guildmaster.Combat
             _autoAttackSystem.Tick(_units, this, dt);
             _projectileSystem.Tick(_projectiles, _units, this, dt);
             _effectSystem.Tick(_units, this, dt);
+            DrainEventQueue();
             _deathSystem.Tick(_units, _spatialHash);
 
             CheckOutcome();
@@ -130,6 +137,12 @@ namespace Guildmaster.Combat
             if (req.Target.IsDead) return;
             var result = DamagePipeline.Execute(req);
             OnDamageDealt?.Invoke(req.Source, req.Target, result);
+
+            // Внутренние события для реактивных компонентов (vampiric/thorns). Два события на удар:
+            // DamageDealt доставляется источнику, DamageTaken — цели (вики «12» §3.4).
+            if (req.Source != null)
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage));
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage));
         }
 
         public void Heal(RuntimeUnit target, float amount, RuntimeUnit source)
@@ -255,6 +268,30 @@ namespace Guildmaster.Combat
                 OnUnitSpawned?.Invoke(_pendingAdd[i]);
             }
             _pendingAdd.Clear();
+        }
+
+        // FIFO-дренаж внутренних событий: реактивные компоненты могут породить новый урон → новые
+        // события → дренятся в той же очереди БЕЗ рекурсии. Кап ловит бесконечный пинг-понг.
+        private void DrainEventQueue()
+        {
+            int processed = 0;
+            while (_eventQueue.Count > 0 && processed < MaxEventsPerDrain)
+            {
+                CombatEventData ev = _eventQueue.Dequeue();
+                RuntimeUnit carrier =
+                    ev.Type == CombatEvent.DamageDealt || ev.Type == CombatEvent.Healed
+                        ? ev.Source
+                        : ev.Target;
+
+                if (carrier != null && !carrier.IsDead)
+                {
+                    _effectSystem.Dispatch(carrier, in ev, this);
+                }
+
+                processed++;
+            }
+
+            if (_eventQueue.Count > 0) _eventQueue.Clear();
         }
 
         private void ApplyDueCommands()
