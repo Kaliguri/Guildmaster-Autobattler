@@ -82,6 +82,7 @@ ci/*          ← CI/CD changes
   - Good: `feature/guild-management`
   - Bad: `feature/add_new_guild_management_system`
 - No broken compilation in any commit
+- **Commit per stage:** when implementing a multi-stage feature/phase, make one commit per completed stage (each compiling + green tests). Every stage is then a safe rollback point and the history reads as the plan's steps
 - Delete branches after merging
 - Keep `dev` always green and buildable: do breaking/WIP work on `feature/*`, merge into `dev` only when CI is green
 - `CI Gate` is the required status check on `dev` and `master`; docs/wiki/markdown pass instantly, code requires green tests
