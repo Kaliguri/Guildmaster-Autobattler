@@ -24,6 +24,9 @@ namespace Guildmaster.Combat
 
                 unit.PreviousPosition = unit.Position;
 
+                // Контроль (корень/обездвиживание) — стоим на месте (вики «6» §5.3).
+                if (!unit.CanMove) continue;
+
                 if (unit.CurrentTarget == null) continue;
 
                 float attackRange = unit.Stats.Get(StatType.AttackRange);

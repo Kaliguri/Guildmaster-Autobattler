@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Guildmaster.Combat.Effects;
+using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -47,7 +48,36 @@ namespace Guildmaster.Combat
                         if (eff.RemainingTicks <= 0) Expire(unit, eff, combat);
                     }
                 }
+
+                if (!unit.IsDead) RecomputeControl(unit);
             }
+        }
+
+        /// <summary>Пересобрать флаги контроля из активных <see cref="ControlComponent"/> (перекрытие без счётчиков).</summary>
+        private static void RecomputeControl(RuntimeUnit unit)
+        {
+            bool canAct = true, canMove = true, canCast = true;
+
+            List<RuntimeEffect> effects = unit.ActiveEffects;
+            for (int e = 0; e < effects.Count; e++)
+            {
+                IEffectComponent[] comps = effects[e].Def.Components;
+                if (comps == null) continue;
+
+                for (int i = 0; i < comps.Length; i++)
+                {
+                    if (comps[i] is ControlComponent control)
+                    {
+                        if (control.PreventAct)  canAct  = false;
+                        if (control.PreventMove) canMove = false;
+                        if (control.PreventCast) canCast = false;
+                    }
+                }
+            }
+
+            unit.CanAct  = canAct;
+            unit.CanMove = canMove;
+            unit.CanCast = canCast;
         }
 
         /// <summary>

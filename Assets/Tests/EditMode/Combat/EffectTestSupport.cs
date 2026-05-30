@@ -89,6 +89,18 @@ namespace Guildmaster.Tests.EditMode.Combat
         public float ArmorK => 100f;
     }
 
+    /// <summary>Установка приватных <c>[SerializeField]</c> компонентов в тестах (без сериализации).</summary>
+    internal static class Reflect
+    {
+        public static T With<T>(this T obj, string field, object value)
+        {
+            FieldInfo fi = typeof(T).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
+            if (fi == null) throw new ArgumentException($"Нет поля {field} в {typeof(T).Name}");
+            fi.SetValue(obj, value);
+            return obj;
+        }
+    }
+
     /// <summary>Считает вызовы жизненного цикла.</summary>
     internal sealed class CountingComponent : IRuntimeEffectComponent
     {

@@ -20,6 +20,9 @@ namespace Guildmaster.Combat
                 if (unit.IsDead || unit.CurrentTarget == null || unit.CurrentTarget.IsDead)
                     continue;
 
+                // Контроль (оглушение/сон) — не атакуем и не тикаем кулдаун (вики «6» §5.3).
+                if (!unit.CanAct) continue;
+
                 unit.AttackCooldown -= dt;
                 if (unit.AttackCooldown > 0f) continue;
 

@@ -1,5 +1,6 @@
 using System.IO;
-using Guildmaster.Combat.Effects;
+using System.Reflection;
+using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Data.Definitions;
 using NUnit.Framework;
 using UnityEditor;
@@ -8,8 +9,8 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Combat
 {
     /// <summary>
-    /// Спайк S1 (вики «12» §5) — ГЕЙТ Фазы 2. Доказывает кросс-сборочный <c>[SerializeReference]</c>:
-    /// Combat-тип <see cref="SpikeProbeComponent"/> (реализует Data-маркер
+    /// Регрессия гейта S1 (вики «12» §5): кросс-сборочный <c>[SerializeReference]</c>. Реальный
+    /// Combat-компонент <see cref="PeriodicDamageComponent"/> (реализует Data-маркер
     /// <see cref="IEffectComponent"/>) кладётся в поле <c>EffectData._components</c> (Data),
     /// сохраняется в <c>.asset</c>, форс-реимпортится и читается обратно — тип и данные обязаны
     /// выжить, хотя сборка Data не знает про Combat.
@@ -25,15 +26,19 @@ namespace Guildmaster.Tests.EditMode.Combat
             {
                 var effect = ScriptableObject.CreateInstance<EffectData>();
 
-                // Назначаем Combat-тип в [SerializeReference]-элемент через настоящий editor-API.
+                // Combat-компонент с заданным значением поля.
+                var component = new PeriodicDamageComponent();
+                typeof(PeriodicDamageComponent)
+                    .GetField("_interval", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .SetValue(component, 0.42f);
+
                 var so = new SerializedObject(effect);
                 SerializedProperty list = so.FindProperty("_components");
                 list.arraySize = 1;
-                list.GetArrayElementAtIndex(0).managedReferenceValue =
-                    new SpikeProbeComponent { Marker = 4242 };
+                list.GetArrayElementAtIndex(0).managedReferenceValue = component;
                 so.ApplyModifiedPropertiesWithoutUndo();
 
-                // Round-trip через диск: запись YAML → форс-реимпорт → чтение обратно.
+                // Round-trip через диск: YAML → форс-реимпорт → чтение обратно.
                 AssetDatabase.CreateAsset(effect, AssetPath);
                 AssetDatabase.SaveAssets();
                 AssetDatabase.ImportAsset(AssetPath, ImportAssetOptions.ForceUpdate);
@@ -44,9 +49,9 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Assert.IsNotNull(loaded.Components, "_components равен null после reimport");
                 Assert.AreEqual(1, loaded.Components.Length, "Потерян элемент массива компонентов");
 
-                var probe = loaded.Components[0] as SpikeProbeComponent;
-                Assert.IsNotNull(probe, "Combat-тип не пережил сериализацию в Data-поле (S1 провалился)");
-                Assert.AreEqual(4242, probe.Marker, "Данные компонента не сериализовались");
+                var probe = loaded.Components[0] as PeriodicDamageComponent;
+                Assert.IsNotNull(probe, "Combat-тип не пережил сериализацию в Data-поле (S1)");
+                Assert.AreEqual(0.42f, probe.Interval, 1e-6f, "Данные компонента не сериализовались");
             }
             finally
             {
