@@ -9,13 +9,26 @@ Unity 6 кооперативный автобатлер-рогалик в реа
 
 ## MCP-серверы
 
-| MCP | Когда использовать |
+| MCP | Server ID | Когда использовать |
+|---|---|---|
+| **unity** | `unityMCP` | Операции с Unity Editor: сцены, объекты, компоненты, тесты, консоль |
+| **github** | `project-0-Guildmaster_-_Autobattler-github` | PR, issues, GitHub Actions workflows |
+| **git** | `project-0-Guildmaster_-_Autobattler-git` | Коммиты, ветки, diff, история — предпочитать Shell-командам |
+| **context7** | `project-0-Guildmaster_-_Autobattler-context7` | Документация Unity API и любых библиотек — ВСЕГДА перед ответом об API |
+| **filesystem** | `project-0-Guildmaster_-_Autobattler-filesystem` | Чтение/запись файлов проекта |
+
+### Unity MCP — ключевые инструменты (`unityMCP`)
+
+| Инструмент | Назначение |
 |---|---|
-| **unity** | Операции с Unity Editor: сцены, объекты, компоненты, play mode |
-| **github** | PR, issues, GitHub Actions workflows |
-| **git** | Коммиты, ветки, diff, история — предпочитать Shell-командам |
-| **context7** | Документация Unity API и любых библиотек — ВСЕГДА перед ответом об API |
-| **filesystem** | Чтение/запись файлов проекта |
+| `read_console` | Чтение логов Unity (types: error/warning/log/all) |
+| `refresh_unity` | Обновление Asset Database и перекомпиляция |
+| `run_tests` + `get_test_job` | Запуск EditMode/PlayMode тестов |
+| `manage_scene` | Иерархия, загрузка/сохранение сцен |
+| `manage_gameobject` | Создание/изменение GameObjects |
+| `manage_script` | Создание скриптов через редактор |
+| `execute_menu_item` | Выполнение команд из меню Unity |
+| `manage_editor` | Play mode управление |
 
 ## Стандарты кода C# / Unity
 

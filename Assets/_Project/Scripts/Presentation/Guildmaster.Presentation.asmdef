@@ -1,0 +1,23 @@
+{
+  "name": "Guildmaster.Presentation",
+  "rootNamespace": "Guildmaster.Presentation",
+  "references": [
+    "Guildmaster.Core",
+    "Guildmaster.Data",
+    "Guildmaster.Combat",
+    "Shapes Runtime",
+    "LitMotion",
+    "UniTask",
+    "MessagePipe",
+    "VContainer"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

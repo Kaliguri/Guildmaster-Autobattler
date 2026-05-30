@@ -3,7 +3,7 @@
   "rootNamespace": "Guildmaster.Guild",
   "references": [
     "Guildmaster.Core",
-    "Guildmaster.Units"
+    "Guildmaster.Data"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

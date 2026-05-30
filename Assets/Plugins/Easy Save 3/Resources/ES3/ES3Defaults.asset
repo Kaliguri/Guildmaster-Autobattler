@@ -40,11 +40,31 @@ MonoBehaviour:
     - FMODUnityResonance
     - Guildmaster.Combat
     - Guildmaster.Core
-    - Guildmaster.Units
+    - Guildmaster.Data
+    - Guildmaster.DevTools
+    - Guildmaster.Game
+    - Guildmaster.Net
+    - Guildmaster.Presentation
+    - Guildmaster.Tests.PlayMode
     - LitMotion
     - LitMotion.Extensions
+    - Lofelt.NiceVibrations
+    - Lofelt.NiceVibrations.Demo
+    - MCPForUnity.Runtime
     - MessagePipe
     - MessagePipe.VContainer
+    - MoreMountains.Tools
+    - QFSW.QC
+    - QFSW.QC.Demo
+    - QFSW.QC.Extras
+    - QFSW.QC.Grammar
+    - QFSW.QC.Parsers
+    - QFSW.QC.ScanRules
+    - QFSW.QC.Serializers
+    - QFSW.QC.Suggestors
+    - QFSW.QC.UI
+    - ShapesRuntime
+    - ShapesSamples
     - Sirenix.OdinInspector.Modules.Unity.Addressables
     - Sirenix.OdinInspector.Modules.UnityLocalization
     - UniTask

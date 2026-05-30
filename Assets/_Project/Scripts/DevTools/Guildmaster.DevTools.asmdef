@@ -1,0 +1,22 @@
+{
+  "name": "Guildmaster.DevTools",
+  "rootNamespace": "Guildmaster.DevTools",
+  "references": [
+    "Guildmaster.Core",
+    "Guildmaster.Data",
+    "Guildmaster.Combat",
+    "Guildmaster.Game",
+    "Guildmaster.Presentation",
+    "QFSW.QC",
+    "VContainer"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

@@ -77,6 +77,9 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# FMOD editor log (regenerated)
+fmod_editor.log
+
 # dotenv
 .env
 .env.*

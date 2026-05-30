@@ -18,12 +18,23 @@ alwaysApply: true
 
 ## Создание новых C# скриптов
 
-После записи любого `.cs` файла — **всегда** вызывать `recompile_scripts` через Unity MCP перед коммитом. Unity генерирует `.meta` файлы при компиляции; без них Unity теряет настройки ассетов.
+После записи любого `.cs` файла — **всегда** триггерить компиляцию через Unity MCP (`unityMCP`) перед коммитом. Unity генерирует `.meta` файлы при компиляции; без них Unity теряет настройки ассетов.
 
 **Порядок действий:**
 1. Записать `.cs` файл(ы)
-2. Вызвать `recompile_scripts` (Unity MCP) — дождаться завершения
-3. Добавить в коммит и `.cs`, и `.meta` вместе
+2. Вызвать `refresh_unity` с `compile: "request"` и `wait_for_ready: true` — дождаться завершения
+3. Проверить ошибки через `read_console` с `types: ["error"]`
+4. Добавить в коммит и `.cs`, и `.meta` вместе
+
+```json
+// Пример вызова перекомпиляции (unityMCP → refresh_unity)
+{
+  "mode": "force",
+  "scope": "scripts",
+  "compile": "request",
+  "wait_for_ready": true
+}
+```
 
 ```
 # Неправильно — коммитить .cs без .meta
@@ -33,6 +44,19 @@ git add Assets/_Project/Scripts/Core/IUnit.cs
 git add Assets/_Project/Scripts/Core/IUnit.cs
 git add Assets/_Project/Scripts/Core/IUnit.cs.meta
 ```
+
+## Unity MCP — текущая версия
+
+Используется [CoplayDev/unity-mcp](https://github.com/CoplayDev/unity-mcp): сервер `mcpforunityserver==9.7.1` (`uvx` → `mcp-for-unity`, транспорт **`stdio`**), server ID `unityMCP` в корневом `.mcp.json`. Редакторный пакет `com.coplaydev.unity-mcp`, мост StdioBridgeHost на порту `6400`. Коннект проверяется ресурсом `mcpforunity://instances`.
+
+Основные инструменты (отличаются от старого `com.gamelovers.mcp-unity`):
+
+| Старый инструмент | Новый инструмент |
+|---|---|
+| `recompile_scripts` | `refresh_unity` (compile: "request") |
+| `get_console_logs` | `read_console` |
+| `run_tests_in_editor` | `run_tests` + `get_test_job` (async) |
+| `get_scene_hierarchy` | `manage_scene` (action: "get_hierarchy") |
 
 
 ## Новые Markdown-файлы в guildmaster-wiki

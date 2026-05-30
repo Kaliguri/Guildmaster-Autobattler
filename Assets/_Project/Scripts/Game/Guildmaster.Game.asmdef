@@ -1,0 +1,27 @@
+{
+  "name": "Guildmaster.Game",
+  "rootNamespace": "Guildmaster.Game",
+  "references": [
+    "Guildmaster.Core",
+    "Guildmaster.Data",
+    "Guildmaster.Combat",
+    "Guildmaster.Guild",
+    "Guildmaster.MiniGames",
+    "Guildmaster.Net",
+    "Guildmaster.Presentation",
+    "Guildmaster.UI",
+    "VContainer",
+    "UniTask",
+    "MessagePipe",
+    "MessagePipe.VContainer"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

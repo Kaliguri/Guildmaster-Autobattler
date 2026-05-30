@@ -82,9 +82,23 @@ ci/*          ← CI/CD changes
   - Good: `feature/guild-management`
   - Bad: `feature/add_new_guild_management_system`
 - No broken compilation in any commit
+- **Commit per stage:** when implementing a multi-stage feature/phase, make one commit per completed stage (each compiling + green tests). Every stage is then a safe rollback point and the history reads as the plan's steps
 - Delete branches after merging
 - Keep `dev` always green and buildable: do breaking/WIP work on `feature/*`, merge into `dev` only when CI is green
 - `CI Gate` is the required status check on `dev` and `master`; docs/wiki/markdown pass instantly, code requires green tests
+
+### When you MUST create a branch (never commit directly to `dev`)
+
+If currently on `dev` or `master`, **always** create a branch before starting:
+- Any new feature, system, or mechanic (`feature/*`)
+- Mass bug fixing or large fix affecting multiple files (`fix/*`)
+- Refactoring (`refactor/*`)
+- Any change that touches ≥3 files or takes more than one commit
+
+**Exceptions — allowed directly on `dev`:**
+- Hotfix: tiny, isolated fix (1-2 files, obvious change, no risk of breaking CI)
+- Docs/wiki-only changes
+- CI/config tweaks with no logic changes
 
 ---
 
