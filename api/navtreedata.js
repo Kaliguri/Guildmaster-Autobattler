@@ -24,30 +24,12 @@
 */
 var NAVTREE =
 [
-  [ "Guildmaster — Autobattler", "index.html", [
-    [ "Namespaces", "namespaces.html", [
-      [ "Namespace List", "namespaces.html", "namespaces_dup" ]
-    ] ],
-    [ "Classes", "annotated.html", [
-      [ "Class List", "annotated.html", "annotated_dup" ],
-      [ "Class Index", "classes.html", null ],
-      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
-      [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Functions", "functions_func.html", null ],
-        [ "Properties", "functions_prop.html", null ],
-        [ "Events", "functions_evnt.html", null ]
-      ] ]
-    ] ],
-    [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
-    ] ]
-  ] ]
+  [ "Guildmaster — Autobattler", "index.html", ]
 ];
 
 var NAVTREEINDEX =
 [
-"BaseUnit_8cs.html"
+"index.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

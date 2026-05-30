@@ -1,5 +1,0 @@
-<map id="Guildmaster.Units.BaseUnit.TakeDamage" name="Guildmaster.Units.BaseUnit.TakeDamage">
-<area shape="rect" id="Node000001" title="Применяет урон к юниту с учётом брони и активных эффектов.Фактически нанесённый урон после всех модиф..." alt="" coords="5,5,212,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Units_1_1BaseUnit.html#a22251b3ac08c7fea9d1a6fe8b8daf093" title="Принудительно убивает юнита, независимо от текущего здоровья.Используется для эффектов мгновенной сме..." alt="" coords="260,13,488,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,23,246,23,246,28,212,28"/>
-</map>
