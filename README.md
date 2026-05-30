@@ -76,6 +76,7 @@
 | **Аудио** | FMOD | Адаптивная музыка (за интерфейсом `IAudioService`) |
 | **Инструменты** | [Odin Inspector](https://odininspector.com) | Расширенный инспектор, `[SerializeReference]`-дропдауны |
 | | [Feel (More Mountains)](https://assetstore.unity.com/packages/tools/particles-effects/feel-183370) | Game feel: вибрация, тряска камеры, хитстопы |
+| | [Shapes (Freya Holmer)](https://acegikmo.com/shapes/) | Процедурная векторная графика для UI и дебага |
 | | [Quantum Console](https://assetstore.unity.com/packages/tools/utilities/quantum-console-211046) | In-game dev-консоль |
 
 ### AI-контент (пайплайн)
