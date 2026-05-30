@@ -38,10 +38,19 @@ MonoBehaviour:
     - FMODUnity
     - FMODUnityHaptics
     - FMODUnityResonance
+    - Guildmaster.Combat
+    - Guildmaster.Core
+    - Guildmaster.Data
+    - Guildmaster.DevTools
+    - Guildmaster.Game
+    - Guildmaster.Net
+    - Guildmaster.Presentation
+    - Guildmaster.Tests.PlayMode
     - LitMotion
     - LitMotion.Extensions
     - Lofelt.NiceVibrations
     - Lofelt.NiceVibrations.Demo
+    - MCPForUnity.Runtime
     - MessagePipe
     - MessagePipe.VContainer
     - MoreMountains.Tools
