@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.AbilitySystem.Tick" name="Guildmaster.Combat.AbilitySystem.Tick">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,208,75"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AbilitySystem.html#a0cedfa4ba0cd96a1b321dbbde5983bc8" title="Попытаться скастовать способность abilityIndex ." alt="" coords="256,35,459,75"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,52,242,52,242,57,208,57"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a1c83a24b7d6d26085832b1e970cecf83" title="Применить эффект к цели. Тело — Фаза 2; в Фазе 1 — стаб (no&#45;op)." alt="" coords="509,5,724,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="459,41,496,36,496,42,459,46"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="507,70,727,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="459,63,493,67,493,72,459,68"/>
+</map>

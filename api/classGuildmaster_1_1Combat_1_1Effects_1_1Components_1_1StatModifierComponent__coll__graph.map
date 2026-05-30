@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Effects.Components.StatModifierComponent" name="Guildmaster.Combat.Effects.Components.StatModifierComponent">
+<area shape="rect" id="Node000001" title="Накладывает стат&#45;модификаторы на носителя на время жизни эффекта." alt="" coords="5,252,260,352"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="40,119,225,204"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,217,135,252,130,252,130,217"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="67,5,198,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="135,85,135,119,130,119,130,85"/>
+</map>

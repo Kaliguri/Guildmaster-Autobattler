@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['hpdamage_0',['HpDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#a1c38e37d8555f62ede39114c7523c2ca',1,'Guildmaster::Combat::DamageResult']]]
+  ['effect_0',['Effect',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a349bb91267ada333275778ffd99d3779',1,'Guildmaster::Combat::Effects::EffectContext']]],
+  ['effecttagmask_1',['EffectTagMask',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a699cc5426b400f63658ab3b2f65aae66',1,'Guildmaster::Combat::RuntimeUnit']]]
 ];

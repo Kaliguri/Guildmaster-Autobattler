@@ -1,0 +1,11 @@
+<map id="Guildmaster.Combat.Effects.IReactiveComponent" name="Guildmaster.Combat.Effects.IReactiveComponent">
+<area shape="rect" id="Node000001" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="145,252,345,332"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent.html" title="Вампиризм: исцеляет носителя на долю нанесённого им урона." alt="" coords="5,380,236,500"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="205,344,173,382,169,378,201,341"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html" title="Шипы: отражает долю полученного урона обратно атакующему." alt="" coords="261,380,479,500"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="289,341,321,378,317,382,285,344"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="152,119,337,204"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="247,218,247,252,242,252,242,218"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="179,5,310,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="247,85,247,119,242,119,242,85"/>
+</map>

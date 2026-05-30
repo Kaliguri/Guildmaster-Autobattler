@@ -147,11 +147,61 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:af4624ae11d8aa89f5c844b732ea4443a" id="r_af4624ae11d8aa89f5c844b732ea4443a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af4624ae11d8aa89f5c844b732ea4443a">Vessel</a></td></tr>
 <tr class="memdesc:af4624ae11d8aa89f5c844b732ea4443a"><td class="mdescLeft">&#160;</td><td class="mdescRight">SO «Пилот»: идентичность, таланты (Фаза 2/4).  <br /></td></tr>
 <tr class="separator:af4624ae11d8aa89f5c844b732ea4443a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4c1d70ebb6150f2752ab43fad8f9fef" id="r_aa4c1d70ebb6150f2752ab43fad8f9fef"><td class="memItemLeft" align="right" valign="top">readonly List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa4c1d70ebb6150f2752ab43fad8f9fef">ActiveEffects</a> = new List&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a>&gt;()</td></tr>
+<tr class="memdesc:aa4c1d70ebb6150f2752ab43fad8f9fef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Активные эффекты на юните. Мутирует только <code>EffectSystem</code> (через pending, не во время итерации).  <br /></td></tr>
+<tr class="separator:aa4c1d70ebb6150f2752ab43fad8f9fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a699cc5426b400f63658ab3b2f65aae66" id="r_a699cc5426b400f63658ab3b2f65aae66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a699cc5426b400f63658ab3b2f65aae66">EffectTagMask</a></td></tr>
+<tr class="memdesc:a699cc5426b400f63658ab3b2f65aae66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Битовая маска тегов активных эффектов. Обновляется при add/remove — быстрый запрос для AI (Фаза 3) и диспела.  <br /></td></tr>
+<tr class="separator:a699cc5426b400f63658ab3b2f65aae66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f4b8c7b5d4000ea833d8cb33d61d55b" id="r_a7f4b8c7b5d4000ea833d8cb33d61d55b"><td class="memItemLeft" align="right" valign="top">readonly List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html">AbilityRuntime</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a7f4b8c7b5d4000ea833d8cb33d61d55b">Abilities</a> = new List&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html">AbilityRuntime</a>&gt;()</td></tr>
+<tr class="memdesc:a7f4b8c7b5d4000ea833d8cb33d61d55b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Активные способности (кулдаун/ресурс). Заполняет RuntimeUnitFactory из реликвии.  <br /></td></tr>
+<tr class="separator:a7f4b8c7b5d4000ea833d8cb33d61d55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c42e23dcadf05b9cb96fe4f2e92410f" id="r_a1c42e23dcadf05b9cb96fe4f2e92410f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a1c42e23dcadf05b9cb96fe4f2e92410f">CanAct</a> = true</td></tr>
+<tr class="memdesc:a1c42e23dcadf05b9cb96fe4f2e92410f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Может действовать (атаковать/кастовать). false = оглушение/сон.  <br /></td></tr>
+<tr class="separator:a1c42e23dcadf05b9cb96fe4f2e92410f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa05ad04cfdd90d4f53c155eeba794196" id="r_aa05ad04cfdd90d4f53c155eeba794196"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa05ad04cfdd90d4f53c155eeba794196">CanMove</a> = true</td></tr>
+<tr class="memdesc:aa05ad04cfdd90d4f53c155eeba794196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Может двигаться. false = обездвиживание/корень.  <br /></td></tr>
+<tr class="separator:aa05ad04cfdd90d4f53c155eeba794196"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae14bc3754e2c9bcb3072ecac904738cf" id="r_ae14bc3754e2c9bcb3072ecac904738cf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae14bc3754e2c9bcb3072ecac904738cf">CanCast</a> = true</td></tr>
+<tr class="memdesc:ae14bc3754e2c9bcb3072ecac904738cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Может кастовать способности. false = немота.  <br /></td></tr>
+<tr class="separator:ae14bc3754e2c9bcb3072ecac904738cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Рантайм-представление юнита на один бой. </p>
 <p>POCO — без MonoBehaviour и ScriptableObject. Создаётся через RuntimeUnitFactory; владеет Stats, текущим HP/ресурсом/щитом и состоянием движения (вики «10» §5.2). </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a7f4b8c7b5d4000ea833d8cb33d61d55b" name="a7f4b8c7b5d4000ea833d8cb33d61d55b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f4b8c7b5d4000ea833d8cb33d61d55b">&#9670;&#160;</a></span>Abilities</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly List&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html">AbilityRuntime</a>&gt; Guildmaster.Combat.RuntimeUnit.Abilities = new List&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html">AbilityRuntime</a>&gt;()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Активные способности (кулдаун/ресурс). Заполняет RuntimeUnitFactory из реликвии. </p>
+
+</div>
+</div>
+<a id="aa4c1d70ebb6150f2752ab43fad8f9fef" name="aa4c1d70ebb6150f2752ab43fad8f9fef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4c1d70ebb6150f2752ab43fad8f9fef">&#9670;&#160;</a></span>ActiveEffects</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly List&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a>&gt; Guildmaster.Combat.RuntimeUnit.ActiveEffects = new List&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a>&gt;()</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Активные эффекты на юните. Мутирует только <code>EffectSystem</code> (через pending, не во время итерации). </p>
+
+</div>
+</div>
 <a id="aae7bb21f873952eeb5152e67382c1edd" name="aae7bb21f873952eeb5152e67382c1edd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae7bb21f873952eeb5152e67382c1edd">&#9670;&#160;</a></span>AttackCooldown</h2>
 
@@ -165,6 +215,54 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Кулдаун автоатаки в секундах. 0 = готов к атаке. </p>
+
+</div>
+</div>
+<a id="a1c42e23dcadf05b9cb96fe4f2e92410f" name="a1c42e23dcadf05b9cb96fe4f2e92410f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c42e23dcadf05b9cb96fe4f2e92410f">&#9670;&#160;</a></span>CanAct</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.RuntimeUnit.CanAct = true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Может действовать (атаковать/кастовать). false = оглушение/сон. </p>
+
+</div>
+</div>
+<a id="ae14bc3754e2c9bcb3072ecac904738cf" name="ae14bc3754e2c9bcb3072ecac904738cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae14bc3754e2c9bcb3072ecac904738cf">&#9670;&#160;</a></span>CanCast</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.RuntimeUnit.CanCast = true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Может кастовать способности. false = немота. </p>
+
+</div>
+</div>
+<a id="aa05ad04cfdd90d4f53c155eeba794196" name="aa05ad04cfdd90d4f53c155eeba794196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa05ad04cfdd90d4f53c155eeba794196">&#9670;&#160;</a></span>CanMove</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.RuntimeUnit.CanMove = true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Может двигаться. false = обездвиживание/корень. </p>
 
 </div>
 </div>
@@ -229,6 +327,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Текущая цель для автоатаки и движения. Null = цель не назначена. </p>
+
+</div>
+</div>
+<a id="a699cc5426b400f63658ab3b2f65aae66" name="a699cc5426b400f63658ab3b2f65aae66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a699cc5426b400f63658ab3b2f65aae66">&#9670;&#160;</a></span>EffectTagMask</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> Guildmaster.Combat.RuntimeUnit.EffectTagMask</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Битовая маска тегов активных эффектов. Обновляется при add/remove — быстрый запрос для AI (Фаза 3) и диспела. </p>
 
 </div>
 </div>

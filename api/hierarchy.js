@@ -1,13 +1,20 @@
 var hierarchy =
 [
+    [ "Guildmaster.Data.Definitions.AbilityData", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html", null ],
+    [ "Guildmaster.Combat.Abilities.AbilityRuntime", "classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html", null ],
+    [ "Guildmaster.Combat.AbilitySystem", "classGuildmaster_1_1Combat_1_1AbilitySystem.html", null ],
     [ "Guildmaster.Combat.AutoAttackSystem", "classGuildmaster_1_1Combat_1_1AutoAttackSystem.html", null ],
     [ "Guildmaster.Presentation.BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", null ],
     [ "Guildmaster.Game.BattleSetupBuilder", "classGuildmaster_1_1Game_1_1BattleSetupBuilder.html", null ],
+    [ "Guildmaster.Combat.Effects.CombatEventData", "structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html", null ],
     [ "Guildmaster.Presentation.DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", null ],
     [ "Guildmaster.Combat.DamagePipeline", "classGuildmaster_1_1Combat_1_1DamagePipeline.html", null ],
     [ "Guildmaster.Combat.DamageRequest", "structGuildmaster_1_1Combat_1_1DamageRequest.html", null ],
     [ "Guildmaster.Combat.DamageResult", "structGuildmaster_1_1Combat_1_1DamageResult.html", null ],
     [ "Guildmaster.Combat.DeathSystem", "classGuildmaster_1_1Combat_1_1DeathSystem.html", null ],
+    [ "Guildmaster.Combat.Effects.DispelRequest", "structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html", null ],
+    [ "Guildmaster.Combat.Effects.EffectContext", "structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html", null ],
+    [ "Guildmaster.Combat.EffectSystem", "classGuildmaster_1_1Combat_1_1EffectSystem.html", null ],
     [ "Guildmaster.Game.Services.GameFlow", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html", null ],
     [ "IAsyncStartable", null, [
       [ "Guildmaster.Game.Services.CombatLoopService", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html", null ]
@@ -18,9 +25,29 @@ var hierarchy =
     [ "Guildmaster.Combat.ICombatContext", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html", [
       [ "Guildmaster.Combat.CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html", null ]
     ] ],
-    [ "Guildmaster.Data.Definitions.IEffectComponent", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html", null ],
+    [ "Guildmaster.Data.Definitions.IEffectComponent", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html", [
+      [ "Guildmaster.Combat.Effects.IRuntimeEffectComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html", [
+        [ "Guildmaster.Combat.Effects.Components.ControlComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html", null ],
+        [ "Guildmaster.Combat.Effects.Components.DispelComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent.html", null ],
+        [ "Guildmaster.Combat.Effects.Components.ShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html", null ],
+        [ "Guildmaster.Combat.Effects.Components.StatModifierComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent.html", null ],
+        [ "Guildmaster.Combat.Effects.IPeriodicComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html", [
+          [ "Guildmaster.Combat.Effects.Components.PeriodicDamageComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html", null ],
+          [ "Guildmaster.Combat.Effects.Components.PeriodicHealComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html", null ]
+        ] ],
+        [ "Guildmaster.Combat.Effects.IReactiveComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html", [
+          [ "Guildmaster.Combat.Effects.Components.LifestealComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent.html", null ],
+          [ "Guildmaster.Combat.Effects.Components.ThornsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html", null ]
+        ] ]
+      ] ]
+    ] ],
     [ "Guildmaster.Core.Random.IRngService", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html", [
       [ "Guildmaster.Core.Random.XorShiftRng", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html", null ]
+    ] ],
+    [ "Guildmaster.Combat.Effects.IScalablePotency", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html", [
+      [ "Guildmaster.Combat.Effects.Components.PeriodicDamageComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html", null ],
+      [ "Guildmaster.Combat.Effects.Components.PeriodicHealComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html", null ],
+      [ "Guildmaster.Combat.Effects.Components.ShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html", null ]
     ] ],
     [ "Guildmaster.Core.Simulation.ISimCommand", "interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html", [
       [ "Guildmaster.Combat.ICombatCommand", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html", [
@@ -56,6 +83,7 @@ var hierarchy =
     [ "Guildmaster.Combat.Projectile", "classGuildmaster_1_1Combat_1_1Projectile.html", null ],
     [ "Guildmaster.Combat.ProjectileSpawn", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html", null ],
     [ "Guildmaster.Combat.ProjectileSystem", "classGuildmaster_1_1Combat_1_1ProjectileSystem.html", null ],
+    [ "Guildmaster.Combat.Effects.RuntimeEffect", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html", null ],
     [ "Guildmaster.Combat.RuntimeUnit", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html", null ],
     [ "Guildmaster.Combat.RuntimeUnitFactory", "classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html", null ],
     [ "Guildmaster.Data.Stats.ScalableValue", "structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html", null ],

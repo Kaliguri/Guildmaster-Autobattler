@@ -1,0 +1,20 @@
+<map id="Guildmaster.Combat.Effects.RuntimeEffect" name="Guildmaster.Combat.Effects.RuntimeEffect">
+<area shape="rect" id="Node000001" title="Экземпляр эффекта на конкретном юните (POCO, живёт один бой)." alt="" coords="46,1036,246,1216"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html" title="Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги,..." alt="" coords="5,364,212,604"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="118,604,143,1020,137,1020,113,604"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="148,5,269,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="138,76,114,96,95,121,83,150,74,180,66,242,68,305,77,363,72,364,63,305,61,242,69,179,78,148,90,119,110,93,134,72"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — стат&#45;блок и боевые категории юнита." alt="" coords="105,120,312,340"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="211,84,211,120,206,120,206,84"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="336,170,543,290"/>
+<area shape="poly" id="edge10_Node000008_Node000003" title=" " alt="" coords="269,76,325,118,381,167,378,171,322,122,266,81"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="235,628,470,973"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="245,975,214,1023,210,1020,240,972"/>
+<area shape="poly" id="edge6_Node000004_Node000004" title=" " alt="" coords="472,766,490,779,497,801,494,815,486,826,482,823,489,813,491,801,485,782,469,770"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="567,167,752,293"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="636,294,570,438,484,605,479,615,474,612,480,603,566,435,631,292"/>
+<area shape="rect" id="Node000006" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html" title="Только&#45;чтение собранных статов." alt="" coords="614,5,705,71"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="662,84,662,167,657,167,657,84"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="239,340,308,611,303,612,234,341"/>
+<area shape="poly" id="edge9_Node000004_Node000008" title=" " alt="" coords="433,291,384,612,379,611,428,290"/>
+</map>

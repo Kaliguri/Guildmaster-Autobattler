@@ -2,17 +2,42 @@ var annotated_dup =
 [
     [ "Guildmaster", "namespaceGuildmaster.html", [
       [ "Combat", "namespaceGuildmaster_1_1Combat.html", [
+        [ "Abilities", "namespaceGuildmaster_1_1Combat_1_1Abilities.html", [
+          [ "AbilityRuntime", "classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html", "classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime" ]
+        ] ],
         [ "Commands", "namespaceGuildmaster_1_1Combat_1_1Commands.html", [
           [ "PauseCommand", "classGuildmaster_1_1Combat_1_1Commands_1_1PauseCommand.html", "classGuildmaster_1_1Combat_1_1Commands_1_1PauseCommand" ],
           [ "ResumeCommand", "classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand.html", "classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand" ],
           [ "SpawnUnitCommand", "classGuildmaster_1_1Combat_1_1Commands_1_1SpawnUnitCommand.html", "classGuildmaster_1_1Combat_1_1Commands_1_1SpawnUnitCommand" ]
         ] ],
+        [ "Effects", "namespaceGuildmaster_1_1Combat_1_1Effects.html", [
+          [ "Components", "namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components.html", [
+            [ "ControlComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent" ],
+            [ "DispelComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent" ],
+            [ "LifestealComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent" ],
+            [ "PeriodicDamageComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent" ],
+            [ "PeriodicHealComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent" ],
+            [ "ShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent" ],
+            [ "StatModifierComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent" ],
+            [ "ThornsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent" ]
+          ] ],
+          [ "CombatEventData", "structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html", "structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData" ],
+          [ "DispelRequest", "structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html", "structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest" ],
+          [ "EffectContext", "structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html", "structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext" ],
+          [ "IPeriodicComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent" ],
+          [ "IReactiveComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent" ],
+          [ "IRuntimeEffectComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent" ],
+          [ "IScalablePotency", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency" ],
+          [ "RuntimeEffect", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect" ]
+        ] ],
+        [ "AbilitySystem", "classGuildmaster_1_1Combat_1_1AbilitySystem.html", "classGuildmaster_1_1Combat_1_1AbilitySystem" ],
         [ "AutoAttackSystem", "classGuildmaster_1_1Combat_1_1AutoAttackSystem.html", "classGuildmaster_1_1Combat_1_1AutoAttackSystem" ],
         [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html", "classGuildmaster_1_1Combat_1_1CombatSimulation" ],
         [ "DamagePipeline", "classGuildmaster_1_1Combat_1_1DamagePipeline.html", "classGuildmaster_1_1Combat_1_1DamagePipeline" ],
         [ "DamageRequest", "structGuildmaster_1_1Combat_1_1DamageRequest.html", "structGuildmaster_1_1Combat_1_1DamageRequest" ],
         [ "DamageResult", "structGuildmaster_1_1Combat_1_1DamageResult.html", "structGuildmaster_1_1Combat_1_1DamageResult" ],
         [ "DeathSystem", "classGuildmaster_1_1Combat_1_1DeathSystem.html", "classGuildmaster_1_1Combat_1_1DeathSystem" ],
+        [ "EffectSystem", "classGuildmaster_1_1Combat_1_1EffectSystem.html", "classGuildmaster_1_1Combat_1_1EffectSystem" ],
         [ "ICombatCommand", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand" ],
         [ "ICombatContext", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html", "interfaceGuildmaster_1_1Combat_1_1ICombatContext" ],
         [ "MovementSystem", "classGuildmaster_1_1Combat_1_1MovementSystem.html", "classGuildmaster_1_1Combat_1_1MovementSystem" ],
@@ -38,6 +63,7 @@ var annotated_dup =
       ] ],
       [ "Data", "namespaceGuildmaster_1_1Data.html", [
         [ "Definitions", "namespaceGuildmaster_1_1Data_1_1Definitions.html", [
+          [ "AbilityData", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData" ],
           [ "EffectData", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData" ],
           [ "IEffectComponent", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html", null ],
           [ "RelicData", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData" ],

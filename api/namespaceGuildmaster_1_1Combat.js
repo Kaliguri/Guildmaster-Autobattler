@@ -1,12 +1,16 @@
 var namespaceGuildmaster_1_1Combat =
 [
+    [ "Abilities", "namespaceGuildmaster_1_1Combat_1_1Abilities.html", "namespaceGuildmaster_1_1Combat_1_1Abilities" ],
     [ "Commands", "namespaceGuildmaster_1_1Combat_1_1Commands.html", "namespaceGuildmaster_1_1Combat_1_1Commands" ],
+    [ "Effects", "namespaceGuildmaster_1_1Combat_1_1Effects.html", "namespaceGuildmaster_1_1Combat_1_1Effects" ],
+    [ "AbilitySystem", "classGuildmaster_1_1Combat_1_1AbilitySystem.html", "classGuildmaster_1_1Combat_1_1AbilitySystem" ],
     [ "AutoAttackSystem", "classGuildmaster_1_1Combat_1_1AutoAttackSystem.html", "classGuildmaster_1_1Combat_1_1AutoAttackSystem" ],
     [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html", "classGuildmaster_1_1Combat_1_1CombatSimulation" ],
     [ "DamagePipeline", "classGuildmaster_1_1Combat_1_1DamagePipeline.html", "classGuildmaster_1_1Combat_1_1DamagePipeline" ],
     [ "DamageRequest", "structGuildmaster_1_1Combat_1_1DamageRequest.html", "structGuildmaster_1_1Combat_1_1DamageRequest" ],
     [ "DamageResult", "structGuildmaster_1_1Combat_1_1DamageResult.html", "structGuildmaster_1_1Combat_1_1DamageResult" ],
     [ "DeathSystem", "classGuildmaster_1_1Combat_1_1DeathSystem.html", "classGuildmaster_1_1Combat_1_1DeathSystem" ],
+    [ "EffectSystem", "classGuildmaster_1_1Combat_1_1EffectSystem.html", "classGuildmaster_1_1Combat_1_1EffectSystem" ],
     [ "ICombatCommand", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand" ],
     [ "ICombatContext", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html", "interfaceGuildmaster_1_1Combat_1_1ICombatContext" ],
     [ "MovementSystem", "classGuildmaster_1_1Combat_1_1MovementSystem.html", "classGuildmaster_1_1Combat_1_1MovementSystem" ],

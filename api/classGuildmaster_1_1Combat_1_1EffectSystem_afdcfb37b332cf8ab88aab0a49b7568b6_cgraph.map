@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.EffectSystem.Apply" name="Guildmaster.Combat.EffectSystem.Apply">
+<area shape="rect" id="Node000001" title="Наложить эффект на цель." alt="" coords="5,5,203,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1EffectSystem.html#afba054405a0f16608dfd5d774a58cc90" title="Длительность эффекта в тиках. &#45;1 = постоянный, 0 = мгновенный, иначе с учётом эфф&#45;эффективностей." alt="" coords="251,5,468,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,23,237,23,237,28,203,28"/>
+</map>

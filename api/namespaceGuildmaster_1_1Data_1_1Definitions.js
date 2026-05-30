@@ -1,10 +1,16 @@
 var namespaceGuildmaster_1_1Data_1_1Definitions =
 [
+    [ "AbilityData", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData" ],
     [ "EffectData", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData" ],
     [ "IEffectComponent", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html", null ],
     [ "RelicData", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData" ],
     [ "StatsConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig" ],
     [ "VesselData", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData" ],
+    [ "AbilityTargetMode", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d", [
+      [ "Self", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806", null ],
+      [ "NearestEnemy", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788", null ],
+      [ "NearestAlly", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443", null ]
+    ] ],
     [ "AttackType", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1", [
       [ "Melee", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1afcbd772e48c4b07d7d3be13b37a82f5e", null ],
       [ "Ranged", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1ac2f329a17c18a701dbe1e96e03858728", null ],
@@ -16,14 +22,35 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "Magic", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3a02700e454d679f31f27c6f0768986dd1", null ],
       [ "True", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3af827cf462f62848df37c5e1e94a4da74", null ]
     ] ],
+    [ "DispelTargetPolarity", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20", [
+      [ "Any", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20aed36a1ef76a59ee3f15180e0441188ad", null ],
+      [ "Buff", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25", null ],
+      [ "Debuff", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a941c9c4ecaa0bb3ab530f13b0078be01", null ]
+    ] ],
     [ "EffectPolarity", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459", [
       [ "Buff", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459a536e1a5d9f4fe868e6ea5ff628f51f25", null ],
       [ "Debuff", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459a941c9c4ecaa0bb3ab530f13b0078be01", null ],
       [ "Neutral", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459ae9bb5320b3890b6747c91b5a71ae5a01", null ]
     ] ],
+    [ "EffectTag", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438", [
+      [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Buff", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25", null ],
+      [ "Debuff", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a941c9c4ecaa0bb3ab530f13b0078be01", null ],
+      [ "Control", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438aa1595abbb4c3a326636dd178757cd6c1", null ],
+      [ "DoT", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438abc77fc33686f58682dfe0704c435c4a6", null ],
+      [ "HoT", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438adcaa2fceac50ca9147bb817517df900f", null ],
+      [ "Heal", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438af357105e6becc3076a3da9b43465051a", null ],
+      [ "Shield", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4", null ]
+    ] ],
     [ "ResourceType", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0", [
       [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0a6adf97f83acf6453d4a6a4b1070f3754", null ],
       [ "Mana", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0a02fcc64668dd1b6a85e60ac9797f2dc7", null ],
       [ "Rage", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0af467834a619fdbc994d37e84f5fef567", null ]
+    ] ],
+    [ "StackRule", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021c", [
+      [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Stack", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca", null ],
+      [ "Refresh", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca63a6a88c066880c5ac42394a22803ca6", null ],
+      [ "StackAndRefresh", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021cadc2a20a77eca42f262a296f18be55278", null ]
     ] ]
 ];

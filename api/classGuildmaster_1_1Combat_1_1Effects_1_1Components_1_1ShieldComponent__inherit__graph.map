@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.ShieldComponent" name="Guildmaster.Combat.Effects.Components.ShieldComponent">
+<area shape="rect" id="Node000001" title="Поглощающий щит." alt="" coords="80,252,295,352"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="5,119,191,204"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,214,158,250,153,253,130,217"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="33,5,163,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,85,101,119,95,119,95,85"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html" title="Опциональный шов: компонент объявляет масштабируемую потенцию." alt="" coords="215,129,341,194"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="252,207,222,253,217,250,248,204"/>
+</map>

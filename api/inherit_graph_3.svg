@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Combat_1_1DamageResult.html" target="_top" xlink:title="Результат пайплайна урона после применения к цели.">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Combat_1_1DamagePipeline.html" target="_top" xlink:title="Детерминированный конвейер урона.">
 <polygon fill="white" stroke="#666666" points="161,-30 0,-30 0,0 161,0 161,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Damage</text>
-<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Result</text>
+<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Pipeline</text>
 </a>
 </g>
 </g>

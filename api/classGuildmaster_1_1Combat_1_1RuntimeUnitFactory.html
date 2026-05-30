@@ -108,18 +108,19 @@ Collaboration diagram for Guildmaster.Combat.RuntimeUnitFactory:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adf3cfe84595a23d11b098d99dbe51d82" id="r_adf3cfe84595a23d11b098d99dbe51d82"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#adf3cfe84595a23d11b098d99dbe51d82">RuntimeUnitFactory</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a> config)</td></tr>
-<tr class="separator:adf3cfe84595a23d11b098d99dbe51d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b33e6195bdd2345c32c41581e0b2fd1" id="r_a9b33e6195bdd2345c32c41581e0b2fd1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a9b33e6195bdd2345c32c41581e0b2fd1">RuntimeUnitFactory</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a> config, <a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html">EffectSystem</a> effects, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
+<tr class="separator:a9b33e6195bdd2345c32c41581e0b2fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a261369f433994727bbd075e6520ac237" id="r_a261369f433994727bbd075e6520ac237"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a261369f433994727bbd075e6520ac237">Create</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> relic, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a> vessel, int team, Vector2 spawnPosition)</td></tr>
 <tr class="memdesc:a261369f433994727bbd075e6520ac237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать RuntimeUnit из SO-данных.  <br /></td></tr>
 <tr class="separator:a261369f433994727bbd075e6520ac237"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Единственная точка сборки RuntimeUnit из SO-данных. </p>
-<p>Шаги сборки: дефолты из StatsConfig → моды реликвии → (таланты сосуда — Фаза 2) → инициализация CurrentHP = Get(MaxHP) (вики «10» §5.2, «6» §3). </p>
+<p>Шаги сборки (вики «10» §5.2, «6» §3): дефолты из StatsConfig → моды реликвии → таланты сосуда → пассивки (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#ac490b773dc90f5d810ac76b9c35633cd">RelicData.GrantedEffects</a> с постоянной длительностью) → активки (AbilityRuntime) → ресурс (StatType.StartResource) → <code>CurrentHP = Get(MaxHP)</code>.</p>
+<p>Пассивки применяются <b>до</b> инициализации <code>CurrentHP</code>: пассив на +MaxHP должен поднять и стартовое здоровье. Поэтому фабрике нужны EffectSystem и боевой контекст — наложение пассивки зовёт <code>OnApply</code> компонентов (вики «12» §6, шаг 9). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="adf3cfe84595a23d11b098d99dbe51d82" name="adf3cfe84595a23d11b098d99dbe51d82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf3cfe84595a23d11b098d99dbe51d82">&#9670;&#160;</a></span>RuntimeUnitFactory()</h2>
+<a id="a9b33e6195bdd2345c32c41581e0b2fd1" name="a9b33e6195bdd2345c32c41581e0b2fd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b33e6195bdd2345c32c41581e0b2fd1">&#9670;&#160;</a></span>RuntimeUnitFactory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -131,8 +132,24 @@ Public Member Functions</h2></td></tr>
           <td class="memname">Guildmaster.Combat.RuntimeUnitFactory.RuntimeUnitFactory </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a>&#160;</td>
-          <td class="paramname"><em>config</em></td><td>)</td>
+          <td class="paramname"><em>config</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html">EffectSystem</a>&#160;</td>
+          <td class="paramname"><em>effects</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a>&#160;</td>
+          <td class="paramname"><em>combat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -204,7 +221,7 @@ Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a261369f433994727bbd075e6520ac237_cgraph.svg" width="494" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a261369f433994727bbd075e6520ac237_cgraph.svg" width="494" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

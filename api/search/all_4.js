@@ -1,10 +1,21 @@
 var searchData=
 [
-  ['effectdata_0',['EffectData',['../classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html',1,'Guildmaster::Data::Definitions']]],
-  ['effectdata_2ecs_1',['EffectData.cs',['../EffectData_8cs.html',1,'']]],
-  ['effectpolarity_2',['EffectPolarity',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459',1,'Guildmaster::Data::Definitions']]],
-  ['enemies_3',['Enemies',['../namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8af181304e789fd0882df5cb02d232fc69',1,'Guildmaster::Combat']]],
-  ['enqueuecommand_4',['EnqueueCommand',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8fd5cd93593dde5fce087c97bfc30d46',1,'Guildmaster::Combat::CombatSimulation']]],
-  ['enqueueunitspawn_5',['EnqueueUnitSpawn',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6ef3762989e4fb8bf6e6f2229baa2b5c',1,'Guildmaster::Combat::CombatSimulation']]],
-  ['execute_6',['Execute',['../classGuildmaster_1_1Combat_1_1DamagePipeline.html#a92f4da6e6fd513be46129dbf0ec6a32d',1,'Guildmaster::Combat::DamagePipeline']]]
+  ['effect_0',['Effect',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a349bb91267ada333275778ffd99d3779',1,'Guildmaster::Combat::Effects::EffectContext']]],
+  ['effectapplied_1',['EffectApplied',['../namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622',1,'Guildmaster::Combat::Effects']]],
+  ['effectcontext_2',['effectcontext',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a7774b968b4299c5263162e9db75ed251',1,'Guildmaster.Combat.Effects.EffectContext.EffectContext()'],['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html',1,'Guildmaster.Combat.Effects.EffectContext']]],
+  ['effectcontext_2ecs_3',['EffectContext.cs',['../EffectContext_8cs.html',1,'']]],
+  ['effectdata_4',['EffectData',['../classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html',1,'Guildmaster::Data::Definitions']]],
+  ['effectdata_2ecs_5',['EffectData.cs',['../EffectData_8cs.html',1,'']]],
+  ['effectpolarity_6',['EffectPolarity',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459',1,'Guildmaster::Data::Definitions']]],
+  ['effects_7',['Effects',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a1033e25d9437b7a67b259959e5f6e84d',1,'Guildmaster::Data::Definitions::AbilityData']]],
+  ['effectsystem_8',['EffectSystem',['../classGuildmaster_1_1Combat_1_1EffectSystem.html',1,'Guildmaster::Combat']]],
+  ['effectsystem_2ecs_9',['EffectSystem.cs',['../EffectSystem_8cs.html',1,'']]],
+  ['effecttag_10',['EffectTag',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438',1,'Guildmaster::Data::Definitions']]],
+  ['effecttag_2ecs_11',['EffectTag.cs',['../EffectTag_8cs.html',1,'']]],
+  ['effecttagmask_12',['EffectTagMask',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a699cc5426b400f63658ab3b2f65aae66',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['enemies_13',['Enemies',['../namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8af181304e789fd0882df5cb02d232fc69',1,'Guildmaster::Combat']]],
+  ['enqueuecommand_14',['EnqueueCommand',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8fd5cd93593dde5fce087c97bfc30d46',1,'Guildmaster::Combat::CombatSimulation']]],
+  ['enqueueunitspawn_15',['EnqueueUnitSpawn',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6ef3762989e4fb8bf6e6f2229baa2b5c',1,'Guildmaster::Combat::CombatSimulation']]],
+  ['events_16',['events',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html#aeef89cd6748a56e1f58726aa49657b03',1,'Guildmaster.Combat.Effects.Components.ThornsComponent.Events'],['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html#a39ea750210ba1d86dcfd557557638080',1,'Guildmaster.Combat.Effects.IReactiveComponent.Events'],['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent.html#a7baf1241b8d34369559036d05e0c4a85',1,'Guildmaster.Combat.Effects.Components.LifestealComponent.Events']]],
+  ['execute_17',['Execute',['../classGuildmaster_1_1Combat_1_1DamagePipeline.html#a92f4da6e6fd513be46129dbf0ec6a32d',1,'Guildmaster::Combat::DamagePipeline']]]
 ];

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.AbilitySystem.TryCast" name="Guildmaster.Combat.AbilitySystem.TryCast">
+<area shape="rect" id="Node000001" title="Попытаться скастовать способность abilityIndex ." alt="" coords="5,35,208,75"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a1c83a24b7d6d26085832b1e970cecf83" title="Применить эффект к цели. Тело — Фаза 2; в Фазе 1 — стаб (no&#45;op)." alt="" coords="259,5,473,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,41,245,36,245,42,209,46"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="256,70,476,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="209,63,243,67,242,72,208,68"/>
+</map>

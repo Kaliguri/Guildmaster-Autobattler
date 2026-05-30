@@ -1,3 +1,29 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html" title="Загрузка и выгрузка сцен." alt="" coords="5,5,212,45"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="5,197,220,237"/>
+<area shape="rect" id="Node000001" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="268,197,476,237"/>
+<area shape="poly" id="edge7_Node000000_Node000001" title=" " alt="" coords="234,215,268,215,268,220,234,220"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html" title="Контроль: запрещает действия носителю на время эффекта." alt="" coords="540,229,771,269"/>
+<area shape="poly" id="edge8_Node000001_Node000002" title=" " alt="" coords="490,228,540,234,539,239,490,233"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent.html" title="Диспел: при наложении снимает с носителя подходящие эффекты (вики «6» §5.4)." alt="" coords="543,293,767,333"/>
+<area shape="poly" id="edge9_Node000001_Node000003" title=" " alt="" coords="429,241,525,279,565,291,564,296,523,284,427,246"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html" title="Поглощающий щит." alt="" coords="869,400,1091,440"/>
+<area shape="poly" id="edge10_Node000001_Node000004" title=" " alt="" coords="390,249,411,288,441,332,479,375,501,392,525,407,569,425,616,438,663,446,711,449,804,447,885,437,885,443,804,453,711,455,663,451,614,443,567,430,523,412,498,397,475,379,437,336,407,291,385,251"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent.html" title="Накладывает стат&#45;модификаторы на носителя на время жизни эффекта." alt="" coords="524,101,787,141"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="427,189,523,151,564,139,565,144,525,156,429,194"/>
+<area shape="rect" id="Node000007" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html" title="Периодический компонент: OnTick каждые Interval секунд (DoT/HoT/реген)." alt="" coords="551,165,759,205"/>
+<area shape="poly" id="edge12_Node000001_Node000007" title=" " alt="" coords="489,201,551,194,551,200,490,207"/>
+<area shape="rect" id="Node000010" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="551,37,759,77"/>
+<area shape="poly" id="edge15_Node000001_Node000010" title=" " alt="" coords="399,185,453,135,487,109,523,87,552,75,554,80,525,92,490,113,456,139,403,189"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html" title="Периодический урон (DoT)." alt="" coords="835,305,1125,345"/>
+<area shape="poly" id="edge13_Node000007_Node000006" title=" " alt="" coords="765,207,788,215,878,259,950,303,947,307,875,263,786,220,763,212"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html" title="Периодическое исцеление (HoT)." alt="" coords="847,181,1113,221"/>
+<area shape="poly" id="edge14_Node000007_Node000008" title=" " alt="" coords="773,188,847,192,847,197,773,194"/>
+<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent.html" title="Вампиризм: исцеляет носителя на долю нанесённого им урона." alt="" coords="861,69,1099,109"/>
+<area shape="poly" id="edge16_Node000010_Node000011" title=" " alt="" coords="773,66,861,75,860,80,773,72"/>
+<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html" title="Шипы: отражает долю полученного урона обратно атакующему." alt="" coords="867,5,1093,45"/>
+<area shape="poly" id="edge17_Node000010_Node000012" title=" " alt="" coords="773,43,866,34,867,39,773,48"/>
+<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html" title="Опциональный шов: компонент объявляет масштабируемую потенцию." alt="" coords="551,357,759,397"/>
+<area shape="poly" id="edge20_Node000005_Node000004" title=" " alt="" coords="773,390,869,403,868,408,772,395"/>
+<area shape="poly" id="edge18_Node000005_Node000006" title=" " alt="" coords="772,356,854,343,855,348,773,361"/>
+<area shape="poly" id="edge19_Node000005_Node000008" title=" " alt="" coords="771,351,785,343,800,331,810,319,819,306,833,291,888,251,940,219,943,224,891,256,836,295,823,309,814,322,804,335,788,348,773,355"/>
 </map>

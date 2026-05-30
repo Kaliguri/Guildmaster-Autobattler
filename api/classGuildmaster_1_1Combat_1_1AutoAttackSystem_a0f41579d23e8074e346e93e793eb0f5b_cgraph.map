@@ -1,9 +1,5 @@
 <map id="Guildmaster.Combat.AutoAttackSystem.Tick" name="Guildmaster.Combat.AutoAttackSystem.Tick">
-<area shape="rect" id="Node000001" title="Обработать автоатаки всех живых юнитов за один тик." alt="" coords="5,63,237,103"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a5468cdcedd25be5819c524aa2be5e812" title="Применить урон через полный пайплайн." alt="" coords="288,5,503,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,60,285,46,287,51,218,65"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="285,70,505,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="237,80,271,80,271,85,237,85"/>
-<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#af77b3fed804337cb57884a18b5bff033" title="Создать снаряд в симуляции." alt="" coords="288,120,503,160"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="218,100,287,115,285,120,217,105"/>
+<area shape="rect" id="Node000001" title="Обработать автоатаки всех живых юнитов за один тик." alt="" coords="5,5,237,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="285,13,505,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,23,271,23,271,28,237,28"/>
 </map>

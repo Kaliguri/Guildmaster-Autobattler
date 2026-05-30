@@ -11,6 +11,11 @@ var CombatCategories_8cs =
       [ "Magic", "CombatCategories_8cs.html#a5cce769078fcc3c898cb60f70d7d6ed3a02700e454d679f31f27c6f0768986dd1", null ],
       [ "True", "CombatCategories_8cs.html#a5cce769078fcc3c898cb60f70d7d6ed3af827cf462f62848df37c5e1e94a4da74", null ]
     ] ],
+    [ "DispelTargetPolarity", "CombatCategories_8cs.html#a9cc3b75ee764cbdef4455c6ce72eee20", [
+      [ "Any", "CombatCategories_8cs.html#a9cc3b75ee764cbdef4455c6ce72eee20aed36a1ef76a59ee3f15180e0441188ad", null ],
+      [ "Buff", "CombatCategories_8cs.html#a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25", null ],
+      [ "Debuff", "CombatCategories_8cs.html#a9cc3b75ee764cbdef4455c6ce72eee20a941c9c4ecaa0bb3ab530f13b0078be01", null ]
+    ] ],
     [ "EffectPolarity", "CombatCategories_8cs.html#afbf19b39e6c0c9a910df44fc60902459", [
       [ "Buff", "CombatCategories_8cs.html#afbf19b39e6c0c9a910df44fc60902459a536e1a5d9f4fe868e6ea5ff628f51f25", null ],
       [ "Debuff", "CombatCategories_8cs.html#afbf19b39e6c0c9a910df44fc60902459a941c9c4ecaa0bb3ab530f13b0078be01", null ],

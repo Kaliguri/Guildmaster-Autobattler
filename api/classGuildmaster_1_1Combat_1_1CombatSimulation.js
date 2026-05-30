@@ -1,9 +1,10 @@
 var classGuildmaster_1_1Combat_1_1CombatSimulation =
 [
-    [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6122f52722e14fa8d20ceb008232a254", null ],
+    [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac926d5627d8944fcfdc16f92e6e8e962", null ],
     [ "ApplyEffect", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7ffdb85ea967ca31ce9f970371df906a", null ],
     [ "ComputeChecksum", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6d647c0229bc77cc9701a4272f36623c", null ],
     [ "DealDamage", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6de925024d5473fc9537c6a36e39fe45", null ],
+    [ "Dispel", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3ce7981b50aa372c5f42ee55bc2e48cb", null ],
     [ "EnqueueCommand", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8fd5cd93593dde5fce087c97bfc30d46", null ],
     [ "EnqueueUnitSpawn", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6ef3762989e4fb8bf6e6f2229baa2b5c", null ],
     [ "Heal", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3edf9fdf873a5ebddd75420669bdb8c2", null ],

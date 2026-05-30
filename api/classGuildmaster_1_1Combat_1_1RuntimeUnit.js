@@ -1,10 +1,16 @@
 var classGuildmaster_1_1Combat_1_1RuntimeUnit =
 [
+    [ "Abilities", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a7f4b8c7b5d4000ea833d8cb33d61d55b", null ],
+    [ "ActiveEffects", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa4c1d70ebb6150f2752ab43fad8f9fef", null ],
     [ "AttackCooldown", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aae7bb21f873952eeb5152e67382c1edd", null ],
+    [ "CanAct", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a1c42e23dcadf05b9cb96fe4f2e92410f", null ],
+    [ "CanCast", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae14bc3754e2c9bcb3072ecac904738cf", null ],
+    [ "CanMove", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa05ad04cfdd90d4f53c155eeba794196", null ],
     [ "CurrentHP", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a16a11155c2e0a73e8bcaa125797d137f", null ],
     [ "CurrentResource", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aade95fbe70d66fe6bc23c4ca18297005", null ],
     [ "CurrentShield", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a24ce73d0729d150103bd1436c64801e3", null ],
     [ "CurrentTarget", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a64ce2c8539ec1d2913559dd98c7c8e31", null ],
+    [ "EffectTagMask", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a699cc5426b400f63658ab3b2f65aae66", null ],
     [ "Id", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a09b0794faa1054a9796334e18a0f557c", null ],
     [ "IsDead", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4535a281dcec5e830ae47b664400347e", null ],
     [ "Position", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ad165873e9407fb2df902527f75674deb", null ],

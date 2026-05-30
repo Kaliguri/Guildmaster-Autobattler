@@ -6,5 +6,7 @@ var searchData=
   ['damagepipeline_3',['DamagePipeline',['../classGuildmaster_1_1Combat_1_1DamagePipeline.html',1,'Guildmaster::Combat']]],
   ['damagerequest_4',['DamageRequest',['../structGuildmaster_1_1Combat_1_1DamageRequest.html',1,'Guildmaster::Combat']]],
   ['damageresult_5',['DamageResult',['../structGuildmaster_1_1Combat_1_1DamageResult.html',1,'Guildmaster::Combat']]],
-  ['deathsystem_6',['DeathSystem',['../classGuildmaster_1_1Combat_1_1DeathSystem.html',1,'Guildmaster::Combat']]]
+  ['deathsystem_6',['DeathSystem',['../classGuildmaster_1_1Combat_1_1DeathSystem.html',1,'Guildmaster::Combat']]],
+  ['dispelcomponent_7',['DispelComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
+  ['dispelrequest_8',['DispelRequest',['../structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html',1,'Guildmaster::Combat::Effects']]]
 ];

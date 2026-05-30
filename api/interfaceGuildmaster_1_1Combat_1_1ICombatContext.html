@@ -109,7 +109,7 @@ Inheritance diagram for Guildmaster.Combat.ICombatContext:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.ICombatContext:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ICombatContext__coll__graph.svg" width="218" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ICombatContext__coll__graph.svg" width="218" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -129,6 +129,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1c83a24b7d6d26085832b1e970cecf83" id="r_a1c83a24b7d6d26085832b1e970cecf83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a1c83a24b7d6d26085832b1e970cecf83">ApplyEffect</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source)</td></tr>
 <tr class="memdesc:a1c83a24b7d6d26085832b1e970cecf83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить эффект к цели. Тело — Фаза 2; в Фазе 1 — стаб (no-op).  <br /></td></tr>
 <tr class="separator:a1c83a24b7d6d26085832b1e970cecf83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1477df432344e4184ca6ba28d790511" id="r_af1477df432344e4184ca6ba28d790511"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#af1477df432344e4184ca6ba28d790511">Dispel</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html">Effects.DispelRequest</a> req)</td></tr>
+<tr class="memdesc:af1477df432344e4184ca6ba28d790511"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4).  <br /></td></tr>
+<tr class="separator:af1477df432344e4184ca6ba28d790511"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -181,6 +184,11 @@ Properties</h2></td></tr>
 <p>Применить эффект к цели. Тело — Фаза 2; в Фазе 1 — стаб (no-op). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7ffdb85ea967ca31ce9f970371df906a">Guildmaster.Combat.CombatSimulation</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ICombatContext_a1c83a24b7d6d26085832b1e970cecf83_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
 
 </div>
 </div>
@@ -203,11 +211,28 @@ Properties</h2></td></tr>
 <p>Применить урон через полный пайплайн. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6de925024d5473fc9537c6a36e39fe45">Guildmaster.Combat.CombatSimulation</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ICombatContext_a5468cdcedd25be5819c524aa2be5e812_icgraph.svg" width="506" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+
 </div>
+</div>
+<a id="af1477df432344e4184ca6ba28d790511" name="af1477df432344e4184ca6ba28d790511"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1477df432344e4184ca6ba28d790511">&#9670;&#160;</a></span>Dispel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.ICombatContext.Dispel </td>
+          <td>(</td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html">Effects.DispelRequest</a>&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4). </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3ce7981b50aa372c5f42ee55bc2e48cb">Guildmaster.Combat.CombatSimulation</a>.</p>
 
 </div>
 </div>
@@ -318,11 +343,6 @@ Here is the caller graph for this function:</div>
 <p>Создать снаряд в симуляции. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a85465a46ea9d2ce38e263814ef54b9c2">Guildmaster.Combat.CombatSimulation</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ICombatContext_af77b3fed804337cb57884a18b5bff033_icgraph.svg" width="506" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.AbilitySystem.TryCast" name="Guildmaster.Combat.AbilitySystem.TryCast">
+<area shape="rect" id="Node000001" title="Попытаться скастовать способность abilityIndex ." alt="" coords="256,5,459,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AbilitySystem.html#aaf936034ee2d2b14afc73a060e1875f4" title=" " alt="" coords="5,5,208,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="242,28,208,28,208,23,242,23"/>
+</map>

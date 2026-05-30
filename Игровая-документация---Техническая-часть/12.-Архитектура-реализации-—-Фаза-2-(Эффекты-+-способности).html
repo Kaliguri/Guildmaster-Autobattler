@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>12. Архитектура реализации — Фаза 2 (Эффекты + способности) | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="12. Архитектура реализации — Фаза 2 (Эффекты + способности) | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="12. Архитектура реализации — Фаза 2 (Эффекты + способности) | Guildmaster Wiki"/><meta name="twitter:description" content="Статус: 🟢 Реализовано (все 10 шагов §8 закрыты, 90 EditMode-тестов зелёные) Детальная архитектура Фазы 2 из роадмапа (9."/><meta property="og:description" content="Статус: 🟢 Реализовано (все 10 шагов §8 закрыты, 90 EditMode-тестов зелёные) Детальная архитектура Фазы 2 из роадмапа (9."/><meta property="og:image:alt" content="Статус: 🟢 Реализовано (все 10 шагов §8 закрыты, 90 EditMode-тестов зелёные) Детальная архитектура Фазы 2 из роадмапа (9."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/Игровая-документация---Техническая-часть/12.-Архитектура-реализации-—-Фаза-2-(Эффекты-+-способности)"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/Игровая-документация---Техническая-часть/12.-Архитектура-реализации-—-Фаза-2-(Эффекты-+-способности)"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="Статус: 🟢 Реализовано (все 10 шагов §8 закрыты, 90 EditMode-тестов зелёные) Детальная архитектура Фазы 2 из роадмапа (9."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="Игровая-документация---Техническая-часть/12.-Архитектура-реализации-—-Фаза-2-(Эффекты-+-способности)"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-26"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-26" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../Игровая-документация---Техническая-часть/">Игровая документация   Техническая часть</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>12. Архитектура реализации — Фаза 2 (Эффекты + способности)</a></div></nav><h1 class="article-title">12. Архитектура реализации — Фаза 2 (Эффекты + способности)</h1><p show-comma="true" class="content-meta"><time datetime="2026-05-30T18:29:57.151Z">30 мая 2026 г.</time><span>время чтения ~11 мин.</span></p></div></div><article class="popover-hint"><p><strong>Статус:</strong> 🟢 Реализовано (все 10 шагов §8 закрыты, 90 EditMode-тестов зелёные)</p>
+<hr/>
+<blockquote>
+<p>Детальная архитектура <strong>Фазы 2</strong> из роадмапа (<a href="../Игровая-документация---Техническая-часть/9.-Roadmap-реализации" class="internal alias" data-slug="Игровая-документация---Техническая-часть/9.-Roadmap-реализации">9. Roadmap реализации</a>): единая модель эффектов + способности.
+Наполняет швы, заложенные пустыми в Фазе 1 (<a href="../Игровая-документация---Техническая-часть/10.-Архитектура-реализации-—-Фаза-1-(Боевое-ядро)" class="internal alias" data-slug="Игровая-документация---Техническая-часть/10.-Архитектура-реализации-—-Фаза-1-(Боевое-ядро)">10. Архитектура реализации — Фаза 1</a>).
+Дизайн-источник: <a href="../Игровая-документация---Техническая-часть/6.-Боевая-модель-(юниты,-статы,-эффекты)" class="internal alias" data-slug="Игровая-документация---Техническая-часть/6.-Боевая-модель-(юниты,-статы,-эффекты)">6. Боевая модель §5</a> (единая модель эффектов), <a href="../Игровая-документация---Техническая-часть/11.-Стат-система-(полный-список-статов)" class="internal alias" data-slug="Игровая-документация---Техническая-часть/11.-Стат-система-(полный-список-статов)">11. Стат-система §5</a> (потенция vs длительность).
+Следует пайплайну <a href=".././../.cursor/rules/phase-design-pipeline.mdc" class="internal alias" data-slug=".cursor/rules/phase-design-pipeline.mdc">phase-design-pipeline</a>: данные → швы → классы → спайк → тесты-имена.</p>
+<p><strong>Это план для ревью, а не финальный код.</strong> Сначала Макс читает и даёт мнение → потом реализуем.</p>
+</blockquote>
+<hr/>
+<h2 id="0-гейт-фаза-1-закрыта-контекст-этого-дока">0. Гейт: Фаза 1 закрыта (контекст этого дока)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#0-гейт-фаза-1-закрыта-контекст-этого-дока" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Фаза 2 опирается на готовое ядро. Сверено по коду, не по статусам:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Что готово в Ф1</th><th>Где</th></tr></thead><tbody><tr><td>Тик-цикл, фикс. порядок систем, детерминизм + checksum</td><td><code>CombatSimulation.Tick</code></td></tr><tr><td><code>Stats</code> (слои модов по источнику, dirty-кэш, формула)</td><td><code>Combat/Stats/Stats.cs</code></td></tr><tr><td><code>DamagePipeline</code> (чистые функции, броня/пробивание/щит)</td><td><code>Combat/Damage/DamagePipeline.cs</code></td></tr><tr><td><code>RuntimeUnit</code>/<code>Factory</code>, spatial hash, авто-атаки, снаряды</td><td><code>Combat/...</code></td></tr><tr><td><strong>Швы под Ф2 (пустые):</strong> <code>ICombatContext.ApplyEffect</code> (no-op), <code>EffectData</code>/<code>IEffectComponent</code>/<code>ScalableValue</code> (скелеты), <code>RelicData.GrantedEffects</code>, enum <code>StatType</code> (все 30 объявлены), <code>EffectPolarity</code></td><td><code>Data/...</code>, <code>Combat/ICombatContext.cs</code></td></tr></tbody></table></div>
+<p><strong>Чего ещё НЕТ и что добавляет Ф2:</strong> <code>RuntimeEffect</code>, внутренняя event-queue (<code>DrainEventQueue</code> в тике отсутствует), <code>EffectSystem</code>, библиотека компонентов, способности (кулдаун/ресурс), диспел, проводка эфф-эффективностей в урон/хил.</p>
+<hr/>
+<h2 id="1-что-фаза-2-даёт-и-чего-не-делает">1. Что Фаза 2 даёт и чего НЕ делает<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-что-фаза-2-даёт-и-чего-не-делает" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Деливерабл:</strong> единая модель эффектов (баффы/дебаффы/DoT/HoT/контроль/щиты/триггеры/пассивки — один <code>Effect</code> с полиморфными компонентами), активные/пассивные способности с кулдауном и ресурсом, многоуровневый диспел, четыре эфф-эффективности длительности и потенция-множители исцеления/щитов — всё под headless EditMode-тестами.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>✅ В Фазе 2</th><th>⛔ НЕ в Фазе 2 (куда переезжает)</th></tr></thead><tbody><tr><td><code>RuntimeEffect</code> + жизненный цикл (apply/tick/expire)</td><td><strong>Решение «когда кастовать»</strong> (Filter/Score/Override) → <strong>Фаза 3</strong>. Ф2 даёт механизм каста + детерминированный плейсхолдер-триггер для тестов</td></tr><tr><td>Библиотека <code>IRuntimeEffectComponent</code> (StatMod, PeriodicDamage/Heal, Control, Shield, Lifesteal, Thorns, Dispel)</td><td>Полный контент-набор эффектов/реликвий (~10 эфф., 6–8 реликвий) → <strong>Фаза 4</strong> (Ф2 делает 2–3 представителя каждого типа для тестов)</td></tr><tr><td><code>ScalableValue</code> в бою (потенция от статов источника)</td><td>Odin-авторинг контента, метаданные статов → <strong>Фаза 4</strong></td></tr><tr><td>Стакинг (<code>StackRule</code>/<code>MaxStacks</code>), <code>EffectTagMask</code></td><td>Гильдмастер-кастер <code>GuildmasterController</code>, гильд-широкие моды → каркас-шов в Ф2, наполнение → <strong>Фаза 5</strong></td></tr><tr><td>Четыре эфф-эффективности <strong>длительности</strong> + <code>HealShieldDealt/TakenEff</code> (потенция) + <code>CooldownEff</code></td><td>Сетевая репликация эффектов/ресурса → <strong>Фаза 6</strong> (Ф2 держит детерминизм → реплицируется тем же путём команд)</td></tr><tr><td><code>AbilityRuntime</code>: кулдаун, ресурс, каст активки</td><td>Презентация эффектов (иконки баффов, тики DoT-цифр) → <strong>минимум в Ф2</strong> (переиспользуем хуки Ф1), полировка → <strong>Фаза 7</strong></td></tr><tr><td>Внутренняя event-queue (FIFO, без рекурсии) для реактивных компонентов</td><td>—</td></tr><tr><td>Многоуровневый диспел (<code>CleanseTier</code> vs <code>DispelPower</code>)</td><td>—</td></tr></tbody></table></div>
+<blockquote>
+<p><strong>Принцип границы:</strong> Ф2 строит <strong>движок эффектов и способностей</strong>, а не контент. Реликвии/эффекты под срез наполняются в Ф4 через готовые точки; AI решает «когда» в Ф3.</p>
+</blockquote>
+<hr/>
+<h2 id="2-данные-первыми-уровень-1--фиксируем">2. Данные первыми (Уровень 1 — фиксируем)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-данные-первыми-уровень-1--фиксируем" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Данные — хребет. Здесь — главные решения, дорогие задним числом.</p>
+<h3 id="21-effectdata-data--дополнить-скелет-до-полной-модели-6-дизайна">2.1 <code>EffectData</code> (Data) — дополнить скелет до полной модели (§6 дизайна)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#21-effectdata-data--дополнить-скелет-до-полной-модели-6-дизайна" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>К текущим <code>Id</code>/<code>Polarity</code>/<code>Tags</code>/<code>BaseDuration</code>/<code>Components</code> добавляются поля стакинга и диспела:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Поле</th><th>Тип</th><th>Назначение</th></tr></thead><tbody><tr><td><code>Stacking</code></td><td><code>StackRule</code> (<code>None</code>/<code>Stack</code>/<code>Refresh</code>/<code>StackAndRefresh</code>)</td><td>Поведение при повторном наложении</td></tr><tr><td><code>MaxStacks</code></td><td><code>int</code></td><td>Потолок стаков</td></tr><tr><td><code>CleanseTier</code></td><td><code>int</code></td><td>Устойчивость к диспелу (лестница vs <code>DispelPower</code>)</td></tr><tr><td><code>Unremovable</code></td><td><code>bool</code></td><td>Неснимаемо никаким диспелом</td></tr></tbody></table></div>
+<ul>
+<li><code>Tags</code> — переводим со <code>string[]</code> на <code>[Flags] EffectTag</code> enum (<code>Control</code>/<code>DoT</code>/<code>HoT</code>/<code>Heal</code>/<code>Shield</code>/<code>Buff</code>/<code>Debuff</code>/…). Нужен для диспела по категории и <code>EffectTagMask</code>. <strong>Полный список тегов — открытый вопрос §9.</strong></li>
+<li><code>_baseDuration ≤ 0</code> семантика: <code>0</code> = мгновенный (один <code>OnApply</code>), <code>-1</code> = постоянный (пассивка). Фиксируем сейчас.</li>
+</ul>
+<h3 id="22-runtimeeffect-combat-новый-poco--экземпляр-эффекта-на-юните">2.2 <code>RuntimeEffect</code> (Combat, новый POCO) — экземпляр эффекта на юните<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#22-runtimeeffect-combat-новый-poco--экземпляр-эффекта-на-юните" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>RuntimeEffect
+├── Def              — ссылка на иммутабельный EffectData
+├── Source           — кто наложил (атрибуция, скейл, триггеры)
+├── RemainingTime    — в секундах сим (или тиках); 0/∞ по Def.BaseDuration
+├── Stacks           — текущее число стаков
+├── ratePerSecond[]  — ПОТЕНЦИЯ периодики, посчитана при наложении через ScalableValue
+│                       (НЕ запечённый total — см. §11 §5.1: масштаб от длительности)
+└── tickAccumulator  — для IPeriodicComponent.Interval
+</code></pre>
+<blockquote>
+<p>⚠️ <strong>Ключевое (док 11 §5.1):</strong> для DoT/HoT хранить <strong>rate за секунду</strong>, не готовый total. Длительность меняется эфф-эффектами → число тиков меняется → total пересчитывается сам. Запекать total при наложении НЕЛЬЗЯ.</p>
+</blockquote>
+<h3 id="23-runtimeunit-combat--новые-поля-швы-ф1-ждут-их">2.3 <code>RuntimeUnit</code> (Combat) — новые поля (швы Ф1 ждут их)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#23-runtimeunit-combat--новые-поля-швы-ф1-ждут-их" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Поле</th><th>Тип</th><th>Кто мутирует</th></tr></thead><tbody><tr><td><code>ActiveEffects</code></td><td><code>List&lt;RuntimeEffect></code></td><td><code>EffectSystem</code> (add → pending-очередь, не в коллекцию во время итерации)</td></tr><tr><td><code>EffectTagMask</code></td><td><code>EffectTag</code> (битовая маска)</td><td><code>EffectSystem</code> при add/remove — быстрый запрос для AI (Ф3) и диспела</td></tr><tr><td><code>Abilities</code></td><td><code>List&lt;AbilityRuntime></code></td><td><code>RuntimeUnitFactory</code> (сборка), <code>AbilitySystem</code> (тик)</td></tr><tr><td><code>Control</code>-флаги</td><td><code>CanAct</code>/<code>CanMove</code>/<code>CanCast</code> (bool)</td><td><code>ControlComponent</code> через apply/expire; читают Movement/AutoAttack/Ability</td></tr></tbody></table></div>
+<ul>
+<li><code>CurrentResource</code>/<code>CurrentShield</code> — поля уже есть с Ф1, в Ф2 их начинают наполнять (<code>StartResource</code> при сборке, <code>ShieldComponent</code>).</li>
+</ul>
+<h3 id="24-abilityruntime-combat--abilitydata-data-на-relicdata">2.4 <code>AbilityRuntime</code> (Combat) + <code>AbilityData</code> (Data, на <code>RelicData</code>)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#24-abilityruntime-combat--abilitydata-data-на-relicdata" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Сущность</th><th>Поля</th><th>Примечание</th></tr></thead><tbody><tr><td><code>AbilityData</code> (SO/вложенный)</td><td><code>EffectData[]</code> применяемых эффектов, <code>baseCooldown</code>, <code>resourceCost</code>, <code>targetMode</code> (Self/Enemy/Allies/Area), <code>ScalableValue</code> параметры</td><td>Активки авторятся на реликвии; пассивки = <code>GrantedEffects</code> с <code>Duration = -1</code></td></tr><tr><td><code>AbilityRuntime</code> (POCO)</td><td>ссылка на <code>AbilityData</code>, <code>cooldownRemaining</code>, готовность</td><td><code>actualCd = baseCd × Source.Get(CooldownEff)</code></td></tr></tbody></table></div>
+<blockquote>
+<p>Слоты по редкости (Common 1/1 → Rare 2/2 → Epic 3/3, док 6 §1) — это число элементов на реликвии; механика слотов одинакова.</p>
+</blockquote>
+<h3 id="25-эфф-эффективности--данные-уже-есть-проводим-логику">2.5 Эфф-эффективности — данные уже есть, проводим логику<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#25-эфф-эффективности--данные-уже-есть-проводим-логику" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Enum <code>StatType</code> уже содержит <code>ApplyBuffEff</code>/<code>ApplyDebuffEff</code>/<code>ReceiveBuffEff</code>/<code>ReceiveDebuffEff</code>/<code>CooldownEff</code>/<code>HealShieldDealtEff</code>/<code>HealShieldTakenEff</code>/<code>AbilityPower</code>/<code>MaxResource</code>/<code>StartResource</code>/<code>ResourceGainEff</code>. Ф2 добавляет им <strong>дефолты/клампы в <code>StatsConfig</code></strong> и <strong>проводку в формулы</strong> (§4), но не трогает enum (нумерация залочена).</p>
+<hr/>
+<h2 id="3-швы-уровень-1--фиксируем">3. Швы (Уровень 1 — фиксируем)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-швы-уровень-1--фиксируем" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="31-кросс-сборочный-шов-компонентов-главный-риск--5-спайк">3.1 Кросс-сборочный шов компонентов (ГЛАВНЫЙ риск — §5 спайк)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#31-кросс-сборочный-шов-компонентов-главный-риск--5-спайк" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Док 10 §2.2 заложил разрыв: <strong>сериализационный якорь — в Data, рантайм-хуки — в Combat.</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="csharp" data-theme="github-light github-dark"><code data-language="csharp" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Data (низ): пустой маркер — Relic/Effect ссылаются, НЕ создавая Data→Combat вверх.</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IEffectComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { }   </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// уже есть (Ф1)</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Combat (верх): рантайм-контракт. Контекст-типы (RuntimeUnit, ICombatContext) живут тут.</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IRuntimeEffectComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> : </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">IEffectComponent</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> OnApply</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> EffectContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ctx</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> OnExpire</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> EffectContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ctx</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IPeriodicComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> : </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">IRuntimeEffectComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">float</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Interval</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> OnTick</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> EffectContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ctx</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">); }</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IReactiveComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> : </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">IRuntimeEffectComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">CombatEvent</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Events</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> OnEvent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> EffectContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ctx</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> CombatEventData</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> e</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">); }</span></span></code></pre></figure>
+<ul>
+<li><strong>Конкретные компоненты (<code>BurnComponent</code> и т.д.) живут в <code>Combat</code></strong>, реализуют <code>IRuntimeEffectComponent</code>.</li>
+<li><code>EffectData._components</code> (Data) типизирован <code>IEffectComponent</code> → хранит экземпляры Combat-типов <strong>полиморфно через <code>[SerializeReference]</code></strong>, без compile-зависимости Data→Combat.</li>
+<li><code>EffectSystem</code> (Combat) кастует <code>Def.Components[i]</code> к <code>IRuntimeEffectComponent</code>/<code>IPeriodicComponent</code>/<code>IReactiveComponent</code>.</li>
+</ul>
+<blockquote>
+<p>Это работает, <strong>только если</strong> Unity/Odin умеет: (а) сериализовать Combat-тип в Data-поле, типизированное Data-интерфейсом, и (б) показать его в <code>[SerializeReference]</code>-дропдауне Odin. Не уверены → <strong>спайк ДО дизайна на этом</strong> (§5).</p>
+</blockquote>
+<h3 id="32-effectcontext-combat--передаётся-in-в-компоненты">3.2 <code>EffectContext</code> (Combat) — передаётся <code>in</code> в компоненты<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#32-effectcontext-combat--передаётся-in-в-компоненты" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="csharp" data-theme="github-light github-dark"><code data-language="csharp" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> readonly</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> ref</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> struct</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> EffectContext</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">   // или struct, решить в спайке alloc-профиля</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> RuntimeUnit</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">   Target</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> RuntimeUnit</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">   Source</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ICombatContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Combat</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IRngService</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">   Rng</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> float</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">         Dt</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> int</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">           Stacks</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;   </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// для масштаба от стаков</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<h3 id="33-icombatcontext--наполняем-стаб--добавляем">3.3 <code>ICombatContext</code> — наполняем стаб + добавляем<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#33-icombatcontext--наполняем-стаб--добавляем" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><code>ApplyEffect(target, def, source)</code> — <strong>тело вместо no-op Ф1:</strong> резолв длительности (§4), стакинг, добавление <code>RuntimeEffect</code> в pending, <code>OnApply</code> компонентов, обновление <code>EffectTagMask</code>.</li>
+<li><code>Heal(...)</code> — добавить проводку <code>HealShieldDealtEff × HealShieldTakenEff</code> (сейчас Ф1 хилит «плоско»).</li>
+<li><strong>Новое:</strong> <code>Dispel(in DispelRequest req)</code> — разрешение по <code>Polarity ∧ Tags ∧ CleanseTier ≤ DispelPower ∧ !Unremovable</code> (док 6 §5.4).</li>
+<li><code>QueryUnitsInRadius</code>/<code>SpawnProjectile</code>/<code>DealDamage</code> — уже есть, переиспользуются компонентами.</li>
+</ul>
+<h3 id="34-внутренняя-event-queue-детерминизм-реактивных-компонентов">3.4 Внутренняя event-queue (детерминизм реактивных компонентов)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#34-внутренняя-event-queue-детерминизм-реактивных-компонентов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Док 6 §7 / док 10 §5.6: <strong>отдельный механизм, не путать с командами и не с MessagePipe.</strong></p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="csharp" data-theme="github-light github-dark"><code data-language="csharp" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> enum</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> CombatEvent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">None</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">DamageDealt</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">DamageTaken</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">UnitDied</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">EffectApplied</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;"> /*…*/</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> }  </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// [Flags] для подписки</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> readonly</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> struct</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> CombatEventData</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">/* source, target, amount, … */</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> }</span></span></code></pre></figure>
+<ul>
+<li><code>DealDamage</code>/<code>Heal</code>/смерть <strong>энкьюят</strong> <code>CombatEventData</code> во внутреннюю FIFO-очередь.</li>
+<li>Новый шаг тика <strong><code>DrainEventQueue()</code></strong> (сейчас в <code>Tick</code> его НЕТ): FIFO, диспатч в <code>IReactiveComponent</code> подписчиков (вампиризм/шипы). Реакция может породить ещё урон → ещё событие → дренится в той же очереди <strong>без рекурсии</strong>.</li>
+<li><strong>Outward-события</strong> для презентации (<code>OnDamageDealt</code> C#-event) остаются как в Ф1 — презентация только читает.</li>
+</ul>
+<h3 id="35-порядок-тика--куда-вставляем-дельта-к-ф1">3.5 Порядок тика — куда вставляем (дельта к Ф1)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#35-порядок-тика--куда-вставляем-дельта-к-ф1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Tick(dt):
+  FlushPendingSpawns
+  ApplyDueCommands
+  AbilitySystem.Tick      ← НОВОЕ: кулдауны↓, ресурс-реген, каст готовых активок
+  Targeting → Movement → SpatialHash.Rebuild → AutoAttack → Projectiles
+  EffectSystem.Tick       ← НОВОЕ: таймеры эффектов, OnTick периодики, expire, маска тегов
+  DrainEventQueue         ← НОВОЕ: реактивные компоненты (FIFO, без рекурсии)
+  Death → CheckOutcome → currentTick++
+</code></pre>
+<ul>
+<li><code>EffectSystem</code> <strong>до</strong> <code>Death</code> — чтобы DoT мог добить.</li>
+<li><code>DrainEventQueue</code> <strong>после</strong> систем, <strong>до</strong> <code>Death</code> — реакции на урон тика учтены до проверки смертей.</li>
+<li>Control-флаги читаются Movement/AutoAttack/AbilitySystem — порядок гарантирует, что эффект, наложенный командой/прошлым тиком, действует этим тиком.</li>
+</ul>
+<hr/>
+<h2 id="4-формулы-фиксируем--детерминизм--баланс">4. Формулы (фиксируем — детерминизм + баланс)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-формулы-фиксируем--детерминизм--баланс" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="41-длительность-при-наложении-док-11-5">4.1 Длительность при наложении (док 11 §5)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#41-длительность-при-наложении-док-11-5" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>RemainingTime = base × Source.Get(ApplyEff[polarity]) × Target.Get(ReceiveEff[polarity])
+   polarity=Buff   → ApplyBuffEff   × ReceiveBuffEff
+   polarity=Debuff → ApplyDebuffEff × ReceiveDebuffEff
+</code></pre>
+<ul>
+<li><code>ReceiveDebuffEff</code> скейлит и длительность контроля → роль tenacity (отдельного стата нет).</li>
+<li><strong>Neutral-полярность:</strong> какая пара применяется? → открытый вопрос §9 (склоняюсь: не скейлится вовсе).</li>
+</ul>
+<h3 id="42-потенция--отдельно-от-длительности">4.2 Потенция — ОТДЕЛЬНО от длительности<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#42-потенция--отдельно-от-длительности" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>Резолв параметра: <code>ScalableValue.Resolve(Source.Stats)</code> (база + Σ стат×ratio, напр. <code>AbilityPower</code>).</li>
+<li>Урон/тик → обычный <code>DamagePipeline</code> (<code>DamageDealtEff</code> × митигация × <code>DamageTakenEff</code>).</li>
+<li>Хил/щит/тик → <code>× Source.HealShieldDealtEff × Target.HealShieldTakenEff</code>.</li>
+<li>DoT/HoT total = <code>ratePerSecond × фактическая длительность</code> (вытекает из §2.2, не запекать).</li>
+</ul>
+<h3 id="43-кулдаун">4.3 Кулдаун<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#43-кулдаун" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>actualCooldown = baseCooldown × Source.Get(CooldownEff)   // &lt;1 = быстрее
+</code></pre>
+<hr/>
+<h2 id="5-неизвестное--спайк-до-дизайна-который-на-это-опирается">5. Неизвестное → спайк (ДО дизайна, который на это опирается)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-неизвестное--спайк-до-дизайна-который-на-это-опирается" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Неизвестное</th><th>Спайк (одноразовый код)</th><th>Если не выйдет</th></tr></thead><tbody><tr><td><strong>S1</strong></td><td><strong>Кросс-сборочный <code>[SerializeReference]</code></strong> (§3.1): сериализует ли Unity Combat-тип в Data-поле типа <code>IEffectComponent</code>, и видит ли Odin-дропдаун эти типы</td><td>На тест-<code>EffectData</code> положить 1 Combat-компонент через инспектор Odin, сохранить <code>.asset</code>, загрузить в EditMode-тесте, проверить что <code>Components[0] is IRuntimeEffectComponent</code> и поля не потерялись после domain reload</td><td>Альтернатива: компоненты в Data + рантайм-хуки через visitor/<code>switch</code> в Combat (хуже, но развязывает)</td></tr><tr><td><strong>S2</strong></td><td><strong>Реентрантность event-queue:</strong> реакция-на-урон порождает урон → не словить недетерминизм/переполнение</td><td>Шипы + вампиризм на двух юнитах, прогнать N тиков headless, сверить checksum дважды (детерминизм) и убедиться в отсутствии stack overflow</td><td>Ограничить глубину дренажа на тик + лог-варнинг</td></tr><tr><td><strong>S3</strong></td><td><strong><code>EffectContext</code> как <code>ref struct</code> vs <code>struct</code></strong> — zero-alloc в горячем тике</td><td>Прогнать 100 эффектов × 1000 тиков, замерить аллокации профайлером</td><td><code>readonly struct</code> с копией</td></tr></tbody></table></div>
+<blockquote>
+<p>Правило пайплайна: упёрлись в S1 — это самый дорогой разворот всей фазы, поэтому он шаг №1 реализации (§7), а не «по ходу».</p>
+</blockquote>
+<hr/>
+<h2 id="6-классы-и-ответственность-без-тел-методов">6. Классы и ответственность (без тел методов)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-классы-и-ответственность-без-тел-методов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Класс</th><th>Сборка</th><th>За что отвечает</th><th>Ключевой публичный метод</th></tr></thead><tbody><tr><td><code>EffectSystem</code></td><td>Combat</td><td>Тик таймеров <code>RuntimeEffect</code>, <code>OnTick</code> периодики, expire + <code>OnExpire</code>, обновление <code>EffectTagMask</code>, стакинг при наложении</td><td><code>Tick(units, ctx, dt)</code>, <code>Apply(unit, def, source, ctx)</code></td></tr><tr><td><code>RuntimeEffect</code></td><td>Combat</td><td>POCO-экземпляр (§2.2). Без интерфейса — одна реализация</td><td>—</td></tr><tr><td><code>AbilitySystem</code></td><td>Combat</td><td>Кулдауны↓, реген ресурса, исполнение каста готовой активки (триггер «когда» — плейсхолдер в Ф2, AI в Ф3)</td><td><code>Tick(units, ctx, dt)</code>, <code>TryCast(unit, abilityIdx, ctx)</code></td></tr><tr><td><code>IRuntimeEffectComponent</code> (+<code>IPeriodic</code>,<code>IReactive</code>)</td><td>Combat</td><td>Полиморфное поведение эффекта. Много реализаций (контент-словарь)</td><td><code>OnApply</code>/<code>OnTick</code>/<code>OnEvent</code>/<code>OnExpire</code></td></tr><tr><td>Библиотека компонентов</td><td>Combat</td><td><code>StatModifierComponent</code>, <code>PeriodicDamageComponent</code>, <code>PeriodicHealComponent</code>, <code>ControlComponent</code>, <code>ShieldComponent</code>, <code>LifestealComponent</code>(реакт.), <code>ThornsComponent</code>(реакт.), <code>DispelComponent</code>. Ф2 — по 1–2 представителя на тип для тестов</td><td>по интерфейсу</td></tr><tr><td><code>DamagePipeline</code></td><td>Combat</td><td>Расширить: эмит во внутреннюю event-queue (для реактивных) поверх Ф1-формулы</td><td><code>Execute</code> (есть)</td></tr><tr><td><code>StatsConfig</code></td><td>Data</td><td>Дефолты/клампы Ф2-статов (эфф-эффективности старт <code>1.0</code>, ресурс)</td><td>поля</td></tr><tr><td><code>RuntimeUnitFactory</code></td><td>Combat</td><td>Шаги 5–6 сборки (док 6 §3): регистрация пассивок (<code>GrantedEffects</code> → <code>Apply</code> с <code>Duration=-1</code>), активок (<code>AbilityRuntime</code>), <code>CurrentResource = StartResource</code></td><td><code>Build</code> (есть, дополнить)</td></tr></tbody></table></div>
+<hr/>
+<h2 id="7-контракт--тесты-имена-editmode-headless">7. Контракт = тесты (имена, EditMode headless)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-контракт--тесты-имена-editmode-headless" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>EffectSystem / жизненный цикл</strong></p>
+<ul>
+<li><code>Apply_AddsEffect_AndSetsTagMaskBit</code></li>
+<li><code>Expire_RemovesEffect_AndClearsTagMaskBit_AndCallsOnExpire</code></li>
+<li><code>PeriodicDamage_TicksEveryInterval_NotEveryFrame</code></li>
+<li><code>DurationChange_ScalesTotalDot_RateStaysConstant</code>  (320 vs 160 при ×2 длительности)</li>
+</ul>
+<p><strong>Длительность / эфф-эффективности</strong></p>
+<ul>
+<li><code>ApplyDuration_ScaledBy_ApplyEff_TimesReceiveEff</code></li>
+<li><code>NeutralPolarity_DurationNotScaled</code>  (фиксирует решение §9)</li>
+<li><code>Tenacity_ReceiveDebuffEff_ShortensControl</code></li>
+</ul>
+<p><strong>Потенция</strong></p>
+<ul>
+<li><code>ScalableValue_Resolves_FromSourceStats_AtApplyTime</code></li>
+<li><code>Heal_ScaledBy_HealShieldDealt_TimesTaken</code></li>
+</ul>
+<p><strong>Стакинг / контроль</strong></p>
+<ul>
+<li><code>Stack_RespectsMaxStacks</code></li>
+<li><code>Refresh_ResetsDuration_KeepsStacks</code></li>
+<li><code>Control_SetsCanActFalse_BlocksAutoAttack</code></li>
+</ul>
+<p><strong>Реактивные / event-queue (S2)</strong></p>
+<ul>
+<li><code>Lifesteal_HealsSource_FromDamageDealt</code></li>
+<li><code>Thorns_DamageReflection_DoesNotRecurseInfinitely</code></li>
+<li><code>EventQueue_DrainsFifo_DeterministicChecksum</code></li>
+</ul>
+<p><strong>Диспел</strong></p>
+<ul>
+<li><code>Dispel_RemovesMatchingPolarityAndTags_BelowDispelPower</code></li>
+<li><code>Dispel_SkipsUnremovable_AndHigherCleanseTier</code></li>
+</ul>
+<p><strong>Способности</strong></p>
+<ul>
+<li><code>Cooldown_ScaledBy_CooldownEff</code></li>
+<li><code>Cast_ConsumesResource_AndFailsWhenInsufficient</code></li>
+<li><code>Passive_GrantedEffect_AppliedAtBuildWithInfiniteDuration</code></li>
+</ul>
+<p><strong>Спайк-гейт (S1)</strong></p>
+<ul>
+<li><code>SerializeReference_CombatComponent_SurvivesReloadInDataAsset</code></li>
+</ul>
+<hr/>
+<h2 id="8-порядок-реализации-внутри-фазы-2">8. Порядок реализации внутри Фазы 2<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-порядок-реализации-внутри-фазы-2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>S1-спайк</strong> — кросс-сборочный <code>[SerializeReference]</code> (§5). Гейт всей фазы. Зелёный → дальше.</li>
+<li><strong>Данные</strong> — дополнить <code>EffectData</code> (стакинг/диспел/<code>EffectTag</code>), <code>RuntimeEffect</code>, поля <code>RuntimeUnit</code>, дефолты Ф2-статов в <code>StatsConfig</code>.</li>
+<li><strong>Швы</strong> — <code>IRuntimeEffectComponent</code>-иерархия, <code>EffectContext</code>, наполнить <code>ApplyEffect</code>, <code>Heal</code>-проводка эффективностей.</li>
+<li><strong>EffectSystem + тик</strong> — вставить в порядок (§3.5), таймеры/периодика/expire/маска. Тесты жизненного цикла + длительности.</li>
+<li><strong>Библиотека компонентов</strong> — StatMod → PeriodicDamage/Heal → Control → Shield (по 1–2 на тип). Тесты на каждый.</li>
+<li><strong>Event-queue (S2) + реактивные</strong> — <code>DrainEventQueue</code>, Lifesteal/Thorns. Тесты детерминизма.</li>
+<li><strong>Диспел</strong> — <code>DispelComponent</code> + <code>ICombatContext.Dispel</code>. Тесты.</li>
+<li><strong>Способности</strong> — <code>AbilityData</code>/<code>AbilityRuntime</code>/<code>AbilitySystem</code>, кулдаун/ресурс, плейсхолдер-триггер каста. Тесты.</li>
+<li><strong>Интеграция</strong> — пассивки/активки через <code>RuntimeUnitFactory</code>; 2–3 тест-реликвии с эффектами; battle-integration с DoT-добиванием.</li>
+<li><strong>Презентация (минимум)</strong> — переиспользовать Ф1-хуки: тики DoT-цифр через <code>OnDamageDealt</code>, без новых экранов (полноценные иконки баффов — Ф7).</li>
+</ol>
+<blockquote>
+<p>Темп (док 9): после шага 4 — «эффекты тикают» в headless-тесте; после 8 — кастующиеся способности; видимый слой — минимальный, полировка в Ф7.</p>
+</blockquote>
+<hr/>
+<h2 id="9-открытые-вопросы-на-ревью">9. Открытые вопросы (на ревью)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-открытые-вопросы-на-ревью" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Полный список <code>EffectTag</code></strong> (<code>[Flags]</code>): категории для диспела/AI-фильтров/маски. Минимум: <code>Control/DoT/HoT/Heal/Shield/Buff/Debuff</code>. Финализировать перед шагом 2.</li>
+<li><strong><code>EffectPolarity.Neutral</code></strong> — какая пара эфф-эффективностей? Предлагаю: Neutral длительность <strong>не скейлится</strong> (тест <code>NeutralPolarity_DurationNotScaled</code> это и фиксирует). Согласовать.</li>
+<li><strong>Триггер каста в Ф2</strong> (до AI Ф3): «кастовать готовую активку на ближайшего по <code>targetMode</code>» детерминированно — достаточно для тестов? Или только через <code>CastGuildmasterSpellCommand</code>/тест-команду? Предлагаю простой детерминированный плейсхолдер + тест-команду; настоящий выбор — Ф3.</li>
+<li><strong>Модель ресурса</strong> (<code>ResourceRegen</code> зарезервирован в доке 11): мана регенит по времени, ярость копится от боя. Ф2 — минимум (<code>StartResource</code>, трата на каст, простой реген по <code>ResourceGainEff</code>)? Или ярость отложить в Ф4? Уточнить.</li>
+<li><strong><code>RemainingTime</code> в секундах или тиках?</strong> Сим тикает фикс. <code>dt</code> → тики проще для детерминизма; секунды нагляднее в авторинге. Предлагаю <strong>тики</strong> внутри, конверсия <code>BaseDuration(сек)→тики</code> при наложении.</li>
+<li><strong><code>EffectContext</code>: <code>ref struct</code> vs <code>struct</code></strong> — решается профилем в S3.</li>
+</ul>
+<hr/>
+<h2 id="10-следующий-шаг">10. Следующий шаг<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-следующий-шаг" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Макс читает → правки → по апруву начинаем с <strong>S1-спайка</strong> (§7 шаг 1): кросс-сборочный <code>[SerializeReference]</code>. Зелёный гейт — разворачиваем данные и <code>EffectSystem</code>. После фазы — ретро дизайна (что разошлось с планом) на вход Фазы 3 (AI-движок).</p>
+<hr/>
+<h2 id="11-ретро-реализации-что-разошлось-с-планом">11. Ретро реализации (что разошлось с планом)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#11-ретро-реализации-что-разошлось-с-планом" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Фаза закрыта. Дельты к плану — на вход Фазе 3:</p>
+<ul>
+<li><strong>Шаг 9 — пассивки применяет <code>RuntimeUnitFactory</code> (как и планировалось §6), но это потребовало дать ей <code>EffectSystem</code> + <code>ICombatContext</code>.</strong> Причина: порядок сборки §5.2 (<code>пассивки → CurrentHP = Get(MaxHP)</code>) обязателен — пассив на <code>+MaxHP</code> должен поднимать и стартовое HP, поэтому наложение происходит <em>внутри</em> <code>Create</code> до инициализации <code>CurrentHP</code>, а не на спавне в <code>CombatSimulation</code>. DI (<code>CombatLifetimeScope</code>) резолвит сим как контекст в фабрику; цикла нет (сим не зависит от фабрики). Источник пассивки — сам юнит.</li>
+<li><strong>Шаг 9 — ресурс:</strong> <code>CurrentResource = Stats.Get(StartResource)</code> при сборке (без клампа к <code>MaxResource</code> — баланс в Ф4). Активки оборачиваются в <code>AbilityRuntime</code> тут же.</li>
+<li><strong>Шаг 10 — презентации нового кода не понадобилось.</strong> DoT идёт <code>PeriodicDamageComponent → DealDamage → OnDamageDealt</code>, т.е. цифры урона переиспользуют Ф1-хук без изменений. Доказано тестом <code>DotTicks_ReuseOnDamageDealtHook_ForPresentation</code>. Иконки баффов/HoT-числа — Ф7, как и планировалось.</li>
+<li><strong>Тесты интеграции:</strong> <code>RuntimeUnitFactoryTests</code> (пассивка с ∞-длительностью при сборке, +MaxHP до CurrentHP, сборка активок, старт ресурса) + <code>DotBattleIntegrationTests</code> (DoT-добивание завершает бой; хук презентации).</li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-19" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#0-гейт-фаза-1-закрыта-контекст-этого-дока" data-for="0-гейт-фаза-1-закрыта-контекст-этого-дока">0. Гейт: Фаза 1 закрыта (контекст этого дока)</a></li><li class="depth-0"><a href="#1-что-фаза-2-даёт-и-чего-не-делает" data-for="1-что-фаза-2-даёт-и-чего-не-делает">1. Что Фаза 2 даёт и чего НЕ делает</a></li><li class="depth-0"><a href="#2-данные-первыми-уровень-1--фиксируем" data-for="2-данные-первыми-уровень-1--фиксируем">2. Данные первыми (Уровень 1 — фиксируем)</a></li><li class="depth-1"><a href="#21-effectdata-data--дополнить-скелет-до-полной-модели-6-дизайна" data-for="21-effectdata-data--дополнить-скелет-до-полной-модели-6-дизайна">2.1 EffectData (Data) — дополнить скелет до полной модели (§6 дизайна)</a></li><li class="depth-1"><a href="#22-runtimeeffect-combat-новый-poco--экземпляр-эффекта-на-юните" data-for="22-runtimeeffect-combat-новый-poco--экземпляр-эффекта-на-юните">2.2 RuntimeEffect (Combat, новый POCO) — экземпляр эффекта на юните</a></li><li class="depth-1"><a href="#23-runtimeunit-combat--новые-поля-швы-ф1-ждут-их" data-for="23-runtimeunit-combat--новые-поля-швы-ф1-ждут-их">2.3 RuntimeUnit (Combat) — новые поля (швы Ф1 ждут их)</a></li><li class="depth-1"><a href="#24-abilityruntime-combat--abilitydata-data-на-relicdata" data-for="24-abilityruntime-combat--abilitydata-data-на-relicdata">2.4 AbilityRuntime (Combat) + AbilityData (Data, на RelicData)</a></li><li class="depth-1"><a href="#25-эфф-эффективности--данные-уже-есть-проводим-логику" data-for="25-эфф-эффективности--данные-уже-есть-проводим-логику">2.5 Эфф-эффективности — данные уже есть, проводим логику</a></li><li class="depth-0"><a href="#3-швы-уровень-1--фиксируем" data-for="3-швы-уровень-1--фиксируем">3. Швы (Уровень 1 — фиксируем)</a></li><li class="depth-1"><a href="#31-кросс-сборочный-шов-компонентов-главный-риск--5-спайк" data-for="31-кросс-сборочный-шов-компонентов-главный-риск--5-спайк">3.1 Кросс-сборочный шов компонентов (ГЛАВНЫЙ риск — §5 спайк)</a></li><li class="depth-1"><a href="#32-effectcontext-combat--передаётся-in-в-компоненты" data-for="32-effectcontext-combat--передаётся-in-в-компоненты">3.2 EffectContext (Combat) — передаётся in в компоненты</a></li><li class="depth-1"><a href="#33-icombatcontext--наполняем-стаб--добавляем" data-for="33-icombatcontext--наполняем-стаб--добавляем">3.3 ICombatContext — наполняем стаб + добавляем</a></li><li class="depth-1"><a href="#34-внутренняя-event-queue-детерминизм-реактивных-компонентов" data-for="34-внутренняя-event-queue-детерминизм-реактивных-компонентов">3.4 Внутренняя event-queue (детерминизм реактивных компонентов)</a></li><li class="depth-1"><a href="#35-порядок-тика--куда-вставляем-дельта-к-ф1" data-for="35-порядок-тика--куда-вставляем-дельта-к-ф1">3.5 Порядок тика — куда вставляем (дельта к Ф1)</a></li><li class="depth-0"><a href="#4-формулы-фиксируем--детерминизм--баланс" data-for="4-формулы-фиксируем--детерминизм--баланс">4. Формулы (фиксируем — детерминизм + баланс)</a></li><li class="depth-1"><a href="#41-длительность-при-наложении-док-11-5" data-for="41-длительность-при-наложении-док-11-5">4.1 Длительность при наложении (док 11 §5)</a></li><li class="depth-1"><a href="#42-потенция--отдельно-от-длительности" data-for="42-потенция--отдельно-от-длительности">4.2 Потенция — ОТДЕЛЬНО от длительности</a></li><li class="depth-1"><a href="#43-кулдаун" data-for="43-кулдаун">4.3 Кулдаун</a></li><li class="depth-0"><a href="#5-неизвестное--спайк-до-дизайна-который-на-это-опирается" data-for="5-неизвестное--спайк-до-дизайна-который-на-это-опирается">5. Неизвестное → спайк (ДО дизайна, который на это опирается)</a></li><li class="depth-0"><a href="#6-классы-и-ответственность-без-тел-методов" data-for="6-классы-и-ответственность-без-тел-методов">6. Классы и ответственность (без тел методов)</a></li><li class="depth-0"><a href="#7-контракт--тесты-имена-editmode-headless" data-for="7-контракт--тесты-имена-editmode-headless">7. Контракт = тесты (имена, EditMode headless)</a></li><li class="depth-0"><a href="#8-порядок-реализации-внутри-фазы-2" data-for="8-порядок-реализации-внутри-фазы-2">8. Порядок реализации внутри Фазы 2</a></li><li class="depth-0"><a href="#9-открытые-вопросы-на-ревью" data-for="9-открытые-вопросы-на-ревью">9. Открытые вопросы (на ревью)</a></li><li class="depth-0"><a href="#10-следующий-шаг" data-for="10-следующий-шаг">10. Следующий шаг</a></li><li class="depth-0"><a href="#11-ретро-реализации-что-разошлось-с-планом" data-for="11-ретро-реализации-что-разошлось-с-планом">11. Ретро реализации (что разошлось с планом)</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../postscript.js" type="module"></script></html>

@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" target="_top" xlink:title="Якорь полиморфного поведения эффекта для сериализации.">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html" target="_top" xlink:title="Единственная точка сборки RuntimeUnit из SO&#45;данных.">
 <polygon fill="white" stroke="#666666" points="161,-30 0,-30 0,0 161,0 161,-30"/>
-<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">IEffectComponent</text>
+<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Runtime</text>
+<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">UnitFactory</text>
 </a>
 </g>
 </g>

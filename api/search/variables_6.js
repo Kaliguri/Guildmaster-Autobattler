@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['killedtarget_0',['KilledTarget',['../structGuildmaster_1_1Combat_1_1DamageResult.html#af1d2b6e49c96453124e9df11b2bb720e',1,'Guildmaster::Combat::DamageResult']]]
+  ['hpdamage_0',['HpDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#a1c38e37d8555f62ede39114c7523c2ca',1,'Guildmaster::Combat::DamageResult']]]
 ];

@@ -100,8 +100,11 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Data_1_1Defini
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html">AbilityData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Определение активной способности реликвии: эффекты при касте, кулдаун, стоимость ресурса, способ выбора цели.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Определение таймированного эффекта: идентичность, полярность, теги, базовая длительность и полиморфные компоненты поведения (вики «10» §4.2).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги, базовая длительность, правила стакинга/диспела и полиморфные компоненты поведения (вики «6» §5, «12» §2.1).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html">IEffectComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Якорь полиморфного поведения эффекта для сериализации.  <a href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html#details">More...</a><br /></td></tr>
@@ -118,6 +121,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:a5344cc37ed9f1d1d575f21d566b5332d" id="r_a5344cc37ed9f1d1d575f21d566b5332d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d">AbilityTargetMode</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806">Self</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788">NearestEnemy</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443">NearestAlly</a> = 2
+ }</td></tr>
+<tr class="memdesc:a5344cc37ed9f1d1d575f21d566b5332d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Как выбирается цель активной способности (полный AI-таргетинг — Фаза 3).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d">More...</a><br /></td></tr>
+<tr class="separator:a5344cc37ed9f1d1d575f21d566b5332d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cce769078fcc3c898cb60f70d7d6ed3" id="r_a5cce769078fcc3c898cb60f70d7d6ed3"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3ace898d62ed9ca7653a01fe0c781e97e9">Physical</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3a02700e454d679f31f27c6f0768986dd1">Magic</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3af827cf462f62848df37c5e1e94a4da74">True</a> = 2
@@ -143,8 +152,59 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:afbf19b39e6c0c9a910df44fc60902459"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полярность таймированного эффекта.  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459">More...</a><br /></td></tr>
 <tr class="separator:afbf19b39e6c0c9a910df44fc60902459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9cc3b75ee764cbdef4455c6ce72eee20" id="r_a9cc3b75ee764cbdef4455c6ce72eee20"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20">DispelTargetPolarity</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20aed36a1ef76a59ee3f15180e0441188ad">Any</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25">Buff</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a941c9c4ecaa0bb3ab530f13b0078be01">Debuff</a> = 2
+ }</td></tr>
+<tr class="memdesc:a9cc3b75ee764cbdef4455c6ce72eee20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фильтр полярности для диспела: что снимать.  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20">More...</a><br /></td></tr>
+<tr class="separator:a9cc3b75ee764cbdef4455c6ce72eee20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e7ad4bd70e81312e11f8afc21650438" id="r_a4e7ad4bd70e81312e11f8afc21650438"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> { <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25">Buff</a> = 1 &lt;&lt; 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a941c9c4ecaa0bb3ab530f13b0078be01">Debuff</a> = 1 &lt;&lt; 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438aa1595abbb4c3a326636dd178757cd6c1">Control</a> = 1 &lt;&lt; 2
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438abc77fc33686f58682dfe0704c435c4a6">DoT</a> = 1 &lt;&lt; 3
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438adcaa2fceac50ca9147bb817517df900f">HoT</a> = 1 &lt;&lt; 4
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438af357105e6becc3076a3da9b43465051a">Heal</a> = 1 &lt;&lt; 5
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4">Shield</a> = 1 &lt;&lt; 6
+<br />
+ }</td></tr>
+<tr class="memdesc:a4e7ad4bd70e81312e11f8afc21650438"><td class="mdescLeft">&#160;</td><td class="mdescRight">Категориальные теги эффекта: для диспела по категории, AI-фильтров и быстрой битовой маски активных эффектов на юните (вики «6» §5.3–§5.4, «12» §2.1).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">More...</a><br /></td></tr>
+<tr class="separator:a4e7ad4bd70e81312e11f8afc21650438"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cad7d2863aa4076313a422e6c06021c" id="r_a5cad7d2863aa4076313a422e6c06021c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021c">StackRule</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca">Stack</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca63a6a88c066880c5ac42394a22803ca6">Refresh</a> = 2
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021cadc2a20a77eca42f262a296f18be55278">StackAndRefresh</a> = 3
+ }</td></tr>
+<tr class="memdesc:a5cad7d2863aa4076313a422e6c06021c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поведение при повторном наложении того же эффекта на цель (вики «6» §5.3).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021c">More...</a><br /></td></tr>
+<tr class="separator:a5cad7d2863aa4076313a422e6c06021c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a5344cc37ed9f1d1d575f21d566b5332d" name="a5344cc37ed9f1d1d575f21d566b5332d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5344cc37ed9f1d1d575f21d566b5332d">&#9670;&#160;</a></span>AbilityTargetMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca">enum</a> <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d">Guildmaster.Data.Definitions.AbilityTargetMode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Как выбирается цель активной способности (полный AI-таргетинг — Фаза 3). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806" name="a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806"></a>Self&#160;</td><td class="fielddoc"><p>На себя. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788" name="a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788"></a>NearestEnemy&#160;</td><td class="fielddoc"><p>Ближайший враг (в Фазе 2 — текущая цель автоатаки). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443" name="a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443"></a>NearestAlly&#160;</td><td class="fielddoc"><p>Ближайший союзник (для бафф/хил-способностей). </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="aa46c443b657817183811b564b53f74a1" name="aa46c443b657817183811b564b53f74a1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa46c443b657817183811b564b53f74a1">&#9670;&#160;</a></span>AttackType</h2>
 
@@ -152,7 +212,7 @@ Enumerations</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1">Guildmaster.Data.Definitions.AttackType</a></td>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca">enum</a> <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1">Guildmaster.Data.Definitions.AttackType</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -178,7 +238,7 @@ Enumerations</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">Guildmaster.Data.Definitions.DamageType</a></td>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca">enum</a> <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">Guildmaster.Data.Definitions.DamageType</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -192,6 +252,28 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
+<a id="a9cc3b75ee764cbdef4455c6ce72eee20" name="a9cc3b75ee764cbdef4455c6ce72eee20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9cc3b75ee764cbdef4455c6ce72eee20">&#9670;&#160;</a></span>DispelTargetPolarity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca">enum</a> <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20">Guildmaster.Data.Definitions.DispelTargetPolarity</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Фильтр полярности для диспела: что снимать. </p>
+<p>Any покрывает оба механизма — purge (снять баффы врага) и cleanse (снять дебаффы союзника) — одним компонентом (вики «6» §5.4). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9cc3b75ee764cbdef4455c6ce72eee20aed36a1ef76a59ee3f15180e0441188ad" name="a9cc3b75ee764cbdef4455c6ce72eee20aed36a1ef76a59ee3f15180e0441188ad"></a>Any&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25" name="a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25"></a>Buff&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9cc3b75ee764cbdef4455c6ce72eee20a941c9c4ecaa0bb3ab530f13b0078be01" name="a9cc3b75ee764cbdef4455c6ce72eee20a941c9c4ecaa0bb3ab530f13b0078be01"></a>Debuff&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="afbf19b39e6c0c9a910df44fc60902459" name="afbf19b39e6c0c9a910df44fc60902459"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afbf19b39e6c0c9a910df44fc60902459">&#9670;&#160;</a></span>EffectPolarity</h2>
 
@@ -199,7 +281,7 @@ Enumerations</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459">Guildmaster.Data.Definitions.EffectPolarity</a></td>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca">enum</a> <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459">Guildmaster.Data.Definitions.EffectPolarity</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -214,6 +296,33 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
+<a id="a4e7ad4bd70e81312e11f8afc21650438" name="a4e7ad4bd70e81312e11f8afc21650438"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e7ad4bd70e81312e11f8afc21650438">&#9670;&#160;</a></span>EffectTag</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca">enum</a> <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Guildmaster.Data.Definitions.EffectTag</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Категориальные теги эффекта: для диспела по категории, AI-фильтров и быстрой битовой маски активных эффектов на юните (вики «6» §5.3–§5.4, «12» §2.1). </p>
+<p><code>[Flags]</code> — один эффект может нести несколько категорий (напр. Debuff | DoT). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438a6adf97f83acf6453d4a6a4b1070f3754" name="a4e7ad4bd70e81312e11f8afc21650438a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25" name="a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25"></a>Buff&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438a941c9c4ecaa0bb3ab530f13b0078be01" name="a4e7ad4bd70e81312e11f8afc21650438a941c9c4ecaa0bb3ab530f13b0078be01"></a>Debuff&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438aa1595abbb4c3a326636dd178757cd6c1" name="a4e7ad4bd70e81312e11f8afc21650438aa1595abbb4c3a326636dd178757cd6c1"></a>Control&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438abc77fc33686f58682dfe0704c435c4a6" name="a4e7ad4bd70e81312e11f8afc21650438abc77fc33686f58682dfe0704c435c4a6"></a>DoT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438adcaa2fceac50ca9147bb817517df900f" name="a4e7ad4bd70e81312e11f8afc21650438adcaa2fceac50ca9147bb817517df900f"></a>HoT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438af357105e6becc3076a3da9b43465051a" name="a4e7ad4bd70e81312e11f8afc21650438af357105e6becc3076a3da9b43465051a"></a>Heal&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4" name="a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4"></a>Shield&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="abefdaf8dabc6adb7c9017704d2fad3e0" name="abefdaf8dabc6adb7c9017704d2fad3e0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abefdaf8dabc6adb7c9017704d2fad3e0">&#9670;&#160;</a></span>ResourceType</h2>
 
@@ -221,7 +330,7 @@ Enumerations</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0">Guildmaster.Data.Definitions.ResourceType</a></td>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca">enum</a> <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0">Guildmaster.Data.Definitions.ResourceType</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -231,6 +340,32 @@ Enumerations</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abefdaf8dabc6adb7c9017704d2fad3e0a6adf97f83acf6453d4a6a4b1070f3754" name="abefdaf8dabc6adb7c9017704d2fad3e0a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="abefdaf8dabc6adb7c9017704d2fad3e0a02fcc64668dd1b6a85e60ac9797f2dc7" name="abefdaf8dabc6adb7c9017704d2fad3e0a02fcc64668dd1b6a85e60ac9797f2dc7"></a>Mana&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="abefdaf8dabc6adb7c9017704d2fad3e0af467834a619fdbc994d37e84f5fef567" name="abefdaf8dabc6adb7c9017704d2fad3e0af467834a619fdbc994d37e84f5fef567"></a>Rage&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a5cad7d2863aa4076313a422e6c06021c" name="a5cad7d2863aa4076313a422e6c06021c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cad7d2863aa4076313a422e6c06021c">&#9670;&#160;</a></span>StackRule</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca">enum</a> <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021c">Guildmaster.Data.Definitions.StackRule</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Поведение при повторном наложении того же эффекта на цель (вики «6» §5.3). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5cad7d2863aa4076313a422e6c06021ca6adf97f83acf6453d4a6a4b1070f3754" name="a5cad7d2863aa4076313a422e6c06021ca6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>Повтор игнорируется — существующий экземпляр не трогаем. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca" name="a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca"></a>Stack&#160;</td><td class="fielddoc"><p>Добавить стак (до <code>MaxStacks</code>); длительность не обновлять. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5cad7d2863aa4076313a422e6c06021ca63a6a88c066880c5ac42394a22803ca6" name="a5cad7d2863aa4076313a422e6c06021ca63a6a88c066880c5ac42394a22803ca6"></a>Refresh&#160;</td><td class="fielddoc"><p>Обновить длительность до полной; стаки не трогать. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5cad7d2863aa4076313a422e6c06021cadc2a20a77eca42f262a296f18be55278" name="a5cad7d2863aa4076313a422e6c06021cadc2a20a77eca42f262a296f18be55278"></a>StackAndRefresh&#160;</td><td class="fielddoc"><p>Добавить стак И обновить длительность. </p>
+</td></tr>
 </table>
 
 </div>
