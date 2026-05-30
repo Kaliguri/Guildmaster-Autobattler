@@ -36,7 +36,7 @@ namespace Guildmaster.Combat
 
                 if (attackType == AttackType.Melee)
                 {
-                    ctx.DealDamage(new DamageRequest(unit, unit.CurrentTarget, raw, dmgType, GetArmorK(ctx)));
+                    ctx.DealDamage(new DamageRequest(unit, unit.CurrentTarget, raw, dmgType, ctx.ArmorK));
                 }
                 else
                 {
@@ -46,11 +46,9 @@ namespace Guildmaster.Combat
 
                     ctx.SpawnProjectile(new ProjectileSpawn(
                         unit, unit.Position, unit.CurrentTarget,
-                        speed, collRadius, raw, dmgType, GetArmorK(ctx), pierces));
+                        speed, collRadius, raw, dmgType, ctx.ArmorK, pierces));
                 }
             }
         }
-
-        private static float GetArmorK(ICombatContext ctx) => ctx.ArmorK;
     }
 }

@@ -15,6 +15,11 @@ namespace Guildmaster.Combat
         private readonly Dictionary<long, List<RuntimeUnit>> _cells =
             new Dictionary<long, List<RuntimeUnit>>();
 
+        // Пул освободившихся списков: переиспользуем аллокации между ребилдами,
+        // не давая словарю копить пустые ячейки от посещённых, но покинутых клеток.
+        private readonly Stack<List<RuntimeUnit>> _listPool =
+            new Stack<List<RuntimeUnit>>();
+
         public float CellSize => _cellSize;
 
         public SpatialHash(float cellSize)
@@ -29,7 +34,7 @@ namespace Guildmaster.Combat
             long key = CellKey(unit.Position);
             if (!_cells.TryGetValue(key, out var list))
             {
-                list = new List<RuntimeUnit>(4);
+                list = RentList();
                 _cells[key] = list;
             }
             list.Add(unit);
@@ -42,7 +47,11 @@ namespace Guildmaster.Combat
             if (_cells.TryGetValue(key, out var list))
             {
                 list.Remove(unit);
-                if (list.Count == 0) _cells.Remove(key);
+                if (list.Count == 0)
+                {
+                    _cells.Remove(key);
+                    _listPool.Push(list);
+                }
             }
         }
 
@@ -52,7 +61,14 @@ namespace Guildmaster.Combat
         /// </summary>
         public void Rebuild(List<RuntimeUnit> units)
         {
-            foreach (var kvp in _cells) kvp.Value.Clear();
+            // Возвращаем все списки в пул и чистим словарь, чтобы он содержал
+            // только реально занятые ячейки этого тика, а не все исторически посещённые.
+            foreach (var kvp in _cells)
+            {
+                kvp.Value.Clear();
+                _listPool.Push(kvp.Value);
+            }
+            _cells.Clear();
 
             for (int i = 0; i < units.Count; i++)
             {
@@ -62,7 +78,7 @@ namespace Guildmaster.Combat
                 long key = CellKey(unit.Position);
                 if (!_cells.TryGetValue(key, out var list))
                 {
-                    list = new List<RuntimeUnit>(4);
+                    list = RentList();
                     _cells[key] = list;
                 }
                 list.Add(unit);
@@ -100,6 +116,9 @@ namespace Guildmaster.Combat
                 }
             }
         }
+
+        private List<RuntimeUnit> RentList() =>
+            _listPool.Count > 0 ? _listPool.Pop() : new List<RuntimeUnit>(4);
 
         private int WorldToCell(float worldCoord) =>
             Mathf.FloorToInt(worldCoord * _invCellSize);
