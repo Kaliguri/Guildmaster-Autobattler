@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.UnitView.UpdateInterpolation" name="Guildmaster.Presentation.UnitView.UpdateInterpolation">
+<area shape="rect" id="Node000001" title="Обновить интерполированную позицию." alt="" coords="5,27,220,67"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="268,5,488,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,33,254,29,255,34,220,38"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html#ae0f426c83b1ecfeb629eb62bf7cd7598" title="Обновить отображаемую долю HP." alt="" coords="283,55,473,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,56,269,61,269,67,220,61"/>
+</map>

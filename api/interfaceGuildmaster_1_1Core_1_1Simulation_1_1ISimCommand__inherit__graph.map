@@ -1,0 +1,11 @@
+<map id="Guildmaster.Core.Simulation.ISimCommand" name="Guildmaster.Core.Simulation.ISimCommand">
+<area shape="rect" id="Node000001" title="Базовый контракт команды симуляции — упорядочивающий ключ для детерминированного применения на границ..." alt="" coords="273,5,478,85"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html" title="Расширяет ISimCommand слоем Combat: добавляет метод применения к симуляции." alt="" coords="272,133,479,213"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="378,99,378,133,373,133,373,99"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Commands_1_1PauseCommand.html" title="Ставит симуляцию боя на паузу на указанном тике." alt="" coords="5,261,236,361"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="292,222,214,264,211,259,289,218"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand.html" title="Снимает симуляцию боя с паузы на указанном тике." alt="" coords="260,261,491,361"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="378,227,378,261,373,261,373,227"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Commands_1_1SpawnUnitCommand.html" title="Добавляет предварительно созданного юнита в симуляцию на указанном тике." alt="" coords="515,261,745,361"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="462,218,540,259,537,264,459,222"/>
+</map>

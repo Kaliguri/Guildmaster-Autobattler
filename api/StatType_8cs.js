@@ -1,0 +1,35 @@
+var StatType_8cs =
+[
+    [ "StatType", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284", [
+      [ "MaxHP", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a7328467362e04fb994455aeb50ac0449", null ],
+      [ "HpRegenFlat", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a35881155d4e7c3d6a18cd465fb28b7ac", null ],
+      [ "HpRegenPct", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284ac62b34ef590567826318ecd2d6caac70", null ],
+      [ "PhysArmor", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a54f06c7358d259caa316edeed3a493f5", null ],
+      [ "MagicArmor", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a477daea460acacedc6e634a2211f9095", null ],
+      [ "DamageTakenEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a813d2113d6b4f81806d7cd857beaf5ef", null ],
+      [ "HealShieldTakenEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a95c911efdf204dd827fd41da53208b99", null ],
+      [ "AutoAttackDamage", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a509dd58938824e6e3f298bde91ddc731", null ],
+      [ "AttackSpeed", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284aa1039049ad899dd188ddd24169458b48", null ],
+      [ "AttackRange", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284ab368d16134fba69bdd208d3d0c7c7c5b", null ],
+      [ "AbilityPower", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a115fccbacfdb86a46d17035b4073ca90", null ],
+      [ "PhysPen", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284ad1742c8675710f479dde6c0866b960f5", null ],
+      [ "PhysPenPct", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a3109e6905a75ddc57761f609264efa85", null ],
+      [ "MagicPen", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284aa70f25585e17da9922476a0b5e39d4ff", null ],
+      [ "MagicPenPct", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284aacf956ece1e8110477cd8351ae2da7d0", null ],
+      [ "DamageDealtEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284acf93b2f799ec1e1047d697999f70f0ad", null ],
+      [ "Lifesteal", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a9d82a0f406f346bcb6fcd036e1b98175", null ],
+      [ "HealShieldDealtEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a76d7b7902f4538e031c6e44e9adcaa4f", null ],
+      [ "ProjectileSpeed", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a0d2990dac5e3917c766ec7e4a7bf81f8", null ],
+      [ "ProjectilePierce", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a94eb18b9ccde1a738aa52a4576bcf84e", null ],
+      [ "MoveSpeed", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a3dfb8a09b650ce66270c54fdf5c2aa74", null ],
+      [ "Size", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a6f6cb72d544962fa333e2e34ce64f719", null ],
+      [ "ApplyBuffEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a04088b7ab0f8da1e1ee848296343a33f", null ],
+      [ "ApplyDebuffEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a604e868d3d14c15c08fd51a3c2d4a740", null ],
+      [ "ReceiveBuffEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284aa975ee95467413b8434907de4d592960", null ],
+      [ "ReceiveDebuffEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a4fec34cb21c0846bb789a55b61d07d65", null ],
+      [ "CooldownEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284aa886a2d2c0b83d00d1eea1ac4f1c99e4", null ],
+      [ "MaxResource", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284af68a53a3ca5bacdb91f4eda90883f5ee", null ],
+      [ "StartResource", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a7fdc6c0e1455e6b04e10d4333e8a07da", null ],
+      [ "ResourceGainEff", "StatType_8cs.html#af58d5e4a0de07916fbc3155322d6e284a143f98d287cb622e9f790376ba67377d", null ]
+    ] ]
+];

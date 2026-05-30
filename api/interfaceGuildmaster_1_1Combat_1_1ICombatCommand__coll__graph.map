@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.ICombatCommand" name="Guildmaster.Combat.ICombatCommand">
+<area shape="rect" id="Node000001" title="Расширяет ISimCommand слоем Combat: добавляет метод применения к симуляции." alt="" coords="5,119,212,199"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html" title="Базовый контракт команды симуляции — упорядочивающий ключ для детерминированного применения на границ..." alt="" coords="53,5,164,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,85,111,118,106,118,106,85"/>
+</map>

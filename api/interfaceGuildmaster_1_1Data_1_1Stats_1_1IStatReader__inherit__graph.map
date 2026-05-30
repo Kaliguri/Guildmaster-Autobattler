@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Stats.IStatReader" name="Guildmaster.Data.Stats.IStatReader">
+<area shape="rect" id="Node000001" title="Только&#45;чтение собранных статов." alt="" coords="5,5,204,85"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="12,133,197,259"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,99,107,133,102,133,102,99"/>
+</map>

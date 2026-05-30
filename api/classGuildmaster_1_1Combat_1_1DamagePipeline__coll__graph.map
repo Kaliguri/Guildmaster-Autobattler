@@ -1,0 +1,3 @@
+<map id="Guildmaster.Combat.DamagePipeline" name="Guildmaster.Combat.DamagePipeline">
+<area shape="rect" id="Node000001" title="Детерминированный конвейер урона." alt="" coords="5,5,212,85"/>
+</map>

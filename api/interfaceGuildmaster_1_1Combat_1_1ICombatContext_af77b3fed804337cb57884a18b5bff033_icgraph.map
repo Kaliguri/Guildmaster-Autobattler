@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.ICombatContext.SpawnProjectile" name="Guildmaster.Combat.ICombatContext.SpawnProjectile">
+<area shape="rect" id="Node000001" title="Создать снаряд в симуляции." alt="" coords="285,5,500,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f41579d23e8074e346e93e793eb0f5b" title="Обработать автоатаки всех живых юнитов за один тик." alt="" coords="5,5,237,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,28,237,28,237,23,272,23"/>
+</map>

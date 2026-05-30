@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.CombatSimulation.Heal" name="Guildmaster.Combat.CombatSimulation.Heal">
+<area shape="rect" id="Node000001" title="Исцелить юнита. Не выходит за MaxHP." alt="" coords="5,5,216,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="264,13,484,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,23,251,23,251,28,216,28"/>
+</map>

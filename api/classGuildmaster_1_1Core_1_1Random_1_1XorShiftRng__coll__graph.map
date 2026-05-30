@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Random.XorShiftRng" name="Guildmaster.Core.Random.XorShiftRng">
+<area shape="rect" id="Node000001" title="Детерминированный PRNG (xorshift128)." alt="" coords="5,219,195,419"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html" title="Детерминированный источник случайности симуляции." alt="" coords="49,5,151,171"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,184,103,218,97,218,97,184"/>
+</map>

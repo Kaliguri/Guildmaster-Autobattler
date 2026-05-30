@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.HealthBarView" name="Guildmaster.Presentation.HealthBarView">
+<area shape="rect" id="Node000001" title="HP&#45;бар через масштаб fill&#45;объекта, без сторонних зависимостей." alt="" coords="5,119,188,219"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="39,5,155,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,84,99,119,94,119,94,84"/>
+</map>

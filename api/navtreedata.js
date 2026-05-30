@@ -24,12 +24,38 @@
 */
 var NAVTREE =
 [
-  [ "Guildmaster — Autobattler", "index.html", ]
+  [ "Guildmaster — Autobattler", "index.html", [
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Enumerations", "namespacemembers_enum.html", null ]
+      ] ]
+    ] ],
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
+      [ "Class Index", "classes.html", null ],
+      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
+      [ "Class Members", "functions.html", [
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", null ],
+        [ "Variables", "functions_vars.html", null ],
+        [ "Properties", "functions_prop.html", null ],
+        [ "Events", "functions_evnt.html", null ]
+      ] ]
+    ] ],
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ]
+    ] ]
+  ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"index.html"
+"AutoAttackSystem_8cs.html",
+"classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a24ce73d0729d150103bd1436c64801e3",
+"dir_a273d6f87b7944d96df82aad1465245a.html",
+"structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html#ad1e65ed57ddcaa8dfbcf2287c5bc5baa"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -1,0 +1,3 @@
+<map id="Guildmaster.Combat.MovementSystem" name="Guildmaster.Combat.MovementSystem">
+<area shape="rect" id="Node000001" title="Интегрирует позиции живых юнитов к их целям." alt="" coords="5,5,228,85"/>
+</map>

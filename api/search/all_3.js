@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['damagedealteff_0',['DamageDealtEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284acf93b2f799ec1e1047d697999f70f0ad',1,'Guildmaster::Data::Stats']]],
+  ['damagedealtevent_1',['damagedealtevent',['../structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html',1,'Guildmaster.Presentation.DamageDealtEvent'],['../structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html#a9ac7df516004da56b56b061fe5becead',1,'Guildmaster.Presentation.DamageDealtEvent.DamageDealtEvent()']]],
+  ['damagenumber_2',['DamageNumber',['../classGuildmaster_1_1Presentation_1_1DamageNumber.html',1,'Guildmaster::Presentation']]],
+  ['damagenumber_2ecs_3',['DamageNumber.cs',['../DamageNumber_8cs.html',1,'']]],
+  ['damagenumberspawner_4',['DamageNumberSpawner',['../classGuildmaster_1_1Presentation_1_1DamageNumberSpawner.html',1,'Guildmaster::Presentation']]],
+  ['damagenumberspawner_2ecs_5',['DamageNumberSpawner.cs',['../DamageNumberSpawner_8cs.html',1,'']]],
+  ['damagepipeline_6',['DamagePipeline',['../classGuildmaster_1_1Combat_1_1DamagePipeline.html',1,'Guildmaster::Combat']]],
+  ['damagepipeline_2ecs_7',['DamagePipeline.cs',['../DamagePipeline_8cs.html',1,'']]],
+  ['damagerequest_8',['damagerequest',['../structGuildmaster_1_1Combat_1_1DamageRequest.html#a71bd7d8905de5eb3942e3a3f6c976a85',1,'Guildmaster.Combat.DamageRequest.DamageRequest()'],['../structGuildmaster_1_1Combat_1_1DamageRequest.html',1,'Guildmaster.Combat.DamageRequest']]],
+  ['damagerequest_2ecs_9',['DamageRequest.cs',['../DamageRequest_8cs.html',1,'']]],
+  ['damageresult_10',['damageresult',['../structGuildmaster_1_1Combat_1_1DamageResult.html',1,'Guildmaster.Combat.DamageResult'],['../structGuildmaster_1_1Combat_1_1DamageResult.html#ad89b31d33fed6fc4c0154eddd673b68b',1,'Guildmaster.Combat.DamageResult.DamageResult()']]],
+  ['damageresult_2ecs_11',['DamageResult.cs',['../DamageResult_8cs.html',1,'']]],
+  ['damagetakeneff_12',['DamageTakenEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a813d2113d6b4f81806d7cd857beaf5ef',1,'Guildmaster::Data::Stats']]],
+  ['damagetype_13',['damagetype',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a1a70036cf86be8db4c1d2f13be8a485c',1,'Guildmaster.Data.Definitions.RelicData.DamageType'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3',1,'Guildmaster.Data.Definitions.DamageType'],['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a1e626b06505d6bfba08b547157d0bb91',1,'Guildmaster.Combat.ProjectileSpawn.DamageType'],['../classGuildmaster_1_1Combat_1_1Projectile.html#a19352dbf5eab778d5c928354ca024a63',1,'Guildmaster.Combat.Projectile.DamageType'],['../structGuildmaster_1_1Combat_1_1DamageRequest.html#a0df183cb3bcba08f89584e9036f0e75c',1,'Guildmaster.Combat.DamageRequest.DamageType']]],
+  ['dealdamage_14',['dealdamage',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6de925024d5473fc9537c6a36e39fe45',1,'Guildmaster.Combat.CombatSimulation.DealDamage()'],['../interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a5468cdcedd25be5819c524aa2be5e812',1,'Guildmaster.Combat.ICombatContext.DealDamage()']]],
+  ['deathsystem_15',['DeathSystem',['../classGuildmaster_1_1Combat_1_1DeathSystem.html',1,'Guildmaster::Combat']]],
+  ['deathsystem_2ecs_16',['DeathSystem.cs',['../DeathSystem_8cs.html',1,'']]],
+  ['debuff_17',['Debuff',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459a941c9c4ecaa0bb3ab530f13b0078be01',1,'Guildmaster::Data::Definitions']]],
+  ['displaynamekey_18',['displaynamekey',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a406b51d325c53708fdeeedc9968ed1ee',1,'Guildmaster.Data.Definitions.RelicData.DisplayNameKey'],['../classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html#ae536c346f6fa36f7770aeaa2f9f4fb1a',1,'Guildmaster.Data.Definitions.VesselData.DisplayNameKey']]],
+  ['draw_19',['Draw',['../namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712a2d03c2d5a7ec65ef4619e0582c272ec2',1,'Guildmaster::Combat']]]
+];

@@ -1,0 +1,5 @@
+<map id="Guildmaster.DevTools.GuildmasterCommands.SpawnBattle" name="Guildmaster.DevTools.GuildmasterCommands.SpawnBattle">
+<area shape="rect" id="Node000001" title="Поднять тест&#45;бой N×M юнитов с заданными HP." alt="" coords="5,5,253,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6ef3762989e4fb8bf6e6f2229baa2b5c" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,5,524,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,23,288,23,288,28,253,28"/>
+</map>

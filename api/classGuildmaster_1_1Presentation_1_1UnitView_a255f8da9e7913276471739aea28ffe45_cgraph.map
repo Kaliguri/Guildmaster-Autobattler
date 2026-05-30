@@ -1,0 +1,9 @@
+<map id="Guildmaster.Presentation.UnitView.Bind" name="Guildmaster.Presentation.UnitView.Bind">
+<area shape="rect" id="Node000001" title="Связать вид с рантайм&#45;юнитом." alt="" coords="5,27,196,67"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html#addca237a220d26640e8bef0b174d1134" title="Привязать к юниту для первоначальной отрисовки." alt="" coords="244,27,435,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,45,230,45,230,50,196,50"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="483,5,703,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="434,34,469,30,470,35,435,39"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html#ae0f426c83b1ecfeb629eb62bf7cd7598" title="Обновить отображаемую долю HP." alt="" coords="497,55,688,95"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="435,55,484,61,483,66,434,60"/>
+</map>

@@ -1,0 +1,17 @@
+<map id="Guildmaster.Combat.Stats.Get" name="Guildmaster.Combat.Stats.Get">
+<area shape="rect" id="Node000001" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="524,173,744,198"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html#addca237a220d26640e8bef0b174d1134" title="Привязать к юниту для первоначальной отрисовки." alt="" coords="265,5,455,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="609,164,551,112,514,84,475,60,448,48,450,43,477,55,517,79,555,108,613,161"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a261369f433994727bbd075e6520ac237" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="253,69,467,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="591,170,475,124,437,112,439,107,477,119,593,165"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3edf9fdf873a5ebddd75420669bdb8c2" title="Исцелить юнита. Не выходит за MaxHP." alt="" coords="255,133,465,173"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="511,174,465,168,466,163,512,168"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Combat_1_1MovementSystem.html#ae81eb146f149fe4cc225406250d96c06" title="Продвинуть позиции всех живых юнитов на один тик." alt="" coords="245,197,475,237"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="512,202,476,207,475,201,511,197"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f41579d23e8074e346e93e793eb0f5b" title="Обработать автоатаки всех живых юнитов за один тик." alt="" coords="244,261,476,301"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="593,206,477,252,439,264,437,259,475,247,591,201"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a25961c760cc2434fa8f210178cf3e8e3" title="Обновить интерполированную позицию." alt="" coords="253,325,467,365"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="613,210,555,263,517,291,477,316,450,328,448,323,475,311,514,287,551,259,609,206"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a255f8da9e7913276471739aea28ffe45" title="Связать вид с рантайм&#45;юнитом." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="251,28,196,28,196,23,251,23"/>
+</map>

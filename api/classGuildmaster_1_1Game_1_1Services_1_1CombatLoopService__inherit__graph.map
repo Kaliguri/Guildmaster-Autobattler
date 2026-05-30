@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Services.CombatLoopService" name="Guildmaster.Game.Services.CombatLoopService">
+<area shape="rect" id="Node000001" title="Реалтайм&#45;пульс боевой симуляции: accumulator&#45;паттерн на Time.deltaTime." alt="" coords="5,119,204,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="47,5,163,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,85,107,118,102,118,102,85"/>
+</map>

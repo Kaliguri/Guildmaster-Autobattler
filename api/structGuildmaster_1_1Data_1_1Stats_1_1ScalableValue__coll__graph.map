@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Stats.ScalableValue" name="Guildmaster.Data.Stats.ScalableValue">
+<area shape="rect" id="Node000001" title="Величина, масштабируемая от статов источника: Base + Σ(reader.Get(term.Stat) × term...." alt="" coords="17,153,241,253"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Data_1_1Stats_1_1ScalingTerm.html" title="Одно слагаемое масштабирования: доля Ratio от стата Stat." alt="" coords="5,5,253,91"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="132,91,132,137,127,137,127,91"/>
+</map>

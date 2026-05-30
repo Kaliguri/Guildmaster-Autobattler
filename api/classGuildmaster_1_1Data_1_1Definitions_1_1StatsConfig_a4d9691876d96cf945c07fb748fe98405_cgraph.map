@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.StatsConfig.GetDefault" name="Guildmaster.Data.Definitions.StatsConfig.GetDefault">
+<area shape="rect" id="Node000001" title="Базовое (доmodifier) значение стата: явный override из ассета или натуральный дефолт." alt="" coords="5,5,220,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#ac51cd688460aed4292e8be0a0472c8a2" title="Натуральный старт стата по его смыслу: 1.0 для PercentMult&#45;эффективностей и StatType...." alt="" coords="268,5,483,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,23,254,23,254,28,220,28"/>
+</map>

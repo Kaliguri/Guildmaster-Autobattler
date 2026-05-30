@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Stats.IStatReader.Get" name="Guildmaster.Data.Stats.IStatReader.Get">
+<area shape="rect" id="Node000001" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="285,5,492,45"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html#a70741f041fa3aa2b67f41f6b82d8e072" title="Разворачивает значение по статам читателя. null&#45;читатель → только Base." alt="" coords="5,5,237,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,28,237,28,237,23,271,23"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.HealthBarView.Bind" name="Guildmaster.Presentation.HealthBarView.Bind">
+<area shape="rect" id="Node000001" title="Привязать к юниту для первоначальной отрисовки." alt="" coords="244,5,435,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a255f8da9e7913276471739aea28ffe45" title="Связать вид с рантайм&#45;юнитом." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

@@ -1,0 +1,3 @@
+<map id="Guildmaster.Combat.AutoAttackSystem" name="Guildmaster.Combat.AutoAttackSystem">
+<area shape="rect" id="Node000001" title="Управляет кулдаунами автоатак и инициирует нанесение урона или создание снарядов в зависимости от Att..." alt="" coords="5,5,229,85"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Commands.PauseCommand" name="Guildmaster.Combat.Commands.PauseCommand">
+<area shape="rect" id="Node000001" title="Ставит симуляцию боя на паузу на указанном тике." alt="" coords="5,232,236,332"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html" title="Расширяет ISimCommand слоем Combat: добавляет метод применения к симуляции." alt="" coords="53,119,189,184"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,198,123,232,118,232,118,198"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html" title="Базовый контракт команды симуляции — упорядочивающий ключ для детерминированного применения на границ..." alt="" coords="65,5,176,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,84,123,119,118,119,118,84"/>
+</map>

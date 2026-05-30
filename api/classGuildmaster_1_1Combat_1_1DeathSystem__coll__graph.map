@@ -1,0 +1,3 @@
+<map id="Guildmaster.Combat.DeathSystem" name="Guildmaster.Combat.DeathSystem">
+<area shape="rect" id="Node000001" title="Помечает юнитов с HP ≤ 0 как мёртвых, удаляет их из SpatialHash, публикует событие OnUnitDied." alt="" coords="5,5,196,85"/>
+</map>

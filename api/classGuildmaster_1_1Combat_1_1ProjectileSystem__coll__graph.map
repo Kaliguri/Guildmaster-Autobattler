@@ -1,0 +1,3 @@
+<map id="Guildmaster.Combat.ProjectileSystem" name="Guildmaster.Combat.ProjectileSystem">
+<area shape="rect" id="Node000001" title="Продвигает снаряды и проверяет столкновения методом swept circle&#45;segment, чтобы быстрые снаряды не «п..." alt="" coords="5,5,219,105"/>
+</map>

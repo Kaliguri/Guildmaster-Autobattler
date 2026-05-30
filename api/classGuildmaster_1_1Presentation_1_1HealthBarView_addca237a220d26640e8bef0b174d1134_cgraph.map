@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.HealthBarView.Bind" name="Guildmaster.Presentation.HealthBarView.Bind">
+<area shape="rect" id="Node000001" title="Привязать к юниту для первоначальной отрисовки." alt="" coords="5,27,196,67"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="244,5,464,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,34,230,30,231,35,196,39"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html#ae0f426c83b1ecfeb629eb62bf7cd7598" title="Обновить отображаемую долю HP." alt="" coords="259,55,449,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="196,55,245,61,245,66,196,60"/>
+</map>

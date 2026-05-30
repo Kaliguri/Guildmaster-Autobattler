@@ -1,0 +1,3 @@
+<map id="Guildmaster.Game.Services.GameFlow" name="Guildmaster.Game.Services.GameFlow">
+<area shape="rect" id="Node000001" title="Управляет макро&#45;флоу игры: Boot → загрузка BattleScene → старт боя → результат." alt="" coords="5,5,204,125"/>
+</map>

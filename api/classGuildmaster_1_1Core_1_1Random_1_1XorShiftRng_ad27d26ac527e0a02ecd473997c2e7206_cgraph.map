@@ -1,0 +1,7 @@
+<map id="Guildmaster.Core.Random.XorShiftRng.NextFloat" name="Guildmaster.Core.Random.XorShiftRng.NextFloat">
+<area shape="rect" id="Node000001" title="Случайный float в полуинтервале [minInclusive, maxExclusive)." alt="" coords="5,5,203,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#a49fe920d86ded5ba28dc7c0dca9233d0" title="Случайный float в полуинтервале [0, 1)." alt="" coords="251,5,448,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,23,237,23,237,28,203,28"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#af1a74306ae2468c62d4016e1e0039267" title="Следующее 32&#45;битное беззнаковое значение. Базовая операция генератора." alt="" coords="496,5,693,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="448,23,482,23,482,28,448,28"/>
+</map>

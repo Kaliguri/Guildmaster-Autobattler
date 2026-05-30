@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['iaudioservice_0',['IAudioService',['../interfaceGuildmaster_1_1Game_1_1Services_1_1IAudioService.html',1,'Guildmaster::Game::Services']]],
+  ['iaudioservice_2ecs_1',['IAudioService.cs',['../IAudioService_8cs.html',1,'']]],
+  ['icombatcommand_2',['ICombatCommand',['../interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html',1,'Guildmaster::Combat']]],
+  ['icombatcommand_2ecs_3',['ICombatCommand.cs',['../ICombatCommand_8cs.html',1,'']]],
+  ['icombatcontext_4',['ICombatContext',['../interfaceGuildmaster_1_1Combat_1_1ICombatContext.html',1,'Guildmaster::Combat']]],
+  ['icombatcontext_2ecs_5',['ICombatContext.cs',['../ICombatContext_8cs.html',1,'']]],
+  ['id_6',['id',['../classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a0707e6422f82090f62a662770967a677',1,'Guildmaster.Data.Definitions.EffectData.Id'],['../classGuildmaster_1_1Combat_1_1Projectile.html#a3ba7eb716e741e5e693a28aee06d256e',1,'Guildmaster.Combat.Projectile.Id'],['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a09b0794faa1054a9796334e18a0f557c',1,'Guildmaster.Combat.RuntimeUnit.Id']]],
+  ['ieffectcomponent_7',['IEffectComponent',['../interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html',1,'Guildmaster::Data::Definitions']]],
+  ['ieffectcomponent_2ecs_8',['IEffectComponent.cs',['../IEffectComponent_8cs.html',1,'']]],
+  ['irngservice_9',['IRngService',['../interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html',1,'Guildmaster::Core::Random']]],
+  ['irngservice_2ecs_10',['IRngService.cs',['../IRngService_8cs.html',1,'']]],
+  ['isalive_11',['IsAlive',['../classGuildmaster_1_1Combat_1_1Projectile.html#aa05bd5d72297ef0851a62dd13843a9f8',1,'Guildmaster::Combat::Projectile']]],
+  ['isdead_12',['IsDead',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4535a281dcec5e830ae47b664400347e',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['isenabled_13',['IsEnabled',['../classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html#a0da2ff2c7d8279ddaca3aa8809cf4d73',1,'Guildmaster::Presentation::CombatDebugDraw']]],
+  ['isimcommand_14',['ISimCommand',['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html',1,'Guildmaster::Core::Simulation']]],
+  ['isimcommand_2ecs_15',['ISimCommand.cs',['../ISimCommand_8cs.html',1,'']]],
+  ['isimevent_16',['ISimEvent',['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimEvent.html',1,'Guildmaster::Core::Simulation']]],
+  ['isimevent_2ecs_17',['ISimEvent.cs',['../ISimEvent_8cs.html',1,'']]],
+  ['ispaused_18',['IsPaused',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a95b013883f25014e70b5ec816df42285',1,'Guildmaster::Combat::CombatSimulation']]],
+  ['istatreader_19',['IStatReader',['../interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html',1,'Guildmaster::Data::Stats']]],
+  ['istatreader_2ecs_20',['IStatReader.cs',['../IStatReader_8cs.html',1,'']]]
+];

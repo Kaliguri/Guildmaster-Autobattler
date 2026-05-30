@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.VesselData" name="Guildmaster.Data.Definitions.VesselData">
+<area shape="rect" id="Node000001" title="«Пилот» — носитель реликвии." alt="" coords="5,119,212,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="48,5,169,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,85,111,118,106,118,106,85"/>
+</map>

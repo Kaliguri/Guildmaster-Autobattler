@@ -1,0 +1,3 @@
+<map id="Guildmaster.Combat.TargetingSystem" name="Guildmaster.Combat.TargetingSystem">
+<area shape="rect" id="Node000001" title="Назначает цель каждому живому юниту." alt="" coords="5,5,217,85"/>
+</map>

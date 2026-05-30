@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.CombatSimulation" name="Guildmaster.Combat.CombatSimulation">
+<area shape="rect" id="Node000001" title="Детерминированная тиковая симуляция боя." alt="" coords="5,239,208,619"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1ICombatContext.html" title="Шов «логика эффектов/способностей ↔ боевой мир»." alt="" coords="23,5,191,191"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,204,109,239,104,239,104,204"/>
+</map>

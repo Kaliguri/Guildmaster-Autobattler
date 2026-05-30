@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['aitickinterval_0',['AiTickInterval',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a362bc4edc3a058f8ba6c1cba173bc460',1,'Guildmaster::Core::Simulation::SimConstants']]],
+  ['aitickrate_1',['AiTickRate',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a53bbebe027c16ed0a78d4af29f355d93',1,'Guildmaster::Core::Simulation::SimConstants']]],
+  ['armork_2',['armork',['../structGuildmaster_1_1Combat_1_1DamageRequest.html#a96e593ead08f6d85d2f0097cba8ba0f6',1,'Guildmaster.Combat.DamageRequest.ArmorK'],['../classGuildmaster_1_1Combat_1_1Projectile.html#a3e7e54f687c64d1f8594b5877f395cb6',1,'Guildmaster.Combat.Projectile.ArmorK'],['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#af4fdc31beae0a45f740acf7be0437988',1,'Guildmaster.Combat.ProjectileSpawn.ArmorK']]],
+  ['attackcooldown_3',['AttackCooldown',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aae7bb21f873952eeb5152e67382c1edd',1,'Guildmaster::Combat::RuntimeUnit']]]
+];

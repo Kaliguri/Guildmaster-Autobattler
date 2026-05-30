@@ -1,0 +1,21 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,255,129,281"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html" title="Набор отладочных команд Quantum Console для Фазы 1 (вики «10» §9)." alt="" coords="179,5,427,45"/>
+<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="72,241,85,200,105,150,135,99,154,76,176,55,195,43,197,48,179,59,158,79,140,102,110,152,90,202,77,243"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1GameBootstrap.html" title="Точка старта: поднимает RootLifetimeScope и запускает GameFlow.BootAsync." alt="" coords="177,70,428,95"/>
+<area shape="poly" id="edge13_Node000000_Node000002" title=" " alt="" coords="76,241,91,210,113,173,141,136,176,106,201,93,204,98,179,110,145,140,117,176,96,212,81,244"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Net_1_1FacepunchTransportBootstrap.html" title="Инициализирует Steam через Facepunch.Steamworks и Netcode for GameObjects." alt="" coords="203,120,403,160"/>
+<area shape="poly" id="edge14_Node000000_Node000003" title=" " alt="" coords="87,243,126,205,176,170,204,158,206,162,179,174,129,209,91,247"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html" title="Debug&#45;слой боя на базе Shapes: spatial hash сетка, радиусы атак, снаряды." alt="" coords="207,184,398,224"/>
+<area shape="poly" id="edge15_Node000000_Node000004" title=" " alt="" coords="123,249,177,233,221,222,223,227,178,239,125,254"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Presentation_1_1CombatPresenter.html" title="Мост «симуляция → вид боя»." alt="" coords="207,248,398,288"/>
+<area shape="poly" id="edge16_Node000000_Node000005" title=" " alt="" coords="144,265,207,265,207,271,144,271"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Presentation_1_1DamageNumber.html" title="Один всплывающий элемент урона: базовый UI Text + цвет и альфа." alt="" coords="207,312,398,352"/>
+<area shape="poly" id="edge17_Node000000_Node000006" title=" " alt="" coords="125,282,178,297,223,309,221,314,177,303,123,287"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Presentation_1_1DamageNumberSpawner.html" title="Всплывающие числа урона." alt="" coords="207,376,398,416"/>
+<area shape="poly" id="edge18_Node000000_Node000007" title=" " alt="" coords="91,289,129,327,179,362,208,374,206,379,176,366,126,331,87,293"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html" title="HP&#45;бар через масштаб fill&#45;объекта, без сторонних зависимостей." alt="" coords="207,440,398,480"/>
+<area shape="poly" id="edge19_Node000000_Node000008" title=" " alt="" coords="81,292,118,360,145,396,179,426,208,441,205,446,176,430,141,399,113,362,77,294"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Presentation_1_1UnitView.html" title="World&#45;space визуальное представление RuntimeUnit." alt="" coords="207,504,398,544"/>
+<area shape="poly" id="edge20_Node000000_Node000009" title=" " alt="" coords="76,294,88,337,108,390,138,444,157,469,179,490,208,507,206,511,176,494,153,472,134,447,103,392,83,339,71,295"/>
+</map>
