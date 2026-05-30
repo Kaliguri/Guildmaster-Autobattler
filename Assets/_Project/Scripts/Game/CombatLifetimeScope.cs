@@ -68,7 +68,11 @@ namespace Guildmaster.Game
                 Lifetime.Scoped);
 
             StatsConfig cfg = _statsConfig;
-            builder.Register<RuntimeUnitFactory>(_ => new RuntimeUnitFactory(cfg), Lifetime.Scoped);
+            builder.Register<RuntimeUnitFactory>(r => new RuntimeUnitFactory(
+                cfg,
+                r.Resolve<EffectSystem>(),
+                r.Resolve<CombatSimulation>()),
+                Lifetime.Scoped);
             builder.Register<BattleSetupBuilder>(Lifetime.Scoped);
 
             builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped).AsSelf();

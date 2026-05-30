@@ -72,6 +72,28 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
     }
 
+    /// <summary>Билдер <see cref="RelicData"/> для тестов интеграции фабрики (приватные поля через рефлексию).</summary>
+    internal static class TestRelic
+    {
+        public static RelicData Make(
+            StatModifier[] stats = null,
+            EffectData[] grantedEffects = null,
+            AbilityData[] abilities = null)
+        {
+            var r = ScriptableObject.CreateInstance<RelicData>();
+            Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
+            Set(r, "_grantedEffects", grantedEffects ?? Array.Empty<EffectData>());
+            Set(r, "_abilities", abilities ?? Array.Empty<AbilityData>());
+            return r;
+        }
+
+        private static void Set(object target, string field, object value)
+        {
+            FieldInfo fi = typeof(RelicData).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
+            fi.SetValue(target, value);
+        }
+    }
+
     /// <summary>Юнит-фабрика для тестов эффектов.</summary>
     internal static class TestUnit
     {
