@@ -47,6 +47,7 @@ namespace Guildmaster.Game
             builder.Register<AutoAttackSystem>(Lifetime.Scoped);
             builder.Register<ProjectileSystem>(Lifetime.Scoped);
             builder.Register<DeathSystem>(Lifetime.Scoped);
+            builder.Register<EffectSystem>(Lifetime.Scoped);
         }
 
         private void RegisterSimulation(IContainerBuilder builder)
@@ -60,7 +61,8 @@ namespace Guildmaster.Game
                 r.Resolve<MovementSystem>(),
                 r.Resolve<AutoAttackSystem>(),
                 r.Resolve<ProjectileSystem>(),
-                r.Resolve<DeathSystem>()),
+                r.Resolve<DeathSystem>(),
+                r.Resolve<EffectSystem>()),
                 Lifetime.Scoped);
 
             StatsConfig cfg = _statsConfig;

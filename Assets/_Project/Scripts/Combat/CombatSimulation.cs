@@ -25,6 +25,7 @@ namespace Guildmaster.Combat
         private readonly AutoAttackSystem    _autoAttackSystem;
         private readonly ProjectileSystem    _projectileSystem;
         private readonly DeathSystem         _deathSystem;
+        private readonly EffectSystem        _effectSystem;
 
         private readonly List<RuntimeUnit>  _units       = new List<RuntimeUnit>();
         private readonly List<RuntimeUnit>  _pendingAdd  = new List<RuntimeUnit>();
@@ -68,7 +69,8 @@ namespace Guildmaster.Combat
             MovementSystem    movementSystem,
             AutoAttackSystem  autoAttackSystem,
             ProjectileSystem  projectileSystem,
-            DeathSystem       deathSystem)
+            DeathSystem       deathSystem,
+            EffectSystem      effectSystem)
         {
             _rng              = rng;
             _armorK           = armorK;
@@ -78,6 +80,7 @@ namespace Guildmaster.Combat
             _autoAttackSystem = autoAttackSystem;
             _projectileSystem = projectileSystem;
             _deathSystem      = deathSystem;
+            _effectSystem     = effectSystem;
 
             _deathSystem.OnUnitDied += unit => OnUnitDied?.Invoke(unit);
         }
@@ -128,12 +131,16 @@ namespace Guildmaster.Combat
             OnDamageDealt?.Invoke(req.Source, req.Target, result);
         }
 
-        // source пока не используется — нужен для триггеров исцеления (Фаза 2).
         public void Heal(RuntimeUnit target, float amount, RuntimeUnit source)
         {
             if (target.IsDead) return;
+
+            // Потенция исцеления масштабируется парой HealShield-эффективностей (вики «11» §5).
+            float mult = (source != null ? source.Stats.Get(Data.Stats.StatType.HealShieldDealtEff) : 1f)
+                       * target.Stats.Get(Data.Stats.StatType.HealShieldTakenEff);
+
             float maxHp = target.Stats.Get(Data.Stats.StatType.MaxHP);
-            target.CurrentHP = Mathf.Min(target.CurrentHP + amount, maxHp);
+            target.CurrentHP = Mathf.Min(target.CurrentHP + amount * mult, maxHp);
         }
 
         public void SpawnProjectile(in ProjectileSpawn spawn)
@@ -183,7 +190,7 @@ namespace Guildmaster.Combat
 
         public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source)
         {
-            // Фаза 2: реализация компонентов эффектов
+            _effectSystem.Apply(target, def, source, this);
         }
 
         // --- Управление симуляцией (вызывается командами) ---
