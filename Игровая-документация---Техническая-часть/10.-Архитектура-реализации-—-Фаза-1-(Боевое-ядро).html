@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>10. Архитектура реализации — Фаза 1 (Боевое ядро) | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="10. Архитектура реализации — Фаза 1 (Боевое ядро) | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="10. Архитектура реализации — Фаза 1 (Боевое ядро) | Guildmaster Wiki"/><meta name="twitter:description" content="Статус: 🟡 Draft (на ревью Макса) Детальная архитектура Фазы 1 из роадмапа (9. Roadmap реализации): боевое ядро + нетворк-спайк."/><meta property="og:description" content="Статус: 🟡 Draft (на ревью Макса) Детальная архитектура Фазы 1 из роадмапа (9. Roadmap реализации): боевое ядро + нетворк-спайк."/><meta property="og:image:alt" content="Статус: 🟡 Draft (на ревью Макса) Детальная архитектура Фазы 1 из роадмапа (9. Roadmap реализации): боевое ядро + нетворк-спайк."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/Игровая-документация---Техническая-часть/10.-Архитектура-реализации-—-Фаза-1-(Боевое-ядро)"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/Игровая-документация---Техническая-часть/10.-Архитектура-реализации-—-Фаза-1-(Боевое-ядро)"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="Статус: 🟡 Draft (на ревью Макса) Детальная архитектура Фазы 1 из роадмапа (9. Roadmap реализации): боевое ядро + нетворк-спайк."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="Игровая-документация---Техническая-часть/10.-Архитектура-реализации-—-Фаза-1-(Боевое-ядро)"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-24"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-24" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../Игровая-документация---Техническая-часть/">Игровая документация   Техническая часть</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>10. Архитектура реализации — Фаза 1 (Боевое ядро)</a></div></nav><h1 class="article-title">10. Архитектура реализации — Фаза 1 (Боевое ядро)</h1><p show-comma="true" class="content-meta"><time datetime="2026-05-30T08:33:13.322Z">30 мая 2026 г.</time><span>время чтения ~13 мин.</span></p></div></div><article class="popover-hint"><p><strong>Статус:</strong> 🟡 Draft (на ревью Макса)</p>
+<hr/>
+<blockquote>
+<p>Детальная архитектура <strong>Фазы 1</strong> из роадмапа (<a href="../Игровая-документация---Техническая-часть/9.-Roadmap-реализации" class="internal alias" data-slug="Игровая-документация---Техническая-часть/9.-Roadmap-реализации">9. Roadmap реализации</a>): боевое ядро + нетворк-спайк.
+Кто за что отвечает, как классы взаимодействуют, какие сборки и сцены создаём.
+Опирается на <a href="../Игровая-документация---Техническая-часть/5.-Технологический-стек-и-архитектура" class="internal alias" data-slug="Игровая-документация---Техническая-часть/5.-Технологический-стек-и-архитектура">5. Стек и архитектура</a>, <a href="../Игровая-документация---Техническая-часть/6.-Боевая-модель-(юниты,-статы,-эффекты)" class="internal alias" data-slug="Игровая-документация---Техническая-часть/6.-Боевая-модель-(юниты,-статы,-эффекты)">6. Боевая модель</a>, <a href="../Игровая-документация---Техническая-часть/7.-Флоу-забега-и-сессия" class="internal alias" data-slug="Игровая-документация---Техническая-часть/7.-Флоу-забега-и-сессия">7. Флоу забега</a>.</p>
+<p><strong>Это план для ревью, а не финальный код.</strong> Сначала Макс читает и даёт мнение → потом реализуем конкретные классы.</p>
+</blockquote>
+<hr/>
+<h2 id="0-решённые-развилки-контекст-этого-дока">0. Решённые развилки (контекст этого дока)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#0-решённые-развилки-контекст-этого-дока" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Вопрос</th><th>Решение</th></tr></thead><tbody><tr><td>asmdef-граф</td><td><strong>Полный рефактор «как надо»</strong> — старые 5 asmdef были временными, не опираемся на них</td></tr><tr><td>Источник юнитов в Фазе 1</td><td><strong>Минимальные реальные SO</strong> (<code>RelicData</code>/<code>VesselData</code>/<code>StatsConfig</code>), а не C#-фикстуры. Полный Odin-авторинг — Фаза 4</td></tr><tr><td>Структура сцен</td><td><strong>Persistent <code>CoreScene</code> + аддитивная <code>BattleScene</code></strong> (паттерн из дока 7)</td></tr><tr><td>Нетворк</td><td><strong>Проектируем шов сейчас</strong> — command-слой и host-authoritative граница закладываются так, чтобы спайк встал без переделок</td></tr></tbody></table></div>
+<hr/>
+<h2 id="1-что-фаза-1-даёт-и-чего-не-делает">1. Что Фаза 1 даёт и чего НЕ делает<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-что-фаза-1-даёт-и-чего-не-делает" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Деливерабл:</strong> бьющиеся юниты в <code>BattleScene</code>, детерминированная тиковая симуляция 30 Гц, чистый пайплайн урона на <code>IRngService</code>, headless-тесты детерминизма, и спайк host-authoritative потока команд через сим в MPPM (2 инстанса).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>✅ В Фазе 1</th><th>⛔ НЕ в Фазе 1 (куда переезжает)</th></tr></thead><tbody><tr><td>Тиковый цикл 30 Гц, детерминизм</td><td>Полная модель эффектов → <strong>Фаза 2</strong></td></tr><tr><td><code>RuntimeUnit</code> + <code>Stats</code> (слоистые модификаторы)</td><td>AI Filter/Score/Override → <strong>Фаза 3</strong> (Фаза 1 = таргетинг «ближайший враг»)</td></tr><tr><td>Пайплайн урона (чистые функции)</td><td>Odin-авторинг контента, полный <code>StatType</code> → <strong>Фаза 4</strong></td></tr><tr><td>Непрерывное движение + spatial hash</td><td>Полный GameFlow, карта, магазины → <strong>Фаза 5</strong></td></tr><tr><td>Авто-атаки: ближний + снаряды (swept)</td><td>Полная сеть: лобби, репликация RunState, реконнект → <strong>Фаза 6</strong></td></tr><tr><td>Command-слой + event-queue (каркас)</td><td>UI Toolkit экраны, MVVM → <strong>Фаза 7</strong></td></tr><tr><td>Презентация: Shapes HP-бары, Feel-хуки, damage numbers</td><td>—</td></tr><tr><td>Нетворк-спайк: host-auth поток команд, 2× MPPM</td><td>—</td></tr></tbody></table></div>
+<blockquote>
+<p><strong>Принцип границы:</strong> Фаза 1 строит <strong>движок и швы</strong>, а не контент. Эффекты, AI, контент подключаются в готовые точки расширения, не переписывая ядро.</p>
+</blockquote>
+<hr/>
+<h2 id="2-сборки-новый-граф">2. Сборки (новый граф)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-сборки-новый-граф" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="21-граф-зависимостей">2.1 Граф зависимостей<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#21-граф-зависимостей" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Core
+ ├─ Data            → Core
+ ├─ Combat          → Core, Data
+ ├─ Guild           → Core, Data
+ ├─ MiniGames       → Core, Data
+ ├─ Net             → Core, Combat
+ ├─ Presentation    → Core, Data, Combat
+ ├─ UI              → Core, Data, Guild
+ ├─ DevTools        → Core, Data, Combat, Game
+ └─ Game            → Core, Data, Combat, Guild, Net, Presentation, UI
+</code></pre>
+<p><code>Game</code> — единственный, кто знает всех (composition root). Всё остальное зависит <strong>только вниз</strong>.</p>
+<h3 id="22-таблица-сборок">2.2 Таблица сборок<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#22-таблица-сборок" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Сборка</th><th>Зависит от</th><th>Чистая C#?</th><th>Назначение</th><th>Фаза 1?</th></tr></thead><tbody><tr><td><code>Guildmaster.Core</code></td><td>—</td><td>✅ (no engine refs по возможности)</td><td><code>IRngService</code>, математика сим, тик-контракты, базовые интерфейсы команд/событий</td><td>✅ создаём</td></tr><tr><td><code>Guildmaster.Data</code></td><td>Core</td><td>SO (нужен UnityEngine)</td><td>ScriptableObject-определения + полиморфные интерфейсы поведения (<code>IEffectComponent</code>), <code>StatType</code>, <code>ScalableValue</code>, <code>RelicData</code>, <code>VesselData</code>, <code>EffectData</code>, <code>StatsConfig</code></td><td>✅ минимум</td></tr><tr><td><code>Guildmaster.Combat</code></td><td>Core, Data</td><td>✅ чистая логика</td><td>Детерминированная симуляция: <code>RuntimeUnit</code>, <code>Stats</code>, тик-степпер, системы (движение/таргетинг/атаки/снаряды), пайплайн урона, <code>ICombatContext</code>, spatial hash</td><td>✅ ядро</td></tr><tr><td><code>Guildmaster.Guild</code></td><td>Core, Data</td><td>✅</td><td>Ростер, <code>RunState</code>, ресурсы</td><td>⛔ стаб (Фаза 5)</td></tr><tr><td><code>Guildmaster.MiniGames</code></td><td>Core, Data</td><td>✅</td><td>Изолированные мини-игры за <code>IMiniGame</code></td><td>⛔ стаб (позже)</td></tr><tr><td><code>Guildmaster.Net</code></td><td>Core, Combat</td><td>NGO/Facepunch</td><td>Host-authoritative реле команд, инициализация транспорта</td><td>✅ спайк</td></tr><tr><td><code>Guildmaster.Presentation</code></td><td>Core, Data, Combat</td><td>Mono + Shapes/Feel/LitMotion</td><td>World-space вид боя: спрайты, HP-бары, damage numbers, debug-draw, фидбэк. <strong>Только читает сим</strong></td><td>✅</td></tr><tr><td><code>Guildmaster.UI</code></td><td>Core, Data, Guild</td><td>UI Toolkit</td><td>Экраны меню/HUD/карты (MVVM)</td><td>⛔ стаб (Фаза 7)</td></tr><tr><td><code>Guildmaster.DevTools</code></td><td>Core, Data, Combat, Game</td><td>Quantum Console</td><td>Debug-команды <code>gm_*</code></td><td>✅</td></tr><tr><td><code>Guildmaster.Game</code></td><td>все выше</td><td>VContainer + Mono</td><td>Composition root (LifetimeScopes), GameFlow, загрузка сцен, пуск тик-цикла</td><td>✅</td></tr><tr><td><code>Guildmaster.Tests.EditMode</code></td><td>Core, Data, Combat</td><td>✅</td><td>Детерминизм, урон, статы, spatial hash, снаряды</td><td>✅</td></tr><tr><td><code>Guildmaster.Tests.PlayMode</code></td><td>Core, Data, Combat, Game</td><td>—</td><td>Интеграция: battle start→loop→end</td><td>✅</td></tr></tbody></table></div>
+<h3 id="23-внешние-пакеты-по-сборкам">2.3 Внешние пакеты по сборкам<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#23-внешние-пакеты-по-сборкам" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Сборка</th><th>Внешние ссылки</th></tr></thead><tbody><tr><td>Core</td><td>— (по возможности <code>noEngineReferences</code>)</td></tr><tr><td>Data</td><td>Odin (Sirenix), UnityEngine</td></tr><tr><td>Combat</td><td>— (только Core/Data; <strong>без VContainer/UniTask/Unity-физики</strong> — чистая, тестируемая)</td></tr><tr><td>Net</td><td>NGO, Facepunch.Steamworks</td></tr><tr><td>Presentation</td><td>Shapes, Feel (MMFeedbacks), LitMotion, MessagePipe, UniTask</td></tr><tr><td>UI</td><td>UI Toolkit, MessagePipe (+ R3 если понадобится)</td></tr><tr><td>Game</td><td>VContainer, MessagePipe, UniTask, NGO</td></tr><tr><td>DevTools</td><td>Quantum Console</td></tr></tbody></table></div>
+<blockquote>
+<p><strong>Почему <code>Combat</code> без VContainer и UniTask:</strong> симуляция — чистая детерминированная логика. Зависимости приходят через <strong>конструкторы</strong>, а не <code>[Inject]</code>-атрибуты. Реальный реалтайм-цикл (UniTask-accumulator) живёт в <code>Game</code> (<code>CombatLoopService</code>) и просто дёргает <code>sim.Tick(dt)</code>. Так сим тестируется headless без движка и без DI.</p>
+</blockquote>
+<blockquote>
+<p><strong>Почему отдельный <code>Data</code> (а не «Units»):</strong> была мина — <code>RelicData</code> несёт способности, порождающие эффекты (<code>EffectData</code>/<code>IEffectComponent</code>). Если эффекты в <code>Combat</code>, а Relic в <code>Units</code>, то <code>Units → Combat</code> = запрещённая зависимость вверх. Решение: <strong>все определения-данные и полиморфные интерфейсы поведения — в одном слое <code>Data</code></strong>, ниже симуляции. <code>Combat</code> ссылается на <code>Data</code> вниз. Relic ссылается на Effect внутри одной сборки — конфликта нет.</p>
+</blockquote>
+<blockquote>
+<p><strong>Почему отдельный <code>Presentation</code> (а не всё в «UI»):</strong> доковый принцип «разделение симуляции и презентации». World-space вид боя (Shapes/Feel/LitMotion, читает <code>RuntimeUnit</code>) — это не экранный UI Toolkit. Разные технологии, разные зависимости.</p>
+</blockquote>
+<hr/>
+<h2 id="3-сцены">3. Сцены<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-сцены" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="31-карта-сцен-фазы-1">3.1 Карта сцен Фазы 1<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#31-карта-сцен-фазы-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Сцена</th><th>Тип</th><th>Живёт</th><th>Назначение</th></tr></thead><tbody><tr><td><code>CoreScene</code></td><td><strong>Persistent</strong> (грузится первой, не выгружается)</td><td>Всю сессию</td><td>Composition root, общие сервисы, постоянная камера, оверлей-слой, debug-консоль</td></tr><tr><td><code>BattleScene</code></td><td><strong>Аддитивная</strong></td><td>На время боя</td><td>Боевая арена, презентация боя, боевой scope</td></tr><tr><td><code>BootScene</code> <em>(опц.)</em></td><td>Точка входа</td><td>Миг</td><td>Только грузит <code>CoreScene</code> и передаёт управление. Можно пропустить и сделать <code>CoreScene</code> точкой входа</td></tr></tbody></table></div>
+<blockquote>
+<p>Map / Lobby / Shop сцены — <strong>Фазы 5–6</strong>, здесь не делаем. «Глянуть карту в бою» по доку 7 = read-only UI-оверлей поверх (не сцена) — тоже позже.</p>
+</blockquote>
+<h3 id="32-corescene--что-внутри">3.2 <code>CoreScene</code> — что внутри<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#32-corescene--что-внутри" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Постоянная сцена. Никогда не выгружается → всё, что должно пережить смену боёв, живёт здесь.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Объект</th><th>Компонент(ы)</th><th>Роль</th></tr></thead><tbody><tr><td><code>[Bootstrap]</code></td><td><code>GameBootstrap</code></td><td>Точка старта: поднимает <code>RootLifetimeScope</code>, грузит первую игровую сцену</td></tr><tr><td><code>[DI Root]</code></td><td><code>RootLifetimeScope</code> (VContainer)</td><td>Регистрирует сессионные сервисы (см. §8)</td></tr><tr><td><code>[EventBus]</code></td><td>MessagePipe (через scope)</td><td>Глобальная шина сим→презентация/аудио</td></tr><tr><td><code>Main Camera</code></td><td>Camera + (later) CinemachineBrain</td><td>Постоянная камера. Боевая сцена задаёт лишь рамки арены и якоря</td></tr><tr><td><code>[Audio]</code></td><td><code>IAudioService</code> (Unity Audio стаб)</td><td>За интерфейсом; FMOD — Фаза 9</td></tr><tr><td><code>[DevConsole]</code></td><td>Quantum Console prefab</td><td><code>gm_*</code> команды</td></tr><tr><td><code>[OverlayRoot]</code></td><td>UIDocument (пустой)</td><td>Будущий слой постоянных оверлеев (карта-в-бою, пауза)</td></tr></tbody></table></div>
+<h3 id="33-battlescene--что-внутри">3.3 <code>BattleScene</code> — что внутри<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#33-battlescene--что-внутри" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Аддитивная. Грузится <code>SceneLoader</code> при старте боя, выгружается после. <strong>Никакой сим-логики в объектах сцены</strong> — симуляция это чистые C#-объекты, создаваемые <code>CombatLifetimeScope</code>. Сцена несёт только <strong>арену и презентацию</strong>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Объект</th><th>Компонент(ы)</th><th>Роль</th></tr></thead><tbody><tr><td><code>[Combat DI]</code></td><td><code>CombatLifetimeScope</code> (child от Root)</td><td>Регистрирует <code>CombatSimulation</code>, системы, <code>ICombatContext</code>, <code>CombatLoopService</code> (см. §8)</td></tr><tr><td><code>[Arena]</code></td><td><code>ArenaConfig</code></td><td>Рамки поля (мин/макс), якоря спавна команд A/B, размер ячейки spatial hash</td></tr><tr><td><code>[Presentation]</code></td><td><code>CombatPresenter</code></td><td>Подписан на сим-события, спавнит/убирает <code>UnitView</code>, мост сим→вид</td></tr><tr><td><code>[DebugDraw]</code></td><td><code>CombatDebugDraw</code> (Shapes)</td><td>Spatial hash, радиусы, траектории снарядов. Тогглится из QC</td></tr><tr><td><code>[WorldHUD]</code></td><td>Canvas (uGUI, опц.) или Shapes</td><td>HP-бары, damage numbers (world-space)</td></tr><tr><td><code>[Background]</code></td><td>SpriteShape/Tilemap <em>(позже)</em></td><td>Декор арены, не геймплейная геометрия</td></tr></tbody></table></div>
+<blockquote>
+<p>Камеры в <code>BattleScene</code> <strong>нет</strong> — используется постоянная из <code>CoreScene</code>. Это упрощает мульти-сцену и NGO scene sync.</p>
+</blockquote>
+<hr/>
+<h2 id="4-слой-данных-guildmasterdata--минимум-фазы-1">4. Слой данных (<code>Guildmaster.Data</code>) — минимум Фазы 1<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-слой-данных-guildmasterdata--минимум-фазы-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Реальные SO, но скелетные. Полный авторинг — Фаза 4.</p>
+<h3 id="41-статы">4.1 Статы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#41-статы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="csharp" data-theme="github-light github-dark"><code data-language="csharp" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Полный список в доке 6; Фаза 1 реализует подмножество, enum растёт без боли.</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> enum</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StatType</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">    MaxHP</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">AutoAttackDamage</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">AttackSpeed</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">AttackRange</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">MoveSpeed</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">    PhysArmor</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">MagicArmor</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">PhysPen</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">MagicPen</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">    CritChance</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">CritDamage</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">    DamageDealtEff</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">DamageTakenEff</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">,   </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// «эффективности» — старт 1.0, PercentMult</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    // … остальные ~30 — Фаза 4</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> enum</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ModifierOp</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Flat</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">PercentAdd</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">PercentMult</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> }</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> readonly</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> struct</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StatModifier</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> readonly</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StatType</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Stat</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> readonly</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> float</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">    Value</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> readonly</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ModifierOp</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Op</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> readonly</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> object</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">   Source</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">;   </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// для снятия модов источника РАЗОМ</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<h3 id="42-so-определения-скелеты">4.2 SO-определения (скелеты)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#42-so-определения-скелеты" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>SO</th><th>Поля Фазы 1</th><th>Примечание</th></tr></thead><tbody><tr><td><code>StatsConfig</code></td><td>дефолты всех <code>StatType</code> (глобальный шаблон)</td><td>Единственный экземпляр, база стат-сборки</td></tr><tr><td><code>RelicData</code></td><td>стат-блок (<code>StatModifier[]</code>), <code>AttackType</code> (Melee/Ranged), <code>AttackRange</code>, <code>ProjectileSpeed</code>, теги</td><td>«Чемпион». Активки/пассивки — поля есть, наполнение Фаза 2</td></tr><tr><td><code>VesselData</code></td><td>имя, ключ локализации, плейсхолдер талантов</td><td>«Пилот». Таланты-модификаторы — Фаза 2/4</td></tr><tr><td><code>EffectData</code></td><td><code>Id</code>, <code>Polarity</code>, <code>Tags</code>, <code>Duration</code>, <code>[SerializeReference] IEffectComponent[]</code></td><td><strong>Скелет интерфейсов сейчас</strong>, реализации компонентов — Фаза 2</td></tr></tbody></table></div>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="csharp" data-theme="github-light github-dark"><code data-language="csharp" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Объявляем интерфейсы и ScalableValue СЕЙЧАС (швы), реализации — Фаза 2.</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IEffectComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> OnApply</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> EffectContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ctx</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">); </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> OnExpire</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> EffectContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ctx</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">); }</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IPeriodicComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> : </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">IEffectComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">float</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Interval</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> OnTick</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> EffectContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ctx</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">); }</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IReactiveComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> : </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">IEffectComponent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">CombatEvent</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Events</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> OnEvent</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> EffectContext</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ctx</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> CombatEventData</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> e</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">); }</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">[</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Serializable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">] </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> struct</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ScalableValue</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> float</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Base</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ScalingTerm</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">[] </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Scalings</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">/* Resolve(IStatReader) */</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> }</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">[</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Serializable</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">] </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> struct</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ScalingTerm</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> StatType</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Stat</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> float</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Ratio</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; }</span></span></code></pre></figure>
+<hr/>
+<h2 id="5-боевая-симуляция-guildmastercombat--сердце-фазы-1">5. Боевая симуляция (<code>Guildmaster.Combat</code>) — сердце Фазы 1<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-боевая-симуляция-guildmastercombat--сердце-фазы-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="51-тиковый-цикл-и-детерминизм">5.1 Тиковый цикл и детерминизм<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#51-тиковый-цикл-и-детерминизм" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>CombatLoopService (Game, MonoBehaviour + UniTask)   ← реалтайм-пульс, host-only
+   │  accumulator += Time.deltaTime (только ЗДЕСЬ Time допустим)
+   │  while (accumulator >= TickDelta) { sim.Tick(TickDelta); accumulator -= TickDelta; }
+   ▼
+CombatSimulation.Tick(float dt)   (Combat, чистый)   ← детерминированный шаг
+   1. ApplyDueCommands(currentTick)        // команды, чей TargetTick == currentTick
+   2. systems в ФИКСИРОВАННОМ порядке:
+        AbilityCooldownSystem → TargetingSystem → MovementSystem
+        → AutoAttackSystem → ProjectileSystem → (EffectSystem — Фаза 2)
+        → DamageResolutionSystem → DeathSystem
+   3. DrainEventQueue()                     // FIFO, без рекурсии (док 6 §7)
+   4. currentTick++
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Класс</th><th>Сборка</th><th>Ответственность</th></tr></thead><tbody><tr><td><code>CombatLoopService</code></td><td>Game</td><td>Реалтайм accumulator-пульс, пауза/возобновление, <strong>только хост</strong> тикает. <code>Time.deltaTime</code> живёт <strong>только тут</strong></td></tr><tr><td><code>CombatSimulation</code></td><td>Combat</td><td>Владеет состоянием боя: список <code>RuntimeUnit</code>, spatial hash, command-queue, event-queue, <code>currentTick</code>. Метод <code>Tick(dt)</code> — чистый, детерминированный</td></tr><tr><td><code>SimConstants</code></td><td>Core</td><td><code>TickRate = 30</code>, <code>TickDelta = 1f/30f</code>, частота AI = 10 Гц (для Фазы 3)</td></tr></tbody></table></div>
+<p><strong>Чек-лист детерминизма (из доков 5/6, проверяется тестами):</strong> фиксированный <code>dt</code>; весь рандом через <code>IRngService</code>; детерминированный порядок итерации (списки + insertion order, не <code>foreach</code> по <code>Dictionary</code>/<code>HashSet</code>); ноль Unity-физики; добавления юнитов/эффектов — в pending-очередь, не в коллекцию во время итерации.</p>
+<h3 id="52-юнит-и-статы">5.2 Юнит и статы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#52-юнит-и-статы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Класс</th><th>Ответственность</th></tr></thead><tbody><tr><td><code>Stats</code></td><td>Слоистые модификаторы с источником. <code>Get(StatType)</code> с кэшем по dirty-флагу. <code>AddModifiersFrom(source, mods)</code> / <code>RemoveModifiersFrom(source)</code>. Реализует <code>IStatReader</code>. Формула: <code>final = (base + ΣFlat) × (1 + ΣPercentAdd) × Π(1 + PercentMult)</code></td></tr><tr><td><code>RuntimeUnit</code></td><td>POCO на один бой: <code>Stats</code>, <code>CurrentHP/Resource/Shield</code>, <code>Position</code>, <code>PreviousPosition</code> (для интерполяции вида), <code>Team</code>, ссылки на <code>RelicData</code>/<code>VesselData</code>, <code>ActiveEffects[]</code> (Фаза 2), <code>EffectTagMask</code>, <code>AIProfile</code> (Фаза 3). <strong>Не <code>ScriptableObject.CreateInstance</code></strong></td></tr><tr><td><code>RuntimeUnitFactory</code></td><td>«Компиляция» SO → <code>RuntimeUnit</code> по шагам дока 6 §3: base из <code>StatsConfig</code> → моды Relic → (таланты/предметы Фаза 2+) → init <code>CurrentHP = Get(MaxHP)</code>. Единственная точка сборки юнита</td></tr></tbody></table></div>
+<h3 id="53-пространство-и-системы">5.3 Пространство и системы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#53-пространство-и-системы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Класс</th><th>Ответственность</th></tr></thead><tbody><tr><td><code>SpatialHash</code></td><td>Uniform grid поверх непрерывных координат. <code>QueryRadius(center, r)</code> без аллокаций (буфер). Перестраивается/обновляется на тике. Только ради перфа — поле остаётся непрерывным</td></tr><tr><td><code>MovementSystem</code></td><td>Интегрирование позиции к цели (ручная математика, без <code>Rigidbody2D</code>). Фаза 1 — простой move-to-target до дистанции атаки. <code>IPositioningMode</code> (гистерезис, support-смещение) — Фаза 3</td></tr><tr><td><code>TargetingSystem</code></td><td><strong>Фаза 1 — «ближайший живой враг»</strong> через spatial hash. Полный Filter/Score/Override — Фаза 3 (этот класс станет тонкой обёрткой над AI-движком)</td></tr><tr><td><code>AutoAttackSystem</code></td><td>Кулдаун атаки от <code>AttackSpeed</code>. Melee → прямой <code>DealDamage</code>. Ranged → <code>SpawnProjectile</code></td></tr><tr><td><code>ProjectileSystem</code></td><td>Снаряды как данные. <strong>Swept circle-segment</strong> проверка (отрезок пути за тик), чтобы быстрые снаряды не «протыкали» цель между тиками. Попадание → <code>DealDamage</code></td></tr><tr><td><code>DeathSystem</code></td><td>HP ≤ 0 → пометить мёртвым, убрать из spatial hash, эмитнуть <code>UnitDied</code>, проверить win/lose</td></tr></tbody></table></div>
+<h3 id="54-урон--чистые-функции">5.4 Урон — чистые функции<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#54-урон--чистые-функции" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>DamagePipeline</code> (статический/чистый, рефактор <code>DamageCalculator</code> на <code>IRngService</code>). Конвейер дока 6 §6:</p>
+<pre><code>raw → ×Source.Get(DamageDealtEff) → крит (ctx.Rng) → −броня/резист (+пробивание)
+    → ×Target.Get(DamageTakenEff) → поглощение Shield → вычет из HP
+    → эмит OnDamageDealt / OnDamageTaken (триггеры вампиризма/шипов — Фаза 2)
+</code></pre>
+<p>Чистые функции (<code>in</code>-параметры, никакого состояния, <code>IRngService</code> снаружи) → 100% покрываются EditMode-тестами.</p>
+<h3 id="55-icombatcontext--шов-логика--мир">5.5 <code>ICombatContext</code> — шов «логика ↔ мир»<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#55-icombatcontext--шов-логика--мир" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Единственный реализатор <code>CombatContext</code>, но <strong>настоящий шов</strong> — делает будущие эффекты/способности юнит-тестируемыми с моком.</p>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="csharp" data-theme="github-light github-dark"><code data-language="csharp" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ICombatContext</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> DealDamage</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> DamageRequest</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> req</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Heal</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">RuntimeUnit</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> target</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">float</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> amount</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">RuntimeUnit</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> source</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> SpawnProjectile</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">in</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ProjectileSpawn</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> spawn</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    int</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">  QueryUnitsInRadius</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Vector2</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> center</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">float</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> radius</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Span</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">RuntimeUnit</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">> </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">buffer</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">TargetFilter</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> filter</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ApplyEffect</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">RuntimeUnit</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> target</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">EffectData</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> def</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">RuntimeUnit</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> source</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);  </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// тело — Фаза 2</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">    IRngService</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Rng</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; }</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    int</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> CurrentTick</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; }</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
+<h3 id="56-команды-и-события">5.6 Команды и события<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#56-команды-и-события" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Два разных механизма — не путать:</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Механизм</th><th>Где</th><th>Природа</th><th>Для чего</th></tr></thead><tbody><tr><td><strong>Command-queue</strong></td><td>Combat</td><td>Детерминированная, отсортированная по <code>(TargetTick, PlayerId, Seq)</code></td><td>Вход в сим: интенты игрока (каст ГМ, пауза). Применяются на границе тика. Основа host-auth + реплеев</td></tr><tr><td><strong>Internal event-queue</strong></td><td>Combat</td><td>FIFO в пределах тика, без рекурсии</td><td>Реактивность эффектов (Фаза 2). Детерминированный порядок</td></tr><tr><td><strong>MessagePipe (outward)</strong></td><td>Game/Presentation</td><td>Fire-and-forget</td><td>Сим → презентация/аудио/UI. Презентация только читает</td></tr></tbody></table></div>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="csharp" data-theme="github-light github-dark"><code data-language="csharp" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> ISimCommand</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">int</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> TargetTick</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Apply</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">CombatSimulation</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> sim</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">); }</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Фаза 1: PauseCommand, ResumeCommand, CastGuildmasterSpellCommand (стаб), SpawnUnitCommand (setup)</span></span></code></pre></figure>
+<blockquote>
+<p><strong>Почему команды важны уже сейчас:</strong> ВСЕ мутации сим во время боя входят через упорядоченные команды на границе тика. Это ровно тот шов, который даёт host-authoritative мультиплеер (хост упорядочивает, клиенты применяют те же команды на тех же тиках → синхрон) И реплеи (лог команд + сид) — «один механизм, три фичи» из дока 5.</p>
+</blockquote>
+<hr/>
+<h2 id="6-нетворк-шов-guildmasternet--host-authoritative">6. Нетворк-шов (<code>Guildmaster.Net</code>) — host-authoritative<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-нетворк-шов-guildmasternet--host-authoritative" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Архитектура закладывается сейчас; полная сеть — Фаза 6. Цель спайка — <strong>снять главный риск рано</strong>.</p>
+<h3 id="61-поток-команды-host-authoritative">6.1 Поток команды (host-authoritative)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#61-поток-команды-host-authoritative" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<pre><code>Клиент: игрок кликнул каст ГМ
+   │  CommandIntent (локально)
+   ▼ ServerRpc
+Хост: NetworkCommandRelay
+   │  присваивает TargetTick = currentTick + lookahead, PlayerId, Seq
+   │  enqueue в CombatSimulation.commandQueue
+   ▼ ClientRpc (broadcast той же команды с тем же TargetTick)
+Все (хост+клиенты): применяют команду на TargetTick детерминированно
+   → симуляции совпадают
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Класс</th><th>Ответственность</th></tr></thead><tbody><tr><td><code>NetworkCommandRelay</code> (NetworkBehaviour)</td><td>Клиент → ServerRpc(intent); хост штампует tick/seq, кладёт в очередь и broadcast ClientRpc; все enqueue</td></tr><tr><td><code>FacepunchTransportBootstrap</code></td><td>Init Steam + Facepunch transport (relay/NAT бесплатно)</td></tr><tr><td><code>SimSyncProbe</code> <em>(спайк)</em></td><td>Периодический <strong>checksum</strong> состояния сим (хэш позиций+HP+tick) для проверки рассинхрона в тесте</td></tr></tbody></table></div>
+<h3 id="62-цель-спайка-definition-of-done">6.2 Цель спайка (Definition of Done)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#62-цель-спайка-definition-of-done" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>MPPM, 2 инстанса (хост + клиент).</li>
+<li>Facepunch transport поднят.</li>
+<li>Команда от клиента проходит host-auth путь и применяется на одном тике у обоих.</li>
+<li><code>SimSyncProbe</code> показывает <strong>совпадающий checksum</strong> после N тиков → детерминизм + сеть подтверждены.</li>
+<li>Тикает <strong>только хост</strong>; клиент применяет команды/синк (в Фазе 1 — упрощённо: команд-эхо + checksum; полная репликация — Фаза 6).</li>
+</ul>
+<hr/>
+<h2 id="7-презентация-guildmasterpresentation--только-читает-сим">7. Презентация (<code>Guildmaster.Presentation</code>) — только читает сим<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-презентация-guildmasterpresentation--только-читает-сим" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Класс</th><th>Инструмент</th><th>Ответственность</th></tr></thead><tbody><tr><td><code>CombatPresenter</code></td><td>MessagePipe</td><td>Подписан на сим-события; спавнит/деспавнит <code>UnitView</code>; мост сим→вид. Точка входа презентации боя</td></tr><tr><td><code>UnitView</code> (Mono)</td><td>Feel</td><td>Позиционирует спрайт по <code>RuntimeUnit</code> (с <strong>интерполяцией</strong> между <code>PreviousPosition</code>→<code>Position</code>, т.к. сим 30 Гц, рендер 60+). На событиях дёргает <code>MMFeedbacksPlayer.PlayFeedbacks()</code> (Фаза 1 — пустые листы, no-op)</td></tr><tr><td><code>HealthBarView</code></td><td><strong>Shapes</strong></td><td><code>Draw.Arc</code>/<code>Draw.Ring</code> по <code>CurrentHP/MaxHP</code>. Crisp на любом зуме, без атласов</td></tr><tr><td><code>DamageNumberSpawner</code></td><td><strong>LitMotion</strong> + <code>ObjectPool</code></td><td>Подписан на <code>OnDamageDealt</code>; всплывающие числа, zero-alloc твины, пулинг</td></tr><tr><td><code>CombatDebugDraw</code></td><td><strong>Shapes</strong></td><td>Spatial hash grid, радиусы атак/AOE, swept-траектории снарядов. Тоггл из QC (<code>gm_toggle_debug_draw</code>). Бесценно при отладке сим без арта</td></tr><tr><td><code>RangeIndicatorView</code></td><td><strong>Shapes</strong></td><td><code>Draw.Ring</code> радиуса атаки/AOE при наведении</td></tr></tbody></table></div>
+<blockquote>
+<p><strong>Разделение ролей твинов:</strong> LitMotion — code-driven (damage numbers, lerp HP-бара). Feel — event-triggered bursts (вспышка удара, шейк, death-burst), конфигурится в Inspector, не кодом. Не конкурируют, дополняют.</p>
+</blockquote>
+<hr/>
+<h2 id="8-di--composition-guildmastergame-vcontainer">8. DI / Composition (<code>Guildmaster.Game</code>, VContainer)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-di--composition-guildmastergame-vcontainer" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="81-rootlifetimescope-в-corescene-на-всю-сессию">8.1 <code>RootLifetimeScope</code> (в <code>CoreScene</code>, на всю сессию)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#81-rootlifetimescope-в-corescene-на-всю-сессию" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Регистрирует:</p>
+<ul>
+<li><code>IRngService</code> → <code>XorShiftRng</code> (фабрика — суб-сид на бой создаётся в боевом scope).</li>
+<li>MessagePipe (<code>RegisterMessageBroker</code>).</li>
+<li><code>IAudioService</code> → <code>UnityAudioService</code> (стаб).</li>
+<li><code>SceneLoader</code> (аддитивная загрузка, NGO-aware).</li>
+<li><code>GameFlow</code> (Фаза 1 — тонкий: Boot → грузит BattleScene; полный флоу — Фаза 5).</li>
+</ul>
+<h3 id="82-combatlifetimescope-в-battlescene-на-один-бой">8.2 <code>CombatLifetimeScope</code> (в <code>BattleScene</code>, на один бой)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#82-combatlifetimescope-в-battlescene-на-один-бой" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>Child от Root. Регистрирует:</p>
+<ul>
+<li><code>CombatSimulation</code> + все системы (§5.3) через конструкторы.</li>
+<li><code>ICombatContext</code> → <code>CombatContext</code>.</li>
+<li><code>IRngService</code> боя (суб-сид = <code>runSeed + battleIndex + attempt</code>, док 7 §6).</li>
+<li><code>CombatLoopService</code> (пульс).</li>
+<li><code>CombatPresenter</code>.</li>
+</ul>
+<blockquote>
+<p>Сцена выгрузилась → scope задиспозился → бой и его аллокации ушли. Чисто.</p>
+</blockquote>
+<h3 id="83-прочие-сервисы">8.3 Прочие сервисы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#83-прочие-сервисы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Класс</th><th>Сборка</th><th>Роль</th></tr></thead><tbody><tr><td><code>GameBootstrap</code></td><td>Game</td><td>Энтри: поднять Root scope, загрузить первую сцену</td></tr><tr><td><code>SceneLoader</code></td><td>Game</td><td><code>LoadBattleAdditive()</code> / <code>UnloadBattle()</code>. Под NGO scene management (Фаза 6) — один шов</td></tr><tr><td><code>BattleSetupBuilder</code></td><td>Game</td><td>Минимальный <code>RunState</code>/тест-конфиг → начальные юниты сим (через <code>RuntimeUnitFactory</code>)</td></tr></tbody></table></div>
+<hr/>
+<h2 id="9-devtools-guildmasterdevtools-quantum-console">9. DevTools (<code>Guildmaster.DevTools</code>, Quantum Console)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-devtools-guildmasterdevtools-quantum-console" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Команды, нужные с Фазы 1:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Команда</th><th>Действие</th></tr></thead><tbody><tr><td><code>gm_rng_seed &lt;seed></code></td><td>Зафиксировать сид боя (детерминизм-отладка)</td></tr><tr><td><code>gm_spawn_battle &lt;a> &lt;b></code></td><td>Поднять тест-бой N×M юнитов</td></tr><tr><td><code>gm_set_hp &lt;unitId> &lt;v></code></td><td>Выставить HP</td></tr><tr><td><code>gm_skip_battle</code></td><td>Мгновенно завершить бой</td></tr><tr><td><code>gm_toggle_debug_draw</code></td><td>Вкл/выкл Shapes debug-слой</td></tr></tbody></table></div>
+<hr/>
+<h2 id="10-тесты-фаза-1">10. Тесты (Фаза 1)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-тесты-фаза-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Тест</th><th>Сборка</th><th>Что проверяет</th></tr></thead><tbody><tr><td>Детерминизм сим</td><td>EditMode</td><td>Один сид + один лог команд → одинаковый checksum после N тиков (headless, без сцены)</td></tr><tr><td>Пайплайн урона</td><td>EditMode</td><td>Чистые функции: крит через мок-Rng, броня/пробивание, эффективности, щит</td></tr><tr><td>Стат-формула</td><td>EditMode</td><td><code>(base+ΣFlat)×(1+ΣPercentAdd)×Π(1+PercentMult)</code>; add/remove по источнику; dirty-кэш</td></tr><tr><td>Spatial hash</td><td>EditMode</td><td><code>QueryRadius</code> находит ровно тех, кто в радиусе; границы ячеек</td></tr><tr><td>Снаряд swept</td><td>EditMode</td><td>Быстрый снаряд не «протыкает» цель между тиками</td></tr><tr><td>Battle integration</td><td>PlayMode</td><td>start → loop → одна сторона побеждает → корректный teardown</td></tr></tbody></table></div>
+<hr/>
+<h2 id="11-карта-взаимодействия-один-бой">11. Карта взаимодействия (один бой)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#11-карта-взаимодействия-один-бой" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<pre><code>GameBootstrap → RootLifetimeScope (CoreScene)
+   └─ GameFlow.Boot → SceneLoader.LoadBattleAdditive()
+        └─ CombatLifetimeScope (BattleScene)
+             ├─ BattleSetupBuilder → RuntimeUnitFactory → юниты в CombatSimulation
+             ├─ CombatPresenter спавнит UnitView/HealthBarView на каждый юнит
+             └─ CombatLoopService стартует пульс (host)
+                  │
+                  ▼ каждый кадр (host)
+             accumulator → N× CombatSimulation.Tick(dt)
+                  ├─ ApplyDueCommands  (вход интентов: ГМ-каст/пауза; в MP — от Net)
+                  ├─ системы (фикс. порядок) → DamagePipeline (Rng)
+                  ├─ DrainEventQueue
+                  └─ emit MessagePipe-события → CombatPresenter → UnitView/HP-бар/числа/Feel
+                  │
+                  ▼ DeathSystem: одна сторона мертва
+             GameFlow ← Outcome → SceneLoader.UnloadBattle() → scope dispose
+</code></pre>
+<hr/>
+<h2 id="12-порядок-реализации-внутри-фазы-1-предложение">12. Порядок реализации внутри Фазы 1 (предложение)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#12-порядок-реализации-внутри-фазы-1-предложение" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>Сборки + сцены</strong> — новый asmdef-граф, <code>CoreScene</code>/<code>BattleScene</code>, пустой <code>RootLifetimeScope</code>, зелёная компиляция и CI.</li>
+<li><strong>Core-фундамент</strong> — <code>IRngService</code> + <code>XorShiftRng</code> + тест детерминизма; <code>SimConstants</code>; базовые интерфейсы команд/событий.</li>
+<li><strong>Data-минимум</strong> — <code>StatType</code> (подмн.), <code>StatModifier</code>, <code>StatsConfig</code>, скелеты <code>RelicData</code>/<code>VesselData</code>; интерфейсы <code>IEffectComponent</code>/<code>ScalableValue</code> (без реализаций).</li>
+<li><strong>Stats + RuntimeUnit + Factory</strong> — стат-формула + тесты.</li>
+<li><strong>DamagePipeline</strong> — чистые функции + тесты (рефактор <code>DamageCalculator</code> на <code>IRngService</code>).</li>
+<li><strong>Spatial hash + Movement + Targeting(lite)</strong> — + тесты.</li>
+<li><strong>AutoAttack + Projectile(swept)</strong> — + тесты; <code>ICombatContext</code>.</li>
+<li><strong>CombatSimulation.Tick</strong> — собрать системы в фикс. порядок; command/event-queue; battle integration-тест.</li>
+<li><strong>CombatLoopService + DI scopes</strong> — реалтайм-пульс, пауза.</li>
+<li><strong>Презентация</strong> — <code>CombatPresenter</code>, <code>UnitView</code>, <code>HealthBarView</code> (Shapes), <code>DamageNumberSpawner</code> (LitMotion), <code>CombatDebugDraw</code>.</li>
+<li><strong>DevTools</strong> — QC-команды.</li>
+<li><strong>Нетворк-спайк</strong> — <code>Net</code>-сборка, <code>NetworkCommandRelay</code>, <code>FacepunchTransportBootstrap</code>, <code>SimSyncProbe</code>, тест в MPPM (2 инстанса).</li>
+</ol>
+<blockquote>
+<p>Принцип темпа (док 9): тонкий вертикальный срез как можно раньше — после шагов 1–8 уже есть «бьющиеся юниты» в headless-тесте, после 9–10 — видимый бой в редакторе.</p>
+</blockquote>
+<hr/>
+<h2 id="13-открытые-вопросы-на-ревью">13. Открытые вопросы (на ревью)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#13-открытые-вопросы-на-ревью" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong><code>Vector2</code>:</strong> оставить <code>UnityEngine.Vector2</code> в чистой сим (удобно, float-детерминизм ок по доку 5) или свой <code>Vec2</code> в Core ради <code>noEngineReferences</code> на <code>Combat</code>? Склоняюсь к <code>UnityEngine.Vector2</code> — прагматично.</li>
+<li><strong><code>Guild</code>/<code>UI</code>/<code>MiniGames</code>:</strong> создать пустыми стабами сейчас (чтобы граф был полным) или заводить по мере надобности в своих фазах? Предлагаю стабы <code>Guild</code>/<code>UI</code> сейчас, <code>MiniGames</code> — позже.</li>
+<li><strong><code>BootScene</code>:</strong> делать отдельную или <code>CoreScene</code> = точка входа? Предлагаю без <code>BootScene</code> (проще).</li>
+<li><strong>Lookahead команд</strong> в host-auth (на сколько тиков вперёд штампуем <code>TargetTick</code>) — подобрать в спайке под пинг Steam relay.</li>
+<li><strong>Подмножество <code>StatType</code> Фазы 1</strong> — финальный список под авто-атаки (без эффектов). Уточнить перед шагом 3.</li>
+</ul>
+<hr/>
+<h2 id="14-следующий-шаг">14. Следующий шаг<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#14-следующий-шаг" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Макс читает → даёт мнение / правки → по согласованию начинаем с <strong>шага 1</strong> (§12): новый asmdef-граф + сцены + пустой composition root + зелёный CI. После апрува — обновить <a href="../Игровая-документация---Техническая-часть/1.-Сборки-(Assembly-Definitions)" class="internal alias" data-slug="Игровая-документация---Техническая-часть/1.-Сборки-(Assembly-Definitions)">1. Сборки</a> под новый граф.</p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-17" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#0-решённые-развилки-контекст-этого-дока" data-for="0-решённые-развилки-контекст-этого-дока">0. Решённые развилки (контекст этого дока)</a></li><li class="depth-0"><a href="#1-что-фаза-1-даёт-и-чего-не-делает" data-for="1-что-фаза-1-даёт-и-чего-не-делает">1. Что Фаза 1 даёт и чего НЕ делает</a></li><li class="depth-0"><a href="#2-сборки-новый-граф" data-for="2-сборки-новый-граф">2. Сборки (новый граф)</a></li><li class="depth-1"><a href="#21-граф-зависимостей" data-for="21-граф-зависимостей">2.1 Граф зависимостей</a></li><li class="depth-1"><a href="#22-таблица-сборок" data-for="22-таблица-сборок">2.2 Таблица сборок</a></li><li class="depth-1"><a href="#23-внешние-пакеты-по-сборкам" data-for="23-внешние-пакеты-по-сборкам">2.3 Внешние пакеты по сборкам</a></li><li class="depth-0"><a href="#3-сцены" data-for="3-сцены">3. Сцены</a></li><li class="depth-1"><a href="#31-карта-сцен-фазы-1" data-for="31-карта-сцен-фазы-1">3.1 Карта сцен Фазы 1</a></li><li class="depth-1"><a href="#32-corescene--что-внутри" data-for="32-corescene--что-внутри">3.2 CoreScene — что внутри</a></li><li class="depth-1"><a href="#33-battlescene--что-внутри" data-for="33-battlescene--что-внутри">3.3 BattleScene — что внутри</a></li><li class="depth-0"><a href="#4-слой-данных-guildmasterdata--минимум-фазы-1" data-for="4-слой-данных-guildmasterdata--минимум-фазы-1">4. Слой данных (Guildmaster.Data) — минимум Фазы 1</a></li><li class="depth-1"><a href="#41-статы" data-for="41-статы">4.1 Статы</a></li><li class="depth-1"><a href="#42-so-определения-скелеты" data-for="42-so-определения-скелеты">4.2 SO-определения (скелеты)</a></li><li class="depth-0"><a href="#5-боевая-симуляция-guildmastercombat--сердце-фазы-1" data-for="5-боевая-симуляция-guildmastercombat--сердце-фазы-1">5. Боевая симуляция (Guildmaster.Combat) — сердце Фазы 1</a></li><li class="depth-1"><a href="#51-тиковый-цикл-и-детерминизм" data-for="51-тиковый-цикл-и-детерминизм">5.1 Тиковый цикл и детерминизм</a></li><li class="depth-1"><a href="#52-юнит-и-статы" data-for="52-юнит-и-статы">5.2 Юнит и статы</a></li><li class="depth-1"><a href="#53-пространство-и-системы" data-for="53-пространство-и-системы">5.3 Пространство и системы</a></li><li class="depth-1"><a href="#54-урон--чистые-функции" data-for="54-урон--чистые-функции">5.4 Урон — чистые функции</a></li><li class="depth-1"><a href="#55-icombatcontext--шов-логика--мир" data-for="55-icombatcontext--шов-логика--мир">5.5 ICombatContext — шов «логика ↔ мир»</a></li><li class="depth-1"><a href="#56-команды-и-события" data-for="56-команды-и-события">5.6 Команды и события</a></li><li class="depth-0"><a href="#6-нетворк-шов-guildmasternet--host-authoritative" data-for="6-нетворк-шов-guildmasternet--host-authoritative">6. Нетворк-шов (Guildmaster.Net) — host-authoritative</a></li><li class="depth-1"><a href="#61-поток-команды-host-authoritative" data-for="61-поток-команды-host-authoritative">6.1 Поток команды (host-authoritative)</a></li><li class="depth-1"><a href="#62-цель-спайка-definition-of-done" data-for="62-цель-спайка-definition-of-done">6.2 Цель спайка (Definition of Done)</a></li><li class="depth-0"><a href="#7-презентация-guildmasterpresentation--только-читает-сим" data-for="7-презентация-guildmasterpresentation--только-читает-сим">7. Презентация (Guildmaster.Presentation) — только читает сим</a></li><li class="depth-0"><a href="#8-di--composition-guildmastergame-vcontainer" data-for="8-di--composition-guildmastergame-vcontainer">8. DI / Composition (Guildmaster.Game, VContainer)</a></li><li class="depth-1"><a href="#81-rootlifetimescope-в-corescene-на-всю-сессию" data-for="81-rootlifetimescope-в-corescene-на-всю-сессию">8.1 RootLifetimeScope (в CoreScene, на всю сессию)</a></li><li class="depth-1"><a href="#82-combatlifetimescope-в-battlescene-на-один-бой" data-for="82-combatlifetimescope-в-battlescene-на-один-бой">8.2 CombatLifetimeScope (в BattleScene, на один бой)</a></li><li class="depth-1"><a href="#83-прочие-сервисы" data-for="83-прочие-сервисы">8.3 Прочие сервисы</a></li><li class="depth-0"><a href="#9-devtools-guildmasterdevtools-quantum-console" data-for="9-devtools-guildmasterdevtools-quantum-console">9. DevTools (Guildmaster.DevTools, Quantum Console)</a></li><li class="depth-0"><a href="#10-тесты-фаза-1" data-for="10-тесты-фаза-1">10. Тесты (Фаза 1)</a></li><li class="depth-0"><a href="#11-карта-взаимодействия-один-бой" data-for="11-карта-взаимодействия-один-бой">11. Карта взаимодействия (один бой)</a></li><li class="depth-0"><a href="#12-порядок-реализации-внутри-фазы-1-предложение" data-for="12-порядок-реализации-внутри-фазы-1-предложение">12. Порядок реализации внутри Фазы 1 (предложение)</a></li><li class="depth-0"><a href="#13-открытые-вопросы-на-ревью" data-for="13-открытые-вопросы-на-ревью">13. Открытые вопросы (на ревью)</a></li><li class="depth-0"><a href="#14-следующий-шаг" data-for="14-следующий-шаг">14. Следующий шаг</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../postscript.js" type="module"></script></html>
