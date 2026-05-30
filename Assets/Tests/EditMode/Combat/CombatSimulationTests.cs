@@ -73,8 +73,12 @@ namespace Guildmaster.Tests.EditMode.Combat
                 $"После {Ticks} тиков checksum расходится при одинаковом сиде");
         }
 
+        // ВНИМАНИЕ: в Фазе 1 симуляция НЕ потребляет RNG (нет крита/разброса урона),
+        // поэтому ход боя при разных сидах идентичен. Этот тест проверяет лишь, что
+        // checksum включает состояние RNG и различает сиды. Когда в Фазе 2 рандом войдёт
+        // в пайплайн — заменить на проверку реального расхождения боя.
         [Test]
-        public void DifferentSeeds_CanProduceDifferentChecksums()
+        public void DifferentSeeds_ProduceDifferentChecksums_ViaRngState()
         {
             var simA = BuildSim(Seed);
             var simB = BuildSim(Seed + 1UL);
@@ -89,7 +93,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             }
 
             Assert.AreNotEqual(simA.ComputeChecksum(), simB.ComputeChecksum(),
-                "Разные сиды должны давать разные состояния при наличии RNG в пайплайне");
+                "Checksum должен различать разные сиды (через снапшот состояния RNG)");
         }
 
         [Test]

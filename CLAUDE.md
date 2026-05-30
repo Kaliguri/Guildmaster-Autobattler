@@ -80,13 +80,17 @@
 
 | Задача | MCP-сервер | Server ID | Инструменты |
 |---|---|---|---|
-| Работа со сценами Unity, объектами, компонентами, play mode, тесты | **unityMCP** | `user-unityMCP` | `manage_scene`, `manage_gameobject`, `read_console`, `run_tests`, `refresh_unity` и др. |
+| Работа со сценами Unity, объектами, компонентами, play mode, тесты | **unityMCP** | `unityMCP` (в `.mcp.json`) | `manage_scene`, `manage_gameobject`, `read_console`, `run_tests`, `refresh_unity` и др. |
 | Создание PR, issues, просмотр workflows, releases | **github** | `project-0-Guildmaster_-_Autobattler-github` | `create_pull_request`, `create_issue`, `list_workflows` и др. |
 | Локальные git-операции: коммиты, ветки, diff, лог | **git** | `project-0-Guildmaster_-_Autobattler-git` | `git_commit`, `git_diff`, `git_log`, `git_create_branch` и др. |
 | Актуальная документация библиотек (Unity, C#, пакеты) | **context7** | `project-0-Guildmaster_-_Autobattler-context7` | `resolve-library-id`, `get-library-docs` |
 | Чтение и запись файлов проекта | **filesystem** | `project-0-Guildmaster_-_Autobattler-filesystem` | `read_file`, `write_file`, `list_directory` и др. |
 
-> Unity MCP: `mcpforunityserver==9.7.1`, порт `8080` (user-level, не в `.cursor/mcp.json` проекта)
+> Unity MCP — это [CoplayDev/unity-mcp](https://github.com/CoplayDev/unity-mcp). Server ID `unityMCP` прописан в корневом `.mcp.json` (остальные серверы — в `.cursor/mcp.json`).
+> - **Сервер:** `mcpforunityserver==9.7.1` через `uvx`, команда `mcp-for-unity`, транспорт **`stdio`** (не HTTP).
+> - **Редакторный пакет:** `com.coplaydev.unity-mcp`, ставится по git URL `https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main` (Package Manager → Add from git URL).
+> - **Мост:** StdioBridgeHost внутри Unity, порт `6400`. `Window → MCP for Unity` показывает статус подключения; окно должно быть открыто.
+> - Проверка коннекта: ресурс `mcpforunity://instances` (`instance_count ≥ 1` = редактор подключён).
 
 ### Приоритет использования MCP
 

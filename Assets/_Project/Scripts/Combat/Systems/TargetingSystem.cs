@@ -23,6 +23,8 @@ namespace Guildmaster.Combat
             }
         }
 
+        // TODO Фаза 3: заменить линейный O(n²) перебор на SpatialHash.QueryRadius,
+        // когда число юнитов вырастет (сейчас десятки — перебор дешевле запроса).
         private static RuntimeUnit FindNearestEnemy(RuntimeUnit unit, List<RuntimeUnit> all)
         {
             RuntimeUnit nearest   = null;

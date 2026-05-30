@@ -18,7 +18,7 @@ alwaysApply: true
 
 ## Создание новых C# скриптов
 
-После записи любого `.cs` файла — **всегда** триггерить компиляцию через Unity MCP (`user-unityMCP`) перед коммитом. Unity генерирует `.meta` файлы при компиляции; без них Unity теряет настройки ассетов.
+После записи любого `.cs` файла — **всегда** триггерить компиляцию через Unity MCP (`unityMCP`) перед коммитом. Unity генерирует `.meta` файлы при компиляции; без них Unity теряет настройки ассетов.
 
 **Порядок действий:**
 1. Записать `.cs` файл(ы)
@@ -27,7 +27,7 @@ alwaysApply: true
 4. Добавить в коммит и `.cs`, и `.meta` вместе
 
 ```json
-// Пример вызова перекомпиляции (user-unityMCP → refresh_unity)
+// Пример вызова перекомпиляции (unityMCP → refresh_unity)
 {
   "mode": "force",
   "scope": "scripts",
@@ -47,7 +47,7 @@ git add Assets/_Project/Scripts/Core/IUnit.cs.meta
 
 ## Unity MCP — текущая версия
 
-Установлен `mcpforunityserver==9.7.1` на уровне пользователя (user-level), server ID: `user-unityMCP`, порт `8080`.
+Используется [CoplayDev/unity-mcp](https://github.com/CoplayDev/unity-mcp): сервер `mcpforunityserver==9.7.1` (`uvx` → `mcp-for-unity`, транспорт **`stdio`**), server ID `unityMCP` в корневом `.mcp.json`. Редакторный пакет `com.coplaydev.unity-mcp`, мост StdioBridgeHost на порту `6400`. Коннект проверяется ресурсом `mcpforunity://instances`.
 
 Основные инструменты (отличаются от старого `com.gamelovers.mcp-unity`):
 

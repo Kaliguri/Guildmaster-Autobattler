@@ -1,14 +1,16 @@
 using System.Collections.Generic;
 using Guildmaster.Combat;
+using MessagePipe;
 using UnityEngine;
 using VContainer;
 
 namespace Guildmaster.Presentation
 {
     /// <summary>
-    /// Мост «симуляция → вид боя». Подписывается на C#-события <see cref="CombatSimulation"/>,
-    /// спавнит/деспавнит <see cref="UnitView"/> и распространяет события в Presentation-слой.
-    /// Только читает состояние симуляции — никогда не мутирует (вики «10» §7).
+    /// Мост «симуляция → презентация». Подписывается на C#-события <see cref="CombatSimulation"/>,
+    /// спавнит/деспавнит <see cref="UnitView"/> и ретранслирует события в MessagePipe, чтобы
+    /// Audio/VFX/UI подписывались независимо от симуляции (вики «10» §7, стек — CLAUDE.md).
+    /// Только читает состояние симуляции — никогда не мутирует.
     /// </summary>
     public sealed class CombatPresenter : MonoBehaviour
     {
@@ -21,10 +23,24 @@ namespace Guildmaster.Presentation
         private CombatSimulation            _simulation;
         private readonly Dictionary<int, UnitView> _views = new Dictionary<int, UnitView>();
 
+        private IPublisher<UnitSpawnedEvent> _unitSpawnedPublisher;
+        private IPublisher<UnitDiedEvent>    _unitDiedPublisher;
+        private IPublisher<DamageDealtEvent> _damageDealtPublisher;
+        private IPublisher<BattleEndedEvent> _battleEndedPublisher;
+
         [Inject]
-        public void Construct(CombatSimulation simulation)
+        public void Construct(
+            CombatSimulation simulation,
+            IPublisher<UnitSpawnedEvent> unitSpawnedPublisher,
+            IPublisher<UnitDiedEvent>    unitDiedPublisher,
+            IPublisher<DamageDealtEvent> damageDealtPublisher,
+            IPublisher<BattleEndedEvent> battleEndedPublisher)
         {
-            _simulation = simulation;
+            _simulation           = simulation;
+            _unitSpawnedPublisher = unitSpawnedPublisher;
+            _unitDiedPublisher    = unitDiedPublisher;
+            _damageDealtPublisher = damageDealtPublisher;
+            _battleEndedPublisher = battleEndedPublisher;
         }
 
         private void OnEnable()
@@ -58,11 +74,14 @@ namespace Guildmaster.Presentation
 
         private void HandleUnitSpawned(RuntimeUnit unit)
         {
-            if (_unitViewPrefab == null) return;
+            if (_unitViewPrefab != null)
+            {
+                var view = Instantiate(_unitViewPrefab, (Vector3)(Vector2)unit.Position, Quaternion.identity, transform);
+                view.Bind(unit);
+                _views[unit.Id] = view;
+            }
 
-            var view = Instantiate(_unitViewPrefab, (Vector3)(Vector2)unit.Position, Quaternion.identity, transform);
-            view.Bind(unit);
-            _views[unit.Id] = view;
+            _unitSpawnedPublisher.Publish(new UnitSpawnedEvent(unit));
         }
 
         private void HandleUnitDied(RuntimeUnit unit)
@@ -72,6 +91,8 @@ namespace Guildmaster.Presentation
                 view.OnDeath();
                 _views.Remove(unit.Id);
             }
+
+            _unitDiedPublisher.Publish(new UnitDiedEvent(unit));
         }
 
         private void HandleDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result)
@@ -80,11 +101,15 @@ namespace Guildmaster.Presentation
                 view.OnDamageReceived(result.TotalDamage);
 
             _damageNumbers?.Spawn(target.Position, result.TotalDamage);
+
+            _damageDealtPublisher.Publish(new DamageDealtEvent(source, target, result));
         }
 
         private void HandleBattleEnded(BattleOutcome outcome)
         {
             Debug.Log($"[CombatPresenter] - Бой завершён: {outcome}");
+
+            _battleEndedPublisher.Publish(new BattleEndedEvent(outcome));
         }
     }
 }

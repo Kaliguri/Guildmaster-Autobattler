@@ -76,6 +76,9 @@ namespace Guildmaster.Game
             builder.RegisterComponentInHierarchy<CombatDebugDraw>();
         }
 
+        // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя), а не
+        // генерироваться локально — иначе RNG хоста и клиента разойдутся. Сейчас ок:
+        // модель хост-авторитетная, тикает только хост (см. CombatLoopService).
         private static ulong GenerateBattleSeed()
         {
             return (ulong)System.DateTime.UtcNow.Ticks ^

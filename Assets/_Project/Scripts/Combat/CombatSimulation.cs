@@ -93,16 +93,19 @@ namespace Guildmaster.Combat
             if (_outcome != BattleOutcome.Ongoing) return;
 
             FlushPendingSpawns();
-            bool wasPaused = _isPaused;
+
+            // Пауза, применённая ЭТИМ тиком, вступает в силу со следующего:
+            // текущий тик ещё досимулировывается. Поэтому фиксируем состояние ДО команд.
+            bool pausedBeforeCommands = _isPaused;
             ApplyDueCommands();
 
-            if (_isPaused)
+            if (_isPaused && pausedBeforeCommands)
             {
-                if (wasPaused)
-                {
-                    if (_commandQueue.Count > 0) _currentTick++;
-                    return;
-                }
+                // Системы стоят, но счётчик тиков продолжает идти, ПОКА в очереди есть
+                // команды — иначе ResumeCommand с будущим TargetTick никогда не наступит
+                // и бой залипнет в паузе навсегда.
+                if (_commandQueue.Count > 0) _currentTick++;
+                return;
             }
 
             _targetingSystem.Tick(_units);
@@ -125,6 +128,7 @@ namespace Guildmaster.Combat
             OnDamageDealt?.Invoke(req.Source, req.Target, result);
         }
 
+        // source пока не используется — нужен для триггеров исцеления (Фаза 2).
         public void Heal(RuntimeUnit target, float amount, RuntimeUnit source)
         {
             if (target.IsDead) return;
@@ -220,10 +224,12 @@ namespace Guildmaster.Combat
             for (int i = 0; i < _units.Count; i++)
             {
                 RuntimeUnit u = _units[i];
+                // Каст float→long ДО ulong: прямой каст отрицательного float в ulong
+                // даёт 0/неопределённость, и разные отрицательные координаты схлопываются.
                 hash ^= (ulong)(u.Id * 1000003);
-                hash ^= (ulong)(u.Position.x * 1000f) * 2246822519UL;
-                hash ^= (ulong)(u.Position.y * 1000f) * 3266489917UL;
-                hash ^= (ulong)(u.CurrentHP  * 100f)  * 668265263UL;
+                hash ^= (ulong)(long)(u.Position.x * 1000f) * 2246822519UL;
+                hash ^= (ulong)(long)(u.Position.y * 1000f) * 3266489917UL;
+                hash ^= (ulong)(long)(u.CurrentHP  * 100f)  * 668265263UL;
                 hash  = (hash << 13) | (hash >> 51);
             }
 

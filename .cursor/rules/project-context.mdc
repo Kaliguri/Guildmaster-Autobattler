@@ -11,13 +11,13 @@ Unity 6 кооперативный автобатлер-рогалик в реа
 
 | MCP | Server ID | Когда использовать |
 |---|---|---|
-| **unity** | `user-unityMCP` | Операции с Unity Editor: сцены, объекты, компоненты, тесты, консоль |
+| **unity** | `unityMCP` | Операции с Unity Editor: сцены, объекты, компоненты, тесты, консоль |
 | **github** | `project-0-Guildmaster_-_Autobattler-github` | PR, issues, GitHub Actions workflows |
 | **git** | `project-0-Guildmaster_-_Autobattler-git` | Коммиты, ветки, diff, история — предпочитать Shell-командам |
 | **context7** | `project-0-Guildmaster_-_Autobattler-context7` | Документация Unity API и любых библиотек — ВСЕГДА перед ответом об API |
 | **filesystem** | `project-0-Guildmaster_-_Autobattler-filesystem` | Чтение/запись файлов проекта |
 
-### Unity MCP — ключевые инструменты (`user-unityMCP`)
+### Unity MCP — ключевые инструменты (`unityMCP`)
 
 | Инструмент | Назначение |
 |---|---|
