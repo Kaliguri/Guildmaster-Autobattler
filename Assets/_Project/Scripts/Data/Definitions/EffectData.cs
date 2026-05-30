@@ -3,14 +3,15 @@ using UnityEngine;
 namespace Guildmaster.Data.Definitions
 {
     /// <summary>
-    /// Определение таймированного эффекта: идентичность, полярность, теги, базовая длительность
-    /// и полиморфные компоненты поведения (вики «10» §4.2).
+    /// Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные
+    /// теги, базовая длительность, правила стакинга/диспела и полиморфные компоненты поведения
+    /// (вики «6» §5, «12» §2.1).
     /// </summary>
     /// <remarks>
-    /// СКЕЛЕТ Фазы 1: поля-швы. <see cref="Components"/> типизирован якорным <see cref="IEffectComponent"/>
-    /// (см. его доку) — реальные компоненты и их применение появляются в Фазе 2.
-    /// Длительность хранится как базовая; масштабирование эфф-эффектами и per-tick-rate DoT/HoT —
-    /// логика рантайма (вики «11» §5–§5.1).
+    /// <see cref="Components"/> типизирован Data-маркером <see cref="IEffectComponent"/>, но реально
+    /// хранит Combat-типы через <c>[SerializeReference]</c> (кросс-сборочный шов подтверждён спайком
+    /// S1, вики «12» §5). Длительность — базовая в секундах; масштабирование эфф-эффектами и
+    /// конверсия в тики — логика рантайма (<c>EffectSystem</c>, вики «11» §5).
     /// </remarks>
     [CreateAssetMenu(menuName = "Guildmaster/Content/Effect", fileName = "Effect")]
     public sealed class EffectData : ScriptableObject
@@ -18,20 +19,36 @@ namespace Guildmaster.Data.Definitions
         [Header("Identity")]
         [SerializeField] private string _id;
         [SerializeField] private EffectPolarity _polarity = EffectPolarity.Neutral;
-        [SerializeField] private string[] _tags;
+        [Tooltip("Категориальные теги: диспел по категории, AI-фильтры, битовая маска на юните.")]
+        [SerializeField] private EffectTag _tags;
 
         [Header("Timing")]
-        [Tooltip("Базовая длительность, сек. ≤ 0 — мгновенный/перманентный (уточняется в Фазе 2).")]
+        [Tooltip("Базовая длительность, сек. 0 = мгновенный (один OnApply), -1 = постоянный (пассивка).")]
         [SerializeField] private float _baseDuration;
 
-        [Header("Behaviour (Фаза 2)")]
-        [Tooltip("Полиморфные компоненты поведения. Реализации — Фаза 2 (Combat).")]
+        [Header("Stacking")]
+        [SerializeField] private StackRule _stacking = StackRule.None;
+        [Tooltip("Потолок стаков (актуально для Stack/StackAndRefresh).")]
+        [SerializeField] private int _maxStacks = 1;
+
+        [Header("Dispel resistance")]
+        [Tooltip("Снимается диспелом с DispelPower ≥ CleanseTier.")]
+        [SerializeField] private int _cleanseTier;
+        [Tooltip("Неснимаемо никаким диспелом.")]
+        [SerializeField] private bool _unremovable;
+
+        [Header("Behaviour")]
+        [Tooltip("Полиморфные компоненты поведения (Combat-типы через SerializeReference). Шарятся между носителями — должны быть stateless.")]
         [SerializeReference] private IEffectComponent[] _components;
 
         public string Id => _id;
         public EffectPolarity Polarity => _polarity;
-        public string[] Tags => _tags;
+        public EffectTag Tags => _tags;
         public float BaseDuration => _baseDuration;
+        public StackRule Stacking => _stacking;
+        public int MaxStacks => _maxStacks;
+        public int CleanseTier => _cleanseTier;
+        public bool Unremovable => _unremovable;
         public IEffectComponent[] Components => _components;
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Guildmaster.Combat.Effects;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -48,5 +50,25 @@ namespace Guildmaster.Combat
 
         /// <summary>SO «Пилот»: идентичность, таланты (Фаза 2/4).</summary>
         public VesselData Vessel;
+
+        // --- Эффекты (Фаза 2) ---
+
+        /// <summary>Активные эффекты на юните. Мутирует только <c>EffectSystem</c> (через pending, не во время итерации).</summary>
+        public readonly List<RuntimeEffect> ActiveEffects = new List<RuntimeEffect>();
+
+        /// <summary>Битовая маска тегов активных эффектов. Обновляется при add/remove — быстрый запрос для AI (Фаза 3) и диспела.</summary>
+        public EffectTag EffectTagMask;
+
+        // --- Флаги контроля (Фаза 2) ---
+        // Пересчитываются EffectSystem из активных ControlComponent. Системы движения/атаки/каста только читают.
+
+        /// <summary>Может действовать (атаковать/кастовать). false = оглушение/сон.</summary>
+        public bool CanAct = true;
+
+        /// <summary>Может двигаться. false = обездвиживание/корень.</summary>
+        public bool CanMove = true;
+
+        /// <summary>Может кастовать способности. false = немота.</summary>
+        public bool CanCast = true;
     }
 }
