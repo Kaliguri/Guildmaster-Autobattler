@@ -1,8 +1,15 @@
 {
-  "name": "Guildmaster.Units",
-  "rootNamespace": "Guildmaster.Units",
+  "name": "Guildmaster.Presentation",
+  "rootNamespace": "Guildmaster.Presentation",
   "references": [
-    "Guildmaster.Core"
+    "Guildmaster.Core",
+    "Guildmaster.Data",
+    "Guildmaster.Combat",
+    "Shapes Runtime",
+    "LitMotion",
+    "UniTask",
+    "MessagePipe",
+    "VContainer"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

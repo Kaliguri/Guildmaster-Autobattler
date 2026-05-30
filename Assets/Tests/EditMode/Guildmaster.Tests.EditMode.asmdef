@@ -5,9 +5,8 @@
     "UnityEngine.TestRunner",
     "UnityEditor.TestRunner",
     "Guildmaster.Core",
-    "Guildmaster.Units",
-    "Guildmaster.Combat",
-    "Guildmaster.Guild"
+    "Guildmaster.Data",
+    "Guildmaster.Combat"
   ],
   "includePlatforms": [
     "Editor"

@@ -4,9 +4,9 @@
   "references": [
     "UnityEngine.TestRunner",
     "Guildmaster.Core",
-    "Guildmaster.Units",
+    "Guildmaster.Data",
     "Guildmaster.Combat",
-    "Guildmaster.Guild"
+    "Guildmaster.Game"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

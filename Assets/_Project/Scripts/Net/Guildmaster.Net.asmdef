@@ -1,0 +1,19 @@
+{
+  "name": "Guildmaster.Net",
+  "rootNamespace": "Guildmaster.Net",
+  "references": [
+    "Guildmaster.Core",
+    "Guildmaster.Combat",
+    "Unity.Netcode.Runtime",
+    "VContainer"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

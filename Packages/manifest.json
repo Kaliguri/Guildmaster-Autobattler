@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.gamelovers.mcp-unity": "https://github.com/CoderGamester/mcp-unity.git",
+    "com.coplaydev.unity-mcp": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
     "com.unity.nuget.newtonsoft-json": "3.2.2",
     "com.unity.addressables": "2.3.1",
     "com.unity.localization": "1.5.3",
