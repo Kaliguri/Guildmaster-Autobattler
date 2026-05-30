@@ -1,12 +1,19 @@
 # Guildmaster — Autobattler
 
-> Пошаговый автобатлер-рогалик с кооперативным управлением гильдией. В разработке.
+> Кооперативный автобатлер-рогалик в реальном времени (с паузой). В разработке.
 
-![Unity](https://img.shields.io/badge/Unity-6000.4.8f1-black?logo=unity) ![Platform](https://img.shields.io/badge/Platform-Windows%20%2F%20PC-blue) ![Status](https://img.shields.io/badge/Status-In%20Development-yellow) ![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red) [![CI](https://github.com/Kaliguri/Guildmaster-Autobattler/actions/workflows/ci.yml/badge.svg)](https://github.com/Kaliguri/Guildmaster-Autobattler/actions/workflows/ci.yml) [![Docs](https://img.shields.io/badge/Docs-GitHub%20Pages-blueviolet?logo=github)](https://kaliguri.github.io/Guildmaster-Autobattler/)
+<p align="center">
+  <img src="https://img.shields.io/badge/Unity-6000.4.8f1-black?logo=unity" alt="Unity"/>
+  <img src="https://img.shields.io/badge/Platform-Windows%20%2F%20PC-blue" alt="Platform"/>
+  <img src="https://img.shields.io/badge/Status-In%20Development-yellow" alt="Status"/>
+  <img src="https://img.shields.io/badge/License-All%20Rights%20Reserved-red" alt="License"/>
+  <a href="https://github.com/Kaliguri/Guildmaster-Autobattler/actions/workflows/ci.yml"><img src="https://github.com/Kaliguri/Guildmaster-Autobattler/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+  <a href="https://kaliguri.github.io/Guildmaster-Autobattler/"><img src="https://img.shields.io/badge/Docs-GitHub%20Pages-blueviolet?logo=github" alt="Docs"/></a>
+</p>
 
 <p align="center">
   <a href="https://kaliguri.github.io/Guildmaster-Autobattler/"><b>🌐 Wiki и документация</b></a>
-  &nbsp;&nbsp;·&nbsp;&nbsp;
+  &nbsp;·&nbsp;
   <a href="https://kaliguri.github.io/Guildmaster-Autobattler/api/"><b>🔧 C# API Reference</b></a>
 </p>
 
@@ -14,19 +21,21 @@
 
 ## Об игре
 
-**Guildmaster** — пошаговый автобатлер с элементами рогалика, вдохновлённый *Slay the Spire*, *Across the Obelisk* и *Teamfight Manager*.
+**Guildmaster** — автобатлер-рогалик с паузой, вдохновлённый *Slay the Spire*, *Across the Obelisk* и *Teamfight Manager*.
 
-Вы возглавляете гильдию авантюристов, готовящихся к великому чемпионату. Перед каждой битвой вы распределяете осколки героев между бойцами, расставляете их на поле и настраиваете тактику — а дальше смотрите, как они сражаются сами. Управление исходом боя осуществляется через заклинания Гильдмастера.
+Вы возглавляете гильдию авантюристов, готовящихся к великому чемпионату. Перед каждой битвой вы распределяете **осколки героев** между бойцами, расставляете их на поле и настраиваете тактику — а дальше наблюдаете, как они сражаются сами. Влиять на ход боя можно через заклинания Гильдмастера.
 
-Игра поддерживает **1–4 игроков**: соло — и вы управляете всей гильдией, в кооперативе — каждый отвечает за своих бойцов.
+Игра поддерживает **1–4 игроков**: в соло вы управляете всей гильдией, в кооперативе — каждый отвечает за своих бойцов.
 
 ### Ключевые механики
 
-- **Осколки героев** — экипируемые артефакты, превращающие обычного гильдийца в бойца с уникальными способностями
-- **Гильдмастер** — не сражается, но кастует заклинания во время боя; его слоты ограничены и перезаряжаются между сражениями
-- **Автобой** — бой идёт сам, без микроменеджмента атак
-- **Карта в стиле STS** — ивенты, магазины, тренировки, боссы в конце акта
-- **Кооператив** — от 1 до 4 игроков делят гильдийцев между собой
+| Механика | Описание |
+|---|---|
+| **Осколки героев** | Экипируемые артефакты, превращающие рядового гильдийца в бойца с уникальными способностями |
+| **Гильдмастер** | Не сражается напрямую — кастует заклинания во время боя; слоты ограничены и восстанавливаются между схватками |
+| **Автобой** | Бой идёт в реальном времени без микроменеджмента атак; тактическая пауза доступна в любой момент |
+| **Карта рогалика** | Ивенты, магазины, тренировки и боссы в конце акта — в стиле *Slay the Spire* |
+| **Кооператив** | От 1 до 4 игроков делят гильдийцев по Steam через host-authoritative NGO |
 
 ---
 
@@ -37,7 +46,7 @@
 ---
 
 <details>
-<summary>Для разработчиков</summary>
+<summary><b>Для разработчиков</b></summary>
 
 ## Технический стек
 
@@ -47,39 +56,38 @@
 | **Язык** | C# |
 | **Платформа** | Windows / PC |
 | **CI/CD** | GitHub Actions + [GameCI](https://game.ci) |
-| **Docs** | Quartz v4 + Doxygen + GitHub Pages |
+| **Документация** | Quartz v4 + Doxygen + GitHub Pages |
 
-**Пакеты и плагины:**
+### Архитектура и пакеты
 
-| Пакет | Назначение |
-|---|---|
-| [VContainer](https://github.com/hadashiA/VContainer) | DI-контейнер — замена синглтонам |
-| [UniTask](https://github.com/Cysharp/UniTask) | Zero-alloc async/await |
-| [MessagePipe](https://github.com/Cysharp/MessagePipe) | Типизированный pub/sub EventBus через DI |
-| [LitMotion](https://github.com/annulusgames/LitMotion) | Zero-alloc твины для UI и VFX |
-| [Odin Inspector](https://odininspector.com) | Расширенный инспектор, `[SerializeReference]`-дропдауны |
-| [Easy Save 3](https://assetstore.unity.com/packages/tools/utilities/easy-save-the-complete-save-data-serializer-system-768) | Сохранения (диск + Steam Cloud) |
-| Newtonsoft.Json | JSON-сериализация DTO сейвов |
-| Addressables | Загрузка контента по адресу |
-| Unity Localization | Локализация EN + RU |
-| MPPM | Тест кооп в редакторе (до 4 виртуальных игроков) |
-| NGO (Netcode for GameObjects) | Сетевой слой (host-authoritative) |
-| [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) | Steam-интеграция и транспорт для NGO |
-| FMOD | Адаптивная музыка (за интерфейсом `IAudioService`) |
-| [Feel (More Mountains)](https://assetstore.unity.com/packages/tools/particles-effects/feel-183370) | Game feel: вибрация, тряска камеры, эффекты |
-| [Shapes (Freya Holmer)](https://acegikmo.com/shapes/) | Процедурная векторная графика для UI и дебага |
-| [Quantum Console](https://assetstore.unity.com/packages/tools/utilities/quantum-console-211046) | In-game dev-консоль |
-
-**AI-инструменты (контент-пайплайн):**
-
-| Инструмент | Назначение | Лицензия |
+| Категория | Пакет | Назначение |
 |---|---|---|
-| [Suno](https://suno.com) | Генерация музыки (платный тир) | Коммерческое использование разрешено |
-| [PixelLab](https://www.pixellab.ai) | Пиксельные спрайты, анимация юнитов | Уточнить тир |
-| [ElevenLabs](https://elevenlabs.io) | Генерация SFX и голоса для трейлера | Уточнить тир |
-| [DeepL](https://deepl.com) | Финальная вычитка локализации EN ↔ RU | — |
+| **DI / Events** | [VContainer](https://github.com/hadashiA/VContainer) | DI-контейнер — никаких синглтонов |
+| | [MessagePipe](https://github.com/Cysharp/MessagePipe) | Типизированный pub/sub EventBus через DI |
+| **Async / UI** | [UniTask](https://github.com/Cysharp/UniTask) | Zero-alloc async/await вместо корутин |
+| | [LitMotion](https://github.com/annulusgames/LitMotion) | Zero-alloc твины для UI и VFX |
+| **Мультиплеер** | NGO 2.11.2 | Netcode for GameObjects — host-authoritative |
+| | [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) | Steam-интеграция и транспорт для NGO |
+| | MPPM 1.3.2 | Тест кооп в редакторе (до 4 виртуальных игроков) |
+| **Данные** | Easy Save 3 | Сохранения (диск + Steam Cloud) |
+| | Newtonsoft.Json | JSON-сериализация DTO |
+| | Addressables | Загрузка контента по адресу |
+| | Unity Localization | Локализация EN + RU |
+| **Аудио** | FMOD | Адаптивная музыка (за интерфейсом `IAudioService`) |
+| **Инструменты** | [Odin Inspector](https://odininspector.com) | Расширенный инспектор, `[SerializeReference]`-дропдауны |
+| | [Feel (More Mountains)](https://assetstore.unity.com/packages/tools/particles-effects/feel-183370) | Game feel: вибрация, тряска камеры, хитстопы |
+| | [Quantum Console](https://assetstore.unity.com/packages/tools/utilities/quantum-console-211046) | In-game dev-консоль |
 
-> ⚠️ **Steam Disclosure:** проект использует AI-контент. При публикации в Steam обязательно заполнить раздел AI-контента в анкете (требование платформы с 2024 года).
+### AI-контент (пайплайн)
+
+| Инструмент | Назначение |
+|---|---|
+| [Suno](https://suno.com) | Генерация музыки |
+| [PixelLab](https://www.pixellab.ai) | Пиксельные спрайты и анимация юнитов |
+| [ElevenLabs](https://elevenlabs.io) | SFX и голос для трейлера |
+| [DeepL](https://deepl.com) | Финальная вычитка локализации EN ↔ RU |
+
+> ⚠️ **Steam Disclosure:** проект использует AI-контент. При публикации обязательно заполнить раздел AI в анкете Steam (требование с 2024 года).
 
 ## Архитектура проекта
 
