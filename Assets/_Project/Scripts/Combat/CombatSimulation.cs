@@ -11,7 +11,7 @@ namespace Guildmaster.Combat
     /// — единственная точка мутации состояния боя из систем и (Фаза 2) компонентов эффектов.
     /// <para>
     /// Порядок систем за тик: ApplyCommands → Targeting → Movement → SpatialHashRebuild
-    /// → AutoAttack → Projectiles → Death → CheckOutcome → currentTick++.
+    /// → AutoAttack → Projectiles → Effects → Death → CheckOutcome → currentTick++.
     /// </para>
     /// (вики «10» §5.1).
     /// </summary>
@@ -116,6 +116,7 @@ namespace Guildmaster.Combat
             _spatialHash.Rebuild(_units);
             _autoAttackSystem.Tick(_units, this, dt);
             _projectileSystem.Tick(_projectiles, _units, this, dt);
+            _effectSystem.Tick(_units, this, dt);
             _deathSystem.Tick(_units, _spatialHash);
 
             CheckOutcome();

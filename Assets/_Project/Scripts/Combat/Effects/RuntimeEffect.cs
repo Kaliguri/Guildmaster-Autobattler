@@ -32,8 +32,11 @@ namespace Guildmaster.Combat.Effects
         /// </summary>
         public float[] ScaledPotency;
 
-        /// <summary>Аккумулятор времени (сек) на периодический компонент — параллельно компонентам.</summary>
-        public float[] TickTimer;
+        /// <summary>
+        /// Счётчик сим-тиков с прошлого срабатывания на периодический компонент (параллельно
+        /// компонентам). Целочисленный — float-аккумулятор дрейфует и ломает детерминизм периодики.
+        /// </summary>
+        public int[] PeriodicTicks;
 
         /// <summary>Постоянный эффект (пассивка) — не истекает по таймеру.</summary>
         public bool IsPermanent => RemainingTicks < 0;

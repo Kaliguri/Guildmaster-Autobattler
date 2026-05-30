@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -8,16 +9,51 @@ namespace Guildmaster.Combat
 {
     /// <summary>
     /// Владелец жизненного цикла эффектов: наложение (длительность, стакинг, потенция, маска тегов),
-    /// тик таймеров и периодики, истечение (Stage 4). Вызывается из <see cref="CombatSimulation"/>
-    /// (вики «12» §3.3, §6).
+    /// тик таймеров и периодики, истечение с корректным teardown. Вызывается из
+    /// <see cref="CombatSimulation"/> (вики «12» §3.3, §3.5, §6).
     /// </summary>
     public sealed class EffectSystem
     {
+        // Переиспользуемые буферы — итерируем по копии refs, чтобы Apply/Dispel во время
+        // тика не ломали коллекцию (вики «6» §7: добавления/удаления вне итерации).
+        private readonly List<RuntimeEffect> _tickBuffer = new List<RuntimeEffect>();
+
+        /// <summary>
+        /// Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение.
+        /// Вставляется в тик-цикл перед DeathSystem (DoT может добить).
+        /// </summary>
+        public void Tick(IReadOnlyList<RuntimeUnit> units, ICombatContext combat, float dt)
+        {
+            for (int u = 0; u < units.Count; u++)
+            {
+                RuntimeUnit unit = units[u];
+                if (unit.IsDead || unit.ActiveEffects.Count == 0) continue;
+
+                _tickBuffer.Clear();
+                _tickBuffer.AddRange(unit.ActiveEffects);
+
+                for (int e = 0; e < _tickBuffer.Count; e++)
+                {
+                    RuntimeEffect eff = _tickBuffer[e];
+                    // Мог быть снят диспелом/реапплаем в этом же тике.
+                    if (!unit.ActiveEffects.Contains(eff)) continue;
+
+                    TickPeriodic(unit, eff, combat);
+                    if (unit.IsDead) break;
+
+                    if (!eff.IsPermanent)
+                    {
+                        eff.RemainingTicks--;
+                        if (eff.RemainingTicks <= 0) Expire(unit, eff, combat);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Наложить эффект на цель. Резолвит длительность (эфф-эффективности), потенцию (снимок
         /// статов источника), обрабатывает стакинг, добавляет <see cref="RuntimeEffect"/> и зовёт
-        /// <c>OnApply</c> компонентов. Прямое добавление в <c>ActiveEffects</c> безопасно: тик
-        /// (Stage 4) итерирует по копии-буферу.
+        /// <c>OnApply</c> компонентов. Мгновенный эффект (BaseDuration = 0) не персистится.
         /// </summary>
         public void Apply(RuntimeUnit target, EffectData def, RuntimeUnit source, ICombatContext combat)
         {
@@ -37,7 +73,7 @@ namespace Guildmaster.Combat
                 Source        = source,
                 Stacks        = 1,
                 ScaledPotency = new float[componentCount],
-                TickTimer     = new float[componentCount],
+                PeriodicTicks = new int[componentCount],
             };
 
             int ticks = ResolveDurationTicks(def, source, target);
@@ -53,8 +89,12 @@ namespace Guildmaster.Combat
                 }
             }
 
-            target.ActiveEffects.Add(effect);
-            target.EffectTagMask |= def.Tags;
+            bool instant = ticks == 0;
+            if (!instant)
+            {
+                target.ActiveEffects.Add(effect);
+                target.EffectTagMask |= def.Tags;
+            }
 
             for (int i = 0; i < componentCount; i++)
             {
@@ -63,6 +103,15 @@ namespace Guildmaster.Combat
                     rc.OnApply(MakeContext(target, source, combat, effect, i, 0f));
                 }
             }
+        }
+
+        /// <summary>
+        /// Принудительно снять эффект с корректным <c>OnExpire</c> и пересборкой маски тегов.
+        /// Используется диспелом (Stage 7).
+        /// </summary>
+        public void Remove(RuntimeUnit unit, RuntimeEffect effect, ICombatContext combat)
+        {
+            Expire(unit, effect, combat);
         }
 
         /// <summary>Длительность эффекта в тиках. -1 = постоянный, 0 = мгновенный, иначе с учётом эфф-эффективностей.</summary>
@@ -79,6 +128,54 @@ namespace Guildmaster.Combat
 
         // --- Приватные ---
 
+        private static void TickPeriodic(RuntimeUnit unit, RuntimeEffect eff, ICombatContext combat)
+        {
+            IEffectComponent[] comps = eff.Def.Components;
+            if (comps == null) return;
+
+            for (int i = 0; i < comps.Length; i++)
+            {
+                if (comps[i] is IPeriodicComponent periodic && periodic.Interval > 0f)
+                {
+                    int intervalTicks = Mathf.Max(1, Mathf.RoundToInt(periodic.Interval * SimConstants.TickRate));
+                    if (++eff.PeriodicTicks[i] >= intervalTicks)
+                    {
+                        eff.PeriodicTicks[i] = 0;
+                        // Dt = Interval: компонент считает применяемое как Potency × Dt × Stacks
+                        // (per-second rate → за период; total масштабируется числом тиков, вики «11» §5.1).
+                        periodic.OnTick(MakeContext(unit, eff.Source, combat, eff, i, periodic.Interval));
+                        if (unit.IsDead) return;
+                    }
+                }
+            }
+        }
+
+        private void Expire(RuntimeUnit unit, RuntimeEffect eff, ICombatContext combat)
+        {
+            IEffectComponent[] comps = eff.Def.Components;
+            if (comps != null)
+            {
+                for (int i = 0; i < comps.Length; i++)
+                {
+                    if (comps[i] is IRuntimeEffectComponent rc)
+                    {
+                        rc.OnExpire(MakeContext(unit, eff.Source, combat, eff, i, 0f));
+                    }
+                }
+            }
+
+            unit.ActiveEffects.Remove(eff);
+            RebuildTagMask(unit);
+        }
+
+        private static void RebuildTagMask(RuntimeUnit unit)
+        {
+            EffectTag mask = EffectTag.None;
+            List<RuntimeEffect> effects = unit.ActiveEffects;
+            for (int i = 0; i < effects.Count; i++) mask |= effects[i].Def.Tags;
+            unit.EffectTagMask = mask;
+        }
+
         private static EffectContext MakeContext(
             RuntimeUnit target, RuntimeUnit source, ICombatContext combat, RuntimeEffect effect, int componentIndex, float dt)
         {
@@ -90,7 +187,7 @@ namespace Guildmaster.Combat
 
         private static RuntimeEffect FindEffect(RuntimeUnit target, EffectData def)
         {
-            var effects = target.ActiveEffects;
+            List<RuntimeEffect> effects = target.ActiveEffects;
             for (int i = 0; i < effects.Count; i++)
             {
                 if (effects[i].Def == def) return effects[i];
