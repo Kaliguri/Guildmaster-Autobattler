@@ -34,6 +34,9 @@ namespace Guildmaster.Combat
         /// <summary>Применить эффект к цели. Тело — Фаза 2; в Фазе 1 — стаб (no-op).</summary>
         void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source);
 
+        /// <summary>Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4).</summary>
+        void Dispel(in Effects.DispelRequest req);
+
         /// <summary>Генератор случайных чисел боя (детерминированный).</summary>
         IRngService Rng { get; }
 

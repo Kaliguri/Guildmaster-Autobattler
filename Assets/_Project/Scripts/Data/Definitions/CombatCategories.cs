@@ -42,4 +42,15 @@ namespace Guildmaster.Data.Definitions
         Debuff = 1,
         Neutral = 2,
     }
+
+    /// <summary>
+    /// Фильтр полярности для диспела: что снимать. <see cref="Any"/> покрывает оба механизма —
+    /// purge (снять баффы врага) и cleanse (снять дебаффы союзника) — одним компонентом (вики «6» §5.4).
+    /// </summary>
+    public enum DispelTargetPolarity
+    {
+        Any = 0,
+        Buff = 1,
+        Debuff = 2,
+    }
 }

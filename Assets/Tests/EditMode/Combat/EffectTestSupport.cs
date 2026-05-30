@@ -59,16 +59,21 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
     }
 
-    /// <summary>Мок шва <see cref="ICombatContext"/>: пишет урон/хил, остальное — no-op.</summary>
+    /// <summary>Мок шва <see cref="ICombatContext"/>: пишет урон/хил, диспел делегирует в EffectSystem.</summary>
     internal sealed class MockCombatContext : ICombatContext
     {
         private readonly IRngService _rng;
+        private readonly EffectSystem _effects;
 
         public readonly List<DamageRequest> DamageCalls = new List<DamageRequest>();
         public float TotalRawDamage;
         public float TotalHealed;
 
-        public MockCombatContext(IRngService rng = null) => _rng = rng ?? new XorShiftRng(1UL);
+        public MockCombatContext(IRngService rng = null, EffectSystem effects = null)
+        {
+            _rng = rng ?? new XorShiftRng(1UL);
+            _effects = effects;
+        }
 
         public void DealDamage(in DamageRequest req)
         {
@@ -83,6 +88,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam) => 0;
 
         public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) { }
+
+        public void Dispel(in DispelRequest req) => _effects?.Dispel(in req, this);
 
         public IRngService Rng => _rng;
         public int CurrentTick => 0;

@@ -207,6 +207,11 @@ namespace Guildmaster.Combat
             _effectSystem.Apply(target, def, source, this);
         }
 
+        public void Dispel(in Effects.DispelRequest req)
+        {
+            _effectSystem.Dispel(in req, this);
+        }
+
         // --- Управление симуляцией (вызывается командами) ---
 
         public void SetPaused(bool paused) => _isPaused = paused;

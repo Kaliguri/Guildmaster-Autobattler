@@ -19,6 +19,7 @@ namespace Guildmaster.Combat
         // тика не ломали коллекцию (вики «6» §7: добавления/удаления вне итерации).
         private readonly List<RuntimeEffect> _tickBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _dispatchBuffer = new List<RuntimeEffect>();
+        private readonly List<RuntimeEffect> _dispelBuffer = new List<RuntimeEffect>();
 
         /// <summary>
         /// Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение.
@@ -176,6 +177,32 @@ namespace Guildmaster.Combat
             }
         }
 
+        /// <summary>
+        /// Снять с цели подходящие эффекты: полярность ∧ теги ∧ <c>CleanseTier ≤ DispelPower</c> ∧
+        /// <c>!Unremovable</c>. Порядок выбора при <c>MaxCount</c> — insertion order (детерминированно;
+        /// тонкая настройка приоритета — при балансе, вики «6» §5.4, «12» §9).
+        /// </summary>
+        public void Dispel(in DispelRequest req, ICombatContext combat)
+        {
+            RuntimeUnit target = req.Target;
+            if (target == null || target.ActiveEffects.Count == 0) return;
+
+            _dispelBuffer.Clear();
+            List<RuntimeEffect> effects = target.ActiveEffects;
+            for (int i = 0; i < effects.Count; i++)
+            {
+                if (MatchesDispel(effects[i].Def, in req)) _dispelBuffer.Add(effects[i]);
+            }
+
+            int removed = 0;
+            for (int i = 0; i < _dispelBuffer.Count; i++)
+            {
+                if (req.MaxCount > 0 && removed >= req.MaxCount) break;
+                Expire(target, _dispelBuffer[i], combat);
+                removed++;
+            }
+        }
+
         /// <summary>Длительность эффекта в тиках. -1 = постоянный, 0 = мгновенный, иначе с учётом эфф-эффективностей.</summary>
         public static int ResolveDurationTicks(EffectData def, RuntimeUnit source, RuntimeUnit target)
         {
@@ -313,6 +340,22 @@ namespace Guildmaster.Combat
                     rc.OnApply(in ctx);
                 }
             }
+        }
+
+        private static bool MatchesDispel(EffectData def, in DispelRequest req)
+        {
+            if (def.Unremovable) return false;
+            if (def.CleanseTier > req.DispelPower) return false;
+
+            bool polarityOk =
+                req.Polarity == DispelTargetPolarity.Any ||
+                (req.Polarity == DispelTargetPolarity.Buff   && def.Polarity == EffectPolarity.Buff) ||
+                (req.Polarity == DispelTargetPolarity.Debuff && def.Polarity == EffectPolarity.Debuff);
+            if (!polarityOk) return false;
+
+            if (req.Tags != EffectTag.None && (def.Tags & req.Tags) == 0) return false;
+
+            return true;
         }
 
         private static float DurationMultiplier(EffectPolarity polarity, RuntimeUnit source, RuntimeUnit target)
