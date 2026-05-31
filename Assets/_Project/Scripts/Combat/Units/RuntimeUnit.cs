@@ -49,7 +49,7 @@ namespace Guildmaster.Combat
         /// <summary>SO «Чемпион»: тип атаки, стат-блок, эффекты (Фаза 2).</summary>
         public RelicData Relic;
 
-        /// <summary>SO «Пилот»: идентичность, таланты (Фаза 2/4).</summary>
+        /// <summary>SO «Пилот»: идентичность, перки (Фаза 2/4).</summary>
         public VesselData Vessel;
 
         // --- Эффекты (Фаза 2) ---

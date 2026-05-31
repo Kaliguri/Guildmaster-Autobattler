@@ -59,6 +59,21 @@ git add Assets/_Project/Scripts/Core/IUnit.cs.meta
 | `get_scene_hierarchy` | `manage_scene` (action: "get_hierarchy") |
 
 
+## Если feature/* смёрджен в master вместо dev
+
+Симптом: `dev` отстаёт от `master`, в `master` есть коммиты которых нет в `dev`.
+
+**Порядок исправления:**
+1. Проверить расхождение: `git log --oneline origin/dev..origin/master`
+2. Переключиться на `dev`: `git checkout dev`
+3. Смёрджить master в dev: `git merge origin/master --no-edit`
+4. Если на фиче-ветке остались коммиты после точки мёрджа в master — смёрджить и их: `git merge <feature-branch> --no-edit`
+5. Запушить: `git push origin dev`
+
+Конфликтов обычно нет — это fast-forward или чистый merge, так как ветки расходятся только по истории, не по содержимому.
+
+---
+
 ## Новые Markdown-файлы в guildmaster-wiki
 
 Файлы не должны начинаться с пустой строки, за которой следует `---`. Quartz интерпретирует такой `---` как начало YAML frontmatter и падает при парсинге.

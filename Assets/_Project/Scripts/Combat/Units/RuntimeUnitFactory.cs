@@ -8,7 +8,7 @@ namespace Guildmaster.Combat
     /// <summary>
     /// Единственная точка сборки <see cref="RuntimeUnit"/> из SO-данных.
     /// Шаги сборки (вики «10» §5.2, «6» §3): дефолты из <see cref="StatsConfig"/> → моды реликвии
-    /// → таланты сосуда → пассивки (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
+    /// → перки сосуда → пассивки (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
     /// → активки (<see cref="AbilityRuntime"/>) → ресурс (<see cref="StatType.StartResource"/>)
     /// → <c>CurrentHP = Get(MaxHP)</c>.
     /// </summary>
@@ -35,7 +35,7 @@ namespace Guildmaster.Combat
         /// Создать <see cref="RuntimeUnit"/> из SO-данных.
         /// </summary>
         /// <param name="relic">SO «Чемпион». null — юнит получит только дефолты StatsConfig.</param>
-        /// <param name="vessel">SO «Пилот». null — таланты не применяются.</param>
+        /// <param name="vessel">SO «Пилот». null — перки не применяются.</param>
         /// <param name="team">Команда: 0 = союзники, 1 = враги.</param>
         /// <param name="spawnPosition">Начальная позиция на поле боя.</param>
         public RuntimeUnit Create(RelicData relic, VesselData vessel, int team, Vector2 spawnPosition)
@@ -45,8 +45,8 @@ namespace Guildmaster.Combat
             if (relic?.Stats != null && relic.Stats.Length > 0)
                 stats.AddModifiersFrom(relic, relic.Stats);
 
-            if (vessel?.TalentModifiers != null && vessel.TalentModifiers.Length > 0)
-                stats.AddModifiersFrom(vessel, vessel.TalentModifiers);
+            if (vessel?.PerkModifiers != null && vessel.PerkModifiers.Length > 0)
+                stats.AddModifiersFrom(vessel, vessel.PerkModifiers);
 
             var unit = new RuntimeUnit
             {

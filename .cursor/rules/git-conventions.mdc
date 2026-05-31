@@ -78,6 +78,7 @@ ci/*          ← CI/CD changes
 
 - All branches are created **from `dev`**, never from `master`
 - `master` is updated only via PR from `dev` — when the version is stable
+- **`feature/*`, `fix/*`, `data/*`, `refactor/*` PRs always target `dev`, never `master`** — merging a feature branch directly into `master` breaks the flow and leaves `dev` behind
 - Branch names: lowercase, hyphen-separated, concise
   - Good: `feature/guild-management`
   - Bad: `feature/add_new_guild_management_system`
