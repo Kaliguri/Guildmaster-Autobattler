@@ -20,9 +20,19 @@ namespace Guildmaster.Tests.EditMode.Presentation
         }
 
         [Test]
-        public void Select_Hit_InterruptsAttackAndMovement()
+        public void Select_Attack_NotInterruptedByHit()
         {
+            // Флинч от урона НЕ перебивает текущий замах атаки (Attack > Hit, коммит f00a01e).
+            // Hit-анимация второстепенна — в будущем, вероятно, заменится hit-VFX (белый флеш).
             var s = UnitAnimationSelector.Select(isDead: false, hitRemaining: 0.2f, attackRemaining: 0.3f, isMoving: true);
+            Assert.AreEqual(UnitAnimationState.Attack, s);
+        }
+
+        [Test]
+        public void Select_Hit_WhenNotAttacking_OverridesMovement()
+        {
+            // Флинч играет, только если нет активной атаки; тогда перекрывает движение.
+            var s = UnitAnimationSelector.Select(isDead: false, hitRemaining: 0.2f, attackRemaining: 0f, isMoving: true);
             Assert.AreEqual(UnitAnimationState.Hit, s);
         }
 

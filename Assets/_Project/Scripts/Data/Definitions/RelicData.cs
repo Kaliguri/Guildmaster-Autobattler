@@ -34,6 +34,11 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Активные способности (кулдаун/ресурс). Слотов — по редкости (Common 1 → Rare 2 → Epic 3).")]
         [SerializeField] private AbilityData[] _abilities;
 
+        // --- Фаза 3: профиль AI ---
+        [Header("AI profile (Phase 3)")]
+        [Tooltip("Параметризованный пресет поведения (кого/когда/где). Интерпретируется ProfileBrain (вики «13» §2.1).")]
+        [SerializeField] private AIProfile _ai = new AIProfile();
+
         public string DisplayNameKey => _displayNameKey;
         public string[] Tags => _tags;
         public DamageType DamageType => _damageType;
@@ -42,5 +47,6 @@ namespace Guildmaster.Data.Definitions
         public StatModifier[] Stats => _stats;
         public EffectData[] GrantedEffects => _grantedEffects;
         public AbilityData[] Abilities => _abilities;
+        public AIProfile Ai => _ai;
     }
 }

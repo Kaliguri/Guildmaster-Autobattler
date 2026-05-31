@@ -26,7 +26,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 rng,
                 ArmorK,
                 new SpatialHash(CellSize),
-                new TargetingSystem(),
+                new BrainSystem(),
                 new AbilitySystem(),
                 new MovementSystem(),
                 new AutoAttackSystem(),

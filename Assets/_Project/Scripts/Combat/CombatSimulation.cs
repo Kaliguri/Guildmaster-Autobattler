@@ -11,17 +11,17 @@ namespace Guildmaster.Combat
     /// Детерминированная тиковая симуляция боя. Реализует <see cref="ICombatContext"/>
     /// — единственная точка мутации состояния боя из систем и (Фаза 2) компонентов эффектов.
     /// <para>
-    /// Порядок систем за тик: ApplyCommands → Targeting → Movement → SpatialHashRebuild
+    /// Порядок систем за тик: ApplyCommands → Brain (AI) → Movement → SpatialHashRebuild
     /// → AutoAttack → Projectiles → Effects → Death → CheckOutcome → currentTick++.
     /// </para>
     /// (вики «10» §5.1).
     /// </summary>
-    public sealed class CombatSimulation : ICombatContext
+    public sealed class CombatSimulation : ICombatContext, IBattleView
     {
         private readonly IRngService         _rng;
         private readonly float               _armorK;
         private readonly SpatialHash         _spatialHash;
-        private readonly TargetingSystem     _targetingSystem;
+        private readonly BrainSystem         _brainSystem;
         private readonly AbilitySystem       _abilitySystem;
         private readonly MovementSystem      _movementSystem;
         private readonly AutoAttackSystem    _autoAttackSystem;
@@ -72,7 +72,7 @@ namespace Guildmaster.Combat
             IRngService       rng,
             float             armorK,
             SpatialHash       spatialHash,
-            TargetingSystem   targetingSystem,
+            BrainSystem       brainSystem,
             AbilitySystem     abilitySystem,
             MovementSystem    movementSystem,
             AutoAttackSystem  autoAttackSystem,
@@ -83,7 +83,7 @@ namespace Guildmaster.Combat
             _rng              = rng;
             _armorK           = armorK;
             _spatialHash      = spatialHash;
-            _targetingSystem  = targetingSystem;
+            _brainSystem      = brainSystem;
             _abilitySystem    = abilitySystem;
             _movementSystem   = movementSystem;
             _autoAttackSystem = autoAttackSystem;
@@ -120,7 +120,7 @@ namespace Guildmaster.Combat
                 return;
             }
 
-            _targetingSystem.Tick(_units);
+            _brainSystem.Tick(_units, this);
             _abilitySystem.Tick(_units, this, dt);
             _movementSystem.Tick(_units, dt);
             _spatialHash.Rebuild(_units);
