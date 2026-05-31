@@ -4,6 +4,7 @@ using Guildmaster.Data.Stats;
 using Guildmaster.Presentation;
 using QFSW.QC;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using VContainer;
 
 namespace Guildmaster.DevTools
@@ -16,6 +17,7 @@ namespace Guildmaster.DevTools
     {
         private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
+        private QuantumConsole     _console;
 
         [Inject]
         public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw)
@@ -23,6 +25,30 @@ namespace Guildmaster.DevTools
             _simulation = simulation;
             _debugDraw  = debugDraw;
         }
+
+        // Пауза сима, пока консоль открыта: настраиваешь бой за консолью, закрываешь — он идёт с начала
+        // на виду (без этого бой проигрывается за полноэкранной консолью и заканчивается невидимым).
+        private void Start()
+        {
+            _console = FindObjectOfType<QuantumConsole>(true);
+            if (_console != null)
+            {
+                _console.OnActivate   += PauseForConsole;
+                _console.OnDeactivate += ResumeAfterConsole;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_console != null)
+            {
+                _console.OnActivate   -= PauseForConsole;
+                _console.OnDeactivate -= ResumeAfterConsole;
+            }
+        }
+
+        private void PauseForConsole()   => _simulation?.SetPaused(true);
+        private void ResumeAfterConsole() => _simulation?.SetPaused(false);
 
         /// <summary>Зафиксировать сид боя для детерминизм-отладки (только до старта).</summary>
         [Command("gm_rng_seed", "Зафиксировать сид боя (до старта симуляции)")]
@@ -37,10 +63,13 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
 
+            // Id начинаем от текущего числа живых юнитов в симуляции, чтобы не было коллизий
+            // при повторном вызове команды в том же бою.
+            int nextId = _simulation.Units.Count;
             for (int i = 0; i < countPerTeam; i++)
             {
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(0, new Vector2(-5f + i, i), hp, damage));
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2( 5f - i, i), hp, damage));
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(0, new Vector2(-5f + i, i), hp, damage, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2( 5f - i, i), hp, damage, nextId++));
             }
 
             Debug.Log($"[GuildmasterCommands] - gm_spawn_battle: добавлено {countPerTeam}×2 юнитов");
@@ -81,6 +110,15 @@ namespace Guildmaster.DevTools
             Debug.Log("[GuildmasterCommands] - gm_skip_battle: все юниты команды B убиты");
         }
 
+        /// <summary>Перезагрузить боевую сцену для нового прогона (бой одноразовый: после конца loop останавливается).</summary>
+        [Command("gm_restart", "Перезапустить бой (перезагрузка сцены)")]
+        public void Restart()
+        {
+            Scene active = SceneManager.GetActiveScene();
+            Debug.Log($"[GuildmasterCommands] - gm_restart: перезагружаю {active.name}");
+            SceneManager.LoadScene(active.name);
+        }
+
         /// <summary>Включить/выключить Shapes debug-слой.</summary>
         [Command("gm_toggle_debug_draw", "Вкл/выкл debug-отрисовку боя")]
         public void ToggleDebugDraw()
@@ -90,7 +128,7 @@ namespace Guildmaster.DevTools
             Debug.Log($"[GuildmasterCommands] - gm_toggle_debug_draw: {(_debugDraw.IsEnabled ? "ON" : "OFF")}");
         }
 
-        private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage)
+        private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("test", new[]
@@ -103,6 +141,7 @@ namespace Guildmaster.DevTools
             });
             return new RuntimeUnit
             {
+                Id               = id,
                 Team             = team,
                 Stats            = stats,
                 CurrentHP        = hp,

@@ -32,9 +32,9 @@ namespace Guildmaster.Presentation
         /// <param name="isMoving">Позиция изменилась за тик (Position != PreviousPosition сверх эпсилона).</param>
         public static UnitAnimationState Select(bool isDead, float hitRemaining, float attackRemaining, bool isMoving)
         {
-            if (isDead)              return UnitAnimationState.Death;   // латч, перекрывает всё
-            if (hitRemaining   > 0f) return UnitAnimationState.Hit;     // флинч прерывает атаку/бег
-            if (attackRemaining > 0f) return UnitAnimationState.Attack; // атака перекрывает бег
+            if (isDead)               return UnitAnimationState.Death;   // латч, перекрывает всё
+            if (attackRemaining > 0f) return UnitAnimationState.Attack; // атака не прерывается флинчем
+            if (hitRemaining    > 0f) return UnitAnimationState.Hit;    // флинч только если нет активной атаки
             return isMoving ? UnitAnimationState.Run : UnitAnimationState.Idle;
         }
     }
