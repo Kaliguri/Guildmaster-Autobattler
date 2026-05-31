@@ -97,6 +97,10 @@ namespace Guildmaster.Presentation
 
         private void HandleDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result)
         {
+            // Анимация атаки у источника — косметика, триггерится с сим-тика (урон уже нанесён).
+            if (source != null && _views.TryGetValue(source.Id, out var sourceView))
+                sourceView.OnAttack();
+
             if (_views.TryGetValue(target.Id, out var view))
                 view.OnDamageReceived(result.TotalDamage);
 

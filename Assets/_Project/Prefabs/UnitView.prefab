@@ -157,6 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.UnitView
   _sprite: {fileID: 4865536931483169076}
   _healthBar: {fileID: 7127319717872641838}
+  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
   _onHitFeedback:
     m_PersistentCalls:
       m_Calls: []
