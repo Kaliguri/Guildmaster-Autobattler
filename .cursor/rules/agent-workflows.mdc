@@ -58,6 +58,27 @@ git add Assets/_Project/Scripts/Core/IUnit.cs.meta
 | `run_tests_in_editor` | `run_tests` + `get_test_job` (async) |
 | `get_scene_hierarchy` | `manage_scene` (action: "get_hierarchy") |
 
+### Установленные рекомендуемые зависимости
+
+MCP for Unity поддерживает группы инструментов (`tool groups`). По умолчанию включена только группа `core`. Остальные активируются через `manage_tools(action="activate", group="<name>")` на время сессии.
+
+В проекте установлены все рекомендуемые зависимости:
+
+| Зависимость | Версия | Что разблокирует |
+|---|---|---|
+| `com.unity.cinemachine` | 3.1.6 | Tier 2 camera tools: brain, body/aim/noise pipeline, extensions, blending, 7 пресетов камер |
+| `com.unity.probuilder` | 6.0.9 | Группа `probuilder`: 3D-моделирование, 12 типов фигур, редактирование face/edge/vertex |
+| Roslyn DLLs | Microsoft.CodeAnalysis v5.0 | Полная семантическая валидация C# в `validate_script` (определяет `USE_ROSLYN` в Scripting Define Symbols; DLL лежат в `Assets/Plugins/Roslyn/`) |
+
+**Как активировать нужную группу в начале задачи:**
+```
+manage_tools(action="activate", group="probuilder")
+manage_tools(action="activate", group="testing")
+manage_tools(action="list_groups")   // посмотреть все доступные группы и их статус
+```
+
+Полный список групп: `core` (всегда), `animation`, `ui`, `vfx`, `scripting_ext`, `testing`, `probuilder`, `profiling`, `docs`.
+
 
 ## Если feature/* смёрджен в master вместо dev
 
