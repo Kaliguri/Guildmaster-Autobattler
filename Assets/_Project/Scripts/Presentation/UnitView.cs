@@ -54,6 +54,24 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
+        /// Подменить визуал в рантайме (пер-юнит визуал из реликвии, вики «13» шаг 4): все юниты
+        /// инстанцируются из одного префаба, но реликвия может задать свой набор кадров.
+        /// </summary>
+        public void SetVisual(UnitVisual visual)
+        {
+            _visual     = visual;
+            _state      = UnitAnimationState.Idle;
+            _frameIndex = 0;
+            _frameTimer = 0f;
+
+            if (_visual != null && _sprite != null)
+            {
+                Sprite[] idle = _visual.Frames(UnitAnimationState.Idle);
+                if (idle.Length > 0) _sprite.sprite = idle[0];
+            }
+        }
+
+        /// <summary>
         /// Обновить интерполированную позицию. Вызывается из <see cref="CombatPresenter.Update"/>.
         /// </summary>
         /// <param name="alpha">Степень интерполяции [0, 1] между PreviousPosition и Position.</param>

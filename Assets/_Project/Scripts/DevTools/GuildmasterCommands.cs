@@ -1,5 +1,6 @@
 using Guildmaster.Combat;
 using Guildmaster.Combat.Commands;
+using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using Guildmaster.Presentation;
 using QFSW.QC;
@@ -15,15 +16,20 @@ namespace Guildmaster.DevTools
     /// </summary>
     public sealed class GuildmasterCommands : MonoBehaviour
     {
+        [Tooltip("SO реликвии «Железный копейщик» для gm_spawn_spearman (вики «13» шаг 4).")]
+        [SerializeField] private RelicData _spearmanRelic;
+
         private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
+        private RuntimeUnitFactory _factory;
         private QuantumConsole     _console;
 
         [Inject]
-        public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw)
+        public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory)
         {
             _simulation = simulation;
             _debugDraw  = debugDraw;
+            _factory    = factory;
         }
 
         // Пауза сима, пока консоль открыта: настраиваешь бой за консолью, закрываешь — он идёт с начала
@@ -73,6 +79,28 @@ namespace Guildmaster.DevTools
             }
 
             Debug.Log($"[GuildmasterCommands] - gm_spawn_battle: добавлено {countPerTeam}×2 юнитов");
+        }
+
+        /// <summary>Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.</summary>
+        [Command("gm_spawn_spearman", "Заспавнить Железного копейщика против кластера (срез шага 4)")]
+        public void SpawnSpearman(int enemies = 3, float enemyHp = 200f)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (_spearmanRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _spearmanRelic в инспекторе"); return; }
+
+            // Копейщик слева — через фабрику (реальный путь сборки: статы/линейная АА/активка/AI-профиль/мана).
+            _simulation.EnqueueUnitSpawn(_factory.Create(_spearmanRelic, null, team: 0, new Vector2(-5f, 0f)));
+
+            // Кластер болванчиков справа — чтобы линейная АА задевала нескольких и сработало условие «≥2 в радиусе».
+            int nextId = _simulation.Units.Count + 1;
+            for (int i = 0; i < enemies; i++)
+            {
+                float y = (i - (enemies - 1) * 0.5f) * 0.8f; // компактно по вертикали
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(5f, y), enemyHp, 8f, nextId++));
+            }
+
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_spearman: копейщик vs {enemies} болванчиков");
         }
 
         /// <summary>Выставить HP юниту по ID.</summary>

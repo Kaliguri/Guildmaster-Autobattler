@@ -58,6 +58,9 @@ namespace Guildmaster.Combat
         /// <summary>Бой завершён с итогом.</summary>
         public event Action<BattleOutcome> OnBattleEnded;
 
+        /// <summary>Зона удара сработала (линия авто-атаки / круг активки) — для dev-оверлея зон.</summary>
+        public event Action<AreaHit> OnAreaHit;
+
         // --- ICombatContext ---
 
         public IRngService Rng         => _rng;
@@ -206,10 +209,46 @@ namespace Guildmaster.Combat
             return results.Count;
         }
 
+        public int QueryUnitsInLine(
+            Vector2 origin,
+            Vector2 direction,
+            float length,
+            float width,
+            List<RuntimeUnit> results,
+            TargetFilter filter,
+            int requestingTeam)
+        {
+            // Broad-phase: круг радиусом = длина линии (живых отбирает QueryRadius), затем
+            // narrow-phase по геометрии полосы: проекция на направление в [0..length], перпендикуляр ≤ width/2.
+            _spatialHash.QueryRadius(origin, length, results);
+
+            Vector2 dir = direction.sqrMagnitude > 1e-6f ? direction.normalized : Vector2.right;
+            float halfWidth = width * 0.5f;
+
+            for (int i = results.Count - 1; i >= 0; i--)
+            {
+                RuntimeUnit u = results[i];
+                Vector2 v = u.Position - origin;
+                float along = Vector2.Dot(v, dir);
+                bool inLine = along >= 0f && along <= length && (v - along * dir).magnitude <= halfWidth;
+
+                bool isAlly = u.Team == requestingTeam;
+                bool teamOk = filter == TargetFilter.All
+                           || (filter == TargetFilter.Enemies && !isAlly)
+                           || (filter == TargetFilter.Allies && isAlly);
+
+                if (!inLine || !teamOk) results.RemoveAt(i);
+            }
+
+            return results.Count;
+        }
+
         public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source)
         {
             _effectSystem.Apply(target, def, source, this);
         }
+
+        public void ReportAreaHit(in AreaHit hit) => OnAreaHit?.Invoke(hit);
 
         public void Dispel(in Effects.DispelRequest req)
         {

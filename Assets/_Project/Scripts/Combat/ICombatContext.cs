@@ -31,8 +31,28 @@ namespace Guildmaster.Combat
             TargetFilter filter,
             int requestingTeam);
 
+        /// <summary>
+        /// Заполнить <paramref name="results"/> живыми юнитами в полосе из <paramref name="origin"/>
+        /// вдоль <paramref name="direction"/>: длина <paramref name="length"/>, полная ширина
+        /// <paramref name="width"/>. Опора линейной авто-атаки «Размашистый выпад» (шаг 4).
+        /// </summary>
+        int QueryUnitsInLine(
+            Vector2 origin,
+            Vector2 direction,
+            float length,
+            float width,
+            List<RuntimeUnit> results,
+            TargetFilter filter,
+            int requestingTeam);
+
         /// <summary>Применить эффект к цели. Тело — Фаза 2; в Фазе 1 — стаб (no-op).</summary>
         void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source);
+
+        /// <summary>
+        /// Сообщить презентации о сработавшей зоне удара (dev-оверлей зон, вики «13» шаг 4).
+        /// Fire-and-forget — не мутирует симуляцию и не влияет на детерминизм.
+        /// </summary>
+        void ReportAreaHit(in AreaHit hit);
 
         /// <summary>Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4).</summary>
         void Dispel(in Effects.DispelRequest req);

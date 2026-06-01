@@ -82,6 +82,7 @@ namespace Guildmaster.Game
         {
             builder.RegisterComponentInHierarchy<CombatPresenter>();
             builder.RegisterComponentInHierarchy<CombatDebugDraw>();
+            builder.RegisterComponentInHierarchy<CombatAreaFlash>();
         }
 
         // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя), а не
