@@ -35,7 +35,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var units = new List<RuntimeUnit> { attacker, target, sideIn, sideOut, ally };
             var ctx   = new SpatialStubContext(units);
 
-            new AutoAttackSystem().Tick(units, ctx, SimConstants.TickDelta);
+            TickUntilDamage(units, ctx);
 
             CollectionAssert.AreEquivalent(
                 new[] { target, sideIn },
@@ -57,7 +57,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var units = new List<RuntimeUnit> { attacker, near, far };
             var ctx   = new SpatialStubContext(units);
 
-            new AutoAttackSystem().Tick(units, ctx, SimConstants.TickDelta);
+            TickUntilDamage(units, ctx);
 
             CollectionAssert.AreEquivalent(new[] { near }, ctx.Damage.ConvertAll(d => d.Target),
                 "Длина линии = радиус атаки: цель за радиусом не задевается");
@@ -165,7 +165,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var units = new List<RuntimeUnit> { attacker, enemy };
             var ctx   = new SpatialStubContext(units);
 
-            new AutoAttackSystem().Tick(units, ctx, SimConstants.TickDelta);
+            TickUntilDamage(units, ctx);
 
             Assert.AreEqual(5f, attacker.CurrentResource, 1e-4f, "Авто-атака даёт +5 маны");
         }
@@ -182,12 +182,23 @@ namespace Guildmaster.Tests.EditMode.Combat
             var units = new List<RuntimeUnit> { attacker, enemy };
             var ctx   = new SpatialStubContext(units);
 
-            new AutoAttackSystem().Tick(units, ctx, SimConstants.TickDelta);
+            TickUntilDamage(units, ctx);
 
             Assert.AreEqual(30f, attacker.CurrentResource, 1e-4f, "Мана клампится к MaxResource (28 + 5 → 30)");
         }
 
         // ===================== Хелперы =====================
+
+        /// <summary>
+        /// Тикает авто-атаку до первого нанесённого урона (сквозь двухфазный замах, вики «14»).
+        /// Без визуала у реликвии windup = MinWindupTicks; удар наступает через несколько тиков.
+        /// </summary>
+        private static void TickUntilDamage(List<RuntimeUnit> units, SpatialStubContext ctx, int maxTicks = 64)
+        {
+            var system = new AutoAttackSystem();
+            for (int t = 0; t < maxTicks && ctx.Damage.Count == 0; t++)
+                system.Tick(units, ctx, SimConstants.TickDelta);
+        }
 
         private static RuntimeUnit MakeUnit(
             int id, int team, Vector2 pos, RelicData relic = null,
@@ -223,12 +234,17 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             public SpatialStubContext(List<RuntimeUnit> all) => _all = all;
 
+            public int AttackStarted;
+            public int AttackInterrupted;
+
             public void DealDamage(in DamageRequest req) => Damage.Add(req);
             public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) { }
             public void SpawnProjectile(in ProjectileSpawn spawn) { }
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) { }
             public void ReportAreaHit(in AreaHit hit) { }
             public void Dispel(in DispelRequest req) { }
+            public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => AttackStarted++;
+            public void NotifyAttackInterrupted(RuntimeUnit unit) => AttackInterrupted++;
 
             public IRngService Rng => null;
             public int CurrentTick => 0;

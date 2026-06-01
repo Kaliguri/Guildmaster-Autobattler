@@ -75,7 +75,8 @@ namespace Guildmaster.DevTools
             [TableColumnWidth(50,  Resizable = false)] public bool   CanCast;
             [TableColumnWidth(80,  Resizable = false)] public string Pos;
             [TableColumnWidth(55,  Resizable = false)] public string Target;
-            [TableColumnWidth(55,  Resizable = false)] public float  AtkCD;
+            [TableColumnWidth(55,  Resizable = false)] public int    AtkCD;
+            [TableColumnWidth(70,  Resizable = false)] public string Windup;
             [TableColumnWidth(55,  Resizable = false)] public float  MoveSpd;
             [TableColumnWidth(55,  Resizable = false)] public float  AtkRange;
             [TableColumnWidth(55,  Resizable = false)] public float  AtkDmg;
@@ -94,7 +95,8 @@ namespace Guildmaster.DevTools
                 CanCast  = u.CanCast;
                 Pos      = $"({u.Position.x:F1},{u.Position.y:F1})";
                 Target   = u.CurrentTarget != null ? $"#{u.CurrentTarget.Id}" : "—";
-                AtkCD    = u.AttackCooldown;
+                AtkCD    = u.AttackCooldownTicks;
+                Windup   = u.IsWindingUp ? $"{u.WindupRemaining}/{u.WindupTicks}" : "—";
                 MoveSpd  = u.Stats.Get(StatType.MoveSpeed);
                 AtkRange = u.Stats.Get(StatType.AttackRange);
                 AtkDmg   = u.Stats.Get(StatType.AutoAttackDamage);

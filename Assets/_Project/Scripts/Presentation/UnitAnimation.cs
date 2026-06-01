@@ -1,14 +1,7 @@
+using Guildmaster.Data.Definitions;
+
 namespace Guildmaster.Presentation
 {
-    /// <summary>Состояние кадровой анимации вида юнита. Порядок стабилен (не использовать как сериализуемый индекс контента).</summary>
-    public enum UnitAnimationState
-    {
-        Idle   = 0,
-        Run    = 1,
-        Attack = 2,
-        Death  = 3,
-    }
-
     /// <summary>
     /// Чистая проекция «состояние сима → состояние анимации» (спайк S4, вики «13» §5).
     /// <para>
@@ -26,12 +19,12 @@ namespace Guildmaster.Presentation
         /// Выбрать состояние анимации.
         /// </summary>
         /// <param name="isDead">Юнит помечен мёртвым симуляцией.</param>
-        /// <param name="attackRemaining">Остаток разовой «атака», сек (&gt;0 = играет).</param>
+        /// <param name="attackPlaying">Играет клип атаки: идёт замах (windup) или фоллоу-сру после удара (вики «14»).</param>
         /// <param name="isMoving">Позиция изменилась за тик (Position != PreviousPosition сверх эпсилона).</param>
-        public static UnitAnimationState Select(bool isDead, float attackRemaining, bool isMoving)
+        public static UnitAnimationState Select(bool isDead, bool attackPlaying, bool isMoving)
         {
-            if (isDead)               return UnitAnimationState.Death;
-            if (attackRemaining > 0f) return UnitAnimationState.Attack;
+            if (isDead)        return UnitAnimationState.Death;
+            if (attackPlaying) return UnitAnimationState.Attack;
             return isMoving ? UnitAnimationState.Run : UnitAnimationState.Idle;
         }
     }

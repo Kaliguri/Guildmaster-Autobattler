@@ -97,7 +97,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             DamageType damageType = DamageType.Physical,
             AreaShape autoAttackShape = AreaShape.None,
             float autoAttackWidth = 1f,
-            float resourceOnHit = 0f)
+            float resourceOnHit = 0f,
+            UnitVisual visual = null)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
@@ -108,6 +109,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(r, "_autoAttackShape", autoAttackShape);
             Set(r, "_autoAttackWidth", autoAttackWidth);
             Set(r, "_resourceOnHit", resourceOnHit);
+            Set(r, "_visual", visual);
             return r;
         }
 
@@ -115,6 +117,20 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             FieldInfo fi = typeof(RelicData).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
             fi.SetValue(target, value);
+        }
+    }
+
+    /// <summary>Билдер <see cref="UnitVisual"/> для тестов windup: задаёт число кадров атаки и кадр контакта.</summary>
+    internal static class TestVisual
+    {
+        public static UnitVisual Make(int frameCount, int hitFrame)
+        {
+            var v = ScriptableObject.CreateInstance<UnitVisual>();
+            FieldInfo attack = typeof(UnitVisual).GetField("_attack", BindingFlags.Instance | BindingFlags.NonPublic);
+            FieldInfo hits   = typeof(UnitVisual).GetField("_attackHitFrames", BindingFlags.Instance | BindingFlags.NonPublic);
+            attack.SetValue(v, new Sprite[frameCount < 0 ? 0 : frameCount]);
+            hits.SetValue(v, new[] { hitFrame });
+            return v;
         }
     }
 
@@ -167,6 +183,9 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void ReportAreaHit(in AreaHit hit) { }
 
         public void Dispel(in DispelRequest req) => _effects?.Dispel(in req, this);
+
+        public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
+        public void NotifyAttackInterrupted(RuntimeUnit unit) { }
 
         public IRngService Rng => _rng;
         public int CurrentTick => 0;

@@ -21,6 +21,10 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private AttackType _attackType = AttackType.Melee;
         [SerializeField] private ResourceType _resourceType = ResourceType.None;
 
+        [Header("Visual (Phase 3)")]
+        [Tooltip("Набор спрайт-кадров. Сим/фабрика читают отсюда кадр контакта авто-атаки для windup (вики «14»). null = статичный фолбэк (мгновенный удар).")]
+        [SerializeField] private UnitVisual _visual;
+
         [Header("Auto-attack shape (Phase 3)")]
         [Tooltip("Форма авто-атаки: None = одиночная цель; Line = линия перед юнитом (несколько целей, «Размашистый выпад»).")]
         [SerializeField] private AreaShape _autoAttackShape = AreaShape.None;
@@ -52,6 +56,7 @@ namespace Guildmaster.Data.Definitions
 
         public string DisplayNameKey => _displayNameKey;
         public string[] Tags => _tags;
+        public UnitVisual Visual => _visual;
         public DamageType DamageType => _damageType;
         public AttackType AttackType => _attackType;
         public ResourceType ResourceType => _resourceType;

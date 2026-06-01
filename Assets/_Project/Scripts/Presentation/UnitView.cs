@@ -1,4 +1,5 @@
 using Guildmaster.Combat;
+using Guildmaster.Data.Definitions;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,10 +32,13 @@ namespace Guildmaster.Presentation
         private Vector2     _renderPosition;
 
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
+        private enum AttackPhase { None, Windup, FollowThrough }
+
         private UnitAnimationState _state = UnitAnimationState.Idle;
         private int   _frameIndex;
         private float _frameTimer;
-        private float _attackRemaining;
+        private AttackPhase _attackPhase;
+        private float _followRemaining;   // сек, фоллоу-сру кадров после контакта
         private bool  _isDead;
         private float _deathRemaining;
 
@@ -91,12 +95,13 @@ namespace Guildmaster.Presentation
             if (_visual == null || _sprite == null) return;
 
             float dt = Time.deltaTime;
-            if (_attackRemaining > 0f) _attackRemaining -= dt;
+            UpdateAttackPhase(dt);
 
             bool isMoving = _unit != null &&
                             (_unit.Position - _unit.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
 
-            UnitAnimationState next = UnitAnimationSelector.Select(_isDead, _attackRemaining, isMoving);
+            bool attackPlaying = _attackPhase != AttackPhase.None;
+            UnitAnimationState next = UnitAnimationSelector.Select(_isDead, attackPlaying, isMoving);
             if (next != _state)
             {
                 _state      = next;
@@ -113,10 +118,49 @@ namespace Guildmaster.Presentation
             }
         }
 
+        // Управление фазой атаки от состояния сима (вики «14»): замах → кадр контакта → фоллоу-сру.
+        private void UpdateAttackPhase(float dt)
+        {
+            if (_isDead) { _attackPhase = AttackPhase.None; return; }
+            if (_unit == null) return;
+
+            // Реконструкция после load/resync: сим в замахе, но события старта мы не видели.
+            if (_attackPhase == AttackPhase.None && _unit.IsWindingUp)
+                _attackPhase = AttackPhase.Windup;
+
+            switch (_attackPhase)
+            {
+                case AttackPhase.Windup:
+                    if (!_unit.IsWindingUp) BeginFollowThrough();   // замах кончился = кадр контакта
+                    break;
+                case AttackPhase.FollowThrough:
+                    _followRemaining -= dt;
+                    if (_followRemaining <= 0f) _attackPhase = AttackPhase.None;
+                    break;
+            }
+        }
+
+        // После кадра контакта доигрываем хвост клипа свободным ходом по _fps (косметика).
+        private void BeginFollowThrough()
+        {
+            int count = _visual.AttackFrameCount;
+            int hit   = Mathf.Clamp(_visual.AttackHitFrame, 0, Mathf.Max(0, count - 1));
+            _frameIndex = hit;
+            int after = Mathf.Max(0, count - 1 - hit);
+            _followRemaining = after / _visual.Fps;
+            _attackPhase = after > 0 ? AttackPhase.FollowThrough : AttackPhase.None;
+        }
+
         private void StepFrames(float dt)
         {
             Sprite[] frames = _visual.Frames(_state);
             if (frames.Length == 0) return;
+
+            if (_state == UnitAnimationState.Attack)
+            {
+                StepAttackFrames(frames, dt);
+                return;
+            }
 
             float frameDur = 1f / _visual.Fps;
             _frameTimer += dt;
@@ -134,10 +178,55 @@ namespace Guildmaster.Presentation
             _sprite.sprite = frames[Mathf.Clamp(_frameIndex, 0, frames.Length - 1)];
         }
 
-        /// <summary>Источник совершил авто-атаку (триггерится презентером с сим-тика, косметика).</summary>
-        public void OnAttack()
+        // Кадры замаха привязаны к доле прошедшего windup → контакт (hitFrame) садится на конец замаха
+        // = на сим-тик урона (OnDamageDealt). Хвост после контакта — свободный ход по _fps.
+        private void StepAttackFrames(Sprite[] frames, float dt)
         {
-            if (_visual != null) _attackRemaining = _visual.Duration(UnitAnimationState.Attack);
+            int hit = Mathf.Clamp(_visual.AttackHitFrame, 0, frames.Length - 1);
+
+            if (_attackPhase == AttackPhase.Windup && _unit != null && _unit.WindupTicks > 0)
+            {
+                float progress = 1f - (float)_unit.WindupRemaining / _unit.WindupTicks;
+                progress = Mathf.Clamp01(progress);
+                _frameIndex = Mathf.Clamp(Mathf.FloorToInt(progress * hit), 0, hit);
+            }
+            else if (_attackPhase == AttackPhase.FollowThrough)
+            {
+                float frameDur = 1f / _visual.Fps;
+                _frameTimer += dt;
+                while (_frameTimer >= frameDur)
+                {
+                    _frameTimer -= frameDur;
+                    if (_frameIndex < frames.Length - 1) _frameIndex++;
+                }
+            }
+
+            _sprite.sprite = frames[Mathf.Clamp(_frameIndex, 0, frames.Length - 1)];
+        }
+
+        /// <summary>Юнит вошёл в замах авто-атаки (событие сима OnAttackStarted) — запускаем свинг.</summary>
+        public void OnAttackStarted()
+        {
+            if (_visual == null) return;
+
+            if (_unit != null && _unit.IsWindingUp && _unit.WindupTicks > 0)
+            {
+                _attackPhase = AttackPhase.Windup;
+                _frameIndex  = 0;
+                _frameTimer  = 0f;
+            }
+            else
+            {
+                BeginFollowThrough();   // мгновенный удар (windup 0) — сразу хвост
+            }
+        }
+
+        /// <summary>Замах прерван (событие сима OnAttackInterrupted) — рвём свинг в idle.</summary>
+        public void OnAttackInterrupted()
+        {
+            _attackPhase = AttackPhase.None;
+            _frameIndex  = 0;
+            _frameTimer  = 0f;
         }
 
         /// <summary>Вызывается при получении урона.</summary>

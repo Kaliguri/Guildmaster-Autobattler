@@ -52,8 +52,14 @@ namespace Guildmaster.Combat
         /// <summary>Юнит погиб.</summary>
         public event Action<RuntimeUnit> OnUnitDied;
 
-        /// <summary>Нанесён урон: источник, цель, результат.</summary>
+        /// <summary>Нанесён урон: источник, цель, результат. Совпадает с кадром контакта (конец замаха, вики «14»).</summary>
         public event Action<RuntimeUnit, RuntimeUnit, DamageResult> OnDamageDealt;
+
+        /// <summary>Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View.</summary>
+        public event Action<RuntimeUnit, RuntimeUnit> OnAttackStarted;
+
+        /// <summary>Замах авто-атаки прерван (стан/смерть себя): View рвёт свинг в idle (вики «14»).</summary>
+        public event Action<RuntimeUnit> OnAttackInterrupted;
 
         /// <summary>Бой завершён с итогом.</summary>
         public event Action<BattleOutcome> OnBattleEnded;
@@ -250,6 +256,10 @@ namespace Guildmaster.Combat
 
         public void ReportAreaHit(in AreaHit hit) => OnAreaHit?.Invoke(hit);
 
+        public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => OnAttackStarted?.Invoke(unit, target);
+
+        public void NotifyAttackInterrupted(RuntimeUnit unit) => OnAttackInterrupted?.Invoke(unit);
+
         public void Dispel(in Effects.DispelRequest req)
         {
             _effectSystem.Dispel(in req, this);
@@ -299,6 +309,9 @@ namespace Guildmaster.Combat
                 hash ^= (ulong)(long)(u.Position.x * 1000f) * 2246822519UL;
                 hash ^= (ulong)(long)(u.Position.y * 1000f) * 3266489917UL;
                 hash ^= (ulong)(long)(u.CurrentHP  * 100f)  * 668265263UL;
+                // Состояние авто-атаки — детерминированное, входит в чек-сумму (вики «14»).
+                hash ^= (ulong)(uint)u.AttackCooldownTicks * 374761393UL;
+                hash ^= (ulong)(uint)u.WindupRemaining     * 3266489917UL;
                 hash  = (hash << 13) | (hash >> 51);
             }
 

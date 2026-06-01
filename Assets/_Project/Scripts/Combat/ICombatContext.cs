@@ -57,6 +57,18 @@ namespace Guildmaster.Combat
         /// <summary>Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4).</summary>
         void Dispel(in Effects.DispelRequest req);
 
+        /// <summary>
+        /// Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View и «вжух»-SFX.
+        /// Fire-and-forget — не мутирует симуляцию.
+        /// </summary>
+        void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target);
+
+        /// <summary>
+        /// Замах авто-атаки прерван (стан/смерть себя): View рвёт свинг в idle, гасит звук замаха (вики «14»).
+        /// Fire-and-forget — не мутирует симуляцию.
+        /// </summary>
+        void NotifyAttackInterrupted(RuntimeUnit unit);
+
         /// <summary>Генератор случайных чисел боя (детерминированный).</summary>
         IRngService Rng { get; }
 

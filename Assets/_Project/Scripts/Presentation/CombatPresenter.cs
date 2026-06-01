@@ -57,19 +57,23 @@ namespace Guildmaster.Presentation
         private void OnEnable()
         {
             if (_simulation == null) return;
-            _simulation.OnUnitSpawned  += HandleUnitSpawned;
-            _simulation.OnUnitDied     += HandleUnitDied;
-            _simulation.OnDamageDealt  += HandleDamageDealt;
-            _simulation.OnBattleEnded  += HandleBattleEnded;
+            _simulation.OnUnitSpawned       += HandleUnitSpawned;
+            _simulation.OnUnitDied          += HandleUnitDied;
+            _simulation.OnDamageDealt       += HandleDamageDealt;
+            _simulation.OnBattleEnded       += HandleBattleEnded;
+            _simulation.OnAttackStarted     += HandleAttackStarted;
+            _simulation.OnAttackInterrupted += HandleAttackInterrupted;
         }
 
         private void OnDisable()
         {
             if (_simulation == null) return;
-            _simulation.OnUnitSpawned  -= HandleUnitSpawned;
-            _simulation.OnUnitDied     -= HandleUnitDied;
-            _simulation.OnDamageDealt  -= HandleDamageDealt;
-            _simulation.OnBattleEnded  -= HandleBattleEnded;
+            _simulation.OnUnitSpawned       -= HandleUnitSpawned;
+            _simulation.OnUnitDied          -= HandleUnitDied;
+            _simulation.OnDamageDealt       -= HandleDamageDealt;
+            _simulation.OnBattleEnded       -= HandleBattleEnded;
+            _simulation.OnAttackStarted     -= HandleAttackStarted;
+            _simulation.OnAttackInterrupted -= HandleAttackInterrupted;
         }
 
         private void Update()
@@ -120,16 +124,27 @@ namespace Guildmaster.Presentation
 
         private void HandleDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result)
         {
-            // Анимация атаки у источника — косметика, триггерится с сим-тика (урон уже нанесён).
-            if (source != null && _views.TryGetValue(source.Id, out var sourceView))
-                sourceView.OnAttack();
-
+            // Урон совпадает с кадром контакта (конец замаха): здесь — импакт-фидбэк цели.
+            // Свинг источника запускается раньше, на OnAttackStarted (вики «14»).
             if (_views.TryGetValue(target.Id, out var view))
                 view.OnDamageReceived(result.TotalDamage);
 
             _damageNumbers?.Spawn(target.Position, result.TotalDamage);
 
             _damageDealtPublisher.Publish(new DamageDealtEvent(source, target, result));
+        }
+
+        private void HandleAttackStarted(RuntimeUnit source, RuntimeUnit target)
+        {
+            // Вход в замах: запускаем анимацию свинга у источника (вики «14»).
+            if (source != null && _views.TryGetValue(source.Id, out var sourceView))
+                sourceView.OnAttackStarted();
+        }
+
+        private void HandleAttackInterrupted(RuntimeUnit unit)
+        {
+            if (unit != null && _views.TryGetValue(unit.Id, out var view))
+                view.OnAttackInterrupted();
         }
 
         private void HandleBattleEnded(BattleOutcome outcome)
