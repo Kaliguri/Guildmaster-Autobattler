@@ -41,10 +41,6 @@ MonoBehaviour:
   - {fileID: -5639509438907974925, guid: beca1e744034fac418413949d3d50cb5, type: 3}
   - {fileID: 452926297546027425, guid: beca1e744034fac418413949d3d50cb5, type: 3}
   - {fileID: 6238536850125145498, guid: beca1e744034fac418413949d3d50cb5, type: 3}
-  _hit:
-  - {fileID: 5658602184316354200, guid: dc659ab443472bb4daef8871b196c3b6, type: 3}
-  - {fileID: 5755147017564654305, guid: dc659ab443472bb4daef8871b196c3b6, type: 3}
-  - {fileID: 406982975876482558, guid: dc659ab443472bb4daef8871b196c3b6, type: 3}
   _death:
   - {fileID: 6991849013916550155, guid: b273c8751aad45d4997a77e62aa68d29, type: 3}
   - {fileID: -276728812324164698, guid: b273c8751aad45d4997a77e62aa68d29, type: 3}
@@ -53,3 +49,4 @@ MonoBehaviour:
   - {fileID: -1891625820773287384, guid: b273c8751aad45d4997a77e62aa68d29, type: 3}
   - {fileID: -5789737788129074030, guid: b273c8751aad45d4997a77e62aa68d29, type: 3}
   - {fileID: 3968659893341466949, guid: b273c8751aad45d4997a77e62aa68d29, type: 3}
+  _attackHitFrames: 04000000

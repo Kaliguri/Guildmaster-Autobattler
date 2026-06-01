@@ -19,13 +19,14 @@ MonoBehaviour:
   _damageType: 0
   _attackType: 0
   _resourceType: 0
+  _visual: {fileID: 0}
   _autoAttackShape: 1
   _autoAttackWidth: 1.5
   _resourceOnHit: 5
   _stats:
   - Stat: 0
     Op: 0
-    Value: 140
+    Value: 220
   - Stat: 7
     Op: 0
     Value: 14
