@@ -18,12 +18,13 @@ var searchData=
   ['guildmaster_3a_3acore_3a_3asimulation_15',['Simulation',['../namespaceGuildmaster_1_1Core_1_1Simulation.html',1,'Guildmaster::Core']]],
   ['guildmaster_3a_3adata_16',['Data',['../namespaceGuildmaster_1_1Data.html',1,'Guildmaster']]],
   ['guildmaster_3a_3adata_3a_3adefinitions_17',['Definitions',['../namespaceGuildmaster_1_1Data_1_1Definitions.html',1,'Guildmaster::Data']]],
-  ['guildmaster_3a_3adata_3a_3astats_18',['Stats',['../namespaceGuildmaster_1_1Data_1_1Stats.html',1,'Guildmaster::Data']]],
-  ['guildmaster_3a_3adevtools_19',['DevTools',['../namespaceGuildmaster_1_1DevTools.html',1,'Guildmaster']]],
-  ['guildmaster_3a_3agame_20',['Game',['../namespaceGuildmaster_1_1Game.html',1,'Guildmaster']]],
-  ['guildmaster_3a_3agame_3a_3aservices_21',['Services',['../namespaceGuildmaster_1_1Game_1_1Services.html',1,'Guildmaster::Game']]],
-  ['guildmaster_3a_3anet_22',['Net',['../namespaceGuildmaster_1_1Net.html',1,'Guildmaster']]],
-  ['guildmaster_3a_3apresentation_23',['Presentation',['../namespaceGuildmaster_1_1Presentation.html',1,'Guildmaster']]],
-  ['guildmastercommands_24',['GuildmasterCommands',['../classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html',1,'Guildmaster::DevTools']]],
-  ['guildmastercommands_2ecs_25',['GuildmasterCommands.cs',['../GuildmasterCommands_8cs.html',1,'']]]
+  ['guildmaster_3a_3adata_3a_3aeditor_18',['Editor',['../namespaceGuildmaster_1_1Data_1_1Editor.html',1,'Guildmaster::Data']]],
+  ['guildmaster_3a_3adata_3a_3astats_19',['Stats',['../namespaceGuildmaster_1_1Data_1_1Stats.html',1,'Guildmaster::Data']]],
+  ['guildmaster_3a_3adevtools_20',['DevTools',['../namespaceGuildmaster_1_1DevTools.html',1,'Guildmaster']]],
+  ['guildmaster_3a_3agame_21',['Game',['../namespaceGuildmaster_1_1Game.html',1,'Guildmaster']]],
+  ['guildmaster_3a_3agame_3a_3aservices_22',['Services',['../namespaceGuildmaster_1_1Game_1_1Services.html',1,'Guildmaster::Game']]],
+  ['guildmaster_3a_3anet_23',['Net',['../namespaceGuildmaster_1_1Net.html',1,'Guildmaster']]],
+  ['guildmaster_3a_3apresentation_24',['Presentation',['../namespaceGuildmaster_1_1Presentation.html',1,'Guildmaster']]],
+  ['guildmastercommands_25',['GuildmasterCommands',['../classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html',1,'Guildmaster::DevTools']]],
+  ['guildmastercommands_2ecs_26',['GuildmasterCommands.cs',['../GuildmasterCommands_8cs.html',1,'']]]
 ];

@@ -109,7 +109,7 @@ Inheritance diagram for Guildmaster.Combat.ICombatContext:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.ICombatContext:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ICombatContext__coll__graph.svg" width="218" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ICombatContext__coll__graph.svg" width="218" height="311"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -126,12 +126,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad7346a3dc0cb676ba10ae5e9810e6eca" id="r_ad7346a3dc0cb676ba10ae5e9810e6eca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#ad7346a3dc0cb676ba10ae5e9810e6eca">QueryUnitsInRadius</a> (Vector2 center, float radius, List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; results, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8">TargetFilter</a> filter, int requestingTeam)</td></tr>
 <tr class="memdesc:ad7346a3dc0cb676ba10ae5e9810e6eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заполнить <em>results</em>  живыми юнитами в радиусе от <em>center</em> .  <br /></td></tr>
 <tr class="separator:ad7346a3dc0cb676ba10ae5e9810e6eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab134c15c01cd56fba2e6287466908900" id="r_ab134c15c01cd56fba2e6287466908900"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#ab134c15c01cd56fba2e6287466908900">QueryUnitsInLine</a> (Vector2 origin, Vector2 direction, float length, float width, List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; results, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8">TargetFilter</a> filter, int requestingTeam)</td></tr>
+<tr class="memdesc:ab134c15c01cd56fba2e6287466908900"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заполнить <em>results</em>  живыми юнитами в полосе из <em>origin</em>  вдоль <em>direction</em> : длина <em>length</em> , полная ширина <em>width</em> .  <br /></td></tr>
+<tr class="separator:ab134c15c01cd56fba2e6287466908900"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c83a24b7d6d26085832b1e970cecf83" id="r_a1c83a24b7d6d26085832b1e970cecf83"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a1c83a24b7d6d26085832b1e970cecf83">ApplyEffect</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source)</td></tr>
 <tr class="memdesc:a1c83a24b7d6d26085832b1e970cecf83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Применить эффект к цели. Тело — Фаза 2; в Фазе 1 — стаб (no-op).  <br /></td></tr>
 <tr class="separator:a1c83a24b7d6d26085832b1e970cecf83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac724e42e655e77612ab64f06872e08c8" id="r_ac724e42e655e77612ab64f06872e08c8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#ac724e42e655e77612ab64f06872e08c8">ReportAreaHit</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1AreaHit.html">AreaHit</a> hit)</td></tr>
+<tr class="memdesc:ac724e42e655e77612ab64f06872e08c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сообщить презентации о сработавшей зоне удара (dev-оверлей зон, вики «13» шаг 4).  <br /></td></tr>
+<tr class="separator:ac724e42e655e77612ab64f06872e08c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1477df432344e4184ca6ba28d790511" id="r_af1477df432344e4184ca6ba28d790511"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#af1477df432344e4184ca6ba28d790511">Dispel</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html">Effects.DispelRequest</a> req)</td></tr>
 <tr class="memdesc:af1477df432344e4184ca6ba28d790511"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4).  <br /></td></tr>
 <tr class="separator:af1477df432344e4184ca6ba28d790511"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61ec3a61e56c37bea02600055200205c" id="r_a61ec3a61e56c37bea02600055200205c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a61ec3a61e56c37bea02600055200205c">NotifyAttackStarted</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target)</td></tr>
+<tr class="memdesc:a61ec3a61e56c37bea02600055200205c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View и «вжух»-SFX.  <br /></td></tr>
+<tr class="separator:a61ec3a61e56c37bea02600055200205c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aeb8d09de75f6660b277ef06670cf89" id="r_a9aeb8d09de75f6660b277ef06670cf89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a9aeb8d09de75f6660b277ef06670cf89">NotifyAttackInterrupted</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit)</td></tr>
+<tr class="memdesc:a9aeb8d09de75f6660b277ef06670cf89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Замах авто-атаки прерван (стан/смерть себя): View рвёт свинг в idle, гасит звук замаха (вики «14»).  <br /></td></tr>
+<tr class="separator:a9aeb8d09de75f6660b277ef06670cf89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -184,11 +196,6 @@ Properties</h2></td></tr>
 <p>Применить эффект к цели. Тело — Фаза 2; в Фазе 1 — стаб (no-op). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7ffdb85ea967ca31ce9f970371df906a">Guildmaster.Combat.CombatSimulation</a>.</p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ICombatContext_a1c83a24b7d6d26085832b1e970cecf83_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
 
 </div>
 </div>
@@ -274,6 +281,125 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a9aeb8d09de75f6660b277ef06670cf89" name="a9aeb8d09de75f6660b277ef06670cf89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aeb8d09de75f6660b277ef06670cf89">&#9670;&#160;</a></span>NotifyAttackInterrupted()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.ICombatContext.NotifyAttackInterrupted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Замах авто-атаки прерван (стан/смерть себя): View рвёт свинг в idle, гасит звук замаха (вики «14»). </p>
+<p>Fire-and-forget — не мутирует симуляцию. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a1817a9ac10c8ae12430fe3a2294edd4e">Guildmaster.Combat.CombatSimulation</a>.</p>
+
+</div>
+</div>
+<a id="a61ec3a61e56c37bea02600055200205c" name="a61ec3a61e56c37bea02600055200205c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61ec3a61e56c37bea02600055200205c">&#9670;&#160;</a></span>NotifyAttackStarted()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.ICombatContext.NotifyAttackStarted </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View и «вжух»-SFX. </p>
+<p>Fire-and-forget — не мутирует симуляцию. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#aba66d338160b4eca2e63c97852a6fcba">Guildmaster.Combat.CombatSimulation</a>.</p>
+
+</div>
+</div>
+<a id="ab134c15c01cd56fba2e6287466908900" name="ab134c15c01cd56fba2e6287466908900"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab134c15c01cd56fba2e6287466908900">&#9670;&#160;</a></span>QueryUnitsInLine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.ICombatContext.QueryUnitsInLine </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>origin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>direction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td>
+          <td class="paramname"><em>results</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8">TargetFilter</a>&#160;</td>
+          <td class="paramname"><em>filter</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>requestingTeam</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Заполнить <em>results</em>  живыми юнитами в полосе из <em>origin</em>  вдоль <em>direction</em> : длина <em>length</em> , полная ширина <em>width</em> . </p>
+<p>Опора линейной авто-атаки «Размашистый выпад» (шаг 4). </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a281bfa09b36891b5caefa6db8022636d">Guildmaster.Combat.CombatSimulation</a>.</p>
+
+</div>
+</div>
 <a id="ad7346a3dc0cb676ba10ae5e9810e6eca" name="ad7346a3dc0cb676ba10ae5e9810e6eca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad7346a3dc0cb676ba10ae5e9810e6eca">&#9670;&#160;</a></span>QueryUnitsInRadius()</h2>
 
@@ -321,6 +447,29 @@ Here is the caller graph for this function:</div>
 <p>Заполнить <em>results</em>  живыми юнитами в радиусе от <em>center</em> . </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a9f74f08be5d3b9940ebde8051ffab8f4">Guildmaster.Combat.CombatSimulation</a>.</p>
+
+</div>
+</div>
+<a id="ac724e42e655e77612ab64f06872e08c8" name="ac724e42e655e77612ab64f06872e08c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac724e42e655e77612ab64f06872e08c8">&#9670;&#160;</a></span>ReportAreaHit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.ICombatContext.ReportAreaHit </td>
+          <td>(</td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Combat_1_1AreaHit.html">AreaHit</a>&#160;</td>
+          <td class="paramname"><em>hit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Сообщить презентации о сработавшей зоне удара (dev-оверлей зон, вики «13» шаг 4). </p>
+<p>Fire-and-forget — не мутирует симуляцию и не влияет на детерминизм. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a96609f5e3bf5177b8fb1959d275f1b44">Guildmaster.Combat.CombatSimulation</a>.</p>
 
 </div>
 </div>

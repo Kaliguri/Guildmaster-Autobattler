@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.AttackTiming.AttackDurationTicks" name="Guildmaster.Combat.AttackTiming.AttackDurationTicks">
+<area shape="rect" id="Node000001" title="Длительность свинга в тиках = min(MaxAttackAnimTicks, intervalTicks)." alt="" coords="256,5,459,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a0b4ea555d2297b9817a0763eed8ae822" title="Тики замаха до кадра контакта." alt="" coords="5,5,208,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="242,28,208,28,208,23,242,23"/>
+</map>

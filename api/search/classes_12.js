@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['xorshiftrng_0',['XorShiftRng',['../classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html',1,'Guildmaster::Core::Random']]]
+  ['vesseldata_0',['VesselData',['../classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html',1,'Guildmaster::Data::Definitions']]]
 ];

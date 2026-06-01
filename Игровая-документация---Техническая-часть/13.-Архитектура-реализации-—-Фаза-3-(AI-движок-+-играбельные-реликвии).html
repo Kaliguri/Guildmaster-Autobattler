@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" dir="ltr"><head><title>13. Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии) | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="13. Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии) | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="13. Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии) | Guildmaster Wiki"/><meta name="twitter:description" content="Статус: 🟡 План на ревью (Макс читает → правки → реализация) Детальная архитектура Фазы 3 из роадмапа (9."/><meta property="og:description" content="Статус: 🟡 План на ревью (Макс читает → правки → реализация) Детальная архитектура Фазы 3 из роадмапа (9."/><meta property="og:image:alt" content="Статус: 🟡 План на ревью (Макс читает → правки → реализация) Детальная архитектура Фазы 3 из роадмапа (9."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/Игровая-документация---Техническая-часть/13.-Архитектура-реализации-—-Фаза-3-(AI-движок-+-играбельные-реликвии)"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/Игровая-документация---Техническая-часть/13.-Архитектура-реализации-—-Фаза-3-(AI-движок-+-играбельные-реликвии)"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="Статус: 🟡 План на ревью (Макс читает → правки → реализация) Детальная архитектура Фазы 3 из роадмапа (9."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+<html lang="ru" dir="ltr"><head><title>13. Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии) | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="13. Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии) | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="13. Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии) | Guildmaster Wiki"/><meta name="twitter:description" content="Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии) 2026-06-01."/><meta property="og:description" content="Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии) 2026-06-01."/><meta property="og:image:alt" content="Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии) 2026-06-01."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/Игровая-документация---Техническая-часть/13.-Архитектура-реализации-—-Фаза-3-(AI-движок-+-играбельные-реликвии)"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/Игровая-документация---Техническая-часть/13.-Архитектура-реализации-—-Фаза-3-(AI-движок-+-играбельные-реликвии)"/><link rel="icon" href="../static/icon.png"/><meta name="description" content="Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии) 2026-06-01."/><meta name="generator" content="Quartz"/><link href="../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
   position: absolute;
   display: flex;
   float: right;
@@ -116,18 +116,14 @@ pre:hover > .expand-button {
   padding: 0 12px;
   font-size: 14px;
 }
-/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="Игровая-документация---Техническая-часть/13.-Архитектура-реализации-—-Фаза-3-(AI-движок-+-играбельные-реликвии)"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-38"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-38" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../Игровая-документация---Техническая-часть/">Игровая документация   Техническая часть</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>13. Архитектура реализации — Фаза 3 (AI движок + играбельные реликвии)</a></div></nav><h1 class="article-title">13. Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии)</h1><p show-comma="true" class="content-meta"><time datetime="2026-05-31T12:44:51.614Z">31 мая 2026 г.</time><span>время чтения ~16 мин.</span></p></div></div><article class="popover-hint"><p><strong>Статус:</strong> 🟡 План на ревью (Макс читает → правки → реализация)</p>
-<hr/>
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="Игровая-документация---Техническая-часть/13.-Архитектура-реализации-—-Фаза-3-(AI-движок-+-играбельные-реликвии)"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-38"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-38" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../Игровая-документация---Техническая-часть/">Игровая документация   Техническая часть</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>13. Архитектура реализации — Фаза 3 (AI движок + играбельные реликвии)</a></div></nav><h1 class="article-title">13. Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии)</h1><p show-comma="true" class="content-meta"><time datetime="2026-06-01T16:42:37.234Z">01 июн. 2026 г.</time><span>время чтения ~9 мин.</span></p></div></div><article class="popover-hint"><h1 id="архитектура-реализации--фаза-3-ai-движок--играбельные-реликвии">Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#архитектура-реализации--фаза-3-ai-движок--играбельные-реликвии" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
 <blockquote>
-<p>Детальная архитектура <strong>Фазы 3</strong> из роадмапа (<a href="../Игровая-документация---Техническая-часть/9.-Roadmap-реализации" class="internal alias" data-slug="Игровая-документация---Техническая-часть/9.-Roadmap-реализации">9. Roadmap реализации</a> §3): AI-движок «когда/кого/где» + движковые расширения под контент + 7 Обычных реликвий играбельны + lite-харнесс.
-Наполняет швы, заложенные пустыми в Фазах 1–2: <code>TargetingSystem</code>/<code>AbilitySystem</code>/<code>MovementSystem</code> (все с пометкой «Фаза 3»), <code>EffectTagMask</code>, флаги <code>CanAct/CanMove/CanCast</code>, <code>RuntimeUnit.AI</code>.
-Дизайн-источники: <a href="../Игровая-документация---Техническая-часть/6.-Боевая-модель-(юниты,-статы,-эффекты)" class="internal alias" data-slug="Игровая-документация---Техническая-часть/6.-Боевая-модель-(юниты,-статы,-эффекты)">6. Боевая модель §2, §10</a>, <a href=".././Игровая-документация---Геймдизайн/3.-Боевая-система" class="internal alias" data-slug="Игровая-документация---Геймдизайн/3.-Боевая-система">3. Боевая система</a> (Filter/Score/Override), карточки <a href=".././Игровая-документация---Геймдизайн/1.-Контент---Реликвии/0.0.-README" class="internal alias" data-slug="Игровая-документация---Геймдизайн/1.-Контент---Реликвии/0.0.-README">1. Контент — Реликвии</a>.
-Следует пайплайну <a href=".././../.cursor/rules/phase-design-pipeline.mdc" class="internal alias" data-slug=".cursor/rules/phase-design-pipeline.mdc">phase-design-pipeline</a>: данные → швы → классы → спайк → тесты-имена.</p>
-<p><strong>Это план для ревью, а не финальный код.</strong> Сначала Макс читает и даёт мнение → потом реализуем.</p>
+<p><strong>2026-06-01.</strong> Документ был утерян (пустой файл) и ранее реконструирован вчерне; реконструкция разошлась с кодом (выдуманные <code>IBrain</code>/<code>Decision</code>/<code>BattleSnapshot</code>/<code>LiteHarness</code>, навык «Удар копьём», пассив «Строй копий»). Эта версия <strong>выверена по фактическому коду</strong> (<code>Assets/_Project/Scripts/Combat/AI/*</code>, тесты <code>Tests/EditMode/Combat/BrainTests.cs</code>) и по канону геймдиз-карточек. Номера секций (§2.1, §2.7, §3.1, §3.2, §3.4, §3.5, §4.1–4.3, §7) совпадают с ссылками в xml-доках кода.</p>
 </blockquote>
+<p>Фаза 3 строит <strong>движок ИИ</strong> боевых юнитов поверх готового боевого ядра (Фаза 1) и системы эффектов/способностей (Фаза 2), а затем доводит первые <strong>играбельные реликвии-юниты</strong> до вертикального среза.</p>
+<p>Рабочий процесс фазы (как и в прошлых): <strong>швы → спайк → стабы+тесты → реализация → ретро</strong>. Мозг ИИ — чистый: читает мир через read-only <code>IBattleView</code>, <strong>пишет только интент</strong> на самого юнита (цель/позиционирование), мир мутирует боевой цикл. «Дорогое» решение «кого/где» принимается с каденсом 10 Гц (стаггер по <code>Id</code>), «дешёвое» решение «кастовать ли» — per-tick в <code>AbilitySystem</code>.</p>
 <hr/>
-<h2 id="0-гейт-фазы-12-закрыты-контекст-этого-дока">0. Гейт: Фазы 1–2 закрыты (контекст этого дока)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#0-гейт-фазы-12-закрыты-контекст-этого-дока" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-<p>Фаза 3 опирается на готовое ядро + движок эффектов. Сверено по коду:</p>
+<h2 id="состояние-шагов-8">Состояние шагов (§8)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#состояние-шагов-8" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
 
 
 
@@ -163,711 +159,250 @@ pre:hover > .expand-button {
 
 
 
-
-
-<div class="table-container"><table><thead><tr><th>Что готово</th><th>Где</th></tr></thead><tbody><tr><td>Тик-цикл, фикс. порядок систем, детерминизм + <code>ComputeChecksum</code></td><td><code>CombatSimulation.Tick</code></td></tr><tr><td><code>Stats</code>, <code>DamagePipeline</code>, снаряды, spatial hash</td><td><code>Combat/...</code></td></tr><tr><td><strong>Движок эффектов:</strong> <code>EffectSystem</code>, <code>RuntimeEffect</code>, библиотека <code>IRuntimeEffectComponent</code> (StatMod/PeriodicDamage/Heal/Control/Shield/Lifesteal/Thorns/Dispel), стакинг, диспел</td><td><code>Combat/Effects/...</code></td></tr><tr><td>Внутренняя event-queue (<code>DrainEventQueue</code>, FIFO, без рекурсии) для реактивных компонентов</td><td><code>CombatSimulation</code> §3.4</td></tr><tr><td>Способности: <code>AbilityData</code>/<code>AbilityRuntime</code>/<code>AbilitySystem</code> с кулдауном/ресурсом + <strong>детерминированный плейсхолдер-каст</strong> (первая готовая активка по <code>TargetMode</code>)</td><td><code>Combat/Abilities/...</code></td></tr><tr><td><code>EffectTagMask</code> на юните (обновляется при add/remove) — быстрый AI-фильтр</td><td><code>RuntimeUnit</code>, <code>EffectSystem</code></td></tr><tr><td>Флаги контроля <code>CanAct/CanMove/CanCast</code> — читают Movement/AutoAttack/Ability</td><td><code>RuntimeUnit</code></td></tr></tbody></table></div>
-<p><strong>Швы под Ф3, ждущие наполнения (с TODO в коде):</strong></p>
+<div class="table-container"><table><thead><tr><th>Шаг</th><th>Содержание</th><th>Статус</th></tr></thead><tbody><tr><td>1</td><td>Спайк S1: staggered-детерминизм прото-шва ИИ (<code>Tests/.../StaggeredBrainSpikeTests.cs</code>, throwaway)</td><td>✅ готово</td></tr><tr><td>2</td><td>Lite визуальный харнесс: самодостаточная <code>BattleScene</code> + <code>UnitView</code> + S4-развязка анимации с симом</td><td>✅ готово</td></tr><tr><td>3 / 3.1</td><td>Шов ИИ: <code>IUnitBrain</code>/<code>IBattleView</code>/<code>ProfileBrain</code>/<code>BrainSystem</code> на месте удалённого <code>TargetingSystem</code></td><td>✅ готово (109/109 тестов)</td></tr><tr><td><strong>4</strong></td><td><strong>Вертикальный срез «Железный копейщик»</strong>: линейная авто-атака «Размашистый выпад» + круговой AOE-актив «Стальной вихрь» (×3) с cast-условием «≥X врагов в радиусе» + SO-ассет реликвии + глаз в харнессе</td><td>🔧 текущий</td></tr><tr><td>5+</td><td>Остальные 6 Обычных реликвий, профили поведения, движковые расширения §10 дока 6 (формы удара, заряды, displacement, pre-damage хук S5)</td><td>⏳ позже</td></tr></tbody></table></div>
+<hr/>
+<h2 id="2--модель-решений-ии">§2 — Модель решений ИИ<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2--модель-решений-ии" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="21--параметризованные-пресеты-выбранная-модель">§2.1 — «Параметризованные пресеты» (выбранная модель)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#21--параметризованные-пресеты-выбранная-модель" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><strong>Решение Макса:</strong> НЕ полный data-driven <code>[SerializeReference]</code>-граф, а <strong>параметризованные пресеты</strong> — фиксированный набор типизированных ручек за стабильным швом <code>IUnitBrain</code>. Одна кодовая реализация (<code>ProfileBrain</code>) их интерпретирует.</p>
 <ul>
-<li><code>TargetingSystem.Tick</code> — «ближайший живой враг», коммент «полный Filter/Score/Override — Фаза 3, станет тонкой обёрткой».</li>
-<li><code>AbilitySystem</code> — плейсхолдер-триггер «кастуем первую готовую активку», коммент «полный выбор когда/что — AI Фазы 3».</li>
-<li><code>MovementSystem</code> — «двигайся к цели до дистанции атаки», коммент «продвинутые режимы (IPositioningMode) — Фаза 3».</li>
-<li><code>RuntimeUnit.AI</code> (док 6 §2) — поля ещё нет, Ф3 добавляет.</li>
+<li><strong><code>AIProfile</code></strong> (<code>[Serializable]</code>, лежит на <code>RelicData.Ai</code>) — ручки <strong>поведения</strong> мозга. <strong>Не</strong> ScriptableObject: сериализуется внутри реликвии, имеет публичный конструктор для кодовых профилей (харнесс/спавн-команды/тесты).</li>
+<li><strong>Why:</strong> сложная AI может не выжить к фестивалю; полиморфная библиотека окупается только при редакторе AI (post-festival). Главное — стабильный шов <code>IUnitBrain</code> (отделяет «как решено» от «как сим исполняет») → апгрейд до графа/хардкода дешёвый, без переписи сим/тестов.</li>
 </ul>
-<p><strong>Чего ещё нет в сценах:</strong> играбельного боя — нет (всё headless, верифицируется Test Runner’ом). Контент-ассетов (<code>StatsConfig</code>, реликвии) — нет. Lite-харнесс — собираем в этой фазе ([interactive-testing-and-scene-state]).</p>
+<p>Состав ручек продиктован ГД-моделью <strong>блоков A–G</strong> (словарь — <code>1. Контент - Реликвии/0.3. Модель AI-настроек реликвий.md</code>). Реликвия включает свой поднабор:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Блок</th><th>Где живёт</th><th>Что задаёт</th></tr></thead><tbody><tr><td><strong>A</strong> фокус авто-атаки</td><td><code>AIProfile.AutoAttackTargeting</code> (<code>TargetingMode</code>, <strong>один дропдаун</strong>, не список) + <code>AutoAttackMode</code> (Damage/Heal) + <code>TargetTag</code> (для <code>PreferTagged</code>)</td><td>кого бьёт авто-атака</td></tr><tr><td><strong>B</strong> отступление</td><td><code>AIProfile.Retreat</code> (Enabled, <code>FleeAtHpPct</code>, <code>ReturnAtHpPct</code>; <strong>B > A</strong> — гистерезис)</td><td>бежать при HP ≤ A%, вернуться при ≥ B%</td></tr><tr><td><strong>C/D/E</strong> цель/условие/отмена ульты</td><td>по-способности на <code>AbilityData</code> (приходят с вертикальным срезом, шаг 4)</td><td>когда и по кому кастовать</td></tr><tr><td><strong>F</strong> триггер пассивки</td><td><code>AIProfile.PassiveTrigger</code> (None/AnyHit/<code>OnHitAbovePctMaxHp</code>/Always) + <code>PassiveThresholdPct</code></td><td>реактив-пассив (щит Защитника и т.п.)</td></tr><tr><td><strong>G</strong> кайт</td><td><code>AIProfile.Kite</code> (Enabled, <code>FleeDist</code>, <code>FallbackDist</code>; <strong>T > F</strong>)</td><td>следопыт: удержание дистанции</td></tr></tbody></table></div>
+<p><strong>Режимы таргетинга</strong> (<code>TargetingMode</code>, общий для авто-атаки и активок): <code>Nearest</code>, <code>LowestHpFlat</code>, <code>LowestHpPercent</code>, <code>HighestHp</code>, <code>PreferTagged</code>, <code>HighestThreat</code> (оценочный «главный ДПС» = <code>AutoAttackDamage × AttackSpeed × DamageDealtEff</code>, без истории урона — Защитнику), <code>AllyNearest</code>, <code>AllyLowestHpPercent</code>.</p>
+<p><strong>Отложено на Ф4+ (решения Макса):</strong> время каста/каналинг и «сбить каст» — осмысленны только для стабильных-под-задержкой спеллов (каналы-стойки, телеграф-нюки); реактивные/кластерные ульты Обычных от каст-времени ломаются. «Отмена условия ульты» трактуется как <strong>HP% самого юнита</strong> (паника/выживание).</p>
+<h3 id="27--хилер-и-ai-поля-юнита">§2.7 — Хилер и AI-поля юнита<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#27--хилер-и-ai-поля-юнита" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>AutoAttackMode.Heal</code> разводит «кого лечу» и «от кого бегу»: авто-атака лечит союзника (<code>AutoAttackTarget</code>), а <code>CurrentTarget</code> держится на ближайшем враге — для позиционирования/отступления.</p>
+<p>AI-поля на <code>RuntimeUnit</code> (пишет мозг 10 Гц, читают системы движения/атаки 30 Гц):</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Поле</th><th>Назначение</th></tr></thead><tbody><tr><td><code>IUnitBrain Brain</code></td><td>мозг юнита; ставит <code>RuntimeUnitFactory</code>; <code>null</code> → дефолтный мозг <code>BrainSystem</code></td></tr><tr><td><code>int BrainPhase</code></td><td>фаза стаггера (<code>= Id % AiTickInterval</code>)</td></tr><tr><td><code>bool BrainDirty</code></td><td>событийное прерывание → переоценка вне фазы</td></tr><tr><td><code>PositioningIntent Positioning</code></td><td>Approach / Kite / Retreat</td></tr><tr><td><code>RuntimeUnit CurrentTarget</code></td><td>цель движения/позиционирования</td></tr><tr><td><code>RuntimeUnit AutoAttackTarget</code></td><td>цель авто-атаки (для хилера ≠ <code>CurrentTarget</code>)</td></tr><tr><td><code>EffectTag EffectTagMask</code></td><td>маска тегов активных эффектов — быстрый запрос для <code>PreferTagged</code></td></tr></tbody></table></div>
 <hr/>
-<h2 id="1-что-фаза-3-даёт-и-чего-не-делает">1. Что Фаза 3 даёт и чего НЕ делает<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-что-фаза-3-даёт-и-чего-не-делает" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-<p><strong>Деливерабл:</strong> юниты сами решают <strong>кого</strong> бить, <strong>когда</strong> жать активку, <strong>где</strong> стоять — по настраиваемому профилю; движковые расширения, которых требуют 7 реликвий; все 7 Обычных реликвий играбельны в бою; lite-харнесс, где это видно глазами.</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="table-container"><table><thead><tr><th>✅ В Фазе 3</th><th>⛔ НЕ в Фазе 3 (куда переезжает)</th></tr></thead><tbody><tr><td>AI-движок: таргетинг (Filter/Score), cast-условия активок, позиционирование (приближение/кайт/отступление)</td><td><strong>Редактор AI в игре</strong> (визуальный граф/UI настройки игроком) → <strong>post-festival</strong></td></tr><tr><td><code>IUnitBrain</code>-шов + 10-Гц staggered AI-тик + событийные прерывания поверх 30-Гц сим</td><td><strong>Богатая data-driven AI</strong> ([SerializeReference]-граф примитивов) → <strong>возможно post-festival</strong> (см. §2.1: шов готов к апгрейду, бьём по простому)</td></tr><tr><td><code>AIProfile</code> = малый набор типизированных «переключателей» на реликвии (3–7 ручек, §2.1)</td><td><strong>Команды Гильдмастера / ручное управление целью игроком</strong> → каркас-шов, наполнение <strong>Фаза 5/7</strong></td></tr><tr><td>Движковые расширения §10: заряды, форма удара (линия/конус/круг), хил-автоатака, displacement + knock-up, атака-в-движении, реактивный перенос метки, empower-next</td><td><strong>Полный контент-набор</strong> (Редкие/Эпические реликвии, ~10 эффектов) → <strong>Фаза 4</strong></td></tr><tr><td>Авторинг 7 SO-реликвий (Обычные) + их <code>AIProfile</code></td><td><strong>Баланс</strong> статов/кулдаунов → <strong>Фаза 8</strong> (Ф3 — «играбельно», не «сбалансировано»)</td></tr><tr><td>Lite-харнесс: сцена + <code>CombatLifetimeScope</code> + <code>StatsConfig</code> + презентер + спрайтовый <code>UnitView</code> + Quantum Console спавн-команды</td><td><strong>Полировка презентации</strong> (иконки баффов, VFX, damage numbers polish) → <strong>Фаза 7</strong></td></tr><tr><td>Спрайтовый <code>UnitView</code> на готовых open-license пиксель-шитах (Idle/Run/Attack/Hit/Death)</td><td><strong>Addressables-пайплайн визуала + <code>AnimatorOverrideController</code> на реликвию</strong> (док 6 §4) → <strong>Фаза 7</strong> (Ф3 — прямые ссылки/упрощённый аниматор)</td></tr></tbody></table></div>
-<blockquote>
-<p><strong>Принцип границы:</strong> Ф3 строит <strong>движок принятия решений + механики, которые реликвии используют</strong>, и доводит 7 реликвий до играбельности. Баланс и полировка — позже. Бесп��койное поведение реликвий (телепорт-в-спину, перенос метки) — это <strong>механики способностей/эффектов</strong>, а не «ум» AI; AI решает только цель/когда/где.</p>
-</blockquote>
-<hr/>
-<h2 id="2-данные-первыми-уровень-1--фиксируем">2. Данные первыми (Уровень 1 — фиксируем)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-данные-первыми-уровень-1--фиксируем" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-<blockquote>
-<p><strong>Терминология «навык» (ГД) → движок.</strong> В карточках реликвий жёсткого деления «1 активка + 1 пассивка» нет — просто <strong>2 навыка</strong> (см. <a href=".././Игровая-документация---Геймдизайн/1.-Контент---Реликвии/0.0.-README" class="internal alias" data-slug="Игровая-документация---Геймдизайн/1.-Контент---Реликвии/0.0.-README">ГД: 0.0 README</a>). На движок ложится без изменений: <strong>пассивный навык</strong> = <code>RelicData.GrantedEffects</code> (постоянный/реактивный эффект, AI-блок F — триггер), <strong>активный навык</strong> = <code>RelicData.Abilities</code> (<code>AbilityData</code> с кулдауном/ресурсом/зарядами, AI-блоки C/D/E). Граница гибкая (авто-срабатывающий навык без ресурса = пассив с реактивным компонентом).</p>
-</blockquote>
-<h3 id="21-aiprofile--модель-ai-решение-11">2.1 <code>AIProfile</code> — модель AI (РЕШЕНИЕ, §11)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#21-aiprofile--модель-ai-решение-11" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<p><strong>Развилка (вопрос Макса):</strong> делать AI полностью data-driven (полиморфные [SerializeReference]-примитивы Filter/Score/CastRule, как библиотека эффектов) или проще?</p>
-<p><strong>Решение: «параметризованные пресеты» — набор типизированных ручек за стабильным швом.</strong> Не полиморфный граф. На реликвии лежит сериализуемый <code>AIProfile</code>; единственная кодовая реализация <code>IUnitBrain</code> его интерпретирует. <strong>Состав ручек продиктован ГД-моделью</strong> (<a href=".././Игровая-документация---Геймдизайн/1.-Контент---Реликвии/0.3.-Модель-AI-настроек-реликвий" class="internal alias" data-slug="Игровая-документация---Геймдизайн/1.-Контент---Реликвии/0.3.-Модель-AI-настроек-реликвий">ГД: 0.3. Модель AI-настроек реликвий</a>) — блоки A–G; реликвия включает свой поднабор.</p>
-<pre><code>AIProfile (Serializable, поле на RelicData)
-├── AutoAttackTargeting  enum  — [блок A/A′] Nearest / LowestHpFlat / HighestHp /
-│                                 MaxTargetsHit / PreferUntagged(tag) / AllyNearest /
-│                                 AllyLowestHpPct / AllyWoundedMaxDps
-├── AutoAttackMode        enum  — Damage / Heal (инверсия таргета авто-атаки, §2.3)
-├── Retreat { Enabled; FleeAtHpPct A; ReturnAtHpPct B }   — [блок B] B>A, зазор от дёрганья
-├── Kite    { Enabled; FleeDist F; FallbackDist T }       — [блок G] T>F (только следопыт)
-└── PassiveTrigger        enum+param — [блок F] AnyHit / OnHitAbovePctMaxHp(D) / (монах: Always/
-                                       OnSelfPushed/OnPushTarget) — всегда срабатывает при смертельном
-</code></pre>
-<p><strong>Cast-настройки живут по-способности на <code>AbilityData</code> (§2.2):</strong> <code>AbilityTargeting</code> [блок C] + <code>CastCondition</code> [блок D] + <code>CastOverride</code> [блок E]. Каждая активка жмётся под своё условие.</p>
-<p><strong>Залоченные семантики (ответы Макса):</strong></p>
-<ul>
-<li><strong>Выбор цели — один режим (дропдаун), не упорядоченный список.</strong> Тай-брейк при равенстве — дистанция, затем <code>Id</code> (детерминизм).</li>
-<li><strong><code>CastOverride</code> (отмена условия) — по HP% САМОГО юнита:</strong> при своём <code>HP ≤ P%</code> кастуем немедленно в обход <code>CastCondition</code> (десперейт/выживание). У хилера override → лечит себя.</li>
-<li><strong>Зона скоринга:</strong> автоатака — враги в радиусе АА; ульта — в радиусе ульты или <strong>глобально</strong> («без ограничения дальности»); нет в зоне → сближение к ближайшему.</li>
-<li><strong><code>HighestThreat</code> / «главный ДПС»</strong> (нужен Защитнику, блок C) — <strong>оценочный</strong> урон/сек из статов (<code>AutoAttackDamage × AttackSpeed × DamageDealtEff</code>), без истории урона → детерминированно, без накопления стейта.</li>
-</ul>
-<p><strong>Почему так, а не полный data-driven (причины — §11):</strong></p>
-<ul>
-<li>Модель Макса (блоки A–G) — это и есть «3–7 ручек, часть общих, часть уникальных». Подтверждает выбор: полиморфный граф не нужен, он окупается только при <strong>редакторе AI в игре</strong> (post-festival). Платить за него сейчас = speculative generality.</li>
-<li>Фиксированный набор ручек: тривиально сериализуется (нет кросс-сборочного [SerializeReference]-риска, как был в Ф2 S1), читаем в инспекторе, быстро авторится.</li>
-<li><strong>Шов важнее реализации мозга.</strong> <code>IUnitBrain</code> (§3.1) изолирует «как принято решение» от «как сим его исполняет». Захотим позже — (а) добавим ручек, (б) подменим мозг на <code>[SerializeReference]</code>-граф, (в) захардкодим пер-архетип — <strong>не трогая интеграцию в сим и тесты шва</strong>. Этот разворот дешёвый именно потому, что шов стабилен.</li>
-</ul>
-<h3 id="22-abilitydata-data--дополнить-под-cast-условия-и-расширения">2.2 <code>AbilityData</code> (Data) — дополнить под cast-условия и расширения<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#22-abilitydata-data--дополнить-под-cast-условия-и-расширения" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<p>К текущим <code>Effects</code>/<code>BaseCooldown</code>/<code>ResourceCost</code>/<code>TargetMode</code> добавляются:</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="table-container"><table><thead><tr><th>Поле</th><th>Тип</th><th>Назначение</th><th>Блок ГД</th></tr></thead><tbody><tr><td><code>AbilityTargeting</code></td><td>enum (как <code>AutoAttackTargeting</code>, + позиц. <code>LaunchFar</code>/<code>LaunchNear</code>/<code>SelfBackline</code> для монаха, + <code>HighestThreat</code>)</td><td>Кого/куда целит ульта</td><td>C</td></tr><tr><td><code>CastCondition</code></td><td>enum: <code>ASAP</code> / <code>EnemiesInRadius</code> / <code>TargetBelowHpPct</code> / <code>AllyBelowHpPct</code> / <code>TaggedTargetsCount</code> / <code>HasValidTarget</code> / <code>Manual</code></td><td>Когда AI жмёт активку</td><td>D</td></tr><tr><td><code>CastThreshold</code></td><td><code>float</code></td><td>Порог условия (кол-во целей / HP% / число тегнутых)</td><td>D</td></tr><tr><td><code>CastRadius</code></td><td><code>float</code> (0 = глобально)</td><td>Радиус для <code>EnemiesInRadius</code>/<code>TaggedTargetsCount</code></td><td>D</td></tr><tr><td><code>RequiredTag</code></td><td><code>EffectTag</code></td><td>Тег для <code>TaggedTargetsCount</code> (напр. <code>Frozen</code>)</td><td>D</td></tr><tr><td><code>CastOverride</code></td><td><code>{ Enabled; HpPct P; bool IfOneEnemyLeft }</code></td><td><strong>Паника по HP%:</strong> при <code>self.HP ≤ P%</code> каст в обход условия (хилер → на себя). Монах: доп. «если враг 1»</td><td>E</td></tr><tr><td><code>Charges</code></td><td><code>int</code> (деф. 1)</td><td>Кол-во зарядов (§2.4)</td><td>—</td></tr><tr><td><code>ChargeCooldown</code></td><td><code>float</code></td><td>Перезарядка одного заряда (независимо от <code>BaseCooldown</code>)</td><td>—</td></tr><tr><td><code>Aoe</code></td><td><code>AreaShape</code> (§2.5)</td><td>Форма зоны AOE-активки (круг/линия/конус)</td><td>—</td></tr></tbody></table></div>
-<p><code>TargetMode</code> (старый) поглощается <code>AbilityTargeting</code>. <code>CastCondition.Manual</code> — задел под команды Гильдмастера. <strong><code>Сбить каст</code> НЕ включён</strong> — каст-времён у врагов пока нет (§9, отложено).</p>
-<h3 id="23-relicdata-data--форма-авто-атаки-режим-визуал">2.3 <code>RelicData</code> (Data) — форма авто-атаки, режим, визуал<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#23-relicdata-data--форма-авто-атаки-режим-визуал" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="table-container"><table><thead><tr><th>Поле</th><th>Тип</th><th>Назначение</th><th>Кому</th></tr></thead><tbody><tr><td><code>AutoAttackShape</code></td><td><code>AreaShape</code> (§2.5)</td><td>Single / Line / Cone — форма попадания авто-атаки</td><td>Железный копейщик (линия)</td></tr><tr><td><code>AutoAttackMode</code></td><td>enum <code>Damage</code>/<code>Heal</code></td><td>Хил-автоатака: цель-союзник + <code>Heal</code> вместо <code>DealDamage</code></td><td>Светлый пастырь</td></tr><tr><td><code>CanAttackWhileMoving</code></td><td><code>bool</code></td><td>Авто-атака не требует остановки движения</td><td>Лесной следопыт, Монах вихря</td></tr><tr><td><code>Ai</code></td><td><code>AIProfile</code> (§2.1)</td><td>Профиль поведения</td><td>все</td></tr><tr><td><code>Visual</code></td><td><code>UnitVisual</code> (§2.6)</td><td>Ссылки на спрайт-шиты для <code>UnitView</code></td><td>все (харнесс)</td></tr></tbody></table></div>
-<h3 id="24-abilityruntime-combat--заряды">2.4 <code>AbilityRuntime</code> (Combat) — заряды<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#24-abilityruntime-combat--заряды" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<p>К <code>Data</code>/<code>CooldownRemaining</code> добавляется:</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="table-container"><table><thead><tr><th>Поле</th><th>Назначение</th></tr></thead><tbody><tr><td><code>ChargesAvailable</code></td><td>Текущее число доступных зарядов (старт = <code>Data.Charges</code>)</td></tr><tr><td><code>ChargeRechargeRemaining</code></td><td>Таймер восстановления одного заряда</td></tr></tbody></table></div>
-<p><code>IsReady</code> = <code>ChargesAvailable > 0</code> (при <code>Charges > 1</code>) ИЛИ <code>CooldownRemaining ≤ 0</code> (классика). Каст тратит заряд/ставит кулдаун; восстановление зарядов тикает параллельно.</p>
-<h3 id="25-areashape-data-новый--единая-форма-зоны">2.5 <code>AreaShape</code> (Data, новый) — единая форма зоны<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#25-areashape-data-новый--единая-форма-зоны" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<p>Переиспользуется авто-атакой (форма удара) и AOE-активками:</p>
-<pre><code>AreaShape
-├── Kind    enum  — None(single) / Circle / Line / Cone
-├── Radius  float — для Circle (вокруг точки/себя)
-├── Length  float — для Line/Cone (дальность)
-├── Width   float — для Line (толщина)
-└── Angle   float — для Cone (полу-угол, градусы)
-</code></pre>
-<p>Резолв «кто в зоне» — детерминированный запрос (<code>QueryUnitsInShape</code>, §3.3). Порядок результатов фиксирован (по <code>Id</code>) — детерминизм мульти-хита.</p>
-<h3 id="26-effecttag--добавить-категории-под-контент">2.6 <code>EffectTag</code> — добавить категории под контент<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#26-effecttag--добавить-категории-под-контент" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<p>К текущим (<code>Buff/Debuff/Control/DoT/HoT/Heal/Shield</code>) добавляем:</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="table-container"><table><thead><tr><th>Тег</th><th>Кому</th><th>Зачем</th></tr></thead><tbody><tr><td><code>Frozen</code></td><td>Криомант</td><td>Пассивка-АА ставит; активка станит всех с <code>Frozen</code> (<code>TaggedTargetsCount</code>, фильтр по маске)</td></tr><tr><td><code>Marked</code></td><td>Лесной следопыт</td><td>Метка +25% урона; AI-приоритет <code>PreferTagged(Marked)</code>; перенос при смерти</td></tr><tr><td><code>KnockUp</code></td><td>семейство контроллеров</td><td>«Подкидывание»: контроль, <strong>не скейлится</strong> <code>ReceiveDebuffEff</code> (§4.4)</td></tr></tbody></table></div>
-<blockquote>
-<p>Маска тегов (<code>EffectTagMask</code>) уже на юните → запрос «есть ли у цели тег X» и «сколько врагов с тегом X в радиусе» — O(1)/линейно по маске, без перебора <code>ActiveEffects</code>. Это и есть быстрый AI-фильтр, ради которого маска сделана.</p>
-</blockquote>
-<h3 id="27-runtimeunit-combat--новые-поля-шов-ai-исполняется-per-tick">2.7 <code>RuntimeUnit</code> (Combat) — новые поля (шов AI исполняется per-tick)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#27-runtimeunit-combat--новые-поля-шов-ai-исполняется-per-tick" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="table-container"><table><thead><tr><th>Поле</th><th>Тип</th><th>Кто мутирует</th><th>Кто читает</th></tr></thead><tbody><tr><td><code>Brain</code></td><td><code>IUnitBrain</code></td><td><code>RuntimeUnitFactory</code> (компиляция из <code>AIProfile</code>)</td><td><code>BrainSystem</code></td></tr><tr><td><code>BrainPhase</code></td><td><code>int</code></td><td>фабрика (= <code>Id % AiStaggerWindow</code>)</td><td><code>BrainSystem</code> (stagger)</td></tr><tr><td><code>BrainDirty</code></td><td><code>bool</code></td><td>event-queue (цель умерла / вышел из стелса)</td><td><code>BrainSystem</code> (прерывание)</td></tr><tr><td><code>Positioning</code></td><td><code>PositioningIntent</code> enum</td><td><code>BrainSystem</code> (10 Гц)</td><td><code>MovementSystem</code> (30 Гц)</td></tr><tr><td><code>AutoAttackTarget</code></td><td><code>RuntimeUnit</code></td><td><code>BrainSystem</code> (для хилера — союзник)</td><td><code>AutoAttackSystem</code></td></tr><tr><td><code>DisplacementVelocity</code> / <code>DisplacementTicks</code></td><td><code>Vector2</code>/<code>int</code></td><td><code>DisplacementComponent</code></td><td><code>MovementSystem</code> (override)</td></tr></tbody></table></div>
-<blockquote>
-<p><code>CurrentTarget</code> (есть с Ф1) теперь пишет мозг, а не <code>TargetingSystem</code>. Для хилера авто-атака бьёт <code>AutoAttackTarget</code> (союзник), а <code>CurrentTarget</code> может указывать на угрозу для позиционирования — разделяем «кого лечу» и «от кого отступаю».</p>
-</blockquote>
-<hr/>
-<h2 id="3-швы-уровень-1--фиксируем">3. Швы (Уровень 1 — фиксируем)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-швы-уровень-1--фиксируем" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-<h3 id="31-iunitbrain--главный-шов-изолирует-ум-от-сим">3.1 <code>IUnitBrain</code> — главный шов (изолирует «ум» от сим)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#31-iunitbrain--главный-шов-изолирует-ум-от-сим" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="csharp" data-theme="github-light github-dark"><code data-language="csharp" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// Combat. Единственная точка, где принимается решение «кого/где». Детерминирован:</span></span>
-<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// читает мир через read-only представление, НЕ мутирует сим напрямую.</span></span>
-<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IUnitBrain</span></span>
+<h2 id="3--контракт-шва-ии-итог-шагов-131">§3 — Контракт шва ИИ (итог шагов 1–3.1)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3--контракт-шва-ии-итог-шагов-131" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="31--шов-iunitbrain--ibattleview--profilebrain">§3.1 — Шов: <code>IUnitBrain</code> / <code>IBattleView</code> / <code>ProfileBrain</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#31--шов-iunitbrain--ibattleview--profilebrain" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<figure data-rehype-pretty-code-figure><pre tabindex="0" data-language="csharp" data-theme="github-light github-dark"><code data-language="csharp" data-theme="github-light github-dark" style="display:grid;"><span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IUnitBrain</span></span>
 <span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
-<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Decide</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">RuntimeUnit</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> self</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">IBattleView</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> view</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);   </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// пишет self.CurrentTarget / AutoAttackTarget / Positioning</span></span>
+<span data-line><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">    // Переоценить решение юнита по текущему срезу боя. Пишет интент на self, НЕ мутирует сим.</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    void</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> Decide</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">(</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">RuntimeUnit</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> self</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">, </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">IBattleView</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> view</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">);</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span>
+<span data-line> </span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">public</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;"> interface</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> IBattleView</span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">          // read-only срез боя (реализует CombatSimulation; мок — FakeBattleView)</span></span>
+<span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">{</span></span>
+<span data-line><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">    IReadOnlyList</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">&lt;</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">RuntimeUnit</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">> </span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;">Units</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; }   </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// живые и мёртвые; мозг сам фильтрует по IsDead/Team</span></span>
+<span data-line><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">    int</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0;"> CurrentTick</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;"> { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583;">get</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">; }                    </span><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D;">// для каденса/стаггера</span></span>
 <span data-line><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8;">}</span></span></code></pre></figure>
 <ul>
-<li><code>IBattleView</code> — read-only срез боя для мозга: список живых юнитов, запросы «враги/союзники в радиусе», чтение масок тегов. Без права мутации (отделяет решение от исполнения → тестируемость + детерминизм).</li>
-<li><strong>v1-реализация — <code>ProfileBrain</code></strong> (одна): интерпретирует <code>AIProfile</code> (§2.1). Filter (живой/команда/в зоне видимости) → Score (по <code>TargetPriority</code>) → Override (порог отступления → <code>Positioning</code>).</li>
-<li><strong>Cast-решение здесь НЕ принимается</strong> — оно дешёвое и проверяется per-tick в <code>AbilitySystem</code> по <code>CastPolicy</code> (§3.5). Мозг отвечает за «дорогое»: таргетинг + позиционирование.</li>
+<li><strong>Мозг не возвращает структуру решения</strong> и не мутирует мир — он записывает интент в поля <code>self</code> (<code>CurrentTarget</code> / <code>AutoAttackTarget</code> / <code>Positioning</code>). Это даёт тестируемость (мок-вью) и детерминизм.</li>
+<li>Cast-решение здесь <strong>не</strong> принимается — оно дешёвое, проверяется per-tick в <code>AbilitySystem</code>.</li>
+<li>v1-реализация — единственная (<code>ProfileBrain</code>). Шов оставлен под будущую подмену (граф-примитивы / пер-архетип) без правок интеграции в сим.</li>
 </ul>
-<h3 id="32-каденс-ai-10-гц--stagger--прерывания-детерминизм">3.2 Каденс AI: 10 Гц + stagger + прерывания (детерминизм)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#32-каденс-ai-10-гц--stagger--прерывания-детерминизм" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<ul>
-<li>Сим = 30 Гц. Мозг переоценивается раз в 3 тика (<code>AiStaggerWindow = 3</code> → 10 Гц).</li>
-<li><strong>Stagger детерминирован по <code>Id</code>:</strong> юнит думает на тике, где <code>currentTick % 3 == unit.BrainPhase</code>. Не все разом — распределение нагрузки. Никакого wall-clock — чистая функция тика и Id ⇒ воспроизводимо.</li>
-<li><strong>Событийное прерывание:</strong> <code>BrainDirty = true</code> ставится детерминированно из event-queue (цель погибла, юнит вышел из стелса, появилась приоритетная цель). На AI-шаге думают юниты, у кого <code>фаза совпала ИЛИ BrainDirty</code>. Сбрасывает флаг после.</li>
-<li><strong>Между AI-тиками</strong> юнит исполняет последнее решение: движется к <code>CurrentTarget</code>/по <code>Positioning</code> (30 Гц), авто-атакует по кулдауну, активка жмётся по готовности+<code>CastPolicy</code>. Решение «залипает» на ≤3 тика — приемлемо, читаемо.</li>
-</ul>
-<h3 id="33-icombatcontext--добавить-запросы-формы-и-смещение">3.3 <code>ICombatContext</code> — добавить запросы формы и смещение<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#33-icombatcontext--добавить-запросы-формы-и-смещение" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<ul>
-<li><strong>Новое:</strong> <code>int QueryUnitsInShape(in AreaShape shape, Vector2 origin, Vector2 direction, List&lt;RuntimeUnit> results, TargetFilter filter, int team)</code> — Circle/Line/Cone, порядок по <code>Id</code> (детерминизм мульти-хита). Переиспользует <code>SpatialHash</code> (broad-phase) + точная проверка формы.</li>
-<li><strong>Новое:</strong> <code>void Displace(RuntimeUnit target, Vector2 totalOffset, int overTicks, bool ignoreTenacity)</code> — детерминированное смещение (knockback/pull/teleport). <code>overTicks=0</code> = мгновенный телепорт; <code>>0</code> = равномерно по тикам, перебивает обычное движение (<code>MovementSystem</code> уважает <code>DisplacementTicks</code>).</li>
-<li><code>QueryUnitsInRadius</code>/<code>SpawnProjectile</code>/<code>DealDamage</code>/<code>Heal</code>/<code>ApplyEffect</code>/<code>Dispel</code> — есть, переиспользуются (перенос метки = <code>QueryUnitsInRadius</code> + <code>ApplyEffect</code>; масс-стан Криоманта = <code>QueryUnitsInRadius</code> + фильтр маски + <code>ApplyEffect</code>).</li>
-</ul>
-<h3 id="34-event-queue--добавить-диспатч-unitdied-реактивным">3.4 Event-queue — добавить диспатч <code>UnitDied</code> реактивным<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#34-event-queue--добавить-диспатч-unitdied-реактивным" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<p>Сейчас <code>DrainEventQueue</code> диспатчит <code>DamageDealt/DamageTaken/Healed</code>. <strong>Перенос метки</strong> (<code>IReactiveComponent</code> на <code>UnitDied</code>) требует, чтобы смерть тоже доходила до реактивных компонентов.</p>
-<ul>
-<li><code>DeathSystem</code> (или <code>DealDamage</code> при добивании) <strong>энкьюит</strong> <code>CombatEventData(UnitDied, …)</code> во внутреннюю FIFO-очередь.</li>
-<li>Порядок тика меняется: <code>DrainEventQueue</code> должен увидеть <code>UnitDied</code> <strong>до</strong> физического удаления — либо двухфазно (пометка мёртвым → драйн → уборка). Деталь — §4.5; фиксируем: реактив на смерть видит ещё-присутствующую цель и ближайшую замену.</li>
-<li>Outward C#-event <code>OnUnitDied</code> (презентация) — без изменений.</li>
-</ul>
-<h3 id="35-порядок-тика--дельта-к-ф2">3.5 Порядок тика — дельта к Ф2<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#35-порядок-тика--дельта-к-ф2" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<pre><code>Tick(dt):
-  FlushPendingSpawns
-  ApplyDueCommands
-  BrainSystem.Tick        ← НОВОЕ: на месте TargetingSystem. 10 Гц staggered + dirty.
-                            Пишет CurrentTarget / AutoAttackTarget / Positioning.
-  AbilitySystem.Tick      ← ИЗМЕНЕНО: кулдауны↓ + заряды; каст по CastPolicy (не плейсхолдер).
-  MovementSystem.Tick     ← ИЗМЕНЕНО: режимы Approach/Kite/Retreat + override смещением.
-  SpatialHash.Rebuild
-  AutoAttackSystem.Tick   ← ИЗМЕНЕНО: форма удара (QueryUnitsInShape), heal-mode, empower-hook.
-  ProjectileSystem.Tick
-  EffectSystem.Tick
-  DrainEventQueue         ← ИЗМЕНЕНО: + UnitDied → реактивные (перенос метки)
-  DeathSystem.Tick → CheckOutcome → currentTick++
-</code></pre>
-<p><code>TargetingSystem</code> поглощается <code>BrainSystem</code> (или становится его Filter-хелпером). Плейсхолдер-каст в <code>AbilitySystem</code> заменяется на <code>CastCondition</code>-гейт.</p>
-<h3 id="36-pre-damage-хук-решено-добавляем--щит-перед-входящим-уроном">3.6 Pre-damage хук (РЕШЕНО: добавляем) — щит «перед входящим уроном»<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#36-pre-damage-хук-решено-добавляем--щит-перед-входящим-уроном" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<p>Пассивка Защитника ставит щит <strong>до</strong> нанесения урона, по триггеру «урон > D% макс HP» + <strong>всегда при смертельном</strong> (блок F). Сейчас реактивы (<code>IReactiveComponent</code>) срабатывают на <code>DamageDealt/Taken</code> — то есть <strong>после</strong> вычета HP. Нужен новый хук <strong>до митигации/вычета</strong>.</p>
-<ul>
-<li>Новый интерфейс <code>IPreDamageComponent : IRuntimeEffectComponent { void OnIncomingDamage(ref PreDamageContext ctx); }</code> — видит <code>RawDamage</code>/<code>Source</code>/<code>Target</code> ещё до <code>DamagePipeline.Execute</code>, может <strong>добавить щит/снизить урон</strong>.</li>
-<li><code>DamagePipeline.Execute</code> получает фазу «pre»: до брони/щита прогоняем pre-damage подписчиков цели. Защитник видит входящий удар, считает «> D% макс HP?» (или «прибьёт?» → <code>RawDamage ≥ CurrentHP</code> после грубой оценки митигации) → ставит <code>ShieldComponent</code>.</li>
-<li><strong>Детерминизм:</strong> pre-фаза синхронна внутри <code>DealDamage</code> (не через event-queue) → порядок строго до вычета, без реентрантности. Один проход, без рекурсии.</li>
-<li>Переиспользуемо: стелс Убийцы «снижает входящий урон» можно сделать обычным <code>DamageTakenEff</code> (не нужен хук), но «всегда при смертельном» у Защитника — <strong>только</strong> через pre-damage.</li>
-</ul>
+<h3 id="32--каденс-brainsystem">§3.2 — Каденс: <code>BrainSystem</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#32--каденс-brainsystem" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>BrainSystem.Tick(units, view)</code> заменяет удалённый <code>TargetingSystem</code> в порядке тика. Каденс <strong>10 Гц поверх 30-Гц сим</strong>: юнит переоценивает решение на тике, где <code>tick % SimConstants.AiTickInterval == BrainPhase</code> (стаггер по <code>Id</code> — нагрузка распределена), <strong>или</strong> когда взведён <code>BrainDirty</code>. Между AI-тиками интент «залипает»: движение/атака исполняют прошлое решение. Обход строго по индексу списка ⇒ порядок решений фиксирован ⇒ детерминизм (гейт спайка S1 — <code>StaggeredBrainSpikeTests</code>, оставлен как регрессия каденса).</p>
+<h3 id="34--событийное-прерывание-braindirty">§3.4 — Событийное прерывание <code>BrainDirty</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#34--событийное-прерывание-braindirty" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>dirty = u.BrainDirty || (u.CurrentTarget != null &amp;&amp; u.CurrentTarget.IsDead)</code> — погибшая цель вызывает немедленную переоценку, не дожидаясь своей фазы. Явный <code>BrainDirty</code> (взводит event-queue) — задел под <code>UnitDied</code>/перенос метки; смерть цели покрыта и проверкой выше. <code>BrainSystem</code> сбрасывает флаг после <code>Decide</code>.</p>
+<h3 id="35--targetingsystem-поглощён-дефолтный-мозг">§3.5 — <code>TargetingSystem</code> поглощён, дефолтный мозг<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#35--targetingsystem-поглощён-дефолтный-мозг" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>TargetingSystem.cs</code> <strong>удалён</strong> (поглощён <code>BrainSystem</code>). Юниты без явного профиля получают дефолтный мозг <code>new ProfileBrain(null)</code> = <code>Nearest</code>-враг — ровно прежнее поведение Фазы 1, поэтому тесты Ф1/Ф2 живы.</p>
 <hr/>
-<h2 id="4-формулы-и-детерминизм-фиксируем">4. Формулы и детерминизм (фиксируем)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-формулы-и-детерминизм-фиксируем" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-<h3 id="41-stagger--прерывание">4.1 Stagger / прерывание<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#41-stagger--прерывание" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<p><code>думатьВ(unit, tick) = (tick % 3 == unit.Id % 3) || unit.BrainDirty</code>. Чистая функция → детерминированно. <code>AiStaggerWindow=3</code> в <code>SimConstants</code>.</p>
-<h3 id="42-скоринг-цели-score">4.2 Скоринг цели (Score)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#42-скоринг-цели-score" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<p>Базовый скор по <code>TargetPriority</code> (меньше = лучше): <code>Nearest</code>→dist²; <code>LowestHpFlat</code>→<code>CurrentHP</code>; <code>LowestHpPercent</code>→<code>CurrentHP/MaxHP</code>; <code>PreferTagged</code>→0 если тег есть, иначе +большая константа, тай-брейк по dist². <strong>Тай-брейк всегда по <code>Id</code></strong> (детерминизм при равных скорах). Без RNG в таргетинге.</p>
-<h3 id="43-позиционирование">4.3 Позиционирование<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#43-позиционирование" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<ul>
-<li><code>Approach</code>: к цели до <code>AttackRange</code> (как Ф1).</li>
-<li><code>Kite</code> (требует <code>CanAttackWhileMoving</code>): держать дистанцию в <code>[AttackRange×0.6, AttackRange]</code>; ближе порога — отходить от ближайшего врага, продолжая атаковать.</li>
-<li><code>Retreat</code> (HP% &lt; <code>RetreatThresholdPct</code>): отходить от центра масс врагов к своему тылу; перекрывает <code>Approach</code>.</li>
-<li>Смещение (<code>DisplacementTicks > 0</code>) перекрывает всё: интегрируем <code>DisplacementVelocity</code>, декремент тиков.</li>
-</ul>
-<h3 id="44-knock-up--displacement--детерминизм">4.4 Knock-up / displacement — детерминизм<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#44-knock-up--displacement--детерминизм" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<ul>
-<li>Смещение — целочисленные тики, <code>offset/overTicks</code> за тик. Без Unity-физики, без RNG.</li>
-<li><code>KnockUp</code>-контроль <strong>не скейлится <code>ReceiveDebuffEff</code></strong> (<code>ControlComponent.IgnoreTenacityScaling=true</code>) — дизайн-требование «не уменьшается tenacity» (док 6 §10).</li>
-</ul>
-<h3 id="45-заряды">4.5 Заряды<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#45-заряды" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-<p><code>actualChargeCd = ChargeCooldown × CooldownEff</code>. Восстановление тикает, пока <code>ChargesAvailable &lt; Charges</code>. Каст: <code>ChargesAvailable--</code>, при <code>Charges==1</code> — обычный <code>CooldownRemaining</code>.</p>
-<hr/>
-<h2 id="5-неизвестное--спайк-до-дизайна-который-на-это-опирается">5. Неизвестное → спайк (ДО дизайна, который на это опирается)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-неизвестное--спайк-до-дизайна-который-на-это-опирается" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="table-container"><table><thead><tr><th>#</th><th>Неизвестное</th><th>Спайк (одноразовый код)</th><th>Если не выйдет</th></tr></thead><tbody><tr><td><strong>S1</strong> (гейт)</td><td><strong>Staggered 10-Гц мозг + per-tick исполнение интента детерминистичны?</strong> Главный архитектурный риск фазы</td><td>2 юнита с <code>ProfileBrain</code>, прогнать N тиков headless дважды, сверить <code>ComputeChecksum</code>; убедиться, что stagger не вносит расхождений и интент исполняется одинаково</td><td>Думать каждый тик (30 Гц) — дороже, но проще; stagger выкинуть</td></tr><tr><td><strong>S2</strong></td><td><strong>Displacement + knock-up + Movement-override детерминизм</strong> и реактив телепорт-в-спину (Монах)</td><td>Толкнуть юнита через 2 других, knock-up, на конце смещения reactive teleport+empable удар; checksum ×2; нет рассинхрона с обычным движением</td><td>Только мгновенный телепорт (<code>overTicks=0</code>), убрать плавное смещение</td></tr><tr><td><strong>S3</strong></td><td><strong><code>QueryUnitsInShape</code> (Line/Cone) детерминизм и порядок мульти-хита</strong></td><td>Линия-АА Копейщика по 3 целям в ряд: порядок резолва по <code>Id</code>, checksum ×2; край зоны (юнит ровно на границе)</td><td>Аппроксимация прямоугольником через radius+угол-фильтр</td></tr><tr><td><strong>S4</strong></td><td><strong>Спрайтовый <code>UnitView</code>: анимация развязана с тиком сим, без рассинхрона в ко-опе</strong></td><td>Слайс 1 шита (Idle/Run/Attack), <code>UnitView</code> читает <code>isMoving</code> из <code>Position!=PreviousPosition</code> и событие <code>Attack</code> (MessagePipe); урон — на сим-тике, не на anim-event</td><td>Статичный спрайт + флеш на удар (без кадровой анимации)</td></tr><tr><td><strong>S5</strong></td><td><strong>Pre-damage хук (§3.6) детерминизм</strong> — щит до вычета HP, «всегда при смертельном»</td><td>Защитник под фокусом: смертельный удар, pre-фаза ставит щит, урон поглощён; checksum ×2; нет реентрантности с обычными <code>DamageDealt</code>-реактивами</td><td>Проактивный щит по таймеру (расходится с дизайном «перед ударом»)</td></tr></tbody></table></div>
+<h2 id="4--исполнение-решения-в-симуляции">§4 — Исполнение решения в симуляции<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4--исполнение-решения-в-симуляции" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="41--brainsystem-в-порядке-тика">§4.1 — <code>BrainSystem</code> в порядке тика<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#41--brainsystem-в-порядке-тика" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>BrainSystem</code> встаёт там, где раньше был <code>TargetingSystem</code> (детали порядка систем — <code>CombatSimulation</code>). <code>CombatSimulation</code> реализует <code>IBattleView</code> (<code>Units</code> + <code>CurrentTick</code>). Фабрика выставляет <code>BrainPhase = Id % AiTickInterval</code> и <code>Brain = new ProfileBrain(relic.Ai)</code>.</p>
 <blockquote>
-<p>Правило пайплайна: S1 — самый дорогой разворот, поэтому шаг №1 реализации (§8). S2/S3/S5 — гейты соответствующих реликвий (Монах / Копейщик / Защитник).</p>
+<p>Имя <code>SimConstants.AiTickInterval</code> оставлено как есть (не переименовано в <code>AiStaggerWindow</code>) — чтобы не ломать существующие ссылки.</p>
 </blockquote>
-<hr/>
-<h2 id="6-классы-и-ответственность-без-тел-методов">6. Классы и ответственность (без тел методов)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-классы-и-ответственность-без-тел-методов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="table-container"><table><thead><tr><th>Класс</th><th>Сборка</th><th>За что отвечает</th><th>Ключевой публичный метод</th></tr></thead><tbody><tr><td><code>IUnitBrain</code></td><td>Combat</td><td>Шов решения «кого/где». Много потенциальных реализаций (сейчас одна)</td><td><code>Decide(self, view)</code></td></tr><tr><td><code>ProfileBrain</code></td><td>Combat</td><td>v1: интерпретирует <code>AIProfile</code> (Filter→Score→Override таргетинга + порог позиционирования)</td><td><code>Decide</code></td></tr><tr><td><code>IBattleView</code></td><td>Combat</td><td>Read-only срез боя для мозга (запросы радиус/тег, список живых). Граница для мок-тестов мозга</td><td><code>EnemiesInRadius</code>, <code>Allies</code>, …</td></tr><tr><td><code>BrainSystem</code></td><td>Combat</td><td>Тик AI: stagger по <code>Id</code>/прерывание по <code>BrainDirty</code>, вызов <code>Decide</code> нужных юнитов</td><td><code>Tick(units, view, tick)</code></td></tr><tr><td><code>MovementSystem</code></td><td>Combat</td><td>+ режимы <code>PositioningIntent</code> (Approach/Kite/Retreat), override смещением</td><td><code>Tick(units, dt)</code> (есть, дополнить)</td></tr><tr><td><code>AutoAttackSystem</code></td><td>Combat</td><td>+ форма удара (<code>QueryUnitsInShape</code>), heal-mode (цель-союзник + <code>Heal</code>), empower-hook (consume <code>PendingAttackMod</code>)</td><td><code>Tick(...)</code> (есть, дополнить)</td></tr><tr><td><code>AbilitySystem</code></td><td>Combat</td><td>+ заряды, + <code>CastPolicy</code>-гейт вместо плейсхолдера</td><td><code>Tick</code>, <code>TryCast</code> (есть, дополнить)</td></tr><tr><td><code>DisplacementComponent</code></td><td>Combat</td><td>Эффект-компонент: детерминированное смещение цели через <code>ICombatContext.Displace</code></td><td><code>OnApply</code>/<code>OnTick</code></td></tr><tr><td><code>MarkTransferComponent</code></td><td>Combat</td><td>Реактив на <code>UnitDied</code>: перевесить эффект на ближайшего врага (<code>QueryUnitsInRadius</code>+<code>ApplyEffect</code>)</td><td><code>OnEvent</code></td></tr><tr><td><code>EmpowerNextAttackComponent</code></td><td>Combat</td><td>Реактив: усилить следующую авто-атаку источника, снять после срабатывания</td><td><code>OnEvent</code></td></tr><tr><td><code>RuntimeUnitFactory</code></td><td>Combat</td><td>+ компиляция <code>AIProfile</code>→<code>Brain</code>, <code>BrainPhase=Id%3</code>, заряды в <code>AbilityRuntime</code></td><td><code>Build</code> (есть, дополнить)</td></tr><tr><td><code>CombatSimulation</code></td><td>Combat</td><td>+ <code>QueryUnitsInShape</code>/<code>Displace</code>, <code>BrainSystem</code> в порядок, <code>UnitDied</code> в event-queue</td><td><code>Tick</code>, <code>ICombatContext</code></td></tr><tr><td><code>UnitView</code> + <code>CombatPresenter</code></td><td>Presentation</td><td>Спрайтовый вид: кадровая анимация от сим-состояния/событий (S4); HP-бар</td><td><code>Bind(unit)</code></td></tr><tr><td>Quantum Console команды</td><td>DevTools</td><td><code>gm_spawn_battle &lt;relicA> &lt;relicB></code>, <code>gm_set_hp</code>, <code>gm_pause</code>, <code>gm_toggle_debug_draw</code> (вектор цели/радиус каста)</td><td>—</td></tr></tbody></table></div>
-<hr/>
-<h2 id="7-контракт--тесты-имена-editmode-headless--harness-глаз">7. Контракт = тесты (имена, EditMode headless + harness-глаз)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-контракт--тесты-имена-editmode-headless--harness-глаз" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-<p><strong>Мозг / таргетинг</strong></p>
-<ul>
-<li><code>Score_LowestHpPercent_PicksWoundedOverNearer</code></li>
-<li><code>Score_TiesBrokenById_Deterministic</code></li>
-<li><code>PreferTagged_PicksMarkedEnemy_WhenPresent</code></li>
-<li><code>Brain_DoesNotMutateSim_OnlyWritesIntent</code></li>
-</ul>
-<p><strong>Каденс / детерминизм (S1)</strong></p>
-<ul>
-<li><code>StaggeredBrain_SameChecksum_AcrossTwoRuns</code></li>
-<li><code>TargetDeath_SetsBrainDirty_ReevaluatesNextTick</code></li>
-<li><code>IntentPersistsBetweenAiTicks_UnitKeepsMoving</code></li>
-</ul>
-<p><strong>Позиционирование</strong></p>
-<ul>
-<li><code>Retreat_BelowThreshold_MovesAwayFromEnemies</code></li>
-<li><code>Kite_KeepsRangeBand_WhileAttacking</code> (требует <code>CanAttackWhileMoving</code>)</li>
-</ul>
-<p><strong>Cast-условия и отмена (паника)</strong></p>
-<ul>
-<li><code>CastCondition_EnemiesInRadius_FiresAt2Plus</code> (Копейщик)</li>
-<li><code>CastCondition_AllyBelowHpPct_FiresWhenAllyLow</code> (Пастырь)</li>
-<li><code>CastCondition_TaggedTargetsCount_FiresOnFrozenStun</code> (Криомант)</li>
-<li><code>CastOverride_FiresWhenSelfHpBelowPct_IgnoringCondition</code></li>
-<li><code>CastOverride_Healer_TargetsSelf</code></li>
-<li><code>CastOverride_Monk_FiresWhenOneEnemyLeft</code></li>
-</ul>
-<p><strong>Pre-damage щит (S5)</strong></p>
-<ul>
-<li><code>PreDamage_Defender_ShieldsBeforeLethalHit</code></li>
-<li><code>PreDamage_OnlyTriggers_AboveDamagePctThreshold</code></li>
-</ul>
-<p><strong>Форма удара (S3)</strong></p>
-<ul>
-<li><code>LineAutoAttack_HitsAllInLine_OrderedById</code> (Копейщик)</li>
-<li><code>ShapeQuery_BoundaryUnit_IncludedConsistently</code></li>
-</ul>
-<p><strong>Заряды</strong></p>
-<ul>
-<li><code>Charges_TwoAvailableThenRecharge</code> (Убийца «Изворотливость»)</li>
-</ul>
-<p><strong>Displacement / knock-up (S2)</strong></p>
-<ul>
-<li><code>Displace_MovesTargetDeterministically_OverTicks</code></li>
-<li><code>KnockUp_NotScaledByTenacity</code></li>
-<li><code>Monk_PushedTarget_TriggersBackstabTeleport_x2</code> (реактив)</li>
-</ul>
-<p><strong>Реактивы (Ф2-совместимые)</strong></p>
-<ul>
-<li><code>MarkTransfer_OnTargetDeath_JumpsToNearestEnemy</code> (Следопыт)</li>
-<li><code>EmpowerNextAttack_AmplifiesOneAttack_ThenRemoved</code> (Монах/Убийца стелс)</li>
-</ul>
-<p><strong>Хил-автоатака</strong></p>
-<ul>
-<li><code>HealAutoAttack_TargetsLowestHpAlly_HealsInsteadOfDamage</code> (Пастырь)</li>
-</ul>
-<p><strong>Интеграция реликвий (battle-level)</strong></p>
-<ul>
-<li>по одному <code>&lt;Relic>_PlaysOutBattle_NoErrors</code> на каждую из 7 + глаз в харнессе</li>
-</ul>
-<hr/>
-<h2 id="8-порядок-реализации--вертикальный-срез-сперва-решение-макса">8. Порядок реализации — вертикальный срез сперва (РЕШЕНИЕ Макса)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-порядок-реализации--вертикальный-срез-сперва-решение-макса" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<h3 id="42--profilebrain-filter--score--override">§4.2 — <code>ProfileBrain</code>: Filter → Score → Override<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#42--profilebrain-filter--score--override" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
 <ol>
-<li><strong>S1-спайк</strong> — staggered 10-Гц мозг + per-tick интент + checksum. <strong>Гейт всей фазы.</strong></li>
-<li><strong>Lite-харнесс</strong> — сцена + <code>CombatLifetimeScope</code> + <code>StatsConfig</code>-ассет + <code>CombatPresenter</code> + спрайтовый <code>UnitView</code> (S4) + Quantum Console спавн-команды. С этого момента всё видно глазами.</li>
-<li><strong>Данные + швы</strong> — <code>AIProfile</code>, <code>AbilityData</code>/<code>RelicData</code>-поля, <code>EffectTag</code>-добавки, <code>AreaShape</code>, <code>IUnitBrain</code>/<code>IBattleView</code>/<code>ProfileBrain</code>/<code>BrainSystem</code>, <code>QueryUnitsInShape</code>, порядок тика.</li>
-<li><strong>🎯 Вертикальный срез — Железный копейщик end-to-end:</strong> линия-АА (S3) + круг-АОЕ-активка + <code>AIProfile</code> (держит фронт, <code>EnemiesInRadius≥2</code>) + SO-ассет + видно в харнессе + тесты. <strong>Это доказывает весь пайплайн</strong> (мозг→интент→исполнение→форма→каст→презентация).</li>
-<li><strong>Надёжный защитник</strong> — почти «бесплатен»: периодич. armor+shield (Ф2-готово) + контроль-активка. Второй ассет, валидирует «реликвия без новых движковых фич».</li>
-<li><strong>Позиционирование Kite/Retreat + атака-в-движении</strong> → разблокирует мобильных.</li>
-<li><strong>Заряды</strong> → Скрытный Убийца («Изворотливость» 2 заряда) + стелс (empower-next-attack, реактив).</li>
-<li><strong>Хил-автоатака</strong> → Светлый пастырь (+ активка «X + недостающее HP»).</li>
-<li><strong>Displacement + knock-up + реактив телепорт-в-спину</strong> (S2) → Монах вихря.</li>
-<li><strong>Реактив перенос метки + empower</strong> → Лесной следопыт (метка +25%, перенос при смерти, атака-в-движении). Криомант (freeze-АА + масс-стан по <code>Frozen</code>).</li>
-<li><strong>Авторинг профилей + battle-интеграция всех 7</strong> + ретро дизайна (§11 ← заполнить).</li>
+<li><strong>Filter</strong> — живой; нужная команда (враги, либо союзники при <code>AllyNearest</code>/<code>AllyLowestHpPercent</code>/<code>Heal</code>); себя исключаем для союзных режимов.</li>
+<li><strong>Score</strong> (меньше = лучше): <code>Nearest</code>/<code>AllyNearest</code> → <code>dist²</code>; <code>LowestHpFlat</code> → <code>CurrentHP</code>; <code>LowestHpPercent</code>/<code>AllyLowestHpPercent</code> → <code>HP%</code>; <code>HighestHp</code> → <code>-CurrentHP</code>; <code>HighestThreat</code> → <code>-EstimatedDps</code>; <code>PreferTagged</code> → <code>dist²</code> тегнутым, <code>dist² + штраф</code> нетегнутым (тегнутый всегда выигрывает).</li>
+<li><strong>Тай-брейк</strong> — при равном скоре дистанция, затем <code>Id</code> (детерминизм, без RNG).</li>
+<li><strong>Запись интента</strong> — обычный режим: <code>CurrentTarget = AutoAttackTarget = best</code>. Хилер: <code>AutoAttackTarget = лучший союзник</code>, <code>CurrentTarget = ближайший враг</code> (§2.7).</li>
 </ol>
+<h3 id="43--позиционирование-override">§4.3 — Позиционирование (Override)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#43--позиционирование-override" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p><code>ResolvePositioning(self)</code> поверх выбора цели:</p>
+<ul>
+<li><strong>Retreat</strong> (если включён): гистерезис <strong>B > A</strong> — уже отступаем ⇒ продолжаем, пока <code>HP% &lt; ReturnAtHpPct</code>; иначе уходим в отступление лишь при <code>HP% ≤ FleeAtHpPct</code>. Зазор гасит дёрганье.</li>
+<li><strong>Kite</strong> (если включён) → <code>PositioningIntent.Kite</code>.</li>
+<li>Иначе → <code>PositioningIntent.Approach</code>.</li>
+</ul>
 <blockquote>
-<p>Темп: после шага 4 — <strong>первый играбельный юнит в харнессе</strong>; дальше каждый шаг добавляет 1–2 реликвии, видимые глазом. Defender (шаг 5) рано даёт «реликвия = только данные».</p>
+<p><strong>Состояние исполнения:</strong> мозг <strong>пишет</strong> <code>Positioning</code>, но <code>MovementSystem</code> пока его <strong>игнорит</strong> (только Approach де-факто). Kite/Retreat-в-движении — отложены на шаги 5+ вместе с движковыми расширениями.</p>
 </blockquote>
-<h3 id="маппинг-7-реликвий--расширения--ai-ручки">Маппинг 7 реликвий → расширения + AI-ручки<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#маппинг-7-реликвий--расширения--ai-ручки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="table-container"><table><thead><tr><th>Реликвия</th><th>Новое движковое</th><th><code>TargetPriority</code></th><th><code>CastPolicy</code> активки</th><th>Шаг</th></tr></thead><tbody><tr><td>Железный копейщик</td><td>линия-АА + круг-АОЕ</td><td>Nearest (гуща)</td><td><code>EnemiesInRadius ≥ 2</code></td><td>4</td></tr><tr><td>Надёжный защитник</td><td>— (Ф2 armor/shield)</td><td>Nearest</td><td><code>ASAP</code> при ресурсе</td><td>5</td></tr><tr><td>Скрытный Убийца</td><td>заряды + стелс(empower)</td><td>LowestHpFlat</td><td><code>Manual</code>/на входящий фокус</td><td>7</td></tr><tr><td>Светлый пастырь</td><td>хил-автоатака</td><td>AllyLowestHpPercent</td><td><code>AllyBelowHpPct</code></td><td>8</td></tr><tr><td>Монах вихря</td><td>displacement+knock-up+реактив-backstab</td><td>NearestEdge</td><td><code>EnemiesInLine ≥ 2</code></td><td>9</td></tr><tr><td>Лесной следопыт</td><td>перенос метки + атака-в-движении</td><td>PreferTagged(Marked)/LowestHp</td><td><code>ASAP</code> старт фокуса</td><td>10</td></tr><tr><td>Криомант</td><td>freeze-тег (контент)</td><td>PreferTagged(Frozen-prep)</td><td><code>TaggedTargetsCount(Frozen) ≥ 2</code></td><td>10</td></tr></tbody></table></div>
 <hr/>
-<h2 id="9-открытые-вопросы-на-ревью">9. Открытые вопросы (на ревью)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-открытые-вопросы-на-ревью" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-<p><strong>✅ Решено (ответы Макса 2026-05-31, по ГД-модели <a href=".././Игровая-документация---Геймдизайн/1.-Контент---Реликвии/0.3.-Модель-AI-настроек-реликвий" class="internal alias" data-slug="Игровая-документация---Геймдизайн/1.-Контент---Реликвии/0.3.-Модель-AI-настроек-реликвий">0.3</a>):</strong></p>
+<h2 id="7--тесты-шва-готово-109109">§7 — Тесты шва (готово, 109/109)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7--тесты-шва-готово-109109" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>EditMode, <code>Guildmaster.Tests.EditMode.Combat</code>:</p>
 <ul>
-<li>Выбор цели — <strong>один режим/дропдаун</strong> (не упорядоченный список).</li>
-<li><code>CastOverride</code> (отмена условия) — <strong>по HP% самого юнита</strong> (паника/выживание; хилер → на себя).</li>
-<li><code>HighestThreat</code>/«главный ДПС» — <strong>нужен</strong> (Защитнику); считаем как оценочный DPS из статов (без истории).</li>
-<li>Pre-damage хук (щит «перед ударом» у Защитника) — <strong>добавляем</strong> (§3.6, спайк S5).</li>
-<li><code>Сбить каст</code> / <strong>время каста</strong> — <strong>отложено</strong> на Ф4+: каст-времена осмысленны только для способностей, стабильных под задержкой (каналы-стойки типа Мага-рыцаря, телеграф-нюки по залоченной цели), а реактивные/кластерные ульты Обычных от каста ломаются. Вводим вместе с контентом под них; тогда же оживёт условие <code>Сбить каст</code>.</li>
+<li><strong><code>BrainTests</code></strong> — контракт мозга на <strong>продовых</strong> типах: <code>Score_LowestHpPercent_PicksWoundedOverNearer</code>, <code>Score_TiesBrokenById_Deterministic</code>, <code>PreferTagged_PicksMarkedEnemy_WhenPresent</code>, <code>Brain_DoesNotMutateSim_OnlyWritesIntent</code> + каденс <code>StaggeredBrain_SameChecksum_AcrossTwoRuns</code>, <code>TargetDeath_SetsBrainDirty_ReevaluatesNextTick</code>, <code>IntentPersistsBetweenAiTicks_UnitKeepsMoving</code>. Мок — <code>FakeBattleView</code>.</li>
+<li><strong><code>StaggeredBrainSpikeTests</code></strong> — спайк S1 (throwaway-прото), оставлен как регрессия staggered-детерминизма.</li>
 </ul>
-<p><strong>Ещё открыто:</strong></p>
+<p>Существующие тесты Ф1/Ф2 (<code>CombatSimulationTests</code>, <code>AbilitySystemTests</code>, <code>EffectSystemTests</code> и др.) зелёные за счёт дефолтного <code>Nearest</code>-мозга (§3.5).</p>
+<hr/>
+<h2 id="шаг-4-8--вертикальный-срез-железный-копейщик">Шаг 4 (§8) — Вертикальный срез «Железный копейщик»<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#шаг-4-8--вертикальный-срез-железный-копейщик" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Цель.</strong> Провести один реальный контентный юнит сквозь весь шов: мозг выбирает цель, юнит подходит, <strong>бьёт линейной авто-атакой</strong>, а при выполнении cast-условия пускает <strong>круговой AOE-актив</strong>. Сначала EditMode (детерминизм), затем глаз в визуальном харнессе.</p>
+<p><strong>Дизайн (канон — <a href=".././Игровая-документация---Геймдизайн/1.-Контент---Реликвии/1.-Обычная-Редкость---Железный-копейщик" class="internal alias" data-slug="Игровая-документация---Геймдизайн/1.-Контент---Реликвии/1.-Обычная-Редкость---Железный-копейщик">карточка «Железный копейщик»</a>):</strong></p>
+<ol>
+<li><strong>«Размашистый выпад»</strong> <em>(пассивная авто-атака)</em> — авто-атака бьёт <strong>линией</strong> перед юнитом, задевая несколько целей; дальность атаки выше обычного милишника. Роль — фронтлайн-брузер с AOE-паттерном.</li>
+<li><strong>«Стальной вихрь»</strong> <em>(активная)</em> — круговой AOE вокруг себя, урон <strong>×3</strong>. Цель не выбирается (по кругу вокруг себя).</li>
+</ol>
+<p><strong>AI-настройки (Шаг 5 карточки):</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Блок</th><th>Настройка</th></tr></thead><tbody><tr><td><strong>A</strong> фокус авто-атаки</td><td><code>Ближайший</code> / <code>Максимум целей (линия)</code> / <code>Меньше всего HP</code></td></tr><tr><td><strong>D</strong> условие ульты</td><td><code>Сразу</code> / <code>≥ X врагов в радиусе AOE</code> (X задать)</td></tr><tr><td><strong>E</strong> отмена условия</td><td>каст при своём HP ≤ P% / выкл</td></tr><tr><td><strong>B</strong> отступление</td><td>бежать при HP ≤ A%, вернуться при ≥ B% / выкл</td></tr></tbody></table></div>
+<blockquote>
+<p><strong>Статы</strong> карточка задаёт словесно (HP выше среднего, урон средний, скорость атаки ниже средней, контроль/зона давления выше средней) — конкретные числа подбираются при сборке SO-ассета, в карточке их нет.</p>
+</blockquote>
+<h3 id="что-уже-есть-в-коде-опора-среза">Что уже есть в коде (опора среза)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#что-уже-есть-в-коде-опора-среза" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
 <ul>
-<li><strong>Убийца, блок F.</strong> В черновике названо «Пассивка», по смыслу — <strong>авто-трата заряда «Изворотливости»</strong> (негейт входящей атаки): при любой / при уроне > D% / всегда при смертельном. Подтвердить трактовку (помечено ⚠️ в карточке).</li>
-<li><strong>Следопыт — нет отмены условия (E) и ресурса.</strong> Метка-ульта = <code>ASAP</code> в начале фокуса. Подтвердить, что override-паника ему не нужна.</li>
-<li><strong><code>KnockUp</code> — отдельный тег или флаг на <code>ControlComponent</code>?</strong> Предлагаю флаг <code>IgnoreTenacityScaling</code> + тег <code>KnockUp</code> для AI/диспела.</li>
-<li><strong>Смещение: мгновенный телепорт vs плавно по тикам.</strong> Дефолт — плавно, фолбэк мгновенный (решит S2).</li>
-<li><strong>Spatial hash в таргетинге.</strong> Заменять O(n²) сейчас или после профайла на харнессе? Предлагаю — после.</li>
-<li><strong>Визуал: какой шит на какую реликвию.</strong> Medieval Warrior ×3, Fantasy Warrior, Martial Hero, Evil Wizard, Huntress ×2 (со снарядом), монстры — черновой маппинг под 7 архетипов мой, утвердить.</li>
-<li><strong><code>StatsConfig</code> дефолты для харнесса.</strong> Грубые играбельные числа (бой ~20–40 с), баланс — Ф8.</li>
+<li><code>ICombatContext.QueryUnitsInRadius(center, radius, results, filter, team)</code> — <strong>круговой запрос есть</strong> (опора «Стального вихря» и cast-условия «≥X в радиусе»).</li>
+<li><code>AbilitySystem</code> — плейсхолдер-каст (первая готовая активка), <code>AbilityData</code> (<code>Id</code>, <code>Effects[]</code>, <code>BaseCooldown</code>, <code>ResourceCost</code>, <code>TargetMode</code>∈{Self/NearestEnemy/NearestAlly}).</li>
+<li><code>AutoAttackSystem</code> — одиночная авто-атака (Melee/Projectile) по <code>CurrentTarget</code>.</li>
 </ul>
-<hr/>
-<h2 id="10-следующий-шаг">10. Следующий шаг<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-следующий-шаг" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-<p>Макс читает → правки → по апруву начинаем с <strong>S1-спайка</strong> (§8 шаг 1): staggered 10-Гц мозг + детерминизм. Зелёный гейт → lite-харнесс → вертикальный срез (Железный копейщик). После фазы — ретро дизайна (§11) на вход Фазы 4 (контент-каркас).</p>
-<hr/>
-<h2 id="11-ретро-реализации-заполняется-по-ходув-конце-фазы">11. Ретро реализации (заполняется по ходу/в конце фазы)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#11-ретро-реализации-заполняется-по-ходув-конце-фазы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-<p><em>(Пусто — фаза не начата. Сюда пишем дельты плана к факту, как §11 дока 12: что разошлось, почему, на вход Ф4.)</em></p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+<h3 id="что-добавляет-шаг-4-новое">Что добавляет шаг 4 (новое)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#что-добавляет-шаг-4-новое" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Область</th><th>Изменение</th></tr></thead><tbody><tr><td><strong>Форма удара (линия)</strong></td><td>новый <code>AreaShape</code> (Line/Circle) + запрос формы (линия перед юнитом). Круг уже покрыт <code>QueryUnitsInRadius</code>.</td></tr><tr><td><strong>Линейная авто-атака</strong></td><td><code>AutoAttackSystem</code> — мульти-цель по форме линии для реликвий с линейной АА; одиночная остаётся дефолтом.</td></tr><tr><td><strong>AOE-урон активки</strong></td><td><code>AbilityData</code> — прямой урон с множителем (×3) по кругу, помимо наложения эффектов.</td></tr><tr><td><strong>Cast-условие (блок D/E)</strong></td><td><code>AbilityData</code> + гейт в <code>AbilitySystem</code> вместо плейсхолдера: <code>Сразу</code> / <code>EnemiesInRadius ≥ X</code> / отмена по своему HP ≤ P%.</td></tr><tr><td><strong>Контент</strong></td><td>SO-ассет реликвии «Железный копейщик» (<code>AIProfile.Ai</code> + 2 навыка) + глаз в <code>BattleScene</code>-харнессе.</td></tr></tbody></table></div>
+<h3 id="доп-условия-решения-макса-2026-06-01">Доп. условия (решения Макса, 2026-06-01)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#доп-условия-решения-макса-2026-06-01" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Множитель «Стального вихря» = ×3 от урона авто-атаки</strong> (<code>AutoAttackDamage</code>), не от иного стата.</li>
+<li><strong>Мана:</strong> заклинание стоит <strong>30</strong>, авто-атака даёт <strong>+5 маны</strong>. <code>MaxResource = 30</code>, <code>StartResource = 0</code> (стартует пустым, мана клампится на 30 — 6 авто-атак до полного каста). Прирост маны за удар — <strong>общий механизм</strong>, но <strong>не новый стат</strong> (<code>StatType</code> залочен на 30): новое <strong>поле <code>ResourceOnHit</code> на <code>RelicData</code></strong> (рядом с <code>AttackType</code>/<code>DamageType</code>; любая мана-реликвия задаёт своё значение, копейщику = 5). Начисляется в <code>AutoAttackSystem</code> при выстреле авто-атаки (× существующий <code>ResourceGainEff</code>), клампится к <code>MaxResource</code>.</li>
+<li><strong>Визуализация зон удара (dev-оверлей):</strong> при касте авто-атаки (линия) и активки (круг) зона рисуется через <strong>Shapes</strong> в <code>CombatDebugDraw</code> (харнесс/дев, тоггл) — <strong>короткая вспышка ~0.25 с</strong>. Это инструмент оценки, <strong>не финальный VFX</strong>.</li>
+<li><strong>Спрайт копейщика:</strong> <code>Fantasy Warrior</code> (Medieval Warrior Pack 2 уже занят тест-юнитом).</li>
+</ul>
+<h3 id="тесты-шага-4-стабы--красный--зелёный">Тесты шага 4 (стабы → красный → зелёный)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#тесты-шага-4-стабы--красный--зелёный" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<p>EditMode, <code>Guildmaster.Tests.EditMode.Combat</code>:</p>
+<ol>
+<li>Линейная авто-атака задевает несколько целей в полосе перед юнитом, мимо-полосы — нет.</li>
+<li>Дальность линейной АА выше базовой милишной.</li>
+<li>«Стальной вихрь» бьёт всех врагов в радиусе на ×3 урона, союзников — нет.</li>
+<li>Cast-условие <code>EnemiesInRadius ≥ X</code>: при &lt; X не кастует, при ≥ X — кастует.</li>
+<li>Отмена условия (блок E): при своём HP ≤ P% кастует независимо от числа врагов.</li>
+<li>Срез в харнессе: подходит → линейно бьёт → при скоплении врагов пускает «Стальной вихрь», далее держит КД.</li>
+</ol>
+<h3 id="критерий-готовности-шага-4">Критерий готовности шага 4<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#критерий-готовности-шага-4" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li>Все EditMode-тесты зелёные (старые + новые шага 4).</li>
+<li>Плейсхолдер-каст заменён на cast-условие из <code>AbilityData</code>.</li>
+<li>«Железный копейщик» проходит срез в харнессе от «подойти» до «вихрь по скоплению».</li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
                 s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
                 c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
                 C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
@@ -877,6 +412,6 @@ pre:hover > .expand-button {
                 C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
                 S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
                 s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
-                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-29" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#0-гейт-фазы-12-закрыты-контекст-этого-дока" data-for="0-гейт-фазы-12-закрыты-контекст-этого-дока">0. Гейт: Фазы 1–2 закрыты (контекст этого дока)</a></li><li class="depth-0"><a href="#1-что-фаза-3-даёт-и-чего-не-делает" data-for="1-что-фаза-3-даёт-и-чего-не-делает">1. Что Фаза 3 даёт и чего НЕ делает</a></li><li class="depth-0"><a href="#2-данные-первыми-уровень-1--фиксируем" data-for="2-данные-первыми-уровень-1--фиксируем">2. Данные первыми (Уровень 1 — фиксируем)</a></li><li class="depth-1"><a href="#21-aiprofile--модель-ai-решение-11" data-for="21-aiprofile--модель-ai-решение-11">2.1 AIProfile — модель AI (РЕШЕНИЕ, §11)</a></li><li class="depth-1"><a href="#22-abilitydata-data--дополнить-под-cast-условия-и-расширения" data-for="22-abilitydata-data--дополнить-под-cast-условия-и-расширения">2.2 AbilityData (Data) — дополнить под cast-условия и расширения</a></li><li class="depth-1"><a href="#23-relicdata-data--форма-авто-атаки-режим-визуал" data-for="23-relicdata-data--форма-авто-атаки-режим-визуал">2.3 RelicData (Data) — форма авто-атаки, режим, визуал</a></li><li class="depth-1"><a href="#24-abilityruntime-combat--заряды" data-for="24-abilityruntime-combat--заряды">2.4 AbilityRuntime (Combat) — заряды</a></li><li class="depth-1"><a href="#25-areashape-data-новый--единая-форма-зоны" data-for="25-areashape-data-новый--единая-форма-зоны">2.5 AreaShape (Data, новый) — единая форма зоны</a></li><li class="depth-1"><a href="#26-effecttag--добавить-категории-под-контент" data-for="26-effecttag--добавить-категории-под-контент">2.6 EffectTag — добавить категории под контент</a></li><li class="depth-1"><a href="#27-runtimeunit-combat--новые-поля-шов-ai-исполняется-per-tick" data-for="27-runtimeunit-combat--новые-поля-шов-ai-исполняется-per-tick">2.7 RuntimeUnit (Combat) — новые поля (шов AI исполняется per-tick)</a></li><li class="depth-0"><a href="#3-швы-уровень-1--фиксируем" data-for="3-швы-уровень-1--фиксируем">3. Швы (Уровень 1 — фиксируем)</a></li><li class="depth-1"><a href="#31-iunitbrain--главный-шов-изолирует-ум-от-сим" data-for="31-iunitbrain--главный-шов-изолирует-ум-от-сим">3.1 IUnitBrain — главный шов (изолирует «ум» от сим)</a></li><li class="depth-1"><a href="#32-каденс-ai-10-гц--stagger--прерывания-детерминизм" data-for="32-каденс-ai-10-гц--stagger--прерывания-детерминизм">3.2 Каденс AI: 10 Гц + stagger + прерывания (детерминизм)</a></li><li class="depth-1"><a href="#33-icombatcontext--добавить-запросы-формы-и-смещение" data-for="33-icombatcontext--добавить-запросы-формы-и-смещение">3.3 ICombatContext — добавить запросы формы и смещение</a></li><li class="depth-1"><a href="#34-event-queue--добавить-диспатч-unitdied-реактивным" data-for="34-event-queue--добавить-диспатч-unitdied-реактивным">3.4 Event-queue — добавить диспатч UnitDied реактивным</a></li><li class="depth-1"><a href="#35-порядок-тика--дельта-к-ф2" data-for="35-порядок-тика--дельта-к-ф2">3.5 Порядок тика — дельта к Ф2</a></li><li class="depth-1"><a href="#36-pre-damage-хук-решено-добавляем--щит-перед-входящим-уроном" data-for="36-pre-damage-хук-решено-добавляем--щит-перед-входящим-уроном">3.6 Pre-damage хук (РЕШЕНО: добавляем) — щит «перед входящим уроном»</a></li><li class="depth-0"><a href="#4-формулы-и-детерминизм-фиксируем" data-for="4-формулы-и-детерминизм-фиксируем">4. Формулы и детерминизм (фиксируем)</a></li><li class="depth-1"><a href="#41-stagger--прерывание" data-for="41-stagger--прерывание">4.1 Stagger / прерывание</a></li><li class="depth-1"><a href="#42-скоринг-цели-score" data-for="42-скоринг-цели-score">4.2 Скоринг цели (Score)</a></li><li class="depth-1"><a href="#43-позиционирование" data-for="43-позиционирование">4.3 Позиционирование</a></li><li class="depth-1"><a href="#44-knock-up--displacement--детерминизм" data-for="44-knock-up--displacement--детерминизм">4.4 Knock-up / displacement — детерминизм</a></li><li class="depth-1"><a href="#45-заряды" data-for="45-заряды">4.5 Заряды</a></li><li class="depth-0"><a href="#5-неизвестное--спайк-до-дизайна-который-на-это-опирается" data-for="5-неизвестное--спайк-до-дизайна-который-на-это-опирается">5. Неизвестное → спайк (ДО дизайна, который на это опирается)</a></li><li class="depth-0"><a href="#6-классы-и-ответственность-без-тел-методов" data-for="6-классы-и-ответственность-без-тел-методов">6. Классы и ответственность (без тел методов)</a></li><li class="depth-0"><a href="#7-контракт--тесты-имена-editmode-headless--harness-глаз" data-for="7-контракт--тесты-имена-editmode-headless--harness-глаз">7. Контракт = тесты (имена, EditMode headless + harness-глаз)</a></li><li class="depth-0"><a href="#8-порядок-реализации--вертикальный-срез-сперва-решение-макса" data-for="8-порядок-реализации--вертикальный-срез-сперва-решение-макса">8. Порядок реализации — вертикальный срез сперва (РЕШЕНИЕ Макса)</a></li><li class="depth-1"><a href="#маппинг-7-реликвий--расширения--ai-ручки" data-for="маппинг-7-реликвий--расширения--ai-ручки">Маппинг 7 реликвий → расширения + AI-ручки</a></li><li class="depth-0"><a href="#9-открытые-вопросы-на-ревью" data-for="9-открытые-вопросы-на-ревью">9. Открытые вопросы (на ревью)</a></li><li class="depth-0"><a href="#10-следующий-шаг" data-for="10-следующий-шаг">10. Следующий шаг</a></li><li class="depth-0"><a href="#11-ретро-реализации-заполняется-по-ходув-конце-фазы" data-for="11-ретро-реализации-заполняется-по-ходув-конце-фазы">11. Ретро реализации (заполняется по ходу/в конце фазы)</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../Игровая-документация---Геймдизайн/1.-Контент---Реликвии/0.3.-Модель-AI-настроек-реликвий" class="internal">0.3. Модель AI-настроек реликвий</a></li><li><a href="../Игровая-документация---Техническая-часть/0.0.-README" class="internal">0.0. README</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-29" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#архитектура-реализации--фаза-3-ai-движок--играбельные-реликвии" data-for="архитектура-реализации--фаза-3-ai-движок--играбельные-реликвии">Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии)</a></li><li class="depth-1"><a href="#состояние-шагов-8" data-for="состояние-шагов-8">Состояние шагов (§8)</a></li><li class="depth-1"><a href="#2--модель-решений-ии" data-for="2--модель-решений-ии">§2 — Модель решений ИИ</a></li><li class="depth-2"><a href="#21--параметризованные-пресеты-выбранная-модель" data-for="21--параметризованные-пресеты-выбранная-модель">§2.1 — «Параметризованные пресеты» (выбранная модель)</a></li><li class="depth-2"><a href="#27--хилер-и-ai-поля-юнита" data-for="27--хилер-и-ai-поля-юнита">§2.7 — Хилер и AI-поля юнита</a></li><li class="depth-1"><a href="#3--контракт-шва-ии-итог-шагов-131" data-for="3--контракт-шва-ии-итог-шагов-131">§3 — Контракт шва ИИ (итог шагов 1–3.1)</a></li><li class="depth-2"><a href="#31--шов-iunitbrain--ibattleview--profilebrain" data-for="31--шов-iunitbrain--ibattleview--profilebrain">§3.1 — Шов: IUnitBrain / IBattleView / ProfileBrain</a></li><li class="depth-2"><a href="#32--каденс-brainsystem" data-for="32--каденс-brainsystem">§3.2 — Каденс: BrainSystem</a></li><li class="depth-2"><a href="#34--событийное-прерывание-braindirty" data-for="34--событийное-прерывание-braindirty">§3.4 — Событийное прерывание BrainDirty</a></li><li class="depth-2"><a href="#35--targetingsystem-поглощён-дефолтный-мозг" data-for="35--targetingsystem-поглощён-дефолтный-мозг">§3.5 — TargetingSystem поглощён, дефолтный мозг</a></li><li class="depth-1"><a href="#4--исполнение-решения-в-симуляции" data-for="4--исполнение-решения-в-симуляции">§4 — Исполнение решения в симуляции</a></li><li class="depth-2"><a href="#41--brainsystem-в-порядке-тика" data-for="41--brainsystem-в-порядке-тика">§4.1 — BrainSystem в порядке тика</a></li><li class="depth-2"><a href="#42--profilebrain-filter--score--override" data-for="42--profilebrain-filter--score--override">§4.2 — ProfileBrain: Filter → Score → Override</a></li><li class="depth-2"><a href="#43--позиционирование-override" data-for="43--позиционирование-override">§4.3 — Позиционирование (Override)</a></li><li class="depth-1"><a href="#7--тесты-шва-готово-109109" data-for="7--тесты-шва-готово-109109">§7 — Тесты шва (готово, 109/109)</a></li><li class="depth-1"><a href="#шаг-4-8--вертикальный-срез-железный-копейщик" data-for="шаг-4-8--вертикальный-срез-железный-копейщик">Шаг 4 (§8) — Вертикальный срез «Железный копейщик»</a></li><li class="depth-2"><a href="#что-уже-есть-в-коде-опора-среза" data-for="что-уже-есть-в-коде-опора-среза">Что уже есть в коде (опора среза)</a></li><li class="depth-2"><a href="#что-добавляет-шаг-4-новое" data-for="что-добавляет-шаг-4-новое">Что добавляет шаг 4 (новое)</a></li><li class="depth-2"><a href="#доп-условия-решения-макса-2026-06-01" data-for="доп-условия-решения-макса-2026-06-01">Доп. условия (решения Макса, 2026-06-01)</a></li><li class="depth-2"><a href="#тесты-шага-4-стабы--красный--зелёный" data-for="тесты-шага-4-стабы--красный--зелёный">Тесты шага 4 (стабы → красный → зелёный)</a></li><li class="depth-2"><a href="#критерий-готовности-шага-4" data-for="критерий-готовности-шага-4">Критерий готовности шага 4</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../Игровая-документация---Геймдизайн/1.-Контент---Реликвии/0.3.-Модель-AI-настроек-реликвий" class="internal">0.3. Модель AI-настроек реликвий</a></li><li><a href="../Игровая-документация---Техническая-часть/0.0.-README" class="internal">0.0. README</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
 </script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
 </script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../postscript.js" type="module"></script></html>

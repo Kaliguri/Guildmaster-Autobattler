@@ -31,24 +31,29 @@ var annotated_dup =
           [ "RuntimeEffect", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect" ]
         ] ],
         [ "AbilitySystem", "classGuildmaster_1_1Combat_1_1AbilitySystem.html", "classGuildmaster_1_1Combat_1_1AbilitySystem" ],
+        [ "AreaHit", "structGuildmaster_1_1Combat_1_1AreaHit.html", "structGuildmaster_1_1Combat_1_1AreaHit" ],
+        [ "AttackTiming", "classGuildmaster_1_1Combat_1_1AttackTiming.html", "classGuildmaster_1_1Combat_1_1AttackTiming" ],
         [ "AutoAttackSystem", "classGuildmaster_1_1Combat_1_1AutoAttackSystem.html", "classGuildmaster_1_1Combat_1_1AutoAttackSystem" ],
+        [ "BrainSystem", "classGuildmaster_1_1Combat_1_1BrainSystem.html", "classGuildmaster_1_1Combat_1_1BrainSystem" ],
         [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html", "classGuildmaster_1_1Combat_1_1CombatSimulation" ],
         [ "DamagePipeline", "classGuildmaster_1_1Combat_1_1DamagePipeline.html", "classGuildmaster_1_1Combat_1_1DamagePipeline" ],
         [ "DamageRequest", "structGuildmaster_1_1Combat_1_1DamageRequest.html", "structGuildmaster_1_1Combat_1_1DamageRequest" ],
         [ "DamageResult", "structGuildmaster_1_1Combat_1_1DamageResult.html", "structGuildmaster_1_1Combat_1_1DamageResult" ],
         [ "DeathSystem", "classGuildmaster_1_1Combat_1_1DeathSystem.html", "classGuildmaster_1_1Combat_1_1DeathSystem" ],
         [ "EffectSystem", "classGuildmaster_1_1Combat_1_1EffectSystem.html", "classGuildmaster_1_1Combat_1_1EffectSystem" ],
+        [ "IBattleView", "interfaceGuildmaster_1_1Combat_1_1IBattleView.html", "interfaceGuildmaster_1_1Combat_1_1IBattleView" ],
         [ "ICombatCommand", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand" ],
         [ "ICombatContext", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html", "interfaceGuildmaster_1_1Combat_1_1ICombatContext" ],
+        [ "IUnitBrain", "interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html", "interfaceGuildmaster_1_1Combat_1_1IUnitBrain" ],
         [ "MovementSystem", "classGuildmaster_1_1Combat_1_1MovementSystem.html", "classGuildmaster_1_1Combat_1_1MovementSystem" ],
+        [ "ProfileBrain", "classGuildmaster_1_1Combat_1_1ProfileBrain.html", "classGuildmaster_1_1Combat_1_1ProfileBrain" ],
         [ "Projectile", "classGuildmaster_1_1Combat_1_1Projectile.html", "classGuildmaster_1_1Combat_1_1Projectile" ],
         [ "ProjectileSpawn", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html", "structGuildmaster_1_1Combat_1_1ProjectileSpawn" ],
         [ "ProjectileSystem", "classGuildmaster_1_1Combat_1_1ProjectileSystem.html", "classGuildmaster_1_1Combat_1_1ProjectileSystem" ],
         [ "RuntimeUnit", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html", "classGuildmaster_1_1Combat_1_1RuntimeUnit" ],
         [ "RuntimeUnitFactory", "classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html", "classGuildmaster_1_1Combat_1_1RuntimeUnitFactory" ],
         [ "SpatialHash", "classGuildmaster_1_1Combat_1_1SpatialHash.html", "classGuildmaster_1_1Combat_1_1SpatialHash" ],
-        [ "Stats", "classGuildmaster_1_1Combat_1_1Stats.html", "classGuildmaster_1_1Combat_1_1Stats" ],
-        [ "TargetingSystem", "classGuildmaster_1_1Combat_1_1TargetingSystem.html", "classGuildmaster_1_1Combat_1_1TargetingSystem" ]
+        [ "Stats", "classGuildmaster_1_1Combat_1_1Stats.html", "classGuildmaster_1_1Combat_1_1Stats" ]
       ] ],
       [ "Core", "namespaceGuildmaster_1_1Core.html", [
         [ "Random", "namespaceGuildmaster_1_1Core_1_1Random.html", [
@@ -64,11 +69,19 @@ var annotated_dup =
       [ "Data", "namespaceGuildmaster_1_1Data.html", [
         [ "Definitions", "namespaceGuildmaster_1_1Data_1_1Definitions.html", [
           [ "AbilityData", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData" ],
+          [ "AIProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile" ],
+          [ "AttackHitFrameStripAttribute", "classGuildmaster_1_1Data_1_1Definitions_1_1AttackHitFrameStripAttribute.html", null ],
           [ "EffectData", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData" ],
           [ "IEffectComponent", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html", null ],
+          [ "Kite", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite" ],
           [ "RelicData", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData" ],
+          [ "Retreat", "structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html", "structGuildmaster_1_1Data_1_1Definitions_1_1Retreat" ],
           [ "StatsConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig" ],
+          [ "UnitVisual", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual" ],
           [ "VesselData", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData" ]
+        ] ],
+        [ "Editor", "namespaceGuildmaster_1_1Data_1_1Editor.html", [
+          [ "AttackHitFrameStripAttributeDrawer", "classGuildmaster_1_1Data_1_1Editor_1_1AttackHitFrameStripAttributeDrawer.html", "classGuildmaster_1_1Data_1_1Editor_1_1AttackHitFrameStripAttributeDrawer" ]
         ] ],
         [ "Stats", "namespaceGuildmaster_1_1Data_1_1Stats.html", [
           [ "IStatReader", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader" ],
@@ -78,6 +91,7 @@ var annotated_dup =
         ] ]
       ] ],
       [ "DevTools", "namespaceGuildmaster_1_1DevTools.html", [
+        [ "CombatUnitDebugView", "classGuildmaster_1_1DevTools_1_1CombatUnitDebugView.html", "classGuildmaster_1_1DevTools_1_1CombatUnitDebugView" ],
         [ "GuildmasterCommands", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands" ]
       ] ],
       [ "Game", "namespaceGuildmaster_1_1Game.html", [
@@ -100,12 +114,14 @@ var annotated_dup =
       ] ],
       [ "Presentation", "namespaceGuildmaster_1_1Presentation.html", [
         [ "BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent" ],
+        [ "CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash" ],
         [ "CombatDebugDraw", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw" ],
         [ "CombatPresenter", "classGuildmaster_1_1Presentation_1_1CombatPresenter.html", "classGuildmaster_1_1Presentation_1_1CombatPresenter" ],
         [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],
         [ "DamageNumber", "classGuildmaster_1_1Presentation_1_1DamageNumber.html", "classGuildmaster_1_1Presentation_1_1DamageNumber" ],
         [ "DamageNumberSpawner", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner.html", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner" ],
         [ "HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", "classGuildmaster_1_1Presentation_1_1HealthBarView" ],
+        [ "UnitAnimationSelector", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector" ],
         [ "UnitDiedEvent", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent" ],
         [ "UnitSpawnedEvent", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent" ],
         [ "UnitView", "classGuildmaster_1_1Presentation_1_1UnitView.html", "classGuildmaster_1_1Presentation_1_1UnitView" ]

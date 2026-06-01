@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loadbattleasync_0',['LoadBattleAsync',['../classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html#a47edfd49557385afca1d3febca010d1a',1,'Guildmaster::Game::Services::SceneLoader']]]
+  ['heal_0',['heal',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3edf9fdf873a5ebddd75420669bdb8c2',1,'Guildmaster.Combat.CombatSimulation.Heal()'],['../interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#ad112eab40594c2438730bcd677d00255',1,'Guildmaster.Combat.ICombatContext.Heal()']]]
 ];
