@@ -37,11 +37,42 @@ namespace Guildmaster.Combat
         /// <summary>Позиция на предыдущем тике — для интерполяции вида (60 fps рендер, 30 Hz сим).</summary>
         public Vector2 PreviousPosition;
 
-        /// <summary>Текущая цель для автоатаки и движения. Null = цель не назначена.</summary>
+        /// <summary>Текущая цель для движения/позиционирования. Пишет мозг (Фаза 3), не TargetingSystem. Null = нет цели.</summary>
         public RuntimeUnit CurrentTarget;
 
-        /// <summary>Кулдаун автоатаки в секундах. 0 = готов к атаке.</summary>
-        public float AttackCooldown;
+        // --- AI (Фаза 3, вики «13» §2.7) ---
+
+        /// <summary>Мозг юнита: интерпретирует AIProfile. Ставит <see cref="RuntimeUnitFactory"/>. null → дефолтный мозг BrainSystem.</summary>
+        public IUnitBrain Brain;
+
+        /// <summary>Фаза стаггера AI (= Id % AiTickInterval). Юнит думает на тике, где tick % interval == BrainPhase.</summary>
+        public int BrainPhase;
+
+        /// <summary>Событийное прерывание: взведён → переоценка на ближайшем тике вне фазы. Сбрасывает BrainSystem.</summary>
+        public bool BrainDirty;
+
+        /// <summary>Намерение позиционирования (Approach/Kite/Retreat). Пишет мозг (10 Гц), читает MovementSystem (30 Гц).</summary>
+        public PositioningIntent Positioning;
+
+        /// <summary>Цель авто-атаки. Для хилера — союзник (≠ CurrentTarget). Пишет мозг, читает AutoAttackSystem.</summary>
+        public RuntimeUnit AutoAttackTarget;
+
+        // --- Авто-атака: двухфазный windup на int-тиках (вики «14») ---
+
+        /// <summary>Кулдаун автоатаки в сим-тиках. 0 = готов к атаке. Рестартится в начале замаха (якорь).</summary>
+        public int AttackCooldownTicks;
+
+        /// <summary>Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Рутит движение (MovementSystem).</summary>
+        public bool IsWindingUp;
+
+        /// <summary>Тиков замаха осталось до кадра контакта. Когда ≤ 0 — резолв удара.</summary>
+        public int WindupRemaining;
+
+        /// <summary>Полная длительность текущего замаха в тиках (посчитана раз на старте, не пересчитывается на лету).</summary>
+        public int WindupTicks;
+
+        /// <summary>Снапшот цели на старте замаха: удар наносится по ней (если жива и в радиусе к концу замаха).</summary>
+        public RuntimeUnit WindupTarget;
 
         /// <summary>Помечен DeathSystem — исключается из всех систем с текущего тика.</summary>
         public bool IsDead;

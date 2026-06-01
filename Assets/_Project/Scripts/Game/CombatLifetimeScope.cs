@@ -42,7 +42,7 @@ namespace Guildmaster.Game
         {
             float cellSize = _spatialHashCellSize;
             builder.Register<SpatialHash>(_ => new SpatialHash(cellSize), Lifetime.Scoped);
-            builder.Register<TargetingSystem>(Lifetime.Scoped);
+            builder.Register<BrainSystem>(Lifetime.Scoped);
             builder.Register<AbilitySystem>(Lifetime.Scoped);
             builder.Register<MovementSystem>(Lifetime.Scoped);
             builder.Register<AutoAttackSystem>(Lifetime.Scoped);
@@ -58,7 +58,7 @@ namespace Guildmaster.Game
                 r.Resolve<IRngService>(),
                 armorK,
                 r.Resolve<SpatialHash>(),
-                r.Resolve<TargetingSystem>(),
+                r.Resolve<BrainSystem>(),
                 r.Resolve<AbilitySystem>(),
                 r.Resolve<MovementSystem>(),
                 r.Resolve<AutoAttackSystem>(),
@@ -82,6 +82,7 @@ namespace Guildmaster.Game
         {
             builder.RegisterComponentInHierarchy<CombatPresenter>();
             builder.RegisterComponentInHierarchy<CombatDebugDraw>();
+            builder.RegisterComponentInHierarchy<CombatAreaFlash>();
         }
 
         // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя), а не

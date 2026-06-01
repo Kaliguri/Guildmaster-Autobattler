@@ -18,5 +18,16 @@ namespace Guildmaster.Data.Definitions
         HoT     = 1 << 4,
         Heal    = 1 << 5,
         Shield  = 1 << 6,
+
+        // --- Контентные категории Фазы 3 (вики «13» §2.6) ---
+
+        /// <summary>Криомант: пассивка-АА ставит, активка станит всех с этим тегом (TaggedTargetsCount).</summary>
+        Frozen  = 1 << 7,
+
+        /// <summary>Лесной следопыт: метка +25% урона; AI-приоритет PreferTagged(Marked); перенос при смерти.</summary>
+        Marked  = 1 << 8,
+
+        /// <summary>Семейство контроллеров: «подкидывание» — контроль, НЕ скейлится ReceiveDebuffEff (§4.4).</summary>
+        KnockUp = 1 << 9,
     }
 }

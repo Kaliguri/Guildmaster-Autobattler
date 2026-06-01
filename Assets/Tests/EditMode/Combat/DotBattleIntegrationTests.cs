@@ -25,7 +25,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new XorShiftRng(7UL),
                 ArmorK,
                 new SpatialHash(CellSize),
-                new TargetingSystem(),
+                new BrainSystem(),
                 new AbilitySystem(),
                 new MovementSystem(),
                 new AutoAttackSystem(),

@@ -11,17 +11,17 @@ namespace Guildmaster.Combat
     /// Детерминированная тиковая симуляция боя. Реализует <see cref="ICombatContext"/>
     /// — единственная точка мутации состояния боя из систем и (Фаза 2) компонентов эффектов.
     /// <para>
-    /// Порядок систем за тик: ApplyCommands → Targeting → Movement → SpatialHashRebuild
+    /// Порядок систем за тик: ApplyCommands → Brain (AI) → Movement → SpatialHashRebuild
     /// → AutoAttack → Projectiles → Effects → Death → CheckOutcome → currentTick++.
     /// </para>
     /// (вики «10» §5.1).
     /// </summary>
-    public sealed class CombatSimulation : ICombatContext
+    public sealed class CombatSimulation : ICombatContext, IBattleView
     {
         private readonly IRngService         _rng;
         private readonly float               _armorK;
         private readonly SpatialHash         _spatialHash;
-        private readonly TargetingSystem     _targetingSystem;
+        private readonly BrainSystem         _brainSystem;
         private readonly AbilitySystem       _abilitySystem;
         private readonly MovementSystem      _movementSystem;
         private readonly AutoAttackSystem    _autoAttackSystem;
@@ -52,11 +52,20 @@ namespace Guildmaster.Combat
         /// <summary>Юнит погиб.</summary>
         public event Action<RuntimeUnit> OnUnitDied;
 
-        /// <summary>Нанесён урон: источник, цель, результат.</summary>
+        /// <summary>Нанесён урон: источник, цель, результат. Совпадает с кадром контакта (конец замаха, вики «14»).</summary>
         public event Action<RuntimeUnit, RuntimeUnit, DamageResult> OnDamageDealt;
+
+        /// <summary>Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View.</summary>
+        public event Action<RuntimeUnit, RuntimeUnit> OnAttackStarted;
+
+        /// <summary>Замах авто-атаки прерван (стан/смерть себя): View рвёт свинг в idle (вики «14»).</summary>
+        public event Action<RuntimeUnit> OnAttackInterrupted;
 
         /// <summary>Бой завершён с итогом.</summary>
         public event Action<BattleOutcome> OnBattleEnded;
+
+        /// <summary>Зона удара сработала (линия авто-атаки / круг активки) — для dev-оверлея зон.</summary>
+        public event Action<AreaHit> OnAreaHit;
 
         // --- ICombatContext ---
 
@@ -72,7 +81,7 @@ namespace Guildmaster.Combat
             IRngService       rng,
             float             armorK,
             SpatialHash       spatialHash,
-            TargetingSystem   targetingSystem,
+            BrainSystem       brainSystem,
             AbilitySystem     abilitySystem,
             MovementSystem    movementSystem,
             AutoAttackSystem  autoAttackSystem,
@@ -83,7 +92,7 @@ namespace Guildmaster.Combat
             _rng              = rng;
             _armorK           = armorK;
             _spatialHash      = spatialHash;
-            _targetingSystem  = targetingSystem;
+            _brainSystem      = brainSystem;
             _abilitySystem    = abilitySystem;
             _movementSystem   = movementSystem;
             _autoAttackSystem = autoAttackSystem;
@@ -120,7 +129,7 @@ namespace Guildmaster.Combat
                 return;
             }
 
-            _targetingSystem.Tick(_units);
+            _brainSystem.Tick(_units, this);
             _abilitySystem.Tick(_units, this, dt);
             _movementSystem.Tick(_units, dt);
             _spatialHash.Rebuild(_units);
@@ -206,10 +215,50 @@ namespace Guildmaster.Combat
             return results.Count;
         }
 
+        public int QueryUnitsInLine(
+            Vector2 origin,
+            Vector2 direction,
+            float length,
+            float width,
+            List<RuntimeUnit> results,
+            TargetFilter filter,
+            int requestingTeam)
+        {
+            // Broad-phase: круг радиусом = длина линии (живых отбирает QueryRadius), затем
+            // narrow-phase по геометрии полосы: проекция на направление в [0..length], перпендикуляр ≤ width/2.
+            _spatialHash.QueryRadius(origin, length, results);
+
+            Vector2 dir = direction.sqrMagnitude > 1e-6f ? direction.normalized : Vector2.right;
+            float halfWidth = width * 0.5f;
+
+            for (int i = results.Count - 1; i >= 0; i--)
+            {
+                RuntimeUnit u = results[i];
+                Vector2 v = u.Position - origin;
+                float along = Vector2.Dot(v, dir);
+                bool inLine = along >= 0f && along <= length && (v - along * dir).magnitude <= halfWidth;
+
+                bool isAlly = u.Team == requestingTeam;
+                bool teamOk = filter == TargetFilter.All
+                           || (filter == TargetFilter.Enemies && !isAlly)
+                           || (filter == TargetFilter.Allies && isAlly);
+
+                if (!inLine || !teamOk) results.RemoveAt(i);
+            }
+
+            return results.Count;
+        }
+
         public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source)
         {
             _effectSystem.Apply(target, def, source, this);
         }
+
+        public void ReportAreaHit(in AreaHit hit) => OnAreaHit?.Invoke(hit);
+
+        public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => OnAttackStarted?.Invoke(unit, target);
+
+        public void NotifyAttackInterrupted(RuntimeUnit unit) => OnAttackInterrupted?.Invoke(unit);
 
         public void Dispel(in Effects.DispelRequest req)
         {
@@ -260,6 +309,9 @@ namespace Guildmaster.Combat
                 hash ^= (ulong)(long)(u.Position.x * 1000f) * 2246822519UL;
                 hash ^= (ulong)(long)(u.Position.y * 1000f) * 3266489917UL;
                 hash ^= (ulong)(long)(u.CurrentHP  * 100f)  * 668265263UL;
+                // Состояние авто-атаки — детерминированное, входит в чек-сумму (вики «14»).
+                hash ^= (ulong)(uint)u.AttackCooldownTicks * 374761393UL;
+                hash ^= (ulong)(uint)u.WindupRemaining     * 3266489917UL;
                 hash  = (hash << 13) | (hash >> 51);
             }
 

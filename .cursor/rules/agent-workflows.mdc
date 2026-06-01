@@ -95,6 +95,66 @@ manage_tools(action="list_groups")   // посмотреть все доступ
 
 ---
 
+## Нарезка спрайт-листов (sprite slicing)
+
+**Никогда не использовать Automatic slicing** — Unity нарезает по непрозрачным пикселям и даёт неверные размеры кадров. У «Pixel Art Heroes»-паков (и аналогичных) все кадры одного размера в одну строку.
+
+**Правильный метод: Grid by Cell Count.**
+
+Алгоритм для агента:
+1. Определить количество кадров: `frameCount = textureWidth / frameHeight` (кадры квадратные).
+2. Установить нарезку через `execute_code` (Unity MCP):
+
+```csharp
+using UnityEditor;
+using UnityEngine;
+using System.Collections.Generic;
+
+string path = "Assets/_Project/Art/Sprites/.../AnimName.png"; // путь к файлу
+var importer = AssetImporter.GetAtPath(path) as TextureImporter;
+int frameCount = 8; // посчитать из ширины / высоты текстуры
+int frameSize  = 150; // ширина == высота одного кадра
+
+importer.spriteImportMode = SpriteImportMode.Multiple;
+importer.filterMode       = FilterMode.Point;
+importer.textureCompression = TextureImporterCompression.Uncompressed;
+
+var rects = new List<SpriteMetaData>();
+for (int i = 0; i < frameCount; i++)
+{
+    rects.Add(new SpriteMetaData
+    {
+        name      = $"AnimName_{i}",
+        rect      = new Rect(i * frameSize, 0, frameSize, frameSize),
+        alignment = 0,
+        pivot     = new Vector2(0.5f, 0.5f),
+    });
+}
+importer.spritesheet = rects.ToArray();
+EditorUtility.SetDirty(importer);
+importer.SaveAndReimport();
+Debug.Log($"[SliceSprites] Нарезано {frameCount} кадров: {path}");
+```
+
+**Параметры нарезки:**
+- `filterMode: Point` — пиксель-арт, без сглаживания
+- `textureCompression: Uncompressed` — без артефактов сжатия
+- Pivot: `(0.5, 0.5)` — центр кадра
+- Offset и Padding: `0`
+- Имена кадров: `AnimationName_0`, `AnimationName_1`, …
+
+**Как узнать frameCount и frameSize без открытия файла:**
+```csharp
+// Сначала получить размеры текстуры:
+var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+int w = tex.width; int h = tex.height;
+// frameSize = h (кадры квадратные); frameCount = w / h
+```
+
+**Почему не Automatic:** автонарезка разбивает кадр персонажа на несколько частей если между пикселями есть прозрачные зазоры внутри анимации (плащ, копьё). Результат — юнит отображается как один пиксель или исчезает.
+
+---
+
 ## Новые Markdown-файлы в guildmaster-wiki
 
 Файлы не должны начинаться с пустой строки, за которой следует `---`. Quartz интерпретирует такой `---` как начало YAML frontmatter и падает при парсинге.

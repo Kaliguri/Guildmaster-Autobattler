@@ -5,7 +5,7 @@
     "Guildmaster.Core",
     "Guildmaster.Data",
     "Guildmaster.Combat",
-    "Shapes Runtime",
+    "ShapesRuntime",
     "LitMotion",
     "UniTask",
     "MessagePipe",

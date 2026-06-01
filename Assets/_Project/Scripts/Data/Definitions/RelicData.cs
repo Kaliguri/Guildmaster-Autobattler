@@ -21,6 +21,21 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private AttackType _attackType = AttackType.Melee;
         [SerializeField] private ResourceType _resourceType = ResourceType.None;
 
+        [Header("Visual (Phase 3)")]
+        [Tooltip("Набор спрайт-кадров. Сим/фабрика читают отсюда кадр контакта авто-атаки для windup (вики «14»). null = статичный фолбэк (мгновенный удар).")]
+        [SerializeField] private UnitVisual _visual;
+
+        [Header("Auto-attack shape (Phase 3)")]
+        [Tooltip("Форма авто-атаки: None = одиночная цель; Line = линия перед юнитом (несколько целей, «Размашистый выпад»).")]
+        [SerializeField] private AreaShape _autoAttackShape = AreaShape.None;
+
+        [Tooltip("Ширина линии авто-атаки (мировые единицы), для Line. Длина линии = AttackRange.")]
+        [SerializeField] private float _autoAttackWidth = 1f;
+
+        [Header("Resource gain (Phase 3)")]
+        [Tooltip("Ресурс (мана) за авто-атаку, × ResourceGainEff, клампится к MaxResource. 0 = не копит от ударов. Копейщик = 5.")]
+        [SerializeField] private float _resourceOnHit;
+
         [Header("Base stat block")]
         [Tooltip("Базовые модификаторы реликвии. Накладываются поверх дефолтов StatsConfig при сборке юнита.")]
         [SerializeField] private StatModifier[] _stats;
@@ -34,13 +49,23 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Активные способности (кулдаун/ресурс). Слотов — по редкости (Common 1 → Rare 2 → Epic 3).")]
         [SerializeField] private AbilityData[] _abilities;
 
+        // --- Фаза 3: профиль AI ---
+        [Header("AI profile (Phase 3)")]
+        [Tooltip("Параметризованный пресет поведения (кого/когда/где). Интерпретируется ProfileBrain (вики «13» §2.1).")]
+        [SerializeField] private AIProfile _ai = new AIProfile();
+
         public string DisplayNameKey => _displayNameKey;
         public string[] Tags => _tags;
+        public UnitVisual Visual => _visual;
         public DamageType DamageType => _damageType;
         public AttackType AttackType => _attackType;
         public ResourceType ResourceType => _resourceType;
+        public AreaShape AutoAttackShape => _autoAttackShape;
+        public float AutoAttackWidth => _autoAttackWidth;
+        public float ResourceOnHit => _resourceOnHit;
         public StatModifier[] Stats => _stats;
         public EffectData[] GrantedEffects => _grantedEffects;
         public AbilityData[] Abilities => _abilities;
+        public AIProfile Ai => _ai;
     }
 }

@@ -103,6 +103,17 @@ If currently on `dev` or `master`, **always** create a branch before starting:
 
 ---
 
+## Assets not pushed yet (git size)
+
+To keep the repo lightweight during pre-festival development:
+
+- **Sprite packs** under `Assets/_Project/Art/Sprites/Pixel Art Heroes/` are **kept local and NOT committed for now** (open-license pixel sheets used by the lite-harness `UnitView`). Temporary (`пока не пушим`) — added later (likely via Git LFS or a curated subset) once the visual set for the 7 relics is finalized.
+- **Dev screenshots** (e.g. `Assets/Screenshots/`, MCP harness captures) are throwaway — **delete them, never commit**.
+
+When staging, **stage code/data/config explicitly — never `git add .` blindly** (it would sweep in the sprite packs).
+
+---
+
 ## Releases (Tags)
 
 Testable/release versions are pinned with **tags**, not a separate branch.

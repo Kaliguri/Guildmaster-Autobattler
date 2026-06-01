@@ -1,4 +1,5 @@
 using Guildmaster.Combat.Abilities;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -48,9 +49,10 @@ namespace Guildmaster.Combat
             if (vessel?.PerkModifiers != null && vessel.PerkModifiers.Length > 0)
                 stats.AddModifiersFrom(vessel, vessel.PerkModifiers);
 
+            int id = _nextId++;
             var unit = new RuntimeUnit
             {
-                Id               = _nextId++,
+                Id               = id,
                 Team             = team,
                 Stats            = stats,
                 CurrentResource  = stats.Get(StatType.StartResource),
@@ -59,6 +61,9 @@ namespace Guildmaster.Combat
                 PreviousPosition = spawnPosition,
                 Relic            = relic,
                 Vessel           = vessel,
+                // AI (Фаза 3): мозг из профиля реликвии + фаза стаггера по Id (вики «13» §2.7, §4.1).
+                Brain            = new ProfileBrain(relic?.Ai),
+                BrainPhase       = id % SimConstants.AiTickInterval,
             };
 
             RegisterPassives(unit, relic);

@@ -113,7 +113,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             new XorShiftRng(seed),
             100f,
             new SpatialHash(3f),
-            new TargetingSystem(),
+            new BrainSystem(),
             new AbilitySystem(),
             new MovementSystem(),
             new AutoAttackSystem(),

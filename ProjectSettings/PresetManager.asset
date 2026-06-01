@@ -4,4 +4,11 @@
 PresetManager:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_DefaultPresets: {}
+  m_DefaultPresets:
+  - m_DefaultList:
+    - m_Preset: {fileID: 2655988077585873504, guid: 929079703f9a0aa46be05e3d45bd7ac8,
+        type: 2}
+      m_Filter: Assets/_Project/Art/Sprites/Pixel Art Heroes
+    m_Type:
+      m_ManagedTypePptr: {fileID: 0, guid: 0000000000000000d000000000000000, type: 0}
+      m_ManagedTypeFallback: UnityEditor.TextureImporter
