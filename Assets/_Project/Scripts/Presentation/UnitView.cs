@@ -34,7 +34,6 @@ namespace Guildmaster.Presentation
         private UnitAnimationState _state = UnitAnimationState.Idle;
         private int   _frameIndex;
         private float _frameTimer;
-        private float _hitRemaining;
         private float _attackRemaining;
         private bool  _isDead;
         private float _deathRemaining;
@@ -92,13 +91,12 @@ namespace Guildmaster.Presentation
             if (_visual == null || _sprite == null) return;
 
             float dt = Time.deltaTime;
-            if (_hitRemaining    > 0f) _hitRemaining    -= dt;
             if (_attackRemaining > 0f) _attackRemaining -= dt;
 
             bool isMoving = _unit != null &&
                             (_unit.Position - _unit.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
 
-            UnitAnimationState next = UnitAnimationSelector.Select(_isDead, _hitRemaining, _attackRemaining, isMoving);
+            UnitAnimationState next = UnitAnimationSelector.Select(_isDead, _attackRemaining, isMoving);
             if (next != _state)
             {
                 _state      = next;
@@ -145,7 +143,6 @@ namespace Guildmaster.Presentation
         /// <summary>Вызывается при получении урона.</summary>
         public void OnDamageReceived(float damage)
         {
-            if (_visual != null) _hitRemaining = _visual.Duration(UnitAnimationState.Hit);
             _onHitFeedback?.Invoke();
         }
 

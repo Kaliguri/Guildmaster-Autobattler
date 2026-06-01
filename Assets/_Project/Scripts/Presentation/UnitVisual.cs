@@ -17,7 +17,6 @@ namespace Guildmaster.Presentation
         [SerializeField] private Sprite[] _idle   = Array.Empty<Sprite>();
         [SerializeField] private Sprite[] _run    = Array.Empty<Sprite>();
         [SerializeField] private Sprite[] _attack = Array.Empty<Sprite>();
-        [SerializeField] private Sprite[] _hit    = Array.Empty<Sprite>();
         [SerializeField] private Sprite[] _death  = Array.Empty<Sprite>();
 
         public float Fps => _fps <= 0f ? 10f : _fps;
@@ -29,7 +28,6 @@ namespace Guildmaster.Presentation
             {
                 case UnitAnimationState.Run:    return _run;
                 case UnitAnimationState.Attack: return _attack;
-                case UnitAnimationState.Hit:    return _hit;
                 case UnitAnimationState.Death:  return _death;
                 default:                        return _idle;
             }

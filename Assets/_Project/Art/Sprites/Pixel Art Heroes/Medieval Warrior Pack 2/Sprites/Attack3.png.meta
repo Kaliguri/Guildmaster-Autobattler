@@ -1,4 +1,4 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: ac7a4fb6af14ff840b254be4104e0900
 TextureImporter:
   internalIDToNameTable:
@@ -112,12 +112,12 @@ TextureImporter:
       name: Attack3_0
       rect:
         serializedVersion: 2
-        x: 37
-        y: 54
-        width: 67
-        height: 39
+        x: 0
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: Attack3_1
       rect:
         serializedVersion: 2
-        x: 189
-        y: 54
-        width: 67
-        height: 39
+        x: 150
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -156,12 +156,12 @@ TextureImporter:
       name: Attack3_2
       rect:
         serializedVersion: 2
-        x: 339
-        y: 54
-        width: 103
-        height: 39
+        x: 300
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -178,12 +178,12 @@ TextureImporter:
       name: Attack3_3
       rect:
         serializedVersion: 2
-        x: 508
-        y: 54
-        width: 84
-        height: 39
+        x: 450
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 46427fc7a17258744baa31da802d1f88
     internalID: 0
     vertices: []
     indices: 
@@ -208,7 +208,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":4.0,"y":1.0},"gridSpriteSize":{"x":150.0,"y":150.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Attack3_0: -3236675104909177313
       Attack3_1: -6048392498854522608
