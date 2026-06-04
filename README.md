@@ -1,6 +1,8 @@
+<p align="right"><b>English</b> · <a href="README.ru.md">Русский</a></p>
+
 # Guildmaster — Autobattler
 
-> Кооперативный автобатлер-рогалик в реальном времени (с паузой). В разработке.
+> Co-op real-time-with-pause autobattler roguelike. In development.
 
 <p align="center">
   <img src="https://img.shields.io/badge/Unity-6000.4.8f1-black?logo=unity" alt="Unity"/>
@@ -12,90 +14,109 @@
 </p>
 
 <p align="center">
-  <a href="https://kaliguri.github.io/Guildmaster-Autobattler/"><b>🌐 Wiki и документация</b></a>
+  <img alt="DI" src="https://img.shields.io/badge/DI-8957e5?style=flat-square"/>
+  <img alt="EventBus" src="https://img.shields.io/badge/EventBus-8957e5?style=flat-square"/>
+  <a href="https://github.com/hadashiA/VContainer"><img alt="VContainer" src="https://img.shields.io/badge/VContainer-1f6feb?style=flat-square"/></a>
+  <a href="https://github.com/Cysharp/MessagePipe"><img alt="MessagePipe" src="https://img.shields.io/badge/MessagePipe-1f6feb?style=flat-square"/></a>
+  <a href="https://github.com/Cysharp/UniTask"><img alt="UniTask" src="https://img.shields.io/badge/UniTask-1f6feb?style=flat-square"/></a>
+  <a href="https://github.com/annulusgames/LitMotion"><img alt="LitMotion" src="https://img.shields.io/badge/LitMotion-1f6feb?style=flat-square"/></a>
+  <a href="https://docs-multiplayer.unity3d.com/"><img alt="NGO" src="https://img.shields.io/badge/NGO-222222?style=flat-square&logo=unity&logoColor=white"/></a>
+  <a href="https://github.com/Facepunch/Facepunch.Steamworks"><img alt="Facepunch.Steamworks" src="https://img.shields.io/badge/Facepunch.Steamworks-171a21?style=flat-square&logo=steam&logoColor=white"/></a>
+  <a href="https://docs.unity3d.com/Packages/com.unity.addressables@latest"><img alt="Addressables" src="https://img.shields.io/badge/Addressables-222222?style=flat-square&logo=unity&logoColor=white"/></a>
+  <a href="https://docs.unity3d.com/Packages/com.unity.localization@latest"><img alt="Unity Localization" src="https://img.shields.io/badge/Unity_Localization-222222?style=flat-square&logo=unity&logoColor=white"/></a>
+  <a href="https://www.fmod.com"><img alt="FMOD" src="https://img.shields.io/badge/FMOD-000000?style=flat-square&logo=fmod&logoColor=white"/></a>
+</p>
+
+<p align="center">
+  <a href="https://kaliguri.github.io/Guildmaster-Autobattler/"><b>🌐 Wiki & docs</b></a>
   &nbsp;·&nbsp;
-  <a href="https://kaliguri.github.io/Guildmaster-Autobattler/api/"><b>🔧 C# API Reference</b></a>
+  <a href="https://kaliguri.github.io/Guildmaster-Autobattler/api/"><b>🔧 C# API reference</b></a>
 </p>
 
 ---
 
-## Об игре
+<!-- Trailer / gameplay GIF goes here — the visual hook. -->
+<p align="center"><i>🎬 Trailer &amp; gameplay GIF — coming soon.</i></p>
 
-**Guildmaster** — автобатлер-рогалик с паузой, вдохновлённый *Slay the Spire*, *Across the Obelisk* и *Teamfight Manager*.
+---
 
-Вы возглавляете гильдию авантюристов, готовящихся к великому чемпионату. Перед каждой битвой вы распределяете **осколки героев** между бойцами, расставляете их на поле и настраиваете тактику — а дальше наблюдаете, как они сражаются сами. Влиять на ход боя можно через заклинания Гильдмастера.
+## About
 
-Игра поддерживает **1–4 игроков**: в соло вы управляете всей гильдией, в кооперативе — каждый отвечает за своих бойцов.
+**Guildmaster** is a real-time-with-pause autobattler roguelike inspired by *Slay the Spire*, *Across the Obelisk* and *Teamfight Manager*.
 
-### Ключевые механики
+You lead a guild of adventurers preparing for a grand championship. Before each battle you slot **hero shards** into your fighters, position them on the field and tune their tactics — then watch them fight on their own, swaying the outcome with the Guildmaster's spells.
 
-| Механика | Описание |
+Built for **1–4 players**: solo, you command the whole guild; in co-op, each player runs their own fighters.
+
+### Key features
+
+| Feature | Description |
 |---|---|
-| **Осколки героев** | Экипируемые артефакты, превращающие рядового гильдийца в бойца с уникальными способностями |
-| **Гильдмастер** | Не сражается напрямую — кастует заклинания во время боя; слоты ограничены и восстанавливаются между схватками |
-| **Автобой** | Бой идёт в реальном времени без микроменеджмента атак; тактическая пауза доступна в любой момент |
-| **Карта рогалика** | Ивенты, магазины, тренировки и боссы в конце акта — в стиле *Slay the Spire* |
-| **Кооператив** | От 1 до 4 игроков делят гильдийцев по Steam через host-authoritative NGO |
+| **Hero shards** | Equippable artifacts that turn a rank-and-file guild member into a fighter with unique abilities |
+| **Guildmaster** | Doesn't fight directly — casts spells mid-battle; spell slots are limited and refresh between fights |
+| **Real-time autobattle** | Combat runs in real time with no attack micro; tactical pause is available at any moment |
+| **Roguelike map** | Events, shops, training and end-of-act bosses, *Slay the Spire*-style |
+| **Co-op** | 1–4 players split the guild over Steam via host-authoritative NGO |
 
 ---
 
 ## Screenshots
 
-> Coming soon — проект в ранней стадии разработки.
+> Coming soon — the project is in early development.
 
 ---
 
-<details>
-<summary><b>Для разработчиков</b></summary>
+<details id="for-developers">
+<summary><b>For developers</b></summary>
 
-## Технический стек
+## Tech stack
 
 | | |
 |---|---|
-| **Движок** | Unity 6 (6000.4.8f1) |
-| **Язык** | C# |
-| **Платформа** | Windows / PC |
+| **Engine** | Unity 6 (6000.4.8f1) |
+| **Language** | C# |
+| **Platform** | Windows / PC |
 | **CI/CD** | GitHub Actions + [GameCI](https://game.ci) |
-| **Документация** | Quartz v4 + Doxygen + GitHub Pages |
+| **Docs** | Quartz v4 + Doxygen + GitHub Pages |
 
-### Архитектура и пакеты
+### Architecture & packages
 
-| Категория | Пакет | Назначение |
+| Category | Package | Purpose |
 |---|---|---|
-| **DI / Events** | [VContainer](https://github.com/hadashiA/VContainer) | DI-контейнер — никаких синглтонов |
-| | [MessagePipe](https://github.com/Cysharp/MessagePipe) | Типизированный pub/sub EventBus через DI |
-| **Async / UI** | [UniTask](https://github.com/Cysharp/UniTask) | Zero-alloc async/await вместо корутин |
-| | [LitMotion](https://github.com/annulusgames/LitMotion) | Zero-alloc твины для UI и VFX |
-| **Мультиплеер** | NGO 2.11.2 | Netcode for GameObjects — host-authoritative |
-| | [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) | Steam-интеграция и транспорт для NGO |
-| | MPPM 1.3.2 | Тест кооп в редакторе (до 4 виртуальных игроков) |
-| **Данные** | Easy Save 3 | Сохранения (диск + Steam Cloud) |
-| | Newtonsoft.Json | JSON-сериализация DTO |
-| | Addressables | Загрузка контента по адресу |
-| | Unity Localization | Локализация EN + RU |
-| **Аудио** | FMOD | Адаптивная музыка (за интерфейсом `IAudioService`) |
-| **Инструменты** | [Odin Inspector](https://odininspector.com) | Расширенный инспектор, `[SerializeReference]`-дропдауны |
-| | [Feel (More Mountains)](https://assetstore.unity.com/packages/tools/particles-effects/feel-183370) | Game feel: вибрация, тряска камеры, хитстопы |
-| | [Shapes (Freya Holmer)](https://acegikmo.com/shapes/) | Процедурная векторная графика для UI и дебага |
-| | [Quantum Console](https://assetstore.unity.com/packages/tools/utilities/quantum-console-211046) | In-game dev-консоль |
+| **DI / Events** | [VContainer](https://github.com/hadashiA/VContainer) | DI container — no singletons |
+| | [MessagePipe](https://github.com/Cysharp/MessagePipe) | Typed pub/sub EventBus over DI |
+| **Async / UI** | [UniTask](https://github.com/Cysharp/UniTask) | Zero-alloc async/await instead of coroutines |
+| | [LitMotion](https://github.com/annulusgames/LitMotion) | Zero-alloc tweens for UI and VFX |
+| **Multiplayer** | NGO 2.11.2 | Netcode for GameObjects — host-authoritative |
+| | [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) | Steam integration and transport for NGO |
+| | MPPM 1.3.2 | In-editor co-op testing (up to 4 virtual players) |
+| **Data** | Easy Save 3 | Saves (disk + Steam Cloud) |
+| | Newtonsoft.Json | JSON serialization of DTOs |
+| | Addressables | Content loading by address |
+| | Unity Localization | EN + RU localization |
+| **Audio** | FMOD | Adaptive music (behind an `IAudioService` interface) |
+| **Tooling** | [Odin Inspector](https://odininspector.com) | Extended inspector, `[SerializeReference]` dropdowns |
+| | [Feel (More Mountains)](https://assetstore.unity.com/packages/tools/particles-effects/feel-183370) | Game feel: rumble, camera shake, hitstops |
+| | [Shapes (Freya Holmer)](https://acegikmo.com/shapes/) | Procedural vector graphics for UI and debug |
+| | [Quantum Console](https://assetstore.unity.com/packages/tools/utilities/quantum-console-211046) | In-game dev console |
 
-### AI-контент (пайплайн)
+### AI content (pipeline)
 
-| Инструмент | Назначение |
+| Tool | Purpose |
 |---|---|
-| [Suno](https://suno.com) | Генерация музыки |
-| [PixelLab](https://www.pixellab.ai) | Пиксельные спрайты и анимация юнитов |
-| [ElevenLabs](https://elevenlabs.io) | SFX и голос для трейлера |
-| [DeepL](https://deepl.com) | Финальная вычитка локализации EN ↔ RU |
+| [Suno](https://suno.com) | Music generation |
+| [PixelLab](https://www.pixellab.ai) | Pixel sprites and unit animation |
+| [ElevenLabs](https://elevenlabs.io) | SFX and trailer voice |
+| [DeepL](https://deepl.com) | Final localization proofreading EN ↔ RU |
 
-> ⚠️ **Steam Disclosure:** проект использует AI-контент. При публикации обязательно заполнить раздел AI в анкете Steam (требование с 2024 года).
+> ⚠️ **Steam disclosure:** the project uses AI-generated content. On release, fill in the AI section of the Steam questionnaire (required since 2024).
 
-## Архитектура проекта
+## Project layout
 
 ```
 Guildmaster - Autobattler/
 ├── Assets/
-│   └── _Project/             # Весь игровой код и контент
+│   └── _Project/             # All game code and content
 │       ├── Scripts/
 │       │   ├── Core/         # Guildmaster.Core.asmdef
 │       │   ├── Units/        # Guildmaster.Units.asmdef
@@ -107,31 +128,31 @@ Guildmaster - Autobattler/
 │       ├── Scenes/
 │       └── UI/
 ├── Assets/Tests/
-│   ├── EditMode/             # Юнит-тесты
-│   └── PlayMode/             # Интеграционные тесты
-├── guildmaster-wiki/         # GDD и техническая документация (Obsidian Vault)
-├── quartz-config/            # Конфиг Quartz v4 для docs сайта
-├── doxygen/                  # Конфиг Doxygen для C# API Reference
-├── .github/workflows/        # CI: тесты (ci.yml) и docs деплой (docs.yml)
-├── .cursor/rules/            # Стандарты кода и git-конвенции для AI-агента
+│   ├── EditMode/             # Unit tests
+│   └── PlayMode/             # Integration tests
+├── guildmaster-wiki/         # GDD and technical docs (Obsidian Vault)
+├── quartz-config/            # Quartz v4 config for the docs site
+├── doxygen/                  # Doxygen config for the C# API reference
+├── .github/workflows/        # CI: tests (ci.yml) and docs deploy (docs.yml)
+├── .cursor/rules/            # Code standards and git conventions for the AI agent
 └── scripts/
-    └── run-tests.ps1         # Локальный запуск тестов
+    └── run-tests.ps1         # Local test runner
 ```
 
-**Принципы кода:**
-- `ScriptableObject` для всех игровых данных — никакого хардкода
-- `ObjectPool<T>` вместо `Instantiate`/`Destroy` в горячих путях
-- Компонентные ссылки кэшируются в `Awake()`, никогда в `Update()`
-- Unity Input System (не Legacy Input)
+**Code principles:**
+- `ScriptableObject` for all game data — no hardcoding
+- `ObjectPool<T>` instead of `Instantiate`/`Destroy` on hot paths
+- Component references cached in `Awake()`, never in `Update()`
+- Unity Input System (not legacy Input)
 
 ## CI/CD
 
-| Файл | Назначение |
+| File | Purpose |
 |---|---|
-| `.github/workflows/ci.yml` | Unity Test Runner (EditMode + PlayMode) при push/PR |
-| `.github/workflows/docs.yml` | Сборка Quartz + Doxygen → деплой на GitHub Pages |
+| `.github/workflows/ci.yml` | Unity Test Runner (EditMode + PlayMode) on push/PR |
+| `.github/workflows/docs.yml` | Build Quartz + Doxygen → deploy to GitHub Pages |
 
-Локальный запуск тестов:
+Run tests locally:
 ```powershell
 ./scripts/run-tests.ps1
 ```
@@ -140,9 +161,12 @@ Guildmaster - Autobattler/
 
 ---
 
-## Лицензия
+## License
 
-**© 2026 Max Gaida. Все права защищены.**
+© 2026 Max Gaida. All rights reserved.
 
-Проект опубликован в открытом доступе исключительно в целях демонстрации в портфолио.  
-Использование, копирование, распространение или создание производных работ **без письменного разрешения автора запрещено**.
+This repository is public for portfolio and demonstration purposes only.
+No license is granted to use, copy, modify, or distribute any part of it
+without prior written permission from the author.
+
+See [LICENSE.md](LICENSE.md) for details.
