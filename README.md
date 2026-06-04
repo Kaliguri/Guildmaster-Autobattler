@@ -1,4 +1,8 @@
-<p align="right"><a href="#english">English</a> · <a href="#русский">Русский</a></p>
+<p align="center">
+  <a href="#english"><img src="https://img.shields.io/badge/English-2ea44f?style=for-the-badge" alt="English"></a>
+  &nbsp;
+  <a href="#русский"><img src="https://img.shields.io/badge/Русский-0a66c2?style=for-the-badge" alt="Русский"></a>
+</p>
 
 # Guildmaster — Autobattler
 
@@ -13,17 +17,27 @@
   <a href="https://kaliguri.github.io/Guildmaster-Autobattler/"><img src="https://img.shields.io/badge/Docs-GitHub%20Pages-blueviolet?logo=github" alt="Docs"/></a>
 </p>
 
-<p align="center">
+<p align="center"><sub><b>Architecture</b></sub><br>
   <img alt="DI" src="https://img.shields.io/badge/DI-8957e5?style=flat-square"/>
+  <img alt="MVVM" src="https://img.shields.io/badge/MVVM-8957e5?style=flat-square"/>
   <img alt="EventBus" src="https://img.shields.io/badge/EventBus-8957e5?style=flat-square"/>
   <a href="https://github.com/hadashiA/VContainer"><img alt="VContainer" src="https://img.shields.io/badge/VContainer-1f6feb?style=flat-square"/></a>
   <a href="https://github.com/Cysharp/MessagePipe"><img alt="MessagePipe" src="https://img.shields.io/badge/MessagePipe-1f6feb?style=flat-square"/></a>
+</p>
+<p align="center"><sub><b>Async / UI</b></sub><br>
   <a href="https://github.com/Cysharp/UniTask"><img alt="UniTask" src="https://img.shields.io/badge/UniTask-1f6feb?style=flat-square"/></a>
   <a href="https://github.com/annulusgames/LitMotion"><img alt="LitMotion" src="https://img.shields.io/badge/LitMotion-1f6feb?style=flat-square"/></a>
+  <a href="https://docs.unity3d.com/Manual/UIElements.html"><img alt="UI Toolkit" src="https://img.shields.io/badge/UI_Toolkit-222222?style=flat-square&logo=unity&logoColor=white"/></a>
+</p>
+<p align="center"><sub><b>Multiplayer</b></sub><br>
   <a href="https://docs-multiplayer.unity3d.com/"><img alt="NGO" src="https://img.shields.io/badge/NGO-222222?style=flat-square&logo=unity&logoColor=white"/></a>
   <a href="https://github.com/Facepunch/Facepunch.Steamworks"><img alt="Facepunch.Steamworks" src="https://img.shields.io/badge/Facepunch.Steamworks-171a21?style=flat-square&logo=steam&logoColor=white"/></a>
+</p>
+<p align="center"><sub><b>Content</b></sub><br>
   <a href="https://docs.unity3d.com/Packages/com.unity.addressables@latest"><img alt="Addressables" src="https://img.shields.io/badge/Addressables-222222?style=flat-square&logo=unity&logoColor=white"/></a>
   <a href="https://docs.unity3d.com/Packages/com.unity.localization@latest"><img alt="Unity Localization" src="https://img.shields.io/badge/Unity_Localization-222222?style=flat-square&logo=unity&logoColor=white"/></a>
+</p>
+<p align="center"><sub><b>Audio</b></sub><br>
   <a href="https://www.fmod.com"><img alt="FMOD" src="https://img.shields.io/badge/FMOD-000000?style=flat-square&logo=fmod&logoColor=white"/></a>
 </p>
 
@@ -48,6 +62,8 @@ You lead a guild of adventurers preparing for a grand championship. Before each 
 
 Built for **1–4 players**: solo, you command the whole guild; in co-op, each player runs their own fighters.
 
+> **What this project demonstrates:** a deterministic real-time combat simulation, a DI-driven architecture (VContainer + MessagePipe) with no singletons, host-authoritative co-op netcode (NGO + Steam), and a fully data-driven content pipeline (ScriptableObjects + Addressables) — covered by an EditMode/PlayMode test suite in CI.
+
 ### Key features
 
 | Feature | Description |
@@ -69,6 +85,8 @@ Built for **1–4 players**: solo, you command the whole guild; in co-op, each p
 Вы возглавляете гильдию авантюристов, готовящихся к великому чемпионату. Перед каждой битвой вы распределяете **осколки героев** между бойцами, расставляете их на поле и настраиваете тактику — а дальше наблюдаете, как они сражаются сами. Влиять на ход боя можно через заклинания Гильдмастера.
 
 Игра поддерживает **1–4 игроков**: в соло вы управляете всей гильдией, в кооперативе — каждый отвечает за своих бойцов.
+
+> **Что демонстрирует проект:** детерминированную симуляцию боя в реальном времени, DI-архитектуру (VContainer + MessagePipe) без синглтонов, host-authoritative кооп-нетворкинг (NGO + Steam) и полностью data-driven контент-пайплайн (ScriptableObjects + Addressables) — с покрытием EditMode/PlayMode-тестами в CI.
 
 ### Ключевые механики
 
@@ -107,7 +125,8 @@ Built for **1–4 players**: solo, you command the whole guild; in co-op, each p
 |---|---|---|
 | **DI / Events** | [VContainer](https://github.com/hadashiA/VContainer) | DI container — no singletons |
 | | [MessagePipe](https://github.com/Cysharp/MessagePipe) | Typed pub/sub EventBus over DI |
-| **Async / UI** | [UniTask](https://github.com/Cysharp/UniTask) | Zero-alloc async/await instead of coroutines |
+| **Async** | [UniTask](https://github.com/Cysharp/UniTask) | Zero-alloc async/await instead of coroutines |
+| **UI** | [UI Toolkit](https://docs.unity3d.com/Manual/UIElements.html) + MVVM | Retained-mode UI (UXML/USS) with View↔ViewModel bindings |
 | | [LitMotion](https://github.com/annulusgames/LitMotion) | Zero-alloc tweens for UI and VFX |
 | **Multiplayer** | NGO 2.11.2 | Netcode for GameObjects — host-authoritative |
 | | [Facepunch.Steamworks](https://github.com/Facepunch/Facepunch.Steamworks) | Steam integration and transport for NGO |
