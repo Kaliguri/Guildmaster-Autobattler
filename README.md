@@ -17,28 +17,39 @@
   <a href="https://kaliguri.github.io/Guildmaster-Autobattler/"><img src="https://img.shields.io/badge/Docs-GitHub%20Pages-blueviolet?logo=github" alt="Docs"/></a>
 </p>
 
-<p><sub><b>Architecture</b></sub><br>
+<p><b>Architecture</b><br>
   <img alt="DI" src="https://img.shields.io/badge/DI-8957e5?style=flat-square"/>
   <img alt="MVVM" src="https://img.shields.io/badge/MVVM-8957e5?style=flat-square"/>
   <img alt="EventBus" src="https://img.shields.io/badge/EventBus-8957e5?style=flat-square"/>
   <a href="https://github.com/hadashiA/VContainer"><img alt="VContainer" src="https://img.shields.io/badge/VContainer-1f6feb?style=flat-square"/></a>
   <a href="https://github.com/Cysharp/MessagePipe"><img alt="MessagePipe" src="https://img.shields.io/badge/MessagePipe-1f6feb?style=flat-square"/></a>
 </p>
-<p><sub><b>Async / UI</b></sub><br>
+<p><b>Patterns</b><br>
+  <img alt="State Machine" src="https://img.shields.io/badge/State_Machine-8957e5?style=flat-square"/>
+  <img alt="Command" src="https://img.shields.io/badge/Command-8957e5?style=flat-square"/>
+  <img alt="Object Pool" src="https://img.shields.io/badge/Object_Pool-8957e5?style=flat-square"/>
+  <img alt="Strategy" src="https://img.shields.io/badge/Strategy-8957e5?style=flat-square"/>
+</p>
+<p><b>Async / UI</b><br>
   <a href="https://github.com/Cysharp/UniTask"><img alt="UniTask" src="https://img.shields.io/badge/UniTask-1f6feb?style=flat-square"/></a>
   <a href="https://github.com/annulusgames/LitMotion"><img alt="LitMotion" src="https://img.shields.io/badge/LitMotion-1f6feb?style=flat-square"/></a>
   <a href="https://docs.unity3d.com/Manual/UIElements.html"><img alt="UI Toolkit" src="https://img.shields.io/badge/UI_Toolkit-222222?style=flat-square&logo=unity&logoColor=white"/></a>
 </p>
-<p><sub><b>Multiplayer</b></sub><br>
+<p><b>Multiplayer</b><br>
   <a href="https://docs-multiplayer.unity3d.com/"><img alt="NGO" src="https://img.shields.io/badge/NGO-222222?style=flat-square&logo=unity&logoColor=white"/></a>
   <a href="https://github.com/Facepunch/Facepunch.Steamworks"><img alt="Facepunch.Steamworks" src="https://img.shields.io/badge/Facepunch.Steamworks-171a21?style=flat-square&logo=steam&logoColor=white"/></a>
 </p>
-<p><sub><b>Content</b></sub><br>
+<p><b>Data</b><br>
   <a href="https://docs.unity3d.com/Packages/com.unity.addressables@latest"><img alt="Addressables" src="https://img.shields.io/badge/Addressables-222222?style=flat-square&logo=unity&logoColor=white"/></a>
   <a href="https://docs.unity3d.com/Packages/com.unity.localization@latest"><img alt="Unity Localization" src="https://img.shields.io/badge/Unity_Localization-222222?style=flat-square&logo=unity&logoColor=white"/></a>
+  <a href="https://moodkie.com/easy-save/"><img alt="Easy Save 3" src="https://img.shields.io/badge/Easy_Save_3-1f6feb?style=flat-square"/></a>
+  <a href="https://www.newtonsoft.com/json"><img alt="Newtonsoft.Json" src="https://img.shields.io/badge/Newtonsoft.Json-1f6feb?style=flat-square"/></a>
 </p>
-<p><sub><b>Audio</b></sub><br>
+<p><b>Audio</b><br>
   <a href="https://www.fmod.com"><img alt="FMOD" src="https://img.shields.io/badge/FMOD-000000?style=flat-square&logo=fmod&logoColor=white"/></a>
+</p>
+<p><b>Tooling</b><br>
+  <a href="https://odininspector.com"><img alt="Odin Inspector" src="https://img.shields.io/badge/Odin_Inspector-1f6feb?style=flat-square"/></a>
 </p>
 
 <p>
