@@ -1,7 +1,7 @@
 <p>
-  <a href="#english"><img src="https://img.shields.io/badge/English-30363d?style=for-the-badge" alt="English"></a>
-  &nbsp;
-  <a href="#русский"><img src="https://img.shields.io/badge/Русский-57606a?style=for-the-badge" alt="Русский"></a>
+  <a href="#english"><b>English</b></a>
+  &nbsp;·&nbsp;
+  <a href="#русский"><b>Русский</b></a>
 </p>
 
 # Guildmaster — Autobattler
