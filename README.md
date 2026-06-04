@@ -1,14 +1,14 @@
-<p align="center">
-  <a href="#english"><img src="https://img.shields.io/badge/English-2ea44f?style=for-the-badge" alt="English"></a>
+<p>
+  <a href="#english"><img src="https://img.shields.io/badge/English-30363d?style=for-the-badge" alt="English"></a>
   &nbsp;
-  <a href="#русский"><img src="https://img.shields.io/badge/Русский-0a66c2?style=for-the-badge" alt="Русский"></a>
+  <a href="#русский"><img src="https://img.shields.io/badge/Русский-57606a?style=for-the-badge" alt="Русский"></a>
 </p>
 
 # Guildmaster — Autobattler
 
 > Co-op real-time-with-pause autobattler roguelike. In development.
 
-<p align="center">
+<p>
   <img src="https://img.shields.io/badge/Unity-6000.4.8f1-black?logo=unity" alt="Unity"/>
   <img src="https://img.shields.io/badge/Platform-Windows%20%2F%20PC-blue" alt="Platform"/>
   <img src="https://img.shields.io/badge/Status-In%20Development-yellow" alt="Status"/>
@@ -17,31 +17,31 @@
   <a href="https://kaliguri.github.io/Guildmaster-Autobattler/"><img src="https://img.shields.io/badge/Docs-GitHub%20Pages-blueviolet?logo=github" alt="Docs"/></a>
 </p>
 
-<p align="center"><sub><b>Architecture</b></sub><br>
+<p><sub><b>Architecture</b></sub><br>
   <img alt="DI" src="https://img.shields.io/badge/DI-8957e5?style=flat-square"/>
   <img alt="MVVM" src="https://img.shields.io/badge/MVVM-8957e5?style=flat-square"/>
   <img alt="EventBus" src="https://img.shields.io/badge/EventBus-8957e5?style=flat-square"/>
   <a href="https://github.com/hadashiA/VContainer"><img alt="VContainer" src="https://img.shields.io/badge/VContainer-1f6feb?style=flat-square"/></a>
   <a href="https://github.com/Cysharp/MessagePipe"><img alt="MessagePipe" src="https://img.shields.io/badge/MessagePipe-1f6feb?style=flat-square"/></a>
 </p>
-<p align="center"><sub><b>Async / UI</b></sub><br>
+<p><sub><b>Async / UI</b></sub><br>
   <a href="https://github.com/Cysharp/UniTask"><img alt="UniTask" src="https://img.shields.io/badge/UniTask-1f6feb?style=flat-square"/></a>
   <a href="https://github.com/annulusgames/LitMotion"><img alt="LitMotion" src="https://img.shields.io/badge/LitMotion-1f6feb?style=flat-square"/></a>
   <a href="https://docs.unity3d.com/Manual/UIElements.html"><img alt="UI Toolkit" src="https://img.shields.io/badge/UI_Toolkit-222222?style=flat-square&logo=unity&logoColor=white"/></a>
 </p>
-<p align="center"><sub><b>Multiplayer</b></sub><br>
+<p><sub><b>Multiplayer</b></sub><br>
   <a href="https://docs-multiplayer.unity3d.com/"><img alt="NGO" src="https://img.shields.io/badge/NGO-222222?style=flat-square&logo=unity&logoColor=white"/></a>
   <a href="https://github.com/Facepunch/Facepunch.Steamworks"><img alt="Facepunch.Steamworks" src="https://img.shields.io/badge/Facepunch.Steamworks-171a21?style=flat-square&logo=steam&logoColor=white"/></a>
 </p>
-<p align="center"><sub><b>Content</b></sub><br>
+<p><sub><b>Content</b></sub><br>
   <a href="https://docs.unity3d.com/Packages/com.unity.addressables@latest"><img alt="Addressables" src="https://img.shields.io/badge/Addressables-222222?style=flat-square&logo=unity&logoColor=white"/></a>
   <a href="https://docs.unity3d.com/Packages/com.unity.localization@latest"><img alt="Unity Localization" src="https://img.shields.io/badge/Unity_Localization-222222?style=flat-square&logo=unity&logoColor=white"/></a>
 </p>
-<p align="center"><sub><b>Audio</b></sub><br>
+<p><sub><b>Audio</b></sub><br>
   <a href="https://www.fmod.com"><img alt="FMOD" src="https://img.shields.io/badge/FMOD-000000?style=flat-square&logo=fmod&logoColor=white"/></a>
 </p>
 
-<p align="center">
+<p>
   <a href="https://kaliguri.github.io/Guildmaster-Autobattler/"><b>🌐 Wiki & docs</b></a>
   &nbsp;·&nbsp;
   <a href="https://kaliguri.github.io/Guildmaster-Autobattler/api/"><b>🔧 C# API reference</b></a>
@@ -50,7 +50,7 @@
 ---
 
 <!-- Trailer / gameplay GIF goes here — the visual hook. -->
-<p align="center"><i>🎬 Trailer &amp; gameplay GIF — coming soon.</i></p>
+<p><i>🎬 Trailer &amp; gameplay GIF — coming soon.</i></p>
 
 ---
 
@@ -141,17 +141,6 @@ Built for **1–4 players**: solo, you command the whole guild; in co-op, each p
 | | [Shapes (Freya Holmer)](https://acegikmo.com/shapes/) | Procedural vector graphics for UI and debug |
 | | [Quantum Console](https://assetstore.unity.com/packages/tools/utilities/quantum-console-211046) | In-game dev console |
 
-### AI content (pipeline)
-
-| Tool | Purpose |
-|---|---|
-| [Suno](https://suno.com) | Music generation |
-| [PixelLab](https://www.pixellab.ai) | Pixel sprites and unit animation |
-| [ElevenLabs](https://elevenlabs.io) | SFX and trailer voice |
-| [DeepL](https://deepl.com) | Final localization proofreading EN ↔ RU |
-
-> ⚠️ **Steam disclosure:** the project uses AI-generated content. On release, fill in the AI section of the Steam questionnaire (required since 2024).
-
 ## Project layout
 
 ```
@@ -175,7 +164,7 @@ Guildmaster - Autobattler/
 ├── quartz-config/            # Quartz v4 config for the docs site
 ├── doxygen/                  # Doxygen config for the C# API reference
 ├── .github/workflows/        # CI: tests (ci.yml) and docs deploy (docs.yml)
-├── .cursor/rules/            # Code standards and git conventions for the AI agent
+├── .cursor/rules/            # Code standards and git conventions
 └── scripts/
     └── run-tests.ps1         # Local test runner
 ```
