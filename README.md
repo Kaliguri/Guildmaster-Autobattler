@@ -6,7 +6,7 @@
 
 # Guildmaster — Autobattler
 
-> Co-op real-time-with-pause autobattler roguelike. In development.
+> Co-op autobattler roguelike for 1–4 players. In development.
 
 <p>
   <img src="https://img.shields.io/badge/Unity-6000.4.8f1-black?logo=unity" alt="Unity"/>
@@ -34,6 +34,8 @@
 
 ---
 
+## Trailer & gameplay
+
 <!-- Trailer / gameplay GIF goes here — the visual hook. -->
 <p><i>🎬 Trailer &amp; gameplay GIF — coming soon.</i></p>
 
@@ -41,11 +43,11 @@
 
 ## English
 
-**Guildmaster** is a real-time-with-pause autobattler roguelike inspired by *Slay the Spire*, *Across the Obelisk* and *Teamfight Manager*.
+**Guildmaster** is a co-op autobattler roguelike for 1–4 players — tactical depth (team-building, Hero Memento management, positioning) wrapped in party-game spirit. Inspired by *Slay the Spire*, *Baldur's Gate 3*, *Divinity: Original Sin 2* and *Teamfight Manager*.
 
-You lead a guild of adventurers preparing for a grand championship. Before each battle you slot **hero shards** into your fighters, position them on the field and tune their tactics — then watch them fight on their own, swaying the outcome with the Guildmaster's spells.
+You lead a guild preparing for the Grand Championship. Your roster is made of **Vessels** — ordinary people who can't fight on their own; their power comes from the **Hero Mementos** they equip. Before each battle you decide which Vessel takes which Memento, set positions and target priorities — then the fight plays out automatically while you sway it in real time with the **Guildmaster's** spells.
 
-Built for **1–4 players**: solo, you command the whole guild; in co-op, each player runs their own fighters.
+Built for **1–4 players**: solo, you command the whole guild; in co-op, each player runs their own Vessels.
 
 > **What this project demonstrates:** a deterministic real-time combat simulation, a DI-driven architecture (VContainer + MessagePipe) with no singletons, host-authoritative co-op netcode (NGO + Steam), and a fully data-driven content pipeline (ScriptableObjects + Addressables) — covered by an EditMode/PlayMode test suite in CI.
 
@@ -53,23 +55,23 @@ Built for **1–4 players**: solo, you command the whole guild; in co-op, each p
 
 | Feature | Description |
 |---|---|
-| **Hero shards** | Equippable artifacts that turn a rank-and-file guild member into a fighter with unique abilities |
-| **Guildmaster** | Doesn't fight directly — casts spells mid-battle; spell slots are limited and refresh between fights |
-| **Real-time autobattle** | Combat runs in real time with no attack micro; tactical pause is available at any moment |
-| **Roguelike map** | Events, shops, training and end-of-act bosses, *Slay the Spire*-style |
-| **Co-op** | 1–4 players split the guild over Steam via host-authoritative NGO |
+| **Vessels & Hero Mementos** | Vessels are ordinary guild members who can't fight alone; equipping a **Hero Memento** grants them its stats and unique abilities — think a player and their champion in *LoL* |
+| **Guildmaster** | Doesn't fight directly — casts spells in real time during the battle; your main lever on the outcome |
+| **Readable auto-battle** | Combat runs automatically from your pre-set positions, target priorities and AI rules; deterministic, no crits or dodges — and you can pause any time |
+| **Roguelike run** | A *Slay the Spire*-style map of events, elite guilds and end-of-act boss fights; rewards are Hero Mementos, resources and gold |
+| **Co-op for 1–4** | The host shares Vessels across the party; each player runs their own over Steam (host-authoritative NGO) |
 
 ---
 
 ## Русский
 
-> Кооперативный автобатлер-рогалик в реальном времени (с паузой). В разработке.
+> Кооперативный автобатлер-рогалик для 1–4 игроков. В разработке.
 
-**Guildmaster** — автобатлер-рогалик с паузой, вдохновлённый *Slay the Spire*, *Across the Obelisk* и *Teamfight Manager*.
+**Guildmaster** — кооперативный автобатлер-рогалик для 1–4 игроков: тактическая глубина (сбор отряда, управление Реликвиями (Hero Mementos), позиционирование) в духе весёлой вечеринки. Вдохновлён *Slay the Spire*, *Baldur's Gate 3*, *Divinity: Original Sin 2* и *Teamfight Manager*.
 
-Вы возглавляете гильдию авантюристов, готовящихся к великому чемпионату. Перед каждой битвой вы распределяете **осколки героев** между бойцами, расставляете их на поле и настраиваете тактику — а дальше наблюдаете, как они сражаются сами. Влиять на ход боя можно через заклинания Гильдмастера.
+Вы возглавляете гильдию, готовящуюся к Великому Чемпионату (Grand Championship). Ваш отряд — это «Сосуды» (Vessels): обычные люди, которые сами не умеют сражаться; их сила приходит из **Реликвий (Hero Mementos)**, которые они принимают. Перед каждым боем вы решаете, кто из «Сосудов» какую Реликвию возьмёт, расставляете позиции и приоритеты целей — а дальше бой идёт сам, и вы влияете на него заклинаниями **Гильдмастера (Guildmaster)** в реальном времени.
 
-Игра поддерживает **1–4 игроков**: в соло вы управляете всей гильдией, в кооперативе — каждый отвечает за своих бойцов.
+Игра рассчитана на **1–4 игроков**: в соло вы ведёте всю гильдию, в кооперативе каждый управляет своими «Сосудами».
 
 > **Что демонстрирует проект:** детерминированную симуляцию боя в реальном времени, DI-архитектуру (VContainer + MessagePipe) без синглтонов, host-authoritative кооп-нетворкинг (NGO + Steam) и полностью data-driven контент-пайплайн (ScriptableObjects + Addressables) — с покрытием EditMode/PlayMode-тестами в CI.
 
@@ -77,11 +79,11 @@ Built for **1–4 players**: solo, you command the whole guild; in co-op, each p
 
 | Механика | Описание |
 |---|---|
-| **Осколки героев** | Экипируемые артефакты, превращающие рядового гильдийца в бойца с уникальными способностями |
-| **Гильдмастер** | Не сражается напрямую — кастует заклинания во время боя; слоты ограничены и восстанавливаются между схватками |
-| **Автобой** | Бой идёт в реальном времени без микроменеджмента атак; тактическая пауза доступна в любой момент |
-| **Карта рогалика** | Ивенты, магазины, тренировки и боссы в конце акта — в стиле *Slay the Spire* |
-| **Кооператив** | От 1 до 4 игроков делят гильдийцев по Steam через host-authoritative NGO |
+| **«Сосуды» (Vessels) и Реликвии (Hero Mementos)** | «Сосуды» — обычные гильдийцы, что сами не сражаются; принятая **Реликвия** даёт им статы и уникальные способности (как игрок и его чемпион в *LoL*) |
+| **Гильдмастер (Guildmaster)** | Не сражается напрямую — кастует заклинания в реальном времени по ходу боя; ваш главный рычаг влияния на исход |
+| **Читаемый автобой** | Бой идёт автоматически по заранее заданным позициям, приоритетам целей и AI-правилам; детерминированно, без крита и уклонения — паузу можно ставить в любой момент |
+| **Рогалик-забег** | Карта в стиле *Slay the Spire*: события, элитные гильдии и босс-бои в конце акта; награды — Реликвии, ресурсы и золото |
+| **Кооп на 1–4** | Хост делит «Сосудов» по отряду; каждый играет за своих по Steam (host-authoritative NGO) |
 
 ---
 
