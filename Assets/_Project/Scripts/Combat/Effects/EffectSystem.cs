@@ -135,6 +135,21 @@ namespace Guildmaster.Combat
                     rc.OnApply(MakeContext(target, source, combat, effect, i, 0f));
                 }
             }
+
+            // Мгновенный эффект (ticks == 0) не персистится в ActiveEffects, значит его OnExpire
+            // иначе не вызовется никогда. Зовём сразу — чтобы stateful-компоненты (StatModifier,
+            // Shield) не «утекли» вечным баффом. Чисто-мгновенные компоненты делают работу в
+            // OnApply, а их OnExpire — no-op, так что двойного эффекта нет.
+            if (instant)
+            {
+                for (int i = 0; i < componentCount; i++)
+                {
+                    if (def.Components[i] is IRuntimeEffectComponent rc)
+                    {
+                        rc.OnExpire(MakeContext(target, source, combat, effect, i, 0f));
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -144,6 +159,10 @@ namespace Guildmaster.Combat
         public void Remove(RuntimeUnit unit, RuntimeEffect effect, ICombatContext combat)
         {
             Expire(unit, effect, combat);
+            // Снятый эффект мог нести контроль. Пересчитать флаги здесь, иначе при удалении
+            // ПОСЛЕДНЕГО эффекта юнит больше не попадёт в EffectSystem.Tick (гард Count==0)
+            // и останется навсегда с замороженными CanAct/CanMove/CanCast.
+            RecomputeControl(unit);
         }
 
         /// <summary>
@@ -201,6 +220,10 @@ namespace Guildmaster.Combat
                 Expire(target, _dispelBuffer[i], combat);
                 removed++;
             }
+
+            // Среди снятого мог быть контроль-эффект. Пересчитать флаги (см. Remove): без этого
+            // диспел последнего эффекта оставил бы юнита навсегда оглушённым/обездвиженным.
+            if (removed > 0) RecomputeControl(target);
         }
 
         /// <summary>Длительность эффекта в тиках. -1 = постоянный, 0 = мгновенный, иначе с учётом эфф-эффективностей.</summary>
@@ -328,6 +351,10 @@ namespace Guildmaster.Combat
 
         private void Reapply(RuntimeEffect effect, RuntimeUnit target, ICombatContext combat)
         {
+            // ПРАВИЛО ПОТЕНЦИИ (осознанно, не баг): снимок ScaledPotency берётся ОДИН раз при
+            // наложении (Apply) и здесь НЕ пересчитывается. Потенция «заморожена» по статам
+            // источника на момент первого каста (вики «11» §5.1). При добавлении стака меняется
+            // только stateful-вклад компонентов под новый Stacks — через OnExpire→OnApply ниже.
             IEffectComponent[] components = effect.Def.Components;
             if (components == null) return;
 
