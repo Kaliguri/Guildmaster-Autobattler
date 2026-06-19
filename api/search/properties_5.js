@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fps_0',['Fps',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a8520a45013f4a3ab3316c6284da73064',1,'Guildmaster::Data::Definitions::UnitVisual']]]
+  ['grantedeffects_0',['GrantedEffects',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#ac490b773dc90f5d810ac76b9c35633cd',1,'Guildmaster::Data::Definitions::RelicData']]]
 ];

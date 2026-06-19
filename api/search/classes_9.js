@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kite_0',['Kite',['../structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html',1,'Guildmaster::Data::Definitions']]]
+  ['lifestealcomponent_0',['LifestealComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
 ];

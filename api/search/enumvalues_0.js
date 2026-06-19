@@ -3,16 +3,10 @@ var searchData=
   ['abilitypower_0',['AbilityPower',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a115fccbacfdb86a46d17035b4073ca90',1,'Guildmaster::Data::Stats']]],
   ['all_1',['All',['../namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8ab1c94ca2fbc3e78fc30069c8d0f01680',1,'Guildmaster::Combat']]],
   ['allies_2',['Allies',['../namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8a4ff52320ad589c7346c8562c2c715fd6',1,'Guildmaster::Combat']]],
-  ['allylowesthppercent_3',['AllyLowestHpPercent',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a927b79ee4aba24db480047e52d1d7df7',1,'Guildmaster::Data::Definitions']]],
-  ['allynearest_4',['AllyNearest',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a77bcb679395f97dc6c24849176938738',1,'Guildmaster::Data::Definitions']]],
-  ['always_5',['Always',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612a68eec46437c384d8dad18d5464ebc35c',1,'Guildmaster::Data::Definitions']]],
-  ['any_6',['Any',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20aed36a1ef76a59ee3f15180e0441188ad',1,'Guildmaster::Data::Definitions']]],
-  ['anyhit_7',['AnyHit',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612afed8068cf66889c7c88bd5b7d3d02e4b',1,'Guildmaster::Data::Definitions']]],
-  ['applybuffeff_8',['ApplyBuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a04088b7ab0f8da1e1ee848296343a33f',1,'Guildmaster::Data::Stats']]],
-  ['applydebuffeff_9',['ApplyDebuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a604e868d3d14c15c08fd51a3c2d4a740',1,'Guildmaster::Data::Stats']]],
-  ['approach_10',['Approach',['../namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba40a68b5da4b9b224764558bb02ecd028',1,'Guildmaster::Combat']]],
-  ['attack_11',['Attack',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6adcfafcb4323b102c7e204555d313ba0a',1,'Guildmaster::Data::Definitions']]],
-  ['attackrange_12',['AttackRange',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab368d16134fba69bdd208d3d0c7c7c5b',1,'Guildmaster::Data::Stats']]],
-  ['attackspeed_13',['AttackSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa1039049ad899dd188ddd24169458b48',1,'Guildmaster::Data::Stats']]],
-  ['autoattackdamage_14',['AutoAttackDamage',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a509dd58938824e6e3f298bde91ddc731',1,'Guildmaster::Data::Stats']]]
+  ['any_3',['Any',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20aed36a1ef76a59ee3f15180e0441188ad',1,'Guildmaster::Data::Definitions']]],
+  ['applybuffeff_4',['ApplyBuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a04088b7ab0f8da1e1ee848296343a33f',1,'Guildmaster::Data::Stats']]],
+  ['applydebuffeff_5',['ApplyDebuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a604e868d3d14c15c08fd51a3c2d4a740',1,'Guildmaster::Data::Stats']]],
+  ['attackrange_6',['AttackRange',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab368d16134fba69bdd208d3d0c7c7c5b',1,'Guildmaster::Data::Stats']]],
+  ['attackspeed_7',['AttackSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa1039049ad899dd188ddd24169458b48',1,'Guildmaster::Data::Stats']]],
+  ['autoattackdamage_8',['AutoAttackDamage',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a509dd58938824e6e3f298bde91ddc731',1,'Guildmaster::Data::Stats']]]
 ];

@@ -1,5 +1,0 @@
-<map id="Guildmaster.Data.Editor.AttackHitFrameStripAttributeDrawer.DrawPropertyLayout" name="Guildmaster.Data.Editor.AttackHitFrameStripAttributeDrawer.DrawPropertyLayout">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,216,60"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a6fd08233e2204cdf206d9959ea5564bb" title="Кадры для состояния. Пустой массив = клип отсутствует (вид останется на текущем кадре)." alt="" coords="264,13,479,53"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,30,250,30,250,35,216,35"/>
-</map>

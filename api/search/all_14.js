@@ -4,6 +4,5 @@ var searchData=
   ['velocity_1',['Velocity',['../classGuildmaster_1_1Combat_1_1Projectile.html#a169a9c9a750f15d3c2d78d276bfa9ae2',1,'Guildmaster::Combat::Projectile']]],
   ['vessel_2',['Vessel',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af4624ae11d8aa89f5c844b732ea4443a',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['vesseldata_3',['VesselData',['../classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html',1,'Guildmaster::Data::Definitions']]],
-  ['vesseldata_2ecs_4',['VesselData.cs',['../VesselData_8cs.html',1,'']]],
-  ['visual_5',['Visual',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a7be3805c728de6e343221c76d7e888af',1,'Guildmaster::Data::Definitions::RelicData']]]
+  ['vesseldata_2ecs_4',['VesselData.cs',['../VesselData_8cs.html',1,'']]]
 ];

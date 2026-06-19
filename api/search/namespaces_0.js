@@ -11,11 +11,10 @@ var searchData=
   ['guildmaster_3a_3acore_3a_3asimulation_8',['Simulation',['../namespaceGuildmaster_1_1Core_1_1Simulation.html',1,'Guildmaster::Core']]],
   ['guildmaster_3a_3adata_9',['Data',['../namespaceGuildmaster_1_1Data.html',1,'Guildmaster']]],
   ['guildmaster_3a_3adata_3a_3adefinitions_10',['Definitions',['../namespaceGuildmaster_1_1Data_1_1Definitions.html',1,'Guildmaster::Data']]],
-  ['guildmaster_3a_3adata_3a_3aeditor_11',['Editor',['../namespaceGuildmaster_1_1Data_1_1Editor.html',1,'Guildmaster::Data']]],
-  ['guildmaster_3a_3adata_3a_3astats_12',['Stats',['../namespaceGuildmaster_1_1Data_1_1Stats.html',1,'Guildmaster::Data']]],
-  ['guildmaster_3a_3adevtools_13',['DevTools',['../namespaceGuildmaster_1_1DevTools.html',1,'Guildmaster']]],
-  ['guildmaster_3a_3agame_14',['Game',['../namespaceGuildmaster_1_1Game.html',1,'Guildmaster']]],
-  ['guildmaster_3a_3agame_3a_3aservices_15',['Services',['../namespaceGuildmaster_1_1Game_1_1Services.html',1,'Guildmaster::Game']]],
-  ['guildmaster_3a_3anet_16',['Net',['../namespaceGuildmaster_1_1Net.html',1,'Guildmaster']]],
-  ['guildmaster_3a_3apresentation_17',['Presentation',['../namespaceGuildmaster_1_1Presentation.html',1,'Guildmaster']]]
+  ['guildmaster_3a_3adata_3a_3astats_11',['Stats',['../namespaceGuildmaster_1_1Data_1_1Stats.html',1,'Guildmaster::Data']]],
+  ['guildmaster_3a_3adevtools_12',['DevTools',['../namespaceGuildmaster_1_1DevTools.html',1,'Guildmaster']]],
+  ['guildmaster_3a_3agame_13',['Game',['../namespaceGuildmaster_1_1Game.html',1,'Guildmaster']]],
+  ['guildmaster_3a_3agame_3a_3aservices_14',['Services',['../namespaceGuildmaster_1_1Game_1_1Services.html',1,'Guildmaster::Game']]],
+  ['guildmaster_3a_3anet_15',['Net',['../namespaceGuildmaster_1_1Net.html',1,'Guildmaster']]],
+  ['guildmaster_3a_3apresentation_16',['Presentation',['../namespaceGuildmaster_1_1Presentation.html',1,'Guildmaster']]]
 ];

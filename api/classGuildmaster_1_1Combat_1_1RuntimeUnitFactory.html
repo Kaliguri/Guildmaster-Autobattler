@@ -116,7 +116,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Единственная точка сборки RuntimeUnit из SO-данных. </p>
-<p>Шаги сборки (вики «10» §5.2, «6» §3): дефолты из StatsConfig → моды реликвии → перки сосуда → пассивки (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#ac490b773dc90f5d810ac76b9c35633cd">RelicData.GrantedEffects</a> с постоянной длительностью) → активки (AbilityRuntime) → ресурс (StatType.StartResource) → <code>CurrentHP = Get(MaxHP)</code>.</p>
+<p>Шаги сборки (вики «10» §5.2, «6» §3): дефолты из StatsConfig → моды реликвии → таланты сосуда → пассивки (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#ac490b773dc90f5d810ac76b9c35633cd">RelicData.GrantedEffects</a> с постоянной длительностью) → активки (AbilityRuntime) → ресурс (StatType.StartResource) → <code>CurrentHP = Get(MaxHP)</code>.</p>
 <p>Пассивки применяются <b>до</b> инициализации <code>CurrentHP</code>: пассив на +MaxHP должен поднять и стартовое здоровье. Поэтому фабрике нужны EffectSystem и боевой контекст — наложение пассивки зовёт <code>OnApply</code> компонентов (вики «12» §6, шаг 9). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9b33e6195bdd2345c32c41581e0b2fd1" name="a9b33e6195bdd2345c32c41581e0b2fd1"></a>
@@ -212,7 +212,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">relic</td><td>SO «Чемпион». null — юнит получит только дефолты StatsConfig.</td></tr>
-    <tr><td class="paramname">vessel</td><td>SO «Пилот». null — перки не применяются.</td></tr>
+    <tr><td class="paramname">vessel</td><td>SO «Пилот». null — таланты не применяются.</td></tr>
     <tr><td class="paramname">team</td><td>Команда: 0 = союзники, 1 = враги.</td></tr>
     <tr><td class="paramname">spawnPosition</td><td>Начальная позиция на поле боя.</td></tr>
   </table>
@@ -222,11 +222,6 @@ Public Member Functions</h2></td></tr>
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a261369f433994727bbd075e6520ac237_cgraph.svg" width="494" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a261369f433994727bbd075e6520ac237_icgraph.svg" width="522" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

@@ -11,7 +11,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Двухфазная авто&#45;атака (вики «14»): кулдаун → замах (windup) → удар на кадре контакта.">
+<g id="a_Node000001"><a xlink:title="Управляет кулдаунами автоатак и инициирует нанесение урона или создание снарядов в зависимости от Att...">
 <polygon fill="#999999" stroke="transparent" points="168,-60 0,-60 0,0 168,0 168,-60"/>
 <text text-anchor="start" x="5" y="-48" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.AutoAttack</text>
 <text text-anchor="start" x="65.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">System</text>

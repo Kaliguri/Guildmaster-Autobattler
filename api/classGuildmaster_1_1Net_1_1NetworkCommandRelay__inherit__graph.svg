@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="Host&#45;authoritative реле команд симуляции.">
+<g id="a_Node000001"><a xlink:title="Реле команд симуляции.">
 <polygon fill="#999999" stroke="transparent" points="185,-75 0,-75 0,0 185,0 185,-75"/>
 <text text-anchor="start" x="5.5" y="-62.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Net.NetworkCommand</text>
 <text text-anchor="start" x="79" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">Relay</text>

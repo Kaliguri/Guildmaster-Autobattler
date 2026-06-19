@@ -1,0 +1,3 @@
+<map id="Guildmaster.Combat.RegenSystem" name="Guildmaster.Combat.RegenSystem">
+<area shape="rect" id="Node000001" title="Регенерация HP живых юнитов за тик: (HpRegenFlat + HpRegenPct × MaxHP) × dt, с клампом по MaxHP." alt="" coords="5,5,199,85"/>
+</map>

@@ -113,17 +113,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html">AbilitySystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тик способностей: убывание кулдаунов и детерминированный плейсхолдер-каст готовых активок (полный выбор «когда/что кастовать» — AI Фазы 3, вики «12» §1, §9).  <a href="classGuildmaster_1_1Combat_1_1AbilitySystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1AreaHit.html">AreaHit</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dev-сигнал «зона удара сработала» для презентации (вики «13» шаг 4): линия авто-атаки или круг активки.  <a href="structGuildmaster_1_1Combat_1_1AreaHit.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AttackTiming.html">AttackTiming</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чистая детерминированная арифметика тайминга авто-атаки (вики «14»).  <a href="classGuildmaster_1_1Combat_1_1AttackTiming.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html">AutoAttackSystem</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Двухфазная авто-атака (вики «14»): кулдаун → <b>замах (windup)</b> → удар на кадре контакта.  <a href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1BrainSystem.html">BrainSystem</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тик AI (вики «13» §3.2, §4.1).  <a href="classGuildmaster_1_1Combat_1_1BrainSystem.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Управляет кулдаунами автоатак и инициирует нанесение урона или создание снарядов в зависимости от <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1" title="Способ доставки автоатаки (вики «11» §2).">AttackType</a> реликвии юнита (вики «10» §5.3).  <a href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Детерминированная тиковая симуляция боя.  <a href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#details">More...</a><br /></td></tr>
@@ -143,23 +134,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html">EffectSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владелец жизненного цикла эффектов: наложение (длительность, стакинг, потенция, маска тегов), тик таймеров и периодики, истечение с корректным teardown.  <a href="classGuildmaster_1_1Combat_1_1EffectSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1IBattleView.html">IBattleView</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only срез боя для мозга (вики «13» §3.1).  <a href="interfaceGuildmaster_1_1Combat_1_1IBattleView.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html">ICombatCommand</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Расширяет ISimCommand слоем Combat: добавляет метод применения к симуляции.  <a href="interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Шов «логика эффектов/способностей ↔ боевой мир».  <a href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html">IUnitBrain</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Главный шов AI (вики «13» §3.1): единственная точка, где принимается «дорогое» решение «кого/где».  <a href="interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1MovementSystem.html">MovementSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Интегрирует позиции живых юнитов к их целям.  <a href="classGuildmaster_1_1Combat_1_1MovementSystem.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1ProfileBrain.html">ProfileBrain</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">v1-мозг (вики «13» §3.1, §4.2): интерпретирует AIProfile.  <a href="classGuildmaster_1_1Combat_1_1ProfileBrain.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html">Projectile</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Рантайм-данные одного снаряда.  <a href="classGuildmaster_1_1Combat_1_1Projectile.html#details">More...</a><br /></td></tr>
@@ -169,6 +151,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1ProjectileSystem.html">ProjectileSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Продвигает снаряды и проверяет столкновения методом swept circle-segment, чтобы быстрые снаряды не «протыкали» цель между тиками (вики «10» §5.3).  <a href="classGuildmaster_1_1Combat_1_1ProjectileSystem.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RegenSystem.html">RegenSystem</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Регенерация HP живых юнитов за тик: <code>(HpRegenFlat + HpRegenPct × MaxHP) × dt</code>, с клампом по MaxHP.  <a href="classGuildmaster_1_1Combat_1_1RegenSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Рантайм-представление юнита на один бой.  <a href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#details">More...</a><br /></td></tr>
@@ -182,6 +167,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Stats.html">Stats</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Рантайм стат-объект юнита.  <a href="classGuildmaster_1_1Combat_1_1Stats.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1TargetingSystem.html">TargetingSystem</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Назначает цель каждому живому юниту.  <a href="classGuildmaster_1_1Combat_1_1TargetingSystem.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -192,12 +180,6 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a1f5748cbbc1931b8421ebc5620edd712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Итог боя, устанавливается CombatSimulation после гибели одной из сторон.  <a href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712">More...</a><br /></td></tr>
 <tr class="separator:a1f5748cbbc1931b8421ebc5620edd712"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0953455148734d6b10316354291b653b" id="r_a0953455148734d6b10316354291b653b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653b">PositioningIntent</a> { <a class="el" href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba40a68b5da4b9b224764558bb02ecd028">Approach</a> = 0
-, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba65c449ad44e2c0b6c1fffc5c5cea7413">Kite</a> = 1
-, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba008bec353de180da9782954e7a1374e6">Retreat</a> = 2
- }</td></tr>
-<tr class="memdesc:a0953455148734d6b10316354291b653b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Намерение позиционирования, которое мозг (10 Гц) пишет, а <code>MovementSystem</code> (30 Гц) исполняет (вики «13» §2.7, §4.3).  <a href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653b">More...</a><br /></td></tr>
-<tr class="separator:a0953455148734d6b10316354291b653b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f41382511e45ac187c5b5caa9a6aea8" id="r_a8f41382511e45ac187c5b5caa9a6aea8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8">TargetFilter</a> { <a class="el" href="namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8af181304e789fd0882df5cb02d232fc69">Enemies</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8a4ff52320ad589c7346c8562c2c715fd6">Allies</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8ab1c94ca2fbc3e78fc30069c8d0f01680">All</a> = 2
@@ -224,32 +206,6 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a1f5748cbbc1931b8421ebc5620edd712aa66e17eee0daf633ec8090d0d97b2d42" name="a1f5748cbbc1931b8421ebc5620edd712aa66e17eee0daf633ec8090d0d97b2d42"></a>TeamAWins&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a1f5748cbbc1931b8421ebc5620edd712a58662d9ca10f6dd2162eaf4f825b317f" name="a1f5748cbbc1931b8421ebc5620edd712a58662d9ca10f6dd2162eaf4f825b317f"></a>TeamBWins&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a1f5748cbbc1931b8421ebc5620edd712a2d03c2d5a7ec65ef4619e0582c272ec2" name="a1f5748cbbc1931b8421ebc5620edd712a2d03c2d5a7ec65ef4619e0582c272ec2"></a>Draw&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
-<a id="a0953455148734d6b10316354291b653b" name="a0953455148734d6b10316354291b653b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0953455148734d6b10316354291b653b">&#9670;&#160;</a></span>PositioningIntent</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653b">Guildmaster.Combat.PositioningIntent</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Намерение позиционирования, которое мозг (10 Гц) пишет, а <code>MovementSystem</code> (30 Гц) исполняет (вики «13» §2.7, §4.3). </p>
-<p>Рантайм-выход решения — не авторинг-данные. </p>
-<p>Исполнение Kite/Retreat в движении приходит на шаге 6 фазы; пока мозг пишет интент, движение по умолчанию трактует всё как Approach.</p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a0953455148734d6b10316354291b653ba40a68b5da4b9b224764558bb02ecd028" name="a0953455148734d6b10316354291b653ba40a68b5da4b9b224764558bb02ecd028"></a>Approach&#160;</td><td class="fielddoc"><p>Сближаться с целью до дистанции атаки (поведение Фазы 1). </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a0953455148734d6b10316354291b653ba65c449ad44e2c0b6c1fffc5c5cea7413" name="a0953455148734d6b10316354291b653ba65c449ad44e2c0b6c1fffc5c5cea7413"></a>Kite&#160;</td><td class="fielddoc"><p>Держать дистанцию в [AttackRange×0.6, AttackRange], атакуя на ходу (требует CanAttackWhileMoving). </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a0953455148734d6b10316354291b653ba008bec353de180da9782954e7a1374e6" name="a0953455148734d6b10316354291b653ba008bec353de180da9782954e7a1374e6"></a>Retreat&#160;</td><td class="fielddoc"><p>Отступать от центра масс врагов к своему тылу (HP% ниже порога Retreat). </p>
-</td></tr>
 </table>
 
 </div>

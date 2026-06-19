@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Core_1_1Simulation
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Simulation.SimConstants:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants__coll__graph.svg" width="216" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants__coll__graph.svg" width="219" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -120,12 +120,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a362bc4edc3a058f8ba6c1cba173bc460" id="r_a362bc4edc3a058f8ba6c1cba173bc460"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a362bc4edc3a058f8ba6c1cba173bc460">AiTickInterval</a> = <a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#af7295f7862c7e21cd583215d083794da">TickRate</a> / <a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a53bbebe027c16ed0a78d4af29f355d93">AiTickRate</a></td></tr>
 <tr class="memdesc:a362bc4edc3a058f8ba6c1cba173bc460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько сим-тиков приходится на один AI-тик (<code>30 / 10 = 3</code>).  <br /></td></tr>
 <tr class="separator:a362bc4edc3a058f8ba6c1cba173bc460"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a129143e126b52371be6845abae80aa05" id="r_a129143e126b52371be6845abae80aa05"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a129143e126b52371be6845abae80aa05">MaxAttackAnimTicks</a> = 30</td></tr>
-<tr class="memdesc:a129143e126b52371be6845abae80aa05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Глобальный потолок длительности свинга авто-атаки, в сим-тиках (≈1с при 30 Гц).  <br /></td></tr>
-<tr class="separator:a129143e126b52371be6845abae80aa05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4fd96970ed2ea6969d5bcebc78703ea" id="r_ac4fd96970ed2ea6969d5bcebc78703ea"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#ac4fd96970ed2ea6969d5bcebc78703ea">MinWindupTicks</a> = 3</td></tr>
-<tr class="memdesc:ac4fd96970ed2ea6969d5bcebc78703ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Минимальный пол замаха авто-атаки, в сим-тиках.  <br /></td></tr>
-<tr class="separator:ac4fd96970ed2ea6969d5bcebc78703ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d6237eec05d62b3bf98445eacd29cbb" id="r_a8d6237eec05d62b3bf98445eacd29cbb"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a8d6237eec05d62b3bf98445eacd29cbb">MaxCatchUpTicksPerFrame</a> = 5</td></tr>
+<tr class="memdesc:a8d6237eec05d62b3bf98445eacd29cbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Анти-лавина: максимум догоняющих тиков за один кадр рендера.  <br /></td></tr>
+<tr class="separator:a8d6237eec05d62b3bf98445eacd29cbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Константы тиковой симуляции. </p>
@@ -179,8 +176,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a129143e126b52371be6845abae80aa05" name="a129143e126b52371be6845abae80aa05"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a129143e126b52371be6845abae80aa05">&#9670;&#160;</a></span>MaxAttackAnimTicks</h2>
+<a id="a8d6237eec05d62b3bf98445eacd29cbb" name="a8d6237eec05d62b3bf98445eacd29cbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d6237eec05d62b3bf98445eacd29cbb">&#9670;&#160;</a></span>MaxCatchUpTicksPerFrame</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -189,7 +186,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const int Guildmaster.Core.Simulation.SimConstants.MaxAttackAnimTicks = 30</td>
+          <td class="memname">const int Guildmaster.Core.Simulation.SimConstants.MaxCatchUpTicksPerFrame = 5</td>
         </tr>
       </table>
   </td>
@@ -199,33 +196,8 @@ Static Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Глобальный потолок длительности свинга авто-атаки, в сим-тиках (≈1с при 30 Гц). </p>
-<p>Свинг всегда играет за фикс. короткое время; остаток интервала юнит ждёт в idle. Балансная ручка «хлёсткости» (вики «14»). Замах ужимается до интервала при быстрой атаке. </p>
-
-</div>
-</div>
-<a id="ac4fd96970ed2ea6969d5bcebc78703ea" name="ac4fd96970ed2ea6969d5bcebc78703ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4fd96970ed2ea6969d5bcebc78703ea">&#9670;&#160;</a></span>MinWindupTicks</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const int Guildmaster.Core.Simulation.SimConstants.MinWindupTicks = 3</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Минимальный пол замаха авто-атаки, в сим-тиках. </p>
-<p>Гарантирует читаемый телеграф у ударов с маленьким кадром контакта (windup — геймплейная механика, не косметика; вики «14»). </p>
+<p>Анти-лавина: максимум догоняющих тиков за один кадр рендера. </p>
+<p>Если кадр подвис (GC, загрузка ассета, alt-tab), аккумулятор копит время — без потолка внутренний while прогнал бы десятки тиков, усилив подвис («спираль смерти»). Излишек долга сверх этого капа отбрасывается (см. <code>CombatLoopService</code>). </p>
 
 </div>
 </div>

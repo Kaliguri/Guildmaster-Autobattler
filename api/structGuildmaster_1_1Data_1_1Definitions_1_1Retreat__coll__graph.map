@@ -1,3 +1,0 @@
-<map id="Guildmaster.Data.Definitions.Retreat" name="Guildmaster.Data.Definitions.Retreat">
-<area shape="rect" id="Node000001" title="Отступление по HP% (блок B). ReturnAtHpPct &gt; FleeAtHpPct — гистерезис от дёрганья." alt="" coords="5,5,212,145"/>
-</map>

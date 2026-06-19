@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1SimSyncProb
 </div><!--header-->
 <div class="contents">
 
-<p>Периодически проверяет checksum симуляции между хостом и клиентами.  
+<p>⛔ ЗАПАРКОВАНО (lockstep).  
  <a href="classGuildmaster_1_1Net_1_1SimSyncProbe.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Net.SimSyncProbe:</div>
@@ -117,8 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:accb456fd41ac66a396633347ab78e05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Периодически проверяет checksum симуляции между хостом и клиентами. </p>
-<p>Хост рассылает checksum каждые N тиков; клиенты сравнивают и логируют рассинхроны. Цель спайка — убедиться, что команды от клиента применяются детерминированно у обоих участников (вики «10» §6.2). </p>
+<div class="textblock"><p>⛔ ЗАПАРКОВАНО (lockstep). </p>
+<p>Сетевая модель проекта — <b>host-authoritative</b> (решение зафиксировано 2026-06-19, см. вики «Архитектура кода» → «Сетевая модель»). Этот класс сравнивает checksum симуляции между пирами — инструмент <b>детерминированного lockstep</b>, где КАЖДЫЙ пир тикает идентичный сим. При host-authoritative считает только хост, второй симуляции для сравнения нет — класс не используется. НЕ удалён намеренно: пригодится для SP-реплеев/дебага и как референс, если модель когда-нибудь пересмотрят. Не вешать на сцены. </p>
+<p>Исходное назначение: хост рассылает checksum каждые N тиков; клиенты сравнивают и логируют рассинхроны (вики «10» §6.2). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="accb456fd41ac66a396633347ab78e05b" name="accb456fd41ac66a396633347ab78e05b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#accb456fd41ac66a396633347ab78e05b">&#9670;&#160;</a></span>Construct()</h2>

@@ -1,5 +1,0 @@
-<map id="Guildmaster.Data.Definitions.UnitVisual" name="Guildmaster.Data.Definitions.UnitVisual">
-<area shape="rect" id="Node000001" title="Визуальный набор реликвии: спрайт&#45;кадры по состояниям (Idle/Run/Attack/Death) + частота кадров." alt="" coords="5,119,212,279"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="48,5,169,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,85,111,118,106,118,106,85"/>
-</map>

@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Net_1_1NetworkComm
 </div><!--header-->
 <div class="contents">
 
-<p>Host-authoritative реле команд симуляции.  
+<p>Реле команд симуляции.  
  <a href="classGuildmaster_1_1Net_1_1NetworkCommandRelay.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Net.NetworkCommandRelay:</div>
@@ -120,8 +120,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2e77a2567df5dd3d91536292441a11b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Host-authoritative реле команд симуляции. </p>
-<p>Клиент → ServerRpc(intent); хост штампует TargetTick/Seq и broadcast ClientRpc; все применяют команду детерминированно на одном тике — основа синхрона (вики «10» §6.1). </p>
+<div class="textblock"><p>Реле команд симуляции. </p>
+<p>Концепт «клиент → ServerRpc(intent) → хост ставит в очередь» — <b>keeper</b> при host-authoritative модели (решение 2026-06-19, см. вики «Сетевая модель»).</p>
+<p>⚠️ Текущая реализация частично в стиле lockstep: хост штампует TargetTick и broadcast'ит команду ВСЕМ пирам, чтобы те применили её «на одном тике». При host-authoritative клиенты свою симуляцию не тикают — хост применяет команду у себя и реплицирует РЕЗУЛЬТАТ (состояние). Поэтому при сборке MP (Фаза MP) часть с broadcast-ClientRpc будет переработана: останется путь intent→host, уйдёт «все применяют на одном тике». Исходный замысел — вики «10» §6.1. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0689846905eaf995e2cd54376001f11d" name="a0689846905eaf995e2cd54376001f11d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0689846905eaf995e2cd54376001f11d">&#9670;&#160;</a></span>Construct()</h2>

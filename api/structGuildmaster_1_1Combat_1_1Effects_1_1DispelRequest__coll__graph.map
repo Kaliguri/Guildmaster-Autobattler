@@ -1,19 +1,17 @@
 <map id="Guildmaster.Combat.Effects.DispelRequest" name="Guildmaster.Combat.Effects.DispelRequest">
-<area shape="rect" id="Node000001" title="Запрос на снятие эффектов с цели." alt="" coords="281,831,481,971"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="263,503,498,768"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="383,768,383,814,378,814,378,768"/>
-<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="500,607,518,617,525,635,522,647,515,656,510,653,517,645,519,636,513,621,497,611"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="5,217,191,343"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="137,341,204,438,254,499,250,502,200,442,133,344"/>
+<area shape="rect" id="Node000001" title="Запрос на снятие эффектов с цели." alt="" coords="218,811,418,951"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="201,403,435,748"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="321,748,321,794,315,794,315,748"/>
+<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="437,540,455,554,462,575,459,590,452,601,447,598,454,588,457,575,451,557,434,545"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="5,167,191,293"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="140,292,201,387,197,390,135,294"/>
 <area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html" title="Только&#45;чтение собранных статов." alt="" coords="53,5,143,71"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="101,85,101,217,95,217,95,85"/>
-<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html" title="Главный шов AI (вики «13» §3.1): единственная точка, где принимается «дорогое» решение «кого/где»." alt="" coords="215,240,397,320"/>
-<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="317,320,352,486,347,487,312,321"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — стат&#45;блок и боевые категории юнита." alt="" coords="421,120,628,440"/>
-<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="462,441,443,489,438,487,457,439"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="580,5,701,71"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="622,84,604,121,599,118,617,82"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="652,220,859,340"/>
-<area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="664,82,729,218,725,221,659,85"/>
-<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="721,342,685,392,643,442,580,499,513,550,510,546,576,495,639,438,681,389,717,339"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="101,84,101,167,95,167,95,84"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — стат&#45;блок и боевые категории юнита." alt="" coords="215,120,421,340"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="321,340,321,386,315,386,315,340"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="373,5,495,71"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="410,84,387,121,383,118,405,81"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="445,170,652,290"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="463,81,515,168,511,171,458,84"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="511,292,445,390,441,387,507,289"/>
 </map>
