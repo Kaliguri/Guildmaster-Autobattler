@@ -8,10 +8,16 @@ using VContainer;
 namespace Guildmaster.Net
 {
     /// <summary>
-    /// Host-authoritative реле команд симуляции.
-    /// Клиент → ServerRpc(intent); хост штампует TargetTick/Seq и broadcast ClientRpc;
-    /// все применяют команду детерминированно на одном тике — основа синхрона (вики «10» §6.1).
+    /// Реле команд симуляции. Концепт «клиент → ServerRpc(intent) → хост ставит в очередь» —
+    /// <b>keeper</b> при host-authoritative модели (решение 2026-06-19, см. вики «Сетевая модель»).
     /// </summary>
+    /// <remarks>
+    /// ⚠️ Текущая реализация частично в стиле lockstep: хост штампует TargetTick и broadcast'ит
+    /// команду ВСЕМ пирам, чтобы те применили её «на одном тике». При host-authoritative клиенты
+    /// свою симуляцию не тикают — хост применяет команду у себя и реплицирует РЕЗУЛЬТАТ (состояние).
+    /// Поэтому при сборке MP (Фаза MP) часть с broadcast-ClientRpc будет переработана: останется
+    /// путь intent→host, уйдёт «все применяют на одном тике». Исходный замысел — вики «10» §6.1.
+    /// </remarks>
     public sealed class NetworkCommandRelay : NetworkBehaviour
     {
         [Tooltip("Lookahead в тиках: на сколько тиков вперёд хост назначает команде TargetTick.")]
