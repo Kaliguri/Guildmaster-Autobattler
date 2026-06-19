@@ -17,5 +17,13 @@ namespace Guildmaster.Core.Simulation
 
         /// <summary>Сколько сим-тиков приходится на один AI-тик (<c>30 / 10 = 3</c>).</summary>
         public const int AiTickInterval = TickRate / AiTickRate;
+
+        /// <summary>
+        /// Анти-лавина: максимум догоняющих тиков за один кадр рендера. Если кадр подвис
+        /// (GC, загрузка ассета, alt-tab), аккумулятор копит время — без потолка внутренний
+        /// while прогнал бы десятки тиков, усилив подвис («спираль смерти»). Излишек долга
+        /// сверх этого капа отбрасывается (см. <c>CombatLoopService</c>).
+        /// </summary>
+        public const int MaxCatchUpTicksPerFrame = 5;
     }
 }

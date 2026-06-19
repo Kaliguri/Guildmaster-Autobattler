@@ -39,12 +39,24 @@ namespace Guildmaster.Game.Services
             {
                 _accumulator += Time.deltaTime;
 
-                while (_accumulator >= SimConstants.TickDelta)
+                // Анти-лавина: не больше N догоняющих тиков за кадр. Иначе один долгий кадр
+                // (GC/загрузка/alt-tab) копит время → десятки тиков → ещё больший подвис.
+                int ticksThisFrame = 0;
+                while (_accumulator >= SimConstants.TickDelta
+                       && ticksThisFrame < SimConstants.MaxCatchUpTicksPerFrame)
                 {
                     _simulation.Tick(SimConstants.TickDelta);
                     _accumulator -= SimConstants.TickDelta;
+                    ticksThisFrame++;
 
                     if (_simulation.Outcome != BattleOutcome.Ongoing) break;
+                }
+
+                // Упёрлись в кап, а долг ещё есть — отбрасываем остаток, чтобы не копить лавину.
+                if (ticksThisFrame >= SimConstants.MaxCatchUpTicksPerFrame
+                    && _accumulator > SimConstants.TickDelta)
+                {
+                    _accumulator = 0f;
                 }
 
                 await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
