@@ -32,7 +32,8 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new AutoAttackSystem(),
                 new ProjectileSystem(),
                 new DeathSystem(),
-                new EffectSystem());
+                new EffectSystem(),
+                new RegenSystem());
         }
 
         private static RuntimeUnit MakeMeleeUnit(int team, float x)

@@ -49,23 +49,17 @@ namespace Guildmaster.Game
             builder.Register<ProjectileSystem>(Lifetime.Scoped);
             builder.Register<DeathSystem>(Lifetime.Scoped);
             builder.Register<EffectSystem>(Lifetime.Scoped);
+            builder.Register<RegenSystem>(Lifetime.Scoped);
         }
 
         private void RegisterSimulation(IContainerBuilder builder)
         {
-            float armorK = _armorK;
-            builder.Register<CombatSimulation>(r => new CombatSimulation(
-                r.Resolve<IRngService>(),
-                armorK,
-                r.Resolve<SpatialHash>(),
-                r.Resolve<TargetingSystem>(),
-                r.Resolve<AbilitySystem>(),
-                r.Resolve<MovementSystem>(),
-                r.Resolve<AutoAttackSystem>(),
-                r.Resolve<ProjectileSystem>(),
-                r.Resolve<DeathSystem>(),
-                r.Resolve<EffectSystem>()),
-                Lifetime.Scoped);
+            // VContainer сам разрешит зависимости конструктора (RNG, SpatialHash, все системы) —
+            // вручную перечислять Resolve не нужно. Единственный не-инъектируемый параметр —
+            // float armorK — передаём через WithParameter по имени. Добавил систему в ctor —
+            // ничего тут править не надо, лишь бы она была зарегистрирована.
+            builder.Register<CombatSimulation>(Lifetime.Scoped)
+                   .WithParameter("armorK", _armorK);
 
             StatsConfig cfg = _statsConfig;
             builder.Register<RuntimeUnitFactory>(r => new RuntimeUnitFactory(

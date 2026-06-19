@@ -31,7 +31,8 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new AutoAttackSystem(),
                 new ProjectileSystem(),
                 new DeathSystem(),
-                new EffectSystem());
+                new EffectSystem(),
+                new RegenSystem());
         }
 
         private static RuntimeUnit MakeInertUnit(int team, float maxHp, Vector2 pos)

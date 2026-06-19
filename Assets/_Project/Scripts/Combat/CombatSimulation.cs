@@ -12,7 +12,7 @@ namespace Guildmaster.Combat
     /// — единственная точка мутации состояния боя из систем и (Фаза 2) компонентов эффектов.
     /// <para>
     /// Порядок систем за тик: ApplyCommands → Targeting → Movement → SpatialHashRebuild
-    /// → AutoAttack → Projectiles → Effects → Death → CheckOutcome → currentTick++.
+    /// → AutoAttack → Projectiles → Regen → Effects → DrainEvents → Death → CheckOutcome → currentTick++.
     /// </para>
     /// (вики «10» §5.1).
     /// </summary>
@@ -28,6 +28,7 @@ namespace Guildmaster.Combat
         private readonly ProjectileSystem    _projectileSystem;
         private readonly DeathSystem         _deathSystem;
         private readonly EffectSystem        _effectSystem;
+        private readonly RegenSystem         _regenSystem;
 
         private readonly List<RuntimeUnit>  _units       = new List<RuntimeUnit>();
         private readonly List<RuntimeUnit>  _pendingAdd  = new List<RuntimeUnit>();
@@ -43,6 +44,11 @@ namespace Guildmaster.Combat
         private bool          _isPaused;
         private BattleOutcome _outcome = BattleOutcome.Ongoing;
         private int           _nextProjectileId;
+
+        // Хотя бы один юнит был заспавнен. До этого CheckOutcome не завершает бой (иначе
+        // пустой стартовый кадр сразу дал бы Draw); юниты из _units не удаляются (только IsDead),
+        // поэтому после первого спавна список непуст до конца боя.
+        private bool          _hasSpawned;
 
         // --- События для Presentation и Game-слоя ---
 
@@ -78,7 +84,8 @@ namespace Guildmaster.Combat
             AutoAttackSystem  autoAttackSystem,
             ProjectileSystem  projectileSystem,
             DeathSystem       deathSystem,
-            EffectSystem      effectSystem)
+            EffectSystem      effectSystem,
+            RegenSystem       regenSystem)
         {
             _rng              = rng;
             _armorK           = armorK;
@@ -90,6 +97,7 @@ namespace Guildmaster.Combat
             _projectileSystem = projectileSystem;
             _deathSystem      = deathSystem;
             _effectSystem     = effectSystem;
+            _regenSystem      = regenSystem;
 
             _deathSystem.OnUnitDied += unit => OnUnitDied?.Invoke(unit);
         }
@@ -126,6 +134,7 @@ namespace Guildmaster.Combat
             _spatialHash.Rebuild(_units);
             _autoAttackSystem.Tick(_units, this, dt);
             _projectileSystem.Tick(_projectiles, _units, this, dt);
+            _regenSystem.Tick(_units, dt);
             _effectSystem.Tick(_units, this, dt);
             DrainEventQueue();
             _deathSystem.Tick(_units, _spatialHash);
@@ -147,6 +156,14 @@ namespace Guildmaster.Combat
             if (req.Source != null)
                 _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage));
             _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage));
+
+            // Вампиризм: источник лечится на долю нанесённого по HP урона. Фаза 1 — применяется
+            // ко всему урону (без тегов источника); сузить до авто-атак/способностей — Фаза 2.
+            if (req.Source != null && !req.Source.IsDead && result.HpDamage > 0f)
+            {
+                float lifesteal = req.Source.Stats.Get(Data.Stats.StatType.Lifesteal);
+                if (lifesteal > 0f) Heal(req.Source, result.HpDamage * lifesteal, req.Source);
+            }
         }
 
         public void Heal(RuntimeUnit target, float amount, RuntimeUnit source)
@@ -158,7 +175,14 @@ namespace Guildmaster.Combat
                        * target.Stats.Get(Data.Stats.StatType.HealShieldTakenEff);
 
             float maxHp = target.Stats.Get(Data.Stats.StatType.MaxHP);
-            target.CurrentHP = Mathf.Min(target.CurrentHP + amount * mult, maxHp);
+            float before = target.CurrentHP;
+            target.CurrentHP = Mathf.Min(before + amount * mult, maxHp);
+
+            // Событие для on-heal реактивных компонентов (носитель — source, как и DamageDealt).
+            // Кладём по ФАКТИЧЕСКИ вылеченному (overheal не считается), дренаж — в этом же тике.
+            float applied = target.CurrentHP - before;
+            if (applied > 0f)
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.Healed, source, target, applied));
         }
 
         public void SpawnProjectile(in ProjectileSpawn spawn)
@@ -270,6 +294,8 @@ namespace Guildmaster.Combat
 
         private void FlushPendingSpawns()
         {
+            if (_pendingAdd.Count > 0) _hasSpawned = true;
+
             for (int i = 0; i < _pendingAdd.Count; i++)
             {
                 _units.Add(_pendingAdd[i]);
@@ -315,7 +341,9 @@ namespace Guildmaster.Combat
 
         private void CheckOutcome()
         {
-            if (_units.Count == 0) return;
+            // До первого спавна бой не оценивается. После — _units непуст (мёртвые остаются
+            // помеченными, не удаляются), поэтому отдельная проверка на пустоту не нужна.
+            if (!_hasSpawned) return;
 
             bool teamAAlive = false;
             bool teamBAlive = false;

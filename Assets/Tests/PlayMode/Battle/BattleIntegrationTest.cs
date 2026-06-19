@@ -32,7 +32,8 @@ namespace Guildmaster.Tests.PlayMode.Battle
                 new AutoAttackSystem(),
                 new ProjectileSystem(),
                 new DeathSystem(),
-                new EffectSystem());
+                new EffectSystem(),
+                new RegenSystem());
 
             sim.EnqueueUnitSpawn(MakeUnit(0, new Vector2(-5f, 0f)));
             sim.EnqueueUnitSpawn(MakeUnit(0, new Vector2(-4f, 1f)));
