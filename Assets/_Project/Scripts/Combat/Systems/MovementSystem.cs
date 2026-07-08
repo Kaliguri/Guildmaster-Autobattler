@@ -25,7 +25,8 @@ namespace Guildmaster.Combat
                 unit.PreviousPosition = unit.Position;
 
                 // Контроль (корень/обездвиживание) — стоим на месте (вики «6» §5.3).
-                if (!unit.CanMove) continue;
+                // Замах авто-атаки рутит юнита: свинг играет на месте (вики «14»).
+                if (!unit.CanMove || unit.IsWindingUp) continue;
 
                 if (unit.CurrentTarget == null) continue;
 

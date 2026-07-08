@@ -55,13 +55,27 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData[] effects = null,
             float cooldown = 5f,
             float cost = 0f,
-            AbilityTargetMode mode = AbilityTargetMode.Self)
+            AbilityTargetMode mode = AbilityTargetMode.Self,
+            float damageMultiplier = 0f,
+            AreaShape areaShape = AreaShape.None,
+            float areaRadius = 0f,
+            CastCondition castCondition = CastCondition.Immediately,
+            int castConditionCount = 1,
+            float castConditionRadius = 0f,
+            float castOverrideSelfHpPct = 0f)
         {
             var a = new AbilityData();
             Set(a, "_effects", effects ?? System.Array.Empty<EffectData>());
             Set(a, "_baseCooldown", cooldown);
             Set(a, "_resourceCost", cost);
             Set(a, "_targetMode", mode);
+            Set(a, "_damageMultiplier", damageMultiplier);
+            Set(a, "_areaShape", areaShape);
+            Set(a, "_areaRadius", areaRadius);
+            Set(a, "_castCondition", castCondition);
+            Set(a, "_castConditionCount", castConditionCount);
+            Set(a, "_castConditionRadius", castConditionRadius);
+            Set(a, "_castOverrideSelfHpPct", castOverrideSelfHpPct);
             return a;
         }
 
@@ -78,12 +92,24 @@ namespace Guildmaster.Tests.EditMode.Combat
         public static RelicData Make(
             StatModifier[] stats = null,
             EffectData[] grantedEffects = null,
-            AbilityData[] abilities = null)
+            AbilityData[] abilities = null,
+            AttackType attackType = AttackType.Melee,
+            DamageType damageType = DamageType.Physical,
+            AreaShape autoAttackShape = AreaShape.None,
+            float autoAttackWidth = 1f,
+            float resourceOnHit = 0f,
+            UnitVisual visual = null)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
             Set(r, "_grantedEffects", grantedEffects ?? Array.Empty<EffectData>());
             Set(r, "_abilities", abilities ?? Array.Empty<AbilityData>());
+            Set(r, "_attackType", attackType);
+            Set(r, "_damageType", damageType);
+            Set(r, "_autoAttackShape", autoAttackShape);
+            Set(r, "_autoAttackWidth", autoAttackWidth);
+            Set(r, "_resourceOnHit", resourceOnHit);
+            Set(r, "_visual", visual);
             return r;
         }
 
@@ -91,6 +117,20 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             FieldInfo fi = typeof(RelicData).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
             fi.SetValue(target, value);
+        }
+    }
+
+    /// <summary>Билдер <see cref="UnitVisual"/> для тестов windup: задаёт число кадров атаки и кадр контакта.</summary>
+    internal static class TestVisual
+    {
+        public static UnitVisual Make(int frameCount, int hitFrame)
+        {
+            var v = ScriptableObject.CreateInstance<UnitVisual>();
+            FieldInfo attack = typeof(UnitVisual).GetField("_attack", BindingFlags.Instance | BindingFlags.NonPublic);
+            FieldInfo hits   = typeof(UnitVisual).GetField("_attackHitFrames", BindingFlags.Instance | BindingFlags.NonPublic);
+            attack.SetValue(v, new Sprite[frameCount < 0 ? 0 : frameCount]);
+            hits.SetValue(v, new[] { hitFrame });
+            return v;
         }
     }
 
@@ -133,10 +173,19 @@ namespace Guildmaster.Tests.EditMode.Combat
         public int QueryUnitsInRadius(
             Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam) => 0;
 
+        public int QueryUnitsInLine(
+            Vector2 origin, Vector2 direction, float length, float width,
+            List<RuntimeUnit> results, TargetFilter filter, int requestingTeam) => 0;
+
         public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source)
             => _effects?.Apply(target, def, source, this);
 
+        public void ReportAreaHit(in AreaHit hit) { }
+
         public void Dispel(in DispelRequest req) => _effects?.Dispel(in req, this);
+
+        public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
+        public void NotifyAttackInterrupted(RuntimeUnit unit) { }
 
         public IRngService Rng => _rng;
         public int CurrentTick => 0;

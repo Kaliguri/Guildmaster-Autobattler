@@ -26,7 +26,7 @@ namespace Guildmaster.Tests.PlayMode.Battle
                 new XorShiftRng(Seed),
                 ArmorK,
                 new SpatialHash(CellSize),
-                new TargetingSystem(),
+                new BrainSystem(),
                 new AbilitySystem(),
                 new MovementSystem(),
                 new AutoAttackSystem(),

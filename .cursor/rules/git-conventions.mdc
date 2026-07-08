@@ -78,6 +78,7 @@ ci/*          ← CI/CD changes
 
 - All branches are created **from `dev`**, never from `master`
 - `master` is updated only via PR from `dev` — when the version is stable
+- **`feature/*`, `fix/*`, `data/*`, `refactor/*` PRs always target `dev`, never `master`** — merging a feature branch directly into `master` breaks the flow and leaves `dev` behind
 - Branch names: lowercase, hyphen-separated, concise
   - Good: `feature/guild-management`
   - Bad: `feature/add_new_guild_management_system`
@@ -99,6 +100,17 @@ If currently on `dev` or `master`, **always** create a branch before starting:
 - Hotfix: tiny, isolated fix (1-2 files, obvious change, no risk of breaking CI)
 - Docs/wiki-only changes
 - CI/config tweaks with no logic changes
+
+---
+
+## Assets not pushed yet (git size)
+
+To keep the repo lightweight during pre-festival development:
+
+- **Sprite packs** under `Assets/_Project/Art/Sprites/Pixel Art Heroes/` are **kept local and NOT committed for now** (open-license pixel sheets used by the lite-harness `UnitView`). Temporary (`пока не пушим`) — added later (likely via Git LFS or a curated subset) once the visual set for the 7 relics is finalized.
+- **Dev screenshots** (e.g. `Assets/Screenshots/`, MCP harness captures) are throwaway — **delete them, never commit**.
+
+When staging, **stage code/data/config explicitly — never `git add .` blindly** (it would sweep in the sprite packs).
 
 ---
 

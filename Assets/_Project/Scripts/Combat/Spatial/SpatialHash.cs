@@ -5,7 +5,7 @@ namespace Guildmaster.Combat
 {
     /// <summary>
     /// Равномерная сетка для пространственных запросов без аллокаций на горячем пути.
-    /// Используется для <c>QueryRadius</c> в <see cref="TargetingSystem"/> и AOE-эффектах (Фаза 2).
+    /// Используется для <c>QueryRadius</c> в AOE-эффектах и авто-атаках (Фаза 2/3).
     /// <para>Не влияет на геометрию поля — оно по-прежнему непрерывное (вики «10» §5.3).</para>
     /// </summary>
     public sealed class SpatialHash
