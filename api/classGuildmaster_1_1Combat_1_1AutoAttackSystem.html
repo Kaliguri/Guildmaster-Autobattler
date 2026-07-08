@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1AutoAtta
 </div><!--header-->
 <div class="contents">
 
-<p>Управляет кулдаунами автоатак и инициирует нанесение урона или создание снарядов в зависимости от <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1" title="Способ доставки автоатаки (вики «11» §2).">AttackType</a> реликвии юнита (вики «10» §5.3).  
+<p>Двухфазная авто-атака (вики «14»): кулдаун → <b>замах (windup)</b> → удар на кадре контакта.  
  <a href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.AutoAttackSystem:</div>
@@ -109,11 +109,13 @@ Collaboration diagram for Guildmaster.Combat.AutoAttackSystem:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a0f41579d23e8074e346e93e793eb0f5b" id="r_a0f41579d23e8074e346e93e793eb0f5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f41579d23e8074e346e93e793eb0f5b">Tick</a> (List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> ctx, float dt)</td></tr>
-<tr class="memdesc:a0f41579d23e8074e346e93e793eb0f5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обработать автоатаки всех живых юнитов за один тик.  <br /></td></tr>
+<tr class="memdesc:a0f41579d23e8074e346e93e793eb0f5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обработать автоатаки всех живых юнитов за один тик. <em>dt</em>  не используется (тайминг на тиках).  <br /></td></tr>
 <tr class="separator:a0f41579d23e8074e346e93e793eb0f5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Управляет кулдаунами автоатак и инициирует нанесение урона или создание снарядов в зависимости от <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1" title="Способ доставки автоатаки (вики «11» §2).">AttackType</a> реликвии юнита (вики «10» §5.3). </p>
+<div class="textblock"><p>Двухфазная авто-атака (вики «14»): кулдаун → <b>замах (windup)</b> → удар на кадре контакта. </p>
+<p>Урон наносится, когда windup-таймер истёк, а не в начале замаха. Всё на int-тиках — детерминизм сохраняется (урон по счётчику тиков), пауза работает автоматически. </p>
+<p>Якорь кулдауна — старт замаха (период damage→damage = интервал). Прерывание (стан/смерть себя) сбрасывает замах и <b>рефандит</b> кулдаун. Цель пропала к удару (мертва/вне радиуса) → удар вхолостую, кулдаун потрачен. Тип атаки (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1" title="Способ доставки автоатаки (вики «11» §2).">AttackType</a>) определяет резолв: мили single/Line или снаряд. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0f41579d23e8074e346e93e793eb0f5b" name="a0f41579d23e8074e346e93e793eb0f5b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f41579d23e8074e346e93e793eb0f5b">&#9670;&#160;</a></span>Tick()</h2>
@@ -155,7 +157,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Обработать автоатаки всех живых юнитов за один тик. </p>
+<p>Обработать автоатаки всех живых юнитов за один тик. <em>dt</em>  не используется (тайминг на тиках). </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

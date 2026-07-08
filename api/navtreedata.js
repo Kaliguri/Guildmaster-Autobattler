@@ -52,11 +52,12 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"AbilityData_8cs.html",
-"classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand.html#a3e96c5df88cd8d6380eacf77b1b9c33b",
-"classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#a49fe920d86ded5ba28dc7c0dca9233d0",
-"functions_q.html",
-"structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#ac092e9b8b99382497991fe8f0411a498"
+"AIProfile_8cs.html",
+"classGuildmaster_1_1Combat_1_1AutoAttackSystem.html",
+"classGuildmaster_1_1Combat_1_1ProjectileSystem.html#ae628045b6024ef74e8604ca84d10c8c6",
+"classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html#a7bad620a3a7c555a0c3126c51c0cbe9b",
+"interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#ab134c15c01cd56fba2e6287466908900",
+"structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

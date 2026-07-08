@@ -1,10 +1,20 @@
 var searchData=
 [
   ['abilities_0',['Abilities',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#aaf35e2a9d6f5ebc3cef6f5f63e458edd',1,'Guildmaster::Data::Definitions::RelicData']]],
-  ['alpha_1',['Alpha',['../classGuildmaster_1_1Presentation_1_1DamageNumber.html#a32039897bc6c5316cc0fff873a917c70',1,'Guildmaster::Presentation::DamageNumber']]],
-  ['armorconstantk_2',['ArmorConstantK',['../classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#a593dd9e4b5b46516d9a66df612a2b23c',1,'Guildmaster::Data::Definitions::StatsConfig']]],
-  ['armork_3',['armork',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4dd6f5d61443f2039f006e08123100d6',1,'Guildmaster.Combat.CombatSimulation.ArmorK'],['../interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a82e1c9f8002d378272140e0e43131278',1,'Guildmaster.Combat.ICombatContext.ArmorK']]],
-  ['attackspeedmax_4',['AttackSpeedMax',['../classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#a948058f4f638d11ea0a98e20b2286f21',1,'Guildmaster::Data::Definitions::StatsConfig']]],
-  ['attackspeedmin_5',['AttackSpeedMin',['../classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#aa2b36ca2fe502a5db9c981c5ea78cf81',1,'Guildmaster::Data::Definitions::StatsConfig']]],
-  ['attacktype_6',['AttackType',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a0e6faca4f24457ff91e3487e18845d9f',1,'Guildmaster::Data::Definitions::RelicData']]]
+  ['ai_1',['Ai',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a0ec73005e4933c217341cd70a0f11bb1',1,'Guildmaster::Data::Definitions::RelicData']]],
+  ['alpha_2',['Alpha',['../classGuildmaster_1_1Presentation_1_1DamageNumber.html#a32039897bc6c5316cc0fff873a917c70',1,'Guildmaster::Presentation::DamageNumber']]],
+  ['arearadius_3',['AreaRadius',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a4326c561eaf90b04edcc35b42b12188f',1,'Guildmaster::Data::Definitions::AbilityData']]],
+  ['areashape_4',['AreaShape',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a9d67ed5c19899885e136b0bc5351a081',1,'Guildmaster::Data::Definitions::AbilityData']]],
+  ['armorconstantk_5',['ArmorConstantK',['../classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#a593dd9e4b5b46516d9a66df612a2b23c',1,'Guildmaster::Data::Definitions::StatsConfig']]],
+  ['armork_6',['armork',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4dd6f5d61443f2039f006e08123100d6',1,'Guildmaster.Combat.CombatSimulation.ArmorK'],['../interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a82e1c9f8002d378272140e0e43131278',1,'Guildmaster.Combat.ICombatContext.ArmorK']]],
+  ['attackframecount_7',['AttackFrameCount',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a93850bcf8f6c2f9620c99fa2b153ab57',1,'Guildmaster::Data::Definitions::UnitVisual']]],
+  ['attackhitframe_8',['AttackHitFrame',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#ad02f17e505670ee04c0304feb082141b',1,'Guildmaster::Data::Definitions::UnitVisual']]],
+  ['attackhitframes_9',['AttackHitFrames',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#ab3d151094dfd40f72ddd1601dd041eec',1,'Guildmaster::Data::Definitions::UnitVisual']]],
+  ['attackspeedmax_10',['AttackSpeedMax',['../classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#a948058f4f638d11ea0a98e20b2286f21',1,'Guildmaster::Data::Definitions::StatsConfig']]],
+  ['attackspeedmin_11',['AttackSpeedMin',['../classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#aa2b36ca2fe502a5db9c981c5ea78cf81',1,'Guildmaster::Data::Definitions::StatsConfig']]],
+  ['attacktype_12',['AttackType',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a0e6faca4f24457ff91e3487e18845d9f',1,'Guildmaster::Data::Definitions::RelicData']]],
+  ['autoattackmode_13',['AutoAttackMode',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a882084f5011458139ba344416737cd34',1,'Guildmaster::Data::Definitions::AIProfile']]],
+  ['autoattackshape_14',['AutoAttackShape',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a6228796fd0ca7a750e0878d7ba8d75bf',1,'Guildmaster::Data::Definitions::RelicData']]],
+  ['autoattacktargeting_15',['AutoAttackTargeting',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#ae4cc61e69d39ec25ba833cb68abe4216',1,'Guildmaster::Data::Definitions::AIProfile']]],
+  ['autoattackwidth_16',['AutoAttackWidth',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a91ab8a3e46355b1673cded112c7e006c',1,'Guildmaster::Data::Definitions::RelicData']]]
 ];

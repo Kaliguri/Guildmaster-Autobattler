@@ -1,5 +1,7 @@
 <map id="Guildmaster.Combat.CombatSimulation.EnqueueUnitSpawn" name="Guildmaster.Combat.CombatSimulation.EnqueueUnitSpawn">
-<area shape="rect" id="Node000001" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,5,524,45"/>
+<area shape="rect" id="Node000001" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,37,524,77"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aedae5faa77d76a446159efa284f38245" title="Поднять тест&#45;бой N×M юнитов с заданными HP." alt="" coords="5,5,253,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,28,253,28,253,23,288,23"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,46,253,42,254,37,288,41"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a81741c7cedaddfdaada0ce90d723615b" title="Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4." alt="" coords="5,69,253,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="288,74,254,78,253,73,288,69"/>
 </map>

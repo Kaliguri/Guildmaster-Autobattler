@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1He
 </div><!--header-->
 <div class="contents">
 
-<p>HP-бар через масштаб fill-объекта, без сторонних зависимостей.  
+<p>Двойной HP-бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA).  
  <a href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.HealthBarView:</div>
@@ -114,14 +114,17 @@ Collaboration diagram for Guildmaster.Presentation.HealthBarView:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:addca237a220d26640e8bef0b174d1134" id="r_addca237a220d26640e8bef0b174d1134"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#addca237a220d26640e8bef0b174d1134">Bind</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit)</td></tr>
-<tr class="memdesc:addca237a220d26640e8bef0b174d1134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Привязать к юниту для первоначальной отрисовки.  <br /></td></tr>
+<tr class="memdesc:addca237a220d26640e8bef0b174d1134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Привязать к юниту: оба слоя — на текущую долю мгновенно.  <br /></td></tr>
 <tr class="separator:addca237a220d26640e8bef0b174d1134"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0f426c83b1ecfeb629eb62bf7cd7598" id="r_ae0f426c83b1ecfeb629eb62bf7cd7598"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#ae0f426c83b1ecfeb629eb62bf7cd7598">UpdateBar</a> (float currentHp, float maxHp)</td></tr>
-<tr class="memdesc:ae0f426c83b1ecfeb629eb62bf7cd7598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновить отображаемую долю HP.  <br /></td></tr>
+<tr class="memdesc:ae0f426c83b1ecfeb629eb62bf7cd7598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновить истинную долю HP (поллинг из UnitView каждый кадр).  <br /></td></tr>
 <tr class="separator:ae0f426c83b1ecfeb629eb62bf7cd7598"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>HP-бар через масштаб fill-объекта, без сторонних зависимостей. </p>
+<div class="textblock"><p>Двойной HP-бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA). </p>
+<p>Истинная доля ставится мгновенно поллингом из UnitView; призрак плавно догоняет её по рендер-времени (НЕ сим — на чек-сумму не влияет).</p>
+<p>Каждый кадр спереди рисуется МЕНЬШАЯ из двух долей (main, зелёный), сзади — БОЛЬШАЯ (trail), поэтому видна цветная «дельта»: • урон (target &lt; ghost): дельта [target, ghost] цветом _damageTrailColor; • хил (target &gt; ghost): дельта [ghost, target] цветом _healTrailColor.</p>
+<p>Левый якорь считается в коде (offset по X от ширины спрайта), поэтому полоса «утекает» слева независимо от пивота спрайта — без жёсткой привязки к настройке ассета. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="addca237a220d26640e8bef0b174d1134" name="addca237a220d26640e8bef0b174d1134"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#addca237a220d26640e8bef0b174d1134">&#9670;&#160;</a></span>Bind()</h2>
@@ -147,11 +150,11 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Привязать к юниту для первоначальной отрисовки. </p>
+<p>Привязать к юниту: оба слоя — на текущую долю мгновенно. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView_addca237a220d26640e8bef0b174d1134_cgraph.svg" width="470" height="102"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView_addca237a220d26640e8bef0b174d1134_cgraph.svg" width="470" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -195,11 +198,11 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Обновить отображаемую долю HP. </p>
+<p>Обновить истинную долю HP (поллинг из UnitView каждый кадр). </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView_ae0f426c83b1ecfeb629eb62bf7cd7598_icgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView_ae0f426c83b1ecfeb629eb62bf7cd7598_icgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

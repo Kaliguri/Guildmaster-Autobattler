@@ -130,7 +130,7 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Вампиризм: исцеляет носителя на долю нанесённого им урона. </p>
 <p>Реактивный — слушает CombatEvent.DamageDealt своего носителя (вики «6» §5.5).</p>
-<p>Доля авторится на компоненте (самодостаточно и тестируемо). Стат <code>Lifesteal</code> остаётся объявленным; его автоматическая привязка к пути урона — отдельное решение позже. </p>
+<p>⚠️ ИЗБЫТОЧЕН под моделью «эффекты кормят статы» (решение 2026-06-19, см. вики «Гайд по архитектуре кода» → 07 §1). Канонический путь вампиризма теперь — стат <code>Lifesteal</code>, читаемый в <code>CombatSimulation.DealDamage</code>; временный «вампирик-бафф» делается эффектом со <code>StatModifierComponent(+Lifesteal)</code>. Этот реактивный компонент лечит НАПРЯМУЮ, минуя стат — НЕ вешать его вместе со стат-вампиризмом на одного юнита (двойной учёт). Оставлен временно (на нём держится <code>ReactiveEffectTests</code>); удаление + миграция теста — когда начнётся авторинг контента (техдолг 07 §3.7). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a1b10f24f6a3a618dfc16025d6bbe40f1" name="a1b10f24f6a3a618dfc16025d6bbe40f1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1b10f24f6a3a618dfc16025d6bbe40f1">&#9670;&#160;</a></span>OnApply()</h2>

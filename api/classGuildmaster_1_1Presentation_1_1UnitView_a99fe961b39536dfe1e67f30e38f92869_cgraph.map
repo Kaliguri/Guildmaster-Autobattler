@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.UnitView.SetVisual" name="Guildmaster.Presentation.UnitView.SetVisual">
+<area shape="rect" id="Node000001" title="Подменить визуал в рантайме (пер&#45;юнит визуал из реликвии, вики «13» шаг 4): все юниты инстанцируются ..." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a6fd08233e2204cdf206d9959ea5564bb" title="Кадры для состояния. Пустой массив = клип отсутствует (вид останется на текущем кадре)." alt="" coords="244,5,459,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
+</map>

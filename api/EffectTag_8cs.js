@@ -8,6 +8,9 @@ var EffectTag_8cs =
       [ "DoT", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438abc77fc33686f58682dfe0704c435c4a6", null ],
       [ "HoT", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438adcaa2fceac50ca9147bb817517df900f", null ],
       [ "Heal", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438af357105e6becc3076a3da9b43465051a", null ],
-      [ "Shield", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4", null ]
+      [ "Shield", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4", null ],
+      [ "Frozen", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a68abcc3d0869f8a52c2b286b3c511dd3", null ],
+      [ "Marked", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438ab80c545ea15439f0b585c86a6aab3226", null ],
+      [ "KnockUp", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89", null ]
     ] ]
 ];
