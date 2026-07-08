@@ -87,8 +87,8 @@
 | Чтение и запись файлов проекта | **filesystem** | `project-0-Guildmaster_-_Autobattler-filesystem` | `read_file`, `write_file`, `list_directory` и др. |
 
 > Unity MCP — это [CoplayDev/unity-mcp](https://github.com/CoplayDev/unity-mcp). Server ID `unityMCP` прописан в корневом `.mcp.json` (остальные серверы — в `.cursor/mcp.json`).
-> - **Сервер:** `mcpforunityserver==9.7.1` через `uvx`, команда `mcp-for-unity`, транспорт **`stdio`** (не HTTP).
-> - **Редакторный пакет:** `com.coplaydev.unity-mcp`, ставится по git URL `https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main` (Package Manager → Add from git URL).
+> - **Сервер:** `mcpforunityserver==10.0.0` через `uvx`, команда `mcp-for-unity`, транспорт **`stdio`** (не HTTP).
+> - **Редакторный пакет:** `com.coplaydev.unity-mcp`, ставится по git URL `https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#v10.0.0` (Package Manager → Add from git URL).
 > - **Мост:** StdioBridgeHost внутри Unity, порт `6400`. `Window → MCP for Unity` показывает статус подключения; окно должно быть открыто.
 > - Проверка коннекта: ресурс `mcpforunity://instances` (`instance_count ≥ 1` = редактор подключён).
 

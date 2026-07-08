@@ -12,7 +12,7 @@
       "hash": "2053ef5c23f2ae755dd85d5865b698c542c351b6"
     },
     "com.coplaydev.unity-mcp": {
-      "version": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
+      "version": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#v10.0.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
@@ -26,7 +26,7 @@
         "com.unity.nuget.newtonsoft-json": "3.0.2",
         "com.unity.test-framework": "1.1.31"
       },
-      "hash": "85c101f5329ec1b0c6f70cba44614166dd78f53c"
+      "hash": "d49ae2953580f3481beb1e084a1da2682f0b5610"
     },
     "com.cysharp.messagepipe": {
       "version": "https://github.com/Cysharp/MessagePipe.git?path=src/MessagePipe.Unity/Assets/Plugins/MessagePipe",
