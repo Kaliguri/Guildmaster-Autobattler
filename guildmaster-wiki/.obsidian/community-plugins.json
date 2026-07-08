@@ -1,4 +1,21 @@
 [
-  "templater-obsidian",
-  "obsidian-excalidraw-plugin"
+  "obsidian-excalidraw-plugin",
+  "table-editor-obsidian",
+  "better-word-count",
+  "obsidian-advanced-uri",
+  "obsidian-git",
+  "obsidian-icon-folder",
+  "dataview",
+  "realclaudian",
+  "obsidian-linter",
+  "make-md",
+  "omnisearch",
+  "obsidian-style-settings",
+  "buttons",
+  "custom-font-loader",
+  "homepage",
+  "link-favicon",
+  "obsidian-minimal-settings",
+  "recent-files-obsidian",
+  "terminal"
 ]
