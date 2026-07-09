@@ -115,7 +115,7 @@ MonoBehaviour:
   _onDeathFeedback:
     m_PersistentCalls:
       m_Calls: []
-  _nameLabel: {fileID: 8366264596475684391}
+  _nameLabel: {fileID: 4136415384210637921}
 --- !u!1001 &3213704030444463326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -291,14 +291,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5309212108395383105, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
   m_PrefabInstance: {fileID: 5496344632759462837}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8366264596475684391 stripped
+--- !u!114 &4136415384210637921 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4061122065357114770, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8440185174650957780, guid: f716e028e86d1724b840eaa580b2a44f, type: 3}
   m_PrefabInstance: {fileID: 5496344632759462837}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshPro
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
