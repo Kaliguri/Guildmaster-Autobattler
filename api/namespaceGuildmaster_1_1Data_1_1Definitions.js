@@ -14,7 +14,8 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     [ "AbilityTargetMode", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d", [
       [ "Self", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806", null ],
       [ "NearestEnemy", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788", null ],
-      [ "NearestAlly", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443", null ]
+      [ "NearestAlly", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443", null ],
+      [ "LowestHpAlly", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9", null ]
     ] ],
     [ "AreaShape", "namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0bec", [
       [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca6adf97f83acf6453d4a6a4b1070f3754", null ],
@@ -33,7 +34,8 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     ] ],
     [ "CastCondition", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0", [
       [ "Immediately", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0afd83e0ccb3e6312a62f888dd496dd0a5", null ],
-      [ "EnemiesInRadius", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204", null ]
+      [ "EnemiesInRadius", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204", null ],
+      [ "AllyTargetHpBelowPct", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a9b5c1389533f26b3550e6a1a2f7e63d8", null ]
     ] ],
     [ "DamageType", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3", [
       [ "Physical", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3ace898d62ed9ca7653a01fe0c781e97e9", null ],

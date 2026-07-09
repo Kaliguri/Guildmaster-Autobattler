@@ -1,7 +1,9 @@
 <map id="Guildmaster.Combat.CombatSimulation.EnqueueUnitSpawn" name="Guildmaster.Combat.CombatSimulation.EnqueueUnitSpawn">
-<area shape="rect" id="Node000001" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,37,524,77"/>
+<area shape="rect" id="Node000001" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,69,524,109"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aedae5faa77d76a446159efa284f38245" title="Поднять тест&#45;бой N×M юнитов с заданными HP." alt="" coords="5,5,253,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,46,253,42,254,37,288,41"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a81741c7cedaddfdaada0ce90d723615b" title="Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4." alt="" coords="5,69,253,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="288,74,254,78,253,73,288,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="310,69,218,48,219,43,311,64"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a4f882498fd866ed62456644514bec367" title="Заспавнить «Светлого пастыря» (team 0) + раненых союзников против болванчиков — срез §10...." alt="" coords="5,69,253,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="288,92,253,92,253,87,288,87"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a81741c7cedaddfdaada0ce90d723615b" title="Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4." alt="" coords="5,133,253,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="311,115,219,136,218,131,310,110"/>
 </map>

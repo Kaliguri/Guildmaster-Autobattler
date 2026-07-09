@@ -139,6 +139,7 @@ Enumerations</h2></td></tr>
 <tr class="memitem:a5344cc37ed9f1d1d575f21d566b5332d" id="r_a5344cc37ed9f1d1d575f21d566b5332d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d">AbilityTargetMode</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806">Self</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788">NearestEnemy</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443">NearestAlly</a> = 2
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9">LowestHpAlly</a> = 3
  }</td></tr>
 <tr class="memdesc:a5344cc37ed9f1d1d575f21d566b5332d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Как выбирается цель активной способности (полный AI-таргетинг — Фаза 3).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d">More...</a><br /></td></tr>
 <tr class="separator:a5344cc37ed9f1d1d575f21d566b5332d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,6 +163,7 @@ Enumerations</h2></td></tr>
 <tr class="separator:acec7178e7ebe0be3c159a5ba373c0bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1decc8121468103a59b37c7903949ea0" id="r_a1decc8121468103a59b37c7903949ea0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0">CastCondition</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0afd83e0ccb3e6312a62f888dd496dd0a5">Immediately</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204">EnemiesInRadius</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a9b5c1389533f26b3550e6a1a2f7e63d8">AllyTargetHpBelowPct</a> = 2
  }</td></tr>
 <tr class="memdesc:a1decc8121468103a59b37c7903949ea0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Условие каста активной способности (блок D ГД-модели AI, вики «13» §2.1, шаг 4).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0">More...</a><br /></td></tr>
 <tr class="separator:a1decc8121468103a59b37c7903949ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,6 +266,8 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443" name="a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443"></a>NearestAlly&#160;</td><td class="fielddoc"><p>Ближайший союзник (для бафф/хил-способностей). </p>
 </td></tr>
+<tr><td class="fieldname"><a id="a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9" name="a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9"></a>LowestHpAlly&#160;</td><td class="fielddoc"><p>Союзник с наименьшим HP% — глобально, без ограничения дальности (хилер-ульта «Длань жизни»). </p>
+</td></tr>
 </table>
 
 </div>
@@ -357,6 +361,8 @@ Enumerations</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1decc8121468103a59b37c7903949ea0afd83e0ccb3e6312a62f888dd496dd0a5" name="a1decc8121468103a59b37c7903949ea0afd83e0ccb3e6312a62f888dd496dd0a5"></a>Immediately&#160;</td><td class="fielddoc"><p>Кастовать как только готова (ресурс/КД). Дефолт — поведение плейсхолдера Ф2. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204" name="a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204"></a>EnemiesInRadius&#160;</td><td class="fielddoc"><p>Кастовать, когда врагов в радиусе условия ≥ заданного X (кластер-ульта). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1decc8121468103a59b37c7903949ea0a9b5c1389533f26b3550e6a1a2f7e63d8" name="a1decc8121468103a59b37c7903949ea0a9b5c1389533f26b3550e6a1a2f7e63d8"></a>AllyTargetHpBelowPct&#160;</td><td class="fielddoc"><p>Кастовать, когда HP% выбранной цели ≤ CastConditionHpPct (блок D хилера: спасать раненого союзника). </p>
 </td></tr>
 </table>
 

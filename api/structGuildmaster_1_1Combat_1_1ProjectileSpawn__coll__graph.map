@@ -1,7 +1,7 @@
 <map id="Guildmaster.Combat.ProjectileSpawn" name="Guildmaster.Combat.ProjectileSpawn">
-<area shape="rect" id="Node000001" title="Параметры создания снаряда." alt="" coords="274,845,487,1045"/>
+<area shape="rect" id="Node000001" title="Параметры создания снаряда." alt="" coords="274,845,487,1065"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="263,503,498,768"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="383,768,383,829,378,829,378,768"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="383,768,383,828,378,828,378,768"/>
 <area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="500,607,518,617,525,635,522,647,515,656,510,653,517,645,519,636,513,621,497,611"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="5,217,191,343"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="137,341,204,438,254,499,250,502,200,442,133,344"/>

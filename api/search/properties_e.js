@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['tags_0',['tags',['../classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#aad7c6e860dcf1e5e21f8bb31119d6476',1,'Guildmaster.Data.Definitions.EffectData.Tags'],['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a7ad0a96ef6c67ee42c4e976107425551',1,'Guildmaster.Data.Definitions.RelicData.Tags'],['../classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html#a88a45070ffedc089bc20cb30f3d79ecb',1,'Guildmaster.Data.Definitions.VesselData.Tags']]],
-  ['targetmode_1',['TargetMode',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ad7f696c9f85df4e7310ecdb087f2298b',1,'Guildmaster::Data::Definitions::AbilityData']]],
-  ['targettag_2',['TargetTag',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a59219e86754164989fbeff037214b359',1,'Guildmaster::Data::Definitions::AIProfile']]],
-  ['targettick_3',['targettick',['../classGuildmaster_1_1Combat_1_1Commands_1_1PauseCommand.html#ab1295b7b00b9a3c16415b3c11e2e2103',1,'Guildmaster.Combat.Commands.PauseCommand.TargetTick'],['../classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand.html#a626e911ae0d3e5a23402fde0596d5111',1,'Guildmaster.Combat.Commands.ResumeCommand.TargetTick'],['../classGuildmaster_1_1Combat_1_1Commands_1_1SpawnUnitCommand.html#a0a4104587e30827650699301296f9549',1,'Guildmaster.Combat.Commands.SpawnUnitCommand.TargetTick'],['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html#a6402297deaeae7072eec1fbb0b119cd5',1,'Guildmaster.Core.Simulation.ISimCommand.TargetTick']]],
-  ['totaldamage_4',['TotalDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#aee606a37b8e57d2f7c2eaff6452c2239',1,'Guildmaster::Combat::DamageResult']]]
+  ['stacking_0',['Stacking',['../classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#af111af562686db26ff155f6f6c180d51',1,'Guildmaster::Data::Definitions::EffectData']]],
+  ['stacks_1',['Stacks',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#ae0145d880f0ab48633a5417ba4cc9e26',1,'Guildmaster::Combat::Effects::EffectContext']]],
+  ['stats_2',['Stats',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a5c15d2b7548eaea2e38eb4e496e7d5ca',1,'Guildmaster::Data::Definitions::RelicData']]]
 ];

@@ -109,8 +109,8 @@ Collaboration diagram for Guildmaster.Combat.ProjectileSpawn:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0b0e30bfba28714a09d4509a5a5ee44d" id="r_a0b0e30bfba28714a09d4509a5a5ee44d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a0b0e30bfba28714a09d4509a5a5ee44d">ProjectileSpawn</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, Vector2 startPosition, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> targetUnit, float speed, float collisionRadius, float rawDamage, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> damageType, float armorK, int maxPierces=0)</td></tr>
-<tr class="separator:a0b0e30bfba28714a09d4509a5a5ee44d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a864fe01059503c7dc4a4a5fc7e0a69ef" id="r_a864fe01059503c7dc4a4a5fc7e0a69ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a864fe01059503c7dc4a4a5fc7e0a69ef">ProjectileSpawn</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, Vector2 startPosition, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> targetUnit, float speed, float collisionRadius, float rawDamage, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> damageType, float armorK, int maxPierces=0, bool isHeal=false)</td></tr>
+<tr class="separator:a864fe01059503c7dc4a4a5fc7e0a69ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -132,13 +132,16 @@ Public Attributes</h2></td></tr>
 <tr class="separator:af4fdc31beae0a45f740acf7be0437988"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05bbcf10908d114d889e5e48f49bdd88" id="r_a05bbcf10908d114d889e5e48f49bdd88"><td class="memItemLeft" align="right" valign="top">readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a05bbcf10908d114d889e5e48f49bdd88">MaxPierces</a></td></tr>
 <tr class="separator:a05bbcf10908d114d889e5e48f49bdd88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7731ec28cceeb5d0b3f9c37f98de5145" id="r_a7731ec28cceeb5d0b3f9c37f98de5145"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a7731ec28cceeb5d0b3f9c37f98de5145">IsHeal</a></td></tr>
+<tr class="memdesc:a7731ec28cceeb5d0b3f9c37f98de5145"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хил-снаряд: лечит цель при попадании (RawDamage = сырое лечение), а не бьёт. §9.2.  <br /></td></tr>
+<tr class="separator:a7731ec28cceeb5d0b3f9c37f98de5145"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Параметры создания снаряда. </p>
 <p>Передаётся в ICombatContext.SpawnProjectile. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a0b0e30bfba28714a09d4509a5a5ee44d" name="a0b0e30bfba28714a09d4509a5a5ee44d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b0e30bfba28714a09d4509a5a5ee44d">&#9670;&#160;</a></span>ProjectileSpawn()</h2>
+<a id="a864fe01059503c7dc4a4a5fc7e0a69ef" name="a864fe01059503c7dc4a4a5fc7e0a69ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a864fe01059503c7dc4a4a5fc7e0a69ef">&#9670;&#160;</a></span>ProjectileSpawn()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,7 +201,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>maxPierces</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>maxPierces</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isHeal</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -255,6 +264,22 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7731ec28cceeb5d0b3f9c37f98de5145" name="a7731ec28cceeb5d0b3f9c37f98de5145"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7731ec28cceeb5d0b3f9c37f98de5145">&#9670;&#160;</a></span>IsHeal</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly bool Guildmaster.Combat.ProjectileSpawn.IsHeal</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Хил-снаряд: лечит цель при попадании (RawDamage = сырое лечение), а не бьёт. §9.2. </p>
 
 </div>
 </div>

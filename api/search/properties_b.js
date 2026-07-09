@@ -1,11 +1,4 @@
 var searchData=
 [
-  ['passivethresholdpct_0',['PassiveThresholdPct',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#aa5ecbbb57b6e45f444647f78e5a7d241',1,'Guildmaster::Data::Definitions::AIProfile']]],
-  ['passivetrigger_1',['PassiveTrigger',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a843c20d91e8851e7111cddc3672ad24f',1,'Guildmaster::Data::Definitions::AIProfile']]],
-  ['perkmodifiers_2',['PerkModifiers',['../classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html#a7bad620a3a7c555a0c3126c51c0cbe9b',1,'Guildmaster::Data::Definitions::VesselData']]],
-  ['polarity_3',['Polarity',['../classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a357421c130b9662bde3b3671e68e36b0',1,'Guildmaster::Data::Definitions::EffectData']]],
-  ['potency_4',['potency',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#a1468dc615b3ab981690093e0d4d447eb',1,'Guildmaster.Combat.Effects.Components.PeriodicDamageComponent.Potency'],['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html#a838b1d47528be47a358fde0fc22dd483',1,'Guildmaster.Combat.Effects.Components.PeriodicHealComponent.Potency'],['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html#a313bf4b946c465d292353e858fa648e7',1,'Guildmaster.Combat.Effects.Components.ShieldComponent.Potency'],['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html#a939adcda0bfc5d60f436a44ce5d21992',1,'Guildmaster.Combat.Effects.IScalablePotency.Potency']]],
-  ['preventact_5',['PreventAct',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html#a758c8604736607ce4b6adc83934717d7',1,'Guildmaster::Combat::Effects::Components::ControlComponent']]],
-  ['preventcast_6',['PreventCast',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html#af168ed4f09075b947569ea26778e0eae',1,'Guildmaster::Combat::Effects::Components::ControlComponent']]],
-  ['preventmove_7',['PreventMove',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html#a4d058f2529922225b672aad02751f0c5',1,'Guildmaster::Combat::Effects::Components::ControlComponent']]]
+  ['outcome_0',['Outcome',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#ade014db043568a48011caded693155c1',1,'Guildmaster::Combat::CombatSimulation']]]
 ];

@@ -1,5 +1,5 @@
 <map id="Guildmaster.Combat.Projectile" name="Guildmaster.Combat.Projectile">
-<area shape="rect" id="Node000001" title="Рантайм&#45;данные одного снаряда." alt="" coords="274,845,487,1091"/>
+<area shape="rect" id="Node000001" title="Рантайм&#45;данные одного снаряда." alt="" coords="274,845,487,1111"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="263,503,498,768"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="383,768,383,829,378,829,378,768"/>
 <area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="500,607,518,617,525,635,522,647,515,656,510,653,517,645,519,636,513,621,497,611"/>

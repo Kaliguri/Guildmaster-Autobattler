@@ -125,6 +125,7 @@ Public Attributes</h2></td></tr>
 <tr class="memdesc:a540c049b7c0a652a3d75275ae70722d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель для трекинга. null = свободный полёт (пробивание/AOE).  <br /></td></tr>
 <tr class="separator:a540c049b7c0a652a3d75275ae70722d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebbeed0b12546809f68c03391c5eca4f" id="r_aebbeed0b12546809f68c03391c5eca4f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html#aebbeed0b12546809f68c03391c5eca4f">RawDamage</a></td></tr>
+<tr class="memdesc:aebbeed0b12546809f68c03391c5eca4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полезная нагрузка снаряда. Для урона — сырой урон; для хил-снаряда (IsHeal) — сырое лечение.  <br /></td></tr>
 <tr class="separator:aebbeed0b12546809f68c03391c5eca4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19352dbf5eab778d5c928354ca024a63" id="r_a19352dbf5eab778d5c928354ca024a63"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html#a19352dbf5eab778d5c928354ca024a63">DamageType</a></td></tr>
 <tr class="separator:a19352dbf5eab778d5c928354ca024a63"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,6 +133,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a3e7e54f687c64d1f8594b5877f395cb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af481a6b9782b6449af4494d08f771d40" id="r_af481a6b9782b6449af4494d08f771d40"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html#af481a6b9782b6449af4494d08f771d40">PiercesRemaining</a></td></tr>
 <tr class="separator:af481a6b9782b6449af4494d08f771d40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5930e54bf575c0b5f29d5de71b3bd9aa" id="r_a5930e54bf575c0b5f29d5de71b3bd9aa"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html#a5930e54bf575c0b5f29d5de71b3bd9aa">IsHeal</a></td></tr>
+<tr class="memdesc:a5930e54bf575c0b5f29d5de71b3bd9aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хил-снаряд: при попадании лечит цель (RawDamage = сырое лечение), а не бьёт. Всегда tracking. §9.2.  <br /></td></tr>
+<tr class="separator:a5930e54bf575c0b5f29d5de71b3bd9aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa05bd5d72297ef0851a62dd13843a9f8" id="r_aa05bd5d72297ef0851a62dd13843a9f8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html#aa05bd5d72297ef0851a62dd13843a9f8">IsAlive</a></td></tr>
 <tr class="separator:aa05bd5d72297ef0851a62dd13843a9f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -211,6 +215,22 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a5930e54bf575c0b5f29d5de71b3bd9aa" name="a5930e54bf575c0b5f29d5de71b3bd9aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5930e54bf575c0b5f29d5de71b3bd9aa">&#9670;&#160;</a></span>IsHeal</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.Projectile.IsHeal</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Хил-снаряд: при попадании лечит цель (RawDamage = сырое лечение), а не бьёт. Всегда tracking. §9.2. </p>
+
+</div>
+</div>
 <a id="af481a6b9782b6449af4494d08f771d40" name="af481a6b9782b6449af4494d08f771d40"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af481a6b9782b6449af4494d08f771d40">&#9670;&#160;</a></span>PiercesRemaining</h2>
 
@@ -264,6 +284,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Полезная нагрузка снаряда. Для урона — сырой урон; для хил-снаряда (IsHeal) — сырое лечение. </p>
 
 </div>
 </div>
