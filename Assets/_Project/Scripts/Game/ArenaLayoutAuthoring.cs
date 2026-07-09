@@ -41,6 +41,15 @@ namespace Guildmaster.Game
         [LabelText("Размер")]
         [SerializeField] private Vector2 _boundsSize = new Vector2(20f, 12f);
 
+        [Title("Зона камеры")]
+        [InfoBox("Жёлтая рамка — предел, за который не уходит видимая область камеры (Overview/Action). " +
+                 "Тяни за грани в Scene-вью, как границы поля. Dev-камера этому пределу не подчиняется.")]
+        [LabelText("Центр (лок.)")]
+        [SerializeField] private Vector2 _cameraZoneCenter = Vector2.zero;
+
+        [LabelText("Размер")]
+        [SerializeField] private Vector2 _cameraZoneSize = new Vector2(26f, 16f);
+
         [Title("Зоны расстановки")]
         [InfoBox("Тяни рамки в Scene-вью за грани/углы. Белая — поле, синяя — игрок, красная — враг, " +
                  "полупрозрачная — Extended. Кнопкой «+» зона добавляется видимого размера на своей половине.")]
@@ -53,6 +62,7 @@ namespace Guildmaster.Game
             Vector2 origin = transform.position;
 
             var bounds = new ArenaBounds(origin + _boundsCenter, _boundsSize);
+            var cameraZone = new Rect2D(origin + _cameraZoneCenter, _cameraZoneSize);
 
             var zones = new List<DeploymentZone>(_zones.Length);
             for (int i = 0; i < _zones.Length; i++)
@@ -61,7 +71,7 @@ namespace Guildmaster.Game
                 zones.Add(new DeploymentZone(new Rect2D(origin + z.Center, z.Size), z.Side, z.Tier));
             }
 
-            return new ArenaLayoutData(bounds, zones);
+            return new ArenaLayoutData(bounds, zones, cameraZone);
         }
 
         // Дефолт для кнопки «+» списка (Odin CustomAddFunction): зона видимого размера на половине
@@ -86,6 +96,10 @@ namespace Guildmaster.Game
             // Границы поля — белым.
             Gizmos.color = Color.white;
             Gizmos.DrawWireCube(origin + _boundsCenter, _boundsSize);
+
+            // Зона камеры — жёлтым (предел видимой области, вики «16»).
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireCube(origin + _cameraZoneCenter, _cameraZoneSize);
 
             for (int i = 0; i < _zones.Length; i++)
             {

@@ -2,6 +2,7 @@ using Guildmaster.Combat;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
 using Guildmaster.Presentation;
 using UnityEngine;
@@ -38,6 +39,9 @@ namespace Guildmaster.Game
             RegisterCombatSystems(builder);
             RegisterSimulation(builder, layout);
             RegisterPresentation(builder);
+
+            // Боевой ввод: пауза/рестарт на время этого боя (вики «16» §4).
+            builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
         }
 
         private ArenaLayoutData BuildArenaLayout()
@@ -105,6 +109,14 @@ namespace Guildmaster.Game
             builder.RegisterComponentInHierarchy<CombatPresenter>();
             builder.RegisterComponentInHierarchy<CombatDebugDraw>();
             builder.RegisterComponentInHierarchy<CombatAreaFlash>();
+
+            // Камера (вики «16» §5): регистрируем ТОЛЬКО если риг собран в сцене — иначе бой не падает.
+            // Держим здесь, рядом с прочей презентацией (отдельный метод внешний форматтер уже сносил).
+            if (FindFirstObjectByType<Presentation.CameraModeController>() != null)
+            {
+                builder.RegisterComponentInHierarchy<Presentation.CombatFocusTarget>();
+                builder.RegisterComponentInHierarchy<Presentation.CameraModeController>();
+            }
         }
 
         // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя), а не

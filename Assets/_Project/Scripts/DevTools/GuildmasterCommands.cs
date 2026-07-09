@@ -43,6 +43,10 @@ namespace Guildmaster.DevTools
         private RuntimeUnitFactory _factory;
         private QuantumConsole     _console;
 
+        // Последний сетап боя для быстрого перезапуска по R. static — переживает релоад сцены.
+        private static System.Action<GuildmasterCommands> _lastBattleSetup;
+        private static bool _replayLastBattleOnStart;
+
         [Inject]
         public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory)
         {
@@ -75,11 +79,20 @@ namespace Guildmaster.DevTools
         private void PauseForConsole()   => _simulation?.SetPaused(true);
         private void ResumeAfterConsole() => _simulation?.SetPaused(false);
 
-        // Быстрый перезапуск боя по F5 (new Input System). Дублирует команду gm_restart.
+        // Dev-хоткеи (new Input System): F5 — релоад сцены (пустая арена), R — перезапуск последнего боя.
         private void Update()
         {
+            // Отложенный повтор последнего сетапа после R-релоада — как только симуляция готова.
+            if (_replayLastBattleOnStart && _simulation != null)
+            {
+                _replayLastBattleOnStart = false;
+                _lastBattleSetup?.Invoke(this);
+            }
+
             Keyboard kb = Keyboard.current;
-            if (kb != null && kb.f5Key.wasPressedThisFrame) Restart();
+            if (kb == null) return;
+            if (kb.f5Key.wasPressedThisFrame) Restart();
+            if (kb.rKey.wasPressedThisFrame)  RestartLastBattle();
         }
 
         /// <summary>Зафиксировать сид боя для детерминизм-отладки (только до старта).</summary>
@@ -104,6 +117,7 @@ namespace Guildmaster.DevTools
                 _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2( 5f - i, i), hp, damage, nextId++));
             }
 
+            _lastBattleSetup = self => self.SpawnBattle(countPerTeam, hp, damage);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_battle: добавлено {countPerTeam}×2 юнитов");
         }
 
@@ -126,6 +140,7 @@ namespace Guildmaster.DevTools
                 _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(5f, y), enemyHp, 8f, nextId++));
             }
 
+            _lastBattleSetup = self => self.SpawnSpearman(enemies, enemyHp);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_spearman: копейщик vs {enemies} болванчиков");
         }
 
@@ -158,6 +173,7 @@ namespace Guildmaster.DevTools
                 _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 10f, nextId++));
             }
 
+            _lastBattleSetup = self => self.SpawnShepherd(allies, enemyHp);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_shepherd: пастырь + {allies} раненых союзника vs 2 болванчика");
         }
 
@@ -180,6 +196,7 @@ namespace Guildmaster.DevTools
                 _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 8f, nextId++));
             }
 
+            _lastBattleSetup = self => self.SpawnCryomancer(enemies, enemyHp);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_cryomancer: криомант vs {enemies} болванчиков");
         }
 
@@ -204,6 +221,7 @@ namespace Guildmaster.DevTools
                 _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), 160f, dmg, nextId++));
             }
 
+            _lastBattleSetup = self => self.SpawnDefender(enemies, enemyDamage);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_defender: защитник vs {enemies} ударных болванчиков");
         }
 
@@ -226,6 +244,7 @@ namespace Guildmaster.DevTools
                 _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 10f, nextId++));
             }
 
+            _lastBattleSetup = self => self.SpawnRanger(enemies, enemyHp);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_ranger: следопыт vs {enemies} болванчиков");
         }
 
@@ -249,6 +268,7 @@ namespace Guildmaster.DevTools
                 _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, enemyDamage, nextId++));
             }
 
+            _lastBattleSetup = self => self.SpawnAssassin(enemies, enemyHp, enemyDamage);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_assassin: убийца vs {enemies} болванчиков");
         }
 
@@ -272,6 +292,7 @@ namespace Guildmaster.DevTools
                 _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 10f, nextId++));
             }
 
+            _lastBattleSetup = self => self.SpawnMonk(enemies, enemyHp);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков");
         }
 
@@ -317,6 +338,19 @@ namespace Guildmaster.DevTools
             Scene active = SceneManager.GetActiveScene();
             Debug.Log($"[GuildmasterCommands] - gm_restart: перезагружаю {active.name}");
             SceneManager.LoadScene(active.name);
+        }
+
+        /// <summary>R: перезапустить ПОСЛЕДНИЙ бой — релоад сцены + повтор последнего сетапа (dev-итерация).</summary>
+        [Command("gm_restart_battle", "Перезапустить последний бой (релоад сцены + повтор последнего сетапа)")]
+        public void RestartLastBattle()
+        {
+            if (_lastBattleSetup == null)
+            {
+                Debug.LogWarning("[GuildmasterCommands] - gm_restart_battle: последний бой не задан (сначала запусти любой gm_spawn_*)");
+                return;
+            }
+            _replayLastBattleOnStart = true;
+            Restart();
         }
 
         /// <summary>Включить/выключить Shapes debug-слой.</summary>
