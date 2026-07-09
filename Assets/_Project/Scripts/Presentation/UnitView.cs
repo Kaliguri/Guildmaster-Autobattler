@@ -28,6 +28,10 @@ namespace Guildmaster.Presentation
         [SerializeField] private UnityEvent _onHitFeedback;
         [SerializeField] private UnityEvent _onDeathFeedback;
 
+        [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
+        [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
+        [SerializeField] private TMPro.TMP_Text _nameLabel;
+
         private RuntimeUnit _unit;
         private Vector2     _renderPosition;
 
@@ -54,6 +58,18 @@ namespace Guildmaster.Presentation
 
             if (_healthBar != null)
                 _healthBar.Bind(unit);
+        }
+
+        /// <summary>Тинт тела юнита: один общий спрайт, разный цвет на персонажа (dev-харнесс, «пока один спрайт»).</summary>
+        public void SetTint(Color color)
+        {
+            if (_sprite != null) _sprite.color = color;
+        }
+
+        /// <summary>Подпись «что за персонаж» над HP-баром. Задаёт лишь текст — вид настраивается на TMP в префабе.</summary>
+        public void SetLabel(string text)
+        {
+            if (_nameLabel != null) _nameLabel.text = text;
         }
 
         /// <summary>

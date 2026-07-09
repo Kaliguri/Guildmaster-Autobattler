@@ -1188,7 +1188,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.CombatPresenter
   _unitViewPrefab: {fileID: 4564468086045929909, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
-  _damageNumbers: {fileID: 0}
+  _floatingTextPrefab: {fileID: 8198921651497659202, guid: 9094d05663a9485458f1f69e97749669, type: 3}
+  _damageColor: {r: 1, g: 0.75, b: 0.2, a: 1}
+  _healColor: {r: 0.5, g: 1, b: 0.6, a: 1}
   _visualOverrides:
   - Relic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
     Visual: {fileID: 11400000, guid: 3911e464d296a71469eea3e103a3a9dd, type: 2}

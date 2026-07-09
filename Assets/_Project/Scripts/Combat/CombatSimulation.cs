@@ -61,6 +61,9 @@ namespace Guildmaster.Combat
         /// <summary>Нанесён урон: источник, цель, результат. Совпадает с кадром контакта (конец замаха, вики «14»).</summary>
         public event Action<RuntimeUnit, RuntimeUnit, DamageResult> OnDamageDealt;
 
+        /// <summary>Юнит исцелён: источник, цель, фактически вылеченное HP (overheal не входит). Для presentation (хил-цифры).</summary>
+        public event Action<RuntimeUnit, RuntimeUnit, float> OnHealed;
+
         /// <summary>Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View.</summary>
         public event Action<RuntimeUnit, RuntimeUnit> OnAttackStarted;
 
@@ -191,7 +194,10 @@ namespace Guildmaster.Combat
             // Кладём по ФАКТИЧЕСКИ вылеченному (overheal не считается), дренаж — в этом же тике.
             float applied = target.CurrentHP - before;
             if (applied > 0f)
+            {
                 _eventQueue.Enqueue(new CombatEventData(CombatEvent.Healed, source, target, applied));
+                OnHealed?.Invoke(source, target, applied);
+            }
         }
 
         public void SpawnProjectile(in ProjectileSpawn spawn)

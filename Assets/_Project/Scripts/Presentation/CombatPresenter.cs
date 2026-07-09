@@ -18,8 +18,13 @@ namespace Guildmaster.Presentation
         [Tooltip("Префаб вида юнита.")]
         [SerializeField] private UnitView _unitViewPrefab;
 
-        [Tooltip("Спаунер чисел урона (необязательно).")]
-        [SerializeField] private DamageNumberSpawner _damageNumbers;
+        [Header("Свои боевые цифры (урон/хил) — один префаб, цвет задаётся здесь")]
+        [Tooltip("Общий префаб всплывающей цифры (несёт FloatingText; размер/шрифт/тайминг — на префабе).")]
+        [SerializeField] private GameObject _floatingTextPrefab;
+        [Tooltip("Цвет цифры урона.")]
+        [SerializeField] private Color _damageColor = new Color(1f, 0.75f, 0.2f);
+        [Tooltip("Цвет цифры лечения (+N).")]
+        [SerializeField] private Color _healColor = new Color(0.5f, 1f, 0.6f);
 
         [Tooltip("Пер-юнит визуалы по реликвии (вики «13» шаг 4): если у юнита эта реликвия — её набор кадров вместо дефолтного на префабе.")]
         [SerializeField] private VisualOverride[] _visualOverrides = System.Array.Empty<VisualOverride>();
@@ -60,6 +65,7 @@ namespace Guildmaster.Presentation
             _simulation.OnUnitSpawned       += HandleUnitSpawned;
             _simulation.OnUnitDied          += HandleUnitDied;
             _simulation.OnDamageDealt       += HandleDamageDealt;
+            _simulation.OnHealed            += HandleHealed;
             _simulation.OnBattleEnded       += HandleBattleEnded;
             _simulation.OnAttackStarted     += HandleAttackStarted;
             _simulation.OnAttackInterrupted += HandleAttackInterrupted;
@@ -71,6 +77,7 @@ namespace Guildmaster.Presentation
             _simulation.OnUnitSpawned       -= HandleUnitSpawned;
             _simulation.OnUnitDied          -= HandleUnitDied;
             _simulation.OnDamageDealt       -= HandleDamageDealt;
+            _simulation.OnHealed            -= HandleHealed;
             _simulation.OnBattleEnded       -= HandleBattleEnded;
             _simulation.OnAttackStarted     -= HandleAttackStarted;
             _simulation.OnAttackInterrupted -= HandleAttackInterrupted;
@@ -96,6 +103,10 @@ namespace Guildmaster.Presentation
 
                 UnitVisual ov = ResolveVisual(unit.Relic);
                 if (ov != null) view.SetVisual(ov);
+
+                // «Пока один спрайт»: тинтуем тело на персонажа + подпись над HP-баром (dev-харнесс).
+                view.SetTint(TintFor(unit));
+                view.SetLabel(NameFor(unit));
 
                 _views[unit.Id] = view;
             }
@@ -129,9 +140,42 @@ namespace Guildmaster.Presentation
             if (_views.TryGetValue(target.Id, out var view))
                 view.OnDamageReceived(result.TotalDamage);
 
-            _damageNumbers?.Spawn(target.Position, result.TotalDamage);
+            int dmg = Mathf.RoundToInt(result.TotalDamage);
+            if (dmg > 0) SpawnNumber(target.Position, dmg.ToString(), _damageColor);
 
             _damageDealtPublisher.Publish(new DamageDealtEvent(source, target, result));
+        }
+
+        private void HandleHealed(RuntimeUnit source, RuntimeUnit target, float amount)
+        {
+            // Хил-цифра над целью (+N). Мелкие тики регена округляются в 0 и не спамят.
+            int healed = Mathf.RoundToInt(amount);
+            if (healed > 0) SpawnNumber(target.Position, "+" + healed, _healColor);
+        }
+
+        /// <summary>Заспавнить свою всплывающую боевую цифру над мировой точкой заданным цветом.</summary>
+        private void SpawnNumber(Vector2 worldPosition, string text, Color color)
+        {
+            Vector3 pos = (Vector3)worldPosition + Vector3.up * 0.4f;
+            FloatingText.Spawn(_floatingTextPrefab, transform, pos, text, color);
+        }
+
+        /// <summary>Тинт тела по персонажу: у реликвии — стабильный оттенок от имени; у болванчиков — по команде.</summary>
+        private static Color TintFor(RuntimeUnit unit)
+        {
+            if (unit.Relic != null)
+            {
+                float hue = (Mathf.Abs(unit.Relic.name.GetHashCode()) % 360) / 360f;
+                return Color.HSVToRGB(hue, 0.5f, 1f);
+            }
+            return unit.Team == 0 ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f);
+        }
+
+        /// <summary>Подпись персонажа: имя реликвии (SO) либо «Ally/Enemy N» для болванчиков.</summary>
+        private static string NameFor(RuntimeUnit unit)
+        {
+            if (unit.Relic != null) return unit.Relic.name;
+            return (unit.Team == 0 ? "Ally " : "Enemy ") + unit.Id;
         }
 
         private void HandleAttackStarted(RuntimeUnit source, RuntimeUnit target)

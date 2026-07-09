@@ -9,7 +9,9 @@
     "LitMotion",
     "UniTask",
     "MessagePipe",
-    "VContainer"
+    "VContainer",
+    "Unity.TextMeshPro",
+    "UnityEngine.UI"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
