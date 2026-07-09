@@ -1,7 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,120,70"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1CombatLifetimeScope.html" title="Дочерний DI&#45;скоуп BattleScene." alt="" coords="168,5,421,45"/>
-<area shape="poly" id="edge36_Node000000_Node000001" title=" " alt="" coords="133,45,167,40,168,46,134,50"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1RootLifetimeScope.html" title="Корневой DI&#45;скоуп, живёт всю сессию вместе с CoreScene." alt="" coords="179,69,411,109"/>
-<area shape="poly" id="edge37_Node000000_Node000002" title=" " alt="" coords="134,64,179,71,178,76,133,70"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="63,55,161,80"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html" title="Связывает боевые действия ввода с симуляцией на время одного боя (вики «16» §4)." alt="" coords="267,9,491,49"/>
+<area shape="poly" id="edge36_Node000000_Node000001" title=" " alt="" coords="175,56,266,42,267,48,175,61"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Input_1_1InputService.html" title="Реализация IInputService поверх Unity Input System (вики «16» §3)." alt="" coords="269,83,488,123"/>
+<area shape="poly" id="edge37_Node000000_Node000003" title=" " alt="" coords="175,73,269,86,269,91,175,78"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html" title="Единая точка ввода игрока (вики «16» §2)." alt="" coords="5,105,219,145"/>
+<area shape="poly" id="edge38_Node000004_Node000003" title=" " alt="" coords="232,112,269,109,269,115,233,118"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="69,5,155,31"/>
+<area shape="poly" id="edge39_Node000002_Node000001" title=" " alt="" coords="169,18,266,22,266,27,169,23"/>
 </map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['modifierop_0',['ModifierOp',['../namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0de',1,'Guildmaster::Data::Stats']]]
+  ['inputcontext_0',['InputContext',['../namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8',1,'Guildmaster::Core::Input']]]
 ];

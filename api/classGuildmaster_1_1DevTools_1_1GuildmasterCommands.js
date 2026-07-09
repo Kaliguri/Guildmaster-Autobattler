@@ -2,6 +2,7 @@ var classGuildmaster_1_1DevTools_1_1GuildmasterCommands =
 [
     [ "Construct", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#adce89e38f7b04415ed257db6e1a4e3d8", null ],
     [ "Restart", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a223c0b90fe8f830bb71e3ed9196b4f9b", null ],
+    [ "RestartLastBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a0e8ffc130d2adb84e307f5c10d183490", null ],
     [ "SetHp", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a1a73a4089cf1a0e9890d4ed1c0b5d871", null ],
     [ "SetRngSeed", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a97c2560d6ac8662a17c250f67c67468a", null ],
     [ "SkipBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ad2371ad3aa2e954271e07b2ac7622176", null ],

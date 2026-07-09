@@ -1,0 +1,5 @@
+<map id="Guildmaster.DevTools.GuildmasterCommands.RestartLastBattle" name="Guildmaster.DevTools.GuildmasterCommands.RestartLastBattle">
+<area shape="rect" id="Node000001" title="R: перезапустить ПОСЛЕДНИЙ бой — релоад сцены + повтор последнего сетапа (dev&#45;итерация)." alt="" coords="5,5,253,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a223c0b90fe8f830bb71e3ed9196b4f9b" title="Перезагрузить боевую сцену для нового прогона (бой одноразовый: после конца loop останавливается)." alt="" coords="301,5,549,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,23,288,23,288,28,253,28"/>
+</map>

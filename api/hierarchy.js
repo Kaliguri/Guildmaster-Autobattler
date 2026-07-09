@@ -41,6 +41,10 @@ var hierarchy =
     [ "Guildmaster.Combat.ICombatContext", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html", [
       [ "Guildmaster.Combat.CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html", null ]
     ] ],
+    [ "IDisposable", null, [
+      [ "Guildmaster.Game.Input.BattleInputController", "classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html", null ],
+      [ "Guildmaster.Game.Input.InputService", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html", null ]
+    ] ],
     [ "Guildmaster.Data.Definitions.IEffectComponent", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html", [
       [ "Guildmaster.Combat.Effects.IRuntimeEffectComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html", [
         [ "Guildmaster.Combat.Effects.Components.ControlComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html", null ],
@@ -68,6 +72,9 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
+    [ "Guildmaster.Core.Input.IInputService", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html", [
+      [ "Guildmaster.Game.Input.InputService", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html", null ]
+    ] ],
     [ "Guildmaster.Core.Random.IRngService", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html", [
       [ "Guildmaster.Core.Random.XorShiftRng", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html", null ]
     ] ],
@@ -84,6 +91,9 @@ var hierarchy =
       ] ]
     ] ],
     [ "Guildmaster.Core.Simulation.ISimEvent", "interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimEvent.html", null ],
+    [ "IStartable", null, [
+      [ "Guildmaster.Game.Input.BattleInputController", "classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html", null ]
+    ] ],
     [ "Guildmaster.Data.Stats.IStatReader", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html", [
       [ "Guildmaster.Combat.Stats", "classGuildmaster_1_1Combat_1_1Stats.html", null ]
     ] ],
@@ -101,8 +111,10 @@ var hierarchy =
       [ "Guildmaster.Game.ArenaLayoutAuthoring", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html", null ],
       [ "Guildmaster.Game.GameBootstrap", "classGuildmaster_1_1Game_1_1GameBootstrap.html", null ],
       [ "Guildmaster.Net.FacepunchTransportBootstrap", "classGuildmaster_1_1Net_1_1FacepunchTransportBootstrap.html", null ],
+      [ "Guildmaster.Presentation.CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", null ],
       [ "Guildmaster.Presentation.CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", null ],
       [ "Guildmaster.Presentation.CombatDebugDraw", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html", null ],
+      [ "Guildmaster.Presentation.CombatFocusTarget", "classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html", null ],
       [ "Guildmaster.Presentation.CombatPresenter", "classGuildmaster_1_1Presentation_1_1CombatPresenter.html", null ],
       [ "Guildmaster.Presentation.CombatStatusOverlay", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html", null ],
       [ "Guildmaster.Presentation.DamageNumber", "classGuildmaster_1_1Presentation_1_1DamageNumber.html", null ],

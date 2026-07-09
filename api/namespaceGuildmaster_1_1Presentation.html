@@ -92,7 +92,8 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Presentation.h
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Presentation Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -101,11 +102,17 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Presentation.h
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CameraModeController.html">CameraModeController</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Управляет режимами камеры и потребляет IInputService (вики «16» §5).  <a href="classGuildmaster_1_1Presentation_1_1CameraModeController.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html">CombatAreaFlash</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dev-оверлей зон удара (вики «13» шаг 4): при линейной авто-атаке и круговой активке рисует форму через Shapes-компоненты на короткую вспышку (~0.25с) с затуханием — инструмент оценки работы, НЕ финальный VFX.  <a href="classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html">CombatDebugDraw</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debug-слой боя на базе Shapes: spatial hash сетка, радиусы атак, снаряды.  <a href="classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html">CombatFocusTarget</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель слежения для экшн-камеры (вики «16» §5): каждый кадр ставит свой transform в сглаженный центроид живых юнитов и считает «разброс» боя (для динамического зума).  <a href="classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatPresenter.html">CombatPresenter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мост «симуляция → презентация».  <a href="classGuildmaster_1_1Presentation_1_1CombatPresenter.html#details">More...</a><br /></td></tr>
@@ -138,7 +145,41 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html">UnitView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">World-space визуальное представление RuntimeUnit.  <a href="classGuildmaster_1_1Presentation_1_1UnitView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a7008f013425bc03096abc74bc96c1319" id="r_a7008f013425bc03096abc74bc96c1319"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319">CameraMode</a> { <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">Action</a>
+, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a3b878279a04dc47d60932cb294d96259">Overview</a>
+, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a55f37d1fd483f6a85379640fe51aafa8">Dev</a>
+ }</td></tr>
+<tr class="memdesc:a7008f013425bc03096abc74bc96c1319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Режим камеры (вики «16» §5).  <a href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319">More...</a><br /></td></tr>
+<tr class="separator:a7008f013425bc03096abc74bc96c1319"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a7008f013425bc03096abc74bc96c1319" name="a7008f013425bc03096abc74bc96c1319"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7008f013425bc03096abc74bc96c1319">&#9670;&#160;</a></span>CameraMode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">enum</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319">Guildmaster.Presentation.CameraMode</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Режим камеры (вики «16» §5). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53" name="a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53"></a>Action&#160;</td><td class="fielddoc"><p>Динамично держит драку: следует за центроидом боя, зум подгоняется под разброс. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7008f013425bc03096abc74bc96c1319a3b878279a04dc47d60932cb294d96259" name="a7008f013425bc03096abc74bc96c1319a3b878279a04dc47d60932cb294d96259"></a>Overview&#160;</td><td class="fielddoc"><p>Обзор всей арены целиком; ручной пан/зум в пределах зоны. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a7008f013425bc03096abc74bc96c1319a55f37d1fd483f6a85379640fe51aafa8" name="a7008f013425bc03096abc74bc96c1319a55f37d1fd483f6a85379640fe51aafa8"></a>Dev&#160;</td><td class="fielddoc"><p>Свободная dev-камера: пан/зум без клампа (доступ выдаётся отдельно). </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

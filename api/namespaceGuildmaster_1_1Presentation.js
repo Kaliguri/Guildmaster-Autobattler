@@ -1,8 +1,10 @@
 var namespaceGuildmaster_1_1Presentation =
 [
     [ "BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent" ],
+    [ "CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", "classGuildmaster_1_1Presentation_1_1CameraModeController" ],
     [ "CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash" ],
     [ "CombatDebugDraw", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw" ],
+    [ "CombatFocusTarget", "classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html", "classGuildmaster_1_1Presentation_1_1CombatFocusTarget" ],
     [ "CombatPresenter", "classGuildmaster_1_1Presentation_1_1CombatPresenter.html", "classGuildmaster_1_1Presentation_1_1CombatPresenter" ],
     [ "CombatStatusOverlay", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay" ],
     [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],
@@ -13,5 +15,10 @@ var namespaceGuildmaster_1_1Presentation =
     [ "UnitAnimationSelector", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector" ],
     [ "UnitDiedEvent", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent" ],
     [ "UnitSpawnedEvent", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent" ],
-    [ "UnitView", "classGuildmaster_1_1Presentation_1_1UnitView.html", "classGuildmaster_1_1Presentation_1_1UnitView" ]
+    [ "UnitView", "classGuildmaster_1_1Presentation_1_1UnitView.html", "classGuildmaster_1_1Presentation_1_1UnitView" ],
+    [ "CameraMode", "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319", [
+      [ "Action", "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53", null ],
+      [ "Overview", "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a3b878279a04dc47d60932cb294d96259", null ],
+      [ "Dev", "namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a55f37d1fd483f6a85379640fe51aafa8", null ]
+    ] ]
 ];

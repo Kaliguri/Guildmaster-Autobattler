@@ -9,5 +9,6 @@ var searchData=
   ['maxhp_6',['MaxHP',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7328467362e04fb994455aeb50ac0449',1,'Guildmaster::Data::Stats']]],
   ['maxresource_7',['MaxResource',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284af68a53a3ca5bacdb91f4eda90883f5ee',1,'Guildmaster::Data::Stats']]],
   ['melee_8',['Melee',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1afcbd772e48c4b07d7d3be13b37a82f5e',1,'Guildmaster::Data::Definitions']]],
-  ['movespeed_9',['MoveSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a3dfb8a09b650ce66270c54fdf5c2aa74',1,'Guildmaster::Data::Stats']]]
+  ['menu_9',['Menu',['../namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8ab61541208db7fa7dba42c85224405911',1,'Guildmaster::Core::Input']]],
+  ['movespeed_10',['MoveSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a3dfb8a09b650ce66270c54fdf5c2aa74',1,'Guildmaster::Data::Stats']]]
 ];

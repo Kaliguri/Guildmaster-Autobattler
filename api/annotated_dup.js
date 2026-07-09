@@ -75,6 +75,9 @@ var annotated_dup =
           [ "DeploymentZone", "structGuildmaster_1_1Core_1_1Arena_1_1DeploymentZone.html", "structGuildmaster_1_1Core_1_1Arena_1_1DeploymentZone" ],
           [ "Rect2D", "structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html", "structGuildmaster_1_1Core_1_1Arena_1_1Rect2D" ]
         ] ],
+        [ "Input", "namespaceGuildmaster_1_1Core_1_1Input.html", [
+          [ "IInputService", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService" ]
+        ] ],
         [ "Random", "namespaceGuildmaster_1_1Core_1_1Random.html", [
           [ "IRngService", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService" ],
           [ "XorShiftRng", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng" ]
@@ -117,6 +120,10 @@ var annotated_dup =
         [ "Editor", "namespaceGuildmaster_1_1Game_1_1Editor.html", [
           [ "ArenaLayoutAuthoringEditor", "classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor.html", "classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor" ]
         ] ],
+        [ "Input", "namespaceGuildmaster_1_1Game_1_1Input.html", [
+          [ "BattleInputController", "classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html", "classGuildmaster_1_1Game_1_1Input_1_1BattleInputController" ],
+          [ "InputService", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html", "classGuildmaster_1_1Game_1_1Input_1_1InputService" ]
+        ] ],
         [ "Services", "namespaceGuildmaster_1_1Game_1_1Services.html", [
           [ "CombatLoopService", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService" ],
           [ "GameFlow", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow" ],
@@ -137,8 +144,10 @@ var annotated_dup =
       ] ],
       [ "Presentation", "namespaceGuildmaster_1_1Presentation.html", [
         [ "BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent" ],
+        [ "CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", "classGuildmaster_1_1Presentation_1_1CameraModeController" ],
         [ "CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash" ],
         [ "CombatDebugDraw", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw" ],
+        [ "CombatFocusTarget", "classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html", "classGuildmaster_1_1Presentation_1_1CombatFocusTarget" ],
         [ "CombatPresenter", "classGuildmaster_1_1Presentation_1_1CombatPresenter.html", "classGuildmaster_1_1Presentation_1_1CombatPresenter" ],
         [ "CombatStatusOverlay", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay" ],
         [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],

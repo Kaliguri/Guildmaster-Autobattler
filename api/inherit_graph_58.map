@@ -1,31 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,415,129,441"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1DevTools_1_1CombatUnitDebugView.html" title="Инспектор состояния всех юнитов симуляции в реальном времени." alt="" coords="193,5,412,45"/>
-<area shape="poly" id="edge38_Node000000_Node000001" title=" " alt="" coords="65,401,69,332,83,239,97,190,116,141,142,95,175,55,192,43,195,47,179,59,146,98,121,143,102,191,88,241,74,333,71,402"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html" title="Набор отладочных команд Quantum Console для Фазы 1 (вики «10» §9)." alt="" coords="179,69,427,109"/>
-<area shape="poly" id="edge39_Node000000_Node000002" title=" " alt="" coords="67,402,74,343,91,267,105,227,124,188,147,151,176,119,192,107,195,112,179,123,151,155,128,190,110,229,97,269,80,344,73,402"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html" title="Авторинг арены в сцене/префабе: задаёт границы поля и зоны расстановки, рисует их гизмо." alt="" coords="187,133,418,173"/>
-<area shape="poly" id="edge40_Node000000_Node000003" title=" " alt="" coords="70,401,81,354,101,295,131,235,152,207,176,183,194,171,197,176,179,187,156,211,136,238,105,297,86,356,75,402"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1GameBootstrap.html" title="Точка старта: поднимает RootLifetimeScope и запускает GameFlow.BootAsync." alt="" coords="177,198,428,223"/>
-<area shape="poly" id="edge41_Node000000_Node000004" title=" " alt="" coords="73,401,86,363,107,318,137,272,176,234,199,221,201,226,179,238,141,275,112,320,91,365,78,403"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Net_1_1FacepunchTransportBootstrap.html" title="Инициализирует Steam через Facepunch.Steamworks и Netcode for GameObjects." alt="" coords="203,248,403,288"/>
-<area shape="poly" id="edge42_Node000000_Node000005" title=" " alt="" coords="81,402,119,349,146,321,176,298,201,285,203,290,179,302,149,325,123,353,85,405"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html" title="Dev&#45;оверлей зон удара (вики «13» шаг 4): при линейной авто&#45;атаке и круговой активке рисует форму чере..." alt="" coords="207,312,398,352"/>
-<area shape="poly" id="edge43_Node000000_Node000006" title=" " alt="" coords="97,405,134,383,176,362,210,350,212,355,178,366,136,387,100,410"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html" title="Debug&#45;слой боя на базе Shapes: spatial hash сетка, радиусы атак, снаряды." alt="" coords="207,376,398,416"/>
-<area shape="poly" id="edge44_Node000000_Node000007" title=" " alt="" coords="143,415,207,406,208,412,144,420"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Presentation_1_1CombatPresenter.html" title="Мост «симуляция → презентация»." alt="" coords="207,440,398,480"/>
-<area shape="poly" id="edge45_Node000000_Node000008" title=" " alt="" coords="144,436,208,444,207,450,143,441"/>
-<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html" title="Dev&#45;подсветка статусов юнитов кольцами Shapes: метка/стан/щит/заморозка/усиление." alt="" coords="207,504,398,544"/>
-<area shape="poly" id="edge46_Node000000_Node000009" title=" " alt="" coords="100,446,136,469,178,490,212,501,210,506,176,494,134,473,97,451"/>
-<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Presentation_1_1DamageNumber.html" title="Один всплывающий элемент урона: базовый UI Text + цвет и альфа." alt="" coords="207,568,398,608"/>
-<area shape="poly" id="edge47_Node000000_Node000010" title=" " alt="" coords="85,451,123,503,149,531,179,554,208,568,206,573,176,558,146,535,119,507,81,454"/>
-<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Presentation_1_1DamageNumberSpawner.html" title="Всплывающие числа урона." alt="" coords="207,632,398,672"/>
-<area shape="poly" id="edge48_Node000000_Node000011" title=" " alt="" coords="79,453,92,490,113,535,142,580,179,618,208,634,206,639,176,622,138,583,108,538,87,492,74,455"/>
-<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Presentation_1_1FloatingText.html" title="Своя всплывающая боевая цифра (урон/хил) — один общий префаб с TMP&#45;текстом." alt="" coords="207,696,398,736"/>
-<area shape="poly" id="edge49_Node000000_Node000012" title=" " alt="" coords="75,454,85,503,104,565,134,628,155,657,179,682,209,700,206,704,176,686,151,660,130,631,99,567,79,504,69,455"/>
-<area shape="rect" id="Node000013" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html" title="Двойной HP&#45;бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA) на uGUI." alt="" coords="207,760,398,800"/>
-<area shape="poly" id="edge50_Node000000_Node000013" title=" " alt="" coords="72,455,78,515,95,594,109,635,127,676,150,713,179,746,208,764,205,769,176,750,146,716,122,678,104,637,90,595,73,516,67,455"/>
-<area shape="rect" id="Node000014" href="$classGuildmaster_1_1Presentation_1_1UnitView.html" title="World&#45;space визуальное представление RuntimeUnit." alt="" coords="207,824,398,864"/>
-<area shape="poly" id="edge51_Node000000_Node000014" title=" " alt="" coords="70,454,73,525,87,621,100,672,119,723,145,769,179,810,208,829,206,833,176,814,141,772,115,725,95,674,81,622,68,526,65,455"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,120,70"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1CombatLifetimeScope.html" title="Дочерний DI&#45;скоуп BattleScene." alt="" coords="168,5,421,45"/>
+<area shape="poly" id="edge40_Node000000_Node000001" title=" " alt="" coords="133,45,167,40,168,46,134,50"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1RootLifetimeScope.html" title="Корневой DI&#45;скоуп, живёт всю сессию вместе с CoreScene." alt="" coords="179,69,411,109"/>
+<area shape="poly" id="edge41_Node000000_Node000002" title=" " alt="" coords="134,64,179,71,178,76,133,70"/>
 </map>

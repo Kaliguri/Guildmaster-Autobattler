@@ -53,12 +53,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AIProfile_8cs.html",
-"UnitAnimationState_8cs.html#a5bcc0ab90dcf45adb135592687f861a6adcfafcb4323b102c7e204555d313ba0a",
-"classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html#ab3158bd78dfed445de596e9197af17c9",
-"classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#ad27d26ac527e0a02ecd473997c2e7206",
-"classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html#afae0c8f6f636435179fddacfe87b3b04",
-"interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#ac724e42e655e77612ab64f06872e08c8",
-"structGuildmaster_1_1Combat_1_1DamageRequest.html#a775472a539a802ce1e5ee945bf0490df"
+"TargetingMode_8cs.html#a9682e32b839e6220bb3b059bf07291c2",
+"classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#a0a839e0d600a5d2201274d4d8d50da97",
+"classGuildmaster_1_1Core_1_1Arena_1_1DeploymentService.html",
+"classGuildmaster_1_1Game_1_1CombatLifetimeScope.html",
+"functions_u.html",
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca30954d90085f6eaaf5817917fc5fecb3",
+"structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html#abf98e74afccf22f069e93eca34391235"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

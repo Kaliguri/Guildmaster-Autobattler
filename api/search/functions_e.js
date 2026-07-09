@@ -9,7 +9,8 @@ var searchData=
   ['resolve_6',['Resolve',['../structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html#a70741f041fa3aa2b67f41f6b82d8e072',1,'Guildmaster::Data::Stats::ScalableValue']]],
   ['resolvedurationticks_7',['ResolveDurationTicks',['../classGuildmaster_1_1Combat_1_1EffectSystem.html#afba054405a0f16608dfd5d774a58cc90',1,'Guildmaster::Combat::EffectSystem']]],
   ['restart_8',['Restart',['../classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a223c0b90fe8f830bb71e3ed9196b4f9b',1,'Guildmaster::DevTools::GuildmasterCommands']]],
-  ['resumecommand_9',['ResumeCommand',['../classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand.html#a24996de26e6f18dfa7d296195180f4a4',1,'Guildmaster::Combat::Commands::ResumeCommand']]],
-  ['runpredamage_10',['RunPreDamage',['../classGuildmaster_1_1Combat_1_1EffectSystem.html#a185829371095c507b7672006d99010b8',1,'Guildmaster::Combat::EffectSystem']]],
-  ['runtimeunitfactory_11',['RuntimeUnitFactory',['../classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a9b33e6195bdd2345c32c41581e0b2fd1',1,'Guildmaster::Combat::RuntimeUnitFactory']]]
+  ['restartlastbattle_9',['RestartLastBattle',['../classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a0e8ffc130d2adb84e307f5c10d183490',1,'Guildmaster::DevTools::GuildmasterCommands']]],
+  ['resumecommand_10',['ResumeCommand',['../classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand.html#a24996de26e6f18dfa7d296195180f4a4',1,'Guildmaster::Combat::Commands::ResumeCommand']]],
+  ['runpredamage_11',['RunPreDamage',['../classGuildmaster_1_1Combat_1_1EffectSystem.html#a185829371095c507b7672006d99010b8',1,'Guildmaster::Combat::EffectSystem']]],
+  ['runtimeunitfactory_12',['RuntimeUnitFactory',['../classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a9b33e6195bdd2345c32c41581e0b2fd1',1,'Guildmaster::Combat::RuntimeUnitFactory']]]
 ];

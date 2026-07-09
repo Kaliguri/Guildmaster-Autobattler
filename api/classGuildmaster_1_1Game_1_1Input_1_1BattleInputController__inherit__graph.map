@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Input.BattleInputController" name="Guildmaster.Game.Input.BattleInputController">
+<area shape="rect" id="Node000001" title="Связывает боевые действия ввода с симуляцией на время одного боя (вики «16» §4)." alt="" coords="5,119,221,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="21,5,99,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="80,83,93,117,88,119,75,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="123,5,213,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="153,84,139,119,134,117,148,82"/>
+</map>
