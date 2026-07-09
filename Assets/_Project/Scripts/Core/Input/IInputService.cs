@@ -1,0 +1,39 @@
+using System;
+using UnityEngine;
+
+namespace Guildmaster.Core.Input
+{
+    /// <summary>
+    /// Единая точка ввода игрока (вики «16» §2). Весь геймплейный ввод сходится сюда, а не
+    /// разбросан по компонентам: реализация оборачивает Input System, потребители (камера,
+    /// боевой слой) зависят только от этого интерфейса и Input System не видят.
+    /// <para>Соглашение о раздаче: непрерывный ввод (пан/зум) читается значением каждый кадр;
+    /// дискретный (нажатия) приходит событиями. Активность карт задаётся <see cref="Context"/>.</para>
+    /// </summary>
+    public interface IInputService
+    {
+        /// <summary>Текущий контекст — какие карты действий активны.</summary>
+        InputContext Context { get; }
+
+        /// <summary>Переключить контекст: гасит старые карты действий и включает нужные.</summary>
+        void SetContext(InputContext context);
+
+        // --- Камера: непрерывный ввод (поллинг каждый кадр) ---
+
+        /// <summary>Панорамирование камеры: WASD + стрелки, нормализовано в [-1..1] по осям.</summary>
+        Vector2 CameraPan { get; }
+
+        /// <summary>Дельта зума за кадр (колесо мыши): &gt;0 — приблизить, &lt;0 — отдалить.</summary>
+        float CameraZoomDelta { get; }
+
+        // --- Камера: дискретные события ---
+
+        /// <summary>Циклическое переключение вида камеры (Tab): Action → Overview → [Dev].</summary>
+        event Action CycleViewRequested;
+
+        // --- Бой: дискретные события ---
+
+        /// <summary>Переключить паузу боя (Space): пауза ↔ продолжить.</summary>
+        event Action PauseToggleRequested;
+    }
+}

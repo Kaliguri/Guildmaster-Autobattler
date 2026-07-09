@@ -1,4 +1,6 @@
+using Guildmaster.Core.Input;
 using Guildmaster.Core.Random;
+using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
 using MessagePipe;
 using VContainer;
@@ -20,6 +22,9 @@ namespace Guildmaster.Game
             builder.Register<UnityAudioService>(Lifetime.Singleton).As<IAudioService>();
             builder.Register<SceneLoader>(Lifetime.Singleton);
             builder.Register<GameFlow>(Lifetime.Singleton);
+
+            // Ввод глобален и переживает перезагрузку боевой сцены (вики «16» §3).
+            builder.Register<InputService>(Lifetime.Singleton).As<IInputService>();
 
             var options = builder.RegisterMessagePipe();
             builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));

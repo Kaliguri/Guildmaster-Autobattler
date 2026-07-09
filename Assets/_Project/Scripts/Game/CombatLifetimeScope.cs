@@ -2,6 +2,7 @@ using Guildmaster.Combat;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
 using Guildmaster.Presentation;
 using UnityEngine;
@@ -38,6 +39,9 @@ namespace Guildmaster.Game
             RegisterCombatSystems(builder);
             RegisterSimulation(builder, layout);
             RegisterPresentation(builder);
+
+            // Боевой ввод: пауза/рестарт на время этого боя (вики «16» §4).
+            builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
         }
 
         private ArenaLayoutData BuildArenaLayout()
