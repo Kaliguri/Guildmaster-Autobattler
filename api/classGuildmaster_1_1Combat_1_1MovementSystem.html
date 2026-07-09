@@ -108,16 +108,16 @@ Collaboration diagram for Guildmaster.Combat.MovementSystem:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae81eb146f149fe4cc225406250d96c06" id="r_ae81eb146f149fe4cc225406250d96c06"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1MovementSystem.html#ae81eb146f149fe4cc225406250d96c06">Tick</a> (List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, float dt)</td></tr>
-<tr class="memdesc:ae81eb146f149fe4cc225406250d96c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Продвинуть позиции всех живых юнитов на один тик.  <br /></td></tr>
-<tr class="separator:ae81eb146f149fe4cc225406250d96c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5b73c3b215a5304f0c57490ece50de4" id="r_af5b73c3b215a5304f0c57490ece50de4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1MovementSystem.html#af5b73c3b215a5304f0c57490ece50de4">Tick</a> (List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, float dt, in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a> bounds)</td></tr>
+<tr class="memdesc:af5b73c3b215a5304f0c57490ece50de4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Продвинуть позиции всех живых юнитов на один тик.  <br /></td></tr>
+<tr class="separator:af5b73c3b215a5304f0c57490ece50de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Интегрирует позиции живых юнитов. </p>
 <p>Ручная математика — без Rigidbody2D и без Time.deltaTime (dt передаётся снаружи из CombatLoopService). Ветвится по RuntimeUnit.Positioning (§9.7): Approach (Ф1), Kite (полоса дистанции), Retreat (от ближайшего врага). Стрельба на ходу (§9.8) снимает рут замаха. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae81eb146f149fe4cc225406250d96c06" name="ae81eb146f149fe4cc225406250d96c06"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae81eb146f149fe4cc225406250d96c06">&#9670;&#160;</a></span>Tick()</h2>
+<a id="af5b73c3b215a5304f0c57490ece50de4" name="af5b73c3b215a5304f0c57490ece50de4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5b73c3b215a5304f0c57490ece50de4">&#9670;&#160;</a></span>Tick()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -135,7 +135,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>dt</em>&#160;</td>
+          <td class="paramname"><em>dt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a>&#160;</td>
+          <td class="paramname"><em>bounds</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -155,13 +161,14 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">units</td><td>Список всех юнитов в бою.</td></tr>
     <tr><td class="paramname">dt</td><td>Длительность тика (всегда SimConstants.TickDelta).</td></tr>
+    <tr><td class="paramname">bounds</td><td>Границы поля: итоговая позиция клампится внутрь (<a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html#a6544c30b216b3a689e965d8c6c0aefda" title="Бесконечное поле: движение не клампится.">ArenaBounds.Unbounded</a> = без стен).</td></tr>
   </table>
   </dd>
 </dl>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1MovementSystem_ae81eb146f149fe4cc225406250d96c06_cgraph.svg" width="510" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1MovementSystem_af5b73c3b215a5304f0c57490ece50de4_cgraph.svg" width="510" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

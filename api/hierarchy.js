@@ -5,6 +5,8 @@ var hierarchy =
     [ "Guildmaster.Combat.AbilitySystem", "classGuildmaster_1_1Combat_1_1AbilitySystem.html", null ],
     [ "Guildmaster.Data.Definitions.AIProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html", null ],
     [ "Guildmaster.Combat.AreaHit", "structGuildmaster_1_1Combat_1_1AreaHit.html", null ],
+    [ "Guildmaster.Core.Arena.ArenaBounds", "structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html", null ],
+    [ "Guildmaster.Core.Arena.ArenaLayoutData", "classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html", null ],
     [ "Guildmaster.Combat.AttackTiming", "classGuildmaster_1_1Combat_1_1AttackTiming.html", null ],
     [ "Attribute", null, [
       [ "Guildmaster.Data.Definitions.AttackHitFrameStripAttribute", "classGuildmaster_1_1Data_1_1Definitions_1_1AttackHitFrameStripAttribute.html", null ]
@@ -19,6 +21,8 @@ var hierarchy =
     [ "Guildmaster.Combat.DamageRequest", "structGuildmaster_1_1Combat_1_1DamageRequest.html", null ],
     [ "Guildmaster.Combat.DamageResult", "structGuildmaster_1_1Combat_1_1DamageResult.html", null ],
     [ "Guildmaster.Combat.DeathSystem", "classGuildmaster_1_1Combat_1_1DeathSystem.html", null ],
+    [ "Guildmaster.Core.Arena.DeploymentService", "classGuildmaster_1_1Core_1_1Arena_1_1DeploymentService.html", null ],
+    [ "Guildmaster.Core.Arena.DeploymentZone", "structGuildmaster_1_1Core_1_1Arena_1_1DeploymentZone.html", null ],
     [ "Guildmaster.Combat.Effects.DispelRequest", "structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html", null ],
     [ "Guildmaster.Combat.DisplacementSystem", "classGuildmaster_1_1Combat_1_1DisplacementSystem.html", null ],
     [ "Guildmaster.Combat.DisplaceRequest", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html", null ],
@@ -42,7 +46,6 @@ var hierarchy =
         [ "Guildmaster.Combat.Effects.Components.ControlComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html", null ],
         [ "Guildmaster.Combat.Effects.Components.DispelComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent.html", null ],
         [ "Guildmaster.Combat.Effects.Components.MissingHpShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MissingHpShieldComponent.html", null ],
-        [ "Guildmaster.Combat.Effects.Components.ShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html", null ],
         [ "Guildmaster.Combat.Effects.Components.StatModifierComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent.html", null ],
         [ "Guildmaster.Combat.Effects.IPeriodicComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html", [
           [ "Guildmaster.Combat.Effects.Components.PeriodicDamageComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html", null ],
@@ -58,6 +61,10 @@ var hierarchy =
           [ "Guildmaster.Combat.Effects.Components.StealthComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.ThornsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.VortexEntryComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html", null ]
+        ] ],
+        [ "Guildmaster.Combat.Effects.IStackableComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html", [
+          [ "Guildmaster.Combat.Effects.Components.DodgeComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html", null ],
+          [ "Guildmaster.Combat.Effects.Components.ShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html", null ]
         ] ]
       ] ]
     ] ],
@@ -91,6 +98,7 @@ var hierarchy =
     [ "MonoBehaviour", null, [
       [ "Guildmaster.DevTools.CombatUnitDebugView", "classGuildmaster_1_1DevTools_1_1CombatUnitDebugView.html", null ],
       [ "Guildmaster.DevTools.GuildmasterCommands", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html", null ],
+      [ "Guildmaster.Game.ArenaLayoutAuthoring", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html", null ],
       [ "Guildmaster.Game.GameBootstrap", "classGuildmaster_1_1Game_1_1GameBootstrap.html", null ],
       [ "Guildmaster.Net.FacepunchTransportBootstrap", "classGuildmaster_1_1Net_1_1FacepunchTransportBootstrap.html", null ],
       [ "Guildmaster.Presentation.CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", null ],
@@ -111,10 +119,14 @@ var hierarchy =
     [ "OdinAttributeDrawer", null, [
       [ "Guildmaster.Data.Editor.AttackHitFrameStripAttributeDrawer", "classGuildmaster_1_1Data_1_1Editor_1_1AttackHitFrameStripAttributeDrawer.html", null ]
     ] ],
+    [ "OdinEditor", null, [
+      [ "Guildmaster.Game.Editor.ArenaLayoutAuthoringEditor", "classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor.html", null ]
+    ] ],
     [ "Guildmaster.Combat.Effects.PreDamageResult", "classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html", null ],
     [ "Guildmaster.Combat.Projectile", "classGuildmaster_1_1Combat_1_1Projectile.html", null ],
     [ "Guildmaster.Combat.ProjectileSpawn", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html", null ],
     [ "Guildmaster.Combat.ProjectileSystem", "classGuildmaster_1_1Combat_1_1ProjectileSystem.html", null ],
+    [ "Guildmaster.Core.Arena.Rect2D", "structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html", null ],
     [ "Guildmaster.Combat.RegenSystem", "classGuildmaster_1_1Combat_1_1RegenSystem.html", null ],
     [ "Guildmaster.Data.Definitions.Retreat", "structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html", null ],
     [ "Guildmaster.Combat.Effects.RuntimeEffect", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html", null ],

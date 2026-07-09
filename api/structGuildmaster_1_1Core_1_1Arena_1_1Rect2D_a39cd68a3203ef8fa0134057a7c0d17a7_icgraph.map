@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Arena.Rect2D.Contains" name="Guildmaster.Core.Arena.Rect2D.Contains">
+<area shape="rect" id="Node000001" title="Лежит ли точка внутри прямоугольника (границы включительно)." alt="" coords="315,5,533,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Core_1_1Arena_1_1DeploymentService.html#a2461da8dbef870bde02d91d7ab0cdb09" title="Можно ли поставить юнита стороны side &#160;в точку pos ." alt="" coords="5,5,267,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="301,28,267,28,267,23,301,23"/>
+</map>

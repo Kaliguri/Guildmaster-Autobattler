@@ -121,7 +121,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Рантайм-контракт поведения эффекта. </p>
 <p>Производный от Data-маркера IEffectComponent: сериализационный якорь живёт в Data, а хуки, оперирующие боевым состоянием (EffectContext), — здесь, в Combat (кросс-сборочный шов, вики «10» §2.2, «12» §3.1).</p>
-<p>Компоненты <b>stateless</b>: экземпляр шарится между всеми носителями эффекта. Per-unit состояние — в RuntimeEffect/EffectContext. <code>OnApply</code> обязан быть идемпотентен при re-apply на стак/рефреш (EffectSystem зовёт OnExpire→OnApply). </p>
+<p>Компоненты <b>stateless</b>: экземпляр шарится между всеми носителями эффекта. Per-unit состояние — в RuntimeEffect/EffectContext. По умолчанию рестак = <code>OnExpire→OnApply</code> (keyed-снятие обязано быть идемпотентным). Компонент с накопленным внешним состоянием (щит/заряды) реализует IStackableComponent и правит вклад дельтой. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac38e374b510929093284b08bde4c2b96" name="ac38e374b510929093284b08bde4c2b96"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac38e374b510929093284b08bde4c2b96">&#9670;&#160;</a></span>OnApply()</h2>

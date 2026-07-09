@@ -10,10 +10,10 @@
 <area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="690,450,555,415,556,410,691,445"/>
 <area shape="rect" id="Node000014" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html#aaf46f1b8729265d7c867f144b4163d3f" title=" " alt="" coords="317,437,580,491"/>
 <area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="630,467,580,467,580,461,630,461"/>
-<area shape="rect" id="Node000015" href="$classGuildmaster_1_1Combat_1_1MovementSystem.html#ae81eb146f149fe4cc225406250d96c06" title="Продвинуть позиции всех живых юнитов на один тик." alt="" coords="333,516,564,556"/>
+<area shape="rect" id="Node000015" href="$classGuildmaster_1_1Combat_1_1RegenSystem.html#ac1d56f58c6a7d2df6944d27069384cb2" title="Применить регенерацию ко всем живым юнитам за один тик." alt="" coords="348,516,549,556"/>
 <area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="690,483,597,505,539,519,538,513,595,500,689,477"/>
-<area shape="rect" id="Node000016" href="$classGuildmaster_1_1Combat_1_1RegenSystem.html#ac1d56f58c6a7d2df6944d27069384cb2" title="Применить регенерацию ко всем живым юнитам за один тик." alt="" coords="348,580,549,620"/>
-<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="729,487,671,530,635,552,597,570,551,586,549,581,595,566,632,547,668,525,726,483"/>
+<area shape="rect" id="Node000016" href="$classGuildmaster_1_1Combat_1_1MovementSystem.html#af5b73c3b215a5304f0c57490ece50de4" title="Продвинуть позиции всех живых юнитов на один тик." alt="" coords="333,580,564,620"/>
+<area shape="poly" id="edge15_Node000001_Node000016" title=" " alt="" coords="729,487,671,530,635,552,597,570,563,582,561,577,595,566,632,547,668,525,726,483"/>
 <area shape="rect" id="Node000017" href="$classGuildmaster_1_1Combat_1_1AbilitySystem.html#a0cedfa4ba0cd96a1b321dbbde5983bc8" title="Попытаться скастовать способность abilityIndex ." alt="" coords="347,644,550,684"/>
 <area shape="poly" id="edge16_Node000001_Node000017" title=" " alt="" coords="739,490,716,523,683,562,643,602,597,634,551,653,549,648,595,630,640,597,679,559,712,520,735,487"/>
 <area shape="rect" id="Node000019" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a25961c760cc2434fa8f210178cf3e8e3" title="Обновить интерполированную позицию." alt="" coords="341,708,556,748"/>

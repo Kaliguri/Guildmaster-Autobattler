@@ -1,6 +1,6 @@
 var classGuildmaster_1_1Combat_1_1CombatSimulation =
 [
-    [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a05e1ef800b78e4c1cc248bb2567a47a4", null ],
+    [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a00e571fb57a06af1059cb76a54a9cede", null ],
     [ "ApplyEffect", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7ffdb85ea967ca31ce9f970371df906a", null ],
     [ "ComputeChecksum", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6d647c0229bc77cc9701a4272f36623c", null ],
     [ "DealDamage", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6de925024d5473fc9537c6a36e39fe45", null ],
@@ -17,6 +17,7 @@ var classGuildmaster_1_1Combat_1_1CombatSimulation =
     [ "SetPaused", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae3092fa6133f040d7b2b7af1c28540c4", null ],
     [ "SpawnProjectile", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a85465a46ea9d2ce38e263814ef54b9c2", null ],
     [ "Tick", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac7aab9f602bf9130070f6f808e6b9f4f", null ],
+    [ "Arena", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#aae2638c3765606cc9ecb3140551ba9be", null ],
     [ "ArmorK", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4dd6f5d61443f2039f006e08123100d6", null ],
     [ "CurrentTick", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ab9f442fdb4c0fe4050dfd80796841bf9", null ],
     [ "IsPaused", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a95b013883f25014e70b5ec816df42285", null ],

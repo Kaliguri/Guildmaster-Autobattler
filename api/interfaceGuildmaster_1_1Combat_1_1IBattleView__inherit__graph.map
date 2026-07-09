@@ -1,5 +1,5 @@
 <map id="Guildmaster.Combat.IBattleView" name="Guildmaster.Combat.IBattleView">
 <area shape="rect" id="Node000001" title="Read&#45;only срез боя для мозга (вики «13» §3.1)." alt="" coords="5,5,232,91"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html" title="Детерминированная тиковая симуляция боя." alt="" coords="17,139,220,519"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,105,121,139,116,139,116,105"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html" title="Детерминированная тиковая симуляция боя." alt="" coords="17,139,220,539"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="121,105,121,138,116,138,116,105"/>
 </map>

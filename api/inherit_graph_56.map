@@ -1,13 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,141,135,166"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html" title="Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги,..." alt="" coords="183,5,397,45"/>
-<area shape="poly" id="edge52_Node000000_Node000001" title=" " alt="" coords="90,129,130,91,181,55,208,43,210,48,184,60,134,95,94,132"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — стат&#45;блок и боевые категории юнита." alt="" coords="183,69,397,109"/>
-<area shape="poly" id="edge53_Node000000_Node000002" title=" " alt="" coords="127,134,220,107,221,112,128,139"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html" title="Глобальный шаблон стат&#45;системы: дефолты статов + тюнинг&#45;константы пайплайна (armor&#45;константа,..." alt="" coords="183,133,397,173"/>
-<area shape="poly" id="edge54_Node000000_Node000003" title=" " alt="" coords="148,151,183,151,183,156,148,156"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html" title="Визуальный набор реликвии: спрайт&#45;кадры по состояниям (Idle/Run/Attack/Death) + частота кадров." alt="" coords="183,197,397,237"/>
-<area shape="poly" id="edge55_Node000000_Node000004" title=" " alt="" coords="128,167,221,195,220,200,127,173"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="183,261,397,301"/>
-<area shape="poly" id="edge56_Node000000_Node000005" title=" " alt="" coords="94,174,134,212,184,247,210,259,208,264,181,252,130,216,90,178"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,13,129,38"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html" title="Реалтайм&#45;пульс боевой симуляции: accumulator&#45;паттерн на Time.deltaTime." alt="" coords="177,5,384,45"/>
+<area shape="poly" id="edge35_Node000000_Node000001" title=" " alt="" coords="143,23,177,23,177,28,143,28"/>
 </map>

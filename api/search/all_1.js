@@ -10,12 +10,14 @@ var searchData=
   ['battlesetupbuilder_2ecs_7',['BattleSetupBuilder.cs',['../BattleSetupBuilder_8cs.html',1,'']]],
   ['bind_8',['bind',['../classGuildmaster_1_1Presentation_1_1HealthBarView.html#addca237a220d26640e8bef0b174d1134',1,'Guildmaster.Presentation.HealthBarView.Bind()'],['../classGuildmaster_1_1Presentation_1_1UnitView.html#a255f8da9e7913276471739aea28ffe45',1,'Guildmaster.Presentation.UnitView.Bind()']]],
   ['bootasync_9',['BootAsync',['../classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#aa9929c253f14ccf778d55252addbe0a4',1,'Guildmaster::Game::Services::GameFlow']]],
-  ['brain_10',['Brain',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a496d71a18b672afd7a799ba221859c9b',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['braindirty_11',['BrainDirty',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9f1b65b1db4e85fd9ad6ff425d0b897f',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['brainphase_12',['BrainPhase',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9ebe4afe282ccb09d9c9083bcae2dccf',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['brainsystem_13',['BrainSystem',['../classGuildmaster_1_1Combat_1_1BrainSystem.html',1,'Guildmaster::Combat']]],
-  ['brainsystem_2ecs_14',['BrainSystem.cs',['../BrainSystem_8cs.html',1,'']]],
-  ['buff_15',['buff',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff']]],
-  ['bulwarkcomponent_16',['BulwarkComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BulwarkComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
-  ['bulwarkcomponent_2ecs_17',['BulwarkComponent.cs',['../BulwarkComponent_8cs.html',1,'']]]
+  ['bounds_10',['Bounds',['../classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html#a7fa391b7fe1303010ef21f71e32b8bf7',1,'Guildmaster::Core::Arena::ArenaLayoutData']]],
+  ['brain_11',['Brain',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a496d71a18b672afd7a799ba221859c9b',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['braindirty_12',['BrainDirty',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9f1b65b1db4e85fd9ad6ff425d0b897f',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['brainphase_13',['BrainPhase',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9ebe4afe282ccb09d9c9083bcae2dccf',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['brainsystem_14',['BrainSystem',['../classGuildmaster_1_1Combat_1_1BrainSystem.html',1,'Guildmaster::Combat']]],
+  ['brainsystem_2ecs_15',['BrainSystem.cs',['../BrainSystem_8cs.html',1,'']]],
+  ['buff_16',['buff',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff']]],
+  ['buildlayout_17',['BuildLayout',['../classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html#aea7da6bbbd27e232ca5ab2d3611a0739',1,'Guildmaster::Game::ArenaLayoutAuthoring']]],
+  ['bulwarkcomponent_18',['BulwarkComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BulwarkComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
+  ['bulwarkcomponent_2ecs_19',['BulwarkComponent.cs',['../BulwarkComponent_8cs.html',1,'']]]
 ];

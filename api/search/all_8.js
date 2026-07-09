@@ -26,8 +26,8 @@ var searchData=
   ['isalive_23',['IsAlive',['../classGuildmaster_1_1Combat_1_1Projectile.html#aa05bd5d72297ef0851a62dd13843a9f8',1,'Guildmaster::Combat::Projectile']]],
   ['iscalablepotency_24',['IScalablePotency',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html',1,'Guildmaster::Combat::Effects']]],
   ['isdead_25',['IsDead',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4535a281dcec5e830ae47b664400347e',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['isenabled_26',['isenabled',['../classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html#a51d36fba71d6d8bf222c387f7a0267a2',1,'Guildmaster.Presentation.CombatAreaFlash.IsEnabled'],['../classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html#a0da2ff2c7d8279ddaca3aa8809cf4d73',1,'Guildmaster.Presentation.CombatDebugDraw.IsEnabled'],['../classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html#a43912a179e9bb9dbb7770fb4b49f46af',1,'Guildmaster.Presentation.CombatStatusOverlay.IsEnabled']]],
-  ['isheal_27',['isheal',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#affc117a4c66868ae3facfeb803835cdb',1,'Guildmaster.Data.Definitions.AbilityData.IsHeal'],['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a7731ec28cceeb5d0b3f9c37f98de5145',1,'Guildmaster.Combat.ProjectileSpawn.IsHeal'],['../classGuildmaster_1_1Combat_1_1Projectile.html#a5930e54bf575c0b5f29d5de71b3bd9aa',1,'Guildmaster.Combat.Projectile.IsHeal']]],
+  ['isenabled_26',['isenabled',['../classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html#a43912a179e9bb9dbb7770fb4b49f46af',1,'Guildmaster.Presentation.CombatStatusOverlay.IsEnabled'],['../classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html#a0da2ff2c7d8279ddaca3aa8809cf4d73',1,'Guildmaster.Presentation.CombatDebugDraw.IsEnabled'],['../classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html#a51d36fba71d6d8bf222c387f7a0267a2',1,'Guildmaster.Presentation.CombatAreaFlash.IsEnabled']]],
+  ['isheal_27',['isheal',['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a7731ec28cceeb5d0b3f9c37f98de5145',1,'Guildmaster.Combat.ProjectileSpawn.IsHeal'],['../classGuildmaster_1_1Combat_1_1Projectile.html#a5930e54bf575c0b5f29d5de71b3bd9aa',1,'Guildmaster.Combat.Projectile.IsHeal'],['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#affc117a4c66868ae3facfeb803835cdb',1,'Guildmaster.Data.Definitions.AbilityData.IsHeal']]],
   ['isimcommand_28',['ISimCommand',['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html',1,'Guildmaster::Core::Simulation']]],
   ['isimcommand_2ecs_29',['ISimCommand.cs',['../ISimCommand_8cs.html',1,'']]],
   ['isimevent_30',['ISimEvent',['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimEvent.html',1,'Guildmaster::Core::Simulation']]],
@@ -35,9 +35,10 @@ var searchData=
   ['ispaused_32',['IsPaused',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a95b013883f25014e70b5ec816df42285',1,'Guildmaster::Combat::CombatSimulation']]],
   ['ispermanent_33',['IsPermanent',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#aee919d35448b0570140dc9fc64c9b23e',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
   ['isready_34',['IsReady',['../classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#a5f608fd1fcc53017c0da8c0533ca8849',1,'Guildmaster::Combat::Abilities::AbilityRuntime']]],
-  ['istatreader_35',['IStatReader',['../interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html',1,'Guildmaster::Data::Stats']]],
-  ['istatreader_2ecs_36',['IStatReader.cs',['../IStatReader_8cs.html',1,'']]],
-  ['iswindingup_37',['IsWindingUp',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae2e9433540f6fc645621c7098fe38923',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['iunitbrain_38',['IUnitBrain',['../interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html',1,'Guildmaster::Combat']]],
-  ['iunitbrain_2ecs_39',['IUnitBrain.cs',['../IUnitBrain_8cs.html',1,'']]]
+  ['istackablecomponent_35',['IStackableComponent',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html',1,'Guildmaster::Combat::Effects']]],
+  ['istatreader_36',['IStatReader',['../interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html',1,'Guildmaster::Data::Stats']]],
+  ['istatreader_2ecs_37',['IStatReader.cs',['../IStatReader_8cs.html',1,'']]],
+  ['iswindingup_38',['IsWindingUp',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae2e9433540f6fc645621c7098fe38923',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['iunitbrain_39',['IUnitBrain',['../interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html',1,'Guildmaster::Combat']]],
+  ['iunitbrain_2ecs_40',['IUnitBrain.cs',['../IUnitBrain_8cs.html',1,'']]]
 ];

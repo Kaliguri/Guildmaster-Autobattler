@@ -1,0 +1,3 @@
+<map id="Guildmaster.Core.Arena.ArenaBounds" name="Guildmaster.Core.Arena.ArenaBounds">
+<area shape="rect" id="Node000001" title="Границы боевого поля — «стены», об которые упирается движение (MovementSystem) и отбрасывание (Displa..." alt="" coords="5,5,216,205"/>
+</map>

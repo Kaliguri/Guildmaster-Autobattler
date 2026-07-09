@@ -7,5 +7,6 @@ var searchData=
   ['tickdelta_4',['TickDelta',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#aa74ddc1aa162b358a9dcf16ad1e57c54',1,'Guildmaster::Core::Simulation::SimConstants']]],
   ['tickrate_5',['TickRate',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#af7295f7862c7e21cd583215d083794da',1,'Guildmaster::Core::Simulation::SimConstants']]],
   ['ticks_6',['Ticks',['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a960d828fcd5a41d77dd9698ba317e646',1,'Guildmaster::Combat::DisplaceRequest']]],
-  ['type_7',['Type',['../structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html#a4c08464dad2b21d98ca161da5f350ebe',1,'Guildmaster::Combat::Effects::CombatEventData']]]
+  ['tier_7',['Tier',['../structGuildmaster_1_1Core_1_1Arena_1_1DeploymentZone.html#ab4a89908f257ef1ef78add05daaec5b4',1,'Guildmaster::Core::Arena::DeploymentZone']]],
+  ['type_8',['Type',['../structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html#a4c08464dad2b21d98ca161da5f350ebe',1,'Guildmaster::Combat::Effects::CombatEventData']]]
 ];

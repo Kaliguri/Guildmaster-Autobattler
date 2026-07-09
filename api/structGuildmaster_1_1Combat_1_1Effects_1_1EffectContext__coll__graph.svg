@@ -287,7 +287,7 @@ var sectionId = 'dynsection-0';
 <text text-anchor="start" x="102.5" y="-906" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackEffects</text>
 <text text-anchor="start" x="85" y="-891" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="102.5" y="-891" font-family="Helvetica,sans-Serif" font-size="10.00">CanAttackWhileMoving</text>
-<text text-anchor="start" x="102.5" y="-876" font-family="Helvetica,sans-Serif" font-size="10.00">and 6 more...</text>
+<text text-anchor="start" x="102.5" y="-876" font-family="Helvetica,sans-Serif" font-size="10.00">and 7 more...</text>
 <text text-anchor="start" x="152" y="-861" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
 <polygon fill="#666666" stroke="#666666" points="76.5,-1036 76.5,-1036 231.5,-1036 231.5,-1036 76.5,-1036"/>
 <polygon fill="#666666" stroke="#666666" points="76.5,-871 76.5,-871 100.5,-871 100.5,-871 76.5,-871"/>

@@ -13,6 +13,7 @@ var searchData=
   ['iscalablepotency_10',['IScalablePotency',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html',1,'Guildmaster::Combat::Effects']]],
   ['isimcommand_11',['ISimCommand',['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html',1,'Guildmaster::Core::Simulation']]],
   ['isimevent_12',['ISimEvent',['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimEvent.html',1,'Guildmaster::Core::Simulation']]],
-  ['istatreader_13',['IStatReader',['../interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html',1,'Guildmaster::Data::Stats']]],
-  ['iunitbrain_14',['IUnitBrain',['../interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html',1,'Guildmaster::Combat']]]
+  ['istackablecomponent_13',['IStackableComponent',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html',1,'Guildmaster::Combat::Effects']]],
+  ['istatreader_14',['IStatReader',['../interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html',1,'Guildmaster::Data::Stats']]],
+  ['iunitbrain_15',['IUnitBrain',['../interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html',1,'Guildmaster::Combat']]]
 ];

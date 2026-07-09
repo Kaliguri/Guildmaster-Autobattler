@@ -117,9 +117,9 @@
 <!-- Node15 -->
 <g id="Node000015" class="node">
 <title>Node15</title>
-<g id="a_Node000015"><a xlink:href="classGuildmaster_1_1Combat_1_1MovementSystem.html#ae81eb146f149fe4cc225406250d96c06" target="_top" xlink:title="Продвинуть позиции всех живых юнитов на один тик.">
-<polygon fill="white" stroke="#666666" points="419,-174 246,-174 246,-144 419,-144 419,-174"/>
-<text text-anchor="start" x="254" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Movement</text>
+<g id="a_Node000015"><a xlink:href="classGuildmaster_1_1Combat_1_1RegenSystem.html#ac1d56f58c6a7d2df6944d27069384cb2" target="_top" xlink:title="Применить регенерацию ко всем живым юнитам за один тик.">
+<polygon fill="white" stroke="#666666" points="408,-174 257,-174 257,-144 408,-144 408,-174"/>
+<text text-anchor="start" x="265" y="-162" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Regen</text>
 <text text-anchor="middle" x="332.5" y="-151" font-family="Helvetica,sans-Serif" font-size="10.00">System.Tick</text>
 </a>
 </g>
@@ -136,9 +136,9 @@
 <!-- Node16 -->
 <g id="Node000016" class="node">
 <title>Node16</title>
-<g id="a_Node000016"><a xlink:href="classGuildmaster_1_1Combat_1_1RegenSystem.html#ac1d56f58c6a7d2df6944d27069384cb2" target="_top" xlink:title="Применить регенерацию ко всем живым юнитам за один тик.">
-<polygon fill="white" stroke="#666666" points="408,-126 257,-126 257,-96 408,-96 408,-126"/>
-<text text-anchor="start" x="265" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Regen</text>
+<g id="a_Node000016"><a xlink:href="classGuildmaster_1_1Combat_1_1MovementSystem.html#af5b73c3b215a5304f0c57490ece50de4" target="_top" xlink:title="Продвинуть позиции всех живых юнитов на один тик.">
+<polygon fill="white" stroke="#666666" points="419,-126 246,-126 246,-96 419,-96 419,-126"/>
+<text text-anchor="start" x="254" y="-114" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Movement</text>
 <text text-anchor="middle" x="332.5" y="-103" font-family="Helvetica,sans-Serif" font-size="10.00">System.Tick</text>
 </a>
 </g>
@@ -147,7 +147,7 @@
 <g id="edge15_Node000001_Node000016" class="edge">
 <title>Node1&#45;&gt;Node16</title>
 <g id="a_edge15_Node000001_Node000016"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M541.36,-197.01C519.11,-179.24 480.61,-150.94 443,-135 432.07,-130.37 420.13,-126.58 408.29,-123.5"/>
+<path fill="none" stroke="#63b8ff" d="M541.36,-197.01C519.11,-179.24 480.61,-150.94 443,-135 434.94,-131.58 426.32,-128.62 417.61,-126.07"/>
 <polygon fill="#63b8ff" stroke="#63b8ff" points="539.35,-199.89 549.32,-203.48 543.77,-194.46 539.35,-199.89"/>
 </a>
 </g>

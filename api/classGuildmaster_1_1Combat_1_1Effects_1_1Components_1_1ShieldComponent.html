@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.ShieldComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent__inherit__graph.svg" width="347" height="358"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent__inherit__graph.svg" width="332" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Effects.Components.ShieldComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent__coll__graph.svg" width="347" height="358"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent__coll__graph.svg" width="332" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -118,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7c0a825f89175d21ba07ce3ae3ad22be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfa58879c8f187e27cc4fc3d06f55e47" id="r_abfa58879c8f187e27cc4fc3d06f55e47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html#abfa58879c8f187e27cc4fc3d06f55e47">OnExpire</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a> ctx)</td></tr>
 <tr class="separator:abfa58879c8f187e27cc4fc3d06f55e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42ba7d035745320ef5afc81dfc4eb9be" id="r_a42ba7d035745320ef5afc81dfc4eb9be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html#a42ba7d035745320ef5afc81dfc4eb9be">OnStacksChanged</a> (int previousStacks, in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a> ctx)</td></tr>
+<tr class="memdesc:a42ba7d035745320ef5afc81dfc4eb9be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Число стаков изменилось.  <br /></td></tr>
+<tr class="separator:a42ba7d035745320ef5afc81dfc4eb9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -182,6 +185,47 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html#afd0175889dfa2140f7a6cf7af1f0eca9">Guildmaster.Combat.Effects.IRuntimeEffectComponent</a>.</p>
+
+</div>
+</div>
+<a id="a42ba7d035745320ef5afc81dfc4eb9be" name="a42ba7d035745320ef5afc81dfc4eb9be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42ba7d035745320ef5afc81dfc4eb9be">&#9670;&#160;</a></span>OnStacksChanged()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.Effects.Components.ShieldComponent.OnStacksChanged </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>previousStacks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a>&#160;</td>
+          <td class="paramname"><em>ctx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Число стаков изменилось. </p>
+<p><em>previousStacks</em>  — до изменения, <code>ctx.Stacks</code> — после. Компонент правит вклад на дельту (обычно <code>ctx.Stacks − previousStacks</code>). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html#a96151b1f6e1ad199981cac9c86242021">Guildmaster.Combat.Effects.IStackableComponent</a>.</p>
 
 </div>
 </div>

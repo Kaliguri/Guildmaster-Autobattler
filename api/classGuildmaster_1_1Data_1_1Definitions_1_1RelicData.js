@@ -7,6 +7,7 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1RelicData =
     [ "AutoAttackShape", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a6228796fd0ca7a750e0878d7ba8d75bf", null ],
     [ "AutoAttackWidth", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a91ab8a3e46355b1673cded112c7e006c", null ],
     [ "CanAttackWhileMoving", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#af03c87926f0b79b557053a7eefc0abd2", null ],
+    [ "CanUseExtendedDeployment", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a5f075c432e38ddbb7594687d1be53fc5", null ],
     [ "DamageType", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a1a70036cf86be8db4c1d2f13be8a485c", null ],
     [ "DisplayNameKey", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a406b51d325c53708fdeeedc9968ed1ee", null ],
     [ "GrantedEffects", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#ac490b773dc90f5d810ac76b9c35633cd", null ],

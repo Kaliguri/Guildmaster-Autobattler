@@ -1,0 +1,5 @@
+<map id="Guildmaster.Core.Arena.DeploymentZone" name="Guildmaster.Core.Arena.DeploymentZone">
+<area shape="rect" id="Node000001" title="Область расстановки внутри арены: прямоугольник + сторона + ранг." alt="" coords="5,213,292,299"/>
+<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html" title="Осепараллельный прямоугольник (центр + размер) в мировых координатах боя." alt="" coords="39,5,259,151"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="151,151,151,196,146,196,146,151"/>
+</map>

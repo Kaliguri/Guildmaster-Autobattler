@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Editor.ArenaLayoutAuthoringEditor" name="Guildmaster.Game.Editor.ArenaLayoutAuthoringEditor">
+<area shape="rect" id="Node000001" title="Редактор арены: тянем границы поля и зоны расстановки прямо в Scene&#45;вью за грани (BoxBoundsHandle),..." alt="" coords="5,119,203,199"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="63,5,145,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,85,107,118,101,118,101,85"/>
+</map>

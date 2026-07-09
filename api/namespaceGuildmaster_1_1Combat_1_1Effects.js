@@ -9,6 +9,7 @@ var namespaceGuildmaster_1_1Combat_1_1Effects =
     [ "IReactiveComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent" ],
     [ "IRuntimeEffectComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent" ],
     [ "IScalablePotency", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency" ],
+    [ "IStackableComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent" ],
     [ "PreDamageResult", "classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html", "classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult" ],
     [ "RuntimeEffect", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect" ],
     [ "CombatEvent", "namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066", [

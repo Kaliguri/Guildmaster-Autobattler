@@ -95,19 +95,21 @@
 <g id="Node000004" class="node">
 <title>Node4</title>
 <g id="a_Node000004"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html" target="_top" xlink:title="Поглощающий щит.">
-<polygon fill="white" stroke="transparent" points="602.5,-90 441.5,-90 441.5,-15 602.5,-15 602.5,-90"/>
-<text text-anchor="start" x="447" y="-77.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="447" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.ShieldComponent</text>
-<text text-anchor="start" x="468" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="503" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">Potency</text>
-<text text-anchor="start" x="468" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="503" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="468" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="503" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<polygon fill="#666666" stroke="#666666" points="442,-61.5 442,-61.5 603,-61.5 603,-61.5 442,-61.5"/>
-<polygon fill="#666666" stroke="#666666" points="442,-46.5 442,-46.5 501,-46.5 501,-46.5 442,-46.5"/>
-<polygon fill="#666666" stroke="#666666" points="501,-46.5 501,-46.5 603,-46.5 603,-46.5 501,-46.5"/>
-<polygon fill="none" stroke="#666666" points="441.5,-15 441.5,-90 602.5,-90 602.5,-15 441.5,-15"/>
+<polygon fill="white" stroke="transparent" points="602.5,-97.5 441.5,-97.5 441.5,-7.5 602.5,-7.5 602.5,-97.5"/>
+<text text-anchor="start" x="447" y="-85.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="447" y="-74.5" font-family="Helvetica,sans-Serif" font-size="10.00">Components.ShieldComponent</text>
+<text text-anchor="start" x="456.5" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="480" y="-59.5" font-family="Helvetica,sans-Serif" font-size="10.00">Potency</text>
+<text text-anchor="start" x="456.5" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="480" y="-44.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="456.5" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="480" y="-29.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="456.5" y="-14.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="480" y="-14.5" font-family="Helvetica,sans-Serif" font-size="10.00">OnStacksChanged()</text>
+<polygon fill="#666666" stroke="#666666" points="442,-69.5 442,-69.5 603,-69.5 603,-69.5 442,-69.5"/>
+<polygon fill="#666666" stroke="#666666" points="442,-54.5 442,-54.5 478,-54.5 478,-54.5 442,-54.5"/>
+<polygon fill="#666666" stroke="#666666" points="478,-54.5 478,-54.5 603,-54.5 603,-54.5 478,-54.5"/>
+<polygon fill="none" stroke="#666666" points="441.5,-7.5 441.5,-97.5 602.5,-97.5 602.5,-7.5 441.5,-7.5"/>
 </a>
 </g>
 </g>
@@ -115,7 +117,7 @@
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M384.35,-135.74C408.33,-121.41 436.24,-104.73 460.64,-90.16"/>
+<path fill="none" stroke="#63b8ff" d="M384.37,-135.72C404.34,-123.8 427.02,-110.25 448.12,-97.64"/>
 <polygon fill="none" stroke="#63b8ff" points="382.49,-132.77 375.7,-140.9 386.08,-138.78 382.49,-132.77"/>
 </a>
 </g>

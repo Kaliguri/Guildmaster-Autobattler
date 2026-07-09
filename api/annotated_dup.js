@@ -35,6 +35,7 @@ var annotated_dup =
           [ "IReactiveComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent" ],
           [ "IRuntimeEffectComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent" ],
           [ "IScalablePotency", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency" ],
+          [ "IStackableComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent" ],
           [ "PreDamageResult", "classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html", "classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult" ],
           [ "RuntimeEffect", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect" ]
         ] ],
@@ -67,6 +68,13 @@ var annotated_dup =
         [ "Stats", "classGuildmaster_1_1Combat_1_1Stats.html", "classGuildmaster_1_1Combat_1_1Stats" ]
       ] ],
       [ "Core", "namespaceGuildmaster_1_1Core.html", [
+        [ "Arena", "namespaceGuildmaster_1_1Core_1_1Arena.html", [
+          [ "ArenaBounds", "structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html", "structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds" ],
+          [ "ArenaLayoutData", "classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html", "classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData" ],
+          [ "DeploymentService", "classGuildmaster_1_1Core_1_1Arena_1_1DeploymentService.html", "classGuildmaster_1_1Core_1_1Arena_1_1DeploymentService" ],
+          [ "DeploymentZone", "structGuildmaster_1_1Core_1_1Arena_1_1DeploymentZone.html", "structGuildmaster_1_1Core_1_1Arena_1_1DeploymentZone" ],
+          [ "Rect2D", "structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html", "structGuildmaster_1_1Core_1_1Arena_1_1Rect2D" ]
+        ] ],
         [ "Random", "namespaceGuildmaster_1_1Core_1_1Random.html", [
           [ "IRngService", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService" ],
           [ "XorShiftRng", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng" ]
@@ -106,6 +114,9 @@ var annotated_dup =
         [ "GuildmasterCommands", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands" ]
       ] ],
       [ "Game", "namespaceGuildmaster_1_1Game.html", [
+        [ "Editor", "namespaceGuildmaster_1_1Game_1_1Editor.html", [
+          [ "ArenaLayoutAuthoringEditor", "classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor.html", "classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor" ]
+        ] ],
         [ "Services", "namespaceGuildmaster_1_1Game_1_1Services.html", [
           [ "CombatLoopService", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService" ],
           [ "GameFlow", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow" ],
@@ -113,6 +124,7 @@ var annotated_dup =
           [ "SceneLoader", "classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html", "classGuildmaster_1_1Game_1_1Services_1_1SceneLoader" ],
           [ "UnityAudioService", "classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html", "classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService" ]
         ] ],
+        [ "ArenaLayoutAuthoring", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring" ],
         [ "BattleSetupBuilder", "classGuildmaster_1_1Game_1_1BattleSetupBuilder.html", "classGuildmaster_1_1Game_1_1BattleSetupBuilder" ],
         [ "CombatLifetimeScope", "classGuildmaster_1_1Game_1_1CombatLifetimeScope.html", "classGuildmaster_1_1Game_1_1CombatLifetimeScope" ],
         [ "GameBootstrap", "classGuildmaster_1_1Game_1_1GameBootstrap.html", null ],
