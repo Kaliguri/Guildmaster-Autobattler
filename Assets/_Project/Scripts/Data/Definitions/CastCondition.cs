@@ -15,5 +15,8 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Кастовать, когда HP% выбранной цели ≤ CastConditionHpPct (блок D хилера: спасать раненого союзника).</summary>
         AllyTargetHpBelowPct = 2,
+
+        /// <summary>Кастовать, когда живых врагов с TriggerTag ≥ CastConditionCount (масс-стан Криоманта по «Заморозке»). Глобально, без ограничения дальности.</summary>
+        EnemiesWithTagCount = 3,
     }
 }

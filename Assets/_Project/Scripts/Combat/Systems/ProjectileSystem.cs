@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Guildmaster.Data.Definitions;
 using UnityEngine;
 
 namespace Guildmaster.Combat
@@ -89,8 +90,20 @@ namespace Guildmaster.Combat
             ctx.DealDamage(new DamageRequest(
                 p.Source, target, p.RawDamage, p.DamageType, ctx.ArmorK));
 
+            // On-hit эффекты (§9.1): «Заморозка» Криоманта вешается при попадании на каждую задетую цель.
+            ApplyOnHitEffects(p, target, ctx);
+
             if (p.PiercesRemaining > 0) p.PiercesRemaining--;
             else                        p.IsAlive = false;
+        }
+
+        /// <summary>Наложить on-hit эффекты снаряда на задетую цель (§9.1). Источник — владелец снаряда.</summary>
+        private static void ApplyOnHitEffects(Projectile p, RuntimeUnit target, ICombatContext ctx)
+        {
+            EffectData[] effects = p.OnHitEffects;
+            if (effects == null) return;
+            for (int i = 0; i < effects.Length; i++)
+                if (effects[i] != null) ctx.ApplyEffect(target, effects[i], p.Source);
         }
 
         /// <summary>

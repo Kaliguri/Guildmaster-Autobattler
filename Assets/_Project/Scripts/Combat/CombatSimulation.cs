@@ -220,6 +220,7 @@ namespace Guildmaster.Combat
                 ArmorK           = spawn.ArmorK,
                 PiercesRemaining = spawn.MaxPierces,
                 IsHeal           = spawn.IsHeal,
+                OnHitEffects     = spawn.OnHitEffects,
                 IsAlive          = true,
             });
         }

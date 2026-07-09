@@ -21,17 +21,21 @@ namespace Guildmaster.Combat
         /// <summary>Хил-снаряд: лечит цель при попадании (<see cref="RawDamage"/> = сырое лечение), а не бьёт. §9.2.</summary>
         public readonly bool        IsHeal;
 
+        /// <summary>On-hit эффекты (§9.1): накладываются на каждую задетую цель при попадании урон-снаряда (Криомант — «Заморозка»). null = нет.</summary>
+        public readonly EffectData[] OnHitEffects;
+
         public ProjectileSpawn(
-            RuntimeUnit source,
-            Vector2     startPosition,
-            RuntimeUnit targetUnit,
-            float       speed,
-            float       collisionRadius,
-            float       rawDamage,
-            DamageType  damageType,
-            float       armorK,
-            int         maxPierces = 0,
-            bool        isHeal     = false)
+            RuntimeUnit  source,
+            Vector2      startPosition,
+            RuntimeUnit  targetUnit,
+            float        speed,
+            float        collisionRadius,
+            float        rawDamage,
+            DamageType   damageType,
+            float        armorK,
+            int          maxPierces   = 0,
+            bool         isHeal       = false,
+            EffectData[] onHitEffects = null)
         {
             Source          = source;
             StartPosition   = startPosition;
@@ -43,6 +47,7 @@ namespace Guildmaster.Combat
             ArmorK          = armorK;
             MaxPierces      = maxPierces;
             IsHeal          = isHeal;
+            OnHitEffects    = onHitEffects;
         }
     }
 }

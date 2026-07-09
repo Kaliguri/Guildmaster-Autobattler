@@ -95,6 +95,12 @@ namespace Guildmaster.Combat
                     bool tagged = (o.EffectTagMask & _profile.TargetTag) != 0;
                     return tagged ? distSq : distSq + TaggedPenalty;
 
+                case TargetingMode.PreferUntagged:
+                    // Зеркало PreferTagged: тегнутый штрафуется, нетегнутый выигрывает всегда
+                    // (Криомант не добивает уже замороженного — распределяет «Заморозку» шире).
+                    bool hasTag = (o.EffectTagMask & _profile.TargetTag) != 0;
+                    return hasTag ? distSq + TaggedPenalty : distSq;
+
                 case TargetingMode.Nearest:
                 case TargetingMode.AllyNearest:
                 default:

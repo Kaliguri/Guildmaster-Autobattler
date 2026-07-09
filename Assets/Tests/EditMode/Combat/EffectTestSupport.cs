@@ -65,7 +65,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             int castConditionCount = 1,
             float castConditionRadius = 0f,
             float castConditionHpPct = 0.5f,
-            float castOverrideSelfHpPct = 0f)
+            float castOverrideSelfHpPct = 0f,
+            EffectTag triggerTag = EffectTag.None,
+            bool consumesTriggerTag = false)
         {
             var a = new AbilityData();
             Set(a, "_effects", effects ?? System.Array.Empty<EffectData>());
@@ -82,6 +84,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(a, "_castConditionRadius", castConditionRadius);
             Set(a, "_castConditionHpPct", castConditionHpPct);
             Set(a, "_castOverrideSelfHpPct", castOverrideSelfHpPct);
+            Set(a, "_triggerTag", triggerTag);
+            Set(a, "_consumesTriggerTag", consumesTriggerTag);
             return a;
         }
 
@@ -105,7 +109,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             float autoAttackWidth = 1f,
             float resourceOnHit = 0f,
             UnitVisual visual = null,
-            AIProfile ai = null)
+            AIProfile ai = null,
+            EffectData[] autoAttackEffects = null)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
@@ -118,6 +123,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(r, "_resourceOnHit", resourceOnHit);
             Set(r, "_visual", visual);
             Set(r, "_ai", ai ?? new AIProfile());
+            Set(r, "_autoAttackEffects", autoAttackEffects ?? Array.Empty<EffectData>());
             return r;
         }
 

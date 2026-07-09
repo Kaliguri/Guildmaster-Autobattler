@@ -1143,6 +1143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.DevTools::Guildmaster.DevTools.GuildmasterCommands
   _spearmanRelic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
   _shepherdRelic: {fileID: 11400000, guid: 2405b745f0480e2428fdaf24ac1b5d93, type: 2}
+  _cryomancerRelic: {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
 --- !u!4 &1713771495
 Transform:
   m_ObjectHideFlags: 0

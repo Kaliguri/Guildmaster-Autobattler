@@ -123,9 +123,14 @@ namespace Guildmaster.Combat
             if (attackType == AttackType.Melee)
             {
                 if (shape == AreaShape.Line)
+                {
                     DealLineDamage(unit, target, range, raw, dmgType, ctx);
+                }
                 else
+                {
                     ctx.DealDamage(new DamageRequest(unit, target, raw, dmgType, ctx.ArmorK));
+                    ApplyAutoAttackOnHit(unit, target, ctx); // §9.1 (мили single)
+                }
             }
             else
             {
@@ -133,10 +138,21 @@ namespace Guildmaster.Combat
                 int   pierces = (int)unit.Stats.Get(StatType.ProjectilePierce);
                 float collRadius = unit.Stats.Get(StatType.Size) * 0.25f;
 
+                // On-hit эффекты (§9.1) едут на снаряде — накладываются в ProjectileSystem при попадании.
                 ctx.SpawnProjectile(new ProjectileSpawn(
                     unit, unit.Position, target,
-                    speed, collRadius, raw, dmgType, ctx.ArmorK, pierces));
+                    speed, collRadius, raw, dmgType, ctx.ArmorK, pierces,
+                    onHitEffects: unit.Relic != null ? unit.Relic.AutoAttackEffects : null));
             }
+        }
+
+        /// <summary>Наложить on-hit эффекты авто-атаки реликвии на задетую цель (§9.1, мили-путь).</summary>
+        private static void ApplyAutoAttackOnHit(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)
+        {
+            EffectData[] effects = unit.Relic != null ? unit.Relic.AutoAttackEffects : null;
+            if (effects == null) return;
+            for (int i = 0; i < effects.Length; i++)
+                if (effects[i] != null) ctx.ApplyEffect(target, effects[i], unit);
         }
 
         /// <summary>Хил-автоатака (Светлый пастырь): авто-атака лечит союзника вместо урона по врагу (§9.2).</summary>
@@ -166,7 +182,10 @@ namespace Guildmaster.Combat
 
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итоговое состояние.
             for (int t = 0; t < _lineTargets.Count; t++)
+            {
                 ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, dmgType, ctx.ArmorK));
+                ApplyAutoAttackOnHit(unit, _lineTargets[t], ctx); // §9.1 (мили Line — по каждой задетой)
+            }
         }
 
         /// <summary>Начислить ресурс за удар (× ResourceGainEff), клампить к MaxResource.</summary>

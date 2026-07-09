@@ -17,6 +17,9 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Союзник с наименьшим HP% — глобально, без ограничения дальности (хилер-ульта «Длань жизни»).</summary>
         LowestHpAlly = 3,
+
+        /// <summary>Все живые враги с тегом <see cref="AbilityData.TriggerTag"/> — глобально, без ограничения дальности (масс-стан «Ледяные оковы» по «Заморозке»). Цель не одиночная.</summary>
+        AllEnemiesWithTag = 4,
     }
 
     /// <summary>
@@ -75,6 +78,13 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Отмена условия (блок E): если HP% кастующего ≤ этого — кастуем независимо от условия. У лечащих способностей цель тогда = сам кастующий. 0 = выкл.")]
         [SerializeField] private float _castOverrideSelfHpPct;
 
+        [Header("Tagged targeting (§9.10) — Криомант")]
+        [Tooltip("Тег для AllEnemiesWithTag / EnemiesWithTagCount / ConsumesTriggerTag (Криомант = Frozen). None = не используется.")]
+        [SerializeField] private EffectTag _triggerTag = EffectTag.None;
+
+        [Tooltip("После наложения эффектов снять TriggerTag с цели (конверсия: «Ледяные оковы» превращают «Заморозку» в стан).")]
+        [SerializeField] private bool _consumesTriggerTag;
+
         public string Id => _id;
         public EffectData[] Effects => _effects;
         public float BaseCooldown => _baseCooldown;
@@ -94,5 +104,7 @@ namespace Guildmaster.Data.Definitions
         public float CastConditionRadius => _castConditionRadius > 0f ? _castConditionRadius : _areaRadius;
         public float CastConditionHpPct => _castConditionHpPct;
         public float CastOverrideSelfHpPct => _castOverrideSelfHpPct;
+        public EffectTag TriggerTag => _triggerTag;
+        public bool ConsumesTriggerTag => _consumesTriggerTag;
     }
 }

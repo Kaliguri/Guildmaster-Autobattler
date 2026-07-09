@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Guildmaster.Combat.Abilities;
+using Guildmaster.Combat.Effects;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 
@@ -56,20 +57,34 @@ namespace Guildmaster.Combat
             // кастующего (лечит себя); урон-способность просто кастуется независимо от условия.
             bool panicSelf = data.CastOverrideSelfHpPct > 0f && HpPct(caster) <= data.CastOverrideSelfHpPct;
 
-            // Круговой удар вокруг себя цели не требует (центр = кастующий); иначе нужна валидная цель.
-            RuntimeUnit target = (panicSelf && data.IsHeal)
-                ? caster
-                : ResolveTarget(caster, data.TargetMode, units);
-            if (data.AreaShape != AreaShape.Circle && target == null) return false;
+            bool isMassTag = data.TargetMode == AbilityTargetMode.AllEnemiesWithTag;
+
+            // Круговой удар и масс-по-тегу одиночной цели не требуют (центр = кастующий / список).
+            RuntimeUnit target = (panicSelf && data.IsHeal) ? caster
+                               : isMassTag                  ? null
+                               : ResolveTarget(caster, data.TargetMode, units);
+
+            // Требование валидной цели: Circle — центр = кастующий; масс-по-тегу — нужен хотя бы один
+            // тегнутый враг (даже под панику масс-стан в пустоту не жжёт КД/ману); иначе — одиночная цель.
+            if (isMassTag)
+            {
+                if (CountEnemiesWithTag(caster, data.TriggerTag, units) == 0) return false;
+            }
+            else if (data.AreaShape != AreaShape.Circle && target == null)
+            {
+                return false;
+            }
 
             // Гейт условия каста (блок D): дешёвое решение «кастовать ли» — здесь, не в мозге.
             // Паника (блок E) кастует независимо от условия.
-            if (!panicSelf && !CastConditionMet(caster, target, data, ctx)) return false;
+            if (!panicSelf && !CastConditionMet(caster, target, data, ctx, units)) return false;
 
             caster.CurrentResource -= data.ResourceCost;
             ability.CooldownRemaining = data.BaseCooldown * caster.Stats.Get(StatType.CooldownEff);
 
-            if (data.AreaShape == AreaShape.Circle)
+            if (isMassTag)
+                ApplyAllWithTag(caster, data, units, ctx);
+            else if (data.AreaShape == AreaShape.Circle)
                 ApplyCircle(caster, data, ctx);
             else
                 ApplyToTarget(caster, target, data, ctx);
@@ -78,7 +93,7 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>Условие каста (блок D). Отмена по своему HP% (блок E) решается в <see cref="TryCast"/> до вызова.</summary>
-        private bool CastConditionMet(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
+        private bool CastConditionMet(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx, IReadOnlyList<RuntimeUnit> units)
         {
             switch (data.CastCondition)
             {
@@ -90,9 +105,49 @@ namespace Guildmaster.Combat
                     // Спасаем раненого союзника: кастуем, только если выбранная цель просела до порога.
                     return target != null && HpPct(target) <= data.CastConditionHpPct;
 
+                case CastCondition.EnemiesWithTagCount:
+                    // Криомант: кастуем масс-стан, когда замороженных врагов накопилось ≥ X (глобально).
+                    return CountEnemiesWithTag(caster, data.TriggerTag, units) >= data.CastConditionCount;
+
                 case CastCondition.Immediately:
                 default:
                     return true;
+            }
+        }
+
+        /// <summary>Число живых врагов кастующего, несущих <paramref name="tag"/> (по маске активных эффектов). Глобально, без дальности (§9.10).</summary>
+        private static int CountEnemiesWithTag(RuntimeUnit caster, EffectTag tag, IReadOnlyList<RuntimeUnit> units)
+        {
+            if (tag == EffectTag.None) return 0;
+            int count = 0;
+            for (int i = 0; i < units.Count; i++)
+            {
+                RuntimeUnit u = units[i];
+                if (u.IsDead || u.Team == caster.Team) continue;
+                if ((u.EffectTagMask & tag) != 0) count++;
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// Масс-каст «Ледяные оковы» (§9.10): наложить эффекты активки на всех живых врагов с
+        /// <see cref="AbilityData.TriggerTag"/> (глобально), затем — при <see cref="AbilityData.ConsumesTriggerTag"/> —
+        /// снять этот тег (конверсия «Заморозки» в стан). Обход по индексу списка — детерминизм.
+        /// </summary>
+        private static void ApplyAllWithTag(RuntimeUnit caster, AbilityData data, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
+        {
+            EffectTag tag = data.TriggerTag;
+            for (int i = 0; i < units.Count; i++)
+            {
+                RuntimeUnit u = units[i];
+                if (u.IsDead || u.Team == caster.Team) continue;
+                if ((u.EffectTagMask & tag) == 0) continue;
+
+                ApplyEffects(u, data, caster, ctx);
+
+                // Конверсия: снять тег-триггер (напр. Frozen) после наложения стана — «Заморозка» превращается в стан.
+                if (data.ConsumesTriggerTag)
+                    ctx.Dispel(new DispelRequest(u, DispelTargetPolarity.Any, tag, dispelPower: int.MaxValue, maxCount: 0));
             }
         }
 

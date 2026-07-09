@@ -30,6 +30,9 @@ namespace Guildmaster.Combat
         /// <summary>Хил-снаряд: при попадании лечит цель (<see cref="RawDamage"/> = сырое лечение), а не бьёт. Всегда tracking. §9.2.</summary>
         public bool        IsHeal;
 
+        /// <summary>On-hit эффекты урон-снаряда (§9.1): накладываются на каждую задетую цель при попадании. null = нет.</summary>
+        public EffectData[] OnHitEffects;
+
         public bool        IsAlive;
     }
 }

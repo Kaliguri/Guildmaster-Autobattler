@@ -22,6 +22,9 @@ namespace Guildmaster.DevTools
         [Tooltip("SO реликвии «Светлый пастырь» для gm_spawn_shepherd (вики «13» §10.1).")]
         [SerializeField] private RelicData _shepherdRelic;
 
+        [Tooltip("SO реликвии «Криомант» для gm_spawn_cryomancer (вики «13» §10.2).")]
+        [SerializeField] private RelicData _cryomancerRelic;
+
         private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
         private RuntimeUnitFactory _factory;
@@ -136,6 +139,28 @@ namespace Guildmaster.DevTools
             }
 
             Debug.Log($"[GuildmasterCommands] - gm_spawn_shepherd: пастырь + {allies} раненых союзника vs 2 болванчика");
+        }
+
+        /// <summary>Заспавнить «Криоманта» (team 0) против кластера болванчиков (team 1) — срез §10.2.</summary>
+        [Command("gm_spawn_cryomancer", "Заспавнить Криоманта против кластера болванчиков (срез §10.2)")]
+        public void SpawnCryomancer(int enemies = 3, float enemyHp = 200f)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (_cryomancerRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _cryomancerRelic в инспекторе"); return; }
+
+            // Криомант в тылу слева — через фабрику (реальный путь: on-hit «Заморозка», масс-стан «Ледяные оковы», AI PreferUntagged).
+            _simulation.EnqueueUnitSpawn(_factory.Create(_cryomancerRelic, null, team: 0, new Vector2(-6f, 0f)));
+
+            // Кластер болванчиков справа: пока Криомант раздаёт «Заморозку», их накапливается ≥2 → срабатывают «Ледяные оковы».
+            int nextId = _simulation.Units.Count + 1;
+            for (int i = 0; i < enemies; i++)
+            {
+                float y = (i - (enemies - 1) * 0.5f) * 1f;
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 8f, nextId++));
+            }
+
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_cryomancer: криомант vs {enemies} болванчиков");
         }
 
         /// <summary>Выставить HP юниту по ID.</summary>

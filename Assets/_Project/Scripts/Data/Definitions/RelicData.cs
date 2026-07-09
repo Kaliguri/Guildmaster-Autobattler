@@ -32,6 +32,9 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Ширина линии авто-атаки (мировые единицы), для Line. Длина линии = AttackRange.")]
         [SerializeField] private float _autoAttackWidth = 1f;
 
+        [Tooltip("On-hit эффекты авто-атаки (§9.1): накладываются на каждую задетую цель в момент удара — мили (single/Line) и при попадании снаряда. Криомант = «Заморозка». Пусто = нет (поведение Ф1/Ф2).")]
+        [SerializeField] private EffectData[] _autoAttackEffects;
+
         [Header("Resource gain (Phase 3)")]
         [Tooltip("Ресурс (мана) за авто-атаку, × ResourceGainEff, клампится к MaxResource. 0 = не копит от ударов. Копейщик = 5.")]
         [SerializeField] private float _resourceOnHit;
@@ -62,6 +65,7 @@ namespace Guildmaster.Data.Definitions
         public ResourceType ResourceType => _resourceType;
         public AreaShape AutoAttackShape => _autoAttackShape;
         public float AutoAttackWidth => _autoAttackWidth;
+        public EffectData[] AutoAttackEffects => _autoAttackEffects;
         public float ResourceOnHit => _resourceOnHit;
         public StatModifier[] Stats => _stats;
         public EffectData[] GrantedEffects => _grantedEffects;

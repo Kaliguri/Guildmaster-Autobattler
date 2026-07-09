@@ -30,5 +30,8 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Союзник с наименьшим HP% (хилер).</summary>
         AllyLowestHpPercent = 7,
+
+        /// <summary>Избегать врага с тегом <see cref="AIProfile.TargetTag"/> (Frozen у Криоманта — не тратить АА на уже замороженного); иначе ближайший. Зеркало <see cref="PreferTagged"/>.</summary>
+        PreferUntagged = 8,
     }
 }
