@@ -15,7 +15,8 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "Self", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806", null ],
       [ "NearestEnemy", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788", null ],
       [ "NearestAlly", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443", null ],
-      [ "LowestHpAlly", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9", null ]
+      [ "LowestHpAlly", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9", null ],
+      [ "AllEnemiesWithTag", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daca9a36847c82d52294021b89b7743fa5", null ]
     ] ],
     [ "AreaShape", "namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0bec", [
       [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca6adf97f83acf6453d4a6a4b1070f3754", null ],
@@ -35,7 +36,8 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     [ "CastCondition", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0", [
       [ "Immediately", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0afd83e0ccb3e6312a62f888dd496dd0a5", null ],
       [ "EnemiesInRadius", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204", null ],
-      [ "AllyTargetHpBelowPct", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a9b5c1389533f26b3550e6a1a2f7e63d8", null ]
+      [ "AllyTargetHpBelowPct", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a9b5c1389533f26b3550e6a1a2f7e63d8", null ],
+      [ "EnemiesWithTagCount", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a925aa4b0a5b89dc13621f1afe086c21a", null ]
     ] ],
     [ "DamageType", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3", [
       [ "Physical", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3ace898d62ed9ca7653a01fe0c781e97e9", null ],
@@ -90,7 +92,8 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "PreferTagged", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a759a43aa9baf11fa753e2836f04e0318", null ],
       [ "HighestThreat", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a1321641e7eddd8aa0f5e4d823b02243c", null ],
       [ "AllyNearest", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a77bcb679395f97dc6c24849176938738", null ],
-      [ "AllyLowestHpPercent", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a927b79ee4aba24db480047e52d1d7df7", null ]
+      [ "AllyLowestHpPercent", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a927b79ee4aba24db480047e52d1d7df7", null ],
+      [ "PreferUntagged", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a1ab8a7777ec5957eeca9aabb3d5f9047", null ]
     ] ],
     [ "UnitAnimationState", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6", [
       [ "Idle", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6ae599161956d626eda4cb0a5ffb85271c", null ],

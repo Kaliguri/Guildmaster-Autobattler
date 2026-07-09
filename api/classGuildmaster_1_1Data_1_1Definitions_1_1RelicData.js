@@ -3,6 +3,7 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1RelicData =
     [ "Abilities", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#aaf35e2a9d6f5ebc3cef6f5f63e458edd", null ],
     [ "Ai", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a0ec73005e4933c217341cd70a0f11bb1", null ],
     [ "AttackType", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a0e6faca4f24457ff91e3487e18845d9f", null ],
+    [ "AutoAttackEffects", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#ac767fc1a64fd7e57d9e2473d413d7c7d", null ],
     [ "AutoAttackShape", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a6228796fd0ca7a750e0878d7ba8d75bf", null ],
     [ "AutoAttackWidth", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a91ab8a3e46355b1673cded112c7e006c", null ],
     [ "DamageType", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a1a70036cf86be8db4c1d2f13be8a485c", null ],

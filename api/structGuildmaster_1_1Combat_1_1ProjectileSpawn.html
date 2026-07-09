@@ -109,8 +109,8 @@ Collaboration diagram for Guildmaster.Combat.ProjectileSpawn:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a864fe01059503c7dc4a4a5fc7e0a69ef" id="r_a864fe01059503c7dc4a4a5fc7e0a69ef"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a864fe01059503c7dc4a4a5fc7e0a69ef">ProjectileSpawn</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, Vector2 startPosition, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> targetUnit, float speed, float collisionRadius, float rawDamage, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> damageType, float armorK, int maxPierces=0, bool isHeal=false)</td></tr>
-<tr class="separator:a864fe01059503c7dc4a4a5fc7e0a69ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a873594d8d13a6a9e8c3f1956cd306bf1" id="r_a873594d8d13a6a9e8c3f1956cd306bf1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a873594d8d13a6a9e8c3f1956cd306bf1">ProjectileSpawn</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, Vector2 startPosition, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> targetUnit, float speed, float collisionRadius, float rawDamage, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> damageType, float armorK, int maxPierces=0, bool isHeal=false, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[] onHitEffects=null)</td></tr>
+<tr class="separator:a873594d8d13a6a9e8c3f1956cd306bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -135,13 +135,16 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a7731ec28cceeb5d0b3f9c37f98de5145" id="r_a7731ec28cceeb5d0b3f9c37f98de5145"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a7731ec28cceeb5d0b3f9c37f98de5145">IsHeal</a></td></tr>
 <tr class="memdesc:a7731ec28cceeb5d0b3f9c37f98de5145"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хил-снаряд: лечит цель при попадании (RawDamage = сырое лечение), а не бьёт. §9.2.  <br /></td></tr>
 <tr class="separator:a7731ec28cceeb5d0b3f9c37f98de5145"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9715ba20be0ad6abfc949a165d1ba853" id="r_a9715ba20be0ad6abfc949a165d1ba853"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a9715ba20be0ad6abfc949a165d1ba853">OnHitEffects</a></td></tr>
+<tr class="memdesc:a9715ba20be0ad6abfc949a165d1ba853"><td class="mdescLeft">&#160;</td><td class="mdescRight">On-hit эффекты (§9.1): накладываются на каждую задетую цель при попадании урон-снаряда (Криомант — «Заморозка»). null = нет.  <br /></td></tr>
+<tr class="separator:a9715ba20be0ad6abfc949a165d1ba853"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Параметры создания снаряда. </p>
 <p>Передаётся в ICombatContext.SpawnProjectile. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a864fe01059503c7dc4a4a5fc7e0a69ef" name="a864fe01059503c7dc4a4a5fc7e0a69ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a864fe01059503c7dc4a4a5fc7e0a69ef">&#9670;&#160;</a></span>ProjectileSpawn()</h2>
+<a id="a873594d8d13a6a9e8c3f1956cd306bf1" name="a873594d8d13a6a9e8c3f1956cd306bf1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a873594d8d13a6a9e8c3f1956cd306bf1">&#9670;&#160;</a></span>ProjectileSpawn()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -207,7 +210,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>isHeal</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>isHeal</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[]&#160;</td>
+          <td class="paramname"><em>onHitEffects</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -294,6 +303,22 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9715ba20be0ad6abfc949a165d1ba853" name="a9715ba20be0ad6abfc949a165d1ba853"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9715ba20be0ad6abfc949a165d1ba853">&#9670;&#160;</a></span>OnHitEffects</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> [] Guildmaster.Combat.ProjectileSpawn.OnHitEffects</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>On-hit эффекты (§9.1): накладываются на каждую задетую цель при попадании урон-снаряда (Криомант — «Заморозка»). null = нет. </p>
 
 </div>
 </div>

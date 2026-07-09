@@ -13,8 +13,9 @@ var searchData=
   ['attackspeedmax_10',['AttackSpeedMax',['../classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#a948058f4f638d11ea0a98e20b2286f21',1,'Guildmaster::Data::Definitions::StatsConfig']]],
   ['attackspeedmin_11',['AttackSpeedMin',['../classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#aa2b36ca2fe502a5db9c981c5ea78cf81',1,'Guildmaster::Data::Definitions::StatsConfig']]],
   ['attacktype_12',['AttackType',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a0e6faca4f24457ff91e3487e18845d9f',1,'Guildmaster::Data::Definitions::RelicData']]],
-  ['autoattackmode_13',['AutoAttackMode',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a882084f5011458139ba344416737cd34',1,'Guildmaster::Data::Definitions::AIProfile']]],
-  ['autoattackshape_14',['AutoAttackShape',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a6228796fd0ca7a750e0878d7ba8d75bf',1,'Guildmaster::Data::Definitions::RelicData']]],
-  ['autoattacktargeting_15',['AutoAttackTargeting',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#ae4cc61e69d39ec25ba833cb68abe4216',1,'Guildmaster::Data::Definitions::AIProfile']]],
-  ['autoattackwidth_16',['AutoAttackWidth',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a91ab8a3e46355b1673cded112c7e006c',1,'Guildmaster::Data::Definitions::RelicData']]]
+  ['autoattackeffects_13',['AutoAttackEffects',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#ac767fc1a64fd7e57d9e2473d413d7c7d',1,'Guildmaster::Data::Definitions::RelicData']]],
+  ['autoattackmode_14',['AutoAttackMode',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a882084f5011458139ba344416737cd34',1,'Guildmaster::Data::Definitions::AIProfile']]],
+  ['autoattackshape_15',['AutoAttackShape',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a6228796fd0ca7a750e0878d7ba8d75bf',1,'Guildmaster::Data::Definitions::RelicData']]],
+  ['autoattacktargeting_16',['AutoAttackTargeting',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#ae4cc61e69d39ec25ba833cb68abe4216',1,'Guildmaster::Data::Definitions::AIProfile']]],
+  ['autoattackwidth_17',['AutoAttackWidth',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#a91ab8a3e46355b1673cded112c7e006c',1,'Guildmaster::Data::Definitions::RelicData']]]
 ];

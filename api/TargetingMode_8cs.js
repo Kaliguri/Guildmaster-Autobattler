@@ -8,6 +8,7 @@ var TargetingMode_8cs =
       [ "PreferTagged", "TargetingMode_8cs.html#a9682e32b839e6220bb3b059bf07291c2a759a43aa9baf11fa753e2836f04e0318", null ],
       [ "HighestThreat", "TargetingMode_8cs.html#a9682e32b839e6220bb3b059bf07291c2a1321641e7eddd8aa0f5e4d823b02243c", null ],
       [ "AllyNearest", "TargetingMode_8cs.html#a9682e32b839e6220bb3b059bf07291c2a77bcb679395f97dc6c24849176938738", null ],
-      [ "AllyLowestHpPercent", "TargetingMode_8cs.html#a9682e32b839e6220bb3b059bf07291c2a927b79ee4aba24db480047e52d1d7df7", null ]
+      [ "AllyLowestHpPercent", "TargetingMode_8cs.html#a9682e32b839e6220bb3b059bf07291c2a927b79ee4aba24db480047e52d1d7df7", null ],
+      [ "PreferUntagged", "TargetingMode_8cs.html#a9682e32b839e6220bb3b059bf07291c2a1ab8a7777ec5957eeca9aabb3d5f9047", null ]
     ] ]
 ];

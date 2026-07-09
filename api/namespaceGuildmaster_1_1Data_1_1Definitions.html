@@ -136,10 +136,14 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a5344cc37ed9f1d1d575f21d566b5332d" id="r_a5344cc37ed9f1d1d575f21d566b5332d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d">AbilityTargetMode</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806">Self</a> = 0
+<tr class="memitem:a5344cc37ed9f1d1d575f21d566b5332d" id="r_a5344cc37ed9f1d1d575f21d566b5332d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d">AbilityTargetMode</a> { <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806">Self</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788">NearestEnemy</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443">NearestAlly</a> = 2
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9">LowestHpAlly</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daca9a36847c82d52294021b89b7743fa5">AllEnemiesWithTag</a> = 4
+<br />
  }</td></tr>
 <tr class="memdesc:a5344cc37ed9f1d1d575f21d566b5332d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Как выбирается цель активной способности (полный AI-таргетинг — Фаза 3).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d">More...</a><br /></td></tr>
 <tr class="separator:a5344cc37ed9f1d1d575f21d566b5332d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -164,6 +168,7 @@ Enumerations</h2></td></tr>
 <tr class="memitem:a1decc8121468103a59b37c7903949ea0" id="r_a1decc8121468103a59b37c7903949ea0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0">CastCondition</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0afd83e0ccb3e6312a62f888dd496dd0a5">Immediately</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204">EnemiesInRadius</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a9b5c1389533f26b3550e6a1a2f7e63d8">AllyTargetHpBelowPct</a> = 2
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a925aa4b0a5b89dc13621f1afe086c21a">EnemiesWithTagCount</a> = 3
  }</td></tr>
 <tr class="memdesc:a1decc8121468103a59b37c7903949ea0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Условие каста активной способности (блок D ГД-модели AI, вики «13» §2.1, шаг 4).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0">More...</a><br /></td></tr>
 <tr class="separator:a1decc8121468103a59b37c7903949ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -233,6 +238,8 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a1321641e7eddd8aa0f5e4d823b02243c">HighestThreat</a> = 5
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a77bcb679395f97dc6c24849176938738">AllyNearest</a> = 6
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a927b79ee4aba24db480047e52d1d7df7">AllyLowestHpPercent</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a1ab8a7777ec5957eeca9aabb3d5f9047">PreferUntagged</a> = 8
 <br />
  }</td></tr>
 <tr class="memdesc:a9682e32b839e6220bb3b059bf07291c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Режим выбора цели (один дропдаун, не упорядоченный список — решение Макса, вики «13» §2.1).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2">More...</a><br /></td></tr>
@@ -267,6 +274,8 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443" name="a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443"></a>NearestAlly&#160;</td><td class="fielddoc"><p>Ближайший союзник (для бафф/хил-способностей). </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9" name="a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9"></a>LowestHpAlly&#160;</td><td class="fielddoc"><p>Союзник с наименьшим HP% — глобально, без ограничения дальности (хилер-ульта «Длань жизни»). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a5344cc37ed9f1d1d575f21d566b5332daca9a36847c82d52294021b89b7743fa5" name="a5344cc37ed9f1d1d575f21d566b5332daca9a36847c82d52294021b89b7743fa5"></a>AllEnemiesWithTag&#160;</td><td class="fielddoc"><p>Все живые враги с тегом AbilityData.TriggerTag — глобально, без ограничения дальности (масс-стан «Ледяные оковы» по «Заморозке»). Цель не одиночная. </p>
 </td></tr>
 </table>
 
@@ -363,6 +372,8 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204" name="a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204"></a>EnemiesInRadius&#160;</td><td class="fielddoc"><p>Кастовать, когда врагов в радиусе условия ≥ заданного X (кластер-ульта). </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a1decc8121468103a59b37c7903949ea0a9b5c1389533f26b3550e6a1a2f7e63d8" name="a1decc8121468103a59b37c7903949ea0a9b5c1389533f26b3550e6a1a2f7e63d8"></a>AllyTargetHpBelowPct&#160;</td><td class="fielddoc"><p>Кастовать, когда HP% выбранной цели ≤ CastConditionHpPct (блок D хилера: спасать раненого союзника). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a1decc8121468103a59b37c7903949ea0a925aa4b0a5b89dc13621f1afe086c21a" name="a1decc8121468103a59b37c7903949ea0a925aa4b0a5b89dc13621f1afe086c21a"></a>EnemiesWithTagCount&#160;</td><td class="fielddoc"><p>Кастовать, когда живых врагов с TriggerTag ≥ CastConditionCount (масс-стан Криоманта по «Заморозке»). Глобально, без ограничения дальности. </p>
 </td></tr>
 </table>
 
@@ -570,6 +581,8 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a9682e32b839e6220bb3b059bf07291c2a77bcb679395f97dc6c24849176938738" name="a9682e32b839e6220bb3b059bf07291c2a77bcb679395f97dc6c24849176938738"></a>AllyNearest&#160;</td><td class="fielddoc"><p>Ближайший союзник (хил/бафф-режим). </p>
 </td></tr>
 <tr><td class="fieldname"><a id="a9682e32b839e6220bb3b059bf07291c2a927b79ee4aba24db480047e52d1d7df7" name="a9682e32b839e6220bb3b059bf07291c2a927b79ee4aba24db480047e52d1d7df7"></a>AllyLowestHpPercent&#160;</td><td class="fielddoc"><p>Союзник с наименьшим HP% (хилер). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a9682e32b839e6220bb3b059bf07291c2a1ab8a7777ec5957eeca9aabb3d5f9047" name="a9682e32b839e6220bb3b059bf07291c2a1ab8a7777ec5957eeca9aabb3d5f9047"></a>PreferUntagged&#160;</td><td class="fielddoc"><p>Избегать врага с тегом AIProfile.TargetTag (Frozen у Криоманта — не тратить АА на уже замороженного); иначе ближайший. Зеркало PreferTagged. </p>
 </td></tr>
 </table>
 

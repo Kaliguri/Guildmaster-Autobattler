@@ -4,5 +4,6 @@ var searchData=
   ['targetmode_1',['TargetMode',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ad7f696c9f85df4e7310ecdb087f2298b',1,'Guildmaster::Data::Definitions::AbilityData']]],
   ['targettag_2',['TargetTag',['../classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a59219e86754164989fbeff037214b359',1,'Guildmaster::Data::Definitions::AIProfile']]],
   ['targettick_3',['targettick',['../classGuildmaster_1_1Combat_1_1Commands_1_1PauseCommand.html#ab1295b7b00b9a3c16415b3c11e2e2103',1,'Guildmaster.Combat.Commands.PauseCommand.TargetTick'],['../classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand.html#a626e911ae0d3e5a23402fde0596d5111',1,'Guildmaster.Combat.Commands.ResumeCommand.TargetTick'],['../classGuildmaster_1_1Combat_1_1Commands_1_1SpawnUnitCommand.html#a0a4104587e30827650699301296f9549',1,'Guildmaster.Combat.Commands.SpawnUnitCommand.TargetTick'],['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html#a6402297deaeae7072eec1fbb0b119cd5',1,'Guildmaster.Core.Simulation.ISimCommand.TargetTick']]],
-  ['totaldamage_4',['TotalDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#aee606a37b8e57d2f7c2eaff6452c2239',1,'Guildmaster::Combat::DamageResult']]]
+  ['totaldamage_4',['TotalDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#aee606a37b8e57d2f7c2eaff6452c2239',1,'Guildmaster::Combat::DamageResult']]],
+  ['triggertag_5',['TriggerTag',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#aa64427999e388aea2224c8b3d05fc2be',1,'Guildmaster::Data::Definitions::AbilityData']]]
 ];
