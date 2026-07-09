@@ -24,6 +24,7 @@ namespace Guildmaster.Presentation
         private Vector3  _startPosition;
         private Color    _baseColor;
         private float    _elapsed;
+        private System.Action<FloatingText> _onComplete;
 
         /// <summary>Заспавнить и проиграть цифру из префаба над мировой точкой. Префаб должен нести <see cref="FloatingText"/>.</summary>
         public static void Spawn(GameObject prefab, Transform parent, Vector3 worldPosition, string text, Color color)
@@ -35,10 +36,17 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>Задать текст, цвет и запустить анимацию.</summary>
-        public void Play(string text, Color color)
+        public void Play(string text, Color color) => Play(text, color, null);
+
+        /// <summary>
+        /// Пул-версия: по завершении зовёт <paramref name="onComplete"/> (возврат в пул) вместо Destroy.
+        /// Позицию выставляет вызывающий ДО вызова.
+        /// </summary>
+        public void Play(string text, Color color, System.Action<FloatingText> onComplete)
         {
-            _text = GetComponentInChildren<TMP_Text>(includeInactive: true);
-            if (_text == null) { Destroy(gameObject); return; }
+            _onComplete = onComplete;
+            if (_text == null) _text = GetComponentInChildren<TMP_Text>(includeInactive: true);
+            if (_text == null) { Finish(); return; }
             _text.text     = text;
             _text.color    = color;
             _baseColor     = color;
@@ -62,7 +70,14 @@ namespace Guildmaster.Presentation
             c.a = _fadeStart < 1f ? 1f - Mathf.Clamp01((t - _fadeStart) / (1f - _fadeStart)) : 1f;
             _text.color = c;
 
-            if (t >= 1f) Destroy(gameObject);
+            if (t >= 1f) Finish();
+        }
+
+        /// <summary>Завершение: вернуть в пул, если задан колбэк; иначе уничтожить (не-пул путь).</summary>
+        private void Finish()
+        {
+            if (_onComplete != null) _onComplete(this);
+            else Destroy(gameObject);
         }
     }
 }

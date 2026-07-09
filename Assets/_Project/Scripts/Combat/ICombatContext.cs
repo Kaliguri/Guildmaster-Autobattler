@@ -57,6 +57,9 @@ namespace Guildmaster.Combat
         /// <summary>Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4).</summary>
         void Dispel(in Effects.DispelRequest req);
 
+        /// <summary>Принудительно сместить цель (отбрасывание/«ядро», §9.9). Исполняет DisplacementSystem.</summary>
+        void Displace(in DisplaceRequest req);
+
         /// <summary>
         /// Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View и «вжух»-SFX.
         /// Fire-and-forget — не мутирует симуляцию.

@@ -5,6 +5,7 @@ using Guildmaster.Data.Stats;
 using Guildmaster.Presentation;
 using QFSW.QC;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using VContainer;
 
@@ -24,6 +25,18 @@ namespace Guildmaster.DevTools
 
         [Tooltip("SO реликвии «Криомант» для gm_spawn_cryomancer (вики «13» §10.2).")]
         [SerializeField] private RelicData _cryomancerRelic;
+
+        [Tooltip("SO реликвии «Надёжный защитник» для gm_spawn_defender (вики «13» §10.3).")]
+        [SerializeField] private RelicData _defenderRelic;
+
+        [Tooltip("SO реликвии «Лесной следопыт» для gm_spawn_ranger (вики «13» §10.4).")]
+        [SerializeField] private RelicData _rangerRelic;
+
+        [Tooltip("SO реликвии «Скрытный убийца» для gm_spawn_assassin (вики «13» §10.5).")]
+        [SerializeField] private RelicData _assassinRelic;
+
+        [Tooltip("SO реликвии «Монах вихря» для gm_spawn_monk (вики «13» §10.6).")]
+        [SerializeField] private RelicData _monkRelic;
 
         private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
@@ -61,6 +74,13 @@ namespace Guildmaster.DevTools
 
         private void PauseForConsole()   => _simulation?.SetPaused(true);
         private void ResumeAfterConsole() => _simulation?.SetPaused(false);
+
+        // Быстрый перезапуск боя по F5 (new Input System). Дублирует команду gm_restart.
+        private void Update()
+        {
+            Keyboard kb = Keyboard.current;
+            if (kb != null && kb.f5Key.wasPressedThisFrame) Restart();
+        }
 
         /// <summary>Зафиксировать сид боя для детерминизм-отладки (только до старта).</summary>
         [Command("gm_rng_seed", "Зафиксировать сид боя (до старта симуляции)")]
@@ -163,6 +183,98 @@ namespace Guildmaster.DevTools
             Debug.Log($"[GuildmasterCommands] - gm_spawn_cryomancer: криомант vs {enemies} болванчиков");
         }
 
+        /// <summary>Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10.3.</summary>
+        [Command("gm_spawn_defender", "Заспавнить Надёжного защитника против ударных болванчиков (срез §10.3)")]
+        public void SpawnDefender(int enemies = 3, float enemyDamage = 40f)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (_defenderRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _defenderRelic в инспекторе"); return; }
+
+            // Защитник по центру-слева — через фабрику (реальный путь: пассив «Оплот» pre-damage, HighestThreat, ульта).
+            _simulation.EnqueueUnitSpawn(_factory.Create(_defenderRelic, null, team: 0, new Vector2(-4f, 0f)));
+
+            // Ударные болванчики справа: урон выше порога «Оплота» (15% × 220 ≈ 33), чтобы щит поднимался.
+            // Первый бьёт сильнее — видно, что ульта уходит в «главную угрозу» (HighestThreat).
+            int nextId = _simulation.Units.Count + 1;
+            for (int i = 0; i < enemies; i++)
+            {
+                float y = (i - (enemies - 1) * 0.5f) * 1.2f;
+                float dmg = i == 0 ? enemyDamage * 1.5f : enemyDamage; // главный ДПС — первый
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), 160f, dmg, nextId++));
+            }
+
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_defender: защитник vs {enemies} ударных болванчиков");
+        }
+
+        /// <summary>Заспавнить «Лесного следопыта» (team 0) против кластера болванчиков (team 1) — срез §10.4.</summary>
+        [Command("gm_spawn_ranger", "Заспавнить Лесного следопыта против кластера болванчиков (срез §10.4)")]
+        public void SpawnRanger(int enemies = 3, float enemyHp = 120f)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (_rangerRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _rangerRelic в инспекторе"); return; }
+
+            // Следопыт слева — через фабрику (реальный путь: кайт, стрельба на ходу, «Метка охотника» с переносом).
+            _simulation.EnqueueUnitSpawn(_factory.Create(_rangerRelic, null, team: 0, new Vector2(-6f, 0f)));
+
+            // Кластер болванчиков справа лезет в ближний бой — видно кайт (отход) и стрельбу на ходу.
+            int nextId = _simulation.Units.Count + 1;
+            for (int i = 0; i < enemies; i++)
+            {
+                float y = (i - (enemies - 1) * 0.5f) * 1.2f;
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 10f, nextId++));
+            }
+
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_ranger: следопыт vs {enemies} болванчиков");
+        }
+
+        /// <summary>Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.</summary>
+        [Command("gm_spawn_assassin", "Заспавнить Скрытного убийцу против болванчиков (срез §10.5)")]
+        public void SpawnAssassin(int enemies = 3, float enemyHp = 120f, float enemyDamage = 40f)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (_assassinRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _assassinRelic в инспекторе"); return; }
+
+            // Убийца слева — через фабрику (реальный путь: пассивы «Скрытность» + «Изворотливость» из GrantedEffects,
+            // усиленный первый удар, негейт крупных ударов, рестелс после убийства).
+            _simulation.EnqueueUnitSpawn(_factory.Create(_assassinRelic, null, team: 0, new Vector2(-5f, 0f)));
+
+            // Болванчики справа: бьют крупно (> порога «Изворотливости»), чтобы видеть негейт и заряды.
+            int nextId = _simulation.Units.Count + 1;
+            for (int i = 0; i < enemies; i++)
+            {
+                float y = (i - (enemies - 1) * 0.5f) * 1.2f;
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, enemyDamage, nextId++));
+            }
+
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_assassin: убийца vs {enemies} болванчиков");
+        }
+
+        /// <summary>Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10.6.</summary>
+        [Command("gm_spawn_monk", "Заспавнить Монаха вихря против кластера болванчиков (срез §10.6)")]
+        public void SpawnMonk(int enemies = 3, float enemyHp = 150f)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (_monkRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _monkRelic в инспекторе"); return; }
+
+            // Монах слева — через фабрику (реальный путь: «Шквальный толчок» = отбрасывание + «ядро» по линии,
+            // «Вихревой заход» = телепорт к цели + усиленный удар в конце полёта).
+            _simulation.EnqueueUnitSpawn(_factory.Create(_monkRelic, null, team: 0, new Vector2(-5f, 0f)));
+
+            // Кластер болванчиков справа: чтобы «ядро» пролетало сквозь нескольких (толкаем одного в других).
+            int nextId = _simulation.Units.Count + 1;
+            for (int i = 0; i < enemies; i++)
+            {
+                float y = (i - (enemies - 1) * 0.5f) * 0.7f; // компактно — толкаемый задевает соседей
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 10f, nextId++));
+            }
+
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков");
+        }
+
         /// <summary>Выставить HP юниту по ID.</summary>
         [Command("gm_set_hp", "Выставить HP юниту по ID")]
         public void SetHp(int unitId, float hp)
@@ -214,6 +326,16 @@ namespace Guildmaster.DevTools
             if (_debugDraw == null) { Debug.LogWarning("[GuildmasterCommands] - CombatDebugDraw не найден"); return; }
             _debugDraw.IsEnabled = !_debugDraw.IsEnabled;
             Debug.Log($"[GuildmasterCommands] - gm_toggle_debug_draw: {(_debugDraw.IsEnabled ? "ON" : "OFF")}");
+        }
+
+        /// <summary>Включить/выключить dev-слой статус-колец (метка/стан/щит/заморозка/усиление).</summary>
+        [Command("gm_toggle_status", "Вкл/выкл dev-подсветку статусов юнитов (кольца)")]
+        public void ToggleStatusOverlay()
+        {
+            var overlay = FindObjectOfType<CombatStatusOverlay>(true);
+            if (overlay == null) { Debug.LogWarning("[GuildmasterCommands] - CombatStatusOverlay не найден (создаётся в бою)"); return; }
+            overlay.IsEnabled = !overlay.IsEnabled;
+            Debug.Log($"[GuildmasterCommands] - gm_toggle_status: {(overlay.IsEnabled ? "ON" : "OFF")}");
         }
 
         private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id)

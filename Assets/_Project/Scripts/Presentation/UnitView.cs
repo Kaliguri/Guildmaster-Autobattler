@@ -108,6 +108,8 @@ namespace Guildmaster.Presentation
         // Кадровая анимация листается по рендер-времени — независимо от 30-Гц сим-тика.
         private void Update()
         {
+            ApplyStealthAlpha(); // dev-подсветка инвиза — до guard'а, работает и без набора кадров
+
             if (_visual == null || _sprite == null) return;
 
             float dt = Time.deltaTime;
@@ -243,6 +245,17 @@ namespace Guildmaster.Presentation
             _attackPhase = AttackPhase.None;
             _frameIndex  = 0;
             _frameTimer  = 0f;
+        }
+
+        // Инвиз (dev, §10.5): пока висит тег Stealth — тело полупрозрачно; иначе непрозрачно.
+        // Перекрывает альфу из SetTint (RGB сохраняется), поллится каждый кадр.
+        private void ApplyStealthAlpha()
+        {
+            if (_sprite == null || _unit == null) return;
+            bool stealthed = (_unit.EffectTagMask & EffectTag.Stealth) != 0;
+            Color c = _sprite.color;
+            c.a = stealthed ? 0.4f : 1f;
+            _sprite.color = c;
         }
 
         /// <summary>Вызывается при получении урона.</summary>

@@ -38,6 +38,25 @@ namespace Guildmaster.Combat.Effects
         /// </summary>
         public int[] PeriodicTicks;
 
+        /// <summary>
+        /// Внутренний кулдаун реактив/pre-damage компонента (§9.3, «Оплот»): абсолютный тик, с которого
+        /// компонент снова готов сработать. Сверяется с <c>ctx.Combat.CurrentTick</c> — без потиковых
+        /// декрементов (детерминизм). 0 = готов с начала боя.
+        /// </summary>
+        public int ReactiveReadyTick;
+
+        /// <summary>
+        /// Фактически поднятая величина щита с runtime-расчётом (§9.3, «Оплот»: <c>flat + %·недостающее HP</c>) —
+        /// снимок при наложении, чтобы <c>OnExpire</c> снял ровно её (потенцию из статов тут не выразить).
+        /// </summary>
+        public float PendingShield;
+
+        /// <summary>
+        /// Заряды реактив-компонента (§9.4, «Изворотливость»): на каждый заряд — абсолютный тик готовности
+        /// (≤ CurrentTick = готов). Независимая перезарядка. null у эффектов без зарядов.
+        /// </summary>
+        public int[] ChargeReadyTicks;
+
         /// <summary>Постоянный эффект (пассивка) — не истекает по таймеру.</summary>
         public bool IsPermanent => RemainingTicks < 0;
     }

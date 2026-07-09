@@ -33,6 +33,27 @@ namespace Guildmaster.Combat.Effects
         void OnEvent(in EffectContext ctx, in CombatEventData e);
     }
 
+    /// <summary>Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар.</summary>
+    public sealed class PreDamageResult
+    {
+        /// <summary>Удар отменён (урон не наносится) — «Изворотливость» ассасина.</summary>
+        public bool Negated;
+
+        public void Reset() => Negated = false;
+    }
+
+    /// <summary>
+    /// Синхронный перехват ДО вычета HP (§9.3): вызывается из <see cref="EffectSystem.RunPreDamage"/>
+    /// перед <see cref="DamagePipeline.Execute"/>. В отличие от <see cref="IReactiveComponent"/>
+    /// (пост-факт, после урона) — успевает поднять щит, поглощающий триггер-удар («Оплот»), ИЛИ
+    /// полностью отменить удар через <see cref="PreDamageResult.Negated"/> («Изворотливость»).
+    /// Порядок опроса — по индексу <see cref="RuntimeUnit.ActiveEffects"/> (детерминизм).
+    /// </summary>
+    public interface IPreDamageComponent : IRuntimeEffectComponent
+    {
+        void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx);
+    }
+
     /// <summary>
     /// Опциональный шов: компонент объявляет масштабируемую потенцию. EffectSystem резолвит её
     /// из статов источника один раз при наложении и кладёт снимок в <see cref="RuntimeEffect.ScaledPotency"/>

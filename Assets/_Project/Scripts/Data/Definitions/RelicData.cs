@@ -35,6 +35,13 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("On-hit эффекты авто-атаки (§9.1): накладываются на каждую задетую цель в момент удара — мили (single/Line) и при попадании снаряда. Криомант = «Заморозка». Пусто = нет (поведение Ф1/Ф2).")]
         [SerializeField] private EffectData[] _autoAttackEffects;
 
+        [Header("Attack while moving (Phase 3, §9.8)")]
+        [Tooltip("Стрельба на ходу: авто-атака НЕ рутит движение (Следопыт). false = стоп на атаку (поведение Ф1).")]
+        [SerializeField] private bool _canAttackWhileMoving;
+
+        [Tooltip("Штраф MoveSpeed (0..1) пока идёт замах при стрельбе на ходу. Следопыт = 0.5 (−50%).")]
+        [SerializeField] private float _movingAttackSpeedPenaltyPct = 0.5f;
+
         [Header("Resource gain (Phase 3)")]
         [Tooltip("Ресурс (мана) за авто-атаку, × ResourceGainEff, клампится к MaxResource. 0 = не копит от ударов. Копейщик = 5.")]
         [SerializeField] private float _resourceOnHit;
@@ -66,6 +73,8 @@ namespace Guildmaster.Data.Definitions
         public AreaShape AutoAttackShape => _autoAttackShape;
         public float AutoAttackWidth => _autoAttackWidth;
         public EffectData[] AutoAttackEffects => _autoAttackEffects;
+        public bool CanAttackWhileMoving => _canAttackWhileMoving;
+        public float MovingAttackSpeedPenaltyPct => _movingAttackSpeedPenaltyPct;
         public float ResourceOnHit => _resourceOnHit;
         public StatModifier[] Stats => _stats;
         public EffectData[] GrantedEffects => _grantedEffects;

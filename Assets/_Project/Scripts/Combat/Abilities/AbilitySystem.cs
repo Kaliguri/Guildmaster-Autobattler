@@ -3,6 +3,7 @@ using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
+using UnityEngine;
 
 namespace Guildmaster.Combat
 {
@@ -29,8 +30,8 @@ namespace Guildmaster.Combat
                     if (ability.CooldownRemaining > 0f) ability.CooldownRemaining -= dt;
                 }
 
-                // Плейсхолдер-триггер: кастуем первую готовую активку, если можем.
-                if (unit.CanAct && unit.CanCast)
+                // Плейсхолдер-триггер: кастуем первую готовую активку, если можем (в полёте — нет, §9.9).
+                if (unit.CanAct && unit.CanCast && unit.DisplacedTicksRemaining == 0)
                 {
                     for (int a = 0; a < unit.Abilities.Count; a++)
                     {
@@ -82,7 +83,9 @@ namespace Guildmaster.Combat
             caster.CurrentResource -= data.ResourceCost;
             ability.CooldownRemaining = data.BaseCooldown * caster.Stats.Get(StatType.CooldownEff);
 
-            if (isMassTag)
+            if (data.Displaces)
+                ApplyDisplace(caster, target, data, ctx);
+            else if (isMassTag)
                 ApplyAllWithTag(caster, data, units, ctx);
             else if (data.AreaShape == AreaShape.Circle)
                 ApplyCircle(caster, data, ctx);
@@ -90,6 +93,28 @@ namespace Guildmaster.Combat
                 ApplyToTarget(caster, target, data, ctx);
 
             return true;
+        }
+
+        /// <summary>«Шквальный толчок» (§9.9): оттолкнуть цель «от себя вперёд» на фикс. дистанцию, урон-ядро по линии.</summary>
+        private static void ApplyDisplace(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
+        {
+            Vector2 dir = target.Position - caster.Position; // от кастующего вперёд
+            float dmg = data.DisplaceDamageMult > 0f
+                ? data.DisplaceDamageMult * caster.Stats.Get(StatType.AutoAttackDamage)
+                : 0f;
+            DamageType dmgType = caster.Relic != null ? caster.Relic.DamageType : DamageType.Physical;
+
+            // Dev-оверлей линии полёта + диски на старте/конце (§10.6, #7) — fire-and-forget, детерминизм не трогает.
+            Vector2 ndir  = dir.sqrMagnitude > 1e-6f ? dir.normalized : Vector2.right;
+            Vector2 start = target.Position;
+            Vector2 end   = start + ndir * data.DisplaceDistance;
+            ctx.ReportAreaHit(AreaHit.Line(start, ndir, data.DisplaceDistance, data.DisplaceWidth, caster.Team));
+            ctx.ReportAreaHit(AreaHit.Circle(start, 0.3f, caster.Team));
+            ctx.ReportAreaHit(AreaHit.Circle(end,   0.3f, caster.Team));
+
+            ctx.Displace(new DisplaceRequest(
+                target, caster, dir, data.DisplaceDistance, data.DisplaceTicks,
+                cannonball: true, damage: dmg, damageType: dmgType, width: data.DisplaceWidth));
         }
 
         /// <summary>Условие каста (блок D). Отмена по своему HP% (блок E) решается в <see cref="TryCast"/> до вызова.</summary>

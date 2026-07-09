@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Guildmaster.Combat.Effects;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -28,12 +29,12 @@ namespace Guildmaster.Combat
                 RuntimeUnit unit = units[i];
                 if (unit.IsDead) continue;
 
-                // Прерывание замаха при потере дееспособности (стан/сон). CanAct посчитан на прошлом тике
-                // (Effects идёт ПОСЛЕ AutoAttack) — это ожидаемое окно в 1 тик (вики «14»).
-                if (!unit.CanAct)
+                // Прерывание замаха при потере дееспособности (стан/сон) или в полёте (§9.9). CanAct
+                // посчитан на прошлом тике (Effects идёт ПОСЛЕ AutoAttack) — окно в 1 тик (вики «14»).
+                if (!unit.CanAct || unit.DisplacedTicksRemaining > 0)
                 {
                     if (unit.IsWindingUp) Interrupt(unit, ctx);
-                    continue; // оглушён и не в замахе — кулдаун не тикает (как было)
+                    continue; // оглушён/в полёте и не в замахе — кулдаун не тикает (как было)
                 }
 
                 // Якорный кулдаун тикает КАЖДЫЙ тик, в т.ч. во время замаха: период damage→damage = интервал,
@@ -118,6 +119,14 @@ namespace Guildmaster.Combat
                     unit, unit.Position, target,
                     healSpeed, healRadius, raw, dmgType, ctx.ArmorK, maxPierces: 0, isHeal: true));
                 return;
+            }
+
+            // §9.6 усиление следующей атаки («Скрытность»): множим урон разово и снимаем баф стелса.
+            if (unit.EmpowerDamageMult > 0f)
+            {
+                raw *= unit.EmpowerDamageMult;
+                unit.EmpowerDamageMult = 0f;
+                ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, EffectTag.Stealth, int.MaxValue, 0));
             }
 
             if (attackType == AttackType.Melee)

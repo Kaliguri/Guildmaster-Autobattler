@@ -50,6 +50,7 @@ namespace Guildmaster.Game
             builder.Register<DeathSystem>(Lifetime.Scoped);
             builder.Register<EffectSystem>(Lifetime.Scoped);
             builder.Register<RegenSystem>(Lifetime.Scoped);
+            builder.Register<DisplacementSystem>(Lifetime.Scoped);
         }
 
         private void RegisterSimulation(IContainerBuilder builder)

@@ -1144,6 +1144,10 @@ MonoBehaviour:
   _spearmanRelic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
   _shepherdRelic: {fileID: 11400000, guid: 2405b745f0480e2428fdaf24ac1b5d93, type: 2}
   _cryomancerRelic: {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
+  _defenderRelic: {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
+  _rangerRelic: {fileID: 11400000, guid: cbdaabcbd4ebc7d42b6f4cbb08c301c9, type: 2}
+  _assassinRelic: {fileID: 11400000, guid: b94a788eb332911478cd8f88880f03ea, type: 2}
+  _monkRelic: {fileID: 11400000, guid: 996f2fad803a29546b30c3849034e749, type: 2}
 --- !u!4 &1713771495
 Transform:
   m_ObjectHideFlags: 0

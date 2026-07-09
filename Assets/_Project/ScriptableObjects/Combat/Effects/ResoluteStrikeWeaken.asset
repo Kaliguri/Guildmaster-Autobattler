@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
+  m_Name: ResoluteStrikeWeaken
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
+  _id: resolute_strike_weaken
+  _polarity: 1
+  _tags: 2
+  _baseDuration: 3
+  _stacking: 2
+  _maxStacks: 1
+  _cleanseTier: 0
+  _unremovable: 0
+  _components:
+  - rid: 5615026876324511843
+  references:
+    version: 2
+    RefIds:
+    - rid: 5615026876324511843
+      type: {class: StatModifierComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _modifiers:
+        - Stat: 15
+          Op: 2
+          Value: -0.3

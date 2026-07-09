@@ -1,8 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
 using MessagePipe;
 using UnityEngine;
+using UnityEngine.Pool;
 using VContainer;
 
 namespace Guildmaster.Presentation
@@ -21,10 +23,16 @@ namespace Guildmaster.Presentation
         [Header("Свои боевые цифры (урон/хил) — один префаб, цвет задаётся здесь")]
         [Tooltip("Общий префаб всплывающей цифры (несёт FloatingText; размер/шрифт/тайминг — на префабе).")]
         [SerializeField] private GameObject _floatingTextPrefab;
-        [Tooltip("Цвет цифры урона.")]
+        [Tooltip("Цвет цифры урона по HP (-N).")]
         [SerializeField] private Color _damageColor = new Color(1f, 0.75f, 0.2f);
         [Tooltip("Цвет цифры лечения (+N).")]
         [SerializeField] private Color _healColor = new Color(0.5f, 1f, 0.6f);
+        [Tooltip("Цвет цифры урона по щиту (-N).")]
+        [SerializeField] private Color _shieldColor = new Color(0.4f, 0.7f, 1f);
+        [Tooltip("Цвет надписи «evade» при полном негейте удара.")]
+        [SerializeField] private Color _evadeColor = new Color(0.85f, 0.9f, 0.95f);
+        [Tooltip("Задержка между цифрой щита и цифрой HP при сплите (сек).")]
+        [SerializeField] private float _splitDelay = 0.06f;
 
         [Tooltip("Пер-юнит визуалы по реликвии (вики «13» шаг 4): если у юнита эта реликвия — её набор кадров вместо дефолтного на префабе.")]
         [SerializeField] private VisualOverride[] _visualOverrides = System.Array.Empty<VisualOverride>();
@@ -38,6 +46,10 @@ namespace Guildmaster.Presentation
 
         private CombatSimulation            _simulation;
         private readonly Dictionary<int, UnitView> _views = new Dictionary<int, UnitView>();
+
+        private ObjectPool<FloatingText>    _textPool;
+        private System.Action<FloatingText> _releaseText;
+        private CombatStatusOverlay         _statusOverlay;
 
         private IPublisher<UnitSpawnedEvent> _unitSpawnedPublisher;
         private IPublisher<UnitDiedEvent>    _unitDiedPublisher;
@@ -66,9 +78,12 @@ namespace Guildmaster.Presentation
             _simulation.OnUnitDied          += HandleUnitDied;
             _simulation.OnDamageDealt       += HandleDamageDealt;
             _simulation.OnHealed            += HandleHealed;
+            _simulation.OnAttackEvaded      += HandleAttackEvaded;
             _simulation.OnBattleEnded       += HandleBattleEnded;
             _simulation.OnAttackStarted     += HandleAttackStarted;
             _simulation.OnAttackInterrupted += HandleAttackInterrupted;
+
+            EnsureStatusOverlay();
         }
 
         private void OnDisable()
@@ -78,9 +93,20 @@ namespace Guildmaster.Presentation
             _simulation.OnUnitDied          -= HandleUnitDied;
             _simulation.OnDamageDealt       -= HandleDamageDealt;
             _simulation.OnHealed            -= HandleHealed;
+            _simulation.OnAttackEvaded      -= HandleAttackEvaded;
             _simulation.OnBattleEnded       -= HandleBattleEnded;
             _simulation.OnAttackStarted     -= HandleAttackStarted;
             _simulation.OnAttackInterrupted -= HandleAttackInterrupted;
+        }
+
+        /// <summary>Создать dev-слой статус-колец в рантайме (без правок сцены/префабов) и подать симуляцию.</summary>
+        private void EnsureStatusOverlay()
+        {
+            if (_statusOverlay != null) return;
+            var go = new GameObject("CombatStatusOverlay");
+            go.transform.SetParent(transform, worldPositionStays: false);
+            _statusOverlay = go.AddComponent<CombatStatusOverlay>();
+            _statusOverlay.Initialize(_simulation);
         }
 
         private void Update()
@@ -140,8 +166,17 @@ namespace Guildmaster.Presentation
             if (_views.TryGetValue(target.Id, out var view))
                 view.OnDamageReceived(result.TotalDamage);
 
-            int dmg = Mathf.RoundToInt(result.TotalDamage);
-            if (dmg > 0) SpawnNumber(target.Position, dmg.ToString(), _damageColor);
+            int shield = Mathf.RoundToInt(result.ShieldDamage);
+            int hp     = Mathf.RoundToInt(result.HpDamage);
+
+            // Урон по щиту — синим «-N»; по HP — «-N» цветом урона. Если задет и щит, и HP —
+            // цифра щита сразу, цифра HP через очень маленькую задержку (обе читаемы).
+            if (shield > 0) SpawnNumber(target.Position, "-" + shield, _shieldColor);
+            if (hp > 0)
+            {
+                if (shield > 0) StartCoroutine(DelayedNumber(target.Position, "-" + hp, _damageColor, _splitDelay));
+                else            SpawnNumber(target.Position, "-" + hp, _damageColor);
+            }
 
             _damageDealtPublisher.Publish(new DamageDealtEvent(source, target, result));
         }
@@ -153,11 +188,44 @@ namespace Guildmaster.Presentation
             if (healed > 0) SpawnNumber(target.Position, "+" + healed, _healColor);
         }
 
-        /// <summary>Заспавнить свою всплывающую боевую цифру над мировой точкой заданным цветом.</summary>
+        private void HandleAttackEvaded(RuntimeUnit target)
+        {
+            // Полный негейт удара («Изворотливость») — урона нет, показываем «evade».
+            SpawnNumber(target.Position, "evade", _evadeColor);
+        }
+
+        private IEnumerator DelayedNumber(Vector2 worldPosition, string text, Color color, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            SpawnNumber(worldPosition, text, color);
+        }
+
+        /// <summary>Заспавнить свою всплывающую боевую цифру над мировой точкой (через пул).</summary>
         private void SpawnNumber(Vector2 worldPosition, string text, Color color)
         {
-            Vector3 pos = (Vector3)worldPosition + Vector3.up * 0.4f;
-            FloatingText.Spawn(_floatingTextPrefab, transform, pos, text, color);
+            EnsureTextPool();
+            if (_textPool == null) return;
+
+            FloatingText ft = _textPool.Get();
+            ft.transform.position = (Vector3)worldPosition + Vector3.up * 0.4f;
+            ft.Play(text, color, _releaseText);
+        }
+
+        /// <summary>Лениво собрать пул всплывающих цифр из префаба (zero-alloc в бою, пункт QA #5).</summary>
+        private void EnsureTextPool()
+        {
+            if (_textPool != null || _floatingTextPrefab == null) return;
+            if (!_floatingTextPrefab.TryGetComponent(out FloatingText _)) return;
+
+            _releaseText = ft => _textPool.Release(ft);
+            _textPool = new ObjectPool<FloatingText>(
+                createFunc: () => Instantiate(_floatingTextPrefab, transform).GetComponent<FloatingText>(),
+                actionOnGet: ft => ft.gameObject.SetActive(true),
+                actionOnRelease: ft => ft.gameObject.SetActive(false),
+                actionOnDestroy: ft => Destroy(ft.gameObject),
+                collectionCheck: false,
+                defaultCapacity: 16,
+                maxSize: 64);
         }
 
         /// <summary>Тинт тела по персонажу: у реликвии — стабильный оттенок от имени; у болванчиков — по команде.</summary>

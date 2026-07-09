@@ -29,5 +29,8 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Семейство контроллеров: «подкидывание» — контроль, НЕ скейлится ReceiveDebuffEff (§4.4).</summary>
         KnockUp = 1 << 9,
+
+        /// <summary>Скрытный убийца: баф «Скрытность» — снимается первой авто-атакой (§9.6, §10.5).</summary>
+        Stealth = 1 << 10,
     }
 }

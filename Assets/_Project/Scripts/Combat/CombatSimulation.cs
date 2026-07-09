@@ -29,6 +29,7 @@ namespace Guildmaster.Combat
         private readonly DeathSystem         _deathSystem;
         private readonly EffectSystem        _effectSystem;
         private readonly RegenSystem         _regenSystem;
+        private readonly DisplacementSystem  _displacementSystem;
 
         private readonly List<RuntimeUnit>  _units       = new List<RuntimeUnit>();
         private readonly List<RuntimeUnit>  _pendingAdd  = new List<RuntimeUnit>();
@@ -64,6 +65,9 @@ namespace Guildmaster.Combat
         /// <summary>Юнит исцелён: источник, цель, фактически вылеченное HP (overheal не входит). Для presentation (хил-цифры).</summary>
         public event Action<RuntimeUnit, RuntimeUnit, float> OnHealed;
 
+        /// <summary>Входящий удар полностью отменён pre-damage реактивом («Изворотливость»). Для presentation («evade»). Урона нет.</summary>
+        public event Action<RuntimeUnit> OnAttackEvaded;
+
         /// <summary>Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View.</summary>
         public event Action<RuntimeUnit, RuntimeUnit> OnAttackStarted;
 
@@ -97,7 +101,8 @@ namespace Guildmaster.Combat
             ProjectileSystem  projectileSystem,
             DeathSystem       deathSystem,
             EffectSystem      effectSystem,
-            RegenSystem       regenSystem)
+            RegenSystem       regenSystem,
+            DisplacementSystem displacementSystem = null)
         {
             _rng              = rng;
             _armorK           = armorK;
@@ -110,8 +115,23 @@ namespace Guildmaster.Combat
             _deathSystem      = deathSystem;
             _effectSystem     = effectSystem;
             _regenSystem      = regenSystem;
+            // Опциональный (дефолт — свежий): headless-тесты конструируют симуляцию позиционно без него.
+            _displacementSystem = displacementSystem ?? new DisplacementSystem();
 
-            _deathSystem.OnUnitDied += unit => OnUnitDied?.Invoke(unit);
+            // Смещение завершилось → сигнал реактивам («Вихревой заход»), доставляется источнику толчка.
+            _displacementSystem.OnDisplacementEnded += (source, target) =>
+            {
+                if (source != null)
+                    _eventQueue.Enqueue(new CombatEventData(CombatEvent.UnitDisplaced, source, target, 0f));
+            };
+
+            _deathSystem.OnUnitDied += unit =>
+            {
+                // Внутреннее событие для реактивов (перенос «Метки охотника», §9.5). Дренится следующим
+                // тиком; носитель-труп ещё в _units с эффектами, DrainEventQueue допускает его для UnitDied.
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.UnitDied, null, unit, 0f));
+                OnUnitDied?.Invoke(unit);
+            };
         }
 
         // --- Основной тик ---
@@ -143,6 +163,7 @@ namespace Guildmaster.Combat
             _brainSystem.Tick(_units, this);
             _abilitySystem.Tick(_units, this, dt);
             _movementSystem.Tick(_units, dt);
+            _displacementSystem.Tick(this, dt);
             _spatialHash.Rebuild(_units);
             _autoAttackSystem.Tick(_units, this, dt);
             _projectileSystem.Tick(_projectiles, _units, this, dt);
@@ -160,6 +181,15 @@ namespace Guildmaster.Combat
         public void DealDamage(in DamageRequest req)
         {
             if (req.Target.IsDead) return;
+
+            // Синхронный pre-damage перехват (§9.3): «Оплот» поднимает щит (поглотит этот же удар),
+            // «Изворотливость» может полностью отменить удар. Порядок детерминирован.
+            if (_effectSystem.RunPreDamage(req.Target, in req, this))
+            {
+                OnAttackEvaded?.Invoke(req.Target); // presentation-сигнал «evade», симуляцию не трогает
+                return; // удар негейтнут — ни урона, ни урон-событий
+            }
+
             var result = DamagePipeline.Execute(req);
             OnDamageDealt?.Invoke(req.Source, req.Target, result);
 
@@ -168,6 +198,10 @@ namespace Guildmaster.Combat
             if (req.Source != null)
                 _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage));
             _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage));
+
+            // Убийство атрибутируется нанёсшему смертельный удар → доставляется УБИЙЦЕ (§10.5, «Скрытность»).
+            if (result.KilledTarget && req.Source != null)
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.UnitKilled, req.Source, req.Target, 0f));
 
             // Вампиризм: источник лечится на долю нанесённого по HP урона. Фаза 1 — применяется
             // ко всему урону (без тегов источника); сузить до авто-атак/способностей — Фаза 2.
@@ -297,6 +331,11 @@ namespace Guildmaster.Combat
             _effectSystem.Dispel(in req, this);
         }
 
+        public void Displace(in DisplaceRequest req)
+        {
+            _displacementSystem.Add(in req);
+        }
+
         // --- Управление симуляцией (вызывается командами) ---
 
         public void SetPaused(bool paused) => _isPaused = paused;
@@ -375,10 +414,15 @@ namespace Guildmaster.Combat
                 CombatEventData ev = _eventQueue.Dequeue();
                 RuntimeUnit carrier =
                     ev.Type == CombatEvent.DamageDealt || ev.Type == CombatEvent.Healed
+                    || ev.Type == CombatEvent.UnitKilled || ev.Type == CombatEvent.UnitDisplaced
                         ? ev.Source
                         : ev.Target;
 
-                if (carrier != null && !carrier.IsDead)
+                // UnitDied доставляем даже мёртвому носителю: «Метка охотника» переносится с трупа
+                // на ближайшего живого врага (§9.5). Остальные события — только живым.
+                bool allowDeadCarrier = ev.Type == CombatEvent.UnitDied;
+
+                if (carrier != null && (allowDeadCarrier || !carrier.IsDead))
                 {
                     _effectSystem.Dispatch(carrier, in ev, this);
                 }

@@ -204,6 +204,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) { }
             public void ReportAreaHit(in AreaHit hit) { }
             public void Dispel(in DispelRequest req) { }
+            public void Displace(in DisplaceRequest req) { }
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => AttackStarted++;
             public void NotifyAttackInterrupted(RuntimeUnit unit) => AttackInterrupted++;
 

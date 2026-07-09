@@ -57,6 +57,16 @@ namespace Guildmaster.Combat
         /// <summary>Цель авто-атаки. Для хилера — союзник (≠ CurrentTarget). Пишет мозг, читает AutoAttackSystem.</summary>
         public RuntimeUnit AutoAttackTarget;
 
+        /// <summary>Множитель урона следующей авто-атаки (§9.6, «Скрытность»): 0 = нет усиления. AutoAttackSystem применяет и сбрасывает (однострел).</summary>
+        public float EmpowerDamageMult;
+
+        /// <summary>
+        /// Тиков принудительного смещения осталось (§9.9, «Шквальный толчок»): &gt; 0 — юнит в полёте.
+        /// Жёсткое состояние: движет DisplacementSystem, юнит не действует/не двигается сам, сопротивление
+        /// контролю НЕ применяется (LoL-подкидывание). Владелец — DisplacementSystem.
+        /// </summary>
+        public int DisplacedTicksRemaining;
+
         // --- Авто-атака: двухфазный windup на int-тиках (вики «14») ---
 
         /// <summary>Кулдаун автоатаки в сим-тиках. 0 = готов к атаке. Рестартится в начале замаха (якорь).</summary>

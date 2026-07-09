@@ -8,7 +8,8 @@
     "Guildmaster.Game",
     "Guildmaster.Presentation",
     "QFSW.QC",
-    "VContainer"
+    "VContainer",
+    "Unity.InputSystem"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

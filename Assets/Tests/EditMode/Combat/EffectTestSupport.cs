@@ -110,7 +110,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             float resourceOnHit = 0f,
             UnitVisual visual = null,
             AIProfile ai = null,
-            EffectData[] autoAttackEffects = null)
+            EffectData[] autoAttackEffects = null,
+            bool canAttackWhileMoving = false,
+            float movingAttackSpeedPenaltyPct = 0.5f)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
@@ -124,6 +126,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(r, "_visual", visual);
             Set(r, "_ai", ai ?? new AIProfile());
             Set(r, "_autoAttackEffects", autoAttackEffects ?? Array.Empty<EffectData>());
+            Set(r, "_canAttackWhileMoving", canAttackWhileMoving);
+            Set(r, "_movingAttackSpeedPenaltyPct", movingAttackSpeedPenaltyPct);
             return r;
         }
 
@@ -197,6 +201,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void ReportAreaHit(in AreaHit hit) { }
 
         public void Dispel(in DispelRequest req) => _effects?.Dispel(in req, this);
+        public void Displace(in DisplaceRequest req) { }
 
         public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
         public void NotifyAttackInterrupted(RuntimeUnit unit) { }

@@ -20,6 +20,8 @@ namespace Guildmaster.Combat
         private readonly List<RuntimeEffect> _tickBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _dispatchBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _dispelBuffer = new List<RuntimeEffect>();
+        private readonly List<RuntimeEffect> _preDamageBuffer = new List<RuntimeEffect>();
+        private readonly PreDamageResult     _preDamageResult = new PreDamageResult();
 
         /// <summary>
         /// Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение.
@@ -163,6 +165,41 @@ namespace Guildmaster.Combat
             // ПОСЛЕДНЕГО эффекта юнит больше не попадёт в EffectSystem.Tick (гард Count==0)
             // и останется навсегда с замороженными CanAct/CanMove/CanCast.
             RecomputeControl(unit);
+        }
+
+        /// <summary>
+        /// Синхронный pre-damage проход (§9.3): до <see cref="DamagePipeline.Execute"/> опросить
+        /// <see cref="IPreDamageComponent"/> цели — «Оплот» успевает поднять щит, поглощающий сам
+        /// триггер-удар. Итерация по копии (реакция может наложить эффект), порядок по индексу
+        /// <see cref="RuntimeUnit.ActiveEffects"/> → детерминизм (гейт S5 влит в срез-тесты).
+        /// </summary>
+        public bool RunPreDamage(RuntimeUnit target, in DamageRequest req, ICombatContext combat)
+        {
+            _preDamageResult.Reset();
+            if (target == null || target.IsDead || target.ActiveEffects.Count == 0) return false;
+
+            _preDamageBuffer.Clear();
+            _preDamageBuffer.AddRange(target.ActiveEffects);
+
+            for (int e = 0; e < _preDamageBuffer.Count; e++)
+            {
+                RuntimeEffect eff = _preDamageBuffer[e];
+                if (!target.ActiveEffects.Contains(eff)) continue;
+
+                IEffectComponent[] comps = eff.Def.Components;
+                if (comps == null) continue;
+
+                for (int i = 0; i < comps.Length; i++)
+                {
+                    if (comps[i] is IPreDamageComponent pre)
+                    {
+                        EffectContext ctx = MakeContext(target, eff.Source, combat, eff, i, 0f);
+                        pre.OnPreDamage(in req, _preDamageResult, in ctx);
+                    }
+                }
+            }
+
+            return _preDamageResult.Negated;
         }
 
         /// <summary>

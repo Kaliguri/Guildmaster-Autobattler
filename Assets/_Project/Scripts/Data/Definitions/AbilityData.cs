@@ -85,6 +85,22 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("После наложения эффектов снять TriggerTag с цели (конверсия: «Ледяные оковы» превращают «Заморозку» в стан).")]
         [SerializeField] private bool _consumesTriggerTag;
 
+        [Header("Displacement (§9.9) — Монах")]
+        [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance за DisplaceTicks; на линии полёта — урон-ядро.")]
+        [SerializeField] private bool _displaces;
+
+        [Tooltip("Дистанция отбрасывания (фиксированная, мировые единицы).")]
+        [SerializeField] private float _displaceDistance = 4f;
+
+        [Tooltip("Длительность полёта в сим-тиках (30/сек). Цель оглушена в полёте.")]
+        [SerializeField] private int _displaceTicks = 12;
+
+        [Tooltip("Множитель урона-ядра от AutoAttackDamage кастующего (0 = без урона на линии).")]
+        [SerializeField] private float _displaceDamageMult = 1f;
+
+        [Tooltip("Ширина линии «ядра» (мировые единицы).")]
+        [SerializeField] private float _displaceWidth = 1f;
+
         public string Id => _id;
         public EffectData[] Effects => _effects;
         public float BaseCooldown => _baseCooldown;
@@ -106,5 +122,10 @@ namespace Guildmaster.Data.Definitions
         public float CastOverrideSelfHpPct => _castOverrideSelfHpPct;
         public EffectTag TriggerTag => _triggerTag;
         public bool ConsumesTriggerTag => _consumesTriggerTag;
+        public bool Displaces => _displaces;
+        public float DisplaceDistance => _displaceDistance;
+        public int DisplaceTicks => _displaceTicks;
+        public float DisplaceDamageMult => _displaceDamageMult;
+        public float DisplaceWidth => _displaceWidth;
     }
 }

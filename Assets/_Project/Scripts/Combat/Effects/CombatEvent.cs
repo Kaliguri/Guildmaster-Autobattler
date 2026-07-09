@@ -17,6 +17,12 @@ namespace Guildmaster.Combat.Effects
         Healed        = 1 << 2,
         UnitDied      = 1 << 3,
         EffectApplied = 1 << 4,
+
+        /// <summary>Носитель совершил убийство (доставляется УБИЙЦЕ = Source). «Скрытность» ассасина (§10.5).</summary>
+        UnitKilled    = 1 << 5,
+
+        /// <summary>Смещение завершилось (доставляется ИСТОЧНИКУ толчка = Source). «Вихревой заход» монаха (§10.6).</summary>
+        UnitDisplaced = 1 << 6,
     }
 
     /// <summary>Полезная нагрузка боевого события, диспатчится через внутреннюю FIFO-очередь (Stage 6).</summary>
