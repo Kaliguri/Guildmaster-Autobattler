@@ -46,7 +46,6 @@ namespace Guildmaster.Game.Input
             bool paused = !_simulation.IsPaused;
             _simulation.SetPaused(paused);
             Time.timeScale = paused ? 0f : 1f;
-            Debug.Log($"[Input] Pause toggled: {paused}");
         }
     }
 }

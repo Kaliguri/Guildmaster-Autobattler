@@ -93,8 +93,6 @@ namespace Guildmaster.Presentation
             ApplyCameraDepth();
             SnapOverviewToArena();
             ApplyMode();
-            Debug.Log($"[Camera] Start: input={_input != null}, layout={_layout != null}, focus={_focus != null}, " +
-                      $"cams A/O/D={_actionCam != null}/{_overviewCam != null}/{_devCam != null}, mode={_mode}");
         }
 
         private void OnDestroy()
@@ -142,10 +140,8 @@ namespace Guildmaster.Presentation
 
         private void OnCycleView()
         {
-            CameraMode prev = _mode;
             _mode = NextMode(_mode, _devAccess);
             ApplyMode();
-            Debug.Log($"[Camera] CycleView: {prev} -> {_mode} (devAccess={_devAccess})");
         }
 
         private static CameraMode NextMode(CameraMode mode, bool devAccess)
@@ -164,10 +160,6 @@ namespace Guildmaster.Presentation
             SetPriority(_actionCam,   _mode == CameraMode.Action);
             SetPriority(_overviewCam, _mode == CameraMode.Overview);
             SetPriority(_devCam,      _mode == CameraMode.Dev);
-            Debug.Log($"[Camera] ApplyMode: {_mode}; prio A/O/D = " +
-                      $"{(_actionCam != null ? (int)_actionCam.Priority : -1)}/" +
-                      $"{(_overviewCam != null ? (int)_overviewCam.Priority : -1)}/" +
-                      $"{(_devCam != null ? (int)_devCam.Priority : -1)}");
         }
 
         private void SetPriority(CinemachineCamera cam, bool active)
