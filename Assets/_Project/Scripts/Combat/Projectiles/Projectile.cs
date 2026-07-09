@@ -21,10 +21,15 @@ namespace Guildmaster.Combat
         /// <summary>Цель для трекинга. null = свободный полёт (пробивание/AOE).</summary>
         public RuntimeUnit TargetUnit;
 
+        /// <summary>Полезная нагрузка снаряда. Для урона — сырой урон; для хил-снаряда (<see cref="IsHeal"/>) — сырое лечение.</summary>
         public float       RawDamage;
         public DamageType  DamageType;
         public float       ArmorK;
         public int         PiercesRemaining;
+
+        /// <summary>Хил-снаряд: при попадании лечит цель (<see cref="RawDamage"/> = сырое лечение), а не бьёт. Всегда tracking. §9.2.</summary>
+        public bool        IsHeal;
+
         public bool        IsAlive;
     }
 }

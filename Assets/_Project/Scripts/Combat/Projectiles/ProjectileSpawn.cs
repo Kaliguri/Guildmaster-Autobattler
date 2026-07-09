@@ -18,6 +18,9 @@ namespace Guildmaster.Combat
         public readonly float       ArmorK;
         public readonly int         MaxPierces;
 
+        /// <summary>Хил-снаряд: лечит цель при попадании (<see cref="RawDamage"/> = сырое лечение), а не бьёт. §9.2.</summary>
+        public readonly bool        IsHeal;
+
         public ProjectileSpawn(
             RuntimeUnit source,
             Vector2     startPosition,
@@ -27,7 +30,8 @@ namespace Guildmaster.Combat
             float       rawDamage,
             DamageType  damageType,
             float       armorK,
-            int         maxPierces = 0)
+            int         maxPierces = 0,
+            bool        isHeal     = false)
         {
             Source          = source;
             StartPosition   = startPosition;
@@ -38,6 +42,7 @@ namespace Guildmaster.Combat
             DamageType      = damageType;
             ArmorK          = armorK;
             MaxPierces      = maxPierces;
+            IsHeal          = isHeal;
         }
     }
 }

@@ -19,6 +19,9 @@ namespace Guildmaster.DevTools
         [Tooltip("SO реликвии «Железный копейщик» для gm_spawn_spearman (вики «13» шаг 4).")]
         [SerializeField] private RelicData _spearmanRelic;
 
+        [Tooltip("SO реликвии «Светлый пастырь» для gm_spawn_shepherd (вики «13» §10.1).")]
+        [SerializeField] private RelicData _shepherdRelic;
+
         private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
         private RuntimeUnitFactory _factory;
@@ -101,6 +104,38 @@ namespace Guildmaster.DevTools
             }
 
             Debug.Log($"[GuildmasterCommands] - gm_spawn_spearman: копейщик vs {enemies} болванчиков");
+        }
+
+        /// <summary>Заспавнить «Светлого пастыря» (team 0) + раненых союзников против болванчиков — срез §10.1.</summary>
+        [Command("gm_spawn_shepherd", "Заспавнить Светлого пастыря + раненых союзников против болванчиков (срез §10.1)")]
+        public void SpawnShepherd(int allies = 2, float enemyHp = 200f)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (_shepherdRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _shepherdRelic в инспекторе"); return; }
+
+            // Пастырь в тылу слева — через фабрику (реальный путь: AI-профиль Heal, хил-снаряд, активка «Длань жизни»).
+            _simulation.EnqueueUnitSpawn(_factory.Create(_shepherdRelic, null, team: 0, new Vector2(-6f, 0f)));
+
+            int nextId = _simulation.Units.Count + 1;
+
+            // Раненые союзники (team 0) на фронте: старт на 40% HP — видно выбор раненого и хил-снаряды.
+            for (int i = 0; i < allies; i++)
+            {
+                float y = (i - (allies - 1) * 0.5f) * 1.2f;
+                var ally = MakeTestUnit(0, new Vector2(-3f, y), 200f, 12f, nextId++);
+                ally.CurrentHP = 80f; // 40% от 200 — есть кого лечить
+                _simulation.EnqueueUnitSpawn(ally);
+            }
+
+            // Пара болванчиков справа (team 1) — чтобы союзники завязли в бою и просаживались под «Длань».
+            for (int i = 0; i < 2; i++)
+            {
+                float y = (i - 0.5f) * 1.2f;
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 10f, nextId++));
+            }
+
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_shepherd: пастырь + {allies} раненых союзника vs 2 болванчика");
         }
 
         /// <summary>Выставить HP юниту по ID.</summary>

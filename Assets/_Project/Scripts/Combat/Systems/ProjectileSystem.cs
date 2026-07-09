@@ -77,6 +77,15 @@ namespace Guildmaster.Combat
 
         private static void ApplyHit(Projectile p, RuntimeUnit target, ICombatContext ctx)
         {
+            // Хил-снаряд лечит цель (эффективности/кламп — внутри ctx.Heal), а не бьёт. Хилы всегда
+            // tracking (по TargetUnit-союзнику), поэтому пробивание к ним не применяется. §9.2.
+            if (p.IsHeal)
+            {
+                ctx.Heal(target, p.RawDamage, p.Source);
+                p.IsAlive = false;
+                return;
+            }
+
             ctx.DealDamage(new DamageRequest(
                 p.Source, target, p.RawDamage, p.DamageType, ctx.ArmorK));
 

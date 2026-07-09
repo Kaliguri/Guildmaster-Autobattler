@@ -52,8 +52,10 @@ namespace Guildmaster.Combat
                 // Ещё на кулдауне — ждём.
                 if (unit.AttackCooldownTicks > 0) continue;
 
-                // Готов к атаке: нужна валидная цель в радиусе.
-                RuntimeUnit target = unit.CurrentTarget;
+                // Готов к атаке: нужна валидная цель в радиусе. Для хил-режима «цель авто-атаки» —
+                // раненый союзник (AutoAttackTarget, пишет мозг), не враг: гейтим/снапшотим замах по нему,
+                // тогда Resolve лечит именно его (§9.2). CurrentTarget (враг) остаётся движению/отступлению.
+                RuntimeUnit target = IsHealMode(unit) ? unit.AutoAttackTarget : unit.CurrentTarget;
                 if (target == null || target.IsDead) continue;
 
                 float range = unit.Stats.Get(StatType.AttackRange);
@@ -106,6 +108,18 @@ namespace Guildmaster.Combat
             DamageType dmgType = unit.Relic != null ? unit.Relic.DamageType : DamageType.Physical;
             AreaShape shape = unit.Relic != null ? unit.Relic.AutoAttackShape : AreaShape.None;
 
+            // Хил-режим (Светлый пастырь): вместо урона — tracking-хил-снаряд в снапшот-союзника.
+            // amount = AutoAttackDamage (сырое; HealShieldDealt/TakenEff применяет ctx.Heal при попадании).
+            if (IsHealMode(unit))
+            {
+                float healSpeed  = unit.Stats.Get(StatType.ProjectileSpeed);
+                float healRadius = unit.Stats.Get(StatType.Size) * 0.25f;
+                ctx.SpawnProjectile(new ProjectileSpawn(
+                    unit, unit.Position, target,
+                    healSpeed, healRadius, raw, dmgType, ctx.ArmorK, maxPierces: 0, isHeal: true));
+                return;
+            }
+
             if (attackType == AttackType.Melee)
             {
                 if (shape == AreaShape.Line)
@@ -124,6 +138,10 @@ namespace Guildmaster.Combat
                     speed, collRadius, raw, dmgType, ctx.ArmorK, pierces));
             }
         }
+
+        /// <summary>Хил-автоатака (Светлый пастырь): авто-атака лечит союзника вместо урона по врагу (§9.2).</summary>
+        private static bool IsHealMode(RuntimeUnit unit) =>
+            unit.Relic?.Ai != null && unit.Relic.Ai.AutoAttackMode == AutoAttackMode.Heal;
 
         /// <summary>Прерывание замаха: сброс + рефанд кулдауна (бьёт снова, как только сможет) + событие.</summary>
         private static void Interrupt(RuntimeUnit unit, ICombatContext ctx)

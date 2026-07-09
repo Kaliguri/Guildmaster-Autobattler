@@ -213,6 +213,7 @@ namespace Guildmaster.Combat
                 DamageType       = spawn.DamageType,
                 ArmorK           = spawn.ArmorK,
                 PiercesRemaining = spawn.MaxPierces,
+                IsHeal           = spawn.IsHeal,
                 IsAlive          = true,
             });
         }

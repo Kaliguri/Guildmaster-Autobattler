@@ -12,5 +12,8 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Кастовать, когда врагов в радиусе условия ≥ заданного X (кластер-ульта).</summary>
         EnemiesInRadius = 1,
+
+        /// <summary>Кастовать, когда HP% выбранной цели ≤ CastConditionHpPct (блок D хилера: спасать раненого союзника).</summary>
+        AllyTargetHpBelowPct = 2,
     }
 }

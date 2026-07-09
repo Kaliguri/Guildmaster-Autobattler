@@ -59,9 +59,12 @@ namespace Guildmaster.Tests.EditMode.Combat
             float damageMultiplier = 0f,
             AreaShape areaShape = AreaShape.None,
             float areaRadius = 0f,
+            float healFlat = 0f,
+            float healPctTargetMissingHp = 0f,
             CastCondition castCondition = CastCondition.Immediately,
             int castConditionCount = 1,
             float castConditionRadius = 0f,
+            float castConditionHpPct = 0.5f,
             float castOverrideSelfHpPct = 0f)
         {
             var a = new AbilityData();
@@ -72,9 +75,12 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(a, "_damageMultiplier", damageMultiplier);
             Set(a, "_areaShape", areaShape);
             Set(a, "_areaRadius", areaRadius);
+            Set(a, "_healFlat", healFlat);
+            Set(a, "_healPctTargetMissingHp", healPctTargetMissingHp);
             Set(a, "_castCondition", castCondition);
             Set(a, "_castConditionCount", castConditionCount);
             Set(a, "_castConditionRadius", castConditionRadius);
+            Set(a, "_castConditionHpPct", castConditionHpPct);
             Set(a, "_castOverrideSelfHpPct", castOverrideSelfHpPct);
             return a;
         }
@@ -98,7 +104,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             AreaShape autoAttackShape = AreaShape.None,
             float autoAttackWidth = 1f,
             float resourceOnHit = 0f,
-            UnitVisual visual = null)
+            UnitVisual visual = null,
+            AIProfile ai = null)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
@@ -110,6 +117,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(r, "_autoAttackWidth", autoAttackWidth);
             Set(r, "_resourceOnHit", resourceOnHit);
             Set(r, "_visual", visual);
+            Set(r, "_ai", ai ?? new AIProfile());
             return r;
         }
 

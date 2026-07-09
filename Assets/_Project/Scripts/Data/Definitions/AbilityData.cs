@@ -14,6 +14,9 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Ближайший союзник (для бафф/хил-способностей).</summary>
         NearestAlly = 2,
+
+        /// <summary>Союзник с наименьшим HP% — глобально, без ограничения дальности (хилер-ульта «Длань жизни»).</summary>
+        LowestHpAlly = 3,
     }
 
     /// <summary>
@@ -49,8 +52,15 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Радиус зоны для Circle (мировые единицы). Центр — кастующий (удар вокруг себя).")]
         [SerializeField] private float _areaRadius;
 
+        [Header("Heal payload (Phase 3) — Светлый пастырь")]
+        [Tooltip("Плоское лечение цели (X). >0 делает способность лечащей: Heal вместо урона. Итог × HealShieldDealtEff/TakenEff.")]
+        [SerializeField] private float _healFlat;
+
+        [Tooltip("Доля недостающего HP цели, добавляемая к лечению («Длань жизни» = 1.0 → долечивает до полного). >0 делает способность лечащей.")]
+        [SerializeField] private float _healPctTargetMissingHp;
+
         [Header("Cast condition (blocks D/E, Phase 3)")]
-        [Tooltip("Когда кастовать: Immediately = как только готова; EnemiesInRadius = врагов в радиусе ≥ CastConditionCount.")]
+        [Tooltip("Когда кастовать: Immediately = как только готова; EnemiesInRadius = врагов в радиусе ≥ CastConditionCount; AllyTargetHpBelowPct = HP% выбранной цели ≤ CastConditionHpPct.")]
         [SerializeField] private CastCondition _castCondition = CastCondition.Immediately;
 
         [Tooltip("X для EnemiesInRadius: минимум врагов в радиусе условия.")]
@@ -59,7 +69,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Радиус подсчёта врагов для условия каста. ≤ 0 = взять AreaRadius.")]
         [SerializeField] private float _castConditionRadius;
 
-        [Tooltip("Отмена условия (блок E): если HP% кастующего ≤ этого — кастуем независимо от условия. 0 = выкл.")]
+        [Tooltip("Порог HP% (0..1) для AllyTargetHpBelowPct: кастуем, когда HP% выбранной цели ≤ этого.")]
+        [SerializeField] private float _castConditionHpPct = 0.5f;
+
+        [Tooltip("Отмена условия (блок E): если HP% кастующего ≤ этого — кастуем независимо от условия. У лечащих способностей цель тогда = сам кастующий. 0 = выкл.")]
         [SerializeField] private float _castOverrideSelfHpPct;
 
         public string Id => _id;
@@ -71,10 +84,15 @@ namespace Guildmaster.Data.Definitions
         public float DamageMultiplier => _damageMultiplier;
         public AreaShape AreaShape => _areaShape;
         public float AreaRadius => _areaRadius;
+        public float HealFlat => _healFlat;
+        public float HealPctTargetMissingHp => _healPctTargetMissingHp;
+        /// <summary>Способность лечит (а не бьёт), если задана любая хил-нагрузка.</summary>
+        public bool IsHeal => _healFlat > 0f || _healPctTargetMissingHp > 0f;
         public CastCondition CastCondition => _castCondition;
         public int CastConditionCount => _castConditionCount;
         /// <summary>Радиус условия каста; при ≤ 0 откатывается к <see cref="AreaRadius"/>.</summary>
         public float CastConditionRadius => _castConditionRadius > 0f ? _castConditionRadius : _areaRadius;
+        public float CastConditionHpPct => _castConditionHpPct;
         public float CastOverrideSelfHpPct => _castOverrideSelfHpPct;
     }
 }

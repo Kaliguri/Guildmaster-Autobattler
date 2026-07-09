@@ -52,12 +52,19 @@ namespace Guildmaster.Combat
             if (data == null || !ability.IsReady) return false;
             if (caster.CurrentResource < data.ResourceCost) return false;
 
-            // Гейт условия каста (блоки D/E): дешёвое решение «кастовать ли» — здесь, не в мозге.
-            if (!CastConditionMet(caster, data, ctx)) return false;
+            // Блок E (паника): при своём низком HP лечащая способность разворачивается на самого
+            // кастующего (лечит себя); урон-способность просто кастуется независимо от условия.
+            bool panicSelf = data.CastOverrideSelfHpPct > 0f && HpPct(caster) <= data.CastOverrideSelfHpPct;
 
             // Круговой удар вокруг себя цели не требует (центр = кастующий); иначе нужна валидная цель.
-            RuntimeUnit target = ResolveTarget(caster, data.TargetMode, units);
+            RuntimeUnit target = (panicSelf && data.IsHeal)
+                ? caster
+                : ResolveTarget(caster, data.TargetMode, units);
             if (data.AreaShape != AreaShape.Circle && target == null) return false;
+
+            // Гейт условия каста (блок D): дешёвое решение «кастовать ли» — здесь, не в мозге.
+            // Паника (блок E) кастует независимо от условия.
+            if (!panicSelf && !CastConditionMet(caster, target, data, ctx)) return false;
 
             caster.CurrentResource -= data.ResourceCost;
             ability.CooldownRemaining = data.BaseCooldown * caster.Stats.Get(StatType.CooldownEff);
@@ -70,18 +77,18 @@ namespace Guildmaster.Combat
             return true;
         }
 
-        /// <summary>Условие каста (блок D) + отмена по своему HP% (блок E). Immediately = всегда.</summary>
-        private bool CastConditionMet(RuntimeUnit caster, AbilityData data, ICombatContext ctx)
+        /// <summary>Условие каста (блок D). Отмена по своему HP% (блок E) решается в <see cref="TryCast"/> до вызова.</summary>
+        private bool CastConditionMet(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
         {
-            // Блок E: при падении HP кастующего ≤ порога кастуем независимо от условия (паника/выживание).
-            if (data.CastOverrideSelfHpPct > 0f && HpPct(caster) <= data.CastOverrideSelfHpPct)
-                return true;
-
             switch (data.CastCondition)
             {
                 case CastCondition.EnemiesInRadius:
                     ctx.QueryUnitsInRadius(caster.Position, data.CastConditionRadius, _targets, TargetFilter.Enemies, caster.Team);
                     return _targets.Count >= data.CastConditionCount;
+
+                case CastCondition.AllyTargetHpBelowPct:
+                    // Спасаем раненого союзника: кастуем, только если выбранная цель просела до порога.
+                    return target != null && HpPct(target) <= data.CastConditionHpPct;
 
                 case CastCondition.Immediately:
                 default:
@@ -109,16 +116,32 @@ namespace Guildmaster.Combat
             }
         }
 
-        /// <summary>Одиночный каст (поведение Ф2 + опциональный прямой урон ×AutoAttackDamage).</summary>
+        /// <summary>Одиночный каст: хил-нагрузка (Пастырь) ИЛИ прямой урон ×AutoAttackDamage (поведение Ф2) + эффекты.</summary>
         private static void ApplyToTarget(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
         {
-            float dmg = AbilityDamage(caster, data);
-            if (dmg > 0f)
+            if (data.IsHeal)
             {
-                DamageType dmgType = caster.Relic != null ? caster.Relic.DamageType : DamageType.Physical;
-                ctx.DealDamage(new DamageRequest(caster, target, dmg, dmgType, ctx.ArmorK));
+                // Сырое лечение (dealt/taken eff и кламп к MaxHP применяет ctx.Heal). «Длань жизни» = X + недостающее HP.
+                ctx.Heal(target, HealAmount(target, data), caster);
+            }
+            else
+            {
+                float dmg = AbilityDamage(caster, data);
+                if (dmg > 0f)
+                {
+                    DamageType dmgType = caster.Relic != null ? caster.Relic.DamageType : DamageType.Physical;
+                    ctx.DealDamage(new DamageRequest(caster, target, dmg, dmgType, ctx.ArmorK));
+                }
             }
             ApplyEffects(target, data, caster, ctx);
+        }
+
+        /// <summary>Сырое лечение способности = HealFlat + HealPctTargetMissingHp × недостающее HP цели.</summary>
+        private static float HealAmount(RuntimeUnit target, AbilityData data)
+        {
+            float missing = target.Stats.Get(StatType.MaxHP) - target.CurrentHP;
+            if (missing < 0f) missing = 0f;
+            return data.HealFlat + data.HealPctTargetMissingHp * missing;
         }
 
         /// <summary>Прямой урон способности = DamageMultiplier × AutoAttackDamage кастующего (0 = только эффекты).</summary>
@@ -156,6 +179,9 @@ namespace Guildmaster.Combat
                 case AbilityTargetMode.NearestAlly:
                     return NearestAlly(caster, units);
 
+                case AbilityTargetMode.LowestHpAlly:
+                    return LowestHpAlly(caster, units);
+
                 default:
                     return null;
             }
@@ -177,6 +203,36 @@ namespace Guildmaster.Combat
                     bestSq = sq;
                     best = other;
                 }
+            }
+
+            return best;
+        }
+
+        /// <summary>
+        /// Союзник с наименьшим HP% — глобально, без ограничения дальности (хилер-ульта «Длань жизни»).
+        /// Себя исключаем: свой критический HP покрывает блок E. Тай-брейк — дистанция, затем Id (детерминизм).
+        /// </summary>
+        private static RuntimeUnit LowestHpAlly(RuntimeUnit caster, IReadOnlyList<RuntimeUnit> units)
+        {
+            RuntimeUnit best      = null;
+            float       bestPct   = float.MaxValue;
+            float       bestDistSq = float.MaxValue;
+
+            for (int i = 0; i < units.Count; i++)
+            {
+                RuntimeUnit other = units[i];
+                if (other == caster || other.IsDead || other.Team != caster.Team) continue;
+
+                float pct    = HpPct(other);
+                float distSq = (other.Position - caster.Position).sqrMagnitude;
+
+                bool better =
+                    best == null
+                    || pct < bestPct
+                    || (pct == bestPct && distSq < bestDistSq)
+                    || (pct == bestPct && distSq == bestDistSq && other.Id < best.Id);
+
+                if (better) { best = other; bestPct = pct; bestDistSq = distSq; }
             }
 
             return best;
