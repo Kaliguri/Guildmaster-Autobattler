@@ -7,6 +7,8 @@ var CombatEvent_8cs =
       [ "DamageTaken", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a3007032a944ef3638beb8825cbb3c28b", null ],
       [ "Healed", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a220d0513e4f7d7507bd9a25cbc538849", null ],
       [ "UnitDied", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066aefa198417da5fbc0a75b54484ad97b4f", null ],
-      [ "EffectApplied", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622", null ]
+      [ "EffectApplied", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622", null ],
+      [ "UnitKilled", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a429d336ceae2000a8948230c38cc738d", null ],
+      [ "UnitDisplaced", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a87af211adc1d3f9a9f1bfc35795a5844", null ]
     ] ]
 ];

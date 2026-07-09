@@ -7,6 +7,7 @@ var searchData=
   ['combatloopservice_4',['CombatLoopService',['../classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html',1,'Guildmaster::Game::Services']]],
   ['combatpresenter_5',['CombatPresenter',['../classGuildmaster_1_1Presentation_1_1CombatPresenter.html',1,'Guildmaster::Presentation']]],
   ['combatsimulation_6',['CombatSimulation',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html',1,'Guildmaster::Combat']]],
-  ['combatunitdebugview_7',['CombatUnitDebugView',['../classGuildmaster_1_1DevTools_1_1CombatUnitDebugView.html',1,'Guildmaster::DevTools']]],
-  ['controlcomponent_8',['ControlComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
+  ['combatstatusoverlay_7',['CombatStatusOverlay',['../classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html',1,'Guildmaster::Presentation']]],
+  ['combatunitdebugview_8',['CombatUnitDebugView',['../classGuildmaster_1_1DevTools_1_1CombatUnitDebugView.html',1,'Guildmaster::DevTools']]],
+  ['controlcomponent_9',['ControlComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
 ];

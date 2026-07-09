@@ -1,5 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,20,161,45"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Data_1_1Editor_1_1AttackHitFrameStripAttributeDrawer.html" title="Odin&#45;drawer для UnitVisual._attackHitFrames (вики «14»): рисует полоску превью кадров атаки (сиблинг&#45;..." alt="" coords="209,5,420,60"/>
-<area shape="poly" id="edge43_Node000000_Node000001" title=" " alt="" coords="175,30,209,30,209,35,175,35"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,45,120,70"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1CombatLifetimeScope.html" title="Дочерний DI&#45;скоуп BattleScene." alt="" coords="168,5,421,45"/>
+<area shape="poly" id="edge34_Node000000_Node000001" title=" " alt="" coords="133,45,167,40,168,46,134,50"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1RootLifetimeScope.html" title="Корневой DI&#45;скоуп, живёт всю сессию вместе с CoreScene." alt="" coords="179,69,411,109"/>
+<area shape="poly" id="edge35_Node000000_Node000002" title=" " alt="" coords="134,64,179,71,178,76,133,70"/>
 </map>

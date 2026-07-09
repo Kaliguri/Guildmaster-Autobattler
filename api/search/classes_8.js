@@ -6,12 +6,13 @@ var searchData=
   ['icombatcontext_3',['ICombatContext',['../interfaceGuildmaster_1_1Combat_1_1ICombatContext.html',1,'Guildmaster::Combat']]],
   ['ieffectcomponent_4',['IEffectComponent',['../interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html',1,'Guildmaster::Data::Definitions']]],
   ['iperiodiccomponent_5',['IPeriodicComponent',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html',1,'Guildmaster::Combat::Effects']]],
-  ['ireactivecomponent_6',['IReactiveComponent',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html',1,'Guildmaster::Combat::Effects']]],
-  ['irngservice_7',['IRngService',['../interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html',1,'Guildmaster::Core::Random']]],
-  ['iruntimeeffectcomponent_8',['IRuntimeEffectComponent',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html',1,'Guildmaster::Combat::Effects']]],
-  ['iscalablepotency_9',['IScalablePotency',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html',1,'Guildmaster::Combat::Effects']]],
-  ['isimcommand_10',['ISimCommand',['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html',1,'Guildmaster::Core::Simulation']]],
-  ['isimevent_11',['ISimEvent',['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimEvent.html',1,'Guildmaster::Core::Simulation']]],
-  ['istatreader_12',['IStatReader',['../interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html',1,'Guildmaster::Data::Stats']]],
-  ['iunitbrain_13',['IUnitBrain',['../interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html',1,'Guildmaster::Combat']]]
+  ['ipredamagecomponent_6',['IPreDamageComponent',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html',1,'Guildmaster::Combat::Effects']]],
+  ['ireactivecomponent_7',['IReactiveComponent',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html',1,'Guildmaster::Combat::Effects']]],
+  ['irngservice_8',['IRngService',['../interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html',1,'Guildmaster::Core::Random']]],
+  ['iruntimeeffectcomponent_9',['IRuntimeEffectComponent',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html',1,'Guildmaster::Combat::Effects']]],
+  ['iscalablepotency_10',['IScalablePotency',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html',1,'Guildmaster::Combat::Effects']]],
+  ['isimcommand_11',['ISimCommand',['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html',1,'Guildmaster::Core::Simulation']]],
+  ['isimevent_12',['ISimEvent',['../interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimEvent.html',1,'Guildmaster::Core::Simulation']]],
+  ['istatreader_13',['IStatReader',['../interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html',1,'Guildmaster::Data::Stats']]],
+  ['iunitbrain_14',['IUnitBrain',['../interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html',1,'Guildmaster::Combat']]]
 ];

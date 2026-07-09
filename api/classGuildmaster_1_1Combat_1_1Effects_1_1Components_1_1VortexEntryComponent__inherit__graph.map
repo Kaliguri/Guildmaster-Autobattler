@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.VortexEntryComponent" name="Guildmaster.Combat.Effects.Components.VortexEntryComponent">
+<area shape="rect" id="Node000001" title="«Вихревой заход» (§9.6, §10.6): реактив на завершение смещения (CombatEvent.UnitDisplaced,..." alt="" coords="5,365,256,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="55,252,206,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="133,331,133,365,128,365,128,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="38,119,223,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="133,218,133,252,128,252,128,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="65,5,196,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="133,85,133,119,128,119,128,85"/>
+</map>

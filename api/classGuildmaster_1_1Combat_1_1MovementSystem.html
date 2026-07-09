@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Movement
 </div><!--header-->
 <div class="contents">
 
-<p>Интегрирует позиции живых юнитов к их целям.  
+<p>Интегрирует позиции живых юнитов.  
  <a href="classGuildmaster_1_1Combat_1_1MovementSystem.html#details">More...</a></p>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.MovementSystem:</div>
@@ -113,8 +113,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae81eb146f149fe4cc225406250d96c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Интегрирует позиции живых юнитов к их целям. </p>
-<p>Ручная математика — без Rigidbody2D и без Time.deltaTime (dt передаётся снаружи из CombatLoopService). Фаза 1 — простое «двигайся к цели до дистанции атаки». Продвинутые режимы позиционирования (IPositioningMode) — Фаза 3. </p>
+<div class="textblock"><p>Интегрирует позиции живых юнитов. </p>
+<p>Ручная математика — без Rigidbody2D и без Time.deltaTime (dt передаётся снаружи из CombatLoopService). Ветвится по RuntimeUnit.Positioning (§9.7): Approach (Ф1), Kite (полоса дистанции), Retreat (от ближайшего врага). Стрельба на ходу (§9.8) снимает рут замаха. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae81eb146f149fe4cc225406250d96c06" name="ae81eb146f149fe4cc225406250d96c06"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae81eb146f149fe4cc225406250d96c06">&#9670;&#160;</a></span>Tick()</h2>

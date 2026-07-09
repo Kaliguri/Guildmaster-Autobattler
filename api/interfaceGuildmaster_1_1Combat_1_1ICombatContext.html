@@ -109,7 +109,7 @@ Inheritance diagram for Guildmaster.Combat.ICombatContext:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.ICombatContext:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ICombatContext__coll__graph.svg" width="218" height="311"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Combat_1_1ICombatContext__coll__graph.svg" width="218" height="331"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -138,6 +138,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af1477df432344e4184ca6ba28d790511" id="r_af1477df432344e4184ca6ba28d790511"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#af1477df432344e4184ca6ba28d790511">Dispel</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html">Effects.DispelRequest</a> req)</td></tr>
 <tr class="memdesc:af1477df432344e4184ca6ba28d790511"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4).  <br /></td></tr>
 <tr class="separator:af1477df432344e4184ca6ba28d790511"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45899e7c43e59d7ae0165ce10b1a406e" id="r_a45899e7c43e59d7ae0165ce10b1a406e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a45899e7c43e59d7ae0165ce10b1a406e">Displace</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html">DisplaceRequest</a> req)</td></tr>
+<tr class="memdesc:a45899e7c43e59d7ae0165ce10b1a406e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Принудительно сместить цель (отбрасывание/«ядро», §9.9). Исполняет DisplacementSystem.  <br /></td></tr>
+<tr class="separator:a45899e7c43e59d7ae0165ce10b1a406e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61ec3a61e56c37bea02600055200205c" id="r_a61ec3a61e56c37bea02600055200205c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a61ec3a61e56c37bea02600055200205c">NotifyAttackStarted</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target)</td></tr>
 <tr class="memdesc:a61ec3a61e56c37bea02600055200205c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Юнит вошёл в замах авто-атаки (вики «14»): запускает анимацию свинга во View и «вжух»-SFX.  <br /></td></tr>
 <tr class="separator:a61ec3a61e56c37bea02600055200205c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -240,6 +243,28 @@ Properties</h2></td></tr>
 <p>Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3ce7981b50aa372c5f42ee55bc2e48cb">Guildmaster.Combat.CombatSimulation</a>.</p>
+
+</div>
+</div>
+<a id="a45899e7c43e59d7ae0165ce10b1a406e" name="a45899e7c43e59d7ae0165ce10b1a406e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45899e7c43e59d7ae0165ce10b1a406e">&#9670;&#160;</a></span>Displace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.ICombatContext.Displace </td>
+          <td>(</td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html">DisplaceRequest</a>&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Принудительно сместить цель (отбрасывание/«ядро», §9.9). Исполняет DisplacementSystem. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ab1642b518cd60e4ef9037e3636dcd887">Guildmaster.Combat.CombatSimulation</a>.</p>
 
 </div>
 </div>

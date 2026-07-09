@@ -118,6 +118,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html">IPeriodicComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Периодический компонент: <code>OnTick</code> каждые Interval секунд (DoT/HoT/реген).  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html">IPreDamageComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline.Execute.  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html">IReactiveComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO-очередь.  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -126,6 +129,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html">IScalablePotency</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Опциональный шов: компонент объявляет масштабируемую потенцию.  <a href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html">PreDamageResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар.  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Экземпляр эффекта на конкретном юните (POCO, живёт один бой).  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#details">More...</a><br /></td></tr>
@@ -141,6 +147,8 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066aefa198417da5fbc0a75b54484ad97b4f">UnitDied</a> = 1 &lt;&lt; 3
 , <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622">EffectApplied</a> = 1 &lt;&lt; 4
+, <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a429d336ceae2000a8948230c38cc738d">UnitKilled</a> = 1 &lt;&lt; 5
+, <a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a87af211adc1d3f9a9f1bfc35795a5844">UnitDisplaced</a> = 1 &lt;&lt; 6
 <br />
  }</td></tr>
 <tr class="memdesc:acbd5655c92bc3943fed6be07e5127066"><td class="mdescLeft">&#160;</td><td class="mdescRight">Внутренние боевые события для реактивных компонентов эффектов (вампиризм/шипы и т.  <a href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066">More...</a><br /></td></tr>
@@ -168,6 +176,10 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="acbd5655c92bc3943fed6be07e5127066a220d0513e4f7d7507bd9a25cbc538849" name="acbd5655c92bc3943fed6be07e5127066a220d0513e4f7d7507bd9a25cbc538849"></a>Healed&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="acbd5655c92bc3943fed6be07e5127066aefa198417da5fbc0a75b54484ad97b4f" name="acbd5655c92bc3943fed6be07e5127066aefa198417da5fbc0a75b54484ad97b4f"></a>UnitDied&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622" name="acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622"></a>EffectApplied&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acbd5655c92bc3943fed6be07e5127066a429d336ceae2000a8948230c38cc738d" name="acbd5655c92bc3943fed6be07e5127066a429d336ceae2000a8948230c38cc738d"></a>UnitKilled&#160;</td><td class="fielddoc"><p>Носитель совершил убийство (доставляется УБИЙЦЕ = Source). «Скрытность» ассасина (§10.5). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="acbd5655c92bc3943fed6be07e5127066a87af211adc1d3f9a9f1bfc35795a5844" name="acbd5655c92bc3943fed6be07e5127066a87af211adc1d3f9a9f1bfc35795a5844"></a>UnitDisplaced&#160;</td><td class="fielddoc"><p>Смещение завершилось (доставляется ИСТОЧНИКУ толчка = Source). «Вихревой заход» монаха (§10.6). </p>
+</td></tr>
 </table>
 
 </div>

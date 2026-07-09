@@ -1,8 +1,11 @@
 var classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect =
 [
+    [ "ChargeReadyTicks", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a553d4c7c1818da07ffa01fb2109c703a", null ],
     [ "Def", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a5e428c825c7aae0c5e6f6f051b3d9daa", null ],
     [ "FullDurationTicks", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a12668bf7295125ae3719118df2c31b16", null ],
+    [ "PendingShield", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a0a858659d43320619d859c28a61c1fb7", null ],
     [ "PeriodicTicks", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a33faf86e1bb27a7509d7d3b07ea1bf3c", null ],
+    [ "ReactiveReadyTick", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#abf5796683cc2c01aec6eb0d914f483d9", null ],
     [ "RemainingTicks", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ac4f0082e00dc1f4610994f29e7ac616b", null ],
     [ "ScaledPotency", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a597de42814cebe2f249cb692f7802ba6", null ],
     [ "Source", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a0d99530ebcedac6036bb4d80f4ff7d7c", null ],

@@ -130,6 +130,15 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a33faf86e1bb27a7509d7d3b07ea1bf3c" id="r_a33faf86e1bb27a7509d7d3b07ea1bf3c"><td class="memItemLeft" align="right" valign="top">int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a33faf86e1bb27a7509d7d3b07ea1bf3c">PeriodicTicks</a></td></tr>
 <tr class="memdesc:a33faf86e1bb27a7509d7d3b07ea1bf3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Счётчик сим-тиков с прошлого срабатывания на периодический компонент (параллельно компонентам).  <br /></td></tr>
 <tr class="separator:a33faf86e1bb27a7509d7d3b07ea1bf3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf5796683cc2c01aec6eb0d914f483d9" id="r_abf5796683cc2c01aec6eb0d914f483d9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#abf5796683cc2c01aec6eb0d914f483d9">ReactiveReadyTick</a></td></tr>
+<tr class="memdesc:abf5796683cc2c01aec6eb0d914f483d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Внутренний кулдаун реактив/pre-damage компонента (§9.3, «Оплот»): абсолютный тик, с которого компонент снова готов сработать.  <br /></td></tr>
+<tr class="separator:abf5796683cc2c01aec6eb0d914f483d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a858659d43320619d859c28a61c1fb7" id="r_a0a858659d43320619d859c28a61c1fb7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a0a858659d43320619d859c28a61c1fb7">PendingShield</a></td></tr>
+<tr class="memdesc:a0a858659d43320619d859c28a61c1fb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фактически поднятая величина щита с runtime-расчётом (§9.3, «Оплот»: <code>flat + ·недостающее HP</code>) — снимок при наложении, чтобы <code>OnExpire</code> снял ровно её (потенцию из статов тут не выразить).  <br /></td></tr>
+<tr class="separator:a0a858659d43320619d859c28a61c1fb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a553d4c7c1818da07ffa01fb2109c703a" id="r_a553d4c7c1818da07ffa01fb2109c703a"><td class="memItemLeft" align="right" valign="top">int[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a553d4c7c1818da07ffa01fb2109c703a">ChargeReadyTicks</a></td></tr>
+<tr class="memdesc:a553d4c7c1818da07ffa01fb2109c703a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заряды реактив-компонента (§9.4, «Изворотливость»): на каждый заряд — абсолютный тик готовности (≤ CurrentTick = готов).  <br /></td></tr>
+<tr class="separator:a553d4c7c1818da07ffa01fb2109c703a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -141,6 +150,23 @@ Properties</h2></td></tr>
 <div class="textblock"><p>Экземпляр эффекта на конкретном юните (POCO, живёт один бой). </p>
 <p>Несёт per-unit рантайм- состояние, которого НЕ может быть в общих <code>[SerializeReference]</code>-компонентах EffectData — те шарятся между всеми носителями эффекта и обязаны быть stateless (вики «12» §2.2, «6» §5). </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
+<a id="a553d4c7c1818da07ffa01fb2109c703a" name="a553d4c7c1818da07ffa01fb2109c703a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a553d4c7c1818da07ffa01fb2109c703a">&#9670;&#160;</a></span>ChargeReadyTicks</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int [] Guildmaster.Combat.Effects.RuntimeEffect.ChargeReadyTicks</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Заряды реактив-компонента (§9.4, «Изворотливость»): на каждый заряд — абсолютный тик готовности (≤ CurrentTick = готов). </p>
+<p>Независимая перезарядка. null у эффектов без зарядов. </p>
+
+</div>
+</div>
 <a id="a5e428c825c7aae0c5e6f6f051b3d9daa" name="a5e428c825c7aae0c5e6f6f051b3d9daa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5e428c825c7aae0c5e6f6f051b3d9daa">&#9670;&#160;</a></span>Def</h2>
 
@@ -173,6 +199,22 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="a0a858659d43320619d859c28a61c1fb7" name="a0a858659d43320619d859c28a61c1fb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a858659d43320619d859c28a61c1fb7">&#9670;&#160;</a></span>PendingShield</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.Effects.RuntimeEffect.PendingShield</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Фактически поднятая величина щита с runtime-расчётом (§9.3, «Оплот»: <code>flat + ·недостающее HP</code>) — снимок при наложении, чтобы <code>OnExpire</code> снял ровно её (потенцию из статов тут не выразить). </p>
+
+</div>
+</div>
 <a id="a33faf86e1bb27a7509d7d3b07ea1bf3c" name="a33faf86e1bb27a7509d7d3b07ea1bf3c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a33faf86e1bb27a7509d7d3b07ea1bf3c">&#9670;&#160;</a></span>PeriodicTicks</h2>
 
@@ -187,6 +229,23 @@ Properties</h2></td></tr>
 
 <p>Счётчик сим-тиков с прошлого срабатывания на периодический компонент (параллельно компонентам). </p>
 <p>Целочисленный — float-аккумулятор дрейфует и ломает детерминизм периодики. </p>
+
+</div>
+</div>
+<a id="abf5796683cc2c01aec6eb0d914f483d9" name="abf5796683cc2c01aec6eb0d914f483d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf5796683cc2c01aec6eb0d914f483d9">&#9670;&#160;</a></span>ReactiveReadyTick</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.Effects.RuntimeEffect.ReactiveReadyTick</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Внутренний кулдаун реактив/pre-damage компонента (§9.3, «Оплот»): абсолютный тик, с которого компонент снова готов сработать. </p>
+<p>Сверяется с <code>ctx.Combat.CurrentTick</code> — без потиковых декрементов (детерминизм). 0 = готов с начала боя. </p>
 
 </div>
 </div>

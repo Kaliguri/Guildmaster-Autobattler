@@ -1,0 +1,19 @@
+<map id="Guildmaster.Combat.DisplaceRequest" name="Guildmaster.Combat.DisplaceRequest">
+<area shape="rect" id="Node000001" title="Параметры принудительного смещения цели (§9.9, «Шквальный толчок»)." alt="" coords="277,805,485,1025"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="263,463,498,728"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="383,728,383,788,378,788,378,728"/>
+<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="500,567,518,577,525,595,522,607,515,616,510,613,517,605,519,596,513,581,497,571"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="5,197,191,323"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="144,321,204,398,254,456,250,459,200,402,140,324"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html" title="Только&#45;чтение собранных статов." alt="" coords="53,5,143,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="101,84,101,197,95,197,95,84"/>
+<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html" title="Главный шов AI (вики «13» §3.1): единственная точка, где принимается «дорогое» решение «кого/где»." alt="" coords="215,220,397,300"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="317,300,350,446,345,447,312,301"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — стат&#45;блок и боевые категории юнита." alt="" coords="421,120,628,400"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="467,401,447,449,442,446,462,399"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="580,5,701,71"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="620,84,600,121,596,119,615,82"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="652,200,859,320"/>
+<area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="666,82,727,198,722,201,661,84"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="714,322,680,362,643,402,579,457,513,508,510,503,576,453,639,398,676,359,710,318"/>
+</map>

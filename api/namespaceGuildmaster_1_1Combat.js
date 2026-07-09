@@ -13,6 +13,8 @@ var namespaceGuildmaster_1_1Combat =
     [ "DamageRequest", "structGuildmaster_1_1Combat_1_1DamageRequest.html", "structGuildmaster_1_1Combat_1_1DamageRequest" ],
     [ "DamageResult", "structGuildmaster_1_1Combat_1_1DamageResult.html", "structGuildmaster_1_1Combat_1_1DamageResult" ],
     [ "DeathSystem", "classGuildmaster_1_1Combat_1_1DeathSystem.html", "classGuildmaster_1_1Combat_1_1DeathSystem" ],
+    [ "DisplacementSystem", "classGuildmaster_1_1Combat_1_1DisplacementSystem.html", "classGuildmaster_1_1Combat_1_1DisplacementSystem" ],
+    [ "DisplaceRequest", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html", "structGuildmaster_1_1Combat_1_1DisplaceRequest" ],
     [ "EffectSystem", "classGuildmaster_1_1Combat_1_1EffectSystem.html", "classGuildmaster_1_1Combat_1_1EffectSystem" ],
     [ "IBattleView", "interfaceGuildmaster_1_1Combat_1_1IBattleView.html", "interfaceGuildmaster_1_1Combat_1_1IBattleView" ],
     [ "ICombatCommand", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand" ],
@@ -33,6 +35,11 @@ var namespaceGuildmaster_1_1Combat =
       [ "TeamAWins", "namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712aa66e17eee0daf633ec8090d0d97b2d42", null ],
       [ "TeamBWins", "namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712a58662d9ca10f6dd2162eaf4f825b317f", null ],
       [ "Draw", "namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712a2d03c2d5a7ec65ef4619e0582c272ec2", null ]
+    ] ],
+    [ "DisplaceKind", "namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0be", [
+      [ "Knockback", "namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96", null ],
+      [ "Pull", "namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea718f59718640c6506b3721fbc8bf3a4d", null ],
+      [ "Teleport", "namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea054fc7866c93a2496fd9048c493e6aed", null ]
     ] ],
     [ "PositioningIntent", "namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653b", [
       [ "Approach", "namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba40a68b5da4b9b224764558bb02ecd028", null ],

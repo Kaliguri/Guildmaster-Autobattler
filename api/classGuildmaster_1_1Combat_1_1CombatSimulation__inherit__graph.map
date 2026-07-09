@@ -1,7 +1,7 @@
 <map id="Guildmaster.Combat.CombatSimulation" name="Guildmaster.Combat.CombatSimulation">
-<area shape="rect" id="Node000001" title="Детерминированная тиковая симуляция боя." alt="" coords="85,339,288,719"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1ICombatContext.html" title="Шов «логика эффектов/способностей ↔ боевой мир»." alt="" coords="5,5,197,291"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="139,304,147,338,141,339,134,305"/>
-<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1IBattleView.html" title="Read&#45;only срез боя для мозга (вики «13» §3.1)." alt="" coords="221,105,325,191"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="263,205,233,339,227,338,258,203"/>
+<area shape="rect" id="Node000001" title="Детерминированная тиковая симуляция боя." alt="" coords="85,359,288,739"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1ICombatContext.html" title="Шов «логика эффектов/способностей ↔ боевой мир»." alt="" coords="5,5,197,311"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="140,324,148,358,142,359,135,325"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1IBattleView.html" title="Read&#45;only срез боя для мозга (вики «13» §3.1)." alt="" coords="221,115,325,201"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="264,215,231,359,226,358,258,214"/>
 </map>

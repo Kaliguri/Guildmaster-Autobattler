@@ -15,5 +15,7 @@ var searchData=
   ['brainphase_12',['BrainPhase',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9ebe4afe282ccb09d9c9083bcae2dccf',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['brainsystem_13',['BrainSystem',['../classGuildmaster_1_1Combat_1_1BrainSystem.html',1,'Guildmaster::Combat']]],
   ['brainsystem_2ecs_14',['BrainSystem.cs',['../BrainSystem_8cs.html',1,'']]],
-  ['buff_15',['buff',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff']]]
+  ['buff_15',['buff',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25',1,'Guildmaster.Data.Definitions.Buff']]],
+  ['bulwarkcomponent_16',['BulwarkComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BulwarkComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
+  ['bulwarkcomponent_2ecs_17',['BulwarkComponent.cs',['../BulwarkComponent_8cs.html',1,'']]]
 ];

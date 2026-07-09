@@ -4,6 +4,7 @@ var namespaceGuildmaster_1_1Presentation =
     [ "CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash" ],
     [ "CombatDebugDraw", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw" ],
     [ "CombatPresenter", "classGuildmaster_1_1Presentation_1_1CombatPresenter.html", "classGuildmaster_1_1Presentation_1_1CombatPresenter" ],
+    [ "CombatStatusOverlay", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay" ],
     [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],
     [ "DamageNumber", "classGuildmaster_1_1Presentation_1_1DamageNumber.html", "classGuildmaster_1_1Presentation_1_1DamageNumber" ],
     [ "DamageNumberSpawner", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner.html", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner" ],

@@ -1,10 +1,11 @@
 var classGuildmaster_1_1Combat_1_1CombatSimulation =
 [
-    [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ad39dddbe2af10c3a6d82f0ecb0107d00", null ],
+    [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a05e1ef800b78e4c1cc248bb2567a47a4", null ],
     [ "ApplyEffect", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7ffdb85ea967ca31ce9f970371df906a", null ],
     [ "ComputeChecksum", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6d647c0229bc77cc9701a4272f36623c", null ],
     [ "DealDamage", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6de925024d5473fc9537c6a36e39fe45", null ],
     [ "Dispel", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3ce7981b50aa372c5f42ee55bc2e48cb", null ],
+    [ "Displace", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ab1642b518cd60e4ef9037e3636dcd887", null ],
     [ "EnqueueCommand", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8fd5cd93593dde5fce087c97bfc30d46", null ],
     [ "EnqueueUnitSpawn", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6ef3762989e4fb8bf6e6f2229baa2b5c", null ],
     [ "Heal", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3edf9fdf873a5ebddd75420669bdb8c2", null ],
@@ -23,6 +24,7 @@ var classGuildmaster_1_1Combat_1_1CombatSimulation =
     [ "Rng", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a252e41fbff5873e8fdeb639556d89666", null ],
     [ "Units", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6a7d8e090ee8dcca46ee0aaf705e7d24", null ],
     [ "OnAreaHit", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a9caad6a621e0b9755a74fb79f3ac7272", null ],
+    [ "OnAttackEvaded", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac488c96e1b4ab1abfff473a2fd0f1f8d", null ],
     [ "OnAttackInterrupted", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae73567a995a49a3e63bdcfb76cfa75bd", null ],
     [ "OnAttackStarted", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8b40f7605f54d4edcf58e483639f8a11", null ],
     [ "OnBattleEnded", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4a83041f340c0c1f635c66282dc3409d", null ],

@@ -10,6 +10,7 @@ var searchData=
   ['combatloopservice_2ecs_7',['CombatLoopService.cs',['../CombatLoopService_8cs.html',1,'']]],
   ['combatpresenter_2ecs_8',['CombatPresenter.cs',['../CombatPresenter_8cs.html',1,'']]],
   ['combatsimulation_2ecs_9',['CombatSimulation.cs',['../CombatSimulation_8cs.html',1,'']]],
-  ['combatunitdebugview_2ecs_10',['CombatUnitDebugView.cs',['../CombatUnitDebugView_8cs.html',1,'']]],
-  ['controlcomponent_2ecs_11',['ControlComponent.cs',['../ControlComponent_8cs.html',1,'']]]
+  ['combatstatusoverlay_2ecs_10',['CombatStatusOverlay.cs',['../CombatStatusOverlay_8cs.html',1,'']]],
+  ['combatunitdebugview_2ecs_11',['CombatUnitDebugView.cs',['../CombatUnitDebugView_8cs.html',1,'']]],
+  ['controlcomponent_2ecs_12',['ControlComponent.cs',['../ControlComponent_8cs.html',1,'']]]
 ];

@@ -1,0 +1,11 @@
+<map id="Guildmaster.Combat.Effects.IPreDamageComponent" name="Guildmaster.Combat.Effects.IPreDamageComponent">
+<area shape="rect" id="Node000001" title="Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline..." alt="" coords="142,252,342,332"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BulwarkComponent.html" title="«Оплот» (§9.3, §10.3): pre&#45;damage реактив." alt="" coords="5,380,233,500"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="203,344,171,382,167,378,198,341"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html" title="«Изворотливость» (§9.3, §9.4, §10.5): pre&#45;damage реактив с зарядами." alt="" coords="257,380,475,500"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="286,341,318,378,314,382,282,344"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="149,119,335,204"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,218,245,252,239,252,239,218"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="177,5,307,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="245,85,245,119,239,119,239,85"/>
+</map>

@@ -140,6 +140,12 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1DeathSystem.html">DeathSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Помечает юнитов с HP ≤ 0 как мёртвых, удаляет их из SpatialHash, публикует событие OnUnitDied.  <a href="classGuildmaster_1_1Combat_1_1DeathSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1DisplacementSystem.html">DisplacementSystem</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Принудительные смещения (§9.9, «Шквальный толчок»): двигает <code>Position</code> летящих юнитов по фиксированному шагу за фикс.  <a href="classGuildmaster_1_1Combat_1_1DisplacementSystem.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html">DisplaceRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Параметры принудительного смещения цели (§9.9, «Шквальный толчок»).  <a href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html">EffectSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владелец жизненного цикла эффектов: наложение (длительность, стакинг, потенция, маска тегов), тик таймеров и периодики, истечение с корректным teardown.  <a href="classGuildmaster_1_1Combat_1_1EffectSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -156,7 +162,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Главный шов AI (вики «13» §3.1): единственная точка, где принимается «дорогое» решение «кого/где».  <a href="interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1MovementSystem.html">MovementSystem</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Интегрирует позиции живых юнитов к их целям.  <a href="classGuildmaster_1_1Combat_1_1MovementSystem.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Интегрирует позиции живых юнитов.  <a href="classGuildmaster_1_1Combat_1_1MovementSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1ProfileBrain.html">ProfileBrain</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">v1-мозг (вики «13» §3.1, §4.2): интерпретирует AIProfile.  <a href="classGuildmaster_1_1Combat_1_1ProfileBrain.html#details">More...</a><br /></td></tr>
@@ -195,6 +201,12 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a1f5748cbbc1931b8421ebc5620edd712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Итог боя, устанавливается CombatSimulation после гибели одной из сторон.  <a href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712">More...</a><br /></td></tr>
 <tr class="separator:a1f5748cbbc1931b8421ebc5620edd712"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba96c0e816c07ca72f53c96500cbe0be" id="r_aba96c0e816c07ca72f53c96500cbe0be"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0be">DisplaceKind</a> { <a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96">Knockback</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea718f59718640c6506b3721fbc8bf3a4d">Pull</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea054fc7866c93a2496fd9048c493e6aed">Teleport</a> = 2
+ }</td></tr>
+<tr class="memdesc:aba96c0e816c07ca72f53c96500cbe0be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вид принудительного смещения (§9.9). MVP реализует Knockback.  <a href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0be">More...</a><br /></td></tr>
+<tr class="separator:aba96c0e816c07ca72f53c96500cbe0be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0953455148734d6b10316354291b653b" id="r_a0953455148734d6b10316354291b653b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653b">PositioningIntent</a> { <a class="el" href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba40a68b5da4b9b224764558bb02ecd028">Approach</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba65c449ad44e2c0b6c1fffc5c5cea7413">Kite</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba008bec353de180da9782954e7a1374e6">Retreat</a> = 2
@@ -227,6 +239,30 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a1f5748cbbc1931b8421ebc5620edd712aa66e17eee0daf633ec8090d0d97b2d42" name="a1f5748cbbc1931b8421ebc5620edd712aa66e17eee0daf633ec8090d0d97b2d42"></a>TeamAWins&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a1f5748cbbc1931b8421ebc5620edd712a58662d9ca10f6dd2162eaf4f825b317f" name="a1f5748cbbc1931b8421ebc5620edd712a58662d9ca10f6dd2162eaf4f825b317f"></a>TeamBWins&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a1f5748cbbc1931b8421ebc5620edd712a2d03c2d5a7ec65ef4619e0582c272ec2" name="a1f5748cbbc1931b8421ebc5620edd712a2d03c2d5a7ec65ef4619e0582c272ec2"></a>Draw&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="aba96c0e816c07ca72f53c96500cbe0be" name="aba96c0e816c07ca72f53c96500cbe0be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba96c0e816c07ca72f53c96500cbe0be">&#9670;&#160;</a></span>DisplaceKind</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0be">Guildmaster.Combat.DisplaceKind</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Вид принудительного смещения (§9.9). MVP реализует Knockback. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96" name="aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96"></a>Knockback&#160;</td><td class="fielddoc"><p>Отбрасывание от источника на фиксированную дистанцию. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aba96c0e816c07ca72f53c96500cbe0bea718f59718640c6506b3721fbc8bf3a4d" name="aba96c0e816c07ca72f53c96500cbe0bea718f59718640c6506b3721fbc8bf3a4d"></a>Pull&#160;</td><td class="fielddoc"><p>Притягивание к источнику (задел, не в MVP). </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aba96c0e816c07ca72f53c96500cbe0bea054fc7866c93a2496fd9048c493e6aed" name="aba96c0e816c07ca72f53c96500cbe0bea054fc7866c93a2496fd9048c493e6aed"></a>Teleport&#160;</td><td class="fielddoc"><p>Телепорт в точку (задел, не в MVP). </p>
+</td></tr>
 </table>
 
 </div>

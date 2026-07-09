@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['radius_0',['Radius',['../structGuildmaster_1_1Combat_1_1AreaHit.html#a37e952212c5640baf6283202e350258d',1,'Guildmaster::Combat::AreaHit']]],
-  ['ratio_1',['Ratio',['../structGuildmaster_1_1Data_1_1Stats_1_1ScalingTerm.html#a30eccbc6bdda5fdd9888ebd9b5693d29',1,'Guildmaster::Data::Stats::ScalingTerm']]],
-  ['rawdamage_2',['rawdamage',['../structGuildmaster_1_1Combat_1_1DamageRequest.html#a644419348de6eb2c2a193b221ff917d3',1,'Guildmaster.Combat.DamageRequest.RawDamage'],['../classGuildmaster_1_1Combat_1_1Projectile.html#aebbeed0b12546809f68c03391c5eca4f',1,'Guildmaster.Combat.Projectile.RawDamage'],['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a56c3b1ab0c7a97b5f9c2a949b85d2879',1,'Guildmaster.Combat.ProjectileSpawn.RawDamage']]],
-  ['relic_3',['Relic',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a5ad74e20cb04f2cb6f6c9444b64bd386',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['remainingticks_4',['RemainingTicks',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ac4f0082e00dc1f4610994f29e7ac616b',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
-  ['result_5',['Result',['../structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html#a058298f83915cea972e339597e593323',1,'Guildmaster::Presentation::DamageDealtEvent']]],
-  ['returnathppct_6',['ReturnAtHpPct',['../structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html#aa18445ec3de8b8f315a7d4a661676321',1,'Guildmaster::Data::Definitions::Retreat']]]
+  ['pendingshield_0',['PendingShield',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a0a858659d43320619d859c28a61c1fb7',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
+  ['periodicticks_1',['PeriodicTicks',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a33faf86e1bb27a7509d7d3b07ea1bf3c',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
+  ['piercesremaining_2',['PiercesRemaining',['../classGuildmaster_1_1Combat_1_1Projectile.html#af481a6b9782b6449af4494d08f771d40',1,'Guildmaster::Combat::Projectile']]],
+  ['polarity_3',['Polarity',['../structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#ad06b5c953be7da1619ba66f7b20d0da0',1,'Guildmaster::Combat::Effects::DispelRequest']]],
+  ['position_4',['position',['../classGuildmaster_1_1Combat_1_1Projectile.html#a89f3f26dd737e1cd1eb83796e5415ddd',1,'Guildmaster.Combat.Projectile.Position'],['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ad165873e9407fb2df902527f75674deb',1,'Guildmaster.Combat.RuntimeUnit.Position']]],
+  ['positioning_5',['Positioning',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa95fa045315d83e9b2e840d3d19b30c6',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['potency_6',['Potency',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a67c7cc29e376bb528fd5ff0ce5b601b3',1,'Guildmaster::Combat::Effects::EffectContext']]],
+  ['previousposition_7',['previousposition',['../classGuildmaster_1_1Combat_1_1Projectile.html#a5f4082554f82eb6bde78d57de9252b65',1,'Guildmaster.Combat.Projectile.PreviousPosition'],['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aecb0992328b22064b9ac4972ac27d5e9',1,'Guildmaster.Combat.RuntimeUnit.PreviousPosition']]]
 ];

@@ -8,5 +8,8 @@ var searchData=
   ['damageresult_5',['DamageResult',['../structGuildmaster_1_1Combat_1_1DamageResult.html',1,'Guildmaster::Combat']]],
   ['deathsystem_6',['DeathSystem',['../classGuildmaster_1_1Combat_1_1DeathSystem.html',1,'Guildmaster::Combat']]],
   ['dispelcomponent_7',['DispelComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
-  ['dispelrequest_8',['DispelRequest',['../structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html',1,'Guildmaster::Combat::Effects']]]
+  ['dispelrequest_8',['DispelRequest',['../structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html',1,'Guildmaster::Combat::Effects']]],
+  ['displacementsystem_9',['DisplacementSystem',['../classGuildmaster_1_1Combat_1_1DisplacementSystem.html',1,'Guildmaster::Combat']]],
+  ['displacerequest_10',['DisplaceRequest',['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html',1,'Guildmaster::Combat']]],
+  ['dodgecomponent_11',['DodgeComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
 ];

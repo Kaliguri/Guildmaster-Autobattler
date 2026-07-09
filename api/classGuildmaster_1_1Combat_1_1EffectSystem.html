@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1EffectSy
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.EffectSystem:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem__coll__graph.svg" width="200" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem__coll__graph.svg" width="200" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -118,6 +118,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac752cc7b39872e4fc36e6ddb25fe170d" id="r_ac752cc7b39872e4fc36e6ddb25fe170d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#ac752cc7b39872e4fc36e6ddb25fe170d">Remove</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit, <a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html">RuntimeEffect</a> effect, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
 <tr class="memdesc:ac752cc7b39872e4fc36e6ddb25fe170d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Принудительно снять эффект с корректным <code>OnExpire</code> и пересборкой маски тегов.  <br /></td></tr>
 <tr class="separator:ac752cc7b39872e4fc36e6ddb25fe170d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a185829371095c507b7672006d99010b8" id="r_a185829371095c507b7672006d99010b8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a185829371095c507b7672006d99010b8">RunPreDamage</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a> req, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
+<tr class="memdesc:a185829371095c507b7672006d99010b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Синхронный pre-damage проход (§9.3): до DamagePipeline.Execute опросить IPreDamageComponent цели — «Оплот» успевает поднять щит, поглощающий сам триггер-удар.  <br /></td></tr>
+<tr class="separator:a185829371095c507b7672006d99010b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af105ee295c2f8be96b878c5c8b704251" id="r_af105ee295c2f8be96b878c5c8b704251"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#af105ee295c2f8be96b878c5c8b704251">Dispatch</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> carrier, in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html">CombatEventData</a> ev, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
 <tr class="memdesc:af105ee295c2f8be96b878c5c8b704251"><td class="mdescLeft">&#160;</td><td class="mdescRight">Доставить боевое событие реактивным компонентам носителя (вампиризм/шипы).  <br /></td></tr>
 <tr class="separator:af105ee295c2f8be96b878c5c8b704251"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -366,6 +369,51 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem_afba054405a0f16608dfd5d774a58cc90_icgraph.svg" width="474" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<a id="a185829371095c507b7672006d99010b8" name="a185829371095c507b7672006d99010b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a185829371095c507b7672006d99010b8">&#9670;&#160;</a></span>RunPreDamage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.EffectSystem.RunPreDamage </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Combat_1_1DamageRequest.html">DamageRequest</a>&#160;</td>
+          <td class="paramname"><em>req</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a>&#160;</td>
+          <td class="paramname"><em>combat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Синхронный pre-damage проход (§9.3): до DamagePipeline.Execute опросить IPreDamageComponent цели — «Оплот» успевает поднять щит, поглощающий сам триггер-удар. </p>
+<p>Итерация по копии (реакция может наложить эффект), порядок по индексу RuntimeUnit.ActiveEffects → детерминизм (гейт S5 влит в срез-тесты). </p>
 
 </div>
 </div>

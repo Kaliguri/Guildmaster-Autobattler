@@ -12,5 +12,6 @@ var searchData=
   ['statmodifiercomponent_2ecs_9',['StatModifierComponent.cs',['../StatModifierComponent_8cs.html',1,'']]],
   ['stats_2ecs_10',['Stats.cs',['../Stats_8cs.html',1,'']]],
   ['statsconfig_2ecs_11',['StatsConfig.cs',['../StatsConfig_8cs.html',1,'']]],
-  ['stattype_2ecs_12',['StatType.cs',['../StatType_8cs.html',1,'']]]
+  ['stattype_2ecs_12',['StatType.cs',['../StatType_8cs.html',1,'']]],
+  ['stealthcomponent_2ecs_13',['StealthComponent.cs',['../StealthComponent_8cs.html',1,'']]]
 ];

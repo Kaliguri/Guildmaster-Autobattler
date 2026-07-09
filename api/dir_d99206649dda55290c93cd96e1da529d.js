@@ -13,6 +13,7 @@ var dir_d99206649dda55290c93cd96e1da529d =
     [ "AreaHit.cs", "AreaHit_8cs.html", "AreaHit_8cs" ],
     [ "BattleOutcome.cs", "BattleOutcome_8cs.html", "BattleOutcome_8cs" ],
     [ "CombatSimulation.cs", "CombatSimulation_8cs.html", "CombatSimulation_8cs" ],
+    [ "DisplaceRequest.cs", "DisplaceRequest_8cs.html", "DisplaceRequest_8cs" ],
     [ "ICombatCommand.cs", "ICombatCommand_8cs.html", "ICombatCommand_8cs" ],
     [ "ICombatContext.cs", "ICombatContext_8cs.html", "ICombatContext_8cs" ],
     [ "PositioningIntent.cs", "PositioningIntent_8cs.html", "PositioningIntent_8cs" ],

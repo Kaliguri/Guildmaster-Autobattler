@@ -11,5 +11,6 @@ var searchData=
   ['statmodifier_8',['StatModifier',['../structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html',1,'Guildmaster::Data::Stats']]],
   ['statmodifiercomponent_9',['StatModifierComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
   ['stats_10',['Stats',['../classGuildmaster_1_1Combat_1_1Stats.html',1,'Guildmaster::Combat']]],
-  ['statsconfig_11',['StatsConfig',['../classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html',1,'Guildmaster::Data::Definitions']]]
+  ['statsconfig_11',['StatsConfig',['../classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html',1,'Guildmaster::Data::Definitions']]],
+  ['stealthcomponent_12',['StealthComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
 ];

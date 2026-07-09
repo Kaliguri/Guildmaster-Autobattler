@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Fl
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.FloatingText:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1FloatingText__inherit__graph.svg" width="194" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1FloatingText__inherit__graph.svg" width="194" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.FloatingText:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1FloatingText__coll__graph.svg" width="194" height="224"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1FloatingText__coll__graph.svg" width="194" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -117,6 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a600a846b806df410c85b2a5dbf0ecfe5" id="r_a600a846b806df410c85b2a5dbf0ecfe5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1FloatingText.html#a600a846b806df410c85b2a5dbf0ecfe5">Play</a> (string text, Color color)</td></tr>
 <tr class="memdesc:a600a846b806df410c85b2a5dbf0ecfe5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать текст, цвет и запустить анимацию.  <br /></td></tr>
 <tr class="separator:a600a846b806df410c85b2a5dbf0ecfe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d51f00f0896f9ff61813a9bad0b499c" id="r_a5d51f00f0896f9ff61813a9bad0b499c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1FloatingText.html#a5d51f00f0896f9ff61813a9bad0b499c">Play</a> (string text, Color color, System.Action&lt; <a class="el" href="classGuildmaster_1_1Presentation_1_1FloatingText.html">FloatingText</a> &gt; onComplete)</td></tr>
+<tr class="memdesc:a5d51f00f0896f9ff61813a9bad0b499c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пул-версия: по завершении зовёт <em>onComplete</em>  (возврат в пул) вместо Destroy.  <br /></td></tr>
+<tr class="separator:a5d51f00f0896f9ff61813a9bad0b499c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -129,13 +132,10 @@ Static Public Member Functions</h2></td></tr>
 <p>Всплывает вверх, во второй половине жизни гаснет, затем сам себя уничтожает. Размер/шрифт настраиваются на TMP в префабе; <b>цвет задаёт вызывающий</b> (CombatPresenter знает семантику: урон/хил), тайминг всплытия/затухания — поля ниже. Чисто презентация: сим не трогает. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a600a846b806df410c85b2a5dbf0ecfe5" name="a600a846b806df410c85b2a5dbf0ecfe5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a600a846b806df410c85b2a5dbf0ecfe5">&#9670;&#160;</a></span>Play()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a600a846b806df410c85b2a5dbf0ecfe5">&#9670;&#160;</a></span>Play() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Presentation.FloatingText.Play </td>
@@ -155,6 +155,45 @@ Static Public Member Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+<p>Задать текст, цвет и запустить анимацию. </p>
+
+</div>
+</div>
+<a id="a5d51f00f0896f9ff61813a9bad0b499c" name="a5d51f00f0896f9ff61813a9bad0b499c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d51f00f0896f9ff61813a9bad0b499c">&#9670;&#160;</a></span>Play() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Presentation.FloatingText.Play </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>text</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">System::Action&lt; <a class="el" href="classGuildmaster_1_1Presentation_1_1FloatingText.html">FloatingText</a> &gt;&#160;</td>
+          <td class="paramname"><em>onComplete</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
@@ -162,7 +201,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Задать текст, цвет и запустить анимацию. </p>
+<p>Пул-версия: по завершении зовёт <em>onComplete</em>  (возврат в пул) вместо Destroy. </p>
+<p>Позицию выставляет вызывающий ДО вызова. </p>
 
 </div>
 </div>

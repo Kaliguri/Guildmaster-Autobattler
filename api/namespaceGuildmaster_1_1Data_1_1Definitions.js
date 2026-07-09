@@ -65,7 +65,8 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "Shield", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4", null ],
       [ "Frozen", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a68abcc3d0869f8a52c2b286b3c511dd3", null ],
       [ "Marked", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438ab80c545ea15439f0b585c86a6aab3226", null ],
-      [ "KnockUp", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89", null ]
+      [ "KnockUp", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89", null ],
+      [ "Stealth", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628", null ]
     ] ],
     [ "PassiveTrigger", "namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612", [
       [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612a6adf97f83acf6453d4a6a4b1070f3754", null ],

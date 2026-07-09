@@ -38,7 +38,7 @@ var NAVTREE =
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", null ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
         [ "Properties", "functions_prop.html", null ],
         [ "Events", "functions_evnt.html", null ]
@@ -53,11 +53,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AIProfile_8cs.html",
-"classGuildmaster_1_1Combat_1_1AttackTiming.html#a0b4ea555d2297b9817a0763eed8ae822",
-"classGuildmaster_1_1Combat_1_1Projectile.html#aaf05a6c036d7612517894326d25fc732",
-"classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#a4d9691876d96cf945c07fb748fe98405",
-"interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html",
-"structGuildmaster_1_1Combat_1_1AreaHit.html#a06c034ffb43d10ab1ec5d15551a95c49"
+"classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#a22dc0e72da44c03c0630c8b9a523fe38",
+"classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent.html#a8edafa17c2889373203c7158cbccde2d",
+"classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a9eef4c282da5352b515c5b08ddc6ea63",
+"classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html#a0da2ff2c7d8279ddaca3aa8809cf4d73",
+"namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653b",
+"structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#aa020877e8cb81b74fc25f85246623ca7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
