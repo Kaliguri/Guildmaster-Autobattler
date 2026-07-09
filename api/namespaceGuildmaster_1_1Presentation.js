@@ -7,6 +7,7 @@ var namespaceGuildmaster_1_1Presentation =
     [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],
     [ "DamageNumber", "classGuildmaster_1_1Presentation_1_1DamageNumber.html", "classGuildmaster_1_1Presentation_1_1DamageNumber" ],
     [ "DamageNumberSpawner", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner.html", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner" ],
+    [ "FloatingText", "classGuildmaster_1_1Presentation_1_1FloatingText.html", "classGuildmaster_1_1Presentation_1_1FloatingText" ],
     [ "HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", "classGuildmaster_1_1Presentation_1_1HealthBarView" ],
     [ "UnitAnimationSelector", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector" ],
     [ "UnitDiedEvent", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent" ],

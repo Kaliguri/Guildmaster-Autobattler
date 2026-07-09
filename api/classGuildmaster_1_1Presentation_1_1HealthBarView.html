@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1He
 </div><!--header-->
 <div class="contents">
 
-<p>Двойной HP-бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA).  
+<p>Двойной HP-бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA) на uGUI.  
  <a href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.HealthBarView:</div>
@@ -121,10 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae0f426c83b1ecfeb629eb62bf7cd7598"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Двойной HP-бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA). </p>
+<div class="textblock"><p>Двойной HP-бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA) на uGUI. </p>
 <p>Истинная доля ставится мгновенно поллингом из UnitView; призрак плавно догоняет её по рендер-времени (НЕ сим — на чек-сумму не влияет).</p>
-<p>Каждый кадр спереди рисуется МЕНЬШАЯ из двух долей (main, зелёный), сзади — БОЛЬШАЯ (trail), поэтому видна цветная «дельта»: • урон (target &lt; ghost): дельта [target, ghost] цветом _damageTrailColor; • хил (target &gt; ghost): дельта [ghost, target] цветом _healTrailColor.</p>
-<p>Левый якорь считается в коде (offset по X от ширины спрайта), поэтому полоса «утекает» слева независимо от пивота спрайта — без жёсткой привязки к настройке ассета. </p>
+<p>Оба слоя — Image с типом Filled (Horizontal, origin Left): доля = <code>fillAmount</code>. Порядок в иерархии: Background → TrailFill → MainFill (main рисуется поверх trail). Спереди видна МЕНЬШАЯ доля (main, зелёный/красный), сзади — БОЛЬШАЯ (trail), поэтому видна цветная «дельта»: • урон (target &lt; ghost): дельта [target, ghost] цветом _damageTrailColor; • хил (target &gt; ghost): дельта [ghost, target] цветом _healTrailColor. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="addca237a220d26640e8bef0b174d1134" name="addca237a220d26640e8bef0b174d1134"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#addca237a220d26640e8bef0b174d1134">&#9670;&#160;</a></span>Bind()</h2>

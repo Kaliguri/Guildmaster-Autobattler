@@ -6,6 +6,7 @@ var dir_9c4489f7376784a5a639cc520f6e7ee8 =
     [ "CombatPresenter.cs", "CombatPresenter_8cs.html", "CombatPresenter_8cs" ],
     [ "DamageNumber.cs", "DamageNumber_8cs.html", "DamageNumber_8cs" ],
     [ "DamageNumberSpawner.cs", "DamageNumberSpawner_8cs.html", "DamageNumberSpawner_8cs" ],
+    [ "FloatingText.cs", "FloatingText_8cs.html", "FloatingText_8cs" ],
     [ "HealthBarView.cs", "HealthBarView_8cs.html", "HealthBarView_8cs" ],
     [ "UnitAnimation.cs", "UnitAnimation_8cs.html", "UnitAnimation_8cs" ],
     [ "UnitView.cs", "UnitView_8cs.html", "UnitView_8cs" ]

@@ -88,6 +88,7 @@ var hierarchy =
       [ "Guildmaster.Presentation.CombatPresenter", "classGuildmaster_1_1Presentation_1_1CombatPresenter.html", null ],
       [ "Guildmaster.Presentation.DamageNumber", "classGuildmaster_1_1Presentation_1_1DamageNumber.html", null ],
       [ "Guildmaster.Presentation.DamageNumberSpawner", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner.html", null ],
+      [ "Guildmaster.Presentation.FloatingText", "classGuildmaster_1_1Presentation_1_1FloatingText.html", null ],
       [ "Guildmaster.Presentation.HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", null ],
       [ "Guildmaster.Presentation.UnitView", "classGuildmaster_1_1Presentation_1_1UnitView.html", null ]
     ] ],
