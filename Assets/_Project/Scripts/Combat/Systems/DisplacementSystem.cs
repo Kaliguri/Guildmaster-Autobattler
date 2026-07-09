@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Guildmaster.Core.Arena;
 using UnityEngine;
 
 namespace Guildmaster.Combat
@@ -58,7 +59,8 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>Продвинуть все активные смещения на один тик.</summary>
-        public void Tick(ICombatContext ctx, float dt)
+        /// <param name="bounds">Границы поля: полётная позиция клампится внутрь — «ядро» упирается в стену (вики «15» §7).</param>
+        public void Tick(ICombatContext ctx, float dt, in ArenaBounds bounds)
         {
             for (int i = _active.Count - 1; i >= 0; i--)
             {
@@ -75,7 +77,8 @@ namespace Guildmaster.Combat
 
                 Vector2 prev = u.Position;
                 u.PreviousPosition = prev;
-                u.Position = prev + a.Step;
+                // Клампим ДО «ядра»: сегмент удара идёт до стены, врагов за полем не задеваем.
+                u.Position = bounds.Clamp(prev + a.Step);
 
                 if (a.Cannonball && a.Damage > 0f && a.Source != null)
                     Cannonball(a, prev, u.Position, ctx);

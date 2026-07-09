@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects.Components;
+using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -87,7 +88,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var u = MakeUnit(0, team: 0, pos: Vector2.zero, range: 10f, positioning: PositioningIntent.Kite);
                 var target = MakeUnit(1, team: 1, pos: new Vector2(3f, 0f));
                 u.CurrentTarget = target;
-                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta);
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
                 Assert.Less(u.Position.x, 0f, "Ближе нижней границы полосы — отходит от цели");
             }
             // В полосе (dist 8) → стоит.
@@ -95,7 +96,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var u = MakeUnit(0, team: 0, pos: Vector2.zero, range: 10f, positioning: PositioningIntent.Kite);
                 var target = MakeUnit(1, team: 1, pos: new Vector2(8f, 0f));
                 u.CurrentTarget = target;
-                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta);
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
                 Assert.AreEqual(0f, u.Position.x, 1e-4f, "В полосе дистанции — держит позицию");
             }
             // Дальше радиуса (dist 15 > 10) → подходит.
@@ -103,8 +104,48 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var u = MakeUnit(0, team: 0, pos: Vector2.zero, range: 10f, positioning: PositioningIntent.Kite);
                 var target = MakeUnit(1, team: 1, pos: new Vector2(15f, 0f));
                 u.CurrentTarget = target;
-                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta);
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
                 Assert.Greater(u.Position.x, 0f, "Вне радиуса — подходит к цели");
+            }
+        }
+
+        // Регресс 07 §3.8 B4: полоса кайта берётся из Kite.FleeDist/FallbackDist профиля, а не из
+        // магического AttackRange×0.6. Радиус атаки 10 (старая полоса дала бы [6,10]), но профиль
+        // задаёт [2,4] — поведение должно следовать профилю.
+        [Test]
+        public void Kite_UsesProfileFleeAndFallbackDist_NotAttackRange()
+        {
+            var kiteAi = new AIProfile(
+                autoAttackTargeting: TargetingMode.Nearest,
+                kite: new Kite { Enabled = true, FleeDist = 2f, FallbackDist = 4f });
+            RelicData kiteRelic = TestRelic.Make(ai: kiteAi);
+
+            // dist 8: старая полоса [6,10] → стой; профильная [2,4] → дальше FallbackDist → подходит.
+            {
+                var u = MakeUnit(0, team: 0, pos: Vector2.zero, range: 10f, relic: kiteRelic,
+                    positioning: PositioningIntent.Kite);
+                var target = MakeUnit(1, team: 1, pos: new Vector2(8f, 0f));
+                u.CurrentTarget = target;
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                Assert.Greater(u.Position.x, 0f, "dist>FallbackDist(4) — подходит (профиль, не AttackRange)");
+            }
+            // dist 1 < FleeDist(2) → отходит.
+            {
+                var u = MakeUnit(0, team: 0, pos: Vector2.zero, range: 10f, relic: kiteRelic,
+                    positioning: PositioningIntent.Kite);
+                var target = MakeUnit(1, team: 1, pos: new Vector2(1f, 0f));
+                u.CurrentTarget = target;
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                Assert.Less(u.Position.x, 0f, "dist<FleeDist(2) — отходит");
+            }
+            // dist 3 в полосе [2,4] → стоит.
+            {
+                var u = MakeUnit(0, team: 0, pos: Vector2.zero, range: 10f, relic: kiteRelic,
+                    positioning: PositioningIntent.Kite);
+                var target = MakeUnit(1, team: 1, pos: new Vector2(3f, 0f));
+                u.CurrentTarget = target;
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                Assert.AreEqual(0f, u.Position.x, 1e-4f, "В полосе [FleeDist, FallbackDist] — держит позицию");
             }
         }
 
@@ -128,9 +169,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             baseline.CurrentTarget = target; // НЕ в замахе → полная скорость
 
             var sys = new MovementSystem();
-            sys.Tick(new List<RuntimeUnit> { moving, target }, SimConstants.TickDelta);
-            sys.Tick(new List<RuntimeUnit> { rooted, target }, SimConstants.TickDelta);
-            sys.Tick(new List<RuntimeUnit> { baseline, target }, SimConstants.TickDelta);
+            sys.Tick(new List<RuntimeUnit> { moving, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+            sys.Tick(new List<RuntimeUnit> { rooted, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+            sys.Tick(new List<RuntimeUnit> { baseline, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
 
             Assert.Greater(moving.Position.x, 0f, "Со стрельбой на ходу юнит движется в замахе");
             Assert.AreEqual(0f, rooted.Position.x, 1e-4f, "Без флага замах рутит (поведение Ф1)");

@@ -7,13 +7,29 @@ param(
     [string]$Mode = "All"
 )
 
-$UnityExe = "C:\Program Files\Unity\Hub\Editor\6000.0.23f1\Editor\Unity.exe"
 $ProjectPath = $PSScriptRoot | Split-Path -Parent
 $ResultsDir = Join-Path $ProjectPath "TestResults"
 
+# Версия редактора берётся из проекта (ProjectSettings/ProjectVersion.txt), а не хардкодится —
+# иначе локальный прогон падает при апгрейде Unity (тех-долг 07 §3.8 I1).
+$VersionFile = Join-Path $ProjectPath "ProjectSettings/ProjectVersion.txt"
+if (-not (Test-Path $VersionFile)) {
+    Write-Error "ProjectVersion.txt not found at: $VersionFile"
+    exit 1
+}
+
+$versionLine = Get-Content $VersionFile | Where-Object { $_ -match '^m_EditorVersion:' } | Select-Object -First 1
+$UnityVersion = ($versionLine -replace '^m_EditorVersion:\s*', '').Trim()
+if (-not $UnityVersion) {
+    Write-Error "Could not parse m_EditorVersion from: $VersionFile"
+    exit 1
+}
+
+$UnityExe = "C:\Program Files\Unity\Hub\Editor\$UnityVersion\Editor\Unity.exe"
+
 if (-not (Test-Path $UnityExe)) {
-    Write-Error "Unity not found at: $UnityExe"
-    Write-Host "Update the path in scripts/run-tests.ps1 to match your Unity installation."
+    Write-Error "Unity $UnityVersion not found at: $UnityExe"
+    Write-Host "Install $UnityVersion via Unity Hub, or update the path in scripts/run-tests.ps1."
     exit 1
 }
 

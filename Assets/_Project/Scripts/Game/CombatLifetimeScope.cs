@@ -1,4 +1,5 @@
 using Guildmaster.Combat;
+using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Services;
@@ -27,10 +28,34 @@ namespace Guildmaster.Game
 
         protected override void Configure(IContainerBuilder builder)
         {
+            // Арену печём из авторинга в сцене (если он есть); иначе — бесконечное поле.
+            // prefab-per-arena через Addressables — будущий свап (вики «15» §4-5): тогда снапшот
+            // придёт из загруженного префаба, а не из FindFirstObjectByType.
+            ArenaLayoutData layout = BuildArenaLayout();
+
+            RegisterArena(builder, layout);
             RegisterRng(builder);
             RegisterCombatSystems(builder);
-            RegisterSimulation(builder);
+            RegisterSimulation(builder, layout);
             RegisterPresentation(builder);
+        }
+
+        private ArenaLayoutData BuildArenaLayout()
+        {
+            var authoring = FindFirstObjectByType<ArenaLayoutAuthoring>();
+            if (authoring == null)
+            {
+                Debug.LogWarning("[CombatLifetimeScope] - ArenaLayoutAuthoring не найден в сцене → " +
+                                 "бесконечное поле без зон (движение не клампится).");
+                return ArenaLayoutData.Unbounded;
+            }
+            return authoring.BuildLayout();
+        }
+
+        private void RegisterArena(IContainerBuilder builder, ArenaLayoutData layout)
+        {
+            builder.RegisterInstance(layout);
+            builder.Register<DeploymentService>(Lifetime.Scoped);
         }
 
         private void RegisterRng(IContainerBuilder builder)
@@ -53,14 +78,16 @@ namespace Guildmaster.Game
             builder.Register<DisplacementSystem>(Lifetime.Scoped);
         }
 
-        private void RegisterSimulation(IContainerBuilder builder)
+        private void RegisterSimulation(IContainerBuilder builder, ArenaLayoutData layout)
         {
             // VContainer сам разрешит зависимости конструктора (RNG, SpatialHash, все системы) —
-            // вручную перечислять Resolve не нужно. Единственный не-инъектируемый параметр —
-            // float armorK — передаём через WithParameter по имени. Добавил систему в ctor —
-            // ничего тут править не надо, лишь бы она была зарегистрирована.
+            // вручную перечислять Resolve не нужно. Не-инъектируемые параметры передаём через
+            // WithParameter по имени: float armorK и границы поля arena (ArenaBounds? — значение,
+            // не сервис). Добавил систему в ctor — ничего тут править не надо, лишь бы она была
+            // зарегистрирована.
             builder.Register<CombatSimulation>(Lifetime.Scoped)
-                   .WithParameter("armorK", _armorK);
+                   .WithParameter("armorK", _armorK)
+                   .WithParameter("arena", (ArenaBounds?)layout.Bounds);
 
             StatsConfig cfg = _statsConfig;
             builder.Register<RuntimeUnitFactory>(r => new RuntimeUnitFactory(

@@ -38,6 +38,11 @@ MonoBehaviour:
     - FMODUnity
     - FMODUnityHaptics
     - FMODUnityResonance
+    - glTFast
+    - glTFast.Documentation.Examples
+    - glTFast.dots
+    - glTFast.Export
+    - glTFast.Newtonsoft
     - Guildmaster.Combat
     - Guildmaster.Core
     - Guildmaster.Data

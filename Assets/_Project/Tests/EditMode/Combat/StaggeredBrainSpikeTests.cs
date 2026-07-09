@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Guildmaster.Combat;
+using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Stats;
 using NUnit.Framework;
@@ -46,7 +47,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             for (int tick = 0; tick < 9; tick++)
             {
                 brain.Tick(units, tick);
-                move.Tick(units, SimConstants.TickDelta);
+                move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded);
             }
 
             // Id=1 → фаза 1 → решает на тиках 1,4,7 (никто не умирает → dirty не срабатывает).
@@ -71,7 +72,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             for (int tick = 0; tick <= 1; tick++)   // прогоняем до тика 1 включительно (юнит получил цель)
             {
                 brain.Tick(units, tick);
-                move.Tick(units, SimConstants.TickDelta);
+                move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded);
             }
             Assert.IsNotNull(u.CurrentTarget, "После своей фазы у юнита должна быть цель");
 
@@ -80,7 +81,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.IsFalse(DecisionTicksFor(brain, 1).Contains(2), "Тик 2 — вне фазы Id=1, решения быть не должно");
 
             Vector2 before = u.Position;
-            move.Tick(units, SimConstants.TickDelta);
+            move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded);
             Assert.AreNotEqual(before, u.Position, "Интент должен залипать: юнит двигается между AI-тиками");
         }
 
@@ -123,7 +124,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             for (; tick < Ticks; tick++)
             {
                 brain.Tick(units, tick);                       // 10 Гц staggered → пишет CurrentTarget
-                move.Tick(units, SimConstants.TickDelta);      // 30 Гц → исполняет интент
+                move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded);      // 30 Гц → исполняет интент
             }
             return Checksum(units, tick);
         }

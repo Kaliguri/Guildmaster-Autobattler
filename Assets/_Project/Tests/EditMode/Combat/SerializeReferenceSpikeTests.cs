@@ -17,7 +17,7 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class SerializeReferenceSpikeTests
     {
-        private const string AssetPath = "Assets/Tests/EditMode/__spike_effect.asset";
+        private const string AssetPath = "Assets/_Project/Tests/EditMode/__spike_effect.asset";
 
         [Test]
         public void SerializeReference_CombatComponent_SurvivesReloadInDataAsset()

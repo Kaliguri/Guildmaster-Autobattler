@@ -117,6 +117,29 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(150f, assassin.CurrentHP, 1e-4f, "Заряд израсходован — второй удар проходит");
         }
 
+        // Регресс 07 §3.8 B2: рестак стакающегося дожа НЕ перезаряжает уже израсходованные заряды.
+        [Test]
+        public void Dodge_Restack_DoesNotRefillSpentCharges()
+        {
+            var es  = new EffectSystem();
+            var ctx = new TickContext(es);
+            var assassin = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f,
+                relic: AssassinRelic(PassiveTrigger.AnyHit));
+
+            EffectData dodge = DodgePassiveStacking(maxCharges: 1, rechargeSeconds: 8f);
+            ctx.Tick = 0;
+            es.Apply(assassin, dodge, assassin, ctx);
+
+            var hit = new DamageRequest(null, assassin, 30f, DamageType.True, ArmorK);
+            Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx),  "Заряд израсходован на 1-м ударе");
+            Assert.IsFalse(es.RunPreDamage(assassin, in hit, ctx), "Зарядов больше нет");
+
+            es.Apply(assassin, dodge, assassin, ctx); // рестак того же эффекта → стак растёт
+            Assert.AreEqual(2, assassin.ActiveEffects[0].Stacks, "Предусловие: стак вырос");
+            Assert.IsFalse(es.RunPreDamage(assassin, in hit, ctx),
+                "Рестак НЕ перезарядил израсходованный заряд (07 §3.8 B2)");
+        }
+
         // ===================== Фабрики / хелперы =====================
 
         private static EffectData StealthBuff()
@@ -145,6 +168,16 @@ namespace Guildmaster.Tests.EditMode.Combat
                 .With("_maxCharges", maxCharges)
                 .With("_rechargeSeconds", rechargeSeconds);
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: dodge);
+        }
+
+        private static EffectData DodgePassiveStacking(int maxCharges, float rechargeSeconds)
+        {
+            var dodge = new DodgeComponent()
+                .With("_maxCharges", maxCharges)
+                .With("_rechargeSeconds", rechargeSeconds);
+            return TestEffect.Make(
+                baseDuration: -1f, polarity: EffectPolarity.Neutral,
+                stacking: StackRule.Stack, maxStacks: 2, components: dodge);
         }
 
         private static RelicData AssassinRelic(PassiveTrigger trigger)

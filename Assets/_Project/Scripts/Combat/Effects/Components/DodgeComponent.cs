@@ -13,7 +13,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// любой следующий удар). Состояние зарядов — per-effect в <see cref="RuntimeEffect.ChargeReadyTicks"/>.
     /// </summary>
     [Serializable]
-    public sealed class DodgeComponent : IPreDamageComponent
+    public sealed class DodgeComponent : IPreDamageComponent, IStackableComponent
     {
         [Tooltip("Число зарядов негейта.")]
         [SerializeField] private int _maxCharges = 2;
@@ -28,6 +28,13 @@ namespace Guildmaster.Combat.Effects.Components
         }
 
         public void OnExpire(in EffectContext ctx) { }
+
+        public void OnStacksChanged(int previousStacks, in EffectContext ctx)
+        {
+            // Рестак НЕ трогает заряды: их число фиксировано (_maxCharges), а per-charge таймеры
+            // перезарядки уже живут в ctx.Effect.ChargeReadyTicks. Дефолтный OnExpire→OnApply здесь
+            // обнулил бы массив — бесплатный рефилл всех зарядов негейта на каждый стак (07 §3.8 B2).
+        }
 
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {

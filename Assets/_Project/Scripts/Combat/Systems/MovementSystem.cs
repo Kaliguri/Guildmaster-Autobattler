@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Guildmaster.Core.Arena;
+using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
 
@@ -15,7 +17,8 @@ namespace Guildmaster.Combat
         /// <summary>Продвинуть позиции всех живых юнитов на один тик.</summary>
         /// <param name="units">Список всех юнитов в бою.</param>
         /// <param name="dt">Длительность тика (всегда <see cref="SimConstants.TickDelta"/>).</param>
-        public void Tick(List<RuntimeUnit> units, float dt)
+        /// <param name="bounds">Границы поля: итоговая позиция клампится внутрь (<see cref="ArenaBounds.Unbounded"/> = без стен).</param>
+        public void Tick(List<RuntimeUnit> units, float dt, in ArenaBounds bounds)
         {
             for (int i = 0; i < units.Count; i++)
             {
@@ -53,6 +56,9 @@ namespace Guildmaster.Combat
                     case PositioningIntent.Retreat: MoveRetreat(unit, units, maxMove); break;
                     default:                        MoveApproach(unit, target, maxMove); break;
                 }
+
+                // Стены арены: не даём кайту/отступлению уйти за поле (вики «15» §7).
+                unit.Position = bounds.Clamp(unit.Position);
             }
         }
 
@@ -74,24 +80,36 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
-        /// Кайт (§9.7): держим дистанцию в полосе [AttackRange×0.6, AttackRange] от цели —
-        /// отходим, если ближе нижней границы; подходим, если дальше радиуса; иначе стоим и стреляем.
+        /// Кайт (§9.7): держим дистанцию в полосе [FleeDist, FallbackDist] из <see cref="Kite"/> профиля —
+        /// отходим (до FallbackDist), если ближе FleeDist; подходим, если дальше FallbackDist; иначе стоим
+        /// и стреляем. Провал/пустой контент → деградируем на [AttackRange×0.6, AttackRange] (07 §3.8 B4).
         /// </summary>
         private static void MoveKite(RuntimeUnit unit, RuntimeUnit target, float maxMove)
         {
-            float range = unit.Stats.Get(StatType.AttackRange);
-            float near   = range * 0.6f;
+            Kite kite = unit.Relic != null ? unit.Relic.Ai.Kite : default;
+            float flee     = kite.FleeDist;
+            float fallback = kite.FallbackDist;
+
+            // Некорректные/незаданные дистанции (FallbackDist ≤ FleeDist или неположительные) —
+            // фолбэк на радиус атаки, чтобы кайт не залипал. Валидатор контента (07 §3.8 C2) поймает
+            // такое на авторинге; здесь — безопасная деградация в рантайме.
+            if (flee <= 0f || fallback <= flee)
+            {
+                float range = unit.Stats.Get(StatType.AttackRange);
+                flee     = range * 0.6f;
+                fallback = range;
+            }
 
             Vector2 toTarget = target.Position - unit.Position;
             float dist = toTarget.magnitude;
             if (dist < 1e-4f) return;
 
             Vector2 dir = toTarget / dist;
-            if (dist < near)
-                unit.Position -= dir * Mathf.Min(maxMove, near - dist);  // слишком близко — отходим
-            else if (dist > range)
-                unit.Position += dir * Mathf.Min(maxMove, dist - range); // вне радиуса — подходим
-            // иначе — в полосе, стоим (атакуем на ходу)
+            if (dist < flee)
+                unit.Position -= dir * Mathf.Min(maxMove, fallback - dist);  // ближе FleeDist — отходим до FallbackDist
+            else if (dist > fallback)
+                unit.Position += dir * Mathf.Min(maxMove, dist - fallback);  // дальше FallbackDist — подходим
+            // иначе — в полосе [FleeDist, FallbackDist], стоим (атакуем на ходу)
         }
 
         /// <summary>Отступление (§9.7): движемся прочь от ближайшего врага (тай-брейк по Id — детерминизм).</summary>

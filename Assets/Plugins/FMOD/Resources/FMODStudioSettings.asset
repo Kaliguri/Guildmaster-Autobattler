@@ -388,7 +388,7 @@ MonoBehaviour:
   m_Name: FMODStudioSettingsPlatform
   m_EditorClassIdentifier: FMODUnity::FMODUnity.PlatformPlayInEditor
   identifier: playInEditor
-  parentIdentifier:
+  parentIdentifier: 
   active: 1
   Properties:
     LiveUpdate:

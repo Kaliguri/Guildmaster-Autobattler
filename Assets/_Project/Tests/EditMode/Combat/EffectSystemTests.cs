@@ -1,4 +1,5 @@
 using Guildmaster.Combat;
+using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -205,6 +206,29 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.AreEqual(1, unit.ActiveEffects.Count);
             Assert.AreEqual(30, unit.ActiveEffects[0].RemainingTicks);
+        }
+
+        // Регресс 07 §3.8 B1: рестак частично израсходованного щита добавляет только вклад нового
+        // стака (дельту), а не пере-вычитает через OnExpire с новым Stacks (клэмп съедал остаток).
+        [Test]
+        public void ShieldRestack_AfterPartialDamage_AddsOnlyDelta()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+            var unit = TestUnit.Make();
+            var shield = new ShieldComponent().With("_amount", new ScalableValue(20f));
+            EffectData def = TestEffect.Make(
+                baseDuration: 5f, stacking: StackRule.Stack, maxStacks: 3, components: shield);
+
+            sys.Apply(unit, def, unit, ctx);
+            Assert.AreEqual(20f, unit.CurrentShield, 1e-4f, "1 стак = 20 щита");
+
+            unit.CurrentShield -= 12f; // урон поглотил часть → осталось 8
+            Assert.AreEqual(8f, unit.CurrentShield, 1e-4f, "Предусловие: щит частично израсходован");
+
+            sys.Apply(unit, def, unit, ctx); // рестак → 2 стака
+            Assert.AreEqual(2, unit.ActiveEffects[0].Stacks);
+            Assert.AreEqual(28f, unit.CurrentShield, 1e-4f, "Остаток 8 + новый стак 20 = 28 (не 40, не 20)");
         }
     }
 }

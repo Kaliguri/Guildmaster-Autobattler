@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Guildmaster.Combat.Effects;
+using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace Guildmaster.Combat
     {
         private readonly IRngService         _rng;
         private readonly float               _armorK;
+        private readonly ArenaBounds         _arena;
         private readonly SpatialHash         _spatialHash;
         private readonly BrainSystem         _brainSystem;
         private readonly AbilitySystem       _abilitySystem;
@@ -86,6 +88,9 @@ namespace Guildmaster.Combat
         public int         CurrentTick => _currentTick;
         public float       ArmorK      => _armorK;
 
+        /// <summary>Границы боевого поля этого боя (для презентации/оверлея; клампинг — внутри систем).</summary>
+        public ArenaBounds Arena       => _arena;
+
         public IReadOnlyList<RuntimeUnit> Units    => _units;
         public BattleOutcome              Outcome  => _outcome;
         public bool                       IsPaused => _isPaused;
@@ -102,10 +107,13 @@ namespace Guildmaster.Combat
             DeathSystem       deathSystem,
             EffectSystem      effectSystem,
             RegenSystem       regenSystem,
-            DisplacementSystem displacementSystem = null)
+            DisplacementSystem displacementSystem = null,
+            ArenaBounds?      arena              = null)
         {
             _rng              = rng;
             _armorK           = armorK;
+            // null → бесконечное поле (headless-тесты, бой без заданной арены). НЕ default(ArenaBounds).
+            _arena            = arena ?? ArenaBounds.Unbounded;
             _spatialHash      = spatialHash;
             _brainSystem      = brainSystem;
             _abilitySystem    = abilitySystem;
@@ -162,8 +170,8 @@ namespace Guildmaster.Combat
 
             _brainSystem.Tick(_units, this);
             _abilitySystem.Tick(_units, this, dt);
-            _movementSystem.Tick(_units, dt);
-            _displacementSystem.Tick(this, dt);
+            _movementSystem.Tick(_units, dt, in _arena);
+            _displacementSystem.Tick(this, dt, in _arena);
             _spatialHash.Rebuild(_units);
             _autoAttackSystem.Tick(_units, this, dt);
             _projectileSystem.Tick(_projectiles, _units, this, dt);
@@ -290,12 +298,15 @@ namespace Guildmaster.Combat
             TargetFilter filter,
             int requestingTeam)
         {
-            // Broad-phase: круг радиусом = длина линии (живых отбирает QueryRadius), затем
+            // Broad-phase: круг радиусом = length + halfWidth (живых отбирает QueryRadius), затем
             // narrow-phase по геометрии полосы: проекция на направление в [0..length], перпендикуляр ≤ width/2.
-            _spatialHash.QueryRadius(origin, length, results);
+            // Радиус ДОЛЖЕН включать halfWidth: юнит у дальнего угла полосы лежит на расстоянии
+            // √(length² + halfWidth²) > length от origin — с радиусом length он отсекался бы до
+            // narrow-phase (07 §3.8 B5). length + halfWidth — консервативный супермножество-радиус.
+            float halfWidth = width * 0.5f;
+            _spatialHash.QueryRadius(origin, length + halfWidth, results);
 
             Vector2 dir = direction.sqrMagnitude > 1e-6f ? direction.normalized : Vector2.right;
-            float halfWidth = width * 0.5f;
 
             for (int i = results.Count - 1; i >= 0; i--)
             {
@@ -430,7 +441,17 @@ namespace Guildmaster.Combat
                 processed++;
             }
 
-            if (_eventQueue.Count > 0) _eventQueue.Clear();
+            // Упёрлись в кап: осталось > 0 непродренированных событий. Раньше их молча сбрасывали —
+            // исход боя тихо зависел от «уложились ли в MaxEventsPerDrain» (07 §3.8 B6). На текущем
+            // контенте 512/тик недостижимо; если сработало — это пинг-понг реактивов или всплеск,
+            // требующий внимания. Логируем (dev-сигнал) и сбрасываем, чтобы не зациклиться.
+            if (_eventQueue.Count > 0)
+            {
+                Debug.LogError(
+                    $"[CombatSimulation] Event-queue cap hit: dropped {_eventQueue.Count} events at tick {_currentTick} " +
+                    $"(processed {MaxEventsPerDrain}). Возможен пинг-понг реактивных компонентов.");
+                _eventQueue.Clear();
+            }
         }
 
         private void ApplyDueCommands()

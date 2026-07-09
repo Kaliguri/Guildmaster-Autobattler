@@ -1,0 +1,24 @@
+{
+  "name": "Guildmaster.Game.Editor",
+  "rootNamespace": "Guildmaster.Game.Editor",
+  "references": [
+    "Guildmaster.Game",
+    "Guildmaster.Core"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "Sirenix.OdinInspector.Attributes.dll",
+    "Sirenix.OdinInspector.Editor.dll",
+    "Sirenix.Utilities.dll",
+    "Sirenix.Utilities.Editor.dll"
+  ],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

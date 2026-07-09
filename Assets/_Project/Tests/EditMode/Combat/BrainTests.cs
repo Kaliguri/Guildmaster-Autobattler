@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Guildmaster.Combat;
+using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -137,7 +138,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             {
                 view.CurrentTick = tick;
                 brain.Tick(units, view);
-                move.Tick(units, SimConstants.TickDelta);
+                move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded);
             }
             Assert.IsNotNull(u.CurrentTarget, "После своей фазы у юнита должна быть цель");
 
@@ -145,7 +146,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             view.CurrentTick = 2;
             brain.Tick(units, view);
             Vector2 before = u.Position;
-            move.Tick(units, SimConstants.TickDelta);
+            move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded);
 
             Assert.AreNotEqual(before, u.Position, "Интент должен залипать: юнит двигается между AI-тиками");
         }
@@ -165,7 +166,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             {
                 view.CurrentTick = tick;
                 brain.Tick(units, view);
-                move.Tick(units, SimConstants.TickDelta);
+                move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded);
             }
             return Checksum(units, tick);
         }

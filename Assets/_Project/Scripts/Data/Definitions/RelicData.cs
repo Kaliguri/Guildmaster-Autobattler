@@ -46,6 +46,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Ресурс (мана) за авто-атаку, × ResourceGainEff, клампится к MaxResource. 0 = не копит от ударов. Копейщик = 5.")]
         [SerializeField] private float _resourceOnHit;
 
+        [Header("Deployment (Arena)")]
+        [Tooltip("Доступ к расширенным зонам расстановки (Extended): манёвренные чемпионы/убийцы. false = только базовые зоны (вики «15» §6).")]
+        [SerializeField] private bool _canUseExtendedDeployment;
+
         [Header("Base stat block")]
         [Tooltip("Базовые модификаторы реликвии. Накладываются поверх дефолтов StatsConfig при сборке юнита.")]
         [SerializeField] private StatModifier[] _stats;
@@ -76,6 +80,7 @@ namespace Guildmaster.Data.Definitions
         public bool CanAttackWhileMoving => _canAttackWhileMoving;
         public float MovingAttackSpeedPenaltyPct => _movingAttackSpeedPenaltyPct;
         public float ResourceOnHit => _resourceOnHit;
+        public bool CanUseExtendedDeployment => _canUseExtendedDeployment;
         public StatModifier[] Stats => _stats;
         public EffectData[] GrantedEffects => _grantedEffects;
         public AbilityData[] Abilities => _abilities;

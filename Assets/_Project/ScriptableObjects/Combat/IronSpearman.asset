@@ -18,7 +18,7 @@ MonoBehaviour:
   - common
   _damageType: 0
   _attackType: 0
-  _resourceType: 0
+  _resourceType: 2
   _visual: {fileID: 0}
   _autoAttackShape: 1
   _autoAttackWidth: 1.5

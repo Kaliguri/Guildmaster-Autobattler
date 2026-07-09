@@ -347,6 +347,7 @@ namespace Guildmaster.Combat
         private void ApplyStacking(
             RuntimeEffect existing, EffectData def, RuntimeUnit source, RuntimeUnit target, ICombatContext combat)
         {
+            int previousStacks = existing.Stacks;
             bool stacksChanged = false;
 
             switch (def.Stacking)
@@ -369,7 +370,7 @@ namespace Guildmaster.Combat
             }
 
             // Стак изменил число — переоценить stateful-вклад компонентов под новый Stacks.
-            if (stacksChanged) Reapply(existing, target, combat);
+            if (stacksChanged) Reapply(existing, previousStacks, target, combat);
         }
 
         private static bool TryAddStack(RuntimeEffect effect, EffectData def)
@@ -386,20 +387,28 @@ namespace Guildmaster.Combat
             effect.FullDurationTicks = ticks;
         }
 
-        private void Reapply(RuntimeEffect effect, RuntimeUnit target, ICombatContext combat)
+        private void Reapply(RuntimeEffect effect, int previousStacks, RuntimeUnit target, ICombatContext combat)
         {
             // ПРАВИЛО ПОТЕНЦИИ (осознанно, не баг): снимок ScaledPotency берётся ОДИН раз при
             // наложении (Apply) и здесь НЕ пересчитывается. Потенция «заморожена» по статам
             // источника на момент первого каста (вики «11» §5.1). При добавлении стака меняется
-            // только stateful-вклад компонентов под новый Stacks — через OnExpire→OnApply ниже.
+            // только stateful-вклад компонентов под новый Stacks.
             IEffectComponent[] components = effect.Def.Components;
             if (components == null) return;
 
             for (int i = 0; i < components.Length; i++)
             {
-                if (components[i] is IRuntimeEffectComponent rc)
+                EffectContext ctx = MakeContext(target, effect.Source, combat, effect, i, 0f);
+
+                // Компонент с накопленным внешним состоянием (щит/заряды) правит вклад дельтой сам.
+                // Слепой OnExpire→OnApply для него неверен (пере-вычет щита / бесплатный рефилл
+                // зарядов) — 07 §3.8 B1–B3. Прочим (keyed-снятие, напр. StatModifier) — дефолт.
+                if (components[i] is IStackableComponent stackable)
                 {
-                    EffectContext ctx = MakeContext(target, effect.Source, combat, effect, i, 0f);
+                    stackable.OnStacksChanged(previousStacks, in ctx);
+                }
+                else if (components[i] is IRuntimeEffectComponent rc)
+                {
                     rc.OnExpire(in ctx);
                     rc.OnApply(in ctx);
                 }
