@@ -30,9 +30,10 @@ namespace Guildmaster.Presentation
         [SerializeField] private CinemachineCamera _overviewCam;
         [SerializeField] private CinemachineCamera _devCam;
 
-        [Header("Зона камеры")]
-        [Tooltip("Отступ вокруг границ арены — насколько видно за краем поля.")]
-        [SerializeField] private float _boundsPadding = 2f;
+        [Header("Камера (глубина)")]
+        [Tooltip("Z-позиция камеры (2D: отрицательная, чтобы плоскость поля z=0 попадала в кадр). " +
+                 "Саму зону-ограничитель задаёт арена (ArenaLayoutAuthoring, жёлтая рамка).")]
+        [SerializeField] private float _cameraZ = -10f;
 
         [Header("Зум")]
         [Tooltip("Ближний предел орто-размера (максимальное приближение).")]
@@ -77,16 +78,55 @@ namespace Guildmaster.Presentation
             _focus  = focus;
         }
 
-        private void OnEnable()
+        // Подписку и стартовую настройку делаем в Start, а НЕ в OnEnable: компонент инъектится
+        // VContainer'ом во время Build (в Awake скоупа боя), а [Camera] стоит выше [Combat] в
+        // иерархии — его OnEnable успел бы отработать до инъекции (_input == null) и подписка на
+        // Tab потерялась бы. Start гарантированно после всех Awake, т.е. после инъекции.
+        private void Start()
         {
             if (_input != null) _input.CycleViewRequested += OnCycleView;
+
+            // В редакторе dev-камера доступна сразу (удобно тестить); в билде — гейтед, выдаётся
+            // через gm_cam_dev (вики «16» §6). Обычный игрок в релизе циклит только Action↔Overview.
+            _devAccess = Application.isEditor;
+
+            ApplyCameraDepth();
             SnapOverviewToArena();
             ApplyMode();
+            Debug.Log($"[Camera] Start: input={_input != null}, layout={_layout != null}, focus={_focus != null}, " +
+                      $"cams A/O/D={_actionCam != null}/{_overviewCam != null}/{_devCam != null}, mode={_mode}");
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             if (_input != null) _input.CycleViewRequested -= OnCycleView;
+        }
+
+        // 2D-глубина: камеры смотрят на плоскость z=0 из _cameraZ. Overview/Dev — прямой z;
+        // Action ведёт CinemachineFollow, поэтому правим z его смещения (x/y offset сохраняем).
+        private void ApplyCameraDepth()
+        {
+            SetZ(_overviewCam);
+            SetZ(_devCam);
+
+            if (_actionCam != null)
+            {
+                var follow = _actionCam.GetComponent<CinemachineFollow>();
+                if (follow != null)
+                {
+                    Vector3 off = follow.FollowOffset;
+                    off.z = _cameraZ;
+                    follow.FollowOffset = off;
+                }
+            }
+        }
+
+        private void SetZ(CinemachineCamera cam)
+        {
+            if (cam == null) return;
+            Vector3 p = cam.transform.position;
+            p.z = _cameraZ;
+            cam.transform.position = p;
         }
 
         /// <summary>Выдать/забрать доступ к dev-камере (QFSW: gm_cam_dev). Забирая — уводим из Dev.</summary>
@@ -102,8 +142,10 @@ namespace Guildmaster.Presentation
 
         private void OnCycleView()
         {
+            CameraMode prev = _mode;
             _mode = NextMode(_mode, _devAccess);
             ApplyMode();
+            Debug.Log($"[Camera] CycleView: {prev} -> {_mode} (devAccess={_devAccess})");
         }
 
         private static CameraMode NextMode(CameraMode mode, bool devAccess)
@@ -122,6 +164,10 @@ namespace Guildmaster.Presentation
             SetPriority(_actionCam,   _mode == CameraMode.Action);
             SetPriority(_overviewCam, _mode == CameraMode.Overview);
             SetPriority(_devCam,      _mode == CameraMode.Dev);
+            Debug.Log($"[Camera] ApplyMode: {_mode}; prio A/O/D = " +
+                      $"{(_actionCam != null ? (int)_actionCam.Priority : -1)}/" +
+                      $"{(_overviewCam != null ? (int)_overviewCam.Priority : -1)}/" +
+                      $"{(_devCam != null ? (int)_devCam.Priority : -1)}");
         }
 
         private void SetPriority(CinemachineCamera cam, bool active)
@@ -157,12 +203,15 @@ namespace Guildmaster.Presentation
             lens.OrthographicSize = size;
             cam.Lens = lens;
 
+            // unscaled: чтобы можно было двигать камеру даже на паузе боя (Time.timeScale = 0).
             Vector2 pan = _input.CameraPan;
+            float dt = Time.unscaledDeltaTime;
             Vector3 pos = cam.transform.position;
-            pos.x += pan.x * panSpeed * Time.deltaTime;
-            pos.y += pan.y * panSpeed * Time.deltaTime;
+            pos.x += pan.x * panSpeed * dt;
+            pos.y += pan.y * panSpeed * dt;
 
             if (clampToZone) pos = ClampVisibleCenter(pos, size);
+            pos.z = _cameraZ; // держим 2D-глубину (иначе спрайты на z=0 отсекаются)
             cam.transform.position = pos;
         }
 
@@ -192,7 +241,7 @@ namespace Guildmaster.Presentation
         // Кламп центра так, чтобы видимый прямоугольник (полу-высота = size) не вышел за зону.
         private Vector3 ClampVisibleCenter(Vector3 pos, float size)
         {
-            Vector2 c = _layout.Bounds.Center;
+            Vector2 c = _layout.CameraZone.Center;
             Vector2 zone = ZoneSize();
             float aspect = ScreenAspect();
 
@@ -209,9 +258,8 @@ namespace Guildmaster.Presentation
         {
             if (_overviewCam == null || _layout == null) return;
 
-            Vector2 c = _layout.Bounds.Center;
-            Vector3 pos = _overviewCam.transform.position;
-            _overviewCam.transform.position = new Vector3(c.x, c.y, pos.z);
+            Vector2 c = _layout.CameraZone.Center;
+            _overviewCam.transform.position = new Vector3(c.x, c.y, _cameraZ);
 
             LensSettings lens = _overviewCam.Lens;
             lens.OrthographicSize = MaxZoomForZone();
@@ -220,8 +268,8 @@ namespace Guildmaster.Presentation
 
         private Vector2 ZoneSize()
         {
-            Vector2 s = _layout.Bounds.Size;
-            return new Vector2(Mathf.Abs(s.x) + _boundsPadding * 2f, Mathf.Abs(s.y) + _boundsPadding * 2f);
+            Vector2 s = _layout.CameraZone.Size;
+            return new Vector2(Mathf.Abs(s.x), Mathf.Abs(s.y));
         }
 
         private static float ScreenAspect()

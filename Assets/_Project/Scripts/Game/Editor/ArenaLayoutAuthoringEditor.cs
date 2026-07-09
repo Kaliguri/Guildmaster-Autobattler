@@ -42,6 +42,11 @@ namespace Guildmaster.Game.Editor
                 serializedObject.FindProperty("_boundsSize"),
                 Color.white, "Арена");
 
+            DrawBox(origin,
+                serializedObject.FindProperty("_cameraZoneCenter"),
+                serializedObject.FindProperty("_cameraZoneSize"),
+                Color.yellow, "Камера");
+
             SerializedProperty zones = serializedObject.FindProperty("_zones");
             for (int i = 0; i < zones.arraySize; i++)
             {

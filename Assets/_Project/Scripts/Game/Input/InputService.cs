@@ -87,12 +87,20 @@ namespace Guildmaster.Game.Input
                 default:
                     break;
             }
+
+            UnityEngine.Debug.Log($"[Input] SetContext -> {context}; camMap={_cameraMap.enabled}, combatMap={_combatMap.enabled}");
         }
 
         public Vector2 CameraPan     => _pan.ReadValue<Vector2>();
         public float   CameraZoomDelta => _zoom.ReadValue<float>();
 
-        private void OnCycleView(InputAction.CallbackContext _)   => CycleViewRequested?.Invoke();
+        private void OnCycleView(InputAction.CallbackContext _)
+        {
+            int subs = CycleViewRequested?.GetInvocationList().Length ?? 0;
+            UnityEngine.Debug.Log($"[Input] CycleView fired (subscribers={subs})");
+            CycleViewRequested?.Invoke();
+        }
+
         private void OnPauseToggle(InputAction.CallbackContext _) => PauseToggleRequested?.Invoke();
 
         public void Dispose()

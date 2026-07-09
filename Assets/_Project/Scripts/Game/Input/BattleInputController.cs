@@ -1,6 +1,7 @@
 using System;
 using Guildmaster.Combat;
 using Guildmaster.Core.Input;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace Guildmaster.Game.Input
@@ -33,10 +34,19 @@ namespace Guildmaster.Game.Input
         {
             _input.PauseToggleRequested -= OnPauseToggle;
             _input.SetContext(InputContext.None);
+            Time.timeScale = 1f; // страховка: если скоуп рушится на паузе (напр. R), не оставить мир замороженным
         }
 
-        // Space: локальный toggle паузы (как dev-консоль). MP-путь идёт через PauseCommand/
-        // ResumeCommand в NetworkCommandRelay — здесь хост-локально, поэтому SetPaused напрямую.
-        private void OnPauseToggle() => _simulation.SetPaused(!_simulation.IsPaused);
+        // Space: пауза боя. SetPaused замораживает СИМУЛЯЦИЮ; Time.timeScale = 0 замораживает и
+        // ПРЕЗЕНТАЦИЮ (анимации, всплывающие цифры — всё на Time.deltaTime). Камеры не касается:
+        // её пан идёт на Time.unscaledDeltaTime, так что на паузе поле можно осмотреть.
+        // MP-путь пойдёт через PauseCommand/ResumeCommand (NetworkCommandRelay) — здесь хост-локально.
+        private void OnPauseToggle()
+        {
+            bool paused = !_simulation.IsPaused;
+            _simulation.SetPaused(paused);
+            Time.timeScale = paused ? 0f : 1f;
+            Debug.Log($"[Input] Pause toggled: {paused}");
+        }
     }
 }

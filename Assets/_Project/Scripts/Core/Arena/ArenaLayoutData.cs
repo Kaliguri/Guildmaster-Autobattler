@@ -17,10 +17,17 @@ namespace Guildmaster.Core.Arena
         /// <summary>Зоны расстановки внутри поля.</summary>
         public IReadOnlyList<DeploymentZone> Zones { get; }
 
-        public ArenaLayoutData(ArenaBounds bounds, IReadOnlyList<DeploymentZone> zones)
+        /// <summary>
+        /// Зона камеры: прямоугольник, за который не выходит ВИДИМАЯ область камеры (Overview/Action).
+        /// Презентация (вики «16» §5), симуляции не касается. Не задана → совпадает с полем (<see cref="Bounds"/>).
+        /// </summary>
+        public Rect2D CameraZone { get; }
+
+        public ArenaLayoutData(ArenaBounds bounds, IReadOnlyList<DeploymentZone> zones, Rect2D? cameraZone = null)
         {
-            Bounds = bounds;
-            Zones  = zones ?? Array.Empty<DeploymentZone>();
+            Bounds     = bounds;
+            Zones      = zones ?? Array.Empty<DeploymentZone>();
+            CameraZone = cameraZone ?? bounds.Rect;
         }
 
         /// <summary>Бесконечное поле без зон: дефолт, когда арена не задана (вики «15» §2).</summary>
