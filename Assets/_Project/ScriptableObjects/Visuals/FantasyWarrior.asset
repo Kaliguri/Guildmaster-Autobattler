@@ -49,4 +49,4 @@ MonoBehaviour:
   - {fileID: -1891625820773287384, guid: b273c8751aad45d4997a77e62aa68d29, type: 3}
   - {fileID: -5789737788129074030, guid: b273c8751aad45d4997a77e62aa68d29, type: 3}
   - {fileID: 3968659893341466949, guid: b273c8751aad45d4997a77e62aa68d29, type: 3}
-  _attackHitFrames: 04000000
+  _attackHitFrames: 00000000
