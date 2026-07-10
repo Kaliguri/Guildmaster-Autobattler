@@ -370,6 +370,7 @@ namespace Guildmaster.DevTools
                 return;
             }
             _simulation?.ResetBattle();
+            _factory?.ResetIds();  // иначе Id фабрики уезжают → коллизия с Id болванчиков → осиротевшие виды
             Time.timeScale = 1f;   // на случай, если бой был на паузе (Space) — снимаем заморозку презентации
             _lastBattleSetup.Invoke(this);
         }

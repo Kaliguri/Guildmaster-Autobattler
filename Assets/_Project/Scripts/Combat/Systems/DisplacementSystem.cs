@@ -38,6 +38,13 @@ namespace Guildmaster.Combat
         /// маркер «в полёте» (тег KnockUp) → единый EffectExpired (на нём завязаны реактивы монаха, §10.6).</summary>
         public event Action<RuntimeUnit, RuntimeUnit> OnDisplacementEnded;
 
+        /// <summary>Сбросить все активные полёты (перезапуск боя на месте) — иначе повиснут ссылки на удалённых юнитов.</summary>
+        public void Clear()
+        {
+            _active.Clear();
+            _lineBuffer.Clear();
+        }
+
         /// <summary>Поставить смещение в работу. Цель сразу переходит в полётное оглушение.</summary>
         public void Add(in DisplaceRequest req)
         {

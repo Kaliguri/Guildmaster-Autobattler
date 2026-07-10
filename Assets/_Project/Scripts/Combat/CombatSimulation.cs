@@ -406,6 +406,7 @@ namespace Guildmaster.Combat
             _projectiles.Clear();
             _eventQueue.Clear();
             _commandQueue.Clear();
+            _displacementSystem.Clear();  // незавершённые полёты не должны держать ссылки на удалённых юнитов
             _spatialHash.Rebuild(_units); // пустой список → хэш очищен
 
             _outcome          = BattleOutcome.Ongoing;
