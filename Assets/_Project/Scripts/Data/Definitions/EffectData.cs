@@ -40,6 +40,12 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Полиморфные компоненты поведения (Combat-типы через SerializeReference). Шарятся между носителями — должны быть stateless.")]
         [SerializeReference] private IEffectComponent[] _components;
 
+        [Header("Presentation / info")]
+        [Tooltip("Иконка для бафф-бара HUD (опциональна: у скрытых/технических эффектов пустая).")]
+        [SerializeField] private Sprite _icon;
+        [Tooltip("Информационные теги для тултипов.")]
+        [SerializeField] private TagData[] _infoTags;
+
         public EffectPolarity Polarity => _polarity;
         public EffectTag Tags => _tags;
         public float BaseDuration => _baseDuration;
@@ -48,6 +54,8 @@ namespace Guildmaster.Data.Definitions
         public int CleanseTier => _cleanseTier;
         public bool Unremovable => _unremovable;
         public IEffectComponent[] Components => _components;
+        public Sprite Icon => _icon;
+        public TagData[] InfoTags => _infoTags;
 
         /// <summary>
         /// Собрать системный эффект в коде (не авторинг-ассет): для эффектов, которые движок создаёт сам,

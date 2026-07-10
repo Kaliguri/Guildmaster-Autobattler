@@ -14,9 +14,16 @@ namespace Guildmaster.Data.Definitions
         // Концертный тип → домен. Наследники резолвятся по ближайшему зарегистрированному предку (fallback).
         private static readonly Dictionary<Type, string> Domains = new Dictionary<Type, string>
         {
-            { typeof(RelicData),  "relic"  },
-            { typeof(VesselData), "vessel" },
-            { typeof(EffectData), "effect" },
+            { typeof(RelicData),       "relic"       },
+            { typeof(VesselData),      "vessel"      },
+            { typeof(EffectData),      "effect"      },
+            { typeof(TagData),         "tag"         },
+            { typeof(TraitData),       "trait"       },
+            { typeof(ConsequenceData), "consequence" },
+            { typeof(AIPresetData),    "ai_preset"   },
+            { typeof(GuildmasterData), "guildmaster" },
+            { typeof(ItemData),        "item"        },
+            { typeof(RunModifierData), "run_mod"     },
         };
 
         /// <summary>Найти домен для типа (точное совпадение или ближайший зарегистрированный предок).</summary>
