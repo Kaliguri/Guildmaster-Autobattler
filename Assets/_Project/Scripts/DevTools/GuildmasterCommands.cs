@@ -177,7 +177,7 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             var s = _simulation.Separation;
-            Debug.Log($"[GuildmasterCommands] - gm_sep: BodyRadiusPerSize={s.BodyRadiusPerSize} (⌀ при Size1 = {s.BodyRadiusPerSize * 2f}), Strength={s.Strength}, Iterations={s.Iterations}");
+            Debug.Log($"[GuildmasterCommands] - gm_sep: BodyRadiusPerSize={s.BodyRadiusPerSize} (⌀ при Size1 = {s.BodyRadiusPerSize * 2f}), Strength={s.Strength}, Iterations={s.Iterations}, SameTeamScale={s.SameTeamScale}");
         }
 
         /// <summary>Радиус тела на единицу Size (0.25 = ⌀0.5 при Size1). Крути под ширину спрайта.</summary>
@@ -204,6 +204,15 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             _simulation.Separation.Iterations = Mathf.Max(1, iterations);
+            SepInfo();
+        }
+
+        /// <summary>Множитель расталкивания СВОИХ (0..1): меньше = свои расступаются мягче, задние просачиваются к фронту. Live.</summary>
+        [Command("gm_sep_ally", "Мягкость расталкивания своих (0..1, live)")]
+        public void SepAlly(float scale)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            _simulation.Separation.SameTeamScale = Mathf.Clamp01(scale);
             SepInfo();
         }
 
@@ -494,7 +503,7 @@ namespace Guildmaster.DevTools
                 new StatModifier(StatType.AutoAttackDamage, ModifierOp.Flat, damage),
                 new StatModifier(StatType.AttackSpeed,      ModifierOp.Flat, 1f),
                 new StatModifier(StatType.AttackRange,      ModifierOp.Flat, range),
-                new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, 1.8f),
+                new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, 2.5f),
                 new StatModifier(StatType.Size,             ModifierOp.Flat, size - 1f), // Size база 1 → итог = size
             });
             return new RuntimeUnit

@@ -28,6 +28,8 @@ namespace Guildmaster.Combat
         public float BodyRadiusPerSize = SimConstants.BodyRadiusPerSize;
         public float Strength          = SimConstants.SeparationStrength;
         public int   Iterations        = SimConstants.SeparationIterations;
+        // Свои расталкиваются мягче (просачиваются к фронту), враги — на полную (линия держится).
+        public float SameTeamScale     = SimConstants.SeparationSameTeamScale;
 
         // Переиспользуемый буфер соседей — без аллокаций на горячем пути.
         private readonly List<RuntimeUnit> _neighbors = new List<RuntimeUnit>();
@@ -73,7 +75,9 @@ namespace Guildmaster.Combat
 
                         float dist = Mathf.Sqrt(distSq);
                         Vector2 dir = dist > 1e-4f ? delta / dist : DegenerateDir(a, b);
-                        Vector2 halfPush = dir * ((minDist - dist) * Strength * 0.5f); // по половине каждому
+                        // Свои — мягче (просачиваются сквозь свои ряды к фронту), враги — на полную (линия держится).
+                        float pairStrength = a.Team == b.Team ? Strength * SameTeamScale : Strength;
+                        Vector2 halfPush = dir * ((minDist - dist) * pairStrength * 0.5f); // по половине каждому
 
                         a.Position = bounds.Clamp(a.Position + halfPush);
                         b.Position = bounds.Clamp(b.Position - halfPush);

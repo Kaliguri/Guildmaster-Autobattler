@@ -55,5 +55,11 @@ namespace Guildmaster.Core.Simulation
 
         /// <summary>Проходов разделения за тик (больше = жёстче и дороже). Обычно 1.</summary>
         public const int SeparationIterations = 1;
+
+        /// <summary>
+        /// Множитель расталкивания для пары ОДНОЙ команды (0..1). Свои расступаются мягче — задние
+        /// просачиваются сквозь ряды к фронту; враги всегда на полную (боевая линия держится на стыке).
+        /// </summary>
+        public const float SeparationSameTeamScale = 0.35f;
     }
 }

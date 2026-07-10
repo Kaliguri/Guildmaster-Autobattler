@@ -18,11 +18,12 @@ namespace Guildmaster.Tests.EditMode.Combat
         // чтобы тест не разъезжался при смене дефолтного радиуса.
         private static readonly float MinDist = 2f * SimConstants.BodyRadiusPerSize;
 
-        private static RuntimeUnit MakeUnit(int id, float x, float y, int displaced = 0) =>
+        private static RuntimeUnit MakeUnit(int id, float x, float y, int displaced = 0, int team = 0) =>
             new RuntimeUnit
             {
                 Id       = id,
-                Stats    = new Stats(null), // Size = 1 → радиус 0.25
+                Team     = team,
+                Stats    = new Stats(null), // Size = 1 → радиус из SimConstants
                 Position = new Vector2(x, y),
                 DisplacedTicksRemaining = displaced,
             };
@@ -39,8 +40,8 @@ namespace Guildmaster.Tests.EditMode.Combat
         [Test]
         public void Overlapping_PushesApart()
         {
-            var a = MakeUnit(0, 0f, 0f);
-            var b = MakeUnit(1, 0.2f, 0f); // перекрытие: dist 0.2 < 0.5
+            var a = MakeUnit(0, 0f, 0f, team: 0);
+            var b = MakeUnit(1, 0.2f, 0f, team: 1); // враги (полная сила), перекрытие
             var units = new List<RuntimeUnit> { a, b };
             var sys = new SeparationSystem();
             var hash = new SpatialHash(2f);
@@ -55,8 +56,8 @@ namespace Guildmaster.Tests.EditMode.Combat
         [Test]
         public void Overlapping_ConvergesToContact_OverTicks()
         {
-            var a = MakeUnit(0, 0f, 0f);
-            var b = MakeUnit(1, 0.1f, 0f);
+            var a = MakeUnit(0, 0f, 0f, team: 0);
+            var b = MakeUnit(1, 0.1f, 0f, team: 1); // враги — полная сила, сходятся до касания
             var units = new List<RuntimeUnit> { a, b };
             var sys = new SeparationSystem();
             var hash = new SpatialHash(2f);
@@ -139,6 +140,27 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(0f,   flying.Position.y,   1e-6f);
             Assert.AreEqual(0.2f, neighbor.Position.x, 1e-6f, "сосед летящего не расталкивается (пара пропущена)");
             Assert.AreEqual(0f,   neighbor.Position.y, 1e-6f);
+        }
+
+        [Test]
+        public void SameTeam_PushesSofterThanCrossTeam()
+        {
+            // Свои расступаются мягче врагов: за одинаковое время своя пара разойдётся МЕНЬШЕ вражеской
+            // (задние просачиваются к фронту, а не отскакивают). Одинаковый старт, разные команды.
+            var allyA = MakeUnit(0, 0f, 0f, team: 0);
+            var allyB = MakeUnit(1, 0.2f, 0f, team: 0);
+            var allies = new List<RuntimeUnit> { allyA, allyB };
+
+            var foeA = MakeUnit(0, 0f, 0f, team: 0);
+            var foeB = MakeUnit(1, 0.2f, 0f, team: 1);
+            var foes = new List<RuntimeUnit> { foeA, foeB };
+
+            Step(new SeparationSystem(), allies, new SpatialHash(2f), ArenaBounds.Unbounded, times: 3);
+            Step(new SeparationSystem(), foes,   new SpatialHash(2f), ArenaBounds.Unbounded, times: 3);
+
+            float allyDist = (allyA.Position - allyB.Position).magnitude;
+            float foeDist  = (foeA.Position - foeB.Position).magnitude;
+            Assert.Less(allyDist, foeDist, "своя пара должна расходиться мягче (медленнее) вражеской");
         }
     }
 }
