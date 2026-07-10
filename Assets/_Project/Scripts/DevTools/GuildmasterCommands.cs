@@ -125,6 +125,8 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
 
+            ResetForNewBattle();
+
             // Id начинаем от текущего числа живых юнитов в симуляции, чтобы не было коллизий
             // при повторном вызове команды в том же бою.
             int nextId = _simulation.Units.Count;
@@ -138,6 +140,82 @@ namespace Guildmaster.DevTools
             Debug.Log($"[GuildmasterCommands] - gm_spawn_battle: добавлено {countPerTeam}×2 юнитов");
         }
 
+        /// <summary>
+        /// Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия).
+        /// Спавнит сеткой с шагом МЕНЬШЕ диаметра тела → юниты сразу перекрываются и разъезжаются; высокий
+        /// HP и низкий урон держат толпу живой, чтобы видеть spacing и при сшибке блобов в центре.
+        /// Крути на глаз <c>SimConstants.SeparationStrength</c> / <c>SeparationIterations</c> / <c>BodyRadiusPerSize</c>,
+        /// перезапуск на месте — R. Параметр <paramref name="size"/> — «толщина» тел (Size-стат).
+        /// </summary>
+        [Command("gm_spawn_crowd", "Плотный клубок обеих команд для теста коллизии/расталкивания")]
+        public void SpawnCrowd(int perTeam = 8, float hp = 400f, float damage = 6f, float size = 1f, float range = 3f)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+
+            ResetForNewBattle();
+
+            int cols = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(perTeam)));
+            const float spacing = 0.15f; // << диаметра тела (~0.5 при Size 1) → перекрытие на старте
+            int nextId = _simulation.Units.Count;
+
+            for (int i = 0; i < perTeam; i++)
+            {
+                int cx = i % cols, cy = i / cols;
+                float ox = (cx - (cols - 1) * 0.5f) * spacing;
+                float oy = (cy - (cols - 1) * 0.5f) * spacing;
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(0, new Vector2(-3f + ox, oy), hp, damage, nextId++, size, range));
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2( 3f + ox, oy), hp, damage, nextId++, size, range));
+            }
+
+            _lastBattleSetup = self => self.SpawnCrowd(perTeam, hp, damage, size, range);
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_crowd: {perTeam}×2 юнитов (Size {size}, range {range}), плотный клубок");
+        }
+
+        /// <summary>Показать текущие параметры расталкивания (SeparationSystem).</summary>
+        [Command("gm_sep", "Показать параметры расталкивания (радиус/сила/итерации)")]
+        public void SepInfo()
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            var s = _simulation.Separation;
+            Debug.Log($"[GuildmasterCommands] - gm_sep: BodyRadiusPerSize={s.BodyRadiusPerSize} (⌀ при Size1 = {s.BodyRadiusPerSize * 2f}), Strength={s.Strength}, Iterations={s.Iterations}, SameTeamScale={s.SameTeamScale}");
+        }
+
+        /// <summary>Радиус тела на единицу Size (0.25 = ⌀0.5 при Size1). Крути под ширину спрайта.</summary>
+        [Command("gm_sep_radius", "Радиус тела на единицу Size (live)")]
+        public void SepRadius(float radiusPerSize)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            _simulation.Separation.BodyRadiusPerSize = Mathf.Max(0.01f, radiusPerSize);
+            SepInfo();
+        }
+
+        /// <summary>Сила расталкивания за тик (0..1; 1 = жёстко, мягче = плавнее). Live.</summary>
+        [Command("gm_sep_strength", "Сила расталкивания за тик (live)")]
+        public void SepStrength(float strength)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            _simulation.Separation.Strength = Mathf.Clamp(strength, 0f, 1f);
+            SepInfo();
+        }
+
+        /// <summary>Проходов расталкивания за тик (больше = жёстче/дороже). Live.</summary>
+        [Command("gm_sep_iters", "Проходов расталкивания за тик (live)")]
+        public void SepIters(int iterations)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            _simulation.Separation.Iterations = Mathf.Max(1, iterations);
+            SepInfo();
+        }
+
+        /// <summary>Множитель расталкивания СВОИХ (0..1): меньше = свои расступаются мягче, задние просачиваются к фронту. Live.</summary>
+        [Command("gm_sep_ally", "Мягкость расталкивания своих (0..1, live)")]
+        public void SepAlly(float scale)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            _simulation.Separation.SameTeamScale = Mathf.Clamp01(scale);
+            SepInfo();
+        }
+
         /// <summary>Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.</summary>
         [Command("gm_spawn_spearman", "Заспавнить Железного копейщика против кластера (срез шага 4)")]
         public void SpawnSpearman(int enemies = 3, float enemyHp = 200f)
@@ -145,6 +223,8 @@ namespace Guildmaster.DevTools
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
             if (_spearmanRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _spearmanRelic в инспекторе"); return; }
+
+            ResetForNewBattle();
 
             // Копейщик слева — через фабрику (реальный путь сборки: статы/линейная АА/активка/AI-профиль/мана).
             _simulation.EnqueueUnitSpawn(_factory.Create(_spearmanRelic, null, team: 0, new Vector2(-5f, 0f)));
@@ -168,6 +248,8 @@ namespace Guildmaster.DevTools
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
             if (_shepherdRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _shepherdRelic в инспекторе"); return; }
+
+            ResetForNewBattle();
 
             // Пастырь в тылу слева — через фабрику (реальный путь: AI-профиль Heal, хил-снаряд, активка «Длань жизни»).
             _simulation.EnqueueUnitSpawn(_factory.Create(_shepherdRelic, null, team: 0, new Vector2(-6f, 0f)));
@@ -202,6 +284,8 @@ namespace Guildmaster.DevTools
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
             if (_cryomancerRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _cryomancerRelic в инспекторе"); return; }
 
+            ResetForNewBattle();
+
             // Криомант в тылу слева — через фабрику (реальный путь: on-hit «Заморозка», масс-стан «Ледяные оковы», AI PreferUntagged).
             _simulation.EnqueueUnitSpawn(_factory.Create(_cryomancerRelic, null, team: 0, new Vector2(-6f, 0f)));
 
@@ -224,6 +308,8 @@ namespace Guildmaster.DevTools
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
             if (_defenderRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _defenderRelic в инспекторе"); return; }
+
+            ResetForNewBattle();
 
             // Защитник по центру-слева — через фабрику (реальный путь: пассив «Оплот» pre-damage, HighestThreat, ульта).
             _simulation.EnqueueUnitSpawn(_factory.Create(_defenderRelic, null, team: 0, new Vector2(-4f, 0f)));
@@ -250,6 +336,8 @@ namespace Guildmaster.DevTools
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
             if (_rangerRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _rangerRelic в инспекторе"); return; }
 
+            ResetForNewBattle();
+
             // Следопыт слева — через фабрику (реальный путь: кайт, стрельба на ходу, «Метка охотника» с переносом).
             _simulation.EnqueueUnitSpawn(_factory.Create(_rangerRelic, null, team: 0, new Vector2(-6f, 0f)));
 
@@ -273,6 +361,8 @@ namespace Guildmaster.DevTools
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
             if (_assassinRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _assassinRelic в инспекторе"); return; }
 
+            ResetForNewBattle();
+
             // Убийца слева — через фабрику (реальный путь: пассивы «Скрытность» + «Изворотливость» из GrantedEffects,
             // усиленный первый удар, негейт крупных ударов, рестелс после убийства).
             _simulation.EnqueueUnitSpawn(_factory.Create(_assassinRelic, null, team: 0, new Vector2(-5f, 0f)));
@@ -291,27 +381,35 @@ namespace Guildmaster.DevTools
 
         /// <summary>Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10.6.</summary>
         [Command("gm_spawn_monk", "Заспавнить Монаха вихря против болванчиков (срез §10.6)")]
-        public void SpawnMonk(int enemies = 3, float enemyHp = 150f, float enemyDamage = 5f)
+        public void SpawnMonk(int enemies = 4, float enemyHp = 150f, float enemyDamage = 5f)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
             if (_monkRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _monkRelic в инспекторе"); return; }
 
-            // Монах слева — через фабрику (реальный путь: рывок → фиксация → отбрасывание → телепорт, §10.6).
-            _simulation.EnqueueUnitSpawn(_factory.Create(_monkRelic, null, team: 0, new Vector2(-5f, 0f)));
+            ResetForNewBattle();
 
-            // Болванчики справа расставлены пошире (интервал 1.6) — виден заход рывком к конкретной цели,
-            // а не в плотную кашу. Урон болванчиков задаётся параметром (по умолчанию низкий — бой дольше).
+            // Монах слева — через фабрику (реальный путь: рывок → фиксация → отбрасывание → телепорт, §10.6).
+            _simulation.EnqueueUnitSpawn(_factory.Create(_monkRelic, null, team: 0, new Vector2(-6f, 0f)));
+
+            // Болванчики справа — раскиданы ХАОТИЧНО (детерминированный хэш по индексу, чтобы R повторял ту же
+            // расстановку), далеко друг от друга: видно заход к конкретной цели и УГЛОВОЙ цепной толчок «ядра»,
+            // а не ровный ряд. x∈[2,8], y∈[-3.5,3.5].
             int nextId = _simulation.Units.Count + 1;
             for (int i = 0; i < enemies; i++)
             {
-                float y = (i - (enemies - 1) * 0.5f) * 1.6f;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, enemyDamage, nextId++));
+                float hx = Frac(Mathf.Sin((i + 1) * 12.9898f) * 43758.5453f);
+                float hy = Frac(Mathf.Sin((i + 1) * 78.233f)  * 43758.5453f);
+                var pos = new Vector2(2f + hx * 6f, -3.5f + hy * 7f);
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, pos, enemyHp, enemyDamage, nextId++));
             }
 
             _lastBattleSetup = self => self.SpawnMonk(enemies, enemyHp, enemyDamage);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков (урон {enemyDamage})");
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков (хаос, урон {enemyDamage})");
         }
+
+        // Дробная часть — детерминированный «хэш» [0,1) для хаотичной, но воспроизводимой расстановки.
+        private static float Frac(float v) => v - Mathf.Floor(v);
 
         /// <summary>Выставить HP юниту по ID.</summary>
         [Command("gm_set_hp", "Выставить HP юниту по ID")]
@@ -369,9 +467,7 @@ namespace Guildmaster.DevTools
                 Debug.LogWarning("[GuildmasterCommands] - gm_restart_battle: последний бой не задан (сначала запусти любой gm_spawn_*)");
                 return;
             }
-            _simulation?.ResetBattle();
-            _factory?.ResetIds();  // иначе Id фабрики уезжают → коллизия с Id болванчиков → осиротевшие виды
-            Time.timeScale = 1f;   // на случай, если бой был на паузе (Space) — снимаем заморозку презентации
+            ResetForNewBattle();
             _lastBattleSetup.Invoke(this);
         }
 
@@ -394,7 +490,17 @@ namespace Guildmaster.DevTools
             Debug.Log($"[GuildmasterCommands] - gm_toggle_status: {(overlay.IsEnabled ? "ON" : "OFF")}");
         }
 
-        private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id)
+        // Начать НОВЫЙ бой: сбросить текущий (юниты/снаряды/исход/очереди) + счётчик Id фабрики + снять
+        // заморозку времени. Вызывается всеми gm_spawn_* — новая команда старта ПРЕРЫВАЕТ предыдущий бой,
+        // а не копит юнитов поверх (иначе Id-коллизии и каша из нескольких боёв).
+        private void ResetForNewBattle()
+        {
+            _simulation?.ResetBattle();
+            _factory?.ResetIds();
+            Time.timeScale = 1f;
+        }
+
+        private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f, float range = 1.5f)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("test", new[]
@@ -402,8 +508,9 @@ namespace Guildmaster.DevTools
                 new StatModifier(StatType.MaxHP,            ModifierOp.Flat, hp),
                 new StatModifier(StatType.AutoAttackDamage, ModifierOp.Flat, damage),
                 new StatModifier(StatType.AttackSpeed,      ModifierOp.Flat, 1f),
-                new StatModifier(StatType.AttackRange,      ModifierOp.Flat, 1.5f),
-                new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, 1.8f),
+                new StatModifier(StatType.AttackRange,      ModifierOp.Flat, range),
+                new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, 2.5f),
+                new StatModifier(StatType.Size,             ModifierOp.Flat, size - 1f), // Size база 1 → итог = size
             });
             return new RuntimeUnit
             {

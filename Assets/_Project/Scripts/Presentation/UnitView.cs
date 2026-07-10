@@ -1,4 +1,5 @@
 using Guildmaster.Combat;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 using UnityEngine.Events;
@@ -26,6 +27,10 @@ namespace Guildmaster.Presentation
         [Header("Animation (S4) — опционально; пусто = статичный спрайт")]
         [SerializeField] private UnitVisual _visual;
 
+        [Tooltip("Бег «прибит к земле»: сколько мировых юнитов проходит юнит на ОДИН кадр бега. " +
+                 "Меньше = ноги быстрее (бодрее), больше = медленнее. Темп бега привязан к скорости — не скользит.")]
+        [SerializeField] private float _runUnitsPerFrame = 0.15f;
+
         [Header("Feel Hooks (подключить MMF_Player в Inspector)")]
         [SerializeField] private UnityEvent _onHitFeedback;
         [SerializeField] private UnityEvent _onDeathFeedback;
@@ -50,7 +55,7 @@ namespace Guildmaster.Presentation
         [SerializeField] private float _recommendedHeight = 1.7f;
         [Tooltip("Превью Size для гизмо круга коллизии, когда юнит ещё не заспавнен (рантайм берёт настоящий Size).")]
         [SerializeField] private float _gizmoPreviewSize = 1f;
-        [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус Size×0.25). Выключи, если мешает.")]
+        [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус = Size × SimConstants.BodyRadiusPerSize). Выключи, если мешает.")]
         [SerializeField] private bool _showCollisionGizmo = true;
 
         private RuntimeUnit _unit;
@@ -224,6 +229,12 @@ namespace Guildmaster.Presentation
                 return;
             }
 
+            if (_state == UnitAnimationState.Run && _unit != null)
+            {
+                StepRunFrames(frames, dt);
+                return;
+            }
+
             float frameDur = 1f / _visual.Fps;
             _frameTimer += dt;
             while (_frameTimer >= frameDur)
@@ -235,6 +246,24 @@ namespace Guildmaster.Presentation
                     bool looping = _state == UnitAnimationState.Idle || _state == UnitAnimationState.Run;
                     _frameIndex = looping ? 0 : frames.Length - 1;   // one-shot/death замирает на последнем кадре
                 }
+            }
+
+            _sprite.sprite = frames[Mathf.Clamp(_frameIndex, 0, frames.Length - 1)];
+        }
+
+        // Бег «прибит к земле»: листаем кадры по ПРОЙДЕННОЙ дистанции (скорость × время), а не по фикс. fps —
+        // ноги не скользят, темп совпадает со скоростью на любом размере. Скорость берём из сим-дельты позиции.
+        private void StepRunFrames(Sprite[] frames, float dt)
+        {
+            float speed = (_unit.Position - _unit.PreviousPosition).magnitude / SimConstants.TickDelta; // мир. ед/с
+            float step  = Mathf.Max(0.01f, _runUnitsPerFrame);
+
+            _frameTimer += speed * dt; // накапливаем пройденную дистанцию
+            while (_frameTimer >= step)
+            {
+                _frameTimer -= step;
+                _frameIndex++;
+                if (_frameIndex >= frames.Length) _frameIndex = 0;
             }
 
             _sprite.sprite = frames[Mathf.Clamp(_frameIndex, 0, frames.Length - 1)];
@@ -357,7 +386,7 @@ namespace Guildmaster.Presentation
             UnityEditor.Handles.color = green;
             UnityEditor.Handles.Label(rTop + Vector3.up * 0.06f, "рек. рост " + rec.ToString("0.##") + " м");
 
-            // --- Круг коллизии сима (радиус = Size × 0.25) в НОГАХ (Feet Point), как и линейка. Тумблер. ---
+            // --- Круг коллизии сима (радиус = Size × SimConstants.BodyRadiusPerSize) в НОГАХ, как линейка. Тумблер. ---
             // В рантайме сим считает коллизию в unit.Position; презентация ставит юнита так, чтобы Feet Point
             // попал в неё (офсет спавна — фаза коллизии), поэтому центр здесь = feet.
             if (_showCollisionGizmo)
@@ -365,7 +394,7 @@ namespace Guildmaster.Presentation
                 float size = Application.isPlaying && _unit != null
                     ? Mathf.Max(0.01f, _unit.Stats.Get(Data.Stats.StatType.Size))
                     : Mathf.Max(0.01f, _gizmoPreviewSize);
-                float cr = size * 0.25f;
+                float cr = size * SimConstants.BodyRadiusPerSize;
                 var orange = new Color(1f, 0.6f, 0.2f, 0.85f);
                 Gizmos.color = orange;
                 DrawWireDisc(feet, cr);
