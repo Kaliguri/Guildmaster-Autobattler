@@ -138,6 +138,35 @@ namespace Guildmaster.DevTools
             Debug.Log($"[GuildmasterCommands] - gm_spawn_battle: добавлено {countPerTeam}×2 юнитов");
         }
 
+        /// <summary>
+        /// Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия).
+        /// Спавнит сеткой с шагом МЕНЬШЕ диаметра тела → юниты сразу перекрываются и разъезжаются; высокий
+        /// HP и низкий урон держат толпу живой, чтобы видеть spacing и при сшибке блобов в центре.
+        /// Крути на глаз <c>SimConstants.SeparationStrength</c> / <c>SeparationIterations</c> / <c>BodyRadiusPerSize</c>,
+        /// перезапуск на месте — R. Параметр <paramref name="size"/> — «толщина» тел (Size-стат).
+        /// </summary>
+        [Command("gm_spawn_crowd", "Плотный клубок обеих команд для теста коллизии/расталкивания")]
+        public void SpawnCrowd(int perTeam = 8, float hp = 400f, float damage = 6f, float size = 1f)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+
+            int cols = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(perTeam)));
+            const float spacing = 0.15f; // << диаметра тела (~0.5 при Size 1) → перекрытие на старте
+            int nextId = _simulation.Units.Count;
+
+            for (int i = 0; i < perTeam; i++)
+            {
+                int cx = i % cols, cy = i / cols;
+                float ox = (cx - (cols - 1) * 0.5f) * spacing;
+                float oy = (cy - (cols - 1) * 0.5f) * spacing;
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(0, new Vector2(-3f + ox, oy), hp, damage, nextId++, size));
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2( 3f + ox, oy), hp, damage, nextId++, size));
+            }
+
+            _lastBattleSetup = self => self.SpawnCrowd(perTeam, hp, damage, size);
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_crowd: {perTeam}×2 юнитов (Size {size}), плотный клубок");
+        }
+
         /// <summary>Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.</summary>
         [Command("gm_spawn_spearman", "Заспавнить Железного копейщика против кластера (срез шага 4)")]
         public void SpawnSpearman(int enemies = 3, float enemyHp = 200f)
@@ -394,7 +423,7 @@ namespace Guildmaster.DevTools
             Debug.Log($"[GuildmasterCommands] - gm_toggle_status: {(overlay.IsEnabled ? "ON" : "OFF")}");
         }
 
-        private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id)
+        private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("test", new[]
@@ -404,6 +433,7 @@ namespace Guildmaster.DevTools
                 new StatModifier(StatType.AttackSpeed,      ModifierOp.Flat, 1f),
                 new StatModifier(StatType.AttackRange,      ModifierOp.Flat, 1.5f),
                 new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, 1.8f),
+                new StatModifier(StatType.Size,             ModifierOp.Flat, size - 1f), // Size база 1 → итог = size
             });
             return new RuntimeUnit
             {
