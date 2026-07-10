@@ -104,24 +104,55 @@ namespace Guildmaster.Combat
         /// </summary>
         private static void ApplyDisplace(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
         {
-            Vector2 toTarget = target.Position - caster.Position;
-            float dist = toTarget.magnitude;
-            Vector2 dir = dist > 1e-4f ? toTarget / dist : Vector2.right;
-
-            // Приземляемся вплотную (в пределах радиуса атаки), а не в саму точку цели.
             float adjacency = caster.Stats.Get(StatType.AttackRange) * 0.5f;
-            float dashDist  = Mathf.Max(0f, dist - adjacency);
 
-            // Фиксация цели: оцепенение (эффекты активки) — цель стоит, пока монах подлетает.
+            // Монах бьёт ТОЛЬКО прямо от себя, поэтому позицию рывка выбираем так, чтобы линия
+            // «монах → цель» смотрела в ближайшего ДРУГОГО врага («наковальню») — тогда толчок отправит
+            // цель в него (и «ядро» пройдёт сквозь). Враг один — просто заходим со своей стороны.
+            RuntimeUnit anvil = NearestEnemyTo(target.Position, caster.Team, target, ctx);
+            Vector2 throwDir = anvil != null
+                ? anvil.Position - target.Position
+                : target.Position - caster.Position;
+            throwDir = throwDir.sqrMagnitude > 1e-6f ? throwDir.normalized : Vector2.right;
+
+            // Приземляемся на сторону цели, ПРОТИВОПОЛОЖНУЮ наковальне (вплотную) → monk→target == throwDir.
+            Vector2 dashDest = target.Position - throwDir * adjacency;
+            Vector2 toDest   = dashDest - caster.Position;
+            float   dashDist = toDest.magnitude;
+            Vector2 dashDir  = dashDist > 1e-4f ? toDest / dashDist : Vector2.right;
+
+            // Фиксация цели: оцепенение (эффекты активки) — цель стоит, пока монах облетает её.
             ApplyEffects(target, data, caster, ctx);
 
             // Dev-оверлей линии рывка (fire-and-forget).
-            ctx.ReportAreaHit(AreaHit.Line(caster.Position, dir, dashDist, 0.4f, caster.Team));
+            ctx.ReportAreaHit(AreaHit.Line(caster.Position, dashDir, dashDist, 0.4f, caster.Team));
 
             // Рывок = смещение самого кастующего, без «ядра». Приземление (EffectExpired на себе) поднимет отбрасывание.
             ctx.Displace(new DisplaceRequest(
-                caster, caster, dir, dashDist, data.DisplaceTicks,
+                caster, caster, dashDir, dashDist, data.DisplaceTicks,
                 cannonball: false, damage: 0f, damageType: DamageType.Physical, width: 0f));
+        }
+
+        /// <summary>Ближайший к точке живой враг команды <paramref name="selfTeam"/>, кроме <paramref name="exclude"/> (тай-брейк по Id).</summary>
+        private static RuntimeUnit NearestEnemyTo(Vector2 from, int selfTeam, RuntimeUnit exclude, ICombatContext ctx)
+        {
+            var buffer = new List<RuntimeUnit>();
+            ctx.QueryUnitsInRadius(from, 500f, buffer, TargetFilter.Enemies, selfTeam);
+
+            RuntimeUnit best = null;
+            float bestSq = float.MaxValue;
+            for (int i = 0; i < buffer.Count; i++)
+            {
+                RuntimeUnit o = buffer[i];
+                if (o.IsDead || ReferenceEquals(o, exclude)) continue;
+                float sq = (o.Position - from).sqrMagnitude;
+                if (sq < bestSq || (sq == bestSq && (best == null || o.Id < best.Id)))
+                {
+                    bestSq = sq;
+                    best = o;
+                }
+            }
+            return best;
         }
 
         /// <summary>Условие каста (блок D). Отмена по своему HP% (блок E) решается в <see cref="TryCast"/> до вызова.</summary>

@@ -44,11 +44,14 @@ namespace Guildmaster.Combat.Effects.Components
             if (monk == null || monk.IsDead) return;
             if (!ReferenceEquals(e.Target, monk)) return; // смещался не сам монах (это отбрасывание врага) — не наше
 
-            // Монах приземлился вплотную к цели: бьём отбрасыванием по ближайшему врагу.
-            RuntimeUnit victim = NearestEnemy(monk, ctx.Combat);
+            // Монах приземлился вплотную к цели рывка = ближайший враг. Отбрасываем именно его.
+            RuntimeUnit victim = NearestEnemy(monk, monk.Position, ctx.Combat, exclude: null);
             if (victim == null) return;
 
-            Vector2 dir = victim.Position - monk.Position; // «от себя вперёд»
+            // Монах бьёт ТОЛЬКО прямо от себя. «Умная» часть — позиция приземления рывка (см. AbilitySystem):
+            // монах заходит на сторону цели, противоположную ближайшему другому врагу, поэтому «прямо от
+            // монаха через цель» уже смотрит в того врага. Здесь направление простое.
+            Vector2 dir = victim.Position - monk.Position;
             float dmg = _displaceDamageMult > 0f
                 ? _displaceDamageMult * monk.Stats.Get(StatType.AutoAttackDamage)
                 : 0f;
@@ -64,20 +67,21 @@ namespace Guildmaster.Combat.Effects.Components
                 kind: DisplaceKind.Knockback, chainDistance: _chainDistance, chainTicks: _chainTicks));
         }
 
-        // Ближайший живой враг монаха (тай-брейк по Id — детерминизм). Радиус большой: цель после рывка рядом,
-        // но берём глобально, чтобы не зависеть от точной посадки. Локальный буфер — событие редкое (per-cast).
-        private static RuntimeUnit NearestEnemy(RuntimeUnit monk, ICombatContext combat)
+        // Ближайший к точке <paramref name="from"/> живой враг монаха (тай-брейк по Id — детерминизм), кроме
+        // <paramref name="exclude"/>. Радиус большой: берём глобально, чтобы не зависеть от точной посадки.
+        // Локальный буфер — событие редкое (per-cast).
+        private static RuntimeUnit NearestEnemy(RuntimeUnit monk, UnityEngine.Vector2 from, ICombatContext combat, RuntimeUnit exclude)
         {
             var buffer = new List<RuntimeUnit>();
-            combat.QueryUnitsInRadius(monk.Position, 500f, buffer, TargetFilter.Enemies, monk.Team);
+            combat.QueryUnitsInRadius(from, 500f, buffer, TargetFilter.Enemies, monk.Team);
 
             RuntimeUnit best = null;
             float bestSq = float.MaxValue;
             for (int i = 0; i < buffer.Count; i++)
             {
                 RuntimeUnit o = buffer[i];
-                if (o.IsDead) continue;
-                float sq = (o.Position - monk.Position).sqrMagnitude;
+                if (o.IsDead || ReferenceEquals(o, exclude)) continue;
+                float sq = (o.Position - from).sqrMagnitude;
                 if (sq < bestSq || (sq == bestSq && (best == null || o.Id < best.Id)))
                 {
                     bestSq = sq;
