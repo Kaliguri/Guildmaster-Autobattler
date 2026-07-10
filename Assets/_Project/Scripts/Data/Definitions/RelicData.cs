@@ -9,11 +9,9 @@ namespace Guildmaster.Data.Definitions
     /// </summary>
     /// <remarks>СКЕЛЕТ Фазы 1: стат-блок + категории. Активки/пассивки (через <see cref="EffectData"/>) — Фаза 2.</remarks>
     [CreateAssetMenu(menuName = "Guildmaster/Content/Relic", fileName = "Relic")]
-    public sealed class RelicData : ScriptableObject
+    public sealed class RelicData : ContentDefinition
     {
         [Header("Identity")]
-        [Tooltip("Ключ локализации отображаемого имени (EN/RU задаётся в таблице локализации).")]
-        [SerializeField] private string _displayNameKey;
         [SerializeField] private string[] _tags;
 
         [Header("Combat categories")]
@@ -68,7 +66,6 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Параметризованный пресет поведения (кого/когда/где). Интерпретируется ProfileBrain (вики «13» §2.1).")]
         [SerializeField] private AIProfile _ai = new AIProfile();
 
-        public string DisplayNameKey => _displayNameKey;
         public string[] Tags => _tags;
         public UnitVisual Visual => _visual;
         public DamageType DamageType => _damageType;

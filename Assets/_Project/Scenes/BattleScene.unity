@@ -198,6 +198,7 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  _contentDatabase: {fileID: 11400000, guid: 6ee93f01d460d5942962e5433b56e5d8, type: 2}
 --- !u!4 &265839542
 Transform:
   m_ObjectHideFlags: 0
@@ -440,7 +441,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -1.88125, y: 1.22867, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -723,6 +724,9 @@ MonoBehaviour:
   _boundsSize: {x: 14, y: 7}
   _cameraZoneCenter: {x: 0, y: 0}
   _cameraZoneSize: {x: 40, y: 30}
+  _showScaleReference: 1
+  _refHumanHeight: 1.7
+  _refHumanWidth: 0.6
   _zones:
   - Side: 0
     Tier: 0
@@ -970,7 +974,6 @@ MonoBehaviour:
   autoInjectGameObjects:
   - {fileID: 1713771493}
   _statsConfig: {fileID: 11400000, guid: ad16ddf55214b4f4f9fc8305dadd705e, type: 2}
-  _armorK: 100
   _spatialHashCellSize: 3
 --- !u!4 &1496836686
 Transform:

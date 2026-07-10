@@ -1,8 +1,10 @@
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Random;
+using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
 using MessagePipe;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -15,9 +17,15 @@ namespace Guildmaster.Game
     /// </summary>
     public class RootLifetimeScope : LifetimeScope
     {
+        [Tooltip("Реестр всего контента (вики «13» §3.6). Наполняется Tools/Guildmaster/Sync Content Database.")]
+        [SerializeField] private ContentDatabase _contentDatabase;
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<IRngService>(_ => new XorShiftRng(GenerateRootSeed()), Lifetime.Singleton);
+
+            // Контент: SO — чистые данные, рантайм-индекс (id → def) строится один раз здесь (вики «13» §3.6).
+            builder.RegisterInstance<IContentDatabase>(new ContentRegistry(_contentDatabase.Entries));
 
             builder.Register<UnityAudioService>(Lifetime.Singleton).As<IAudioService>();
             builder.Register<SceneLoader>(Lifetime.Singleton);

@@ -43,7 +43,8 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static void Set(object target, string field, object value)
         {
-            FieldInfo fi = typeof(EffectData).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
+            FieldInfo fi = Reflect.FindField(target.GetType(), field);
+            if (fi == null) throw new ArgumentException($"Нет поля {field} в {target.GetType().Name} (или базах)");
             fi.SetValue(target, value);
         }
     }
@@ -91,7 +92,8 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static void Set(object target, string field, object value)
         {
-            FieldInfo fi = typeof(AbilityData).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
+            FieldInfo fi = Reflect.FindField(target.GetType(), field);
+            if (fi == null) throw new ArgumentException($"Нет поля {field} в {target.GetType().Name} (или базах)");
             fi.SetValue(target, value);
         }
     }
@@ -133,7 +135,8 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static void Set(object target, string field, object value)
         {
-            FieldInfo fi = typeof(RelicData).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
+            FieldInfo fi = Reflect.FindField(target.GetType(), field);
+            if (fi == null) throw new ArgumentException($"Нет поля {field} в {target.GetType().Name} (или базах)");
             fi.SetValue(target, value);
         }
     }
@@ -216,10 +219,24 @@ namespace Guildmaster.Tests.EditMode.Combat
     {
         public static T With<T>(this T obj, string field, object value)
         {
-            FieldInfo fi = typeof(T).GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
-            if (fi == null) throw new ArgumentException($"Нет поля {field} в {typeof(T).Name}");
+            FieldInfo fi = FindField(obj.GetType(), field);
+            if (fi == null) throw new ArgumentException($"Нет поля {field} в {obj.GetType().Name} (или базах)");
             fi.SetValue(obj, value);
             return obj;
+        }
+
+        /// <summary>
+        /// Найти приватное/публичное instance-поле по всей иерархии типа. <c>Type.GetField</c> не видит
+        /// приватные поля БАЗ — а поля контента переезжают в базы (ContentDefinition._id, UnitData-кит Ф4).
+        /// </summary>
+        public static FieldInfo FindField(Type type, string field)
+        {
+            for (Type t = type; t != null && t != typeof(object); t = t.BaseType)
+            {
+                FieldInfo fi = t.GetField(field, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                if (fi != null) return fi;
+            }
+            return null;
         }
     }
 

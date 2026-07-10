@@ -6,6 +6,7 @@
     "UnityEditor.TestRunner",
     "Guildmaster.Core",
     "Guildmaster.Data",
+    "Guildmaster.Data.Editor",
     "Guildmaster.Combat",
     "Guildmaster.Presentation"
   ],

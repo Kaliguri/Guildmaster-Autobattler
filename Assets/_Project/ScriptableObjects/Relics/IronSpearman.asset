@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
+  m_Name: IronSpearman
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
+  _id: relic.iron_spearman
+  _tags:
+  - spearman
+  - common
+  _damageType: 0
+  _attackType: 0
+  _resourceType: 2
+  _visual: {fileID: 0}
+  _autoAttackShape: 1
+  _autoAttackWidth: 1.5
+  _autoAttackEffects: []
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _resourceOnHit: 5
+  _canUseExtendedDeployment: 0
+  _stats:
+  - Stat: 0
+    Op: 0
+    Value: 220
+  - Stat: 7
+    Op: 0
+    Value: 14
+  - Stat: 8
+    Op: 0
+    Value: 0.8
+  - Stat: 9
+    Op: 0
+    Value: 3
+  - Stat: 3
+    Op: 0
+    Value: 8
+  - Stat: 20
+    Op: 0
+    Value: 2.5000002
+  - Stat: 27
+    Op: 0
+    Value: 30
+  - Stat: 28
+    Op: 0
+    Value: 0
+  _grantedEffects: []
+  _abilities:
+  - _id: steel_whirl
+    _effects: []
+    _baseCooldown: 5
+    _resourceCost: 30
+    _targetMode: 0
+    _damageMultiplier: 3
+    _areaShape: 2
+    _areaRadius: 2.5
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _castCondition: 1
+    _castConditionCount: 2
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0.25
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceTicks: 12
+    _displaceDamageMult: 1
+    _displaceWidth: 1
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 0
+      FleeAtHpPct: 0
+      ReturnAtHpPct: 0
+    _kite:
+      Enabled: 0
+      FleeDist: 0
+      FallbackDist: 0
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
