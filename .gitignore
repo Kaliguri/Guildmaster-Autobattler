@@ -92,13 +92,13 @@ desktop.ini
 ehthumbs.db
 
 # Obsidian personal state (keep app.json and graph.json, ignore workspace state)
-guildmaster-wiki/.obsidian/workspace.json
-guildmaster-wiki/.obsidian/workspace-mobile.json
-guildmaster-wiki/.obsidian/cache
+docs/wiki/.obsidian/workspace.json
+docs/wiki/.obsidian/workspace-mobile.json
+docs/wiki/.obsidian/cache
 
 # Obsidian community plugins — track manifest.json only, not compiled bundles
-guildmaster-wiki/.obsidian/plugins/*/main.js
-guildmaster-wiki/.obsidian/plugins/*/styles.css
+docs/wiki/.obsidian/plugins/*/main.js
+docs/wiki/.obsidian/plugins/*/styles.css
 
 # Docs site build artifacts
 quartz-build/

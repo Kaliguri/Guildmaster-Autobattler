@@ -147,7 +147,7 @@ Guildmaster - Autobattler/
 ├── Assets/Tests/
 │   ├── EditMode/             # Unit tests
 │   └── PlayMode/             # Integration tests
-├── guildmaster-wiki/         # GDD and technical docs (Obsidian Vault)
+├── docs/wiki/         # GDD and technical docs (Obsidian Vault)
 ├── quartz-config/            # Quartz v4 config for the docs site
 ├── doxygen/                  # Doxygen config for the C# API reference
 ├── .github/workflows/        # CI: tests (ci.yml) and docs deploy (docs.yml)

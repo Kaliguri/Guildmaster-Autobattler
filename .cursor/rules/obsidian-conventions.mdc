@@ -1,5 +1,5 @@
 ---
-description: Conventions for writing markdown files inside the Obsidian Vault (guildmaster-wiki/)
+description: Conventions for writing markdown files inside the Obsidian Vault (docs/wiki/)
 alwaysApply: true
 ---
 
@@ -63,5 +63,5 @@ alwaysApply: true
 
 ## Исключения
 
-- `guildmaster-wiki/README.md` — GitHub-facing файл, H1 там **нужен**
-- Файлы вне `guildmaster-wiki/` (например, `CLAUDE.md`) — обычный Markdown, H1 допустим
+- `docs/wiki/README.md` — GitHub-facing файл, H1 там **нужен**
+- Файлы вне `docs/wiki/` (например, `CLAUDE.md`) — обычный Markdown, H1 допустим
