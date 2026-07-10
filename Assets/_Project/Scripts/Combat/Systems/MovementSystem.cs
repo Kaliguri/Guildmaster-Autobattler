@@ -14,6 +14,10 @@ namespace Guildmaster.Combat
     /// </summary>
     public sealed class MovementSystem
     {
+        // Порог «желаемый отход зажат стеной»: если кламп сдвинул цель дальше этого (в кв. ед.) — считаем,
+        // что упёрлись, и переходим к репозиции вдоль стены. Мал, чтобы ловить реальный контакт, не FP-шум.
+        private const float WallPinEpsilonSq = 1e-6f;
+
         /// <summary>Продвинуть позиции всех живых юнитов на один тик.</summary>
         /// <param name="units">Список всех юнитов в бою.</param>
         /// <param name="dt">Длительность тика (всегда <see cref="SimConstants.TickDelta"/>).</param>
@@ -52,8 +56,8 @@ namespace Guildmaster.Combat
 
                 switch (unit.Positioning)
                 {
-                    case PositioningIntent.Kite:    MoveKite(unit, target, maxMove); break;
-                    case PositioningIntent.Retreat: MoveRetreat(unit, units, maxMove); break;
+                    case PositioningIntent.Kite:    MoveKite(unit, target, maxMove, bounds); break;
+                    case PositioningIntent.Retreat: MoveRetreat(unit, units, maxMove, bounds); break;
                     default:                        MoveApproach(unit, target, maxMove); break;
                 }
 
@@ -84,7 +88,7 @@ namespace Guildmaster.Combat
         /// отходим (до FallbackDist), если ближе FleeDist; подходим, если дальше FallbackDist; иначе стоим
         /// и стреляем. Провал/пустой контент → деградируем на [AttackRange×0.6, AttackRange] (07 §3.8 B4).
         /// </summary>
-        private static void MoveKite(RuntimeUnit unit, RuntimeUnit target, float maxMove)
+        private static void MoveKite(RuntimeUnit unit, RuntimeUnit target, float maxMove, in ArenaBounds bounds)
         {
             Kite kite = unit.Relic != null ? unit.Relic.Ai.Kite : default;
             float flee     = kite.FleeDist;
@@ -106,14 +110,16 @@ namespace Guildmaster.Combat
 
             Vector2 dir = toTarget / dist;
             if (dist < flee)
-                unit.Position -= dir * Mathf.Min(maxMove, fallback - dist);  // ближе FleeDist — отходим до FallbackDist
+                // Ближе FleeDist — отходим до FallbackDist. Отход «от цели» может упереться в стену:
+                // тогда репозиционируемся вдоль стены/сквозь скопление в открытое место, а не утыкаемся.
+                unit.Position = RetreatStep(unit.Position, -dir, Mathf.Min(maxMove, fallback - dist), bounds);
             else if (dist > fallback)
                 unit.Position += dir * Mathf.Min(maxMove, dist - fallback);  // дальше FallbackDist — подходим
             // иначе — в полосе [FleeDist, FallbackDist], стоим (атакуем на ходу)
         }
 
         /// <summary>Отступление (§9.7): движемся прочь от ближайшего врага (тай-брейк по Id — детерминизм).</summary>
-        private static void MoveRetreat(RuntimeUnit unit, List<RuntimeUnit> units, float maxMove)
+        private static void MoveRetreat(RuntimeUnit unit, List<RuntimeUnit> units, float maxMove, in ArenaBounds bounds)
         {
             RuntimeUnit nearest = null;
             float bestSq = float.MaxValue;
@@ -132,7 +138,31 @@ namespace Guildmaster.Combat
 
             Vector2 away = unit.Position - nearest.Position;
             if (away.sqrMagnitude < 1e-4f) return;
-            unit.Position += away.normalized * maxMove;
+            unit.Position = RetreatStep(unit.Position, away.normalized, maxMove, bounds);
+        }
+
+        /// <summary>
+        /// Шаг отхода с обработкой «зажат у стены» (вики «15» §7). Обычно уходим строго <paramref name="awayDir"/>.
+        /// Но если этот отход упирается в стену арены (итог клампится) — репозиционируемся: скользим ВДОЛЬ стены
+        /// в сторону центра арены (для окружённого юнита это уводит его мимо/сквозь скопление врагов в открытое
+        /// место, а не утыкает в угол). Детерминировано: только векторная математика, без RNG.
+        /// </summary>
+        private static Vector2 RetreatStep(Vector2 pos, Vector2 awayDir, float step, in ArenaBounds bounds)
+        {
+            if (step <= 0f) return pos;
+
+            Vector2 desired = pos + awayDir * step;
+            Vector2 clamped = bounds.Clamp(desired);
+
+            // Отход прошёл свободно (стена не поджала) — идём как есть.
+            if ((clamped - desired).sqrMagnitude < WallPinEpsilonSq) return desired;
+
+            // Уперлись в стену: касательная к направлению отхода, в сторону центра арены (открытое место).
+            Vector2 tangent = new Vector2(-awayDir.y, awayDir.x);
+            if (Vector2.Dot(tangent, bounds.Center - pos) < 0f) tangent = -tangent;
+            if (tangent.sqrMagnitude < 1e-10f) return clamped; // вырожденный случай — хотя бы не за стеной
+
+            return bounds.Clamp(pos + tangent.normalized * step);
         }
     }
 }

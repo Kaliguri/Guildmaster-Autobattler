@@ -26,14 +26,24 @@ namespace Guildmaster.Combat
             public float       Damage;
             public Data.Definitions.DamageType DamageType;
             public float       Width;
+            public float       ChainDistance;
+            public int         ChainTicks;
             public readonly List<RuntimeUnit> Hit = new List<RuntimeUnit>();
         }
 
         private readonly List<Active> _active = new List<Active>();
         private readonly List<RuntimeUnit> _lineBuffer = new List<RuntimeUnit>();
 
-        /// <summary>Полёт завершился: (источник толчка, смещённая цель). Подписчик — CombatSimulation (сигнал UnitDisplaced).</summary>
+        /// <summary>Полёт завершился: (источник толчка, смещённая цель). Подписчик — CombatSimulation снимает
+        /// маркер «в полёте» (тег KnockUp) → единый EffectExpired (на нём завязаны реактивы монаха, §10.6).</summary>
         public event Action<RuntimeUnit, RuntimeUnit> OnDisplacementEnded;
+
+        /// <summary>Сбросить все активные полёты (перезапуск боя на месте) — иначе повиснут ссылки на удалённых юнитов.</summary>
+        public void Clear()
+        {
+            _active.Clear();
+            _lineBuffer.Clear();
+        }
 
         /// <summary>Поставить смещение в работу. Цель сразу переходит в полётное оглушение.</summary>
         public void Add(in DisplaceRequest req)
@@ -53,6 +63,8 @@ namespace Guildmaster.Combat
                 Damage         = req.Damage,
                 DamageType     = req.DamageType,
                 Width          = req.Width,
+                ChainDistance  = req.ChainDistance,
+                ChainTicks     = req.ChainTicks,
             });
 
             target.DisplacedTicksRemaining = req.Ticks;
@@ -111,6 +123,17 @@ namespace Guildmaster.Combat
 
                 a.Hit.Add(victim);
                 ctx.DealDamage(new DamageRequest(a.Source, victim, a.Damage, a.DamageType, ctx.ArmorK));
+
+                // §10.6: задетый «ядром» не только получает урон, но и сам слабо отбрасывается вдоль полёта.
+                // Источник — тот же (монах), поэтому конец этого цепного полёта тоже триггерит «Вихревой заход».
+                // Без каскада (cannonball:false) и слабый (короче главного) → финальный телепорт сядет на исходную цель.
+                if (a.ChainDistance > 0f && a.ChainTicks > 0 && a.Source != null)
+                {
+                    Vector2 cdir = seg / len;
+                    ctx.Displace(new DisplaceRequest(
+                        victim, a.Source, cdir, a.ChainDistance, a.ChainTicks,
+                        cannonball: false, damage: 0f, damageType: a.DamageType, width: 0f));
+                }
             }
         }
     }

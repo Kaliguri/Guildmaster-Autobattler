@@ -34,9 +34,18 @@ namespace Guildmaster.Game.Services
             _running     = true;
             _accumulator = 0f;
 
-            while (_running && _simulation.Outcome == BattleOutcome.Ongoing
-                             && !cancellation.IsCancellationRequested)
+            // Цикл живёт всю жизнь боевого скоупа. Тикает только при активном бою (Outcome == Ongoing);
+            // после конца боя простаивает (не копит время), а dev-рестарт на месте (ResetBattle → Ongoing)
+            // сам возобновляет тик — без перезапуска цикла и без перезагрузки сцены.
+            while (_running && !cancellation.IsCancellationRequested)
             {
+                if (_simulation.Outcome != BattleOutcome.Ongoing)
+                {
+                    _accumulator = 0f;
+                    await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
+                    continue;
+                }
+
                 _accumulator += Time.deltaTime;
 
                 // Анти-лавина: не больше N догоняющих тиков за кадр. Иначе один долгий кадр

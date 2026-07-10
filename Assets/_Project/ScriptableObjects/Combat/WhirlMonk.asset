@@ -27,6 +27,7 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _resourceOnHit: 5
+  _canUseExtendedDeployment: 0
   _stats:
   - Stat: 0
     Op: 0
@@ -45,18 +46,20 @@ MonoBehaviour:
     Value: 1.5
   - Stat: 20
     Op: 0
-    Value: 4
+    Value: 2.4
   - Stat: 27
     Op: 0
     Value: 30
   - Stat: 28
     Op: 0
-    Value: 0
+    Value: 30
   _grantedEffects:
   - {fileID: 11400000, guid: 5bbca1847e2a5854fabf515858d38903, type: 2}
+  - {fileID: 11400000, guid: 9e50eef356131b4409c788dd915e3a81, type: 2}
   _abilities:
   - _id: whirl_push
-    _effects: []
+    _effects:
+    - {fileID: 11400000, guid: 797317b8c41510641b4e40412ba219f7, type: 2}
     _baseCooldown: 6
     _resourceCost: 30
     _targetMode: 1
@@ -65,16 +68,16 @@ MonoBehaviour:
     _areaRadius: 0
     _healFlat: 0
     _healPctTargetMissingHp: 0
-    _castCondition: 0
+    _castCondition: 1
     _castConditionCount: 1
-    _castConditionRadius: 0
+    _castConditionRadius: 6
     _castConditionHpPct: 0.5
     _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
     _displaces: 1
     _displaceDistance: 4
-    _displaceTicks: 12
+    _displaceTicks: 6
     _displaceDamageMult: 1.5
     _displaceWidth: 1.5
   _ai:

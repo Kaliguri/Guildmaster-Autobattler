@@ -21,7 +21,16 @@ namespace Guildmaster.Combat
         private readonly List<RuntimeEffect> _dispatchBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _dispelBuffer = new List<RuntimeEffect>();
         private readonly List<RuntimeEffect> _preDamageBuffer = new List<RuntimeEffect>();
+        private readonly List<RuntimeEffect> _removeByTagBuffer = new List<RuntimeEffect>();
         private readonly PreDamageResult     _preDamageResult = new PreDamageResult();
+
+        /// <summary>
+        /// Эффект закончился на юните: (юнит, источник эффекта, теги эффекта). Единый шов «эффект истёк/снят»
+        /// (вики «12» §3.4). CombatSimulation ретранслирует в <see cref="Effects.CombatEvent.EffectExpired"/>
+        /// (носитель = источник). На нём завязаны реактивы монаха (§10.6). Мгновенные эффекты (ticks==0) сюда
+        /// НЕ попадают — они не персистятся, их OnExpire зовётся прямо в Apply.
+        /// </summary>
+        public event System.Action<RuntimeUnit, RuntimeUnit, Data.Definitions.EffectTag> OnEffectExpired;
 
         /// <summary>
         /// Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение.
@@ -315,6 +324,30 @@ namespace Guildmaster.Combat
 
             unit.ActiveEffects.Remove(eff);
             RebuildTagMask(unit);
+
+            // Единый сигнал «эффект закончился» (носитель-получатель = источник эффекта, ретрансляция в
+            // CombatSimulation). Реактивы фильтруют по тегам эффекта + команде юнита. Смещение (KnockUp)
+            // именно так и разводит «конец отбрасывания врага → телепорт» vs «конец рывка себя → толчок».
+            OnEffectExpired?.Invoke(unit, eff.Source, eff.Def.Tags);
+        }
+
+        /// <summary>
+        /// Принудительно снять с юнита ВСЕ эффекты, несущие любой из <paramref name="tag"/> (игнорируя
+        /// <see cref="EffectData.Unremovable"/> — это не диспел, а системное завершение, напр. конец полёта
+        /// смещения). Каждый снятый прогоняется через <see cref="Expire"/> (корректный teardown + OnEffectExpired).
+        /// </summary>
+        public void RemoveByTag(RuntimeUnit unit, Data.Definitions.EffectTag tag, ICombatContext combat)
+        {
+            if (unit == null || tag == Data.Definitions.EffectTag.None || unit.ActiveEffects.Count == 0) return;
+
+            _removeByTagBuffer.Clear();
+            List<RuntimeEffect> effects = unit.ActiveEffects;
+            for (int i = 0; i < effects.Count; i++)
+                if ((effects[i].Def.Tags & tag) != 0) _removeByTagBuffer.Add(effects[i]);
+
+            if (_removeByTagBuffer.Count == 0) return;
+            for (int i = 0; i < _removeByTagBuffer.Count; i++) Expire(unit, _removeByTagBuffer[i], combat);
+            RecomputeControl(unit);
         }
 
         private static void RebuildTagMask(RuntimeUnit unit)

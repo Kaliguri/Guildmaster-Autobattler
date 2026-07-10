@@ -20,6 +20,8 @@ namespace Guildmaster.Presentation
         [Header("Components")]
         [SerializeField] private SpriteRenderer _sprite;
         [SerializeField] private HealthBarView  _healthBar;
+        [Tooltip("Бар ресурса (мана/ярость). Пусто = без бара; скрывается сам для безресурсных юнитов.")]
+        [SerializeField] private ManaBarView    _manaBar;
 
         [Header("Animation (S4) — опционально; пусто = статичный спрайт")]
         [SerializeField] private UnitVisual _visual;
@@ -58,6 +60,9 @@ namespace Guildmaster.Presentation
 
             if (_healthBar != null)
                 _healthBar.Bind(unit);
+
+            if (_manaBar != null)
+                _manaBar.Bind(unit);
         }
 
         /// <summary>Тинт тела юнита: один общий спрайт, разный цвет на персонажа (dev-харнесс, «пока один спрайт»).</summary>
@@ -103,6 +108,9 @@ namespace Guildmaster.Presentation
 
             if (_healthBar != null)
                 _healthBar.UpdateBar(_unit.CurrentHP, _unit.Stats.Get(Data.Stats.StatType.MaxHP));
+
+            if (_manaBar != null)
+                _manaBar.UpdateBar(_unit.CurrentResource, _unit.Stats.Get(Data.Stats.StatType.MaxResource));
         }
 
         // Кадровая анимация листается по рендер-времени — независимо от 30-Гц сим-тика.

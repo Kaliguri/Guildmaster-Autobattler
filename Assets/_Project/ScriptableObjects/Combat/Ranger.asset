@@ -27,6 +27,7 @@ MonoBehaviour:
   _canAttackWhileMoving: 1
   _movingAttackSpeedPenaltyPct: 0.5
   _resourceOnHit: 5
+  _canUseExtendedDeployment: 0
   _stats:
   - Stat: 0
     Op: 0
@@ -45,7 +46,7 @@ MonoBehaviour:
     Value: 9
   - Stat: 20
     Op: 0
-    Value: 3.5
+    Value: 2.1000001
   - Stat: 18
     Op: 0
     Value: 12
@@ -75,6 +76,11 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceTicks: 12
+    _displaceDamageMult: 1
+    _displaceWidth: 1
   _ai:
     _autoAttackTargeting: 4
     _autoAttackMode: 0

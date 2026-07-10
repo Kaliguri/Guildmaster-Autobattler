@@ -87,6 +87,20 @@ namespace Guildmaster.Presentation
         /// Один пулируемый объект-вспышка. Shapes допускает лишь ОДИН ShapeRenderer на GameObject,
         /// поэтому форма фиксируется при создании (Disc ИЛИ Line) и пулы раздельные по форме.
         /// </summary>
+        // Dev-оверлеи рисуем на выделенном верхнем слое сортировки, иначе спрайт арены (слой выше Default)
+        // перекрывает Shapes — они по умолчанию на Default (самый нижний). Резолвим по имени лениво: NameToID
+        // нельзя звать из инициализатора поля MonoBehaviour, поэтому кэшируем при первом обращении (рантайм).
+        private static bool _layerResolved;
+        private static int  _overlayLayerId;
+        private static int OverlayLayerId
+        {
+            get
+            {
+                if (!_layerResolved) { _overlayLayerId = SortingLayer.NameToID("DevOverlay"); _layerResolved = true; }
+                return _overlayLayerId;
+            }
+        }
+
         private sealed class Flash
         {
             public readonly AreaShape Shape;
@@ -116,6 +130,10 @@ namespace Guildmaster.Presentation
                     _line.EndCaps        = LineEndCap.Square;
                     _line.ThicknessSpace = ThicknessSpace.Meters;
                 }
+
+                // Поверх арены/юнитов: выделенный верхний слой сортировки (см. OverlayLayerId).
+                ShapeRenderer r = shape == AreaShape.Circle ? (ShapeRenderer)_disc : _line;
+                r.SortingLayerID = OverlayLayerId;
 
                 Hide();
             }

@@ -34,6 +34,7 @@ Transform:
   - {fileID: 5309287671395967960}
   - {fileID: 425849765106590452}
   - {fileID: 6691307857455241856}
+  - {fileID: 4918292173934757491}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4865536931483169076
@@ -109,6 +110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.UnitView
   _sprite: {fileID: 4865536931483169076}
   _healthBar: {fileID: 7127319717872641838}
+  _manaBar: {fileID: 8000216100949344901}
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
   _onHitFeedback:
     m_PersistentCalls:
@@ -223,6 +225,79 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6680241191612720265, guid: 9094d05663a9485458f1f69e97749669, type: 3}
   m_PrefabInstance: {fileID: 29474553417989641}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2411245925054792053
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2245965703680616668}
+    m_Modifications:
+    - target: {fileID: 2904368747384309972, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_Name
+      value: ManaBar
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2973
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+--- !u!4 &4918292173934757491 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7293368250648807174, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+  m_PrefabInstance: {fileID: 2411245925054792053}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8000216100949344901 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5652032155028390896, guid: 914bb8f630f5cfc4e965296b85274c21, type: 3}
+  m_PrefabInstance: {fileID: 2411245925054792053}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 764e9e775ae772041a8ffcaf9aded32d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.ManaBarView
 --- !u!1001 &3213704030444463326
 PrefabInstance:
   m_ObjectHideFlags: 0

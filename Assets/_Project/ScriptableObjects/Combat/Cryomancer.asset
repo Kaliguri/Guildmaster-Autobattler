@@ -25,7 +25,10 @@ MonoBehaviour:
   _autoAttackWidth: 1
   _autoAttackEffects:
   - {fileID: 11400000, guid: c18d4142e7281344fb0e88c7f19ff1ed, type: 2}
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
   _resourceOnHit: 5
+  _canUseExtendedDeployment: 0
   _stats:
   - Stat: 0
     Op: 0
@@ -44,7 +47,7 @@ MonoBehaviour:
     Value: 3
   - Stat: 20
     Op: 0
-    Value: 2.8
+    Value: 1.6800001
   - Stat: 18
     Op: 0
     Value: 8
@@ -74,6 +77,11 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0.3
     _triggerTag: 128
     _consumesTriggerTag: 1
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceTicks: 12
+    _displaceDamageMult: 1
+    _displaceWidth: 1
   _ai:
     _autoAttackTargeting: 8
     _autoAttackMode: 0

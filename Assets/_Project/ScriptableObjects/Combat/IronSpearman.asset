@@ -22,7 +22,11 @@ MonoBehaviour:
   _visual: {fileID: 0}
   _autoAttackShape: 1
   _autoAttackWidth: 1.5
+  _autoAttackEffects: []
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
   _resourceOnHit: 5
+  _canUseExtendedDeployment: 0
   _stats:
   - Stat: 0
     Op: 0
@@ -41,7 +45,7 @@ MonoBehaviour:
     Value: 8
   - Stat: 20
     Op: 0
-    Value: 3
+    Value: 1.8000001
   - Stat: 27
     Op: 0
     Value: 30
@@ -58,10 +62,20 @@ MonoBehaviour:
     _damageMultiplier: 3
     _areaShape: 2
     _areaRadius: 2.5
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
     _castCondition: 1
     _castConditionCount: 2
     _castConditionRadius: 0
+    _castConditionHpPct: 0.5
     _castOverrideSelfHpPct: 0.25
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceTicks: 12
+    _displaceDamageMult: 1
+    _displaceWidth: 1
   _ai:
     _autoAttackTargeting: 0
     _autoAttackMode: 0

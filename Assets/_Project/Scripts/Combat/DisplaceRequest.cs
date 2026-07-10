@@ -35,6 +35,15 @@ namespace Guildmaster.Combat
         public readonly DamageType   DamageType;
         public readonly float        Width;
 
+        /// <summary>
+        /// Слабое «цепное» отбрасывание врагов, задетых «ядром» на линии полёта (§10.6): &gt;0 — каждый задетый
+        /// не только получает урон, но и сам чуть отбрасывается (что тоже триггерит «Вихревой заход» монаха).
+        /// Держим слабым, чтобы цепные полёты кончались раньше главного и финальный телепорт сел на исходную цель.
+        /// 0 = без цепи (обычное «ядро» — только урон).
+        /// </summary>
+        public readonly float        ChainDistance;
+        public readonly int          ChainTicks;
+
         public DisplaceRequest(
             RuntimeUnit target,
             RuntimeUnit source,
@@ -45,18 +54,22 @@ namespace Guildmaster.Combat
             float       damage,
             DamageType  damageType,
             float       width,
-            DisplaceKind kind = DisplaceKind.Knockback)
+            DisplaceKind kind = DisplaceKind.Knockback,
+            float       chainDistance = 0f,
+            int         chainTicks = 0)
         {
-            Kind       = kind;
-            Target     = target;
-            Source     = source;
-            Direction  = direction;
-            Distance   = distance;
-            Ticks      = ticks;
-            Cannonball = cannonball;
-            Damage     = damage;
-            DamageType = damageType;
-            Width      = width;
+            Kind          = kind;
+            Target        = target;
+            Source        = source;
+            Direction     = direction;
+            Distance      = distance;
+            Ticks         = ticks;
+            Cannonball    = cannonball;
+            Damage        = damage;
+            DamageType    = damageType;
+            Width         = width;
+            ChainDistance = chainDistance;
+            ChainTicks    = chainTicks;
         }
     }
 }

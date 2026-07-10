@@ -103,12 +103,70 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.LessOrEqual(distToVictim, monk.Stats.Get(StatType.AttackRange) + 1e-3f, "Телепорт поставил монаха в пределах досягаемости");
         }
 
+        // ===================== §10.6 полная цепочка: рывок → отбрасывание → телепорт =====================
+
+        [Test]
+        public void DashLanding_KnocksBackEnemy_ThenVortexTeleports_SelfDashNoSelfTeleport()
+        {
+            var sim = BuildSim(1UL);
+            // Монах с двумя пассивами: приземление рывка (→ отбрасывание) и «Вихревой заход» (→ телепорт).
+            var monk     = MakeUnit(0, team: 0, pos: new Vector2(0f, 0f), range: 2f, aad: 10f, moveSpeed: 0f);
+            var enemy    = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f), maxHp: 500f, aad: 0f, moveSpeed: 0f);
+            var bystander = MakeUnit(2, team: 1, pos: new Vector2(4f, 0f), maxHp: 500f, aad: 0f, moveSpeed: 0f); // на линии полёта «ядра»
+            sim.EnqueueUnitSpawn(monk);
+            sim.EnqueueUnitSpawn(enemy);
+            sim.EnqueueUnitSpawn(bystander);
+            sim.Tick(SimConstants.TickDelta); // флаш + регистрация в spatial hash
+
+            sim.ApplyEffect(monk, DashLandingPassive(distance: 4f, ticks: 8, dmgMult: 1.5f), monk);
+            sim.ApplyEffect(monk, VortexPassive(2f), monk);
+
+            float enemyStartX     = enemy.Position.x;
+            float bystanderStartX = bystander.Position.x;
+
+            // Рывок монаха к цели (self-displacement) — как это делает активка «Шквальный толчок».
+            sim.Displace(new DisplaceRequest(monk, monk, new Vector2(1f, 0f),
+                distance: 1f, ticks: 6, cannonball: false, damage: 0f, damageType: DamageType.Physical, width: 0f));
+
+            // Конец рывка → приземление → отбрасывание врага → конец отбрасывания → телепорт монаха.
+            // Усиление ×2 могло быть израсходовано авто-атакой к концу прогона — трекаем максимум за прогон.
+            float maxEmpower = 0f;
+            for (int t = 0; t < 30; t++)
+            {
+                sim.Tick(SimConstants.TickDelta);
+                maxEmpower = Mathf.Max(maxEmpower, monk.EmpowerDamageMult);
+            }
+
+            Assert.Greater(enemy.Position.x, enemyStartX + 1f, "Приземление рывка оттолкнуло врага (фаза «отбрасывание»)");
+            Assert.AreEqual(2f, maxEmpower, 1e-4f, "Конец отбрасывания врага взвёл «Вихревой заход» (×2)");
+            // Финальный телепорт садит монаха вплотную к отброшенной цели (какой именно — детерминировано,
+            // но зависит от того, чей полёт кончился последним; жёстко «исходную» не зашиваем — это интент, не инвариант).
+            float distMain  = (monk.Position - enemy.Position).magnitude;
+            float distChain = (monk.Position - bystander.Position).magnitude;
+            float range = monk.Stats.Get(StatType.AttackRange);
+            Assert.LessOrEqual(Mathf.Min(distMain, distChain), range + 1e-3f, "Монах телепортнулся вплотную к отброшенной цели");
+
+            // «Ядро» задело прохожего на линии: и урон, и слабое цепное отбрасывание (§10.6).
+            Assert.Less(bystander.CurrentHP, 500f, "«Ядро» нанесло урон задетому на линии");
+            Assert.Greater(bystander.Position.x, bystanderStartX + 0.1f, "Задетый «ядром» слабо отброшен (цепь)");
+        }
+
         // ===================== Фабрики / хелперы =====================
 
         private static EffectData VortexPassive(float mult)
         {
             var vortex = new VortexEntryComponent().With("_empowerMult", mult);
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: vortex);
+        }
+
+        private static EffectData DashLandingPassive(float distance, int ticks, float dmgMult)
+        {
+            var landing = new WhirlDashLandingComponent()
+                .With("_displaceDistance", distance)
+                .With("_displaceTicks", ticks)
+                .With("_displaceDamageMult", dmgMult)
+                .With("_displaceWidth", 1.5f);
+            return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: landing);
         }
 
         private static CombatSimulation BuildSim(ulong seed) =>

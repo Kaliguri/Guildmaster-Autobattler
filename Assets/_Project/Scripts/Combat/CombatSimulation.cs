@@ -39,6 +39,19 @@ namespace Guildmaster.Combat
         private readonly List<ICombatCommand> _commandQueue = new List<ICombatCommand>();
         private readonly Queue<CombatEventData> _eventQueue = new Queue<CombatEventData>();
 
+        // Системный эффект-маркер «в полёте» (смещение — это ЭФФЕКТ, вики §4.4): вешается на цель смещения,
+        // несёт жёсткий контроль + тег KnockUp, снимается в конце полёта → единый EffectExpired. Neutral →
+        // длительность не скейлится ReceiveDebuffEff (единственное исключение смещения). Строится в коде,
+        // чтобы не тащить системный .asset в скоуп/тесты.
+        private readonly Data.Definitions.EffectData _airborneEffect =
+            Data.Definitions.EffectData.CreateRuntime(
+                "sys.airborne",
+                Data.Definitions.EffectPolarity.Neutral,
+                Data.Definitions.EffectTag.KnockUp | Data.Definitions.EffectTag.Control,
+                baseDuration: -1f,          // постоянный: снимает DisplacementSystem в конце полёта
+                unremovable: true,          // диспелом не снять — полёт всегда доигрывается
+                new Effects.Components.ControlComponent(preventAct: true, preventMove: true, preventCast: true));
+
         // Защита от бесконечной реентрантности реактивных компонентов (шипы↔шипы): дренаж
         // капается детерминированно — остаток отбрасывается (вики «12» §3.4, спайк S2).
         private const int MaxEventsPerDrain = 512;
@@ -79,8 +92,19 @@ namespace Guildmaster.Combat
         /// <summary>Бой завершён с итогом.</summary>
         public event Action<BattleOutcome> OnBattleEnded;
 
+        /// <summary>Бой сброшен для перезапуска на месте (R): презентация чистит виды/оверлеи. Сцена НЕ перезагружается.</summary>
+        public event Action OnBattleReset;
+
         /// <summary>Зона удара сработала (линия авто-атаки / круг активки) — для dev-оверлея зон.</summary>
         public event Action<AreaHit> OnAreaHit;
+
+        /// <summary>
+        /// Снаряд создан — презентация заводит вид (Bullet), держит ссылку на этот <see cref="Projectile"/>
+        /// и следует за ним интерполяцией. При попадании сим ставит <c>Position</c> = точка удара и
+        /// <c>IsAlive = false</c> в тот же тик, что и <see cref="OnDamageDealt"/> — вид снапается туда и гаснет,
+        /// поэтому визуальный импакт и реальный эффект совпадают (без рассинхрона).
+        /// </summary>
+        public event Action<Projectile> OnProjectileSpawned;
 
         // --- ICombatContext ---
 
@@ -126,11 +150,20 @@ namespace Guildmaster.Combat
             // Опциональный (дефолт — свежий): headless-тесты конструируют симуляцию позиционно без него.
             _displacementSystem = displacementSystem ?? new DisplacementSystem();
 
-            // Смещение завершилось → сигнал реактивам («Вихревой заход»), доставляется источнику толчка.
+            // Полёт завершился → снимаем маркер «в полёте» с цели. Снятие эффекта само поднимет единый
+            // EffectExpired (через OnEffectExpired ниже) — отдельного UnitDisplaced больше нет.
             _displacementSystem.OnDisplacementEnded += (source, target) =>
             {
+                if (target != null)
+                    _effectSystem.RemoveByTag(target, Data.Definitions.EffectTag.KnockUp, this);
+            };
+
+            // Единый шов «эффект закончился»: ретранслируем в EffectExpired, носитель-получатель = источник
+            // эффекта (напр. монах — источник и рывка, и отбрасывания). Реактивы фильтруют по тегам + команде.
+            _effectSystem.OnEffectExpired += (unit, source, tags) =>
+            {
                 if (source != null)
-                    _eventQueue.Enqueue(new CombatEventData(CombatEvent.UnitDisplaced, source, target, 0f));
+                    _eventQueue.Enqueue(new CombatEventData(CombatEvent.EffectExpired, source, unit, 0f, tags));
             };
 
             _deathSystem.OnUnitDied += unit =>
@@ -248,7 +281,7 @@ namespace Guildmaster.Combat
                 ? (spawn.TargetUnit.Position - spawn.StartPosition).normalized * spawn.Speed
                 : Vector2.right * spawn.Speed;
 
-            _projectiles.Add(new Projectile
+            var projectile = new Projectile
             {
                 Id               = _nextProjectileId++,
                 Source           = spawn.Source,
@@ -264,7 +297,9 @@ namespace Guildmaster.Combat
                 IsHeal           = spawn.IsHeal,
                 OnHitEffects     = spawn.OnHitEffects,
                 IsAlive          = true,
-            });
+            };
+            _projectiles.Add(projectile);
+            OnProjectileSpawned?.Invoke(projectile); // презентация заведёт Bullet и будет следовать за ссылкой
         }
 
         public int QueryUnitsInRadius(
@@ -344,12 +379,42 @@ namespace Guildmaster.Combat
 
         public void Displace(in DisplaceRequest req)
         {
+            // Смещение — это ЭФФЕКТ: вешаем маркер «в полёте» (жёсткий контроль + тег KnockUp, длительность
+            // не скейлится — Neutral) на цель, затем отдаём траекторию DisplacementSystem. Маркер снимается
+            // в конце полёта (OnDisplacementEnded → RemoveByTag) и поднимает единый EffectExpired.
+            if (req.Target != null && !req.Target.IsDead)
+                _effectSystem.Apply(req.Target, _airborneEffect, req.Source, this);
             _displacementSystem.Add(in req);
         }
 
         // --- Управление симуляцией (вызывается командами) ---
 
         public void SetPaused(bool paused) => _isPaused = paused;
+
+        /// <summary>
+        /// Сбросить бой для перезапуска НА МЕСТЕ (dev-R): чистим всех юнитов/снаряды/очереди и возвращаем
+        /// исход в <see cref="BattleOutcome.Ongoing"/>. Сцена/камера НЕ трогаются — их не перезагружаем.
+        /// Тик-цикл (<see cref="CombatLoopService"/>) простаивает, пока не-Ongoing, и сам возобновится после сброса.
+        /// Дальше вызывающий заново расставляет бой (тот же сетап) через <see cref="EnqueueUnitSpawn"/>.
+        /// </summary>
+        public void ResetBattle()
+        {
+            OnBattleReset?.Invoke(); // презентация снимает виды/оверлеи до очистки сим-состояния
+
+            _units.Clear();
+            _pendingAdd.Clear();
+            _projectiles.Clear();
+            _eventQueue.Clear();
+            _commandQueue.Clear();
+            _displacementSystem.Clear();  // незавершённые полёты не должны держать ссылки на удалённых юнитов
+            _spatialHash.Rebuild(_units); // пустой список → хэш очищен
+
+            _outcome          = BattleOutcome.Ongoing;
+            _hasSpawned       = false;
+            _isPaused         = false;
+            _currentTick      = 0;
+            _nextProjectileId = 0;
+        }
 
         /// <summary>Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию).</summary>
         public void EnqueueUnitSpawn(RuntimeUnit unit) => _pendingAdd.Add(unit);
@@ -425,7 +490,7 @@ namespace Guildmaster.Combat
                 CombatEventData ev = _eventQueue.Dequeue();
                 RuntimeUnit carrier =
                     ev.Type == CombatEvent.DamageDealt || ev.Type == CombatEvent.Healed
-                    || ev.Type == CombatEvent.UnitKilled || ev.Type == CombatEvent.UnitDisplaced
+                    || ev.Type == CombatEvent.UnitKilled || ev.Type == CombatEvent.EffectExpired
                         ? ev.Source
                         : ev.Target;
 
