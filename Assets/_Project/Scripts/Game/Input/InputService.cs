@@ -28,6 +28,9 @@ namespace Guildmaster.Game.Input
 
         public InputContext Context => _context;
 
+        /// <inheritdoc/>
+        public bool GameplaySuppressed { get; set; }
+
         public event Action CycleViewRequested;
         public event Action PauseToggleRequested;
 
@@ -89,11 +92,13 @@ namespace Guildmaster.Game.Input
             }
         }
 
-        public Vector2 CameraPan     => _pan.ReadValue<Vector2>();
-        public float   CameraZoomDelta => _zoom.ReadValue<float>();
+        // Пока ввод заглушен модальным слоем (консоль/меню) — отдаём нейтраль, чтобы WASD/колесо,
+        // которыми набирают текст в консоли, не таскали и не зумили камеру.
+        public Vector2 CameraPan      => GameplaySuppressed ? Vector2.zero : _pan.ReadValue<Vector2>();
+        public float   CameraZoomDelta => GameplaySuppressed ? 0f : _zoom.ReadValue<float>();
 
-        private void OnCycleView(InputAction.CallbackContext _)   => CycleViewRequested?.Invoke();
-        private void OnPauseToggle(InputAction.CallbackContext _) => PauseToggleRequested?.Invoke();
+        private void OnCycleView(InputAction.CallbackContext _)   { if (!GameplaySuppressed) CycleViewRequested?.Invoke(); }
+        private void OnPauseToggle(InputAction.CallbackContext _) { if (!GameplaySuppressed) PauseToggleRequested?.Invoke(); }
 
         public void Dispose()
         {

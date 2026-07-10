@@ -21,8 +21,15 @@ namespace Guildmaster.Combat.Effects
         /// <summary>Носитель совершил убийство (доставляется УБИЙЦЕ = Source). «Скрытность» ассасина (§10.5).</summary>
         UnitKilled    = 1 << 5,
 
-        /// <summary>Смещение завершилось (доставляется ИСТОЧНИКУ толчка = Source). «Вихревой заход» монаха (§10.6).</summary>
-        UnitDisplaced = 1 << 6,
+        /// <summary>
+        /// Эффект истёк/снят с юнита (доставляется ИСТОЧНИКУ эффекта = Source). Единый шов «эффект закончился»:
+        /// реактив фильтрует по тегам истёкшего эффекта (<see cref="CombatEventData.Tags"/>) и команде юнита,
+        /// на котором он закончился (<see cref="CombatEventData.Target"/>). Так реагируют «Вихревой заход»
+        /// монаха (конец отбрасывания врага) и приземление рывка (конец смещения самого монаха), §10.6.
+        /// Смещение — это эффект (тег <see cref="Guildmaster.Data.Definitions.EffectTag.KnockUp"/>), не жёсткое
+        /// состояние: только длительность не скейлится (Neutral), всё остальное — через систему эффектов.
+        /// </summary>
+        EffectExpired = 1 << 6,
     }
 
     /// <summary>Полезная нагрузка боевого события, диспатчится через внутреннюю FIFO-очередь (Stage 6).</summary>
@@ -33,12 +40,19 @@ namespace Guildmaster.Combat.Effects
         public readonly RuntimeUnit Target;
         public readonly float       Amount;
 
+        /// <summary>Теги, релевантные событию: для <see cref="CombatEvent.EffectExpired"/> — теги истёкшего эффекта. Иначе None.</summary>
+        public readonly Data.Definitions.EffectTag Tags;
+
         public CombatEventData(CombatEvent type, RuntimeUnit source, RuntimeUnit target, float amount)
+            : this(type, source, target, amount, Data.Definitions.EffectTag.None) { }
+
+        public CombatEventData(CombatEvent type, RuntimeUnit source, RuntimeUnit target, float amount, Data.Definitions.EffectTag tags)
         {
             Type   = type;
             Source = source;
             Target = target;
             Amount = amount;
+            Tags   = tags;
         }
     }
 }

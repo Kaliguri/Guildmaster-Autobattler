@@ -1,5 +1,6 @@
 using Guildmaster.Combat;
 using Guildmaster.Combat.Commands;
+using Guildmaster.Core.Input;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using Guildmaster.Presentation;
@@ -41,18 +42,24 @@ namespace Guildmaster.DevTools
         private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
         private RuntimeUnitFactory _factory;
+        private IInputService      _input;
         private QuantumConsole     _console;
+
+        // Открыта ли консоль сейчас: пока да — глушим наш игровой ввод (кроме F5), чтобы набор
+        // команд в консоли не протекал в геймплей (пауза/смена вида/пан-зум/перезапуск боя).
+        private bool _consoleOpen;
 
         // Последний сетап боя для быстрого перезапуска по R. static — переживает релоад сцены.
         private static System.Action<GuildmasterCommands> _lastBattleSetup;
         private static bool _replayLastBattleOnStart;
 
         [Inject]
-        public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory)
+        public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory, IInputService input)
         {
             _simulation = simulation;
             _debugDraw  = debugDraw;
             _factory    = factory;
+            _input      = input;
         }
 
         // Пауза сима, пока консоль открыта: настраиваешь бой за консолью, закрываешь — он идёт с начала
@@ -76,8 +83,21 @@ namespace Guildmaster.DevTools
             }
         }
 
-        private void PauseForConsole()   => _simulation?.SetPaused(true);
-        private void ResumeAfterConsole() => _simulation?.SetPaused(false);
+        // Консоль открыта: пауза сима (настраиваешь бой за консолью, закрываешь — он идёт с начала на
+        // виду) + глушим игровой ввод, чтобы буквы команд не текли в геймплей.
+        private void PauseForConsole()
+        {
+            _consoleOpen = true;
+            _simulation?.SetPaused(true);
+            if (_input != null) _input.GameplaySuppressed = true;
+        }
+
+        private void ResumeAfterConsole()
+        {
+            _consoleOpen = false;
+            _simulation?.SetPaused(false);
+            if (_input != null) _input.GameplaySuppressed = false;
+        }
 
         // Dev-хоткеи (new Input System): F5 — релоад сцены (пустая арена), R — перезапуск последнего боя.
         private void Update()
@@ -91,8 +111,12 @@ namespace Guildmaster.DevTools
 
             Keyboard kb = Keyboard.current;
             if (kb == null) return;
+
+            // F5 работает всегда (жёсткий сброс сцены) — даже с открытой консолью.
             if (kb.f5Key.wasPressedThisFrame) Restart();
-            if (kb.rKey.wasPressedThisFrame)  RestartLastBattle();
+
+            // R (перезапуск боя) глушим, пока консоль открыта: иначе буква «r» в команде дёргает рестарт.
+            if (!_consoleOpen && kb.rKey.wasPressedThisFrame) RestartLastBattle();
         }
 
         /// <summary>Зафиксировать сид боя для детерминизм-отладки (только до старта).</summary>

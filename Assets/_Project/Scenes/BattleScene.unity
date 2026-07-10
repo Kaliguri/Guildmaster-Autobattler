@@ -164,6 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.CombatFocusTarget
   _positionDamping: 4
+  _spreadDamping: 2.5
 --- !u!1 &265839540
 GameObject:
   m_ObjectHideFlags: 0
@@ -1831,6 +1832,7 @@ MonoBehaviour:
   _devPanSpeed: 24
   _actionZoomPadding: 4
   _actionZoomDamping: 3
+  _actionZoomDeadzone: 0.4
   _activePriority: 20
   _inactivePriority: 0
 --- !u!1 &2010715614
@@ -1895,6 +1897,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.CombatPresenter
   _unitViewPrefab: {fileID: 4564468086045929909, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _bulletPrefab: {fileID: 7845730738978694074, guid: 0f227c6ce54550a4a8c1828aa8af5b70, type: 3}
   _floatingTextPrefab: {fileID: 8198921651497659202, guid: 9094d05663a9485458f1f69e97749669, type: 3}
   _damageColor: {r: 1, g: 0.75, b: 0.2, a: 1}
   _healColor: {r: 0.5, g: 1, b: 0.6, a: 1}

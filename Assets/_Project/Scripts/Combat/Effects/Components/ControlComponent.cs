@@ -21,6 +21,17 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Немота: нельзя кастовать способности.")]
         [SerializeField] private bool _preventCast;
 
+        /// <summary>Для сериализованных ассетов (поля выставляет инспектор).</summary>
+        public ControlComponent() { }
+
+        /// <summary>Кодовая сборка (системные эффекты, напр. маркер «в полёте»).</summary>
+        public ControlComponent(bool preventAct, bool preventMove, bool preventCast)
+        {
+            _preventAct  = preventAct;
+            _preventMove = preventMove;
+            _preventCast = preventCast;
+        }
+
         public bool PreventAct => _preventAct;
         public bool PreventMove => _preventMove;
         public bool PreventCast => _preventCast;

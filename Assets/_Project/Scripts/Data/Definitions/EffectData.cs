@@ -50,5 +50,27 @@ namespace Guildmaster.Data.Definitions
         public int CleanseTier => _cleanseTier;
         public bool Unremovable => _unremovable;
         public IEffectComponent[] Components => _components;
+
+        /// <summary>
+        /// Собрать системный эффект в коде (не авторинг-ассет): для эффектов, которые движок создаёт сам,
+        /// напр. маркер смещения «в полёте» (<see cref="EffectTag.KnockUp"/>). Так не заводим лишний .asset и
+        /// не тащим ссылку на него в скоуп/тесты. Компоненты передаются напрямую (те же правила stateless).
+        /// </summary>
+        public static EffectData CreateRuntime(
+            string id, EffectPolarity polarity, EffectTag tags, float baseDuration,
+            bool unremovable, params IEffectComponent[] components)
+        {
+            var d = CreateInstance<EffectData>();
+            d._id           = id;
+            d._polarity     = polarity;
+            d._tags         = tags;
+            d._baseDuration = baseDuration;
+            d._stacking     = StackRule.None;
+            d._maxStacks    = 1;
+            d._cleanseTier  = 0;
+            d._unremovable  = unremovable;
+            d._components   = components ?? System.Array.Empty<IEffectComponent>();
+            return d;
+        }
     }
 }

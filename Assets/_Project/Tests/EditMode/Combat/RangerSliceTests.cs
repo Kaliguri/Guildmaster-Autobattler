@@ -149,6 +149,38 @@ namespace Guildmaster.Tests.EditMode.Combat
             }
         }
 
+        // ===================== Репозиция у стены (вики «15» §7: зажат у стены) =====================
+
+        // Отход прочь строго от врага упирается в стену — юнит не должен стоять/продавливаться наружу,
+        // а репозиционируется вдоль стены (скольжение к центру арены = перебежка мимо/сквозь скопление).
+        [Test]
+        public void Retreat_PinnedAtWall_SlidesAlongWall_NotStuck()
+        {
+            var bounds = new ArenaBounds(Vector2.zero, new Vector2(10f, 10f)); // x,y ∈ [-5, 5]
+            var u     = MakeUnit(0, team: 0, pos: new Vector2(-5f, 0f), positioning: PositioningIntent.Retreat);
+            var enemy = MakeUnit(1, team: 1, pos: new Vector2(-3f, 0f)); // справа → отход в -x упирается в левую стену
+            u.CurrentTarget = enemy; // MoveRetreat ищет ближайшего сам, но Tick требует ненулевую цель
+
+            new MovementSystem().Tick(new List<RuntimeUnit> { u, enemy }, SimConstants.TickDelta, bounds);
+
+            Assert.AreEqual(-5f, u.Position.x, 1e-3f, "За стену по X не продавливается");
+            Assert.Greater(Mathf.Abs(u.Position.y), 1e-4f, "Зажатый у стены идёт ВДОЛЬ неё, а не утыкается на месте");
+        }
+
+        [Test]
+        public void Kite_PinnedAtWall_RepositionsAlongWall()
+        {
+            var bounds = new ArenaBounds(Vector2.zero, new Vector2(10f, 10f)); // x,y ∈ [-5, 5]
+            var u      = MakeUnit(0, team: 0, pos: new Vector2(-5f, 0f), range: 10f, positioning: PositioningIntent.Kite);
+            var target = MakeUnit(1, team: 1, pos: new Vector2(-4.5f, 0f)); // впритык → flee-ветка отхода в стену
+            u.CurrentTarget = target;
+
+            new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, bounds);
+
+            Assert.AreEqual(-5f, u.Position.x, 1e-3f, "Кайт за стену по X не продавливается");
+            Assert.Greater(Mathf.Abs(u.Position.y), 1e-4f, "Кайт, зажатый у стены, перебегает вдоль неё, а не утыкается");
+        }
+
         // ===================== Стрельба на ходу (§9.8) =====================
 
         [Test]

@@ -20,6 +20,9 @@ namespace Guildmaster.Presentation
         [Tooltip("Префаб вида юнита.")]
         [SerializeField] private UnitView _unitViewPrefab;
 
+        [Tooltip("Префаб вида снаряда (Bullet). Пусто = снаряды не визуализируются (сим не меняется).")]
+        [SerializeField] private ProjectileView _bulletPrefab;
+
         [Header("Свои боевые цифры (урон/хил) — один префаб, цвет задаётся здесь")]
         [Tooltip("Общий префаб всплывающей цифры (несёт FloatingText; размер/шрифт/тайминг — на префабе).")]
         [SerializeField] private GameObject _floatingTextPrefab;
@@ -45,7 +48,9 @@ namespace Guildmaster.Presentation
         }
 
         private CombatSimulation            _simulation;
-        private readonly Dictionary<int, UnitView> _views = new Dictionary<int, UnitView>();
+        private readonly Dictionary<int, UnitView>       _views     = new Dictionary<int, UnitView>();
+        private readonly Dictionary<int, ProjectileView> _projViews = new Dictionary<int, ProjectileView>();
+        private readonly List<int>                       _deadProj  = new List<int>();
 
         private ObjectPool<FloatingText>    _textPool;
         private System.Action<FloatingText> _releaseText;
@@ -82,6 +87,7 @@ namespace Guildmaster.Presentation
             _simulation.OnBattleEnded       += HandleBattleEnded;
             _simulation.OnAttackStarted     += HandleAttackStarted;
             _simulation.OnAttackInterrupted += HandleAttackInterrupted;
+            _simulation.OnProjectileSpawned += HandleProjectileSpawned;
 
             EnsureStatusOverlay();
         }
@@ -97,6 +103,7 @@ namespace Guildmaster.Presentation
             _simulation.OnBattleEnded       -= HandleBattleEnded;
             _simulation.OnAttackStarted     -= HandleAttackStarted;
             _simulation.OnAttackInterrupted -= HandleAttackInterrupted;
+            _simulation.OnProjectileSpawned -= HandleProjectileSpawned;
         }
 
         /// <summary>Создать dev-слой статус-колец в рантайме (без правок сцены/префабов) и подать симуляцию.</summary>
@@ -118,6 +125,32 @@ namespace Guildmaster.Presentation
             {
                 kvp.Value.UpdateInterpolation(alpha);
             }
+
+            // Снаряды: следуем за ссылкой на симовый Projectile; когда он исчез (попал/вышел за поле) —
+            // вид снапнулся в точку удара и вернул false → уничтожаем (импакт совпал с цифрой урона).
+            if (_projViews.Count > 0)
+            {
+                _deadProj.Clear();
+                foreach (var kvp in _projViews)
+                    if (!kvp.Value.Tick(alpha)) _deadProj.Add(kvp.Key);
+
+                for (int i = 0; i < _deadProj.Count; i++)
+                {
+                    if (_projViews.TryGetValue(_deadProj[i], out var pv) && pv != null) Destroy(pv.gameObject);
+                    _projViews.Remove(_deadProj[i]);
+                }
+            }
+        }
+
+        private void HandleProjectileSpawned(Projectile projectile)
+        {
+            if (_bulletPrefab == null || projectile == null) return;
+
+            var view = Instantiate(_bulletPrefab, (Vector3)(Vector2)projectile.Position, Quaternion.identity, transform);
+            // Тинт снаряда = цвет юнита-источника (тот же метод, что и тело юнита).
+            Color tint = projectile.Source != null ? TintFor(projectile.Source) : Color.white;
+            view.Bind(projectile, tint);
+            _projViews[projectile.Id] = view;
         }
 
         private void HandleUnitSpawned(RuntimeUnit unit)

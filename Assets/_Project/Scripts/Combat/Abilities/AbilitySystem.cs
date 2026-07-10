@@ -95,26 +95,33 @@ namespace Guildmaster.Combat
             return true;
         }
 
-        /// <summary>«Шквальный толчок» (§9.9): оттолкнуть цель «от себя вперёд» на фикс. дистанцию, урон-ядро по линии.</summary>
+        /// <summary>
+        /// «Шквальный толчок» (§10.6) — фазы 1–2: РЫВОК монаха вплотную к цели + ФИКСАЦИЯ цели оцепенением.
+        /// Смещаем САМОГО кастующего (self-displacement) к точке рядом с целью; эффекты активки (<c>_effects</c>
+        /// = оцепенение) вешаем на цель, чтобы за рывок она не уползла. Фазы 3–4 (отбрасывание → телепорт)
+        /// поднимаются реактивами: приземление рывка (<c>WhirlDashLandingComponent</c>) → отбрасывание, конец
+        /// отбрасывания (<c>VortexEntryComponent</c>) → телепорт в спину. Гейт по дальности — CastCondition.
+        /// </summary>
         private static void ApplyDisplace(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
         {
-            Vector2 dir = target.Position - caster.Position; // от кастующего вперёд
-            float dmg = data.DisplaceDamageMult > 0f
-                ? data.DisplaceDamageMult * caster.Stats.Get(StatType.AutoAttackDamage)
-                : 0f;
-            DamageType dmgType = caster.Relic != null ? caster.Relic.DamageType : DamageType.Physical;
+            Vector2 toTarget = target.Position - caster.Position;
+            float dist = toTarget.magnitude;
+            Vector2 dir = dist > 1e-4f ? toTarget / dist : Vector2.right;
 
-            // Dev-оверлей линии полёта + диски на старте/конце (§10.6, #7) — fire-and-forget, детерминизм не трогает.
-            Vector2 ndir  = dir.sqrMagnitude > 1e-6f ? dir.normalized : Vector2.right;
-            Vector2 start = target.Position;
-            Vector2 end   = start + ndir * data.DisplaceDistance;
-            ctx.ReportAreaHit(AreaHit.Line(start, ndir, data.DisplaceDistance, data.DisplaceWidth, caster.Team));
-            ctx.ReportAreaHit(AreaHit.Circle(start, 0.3f, caster.Team));
-            ctx.ReportAreaHit(AreaHit.Circle(end,   0.3f, caster.Team));
+            // Приземляемся вплотную (в пределах радиуса атаки), а не в саму точку цели.
+            float adjacency = caster.Stats.Get(StatType.AttackRange) * 0.5f;
+            float dashDist  = Mathf.Max(0f, dist - adjacency);
 
+            // Фиксация цели: оцепенение (эффекты активки) — цель стоит, пока монах подлетает.
+            ApplyEffects(target, data, caster, ctx);
+
+            // Dev-оверлей линии рывка (fire-and-forget).
+            ctx.ReportAreaHit(AreaHit.Line(caster.Position, dir, dashDist, 0.4f, caster.Team));
+
+            // Рывок = смещение самого кастующего, без «ядра». Приземление (EffectExpired на себе) поднимет отбрасывание.
             ctx.Displace(new DisplaceRequest(
-                target, caster, dir, data.DisplaceDistance, data.DisplaceTicks,
-                cannonball: true, damage: dmg, damageType: dmgType, width: data.DisplaceWidth));
+                caster, caster, dir, dashDist, data.DisplaceTicks,
+                cannonball: false, damage: 0f, damageType: DamageType.Physical, width: 0f));
         }
 
         /// <summary>Условие каста (блок D). Отмена по своему HP% (блок E) решается в <see cref="TryCast"/> до вызова.</summary>

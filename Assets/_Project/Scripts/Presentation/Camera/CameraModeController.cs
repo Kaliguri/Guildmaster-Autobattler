@@ -52,6 +52,8 @@ namespace Guildmaster.Presentation
         [SerializeField] private float _actionZoomPadding = 4f;
         [Tooltip("Скорость подгона орто-размера экшн-камеры.")]
         [SerializeField] private float _actionZoomDamping = 3f;
+        [Tooltip("Дедзона зума (орто-ед.): цель зума обновляем, лишь когда разброс ушёл дальше — гасит микро-подстройку.")]
+        [SerializeField] private float _actionZoomDeadzone = 0.4f;
 
         [Header("Приоритеты")]
         [SerializeField] private int _activePriority = 20;
@@ -63,6 +65,8 @@ namespace Guildmaster.Presentation
 
         private CameraMode _mode = CameraMode.Action;
         private bool _devAccess;
+        // Удерживаемая цель зума экшн-камеры (обновляется через дедзону, см. DriveActionZoom). ≤0 = ещё не задана.
+        private float _actionZoomTarget = -1f;
 
         /// <summary>Разблокирован ли dev-режим камеры (доступ выдаётся отдельно, вики «16» §6).</summary>
         public bool DevAccess => _devAccess;
@@ -213,10 +217,16 @@ namespace Guildmaster.Presentation
             if (_actionCam == null || _focus == null || !_focus.HasUnits) return;
 
             LensSettings lens = _actionCam.Lens;
-            float desired = Mathf.Max(_minZoom, _focus.Spread + _actionZoomPadding);
-            desired = Mathf.Min(desired, MaxZoomForZone());
+            float desired = Mathf.Clamp(_focus.Spread + _actionZoomPadding, _minZoom, MaxZoomForZone());
+
+            // Дедзона: удерживаемую цель зума двигаем, лишь когда разброс отошёл от неё дальше порога —
+            // камера не гоняется за микро-колебаниями (юниты «дышат» на месте), но реагирует на реальный
+            // разлёт/сжатие боя. Затем плавно тянемся к удерживаемой цели.
+            if (_actionZoomTarget <= 0f || Mathf.Abs(desired - _actionZoomTarget) > _actionZoomDeadzone)
+                _actionZoomTarget = desired;
+
             float t = 1f - Mathf.Exp(-_actionZoomDamping * Time.deltaTime);
-            lens.OrthographicSize = Mathf.Lerp(lens.OrthographicSize, desired, t);
+            lens.OrthographicSize = Mathf.Lerp(lens.OrthographicSize, _actionZoomTarget, t);
             _actionCam.Lens = lens;
         }
 
