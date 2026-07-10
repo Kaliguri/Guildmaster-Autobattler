@@ -23,7 +23,11 @@ MonoBehaviour:
   _visual: {fileID: 0}
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackEffects: []
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
   _resourceOnHit: 5
+  _canUseExtendedDeployment: 0
   _stats:
   - Stat: 0
     Op: 0
@@ -42,7 +46,7 @@ MonoBehaviour:
     Value: 4
   - Stat: 20
     Op: 0
-    Value: 3.2
+    Value: 1.9200001
   - Stat: 18
     Op: 0
     Value: 8
@@ -69,6 +73,13 @@ MonoBehaviour:
     _castConditionRadius: 0
     _castConditionHpPct: 0.5
     _castOverrideSelfHpPct: 0.3
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceTicks: 12
+    _displaceDamageMult: 1
+    _displaceWidth: 1
   _ai:
     _autoAttackTargeting: 7
     _autoAttackMode: 1

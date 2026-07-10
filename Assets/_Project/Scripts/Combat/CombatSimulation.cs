@@ -92,6 +92,9 @@ namespace Guildmaster.Combat
         /// <summary>Бой завершён с итогом.</summary>
         public event Action<BattleOutcome> OnBattleEnded;
 
+        /// <summary>Бой сброшен для перезапуска на месте (R): презентация чистит виды/оверлеи. Сцена НЕ перезагружается.</summary>
+        public event Action OnBattleReset;
+
         /// <summary>Зона удара сработала (линия авто-атаки / круг активки) — для dev-оверлея зон.</summary>
         public event Action<AreaHit> OnAreaHit;
 
@@ -387,6 +390,30 @@ namespace Guildmaster.Combat
         // --- Управление симуляцией (вызывается командами) ---
 
         public void SetPaused(bool paused) => _isPaused = paused;
+
+        /// <summary>
+        /// Сбросить бой для перезапуска НА МЕСТЕ (dev-R): чистим всех юнитов/снаряды/очереди и возвращаем
+        /// исход в <see cref="BattleOutcome.Ongoing"/>. Сцена/камера НЕ трогаются — их не перезагружаем.
+        /// Тик-цикл (<see cref="CombatLoopService"/>) простаивает, пока не-Ongoing, и сам возобновится после сброса.
+        /// Дальше вызывающий заново расставляет бой (тот же сетап) через <see cref="EnqueueUnitSpawn"/>.
+        /// </summary>
+        public void ResetBattle()
+        {
+            OnBattleReset?.Invoke(); // презентация снимает виды/оверлеи до очистки сим-состояния
+
+            _units.Clear();
+            _pendingAdd.Clear();
+            _projectiles.Clear();
+            _eventQueue.Clear();
+            _commandQueue.Clear();
+            _spatialHash.Rebuild(_units); // пустой список → хэш очищен
+
+            _outcome          = BattleOutcome.Ongoing;
+            _hasSpawned       = false;
+            _isPaused         = false;
+            _currentTick      = 0;
+            _nextProjectileId = 0;
+        }
 
         /// <summary>Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию).</summary>
         public void EnqueueUnitSpawn(RuntimeUnit unit) => _pendingAdd.Add(unit);

@@ -49,9 +49,9 @@ namespace Guildmaster.DevTools
         // команд в консоли не протекал в геймплей (пауза/смена вида/пан-зум/перезапуск боя).
         private bool _consoleOpen;
 
-        // Последний сетап боя для быстрого перезапуска по R. static — переживает релоад сцены.
+        // Последний сетап боя для быстрого перезапуска по R. static — переживает релоад сцены (F5),
+        // чтобы R после F5 всё ещё знал последний бой.
         private static System.Action<GuildmasterCommands> _lastBattleSetup;
-        private static bool _replayLastBattleOnStart;
 
         [Inject]
         public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory, IInputService input)
@@ -99,16 +99,9 @@ namespace Guildmaster.DevTools
             if (_input != null) _input.GameplaySuppressed = false;
         }
 
-        // Dev-хоткеи (new Input System): F5 — релоад сцены (пустая арена), R — перезапуск последнего боя.
+        // Dev-хоткеи (new Input System): F5 — полный релоад сцены (пустая арена), R — рестарт боя НА МЕСТЕ.
         private void Update()
         {
-            // Отложенный повтор последнего сетапа после R-релоада — как только симуляция готова.
-            if (_replayLastBattleOnStart && _simulation != null)
-            {
-                _replayLastBattleOnStart = false;
-                _lastBattleSetup?.Invoke(this);
-            }
-
             Keyboard kb = Keyboard.current;
             if (kb == null) return;
 
@@ -297,27 +290,27 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10.6.</summary>
-        [Command("gm_spawn_monk", "Заспавнить Монаха вихря против кластера болванчиков (срез §10.6)")]
-        public void SpawnMonk(int enemies = 3, float enemyHp = 150f)
+        [Command("gm_spawn_monk", "Заспавнить Монаха вихря против болванчиков (срез §10.6)")]
+        public void SpawnMonk(int enemies = 3, float enemyHp = 150f, float enemyDamage = 5f)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
             if (_monkRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _monkRelic в инспекторе"); return; }
 
-            // Монах слева — через фабрику (реальный путь: «Шквальный толчок» = отбрасывание + «ядро» по линии,
-            // «Вихревой заход» = телепорт к цели + усиленный удар в конце полёта).
+            // Монах слева — через фабрику (реальный путь: рывок → фиксация → отбрасывание → телепорт, §10.6).
             _simulation.EnqueueUnitSpawn(_factory.Create(_monkRelic, null, team: 0, new Vector2(-5f, 0f)));
 
-            // Кластер болванчиков справа: чтобы «ядро» пролетало сквозь нескольких (толкаем одного в других).
+            // Болванчики справа расставлены пошире (интервал 1.6) — виден заход рывком к конкретной цели,
+            // а не в плотную кашу. Урон болванчиков задаётся параметром (по умолчанию низкий — бой дольше).
             int nextId = _simulation.Units.Count + 1;
             for (int i = 0; i < enemies; i++)
             {
-                float y = (i - (enemies - 1) * 0.5f) * 0.7f; // компактно — толкаемый задевает соседей
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 10f, nextId++));
+                float y = (i - (enemies - 1) * 0.5f) * 1.6f;
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, enemyDamage, nextId++));
             }
 
-            _lastBattleSetup = self => self.SpawnMonk(enemies, enemyHp);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков");
+            _lastBattleSetup = self => self.SpawnMonk(enemies, enemyHp, enemyDamage);
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков (урон {enemyDamage})");
         }
 
         /// <summary>Выставить HP юниту по ID.</summary>
@@ -364,8 +357,11 @@ namespace Guildmaster.DevTools
             SceneManager.LoadScene(active.name);
         }
 
-        /// <summary>R: перезапустить ПОСЛЕДНИЙ бой — релоад сцены + повтор последнего сетапа (dev-итерация).</summary>
-        [Command("gm_restart_battle", "Перезапустить последний бой (релоад сцены + повтор последнего сетапа)")]
+        /// <summary>
+        /// R: перезапустить ПОСЛЕДНИЙ бой НА МЕСТЕ — сброс сима (юниты/снаряды/исход) + повтор последнего сетапа.
+        /// Сцену и камеру НЕ перезагружаем: заново начинается только бой (dev-итерация).
+        /// </summary>
+        [Command("gm_restart_battle", "Перезапустить последний бой на месте (без перезагрузки сцены)")]
         public void RestartLastBattle()
         {
             if (_lastBattleSetup == null)
@@ -373,8 +369,9 @@ namespace Guildmaster.DevTools
                 Debug.LogWarning("[GuildmasterCommands] - gm_restart_battle: последний бой не задан (сначала запусти любой gm_spawn_*)");
                 return;
             }
-            _replayLastBattleOnStart = true;
-            Restart();
+            _simulation?.ResetBattle();
+            Time.timeScale = 1f;   // на случай, если бой был на паузе (Space) — снимаем заморозку презентации
+            _lastBattleSetup.Invoke(this);
         }
 
         /// <summary>Включить/выключить Shapes debug-слой.</summary>
@@ -405,7 +402,7 @@ namespace Guildmaster.DevTools
                 new StatModifier(StatType.AutoAttackDamage, ModifierOp.Flat, damage),
                 new StatModifier(StatType.AttackSpeed,      ModifierOp.Flat, 1f),
                 new StatModifier(StatType.AttackRange,      ModifierOp.Flat, 1.5f),
-                new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, 3f),
+                new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, 1.8f),
             });
             return new RuntimeUnit
             {

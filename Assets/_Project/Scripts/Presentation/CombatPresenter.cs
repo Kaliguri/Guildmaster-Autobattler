@@ -88,6 +88,7 @@ namespace Guildmaster.Presentation
             _simulation.OnAttackStarted     += HandleAttackStarted;
             _simulation.OnAttackInterrupted += HandleAttackInterrupted;
             _simulation.OnProjectileSpawned += HandleProjectileSpawned;
+            _simulation.OnBattleReset       += HandleBattleReset;
 
             EnsureStatusOverlay();
         }
@@ -104,6 +105,20 @@ namespace Guildmaster.Presentation
             _simulation.OnAttackStarted     -= HandleAttackStarted;
             _simulation.OnAttackInterrupted -= HandleAttackInterrupted;
             _simulation.OnProjectileSpawned -= HandleProjectileSpawned;
+            _simulation.OnBattleReset       -= HandleBattleReset;
+        }
+
+        // Перезапуск боя на месте (dev-R): снимаем все виды юнитов и снарядов. Сцена/камера не трогаются;
+        // новый сетап заспавнит юнитов заново через OnUnitSpawned.
+        private void HandleBattleReset()
+        {
+            foreach (var kvp in _views)
+                if (kvp.Value != null) Destroy(kvp.Value.gameObject);
+            _views.Clear();
+
+            foreach (var kvp in _projViews)
+                if (kvp.Value != null) Destroy(kvp.Value.gameObject);
+            _projViews.Clear();
         }
 
         /// <summary>Создать dev-слой статус-колец в рантайме (без правок сцены/префабов) и подать симуляцию.</summary>
