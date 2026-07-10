@@ -60,8 +60,8 @@ Canvas:
   m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 380201804
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!222 &8394570634597811694
 CanvasRenderer:

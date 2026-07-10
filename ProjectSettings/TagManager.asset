@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
@@ -41,3 +41,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 332801758
+    locked: 0
+  - name: GroundFX
+    uniqueID: 1534749349
+    locked: 0
+  - name: Units
+    uniqueID: 1980666811
+    locked: 0
+  - name: OverheadFX
+    uniqueID: 1046995928
+    locked: 0
+  - name: WorldUI
+    uniqueID: 380201804
+    locked: 0
+  m_RenderingLayers:
+  - Default
+  m_MigratedRenderPipelines: []
