@@ -56,6 +56,9 @@ TagManager:
   - name: WorldUI
     uniqueID: 380201804
     locked: 0
+  - name: DevOverlay
+    uniqueID: 1122334455
+    locked: 0
   m_RenderingLayers:
   - Default
   m_MigratedRenderPipelines: []

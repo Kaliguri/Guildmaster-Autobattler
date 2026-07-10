@@ -26,6 +26,19 @@ namespace Guildmaster.Presentation
         private const float RingStep   = 0.13f;
         private const float Thickness  = 0.06f;
 
+        // Верхний слой сортировки для dev-оверлеев (иначе спрайт арены перекрывает Shapes — они на Default).
+        // Ленивый резолв: NameToID нельзя из инициализатора поля MonoBehaviour — кэшируем при первом обращении.
+        private static bool _layerResolved;
+        private static int  _overlayLayerId;
+        private static int OverlayLayerId
+        {
+            get
+            {
+                if (!_layerResolved) { _overlayLayerId = SortingLayer.NameToID("DevOverlay"); _layerResolved = true; }
+                return _overlayLayerId;
+            }
+        }
+
         private CombatSimulation _simulation;
         private bool _enabled = true;
 
@@ -96,6 +109,7 @@ namespace Guildmaster.Presentation
             disc.Geometry       = DiscGeometry.Flat2D;
             disc.Type           = DiscType.Ring;
             disc.ThicknessSpace = ThicknessSpace.Meters;
+            disc.SortingLayerID = OverlayLayerId; // поверх арены/юнитов
             _pool.Add(disc);
             return disc;
         }
