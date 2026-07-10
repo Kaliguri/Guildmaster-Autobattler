@@ -39,6 +39,13 @@ namespace Guildmaster.Data.Definitions
     [Serializable]
     public sealed class AIProfile
     {
+        /// <summary>
+        /// Дефолт порога <see cref="PassiveTrigger.OnHitAbovePctMaxHp"/> (доля макс HP цели, 0..1).
+        /// Единственное объявление значения — использовать здесь, в дефолтах и в фолбэках компонентов
+        /// (вики «13» §4.2 п.2). TODO пакет 2: переезжает в SimTuningConfig.
+        /// </summary>
+        public const float DefaultPassiveThresholdPct = 0.2f;
+
         [Header("Auto-attack targeting (block A)")]
         [Tooltip("Кого бьёт авто-атака. Один режим (дропдаун). Тай-брейк — дистанция, затем Id.")]
         [SerializeField] private TargetingMode _autoAttackTargeting = TargetingMode.Nearest;
@@ -59,7 +66,7 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private PassiveTrigger _passiveTrigger = PassiveTrigger.None;
 
         [Tooltip("Порог для OnHitAbovePctMaxHp — доля макс HP цели (0..1).")]
-        [SerializeField] private float _passiveThresholdPct = 0.2f;
+        [SerializeField] private float _passiveThresholdPct = DefaultPassiveThresholdPct;
 
         /// <summary>Безпараметрический — для Unity-сериализации и дефолтов (Nearest, без отступления).</summary>
         public AIProfile() { }
@@ -72,7 +79,7 @@ namespace Guildmaster.Data.Definitions
             Retreat        retreat             = default,
             Kite           kite                = default,
             PassiveTrigger passiveTrigger      = PassiveTrigger.None,
-            float          passiveThresholdPct = 0.2f)
+            float          passiveThresholdPct = DefaultPassiveThresholdPct)
         {
             _autoAttackTargeting = autoAttackTargeting;
             _autoAttackMode      = autoAttackMode;

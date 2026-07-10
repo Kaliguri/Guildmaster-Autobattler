@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -77,7 +78,7 @@ namespace Guildmaster.Combat.Effects.Components
         private static RuntimeUnit NearestEnemy(RuntimeUnit monk, UnityEngine.Vector2 from, ICombatContext combat, RuntimeUnit exclude)
         {
             var buffer = new List<RuntimeUnit>();
-            combat.QueryUnitsInRadius(from, 500f, buffer, TargetFilter.Enemies, monk.Team);
+            combat.QueryUnitsInRadius(from, SimConstants.GlobalSearchRadius, buffer, TargetFilter.Enemies, monk.Team);
 
             RuntimeUnit best = null;
             float bestSq = float.MaxValue;

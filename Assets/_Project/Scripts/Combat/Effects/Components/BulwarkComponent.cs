@@ -61,7 +61,7 @@ namespace Guildmaster.Combat.Effects.Components
                     return true;
 
                 case PassiveTrigger.OnHitAbovePctMaxHp:
-                    float threshold = (ai != null ? ai.PassiveThresholdPct : 0.2f) * self.Stats.Get(StatType.MaxHP);
+                    float threshold = (ai != null ? ai.PassiveThresholdPct : AIProfile.DefaultPassiveThresholdPct) * self.Stats.Get(StatType.MaxHP);
                     return req.RawDamage > threshold || req.RawDamage >= self.CurrentHP;
 
                 default:

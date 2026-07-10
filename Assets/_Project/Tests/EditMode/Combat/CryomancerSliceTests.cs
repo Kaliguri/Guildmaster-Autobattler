@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects.Components;
+using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -51,7 +52,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var system      = new ProjectileSystem();
             var projectiles = new List<Projectile> { proj };
             for (int t = 0; t < 32 && (enemy.EffectTagMask & EffectTag.Frozen) == 0; t++)
-                system.Tick(projectiles, units, ctx, SimConstants.TickDelta);
+                system.Tick(projectiles, units, ctx, SimConstants.TickDelta, ArenaBounds.Unbounded);
 
             Assert.AreNotEqual(EffectTag.None, enemy.EffectTagMask & EffectTag.Frozen, "Снаряд при попадании вешает «Заморозку»");
             Assert.AreEqual(1, ctx.DamageCalls.Count, "Урон снаряда тоже применён (on-hit не заменяет урон)");

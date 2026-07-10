@@ -500,6 +500,9 @@ namespace Guildmaster.DevTools
             Time.timeScale = 1f;
         }
 
+        // Автономные стат-значения dev-болванчика для сценариев gm_spawn_* (НЕ из StatsConfig: метод
+        // статический, DI недоступен). Продакшн-дефолты юнита живут в StatsConfig.Defaults (вики «13»
+        // §3.4/§4.2 п.6); держим их раздельно осознанно, чтобы не плодить тихий дрейф баланса.
         private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f, float range = 1.5f)
         {
             var stats = new Stats(null);

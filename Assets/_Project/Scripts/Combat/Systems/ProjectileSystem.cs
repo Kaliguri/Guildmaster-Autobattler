@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Guildmaster.Core.Arena;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -10,8 +12,8 @@ namespace Guildmaster.Combat
     /// </summary>
     public sealed class ProjectileSystem
     {
-        /// <summary>Обновить все живые снаряды за один тик.</summary>
-        public void Tick(List<Projectile> projectiles, List<RuntimeUnit> units, ICombatContext ctx, float dt)
+        /// <summary>Обновить все живые снаряды за один тик. <paramref name="arena"/> — границы поля для деспавна (§4.2 п.4).</summary>
+        public void Tick(List<Projectile> projectiles, List<RuntimeUnit> units, ICombatContext ctx, float dt, in ArenaBounds arena)
         {
             for (int i = 0; i < projectiles.Count; i++)
             {
@@ -26,7 +28,7 @@ namespace Guildmaster.Combat
                 }
                 else
                 {
-                    AdvanceFreeFlying(p, dt, units, ctx);
+                    AdvanceFreeFlying(p, dt, units, ctx, in arena);
                 }
             }
 
@@ -55,7 +57,7 @@ namespace Guildmaster.Combat
             }
         }
 
-        private static void AdvanceFreeFlying(Projectile p, float dt, List<RuntimeUnit> units, ICombatContext ctx)
+        private static void AdvanceFreeFlying(Projectile p, float dt, List<RuntimeUnit> units, ICombatContext ctx, in ArenaBounds arena)
         {
             Vector2 newPos = p.Position + p.Velocity * dt;
 
@@ -73,7 +75,7 @@ namespace Guildmaster.Combat
 
             p.Position = newPos;
 
-            if (IsOutOfBounds(p.Position)) p.IsAlive = false;
+            if (IsOutOfBounds(p.Position, in arena)) p.IsAlive = false;
         }
 
         private static void ApplyHit(Projectile p, RuntimeUnit target, ICombatContext ctx)
@@ -131,8 +133,16 @@ namespace Guildmaster.Combat
             return distSq <= radius * radius;
         }
 
-        private static bool IsOutOfBounds(Vector2 pos) =>
-            Mathf.Abs(pos.x) > 200f || Mathf.Abs(pos.y) > 200f;
+        // Снаряд гаснет, выйдя за границы арены на ProjectileDespawnMargin (§4.2 п.4). Бесконечное поле
+        // (headless-тесты, бой без арены) → Size = +∞ → снаряд не деспавнится по границам (как и стены).
+        private static bool IsOutOfBounds(Vector2 pos, in ArenaBounds arena)
+        {
+            Vector2 center = arena.Center;
+            Vector2 size   = arena.Size;
+            float halfX = size.x * 0.5f + SimConstants.ProjectileDespawnMargin;
+            float halfY = size.y * 0.5f + SimConstants.ProjectileDespawnMargin;
+            return Mathf.Abs(pos.x - center.x) > halfX || Mathf.Abs(pos.y - center.y) > halfY;
+        }
 
         private static void RemoveDead(List<Projectile> projectiles)
         {

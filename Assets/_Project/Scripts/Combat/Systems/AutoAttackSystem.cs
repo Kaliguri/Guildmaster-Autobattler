@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Guildmaster.Combat.Effects;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -114,7 +115,7 @@ namespace Guildmaster.Combat
             if (IsHealMode(unit))
             {
                 float healSpeed  = unit.Stats.Get(StatType.ProjectileSpeed);
-                float healRadius = unit.Stats.Get(StatType.Size) * 0.25f;
+                float healRadius = unit.Stats.Get(StatType.Size) * SimConstants.ProjectileHitRadiusFactor;
                 ctx.SpawnProjectile(new ProjectileSpawn(
                     unit, unit.Position, target,
                     healSpeed, healRadius, raw, dmgType, ctx.ArmorK, maxPierces: 0, isHeal: true));
@@ -145,7 +146,7 @@ namespace Guildmaster.Combat
             {
                 float speed = unit.Stats.Get(StatType.ProjectileSpeed);
                 int   pierces = (int)unit.Stats.Get(StatType.ProjectilePierce);
-                float collRadius = unit.Stats.Get(StatType.Size) * 0.25f;
+                float collRadius = unit.Stats.Get(StatType.Size) * SimConstants.ProjectileHitRadiusFactor;
 
                 // On-hit эффекты (§9.1) едут на снаряде — накладываются в ProjectileSystem при попадании.
                 ctx.SpawnProjectile(new ProjectileSpawn(

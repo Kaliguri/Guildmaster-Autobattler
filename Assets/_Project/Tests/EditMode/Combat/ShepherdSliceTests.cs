@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
+using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -78,7 +79,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var projectiles = new List<Projectile> { proj };
             var system = new ProjectileSystem();
             for (int t = 0; t < 32 && ctx.Heals.Count == 0; t++)
-                system.Tick(projectiles, units, ctx, SimConstants.TickDelta);
+                system.Tick(projectiles, units, ctx, SimConstants.TickDelta, ArenaBounds.Unbounded);
 
             Assert.AreEqual(1, ctx.Heals.Count, "Снаряд при попадании лечит цель");
             Assert.AreSame(ally, ctx.Heals[0].Target);

@@ -215,7 +215,7 @@ namespace Guildmaster.Combat
             _separationSystem.Tick(_units, _spatialHash, in _arena);
             _spatialHash.Rebuild(_units);
             _autoAttackSystem.Tick(_units, this, dt);
-            _projectileSystem.Tick(_projectiles, _units, this, dt);
+            _projectileSystem.Tick(_projectiles, _units, this, dt, in _arena);
             _regenSystem.Tick(_units, dt);
             _effectSystem.Tick(_units, this, dt);
             DrainEventQueue();
