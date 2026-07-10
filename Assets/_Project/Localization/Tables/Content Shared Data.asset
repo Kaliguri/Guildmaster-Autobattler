@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Content Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Content
+  m_TableCollectionNameGuidString: f2fc04871d16f7e4e9aee9b053d85757
+  m_Entries:
+  - m_Id: 2796550348800
+    m_Key: relic.assassin.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2796625846272
+    m_Key: relic.assassin.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471296
+    m_Key: relic.cryomancer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471297
+    m_Key: relic.cryomancer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471298
+    m_Key: relic.defender.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471299
+    m_Key: relic.defender.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471300
+    m_Key: relic.iron_spearman.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471301
+    m_Key: relic.iron_spearman.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471302
+    m_Key: relic.ranger.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471303
+    m_Key: relic.ranger.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471304
+    m_Key: relic.whirl_monk.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471305
+    m_Key: relic.whirl_monk.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471306
+    m_Key: relic.light_shepherd.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471307
+    m_Key: relic.light_shepherd.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471308
+    m_Key: effect.bulwark.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471309
+    m_Key: effect.bulwark_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471310
+    m_Key: effect.dodge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471311
+    m_Key: effect.frozen.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471312
+    m_Key: effect.hunters_mark.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471313
+    m_Key: effect.ice_chains_stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471314
+    m_Key: effect.resolute_strike_stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471315
+    m_Key: effect.resolute_strike_weaken.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471316
+    m_Key: effect.stealth.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471317
+    m_Key: effect.stealth_buff.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471318
+    m_Key: effect.vortex_dash_landing.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471319
+    m_Key: effect.vortex_entry.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471320
+    m_Key: effect.vortex_hold.name
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5615026876324512145
+  references:
+    version: 2
+    RefIds:
+    - rid: 5615026876324512145
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1783726656879

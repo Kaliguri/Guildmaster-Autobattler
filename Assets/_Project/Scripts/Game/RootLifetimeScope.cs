@@ -1,4 +1,5 @@
 using Guildmaster.Core.Input;
+using Guildmaster.Core.Localization;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Input;
@@ -34,6 +35,10 @@ namespace Guildmaster.Game
             builder.RegisterInstance(_gameConfig);
 
             builder.Register<UnityAudioService>(Lifetime.Singleton).As<IAudioService>();
+
+            // Локализация: сервис поверх String Tables (вики «13» §5). Потребители (UI) — Фаза 7.
+            builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();
+
             builder.Register<SceneLoader>(Lifetime.Singleton);
             builder.Register<GameFlow>(Lifetime.Singleton);
 

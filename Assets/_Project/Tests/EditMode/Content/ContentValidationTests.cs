@@ -87,6 +87,20 @@ namespace Guildmaster.Tests.EditMode.Content
             }
         }
 
+        // --- §8 правило 4: обязательные ключи локализации по доменам ---
+
+        [Test]
+        public void RequiredLocalizationKeys_Exist()
+        {
+            foreach (ContentDefinition def in AllContent())
+            {
+                IReadOnlyList<string> missing = ContentLocalization.MissingKeys(def);
+                Assert.IsEmpty(missing,
+                    $"Content '{def.Id}' ({AssetDatabase.GetAssetPath(def)}) missing required localization key(s): " +
+                    $"[{string.Join(", ", missing)}] — open it in the inspector and press 'Create missing keys'.");
+            }
+        }
+
         // --- §8 правило 5: диапазоны и кросс-инварианты ---
 
         [Test]

@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Content_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: f2fc04871d16f7e4e9aee9b053d85757, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 2796550348800
+    m_Localized: Assassin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2796625846272
+    m_Localized: A swift killer who cuts down a weak target and slips out of focus.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471296
+    m_Localized: Cryomancer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471297
+    m_Localized: An ice mage who sets up control and catches enemies in a window
+      of weakness.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471298
+    m_Localized: Defender
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471299
+    m_Localized: A steadfast frontliner who holds the line and shields allies.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471300
+    m_Localized: Iron Spearman
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471301
+    m_Localized: A disciplined vanguard who pushes the front with linear damage.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471302
+    m_Localized: Ranger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471303
+    m_Localized: A mobile hunter who keeps constant pressure on the priority target.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471304
+    m_Localized: Whirl Monk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471305
+    m_Localized: An agile combat master who breaks enemy formation with a flurry
+      of shoves.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471306
+    m_Localized: Light Shepherd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471307
+    m_Localized: A battle healer who keeps the team hanging on the edge of survival.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471308
+    m_Localized: Bulwark
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471309
+    m_Localized: Bulwark Shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471310
+    m_Localized: Dodge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471311
+    m_Localized: Frozen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471312
+    m_Localized: Hunter's Mark
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471313
+    m_Localized: Ice Chains
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471314
+    m_Localized: 'Resolute Strike: Stun'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471315
+    m_Localized: 'Resolute Strike: Weaken'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471316
+    m_Localized: Stealth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471317
+    m_Localized: Stealth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471318
+    m_Localized: Vortex Landing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471319
+    m_Localized: Vortex
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3196892471320
+    m_Localized: Vortex Hold
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
