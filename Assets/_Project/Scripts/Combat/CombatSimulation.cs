@@ -23,6 +23,9 @@ namespace Guildmaster.Combat
         private readonly IRngService         _rng;
         private readonly float               _armorK;
         private readonly ArenaBounds         _arena;
+        // Зона деспавна снарядов = видимая область камеры (CameraZone) + margin: снаряд гаснет ЗА
+        // пределами видимого игроку, а не на краю арены (решение Макса). Фолбэк — границы арены.
+        private readonly ArenaBounds         _projectileDespawnBounds;
         // Не readonly: dev re-bake (gm_tuning_rebake) применяет новый тюнинг к идущему бою (tainted).
         private SimTuning                    _tuning;
         private readonly SpatialHash         _spatialHash;
@@ -144,12 +147,15 @@ namespace Guildmaster.Combat
             RegenSystem       regenSystem,
             DisplacementSystem displacementSystem = null,
             ArenaBounds?      arena              = null,
-            SimTuning?        tuning             = null)
+            SimTuning?        tuning             = null,
+            Rect2D?           cameraZone         = null)
         {
             _rng              = rng;
             _armorK           = armorK;
             // null → бесконечное поле (headless-тесты, бой без заданной арены). НЕ default(ArenaBounds).
             _arena            = arena ?? ArenaBounds.Unbounded;
+            // Деспавн снарядов — по видимой зоне камеры; не задана → границы арены (в т.ч. Unbounded).
+            _projectileDespawnBounds = new ArenaBounds(cameraZone ?? _arena.Rect);
             // null → код-дефолты (headless-тесты). Боевой скоуп печёт снапшот из SimTuningConfig.
             _tuning           = tuning ?? SimTuning.Default;
             PushSeparationTuning();
@@ -242,7 +248,7 @@ namespace Guildmaster.Combat
             _separationSystem.Tick(_units, _spatialHash, in _arena);
             _spatialHash.Rebuild(_units);
             _autoAttackSystem.Tick(_units, this, dt);
-            _projectileSystem.Tick(_projectiles, _units, this, dt, in _arena);
+            _projectileSystem.Tick(_projectiles, _units, this, dt, in _projectileDespawnBounds);
             _regenSystem.Tick(_units, dt);
             _effectSystem.Tick(_units, this, dt);
             DrainEventQueue();

@@ -93,7 +93,8 @@ namespace Guildmaster.Game
             builder.Register<CombatSimulation>(Lifetime.Scoped)
                    .WithParameter("armorK", _statsConfig.ArmorConstantK)
                    .WithParameter("arena", (ArenaBounds?)layout.Bounds)
-                   .WithParameter("tuning", (SimTuning?)_simTuningConfig.ToSnapshot());
+                   .WithParameter("tuning", (SimTuning?)_simTuningConfig.ToSnapshot())
+                   .WithParameter("cameraZone", (Rect2D?)layout.CameraZone);
 
             StatsConfig cfg = _statsConfig;
             builder.Register<RuntimeUnitFactory>(r => new RuntimeUnitFactory(
