@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>06. Тайминг авто-атаки — windup + кадр удара (дизайн) | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="06. Тайминг авто-атаки — windup + кадр удара (дизайн) | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="06. Тайминг авто-атаки — windup + кадр удара (дизайн) | Guildmaster Wiki"/><meta name="twitter:description" content="Тайминг авто-атаки — windup + кадр удара (дизайн) 2026-06-01. Дизайн-заметка, зафиксированная перед реализацией (обсуждение в чате)."/><meta property="og:description" content="Тайминг авто-атаки — windup + кадр удара (дизайн) 2026-06-01. Дизайн-заметка, зафиксированная перед реализацией (обсуждение в чате)."/><meta property="og:image:alt" content="Тайминг авто-атаки — windup + кадр удара (дизайн) 2026-06-01. Дизайн-заметка, зафиксированная перед реализацией (обсуждение в чате)."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/tech/implementation/06.-Тайминг-авто-атаки-—-windup-+-кадр-удара-(дизайн)"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/tech/implementation/06.-Тайминг-авто-атаки-—-windup-+-кадр-удара-(дизайн)"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Тайминг авто-атаки — windup + кадр удара (дизайн) 2026-06-01. Дизайн-заметка, зафиксированная перед реализацией (обсуждение в чате)."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="tech/implementation/06.-Тайминг-авто-атаки-—-windup-+-кадр-удара-(дизайн)"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-64"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-64" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../tech/">tech</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../tech/implementation/">implementation</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>06. Тайминг авто атаки — windup + кадр удара (дизайн)</a></div></nav><h1 class="article-title">06. Тайминг авто-атаки — windup + кадр удара (дизайн)</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-10T17:43:09.198Z">10 июл. 2026 г.</time><span>время чтения ~14 мин.</span></p></div></div><article class="popover-hint"><h1 id="тайминг-авто-атаки--windup--кадр-удара-дизайн">Тайминг авто-атаки — windup + кадр удара (дизайн)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#тайминг-авто-атаки--windup--кадр-удара-дизайн" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<blockquote>
+<p><strong>2026-06-01.</strong> Дизайн-заметка, зафиксированная перед реализацией (обсуждение в чате). Код ещё <strong>не написан</strong> — это согласованная идея, причины и решённые развилки для продолжения в новом чате. Связано с Фазой 3 (доку 13, вертикальный срез «Железный копейщик») и развязкой анимации S4.</p>
+<p><strong>Ревизия 2026-06-01 (вечер):</strong> модель тайминга пересмотрена — вместо пропорциональной выбрана <strong>фикс. длительность свинга с клампом</strong> (см. ниже); 4 развилки (цель в замахе / дальнобой / тип таймера / первый удар+прерывание) — решены.</p>
+<p><strong>Ревизия 2026-06-01 (ревью кода):</strong> сверено с реальным боевым ядром (<code>AutoAttackSystem</code>, <code>CombatSimulation</code>, <code>RuntimeUnit</code>, <code>SimConstants</code>). Закрыто 5 критичных пробелов (целочисленная формула без float, порядок систем на тике контакта, View при save/load, windup-таймер при стане, развязка <code>AutoAttackTarget</code>/<code>CurrentTarget</code>) и решены 4 развилки: <strong>рут на весь замах</strong>, <strong>windup — геймплейный телеграф (с мин. полом)</strong>, <strong><code>_attackHitFrames</code> — массив на будущее (рантаймом резолвим один кадр)</strong>, <strong><code>MaxAttackAnimTicks</code> в тиках (int) в <code>SimConstants</code></strong>. Формула windup переведена на целочисленную арифметику — float из неё убран полностью.</p>
+</blockquote>
+<h2 id="проблема">Проблема<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#проблема" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Хотим, чтобы:</p>
+<ol>
+<li><strong>Анимация атаки выглядела хлёстко на любой скорости атаки</strong> — быстрый юнит не превращал свинг в блюр, медленный не растягивал 7 кадров на 3 секунды (вяло/рвано). Свинг играет за фиксированное короткое время, остаток интервала юнит ждёт в idle.</li>
+<li><strong>Урон авто-атаки наносился не в начале замаха, а на конкретном кадре анимации</strong> (напр. удар на 5-м кадре из 7).</li>
+</ol>
+<p>При этом <strong>не сломав детерминизм</strong> боевого ядра.</p>
+<h2 id="почему-детерминизм-не-страдает-исходная-развязка">Почему детерминизм не страдает (исходная развязка)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#почему-детерминизм-не-страдает-исходная-развязка" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Граница уже заложена и её НЕ трогаем:</p>
+<ul>
+<li>Сим тикает фиксированным шагом <code>TickDelta = 1/30</code> (<code>SimConstants</code>), <code>Time.deltaTime</code> живёт только в <code>CombatLoopService</code>.</li>
+<li>View листает кадры по рендер-времени и <strong>никогда не пишет в сим</strong> (<code>UnitView</code>, инвариант S4). Урон уже нанесён на тике — кадр косметичен.</li>
+</ul>
+<p>Правило: <strong>урон наносит только сим, по счётчику тиков.</strong> Анимация — наблюдатель.</p>
+<h2 id="ключевое-архитектурное-решение-windup-в-симе">Ключевое архитектурное решение: windup в симе<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ключевое-архитектурное-решение-windup-в-симе" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Авто-атака становится <strong>двухфазной</strong> внутри сима (Вариант A):</p>
+<ul>
+<li>Когда кулдаун дошёл до нуля и цель в радиусе — юнит входит в <strong>замах (windup)</strong> на N тиков.</li>
+<li>Урон наносится, когда windup-таймер истёк (<code>attackStartTick + windupTicks</code>).</li>
+<li>Это просто ещё один tick-таймер рядом с <code>AttackCooldown</code> → детерминизм сохраняется, пауза работает автоматически. (<code>AttackCooldown</code> сейчас float на фикс. <code>dt</code>; в рамках этой работы оба переводим на int-тики — единые единицы, см. швы §2.)</li>
+</ul>
+<p>Новое событие из сима <code>OnAttackStarted(unit, ...)</code> (фейрится при входе в замах) запускает анимацию замаха во view; существующее <code>OnDamageDealt</code> (в конце замаха) совпадает с кадром удара. Раньше анимацию запускал <code>OnDamageDealt</code> — теперь этого мало, т.к. урон уехал в конец.</p>
+<h2 id="отклонённые-альтернативы">Отклонённые альтернативы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#отклонённые-альтернативы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Animator + Animation Event как рантайм-триггер урона — НЕТ.</strong> Event срабатывает на рендер-времени, frame-rate-зависим, и в мультиплеере у каждого клиента свой Animator → урон падает в разные моменты → рассинхрон чек-суммы. Animator для кадрового пиксель-арта к тому же оверкилл (у нас уже чистый кадровый степпер).</li>
+<li><strong>Animation Event как «метка», считываемая в данные — допустимо, но не выбрано.</strong> Метка-данные ≠ рантайм-обработчик (это безопасно). Но Event живёт на <code>AnimationClip</code>, которого у нас нет (атаки — это <code>Sprite[]</code>). Вместо этого делаем удобную метку через <strong>Odin</strong> прямо на <code>Sprite[]</code>.</li>
+</ul>
+<h2 id="источник-истины-кадры-контакта">Источник истины: кадр(ы) контакта<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#источник-истины-кадры-контакта" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Дизайнер авторит <strong>индексы ударных кадров — <code>_attackHitFrames</code></strong> (0-based, «момент, когда этот кадр появляется») в SO визуала, кликами по Odin-полоске кадров. Всё остальное выводится:</p>
+<ul>
+<li><strong>доля удара = <code>hitFrame / frameCount</code></strong> (см. модель ниже);</li>
+<li>сим из доли и длительности свинга считает <code>windupTicks</code>.</li>
+</ul>
+<blockquote>
+<p><strong>Форма данных vs рантайм (решение «мультикадр на будущее»).</strong> Поле — <strong>массив</strong> (<code>_attackHitFrames</code>, отсортированный), чтобы будущие релики (двойной удар, серия) не ломали формат SO. Но <strong>рантайм Фазы 3 резолвит ровно один контакт</strong> — берётся первый элемент (<code>hitFrames[0]</code>); линейный cleave (<code>AreaShape.Line</code>) уже бьёт многих на одном кадре, этого достаточно для вертикального среза. Полноценный мульти-резолв (несколько damage-тиков внутри одного свинга) — <strong>отдельный шаг позже</strong>; до него массив с одним элементом эквивалентен старому единственному числу.</p>
+<p><strong>Свинг = атомарная атака (решение для мульти-резолва).</strong> Когда дойдёт до серии в одной анимации: <strong>кулдаун и прерывание считаются на весь свинг</strong>, не на каждый кадр. Якорь кулдауна — старт замаха (как и для одиночного удара); прерывание (стан/смерть/потеря <code>CanAct</code>) в любой момент свинга <strong>отменяет всю оставшуюся серию</strong> — уже нанесённые контакты остаются, последующие <code>hitFrames</code> не срабатывают, <strong>кулдаун НЕ потрачен</strong>. То есть «серия» — это один логический заход атаки с несколькими damage-тиками внутри, а не N независимых атак.</p>
+</blockquote>
+<h2 id="модель-тайминга-фикс-длительность-свинга--кламп-выбрана-целочисленная">Модель тайминга: ФИКС. ДЛИТЕЛЬНОСТЬ СВИНГА + КЛАМП (выбрана), ЦЕЛОЧИСЛЕННАЯ<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#модель-тайминга-фикс-длительность-свинга--кламп-выбрана-целочисленная" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Есть <strong>глобальная константа <code>MaxAttackAnimTicks</code></strong> (int, в сим-тиках; напр. <code>30</code> = 1с при <code>TickRate 30</code>), общая для всех юнитов. Свинг всегда играет за фиксированное короткое время; остаток интервала юнит ждёт в idle. При очень быстрой атаке длительность ужимается до интервала, чтобы свинг не наезжал сам на себя.</p>
+<p><strong>Вся формула — на int-тиках, без float</strong> (детерминизм без ловушки округления, см. ниже):</p>
+<pre><code>intervalTicks      = max(1, round(TickRate / AttackSpeed))   // ЕДИНСТВЕННОЕ округление (конверсия AttackSpeed)
+attackDurationTicks = min(MaxAttackAnimTicks, intervalTicks)
+windupTicks        = (hitFrame * attackDurationTicks) / frameCount   // целочисленное деление = floor
+windupTicks        = clamp(windupTicks, MinWindupTicks, intervalTicks − 1)
+</code></pre>
+<blockquote>
+<p><strong>Почему без float (критичная правка).</strong> <code>Mathf.RoundToInt</code> / <code>Math.Round</code> в .NET по умолчанию — banker’s rounding (к чётному). Если бы формула считала через float (<code>MaxAttackAnimSeconds</code>, доли), округлять пришлось бы в <strong>трёх</strong> местах (интервал, длительность свинга, сам windup) — три почти-одинаковых округления = классический источник рассинхрона чек-суммы между сборками/платформами. Целочисленная форма оставляет <strong>ровно одно</strong> округление — конверсию <code>AttackSpeed → intervalTicks</code> (<code>AttackSpeed</code> — float-стат); дальше всё int. Округление этой конверсии зафиксировать явным <code>MidpointRounding</code> в тестах.</p>
+</blockquote>
+<blockquote>
+<p><strong>Пол <code>intervalTicks ≥ 1</code></strong> закрывает край «очень высокий <code>AttackSpeed</code>»: без него <code>intervalTicks</code> мог стать <code>0</code> → пустой диапазон клампа <code>[…, −1]</code> и деление на ноль в производных.</p>
+</blockquote>
+<blockquote>
+<p><strong><code>MinWindupTicks</code></strong> (мин. пол, глобальная int-константа рядом с <code>MaxAttackAnimTicks</code>): windup — <strong>геймплейный телеграф</strong> (решение ниже), а не косметика. У тяжёлого удара с маленьким <code>hitFrame/frameCount</code> без пола замах ≈ 0 → телеграфа и окна прерывания нет. Пол гарантирует минимальную «читаемость удара».</p>
+</blockquote>
+<p>Два режима (в тиках; <code>TickRate 30</code>, <code>MaxAttackAnimTicks 30</code>):</p>
+<ul>
+<li><strong>Медленный юнит</strong> (интервал > max). Пример: интервал 90 тиков (3с), <code>hitFrame/frameCount = 5/7</code>. Свинг играет за 30 тиков (<code>attackDurationTicks</code>), удар на тике <code>5×30/7 = 21</code> (~0.71с), затем <strong>60 тиков idle</strong>, затем снова. Анимация хлёсткая, не растянутая.</li>
+<li><strong>Быстрый юнит</strong> (интервал &lt; max). Пример: интервал 15 тиков (0.5с). <code>attackDurationTicks = 15</code>, свинг ужимается, idle нет. Кламп <code>min(...)</code> закрывает краевой случай «интервал короче свинга» — без него анимация не успевала бы доиграть.</li>
+</ul>
+<p><strong>Якорь кулдауна:</strong> кулдаун рестартится в <strong>начале замаха</strong> (свинг «внутри» интервала). Период damage→damage = ровно интервал; windup <strong>не добавляется</strong> к интервалу.</p>
+<p><strong>Следствие — <code>_fps</code> не нужен для атаки.</strong> Длительность задаёт <code>attackDurationTicks</code>, а тайминг урона — <code>hitFrame / frameCount</code> (fps в уравнении отсутствует). Сим для windup читает только <code>hitFrame</code> + <code>frameCount</code> (= <code>_attack.Length</code>) + глобальный <code>MaxAttackAnimTicks</code>. <code>_fps</code> остаётся только для <strong>Idle / Run / Death</strong> — клипов без геймплейной каденции.</p>
+<h3 id="почему-не-две-отклонённые-модели">Почему не две отклонённые модели<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#почему-не-две-отклонённые-модели" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Пропорциональная</strong> (<code>длительность клипа = интервал</code>, клип растянут под <code>1/AttackSpeed</code>): медленный тяжёлый юнит растягивает 7 кадров на 3с (~0.47с/кадр) — рвано и вяло; быстрый — блюр. Не даёт стабильного «хлёсткого» фида.</li>
+<li><strong>Абсолютная</strong> (<code>windup = hitFrame / fps</code>, замах фикс по авторскому fps спрайтов): fps становится load-bearing для тайминга урона, нужен per-clip кламп при высокой скорости, и темп зависит от того, как дизайнер нарезал кадры.</li>
+<li><strong>Выбранная</strong> берёт лучшее: один глобальный рычаг <code>MaxAttackAnimTicks</code>, без load-bearing fps, кламп к интервалу закрывает быстрый край, медленные юниты остаются хлёсткими.</li>
+</ul>
+<blockquote>
+<p><code>MaxAttackAnimTicks</code> (и <code>MinWindupTicks</code>) — сим-величины (из них считается <code>windupTicks</code>), живут в <strong><code>SimConstants</code></strong> (<code>Core</code>) как int-константы. View читает их же, чтобы знать, за сколько проиграть свинг и когда уйти в idle. Возможен per-visual override в будущем, пока — глобально.</p>
+<p><strong>Дизайн-ценность постоянной длины телеграфа.</strong> Глобальный потолок означает, что и медленный тяжёлый молотобоец, и быстрый разбойник заводят оружие за одно и то же wall-clock время. В паузо-реалтайме, где игрок парсит десятки юнитов одновременно (тем более в кооперативе), <strong>постоянная длина свинга = читаемость поля боя</strong>: «занос оружия» всегда занимает узнаваемый отрезок времени. Это прямой аргумент за глобальность (а не per-fps/per-clip).</p>
+</blockquote>
+<h2 id="топология-so-где-что-настраивается">Топология SO (где что настраивается)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#топология-so-где-что-настраивается" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>«SO юнита» у нас = <strong><code>RelicData</code></strong> (SO «Чемпион»). Он хранит ссылку на <strong><code>UnitVisual</code></strong> (SO визуала):</p>
+<pre><code>SimConstants
+├── MaxAttackAnimTicks        ← глобальный потолок длительности свинга (int-тики, ≈30 = 1с)
+└── MinWindupTicks            ← мин. пол замаха = гарантия телеграфа (int-тики)
+
+RelicData  (SO «Чемпион»)
+├── _stats → AttackSpeed         ← КАК ЧАСТО бьёт (геймплей)
+└── _visual → UnitVisual  (SO визуала)
+              ├── _attack : Sprite[]    ← кадры атаки
+              ├── _attackHitFrames      ← НА КАКИХ КАДРАХ урон (массив, рантайм берёт [0])  ← новая ручка
+              └── _fps                  ← темп Idle/Run/Death (для атаки не используется)
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Что настраиваешь</th><th>В каком SO</th><th>Поле</th></tr></thead><tbody><tr><td>Как часто бьёт</td><td><code>RelicData</code></td><td><code>AttackSpeed</code> в <code>_stats</code></td></tr><tr><td><strong>Кадр(ы) удара</strong></td><td><code>UnitVisual</code></td><td><code>_attackHitFrames</code> (0-based массив, Odin-клик по полоске)</td></tr><tr><td>Потолок длительности свинга</td><td><code>SimConstants</code></td><td><code>MaxAttackAnimTicks</code> (глобально, int)</td></tr><tr><td>Мин. пол замаха (телеграф)</td><td><code>SimConstants</code></td><td><code>MinWindupTicks</code> (глобально, int)</td></tr><tr><td>Темп Idle/Run/Death</td><td><code>UnitVisual</code></td><td><code>_fps</code></td></tr></tbody></table></div>
+<p><strong>Связка чемпион → визуал:</strong> сейчас живёт в <code>CombatPresenter._visualOverrides</code> (Presentation). Предлагается перенести ссылку в сам <code>RelicData</code>, чтобы было «SO юнита хранит SO визуала» и фабрика боя могла прочитать <code>relic.Visual.AttackHitFrames[0]</code>.</p>
+<h2 id="граница-asmdef--почему-встаёт-вопрос-переноса-unitvisual">Граница asmdef — почему встаёт вопрос переноса <code>UnitVisual</code><a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#граница-asmdef--почему-встаёт-вопрос-переноса-unitvisual" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><code>Guildmaster.Combat</code> ссылается только на <code>Core</code> + <code>Data</code>.</li>
+<li><code>Guildmaster.Presentation</code> ссылается на <code>Combat</code> + <code>Data</code>.</li>
+<li><code>UnitVisual</code> лежит в <strong>Presentation</strong> → <strong>сим физически не может его прочитать</strong> (была бы циклическая ссылка).</li>
+</ul>
+<p>Значит число, по которому сим считает урон, обязано быть доступно <code>Combat</code> (т.е. в <code>Guildmaster.Data</code>). Два пути:</p>
+<ul>
+<li><strong>(Рекомендуется) Перенести <code>UnitVisual</code> в <code>Guildmaster.Data</code>.</strong> Это чистый контент (<code>Sprite[]</code> + числа, без поведения/Presentation-типов). Тогда: один источник истины, Odin-превью работает там же, фабрика сама считает <code>windupTicks</code>, никакого бейка и инверсии зависимостей.</li>
+<li><strong>(Альтернатива) Оставить в Presentation + запекать</strong> windup в <code>RelicData</code> эдитор-кнопкой при изменении кадра. Работает, детерминизм цел, но добавляет шаг синхронизации и риск «забыл нажать».</li>
+</ul>
+<h2 id="путь-дизайнера-от-загрузил-анимацию-до-работает-в-игре">Путь дизайнера (от «загрузил анимацию» до «работает в игре»)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#путь-дизайнера-от-загрузил-анимацию-до-работает-в-игре" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>Импорт.</strong> Спрайт-лист атаки в проект, нарезка (пиксель-арт пресеты импорта уже настроены).</li>
+<li><strong>Визуал.</strong> Открыть/создать <code>UnitVisual</code> (<code>Create → Guildmaster/.../Unit Visual</code>), перетащить кадры в <code>_attack</code>.</li>
+<li><strong>Метка удара.</strong> В инспекторе <code>UnitVisual</code> — Odin-полоска кадров: листаешь скраббером, <strong>кликаешь кадр контакта</strong> → пишется в <code>_attackHitFrames</code> (для Фазы 3 — один кадр; массив поддержан на будущее).</li>
+<li><strong>Связка с реликвией.</strong> Ссылка <code>_visual</code> в <code>RelicData</code> (или существующий <code>_visualOverrides</code>).</li>
+<li><strong>Без ручной синхронизации.</strong> При сборке боя фабрика читает <code>hitFrame</code>/<code>frameCount</code> визуала и кладёт <code>windupTicks</code> в юнита.</li>
+<li><strong>Проверка в Play.</strong> Дев-харнесс: число урона и кадр контакта совпадают; свинг играет за фикс. время, остаток интервала — idle.</li>
+<li><strong>Тюнинг.</strong> Момент удара — двигаешь <code>hitFrame</code>; частота — <code>AttackSpeed</code> в реликвии; общую «хлёсткость» свинга — <code>MaxAttackAnimTicks</code> глобально; минимум телеграфа — <code>MinWindupTicks</code>. Рычаги независимы.</li>
+</ol>
+<h2 id="порядок-систем-и-тик-контакта-критично--сверено-с-кодом">Порядок систем и тик контакта (КРИТИЧНО — сверено с кодом)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#порядок-систем-и-тик-контакта-критично--сверено-с-кодом" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Реальный порядок за тик (<code>CombatSimulation.Tick</code>): <code>ApplyCommands → Brain → Ability → Movement → SpatialHashRebuild → AutoAttack → Projectiles → Effects → DrainEvents → Death → CheckOutcome → tick++</code>. Из этого вытекают два правила, которые windup обязан соблюдать:</p>
+<ul>
+<li><strong>Стан применяется в <code>Effects</code>, т.е. ПОСЛЕ <code>AutoAttack</code>.</strong> Значит прерывание замаха проверяется по <code>CanAct</code>, <strong>посчитанному на прошлом тике</strong>: стан, прилетевший на тике T, отменяет замах только с тика T+1, а удар, чей windup истёк на T, на T ещё проходит. Это допустимо (1 тик = 33 мс) и должно быть <strong>явно записано</strong>, иначе будет выглядеть багом.</li>
+<li><strong><code>Death</code> — последняя система.</strong> Юнит со смертельным уроном, но ещё не помеченный <code>IsDead</code> (флаг ставит <code>DeathSystem</code> в конце), <strong>доигрывает свой windup и наносит удар на том же тике</strong>. Следствие для контрплея: «убить врага в замахе» прерывает его удар <strong>только если урон-убийца сел на более раннем тике</strong>, чем резолв. Это и есть окно телеграфа — не баг, а механика (см. развилку про телеграф).</li>
+<li><strong><code>Movement</code> идёт ДО <code>AutoAttack</code></strong> → рут на время замаха реализуется флагом, который читает <code>MovementSystem</code> (см. §2).</li>
+</ul>
+<h2 id="швы-реализации-сигнатуры--в-следующем-чате">Швы реализации (сигнатуры — в следующем чате)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#швы-реализации-сигнатуры--в-следующем-чате" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>Data:</strong> <code>UnitVisual</code> → в <code>Guildmaster.Data</code>; новое поле <code>_attackHitFrames</code> (массив 0-based, отсортирован; рантайм Фазы 3 берёт <code>[0]</code>) + Odin-drawer полоски; (опц.) ссылка на <code>RelicData</code>/перенос связки из <code>_visualOverrides</code>. Глобальные <code>MaxAttackAnimTicks</code> и <code>MinWindupTicks</code> (int) в <code>SimConstants</code>.</li>
+<li><strong>Сим — таймеры на int-тиках:</strong>
+<ul>
+<li><code>AttackCooldown</code> перевести с float-секунд на <strong>int-тики</strong> (заодно с windup, единые единицы; сейчас float, вычитается фикс. <code>dt</code> в <code>AutoAttackSystem</code>). Сейчас кулдаун <strong>не тикает при стане</strong> (<code>if (!unit.CanAct) continue;</code> ДО декремента) — это поведение сохраняем.</li>
+<li><code>RuntimeUnit.WindupRemaining</code> (int) + хранимый <code>WindupTicks</code> (посчитан раз на старте замаха, <strong>не пересчитывается</strong> при смене <code>AttackSpeed</code> в полёте) + <code>RuntimeUnit.WindupTarget</code> (снапшот цели на старте — см. ниже про <code>AutoAttackTarget</code>).</li>
+<li><strong>Целочисленная формула (без float):</strong> <code>windupTicks = clamp( (hitFrame * attackDurationTicks) / frameCount, MinWindupTicks, intervalTicks − 1 )</code>, где <code>intervalTicks = max(1, round(TickRate / AttackSpeed))</code>, <code>attackDurationTicks = min(MaxAttackAnimTicks, intervalTicks)</code>. Целочисленное деление = floor; единственное округление — конверсия <code>AttackSpeed</code>, фиксируется явным <code>MidpointRounding</code> в тестах. Кламп ≤ <code>intervalTicks−1</code> исключает совпадение удара с тиком старта следующей атаки.</li>
+<li>Двухфазный <code>AutoAttackSystem</code>: кулдаун дошёл до 0 + цель в радиусе → <strong>вход в замах</strong> (кулдаун рестартится здесь = якорь), <strong>снапшот цели</strong> в <code>WindupTarget</code> на старте; на нуле windup → разрешение удара.</li>
+<li><strong>Рут на время замаха:</strong> на старте замаха юнит обездвижен — флаг (напр. <code>IsWindingUp</code>), который уважает <code>MovementSystem</code>. Свинг играет на месте; facing фиксируется на старте. Мили-whiff, если цель вышла из радиуса.</li>
+<li><strong>Windup-таймер при стане:</strong> замах <strong>сбрасывается</strong> при потере <code>CanAct</code> (а не замораживается) — см. прерывание. (Согласуется с тем, что кулдаун при стане не тикает.)</li>
+<li><strong>Цель пропала к удару</strong> (мертва / вне радиуса / сменилась): урон не наносится (вхолостую), кулдаун уже потрачен.</li>
+<li><strong>Прерывание</strong> (стан/смерть/потеря <code>CanAct</code> в замахе): замах сбрасывается (<code>WindupRemaining</code>, <code>IsWindingUp</code>), удар не наносится, <strong>кулдаун НЕ потрачен</strong> (бьёт снова, как только сможет).</li>
+</ul>
+</li>
+<li><strong>Развязка <code>AutoAttackTarget</code> vs <code>CurrentTarget</code> (предусловие).</strong> Сейчас <code>AutoAttackSystem</code> читает <code>unit.CurrentTarget</code>, хотя <code>RuntimeUnit.AutoAttackTarget</code> помечен «читает AutoAttackSystem» (для хилера цель авто-атаки ≠ цель движения). До добавления снапшота цели в замах — <strong>развести явно</strong>, какую ссылку бьёт авто-атака, и снапшотить именно её в <code>WindupTarget</code>.</li>
+<li><strong>События сима (хук для анимации + аудио/VFX):</strong> <code>OnAttackStarted(unit, target)</code> — вход в замах (свинг во View + «вжух»-SFX); <code>OnDamageDealt</code> — конец замаха = кадр контакта (импакт-SFX + хит-спарк VFX; удалённый флинч можно вернуть как VFX здесь, а не спрайт-клипом); <strong><code>OnAttackInterrupted(unit)</code></strong> — отмена замаха (View рвёт свинг → idle/stunned, гасит звук замаха). Перевесить запуск анимации с <code>OnDamageDealt</code> на <code>OnAttackStarted</code> (сейчас <code>CombatPresenter.HandleDamageDealt</code> дёргает <code>OnAttack()</code> ПОСЛЕ урона — наоборот).</li>
+<li><strong>Дальнобой (снаряды):</strong> <code>hitFrame</code> = кадр <strong>выпуска снаряда</strong>. На windup-end <code>AutoAttackSystem</code> спавнит снаряд (как сейчас, но из конца замаха, не из старта); <strong>время полёта добавляет <code>ProjectileSystem</code> поверх</strong> windup. Снапшот цели/прерывание — те же правила, что для мили (снаряд уже в полёте после выпуска живёт по правилам <code>ProjectileSystem</code>).</li>
+<li><strong>Фабрика:</strong> считает <code>WindupTicks</code> из <code>hitFrames[0]</code>/<code>frameCount</code> визуала реликвии + <code>MaxAttackAnimTicks</code> + <code>MinWindupTicks</code> + интервала при <code>Create</code>.</li>
+<li><strong>View:</strong> двухсегментный <code>StepFrames</code> — кадры <strong>до</strong> <code>hitFrame</code> гонятся под фактическую длительность замаха (привязка к <code>OnAttackStarted</code>/<code>WindupRemaining</code> сима, чтобы контакт сел ровно на <code>OnDamageDealt</code>), кадры <strong>после</strong> — фоллоу-сру; затем idle до следующего <code>OnAttackStarted</code>. Снять зависимость атаки от <code>_fps</code>; реагировать на <code>OnAttackInterrupted</code>.
+<ul>
+<li><strong>Save/load и ресинк (критично):</strong> <code>OnAttackStarted</code> — событие, при загрузке <strong>не переиграется</strong>. View при спавне/ресинке обязан реконструировать свинг <strong>из состояния</strong>: если <code>IsWindingUp</code>/<code>WindupRemaining > 0</code> — войти в свинг на кадре, соответствующем уже прошедшей части замаха (не ждать события).</li>
+</ul>
+</li>
+<li><strong>Тесты:</strong> детерминизм windup (EditMode); граничные <code>hitFrame</code> (0 / последний / пустой массив); пол <code>MinWindupTicks</code> срабатывает при крошечном <code>hitFrame/frameCount</code>; пол <code>intervalTicks ≥ 1</code> при очень высоком <code>AttackSpeed</code>; кламп при интервале &lt; <code>MaxAttackAnimTicks</code> (быстрый юнит); пересчёт под разные <code>AttackSpeed</code>; цель умерла/вышла из радиуса в замахе → урона нет, кулдаун потрачен; прерывание стаганом → урона нет, кулдаун цел; смена <code>AttackSpeed</code> в замахе не двигает текущий <code>WindupTicks</code>; рут — юнит не двигается в замахе; «убийство в замахе на раннем тике прерывает, на тике резолва — нет» (порядок систем); save/load посреди замаха восстанавливает <code>WindupRemaining</code>/<code>WindupTarget</code>; чек-сумма с новыми полями (<code>WindupRemaining</code>/<code>WindupTicks</code>).</li>
+</ol>
+<h2 id="решённые-развилки">Решённые развилки<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#решённые-развилки" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Вопрос</th><th>Решение (2026-06-01)</th></tr></thead><tbody><tr><td>1</td><td>Перенос <code>UnitVisual</code> в <code>Data</code> vs эдитор-бейк</td><td><strong>Перенести в <code>Guildmaster.Data</code></strong> (рекомендация; финально подтвердить при коде). Чистый контент — без инверсии зависимостей и шага синхронизации.</td></tr><tr><td>2</td><td>Модель тайминга</td><td><strong>Фикс. <code>MaxAttackAnimTicks</code> + кламп к интервалу</strong>, целочисленная (заменила пропорциональную; float убран из формулы).</td></tr><tr><td>3</td><td>Цель пропала в замахе</td><td><strong>Снапшот цели на старте; мимо = вхолостую</strong>, кулдаун потрачен.</td></tr><tr><td>4</td><td>Дальнобой</td><td><strong>Входит в дизайн</strong> (все релики Фазы 3): <code>hitFrame</code> = выпуск снаряда, полёт поверх.</td></tr><tr><td>5</td><td>Тип таймера</td><td><strong>int-тики</strong>, <code>WindupTicks</code> раз на старте; <code>AttackCooldown</code> тоже на тики.</td></tr><tr><td>6</td><td>Первый удар</td><td><strong>С замахом</strong> (юнит сначала заносит оружие — честный телеграф).</td></tr><tr><td>7</td><td>Прерывание (стан/смерть)</td><td>Удар пропадает, <strong>кулдаун НЕ потрачен</strong>; windup-таймер сбрасывается (не замораживается).</td></tr><tr><td>8</td><td>Рут в замахе</td><td><strong>Да, рут на весь windup</strong> (флаг уважает <code>MovementSystem</code>); свинг на месте, мили-whiff если цель ушла.</td></tr><tr><td>9</td><td>Рамка windup</td><td><strong>Геймплейный телеграф, не косметика</strong>: окно прерывания и задержка первого удара — намеренный контрплей. Мин. пол <code>MinWindupTicks</code> гарантирует телеграф.</td></tr><tr><td>10</td><td>Мультикадр контакта</td><td><strong>Форма данных — массив <code>_attackHitFrames</code> (на будущее); рантайм Фазы 3 резолвит <code>[0]</code>.</strong> Мульти-резолв — отдельный шаг позже. <strong>Свинг = атомарная атака:</strong> кулдаун/прерывание на всю серию, не на кадр; прерывание отменяет остаток серии, кулдаун не потрачен.</td></tr><tr><td>11</td><td>Где/в чём <code>MaxAttackAnimTicks</code></td><td><strong>В тиках (int), в <code>SimConstants</code></strong> (рядом — <code>MinWindupTicks</code>). Убирает float и тройное округление.</td></tr></tbody></table></div>
+<p><strong>Зафиксировано:</strong> двухфазный windup в симе (int-тики, <strong>целочисленная формула без float</strong>); источник истины — <code>_attackHitFrames</code> (массив 0-based, рантайм берёт <code>[0]</code>); <strong>модель «фикс. длительность свинга + кламп»</strong>; <strong>рут на весь замах</strong>; <strong>windup = телеграф (мин. пол <code>MinWindupTicks</code>)</strong>; <code>_fps</code> только для не-атакующих клипов; контакт View прибит к damage-тику; порядок систем определяет окно прерывания (стан/смерть видны со следующего тика); save/load реконструирует свинг из состояния; Animator/Event-триггер отклонён.</p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-53" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#тайминг-авто-атаки--windup--кадр-удара-дизайн" data-for="тайминг-авто-атаки--windup--кадр-удара-дизайн">Тайминг авто-атаки — windup + кадр удара (дизайн)</a></li><li class="depth-1"><a href="#проблема" data-for="проблема">Проблема</a></li><li class="depth-1"><a href="#почему-детерминизм-не-страдает-исходная-развязка" data-for="почему-детерминизм-не-страдает-исходная-развязка">Почему детерминизм не страдает (исходная развязка)</a></li><li class="depth-1"><a href="#ключевое-архитектурное-решение-windup-в-симе" data-for="ключевое-архитектурное-решение-windup-в-симе">Ключевое архитектурное решение: windup в симе</a></li><li class="depth-1"><a href="#отклонённые-альтернативы" data-for="отклонённые-альтернативы">Отклонённые альтернативы</a></li><li class="depth-1"><a href="#источник-истины-кадры-контакта" data-for="источник-истины-кадры-контакта">Источник истины: кадр(ы) контакта</a></li><li class="depth-1"><a href="#модель-тайминга-фикс-длительность-свинга--кламп-выбрана-целочисленная" data-for="модель-тайминга-фикс-длительность-свинга--кламп-выбрана-целочисленная">Модель тайминга: ФИКС. ДЛИТЕЛЬНОСТЬ СВИНГА + КЛАМП (выбрана), ЦЕЛОЧИСЛЕННАЯ</a></li><li class="depth-2"><a href="#почему-не-две-отклонённые-модели" data-for="почему-не-две-отклонённые-модели">Почему не две отклонённые модели</a></li><li class="depth-1"><a href="#топология-so-где-что-настраивается" data-for="топология-so-где-что-настраивается">Топология SO (где что настраивается)</a></li><li class="depth-1"><a href="#граница-asmdef--почему-встаёт-вопрос-переноса-unitvisual" data-for="граница-asmdef--почему-встаёт-вопрос-переноса-unitvisual">Граница asmdef — почему встаёт вопрос переноса UnitVisual</a></li><li class="depth-1"><a href="#путь-дизайнера-от-загрузил-анимацию-до-работает-в-игре" data-for="путь-дизайнера-от-загрузил-анимацию-до-работает-в-игре">Путь дизайнера (от «загрузил анимацию» до «работает в игре»)</a></li><li class="depth-1"><a href="#порядок-систем-и-тик-контакта-критично--сверено-с-кодом" data-for="порядок-систем-и-тик-контакта-критично--сверено-с-кодом">Порядок систем и тик контакта (КРИТИЧНО — сверено с кодом)</a></li><li class="depth-1"><a href="#швы-реализации-сигнатуры--в-следующем-чате" data-for="швы-реализации-сигнатуры--в-следующем-чате">Швы реализации (сигнатуры — в следующем чате)</a></li><li class="depth-1"><a href="#решённые-развилки" data-for="решённые-развилки">Решённые развилки</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../tech/0.0.-README" class="internal">0.0. README</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>
