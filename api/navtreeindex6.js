@@ -1,5 +1,13 @@
 var NAVTREEINDEX6 =
 {
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a941c9c4ecaa0bb3ab530f13b0078be01":[0,0,0,2,0,19,2],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4":[0,0,0,2,0,19,7],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438aa1595abbb4c3a326636dd178757cd6c1":[0,0,0,2,0,19,3],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438ab80c545ea15439f0b585c86a6aab3226":[0,0,0,2,0,19,9],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438abc77fc33686f58682dfe0704c435c4a6":[0,0,0,2,0,19,4],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438adcaa2fceac50ca9147bb817517df900f":[0,0,0,2,0,19,5],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438af357105e6becc3076a3da9b43465051a":[0,0,0,2,0,19,6],
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332d":[0,0,0,2,0,11],
 "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788":[0,0,0,2,0,11,1],
 "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9":[0,0,0,2,0,11,3],
 "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443":[0,0,0,2,0,11,2],
@@ -241,13 +249,5 @@ var NAVTREEINDEX6 =
 "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html":[1,0,0,0,23],
 "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a05bbcf10908d114d889e5e48f49bdd88":[0,0,0,0,23,5],
 "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a05bbcf10908d114d889e5e48f49bdd88":[1,0,0,0,23,5],
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a1e626b06505d6bfba08b547157d0bb91":[1,0,0,0,23,3],
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a1e626b06505d6bfba08b547157d0bb91":[0,0,0,0,23,3],
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a3256e656b27c2577f0b2d74cde80ab0a":[1,0,0,0,23,2],
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a3256e656b27c2577f0b2d74cde80ab0a":[0,0,0,0,23,2],
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a56c3b1ab0c7a97b5f9c2a949b85d2879":[1,0,0,0,23,7],
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a56c3b1ab0c7a97b5f9c2a949b85d2879":[0,0,0,0,23,7],
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a664dc0441fe4e7b85f2aa8cd3435f8ea":[1,0,0,0,23,8],
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a664dc0441fe4e7b85f2aa8cd3435f8ea":[0,0,0,0,23,8],
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a7731ec28cceeb5d0b3f9c37f98de5145":[1,0,0,0,23,4]
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a1e626b06505d6bfba08b547157d0bb91":[1,0,0,0,23,3]
 };

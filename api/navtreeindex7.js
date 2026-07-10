@@ -1,5 +1,13 @@
 var NAVTREEINDEX7 =
 {
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a1e626b06505d6bfba08b547157d0bb91":[0,0,0,0,23,3],
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a3256e656b27c2577f0b2d74cde80ab0a":[1,0,0,0,23,2],
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a3256e656b27c2577f0b2d74cde80ab0a":[0,0,0,0,23,2],
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a56c3b1ab0c7a97b5f9c2a949b85d2879":[1,0,0,0,23,7],
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a56c3b1ab0c7a97b5f9c2a949b85d2879":[0,0,0,0,23,7],
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a664dc0441fe4e7b85f2aa8cd3435f8ea":[1,0,0,0,23,8],
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a664dc0441fe4e7b85f2aa8cd3435f8ea":[0,0,0,0,23,8],
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a7731ec28cceeb5d0b3f9c37f98de5145":[1,0,0,0,23,4],
 "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a7731ec28cceeb5d0b3f9c37f98de5145":[0,0,0,0,23,4],
 "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a873594d8d13a6a9e8c3f1956cd306bf1":[1,0,0,0,23,0],
 "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a873594d8d13a6a9e8c3f1956cd306bf1":[0,0,0,0,23,0],

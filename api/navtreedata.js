@@ -57,9 +57,9 @@ var NAVTREEINDEX =
 "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MarkTransferComponent.html#a4fc109892f3a3549513b2f42b165bf7c",
 "classGuildmaster_1_1Combat_1_1SpatialHash.html#a06b9482f7145afd2f7ac8cc74768aff3",
 "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a38b9066022dfe44f572bd75a05b1be08",
-"dir_d2774252db0282cea59d2af38c204c1c.html",
-"namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788",
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a7731ec28cceeb5d0b3f9c37f98de5145"
+"dir_a273d6f87b7944d96df82aad1465245a.html",
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a941c9c4ecaa0bb3ab530f13b0078be01",
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a1e626b06505d6bfba08b547157d0bb91"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -8,5 +8,9 @@ var classGuildmaster_1_1Presentation_1_1UnitView =
     [ "SetLabel", "classGuildmaster_1_1Presentation_1_1UnitView.html#a0f0ae1200d3f3e7c13dfc45a0bf25154", null ],
     [ "SetTint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a871086ece5d0cc216dfcfa74353fa22b", null ],
     [ "SetVisual", "classGuildmaster_1_1Presentation_1_1UnitView.html#a99fe961b39536dfe1e67f30e38f92869", null ],
-    [ "UpdateInterpolation", "classGuildmaster_1_1Presentation_1_1UnitView.html#a25961c760cc2434fa8f210178cf3e8e3", null ]
+    [ "UpdateInterpolation", "classGuildmaster_1_1Presentation_1_1UnitView.html#a25961c760cc2434fa8f210178cf3e8e3", null ],
+    [ "FeetPoint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a419e6e5695f338bbfbc00ea673332d73", null ],
+    [ "HeadPoint", "classGuildmaster_1_1Presentation_1_1UnitView.html#aa5d0b3a95175c65614c399cc9faa580b", null ],
+    [ "HitPoint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a444c356d8abdf2981ef9a8a556af8196", null ],
+    [ "ShotPoint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a9430939990b1ad8909cd93b46d2cedbf", null ]
 ];
