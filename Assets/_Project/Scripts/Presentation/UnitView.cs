@@ -27,6 +27,10 @@ namespace Guildmaster.Presentation
         [Header("Animation (S4) — опционально; пусто = статичный спрайт")]
         [SerializeField] private UnitVisual _visual;
 
+        [Tooltip("Бег «прибит к земле»: сколько мировых юнитов проходит юнит на ОДИН кадр бега. " +
+                 "Меньше = ноги быстрее (бодрее), больше = медленнее. Темп бега привязан к скорости — не скользит.")]
+        [SerializeField] private float _runUnitsPerFrame = 0.15f;
+
         [Header("Feel Hooks (подключить MMF_Player в Inspector)")]
         [SerializeField] private UnityEvent _onHitFeedback;
         [SerializeField] private UnityEvent _onDeathFeedback;
@@ -225,6 +229,12 @@ namespace Guildmaster.Presentation
                 return;
             }
 
+            if (_state == UnitAnimationState.Run && _unit != null)
+            {
+                StepRunFrames(frames, dt);
+                return;
+            }
+
             float frameDur = 1f / _visual.Fps;
             _frameTimer += dt;
             while (_frameTimer >= frameDur)
@@ -236,6 +246,24 @@ namespace Guildmaster.Presentation
                     bool looping = _state == UnitAnimationState.Idle || _state == UnitAnimationState.Run;
                     _frameIndex = looping ? 0 : frames.Length - 1;   // one-shot/death замирает на последнем кадре
                 }
+            }
+
+            _sprite.sprite = frames[Mathf.Clamp(_frameIndex, 0, frames.Length - 1)];
+        }
+
+        // Бег «прибит к земле»: листаем кадры по ПРОЙДЕННОЙ дистанции (скорость × время), а не по фикс. fps —
+        // ноги не скользят, темп совпадает со скоростью на любом размере. Скорость берём из сим-дельты позиции.
+        private void StepRunFrames(Sprite[] frames, float dt)
+        {
+            float speed = (_unit.Position - _unit.PreviousPosition).magnitude / SimConstants.TickDelta; // мир. ед/с
+            float step  = Mathf.Max(0.01f, _runUnitsPerFrame);
+
+            _frameTimer += speed * dt; // накапливаем пройденную дистанцию
+            while (_frameTimer >= step)
+            {
+                _frameTimer -= step;
+                _frameIndex++;
+                if (_frameIndex >= frames.Length) _frameIndex = 0;
             }
 
             _sprite.sprite = frames[Mathf.Clamp(_frameIndex, 0, frames.Length - 1)];

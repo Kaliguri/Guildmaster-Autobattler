@@ -129,7 +129,14 @@ namespace Guildmaster.Combat
                 // Без каскада (cannonball:false) и слабый (короче главного) → финальный телепорт сядет на исходную цель.
                 if (a.ChainDistance > 0f && a.ChainTicks > 0 && a.Source != null)
                 {
-                    Vector2 cdir = seg / len;
+                    // Направление цепного толчка учитывает УГОЛ попадания: чем дальше цель от оси полёта
+                    // (скользящее/касательное попадание), тем сильнее толкает ВБОК, а не строго вперёд.
+                    // dir = вперёд(единичный) + поперечное смещение цели от линии. По центру → чисто вперёд.
+                    Vector2 fwd = seg / len;
+                    Vector2 rel = victim.Position - from;
+                    Vector2 lateral = rel - fwd * Vector2.Dot(rel, fwd); // перпендикулярная составляющая
+                    Vector2 cdir = fwd + lateral;
+                    cdir = cdir.sqrMagnitude > 1e-6f ? cdir.normalized : fwd;
                     ctx.Displace(new DisplaceRequest(
                         victim, a.Source, cdir, a.ChainDistance, a.ChainTicks,
                         cannonball: false, damage: 0f, damageType: a.DamageType, width: 0f));
