@@ -381,7 +381,7 @@ namespace Guildmaster.DevTools
 
         /// <summary>Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10.6.</summary>
         [Command("gm_spawn_monk", "Заспавнить Монаха вихря против болванчиков (срез §10.6)")]
-        public void SpawnMonk(int enemies = 3, float enemyHp = 150f, float enemyDamage = 5f)
+        public void SpawnMonk(int enemies = 4, float enemyHp = 150f, float enemyDamage = 5f)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
@@ -390,20 +390,26 @@ namespace Guildmaster.DevTools
             ResetForNewBattle();
 
             // Монах слева — через фабрику (реальный путь: рывок → фиксация → отбрасывание → телепорт, §10.6).
-            _simulation.EnqueueUnitSpawn(_factory.Create(_monkRelic, null, team: 0, new Vector2(-5f, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(_monkRelic, null, team: 0, new Vector2(-6f, 0f)));
 
-            // Болванчики справа расставлены пошире (интервал 1.6) — виден заход рывком к конкретной цели,
-            // а не в плотную кашу. Урон болванчиков задаётся параметром (по умолчанию низкий — бой дольше).
+            // Болванчики справа — раскиданы ХАОТИЧНО (детерминированный хэш по индексу, чтобы R повторял ту же
+            // расстановку), далеко друг от друга: видно заход к конкретной цели и УГЛОВОЙ цепной толчок «ядра»,
+            // а не ровный ряд. x∈[2,8], y∈[-3.5,3.5].
             int nextId = _simulation.Units.Count + 1;
             for (int i = 0; i < enemies; i++)
             {
-                float y = (i - (enemies - 1) * 0.5f) * 1.6f;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, enemyDamage, nextId++));
+                float hx = Frac(Mathf.Sin((i + 1) * 12.9898f) * 43758.5453f);
+                float hy = Frac(Mathf.Sin((i + 1) * 78.233f)  * 43758.5453f);
+                var pos = new Vector2(2f + hx * 6f, -3.5f + hy * 7f);
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, pos, enemyHp, enemyDamage, nextId++));
             }
 
             _lastBattleSetup = self => self.SpawnMonk(enemies, enemyHp, enemyDamage);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков (урон {enemyDamage})");
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков (хаос, урон {enemyDamage})");
         }
+
+        // Дробная часть — детерминированный «хэш» [0,1) для хаотичной, но воспроизводимой расстановки.
+        private static float Frac(float v) => v - Mathf.Floor(v);
 
         /// <summary>Выставить HP юниту по ID.</summary>
         [Command("gm_set_hp", "Выставить HP юниту по ID")]
