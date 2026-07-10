@@ -25,24 +25,18 @@ MonoBehaviour:
   _movingAttackSpeedPenaltyPct: 0.5
   _resourceOnHit: 5
   _stats:
-  - Stat: 0
-    Op: 0
-    Value: 120
-  - Stat: 7
-    Op: 0
-    Value: 12
   - Stat: 8
     Op: 0
-    Value: 0.9
+    Value: -0.100000024
   - Stat: 9
     Op: 0
-    Value: 8
+    Value: 6.5
   - Stat: 3
     Op: 0
-    Value: 3
+    Value: -1
   - Stat: 20
     Op: 0
-    Value: 2.3333335
+    Value: -0.6666665
   - Stat: 18
     Op: 0
     Value: 8

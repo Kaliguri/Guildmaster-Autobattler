@@ -26,22 +26,19 @@ MonoBehaviour:
   _stats:
   - Stat: 0
     Op: 0
-    Value: 140
+    Value: 20
   - Stat: 7
     Op: 0
-    Value: 10
+    Value: -2
   - Stat: 8
     Op: 0
-    Value: 0.9
+    Value: -0.100000024
   - Stat: 9
     Op: 0
-    Value: 7
-  - Stat: 3
-    Op: 0
-    Value: 4
+    Value: 5.5
   - Stat: 20
     Op: 0
-    Value: 2.666667
+    Value: -0.33333302
   - Stat: 18
     Op: 0
     Value: 8
