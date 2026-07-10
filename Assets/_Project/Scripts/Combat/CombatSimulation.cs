@@ -119,6 +119,9 @@ namespace Guildmaster.Combat
         /// <summary>Границы боевого поля этого боя (для презентации/оверлея; клампинг — внутри систем).</summary>
         public ArenaBounds Arena       => _arena;
 
+        /// <summary>Система разделения тел — доступ для dev-тюнинга параметров в рантайме (gm_sep_*).</summary>
+        public SeparationSystem Separation => _separationSystem;
+
         public IReadOnlyList<RuntimeUnit> Units    => _units;
         public BattleOutcome              Outcome  => _outcome;
         public bool                       IsPaused => _isPaused;

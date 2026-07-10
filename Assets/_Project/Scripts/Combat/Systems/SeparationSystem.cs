@@ -22,6 +22,12 @@ namespace Guildmaster.Combat
     /// </summary>
     public sealed class SeparationSystem
     {
+        // Тюнеры (дефолты — из SimConstants). Публичные, чтобы dev мог крутить в рантайме (gm_sep_*)
+        // для подбора ощущения без рекомпиляции. В релизе значения фиксируются в SimConstants.
+        public float BodyRadiusPerSize = SimConstants.BodyRadiusPerSize;
+        public float Strength          = SimConstants.SeparationStrength;
+        public int   Iterations        = SimConstants.SeparationIterations;
+
         // Переиспользуемый буфер соседей — без аллокаций на горячем пути.
         private readonly List<RuntimeUnit> _neighbors = new List<RuntimeUnit>();
 
@@ -42,7 +48,7 @@ namespace Guildmaster.Combat
             }
             if (maxRadius <= 0f) return;
 
-            for (int iter = 0; iter < SimConstants.SeparationIterations; iter++)
+            for (int iter = 0; iter < Iterations; iter++)
             {
                 for (int i = 0; i < units.Count; i++)
                 {
@@ -72,7 +78,7 @@ namespace Guildmaster.Combat
 
                         float dist = Mathf.Sqrt(distSq);
                         Vector2 dir = dist > 1e-4f ? delta / dist : DegenerateDir(a, b);
-                        Vector2 push = dir * ((minDist - dist) * SimConstants.SeparationStrength);
+                        Vector2 push = dir * ((minDist - dist) * Strength);
 
                         if (aMovable && bMovable)
                         {
@@ -92,10 +98,10 @@ namespace Guildmaster.Combat
             }
         }
 
-        private static float BodyRadius(RuntimeUnit u)
+        private float BodyRadius(RuntimeUnit u)
         {
             float size = u.Stats.Get(StatType.Size);
-            return Mathf.Max(0.01f, size) * SimConstants.BodyRadiusPerSize;
+            return Mathf.Max(0.01f, size) * BodyRadiusPerSize;
         }
 
         // Тела точь-в-точь: детерминированно раздвигаем по X — младший Id влево, старший вправо.

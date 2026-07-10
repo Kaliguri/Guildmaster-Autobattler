@@ -146,7 +146,7 @@ namespace Guildmaster.DevTools
         /// перезапуск на месте — R. Параметр <paramref name="size"/> — «толщина» тел (Size-стат).
         /// </summary>
         [Command("gm_spawn_crowd", "Плотный клубок обеих команд для теста коллизии/расталкивания")]
-        public void SpawnCrowd(int perTeam = 8, float hp = 400f, float damage = 6f, float size = 1f)
+        public void SpawnCrowd(int perTeam = 8, float hp = 400f, float damage = 6f, float size = 1f, float range = 1.5f)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
 
@@ -159,12 +159,48 @@ namespace Guildmaster.DevTools
                 int cx = i % cols, cy = i / cols;
                 float ox = (cx - (cols - 1) * 0.5f) * spacing;
                 float oy = (cy - (cols - 1) * 0.5f) * spacing;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(0, new Vector2(-3f + ox, oy), hp, damage, nextId++, size));
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2( 3f + ox, oy), hp, damage, nextId++, size));
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(0, new Vector2(-3f + ox, oy), hp, damage, nextId++, size, range));
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2( 3f + ox, oy), hp, damage, nextId++, size, range));
             }
 
-            _lastBattleSetup = self => self.SpawnCrowd(perTeam, hp, damage, size);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_crowd: {perTeam}×2 юнитов (Size {size}), плотный клубок");
+            _lastBattleSetup = self => self.SpawnCrowd(perTeam, hp, damage, size, range);
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_crowd: {perTeam}×2 юнитов (Size {size}, range {range}), плотный клубок");
+        }
+
+        /// <summary>Показать текущие параметры расталкивания (SeparationSystem).</summary>
+        [Command("gm_sep", "Показать параметры расталкивания (радиус/сила/итерации)")]
+        public void SepInfo()
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            var s = _simulation.Separation;
+            Debug.Log($"[GuildmasterCommands] - gm_sep: BodyRadiusPerSize={s.BodyRadiusPerSize} (⌀ при Size1 = {s.BodyRadiusPerSize * 2f}), Strength={s.Strength}, Iterations={s.Iterations}");
+        }
+
+        /// <summary>Радиус тела на единицу Size (0.25 = ⌀0.5 при Size1). Крути под ширину спрайта.</summary>
+        [Command("gm_sep_radius", "Радиус тела на единицу Size (live)")]
+        public void SepRadius(float radiusPerSize)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            _simulation.Separation.BodyRadiusPerSize = Mathf.Max(0.01f, radiusPerSize);
+            SepInfo();
+        }
+
+        /// <summary>Сила расталкивания за тик (0..1; 1 = жёстко, мягче = плавнее). Live.</summary>
+        [Command("gm_sep_strength", "Сила расталкивания за тик (live)")]
+        public void SepStrength(float strength)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            _simulation.Separation.Strength = Mathf.Clamp(strength, 0f, 1f);
+            SepInfo();
+        }
+
+        /// <summary>Проходов расталкивания за тик (больше = жёстче/дороже). Live.</summary>
+        [Command("gm_sep_iters", "Проходов расталкивания за тик (live)")]
+        public void SepIters(int iterations)
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            _simulation.Separation.Iterations = Mathf.Max(1, iterations);
+            SepInfo();
         }
 
         /// <summary>Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.</summary>
@@ -423,7 +459,7 @@ namespace Guildmaster.DevTools
             Debug.Log($"[GuildmasterCommands] - gm_toggle_status: {(overlay.IsEnabled ? "ON" : "OFF")}");
         }
 
-        private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f)
+        private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f, float range = 1.5f)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("test", new[]
@@ -431,7 +467,7 @@ namespace Guildmaster.DevTools
                 new StatModifier(StatType.MaxHP,            ModifierOp.Flat, hp),
                 new StatModifier(StatType.AutoAttackDamage, ModifierOp.Flat, damage),
                 new StatModifier(StatType.AttackSpeed,      ModifierOp.Flat, 1f),
-                new StatModifier(StatType.AttackRange,      ModifierOp.Flat, 1.5f),
+                new StatModifier(StatType.AttackRange,      ModifierOp.Flat, range),
                 new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, 1.8f),
                 new StatModifier(StatType.Size,             ModifierOp.Flat, size - 1f), // Size база 1 → итог = size
             });
