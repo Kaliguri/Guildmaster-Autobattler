@@ -32,5 +32,5 @@ MonoBehaviour:
         _displaceTicks: 12
         _displaceDamageMult: 1.5
         _displaceWidth: 1.5
-        _chainDistance: 0.6
+        _chainDistance: 1.5
         _chainTicks: 4

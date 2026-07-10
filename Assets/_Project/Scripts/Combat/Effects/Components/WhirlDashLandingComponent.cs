@@ -25,9 +25,9 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Ширина линии «ядра» (мировые единицы).")]
         [SerializeField] private float _displaceWidth = 1.5f;
 
-        [Tooltip("Слабое цепное отбрасывание врагов, задетых «ядром»: дистанция (мировые ед.). Держать МАЛЕНЬКИМ, чтобы цепь кончалась раньше главного полёта и финальный телепорт сел на исходную цель. 0 = только урон по задетым.")]
-        [SerializeField] private float _chainDistance = 0.6f;
-        [Tooltip("Длительность цепного полёта в тиках. Короче главного (_displaceTicks).")]
+        [Tooltip("Цепное отбрасывание врагов, задетых «ядром»: дистанция (мировые ед.), обычно доля от основного толчка (_displaceDistance). 0 = только урон по задетым. ВАЖНО: тайминг «цепь кончается раньше главного полёта → финальный телепорт сядет на исходную цель» держится _chainTicks < _displaceTicks, а НЕ малой дистанцией.")]
+        [SerializeField] private float _chainDistance = 1.5f;
+        [Tooltip("Длительность цепного полёта в тиках. Строго КОРОЧЕ главного (_displaceTicks) — чтобы цепь кончалась первой и телепорт сел на основную цель.")]
         [SerializeField] private int _chainTicks = 4;
 
         public CombatEvent Events => CombatEvent.EffectExpired;
