@@ -104,6 +104,10 @@ namespace Guildmaster.Combat
         /// </summary>
         private static void ApplyDisplace(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
         {
+            // Запоминаем цель захода: приземление рывка оттолкнёт ИМЕННО её (позицию считаем под неё),
+            // а не «ближайшего» — тот мог разъехаться, пока монах облетал.
+            caster.PendingEngageTarget = target;
+
             float adjacency = caster.Stats.Get(StatType.AttackRange) * 0.5f;
 
             // Монах бьёт ТОЛЬКО прямо от себя, поэтому позицию рывка выбираем так, чтобы линия

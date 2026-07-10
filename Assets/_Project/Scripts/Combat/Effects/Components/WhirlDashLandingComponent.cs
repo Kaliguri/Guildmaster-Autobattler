@@ -44,8 +44,12 @@ namespace Guildmaster.Combat.Effects.Components
             if (monk == null || monk.IsDead) return;
             if (!ReferenceEquals(e.Target, monk)) return; // смещался не сам монах (это отбрасывание врага) — не наше
 
-            // Монах приземлился вплотную к цели рывка = ближайший враг. Отбрасываем именно его.
-            RuntimeUnit victim = NearestEnemy(monk, monk.Position, ctx.Combat, exclude: null);
+            // Отбрасываем ИМЕННО цель захода (под неё считалась позиция рывка), а не «ближайшего» —
+            // тот мог разъехаться. Фолбэк на ближайшего, если цель погибла за время рывка.
+            RuntimeUnit victim = monk.PendingEngageTarget;
+            monk.PendingEngageTarget = null;
+            if (victim == null || victim.IsDead)
+                victim = NearestEnemy(monk, monk.Position, ctx.Combat, exclude: null);
             if (victim == null) return;
 
             // Монах бьёт ТОЛЬКО прямо от себя. «Умная» часть — позиция приземления рывка (см. AbilitySystem):
