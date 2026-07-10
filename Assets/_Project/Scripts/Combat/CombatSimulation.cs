@@ -12,8 +12,8 @@ namespace Guildmaster.Combat
     /// Детерминированная тиковая симуляция боя. Реализует <see cref="ICombatContext"/>
     /// — единственная точка мутации состояния боя из систем и (Фаза 2) компонентов эффектов.
     /// <para>
-    /// Порядок систем за тик: ApplyCommands → Brain (AI) → Ability → Movement → SpatialHashRebuild
-    /// → AutoAttack → Projectiles → Regen → Effects → DrainEvents → Death → CheckOutcome → currentTick++.
+    /// Порядок систем за тик: ApplyCommands → Brain (AI) → Ability → Movement → Displacement → Separation
+    /// → SpatialHashRebuild → AutoAttack → Projectiles → Regen → Effects → DrainEvents → Death → CheckOutcome → currentTick++.
     /// </para>
     /// (вики «10» §5.1).
     /// </summary>
@@ -32,6 +32,10 @@ namespace Guildmaster.Combat
         private readonly EffectSystem        _effectSystem;
         private readonly RegenSystem         _regenSystem;
         private readonly DisplacementSystem  _displacementSystem;
+
+        // Разделение тел — локальное избегание (вики «10» §5.1). Не инъектится: без конфигурации,
+        // читает тюнеры из SimConstants; внутренний инстанс, чтобы не ломать позиционные тест-конструкторы.
+        private readonly SeparationSystem    _separationSystem = new SeparationSystem();
 
         private readonly List<RuntimeUnit>  _units       = new List<RuntimeUnit>();
         private readonly List<RuntimeUnit>  _pendingAdd  = new List<RuntimeUnit>();
@@ -205,6 +209,7 @@ namespace Guildmaster.Combat
             _abilitySystem.Tick(_units, this, dt);
             _movementSystem.Tick(_units, dt, in _arena);
             _displacementSystem.Tick(this, dt, in _arena);
+            _separationSystem.Tick(_units, _spatialHash, in _arena);
             _spatialHash.Rebuild(_units);
             _autoAttackSystem.Tick(_units, this, dt);
             _projectileSystem.Tick(_projectiles, _units, this, dt);

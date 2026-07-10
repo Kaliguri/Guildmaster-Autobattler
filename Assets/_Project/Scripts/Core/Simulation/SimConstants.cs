@@ -38,5 +38,22 @@ namespace Guildmaster.Core.Simulation
         /// у ударов с маленьким кадром контакта (windup — геймплейная механика, не косметика; вики «14»).
         /// </summary>
         public const int MinWindupTicks = 3;
+
+        // --- Разделение тел (SeparationSystem, локальное избегание) ---
+
+        /// <summary>
+        /// Радиус тела юнита = <see cref="Data.Stats.StatType.Size"/> × это (мировые ед.).
+        /// Size 1.0 → 0.25 (диаметр 0.5). Совпадает с кругом коллизии в гизмо UnitView.
+        /// </summary>
+        public const float BodyRadiusPerSize = 0.25f;
+
+        /// <summary>
+        /// Доля перекрытия, устраняемая за тик (мягкая усадка за пару тиков; 1 = жёстко за тик).
+        /// Балансная ручка «интенсивности» коллизии.
+        /// </summary>
+        public const float SeparationStrength = 0.5f;
+
+        /// <summary>Проходов разделения за тик (больше = жёстче и дороже). Обычно 1.</summary>
+        public const int SeparationIterations = 1;
     }
 }
