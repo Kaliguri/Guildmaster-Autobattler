@@ -22,7 +22,9 @@ namespace Guildmaster.Presentation
         private static readonly Color FrozenColor  = new Color(0.5f, 0.9f,  1f,    0.9f); // заморозка — голубой
         private static readonly Color EmpowerColor = new Color(1f,   0.4f,  1f,    0.9f); // усиление — маджента
 
-        private const float BaseRadius = 0.55f;
+        // Базовый радиус кольца = половина видимой ширины тела при Size 1 + небольшой зазор
+        // (тело ~0.6 юнита в ширину при росте ~1.7). Крутится под финальный размер спрайта на глаз.
+        private const float BaseRadius = 0.35f;
         private const float RingStep   = 0.13f;
         private const float Thickness  = 0.06f;
 

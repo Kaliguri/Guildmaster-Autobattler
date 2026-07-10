@@ -50,6 +50,18 @@ namespace Guildmaster.Game
         [LabelText("Размер")]
         [SerializeField] private Vector2 _cameraZoneSize = new Vector2(26f, 16f);
 
+        [Title("Калибровка масштаба")]
+        [InfoBox("Зелёный силуэт — эталон роста играбельного персонажа (1 юнит = 1 метр). Только гизмо, " +
+                 "на симуляцию/расстановку не влияет. Помогает на глаз сверить размер юнитов и арены.")]
+        [LabelText("Показывать эталон")]
+        [SerializeField] private bool _showScaleReference = true;
+
+        [LabelText("Рост эталона")]
+        [SerializeField] private float _refHumanHeight = 1.7f;
+
+        [LabelText("Ширина эталона")]
+        [SerializeField] private float _refHumanWidth = 0.6f;
+
         [Title("Зоны расстановки")]
         [InfoBox("Тяни рамки в Scene-вью за грани/углы. Белая — поле, синяя — игрок, красная — враг, " +
                  "полупрозрачная — Extended. Кнопкой «+» зона добавляется видимого размера на своей половине.")]
@@ -110,6 +122,16 @@ namespace Guildmaster.Game
                 if (z.Tier == DeploymentTier.Extended) c.a = 0.5f; // extended — полупрозрачным контуром
                 Gizmos.color = c;
                 Gizmos.DrawWireCube(origin + z.Center, z.Size);
+            }
+
+            // Эталон роста персонажа: стоит на полу у левого края поля, для сверки масштаба на глаз.
+            if (_showScaleReference && _refHumanHeight > 0f)
+            {
+                Vector2 floorLeft = origin + _boundsCenter +
+                                    new Vector2(-Mathf.Abs(_boundsSize.x) * 0.5f + _refHumanWidth, -Mathf.Abs(_boundsSize.y) * 0.5f);
+                var center = new Vector3(floorLeft.x, floorLeft.y + _refHumanHeight * 0.5f, 0f);
+                Gizmos.color = new Color(0.35f, 0.95f, 0.55f, 0.9f);
+                Gizmos.DrawWireCube(center, new Vector3(_refHumanWidth, _refHumanHeight, 0f));
             }
         }
     }
