@@ -23,13 +23,14 @@ namespace Guildmaster.Combat
     /// </summary>
     public sealed class SeparationSystem
     {
-        // Тюнеры (дефолты — из SimConstants). Публичные, чтобы dev мог крутить в рантайме (gm_sep_*)
-        // для подбора ощущения без рекомпиляции. В релизе значения фиксируются в SimConstants.
-        public float BodyRadiusPerSize = SimConstants.BodyRadiusPerSize;
-        public float Strength          = SimConstants.SeparationStrength;
-        public int   Iterations        = SimConstants.SeparationIterations;
+        // Тюнеры. Публичные, чтобы dev крутил вживую (gm_sep_*) без рекомпиляции. Стартовые значения
+        // засевает CombatSimulation из снапшота SimTuning (SimTuningConfig); здесь — код-дефолты для
+        // headless-конструирования без снапшота.
+        public float BodyRadiusPerSize = SimTuning.Default.BodyRadiusPerSize;
+        public float Strength          = SimTuning.Default.SeparationStrength;
+        public int   Iterations        = SimTuning.Default.SeparationIterations;
         // Свои расталкиваются мягче (просачиваются к фронту), враги — на полную (линия держится).
-        public float SameTeamScale     = SimConstants.SeparationSameTeamScale;
+        public float SameTeamScale     = SimTuning.Default.SeparationSameTeamScale;
 
         // Переиспользуемый буфер соседей — без аллокаций на горячем пути.
         private readonly List<RuntimeUnit> _neighbors = new List<RuntimeUnit>();

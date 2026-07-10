@@ -55,7 +55,7 @@ namespace Guildmaster.Presentation
         [SerializeField] private float _recommendedHeight = 1.7f;
         [Tooltip("Превью Size для гизмо круга коллизии, когда юнит ещё не заспавнен (рантайм берёт настоящий Size).")]
         [SerializeField] private float _gizmoPreviewSize = 1f;
-        [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус = Size × SimConstants.BodyRadiusPerSize). Выключи, если мешает.")]
+        [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус = Size × SimTuning.BodyRadiusPerSize). Выключи, если мешает.")]
         [SerializeField] private bool _showCollisionGizmo = true;
 
         private RuntimeUnit _unit;
@@ -386,7 +386,7 @@ namespace Guildmaster.Presentation
             UnityEditor.Handles.color = green;
             UnityEditor.Handles.Label(rTop + Vector3.up * 0.06f, "рек. рост " + rec.ToString("0.##") + " м");
 
-            // --- Круг коллизии сима (радиус = Size × SimConstants.BodyRadiusPerSize) в НОГАХ, как линейка. Тумблер. ---
+            // --- Круг коллизии сима (радиус = Size × SimTuning.Default.BodyRadiusPerSize) в НОГАХ, как линейка. Тумблер. ---
             // В рантайме сим считает коллизию в unit.Position; презентация ставит юнита так, чтобы Feet Point
             // попал в неё (офсет спавна — фаза коллизии), поэтому центр здесь = feet.
             if (_showCollisionGizmo)
@@ -394,7 +394,7 @@ namespace Guildmaster.Presentation
                 float size = Application.isPlaying && _unit != null
                     ? Mathf.Max(0.01f, _unit.Stats.Get(Data.Stats.StatType.Size))
                     : Mathf.Max(0.01f, _gizmoPreviewSize);
-                float cr = size * SimConstants.BodyRadiusPerSize;
+                float cr = size * SimTuning.Default.BodyRadiusPerSize;
                 var orange = new Color(1f, 0.6f, 0.2f, 0.85f);
                 Gizmos.color = orange;
                 DrawWireDisc(feet, cr);

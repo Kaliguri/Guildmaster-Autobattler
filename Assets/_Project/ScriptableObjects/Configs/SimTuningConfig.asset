@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fbd7ad3964944542a8469b5f7846410, type: 3}
+  m_Name: SimTuningConfig
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.SimTuningConfig
+  _bodyRadiusPerSize: 0.575
+  _separationStrength: 0.5
+  _separationIterations: 1
+  _separationSameTeamScale: 0.35
+  _projectileHitRadiusFactor: 0.25
+  _projectileDespawnMargin: 5
+  _kiteFleeFactor: 0.6
+  _globalSearchRadius: 500

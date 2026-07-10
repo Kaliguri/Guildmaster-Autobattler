@@ -1,6 +1,7 @@
 using Guildmaster.Combat;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
@@ -20,6 +21,9 @@ namespace Guildmaster.Game
     {
         [Tooltip("Конфиг базовых характеристик (в т.ч. armor-константа K — единственный источник).")]
         [SerializeField] private StatsConfig _statsConfig;
+
+        [Tooltip("Балансный тюнинг симуляции (вики «13» §3.4): печётся в снапшот SimTuning на старте боя.")]
+        [SerializeField] private SimTuningConfig _simTuningConfig;
 
         [Tooltip("Размер ячейки пространственного хэша.")]
         [SerializeField] private float _spatialHashCellSize = 3f;
@@ -88,7 +92,8 @@ namespace Guildmaster.Game
             // систему в ctor — ничего тут править не надо, лишь бы она была зарегистрирована.
             builder.Register<CombatSimulation>(Lifetime.Scoped)
                    .WithParameter("armorK", _statsConfig.ArmorConstantK)
-                   .WithParameter("arena", (ArenaBounds?)layout.Bounds);
+                   .WithParameter("arena", (ArenaBounds?)layout.Bounds)
+                   .WithParameter("tuning", (SimTuning?)_simTuningConfig.ToSnapshot());
 
             StatsConfig cfg = _statsConfig;
             builder.Register<RuntimeUnitFactory>(r => new RuntimeUnitFactory(

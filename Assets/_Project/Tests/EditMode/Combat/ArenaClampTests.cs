@@ -49,7 +49,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var units  = RetreatPair(out RuntimeUnit fleer);
 
             for (int t = 0; t < 200; t++)
-                move.Tick(units, SimConstants.TickDelta, in bounds);
+                move.Tick(units, SimConstants.TickDelta, in bounds, SimTuning.Default);
 
             Assert.IsTrue(bounds.Contains(fleer.Position),
                 $"Отступающий юнит вышел за границы арены: {fleer.Position}");
@@ -63,7 +63,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var units = RetreatPair(out RuntimeUnit fleer);
 
             for (int t = 0; t < 200; t++)
-                move.Tick(units, SimConstants.TickDelta, in unb);
+                move.Tick(units, SimConstants.TickDelta, in unb, SimTuning.Default);
 
             Assert.Greater(fleer.Position.x, 5f,
                 "Без границ отступающий должен уйти далеко за пределы бывшей арены");

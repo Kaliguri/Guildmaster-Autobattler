@@ -88,7 +88,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var u = MakeUnit(0, team: 0, pos: Vector2.zero, range: 10f, positioning: PositioningIntent.Kite);
                 var target = MakeUnit(1, team: 1, pos: new Vector2(3f, 0f));
                 u.CurrentTarget = target;
-                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
                 Assert.Less(u.Position.x, 0f, "Ближе нижней границы полосы — отходит от цели");
             }
             // В полосе (dist 8) → стоит.
@@ -96,7 +96,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var u = MakeUnit(0, team: 0, pos: Vector2.zero, range: 10f, positioning: PositioningIntent.Kite);
                 var target = MakeUnit(1, team: 1, pos: new Vector2(8f, 0f));
                 u.CurrentTarget = target;
-                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
                 Assert.AreEqual(0f, u.Position.x, 1e-4f, "В полосе дистанции — держит позицию");
             }
             // Дальше радиуса (dist 15 > 10) → подходит.
@@ -104,7 +104,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var u = MakeUnit(0, team: 0, pos: Vector2.zero, range: 10f, positioning: PositioningIntent.Kite);
                 var target = MakeUnit(1, team: 1, pos: new Vector2(15f, 0f));
                 u.CurrentTarget = target;
-                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
                 Assert.Greater(u.Position.x, 0f, "Вне радиуса — подходит к цели");
             }
         }
@@ -126,7 +126,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                     positioning: PositioningIntent.Kite);
                 var target = MakeUnit(1, team: 1, pos: new Vector2(8f, 0f));
                 u.CurrentTarget = target;
-                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
                 Assert.Greater(u.Position.x, 0f, "dist>FallbackDist(4) — подходит (профиль, не AttackRange)");
             }
             // dist 1 < FleeDist(2) → отходит.
@@ -135,7 +135,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                     positioning: PositioningIntent.Kite);
                 var target = MakeUnit(1, team: 1, pos: new Vector2(1f, 0f));
                 u.CurrentTarget = target;
-                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
                 Assert.Less(u.Position.x, 0f, "dist<FleeDist(2) — отходит");
             }
             // dist 3 в полосе [2,4] → стоит.
@@ -144,7 +144,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                     positioning: PositioningIntent.Kite);
                 var target = MakeUnit(1, team: 1, pos: new Vector2(3f, 0f));
                 u.CurrentTarget = target;
-                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
                 Assert.AreEqual(0f, u.Position.x, 1e-4f, "В полосе [FleeDist, FallbackDist] — держит позицию");
             }
         }
@@ -161,7 +161,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var enemy = MakeUnit(1, team: 1, pos: new Vector2(-3f, 0f)); // справа → отход в -x упирается в левую стену
             u.CurrentTarget = enemy; // MoveRetreat ищет ближайшего сам, но Tick требует ненулевую цель
 
-            new MovementSystem().Tick(new List<RuntimeUnit> { u, enemy }, SimConstants.TickDelta, bounds);
+            new MovementSystem().Tick(new List<RuntimeUnit> { u, enemy }, SimConstants.TickDelta, bounds, SimTuning.Default);
 
             Assert.AreEqual(-5f, u.Position.x, 1e-3f, "За стену по X не продавливается");
             Assert.Greater(Mathf.Abs(u.Position.y), 1e-4f, "Зажатый у стены идёт ВДОЛЬ неё, а не утыкается на месте");
@@ -175,7 +175,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var target = MakeUnit(1, team: 1, pos: new Vector2(-4.5f, 0f)); // впритык → flee-ветка отхода в стену
             u.CurrentTarget = target;
 
-            new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, bounds);
+            new MovementSystem().Tick(new List<RuntimeUnit> { u, target }, SimConstants.TickDelta, bounds, SimTuning.Default);
 
             Assert.AreEqual(-5f, u.Position.x, 1e-3f, "Кайт за стену по X не продавливается");
             Assert.Greater(Mathf.Abs(u.Position.y), 1e-4f, "Кайт, зажатый у стены, перебегает вдоль неё, а не утыкается");
@@ -201,9 +201,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             baseline.CurrentTarget = target; // НЕ в замахе → полная скорость
 
             var sys = new MovementSystem();
-            sys.Tick(new List<RuntimeUnit> { moving, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
-            sys.Tick(new List<RuntimeUnit> { rooted, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
-            sys.Tick(new List<RuntimeUnit> { baseline, target }, SimConstants.TickDelta, ArenaBounds.Unbounded);
+            sys.Tick(new List<RuntimeUnit> { moving, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
+            sys.Tick(new List<RuntimeUnit> { rooted, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
+            sys.Tick(new List<RuntimeUnit> { baseline, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
 
             Assert.Greater(moving.Position.x, 0f, "Со стрельбой на ходу юнит движется в замахе");
             Assert.AreEqual(0f, rooted.Position.x, 1e-4f, "Без флага замах рутит (поведение Ф1)");

@@ -30,7 +30,7 @@ namespace Guildmaster.Combat.Effects.Components
 
             // Ближайший живой враг источника к точке смерти (без ограничения дальности).
             var candidates = new List<RuntimeUnit>();
-            ctx.Combat.QueryUnitsInRadius(dead.Position, SimConstants.GlobalSearchRadius, candidates, TargetFilter.Enemies, source.Team);
+            ctx.Combat.QueryUnitsInRadius(dead.Position, ctx.Combat.Tuning.GlobalSearchRadius, candidates, TargetFilter.Enemies, source.Team);
 
             RuntimeUnit best = null;
             float bestSq = float.MaxValue;

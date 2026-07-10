@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Guildmaster.Core.Random;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -80,5 +81,8 @@ namespace Guildmaster.Combat
 
         /// <summary>Константа K из StatsConfig для пайплайна брони.</summary>
         float ArmorK { get; }
+
+        /// <summary>Снапшот балансного тюнинга, запечённый на старте боя (вики «13» §3.4, §4).</summary>
+        SimTuning Tuning { get; }
     }
 }

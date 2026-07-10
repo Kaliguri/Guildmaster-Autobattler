@@ -75,7 +75,7 @@ namespace Guildmaster.Combat
 
             p.Position = newPos;
 
-            if (IsOutOfBounds(p.Position, in arena)) p.IsAlive = false;
+            if (IsOutOfBounds(p.Position, in arena, ctx.Tuning.ProjectileDespawnMargin)) p.IsAlive = false;
         }
 
         private static void ApplyHit(Projectile p, RuntimeUnit target, ICombatContext ctx)
@@ -135,12 +135,12 @@ namespace Guildmaster.Combat
 
         // Снаряд гаснет, выйдя за границы арены на ProjectileDespawnMargin (§4.2 п.4). Бесконечное поле
         // (headless-тесты, бой без арены) → Size = +∞ → снаряд не деспавнится по границам (как и стены).
-        private static bool IsOutOfBounds(Vector2 pos, in ArenaBounds arena)
+        private static bool IsOutOfBounds(Vector2 pos, in ArenaBounds arena, float despawnMargin)
         {
             Vector2 center = arena.Center;
             Vector2 size   = arena.Size;
-            float halfX = size.x * 0.5f + SimConstants.ProjectileDespawnMargin;
-            float halfY = size.y * 0.5f + SimConstants.ProjectileDespawnMargin;
+            float halfX = size.x * 0.5f + despawnMargin;
+            float halfY = size.y * 0.5f + despawnMargin;
             return Mathf.Abs(pos.x - center.x) > halfX || Mathf.Abs(pos.y - center.y) > halfY;
         }
 

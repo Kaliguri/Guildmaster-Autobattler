@@ -142,7 +142,7 @@ namespace Guildmaster.Combat
         private static RuntimeUnit NearestEnemyTo(Vector2 from, int selfTeam, RuntimeUnit exclude, ICombatContext ctx)
         {
             var buffer = new List<RuntimeUnit>();
-            ctx.QueryUnitsInRadius(from, SimConstants.GlobalSearchRadius, buffer, TargetFilter.Enemies, selfTeam);
+            ctx.QueryUnitsInRadius(from, ctx.Tuning.GlobalSearchRadius, buffer, TargetFilter.Enemies, selfTeam);
 
             RuntimeUnit best = null;
             float bestSq = float.MaxValue;

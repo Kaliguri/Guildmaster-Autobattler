@@ -20,12 +20,18 @@ namespace Guildmaster.Game
         [Tooltip("Реестр всего контента (вики «13» §3.6). Наполняется Tools/Guildmaster/Sync Content Database.")]
         [SerializeField] private ContentDatabase _contentDatabase;
 
+        [Tooltip("Общие дефолты игры (громкости, локаль, слоты предметов; вики «13» §3.4). Потребители — Фаза 6/7.")]
+        [SerializeField] private GameConfig _gameConfig;
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<IRngService>(_ => new XorShiftRng(GenerateRootSeed()), Lifetime.Singleton);
 
             // Контент: SO — чистые данные, рантайм-индекс (id → def) строится один раз здесь (вики «13» §3.6).
             builder.RegisterInstance<IContentDatabase>(new ContentRegistry(_contentDatabase.Entries));
+
+            // Общие дефолты игры (потребителей пока нет — тип/ассет/DI под Фазу 6/7).
+            builder.RegisterInstance(_gameConfig);
 
             builder.Register<UnityAudioService>(Lifetime.Singleton).As<IAudioService>();
             builder.Register<SceneLoader>(Lifetime.Singleton);

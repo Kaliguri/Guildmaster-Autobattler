@@ -39,6 +39,9 @@ namespace Guildmaster.DevTools
         [Tooltip("SO реликвии «Монах вихря» для gm_spawn_monk (вики «13» §10.6).")]
         [SerializeField] private RelicData _monkRelic;
 
+        [Tooltip("Тот же SimTuningConfig, что и на CombatLifetimeScope — для gm_tuning_rebake (QC).")]
+        [SerializeField] private SimTuningConfig _simTuningConfig;
+
         private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
         private RuntimeUnitFactory _factory;
@@ -144,7 +147,7 @@ namespace Guildmaster.DevTools
         /// Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия).
         /// Спавнит сеткой с шагом МЕНЬШЕ диаметра тела → юниты сразу перекрываются и разъезжаются; высокий
         /// HP и низкий урон держат толпу живой, чтобы видеть spacing и при сшибке блобов в центре.
-        /// Крути на глаз <c>SimConstants.SeparationStrength</c> / <c>SeparationIterations</c> / <c>BodyRadiusPerSize</c>,
+        /// Крути на глаз <c>SimTuningConfig</c> (Strength / Iterations / BodyRadiusPerSize) или live gm_sep_*,
         /// перезапуск на месте — R. Параметр <paramref name="size"/> — «толщина» тел (Size-стат).
         /// </summary>
         [Command("gm_spawn_crowd", "Плотный клубок обеих команд для теста коллизии/расталкивания")]
@@ -488,6 +491,17 @@ namespace Guildmaster.DevTools
             if (overlay == null) { Debug.LogWarning("[GuildmasterCommands] - CombatStatusOverlay не найден (создаётся в бою)"); return; }
             overlay.IsEnabled = !overlay.IsEnabled;
             Debug.Log($"[GuildmasterCommands] - gm_toggle_status: {(overlay.IsEnabled ? "ON" : "OFF")}");
+        }
+
+        /// <summary>Пересобрать SimTuning из SO и применить к идущему бою (QC-тюнинг без рекомпиляции).</summary>
+        [Command("gm_tuning_rebake", "Пересобрать SimTuning из SO и применить к бою (бой становится TAINTED)")]
+        public void TuningRebake()
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: нет активного боя"); return; }
+            if (_simTuningConfig == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: SimTuningConfig не назначен"); return; }
+
+            _simulation.RebakeTuning(_simTuningConfig.ToSnapshot());
+            Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: тюнинг применён к бою → battle TAINTED (реплей невалиден, вики «13» §4.1)");
         }
 
         // Начать НОВЫЙ бой: сбросить текущий (юниты/снаряды/исход/очереди) + счётчик Id фабрики + снять

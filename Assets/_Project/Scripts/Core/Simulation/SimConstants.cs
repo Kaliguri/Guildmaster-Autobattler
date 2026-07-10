@@ -39,47 +39,8 @@ namespace Guildmaster.Core.Simulation
         /// </summary>
         public const int MinWindupTicks = 3;
 
-        // --- Разделение тел (SeparationSystem, локальное избегание) ---
-
-        /// <summary>
-        /// Радиус тела юнита = <see cref="Data.Stats.StatType.Size"/> × это (мировые ед.).
-        /// Size 1.0 → 0.575 (диаметр 1.15). Подгоняется под видимую ширину спрайта (dev live: gm_sep_radius).
-        /// </summary>
-        public const float BodyRadiusPerSize = 0.575f;
-
-        /// <summary>
-        /// Доля перекрытия, устраняемая за тик (мягкая усадка за пару тиков; 1 = жёстко за тик).
-        /// Балансная ручка «интенсивности» коллизии.
-        /// </summary>
-        public const float SeparationStrength = 0.5f;
-
-        /// <summary>Проходов разделения за тик (больше = жёстче и дороже). Обычно 1.</summary>
-        public const int SeparationIterations = 1;
-
-        /// <summary>
-        /// Множитель расталкивания для пары ОДНОЙ команды (0..1). Свои расступаются мягче — задние
-        /// просачиваются сквозь ряды к фронту; враги всегда на полную (боевая линия держится на стыке).
-        /// </summary>
-        public const float SeparationSameTeamScale = 0.35f;
-
-        // --- Снаряды и поиск целей (единый источник значений; пакет 0 §4.2) ---
-        // TODO Фаза 4 (пакет 2): переезжают в SimTuningConfig (снапшот на старте боя, вики «13» §3.4).
-
-        /// <summary>
-        /// «Глобальный» радиус поиска целей (мировые ед.): метка охотника, ближайший враг для
-        /// монаха/активок — по сути «без ограничения дальности» на масштабе арены (вики «13» §4.2 п.3).
-        /// </summary>
-        public const float GlobalSearchRadius = 500f;
-
-        /// <summary>
-        /// Радиус коллизии снаряда/хил-снаряда = <see cref="Data.Stats.StatType.Size"/> × это (вики «13» §4.2 п.5).
-        /// </summary>
-        public const float ProjectileHitRadiusFactor = 0.25f;
-
-        /// <summary>
-        /// Отступ деспавна снаряда ЗА границами арены (мировые ед.): снаряд гаснет, выйдя за поле на
-        /// этот запас, а не по несвязанному мировому нулю (вики «13» §4.2 п.4). Бесконечное поле → не гаснет.
-        /// </summary>
-        public const float ProjectileDespawnMargin = 5f;
+        // Балансные тюнинг-ручки (разделение тел, снаряды, KiteFleeFactor, GlobalSearchRadius) переехали
+        // в SimTuningConfig → снапшот SimTuning на старте боя (вики «13» §3.4, §4; пакет 2). Здесь остаются
+        // только структурные/детерминизм-константы (TickRate и производные, потолок догоняющих тиков).
     }
 }

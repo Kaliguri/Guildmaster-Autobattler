@@ -78,7 +78,7 @@ namespace Guildmaster.Combat.Effects.Components
         private static RuntimeUnit NearestEnemy(RuntimeUnit monk, UnityEngine.Vector2 from, ICombatContext combat, RuntimeUnit exclude)
         {
             var buffer = new List<RuntimeUnit>();
-            combat.QueryUnitsInRadius(from, SimConstants.GlobalSearchRadius, buffer, TargetFilter.Enemies, monk.Team);
+            combat.QueryUnitsInRadius(from, combat.Tuning.GlobalSearchRadius, buffer, TargetFilter.Enemies, monk.Team);
 
             RuntimeUnit best = null;
             float bestSq = float.MaxValue;

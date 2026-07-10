@@ -250,6 +250,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             public IRngService Rng => null;
             public int CurrentTick => 0;
             public float ArmorK => 100f;
+            public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
 
             public int QueryUnitsInRadius(Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam)
             {

@@ -212,6 +212,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         public IRngService Rng => _rng;
         public int CurrentTick => 0;
         public float ArmorK => 100f;
+        public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
     }
 
     /// <summary>Установка приватных <c>[SerializeField]</c> компонентов в тестах (без сериализации).</summary>
