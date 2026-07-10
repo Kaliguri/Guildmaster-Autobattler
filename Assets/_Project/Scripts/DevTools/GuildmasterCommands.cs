@@ -148,7 +148,7 @@ namespace Guildmaster.DevTools
         /// перезапуск на месте — R. Параметр <paramref name="size"/> — «толщина» тел (Size-стат).
         /// </summary>
         [Command("gm_spawn_crowd", "Плотный клубок обеих команд для теста коллизии/расталкивания")]
-        public void SpawnCrowd(int perTeam = 8, float hp = 400f, float damage = 6f, float size = 1f, float range = 3.75f)
+        public void SpawnCrowd(int perTeam = 8, float hp = 400f, float damage = 6f, float size = 1f, float range = 3f)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
 
