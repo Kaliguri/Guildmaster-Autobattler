@@ -64,7 +64,8 @@ var hierarchy =
           [ "Guildmaster.Combat.Effects.Components.MarkTransferComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MarkTransferComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.StealthComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent.html", null ],
           [ "Guildmaster.Combat.Effects.Components.ThornsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html", null ],
-          [ "Guildmaster.Combat.Effects.Components.VortexEntryComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html", null ]
+          [ "Guildmaster.Combat.Effects.Components.VortexEntryComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html", null ],
+          [ "Guildmaster.Combat.Effects.Components.WhirlDashLandingComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent.html", null ]
         ] ],
         [ "Guildmaster.Combat.Effects.IStackableComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html", [
           [ "Guildmaster.Combat.Effects.Components.DodgeComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html", null ],
@@ -121,6 +122,8 @@ var hierarchy =
       [ "Guildmaster.Presentation.DamageNumberSpawner", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner.html", null ],
       [ "Guildmaster.Presentation.FloatingText", "classGuildmaster_1_1Presentation_1_1FloatingText.html", null ],
       [ "Guildmaster.Presentation.HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", null ],
+      [ "Guildmaster.Presentation.ManaBarView", "classGuildmaster_1_1Presentation_1_1ManaBarView.html", null ],
+      [ "Guildmaster.Presentation.ProjectileView", "classGuildmaster_1_1Presentation_1_1ProjectileView.html", null ],
       [ "Guildmaster.Presentation.UnitView", "classGuildmaster_1_1Presentation_1_1UnitView.html", null ]
     ] ],
     [ "Guildmaster.Combat.MovementSystem", "classGuildmaster_1_1Combat_1_1MovementSystem.html", null ],

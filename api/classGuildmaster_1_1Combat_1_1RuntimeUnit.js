@@ -20,6 +20,7 @@ var classGuildmaster_1_1Combat_1_1RuntimeUnit =
     [ "Id", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a09b0794faa1054a9796334e18a0f557c", null ],
     [ "IsDead", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4535a281dcec5e830ae47b664400347e", null ],
     [ "IsWindingUp", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae2e9433540f6fc645621c7098fe38923", null ],
+    [ "PendingEngageTarget", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4a5a1c655470baca92db2ec4541e08a5", null ],
     [ "Position", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ad165873e9407fb2df902527f75674deb", null ],
     [ "Positioning", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa95fa045315d83e9b2e840d3d19b30c6", null ],
     [ "PreviousPosition", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aecb0992328b22064b9ac4972ac27d5e9", null ],

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.AreaHit.Line" name="Guildmaster.Combat.AreaHit.Line">
+<area shape="rect" id="Node000001" title=" " alt="" coords="359,20,599,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent.html#a5933d5d66fc090277a301f44e4ded35d" title=" " alt="" coords="5,5,311,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="345,35,311,35,311,30,345,30"/>
+</map>

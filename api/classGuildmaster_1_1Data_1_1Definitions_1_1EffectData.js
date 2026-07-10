@@ -1,5 +1,6 @@
 var classGuildmaster_1_1Data_1_1Definitions_1_1EffectData =
 [
+    [ "CreateRuntime", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#afee2cbba71742c7d88393d2347717ddc", null ],
     [ "BaseDuration", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a1d6c4b554fe357c4b6fd3fc279719816", null ],
     [ "CleanseTier", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a59bb05962bd41a29606938b69ec75519", null ],
     [ "Components", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a5a5e39f4549e0caa9e9b9caf273038d8", null ],

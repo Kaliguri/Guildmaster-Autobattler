@@ -46,7 +46,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 967;
+var viewWidth = 1205;
 var viewHeight = 379;
 var sectionId = 'dynsection-0';
 </script>
@@ -58,17 +58,17 @@ var sectionId = 'dynsection-0';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь...">
-<polygon fill="#999999" stroke="transparent" points="562.5,-186 412.5,-186 412.5,-126 562.5,-126 562.5,-186"/>
-<text text-anchor="start" x="417.5" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
-<text text-anchor="start" x="436" y="-163" font-family="Helvetica,sans-Serif" font-size="10.00">IReactiveComponent</text>
-<text text-anchor="start" x="436.5" y="-148" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="469.5" y="-148" font-family="Helvetica,sans-Serif" font-size="10.00">Events</text>
-<text text-anchor="start" x="436.5" y="-133" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="469.5" y="-133" font-family="Helvetica,sans-Serif" font-size="10.00">OnEvent()</text>
-<polygon fill="#666666" stroke="#666666" points="412.5,-158 412.5,-158 562.5,-158 562.5,-158 412.5,-158"/>
-<polygon fill="#666666" stroke="#666666" points="412.5,-143 412.5,-143 467.5,-143 467.5,-143 412.5,-143"/>
-<polygon fill="#666666" stroke="#666666" points="467.5,-143 467.5,-143 562.5,-143 562.5,-143 467.5,-143"/>
-<polygon fill="none" stroke="#666666" points="412.5,-126 412.5,-186 562.5,-186 562.5,-126 412.5,-126"/>
+<polygon fill="#999999" stroke="transparent" points="653.5,-186 503.5,-186 503.5,-126 653.5,-126 653.5,-186"/>
+<text text-anchor="start" x="508.5" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="527" y="-163" font-family="Helvetica,sans-Serif" font-size="10.00">IReactiveComponent</text>
+<text text-anchor="start" x="527.5" y="-148" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="560.5" y="-148" font-family="Helvetica,sans-Serif" font-size="10.00">Events</text>
+<text text-anchor="start" x="527.5" y="-133" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="560.5" y="-133" font-family="Helvetica,sans-Serif" font-size="10.00">OnEvent()</text>
+<polygon fill="#666666" stroke="#666666" points="503.5,-158 503.5,-158 653.5,-158 653.5,-158 503.5,-158"/>
+<polygon fill="#666666" stroke="#666666" points="503.5,-143 503.5,-143 558.5,-143 558.5,-143 503.5,-143"/>
+<polygon fill="#666666" stroke="#666666" points="558.5,-143 558.5,-143 653.5,-143 653.5,-143 558.5,-143"/>
+<polygon fill="none" stroke="#666666" points="503.5,-126 503.5,-186 653.5,-186 653.5,-126 503.5,-126"/>
 </a>
 </g>
 </g>
@@ -98,8 +98,8 @@ var sectionId = 'dynsection-0';
 <g id="edge3_Node000001_Node000004" class="edge">
 <title>Node1&#45;&gt;Node4</title>
 <g id="a_edge3_Node000001_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M402.21,-142.17C340.06,-131.55 254.35,-114.26 181.5,-90 178.74,-89.08 175.96,-88.1 173.16,-87.08"/>
-<polygon fill="none" stroke="#63b8ff" points="401.92,-145.67 412.37,-143.88 403.09,-138.77 401.92,-145.67"/>
+<path fill="none" stroke="#63b8ff" d="M493.01,-147.77C411.56,-139.3 286.18,-122.15 181.5,-90 178.72,-89.15 175.92,-88.23 173.1,-87.25"/>
+<polygon fill="none" stroke="#63b8ff" points="492.91,-151.28 503.22,-148.81 493.62,-144.31 492.91,-151.28"/>
 </a>
 </g>
 </g>
@@ -129,8 +129,8 @@ var sectionId = 'dynsection-0';
 <g id="edge4_Node000001_Node000005" class="edge">
 <title>Node1&#45;&gt;Node5</title>
 <g id="a_edge4_Node000001_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M425.31,-120.94C407.52,-111.19 387.86,-100.42 369.13,-90.17"/>
-<polygon fill="none" stroke="#63b8ff" points="423.98,-124.2 434.43,-125.93 427.34,-118.06 423.98,-124.2"/>
+<path fill="none" stroke="#63b8ff" d="M493.91,-125.92C462.84,-114.99 427.46,-102.24 395.5,-90 392.41,-88.81 389.26,-87.6 386.1,-86.36"/>
+<polygon fill="none" stroke="#63b8ff" points="492.81,-129.25 503.41,-129.26 495.13,-122.64 492.81,-129.25"/>
 </a>
 </g>
 </g>
@@ -160,8 +160,8 @@ var sectionId = 'dynsection-0';
 <g id="edge5_Node000001_Node000006" class="edge">
 <title>Node1&#45;&gt;Node6</title>
 <g id="a_edge5_Node000001_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M487.5,-115.62C487.5,-107.32 487.5,-98.52 487.5,-90.06"/>
-<polygon fill="none" stroke="#63b8ff" points="484,-115.79 487.5,-125.79 491,-115.79 484,-115.79"/>
+<path fill="none" stroke="#63b8ff" d="M547.69,-118.09C540.17,-109.09 532.05,-99.36 524.29,-90.06"/>
+<polygon fill="none" stroke="#63b8ff" points="545.02,-120.36 554.11,-125.79 550.39,-115.87 545.02,-120.36"/>
 </a>
 </g>
 </g>
@@ -191,15 +191,15 @@ var sectionId = 'dynsection-0';
 <g id="edge6_Node000001_Node000007" class="edge">
 <title>Node1&#45;&gt;Node7</title>
 <g id="a_edge6_Node000001_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M545.38,-120.53C561.61,-110.86 579.49,-100.21 596.52,-90.06"/>
-<polygon fill="none" stroke="#63b8ff" points="543.34,-117.67 536.54,-125.79 546.92,-123.68 543.34,-117.67"/>
+<path fill="none" stroke="#63b8ff" d="M609.65,-118.09C617.25,-109.09 625.46,-99.36 633.31,-90.06"/>
+<polygon fill="none" stroke="#63b8ff" points="606.93,-115.89 603.15,-125.79 612.28,-120.41 606.93,-115.89"/>
 </a>
 </g>
 </g>
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html" target="_top" xlink:title="«Вихревой заход» (§9.6, §10.6): реактив на завершение смещения (CombatEvent.UnitDisplaced,...">
+<g id="a_Node000008"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html" target="_top" xlink:title="«Вихревой заход» (§9.6, §10.6): реактив на конец эффекта смещения (CombatEvent.EffectExpired с тегом ...">
 <polygon fill="white" stroke="transparent" points="958.5,-90 770.5,-90 770.5,0 958.5,0 958.5,-90"/>
 <text text-anchor="start" x="775.5" y="-78" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
 <text text-anchor="start" x="775.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">Components.VortexEntryComponent</text>
@@ -222,8 +222,39 @@ var sectionId = 'dynsection-0';
 <g id="edge7_Node000001_Node000008" class="edge">
 <title>Node1&#45;&gt;Node8</title>
 <g id="a_edge7_Node000001_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M572.58,-138.73C627.21,-127.33 699.32,-110.49 761.5,-90 764.45,-89.03 767.44,-88 770.45,-86.94"/>
-<polygon fill="none" stroke="#63b8ff" points="571.68,-135.34 562.59,-140.8 573.1,-142.2 571.68,-135.34"/>
+<path fill="none" stroke="#63b8ff" d="M663.18,-126.16C694.26,-115.25 729.63,-102.45 761.5,-90 764.4,-88.87 767.34,-87.7 770.3,-86.52"/>
+<polygon fill="none" stroke="#63b8ff" points="661.96,-122.88 653.68,-129.48 664.28,-129.49 661.96,-122.88"/>
+</a>
+</g>
+</g>
+<!-- Node9 -->
+<g id="Node000009" class="node">
+<title>Node9</title>
+<g id="a_Node000009"><a xlink:href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent.html" target="_top" xlink:title="Приземление рывка монаха (§10.6, «Шквальный толчок», фаза 3 из 4: рывок → фиксация → ОТБРАСЫВАНИЕ → т...">
+<polygon fill="white" stroke="transparent" points="1196.5,-90 976.5,-90 976.5,0 1196.5,0 1196.5,-90"/>
+<text text-anchor="start" x="981.5" y="-78" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
+<text text-anchor="start" x="981.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">Components.WhirlDashLandingComponent</text>
+<text text-anchor="start" x="1017" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1066.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">Events</text>
+<text text-anchor="start" x="1017" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1066.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="1017" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1066.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<text text-anchor="start" x="1017" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="1066.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">OnEvent()</text>
+<polygon fill="#666666" stroke="#666666" points="976.5,-62 976.5,-62 1196.5,-62 1196.5,-62 976.5,-62"/>
+<polygon fill="#666666" stroke="#666666" points="976.5,-47 976.5,-47 1064.5,-47 1064.5,-47 976.5,-47"/>
+<polygon fill="#666666" stroke="#666666" points="1064.5,-47 1064.5,-47 1196.5,-47 1196.5,-47 1064.5,-47"/>
+<polygon fill="none" stroke="#666666" points="976.5,0 976.5,-90 1196.5,-90 1196.5,0 976.5,0"/>
+</a>
+</g>
+</g>
+<!-- Node1&#45;&gt;Node9 -->
+<g id="edge8_Node000001_Node000009" class="edge">
+<title>Node1&#45;&gt;Node9</title>
+<g id="a_edge8_Node000001_Node000009"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M663.56,-145.48C743.03,-135.48 864.54,-117.37 967.5,-90 970.37,-89.24 973.28,-88.43 976.19,-87.59"/>
+<polygon fill="none" stroke="#63b8ff" points="663.09,-142.01 653.6,-146.72 663.96,-148.96 663.09,-142.01"/>
 </a>
 </g>
 </g>
@@ -231,16 +262,16 @@ var sectionId = 'dynsection-0';
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" target="_top" xlink:title="Рантайм&#45;контракт поведения эффекта.">
-<polygon fill="white" stroke="transparent" points="557,-286 418,-286 418,-222 557,-222 557,-286"/>
-<text text-anchor="start" x="423.5" y="-274" font-family="Helvetica,sans-Serif" font-size="10.00">IRuntimeEffectComponent</text>
-<text text-anchor="start" x="486" y="-259" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="439" y="-244" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="468.5" y="-244" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
-<text text-anchor="start" x="439" y="-229" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="468.5" y="-229" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
-<polygon fill="#666666" stroke="#666666" points="418.5,-269 418.5,-269 557.5,-269 557.5,-269 418.5,-269"/>
-<polygon fill="#666666" stroke="#666666" points="418.5,-254 418.5,-254 557.5,-254 557.5,-254 418.5,-254"/>
-<polygon fill="none" stroke="#666666" points="418,-222 418,-286 557,-286 557,-222 418,-222"/>
+<polygon fill="white" stroke="transparent" points="648,-286 509,-286 509,-222 648,-222 648,-286"/>
+<text text-anchor="start" x="514.5" y="-274" font-family="Helvetica,sans-Serif" font-size="10.00">IRuntimeEffectComponent</text>
+<text text-anchor="start" x="577" y="-259" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="530" y="-244" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="559.5" y="-244" font-family="Helvetica,sans-Serif" font-size="10.00">OnApply()</text>
+<text text-anchor="start" x="530" y="-229" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="559.5" y="-229" font-family="Helvetica,sans-Serif" font-size="10.00">OnExpire()</text>
+<polygon fill="#666666" stroke="#666666" points="509.5,-269 509.5,-269 648.5,-269 648.5,-269 509.5,-269"/>
+<polygon fill="#666666" stroke="#666666" points="509.5,-254 509.5,-254 648.5,-254 648.5,-254 509.5,-254"/>
+<polygon fill="none" stroke="#666666" points="509,-222 509,-286 648,-286 648,-222 509,-222"/>
 </a>
 </g>
 </g>
@@ -248,8 +279,8 @@ var sectionId = 'dynsection-0';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node2&#45;&gt;Node1</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M487.5,-211.57C487.5,-202.97 487.5,-194.09 487.5,-186.06"/>
-<polygon fill="none" stroke="#63b8ff" points="484,-211.83 487.5,-221.83 491,-211.83 484,-211.83"/>
+<path fill="none" stroke="#63b8ff" d="M578.5,-211.57C578.5,-202.97 578.5,-194.09 578.5,-186.06"/>
+<polygon fill="none" stroke="#63b8ff" points="575,-211.83 578.5,-221.83 582,-211.83 575,-211.83"/>
 </a>
 </g>
 </g>
@@ -257,13 +288,13 @@ var sectionId = 'dynsection-0';
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" target="_top" xlink:title="Якорь полиморфного поведения эффекта для сериализации.">
-<polygon fill="white" stroke="transparent" points="536.5,-371 438.5,-371 438.5,-322 536.5,-322 536.5,-371"/>
-<text text-anchor="start" x="443.5" y="-358.5" font-family="Helvetica,sans-Serif" font-size="10.00">IEffectComponent</text>
-<text text-anchor="start" x="485.5" y="-343.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="485.5" y="-328.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="438.5,-353.5 438.5,-353.5 536.5,-353.5 536.5,-353.5 438.5,-353.5"/>
-<polygon fill="#666666" stroke="#666666" points="438.5,-338.5 438.5,-338.5 536.5,-338.5 536.5,-338.5 438.5,-338.5"/>
-<polygon fill="none" stroke="#666666" points="438.5,-322 438.5,-371 536.5,-371 536.5,-322 438.5,-322"/>
+<polygon fill="white" stroke="transparent" points="627.5,-371 529.5,-371 529.5,-322 627.5,-322 627.5,-371"/>
+<text text-anchor="start" x="534.5" y="-358.5" font-family="Helvetica,sans-Serif" font-size="10.00">IEffectComponent</text>
+<text text-anchor="start" x="576.5" y="-343.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="576.5" y="-328.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<polygon fill="#666666" stroke="#666666" points="529.5,-353.5 529.5,-353.5 627.5,-353.5 627.5,-353.5 529.5,-353.5"/>
+<polygon fill="#666666" stroke="#666666" points="529.5,-338.5 529.5,-338.5 627.5,-338.5 627.5,-338.5 529.5,-338.5"/>
+<polygon fill="none" stroke="#666666" points="529.5,-322 529.5,-371 627.5,-371 627.5,-322 529.5,-322"/>
 </a>
 </g>
 </g>
@@ -271,8 +302,8 @@ var sectionId = 'dynsection-0';
 <g id="edge2_Node000002_Node000003" class="edge">
 <title>Node3&#45;&gt;Node2</title>
 <g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M487.5,-311.54C487.5,-303.2 487.5,-294.31 487.5,-286.11"/>
-<polygon fill="none" stroke="#63b8ff" points="484,-311.72 487.5,-321.72 491,-311.72 484,-311.72"/>
+<path fill="none" stroke="#63b8ff" d="M578.5,-311.54C578.5,-303.2 578.5,-294.31 578.5,-286.11"/>
+<polygon fill="none" stroke="#63b8ff" points="575,-311.72 578.5,-321.72 582,-311.72 575,-311.72"/>
 </a>
 </g>
 </g>

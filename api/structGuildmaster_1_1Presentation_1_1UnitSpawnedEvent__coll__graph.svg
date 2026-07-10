@@ -123,9 +123,10 @@ var sectionId = 'dynsection-0';
 <polygon fill="none" stroke="#63b8ff" points="380.3,-192.22 373.13,-193.02 369.63,-186.71 376.8,-185.91 380.3,-192.22"/>
 </a>
 </g>
-<text text-anchor="middle" x="435.5" y="-215" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +AutoAttackTarget</text>
-<text text-anchor="middle" x="435.5" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+CurrentTarget</text>
-<text text-anchor="middle" x="435.5" y="-193" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+WindupTarget</text>
+<text text-anchor="middle" x="444.5" y="-220.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +AutoAttackTarget</text>
+<text text-anchor="middle" x="444.5" y="-209.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+CurrentTarget</text>
+<text text-anchor="middle" x="444.5" y="-198.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+PendingEngageTarget</text>
+<text text-anchor="middle" x="444.5" y="-187.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+WindupTarget</text>
 </g>
 <!-- Node3 -->
 <g id="Node000003" class="node">

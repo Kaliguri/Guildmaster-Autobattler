@@ -53,13 +53,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AIProfile_8cs.html",
-"TargetingMode_8cs.html#a9682e32b839e6220bb3b059bf07291c2",
-"classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#a0a839e0d600a5d2201274d4d8d50da97",
-"classGuildmaster_1_1Core_1_1Arena_1_1DeploymentService.html",
-"classGuildmaster_1_1Game_1_1CombatLifetimeScope.html",
-"functions_u.html",
-"namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca30954d90085f6eaaf5817917fc5fecb3",
-"structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html#abf98e74afccf22f069e93eca34391235"
+"TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8af181304e789fd0882df5cb02d232fc69",
+"classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MarkTransferComponent.html#a4fc109892f3a3549513b2f42b165bf7c",
+"classGuildmaster_1_1Combat_1_1SpatialHash.html#a06b9482f7145afd2f7ac8cc74768aff3",
+"classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a38b9066022dfe44f572bd75a05b1be08",
+"dir_d2774252db0282cea59d2af38c204c1c.html",
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788",
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a7731ec28cceeb5d0b3f9c37f98de5145"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

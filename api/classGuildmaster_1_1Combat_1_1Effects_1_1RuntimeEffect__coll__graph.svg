@@ -94,28 +94,29 @@ var sectionId = 'dynsection-0';
 <polygon fill="white" stroke="transparent" points="155,-624 0,-624 0,-444 155,-444 155,-624"/>
 <text text-anchor="start" x="5.5" y="-612" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="52" y="-601" font-family="Helvetica,sans-Serif" font-size="10.00">EffectData</text>
-<text text-anchor="start" x="21" y="-586" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-586" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
-<text text-anchor="start" x="21" y="-571" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-571" font-family="Helvetica,sans-Serif" font-size="10.00">Polarity</text>
-<text text-anchor="start" x="21" y="-556" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-556" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
-<text text-anchor="start" x="21" y="-541" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-541" font-family="Helvetica,sans-Serif" font-size="10.00">BaseDuration</text>
-<text text-anchor="start" x="21" y="-526" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-526" font-family="Helvetica,sans-Serif" font-size="10.00">Stacking</text>
-<text text-anchor="start" x="21" y="-511" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-511" font-family="Helvetica,sans-Serif" font-size="10.00">MaxStacks</text>
-<text text-anchor="start" x="21" y="-496" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-496" font-family="Helvetica,sans-Serif" font-size="10.00">CleanseTier</text>
-<text text-anchor="start" x="21" y="-481" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-481" font-family="Helvetica,sans-Serif" font-size="10.00">Unremovable</text>
-<text text-anchor="start" x="21" y="-466" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-466" font-family="Helvetica,sans-Serif" font-size="10.00">Components</text>
-<text text-anchor="start" x="76" y="-451" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="17.5" y="-586" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-586" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
+<text text-anchor="start" x="17.5" y="-571" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-571" font-family="Helvetica,sans-Serif" font-size="10.00">Polarity</text>
+<text text-anchor="start" x="17.5" y="-556" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-556" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
+<text text-anchor="start" x="17.5" y="-541" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-541" font-family="Helvetica,sans-Serif" font-size="10.00">BaseDuration</text>
+<text text-anchor="start" x="17.5" y="-526" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-526" font-family="Helvetica,sans-Serif" font-size="10.00">Stacking</text>
+<text text-anchor="start" x="17.5" y="-511" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-511" font-family="Helvetica,sans-Serif" font-size="10.00">MaxStacks</text>
+<text text-anchor="start" x="17.5" y="-496" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-496" font-family="Helvetica,sans-Serif" font-size="10.00">CleanseTier</text>
+<text text-anchor="start" x="17.5" y="-481" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-481" font-family="Helvetica,sans-Serif" font-size="10.00">Unremovable</text>
+<text text-anchor="start" x="17.5" y="-466" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-466" font-family="Helvetica,sans-Serif" font-size="10.00">Components</text>
+<text text-anchor="start" x="17.5" y="-451" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-451" font-family="Helvetica,sans-Serif" font-size="10.00">CreateRuntime()</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-596 0.5,-596 155.5,-596 155.5,-596 0.5,-596"/>
-<polygon fill="#666666" stroke="#666666" points="0.5,-461 0.5,-461 48.5,-461 48.5,-461 0.5,-461"/>
-<polygon fill="#666666" stroke="#666666" points="48.5,-461 48.5,-461 155.5,-461 155.5,-461 48.5,-461"/>
+<polygon fill="#666666" stroke="#666666" points="0.5,-461 0.5,-461 41.5,-461 41.5,-461 0.5,-461"/>
+<polygon fill="#666666" stroke="#666666" points="41.5,-461 41.5,-461 155.5,-461 155.5,-461 41.5,-461"/>
 <polygon fill="none" stroke="#666666" points="0,-444 0,-624 155,-624 155,-444 0,-444"/>
 </a>
 </g>
@@ -281,9 +282,10 @@ var sectionId = 'dynsection-0';
 <polygon fill="none" stroke="#63b8ff" points="425.3,-312.22 418.13,-313.02 414.63,-306.71 421.8,-305.91 425.3,-312.22"/>
 </a>
 </g>
-<text text-anchor="middle" x="480.5" y="-335" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +AutoAttackTarget</text>
-<text text-anchor="middle" x="480.5" y="-324" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+CurrentTarget</text>
-<text text-anchor="middle" x="480.5" y="-313" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+WindupTarget</text>
+<text text-anchor="middle" x="489.5" y="-340.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +AutoAttackTarget</text>
+<text text-anchor="middle" x="489.5" y="-329.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+CurrentTarget</text>
+<text text-anchor="middle" x="489.5" y="-318.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+PendingEngageTarget</text>
+<text text-anchor="middle" x="489.5" y="-307.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+WindupTarget</text>
 </g>
 <!-- Node5 -->
 <g id="Node000005" class="node">

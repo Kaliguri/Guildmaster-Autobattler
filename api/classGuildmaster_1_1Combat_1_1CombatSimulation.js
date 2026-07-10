@@ -14,6 +14,7 @@ var classGuildmaster_1_1Combat_1_1CombatSimulation =
     [ "QueryUnitsInLine", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a281bfa09b36891b5caefa6db8022636d", null ],
     [ "QueryUnitsInRadius", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a9f74f08be5d3b9940ebde8051ffab8f4", null ],
     [ "ReportAreaHit", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a96609f5e3bf5177b8fb1959d275f1b44", null ],
+    [ "ResetBattle", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a466fdfbb0c077b3fc94f81db8b810867", null ],
     [ "SetPaused", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae3092fa6133f040d7b2b7af1c28540c4", null ],
     [ "SpawnProjectile", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a85465a46ea9d2ce38e263814ef54b9c2", null ],
     [ "Tick", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac7aab9f602bf9130070f6f808e6b9f4f", null ],
@@ -29,8 +30,10 @@ var classGuildmaster_1_1Combat_1_1CombatSimulation =
     [ "OnAttackInterrupted", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae73567a995a49a3e63bdcfb76cfa75bd", null ],
     [ "OnAttackStarted", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8b40f7605f54d4edcf58e483639f8a11", null ],
     [ "OnBattleEnded", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4a83041f340c0c1f635c66282dc3409d", null ],
+    [ "OnBattleReset", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8ab46bf85adfb0303a700a734db9d6da", null ],
     [ "OnDamageDealt", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a845becdf4b3273fef21b64bc92512c14", null ],
     [ "OnHealed", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae9f9904d224e85b35467387dace83479", null ],
+    [ "OnProjectileSpawned", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7c9a86d3e520b6496d02d52a598f5fd5", null ],
     [ "OnUnitDied", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac25978bcf3dab4e01b7b92d6bc884d60", null ],
     [ "OnUnitSpawned", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ad5df9c3a7cc47a7c99246aedfb4cb605", null ]
 ];

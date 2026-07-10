@@ -13,5 +13,6 @@ var dir_cef45d0043a86f76beada6941c644354 =
     [ "StatModifierComponent.cs", "StatModifierComponent_8cs.html", "StatModifierComponent_8cs" ],
     [ "StealthComponent.cs", "StealthComponent_8cs.html", "StealthComponent_8cs" ],
     [ "ThornsComponent.cs", "ThornsComponent_8cs.html", "ThornsComponent_8cs" ],
-    [ "VortexEntryComponent.cs", "VortexEntryComponent_8cs.html", "VortexEntryComponent_8cs" ]
+    [ "VortexEntryComponent.cs", "VortexEntryComponent_8cs.html", "VortexEntryComponent_8cs" ],
+    [ "WhirlDashLandingComponent.cs", "WhirlDashLandingComponent_8cs.html", "WhirlDashLandingComponent_8cs" ]
 ];

@@ -7,5 +7,6 @@ var searchData=
   ['profilebrain_4',['ProfileBrain',['../classGuildmaster_1_1Combat_1_1ProfileBrain.html',1,'Guildmaster::Combat']]],
   ['projectile_5',['Projectile',['../classGuildmaster_1_1Combat_1_1Projectile.html',1,'Guildmaster::Combat']]],
   ['projectilespawn_6',['ProjectileSpawn',['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html',1,'Guildmaster::Combat']]],
-  ['projectilesystem_7',['ProjectileSystem',['../classGuildmaster_1_1Combat_1_1ProjectileSystem.html',1,'Guildmaster::Combat']]]
+  ['projectilesystem_7',['ProjectileSystem',['../classGuildmaster_1_1Combat_1_1ProjectileSystem.html',1,'Guildmaster::Combat']]],
+  ['projectileview_8',['ProjectileView',['../classGuildmaster_1_1Presentation_1_1ProjectileView.html',1,'Guildmaster::Presentation']]]
 ];

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.CombatSimulation.ResetBattle" name="Guildmaster.Combat.CombatSimulation.ResetBattle">
+<area shape="rect" id="Node000001" title="Сбросить бой для перезапуска НА МЕСТЕ (dev&#45;R): чистим всех юнитов/снаряды/очереди и возвращаем исход ..." alt="" coords="301,5,512,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a0e8ffc130d2adb84e307f5c10d183490" title="R: перезапустить ПОСЛЕДНИЙ бой НА МЕСТЕ — сброс сима (юниты/снаряды/исход) + повтор последнего сетапа..." alt="" coords="5,5,253,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,28,254,28,254,23,288,23"/>
+</map>

@@ -1,7 +1,9 @@
 var structGuildmaster_1_1Combat_1_1DisplaceRequest =
 [
-    [ "DisplaceRequest", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a177c0d2190dbb9005580fc6a914652d0", null ],
+    [ "DisplaceRequest", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html#ac09513626abe0062ae7b2470a44a9b17", null ],
     [ "Cannonball", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html#af5fdc4224f677ae7ae8a98633ec18c41", null ],
+    [ "ChainDistance", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a7600d1262e048da37035651c44688126", null ],
+    [ "ChainTicks", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a488f1e5196281c757ed22b06cdccc461", null ],
     [ "Damage", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html#ac7c7397f6ee88f19ba72ae8f1383eb41", null ],
     [ "DamageType", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html#ac973d9cb8ab9421c611980773007ba3c", null ],
     [ "Direction", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a1a8af44a4584d73abadcbbb653c2d1e0", null ],

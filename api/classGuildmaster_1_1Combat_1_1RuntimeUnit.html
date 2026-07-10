@@ -153,6 +153,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:af7cdab4bcc1b402cb19e28eae70937ef" id="r_af7cdab4bcc1b402cb19e28eae70937ef"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af7cdab4bcc1b402cb19e28eae70937ef">EmpowerDamageMult</a></td></tr>
 <tr class="memdesc:af7cdab4bcc1b402cb19e28eae70937ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель урона следующей авто-атаки (§9.6, «Скрытность»): 0 = нет усиления. AutoAttackSystem применяет и сбрасывает (однострел).  <br /></td></tr>
 <tr class="separator:af7cdab4bcc1b402cb19e28eae70937ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a5a1c655470baca92db2ec4541e08a5" id="r_a4a5a1c655470baca92db2ec4541e08a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4a5a1c655470baca92db2ec4541e08a5">PendingEngageTarget</a></td></tr>
+<tr class="memdesc:a4a5a1c655470baca92db2ec4541e08a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель захода монаха (§10.6): в кого он зашёл рывком и кого оттолкнёт на приземлении.  <br /></td></tr>
+<tr class="separator:a4a5a1c655470baca92db2ec4541e08a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac63ecffafc04c27573fb6c8f5bbca0c2" id="r_ac63ecffafc04c27573fb6c8f5bbca0c2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ac63ecffafc04c27573fb6c8f5bbca0c2">DisplacedTicksRemaining</a></td></tr>
 <tr class="memdesc:ac63ecffafc04c27573fb6c8f5bbca0c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тиков принудительного смещения осталось (§9.9, «Шквальный толчок»): &gt; 0 — юнит в полёте.  <br /></td></tr>
 <tr class="separator:ac63ecffafc04c27573fb6c8f5bbca0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -521,6 +524,23 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Рутит движение (MovementSystem). </p>
+
+</div>
+</div>
+<a id="a4a5a1c655470baca92db2ec4541e08a5" name="a4a5a1c655470baca92db2ec4541e08a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a5a1c655470baca92db2ec4541e08a5">&#9670;&#160;</a></span>PendingEngageTarget</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> Guildmaster.Combat.RuntimeUnit.PendingEngageTarget</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Цель захода монаха (§10.6): в кого он зашёл рывком и кого оттолкнёт на приземлении. </p>
+<p>Ставит <code>AbilitySystem</code> при касте «Шквального толчка» (позицию рывка считает под ЭТУ цель), читает и сбрасывает <code>WhirlDashLandingComponent</code> — чтобы толкать именно её, а не «ближайшего» (тот мог разъехаться). null = нет активного захода. </p>
 
 </div>
 </div>

@@ -111,6 +111,8 @@ Collaboration diagram for Guildmaster.Combat.Effects.CombatEventData:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2df2cf85197644f762920d6a8b454b6d" id="r_a2df2cf85197644f762920d6a8b454b6d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html#a2df2cf85197644f762920d6a8b454b6d">CombatEventData</a> (<a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066">CombatEvent</a> type, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float amount)</td></tr>
 <tr class="separator:a2df2cf85197644f762920d6a8b454b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9c33d0c5899830686da8bd2d83145a5" id="r_ae9c33d0c5899830686da8bd2d83145a5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html#ae9c33d0c5899830686da8bd2d83145a5">CombatEventData</a> (<a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066">CombatEvent</a> type, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, float amount, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data.Definitions.EffectTag</a> tags)</td></tr>
+<tr class="separator:ae9c33d0c5899830686da8bd2d83145a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -122,12 +124,15 @@ Public Attributes</h2></td></tr>
 <tr class="separator:acd2620ce1b52ee004a83a55029077e6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa591444db32ddef4802833d3ebf45e46" id="r_aa591444db32ddef4802833d3ebf45e46"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html#aa591444db32ddef4802833d3ebf45e46">Amount</a></td></tr>
 <tr class="separator:aa591444db32ddef4802833d3ebf45e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c28710c0d1f092849dc918439d6b14f" id="r_a6c28710c0d1f092849dc918439d6b14f"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data.Definitions.EffectTag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html#a6c28710c0d1f092849dc918439d6b14f">Tags</a></td></tr>
+<tr class="memdesc:a6c28710c0d1f092849dc918439d6b14f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Теги, релевантные событию: для CombatEvent.EffectExpired — теги истёкшего эффекта. Иначе None.  <br /></td></tr>
+<tr class="separator:a6c28710c0d1f092849dc918439d6b14f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Полезная нагрузка боевого события, диспатчится через внутреннюю FIFO-очередь (Stage 6). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2df2cf85197644f762920d6a8b454b6d" name="a2df2cf85197644f762920d6a8b454b6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2df2cf85197644f762920d6a8b454b6d">&#9670;&#160;</a></span>CombatEventData()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2df2cf85197644f762920d6a8b454b6d">&#9670;&#160;</a></span>CombatEventData() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,6 +179,60 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ae9c33d0c5899830686da8bd2d83145a5" name="ae9c33d0c5899830686da8bd2d83145a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9c33d0c5899830686da8bd2d83145a5">&#9670;&#160;</a></span>CombatEventData() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Guildmaster.Combat.Effects.CombatEventData.CombatEventData </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066">CombatEvent</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>amount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data::Definitions::EffectTag</a>&#160;</td>
+          <td class="paramname"><em>tags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="aa591444db32ddef4802833d3ebf45e46" name="aa591444db32ddef4802833d3ebf45e46"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa591444db32ddef4802833d3ebf45e46">&#9670;&#160;</a></span>Amount</h2>
@@ -200,6 +259,22 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6c28710c0d1f092849dc918439d6b14f" name="a6c28710c0d1f092849dc918439d6b14f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c28710c0d1f092849dc918439d6b14f">&#9670;&#160;</a></span>Tags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data.Definitions.EffectTag</a> Guildmaster.Combat.Effects.CombatEventData.Tags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Теги, релевантные событию: для CombatEvent.EffectExpired — теги истёкшего эффекта. Иначе None. </p>
 
 </div>
 </div>

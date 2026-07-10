@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1EffectSy
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1EffectSystem-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.EffectSystem Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -104,7 +105,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1EffectSy
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.EffectSystem:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem__coll__graph.svg" width="200" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EffectSystem__coll__graph.svg" width="200" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -127,12 +128,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:add433549e9a0dc16bb7e3b582cf951cb" id="r_add433549e9a0dc16bb7e3b582cf951cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#add433549e9a0dc16bb7e3b582cf951cb">Dispel</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html">DispelRequest</a> req, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
 <tr class="memdesc:add433549e9a0dc16bb7e3b582cf951cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять с цели подходящие эффекты: полярность ∧ теги ∧ <code>CleanseTier ≤ DispelPower</code> ∧ <code>!Unremovable</code>.  <br /></td></tr>
 <tr class="separator:add433549e9a0dc16bb7e3b582cf951cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b6d6263a82d13805d5bfb6498ca1ce2" id="r_a3b6d6263a82d13805d5bfb6498ca1ce2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a3b6d6263a82d13805d5bfb6498ca1ce2">RemoveByTag</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data.Definitions.EffectTag</a> tag, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> combat)</td></tr>
+<tr class="memdesc:a3b6d6263a82d13805d5bfb6498ca1ce2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Принудительно снять с юнита ВСЕ эффекты, несущие любой из <em>tag</em>  (игнорируя <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a34da08cb0aa522f1298524ad8da61ac6">EffectData.Unremovable</a> — это не диспел, а системное завершение, напр.  <br /></td></tr>
+<tr class="separator:a3b6d6263a82d13805d5bfb6498ca1ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:afba054405a0f16608dfd5d774a58cc90" id="r_afba054405a0f16608dfd5d774a58cc90"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#afba054405a0f16608dfd5d774a58cc90">ResolveDurationTicks</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a> def, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target)</td></tr>
 <tr class="memdesc:afba054405a0f16608dfd5d774a58cc90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Длительность эффекта в тиках. -1 = постоянный, 0 = мгновенный, иначе с учётом эфф-эффективностей.  <br /></td></tr>
 <tr class="separator:afba054405a0f16608dfd5d774a58cc90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:a83d599992f80d903424732e367fc54e6" id="r_a83d599992f80d903424732e367fc54e6"><td class="memItemLeft" align="right" valign="top">System.Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data.Definitions.EffectTag</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html#a83d599992f80d903424732e367fc54e6">OnEffectExpired</a></td></tr>
+<tr class="memdesc:a83d599992f80d903424732e367fc54e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Эффект закончился на юните: (юнит, источник эффекта, теги эффекта).  <br /></td></tr>
+<tr class="separator:a83d599992f80d903424732e367fc54e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Владелец жизненного цикла эффектов: наложение (длительность, стакинг, потенция, маска тегов), тик таймеров и периодики, истечение с корректным teardown. </p>
@@ -323,6 +333,51 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a3b6d6263a82d13805d5bfb6498ca1ce2" name="a3b6d6263a82d13805d5bfb6498ca1ce2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b6d6263a82d13805d5bfb6498ca1ce2">&#9670;&#160;</a></span>RemoveByTag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.EffectSystem.RemoveByTag </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data::Definitions::EffectTag</a>&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a>&#160;</td>
+          <td class="paramname"><em>combat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Принудительно снять с юнита ВСЕ эффекты, несущие любой из <em>tag</em>  (игнорируя <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a34da08cb0aa522f1298524ad8da61ac6">EffectData.Unremovable</a> — это не диспел, а системное завершение, напр. </p>
+<p>конец полёта смещения). Каждый снятый прогоняется через Expire (корректный teardown + OnEffectExpired). </p>
+
+</div>
+</div>
 <a id="afba054405a0f16608dfd5d774a58cc90" name="afba054405a0f16608dfd5d774a58cc90"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afba054405a0f16608dfd5d774a58cc90">&#9670;&#160;</a></span>ResolveDurationTicks()</h2>
 
@@ -459,6 +514,24 @@ Here is the caller graph for this function:</div>
 
 <p>Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение. </p>
 <p>Вставляется в тик-цикл перед DeathSystem (DoT может добить). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Event Documentation</h2>
+<a id="a83d599992f80d903424732e367fc54e6" name="a83d599992f80d903424732e367fc54e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83d599992f80d903424732e367fc54e6">&#9670;&#160;</a></span>OnEffectExpired</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">System.Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data.Definitions.EffectTag</a>&gt; Guildmaster.Combat.EffectSystem.OnEffectExpired</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Эффект закончился на юните: (юнит, источник эффекта, теги эффекта). </p>
+<p>Единый шов «эффект истёк/снят» (вики «12» §3.4). CombatSimulation ретранслирует в Effects.CombatEvent.EffectExpired (носитель = источник). На нём завязаны реактивы монаха (§10.6). Мгновенные эффекты (ticks==0) сюда НЕ попадают — они не персистятся, их OnExpire зовётся прямо в Apply. </p>
 
 </div>
 </div>

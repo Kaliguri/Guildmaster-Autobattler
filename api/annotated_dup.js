@@ -25,7 +25,8 @@ var annotated_dup =
             [ "StatModifierComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent" ],
             [ "StealthComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent" ],
             [ "ThornsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent" ],
-            [ "VortexEntryComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent" ]
+            [ "VortexEntryComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent" ],
+            [ "WhirlDashLandingComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent" ]
           ] ],
           [ "CombatEventData", "structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html", "structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData" ],
           [ "DispelRequest", "structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html", "structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest" ],
@@ -155,6 +156,8 @@ var annotated_dup =
         [ "DamageNumberSpawner", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner.html", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner" ],
         [ "FloatingText", "classGuildmaster_1_1Presentation_1_1FloatingText.html", "classGuildmaster_1_1Presentation_1_1FloatingText" ],
         [ "HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", "classGuildmaster_1_1Presentation_1_1HealthBarView" ],
+        [ "ManaBarView", "classGuildmaster_1_1Presentation_1_1ManaBarView.html", "classGuildmaster_1_1Presentation_1_1ManaBarView" ],
+        [ "ProjectileView", "classGuildmaster_1_1Presentation_1_1ProjectileView.html", "classGuildmaster_1_1Presentation_1_1ProjectileView" ],
         [ "UnitAnimationSelector", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector" ],
         [ "UnitDiedEvent", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent" ],
         [ "UnitSpawnedEvent", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent" ],

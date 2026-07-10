@@ -1,0 +1,9 @@
+<map id="Guildmaster.Combat.Effects.Components.WhirlDashLandingComponent" name="Guildmaster.Combat.Effects.Components.WhirlDashLandingComponent">
+<area shape="rect" id="Node000001" title="Приземление рывка монаха (§10.6, «Шквальный толчок», фаза 3 из 4: рывок → фиксация → ОТБРАСЫВАНИЕ → т..." alt="" coords="5,365,299,485"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="77,252,227,317"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,331,155,365,149,365,149,331"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="59,119,245,204"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="155,218,155,252,149,252,149,218"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="87,5,217,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="155,85,155,119,149,119,149,85"/>
+</map>

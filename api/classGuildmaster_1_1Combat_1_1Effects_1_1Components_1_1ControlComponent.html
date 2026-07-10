@@ -104,16 +104,22 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.ControlComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent__inherit__graph.svg" width="234" height="398"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent__inherit__graph.svg" width="234" height="438"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.Effects.Components.ControlComponent:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent__coll__graph.svg" width="234" height="398"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent__coll__graph.svg" width="234" height="438"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a0fad23922a16d4b3e47d2a6518a84215" id="r_a0fad23922a16d4b3e47d2a6518a84215"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html#a0fad23922a16d4b3e47d2a6518a84215">ControlComponent</a> ()</td></tr>
+<tr class="memdesc:a0fad23922a16d4b3e47d2a6518a84215"><td class="mdescLeft">&#160;</td><td class="mdescRight">Для сериализованных ассетов (поля выставляет инспектор).  <br /></td></tr>
+<tr class="separator:a0fad23922a16d4b3e47d2a6518a84215"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20a4807dbf451d556a2a870aff840715" id="r_a20a4807dbf451d556a2a870aff840715"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html#a20a4807dbf451d556a2a870aff840715">ControlComponent</a> (bool preventAct, bool preventMove, bool preventCast)</td></tr>
+<tr class="memdesc:a20a4807dbf451d556a2a870aff840715"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кодовая сборка (системные эффекты, напр. маркер «в полёте»).  <br /></td></tr>
+<tr class="separator:a20a4807dbf451d556a2a870aff840715"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a590ffb234c568febd8f7d129e2a75084" id="r_a590ffb234c568febd8f7d129e2a75084"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html#a590ffb234c568febd8f7d129e2a75084">OnApply</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a> ctx)</td></tr>
 <tr class="separator:a590ffb234c568febd8f7d129e2a75084"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9074dfccf56f8b406539742f7b5d816e" id="r_a9074dfccf56f8b406539742f7b5d816e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html#a9074dfccf56f8b406539742f7b5d816e">OnExpire</a> (in <a class="el" href="structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html">EffectContext</a> ctx)</td></tr>
@@ -131,7 +137,79 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Контроль: запрещает действия носителю на время эффекта. </p>
 <p>Сами флаги (<code>CanAct/CanMove/CanCast</code>) пересчитывает EffectSystem из активных контрол-эффектов каждый тик — так перекрывающиеся контроли и независимое истечение разрешаются без счётчиков. Без diminishing returns (вики «6» §5.3). </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a0fad23922a16d4b3e47d2a6518a84215" name="a0fad23922a16d4b3e47d2a6518a84215"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fad23922a16d4b3e47d2a6518a84215">&#9670;&#160;</a></span>ControlComponent() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Guildmaster.Combat.Effects.Components.ControlComponent.ControlComponent </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Для сериализованных ассетов (поля выставляет инспектор). </p>
+
+</div>
+</div>
+<a id="a20a4807dbf451d556a2a870aff840715" name="a20a4807dbf451d556a2a870aff840715"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20a4807dbf451d556a2a870aff840715">&#9670;&#160;</a></span>ControlComponent() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Guildmaster.Combat.Effects.Components.ControlComponent.ControlComponent </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>preventAct</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>preventMove</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>preventCast</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Кодовая сборка (системные эффекты, напр. маркер «в полёте»). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a590ffb234c568febd8f7d129e2a75084" name="a590ffb234c568febd8f7d129e2a75084"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a590ffb234c568febd8f7d129e2a75084">&#9670;&#160;</a></span>OnApply()</h2>
 

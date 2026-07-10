@@ -1,7 +1,7 @@
 <map id="Guildmaster.Combat.DisplaceRequest" name="Guildmaster.Combat.DisplaceRequest">
-<area shape="rect" id="Node000001" title="Параметры принудительного смещения цели (§9.9, «Шквальный толчок»)." alt="" coords="277,805,485,1025"/>
+<area shape="rect" id="Node000001" title="Параметры принудительного смещения цели (§9.9, «Шквальный толчок»)." alt="" coords="277,805,485,1065"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="263,463,498,728"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="383,728,383,788,378,788,378,728"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="383,728,383,789,378,789,378,728"/>
 <area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="500,567,518,577,525,595,522,607,515,616,510,613,517,605,519,596,513,581,497,571"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="5,197,191,323"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="144,321,204,398,254,456,250,459,200,402,140,324"/>

@@ -155,6 +155,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab1642b518cd60e4ef9037e3636dcd887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3092fa6133f040d7b2b7af1c28540c4" id="r_ae3092fa6133f040d7b2b7af1c28540c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae3092fa6133f040d7b2b7af1c28540c4">SetPaused</a> (bool paused)</td></tr>
 <tr class="separator:ae3092fa6133f040d7b2b7af1c28540c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a466fdfbb0c077b3fc94f81db8b810867" id="r_a466fdfbb0c077b3fc94f81db8b810867"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a466fdfbb0c077b3fc94f81db8b810867">ResetBattle</a> ()</td></tr>
+<tr class="memdesc:a466fdfbb0c077b3fc94f81db8b810867"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сбросить бой для перезапуска НА МЕСТЕ (dev-R): чистим всех юнитов/снаряды/очереди и возвращаем исход в BattleOutcome.Ongoing.  <br /></td></tr>
+<tr class="separator:a466fdfbb0c077b3fc94f81db8b810867"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ef3762989e4fb8bf6e6f2229baa2b5c" id="r_a6ef3762989e4fb8bf6e6f2229baa2b5c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6ef3762989e4fb8bf6e6f2229baa2b5c">EnqueueUnitSpawn</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit)</td></tr>
 <tr class="memdesc:a6ef3762989e4fb8bf6e6f2229baa2b5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию).  <br /></td></tr>
 <tr class="separator:a6ef3762989e4fb8bf6e6f2229baa2b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,9 +218,15 @@ Events</h2></td></tr>
 <tr class="memitem:a4a83041f340c0c1f635c66282dc3409d" id="r_a4a83041f340c0c1f635c66282dc3409d"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712">BattleOutcome</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4a83041f340c0c1f635c66282dc3409d">OnBattleEnded</a></td></tr>
 <tr class="memdesc:a4a83041f340c0c1f635c66282dc3409d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Бой завершён с итогом.  <br /></td></tr>
 <tr class="separator:a4a83041f340c0c1f635c66282dc3409d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ab46bf85adfb0303a700a734db9d6da" id="r_a8ab46bf85adfb0303a700a734db9d6da"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8ab46bf85adfb0303a700a734db9d6da">OnBattleReset</a></td></tr>
+<tr class="memdesc:a8ab46bf85adfb0303a700a734db9d6da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Бой сброшен для перезапуска на месте (R): презентация чистит виды/оверлеи. Сцена НЕ перезагружается.  <br /></td></tr>
+<tr class="separator:a8ab46bf85adfb0303a700a734db9d6da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9caad6a621e0b9755a74fb79f3ac7272" id="r_a9caad6a621e0b9755a74fb79f3ac7272"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="structGuildmaster_1_1Combat_1_1AreaHit.html">AreaHit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a9caad6a621e0b9755a74fb79f3ac7272">OnAreaHit</a></td></tr>
 <tr class="memdesc:a9caad6a621e0b9755a74fb79f3ac7272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Зона удара сработала (линия авто-атаки / круг активки) — для dev-оверлея зон.  <br /></td></tr>
 <tr class="separator:a9caad6a621e0b9755a74fb79f3ac7272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c9a86d3e520b6496d02d52a598f5fd5" id="r_a7c9a86d3e520b6496d02d52a598f5fd5"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html">Projectile</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7c9a86d3e520b6496d02d52a598f5fd5">OnProjectileSpawned</a></td></tr>
+<tr class="memdesc:a7c9a86d3e520b6496d02d52a598f5fd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снаряд создан — презентация заводит вид (Bullet), держит ссылку на этот Projectile и следует за ним интерполяцией.  <br /></td></tr>
+<tr class="separator:a7c9a86d3e520b6496d02d52a598f5fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Детерминированная тиковая симуляция боя. </p>
@@ -809,6 +818,39 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a466fdfbb0c077b3fc94f81db8b810867" name="a466fdfbb0c077b3fc94f81db8b810867"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a466fdfbb0c077b3fc94f81db8b810867">&#9670;&#160;</a></span>ResetBattle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.ResetBattle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сбросить бой для перезапуска НА МЕСТЕ (dev-R): чистим всех юнитов/снаряды/очереди и возвращаем исход в BattleOutcome.Ongoing. </p>
+<p>Сцена/камера НЕ трогаются — их не перезагружаем. Тик-цикл (CombatLoopService) простаивает, пока не-Ongoing, и сам возобновится после сброса. Дальше вызывающий заново расставляет бой (тот же сетап) через EnqueueUnitSpawn. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a466fdfbb0c077b3fc94f81db8b810867_icgraph.svg" width="518" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="ae3092fa6133f040d7b2b7af1c28540c4" name="ae3092fa6133f040d7b2b7af1c28540c4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae3092fa6133f040d7b2b7af1c28540c4">&#9670;&#160;</a></span>SetPaused()</h2>
 
@@ -1140,6 +1182,22 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a8ab46bf85adfb0303a700a734db9d6da" name="a8ab46bf85adfb0303a700a734db9d6da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ab46bf85adfb0303a700a734db9d6da">&#9670;&#160;</a></span>OnBattleReset</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Combat.CombatSimulation.OnBattleReset</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Бой сброшен для перезапуска на месте (R): презентация чистит виды/оверлеи. Сцена НЕ перезагружается. </p>
+
+</div>
+</div>
 <a id="a845becdf4b3273fef21b64bc92512c14" name="a845becdf4b3273fef21b64bc92512c14"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a845becdf4b3273fef21b64bc92512c14">&#9670;&#160;</a></span>OnDamageDealt</h2>
 
@@ -1169,6 +1227,23 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Юнит исцелён: источник, цель, фактически вылеченное HP (overheal не входит). Для presentation (хил-цифры). </p>
+
+</div>
+</div>
+<a id="a7c9a86d3e520b6496d02d52a598f5fd5" name="a7c9a86d3e520b6496d02d52a598f5fd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c9a86d3e520b6496d02d52a598f5fd5">&#9670;&#160;</a></span>OnProjectileSpawned</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html">Projectile</a>&gt; Guildmaster.Combat.CombatSimulation.OnProjectileSpawned</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Снаряд создан — презентация заводит вид (Bullet), держит ссылку на этот Projectile и следует за ним интерполяцией. </p>
+<p>При попадании сим ставит <code>Position</code> = точка удара и <code>IsAlive = false</code> в тот же тик, что и OnDamageDealt — вид снапается туда и гаснет, поэтому визуальный импакт и реальный эффект совпадают (без рассинхрона). </p>
 
 </div>
 </div>

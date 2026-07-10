@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Input_1_1I
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Input.InputService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Input_1_1InputService__inherit__graph.svg" width="280" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Input_1_1InputService__inherit__graph.svg" width="296" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Input.InputService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Input_1_1InputService__coll__graph.svg" width="280" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Input_1_1InputService__coll__graph.svg" width="296" height="364"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -128,6 +128,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a4d3955c0336d5d5245e1510b984d5ebe" id="r_a4d3955c0336d5d5245e1510b984d5ebe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8">InputContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a4d3955c0336d5d5245e1510b984d5ebe">Context</a><code> [get]</code></td></tr>
 <tr class="memdesc:a4d3955c0336d5d5245e1510b984d5ebe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущий контекст — какие карты действий активны.  <br /></td></tr>
 <tr class="separator:a4d3955c0336d5d5245e1510b984d5ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b972ff3543569ced32601310333958e" id="r_a2b972ff3543569ced32601310333958e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a2b972ff3543569ced32601310333958e">GameplaySuppressed</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a2b972ff3543569ced32601310333958e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Глушитель геймплейного ввода поверх активных карт (ортогонально <a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#aefb63244e2854858b20a403952435dcf" title="Текущий контекст — какие карты действий активны.">Context</a>): пока <code>true</code> — пан/зум читаются как ноль, а дискретные события (пауза, смена вида) не поднимаются.Ставит внешний модальный слой, забирающий клавиатуру: dev-консоль QFSW сейчас, модальное меню — в будущем. Нужен, чтобы набор текста в консоли не протекал в геймплей.  <br /></td></tr>
+<tr class="separator:a2b972ff3543569ced32601310333958e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45d47e37cab62d3116d144af9ab6bb9c" id="r_a45d47e37cab62d3116d144af9ab6bb9c"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a45d47e37cab62d3116d144af9ab6bb9c">CameraPan</a><code> [get]</code></td></tr>
 <tr class="memdesc:a45d47e37cab62d3116d144af9ab6bb9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Панорамирование камеры: WASD + стрелки, нормализовано в [-1..1] по осям.  <br /></td></tr>
 <tr class="separator:a45d47e37cab62d3116d144af9ab6bb9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -312,6 +315,32 @@ Events</h2></td></tr>
 <p>Текущий контекст — какие карты действий активны. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#aefb63244e2854858b20a403952435dcf">Guildmaster.Core.Input.IInputService</a>.</p>
+
+</div>
+</div>
+<a id="a2b972ff3543569ced32601310333958e" name="a2b972ff3543569ced32601310333958e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b972ff3543569ced32601310333958e">&#9670;&#160;</a></span>GameplaySuppressed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Input.InputService.GameplaySuppressed</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Глушитель геймплейного ввода поверх активных карт (ортогонально <a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#aefb63244e2854858b20a403952435dcf" title="Текущий контекст — какие карты действий активны.">Context</a>): пока <code>true</code> — пан/зум читаются как ноль, а дискретные события (пауза, смена вида) не поднимаются.Ставит внешний модальный слой, забирающий клавиатуру: dev-консоль QFSW сейчас, модальное меню — в будущем. Нужен, чтобы набор текста в консоли не протекал в геймплей. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a5595966e2ca4ffb59d1d14c8a624f5f1">Guildmaster.Core.Input.IInputService</a>.</p>
 
 </div>
 </div>

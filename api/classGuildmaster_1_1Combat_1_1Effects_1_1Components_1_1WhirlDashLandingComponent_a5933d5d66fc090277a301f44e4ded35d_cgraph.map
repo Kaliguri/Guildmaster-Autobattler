@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.Effects.Components.WhirlDashLandingComponent.OnEvent" name="Guildmaster.Combat.Effects.Components.WhirlDashLandingComponent.OnEvent">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,16,311,71"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html#ad51b23676359ca7d60f6ed64f84f560a" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="369,5,589,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="311,29,354,25,355,30,311,34"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Combat_1_1AreaHit.html#a2ee9fcb00fcc70878adaefa660f843c0" title=" " alt="" coords="359,55,599,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="311,52,345,55,345,60,311,57"/>
+</map>

@@ -79,12 +79,12 @@ var NAVTREEINDEX0 =
 "CombatDebugDraw_8cs.html":[2,0,0,0,0,6,3],
 "CombatEvent_8cs.html":[2,0,0,0,0,0,4,1],
 "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066":[2,0,0,0,0,0,4,1,1],
+"CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a1248807988c03e6f257d4238c3bc4136":[2,0,0,0,0,0,4,1,1,7],
 "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a220d0513e4f7d7507bd9a25cbc538849":[2,0,0,0,0,0,4,1,1,3],
 "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a3007032a944ef3638beb8825cbb3c28b":[2,0,0,0,0,0,4,1,1,2],
 "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a429d336ceae2000a8948230c38cc738d":[2,0,0,0,0,0,4,1,1,6],
 "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a489309c92002b00f2c4b0ee25c7484e9":[2,0,0,0,0,0,4,1,1,1],
 "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a6adf97f83acf6453d4a6a4b1070f3754":[2,0,0,0,0,0,4,1,1,0],
-"CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a87af211adc1d3f9a9f1bfc35795a5844":[2,0,0,0,0,0,4,1,1,7],
 "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622":[2,0,0,0,0,0,4,1,1,5],
 "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066aefa198417da5fbc0a75b54484ad97b4f":[2,0,0,0,0,0,4,1,1,4],
 "CombatEvents_8cs.html":[2,0,0,0,0,6,1,0],
@@ -162,6 +162,7 @@ var NAVTREEINDEX0 =
 "InputContext_8cs.html#a4c81028c2df2c0050893a9d7c4626ac8aea355214fd4bc7c57f471bd92918879b":[2,0,0,0,0,1,1,1,0,2],
 "InputService_8cs.html":[2,0,0,0,0,4,1,1],
 "LifestealComponent_8cs.html":[2,0,0,0,0,0,4,0,4],
+"ManaBarView_8cs.html":[2,0,0,0,0,6,10],
 "MarkTransferComponent_8cs.html":[2,0,0,0,0,0,4,0,5],
 "MissingHpShieldComponent_8cs.html":[2,0,0,0,0,0,4,0,6],
 "ModifierOp_8cs.html":[2,0,0,0,0,2,2,1],
@@ -185,6 +186,7 @@ var NAVTREEINDEX0 =
 "ProfileBrain_8cs.html":[2,0,0,0,0,0,1,3],
 "ProjectileSpawn_8cs.html":[2,0,0,0,0,0,5,1],
 "ProjectileSystem_8cs.html":[2,0,0,0,0,0,8,5],
+"ProjectileView_8cs.html":[2,0,0,0,0,6,11],
 "Projectile_8cs.html":[2,0,0,0,0,0,5,0],
 "Rect2D_8cs.html":[2,0,0,0,0,1,0,4],
 "RegenSystem_8cs.html":[2,0,0,0,0,0,8,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "TargetFilter_8cs.html":[2,0,0,0,0,0,17],
 "TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8":[2,0,0,0,0,0,17,0],
 "TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8a4ff52320ad589c7346c8562c2c715fd6":[2,0,0,0,0,0,17,0,1],
-"TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8ab1c94ca2fbc3e78fc30069c8d0f01680":[2,0,0,0,0,0,17,0,2],
-"TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8af181304e789fd0882df5cb02d232fc69":[2,0,0,0,0,0,17,0,0],
-"TargetingMode_8cs.html":[2,0,0,0,0,2,0,12]
+"TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8ab1c94ca2fbc3e78fc30069c8d0f01680":[2,0,0,0,0,0,17,0,2]
 };

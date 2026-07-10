@@ -86,9 +86,10 @@
 <polygon fill="none" stroke="#63b8ff" points="425.3,-524.22 418.13,-525.02 414.63,-518.71 421.8,-517.91 425.3,-524.22"/>
 </a>
 </g>
-<text text-anchor="middle" x="480.5" y="-547" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +AutoAttackTarget</text>
-<text text-anchor="middle" x="480.5" y="-536" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+CurrentTarget</text>
-<text text-anchor="middle" x="480.5" y="-525" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+WindupTarget</text>
+<text text-anchor="middle" x="489.5" y="-552.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +AutoAttackTarget</text>
+<text text-anchor="middle" x="489.5" y="-541.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+CurrentTarget</text>
+<text text-anchor="middle" x="489.5" y="-530.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+PendingEngageTarget</text>
+<text text-anchor="middle" x="489.5" y="-519.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+WindupTarget</text>
 </g>
 <!-- Node10 -->
 <g id="Node000010" class="node">
@@ -320,28 +321,29 @@
 <polygon fill="white" stroke="transparent" points="155,-836 0,-836 0,-656 155,-656 155,-836"/>
 <text text-anchor="start" x="5.5" y="-824" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="52" y="-813" font-family="Helvetica,sans-Serif" font-size="10.00">EffectData</text>
-<text text-anchor="start" x="21" y="-798" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-798" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
-<text text-anchor="start" x="21" y="-783" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-783" font-family="Helvetica,sans-Serif" font-size="10.00">Polarity</text>
-<text text-anchor="start" x="21" y="-768" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-768" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
-<text text-anchor="start" x="21" y="-753" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-753" font-family="Helvetica,sans-Serif" font-size="10.00">BaseDuration</text>
-<text text-anchor="start" x="21" y="-738" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-738" font-family="Helvetica,sans-Serif" font-size="10.00">Stacking</text>
-<text text-anchor="start" x="21" y="-723" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-723" font-family="Helvetica,sans-Serif" font-size="10.00">MaxStacks</text>
-<text text-anchor="start" x="21" y="-708" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-708" font-family="Helvetica,sans-Serif" font-size="10.00">CleanseTier</text>
-<text text-anchor="start" x="21" y="-693" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-693" font-family="Helvetica,sans-Serif" font-size="10.00">Unremovable</text>
-<text text-anchor="start" x="21" y="-678" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-678" font-family="Helvetica,sans-Serif" font-size="10.00">Components</text>
-<text text-anchor="start" x="76" y="-663" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="17.5" y="-798" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-798" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
+<text text-anchor="start" x="17.5" y="-783" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-783" font-family="Helvetica,sans-Serif" font-size="10.00">Polarity</text>
+<text text-anchor="start" x="17.5" y="-768" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-768" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
+<text text-anchor="start" x="17.5" y="-753" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-753" font-family="Helvetica,sans-Serif" font-size="10.00">BaseDuration</text>
+<text text-anchor="start" x="17.5" y="-738" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-738" font-family="Helvetica,sans-Serif" font-size="10.00">Stacking</text>
+<text text-anchor="start" x="17.5" y="-723" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-723" font-family="Helvetica,sans-Serif" font-size="10.00">MaxStacks</text>
+<text text-anchor="start" x="17.5" y="-708" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-708" font-family="Helvetica,sans-Serif" font-size="10.00">CleanseTier</text>
+<text text-anchor="start" x="17.5" y="-693" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-693" font-family="Helvetica,sans-Serif" font-size="10.00">Unremovable</text>
+<text text-anchor="start" x="17.5" y="-678" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-678" font-family="Helvetica,sans-Serif" font-size="10.00">Components</text>
+<text text-anchor="start" x="17.5" y="-663" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-663" font-family="Helvetica,sans-Serif" font-size="10.00">CreateRuntime()</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-808 0.5,-808 155.5,-808 155.5,-808 0.5,-808"/>
-<polygon fill="#666666" stroke="#666666" points="0.5,-673 0.5,-673 48.5,-673 48.5,-673 0.5,-673"/>
-<polygon fill="#666666" stroke="#666666" points="48.5,-673 48.5,-673 155.5,-673 155.5,-673 48.5,-673"/>
+<polygon fill="#666666" stroke="#666666" points="0.5,-673 0.5,-673 41.5,-673 41.5,-673 0.5,-673"/>
+<polygon fill="#666666" stroke="#666666" points="41.5,-673 41.5,-673 155.5,-673 155.5,-673 41.5,-673"/>
 <polygon fill="none" stroke="#666666" points="0,-656 0,-836 155,-836 155,-656 0,-656"/>
 </a>
 </g>

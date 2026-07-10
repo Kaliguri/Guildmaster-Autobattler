@@ -109,8 +109,8 @@ Collaboration diagram for Guildmaster.Combat.DisplaceRequest:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a177c0d2190dbb9005580fc6a914652d0" id="r_a177c0d2190dbb9005580fc6a914652d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a177c0d2190dbb9005580fc6a914652d0">DisplaceRequest</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, Vector2 direction, float distance, int ticks, bool cannonball, float damage, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> damageType, float width, <a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0be">DisplaceKind</a> kind=<a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96">DisplaceKind.Knockback</a>)</td></tr>
-<tr class="separator:a177c0d2190dbb9005580fc6a914652d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac09513626abe0062ae7b2470a44a9b17" id="r_ac09513626abe0062ae7b2470a44a9b17"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html#ac09513626abe0062ae7b2470a44a9b17">DisplaceRequest</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> target, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, Vector2 direction, float distance, int ticks, bool cannonball, float damage, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> damageType, float width, <a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0be">DisplaceKind</a> kind=<a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96">DisplaceKind.Knockback</a>, float chainDistance=0f, int chainTicks=0)</td></tr>
+<tr class="separator:ac09513626abe0062ae7b2470a44a9b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -134,13 +134,18 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ac973d9cb8ab9421c611980773007ba3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb64ae5590053cff0157d59123189589" id="r_abb64ae5590053cff0157d59123189589"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html#abb64ae5590053cff0157d59123189589">Width</a></td></tr>
 <tr class="separator:abb64ae5590053cff0157d59123189589"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7600d1262e048da37035651c44688126" id="r_a7600d1262e048da37035651c44688126"><td class="memItemLeft" align="right" valign="top">readonly float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a7600d1262e048da37035651c44688126">ChainDistance</a></td></tr>
+<tr class="memdesc:a7600d1262e048da37035651c44688126"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слабое «цепное» отбрасывание врагов, задетых «ядром» на линии полёта (§10.6): &gt;0 — каждый задетый не только получает урон, но и сам чуть отбрасывается (что тоже триггерит «Вихревой заход» монаха).  <br /></td></tr>
+<tr class="separator:a7600d1262e048da37035651c44688126"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a488f1e5196281c757ed22b06cdccc461" id="r_a488f1e5196281c757ed22b06cdccc461"><td class="memItemLeft" align="right" valign="top">readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a488f1e5196281c757ed22b06cdccc461">ChainTicks</a></td></tr>
+<tr class="separator:a488f1e5196281c757ed22b06cdccc461"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Параметры принудительного смещения цели (§9.9, «Шквальный толчок»). </p>
 <p>Передаётся в ICombatContext.Displace. Дистанция фиксирована (не «до столкновения»); на время полёта цель оглушена (жёсткое состояние, сопротивление контролю не применяется). При Cannonball летящая цель бьёт врагов источника на пройденной линии — «ядро». </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a177c0d2190dbb9005580fc6a914652d0" name="a177c0d2190dbb9005580fc6a914652d0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a177c0d2190dbb9005580fc6a914652d0">&#9670;&#160;</a></span>DisplaceRequest()</h2>
+<a id="ac09513626abe0062ae7b2470a44a9b17" name="ac09513626abe0062ae7b2470a44a9b17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac09513626abe0062ae7b2470a44a9b17">&#9670;&#160;</a></span>DisplaceRequest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -206,7 +211,19 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0be">DisplaceKind</a>&#160;</td>
-          <td class="paramname"><em>kind</em> = <code><a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96">DisplaceKind::Knockback</a></code>&#160;</td>
+          <td class="paramname"><em>kind</em> = <code><a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96">DisplaceKind::Knockback</a></code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>chainDistance</em> = <code>0f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>chainTicks</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -232,6 +249,37 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">readonly bool Guildmaster.Combat.DisplaceRequest.Cannonball</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7600d1262e048da37035651c44688126" name="a7600d1262e048da37035651c44688126"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7600d1262e048da37035651c44688126">&#9670;&#160;</a></span>ChainDistance</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly float Guildmaster.Combat.DisplaceRequest.ChainDistance</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Слабое «цепное» отбрасывание врагов, задетых «ядром» на линии полёта (§10.6): &gt;0 — каждый задетый не только получает урон, но и сам чуть отбрасывается (что тоже триггерит «Вихревой заход» монаха). </p>
+<p>Держим слабым, чтобы цепные полёты кончались раньше главного и финальный телепорт сел на исходную цель. 0 = без цепи (обычное «ядро» — только урон). </p>
+
+</div>
+</div>
+<a id="a488f1e5196281c757ed22b06cdccc461" name="a488f1e5196281c757ed22b06cdccc461"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a488f1e5196281c757ed22b06cdccc461">&#9670;&#160;</a></span>ChainTicks</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly int Guildmaster.Combat.DisplaceRequest.ChainTicks</td>
         </tr>
       </table>
 </div><div class="memdoc">

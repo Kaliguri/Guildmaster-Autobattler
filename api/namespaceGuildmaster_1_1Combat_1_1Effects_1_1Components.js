@@ -13,5 +13,6 @@ var namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components =
     [ "StatModifierComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent" ],
     [ "StealthComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent" ],
     [ "ThornsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent" ],
-    [ "VortexEntryComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent" ]
+    [ "VortexEntryComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent" ],
+    [ "WhirlDashLandingComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent" ]
 ];

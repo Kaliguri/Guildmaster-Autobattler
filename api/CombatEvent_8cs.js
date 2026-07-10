@@ -9,6 +9,6 @@ var CombatEvent_8cs =
       [ "UnitDied", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066aefa198417da5fbc0a75b54484ad97b4f", null ],
       [ "EffectApplied", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066aae22ad0343f490e1d4d798f879dc6622", null ],
       [ "UnitKilled", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a429d336ceae2000a8948230c38cc738d", null ],
-      [ "UnitDisplaced", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a87af211adc1d3f9a9f1bfc35795a5844", null ]
+      [ "EffectExpired", "CombatEvent_8cs.html#acbd5655c92bc3943fed6be07e5127066a1248807988c03e6f257d4238c3bc4136", null ]
     ] ]
 ];

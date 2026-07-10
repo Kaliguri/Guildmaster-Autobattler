@@ -25,28 +25,29 @@
 <polygon fill="#999999" stroke="transparent" points="155,-180 0,-180 0,0 155,0 155,-180"/>
 <text text-anchor="start" x="5.5" y="-168" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="52" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">EffectData</text>
-<text text-anchor="start" x="21" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
-<text text-anchor="start" x="21" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">Polarity</text>
-<text text-anchor="start" x="21" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
-<text text-anchor="start" x="21" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">BaseDuration</text>
-<text text-anchor="start" x="21" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">Stacking</text>
-<text text-anchor="start" x="21" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">MaxStacks</text>
-<text text-anchor="start" x="21" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">CleanseTier</text>
-<text text-anchor="start" x="21" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">Unremovable</text>
-<text text-anchor="start" x="21" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="50.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">Components</text>
-<text text-anchor="start" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="17.5" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
+<text text-anchor="start" x="17.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">Polarity</text>
+<text text-anchor="start" x="17.5" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
+<text text-anchor="start" x="17.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">BaseDuration</text>
+<text text-anchor="start" x="17.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">Stacking</text>
+<text text-anchor="start" x="17.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">MaxStacks</text>
+<text text-anchor="start" x="17.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">CleanseTier</text>
+<text text-anchor="start" x="17.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">Unremovable</text>
+<text text-anchor="start" x="17.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">Components</text>
+<text text-anchor="start" x="17.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="43.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">CreateRuntime()</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-152 0.5,-152 155.5,-152 155.5,-152 0.5,-152"/>
-<polygon fill="#666666" stroke="#666666" points="0.5,-17 0.5,-17 48.5,-17 48.5,-17 0.5,-17"/>
-<polygon fill="#666666" stroke="#666666" points="48.5,-17 48.5,-17 155.5,-17 155.5,-17 48.5,-17"/>
+<polygon fill="#666666" stroke="#666666" points="0.5,-17 0.5,-17 41.5,-17 41.5,-17 0.5,-17"/>
+<polygon fill="#666666" stroke="#666666" points="41.5,-17 41.5,-17 155.5,-17 155.5,-17 41.5,-17"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-180 155,-180 155,0 0,0"/>
 </a>
 </g>

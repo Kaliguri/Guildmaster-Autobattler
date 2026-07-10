@@ -5,12 +5,14 @@ var searchData=
   ['canmove_2',['CanMove',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa05ad04cfdd90d4f53c155eeba794196',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['cannonball_3',['Cannonball',['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html#af5fdc4224f677ae7ae8a98633ec18c41',1,'Guildmaster::Combat::DisplaceRequest']]],
   ['center_4',['Center',['../structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html#abab52891b83d9f1d838ad6eb6265e4dd',1,'Guildmaster::Core::Arena::Rect2D']]],
-  ['chargereadyticks_5',['ChargeReadyTicks',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a553d4c7c1818da07ffa01fb2109c703a',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
-  ['collisionradius_6',['collisionradius',['../classGuildmaster_1_1Combat_1_1Projectile.html#aaf05a6c036d7612517894326d25fc732',1,'Guildmaster.Combat.Projectile.CollisionRadius'],['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a3256e656b27c2577f0b2d74cde80ab0a',1,'Guildmaster.Combat.ProjectileSpawn.CollisionRadius']]],
-  ['combat_7',['Combat',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a563634ca57e5764ba8938cb855ee4e6b',1,'Guildmaster::Combat::Effects::EffectContext']]],
-  ['cooldownremaining_8',['CooldownRemaining',['../classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#a7e4d83b9f92db4d81f68da3ebc04d085',1,'Guildmaster::Combat::Abilities::AbilityRuntime']]],
-  ['currenthp_9',['CurrentHP',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a16a11155c2e0a73e8bcaa125797d137f',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['currentresource_10',['CurrentResource',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aade95fbe70d66fe6bc23c4ca18297005',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['currentshield_11',['CurrentShield',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a24ce73d0729d150103bd1436c64801e3',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['currenttarget_12',['CurrentTarget',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a64ce2c8539ec1d2913559dd98c7c8e31',1,'Guildmaster::Combat::RuntimeUnit']]]
+  ['chaindistance_5',['ChainDistance',['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a7600d1262e048da37035651c44688126',1,'Guildmaster::Combat::DisplaceRequest']]],
+  ['chainticks_6',['ChainTicks',['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a488f1e5196281c757ed22b06cdccc461',1,'Guildmaster::Combat::DisplaceRequest']]],
+  ['chargereadyticks_7',['ChargeReadyTicks',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a553d4c7c1818da07ffa01fb2109c703a',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
+  ['collisionradius_8',['collisionradius',['../classGuildmaster_1_1Combat_1_1Projectile.html#aaf05a6c036d7612517894326d25fc732',1,'Guildmaster.Combat.Projectile.CollisionRadius'],['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a3256e656b27c2577f0b2d74cde80ab0a',1,'Guildmaster.Combat.ProjectileSpawn.CollisionRadius']]],
+  ['combat_9',['Combat',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a563634ca57e5764ba8938cb855ee4e6b',1,'Guildmaster::Combat::Effects::EffectContext']]],
+  ['cooldownremaining_10',['CooldownRemaining',['../classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#a7e4d83b9f92db4d81f68da3ebc04d085',1,'Guildmaster::Combat::Abilities::AbilityRuntime']]],
+  ['currenthp_11',['CurrentHP',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a16a11155c2e0a73e8bcaa125797d137f',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['currentresource_12',['CurrentResource',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aade95fbe70d66fe6bc23c4ca18297005',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['currentshield_13',['CurrentShield',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a24ce73d0729d150103bd1436c64801e3',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['currenttarget_14',['CurrentTarget',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a64ce2c8539ec1d2913559dd98c7c8e31',1,'Guildmaster::Combat::RuntimeUnit']]]
 ];

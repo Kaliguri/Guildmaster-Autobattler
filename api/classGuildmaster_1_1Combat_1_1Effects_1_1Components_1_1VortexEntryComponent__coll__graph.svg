@@ -21,7 +21,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:title="«Вихревой заход» (§9.6, §10.6): реактив на завершение смещения (CombatEvent.UnitDisplaced,...">
+<g id="a_Node000001"><a xlink:title="«Вихревой заход» (§9.6, §10.6): реактив на конец эффекта смещения (CombatEvent.EffectExpired с тегом ...">
 <polygon fill="#999999" stroke="transparent" points="188,-90 0,-90 0,0 188,0 188,-90"/>
 <text text-anchor="start" x="5" y="-78" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Effects.</text>
 <text text-anchor="start" x="5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">Components.VortexEntryComponent</text>

@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Effects_
 </div><!--header-->
 <div class="contents">
 
-<p>«Вихревой заход» (§9.6, §10.6): реактив на завершение смещения (CombatEvent.UnitDisplaced, доставляется источнику толчка).  
+<p>«Вихревой заход» (§9.6, §10.6): реактив на конец эффекта смещения (CombatEvent.EffectExpired с тегом EffectTag.KnockUp, доставляется источнику смещения).  
  <a href="classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Combat.Effects.Components.VortexEntryComponent:</div>
@@ -128,8 +128,8 @@ Properties</h2></td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html">Guildmaster.Combat.Effects.IReactiveComponent</a></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>«Вихревой заход» (§9.6, §10.6): реактив на завершение смещения (CombatEvent.UnitDisplaced, доставляется источнику толчка). </p>
-<p>В конце полёта монах телепортируется к смещённой цели и взводит усиление следующей авто-атаки (×2). Без кулдауна — комбо-механика. Направление «в спину» приближено (садимся вплотную со стороны монаха). </p>
+<div class="textblock"><p>«Вихревой заход» (§9.6, §10.6): реактив на конец эффекта смещения (CombatEvent.EffectExpired с тегом EffectTag.KnockUp, доставляется источнику смещения). </p>
+<p>Срабатывает, когда закончилось отбрасывание ВРАГА (по команде смещённого) — монах телепортируется ему в спину и взводит усиление следующей авто-атаки (×2). Конец собственного рывка монаха (смещённый = свой) сюда НЕ проходит (та же ветка обрабатывается приземлением рывка). Без кулдауна — комбо-механика. Направление «в спину» приближено (садимся вплотную со стороны монаха). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac01fe0c60954266a0a7b24632b86b6dc" name="ac01fe0c60954266a0a7b24632b86b6dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac01fe0c60954266a0a7b24632b86b6dc">&#9670;&#160;</a></span>OnApply()</h2>

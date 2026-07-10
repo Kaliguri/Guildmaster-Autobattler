@@ -1,23 +1,23 @@
 <map id="Guildmaster.Combat.RuntimeUnit" name="Guildmaster.Combat.RuntimeUnit">
-<area shape="rect" id="Node000001" title="Рантайм&#45;представление юнита на один бой." alt="" coords="258,820,493,1085"/>
+<area shape="rect" id="Node000001" title="Рантайм&#45;представление юнита на один бой." alt="" coords="246,835,481,1100"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="5,197,191,323"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,323,77,407,73,510,76,566,84,621,98,675,118,727,143,769,174,807,209,841,246,871,243,875,206,845,170,810,138,772,113,729,92,677,79,622,71,566,68,511,72,406,83,322"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="258,463,493,728"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="151,321,257,448,253,452,147,324"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="87,323,74,407,68,510,70,565,76,620,88,675,106,727,130,771,161,812,197,849,235,881,231,885,193,853,157,816,126,774,101,729,82,676,71,621,64,565,62,510,69,406,81,323"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="246,463,481,728"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="149,321,251,448,247,452,145,324"/>
 <area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html" title="Только&#45;чтение собранных статов." alt="" coords="53,5,143,71"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="101,84,101,197,95,197,95,84"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="378,728,378,804,373,804,373,728"/>
-<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="494,567,512,577,519,595,517,607,509,616,505,613,512,605,514,596,508,581,491,571"/>
-<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html" title="Главный шов AI (вики «13» §3.1): единственная точка, где принимается «дорогое» решение «кого/где»." alt="" coords="239,220,421,300"/>
-<area shape="poly" id="edge11_Node000001_Node000005" title=" " alt="" coords="296,302,243,373,218,417,199,464,179,537,172,596,178,655,199,727,221,775,250,820,246,823,216,777,194,729,173,656,167,596,174,536,194,462,213,415,238,371,292,299"/>
-<area shape="poly" id="edge6_Node000004_Node000005" title=" " alt="" coords="338,300,358,446,353,447,333,301"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — стат&#45;блок и боевые категории юнита." alt="" coords="688,120,895,400"/>
-<area shape="poly" id="edge12_Node000001_Node000006" title=" " alt="" coords="810,400,810,479,802,564,782,650,767,691,747,729,725,761,699,790,640,840,574,880,509,910,507,905,572,875,637,836,696,786,721,758,742,727,762,689,777,648,797,563,805,479,804,400"/>
-<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="690,392,678,402,595,468,508,524,505,519,592,463,675,398,686,388"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="616,5,737,71"/>
-<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="702,82,721,119,716,121,697,84"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="457,200,664,320"/>
-<area shape="poly" id="edge10_Node000008_Node000007" title=" " alt="" coords="656,84,594,201,590,198,651,82"/>
-<area shape="poly" id="edge13_Node000001_Node000008" title=" " alt="" coords="598,319,638,402,657,453,672,507,682,563,685,620,678,676,659,729,630,776,593,818,551,854,508,885,505,881,548,850,589,814,626,773,654,727,672,674,679,620,677,564,667,508,652,454,633,404,593,321"/>
-<area shape="poly" id="edge9_Node000004_Node000008" title=" " alt="" coords="530,321,459,449,454,447,526,319"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="366,728,366,818,361,818,361,728"/>
+<area shape="poly" id="edge5_Node000004_Node000004" title=" " alt="" coords="482,567,500,577,507,595,505,607,497,616,493,613,500,605,502,596,496,581,479,571"/>
+<area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html" title="Главный шов AI (вики «13» §3.1): единственная точка, где принимается «дорогое» решение «кого/где»." alt="" coords="243,220,425,300"/>
+<area shape="poly" id="edge11_Node000001_Node000005" title=" " alt="" coords="295,302,266,334,235,373,208,417,187,464,166,536,159,595,166,655,187,727,209,778,238,825,234,828,204,780,182,729,161,656,154,595,161,535,182,462,203,414,231,370,262,331,291,299"/>
+<area shape="poly" id="edge6_Node000004_Node000005" title=" " alt="" coords="340,300,353,446,348,447,335,300"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — стат&#45;блок и боевые категории юнита." alt="" coords="696,120,903,400"/>
+<area shape="poly" id="edge12_Node000001_Node000006" title=" " alt="" coords="819,400,820,478,814,564,796,649,782,690,763,729,739,765,711,798,679,827,644,854,570,897,497,929,495,924,568,892,641,849,675,823,707,794,735,762,758,727,777,688,791,648,809,563,815,478,814,400"/>
+<area shape="poly" id="edge7_Node000004_Node000006" title=" " alt="" coords="698,392,686,402,641,438,593,472,496,530,493,526,590,468,638,434,683,398,694,388"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="624,5,745,71"/>
+<area shape="poly" id="edge8_Node000006_Node000007" title=" " alt="" coords="710,82,729,119,724,121,705,84"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="465,200,672,320"/>
+<area shape="poly" id="edge10_Node000008_Node000007" title=" " alt="" coords="664,84,602,201,598,198,659,82"/>
+<area shape="poly" id="edge13_Node000001_Node000008" title=" " alt="" coords="609,319,644,386,660,423,671,462,690,537,701,598,701,628,697,659,687,692,671,729,637,782,594,829,546,869,496,903,493,898,543,865,591,825,633,779,666,727,682,690,692,657,696,628,696,599,685,538,666,463,655,425,640,388,605,321"/>
+<area shape="poly" id="edge9_Node000004_Node000008" title=" " alt="" coords="535,321,455,450,451,447,530,319"/>
 </map>

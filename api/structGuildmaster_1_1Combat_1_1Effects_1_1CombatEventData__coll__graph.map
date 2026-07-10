@@ -1,7 +1,7 @@
 <map id="Guildmaster.Combat.Effects.CombatEventData" name="Guildmaster.Combat.Effects.CombatEventData">
-<area shape="rect" id="Node000001" title="Полезная нагрузка боевого события, диспатчится через внутреннюю FIFO&#45;очередь (Stage 6)." alt="" coords="281,805,481,905"/>
+<area shape="rect" id="Node000001" title="Полезная нагрузка боевого события, диспатчится через внутреннюю FIFO&#45;очередь (Stage 6)." alt="" coords="461,805,661,925"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="263,463,498,728"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="383,728,383,789,378,789,378,728"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="472,727,514,790,510,793,467,730"/>
 <area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="500,567,518,577,525,595,522,607,515,616,510,613,517,605,519,596,513,581,497,571"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="5,197,191,323"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="144,321,204,398,254,456,250,459,200,402,140,324"/>
@@ -15,5 +15,7 @@
 <area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="620,84,600,121,596,119,615,82"/>
 <area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="652,200,859,320"/>
 <area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="666,82,727,198,722,201,661,84"/>
-<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="714,322,680,362,643,402,579,457,513,508,510,503,576,453,639,398,676,359,710,318"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="713,322,679,362,641,402,578,457,513,507,510,503,575,453,637,398,675,359,709,319"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="699,563,783,628"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="733,629,715,678,688,729,637,795,633,791,684,727,710,676,728,627"/>
 </map>

@@ -1,7 +1,7 @@
 <map id="Guildmaster.Combat.ProjectileSpawn" name="Guildmaster.Combat.ProjectileSpawn">
-<area shape="rect" id="Node000001" title="Параметры создания снаряда." alt="" coords="583,1031,797,1251"/>
+<area shape="rect" id="Node000001" title="Параметры создания снаряда." alt="" coords="593,1031,806,1251"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="407,688,642,953"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="595,952,628,1014,623,1017,591,955"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="599,952,634,1015,629,1017,595,955"/>
 <area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="644,791,662,802,669,820,666,833,659,842,654,839,661,831,663,821,657,805,641,795"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="5,197,191,323"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="124,322,156,396,200,484,254,576,319,662,355,699,396,733,392,737,352,703,315,666,250,579,195,486,151,398,119,324"/>
@@ -15,8 +15,8 @@
 <area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="695,80,641,122,630,133,626,129,638,118,691,76"/>
 <area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="652,200,859,320"/>
 <area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="758,84,758,200,753,200,753,84"/>
-<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html" title="Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги,..." alt="" coords="779,424,985,664"/>
-<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="829,72,854,93,874,119,890,155,902,194,915,273,916,352,909,424,904,423,910,352,910,274,897,195,885,157,869,121,850,96,826,76"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html" title="Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги,..." alt="" coords="785,424,992,664"/>
+<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="830,73,854,93,874,119,891,155,903,193,917,273,919,352,914,424,908,424,914,352,911,274,898,195,886,157,869,121,850,97,826,77"/>
 <area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="733,322,588,674,583,672,728,320"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="874,665,851,805,833,881,808,954,778,1017,773,1015,804,952,828,880,846,804,869,664"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="889,664,883,732,873,806,856,881,832,954,800,1018,795,1016,828,952,851,880,867,805,878,731,883,664"/>
 </map>

@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Core_1_1Input_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Input.IInputService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__inherit__graph.svg" width="222" height="339"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__inherit__graph.svg" width="222" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Input.IInputService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__coll__graph.svg" width="216" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__coll__graph.svg" width="216" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -124,6 +124,9 @@ Properties</h2></td></tr>
 <tr class="memitem:aefb63244e2854858b20a403952435dcf" id="r_aefb63244e2854858b20a403952435dcf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8">InputContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#aefb63244e2854858b20a403952435dcf">Context</a><code> [get]</code></td></tr>
 <tr class="memdesc:aefb63244e2854858b20a403952435dcf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущий контекст — какие карты действий активны.  <br /></td></tr>
 <tr class="separator:aefb63244e2854858b20a403952435dcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5595966e2ca4ffb59d1d14c8a624f5f1" id="r_a5595966e2ca4ffb59d1d14c8a624f5f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a5595966e2ca4ffb59d1d14c8a624f5f1">GameplaySuppressed</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a5595966e2ca4ffb59d1d14c8a624f5f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Глушитель геймплейного ввода поверх активных карт (ортогонально Context): пока <code>true</code> — пан/зум читаются как ноль, а дискретные события (пауза, смена вида) не поднимаются.  <br /></td></tr>
+<tr class="separator:a5595966e2ca4ffb59d1d14c8a624f5f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace8eee9479a983da7eeda2e5cc7bfe57" id="r_ace8eee9479a983da7eeda2e5cc7bfe57"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#ace8eee9479a983da7eeda2e5cc7bfe57">CameraPan</a><code> [get]</code></td></tr>
 <tr class="memdesc:ace8eee9479a983da7eeda2e5cc7bfe57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Панорамирование камеры: WASD + стрелки, нормализовано в [-1..1] по осям.  <br /></td></tr>
 <tr class="separator:ace8eee9479a983da7eeda2e5cc7bfe57"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -243,6 +246,33 @@ Events</h2></td></tr>
 <p>Текущий контекст — какие карты действий активны. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a4d3955c0336d5d5245e1510b984d5ebe">Guildmaster.Game.Input.InputService</a>.</p>
+
+</div>
+</div>
+<a id="a5595966e2ca4ffb59d1d14c8a624f5f1" name="a5595966e2ca4ffb59d1d14c8a624f5f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5595966e2ca4ffb59d1d14c8a624f5f1">&#9670;&#160;</a></span>GameplaySuppressed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Core.Input.IInputService.GameplaySuppressed</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Глушитель геймплейного ввода поверх активных карт (ортогонально Context): пока <code>true</code> — пан/зум читаются как ноль, а дискретные события (пауза, смена вида) не поднимаются. </p>
+<p>Ставит внешний модальный слой, забирающий клавиатуру: dev-консоль QFSW сейчас, модальное меню — в будущем. Нужен, чтобы набор текста в консоли не протекал в геймплей. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a2b972ff3543569ced32601310333958e">Guildmaster.Game.Input.InputService</a>.</p>
 
 </div>
 </div>
