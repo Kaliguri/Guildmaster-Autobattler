@@ -74,7 +74,7 @@ namespace Guildmaster.Combat
             int intervalTicks = AttackTiming.IntervalTicks(attackSpeed);
             unit.AttackCooldownTicks = intervalTicks;
 
-            UnitVisual visual = unit.Relic != null ? unit.Relic.Visual : null;
+            UnitVisual visual = unit.Unit != null ? unit.Unit.Visual : null;
             int frameCount = visual != null ? visual.AttackFrameCount : 0;
             int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
 
@@ -105,10 +105,10 @@ namespace Guildmaster.Combat
             // Прирост ресурса — на момент реального удара (мана-реликвии).
             GainResourceOnHit(unit);
 
-            AttackType attackType = unit.Relic != null ? unit.Relic.AttackType : AttackType.Melee;
+            AttackType attackType = unit.Unit != null ? unit.Unit.AttackType : AttackType.Melee;
             float raw = unit.Stats.Get(StatType.AutoAttackDamage);
-            DamageType dmgType = unit.Relic != null ? unit.Relic.DamageType : DamageType.Physical;
-            AreaShape shape = unit.Relic != null ? unit.Relic.AutoAttackShape : AreaShape.None;
+            DamageType dmgType = unit.Unit != null ? unit.Unit.DamageType : DamageType.Physical;
+            AreaShape shape = unit.Unit != null ? unit.Unit.AutoAttackShape : AreaShape.None;
 
             // Хил-режим (Светлый пастырь): вместо урона — tracking-хил-снаряд в снапшот-союзника.
             // amount = AutoAttackDamage (сырое; HealShieldDealt/TakenEff применяет ctx.Heal при попадании).
@@ -152,14 +152,14 @@ namespace Guildmaster.Combat
                 ctx.SpawnProjectile(new ProjectileSpawn(
                     unit, unit.Position, target,
                     speed, collRadius, raw, dmgType, ctx.ArmorK, pierces,
-                    onHitEffects: unit.Relic != null ? unit.Relic.AutoAttackEffects : null));
+                    onHitEffects: unit.Unit != null ? unit.Unit.AutoAttackEffects : null));
             }
         }
 
         /// <summary>Наложить on-hit эффекты авто-атаки реликвии на задетую цель (§9.1, мили-путь).</summary>
         private static void ApplyAutoAttackOnHit(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)
         {
-            EffectData[] effects = unit.Relic != null ? unit.Relic.AutoAttackEffects : null;
+            EffectData[] effects = unit.Unit != null ? unit.Unit.AutoAttackEffects : null;
             if (effects == null) return;
             for (int i = 0; i < effects.Length; i++)
                 if (effects[i] != null) ctx.ApplyEffect(target, effects[i], unit);
@@ -167,7 +167,7 @@ namespace Guildmaster.Combat
 
         /// <summary>Хил-автоатака (Светлый пастырь): авто-атака лечит союзника вместо урона по врагу (§9.2).</summary>
         private static bool IsHealMode(RuntimeUnit unit) =>
-            unit.Relic?.Ai != null && unit.Relic.Ai.AutoAttackMode == AutoAttackMode.Heal;
+            unit.Unit?.Ai != null && unit.Unit.Ai.AutoAttackMode == AutoAttackMode.Heal;
 
         /// <summary>Прерывание замаха: сброс + рефанд кулдауна (бьёт снова, как только сможет) + событие.</summary>
         private static void Interrupt(RuntimeUnit unit, ICombatContext ctx)
@@ -182,7 +182,7 @@ namespace Guildmaster.Combat
         /// <summary>Линейная авто-атака «Размашистый выпад»: полоса к цели, урон по всем врагам в ней.</summary>
         private void DealLineDamage(RuntimeUnit unit, RuntimeUnit target, float length, float raw, DamageType dmgType, ICombatContext ctx)
         {
-            float width = unit.Relic.AutoAttackWidth;
+            float width = unit.Unit.AutoAttackWidth;
             Vector2 dir = target.Position - unit.Position;
 
             // Dev-оверлей зоны (показываем полосу даже если никого не задели).
@@ -201,7 +201,7 @@ namespace Guildmaster.Combat
         /// <summary>Начислить ресурс за удар (× ResourceGainEff), клампить к MaxResource.</summary>
         private static void GainResourceOnHit(RuntimeUnit unit)
         {
-            float onHit = unit.Relic != null ? unit.Relic.ResourceOnHit : 0f;
+            float onHit = unit.Unit != null ? unit.Unit.ResourceOnHit : 0f;
             if (onHit <= 0f) return;
 
             float gain = onHit * unit.Stats.Get(StatType.ResourceGainEff);

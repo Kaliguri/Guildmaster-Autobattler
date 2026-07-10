@@ -13,9 +13,6 @@ MonoBehaviour:
   m_Name: IronSpearman
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.iron_spearman
-  _tags:
-  - spearman
-  - common
   _damageType: 0
   _attackType: 0
   _resourceType: 2
@@ -26,7 +23,6 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _resourceOnHit: 5
-  _canUseExtendedDeployment: 0
   _stats:
   - Stat: 0
     Op: 0
@@ -76,6 +72,8 @@ MonoBehaviour:
     _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
+    _infoTags: []
+  _aiPreset: {fileID: 11400000, guid: fbc693eab707b8749b2ca102d280768c, type: 2}
   _ai:
     _autoAttackTargeting: 0
     _autoAttackMode: 0
@@ -90,3 +88,12 @@ MonoBehaviour:
       FallbackDist: 0
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags: []
+  _tags:
+  - spearman
+  - common
+  _rarity: 0
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0

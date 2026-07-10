@@ -13,10 +13,6 @@ MonoBehaviour:
   m_Name: Assassin
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.assassin
-  _tags:
-  - assassin
-  - melee
-  - common
   _damageType: 0
   _attackType: 0
   _resourceType: 0
@@ -27,7 +23,6 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _resourceOnHit: 0
-  _canUseExtendedDeployment: 0
   _stats:
   - Stat: 0
     Op: 0
@@ -51,6 +46,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e3be461416627c240b9d261a7f4b4b29, type: 2}
   - {fileID: 11400000, guid: 3404fe6e06b59da4ab445d73bd764994, type: 2}
   _abilities: []
+  _aiPreset: {fileID: 11400000, guid: 6ff0270a8ae2e2b4a9683cec33e5071b, type: 2}
   _ai:
     _autoAttackTargeting: 1
     _autoAttackMode: 0
@@ -65,3 +61,13 @@ MonoBehaviour:
       FallbackDist: 3
     _passiveTrigger: 2
     _passiveThresholdPct: 0.25
+  _icon: {fileID: 0}
+  _infoTags: []
+  _tags:
+  - assassin
+  - melee
+  - common
+  _rarity: 0
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0

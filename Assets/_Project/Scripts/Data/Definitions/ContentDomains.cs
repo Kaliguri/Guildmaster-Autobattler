@@ -15,6 +15,7 @@ namespace Guildmaster.Data.Definitions
         private static readonly Dictionary<Type, string> Domains = new Dictionary<Type, string>
         {
             { typeof(RelicData),       "relic"       },
+            { typeof(EnemyData),       "enemy"       },
             { typeof(VesselData),      "vessel"      },
             { typeof(EffectData),      "effect"      },
             { typeof(TagData),         "tag"         },

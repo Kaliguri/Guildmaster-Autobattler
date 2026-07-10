@@ -13,10 +13,6 @@ MonoBehaviour:
   m_Name: Cryomancer
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.cryomancer
-  _tags:
-  - cryomancer
-  - controller
-  - common
   _damageType: 1
   _attackType: 1
   _resourceType: 1
@@ -28,7 +24,6 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _resourceOnHit: 5
-  _canUseExtendedDeployment: 0
   _stats:
   - Stat: 0
     Op: 0
@@ -82,6 +77,8 @@ MonoBehaviour:
     _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
+    _infoTags: []
+  _aiPreset: {fileID: 11400000, guid: ba7e13bce9e895841b687a35814c5415, type: 2}
   _ai:
     _autoAttackTargeting: 8
     _autoAttackMode: 0
@@ -96,3 +93,13 @@ MonoBehaviour:
       FallbackDist: 3
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags: []
+  _tags:
+  - cryomancer
+  - controller
+  - common
+  _rarity: 0
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0

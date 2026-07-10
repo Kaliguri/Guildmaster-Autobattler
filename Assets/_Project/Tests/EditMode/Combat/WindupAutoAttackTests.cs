@@ -187,7 +187,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             return new RuntimeUnit
             {
                 Id = id, Team = team, Stats = stats,
-                CurrentHP = maxHp, Position = pos, PreviousPosition = pos, Relic = relic,
+                CurrentHP = maxHp, Position = pos, PreviousPosition = pos, Unit = relic,
             };
         }
 

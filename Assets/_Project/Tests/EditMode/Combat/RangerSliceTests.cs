@@ -252,7 +252,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CurrentHP        = maxHp,
                 Position         = pos,
                 PreviousPosition = pos,
-                Relic            = relic,
+                Unit             = relic,
                 Positioning      = positioning,
             };
         }

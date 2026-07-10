@@ -13,10 +13,6 @@ MonoBehaviour:
   m_Name: Defender
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.defender
-  _tags:
-  - defender
-  - tank
-  - common
   _damageType: 0
   _attackType: 0
   _resourceType: 1
@@ -27,7 +23,6 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _resourceOnHit: 5
-  _canUseExtendedDeployment: 0
   _stats:
   - Stat: 0
     Op: 0
@@ -83,6 +78,8 @@ MonoBehaviour:
     _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
+    _infoTags: []
+  _aiPreset: {fileID: 11400000, guid: e667522120f776b4ab0e3fd9ff8bf933, type: 2}
   _ai:
     _autoAttackTargeting: 5
     _autoAttackMode: 0
@@ -97,3 +94,13 @@ MonoBehaviour:
       FallbackDist: 3
     _passiveTrigger: 2
     _passiveThresholdPct: 0.15
+  _icon: {fileID: 0}
+  _infoTags: []
+  _tags:
+  - defender
+  - tank
+  - common
+  _rarity: 0
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0

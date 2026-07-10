@@ -60,7 +60,7 @@ namespace Guildmaster.Combat.Effects.Components
             float dmg = _displaceDamageMult > 0f
                 ? _displaceDamageMult * monk.Stats.Get(StatType.AutoAttackDamage)
                 : 0f;
-            DamageType dmgType = monk.Relic != null ? monk.Relic.DamageType : DamageType.Physical;
+            DamageType dmgType = monk.Unit != null ? monk.Unit.DamageType : DamageType.Physical;
 
             ctx.Combat.ReportAreaHit(AreaHit.Line(
                 victim.Position, dir.sqrMagnitude > 1e-6f ? dir.normalized : Vector2.right,

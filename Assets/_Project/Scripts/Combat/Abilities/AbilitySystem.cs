@@ -228,7 +228,7 @@ namespace Guildmaster.Combat
             ctx.QueryUnitsInRadius(caster.Position, data.AreaRadius, _targets, TargetFilter.Enemies, caster.Team);
 
             float dmg = AbilityDamage(caster, data);
-            DamageType dmgType = caster.Relic != null ? caster.Relic.DamageType : DamageType.Physical;
+            DamageType dmgType = caster.Unit != null ? caster.Unit.DamageType : DamageType.Physical;
 
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итог.
             for (int i = 0; i < _targets.Count; i++)
@@ -252,7 +252,7 @@ namespace Guildmaster.Combat
                 float dmg = AbilityDamage(caster, data);
                 if (dmg > 0f)
                 {
-                    DamageType dmgType = caster.Relic != null ? caster.Relic.DamageType : DamageType.Physical;
+                    DamageType dmgType = caster.Unit != null ? caster.Unit.DamageType : DamageType.Physical;
                     ctx.DealDamage(new DamageRequest(caster, target, dmg, dmgType, ctx.ArmorK));
                 }
             }

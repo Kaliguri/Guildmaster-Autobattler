@@ -39,7 +39,7 @@ namespace Guildmaster.Combat
                 if (!unit.CanMove) continue;
 
                 bool windingUp        = unit.IsWindingUp;
-                bool attackWhileMoving = unit.Relic != null && unit.Relic.CanAttackWhileMoving;
+                bool attackWhileMoving = unit.Unit != null && unit.Unit.CanAttackWhileMoving;
 
                 // Замах авто-атаки рутит юнита (свинг на месте, вики «14») — КРОМЕ реликвий со
                 // «стрельбой на ходу» (§9.8): те продолжают движение со штрафом скорости.
@@ -50,7 +50,7 @@ namespace Guildmaster.Combat
 
                 float moveSpeed = unit.Stats.Get(StatType.MoveSpeed);
                 if (windingUp && attackWhileMoving)
-                    moveSpeed *= Mathf.Max(0f, 1f - unit.Relic.MovingAttackSpeedPenaltyPct); // §9.8
+                    moveSpeed *= Mathf.Max(0f, 1f - unit.Unit.MovingAttackSpeedPenaltyPct); // §9.8
 
                 float maxMove = moveSpeed * dt;
                 if (maxMove <= 0f) continue;
@@ -91,7 +91,7 @@ namespace Guildmaster.Combat
         /// </summary>
         private static void MoveKite(RuntimeUnit unit, RuntimeUnit target, float maxMove, in ArenaBounds bounds, in SimTuning tuning)
         {
-            Kite kite = unit.Relic != null ? unit.Relic.Ai.Kite : default;
+            Kite kite = unit.Unit != null ? unit.Unit.Ai.Kite : default;
             float flee     = kite.FleeDist;
             float fallback = kite.FallbackDist;
 

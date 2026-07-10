@@ -254,7 +254,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CurrentHP        = hp < 0f ? maxHp : hp,
                 Position         = pos,
                 PreviousPosition = pos,
-                Relic            = relic,
+                Unit             = relic,
             };
         }
 

@@ -8,7 +8,7 @@ namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
     /// «Изворотливость» (§9.3, §9.4, §10.5): pre-damage реактив с зарядами. По триггеру блока F
-    /// (из <c>self.Relic.Ai.PassiveTrigger</c>) полностью отменяет входящий удар, тратя один заряд;
+    /// (из <c>self.Unit.Ai.PassiveTrigger</c>) полностью отменяет входящий удар, тратя один заряд;
     /// заряды восстанавливаются независимо. Тип источника урона не важен (решение Макса — негейтит
     /// любой следующий удар). Состояние зарядов — per-effect в <see cref="RuntimeEffect.ChargeReadyTicks"/>.
     /// </summary>
@@ -65,7 +65,7 @@ namespace Guildmaster.Combat.Effects.Components
         /// <summary>Триггер блока F: None — никогда; AnyHit/Always — любой удар; OnHitAbovePctMaxHp — выше порога ИЛИ смертельный.</summary>
         private static bool TriggerMet(RuntimeUnit self, in DamageRequest req)
         {
-            AIProfile ai = self.Relic != null ? self.Relic.Ai : null;
+            AIProfile ai = self.Unit != null ? self.Unit.Ai : null;
             PassiveTrigger trigger = ai != null ? ai.PassiveTrigger : PassiveTrigger.AnyHit;
 
             switch (trigger)
