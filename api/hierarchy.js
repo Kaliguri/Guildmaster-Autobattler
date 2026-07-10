@@ -157,6 +157,7 @@ var hierarchy =
       [ "Guildmaster.Data.Definitions.UnitVisual", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html", null ],
       [ "Guildmaster.Data.Definitions.VesselData", "classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html", null ]
     ] ],
+    [ "Guildmaster.Combat.SeparationSystem", "classGuildmaster_1_1Combat_1_1SeparationSystem.html", null ],
     [ "Guildmaster.Core.Simulation.SimConstants", "classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html", null ],
     [ "Guildmaster.Combat.SpatialHash", "classGuildmaster_1_1Combat_1_1SpatialHash.html", null ],
     [ "Guildmaster.Data.Stats.StatModifier", "structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html", null ],

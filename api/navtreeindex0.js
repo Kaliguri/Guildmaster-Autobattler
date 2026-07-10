@@ -198,6 +198,7 @@ var NAVTREEINDEX0 =
 "RuntimeUnit_8cs.html":[2,0,0,0,0,0,9,0],
 "ScalableValue_8cs.html":[2,0,0,0,0,2,2,2],
 "SceneLoader_8cs.html":[2,0,0,0,0,4,2,3],
+"SeparationSystem_8cs.html":[2,0,0,0,0,0,8,7],
 "ShieldComponent_8cs.html":[2,0,0,0,0,0,4,0,9],
 "SimConstants_8cs.html":[2,0,0,0,0,1,3,2],
 "SimSyncProbe_8cs.html":[2,0,0,0,0,5,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "StealthComponent_8cs.html":[2,0,0,0,0,0,4,0,11],
 "TargetFilter_8cs.html":[2,0,0,0,0,0,17],
 "TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8":[2,0,0,0,0,0,17,0],
-"TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8a4ff52320ad589c7346c8562c2c715fd6":[2,0,0,0,0,0,17,0,1],
-"TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8ab1c94ca2fbc3e78fc30069c8d0f01680":[2,0,0,0,0,0,17,0,2]
+"TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8a4ff52320ad589c7346c8562c2c715fd6":[2,0,0,0,0,0,17,0,1]
 };

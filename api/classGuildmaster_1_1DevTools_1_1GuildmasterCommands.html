@@ -121,6 +121,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aedae5faa77d76a446159efa284f38245" id="r_aedae5faa77d76a446159efa284f38245"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aedae5faa77d76a446159efa284f38245">SpawnBattle</a> (int countPerTeam=2, float hp=300f, float damage=50f)</td></tr>
 <tr class="memdesc:aedae5faa77d76a446159efa284f38245"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поднять тест-бой N×M юнитов с заданными HP.  <br /></td></tr>
 <tr class="separator:aedae5faa77d76a446159efa284f38245"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40149c4b1a21190ed41b1b484a4b0519" id="r_a40149c4b1a21190ed41b1b484a4b0519"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a40149c4b1a21190ed41b1b484a4b0519">SpawnCrowd</a> (int perTeam=8, float hp=400f, float damage=6f, float size=1f, float range=3f)</td></tr>
+<tr class="memdesc:a40149c4b1a21190ed41b1b484a4b0519"><td class="mdescLeft">&#160;</td><td class="mdescRight">Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия).  <br /></td></tr>
+<tr class="separator:a40149c4b1a21190ed41b1b484a4b0519"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bb0980dbbe14fdfe9dd4643d3f41f91" id="r_a7bb0980dbbe14fdfe9dd4643d3f41f91"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a7bb0980dbbe14fdfe9dd4643d3f41f91">SepInfo</a> ()</td></tr>
+<tr class="memdesc:a7bb0980dbbe14fdfe9dd4643d3f41f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Показать текущие параметры расталкивания (SeparationSystem).  <br /></td></tr>
+<tr class="separator:a7bb0980dbbe14fdfe9dd4643d3f41f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2458c149ad1867ee32cd9c5f732b4ed" id="r_aa2458c149ad1867ee32cd9c5f732b4ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aa2458c149ad1867ee32cd9c5f732b4ed">SepRadius</a> (float radiusPerSize)</td></tr>
+<tr class="memdesc:aa2458c149ad1867ee32cd9c5f732b4ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Радиус тела на единицу Size (0.25 = ⌀0.5 при Size1). Крути под ширину спрайта.  <br /></td></tr>
+<tr class="separator:aa2458c149ad1867ee32cd9c5f732b4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50a4653b04f364e29dd24396ef6139a7" id="r_a50a4653b04f364e29dd24396ef6139a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a50a4653b04f364e29dd24396ef6139a7">SepStrength</a> (float strength)</td></tr>
+<tr class="memdesc:a50a4653b04f364e29dd24396ef6139a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сила расталкивания за тик (0..1; 1 = жёстко, мягче = плавнее). Live.  <br /></td></tr>
+<tr class="separator:a50a4653b04f364e29dd24396ef6139a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd25f38f9481f1537f0ad9cb5def1eb9" id="r_abd25f38f9481f1537f0ad9cb5def1eb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#abd25f38f9481f1537f0ad9cb5def1eb9">SepIters</a> (int iterations)</td></tr>
+<tr class="memdesc:abd25f38f9481f1537f0ad9cb5def1eb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Проходов расталкивания за тик (больше = жёстче/дороже). Live.  <br /></td></tr>
+<tr class="separator:abd25f38f9481f1537f0ad9cb5def1eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af21577e0f97d9648fddbf8ae2bed00b3" id="r_af21577e0f97d9648fddbf8ae2bed00b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#af21577e0f97d9648fddbf8ae2bed00b3">SepAlly</a> (float scale)</td></tr>
+<tr class="memdesc:af21577e0f97d9648fddbf8ae2bed00b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель расталкивания СВОИХ (0..1): меньше = свои расступаются мягче, задние просачиваются к фронту. Live.  <br /></td></tr>
+<tr class="separator:af21577e0f97d9648fddbf8ae2bed00b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81741c7cedaddfdaada0ce90d723615b" id="r_a81741c7cedaddfdaada0ce90d723615b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a81741c7cedaddfdaada0ce90d723615b">SpawnSpearman</a> (int enemies=3, float enemyHp=200f)</td></tr>
 <tr class="memdesc:a81741c7cedaddfdaada0ce90d723615b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.  <br /></td></tr>
 <tr class="separator:a81741c7cedaddfdaada0ce90d723615b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,9 +157,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad802cce6be40b4253f9b4a5758b2aeab" id="r_ad802cce6be40b4253f9b4a5758b2aeab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ad802cce6be40b4253f9b4a5758b2aeab">SpawnAssassin</a> (int enemies=3, float enemyHp=120f, float enemyDamage=40f)</td></tr>
 <tr class="memdesc:ad802cce6be40b4253f9b4a5758b2aeab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.  <br /></td></tr>
 <tr class="separator:ad802cce6be40b4253f9b4a5758b2aeab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeeecda4df23fd32dcbe95b2611eaff79" id="r_aeeecda4df23fd32dcbe95b2611eaff79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aeeecda4df23fd32dcbe95b2611eaff79">SpawnMonk</a> (int enemies=3, float enemyHp=150f, float enemyDamage=5f)</td></tr>
-<tr class="memdesc:aeeecda4df23fd32dcbe95b2611eaff79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10.6.  <br /></td></tr>
-<tr class="separator:aeeecda4df23fd32dcbe95b2611eaff79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a518bdb00fd636e525cf2a0ef7c622a3b" id="r_a518bdb00fd636e525cf2a0ef7c622a3b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a518bdb00fd636e525cf2a0ef7c622a3b">SpawnMonk</a> (int enemies=4, float enemyHp=150f, float enemyDamage=5f)</td></tr>
+<tr class="memdesc:a518bdb00fd636e525cf2a0ef7c622a3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10.6.  <br /></td></tr>
+<tr class="separator:a518bdb00fd636e525cf2a0ef7c622a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a73a4089cf1a0e9890d4ed1c0b5d871" id="r_a1a73a4089cf1a0e9890d4ed1c0b5d871"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a1a73a4089cf1a0e9890d4ed1c0b5d871">SetHp</a> (int unitId, float hp)</td></tr>
 <tr class="memdesc:a1a73a4089cf1a0e9890d4ed1c0b5d871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выставить HP юниту по ID.  <br /></td></tr>
 <tr class="separator:a1a73a4089cf1a0e9890d4ed1c0b5d871"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,10 +283,169 @@ Public Member Functions</h2></td></tr>
 
 <p>R: перезапустить ПОСЛЕДНИЙ бой НА МЕСТЕ — сброс сима (юниты/снаряды/исход) + повтор последнего сетапа. </p>
 <p>Сцену и камеру НЕ перезагружаем: заново начинается только бой (dev-итерация). </p>
+
+</div>
+</div>
+<a id="af21577e0f97d9648fddbf8ae2bed00b3" name="af21577e0f97d9648fddbf8ae2bed00b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af21577e0f97d9648fddbf8ae2bed00b3">&#9670;&#160;</a></span>SepAlly()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.DevTools.GuildmasterCommands.SepAlly </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>scale</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Множитель расталкивания СВОИХ (0..1): меньше = свои расступаются мягче, задние просачиваются к фронту. Live. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_a0e8ffc130d2adb84e307f5c10d183490_cgraph.svg" width="522" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_af21577e0f97d9648fddbf8ae2bed00b3_cgraph.svg" width="555" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a7bb0980dbbe14fdfe9dd4643d3f41f91" name="a7bb0980dbbe14fdfe9dd4643d3f41f91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bb0980dbbe14fdfe9dd4643d3f41f91">&#9670;&#160;</a></span>SepInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.DevTools.GuildmasterCommands.SepInfo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Показать текущие параметры расталкивания (SeparationSystem). </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_a7bb0980dbbe14fdfe9dd4643d3f41f91_icgraph.svg" width="555" height="243"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="abd25f38f9481f1537f0ad9cb5def1eb9" name="abd25f38f9481f1537f0ad9cb5def1eb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd25f38f9481f1537f0ad9cb5def1eb9">&#9670;&#160;</a></span>SepIters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.DevTools.GuildmasterCommands.SepIters </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>iterations</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Проходов расталкивания за тик (больше = жёстче/дороже). Live. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_abd25f38f9481f1537f0ad9cb5def1eb9_cgraph.svg" width="555" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aa2458c149ad1867ee32cd9c5f732b4ed" name="aa2458c149ad1867ee32cd9c5f732b4ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2458c149ad1867ee32cd9c5f732b4ed">&#9670;&#160;</a></span>SepRadius()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.DevTools.GuildmasterCommands.SepRadius </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>radiusPerSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Радиус тела на единицу Size (0.25 = ⌀0.5 при Size1). Крути под ширину спрайта. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_aa2458c149ad1867ee32cd9c5f732b4ed_cgraph.svg" width="555" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a50a4653b04f364e29dd24396ef6139a7" name="a50a4653b04f364e29dd24396ef6139a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50a4653b04f364e29dd24396ef6139a7">&#9670;&#160;</a></span>SepStrength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.DevTools.GuildmasterCommands.SepStrength </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>strength</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сила расталкивания за тик (0..1; 1 = жёстко, мягче = плавнее). Live. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_a50a4653b04f364e29dd24396ef6139a7_cgraph.svg" width="555" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -474,6 +651,73 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
+<a id="a40149c4b1a21190ed41b1b484a4b0519" name="a40149c4b1a21190ed41b1b484a4b0519"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40149c4b1a21190ed41b1b484a4b0519">&#9670;&#160;</a></span>SpawnCrowd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.DevTools.GuildmasterCommands.SpawnCrowd </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>perTeam</em> = <code>8</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>hp</em> = <code>400f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>damage</em> = <code>6f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>size</em> = <code>1f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>range</em> = <code>3f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия). </p>
+<p>Спавнит сеткой с шагом МЕНЬШЕ диаметра тела → юниты сразу перекрываются и разъезжаются; высокий HP и низкий урон держат толпу живой, чтобы видеть spacing и при сшибке блобов в центре. Крути на глаз <code>SimConstants.SeparationStrength</code> / <code>SeparationIterations</code> / <code>BodyRadiusPerSize</code>, перезапуск на месте — R. Параметр <em>size</em>  — «толщина» тел (Size-стат). </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_a40149c4b1a21190ed41b1b484a4b0519_cgraph.svg" width="530" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_a40149c4b1a21190ed41b1b484a4b0519_icgraph.svg" width="259" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
 <a id="a2eb2cbfe58040010e7e08fb0dec1afca" name="a2eb2cbfe58040010e7e08fb0dec1afca"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2eb2cbfe58040010e7e08fb0dec1afca">&#9670;&#160;</a></span>SpawnCryomancer()</h2>
 
@@ -570,8 +814,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="aeeecda4df23fd32dcbe95b2611eaff79" name="aeeecda4df23fd32dcbe95b2611eaff79"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeeecda4df23fd32dcbe95b2611eaff79">&#9670;&#160;</a></span>SpawnMonk()</h2>
+<a id="a518bdb00fd636e525cf2a0ef7c622a3b" name="a518bdb00fd636e525cf2a0ef7c622a3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a518bdb00fd636e525cf2a0ef7c622a3b">&#9670;&#160;</a></span>SpawnMonk()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -583,7 +827,7 @@ Here is the caller graph for this function:</div>
           <td class="memname">void Guildmaster.DevTools.GuildmasterCommands.SpawnMonk </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>enemies</em> = <code>3</code>, </td>
+          <td class="paramname"><em>enemies</em> = <code>4</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -614,12 +858,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_aeeecda4df23fd32dcbe95b2611eaff79_cgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_a518bdb00fd636e525cf2a0ef7c622a3b_cgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_aeeecda4df23fd32dcbe95b2611eaff79_icgraph.svg" width="259" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_a518bdb00fd636e525cf2a0ef7c622a3b_icgraph.svg" width="259" height="75"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

@@ -24,6 +24,7 @@ var classGuildmaster_1_1Combat_1_1CombatSimulation =
     [ "IsPaused", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a95b013883f25014e70b5ec816df42285", null ],
     [ "Outcome", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ade014db043568a48011caded693155c1", null ],
     [ "Rng", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a252e41fbff5873e8fdeb639556d89666", null ],
+    [ "Separation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#acd88bbaa5eead8fdf3ff182b1d4f44e1", null ],
     [ "Units", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6a7d8e090ee8dcca46ee0aaf705e7d24", null ],
     [ "OnAreaHit", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a9caad6a621e0b9755a74fb79f3ac7272", null ],
     [ "OnAttackEvaded", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac488c96e1b4ab1abfff473a2fd0f1f8d", null ],

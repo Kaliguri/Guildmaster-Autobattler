@@ -6,5 +6,6 @@ var dir_b1358c9c8208c44d84f14715b5e7022c =
     [ "DisplacementSystem.cs", "DisplacementSystem_8cs.html", "DisplacementSystem_8cs" ],
     [ "MovementSystem.cs", "MovementSystem_8cs.html", "MovementSystem_8cs" ],
     [ "ProjectileSystem.cs", "ProjectileSystem_8cs.html", "ProjectileSystem_8cs" ],
-    [ "RegenSystem.cs", "RegenSystem_8cs.html", "RegenSystem_8cs" ]
+    [ "RegenSystem.cs", "RegenSystem_8cs.html", "RegenSystem_8cs" ],
+    [ "SeparationSystem.cs", "SeparationSystem_8cs.html", "SeparationSystem_8cs" ]
 ];

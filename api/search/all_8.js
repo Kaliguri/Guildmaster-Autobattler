@@ -18,9 +18,9 @@ var searchData=
   ['initialize_15',['Initialize',['../classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html#a7bb2b3aeb78689fa094f37fdd832a71d',1,'Guildmaster::Presentation::CombatStatusOverlay']]],
   ['inputcontext_16',['InputContext',['../namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8',1,'Guildmaster::Core::Input']]],
   ['inputcontext_2ecs_17',['InputContext.cs',['../InputContext_8cs.html',1,'']]],
-  ['inputservice_18',['inputservice',['../classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a5ab570be7f09301a67a9dd460eb472de',1,'Guildmaster.Game.Input.InputService.InputService()'],['../classGuildmaster_1_1Game_1_1Input_1_1InputService.html',1,'Guildmaster.Game.Input.InputService']]],
+  ['inputservice_18',['inputservice',['../classGuildmaster_1_1Game_1_1Input_1_1InputService.html',1,'Guildmaster.Game.Input.InputService'],['../classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a5ab570be7f09301a67a9dd460eb472de',1,'Guildmaster.Game.Input.InputService.InputService()']]],
   ['inputservice_2ecs_19',['InputService.cs',['../InputService_8cs.html',1,'']]],
-  ['interval_20',['interval',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html#a2e8339e75cfc253e88fe9add7ba98bda',1,'Guildmaster.Combat.Effects.IPeriodicComponent.Interval'],['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html#a1f15bf3dd2da711e214f8bfa1e3543be',1,'Guildmaster.Combat.Effects.Components.PeriodicHealComponent.Interval'],['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#a7851792995e5d3d2919783cab4fb967e',1,'Guildmaster.Combat.Effects.Components.PeriodicDamageComponent.Interval']]],
+  ['interval_20',['interval',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html#a1f15bf3dd2da711e214f8bfa1e3543be',1,'Guildmaster.Combat.Effects.Components.PeriodicHealComponent.Interval'],['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html#a2e8339e75cfc253e88fe9add7ba98bda',1,'Guildmaster.Combat.Effects.IPeriodicComponent.Interval'],['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#a7851792995e5d3d2919783cab4fb967e',1,'Guildmaster.Combat.Effects.Components.PeriodicDamageComponent.Interval']]],
   ['intervalticks_21',['IntervalTicks',['../classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b',1,'Guildmaster::Combat::AttackTiming']]],
   ['iperiodiccomponent_22',['IPeriodicComponent',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html',1,'Guildmaster::Combat::Effects']]],
   ['ipredamagecomponent_23',['IPreDamageComponent',['../interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html',1,'Guildmaster::Combat::Effects']]],
@@ -45,6 +45,7 @@ var searchData=
   ['istatreader_42',['IStatReader',['../interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html',1,'Guildmaster::Data::Stats']]],
   ['istatreader_2ecs_43',['IStatReader.cs',['../IStatReader_8cs.html',1,'']]],
   ['iswindingup_44',['IsWindingUp',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae2e9433540f6fc645621c7098fe38923',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['iunitbrain_45',['IUnitBrain',['../interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html',1,'Guildmaster::Combat']]],
-  ['iunitbrain_2ecs_46',['IUnitBrain.cs',['../IUnitBrain_8cs.html',1,'']]]
+  ['iterations_45',['Iterations',['../classGuildmaster_1_1Combat_1_1SeparationSystem.html#a572ca44e6f36201d01b1cb5d9ed949aa',1,'Guildmaster::Combat::SeparationSystem']]],
+  ['iunitbrain_46',['IUnitBrain',['../interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html',1,'Guildmaster::Combat']]],
+  ['iunitbrain_2ecs_47',['IUnitBrain.cs',['../IUnitBrain_8cs.html',1,'']]]
 ];

@@ -1,0 +1,11 @@
+<map id="Guildmaster.DevTools.GuildmasterCommands.SepInfo" name="Guildmaster.DevTools.GuildmasterCommands.SepInfo">
+<area shape="rect" id="Node000001" title="Показать текущие параметры расталкивания (SeparationSystem)." alt="" coords="301,101,549,141"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#af21577e0f97d9648fddbf8ae2bed00b3" title="Множитель расталкивания СВОИХ (0..1): меньше = свои расступаются мягче, задние просачиваются к фронту..." alt="" coords="5,5,253,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="361,99,253,60,212,48,214,43,254,55,363,94"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#abd25f38f9481f1537f0ad9cb5def1eb9" title="Проходов расталкивания за тик (больше = жёстче/дороже). Live." alt="" coords="5,69,253,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="288,109,253,105,254,100,288,104"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aa2458c149ad1867ee32cd9c5f732b4ed" title="Радиус тела на единицу Size (0.25 = ⌀0.5 при Size1). Крути под ширину спрайта." alt="" coords="5,133,253,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="288,139,254,143,253,137,288,134"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a50a4653b04f364e29dd24396ef6139a7" title="Сила расталкивания за тик (0..1; 1 = жёстко, мягче = плавнее). Live." alt="" coords="5,197,253,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="363,149,254,188,214,200,212,195,253,183,361,144"/>
+</map>

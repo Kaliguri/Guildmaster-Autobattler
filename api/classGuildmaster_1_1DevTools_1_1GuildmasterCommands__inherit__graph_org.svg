@@ -16,27 +16,27 @@
 <text text-anchor="start" x="5" y="-198" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="start" x="62" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">Commands</text>
 <text text-anchor="start" x="88" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="18.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="46" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">Construct()</text>
-<text text-anchor="start" x="18.5" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="46" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">SetRngSeed()</text>
-<text text-anchor="start" x="18.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="46" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnBattle()</text>
-<text text-anchor="start" x="18.5" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="46" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnSpearman()</text>
-<text text-anchor="start" x="18.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="46" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnShepherd()</text>
-<text text-anchor="start" x="18.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="46" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnCryomancer()</text>
-<text text-anchor="start" x="18.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="46" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnDefender()</text>
-<text text-anchor="start" x="18.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="46" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnRanger()</text>
-<text text-anchor="start" x="18.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="46" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnAssassin()</text>
-<text text-anchor="start" x="18.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="46" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnMonk()</text>
-<text text-anchor="start" x="46" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">and 6 more...</text>
+<text text-anchor="start" x="21" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">Construct()</text>
+<text text-anchor="start" x="21" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">SetRngSeed()</text>
+<text text-anchor="start" x="21" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnBattle()</text>
+<text text-anchor="start" x="21" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnCrowd()</text>
+<text text-anchor="start" x="21" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">SepInfo()</text>
+<text text-anchor="start" x="21" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">SepRadius()</text>
+<text text-anchor="start" x="21" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">SepStrength()</text>
+<text text-anchor="start" x="21" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">SepIters()</text>
+<text text-anchor="start" x="21" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">SepAlly()</text>
+<text text-anchor="start" x="21" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="51" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">SpawnSpearman()</text>
+<text text-anchor="start" x="51" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">and 12 more...</text>
 <polygon fill="#666666" stroke="#666666" points="0,-182 0,-182 180,-182 180,-182 0,-182"/>
 <polygon fill="#666666" stroke="#666666" points="0,-167 0,-167 180,-167 180,-167 0,-167"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-210 180,-210 180,0 0,0"/>

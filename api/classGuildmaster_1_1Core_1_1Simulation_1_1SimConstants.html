@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Core_1_1Simulation
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Simulation.SimConstants:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants__coll__graph.svg" width="219" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants__coll__graph.svg" width="219" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -129,6 +129,18 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:ac4fd96970ed2ea6969d5bcebc78703ea" id="r_ac4fd96970ed2ea6969d5bcebc78703ea"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#ac4fd96970ed2ea6969d5bcebc78703ea">MinWindupTicks</a> = 3</td></tr>
 <tr class="memdesc:ac4fd96970ed2ea6969d5bcebc78703ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Минимальный пол замаха авто-атаки, в сим-тиках.  <br /></td></tr>
 <tr class="separator:ac4fd96970ed2ea6969d5bcebc78703ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0765b6ca52ece9e78ec99d88d2045e0d" id="r_a0765b6ca52ece9e78ec99d88d2045e0d"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a0765b6ca52ece9e78ec99d88d2045e0d">BodyRadiusPerSize</a> = 0.575f</td></tr>
+<tr class="memdesc:a0765b6ca52ece9e78ec99d88d2045e0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Радиус тела юнита = Data.Stats.StatType.Size × это (мировые ед.).  <br /></td></tr>
+<tr class="separator:a0765b6ca52ece9e78ec99d88d2045e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdc7629991938dc25e6c3e1a80ce7c61" id="r_afdc7629991938dc25e6c3e1a80ce7c61"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#afdc7629991938dc25e6c3e1a80ce7c61">SeparationStrength</a> = 0.5f</td></tr>
+<tr class="memdesc:afdc7629991938dc25e6c3e1a80ce7c61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Доля перекрытия, устраняемая за тик (мягкая усадка за пару тиков; 1 = жёстко за тик).  <br /></td></tr>
+<tr class="separator:afdc7629991938dc25e6c3e1a80ce7c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b4a68e083288cecac0db64152e402b4" id="r_a5b4a68e083288cecac0db64152e402b4"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a5b4a68e083288cecac0db64152e402b4">SeparationIterations</a> = 1</td></tr>
+<tr class="memdesc:a5b4a68e083288cecac0db64152e402b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Проходов разделения за тик (больше = жёстче и дороже). Обычно 1.  <br /></td></tr>
+<tr class="separator:a5b4a68e083288cecac0db64152e402b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8fa6befa81419316ab4a70a4977d7c5" id="r_aa8fa6befa81419316ab4a70a4977d7c5"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#aa8fa6befa81419316ab4a70a4977d7c5">SeparationSameTeamScale</a> = 0.35f</td></tr>
+<tr class="memdesc:aa8fa6befa81419316ab4a70a4977d7c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель расталкивания для пары ОДНОЙ команды (0..1).  <br /></td></tr>
+<tr class="separator:aa8fa6befa81419316ab4a70a4977d7c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Константы тиковой симуляции. </p>
@@ -179,6 +191,31 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Частота пересчёта AI, Гц (реже сим ради перфа; полный AI — Фаза 3). </p>
+
+</div>
+</div>
+<a id="a0765b6ca52ece9e78ec99d88d2045e0d" name="a0765b6ca52ece9e78ec99d88d2045e0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0765b6ca52ece9e78ec99d88d2045e0d">&#9670;&#160;</a></span>BodyRadiusPerSize</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float Guildmaster.Core.Simulation.SimConstants.BodyRadiusPerSize = 0.575f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Радиус тела юнита = Data.Stats.StatType.Size × это (мировые ед.). </p>
+<p>Size 1.0 → 0.575 (диаметр 1.15). Подгоняется под видимую ширину спрайта (dev live: gm_sep_radius). </p>
 
 </div>
 </div>
@@ -254,6 +291,80 @@ Static Public Attributes</h2></td></tr>
 
 <p>Минимальный пол замаха авто-атаки, в сим-тиках. </p>
 <p>Гарантирует читаемый телеграф у ударов с маленьким кадром контакта (windup — геймплейная механика, не косметика; вики «14»). </p>
+
+</div>
+</div>
+<a id="a5b4a68e083288cecac0db64152e402b4" name="a5b4a68e083288cecac0db64152e402b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b4a68e083288cecac0db64152e402b4">&#9670;&#160;</a></span>SeparationIterations</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const int Guildmaster.Core.Simulation.SimConstants.SeparationIterations = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Проходов разделения за тик (больше = жёстче и дороже). Обычно 1. </p>
+
+</div>
+</div>
+<a id="aa8fa6befa81419316ab4a70a4977d7c5" name="aa8fa6befa81419316ab4a70a4977d7c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8fa6befa81419316ab4a70a4977d7c5">&#9670;&#160;</a></span>SeparationSameTeamScale</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float Guildmaster.Core.Simulation.SimConstants.SeparationSameTeamScale = 0.35f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Множитель расталкивания для пары ОДНОЙ команды (0..1). </p>
+<p>Свои расступаются мягче — задние просачиваются сквозь ряды к фронту; враги всегда на полную (боевая линия держится на стыке). </p>
+
+</div>
+</div>
+<a id="afdc7629991938dc25e6c3e1a80ce7c61" name="afdc7629991938dc25e6c3e1a80ce7c61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdc7629991938dc25e6c3e1a80ce7c61">&#9670;&#160;</a></span>SeparationStrength</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float Guildmaster.Core.Simulation.SimConstants.SeparationStrength = 0.5f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Доля перекрытия, устраняемая за тик (мягкая усадка за пару тиков; 1 = жёстко за тик). </p>
+<p>Балансная ручка «интенсивности» коллизии. </p>
 
 </div>
 </div>

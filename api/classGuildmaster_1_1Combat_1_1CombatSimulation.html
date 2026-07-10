@@ -182,6 +182,9 @@ Properties</h2></td></tr>
 <tr class="memitem:aae2638c3765606cc9ecb3140551ba9be" id="r_aae2638c3765606cc9ecb3140551ba9be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#aae2638c3765606cc9ecb3140551ba9be">Arena</a><code> [get]</code></td></tr>
 <tr class="memdesc:aae2638c3765606cc9ecb3140551ba9be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Границы боевого поля этого боя (для презентации/оверлея; клампинг — внутри систем).  <br /></td></tr>
 <tr class="separator:aae2638c3765606cc9ecb3140551ba9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd88bbaa5eead8fdf3ff182b1d4f44e1" id="r_acd88bbaa5eead8fdf3ff182b1d4f44e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1SeparationSystem.html">SeparationSystem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#acd88bbaa5eead8fdf3ff182b1d4f44e1">Separation</a><code> [get]</code></td></tr>
+<tr class="memdesc:acd88bbaa5eead8fdf3ff182b1d4f44e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Система разделения тел — доступ для dev-тюнинга параметров в рантайме (gm_sep_*).  <br /></td></tr>
+<tr class="separator:acd88bbaa5eead8fdf3ff182b1d4f44e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6a7d8e090ee8dcca46ee0aaf705e7d24" id="r_a6a7d8e090ee8dcca46ee0aaf705e7d24"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6a7d8e090ee8dcca46ee0aaf705e7d24">Units</a><code> [get]</code></td></tr>
 <tr class="memdesc:a6a7d8e090ee8dcca46ee0aaf705e7d24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все юниты боя (живые и мёртвые — мозг сам фильтрует по <code>IsDead</code>/команде).  <br /></td></tr>
 <tr class="separator:a6a7d8e090ee8dcca46ee0aaf705e7d24"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,7 +234,7 @@ Events</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Детерминированная тиковая симуляция боя. </p>
 <p>Реализует ICombatContext — единственная точка мутации состояния боя из систем и (Фаза 2) компонентов эффектов. </p>
-<p>Порядок систем за тик: ApplyCommands → Brain (AI) → Ability → Movement → SpatialHashRebuild → AutoAttack → Projectiles → Regen → Effects → DrainEvents → Death → CheckOutcome → currentTick++. </p>
+<p>Порядок систем за тик: ApplyCommands → Brain (AI) → Ability → Movement → Displacement → Separation → SpatialHashRebuild → AutoAttack → Projectiles → Regen → Effects → DrainEvents → Death → CheckOutcome → currentTick++. </p>
 <p>(вики «10» §5.1). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a00e571fb57a06af1059cb76a54a9cede" name="a00e571fb57a06af1059cb76a54a9cede"></a>
@@ -843,11 +846,6 @@ Here is the call graph for this function:</div>
 
 <p>Сбросить бой для перезапуска НА МЕСТЕ (dev-R): чистим всех юнитов/снаряды/очереди и возвращаем исход в BattleOutcome.Ongoing. </p>
 <p>Сцена/камера НЕ трогаются — их не перезагружаем. Тик-цикл (CombatLoopService) простаивает, пока не-Ongoing, и сам возобновится после сброса. Дальше вызывающий заново расставляет бой (тот же сетап) через EnqueueUnitSpawn. </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a466fdfbb0c077b3fc94f81db8b810867_icgraph.svg" width="518" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1072,6 +1070,30 @@ Here is the caller graph for this function:</div>
 <p>Генератор случайных чисел боя (детерминированный). </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#aed3ab1d7a324483db80b0b969fe03287">Guildmaster.Combat.ICombatContext</a>.</p>
+
+</div>
+</div>
+<a id="acd88bbaa5eead8fdf3ff182b1d4f44e1" name="acd88bbaa5eead8fdf3ff182b1d4f44e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd88bbaa5eead8fdf3ff182b1d4f44e1">&#9670;&#160;</a></span>Separation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Combat_1_1SeparationSystem.html">SeparationSystem</a> Guildmaster.Combat.CombatSimulation.Separation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Система разделения тел — доступ для dev-тюнинга параметров в рантайме (gm_sep_*). </p>
 
 </div>
 </div>

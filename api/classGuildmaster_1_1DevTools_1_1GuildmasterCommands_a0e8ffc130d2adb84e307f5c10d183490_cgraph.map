@@ -1,7 +1,0 @@
-<map id="Guildmaster.DevTools.GuildmasterCommands.RestartLastBattle" name="Guildmaster.DevTools.GuildmasterCommands.RestartLastBattle">
-<area shape="rect" id="Node000001" title="R: перезапустить ПОСЛЕДНИЙ бой НА МЕСТЕ — сброс сима (юниты/снаряды/исход) + повтор последнего сетапа..." alt="" coords="5,37,253,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a466fdfbb0c077b3fc94f81db8b810867" title="Сбросить бой для перезапуска НА МЕСТЕ (dev&#45;R): чистим всех юнитов/снаряды/очереди и возвращаем исход ..." alt="" coords="303,5,514,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,40,289,36,290,42,254,46"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a4d84bafc6102b502a158474b5eed00ca" title="Сбросить счётчик Id (перезапуск боя на месте, dev&#45;R)." alt="" coords="301,69,516,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,69,288,73,288,78,253,74"/>
-</map>

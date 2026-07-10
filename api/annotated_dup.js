@@ -65,6 +65,7 @@ var annotated_dup =
         [ "RegenSystem", "classGuildmaster_1_1Combat_1_1RegenSystem.html", "classGuildmaster_1_1Combat_1_1RegenSystem" ],
         [ "RuntimeUnit", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html", "classGuildmaster_1_1Combat_1_1RuntimeUnit" ],
         [ "RuntimeUnitFactory", "classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html", "classGuildmaster_1_1Combat_1_1RuntimeUnitFactory" ],
+        [ "SeparationSystem", "classGuildmaster_1_1Combat_1_1SeparationSystem.html", "classGuildmaster_1_1Combat_1_1SeparationSystem" ],
         [ "SpatialHash", "classGuildmaster_1_1Combat_1_1SpatialHash.html", "classGuildmaster_1_1Combat_1_1SpatialHash" ],
         [ "Stats", "classGuildmaster_1_1Combat_1_1Stats.html", "classGuildmaster_1_1Combat_1_1Stats" ]
       ] ],
