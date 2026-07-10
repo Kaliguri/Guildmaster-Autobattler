@@ -4,7 +4,7 @@ on:
   push:
     branches: [dev, master]
     paths:
-      - "guildmaster-wiki/**"
+      - "docs/wiki/**"
       - "Assets/_Project/Scripts/**"
       - "quartz-config/**"
       - "doxygen/**"
@@ -38,7 +38,7 @@ jobs:
           cp quartz-config/quartz.config.ts quartz-build/quartz.config.ts
           cp quartz-config/quartz.layout.ts quartz-build/quartz.layout.ts
           rm -rf quartz-build/content
-          cp -r guildmaster-wiki quartz-build/content
+          cp -r docs/wiki quartz-build/content
 
       - name: Cache Quartz node_modules
         uses: actions/cache@v4

@@ -155,7 +155,7 @@ int w = tex.width; int h = tex.height;
 
 ---
 
-## Новые Markdown-файлы в guildmaster-wiki
+## Новые Markdown-файлы в docs/wiki
 
 Файлы не должны начинаться с пустой строки, за которой следует `---`. Quartz интерпретирует такой `---` как начало YAML frontmatter и падает при парсинге.
 
