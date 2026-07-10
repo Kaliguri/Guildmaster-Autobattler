@@ -43,9 +43,9 @@ namespace Guildmaster.Core.Simulation
 
         /// <summary>
         /// Радиус тела юнита = <see cref="Data.Stats.StatType.Size"/> × это (мировые ед.).
-        /// Size 1.0 → 0.25 (диаметр 0.5). Совпадает с кругом коллизии в гизмо UnitView.
+        /// Size 1.0 → 0.5 (диаметр 1.0). Подгоняется под видимую ширину спрайта (dev live: gm_sep_radius).
         /// </summary>
-        public const float BodyRadiusPerSize = 0.25f;
+        public const float BodyRadiusPerSize = 0.5f;
 
         /// <summary>
         /// Доля перекрытия, устраняемая за тик (мягкая усадка за пару тиков; 1 = жёстко за тик).

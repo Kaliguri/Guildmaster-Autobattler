@@ -14,10 +14,11 @@ namespace Guildmaster.Combat
     /// <para>
     /// Детерминировано: каждая пара обрабатывается один раз (по <see cref="RuntimeUnit.Id"/>), порядок
     /// итерации фиксирован, без RNG; направление в вырожденном случае (позиции совпали) — по Id.
-    /// Юниты в полёте (§9.9, <see cref="RuntimeUnit.DisplacedTicksRemaining"/>) — неподвижные «толкатели»:
-    /// занимают место и толкают других, но сами не двигаются (импакт полёта — Фаза 2). Broad-phase через
-    /// <see cref="SpatialHash"/>; итог клампится в границы арены. Место в тике: ПОСЛЕ движения/смещения,
-    /// ДО ребилда хэша.
+    /// Юниты в полёте (§9.9, <see cref="RuntimeUnit.DisplacedTicksRemaining"/>) ИСКЛЮЧЕНЫ из сепарации
+    /// целиком — ими владеет <c>DisplacementSystem</c>, а удар летящего тела по цели/толпе делает логика
+    /// броска (cannonball, урон + цепное отбрасывание), НЕ расталкивание (иначе оно спихивало бы цель с
+    /// линии полёта до нанесения урона). Broad-phase через <see cref="SpatialHash"/>; итог клампится в
+    /// границы арены. Место в тике: ПОСЛЕ движения/смещения, ДО ребилда хэша.
     /// </para>
     /// </summary>
     public sealed class SeparationSystem
@@ -42,7 +43,7 @@ namespace Guildmaster.Combat
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit u = units[i];
-                if (u.IsDead) continue;
+                if (u.IsDead || u.DisplacedTicksRemaining > 0) continue;
                 float r = BodyRadius(u);
                 if (r > maxRadius) maxRadius = r;
             }
@@ -53,7 +54,7 @@ namespace Guildmaster.Combat
                 for (int i = 0; i < units.Count; i++)
                 {
                     RuntimeUnit a = units[i];
-                    if (a.IsDead) continue;
+                    if (a.IsDead || a.DisplacedTicksRemaining > 0) continue; // в полёте — вне сепарации (владеет DisplacementSystem)
 
                     float ra = BodyRadius(a);
                     hash.QueryRadius(a.Position, ra + maxRadius, _neighbors);
@@ -62,37 +63,20 @@ namespace Guildmaster.Combat
                     {
                         RuntimeUnit b = _neighbors[n];
 
-                        // Каждую неупорядоченную пару обрабатываем ровно один раз (b.Id > a.Id); себя пропускаем.
-                        if (b.Id <= a.Id || b.IsDead) continue;
+                        // Пару обрабатываем ровно один раз (b.Id > a.Id); себя, мёртвых и летящих пропускаем.
+                        if (b.Id <= a.Id || b.IsDead || b.DisplacedTicksRemaining > 0) continue;
 
-                        float rb = BodyRadius(b);
-                        float minDist = ra + rb;
-
+                        float minDist = ra + BodyRadius(b);
                         Vector2 delta = a.Position - b.Position;
                         float distSq = delta.sqrMagnitude;
                         if (distSq >= minDist * minDist) continue; // не пересекаются
 
-                        bool aMovable = a.DisplacedTicksRemaining <= 0;
-                        bool bMovable = b.DisplacedTicksRemaining <= 0;
-                        if (!aMovable && !bMovable) continue; // оба в полёте — не двигаем ни одного
-
                         float dist = Mathf.Sqrt(distSq);
                         Vector2 dir = dist > 1e-4f ? delta / dist : DegenerateDir(a, b);
-                        Vector2 push = dir * ((minDist - dist) * Strength);
+                        Vector2 halfPush = dir * ((minDist - dist) * Strength * 0.5f); // по половине каждому
 
-                        if (aMovable && bMovable)
-                        {
-                            a.Position = bounds.Clamp(a.Position + push * 0.5f);
-                            b.Position = bounds.Clamp(b.Position - push * 0.5f);
-                        }
-                        else if (aMovable)
-                        {
-                            a.Position = bounds.Clamp(a.Position + push); // неподвижный b забирает всё проникновение
-                        }
-                        else
-                        {
-                            b.Position = bounds.Clamp(b.Position - push); // неподвижен a
-                        }
+                        a.Position = bounds.Clamp(a.Position + halfPush);
+                        b.Position = bounds.Clamp(b.Position - halfPush);
                     }
                 }
             }

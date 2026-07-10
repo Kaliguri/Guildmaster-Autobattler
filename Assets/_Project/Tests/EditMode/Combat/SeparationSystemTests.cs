@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Core.Arena;
+using Guildmaster.Core.Simulation;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -13,7 +14,9 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class SeparationSystemTests
     {
-        private const float MinDist = 0.5f; // r(0.25) + r(0.25) при Size 1
+        // Минимальная дистанция между центрами = сумма радиусов двух Size-1 тел; тянем из SimConstants,
+        // чтобы тест не разъезжался при смене дефолтного радиуса.
+        private static readonly float MinDist = 2f * SimConstants.BodyRadiusPerSize;
 
         private static RuntimeUnit MakeUnit(int id, float x, float y, int displaced = 0) =>
             new RuntimeUnit
@@ -119,20 +122,23 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
-        public void DisplacedUnit_PushesButIsNotPushed()
+        public void DisplacedUnit_ExcludedFromSeparation()
         {
-            var flying = MakeUnit(0, 0f, 0f, displaced: 5); // в полёте — неподвижный толкатель
-            var mover  = MakeUnit(1, 0.2f, 0f);
-            var units = new List<RuntimeUnit> { flying, mover };
+            // Летящий (в полёте) исключён из сепарации целиком: им владеет DisplacementSystem, а удар
+            // телом по толпе — забота логики броска, не расталкивания. Значит перекрытие с летящим НЕ
+            // расталкивается — ни он, ни сосед не двигаются.
+            var flying = MakeUnit(0, 0f, 0f, displaced: 5);
+            var neighbor = MakeUnit(1, 0.2f, 0f); // перекрывает летящего
+            var units = new List<RuntimeUnit> { flying, neighbor };
             var sys = new SeparationSystem();
             var hash = new SpatialHash(2f);
 
-            Vector2 flyingStart = flying.Position;
             Step(sys, units, hash, ArenaBounds.Unbounded, times: 5);
 
-            Assert.AreEqual(flyingStart.x, flying.Position.x, 1e-6f, "летящий не сдвигается");
-            Assert.AreEqual(flyingStart.y, flying.Position.y, 1e-6f);
-            Assert.Greater(mover.Position.x, 0.2f, "подвижный забирает всё расталкивание");
+            Assert.AreEqual(0f,   flying.Position.x,   1e-6f, "летящий не двигается");
+            Assert.AreEqual(0f,   flying.Position.y,   1e-6f);
+            Assert.AreEqual(0.2f, neighbor.Position.x, 1e-6f, "сосед летящего не расталкивается (пара пропущена)");
+            Assert.AreEqual(0f,   neighbor.Position.y, 1e-6f);
         }
     }
 }
