@@ -65,6 +65,11 @@ namespace Guildmaster.Combat
                 if (wantAllies) { if (!isAlly || o == self) continue; }
                 else            { if (isAlly) continue; }
 
+                // Скрытность (§9.6, §10.5): скрытый враг невидим для вражеского таргетинга — его нельзя
+                // выбрать целью (враги не бегут к нему и не бьют), пока стелс не снят первой авто-атакой.
+                // Союзный таргетинг (хил) стелс не блокирует — только выбор цели противником.
+                if (!wantAllies && (o.EffectTagMask & EffectTag.Stealth) != 0) continue;
+
                 float distSq = (o.Position - self.Position).sqrMagnitude;
                 float score  = Score(o, mode, distSq);
 
