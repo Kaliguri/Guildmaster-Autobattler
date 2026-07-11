@@ -103,6 +103,12 @@ namespace Guildmaster.Presentation
             if (_sprite != null) _sprite.color = color;
         }
 
+        /// <summary>Цвет HP-бара по принадлежности к смотрящему (из <c>CombatColorPalette</c>).</summary>
+        public void SetHealthColor(Color color)
+        {
+            if (_healthBar != null) _healthBar.SetMainColor(color);
+        }
+
         /// <summary>Подпись «что за персонаж» над HP-баром. Задаёт лишь текст — вид настраивается на TMP в префабе.</summary>
         public void SetLabel(string text)
         {

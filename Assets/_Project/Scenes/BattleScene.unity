@@ -1913,6 +1913,8 @@ MonoBehaviour:
   _visualOverrides:
   - Relic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
     Visual: {fileID: 11400000, guid: 3911e464d296a71469eea3e103a3a9dd, type: 2}
+  _colorPalette: {fileID: 11400000, guid: 422d364d4b20d314e91116d7591f294b, type: 2}
+  _localViewerTeam: 0
 --- !u!4 &2012697186
 Transform:
   m_ObjectHideFlags: 0
