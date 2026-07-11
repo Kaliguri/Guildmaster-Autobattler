@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Editor.ContentLocalization.RequiredSuffixes" name="Guildmaster.Data.Editor.ContentLocalization.RequiredSuffixes">
+<area shape="rect" id="Node000001" title="Обязательные суффиксы ключей для типа (пусто = контент не локализуется)." alt="" coords="5,5,219,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#ab39605eab85b1334b6640bd8245c99a1" title="Домен типа или исключение (отсутствие маппинга = ошибка конфигурации, не тихий дефолт)." alt="" coords="267,13,481,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,30,253,30,253,35,219,35"/>
+</map>

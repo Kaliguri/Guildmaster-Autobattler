@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.ContentDomains.TryGetDomain" name="Guildmaster.Data.Definitions.ContentDomains.TryGetDomain">
+<area shape="rect" id="Node000001" title="Найти домен для типа (точное совпадение или ближайший зарегистрированный предок)." alt="" coords="268,5,496,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html#a4701ffe250559c2e99f32082bc6e2f12" title="Присвоить id из движка (рантайм&#45;создание def&#39;ов через CreateRuntime, editor&#45;миграции)." alt="" coords="5,5,220,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="255,28,220,28,220,23,255,23"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Data.Editor.ContentDatabaseSync.Sync" name="Guildmaster.Data.Editor.ContentDatabaseSync.Sync">
+<area shape="rect" id="Node000001" title="Найти/создать БД, заполнить всеми контент&#45;ассетами (сортировка по id), сохранить." alt="" coords="5,37,207,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility.html#a760ae23288991c3a17d526a9309ff1b9" title="Все ContentDefinition&#45;ассеты проекта." alt="" coords="291,5,473,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="206,43,277,35,278,40,207,48"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a7303fc4567b36f6b619add6c08137180" title="Существующая БД (первая найденная) или новая в DatabasePath." alt="" coords="255,69,509,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,66,241,70,240,76,206,72"/>
+</map>

@@ -1,7 +1,7 @@
 <map id="Guildmaster.DevTools.GuildmasterCommands.SpawnDefender" name="Guildmaster.DevTools.GuildmasterCommands.SpawnDefender">
 <area shape="rect" id="Node000001" title="Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10...." alt="" coords="5,37,253,77"/>
 <area shape="poly" id="edge4_Node000001_Node000001" title=" " alt="" coords="77,38,74,28,82,18,101,13,129,11,162,13,180,21,178,26,161,19,129,16,102,18,85,23,79,29,82,36"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a261369f433994727bbd075e6520ac237" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="305,5,520,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#abb754b7167c368882ad44db99cd688e4" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="305,5,520,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,41,291,36,292,42,254,46"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6ef3762989e4fb8bf6e6f2229baa2b5c" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,69,524,109"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="254,69,288,73,288,78,253,74"/>

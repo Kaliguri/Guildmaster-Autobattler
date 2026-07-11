@@ -1,0 +1,9 @@
+<map id="Guildmaster.Data.Editor.ContentLocalization.CreateMissingKeys" name="Guildmaster.Data.Editor.ContentLocalization.CreateMissingKeys">
+<area shape="rect" id="Node000001" title="Создать недостающие ключи одного ассета. Возвращает число созданных." alt="" coords="5,41,284,81"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#af4bf10403d3bf2f9a972286234fea311" title=" " alt="" coords="339,5,538,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="284,42,325,36,326,42,285,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#a55a3f23035c7e83a411cd58e4169ec6a" title="Обязательные суффиксы ключей для типа (пусто = контент не локализуется)." alt="" coords="332,70,545,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="285,76,319,80,318,85,284,81"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#ab39605eab85b1334b6640bd8245c99a1" title="Домен типа или исключение (отсутствие маппинга = ошибка конфигурации, не тихий дефолт)." alt="" coords="593,77,808,117"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="545,95,580,95,580,100,545,100"/>
+</map>

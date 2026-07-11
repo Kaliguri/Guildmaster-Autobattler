@@ -1,5 +1,6 @@
 var namespaceGuildmaster_1_1Presentation =
 [
+    [ "Audio", "namespaceGuildmaster_1_1Presentation_1_1Audio.html", "namespaceGuildmaster_1_1Presentation_1_1Audio" ],
     [ "BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent" ],
     [ "CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", "classGuildmaster_1_1Presentation_1_1CameraModeController" ],
     [ "CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash" ],
@@ -8,8 +9,6 @@ var namespaceGuildmaster_1_1Presentation =
     [ "CombatPresenter", "classGuildmaster_1_1Presentation_1_1CombatPresenter.html", "classGuildmaster_1_1Presentation_1_1CombatPresenter" ],
     [ "CombatStatusOverlay", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay" ],
     [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],
-    [ "DamageNumber", "classGuildmaster_1_1Presentation_1_1DamageNumber.html", "classGuildmaster_1_1Presentation_1_1DamageNumber" ],
-    [ "DamageNumberSpawner", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner.html", "classGuildmaster_1_1Presentation_1_1DamageNumberSpawner" ],
     [ "FloatingText", "classGuildmaster_1_1Presentation_1_1FloatingText.html", "classGuildmaster_1_1Presentation_1_1FloatingText" ],
     [ "HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", "classGuildmaster_1_1Presentation_1_1HealthBarView" ],
     [ "ManaBarView", "classGuildmaster_1_1Presentation_1_1ManaBarView.html", "classGuildmaster_1_1Presentation_1_1ManaBarView" ],

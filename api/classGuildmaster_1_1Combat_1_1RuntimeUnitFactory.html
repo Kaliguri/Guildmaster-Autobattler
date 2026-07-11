@@ -113,13 +113,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4d84bafc6102b502a158474b5eed00ca" id="r_a4d84bafc6102b502a158474b5eed00ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a4d84bafc6102b502a158474b5eed00ca">ResetIds</a> ()</td></tr>
 <tr class="memdesc:a4d84bafc6102b502a158474b5eed00ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сбросить счётчик Id (перезапуск боя на месте, dev-R).  <br /></td></tr>
 <tr class="separator:a4d84bafc6102b502a158474b5eed00ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a261369f433994727bbd075e6520ac237" id="r_a261369f433994727bbd075e6520ac237"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a261369f433994727bbd075e6520ac237">Create</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> relic, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a> vessel, int team, Vector2 spawnPosition)</td></tr>
-<tr class="memdesc:a261369f433994727bbd075e6520ac237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать RuntimeUnit из SO-данных.  <br /></td></tr>
-<tr class="separator:a261369f433994727bbd075e6520ac237"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb754b7167c368882ad44db99cd688e4" id="r_abb754b7167c368882ad44db99cd688e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#abb754b7167c368882ad44db99cd688e4">Create</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> data, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a> vessel, int team, Vector2 spawnPosition)</td></tr>
+<tr class="memdesc:abb754b7167c368882ad44db99cd688e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Создать RuntimeUnit из SO-данных.  <br /></td></tr>
+<tr class="separator:abb754b7167c368882ad44db99cd688e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Единственная точка сборки RuntimeUnit из SO-данных. </p>
-<p>Шаги сборки (вики «10» §5.2, «6» §3): дефолты из StatsConfig → моды реликвии → перки сосуда → пассивки (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#ac490b773dc90f5d810ac76b9c35633cd">RelicData.GrantedEffects</a> с постоянной длительностью) → активки (AbilityRuntime) → ресурс (StatType.StartResource) → <code>CurrentHP = Get(MaxHP)</code>.</p>
+<p>Шаги сборки (вики «10» §5.2, «6» §3): дефолты из StatsConfig → моды реликвии → перки сосуда → пассивки (RelicData.GrantedEffects с постоянной длительностью) → активки (AbilityRuntime) → ресурс (StatType.StartResource) → <code>CurrentHP = Get(MaxHP)</code>.</p>
 <p>Пассивки применяются <b>до</b> инициализации <code>CurrentHP</code>: пассив на +MaxHP должен поднять и стартовое здоровье. Поэтому фабрике нужны EffectSystem и боевой контекст — наложение пассивки зовёт <code>OnApply</code> компонентов (вики «12» §6, шаг 9). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9b33e6195bdd2345c32c41581e0b2fd1" name="a9b33e6195bdd2345c32c41581e0b2fd1"></a>
@@ -165,8 +165,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a261369f433994727bbd075e6520ac237" name="a261369f433994727bbd075e6520ac237"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a261369f433994727bbd075e6520ac237">&#9670;&#160;</a></span>Create()</h2>
+<a id="abb754b7167c368882ad44db99cd688e4" name="abb754b7167c368882ad44db99cd688e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb754b7167c368882ad44db99cd688e4">&#9670;&#160;</a></span>Create()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,8 +177,8 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> Guildmaster.Combat.RuntimeUnitFactory.Create </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>&#160;</td>
-          <td class="paramname"><em>relic</em>, </td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a>&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -212,9 +212,10 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Создать RuntimeUnit из SO-данных. </p>
+<p>Принимает базовый UnitData — реликвию или врага; сборке всё равно, кто перед ней (вики «13» §3.1).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">relic</td><td>SO «Чемпион». null — юнит получит только дефолты StatsConfig.</td></tr>
+    <tr><td class="paramname">data</td><td>Боевой кит («Чемпион»/враг). null — юнит получит только дефолты StatsConfig.</td></tr>
     <tr><td class="paramname">vessel</td><td>SO «Пилот». null — перки не применяются.</td></tr>
     <tr><td class="paramname">team</td><td>Команда: 0 = союзники, 1 = враги.</td></tr>
     <tr><td class="paramname">spawnPosition</td><td>Начальная позиция на поле боя.</td></tr>
@@ -224,12 +225,12 @@ Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a261369f433994727bbd075e6520ac237_cgraph.svg" width="494" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_abb754b7167c368882ad44db99cd688e4_cgraph.svg" width="494" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_a261369f433994727bbd075e6520ac237_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory_abb754b7167c368882ad44db99cd688e4_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

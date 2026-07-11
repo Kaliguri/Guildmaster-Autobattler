@@ -1,0 +1,15 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="67,57,165,82"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html" title="Связывает боевые действия ввода с симуляцией на время одного боя (вики «16» §4)." alt="" coords="275,5,499,45"/>
+<area shape="poly" id="edge57_Node000000_Node000001" title=" " alt="" coords="179,57,274,41,275,46,180,62"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Input_1_1InputService.html" title="Реализация IInputService поверх Unity Input System (вики «16» §3)." alt="" coords="277,75,496,115"/>
+<area shape="poly" id="edge58_Node000000_Node000003" title=" " alt="" coords="179,73,277,82,277,87,179,78"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html" title="Реализация ILocalizationService поверх Unity String Tables (вики «13» §5)." alt="" coords="283,149,490,189"/>
+<area shape="poly" id="edge59_Node000000_Node000005" title=" " alt="" coords="179,77,228,92,252,108,276,124,327,147,325,152,273,129,249,112,226,97,178,82"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html" title="Единая точка ввода игрока (вики «16» §2)." alt="" coords="9,107,223,147"/>
+<area shape="poly" id="edge60_Node000004_Node000003" title=" " alt="" coords="236,110,277,105,278,110,237,115"/>
+<area shape="rect" id="Node000006" href="$interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html" title="Единая точка локализации (вики «13» §5)." alt="" coords="5,171,227,211"/>
+<area shape="poly" id="edge61_Node000006_Node000005" title=" " alt="" coords="240,178,283,175,283,180,241,184"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="73,7,159,33"/>
+<area shape="poly" id="edge62_Node000002_Node000001" title=" " alt="" coords="173,18,274,20,274,26,173,24"/>
+</map>

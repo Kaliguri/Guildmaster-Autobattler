@@ -1,0 +1,7 @@
+<map id="Guildmaster.Data.Definitions.ContentDefinition.SetId" name="Guildmaster.Data.Definitions.ContentDefinition.SetId">
+<area shape="rect" id="Node000001" title="Присвоить id из движка (рантайм&#45;создание def&#39;ов через CreateRuntime, editor&#45;миграции)." alt="" coords="5,37,220,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a5b4278ee1315bb56b8c5ccb07f38cd12" title="Собрать id domain.lower_snake из имени ассета: (&quot;IceChainsStun&quot;) → effect.ice_chains_stun." alt="" coords="275,5,489,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,42,261,37,261,42,220,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#aedef3a39f7ef0281d8b5c0fa1facc356" title="Найти домен для типа (точное совпадение или ближайший зарегистрированный предок)." alt="" coords="268,69,496,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="220,67,255,72,254,77,220,73"/>
+</map>

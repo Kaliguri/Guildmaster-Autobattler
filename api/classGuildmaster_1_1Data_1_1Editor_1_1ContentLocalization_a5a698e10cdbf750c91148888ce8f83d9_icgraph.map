@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Editor.ContentLocalization.CreateMissingKeys" name="Guildmaster.Data.Editor.ContentLocalization.CreateMissingKeys">
+<area shape="rect" id="Node000001" title="Создать недостающие ключи одного ассета. Возвращает число созданных." alt="" coords="301,13,580,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#a01b49ed448fc51920f564b44d9b7f071" title="Создать недостающие ключи для всех ассетов домена данного типа. Возвращает число созданных." alt="" coords="5,5,253,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,35,254,35,254,30,288,30"/>
+</map>

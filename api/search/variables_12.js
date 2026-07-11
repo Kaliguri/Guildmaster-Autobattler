@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['value_0',['Value',['../structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html#abb8bfeb1198366bad3c665cb3bb00039',1,'Guildmaster::Data::Stats::StatModifier']]],
-  ['velocity_1',['Velocity',['../classGuildmaster_1_1Combat_1_1Projectile.html#a169a9c9a750f15d3c2d78d276bfa9ae2',1,'Guildmaster::Combat::Projectile']]],
-  ['vessel_2',['Vessel',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af4624ae11d8aa89f5c844b732ea4443a',1,'Guildmaster::Combat::RuntimeUnit']]]
+  ['unit_0',['unit',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a5396847e5a6b2b2f9c1e60dccba9c0f1',1,'Guildmaster.Combat.RuntimeUnit.Unit'],['../structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html#a2a56e8a6aaa4aeab5cbc6f17c0683ad8',1,'Guildmaster.Presentation.UnitSpawnedEvent.Unit'],['../structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html#a664415595dd3ab33341c67bd63548d4c',1,'Guildmaster.Presentation.UnitDiedEvent.Unit']]]
 ];

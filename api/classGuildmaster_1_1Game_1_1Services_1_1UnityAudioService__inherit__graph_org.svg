@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="interfaceGuildmaster_1_1Game_1_1Services_1_1IAudioService.html" target="_top" xlink:title="Фасад звуковой подсистемы.">
+<g id="a_Node000002"><a xlink:href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html" target="_top" xlink:title="Фасад звуковой подсистемы.">
 <polygon fill="white" stroke="transparent" points="129.5,-205 19.5,-205 19.5,-126 129.5,-126 129.5,-205"/>
 <text text-anchor="start" x="41" y="-192.5" font-family="Helvetica,sans-Serif" font-size="10.00">IAudioService</text>
 <text text-anchor="start" x="72.5" y="-177.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>

@@ -1,0 +1,13 @@
+<map id="Guildmaster.Data.Editor.ContentLocalization.CreateMissingKeysForDomain" name="Guildmaster.Data.Editor.ContentLocalization.CreateMissingKeysForDomain">
+<area shape="rect" id="Node000001" title="Создать недостающие ключи для всех ассетов домена данного типа. Возвращает число созданных." alt="" coords="5,66,253,121"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#a5a698e10cdbf750c91148888ce8f83d9" title="Создать недостающие ключи одного ассета. Возвращает число созданных." alt="" coords="301,41,580,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,78,287,74,288,80,254,83"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility.html#a760ae23288991c3a17d526a9309ff1b9" title="Все ContentDefinition&#45;ассеты проекта." alt="" coords="350,105,531,145"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="254,103,336,112,336,117,253,109"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#af4bf10403d3bf2f9a972286234fea311" title=" " alt="" coords="635,5,834,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="580,42,621,36,622,42,581,47"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#a55a3f23035c7e83a411cd58e4169ec6a" title="Обязательные суффиксы ключей для типа (пусто = контент не локализуется)." alt="" coords="628,70,841,125"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="581,76,615,80,614,85,580,81"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#ab39605eab85b1334b6640bd8245c99a1" title="Домен типа или исключение (отсутствие маппинга = ошибка конфигурации, не тихий дефолт)." alt="" coords="889,77,1104,117"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="841,95,876,95,876,100,841,100"/>
+</map>

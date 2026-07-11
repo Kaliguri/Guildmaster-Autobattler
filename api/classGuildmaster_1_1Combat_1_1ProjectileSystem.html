@@ -109,9 +109,9 @@ Collaboration diagram for Guildmaster.Combat.ProjectileSystem:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae628045b6024ef74e8604ca84d10c8c6" id="r_ae628045b6024ef74e8604ca84d10c8c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1ProjectileSystem.html#ae628045b6024ef74e8604ca84d10c8c6">Tick</a> (List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html">Projectile</a> &gt; projectiles, List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> ctx, float dt)</td></tr>
-<tr class="memdesc:ae628045b6024ef74e8604ca84d10c8c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновить все живые снаряды за один тик.  <br /></td></tr>
-<tr class="separator:ae628045b6024ef74e8604ca84d10c8c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f646d43fc951e99e8880d15902e7b58" id="r_a4f646d43fc951e99e8880d15902e7b58"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1ProjectileSystem.html#a4f646d43fc951e99e8880d15902e7b58">Tick</a> (List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html">Projectile</a> &gt; projectiles, List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> ctx, float dt, in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a> despawnZone)</td></tr>
+<tr class="memdesc:a4f646d43fc951e99e8880d15902e7b58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновить все живые снаряды за один тик.  <br /></td></tr>
+<tr class="separator:a4f646d43fc951e99e8880d15902e7b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -173,8 +173,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ae628045b6024ef74e8604ca84d10c8c6" name="ae628045b6024ef74e8604ca84d10c8c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae628045b6024ef74e8604ca84d10c8c6">&#9670;&#160;</a></span>Tick()</h2>
+<a id="a4f646d43fc951e99e8880d15902e7b58" name="a4f646d43fc951e99e8880d15902e7b58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f646d43fc951e99e8880d15902e7b58">&#9670;&#160;</a></span>Tick()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -204,7 +204,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>dt</em>&#160;</td>
+          <td class="paramname"><em>dt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a>&#160;</td>
+          <td class="paramname"><em>despawnZone</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -220,6 +226,7 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Обновить все живые снаряды за один тик. </p>
+<p><em>despawnZone</em>  — зона деспавна: видимая область камеры (CameraZone) + <code>ProjectileDespawnMargin</code>, чтобы снаряд гас ЗА кадром игрока. </p>
 
 </div>
 </div>

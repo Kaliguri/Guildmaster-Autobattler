@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.SimTuningConfig.ToSnapshot" name="Guildmaster.Data.Definitions.SimTuningConfig.ToSnapshot">
+<area shape="rect" id="Node000001" title="Снять иммутабельный снапшот для бейка на старте боя." alt="" coords="301,5,516,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a54a2f9a23293d456f41aa104ba5a6d0b" title="Пересобрать SimTuning из SO и применить к идущему бою (QC&#45;тюнинг без рекомпиляции)." alt="" coords="5,5,253,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="288,28,254,28,254,23,288,23"/>
+</map>

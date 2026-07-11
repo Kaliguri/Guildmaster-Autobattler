@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Editor.ContentIdUtility.GenerateUniqueId" name="Guildmaster.Data.Editor.ContentIdUtility.GenerateUniqueId">
+<area shape="rect" id="Node000001" title="Уникальный id для def &#160;из имени ассета: domain.name, при занятости — суффикс _2, _3… (плейсхолдер до ..." alt="" coords="5,5,251,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a5b4278ee1315bb56b8c5ccb07f38cd12" title="Собрать id domain.lower_snake из имени ассета: (&quot;IceChainsStun&quot;) → effect.ice_chains_stun." alt="" coords="299,5,513,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,23,285,23,285,28,251,28"/>
+</map>

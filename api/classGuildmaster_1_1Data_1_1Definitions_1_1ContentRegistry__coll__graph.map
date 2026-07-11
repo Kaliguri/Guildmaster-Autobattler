@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.ContentRegistry" name="Guildmaster.Data.Definitions.ContentRegistry">
+<area shape="rect" id="Node000001" title="Рантайм&#45;индекс контента: словарь id → ContentDefinition, построенный один раз из ContentDatabase при ..." alt="" coords="5,159,212,299"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html" title="Рантайм&#45;доступ к контенту по строковому id (вики «13» §3.6)." alt="" coords="43,5,174,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,125,111,158,106,158,106,125"/>
+</map>

@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['onhiteffects_0',['onhiteffects',['../classGuildmaster_1_1Combat_1_1Projectile.html#a7585f2a8bfc7e8a54049c5c0732cd5e0',1,'Guildmaster.Combat.Projectile.OnHitEffects'],['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a9715ba20be0ad6abfc949a165d1ba853',1,'Guildmaster.Combat.ProjectileSpawn.OnHitEffects']]],
-  ['op_1',['Op',['../structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html#a080a34276e29e59b27a7e75d1d408b49',1,'Guildmaster::Data::Stats::StatModifier']]],
-  ['origin_2',['Origin',['../structGuildmaster_1_1Combat_1_1AreaHit.html#aae918acfce25f6b8f2b994938d2b2481',1,'Guildmaster::Combat::AreaHit']]],
-  ['outcome_3',['Outcome',['../structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html#a62a095f0d9e11ea6588c36780385b626',1,'Guildmaster::Presentation::BattleEndedEvent']]]
+  ['namesuffix_0',['NameSuffix',['../classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#afa593e78a4dab3f6fa93787d9c7c50e1',1,'Guildmaster::Data::Editor::ContentLocalization']]],
+  ['negated_1',['Negated',['../classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#ab647c407a4619a42587251888fc7f167',1,'Guildmaster::Combat::Effects::PreDamageResult']]]
 ];

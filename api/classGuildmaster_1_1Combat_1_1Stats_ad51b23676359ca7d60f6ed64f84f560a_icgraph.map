@@ -1,6 +1,6 @@
 <map id="Guildmaster.Combat.Stats.Get" name="Guildmaster.Combat.Stats.Get">
 <area shape="rect" id="Node000001" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="655,630,875,655"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a261369f433994727bbd075e6520ac237" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="347,293,561,333"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#abb754b7167c368882ad44db99cd688e4" title="Создать RuntimeUnit из SO&#45;данных." alt="" coords="347,293,561,333"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="755,617,738,560,709,486,689,448,665,411,637,377,605,347,584,335,560,326,562,321,586,330,608,343,641,373,670,408,694,445,714,484,743,558,760,616"/>
 <area shape="rect" id="Node000010" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a3edf9fdf873a5ebddd75420669bdb8c2" title="Исцелить юнита. Не выходит за MaxHP." alt="" coords="349,357,559,397"/>
 <area shape="poly" id="edge16_Node000001_Node000010" title=" " alt="" coords="751,618,731,572,700,516,658,459,633,433,605,412,583,399,558,391,560,386,585,395,608,407,636,429,662,455,704,513,736,570,756,616"/>
@@ -12,7 +12,7 @@
 <area shape="poly" id="edge19_Node000001_Node000013" title=" " alt="" coords="641,631,607,627,608,622,642,626"/>
 <area shape="rect" id="Node000014" href="$classGuildmaster_1_1Combat_1_1RegenSystem.html#ac1d56f58c6a7d2df6944d27069384cb2" title="Применить регенерацию ко всем живым юнитам за один тик." alt="" coords="353,659,555,699"/>
 <area shape="poly" id="edge20_Node000001_Node000014" title=" " alt="" coords="642,660,555,670,554,664,641,654"/>
-<area shape="rect" id="Node000015" href="$classGuildmaster_1_1Combat_1_1MovementSystem.html#af5b73c3b215a5304f0c57490ece50de4" title="Продвинуть позиции всех живых юнитов на один тик." alt="" coords="339,723,569,763"/>
+<area shape="rect" id="Node000015" href="$classGuildmaster_1_1Combat_1_1MovementSystem.html#a9ecc1ea30095327269a5c4835230a71f" title="Продвинуть позиции всех живых юнитов на один тик." alt="" coords="339,723,569,763"/>
 <area shape="poly" id="edge21_Node000001_Node000015" title=" " alt="" coords="728,664,672,689,607,713,564,725,563,720,606,708,670,684,725,659"/>
 <area shape="rect" id="Node000016" href="$classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f41579d23e8074e346e93e793eb0f5b" title="Обработать автоатаки всех живых юнитов за один тик. dt &#160;не используется (тайминг на тиках)." alt="" coords="338,787,570,827"/>
 <area shape="poly" id="edge22_Node000001_Node000016" title=" " alt="" coords="745,667,687,723,649,752,608,777,571,791,569,786,606,772,646,748,684,719,741,664"/>

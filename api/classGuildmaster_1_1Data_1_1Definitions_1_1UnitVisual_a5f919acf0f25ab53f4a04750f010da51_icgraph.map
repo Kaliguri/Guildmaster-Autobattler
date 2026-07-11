@@ -1,5 +1,0 @@
-<map id="Guildmaster.Data.Definitions.UnitVisual.Duration" name="Guildmaster.Data.Definitions.UnitVisual.Duration">
-<area shape="rect" id="Node000001" title="Длительность разового клипа (кадры / fps), сек. 0 если клип пуст. Для атаки не использовать — её темп..." alt="" coords="244,5,459,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#ae7d5acba13743608684bd9fa33390db1" title="Вызывается при гибели юнита." alt="" coords="5,5,196,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
-</map>

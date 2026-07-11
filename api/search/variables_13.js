@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['width_0',['width',['../structGuildmaster_1_1Combat_1_1AreaHit.html#a55492ed72cf676e51b87cdf64cd3d2a1',1,'Guildmaster.Combat.AreaHit.Width'],['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html#abb64ae5590053cff0157d59123189589',1,'Guildmaster.Combat.DisplaceRequest.Width']]],
-  ['windupremaining_1',['WindupRemaining',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a79722b472031d0629740f8f27bc0f430',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['winduptarget_2',['WindupTarget',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aaca9226422a010ad8ebf303ba6d5d8d9',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['windupticks_3',['WindupTicks',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa53f7987a8b972c632526d949975cc31',1,'Guildmaster::Combat::RuntimeUnit']]]
+  ['value_0',['Value',['../structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html#abb8bfeb1198366bad3c665cb3bb00039',1,'Guildmaster::Data::Stats::StatModifier']]],
+  ['velocity_1',['Velocity',['../classGuildmaster_1_1Combat_1_1Projectile.html#a169a9c9a750f15d3c2d78d276bfa9ae2',1,'Guildmaster::Combat::Projectile']]],
+  ['vessel_2',['Vessel',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af4624ae11d8aa89f5c844b732ea4443a',1,'Guildmaster::Combat::RuntimeUnit']]]
 ];

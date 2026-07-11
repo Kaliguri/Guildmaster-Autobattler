@@ -1,7 +1,8 @@
 var classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile =
 [
     [ "AIProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a76cd29832ac804dcea7cafc469275a36", null ],
-    [ "AIProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a9eef4c282da5352b515c5b08ddc6ea63", null ],
+    [ "AIProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a30df8f6fcd88d5f1532d331168493599", null ],
+    [ "DefaultPassiveThresholdPct", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#abd0481f5347c16a989ebf89bd63b8b34", null ],
     [ "AutoAttackMode", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a882084f5011458139ba344416737cd34", null ],
     [ "AutoAttackTargeting", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#ae4cc61e69d39ec25ba833cb68abe4216", null ],
     [ "Kite", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#a6f7f8aead68bb092a42878bf57340cfb", null ],

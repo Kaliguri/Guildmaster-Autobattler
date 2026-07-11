@@ -113,8 +113,8 @@ Collaboration diagram for Guildmaster.DevTools.GuildmasterCommands:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8602897bec8438959f6a1cb9043180b4" id="r_a8602897bec8438959f6a1cb9043180b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a8602897bec8438959f6a1cb9043180b4">Construct</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation, <a class="el" href="classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html">CombatDebugDraw</a> debugDraw, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html">RuntimeUnitFactory</a> factory, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a> input)</td></tr>
-<tr class="separator:a8602897bec8438959f6a1cb9043180b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0a7449a295942e484c6fe86b0fe3e09" id="r_ab0a7449a295942e484c6fe86b0fe3e09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab0a7449a295942e484c6fe86b0fe3e09">Construct</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation, <a class="el" href="classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html">CombatDebugDraw</a> debugDraw, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html">RuntimeUnitFactory</a> factory, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a> input, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> contentDatabase)</td></tr>
+<tr class="separator:ab0a7449a295942e484c6fe86b0fe3e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97c2560d6ac8662a17c250f67c67468a" id="r_a97c2560d6ac8662a17c250f67c67468a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a97c2560d6ac8662a17c250f67c67468a">SetRngSeed</a> (ulong seed)</td></tr>
 <tr class="memdesc:a97c2560d6ac8662a17c250f67c67468a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Зафиксировать сид боя для детерминизм-отладки (только до старта).  <br /></td></tr>
 <tr class="separator:a97c2560d6ac8662a17c250f67c67468a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,13 +178,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab36b53eec55cacb691a055d7d587954e" id="r_ab36b53eec55cacb691a055d7d587954e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab36b53eec55cacb691a055d7d587954e">ToggleStatusOverlay</a> ()</td></tr>
 <tr class="memdesc:ab36b53eec55cacb691a055d7d587954e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Включить/выключить dev-слой статус-колец (метка/стан/щит/заморозка/усиление).  <br /></td></tr>
 <tr class="separator:ab36b53eec55cacb691a055d7d587954e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54a2f9a23293d456f41aa104ba5a6d0b" id="r_a54a2f9a23293d456f41aa104ba5a6d0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a54a2f9a23293d456f41aa104ba5a6d0b">TuningRebake</a> ()</td></tr>
+<tr class="memdesc:a54a2f9a23293d456f41aa104ba5a6d0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пересобрать SimTuning из SO и применить к идущему бою (QC-тюнинг без рекомпиляции).  <br /></td></tr>
+<tr class="separator:a54a2f9a23293d456f41aa104ba5a6d0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Набор отладочных команд Quantum Console для Фазы 1 (вики «10» §9). </p>
 <p>Инъектируется через VContainer — зависимости появляются только при наличии активной симуляции. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a8602897bec8438959f6a1cb9043180b4" name="a8602897bec8438959f6a1cb9043180b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8602897bec8438959f6a1cb9043180b4">&#9670;&#160;</a></span>Construct()</h2>
+<a id="ab0a7449a295942e484c6fe86b0fe3e09" name="ab0a7449a295942e484c6fe86b0fe3e09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0a7449a295942e484c6fe86b0fe3e09">&#9670;&#160;</a></span>Construct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -214,7 +217,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a>&#160;</td>
-          <td class="paramname"><em>input</em>&#160;</td>
+          <td class="paramname"><em>input</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a>&#160;</td>
+          <td class="paramname"><em>contentDatabase</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -704,7 +713,7 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия). </p>
-<p>Спавнит сеткой с шагом МЕНЬШЕ диаметра тела → юниты сразу перекрываются и разъезжаются; высокий HP и низкий урон держат толпу живой, чтобы видеть spacing и при сшибке блобов в центре. Крути на глаз <code>SimConstants.SeparationStrength</code> / <code>SeparationIterations</code> / <code>BodyRadiusPerSize</code>, перезапуск на месте — R. Параметр <em>size</em>  — «толщина» тел (Size-стат). </p>
+<p>Спавнит сеткой с шагом МЕНЬШЕ диаметра тела → юниты сразу перекрываются и разъезжаются; высокий HP и низкий урон держат толпу живой, чтобы видеть spacing и при сшибке блобов в центре. Крути на глаз <code>SimTuningConfig</code> (Strength / Iterations / BodyRadiusPerSize) или live gm_sep_*, перезапуск на месте — R. Параметр <em>size</em>  — «толщина» тел (Size-стат). </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1063,6 +1072,38 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Включить/выключить dev-слой статус-колец (метка/стан/щит/заморозка/усиление). </p>
+
+</div>
+</div>
+<a id="a54a2f9a23293d456f41aa104ba5a6d0b" name="a54a2f9a23293d456f41aa104ba5a6d0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54a2f9a23293d456f41aa104ba5a6d0b">&#9670;&#160;</a></span>TuningRebake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.DevTools.GuildmasterCommands.TuningRebake </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Пересобрать SimTuning из SO и применить к идущему бою (QC-тюнинг без рекомпиляции). </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1DevTools_1_1GuildmasterCommands_a54a2f9a23293d456f41aa104ba5a6d0b_cgraph.svg" width="522" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

@@ -1,0 +1,14 @@
+<map id="Guildmaster.Data.Editor.ContentCrudService.Create" name="Guildmaster.Data.Editor.ContentCrudService.Create">
+<area shape="rect" id="Node000001" title="Создать новый ассет типа type &#160;в его папке с уникальным id. Синхронизирует БД." alt="" coords="5,93,204,133"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths.html#a84c0d5ec598b471bb76f6047faefbf16" title="Гарантировать существование папки&#45;ассета (рекурсивно)." alt="" coords="255,29,451,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="182,91,261,70,262,75,184,96"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths.html#a741f6a09412e7b7240fa071bd2cb9ae7" title="Полный путь целевой папки для типа (создаётся при необходимости)." alt="" coords="262,93,443,133"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="204,111,248,111,248,116,204,116"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a0f1c481144d212691dd43e8322040151" title="Найти/создать БД, заполнить всеми контент&#45;ассетами (сортировка по id), сохранить." alt="" coords="252,157,453,197"/>
+<area shape="poly" id="edge4_Node000001_Node000004" title=" " alt="" coords="184,131,262,151,261,156,182,136"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="307,30,304,20,311,10,328,5,353,3,381,6,397,13,395,18,380,11,353,8,329,10,314,15,309,21,312,28"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility.html#a760ae23288991c3a17d526a9309ff1b9" title="Все ContentDefinition&#45;ассеты проекта." alt="" coords="538,125,719,165"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="453,163,524,155,525,160,454,168"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a7303fc4567b36f6b619add6c08137180" title="Существующая БД (первая найденная) или новая в DatabasePath." alt="" coords="501,189,756,229"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="454,186,488,190,487,196,453,192"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="Guildmaster.Data.Editor.ContentPaths.EnsureFolder" name="Guildmaster.Data.Editor.ContentPaths.EnsureFolder">
+<area shape="rect" id="Node000001" title="Гарантировать существование папки&#45;ассета (рекурсивно)." alt="" coords="252,29,448,69"/>
+<area shape="poly" id="edge2_Node000001_Node000001" title=" " alt="" coords="392,18,377,11,350,8,326,10,312,15,307,21,309,28,304,30,302,20,309,10,325,5,350,3,379,6,394,13"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#af795537cb7f5fe633278ac7399267fc0" title="Создать новый ассет типа type &#160;в его папке с уникальным id. Синхронизирует БД." alt="" coords="5,29,204,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,52,204,52,204,47,238,47"/>
+</map>

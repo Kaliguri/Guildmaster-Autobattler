@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Definitions.UnitVisual.SkillClip" name="Guildmaster.Data.Definitions.UnitVisual.SkillClip">
+<area shape="rect" id="Node000001" title="Клип каста по слоту скилла (0&#45;based). null = слот пуст или индекс вне диапазона." alt="" coords="244,5,459,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a99fe961b39536dfe1e67f30e38f92869" title="Подменить визуал в рантайме (пер&#45;юнит визуал из реликвии, вики «13» шаг 4): все юниты инстанцируются ..." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

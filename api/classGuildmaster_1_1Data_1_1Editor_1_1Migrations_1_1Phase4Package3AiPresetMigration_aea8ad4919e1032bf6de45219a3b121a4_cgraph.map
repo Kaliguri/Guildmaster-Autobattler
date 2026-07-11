@@ -1,0 +1,12 @@
+<map id="Guildmaster.Data.Editor.Migrations.Phase4Package3AiPresetMigration.Run" name="Guildmaster.Data.Editor.Migrations.Phase4Package3AiPresetMigration.Run">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,26,263,81"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility.html#a760ae23288991c3a17d526a9309ff1b9" title="Все ContentDefinition&#45;ассеты проекта." alt="" coords="610,5,791,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,25,310,19,460,13,596,16,596,21,460,18,311,24,263,30"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a5b4278ee1315bb56b8c5ccb07f38cd12" title="Собрать id domain.lower_snake из имени ассета: (&quot;IceChainsStun&quot;) → effect.ice_chains_stun." alt="" coords="311,33,525,73"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="263,51,297,51,297,56,263,56"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a0f1c481144d212691dd43e8322040151" title="Найти/создать БД, заполнить всеми контент&#45;ассетами (сортировка по id), сохранить." alt="" coords="317,97,519,137"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="256,78,316,92,315,97,255,83"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="487,95,525,83,629,47,631,52,526,88,488,100"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a7303fc4567b36f6b619add6c08137180" title="Существующая БД (первая найденная) или новая в DatabasePath." alt="" coords="573,97,828,137"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="519,115,559,115,559,120,519,120"/>
+</map>

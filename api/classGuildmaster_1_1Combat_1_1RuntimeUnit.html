@@ -177,9 +177,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a4535a281dcec5e830ae47b664400347e" id="r_a4535a281dcec5e830ae47b664400347e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4535a281dcec5e830ae47b664400347e">IsDead</a></td></tr>
 <tr class="memdesc:a4535a281dcec5e830ae47b664400347e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Помечен DeathSystem — исключается из всех систем с текущего тика.  <br /></td></tr>
 <tr class="separator:a4535a281dcec5e830ae47b664400347e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ad74e20cb04f2cb6f6c9444b64bd386" id="r_a5ad74e20cb04f2cb6f6c9444b64bd386"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a5ad74e20cb04f2cb6f6c9444b64bd386">Relic</a></td></tr>
-<tr class="memdesc:a5ad74e20cb04f2cb6f6c9444b64bd386"><td class="mdescLeft">&#160;</td><td class="mdescRight">SO «Чемпион»: тип атаки, стат-блок, эффекты (Фаза 2).  <br /></td></tr>
-<tr class="separator:a5ad74e20cb04f2cb6f6c9444b64bd386"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5396847e5a6b2b2f9c1e60dccba9c0f1" id="r_a5396847e5a6b2b2f9c1e60dccba9c0f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a5396847e5a6b2b2f9c1e60dccba9c0f1">Unit</a></td></tr>
+<tr class="memdesc:a5396847e5a6b2b2f9c1e60dccba9c0f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Боевой кит юнита (реликвия/враг): тип атаки, стат-блок, эффекты, AI (вики «13» §3.1).  <br /></td></tr>
+<tr class="separator:a5396847e5a6b2b2f9c1e60dccba9c0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4624ae11d8aa89f5c844b732ea4443a" id="r_af4624ae11d8aa89f5c844b732ea4443a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af4624ae11d8aa89f5c844b732ea4443a">Vessel</a></td></tr>
 <tr class="memdesc:af4624ae11d8aa89f5c844b732ea4443a"><td class="mdescLeft">&#160;</td><td class="mdescRight">SO «Пилот»: идентичность, перки (Фаза 2/4).  <br /></td></tr>
 <tr class="separator:af4624ae11d8aa89f5c844b732ea4443a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -592,22 +592,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a5ad74e20cb04f2cb6f6c9444b64bd386" name="a5ad74e20cb04f2cb6f6c9444b64bd386"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ad74e20cb04f2cb6f6c9444b64bd386">&#9670;&#160;</a></span>Relic</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> Guildmaster.Combat.RuntimeUnit.Relic</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>SO «Чемпион»: тип атаки, стат-блок, эффекты (Фаза 2). </p>
-
-</div>
-</div>
 <a id="a16de05e43024e2dd5bc6cc5e5ac777e4" name="a16de05e43024e2dd5bc6cc5e5ac777e4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a16de05e43024e2dd5bc6cc5e5ac777e4">&#9670;&#160;</a></span>Stats</h2>
 
@@ -637,6 +621,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Команда: 0 = союзники (левая сторона), 1 = враги (правая). </p>
+
+</div>
+</div>
+<a id="a5396847e5a6b2b2f9c1e60dccba9c0f1" name="a5396847e5a6b2b2f9c1e60dccba9c0f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5396847e5a6b2b2f9c1e60dccba9c0f1">&#9670;&#160;</a></span>Unit</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a> Guildmaster.Combat.RuntimeUnit.Unit</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Боевой кит юнита (реликвия/враг): тип атаки, стат-блок, эффекты, AI (вики «13» §3.1). </p>
 
 </div>
 </div>

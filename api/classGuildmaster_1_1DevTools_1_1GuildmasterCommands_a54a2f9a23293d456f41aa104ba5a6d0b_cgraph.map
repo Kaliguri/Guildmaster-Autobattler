@@ -1,0 +1,7 @@
+<map id="Guildmaster.DevTools.GuildmasterCommands.TuningRebake" name="Guildmaster.DevTools.GuildmasterCommands.TuningRebake">
+<area shape="rect" id="Node000001" title="Пересобрать SimTuning из SO и применить к идущему бою (QC&#45;тюнинг без рекомпиляции)." alt="" coords="5,37,253,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a0bbce927646fde43a9fb3d555050012b" title="Dev re&#45;bake (QC, gm_tuning_rebake): применить новый снапшот тюнинга к идущему бою." alt="" coords="303,5,514,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="253,40,289,36,290,42,254,46"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1SimTuningConfig.html#a611bb6eba617378eaee7743bcb33b85d" title="Снять иммутабельный снапшот для бейка на старте боя." alt="" coords="301,69,516,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="254,69,288,73,288,78,253,74"/>
+</map>

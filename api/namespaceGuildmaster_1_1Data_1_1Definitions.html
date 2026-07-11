@@ -103,32 +103,80 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html">AbilityData</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Определение активной способности реликвии: эффекты при касте, кулдаун, стоимость ресурса, способ выбора цели.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AIPresetData.html">AIPresetData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пресет поведения AI (roadmap «2–3 пресета на архетип», вики «13» §3.2).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1AIPresetData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html">AIProfile</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">«Параметризованные пресеты» AI (РЕШЕНИЕ §2.1): фиксированный набор типизированных ручек за стабильным швом <code>IUnitBrain</code>, НЕ полиморфный [SerializeReference]-граф.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1AttackHitFrameStripAttribute.html">AttackHitFrameStripAttribute</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Маркер для поля индексов кадров контакта (<code>UnitVisual._attackHitFrames</code>): редактор-drawer рисует полоску превью спрайтов атаки с кликом по кадру (вики «14»).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1AttackHitFrameStripAttribute.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html">ClipMarkers</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Маркеры-как-данные на AnimationClip (вики «13» §3.1, «14»).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html">ConsequenceData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Последствие боя: травма или закалка (объединяет бывш.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase.html">ContentDatabase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реестр всего контент-контента проекта (вики «13» §3.6).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html">ContentDefinition</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Базовый класс всех контент-SO: несёт канонический строковый id (<code>domain.name</code>), по которому связываются слои данных, работают реестр (ContentDatabase), валидация и производные лок/аудио-ключи (вики «13» §2).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html">ContentDomains</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Маппинг тип контента → префикс домена id и генерация id вида <code>domain.lower_snake</code> из имени ассета (вики «13» §2.2).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentRegistry.html">ContentRegistry</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Рантайм-индекс контента: словарь <code>id → ContentDefinition</code>, построенный один раз из ContentDatabase при сборке DI-контейнера (вики «13» §3.6).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentRegistry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги, базовая длительность, правила стакинга/диспела и полиморфные компоненты поведения (вики «6» §5, «12» §2.1).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData.html">EnemyData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вражеский юнит: боевой кит (UnitData) + мета врага (очки опасности, награда).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html">GameConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Общие дефолты игры (вики «13» §3.4): начальные пользовательские настройки (громкости, локаль) и мета-правила.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html">GuildmasterData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Гильдмастер (GDD 4, вики «13» §3.2): начальные заклинания, пассивный бонус гильдии, уникальные особенности, стартовые реликвии (по id) и ресурс.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Рантайм-доступ к контенту по строковому id (вики «13» §3.6).  <a href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html">IEffectComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Якорь полиморфного поведения эффекта для сериализации.  <a href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Предмет двух скоупов в одном типе (вики «13» §3.2): ItemScope.Vessel — на персонажа (до N слотов, GameConfig.VesselItemSlots), ItemScope.Party — на всю команду/бой.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html">Kite</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кайт (блок G). <code>FallbackDist</code> &gt; <code>FleeDist</code> — зона удержания дистанции.  <a href="structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">«Чемпион» — стат-блок и боевые категории юнита.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">«Чемпион» — реликвия игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег, альт-пресеты AI, доступ к Extended-зонам).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html">Retreat</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Отступление по HP% (блок B). <code>ReturnAtHpPct</code> &gt; <code>FleeAtHpPct</code> — гистерезис от дёрганья.  <a href="structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData.html">RunModifierData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Модификатор забега (заготовка ascension/pact, вики «13» §3.2).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1SimTuningConfig.html">SimTuningConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Балансные тюнинг-ручки симуляции (вики «13» §3.4).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1SimTuningConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html">StatsConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Глобальный шаблон стат-системы: дефолты статов + тюнинг-константы пайплайна (armor-константа, клампы скорости атаки).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1TagData.html">TagData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Информационный тег для тултипов/фильтров (вики «13» §3.0): чисто UI-слой, НЕ путать с боевыми EffectTag-флагами.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1TagData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1TraitData.html">TraitData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Трейт «Сосуда» (бывш.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1TraitData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html">UnitData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Общий боевой кит всего, что выходит на арену (вики «13» §3.1).  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html">UnitVisual</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Визуальный набор реликвии: спрайт-кадры по состояниям (Idle/Run/Attack/Death) + частота кадров.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Визуальный набор реликвии на AnimationClip-слотах (вики «13» §3.1): состояния Idle/Run/Attack/Death/Hit + клипы скиллов + портрет.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">«Пилот» — носитель реликвии.  <a href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html#details">More...</a><br /></td></tr>
@@ -203,6 +251,45 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a9cc3b75ee764cbdef4455c6ce72eee20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фильтр полярности для диспела: что снимать.  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20">More...</a><br /></td></tr>
 <tr class="separator:a9cc3b75ee764cbdef4455c6ce72eee20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f169d5cb69e236380c314f6148efed9" id="r_a6f169d5cb69e236380c314f6148efed9"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a6f169d5cb69e236380c314f6148efed9">RelicRarity</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a6f169d5cb69e236380c314f6148efed9ad13bc5b68b2bd9e18f29777db17cc563">Common</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a6f169d5cb69e236380c314f6148efed9a2a31072f729cf6c21db67a11c9e8f433">Cursed</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a6f169d5cb69e236380c314f6148efed9a178ccf18b360e8cff0fc1a4eb404def6">Divine</a> = 2
+ }</td></tr>
+<tr class="memdesc:a6f169d5cb69e236380c314f6148efed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Редкость реликвии (GDD 5). У вертикального среза — все Common.  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a6f169d5cb69e236380c314f6148efed9">More...</a><br /></td></tr>
+<tr class="separator:a6f169d5cb69e236380c314f6148efed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ad7c124bf03fa0b4a000cd1effd2113" id="r_a1ad7c124bf03fa0b4a000cd1effd2113"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113">TagCategory</a> { <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113abbbabdbe1b262f75d99d62880b953be1">Role</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113ac6cd5611ab5d356412d10cfdf1d0c67b">DamageType</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113a95c846c435277fef4a1d64748633b49f">Playstyle</a> = 2
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113a64eb669723cae1983f03e34cca705c80">Mechanic</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113a6311ae17c1ee52b36e68aaf4ad066387">Other</a> = 4
+<br />
+ }</td></tr>
+<tr class="memdesc:a1ad7c124bf03fa0b4a000cd1effd2113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Категория информационного тега для группировки в UI (вики «13» §3.0).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113">More...</a><br /></td></tr>
+<tr class="separator:a1ad7c124bf03fa0b4a000cd1effd2113"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47d79e60de086a94265b32b9833971e1" id="r_a47d79e60de086a94265b32b9833971e1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a47d79e60de086a94265b32b9833971e1">TraitPolarity</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a47d79e60de086a94265b32b9833971e1a3289297424e01eda5b788c083bbf3147">Positive</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a47d79e60de086a94265b32b9833971e1affb9356ff2b7da85c75c92fa7ea03b8b">Negative</a> = 1
+ }</td></tr>
+<tr class="memdesc:a47d79e60de086a94265b32b9833971e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полярность трейта «Сосуда» (GDD: выбор 1 из 3, вики «13» §3.2).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a47d79e60de086a94265b32b9833971e1">More...</a><br /></td></tr>
+<tr class="separator:a47d79e60de086a94265b32b9833971e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ee0ec1813ac8fb109f708dc45051fe4" id="r_a9ee0ec1813ac8fb109f708dc45051fe4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4">ConsequencePolarity</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a47deba8478555be8eecd4256caa21c7b">Injury</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a400419f1b352e7a735a9b391387e8e80">Mettle</a> = 1
+ }</td></tr>
+<tr class="memdesc:a9ee0ec1813ac8fb109f708dc45051fe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вид последствия боя (GDD 9): травма снимается лечением, закалка постоянна (вики «13» §3.2).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4">More...</a><br /></td></tr>
+<tr class="separator:a9ee0ec1813ac8fb109f708dc45051fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb3246db7673b2da9a0a4d4f4ffdd590" id="r_adb3246db7673b2da9a0a4d4f4ffdd590"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590">ItemScope</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590add85641c28bfd5bae3047879853d4a33">Vessel</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590a094a173d3b32f44f5b5c996e8710ae28">Party</a> = 1
+ }</td></tr>
+<tr class="memdesc:adb3246db7673b2da9a0a4d4f4ffdd590"><td class="mdescLeft">&#160;</td><td class="mdescRight">Скоуп предмета (вики «13» §3.2): на персонажа или на всю команду/бой.  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590">More...</a><br /></td></tr>
+<tr class="separator:adb3246db7673b2da9a0a4d4f4ffdd590"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2772e0f6d732c1f22cce603b3958140" id="r_ae2772e0f6d732c1f22cce603b3958140"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae2772e0f6d732c1f22cce603b3958140">RunModTarget</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae2772e0f6d732c1f22cce603b3958140a93ec972c68d5caca43370a9746a08cea">Players</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae2772e0f6d732c1f22cce603b3958140af181304e789fd0882df5cb02d232fc69">Enemies</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae2772e0f6d732c1f22cce603b3958140a8afc1f2760cfc2d63b8f0e9ddb1b6f39">Economy</a> = 2
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae2772e0f6d732c1f22cce603b3958140a1f4da964f8eab62e96e8cfe406e44364">Rules</a> = 3
+ }</td></tr>
+<tr class="memdesc:ae2772e0f6d732c1f22cce603b3958140"><td class="mdescLeft">&#160;</td><td class="mdescRight">На кого действует модификатор забега (вики «13» §3.2, заготовка ascension/pact).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae2772e0f6d732c1f22cce603b3958140">More...</a><br /></td></tr>
+<tr class="separator:ae2772e0f6d732c1f22cce603b3958140"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e7ad4bd70e81312e11f8afc21650438" id="r_a4e7ad4bd70e81312e11f8afc21650438"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> { <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a536e1a5d9f4fe868e6ea5ff628f51f25">Buff</a> = 1 &lt;&lt; 0
@@ -222,6 +309,13 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a4e7ad4bd70e81312e11f8afc21650438"><td class="mdescLeft">&#160;</td><td class="mdescRight">Категориальные теги эффекта: для диспела по категории, AI-фильтров и быстрой битовой маски активных эффектов на юните (вики «6» §5.3–§5.4, «12» §2.1).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">More...</a><br /></td></tr>
 <tr class="separator:a4e7ad4bd70e81312e11f8afc21650438"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeb925456e7544419585e3138c3db656" id="r_aaeb925456e7544419585e3138c3db656"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656">SkillSlot</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656a7255340c02ad7a4e4dbe394416683342">Skill1</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656aa844affb27623abf8a1ae306db49e447">Skill2</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656a40345553689931c458531932b60f8385">Skill3</a> = 2
+, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656ad335f39a69a8ba5792b7f47c76cc5142">Skill4</a> = 3
+ }</td></tr>
+<tr class="memdesc:aaeb925456e7544419585e3138c3db656"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слот визуала каста способности (вики «13» §3.1).  <a href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656">More...</a><br /></td></tr>
+<tr class="separator:aaeb925456e7544419585e3138c3db656"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cad7d2863aa4076313a422e6c06021c" id="r_a5cad7d2863aa4076313a422e6c06021c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021c">StackRule</a> { <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca6adf97f83acf6453d4a6a4b1070f3754">None</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca">Stack</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca63a6a88c066880c5ac42394a22803ca6">Refresh</a> = 2
@@ -380,6 +474,26 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
+<a id="a9ee0ec1813ac8fb109f708dc45051fe4" name="a9ee0ec1813ac8fb109f708dc45051fe4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ee0ec1813ac8fb109f708dc45051fe4">&#9670;&#160;</a></span>ConsequencePolarity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4">Guildmaster.Data.Definitions.ConsequencePolarity</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Вид последствия боя (GDD 9): травма снимается лечением, закалка постоянна (вики «13» §3.2). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a9ee0ec1813ac8fb109f708dc45051fe4a47deba8478555be8eecd4256caa21c7b" name="a9ee0ec1813ac8fb109f708dc45051fe4a47deba8478555be8eecd4256caa21c7b"></a>Injury&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a9ee0ec1813ac8fb109f708dc45051fe4a400419f1b352e7a735a9b391387e8e80" name="a9ee0ec1813ac8fb109f708dc45051fe4a400419f1b352e7a735a9b391387e8e80"></a>Mettle&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="a5cce769078fcc3c898cb60f70d7d6ed3" name="a5cce769078fcc3c898cb60f70d7d6ed3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5cce769078fcc3c898cb60f70d7d6ed3">&#9670;&#160;</a></span>DamageType</h2>
 
@@ -480,6 +594,26 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
+<a id="adb3246db7673b2da9a0a4d4f4ffdd590" name="adb3246db7673b2da9a0a4d4f4ffdd590"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb3246db7673b2da9a0a4d4f4ffdd590">&#9670;&#160;</a></span>ItemScope</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590">Guildmaster.Data.Definitions.ItemScope</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Скоуп предмета (вики «13» §3.2): на персонажа или на всю команду/бой. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adb3246db7673b2da9a0a4d4f4ffdd590add85641c28bfd5bae3047879853d4a33" name="adb3246db7673b2da9a0a4d4f4ffdd590add85641c28bfd5bae3047879853d4a33"></a>Vessel&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adb3246db7673b2da9a0a4d4f4ffdd590a094a173d3b32f44f5b5c996e8710ae28" name="adb3246db7673b2da9a0a4d4f4ffdd590a094a173d3b32f44f5b5c996e8710ae28"></a>Party&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="ac59314485558032c61c7eab5c58b6612" name="ac59314485558032c61c7eab5c58b6612"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac59314485558032c61c7eab5c58b6612">&#9670;&#160;</a></span>PassiveTrigger</h2>
 
@@ -507,6 +641,27 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
+<a id="a6f169d5cb69e236380c314f6148efed9" name="a6f169d5cb69e236380c314f6148efed9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f169d5cb69e236380c314f6148efed9">&#9670;&#160;</a></span>RelicRarity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a6f169d5cb69e236380c314f6148efed9">Guildmaster.Data.Definitions.RelicRarity</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Редкость реликвии (GDD 5). У вертикального среза — все Common. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6f169d5cb69e236380c314f6148efed9ad13bc5b68b2bd9e18f29777db17cc563" name="a6f169d5cb69e236380c314f6148efed9ad13bc5b68b2bd9e18f29777db17cc563"></a>Common&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6f169d5cb69e236380c314f6148efed9a2a31072f729cf6c21db67a11c9e8f433" name="a6f169d5cb69e236380c314f6148efed9a2a31072f729cf6c21db67a11c9e8f433"></a>Cursed&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a6f169d5cb69e236380c314f6148efed9a178ccf18b360e8cff0fc1a4eb404def6" name="a6f169d5cb69e236380c314f6148efed9a178ccf18b360e8cff0fc1a4eb404def6"></a>Divine&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="abefdaf8dabc6adb7c9017704d2fad3e0" name="abefdaf8dabc6adb7c9017704d2fad3e0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abefdaf8dabc6adb7c9017704d2fad3e0">&#9670;&#160;</a></span>ResourceType</h2>
 
@@ -524,6 +679,51 @@ Enumerations</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="abefdaf8dabc6adb7c9017704d2fad3e0a6adf97f83acf6453d4a6a4b1070f3754" name="abefdaf8dabc6adb7c9017704d2fad3e0a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="abefdaf8dabc6adb7c9017704d2fad3e0a02fcc64668dd1b6a85e60ac9797f2dc7" name="abefdaf8dabc6adb7c9017704d2fad3e0a02fcc64668dd1b6a85e60ac9797f2dc7"></a>Mana&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="abefdaf8dabc6adb7c9017704d2fad3e0af467834a619fdbc994d37e84f5fef567" name="abefdaf8dabc6adb7c9017704d2fad3e0af467834a619fdbc994d37e84f5fef567"></a>Rage&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ae2772e0f6d732c1f22cce603b3958140" name="ae2772e0f6d732c1f22cce603b3958140"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2772e0f6d732c1f22cce603b3958140">&#9670;&#160;</a></span>RunModTarget</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#ae2772e0f6d732c1f22cce603b3958140">Guildmaster.Data.Definitions.RunModTarget</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>На кого действует модификатор забега (вики «13» §3.2, заготовка ascension/pact). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae2772e0f6d732c1f22cce603b3958140a93ec972c68d5caca43370a9746a08cea" name="ae2772e0f6d732c1f22cce603b3958140a93ec972c68d5caca43370a9746a08cea"></a>Players&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae2772e0f6d732c1f22cce603b3958140af181304e789fd0882df5cb02d232fc69" name="ae2772e0f6d732c1f22cce603b3958140af181304e789fd0882df5cb02d232fc69"></a>Enemies&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae2772e0f6d732c1f22cce603b3958140a8afc1f2760cfc2d63b8f0e9ddb1b6f39" name="ae2772e0f6d732c1f22cce603b3958140a8afc1f2760cfc2d63b8f0e9ddb1b6f39"></a>Economy&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ae2772e0f6d732c1f22cce603b3958140a1f4da964f8eab62e96e8cfe406e44364" name="ae2772e0f6d732c1f22cce603b3958140a1f4da964f8eab62e96e8cfe406e44364"></a>Rules&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="aaeb925456e7544419585e3138c3db656" name="aaeb925456e7544419585e3138c3db656"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaeb925456e7544419585e3138c3db656">&#9670;&#160;</a></span>SkillSlot</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656">Guildmaster.Data.Definitions.SkillSlot</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Слот визуала каста способности (вики «13» §3.1). </p>
+<p>Индекс совпадает с <code>UnitVisual.SkillClip(int)</code>: каст проигрывает клип соответствующего слота. Порядок стабилен. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aaeb925456e7544419585e3138c3db656a7255340c02ad7a4e4dbe394416683342" name="aaeb925456e7544419585e3138c3db656a7255340c02ad7a4e4dbe394416683342"></a>Skill1&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaeb925456e7544419585e3138c3db656aa844affb27623abf8a1ae306db49e447" name="aaeb925456e7544419585e3138c3db656aa844affb27623abf8a1ae306db49e447"></a>Skill2&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaeb925456e7544419585e3138c3db656a40345553689931c458531932b60f8385" name="aaeb925456e7544419585e3138c3db656a40345553689931c458531932b60f8385"></a>Skill3&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaeb925456e7544419585e3138c3db656ad335f39a69a8ba5792b7f47c76cc5142" name="aaeb925456e7544419585e3138c3db656ad335f39a69a8ba5792b7f47c76cc5142"></a>Skill4&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -550,6 +750,29 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a5cad7d2863aa4076313a422e6c06021cadc2a20a77eca42f262a296f18be55278" name="a5cad7d2863aa4076313a422e6c06021cadc2a20a77eca42f262a296f18be55278"></a>StackAndRefresh&#160;</td><td class="fielddoc"><p>Добавить стак И обновить длительность. </p>
 </td></tr>
+</table>
+
+</div>
+</div>
+<a id="a1ad7c124bf03fa0b4a000cd1effd2113" name="a1ad7c124bf03fa0b4a000cd1effd2113"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ad7c124bf03fa0b4a000cd1effd2113">&#9670;&#160;</a></span>TagCategory</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113">Guildmaster.Data.Definitions.TagCategory</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Категория информационного тега для группировки в UI (вики «13» §3.0). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1ad7c124bf03fa0b4a000cd1effd2113abbbabdbe1b262f75d99d62880b953be1" name="a1ad7c124bf03fa0b4a000cd1effd2113abbbabdbe1b262f75d99d62880b953be1"></a>Role&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a1ad7c124bf03fa0b4a000cd1effd2113ac6cd5611ab5d356412d10cfdf1d0c67b" name="a1ad7c124bf03fa0b4a000cd1effd2113ac6cd5611ab5d356412d10cfdf1d0c67b"></a>DamageType&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a1ad7c124bf03fa0b4a000cd1effd2113a95c846c435277fef4a1d64748633b49f" name="a1ad7c124bf03fa0b4a000cd1effd2113a95c846c435277fef4a1d64748633b49f"></a>Playstyle&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a1ad7c124bf03fa0b4a000cd1effd2113a64eb669723cae1983f03e34cca705c80" name="a1ad7c124bf03fa0b4a000cd1effd2113a64eb669723cae1983f03e34cca705c80"></a>Mechanic&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a1ad7c124bf03fa0b4a000cd1effd2113a6311ae17c1ee52b36e68aaf4ad066387" name="a1ad7c124bf03fa0b4a000cd1effd2113a6311ae17c1ee52b36e68aaf4ad066387"></a>Other&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -587,6 +810,26 @@ Enumerations</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="a9682e32b839e6220bb3b059bf07291c2a1ab8a7777ec5957eeca9aabb3d5f9047" name="a9682e32b839e6220bb3b059bf07291c2a1ab8a7777ec5957eeca9aabb3d5f9047"></a>PreferUntagged&#160;</td><td class="fielddoc"><p>Избегать врага с тегом AIProfile.TargetTag (Frozen у Криоманта — не тратить АА на уже замороженного); иначе ближайший. Зеркало PreferTagged. </p>
 </td></tr>
+</table>
+
+</div>
+</div>
+<a id="a47d79e60de086a94265b32b9833971e1" name="a47d79e60de086a94265b32b9833971e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47d79e60de086a94265b32b9833971e1">&#9670;&#160;</a></span>TraitPolarity</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a47d79e60de086a94265b32b9833971e1">Guildmaster.Data.Definitions.TraitPolarity</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Полярность трейта «Сосуда» (GDD: выбор 1 из 3, вики «13» §3.2). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a47d79e60de086a94265b32b9833971e1a3289297424e01eda5b788c083bbf3147" name="a47d79e60de086a94265b32b9833971e1a3289297424e01eda5b788c083bbf3147"></a>Positive&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a47d79e60de086a94265b32b9833971e1affb9356ff2b7da85c75c92fa7ea03b8b" name="a47d79e60de086a94265b32b9833971e1affb9356ff2b7da85c75c92fa7ea03b8b"></a>Negative&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>

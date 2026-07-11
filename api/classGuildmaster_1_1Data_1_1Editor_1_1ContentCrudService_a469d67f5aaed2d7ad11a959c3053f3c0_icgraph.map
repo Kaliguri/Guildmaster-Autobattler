@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Editor.ContentCrudService.FindUsages" name="Guildmaster.Data.Editor.ContentCrudService.FindUsages">
+<area shape="rect" id="Node000001" title="Пути ассетов/сцен/префабов, ссылающихся на def &#160;(обратная зависимость)." alt="" coords="271,5,501,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#abd2df813040020ae837b6ccd5b904e48" title="Удалить ассет, если он ни на что не ссылается." alt="" coords="5,5,223,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="257,28,223,28,223,23,257,23"/>
+</map>

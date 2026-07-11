@@ -14,7 +14,7 @@ var searchData=
   ['applybuffeff_11',['ApplyBuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a04088b7ab0f8da1e1ee848296343a33f',1,'Guildmaster::Data::Stats']]],
   ['applydebuffeff_12',['ApplyDebuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a604e868d3d14c15c08fd51a3c2d4a740',1,'Guildmaster::Data::Stats']]],
   ['approach_13',['Approach',['../namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba40a68b5da4b9b224764558bb02ecd028',1,'Guildmaster::Combat']]],
-  ['attack_14',['Attack',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6adcfafcb4323b102c7e204555d313ba0a',1,'Guildmaster::Data::Definitions']]],
+  ['attack_14',['attack',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6adcfafcb4323b102c7e204555d313ba0a',1,'Guildmaster.Data.Definitions.Attack'],['../namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1adcfafcb4323b102c7e204555d313ba0a',1,'Guildmaster.Presentation.Audio.Attack']]],
   ['attackrange_15',['AttackRange',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab368d16134fba69bdd208d3d0c7c7c5b',1,'Guildmaster::Data::Stats']]],
   ['attackspeed_16',['AttackSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa1039049ad899dd188ddd24169458b48',1,'Guildmaster::Data::Stats']]],
   ['autoattackdamage_17',['AutoAttackDamage',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a509dd58938824e6e3f298bde91ddc731',1,'Guildmaster::Data::Stats']]]

@@ -13,5 +13,6 @@ var interfaceGuildmaster_1_1Combat_1_1ICombatContext =
     [ "SpawnProjectile", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#af77b3fed804337cb57884a18b5bff033", null ],
     [ "ArmorK", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a82e1c9f8002d378272140e0e43131278", null ],
     [ "CurrentTick", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a5348ec9d3456db776581f4e70d53b444", null ],
-    [ "Rng", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#aed3ab1d7a324483db80b0b969fe03287", null ]
+    [ "Rng", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#aed3ab1d7a324483db80b0b969fe03287", null ],
+    [ "Tuning", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a1aea321bfdcbf858e7acbfabd5b390ad", null ]
 ];

@@ -1,6 +1,6 @@
 var classGuildmaster_1_1Combat_1_1CombatSimulation =
 [
-    [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a00e571fb57a06af1059cb76a54a9cede", null ],
+    [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ad93a3eda61fc3dac619027e365ae9132", null ],
     [ "ApplyEffect", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a7ffdb85ea967ca31ce9f970371df906a", null ],
     [ "ComputeChecksum", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6d647c0229bc77cc9701a4272f36623c", null ],
     [ "DealDamage", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6de925024d5473fc9537c6a36e39fe45", null ],
@@ -13,6 +13,7 @@ var classGuildmaster_1_1Combat_1_1CombatSimulation =
     [ "NotifyAttackStarted", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#aba66d338160b4eca2e63c97852a6fcba", null ],
     [ "QueryUnitsInLine", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a281bfa09b36891b5caefa6db8022636d", null ],
     [ "QueryUnitsInRadius", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a9f74f08be5d3b9940ebde8051ffab8f4", null ],
+    [ "RebakeTuning", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a0bbce927646fde43a9fb3d555050012b", null ],
     [ "ReportAreaHit", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a96609f5e3bf5177b8fb1959d275f1b44", null ],
     [ "ResetBattle", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a466fdfbb0c077b3fc94f81db8b810867", null ],
     [ "SetPaused", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae3092fa6133f040d7b2b7af1c28540c4", null ],
@@ -25,6 +26,7 @@ var classGuildmaster_1_1Combat_1_1CombatSimulation =
     [ "Outcome", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ade014db043568a48011caded693155c1", null ],
     [ "Rng", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a252e41fbff5873e8fdeb639556d89666", null ],
     [ "Separation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#acd88bbaa5eead8fdf3ff182b1d4f44e1", null ],
+    [ "Tuning", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a5c1c25bef2787d28f77d0e8c2e328e8a", null ],
     [ "Units", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6a7d8e090ee8dcca46ee0aaf705e7d24", null ],
     [ "OnAreaHit", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a9caad6a621e0b9755a74fb79f3ac7272", null ],
     [ "OnAttackEvaded", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac488c96e1b4ab1abfff473a2fd0f1f8d", null ],

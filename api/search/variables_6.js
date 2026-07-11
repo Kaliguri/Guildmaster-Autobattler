@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hpdamage_0',['HpDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#a1c38e37d8555f62ede39114c7523c2ca',1,'Guildmaster::Combat::DamageResult']]]
+  ['globalsearchradius_0',['GlobalSearchRadius',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a4d3cfea1fe03b64dedba71506fa9c846',1,'Guildmaster::Core::Simulation::SimTuning']]]
 ];

@@ -108,16 +108,16 @@ Collaboration diagram for Guildmaster.Combat.MovementSystem:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af5b73c3b215a5304f0c57490ece50de4" id="r_af5b73c3b215a5304f0c57490ece50de4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1MovementSystem.html#af5b73c3b215a5304f0c57490ece50de4">Tick</a> (List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, float dt, in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a> bounds)</td></tr>
-<tr class="memdesc:af5b73c3b215a5304f0c57490ece50de4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Продвинуть позиции всех живых юнитов на один тик.  <br /></td></tr>
-<tr class="separator:af5b73c3b215a5304f0c57490ece50de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ecc1ea30095327269a5c4835230a71f" id="r_a9ecc1ea30095327269a5c4835230a71f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1MovementSystem.html#a9ecc1ea30095327269a5c4835230a71f">Tick</a> (List&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, float dt, in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a> bounds, in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a> tuning)</td></tr>
+<tr class="memdesc:a9ecc1ea30095327269a5c4835230a71f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Продвинуть позиции всех живых юнитов на один тик.  <br /></td></tr>
+<tr class="separator:a9ecc1ea30095327269a5c4835230a71f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Интегрирует позиции живых юнитов. </p>
 <p>Ручная математика — без Rigidbody2D и без Time.deltaTime (dt передаётся снаружи из CombatLoopService). Ветвится по RuntimeUnit.Positioning (§9.7): Approach (Ф1), Kite (полоса дистанции), Retreat (от ближайшего врага). Стрельба на ходу (§9.8) снимает рут замаха. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="af5b73c3b215a5304f0c57490ece50de4" name="af5b73c3b215a5304f0c57490ece50de4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5b73c3b215a5304f0c57490ece50de4">&#9670;&#160;</a></span>Tick()</h2>
+<a id="a9ecc1ea30095327269a5c4835230a71f" name="a9ecc1ea30095327269a5c4835230a71f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ecc1ea30095327269a5c4835230a71f">&#9670;&#160;</a></span>Tick()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -141,7 +141,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a>&#160;</td>
-          <td class="paramname"><em>bounds</em>&#160;</td>
+          <td class="paramname"><em>bounds</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">in <a class="el" href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html">SimTuning</a>&#160;</td>
+          <td class="paramname"><em>tuning</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -160,7 +166,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">units</td><td>Список всех юнитов в бою.</td></tr>
-    <tr><td class="paramname">dt</td><td>Длительность тика (всегда SimConstants.TickDelta).</td></tr>
+    <tr><td class="paramname">dt</td><td>Длительность тика (всегда <a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#aa74ddc1aa162b358a9dcf16ad1e57c54" title="Фиксированный шаг симуляции, сек. Единственный «dt» детерминированного шага.">SimConstants.TickDelta</a>).</td></tr>
     <tr><td class="paramname">bounds</td><td>Границы поля: итоговая позиция клампится внутрь (<a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html#a6544c30b216b3a689e965d8c6c0aefda" title="Бесконечное поле: движение не клампится.">ArenaBounds.Unbounded</a> = без стен).</td></tr>
   </table>
   </dd>
@@ -168,7 +174,7 @@ Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1MovementSystem_af5b73c3b215a5304f0c57490ece50de4_cgraph.svg" width="510" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1MovementSystem_a9ecc1ea30095327269a5c4835230a71f_cgraph.svg" width="510" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

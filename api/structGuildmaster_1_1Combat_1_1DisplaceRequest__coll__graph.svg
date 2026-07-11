@@ -46,7 +46,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 648;
+var viewWidth = 664;
 var viewHeight = 803;
 var sectionId = 'dynsection-0';
 </script>
@@ -58,35 +58,35 @@ var sectionId = 'dynsection-0';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title="Параметры принудительного смещения цели (§9.9, «Шквальный толчок»).">
-<polygon fill="#999999" stroke="transparent" points="359.5,-195 203.5,-195 203.5,0 359.5,0 359.5,-195"/>
-<text text-anchor="start" x="208.5" y="-182.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Displace</text>
-<text text-anchor="start" x="261.5" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">Request</text>
-<text text-anchor="start" x="218.5" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">Kind</text>
-<text text-anchor="start" x="218.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">Direction</text>
-<text text-anchor="start" x="218.5" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">Distance</text>
-<text text-anchor="start" x="218.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Ticks</text>
-<text text-anchor="start" x="218.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Cannonball</text>
-<text text-anchor="start" x="218.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">Damage</text>
-<text text-anchor="start" x="218.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">DamageType</text>
-<text text-anchor="start" x="218.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">Width</text>
-<text text-anchor="start" x="218.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">ChainDistance</text>
-<text text-anchor="start" x="218.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">ChainTicks</text>
-<text text-anchor="start" x="218.5" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="242.5" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">DisplaceRequest()</text>
-<polygon fill="#666666" stroke="#666666" points="203.5,-166.5 203.5,-166.5 359.5,-166.5 359.5,-166.5 203.5,-166.5"/>
-<polygon fill="#666666" stroke="#666666" points="203.5,-16.5 203.5,-16.5 240.5,-16.5 240.5,-16.5 203.5,-16.5"/>
-<polygon fill="#666666" stroke="#666666" points="240.5,-16.5 240.5,-16.5 359.5,-16.5 359.5,-16.5 240.5,-16.5"/>
-<polygon fill="none" stroke="#666666" points="203.5,0 203.5,-195 359.5,-195 359.5,0 203.5,0"/>
+<polygon fill="#999999" stroke="transparent" points="361.5,-195 205.5,-195 205.5,0 361.5,0 361.5,-195"/>
+<text text-anchor="start" x="210.5" y="-182.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Displace</text>
+<text text-anchor="start" x="263.5" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">Request</text>
+<text text-anchor="start" x="220.5" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">Kind</text>
+<text text-anchor="start" x="220.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">Direction</text>
+<text text-anchor="start" x="220.5" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">Distance</text>
+<text text-anchor="start" x="220.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">Ticks</text>
+<text text-anchor="start" x="220.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">Cannonball</text>
+<text text-anchor="start" x="220.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">Damage</text>
+<text text-anchor="start" x="220.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">DamageType</text>
+<text text-anchor="start" x="220.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">Width</text>
+<text text-anchor="start" x="220.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">ChainDistance</text>
+<text text-anchor="start" x="220.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">ChainTicks</text>
+<text text-anchor="start" x="220.5" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="244.5" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">DisplaceRequest()</text>
+<polygon fill="#666666" stroke="#666666" points="205.5,-166.5 205.5,-166.5 361.5,-166.5 361.5,-166.5 205.5,-166.5"/>
+<polygon fill="#666666" stroke="#666666" points="205.5,-16.5 205.5,-16.5 242.5,-16.5 242.5,-16.5 205.5,-16.5"/>
+<polygon fill="#666666" stroke="#666666" points="242.5,-16.5 242.5,-16.5 361.5,-16.5 361.5,-16.5 242.5,-16.5"/>
+<polygon fill="none" stroke="#666666" points="205.5,0 205.5,-195 361.5,-195 361.5,0 205.5,0"/>
 </a>
 </g>
 </g>
@@ -94,34 +94,34 @@ var sectionId = 'dynsection-0';
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html" target="_top" xlink:title="Рантайм&#45;представление юнита на один бой.">
-<polygon fill="white" stroke="transparent" points="369.5,-452 193.5,-452 193.5,-253 369.5,-253 369.5,-452"/>
-<text text-anchor="start" x="198.5" y="-439.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.RuntimeUnit</text>
-<text text-anchor="start" x="215.5" y="-424.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="246.5" y="-424.5" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
-<text text-anchor="start" x="215.5" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="246.5" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">Team</text>
-<text text-anchor="start" x="215.5" y="-394.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="246.5" y="-394.5" font-family="Helvetica,sans-Serif" font-size="10.00">CurrentHP</text>
-<text text-anchor="start" x="215.5" y="-379.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="246.5" y="-379.5" font-family="Helvetica,sans-Serif" font-size="10.00">CurrentResource</text>
-<text text-anchor="start" x="215.5" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="246.5" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00">CurrentShield</text>
-<text text-anchor="start" x="215.5" y="-349.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="246.5" y="-349.5" font-family="Helvetica,sans-Serif" font-size="10.00">Position</text>
-<text text-anchor="start" x="215.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="246.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">PreviousPosition</text>
-<text text-anchor="start" x="215.5" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="246.5" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">BrainPhase</text>
-<text text-anchor="start" x="215.5" y="-304.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="246.5" y="-304.5" font-family="Helvetica,sans-Serif" font-size="10.00">BrainDirty</text>
-<text text-anchor="start" x="215.5" y="-289.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="246.5" y="-289.5" font-family="Helvetica,sans-Serif" font-size="10.00">Positioning</text>
-<text text-anchor="start" x="246.5" y="-274.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 13 more...</text>
-<text text-anchor="start" x="279.5" y="-259.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="193.5,-434.5 193.5,-434.5 369.5,-434.5 369.5,-434.5 193.5,-434.5"/>
-<polygon fill="#666666" stroke="#666666" points="193.5,-269.5 193.5,-269.5 244.5,-269.5 244.5,-269.5 193.5,-269.5"/>
-<polygon fill="#666666" stroke="#666666" points="244.5,-269.5 244.5,-269.5 369.5,-269.5 369.5,-269.5 244.5,-269.5"/>
-<polygon fill="none" stroke="#666666" points="193.5,-253 193.5,-452 369.5,-452 369.5,-253 193.5,-253"/>
+<polygon fill="white" stroke="transparent" points="371.5,-452 195.5,-452 195.5,-253 371.5,-253 371.5,-452"/>
+<text text-anchor="start" x="200.5" y="-439.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.RuntimeUnit</text>
+<text text-anchor="start" x="217.5" y="-424.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="248.5" y="-424.5" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
+<text text-anchor="start" x="217.5" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="248.5" y="-409.5" font-family="Helvetica,sans-Serif" font-size="10.00">Team</text>
+<text text-anchor="start" x="217.5" y="-394.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="248.5" y="-394.5" font-family="Helvetica,sans-Serif" font-size="10.00">CurrentHP</text>
+<text text-anchor="start" x="217.5" y="-379.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="248.5" y="-379.5" font-family="Helvetica,sans-Serif" font-size="10.00">CurrentResource</text>
+<text text-anchor="start" x="217.5" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="248.5" y="-364.5" font-family="Helvetica,sans-Serif" font-size="10.00">CurrentShield</text>
+<text text-anchor="start" x="217.5" y="-349.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="248.5" y="-349.5" font-family="Helvetica,sans-Serif" font-size="10.00">Position</text>
+<text text-anchor="start" x="217.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="248.5" y="-334.5" font-family="Helvetica,sans-Serif" font-size="10.00">PreviousPosition</text>
+<text text-anchor="start" x="217.5" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="248.5" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">BrainPhase</text>
+<text text-anchor="start" x="217.5" y="-304.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="248.5" y="-304.5" font-family="Helvetica,sans-Serif" font-size="10.00">BrainDirty</text>
+<text text-anchor="start" x="217.5" y="-289.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="248.5" y="-289.5" font-family="Helvetica,sans-Serif" font-size="10.00">Positioning</text>
+<text text-anchor="start" x="248.5" y="-274.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 13 more...</text>
+<text text-anchor="start" x="281.5" y="-259.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<polygon fill="#666666" stroke="#666666" points="195.5,-434.5 195.5,-434.5 371.5,-434.5 371.5,-434.5 195.5,-434.5"/>
+<polygon fill="#666666" stroke="#666666" points="195.5,-269.5 195.5,-269.5 246.5,-269.5 246.5,-269.5 195.5,-269.5"/>
+<polygon fill="#666666" stroke="#666666" points="246.5,-269.5 246.5,-269.5 371.5,-269.5 371.5,-269.5 246.5,-269.5"/>
+<polygon fill="none" stroke="#666666" points="195.5,-253 195.5,-452 371.5,-452 371.5,-253 195.5,-253"/>
 </a>
 </g>
 </g>
@@ -129,25 +129,25 @@ var sectionId = 'dynsection-0';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node2&#45;&gt;Node1</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M281.5,-252.96C281.5,-237.96 281.5,-222.41 281.5,-207.21"/>
-<polygon fill="none" stroke="#63b8ff" points="281.5,-207.11 277.5,-201.11 281.5,-195.11 285.5,-201.11 281.5,-207.11"/>
+<path fill="none" stroke="#63b8ff" d="M283.5,-252.96C283.5,-237.96 283.5,-222.41 283.5,-207.21"/>
+<polygon fill="none" stroke="#63b8ff" points="283.5,-207.11 279.5,-201.11 283.5,-195.11 287.5,-201.11 283.5,-207.11"/>
 </a>
 </g>
-<text text-anchor="middle" x="304" y="-227" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Source</text>
-<text text-anchor="middle" x="304" y="-216" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+Target</text>
+<text text-anchor="middle" x="306" y="-227" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Source</text>
+<text text-anchor="middle" x="306" y="-216" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+Target</text>
 </g>
 <!-- Node2&#45;&gt;Node2 -->
 <g id="edge4_Node000002_Node000002" class="edge">
 <title>Node2&#45;&gt;Node2</title>
 <g id="a_edge4_Node000002_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M369.63,-372.29C380.43,-368.75 387.5,-362.15 387.5,-352.5 387.5,-346.62 384.87,-341.87 380.38,-338.26"/>
-<polygon fill="none" stroke="#63b8ff" points="380.3,-338.22 373.13,-339.02 369.63,-332.71 376.8,-331.91 380.3,-338.22"/>
+<path fill="none" stroke="#63b8ff" d="M371.63,-372.29C382.43,-368.75 389.5,-362.15 389.5,-352.5 389.5,-346.62 386.87,-341.87 382.38,-338.26"/>
+<polygon fill="none" stroke="#63b8ff" points="382.3,-338.22 375.13,-339.02 371.63,-332.71 378.8,-331.91 382.3,-338.22"/>
 </a>
 </g>
-<text text-anchor="middle" x="444.5" y="-366.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +AutoAttackTarget</text>
-<text text-anchor="middle" x="444.5" y="-355.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+CurrentTarget</text>
-<text text-anchor="middle" x="444.5" y="-344.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+PendingEngageTarget</text>
-<text text-anchor="middle" x="444.5" y="-333.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+WindupTarget</text>
+<text text-anchor="middle" x="446.5" y="-366.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +AutoAttackTarget</text>
+<text text-anchor="middle" x="446.5" y="-355.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+CurrentTarget</text>
+<text text-anchor="middle" x="446.5" y="-344.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+PendingEngageTarget</text>
+<text text-anchor="middle" x="446.5" y="-333.5" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey">+WindupTarget</text>
 </g>
 <!-- Node3 -->
 <g id="Node000003" class="node">
@@ -174,8 +174,8 @@ var sectionId = 'dynsection-0';
 <g id="edge2_Node000002_Node000003" class="edge">
 <title>Node3&#45;&gt;Node2</title>
 <g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M102.51,-556.93C116.05,-538.58 132.13,-517.48 147.5,-499 159.3,-484.82 172.05,-470.18 184.83,-455.9"/>
-<polygon fill="none" stroke="#63b8ff" points="185.2,-455.49 186.24,-448.36 193.22,-446.57 192.18,-453.71 185.2,-455.49"/>
+<path fill="none" stroke="#63b8ff" d="M102.44,-556.87C115.97,-538.51 132.06,-517.42 147.5,-499 159.92,-484.19 173.39,-468.91 186.88,-454.07"/>
+<polygon fill="none" stroke="#63b8ff" points="187.17,-453.75 188.26,-446.62 195.27,-444.89 194.17,-452.02 187.17,-453.75"/>
 </a>
 </g>
 <text text-anchor="middle" x="191" y="-473" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Stats</text>
@@ -224,45 +224,45 @@ var sectionId = 'dynsection-0';
 <g id="edge5_Node000002_Node000005" class="edge">
 <title>Node5&#45;&gt;Node2</title>
 <g id="a_edge5_Node000002_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M232.03,-573.89C238.14,-546.69 247.65,-504.33 256.7,-463.98"/>
-<polygon fill="none" stroke="#63b8ff" points="256.74,-463.82 254.15,-457.09 259.37,-452.11 261.96,-458.84 256.74,-463.82"/>
+<path fill="none" stroke="#63b8ff" d="M232.27,-573.89C238.59,-546.69 248.44,-504.33 257.82,-463.98"/>
+<polygon fill="none" stroke="#63b8ff" points="257.86,-463.8 255.32,-457.05 260.58,-452.11 263.11,-458.86 257.86,-463.8"/>
 </a>
 </g>
-<text text-anchor="middle" x="274" y="-473" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Brain</text>
+<text text-anchor="middle" x="275" y="-473" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Brain</text>
 </g>
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" target="_top" xlink:title="«Чемпион» — стат&#45;блок и боевые категории юнита.">
-<polygon fill="white" stroke="transparent" points="467,-709 312,-709 312,-499 467,-499 467,-709"/>
-<text text-anchor="start" x="317.5" y="-697" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="start" x="366" y="-686" font-family="Helvetica,sans-Serif" font-size="10.00">RelicData</text>
-<text text-anchor="start" x="321" y="-671" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="338.5" y="-671" font-family="Helvetica,sans-Serif" font-size="10.00">DisplayNameKey</text>
-<text text-anchor="start" x="321" y="-656" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="338.5" y="-656" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
-<text text-anchor="start" x="321" y="-641" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="338.5" y="-641" font-family="Helvetica,sans-Serif" font-size="10.00">Visual</text>
-<text text-anchor="start" x="321" y="-626" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="338.5" y="-626" font-family="Helvetica,sans-Serif" font-size="10.00">DamageType</text>
-<text text-anchor="start" x="321" y="-611" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="338.5" y="-611" font-family="Helvetica,sans-Serif" font-size="10.00">AttackType</text>
-<text text-anchor="start" x="321" y="-596" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="338.5" y="-596" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceType</text>
-<text text-anchor="start" x="321" y="-581" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="338.5" y="-581" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackShape</text>
-<text text-anchor="start" x="321" y="-566" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="338.5" y="-566" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackWidth</text>
-<text text-anchor="start" x="321" y="-551" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="338.5" y="-551" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackEffects</text>
-<text text-anchor="start" x="321" y="-536" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="338.5" y="-536" font-family="Helvetica,sans-Serif" font-size="10.00">CanAttackWhileMoving</text>
-<text text-anchor="start" x="338.5" y="-521" font-family="Helvetica,sans-Serif" font-size="10.00">and 7 more...</text>
-<text text-anchor="start" x="388" y="-506" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="312.5,-681 312.5,-681 467.5,-681 467.5,-681 312.5,-681"/>
-<polygon fill="#666666" stroke="#666666" points="312.5,-516 312.5,-516 336.5,-516 336.5,-516 312.5,-516"/>
-<polygon fill="#666666" stroke="#666666" points="336.5,-516 336.5,-516 467.5,-516 467.5,-516 336.5,-516"/>
-<polygon fill="none" stroke="#666666" points="312,-499 312,-709 467,-709 467,-499 312,-499"/>
+<g id="a_Node000006"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html" target="_top" xlink:title="Общий боевой кит всего, что выходит на арену (вики «13» §3.1).">
+<polygon fill="white" stroke="transparent" points="483,-709 312,-709 312,-499 483,-499 483,-709"/>
+<text text-anchor="start" x="325.5" y="-697" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
+<text text-anchor="start" x="376" y="-686" font-family="Helvetica,sans-Serif" font-size="10.00">UnitData</text>
+<text text-anchor="start" x="316.5" y="-671" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="329.5" y="-671" font-family="Helvetica,sans-Serif" font-size="10.00">DamageType</text>
+<text text-anchor="start" x="316.5" y="-656" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="329.5" y="-656" font-family="Helvetica,sans-Serif" font-size="10.00">AttackType</text>
+<text text-anchor="start" x="316.5" y="-641" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="329.5" y="-641" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceType</text>
+<text text-anchor="start" x="316.5" y="-626" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="329.5" y="-626" font-family="Helvetica,sans-Serif" font-size="10.00">Visual</text>
+<text text-anchor="start" x="316.5" y="-611" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="329.5" y="-611" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackShape</text>
+<text text-anchor="start" x="316.5" y="-596" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="329.5" y="-596" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackWidth</text>
+<text text-anchor="start" x="316.5" y="-581" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="329.5" y="-581" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackEffects</text>
+<text text-anchor="start" x="316.5" y="-566" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="329.5" y="-566" font-family="Helvetica,sans-Serif" font-size="10.00">CanAttackWhileMoving</text>
+<text text-anchor="start" x="316.5" y="-551" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="329.5" y="-551" font-family="Helvetica,sans-Serif" font-size="10.00">MovingAttackSpeedPenaltyPct</text>
+<text text-anchor="start" x="316.5" y="-536" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="329.5" y="-536" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceOnHit</text>
+<text text-anchor="start" x="329.5" y="-521" font-family="Helvetica,sans-Serif" font-size="10.00">and 7 more...</text>
+<text text-anchor="start" x="396" y="-506" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<polygon fill="#666666" stroke="#666666" points="312.5,-681 312.5,-681 483.5,-681 483.5,-681 312.5,-681"/>
+<polygon fill="#666666" stroke="#666666" points="312.5,-516 312.5,-516 327.5,-516 327.5,-516 312.5,-516"/>
+<polygon fill="#666666" stroke="#666666" points="327.5,-516 327.5,-516 483.5,-516 483.5,-516 327.5,-516"/>
+<polygon fill="none" stroke="#666666" points="312,-499 312,-709 483,-709 483,-499 312,-499"/>
 </a>
 </g>
 </g>
@@ -270,23 +270,26 @@ var sectionId = 'dynsection-0';
 <g id="edge6_Node000002_Node000006" class="edge">
 <title>Node6&#45;&gt;Node2</title>
 <g id="a_edge6_Node000002_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M344.48,-499C339.39,-487.24 334.2,-475.24 329.08,-463.41"/>
-<polygon fill="none" stroke="#63b8ff" points="328.96,-463.15 322.91,-459.24 324.2,-452.14 330.25,-456.06 328.96,-463.15"/>
+<path fill="none" stroke="#63b8ff" d="M349.98,-499C344.61,-487.24 339.12,-475.24 333.72,-463.41"/>
+<polygon fill="none" stroke="#63b8ff" points="333.56,-463.05 327.43,-459.26 328.57,-452.14 334.7,-455.93 333.56,-463.05"/>
 </a>
 </g>
-<text text-anchor="middle" x="353.5" y="-473" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Relic</text>
+<text text-anchor="middle" x="356.5" y="-473" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Unit</text>
 </g>
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:title=" ">
-<polygon fill="white" stroke="transparent" points="522,-795 431,-795 431,-746 522,-746 522,-795"/>
-<text text-anchor="start" x="436.5" y="-782.5" font-family="Helvetica,sans-Serif" font-size="10.00">ScriptableObject</text>
-<text text-anchor="start" x="475" y="-767.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<text text-anchor="start" x="475" y="-752.5" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="431.5,-777.5 431.5,-777.5 522.5,-777.5 522.5,-777.5 431.5,-777.5"/>
-<polygon fill="#666666" stroke="#666666" points="431.5,-762.5 431.5,-762.5 522.5,-762.5 522.5,-762.5 431.5,-762.5"/>
-<polygon fill="none" stroke="#666666" points="431,-746 431,-795 522,-795 522,-746 431,-746"/>
+<g id="a_Node000007"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" target="_top" xlink:title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются...">
+<polygon fill="#fff0f0" stroke="transparent" points="555.5,-795 459.5,-795 459.5,-746 555.5,-746 555.5,-795"/>
+<text text-anchor="start" x="464.5" y="-782.5" font-family="Helvetica,sans-Serif" font-size="10.00">ContentDefinition</text>
+<text text-anchor="start" x="474" y="-767.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="497.5" y="-767.5" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
+<text text-anchor="start" x="474" y="-752.5" font-family="Helvetica,sans-Serif" font-size="10.00">#</text>
+<text text-anchor="start" x="497.5" y="-752.5" font-family="Helvetica,sans-Serif" font-size="10.00">SetId()</text>
+<polygon fill="red" stroke="red" points="459.5,-777.5 459.5,-777.5 555.5,-777.5 555.5,-777.5 459.5,-777.5"/>
+<polygon fill="red" stroke="red" points="459.5,-762.5 459.5,-762.5 495.5,-762.5 495.5,-762.5 459.5,-762.5"/>
+<polygon fill="red" stroke="red" points="495.5,-762.5 495.5,-762.5 555.5,-762.5 555.5,-762.5 495.5,-762.5"/>
+<polygon fill="none" stroke="red" points="459.5,-746 459.5,-795 555.5,-795 555.5,-746 459.5,-746"/>
 </a>
 </g>
 </g>
@@ -294,50 +297,48 @@ var sectionId = 'dynsection-0';
 <g id="edge7_Node000006_Node000007" class="edge">
 <title>Node7&#45;&gt;Node6</title>
 <g id="a_edge7_Node000006_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M459.28,-736.94C454.83,-728.52 449.79,-719 444.51,-709.01"/>
-<polygon fill="none" stroke="#63b8ff" points="456.27,-738.73 464.04,-745.93 462.45,-735.45 456.27,-738.73"/>
+<path fill="none" stroke="#63b8ff" d="M486.09,-737.48C480.37,-728.93 473.87,-719.21 467.05,-709.01"/>
+<polygon fill="none" stroke="#63b8ff" points="483.27,-739.56 491.74,-745.93 489.09,-735.67 483.27,-739.56"/>
 </a>
 </g>
 </g>
-<!-- Node8 -->
-<g id="Node000008" class="node">
-<title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" target="_top" xlink:title="«Пилот» — носитель реликвии.">
-<polygon fill="white" stroke="transparent" points="640,-649 485,-649 485,-559 640,-559 640,-649"/>
-<text text-anchor="start" x="490.5" y="-637" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
-<text text-anchor="start" x="535.5" y="-626" font-family="Helvetica,sans-Serif" font-size="10.00">VesselData</text>
-<text text-anchor="start" x="501.5" y="-611" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="526.5" y="-611" font-family="Helvetica,sans-Serif" font-size="10.00">DisplayNameKey</text>
-<text text-anchor="start" x="501.5" y="-596" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="526.5" y="-596" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
-<text text-anchor="start" x="501.5" y="-581" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="526.5" y="-581" font-family="Helvetica,sans-Serif" font-size="10.00">PerkModifiers</text>
-<text text-anchor="start" x="561" y="-566" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
-<polygon fill="#666666" stroke="#666666" points="485.5,-621 485.5,-621 640.5,-621 640.5,-621 485.5,-621"/>
-<polygon fill="#666666" stroke="#666666" points="485.5,-576 485.5,-576 524.5,-576 524.5,-576 485.5,-576"/>
-<polygon fill="#666666" stroke="#666666" points="524.5,-576 524.5,-576 640.5,-576 640.5,-576 524.5,-576"/>
-<polygon fill="none" stroke="#666666" points="485,-559 485,-649 640,-649 640,-559 485,-559"/>
+<!-- Node9 -->
+<g id="Node000009" class="node">
+<title>Node9</title>
+<g id="a_Node000009"><a xlink:href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" target="_top" xlink:title="«Пилот» — носитель реликвии.">
+<polygon fill="white" stroke="transparent" points="656,-641.5 501,-641.5 501,-566.5 656,-566.5 656,-641.5"/>
+<text text-anchor="start" x="506.5" y="-629" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
+<text text-anchor="start" x="551.5" y="-618" font-family="Helvetica,sans-Serif" font-size="10.00">VesselData</text>
+<text text-anchor="start" x="522" y="-603" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="551.5" y="-603" font-family="Helvetica,sans-Serif" font-size="10.00">Tags</text>
+<text text-anchor="start" x="522" y="-588" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="551.5" y="-588" font-family="Helvetica,sans-Serif" font-size="10.00">PerkModifiers</text>
+<text text-anchor="start" x="577" y="-573" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<polygon fill="#666666" stroke="#666666" points="501.5,-613 501.5,-613 656.5,-613 656.5,-613 501.5,-613"/>
+<polygon fill="#666666" stroke="#666666" points="501.5,-583 501.5,-583 549.5,-583 549.5,-583 501.5,-583"/>
+<polygon fill="#666666" stroke="#666666" points="549.5,-583 549.5,-583 656.5,-583 656.5,-583 549.5,-583"/>
+<polygon fill="none" stroke="#666666" points="501,-566.5 501,-641.5 656,-641.5 656,-566.5 501,-566.5"/>
 </a>
 </g>
 </g>
-<!-- Node7&#45;&gt;Node8 -->
-<g id="edge9_Node000008_Node000007" class="edge">
-<title>Node7&#45;&gt;Node8</title>
-<g id="a_edge9_Node000008_Node000007"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M493.58,-736.84C506.69,-711.75 524.93,-676.86 539.36,-649.27"/>
-<polygon fill="none" stroke="#63b8ff" points="490.35,-735.45 488.82,-745.93 496.56,-738.69 490.35,-735.45"/>
+<!-- Node7&#45;&gt;Node9 -->
+<g id="edge9_Node000009_Node000007" class="edge">
+<title>Node7&#45;&gt;Node9</title>
+<g id="a_edge9_Node000009_Node000007"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M521.64,-736.74C533.5,-709.26 550.42,-670.06 562.72,-641.57"/>
+<polygon fill="none" stroke="#63b8ff" points="518.42,-735.36 517.67,-745.93 524.85,-738.14 518.42,-735.36"/>
 </a>
 </g>
 </g>
-<!-- Node8&#45;&gt;Node2 -->
-<g id="edge8_Node000002_Node000008" class="edge">
-<title>Node8&#45;&gt;Node2</title>
-<g id="a_edge8_Node000002_Node000008"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M529.93,-558.98C514.69,-539.65 495.68,-517.25 476.5,-499 446.96,-470.9 411.98,-443.31 379.86,-419.83"/>
-<polygon fill="none" stroke="#63b8ff" points="379.71,-419.72 372.5,-419.44 369.99,-412.68 377.19,-412.97 379.71,-419.72"/>
+<!-- Node9&#45;&gt;Node2 -->
+<g id="edge8_Node000002_Node000009" class="edge">
+<title>Node9&#45;&gt;Node2</title>
+<g id="a_edge8_Node000002_Node000009"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M552.05,-566.23C536.07,-545.31 514.57,-519.31 492.5,-499 458.83,-468 418.21,-438.29 381.78,-413.88"/>
+<polygon fill="none" stroke="#63b8ff" points="381.62,-413.77 374.41,-413.79 371.62,-407.14 378.83,-407.12 381.62,-413.77"/>
 </a>
 </g>
-<text text-anchor="middle" x="474" y="-473" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Vessel</text>
+<text text-anchor="middle" x="493" y="-473" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> +Vessel</text>
 </g>
 </g>
 </svg>

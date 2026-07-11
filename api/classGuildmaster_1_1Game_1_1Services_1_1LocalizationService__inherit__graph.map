@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Services.LocalizationService" name="Guildmaster.Game.Services.LocalizationService">
+<area shape="rect" id="Node000001" title="Реализация ILocalizationService поверх Unity String Tables (вики «13» §5)." alt="" coords="49,179,247,359"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html" title="Единая точка локализации (вики «13» §5)." alt="" coords="5,5,149,131"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,143,119,178,114,179,101,144"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="173,35,264,101"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="205,114,182,179,177,177,200,112"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="Guildmaster.Data.Editor.ContentCrudService.TryDelete" name="Guildmaster.Data.Editor.ContentCrudService.TryDelete">
+<area shape="rect" id="Node000001" title="Удалить ассет, если он ни на что не ссылается." alt="" coords="5,37,223,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#a469d67f5aaed2d7ad11a959c3053f3c0" title="Пути ассетов/сцен/префабов, ссылающихся на def &#160;(обратная зависимость)." alt="" coords="271,5,501,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="223,42,257,38,258,43,223,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a0f1c481144d212691dd43e8322040151" title="Найти/создать БД, заполнить всеми контент&#45;ассетами (сортировка по id), сохранить." alt="" coords="285,69,487,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="223,67,272,73,271,79,223,73"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility.html#a760ae23288991c3a17d526a9309ff1b9" title="Все ContentDefinition&#45;ассеты проекта." alt="" coords="586,37,767,77"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="487,76,572,66,573,71,487,81"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a7303fc4567b36f6b619add6c08137180" title="Существующая БД (первая найденная) или новая в DatabasePath." alt="" coords="549,101,804,141"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="487,98,535,103,535,108,487,103"/>
+</map>

@@ -8,5 +8,7 @@ var searchData=
   ['resourcegaineff_5',['ResourceGainEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a143f98d287cb622e9f790376ba67377d',1,'Guildmaster::Data::Stats']]],
   ['resume_6',['Resume',['../namespaceGuildmaster_1_1Net.html#abfefa865c9eefe25d3d732f0c5c953f8af1cefec9e2196c672a622347f1fbc325',1,'Guildmaster::Net']]],
   ['retreat_7',['Retreat',['../namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba008bec353de180da9782954e7a1374e6',1,'Guildmaster::Combat']]],
-  ['run_8',['Run',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6ac5301693c4e792bcd5a479ef38fb8f8d',1,'Guildmaster::Data::Definitions']]]
+  ['role_8',['Role',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113abbbabdbe1b262f75d99d62880b953be1',1,'Guildmaster::Data::Definitions']]],
+  ['rules_9',['Rules',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ae2772e0f6d732c1f22cce603b3958140a1f4da964f8eab62e96e8cfe406e44364',1,'Guildmaster::Data::Definitions']]],
+  ['run_10',['Run',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6ac5301693c4e792bcd5a479ef38fb8f8d',1,'Guildmaster::Data::Definitions']]]
 ];

@@ -40,7 +40,7 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
-        [ "Properties", "functions_prop.html", null ],
+        [ "Properties", "functions_prop.html", "functions_prop" ],
         [ "Events", "functions_evnt.html", null ]
       ] ]
     ] ],
@@ -52,14 +52,16 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"AIProfile_8cs.html",
-"TargetFilter_8cs.html#a8f41382511e45ac187c5b5caa9a6aea8ab1c94ca2fbc3e78fc30069c8d0f01680",
-"classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent.html#ac94a741484f22fe97749b326da14d10a",
-"classGuildmaster_1_1Combat_1_1SeparationSystem.html",
-"classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html#a7bad620a3a7c555a0c3126c51c0cbe9b",
-"classGuildmaster_1_1Presentation_1_1UnitView.html#a871086ece5d0cc216dfcfa74353fa22b",
-"namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a429d336ceae2000a8948230c38cc738d",
-"structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#a6f07007b00cfb6f5b0dd4ab4f61f36e7"
+"AIPresetData_8cs.html",
+"RunModifierData_8cs.html",
+"classGuildmaster_1_1Combat_1_1DisplacementSystem.html#a7d8b3c5a531421c51ec75ad181051808",
+"classGuildmaster_1_1Combat_1_1RuntimeUnit.html",
+"classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html",
+"classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#a2f24dca1ff0462435f25c366e6104a2b",
+"classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aec07fefb6129c24b0e0c0205abe3aae7",
+"interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html#a939adcda0bfc5d60f436a44ce5d21992",
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a400419f1b352e7a735a9b391387e8e80",
+"structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

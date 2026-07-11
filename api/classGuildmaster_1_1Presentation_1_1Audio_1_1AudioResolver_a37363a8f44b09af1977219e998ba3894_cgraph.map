@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Audio.AudioResolver.Resolve" name="Guildmaster.Presentation.Audio.AudioResolver.Resolve">
+<area shape="rect" id="Node000001" title="Ключ для проигрывания, либо null = тишина (нет ни точной записи, ни дефолта)." alt="" coords="5,5,217,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Audio_1_1AudioResolver.html#a728ea9ceecfab0c00d8d69eb60c73511" title="Строковый вид действия для ключа (attack/hit/death/cast/ui)." alt="" coords="265,5,491,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,23,252,23,252,28,217,28"/>
+</map>

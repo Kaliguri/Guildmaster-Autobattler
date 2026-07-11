@@ -1,19 +1,7 @@
 var searchData=
 [
-  ['rebuild_0',['Rebuild',['../classGuildmaster_1_1Combat_1_1SpatialHash.html#ac543e18ee359c871452b0e8a9ede3b45',1,'Guildmaster::Combat::SpatialHash']]],
-  ['rect2d_1',['Rect2D',['../structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html#a191c4757dd9021b242fb16ed08bedbe0',1,'Guildmaster::Core::Arena::Rect2D']]],
-  ['remove_2',['remove',['../classGuildmaster_1_1Combat_1_1EffectSystem.html#ac752cc7b39872e4fc36e6ddb25fe170d',1,'Guildmaster.Combat.EffectSystem.Remove()'],['../classGuildmaster_1_1Combat_1_1SpatialHash.html#a06b9482f7145afd2f7ac8cc74768aff3',1,'Guildmaster.Combat.SpatialHash.Remove()']]],
-  ['removebytag_3',['RemoveByTag',['../classGuildmaster_1_1Combat_1_1EffectSystem.html#a3b6d6263a82d13805d5bfb6498ca1ce2',1,'Guildmaster::Combat::EffectSystem']]],
-  ['removemodifiersfrom_4',['RemoveModifiersFrom',['../classGuildmaster_1_1Combat_1_1Stats.html#a28fb93c927f98bada4d89285bfc2e4ca',1,'Guildmaster::Combat::Stats']]],
-  ['reportareahit_5',['reportareahit',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a96609f5e3bf5177b8fb1959d275f1b44',1,'Guildmaster.Combat.CombatSimulation.ReportAreaHit()'],['../interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#ac724e42e655e77612ab64f06872e08c8',1,'Guildmaster.Combat.ICombatContext.ReportAreaHit()']]],
-  ['reset_6',['Reset',['../classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html#ae78a0afc9b06e3549b87c9e74c121b36',1,'Guildmaster::Combat::Effects::PreDamageResult']]],
-  ['resetbattle_7',['ResetBattle',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a466fdfbb0c077b3fc94f81db8b810867',1,'Guildmaster::Combat::CombatSimulation']]],
-  ['resetids_8',['ResetIds',['../classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a4d84bafc6102b502a158474b5eed00ca',1,'Guildmaster::Combat::RuntimeUnitFactory']]],
-  ['resolve_9',['Resolve',['../structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html#a70741f041fa3aa2b67f41f6b82d8e072',1,'Guildmaster::Data::Stats::ScalableValue']]],
-  ['resolvedurationticks_10',['ResolveDurationTicks',['../classGuildmaster_1_1Combat_1_1EffectSystem.html#afba054405a0f16608dfd5d774a58cc90',1,'Guildmaster::Combat::EffectSystem']]],
-  ['restart_11',['Restart',['../classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a223c0b90fe8f830bb71e3ed9196b4f9b',1,'Guildmaster::DevTools::GuildmasterCommands']]],
-  ['restartlastbattle_12',['RestartLastBattle',['../classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a0e8ffc130d2adb84e307f5c10d183490',1,'Guildmaster::DevTools::GuildmasterCommands']]],
-  ['resumecommand_13',['ResumeCommand',['../classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand.html#a24996de26e6f18dfa7d296195180f4a4',1,'Guildmaster::Combat::Commands::ResumeCommand']]],
-  ['runpredamage_14',['RunPreDamage',['../classGuildmaster_1_1Combat_1_1EffectSystem.html#a185829371095c507b7672006d99010b8',1,'Guildmaster::Combat::EffectSystem']]],
-  ['runtimeunitfactory_15',['RuntimeUnitFactory',['../classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a9b33e6195bdd2345c32c41581e0b2fd1',1,'Guildmaster::Combat::RuntimeUnitFactory']]]
+  ['pausecommand_0',['PauseCommand',['../classGuildmaster_1_1Combat_1_1Commands_1_1PauseCommand.html#a59a9fe615d930a534e492771f0e884b4',1,'Guildmaster::Combat::Commands::PauseCommand']]],
+  ['play_1',['play',['../interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html#af56cc676ba2959a2b5ef846260d973f1',1,'Guildmaster.Core.Audio.IAudioService.Play()'],['../classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#a197c8aa1dba9410b38e928115782bca8',1,'Guildmaster.Game.Services.UnityAudioService.Play()'],['../classGuildmaster_1_1Presentation_1_1FloatingText.html#a600a846b806df410c85b2a5dbf0ecfe5',1,'Guildmaster.Presentation.FloatingText.Play(string text, Color color)'],['../classGuildmaster_1_1Presentation_1_1FloatingText.html#a5d51f00f0896f9ff61813a9bad0b499c',1,'Guildmaster.Presentation.FloatingText.Play(string text, Color color, System.Action&lt; FloatingText &gt; onComplete)']]],
+  ['profilebrain_2',['ProfileBrain',['../classGuildmaster_1_1Combat_1_1ProfileBrain.html#a5070da8d39c72dc147c4593883fc22c1',1,'Guildmaster::Combat::ProfileBrain']]],
+  ['projectilespawn_3',['ProjectileSpawn',['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a873594d8d13a6a9e8c3f1956cd306bf1',1,'Guildmaster::Combat::ProjectileSpawn']]]
 ];

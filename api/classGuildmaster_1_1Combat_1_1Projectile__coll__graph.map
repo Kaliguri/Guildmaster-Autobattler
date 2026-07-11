@@ -1,22 +1,22 @@
 <map id="Guildmaster.Combat.Projectile" name="Guildmaster.Combat.Projectile">
-<area shape="rect" id="Node000001" title="Рантайм&#45;данные одного снаряда." alt="" coords="593,1031,806,1296"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="407,688,642,953"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="595,952,627,1015,622,1017,590,955"/>
-<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="644,791,662,802,669,820,666,833,659,842,654,839,661,831,663,821,657,805,641,795"/>
+<area shape="rect" id="Node000001" title="Рантайм&#45;данные одного снаряда." alt="" coords="605,1051,818,1316"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="418,708,653,973"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="606,972,638,1035,633,1037,601,975"/>
+<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="654,811,672,822,679,840,677,853,669,862,665,859,672,851,674,841,668,825,651,815"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="5,197,191,323"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="124,322,156,396,200,484,254,576,319,662,355,699,396,733,392,737,352,703,315,666,250,579,195,486,151,398,119,324"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="122,322,154,400,198,493,254,591,286,638,321,682,361,722,406,758,403,762,358,726,317,686,282,642,250,594,193,496,149,402,117,324"/>
 <area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html" title="Только&#45;чтение собранных статов." alt="" coords="53,5,143,71"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="101,84,101,197,95,197,95,84"/>
 <area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html" title="Главный шов AI (вики «13» §3.1): единственная точка, где принимается «дорогое» решение «кого/где»." alt="" coords="215,220,397,300"/>
-<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="324,299,470,672,465,674,319,301"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — стат&#45;блок и боевые категории юнита." alt="" coords="421,120,628,400"/>
-<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="527,400,527,671,522,671,522,400"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="695,5,816,71"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="695,80,641,122,630,133,626,129,638,118,691,76"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="652,200,859,320"/>
-<area shape="poly" id="edge9_Node000008_Node000007" title=" " alt="" coords="758,84,758,200,753,200,753,84"/>
-<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html" title="Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги,..." alt="" coords="785,424,992,664"/>
-<area shape="poly" id="edge11_Node000009_Node000007" title=" " alt="" coords="830,73,854,93,874,119,891,155,903,193,917,273,919,352,914,424,908,424,914,352,911,274,898,195,886,157,869,121,850,97,826,77"/>
-<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="733,322,588,674,583,672,728,320"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="887,664,871,805,855,881,832,954,803,1017,799,1015,828,952,850,880,865,804,882,664"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="324,299,480,692,475,694,319,301"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html" title="Общий боевой кит всего, что выходит на арену (вики «13» §3.1)." alt="" coords="421,120,649,400"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="538,400,538,691,533,691,533,400"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="713,5,841,71"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="717,80,662,122,651,132,648,128,659,118,714,76"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="673,210,880,310"/>
+<area shape="poly" id="edge9_Node000009_Node000007" title=" " alt="" coords="779,84,779,210,774,210,774,84"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html" title="Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги,..." alt="" coords="804,424,1011,684"/>
+<area shape="poly" id="edge11_Node000010_Node000007" title=" " alt="" coords="854,75,877,94,895,119,912,155,924,193,938,272,940,351,935,424,929,423,935,351,933,273,919,194,907,157,890,121,873,98,850,79"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="759,311,599,693,594,691,754,309"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="903,685,883,826,866,901,843,974,814,1037,809,1035,838,972,861,900,878,825,897,684"/>
 </map>
