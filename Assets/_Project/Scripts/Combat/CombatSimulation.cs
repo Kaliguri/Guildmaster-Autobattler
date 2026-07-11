@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -22,6 +23,11 @@ namespace Guildmaster.Combat
         private readonly IRngService         _rng;
         private readonly float               _armorK;
         private readonly ArenaBounds         _arena;
+        // Зона деспавна снарядов = видимая область камеры (CameraZone) + margin: снаряд гаснет ЗА
+        // пределами видимого игроку, а не на краю арены (решение Макса). Фолбэк — границы арены.
+        private readonly ArenaBounds         _projectileDespawnBounds;
+        // Не readonly: dev re-bake (gm_tuning_rebake) применяет новый тюнинг к идущему бою (tainted).
+        private SimTuning                    _tuning;
         private readonly SpatialHash         _spatialHash;
         private readonly BrainSystem         _brainSystem;
         private readonly AbilitySystem       _abilitySystem;
@@ -115,6 +121,7 @@ namespace Guildmaster.Combat
         public IRngService Rng         => _rng;
         public int         CurrentTick => _currentTick;
         public float       ArmorK      => _armorK;
+        public SimTuning   Tuning      => _tuning;
 
         /// <summary>Границы боевого поля этого боя (для презентации/оверлея; клампинг — внутри систем).</summary>
         public ArenaBounds Arena       => _arena;
@@ -139,12 +146,19 @@ namespace Guildmaster.Combat
             EffectSystem      effectSystem,
             RegenSystem       regenSystem,
             DisplacementSystem displacementSystem = null,
-            ArenaBounds?      arena              = null)
+            ArenaBounds?      arena              = null,
+            SimTuning?        tuning             = null,
+            Rect2D?           cameraZone         = null)
         {
             _rng              = rng;
             _armorK           = armorK;
             // null → бесконечное поле (headless-тесты, бой без заданной арены). НЕ default(ArenaBounds).
             _arena            = arena ?? ArenaBounds.Unbounded;
+            // Деспавн снарядов — по видимой зоне камеры; не задана → границы арены (в т.ч. Unbounded).
+            _projectileDespawnBounds = new ArenaBounds(cameraZone ?? _arena.Rect);
+            // null → код-дефолты (headless-тесты). Боевой скоуп печёт снапшот из SimTuningConfig.
+            _tuning           = tuning ?? SimTuning.Default;
+            PushSeparationTuning();
             _spatialHash      = spatialHash;
             _brainSystem      = brainSystem;
             _abilitySystem    = abilitySystem;
@@ -182,6 +196,25 @@ namespace Guildmaster.Combat
             };
         }
 
+        // Сепарация тюнится вживую (gm_sep_*), её публичные поля не readonly — засеваем снапшотом здесь.
+        private void PushSeparationTuning()
+        {
+            _separationSystem.BodyRadiusPerSize = _tuning.BodyRadiusPerSize;
+            _separationSystem.Strength          = _tuning.SeparationStrength;
+            _separationSystem.Iterations        = _tuning.SeparationIterations;
+            _separationSystem.SameTeamScale     = _tuning.SeparationSameTeamScale;
+        }
+
+        /// <summary>
+        /// Dev re-bake (QC, gm_tuning_rebake): применить новый снапшот тюнинга к идущему бою. Бой становится
+        /// TAINTED — реплей невалиден (вики «13» §4.1). В обычном потоке снапшот неизменен с старта боя.
+        /// </summary>
+        public void RebakeTuning(SimTuning tuning)
+        {
+            _tuning = tuning;
+            PushSeparationTuning();
+        }
+
         // --- Основной тик ---
 
         /// <summary>
@@ -210,12 +243,12 @@ namespace Guildmaster.Combat
 
             _brainSystem.Tick(_units, this);
             _abilitySystem.Tick(_units, this, dt);
-            _movementSystem.Tick(_units, dt, in _arena);
+            _movementSystem.Tick(_units, dt, in _arena, in _tuning);
             _displacementSystem.Tick(this, dt, in _arena);
             _separationSystem.Tick(_units, _spatialHash, in _arena);
             _spatialHash.Rebuild(_units);
             _autoAttackSystem.Tick(_units, this, dt);
-            _projectileSystem.Tick(_projectiles, _units, this, dt);
+            _projectileSystem.Tick(_projectiles, _units, this, dt, in _projectileDespawnBounds);
             _regenSystem.Tick(_units, dt);
             _effectSystem.Tick(_units, this, dt);
             DrainEventQueue();

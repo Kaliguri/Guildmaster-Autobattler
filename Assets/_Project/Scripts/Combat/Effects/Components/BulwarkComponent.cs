@@ -8,7 +8,7 @@ namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
     /// «Оплот» (§9.3, §10.3): pre-damage реактив. Перед входящим уроном — если выполнен триггер
-    /// блока F (читается из <c>self.Relic.Ai.PassiveTrigger</c>) и истёк внутренний кулдаун —
+    /// блока F (читается из <c>self.Unit.Ai.PassiveTrigger</c>) и истёк внутренний кулдаун —
     /// накладывает на носителя таймированный щит (<see cref="_shieldEffect"/>), который тут же
     /// поглощает триггер-удар. Внутренний КД хранится per-effect в
     /// <see cref="RuntimeEffect.ReactiveReadyTick"/> (сверка с текущим тиком, без декрементов).
@@ -48,7 +48,7 @@ namespace Guildmaster.Combat.Effects.Components
         /// </summary>
         private static bool TriggerMet(RuntimeUnit self, in DamageRequest req)
         {
-            AIProfile ai = self.Relic != null ? self.Relic.Ai : null;
+            AIProfile ai = self.Unit != null ? self.Unit.Ai : null;
             PassiveTrigger trigger = ai != null ? ai.PassiveTrigger : PassiveTrigger.AnyHit;
 
             switch (trigger)
@@ -61,7 +61,7 @@ namespace Guildmaster.Combat.Effects.Components
                     return true;
 
                 case PassiveTrigger.OnHitAbovePctMaxHp:
-                    float threshold = (ai != null ? ai.PassiveThresholdPct : 0.2f) * self.Stats.Get(StatType.MaxHP);
+                    float threshold = (ai != null ? ai.PassiveThresholdPct : AIProfile.DefaultPassiveThresholdPct) * self.Stats.Get(StatType.MaxHP);
                     return req.RawDamage > threshold || req.RawDamage >= self.CurrentHP;
 
                 default:

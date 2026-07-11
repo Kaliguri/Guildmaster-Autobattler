@@ -101,6 +101,14 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Ширина линии «ядра» (мировые единицы).")]
         [SerializeField] private float _displaceWidth = 1f;
 
+        [Header("Visual")]
+        [Tooltip("Слот визуала каста: проигрывается клип UnitVisual.SkillClip(этот слот). По умолчанию Skill1.")]
+        [SerializeField] private SkillSlot _visualSlot = SkillSlot.Skill1;
+
+        [Header("Info")]
+        [Tooltip("Информационные теги скилла для тултипов.")]
+        [SerializeField] private TagData[] _infoTags;
+
         public string Id => _id;
         public EffectData[] Effects => _effects;
         public float BaseCooldown => _baseCooldown;
@@ -127,5 +135,9 @@ namespace Guildmaster.Data.Definitions
         public int DisplaceTicks => _displaceTicks;
         public float DisplaceDamageMult => _displaceDamageMult;
         public float DisplaceWidth => _displaceWidth;
+        public TagData[] InfoTags => _infoTags;
+
+        /// <summary>Слот визуала каста (клип из <see cref="UnitVisual.SkillClip"/>).</summary>
+        public SkillSlot VisualSlot => _visualSlot;
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
+using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -78,7 +79,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var projectiles = new List<Projectile> { proj };
             var system = new ProjectileSystem();
             for (int t = 0; t < 32 && ctx.Heals.Count == 0; t++)
-                system.Tick(projectiles, units, ctx, SimConstants.TickDelta);
+                system.Tick(projectiles, units, ctx, SimConstants.TickDelta, ArenaBounds.Unbounded);
 
             Assert.AreEqual(1, ctx.Heals.Count, "Снаряд при попадании лечит цель");
             Assert.AreSame(ally, ctx.Heals[0].Target);
@@ -279,7 +280,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CurrentHP        = hp < 0f ? maxHp : hp,
                 Position         = pos,
                 PreviousPosition = pos,
-                Relic            = relic,
+                Unit             = relic,
             };
         }
 
@@ -316,6 +317,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             public IRngService Rng => null;
             public int CurrentTick => 0;
             public float ArmorK => 100f;
+            public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
 
             public int QueryUnitsInRadius(Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam)
             {

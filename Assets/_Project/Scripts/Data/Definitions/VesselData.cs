@@ -9,10 +9,9 @@ namespace Guildmaster.Data.Definitions
     /// </summary>
     /// <remarks>СКЕЛЕТ Фазы 1: только идентичность. Перки — Фаза 2/4.</remarks>
     [CreateAssetMenu(menuName = "Guildmaster/Content/Vessel", fileName = "Vessel")]
-    public sealed class VesselData : ScriptableObject
+    public sealed class VesselData : ContentDefinition
     {
         [Header("Identity")]
-        [SerializeField] private string _displayNameKey;
         [SerializeField] private string[] _tags;
 
         // --- Фаза 2/4: перки ---
@@ -20,7 +19,6 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Плейсхолдер перков-модификаторов. Структура и наполнение — Фаза 2/4.")]
         [SerializeField] private StatModifier[] _perkModifiers;
 
-        public string DisplayNameKey => _displayNameKey;
         public string[] Tags => _tags;
         public StatModifier[] PerkModifiers => _perkModifiers;
     }

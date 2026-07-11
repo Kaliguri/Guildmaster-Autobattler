@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Guildmaster.Core.Arena;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -10,8 +12,11 @@ namespace Guildmaster.Combat
     /// </summary>
     public sealed class ProjectileSystem
     {
-        /// <summary>Обновить все живые снаряды за один тик.</summary>
-        public void Tick(List<Projectile> projectiles, List<RuntimeUnit> units, ICombatContext ctx, float dt)
+        /// <summary>
+        /// Обновить все живые снаряды за один тик. <paramref name="despawnZone"/> — зона деспавна: видимая
+        /// область камеры (CameraZone) + <c>ProjectileDespawnMargin</c>, чтобы снаряд гас ЗА кадром игрока.
+        /// </summary>
+        public void Tick(List<Projectile> projectiles, List<RuntimeUnit> units, ICombatContext ctx, float dt, in ArenaBounds despawnZone)
         {
             for (int i = 0; i < projectiles.Count; i++)
             {
@@ -26,7 +31,7 @@ namespace Guildmaster.Combat
                 }
                 else
                 {
-                    AdvanceFreeFlying(p, dt, units, ctx);
+                    AdvanceFreeFlying(p, dt, units, ctx, in despawnZone);
                 }
             }
 
@@ -55,7 +60,7 @@ namespace Guildmaster.Combat
             }
         }
 
-        private static void AdvanceFreeFlying(Projectile p, float dt, List<RuntimeUnit> units, ICombatContext ctx)
+        private static void AdvanceFreeFlying(Projectile p, float dt, List<RuntimeUnit> units, ICombatContext ctx, in ArenaBounds despawnZone)
         {
             Vector2 newPos = p.Position + p.Velocity * dt;
 
@@ -73,7 +78,7 @@ namespace Guildmaster.Combat
 
             p.Position = newPos;
 
-            if (IsOutOfBounds(p.Position)) p.IsAlive = false;
+            if (IsOutOfBounds(p.Position, in despawnZone, ctx.Tuning.ProjectileDespawnMargin)) p.IsAlive = false;
         }
 
         private static void ApplyHit(Projectile p, RuntimeUnit target, ICombatContext ctx)
@@ -131,8 +136,16 @@ namespace Guildmaster.Combat
             return distSq <= radius * radius;
         }
 
-        private static bool IsOutOfBounds(Vector2 pos) =>
-            Mathf.Abs(pos.x) > 200f || Mathf.Abs(pos.y) > 200f;
+        // Снаряд гаснет, выйдя за зону деспавна (видимая область камеры) на ProjectileDespawnMargin.
+        // Бесконечная зона (headless-тесты / нет камеры → фолбэк на Unbounded-арену) → Size = +∞ → не гаснет.
+        private static bool IsOutOfBounds(Vector2 pos, in ArenaBounds despawnZone, float despawnMargin)
+        {
+            Vector2 center = despawnZone.Center;
+            Vector2 size   = despawnZone.Size;
+            float halfX = size.x * 0.5f + despawnMargin;
+            float halfY = size.y * 0.5f + despawnMargin;
+            return Mathf.Abs(pos.x - center.x) > halfX || Mathf.Abs(pos.y - center.y) > halfY;
+        }
 
         private static void RemoveDead(List<Projectile> projectiles)
         {

@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
+  m_Name: Defender
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
+  _id: relic.defender
+  _damageType: 0
+  _attackType: 0
+  _resourceType: 1
+  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackEffects: []
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _resourceOnHit: 5
+  _stats:
+  - Stat: 0
+    Op: 0
+    Value: 100
+  - Stat: 3
+    Op: 0
+    Value: 8
+  - Stat: 4
+    Op: 0
+    Value: 8
+  - Stat: 7
+    Op: 0
+    Value: -4
+  - Stat: 8
+    Op: 0
+    Value: -0.3
+  - Stat: 20
+    Op: 0
+    Value: -0.9166665
+  - Stat: 27
+    Op: 0
+    Value: 30
+  - Stat: 28
+    Op: 0
+    Value: 0
+  _grantedEffects:
+  - {fileID: 11400000, guid: c585ce229a24f184cbb2d0431b508603, type: 2}
+  _abilities:
+  - _id: resolute_strike
+    _effects:
+    - {fileID: 11400000, guid: 5f8a731f13f522a4090cc75dfe269d47, type: 2}
+    - {fileID: 11400000, guid: 2d42622144fda1d44a4161e7148fc2c5, type: 2}
+    _baseCooldown: 8
+    _resourceCost: 30
+    _targetMode: 1
+    _damageMultiplier: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _castCondition: 0
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0.3
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceTicks: 12
+    _displaceDamageMult: 1
+    _displaceWidth: 1
+    _visualSlot: 0
+    _infoTags: []
+  _aiPreset: {fileID: 11400000, guid: e667522120f776b4ab0e3fd9ff8bf933, type: 2}
+  _ai:
+    _autoAttackTargeting: 5
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 0
+      FleeAtHpPct: 0.25
+      ReturnAtHpPct: 0.5
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 2
+    _passiveThresholdPct: 0.15
+  _icon: {fileID: 0}
+  _infoTags: []
+  _tags:
+  - defender
+  - tank
+  - common
+  _rarity: 0
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0

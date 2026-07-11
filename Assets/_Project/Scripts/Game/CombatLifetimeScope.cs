@@ -1,6 +1,7 @@
 using Guildmaster.Combat;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
@@ -18,11 +19,11 @@ namespace Guildmaster.Game
     /// </summary>
     public class CombatLifetimeScope : LifetimeScope
     {
-        [Tooltip("Конфиг базовых характеристик.")]
+        [Tooltip("Конфиг базовых характеристик (в т.ч. armor-константа K — единственный источник).")]
         [SerializeField] private StatsConfig _statsConfig;
 
-        [Tooltip("Константа K в формуле брони.")]
-        [SerializeField] private float _armorK = 100f;
+        [Tooltip("Балансный тюнинг симуляции (вики «13» §3.4): печётся в снапшот SimTuning на старте боя.")]
+        [SerializeField] private SimTuningConfig _simTuningConfig;
 
         [Tooltip("Размер ячейки пространственного хэша.")]
         [SerializeField] private float _spatialHashCellSize = 3f;
@@ -86,12 +87,14 @@ namespace Guildmaster.Game
         {
             // VContainer сам разрешит зависимости конструктора (RNG, SpatialHash, все системы) —
             // вручную перечислять Resolve не нужно. Не-инъектируемые параметры передаём через
-            // WithParameter по имени: float armorK и границы поля arena (ArenaBounds? — значение,
-            // не сервис). Добавил систему в ctor — ничего тут править не надо, лишь бы она была
-            // зарегистрирована.
+            // WithParameter по имени: float armorK (единственный источник — StatsConfig.ArmorConstantK,
+            // вики «13» §4.2 п.1) и границы поля arena (ArenaBounds? — значение, не сервис). Добавил
+            // систему в ctor — ничего тут править не надо, лишь бы она была зарегистрирована.
             builder.Register<CombatSimulation>(Lifetime.Scoped)
-                   .WithParameter("armorK", _armorK)
-                   .WithParameter("arena", (ArenaBounds?)layout.Bounds);
+                   .WithParameter("armorK", _statsConfig.ArmorConstantK)
+                   .WithParameter("arena", (ArenaBounds?)layout.Bounds)
+                   .WithParameter("tuning", (SimTuning?)_simTuningConfig.ToSnapshot())
+                   .WithParameter("cameraZone", (Rect2D?)layout.CameraZone);
 
             StatsConfig cfg = _statsConfig;
             builder.Register<RuntimeUnitFactory>(r => new RuntimeUnitFactory(

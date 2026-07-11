@@ -254,7 +254,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CurrentHP        = hp < 0f ? maxHp : hp,
                 Position         = pos,
                 PreviousPosition = pos,
-                Relic            = relic,
+                Unit             = relic,
             };
         }
 
@@ -268,6 +268,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             public int CurrentTick => Tick;
             public float ArmorK => 100f;
+            public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
             public IRngService Rng => null;
 
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);

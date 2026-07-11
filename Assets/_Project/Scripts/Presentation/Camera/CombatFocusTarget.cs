@@ -14,7 +14,7 @@ namespace Guildmaster.Presentation
     public sealed class CombatFocusTarget : MonoBehaviour
     {
         [Tooltip("Скорость сглаживания позиции (больше — резче следует за центром боя).")]
-        [SerializeField] private float _positionDamping = 3f;
+        [SerializeField] private float _positionDamping = 4f;
 
         [Tooltip("Скорость сглаживания разброса (для зума). Меньше — плавнее реакция зума на смерть/рывок юнита.")]
         [SerializeField] private float _spreadDamping = 2.5f;

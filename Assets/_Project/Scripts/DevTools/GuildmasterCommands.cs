@@ -39,11 +39,18 @@ namespace Guildmaster.DevTools
         [Tooltip("SO реликвии «Монах вихря» для gm_spawn_monk (вики «13» §10.6).")]
         [SerializeField] private RelicData _monkRelic;
 
+        [Tooltip("Тот же SimTuningConfig, что и на CombatLifetimeScope — для gm_tuning_rebake (QC).")]
+        [SerializeField] private SimTuningConfig _simTuningConfig;
+
         private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
         private RuntimeUnitFactory _factory;
         private IInputService      _input;
         private QuantumConsole     _console;
+
+        // Дамми-болванчики оформлены как полноценный юнит (EnemyData «enemy.training_dummy»): свой SO,
+        // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
+        private UnitData _dummyEnemy;
 
         // Открыта ли консоль сейчас: пока да — глушим наш игровой ввод (кроме F5), чтобы набор
         // команд в консоли не протекал в геймплей (пауза/смена вида/пан-зум/перезапуск боя).
@@ -54,12 +61,14 @@ namespace Guildmaster.DevTools
         private static System.Action<GuildmasterCommands> _lastBattleSetup;
 
         [Inject]
-        public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory, IInputService input)
+        public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory,
+            IInputService input, IContentDatabase contentDatabase)
         {
             _simulation = simulation;
             _debugDraw  = debugDraw;
             _factory    = factory;
             _input      = input;
+            contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
         }
 
         // Пауза сима, пока консоль открыта: настраиваешь бой за консолью, закрываешь — он идёт с начала
@@ -144,7 +153,7 @@ namespace Guildmaster.DevTools
         /// Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия).
         /// Спавнит сеткой с шагом МЕНЬШЕ диаметра тела → юниты сразу перекрываются и разъезжаются; высокий
         /// HP и низкий урон держат толпу живой, чтобы видеть spacing и при сшибке блобов в центре.
-        /// Крути на глаз <c>SimConstants.SeparationStrength</c> / <c>SeparationIterations</c> / <c>BodyRadiusPerSize</c>,
+        /// Крути на глаз <c>SimTuningConfig</c> (Strength / Iterations / BodyRadiusPerSize) или live gm_sep_*,
         /// перезапуск на месте — R. Параметр <paramref name="size"/> — «толщина» тел (Size-стат).
         /// </summary>
         [Command("gm_spawn_crowd", "Плотный клубок обеих команд для теста коллизии/расталкивания")]
@@ -490,6 +499,17 @@ namespace Guildmaster.DevTools
             Debug.Log($"[GuildmasterCommands] - gm_toggle_status: {(overlay.IsEnabled ? "ON" : "OFF")}");
         }
 
+        /// <summary>Пересобрать SimTuning из SO и применить к идущему бою (QC-тюнинг без рекомпиляции).</summary>
+        [Command("gm_tuning_rebake", "Пересобрать SimTuning из SO и применить к бою (бой становится TAINTED)")]
+        public void TuningRebake()
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: нет активного боя"); return; }
+            if (_simTuningConfig == null) { Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: SimTuningConfig не назначен"); return; }
+
+            _simulation.RebakeTuning(_simTuningConfig.ToSnapshot());
+            Debug.LogWarning("[GuildmasterCommands] - gm_tuning_rebake: тюнинг применён к бою → battle TAINTED (реплей невалиден, вики «13» §4.1)");
+        }
+
         // Начать НОВЫЙ бой: сбросить текущий (юниты/снаряды/исход/очереди) + счётчик Id фабрики + снять
         // заморозку времени. Вызывается всеми gm_spawn_* — новая команда старта ПРЕРЫВАЕТ предыдущий бой,
         // а не копит юнитов поверх (иначе Id-коллизии и каша из нескольких боёв).
@@ -500,7 +520,10 @@ namespace Guildmaster.DevTools
             Time.timeScale = 1f;
         }
 
-        private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f, float range = 1.5f)
+        // Автономные стат-значения dev-болванчика для сценариев gm_spawn_* (НЕ из StatsConfig: метод
+        // статический, DI недоступен). Продакшн-дефолты юнита живут в StatsConfig.Defaults (вики «13»
+        // §3.4/§4.2 п.6); держим их раздельно осознанно, чтобы не плодить тихий дрейф баланса.
+        private RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f, float range = 1.5f)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("test", new[]
@@ -520,6 +543,8 @@ namespace Guildmaster.DevTools
                 CurrentHP        = hp,
                 Position         = pos,
                 PreviousPosition = pos,
+                // Дамми как полноценный юнит: свой SO даёт визуал (→ анимации) без своей AI/способностей.
+                Unit             = _dummyEnemy,
             };
         }
     }

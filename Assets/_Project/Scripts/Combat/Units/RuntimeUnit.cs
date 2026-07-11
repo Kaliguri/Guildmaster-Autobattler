@@ -95,8 +95,8 @@ namespace Guildmaster.Combat
         /// <summary>Помечен DeathSystem — исключается из всех систем с текущего тика.</summary>
         public bool IsDead;
 
-        /// <summary>SO «Чемпион»: тип атаки, стат-блок, эффекты (Фаза 2).</summary>
-        public RelicData Relic;
+        /// <summary>Боевой кит юнита (реликвия/враг): тип атаки, стат-блок, эффекты, AI (вики «13» §3.1).</summary>
+        public UnitData Unit;
 
         /// <summary>SO «Пилот»: идентичность, перки (Фаза 2/4).</summary>
         public VesselData Vessel;

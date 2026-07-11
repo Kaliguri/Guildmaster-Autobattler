@@ -41,18 +41,19 @@ namespace Guildmaster.Combat
         public void ResetIds() => _nextId = 0;
 
         /// <summary>
-        /// Создать <see cref="RuntimeUnit"/> из SO-данных.
+        /// Создать <see cref="RuntimeUnit"/> из SO-данных. Принимает базовый <see cref="UnitData"/> —
+        /// реликвию или врага; сборке всё равно, кто перед ней (вики «13» §3.1).
         /// </summary>
-        /// <param name="relic">SO «Чемпион». null — юнит получит только дефолты StatsConfig.</param>
+        /// <param name="data">Боевой кит («Чемпион»/враг). null — юнит получит только дефолты StatsConfig.</param>
         /// <param name="vessel">SO «Пилот». null — перки не применяются.</param>
         /// <param name="team">Команда: 0 = союзники, 1 = враги.</param>
         /// <param name="spawnPosition">Начальная позиция на поле боя.</param>
-        public RuntimeUnit Create(RelicData relic, VesselData vessel, int team, Vector2 spawnPosition)
+        public RuntimeUnit Create(UnitData data, VesselData vessel, int team, Vector2 spawnPosition)
         {
             var stats = new Stats(_config);
 
-            if (relic?.Stats != null && relic.Stats.Length > 0)
-                stats.AddModifiersFrom(relic, relic.Stats);
+            if (data?.Stats != null && data.Stats.Length > 0)
+                stats.AddModifiersFrom(data, data.Stats);
 
             if (vessel?.PerkModifiers != null && vessel.PerkModifiers.Length > 0)
                 stats.AddModifiersFrom(vessel, vessel.PerkModifiers);
@@ -67,15 +68,15 @@ namespace Guildmaster.Combat
                 CurrentShield    = 0f,
                 Position         = spawnPosition,
                 PreviousPosition = spawnPosition,
-                Relic            = relic,
+                Unit             = data,
                 Vessel           = vessel,
-                // AI (Фаза 3): мозг из профиля реликвии + фаза стаггера по Id (вики «13» §2.7, §4.1).
-                Brain            = new ProfileBrain(relic?.Ai),
+                // AI (Фаза 3): мозг из профиля кита + фаза стаггера по Id (вики «13» §2.7, §4.1).
+                Brain            = new ProfileBrain(data?.Ai),
                 BrainPhase       = id % SimConstants.AiTickInterval,
             };
 
-            RegisterPassives(unit, relic);
-            RegisterAbilities(unit, relic);
+            RegisterPassives(unit, data);
+            RegisterAbilities(unit, data);
 
             // CurrentHP — после пассивок: они могли поднять MaxHP, юнит должен стартовать с полным.
             unit.CurrentHP = stats.Get(StatType.MaxHP);
@@ -83,10 +84,10 @@ namespace Guildmaster.Combat
             return unit;
         }
 
-        /// <summary>Наложить пассивные эффекты реликвии (источник — сам юнит, длительность из Def, обычно −1).</summary>
-        private void RegisterPassives(RuntimeUnit unit, RelicData relic)
+        /// <summary>Наложить пассивные эффекты кита (источник — сам юнит, длительность из Def, обычно −1).</summary>
+        private void RegisterPassives(RuntimeUnit unit, UnitData data)
         {
-            EffectData[] passives = relic?.GrantedEffects;
+            EffectData[] passives = data?.GrantedEffects;
             if (passives == null || _effects == null) return;
 
             for (int i = 0; i < passives.Length; i++)
@@ -95,10 +96,10 @@ namespace Guildmaster.Combat
             }
         }
 
-        /// <summary>Собрать рантайм-обёртки активных способностей реликвии (кулдаун/ресурс).</summary>
-        private static void RegisterAbilities(RuntimeUnit unit, RelicData relic)
+        /// <summary>Собрать рантайм-обёртки активных способностей кита (кулдаун/ресурс).</summary>
+        private static void RegisterAbilities(RuntimeUnit unit, UnitData data)
         {
-            AbilityData[] abilities = relic?.Abilities;
+            AbilityData[] abilities = data?.Abilities;
             if (abilities == null) return;
 
             for (int i = 0; i < abilities.Length; i++)

@@ -175,7 +175,7 @@ namespace Guildmaster.Presentation
                 var view = Instantiate(_unitViewPrefab, (Vector3)(Vector2)unit.Position, Quaternion.identity, transform);
                 view.Bind(unit);
 
-                UnitVisual ov = ResolveVisual(unit.Relic);
+                UnitVisual ov = ResolveVisual(unit.Unit);
                 if (ov != null) view.SetVisual(ov);
 
                 // «Пока один спрайт»: тинтуем тело на персонажа + подпись над HP-баром (dev-харнесс).
@@ -188,11 +188,15 @@ namespace Guildmaster.Presentation
             _unitSpawnedPublisher.Publish(new UnitSpawnedEvent(unit));
         }
 
-        private UnitVisual ResolveVisual(RelicData relic)
+        // Источник визуала — данные юнита (UnitData.Visual): тот же ассет, что читает сим для windup
+        // (AutoAttackSystem). Scene-_visualOverrides остаётся лишь dev-фолбэком для юнитов без своего
+        // визуала (сравнение по reference-равенству RelicData(.Relic) == UnitData(data) через общую базу).
+        private UnitVisual ResolveVisual(UnitData data)
         {
-            if (relic == null) return null;
+            if (data == null) return null;
+            if (data.Visual != null) return data.Visual;
             for (int i = 0; i < _visualOverrides.Length; i++)
-                if (_visualOverrides[i].Relic == relic) return _visualOverrides[i].Visual;
+                if (_visualOverrides[i].Relic == data) return _visualOverrides[i].Visual;
             return null;
         }
 
@@ -279,9 +283,9 @@ namespace Guildmaster.Presentation
         /// <summary>Тинт тела по персонажу: у реликвии — стабильный оттенок от имени; у болванчиков — по команде.</summary>
         private static Color TintFor(RuntimeUnit unit)
         {
-            if (unit.Relic != null)
+            if (unit.Unit != null)
             {
-                float hue = (Mathf.Abs(unit.Relic.name.GetHashCode()) % 360) / 360f;
+                float hue = (Mathf.Abs(unit.Unit.name.GetHashCode()) % 360) / 360f;
                 return Color.HSVToRGB(hue, 0.5f, 1f);
             }
             return unit.Team == 0 ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f);
@@ -290,7 +294,7 @@ namespace Guildmaster.Presentation
         /// <summary>Подпись персонажа: имя реликвии (SO) либо «Ally/Enemy N» для болванчиков.</summary>
         private static string NameFor(RuntimeUnit unit)
         {
-            if (unit.Relic != null) return unit.Relic.name;
+            if (unit.Unit != null) return unit.Unit.name;
             return (unit.Team == 0 ? "Ally " : "Enemy ") + unit.Id;
         }
 

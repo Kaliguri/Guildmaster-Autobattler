@@ -138,7 +138,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             {
                 view.CurrentTick = tick;
                 brain.Tick(units, view);
-                move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
             }
             Assert.IsNotNull(u.CurrentTarget, "После своей фазы у юнита должна быть цель");
 
@@ -146,7 +146,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             view.CurrentTick = 2;
             brain.Tick(units, view);
             Vector2 before = u.Position;
-            move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded);
+            move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
 
             Assert.AreNotEqual(before, u.Position, "Интент должен залипать: юнит двигается между AI-тиками");
         }
@@ -166,7 +166,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             {
                 view.CurrentTick = tick;
                 brain.Tick(units, view);
-                move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
             }
             return Checksum(units, tick);
         }

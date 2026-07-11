@@ -3,7 +3,9 @@
   "rootNamespace": "Guildmaster.Data.Editor",
   "references": [
     "Guildmaster.Data",
-    "Guildmaster.Core"
+    "Guildmaster.Core",
+    "Unity.Localization",
+    "Unity.Localization.Editor"
   ],
   "includePlatforms": [
     "Editor"

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Guildmaster.Core.Arena;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -22,7 +23,7 @@ namespace Guildmaster.Combat
         /// <param name="units">Список всех юнитов в бою.</param>
         /// <param name="dt">Длительность тика (всегда <see cref="SimConstants.TickDelta"/>).</param>
         /// <param name="bounds">Границы поля: итоговая позиция клампится внутрь (<see cref="ArenaBounds.Unbounded"/> = без стен).</param>
-        public void Tick(List<RuntimeUnit> units, float dt, in ArenaBounds bounds)
+        public void Tick(List<RuntimeUnit> units, float dt, in ArenaBounds bounds, in SimTuning tuning)
         {
             for (int i = 0; i < units.Count; i++)
             {
@@ -38,7 +39,7 @@ namespace Guildmaster.Combat
                 if (!unit.CanMove) continue;
 
                 bool windingUp        = unit.IsWindingUp;
-                bool attackWhileMoving = unit.Relic != null && unit.Relic.CanAttackWhileMoving;
+                bool attackWhileMoving = unit.Unit != null && unit.Unit.CanAttackWhileMoving;
 
                 // Замах авто-атаки рутит юнита (свинг на месте, вики «14») — КРОМЕ реликвий со
                 // «стрельбой на ходу» (§9.8): те продолжают движение со штрафом скорости.
@@ -49,14 +50,14 @@ namespace Guildmaster.Combat
 
                 float moveSpeed = unit.Stats.Get(StatType.MoveSpeed);
                 if (windingUp && attackWhileMoving)
-                    moveSpeed *= Mathf.Max(0f, 1f - unit.Relic.MovingAttackSpeedPenaltyPct); // §9.8
+                    moveSpeed *= Mathf.Max(0f, 1f - unit.Unit.MovingAttackSpeedPenaltyPct); // §9.8
 
                 float maxMove = moveSpeed * dt;
                 if (maxMove <= 0f) continue;
 
                 switch (unit.Positioning)
                 {
-                    case PositioningIntent.Kite:    MoveKite(unit, target, maxMove, bounds); break;
+                    case PositioningIntent.Kite:    MoveKite(unit, target, maxMove, bounds, in tuning); break;
                     case PositioningIntent.Retreat: MoveRetreat(unit, units, maxMove, bounds); break;
                     default:                        MoveApproach(unit, target, maxMove); break;
                 }
@@ -88,9 +89,9 @@ namespace Guildmaster.Combat
         /// отходим (до FallbackDist), если ближе FleeDist; подходим, если дальше FallbackDist; иначе стоим
         /// и стреляем. Провал/пустой контент → деградируем на [AttackRange×0.6, AttackRange] (07 §3.8 B4).
         /// </summary>
-        private static void MoveKite(RuntimeUnit unit, RuntimeUnit target, float maxMove, in ArenaBounds bounds)
+        private static void MoveKite(RuntimeUnit unit, RuntimeUnit target, float maxMove, in ArenaBounds bounds, in SimTuning tuning)
         {
-            Kite kite = unit.Relic != null ? unit.Relic.Ai.Kite : default;
+            Kite kite = unit.Unit?.Ai != null ? unit.Unit.Ai.Kite : default;
             float flee     = kite.FleeDist;
             float fallback = kite.FallbackDist;
 
@@ -100,7 +101,7 @@ namespace Guildmaster.Combat
             if (flee <= 0f || fallback <= flee)
             {
                 float range = unit.Stats.Get(StatType.AttackRange);
-                flee     = range * 0.6f;
+                flee     = range * tuning.KiteFleeFactor;
                 fallback = range;
             }
 

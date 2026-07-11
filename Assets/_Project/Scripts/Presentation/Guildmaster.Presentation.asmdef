@@ -12,7 +12,8 @@
     "VContainer",
     "Unity.TextMeshPro",
     "UnityEngine.UI",
-    "Unity.Cinemachine"
+    "Unity.Cinemachine",
+    "FMODUnity"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

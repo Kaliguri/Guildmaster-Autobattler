@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Guildmaster.Core.Simulation;
 
 namespace Guildmaster.Combat.Effects.Components
 {
@@ -12,9 +13,6 @@ namespace Guildmaster.Combat.Effects.Components
     [Serializable]
     public sealed class MarkTransferComponent : IReactiveComponent
     {
-        // Радиус «глобального» поиска ближайшего врага (метка — без ограничения дальности, §9.10).
-        private const float SearchRadius = 500f;
-
         public CombatEvent Events => CombatEvent.UnitDied;
 
         public void OnApply(in EffectContext ctx) { }
@@ -32,7 +30,7 @@ namespace Guildmaster.Combat.Effects.Components
 
             // Ближайший живой враг источника к точке смерти (без ограничения дальности).
             var candidates = new List<RuntimeUnit>();
-            ctx.Combat.QueryUnitsInRadius(dead.Position, SearchRadius, candidates, TargetFilter.Enemies, source.Team);
+            ctx.Combat.QueryUnitsInRadius(dead.Position, ctx.Combat.Tuning.GlobalSearchRadius, candidates, TargetFilter.Enemies, source.Team);
 
             RuntimeUnit best = null;
             float bestSq = float.MaxValue;

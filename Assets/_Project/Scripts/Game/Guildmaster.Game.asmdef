@@ -14,7 +14,9 @@
     "UniTask",
     "MessagePipe",
     "MessagePipe.VContainer",
-    "Unity.InputSystem"
+    "Unity.InputSystem",
+    "Unity.Localization",
+    "Unity.ResourceManager"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

@@ -187,7 +187,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             return new RuntimeUnit
             {
                 Id = id, Team = team, Stats = stats,
-                CurrentHP = maxHp, Position = pos, PreviousPosition = pos, Relic = relic,
+                CurrentHP = maxHp, Position = pos, PreviousPosition = pos, Unit = relic,
             };
         }
 
@@ -214,6 +214,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             public IRngService Rng => null;
             public int CurrentTick => 0;
             public float ArmorK => 100f;
+            public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
         }
     }
 }

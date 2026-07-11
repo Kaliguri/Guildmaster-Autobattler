@@ -16,7 +16,7 @@ namespace Guildmaster.Tests.EditMode.Combat
     {
         // Минимальная дистанция между центрами = сумма радиусов двух Size-1 тел; тянем из SimConstants,
         // чтобы тест не разъезжался при смене дефолтного радиуса.
-        private static readonly float MinDist = 2f * SimConstants.BodyRadiusPerSize;
+        private static readonly float MinDist = 2f * SimTuning.Default.BodyRadiusPerSize;
 
         private static RuntimeUnit MakeUnit(int id, float x, float y, int displaced = 0, int team = 0) =>
             new RuntimeUnit

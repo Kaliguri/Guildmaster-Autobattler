@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -59,7 +60,7 @@ namespace Guildmaster.Combat.Effects.Components
             float dmg = _displaceDamageMult > 0f
                 ? _displaceDamageMult * monk.Stats.Get(StatType.AutoAttackDamage)
                 : 0f;
-            DamageType dmgType = monk.Relic != null ? monk.Relic.DamageType : DamageType.Physical;
+            DamageType dmgType = monk.Unit != null ? monk.Unit.DamageType : DamageType.Physical;
 
             ctx.Combat.ReportAreaHit(AreaHit.Line(
                 victim.Position, dir.sqrMagnitude > 1e-6f ? dir.normalized : Vector2.right,
@@ -77,7 +78,7 @@ namespace Guildmaster.Combat.Effects.Components
         private static RuntimeUnit NearestEnemy(RuntimeUnit monk, UnityEngine.Vector2 from, ICombatContext combat, RuntimeUnit exclude)
         {
             var buffer = new List<RuntimeUnit>();
-            combat.QueryUnitsInRadius(from, 500f, buffer, TargetFilter.Enemies, monk.Team);
+            combat.QueryUnitsInRadius(from, combat.Tuning.GlobalSearchRadius, buffer, TargetFilter.Enemies, monk.Team);
 
             RuntimeUnit best = null;
             float bestSq = float.MaxValue;

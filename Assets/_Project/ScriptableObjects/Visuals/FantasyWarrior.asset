@@ -12,6 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 551ba710b5e1fcc4f9e3f6c56bdfdf45, type: 3}
   m_Name: FantasyWarrior
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.UnitVisual
+  _idleClip: {fileID: 7400000, guid: b0458905c70f5a2449b94c4ff47a2ae9, type: 2}
+  _runClip: {fileID: 7400000, guid: 259148cc5a2db194a94eacbaaab64e63, type: 2}
+  _attackClip: {fileID: 7400000, guid: 4c7f135f77c321a4ebf82761443bcfc2, type: 2}
+  _deathClip: {fileID: 7400000, guid: 2420d5ec0804d9541b0a493a6fd53560, type: 2}
+  _hitClip: {fileID: 0}
+  _skillClips:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _portrait: {fileID: 0}
   _fps: 10
   _idle:
   - {fileID: 4723107735738678597, guid: 952daaf7859b62e4c8f4c8c28f309402, type: 3}
