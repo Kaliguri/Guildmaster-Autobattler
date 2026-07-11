@@ -145,7 +145,7 @@ namespace Guildmaster.Combat
                 }
                 else
                 {
-                    ctx.DealDamage(new DamageRequest(unit, target, raw, dmgType, ctx.ArmorK));
+                    ctx.DealDamage(new DamageRequest(unit, target, raw, dmgType, ctx.ArmorK, isAutoAttack: true));
                     ApplyAutoAttackOnHit(unit, target, ctx); // §9.1 (мили single)
                 }
             }
@@ -159,7 +159,8 @@ namespace Guildmaster.Combat
                 ctx.SpawnProjectile(new ProjectileSpawn(
                     unit, unit.Position, target,
                     speed, collRadius, raw, dmgType, ctx.ArmorK, pierces,
-                    onHitEffects: unit.Unit != null ? unit.Unit.AutoAttackEffects : null));
+                    onHitEffects: unit.Unit != null ? unit.Unit.AutoAttackEffects : null,
+                    isAutoAttack: true));
             }
         }
 
@@ -200,7 +201,7 @@ namespace Guildmaster.Combat
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итоговое состояние.
             for (int t = 0; t < _lineTargets.Count; t++)
             {
-                ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, dmgType, ctx.ArmorK));
+                ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, dmgType, ctx.ArmorK, isAutoAttack: true));
                 ApplyAutoAttackOnHit(unit, _lineTargets[t], ctx); // §9.1 (мили Line — по каждой задетой)
             }
         }

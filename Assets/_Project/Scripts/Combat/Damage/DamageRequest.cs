@@ -23,18 +23,24 @@ namespace Guildmaster.Combat
         /// <summary>Константа K из StatsConfig (mult = K / (K + effArmor)).</summary>
         public readonly float ArmorK;
 
+        /// <summary>Это урон АВТОАТАКИ (мили single/линия или снаряд-автоатака)? Урон способностей/DoT/шипов = false.
+        /// Пре-дамаг реактивы, завязанные именно на автоатаку (напр. «Изворотливость» убийцы), гейтятся по этому флагу.</summary>
+        public readonly bool IsAutoAttack;
+
         public DamageRequest(
             RuntimeUnit source,
             RuntimeUnit target,
             float rawDamage,
             DamageType damageType,
-            float armorK)
+            float armorK,
+            bool isAutoAttack = false)
         {
-            Source     = source;
-            Target     = target;
-            RawDamage  = rawDamage;
-            DamageType = damageType;
-            ArmorK     = armorK;
+            Source       = source;
+            Target       = target;
+            RawDamage    = rawDamage;
+            DamageType   = damageType;
+            ArmorK       = armorK;
+            IsAutoAttack = isAutoAttack;
         }
     }
 }

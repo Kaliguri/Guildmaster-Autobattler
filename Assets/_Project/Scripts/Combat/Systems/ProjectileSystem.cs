@@ -93,7 +93,7 @@ namespace Guildmaster.Combat
             }
 
             ctx.DealDamage(new DamageRequest(
-                p.Source, target, p.RawDamage, p.DamageType, ctx.ArmorK));
+                p.Source, target, p.RawDamage, p.DamageType, ctx.ArmorK, isAutoAttack: p.IsAutoAttack));
 
             // On-hit эффекты (§9.1): «Заморозка» Криоманта вешается при попадании на каждую задетую цель.
             ApplyOnHitEffects(p, target, ctx);

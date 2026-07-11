@@ -33,6 +33,9 @@ namespace Guildmaster.Combat
         /// <summary>On-hit эффекты урон-снаряда (§9.1): накладываются на каждую задетую цель при попадании. null = нет.</summary>
         public EffectData[] OnHitEffects;
 
+        /// <summary>Снаряд-автоатака: попадание помечает урон как автоатаку (<see cref="DamageRequest.IsAutoAttack"/>).</summary>
+        public bool        IsAutoAttack;
+
         public bool        IsAlive;
     }
 }

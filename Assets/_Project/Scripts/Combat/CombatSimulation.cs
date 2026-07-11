@@ -337,6 +337,7 @@ namespace Guildmaster.Combat
                 PiercesRemaining = spawn.MaxPierces,
                 IsHeal           = spawn.IsHeal,
                 OnHitEffects     = spawn.OnHitEffects,
+                IsAutoAttack     = spawn.IsAutoAttack,
                 IsAlive          = true,
             };
             _projectiles.Add(projectile);

@@ -24,6 +24,9 @@ namespace Guildmaster.Combat
         /// <summary>On-hit эффекты (§9.1): накладываются на каждую задетую цель при попадании урон-снаряда (Криомант — «Заморозка»). null = нет.</summary>
         public readonly EffectData[] OnHitEffects;
 
+        /// <summary>Снаряд-автоатака (для тега <see cref="DamageRequest.IsAutoAttack"/> при попадании). Хил-снаряды/будущие снаряды-способности = false.</summary>
+        public readonly bool         IsAutoAttack;
+
         public ProjectileSpawn(
             RuntimeUnit  source,
             Vector2      startPosition,
@@ -35,7 +38,8 @@ namespace Guildmaster.Combat
             float        armorK,
             int          maxPierces   = 0,
             bool         isHeal       = false,
-            EffectData[] onHitEffects = null)
+            EffectData[] onHitEffects = null,
+            bool         isAutoAttack = false)
         {
             Source          = source;
             StartPosition   = startPosition;
@@ -48,6 +52,7 @@ namespace Guildmaster.Combat
             MaxPierces      = maxPierces;
             IsHeal          = isHeal;
             OnHitEffects    = onHitEffects;
+            IsAutoAttack    = isAutoAttack;
         }
     }
 }
