@@ -141,17 +141,38 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
     }
 
-    /// <summary>Билдер <see cref="UnitVisual"/> для тестов windup: задаёт число кадров атаки и кадр контакта.</summary>
+    /// <summary>
+    /// Билдер <see cref="UnitVisual"/> для тестов windup: собирает Attack-<see cref="AnimationClip"/> с
+    /// заданным числом кадров (длина = frameCount/fps) и маркером контакта на hitFrame — сим выводит
+    /// windup из клипа (<see cref="ClipMarkers"/>), как в проде. Спрайты не нужны: длину задаёт float-кривая.
+    /// </summary>
     internal static class TestVisual
     {
+        private const float Fps = 10f;
+
         public static UnitVisual Make(int frameCount, int hitFrame)
         {
             var v = ScriptableObject.CreateInstance<UnitVisual>();
-            FieldInfo attack = typeof(UnitVisual).GetField("_attack", BindingFlags.Instance | BindingFlags.NonPublic);
-            FieldInfo hits   = typeof(UnitVisual).GetField("_attackHitFrames", BindingFlags.Instance | BindingFlags.NonPublic);
-            attack.SetValue(v, new Sprite[frameCount < 0 ? 0 : frameCount]);
-            hits.SetValue(v, new[] { hitFrame });
+            FieldInfo attackClip = typeof(UnitVisual).GetField("_attackClip", BindingFlags.Instance | BindingFlags.NonPublic);
+            attackClip.SetValue(v, BuildAttackClip(frameCount, hitFrame));
             return v;
+        }
+
+        private static AnimationClip BuildAttackClip(int frameCount, int hitFrame)
+        {
+            var clip = new AnimationClip { frameRate = Fps };
+            if (frameCount > 0)
+            {
+                // Длина клипа = frameCount/Fps → round(length*frameRate) == frameCount (см. ClipMarkers).
+                clip.SetCurve("", typeof(Transform), "localPosition.x",
+                    AnimationCurve.Linear(0f, 0f, frameCount / Fps, 0f));
+            }
+            if (hitFrame > 0)
+            {
+                var ev = new AnimationEvent { functionName = ClipMarkers.MarkerFunction, time = hitFrame / Fps };
+                UnityEditor.AnimationUtility.SetAnimationEvents(clip, new[] { ev });
+            }
+            return clip;
         }
     }
 

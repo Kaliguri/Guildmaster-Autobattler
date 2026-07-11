@@ -48,6 +48,10 @@ namespace Guildmaster.DevTools
         private IInputService      _input;
         private QuantumConsole     _console;
 
+        // Дамми-болванчики оформлены как полноценный юнит (EnemyData «enemy.training_dummy»): свой SO,
+        // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
+        private UnitData _dummyEnemy;
+
         // Открыта ли консоль сейчас: пока да — глушим наш игровой ввод (кроме F5), чтобы набор
         // команд в консоли не протекал в геймплей (пауза/смена вида/пан-зум/перезапуск боя).
         private bool _consoleOpen;
@@ -57,12 +61,14 @@ namespace Guildmaster.DevTools
         private static System.Action<GuildmasterCommands> _lastBattleSetup;
 
         [Inject]
-        public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory, IInputService input)
+        public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory,
+            IInputService input, IContentDatabase contentDatabase)
         {
             _simulation = simulation;
             _debugDraw  = debugDraw;
             _factory    = factory;
             _input      = input;
+            contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
         }
 
         // Пауза сима, пока консоль открыта: настраиваешь бой за консолью, закрываешь — он идёт с начала
@@ -517,7 +523,7 @@ namespace Guildmaster.DevTools
         // Автономные стат-значения dev-болванчика для сценариев gm_spawn_* (НЕ из StatsConfig: метод
         // статический, DI недоступен). Продакшн-дефолты юнита живут в StatsConfig.Defaults (вики «13»
         // §3.4/§4.2 п.6); держим их раздельно осознанно, чтобы не плодить тихий дрейф баланса.
-        private static RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f, float range = 1.5f)
+        private RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f, float range = 1.5f)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("test", new[]
@@ -537,6 +543,8 @@ namespace Guildmaster.DevTools
                 CurrentHP        = hp,
                 Position         = pos,
                 PreviousPosition = pos,
+                // Дамми как полноценный юнит: свой SO даёт визуал (→ анимации) без своей AI/способностей.
+                Unit             = _dummyEnemy,
             };
         }
     }

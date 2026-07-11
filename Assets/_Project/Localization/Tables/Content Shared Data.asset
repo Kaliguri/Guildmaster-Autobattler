@@ -123,6 +123,14 @@ MonoBehaviour:
     m_Key: effect.vortex_hold.name
     m_Metadata:
       m_Items: []
+  - m_Id: 202216797626368
+    m_Key: enemy.training_dummy.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 202216843763712
+    m_Key: enemy.training_dummy.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

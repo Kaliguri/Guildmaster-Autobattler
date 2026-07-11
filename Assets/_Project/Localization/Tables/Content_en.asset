@@ -128,6 +128,14 @@ MonoBehaviour:
     m_Localized: Vortex Hold
     m_Metadata:
       m_Items: []
+  - m_Id: 202216797626368
+    m_Localized: Training Dummy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 202216843763712
+    m_Localized: A passive test target for playtesting.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

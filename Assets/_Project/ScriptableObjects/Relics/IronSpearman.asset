@@ -16,7 +16,7 @@ MonoBehaviour:
   _damageType: 0
   _attackType: 0
   _resourceType: 2
-  _visual: {fileID: 0}
+  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
   _autoAttackShape: 1
   _autoAttackWidth: 1.5
   _autoAttackEffects: []
@@ -72,6 +72,7 @@ MonoBehaviour:
     _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
+    _visualSlot: 0
     _infoTags: []
   _aiPreset: {fileID: 11400000, guid: fbc693eab707b8749b2ca102d280768c, type: 2}
   _ai:

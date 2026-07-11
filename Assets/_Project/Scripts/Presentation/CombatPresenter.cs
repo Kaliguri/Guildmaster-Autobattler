@@ -188,11 +188,13 @@ namespace Guildmaster.Presentation
             _unitSpawnedPublisher.Publish(new UnitSpawnedEvent(unit));
         }
 
-        // Оверрайд визуала мапится по киту юнита; сравнение RelicData(.Relic) == UnitData(data) —
-        // reference-равенство через общую базу (RelicData : UnitData), сцена-данные оверрайдов не тронуты.
+        // Источник визуала — данные юнита (UnitData.Visual): тот же ассет, что читает сим для windup
+        // (AutoAttackSystem). Scene-_visualOverrides остаётся лишь dev-фолбэком для юнитов без своего
+        // визуала (сравнение по reference-равенству RelicData(.Relic) == UnitData(data) через общую базу).
         private UnitVisual ResolveVisual(UnitData data)
         {
             if (data == null) return null;
+            if (data.Visual != null) return data.Visual;
             for (int i = 0; i < _visualOverrides.Length; i++)
                 if (_visualOverrides[i].Relic == data) return _visualOverrides[i].Visual;
             return null;

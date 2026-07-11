@@ -91,7 +91,7 @@ namespace Guildmaster.Combat
         /// </summary>
         private static void MoveKite(RuntimeUnit unit, RuntimeUnit target, float maxMove, in ArenaBounds bounds, in SimTuning tuning)
         {
-            Kite kite = unit.Unit != null ? unit.Unit.Ai.Kite : default;
+            Kite kite = unit.Unit?.Ai != null ? unit.Unit.Ai.Kite : default;
             float flee     = kite.FleeDist;
             float fallback = kite.FallbackDist;
 

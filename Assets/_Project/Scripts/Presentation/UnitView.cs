@@ -7,12 +7,13 @@ using UnityEngine.Events;
 namespace Guildmaster.Presentation
 {
     /// <summary>
-    /// World-space визуальное представление <see cref="RuntimeUnit"/>.
-    /// Интерполирует позицию между тиками (сим 30 Hz, рендер 60+ fps) и проигрывает
-    /// кадровую анимацию (S4, вики «13» §5), развязанную с сим-тиком: состояние выбирает
-    /// чистый <see cref="UnitAnimationSelector"/> по наблюдаемому состоянию сима + событиям тика,
-    /// кадры листаются по рендер-времени. Анимация НИКОГДА не пишет в сим (урон уже на тике).
-    /// Feel-хуки — <see cref="UnityEvent"/> поля (подключается MMF_Player в Inspector).
+    /// World-space визуальное представление <see cref="RuntimeUnit"/>. Интерполирует позицию между
+    /// тиками (сим 30 Hz, рендер 60+ fps) и проигрывает анимацию через <see cref="Animator"/> —
+    /// клипы берутся из <see cref="UnitVisual"/> сборкой <see cref="AnimatorOverrideController"/> поверх
+    /// базового контроллера. Состояние выбирает чистый <see cref="UnitAnimationSelector"/> по наблюдаемому
+    /// состоянию сима; тайминг Attack привязан к сим-windup (маркер клипа садится на тик удара), Run
+    /// «прибит к земле». <c>animator.fireEvents=false</c> — маркеры это данные, а не колбэки. Анимация
+    /// НИКОГДА не пишет в сим. Feel-хуки — <see cref="UnityEvent"/> (MMF_Player в Inspector).
     /// </summary>
     public sealed class UnitView : MonoBehaviour
     {
@@ -20,11 +21,15 @@ namespace Guildmaster.Presentation
 
         [Header("Components")]
         [SerializeField] private SpriteRenderer _sprite;
+        [Tooltip("Animator на теле (той же GO, что SpriteRenderer). Пусто/без визуала = статичный спрайт.")]
+        [SerializeField] private Animator _animator;
+        [Tooltip("Базовый контроллер (Visuals/UnitBase.controller): стейты Idle/Run/Attack/Death/Hit/Skill1-4.")]
+        [SerializeField] private RuntimeAnimatorController _baseController;
         [SerializeField] private HealthBarView  _healthBar;
         [Tooltip("Бар ресурса (мана/ярость). Пусто = без бара; скрывается сам для безресурсных юнитов.")]
         [SerializeField] private ManaBarView    _manaBar;
 
-        [Header("Animation (S4) — опционально; пусто = статичный спрайт")]
+        [Header("Animation")]
         [SerializeField] private UnitVisual _visual;
 
         [Tooltip("Бег «прибит к земле»: сколько мировых юнитов проходит юнит на ОДИН кадр бега. " +
@@ -58,6 +63,11 @@ namespace Guildmaster.Presentation
         [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус = Size × SimTuning.BodyRadiusPerSize). Выключи, если мешает.")]
         [SerializeField] private bool _showCollisionGizmo = true;
 
+        private static readonly int IdleHash   = Animator.StringToHash("Idle");
+        private static readonly int RunHash     = Animator.StringToHash("Run");
+        private static readonly int AttackHash = Animator.StringToHash("Attack");
+        private static readonly int DeathHash   = Animator.StringToHash("Death");
+
         private RuntimeUnit _unit;
         private Vector2     _renderPosition;
 
@@ -65,12 +75,13 @@ namespace Guildmaster.Presentation
         private enum AttackPhase { None, Windup, FollowThrough }
 
         private UnitAnimationState _state = UnitAnimationState.Idle;
-        private int   _frameIndex;
-        private float _frameTimer;
         private AttackPhase _attackPhase;
-        private float _followRemaining;   // сек, фоллоу-сру кадров после контакта
         private bool  _isDead;
         private float _deathRemaining;
+
+        private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
+        private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
+        private float _runFrameRate = 10f;
 
         /// <summary>Связать вид с рантайм-юнитом.</summary>
         public void Bind(RuntimeUnit unit)
@@ -82,11 +93,8 @@ namespace Guildmaster.Presentation
             // Команда 0 смотрит вправо (как нарисованы спрайты), команда 1 — влево.
             if (_sprite != null) _sprite.flipX = unit.Team == 1;
 
-            if (_healthBar != null)
-                _healthBar.Bind(unit);
-
-            if (_manaBar != null)
-                _manaBar.Bind(unit);
+            if (_healthBar != null) _healthBar.Bind(unit);
+            if (_manaBar != null)   _manaBar.Bind(unit);
         }
 
         /// <summary>Тинт тела юнита: один общий спрайт, разный цвет на персонажа (dev-харнесс, «пока один спрайт»).</summary>
@@ -103,20 +111,47 @@ namespace Guildmaster.Presentation
 
         /// <summary>
         /// Подменить визуал в рантайме (пер-юнит визуал из реликвии, вики «13» шаг 4): все юниты
-        /// инстанцируются из одного префаба, но реликвия может задать свой набор кадров.
+        /// инстанцируются из одного префаба, но реликвия задаёт свой набор клипов. Юнит без клипов
+        /// оставляет статичный спрайт префаба (Animator выключается) — поведение dev-харнесса.
         /// </summary>
         public void SetVisual(UnitVisual visual)
         {
-            _visual     = visual;
-            _state      = UnitAnimationState.Idle;
-            _frameIndex = 0;
-            _frameTimer = 0f;
+            _visual = visual;
+            _state = UnitAnimationState.Idle;
+            _attackPhase = AttackPhase.None;
 
-            if (_visual != null && _sprite != null)
+            bool ready = _visual != null && _visual.HasClips && _animator != null && _baseController != null;
+            _animActive = ready;
+
+            if (!ready)
             {
-                Sprite[] idle = _visual.Frames(UnitAnimationState.Idle);
-                if (idle.Length > 0) _sprite.sprite = idle[0];
+                if (_animator != null) _animator.enabled = false;
+                return;
             }
+
+            var overrides = new AnimatorOverrideController(_baseController);
+            AssignClip(overrides, "Idle",   _visual.Clip(UnitAnimationState.Idle));
+            AssignClip(overrides, "Run",    _visual.Clip(UnitAnimationState.Run));
+            AssignClip(overrides, "Attack", _visual.Clip(UnitAnimationState.Attack));
+            AssignClip(overrides, "Death",  _visual.Clip(UnitAnimationState.Death));
+            AssignClip(overrides, "Hit",    _visual.HitClip);
+            for (int i = 0; i < 4; i++) AssignClip(overrides, "Skill" + (i + 1), _visual.SkillClip(i));
+
+            _animator.runtimeAnimatorController = overrides;
+            _animator.fireEvents = false;
+            _animator.enabled = true;
+
+            _attackMarkerNormalized = ClipMarkers.MarkerNormalized(_visual.AttackClip);
+            AnimationClip run = _visual.Clip(UnitAnimationState.Run);
+            _runFrameRate = run != null && run.frameRate > 0f ? run.frameRate : 10f;
+
+            _animator.Play(IdleHash, 0, 0f);
+            _animator.speed = 1f;
+        }
+
+        private static void AssignClip(AnimatorOverrideController overrides, string slot, AnimationClip clip)
+        {
+            if (clip != null) overrides[slot] = clip;
         }
 
         /// <summary>
@@ -138,9 +173,8 @@ namespace Guildmaster.Presentation
         }
 
         // --- Attach points (сокеты) ----------------------------------------------------------------
-        // Размер вида задаётся СТАТИКОЙ (масштаб узла 'Sprite Visual' или PPU арта), не рантаймом.
-        // Сокеты — пустые GO под 'Sprite Visual', презентация читает их мировые позиции для спавна
-        // снаряда/цифр/вспышек. Фолбэк на позицию юнита, если сокет не назначен.
+        // Размер вида задаётся СТАТИКОЙ (масштаб узла тела или PPU арта), не рантаймом. Сокеты — пустые GO,
+        // презентация читает их мировые позиции для спавна снаряда/цифр/вспышек. Фолбэк — позиция юнита.
 
         /// <summary>Мировая точка ног (касание земли). Фолбэк — позиция юнита.</summary>
         public Vector3 FeetPoint => _feetPoint != null ? _feetPoint.position : transform.position;
@@ -154,29 +188,28 @@ namespace Guildmaster.Presentation
         /// <summary>Мировая точка попадания (куда прилетают снаряды/цифры урона). Фолбэк — позиция юнита.</summary>
         public Vector3 HitPoint => _hitPoint != null ? _hitPoint.position : transform.position;
 
-        // Кадровая анимация листается по рендер-времени — независимо от 30-Гц сим-тика.
         private void Update()
         {
-            ApplyStealthAlpha(); // dev-подсветка инвиза — до guard'а, работает и без набора кадров
+            ApplyStealthAlpha(); // dev-подсветка инвиза — до guard'а, работает и без Animator
 
-            if (_visual == null || _sprite == null) return;
+            if (!_animActive) return;
 
             float dt = Time.deltaTime;
             UpdateAttackPhase(dt);
 
             bool isMoving = _unit != null &&
                             (_unit.Position - _unit.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
-
             bool attackPlaying = _attackPhase != AttackPhase.None;
+
             UnitAnimationState next = UnitAnimationSelector.Select(_isDead, attackPlaying, isMoving);
             if (next != _state)
             {
-                _state      = next;
-                _frameIndex = 0;
-                _frameTimer = 0f;
+                _state = next;
+                _animator.Play(HashFor(next), 0, 0f);
+                _animator.speed = 1f;
             }
 
-            StepFrames(dt);
+            DriveAnimation(dt);
 
             if (_isDead && _deathRemaining > 0f)
             {
@@ -184,6 +217,14 @@ namespace Guildmaster.Presentation
                 if (_deathRemaining <= 0f) gameObject.SetActive(false);
             }
         }
+
+        private static int HashFor(UnitAnimationState state) => state switch
+        {
+            UnitAnimationState.Run    => RunHash,
+            UnitAnimationState.Attack => AttackHash,
+            UnitAnimationState.Death  => DeathHash,
+            _                         => IdleHash,
+        };
 
         // Управление фазой атаки от состояния сима (вики «14»): замах → кадр контакта → фоллоу-сру.
         private void UpdateAttackPhase(float dt)
@@ -198,126 +239,69 @@ namespace Guildmaster.Presentation
             switch (_attackPhase)
             {
                 case AttackPhase.Windup:
-                    if (!_unit.IsWindingUp) BeginFollowThrough();   // замах кончился = кадр контакта
+                    if (!_unit.IsWindingUp) _attackPhase = AttackPhase.FollowThrough; // замах кончился = кадр контакта
                     break;
                 case AttackPhase.FollowThrough:
-                    _followRemaining -= dt;
-                    if (_followRemaining <= 0f) _attackPhase = AttackPhase.None;
+                    // Хвост доигрывается свободным ходом; конец клипа → возврат к локомоции.
+                    if (_state == UnitAnimationState.Attack &&
+                        _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+                        _attackPhase = AttackPhase.None;
                     break;
             }
         }
 
-        // После кадра контакта доигрываем хвост клипа свободным ходом по _fps (косметика).
-        private void BeginFollowThrough()
+        // Скорость/позиция клипа под текущее состояние: Attack скрабится по windup (маркер на тик удара),
+        // Run «прибит к земле», остальное — натуральный темп клипа.
+        private void DriveAnimation(float dt)
         {
-            int count = _visual.AttackFrameCount;
-            int hit   = Mathf.Clamp(_visual.AttackHitFrame, 0, Mathf.Max(0, count - 1));
-            _frameIndex = hit;
-            int after = Mathf.Max(0, count - 1 - hit);
-            _followRemaining = after / _visual.Fps;
-            _attackPhase = after > 0 ? AttackPhase.FollowThrough : AttackPhase.None;
-        }
-
-        private void StepFrames(float dt)
-        {
-            Sprite[] frames = _visual.Frames(_state);
-            if (frames.Length == 0) return;
-
-            if (_state == UnitAnimationState.Attack)
+            switch (_state)
             {
-                StepAttackFrames(frames, dt);
-                return;
+                case UnitAnimationState.Attack:
+                    if (_attackPhase == AttackPhase.Windup && _unit != null && _unit.WindupTicks > 0)
+                    {
+                        // Замах: скрабим клип до маркера пропорционально прогрессу windup — контакт (маркер)
+                        // приходится ровно на конец замаха = сим-тик урона.
+                        float progress = 1f - (float)_unit.WindupRemaining / _unit.WindupTicks;
+                        progress = Mathf.Clamp01(progress);
+                        _animator.speed = 0f;
+                        _animator.Play(AttackHash, 0, progress * _attackMarkerNormalized);
+                    }
+                    else
+                    {
+                        // Фоллоу-сру (или мгновенный удар): доигрываем хвост натуральным ходом.
+                        _animator.speed = 1f;
+                    }
+                    break;
+
+                case UnitAnimationState.Run:
+                    // Кадры бега листаются по пройденной дистанции: скорость клипа = (ед/с) / (ед/кадр) / (кадр/с).
+                    float speed = _unit != null
+                        ? (_unit.Position - _unit.PreviousPosition).magnitude / SimConstants.TickDelta
+                        : 0f;
+                    float step = Mathf.Max(0.01f, _runUnitsPerFrame);
+                    _animator.speed = speed / (step * _runFrameRate);
+                    break;
+
+                default:
+                    _animator.speed = 1f;
+                    break;
             }
-
-            if (_state == UnitAnimationState.Run && _unit != null)
-            {
-                StepRunFrames(frames, dt);
-                return;
-            }
-
-            float frameDur = 1f / _visual.Fps;
-            _frameTimer += dt;
-            while (_frameTimer >= frameDur)
-            {
-                _frameTimer -= frameDur;
-                _frameIndex++;
-                if (_frameIndex >= frames.Length)
-                {
-                    bool looping = _state == UnitAnimationState.Idle || _state == UnitAnimationState.Run;
-                    _frameIndex = looping ? 0 : frames.Length - 1;   // one-shot/death замирает на последнем кадре
-                }
-            }
-
-            _sprite.sprite = frames[Mathf.Clamp(_frameIndex, 0, frames.Length - 1)];
-        }
-
-        // Бег «прибит к земле»: листаем кадры по ПРОЙДЕННОЙ дистанции (скорость × время), а не по фикс. fps —
-        // ноги не скользят, темп совпадает со скоростью на любом размере. Скорость берём из сим-дельты позиции.
-        private void StepRunFrames(Sprite[] frames, float dt)
-        {
-            float speed = (_unit.Position - _unit.PreviousPosition).magnitude / SimConstants.TickDelta; // мир. ед/с
-            float step  = Mathf.Max(0.01f, _runUnitsPerFrame);
-
-            _frameTimer += speed * dt; // накапливаем пройденную дистанцию
-            while (_frameTimer >= step)
-            {
-                _frameTimer -= step;
-                _frameIndex++;
-                if (_frameIndex >= frames.Length) _frameIndex = 0;
-            }
-
-            _sprite.sprite = frames[Mathf.Clamp(_frameIndex, 0, frames.Length - 1)];
-        }
-
-        // Кадры замаха привязаны к доле прошедшего windup → контакт (hitFrame) садится на конец замаха
-        // = на сим-тик урона (OnDamageDealt). Хвост после контакта — свободный ход по _fps.
-        private void StepAttackFrames(Sprite[] frames, float dt)
-        {
-            int hit = Mathf.Clamp(_visual.AttackHitFrame, 0, frames.Length - 1);
-
-            if (_attackPhase == AttackPhase.Windup && _unit != null && _unit.WindupTicks > 0)
-            {
-                float progress = 1f - (float)_unit.WindupRemaining / _unit.WindupTicks;
-                progress = Mathf.Clamp01(progress);
-                _frameIndex = Mathf.Clamp(Mathf.FloorToInt(progress * hit), 0, hit);
-            }
-            else if (_attackPhase == AttackPhase.FollowThrough)
-            {
-                float frameDur = 1f / _visual.Fps;
-                _frameTimer += dt;
-                while (_frameTimer >= frameDur)
-                {
-                    _frameTimer -= frameDur;
-                    if (_frameIndex < frames.Length - 1) _frameIndex++;
-                }
-            }
-
-            _sprite.sprite = frames[Mathf.Clamp(_frameIndex, 0, frames.Length - 1)];
         }
 
         /// <summary>Юнит вошёл в замах авто-атаки (событие сима OnAttackStarted) — запускаем свинг.</summary>
         public void OnAttackStarted()
         {
-            if (_visual == null) return;
+            if (!_animActive) return;
 
-            if (_unit != null && _unit.IsWindingUp && _unit.WindupTicks > 0)
-            {
-                _attackPhase = AttackPhase.Windup;
-                _frameIndex  = 0;
-                _frameTimer  = 0f;
-            }
-            else
-            {
-                BeginFollowThrough();   // мгновенный удар (windup 0) — сразу хвост
-            }
+            _attackPhase = _unit != null && _unit.IsWindingUp && _unit.WindupTicks > 0
+                ? AttackPhase.Windup
+                : AttackPhase.FollowThrough; // мгновенный удар (windup 0) — сразу хвост
         }
 
         /// <summary>Замах прерван (событие сима OnAttackInterrupted) — рвём свинг в idle.</summary>
         public void OnAttackInterrupted()
         {
             _attackPhase = AttackPhase.None;
-            _frameIndex  = 0;
-            _frameTimer  = 0f;
         }
 
         // Инвиз (dev, §10.5): пока висит тег Stealth — тело полупрозрачно; иначе непрозрачно.
@@ -342,15 +326,16 @@ namespace Guildmaster.Presentation
         {
             _onDeathFeedback?.Invoke();
 
-            if (_visual != null)
+            if (_animActive)
             {
                 _isDead = true;
-                _deathRemaining = _visual.Duration(UnitAnimationState.Death);
-                if (_deathRemaining <= 0f) gameObject.SetActive(false);   // нет death-клипа → прячемся сразу
+                AnimationClip death = _visual.Clip(UnitAnimationState.Death);
+                _deathRemaining = death != null ? death.length : 0f;
+                if (_deathRemaining <= 0f) gameObject.SetActive(false); // нет death-клипа → прячемся сразу
             }
             else
             {
-                gameObject.SetActive(false);   // статичный фолбэк — прежнее поведение
+                gameObject.SetActive(false); // статичный фолбэк — прежнее поведение
             }
         }
 

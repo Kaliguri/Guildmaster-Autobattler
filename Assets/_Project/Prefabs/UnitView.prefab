@@ -146,9 +146,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.UnitView
   _sprite: {fileID: 5019486704723773761}
+  _animator: {fileID: 1355228489009499667}
+  _baseController: {fileID: 9100000, guid: da670d250fd69f8449d370b6c0628636, type: 2}
   _healthBar: {fileID: 7127319717872641838}
   _manaBar: {fileID: 8000216100949344901}
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
+  _runUnitsPerFrame: 0.15
   _onHitFeedback:
     m_PersistentCalls:
       m_Calls: []
@@ -173,6 +176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4771467941838879073}
   - component: {fileID: 5019486704723773761}
+  - component: {fileID: 1355228489009499667}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -254,6 +258,28 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!95 &1355228489009499667
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5585378942455852698}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: da670d250fd69f8449d370b6c0628636, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5676705268421904075
 GameObject:
   m_ObjectHideFlags: 0
