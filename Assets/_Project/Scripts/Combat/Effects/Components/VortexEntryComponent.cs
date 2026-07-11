@@ -1,6 +1,5 @@
 using System;
 using Guildmaster.Data.Definitions;
-using Guildmaster.Data.Stats;
 using UnityEngine;
 
 namespace Guildmaster.Combat.Effects.Components
@@ -38,16 +37,11 @@ namespace Guildmaster.Combat.Effects.Components
             if (victim.Team == monk.Team) return;
 
             // «В спину» = ДАЛЬНЯЯ от монаха сторона цели (направление её отбрасывания): монах перепрыгивает
-            // ЧЕРЕЗ приземлившегося врага и встаёт у него за спиной. Раньше садились на свою сторону (перед
-            // врагом, откуда пришёл толчок) — визуально это «не за спину». Фокус + усиление след. атаки.
-            Vector2 fromMonk = victim.Position - monk.Position; // монах → цель = направление отбрасывания
-            Vector2 behindDir = fromMonk.sqrMagnitude > 1e-4f ? fromMonk.normalized : Vector2.right;
-            float range = monk.Stats.Get(StatType.AttackRange);
-
-            monk.PreviousPosition = monk.Position;
-            monk.Position = victim.Position + behindDir * (range * 0.5f);
+            // ЧЕРЕЗ приземлившегося врага и встаёт у него за спиной (общий хелпер с убийцей). Раньше садились
+            // на свою сторону (перед врагом, откуда пришёл толчок) — визуально это «не за спину».
+            CombatPositioning.TeleportBehind(monk, victim);
             monk.CurrentTarget = victim;
-            monk.EmpowerDamageMult = _empowerMult;
+            monk.EmpowerDamageMult = _empowerMult; // усиление след. атаки
         }
     }
 }

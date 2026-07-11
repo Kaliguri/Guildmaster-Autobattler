@@ -130,6 +130,13 @@ namespace Guildmaster.Combat
                 ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, EffectTag.Stealth, int.MaxValue, 0));
             }
 
+            // §10.5 блинк убийцы: удар из скрытности телепортирует его за спину цели (в момент удара, до урона).
+            if (unit.BlinkBehindOnNextAttack)
+            {
+                unit.BlinkBehindOnNextAttack = false;
+                CombatPositioning.TeleportBehind(unit, target);
+            }
+
             if (attackType == AttackType.Melee)
             {
                 if (shape == AreaShape.Line)
