@@ -417,7 +417,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 4
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -442,7 +442,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.88125, y: 1.22867, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -536,7 +536,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 40
-    OrthographicSize: 4
+    OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -563,8 +563,8 @@ Transform:
   m_GameObject: {fileID: 587380978}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.88125, y: 1.22867, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 493356802}
@@ -644,7 +644,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 40
-    OrthographicSize: 4
+    OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -671,8 +671,8 @@ Transform:
   m_GameObject: {fileID: 735157760}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.88125, y: 1.22867, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 493356802}
@@ -722,21 +722,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Game::Guildmaster.Game.ArenaLayoutAuthoring
   _boundsCenter: {x: 0, y: 0}
-  _boundsSize: {x: 14, y: 7}
+  _boundsSize: {x: 40, y: 20}
   _cameraZoneCenter: {x: 0, y: 0}
-  _cameraZoneSize: {x: 40, y: 30}
+  _cameraZoneSize: {x: 70, y: 50}
   _showScaleReference: 1
   _refHumanHeight: 1.7
   _refHumanWidth: 0.6
   _zones:
   - Side: 0
     Tier: 0
-    Center: {x: -4.68, y: 0}
-    Size: {x: 3, y: 3}
+    Center: {x: -15, y: 0}
+    Size: {x: 10, y: 18}
   - Side: 1
     Tier: 0
-    Center: {x: 4.57, y: 0}
-    Size: {x: 3, y: 3}
+    Center: {x: 15, y: 0}
+    Size: {x: 10, y: 18}
 --- !u!1 &955133365
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +857,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 14, y: 7, z: 1}
+  m_LocalScale: {x: 40, y: 20, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 696136177}
@@ -1035,7 +1035,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 40
-    OrthographicSize: 4
+    OrthographicSize: 12
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -1063,7 +1063,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 493356802}
@@ -1809,7 +1809,7 @@ Transform:
   m_GameObject: {fileID: 2005389603}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.88125, y: 1.22867, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: -10}
   m_ConstrainProportionsScale: 0
   m_Children: []
