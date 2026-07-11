@@ -39,6 +39,9 @@ MonoBehaviour:
   - Stat: 28
     Op: 0
     Value: 30
+  - Stat: 9
+    Op: 0
+    Value: 1
   _grantedEffects:
   - {fileID: 11400000, guid: 5bbca1847e2a5854fabf515858d38903, type: 2}
   - {fileID: 11400000, guid: 9e50eef356131b4409c788dd915e3a81, type: 2}
