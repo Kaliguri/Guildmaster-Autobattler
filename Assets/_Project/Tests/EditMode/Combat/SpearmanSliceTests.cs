@@ -50,8 +50,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             RelicData spear = TestRelic.Make(autoAttackShape: AreaShape.Line, autoAttackWidth: 2f);
             var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: spear, range: 5f);
 
-            var near = MakeUnit(1, team: 1, pos: new Vector2(4.9f, 0f)); // в пределах длины → бьём
-            var far  = MakeUnit(2, team: 1, pos: new Vector2(5.5f, 0f)); // дальше длины линии → мимо
+            // Длина линии = досягаемость с учётом тел (AttackRange + радиусы обоих тел ≈ 5 + 0.575·2 ≈ 6.15).
+            var near = MakeUnit(1, team: 1, pos: new Vector2(4.9f, 0f)); // в пределах reach → бьём
+            var far  = MakeUnit(2, team: 1, pos: new Vector2(7f,   0f)); // дальше reach линии → мимо
             attacker.CurrentTarget = near;
 
             var units = new List<RuntimeUnit> { attacker, near, far };
@@ -60,7 +61,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             TickUntilDamage(units, ctx);
 
             CollectionAssert.AreEquivalent(new[] { near }, ctx.Damage.ConvertAll(d => d.Target),
-                "Длина линии = радиус атаки: цель за радиусом не задевается");
+                "Длина линии = body-aware reach: цель за пределом досягаемости не задевается");
         }
 
         // ===================== Круговой AOE-актив («Стальной вихрь») =====================

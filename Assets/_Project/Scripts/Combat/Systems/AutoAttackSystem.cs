@@ -60,8 +60,9 @@ namespace Guildmaster.Combat
                 RuntimeUnit target = IsHealMode(unit) ? unit.AutoAttackTarget : unit.CurrentTarget;
                 if (target == null || target.IsDead) continue;
 
-                float range = unit.Stats.Get(StatType.AttackRange);
-                if ((target.Position - unit.Position).sqrMagnitude > range * range) continue;
+                // Досягаемость — с учётом тел обоих юнитов (§9, зазор поверхностей). Метрика едина с
+                // движением и сепарацией: см. CombatPositioning.AttackReachCenter.
+                if (!CombatPositioning.InAttackRange(unit, target, ctx.Tuning)) continue;
 
                 EnterWindup(unit, target, ctx);
             }
@@ -99,8 +100,9 @@ namespace Guildmaster.Combat
             // Цель пропала к удару (мертва / вне радиуса) → вхолостую, кулдаун уже потрачен на старте.
             if (target == null || target.IsDead) return;
 
-            float range = unit.Stats.Get(StatType.AttackRange);
-            if ((target.Position - unit.Position).sqrMagnitude > range * range) return;
+            // Досягаемость с учётом тел (см. EnterWindup). reach также = длина линейной АА ниже.
+            float reach = CombatPositioning.AttackReachCenter(unit, target, ctx.Tuning);
+            if ((target.Position - unit.Position).sqrMagnitude > reach * reach) return;
 
             // Прирост ресурса — на момент реального удара (мана-реликвии).
             GainResourceOnHit(unit);
@@ -141,7 +143,7 @@ namespace Guildmaster.Combat
             {
                 if (shape == AreaShape.Line)
                 {
-                    DealLineDamage(unit, target, range, raw, dmgType, ctx);
+                    DealLineDamage(unit, target, reach, raw, dmgType, ctx);
                 }
                 else
                 {

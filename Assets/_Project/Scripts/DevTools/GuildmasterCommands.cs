@@ -130,7 +130,7 @@ namespace Guildmaster.DevTools
 
         /// <summary>Поднять тест-бой N×M юнитов с заданными HP.</summary>
         [Command("gm_spawn_battle", "Запустить тест-бой N юнитов за каждую сторону")]
-        public void SpawnBattle(int countPerTeam = 2, float hp = 300f, float damage = 50f)
+        public void SpawnBattle(int countPerTeam = 2, float hp = 300f, float damage = 15f)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
 
@@ -243,7 +243,7 @@ namespace Guildmaster.DevTools
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 0.8f; // компактно по вертикали
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(5f, y), enemyHp, 8f, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(5f, y), enemyHp, 5f, nextId++));
             }
 
             _lastBattleSetup = self => self.SpawnSpearman(enemies, enemyHp);
@@ -278,7 +278,7 @@ namespace Guildmaster.DevTools
             for (int i = 0; i < 2; i++)
             {
                 float y = (i - 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 10f, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 5f, nextId++));
             }
 
             _lastBattleSetup = self => self.SpawnShepherd(allies, enemyHp);
@@ -303,7 +303,7 @@ namespace Guildmaster.DevTools
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 1f;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 8f, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 5f, nextId++));
             }
 
             _lastBattleSetup = self => self.SpawnCryomancer(enemies, enemyHp);
@@ -312,7 +312,7 @@ namespace Guildmaster.DevTools
 
         /// <summary>Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10.3.</summary>
         [Command("gm_spawn_defender", "Заспавнить Надёжного защитника против ударных болванчиков (срез §10.3)")]
-        public void SpawnDefender(int enemies = 3, float enemyDamage = 40f)
+        public void SpawnDefender(int enemies = 3, float enemyDamage = 8f)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
@@ -323,8 +323,9 @@ namespace Guildmaster.DevTools
             // Защитник по центру-слева — через фабрику (реальный путь: пассив «Оплот» pre-damage, HighestThreat, ульта).
             _simulation.EnqueueUnitSpawn(_factory.Create(_defenderRelic, null, team: 0, new Vector2(-4f, 0f)));
 
-            // Ударные болванчики справа: урон выше порога «Оплота» (15% × 220 ≈ 33), чтобы щит поднимался.
-            // Первый бьёт сильнее — видно, что ульта уходит в «главную угрозу» (HighestThreat).
+            // Болванчики справа. Дефолт урона низкий (герой выживает для спокойного теста). «Оплот»
+            // поднимает щит на ЛЮБОЙ удар (PassiveTrigger.AnyHit, внутр. КД 4с) — низкий урон это не ломает.
+            // Первый бьёт в 1.5× сильнее — видно, что ульта уходит в «главную угрозу» (HighestThreat).
             int nextId = _simulation.Units.Count + 1;
             for (int i = 0; i < enemies; i++)
             {
@@ -355,7 +356,7 @@ namespace Guildmaster.DevTools
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 10f, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 5f, nextId++));
             }
 
             _lastBattleSetup = self => self.SpawnRanger(enemies, enemyHp);
@@ -364,7 +365,7 @@ namespace Guildmaster.DevTools
 
         /// <summary>Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.</summary>
         [Command("gm_spawn_assassin", "Заспавнить Скрытного убийцу против болванчиков (срез §10.5)")]
-        public void SpawnAssassin(int enemies = 3, float enemyHp = 120f, float enemyDamage = 40f)
+        public void SpawnAssassin(int enemies = 3, float enemyHp = 120f, float enemyDamage = 8f)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
@@ -376,7 +377,8 @@ namespace Guildmaster.DevTools
             // усиленный первый удар, негейт крупных ударов, рестелс после убийства).
             _simulation.EnqueueUnitSpawn(_factory.Create(_assassinRelic, null, team: 0, new Vector2(-5f, 0f)));
 
-            // Болванчики справа: бьют крупно (> порога «Изворотливости»), чтобы видеть негейт и заряды.
+            // Болванчики справа. Дефолт урона низкий (герой выживает для спокойного теста). «Изворотливость»
+            // гейтит ЛЮБУЮ автоатаку независимо от размера урона (PassiveTrigger.AnyHit) — низкий урон это не ломает.
             int nextId = _simulation.Units.Count + 1;
             for (int i = 0; i < enemies; i++)
             {
@@ -523,7 +525,7 @@ namespace Guildmaster.DevTools
         // Автономные стат-значения dev-болванчика для сценариев gm_spawn_* (НЕ из StatsConfig: метод
         // статический, DI недоступен). Продакшн-дефолты юнита живут в StatsConfig.Defaults (вики «13»
         // §3.4/§4.2 п.6); держим их раздельно осознанно, чтобы не плодить тихий дрейф баланса.
-        private RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f, float range = 1.5f)
+        private RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f, float range = 1.0f)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("test", new[]
@@ -531,6 +533,8 @@ namespace Guildmaster.DevTools
                 new StatModifier(StatType.MaxHP,            ModifierOp.Flat, hp),
                 new StatModifier(StatType.AutoAttackDamage, ModifierOp.Flat, damage),
                 new StatModifier(StatType.AttackSpeed,      ModifierOp.Flat, 1f),
+                // AttackRange теперь = зазор между поверхностями тел (§9): досягаемость считается с учётом
+                // радиусов обоих тел, поэтому «нормальная» мили-дистанция — небольшая (~1.0), а не 2.5.
                 new StatModifier(StatType.AttackRange,      ModifierOp.Flat, range),
                 new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, 2.5f),
                 new StatModifier(StatType.Size,             ModifierOp.Flat, size - 1f), // Size база 1 → итог = size

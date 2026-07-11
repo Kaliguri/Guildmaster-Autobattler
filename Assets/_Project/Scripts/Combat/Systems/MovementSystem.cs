@@ -19,6 +19,13 @@ namespace Guildmaster.Combat
         // что упёрлись, и переходим к репозиции вдоль стены. Мал, чтобы ловить реальный контакт, не FP-шум.
         private const float WallPinEpsilonSq = 1e-6f;
 
+        // Буфер подхода: сближаемся не ДО предела досягаемости, а чуть ближе (× это). Движение идёт ПЕРЕД
+        // расталкиванием в тике, поэтому если парковаться ровно на пределе reach — расталкивание (толчок
+        // соседей) выбивает юнита за радиус ровно к фазе удара → вечный удар «вхолостую». Буфер даёт полосу
+        // [reach×фактор … reach], которая поглощает per-tick сдвиг сепарации: гейт атаки (полный reach)
+        // продолжает засчитывать удар. Мили встают чуть плотнее — это и визуально живее.
+        private const float ApproachStopFactor = 0.85f;
+
         /// <summary>Продвинуть позиции всех живых юнитов на один тик.</summary>
         /// <param name="units">Список всех юнитов в бою.</param>
         /// <param name="dt">Длительность тика (всегда <see cref="SimConstants.TickDelta"/>).</param>
@@ -59,7 +66,7 @@ namespace Guildmaster.Combat
                 {
                     case PositioningIntent.Kite:    MoveKite(unit, target, maxMove, bounds, in tuning); break;
                     case PositioningIntent.Retreat: MoveRetreat(unit, units, maxMove, bounds); break;
-                    default:                        MoveApproach(unit, target, maxMove); break;
+                    default:                        MoveApproach(unit, target, maxMove, in tuning); break;
                 }
 
                 // Стены арены: не даём кайту/отступлению уйти за поле (вики «15» §7).
@@ -67,19 +74,23 @@ namespace Guildmaster.Combat
             }
         }
 
-        /// <summary>Сближение до дистанции атаки (поведение Ф1).</summary>
-        private static void MoveApproach(RuntimeUnit unit, RuntimeUnit target, float maxMove)
+        /// <summary>
+        /// Сближение до дистанции атаки (поведение Ф1). Точка остановки — <see cref="CombatPositioning.AttackReachCenter"/>
+        /// (та же body-aware метрика, что у гейта автоатаки): движение подводит юнита ровно туда, откуда
+        /// автоатака засчитает попадание, поэтому расталкивание не выбивает его из радиуса «вхолостую».
+        /// </summary>
+        private static void MoveApproach(RuntimeUnit unit, RuntimeUnit target, float maxMove, in SimTuning tuning)
         {
-            float attackRange = unit.Stats.Get(StatType.AttackRange);
+            // Стоп-дистанция = чуть ближе предела досягаемости (буфер под расталкивание, см. ApproachStopFactor).
+            float stop        = CombatPositioning.AttackReachCenter(unit, target, in tuning) * ApproachStopFactor;
             Vector2 toTarget  = target.Position - unit.Position;
             float distSq      = toTarget.sqrMagnitude;
-            float rangeSq     = attackRange * attackRange;
 
-            if (distSq <= rangeSq) return;
+            if (distSq <= stop * stop) return;
 
             float dist = Mathf.Sqrt(distSq);
-            if (dist - attackRange <= maxMove)
-                unit.Position = target.Position - toTarget / dist * attackRange;
+            if (dist - stop <= maxMove)
+                unit.Position = target.Position - toTarget / dist * stop;
             else
                 unit.Position += toTarget / dist * maxMove;
         }

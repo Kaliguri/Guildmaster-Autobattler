@@ -90,8 +90,9 @@ namespace Guildmaster.Presentation
             _renderPosition = unit.Position;
             transform.position = (Vector3)_renderPosition;
 
-            // Команда 0 смотрит вправо (как нарисованы спрайты), команда 1 — влево.
-            if (_sprite != null) _sprite.flipX = unit.Team == 1;
+            // Изначально все смотрят вправо (как нарисованы спрайты). Дальше разворот динамический —
+            // по положению текущей цели (ApplyFacing в Update).
+            if (_sprite != null) _sprite.flipX = false;
 
             if (_healthBar != null) _healthBar.Bind(unit);
             if (_manaBar != null)   _manaBar.Bind(unit);
@@ -197,6 +198,7 @@ namespace Guildmaster.Presentation
         private void Update()
         {
             ApplyStealthAlpha(); // dev-подсветка инвиза — до guard'а, работает и без Animator
+            ApplyFacing();       // разворот по цели — тоже до guard'а (нужен и статичным спрайтам)
 
             if (!_animActive) return;
 
@@ -308,6 +310,22 @@ namespace Guildmaster.Presentation
         public void OnAttackInterrupted()
         {
             _attackPhase = AttackPhase.None;
+        }
+
+        // Разворот тела по горизонтали: спрайты нарисованы «лицом вправо», поэтому если текущая цель
+        // левее — отражаем по X. Мёртвая зона гасит дрожание, когда цель почти строго по вертикали.
+        // Цели нет (враги кончились) — сохраняем последний разворот. Только презентация, сим не трогаем.
+        private const float FacingDeadzoneX = 0.05f;
+
+        private void ApplyFacing()
+        {
+            if (_sprite == null || _unit == null) return;
+            RuntimeUnit target = _unit.CurrentTarget;
+            if (target == null || target.IsDead) return;
+
+            float dx = target.Position.x - _unit.Position.x;
+            if (Mathf.Abs(dx) < FacingDeadzoneX) return;
+            _sprite.flipX = dx < 0f;
         }
 
         // Инвиз (dev, §10.5): пока висит тег Stealth — тело полупрозрачно; иначе непрозрачно.
