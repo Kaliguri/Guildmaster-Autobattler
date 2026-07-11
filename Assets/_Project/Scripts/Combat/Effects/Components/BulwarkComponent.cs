@@ -16,8 +16,8 @@ namespace Guildmaster.Combat.Effects.Components
     [Serializable]
     public sealed class BulwarkComponent : IPreDamageComponent
     {
-        [Tooltip("Внутренний кулдаун между поднятиями щита, сек (иначе блокирует каждый удар). Защитник ≈ 7.")]
-        [SerializeField] private float _internalCooldownSeconds = 7f;
+        [Tooltip("Внутренний кулдаун между поднятиями щита, сек (стартует ПОСЛЕ срабатывания). Защитник = 4.")]
+        [SerializeField] private float _internalCooldownSeconds = 4f;
 
         [Tooltip("Таймированный щит-эффект, накладываемый на носителя при срабатывании (величина — в его MissingHpShieldComponent).")]
         [SerializeField] private EffectData _shieldEffect;

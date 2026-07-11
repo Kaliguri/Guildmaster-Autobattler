@@ -93,7 +93,7 @@ MonoBehaviour:
       Enabled: 0
       FleeDist: 1.5
       FallbackDist: 3
-    _passiveTrigger: 2
+    _passiveTrigger: 1
     _passiveThresholdPct: 0.15
   _icon: {fileID: 0}
   _infoTags: []

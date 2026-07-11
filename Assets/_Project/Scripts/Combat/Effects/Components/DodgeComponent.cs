@@ -15,11 +15,11 @@ namespace Guildmaster.Combat.Effects.Components
     [Serializable]
     public sealed class DodgeComponent : IPreDamageComponent, IStackableComponent
     {
-        [Tooltip("Число зарядов негейта.")]
-        [SerializeField] private int _maxCharges = 2;
+        [Tooltip("Число зарядов негейта. Убийца = 1 (гейтит одну следующую атаку).")]
+        [SerializeField] private int _maxCharges = 1;
 
-        [Tooltip("Независимая перезарядка одного заряда, сек.")]
-        [SerializeField] private float _rechargeSeconds = 8f;
+        [Tooltip("Независимая перезарядка одного заряда, сек. Убийца = 5.")]
+        [SerializeField] private float _rechargeSeconds = 5f;
 
         public void OnApply(in EffectContext ctx)
         {
