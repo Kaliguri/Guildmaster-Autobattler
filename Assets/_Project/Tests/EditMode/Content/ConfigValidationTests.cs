@@ -25,6 +25,12 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.AreEqual(5f,     d.ProjectileDespawnMargin,   1e-6f, nameof(d.ProjectileDespawnMargin));
             Assert.AreEqual(0.6f,   d.KiteFleeFactor,            1e-6f, nameof(d.KiteFleeFactor));
             Assert.AreEqual(500f,   d.GlobalSearchRadius,        1e-6f, nameof(d.GlobalSearchRadius));
+            Assert.AreEqual(1f,     d.FleeThreatWeight,          1e-6f, nameof(d.FleeThreatWeight));
+            Assert.AreEqual(0.5f,   d.FleeHomeWeight,            1e-6f, nameof(d.FleeHomeWeight));
+            Assert.AreEqual(1.5f,   d.FleeWallWeight,            1e-6f, nameof(d.FleeWallWeight));
+            Assert.AreEqual(2.5f,   d.FleeWallMargin,            1e-6f, nameof(d.FleeWallMargin));
+            Assert.AreEqual(6f,     d.FleeThreatRadius,          1e-6f, nameof(d.FleeThreatRadius));
+            Assert.AreEqual(0.35f,  d.KiteStrafeWeight,          1e-6f, nameof(d.KiteStrafeWeight));
         }
 
         // --- §8 правило 6: закоммиченный SimTuningConfig == код-дефолты (ловит утёкшие play-mode правки) ---
@@ -45,6 +51,12 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.AreEqual(d.ProjectileDespawnMargin,   s.ProjectileDespawnMargin,   1e-6f);
             Assert.AreEqual(d.KiteFleeFactor,            s.KiteFleeFactor,            1e-6f);
             Assert.AreEqual(d.GlobalSearchRadius,        s.GlobalSearchRadius,        1e-6f);
+            Assert.AreEqual(d.FleeThreatWeight,          s.FleeThreatWeight,          1e-6f);
+            Assert.AreEqual(d.FleeHomeWeight,            s.FleeHomeWeight,            1e-6f);
+            Assert.AreEqual(d.FleeWallWeight,            s.FleeWallWeight,            1e-6f);
+            Assert.AreEqual(d.FleeWallMargin,            s.FleeWallMargin,            1e-6f);
+            Assert.AreEqual(d.FleeThreatRadius,          s.FleeThreatRadius,          1e-6f);
+            Assert.AreEqual(d.KiteStrafeWeight,          s.KiteStrafeWeight,          1e-6f);
         }
 
         // --- §8 правило 5: диапазоны ---
@@ -61,6 +73,12 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.GreaterOrEqual(s.ProjectileDespawnMargin, 0f);
             Assert.That(s.KiteFleeFactor, Is.GreaterThan(0f).And.LessThanOrEqualTo(1f));
             Assert.Greater(s.GlobalSearchRadius, 0f);
+            Assert.GreaterOrEqual(s.FleeThreatWeight, 0f);
+            Assert.GreaterOrEqual(s.FleeHomeWeight, 0f);
+            Assert.GreaterOrEqual(s.FleeWallWeight, 0f);
+            Assert.GreaterOrEqual(s.FleeWallMargin, 0f);
+            Assert.Greater(s.FleeThreatRadius, 0f);
+            Assert.GreaterOrEqual(s.KiteStrafeWeight, 0f);
         }
 
         [Test]

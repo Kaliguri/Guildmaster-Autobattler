@@ -31,6 +31,17 @@ namespace Guildmaster.Core.Simulation
         public readonly float KiteFleeFactor;      // fallback-полоса кайта: flee = range × это
         public readonly float GlobalSearchRadius;  // «без ограничения дальности» на масштабе арены
 
+        // --- Побег (FleeSteering): единая математика Retreat/Kite-flee ---
+        // Направление побега = взвешенная сумма: отталкивание от центроида врагов (Threat) + притяжение
+        // к своему тылу (Home, по Team) + превентивное избегание стен (Wall). Веса безразмерные (складываются
+        // до нормализации). Home < Threat — тыл лишь подкручивает, не разворачивает от реальной угрозы.
+        public readonly float FleeThreatWeight;    // вес отталкивания от врагов
+        public readonly float FleeHomeWeight;      // вес притяжения к своему тылу
+        public readonly float FleeWallWeight;      // вес отталкивания от стены (в пределах FleeWallMargin)
+        public readonly float FleeWallMargin;      // дистанция до стены (м), с которой включается избегание
+        public readonly float FleeThreatRadius;    // радиус (м) сбора врагов в центроид угрозы (иначе — ближайший)
+        public readonly float KiteStrafeWeight;    // вес бокового ухода кайтера (дуга вместо пятящегося отхода)
+
         public SimTuning(
             float bodyRadiusPerSize,
             float separationStrength,
@@ -39,7 +50,13 @@ namespace Guildmaster.Core.Simulation
             float projectileHitRadiusFactor,
             float projectileDespawnMargin,
             float kiteFleeFactor,
-            float globalSearchRadius)
+            float globalSearchRadius,
+            float fleeThreatWeight,
+            float fleeHomeWeight,
+            float fleeWallWeight,
+            float fleeWallMargin,
+            float fleeThreatRadius,
+            float kiteStrafeWeight)
         {
             BodyRadiusPerSize         = bodyRadiusPerSize;
             SeparationStrength        = separationStrength;
@@ -49,6 +66,12 @@ namespace Guildmaster.Core.Simulation
             ProjectileDespawnMargin   = projectileDespawnMargin;
             KiteFleeFactor            = kiteFleeFactor;
             GlobalSearchRadius        = globalSearchRadius;
+            FleeThreatWeight          = fleeThreatWeight;
+            FleeHomeWeight            = fleeHomeWeight;
+            FleeWallWeight            = fleeWallWeight;
+            FleeWallMargin            = fleeWallMargin;
+            FleeThreatRadius          = fleeThreatRadius;
+            KiteStrafeWeight          = kiteStrafeWeight;
         }
 
         /// <summary>Код-дефолты (исторические значения фиксированных констант — контракт баланса).</summary>
@@ -60,6 +83,12 @@ namespace Guildmaster.Core.Simulation
             projectileHitRadiusFactor: 0.25f,
             projectileDespawnMargin:   5f,
             kiteFleeFactor:            0.6f,
-            globalSearchRadius:        500f);
+            globalSearchRadius:        500f,
+            fleeThreatWeight:          1f,
+            fleeHomeWeight:            0.5f,
+            fleeWallWeight:            1.5f,
+            fleeWallMargin:            2.5f,
+            fleeThreatRadius:          6f,
+            kiteStrafeWeight:          0.35f);
     }
 }
