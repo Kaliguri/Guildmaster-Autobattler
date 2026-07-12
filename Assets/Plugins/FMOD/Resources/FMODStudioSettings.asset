@@ -388,7 +388,7 @@ MonoBehaviour:
   m_Name: FMODStudioSettingsPlatform
   m_EditorClassIdentifier: FMODUnity::FMODUnity.PlatformPlayInEditor
   identifier: playInEditor
-  parentIdentifier:
+  parentIdentifier: 
   active: 1
   Properties:
     LiveUpdate:
@@ -463,8 +463,8 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: ../../My Programms/FMOD/Guildmaster/Guildmaster.fspro
-  sourceBankPath: ../../My Programms/FMOD/Guildmaster/Build
+  sourceProjectPath: FMOD Project/Guildmaster Autobattler Game.fspro
+  sourceBankPath: FMOD Project/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
@@ -486,7 +486,8 @@ MonoBehaviour:
   VirtualChannelSettings: []
   RealChannelSettings: []
   Plugins: []
-  MasterBanks: []
+  MasterBanks:
+  - Master
   Banks: []
   BanksToLoad: []
   LiveUpdatePort: 9264

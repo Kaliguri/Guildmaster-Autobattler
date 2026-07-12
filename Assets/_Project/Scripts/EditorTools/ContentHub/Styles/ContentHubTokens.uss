@@ -1,0 +1,41 @@
+/*
+ * Content Hub design tokens (--gh-*). Rides on .gh-vars at the window root so every
+ * descendant — including overlays (toasts, modals, popovers) mounted on the root — inherits.
+ * Palette sourced from maxgaida.site dark theme (warm stone + amber). Max: recolor here,
+ * chrome (ContentHub.uss) consumes only var(--gh-*). Pattern mirrors Bloodlines ThemeEditorTokens.uss.
+ */
+.gh-vars {
+    /* surfaces (stone) */
+    --gh-bg: #0c0a09;          /* page canvas (stone-950) */
+    --gh-bg-raised: #1c1917;   /* toolbar / tab bar (stone-900) */
+    --gh-bg-sunken: #070605;   /* inset */
+    --gh-panel: #292524;       /* buttons / pill hover (stone-800) */
+    --gh-panel-hover: #34302c;
+
+    /* lines */
+    --gh-border: #2a2522;
+    --gh-border-strong: #3a332e;
+
+    /* text (contrast bumped — editor readability beats site fidelity) */
+    --gh-text: #f7f6f4;        /* warm white */
+    --gh-text-dim: #cdc9c3;    /* secondary — brighter than the site so lists read clearly */
+    --gh-text-faint: #9c958d;  /* labels/captions — still legible on dark */
+
+    /* accent (warm amber — single knob drives active pills, accent line, focus) */
+    --gh-accent: #f5a524;
+    --gh-accent-hover: #fbbf24;
+    --gh-accent-dim: #7a4d12;  /* muted amber for subtle fills (divider hover) */
+    --gh-on-accent: #1c1207;   /* dark text on amber */
+
+    /* status */
+    --gh-success: #7fb069;
+    --gh-info: #f5a524;
+    --gh-warning: #e0a03a;
+    --gh-error: #d9534f;
+
+    /* metrics */
+    --gh-radius: 5px;
+    --gh-radius-sm: 3px;
+    --gh-gap: 8px;
+    --gh-pad: 10px;
+}

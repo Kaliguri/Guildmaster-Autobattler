@@ -80,6 +80,9 @@ yarn-error.log
 # FMOD editor log (regenerated)
 fmod_editor.log
 
+# FMOD Studio project build cache (regenerated)
+FMOD Project/.cache/
+
 # dotenv
 .env
 .env.*
