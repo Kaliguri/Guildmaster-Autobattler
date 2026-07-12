@@ -11,7 +11,7 @@ namespace Guildmaster.ContentHub.Editor
     /// роутер контента, персист состояния. Паттерн перенесён из Bloodlines <c>ThemeEditorWindow</c> с упрощением.
     /// <para>Пакет 0 — только каркас: страницы-заглушки. Реальные страницы приходят пакетами 2+.</para>
     /// </summary>
-    public sealed class ContentHubWindow : EditorWindow
+    public sealed partial class ContentHubWindow : EditorWindow
     {
         // Порядок объявления = порядок отображения. Группировка pill-бара — в PageGroups.
         public enum Page { Browser, Balance, Coverage, Visual, Audio, Doctor, Configs }
@@ -28,8 +28,10 @@ namespace Guildmaster.ContentHub.Editor
 
         // Персист текущей страницы через сериализованное состояние окна — переживает domain reload.
         [SerializeField] private Page _page = Page.Browser;
+        [SerializeField] private string _selectedGuid;
 
-        private ScrollView _content;
+        private VisualElement _content;
+        private HubToasts _toasts;
         private readonly Dictionary<Page, Button> _pills = new Dictionary<Page, Button>();
 
         [MenuItem("Tools/Guildmaster/Content Hub")]
@@ -51,6 +53,7 @@ namespace Guildmaster.ContentHub.Editor
             LoadStyle(root, "ContentHub.uss");
 
             BuildShell(root);
+            _toasts = new HubToasts(root);
             RebuildContent();
         }
 
@@ -82,7 +85,7 @@ namespace Guildmaster.ContentHub.Editor
 
             shell.Add(BuildTabbar());
 
-            _content = new ScrollView { name = "content" };
+            _content = new VisualElement { name = "content" };
             _content.AddToClassList("gh-content");
             shell.Add(_content);
 
@@ -161,14 +164,20 @@ namespace Guildmaster.ContentHub.Editor
         {
             _content.Clear();
 
-            var page = new VisualElement();
-            page.AddToClassList("gh-page");
-            _content.Add(page);
-
-            // Пакет 0: все страницы — заглушки. Наполнение приходит пакетами 2+.
-            var stub = new Label($"«{PageLabel(_page)}» — заглушка (пакет 0). Наполнение: см. ТЗ 08.");
-            stub.AddToClassList("gh-stub");
-            page.Add(stub);
+            switch (_page)
+            {
+                case Page.Browser:
+                    BuildBrowser(_content);
+                    break;
+                default:
+                    var page = new VisualElement();
+                    page.AddToClassList("gh-page");
+                    _content.Add(page);
+                    var stub = new Label($"«{PageLabel(_page)}» — скоро (см. ТЗ 08).");
+                    stub.AddToClassList("gh-stub");
+                    page.Add(stub);
+                    break;
+            }
         }
 
         // ---------------------------------------------------------------- page metadata
