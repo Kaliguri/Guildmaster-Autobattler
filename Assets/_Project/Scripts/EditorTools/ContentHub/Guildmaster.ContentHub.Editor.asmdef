@@ -1,0 +1,20 @@
+{
+  "name": "Guildmaster.ContentHub.Editor",
+  "rootNamespace": "Guildmaster.ContentHub.Editor",
+  "references": [
+    "Guildmaster.Data",
+    "Guildmaster.Data.Editor",
+    "Guildmaster.Core"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

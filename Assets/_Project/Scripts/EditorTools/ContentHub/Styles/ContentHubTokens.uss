@@ -1,0 +1,40 @@
+/*
+ * Content Hub design tokens (--gh-*). Rides on .gh-vars at the window root so every
+ * descendant — including overlays (toasts, modals, popovers) mounted on the root — inherits.
+ * Neutral dark editor palette. Max: recolor here, chrome (ContentHub.uss) consumes only var(--gh-*).
+ * Pattern mirrors Bloodlines ThemeEditorTokens.uss.
+ */
+.gh-vars {
+    /* surfaces */
+    --gh-bg: rgb(30, 31, 34);
+    --gh-bg-raised: rgb(38, 40, 44);
+    --gh-bg-sunken: rgb(24, 25, 28);
+    --gh-panel: rgb(43, 45, 50);
+    --gh-panel-hover: rgb(52, 55, 61);
+
+    /* lines */
+    --gh-border: rgb(58, 61, 68);
+    --gh-border-strong: rgb(74, 78, 86);
+
+    /* text */
+    --gh-text: rgb(220, 223, 228);
+    --gh-text-dim: rgb(150, 155, 163);
+    --gh-text-faint: rgb(108, 113, 121);
+
+    /* accent (single knob drives active pills, accent line, focus) */
+    --gh-accent: rgb(120, 170, 255);
+    --gh-accent-dim: rgb(70, 100, 155);
+    --gh-on-accent: rgb(16, 18, 22);
+
+    /* status */
+    --gh-success: rgb(120, 200, 130);
+    --gh-info: rgb(120, 170, 255);
+    --gh-warning: rgb(230, 190, 100);
+    --gh-error: rgb(232, 110, 110);
+
+    /* metrics */
+    --gh-radius: 5px;
+    --gh-radius-sm: 3px;
+    --gh-gap: 8px;
+    --gh-pad: 10px;
+}
