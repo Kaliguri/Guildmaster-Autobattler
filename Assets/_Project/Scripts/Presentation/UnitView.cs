@@ -43,12 +43,17 @@ namespace Guildmaster.Presentation
         [SerializeField] private UnityEvent _onDeathFeedback;
 
         [Header("Feel — реакция на попадание (LitMotion, код)")]
-        [Tooltip("Длительность вспышки белым при попадании, сек.")]
+        [Tooltip("Материал спрайта с параметром _FlashAmount (Guildmaster/Sprite/HitFlash). " +
+                 "Ставится на спрайт в Bind; пусто = вспышки не будет (обычный .color так не осветлить).")]
+        [SerializeField] private Material _flashMaterial;
+        [Tooltip("Цвет вспышки попадания (обычно белый).")]
+        [SerializeField] private Color _flashColor = Color.white;
+        [Tooltip("Длительность вспышки при попадании, сек.")]
         [SerializeField] private float _hitFlashDuration = 0.08f;
         [Tooltip("Длительность сплющивания при попадании, сек.")]
-        [SerializeField] private float _hitSquashDuration = 0.18f;
-        [Tooltip("Сила сплющивания: X растягивается, Y сжимается на эту долю (0.18 = ±18%).")]
-        [SerializeField] private float _hitSquashAmount = 0.18f;
+        [SerializeField] private float _hitSquashDuration = 0.22f;
+        [Tooltip("Сила сплющивания: X растягивается, Y сжимается на эту долю (0.3 = ±30%).")]
+        [SerializeField] private float _hitSquashAmount = 0.3f;
 
         [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
         [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
@@ -82,12 +87,18 @@ namespace Guildmaster.Presentation
         private Vector2     _renderPosition;
 
         // --- Feel (реакция на удар, LitMotion) — только презентация, сим не трогает ---
-        private Color        _baseTint = Color.white;   // цвет тела до подмешивания вспышки
-        private float        _flashAmount;               // 0..1 — сколько белого подмешать (вспышка)
-        private Vector3      _baseSpriteScale = Vector3.one; // масштаб спрайта до сплющивания
+        private Color        _baseTint = Color.white;   // цвет-тинт тела (умножается на текстуру в шейдере)
+        private float        _flashAmount;               // 0..1 — сила вспышки (параметр _FlashAmount шейдера)
+        private bool         _flashApplied;              // держим ли сейчас MPB на спрайте (чтобы вернуть в 0 один раз)
+        private Vector3      _baseSpriteScale = Vector3.one; // масштаб узла сплющивания до эффекта
+        private Transform    _squashTarget;              // узел, который сплющиваем (выше Animator, чтобы не затирался)
         private float        _hitstopRemaining;          // unscaled-окно заморозки анимации участников удара
+        private MaterialPropertyBlock _mpb;              // per-instance _FlashAmount без клонирования материала
         private MotionHandle _flashHandle;
         private MotionHandle _squashHandle;
+
+        private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
+        private static readonly int FlashColorId  = Shader.PropertyToID("_FlashColor");
 
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
         // Своя фаза анимации атаки (НЕ путать с сим-AttackPhase на RuntimeUnit): охватывает ВЕСЬ цикл
@@ -118,7 +129,14 @@ namespace Guildmaster.Presentation
             if (_sprite != null)
             {
                 _sprite.flipX = false;
-                _baseSpriteScale = _sprite.transform.localScale; // база для сплющивания на попадании
+
+                // Материал с flash-параметром: осветлить спрайт в белый через SpriteRenderer.color нельзя
+                // (это множитель), поэтому ставим шейдер с _FlashAmount поверх текстуры.
+                if (_flashMaterial != null) _sprite.sharedMaterial = _flashMaterial;
+
+                // Сплющиваем узел ВЫШЕ Animator (родитель спрайта), иначе кадровая анимация тела его затирает.
+                _squashTarget    = _sprite.transform.parent != null ? _sprite.transform.parent : _sprite.transform;
+                _baseSpriteScale = _squashTarget.localScale;
             }
 
             if (_healthBar != null) _healthBar.Bind(unit);
@@ -424,16 +442,32 @@ namespace Guildmaster.Presentation
             return true;
         }
 
-        // Единый писатель _sprite.color: база (тинт персонажа) + подмешанная вспышка попадания (RGB→белый)
-        // + альфа инвиза (dev, §10.5: тег Stealth → полупрозрачность). Поллится каждый кадр, чтобы вспышка
-        // и инвиз не перетирали друг друга (раньше был отдельный ApplyStealthAlpha).
+        // Тинт тела (умножается на текстуру в шейдере) + альфа инвиза (dev, §10.5: тег Stealth → полупрозрачность).
+        // Вспышка попадания идёт НЕ здесь, а через _FlashAmount материала (ApplyFlash) — .color осветлить не может.
         private void ApplyColor()
         {
             if (_sprite == null) return;
-            Color c = _flashAmount > 0f ? Color.Lerp(_baseTint, Color.white, _flashAmount) : _baseTint;
+            Color c = _baseTint;
             bool stealthed = _unit != null && (_unit.EffectTagMask & EffectTag.Stealth) != 0;
             c.a = stealthed ? 0.4f : 1f;
             _sprite.color = c;
+            ApplyFlash();
+        }
+
+        // Вспышка через MaterialPropertyBlock (per-instance _FlashAmount, без клонирования материала).
+        // Пишем блок, только пока вспышка активна, + один раз чтобы вернуть в 0 (не ломаем SRP-батчинг зря).
+        private void ApplyFlash()
+        {
+            if (_sprite == null) return;
+            bool active = _flashAmount > 0.0001f;
+            if (!active && !_flashApplied) return;
+
+            _mpb ??= new MaterialPropertyBlock();
+            _sprite.GetPropertyBlock(_mpb);
+            _mpb.SetFloat(FlashAmountId, _flashAmount);
+            _mpb.SetColor(FlashColorId, _flashColor);
+            _sprite.SetPropertyBlock(_mpb);
+            _flashApplied = active;
         }
 
         /// <summary>Вызывается при получении урона: локальная реакция цели (вспышка + сплющивание).</summary>
@@ -464,16 +498,17 @@ namespace Guildmaster.Presentation
         }
 
         // Сплющивание: X растягивается, Y сжимается на _hitSquashAmount·v, где v 1→0. На конце v=0 → база.
+        // Крутим _squashTarget (узел выше Animator), иначе кадровая анимация тела затирает scale.
         private void PlayHitSquash()
         {
-            if (_sprite == null) return;
+            if (_squashTarget == null) return;
             if (_squashHandle.IsActive()) _squashHandle.Cancel();
             _squashHandle = LMotion.Create(1f, 0f, _hitSquashDuration)
-                .WithEase(Ease.OutQuad)
+                .WithEase(Ease.OutCubic)
                 .Bind(this, static (v, self) =>
                 {
                     float a = self._hitSquashAmount * v;
-                    self._sprite.transform.localScale = new Vector3(
+                    self._squashTarget.localScale = new Vector3(
                         self._baseSpriteScale.x * (1f + a),
                         self._baseSpriteScale.y * (1f - a),
                         self._baseSpriteScale.z);

@@ -158,6 +158,11 @@ MonoBehaviour:
   _onDeathFeedback:
     m_PersistentCalls:
       m_Calls: []
+  _flashMaterial: {fileID: 2100000, guid: 3704397a32ceccf4cadff9d2d61d82c2, type: 2}
+  _flashColor: {r: 1, g: 1, b: 1, a: 1}
+  _hitFlashDuration: 0.08
+  _hitSquashDuration: 0.22
+  _hitSquashAmount: 0.3
   _nameLabel: {fileID: 4136415384210637921}
   _feetPoint: {fileID: 8255871860099045492}
   _headPoint: {fileID: 7188299341035105591}
