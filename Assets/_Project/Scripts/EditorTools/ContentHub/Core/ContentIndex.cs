@@ -4,6 +4,8 @@ using System.Linq;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Editor;
 using Guildmaster.Data.Stats;
+using Guildmaster.Presentation.Audio;
+using Guildmaster.Presentation.Design;
 using UnityEditor;
 using UnityEngine;
 
@@ -72,6 +74,8 @@ namespace Guildmaster.ContentHub.Editor
             foreach (var c in FindAll<StatsConfig>()) AddEntry(c, c.name, "Configs");
             foreach (var c in FindAll<SimTuningConfig>()) AddEntry(c, c.name, "Configs");
             foreach (var c in FindAll<GameConfig>()) AddEntry(c, c.name, "Configs");
+            foreach (var a in FindAll<AudioCatalog>()) AddEntry(a, a.name, "Audio");
+            foreach (var p in FindAll<CombatColorPalette>()) AddEntry(p, p.name, "Design");
 
             BuildGraph();
             BuildCohorts();

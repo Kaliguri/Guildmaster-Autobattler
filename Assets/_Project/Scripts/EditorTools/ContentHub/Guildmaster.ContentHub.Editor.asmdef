@@ -5,7 +5,8 @@
     "Guildmaster.Data",
     "Guildmaster.Data.Editor",
     "Guildmaster.Core",
-    "Guildmaster.Combat"
+    "Guildmaster.Combat",
+    "Guildmaster.Presentation"
   ],
   "includePlatforms": [
     "Editor"

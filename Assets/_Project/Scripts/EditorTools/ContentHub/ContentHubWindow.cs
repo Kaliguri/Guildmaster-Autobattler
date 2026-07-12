@@ -205,6 +205,12 @@ namespace Guildmaster.ContentHub.Editor
                 case Page.Visual:
                     BuildVisual(_content);
                     break;
+                case Page.Audio:
+                    BuildAudio(_content);
+                    break;
+                case Page.Configs:
+                    BuildConfigs(_content);
+                    break;
                 default:
                     var page = new VisualElement();
                     page.AddToClassList("gh-page");
