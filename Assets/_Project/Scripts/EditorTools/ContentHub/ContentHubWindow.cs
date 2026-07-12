@@ -54,6 +54,8 @@ namespace Guildmaster.ContentHub.Editor
 
             BuildShell(root);
             _toasts = new HubToasts(root);
+            root.UnregisterCallback<KeyDownEvent>(OnGlobalKey);
+            root.RegisterCallback<KeyDownEvent>(OnGlobalKey);
             RebuildContent();
         }
 
@@ -106,6 +108,8 @@ namespace Guildmaster.ContentHub.Editor
 
             var spacer = new VisualElement(); spacer.AddToClassList("gh-header-spacer");
             bar.Add(spacer);
+
+            bar.Add(BuildNavButtons());
 
             return bar;
         }

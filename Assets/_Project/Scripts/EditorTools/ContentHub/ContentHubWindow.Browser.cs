@@ -151,6 +151,7 @@ namespace Guildmaster.ContentHub.Editor
             _selectedGuid = entry?.Asset != null
                 ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(entry.Asset))
                 : "";
+            RecordNav(_selectedGuid);
             PopulateList();     // refresh highlight
             RebuildDetail();
         }
@@ -194,6 +195,8 @@ namespace Guildmaster.ContentHub.Editor
 
             if (_selected.IsUnit)
                 BuildStatContext(_selected);
+
+            BuildRelations(_selected);
         }
 
         private void BuildDetailHeader(ContentEntry entry)
