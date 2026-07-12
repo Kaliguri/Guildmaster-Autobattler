@@ -58,6 +58,8 @@ namespace Guildmaster.ContentHub.Editor
             root.RegisterCallback<KeyDownEvent>(OnGlobalKey);
             ContentIndex.Changed -= OnIndexChanged;
             ContentIndex.Changed += OnIndexChanged;
+            EditorApplication.update -= ClipTick;
+            EditorApplication.update += ClipTick;
             RebuildContent();
             RefreshDoctorBadge();
         }
@@ -65,6 +67,7 @@ namespace Guildmaster.ContentHub.Editor
         private void OnDisable()
         {
             ContentIndex.Changed -= OnIndexChanged;
+            EditorApplication.update -= ClipTick;
             CloseCommandPalette();
         }
 
@@ -198,6 +201,9 @@ namespace Guildmaster.ContentHub.Editor
                     break;
                 case Page.Coverage:
                     BuildCoverage(_content);
+                    break;
+                case Page.Visual:
+                    BuildVisual(_content);
                     break;
                 default:
                     var page = new VisualElement();
