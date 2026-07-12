@@ -1,0 +1,10 @@
+<map id="Guildmaster.Combat.CombatPositioning.AttackReachCenter" name="Guildmaster.Combat.CombatPositioning.AttackReachCenter">
+<area shape="rect" id="Node000001" title="Эффективная дистанция ЦЕНТРОВ, на которой цель «в досягаемости»: StatType.AttackRange трактуется как ..." alt="" coords="544,37,767,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a57295456ca777e61fdd124729528c22a" title="Успеет ли рутовый замах докрутить по этой цели (слой 2, «сначала подойти ближе с учётом скоростей»)." alt="" coords="285,5,496,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="530,45,496,41,497,35,531,40"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a3087b271f69177d35a9120d27ae5b4e1" title="Цель в пределах досягаемости атаки (сравнение квадратов — без sqrt). См. AttackReachCenter." alt="" coords="285,69,496,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="531,75,497,79,496,74,530,70"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f41579d23e8074e346e93e793eb0f5b" title="Обработать автоатаки всех живых юнитов за один тик. dt &#160;не используется (тайминг на тиках)." alt="" coords="5,37,237,77"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="272,42,238,46,237,41,271,37"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="271,78,237,74,238,68,272,73"/>
+</map>

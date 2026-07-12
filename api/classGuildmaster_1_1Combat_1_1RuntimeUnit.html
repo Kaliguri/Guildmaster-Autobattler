@@ -92,7 +92,9 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1RuntimeU
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1RuntimeUnit-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.RuntimeUnit Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -106,6 +108,15 @@ Collaboration diagram for Guildmaster.Combat.RuntimeUnit:</div>
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnit__coll__graph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:af770b3e1ea0e566b1eef009bd5b32aad" id="r_af770b3e1ea0e566b1eef009bd5b32aad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af770b3e1ea0e566b1eef009bd5b32aad">AddIncomingEffect</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> mask)</td></tr>
+<tr class="memdesc:af770b3e1ea0e566b1eef009bd5b32aad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Забронировать теги летящего в юнита снаряда (при спавне снаряда).  <br /></td></tr>
+<tr class="separator:af770b3e1ea0e566b1eef009bd5b32aad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ece42600c288c980730fc1429ed478e" id="r_a6ece42600c288c980730fc1429ed478e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a6ece42600c288c980730fc1429ed478e">RemoveIncomingEffect</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> mask)</td></tr>
+<tr class="memdesc:a6ece42600c288c980730fc1429ed478e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять бронь одного разрешённого снаряда (попал/деспавн); бит гаснет лишь без остатка носителей.  <br /></td></tr>
+<tr class="separator:a6ece42600c288c980730fc1429ed478e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a09b0794faa1054a9796334e18a0f557c" id="r_a09b0794faa1054a9796334e18a0f557c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a09b0794faa1054a9796334e18a0f557c">Id</a></td></tr>
@@ -153,6 +164,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:af7cdab4bcc1b402cb19e28eae70937ef" id="r_af7cdab4bcc1b402cb19e28eae70937ef"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af7cdab4bcc1b402cb19e28eae70937ef">EmpowerDamageMult</a></td></tr>
 <tr class="memdesc:af7cdab4bcc1b402cb19e28eae70937ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Множитель урона следующей авто-атаки (§9.6, «Скрытность»): 0 = нет усиления. AutoAttackSystem применяет и сбрасывает (однострел).  <br /></td></tr>
 <tr class="separator:af7cdab4bcc1b402cb19e28eae70937ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fd96bdf0f26a32b0e60c35c10976c26" id="r_a0fd96bdf0f26a32b0e60c35c10976c26"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a0fd96bdf0f26a32b0e60c35c10976c26">BlinkBehindOnNextAttack</a></td></tr>
+<tr class="memdesc:a0fd96bdf0f26a32b0e60c35c10976c26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Блинк «за спину» цели на усиленной атаке из скрытности (§10.5, «Скрытный убийца»): в момент удара телепорт на дальнюю сторону цели.  <br /></td></tr>
+<tr class="separator:a0fd96bdf0f26a32b0e60c35c10976c26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a5a1c655470baca92db2ec4541e08a5" id="r_a4a5a1c655470baca92db2ec4541e08a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4a5a1c655470baca92db2ec4541e08a5">PendingEngageTarget</a></td></tr>
 <tr class="memdesc:a4a5a1c655470baca92db2ec4541e08a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель захода монаха (§10.6): в кого он зашёл рывком и кого оттолкнёт на приземлении.  <br /></td></tr>
 <tr class="separator:a4a5a1c655470baca92db2ec4541e08a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,15 +176,21 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a11fa1f8683761b538eed81934693ab4b" id="r_a11fa1f8683761b538eed81934693ab4b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a11fa1f8683761b538eed81934693ab4b">AttackCooldownTicks</a></td></tr>
 <tr class="memdesc:a11fa1f8683761b538eed81934693ab4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Кулдаун автоатаки в сим-тиках. 0 = готов к атаке. Рестартится в начале замаха (якорь).  <br /></td></tr>
 <tr class="separator:a11fa1f8683761b538eed81934693ab4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2e9433540f6fc645621c7098fe38923" id="r_ae2e9433540f6fc645621c7098fe38923"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae2e9433540f6fc645621c7098fe38923">IsWindingUp</a></td></tr>
-<tr class="memdesc:ae2e9433540f6fc645621c7098fe38923"><td class="mdescLeft">&#160;</td><td class="mdescRight">Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Рутит движение (MovementSystem).  <br /></td></tr>
-<tr class="separator:ae2e9433540f6fc645621c7098fe38923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a646dfcd61bc441a8807662838964d8" id="r_a2a646dfcd61bc441a8807662838964d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676f">AttackPhase</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a2a646dfcd61bc441a8807662838964d8">Phase</a></td></tr>
+<tr class="memdesc:a2a646dfcd61bc441a8807662838964d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза боевого действия — единый источник истины «занятости» (Idle/Windup/Recovery).  <br /></td></tr>
+<tr class="separator:a2a646dfcd61bc441a8807662838964d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79722b472031d0629740f8f27bc0f430" id="r_a79722b472031d0629740f8f27bc0f430"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a79722b472031d0629740f8f27bc0f430">WindupRemaining</a></td></tr>
 <tr class="memdesc:a79722b472031d0629740f8f27bc0f430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тиков замаха осталось до кадра контакта. Когда ≤ 0 — резолв удара.  <br /></td></tr>
 <tr class="separator:a79722b472031d0629740f8f27bc0f430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9087d6d066e6294e91d3287dce1b2355" id="r_a9087d6d066e6294e91d3287dce1b2355"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9087d6d066e6294e91d3287dce1b2355">RecoveryRemaining</a></td></tr>
+<tr class="memdesc:a9087d6d066e6294e91d3287dce1b2355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тиков восстановления (хвост после удара) осталось. Когда ≤ 0 — переход в Idle. 0 = нет восстановления.  <br /></td></tr>
+<tr class="separator:a9087d6d066e6294e91d3287dce1b2355"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa53f7987a8b972c632526d949975cc31" id="r_aa53f7987a8b972c632526d949975cc31"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa53f7987a8b972c632526d949975cc31">WindupTicks</a></td></tr>
 <tr class="memdesc:aa53f7987a8b972c632526d949975cc31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Полная длительность текущего замаха в тиках (посчитана раз на старте, не пересчитывается на лету).  <br /></td></tr>
 <tr class="separator:aa53f7987a8b972c632526d949975cc31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23576b1527457888eb26cc63151ad400" id="r_a23576b1527457888eb26cc63151ad400"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a23576b1527457888eb26cc63151ad400">RecoveryTicks</a></td></tr>
+<tr class="memdesc:a23576b1527457888eb26cc63151ad400"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запланированная длина хвоста-восстановления текущего свинга в тиках (доигрыш клипа + доп.  <br /></td></tr>
+<tr class="separator:a23576b1527457888eb26cc63151ad400"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaca9226422a010ad8ebf303ba6d5d8d9" id="r_aaca9226422a010ad8ebf303ba6d5d8d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aaca9226422a010ad8ebf303ba6d5d8d9">WindupTarget</a></td></tr>
 <tr class="memdesc:aaca9226422a010ad8ebf303ba6d5d8d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снапшот цели на старте замаха: удар наносится по ней (если жива и в радиусе к концу замаха).  <br /></td></tr>
 <tr class="separator:aaca9226422a010ad8ebf303ba6d5d8d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,11 +221,82 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ae14bc3754e2c9bcb3072ecac904738cf" id="r_ae14bc3754e2c9bcb3072ecac904738cf"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae14bc3754e2c9bcb3072ecac904738cf">CanCast</a> = true</td></tr>
 <tr class="memdesc:ae14bc3754e2c9bcb3072ecac904738cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Может кастовать способности. false = немота.  <br /></td></tr>
 <tr class="separator:ae14bc3754e2c9bcb3072ecac904738cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:ae2e9433540f6fc645621c7098fe38923" id="r_ae2e9433540f6fc645621c7098fe38923"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae2e9433540f6fc645621c7098fe38923">IsWindingUp</a><code> [get]</code></td></tr>
+<tr class="memdesc:ae2e9433540f6fc645621c7098fe38923"><td class="mdescLeft">&#160;</td><td class="mdescRight">Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Производный алиас Phase.  <br /></td></tr>
+<tr class="separator:ae2e9433540f6fc645621c7098fe38923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafdbde87b1d1613d182668813c73c8d3" id="r_aafdbde87b1d1613d182668813c73c8d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aafdbde87b1d1613d182668813c73c8d3">IncomingEffectTags</a><code> [get]</code></td></tr>
+<tr class="memdesc:aafdbde87b1d1613d182668813c73c8d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Битовое ИЛИ тегов эффектов, ЛЕТЯЩИХ в этого юнита (on-hit эффекты снарядов, ещё не легли).  <br /></td></tr>
+<tr class="separator:aafdbde87b1d1613d182668813c73c8d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Рантайм-представление юнита на один бой. </p>
 <p>POCO — без MonoBehaviour и ScriptableObject. Создаётся через RuntimeUnitFactory; владеет Stats, текущим HP/ресурсом/щитом и состоянием движения (вики «10» §5.2). </p>
-</div><h2 class="groupheader">Member Data Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="af770b3e1ea0e566b1eef009bd5b32aad" name="af770b3e1ea0e566b1eef009bd5b32aad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af770b3e1ea0e566b1eef009bd5b32aad">&#9670;&#160;</a></span>AddIncomingEffect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.RuntimeUnit.AddIncomingEffect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a>&#160;</td>
+          <td class="paramname"><em>mask</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Забронировать теги летящего в юнита снаряда (при спавне снаряда). </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnit_af770b3e1ea0e566b1eef009bd5b32aad_icgraph.svg" width="484" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a6ece42600c288c980730fc1429ed478e" name="a6ece42600c288c980730fc1429ed478e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ece42600c288c980730fc1429ed478e">&#9670;&#160;</a></span>RemoveIncomingEffect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.RuntimeUnit.RemoveIncomingEffect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a>&#160;</td>
+          <td class="paramname"><em>mask</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Снять бронь одного разрешённого снаряда (попал/деспавн); бит гаснет лишь без остатка носителей. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
 <a id="a7f4b8c7b5d4000ea833d8cb33d61d55b" name="a7f4b8c7b5d4000ea833d8cb33d61d55b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7f4b8c7b5d4000ea833d8cb33d61d55b">&#9670;&#160;</a></span>Abilities</h2>
 
@@ -267,6 +358,23 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Цель авто-атаки. Для хилера — союзник (≠ CurrentTarget). Пишет мозг, читает AutoAttackSystem. </p>
+
+</div>
+</div>
+<a id="a0fd96bdf0f26a32b0e60c35c10976c26" name="a0fd96bdf0f26a32b0e60c35c10976c26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fd96bdf0f26a32b0e60c35c10976c26">&#9670;&#160;</a></span>BlinkBehindOnNextAttack</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.RuntimeUnit.BlinkBehindOnNextAttack</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Блинк «за спину» цели на усиленной атаке из скрытности (§10.5, «Скрытный убийца»): в момент удара телепорт на дальнюю сторону цели. </p>
+<p>Ставит <code>StealthComponent</code> вместе с усилением, применяет и сбрасывает <code>AutoAttackSystem</code> (в блоке снятия усиления). Монах сюда не завязан (у него свой заход). </p>
 
 </div>
 </div>
@@ -511,22 +619,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae2e9433540f6fc645621c7098fe38923" name="ae2e9433540f6fc645621c7098fe38923"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2e9433540f6fc645621c7098fe38923">&#9670;&#160;</a></span>IsWindingUp</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Guildmaster.Combat.RuntimeUnit.IsWindingUp</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Рутит движение (MovementSystem). </p>
-
-</div>
-</div>
 <a id="a4a5a1c655470baca92db2ec4541e08a5" name="a4a5a1c655470baca92db2ec4541e08a5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4a5a1c655470baca92db2ec4541e08a5">&#9670;&#160;</a></span>PendingEngageTarget</h2>
 
@@ -541,6 +633,23 @@ Public Attributes</h2></td></tr>
 
 <p>Цель захода монаха (§10.6): в кого он зашёл рывком и кого оттолкнёт на приземлении. </p>
 <p>Ставит <code>AbilitySystem</code> при касте «Шквального толчка» (позицию рывка считает под ЭТУ цель), читает и сбрасывает <code>WhirlDashLandingComponent</code> — чтобы толкать именно её, а не «ближайшего» (тот мог разъехаться). null = нет активного захода. </p>
+
+</div>
+</div>
+<a id="a2a646dfcd61bc441a8807662838964d8" name="a2a646dfcd61bc441a8807662838964d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a646dfcd61bc441a8807662838964d8">&#9670;&#160;</a></span>Phase</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676f">AttackPhase</a> Guildmaster.Combat.RuntimeUnit.Phase</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Фаза боевого действия — единый источник истины «занятости» (Idle/Windup/Recovery). </p>
+<p>Пишет только <code>AutoAttackSystem</code>; движение/презентация/способности читают. См. AttackPhase. </p>
 
 </div>
 </div>
@@ -589,6 +698,39 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Позиция на предыдущем тике — для интерполяции вида (60 fps рендер, 30 Hz сим). </p>
+
+</div>
+</div>
+<a id="a9087d6d066e6294e91d3287dce1b2355" name="a9087d6d066e6294e91d3287dce1b2355"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9087d6d066e6294e91d3287dce1b2355">&#9670;&#160;</a></span>RecoveryRemaining</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.RuntimeUnit.RecoveryRemaining</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Тиков восстановления (хвост после удара) осталось. Когда ≤ 0 — переход в Idle. 0 = нет восстановления. </p>
+
+</div>
+</div>
+<a id="a23576b1527457888eb26cc63151ad400" name="a23576b1527457888eb26cc63151ad400"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23576b1527457888eb26cc63151ad400">&#9670;&#160;</a></span>RecoveryTicks</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Guildmaster.Combat.RuntimeUnit.RecoveryTicks</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Запланированная длина хвоста-восстановления текущего свинга в тиках (доигрыш клипа + доп. </p>
+<p>секунды). Считается раз на старте замаха (как WindupTicks), применяется в резолве. </p>
 
 </div>
 </div>
@@ -701,6 +843,56 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Полная длительность текущего замаха в тиках (посчитана раз на старте, не пересчитывается на лету). </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="aafdbde87b1d1613d182668813c73c8d3" name="aafdbde87b1d1613d182668813c73c8d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafdbde87b1d1613d182668813c73c8d3">&#9670;&#160;</a></span>IncomingEffectTags</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a> Guildmaster.Combat.RuntimeUnit.IncomingEffectTags</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Битовое ИЛИ тегов эффектов, ЛЕТЯЩИХ в этого юнита (on-hit эффекты снарядов, ещё не легли). </p>
+<p>Таргетинг, зависящий от эффекта (PreferTagged/PreferUntagged), учитывает их наравне с EffectTagMask, чтобы не выбирать цель повторно, пока к ней уже летит, напр., «Заморозка» (иначе двойное наложение). Только чтение; правится через AddIncomingEffect/RemoveIncomingEffect. </p>
+
+</div>
+</div>
+<a id="ae2e9433540f6fc645621c7098fe38923" name="ae2e9433540f6fc645621c7098fe38923"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2e9433540f6fc645621c7098fe38923">&#9670;&#160;</a></span>IsWindingUp</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.RuntimeUnit.IsWindingUp</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Производный алиас Phase. </p>
 
 </div>
 </div>

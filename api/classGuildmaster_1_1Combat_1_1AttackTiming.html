@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1AttackTi
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.AttackTiming:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AttackTiming__coll__graph.svg" width="206" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AttackTiming__coll__graph.svg" width="206" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
@@ -114,8 +114,16 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af33ab61d5a7708b5496da9e3baa92c03" id="r_af33ab61d5a7708b5496da9e3baa92c03"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AttackTiming.html#af33ab61d5a7708b5496da9e3baa92c03">AttackDurationTicks</a> (int intervalTicks)</td></tr>
 <tr class="memdesc:af33ab61d5a7708b5496da9e3baa92c03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Длительность свинга в тиках = <code>min(MaxAttackAnimTicks, intervalTicks)</code>.  <br /></td></tr>
 <tr class="separator:af33ab61d5a7708b5496da9e3baa92c03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8db23a6ac07992286291ec08f127c80f" id="r_a8db23a6ac07992286291ec08f127c80f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AttackTiming.html#a8db23a6ac07992286291ec08f127c80f">RecoveryTicks</a> (float seconds)</td></tr>
+<tr class="memdesc:a8db23a6ac07992286291ec08f127c80f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тики замаха до кадра контакта.  <br /></td></tr>
+<tr class="separator:a8db23a6ac07992286291ec08f127c80f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4a29edbee165136e44b57f5c9e0b5eb" id="r_ad4a29edbee165136e44b57f5c9e0b5eb"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AttackTiming.html#ad4a29edbee165136e44b57f5c9e0b5eb">FollowThroughTicks</a> (int hitFrame, int frameCount, int intervalTicks, int windupTicks)</td></tr>
+<tr class="memdesc:ad4a29edbee165136e44b57f5c9e0b5eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хвост-доигрыш клипа удара после кадра контакта = <code>attackDurationTicks − windupTicks</code>.  <br /></td></tr>
+<tr class="separator:ad4a29edbee165136e44b57f5c9e0b5eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a627a13ac427fbcb0bb8a5f2fc98891db" id="r_a627a13ac427fbcb0bb8a5f2fc98891db"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AttackTiming.html#a627a13ac427fbcb0bb8a5f2fc98891db">WindupTicksFor</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> unit)</td></tr>
+<tr class="memdesc:a627a13ac427fbcb0bb8a5f2fc98891db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тики замаха, которые получит СЛЕДУЮЩИЙ свинг этого юнита при текущей скорости атаки и клипе.  <br /></td></tr>
+<tr class="separator:a627a13ac427fbcb0bb8a5f2fc98891db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b4ea555d2297b9817a0763eed8ae822" id="r_a0b4ea555d2297b9817a0763eed8ae822"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AttackTiming.html#a0b4ea555d2297b9817a0763eed8ae822">WindupTicks</a> (int hitFrame, int frameCount, int intervalTicks)</td></tr>
-<tr class="memdesc:a0b4ea555d2297b9817a0763eed8ae822"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тики замаха до кадра контакта.  <br /></td></tr>
 <tr class="separator:a0b4ea555d2297b9817a0763eed8ae822"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -151,7 +159,64 @@ Static Public Member Functions</h2></td></tr>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AttackTiming_af33ab61d5a7708b5496da9e3baa92c03_icgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AttackTiming_af33ab61d5a7708b5496da9e3baa92c03_icgraph.svg" width="100%" height="386"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="ad4a29edbee165136e44b57f5c9e0b5eb" name="ad4a29edbee165136e44b57f5c9e0b5eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4a29edbee165136e44b57f5c9e0b5eb">&#9670;&#160;</a></span>FollowThroughTicks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Guildmaster.Combat.AttackTiming.FollowThroughTicks </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>hitFrame</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>frameCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>intervalTicks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>windupTicks</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Хвост-доигрыш клипа удара после кадра контакта = <code>attackDurationTicks − windupTicks</code>. </p>
+<p>Это «задняя половина» анимации свинга: урон уже нанесён (на кадре контакта), но юнит всё ещё доигрывает движение и остаётся «занят» (рут либо штраф скорости). Выводится из той же модели, что и WindupTicks, поэтому автоматически масштабируется со скоростью атаки — в отличие от абсолютных секунд не «расклеивается» при баффах скорости. </p>
+<p>Нет реального клипа (<em>frameCount</em>  ≤ 0 или <em>hitFrame</em>  ≤ 0) → windup был чистым телеграфом (пол <a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#ac4fd96970ed2ea6969d5bcebc78703ea" title="Минимальный пол замаха авто-атаки, в сим-тиках.">SimConstants.MinWindupTicks</a>), доигрывать нечего → 0. Вычитание (а не независимая пропорция «хвостовых кадров») сознательно: оно поглощает округление windup, поэтому <code>windup + доигрыш = attackDurationTicks</code> ровно, без фантомного зазора. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AttackTiming_ad4a29edbee165136e44b57f5c9e0b5eb_cgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>
@@ -182,6 +247,41 @@ Here is the caller graph for this function:</div>
 
 <p>Интервал между атаками в сим-тиках. </p>
 <p>Пол <code>≥ 1</code> закрывает край «очень высокий AttackSpeed» (иначе деление/кламп вырождаются). <em>attackSpeed</em>  ≤ 0 → максимально редкая атака. </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AttackTiming_a22bc798f12c716f8ccda8585b205691b_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a8db23a6ac07992286291ec08f127c80f" name="a8db23a6ac07992286291ec08f127c80f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8db23a6ac07992286291ec08f127c80f">&#9670;&#160;</a></span>RecoveryTicks()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Guildmaster.Combat.AttackTiming.RecoveryTicks </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>seconds</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Тики замаха до кадра контакта. </p>
+<p>Целочисленное деление = floor (детерминированно). Кламп: нижний — <a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#ac4fd96970ed2ea6969d5bcebc78703ea" title="Минимальный пол замаха авто-атаки, в сим-тиках.">SimConstants.MinWindupTicks</a> (телеграф-пол), верхний — <code>intervalTicks − 1</code> (удар не совпадает с тиком старта следующей атаки). Пустой клип (<em>frameCount</em>  ≤ 0) или <em>hitFrame</em>  ≤ 0 → нижний кламп.</p>
+<p>Дополнительное восстановление (сверх анимационного доигрыша) в тиках из секунд. Детерминированное округление (MidpointRounding.AwayFromZero), как у интервала. ≤ 0 сек → 0 тиков. </p>
 
 </div>
 </div>
@@ -224,13 +324,54 @@ Here is the caller graph for this function:</div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Тики замаха до кадра контакта. </p>
-<p>Целочисленное деление = floor (детерминированно). Кламп: нижний — <a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#ac4fd96970ed2ea6969d5bcebc78703ea" title="Минимальный пол замаха авто-атаки, в сим-тиках.">SimConstants.MinWindupTicks</a> (телеграф-пол), верхний — <code>intervalTicks − 1</code> (удар не совпадает с тиком старта следующей атаки). Пустой клип (<em>frameCount</em>  ≤ 0) или <em>hitFrame</em>  ≤ 0 → нижний кламп. </p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AttackTiming_a0b4ea555d2297b9817a0763eed8ae822_cgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AttackTiming_a0b4ea555d2297b9817a0763eed8ae822_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+
+</div>
+</div>
+<a id="a627a13ac427fbcb0bb8a5f2fc98891db" name="a627a13ac427fbcb0bb8a5f2fc98891db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a627a13ac427fbcb0bb8a5f2fc98891db">&#9670;&#160;</a></span>WindupTicksFor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int Guildmaster.Combat.AttackTiming.WindupTicksFor </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&#160;</td>
+          <td class="paramname"><em>unit</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Тики замаха, которые получит СЛЕДУЮЩИЙ свинг этого юнита при текущей скорости атаки и клипе. </p>
+<p>Свёртка IntervalTicks + WindupTicks над данными юнита — чтобы гейт атаки и движение (предсказание «докрутит ли замах», <code>CombatPositioning.CanLandWindup</code>) считали ту же длину, что и <code>AutoAttackSystem.EnterWindup</code>. Пустой визуал → нижний кламп. </p>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AttackTiming_a627a13ac427fbcb0bb8a5f2fc98891db_cgraph.svg" width="100%" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AttackTiming_a627a13ac427fbcb0bb8a5f2fc98891db_icgraph.svg" width="494" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

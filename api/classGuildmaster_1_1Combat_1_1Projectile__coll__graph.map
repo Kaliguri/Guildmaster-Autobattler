@@ -1,14 +1,14 @@
 <map id="Guildmaster.Combat.Projectile" name="Guildmaster.Combat.Projectile">
-<area shape="rect" id="Node000001" title="Рантайм&#45;данные одного снаряда." alt="" coords="605,1051,818,1316"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="418,708,653,973"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="606,972,638,1035,633,1037,601,975"/>
-<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="654,811,672,822,679,840,677,853,669,862,665,859,672,851,674,841,668,825,651,815"/>
+<area shape="rect" id="Node000001" title="Рантайм&#45;данные одного снаряда." alt="" coords="781,1111,994,1396"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1RuntimeUnit.html" title="Рантайм&#45;представление юнита на один бой." alt="" coords="418,708,653,1033"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="655,997,771,1123,767,1127,651,1001"/>
+<area shape="poly" id="edge4_Node000002_Node000002" title=" " alt="" coords="654,836,672,849,679,871,676,885,669,896,665,893,672,883,674,871,668,852,651,840"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="5,197,191,323"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="122,322,154,400,198,493,254,591,286,638,321,682,361,722,406,758,403,762,358,726,317,686,282,642,250,594,193,496,149,402,117,324"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="123,322,154,399,198,492,252,590,316,682,359,730,407,773,403,777,355,733,312,686,248,593,193,494,149,401,118,324"/>
 <area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html" title="Только&#45;чтение собранных статов." alt="" coords="53,5,143,71"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="101,84,101,197,95,197,95,84"/>
 <area shape="rect" id="Node000005" href="$interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html" title="Главный шов AI (вики «13» §3.1): единственная точка, где принимается «дорогое» решение «кого/где»." alt="" coords="215,220,397,300"/>
-<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="324,299,480,692,475,694,319,301"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="323,299,471,692,466,694,318,301"/>
 <area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html" title="Общий боевой кит всего, что выходит на арену (вики «13» §3.1)." alt="" coords="421,120,649,400"/>
 <area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="538,400,538,691,533,691,533,400"/>
 <area shape="rect" id="Node000007" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="713,5,841,71"/>
@@ -16,7 +16,9 @@
 <area shape="rect" id="Node000009" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="673,210,880,310"/>
 <area shape="poly" id="edge9_Node000009_Node000007" title=" " alt="" coords="779,84,779,210,774,210,774,84"/>
 <area shape="rect" id="Node000010" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html" title="Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги,..." alt="" coords="804,424,1011,684"/>
-<area shape="poly" id="edge11_Node000010_Node000007" title=" " alt="" coords="854,75,877,94,895,119,912,155,924,193,938,272,940,351,935,424,929,423,935,351,933,273,919,194,907,157,890,121,873,98,850,79"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="759,311,599,693,594,691,754,309"/>
-<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="903,685,883,826,866,901,843,974,814,1037,809,1035,838,972,861,900,878,825,897,684"/>
+<area shape="poly" id="edge11_Node000010_Node000007" title=" " alt="" coords="854,75,876,95,894,119,910,155,923,193,937,272,939,351,934,424,929,423,934,351,931,273,918,194,905,157,889,121,872,98,850,79"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="760,311,608,694,603,692,755,309"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="904,684,903,708,893,1095,888,1094,898,708,899,684"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="1009,838,1093,903"/>
+<area shape="poly" id="edge12_Node000001_Node000011" title=" " alt="" coords="1043,905,992,1034,965,1096,960,1094,988,1032,1038,903"/>
 </map>

@@ -3,6 +3,7 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1UnitData =
     [ "Abilities", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#ac8b61ca708de6432f6316a5b74f23b55", null ],
     [ "Ai", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#aac797685da3e9ab8bbd3981aac17ad8a", null ],
     [ "AiPreset", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#ab6f3885b304da645c1e130e07c173cae", null ],
+    [ "AttackRecoverySeconds", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a16bf554be479332eafb6e86e0f6459bb", null ],
     [ "AttackType", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a2ae2a87a088704ef420bd7c539de18c5", null ],
     [ "AutoAttackEffects", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#aacde5b944f0d7fcd291beed97178ba56", null ],
     [ "AutoAttackShape", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#ab4497f7e564dcf1abe587a67a8caf45a", null ],

@@ -114,7 +114,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Интегрирует позиции живых юнитов. </p>
-<p>Ручная математика — без Rigidbody2D и без Time.deltaTime (dt передаётся снаружи из CombatLoopService). Ветвится по RuntimeUnit.Positioning (§9.7): Approach (Ф1), Kite (полоса дистанции), Retreat (от ближайшего врага). Стрельба на ходу (§9.8) снимает рут замаха. </p>
+<p>Ручная математика — без Rigidbody2D и без Time.deltaTime (dt передаётся снаружи из CombatLoopService). Ветвится по RuntimeUnit.Positioning (§9.7): Approach (Ф1), Kite (полоса дистанции), Retreat (побег через FleeSteering: от центроида врагов к своему тылу, с избеганием стен). Стрельба на ходу (§9.8) снимает рут замаха. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9ecc1ea30095327269a5c4835230a71f" name="a9ecc1ea30095327269a5c4835230a71f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9ecc1ea30095327269a5c4835230a71f">&#9670;&#160;</a></span>Tick()</h2>

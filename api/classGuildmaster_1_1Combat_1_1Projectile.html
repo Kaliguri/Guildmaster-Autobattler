@@ -139,6 +139,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a7585f2a8bfc7e8a54049c5c0732cd5e0" id="r_a7585f2a8bfc7e8a54049c5c0732cd5e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html#a7585f2a8bfc7e8a54049c5c0732cd5e0">OnHitEffects</a></td></tr>
 <tr class="memdesc:a7585f2a8bfc7e8a54049c5c0732cd5e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">On-hit эффекты урон-снаряда (§9.1): накладываются на каждую задетую цель при попадании. null = нет.  <br /></td></tr>
 <tr class="separator:a7585f2a8bfc7e8a54049c5c0732cd5e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebec48acac46bc293eab617c8d802a46" id="r_aebec48acac46bc293eab617c8d802a46"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html#aebec48acac46bc293eab617c8d802a46">IsAutoAttack</a></td></tr>
+<tr class="memdesc:aebec48acac46bc293eab617c8d802a46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снаряд-автоатака: попадание помечает урон как автоатаку (DamageRequest.IsAutoAttack).  <br /></td></tr>
+<tr class="separator:aebec48acac46bc293eab617c8d802a46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae055ae9d6f77bd37fc909cc825f16872" id="r_ae055ae9d6f77bd37fc909cc825f16872"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data.Definitions.EffectTag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html#ae055ae9d6f77bd37fc909cc825f16872">ReservedTags</a></td></tr>
+<tr class="memdesc:ae055ae9d6f77bd37fc909cc825f16872"><td class="mdescLeft">&#160;</td><td class="mdescRight">Теги on-hit эффектов, «забронированные» на TargetUnit на время полёта (см.  <br /></td></tr>
+<tr class="separator:ae055ae9d6f77bd37fc909cc825f16872"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa05bd5d72297ef0851a62dd13843a9f8" id="r_aa05bd5d72297ef0851a62dd13843a9f8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1Projectile.html#aa05bd5d72297ef0851a62dd13843a9f8">IsAlive</a></td></tr>
 <tr class="separator:aa05bd5d72297ef0851a62dd13843a9f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -215,6 +221,22 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="aebec48acac46bc293eab617c8d802a46" name="aebec48acac46bc293eab617c8d802a46"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebec48acac46bc293eab617c8d802a46">&#9670;&#160;</a></span>IsAutoAttack</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Combat.Projectile.IsAutoAttack</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Снаряд-автоатака: попадание помечает урон как автоатаку (DamageRequest.IsAutoAttack). </p>
 
 </div>
 </div>
@@ -305,6 +327,23 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Полезная нагрузка снаряда. Для урона — сырой урон; для хил-снаряда (IsHeal) — сырое лечение. </p>
+
+</div>
+</div>
+<a id="ae055ae9d6f77bd37fc909cc825f16872" name="ae055ae9d6f77bd37fc909cc825f16872"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae055ae9d6f77bd37fc909cc825f16872">&#9670;&#160;</a></span>ReservedTags</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">Data.Definitions.EffectTag</a> Guildmaster.Combat.Projectile.ReservedTags</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Теги on-hit эффектов, «забронированные» на TargetUnit на время полёта (см. </p>
+<p>RuntimeUnit.IncomingEffectTags). Снимаются с цели при разрешении снаряда. </p>
 
 </div>
 </div>

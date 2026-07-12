@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.CombatPositioning.TeleportBehind" name="Guildmaster.Combat.CombatPositioning.TeleportBehind">
+<area shape="rect" id="Node000001" title="Телепорт атакующего ЗА спину цели: на ДАЛЬНЮЮ от атакующего сторону (по направлению «атакующий → цель..." alt="" coords="316,13,527,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html#aaf46f1b8729265d7c867f144b4163d3f" title=" " alt="" coords="5,5,268,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="302,35,268,35,268,30,302,30"/>
+</map>

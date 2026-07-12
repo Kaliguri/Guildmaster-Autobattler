@@ -45,6 +45,7 @@ var annotated_dup =
         [ "AttackTiming", "classGuildmaster_1_1Combat_1_1AttackTiming.html", "classGuildmaster_1_1Combat_1_1AttackTiming" ],
         [ "AutoAttackSystem", "classGuildmaster_1_1Combat_1_1AutoAttackSystem.html", "classGuildmaster_1_1Combat_1_1AutoAttackSystem" ],
         [ "BrainSystem", "classGuildmaster_1_1Combat_1_1BrainSystem.html", "classGuildmaster_1_1Combat_1_1BrainSystem" ],
+        [ "CombatPositioning", "classGuildmaster_1_1Combat_1_1CombatPositioning.html", "classGuildmaster_1_1Combat_1_1CombatPositioning" ],
         [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html", "classGuildmaster_1_1Combat_1_1CombatSimulation" ],
         [ "DamagePipeline", "classGuildmaster_1_1Combat_1_1DamagePipeline.html", "classGuildmaster_1_1Combat_1_1DamagePipeline" ],
         [ "DamageRequest", "structGuildmaster_1_1Combat_1_1DamageRequest.html", "structGuildmaster_1_1Combat_1_1DamageRequest" ],
@@ -53,6 +54,7 @@ var annotated_dup =
         [ "DisplacementSystem", "classGuildmaster_1_1Combat_1_1DisplacementSystem.html", "classGuildmaster_1_1Combat_1_1DisplacementSystem" ],
         [ "DisplaceRequest", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html", "structGuildmaster_1_1Combat_1_1DisplaceRequest" ],
         [ "EffectSystem", "classGuildmaster_1_1Combat_1_1EffectSystem.html", "classGuildmaster_1_1Combat_1_1EffectSystem" ],
+        [ "FleeSteering", "classGuildmaster_1_1Combat_1_1FleeSteering.html", "classGuildmaster_1_1Combat_1_1FleeSteering" ],
         [ "IBattleView", "interfaceGuildmaster_1_1Combat_1_1IBattleView.html", "interfaceGuildmaster_1_1Combat_1_1IBattleView" ],
         [ "ICombatCommand", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand" ],
         [ "ICombatContext", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html", "interfaceGuildmaster_1_1Combat_1_1ICombatContext" ],
@@ -184,6 +186,9 @@ var annotated_dup =
           [ "AudioPresenter", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter" ],
           [ "AudioResolver", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioResolver.html", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioResolver" ],
           [ "IAudioCatalog", "interfaceGuildmaster_1_1Presentation_1_1Audio_1_1IAudioCatalog.html", "interfaceGuildmaster_1_1Presentation_1_1Audio_1_1IAudioCatalog" ]
+        ] ],
+        [ "Design", "namespaceGuildmaster_1_1Presentation_1_1Design.html", [
+          [ "CombatColorPalette", "classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html", "classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette" ]
         ] ],
         [ "BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent" ],
         [ "CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", "classGuildmaster_1_1Presentation_1_1CameraModeController" ],

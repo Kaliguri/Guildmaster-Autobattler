@@ -8,6 +8,7 @@ var namespaceGuildmaster_1_1Combat =
     [ "AttackTiming", "classGuildmaster_1_1Combat_1_1AttackTiming.html", "classGuildmaster_1_1Combat_1_1AttackTiming" ],
     [ "AutoAttackSystem", "classGuildmaster_1_1Combat_1_1AutoAttackSystem.html", "classGuildmaster_1_1Combat_1_1AutoAttackSystem" ],
     [ "BrainSystem", "classGuildmaster_1_1Combat_1_1BrainSystem.html", "classGuildmaster_1_1Combat_1_1BrainSystem" ],
+    [ "CombatPositioning", "classGuildmaster_1_1Combat_1_1CombatPositioning.html", "classGuildmaster_1_1Combat_1_1CombatPositioning" ],
     [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html", "classGuildmaster_1_1Combat_1_1CombatSimulation" ],
     [ "DamagePipeline", "classGuildmaster_1_1Combat_1_1DamagePipeline.html", "classGuildmaster_1_1Combat_1_1DamagePipeline" ],
     [ "DamageRequest", "structGuildmaster_1_1Combat_1_1DamageRequest.html", "structGuildmaster_1_1Combat_1_1DamageRequest" ],
@@ -16,6 +17,7 @@ var namespaceGuildmaster_1_1Combat =
     [ "DisplacementSystem", "classGuildmaster_1_1Combat_1_1DisplacementSystem.html", "classGuildmaster_1_1Combat_1_1DisplacementSystem" ],
     [ "DisplaceRequest", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html", "structGuildmaster_1_1Combat_1_1DisplaceRequest" ],
     [ "EffectSystem", "classGuildmaster_1_1Combat_1_1EffectSystem.html", "classGuildmaster_1_1Combat_1_1EffectSystem" ],
+    [ "FleeSteering", "classGuildmaster_1_1Combat_1_1FleeSteering.html", "classGuildmaster_1_1Combat_1_1FleeSteering" ],
     [ "IBattleView", "interfaceGuildmaster_1_1Combat_1_1IBattleView.html", "interfaceGuildmaster_1_1Combat_1_1IBattleView" ],
     [ "ICombatCommand", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand" ],
     [ "ICombatContext", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html", "interfaceGuildmaster_1_1Combat_1_1ICombatContext" ],
@@ -31,6 +33,11 @@ var namespaceGuildmaster_1_1Combat =
     [ "SeparationSystem", "classGuildmaster_1_1Combat_1_1SeparationSystem.html", "classGuildmaster_1_1Combat_1_1SeparationSystem" ],
     [ "SpatialHash", "classGuildmaster_1_1Combat_1_1SpatialHash.html", "classGuildmaster_1_1Combat_1_1SpatialHash" ],
     [ "Stats", "classGuildmaster_1_1Combat_1_1Stats.html", "classGuildmaster_1_1Combat_1_1Stats" ],
+    [ "AttackPhase", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676f", [
+      [ "Idle", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fae599161956d626eda4cb0a5ffb85271c", null ],
+      [ "Windup", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fa3d501c93b1c2ecdb8ca9ffc8ef9c7055", null ],
+      [ "Recovery", "namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fad8afbc541b39d23648c823057cffe3a5", null ]
+    ] ],
     [ "BattleOutcome", "namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712", [
       [ "Ongoing", "namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712a7ee7defde6dc3a1d4a4a891b3894e790", null ],
       [ "TeamAWins", "namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712aa66e17eee0daf633ec8090d0d97b2d42", null ],

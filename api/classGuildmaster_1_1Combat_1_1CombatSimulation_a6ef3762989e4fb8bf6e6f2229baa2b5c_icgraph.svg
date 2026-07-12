@@ -67,7 +67,7 @@ var sectionId = 'dynsection-3';
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ad802cce6be40b4253f9b4a5758b2aeab" target="_top" xlink:title="Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aec99ab661f140b243f949108eae06a11" target="_top" xlink:title="Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.">
 <polygon fill="white" stroke="#666666" points="186,-558 0,-558 0,-528 186,-528 186,-558"/>
 <text text-anchor="start" x="8" y="-546" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-535" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnAssassin</text>
@@ -86,7 +86,7 @@ var sectionId = 'dynsection-3';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aedae5faa77d76a446159efa284f38245" target="_top" xlink:title="Поднять тест&#45;бой N×M юнитов с заданными HP.">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a6eab8074b6fe5df04aeb4779ed6ad274" target="_top" xlink:title="Поднять тест&#45;бой N×M юнитов с заданными HP.">
 <polygon fill="white" stroke="#666666" points="186,-492 0,-492 0,-462 186,-462 186,-492"/>
 <text text-anchor="start" x="8" y="-480" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-469" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnBattle</text>
@@ -143,7 +143,7 @@ var sectionId = 'dynsection-3';
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a7091ad6903909721799225714fb640d4" target="_top" xlink:title="Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10....">
+<g id="a_Node000006"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a7eb2484b459cdce5faab5334f56cf0b1" target="_top" xlink:title="Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10....">
 <polygon fill="white" stroke="#666666" points="186,-294 0,-294 0,-264 186,-264 186,-294"/>
 <text text-anchor="start" x="8" y="-282" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-271" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnDefender</text>

@@ -25,5 +25,6 @@ var searchData=
   ['guildmaster_3a_3agame_3a_3aservices_22',['Services',['../namespaceGuildmaster_1_1Game_1_1Services.html',1,'Guildmaster::Game']]],
   ['guildmaster_3a_3anet_23',['Net',['../namespaceGuildmaster_1_1Net.html',1,'Guildmaster']]],
   ['guildmaster_3a_3apresentation_24',['Presentation',['../namespaceGuildmaster_1_1Presentation.html',1,'Guildmaster']]],
-  ['guildmaster_3a_3apresentation_3a_3aaudio_25',['Audio',['../namespaceGuildmaster_1_1Presentation_1_1Audio.html',1,'Guildmaster::Presentation']]]
+  ['guildmaster_3a_3apresentation_3a_3aaudio_25',['Audio',['../namespaceGuildmaster_1_1Presentation_1_1Audio.html',1,'Guildmaster::Presentation']]],
+  ['guildmaster_3a_3apresentation_3a_3adesign_26',['Design',['../namespaceGuildmaster_1_1Presentation_1_1Design.html',1,'Guildmaster::Presentation']]]
 ];

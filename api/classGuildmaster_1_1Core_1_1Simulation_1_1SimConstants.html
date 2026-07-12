@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Core_1_1Simulation
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Simulation.SimConstants:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants__coll__graph.svg" width="219" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants__coll__graph.svg" width="219" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -129,6 +129,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:ac4fd96970ed2ea6969d5bcebc78703ea" id="r_ac4fd96970ed2ea6969d5bcebc78703ea"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#ac4fd96970ed2ea6969d5bcebc78703ea">MinWindupTicks</a> = 3</td></tr>
 <tr class="memdesc:ac4fd96970ed2ea6969d5bcebc78703ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Минимальный пол замаха авто-атаки, в сим-тиках.  <br /></td></tr>
 <tr class="separator:ac4fd96970ed2ea6969d5bcebc78703ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8055490326c8e34406e451cda4359c5d" id="r_a8055490326c8e34406e451cda4359c5d"><td class="memItemLeft" align="right" valign="top">const float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a8055490326c8e34406e451cda4359c5d">AttackReachTolerance</a> = 0.35f</td></tr>
+<tr class="memdesc:a8055490326c8e34406e451cda4359c5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прощающий буфер досягаемости на кадре контакта, в мировых ед.  <br /></td></tr>
+<tr class="separator:a8055490326c8e34406e451cda4359c5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Константы тиковой симуляции. </p>
@@ -179,6 +182,32 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Частота пересчёта AI, Гц (реже сим ради перфа; полный AI — Фаза 3). </p>
+
+</div>
+</div>
+<a id="a8055490326c8e34406e451cda4359c5d" name="a8055490326c8e34406e451cda4359c5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8055490326c8e34406e451cda4359c5d">&#9670;&#160;</a></span>AttackReachTolerance</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float Guildmaster.Core.Simulation.SimConstants.AttackReachTolerance = 0.35f</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Прощающий буфер досягаемости на кадре контакта, в мировых ед. </p>
+<p>(вики «14», кайт/погоня). Замах <b>не</b> прерывается уходом цели: если к удару цель отошла в пределах этого буфера (микро-дрожание, обычный шаг) — удар засчитывается; вышла за него (блинк/рывок/спид-спайк) — вхолостую (кулдаун потрачен). Тот же буфер — предсказательный гейт старта замаха: юнит не начинает свинг, который заведомо придётся вхолостую (слой 2, «сначала подойти ближе»). </p>
+<p>Расширяет только «прощение» результата, НЕ базовый радиус захвата (гейт всё равно требует быть в reach). Балансная ручка «липкости» мили против кайта — крутить под плейтест.</p>
 
 </div>
 </div>

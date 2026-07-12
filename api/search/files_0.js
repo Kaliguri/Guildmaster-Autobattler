@@ -12,10 +12,11 @@ var searchData=
   ['arenalayoutauthoringeditor_2ecs_9',['ArenaLayoutAuthoringEditor.cs',['../ArenaLayoutAuthoringEditor_8cs.html',1,'']]],
   ['arenalayoutdata_2ecs_10',['ArenaLayoutData.cs',['../ArenaLayoutData_8cs.html',1,'']]],
   ['assemblyinfo_2ecs_11',['AssemblyInfo.cs',['../AssemblyInfo_8cs.html',1,'']]],
-  ['attacktiming_2ecs_12',['AttackTiming.cs',['../AttackTiming_8cs.html',1,'']]],
-  ['audioaction_2ecs_13',['AudioAction.cs',['../AudioAction_8cs.html',1,'']]],
-  ['audiocatalog_2ecs_14',['AudioCatalog.cs',['../AudioCatalog_8cs.html',1,'']]],
-  ['audiopresenter_2ecs_15',['AudioPresenter.cs',['../AudioPresenter_8cs.html',1,'']]],
-  ['audioresolver_2ecs_16',['AudioResolver.cs',['../AudioResolver_8cs.html',1,'']]],
-  ['autoattacksystem_2ecs_17',['AutoAttackSystem.cs',['../AutoAttackSystem_8cs.html',1,'']]]
+  ['attackphase_2ecs_12',['AttackPhase.cs',['../AttackPhase_8cs.html',1,'']]],
+  ['attacktiming_2ecs_13',['AttackTiming.cs',['../AttackTiming_8cs.html',1,'']]],
+  ['audioaction_2ecs_14',['AudioAction.cs',['../AudioAction_8cs.html',1,'']]],
+  ['audiocatalog_2ecs_15',['AudioCatalog.cs',['../AudioCatalog_8cs.html',1,'']]],
+  ['audiopresenter_2ecs_16',['AudioPresenter.cs',['../AudioPresenter_8cs.html',1,'']]],
+  ['audioresolver_2ecs_17',['AudioResolver.cs',['../AudioResolver_8cs.html',1,'']]],
+  ['autoattacksystem_2ecs_18',['AutoAttackSystem.cs',['../AutoAttackSystem_8cs.html',1,'']]]
 ];

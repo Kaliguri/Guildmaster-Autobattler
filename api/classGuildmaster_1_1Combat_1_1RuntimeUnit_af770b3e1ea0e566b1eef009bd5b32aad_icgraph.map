@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.RuntimeUnit.AddIncomingEffect" name="Guildmaster.Combat.RuntimeUnit.AddIncomingEffect">
+<area shape="rect" id="Node000001" title="Забронировать теги летящего в юнита снаряда (при спавне снаряда)." alt="" coords="264,5,479,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatSimulation.html#a85465a46ea9d2ce38e263814ef54b9c2" title="Создать снаряд в симуляции." alt="" coords="5,5,216,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,28,216,28,216,23,251,23"/>
+</map>

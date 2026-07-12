@@ -1,9 +1,12 @@
 var classGuildmaster_1_1Combat_1_1RuntimeUnit =
 [
+    [ "AddIncomingEffect", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af770b3e1ea0e566b1eef009bd5b32aad", null ],
+    [ "RemoveIncomingEffect", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a6ece42600c288c980730fc1429ed478e", null ],
     [ "Abilities", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a7f4b8c7b5d4000ea833d8cb33d61d55b", null ],
     [ "ActiveEffects", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa4c1d70ebb6150f2752ab43fad8f9fef", null ],
     [ "AttackCooldownTicks", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a11fa1f8683761b538eed81934693ab4b", null ],
     [ "AutoAttackTarget", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#adcb828c6ef20e0efa7a8937f019566f7", null ],
+    [ "BlinkBehindOnNextAttack", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a0fd96bdf0f26a32b0e60c35c10976c26", null ],
     [ "Brain", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a496d71a18b672afd7a799ba221859c9b", null ],
     [ "BrainDirty", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9f1b65b1db4e85fd9ad6ff425d0b897f", null ],
     [ "BrainPhase", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9ebe4afe282ccb09d9c9083bcae2dccf", null ],
@@ -19,16 +22,20 @@ var classGuildmaster_1_1Combat_1_1RuntimeUnit =
     [ "EmpowerDamageMult", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af7cdab4bcc1b402cb19e28eae70937ef", null ],
     [ "Id", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a09b0794faa1054a9796334e18a0f557c", null ],
     [ "IsDead", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4535a281dcec5e830ae47b664400347e", null ],
-    [ "IsWindingUp", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae2e9433540f6fc645621c7098fe38923", null ],
     [ "PendingEngageTarget", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a4a5a1c655470baca92db2ec4541e08a5", null ],
+    [ "Phase", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a2a646dfcd61bc441a8807662838964d8", null ],
     [ "Position", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ad165873e9407fb2df902527f75674deb", null ],
     [ "Positioning", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa95fa045315d83e9b2e840d3d19b30c6", null ],
     [ "PreviousPosition", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aecb0992328b22064b9ac4972ac27d5e9", null ],
+    [ "RecoveryRemaining", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9087d6d066e6294e91d3287dce1b2355", null ],
+    [ "RecoveryTicks", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a23576b1527457888eb26cc63151ad400", null ],
     [ "Stats", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a16de05e43024e2dd5bc6cc5e5ac777e4", null ],
     [ "Team", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a7df5943afafbd06a7d8d552451f5deaa", null ],
     [ "Unit", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a5396847e5a6b2b2f9c1e60dccba9c0f1", null ],
     [ "Vessel", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#af4624ae11d8aa89f5c844b732ea4443a", null ],
     [ "WindupRemaining", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a79722b472031d0629740f8f27bc0f430", null ],
     [ "WindupTarget", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aaca9226422a010ad8ebf303ba6d5d8d9", null ],
-    [ "WindupTicks", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa53f7987a8b972c632526d949975cc31", null ]
+    [ "WindupTicks", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa53f7987a8b972c632526d949975cc31", null ],
+    [ "IncomingEffectTags", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aafdbde87b1d1613d182668813c73c8d3", null ],
+    [ "IsWindingUp", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae2e9433540f6fc645621c7098fe38923", null ]
 ];

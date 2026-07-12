@@ -1,14 +1,14 @@
 <map id="Guildmaster.Combat.CombatSimulation.EnqueueUnitSpawn" name="Guildmaster.Combat.CombatSimulation.EnqueueUnitSpawn">
 <area shape="rect" id="Node000001" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию)." alt="" coords="301,381,524,421"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ad802cce6be40b4253f9b4a5758b2aeab" title="Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5." alt="" coords="5,29,253,69"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aec99ab661f140b243f949108eae06a11" title="Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5." alt="" coords="5,29,253,69"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="402,368,385,307,356,230,336,189,312,150,284,115,252,83,233,72,236,67,255,79,288,111,316,147,341,187,361,227,390,305,407,367"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aedae5faa77d76a446159efa284f38245" title="Поднять тест&#45;бой N×M юнитов с заданными HP." alt="" coords="5,117,253,157"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a6eab8074b6fe5df04aeb4779ed6ad274" title="Поднять тест&#45;бой N×M юнитов с заданными HP." alt="" coords="5,117,253,157"/>
 <area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="396,370,374,325,343,271,302,217,278,193,252,172,231,160,234,155,255,167,281,189,306,213,347,268,379,322,401,368"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a40149c4b1a21190ed41b1b484a4b0519" title="Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия)." alt="" coords="5,205,253,245"/>
 <area shape="poly" id="edge5_Node000001_Node000004" title=" " alt="" coords="384,373,327,315,291,285,252,260,226,248,228,243,255,255,294,281,331,311,388,369"/>
 <area shape="rect" id="Node000005" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a2eb2cbfe58040010e7e08fb0dec1afca" title="Заспавнить «Криоманта» (team 0) против кластера болванчиков (team 1) — срез §10.2." alt="" coords="5,293,253,333"/>
 <area shape="poly" id="edge7_Node000001_Node000005" title=" " alt="" coords="345,379,253,348,211,336,212,331,254,343,347,374"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a7091ad6903909721799225714fb640d4" title="Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10...." alt="" coords="5,381,253,421"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a7eb2484b459cdce5faab5334f56cf0b1" title="Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10...." alt="" coords="5,381,253,421"/>
 <area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="288,404,253,404,253,399,288,399"/>
 <area shape="rect" id="Node000007" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a518bdb00fd636e525cf2a0ef7c622a3b" title="Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10...." alt="" coords="5,469,253,509"/>
 <area shape="poly" id="edge11_Node000001_Node000007" title=" " alt="" coords="335,428,196,472,194,467,333,423"/>

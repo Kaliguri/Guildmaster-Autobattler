@@ -1,6 +1,7 @@
 var namespaceGuildmaster_1_1Presentation =
 [
     [ "Audio", "namespaceGuildmaster_1_1Presentation_1_1Audio.html", "namespaceGuildmaster_1_1Presentation_1_1Audio" ],
+    [ "Design", "namespaceGuildmaster_1_1Presentation_1_1Design.html", "namespaceGuildmaster_1_1Presentation_1_1Design" ],
     [ "BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent" ],
     [ "CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", "classGuildmaster_1_1Presentation_1_1CameraModeController" ],
     [ "CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash" ],

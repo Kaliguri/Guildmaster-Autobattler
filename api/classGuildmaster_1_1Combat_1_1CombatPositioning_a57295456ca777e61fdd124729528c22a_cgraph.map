@@ -1,0 +1,7 @@
+<map id="Guildmaster.Combat.CombatPositioning.CanLandWindup" name="Guildmaster.Combat.CombatPositioning.CanLandWindup">
+<area shape="rect" id="Node000001" title="Успеет ли рутовый замах докрутить по этой цели (слой 2, «сначала подойти ближе с учётом скоростей»)." alt="" coords="5,37,216,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#aefa09ee7a570ca7a9f220d0cbe5528d4" title="Эффективная дистанция ЦЕНТРОВ, на которой цель «в досягаемости»: StatType.AttackRange трактуется как ..." alt="" coords="290,5,513,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,43,276,36,276,42,217,48"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1CombatPositioning.html#a8acd5fc82a7974b455f42d1279121279" title="Лучевая скорость ухода цели, мировые ед." alt="" coords="264,69,539,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,66,251,70,250,75,216,72"/>
+</map>

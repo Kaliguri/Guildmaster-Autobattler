@@ -43,8 +43,9 @@ var searchData=
   ['guildmaster_3a_3anet_40',['Net',['../namespaceGuildmaster_1_1Net.html',1,'Guildmaster']]],
   ['guildmaster_3a_3apresentation_41',['Presentation',['../namespaceGuildmaster_1_1Presentation.html',1,'Guildmaster']]],
   ['guildmaster_3a_3apresentation_3a_3aaudio_42',['Audio',['../namespaceGuildmaster_1_1Presentation_1_1Audio.html',1,'Guildmaster::Presentation']]],
-  ['guildmastercommands_43',['GuildmasterCommands',['../classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html',1,'Guildmaster::DevTools']]],
-  ['guildmastercommands_2ecs_44',['GuildmasterCommands.cs',['../GuildmasterCommands_8cs.html',1,'']]],
-  ['guildmasterdata_45',['GuildmasterData',['../classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html',1,'Guildmaster::Data::Definitions']]],
-  ['guildmasterdata_2ecs_46',['GuildmasterData.cs',['../GuildmasterData_8cs.html',1,'']]]
+  ['guildmaster_3a_3apresentation_3a_3adesign_43',['Design',['../namespaceGuildmaster_1_1Presentation_1_1Design.html',1,'Guildmaster::Presentation']]],
+  ['guildmastercommands_44',['GuildmasterCommands',['../classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html',1,'Guildmaster::DevTools']]],
+  ['guildmastercommands_2ecs_45',['GuildmasterCommands.cs',['../GuildmasterCommands_8cs.html',1,'']]],
+  ['guildmasterdata_46',['GuildmasterData',['../classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html',1,'Guildmaster::Data::Definitions']]],
+  ['guildmasterdata_2ecs_47',['GuildmasterData.cs',['../GuildmasterData_8cs.html',1,'']]]
 ];

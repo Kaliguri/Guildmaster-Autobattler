@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html" target="_top" xlink:title="Иммутабельный снапшот балансных тюнинг&#45;ручек симуляции, снятый со SimTuningConfig на старте боя (вики...">
+<g id="a_Node000000"><a xlink:href="interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimEvent.html" target="_top" xlink:title="Маркер внутреннего события симуляции.">
 <polygon fill="white" stroke="#666666" points="160,-30 0,-30 0,0 160,0 160,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Core.Simulation.</text>
-<text text-anchor="middle" x="80" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">SimTuning</text>
+<text text-anchor="middle" x="80" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ISimEvent</text>
 </a>
 </g>
 </g>

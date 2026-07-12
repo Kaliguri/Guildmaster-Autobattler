@@ -5,6 +5,7 @@ var classGuildmaster_1_1Presentation_1_1UnitView =
     [ "OnAttackStarted", "classGuildmaster_1_1Presentation_1_1UnitView.html#a2a261246ec9811b9cd67df974cd58a2f", null ],
     [ "OnDamageReceived", "classGuildmaster_1_1Presentation_1_1UnitView.html#aa1036767ba0d3fc2a89a34852b2bb96f", null ],
     [ "OnDeath", "classGuildmaster_1_1Presentation_1_1UnitView.html#ae7d5acba13743608684bd9fa33390db1", null ],
+    [ "SetHealthColor", "classGuildmaster_1_1Presentation_1_1UnitView.html#ab0dc8b6fe16fc87631a7c087aff11550", null ],
     [ "SetLabel", "classGuildmaster_1_1Presentation_1_1UnitView.html#a0f0ae1200d3f3e7c13dfc45a0bf25154", null ],
     [ "SetTint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a871086ece5d0cc216dfcfa74353fa22b", null ],
     [ "SetVisual", "classGuildmaster_1_1Presentation_1_1UnitView.html#a99fe961b39536dfe1e67f30e38f92869", null ],

@@ -109,8 +109,8 @@ Collaboration diagram for Guildmaster.Combat.ProjectileSpawn:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a873594d8d13a6a9e8c3f1956cd306bf1" id="r_a873594d8d13a6a9e8c3f1956cd306bf1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a873594d8d13a6a9e8c3f1956cd306bf1">ProjectileSpawn</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, Vector2 startPosition, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> targetUnit, float speed, float collisionRadius, float rawDamage, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> damageType, float armorK, int maxPierces=0, bool isHeal=false, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[] onHitEffects=null)</td></tr>
-<tr class="separator:a873594d8d13a6a9e8c3f1956cd306bf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0c36976fe93124f79881b832b991ad7" id="r_ab0c36976fe93124f79881b832b991ad7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#ab0c36976fe93124f79881b832b991ad7">ProjectileSpawn</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> source, Vector2 startPosition, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> targetUnit, float speed, float collisionRadius, float rawDamage, <a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3">DamageType</a> damageType, float armorK, int maxPierces=0, bool isHeal=false, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[] onHitEffects=null, bool isAutoAttack=false)</td></tr>
+<tr class="separator:ab0c36976fe93124f79881b832b991ad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -138,13 +138,16 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a9715ba20be0ad6abfc949a165d1ba853" id="r_a9715ba20be0ad6abfc949a165d1ba853"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a9715ba20be0ad6abfc949a165d1ba853">OnHitEffects</a></td></tr>
 <tr class="memdesc:a9715ba20be0ad6abfc949a165d1ba853"><td class="mdescLeft">&#160;</td><td class="mdescRight">On-hit эффекты (§9.1): накладываются на каждую задетую цель при попадании урон-снаряда (Криомант — «Заморозка»). null = нет.  <br /></td></tr>
 <tr class="separator:a9715ba20be0ad6abfc949a165d1ba853"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6e005843b720f866695d34f8844699f" id="r_ab6e005843b720f866695d34f8844699f"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#ab6e005843b720f866695d34f8844699f">IsAutoAttack</a></td></tr>
+<tr class="memdesc:ab6e005843b720f866695d34f8844699f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снаряд-автоатака (для тега DamageRequest.IsAutoAttack при попадании). Хил-снаряды/будущие снаряды-способности = false.  <br /></td></tr>
+<tr class="separator:ab6e005843b720f866695d34f8844699f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Параметры создания снаряда. </p>
 <p>Передаётся в ICombatContext.SpawnProjectile. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a873594d8d13a6a9e8c3f1956cd306bf1" name="a873594d8d13a6a9e8c3f1956cd306bf1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a873594d8d13a6a9e8c3f1956cd306bf1">&#9670;&#160;</a></span>ProjectileSpawn()</h2>
+<a id="ab0c36976fe93124f79881b832b991ad7" name="ab0c36976fe93124f79881b832b991ad7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0c36976fe93124f79881b832b991ad7">&#9670;&#160;</a></span>ProjectileSpawn()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,7 +219,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html">EffectData</a>[]&#160;</td>
-          <td class="paramname"><em>onHitEffects</em> = <code>null</code>&#160;</td>
+          <td class="paramname"><em>onHitEffects</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isAutoAttack</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -273,6 +282,22 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab6e005843b720f866695d34f8844699f" name="ab6e005843b720f866695d34f8844699f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6e005843b720f866695d34f8844699f">&#9670;&#160;</a></span>IsAutoAttack</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly bool Guildmaster.Combat.ProjectileSpawn.IsAutoAttack</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Снаряд-автоатака (для тега DamageRequest.IsAutoAttack при попадании). Хил-снаряды/будущие снаряды-способности = false. </p>
 
 </div>
 </div>

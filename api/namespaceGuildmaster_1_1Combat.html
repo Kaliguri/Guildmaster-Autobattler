@@ -125,6 +125,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1BrainSystem.html">BrainSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тик AI (вики «13» §3.2, §4.1).  <a href="classGuildmaster_1_1Combat_1_1BrainSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatPositioning.html">CombatPositioning</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Общие позиционные хелперы боя — детерминированная векторная математика без RNG.  <a href="classGuildmaster_1_1Combat_1_1CombatPositioning.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Детерминированная тиковая симуляция боя.  <a href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,6 +151,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html">EffectSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владелец жизненного цикла эффектов: наложение (длительность, стакинг, потенция, маска тегов), тик таймеров и периодики, истечение с корректным teardown.  <a href="classGuildmaster_1_1Combat_1_1EffectSystem.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1FleeSteering.html">FleeSteering</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Единая математика ПОБЕГА (Retreat и flee-фаза Kite): детерминированное steering-поле без RNG.  <a href="classGuildmaster_1_1Combat_1_1FleeSteering.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Combat_1_1IBattleView.html">IBattleView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read-only срез боя для мозга (вики «13» §3.1).  <a href="interfaceGuildmaster_1_1Combat_1_1IBattleView.html#details">More...</a><br /></td></tr>
@@ -222,8 +228,39 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a8f41382511e45ac187c5b5caa9a6aea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фильтр целей для пространственных запросов ICombatContext.  <a href="namespaceGuildmaster_1_1Combat.html#a8f41382511e45ac187c5b5caa9a6aea8">More...</a><br /></td></tr>
 <tr class="separator:a8f41382511e45ac187c5b5caa9a6aea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12d1be24d63d2d978fb9ed01e13b676f" id="r_a12d1be24d63d2d978fb9ed01e13b676f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676f">AttackPhase</a> { <a class="el" href="namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fae599161956d626eda4cb0a5ffb85271c">Idle</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fa3d501c93b1c2ecdb8ca9ffc8ef9c7055">Windup</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fad8afbc541b39d23648c823057cffe3a5">Recovery</a> = 2
+ }</td></tr>
+<tr class="memdesc:a12d1be24d63d2d978fb9ed01e13b676f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Фаза боевого действия юнита — единый источник истины для «занятости» авто-атакой (вики «14»).  <a href="namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676f">More...</a><br /></td></tr>
+<tr class="separator:a12d1be24d63d2d978fb9ed01e13b676f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a12d1be24d63d2d978fb9ed01e13b676f" name="a12d1be24d63d2d978fb9ed01e13b676f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12d1be24d63d2d978fb9ed01e13b676f">&#9670;&#160;</a></span>AttackPhase</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676f">Guildmaster.Combat.AttackPhase</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Фаза боевого действия юнита — единый источник истины для «занятости» авто-атакой (вики «14»). </p>
+<p>Владелец перехода — AutoAttackSystem; движение/презентация/способности только читают. Детерминизм: фаза выводится из int-счётчиков тиков (RuntimeUnit.WindupRemaining, RuntimeUnit.RecoveryRemaining), а не из времени. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a12d1be24d63d2d978fb9ed01e13b676fae599161956d626eda4cb0a5ffb85271c" name="a12d1be24d63d2d978fb9ed01e13b676fae599161956d626eda4cb0a5ffb85271c"></a>Idle&#160;</td><td class="fielddoc"><p>Нет активного свинга (в т.ч. на кулдауне между ударами). Юнит свободен — движется на полной скорости. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a12d1be24d63d2d978fb9ed01e13b676fa3d501c93b1c2ecdb8ca9ffc8ef9c7055" name="a12d1be24d63d2d978fb9ed01e13b676fa3d501c93b1c2ecdb8ca9ffc8ef9c7055"></a>Windup&#160;</td><td class="fielddoc"><p>Замах до кадра контакта: юнит «занят» (рут либо штраф скорости при стрельбе на ходу), урон в конце. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a12d1be24d63d2d978fb9ed01e13b676fad8afbc541b39d23648c823057cffe3a5" name="a12d1be24d63d2d978fb9ed01e13b676fad8afbc541b39d23648c823057cffe3a5"></a>Recovery&#160;</td><td class="fielddoc"><p>Хвост-восстановление после удара: всё ещё «занят», новый замах начать нельзя, пока не истечёт. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="a1f5748cbbc1931b8421ebc5620edd712" name="a1f5748cbbc1931b8421ebc5620edd712"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1f5748cbbc1931b8421ebc5620edd712">&#9670;&#160;</a></span>BattleOutcome</h2>
 

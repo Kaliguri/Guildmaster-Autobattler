@@ -1,9 +1,10 @@
 var structGuildmaster_1_1Combat_1_1ProjectileSpawn =
 [
-    [ "ProjectileSpawn", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a873594d8d13a6a9e8c3f1956cd306bf1", null ],
+    [ "ProjectileSpawn", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#ab0c36976fe93124f79881b832b991ad7", null ],
     [ "ArmorK", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#af4fdc31beae0a45f740acf7be0437988", null ],
     [ "CollisionRadius", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a3256e656b27c2577f0b2d74cde80ab0a", null ],
     [ "DamageType", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a1e626b06505d6bfba08b547157d0bb91", null ],
+    [ "IsAutoAttack", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#ab6e005843b720f866695d34f8844699f", null ],
     [ "IsHeal", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a7731ec28cceeb5d0b3f9c37f98de5145", null ],
     [ "MaxPierces", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a05bbcf10908d114d889e5e48f49bdd88", null ],
     [ "OnHitEffects", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a9715ba20be0ad6abfc949a165d1ba853", null ],

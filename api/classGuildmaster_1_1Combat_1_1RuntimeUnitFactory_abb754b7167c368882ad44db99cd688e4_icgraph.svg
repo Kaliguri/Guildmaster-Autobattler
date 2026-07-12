@@ -67,7 +67,7 @@ var sectionId = 'dynsection-2';
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ad802cce6be40b4253f9b4a5758b2aeab" target="_top" xlink:title="Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aec99ab661f140b243f949108eae06a11" target="_top" xlink:title="Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.">
 <polygon fill="white" stroke="#666666" points="186,-426 0,-426 0,-396 186,-396 186,-426"/>
 <text text-anchor="start" x="8" y="-414" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-403" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnAssassin</text>
@@ -105,7 +105,7 @@ var sectionId = 'dynsection-2';
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a7091ad6903909721799225714fb640d4" target="_top" xlink:title="Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10....">
+<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a7eb2484b459cdce5faab5334f56cf0b1" target="_top" xlink:title="Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10....">
 <polygon fill="white" stroke="#666666" points="186,-294 0,-294 0,-264 186,-264 186,-294"/>
 <text text-anchor="start" x="8" y="-282" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-271" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnDefender</text>

@@ -7,7 +7,7 @@ var searchData=
   ['damagemultiplier_4',['DamageMultiplier',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#afbab1afcfafba010b2c4c88a3dbd2700',1,'Guildmaster::Data::Definitions::AbilityData']]],
   ['damagepipeline_5',['DamagePipeline',['../classGuildmaster_1_1Combat_1_1DamagePipeline.html',1,'Guildmaster::Combat']]],
   ['damagepipeline_2ecs_6',['DamagePipeline.cs',['../DamagePipeline_8cs.html',1,'']]],
-  ['damagerequest_7',['damagerequest',['../structGuildmaster_1_1Combat_1_1DamageRequest.html',1,'Guildmaster.Combat.DamageRequest'],['../structGuildmaster_1_1Combat_1_1DamageRequest.html#a71bd7d8905de5eb3942e3a3f6c976a85',1,'Guildmaster.Combat.DamageRequest.DamageRequest()']]],
+  ['damagerequest_7',['damagerequest',['../structGuildmaster_1_1Combat_1_1DamageRequest.html',1,'Guildmaster.Combat.DamageRequest'],['../structGuildmaster_1_1Combat_1_1DamageRequest.html#a76d36c9cd78643125d2a49e628e09493',1,'Guildmaster.Combat.DamageRequest.DamageRequest()']]],
   ['damagerequest_2ecs_8',['DamageRequest.cs',['../DamageRequest_8cs.html',1,'']]],
   ['damageresult_9',['damageresult',['../structGuildmaster_1_1Combat_1_1DamageResult.html#ad89b31d33fed6fc4c0154eddd673b68b',1,'Guildmaster.Combat.DamageResult.DamageResult()'],['../structGuildmaster_1_1Combat_1_1DamageResult.html',1,'Guildmaster.Combat.DamageResult']]],
   ['damageresult_2ecs_10',['DamageResult.cs',['../DamageResult_8cs.html',1,'']]],

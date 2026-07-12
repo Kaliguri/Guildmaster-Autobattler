@@ -16,6 +16,7 @@ var hierarchy =
     [ "Guildmaster.Combat.BrainSystem", "classGuildmaster_1_1Combat_1_1BrainSystem.html", null ],
     [ "Guildmaster.Data.Definitions.ClipMarkers", "classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html", null ],
     [ "Guildmaster.Combat.Effects.CombatEventData", "structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html", null ],
+    [ "Guildmaster.Combat.CombatPositioning", "classGuildmaster_1_1Combat_1_1CombatPositioning.html", null ],
     [ "Guildmaster.Data.Editor.ContentCrudService", "classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html", null ],
     [ "Guildmaster.Data.Editor.ContentDatabaseSync", "classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html", null ],
     [ "Guildmaster.Data.Definitions.ContentDomains", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html", null ],
@@ -35,6 +36,7 @@ var hierarchy =
     [ "Guildmaster.Combat.Effects.EffectContext", "structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html", null ],
     [ "Guildmaster.Combat.EffectSystem", "classGuildmaster_1_1Combat_1_1EffectSystem.html", null ],
     [ "Guildmaster.Presentation.Audio.AudioCatalog.Entry", "structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry.html", null ],
+    [ "Guildmaster.Combat.FleeSteering", "classGuildmaster_1_1Combat_1_1FleeSteering.html", null ],
     [ "Guildmaster.Game.Services.GameFlow", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html", null ],
     [ "IAsyncStartable", null, [
       [ "Guildmaster.Game.Services.CombatLoopService", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html", null ]
@@ -191,7 +193,8 @@ var hierarchy =
       [ "Guildmaster.Data.Definitions.SimTuningConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1SimTuningConfig.html", null ],
       [ "Guildmaster.Data.Definitions.StatsConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html", null ],
       [ "Guildmaster.Data.Definitions.UnitVisual", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html", null ],
-      [ "Guildmaster.Presentation.Audio.AudioCatalog", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html", null ]
+      [ "Guildmaster.Presentation.Audio.AudioCatalog", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html", null ],
+      [ "Guildmaster.Presentation.Design.CombatColorPalette", "classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html", null ]
     ] ],
     [ "Guildmaster.Combat.SeparationSystem", "classGuildmaster_1_1Combat_1_1SeparationSystem.html", null ],
     [ "Guildmaster.Core.Simulation.SimConstants", "classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html", null ],
