@@ -1,7 +1,11 @@
 <map id="Guildmaster.Combat.AttackTiming.IntervalTicks" name="Guildmaster.Combat.AttackTiming.IntervalTicks">
-<area shape="rect" id="Node000001" title="Интервал между атаками в сим&#45;тиках." alt="" coords="536,5,739,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a627a13ac427fbcb0bb8a5f2fc98891db" title="Тики замаха, которые получит СЛЕДУЮЩИЙ свинг этого юнита при текущей скорости атаки и клипе." alt="" coords="285,5,488,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="522,28,488,28,488,23,522,23"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f41579d23e8074e346e93e793eb0f5b" title="Обработать автоатаки всех живых юнитов за один тик. dt &#160;не используется (тайминг на тиках)." alt="" coords="5,5,237,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="272,28,237,28,237,23,272,23"/>
+<area shape="rect" id="Node000001" title="Интервал между атаками в сим&#45;тиках." alt="" coords="560,37,763,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html#a92ff8d6143fdbc9b0269a6d9cfac7cb8" title="Атак/сек с учётом тиковой квантизации сима (через AttackTiming), не сырой AttackSpeed." alt="" coords="285,5,512,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="546,46,512,42,513,36,547,41"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a627a13ac427fbcb0bb8a5f2fc98891db" title="Тики замаха, которые получит СЛЕДУЮЩИЙ свинг этого юнита при текущей скорости атаки и клипе." alt="" coords="297,69,500,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="547,74,500,80,500,74,546,69"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html#a18912a608f1c5a8f5603310031093828" title="«Бумажный» DPS автоатаки без цели: урон × атак/сек × эфф. наносимого урона (броня/митигейт цели не уч..." alt="" coords="8,5,235,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="271,28,235,28,235,23,271,23"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#a0f41579d23e8074e346e93e793eb0f5b" title="Обработать автоатаки всех живых юнитов за один тик. dt &#160;не используется (тайминг на тиках)." alt="" coords="5,69,237,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="283,92,238,92,238,87,283,87"/>
 </map>

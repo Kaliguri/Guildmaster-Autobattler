@@ -1,3 +1,48 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html" title="Управляет макро&#45;флоу игры: Boot → загрузка BattleScene → старт боя → результат." alt="" coords="5,5,212,45"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html" title="Якорь полиморфного поведения эффекта для сериализации." alt="" coords="5,485,220,525"/>
+<area shape="rect" id="Node000001" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html" title="Рантайм&#45;контракт поведения эффекта." alt="" coords="268,485,476,525"/>
+<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="234,503,268,503,268,508,234,508"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html" title="Контроль: запрещает действия носителю на время эффекта." alt="" coords="554,389,785,429"/>
+<area shape="poly" id="edge13_Node000001_Node000002" title=" " alt="" coords="426,477,523,439,566,427,567,432,525,444,428,482"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent.html" title="Диспел: при наложении снимает с носителя подходящие эффекты (вики «6» §5.4)." alt="" coords="557,453,781,493"/>
+<area shape="poly" id="edge14_Node000001_Node000003" title=" " alt="" coords="490,490,557,483,557,488,490,495"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MissingHpShieldComponent.html" title="Щит с величиной, зависящей от текущего HP носителя: flat + pct × недостающее HP (§9...." alt="" coords="524,517,815,557"/>
+<area shape="poly" id="edge15_Node000001_Node000004" title=" " alt="" coords="490,515,524,519,523,524,490,521"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StatModifierComponent.html" title="Накладывает стат&#45;модификаторы на носителя на время жизни эффекта." alt="" coords="538,581,801,621"/>
+<area shape="poly" id="edge16_Node000001_Node000005" title=" " alt="" coords="428,529,525,567,567,579,566,584,523,572,426,534"/>
+<area shape="rect" id="Node000006" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPeriodicComponent.html" title="Периодический компонент: OnTick каждые Interval секунд (DoT/HoT/реген)." alt="" coords="565,773,773,813"/>
+<area shape="poly" id="edge17_Node000001_Node000006" title=" " alt="" coords="386,537,404,587,433,648,474,709,498,736,525,759,566,779,564,784,523,764,494,740,469,712,429,650,399,589,381,539"/>
+<area shape="rect" id="Node000013" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IPreDamageComponent.html" title="Синхронный перехват ДО вычета HP (§9.3): вызывается из EffectSystem.RunPreDamage перед DamagePipeline..." alt="" coords="565,325,773,365"/>
+<area shape="poly" id="edge20_Node000001_Node000013" title=" " alt="" coords="398,473,452,422,486,397,523,375,564,359,566,364,525,380,489,401,456,426,402,477"/>
+<area shape="rect" id="Node000015" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IReactiveComponent.html" title="Реактивный компонент: реагирует на боевые события (вампиризм/шипы). Диспатч — внутренняя FIFO&#45;очередь..." alt="" coords="565,197,773,237"/>
+<area shape="poly" id="edge23_Node000001_Node000015" title=" " alt="" coords="391,472,446,395,483,352,522,311,577,268,630,235,633,240,580,273,526,315,487,356,451,399,396,475"/>
+<area shape="rect" id="Node000011" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IStackableComponent.html" title="Опциональный шов рестака (07 §3.8 B1–B3): компонент с накопленным ВНЕШНИМ состоянием (пул щита,..." alt="" coords="565,645,773,685"/>
+<area shape="poly" id="edge30_Node000001_Node000011" title=" " alt="" coords="402,534,456,584,489,610,525,631,566,646,564,651,523,636,486,614,452,588,398,537"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html" title="Периодический урон (DoT)." alt="" coords="868,709,1159,749"/>
+<area shape="poly" id="edge18_Node000006_Node000007" title=" " alt="" coords="786,769,905,747,906,752,787,774"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicHealComponent.html" title="Периодическое исцеление (HoT)." alt="" coords="881,773,1146,813"/>
+<area shape="poly" id="edge19_Node000006_Node000009" title=" " alt="" coords="787,791,880,791,880,796,787,796"/>
+<area shape="rect" id="Node000014" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BulwarkComponent.html" title="«Оплот» (§9.3, §10.3): pre&#45;damage реактив." alt="" coords="895,389,1131,429"/>
+<area shape="poly" id="edge21_Node000013_Node000014" title=" " alt="" coords="787,365,906,387,905,392,786,370"/>
+<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html" title="«Изворотливость» (§9.3, §9.4, §10.5): pre&#45;damage реактив с зарядами." alt="" coords="901,517,1126,557"/>
+<area shape="poly" id="edge22_Node000013_Node000012" title=" " alt="" coords="787,361,816,375,833,390,842,406,851,422,865,439,920,482,974,515,971,519,917,487,861,443,846,425,838,409,829,394,813,380,785,366"/>
+<area shape="rect" id="Node000016" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent.html" title="Вампиризм: исцеляет носителя на долю нанесённого им урона." alt="" coords="894,197,1133,237"/>
+<area shape="poly" id="edge24_Node000015_Node000016" title=" " alt="" coords="787,215,894,215,894,220,787,220"/>
+<area shape="rect" id="Node000017" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MarkTransferComponent.html" title="«Метка охотника» (§9.5): реактив на CombatEvent.UnitDied." alt="" coords="879,261,1147,301"/>
+<area shape="poly" id="edge25_Node000015_Node000017" title=" " alt="" coords="787,237,906,259,905,264,786,242"/>
+<area shape="rect" id="Node000018" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1StealthComponent.html" title="«Скрытность» (§9.6, §10.5): в начале боя (OnApply при выдаче пассива) и после СВОЕГО убийства (Combat..." alt="" coords="899,325,1128,365"/>
+<area shape="poly" id="edge26_Node000015_Node000018" title=" " alt="" coords="717,242,785,277,864,311,903,323,902,328,862,316,783,282,715,246"/>
+<area shape="rect" id="Node000019" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html" title="Шипы: отражает долю полученного урона обратно атакующему." alt="" coords="900,5,1127,45"/>
+<area shape="poly" id="edge27_Node000015_Node000019" title=" " alt="" coords="696,185,767,119,812,84,862,55,899,41,901,46,864,60,815,88,770,123,700,189"/>
+<area shape="rect" id="Node000020" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1VortexEntryComponent.html" title="«Вихревой заход» (§9.6, §10.6): реактив на конец эффекта смещения (CombatEvent.EffectExpired с тегом ..." alt="" coords="884,69,1143,109"/>
+<area shape="poly" id="edge28_Node000015_Node000020" title=" " alt="" coords="715,188,783,152,862,119,902,107,903,112,864,124,785,157,717,193"/>
+<area shape="rect" id="Node000021" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent.html" title="Приземление рывка монаха (§10.6, «Шквальный толчок», фаза 3 из 4: рывок → фиксация → ОТБРАСЫВАНИЕ → т..." alt="" coords="863,133,1164,173"/>
+<area shape="poly" id="edge29_Node000015_Node000021" title=" " alt="" coords="786,193,905,171,906,176,787,198"/>
+<area shape="poly" id="edge31_Node000011_Node000012" title=" " alt="" coords="786,640,814,631,902,593,976,555,978,560,905,598,816,636,787,645"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ShieldComponent.html" title="Поглощающий щит." alt="" coords="902,645,1125,685"/>
+<area shape="poly" id="edge32_Node000011_Node000010" title=" " alt="" coords="787,663,902,663,902,668,787,668"/>
+<area shape="rect" id="Node000008" href="$interfaceGuildmaster_1_1Combat_1_1Effects_1_1IScalablePotency.html" title="Опциональный шов: компонент объявляет масштабируемую потенцию." alt="" coords="565,709,773,749"/>
+<area shape="poly" id="edge33_Node000008_Node000007" title=" " alt="" coords="787,727,868,727,868,732,787,732"/>
+<area shape="poly" id="edge34_Node000008_Node000009" title=" " alt="" coords="787,749,906,771,905,776,786,754"/>
+<area shape="poly" id="edge35_Node000008_Node000010" title=" " alt="" coords="786,705,905,683,906,688,787,710"/>
 </map>

@@ -1,5 +1,11 @@
 <map id="Guildmaster.Data.Definitions.ContentDomains.TryGetDomain" name="Guildmaster.Data.Definitions.ContentDomains.TryGetDomain">
-<area shape="rect" id="Node000001" title="Найти домен для типа (точное совпадение или ближайший зарегистрированный предок)." alt="" coords="268,5,496,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html#a4701ffe250559c2e99f32082bc6e2f12" title="Присвоить id из движка (рантайм&#45;создание def&#39;ов через CreateRuntime, editor&#45;миграции)." alt="" coords="5,5,220,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="255,28,220,28,220,23,255,23"/>
+<area shape="rect" id="Node000001" title="Найти домен для типа (точное совпадение или ближайший зарегистрированный предок)." alt="" coords="895,41,1123,81"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html#a4701ffe250559c2e99f32082bc6e2f12" title="Присвоить id из движка (рантайм&#45;создание def&#39;ов через CreateRuntime, editor&#45;миграции)." alt="" coords="618,5,833,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="881,48,833,42,833,36,881,42"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a72ee54dbb17f5b39e75c5c493f0a00c9" title="Чистые проверки id&#45;строки (без обращения к индексу): пустой / формат / домен под тип." alt="" coords="604,70,847,125"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="881,80,847,85,846,79,881,75"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#add953939cb76a60ae2ff9ac0e21e7974" title="Валидация одной записи (id, дубликаты по индексу, null&#45;компоненты эффектов)." alt="" coords="313,77,556,117"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="591,100,556,100,556,95,591,95"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a1c36ea089884779b8af2d682df2f8a27" title="Полный проход по индексу — основа Doctor (P4)." alt="" coords="5,77,265,117"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="299,100,266,100,266,95,299,95"/>
 </map>

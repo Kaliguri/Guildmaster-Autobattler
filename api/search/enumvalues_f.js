@@ -10,5 +10,6 @@ var searchData=
   ['stack_7',['Stack',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca',1,'Guildmaster::Data::Definitions']]],
   ['stackandrefresh_8',['StackAndRefresh',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021cadc2a20a77eca42f262a296f18be55278',1,'Guildmaster::Data::Definitions']]],
   ['startresource_9',['StartResource',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7fdc6c0e1455e6b04e10d4333e8a07da',1,'Guildmaster::Data::Stats']]],
-  ['stealth_10',['Stealth',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628',1,'Guildmaster::Data::Definitions']]]
+  ['stealth_10',['Stealth',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628',1,'Guildmaster::Data::Definitions']]],
+  ['success_11',['Success',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a685d227543d73264d3c77b5ed5b0e02ca505a83f220c02df2f85c3810cd9ceb38',1,'Guildmaster::ContentHub::Editor::HubToasts']]]
 ];

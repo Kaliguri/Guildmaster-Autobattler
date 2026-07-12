@@ -11,8 +11,9 @@ var searchData=
   ['collisionradius_8',['collisionradius',['../classGuildmaster_1_1Combat_1_1Projectile.html#aaf05a6c036d7612517894326d25fc732',1,'Guildmaster.Combat.Projectile.CollisionRadius'],['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a3256e656b27c2577f0b2d74cde80ab0a',1,'Guildmaster.Combat.ProjectileSpawn.CollisionRadius']]],
   ['combat_9',['Combat',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a563634ca57e5764ba8938cb855ee4e6b',1,'Guildmaster::Combat::Effects::EffectContext']]],
   ['cooldownremaining_10',['CooldownRemaining',['../classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#a7e4d83b9f92db4d81f68da3ebc04d085',1,'Guildmaster::Combat::Abilities::AbilityRuntime']]],
-  ['currenthp_11',['CurrentHP',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a16a11155c2e0a73e8bcaa125797d137f',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['currentresource_12',['CurrentResource',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aade95fbe70d66fe6bc23c4ca18297005',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['currentshield_13',['CurrentShield',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a24ce73d0729d150103bd1436c64801e3',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['currenttarget_14',['CurrentTarget',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a64ce2c8539ec1d2913559dd98c7c8e31',1,'Guildmaster::Combat::RuntimeUnit']]]
+  ['count_11',['Count',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#afbd85a52e7f2001be917bf5c155277be',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]],
+  ['currenthp_12',['CurrentHP',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a16a11155c2e0a73e8bcaa125797d137f',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['currentresource_13',['CurrentResource',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aade95fbe70d66fe6bc23c4ca18297005',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['currentshield_14',['CurrentShield',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a24ce73d0729d150103bd1436c64801e3',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['currenttarget_15',['CurrentTarget',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a64ce2c8539ec1d2913559dd98c7c8e31',1,'Guildmaster::Combat::RuntimeUnit']]]
 ];

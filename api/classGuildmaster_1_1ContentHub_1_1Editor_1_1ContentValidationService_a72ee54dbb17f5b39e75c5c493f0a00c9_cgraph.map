@@ -1,0 +1,5 @@
+<map id="Guildmaster.ContentHub.Editor.ContentValidationService.ValidateIdString" name="Guildmaster.ContentHub.Editor.ContentValidationService.ValidateIdString">
+<area shape="rect" id="Node000001" title="Чистые проверки id&#45;строки (без обращения к индексу): пустой / формат / домен под тип." alt="" coords="5,5,248,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#aedef3a39f7ef0281d8b5c0fa1facc356" title="Найти домен для типа (точное совпадение или ближайший зарегистрированный предок)." alt="" coords="296,13,524,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="248,30,282,30,282,35,248,35"/>
+</map>

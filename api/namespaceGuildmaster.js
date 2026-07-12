@@ -1,6 +1,7 @@
 var namespaceGuildmaster =
 [
     [ "Combat", "namespaceGuildmaster_1_1Combat.html", "namespaceGuildmaster_1_1Combat" ],
+    [ "ContentHub", "namespaceGuildmaster_1_1ContentHub.html", "namespaceGuildmaster_1_1ContentHub" ],
     [ "Core", "namespaceGuildmaster_1_1Core.html", "namespaceGuildmaster_1_1Core" ],
     [ "Data", "namespaceGuildmaster_1_1Data.html", "namespaceGuildmaster_1_1Data" ],
     [ "DevTools", "namespaceGuildmaster_1_1DevTools.html", "namespaceGuildmaster_1_1DevTools" ],

@@ -7,5 +7,6 @@ var searchData=
   ['enemiesinradius_4',['EnemiesInRadius',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204',1,'Guildmaster::Data::Definitions']]],
   ['enemieswithtagcount_5',['EnemiesWithTagCount',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a925aa4b0a5b89dc13621f1afe086c21a',1,'Guildmaster::Data::Definitions']]],
   ['enemy_6',['Enemy',['../namespaceGuildmaster_1_1Core_1_1Arena.html#ad2f8cdf4db07e9198b14b687d5091dd8a8c6d21187fb58b7a079d70030686b33e',1,'Guildmaster::Core::Arena']]],
-  ['extended_7',['Extended',['../namespaceGuildmaster_1_1Core_1_1Arena.html#a92bfeab96a23ed0ff98de12620540de3af23578fcd2a868168854ab714e7de537',1,'Guildmaster::Core::Arena']]]
+  ['error_7',['error',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a685d227543d73264d3c77b5ed5b0e02ca902b0d55fddef6f8d651fe1035b7d4bd',1,'Guildmaster.ContentHub.Editor.HubToasts.Error'],['../namespaceGuildmaster_1_1ContentHub_1_1Editor.html#a2bbad0e91e184df82f30b352e2e96a93a902b0d55fddef6f8d651fe1035b7d4bd',1,'Guildmaster.ContentHub.Editor.Error']]],
+  ['extended_8',['Extended',['../namespaceGuildmaster_1_1Core_1_1Arena.html#a92bfeab96a23ed0ff98de12620540de3af23578fcd2a868168854ab714e7de537',1,'Guildmaster::Core::Arena']]]
 ];

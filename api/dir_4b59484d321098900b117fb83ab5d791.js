@@ -6,6 +6,5 @@ var dir_4b59484d321098900b117fb83ab5d791 =
     [ "ContentDefinitionEditor.cs", "ContentDefinitionEditor_8cs.html", "ContentDefinitionEditor_8cs" ],
     [ "ContentIdUtility.cs", "ContentIdUtility_8cs.html", "ContentIdUtility_8cs" ],
     [ "ContentLocalization.cs", "ContentLocalization_8cs.html", "ContentLocalization_8cs" ],
-    [ "ContentManagerWindow.cs", "ContentManagerWindow_8cs.html", "ContentManagerWindow_8cs" ],
     [ "ContentPaths.cs", "ContentPaths_8cs.html", "ContentPaths_8cs" ]
 ];

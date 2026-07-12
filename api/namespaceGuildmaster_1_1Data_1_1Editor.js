@@ -6,6 +6,5 @@ var namespaceGuildmaster_1_1Data_1_1Editor =
     [ "ContentDefinitionEditor", "classGuildmaster_1_1Data_1_1Editor_1_1ContentDefinitionEditor.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentDefinitionEditor" ],
     [ "ContentIdUtility", "classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility" ],
     [ "ContentLocalization", "classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization" ],
-    [ "ContentManagerWindow", "classGuildmaster_1_1Data_1_1Editor_1_1ContentManagerWindow.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentManagerWindow" ],
     [ "ContentPaths", "classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths" ]
 ];

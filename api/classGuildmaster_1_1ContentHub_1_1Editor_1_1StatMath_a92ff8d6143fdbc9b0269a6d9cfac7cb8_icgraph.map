@@ -1,0 +1,5 @@
+<map id="Guildmaster.ContentHub.Editor.StatMath.AttacksPerSecond" name="Guildmaster.ContentHub.Editor.StatMath.AttacksPerSecond">
+<area shape="rect" id="Node000001" title="Атак/сек с учётом тиковой квантизации сима (через AttackTiming), не сырой AttackSpeed." alt="" coords="280,5,507,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html#a18912a608f1c5a8f5603310031093828" title="«Бумажный» DPS автоатаки без цели: урон × атак/сек × эфф. наносимого урона (броня/митигейт цели не уч..." alt="" coords="5,5,232,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="266,28,232,28,232,23,266,23"/>
+</map>

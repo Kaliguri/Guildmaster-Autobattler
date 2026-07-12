@@ -1,7 +1,5 @@
 <map id="Guildmaster.Data.Editor.ContentPaths.FolderFor" name="Guildmaster.Data.Editor.ContentPaths.FolderFor">
-<area shape="rect" id="Node000001" title="Полный путь целевой папки для типа (создаётся при необходимости)." alt="" coords="335,37,516,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentManagerWindow.html#a6bfc543373e550f6f0147cc7787e04a3" title=" " alt="" coords="5,5,287,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="321,48,286,44,287,39,321,43"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#af795537cb7f5fe633278ac7399267fc0" title="Создать новый ассет типа type &#160;в его папке с уникальным id. Синхронизирует БД." alt="" coords="47,69,245,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="321,72,246,81,245,75,321,67"/>
+<area shape="rect" id="Node000001" title="Полный путь целевой папки для типа (создаётся при необходимости)." alt="" coords="252,5,433,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#af795537cb7f5fe633278ac7399267fc0" title="Создать новый ассет типа type &#160;в его папке с уникальным id. Синхронизирует БД." alt="" coords="5,5,204,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,28,204,28,204,23,238,23"/>
 </map>

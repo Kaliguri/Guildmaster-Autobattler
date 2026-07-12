@@ -40,6 +40,7 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ],
+        [ "Enumerations", "functions_enum.html", null ],
         [ "Properties", "functions_prop.html", "functions_prop" ],
         [ "Events", "functions_evnt.html", null ]
       ] ]
@@ -53,15 +54,16 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AIPresetData_8cs.html",
-"ProjectileSystem_8cs.html",
-"classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand.html#a3e96c5df88cd8d6380eacf77b1b9c33b",
-"classGuildmaster_1_1Combat_1_1Projectile.html#a3ba7eb716e741e5e693a28aee06d256e",
-"classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a2ae15a8367256776a7c548bc1fc8303a",
-"classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a2ae2a87a088704ef420bd7c539de18c5",
-"classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#aa9929c253f14ccf778d55252addbe0a4",
-"functions_func_t.html",
-"namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8aea355214fd4bc7c57f471bd92918879b",
-"structGuildmaster_1_1Combat_1_1DisplaceRequest.html#af5fdc4224f677ae7ae8a98633ec18c41"
+"ModifierOp_8cs.html#aae132bbc024dc11a826cb55da0cae0dea745e3db6a7ffd50e1a72b39482f0882d",
+"classGuildmaster_1_1Combat_1_1CombatSimulation.html#ad93a3eda61fc3dac619027e365ae9132",
+"classGuildmaster_1_1Combat_1_1FleeSteering.html",
+"classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentIndex.html#af39b4a94470d004970da38ab4b80455b",
+"classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a5b4278ee1315bb56b8c5ccb07f38cd12",
+"classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#a01b49ed448fc51920f564b44d9b7f071",
+"classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html#a4d78fa7bd04bda681534f75fc330b09b",
+"interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html",
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1a8bbf55183f7d11e74da28d738216036a",
+"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#af4fdc31beae0a45f740acf7be0437988"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

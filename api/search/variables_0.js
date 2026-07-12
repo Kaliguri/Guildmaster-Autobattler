@@ -10,5 +10,6 @@ var searchData=
   ['armork_7',['armork',['../structGuildmaster_1_1Combat_1_1DamageRequest.html#a96e593ead08f6d85d2f0097cba8ba0f6',1,'Guildmaster.Combat.DamageRequest.ArmorK'],['../classGuildmaster_1_1Combat_1_1Projectile.html#a3e7e54f687c64d1f8594b5877f395cb6',1,'Guildmaster.Combat.Projectile.ArmorK'],['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#af4fdc31beae0a45f740acf7be0437988',1,'Guildmaster.Combat.ProjectileSpawn.ArmorK']]],
   ['attackcooldownticks_8',['AttackCooldownTicks',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a11fa1f8683761b538eed81934693ab4b',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['attackreachtolerance_9',['AttackReachTolerance',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a8055490326c8e34406e451cda4359c5d',1,'Guildmaster::Core::Simulation::SimConstants']]],
-  ['autoattacktarget_10',['AutoAttackTarget',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#adcb828c6ef20e0efa7a8937f019566f7',1,'Guildmaster::Combat::RuntimeUnit']]]
+  ['autoattacktarget_10',['AutoAttackTarget',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#adcb828c6ef20e0efa7a8937f019566f7',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['avg_11',['Avg',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#a0921e115140652d37c31fcd02958625f',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]]
 ];

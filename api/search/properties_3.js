@@ -13,5 +13,7 @@ var searchData=
   ['displacedistance_10',['DisplaceDistance',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#adda1c501129f875787ef41e2259db90b',1,'Guildmaster::Data::Definitions::AbilityData']]],
   ['displaces_11',['Displaces',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#aebf0e2fca56e3352b89332f9f1c9e709',1,'Guildmaster::Data::Definitions::AbilityData']]],
   ['displaceticks_12',['DisplaceTicks',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#abf0c8ea973982d50075e3b487d4fdf83',1,'Guildmaster::Data::Definitions::AbilityData']]],
-  ['displacewidth_13',['DisplaceWidth',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a68c7f0297600133bd5d5acd5aa35fd62',1,'Guildmaster::Data::Definitions::AbilityData']]]
+  ['displacewidth_13',['DisplaceWidth',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a68c7f0297600133bd5d5acd5aa35fd62',1,'Guildmaster::Data::Definitions::AbilityData']]],
+  ['displayname_14',['DisplayName',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#a4bdf4d8b92f15a5ee4a01d10caa2a888',1,'Guildmaster::ContentHub::Editor::ContentEntry']]],
+  ['domain_15',['Domain',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#a5c6ca2846770ab8fe81f62d32262373a',1,'Guildmaster::ContentHub::Editor::ContentEntry']]]
 ];

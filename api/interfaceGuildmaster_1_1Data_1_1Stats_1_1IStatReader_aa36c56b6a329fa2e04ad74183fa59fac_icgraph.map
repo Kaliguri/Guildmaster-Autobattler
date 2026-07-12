@@ -1,5 +1,7 @@
 <map id="Guildmaster.Data.Stats.IStatReader.Get" name="Guildmaster.Data.Stats.IStatReader.Get">
-<area shape="rect" id="Node000001" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="285,5,492,45"/>
-<area shape="rect" id="Node000002" href="$structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html#a70741f041fa3aa2b67f41f6b82d8e072" title="Разворачивает значение по статам читателя. null&#45;читатель → только Base." alt="" coords="5,5,237,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,28,237,28,237,23,271,23"/>
+<area shape="rect" id="Node000001" title="Итоговое значение стата после всех модификаторов и клампов." alt="" coords="285,37,492,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html#a18912a608f1c5a8f5603310031093828" title="«Бумажный» DPS автоатаки без цели: урон × атак/сек × эфф. наносимого урона (броня/митигейт цели не уч..." alt="" coords="8,5,235,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="271,46,235,42,235,36,272,41"/>
+<area shape="rect" id="Node000003" href="$structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html#a70741f041fa3aa2b67f41f6b82d8e072" title="Разворачивает значение по статам читателя. null&#45;читатель → только Base." alt="" coords="5,69,237,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="272,74,238,78,237,73,271,69"/>
 </map>

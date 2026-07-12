@@ -1,0 +1,5 @@
+<map id="Guildmaster.ContentHub.Editor.ValidationIssue" name="Guildmaster.ContentHub.Editor.ValidationIssue">
+<area shape="rect" id="Node000001" title="Одна находка валидации: где, насколько серьёзно, что." alt="" coords="5,368,224,468"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html" title="Одна запись индекса контента: ассет + метаданные + рёбра графа ссылок + (для юнитов) эффективные стат..." alt="" coords="5,5,224,305"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,306,117,352,112,352,112,306"/>
+</map>

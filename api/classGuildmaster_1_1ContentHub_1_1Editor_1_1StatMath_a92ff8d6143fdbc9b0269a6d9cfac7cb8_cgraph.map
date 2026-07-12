@@ -1,0 +1,5 @@
+<map id="Guildmaster.ContentHub.Editor.StatMath.AttacksPerSecond" name="Guildmaster.ContentHub.Editor.StatMath.AttacksPerSecond">
+<area shape="rect" id="Node000001" title="Атак/сек с учётом тиковой квантизации сима (через AttackTiming), не сырой AttackSpeed." alt="" coords="5,5,232,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1AttackTiming.html#a22bc798f12c716f8ccda8585b205691b" title="Интервал между атаками в сим&#45;тиках." alt="" coords="280,5,483,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,23,266,23,266,28,232,28"/>
+</map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['modifierop_0',['ModifierOp',['../namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0de',1,'Guildmaster::Data::Stats']]]
+  ['kind_0',['Kind',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a685d227543d73264d3c77b5ed5b0e02c',1,'Guildmaster::ContentHub::Editor::HubToasts']]]
 ];

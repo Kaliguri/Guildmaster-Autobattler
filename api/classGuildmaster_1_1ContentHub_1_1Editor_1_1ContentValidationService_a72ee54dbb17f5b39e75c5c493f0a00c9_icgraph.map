@@ -1,0 +1,7 @@
+<map id="Guildmaster.ContentHub.Editor.ContentValidationService.ValidateIdString" name="Guildmaster.ContentHub.Editor.ContentValidationService.ValidateIdString">
+<area shape="rect" id="Node000001" title="Чистые проверки id&#45;строки (без обращения к индексу): пустой / формат / домен под тип." alt="" coords="604,5,847,60"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#add953939cb76a60ae2ff9ac0e21e7974" title="Валидация одной записи (id, дубликаты по индексу, null&#45;компоненты эффектов)." alt="" coords="313,13,556,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="591,35,556,35,556,30,591,30"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentValidationService.html#a1c36ea089884779b8af2d682df2f8a27" title="Полный проход по индексу — основа Doctor (P4)." alt="" coords="5,13,265,53"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="299,35,266,35,266,30,299,30"/>
+</map>

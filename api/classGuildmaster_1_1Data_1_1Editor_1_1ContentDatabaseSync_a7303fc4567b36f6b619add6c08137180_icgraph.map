@@ -1,17 +1,15 @@
 <map id="Guildmaster.Data.Editor.ContentDatabaseSync.FindOrCreate" name="Guildmaster.Data.Editor.ContentDatabaseSync.FindOrCreate">
-<area shape="rect" id="Node000001" title="Существующая БД (первая найденная) или новая в DatabasePath." alt="" coords="597,177,852,217"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a0f1c481144d212691dd43e8322040151" title="Найти/создать БД, заполнить всеми контент&#45;ассетами (сортировка по id), сохранить." alt="" coords="348,177,549,217"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="584,200,550,200,550,195,584,195"/>
+<area shape="rect" id="Node000001" title="Существующая БД (первая найденная) или новая в DatabasePath." alt="" coords="597,133,852,173"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html#a0f1c481144d212691dd43e8322040151" title="Найти/создать БД, заполнить всеми контент&#45;ассетами (сортировка по id), сохранить." alt="" coords="348,133,549,173"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="584,156,550,156,550,151,584,151"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#af795537cb7f5fe633278ac7399267fc0" title="Создать новый ассет типа type &#160;в его папке с уникальным id. Синхронизирует БД." alt="" coords="53,5,252,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="422,168,369,112,336,83,299,60,251,42,253,37,301,55,339,79,373,108,426,165"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="410,127,359,92,299,60,251,44,253,39,301,55,362,87,413,123"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#a2f24dca1ff0462435f25c366e6104a2b" title="Дублировать ассет с новым уникальным id (вики «13» §2.3 п.4). Синхронизирует БД." alt="" coords="44,69,261,109"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="402,173,353,147,299,124,260,112,262,107,301,119,355,142,404,168"/>
-<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentManagerWindow.html#a15ea108defd5109aa69404af924a5a57" title=" " alt="" coords="33,134,273,189"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="334,186,272,179,273,173,334,181"/>
-<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package1Migration.html#ab3878c743eb0fd7770c2cab2cc17273c" title=" " alt="" coords="5,213,300,253"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="335,214,301,218,300,213,334,209"/>
-<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package3AiPresetMigration.html#aea8ad4919e1032bf6de45219a3b121a4" title=" " alt="" coords="24,278,281,333"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="397,226,301,268,263,280,261,275,299,263,395,221"/>
-<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#abd2df813040020ae837b6ccd5b904e48" title="Удалить ассет, если он ни на что не ссылается." alt="" coords="44,357,261,397"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="427,230,374,290,340,321,301,346,262,363,260,358,299,342,336,316,371,286,423,226"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="341,133,245,112,246,107,343,128"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package1Migration.html#ab3878c743eb0fd7770c2cab2cc17273c" title=" " alt="" coords="5,133,300,173"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="334,156,300,156,300,151,334,151"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package3AiPresetMigration.html#aea8ad4919e1032bf6de45219a3b121a4" title=" " alt="" coords="24,198,281,253"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="353,179,266,201,265,195,352,174"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#abd2df813040020ae837b6ccd5b904e48" title="Удалить ассет, если он ни на что не ссылается." alt="" coords="44,277,261,317"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="418,185,366,227,334,248,301,266,262,281,260,276,299,262,332,244,363,223,415,180"/>
 </map>

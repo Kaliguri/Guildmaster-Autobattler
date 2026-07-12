@@ -12,10 +12,12 @@ var searchData=
   ['spatialhash_2ecs_9',['SpatialHash.cs',['../SpatialHash_8cs.html',1,'']]],
   ['spawnunitcommand_2ecs_10',['SpawnUnitCommand.cs',['../SpawnUnitCommand_8cs.html',1,'']]],
   ['stackrule_2ecs_11',['StackRule.cs',['../StackRule_8cs.html',1,'']]],
-  ['statmodifier_2ecs_12',['StatModifier.cs',['../StatModifier_8cs.html',1,'']]],
-  ['statmodifiercomponent_2ecs_13',['StatModifierComponent.cs',['../StatModifierComponent_8cs.html',1,'']]],
-  ['stats_2ecs_14',['Stats.cs',['../Stats_8cs.html',1,'']]],
-  ['statsconfig_2ecs_15',['StatsConfig.cs',['../StatsConfig_8cs.html',1,'']]],
-  ['stattype_2ecs_16',['StatType.cs',['../StatType_8cs.html',1,'']]],
-  ['stealthcomponent_2ecs_17',['StealthComponent.cs',['../StealthComponent_8cs.html',1,'']]]
+  ['statcohort_2ecs_12',['StatCohort.cs',['../StatCohort_8cs.html',1,'']]],
+  ['statmath_2ecs_13',['StatMath.cs',['../StatMath_8cs.html',1,'']]],
+  ['statmodifier_2ecs_14',['StatModifier.cs',['../StatModifier_8cs.html',1,'']]],
+  ['statmodifiercomponent_2ecs_15',['StatModifierComponent.cs',['../StatModifierComponent_8cs.html',1,'']]],
+  ['stats_2ecs_16',['Stats.cs',['../Stats_8cs.html',1,'']]],
+  ['statsconfig_2ecs_17',['StatsConfig.cs',['../StatsConfig_8cs.html',1,'']]],
+  ['stattype_2ecs_18',['StatType.cs',['../StatType_8cs.html',1,'']]],
+  ['stealthcomponent_2ecs_19',['StealthComponent.cs',['../StealthComponent_8cs.html',1,'']]]
 ];

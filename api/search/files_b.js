@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['networkcommandrelay_2ecs_0',['NetworkCommandRelay.cs',['../NetworkCommandRelay_8cs.html',1,'']]]
+  ['navhistory_2ecs_0',['NavHistory.cs',['../NavHistory_8cs.html',1,'']]],
+  ['networkcommandrelay_2ecs_1',['NetworkCommandRelay.cs',['../NetworkCommandRelay_8cs.html',1,'']]]
 ];
