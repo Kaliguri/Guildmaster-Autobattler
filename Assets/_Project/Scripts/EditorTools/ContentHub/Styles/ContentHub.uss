@@ -235,7 +235,8 @@
     padding-left: 22px;
     padding-right: 8px;
     border-radius: var(--gh-radius-sm);
-    color: var(--gh-text-dim);
+    color: var(--gh-text);
+    font-size: 12px;
 }
 
 .gh-row:hover { background-color: var(--gh-panel); }
@@ -300,11 +301,43 @@
 .gh-btn--danger:hover { border-color: var(--gh-error); color: var(--gh-error); }
 
 .gh-sec-h {
-    color: var(--gh-text-faint);
+    color: var(--gh-text-dim);
     font-size: 11px;
     -unity-font-style: bold;
     margin-top: 14px;
     margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+
+/* domain filter tabs (Browser second row) */
+.gh-domtabs {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 5px var(--gh-pad);
+    background-color: var(--gh-bg-sunken);
+    border-bottom-width: 1px;
+    border-bottom-color: var(--gh-border);
+}
+.gh-domtab {
+    height: 20px;
+    padding-left: 9px;
+    padding-right: 9px;
+    margin-right: 4px;
+    margin-bottom: 3px;
+    border-radius: 10px;
+    background-color: transparent;
+    border-width: 1px;
+    border-color: transparent;
+    color: var(--gh-text-dim);
+    font-size: 11px;
+    -unity-text-align: middle-center;
+}
+.gh-domtab:hover { background-color: var(--gh-panel); color: var(--gh-text); }
+.gh-domtab--active {
+    background-color: var(--gh-accent);
+    border-color: var(--gh-accent);
+    color: var(--gh-on-accent);
+    -unity-font-style: bold;
 }
 
 .gh-fieldblock {

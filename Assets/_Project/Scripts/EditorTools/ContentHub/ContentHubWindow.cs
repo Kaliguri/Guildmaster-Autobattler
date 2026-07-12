@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -13,15 +14,14 @@ namespace Guildmaster.ContentHub.Editor
     /// </summary>
     public sealed partial class ContentHubWindow : EditorWindow
     {
-        // Порядок объявления = порядок отображения. Группировка pill-бара — в PageGroups.
-        public enum Page { Browser, Balance, Coverage, Visual, Audio, Doctor, Configs }
+        // Инструмент-страницы. Домены типов SO — динамические табы (строятся из индекса), не enum.
+        public enum Page { Browser, Balance, Audio, Doctor, Configs }
 
-        private static readonly Page[][] PageGroups =
-        {
-            new[] { Page.Browser },                                  // Content
-            new[] { Page.Balance, Page.Coverage, Page.Visual, Page.Audio }, // Design
-            new[] { Page.Doctor, Page.Configs },                    // System
-        };
+        // Конфиг-подобные домены редактируются на странице Configs, а не отдельным табом-доменом.
+        private static readonly HashSet<string> ConfigLikeDomains =
+            new HashSet<string> { "Configs", "Design", "Audio" };
+
+        public static bool IsConfigLike(string domain) => ConfigLikeDomains.Contains(domain);
 
         private const string StylesDir = "Assets/_Project/Scripts/EditorTools/ContentHub/Styles/";
         private const string WindowTitle = "Content Hub";
@@ -31,8 +31,10 @@ namespace Guildmaster.ContentHub.Editor
         [SerializeField] private string _selectedGuid;
 
         private VisualElement _content;
+        private VisualElement _tabbar;
         private HubToasts _toasts;
         private readonly Dictionary<Page, Button> _pills = new Dictionary<Page, Button>();
+        private readonly Dictionary<string, Button> _domainPills = new Dictionary<string, Button>();
 
         [MenuItem("Tools/Guildmaster/Content Hub")]
         public static void Open()
@@ -97,7 +99,10 @@ namespace Guildmaster.ContentHub.Editor
             accent.AddToClassList("gh-accent-line");
             shell.Add(accent);
 
-            shell.Add(BuildTabbar());
+            _tabbar = new VisualElement();
+            _tabbar.AddToClassList("gh-tabbar");
+            shell.Add(_tabbar);
+            PopulateTabs();
 
             _content = new VisualElement { name = "content" };
             _content.AddToClassList("gh-content");
@@ -126,40 +131,74 @@ namespace Guildmaster.ContentHub.Editor
             return bar;
         }
 
-        private VisualElement BuildTabbar()
+        /// <summary>Строит панель табов: домены типов SO (динамически из индекса) + инструменты.</summary>
+        private void PopulateTabs()
         {
-            var bar = new VisualElement();
-            bar.AddToClassList("gh-tabbar");
+            if (_tabbar == null) return;
+            _tabbar.Clear();
             _pills.Clear();
+            _domainPills.Clear();
 
-            for (int g = 0; g < PageGroups.Length; g++)
-            {
-                if (g > 0)
-                {
-                    var sep = new VisualElement();
-                    sep.AddToClassList("gh-pill-group-sep");
-                    sep.pickingMode = PickingMode.Ignore;
-                    bar.Add(sep);
-                }
+            // Группа 1 — типы SO: «Все» + по табу на домен контента.
+            var content = NewPillGroup();
+            content.Add(MakeDomainPill("Все", ""));
+            foreach (var domain in ContentDomainTabs())
+                content.Add(MakeDomainPill(domain, domain));
+            _tabbar.Add(content);
 
-                var group = new VisualElement();
-                group.AddToClassList("gh-pill-group");
-                foreach (var page in PageGroups[g]) group.Add(MakePill(page));
-                bar.Add(group);
-            }
+            _tabbar.Add(PillSep());
 
-            return bar;
+            // Группа 2 — аналитика.
+            var analytics = NewPillGroup();
+            analytics.Add(MakePagePill(Page.Balance));
+            analytics.Add(MakePagePill(Page.Audio));
+            _tabbar.Add(analytics);
+
+            _tabbar.Add(PillSep());
+
+            // Группа 3 — инструменты.
+            var tools = NewPillGroup();
+            tools.Add(MakePagePill(Page.Doctor));
+            tools.Add(MakePagePill(Page.Configs));
+            _tabbar.Add(tools);
         }
 
-        private Button MakePill(Page page)
+        private IEnumerable<string> ContentDomainTabs() =>
+            ContentIndex.Entries.Select(e => e.Domain).Distinct()
+                .Where(d => !IsConfigLike(d))
+                .OrderBy(DomainOrder).ThenBy(d => d, StringComparer.OrdinalIgnoreCase);
+
+        private static VisualElement NewPillGroup()
+        {
+            var g = new VisualElement();
+            g.AddToClassList("gh-pill-group");
+            return g;
+        }
+
+        private static VisualElement PillSep()
+        {
+            var s = new VisualElement();
+            s.AddToClassList("gh-pill-group-sep");
+            s.pickingMode = PickingMode.Ignore;
+            return s;
+        }
+
+        private Button MakeDomainPill(string label, string domain)
+        {
+            var b = new Button(() => GoToDomain(domain));
+            b.AddToClassList("gh-pill");
+            if (_page == Page.Browser && _browserDomain == domain) b.AddToClassList("gh-pill--active");
+            var l = new Label(label); l.AddToClassList("gh-pill-label"); b.Add(l);
+            _domainPills[domain] = b;
+            return b;
+        }
+
+        private Button MakePagePill(Page page)
         {
             var b = new Button(() => SelectPage(page));
             b.AddToClassList("gh-pill");
-            if (page == _page) b.AddToClassList("gh-pill--active");
-
-            var label = new Label(PageLabel(page));
-            label.AddToClassList("gh-pill-label");
-            b.Add(label);
+            if (_page == page) b.AddToClassList("gh-pill--active");
+            var label = new Label(PageLabel(page)); label.AddToClassList("gh-pill-label"); b.Add(label);
 
             if (page == Page.Doctor)
             {
@@ -173,13 +212,26 @@ namespace Guildmaster.ContentHub.Editor
             return b;
         }
 
+        private void GoToDomain(string domain)
+        {
+            _page = Page.Browser;
+            _browserDomain = domain;
+            ApplyView();
+        }
+
         private void SelectPage(Page page)
         {
-            if (_page == page) return;
-            if (_pills.TryGetValue(_page, out var prev)) prev.RemoveFromClassList("gh-pill--active");
             _page = page;
-            if (_pills.TryGetValue(_page, out var next)) next.AddToClassList("gh-pill--active");
+            ApplyView();
+        }
+
+        /// <summary>Применить смену вида: перестроить табы (активные состояния) + контент + бейдж + кнопки Nav.</summary>
+        private void ApplyView()
+        {
+            PopulateTabs();
             RebuildContent();
+            RefreshDoctorBadge();
+            RefreshNavButtons();
         }
 
         // ---------------------------------------------------------------- content router
@@ -198,12 +250,6 @@ namespace Guildmaster.ContentHub.Editor
                     break;
                 case Page.Balance:
                     BuildBalance(_content);
-                    break;
-                case Page.Coverage:
-                    BuildCoverage(_content);
-                    break;
-                case Page.Visual:
-                    BuildVisual(_content);
                     break;
                 case Page.Audio:
                     BuildAudio(_content);
@@ -228,8 +274,6 @@ namespace Guildmaster.ContentHub.Editor
         {
             Page.Browser => "Browser",
             Page.Balance => "Balance",
-            Page.Coverage => "Coverage",
-            Page.Visual => "Visual",
             Page.Audio => "Audio",
             Page.Doctor => "Doctor",
             Page.Configs => "Configs",

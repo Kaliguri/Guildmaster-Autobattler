@@ -63,6 +63,7 @@ namespace Guildmaster.ContentHub.Editor
 
         private void OnIndexChanged()
         {
+            if (_tabbar != null) PopulateTabs();   // домены могли появиться/исчезнуть
             RefreshDoctorBadge();
             if (_page == Page.Doctor && _content != null) RebuildContent();
         }

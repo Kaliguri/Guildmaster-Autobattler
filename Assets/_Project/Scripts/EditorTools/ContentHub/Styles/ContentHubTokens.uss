@@ -16,10 +16,10 @@
     --gh-border: #2a2522;
     --gh-border-strong: #3a332e;
 
-    /* text */
-    --gh-text: #f5f4f2;        /* warm white */
-    --gh-text-dim: #a8a29e;    /* secondary (stone-400) */
-    --gh-text-faint: #78706a;
+    /* text (contrast bumped — editor readability beats site fidelity) */
+    --gh-text: #f7f6f4;        /* warm white */
+    --gh-text-dim: #cdc9c3;    /* secondary — brighter than the site so lists read clearly */
+    --gh-text-faint: #9c958d;  /* labels/captions — still legible on dark */
 
     /* accent (warm amber — single knob drives active pills, accent line, focus) */
     --gh-accent: #f5a524;

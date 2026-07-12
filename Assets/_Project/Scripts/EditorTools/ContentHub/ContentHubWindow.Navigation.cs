@@ -15,7 +15,8 @@ namespace Guildmaster.ContentHub.Editor
         {
             public readonly Page Page;
             public readonly string Guid;
-            public NavAddress(Page page, string guid) { Page = page; Guid = guid; }
+            public readonly string Domain;   // домен-таб для Browser
+            public NavAddress(Page page, string guid, string domain) { Page = page; Guid = guid; Domain = domain; }
         }
 
         private readonly NavHistory<NavAddress> _nav = new NavHistory<NavAddress>();
@@ -63,34 +64,30 @@ namespace Guildmaster.ContentHub.Editor
         private static string GuidOf(ContentEntry e) =>
             e?.Asset != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(e.Asset)) : "";
 
-        /// <summary>Записать текущую позицию в историю (зовётся при выборе из списка).</summary>
+        /// <summary>Записать текущую позицию в историю (зовётся при выборе из списка Browser).</summary>
         internal void RecordNav(string guid)
         {
-            _nav.Push(new NavAddress(Page.Browser, guid));
+            _nav.Push(new NavAddress(Page.Browser, guid, _browserDomain));
             RefreshNavButtons();
         }
 
-        /// <summary>Перейти к сущности (из чипа/палитры): страница Browser + выбор + запись истории.</summary>
+        /// <summary>Перейти к сущности (из чипа/палитры): нужный таб-домен (или Configs для конфиг-подобных) + выбор + история.</summary>
         private void NavigateToEntry(ContentEntry entry)
         {
             if (entry == null) return;
-            NavGoto(new NavAddress(Page.Browser, GuidOf(entry)), record: true);
+            var addr = IsConfigLike(entry.Domain)
+                ? new NavAddress(Page.Configs, GuidOf(entry), "")
+                : new NavAddress(Page.Browser, GuidOf(entry), entry.Domain);
+            NavGoto(addr, record: true);
         }
 
         private void NavGoto(NavAddress addr, bool record)
         {
             if (record) _nav.Push(addr);
             _selectedGuid = addr.Guid;
-
-            if (_page != addr.Page)
-            {
-                if (_pills.TryGetValue(_page, out var prev)) prev.RemoveFromClassList("gh-pill--active");
-                _page = addr.Page;
-                if (_pills.TryGetValue(_page, out var next)) next.AddToClassList("gh-pill--active");
-            }
-
-            RebuildContent();
-            RefreshNavButtons();
+            _page = addr.Page;
+            if (addr.Page == Page.Browser) _browserDomain = addr.Domain;
+            ApplyView();
         }
 
         private void Back()

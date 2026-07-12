@@ -17,56 +17,6 @@ namespace Guildmaster.ContentHub.Editor
         private Image _clipImage;
         private Label _clipInfo, _clipScale;
 
-        private void BuildVisual(VisualElement container)
-        {
-            var split = new TwoPaneSplitView(0, 220f, TwoPaneSplitViewOrientation.Horizontal);
-            split.style.flexGrow = 1;
-            container.Add(split);
-
-            // ---- left: visuals list
-            var rail = new VisualElement();
-            rail.AddToClassList("gh-rail");
-            var railScroll = new ScrollView();
-            railScroll.style.flexGrow = 1;
-            rail.Add(railScroll);
-            foreach (var e in VisualEntries())
-                railScroll.Add(BuildRow(e));
-            split.Add(rail);
-
-            // ---- right: preview
-            var right = new ScrollView();
-            right.style.flexGrow = 1;
-            var inner = new VisualElement();
-            inner.AddToClassList("gh-detail");
-            right.Add(inner);
-            split.Add(right);
-
-            var vis = ResolveVisual();
-            if (vis == null)
-            {
-                inner.Add(new Label("Выбери визуал слева (или юнита с визуалом).").WithClass("gh-stub"));
-            }
-            else
-            {
-                BuildVisualPreview(inner, vis);
-            }
-
-            inner.Add(new Label("Lineup — все визуалы").WithClass("gh-sec-h"));
-            inner.Add(BuildLineup());
-        }
-
-        private IEnumerable<ContentEntry> VisualEntries() =>
-            ContentIndex.Entries.Where(e => e.Asset is UnitVisual)
-                .OrderBy(e => e.DisplayName, System.StringComparer.OrdinalIgnoreCase);
-
-        private UnitVisual ResolveVisual()
-        {
-            var entry = ResolveSelected();
-            if (entry?.Asset is UnitVisual direct) return direct;
-            if (entry?.Unit != null && entry.Unit.Visual != null) return entry.Unit.Visual;
-            return VisualEntries().FirstOrDefault()?.Asset as UnitVisual;
-        }
-
         private void BuildVisualPreview(VisualElement inner, UnitVisual vis)
         {
             var top = new VisualElement();
@@ -142,39 +92,6 @@ namespace Guildmaster.ContentHub.Editor
             yield return ("Hit", vis.HitClip);
             for (int i = 0; i < 4; i++)
                 yield return ($"Skill{i + 1}", vis.SkillClip(i));
-        }
-
-        private VisualElement BuildLineup()
-        {
-            var grid = new VisualElement();
-            grid.style.flexDirection = FlexDirection.Row;
-            grid.style.flexWrap = Wrap.Wrap;
-
-            foreach (var e in VisualEntries())
-            {
-                var vis = (UnitVisual)e.Asset;
-                var frames = ClipSpriteFrames.Extract(vis.Clip(UnitAnimationState.Idle));
-                Sprite thumb = frames.Count > 0 ? frames[0].Sprite : vis.Portrait;
-
-                var cell = new VisualElement();
-                cell.style.width = 64; cell.style.height = 78;
-                cell.style.marginRight = 6; cell.style.marginBottom = 6;
-                cell.style.alignItems = Align.Center;
-
-                var img = new Image { sprite = thumb, scaleMode = ScaleMode.ScaleToFit };
-                img.style.width = 56; img.style.height = 56;
-                img.style.backgroundColor = new Color(0.04f, 0.04f, 0.03f, 1f);
-                cell.Add(img);
-                var name = new Label(e.DisplayName);
-                name.style.fontSize = 9;
-                name.style.overflow = Overflow.Hidden;
-                cell.Add(name);
-
-                var captured = e;
-                cell.RegisterCallback<PointerDownEvent>(ev => { if (ev.button == 0) SelectAssetAndRebuild(captured.Asset); });
-                grid.Add(cell);
-            }
-            return grid;
         }
 
         private void LoadClip(AnimationClip clip, string label)

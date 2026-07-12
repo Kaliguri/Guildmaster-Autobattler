@@ -16,6 +16,7 @@ namespace Guildmaster.ContentHub.Editor
     {
         private ContentEntry _selected;
         private string _browserSearch = "";
+        [SerializeField] private string _browserDomain = "";   // "" = все домены (таб «Все»)
         private VisualElement _detailPane;
         private ScrollView _railScroll;
 
@@ -64,6 +65,19 @@ namespace Guildmaster.ContentHub.Editor
             return bar;
         }
 
+        // Контент-домены вперёд, спутники (визуалы/конфиги/аудио/дизайн) — в конец.
+        internal static int DomainOrder(string domain)
+        {
+            switch (domain)
+            {
+                case "Visuals": return 1;
+                case "Audio": return 2;
+                case "Design": return 3;
+                case "Configs": return 4;
+                default: return 0;
+            }
+        }
+
         // ---------------------------------------------------------------- left rail
 
         private VisualElement BuildRail()
@@ -101,9 +115,19 @@ namespace Guildmaster.ContentHub.Editor
                 || (e.DisplayName != null && e.DisplayName.ToLowerInvariant().Contains(q))
                 || (e.Id != null && e.Id.ToLowerInvariant().Contains(q));
 
+            // Выбран конкретный домен — плоский список без заголовков групп.
+            if (_browserDomain.Length > 0)
+            {
+                foreach (var entry in ContentIndex.Entries
+                             .Where(e => e.Domain == _browserDomain && Match(e))
+                             .OrderBy(e => e.DisplayName, StringComparer.OrdinalIgnoreCase))
+                    _railScroll.Add(BuildRow(entry));
+                return;
+            }
+
             var groups = ContentIndex.Entries
                 .GroupBy(e => e.Domain)
-                .OrderBy(g => (g.Key == "Configs" || g.Key == "Visuals") ? 1 : 0)
+                .OrderBy(g => DomainOrder(g.Key))
                 .ThenBy(g => g.Key, StringComparer.OrdinalIgnoreCase);
 
             foreach (var group in groups)
@@ -131,29 +155,36 @@ namespace Guildmaster.ContentHub.Editor
             if (_selected == entry) row.AddToClassList("gh-row--sel");
 
             row.Add(new Label(entry.DisplayName));
-            var id = new Label(entry.Id);
-            id.AddToClassList("gh-row-id");
-            row.Add(id);
 
             row.RegisterCallback<PointerDownEvent>(e =>
             {
                 if (e.button != 0) return;
-                SelectEntry(entry);
+                SelectFromList(entry);
             });
             return row;
         }
 
         // ---------------------------------------------------------------- selection
 
-        private void SelectEntry(ContentEntry entry)
+        /// <summary>Клик по строке списка. На Browser — лёгкое обновление; на других страницах (Configs)
+        /// — полный rebuild текущей страницы (иначе их детальная не переключалась).</summary>
+        private void SelectFromList(ContentEntry entry)
         {
-            _selected = entry;
             _selectedGuid = entry?.Asset != null
                 ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(entry.Asset))
                 : "";
             RecordNav(_selectedGuid);
-            PopulateList();     // refresh highlight
-            RebuildDetail();
+
+            if (_page == Page.Browser)
+            {
+                _selected = entry;
+                PopulateList();     // refresh highlight
+                RebuildDetail();
+            }
+            else
+            {
+                RebuildContent();
+            }
         }
 
         private ContentEntry ResolveSelected()
@@ -170,7 +201,13 @@ namespace Guildmaster.ContentHub.Editor
             _selectedGuid = asset != null
                 ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(asset))
                 : "";
-            RebuildContent();
+            var entry = ResolveSelected();
+            if (entry != null && !IsConfigLike(entry.Domain))
+            {
+                _page = Page.Browser;
+                _browserDomain = entry.Domain;
+            }
+            ApplyView();
         }
 
         // ---------------------------------------------------------------- detail
@@ -192,6 +229,14 @@ namespace Guildmaster.ContentHub.Editor
 
             _detailPane.Add(new Label("Поля") { }.WithClass("gh-sec-h"));
             _detailPane.Add(new InspectorElement(new SerializedObject(_selected.Asset)));
+
+            // Визуал прямо под полями: если это UnitVisual или юнит с визуалом — портрет + плеер клипов.
+            var vis = _selected.Asset as UnitVisual ?? _selected.Unit?.Visual;
+            if (vis != null)
+            {
+                _detailPane.Add(new Label("Визуал").WithClass("gh-sec-h"));
+                BuildVisualPreview(_detailPane, vis);
+            }
 
             if (_selected.IsUnit)
                 BuildStatContext(_selected);

@@ -54,6 +54,12 @@ namespace Guildmaster.ContentHub.Editor
             col.style.flexGrow = 1;
             container.Add(col);
 
+            // ---- coverage summary (свёрнуто) — «каких много/мало» рядом с балансом
+            var cov = new Foldout { text = "Coverage — покрытие контента", value = false };
+            cov.style.marginLeft = 8; cov.style.marginTop = 4;
+            BuildCoverageSummary(cov);
+            col.Add(cov);
+
             // ---- toolbar
             var bar = new VisualElement();
             bar.AddToClassList("gh-subbar");

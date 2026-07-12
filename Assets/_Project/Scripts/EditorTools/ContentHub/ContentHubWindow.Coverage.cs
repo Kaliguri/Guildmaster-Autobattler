@@ -8,16 +8,8 @@ namespace Guildmaster.ContentHub.Editor
     /// <summary>Coverage: срезы «каких много/мало» по доменам и категориям юнитов.</summary>
     public sealed partial class ContentHubWindow
     {
-        private void BuildCoverage(VisualElement container)
+        private void BuildCoverageSummary(VisualElement inner)
         {
-            var scroll = new ScrollView();
-            scroll.style.flexGrow = 1;
-            container.Add(scroll);
-
-            var inner = new VisualElement();
-            inner.AddToClassList("gh-detail");
-            scroll.Add(inner);
-
             var byDomain = ContentIndex.Entries
                 .GroupBy(e => e.Domain)
                 .Select(g => (g.Key, g.Count()))

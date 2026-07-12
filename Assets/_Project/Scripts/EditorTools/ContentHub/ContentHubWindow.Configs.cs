@@ -12,13 +12,13 @@ namespace Guildmaster.ContentHub.Editor
     {
         private IEnumerable<ContentEntry> ConfigEntries() =>
             ContentIndex.Entries
-                .Where(e => e.Domain == "Configs" || e.Domain == "Design")
+                .Where(e => IsConfigLike(e.Domain))
                 .OrderBy(e => e.Domain).ThenBy(e => e.DisplayName, StringComparer.OrdinalIgnoreCase);
 
         private ContentEntry ResolveConfigEntry()
         {
             var entry = ResolveSelected();
-            if (entry != null && (entry.Domain == "Configs" || entry.Domain == "Design")) return entry;
+            if (entry != null && IsConfigLike(entry.Domain)) return entry;
             return ConfigEntries().FirstOrDefault();
         }
 
