@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Guildmaster.Data.Definitions;
+using UnityEditor;
 
 namespace Guildmaster.ContentHub.Editor
 {
@@ -46,6 +47,18 @@ namespace Guildmaster.ContentHub.Editor
         {
             var result = new List<ValidationIssue>();
             if (entry?.Asset == null) return result;
+
+            // Битые object-ссылки (был назначен объект, тип пропал/удалён) — для любого ассета.
+            using (var so = new SerializedObject(entry.Asset))
+            {
+                var p = so.GetIterator();
+                while (p.NextVisible(true))
+                    if (p.propertyType == SerializedPropertyType.ObjectReference
+                        && p.objectReferenceValue == null
+                        && p.objectReferenceInstanceIDValue != 0)
+                        result.Add(new ValidationIssue(entry, IssueSeverity.Error,
+                            $"битая ссылка (missing) в поле '{p.displayName}'"));
+            }
 
             if (entry.Asset is ContentDefinition cd)
             {

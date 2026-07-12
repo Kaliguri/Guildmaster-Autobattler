@@ -56,7 +56,16 @@ namespace Guildmaster.ContentHub.Editor
             _toasts = new HubToasts(root);
             root.UnregisterCallback<KeyDownEvent>(OnGlobalKey);
             root.RegisterCallback<KeyDownEvent>(OnGlobalKey);
+            ContentIndex.Changed -= OnIndexChanged;
+            ContentIndex.Changed += OnIndexChanged;
             RebuildContent();
+            RefreshDoctorBadge();
+        }
+
+        private void OnDisable()
+        {
+            ContentIndex.Changed -= OnIndexChanged;
+            CloseCommandPalette();
         }
 
         private void OnFocus()
@@ -149,6 +158,14 @@ namespace Guildmaster.ContentHub.Editor
             label.AddToClassList("gh-pill-label");
             b.Add(label);
 
+            if (page == Page.Doctor)
+            {
+                _doctorBadge = new Label();
+                _doctorBadge.AddToClassList("gh-pill-badge");
+                _doctorBadge.style.display = DisplayStyle.None;
+                b.Add(_doctorBadge);
+            }
+
             _pills[page] = b;
             return b;
         }
@@ -172,6 +189,9 @@ namespace Guildmaster.ContentHub.Editor
             {
                 case Page.Browser:
                     BuildBrowser(_content);
+                    break;
+                case Page.Doctor:
+                    BuildDoctor(_content);
                     break;
                 default:
                     var page = new VisualElement();
