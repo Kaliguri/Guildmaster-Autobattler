@@ -340,6 +340,20 @@ namespace Guildmaster.Combat
                 IsAutoAttack     = spawn.IsAutoAttack,
                 IsAlive          = true,
             };
+
+            // Бронь входящих тегов на трекинг-цель: пока снаряд с on-hit эффектами летит, таргетинг
+            // (PreferTagged/PreferUntagged) считает цель уже «тегнутой» → крио не шлёт вторую «Заморозку»
+            // в того же врага. Снимается в ProjectileSystem при разрешении снаряда (попал/деспавн).
+            if (spawn.TargetUnit != null && spawn.OnHitEffects != null)
+            {
+                Data.Definitions.EffectTag reserved = 0;
+                for (int e = 0; e < spawn.OnHitEffects.Length; e++)
+                    if (spawn.OnHitEffects[e] != null) reserved |= spawn.OnHitEffects[e].Tags;
+
+                projectile.ReservedTags = reserved;
+                spawn.TargetUnit.AddIncomingEffect(reserved);
+            }
+
             _projectiles.Add(projectile);
             OnProjectileSpawned?.Invoke(projectile); // презентация заведёт Bullet и будет следовать за ссылкой
         }

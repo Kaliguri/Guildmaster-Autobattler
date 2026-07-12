@@ -19,12 +19,16 @@ namespace Guildmaster.Combat
         // что упёрлись, и переходим к репозиции вдоль стены. Мал, чтобы ловить реальный контакт, не FP-шум.
         private const float WallPinEpsilonSq = 1e-6f;
 
-        // Буфер подхода: сближаемся не ДО предела досягаемости, а чуть ближе (× это). Движение идёт ПЕРЕД
-        // расталкиванием в тике, поэтому если парковаться ровно на пределе reach — расталкивание (толчок
-        // соседей) выбивает юнита за радиус ровно к фазе удара → вечный удар «вхолостую». Буфер даёт полосу
-        // [reach×фактор … reach], которая поглощает per-tick сдвиг сепарации: гейт атаки (полный reach)
-        // продолжает засчитывать удар. Мили встают чуть плотнее — это и визуально живее.
-        private const float ApproachStopFactor = 0.85f;
+        // Двухрадиусный гистерезис подхода (против троттлинга «бьёт/бежит»):
+        //  • ВНЕШНИЙ радиус = reach (полная досягаемость). Пока юнит внутри него — он «в бою»: держит
+        //    позицию и бьёт, НЕ пере-подбегает. Это гасит дёрганье, когда расталкивание чуть сдвигает
+        //    юнита каждый тик (иначе движение каждый тик тянуло бы его назад → мельтешение Run/Attack).
+        //  • ВНУТРЕННИЙ радиус = reach × ApproachStopFactor. Юнит стремится СЮДА, только когда его
+        //    вытолкнуло ЗА внешний радиус: подбегает с запасом внутрь, чтобы не выскочить обратно тут же.
+        // Движение идёт ПЕРЕД расталкиванием в тике, поэтому запас ещё и страхует гейт атаки от выпихивания.
+        // 0.7 → полоса гистерезиса [0.7·reach … reach] ≈ 0.65 ед. при мили-reach ~2.15 (перекрывает толчок
+        // сепарации 0.1–0.3, чтобы не пере-подбегать каждый тик). Мельче — снова начинает дёргаться.
+        private const float ApproachStopFactor = 0.7f;
 
         /// <summary>Продвинуть позиции всех живых юнитов на один тик.</summary>
         /// <param name="units">Список всех юнитов в бою.</param>
@@ -81,13 +85,15 @@ namespace Guildmaster.Combat
         /// </summary>
         private static void MoveApproach(RuntimeUnit unit, RuntimeUnit target, float maxMove, in SimTuning tuning)
         {
-            // Стоп-дистанция = чуть ближе предела досягаемости (буфер под расталкивание, см. ApproachStopFactor).
-            float stop        = CombatPositioning.AttackReachCenter(unit, target, in tuning) * ApproachStopFactor;
+            float reach       = CombatPositioning.AttackReachCenter(unit, target, in tuning); // внешний радиус
             Vector2 toTarget  = target.Position - unit.Position;
             float distSq      = toTarget.sqrMagnitude;
 
-            if (distSq <= stop * stop) return;
+            // Гистерезис: пока в пределах досягаемости — стоим и бьём, не пере-подбегаем (гасит троттлинг).
+            if (distSq <= reach * reach) return;
 
+            // Вытолкнуло за reach → подбегаем к ВНУТРЕННЕМУ радиусу (с запасом внутрь, чтобы не выскочить сразу).
+            float stop = reach * ApproachStopFactor;
             float dist = Mathf.Sqrt(distSq);
             if (dist - stop <= maxMove)
                 unit.Position = target.Position - toTarget / dist * stop;

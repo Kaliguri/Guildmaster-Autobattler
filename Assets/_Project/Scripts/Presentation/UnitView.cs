@@ -312,19 +312,34 @@ namespace Guildmaster.Presentation
             _attackPhase = AttackPhase.None;
         }
 
-        // Разворот тела по горизонтали: спрайты нарисованы «лицом вправо», поэтому если текущая цель
-        // левее — отражаем по X. Мёртвая зона гасит дрожание, когда цель почти строго по вертикали.
-        // Цели нет (враги кончились) — сохраняем последний разворот. Только презентация, сим не трогаем.
-        private const float FacingDeadzoneX = 0.05f;
+        // Разворот тела по горизонтали (спрайты нарисованы «лицом вправо»):
+        //  • движемся — смотрим ТУДА, КУДА бежим (подход, кайт, побег рейнджера от цели за спиной);
+        //  • стоим — смотрим на текущую цель.
+        // Знак горизонтальной скорости берём со сглаживанием: знакопеременное дрожание сепарации
+        // усредняется к нулю (не мельтешит разворотом), а осмысленный бег накапливает устойчивый знак.
+        // Только презентация, сим не трогаем.
+        private const float FacingTargetDeadzoneX = 0.05f;  // мёртвая зона по цели (почти по вертикали — не дёргаем)
+        private const float FacingMoveEpsilonX    = 0.01f;  // порог «действительно бежит по X» на сглаженной скорости
+        private float _facingVelX;                          // low-pass горизонтальной скорости
 
         private void ApplyFacing()
         {
             if (_sprite == null || _unit == null) return;
+
+            float moveDx = _unit.Position.x - _unit.PreviousPosition.x;
+            _facingVelX = Mathf.Lerp(_facingVelX, moveDx, 0.2f);
+
+            if (Mathf.Abs(_facingVelX) > FacingMoveEpsilonX)
+            {
+                _sprite.flipX = _facingVelX < 0f; // бежим влево → отражаем
+                return;
+            }
+
             RuntimeUnit target = _unit.CurrentTarget;
             if (target == null || target.IsDead) return;
 
             float dx = target.Position.x - _unit.Position.x;
-            if (Mathf.Abs(dx) < FacingDeadzoneX) return;
+            if (Mathf.Abs(dx) < FacingTargetDeadzoneX) return;
             _sprite.flipX = dx < 0f;
         }
 

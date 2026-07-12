@@ -52,8 +52,9 @@ namespace Guildmaster.Presentation
         [SerializeField] private float _actionZoomPadding = 4f;
         [Tooltip("Скорость подгона орто-размера экшн-камеры.")]
         [SerializeField] private float _actionZoomDamping = 3f;
-        [Tooltip("Дедзона зума (орто-ед.): цель зума обновляем, лишь когда разброс ушёл дальше — гасит микро-подстройку.")]
-        [SerializeField] private float _actionZoomDeadzone = 0.4f;
+        [Tooltip("Дедзона зума (орто-ед.): цель зума обновляем, лишь когда разброс ушёл дальше — гасит микро-подстройку " +
+                 "(«дыхание» зума). При орто ~3–20 порог ~1.5 = зум реагирует на реальный разлёт, не на дрожь.")]
+        [SerializeField] private float _actionZoomDeadzone = 1.5f;
 
         [Header("Приоритеты")]
         [SerializeField] private int _activePriority = 20;

@@ -97,13 +97,15 @@ namespace Guildmaster.Combat
                 case TargetingMode.HighestHp:           return -o.CurrentHP;
                 case TargetingMode.HighestThreat:       return -EstimatedDps(o);
                 case TargetingMode.PreferTagged:
-                    bool tagged = (o.EffectTagMask & _profile.TargetTag) != 0;
+                    // Учитываем и уже наложенный тег, и ЛЕТЯЩИЙ в цель (входящая бронь снаряда).
+                    bool tagged = ((o.EffectTagMask | o.IncomingEffectTags) & _profile.TargetTag) != 0;
                     return tagged ? distSq : distSq + TaggedPenalty;
 
                 case TargetingMode.PreferUntagged:
                     // Зеркало PreferTagged: тегнутый штрафуется, нетегнутый выигрывает всегда
-                    // (Криомант не добивает уже замороженного — распределяет «Заморозку» шире).
-                    bool hasTag = (o.EffectTagMask & _profile.TargetTag) != 0;
+                    // (Криомант не добивает уже замороженного — распределяет «Заморозку» шире). «Тегнут» =
+                    // эффект уже висит ИЛИ снаряд с ним уже летит (IncomingEffectTags) → не шлём вторую «Заморозку».
+                    bool hasTag = ((o.EffectTagMask | o.IncomingEffectTags) & _profile.TargetTag) != 0;
                     return hasTag ? distSq + TaggedPenalty : distSq;
 
                 case TargetingMode.Nearest:

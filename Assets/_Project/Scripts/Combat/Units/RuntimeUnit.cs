@@ -114,6 +114,36 @@ namespace Guildmaster.Combat
         /// <summary>Битовая маска тегов активных эффектов. Обновляется при add/remove — быстрый запрос для AI (Фаза 3) и диспела.</summary>
         public EffectTag EffectTagMask;
 
+        /// <summary>
+        /// Битовое ИЛИ тегов эффектов, ЛЕТЯЩИХ в этого юнита (on-hit эффекты снарядов, ещё не легли).
+        /// Таргетинг, зависящий от эффекта (PreferTagged/PreferUntagged), учитывает их наравне с
+        /// <see cref="EffectTagMask"/>, чтобы не выбирать цель повторно, пока к ней уже летит, напр., «Заморозка»
+        /// (иначе двойное наложение). Только чтение; правится через <see cref="AddIncomingEffect"/>/<see cref="RemoveIncomingEffect"/>.
+        /// </summary>
+        public EffectTag IncomingEffectTags { get; private set; }
+
+        // Рефкаунт входящих эффектов: по одной записи-маске на КАЖДЫЙ летящий снаряд (несколько снарядов
+        // одного тега в одну цель — напр. два одинаковых крио/кооп-дубля — считаются независимо). Бит в
+        // IncomingEffectTags гаснет, только когда ушёл ПОСЛЕДНИЙ снаряд с ним. Список крошечный (снаряды в цель).
+        private readonly List<EffectTag> _incomingReservations = new List<EffectTag>();
+
+        /// <summary>Забронировать теги летящего в юнита снаряда (при спавне снаряда).</summary>
+        public void AddIncomingEffect(EffectTag mask)
+        {
+            if (mask == 0) return;
+            _incomingReservations.Add(mask);
+            IncomingEffectTags |= mask;
+        }
+
+        /// <summary>Снять бронь одного разрешённого снаряда (попал/деспавн); бит гаснет лишь без остатка носителей.</summary>
+        public void RemoveIncomingEffect(EffectTag mask)
+        {
+            if (mask == 0 || !_incomingReservations.Remove(mask)) return;
+            EffectTag remaining = 0;
+            for (int i = 0; i < _incomingReservations.Count; i++) remaining |= _incomingReservations[i];
+            IncomingEffectTags = remaining;
+        }
+
         /// <summary>Активные способности (кулдаун/ресурс). Заполняет <see cref="RuntimeUnitFactory"/> из реликвии.</summary>
         public readonly List<AbilityRuntime> Abilities = new List<AbilityRuntime>();
 

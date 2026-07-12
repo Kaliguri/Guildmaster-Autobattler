@@ -29,5 +29,5 @@ MonoBehaviour:
       type: {class: ControlComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _preventAct: 1
-        _preventMove: 0
-        _preventCast: 0
+        _preventMove: 1
+        _preventCast: 1

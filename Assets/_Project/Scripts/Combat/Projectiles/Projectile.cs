@@ -36,6 +36,12 @@ namespace Guildmaster.Combat
         /// <summary>Снаряд-автоатака: попадание помечает урон как автоатаку (<see cref="DamageRequest.IsAutoAttack"/>).</summary>
         public bool        IsAutoAttack;
 
+        /// <summary>
+        /// Теги on-hit эффектов, «забронированные» на <see cref="TargetUnit"/> на время полёта
+        /// (см. <see cref="RuntimeUnit.IncomingEffectTags"/>). Снимаются с цели при разрешении снаряда.
+        /// </summary>
+        public Data.Definitions.EffectTag ReservedTags;
+
         public bool        IsAlive;
     }
 }
