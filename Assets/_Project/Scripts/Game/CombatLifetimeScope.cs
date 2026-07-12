@@ -28,6 +28,9 @@ namespace Guildmaster.Game
         [Tooltip("Размер ячейки пространственного хэша.")]
         [SerializeField] private float _spatialHashCellSize = 3f;
 
+        [Tooltip("Фиксированный сид боя для воспроизводимости (баг/баланс/реплей). 0 = случайный каждый бой.")]
+        [SerializeField] private long _fixedSeed;
+
         protected override void Configure(IContainerBuilder builder)
         {
             // Арену печём из авторинга в сцене (если он есть); иначе — бесконечное поле.
@@ -41,7 +44,11 @@ namespace Guildmaster.Game
             RegisterSimulation(builder, layout);
             RegisterPresentation(builder);
 
-            // Боевой ввод: пауза/рестарт на время этого боя (вики «16» §4).
+            // Единый арбитр Time.timeScale (пауза/скорость/cinematic slowmo). Scoped → при
+            // разрушении боевого скоупа его Dispose вернёт timeScale к 1.
+            builder.Register<TimeScaleService>(Lifetime.Scoped);
+
+            // Боевой ввод: пауза/скорость на время этого боя (вики «16» §4).
             builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
         }
 
@@ -65,7 +72,14 @@ namespace Guildmaster.Game
 
         private void RegisterRng(IContainerBuilder builder)
         {
-            builder.RegisterInstance<IRngService>(new XorShiftRng(GenerateBattleSeed()));
+            bool fixedSeed = _fixedSeed != 0L;
+            ulong seed = fixedSeed ? (ulong)_fixedSeed : GenerateBattleSeed();
+
+            Debug.Log($"[CombatLifetimeScope] - Battle seed = {seed}{(fixedSeed ? " (fixed)" : "")}");
+
+            // Сид доступен из DI (лог/реплей/MP), а не только «внутри» RNG.
+            builder.RegisterInstance(new BattleSeed(seed));
+            builder.RegisterInstance<IRngService>(new XorShiftRng(seed));
         }
 
         private void RegisterCombatSystems(IContainerBuilder builder)
@@ -122,8 +136,8 @@ namespace Guildmaster.Game
             }
         }
 
-        // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя), а не
-        // генерироваться локально — иначе RNG хоста и клиента разойдутся. Сейчас ок:
+        // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя) и лечь в BattleSeed,
+        // а не генерироваться локально — иначе RNG хоста и клиента разойдутся. Сейчас ок:
         // модель хост-авторитетная, тикает только хост (см. CombatLoopService).
         private static ulong GenerateBattleSeed()
         {
