@@ -45,14 +45,34 @@ namespace Guildmaster.Combat
         /// или <paramref name="hitFrame"/> ≤ 0 → нижний кламп.
         /// </summary>
         /// <summary>
-        /// Восстановление (хвост-бэксвинг) после удара в тиках из секунд. Детерминированное округление
-        /// (<see cref="MidpointRounding.AwayFromZero"/>), как у интервала. ≤ 0 сек → 0 тиков (нет восстановления).
+        /// Дополнительное восстановление (сверх анимационного доигрыша) в тиках из секунд. Детерминированное
+        /// округление (<see cref="MidpointRounding.AwayFromZero"/>), как у интервала. ≤ 0 сек → 0 тиков.
         /// </summary>
         public static int RecoveryTicks(float seconds)
         {
             if (seconds <= 0f) return 0;
             int ticks = (int)Math.Round(SimConstants.TickRate * seconds, MidpointRounding.AwayFromZero);
             return ticks < 0 ? 0 : ticks;
+        }
+
+        /// <summary>
+        /// Хвост-доигрыш клипа удара после кадра контакта = <c>attackDurationTicks − windupTicks</c>.
+        /// Это «задняя половина» анимации свинга: урон уже нанесён (на кадре контакта), но юнит всё ещё
+        /// доигрывает движение и остаётся «занят» (рут либо штраф скорости). Выводится из той же модели,
+        /// что и <see cref="WindupTicks"/>, поэтому автоматически масштабируется со скоростью атаки —
+        /// в отличие от абсолютных секунд не «расклеивается» при баффах скорости.
+        /// <para>
+        /// Нет реального клипа (<paramref name="frameCount"/> ≤ 0 или <paramref name="hitFrame"/> ≤ 0) →
+        /// windup был чистым телеграфом (пол <see cref="SimConstants.MinWindupTicks"/>), доигрывать нечего → 0.
+        /// Вычитание (а не независимая пропорция «хвостовых кадров») сознательно: оно поглощает округление
+        /// windup, поэтому <c>windup + доигрыш = attackDurationTicks</c> ровно, без фантомного зазора.
+        /// </para>
+        /// </summary>
+        public static int FollowThroughTicks(int hitFrame, int frameCount, int intervalTicks, int windupTicks)
+        {
+            if (frameCount <= 0 || hitFrame <= 0) return 0;
+            int tail = AttackDurationTicks(intervalTicks) - windupTicks;
+            return tail < 0 ? 0 : tail;
         }
 
         public static int WindupTicks(int hitFrame, int frameCount, int intervalTicks)

@@ -124,6 +124,29 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
+        public void Recovery_AfterHit_LastsClipFollowThrough_ThenLeavesRecovery()
+        {
+            var (attacker, enemy, units, ctx) = Scene();
+            var sys = new AutoAttackSystem();
+            int interval = AttackTiming.IntervalTicks(1f);
+            int windup   = AttackTiming.WindupTicks(HitFrame, FrameCount, interval);
+            int tail     = AttackTiming.FollowThroughTicks(HitFrame, FrameCount, interval, windup);
+            Assert.Greater(tail, 0, "Предусловие: у юнита с клипом есть доигрыш-хвост");
+
+            // Тикаем до кадра контакта включительно (вход в замах + windup тиков до удара).
+            for (int i = 0; i <= windup; i++) sys.Tick(units, ctx, 0f);
+
+            Assert.AreEqual(1, ctx.Damage.Count, "Удар нанесён");
+            Assert.AreEqual(AttackPhase.Recovery, attacker.Phase, "Сразу после удара — фаза восстановления");
+            Assert.AreEqual(tail, attacker.RecoveryRemaining, "Длина хвоста = доигрыш клипа (interval − windup)");
+
+            // Досчитываем хвост: на последнем тике Recovery истекает и фаза покидает Recovery
+            // (у стрелка кулдаун обнуляется тогда же → сразу новый замах, поэтому НЕ обязательно Idle).
+            for (int i = 0; i < tail; i++) sys.Tick(units, ctx, 0f);
+            Assert.AreNotEqual(AttackPhase.Recovery, attacker.Phase, "Хвост истёк — юнит больше не в Recovery");
+        }
+
+        [Test]
         public void AttackSpeedChange_DuringWindup_DoesNotChangeCurrentWindupTicks()
         {
             var (attacker, enemy, units, ctx) = Scene();

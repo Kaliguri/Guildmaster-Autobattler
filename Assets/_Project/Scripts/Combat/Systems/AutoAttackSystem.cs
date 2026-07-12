@@ -54,11 +54,14 @@ namespace Guildmaster.Combat
                 }
 
                 // Фаза восстановления: досчитываем хвост, новый замах начать нельзя, пока не истечёт.
+                // Когда хвост истёк — освобождаемся и ПРОВАЛИВАЕМСЯ к гейту атаки в тот же тик: у стрелка
+                // хвост = «интервал − замах», поэтому кулдаун обнуляется ровно тогда же → бесшовный
+                // следующий замах без потери тика (иначе период damage→damage съехал бы на +1).
                 if (unit.Phase == AttackPhase.Recovery)
                 {
                     unit.RecoveryRemaining--;
-                    if (unit.RecoveryRemaining <= 0) unit.Phase = AttackPhase.Idle;
-                    continue;
+                    if (unit.RecoveryRemaining > 0) continue;
+                    unit.Phase = AttackPhase.Idle;
                 }
 
                 // Ещё на кулдауне — ждём.
@@ -89,7 +92,16 @@ namespace Guildmaster.Combat
             int frameCount = visual != null ? visual.AttackFrameCount : 0;
             int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
 
-            unit.WindupTicks = unit.WindupRemaining = AttackTiming.WindupTicks(hitFrame, frameCount, intervalTicks);
+            int windupTicks = AttackTiming.WindupTicks(hitFrame, frameCount, intervalTicks);
+            unit.WindupTicks = unit.WindupRemaining = windupTicks;
+
+            // Хвост-занятость = доигрыш клипа после кадра контакта (авто-масштаб со скоростью атаки) +
+            // опциональный доп.хвост в секундах (сознательный «оверкоммит» для отдельных китов). Считаем
+            // здесь — на старте свинга, как и windup, — чтобы бафф скорости в полёте не «расклеил» тайминг.
+            int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, windupTicks);
+            int extraTail     = unit.Unit != null ? AttackTiming.RecoveryTicks(unit.Unit.AttackRecoverySeconds) : 0;
+            unit.RecoveryTicks = followThrough + extraTail;
+
             unit.Phase = AttackPhase.Windup;
             unit.WindupTarget = target;
 
@@ -191,10 +203,11 @@ namespace Guildmaster.Combat
         private static bool IsHealMode(RuntimeUnit unit) =>
             unit.Unit?.Ai != null && unit.Unit.Ai.AutoAttackMode == AutoAttackMode.Heal;
 
-        /// <summary>Хвост-восстановление после удара: Recovery на N тиков, либо сразу Idle, если восстановления нет (0 сек).</summary>
+        /// <summary>Хвост-восстановление после удара: Recovery на запланированные тики (доигрыш клипа +
+        /// доп. секунды, посчитано в <see cref="EnterWindup"/>), либо сразу Idle, если хвоста нет.</summary>
         private static void EnterRecovery(RuntimeUnit unit)
         {
-            int ticks = unit.Unit != null ? AttackTiming.RecoveryTicks(unit.Unit.AttackRecoverySeconds) : 0;
+            int ticks = unit.RecoveryTicks;
             if (ticks <= 0)
             {
                 unit.Phase = AttackPhase.Idle;

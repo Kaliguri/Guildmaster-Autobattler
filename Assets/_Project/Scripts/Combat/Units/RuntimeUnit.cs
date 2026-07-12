@@ -103,6 +103,10 @@ namespace Guildmaster.Combat
         /// <summary>Полная длительность текущего замаха в тиках (посчитана раз на старте, не пересчитывается на лету).</summary>
         public int WindupTicks;
 
+        /// <summary>Запланированная длина хвоста-восстановления текущего свинга в тиках (доигрыш клипа +
+        /// доп. секунды). Считается раз на старте замаха (как <see cref="WindupTicks"/>), применяется в резолве.</summary>
+        public int RecoveryTicks;
+
         /// <summary>Снапшот цели на старте замаха: удар наносится по ней (если жива и в радиусе к концу замаха).</summary>
         public RuntimeUnit WindupTarget;
 
