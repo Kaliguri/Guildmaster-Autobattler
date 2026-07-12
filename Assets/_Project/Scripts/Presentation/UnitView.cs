@@ -49,11 +49,11 @@ namespace Guildmaster.Presentation
         [Tooltip("Цвет вспышки попадания (обычно белый).")]
         [SerializeField] private Color _flashColor = Color.white;
         [Tooltip("Длительность вспышки при попадании, сек. Ровный (линейный) спад от белого.")]
-        [SerializeField] private float _hitFlashDuration = 0.18f;
-        [Tooltip("Длительность панча сплющивания при попадании, сек (успевает 2-3 колебания).")]
-        [SerializeField] private float _hitSquashDuration = 0.35f;
-        [Tooltip("Амплитуда панча: X растягивается / Y сжимается на эту долю (0.35 = ±35%).")]
-        [SerializeField] private float _hitSquashAmount = 0.35f;
+        [SerializeField] private float _hitFlashDuration = 0.25f;
+        [Tooltip("Длительность сплющивания при попадании, сек (сжался на пике → ровно вернулся к базе).")]
+        [SerializeField] private float _hitSquashDuration = 0.25f;
+        [Tooltip("Сила сплющивания: X растягивается / Y сжимается на эту долю (0.4 = ±40%).")]
+        [SerializeField] private float _hitSquashAmount = 0.4f;
 
         [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
         [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
@@ -498,19 +498,23 @@ namespace Guildmaster.Presentation
                 .AddTo(gameObject);
         }
 
-        // Сплющивание — панч: затухающие колебания вокруг базы, X и Y в противофазе (знак амплитуды),
-        // поэтому тело «сжался-растянулся-осел», а не просто дёрнулось и пропало (decay-твин затухал за 2 кадра).
+        // Сплющивание: на пике (v=1) X растягивается, Y сжимается на _hitSquashAmount; линейно возвращается
+        // к базе (v→0). Linear, а не Out* — тот сваливал весь эффект в первые 1-2 кадра («слабо/мгновенно»).
         // Крутим _squashTarget (узел выше Animator), иначе кадровая анимация тела затирает scale.
         private void PlayHitSquash()
         {
             if (_squashTarget == null) return;
             if (_squashHandle.IsActive()) _squashHandle.Cancel();
-            var strength = new Vector3(
-                 _baseSpriteScale.x * _hitSquashAmount,
-                -_baseSpriteScale.y * _hitSquashAmount,
-                0f);
-            _squashHandle = LMotion.Punch.Create(_baseSpriteScale, strength, _hitSquashDuration)
-                .Bind(this, static (v, self) => self._squashTarget.localScale = v)
+            _squashHandle = LMotion.Create(1f, 0f, _hitSquashDuration)
+                .WithEase(Ease.Linear)
+                .Bind(this, static (v, self) =>
+                {
+                    float a = self._hitSquashAmount * v;
+                    self._squashTarget.localScale = new Vector3(
+                        self._baseSpriteScale.x * (1f + a),
+                        self._baseSpriteScale.y * (1f - a),
+                        self._baseSpriteScale.z);
+                })
                 .AddTo(gameObject);
         }
 
