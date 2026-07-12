@@ -1,5 +1,7 @@
 using System;
 using Guildmaster.Core.Simulation;
+using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Stats;
 
 namespace Guildmaster.Combat
 {
@@ -73,6 +75,24 @@ namespace Guildmaster.Combat
             if (frameCount <= 0 || hitFrame <= 0) return 0;
             int tail = AttackDurationTicks(intervalTicks) - windupTicks;
             return tail < 0 ? 0 : tail;
+        }
+
+        /// <summary>
+        /// Тики замаха, которые получит СЛЕДУЮЩИЙ свинг этого юнита при текущей скорости атаки и клипе.
+        /// Свёртка <see cref="IntervalTicks"/> + <see cref="WindupTicks"/> над данными юнита — чтобы гейт
+        /// атаки и движение (предсказание «докрутит ли замах», <c>CombatPositioning.CanLandWindup</c>)
+        /// считали ту же длину, что и <c>AutoAttackSystem.EnterWindup</c>. Пустой визуал → нижний кламп.
+        /// </summary>
+        public static int WindupTicksFor(RuntimeUnit unit)
+        {
+            float attackSpeed = unit.Stats.Get(StatType.AttackSpeed);
+            int intervalTicks = IntervalTicks(attackSpeed);
+
+            UnitVisual visual = unit.Unit != null ? unit.Unit.Visual : null;
+            int frameCount = visual != null ? visual.AttackFrameCount : 0;
+            int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
+
+            return WindupTicks(hitFrame, frameCount, intervalTicks);
         }
 
         public static int WindupTicks(int hitFrame, int frameCount, int intervalTicks)

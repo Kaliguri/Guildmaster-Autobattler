@@ -92,12 +92,23 @@ namespace Guildmaster.Combat
             Vector2 toTarget  = target.Position - unit.Position;
             float distSq      = toTarget.sqrMagnitude;
 
-            // Гистерезис: пока в пределах досягаемости — стоим и бьём, не пере-подбегаем (гасит троттлинг).
-            if (distSq <= reach * reach) return;
+            // В пределах досягаемости. Обычно — гистерезис: стоим и бьём, не пере-подбегаем (гасит троттлинг,
+            // когда расталкивание чуть сдвигает юнита каждый тик). НО если цель убегает так, что рутовый
+            // замах ОТСЮДА придётся вхолостую (слой 2), стоять нельзя — иначе гейт атаки не начнёт свинг,
+            // и юнит замрёт в reach, отпуская цель. Тогда проваливаемся к сближению и дожимаем дистанцию
+            // («сначала подойти ближе с учётом скоростей»), чтобы свинг успел докрутить. Для стоящей/
+            // наступающей цели CanLandWindup=true → поведение прежнее, гистерезис сохранён.
+            if (distSq <= reach * reach)
+            {
+                int windup = AttackTiming.WindupTicksFor(unit);
+                if (CombatPositioning.CanLandWindup(unit, target, windup, in tuning)) return;
+            }
 
-            // Вытолкнуло за reach → подбегаем к ВНУТРЕННЕМУ радиусу (с запасом внутрь, чтобы не выскочить сразу).
+            // Сближение к ВНУТРЕННЕМУ радиусу (с запасом внутрь, чтобы не выскочить обратно тут же —
+            // и, при догоне убегающего, чтобы рутовый замах докрутил из положения внутри reach).
             float stop = reach * ApproachStopFactor;
             float dist = Mathf.Sqrt(distSq);
+            if (dist <= stop) return;                        // уже ближе внутреннего радиуса — не наезжаем в тело
             if (dist - stop <= maxMove)
                 unit.Position = target.Position - toTarget / dist * stop;
             else

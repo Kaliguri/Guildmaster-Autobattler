@@ -73,16 +73,23 @@ namespace Guildmaster.Combat
                 RuntimeUnit target = IsHealMode(unit) ? unit.AutoAttackTarget : unit.CurrentTarget;
                 if (target == null || target.IsDead) continue;
 
-                // Досягаемость — с учётом тел обоих юнитов (§9, зазор поверхностей). Метрика едина с
-                // движением и сепарацией: см. CombatPositioning.AttackReachCenter.
+                // Гейт старта замаха = базовый радиус (не расширяем захват) И предсказание «замах докрутит»
+                // (слой 2, вики «14»). Убегающую цель, которая за время замаха выйдет за reach + tolerance,
+                // не бьём вхолостую (это только замедляло бы погоню штрафом занятости) — движение продолжает
+                // сближение (MoveApproach дожимает дистанцию), свинг стартует, лишь когда попадёт.
+                // Метрика едина с движением и сепарацией: см. CombatPositioning.AttackReachCenter.
+                int windupTicks = AttackTiming.WindupTicksFor(unit);
                 if (!CombatPositioning.InAttackRange(unit, target, ctx.Tuning)) continue;
+                if (!CombatPositioning.CanLandWindup(unit, target, windupTicks, ctx.Tuning)) continue;
 
-                EnterWindup(unit, target, ctx);
+                EnterWindup(unit, target, ctx, windupTicks);
             }
         }
 
-        /// <summary>Вход в замах: рестарт кулдауна (якорь), расчёт windupTicks, снапшот цели, событие старта.</summary>
-        private void EnterWindup(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)
+        /// <summary>Вход в замах: рестарт кулдауна (якорь), снапшот цели, событие старта.
+        /// <paramref name="windupTicks"/> уже посчитан гейтом (<see cref="AttackTiming.WindupTicksFor"/>) —
+        /// та же длина, по которой гейт предсказал попадание, без повторного расчёта/расхождения.</summary>
+        private void EnterWindup(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx, int windupTicks)
         {
             float attackSpeed = unit.Stats.Get(StatType.AttackSpeed);
             int intervalTicks = AttackTiming.IntervalTicks(attackSpeed);
@@ -92,7 +99,6 @@ namespace Guildmaster.Combat
             int frameCount = visual != null ? visual.AttackFrameCount : 0;
             int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
 
-            int windupTicks = AttackTiming.WindupTicks(hitFrame, frameCount, intervalTicks);
             unit.WindupTicks = unit.WindupRemaining = windupTicks;
 
             // Хвост-занятость = доигрыш клипа после кадра контакта (авто-масштаб со скоростью атаки) +
@@ -125,8 +131,13 @@ namespace Guildmaster.Combat
             if (target == null || target.IsDead) return;
 
             // Досягаемость с учётом тел (см. EnterWindup). reach также = длина линейной АА ниже.
+            // Прощающий буфер (слой 1, вики «14»): цель, сдвинувшаяся за замах в пределах tolerance
+            // (микро-дрожание, обычный шаг), ещё поражается; ушедшая за него (блинк/рывок) — вхолостую,
+            // кулдаун уже потрачен на старте → «воу, уклонился». Замах при этом не прерывался: юнит
+            // доиграл свинг и хвост (см. EnterRecovery выше) независимо от исхода.
             float reach = CombatPositioning.AttackReachCenter(unit, target, ctx.Tuning);
-            if ((target.Position - unit.Position).sqrMagnitude > reach * reach) return;
+            float landReach = reach + SimConstants.AttackReachTolerance;
+            if ((target.Position - unit.Position).sqrMagnitude > landReach * landReach) return;
 
             // Прирост ресурса — на момент реального удара (мана-реликвии).
             GainResourceOnHit(unit);
