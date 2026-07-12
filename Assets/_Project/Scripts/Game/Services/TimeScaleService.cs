@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace Guildmaster.Game.Services
 {
@@ -18,11 +19,15 @@ namespace Guildmaster.Game.Services
     /// отзывчивой на паузе (вики «16»). Детерминизм цел: тики те же, меняется лишь сколько
     /// реального времени приходится на тик.
     /// </summary>
-    public sealed class TimeScaleService : IDisposable
+    public sealed class TimeScaleService : ITickable, IDisposable
     {
         private float _gameSpeed = 1f;
         private float _cinematic = 1f;
         private bool  _paused;
+
+        // Возврат cinematic к 1 после пульса: линейный, на unscaled-времени (иначе slowmo тормозит
+        // собственный отпуск). 0 = возврата нет (cinematic держится, пока не задан новый).
+        private float _cinematicRecoverPerSec;
 
         /// <summary>Игровая скорость (выбор игрока), без учёта паузы и cinematic.</summary>
         public float GameSpeed => _gameSpeed;
@@ -47,6 +52,28 @@ namespace Guildmaster.Game.Services
         public void SetCinematic(float factor)
         {
             _cinematic = Mathf.Clamp(factor, 0f, 4f);
+            _cinematicRecoverPerSec = 0f; // ручная установка не возвращается сама
+            Apply();
+        }
+
+        /// <summary>
+        /// Кинематографический пульс: мгновенно уйти в slowmo (<paramref name="factor"/>) и линейно вернуться
+        /// к 1 за <paramref name="recoverSeconds"/> (на unscaled-времени). Момент режиссуры на значимое событие
+        /// (килл/конец боя). Новый пульс перебивает текущий.
+        /// </summary>
+        public void CinematicPulse(float factor, float recoverSeconds)
+        {
+            _cinematic = Mathf.Clamp(factor, 0f, 4f);
+            _cinematicRecoverPerSec = recoverSeconds > 0f ? (1f - _cinematic) / recoverSeconds : 0f;
+            Apply();
+        }
+
+        /// <summary>VContainer-тик: ведёт возврат cinematic к 1 после пульса (unscaled — не тормозит сам себя).</summary>
+        public void Tick()
+        {
+            if (_cinematicRecoverPerSec <= 0f || _cinematic >= 1f) return;
+            _cinematic = Mathf.Min(1f, _cinematic + _cinematicRecoverPerSec * Time.unscaledDeltaTime);
+            if (_cinematic >= 1f) _cinematicRecoverPerSec = 0f;
             Apply();
         }
 

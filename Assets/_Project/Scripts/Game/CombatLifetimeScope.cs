@@ -44,9 +44,12 @@ namespace Guildmaster.Game
             RegisterSimulation(builder, layout);
             RegisterPresentation(builder);
 
-            // Единый арбитр Time.timeScale (пауза/скорость/cinematic slowmo). Scoped → при
-            // разрушении боевого скоупа его Dispose вернёт timeScale к 1.
-            builder.Register<TimeScaleService>(Lifetime.Scoped);
+            // Единый арбитр Time.timeScale (пауза/скорость/cinematic slowmo). EntryPoint — чтобы Tick()
+            // вёл возврат slowmo, а Dispose вернул timeScale к 1; AsSelf — для инъекции в потребителей.
+            builder.RegisterEntryPoint<TimeScaleService>(Lifetime.Scoped).AsSelf();
+
+            // Режиссёр «сочности»: политика global-эффектов (slowmo на килл/конец боя) по MessagePipe-событиям.
+            builder.RegisterEntryPoint<CombatFeelDirector>(Lifetime.Scoped);
 
             // Боевой ввод: пауза/скорость на время этого боя (вики «16» §4).
             builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
