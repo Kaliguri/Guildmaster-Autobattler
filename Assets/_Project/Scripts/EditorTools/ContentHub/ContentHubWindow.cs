@@ -193,6 +193,9 @@ namespace Guildmaster.ContentHub.Editor
                 case Page.Doctor:
                     BuildDoctor(_content);
                     break;
+                case Page.Balance:
+                    BuildBalance(_content);
+                    break;
                 default:
                     var page = new VisualElement();
                     page.AddToClassList("gh-page");
