@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Guildmaster.Data.Stats;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -27,6 +28,7 @@ namespace Guildmaster.ContentHub.Editor
         private bool _balOnlyPinned;
         private int _balSortCol;            // индекс в _balCols
         private bool _balSortAsc = true;
+        private List<ContentEntry> _balCurrentRows = new List<ContentEntry>();
 
         private void EnsureBalCols()
         {
@@ -69,6 +71,10 @@ namespace Guildmaster.ContentHub.Editor
             var onlyPinned = new Toggle("только закреплённые") { value = _balOnlyPinned };
             onlyPinned.RegisterValueChangedCallback(e => { _balOnlyPinned = e.newValue; PopulateBalance(); });
             bar.Add(onlyPinned);
+
+            var export = new Button(ExportBalanceMarkdown) { text = "Export MD" };
+            export.AddToClassList("gh-btn");
+            bar.Add(export);
 
             col.Add(bar);
 
@@ -119,9 +125,29 @@ namespace Guildmaster.ContentHub.Editor
                 ranges[c] = (min, max);
             }
 
+            _balCurrentRows = rows;
+
             _balTable.Add(BuildBalHeader());
             foreach (var entry in rows)
                 _balTable.Add(BuildBalRow(entry, ranges));
+        }
+
+        private void ExportBalanceMarkdown()
+        {
+            var numeric = _balCols.Where(c => !c.IsName).ToList();
+            var headers = new List<string> { "Юнит" };
+            headers.AddRange(numeric.Select(c => c.Title));
+
+            var rows = new List<IReadOnlyList<string>>();
+            foreach (var e in _balCurrentRows)
+            {
+                var cells = new List<string> { e.DisplayName };
+                cells.AddRange(numeric.Select(c => Num(c.Num(e))));
+                rows.Add(cells);
+            }
+
+            EditorGUIUtility.systemCopyBuffer = MarkdownTable.Format(headers, rows);
+            _toasts?.Show($"Markdown ({_balCurrentRows.Count} строк) в буфере", HubToasts.Kind.Success);
         }
 
         private VisualElement BuildBalHeader()

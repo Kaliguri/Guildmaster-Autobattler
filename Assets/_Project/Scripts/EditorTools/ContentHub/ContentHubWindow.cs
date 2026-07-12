@@ -196,6 +196,9 @@ namespace Guildmaster.ContentHub.Editor
                 case Page.Balance:
                     BuildBalance(_content);
                     break;
+                case Page.Coverage:
+                    BuildCoverage(_content);
+                    break;
                 default:
                     var page = new VisualElement();
                     page.AddToClassList("gh-page");

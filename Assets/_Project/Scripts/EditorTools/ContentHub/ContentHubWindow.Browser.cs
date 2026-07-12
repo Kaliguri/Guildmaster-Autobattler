@@ -222,6 +222,12 @@ namespace Guildmaster.ContentHub.Editor
             var actions = new VisualElement();
             actions.AddToClassList("gh-actions");
             actions.Add(MakeBtn("Reveal", () => { EditorGUIUtility.PingObject(entry.Asset); Selection.activeObject = entry.Asset; }));
+            if (entry.Unit != null)
+            {
+                var cmp = MakeBtn("Сравнить", () => DoCompare(entry));
+                cmp.AddToClassList("gh-btn--pri");
+                actions.Add(cmp);
+            }
             if (entry.Asset is ContentDefinition cd)
             {
                 actions.Add(MakeBtn("Duplicate", () => DoDuplicate(cd)));
@@ -341,6 +347,13 @@ namespace Guildmaster.ContentHub.Editor
             ContentDatabaseSync.Sync(verbose: true);
             ContentIndex.Invalidate();
             _toasts?.Show("Content Database синхронизирована", HubToasts.Kind.Success);
+        }
+
+        /// <summary>Закрепить юнит в Balance и перейти туда (кнопка «Сравнить»).</summary>
+        private void DoCompare(ContentEntry entry)
+        {
+            _pinned.Add(entry);
+            SelectPage(Page.Balance);
         }
 
         // ---------------------------------------------------------------- helpers
