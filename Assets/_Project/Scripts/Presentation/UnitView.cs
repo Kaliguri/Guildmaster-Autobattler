@@ -48,12 +48,12 @@ namespace Guildmaster.Presentation
         [SerializeField] private Material _flashMaterial;
         [Tooltip("Цвет вспышки попадания (обычно белый).")]
         [SerializeField] private Color _flashColor = Color.white;
-        [Tooltip("Длительность вспышки при попадании, сек.")]
-        [SerializeField] private float _hitFlashDuration = 0.08f;
-        [Tooltip("Длительность сплющивания при попадании, сек.")]
-        [SerializeField] private float _hitSquashDuration = 0.22f;
-        [Tooltip("Сила сплющивания: X растягивается, Y сжимается на эту долю (0.3 = ±30%).")]
-        [SerializeField] private float _hitSquashAmount = 0.3f;
+        [Tooltip("Длительность вспышки при попадании, сек. Ровный (линейный) спад от белого.")]
+        [SerializeField] private float _hitFlashDuration = 0.18f;
+        [Tooltip("Длительность панча сплющивания при попадании, сек (успевает 2-3 колебания).")]
+        [SerializeField] private float _hitSquashDuration = 0.35f;
+        [Tooltip("Амплитуда панча: X растягивается / Y сжимается на эту долю (0.35 = ±35%).")]
+        [SerializeField] private float _hitSquashAmount = 0.35f;
 
         [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
         [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
@@ -491,28 +491,26 @@ namespace Guildmaster.Presentation
             if (_sprite == null) return;
             if (_flashHandle.IsActive()) _flashHandle.Cancel();
             _flashAmount = 1f;
+            // Линейный спад: вспышка держится и ровно гаснет (OutQuad сваливал её в первые 1-2 кадра → «миг»).
             _flashHandle = LMotion.Create(1f, 0f, _hitFlashDuration)
-                .WithEase(Ease.OutQuad)
+                .WithEase(Ease.Linear)
                 .Bind(this, static (v, self) => self._flashAmount = v)
                 .AddTo(gameObject);
         }
 
-        // Сплющивание: X растягивается, Y сжимается на _hitSquashAmount·v, где v 1→0. На конце v=0 → база.
+        // Сплющивание — панч: затухающие колебания вокруг базы, X и Y в противофазе (знак амплитуды),
+        // поэтому тело «сжался-растянулся-осел», а не просто дёрнулось и пропало (decay-твин затухал за 2 кадра).
         // Крутим _squashTarget (узел выше Animator), иначе кадровая анимация тела затирает scale.
         private void PlayHitSquash()
         {
             if (_squashTarget == null) return;
             if (_squashHandle.IsActive()) _squashHandle.Cancel();
-            _squashHandle = LMotion.Create(1f, 0f, _hitSquashDuration)
-                .WithEase(Ease.OutCubic)
-                .Bind(this, static (v, self) =>
-                {
-                    float a = self._hitSquashAmount * v;
-                    self._squashTarget.localScale = new Vector3(
-                        self._baseSpriteScale.x * (1f + a),
-                        self._baseSpriteScale.y * (1f - a),
-                        self._baseSpriteScale.z);
-                })
+            var strength = new Vector3(
+                 _baseSpriteScale.x * _hitSquashAmount,
+                -_baseSpriteScale.y * _hitSquashAmount,
+                0f);
+            _squashHandle = LMotion.Punch.Create(_baseSpriteScale, strength, _hitSquashDuration)
+                .Bind(this, static (v, self) => self._squashTarget.localScale = v)
                 .AddTo(gameObject);
         }
 
