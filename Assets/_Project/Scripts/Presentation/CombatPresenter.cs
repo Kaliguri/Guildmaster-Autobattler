@@ -70,6 +70,13 @@ namespace Guildmaster.Presentation
         private IPublisher<DamageDealtEvent> _damageDealtPublisher;
         private IPublisher<BattleEndedEvent> _battleEndedPublisher;
 
+        // Локальный hitstop (2a): окно заморозки участников удара, масштабируется долей нанесённого HP-урона.
+        // Локально (на пару вью), поэтому допустимо на каждом ударе — толпа вокруг не стынет. Global-эффекты
+        // (slowmo/шейк) — отдельный слой по порогам значимости (2b).
+        private const float HitstopMinSeconds = 0.02f; // слабый удар — ~1 кадр при 60 fps
+        private const float HitstopMaxSeconds = 0.09f; // тяжёлый удар
+        private const float HitstopFullFrac   = 0.25f; // урон ≥25% MaxHP цели → максимальный стоп
+
         [Inject]
         public void Construct(
             CombatSimulation simulation,
@@ -232,6 +239,17 @@ namespace Guildmaster.Presentation
             // Свинг источника запускается раньше, на OnAttackStarted (вики «14»).
             if (_views.TryGetValue(target.Id, out var view))
                 view.OnDamageReceived(result.TotalDamage);
+
+            // Локальный hitstop пары «источник + цель» по значимости удара (доля HP-урона от MaxHP цели).
+            if (view != null)
+            {
+                float maxHp = target.Stats.Get(Data.Stats.StatType.MaxHP);
+                float frac  = maxHp > 0f ? result.HpDamage / maxHp : 0f;
+                float stop  = Mathf.Lerp(HitstopMinSeconds, HitstopMaxSeconds, Mathf.Clamp01(frac / HitstopFullFrac));
+                view.OnHitstop(stop);
+                if (source != null && _views.TryGetValue(source.Id, out var sourceView))
+                    sourceView.OnHitstop(stop);
+            }
 
             int shield = Mathf.RoundToInt(result.ShieldDamage);
             int hp     = Mathf.RoundToInt(result.HpDamage);

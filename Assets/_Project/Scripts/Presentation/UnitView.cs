@@ -1,6 +1,7 @@
 using Guildmaster.Combat;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
+using LitMotion;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,7 +14,8 @@ namespace Guildmaster.Presentation
     /// базового контроллера. Состояние выбирает чистый <see cref="UnitAnimationSelector"/> по наблюдаемому
     /// состоянию сима; тайминг Attack привязан к сим-windup (маркер клипа садится на тик удара), Run
     /// «прибит к земле». <c>animator.fireEvents=false</c> — маркеры это данные, а не колбэки. Анимация
-    /// НИКОГДА не пишет в сим. Feel-хуки — <see cref="UnityEvent"/> (MMF_Player в Inspector).
+    /// НИКОГДА не пишет в сим. Базовая реакция на удар (вспышка/сплющивание/локальный hitstop) — кодом
+    /// на LitMotion (zero-alloc); <see cref="UnityEvent"/>-хуки оставлены пустым швом под точечный MMF.
     /// </summary>
     public sealed class UnitView : MonoBehaviour
     {
@@ -36,9 +38,17 @@ namespace Guildmaster.Presentation
                  "Меньше = ноги быстрее (бодрее), больше = медленнее. Темп бега привязан к скорости — не скользит.")]
         [SerializeField] private float _runUnitsPerFrame = 0.15f;
 
-        [Header("Feel Hooks (подключить MMF_Player в Inspector)")]
+        [Header("Feel Hooks (пустой шов под точечный MMF_Player в Inspector)")]
         [SerializeField] private UnityEvent _onHitFeedback;
         [SerializeField] private UnityEvent _onDeathFeedback;
+
+        [Header("Feel — реакция на попадание (LitMotion, код)")]
+        [Tooltip("Длительность вспышки белым при попадании, сек.")]
+        [SerializeField] private float _hitFlashDuration = 0.08f;
+        [Tooltip("Длительность сплющивания при попадании, сек.")]
+        [SerializeField] private float _hitSquashDuration = 0.18f;
+        [Tooltip("Сила сплющивания: X растягивается, Y сжимается на эту долю (0.18 = ±18%).")]
+        [SerializeField] private float _hitSquashAmount = 0.18f;
 
         [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
         [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
@@ -71,6 +81,14 @@ namespace Guildmaster.Presentation
         private RuntimeUnit _unit;
         private Vector2     _renderPosition;
 
+        // --- Feel (реакция на удар, LitMotion) — только презентация, сим не трогает ---
+        private Color        _baseTint = Color.white;   // цвет тела до подмешивания вспышки
+        private float        _flashAmount;               // 0..1 — сколько белого подмешать (вспышка)
+        private Vector3      _baseSpriteScale = Vector3.one; // масштаб спрайта до сплющивания
+        private float        _hitstopRemaining;          // unscaled-окно заморозки анимации участников удара
+        private MotionHandle _flashHandle;
+        private MotionHandle _squashHandle;
+
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
         // Своя фаза анимации атаки (НЕ путать с сим-AttackPhase на RuntimeUnit): охватывает ВЕСЬ цикл
         // атаки — замах до кадра контакта + хвост-возврат, растянутый на «окно» до следующего замаха.
@@ -97,7 +115,11 @@ namespace Guildmaster.Presentation
 
             // Изначально все смотрят вправо (как нарисованы спрайты). Дальше разворот динамический —
             // по положению текущей цели (ApplyFacing в Update).
-            if (_sprite != null) _sprite.flipX = false;
+            if (_sprite != null)
+            {
+                _sprite.flipX = false;
+                _baseSpriteScale = _sprite.transform.localScale; // база для сплющивания на попадании
+            }
 
             if (_healthBar != null) _healthBar.Bind(unit);
             if (_manaBar != null)   _manaBar.Bind(unit);
@@ -106,7 +128,8 @@ namespace Guildmaster.Presentation
         /// <summary>Тинт тела юнита: один общий спрайт, разный цвет на персонажа (dev-харнесс, «пока один спрайт»).</summary>
         public void SetTint(Color color)
         {
-            if (_sprite != null) _sprite.color = color;
+            _baseTint = color;
+            ApplyColor(); // итоговый цвет = база + вспышка + альфа инвиза (единый писатель _sprite.color)
         }
 
         /// <summary>Цвет HP-бара по принадлежности к смотрящему (из <c>CombatColorPalette</c>).</summary>
@@ -202,8 +225,19 @@ namespace Guildmaster.Presentation
 
         private void Update()
         {
-            ApplyStealthAlpha(); // dev-подсветка инвиза — до guard'а, работает и без Animator
-            ApplyFacing();       // разворот по цели — тоже до guard'а (нужен и статичным спрайтам)
+            ApplyColor(); // вспышка + альфа инвиза видны даже в hitstop/паузе (единый писатель _sprite.color)
+
+            // Локальный hitstop: удар «весит» — участники замирают на unscaled-окно, толпа вокруг не стынет.
+            // Морозим только анимацию: позиция продолжает интерполироваться (≈50 мс дрейфа незаметны, зато
+            // нет снапа при выходе). unscaled — работает и во время global slowmo (2b), и на паузе.
+            if (_hitstopRemaining > 0f)
+            {
+                _hitstopRemaining -= Time.unscaledDeltaTime;
+                if (_animActive) _animator.speed = 0f;
+                return;
+            }
+
+            ApplyFacing(); // разворот по цели — до guard'а анимации (нужен и статичным спрайтам)
 
             if (!_animActive) return;
 
@@ -390,21 +424,61 @@ namespace Guildmaster.Presentation
             return true;
         }
 
-        // Инвиз (dev, §10.5): пока висит тег Stealth — тело полупрозрачно; иначе непрозрачно.
-        // Перекрывает альфу из SetTint (RGB сохраняется), поллится каждый кадр.
-        private void ApplyStealthAlpha()
+        // Единый писатель _sprite.color: база (тинт персонажа) + подмешанная вспышка попадания (RGB→белый)
+        // + альфа инвиза (dev, §10.5: тег Stealth → полупрозрачность). Поллится каждый кадр, чтобы вспышка
+        // и инвиз не перетирали друг друга (раньше был отдельный ApplyStealthAlpha).
+        private void ApplyColor()
         {
-            if (_sprite == null || _unit == null) return;
-            bool stealthed = (_unit.EffectTagMask & EffectTag.Stealth) != 0;
-            Color c = _sprite.color;
+            if (_sprite == null) return;
+            Color c = _flashAmount > 0f ? Color.Lerp(_baseTint, Color.white, _flashAmount) : _baseTint;
+            bool stealthed = _unit != null && (_unit.EffectTagMask & EffectTag.Stealth) != 0;
             c.a = stealthed ? 0.4f : 1f;
             _sprite.color = c;
         }
 
-        /// <summary>Вызывается при получении урона.</summary>
+        /// <summary>Вызывается при получении урона: локальная реакция цели (вспышка + сплющивание).</summary>
         public void OnDamageReceived(float damage)
         {
             _onHitFeedback?.Invoke();
+            PlayHitFlash();
+            PlayHitSquash();
+        }
+
+        /// <summary>Заморозить анимацию этого вида на unscaled-окно (локальный hitstop участника удара).</summary>
+        public void OnHitstop(float unscaledSeconds)
+        {
+            if (unscaledSeconds <= 0f) return;
+            _hitstopRemaining = Mathf.Max(_hitstopRemaining, unscaledSeconds);
+        }
+
+        // Вспышка белым: подмешиваем _flashAmount 1→0, ApplyColor рисует. Bind со state (this) — zero-alloc.
+        private void PlayHitFlash()
+        {
+            if (_sprite == null) return;
+            if (_flashHandle.IsActive()) _flashHandle.Cancel();
+            _flashAmount = 1f;
+            _flashHandle = LMotion.Create(1f, 0f, _hitFlashDuration)
+                .WithEase(Ease.OutQuad)
+                .Bind(this, static (v, self) => self._flashAmount = v)
+                .AddTo(gameObject);
+        }
+
+        // Сплющивание: X растягивается, Y сжимается на _hitSquashAmount·v, где v 1→0. На конце v=0 → база.
+        private void PlayHitSquash()
+        {
+            if (_sprite == null) return;
+            if (_squashHandle.IsActive()) _squashHandle.Cancel();
+            _squashHandle = LMotion.Create(1f, 0f, _hitSquashDuration)
+                .WithEase(Ease.OutQuad)
+                .Bind(this, static (v, self) =>
+                {
+                    float a = self._hitSquashAmount * v;
+                    self._sprite.transform.localScale = new Vector3(
+                        self._baseSpriteScale.x * (1f + a),
+                        self._baseSpriteScale.y * (1f - a),
+                        self._baseSpriteScale.z);
+                })
+                .AddTo(gameObject);
         }
 
         /// <summary>Вызывается при гибели юнита.</summary>
