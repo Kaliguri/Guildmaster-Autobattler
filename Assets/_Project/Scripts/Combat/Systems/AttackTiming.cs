@@ -1,5 +1,7 @@
 using System;
 using Guildmaster.Core.Simulation;
+using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Stats;
 
 namespace Guildmaster.Combat
 {
@@ -44,6 +46,55 @@ namespace Guildmaster.Combat
         /// (удар не совпадает с тиком старта следующей атаки). Пустой клип (<paramref name="frameCount"/> ≤ 0)
         /// или <paramref name="hitFrame"/> ≤ 0 → нижний кламп.
         /// </summary>
+        /// <summary>
+        /// Дополнительное восстановление (сверх анимационного доигрыша) в тиках из секунд. Детерминированное
+        /// округление (<see cref="MidpointRounding.AwayFromZero"/>), как у интервала. ≤ 0 сек → 0 тиков.
+        /// </summary>
+        public static int RecoveryTicks(float seconds)
+        {
+            if (seconds <= 0f) return 0;
+            int ticks = (int)Math.Round(SimConstants.TickRate * seconds, MidpointRounding.AwayFromZero);
+            return ticks < 0 ? 0 : ticks;
+        }
+
+        /// <summary>
+        /// Хвост-доигрыш клипа удара после кадра контакта = <c>attackDurationTicks − windupTicks</c>.
+        /// Это «задняя половина» анимации свинга: урон уже нанесён (на кадре контакта), но юнит всё ещё
+        /// доигрывает движение и остаётся «занят» (рут либо штраф скорости). Выводится из той же модели,
+        /// что и <see cref="WindupTicks"/>, поэтому автоматически масштабируется со скоростью атаки —
+        /// в отличие от абсолютных секунд не «расклеивается» при баффах скорости.
+        /// <para>
+        /// Нет реального клипа (<paramref name="frameCount"/> ≤ 0 или <paramref name="hitFrame"/> ≤ 0) →
+        /// windup был чистым телеграфом (пол <see cref="SimConstants.MinWindupTicks"/>), доигрывать нечего → 0.
+        /// Вычитание (а не независимая пропорция «хвостовых кадров») сознательно: оно поглощает округление
+        /// windup, поэтому <c>windup + доигрыш = attackDurationTicks</c> ровно, без фантомного зазора.
+        /// </para>
+        /// </summary>
+        public static int FollowThroughTicks(int hitFrame, int frameCount, int intervalTicks, int windupTicks)
+        {
+            if (frameCount <= 0 || hitFrame <= 0) return 0;
+            int tail = AttackDurationTicks(intervalTicks) - windupTicks;
+            return tail < 0 ? 0 : tail;
+        }
+
+        /// <summary>
+        /// Тики замаха, которые получит СЛЕДУЮЩИЙ свинг этого юнита при текущей скорости атаки и клипе.
+        /// Свёртка <see cref="IntervalTicks"/> + <see cref="WindupTicks"/> над данными юнита — чтобы гейт
+        /// атаки и движение (предсказание «докрутит ли замах», <c>CombatPositioning.CanLandWindup</c>)
+        /// считали ту же длину, что и <c>AutoAttackSystem.EnterWindup</c>. Пустой визуал → нижний кламп.
+        /// </summary>
+        public static int WindupTicksFor(RuntimeUnit unit)
+        {
+            float attackSpeed = unit.Stats.Get(StatType.AttackSpeed);
+            int intervalTicks = IntervalTicks(attackSpeed);
+
+            UnitVisual visual = unit.Unit != null ? unit.Unit.Visual : null;
+            int frameCount = visual != null ? visual.AttackFrameCount : 0;
+            int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
+
+            return WindupTicks(hitFrame, frameCount, intervalTicks);
+        }
+
         public static int WindupTicks(int hitFrame, int frameCount, int intervalTicks)
         {
             int upper = intervalTicks - 1;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Random;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using NUnit.Framework;
@@ -124,6 +125,29 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
+        public void Recovery_AfterHit_LastsClipFollowThrough_ThenLeavesRecovery()
+        {
+            var (attacker, enemy, units, ctx) = Scene();
+            var sys = new AutoAttackSystem();
+            int interval = AttackTiming.IntervalTicks(1f);
+            int windup   = AttackTiming.WindupTicks(HitFrame, FrameCount, interval);
+            int tail     = AttackTiming.FollowThroughTicks(HitFrame, FrameCount, interval, windup);
+            Assert.Greater(tail, 0, "Предусловие: у юнита с клипом есть доигрыш-хвост");
+
+            // Тикаем до кадра контакта включительно (вход в замах + windup тиков до удара).
+            for (int i = 0; i <= windup; i++) sys.Tick(units, ctx, 0f);
+
+            Assert.AreEqual(1, ctx.Damage.Count, "Удар нанесён");
+            Assert.AreEqual(AttackPhase.Recovery, attacker.Phase, "Сразу после удара — фаза восстановления");
+            Assert.AreEqual(tail, attacker.RecoveryRemaining, "Длина хвоста = доигрыш клипа (interval − windup)");
+
+            // Досчитываем хвост: на последнем тике Recovery истекает и фаза покидает Recovery
+            // (у стрелка кулдаун обнуляется тогда же → сразу новый замах, поэтому НЕ обязательно Idle).
+            for (int i = 0; i < tail; i++) sys.Tick(units, ctx, 0f);
+            Assert.AreNotEqual(AttackPhase.Recovery, attacker.Phase, "Хвост истёк — юнит больше не в Recovery");
+        }
+
+        [Test]
         public void AttackSpeedChange_DuringWindup_DoesNotChangeCurrentWindupTicks()
         {
             var (attacker, enemy, units, ctx) = Scene();
@@ -144,7 +168,113 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(1, ctx.Damage.Count, "Удар наступил по исходному таймингу замаха");
         }
 
+        // ===================== Погоня / кайт: гейт старта + прощающий буфер (вики «14») =====================
+
+        [Test]
+        public void FleeingTarget_AtReachEdge_DoesNotStartWindup()
+        {
+            // Цель у края досягаемости и убегает: рутовый замах отсюда не докрутит (уйдёт за reach+tol) →
+            // юнит НЕ начинает свинг (слой 2), чтобы не бить вхолостую и не тормозить погоню занятостью.
+            var (attacker, enemy, units, ctx) = FleeScene(enemyDist: null, recedePerTick: 0.15f);
+
+            sys().Tick(units, ctx, 0f);
+
+            Assert.IsFalse(attacker.IsWindingUp, "Убегающую цель у края reach не бьём — сначала догоняем");
+            Assert.AreEqual(0, ctx.AttackStarted, "Замах не стартовал");
+        }
+
+        [Test]
+        public void StationaryTarget_AtReachEdge_StartsWindup()
+        {
+            // Тот же край reach, но цель СТОИТ (recede = 0) → замах докрутит → стартуем как обычно.
+            // Контроль-регрессия: предсказательный гейт не ломает базовый случай «цель в радиусе».
+            var (attacker, enemy, units, ctx) = FleeScene(enemyDist: null, recedePerTick: 0f);
+
+            sys().Tick(units, ctx, 0f);
+
+            Assert.IsTrue(attacker.IsWindingUp, "Стоящую цель в радиусе бьём без задержки");
+            Assert.AreEqual(1, ctx.AttackStarted);
+        }
+
+        [Test]
+        public void SmallDrift_WithinTolerance_DuringWindup_StillLands()
+        {
+            // Слой 1: цель за замах сместилась чуть за базовый reach, но в пределах tolerance → удар засчитан.
+            var (attacker, enemy, units, ctx) = Scene();
+            var s = new AutoAttackSystem();
+            int windup = AttackTiming.WindupTicks(HitFrame, FrameCount, AttackTiming.IntervalTicks(1f));
+            float reach = CombatPositioning.AttackReachCenter(attacker, enemy, SimTuning.Default);
+
+            s.Tick(units, ctx, 0f);                                  // вход в замах (цель в радиусе)
+            enemy.Position = new Vector2(reach + 0.2f, 0f);          // сдвиг < tolerance (0.35) за край reach
+            for (int i = 0; i < windup; i++) s.Tick(units, ctx, 0f); // досчитываем до кадра контакта
+
+            Assert.AreEqual(1, ctx.Damage.Count, "Сдвиг в пределах буфера — удар проходит");
+        }
+
+        [Test]
+        public void Dodge_BeyondTolerance_DuringWindup_Whiffs_AndSpendsCooldown()
+        {
+            // «Воу, уклонился»: цель ушла за reach+tolerance (блинк/рывок) во время замаха → свинг доиграл
+            // ВПУСТУЮ (не прерван), кулдаун потрачен на старте, юнит занят весь цикл. Так и задумано.
+            var (attacker, enemy, units, ctx) = Scene();
+            var s = new AutoAttackSystem();
+            int interval = AttackTiming.IntervalTicks(1f);
+            int windup   = AttackTiming.WindupTicks(HitFrame, FrameCount, interval);
+            float reach  = CombatPositioning.AttackReachCenter(attacker, enemy, SimTuning.Default);
+
+            s.Tick(units, ctx, 0f);                                  // вход в замах
+            enemy.Position = new Vector2(reach + 1f, 0f);            // блинк далеко за буфер
+            for (int i = 0; i < windup; i++) s.Tick(units, ctx, 0f); // до резолва
+
+            Assert.AreEqual(0, ctx.Damage.Count, "Ушедшую за буфер цель удар не достаёт");
+            Assert.AreEqual(0, ctx.AttackInterrupted, "Это whiff, а не прерывание (замах доиграл)");
+            Assert.AreNotEqual(AttackPhase.Windup, attacker.Phase, "Свинг доигран (не завис в замахе)");
+            Assert.AreEqual(interval - windup, attacker.AttackCooldownTicks,
+                "Кулдаун потрачен на старте и тикал — уклонение стоит мили полного цикла");
+        }
+
+        [Test]
+        public void CanLandWindup_TrueForStationary_FalseForFastFlee()
+        {
+            // Чистый предикат слоя 2 без симуляции.
+            var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, range: 2f);
+            var enemy    = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f)); // в пределах reach
+            int windup   = 21;
+
+            enemy.PreviousPosition = enemy.Position; // стоит
+            Assert.IsTrue(CombatPositioning.CanLandWindup(attacker, enemy, windup, SimTuning.Default),
+                "Стоящую цель в радиусе замах достаёт");
+
+            enemy.PreviousPosition = new Vector2(1.7f, 0f); // ушла на +0.3/тик = быстрый побег
+            Assert.IsFalse(CombatPositioning.CanLandWindup(attacker, enemy, windup, SimTuning.Default),
+                "Быстрый побег: за замах уйдёт за reach+tolerance — замах не докрутит");
+        }
+
         // ===================== Хелперы =====================
+
+        private static AutoAttackSystem sys() => new AutoAttackSystem();
+
+        /// <summary>Сцена «цель у края reach, задан её уход»: attacker с клипом, enemy на дистанции ≈reach·0.98,
+        /// PreviousPosition сдвинут так, что цель уходит на <paramref name="recedePerTick"/> ед./тик по оси.</summary>
+        private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx)
+            FleeScene(float? enemyDist, float recedePerTick)
+        {
+            UnitVisual visual = TestVisual.Make(FrameCount, HitFrame);
+            RelicData relic = TestRelic.Make(visual: visual);
+
+            var attacker = MakeUnit(0, team: 0, pos: Vector2.zero, relic: relic, range: 2f, aad: 10f, atkSpeed: 1f);
+            var enemyTmp = MakeUnit(1, team: 1, pos: Vector2.zero);
+            float reach  = CombatPositioning.AttackReachCenter(attacker, enemyTmp, SimTuning.Default);
+            float dist   = enemyDist ?? reach * 0.98f; // надёжно в пределах reach
+
+            var enemy = MakeUnit(1, team: 1, pos: new Vector2(dist, 0f));
+            enemy.PreviousPosition = new Vector2(dist - recedePerTick, 0f); // шаг +recede по +x = уход от attacker
+            attacker.CurrentTarget = enemy;
+
+            var units = new List<RuntimeUnit> { attacker, enemy };
+            return (attacker, enemy, units, new StubContext());
+        }
 
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, StubContext ctx) Scene()
         {

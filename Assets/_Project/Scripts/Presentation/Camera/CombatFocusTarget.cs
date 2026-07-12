@@ -16,6 +16,11 @@ namespace Guildmaster.Presentation
         [Tooltip("Скорость сглаживания позиции (больше — резче следует за центром боя).")]
         [SerializeField] private float _positionDamping = 4f;
 
+        [Tooltip("Мёртвая зона слежения (мировые ед.): пока центр боя дрейфует в этом радиусе от камеры — " +
+                 "камера СТОИТ (гасит тряску от толкотни юнитов), тянется только когда центр уехал за радиус. " +
+                 "Масштаб поля 40×20, рост юнита 1.7 → ~3 = пара ростов, реально держит кадр.")]
+        [SerializeField] private float _deadZoneRadius = 3f;
+
         [Tooltip("Скорость сглаживания разброса (для зума). Меньше — плавнее реакция зума на смерть/рывок юнита.")]
         [SerializeField] private float _spreadDamping = 2.5f;
 
@@ -72,12 +77,22 @@ namespace Guildmaster.Presentation
                 return;
             }
 
+            // Мёртвая зона: цель слежения = центроид, но пока он в радиусе _deadZoneRadius от камеры —
+            // держим камеру на месте (тряска от толкотни юнитов сюда не проходит). Уехал за радиус —
+            // целимся в КРАЙ зоны (центроид, «подтянутый» назад на радиус), поэтому камера догоняет мягко,
+            // без рывка на всю величину. Тот же двухрадиусный гистерезис, что и у подхода юнитов (§движение).
+            Vector2 delta = centroid - (Vector2)cur;
+            float drift = delta.magnitude;
+            Vector3 followTarget = drift <= _deadZoneRadius
+                ? cur
+                : (Vector3)(centroid - delta / drift * _deadZoneRadius) + Vector3.forward * cur.z;
+
             // Экспоненциальное сглаживание, независимое от частоты кадров. Разброс сглаживаем отдельно:
             // сырой скачет при смерти/рывке (телепорт монаха, отбрасывание) и дёргал бы зум.
             float tPos    = 1f - Mathf.Exp(-_positionDamping * Time.deltaTime);
             float tSpread = 1f - Mathf.Exp(-_spreadDamping   * Time.deltaTime);
             Spread = Mathf.Lerp(Spread, rawSpread, tSpread);
-            transform.position = Vector3.Lerp(cur, centroid3, tPos);
+            transform.position = Vector3.Lerp(cur, followTarget, tPos);
         }
     }
 }

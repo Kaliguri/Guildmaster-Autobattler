@@ -1,6 +1,5 @@
 using System;
 using Guildmaster.Data.Definitions;
-using Guildmaster.Data.Stats;
 using UnityEngine;
 
 namespace Guildmaster.Combat.Effects.Components
@@ -11,7 +10,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// источнику смещения). Срабатывает, когда закончилось отбрасывание ВРАГА (по команде смещённого) —
     /// монах телепортируется ему в спину и взводит усиление следующей авто-атаки (×2). Конец собственного
     /// рывка монаха (смещённый = свой) сюда НЕ проходит (та же ветка обрабатывается приземлением рывка).
-    /// Без кулдауна — комбо-механика. Направление «в спину» приближено (садимся вплотную со стороны монаха).
+    /// Без кулдауна — комбо-механика. Садимся ЗА спиной цели: на ДАЛЬНЮЮ от монаха сторону (направление отбрасывания).
     /// </summary>
     [Serializable]
     public sealed class VortexEntryComponent : IReactiveComponent
@@ -37,15 +36,12 @@ namespace Guildmaster.Combat.Effects.Components
             // своя команда) отсекаем — иначе монах «телепортнулся бы к себе» на приземлении рывка.
             if (victim.Team == monk.Team) return;
 
-            // Телепорт вплотную к цели со стороны монаха (приближение «в спину»); фокус + усиление.
-            Vector2 toMonk = monk.Position - victim.Position;
-            Vector2 dir = toMonk.sqrMagnitude > 1e-4f ? toMonk.normalized : Vector2.right;
-            float range = monk.Stats.Get(StatType.AttackRange);
-
-            monk.PreviousPosition = monk.Position;
-            monk.Position = victim.Position + dir * (range * 0.5f);
+            // «В спину» = ДАЛЬНЯЯ от монаха сторона цели (направление её отбрасывания): монах перепрыгивает
+            // ЧЕРЕЗ приземлившегося врага и встаёт у него за спиной (общий хелпер с убийцей). Раньше садились
+            // на свою сторону (перед врагом, откуда пришёл толчок) — визуально это «не за спину».
+            CombatPositioning.TeleportBehind(monk, victim);
             monk.CurrentTarget = victim;
-            monk.EmpowerDamageMult = _empowerMult;
+            monk.EmpowerDamageMult = _empowerMult; // усиление след. атаки
         }
     }
 }

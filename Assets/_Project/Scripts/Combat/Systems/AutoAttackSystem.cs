@@ -30,12 +30,14 @@ namespace Guildmaster.Combat
                 RuntimeUnit unit = units[i];
                 if (unit.IsDead) continue;
 
-                // Прерывание замаха при потере дееспособности (стан/сон) или в полёте (§9.9). CanAct
-                // посчитан на прошлом тике (Effects идёт ПОСЛЕ AutoAttack) — окно в 1 тик (вики «14»).
+                // Прерывание при потере дееспособности (стан/сон) или в полёте (§9.9). CanAct посчитан
+                // на прошлом тике (Effects идёт ПОСЛЕ AutoAttack) — окно в 1 тик (вики «14»). Замах →
+                // сброс+рефанд; восстановление → отмена хвоста (урон уже нанесён, рефанда нет), Idle.
                 if (!unit.CanAct || unit.DisplacedTicksRemaining > 0)
                 {
-                    if (unit.IsWindingUp) Interrupt(unit, ctx);
-                    continue; // оглушён/в полёте и не в замахе — кулдаун не тикает (как было)
+                    if (unit.Phase == AttackPhase.Windup) Interrupt(unit, ctx);
+                    else if (unit.Phase == AttackPhase.Recovery) { unit.Phase = AttackPhase.Idle; unit.RecoveryRemaining = 0; }
+                    continue; // оглушён/в полёте — кулдаун не тикает (как было)
                 }
 
                 // Якорный кулдаун тикает КАЖДЫЙ тик, в т.ч. во время замаха: период damage→damage = интервал,
@@ -44,11 +46,22 @@ namespace Guildmaster.Combat
                 if (unit.AttackCooldownTicks > 0) unit.AttackCooldownTicks--;
 
                 // Фаза замаха: досчитываем до кадра контакта.
-                if (unit.IsWindingUp)
+                if (unit.Phase == AttackPhase.Windup)
                 {
                     unit.WindupRemaining--;
                     if (unit.WindupRemaining <= 0) Resolve(unit, ctx);
                     continue;
+                }
+
+                // Фаза восстановления: досчитываем хвост, новый замах начать нельзя, пока не истечёт.
+                // Когда хвост истёк — освобождаемся и ПРОВАЛИВАЕМСЯ к гейту атаки в тот же тик: у стрелка
+                // хвост = «интервал − замах», поэтому кулдаун обнуляется ровно тогда же → бесшовный
+                // следующий замах без потери тика (иначе период damage→damage съехал бы на +1).
+                if (unit.Phase == AttackPhase.Recovery)
+                {
+                    unit.RecoveryRemaining--;
+                    if (unit.RecoveryRemaining > 0) continue;
+                    unit.Phase = AttackPhase.Idle;
                 }
 
                 // Ещё на кулдауне — ждём.
@@ -60,15 +73,23 @@ namespace Guildmaster.Combat
                 RuntimeUnit target = IsHealMode(unit) ? unit.AutoAttackTarget : unit.CurrentTarget;
                 if (target == null || target.IsDead) continue;
 
-                float range = unit.Stats.Get(StatType.AttackRange);
-                if ((target.Position - unit.Position).sqrMagnitude > range * range) continue;
+                // Гейт старта замаха = базовый радиус (не расширяем захват) И предсказание «замах докрутит»
+                // (слой 2, вики «14»). Убегающую цель, которая за время замаха выйдет за reach + tolerance,
+                // не бьём вхолостую (это только замедляло бы погоню штрафом занятости) — движение продолжает
+                // сближение (MoveApproach дожимает дистанцию), свинг стартует, лишь когда попадёт.
+                // Метрика едина с движением и сепарацией: см. CombatPositioning.AttackReachCenter.
+                int windupTicks = AttackTiming.WindupTicksFor(unit);
+                if (!CombatPositioning.InAttackRange(unit, target, ctx.Tuning)) continue;
+                if (!CombatPositioning.CanLandWindup(unit, target, windupTicks, ctx.Tuning)) continue;
 
-                EnterWindup(unit, target, ctx);
+                EnterWindup(unit, target, ctx, windupTicks);
             }
         }
 
-        /// <summary>Вход в замах: рестарт кулдауна (якорь), расчёт windupTicks, снапшот цели, событие старта.</summary>
-        private void EnterWindup(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)
+        /// <summary>Вход в замах: рестарт кулдауна (якорь), снапшот цели, событие старта.
+        /// <paramref name="windupTicks"/> уже посчитан гейтом (<see cref="AttackTiming.WindupTicksFor"/>) —
+        /// та же длина, по которой гейт предсказал попадание, без повторного расчёта/расхождения.</summary>
+        private void EnterWindup(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx, int windupTicks)
         {
             float attackSpeed = unit.Stats.Get(StatType.AttackSpeed);
             int intervalTicks = AttackTiming.IntervalTicks(attackSpeed);
@@ -78,8 +99,16 @@ namespace Guildmaster.Combat
             int frameCount = visual != null ? visual.AttackFrameCount : 0;
             int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
 
-            unit.WindupTicks = unit.WindupRemaining = AttackTiming.WindupTicks(hitFrame, frameCount, intervalTicks);
-            unit.IsWindingUp = true;
+            unit.WindupTicks = unit.WindupRemaining = windupTicks;
+
+            // Хвост-занятость = доигрыш клипа после кадра контакта (авто-масштаб со скоростью атаки) +
+            // опциональный доп.хвост в секундах (сознательный «оверкоммит» для отдельных китов). Считаем
+            // здесь — на старте свинга, как и windup, — чтобы бафф скорости в полёте не «расклеил» тайминг.
+            int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, windupTicks);
+            int extraTail     = unit.Unit != null ? AttackTiming.RecoveryTicks(unit.Unit.AttackRecoverySeconds) : 0;
+            unit.RecoveryTicks = followThrough + extraTail;
+
+            unit.Phase = AttackPhase.Windup;
             unit.WindupTarget = target;
 
             ctx.NotifyAttackStarted(unit, target);
@@ -91,16 +120,24 @@ namespace Guildmaster.Combat
         /// <summary>Конец замаха: нанести урон по снапшот-цели, если она жива и в радиусе; иначе вхолостую.</summary>
         private void Resolve(RuntimeUnit unit, ICombatContext ctx)
         {
-            unit.IsWindingUp = false;
+            // Замах кончился → хвост-восстановление (или сразу Idle, если восстановления нет). Переход
+            // выполняем ДО расчёта урона: юнит «занят» бэксвингом независимо от того, попал он или вхолостую.
             unit.WindupRemaining = 0;
+            EnterRecovery(unit);
             RuntimeUnit target = unit.WindupTarget;
             unit.WindupTarget = null;
 
             // Цель пропала к удару (мертва / вне радиуса) → вхолостую, кулдаун уже потрачен на старте.
             if (target == null || target.IsDead) return;
 
-            float range = unit.Stats.Get(StatType.AttackRange);
-            if ((target.Position - unit.Position).sqrMagnitude > range * range) return;
+            // Досягаемость с учётом тел (см. EnterWindup). reach также = длина линейной АА ниже.
+            // Прощающий буфер (слой 1, вики «14»): цель, сдвинувшаяся за замах в пределах tolerance
+            // (микро-дрожание, обычный шаг), ещё поражается; ушедшая за него (блинк/рывок) — вхолостую,
+            // кулдаун уже потрачен на старте → «воу, уклонился». Замах при этом не прерывался: юнит
+            // доиграл свинг и хвост (см. EnterRecovery выше) независимо от исхода.
+            float reach = CombatPositioning.AttackReachCenter(unit, target, ctx.Tuning);
+            float landReach = reach + SimConstants.AttackReachTolerance;
+            if ((target.Position - unit.Position).sqrMagnitude > landReach * landReach) return;
 
             // Прирост ресурса — на момент реального удара (мана-реликвии).
             GainResourceOnHit(unit);
@@ -130,15 +167,22 @@ namespace Guildmaster.Combat
                 ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, EffectTag.Stealth, int.MaxValue, 0));
             }
 
+            // §10.5 блинк убийцы: удар из скрытности телепортирует его за спину цели (в момент удара, до урона).
+            if (unit.BlinkBehindOnNextAttack)
+            {
+                unit.BlinkBehindOnNextAttack = false;
+                CombatPositioning.TeleportBehind(unit, target);
+            }
+
             if (attackType == AttackType.Melee)
             {
                 if (shape == AreaShape.Line)
                 {
-                    DealLineDamage(unit, target, range, raw, dmgType, ctx);
+                    DealLineDamage(unit, target, reach, raw, dmgType, ctx);
                 }
                 else
                 {
-                    ctx.DealDamage(new DamageRequest(unit, target, raw, dmgType, ctx.ArmorK));
+                    ctx.DealDamage(new DamageRequest(unit, target, raw, dmgType, ctx.ArmorK, isAutoAttack: true));
                     ApplyAutoAttackOnHit(unit, target, ctx); // §9.1 (мили single)
                 }
             }
@@ -152,7 +196,8 @@ namespace Guildmaster.Combat
                 ctx.SpawnProjectile(new ProjectileSpawn(
                     unit, unit.Position, target,
                     speed, collRadius, raw, dmgType, ctx.ArmorK, pierces,
-                    onHitEffects: unit.Unit != null ? unit.Unit.AutoAttackEffects : null));
+                    onHitEffects: unit.Unit != null ? unit.Unit.AutoAttackEffects : null,
+                    isAutoAttack: true));
             }
         }
 
@@ -169,11 +214,29 @@ namespace Guildmaster.Combat
         private static bool IsHealMode(RuntimeUnit unit) =>
             unit.Unit?.Ai != null && unit.Unit.Ai.AutoAttackMode == AutoAttackMode.Heal;
 
+        /// <summary>Хвост-восстановление после удара: Recovery на запланированные тики (доигрыш клипа +
+        /// доп. секунды, посчитано в <see cref="EnterWindup"/>), либо сразу Idle, если хвоста нет.</summary>
+        private static void EnterRecovery(RuntimeUnit unit)
+        {
+            int ticks = unit.RecoveryTicks;
+            if (ticks <= 0)
+            {
+                unit.Phase = AttackPhase.Idle;
+                unit.RecoveryRemaining = 0;
+            }
+            else
+            {
+                unit.Phase = AttackPhase.Recovery;
+                unit.RecoveryRemaining = ticks;
+            }
+        }
+
         /// <summary>Прерывание замаха: сброс + рефанд кулдауна (бьёт снова, как только сможет) + событие.</summary>
         private static void Interrupt(RuntimeUnit unit, ICombatContext ctx)
         {
-            unit.IsWindingUp = false;
+            unit.Phase = AttackPhase.Idle;
             unit.WindupRemaining = 0;
+            unit.RecoveryRemaining = 0;
             unit.WindupTarget = null;
             unit.AttackCooldownTicks = 0;
             ctx.NotifyAttackInterrupted(unit);
@@ -193,7 +256,7 @@ namespace Guildmaster.Combat
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итоговое состояние.
             for (int t = 0; t < _lineTargets.Count; t++)
             {
-                ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, dmgType, ctx.ArmorK));
+                ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, dmgType, ctx.ArmorK, isAutoAttack: true));
                 ApplyAutoAttackOnHit(unit, _lineTargets[t], ctx); // §9.1 (мили Line — по каждой задетой)
             }
         }

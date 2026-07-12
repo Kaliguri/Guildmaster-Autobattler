@@ -116,5 +116,33 @@ namespace Guildmaster.Tests.EditMode.Combat
             for (int i = 0; i < 5; i++)
                 Assert.AreEqual(21, AttackTiming.WindupTicks(5, 7, 30));
         }
+
+        // ===================== FollowThroughTicks (доигрыш клипа после кадра контакта) =====================
+
+        [Test]
+        public void FollowThrough_BaseSpeed_FillsRestOfClip()
+        {
+            // interval 30, duration 30, windup 21 → доигрыш 30 − 21 = 9. windup + доигрыш = весь клип.
+            int windup = AttackTiming.WindupTicks(5, 7, 30);
+            Assert.AreEqual(9, AttackTiming.FollowThroughTicks(5, 7, 30, windup));
+            Assert.AreEqual(30, windup + AttackTiming.FollowThroughTicks(5, 7, 30, windup),
+                "windup + доигрыш ровно покрывают длительность клипа (без фантомного зазора)");
+        }
+
+        [Test]
+        public void FollowThrough_NoClip_IsZero()
+        {
+            // Без клипа windup был чистым телеграфом (пол MinWindupTicks) → доигрывать нечего.
+            Assert.AreEqual(0, AttackTiming.FollowThroughTicks(0, 7, 30, SimConstants.MinWindupTicks));
+            Assert.AreEqual(0, AttackTiming.FollowThroughTicks(5, 0, 30, SimConstants.MinWindupTicks));
+        }
+
+        [Test]
+        public void FollowThrough_LastFrameHit_LeavesMinimalTail()
+        {
+            // hit 7/7 → windup клампится к interval−1 = 29; доигрыш = 30 − 29 = 1 (удар почти в конце клипа).
+            int windup = AttackTiming.WindupTicks(7, 7, 30);
+            Assert.AreEqual(1, AttackTiming.FollowThroughTicks(7, 7, 30, windup));
+        }
     }
 }

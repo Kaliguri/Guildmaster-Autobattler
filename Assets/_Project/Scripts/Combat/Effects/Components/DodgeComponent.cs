@@ -7,19 +7,20 @@ using UnityEngine;
 namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
-    /// «Изворотливость» (§9.3, §9.4, §10.5): pre-damage реактив с зарядами. По триггеру блока F
-    /// (из <c>self.Unit.Ai.PassiveTrigger</c>) полностью отменяет входящий удар, тратя один заряд;
-    /// заряды восстанавливаются независимо. Тип источника урона не важен (решение Макса — негейтит
-    /// любой следующий удар). Состояние зарядов — per-effect в <see cref="RuntimeEffect.ChargeReadyTicks"/>.
+    /// «Изворотливость» (§9.3, §9.4, §10.5): pre-damage реактив с зарядами. Полностью отменяет входящую
+    /// АВТОАТАКУ (<see cref="DamageRequest.IsAutoAttack"/>) — любую, даже слабую; урон способностей/DoT/шипов
+    /// не гасит. Дополнительно фильтруется триггером блока F (из <c>self.Unit.Ai.PassiveTrigger</c>) и тратит
+    /// один заряд; заряды восстанавливаются независимо. Состояние зарядов — per-effect в
+    /// <see cref="RuntimeEffect.ChargeReadyTicks"/>.
     /// </summary>
     [Serializable]
     public sealed class DodgeComponent : IPreDamageComponent, IStackableComponent
     {
-        [Tooltip("Число зарядов негейта.")]
-        [SerializeField] private int _maxCharges = 2;
+        [Tooltip("Число зарядов негейта. Убийца = 1 (гейтит одну следующую атаку).")]
+        [SerializeField] private int _maxCharges = 1;
 
-        [Tooltip("Независимая перезарядка одного заряда, сек.")]
-        [SerializeField] private float _rechargeSeconds = 8f;
+        [Tooltip("Независимая перезарядка одного заряда, сек. Убийца = 5.")]
+        [SerializeField] private float _rechargeSeconds = 5f;
 
         public void OnApply(in EffectContext ctx)
         {
@@ -39,6 +40,7 @@ namespace Guildmaster.Combat.Effects.Components
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (result.Negated) return; // уже отменён другим компонентом
+            if (!incoming.IsAutoAttack) return; // «Изворотливость» уклоняется ТОЛЬКО от автоатак (не от способностей/DoT)
 
             RuntimeUnit self = ctx.Target;
             if (self == null || self.IsDead) return;

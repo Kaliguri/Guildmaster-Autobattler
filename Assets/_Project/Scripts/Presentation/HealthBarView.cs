@@ -23,11 +23,15 @@ namespace Guildmaster.Presentation
         [Tooltip("Задний слой — догоняющий «призрак».")]
         [SerializeField] private Image _trailImage;
 
-        [Header("Цвета main (истинное HP)")]
-        [SerializeField] private Color _fullColor      = new Color(0.2f, 0.9f, 0.2f);
-        [SerializeField] private Color _lowColor       = new Color(0.9f, 0.2f, 0.2f);
-        [Tooltip("Порог низкого HP [0,1] для перехода в _lowColor.")]
-        [SerializeField] private float _lowHpThreshold = 0.3f;
+        [Header("Цвет main (истинное HP)")]
+        [Tooltip("Фолбэк-цвет основного слоя, если презентация не подала цвет по принадлежности " +
+                 "(CombatColorPalette). В бою цвет задаётся из палитры (ally/enemy), см. SetMainColor.")]
+        [SerializeField] private Color _fallbackColor = new Color(0.2f, 0.9f, 0.2f);
+
+        // Цвет основного слоя по принадлежности к смотрящему (ally/enemy) — подаёт презентация из
+        // CombatColorPalette (первый SO дизайн-системы). Пока не подан — используем _fallbackColor.
+        private Color _mainColor;
+        private bool  _hasMainColor;
 
         [Header("Цвета trail (догоняющая дельта)")]
         [Tooltip("Дельта недавно потерянного HP (урон).")]
@@ -45,6 +49,17 @@ namespace Guildmaster.Presentation
         private float _targetFraction = 1f;
         private float _trailFraction  = 1f;
         private float _delayRemaining;
+
+        /// <summary>
+        /// Задать цвет основного слоя по принадлежности к смотрящему (из <c>CombatColorPalette</c>).
+        /// Пока не вызван — бар использует <see cref="_fallbackColor"/>.
+        /// </summary>
+        public void SetMainColor(Color color)
+        {
+            _mainColor    = color;
+            _hasMainColor = true;
+            Layout();
+        }
 
         /// <summary>Привязать к юниту: оба слоя — на текущую долю мгновенно.</summary>
         public void Bind(RuntimeUnit unit)
@@ -93,8 +108,7 @@ namespace Guildmaster.Presentation
             if (_mainImage != null)
             {
                 _mainImage.fillAmount = lo;
-                _mainImage.color = Color.Lerp(_lowColor, _fullColor,
-                    Mathf.InverseLerp(0f, _lowHpThreshold, _targetFraction));
+                _mainImage.color = _hasMainColor ? _mainColor : _fallbackColor;
             }
 
             if (_trailImage != null)

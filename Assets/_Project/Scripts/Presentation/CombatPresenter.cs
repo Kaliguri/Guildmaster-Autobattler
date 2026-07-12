@@ -40,6 +40,15 @@ namespace Guildmaster.Presentation
         [Tooltip("Пер-юнит визуалы по реликвии (вики «13» шаг 4): если у юнита эта реликвия — её набор кадров вместо дефолтного на префабе.")]
         [SerializeField] private VisualOverride[] _visualOverrides = System.Array.Empty<VisualOverride>();
 
+        [Header("Дизайн-система (цвета боевого UI)")]
+        [Tooltip("Палитра цветов боя (первый SO дизайн-системы). Задаёт цвет HP-бара по принадлежности к " +
+                 "смотрящему. Пусто = фолбэк-цвета по умолчанию (см. DefaultHealthColor).")]
+        [SerializeField] private Design.CombatColorPalette _colorPalette;
+
+        [Tooltip("Команда «смотрящего» (локального игрока): его юниты — союзные (ally-цвет), прочие — enemy. " +
+                 "Шов под кооп (там смотрящий может быть в любой команде); пока 0 = команда игрока.")]
+        [SerializeField] private int _localViewerTeam;
+
         [System.Serializable]
         private struct VisualOverride
         {
@@ -182,6 +191,12 @@ namespace Guildmaster.Presentation
                 view.SetTint(TintFor(unit));
                 view.SetLabel(NameFor(unit));
 
+                // Цвет HP-бара по принадлежности к смотрящему (дизайн-система, задача 1).
+                bool isAllyOfViewer = unit.Team == _localViewerTeam;
+                view.SetHealthColor(_colorPalette != null
+                    ? _colorPalette.HealthBarColor(isAllyOfViewer)
+                    : DefaultHealthColor(isAllyOfViewer));
+
                 _views[unit.Id] = view;
             }
 
@@ -290,6 +305,11 @@ namespace Guildmaster.Presentation
             }
             return unit.Team == 0 ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f);
         }
+
+        /// <summary>Фолбэк-цвет HP-бара, если палитра дизайн-системы не назначена (совпадает с дефолтами SO).</summary>
+        private static Color DefaultHealthColor(bool isAllyOfViewer) => isAllyOfViewer
+            ? new Color(0.30f, 0.85f, 0.35f)
+            : new Color(0.90f, 0.25f, 0.25f);
 
         /// <summary>Подпись персонажа: имя реликвии (SO) либо «Ally/Enemy N» для болванчиков.</summary>
         private static string NameFor(RuntimeUnit unit)

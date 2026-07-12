@@ -25,6 +25,6 @@ MonoBehaviour:
       Enabled: 0
       FleeDist: 1.5
       FallbackDist: 3
-    _passiveTrigger: 2
-    _passiveThresholdPct: 0.25
+    _passiveTrigger: 1
+    _passiveThresholdPct: 0
   _archetypeTags: []

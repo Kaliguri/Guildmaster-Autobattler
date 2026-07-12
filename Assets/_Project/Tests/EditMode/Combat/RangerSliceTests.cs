@@ -192,10 +192,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             RelicData movingRelic = TestRelic.Make(canAttackWhileMoving: true, movingAttackSpeedPenaltyPct: 0.5f);
 
             var moving = MakeUnit(0, team: 0, pos: Vector2.zero, range: 1f, relic: movingRelic);
-            moving.CurrentTarget = target; moving.IsWindingUp = true;
+            moving.CurrentTarget = target; moving.Phase = AttackPhase.Windup;
 
             var rooted = MakeUnit(1, team: 0, pos: Vector2.zero, range: 1f); // без флага
-            rooted.CurrentTarget = target; rooted.IsWindingUp = true;
+            rooted.CurrentTarget = target; rooted.Phase = AttackPhase.Windup;
 
             var baseline = MakeUnit(2, team: 0, pos: Vector2.zero, range: 1f, relic: movingRelic);
             baseline.CurrentTarget = target; // НЕ в замахе → полная скорость
@@ -208,6 +208,33 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.Greater(moving.Position.x, 0f, "Со стрельбой на ходу юнит движется в замахе");
             Assert.AreEqual(0f, rooted.Position.x, 1e-4f, "Без флага замах рутит (поведение Ф1)");
             Assert.AreEqual(baseline.Position.x * 0.5f, moving.Position.x, 1e-4f, "В замахе скорость вдвое ниже (штраф 50%)");
+        }
+
+        // Regress: хвост-восстановление — тоже «занятость». Замедление держится ВЕСЬ доигрыш свинга,
+        // а не только замах — иначе стрелок спринтит на полной скорости в паузе между выстрелами
+        // («скользкий кайт»). Непрерывно атакующий = непрерывно замедлен.
+        [Test]
+        public void AttackWhileMoving_StaysSlowed_DuringRecovery()
+        {
+            var target = MakeUnit(9, team: 1, pos: new Vector2(10f, 0f));
+            RelicData movingRelic = TestRelic.Make(canAttackWhileMoving: true, movingAttackSpeedPenaltyPct: 0.5f);
+
+            // Юнит в хвосте-восстановлении (урон уже нанесён, но свинг доигрывается).
+            var recovering = MakeUnit(0, team: 0, pos: Vector2.zero, range: 1f, relic: movingRelic);
+            recovering.CurrentTarget = target;
+            recovering.Phase = AttackPhase.Recovery; recovering.RecoveryRemaining = 5;
+
+            // Тот же юнит в Idle (между циклами) — эталон полной скорости.
+            var baseline = MakeUnit(2, team: 0, pos: Vector2.zero, range: 1f, relic: movingRelic);
+            baseline.CurrentTarget = target;
+
+            var sys = new MovementSystem();
+            sys.Tick(new List<RuntimeUnit> { recovering, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
+            sys.Tick(new List<RuntimeUnit> { baseline, target }, SimConstants.TickDelta, ArenaBounds.Unbounded, SimTuning.Default);
+
+            Assert.Greater(recovering.Position.x, 0f, "В хвосте-восстановлении стрелок продолжает движение");
+            Assert.AreEqual(baseline.Position.x * 0.5f, recovering.Position.x, 1e-4f,
+                "В хвосте скорость вдвое ниже — штраф держится, а не только в замахе");
         }
 
         // ===================== Фабрики / хелперы =====================

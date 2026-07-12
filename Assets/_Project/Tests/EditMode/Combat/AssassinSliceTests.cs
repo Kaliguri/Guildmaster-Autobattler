@@ -88,7 +88,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 relic: AssassinRelic(PassiveTrigger.AnyHit));
 
             ctx.ApplyEffect(assassin, DodgePassive(maxCharges: 2, rechargeSeconds: 8f), assassin);
-            var hit = new DamageRequest(null, assassin, 30f, DamageType.True, ArmorK);
+            var hit = new DamageRequest(null, assassin, 30f, DamageType.True, ArmorK, isAutoAttack: true);
 
             ctx.Tick = 0;
             Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx),  "1-й удар негейтнут (заряд 1)");
@@ -110,10 +110,10 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 8f), assassin);
 
-            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageType.True, sim.ArmorK));
+            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageType.True, sim.ArmorK, isAutoAttack: true));
             Assert.AreEqual(200f, assassin.CurrentHP, 1e-4f, "Первый удар негейтнут — HP не тронуто");
 
-            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageType.True, sim.ArmorK));
+            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageType.True, sim.ArmorK, isAutoAttack: true));
             Assert.AreEqual(150f, assassin.CurrentHP, 1e-4f, "Заряд израсходован — второй удар проходит");
         }
 
@@ -130,7 +130,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             ctx.Tick = 0;
             es.Apply(assassin, dodge, assassin, ctx);
 
-            var hit = new DamageRequest(null, assassin, 30f, DamageType.True, ArmorK);
+            var hit = new DamageRequest(null, assassin, 30f, DamageType.True, ArmorK, isAutoAttack: true);
             Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx),  "Заряд израсходован на 1-м ударе");
             Assert.IsFalse(es.RunPreDamage(assassin, in hit, ctx), "Зарядов больше нет");
 
@@ -138,6 +138,24 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(2, assassin.ActiveEffects[0].Stacks, "Предусловие: стак вырос");
             Assert.IsFalse(es.RunPreDamage(assassin, in hit, ctx),
                 "Рестак НЕ перезарядил израсходованный заряд (07 §3.8 B2)");
+        }
+
+        // Изворотливость гасит ТОЛЬКО автоатаки: урон способности (IsAutoAttack=false) проходит и не тратит заряд.
+        [Test]
+        public void Dodge_IgnoresNonAutoAttackDamage()
+        {
+            var es  = new EffectSystem();
+            var ctx = new TickContext(es);
+            var assassin = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f,
+                relic: AssassinRelic(PassiveTrigger.AnyHit));
+
+            ctx.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 5f), assassin);
+
+            var ability = new DamageRequest(null, assassin, 30f, DamageType.True, ArmorK); // isAutoAttack=false
+            Assert.IsFalse(es.RunPreDamage(assassin, in ability, ctx), "Урон способности не уклоняется");
+
+            var auto = new DamageRequest(null, assassin, 30f, DamageType.True, ArmorK, isAutoAttack: true);
+            Assert.IsTrue(es.RunPreDamage(assassin, in auto, ctx), "Заряд был цел — автоатака уклоняется");
         }
 
         // ===================== Фабрики / хелперы =====================

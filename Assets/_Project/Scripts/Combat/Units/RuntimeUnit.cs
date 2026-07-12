@@ -60,6 +60,11 @@ namespace Guildmaster.Combat
         /// <summary>Множитель урона следующей авто-атаки (§9.6, «Скрытность»): 0 = нет усиления. AutoAttackSystem применяет и сбрасывает (однострел).</summary>
         public float EmpowerDamageMult;
 
+        /// <summary>Блинк «за спину» цели на усиленной атаке из скрытности (§10.5, «Скрытный убийца»): в момент
+        /// удара телепорт на дальнюю сторону цели. Ставит <c>StealthComponent</c> вместе с усилением, применяет
+        /// и сбрасывает <c>AutoAttackSystem</c> (в блоке снятия усиления). Монах сюда не завязан (у него свой заход).</summary>
+        public bool BlinkBehindOnNextAttack;
+
         /// <summary>
         /// Цель захода монаха (§10.6): в кого он зашёл рывком и кого оттолкнёт на приземлении. Ставит
         /// <c>AbilitySystem</c> при касте «Шквального толчка» (позицию рывка считает под ЭТУ цель), читает и
@@ -75,19 +80,32 @@ namespace Guildmaster.Combat
         /// </summary>
         public int DisplacedTicksRemaining;
 
-        // --- Авто-атака: двухфазный windup на int-тиках (вики «14») ---
+        // --- Авто-атака: FSM фаз на int-тиках (вики «14») ---
 
         /// <summary>Кулдаун автоатаки в сим-тиках. 0 = готов к атаке. Рестартится в начале замаха (якорь).</summary>
         public int AttackCooldownTicks;
 
-        /// <summary>Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Рутит движение (MovementSystem).</summary>
-        public bool IsWindingUp;
+        /// <summary>
+        /// Фаза боевого действия — единый источник истины «занятости» (Idle/Windup/Recovery). Пишет только
+        /// <c>AutoAttackSystem</c>; движение/презентация/способности читают. См. <see cref="AttackPhase"/>.
+        /// </summary>
+        public AttackPhase Phase;
+
+        /// <summary>Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Производный алиас <see cref="Phase"/>.</summary>
+        public bool IsWindingUp => Phase == AttackPhase.Windup;
 
         /// <summary>Тиков замаха осталось до кадра контакта. Когда ≤ 0 — резолв удара.</summary>
         public int WindupRemaining;
 
+        /// <summary>Тиков восстановления (хвост после удара) осталось. Когда ≤ 0 — переход в Idle. 0 = нет восстановления.</summary>
+        public int RecoveryRemaining;
+
         /// <summary>Полная длительность текущего замаха в тиках (посчитана раз на старте, не пересчитывается на лету).</summary>
         public int WindupTicks;
+
+        /// <summary>Запланированная длина хвоста-восстановления текущего свинга в тиках (доигрыш клипа +
+        /// доп. секунды). Считается раз на старте замаха (как <see cref="WindupTicks"/>), применяется в резолве.</summary>
+        public int RecoveryTicks;
 
         /// <summary>Снапшот цели на старте замаха: удар наносится по ней (если жива и в радиусе к концу замаха).</summary>
         public RuntimeUnit WindupTarget;
@@ -108,6 +126,36 @@ namespace Guildmaster.Combat
 
         /// <summary>Битовая маска тегов активных эффектов. Обновляется при add/remove — быстрый запрос для AI (Фаза 3) и диспела.</summary>
         public EffectTag EffectTagMask;
+
+        /// <summary>
+        /// Битовое ИЛИ тегов эффектов, ЛЕТЯЩИХ в этого юнита (on-hit эффекты снарядов, ещё не легли).
+        /// Таргетинг, зависящий от эффекта (PreferTagged/PreferUntagged), учитывает их наравне с
+        /// <see cref="EffectTagMask"/>, чтобы не выбирать цель повторно, пока к ней уже летит, напр., «Заморозка»
+        /// (иначе двойное наложение). Только чтение; правится через <see cref="AddIncomingEffect"/>/<see cref="RemoveIncomingEffect"/>.
+        /// </summary>
+        public EffectTag IncomingEffectTags { get; private set; }
+
+        // Рефкаунт входящих эффектов: по одной записи-маске на КАЖДЫЙ летящий снаряд (несколько снарядов
+        // одного тега в одну цель — напр. два одинаковых крио/кооп-дубля — считаются независимо). Бит в
+        // IncomingEffectTags гаснет, только когда ушёл ПОСЛЕДНИЙ снаряд с ним. Список крошечный (снаряды в цель).
+        private readonly List<EffectTag> _incomingReservations = new List<EffectTag>();
+
+        /// <summary>Забронировать теги летящего в юнита снаряда (при спавне снаряда).</summary>
+        public void AddIncomingEffect(EffectTag mask)
+        {
+            if (mask == 0) return;
+            _incomingReservations.Add(mask);
+            IncomingEffectTags |= mask;
+        }
+
+        /// <summary>Снять бронь одного разрешённого снаряда (попал/деспавн); бит гаснет лишь без остатка носителей.</summary>
+        public void RemoveIncomingEffect(EffectTag mask)
+        {
+            if (mask == 0 || !_incomingReservations.Remove(mask)) return;
+            EffectTag remaining = 0;
+            for (int i = 0; i < _incomingReservations.Count; i++) remaining |= _incomingReservations[i];
+            IncomingEffectTags = remaining;
+        }
 
         /// <summary>Активные способности (кулдаун/ресурс). Заполняет <see cref="RuntimeUnitFactory"/> из реликвии.</summary>
         public readonly List<AbilityRuntime> Abilities = new List<AbilityRuntime>();

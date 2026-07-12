@@ -1,0 +1,67 @@
+filters:
+  and:
+    - kind == "character"
+properties:
+  rarity:
+    displayName: Редкость
+  position:
+    displayName: Позиция
+  combat_range:
+    displayName: Дальность
+  attack_delivery:
+    displayName: Тип атаки
+  physical_damage:
+    displayName: Физический урон
+  elemental_damage:
+    displayName: Стихийный урон
+  special_damage:
+    displayName: Особый урон
+  roles:
+    displayName: Роли
+  mechanics:
+    displayName: Механики
+  gender:
+    displayName: Пол
+  themes:
+    displayName: Тематика
+  needs_review:
+    displayName: Требует уточнения
+views:
+  - type: table
+    name: Все персонажи
+    order:
+      - file.name
+      - rarity
+      - position
+      - combat_range
+      - attack_delivery
+      - physical_damage
+      - elemental_damage
+      - special_damage
+      - roles
+      - mechanics
+      - gender
+      - themes
+      - needs_review
+  - type: table
+    name: Фронт
+    filters:
+      and:
+        - position == "Фронт"
+    order:
+      - file.name
+      - roles
+      - physical_damage
+      - elemental_damage
+      - special_damage
+      - mechanics
+  - type: table
+    name: Фланг
+    filters:
+      and:
+        - position == "Фланг"
+    order:
+      - file.name
+      - roles
+      - attack_delivery
+      - mechanics

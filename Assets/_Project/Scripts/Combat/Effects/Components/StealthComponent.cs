@@ -39,6 +39,7 @@ namespace Guildmaster.Combat.Effects.Components
 
             if (_stealthBuff != null) ctx.Combat.ApplyEffect(self, _stealthBuff, self);
             self.EmpowerDamageMult = _empowerMult;
+            self.BlinkBehindOnNextAttack = true; // удар из скрытности блинкует убийцу за спину цели (§10.5)
         }
     }
 }

@@ -28,8 +28,8 @@ MonoBehaviour:
     - rid: 5615026876324512081
       type: {class: WhirlDashLandingComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _displaceDistance: 4
-        _displaceTicks: 12
+        _displaceDistance: 6
+        _displaceTicks: 18
         _displaceDamageMult: 1.5
         _displaceWidth: 1.5
         _chainDistance: 1.5

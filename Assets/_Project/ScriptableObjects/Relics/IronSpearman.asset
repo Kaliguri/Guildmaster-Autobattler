@@ -18,7 +18,7 @@ MonoBehaviour:
   _resourceType: 2
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
   _autoAttackShape: 1
-  _autoAttackWidth: 1.5
+  _autoAttackWidth: 2.25
   _autoAttackEffects: []
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
@@ -35,7 +35,7 @@ MonoBehaviour:
     Value: -0.19999999
   - Stat: 9
     Op: 0
-    Value: 1.5
+    Value: 2
   - Stat: 3
     Op: 0
     Value: 4

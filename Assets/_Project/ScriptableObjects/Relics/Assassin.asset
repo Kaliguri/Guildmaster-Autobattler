@@ -39,6 +39,9 @@ MonoBehaviour:
   - Stat: 20
     Op: 0
     Value: 0.33333373
+  - Stat: 9
+    Op: 0
+    Value: 0
   _grantedEffects:
   - {fileID: 11400000, guid: e3be461416627c240b9d261a7f4b4b29, type: 2}
   - {fileID: 11400000, guid: 3404fe6e06b59da4ab445d73bd764994, type: 2}
@@ -56,7 +59,7 @@ MonoBehaviour:
       Enabled: 0
       FleeDist: 1.5
       FallbackDist: 3
-    _passiveTrigger: 2
+    _passiveTrigger: 1
     _passiveThresholdPct: 0.25
   _icon: {fileID: 0}
   _infoTags: []

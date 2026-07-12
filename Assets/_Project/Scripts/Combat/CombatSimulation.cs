@@ -337,8 +337,23 @@ namespace Guildmaster.Combat
                 PiercesRemaining = spawn.MaxPierces,
                 IsHeal           = spawn.IsHeal,
                 OnHitEffects     = spawn.OnHitEffects,
+                IsAutoAttack     = spawn.IsAutoAttack,
                 IsAlive          = true,
             };
+
+            // Бронь входящих тегов на трекинг-цель: пока снаряд с on-hit эффектами летит, таргетинг
+            // (PreferTagged/PreferUntagged) считает цель уже «тегнутой» → крио не шлёт вторую «Заморозку»
+            // в того же врага. Снимается в ProjectileSystem при разрешении снаряда (попал/деспавн).
+            if (spawn.TargetUnit != null && spawn.OnHitEffects != null)
+            {
+                Data.Definitions.EffectTag reserved = 0;
+                for (int e = 0; e < spawn.OnHitEffects.Length; e++)
+                    if (spawn.OnHitEffects[e] != null) reserved |= spawn.OnHitEffects[e].Tags;
+
+                projectile.ReservedTags = reserved;
+                spawn.TargetUnit.AddIncomingEffect(reserved);
+            }
+
             _projectiles.Add(projectile);
             OnProjectileSpawned?.Invoke(projectile); // презентация заведёт Bullet и будет следовать за ссылкой
         }
@@ -500,6 +515,7 @@ namespace Guildmaster.Combat
                 // Состояние авто-атаки — детерминированное, входит в чек-сумму (вики «14»).
                 hash ^= (ulong)(uint)u.AttackCooldownTicks * 374761393UL;
                 hash ^= (ulong)(uint)u.WindupRemaining     * 3266489917UL;
+                hash ^= (ulong)(uint)u.RecoveryRemaining   * 2654435761UL;
                 hash  = (hash << 13) | (hash >> 51);
             }
 

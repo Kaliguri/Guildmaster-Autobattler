@@ -93,7 +93,7 @@ namespace Guildmaster.Combat
             }
 
             ctx.DealDamage(new DamageRequest(
-                p.Source, target, p.RawDamage, p.DamageType, ctx.ArmorK));
+                p.Source, target, p.RawDamage, p.DamageType, ctx.ArmorK, isAutoAttack: p.IsAutoAttack));
 
             // On-hit эффекты (§9.1): «Заморозка» Криоманта вешается при попадании на каждую задетую цель.
             ApplyOnHitEffects(p, target, ctx);
@@ -151,7 +151,15 @@ namespace Guildmaster.Combat
         {
             for (int i = projectiles.Count - 1; i >= 0; i--)
             {
-                if (!projectiles[i].IsAlive) projectiles.RemoveAt(i);
+                Projectile p = projectiles[i];
+                if (p.IsAlive) continue;
+
+                // Снимаем бронь входящих тегов с цели (см. RuntimeUnit.IncomingEffectTags): снаряд
+                // разрешился — попал (реальный тег уже лёг в EffectTagMask) или деспавнулся (не долетел).
+                if (p.TargetUnit != null && p.ReservedTags != 0)
+                    p.TargetUnit.RemoveIncomingEffect(p.ReservedTags);
+
+                projectiles.RemoveAt(i);
             }
         }
     }
