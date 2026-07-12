@@ -72,15 +72,20 @@ namespace Guildmaster.Presentation
         private Vector2     _renderPosition;
 
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
-        private enum AttackPhase { None, Windup, FollowThrough }
+        // Своя фаза анимации атаки (НЕ путать с сим-AttackPhase на RuntimeUnit): охватывает ВЕСЬ цикл
+        // атаки — замах до кадра контакта + хвост-возврат, растянутый на «окно» до следующего замаха.
+        // За счёт этого у непрерывно атакующего клип атаки лупится бесшовно в темпе скорости атаки, а
+        // не мигает Attack↔Run в паузе между ударами.
+        private enum AttackAnimPhase { None, Windup, Recovery }
 
         private UnitAnimationState _state = UnitAnimationState.Idle;
-        private AttackPhase _attackPhase;
+        private AttackAnimPhase _attackPhase;
         private bool  _isDead;
         private float _deathRemaining;
 
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
         private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
+        private int   _recoveryGapTicks = 1;    // тиков от кадра контакта до следующего замаха (снап на конце замаха) — темп хвоста
         private float _runFrameRate = 10f;
 
         /// <summary>Связать вид с рантайм-юнитом.</summary>
@@ -125,7 +130,7 @@ namespace Guildmaster.Presentation
         {
             _visual = visual;
             _state = UnitAnimationState.Idle;
-            _attackPhase = AttackPhase.None;
+            _attackPhase = AttackAnimPhase.None;
 
             bool ready = _visual != null && _visual.HasClips && _animator != null && _baseController != null;
             _animActive = ready;
@@ -207,7 +212,12 @@ namespace Guildmaster.Presentation
 
             bool isMoving = _unit != null &&
                             (_unit.Position - _unit.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
-            bool attackPlaying = _attackPhase != AttackPhase.None;
+
+            // Attack показываем поверх Run, ПОКА идёт цикл атаки. Но мили-преследователя (движется и НЕ
+            // умеет бить на ходу) в паузе между ударами показываем бегущим, а не машущим на бегу; стрелок
+            // со «стрельбой на ходу» и любой атакующий на месте — лупят анимацию атаки.
+            bool attackWhileMoving = _unit?.Unit != null && _unit.Unit.CanAttackWhileMoving;
+            bool attackPlaying = _attackPhase != AttackAnimPhase.None && (attackWhileMoving || !isMoving);
 
             UnitAnimationState next = UnitAnimationSelector.Select(_isDead, attackPlaying, isMoving);
             if (next != _state)
@@ -234,26 +244,31 @@ namespace Guildmaster.Presentation
             _                         => IdleHash,
         };
 
-        // Управление фазой атаки от состояния сима (вики «14»): замах → кадр контакта → фоллоу-сру.
+        // Управление фазой анимации атаки от состояния сима (вики «14»): замах → кадр контакта → хвост.
+        // Замах скрабится по windup-тикам (маркер на тик урона); хвост — по остатку интервала до
+        // следующего замаха, поэтому у непрерывно бьющего клип лупится бесшовно в темпе скорости атаки.
         private void UpdateAttackPhase(float dt)
         {
-            if (_isDead) { _attackPhase = AttackPhase.None; return; }
+            if (_isDead) { _attackPhase = AttackAnimPhase.None; return; }
             if (_unit == null) return;
 
-            // Реконструкция после load/resync: сим в замахе, но события старта мы не видели.
-            if (_attackPhase == AttackPhase.None && _unit.IsWindingUp)
-                _attackPhase = AttackPhase.Windup;
+            // Идёт сим-замах → фаза замаха (покрывает и реконструкцию после load/resync без события старта).
+            if (_unit.IsWindingUp) { _attackPhase = AttackAnimPhase.Windup; return; }
 
             switch (_attackPhase)
             {
-                case AttackPhase.Windup:
-                    if (!_unit.IsWindingUp) _attackPhase = AttackPhase.FollowThrough; // замах кончился = кадр контакта
+                case AttackAnimPhase.Windup:
+                    // Замах кончился (кадр контакта) → хвост. Окно до следующего удара = текущий кулдаун:
+                    // на старте замаха он равнялся интервалу, за замах убыл до «интервал − замах».
+                    _recoveryGapTicks = Mathf.Max(1, _unit.AttackCooldownTicks);
+                    _attackPhase = AttackAnimPhase.Recovery;
                     break;
-                case AttackPhase.FollowThrough:
-                    // Хвост доигрывается свободным ходом; конец клипа → возврат к локомоции.
-                    if (_state == UnitAnimationState.Attack &&
-                        _animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
-                        _attackPhase = AttackPhase.None;
+
+                case AttackAnimPhase.Recovery:
+                    // Пока тикает кулдаун — цикл атаки жив, держим хвост (в непрерывной атаке следующий
+                    // замах придёт ровно на кулдаун 0 → бесшовный луп, без провала в Run). Кулдаун истёк
+                    // без нового замаха (цель ушла/вне радиуса) → атака кончилась, возврат к локомоции.
+                    if (_unit.AttackCooldownTicks <= 0) _attackPhase = AttackAnimPhase.None;
                     break;
             }
         }
@@ -265,18 +280,28 @@ namespace Guildmaster.Presentation
             switch (_state)
             {
                 case UnitAnimationState.Attack:
-                    if (_attackPhase == AttackPhase.Windup && _unit != null && _unit.WindupTicks > 0)
+                    if (_attackPhase == AttackAnimPhase.Windup && _unit != null && _unit.WindupTicks > 0)
                     {
-                        // Замах: скрабим клип до маркера пропорционально прогрессу windup — контакт (маркер)
-                        // приходится ровно на конец замаха = сим-тик урона.
+                        // Замах: скрабим [0..маркер] по прогрессу windup — контакт (маркер) приходится
+                        // ровно на конец замаха = сим-тик урона.
                         float progress = 1f - (float)_unit.WindupRemaining / _unit.WindupTicks;
                         progress = Mathf.Clamp01(progress);
                         _animator.speed = 0f;
                         _animator.Play(AttackHash, 0, progress * _attackMarkerNormalized);
                     }
+                    else if (_attackPhase == AttackAnimPhase.Recovery && _unit != null)
+                    {
+                        // Хвост: скрабим [маркер..1] по прогрессу окна до следующего замаха — клип
+                        // доигрывает ровно к старту следующего удара, цикл лупится в темпе скорости атаки.
+                        float gapProgress = 1f - (float)_unit.AttackCooldownTicks / _recoveryGapTicks;
+                        gapProgress = Mathf.Clamp01(gapProgress);
+                        float clipT = _attackMarkerNormalized + gapProgress * (1f - _attackMarkerNormalized);
+                        _animator.speed = 0f;
+                        _animator.Play(AttackHash, 0, clipT);
+                    }
                     else
                     {
-                        // Фоллоу-сру (или мгновенный удар): доигрываем хвост натуральным ходом.
+                        // Мгновенный удар без данных тайминга — доигрываем натуральным ходом.
                         _animator.speed = 1f;
                     }
                     break;
@@ -301,19 +326,27 @@ namespace Guildmaster.Presentation
         {
             if (!_animActive) return;
 
-            _attackPhase = _unit != null && _unit.IsWindingUp && _unit.WindupTicks > 0
-                ? AttackPhase.Windup
-                : AttackPhase.FollowThrough; // мгновенный удар (windup 0) — сразу хвост
+            if (_unit != null && _unit.IsWindingUp && _unit.WindupTicks > 0)
+            {
+                _attackPhase = AttackAnimPhase.Windup;
+            }
+            else
+            {
+                // Мгновенный удар (windup 0): сразу хвост, окно = весь интервал (кулдаун только что взведён).
+                _recoveryGapTicks = Mathf.Max(1, _unit != null ? _unit.AttackCooldownTicks : 1);
+                _attackPhase = AttackAnimPhase.Recovery;
+            }
         }
 
         /// <summary>Замах прерван (событие сима OnAttackInterrupted) — рвём свинг в idle.</summary>
         public void OnAttackInterrupted()
         {
-            _attackPhase = AttackPhase.None;
+            _attackPhase = AttackAnimPhase.None;
         }
 
         // Разворот тела по горизонтали (спрайты нарисованы «лицом вправо»):
-        //  • движемся — смотрим ТУДА, КУДА бежим (подход, кайт, побег рейнджера от цели за спиной);
+        //  • ИДЁТ АТАКА (замах/хвост) — смотрим на цель: стрелок целится во врага, даже пятясь (кайт/побег);
+        //  • иначе движемся — смотрим ТУДА, КУДА бежим (подход/побег без стрельбы);
         //  • стоим — смотрим на текущую цель.
         // Знак горизонтальной скорости берём со сглаживанием: знакопеременное дрожание сепарации
         // усредняется к нулю (не мельтешит разворотом), а осмысленный бег накапливает устойчивый знак.
@@ -326,6 +359,10 @@ namespace Guildmaster.Presentation
         {
             if (_sprite == null || _unit == null) return;
 
+            // Пока идёт цикл атаки — целимся в цель (приоритет над движением): стрелок смотрит на врага,
+            // даже отступая. Нет цели — падаем на разворот по движению ниже.
+            if (_attackPhase != AttackAnimPhase.None && FaceTarget(_unit.CurrentTarget)) return;
+
             float moveDx = _unit.Position.x - _unit.PreviousPosition.x;
             _facingVelX = Mathf.Lerp(_facingVelX, moveDx, 0.2f);
 
@@ -335,12 +372,17 @@ namespace Guildmaster.Presentation
                 return;
             }
 
-            RuntimeUnit target = _unit.CurrentTarget;
-            if (target == null || target.IsDead) return;
+            FaceTarget(_unit.CurrentTarget); // стоим — смотрим на цель
+        }
 
+        // Развернуть спрайт к цели по X. false = цели нет/мертва (разворот не сделан → фолбэк на движение).
+        // Почти вертикаль (в мёртвой зоне) считаем «уже повёрнут» — не дёргаем и не проваливаемся в движение.
+        private bool FaceTarget(RuntimeUnit target)
+        {
+            if (target == null || target.IsDead) return false;
             float dx = target.Position.x - _unit.Position.x;
-            if (Mathf.Abs(dx) < FacingTargetDeadzoneX) return;
-            _sprite.flipX = dx < 0f;
+            if (Mathf.Abs(dx) >= FacingTargetDeadzoneX) _sprite.flipX = dx < 0f;
+            return true;
         }
 
         // Инвиз (dev, §10.5): пока висит тег Stealth — тело полупрозрачно; иначе непрозрачно.
