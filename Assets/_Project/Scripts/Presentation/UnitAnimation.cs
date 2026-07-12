@@ -27,5 +27,25 @@ namespace Guildmaster.Presentation
             if (attackPlaying) return UnitAnimationState.Attack;
             return isMoving ? UnitAnimationState.Run : UnitAnimationState.Idle;
         }
+
+        /// <summary>
+        /// Играть ли поверх локомоции клип атаки (замах/удар/хвост). Разводит два случая — и именно
+        /// смешение их через сырое «сдвинулся ли юнит» ломало картинку (свинг рвался в Run от толчка
+        /// сепарации; у преследователя не рисовались замах/хвост — только момент удара):
+        /// <list type="bullet">
+        /// <item><b>Сим реально в свинге</b> (<paramref name="simInSwing"/> = Windup/Recovery): мили-юнит
+        /// зарутован симом, любое смещение — это толчок <c>SeparationSystem</c>, а НЕ бег. Клип атаки
+        /// показываем ВСЕГДА, игнорируя <paramref name="isMoving"/>.</item>
+        /// <item><b>Свинга нет, но рендер тянет хвост-цикл</b> до следующего удара
+        /// (<paramref name="attackCycleActive"/>): смещение здесь = настоящая локомоция. Держим клип атаки,
+        /// только если юнит стоит (боец на месте лупит атаку бесшовно) — иначе преследователь в паузе
+        /// между ударами бежит. Стрельба на ходу (<paramref name="canAttackWhileMoving"/>) всегда «в атаке».</item>
+        /// </list>
+        /// </summary>
+        public static bool AttackClipPlaying(bool attackCycleActive, bool simInSwing, bool canAttackWhileMoving, bool isMoving)
+        {
+            if (!attackCycleActive) return false;
+            return simInSwing || canAttackWhileMoving || !isMoving;
+        }
     }
 }

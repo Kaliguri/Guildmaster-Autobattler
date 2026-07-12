@@ -213,11 +213,16 @@ namespace Guildmaster.Presentation
             bool isMoving = _unit != null &&
                             (_unit.Position - _unit.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
 
-            // Attack показываем поверх Run, ПОКА идёт цикл атаки. Но мили-преследователя (движется и НЕ
-            // умеет бить на ходу) в паузе между ударами показываем бегущим, а не машущим на бегу; стрелок
-            // со «стрельбой на ходу» и любой атакующий на месте — лупят анимацию атаки.
+            // Attack показываем поверх Run, ПОКА идёт цикл атаки. Ключ — что «в атаке» решает СИМ-фаза,
+            // а не сырое смещение: во время замаха/хвоста мили зарутован (MovementSystem), и толчок
+            // сепарации НЕ должен рвать свинг в Run (иначе виден бег вместо замаха и пропадают замах/хвост
+            // у преследователя — остаётся будто только удар). isMoving разделяет стойку и погоню лишь в
+            // ПАУЗЕ между ударами (сим Idle, рендер ещё тянет хвост-цикл).
             bool attackWhileMoving = _unit?.Unit != null && _unit.Unit.CanAttackWhileMoving;
-            bool attackPlaying = _attackPhase != AttackAnimPhase.None && (attackWhileMoving || !isMoving);
+            bool simInSwing = _unit != null &&
+                              (_unit.Phase == AttackPhase.Windup || _unit.Phase == AttackPhase.Recovery);
+            bool attackPlaying = UnitAnimationSelector.AttackClipPlaying(
+                _attackPhase != AttackAnimPhase.None, simInSwing, attackWhileMoving, isMoving);
 
             UnitAnimationState next = UnitAnimationSelector.Select(_isDead, attackPlaying, isMoving);
             if (next != _state)
