@@ -165,10 +165,6 @@ namespace Guildmaster.ContentHub.Editor
             page.AddToClassList("gh-page");
             _content.Add(page);
 
-            var intro = new Label(PageIntro(_page));
-            intro.AddToClassList("gh-intro");
-            page.Add(intro);
-
             // Пакет 0: все страницы — заглушки. Наполнение приходит пакетами 2+.
             var stub = new Label($"«{PageLabel(_page)}» — заглушка (пакет 0). Наполнение: см. ТЗ 08.");
             stub.AddToClassList("gh-stub");
@@ -187,18 +183,6 @@ namespace Guildmaster.ContentHub.Editor
             Page.Doctor => "Doctor",
             Page.Configs => "Configs",
             _ => page.ToString(),
-        };
-
-        private static string PageIntro(Page page) => page switch
-        {
-            Page.Browser => "Обзор и правка всего контента: домены, фильтр, поиск, CRUD и детальный инспектор.",
-            Page.Balance => "Все статы всех юнитов в одной таблице: сортировка, хитмап, сравнение.",
-            Page.Coverage => "Сводки «каких много/мало» по доменам, тегам и типам + экспорт markdown.",
-            Page.Visual => "Превью юнитов: портрет, проигрывание анимаций, масштаб, сетка всех юнитов.",
-            Page.Audio => "Матрица озвучки: какие сущности/события уже имеют звук, а какие пусты.",
-            Page.Doctor => "Валидация всего контента одним списком: дубли id, битые ссылки, пустые поля.",
-            Page.Configs => "Конфиги-синглтоны и дизайн-SO с подсветкой отличий от код-дефолтов.",
-            _ => string.Empty,
         };
     }
 }

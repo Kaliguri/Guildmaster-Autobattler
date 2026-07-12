@@ -118,9 +118,9 @@
 }
 
 .gh-pill--active {
-    background-color: var(--gh-accent-dim);
+    background-color: var(--gh-accent);
     border-color: var(--gh-accent);
-    color: var(--gh-text);
+    color: var(--gh-on-accent);
 }
 
 .gh-pill-label {
@@ -150,18 +150,6 @@
 
 .gh-page {
     padding: 14px;
-}
-
-.gh-intro {
-    color: var(--gh-text-dim);
-    font-size: 12px;
-    white-space: normal;
-    margin-bottom: 12px;
-    padding: 8px 10px;
-    background-color: var(--gh-bg-sunken);
-    border-left-width: 2px;
-    border-left-color: var(--gh-accent);
-    border-radius: var(--gh-radius-sm);
 }
 
 .gh-stub {

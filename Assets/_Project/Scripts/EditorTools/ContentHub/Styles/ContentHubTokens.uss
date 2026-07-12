@@ -1,36 +1,37 @@
 /*
  * Content Hub design tokens (--gh-*). Rides on .gh-vars at the window root so every
  * descendant — including overlays (toasts, modals, popovers) mounted on the root — inherits.
- * Neutral dark editor palette. Max: recolor here, chrome (ContentHub.uss) consumes only var(--gh-*).
- * Pattern mirrors Bloodlines ThemeEditorTokens.uss.
+ * Palette sourced from maxgaida.site dark theme (warm stone + amber). Max: recolor here,
+ * chrome (ContentHub.uss) consumes only var(--gh-*). Pattern mirrors Bloodlines ThemeEditorTokens.uss.
  */
 .gh-vars {
-    /* surfaces */
-    --gh-bg: rgb(30, 31, 34);
-    --gh-bg-raised: rgb(38, 40, 44);
-    --gh-bg-sunken: rgb(24, 25, 28);
-    --gh-panel: rgb(43, 45, 50);
-    --gh-panel-hover: rgb(52, 55, 61);
+    /* surfaces (stone) */
+    --gh-bg: #0c0a09;          /* page canvas (stone-950) */
+    --gh-bg-raised: #1c1917;   /* toolbar / tab bar (stone-900) */
+    --gh-bg-sunken: #070605;   /* inset */
+    --gh-panel: #292524;       /* buttons / pill hover (stone-800) */
+    --gh-panel-hover: #34302c;
 
     /* lines */
-    --gh-border: rgb(58, 61, 68);
-    --gh-border-strong: rgb(74, 78, 86);
+    --gh-border: #2a2522;
+    --gh-border-strong: #3a332e;
 
     /* text */
-    --gh-text: rgb(220, 223, 228);
-    --gh-text-dim: rgb(150, 155, 163);
-    --gh-text-faint: rgb(108, 113, 121);
+    --gh-text: #f5f4f2;        /* warm white */
+    --gh-text-dim: #a8a29e;    /* secondary (stone-400) */
+    --gh-text-faint: #78706a;
 
-    /* accent (single knob drives active pills, accent line, focus) */
-    --gh-accent: rgb(120, 170, 255);
-    --gh-accent-dim: rgb(70, 100, 155);
-    --gh-on-accent: rgb(16, 18, 22);
+    /* accent (warm amber — single knob drives active pills, accent line, focus) */
+    --gh-accent: #f5a524;
+    --gh-accent-hover: #fbbf24;
+    --gh-accent-dim: #7a4d12;  /* muted amber for subtle fills (divider hover) */
+    --gh-on-accent: #1c1207;   /* dark text on amber */
 
     /* status */
-    --gh-success: rgb(120, 200, 130);
-    --gh-info: rgb(120, 170, 255);
-    --gh-warning: rgb(230, 190, 100);
-    --gh-error: rgb(232, 110, 110);
+    --gh-success: #7fb069;
+    --gh-info: #f5a524;
+    --gh-warning: #e0a03a;
+    --gh-error: #d9534f;
 
     /* metrics */
     --gh-radius: 5px;
