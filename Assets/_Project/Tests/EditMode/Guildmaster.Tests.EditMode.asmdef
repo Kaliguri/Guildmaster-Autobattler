@@ -9,7 +9,8 @@
     "Guildmaster.Data.Editor",
     "Guildmaster.Combat",
     "Guildmaster.Presentation",
-    "Guildmaster.Game"
+    "Guildmaster.Game",
+    "Guildmaster.ContentHub.Editor"
   ],
   "includePlatforms": [
     "Editor"

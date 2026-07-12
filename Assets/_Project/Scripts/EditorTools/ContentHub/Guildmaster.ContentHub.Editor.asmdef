@@ -4,7 +4,8 @@
   "references": [
     "Guildmaster.Data",
     "Guildmaster.Data.Editor",
-    "Guildmaster.Core"
+    "Guildmaster.Core",
+    "Guildmaster.Combat"
   ],
   "includePlatforms": [
     "Editor"
