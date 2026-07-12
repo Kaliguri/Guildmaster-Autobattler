@@ -515,6 +515,7 @@ namespace Guildmaster.Combat
                 // Состояние авто-атаки — детерминированное, входит в чек-сумму (вики «14»).
                 hash ^= (ulong)(uint)u.AttackCooldownTicks * 374761393UL;
                 hash ^= (ulong)(uint)u.WindupRemaining     * 3266489917UL;
+                hash ^= (ulong)(uint)u.RecoveryRemaining   * 2654435761UL;
                 hash  = (hash << 13) | (hash >> 51);
             }
 

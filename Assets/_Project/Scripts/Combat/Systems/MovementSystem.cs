@@ -49,18 +49,21 @@ namespace Guildmaster.Combat
                 // Контроль (корень/обездвиживание) — стоим на месте (вики «6» §5.3).
                 if (!unit.CanMove) continue;
 
-                bool windingUp        = unit.IsWindingUp;
+                // «Занят» атакой = замах ИЛИ восстановление (весь бэксвинг, вики «14»): в оба хвоста
+                // юнит либо стоит, либо (со «стрельбой на ходу») движется со штрафом. Recovery = 0 у
+                // большинства китов → фаза мгновенна, поведение как раньше; ненулевое — у стрелка/комбо.
+                bool firing            = unit.Phase == AttackPhase.Windup || unit.Phase == AttackPhase.Recovery;
                 bool attackWhileMoving = unit.Unit != null && unit.Unit.CanAttackWhileMoving;
 
-                // Замах авто-атаки рутит юнита (свинг на месте, вики «14») — КРОМЕ реликвий со
-                // «стрельбой на ходу» (§9.8): те продолжают движение со штрафом скорости.
-                if (windingUp && !attackWhileMoving) continue;
+                // Атака рутит юнита (свинг на месте) — КРОМЕ реликвий со «стрельбой на ходу» (§9.8):
+                // те продолжают движение со штрафом скорости.
+                if (firing && !attackWhileMoving) continue;
 
                 RuntimeUnit target = unit.CurrentTarget;
                 if (target == null) continue;
 
                 float moveSpeed = unit.Stats.Get(StatType.MoveSpeed);
-                if (windingUp && attackWhileMoving)
+                if (firing && attackWhileMoving)
                     moveSpeed *= Mathf.Max(0f, 1f - unit.Unit.MovingAttackSpeedPenaltyPct); // §9.8
 
                 float maxMove = moveSpeed * dt;

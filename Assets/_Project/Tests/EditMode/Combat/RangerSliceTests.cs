@@ -192,10 +192,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             RelicData movingRelic = TestRelic.Make(canAttackWhileMoving: true, movingAttackSpeedPenaltyPct: 0.5f);
 
             var moving = MakeUnit(0, team: 0, pos: Vector2.zero, range: 1f, relic: movingRelic);
-            moving.CurrentTarget = target; moving.IsWindingUp = true;
+            moving.CurrentTarget = target; moving.Phase = AttackPhase.Windup;
 
             var rooted = MakeUnit(1, team: 0, pos: Vector2.zero, range: 1f); // без флага
-            rooted.CurrentTarget = target; rooted.IsWindingUp = true;
+            rooted.CurrentTarget = target; rooted.Phase = AttackPhase.Windup;
 
             var baseline = MakeUnit(2, team: 0, pos: Vector2.zero, range: 1f, relic: movingRelic);
             baseline.CurrentTarget = target; // НЕ в замахе → полная скорость

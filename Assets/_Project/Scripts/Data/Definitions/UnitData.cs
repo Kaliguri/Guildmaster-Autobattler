@@ -37,6 +37,9 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Штраф MoveSpeed (0..1) пока идёт замах при стрельбе на ходу. Следопыт = 0.5 (−50%).")]
         [SerializeField] private float _movingAttackSpeedPenaltyPct = 0.5f;
 
+        [Tooltip("Восстановление (хвост-бэксвинг) после удара, сек. Юнит остаётся «занят» (рут/штраф скорости) весь этот хвост. 0 = мгновенный возврат в Idle (поведение Ф1).")]
+        [SerializeField] private float _attackRecoverySeconds;
+
         [Header("Resource gain (Phase 3)")]
         [Tooltip("Ресурс (мана) за авто-атаку, × ResourceGainEff, клампится к MaxResource. 0 = не копит от ударов. Копейщик = 5.")]
         [SerializeField] private float _resourceOnHit;
@@ -76,6 +79,7 @@ namespace Guildmaster.Data.Definitions
         public EffectData[] AutoAttackEffects => _autoAttackEffects;
         public bool CanAttackWhileMoving => _canAttackWhileMoving;
         public float MovingAttackSpeedPenaltyPct => _movingAttackSpeedPenaltyPct;
+        public float AttackRecoverySeconds => _attackRecoverySeconds;
         public float ResourceOnHit => _resourceOnHit;
         public StatModifier[] Stats => _stats;
         public EffectData[] GrantedEffects => _grantedEffects;

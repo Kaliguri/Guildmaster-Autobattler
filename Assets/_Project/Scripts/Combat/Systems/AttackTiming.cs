@@ -44,6 +44,17 @@ namespace Guildmaster.Combat
         /// (удар не совпадает с тиком старта следующей атаки). Пустой клип (<paramref name="frameCount"/> ≤ 0)
         /// или <paramref name="hitFrame"/> ≤ 0 → нижний кламп.
         /// </summary>
+        /// <summary>
+        /// Восстановление (хвост-бэксвинг) после удара в тиках из секунд. Детерминированное округление
+        /// (<see cref="MidpointRounding.AwayFromZero"/>), как у интервала. ≤ 0 сек → 0 тиков (нет восстановления).
+        /// </summary>
+        public static int RecoveryTicks(float seconds)
+        {
+            if (seconds <= 0f) return 0;
+            int ticks = (int)Math.Round(SimConstants.TickRate * seconds, MidpointRounding.AwayFromZero);
+            return ticks < 0 ? 0 : ticks;
+        }
+
         public static int WindupTicks(int hitFrame, int frameCount, int intervalTicks)
         {
             int upper = intervalTicks - 1;

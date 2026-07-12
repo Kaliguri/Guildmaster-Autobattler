@@ -30,12 +30,14 @@ namespace Guildmaster.Combat
                 RuntimeUnit unit = units[i];
                 if (unit.IsDead) continue;
 
-                // Прерывание замаха при потере дееспособности (стан/сон) или в полёте (§9.9). CanAct
-                // посчитан на прошлом тике (Effects идёт ПОСЛЕ AutoAttack) — окно в 1 тик (вики «14»).
+                // Прерывание при потере дееспособности (стан/сон) или в полёте (§9.9). CanAct посчитан
+                // на прошлом тике (Effects идёт ПОСЛЕ AutoAttack) — окно в 1 тик (вики «14»). Замах →
+                // сброс+рефанд; восстановление → отмена хвоста (урон уже нанесён, рефанда нет), Idle.
                 if (!unit.CanAct || unit.DisplacedTicksRemaining > 0)
                 {
-                    if (unit.IsWindingUp) Interrupt(unit, ctx);
-                    continue; // оглушён/в полёте и не в замахе — кулдаун не тикает (как было)
+                    if (unit.Phase == AttackPhase.Windup) Interrupt(unit, ctx);
+                    else if (unit.Phase == AttackPhase.Recovery) { unit.Phase = AttackPhase.Idle; unit.RecoveryRemaining = 0; }
+                    continue; // оглушён/в полёте — кулдаун не тикает (как было)
                 }
 
                 // Якорный кулдаун тикает КАЖДЫЙ тик, в т.ч. во время замаха: период damage→damage = интервал,
@@ -44,10 +46,18 @@ namespace Guildmaster.Combat
                 if (unit.AttackCooldownTicks > 0) unit.AttackCooldownTicks--;
 
                 // Фаза замаха: досчитываем до кадра контакта.
-                if (unit.IsWindingUp)
+                if (unit.Phase == AttackPhase.Windup)
                 {
                     unit.WindupRemaining--;
                     if (unit.WindupRemaining <= 0) Resolve(unit, ctx);
+                    continue;
+                }
+
+                // Фаза восстановления: досчитываем хвост, новый замах начать нельзя, пока не истечёт.
+                if (unit.Phase == AttackPhase.Recovery)
+                {
+                    unit.RecoveryRemaining--;
+                    if (unit.RecoveryRemaining <= 0) unit.Phase = AttackPhase.Idle;
                     continue;
                 }
 
@@ -80,7 +90,7 @@ namespace Guildmaster.Combat
             int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
 
             unit.WindupTicks = unit.WindupRemaining = AttackTiming.WindupTicks(hitFrame, frameCount, intervalTicks);
-            unit.IsWindingUp = true;
+            unit.Phase = AttackPhase.Windup;
             unit.WindupTarget = target;
 
             ctx.NotifyAttackStarted(unit, target);
@@ -92,8 +102,10 @@ namespace Guildmaster.Combat
         /// <summary>Конец замаха: нанести урон по снапшот-цели, если она жива и в радиусе; иначе вхолостую.</summary>
         private void Resolve(RuntimeUnit unit, ICombatContext ctx)
         {
-            unit.IsWindingUp = false;
+            // Замах кончился → хвост-восстановление (или сразу Idle, если восстановления нет). Переход
+            // выполняем ДО расчёта урона: юнит «занят» бэксвингом независимо от того, попал он или вхолостую.
             unit.WindupRemaining = 0;
+            EnterRecovery(unit);
             RuntimeUnit target = unit.WindupTarget;
             unit.WindupTarget = null;
 
@@ -179,11 +191,28 @@ namespace Guildmaster.Combat
         private static bool IsHealMode(RuntimeUnit unit) =>
             unit.Unit?.Ai != null && unit.Unit.Ai.AutoAttackMode == AutoAttackMode.Heal;
 
+        /// <summary>Хвост-восстановление после удара: Recovery на N тиков, либо сразу Idle, если восстановления нет (0 сек).</summary>
+        private static void EnterRecovery(RuntimeUnit unit)
+        {
+            int ticks = unit.Unit != null ? AttackTiming.RecoveryTicks(unit.Unit.AttackRecoverySeconds) : 0;
+            if (ticks <= 0)
+            {
+                unit.Phase = AttackPhase.Idle;
+                unit.RecoveryRemaining = 0;
+            }
+            else
+            {
+                unit.Phase = AttackPhase.Recovery;
+                unit.RecoveryRemaining = ticks;
+            }
+        }
+
         /// <summary>Прерывание замаха: сброс + рефанд кулдауна (бьёт снова, как только сможет) + событие.</summary>
         private static void Interrupt(RuntimeUnit unit, ICombatContext ctx)
         {
-            unit.IsWindingUp = false;
+            unit.Phase = AttackPhase.Idle;
             unit.WindupRemaining = 0;
+            unit.RecoveryRemaining = 0;
             unit.WindupTarget = null;
             unit.AttackCooldownTicks = 0;
             ctx.NotifyAttackInterrupted(unit);

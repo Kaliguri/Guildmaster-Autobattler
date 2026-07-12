@@ -80,16 +80,25 @@ namespace Guildmaster.Combat
         /// </summary>
         public int DisplacedTicksRemaining;
 
-        // --- Авто-атака: двухфазный windup на int-тиках (вики «14») ---
+        // --- Авто-атака: FSM фаз на int-тиках (вики «14») ---
 
         /// <summary>Кулдаун автоатаки в сим-тиках. 0 = готов к атаке. Рестартится в начале замаха (якорь).</summary>
         public int AttackCooldownTicks;
 
-        /// <summary>Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Рутит движение (MovementSystem).</summary>
-        public bool IsWindingUp;
+        /// <summary>
+        /// Фаза боевого действия — единый источник истины «занятости» (Idle/Windup/Recovery). Пишет только
+        /// <c>AutoAttackSystem</c>; движение/презентация/способности читают. См. <see cref="AttackPhase"/>.
+        /// </summary>
+        public AttackPhase Phase;
+
+        /// <summary>Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Производный алиас <see cref="Phase"/>.</summary>
+        public bool IsWindingUp => Phase == AttackPhase.Windup;
 
         /// <summary>Тиков замаха осталось до кадра контакта. Когда ≤ 0 — резолв удара.</summary>
         public int WindupRemaining;
+
+        /// <summary>Тиков восстановления (хвост после удара) осталось. Когда ≤ 0 — переход в Idle. 0 = нет восстановления.</summary>
+        public int RecoveryRemaining;
 
         /// <summary>Полная длительность текущего замаха в тиках (посчитана раз на старте, не пересчитывается на лету).</summary>
         public int WindupTicks;
