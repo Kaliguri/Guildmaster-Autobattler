@@ -56,6 +56,21 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Доля HP-урона от MaxHP цели, при которой цифра достигает NumberMaxScale.")]
         [SerializeField, Range(0.01f, 1f)] private float _numberFullFrac = 0.25f;
 
+        // --- Смерть — вспышка + разлёт спрайта на осколки (DeathShatter/UnitView) ---
+        [Header("Death shatter — вспышка + разлёт на треугольники")]
+        [Tooltip("За сколько секунд спрайт вспыхивает в белый ПЕРЕД расколом.")]
+        [SerializeField] private float _shatterFlashIn = 0.08f;
+        [Tooltip("Длительность самого разлёта осколков, сек.")]
+        [SerializeField] private float _shatterDuration = 0.55f;
+        [Tooltip("Сила разлёта — как далеко улетают осколки (мировые ед.).")]
+        [SerializeField] private float _shatterExplode = 1.6f;
+        [Tooltip("Гравитация осколков (тянет вниз к концу).")]
+        [SerializeField] private float _shatterGravity = 3f;
+        [Tooltip("Скорость вращения осколков (рад/раскол).")]
+        [SerializeField] private float _shatterSpin = 6f;
+        [Tooltip("Разброс направлений от радиального (рад) — 0 = строго от центра.")]
+        [SerializeField] private float _shatterSpread = 0.8f;
+
         // --- Slowmo — добивающий удар (CombatFeelDirector) ---
         [Header("Slowmo — добивающий удар (kill)")]
         [Tooltip("Во сколько замедлить мир на добивающий удар.")]
@@ -99,6 +114,13 @@ namespace Guildmaster.Presentation.Design
 
         public float NumberMaxScale    => _numberMaxScale;
         public float NumberFullFrac    => _numberFullFrac;
+
+        public float ShatterFlashIn    => _shatterFlashIn;
+        public float ShatterDuration   => _shatterDuration;
+        public float ShatterExplode    => _shatterExplode;
+        public float ShatterGravity    => _shatterGravity;
+        public float ShatterSpin       => _shatterSpin;
+        public float ShatterSpread     => _shatterSpread;
 
         public float KillSlowFactor    => _killSlowFactor;
         public float KillSlowRelease   => _killSlowRelease;

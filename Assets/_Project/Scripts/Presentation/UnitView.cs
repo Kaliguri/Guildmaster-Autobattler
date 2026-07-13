@@ -110,6 +110,10 @@ namespace Guildmaster.Presentation
         private bool  _isDead;
         private float _deathRemaining;
 
+        // Секвенс смерти: ждём конца hit-flash → death-клип → на конце разлёт на осколки (DeathShatter).
+        private enum DeathPhase { None, WaitFlash, Dying, Shattering }
+        private DeathPhase _deathPhase;
+
         private bool _freeRun;        // бой окончен → доигрываем анимации натурально, не скрабим по замершему симу
         private bool _freeRunSettled; // уже осели в Idle после доигрыша
         private bool  _holdHitFrame;  // финишер: держим кадр контакта весь финальный slowmo
@@ -268,6 +272,9 @@ namespace Guildmaster.Presentation
                 return;
             }
 
+            // Смерть перехватывает обычную анимацию: ждём hit-flash → death-клип → разлёт (см. DriveDeath).
+            if (_deathPhase != DeathPhase.None) { DriveDeath(); return; }
+
             ApplyFacing(); // разворот по цели — до guard'а анимации (нужен и статичным спрайтам)
 
             if (!_animActive) return;
@@ -312,12 +319,6 @@ namespace Guildmaster.Presentation
             }
 
             DriveAnimation(dt);
-
-            if (_isDead && _deathRemaining > 0f)
-            {
-                _deathRemaining -= dt;
-                if (_deathRemaining <= 0f) gameObject.SetActive(false);
-            }
         }
 
         private static int HashFor(UnitAnimationState state) => state switch
@@ -614,7 +615,11 @@ namespace Guildmaster.Presentation
                 .AddTo(gameObject);
         }
 
-        /// <summary>Вызывается при гибели юнита.</summary>
+        /// <summary>
+        /// Вызывается при гибели юнита. Секвенс: сначала даём догаснуть hit-flash (не рвём моргание удара),
+        /// затем проигрываем death-клип, на конце которого — вспышка в белый и разлёт спрайта на осколки
+        /// (<see cref="DeathShatter"/>). Сам разлёт/тайминги ведёт <see cref="DriveDeath"/>.
+        /// </summary>
         public void OnDeath()
         {
             _onDeathFeedback?.Invoke();
@@ -632,17 +637,66 @@ namespace Guildmaster.Presentation
                 if (_nameLabel != null) _nameLabel.gameObject.SetActive(false);
             }
 
-            if (_animActive)
+            _isDead     = true;
+            _deathPhase = DeathPhase.WaitFlash; // дальше — DriveDeath (ждём hit-flash → death → разлёт)
+        }
+
+        // Секвенс смерти. WaitFlash: держим кадр, пока не догорит моргание удара. Dying: проигрываем death-клип
+        // натурально. По его концу (или сразу, если нет анимации) — StartShatter. Shattering: ждём, DeathShatter
+        // сам доиграет и по завершении спрячет юнит.
+        private void DriveDeath()
+        {
+            switch (_deathPhase)
             {
-                _isDead = true;
-                AnimationClip death = _visual != null ? _visual.Clip(UnitAnimationState.Death) : null;
-                _deathRemaining = death != null ? death.length : 1f; // нет длины → держим ~1с и прячемся
-                if (_deathRemaining <= 0f) gameObject.SetActive(false); // нет death-клипа → прячемся сразу
+                case DeathPhase.WaitFlash:
+                    if (_animActive) _animator.speed = 0f; // держим кадр, пока гаснет вспышка удара
+                    // Ждём конца hit-flash: и активного твина, и остаточной величины (моргание должно догореть).
+                    if (_flashHandle.IsActive() || _flashAmount > 0.02f) return;
+
+                    if (_animActive)
+                    {
+                        _state = UnitAnimationState.Death;
+                        _animator.Play(DeathHash, 0, 0f);
+                        _animator.speed = 1f;
+                        AnimationClip death = _visual != null ? _visual.Clip(UnitAnimationState.Death) : null;
+                        _deathRemaining = death != null && death.length > 0f ? death.length : 0.6f;
+                        _deathPhase = DeathPhase.Dying;
+                    }
+                    else
+                    {
+                        StartShatter();
+                    }
+                    break;
+
+                case DeathPhase.Dying:
+                    _animator.speed = 1f;
+                    _deathRemaining -= Time.deltaTime;
+                    if (_deathRemaining <= 0f) StartShatter();
+                    break;
+
+                case DeathPhase.Shattering:
+                    // Разлёт ведёт DeathShatter; по завершении он вызовет callback → gameObject.SetActive(false).
+                    break;
             }
-            else
+        }
+
+        // Конец death-клипа: прячем исходный спрайт и запускаем разлёт на осколки из его текущего кадра.
+        private void StartShatter()
+        {
+            _deathPhase = DeathPhase.Shattering;
+
+            if (_sprite == null || _sprite.sprite == null)
             {
-                gameObject.SetActive(false); // статичный фолбэк — прежнее поведение
+                gameObject.SetActive(false); // нечего колоть — просто убираем
+                return;
             }
+
+            var go = new GameObject("DeathShatter");
+            go.transform.SetParent(transform, worldPositionStays: false);
+            var shatter = go.AddComponent<DeathShatter>();
+            shatter.Play(_sprite, _feel, () => gameObject.SetActive(false));
+
+            _sprite.enabled = false; // дальше показывают осколки, исходный спрайт прячем
         }
 
 #if UNITY_EDITOR
