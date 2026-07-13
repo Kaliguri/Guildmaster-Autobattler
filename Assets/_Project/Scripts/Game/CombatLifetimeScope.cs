@@ -135,7 +135,13 @@ namespace Guildmaster.Game
             if (FindFirstObjectByType<Presentation.CameraModeController>() != null)
             {
                 builder.RegisterComponentInHierarchy<Presentation.CombatFocusTarget>();
-                builder.RegisterComponentInHierarchy<Presentation.CameraModeController>();
+                builder.RegisterComponentInHierarchy<Presentation.CameraModeController>()
+                       .AsSelf().As<Presentation.IScreenShake>();
+            }
+            else
+            {
+                // Нет камеры-рига → тряска-заглушка, чтобы CombatFeelDirector резолвился и бой не падал.
+                builder.RegisterInstance<Presentation.IScreenShake>(new Presentation.NullScreenShake());
             }
         }
 
