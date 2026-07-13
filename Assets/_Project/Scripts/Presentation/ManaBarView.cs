@@ -5,42 +5,78 @@ using UnityEngine.UI;
 namespace Guildmaster.Presentation
 {
     /// <summary>
-    /// Бар ресурса (мана/ярость) — по образцу <see cref="HealthBarView"/>, но для
-    /// <see cref="RuntimeUnit.CurrentResource"/> / <see cref="Data.Stats.StatType.MaxResource"/>.
-    /// Истинная доля ставится мгновенно поллингом из <see cref="UnitView"/>; «призрак» плавно догоняет
-    /// по рендер-времени (НЕ сим — на чек-сумму не влияет), показывая свежую трату/добор ресурса.
+    /// Сегментированный бар ресурса (мана/ярость) на том же шейдере, что и HP-бар
+    /// (<c>Guildmaster/UI/SegmentedHealthBar</c>), но БЕЗ щита: заливка ресурса + насечки фиксированного
+    /// значения (<see cref="_tickValue"/> ресурса на минорную насечку, жирная каждые <see cref="_majorTickValue"/>).
+    /// Нормировка простая — <c>scale = MaxResource</c> (ресурс не выходит за макс), поэтому частота насечек
+    /// постоянна для юнита. Chip-дельта показывает свежую трату/добор.
     ///
-    /// В отличие от HP: нет «низкого» красного порога (мало ресурса — не опасность, просто мало) и бар
-    /// целиком скрывается для юнитов без ресурса (<c>MaxResource ≤ 0</c> — болванчики, безресурсные реликвии).
+    /// <para>Скрывается целиком для безресурсных юнитов (<c>MaxResource ≤ 0</c> — болванчики, безресурсные реликвии).
+    /// Динамика гонится в per-instance материал по рендер-времени (НЕ по сим-тику).</para>
     /// </summary>
     public sealed class ManaBarView : MonoBehaviour
     {
-        [Header("Слои (Image Filled Horizontal, origin Left; fillAmount = доля [0..1])")]
-        [Tooltip("Передний слой — истинный ресурс.")]
-        [SerializeField] private Image _mainImage;
-        [Tooltip("Задний слой — догоняющий «призрак».")]
-        [SerializeField] private Image _trailImage;
+        private const string ShaderName = "Guildmaster/UI/SegmentedHealthBar";
 
-        [Header("Цвета")]
-        [Tooltip("Основной цвет ресурса.")]
-        [SerializeField] private Color _fillColor = new Color(0.3f, 0.55f, 1f);
-        [Tooltip("Дельта недавно потраченного ресурса (трата — призрак впереди истинного).")]
-        [SerializeField] private Color _spendTrailColor = new Color(0.55f, 0.75f, 1f);
-        [Tooltip("Дельта недавно добранного ресурса (добор — истинный впереди призрака).")]
-        [SerializeField] private Color _gainTrailColor  = new Color(0.7f, 0.95f, 1f);
+        [Header("Рендер")]
+        [Tooltip("Единственный Image бара (тип Simple, на всю ширину, белый vertex-цвет).")]
+        [SerializeField] private Image _fillImage;
 
-        [Header("Анимация догона")]
-        [Tooltip("Пауза перед стартом догона, сек.")]
+        [Tooltip("Шаблон материала (шейдер SegmentedHealthBar) — задаёт статичный вид (цвета/толщину насечек). " +
+                 "В рантайме клонируется. Пусто → Shader.Find.")]
+        [SerializeField] private Material _barMaterial;
+
+        [Header("Насечки")]
+        [Tooltip("Сколько ресурса на одну (минорную) насечку. По умолчанию 5.")]
+        [SerializeField] private float _tickValue = 5f;
+        [Tooltip("Через сколько ресурса идёт ЖИРНАЯ насечка. По умолчанию 20. Кратно tickValue.")]
+        [SerializeField] private float _majorTickValue = 20f;
+
+        [Header("Цвет ресурса (фолбэк)")]
+        [SerializeField] private Color _fallbackFillColor = new Color(0.30f, 0.55f, 1.0f);
+
+        [Header("Анимация chip-дельты")]
         [SerializeField] private float _trailDelay = 0.15f;
-        [Tooltip("Скорость догона, доли ресурса в секунду.")]
         [SerializeField] private float _trailSpeed = 1.2f;
 
-        // Истинная доля (ставится мгновенно) и догоняющая.
-        private float _targetFraction = 1f;
-        private float _trailFraction  = 1f;
+        // Абсолютное состояние ресурса.
+        private float _max = 1f;
+        private float _current;
+        private float _trail;          // догоняющий current, в абсолюте
         private float _delayRemaining;
 
-        /// <summary>Привязать к юниту: скрыть для безресурсных, иначе оба слоя — на текущую долю мгновенно.</summary>
+        private Material _mat;
+
+        private static readonly int IdHpFrac       = Shader.PropertyToID("_HpFrac");
+        private static readonly int IdCombinedFrac = Shader.PropertyToID("_CombinedFrac");
+        private static readonly int IdTrailFrac    = Shader.PropertyToID("_TrailFrac");
+        private static readonly int IdSegments     = Shader.PropertyToID("_Segments");
+        private static readonly int IdMajorEvery   = Shader.PropertyToID("_MajorEvery");
+        private static readonly int IdHpColor      = Shader.PropertyToID("_HpColor");
+
+        private void Awake() => EnsureMaterial();
+
+        private void EnsureMaterial()
+        {
+            if (_mat != null) return;
+
+            if (_barMaterial != null)
+                _mat = new Material(_barMaterial);
+            else
+            {
+                Shader sh = Shader.Find(ShaderName);
+                if (sh != null) _mat = new Material(sh);
+            }
+
+            if (_mat == null) return;
+            if (_fillImage != null) _fillImage.material = _mat;
+
+            _mat.SetFloat(IdMajorEvery, Mathf.Max(1f, _majorTickValue / Mathf.Max(0.0001f, _tickValue)));
+            // Если материал не задаёт цвет ресурса — ставим фолбэк (обычно материал уже синий).
+            if (_barMaterial == null) _mat.SetColor(IdHpColor, _fallbackFillColor);
+        }
+
+        /// <summary>Привязать к юниту: скрыть для безресурсных, иначе — на текущую долю мгновенно.</summary>
         public void Bind(RuntimeUnit unit)
         {
             float max = unit.Stats.Get(Data.Stats.StatType.MaxResource);
@@ -48,56 +84,54 @@ namespace Guildmaster.Presentation
             gameObject.SetActive(hasResource);
             if (!hasResource) return;
 
-            _targetFraction = Mathf.Clamp01(unit.CurrentResource / max);
-            _trailFraction  = _targetFraction;
+            EnsureMaterial();
+            _max     = Mathf.Max(1f, max);
+            _current = Mathf.Clamp(unit.CurrentResource, 0f, _max);
+            _trail   = _current;
             _delayRemaining = 0f;
-            Layout();
+            PushDynamicProps();
         }
 
-        /// <summary>Обновить истинную долю ресурса (поллинг из UnitView каждый кадр).</summary>
+        /// <summary>Обновить ресурс (поллинг из UnitView каждый кадр).</summary>
         public void UpdateBar(float current, float max)
         {
             if (max <= 0f) return;
-            float fraction = Mathf.Clamp01(current / max);
-            if (!Mathf.Approximately(fraction, _targetFraction))
-                _delayRemaining = _trailDelay;   // ресурс изменился — перезапустить паузу догона
-            _targetFraction = fraction;
+            float newMax = Mathf.Max(1f, max);
+            float newCur = Mathf.Clamp(current, 0f, newMax);
+            if (!Mathf.Approximately(newCur, _current))
+                _delayRemaining = _trailDelay;
+            _max     = newMax;
+            _current = newCur;
         }
 
-        // Догон призрака идёт по рендер-времени, не по сим-тику.
         private void Update()
         {
-            if (!Mathf.Approximately(_trailFraction, _targetFraction))
+            if (!Mathf.Approximately(_trail, _current))
             {
                 if (_delayRemaining > 0f)
                     _delayRemaining -= Time.deltaTime;
                 else
-                    _trailFraction = Mathf.MoveTowards(
-                        _trailFraction, _targetFraction, _trailSpeed * Time.deltaTime);
+                    _trail = Mathf.MoveTowards(_trail, _current, _trailSpeed * _max * Time.deltaTime);
             }
 
-            Layout();
+            PushDynamicProps();
         }
 
-        // Спереди — меньшая доля (main, истинный цвет), сзади — большая (trail, цвет по направлению).
-        private void Layout()
+        private void PushDynamicProps()
         {
-            float lo = Mathf.Min(_targetFraction, _trailFraction);
-            float hi = Mathf.Max(_targetFraction, _trailFraction);
+            if (_mat == null) return;
 
-            if (_mainImage != null)
-            {
-                _mainImage.fillAmount = lo;
-                _mainImage.color = _fillColor;
-            }
+            float scale = Mathf.Max(_max, 1f);
+            float frac = _current / scale;
+            _mat.SetFloat(IdHpFrac,       frac);
+            _mat.SetFloat(IdCombinedFrac, frac);          // ресурс без щита: combined = fill
+            _mat.SetFloat(IdTrailFrac,    _trail / scale);
+            _mat.SetFloat(IdSegments,     Mathf.Max(1f, scale / Mathf.Max(0.0001f, _tickValue)));
+        }
 
-            if (_trailImage != null)
-            {
-                _trailImage.fillAmount = hi;
-                _trailImage.color = _targetFraction < _trailFraction
-                    ? _spendTrailColor   // потратили ресурс
-                    : _gainTrailColor;   // добрали ресурс
-            }
+        private void OnDestroy()
+        {
+            if (_mat != null) Destroy(_mat);
         }
     }
 }

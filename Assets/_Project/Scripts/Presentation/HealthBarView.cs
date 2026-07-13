@@ -5,119 +5,172 @@ using UnityEngine.UI;
 namespace Guildmaster.Presentation
 {
     /// <summary>
-    /// Двойной HP-бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA) на uGUI.
-    /// Истинная доля ставится мгновенно поллингом из <see cref="UnitView"/>; призрак плавно
-    /// догоняет её по рендер-времени (НЕ сим — на чек-сумму не влияет).
+    /// Надголовный HP/щит-бар на uGUI (world-space). Один <see cref="Image"/> с кастомным шейдером
+    /// <c>Guildmaster/UI/SegmentedHealthBar</c> рисует за проход HP, щит, пустоту, chip-дельту урона/хила и
+    /// насечки. Насечки — фиксированного ЗНАЧЕНИЯ (<see cref="_tickValue"/> EHP на насечку): их частота
+    /// (<c>scale / tickValue</c>) растёт вместе с суммарным EHP, ширина бара при этом не меняется (трюк LoL).
     ///
-    /// Оба слоя — <see cref="Image"/> с типом Filled (Horizontal, origin Left): доля = <c>fillAmount</c>.
-    /// Порядок в иерархии: Background → TrailFill → MainFill (main рисуется поверх trail). Спереди
-    /// видна МЕНЬШАЯ доля (main, зелёный/красный), сзади — БОЛЬШАЯ (trail), поэтому видна цветная «дельта»:
-    ///   • урон (target &lt; ghost): дельта [target, ghost] цветом <see cref="_damageTrailColor"/>;
-    ///   • хил   (target &gt; ghost): дельта [ghost, target] цветом <see cref="_healTrailColor"/>.
+    /// <para>Нормировка: <c>scale = max(maxHP, HP+щит, trail)</c>. Без щита <c>scale = maxHP</c> — насечки
+    /// как в LoL; щит появился — сгустились, доля цвета показывает соотношение HP↔щит.</para>
+    ///
+    /// <para>Разделение источников (чтобы материал был песочницей): <b>код</b> гонит только динамику
+    /// (доли, плотность насечек) и цвета HP/щита из палитры; <b>материал</b> владеет статичным видом
+    /// (цвета пустоты/урона/хила/насечек, толщина насечек) — крути его слайдеры в edit-mode и видишь бар
+    /// живьём, эти же значения идут в бой. Всё гонится в per-instance материал по рендер-времени
+    /// (НЕ по сим-тику — на чек-сумму не влияет).</para>
     /// </summary>
     public sealed class HealthBarView : MonoBehaviour
     {
-        [Header("Слои (Image Filled Horizontal, origin Left; fillAmount = доля [0..1])")]
-        [Tooltip("Передний слой — истинное HP (зелёный/красный).")]
-        [SerializeField] private Image _mainImage;
-        [Tooltip("Задний слой — догоняющий «призрак».")]
-        [SerializeField] private Image _trailImage;
+        private const string ShaderName = "Guildmaster/UI/SegmentedHealthBar";
 
-        [Header("Цвет main (истинное HP)")]
-        [Tooltip("Фолбэк-цвет основного слоя, если презентация не подала цвет по принадлежности " +
-                 "(CombatColorPalette). В бою цвет задаётся из палитры (ally/enemy), см. SetMainColor.")]
-        [SerializeField] private Color _fallbackColor = new Color(0.2f, 0.9f, 0.2f);
+        [Header("Рендер")]
+        [Tooltip("Единственный Image бара (тип Simple, на всю ширину, белый vertex-цвет). На него ставится инстанс материала.")]
+        [SerializeField] private Image _fillImage;
 
-        // Цвет основного слоя по принадлежности к смотрящему (ally/enemy) — подаёт презентация из
-        // CombatColorPalette (первый SO дизайн-системы). Пока не подан — используем _fallbackColor.
-        private Color _mainColor;
-        private bool  _hasMainColor;
+        [Tooltip("Шаблон материала (шейдер SegmentedHealthBar) — задаёт статичный вид (цвета пустоты/урона/" +
+                 "хила/насечек, толщину). В рантайме клонируется per-instance. Пусто → Shader.Find (для билда " +
+                 "шейдер должен быть Always Included).")]
+        [SerializeField] private Material _barMaterial;
 
-        [Header("Цвета trail (догоняющая дельта)")]
-        [Tooltip("Дельта недавно потерянного HP (урон).")]
-        [SerializeField] private Color _damageTrailColor = new Color(0.95f, 0.85f, 0.2f);
-        [Tooltip("Дельта недавно восстановленного HP (хил).")]
-        [SerializeField] private Color _healTrailColor   = new Color(0.6f, 1f, 0.7f);
+        [Header("Насечки (плотность — код; вид — материал)")]
+        [Tooltip("Сколько EHP на одну (минорную) насечку. Тюнер под диапазон HP. Больше — реже насечки.")]
+        [SerializeField] private float _tickValue = 200f;
 
-        [Header("Анимация догона")]
+        [Tooltip("Через сколько EHP идёт ЖИРНАЯ насечка (якорь абсолюта, напр. каждые 1000). Кратно tickValue.")]
+        [SerializeField] private float _majorTickValue = 1000f;
+
+        [Header("Цвета HP/щита (фолбэк; в бою — из CombatColorPalette)")]
+        [SerializeField] private Color _fallbackHpColor = new Color(0.30f, 0.85f, 0.35f);
+        [SerializeField] private Color _fallbackShieldColor = new Color(0.62f, 0.86f, 1.0f);
+
+        [Header("Анимация chip-дельты")]
         [Tooltip("Пауза перед стартом догона, сек.")]
         [SerializeField] private float _trailDelay = 0.25f;
-        [Tooltip("Скорость догона, доли HP в секунду.")]
+        [Tooltip("Скорость догона в долях scale в секунду.")]
         [SerializeField] private float _trailSpeed = 0.8f;
 
-        // Истинная доля (ставится мгновенно) и догоняющая.
-        private float _targetFraction = 1f;
-        private float _trailFraction  = 1f;
+        // Абсолютное состояние (в EHP), из него каждый кадр считаются доли для шейдера.
+        private float _maxHp = 1f;
+        private float _hp;
+        private float _shield;
+        private float _trailEhp;      // догоняющий combined (HP+щит), в абсолюте
         private float _delayRemaining;
 
-        /// <summary>
-        /// Задать цвет основного слоя по принадлежности к смотрящему (из <c>CombatColorPalette</c>).
-        /// Пока не вызван — бар использует <see cref="_fallbackColor"/>.
-        /// </summary>
+        private Material _mat;
+        private bool _hasHpColor, _hasShieldColor;
+        private Color _hpColor, _shieldColor;
+
+        private static readonly int IdHpFrac       = Shader.PropertyToID("_HpFrac");
+        private static readonly int IdCombinedFrac = Shader.PropertyToID("_CombinedFrac");
+        private static readonly int IdTrailFrac    = Shader.PropertyToID("_TrailFrac");
+        private static readonly int IdSegments     = Shader.PropertyToID("_Segments");
+        private static readonly int IdMajorEvery   = Shader.PropertyToID("_MajorEvery");
+        private static readonly int IdHpColor      = Shader.PropertyToID("_HpColor");
+        private static readonly int IdShieldColor  = Shader.PropertyToID("_ShieldColor");
+
+        private void Awake() => EnsureMaterial();
+
+        private void EnsureMaterial()
+        {
+            if (_mat != null) return;
+
+            if (_barMaterial != null)
+                _mat = new Material(_barMaterial);      // клон шаблона — статичный вид берётся из него
+            else
+            {
+                Shader sh = Shader.Find(ShaderName);
+                if (sh != null) _mat = new Material(sh);
+            }
+
+            if (_mat == null) return;
+            if (_fillImage != null) _fillImage.material = _mat;
+
+            // Плотность насечек: жирная каждые majorTickValue/tickValue минорных.
+            _mat.SetFloat(IdMajorEvery, Mathf.Max(1f, _majorTickValue / Mathf.Max(0.0001f, _tickValue)));
+            // Цвета HP/щита — палитра, если подана; иначе фолбэк.
+            _mat.SetColor(IdHpColor,     _hasHpColor ? _hpColor : _fallbackHpColor);
+            _mat.SetColor(IdShieldColor, _hasShieldColor ? _shieldColor : _fallbackShieldColor);
+        }
+
+        /// <summary>Цвет HP по принадлежности к смотрящему (из <c>CombatColorPalette</c>).</summary>
         public void SetMainColor(Color color)
         {
-            _mainColor    = color;
-            _hasMainColor = true;
-            Layout();
+            _hpColor = color;
+            _hasHpColor = true;
+            if (_mat != null) _mat.SetColor(IdHpColor, color);
         }
 
-        /// <summary>Привязать к юниту: оба слоя — на текущую долю мгновенно.</summary>
+        /// <summary>Цвет щита (из <c>CombatColorPalette</c>, общий для всех).</summary>
+        public void SetShieldColor(Color color)
+        {
+            _shieldColor = color;
+            _hasShieldColor = true;
+            if (_mat != null) _mat.SetColor(IdShieldColor, color);
+        }
+
+        /// <summary>Привязать к юниту: доли — на текущее состояние мгновенно, trail без догона.</summary>
         public void Bind(RuntimeUnit unit)
         {
-            float max = unit.Stats.Get(Data.Stats.StatType.MaxHP);
-            _targetFraction = max > 0f ? Mathf.Clamp01(unit.CurrentHP / max) : 0f;
-            _trailFraction  = _targetFraction;
+            EnsureMaterial();
+            _maxHp  = Mathf.Max(1f, unit.Stats.Get(Data.Stats.StatType.MaxHP));
+            _hp     = Mathf.Clamp(unit.CurrentHP, 0f, _maxHp);
+            _shield = Mathf.Max(0f, unit.CurrentShield);
+            _trailEhp = _hp + _shield;
             _delayRemaining = 0f;
-            Layout();
+            PushDynamicProps();
         }
 
-        /// <summary>Обновить истинную долю HP (поллинг из UnitView каждый кадр).</summary>
-        public void UpdateBar(float currentHp, float maxHp)
+        /// <summary>Обновить состояние (поллинг из UnitView каждый кадр).</summary>
+        public void UpdateBar(float currentHp, float maxHp, float shield)
         {
-            float fraction = maxHp > 0f ? Mathf.Clamp01(currentHp / maxHp) : 0f;
-            if (!Mathf.Approximately(fraction, _targetFraction))
-                _delayRemaining = _trailDelay;   // HP изменилось — перезапустить паузу догона
-            _targetFraction = fraction;
+            float newMax = Mathf.Max(1f, maxHp);
+            float newHp  = Mathf.Clamp(currentHp, 0f, newMax);
+            float newSh  = Mathf.Max(0f, shield);
+
+            float prevCombined = _hp + _shield;
+            float nextCombined = newHp + newSh;
+            if (!Mathf.Approximately(prevCombined, nextCombined))
+                _delayRemaining = _trailDelay;   // EHP изменилось — перезапустить паузу догона
+
+            _maxHp  = newMax;
+            _hp     = newHp;
+            _shield = newSh;
         }
 
-        // Догон призрака идёт по рендер-времени, не по сим-тику.
+        // Догон по рендер-времени; доли считаются от текущего scale.
         private void Update()
         {
-            if (!Mathf.Approximately(_trailFraction, _targetFraction))
+            float target = _hp + _shield;
+            if (!Mathf.Approximately(_trailEhp, target))
             {
                 if (_delayRemaining > 0f)
-                {
                     _delayRemaining -= Time.deltaTime;
-                }
                 else
                 {
-                    _trailFraction = Mathf.MoveTowards(
-                        _trailFraction, _targetFraction, _trailSpeed * Time.deltaTime);
+                    float scale = CurrentScale();
+                    _trailEhp = Mathf.MoveTowards(_trailEhp, target, _trailSpeed * scale * Time.deltaTime);
                 }
             }
 
-            Layout();
+            PushDynamicProps();
         }
 
-        // Спереди — меньшая доля (main, истинный цвет), сзади — большая (trail, цвет по направлению).
-        private void Layout()
+        private float CurrentScale() => Mathf.Max(_maxHp, _hp + _shield, _trailEhp, 1f);
+
+        private void PushDynamicProps()
         {
-            float lo = Mathf.Min(_targetFraction, _trailFraction);
-            float hi = Mathf.Max(_targetFraction, _trailFraction);
+            if (_mat == null) return;
 
-            if (_mainImage != null)
-            {
-                _mainImage.fillAmount = lo;
-                _mainImage.color = _hasMainColor ? _mainColor : _fallbackColor;
-            }
+            float scale = CurrentScale();
+            _mat.SetFloat(IdHpFrac,       _hp / scale);
+            _mat.SetFloat(IdCombinedFrac, (_hp + _shield) / scale);
+            _mat.SetFloat(IdTrailFrac,    _trailEhp / scale);
+            _mat.SetFloat(IdSegments,     Mathf.Max(1f, scale / Mathf.Max(0.0001f, _tickValue)));
+        }
 
-            if (_trailImage != null)
-            {
-                _trailImage.fillAmount = hi;
-                _trailImage.color = _targetFraction < _trailFraction
-                    ? _damageTrailColor   // потеряли HP
-                    : _healTrailColor;    // восстановили HP
-            }
+        private void OnDestroy()
+        {
+            if (_mat != null) Destroy(_mat);
         }
     }
 }

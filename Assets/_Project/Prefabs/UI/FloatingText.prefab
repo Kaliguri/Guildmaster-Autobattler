@@ -94,7 +94,7 @@ MonoBehaviour:
   m_text: 32
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 42a4767d699e4af46a1d93fd8ae42b53, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -178,3 +178,6 @@ MonoBehaviour:
   _floatHeight: 1.1
   _duration: 0.8
   _fadeStart: 0.5
+  _popDuration: 0.14
+  _popOvershoot: 0.9
+  _spreadX: 0.35
