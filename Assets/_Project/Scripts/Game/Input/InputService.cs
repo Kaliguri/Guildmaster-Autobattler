@@ -24,6 +24,7 @@ namespace Guildmaster.Game.Input
         private readonly InputAction _cycleView;
         private readonly InputAction _pauseToggle;
         private readonly InputAction _gameSpeedCycle;
+        private readonly InputAction _menuToggle; // Escape — оверлей системного меню, живёт вне контекст-карт (always-on)
 
         private InputContext _context = InputContext.None;
 
@@ -35,6 +36,7 @@ namespace Guildmaster.Game.Input
         public event Action CycleViewRequested;
         public event Action PauseToggleRequested;
         public event Action GameSpeedCycleRequested;
+        public event Action MenuToggleRequested;
 
         public InputService()
         {
@@ -63,6 +65,12 @@ namespace Guildmaster.Game.Input
 
             // --- Карта «UI»: пока пустой seam ---
             _uiMap = new InputActionMap("UI");
+
+            // Системное меню (Escape): оверлей, НЕ пауза (кооп). Вне контекст-карт — доступно из любого
+            // контекста; НЕ глушится GameplaySuppressed, иначе открытое меню нельзя было бы закрыть.
+            _menuToggle = new InputAction("MenuToggle", InputActionType.Button, "<Keyboard>/escape");
+            _menuToggle.performed += OnMenuToggle;
+            _menuToggle.Enable();
 
             _cycleView.performed     += OnCycleView;
             _pauseToggle.performed   += OnPauseToggle;
@@ -105,15 +113,20 @@ namespace Guildmaster.Game.Input
         private void OnPauseToggle(InputAction.CallbackContext _)    { if (!GameplaySuppressed) PauseToggleRequested?.Invoke(); }
         private void OnGameSpeedCycle(InputAction.CallbackContext _) { if (!GameplaySuppressed) GameSpeedCycleRequested?.Invoke(); }
 
+        // Escape НЕ гейтится GameplaySuppressed: меню должно закрываться, даже когда геймплейный ввод заглушён.
+        private void OnMenuToggle(InputAction.CallbackContext _) => MenuToggleRequested?.Invoke();
+
         public void Dispose()
         {
             _cycleView.performed     -= OnCycleView;
             _pauseToggle.performed   -= OnPauseToggle;
             _gameSpeedCycle.performed -= OnGameSpeedCycle;
+            _menuToggle.performed    -= OnMenuToggle;
 
             _cameraMap.Dispose();
             _combatMap.Dispose();
             _uiMap.Dispose();
+            _menuToggle.Dispose();
         }
     }
 }
