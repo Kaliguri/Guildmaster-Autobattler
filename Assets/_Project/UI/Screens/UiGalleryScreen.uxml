@@ -1,0 +1,72 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="gallery-root" style="flex-grow: 1; background-color: rgb(18, 16, 13); padding: 24px;">
+        <ui:Label text="Guildmaster UI — component gallery" class="gm-panel__title" style="-unity-text-align: upper-left; font-size: 24px; margin-bottom: 4px;" />
+        <ui:Label text="dev-каталог: токены и gm-* компоненты в одном месте (визуальная приёмка)" class="gm-text-muted" />
+
+        <ui:Label text="Tokens" class="gm-text-muted" style="margin-top: 20px; margin-bottom: 8px;" />
+        <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
+            <ui:VisualElement style="align-items: center; margin-right: 10px; margin-bottom: 14px;">
+                <ui:VisualElement style="width: 74px; height: 40px; flex-shrink: 0; border-width: 1px; border-color: rgb(74, 58, 38); background-color: rgb(217, 178, 106);" />
+                <ui:Label text="brass-300" class="gm-text-muted" style="margin-top: 4px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="align-items: center; margin-right: 10px; margin-bottom: 14px;">
+                <ui:VisualElement style="width: 74px; height: 40px; flex-shrink: 0; border-width: 1px; border-color: rgb(74, 58, 38); background-color: rgb(184, 134, 59);" />
+                <ui:Label text="brass-500" class="gm-text-muted" style="margin-top: 4px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="align-items: center; margin-right: 10px; margin-bottom: 14px;">
+                <ui:VisualElement style="width: 74px; height: 40px; flex-shrink: 0; border-width: 1px; border-color: rgb(74, 58, 38); background-color: rgb(138, 95, 40);" />
+                <ui:Label text="brass-700" class="gm-text-muted" style="margin-top: 4px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="align-items: center; margin-right: 10px; margin-bottom: 14px;">
+                <ui:VisualElement style="width: 74px; height: 40px; flex-shrink: 0; border-width: 1px; border-color: rgb(74, 58, 38); background-color: rgb(23, 17, 12);" />
+                <ui:Label text="ink-800" class="gm-text-muted" style="margin-top: 4px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="align-items: center; margin-right: 10px; margin-bottom: 14px;">
+                <ui:VisualElement style="width: 74px; height: 40px; flex-shrink: 0; border-width: 1px; border-color: rgb(74, 58, 38); background-color: rgb(239, 226, 196);" />
+                <ui:Label text="parch-100" class="gm-text-muted" style="margin-top: 4px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="align-items: center; margin-right: 10px; margin-bottom: 14px;">
+                <ui:VisualElement style="width: 74px; height: 40px; flex-shrink: 0; border-width: 1px; border-color: rgb(74, 58, 38); background-color: rgb(36, 26, 18);" />
+                <ui:Label text="surface" class="gm-text-muted" style="margin-top: 4px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="align-items: center; margin-right: 10px; margin-bottom: 14px;">
+                <ui:VisualElement style="width: 74px; height: 40px; flex-shrink: 0; border-width: 1px; border-color: rgb(74, 58, 38); background-color: rgb(168, 80, 58);" />
+                <ui:Label text="danger" class="gm-text-muted" style="margin-top: 4px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:Label text="gm-button (hover / active — интерактивны в Play)" class="gm-text-muted" style="margin-top: 20px; margin-bottom: 8px;" />
+        <ui:VisualElement style="flex-direction: row; align-items: flex-start;">
+            <ui:Button text="Default" class="gm-button" style="margin-right: 12px;" />
+            <ui:Button text="Primary" class="gm-button gm-button--primary" style="margin-right: 12px;" />
+            <ui:Button text="Disabled" class="gm-button" enabled="false" />
+        </ui:VisualElement>
+
+        <ui:Label text="gm-panel + gm-slider (settings preview)" class="gm-text-muted" style="margin-top: 20px; margin-bottom: 8px;" />
+        <ui:VisualElement class="gm-panel" style="max-width: 380px;">
+            <ui:Label text="Audio" class="gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+            <ui:VisualElement class="gm-slider-row">
+                <ui:Label text="Master" class="gm-slider-row__label" />
+                <ui:Slider class="gm-slider" low-value="0" high-value="1" value="0.8" />
+                <ui:Label text="80%" class="gm-slider-row__value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="gm-slider-row">
+                <ui:Label text="Music" class="gm-slider-row__label" />
+                <ui:Slider class="gm-slider" low-value="0" high-value="1" value="0.65" />
+                <ui:Label text="65%" class="gm-slider-row__value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="gm-slider-row">
+                <ui:Label text="SFX" class="gm-slider-row__label" />
+                <ui:Slider class="gm-slider" low-value="0" high-value="1" value="1" />
+                <ui:Label text="100%" class="gm-slider-row__value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="gm-divider" />
+            <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+                <ui:Button text="Save" class="gm-button gm-button--primary" style="flex-grow: 1; margin-right: 8px;" />
+                <ui:Button text="Cancel" class="gm-button" style="flex-grow: 1; margin-right: 8px;" />
+                <ui:Button text="Defaults" class="gm-button" style="flex-grow: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

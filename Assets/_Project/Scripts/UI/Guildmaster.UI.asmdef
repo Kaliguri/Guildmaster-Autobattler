@@ -4,7 +4,12 @@
   "references": [
     "Guildmaster.Core",
     "Guildmaster.Data",
-    "Guildmaster.Guild"
+    "Guildmaster.Guild",
+    "VContainer",
+    "UniTask",
+    "MessagePipe",
+    "MessagePipe.VContainer",
+    "Unity.Localization"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
