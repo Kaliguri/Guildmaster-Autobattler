@@ -113,8 +113,8 @@ Collaboration diagram for Guildmaster.Game.Input.BattleInputController:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adeab8c91c984424ccb76fb8224c6116d" id="r_adeab8c91c984424ccb76fb8224c6116d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html#adeab8c91c984424ccb76fb8224c6116d">BattleInputController</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a> input, <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation)</td></tr>
-<tr class="separator:adeab8c91c984424ccb76fb8224c6116d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64be5dcd076505ca32e80021dba35c0d" id="r_a64be5dcd076505ca32e80021dba35c0d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html#a64be5dcd076505ca32e80021dba35c0d">BattleInputController</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a> input, <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation, <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html">TimeScaleService</a> time)</td></tr>
+<tr class="separator:a64be5dcd076505ca32e80021dba35c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1fd4f0589f2c5a33eee4e2e25495bad9" id="r_a1fd4f0589f2c5a33eee4e2e25495bad9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html#a1fd4f0589f2c5a33eee4e2e25495bad9">Start</a> ()</td></tr>
 <tr class="separator:a1fd4f0589f2c5a33eee4e2e25495bad9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0be0af531074bc1af08128fb351cf43" id="r_ae0be0af531074bc1af08128fb351cf43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html#ae0be0af531074bc1af08128fb351cf43">Dispose</a> ()</td></tr>
@@ -122,11 +122,11 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Связывает боевые действия ввода с симуляцией на время одного боя (вики «16» §4). </p>
-<p>Живёт в боевом скоупе: на старте ставит контекст InputContext.Combat и подписывается на паузу, на уничтожении скоупа — отписывается и гасит контекст. </p>
+<p>Живёт в боевом скоупе: на старте ставит контекст InputContext.Combat и подписывается на паузу/смену скорости, на уничтожении скоупа — отписывается и гасит контекст. </p>
 <p>Рестарт боя (R) и рестарт сцены (F5) — это dev-инструменты (см. DevTools), а не игровой ввод, поэтому их здесь нет.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="adeab8c91c984424ccb76fb8224c6116d" name="adeab8c91c984424ccb76fb8224c6116d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adeab8c91c984424ccb76fb8224c6116d">&#9670;&#160;</a></span>BattleInputController()</h2>
+<a id="a64be5dcd076505ca32e80021dba35c0d" name="a64be5dcd076505ca32e80021dba35c0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64be5dcd076505ca32e80021dba35c0d">&#9670;&#160;</a></span>BattleInputController()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,7 +144,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a>&#160;</td>
-          <td class="paramname"><em>simulation</em>&#160;</td>
+          <td class="paramname"><em>simulation</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html">TimeScaleService</a>&#160;</td>
+          <td class="paramname"><em>time</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

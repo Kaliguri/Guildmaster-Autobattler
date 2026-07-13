@@ -6,5 +6,6 @@ var interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService =
     [ "Context", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#aefb63244e2854858b20a403952435dcf", null ],
     [ "GameplaySuppressed", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a5595966e2ca4ffb59d1d14c8a624f5f1", null ],
     [ "CycleViewRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a3af6bad4dbd792ea37e6240dec0ea408", null ],
+    [ "GameSpeedCycleRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a3169aaabda1fde22720d0c2bd6c55f1d", null ],
     [ "PauseToggleRequested", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a7b97242d655b5388789f6dfd8fa6a490", null ]
 ];

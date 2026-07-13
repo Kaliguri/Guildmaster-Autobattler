@@ -17,5 +17,6 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1UnitData =
     [ "ResourceOnHit", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#ab089fb3e7b0e13078abc889c0400b647", null ],
     [ "ResourceType", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a497714a77515528196ecc371f9806254", null ],
     [ "Stats", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a43bcc20bf8bc8df375f22c8e8e1567d6", null ],
+    [ "ViewPrefab", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a8f9387e57aa937bf1ebf94efce9fd241", null ],
     [ "Visual", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#aa9edd77bd03c31aff370a3183fd645ee", null ]
 ];

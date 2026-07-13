@@ -333,18 +333,18 @@
 <text text-anchor="start" x="1388.5" y="-283" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="1401.5" y="-283" font-family="Helvetica,sans-Serif" font-size="10.00">Visual</text>
 <text text-anchor="start" x="1388.5" y="-268" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1401.5" y="-268" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackShape</text>
+<text text-anchor="start" x="1401.5" y="-268" font-family="Helvetica,sans-Serif" font-size="10.00">ViewPrefab</text>
 <text text-anchor="start" x="1388.5" y="-253" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1401.5" y="-253" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackWidth</text>
+<text text-anchor="start" x="1401.5" y="-253" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackShape</text>
 <text text-anchor="start" x="1388.5" y="-238" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1401.5" y="-238" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackEffects</text>
+<text text-anchor="start" x="1401.5" y="-238" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackWidth</text>
 <text text-anchor="start" x="1388.5" y="-223" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1401.5" y="-223" font-family="Helvetica,sans-Serif" font-size="10.00">CanAttackWhileMoving</text>
+<text text-anchor="start" x="1401.5" y="-223" font-family="Helvetica,sans-Serif" font-size="10.00">AutoAttackEffects</text>
 <text text-anchor="start" x="1388.5" y="-208" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1401.5" y="-208" font-family="Helvetica,sans-Serif" font-size="10.00">MovingAttackSpeedPenaltyPct</text>
+<text text-anchor="start" x="1401.5" y="-208" font-family="Helvetica,sans-Serif" font-size="10.00">CanAttackWhileMoving</text>
 <text text-anchor="start" x="1388.5" y="-193" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="1401.5" y="-193" font-family="Helvetica,sans-Serif" font-size="10.00">AttackRecoverySeconds</text>
-<text text-anchor="start" x="1401.5" y="-178" font-family="Helvetica,sans-Serif" font-size="10.00">and 8 more...</text>
+<text text-anchor="start" x="1401.5" y="-193" font-family="Helvetica,sans-Serif" font-size="10.00">MovingAttackSpeedPenaltyPct</text>
+<text text-anchor="start" x="1401.5" y="-178" font-family="Helvetica,sans-Serif" font-size="10.00">and 9 more...</text>
 <text text-anchor="start" x="1468" y="-163" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
 <polygon fill="#666666" stroke="#666666" points="1384.5,-338 1384.5,-338 1555.5,-338 1555.5,-338 1384.5,-338"/>
 <polygon fill="#666666" stroke="#666666" points="1384.5,-173 1384.5,-173 1399.5,-173 1399.5,-173 1384.5,-173"/>

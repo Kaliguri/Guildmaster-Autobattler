@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.ScreenShake" name="Guildmaster.Presentation.ScreenShake">
+<area shape="rect" id="Node000001" title="Тряска камеры как Cinemachine&#45;extension: добавляет затухающее смещение + крен (roll) к финальному сос..." alt="" coords="5,119,217,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="30,5,193,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,85,114,118,109,118,109,85"/>
+</map>

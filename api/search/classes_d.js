@@ -6,10 +6,13 @@ var searchData=
   ['phase4package1migration_3',['Phase4Package1Migration',['../classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package1Migration.html',1,'Guildmaster::Data::Editor::Migrations']]],
   ['phase4package3aipresetmigration_4',['Phase4Package3AiPresetMigration',['../classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package3AiPresetMigration.html',1,'Guildmaster::Data::Editor::Migrations']]],
   ['phase4package3statsbasemigration_5',['Phase4Package3StatsBaseMigration',['../classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package3StatsBaseMigration.html',1,'Guildmaster::Data::Editor::Migrations']]],
-  ['predamageresult_6',['PreDamageResult',['../classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html',1,'Guildmaster::Combat::Effects']]],
-  ['profilebrain_7',['ProfileBrain',['../classGuildmaster_1_1Combat_1_1ProfileBrain.html',1,'Guildmaster::Combat']]],
-  ['projectile_8',['Projectile',['../classGuildmaster_1_1Combat_1_1Projectile.html',1,'Guildmaster::Combat']]],
-  ['projectilespawn_9',['ProjectileSpawn',['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html',1,'Guildmaster::Combat']]],
-  ['projectilesystem_10',['ProjectileSystem',['../classGuildmaster_1_1Combat_1_1ProjectileSystem.html',1,'Guildmaster::Combat']]],
-  ['projectileview_11',['ProjectileView',['../classGuildmaster_1_1Presentation_1_1ProjectileView.html',1,'Guildmaster::Presentation']]]
+  ['pixelburst_6',['PixelBurst',['../classGuildmaster_1_1Presentation_1_1PixelBurst.html',1,'Guildmaster::Presentation']]],
+  ['pixelburstmesh_7',['PixelBurstMesh',['../classGuildmaster_1_1Presentation_1_1PixelBurstMesh.html',1,'Guildmaster::Presentation']]],
+  ['pixelburstpreset_8',['PixelBurstPreset',['../classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html',1,'Guildmaster::Presentation::Design']]],
+  ['predamageresult_9',['PreDamageResult',['../classGuildmaster_1_1Combat_1_1Effects_1_1PreDamageResult.html',1,'Guildmaster::Combat::Effects']]],
+  ['profilebrain_10',['ProfileBrain',['../classGuildmaster_1_1Combat_1_1ProfileBrain.html',1,'Guildmaster::Combat']]],
+  ['projectile_11',['Projectile',['../classGuildmaster_1_1Combat_1_1Projectile.html',1,'Guildmaster::Combat']]],
+  ['projectilespawn_12',['ProjectileSpawn',['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html',1,'Guildmaster::Combat']]],
+  ['projectilesystem_13',['ProjectileSystem',['../classGuildmaster_1_1Combat_1_1ProjectileSystem.html',1,'Guildmaster::Combat']]],
+  ['projectileview_14',['ProjectileView',['../classGuildmaster_1_1Presentation_1_1ProjectileView.html',1,'Guildmaster::Presentation']]]
 ];

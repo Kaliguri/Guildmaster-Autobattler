@@ -41,5 +41,6 @@ var searchData=
   ['movementsystem_38',['MovementSystem',['../classGuildmaster_1_1Combat_1_1MovementSystem.html',1,'Guildmaster::Combat']]],
   ['movementsystem_2ecs_39',['MovementSystem.cs',['../MovementSystem_8cs.html',1,'']]],
   ['movespeed_40',['MoveSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a3dfb8a09b650ce66270c54fdf5c2aa74',1,'Guildmaster::Data::Stats']]],
-  ['movingattackspeedpenaltypct_41',['MovingAttackSpeedPenaltyPct',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a0b1f68b36757fdb2947caea70973ab3f',1,'Guildmaster::Data::Definitions::UnitData']]]
+  ['movingattackspeedpenaltypct_41',['MovingAttackSpeedPenaltyPct',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a0b1f68b36757fdb2947caea70973ab3f',1,'Guildmaster::Data::Definitions::UnitData']]],
+  ['muzzle_42',['Muzzle',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a96a50a1c214704226eee1fb57d537fbe',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]]
 ];

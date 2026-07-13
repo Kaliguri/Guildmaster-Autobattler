@@ -9,11 +9,13 @@ var searchData=
   ['chainticks_6',['ChainTicks',['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html#a488f1e5196281c757ed22b06cdccc461',1,'Guildmaster::Combat::DisplaceRequest']]],
   ['chargereadyticks_7',['ChargeReadyTicks',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a553d4c7c1818da07ffa01fb2109c703a',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
   ['collisionradius_8',['collisionradius',['../classGuildmaster_1_1Combat_1_1Projectile.html#aaf05a6c036d7612517894326d25fc732',1,'Guildmaster.Combat.Projectile.CollisionRadius'],['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a3256e656b27c2577f0b2d74cde80ab0a',1,'Guildmaster.Combat.ProjectileSpawn.CollisionRadius']]],
-  ['combat_9',['Combat',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a563634ca57e5764ba8938cb855ee4e6b',1,'Guildmaster::Combat::Effects::EffectContext']]],
-  ['cooldownremaining_10',['CooldownRemaining',['../classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#a7e4d83b9f92db4d81f68da3ebc04d085',1,'Guildmaster::Combat::Abilities::AbilityRuntime']]],
-  ['count_11',['Count',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#afbd85a52e7f2001be917bf5c155277be',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]],
-  ['currenthp_12',['CurrentHP',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a16a11155c2e0a73e8bcaa125797d137f',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['currentresource_13',['CurrentResource',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aade95fbe70d66fe6bc23c4ca18297005',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['currentshield_14',['CurrentShield',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a24ce73d0729d150103bd1436c64801e3',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['currenttarget_15',['CurrentTarget',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a64ce2c8539ec1d2913559dd98c7c8e31',1,'Guildmaster::Combat::RuntimeUnit']]]
+  ['color_9',['Color',['../classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html#acc60b08ce6a14cc70d37c544f23020db',1,'Guildmaster::Presentation::Design::PixelBurstPreset']]],
+  ['combat_10',['Combat',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a563634ca57e5764ba8938cb855ee4e6b',1,'Guildmaster::Combat::Effects::EffectContext']]],
+  ['cooldownremaining_11',['CooldownRemaining',['../classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html#a7e4d83b9f92db4d81f68da3ebc04d085',1,'Guildmaster::Combat::Abilities::AbilityRuntime']]],
+  ['count_12',['count',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#afbd85a52e7f2001be917bf5c155277be',1,'Guildmaster.ContentHub.Editor.StatCohort.Agg.Count'],['../classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html#acb2624b45b36333bbb8ed8aeabdf8caa',1,'Guildmaster.Presentation.Design.PixelBurstPreset.Count'],['../classGuildmaster_1_1Presentation_1_1PixelBurstMesh.html#ad4f83e0101ae9fe951565f594c02deb2',1,'Guildmaster.Presentation.PixelBurstMesh.Count']]],
+  ['currenthp_13',['CurrentHP',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a16a11155c2e0a73e8bcaa125797d137f',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['currentresource_14',['CurrentResource',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aade95fbe70d66fe6bc23c4ca18297005',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['currentshield_15',['CurrentShield',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a24ce73d0729d150103bd1436c64801e3',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['currenttarget_16',['CurrentTarget',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a64ce2c8539ec1d2913559dd98c7c8e31',1,'Guildmaster::Combat::RuntimeUnit']]],
+  ['curve_17',['Curve',['../structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment.html#ab62c3ce4fb2d30339807af49ec83b6bf',1,'Guildmaster::Game::Services::CinematicSegment']]]
 ];

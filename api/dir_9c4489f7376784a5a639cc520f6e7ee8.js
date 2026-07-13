@@ -8,10 +8,16 @@ var dir_9c4489f7376784a5a639cc520f6e7ee8 =
     [ "CombatDebugDraw.cs", "CombatDebugDraw_8cs.html", "CombatDebugDraw_8cs" ],
     [ "CombatPresenter.cs", "CombatPresenter_8cs.html", "CombatPresenter_8cs" ],
     [ "CombatStatusOverlay.cs", "CombatStatusOverlay_8cs.html", "CombatStatusOverlay_8cs" ],
+    [ "CombatVfx.cs", "CombatVfx_8cs.html", "CombatVfx_8cs" ],
+    [ "DeathShatter.cs", "DeathShatter_8cs.html", "DeathShatter_8cs" ],
     [ "FloatingText.cs", "FloatingText_8cs.html", "FloatingText_8cs" ],
     [ "HealthBarView.cs", "HealthBarView_8cs.html", "HealthBarView_8cs" ],
     [ "ManaBarView.cs", "ManaBarView_8cs.html", "ManaBarView_8cs" ],
+    [ "PixelBurst.cs", "PixelBurst_8cs.html", "PixelBurst_8cs" ],
+    [ "PixelBurstMesh.cs", "PixelBurstMesh_8cs.html", "PixelBurstMesh_8cs" ],
     [ "ProjectileView.cs", "ProjectileView_8cs.html", "ProjectileView_8cs" ],
+    [ "ShatterMesh.cs", "ShatterMesh_8cs.html", "ShatterMesh_8cs" ],
     [ "UnitAnimation.cs", "UnitAnimation_8cs.html", "UnitAnimation_8cs" ],
-    [ "UnitView.cs", "UnitView_8cs.html", "UnitView_8cs" ]
+    [ "UnitView.cs", "UnitView_8cs.html", "UnitView_8cs" ],
+    [ "YSortSprite.cs", "YSortSprite_8cs.html", "YSortSprite_8cs" ]
 ];

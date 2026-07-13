@@ -128,7 +128,13 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html">CombatStatusOverlay</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dev-подсветка статусов юнитов кольцами Shapes: метка/стан/щит/заморозка/усиление.  <a href="classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatVfx.html">CombatVfx</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пул и спавн пиксельных боевых VFX-брызгов (PixelBurst).  <a href="classGuildmaster_1_1Presentation_1_1CombatVfx.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html">DamageDealtEvent</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeathShatter.html">DeathShatter</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Разлёт спрайта юнита на осколки при смерти.  <a href="classGuildmaster_1_1Presentation_1_1DeathShatter.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1FloatingText.html">FloatingText</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Своя всплывающая боевая цифра (урон/хил) — один общий префаб с TMP-текстом.  <a href="classGuildmaster_1_1Presentation_1_1FloatingText.html#details">More...</a><br /></td></tr>
@@ -136,11 +142,29 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1HealthBarView.html">HealthBarView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Двойной HP-бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA) на uGUI.  <a href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html">IScreenShake</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тряска боевой камеры по запросу режиссёра (<code>CombatFeelDirector</code>).  <a href="interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ManaBarView.html">ManaBarView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Бар ресурса (мана/ярость) — по образцу HealthBarView, но для <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aade95fbe70d66fe6bc23c4ca18297005" title="Текущий ресурс (мана/ярость). Фаза 2.">RuntimeUnit.CurrentResource</a> / Data.Stats.StatType.MaxResource.  <a href="classGuildmaster_1_1Presentation_1_1ManaBarView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1NullScreenShake.html">NullScreenShake</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заглушка тряски: подставляется, когда камеры-рига в сцене нет (бой не должен падать из-за визуала).  <a href="classGuildmaster_1_1Presentation_1_1NullScreenShake.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1PixelBurst.html">PixelBurst</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Один пиксельный «брызг» частиц (hit-spark / muzzle / dust / heal).  <a href="classGuildmaster_1_1Presentation_1_1PixelBurst.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1PixelBurstMesh.html">PixelBurstMesh</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Общий меш для пиксельного «брызга» (PixelBurst): Count квадов-«пикселей».  <a href="classGuildmaster_1_1Presentation_1_1PixelBurstMesh.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ProjectileView.html">ProjectileView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">World-space вид снаряда (Bullet).  <a href="classGuildmaster_1_1Presentation_1_1ProjectileView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ScreenShake.html">ScreenShake</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тряска камеры как Cinemachine-extension: добавляет затухающее смещение + крен (roll) к финальному состоянию камеры (стадия Finalize).  <a href="classGuildmaster_1_1Presentation_1_1ScreenShake.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ShatterMesh.html">ShatterMesh</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строит меш «пиксельного» разлёта спрайта (DeathShatter): видимая область режется на БЛОЧНЫЕ куски-квады разных размеров, выровненные по пиксель-сетке исходного спрайта (границы блоков падают на границы исходных пикселей → чанки выглядят как настоящие куски пиксель-персонажа, а не вектор-слайсы).  <a href="classGuildmaster_1_1Presentation_1_1ShatterMesh.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html">UnitAnimationSelector</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чистая проекция «состояние сима → состояние анимации» (спайк S4, вики «13» §5).  <a href="classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html#details">More...</a><br /></td></tr>
@@ -152,6 +176,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1UnitView.html">UnitView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">World-space визуальное представление RuntimeUnit.  <a href="classGuildmaster_1_1Presentation_1_1UnitView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1YSortSprite.html">YSortSprite</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y-сортировка спрайта: каждый кадр ставит SpriteRenderer.sortingOrder по мировой Y — кто ниже (ближе к зрителю), тот рисуется поверх.  <a href="classGuildmaster_1_1Presentation_1_1YSortSprite.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>

@@ -1,9 +1,7 @@
 <map id="Guildmaster.Data.Definitions.ClipMarkers.FirstMarkerTime" name="Guildmaster.Data.Definitions.ClipMarkers.FirstMarkerTime">
-<area shape="rect" id="Node000001" title="Время первого маркера (сек) или &#45;1, если маркера нет." alt="" coords="515,37,729,77"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#ab85199f88e9e8c16535a9a5360138056" title="Кадр первого маркера = round(time × frameRate). 0 если клипа/маркера нет." alt="" coords="248,5,463,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="501,45,462,41,463,36,501,40"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a037b09771dbd1c2b1f00d8677f9bfc94" title="Нормированное время маркера (0..1) в клипе. 0 если клипа/маркера/длины нет." alt="" coords="244,69,467,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="501,74,467,79,467,73,501,69"/>
-<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a99fe961b39536dfe1e67f30e38f92869" title="Подменить визуал в рантайме (пер&#45;юнит визуал из реликвии, вики «13» шаг 4): все юниты инстанцируются ..." alt="" coords="5,69,196,109"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="230,92,196,92,196,87,230,87"/>
+<area shape="rect" id="Node000001" title="Время первого маркера (сек) или &#45;1, если маркера нет." alt="" coords="276,37,491,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#ab85199f88e9e8c16535a9a5360138056" title="Кадр первого маркера = round(time × frameRate). 0 если клипа/маркера нет." alt="" coords="9,5,224,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="262,45,224,41,224,36,263,40"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a037b09771dbd1c2b1f00d8677f9bfc94" title="Нормированное время маркера (0..1) в клипе. 0 если клипа/маркера/длины нет." alt="" coords="5,69,228,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="263,74,229,79,228,73,262,69"/>
 </map>

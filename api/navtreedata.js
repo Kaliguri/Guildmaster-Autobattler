@@ -39,7 +39,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ],
+        [ "Variables", "functions_vars.html", "functions_vars" ],
         [ "Enumerations", "functions_enum.html", null ],
         [ "Properties", "functions_prop.html", "functions_prop" ],
         [ "Events", "functions_evnt.html", null ]
@@ -54,16 +54,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AIPresetData_8cs.html",
-"ModifierOp_8cs.html#aae132bbc024dc11a826cb55da0cae0dea745e3db6a7ffd50e1a72b39482f0882d",
-"classGuildmaster_1_1Combat_1_1CombatSimulation.html#ad93a3eda61fc3dac619027e365ae9132",
-"classGuildmaster_1_1Combat_1_1FleeSteering.html",
-"classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentIndex.html#af39b4a94470d004970da38ab4b80455b",
-"classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html#a5b4278ee1315bb56b8c5ccb07f38cd12",
-"classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html#a01b49ed448fc51920f564b44d9b7f071",
-"classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html#a4d78fa7bd04bda681534f75fc330b09b",
-"interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html",
-"namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1a8bbf55183f7d11e74da28d738216036a",
-"structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#af4fdc31beae0a45f740acf7be0437988"
+"MarkdownTable_8cs.html",
+"classGuildmaster_1_1Combat_1_1CombatSimulation.html#ab9f442fdb4c0fe4050dfd80796841bf9",
+"classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#a33faf86e1bb27a7509d7d3b07ea1bf3c",
+"classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentHubWindow.html#aee509a3c0443c6ef8d32905475d2265a",
+"classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html#ab7224b94e5120db1786e2a6a9cd21fe6",
+"classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html#af795537cb7f5fe633278ac7399267fc0",
+"classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#a7f8c731bf6d86ed269188d6b3d336740",
+"classGuildmaster_1_1Presentation_1_1ShatterMesh.html#a95e91979b68518905199d0111baf9df8",
+"interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a9aeb8d09de75f6660b277ef06670cf89",
+"namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612a68eec46437c384d8dad18d5464ebc35c",
+"structGuildmaster_1_1ContentHub_1_1Editor_1_1ConfigDiff_1_1Row.html#a6fcbc17277588ac6d79a0e60fdc5685f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

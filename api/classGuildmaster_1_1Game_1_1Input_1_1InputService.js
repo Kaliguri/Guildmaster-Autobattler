@@ -8,5 +8,6 @@ var classGuildmaster_1_1Game_1_1Input_1_1InputService =
     [ "Context", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a4d3955c0336d5d5245e1510b984d5ebe", null ],
     [ "GameplaySuppressed", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a2b972ff3543569ced32601310333958e", null ],
     [ "CycleViewRequested", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a3d76549b588de3b7b4fc460c80e1b571", null ],
+    [ "GameSpeedCycleRequested", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a932fb5f60977f90f7259acd2484b3171", null ],
     [ "PauseToggleRequested", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a46e9c32808dff6d9f17c4ced3b94ac53", null ]
 ];

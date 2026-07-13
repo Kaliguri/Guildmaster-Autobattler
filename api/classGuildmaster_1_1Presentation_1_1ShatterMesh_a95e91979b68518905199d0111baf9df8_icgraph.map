@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.ShatterMesh.Build" name="Guildmaster.Presentation.ShatterMesh.Build">
+<area shape="rect" id="Node000001" title="Собрать блочный меш размером size &#160;(лок." alt="" coords="244,5,435,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1DeathShatter.html#ac3033443fa45cf481cfebe680b9d196f" title="Запустить разлёт из текущего состояния спрайта src ." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

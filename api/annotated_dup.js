@@ -105,6 +105,7 @@ var annotated_dup =
           [ "ILocalizationService", "interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html", "interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService" ]
         ] ],
         [ "Random", "namespaceGuildmaster_1_1Core_1_1Random.html", [
+          [ "BattleSeed", "classGuildmaster_1_1Core_1_1Random_1_1BattleSeed.html", "classGuildmaster_1_1Core_1_1Random_1_1BattleSeed" ],
           [ "IRngService", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService" ],
           [ "XorShiftRng", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng" ]
         ] ],
@@ -178,10 +179,13 @@ var annotated_dup =
           [ "InputService", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html", "classGuildmaster_1_1Game_1_1Input_1_1InputService" ]
         ] ],
         [ "Services", "namespaceGuildmaster_1_1Game_1_1Services.html", [
+          [ "CinematicSegment", "structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment.html", "structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment" ],
+          [ "CombatFeelDirector", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector" ],
           [ "CombatLoopService", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService" ],
           [ "GameFlow", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow" ],
           [ "LocalizationService", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService" ],
           [ "SceneLoader", "classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html", "classGuildmaster_1_1Game_1_1Services_1_1SceneLoader" ],
+          [ "TimeScaleService", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService" ],
           [ "UnityAudioService", "classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html", "classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService" ]
         ] ],
         [ "ArenaLayoutAuthoring", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring" ],
@@ -203,7 +207,9 @@ var annotated_dup =
           [ "IAudioCatalog", "interfaceGuildmaster_1_1Presentation_1_1Audio_1_1IAudioCatalog.html", "interfaceGuildmaster_1_1Presentation_1_1Audio_1_1IAudioCatalog" ]
         ] ],
         [ "Design", "namespaceGuildmaster_1_1Presentation_1_1Design.html", [
-          [ "CombatColorPalette", "classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html", "classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette" ]
+          [ "CombatColorPalette", "classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html", "classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette" ],
+          [ "CombatFeelConfig", "classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html", "classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig" ],
+          [ "PixelBurstPreset", "classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html", "classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset" ]
         ] ],
         [ "BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent" ],
         [ "CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", "classGuildmaster_1_1Presentation_1_1CameraModeController" ],
@@ -212,15 +218,24 @@ var annotated_dup =
         [ "CombatFocusTarget", "classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html", "classGuildmaster_1_1Presentation_1_1CombatFocusTarget" ],
         [ "CombatPresenter", "classGuildmaster_1_1Presentation_1_1CombatPresenter.html", "classGuildmaster_1_1Presentation_1_1CombatPresenter" ],
         [ "CombatStatusOverlay", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay" ],
+        [ "CombatVfx", "classGuildmaster_1_1Presentation_1_1CombatVfx.html", "classGuildmaster_1_1Presentation_1_1CombatVfx" ],
         [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],
+        [ "DeathShatter", "classGuildmaster_1_1Presentation_1_1DeathShatter.html", "classGuildmaster_1_1Presentation_1_1DeathShatter" ],
         [ "FloatingText", "classGuildmaster_1_1Presentation_1_1FloatingText.html", "classGuildmaster_1_1Presentation_1_1FloatingText" ],
         [ "HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", "classGuildmaster_1_1Presentation_1_1HealthBarView" ],
+        [ "IScreenShake", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake" ],
         [ "ManaBarView", "classGuildmaster_1_1Presentation_1_1ManaBarView.html", "classGuildmaster_1_1Presentation_1_1ManaBarView" ],
+        [ "NullScreenShake", "classGuildmaster_1_1Presentation_1_1NullScreenShake.html", "classGuildmaster_1_1Presentation_1_1NullScreenShake" ],
+        [ "PixelBurst", "classGuildmaster_1_1Presentation_1_1PixelBurst.html", "classGuildmaster_1_1Presentation_1_1PixelBurst" ],
+        [ "PixelBurstMesh", "classGuildmaster_1_1Presentation_1_1PixelBurstMesh.html", "classGuildmaster_1_1Presentation_1_1PixelBurstMesh" ],
         [ "ProjectileView", "classGuildmaster_1_1Presentation_1_1ProjectileView.html", "classGuildmaster_1_1Presentation_1_1ProjectileView" ],
+        [ "ScreenShake", "classGuildmaster_1_1Presentation_1_1ScreenShake.html", "classGuildmaster_1_1Presentation_1_1ScreenShake" ],
+        [ "ShatterMesh", "classGuildmaster_1_1Presentation_1_1ShatterMesh.html", "classGuildmaster_1_1Presentation_1_1ShatterMesh" ],
         [ "UnitAnimationSelector", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector" ],
         [ "UnitDiedEvent", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent" ],
         [ "UnitSpawnedEvent", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent" ],
-        [ "UnitView", "classGuildmaster_1_1Presentation_1_1UnitView.html", "classGuildmaster_1_1Presentation_1_1UnitView" ]
+        [ "UnitView", "classGuildmaster_1_1Presentation_1_1UnitView.html", "classGuildmaster_1_1Presentation_1_1UnitView" ],
+        [ "YSortSprite", "classGuildmaster_1_1Presentation_1_1YSortSprite.html", null ]
       ] ]
     ] ]
 ];

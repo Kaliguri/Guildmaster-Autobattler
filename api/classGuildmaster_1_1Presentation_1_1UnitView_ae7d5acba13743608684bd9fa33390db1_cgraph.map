@@ -1,5 +1,0 @@
-<map id="Guildmaster.Presentation.UnitView.OnDeath" name="Guildmaster.Presentation.UnitView.OnDeath">
-<area shape="rect" id="Node000001" title="Вызывается при гибели юнита." alt="" coords="5,5,196,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html#a51f9474ef9f72bb520718a6a5da74956" title="Клип базового состояния (Idle/Run/Attack/Death). null = слот не задан." alt="" coords="244,5,459,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
-</map>
