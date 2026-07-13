@@ -25,8 +25,6 @@ namespace Guildmaster.Presentation
         [SerializeField] private SpriteRenderer _sprite;
         [Tooltip("Animator на теле (той же GO, что SpriteRenderer). Пусто/без визуала = статичный спрайт.")]
         [SerializeField] private Animator _animator;
-        [Tooltip("Базовый контроллер (Visuals/UnitBase.controller): стейты Idle/Run/Attack/Death/Hit/Skill1-4.")]
-        [SerializeField] private RuntimeAnimatorController _baseController;
         [SerializeField] private HealthBarView  _healthBar;
         [Tooltip("Бар ресурса (мана/ярость). Пусто = без бара; скрывается сам для безресурсных юнитов.")]
         [SerializeField] private ManaBarView    _manaBar;
@@ -62,10 +60,7 @@ namespace Guildmaster.Presentation
         [Tooltip("Точка попадания: куда прилетают снаряды/цифры урона/вспышка (обычно грудь).")]
         [SerializeField] private Transform _hitPoint;
 
-        [Header("Gizmo — рекомендованный рост (только редактор, ни на что не влияет)")]
-        [Tooltip("Эталонная высота юнита в мировых юнитах (1 юнит = 1 метр). Рисуется линейкой с подписью — " +
-                 "ставь размер спрайта вручную под неё.")]
-        [SerializeField] private float _recommendedHeight = 1.7f;
+        [Header("Gizmo — круг коллизии сима (только редактор)")]
         [Tooltip("Превью Size для гизмо круга коллизии, когда юнит ещё не заспавнен (рантайм берёт настоящий Size).")]
         [SerializeField] private float _gizmoPreviewSize = 1f;
         [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус = Size × SimTuning.BodyRadiusPerSize). Выключи, если мешает.")]
@@ -141,6 +136,8 @@ namespace Guildmaster.Presentation
 
             if (_healthBar != null) _healthBar.Bind(unit);
             if (_manaBar != null)   _manaBar.Bind(unit);
+
+            InitVisual(); // визуал/анимация — из самого префаба (см. InitVisual), без рантайм-подмены
         }
 
         /// <summary>Тинт тела юнита: один общий спрайт, разный цвет на персонажа (dev-харнесс, «пока один спрайт»).</summary>
@@ -166,17 +163,18 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Подменить визуал в рантайме (пер-юнит визуал из реликвии, вики «13» шаг 4): все юниты
-        /// инстанцируются из одного префаба, но реликвия задаёт свой набор клипов. Юнит без клипов
-        /// оставляет статичный спрайт префаба (Animator выключается) — поведение dev-харнесса.
+        /// Инициализировать визуал из САМОГО префаба (вызывается из <see cref="Bind"/>): Animator уже несёт
+        /// контроллер с клипами персонажа — рантайм-подмены больше нет. Из <see cref="_visual"/> (задан на
+        /// префабе) берём только маркер контакта авто-атаки и темп бега для скраба анимации по симу. Нет
+        /// клипов/контроллера → статичный спрайт (Animator выключается).
         /// </summary>
-        public void SetVisual(UnitVisual visual)
+        private void InitVisual()
         {
-            _visual = visual;
             _state = UnitAnimationState.Idle;
             _attackPhase = AttackAnimPhase.None;
 
-            bool ready = _visual != null && _visual.HasClips && _animator != null && _baseController != null;
+            bool ready = _visual != null && _visual.HasClips
+                         && _animator != null && _animator.runtimeAnimatorController != null;
             _animActive = ready;
 
             if (!ready)
@@ -185,15 +183,6 @@ namespace Guildmaster.Presentation
                 return;
             }
 
-            var overrides = new AnimatorOverrideController(_baseController);
-            AssignClip(overrides, "Idle",   _visual.Clip(UnitAnimationState.Idle));
-            AssignClip(overrides, "Run",    _visual.Clip(UnitAnimationState.Run));
-            AssignClip(overrides, "Attack", _visual.Clip(UnitAnimationState.Attack));
-            AssignClip(overrides, "Death",  _visual.Clip(UnitAnimationState.Death));
-            AssignClip(overrides, "Hit",    _visual.HitClip);
-            for (int i = 0; i < 4; i++) AssignClip(overrides, "Skill" + (i + 1), _visual.SkillClip(i));
-
-            _animator.runtimeAnimatorController = overrides;
             _animator.fireEvents = false;
             _animator.enabled = true;
 
@@ -203,11 +192,6 @@ namespace Guildmaster.Presentation
 
             _animator.Play(IdleHash, 0, 0f);
             _animator.speed = 1f;
-        }
-
-        private static void AssignClip(AnimatorOverrideController overrides, string slot, AnimationClip clip)
-        {
-            if (clip != null) overrides[slot] = clip;
         }
 
         /// <summary>
@@ -622,25 +606,8 @@ namespace Guildmaster.Presentation
 
             Vector3 root   = transform.position;                                 // сим-позиция юнита
             Vector3 feet   = _feetPoint != null ? _feetPoint.position : root;     // низ фигуры (ноги)
-            Vector3 rightN = transform.right;
 
-            // --- Линейка рекомендованного роста: от НОГ вверх на _recommendedHeight ---
-            float rec = Mathf.Max(0.01f, _recommendedHeight);
-            var green = new Color(0.35f, 0.95f, 0.55f, 0.95f);
-            Vector3 rBot = feet - rightN * 0.7f;
-            Vector3 rTop = rBot + Vector3.up * rec;
-            Gizmos.color = green;
-            Gizmos.DrawLine(rBot, rTop);
-            Gizmos.DrawLine(rBot - rightN * 0.1f, rBot + rightN * 0.1f); // засечка низа (= ноги)
-            Gizmos.DrawLine(rTop - rightN * 0.1f, rTop + rightN * 0.1f); // засечка верха (= рек. рост)
-            // Тонкие горизонтальные ориентиры ног и макушки — сквозь фигуру, чтобы видеть где 0 и где рост.
-            Gizmos.color = new Color(green.r, green.g, green.b, 0.22f);
-            Gizmos.DrawLine(feet - rightN * 0.7f, feet + rightN * 0.7f);
-            Gizmos.DrawLine((feet + Vector3.up * rec) - rightN * 0.7f, (feet + Vector3.up * rec) + rightN * 0.7f);
-            UnityEditor.Handles.color = green;
-            UnityEditor.Handles.Label(rTop + Vector3.up * 0.06f, "рек. рост " + rec.ToString("0.##") + " м");
-
-            // --- Круг коллизии сима (радиус = Size × SimTuning.Default.BodyRadiusPerSize) в НОГАХ, как линейка. Тумблер. ---
+            // --- Круг коллизии сима (радиус = Size × SimTuning.Default.BodyRadiusPerSize) в НОГАХ. Тумблер. ---
             // В рантайме сим считает коллизию в unit.Position; презентация ставит юнита так, чтобы Feet Point
             // попал в неё (офсет спавна — фаза коллизии), поэтому центр здесь = feet.
             if (_showCollisionGizmo)

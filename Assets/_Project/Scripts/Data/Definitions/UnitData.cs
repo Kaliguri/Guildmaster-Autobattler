@@ -20,6 +20,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Набор спрайт-кадров. Сим/фабрика читают отсюда кадр контакта авто-атаки для windup (вики «14»). null = статичный фолбэк (мгновенный удар).")]
         [SerializeField] private UnitVisual _visual;
 
+        [Tooltip("Свой префаб визуала юнита (с настроенным Animator и реальным размером ПРЯМО в префабе). " +
+                 "Сейчас всем можно прицепить единый placeholder, позже — индивидуальные. Пусто = дефолтный из презентера.")]
+        [SerializeField] private GameObject _viewPrefab;
+
         [Header("Auto-attack shape (Phase 3)")]
         [Tooltip("Форма авто-атаки: None = одиночная цель; Line = линия перед юнитом (несколько целей, «Размашистый выпад»).")]
         [SerializeField] private AreaShape _autoAttackShape = AreaShape.None;
@@ -76,6 +80,7 @@ namespace Guildmaster.Data.Definitions
         public AttackType AttackType => _attackType;
         public ResourceType ResourceType => _resourceType;
         public UnitVisual Visual => _visual;
+        public GameObject ViewPrefab => _viewPrefab;
         public AreaShape AutoAttackShape => _autoAttackShape;
         public float AutoAttackWidth => _autoAttackWidth;
         public EffectData[] AutoAttackEffects => _autoAttackEffects;

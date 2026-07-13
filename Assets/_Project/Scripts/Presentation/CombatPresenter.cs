@@ -37,9 +37,6 @@ namespace Guildmaster.Presentation
         [Tooltip("Задержка между цифрой щита и цифрой HP при сплите (сек).")]
         [SerializeField] private float _splitDelay = 0.06f;
 
-        [Tooltip("Пер-юнит визуалы по реликвии (вики «13» шаг 4): если у юнита эта реликвия — её набор кадров вместо дефолтного на префабе.")]
-        [SerializeField] private VisualOverride[] _visualOverrides = System.Array.Empty<VisualOverride>();
-
         [Header("Дизайн-система (цвета боевого UI)")]
         [Tooltip("Палитра цветов боя (первый SO дизайн-системы). Задаёт цвет HP-бара по принадлежности к " +
                  "смотрящему. Пусто = фолбэк-цвета по умолчанию (см. DefaultHealthColor).")]
@@ -48,13 +45,6 @@ namespace Guildmaster.Presentation
         [Tooltip("Команда «смотрящего» (локального игрока): его юниты — союзные (ally-цвет), прочие — enemy. " +
                  "Шов под кооп (там смотрящий может быть в любой команде); пока 0 = команда игрока.")]
         [SerializeField] private int _localViewerTeam;
-
-        [System.Serializable]
-        private struct VisualOverride
-        {
-            public RelicData Relic;
-            public UnitVisual Visual;
-        }
 
         private CombatSimulation            _simulation;
         private readonly Dictionary<int, UnitView>       _views     = new Dictionary<int, UnitView>();
@@ -187,41 +177,36 @@ namespace Guildmaster.Presentation
 
         private void HandleUnitSpawned(RuntimeUnit unit)
         {
-            if (_unitViewPrefab != null)
+            // Свой префаб персонажа (визуал/анимация/размер настроены ПРЯМО в нём); фолбэк — дефолтный
+            // из презентера. Никакой рантайм-подмены визуала — префаб самодостаточен.
+            GameObject prefabGo = unit.Unit != null && unit.Unit.ViewPrefab != null
+                ? unit.Unit.ViewPrefab
+                : (_unitViewPrefab != null ? _unitViewPrefab.gameObject : null);
+
+            if (prefabGo != null)
             {
-                var view = Instantiate(_unitViewPrefab, (Vector3)(Vector2)unit.Position, Quaternion.identity, transform);
-                view.Bind(unit);
-                view.ApplyFeelConfig(_feel); // параметры вспышки/сплющивания — из design-конфига
+                var go = Instantiate(prefabGo, (Vector3)(Vector2)unit.Position, Quaternion.identity, transform);
+                if (go.TryGetComponent(out UnitView view))
+                {
+                    view.Bind(unit);
+                    view.ApplyFeelConfig(_feel); // параметры вспышки/сплющивания — из design-конфига
 
-                UnitVisual ov = ResolveVisual(unit.Unit);
-                if (ov != null) view.SetVisual(ov);
+                    // Тинт тела по персонажу (dev-различение, пока placeholder-спрайт) + подпись над HP-баром.
+                    view.SetTint(TintFor(unit));
+                    view.SetLabel(NameFor(unit));
 
-                // «Пока один спрайт»: тинтуем тело на персонажа + подпись над HP-баром (dev-харнесс).
-                view.SetTint(TintFor(unit));
-                view.SetLabel(NameFor(unit));
+                    // Цвет HP-бара по принадлежности к смотрящему (дизайн-система).
+                    bool isAllyOfViewer = unit.Team == _localViewerTeam;
+                    view.SetHealthColor(_colorPalette != null
+                        ? _colorPalette.HealthBarColor(isAllyOfViewer)
+                        : DefaultHealthColor(isAllyOfViewer));
 
-                // Цвет HP-бара по принадлежности к смотрящему (дизайн-система, задача 1).
-                bool isAllyOfViewer = unit.Team == _localViewerTeam;
-                view.SetHealthColor(_colorPalette != null
-                    ? _colorPalette.HealthBarColor(isAllyOfViewer)
-                    : DefaultHealthColor(isAllyOfViewer));
-
-                _views[unit.Id] = view;
+                    _views[unit.Id] = view;
+                }
+                else Destroy(go);
             }
 
             _unitSpawnedPublisher.Publish(new UnitSpawnedEvent(unit));
-        }
-
-        // Источник визуала — данные юнита (UnitData.Visual): тот же ассет, что читает сим для windup
-        // (AutoAttackSystem). Scene-_visualOverrides остаётся лишь dev-фолбэком для юнитов без своего
-        // визуала (сравнение по reference-равенству RelicData(.Relic) == UnitData(data) через общую базу).
-        private UnitVisual ResolveVisual(UnitData data)
-        {
-            if (data == null) return null;
-            if (data.Visual != null) return data.Visual;
-            for (int i = 0; i < _visualOverrides.Length; i++)
-                if (_visualOverrides[i].Relic == data) return _visualOverrides[i].Visual;
-            return null;
         }
 
         private void HandleUnitDied(RuntimeUnit unit)
