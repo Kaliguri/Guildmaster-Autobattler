@@ -60,16 +60,16 @@ namespace Guildmaster.Presentation.Design
         [Header("Death shatter — вспышка + разлёт на треугольники")]
         [Tooltip("За сколько секунд спрайт вспыхивает в белый ПЕРЕД расколом.")]
         [SerializeField] private float _shatterFlashIn = 0.08f;
-        [Tooltip("Длительность самого разлёта осколков, сек.")]
-        [SerializeField] private float _shatterDuration = 0.55f;
-        [Tooltip("Сила разлёта — как далеко улетают осколки (мировые ед.).")]
-        [SerializeField] private float _shatterExplode = 1.6f;
-        [Tooltip("Гравитация осколков (тянет вниз к концу).")]
-        [SerializeField] private float _shatterGravity = 3f;
-        [Tooltip("Скорость вращения осколков (рад/раскол).")]
-        [SerializeField] private float _shatterSpin = 6f;
-        [Tooltip("Разброс направлений от радиального (рад) — 0 = строго от центра.")]
-        [SerializeField] private float _shatterSpread = 0.8f;
+        [Tooltip("Длительность разлёта осколков, сек (дольше = медленнее дрейф и плавнее исчезновение).")]
+        [SerializeField] private float _shatterDuration = 0.75f;
+        [Tooltip("Дальность разлёта в ВЫСОТАХ спрайта (1 = осколки уходят примерно на рост персонажа).")]
+        [SerializeField] private float _shatterExplode = 1.2f;
+        [Tooltip("Гравитация осколков в высотах спрайта (0 = без падения вниз, просто дрейф наружу).")]
+        [SerializeField] private float _shatterGravity = 0f;
+        [Tooltip("Скорость вращения осколков (рад за раскол). Меньше = медленнее крутятся.")]
+        [SerializeField] private float _shatterSpin = 3f;
+        [Tooltip("Разброс направлений от радиального (рад) — больше = летят «во все стороны», не строго от центра.")]
+        [SerializeField] private float _shatterSpread = 1.2f;
 
         // --- Slowmo — добивающий удар (CombatFeelDirector) ---
         [Header("Slowmo — добивающий удар (kill)")]
