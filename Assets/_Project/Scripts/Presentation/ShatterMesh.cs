@@ -4,59 +4,45 @@ using UnityEngine;
 namespace Guildmaster.Presentation
 {
     /// <summary>
-    /// Строит меш для разлёта спрайта на осколки (<see cref="DeathShatter"/>) под КОНКРЕТНЫЙ видимый размер
-    /// спрайта. Прямоугольник <paramref name="size"/> (в локальных ед. спрайта, центр в 0) режется джиттер-сеткой
-    /// на ячейки РАЗНЫХ размеров, каждая — на два РАЗЪЕДИНЁННЫХ треугольника (свои 3 вершины, чтобы двигаться
-    /// независимо). В вершину запекается центроид её треугольника (uv2 — общий у трёх, точка разлёта/вращения)
-    /// и случайные параметры осколка (color: r=speed, g=spin, b=dirJitter). UV0 мапится на <paramref name="uvRect"/>
-    /// (тесная область текстуры под спрайтом) — осколки несут именно пиксели персонажа, без размазывания.
-    /// Меш строится ПОД смерть (маленький, ~126 треугольников) и уничтожается вместе с эффектом.
+    /// Строит меш «пиксельного» разлёта спрайта (<see cref="DeathShatter"/>): видимая область режется на
+    /// БЛОЧНЫЕ куски-квады разных размеров, выровненные по пиксель-сетке исходного спрайта (границы блоков
+    /// падают на границы исходных пикселей → чанки выглядят как настоящие куски пиксель-персонажа, а не
+    /// вектор-слайсы). Каждый блок — жёсткий квад (4 вершины, все несут ОДИН центроид блока в uv2 и ОДИН
+    /// набор случайных параметров в color), поэтому летит и вращается как единое целое. UV0 мапится на
+    /// тесную область текстуры (<paramref name="uvRect"/>). Меш строится под смерть и уничтожается с эффектом.
     /// </summary>
     public static class ShatterMesh
     {
-        private const int Cols = 7;
-        private const int Rows = 9;
-        private const float LineJitter = 0.4f; // доля ячейки, на которую гуляют внутренние линии сетки
+        private const float LineJitter = 0.6f; // насколько гуляют внутренние линии (в долях ячейки) → разные размеры
         private const int Seed = 1337;
 
-        /// <summary>Собрать меш размером <paramref name="size"/> (лок. ед., центр в 0), UV в области <paramref name="uvRect"/>.</summary>
-        public static Mesh Build(Vector2 size, Rect uvRect)
+        /// <summary>
+        /// Собрать блочный меш размером <paramref name="size"/> (лок. ед., центр в 0), UV в области
+        /// <paramref name="uvRect"/>. <paramref name="regionPixels"/> — размер области в ИСХОДНЫХ пикселях
+        /// (для снапа границ), <paramref name="blockPixels"/> — целевой размер чанка в пикселях.
+        /// </summary>
+        public static Mesh Build(Vector2 size, Rect uvRect, Vector2 regionPixels, int blockPixels)
         {
             var rng = new System.Random(Seed);
+            int bp = Mathf.Max(1, blockPixels);
+            int cols = Mathf.Clamp(Mathf.RoundToInt(regionPixels.x / bp), 3, 16);
+            int rows = Mathf.Clamp(Mathf.RoundToInt(regionPixels.y / bp), 3, 20);
 
-            // Доли линий сетки по осям [0..1] с джиттером внутренних узлов → ячейки разных размеров.
-            float[] fx = BuildLines(Cols, rng);
-            float[] fy = BuildLines(Rows, rng);
+            float[] fx = BuildLines(cols, regionPixels.x, rng); // доли [0..1] границ по X, снап на пиксели
+            float[] fy = BuildLines(rows, regionPixels.y, rng);
 
-            int cap = Cols * Rows * 6;
+            int cap = cols * rows * 4;
             var verts     = new List<Vector3>(cap);
             var uvs       = new List<Vector2>(cap);
             var centroids = new List<Vector2>(cap);
             var colors    = new List<Color>(cap);
-            var tris      = new List<int>(cap);
+            var tris      = new List<int>(cols * rows * 6);
 
-            for (int cy = 0; cy < Rows; cy++)
-            for (int cx = 0; cx < Cols; cx++)
-            {
-                Vector2 bl = Corner(fx[cx],     fy[cy],     size);
-                Vector2 br = Corner(fx[cx + 1], fy[cy],     size);
-                Vector2 tl = Corner(fx[cx],     fy[cy + 1], size);
-                Vector2 tr = Corner(fx[cx + 1], fy[cy + 1], size);
+            for (int cy = 0; cy < rows; cy++)
+            for (int cx = 0; cx < cols; cx++)
+                AddBlock(fx[cx], fy[cy], fx[cx + 1], fy[cy + 1], size, uvRect, verts, uvs, centroids, colors, tris, rng);
 
-                bool flipDiag = ((cx + cy) & 1) == 0; // чередуем диагональ — меньше «сеточности»
-                if (flipDiag)
-                {
-                    AddTri(bl, br, tl, size, uvRect, verts, uvs, centroids, colors, tris, rng);
-                    AddTri(br, tr, tl, size, uvRect, verts, uvs, centroids, colors, tris, rng);
-                }
-                else
-                {
-                    AddTri(bl, br, tr, size, uvRect, verts, uvs, centroids, colors, tris, rng);
-                    AddTri(bl, tr, tl, size, uvRect, verts, uvs, centroids, colors, tris, rng);
-                }
-            }
-
-            var mesh = new Mesh { name = "ShatterQuad" };
+            var mesh = new Mesh { name = "ShatterBlocks" };
             mesh.indexFormat = verts.Count > 65535
                 ? UnityEngine.Rendering.IndexFormat.UInt32
                 : UnityEngine.Rendering.IndexFormat.UInt16;
@@ -69,30 +55,40 @@ namespace Guildmaster.Presentation
             return mesh;
         }
 
-        // Доля [0..1] сетки → лок. координата, центр в 0: (f-0.5)*size.
+        // Доли [0..1] границ ячеек, СНАПНУТЫЕ на пиксельную сетку области (строго возрастают, каждая ≥1 px шире).
+        private static float[] BuildLines(int cells, float regionPx, System.Random rng)
+        {
+            int w = Mathf.Max(cells, Mathf.RoundToInt(regionPx)); // хотя бы по 1 пикселю на ячейку
+            var frac = new float[cells + 1];
+            frac[0] = 0f;
+            frac[cells] = 1f;
+            int prevPx = 0;
+            for (int i = 1; i < cells; i++)
+            {
+                float t = (float)i / cells + ((float)rng.NextDouble() - 0.5f) * (1f / cells) * LineJitter;
+                int px = Mathf.Clamp(Mathf.RoundToInt(t * w), prevPx + 1, w - (cells - i)); // строго растёт, место для остатка
+                frac[i] = (float)px / w;
+                prevPx = px;
+            }
+            return frac;
+        }
+
+        // Доля [0..1] по осям → лок. координата, центр в 0: (f-0.5)*size.
         private static Vector2 Corner(float fxi, float fyi, Vector2 size)
             => new Vector2((fxi - 0.5f) * size.x, (fyi - 0.5f) * size.y);
 
-        // Позиции линий по одной оси: N ячеек → N+1 узлов (доли [0..1]), края фиксированы, внутренние — джиттер.
-        private static float[] BuildLines(int cells, System.Random rng)
-        {
-            var lines = new float[cells + 1];
-            float step = 1f / cells;
-            for (int i = 0; i <= cells; i++)
-            {
-                float t = i * step;
-                if (i > 0 && i < cells) t += ((float)rng.NextDouble() - 0.5f) * step * LineJitter;
-                lines[i] = t;
-            }
-            return lines;
-        }
-
-        private static void AddTri(
-            Vector2 a, Vector2 b, Vector2 c, Vector2 size, Rect uvRect,
+        // Жёсткий блок-квад: 4 вершины несут ОДИН центроид и ОДИН рандом → блок летит/крутится как целое.
+        private static void AddBlock(
+            float fx0, float fy0, float fx1, float fy1, Vector2 size, Rect uvRect,
             List<Vector3> verts, List<Vector2> uvs, List<Vector2> centroids, List<Color> colors, List<int> tris,
             System.Random rng)
         {
-            Vector2 centroid = (a + b + c) / 3f;
+            Vector2 bl = Corner(fx0, fy0, size);
+            Vector2 br = Corner(fx1, fy0, size);
+            Vector2 tr = Corner(fx1, fy1, size);
+            Vector2 tl = Corner(fx0, fy1, size);
+            Vector2 centroid = (bl + tr) * 0.5f;
+
             var rand = new Color(
                 (float)rng.NextDouble(),  // r = speed
                 (float)rng.NextDouble(),  // g = spin
@@ -100,23 +96,20 @@ namespace Guildmaster.Presentation
                 1f);
 
             int start = verts.Count;
-            AddVertex(a, centroid, rand, size, uvRect, verts, uvs, centroids, colors);
-            AddVertex(b, centroid, rand, size, uvRect, verts, uvs, centroids, colors);
-            AddVertex(c, centroid, rand, size, uvRect, verts, uvs, centroids, colors);
-            tris.Add(start);
-            tris.Add(start + 1);
-            tris.Add(start + 2);
+            AddVertex(bl, fx0, fy0, centroid, rand, uvRect, verts, uvs, centroids, colors);
+            AddVertex(br, fx1, fy0, centroid, rand, uvRect, verts, uvs, centroids, colors);
+            AddVertex(tr, fx1, fy1, centroid, rand, uvRect, verts, uvs, centroids, colors);
+            AddVertex(tl, fx0, fy1, centroid, rand, uvRect, verts, uvs, centroids, colors);
+            tris.Add(start);     tris.Add(start + 1); tris.Add(start + 2);
+            tris.Add(start);     tris.Add(start + 2); tris.Add(start + 3);
         }
 
         private static void AddVertex(
-            Vector2 pos, Vector2 centroid, Color rand, Vector2 size, Rect uvRect,
+            Vector2 pos, float fu, float fv, Vector2 centroid, Color rand, Rect uvRect,
             List<Vector3> verts, List<Vector2> uvs, List<Vector2> centroids, List<Color> colors)
         {
             verts.Add(new Vector3(pos.x, pos.y, 0f));
-            // Доля позиции внутри прямоугольника [0..1] → UV в тесной области текстуры.
-            float u = size.x != 0f ? pos.x / size.x + 0.5f : 0.5f;
-            float v = size.y != 0f ? pos.y / size.y + 0.5f : 0.5f;
-            uvs.Add(new Vector2(uvRect.xMin + u * uvRect.width, uvRect.yMin + v * uvRect.height));
+            uvs.Add(new Vector2(uvRect.xMin + fu * uvRect.width, uvRect.yMin + fv * uvRect.height));
             centroids.Add(centroid);
             colors.Add(rand);
         }

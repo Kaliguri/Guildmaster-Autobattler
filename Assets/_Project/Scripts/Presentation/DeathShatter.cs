@@ -47,7 +47,13 @@ namespace Guildmaster.Presentation
             Vector2 sizeLocal, centerLocal, uvMin, uvSize;
             ComputeTightRect(sprite, out sizeLocal, out centerLocal, out uvMin, out uvSize);
 
-            _mesh = ShatterMesh.Build(sizeLocal, new Rect(uvMin.x, uvMin.y, uvSize.x, uvSize.y));
+            // Размер видимой области в ИСХОДНЫХ пикселях — для снапа границ чанков на пиксель-сетку.
+            Vector2 regionPixels = Vector2.one * 16f;
+            if (sprite != null && sprite.texture != null)
+                regionPixels = new Vector2(uvSize.x * sprite.texture.width, uvSize.y * sprite.texture.height);
+
+            int blockPx = cfg != null ? cfg.ShatterBlockPixels : 6;
+            _mesh = ShatterMesh.Build(sizeLocal, new Rect(uvMin.x, uvMin.y, uvSize.x, uvSize.y), regionPixels, blockPx);
 
             _mf = GetComponent<MeshFilter>();
             _mr = GetComponent<MeshRenderer>();
@@ -100,9 +106,11 @@ namespace Guildmaster.Presentation
             _elapsed += Time.deltaTime;
 
             float shatter = _duration > 0f ? Mathf.Clamp01((_elapsed - _flashIn) / _duration) : 1f;
+            // Вспышка в белый на разломе, затем БЫСТРО гаснет (за первые ~35% разлёта) — чтобы дальше были видны
+            // настоящие пиксели чанков, а не белые кубики.
             float flash = _elapsed < _flashIn
-                ? (_flashIn > 0f ? Mathf.Clamp01(_elapsed / _flashIn) : 1f) // 0→1 вспышка в белый
-                : Mathf.Lerp(1f, 0.25f, shatter);                           // держим бело, слегка спадая
+                ? (_flashIn > 0f ? Mathf.Clamp01(_elapsed / _flashIn) : 1f)
+                : Mathf.Clamp01(1f - shatter / 0.35f);
 
             _mr.GetPropertyBlock(_mpb);
             _mpb.SetFloat(FlashAmtId, flash);
