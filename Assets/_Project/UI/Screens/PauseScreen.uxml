@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel" style="min-width: 240px;">
+            <ui:Label text="Menu" class="gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+            <ui:Button name="btn-return" text="Return" class="gm-button gm-button--primary" />
+            <ui:Button name="btn-settings" text="Settings" class="gm-button" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

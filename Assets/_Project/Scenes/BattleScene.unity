@@ -232,6 +232,91 @@ MonoBehaviour:
   _positionDamping: 4
   _deadZoneRadius: 3
   _spreadDamping: 2.5
+--- !u!1 &101249932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 101249936}
+  - component: {fileID: 101249935}
+  - component: {fileID: 101249934}
+  - component: {fileID: 101249933}
+  m_Layer: 0
+  m_Name: UI Root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &101249933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101249932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f5bc8f10f279c4fb51bb9278d9e04e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.UI::Guildmaster.UI.UiRootBootstrap
+  _pauseScreen: {fileID: 9197481963319205126, guid: 83346036989603340a05776972634b0c, type: 3}
+  _settingsScreen: {fileID: 9197481963319205126, guid: ac79cb8fcfe667b4c8669094609ff498, type: 3}
+--- !u!114 &101249934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101249932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 321345f4278ef4a4b84b5446104ebe4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.UI::Guildmaster.UI.IntegerPanelScaler
+  _panelSettings: {fileID: 11400000, guid: 065e98615efcd16419800f6cabea2c81, type: 2}
+  _referenceHeight: 360
+--- !u!114 &101249935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101249932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 065e98615efcd16419800f6cabea2c81, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 0}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!4 &101249936
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101249932}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &107007566
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -506,6 +591,7 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _contentDatabase: {fileID: 11400000, guid: 6ee93f01d460d5942962e5433b56e5d8, type: 2}
   _gameConfig: {fileID: 11400000, guid: 3f479309a3dcb31429f94c65a88fb275, type: 2}
+  _audioCatalog: {fileID: 0}
 --- !u!4 &265839542
 Transform:
   m_ObjectHideFlags: 0
@@ -19515,9 +19601,6 @@ MonoBehaviour:
   _shieldColor: {r: 0.4, g: 0.7, b: 1, a: 1}
   _evadeColor: {r: 0.85, g: 0.9, b: 0.95, a: 1}
   _splitDelay: 0.06
-  _visualOverrides:
-  - Relic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
-    Visual: {fileID: 11400000, guid: 3911e464d296a71469eea3e103a3a9dd, type: 2}
   _colorPalette: {fileID: 11400000, guid: 422d364d4b20d314e91116d7591f294b, type: 2}
   _localViewerTeam: 0
 --- !u!4 &2012697186
@@ -20065,3 +20148,4 @@ SceneRoots:
   - {fileID: 2010715615}
   - {fileID: 955133366}
   - {fileID: 1588467738}
+  - {fileID: 101249936}

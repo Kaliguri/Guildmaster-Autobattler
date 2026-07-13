@@ -6,6 +6,7 @@ using Guildmaster.Core.Settings;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
+using Guildmaster.UI;
 using Guildmaster.Presentation.Audio;
 using MessagePipe;
 using UnityEngine;
@@ -51,6 +52,12 @@ namespace Guildmaster.Game
             // Настройки игрока: единый источник + JSON-персист + живое применение в аудио (клиент-локально).
             // Entry point — Start() зовёт Load() и применяет сохранённые громкости на старте сессии.
             builder.RegisterEntryPoint<SettingsService>(Lifetime.Singleton).As<ISettingsService>();
+
+            // Рантайм-UI (оверлеи меню/настроек): VM + роутер сессионные; бутстрап — UIDocument-компонент
+            // в CoreScene (инъекция методом через RegisterComponentInHierarchy). ESC открывает меню.
+            builder.Register<SettingsViewModel>(Lifetime.Singleton);
+            builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf().As<IMenuRouter>();
+            builder.RegisterComponentInHierarchy<UiRootBootstrap>();
 
             // Локализация: сервис поверх String Tables (вики «13» §5). Потребители (UI) — Фаза 7.
             builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();

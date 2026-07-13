@@ -1,0 +1,31 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel" style="min-width: 380px;">
+            <ui:Label text="Audio" class="gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <ui:VisualElement class="gm-slider-row">
+                <ui:Label text="Master" class="gm-slider-row__label" />
+                <ui:Slider name="slider-master" class="gm-slider" low-value="0" high-value="1" />
+                <ui:Label name="val-master" text="100%" class="gm-slider-row__value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="gm-slider-row">
+                <ui:Label text="Music" class="gm-slider-row__label" />
+                <ui:Slider name="slider-music" class="gm-slider" low-value="0" high-value="1" />
+                <ui:Label name="val-music" text="100%" class="gm-slider-row__value" />
+            </ui:VisualElement>
+            <ui:VisualElement class="gm-slider-row">
+                <ui:Label text="SFX" class="gm-slider-row__label" />
+                <ui:Slider name="slider-sfx" class="gm-slider" low-value="0" high-value="1" />
+                <ui:Label name="val-sfx" text="100%" class="gm-slider-row__value" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="gm-divider" />
+            <ui:VisualElement style="flex-direction: row;">
+                <ui:Button name="btn-save" text="Save" class="gm-button gm-button--primary" style="flex-grow: 1; margin-right: 8px;" />
+                <ui:Button name="btn-cancel" text="Cancel" class="gm-button" style="flex-grow: 1; margin-right: 8px;" />
+                <ui:Button name="btn-defaults" text="Defaults" class="gm-button" style="flex-grow: 1;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
