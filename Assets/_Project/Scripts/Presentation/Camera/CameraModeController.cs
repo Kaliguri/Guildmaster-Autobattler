@@ -124,6 +124,12 @@ namespace Guildmaster.Presentation
             for (int i = 0; i < _shakers.Count; i++) _shakers[i].Shake(intensity);
         }
 
+        /// <summary>Снять остаточную тряску со всех vcam-расширений (перезапуск боя).</summary>
+        public void ResetShake()
+        {
+            for (int i = 0; i < _shakers.Count; i++) if (_shakers[i] != null) _shakers[i].ResetShake();
+        }
+
         private void OnDestroy()
         {
             if (_input != null) _input.CycleViewRequested -= OnCycleView;

@@ -171,6 +171,12 @@ namespace Guildmaster.Presentation
             if (_healthBar != null) _healthBar.SetMainColor(color);
         }
 
+        /// <summary>Цвет полоски щита (из <c>CombatColorPalette</c>, общий для всех).</summary>
+        public void SetShieldColor(Color color)
+        {
+            if (_healthBar != null) _healthBar.SetShieldColor(color);
+        }
+
         /// <summary>Подпись «что за персонаж» над HP-баром. Задаёт лишь текст — вид настраивается на TMP в префабе.</summary>
         public void SetLabel(string text)
         {
@@ -230,7 +236,7 @@ namespace Guildmaster.Presentation
                 _sprite.sortingOrder = -Mathf.RoundToInt(_renderPosition.y * YSortPrecision);
 
             if (_healthBar != null)
-                _healthBar.UpdateBar(_unit.CurrentHP, _unit.Stats.Get(Data.Stats.StatType.MaxHP));
+                _healthBar.UpdateBar(_unit.CurrentHP, _unit.Stats.Get(Data.Stats.StatType.MaxHP), _unit.CurrentShield);
 
             if (_manaBar != null)
                 _manaBar.UpdateBar(_unit.CurrentResource, _unit.Stats.Get(Data.Stats.StatType.MaxResource));
@@ -704,7 +710,10 @@ namespace Guildmaster.Presentation
             }
 
             var go = new GameObject("DeathShatter");
-            go.transform.SetParent(transform, worldPositionStays: false);
+            // Сиблинг спрайта (тот же родитель — Visual Sprite), а не корень вида: иначе трансформ-пространство
+            // (масштаб/иерархия) не совпадает со спрайтом и осколки спавнятся со смещением.
+            Transform visualParent = _sprite.transform.parent != null ? _sprite.transform.parent : transform;
+            go.transform.SetParent(visualParent, worldPositionStays: false);
             var shatter = go.AddComponent<DeathShatter>();
             shatter.Play(_sprite, _feel, () => gameObject.SetActive(false));
 

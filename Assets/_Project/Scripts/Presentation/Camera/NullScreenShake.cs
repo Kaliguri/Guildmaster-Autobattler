@@ -4,5 +4,6 @@ namespace Guildmaster.Presentation
     public sealed class NullScreenShake : IScreenShake
     {
         public void Shake(float intensity) { }
+        public void ResetShake() { }
     }
 }

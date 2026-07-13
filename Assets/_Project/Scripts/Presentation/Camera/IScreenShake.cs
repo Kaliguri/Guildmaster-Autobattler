@@ -8,5 +8,8 @@ namespace Guildmaster.Presentation
     {
         /// <summary>Тряхнуть камеру. <paramref name="intensity"/> 0..1 (клампится); удары складываются вверх (берётся максимум).</summary>
         void Shake(float intensity);
+
+        /// <summary>Мгновенно снять остаточную тряску (перезапуск боя). Не <c>Reset</c> — то магический колбэк MonoBehaviour.</summary>
+        void ResetShake();
     }
 }

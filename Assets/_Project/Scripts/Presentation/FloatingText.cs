@@ -122,5 +122,14 @@ namespace Guildmaster.Presentation
             if (_onComplete != null) _onComplete(this);
             else Destroy(gameObject);
         }
+
+        /// <summary>Прервать полёт цифры при перезапуске боя: вернуть в пул (деактивирует) / уничтожить — без досчёта.</summary>
+        public void Cancel()
+        {
+            var cb = _onComplete;
+            _onComplete = null;         // чтобы Update больше не досчитал и не вызвал release повторно
+            if (cb != null) cb(this);   // release → пул деактивирует объект
+            else Destroy(gameObject);
+        }
     }
 }
