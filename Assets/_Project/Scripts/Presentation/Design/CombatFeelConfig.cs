@@ -100,6 +100,20 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Форма возврата: нормализованное время (0→1) → доля возврата к норме (0→1).")]
         [SerializeField] private AnimationCurve _finisherReturnCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
+        // --- VFX — пиксельные брызги (CombatVfx / PixelBurst) ---
+        [Header("VFX — hit-spark (попадание, в HitPoint)")]
+        [SerializeField] private PixelBurstPreset _hitSpark = new PixelBurstPreset
+            { Color = new Color(1f, 0.95f, 0.7f), Count = 14, Speed = 0.9f, Size = 0.06f, Life = 0.35f, Gravity = 0.5f, SpreadDeg = 360f };
+        [Header("VFX — muzzle (выстрел, в ShotPoint)")]
+        [SerializeField] private PixelBurstPreset _muzzle = new PixelBurstPreset
+            { Color = new Color(1f, 0.85f, 0.4f), Count = 8, Speed = 0.6f, Size = 0.06f, Life = 0.18f, Gravity = 0f, SpreadDeg = 55f };
+        [Header("VFX — impact dust (мили-удар, у ног цели)")]
+        [SerializeField] private PixelBurstPreset _impactDust = new PixelBurstPreset
+            { Color = new Color(0.75f, 0.68f, 0.55f), Count = 8, Speed = 0.5f, Size = 0.07f, Life = 0.5f, Gravity = 0.4f, SpreadDeg = 130f };
+        [Header("VFX — heal (лечение, в HitPoint)")]
+        [SerializeField] private PixelBurstPreset _heal = new PixelBurstPreset
+            { Color = new Color(0.55f, 1f, 0.6f), Count = 10, Speed = 0.6f, Size = 0.05f, Life = 0.55f, Gravity = -0.4f, SpreadDeg = 45f };
+
         // --- Getters ---
         public Color FlashColor       => _flashColor;
         public float FlashDuration    => _flashDuration;
@@ -131,6 +145,11 @@ namespace Guildmaster.Presentation.Design
         public float ShatterSpin       => _shatterSpin;
         public float ShatterSpread     => _shatterSpread;
         public int   ShatterBlockPixels => _shatterBlockPixels;
+
+        public PixelBurstPreset HitSpark   => _hitSpark;
+        public PixelBurstPreset Muzzle     => _muzzle;
+        public PixelBurstPreset ImpactDust => _impactDust;
+        public PixelBurstPreset Heal       => _heal;
 
         public float KillSlowFactor    => _killSlowFactor;
         public float KillSlowRelease   => _killSlowRelease;

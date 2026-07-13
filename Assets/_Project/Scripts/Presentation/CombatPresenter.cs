@@ -54,6 +54,7 @@ namespace Guildmaster.Presentation
         private ObjectPool<FloatingText>    _textPool;
         private System.Action<FloatingText> _releaseText;
         private CombatStatusOverlay         _statusOverlay;
+        private CombatVfx                   _vfx;               // пул пиксельных VFX-брызгов
         private RuntimeUnit                 _finisherCandidate; // автор последнего добивающего мили-удара
 
         private IPublisher<UnitSpawnedEvent> _unitSpawnedPublisher;
@@ -96,6 +97,7 @@ namespace Guildmaster.Presentation
             _simulation.OnBattleReset       += HandleBattleReset;
 
             EnsureStatusOverlay();
+            EnsureVfx();
         }
 
         private void OnDisable()
@@ -138,6 +140,16 @@ namespace Guildmaster.Presentation
             _statusOverlay.Initialize(_simulation);
         }
 
+        /// <summary>Создать пул пиксельных VFX-брызгов в рантайме (без правок сцены/префабов).</summary>
+        private void EnsureVfx()
+        {
+            if (_vfx != null) return;
+            var go = new GameObject("CombatVfx");
+            go.transform.SetParent(transform, worldPositionStays: false);
+            _vfx = go.AddComponent<CombatVfx>();
+            _vfx.Initialize();
+        }
+
         private void Update()
         {
             float alpha = Time.deltaTime / Guildmaster.Core.Simulation.SimConstants.TickDelta;
@@ -171,7 +183,17 @@ namespace Guildmaster.Presentation
             // Визуальный старт — из ShotPoint (дула) источника, если его вид есть; иначе из позиции сима.
             Vector3 origin = (Vector3)(Vector2)projectile.Position;
             if (projectile.Source != null && _views.TryGetValue(projectile.Source.Id, out var srcView) && srcView != null)
+            {
                 origin = srcView.ShotPoint;
+
+                // Muzzle-вспышка из дула по направлению полёта снаряда.
+                if (_vfx != null && _feel != null)
+                {
+                    Vector2 vel = projectile.Velocity;
+                    float ang = vel.sqrMagnitude > 1e-6f ? Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg : 0f;
+                    _vfx.SpawnBurst(srcView.ShotPoint, ang, _feel.Muzzle, 1f, srcView.BodySortingLayerId, srcView.BodySortingOrder + 5);
+                }
+            }
 
             var view = Instantiate(_bulletPrefab, origin, Quaternion.identity, transform);
             // Тинт снаряда = цвет юнита-источника (тот же метод, что и тело юнита).
@@ -256,6 +278,17 @@ namespace Guildmaster.Presentation
             Vector3 anchor  = AnchorFor(target);
             float   hpScale = Mathf.Lerp(1f, _feel.NumberMaxScale, Mathf.Clamp01(frac / Mathf.Max(1e-4f, _feel.NumberFullFrac)));
 
+            // Пиксельные VFX: искры в точку попадания (кол-во по весу удара) + пыль у ног на мили-ударе.
+            if (_vfx != null && _feel != null && view != null)
+            {
+                float intensity = 0.35f + 0.65f * Mathf.Clamp01(frac / Mathf.Max(1e-4f, _feel.HeavyHitFrac));
+                _vfx.SpawnBurst(anchor, 0f, _feel.HitSpark, intensity, view.BodySortingLayerId, view.BodySortingOrder + 5);
+
+                bool melee = source?.Unit != null && source.Unit.AttackType == AttackType.Melee;
+                if (melee)
+                    _vfx.SpawnBurst(view.FeetPoint, 90f, _feel.ImpactDust, 1f, view.BodySortingLayerId, view.BodySortingOrder - 1);
+            }
+
             // Урон по щиту — синим «-N»; по HP — «-N» цветом урона. Если задет и щит, и HP —
             // цифра щита сразу, цифра HP через очень маленькую задержку (обе читаемы).
             if (shield > 0) SpawnNumber(anchor, "-" + shield, _shieldColor);
@@ -272,7 +305,13 @@ namespace Guildmaster.Presentation
         {
             // Хил-цифра в точку попадания цели (+N). Мелкие тики регена округляются в 0 и не спамят.
             int healed = Mathf.RoundToInt(amount);
-            if (healed > 0) SpawnNumber(AnchorFor(target), "+" + healed, _healColor);
+            if (healed <= 0) return;
+
+            SpawnNumber(AnchorFor(target), "+" + healed, _healColor);
+
+            // Пиксельные хил-искры (восходящие, зелёные) в точку попадания.
+            if (_vfx != null && _feel != null && _views.TryGetValue(target.Id, out var tView) && tView != null)
+                _vfx.SpawnBurst(tView.HitPoint, 90f, _feel.Heal, 1f, tView.BodySortingLayerId, tView.BodySortingOrder + 5);
         }
 
         private void HandleAttackEvaded(RuntimeUnit target)

@@ -252,6 +252,12 @@ namespace Guildmaster.Presentation
         /// <summary>Мировая точка попадания (куда прилетают снаряды/цифры урона), зеркалится по фейсингу. Фолбэк — позиция юнита.</summary>
         public Vector3 HitPoint => ResolveSocketFacing(_hitPoint);
 
+        /// <summary>Слой сортировки тела — для размещения VFX относительно юнита.</summary>
+        public int BodySortingLayerId => _sprite != null ? _sprite.sortingLayerID : 0;
+
+        /// <summary>Текущий ордер сортировки тела (Y-sort) — VFX ставим со смещением от него.</summary>
+        public int BodySortingOrder => _sprite != null ? _sprite.sortingOrder : 0;
+
         // Сокет с учётом разворота: спрайт зеркалим через SpriteRenderer.flipX, а он НЕ зеркалит дочерние GO
         // (сокеты живут в мировой иерархии). Поэтому для смотрящего влево отражаем локальную X сокета вручную —
         // иначе дуло/грудь оказываются с «нарисованной» стороны, а не с той, куда юнит фактически повёрнут.
