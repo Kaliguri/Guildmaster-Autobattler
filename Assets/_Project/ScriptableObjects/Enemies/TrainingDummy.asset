@@ -25,7 +25,13 @@ MonoBehaviour:
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _resourceOnHit: 0
-  _stats: []
+  _stats:
+  - Stat: 0
+    Op: 3
+    Value: 1200
+  - Stat: 7
+    Op: 3
+    Value: 100
   _grantedEffects: []
   _abilities: []
   _aiPreset: {fileID: 0}

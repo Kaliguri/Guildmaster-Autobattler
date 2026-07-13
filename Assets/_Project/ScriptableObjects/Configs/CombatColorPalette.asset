@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: CombatColorPalette
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Design.CombatColorPalette
   _allyHp: {r: 0.3, g: 0.85, b: 0.35, a: 1}
-  _enemyHp: {r: 0.9, g: 0.25, b: 0.25, a: 1}
+  _enemyHp: {r: 1, g: 0.4, b: 0.13, a: 1}
+  _shield: {r: 0.62, g: 0.86, b: 1, a: 1}

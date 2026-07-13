@@ -2,9 +2,12 @@ using Guildmaster.Core.Audio;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
 using Guildmaster.Core.Random;
+using Guildmaster.Core.Settings;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
+using Guildmaster.UI;
+using Guildmaster.Presentation.Audio;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -25,6 +28,10 @@ namespace Guildmaster.Game
         [Tooltip("Общие дефолты игры (громкости, локаль, слоты предметов; вики «13» §3.4). Потребители — Фаза 6/7.")]
         [SerializeField] private GameConfig _gameConfig;
 
+        [Tooltip("Каталог звуков (ключ→FMOD-событие; вики impl «09»). Потребители — FmodAudioService и AudioPresenter. " +
+                 "Пусто = игра не падает, но звука нет: назначить ассет Assets/_Project/ScriptableObjects/Audio/AudioCatalog.")]
+        [SerializeField] private AudioCatalog _audioCatalog;
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<IRngService>(_ => new XorShiftRng(GenerateRootSeed()), Lifetime.Singleton);
@@ -35,7 +42,22 @@ namespace Guildmaster.Game
             // Общие дефолты игры (потребителей пока нет — тип/ассет/DI под Фазу 6/7).
             builder.RegisterInstance(_gameConfig);
 
-            builder.Register<UnityAudioService>(Lifetime.Singleton).As<IAudioService>();
+            // Каталог доступен обоим потребителям (FmodAudioService резолвит ключ→событие, AudioPresenter
+            // строит поверх него резолвер). Ассет не назначен → пустой рантайм-инстанс (всё в тишину, бой
+            // не падает) — тот же приём, что у CombatFeelConfig.
+            var audioCatalog = _audioCatalog != null ? _audioCatalog : ScriptableObject.CreateInstance<AudioCatalog>();
+            builder.RegisterInstance(audioCatalog);
+            builder.Register<FmodAudioService>(Lifetime.Singleton).As<IAudioService>();
+
+            // Настройки игрока: единый источник + JSON-персист + живое применение в аудио (клиент-локально).
+            // Entry point — Start() зовёт Load() и применяет сохранённые громкости на старте сессии.
+            builder.RegisterEntryPoint<SettingsService>(Lifetime.Singleton).As<ISettingsService>();
+
+            // Рантайм-UI (оверлеи меню/настроек): VM + роутер сессионные; бутстрап — UIDocument-компонент
+            // в CoreScene (инъекция методом через RegisterComponentInHierarchy). ESC открывает меню.
+            builder.Register<SettingsViewModel>(Lifetime.Singleton);
+            builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf().As<IMenuRouter>();
+            builder.RegisterComponentInHierarchy<UiRootBootstrap>();
 
             // Локализация: сервис поверх String Tables (вики «13» §5). Потребители (UI) — Фаза 7.
             builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();

@@ -1,4 +1,5 @@
 using System;
+using Guildmaster.Core.Audio;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -43,9 +44,16 @@ namespace Guildmaster.Game.Services
     /// </summary>
     public sealed class TimeScaleService : ITickable, IDisposable
     {
+        // FMOD не следит за Time.timeScale — slowmo-питч боевой шины ведём глобальным параметром (вики impl «09» §2.6).
+        // Пишем только на изменение (Apply зовётся каждый кадр во время пульса/секвенции).
+        private readonly IAudioService _audio;
+        private float _lastPushedTimeScale = float.NaN;
+
         private float _gameSpeed = 1f;
         private float _cinematic = 1f;
         private bool  _paused;
+
+        public TimeScaleService(IAudioService audio) => _audio = audio;
 
         // Профиль cinematic-пульса: держим глубину _cinematicFrom _holdRemaining секунд, затем возвращаемся
         // к 1 за _releaseDuration по кривой _releaseCurve. Всё на unscaled-времени (иначе slowmo тормозит
@@ -187,9 +195,44 @@ namespace Guildmaster.Game.Services
             Apply();
         }
 
-        private void Apply() => Time.timeScale = Effective;
+        private void Apply()
+        {
+            float eff = Effective;
+            Time.timeScale = eff;
 
-        /// <summary>Вернуть глобальный timeScale к 1 при выгрузке боя — иначе мир останется замороженным.</summary>
-        public void Dispose() => Time.timeScale = 1f;
+            // Питч боевой шины идёт от эффективного масштаба (slowmo вниз, 2x/3x вверх). Пол 0.05, чтобы
+            // на паузе (eff=0) не улетать в -inf полутонов; кривую и потолок настраивает Studio-сторона.
+            float param = Mathf.Clamp(eff, 0.05f, 3f);
+            if (_audio != null && !Mathf.Approximately(param, _lastPushedTimeScale))
+            {
+                _audio.SetGlobalParameter(AudioParameters.TimeScale, param);
+                _lastPushedTimeScale = param;
+            }
+        }
+
+        /// <summary>
+        /// Сбросить cinematic-состояние при перезапуске боя (dev-R): снять slowmo/пульс/секвенцию и вернуть
+        /// множитель к 1. Игровую скорость и паузу игрока НЕ трогаем (это его выбор, переживает рестарт).
+        /// Без этого застрявший finisher-slowmo перетирал бы Time.timeScale и новый бой шёл в замедлении.
+        /// </summary>
+        public void Reset()
+        {
+            _cinematic       = 1f;
+            _cinematicActive = false;
+            _sequenceActive  = false;
+            _segments        = null;
+            _holdRemaining   = 0f;
+            _releaseElapsed  = 0f;
+            _segElapsed      = 0f;
+            Apply();
+        }
+
+        /// <summary>Вернуть глобальный timeScale к 1 при выгрузке боя — иначе мир останется замороженным.
+        /// Заодно сбрасываем аудио-параметр, чтобы следующий бой не начался со «смазанным» питчем.</summary>
+        public void Dispose()
+        {
+            Time.timeScale = 1f;
+            _audio?.SetGlobalParameter(AudioParameters.TimeScale, 1f);
+        }
     }
 }

@@ -64,17 +64,15 @@ namespace Guildmaster.Presentation
             _mr.sortingLayerID = src.sortingLayerID; // 2D-сортировка как у спрайта
             _mr.sortingOrder   = src.sortingOrder;
 
-            // Меш в лок. ед. спрайта, центр в 0 → ставим GO в мировой центр видимой области и масштабируем
-            // в мировой масштаб Body (учитывая масштаб возможного родителя). Флип — знаком X (Cull Off).
+            // Осколки спавнятся СИБЛИНГОМ спрайта (тот же родитель — Visual Sprite), поэтому local-масштаб берём
+            // прямо у спрайта. Якорь — ВИДИМЫЙ центр кадра; при flipX он зеркалится вокруг пивота по X, т.к.
+            // SpriteRenderer.flipX отражает МЕШ, а не трансформ — без этого для отражённых (враги) осколки уезжали вбок.
             Transform bt = src.transform;
-            transform.position = bt.TransformPoint(new Vector3(centerLocal.x, centerLocal.y, 0f));
-            transform.rotation = bt.rotation;
-            Vector3 world = bt.lossyScale;
-            Vector3 parent = transform.parent != null ? transform.parent.lossyScale : Vector3.one;
-            transform.localScale = new Vector3(
-                (src.flipX ? -world.x : world.x) / NonZero(parent.x),
-                world.y / NonZero(parent.y),
-                1f);
+            float signX = src.flipX ? -1f : 1f;
+            transform.position   = bt.TransformPoint(new Vector3(signX * centerLocal.x, centerLocal.y, 0f));
+            transform.rotation   = bt.rotation;
+            Vector3 ls = bt.localScale;
+            transform.localScale = new Vector3(signX * ls.x, ls.y, 1f); // знак X — флип меша под flipX
 
             _mpb = new MaterialPropertyBlock();
             _mr.GetPropertyBlock(_mpb);
@@ -159,8 +157,6 @@ namespace Guildmaster.Presentation
             uvMin  = Vector2.zero;
             uvSize = Vector2.one;
         }
-
-        private static float NonZero(float v) => Mathf.Approximately(v, 0f) ? 1f : v;
 
         // Общий рантайм-материал шаттер-шейдера (один на всех; per-instance данные — через MPB).
         private static Material SharedMaterial()

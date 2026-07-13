@@ -6,6 +6,7 @@ using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
 using Guildmaster.Presentation;
+using Guildmaster.Presentation.Audio;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -59,6 +60,10 @@ namespace Guildmaster.Game
 
             // Режиссёр «сочности»: политика global-эффектов (slowmo на килл/конец боя) по MessagePipe-событиям.
             builder.RegisterEntryPoint<CombatFeelDirector>(Lifetime.Scoped);
+
+            // Аудио-презентер: тот же приём (POCO-подписчик на боевые события). Каталог и IAudioService —
+            // из RootScope. Пусто/заглушка = молчит, бой не падает.
+            builder.RegisterEntryPoint<AudioPresenter>(Lifetime.Scoped);
 
             // Боевой ввод: пауза/скорость на время этого боя (вики «16» §4).
             builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);

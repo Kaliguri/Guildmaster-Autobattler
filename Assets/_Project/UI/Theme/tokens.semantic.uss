@@ -1,0 +1,48 @@
+/* ============================================================================
+ * Дизайн-токены — ЯРУС 2: SEMANTIC (смысловые роли).
+ * Ссылается ТОЛЬКО на primitives. Компоненты (components.uss) консюмят ТОЛЬКО этот ярус.
+ * Сменить всю тему = поправить значения здесь. Требует tokens.primitives.uss раньше в списке.
+ * ========================================================================== */
+:root {
+    /* --- Поверхности --- */
+    --gm-color-scrim: rgba(0, 0, 0, 0.82);        /* затемнение под оверлеем меню (тюнится здесь; при блюре можно ослабить) */
+    --gm-color-surface-panel: var(--gm-ink-700);   /* тело панели */
+    --gm-color-surface-raised: var(--gm-ink-600);  /* кнопки/поднятые блоки */
+    --gm-color-surface-sunken: var(--gm-ink-800);  /* утопленные блоки */
+
+    /* --- Рамки --- */
+    --gm-color-border-frame: var(--gm-brass-500);  /* латунная рамка панели/кнопки */
+    --gm-color-border-inner: var(--gm-brass-700);  /* внутренняя линия рамки */
+    --gm-color-border-subtle: var(--gm-ink-300);   /* тихие разделители */
+
+    /* --- Текст --- */
+    --gm-color-text: var(--gm-parchment-100);
+    --gm-color-text-muted: var(--gm-parchment-300);
+    --gm-color-text-on-accent: var(--gm-ink-800);  /* текст на латунной заливке */
+
+    /* --- Акцент (латунь) — первичные действия --- */
+    --gm-color-accent: var(--gm-brass-500);
+    --gm-color-accent-hover: var(--gm-brass-400);
+    --gm-color-accent-active: var(--gm-brass-600);
+
+    /* --- Деструктив --- */
+    --gm-color-danger: var(--gm-danger-500);
+    --gm-color-danger-hover: var(--gm-danger-400);
+
+    /* --- Интерактив: hover/фокус --- */
+    --gm-color-hover-surface: var(--gm-ink-500);
+    --gm-color-hover-border: var(--gm-brass-300);
+    --gm-color-focus-ring: var(--gm-brass-200);
+    --gm-color-disabled-text: var(--gm-ink-300);
+
+    /* --- Слайдер --- */
+    --gm-color-track: var(--gm-ink-500);
+    --gm-color-track-fill: var(--gm-brass-400);
+    --gm-color-handle: var(--gm-brass-300);
+    --gm-color-handle-border: var(--gm-brass-700);
+
+    /* --- Инсеты/шкала (алиасы под компоненты) --- */
+    --gm-inset-panel: var(--gm-space-5);
+    --gm-inset-control: var(--gm-space-3);
+    --gm-gap-stack: var(--gm-space-3);
+}

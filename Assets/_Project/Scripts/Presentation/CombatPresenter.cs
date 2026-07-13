@@ -50,6 +50,10 @@ namespace Guildmaster.Presentation
         private readonly Dictionary<int, UnitView>       _views     = new Dictionary<int, UnitView>();
         private readonly Dictionary<int, ProjectileView> _projViews = new Dictionary<int, ProjectileView>();
         private readonly List<int>                       _deadProj  = new List<int>();
+        // Виды погибших юнитов: сняты из _views (перестают следовать за симом), но GameObject живёт, пока идёт
+        // секвенс смерти (death-клип → разлёт). Держим отдельно, чтобы гарантированно снести их при рестарте —
+        // иначе трупы прошлого боя остаются висеть в новом («телепортируются»).
+        private readonly List<UnitView>                  _corpses   = new List<UnitView>();
 
         private ObjectPool<FloatingText>    _textPool;
         private System.Action<FloatingText> _releaseText;
@@ -115,8 +119,10 @@ namespace Guildmaster.Presentation
             _simulation.OnBattleReset       -= HandleBattleReset;
         }
 
-        // Перезапуск боя на месте (dev-R): снимаем все виды юнитов и снарядов. Сцена/камера не трогаются;
-        // новый сетап заспавнит юнитов заново через OnUnitSpawned.
+        // Перезапуск боя на месте (dev-R): снимаем все виды юнитов и снарядов и чистим летящие цифры.
+        // Slowmo/тряску сбрасывает CombatFeelDirector (тоже по OnBattleReset — у него есть TimeScaleService/шейк;
+        // презентер в другой сборке и до них не дотянется без цикла asmdef). Статус-кольца (CombatStatusOverlay)
+        // само-гаснут, когда юнитов нет. Сцена/камера не трогаются; новый сетап заспавнит юнитов через OnUnitSpawned.
         private void HandleBattleReset()
         {
             foreach (var kvp in _views)
@@ -127,7 +133,19 @@ namespace Guildmaster.Presentation
                 if (kvp.Value != null) Destroy(kvp.Value.gameObject);
             _projViews.Clear();
 
+            // Трупы прошлого боя (виды в секвенсе смерти, снятые из _views) — иначе висят в новом бою.
+            for (int i = 0; i < _corpses.Count; i++)
+                if (_corpses[i] != null) Destroy(_corpses[i].gameObject);
+            _corpses.Clear();
+
             _finisherCandidate = null;
+
+            // Летящие боевые цифры (урон/хил) — прервать и вернуть в пул, иначе висят после рестарта.
+            if (_textPool != null)
+            {
+                var texts = GetComponentsInChildren<FloatingText>(includeInactive: false);
+                for (int i = 0; i < texts.Length; i++) texts[i].Cancel();
+            }
         }
 
         /// <summary>Создать dev-слой статус-колец в рантайме (без правок сцены/префабов) и подать симуляцию.</summary>
@@ -228,6 +246,10 @@ namespace Guildmaster.Presentation
                         ? _colorPalette.HealthBarColor(isAllyOfViewer)
                         : DefaultHealthColor(isAllyOfViewer));
 
+                    // Цвет щита — общий из палитры (не зависит от принадлежности).
+                    if (_colorPalette != null)
+                        view.SetShieldColor(_colorPalette.Shield);
+
                     _views[unit.Id] = view;
                 }
                 else Destroy(go);
@@ -242,6 +264,7 @@ namespace Guildmaster.Presentation
             {
                 view.OnDeath();
                 _views.Remove(unit.Id);
+                _corpses.Add(view); // труп доигрывает секвенс смерти сам; сносим гарантированно при рестарте
             }
 
             _unitDiedPublisher.Publish(new UnitDiedEvent(unit));

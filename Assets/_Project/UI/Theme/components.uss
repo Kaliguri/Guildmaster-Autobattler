@@ -1,0 +1,149 @@
+/* ============================================================================
+ * Дизайн-система — ЯРУС 3: COMPONENTS (.gm-*).
+ * Единственный слой, задающий вид. Экраны СОБИРАЮТСЯ из этих классов —
+ * сырой стиль на экране запрещён (так «единый стиль» становится структурой, а не договором).
+ * Ссылается ТОЛЬКО на семантические токены. Требует primitives + semantic раньше в списке.
+ * ========================================================================== */
+
+/* --- Экран-оверлей: затемняющий scrim, контент по центру --- */
+.gm-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--gm-color-scrim);
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Панель: латунная рамка, острые углы --- */
+.gm-panel {
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    padding: var(--gm-inset-panel);
+    min-width: 260px;
+}
+
+.gm-panel__title {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-title);
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    margin-bottom: var(--gm-space-3);
+}
+
+.gm-divider {
+    height: 1px;
+    background-color: var(--gm-color-border-subtle);
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-3);
+}
+
+/* --- Кнопка (secondary по умолчанию) --- */
+.gm-button {
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    padding: var(--gm-space-2) var(--gm-space-4);
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
+    transition-property: background-color, border-color;
+    transition-duration: 0.08s;
+}
+
+.gm-button:hover {
+    background-color: var(--gm-color-hover-surface);
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-button:active {
+    background-color: var(--gm-color-accent);
+    border-color: var(--gm-color-accent-active);
+    color: var(--gm-color-text-on-accent);
+}
+
+.gm-button:focus {
+    border-color: var(--gm-color-focus-ring);
+}
+
+.gm-button:disabled {
+    color: var(--gm-color-disabled-text);
+    border-color: var(--gm-color-border-subtle);
+    opacity: 1;
+}
+
+/* --- Кнопка: primary (латунная заливка) — не более одной на экран --- */
+.gm-button--primary {
+    background-color: var(--gm-color-accent);
+    border-color: var(--gm-color-accent-active);
+    color: var(--gm-color-text-on-accent);
+}
+
+.gm-button--primary:hover {
+    background-color: var(--gm-color-accent-hover);
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-button--primary:active {
+    background-color: var(--gm-color-accent-active);
+}
+
+/* --- Строка слайдера: подпись слева, слайдер по центру, значение справа --- */
+.gm-slider-row {
+    flex-direction: row;
+    align-items: center;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-slider-row__label {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    width: 88px;
+    flex-shrink: 0;
+}
+
+.gm-slider-row__value {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    width: 48px;
+    flex-shrink: 0;
+    -unity-text-align: middle-right;
+}
+
+/* --- Слайдер (UI Toolkit Slider), пиксельный трек + квадратная ручка --- */
+.gm-slider {
+    flex-grow: 1;
+    margin-left: var(--gm-space-3);
+    margin-right: var(--gm-space-3);
+}
+
+.gm-slider .unity-base-slider__tracker {
+    background-color: var(--gm-color-track);
+    border-width: 0;
+    border-radius: var(--gm-radius-0);
+    height: 8px;
+    margin-top: 5px;
+}
+
+.gm-slider .unity-base-slider__dragger {
+    background-color: var(--gm-color-handle);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-handle-border);
+    border-radius: var(--gm-radius-0);
+    width: 12px;
+    height: 18px;
+    margin-top: 0;
+}
+
+/* --- Текстовые роли --- */
+.gm-text-muted {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+}

@@ -46,5 +46,14 @@ namespace Guildmaster.Core.Input
 
         /// <summary>Циклически сменить скорость боя (.): 1x → 2x → 3x → 1x.</summary>
         event Action GameSpeedCycleRequested;
+
+        // --- Системное меню: дискретное событие ---
+
+        /// <summary>
+        /// Открыть/закрыть системное меню (Escape). Это ОВЕРЛЕЙ, НЕ пауза (в хост-авторитативном
+        /// коопе мир одному игроку не остановить; боевая пауза — отдельно на Space). Доступно из любого
+        /// контекста и НЕ глушится <see cref="GameplaySuppressed"/> — иначе открытое меню нельзя закрыть.
+        /// </summary>
+        event Action MenuToggleRequested;
     }
 }

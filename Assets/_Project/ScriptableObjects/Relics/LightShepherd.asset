@@ -24,43 +24,43 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
-  _resourceOnHit: 5
+  _resourceOnHit: 15
   _stats:
   - Stat: 0
-    Op: 0
-    Value: 20
+    Op: 3
+    Value: 1400
   - Stat: 7
-    Op: 0
-    Value: -2
+    Op: 3
+    Value: 100
   - Stat: 8
-    Op: 0
-    Value: -0.100000024
+    Op: 3
+    Value: 0.9
   - Stat: 9
-    Op: 0
-    Value: 6
+    Op: 3
+    Value: 7
   - Stat: 20
-    Op: 0
-    Value: -0.33333302
+    Op: 3
+    Value: 2.6667
   - Stat: 18
-    Op: 0
+    Op: 3
     Value: 8
   - Stat: 27
-    Op: 0
-    Value: 30
+    Op: 3
+    Value: 80
   - Stat: 28
-    Op: 0
+    Op: 3
     Value: 0
   _grantedEffects: []
   _abilities:
   - _id: hand_of_life
     _effects: []
     _baseCooldown: 6
-    _resourceCost: 30
+    _resourceCost: 80
     _targetMode: 3
     _damageMultiplier: 0
     _areaShape: 0
     _areaRadius: 0
-    _healFlat: 30
+    _healFlat: 300
     _healPctTargetMissingHp: 1
     _castCondition: 2
     _castConditionCount: 1

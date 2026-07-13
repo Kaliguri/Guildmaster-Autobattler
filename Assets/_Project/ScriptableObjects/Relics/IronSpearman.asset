@@ -24,38 +24,38 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
-  _resourceOnHit: 5
+  _resourceOnHit: 15
   _stats:
   - Stat: 0
-    Op: 0
-    Value: 100
+    Op: 3
+    Value: 2200
   - Stat: 7
-    Op: 0
-    Value: 2
+    Op: 3
+    Value: 140
   - Stat: 8
-    Op: 0
-    Value: -0.19999999
+    Op: 3
+    Value: 0.8
   - Stat: 9
-    Op: 0
-    Value: 2
+    Op: 3
+    Value: 3
   - Stat: 3
-    Op: 0
-    Value: 4
+    Op: 3
+    Value: 8
   - Stat: 20
-    Op: 0
-    Value: -0.49999976
+    Op: 3
+    Value: 2.5
   - Stat: 27
-    Op: 0
-    Value: 30
+    Op: 3
+    Value: 80
   - Stat: 28
-    Op: 0
+    Op: 3
     Value: 0
   _grantedEffects: []
   _abilities:
   - _id: steel_whirl
     _effects: []
     _baseCooldown: 5
-    _resourceCost: 30
+    _resourceCost: 80
     _targetMode: 0
     _damageMultiplier: 3
     _areaShape: 2

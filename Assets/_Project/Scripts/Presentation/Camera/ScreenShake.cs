@@ -20,6 +20,9 @@ namespace Guildmaster.Presentation
         /// <summary>Подать design-конфиг тряски.</summary>
         public void ApplyConfig(Design.CombatFeelConfig feel) => _feel = feel;
 
+        /// <summary>Снять остаточную амплитуду мгновенно (перезапуск боя).</summary>
+        public void ResetShake() => _amplitude = 0f;
+
         /// <summary>Тряхнуть: intensity 0..1. Берётся максимум с текущей амплитудой (удары не гасят друг друга).</summary>
         public void Shake(float intensity)
         {

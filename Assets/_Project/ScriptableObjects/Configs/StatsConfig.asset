@@ -17,9 +17,9 @@ MonoBehaviour:
   _attackSpeedMax: 4
   _defaults:
   - Stat: 0
-    Value: 120
+    Value: 1200
   - Stat: 7
-    Value: 12
+    Value: 120
   - Stat: 8
     Value: 1
   - Stat: 9

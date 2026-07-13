@@ -1,0 +1,5 @@
+/* Runtime-тема UI Toolkit: дефолтная тема Unity (база контролов) + дизайн-система Guildmaster.
+   Назначается в PanelSettings.themeStyleSheet — любой UIDocument с этим PanelSettings
+   получает всю тему без per-screen <Style>. */
+@import url("unity-theme://default");
+@import url("theme.uss");

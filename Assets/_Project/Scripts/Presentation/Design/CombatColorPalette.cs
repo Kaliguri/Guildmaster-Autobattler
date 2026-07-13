@@ -21,11 +21,19 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("HP-бар союзника смотрящего (его команда).")]
         [SerializeField] private Color _allyHp = new Color(0.30f, 0.85f, 0.35f);
 
-        [Tooltip("HP-бар врага смотрящего (чужая команда).")]
-        [SerializeField] private Color _enemyHp = new Color(0.90f, 0.25f, 0.25f);
+        [Tooltip("HP-бар врага смотрящего (чужая команда). Алый/оранжево-красный (vermilion): контрастит и с " +
+                 "зелёным полем, и с красными телами юнитов, отстроен от маны-синего и хил-зелёного.")]
+        [SerializeField] private Color _enemyHp = new Color(1.0f, 0.40f, 0.13f);
+
+        [Header("Щит (absorb-пул над HP)")]
+        [Tooltip("Цвет полоски щита. Пастельно-циан/бело-голубой — отстроен от HP (зелёный/красный) и " +
+                 "маны (синий) по яркости и оттенку; читается без опоры на hue (дальтоник-safe). Один для " +
+                 "всех, вне зависимости от принадлежности юнита.")]
+        [SerializeField] private Color _shield = new Color(0.62f, 0.86f, 1.0f);
 
         public Color AllyHp => _allyHp;
         public Color EnemyHp => _enemyHp;
+        public Color Shield => _shield;
 
         /// <summary>Цвет HP-бара по признаку «союзник ли юнит для смотрящего».</summary>
         public Color HealthBarColor(bool isAllyOfViewer) => isAllyOfViewer ? _allyHp : _enemyHp;

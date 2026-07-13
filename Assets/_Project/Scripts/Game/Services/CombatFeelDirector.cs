@@ -20,6 +20,7 @@ namespace Guildmaster.Game.Services
     {
         private readonly ISubscriber<DamageDealtEvent> _damageSub;
         private readonly ISubscriber<BattleEndedEvent> _endedSub;
+        private readonly CombatSimulation _sim;
         private readonly TimeScaleService _time;
         private readonly IScreenShake     _shake;
         private readonly CombatFeelConfig _cfg;
@@ -30,12 +31,14 @@ namespace Guildmaster.Game.Services
         public CombatFeelDirector(
             ISubscriber<DamageDealtEvent> damageSub,
             ISubscriber<BattleEndedEvent> endedSub,
+            CombatSimulation sim,
             TimeScaleService time,
             IScreenShake shake,
             CombatFeelConfig cfg)
         {
             _damageSub = damageSub;
             _endedSub  = endedSub;
+            _sim       = sim;
             _time      = time;
             _shake     = shake;
             _cfg       = cfg;
@@ -47,9 +50,24 @@ namespace Guildmaster.Game.Services
             _damageSub.Subscribe(OnDamage).AddTo(bag);
             _endedSub.Subscribe(OnBattleEnded).AddTo(bag);
             _subscriptions = bag.Build();
+
+            if (_sim != null) _sim.OnBattleReset += OnBattleReset;
         }
 
-        public void Dispose() => _subscriptions?.Dispose();
+        public void Dispose()
+        {
+            if (_sim != null) _sim.OnBattleReset -= OnBattleReset;
+            _subscriptions?.Dispose();
+        }
+
+        // Перезапуск боя (dev-R): снять застрявший slowmo/финишер-секвенцию и остаточную тряску, сбросить
+        // кулдаун килл-слоумо — иначе новый бой идёт в замедлении и первый килл может не «щёлкнуть».
+        private void OnBattleReset()
+        {
+            _time.Reset();
+            _shake.ResetShake();
+            _lastKillSlowmo = float.NegativeInfinity;
+        }
 
         private void OnDamage(DamageDealtEvent e)
         {
