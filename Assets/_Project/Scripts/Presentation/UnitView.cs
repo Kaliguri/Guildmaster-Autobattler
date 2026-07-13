@@ -114,6 +114,8 @@ namespace Guildmaster.Presentation
 
         private bool _freeRun;        // бой окончен → доигрываем анимации натурально, не скрабим по замершему симу
         private bool _freeRunSettled; // уже осели в Idle после доигрыша
+        private bool  _holdHitFrame;  // финишер: держим кадр контакта весь финальный slowmo
+        private float _holdRemaining; // unscaled-остаток удержания
 
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
         private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
@@ -261,6 +263,13 @@ namespace Guildmaster.Presentation
             ApplyFacing(); // разворот по цели — до guard'а анимации (нужен и статичным спрайтам)
 
             if (!_animActive) return;
+
+            // Финишер: держим кадр контакта весь финальный slowmo (перекрывает free-run).
+            if (_holdHitFrame)
+            {
+                DriveHoldHitFrame();
+                return;
+            }
 
             // Бой окончен: sim не тикает, скраб замер бы — доигрываем клип естественно (см. DriveFreeRun).
             if (_freeRun)
@@ -415,6 +424,33 @@ namespace Guildmaster.Presentation
         public void OnBattleEnded()
         {
             if (_animActive) _freeRun = true;
+        }
+
+        /// <summary>
+        /// Финишер: застыть на кадре контакта на <paramref name="seconds"/> (unscaled — синхронно с финальным
+        /// slowmo). Срабатывает, только если юнит СЕЙЧАС в атаке (значит удар был мили) — иначе игнор, и
+        /// юнит идёт обычным free-run (снаряд/яд «финишеры» позу удара не держат).
+        /// </summary>
+        public void HoldHitFrame(float seconds)
+        {
+            if (!_animActive || _state != UnitAnimationState.Attack) return;
+            _holdHitFrame  = true;
+            _holdRemaining = seconds;
+        }
+
+        // Застываем на кадре контакта (маркер атаки), пока идёт финальный slowmo; на unscaled-времени —
+        // держим ровно столько же, сколько slowmo. По истечении «момента» — доигрываем и оседаем в Idle.
+        private void DriveHoldHitFrame()
+        {
+            _animator.speed = 0f;
+            _animator.Play(AttackHash, 0, _attackMarkerNormalized);
+            _holdRemaining -= Time.unscaledDeltaTime;
+            if (_holdRemaining <= 0f)
+            {
+                _holdHitFrame   = false;
+                _freeRun        = true;
+                _freeRunSettled = false;
+            }
         }
 
         // После конца боя sim не тикает → скраб застыл бы на кадре. Возвращаем Animator к естественному

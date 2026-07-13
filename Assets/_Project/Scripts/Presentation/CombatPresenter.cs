@@ -64,6 +64,7 @@ namespace Guildmaster.Presentation
         private ObjectPool<FloatingText>    _textPool;
         private System.Action<FloatingText> _releaseText;
         private CombatStatusOverlay         _statusOverlay;
+        private RuntimeUnit                 _finisherCandidate; // автор последнего добивающего мили-удара
 
         private IPublisher<UnitSpawnedEvent> _unitSpawnedPublisher;
         private IPublisher<UnitDiedEvent>    _unitDiedPublisher;
@@ -76,6 +77,9 @@ namespace Guildmaster.Presentation
         private const float HitstopMinSeconds = 0.02f; // слабый удар — ~1 кадр при 60 fps
         private const float HitstopMaxSeconds = 0.09f; // тяжёлый удар
         private const float HitstopFullFrac   = 0.25f; // урон ≥25% MaxHP цели → максимальный стоп
+
+        // Финишер держит кадр контакта столько же, сколько длится финальный slowmo (см. CombatFeelDirector).
+        private const float FinisherHoldSeconds = 3f;
 
         [Inject]
         public void Construct(
@@ -135,6 +139,8 @@ namespace Guildmaster.Presentation
             foreach (var kvp in _projViews)
                 if (kvp.Value != null) Destroy(kvp.Value.gameObject);
             _projViews.Clear();
+
+            _finisherCandidate = null;
         }
 
         /// <summary>Создать dev-слой статус-колец в рантайме (без правок сцены/префабов) и подать симуляцию.</summary>
@@ -251,6 +257,10 @@ namespace Guildmaster.Presentation
                     sourceView.OnHitstop(stop);
             }
 
+            // Кандидат в финишеры: автор добивающего удара, если он мили (снаряд/яд позу удара не держат).
+            if (result.KilledTarget)
+                _finisherCandidate = (source?.Unit != null && source.Unit.AttackType == AttackType.Melee) ? source : null;
+
             int shield = Mathf.RoundToInt(result.ShieldDamage);
             int hp     = Mathf.RoundToInt(result.HpDamage);
 
@@ -351,6 +361,10 @@ namespace Guildmaster.Presentation
 
         private void HandleBattleEnded(BattleOutcome outcome)
         {
+            // Финишер-мили держит кадр контакта весь финальный slowmo (перекрывает free-run у него).
+            if (_finisherCandidate != null && _views.TryGetValue(_finisherCandidate.Id, out var finisher) && finisher != null)
+                finisher.HoldHitFrame(FinisherHoldSeconds);
+
             // Живые (в _views мёртвые уже удалены) доигрывают анимации натурально, а не виснут на замершем симе.
             foreach (var kvp in _views)
                 if (kvp.Value != null) kvp.Value.OnBattleEnded();
