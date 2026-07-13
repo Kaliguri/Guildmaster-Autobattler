@@ -31,12 +31,17 @@ namespace Guildmaster.Game.Services
             // Loop/музыка получат хранимые EventInstance в отдельной итерации.
         }
 
-        public void SetMusicVolume(float volume)
+        public void SetMasterVolume(float volume) => SetBusVolume("bus:/", volume);
+        public void SetMusicVolume(float volume)  => SetBusVolume("bus:/Music", volume);
+        public void SetSfxVolume(float volume)    => SetBusVolume("bus:/SFX", volume);
+
+        // Шина может быть невалидна, пока не загружен соответствующий банк — тогда тихо выходим (безопасно
+        // для пустого проекта; bus:/SFX подхватится, когда Макс разведёт шины в FMOD Studio, кода менять не надо).
+        private static void SetBusVolume(string busPath, float volume)
         {
-            // Шина Music появится вместе с музыкальным банком; до тех пор bus невалиден — тихо выходим.
             try
             {
-                var bus = RuntimeManager.GetBus("bus:/Music");
+                var bus = RuntimeManager.GetBus(busPath);
                 if (bus.isValid()) bus.setVolume(Mathf.Clamp01(volume));
             }
             catch (BankLoadException) { }

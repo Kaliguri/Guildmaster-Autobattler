@@ -12,7 +12,7 @@ namespace Guildmaster.Core.Settings
     public interface ISettingsService
     {
         /// <summary>Текущие значения звука (то, что применено сейчас).</summary>
-        AudioSettings Audio { get; }
+        AudioVolumeSettings Audio { get; }
 
         /// <summary>Поднимается при любом изменении значений (для биндинга UI).</summary>
         event Action Changed;

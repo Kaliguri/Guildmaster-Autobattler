@@ -19,7 +19,11 @@ namespace Guildmaster.Game.Services
             Debug.Log($"[UnityAudioService] - Stop: {soundKey}");
         }
 
+        public void SetMasterVolume(float volume) { }
+
         public void SetMusicVolume(float volume) { }
+
+        public void SetSfxVolume(float volume) { }
 
         // Заглушка: параметр пишется каждый кадр (slowmo) — молча глотаем, без лог-спама.
         public void SetGlobalParameter(string name, float value) { }

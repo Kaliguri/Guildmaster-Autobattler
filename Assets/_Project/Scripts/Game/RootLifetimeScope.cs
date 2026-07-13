@@ -2,6 +2,7 @@ using Guildmaster.Core.Audio;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
 using Guildmaster.Core.Random;
+using Guildmaster.Core.Settings;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
@@ -46,6 +47,10 @@ namespace Guildmaster.Game
             var audioCatalog = _audioCatalog != null ? _audioCatalog : ScriptableObject.CreateInstance<AudioCatalog>();
             builder.RegisterInstance(audioCatalog);
             builder.Register<FmodAudioService>(Lifetime.Singleton).As<IAudioService>();
+
+            // Настройки игрока: единый источник + JSON-персист + живое применение в аудио (клиент-локально).
+            // Entry point — Start() зовёт Load() и применяет сохранённые громкости на старте сессии.
+            builder.RegisterEntryPoint<SettingsService>(Lifetime.Singleton).As<ISettingsService>();
 
             // Локализация: сервис поверх String Tables (вики «13» §5). Потребители (UI) — Фаза 7.
             builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();

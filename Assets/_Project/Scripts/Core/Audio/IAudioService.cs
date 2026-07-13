@@ -13,8 +13,14 @@ namespace Guildmaster.Core.Audio
         /// <summary>Остановить звук по ключу.</summary>
         void Stop(string soundKey);
 
-        /// <summary>Установить громкость музыки [0, 1].</summary>
+        /// <summary>Установить громкость мастер-шины [0, 1] (общая громкость, bus:/).</summary>
+        void SetMasterVolume(float volume);
+
+        /// <summary>Установить громкость музыки [0, 1] (bus:/Music).</summary>
         void SetMusicVolume(float volume);
+
+        /// <summary>Установить громкость SFX-шины [0, 1] (bus:/SFX).</summary>
+        void SetSfxVolume(float volume);
 
         /// <summary>
         /// Задать глобальный параметр микса (имена — <see cref="AudioParameters"/>). Напр. TimeScale —
