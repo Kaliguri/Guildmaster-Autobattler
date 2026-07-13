@@ -30,7 +30,10 @@ namespace Guildmaster.Presentation
         [SerializeField] private ManaBarView    _manaBar;
 
         [Header("Animation")]
-        [SerializeField] private UnitVisual _visual;
+        // Клипы играются из контроллера Animator по именам стейтов (Idle/Run/Attack/Death/Hit/Skill1-4) —
+        // на префабе вручную указывать НЕ надо. _visual берётся из данных юнита (UnitData.Visual) авто и нужен
+        // ТОЛЬКО для маркера контакта/темпа бега (те же данные, что читает сим для windup).
+        private UnitVisual _visual;
 
         [Tooltip("Бег «прибит к земле»: сколько мировых юнитов проходит юнит на ОДИН кадр бега. " +
                  "Меньше = ноги быстрее (бодрее), больше = медленнее. Темп бега привязан к скорости — не скользит.")]
@@ -60,7 +63,11 @@ namespace Guildmaster.Presentation
         [Tooltip("Точка попадания: куда прилетают снаряды/цифры урона/вспышка (обычно грудь).")]
         [SerializeField] private Transform _hitPoint;
 
-        [Header("Gizmo — круг коллизии сима (только редактор)")]
+        [Header("Gizmo — эталонный габарит + коллизия (только редактор)")]
+        [Tooltip("Эталонная ВЫСОТА юнита, мировые ед. (1 = 1 метр). Зелёная рамка — подгоняй размер спрайта под неё.")]
+        [SerializeField] private float _recommendedHeight = 1.7f;
+        [Tooltip("Эталонная ШИРИНА юнита, мировые ед. Горизонталь у ног + рамка.")]
+        [SerializeField] private float _recommendedWidth = 0.7f;
         [Tooltip("Превью Size для гизмо круга коллизии, когда юнит ещё не заспавнен (рантайм берёт настоящий Size).")]
         [SerializeField] private float _gizmoPreviewSize = 1f;
         [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус = Size × SimTuning.BodyRadiusPerSize). Выключи, если мешает.")]
@@ -173,11 +180,13 @@ namespace Guildmaster.Presentation
             _state = UnitAnimationState.Idle;
             _attackPhase = AttackAnimPhase.None;
 
-            bool ready = _visual != null && _visual.HasClips
-                         && _animator != null && _animator.runtimeAnimatorController != null;
-            _animActive = ready;
+            // Данные юнита — только для маркера контакта/темпа бега (скраб по симу). Клипы играет контроллер.
+            _visual = _unit?.Unit != null ? _unit.Unit.Visual : null;
 
-            if (!ready)
+            // Анимация активна, если у Animator есть контроллер (клипы — в его стейтах). UnitVisual не обязателен.
+            _animActive = _animator != null && _animator.runtimeAnimatorController != null;
+
+            if (!_animActive)
             {
                 if (_animator != null) _animator.enabled = false;
                 return;
@@ -186,8 +195,10 @@ namespace Guildmaster.Presentation
             _animator.fireEvents = false;
             _animator.enabled = true;
 
-            _attackMarkerNormalized = ClipMarkers.MarkerNormalized(_visual.AttackClip);
-            AnimationClip run = _visual.Clip(UnitAnimationState.Run);
+            // Маркер/темп — из UnitVisual (те же данные, что и у сима). Нет данных → удар без скраба (маркер=1).
+            _attackMarkerNormalized = _visual != null && _visual.AttackClip != null
+                ? ClipMarkers.MarkerNormalized(_visual.AttackClip) : 1f;
+            AnimationClip run = _visual != null ? _visual.Clip(UnitAnimationState.Run) : null;
             _runFrameRate = run != null && run.frameRate > 0f ? run.frameRate : 10f;
 
             _animator.Play(IdleHash, 0, 0f);
@@ -606,6 +617,22 @@ namespace Guildmaster.Presentation
 
             Vector3 root   = transform.position;                                 // сим-позиция юнита
             Vector3 feet   = _feetPoint != null ? _feetPoint.position : root;     // низ фигуры (ноги)
+            Vector3 rightN = transform.right;
+
+            // --- Эталонный габарит: рамка рост × ширина от НОГ (подгоняй спрайт под неё) ---
+            var green = new Color(0.35f, 0.95f, 0.55f, 0.95f);
+            float rec = Mathf.Max(0.01f, _recommendedHeight);
+            float wid = Mathf.Max(0.01f, _recommendedWidth);
+            Vector3 wL = feet - rightN * (wid * 0.5f);
+            Vector3 wR = feet + rightN * (wid * 0.5f);
+            Gizmos.color = green;
+            Gizmos.DrawLine(wL, wR);                                             // ширина у ног
+            Gizmos.color = new Color(green.r, green.g, green.b, 0.5f);
+            Gizmos.DrawLine(wL, wL + Vector3.up * rec);                          // левая вертикаль (рост)
+            Gizmos.DrawLine(wR, wR + Vector3.up * rec);                          // правая вертикаль
+            Gizmos.DrawLine(wL + Vector3.up * rec, wR + Vector3.up * rec);       // верх рамки
+            UnityEditor.Handles.color = green;
+            UnityEditor.Handles.Label(wL + Vector3.up * (rec + 0.06f), $"рост {rec:0.##} × ширина {wid:0.##} м");
 
             // --- Круг коллизии сима (радиус = Size × SimTuning.Default.BodyRadiusPerSize) в НОГАХ. Тумблер. ---
             // В рантайме сим считает коллизию в unit.Position; презентация ставит юнита так, чтобы Feet Point

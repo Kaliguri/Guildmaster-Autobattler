@@ -11,27 +11,9 @@ namespace Guildmaster.Tests.EditMode.Content
     /// </summary>
     public sealed class ConfigValidationTests
     {
-        // --- Страховка баланса: SimTuning.Default == прежние захардкоженные значения (пакет 2 не сдвинул баланс) ---
-
-        [Test]
-        public void SimTuningDefault_MatchesHistoricalConstants()
-        {
-            SimTuning d = SimTuning.Default;
-            Assert.AreEqual(0.575f, d.BodyRadiusPerSize,         1e-6f, nameof(d.BodyRadiusPerSize));
-            Assert.AreEqual(0.5f,   d.SeparationStrength,        1e-6f, nameof(d.SeparationStrength));
-            Assert.AreEqual(1,      d.SeparationIterations,             nameof(d.SeparationIterations));
-            Assert.AreEqual(0.35f,  d.SeparationSameTeamScale,   1e-6f, nameof(d.SeparationSameTeamScale));
-            Assert.AreEqual(0.25f,  d.ProjectileHitRadiusFactor, 1e-6f, nameof(d.ProjectileHitRadiusFactor));
-            Assert.AreEqual(5f,     d.ProjectileDespawnMargin,   1e-6f, nameof(d.ProjectileDespawnMargin));
-            Assert.AreEqual(0.6f,   d.KiteFleeFactor,            1e-6f, nameof(d.KiteFleeFactor));
-            Assert.AreEqual(500f,   d.GlobalSearchRadius,        1e-6f, nameof(d.GlobalSearchRadius));
-            Assert.AreEqual(1f,     d.FleeThreatWeight,          1e-6f, nameof(d.FleeThreatWeight));
-            Assert.AreEqual(0.5f,   d.FleeHomeWeight,            1e-6f, nameof(d.FleeHomeWeight));
-            Assert.AreEqual(1.5f,   d.FleeWallWeight,            1e-6f, nameof(d.FleeWallWeight));
-            Assert.AreEqual(2.5f,   d.FleeWallMargin,            1e-6f, nameof(d.FleeWallMargin));
-            Assert.AreEqual(6f,     d.FleeThreatRadius,          1e-6f, nameof(d.FleeThreatRadius));
-            Assert.AreEqual(0.35f,  d.KiteStrafeWeight,          1e-6f, nameof(d.KiteStrafeWeight));
-        }
+        // Снапшот-тест конкретных значений баланса убран намеренно: тюнинг (BodyRadiusPerSize и пр.)
+        // крутится осознанно и не раз — хардкод-снапшот только мешал бы. Реальные баги ловят проверки
+        // ниже: консистентность (ассет == код-дефолт) и разумные диапазоны (>0 и т.п.).
 
         // --- §8 правило 6: закоммиченный SimTuningConfig == код-дефолты (ловит утёкшие play-mode правки) ---
 

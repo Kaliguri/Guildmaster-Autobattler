@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fbd7ad3964944542a8469b5f7846410, type: 3}
   m_Name: SimTuningConfig
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.SimTuningConfig
-  _bodyRadiusPerSize: 0.575
+  _bodyRadiusPerSize: 0.3
   _separationStrength: 0.5
   _separationIterations: 1
   _separationSameTeamScale: 0.35
@@ -20,3 +20,9 @@ MonoBehaviour:
   _projectileDespawnMargin: 5
   _kiteFleeFactor: 0.6
   _globalSearchRadius: 500
+  _fleeThreatWeight: 1
+  _fleeHomeWeight: 0.5
+  _fleeWallWeight: 1.5
+  _fleeWallMargin: 2.5
+  _fleeThreatRadius: 6
+  _kiteStrafeWeight: 0.35
