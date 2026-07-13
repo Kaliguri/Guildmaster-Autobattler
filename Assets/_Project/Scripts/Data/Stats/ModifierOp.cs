@@ -2,7 +2,8 @@ namespace Guildmaster.Data.Stats
 {
     /// <summary>
     /// Операция стат-модификатора. Формула сборки стата:
-    /// <c>final = (base + ΣFlat) × (1 + ΣPercentAdd) × Π(1 + PercentMult)</c>
+    /// <c>final = (baseTerm + ΣFlat) × (1 + ΣPercentAdd) × Π(1 + PercentMult)</c>, где
+    /// <c>baseTerm = Override(если задан) ИНАЧЕ дефолт из StatsConfig</c>
     /// (вики «11. Стат-система» §1, «6. Боевая модель» §3).
     /// </summary>
     public enum ModifierOp
@@ -15,5 +16,14 @@ namespace Guildmaster.Data.Stats
 
         /// <summary>Мультипликативный процент: каждый множитель отдельный <c>(1 + x)</c>, перемножаются.</summary>
         PercentMult = 2,
+
+        /// <summary>
+        /// Абсолютный ввод: ЗАМЕНЯЕТ базовый терм стата (дефолт StatsConfig игнорируется), поверх которого
+        /// затем работают Flat/Percent от бафов/эффектов. Основной способ авторинга базовых статов юнита на
+        /// SO — реликвия задаёт реальное значение, а не дельту от дефолта. При нескольких Override на один
+        /// стат берётся последний. Дефолты StatsConfig остаются фолбэком для НЕзаданных статов + стартовой
+        /// GD-напоминалкой при создании нового SO.
+        /// </summary>
+        Override = 3,
     }
 }

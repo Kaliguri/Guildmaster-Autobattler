@@ -7,7 +7,8 @@ namespace Guildmaster.Combat
 {
     /// <summary>
     /// Рантайм стат-объект юнита. Хранит группы модификаторов по источнику,
-    /// вычисляет итог по формуле <c>(base + ΣFlat) × (1 + ΣPercentAdd) × Π(1 + PercentMult)</c>
+    /// вычисляет итог по формуле <c>(baseTerm + ΣFlat) × (1 + ΣPercentAdd) × Π(1 + PercentMult)</c>,
+    /// где <c>baseTerm = Override (если задан) ИНАЧЕ дефолт StatsConfig</c>,
     /// и кэширует результат с инвалидацией по dirty-флагу (вики «10» §5.2, «11» §1).
     /// </summary>
     public sealed class Stats : IStatReader
@@ -59,9 +60,11 @@ namespace Guildmaster.Combat
 
         private void RebuildCache()
         {
-            float[] flat       = new float[StatCount];
-            float[] percentAdd = new float[StatCount];
-            float[] multAccum  = new float[StatCount];
+            float[] flat        = new float[StatCount];
+            float[] percentAdd  = new float[StatCount];
+            float[] multAccum   = new float[StatCount];
+            float[] overrideVal = new float[StatCount];
+            bool[]  hasOverride = new bool[StatCount];
             for (int i = 0; i < StatCount; i++) multAccum[i] = 1f;
 
             for (int g = 0; g < _groups.Count; g++)
@@ -72,18 +75,21 @@ namespace Guildmaster.Combat
                     int idx = (int)mods[m].Stat;
                     switch (mods[m].Op)
                     {
-                        case ModifierOp.Flat:        flat[idx]       += mods[m].Value;               break;
-                        case ModifierOp.PercentAdd:  percentAdd[idx] += mods[m].Value;               break;
-                        case ModifierOp.PercentMult: multAccum[idx]  *= (1f + mods[m].Value);        break;
+                        case ModifierOp.Flat:        flat[idx]       += mods[m].Value;        break;
+                        case ModifierOp.PercentAdd:  percentAdd[idx] += mods[m].Value;        break;
+                        case ModifierOp.PercentMult: multAccum[idx]  *= (1f + mods[m].Value); break;
+                        // Абсолютный ввод: заменяет базовый терм (последний Override побеждает).
+                        case ModifierOp.Override:    overrideVal[idx] = mods[m].Value; hasOverride[idx] = true; break;
                     }
                 }
             }
 
             for (int i = 0; i < StatCount; i++)
             {
-                float baseVal = _config != null
-                    ? _config.GetDefault((StatType)i)
-                    : StatsConfig.NaturalDefault((StatType)i);
+                // baseTerm = Override (если задан) ИНАЧЕ дефолт конфига/натуральный.
+                float baseVal = hasOverride[i]
+                    ? overrideVal[i]
+                    : (_config != null ? _config.GetDefault((StatType)i) : StatsConfig.NaturalDefault((StatType)i));
                 _cache[i] = (baseVal + flat[i]) * (1f + percentAdd[i]) * multAccum[i];
             }
 

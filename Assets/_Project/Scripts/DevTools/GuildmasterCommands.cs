@@ -130,23 +130,21 @@ namespace Guildmaster.DevTools
 
         /// <summary>Поднять тест-бой N×M юнитов с заданными HP.</summary>
         [Command("gm_spawn_battle", "Запустить тест-бой N юнитов за каждую сторону")]
-        public void SpawnBattle(int countPerTeam = 2, float hp = 300f, float damage = 15f)
+        public void SpawnBattle(int countPerTeam = 2)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
 
             ResetForNewBattle();
 
-            // Id начинаем от текущего числа живых юнитов в симуляции, чтобы не было коллизий
-            // при повторном вызове команды в том же бою.
-            int nextId = _simulation.Units.Count;
             for (int i = 0; i < countPerTeam; i++)
             {
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(0, new Vector2(-5f + i, i), hp, damage, nextId++));
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2( 5f - i, i), hp, damage, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeDummy(0, new Vector2(-5f + i, i)));
+                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2( 5f - i, i)));
             }
 
-            _lastBattleSetup = self => self.SpawnBattle(countPerTeam, hp, damage);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_battle: добавлено {countPerTeam}×2 юнитов");
+            _lastBattleSetup = self => self.SpawnBattle(countPerTeam);
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_battle: добавлено {countPerTeam}×2 болванчиков");
         }
 
         /// <summary>
@@ -157,27 +155,27 @@ namespace Guildmaster.DevTools
         /// перезапуск на месте — R. Параметр <paramref name="size"/> — «толщина» тел (Size-стат).
         /// </summary>
         [Command("gm_spawn_crowd", "Плотный клубок обеих команд для теста коллизии/расталкивания")]
-        public void SpawnCrowd(int perTeam = 8, float hp = 400f, float damage = 6f, float size = 1f, float range = 3f)
+        public void SpawnCrowd(int perTeam = 8)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
 
             ResetForNewBattle();
 
             int cols = Mathf.Max(1, Mathf.CeilToInt(Mathf.Sqrt(perTeam)));
             const float spacing = 0.15f; // << диаметра тела (~0.5 при Size 1) → перекрытие на старте
-            int nextId = _simulation.Units.Count;
 
             for (int i = 0; i < perTeam; i++)
             {
                 int cx = i % cols, cy = i / cols;
                 float ox = (cx - (cols - 1) * 0.5f) * spacing;
                 float oy = (cy - (cols - 1) * 0.5f) * spacing;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(0, new Vector2(-3f + ox, oy), hp, damage, nextId++, size, range));
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2( 3f + ox, oy), hp, damage, nextId++, size, range));
+                _simulation.EnqueueUnitSpawn(MakeDummy(0, new Vector2(-3f + ox, oy)));
+                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2( 3f + ox, oy)));
             }
 
-            _lastBattleSetup = self => self.SpawnCrowd(perTeam, hp, damage, size, range);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_crowd: {perTeam}×2 юнитов (Size {size}, range {range}), плотный клубок");
+            _lastBattleSetup = self => self.SpawnCrowd(perTeam);
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_crowd: {perTeam}×2 болванчиков, плотный клубок");
         }
 
         /// <summary>Показать текущие параметры расталкивания (SeparationSystem).</summary>
@@ -227,7 +225,7 @@ namespace Guildmaster.DevTools
 
         /// <summary>Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.</summary>
         [Command("gm_spawn_spearman", "Заспавнить Железного копейщика против кластера (срез шага 4)")]
-        public void SpawnSpearman(int enemies = 3, float enemyHp = 200f)
+        public void SpawnSpearman(int enemies = 3)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
@@ -239,20 +237,19 @@ namespace Guildmaster.DevTools
             _simulation.EnqueueUnitSpawn(_factory.Create(_spearmanRelic, null, team: 0, new Vector2(-5f, 0f)));
 
             // Кластер болванчиков справа — чтобы линейная АА задевала нескольких и сработало условие «≥2 в радиусе».
-            int nextId = _simulation.Units.Count + 1;
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 0.8f; // компактно по вертикали
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(5f, y), enemyHp, 5f, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(5f, y)));
             }
 
-            _lastBattleSetup = self => self.SpawnSpearman(enemies, enemyHp);
+            _lastBattleSetup = self => self.SpawnSpearman(enemies);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_spearman: копейщик vs {enemies} болванчиков");
         }
 
         /// <summary>Заспавнить «Светлого пастыря» (team 0) + раненых союзников против болванчиков — срез §10.1.</summary>
         [Command("gm_spawn_shepherd", "Заспавнить Светлого пастыря + раненых союзников против болванчиков (срез §10.1)")]
-        public void SpawnShepherd(int allies = 2, float enemyHp = 200f)
+        public void SpawnShepherd(int allies = 2)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
@@ -263,14 +260,12 @@ namespace Guildmaster.DevTools
             // Пастырь в тылу слева — через фабрику (реальный путь: AI-профиль Heal, хил-снаряд, активка «Длань жизни»).
             _simulation.EnqueueUnitSpawn(_factory.Create(_shepherdRelic, null, team: 0, new Vector2(-6f, 0f)));
 
-            int nextId = _simulation.Units.Count + 1;
-
-            // Раненые союзники (team 0) на фронте: старт на 40% HP — видно выбор раненого и хил-снаряды.
+            // Раненые союзники-болванчики (team 0) на фронте: старт на 40% HP — видно выбор раненого и хил-снаряды.
             for (int i = 0; i < allies; i++)
             {
                 float y = (i - (allies - 1) * 0.5f) * 1.2f;
-                var ally = MakeTestUnit(0, new Vector2(-3f, y), 200f, 12f, nextId++);
-                ally.CurrentHP = 80f; // 40% от 200 — есть кого лечить
+                var ally = MakeDummy(0, new Vector2(-3f, y));
+                ally.CurrentHP = ally.Stats.Get(StatType.MaxHP) * 0.4f; // 40% — есть кого лечить
                 _simulation.EnqueueUnitSpawn(ally);
             }
 
@@ -278,16 +273,16 @@ namespace Guildmaster.DevTools
             for (int i = 0; i < 2; i++)
             {
                 float y = (i - 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 5f, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
             }
 
-            _lastBattleSetup = self => self.SpawnShepherd(allies, enemyHp);
+            _lastBattleSetup = self => self.SpawnShepherd(allies);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_shepherd: пастырь + {allies} раненых союзника vs 2 болванчика");
         }
 
         /// <summary>Заспавнить «Криоманта» (team 0) против кластера болванчиков (team 1) — срез §10.2.</summary>
         [Command("gm_spawn_cryomancer", "Заспавнить Криоманта против кластера болванчиков (срез §10.2)")]
-        public void SpawnCryomancer(int enemies = 3, float enemyHp = 200f)
+        public void SpawnCryomancer(int enemies = 3)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
@@ -299,20 +294,19 @@ namespace Guildmaster.DevTools
             _simulation.EnqueueUnitSpawn(_factory.Create(_cryomancerRelic, null, team: 0, new Vector2(-6f, 0f)));
 
             // Кластер болванчиков справа: пока Криомант раздаёт «Заморозку», их накапливается ≥2 → срабатывают «Ледяные оковы».
-            int nextId = _simulation.Units.Count + 1;
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 1f;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 5f, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
             }
 
-            _lastBattleSetup = self => self.SpawnCryomancer(enemies, enemyHp);
+            _lastBattleSetup = self => self.SpawnCryomancer(enemies);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_cryomancer: криомант vs {enemies} болванчиков");
         }
 
         /// <summary>Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10.3.</summary>
         [Command("gm_spawn_defender", "Заспавнить Надёжного защитника против ударных болванчиков (срез §10.3)")]
-        public void SpawnDefender(int enemies = 3, float enemyDamage = 8f)
+        public void SpawnDefender(int enemies = 3)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
@@ -323,24 +317,20 @@ namespace Guildmaster.DevTools
             // Защитник по центру-слева — через фабрику (реальный путь: пассив «Оплот» pre-damage, HighestThreat, ульта).
             _simulation.EnqueueUnitSpawn(_factory.Create(_defenderRelic, null, team: 0, new Vector2(-4f, 0f)));
 
-            // Болванчики справа. Дефолт урона низкий (герой выживает для спокойного теста). «Оплот»
-            // поднимает щит на ЛЮБОЙ удар (PassiveTrigger.AnyHit, внутр. КД 4с) — низкий урон это не ломает.
-            // Первый бьёт в 1.5× сильнее — видно, что ульта уходит в «главную угрозу» (HighestThreat).
-            int nextId = _simulation.Units.Count + 1;
+            // Болванчики справа бьют защитника. «Оплот» поднимает щит на ЛЮБОЙ удар (PassiveTrigger.AnyHit, внутр. КД 4с).
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                float dmg = i == 0 ? enemyDamage * 1.5f : enemyDamage; // главный ДПС — первый
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), 160f, dmg, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
             }
 
-            _lastBattleSetup = self => self.SpawnDefender(enemies, enemyDamage);
+            _lastBattleSetup = self => self.SpawnDefender(enemies);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_defender: защитник vs {enemies} ударных болванчиков");
         }
 
         /// <summary>Заспавнить «Лесного следопыта» (team 0) против кластера болванчиков (team 1) — срез §10.4.</summary>
         [Command("gm_spawn_ranger", "Заспавнить Лесного следопыта против кластера болванчиков (срез §10.4)")]
-        public void SpawnRanger(int enemies = 3, float enemyHp = 120f)
+        public void SpawnRanger(int enemies = 3)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
@@ -352,20 +342,19 @@ namespace Guildmaster.DevTools
             _simulation.EnqueueUnitSpawn(_factory.Create(_rangerRelic, null, team: 0, new Vector2(-6f, 0f)));
 
             // Кластер болванчиков справа лезет в ближний бой — видно кайт (отход) и стрельбу на ходу.
-            int nextId = _simulation.Units.Count + 1;
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, 5f, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
             }
 
-            _lastBattleSetup = self => self.SpawnRanger(enemies, enemyHp);
+            _lastBattleSetup = self => self.SpawnRanger(enemies);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_ranger: следопыт vs {enemies} болванчиков");
         }
 
         /// <summary>Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.</summary>
         [Command("gm_spawn_assassin", "Заспавнить Скрытного убийцу против болванчиков (срез §10.5)")]
-        public void SpawnAssassin(int enemies = 3, float enemyHp = 120f, float enemyDamage = 8f)
+        public void SpawnAssassin(int enemies = 3)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
@@ -377,22 +366,20 @@ namespace Guildmaster.DevTools
             // усиленный первый удар, негейт крупных ударов, рестелс после убийства).
             _simulation.EnqueueUnitSpawn(_factory.Create(_assassinRelic, null, team: 0, new Vector2(-5f, 0f)));
 
-            // Болванчики справа. Дефолт урона низкий (герой выживает для спокойного теста). «Изворотливость»
-            // гейтит ЛЮБУЮ автоатаку независимо от размера урона (PassiveTrigger.AnyHit) — низкий урон это не ломает.
-            int nextId = _simulation.Units.Count + 1;
+            // Болванчики справа. «Изворотливость» гейтит ЛЮБУЮ автоатаку независимо от размера урона (PassiveTrigger.AnyHit).
             for (int i = 0; i < enemies; i++)
             {
                 float y = (i - (enemies - 1) * 0.5f) * 1.2f;
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, new Vector2(4f, y), enemyHp, enemyDamage, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeDummy(1, new Vector2(4f, y)));
             }
 
-            _lastBattleSetup = self => self.SpawnAssassin(enemies, enemyHp, enemyDamage);
+            _lastBattleSetup = self => self.SpawnAssassin(enemies);
             Debug.Log($"[GuildmasterCommands] - gm_spawn_assassin: убийца vs {enemies} болванчиков");
         }
 
         /// <summary>Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10.6.</summary>
         [Command("gm_spawn_monk", "Заспавнить Монаха вихря против болванчиков (срез §10.6)")]
-        public void SpawnMonk(int enemies = 4, float enemyHp = 150f, float enemyDamage = 5f)
+        public void SpawnMonk(int enemies = 4)
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
@@ -406,17 +393,16 @@ namespace Guildmaster.DevTools
             // Болванчики справа — раскиданы ХАОТИЧНО (детерминированный хэш по индексу, чтобы R повторял ту же
             // расстановку), далеко друг от друга: видно заход к конкретной цели и УГЛОВОЙ цепной толчок «ядра»,
             // а не ровный ряд. x∈[2,8], y∈[-3.5,3.5].
-            int nextId = _simulation.Units.Count + 1;
             for (int i = 0; i < enemies; i++)
             {
                 float hx = Frac(Mathf.Sin((i + 1) * 12.9898f) * 43758.5453f);
                 float hy = Frac(Mathf.Sin((i + 1) * 78.233f)  * 43758.5453f);
                 var pos = new Vector2(2f + hx * 6f, -3.5f + hy * 7f);
-                _simulation.EnqueueUnitSpawn(MakeTestUnit(1, pos, enemyHp, enemyDamage, nextId++));
+                _simulation.EnqueueUnitSpawn(MakeDummy(1, pos));
             }
 
-            _lastBattleSetup = self => self.SpawnMonk(enemies, enemyHp, enemyDamage);
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков (хаос, урон {enemyDamage})");
+            _lastBattleSetup = self => self.SpawnMonk(enemies);
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_monk: монах vs {enemies} болванчиков (хаос)");
         }
 
         // Дробная часть — детерминированный «хэш» [0,1) для хаотичной, но воспроизводимой расстановки.
@@ -517,39 +503,16 @@ namespace Guildmaster.DevTools
         // а не копит юнитов поверх (иначе Id-коллизии и каша из нескольких боёв).
         private void ResetForNewBattle()
         {
+            // ResetBattle() шлёт OnBattleReset → презентация снимает виды/цифры и сбрасывает slowmo/тряску
+            // (CombatPresenter.HandleBattleReset → TimeScaleService.Reset). Ручной Time.timeScale тут больше не
+            // нужен и вреден: перетёр бы выбранную игроком скорость (единый писатель — TimeScaleService).
             _simulation?.ResetBattle();
             _factory?.ResetIds();
-            Time.timeScale = 1f;
         }
 
-        // Автономные стат-значения dev-болванчика для сценариев gm_spawn_* (НЕ из StatsConfig: метод
-        // статический, DI недоступен). Продакшн-дефолты юнита живут в StatsConfig.Defaults (вики «13»
-        // §3.4/§4.2 п.6); держим их раздельно осознанно, чтобы не плодить тихий дрейф баланса.
-        private RuntimeUnit MakeTestUnit(int team, Vector2 pos, float hp, float damage, int id, float size = 1f, float range = 1.0f)
-        {
-            var stats = new Stats(null);
-            stats.AddModifiersFrom("test", new[]
-            {
-                new StatModifier(StatType.MaxHP,            ModifierOp.Flat, hp),
-                new StatModifier(StatType.AutoAttackDamage, ModifierOp.Flat, damage),
-                new StatModifier(StatType.AttackSpeed,      ModifierOp.Flat, 1f),
-                // AttackRange теперь = зазор между поверхностями тел (§9): досягаемость считается с учётом
-                // радиусов обоих тел, поэтому «нормальная» мили-дистанция — небольшая (~1.0), а не 2.5.
-                new StatModifier(StatType.AttackRange,      ModifierOp.Flat, range),
-                new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, 2.5f),
-                new StatModifier(StatType.Size,             ModifierOp.Flat, size - 1f), // Size база 1 → итог = size
-            });
-            return new RuntimeUnit
-            {
-                Id               = id,
-                Team             = team,
-                Stats            = stats,
-                CurrentHP        = hp,
-                Position         = pos,
-                PreviousPosition = pos,
-                // Дамми как полноценный юнит: свой SO даёт визуал (→ анимации) без своей AI/способностей.
-                Unit             = _dummyEnemy,
-            };
-        }
+        // Единый dev-болванчик: собирается фабрикой из SO «enemy.training_dummy» (реальный путь — статы,
+        // Brain из _ai, стартовый HP=MaxHP). Статы дамми правятся ТОЛЬКО в самом SO (1000 HP / 100 урона),
+        // без хардкода в харнессе — один дамми на все сценарии gm_spawn_*.
+        private RuntimeUnit MakeDummy(int team, Vector2 pos) => _factory.Create(_dummyEnemy, null, team, pos);
     }
 }
