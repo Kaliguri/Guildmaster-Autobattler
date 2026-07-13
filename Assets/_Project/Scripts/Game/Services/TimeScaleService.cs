@@ -5,6 +5,28 @@ using VContainer.Unity;
 namespace Guildmaster.Game.Services
 {
     /// <summary>
+    /// Одна ступень режиссёрской cinematic-секвенции (<see cref="TimeScaleService.PlayCinematicSequence"/>).
+    /// <see cref="Ramp"/>=false — мгновенно уйти в <see cref="Factor"/> и держать <see cref="Duration"/> сек;
+    /// <see cref="Ramp"/>=true — плавно перейти от значения предыдущей ступени к <see cref="Factor"/> за
+    /// <see cref="Duration"/> по <see cref="Curve"/> (null = линейно). Всё на unscaled-времени.
+    /// </summary>
+    public readonly struct CinematicSegment
+    {
+        public readonly float Factor;
+        public readonly float Duration;
+        public readonly bool  Ramp;
+        public readonly AnimationCurve Curve;
+
+        public CinematicSegment(float factor, float duration, bool ramp = false, AnimationCurve curve = null)
+        {
+            Factor   = Mathf.Clamp(factor, 0f, 4f);
+            Duration = Mathf.Max(0f, duration);
+            Ramp     = ramp;
+            Curve    = curve;
+        }
+    }
+
+    /// <summary>
     /// Единственный писатель <see cref="UnityEngine.Time.timeScale"/> в бою. Компонует три
     /// независимых источника масштаба времени, чтобы они не перетирали друг друга:
     /// <list type="bullet">
@@ -34,6 +56,15 @@ namespace Guildmaster.Game.Services
         private float          _releaseElapsed;
         private AnimationCurve _releaseCurve;
         private bool           _cinematicActive;
+
+        // Многоступенчатая режиссёрская секвенция (финишер-концовка): последовательность сегментов на
+        // unscaled-времени. Ступень с Ramp=false — мгновенно уйти в Factor и держать Duration; Ramp=true —
+        // плавно перейти от предыдущего к Factor за Duration по Curve. Перебивает одиночный пульс.
+        private CinematicSegment[] _segments;
+        private int                _segIndex;
+        private float              _segElapsed;
+        private float              _segFrom;
+        private bool               _sequenceActive;
 
         /// <summary>Игровая скорость (выбор игрока), без учёта паузы и cinematic.</summary>
         public float GameSpeed => _gameSpeed;
@@ -80,9 +111,27 @@ namespace Guildmaster.Game.Services
             Apply();
         }
 
+        /// <summary>
+        /// Запустить многоступенчатую cinematic-секвенцию (напр. финишер: пауза → slowmo death → slowmo shatter →
+        /// возврат). Проигрывается по <see cref="CinematicSegment"/> на unscaled-времени. Перебивает пульс/секвенцию.
+        /// </summary>
+        public void PlayCinematicSequence(CinematicSegment[] segments)
+        {
+            if (segments == null || segments.Length == 0) return;
+            _segments        = segments;
+            _segIndex        = 0;
+            _segElapsed      = 0f;
+            _segFrom         = _cinematic;
+            _sequenceActive  = true;
+            _cinematicActive = false; // секвенция перекрывает одиночный пульс
+            if (!_segments[0].Ramp) _cinematic = _segments[0].Factor; // мгновенная ступень — сразу в Factor
+            Apply();
+        }
+
         /// <summary>VContainer-тик: держит глубину, затем ведёт возврат к 1 по кривой (unscaled — не тормозит сам себя).</summary>
         public void Tick()
         {
+            if (_sequenceActive) { TickSequence(); return; }
             if (!_cinematicActive) return;
 
             float dt = Time.unscaledDeltaTime;
@@ -98,6 +147,37 @@ namespace Guildmaster.Game.Services
             _cinematic = Mathf.Lerp(_cinematicFrom, 1f, k);
             if (t >= 1f) { _cinematic = 1f; _cinematicActive = false; }
             Apply();
+        }
+
+        // Ступени секвенции на unscaled-времени: держим/рампим текущую, по истечении — к следующей; конец — стоп.
+        private void TickSequence()
+        {
+            CinematicSegment seg = _segments[_segIndex];
+            _segElapsed += Time.unscaledDeltaTime;
+
+            if (seg.Ramp)
+            {
+                float t = seg.Duration > 0f ? Mathf.Clamp01(_segElapsed / seg.Duration) : 1f;
+                float k = seg.Curve != null ? Mathf.Clamp01(seg.Curve.Evaluate(t)) : t;
+                _cinematic = Mathf.Lerp(_segFrom, seg.Factor, k);
+            }
+            else
+            {
+                _cinematic = seg.Factor; // держим ступень
+            }
+            Apply();
+
+            if (_segElapsed >= seg.Duration)
+            {
+                _segIndex++;
+                _segElapsed = 0f;
+                _segFrom = _cinematic;
+                if (_segIndex >= _segments.Length)
+                {
+                    _sequenceActive = false;
+                    _segments = null; // конец: _cinematic остаётся на значении последней ступени (обычно 1)
+                }
+            }
         }
 
         /// <summary>Поставить/снять жёсткую паузу (перекрывает game speed и cinematic).</summary>

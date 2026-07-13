@@ -80,16 +80,23 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Секунд между kill-slowmo — на толпе киллов много.")]
         [SerializeField] private float _killSlowCooldown = 2f;
 
-        // --- Slowmo — конец боя, финишер-момент (CombatFeelDirector + TimeScaleService) ---
-        [Header("Slowmo — конец боя (финишер-момент)")]
-        [Tooltip("Глубина slowmo на конце боя (0.1 = мир почти замер).")]
-        [SerializeField, Range(0.01f, 1f)] private float _battleEndFactor = 0.1f;
-        [Tooltip("Держим глубокое slowmo столько секунд, потом отпускаем.")]
-        [SerializeField] private float _battleEndHold = 4f;
-        [Tooltip("За сколько секунд возвращаемся к норме после удержания.")]
-        [SerializeField] private float _battleEndRelease = 2f;
+        // --- Slowmo — финишер-концовка, ступени (CombatFeelDirector + TimeScaleService) ---
+        // Таймлайн финального удара: полная пауза → slowmo анимации смерти → сильное slowmo разлёта → возврат.
+        [Header("Slowmo — финишер-концовка (ступени)")]
+        [Tooltip("Ступень 1 — полная пауза (timeScale 0) на финальном ударе, пока держится хит-эффект, сек.")]
+        [SerializeField] private float _finisherPause = 1f;
+        [Tooltip("Ступень 2 — slowmo анимации смерти (0.5 = полускорость).")]
+        [SerializeField, Range(0.01f, 1f)] private float _finisherDeathFactor = 0.5f;
+        [Tooltip("Ступень 2 — сколько держать slowmo смерти, сек.")]
+        [SerializeField] private float _finisherDeathDuration = 1.5f;
+        [Tooltip("Ступень 3 — сильное slowmo во время разлёта осколков (0.1 = почти стоп).")]
+        [SerializeField, Range(0.01f, 1f)] private float _finisherShatterFactor = 0.1f;
+        [Tooltip("Ступень 3 — сколько держать сильное slowmo разлёта, сек.")]
+        [SerializeField] private float _finisherShatterDuration = 3f;
+        [Tooltip("Ступень 4 — за сколько секунд плавно вернуться к норме.")]
+        [SerializeField] private float _finisherReturn = 2f;
         [Tooltip("Форма возврата: нормализованное время (0→1) → доля возврата к норме (0→1).")]
-        [SerializeField] private AnimationCurve _battleEndReleaseCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+        [SerializeField] private AnimationCurve _finisherReturnCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
         // --- Getters ---
         public Color FlashColor       => _flashColor;
@@ -126,12 +133,15 @@ namespace Guildmaster.Presentation.Design
         public float KillSlowRelease   => _killSlowRelease;
         public float KillSlowCooldown  => _killSlowCooldown;
 
-        public float BattleEndFactor   => _battleEndFactor;
-        public float BattleEndHold     => _battleEndHold;
-        public float BattleEndRelease  => _battleEndRelease;
-        public AnimationCurve BattleEndReleaseCurve => _battleEndReleaseCurve;
+        public float FinisherPause          => _finisherPause;
+        public float FinisherDeathFactor    => _finisherDeathFactor;
+        public float FinisherDeathDuration  => _finisherDeathDuration;
+        public float FinisherShatterFactor  => _finisherShatterFactor;
+        public float FinisherShatterDuration => _finisherShatterDuration;
+        public float FinisherReturn         => _finisherReturn;
+        public AnimationCurve FinisherReturnCurve => _finisherReturnCurve;
 
-        /// <summary>Сколько всего длится финишер-момент (удержание + возврат) — финишер держит кадр столько же.</summary>
-        public float FinisherHoldSeconds => _battleEndHold + _battleEndRelease;
+        /// <summary>Полная длительность финишер-таймлайна (пауза + death + shatter + возврат) — финишер держит кадр столько же.</summary>
+        public float FinisherHoldSeconds => _finisherPause + _finisherDeathDuration + _finisherShatterDuration + _finisherReturn;
     }
 }

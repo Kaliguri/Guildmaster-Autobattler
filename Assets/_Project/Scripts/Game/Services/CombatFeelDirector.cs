@@ -76,10 +76,18 @@ namespace Guildmaster.Game.Services
             _shake.Shake(Mathf.Lerp(_cfg.HeavyShakeMin, _cfg.HeavyShakeMax, k));
         }
 
-        // Конец боя → сильное slowmo с удержанием и возвратом по кривой (финишер-момент) + сильная тряска.
+        // Конец боя → финишер-таймлайн ступенями (совпадает с секвенсом смерти на scaled-времени):
+        // 1) полная пауза на хит-эффекте → 2) slowmo анимации смерти → 3) сильное slowmo разлёта → 4) возврат.
         private void OnBattleEnded(BattleEndedEvent e)
         {
-            _time.CinematicPulse(_cfg.BattleEndFactor, _cfg.BattleEndHold, _cfg.BattleEndRelease, _cfg.BattleEndReleaseCurve);
+            var segments = new[]
+            {
+                new CinematicSegment(0f,                        _cfg.FinisherPause),            // 1: полный стоп
+                new CinematicSegment(_cfg.FinisherDeathFactor,  _cfg.FinisherDeathDuration),    // 2: death slowmo
+                new CinematicSegment(_cfg.FinisherShatterFactor, _cfg.FinisherShatterDuration), // 3: shatter slowmo
+                new CinematicSegment(1f, _cfg.FinisherReturn, ramp: true, curve: _cfg.FinisherReturnCurve), // 4: возврат
+            };
+            _time.PlayCinematicSequence(segments);
             _shake.Shake(_cfg.BattleEndShake);
         }
     }
