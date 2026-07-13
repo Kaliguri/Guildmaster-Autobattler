@@ -106,11 +106,10 @@ namespace Guildmaster.Presentation
             _elapsed += Time.deltaTime;
 
             float shatter = _duration > 0f ? Mathf.Clamp01((_elapsed - _flashIn) / _duration) : 1f;
-            // Вспышка в белый на разломе, затем БЫСТРО гаснет (за первые ~35% разлёта) — чтобы дальше были видны
-            // настоящие пиксели чанков, а не белые кубики.
-            float flash = _elapsed < _flashIn
-                ? (_flashIn > 0f ? Mathf.Clamp01(_elapsed / _flashIn) : 1f)
-                : Mathf.Clamp01(1f - shatter / 0.35f);
+            // Осколки остаются БЕЛЫМИ весь разлёт (не возвращают свой цвет) — вспыхивают и так летят, тают альфой.
+            float flash = _elapsed >= _flashIn || _flashIn <= 0f
+                ? 1f
+                : Mathf.Clamp01(_elapsed / _flashIn);
 
             _mr.GetPropertyBlock(_mpb);
             _mpb.SetFloat(FlashAmtId, flash);
