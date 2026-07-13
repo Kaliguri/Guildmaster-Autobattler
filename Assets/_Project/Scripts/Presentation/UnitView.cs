@@ -28,6 +28,9 @@ namespace Guildmaster.Presentation
         [SerializeField] private HealthBarView  _healthBar;
         [Tooltip("Бар ресурса (мана/ярость). Пусто = без бара; скрывается сам для безресурсных юнитов.")]
         [SerializeField] private ManaBarView    _manaBar;
+        [Tooltip("Общий контейнер world-UI (бары + подпись) — нода 'UI'. Гасится целиком при смерти. " +
+                 "Пусто = фолбэк на поштучное скрытие баров/подписи.")]
+        [SerializeField] private GameObject     _worldUi;
 
         [Header("Animation")]
         // Клипы играются из контроллера Animator по именам стейтов (Idle/Run/Attack/Death/Hit/Skill1-4) —
@@ -233,11 +236,23 @@ namespace Guildmaster.Presentation
         /// <summary>Мировая точка головы (макушка) — якорь баров/статус-текста. Фолбэк — позиция юнита.</summary>
         public Vector3 HeadPoint => _headPoint != null ? _headPoint.position : transform.position;
 
-        /// <summary>Мировая точка выстрела (откуда визуально стартует снаряд/каст). Фолбэк — позиция юнита.</summary>
-        public Vector3 ShotPoint => _shotPoint != null ? _shotPoint.position : transform.position;
+        /// <summary>Мировая точка выстрела (откуда визуально стартует снаряд/каст), зеркалится по фейсингу. Фолбэк — позиция юнита.</summary>
+        public Vector3 ShotPoint => ResolveSocketFacing(_shotPoint);
 
-        /// <summary>Мировая точка попадания (куда прилетают снаряды/цифры урона). Фолбэк — позиция юнита.</summary>
-        public Vector3 HitPoint => _hitPoint != null ? _hitPoint.position : transform.position;
+        /// <summary>Мировая точка попадания (куда прилетают снаряды/цифры урона), зеркалится по фейсингу. Фолбэк — позиция юнита.</summary>
+        public Vector3 HitPoint => ResolveSocketFacing(_hitPoint);
+
+        // Сокет с учётом разворота: спрайт зеркалим через SpriteRenderer.flipX, а он НЕ зеркалит дочерние GO
+        // (сокеты живут в мировой иерархии). Поэтому для смотрящего влево отражаем локальную X сокета вручную —
+        // иначе дуло/грудь оказываются с «нарисованной» стороны, а не с той, куда юнит фактически повёрнут.
+        private Vector3 ResolveSocketFacing(Transform socket)
+        {
+            if (socket == null) return transform.position;
+            if (_sprite == null || !_sprite.flipX) return socket.position;
+            Vector3 local = transform.InverseTransformPoint(socket.position);
+            local.x = -local.x;
+            return transform.TransformPoint(local);
+        }
 
         private void Update()
         {
@@ -590,9 +605,18 @@ namespace Guildmaster.Presentation
         {
             _onDeathFeedback?.Invoke();
 
-            // Прячем бары сразу — над трупом HP/ресурс не нужны (иначе висят и выглядит странно).
-            if (_healthBar != null) _healthBar.gameObject.SetActive(false);
-            if (_manaBar   != null) _manaBar.gameObject.SetActive(false);
+            // Прячем весь world-UI одним контейнером (бары + подпись) — над трупом он не нужен.
+            if (_worldUi != null)
+            {
+                _worldUi.SetActive(false);
+            }
+            else
+            {
+                // Фолбэк, если контейнер 'UI' не привязан: гасим бары и подпись поштучно.
+                if (_healthBar != null) _healthBar.gameObject.SetActive(false);
+                if (_manaBar   != null) _manaBar.gameObject.SetActive(false);
+                if (_nameLabel != null) _nameLabel.gameObject.SetActive(false);
+            }
 
             if (_animActive)
             {

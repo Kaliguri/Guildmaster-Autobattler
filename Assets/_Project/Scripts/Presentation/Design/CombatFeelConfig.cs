@@ -48,6 +48,14 @@ namespace Guildmaster.Presentation.Design
         [SerializeField, Range(0f, 1f)] private float _heavyShakeMin = 0.2f;
         [SerializeField, Range(0f, 1f)] private float _heavyShakeMax = 0.5f;
 
+        // --- Боевые цифры — масштаб по величине урона (CombatPresenter → FloatingText) ---
+        [Header("Numbers — масштаб цифры по величине удара")]
+        [Tooltip("Во сколько раз крупнее цифра HP-урона на тяжёлом ударе (доля урона >= NumberFullFrac). " +
+                 "Поп/разлёт/тайминг цифры настраиваются на самом префабе FloatingText.")]
+        [SerializeField, Range(1f, 3f)] private float _numberMaxScale = 1.7f;
+        [Tooltip("Доля HP-урона от MaxHP цели, при которой цифра достигает NumberMaxScale.")]
+        [SerializeField, Range(0.01f, 1f)] private float _numberFullFrac = 0.25f;
+
         // --- Slowmo — добивающий удар (CombatFeelDirector) ---
         [Header("Slowmo — добивающий удар (kill)")]
         [Tooltip("Во сколько замедлить мир на добивающий удар.")]
@@ -88,6 +96,9 @@ namespace Guildmaster.Presentation.Design
         public float HeavyHitFrac      => _heavyHitFrac;
         public float HeavyShakeMin     => _heavyShakeMin;
         public float HeavyShakeMax     => _heavyShakeMax;
+
+        public float NumberMaxScale    => _numberMaxScale;
+        public float NumberFullFrac    => _numberFullFrac;
 
         public float KillSlowFactor    => _killSlowFactor;
         public float KillSlowRelease   => _killSlowRelease;

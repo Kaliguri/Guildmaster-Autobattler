@@ -168,10 +168,15 @@ namespace Guildmaster.Presentation
         {
             if (_bulletPrefab == null || projectile == null) return;
 
-            var view = Instantiate(_bulletPrefab, (Vector3)(Vector2)projectile.Position, Quaternion.identity, transform);
+            // Визуальный старт — из ShotPoint (дула) источника, если его вид есть; иначе из позиции сима.
+            Vector3 origin = (Vector3)(Vector2)projectile.Position;
+            if (projectile.Source != null && _views.TryGetValue(projectile.Source.Id, out var srcView) && srcView != null)
+                origin = srcView.ShotPoint;
+
+            var view = Instantiate(_bulletPrefab, origin, Quaternion.identity, transform);
             // Тинт снаряда = цвет юнита-источника (тот же метод, что и тело юнита).
             Color tint = projectile.Source != null ? TintFor(projectile.Source) : Color.white;
-            view.Bind(projectile, tint);
+            view.Bind(projectile, tint, origin);
             _projViews[projectile.Id] = view;
         }
 
@@ -227,12 +232,14 @@ namespace Guildmaster.Presentation
             if (_views.TryGetValue(target.Id, out var view))
                 view.OnDamageReceived(result.TotalDamage);
 
-            // Локальный hitstop пары «источник + цель» по значимости удара (доля HP-урона от MaxHP цели).
+            // Доля HP-урона от MaxHP цели — общий «вес удара» для hitstop и размера цифры.
+            float maxHp = target.Stats.Get(Data.Stats.StatType.MaxHP);
+            float frac  = maxHp > 0f ? result.HpDamage / maxHp : 0f;
+
+            // Локальный hitstop пары «источник + цель» по значимости удара.
             if (view != null)
             {
-                float maxHp = target.Stats.Get(Data.Stats.StatType.MaxHP);
-                float frac  = maxHp > 0f ? result.HpDamage / maxHp : 0f;
-                float stop  = Mathf.Lerp(_feel.HitstopMin, _feel.HitstopMax, Mathf.Clamp01(frac / _feel.HitstopFullFrac));
+                float stop = Mathf.Lerp(_feel.HitstopMin, _feel.HitstopMax, Mathf.Clamp01(frac / _feel.HitstopFullFrac));
                 view.OnHitstop(stop);
                 if (source != null && _views.TryGetValue(source.Id, out var sourceView))
                     sourceView.OnHitstop(stop);
@@ -245,13 +252,17 @@ namespace Guildmaster.Presentation
             int shield = Mathf.RoundToInt(result.ShieldDamage);
             int hp     = Mathf.RoundToInt(result.HpDamage);
 
+            // Цифры — в точку попадания (грудь) цели. Размер HP-цифры растёт с весом удара (тяжёлый = крупнее).
+            Vector3 anchor  = AnchorFor(target);
+            float   hpScale = Mathf.Lerp(1f, _feel.NumberMaxScale, Mathf.Clamp01(frac / Mathf.Max(1e-4f, _feel.NumberFullFrac)));
+
             // Урон по щиту — синим «-N»; по HP — «-N» цветом урона. Если задет и щит, и HP —
             // цифра щита сразу, цифра HP через очень маленькую задержку (обе читаемы).
-            if (shield > 0) SpawnNumber(target.Position, "-" + shield, _shieldColor);
+            if (shield > 0) SpawnNumber(anchor, "-" + shield, _shieldColor);
             if (hp > 0)
             {
-                if (shield > 0) StartCoroutine(DelayedNumber(target.Position, "-" + hp, _damageColor, _splitDelay));
-                else            SpawnNumber(target.Position, "-" + hp, _damageColor);
+                if (shield > 0) StartCoroutine(DelayedNumber(anchor, "-" + hp, _damageColor, _splitDelay, hpScale));
+                else            SpawnNumber(anchor, "-" + hp, _damageColor, hpScale);
             }
 
             _damageDealtPublisher.Publish(new DamageDealtEvent(source, target, result));
@@ -259,32 +270,40 @@ namespace Guildmaster.Presentation
 
         private void HandleHealed(RuntimeUnit source, RuntimeUnit target, float amount)
         {
-            // Хил-цифра над целью (+N). Мелкие тики регена округляются в 0 и не спамят.
+            // Хил-цифра в точку попадания цели (+N). Мелкие тики регена округляются в 0 и не спамят.
             int healed = Mathf.RoundToInt(amount);
-            if (healed > 0) SpawnNumber(target.Position, "+" + healed, _healColor);
+            if (healed > 0) SpawnNumber(AnchorFor(target), "+" + healed, _healColor);
         }
 
         private void HandleAttackEvaded(RuntimeUnit target)
         {
             // Полный негейт удара («Изворотливость») — урона нет, показываем «evade».
-            SpawnNumber(target.Position, "evade", _evadeColor);
+            SpawnNumber(AnchorFor(target), "evade", _evadeColor);
         }
 
-        private IEnumerator DelayedNumber(Vector2 worldPosition, string text, Color color, float delay)
+        private IEnumerator DelayedNumber(Vector3 worldPosition, string text, Color color, float delay, float sizeScale = 1f)
         {
             yield return new WaitForSeconds(delay);
-            SpawnNumber(worldPosition, text, color);
+            SpawnNumber(worldPosition, text, color, sizeScale);
         }
 
-        /// <summary>Заспавнить свою всплывающую боевую цифру над мировой точкой (через пул).</summary>
-        private void SpawnNumber(Vector2 worldPosition, string text, Color color)
+        /// <summary>Заспавнить свою всплывающую боевую цифру в мировой точке (через пул). sizeScale — размер по величине удара.</summary>
+        private void SpawnNumber(Vector3 worldPosition, string text, Color color, float sizeScale = 1f)
         {
             EnsureTextPool();
             if (_textPool == null) return;
 
             FloatingText ft = _textPool.Get();
-            ft.transform.position = (Vector3)worldPosition + Vector3.up * 0.4f;
-            ft.Play(text, color, _releaseText);
+            ft.transform.position = worldPosition;
+            ft.Play(text, color, sizeScale, _releaseText);
+        }
+
+        /// <summary>Мировая точка для боевой цифры: HitPoint вида цели (грудь); фолбэк — над позицией сима.</summary>
+        private Vector3 AnchorFor(RuntimeUnit target)
+        {
+            if (_views.TryGetValue(target.Id, out var v) && v != null)
+                return v.HitPoint;
+            return (Vector3)(Vector2)target.Position + Vector3.up * 0.4f;
         }
 
         /// <summary>Лениво собрать пул всплывающих цифр из префаба (zero-alloc в бою, пункт QA #5).</summary>
