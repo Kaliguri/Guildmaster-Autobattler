@@ -20,5 +20,8 @@ namespace Guildmaster.Game.Services
         }
 
         public void SetMusicVolume(float volume) { }
+
+        // Заглушка: параметр пишется каждый кадр (slowmo) — молча глотаем, без лог-спама.
+        public void SetGlobalParameter(string name, float value) { }
     }
 }

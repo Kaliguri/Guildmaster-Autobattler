@@ -2,28 +2,26 @@ using System;
 using Guildmaster.Combat;
 using Guildmaster.Core.Audio;
 using MessagePipe;
-using UnityEngine;
-using VContainer;
+using VContainer.Unity;
 
 namespace Guildmaster.Presentation.Audio
 {
     /// <summary>
-    /// Аудио-презентер (вики «13» §7): подписывается на боевые MessagePipe-события (по образцу
-    /// <see cref="CombatPresenter"/>), резолвит ключ через <see cref="AudioResolver"/> и отдаёт его в
-    /// <see cref="IAudioService"/>. Сейчас <c>IAudioService</c> — заглушка (Debug.Log), звука нет; FMOD
-    /// подключится в Фазе 7/9 без правок этого класса. Attack/cast появятся, когда их события пробросят
-    /// в MessagePipe — сейчас доступны hit (урон) и death.
+    /// Аудио-презентер (вики impl «09» §П3): POCO-entry-point (как <c>CombatFeelDirector</c>), подписывается на
+    /// боевые MessagePipe-события, резолвит ключ через <see cref="AudioResolver"/> и отдаёт в
+    /// <see cref="IAudioService"/>. Развязан от симуляции; не MonoBehaviour — не нужен объект в сцене,
+    /// регистрируется в <c>CombatLifetimeScope</c>. Attack/cast и прочие появятся, когда их события
+    /// пробросят в MessagePipe (П4) — пока доступны hit (урон) и death.
     /// </summary>
-    public sealed class AudioPresenter : MonoBehaviour
+    public sealed class AudioPresenter : IStartable, IDisposable
     {
-        private IAudioService _audio;
-        private AudioResolver _resolver;
-        private ISubscriber<DamageDealtEvent> _damageSub;
-        private ISubscriber<UnitDiedEvent> _diedSub;
+        private readonly IAudioService _audio;
+        private readonly AudioResolver _resolver;
+        private readonly ISubscriber<DamageDealtEvent> _damageSub;
+        private readonly ISubscriber<UnitDiedEvent> _diedSub;
         private IDisposable _subscriptions;
 
-        [Inject]
-        public void Construct(
+        public AudioPresenter(
             IAudioService audio,
             AudioCatalog catalog,
             ISubscriber<DamageDealtEvent> damageSub,
@@ -35,16 +33,15 @@ namespace Guildmaster.Presentation.Audio
             _diedSub = diedSub;
         }
 
-        private void OnEnable()
+        public void Start()
         {
-            if (_damageSub == null || _diedSub == null) return;
             var bag = DisposableBag.CreateBuilder();
             _damageSub.Subscribe(OnDamageDealt).AddTo(bag);
             _diedSub.Subscribe(OnUnitDied).AddTo(bag);
             _subscriptions = bag.Build();
         }
 
-        private void OnDisable() => _subscriptions?.Dispose();
+        public void Dispose() => _subscriptions?.Dispose();
 
         private void OnDamageDealt(DamageDealtEvent e) => PlayFor(e.Target, AudioAction.Hit);
 

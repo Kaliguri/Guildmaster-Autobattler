@@ -15,5 +15,11 @@ namespace Guildmaster.Core.Audio
 
         /// <summary>Установить громкость музыки [0, 1].</summary>
         void SetMusicVolume(float volume);
+
+        /// <summary>
+        /// Задать глобальный параметр микса (имена — <see cref="AudioParameters"/>). Напр. TimeScale —
+        /// slowmo-питч боевой шины. Строки, не FMOD-типы, чтобы Core не знал о звижке.
+        /// </summary>
+        void SetGlobalParameter(string name, float value);
     }
 }

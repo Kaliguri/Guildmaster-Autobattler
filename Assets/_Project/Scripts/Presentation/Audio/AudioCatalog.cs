@@ -52,5 +52,24 @@ namespace Guildmaster.Presentation.Audio
                 if (_defaults[i].Action == action) return true;
             return false;
         }
+
+        /// <summary>
+        /// Резолвнутый ключ (<see cref="AudioResolver.Resolve"/>) → FMOD-событие: точная запись
+        /// (<c>{contentId}.{action}</c>) либо дефолт действия (строка действия, напр. <c>hit</c>).
+        /// Возвращает <c>false</c>, если события нет ИЛИ ссылка пустая (нет банка) — вызывающий молчит.
+        /// </summary>
+        public bool TryGetEvent(string key, out EventReference evt)
+        {
+            if (!string.IsNullOrEmpty(key))
+            {
+                for (int i = 0; i < _entries.Length; i++)
+                    if (_entries[i].Key == key) { evt = _entries[i].Event; return !evt.IsNull; }
+
+                for (int i = 0; i < _defaults.Length; i++)
+                    if (AudioResolver.ActionKey(_defaults[i].Action) == key) { evt = _defaults[i].Event; return !evt.IsNull; }
+            }
+            evt = default;
+            return false;
+        }
     }
 }
