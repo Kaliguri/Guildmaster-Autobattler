@@ -2,6 +2,7 @@ using System;
 using Guildmaster.Combat;
 using Guildmaster.Data.Stats;
 using Guildmaster.Presentation;
+using Guildmaster.Presentation.Design;
 using MessagePipe;
 using UnityEngine;
 using VContainer.Unity;
@@ -17,23 +18,11 @@ namespace Guildmaster.Game.Services
     /// </summary>
     public sealed class CombatFeelDirector : IStartable, IDisposable
     {
-        // --- Тюнеры (пороги/сила). Константы; при желании вынести в SO-конфиг. ---
-        private const float KillSlowFactor   = 0.4f;   // во сколько замедлить мир на добивающий удар
-        private const float KillSlowRecover  = 0.5f;   // сек возврата к норме (unscaled)
-        private const float KillSlowCooldown = 2.0f;   // сек между kill-slowmo — на толпе киллов много
-        private const float BattleEndFactor  = 0.1f;   // концовка боя — сильное slowmo (мир почти замер)
-        private const float BattleEndRecover = 5.0f;   // и медленно, за 5с, возвращается к норме (финишер-момент)
-
-        private const float KillShake      = 0.55f;    // тряска на добивающий удар
-        private const float BattleEndShake = 0.75f;    // тряска на конец боя
-        private const float HeavyHitFrac   = 0.15f;    // порог: доля урона от MaxHP цели, ниже — без тряски
-        private const float HeavyShakeMin  = 0.2f;     // тряска на пороговый тяжёлый удар
-        private const float HeavyShakeMax  = 0.5f;     // тряска на «в полздоровья» удар
-
         private readonly ISubscriber<DamageDealtEvent> _damageSub;
         private readonly ISubscriber<BattleEndedEvent> _endedSub;
         private readonly TimeScaleService _time;
         private readonly IScreenShake     _shake;
+        private readonly CombatFeelConfig _cfg;
 
         private IDisposable _subscriptions;
         private float _lastKillSlowmo = float.NegativeInfinity;
@@ -42,12 +31,14 @@ namespace Guildmaster.Game.Services
             ISubscriber<DamageDealtEvent> damageSub,
             ISubscriber<BattleEndedEvent> endedSub,
             TimeScaleService time,
-            IScreenShake shake)
+            IScreenShake shake,
+            CombatFeelConfig cfg)
         {
             _damageSub = damageSub;
             _endedSub  = endedSub;
             _time      = time;
             _shake     = shake;
+            _cfg       = cfg;
         }
 
         public void Start()
@@ -66,12 +57,12 @@ namespace Guildmaster.Game.Services
             if (e.Result.KilledTarget)
             {
                 float now = Time.unscaledTime;
-                if (now - _lastKillSlowmo >= KillSlowCooldown)
+                if (now - _lastKillSlowmo >= _cfg.KillSlowCooldown)
                 {
                     _lastKillSlowmo = now;
-                    _time.CinematicPulse(KillSlowFactor, KillSlowRecover);
+                    _time.CinematicPulse(_cfg.KillSlowFactor, 0f, _cfg.KillSlowRelease);
                 }
-                _shake.Shake(KillShake);
+                _shake.Shake(_cfg.KillShake);
                 return;
             }
 
@@ -80,16 +71,16 @@ namespace Guildmaster.Game.Services
             float maxHp = target != null ? target.Stats.Get(StatType.MaxHP) : 0f;
             if (maxHp <= 0f) return;
             float frac = e.Result.TotalDamage / maxHp;
-            if (frac < HeavyHitFrac) return;
-            float k = Mathf.Clamp01((frac - HeavyHitFrac) / (1f - HeavyHitFrac));
-            _shake.Shake(Mathf.Lerp(HeavyShakeMin, HeavyShakeMax, k));
+            if (frac < _cfg.HeavyHitFrac) return;
+            float k = Mathf.Clamp01((frac - _cfg.HeavyHitFrac) / (1f - _cfg.HeavyHitFrac));
+            _shake.Shake(Mathf.Lerp(_cfg.HeavyShakeMin, _cfg.HeavyShakeMax, k));
         }
 
-        // Конец боя → более выраженный slowmo (перебивает kill-пульс) + сильная тряска.
+        // Конец боя → сильное slowmo с удержанием и возвратом по кривой (финишер-момент) + сильная тряска.
         private void OnBattleEnded(BattleEndedEvent e)
         {
-            _time.CinematicPulse(BattleEndFactor, BattleEndRecover);
-            _shake.Shake(BattleEndShake);
+            _time.CinematicPulse(_cfg.BattleEndFactor, _cfg.BattleEndHold, _cfg.BattleEndRelease, _cfg.BattleEndReleaseCurve);
+            _shake.Shake(_cfg.BattleEndShake);
         }
     }
 }

@@ -71,15 +71,8 @@ namespace Guildmaster.Presentation
         private IPublisher<DamageDealtEvent> _damageDealtPublisher;
         private IPublisher<BattleEndedEvent> _battleEndedPublisher;
 
-        // Локальный hitstop (2a): окно заморозки участников удара, масштабируется долей нанесённого HP-урона.
-        // Локально (на пару вью), поэтому допустимо на каждом ударе — толпа вокруг не стынет. Global-эффекты
-        // (slowmo/шейк) — отдельный слой по порогам значимости (2b).
-        private const float HitstopMinSeconds = 0.02f; // слабый удар — ~1 кадр при 60 fps
-        private const float HitstopMaxSeconds = 0.09f; // тяжёлый удар
-        private const float HitstopFullFrac   = 0.25f; // урон ≥25% MaxHP цели → максимальный стоп
-
-        // Финишер держит кадр контакта столько же, сколько длится финальный slowmo (см. CombatFeelDirector).
-        private const float FinisherHoldSeconds = 5f;
+        // Все feel-параметры (hitstop, финишер, вспышка/сплющивание вью) — из design-конфига (единый источник).
+        private Design.CombatFeelConfig _feel;
 
         [Inject]
         public void Construct(
@@ -87,13 +80,15 @@ namespace Guildmaster.Presentation
             IPublisher<UnitSpawnedEvent> unitSpawnedPublisher,
             IPublisher<UnitDiedEvent>    unitDiedPublisher,
             IPublisher<DamageDealtEvent> damageDealtPublisher,
-            IPublisher<BattleEndedEvent> battleEndedPublisher)
+            IPublisher<BattleEndedEvent> battleEndedPublisher,
+            Design.CombatFeelConfig feel)
         {
             _simulation           = simulation;
             _unitSpawnedPublisher = unitSpawnedPublisher;
             _unitDiedPublisher    = unitDiedPublisher;
             _damageDealtPublisher = damageDealtPublisher;
             _battleEndedPublisher = battleEndedPublisher;
+            _feel                 = feel;
         }
 
         private void OnEnable()
@@ -196,6 +191,7 @@ namespace Guildmaster.Presentation
             {
                 var view = Instantiate(_unitViewPrefab, (Vector3)(Vector2)unit.Position, Quaternion.identity, transform);
                 view.Bind(unit);
+                view.ApplyFeelConfig(_feel); // параметры вспышки/сплющивания — из design-конфига
 
                 UnitVisual ov = ResolveVisual(unit.Unit);
                 if (ov != null) view.SetVisual(ov);
@@ -251,7 +247,7 @@ namespace Guildmaster.Presentation
             {
                 float maxHp = target.Stats.Get(Data.Stats.StatType.MaxHP);
                 float frac  = maxHp > 0f ? result.HpDamage / maxHp : 0f;
-                float stop  = Mathf.Lerp(HitstopMinSeconds, HitstopMaxSeconds, Mathf.Clamp01(frac / HitstopFullFrac));
+                float stop  = Mathf.Lerp(_feel.HitstopMin, _feel.HitstopMax, Mathf.Clamp01(frac / _feel.HitstopFullFrac));
                 view.OnHitstop(stop);
                 if (source != null && _views.TryGetValue(source.Id, out var sourceView))
                     sourceView.OnHitstop(stop);
@@ -363,7 +359,7 @@ namespace Guildmaster.Presentation
         {
             // Финишер-мили держит кадр контакта весь финальный slowmo (перекрывает free-run у него).
             if (_finisherCandidate != null && _views.TryGetValue(_finisherCandidate.Id, out var finisher) && finisher != null)
-                finisher.HoldHitFrame(FinisherHoldSeconds);
+                finisher.HoldHitFrame(_feel.FinisherHoldSeconds);
 
             // Живые (в _views мёртвые уже удалены) доигрывают анимации натурально, а не виснут на замершем симе.
             foreach (var kvp in _views)

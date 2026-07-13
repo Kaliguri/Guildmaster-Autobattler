@@ -25,9 +25,15 @@ namespace Guildmaster.Game.Services
         private float _cinematic = 1f;
         private bool  _paused;
 
-        // Возврат cinematic к 1 после пульса: линейный, на unscaled-времени (иначе slowmo тормозит
-        // собственный отпуск). 0 = возврата нет (cinematic держится, пока не задан новый).
-        private float _cinematicRecoverPerSec;
+        // Профиль cinematic-пульса: держим глубину _cinematicFrom _holdRemaining секунд, затем возвращаемся
+        // к 1 за _releaseDuration по кривой _releaseCurve. Всё на unscaled-времени (иначе slowmo тормозит
+        // собственный отпуск). _cinematicActive=false — пульса нет.
+        private float          _cinematicFrom;
+        private float          _holdRemaining;
+        private float          _releaseDuration;
+        private float          _releaseElapsed;
+        private AnimationCurve _releaseCurve;
+        private bool           _cinematicActive;
 
         /// <summary>Игровая скорость (выбор игрока), без учёта паузы и cinematic.</summary>
         public float GameSpeed => _gameSpeed;
@@ -48,32 +54,49 @@ namespace Guildmaster.Game.Services
             Apply();
         }
 
-        /// <summary>Задать cinematic-множитель (0..4): &lt;1 — slowmo, &gt;1 — ускорение момента.</summary>
+        /// <summary>Задать cinematic-множитель напрямую (0..4): &lt;1 — slowmo. Отменяет активный пульс.</summary>
         public void SetCinematic(float factor)
         {
             _cinematic = Mathf.Clamp(factor, 0f, 4f);
-            _cinematicRecoverPerSec = 0f; // ручная установка не возвращается сама
+            _cinematicActive = false;
             Apply();
         }
 
         /// <summary>
-        /// Кинематографический пульс: мгновенно уйти в slowmo (<paramref name="factor"/>) и линейно вернуться
-        /// к 1 за <paramref name="recoverSeconds"/> (на unscaled-времени). Момент режиссуры на значимое событие
-        /// (килл/конец боя). Новый пульс перебивает текущий.
+        /// Кинематографический пульс: мгновенно уйти в slowmo (<paramref name="factor"/>), ДЕРЖАТЬ его
+        /// <paramref name="holdSeconds"/>, затем вернуться к 1 за <paramref name="releaseSeconds"/> по форме
+        /// <paramref name="releaseCurve"/> (норм. время 0→1 → доля возврата 0→1; null = линейно). Всё на
+        /// unscaled-времени. Момент режиссуры (килл / финишер-концовка). Новый пульс перебивает текущий.
         /// </summary>
-        public void CinematicPulse(float factor, float recoverSeconds)
+        public void CinematicPulse(float factor, float holdSeconds, float releaseSeconds, AnimationCurve releaseCurve = null)
         {
-            _cinematic = Mathf.Clamp(factor, 0f, 4f);
-            _cinematicRecoverPerSec = recoverSeconds > 0f ? (1f - _cinematic) / recoverSeconds : 0f;
+            _cinematicFrom   = Mathf.Clamp(factor, 0f, 4f);
+            _cinematic       = _cinematicFrom;
+            _holdRemaining   = Mathf.Max(0f, holdSeconds);
+            _releaseDuration = Mathf.Max(0.0001f, releaseSeconds);
+            _releaseElapsed  = 0f;
+            _releaseCurve    = releaseCurve;
+            _cinematicActive = true;
             Apply();
         }
 
-        /// <summary>VContainer-тик: ведёт возврат cinematic к 1 после пульса (unscaled — не тормозит сам себя).</summary>
+        /// <summary>VContainer-тик: держит глубину, затем ведёт возврат к 1 по кривой (unscaled — не тормозит сам себя).</summary>
         public void Tick()
         {
-            if (_cinematicRecoverPerSec <= 0f || _cinematic >= 1f) return;
-            _cinematic = Mathf.Min(1f, _cinematic + _cinematicRecoverPerSec * Time.unscaledDeltaTime);
-            if (_cinematic >= 1f) _cinematicRecoverPerSec = 0f;
+            if (!_cinematicActive) return;
+
+            float dt = Time.unscaledDeltaTime;
+            if (_holdRemaining > 0f)
+            {
+                _holdRemaining -= dt; // держим _cinematicFrom (уже применён)
+                return;
+            }
+
+            _releaseElapsed += dt;
+            float t = Mathf.Clamp01(_releaseElapsed / _releaseDuration);
+            float k = _releaseCurve != null ? Mathf.Clamp01(_releaseCurve.Evaluate(t)) : t; // доля возврата к норме
+            _cinematic = Mathf.Lerp(_cinematicFrom, 1f, k);
+            if (t >= 1f) { _cinematic = 1f; _cinematicActive = false; }
             Apply();
         }
 

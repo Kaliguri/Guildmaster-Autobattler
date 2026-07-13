@@ -12,18 +12,13 @@ namespace Guildmaster.Presentation
     /// </summary>
     public sealed class ScreenShake : CinemachineExtension
     {
-        [Tooltip("Смещение как ДОЛЯ обзора камеры (orthoSize) при интенсивности 1 — не зависит от зума. " +
-                 "0.08 = ±8% полувысоты кадра.")]
-        [SerializeField] private float _positionFraction = 0.08f;
-        [Tooltip("Крен (roll) в градусах при интенсивности 1.")]
-        [SerializeField] private float _rotationStrength = 4f;
-        [Tooltip("Частота дрожания (Гц-подобная).")]
-        [SerializeField] private float _frequency = 26f;
-        [Tooltip("Скорость затухания амплитуды в секунду (unscaled). Меньше = дольше трясёт.")]
-        [SerializeField] private float _decayPerSec = 2f;
-
+        // Форма тряски — из CombatFeelConfig (ApplyConfig от CameraModeController). Фолбэки — если конфига нет.
+        private Design.CombatFeelConfig _feel;
         private float _amplitude;
         private float _seed;
+
+        /// <summary>Подать design-конфиг тряски.</summary>
+        public void ApplyConfig(Design.CombatFeelConfig feel) => _feel = feel;
 
         /// <summary>Тряхнуть: intensity 0..1. Берётся максимум с текущей амплитудой (удары не гасят друг друга).</summary>
         public void Shake(float intensity)
@@ -40,19 +35,24 @@ namespace Guildmaster.Presentation
         {
             if (stage != CinemachineCore.Stage.Finalize || _amplitude <= 0.0001f) return;
 
+            float positionFraction = _feel != null ? _feel.ShakePositionFraction : 0.08f;
+            float rotationStrength = _feel != null ? _feel.ShakeRotationStrength : 4f;
+            float frequency        = _feel != null ? _feel.ShakeFrequency        : 26f;
+            float decayPerSec      = _feel != null ? _feel.ShakeDecayPerSec       : 2f;
+
             // Линейная амплитуда (без квадрата — тот втрое резал силу). Сдвиг привязан к обзору камеры
             // (orthoSize), иначе на широком зуме абсолютные ед. незаметны.
             float amp   = _amplitude;
             float ortho = Mathf.Max(state.Lens.OrthographicSize, 1f);
-            float t = Time.unscaledTime * _frequency;
+            float t = Time.unscaledTime * frequency;
             float nx = (Mathf.PerlinNoise(_seed,        t) - 0.5f) * 2f;
             float ny = (Mathf.PerlinNoise(_seed + 19f,  t) - 0.5f) * 2f;
             float nr = (Mathf.PerlinNoise(_seed + 43f,  t) - 0.5f) * 2f;
 
-            state.PositionCorrection    += new Vector3(nx, ny, 0f) * (_positionFraction * ortho * amp);
-            state.OrientationCorrection  = state.OrientationCorrection * Quaternion.Euler(0f, 0f, nr * _rotationStrength * amp);
+            state.PositionCorrection    += new Vector3(nx, ny, 0f) * (positionFraction * ortho * amp);
+            state.OrientationCorrection  = state.OrientationCorrection * Quaternion.Euler(0f, 0f, nr * rotationStrength * amp);
 
-            _amplitude = Mathf.Max(0f, _amplitude - _decayPerSec * Time.unscaledDeltaTime);
+            _amplitude = Mathf.Max(0f, _amplitude - decayPerSec * Time.unscaledDeltaTime);
         }
     }
 }

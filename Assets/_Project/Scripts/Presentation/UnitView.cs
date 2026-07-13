@@ -46,14 +46,7 @@ namespace Guildmaster.Presentation
         [Tooltip("Материал спрайта с параметром _FlashAmount (Guildmaster/Sprite/HitFlash). " +
                  "Ставится на спрайт в Bind; пусто = вспышки не будет (обычный .color так не осветлить).")]
         [SerializeField] private Material _flashMaterial;
-        [Tooltip("Цвет вспышки попадания (обычно белый).")]
-        [SerializeField] private Color _flashColor = Color.white;
-        [Tooltip("Длительность вспышки при попадании, сек. Ровный (линейный) спад от белого.")]
-        [SerializeField] private float _hitFlashDuration = 0.25f;
-        [Tooltip("Длительность сплющивания при попадании, сек (сжался на пике → ровно вернулся к базе).")]
-        [SerializeField] private float _hitSquashDuration = 0.25f;
-        [Tooltip("Сила сплющивания: X растягивается / Y сжимается на эту долю (0.4 = ±40%).")]
-        [SerializeField] private float _hitSquashAmount = 0.4f;
+        // Длительности/сила/цвет вспышки и сплющивания — из CombatFeelConfig (ApplyFeelConfig), не с префаба.
 
         [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
         [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
@@ -87,6 +80,7 @@ namespace Guildmaster.Presentation
         private Vector2     _renderPosition;
 
         // --- Feel (реакция на удар, LitMotion) — только презентация, сим не трогает ---
+        private Design.CombatFeelConfig _feel;          // параметры вспышки/сплющивания (из design-конфига)
         private Color        _baseTint = Color.white;   // цвет-тинт тела (умножается на текстуру в шейдере)
         private float        _flashAmount;               // 0..1 — сила вспышки (параметр _FlashAmount шейдера)
         private bool         _flashApplied;              // держим ли сейчас MPB на спрайте (чтобы вернуть в 0 один раз)
@@ -129,11 +123,12 @@ namespace Guildmaster.Presentation
             _renderPosition = unit.Position;
             transform.position = (Vector3)_renderPosition;
 
-            // Изначально все смотрят вправо (как нарисованы спрайты). Дальше разворот динамический —
-            // по положению текущей цели (ApplyFacing в Update).
+            // Спрайты нарисованы лицом вправо: команда 0 (слева) так и смотрит, враги (справа) — влево.
+            // Дальше разворот динамический (ApplyFacing по цели/движению), но стартовый — по стороне, иначе
+            // стоящий без цели (напр. ассасин в инвизе) смотрит «от противника».
             if (_sprite != null)
             {
-                _sprite.flipX = false;
+                _sprite.flipX = unit.Team != 0;
 
                 // Материал с flash-параметром: осветлить спрайт в белый через SpriteRenderer.color нельзя
                 // (это множитель), поэтому ставим шейдер с _FlashAmount поверх текстуры.
@@ -154,6 +149,9 @@ namespace Guildmaster.Presentation
             _baseTint = color;
             ApplyColor(); // итоговый цвет = база + вспышка + альфа инвиза (единый писатель _sprite.color)
         }
+
+        /// <summary>Подать design-конфиг сочности (длительности/сила/цвет вспышки и сплющивания). CombatPresenter — при спавне.</summary>
+        public void ApplyFeelConfig(Design.CombatFeelConfig feel) => _feel = feel;
 
         /// <summary>Цвет HP-бара по принадлежности к смотрящему (из <c>CombatColorPalette</c>).</summary>
         public void SetHealthColor(Color color)
@@ -536,7 +534,7 @@ namespace Guildmaster.Presentation
             _mpb ??= new MaterialPropertyBlock();
             _sprite.GetPropertyBlock(_mpb);
             _mpb.SetFloat(FlashAmountId, _flashAmount);
-            _mpb.SetColor(FlashColorId, _flashColor);
+            _mpb.SetColor(FlashColorId, _feel != null ? _feel.FlashColor : Color.white);
             _sprite.SetPropertyBlock(_mpb);
             _flashApplied = active;
         }
@@ -562,8 +560,9 @@ namespace Guildmaster.Presentation
             if (_sprite == null) return;
             if (_flashHandle.IsActive()) _flashHandle.Cancel();
             _flashAmount = 1f;
+            float dur = _feel != null ? _feel.FlashDuration : 0.25f;
             // Линейный спад: вспышка держится и ровно гаснет (OutQuad сваливал её в первые 1-2 кадра → «миг»).
-            _flashHandle = LMotion.Create(1f, 0f, _hitFlashDuration)
+            _flashHandle = LMotion.Create(1f, 0f, dur)
                 .WithEase(Ease.Linear)
                 .Bind(this, static (v, self) => self._flashAmount = v)
                 .AddTo(gameObject);
@@ -576,11 +575,13 @@ namespace Guildmaster.Presentation
         {
             if (_squashTarget == null) return;
             if (_squashHandle.IsActive()) _squashHandle.Cancel();
-            _squashHandle = LMotion.Create(1f, 0f, _hitSquashDuration)
+            float dur = _feel != null ? _feel.SquashDuration : 0.25f;
+            _squashHandle = LMotion.Create(1f, 0f, dur)
                 .WithEase(Ease.Linear)
                 .Bind(this, static (v, self) =>
                 {
-                    float a = self._hitSquashAmount * v;
+                    float amount = self._feel != null ? self._feel.SquashAmount : 0.4f;
+                    float a = amount * v;
                     self._squashTarget.localScale = new Vector3(
                         self._baseSpriteScale.x * (1f + a),
                         self._baseSpriteScale.y * (1f - a),

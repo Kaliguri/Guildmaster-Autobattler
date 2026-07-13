@@ -64,6 +64,7 @@ namespace Guildmaster.Presentation
         private IInputService     _input;
         private ArenaLayoutData   _layout;
         private CombatFocusTarget _focus;
+        private Design.CombatFeelConfig _feel; // конфиг тряски → раздаётся ScreenShake-ам
 
         private CameraMode _mode = CameraMode.Action;
         private bool _devAccess;
@@ -78,11 +79,12 @@ namespace Guildmaster.Presentation
         public CameraMode Mode => _mode;
 
         [Inject]
-        public void Construct(IInputService input, ArenaLayoutData layout, CombatFocusTarget focus)
+        public void Construct(IInputService input, ArenaLayoutData layout, CombatFocusTarget focus, Design.CombatFeelConfig feel)
         {
             _input  = input;
             _layout = layout;
             _focus  = focus;
+            _feel   = feel;
         }
 
         // Подписку и стартовую настройку делаем в Start, а НЕ в OnEnable: компонент инъектится
@@ -112,6 +114,7 @@ namespace Guildmaster.Presentation
             if (cam == null) return;
             var shaker = cam.GetComponent<ScreenShake>();
             if (shaker == null) shaker = cam.gameObject.AddComponent<ScreenShake>();
+            shaker.ApplyConfig(_feel);
             _shakers.Add(shaker);
         }
 

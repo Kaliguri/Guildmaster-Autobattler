@@ -31,6 +31,9 @@ namespace Guildmaster.Game
         [Tooltip("Фиксированный сид боя для воспроизводимости (баг/баланс/реплей). 0 = случайный каждый бой.")]
         [SerializeField] private long _fixedSeed;
 
+        [Tooltip("Design-конфиг «сочности» боя (вспышка/сплющивание/hitstop/slowmo/тряска). Пусто = дефолты в рантайме.")]
+        [SerializeField] private Presentation.Design.CombatFeelConfig _feelConfig;
+
         protected override void Configure(IContainerBuilder builder)
         {
             // Арену печём из авторинга в сцене (если он есть); иначе — бесконечное поле.
@@ -43,6 +46,12 @@ namespace Guildmaster.Game
             RegisterCombatSystems(builder);
             RegisterSimulation(builder, layout);
             RegisterPresentation(builder);
+
+            // Конфиг «сочности»: если ассет не назначен — рантайм-инстанс с дефолтами (бой не падает).
+            var feel = _feelConfig != null
+                ? _feelConfig
+                : ScriptableObject.CreateInstance<Presentation.Design.CombatFeelConfig>();
+            builder.RegisterInstance(feel);
 
             // Единый арбитр Time.timeScale (пауза/скорость/cinematic slowmo). EntryPoint — чтобы Tick()
             // вёл возврат slowmo, а Dispose вернул timeScale к 1; AsSelf — для инъекции в потребителей.
