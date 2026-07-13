@@ -351,6 +351,10 @@ namespace Guildmaster.Presentation
 
         private void HandleBattleEnded(BattleOutcome outcome)
         {
+            // Живые (в _views мёртвые уже удалены) доигрывают анимации натурально, а не виснут на замершем симе.
+            foreach (var kvp in _views)
+                if (kvp.Value != null) kvp.Value.OnBattleEnded();
+
             Debug.Log($"[CombatPresenter] - Бой завершён: {outcome}");
 
             _battleEndedPublisher.Publish(new BattleEndedEvent(outcome));

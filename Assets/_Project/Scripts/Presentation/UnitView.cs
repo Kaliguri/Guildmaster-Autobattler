@@ -112,6 +112,9 @@ namespace Guildmaster.Presentation
         private bool  _isDead;
         private float _deathRemaining;
 
+        private bool _freeRun;        // бой окончен → доигрываем анимации натурально, не скрабим по замершему симу
+        private bool _freeRunSettled; // уже осели в Idle после доигрыша
+
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
         private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
         private int   _recoveryGapTicks = 1;    // тиков от кадра контакта до следующего замаха (снап на конце замаха) — темп хвоста
@@ -259,6 +262,13 @@ namespace Guildmaster.Presentation
 
             if (!_animActive) return;
 
+            // Бой окончен: sim не тикает, скраб замер бы — доигрываем клип естественно (см. DriveFreeRun).
+            if (_freeRun)
+            {
+                DriveFreeRun();
+                return;
+            }
+
             float dt = Time.deltaTime;
             UpdateAttackPhase(dt);
 
@@ -399,6 +409,31 @@ namespace Guildmaster.Presentation
         public void OnAttackInterrupted()
         {
             _attackPhase = AttackAnimPhase.None;
+        }
+
+        /// <summary>Бой окончен: перестаём скрабить по замершему симу; даём анимации доиграть натурально.</summary>
+        public void OnBattleEnded()
+        {
+            if (_animActive) _freeRun = true;
+        }
+
+        // После конца боя sim не тикает → скраб застыл бы на кадре. Возвращаем Animator к естественному
+        // проигрышу (speed = 1): текущий замах/удар/восстановление доигрывается до конца, затем Idle.
+        private void DriveFreeRun()
+        {
+            _animator.speed = 1f;
+            if (_freeRunSettled) return;
+
+            // Пока текущий attack-клип не доигран — ждём (юнит завершает удар и хвост естественно).
+            if (_state == UnitAnimationState.Attack)
+            {
+                AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(0);
+                if (info.shortNameHash == AttackHash && info.normalizedTime < 1f) return;
+            }
+
+            _state = UnitAnimationState.Idle;
+            _animator.Play(IdleHash, 0, 0f);
+            _freeRunSettled = true;
         }
 
         // Разворот тела по горизонтали (спрайты нарисованы «лицом вправо»):
