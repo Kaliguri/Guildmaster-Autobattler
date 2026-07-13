@@ -22,7 +22,7 @@ namespace Guildmaster.Game.Services
         private const float KillSlowRecover  = 0.5f;   // сек возврата к норме (unscaled)
         private const float KillSlowCooldown = 2.0f;   // сек между kill-slowmo — на толпе киллов много
         private const float BattleEndFactor  = 0.1f;   // концовка боя — сильное slowmo (мир почти замер)
-        private const float BattleEndRecover = 3.0f;   // и медленно, за 3с, возвращается к норме (финишер-момент)
+        private const float BattleEndRecover = 5.0f;   // и медленно, за 5с, возвращается к норме (финишер-момент)
 
         private const float KillShake      = 0.55f;    // тряска на добивающий удар
         private const float BattleEndShake = 0.75f;    // тряска на конец боя

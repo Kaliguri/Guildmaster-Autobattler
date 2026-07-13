@@ -40,8 +40,9 @@ Shader "Guildmaster/Sprite/HitFlash"
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
 
+            // Без _MainTex_ST: спрайтовые UV уже в меше, а _ST/_TexelSize ломают 2D SRP Batcher
+            // (батчинг отключился бы для всех юнитов с этим материалом).
             CBUFFER_START(UnityPerMaterial)
-                float4 _MainTex_ST;
                 half4  _Color;
                 half4  _FlashColor;
                 half   _FlashAmount;
@@ -65,7 +66,7 @@ Shader "Guildmaster/Sprite/HitFlash"
             {
                 Varyings output;
                 output.positionCS = TransformObjectToHClip(input.positionOS.xyz);
-                output.uv         = TRANSFORM_TEX(input.uv, _MainTex);
+                output.uv         = input.uv; // спрайтовые UV уже готовы в меше — без TRANSFORM_TEX
                 output.color      = input.color * _Color;
                 return output;
             }

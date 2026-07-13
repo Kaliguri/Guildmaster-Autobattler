@@ -79,7 +79,7 @@ namespace Guildmaster.Presentation
         private const float HitstopFullFrac   = 0.25f; // урон ≥25% MaxHP цели → максимальный стоп
 
         // Финишер держит кадр контакта столько же, сколько длится финальный slowmo (см. CombatFeelDirector).
-        private const float FinisherHoldSeconds = 3f;
+        private const float FinisherHoldSeconds = 5f;
 
         [Inject]
         public void Construct(
