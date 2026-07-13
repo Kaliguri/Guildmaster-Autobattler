@@ -28,6 +28,12 @@ namespace Guildmaster.Game
         [Tooltip("Размер ячейки пространственного хэша.")]
         [SerializeField] private float _spatialHashCellSize = 3f;
 
+        [Tooltip("Фиксированный сид боя для воспроизводимости (баг/баланс/реплей). 0 = случайный каждый бой.")]
+        [SerializeField] private long _fixedSeed;
+
+        [Tooltip("Design-конфиг «сочности» боя (вспышка/сплющивание/hitstop/slowmo/тряска). Пусто = дефолты в рантайме.")]
+        [SerializeField] private Presentation.Design.CombatFeelConfig _feelConfig;
+
         protected override void Configure(IContainerBuilder builder)
         {
             // Арену печём из авторинга в сцене (если он есть); иначе — бесконечное поле.
@@ -41,7 +47,20 @@ namespace Guildmaster.Game
             RegisterSimulation(builder, layout);
             RegisterPresentation(builder);
 
-            // Боевой ввод: пауза/рестарт на время этого боя (вики «16» §4).
+            // Конфиг «сочности»: если ассет не назначен — рантайм-инстанс с дефолтами (бой не падает).
+            var feel = _feelConfig != null
+                ? _feelConfig
+                : ScriptableObject.CreateInstance<Presentation.Design.CombatFeelConfig>();
+            builder.RegisterInstance(feel);
+
+            // Единый арбитр Time.timeScale (пауза/скорость/cinematic slowmo). EntryPoint — чтобы Tick()
+            // вёл возврат slowmo, а Dispose вернул timeScale к 1; AsSelf — для инъекции в потребителей.
+            builder.RegisterEntryPoint<TimeScaleService>(Lifetime.Scoped).AsSelf();
+
+            // Режиссёр «сочности»: политика global-эффектов (slowmo на килл/конец боя) по MessagePipe-событиям.
+            builder.RegisterEntryPoint<CombatFeelDirector>(Lifetime.Scoped);
+
+            // Боевой ввод: пауза/скорость на время этого боя (вики «16» §4).
             builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
         }
 
@@ -65,7 +84,14 @@ namespace Guildmaster.Game
 
         private void RegisterRng(IContainerBuilder builder)
         {
-            builder.RegisterInstance<IRngService>(new XorShiftRng(GenerateBattleSeed()));
+            bool fixedSeed = _fixedSeed != 0L;
+            ulong seed = fixedSeed ? (ulong)_fixedSeed : GenerateBattleSeed();
+
+            Debug.Log($"[CombatLifetimeScope] - Battle seed = {seed}{(fixedSeed ? " (fixed)" : "")}");
+
+            // Сид доступен из DI (лог/реплей/MP), а не только «внутри» RNG.
+            builder.RegisterInstance(new BattleSeed(seed));
+            builder.RegisterInstance<IRngService>(new XorShiftRng(seed));
         }
 
         private void RegisterCombatSystems(IContainerBuilder builder)
@@ -118,12 +144,18 @@ namespace Guildmaster.Game
             if (FindFirstObjectByType<Presentation.CameraModeController>() != null)
             {
                 builder.RegisterComponentInHierarchy<Presentation.CombatFocusTarget>();
-                builder.RegisterComponentInHierarchy<Presentation.CameraModeController>();
+                builder.RegisterComponentInHierarchy<Presentation.CameraModeController>()
+                       .AsSelf().As<Presentation.IScreenShake>();
+            }
+            else
+            {
+                // Нет камеры-рига → тряска-заглушка, чтобы CombatFeelDirector резолвился и бой не падал.
+                builder.RegisterInstance<Presentation.IScreenShake>(new Presentation.NullScreenShake());
             }
         }
 
-        // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя), а не
-        // генерироваться локально — иначе RNG хоста и клиента разойдутся. Сейчас ок:
+        // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя) и лечь в BattleSeed,
+        // а не генерироваться локально — иначе RNG хоста и клиента разойдутся. Сейчас ок:
         // модель хост-авторитетная, тикает только хост (см. CombatLoopService).
         private static ulong GenerateBattleSeed()
         {

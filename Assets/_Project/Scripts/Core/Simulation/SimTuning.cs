@@ -76,7 +76,7 @@ namespace Guildmaster.Core.Simulation
 
         /// <summary>Код-дефолты (исторические значения фиксированных констант — контракт баланса).</summary>
         public static readonly SimTuning Default = new SimTuning(
-            bodyRadiusPerSize:         0.575f,
+            bodyRadiusPerSize:         0.3f,
             separationStrength:        0.5f,
             separationIterations:      1,
             separationSameTeamScale:   0.35f,

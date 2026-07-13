@@ -17,11 +17,13 @@ MonoBehaviour:
   _attackType: 0
   _resourceType: 0
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
+  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
   _resourceOnHit: 0
   _stats: []
   _grantedEffects: []

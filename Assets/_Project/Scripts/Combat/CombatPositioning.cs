@@ -83,8 +83,10 @@ namespace Guildmaster.Combat
             Vector2 behindDir = fromAttacker.sqrMagnitude > 1e-4f ? fromAttacker.normalized : Vector2.right;
             float offset = attacker.Stats.Get(StatType.AttackRange) * 0.5f;
 
-            attacker.PreviousPosition = attacker.Position;
+            // Снап без интерполяции: сначала переезд, ЗАТЕМ Prev = Pos (иначе вид едет старая→новая за тик —
+            // юнит «проносится» через экран, что при добивающем блинк-ударе читается как телепорт при смерти).
             attacker.Position = target.Position + behindDir * offset;
+            attacker.PreviousPosition = attacker.Position;
         }
     }
 }

@@ -43,5 +43,8 @@ namespace Guildmaster.Core.Input
 
         /// <summary>Переключить паузу боя (Space): пауза ↔ продолжить.</summary>
         event Action PauseToggleRequested;
+
+        /// <summary>Циклически сменить скорость боя (.): 1x → 2x → 3x → 1x.</summary>
+        event Action GameSpeedCycleRequested;
     }
 }

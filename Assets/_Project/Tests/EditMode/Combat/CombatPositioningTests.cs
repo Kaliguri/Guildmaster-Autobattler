@@ -29,7 +29,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             // Дальняя сторона по направлению атакующий→цель (+X): цель(5) + dir(1,0)*1 = (6,0).
             Assert.That(attacker.Position.x, Is.EqualTo(6f).Within(1e-4f));
             Assert.That(attacker.Position.y, Is.EqualTo(0f).Within(1e-4f));
-            Assert.AreEqual(new Vector2(0f, 0f), attacker.PreviousPosition, "Вид должен снапнуть: PreviousPosition = прежняя позиция.");
+            Assert.AreEqual(attacker.Position, attacker.PreviousPosition, "Снап без интерполяции: PreviousPosition = Position (иначе вид едет старая→новая за тик).");
         }
 
         [Test]

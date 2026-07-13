@@ -1,0 +1,176 @@
+using UnityEngine;
+
+namespace Guildmaster.Presentation
+{
+    /// <summary>
+    /// Разлёт спрайта юнита на осколки при смерти. Берёт ТЕКУЩИЙ кадр спрайта и строит меш строго под его
+    /// ВИДИМЫЕ границы (из собственного меша спрайта — <c>sprite.vertices</c>/<c>sprite.uv</c>), поэтому осколки
+    /// размером с персонажа, а не с прозрачной спрайт-ячейки. Рисует шейдером Guildmaster/Sprite/Shatter:
+    /// вспышка в белый → осколки дрейфуют наружу во все стороны, медленно вращаясь, и плавно тают. Разлёт нормирован
+    /// на высоту спрайта. Per-instance данные через MaterialPropertyBlock (материал общий, без аллокаций).
+    /// По завершении зовёт callback и самоуничтожается. Только презентация; сим не трогает.
+    /// </summary>
+    [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
+    public sealed class DeathShatter : MonoBehaviour
+    {
+        private static readonly int MainTexId    = Shader.PropertyToID("_MainTex");
+        private static readonly int ColorId      = Shader.PropertyToID("_Color");
+        private static readonly int FlashColorId = Shader.PropertyToID("_FlashColor");
+        private static readonly int FlashAmtId   = Shader.PropertyToID("_FlashAmount");
+        private static readonly int ShatterId    = Shader.PropertyToID("_Shatter");
+        private static readonly int ExplodeId    = Shader.PropertyToID("_Explode");
+        private static readonly int GravityId    = Shader.PropertyToID("_Gravity");
+        private static readonly int SpinId       = Shader.PropertyToID("_Spin");
+        private static readonly int SpreadId     = Shader.PropertyToID("_Spread");
+
+        private static Material _sharedMat;
+
+        private MeshRenderer          _mr;
+        private MeshFilter            _mf;
+        private Mesh                  _mesh;   // per-instance — уничтожаем вместе с эффектом
+        private MaterialPropertyBlock _mpb;
+        private System.Action         _onComplete;
+        private float _flashIn, _duration, _elapsed;
+        private bool  _running;
+
+        /// <summary>Запустить разлёт из текущего состояния спрайта <paramref name="src"/>.</summary>
+        public void Play(SpriteRenderer src, Design.CombatFeelConfig cfg, System.Action onComplete)
+        {
+            _onComplete = onComplete;
+            _flashIn  = cfg != null ? cfg.ShatterFlashIn  : 0.08f;
+            _duration = cfg != null ? cfg.ShatterDuration : 0.75f;
+
+            Sprite sprite = src.sprite;
+
+            // Тесные видимые границы кадра из собственного меша спрайта (в лок. ед. спрайта = пространстве Body).
+            // UV берём из его же uv — 1:1, без размазывания. Фолбэк на полный rect, если меш пуст.
+            Vector2 sizeLocal, centerLocal, uvMin, uvSize;
+            ComputeTightRect(sprite, out sizeLocal, out centerLocal, out uvMin, out uvSize);
+
+            // Размер видимой области в ИСХОДНЫХ пикселях — для снапа границ чанков на пиксель-сетку.
+            Vector2 regionPixels = Vector2.one * 16f;
+            if (sprite != null && sprite.texture != null)
+                regionPixels = new Vector2(uvSize.x * sprite.texture.width, uvSize.y * sprite.texture.height);
+
+            int blockPx = cfg != null ? cfg.ShatterBlockPixels : 6;
+            _mesh = ShatterMesh.Build(sizeLocal, new Rect(uvMin.x, uvMin.y, uvSize.x, uvSize.y), regionPixels, blockPx);
+
+            _mf = GetComponent<MeshFilter>();
+            _mr = GetComponent<MeshRenderer>();
+            _mf.sharedMesh     = _mesh;
+            _mr.sharedMaterial = SharedMaterial();
+            _mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            _mr.receiveShadows    = false;
+            _mr.sortingLayerID = src.sortingLayerID; // 2D-сортировка как у спрайта
+            _mr.sortingOrder   = src.sortingOrder;
+
+            // Меш в лок. ед. спрайта, центр в 0 → ставим GO в мировой центр видимой области и масштабируем
+            // в мировой масштаб Body (учитывая масштаб возможного родителя). Флип — знаком X (Cull Off).
+            Transform bt = src.transform;
+            transform.position = bt.TransformPoint(new Vector3(centerLocal.x, centerLocal.y, 0f));
+            transform.rotation = bt.rotation;
+            Vector3 world = bt.lossyScale;
+            Vector3 parent = transform.parent != null ? transform.parent.lossyScale : Vector3.one;
+            transform.localScale = new Vector3(
+                (src.flipX ? -world.x : world.x) / NonZero(parent.x),
+                world.y / NonZero(parent.y),
+                1f);
+
+            _mpb = new MaterialPropertyBlock();
+            _mr.GetPropertyBlock(_mpb);
+            if (sprite != null && sprite.texture != null) _mpb.SetTexture(MainTexId, sprite.texture);
+
+            Color tint = src.color; tint.a = 1f;
+            _mpb.SetColor(ColorId, tint);
+            _mpb.SetColor(FlashColorId, cfg != null ? cfg.FlashColor : Color.white);
+
+            // Разлёт/гравитация нормированы на ВЫСОТУ спрайта (лок. ед.) — одинаково ощущается на любом размере.
+            float h = Mathf.Max(0.0001f, sizeLocal.y);
+            _mpb.SetFloat(ExplodeId, (cfg != null ? cfg.ShatterExplode : 1.2f) * h);
+            _mpb.SetFloat(GravityId, (cfg != null ? cfg.ShatterGravity : 0f)  * h);
+            _mpb.SetFloat(SpinId,    cfg != null ? cfg.ShatterSpin   : 3f);
+            _mpb.SetFloat(SpreadId,  cfg != null ? cfg.ShatterSpread : 1.2f);
+            _mpb.SetFloat(FlashAmtId, 0f);
+            _mpb.SetFloat(ShatterId,  0f);
+            _mr.SetPropertyBlock(_mpb);
+
+            _elapsed = 0f;
+            _running = true;
+        }
+
+        private void Update()
+        {
+            if (!_running) return;
+
+            // Масштабируем по игровому времени → в финальном slowmo осколки летят медленно (в такт моменту).
+            _elapsed += Time.deltaTime;
+
+            float shatter = _duration > 0f ? Mathf.Clamp01((_elapsed - _flashIn) / _duration) : 1f;
+            // Осколки остаются БЕЛЫМИ весь разлёт (не возвращают свой цвет) — вспыхивают и так летят, тают альфой.
+            float flash = _elapsed >= _flashIn || _flashIn <= 0f
+                ? 1f
+                : Mathf.Clamp01(_elapsed / _flashIn);
+
+            _mr.GetPropertyBlock(_mpb);
+            _mpb.SetFloat(FlashAmtId, flash);
+            _mpb.SetFloat(ShatterId, shatter);
+            _mr.SetPropertyBlock(_mpb);
+
+            if (_elapsed >= _flashIn + _duration)
+            {
+                _running = false;
+                _onComplete?.Invoke();
+                Destroy(gameObject);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (_mesh != null) Destroy(_mesh); // per-instance меш — чистим за собой
+        }
+
+        // Тесные видимые границы кадра + соответствующий UV-прямоугольник (из меша спрайта). Фолбэк — полный rect.
+        private static void ComputeTightRect(Sprite sprite, out Vector2 size, out Vector2 center, out Vector2 uvMin, out Vector2 uvSize)
+        {
+            if (sprite != null && sprite.vertices != null && sprite.vertices.Length >= 3)
+            {
+                Vector2[] v = sprite.vertices;
+                Vector2[] uv = sprite.uv;
+                Vector2 vMin = v[0], vMax = v[0], uMin = uv[0], uMax = uv[0];
+                for (int i = 1; i < v.Length; i++)
+                {
+                    vMin = Vector2.Min(vMin, v[i]); vMax = Vector2.Max(vMax, v[i]);
+                    uMin = Vector2.Min(uMin, uv[i]); uMax = Vector2.Max(uMax, uv[i]);
+                }
+                size   = vMax - vMin;
+                center = (vMin + vMax) * 0.5f;
+                uvMin  = uMin;
+                uvSize = uMax - uMin;
+                return;
+            }
+
+            // Фолбэк: полный прямоугольник спрайта.
+            if (sprite != null)
+            {
+                size   = sprite.bounds.size;
+                center = sprite.bounds.center;
+            }
+            else { size = Vector2.one; center = Vector2.zero; }
+            uvMin  = Vector2.zero;
+            uvSize = Vector2.one;
+        }
+
+        private static float NonZero(float v) => Mathf.Approximately(v, 0f) ? 1f : v;
+
+        // Общий рантайм-материал шаттер-шейдера (один на всех; per-instance данные — через MPB).
+        private static Material SharedMaterial()
+        {
+            if (_sharedMat == null)
+            {
+                Shader sh = Shader.Find("Guildmaster/Sprite/Shatter");
+                _sharedMat = new Material(sh) { name = "MAT_Shatter_Runtime" };
+            }
+            return _sharedMat;
+        }
+    }
+}

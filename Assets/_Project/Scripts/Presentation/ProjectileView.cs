@@ -15,14 +15,27 @@ namespace Guildmaster.Presentation
     {
         [SerializeField] private SpriteRenderer _sprite;
 
-        private Projectile _projectile;
+        // Как быстро визуальный офсет «старта из дула» сходит на симовую траекторию (1/сек). Больше = резче.
+        private const float OriginConvergeRate = 12f;
 
-        /// <summary>Привязать к симовому снаряду и затинтовать под источник.</summary>
+        private Projectile _projectile;
+        private Vector3    _originOffset; // визуальный старт из ShotPoint: разница (дуло − центр сима), затухает к 0
+
+        /// <summary>Привязать к симовому снаряду и затинтовать под источник (старт из центра сима).</summary>
         public void Bind(Projectile projectile, Color tint)
+            => Bind(projectile, tint, new Vector3(projectile.Position.x, projectile.Position.y, 0f));
+
+        /// <summary>
+        /// Привязать со стартом из мировой точки <paramref name="visualOrigin"/> (дуло/ShotPoint источника):
+        /// снаряд визуально вылетает оттуда и плавно сходит на симовую траекторию — сим стреляет из центра юнита.
+        /// </summary>
+        public void Bind(Projectile projectile, Color tint, Vector3 visualOrigin)
         {
             _projectile = projectile;
             if (_sprite != null) _sprite.color = tint;
-            transform.position = new Vector3(projectile.Position.x, projectile.Position.y, 0f);
+            Vector3 simPos = new Vector3(projectile.Position.x, projectile.Position.y, 0f);
+            _originOffset = visualOrigin - simPos;
+            transform.position = simPos + _originOffset;
             FaceVelocity(projectile.Velocity);
         }
 
@@ -37,12 +50,16 @@ namespace Guildmaster.Presentation
             if (!_projectile.IsAlive)
             {
                 // Снап в точку удара (совпадает с кадром появления цифры урона) — импакт без рассинхрона.
+                // Офсет дула тут НЕ применяем: точка удара должна совпасть с симом и цифрой урона.
                 transform.position = new Vector3(_projectile.Position.x, _projectile.Position.y, 0f);
                 return false;
             }
 
+            // Офсет дула затухает к нулю — снаряд сходит на симовую траекторию задолго до импакта.
+            _originOffset = Vector3.Lerp(_originOffset, Vector3.zero, 1f - Mathf.Exp(-OriginConvergeRate * Time.deltaTime));
+
             Vector2 p = Vector2.Lerp(_projectile.PreviousPosition, _projectile.Position, alpha);
-            transform.position = new Vector3(p.x, p.y, 0f);
+            transform.position = new Vector3(p.x, p.y, 0f) + _originOffset;
             FaceVelocity(_projectile.Velocity);
             return true;
         }

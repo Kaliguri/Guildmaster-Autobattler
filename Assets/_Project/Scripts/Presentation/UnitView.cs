@@ -1,6 +1,7 @@
 using Guildmaster.Combat;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
+using LitMotion;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,32 +14,43 @@ namespace Guildmaster.Presentation
     /// базового контроллера. Состояние выбирает чистый <see cref="UnitAnimationSelector"/> по наблюдаемому
     /// состоянию сима; тайминг Attack привязан к сим-windup (маркер клипа садится на тик удара), Run
     /// «прибит к земле». <c>animator.fireEvents=false</c> — маркеры это данные, а не колбэки. Анимация
-    /// НИКОГДА не пишет в сим. Feel-хуки — <see cref="UnityEvent"/> (MMF_Player в Inspector).
+    /// НИКОГДА не пишет в сим. Базовая реакция на удар (вспышка/сплющивание/локальный hitstop) — кодом
+    /// на LitMotion (zero-alloc); <see cref="UnityEvent"/>-хуки оставлены пустым швом под точечный MMF.
     /// </summary>
     public sealed class UnitView : MonoBehaviour
     {
         private const float MoveEpsilonSq = 1e-6f;
+        private const int   YSortPrecision = 100; // ордеров на 1 мировую ед. Y (0.01 Y = 1 ордер) — Y-сортировка тел
 
         [Header("Components")]
         [SerializeField] private SpriteRenderer _sprite;
         [Tooltip("Animator на теле (той же GO, что SpriteRenderer). Пусто/без визуала = статичный спрайт.")]
         [SerializeField] private Animator _animator;
-        [Tooltip("Базовый контроллер (Visuals/UnitBase.controller): стейты Idle/Run/Attack/Death/Hit/Skill1-4.")]
-        [SerializeField] private RuntimeAnimatorController _baseController;
         [SerializeField] private HealthBarView  _healthBar;
         [Tooltip("Бар ресурса (мана/ярость). Пусто = без бара; скрывается сам для безресурсных юнитов.")]
         [SerializeField] private ManaBarView    _manaBar;
+        [Tooltip("Общий контейнер world-UI (бары + подпись) — нода 'UI'. Гасится целиком при смерти. " +
+                 "Пусто = фолбэк на поштучное скрытие баров/подписи.")]
+        [SerializeField] private GameObject     _worldUi;
 
         [Header("Animation")]
-        [SerializeField] private UnitVisual _visual;
+        // Клипы играются из контроллера Animator по именам стейтов (Idle/Run/Attack/Death/Hit/Skill1-4) —
+        // на префабе вручную указывать НЕ надо. _visual берётся из данных юнита (UnitData.Visual) авто и нужен
+        // ТОЛЬКО для маркера контакта/темпа бега (те же данные, что читает сим для windup).
+        private UnitVisual _visual;
 
         [Tooltip("Бег «прибит к земле»: сколько мировых юнитов проходит юнит на ОДИН кадр бега. " +
                  "Меньше = ноги быстрее (бодрее), больше = медленнее. Темп бега привязан к скорости — не скользит.")]
         [SerializeField] private float _runUnitsPerFrame = 0.15f;
 
-        [Header("Feel Hooks (подключить MMF_Player в Inspector)")]
+        [Header("Feel Hooks (пустой шов под точечный MMF_Player в Inspector)")]
         [SerializeField] private UnityEvent _onHitFeedback;
         [SerializeField] private UnityEvent _onDeathFeedback;
+
+        [Header("Feel — реакция на попадание (LitMotion, код)")]
+        // Материал вспышки (Guildmaster/Sprite/HitFlash с параметром _FlashAmount) стоит ПРЯМО на Body-спрайте
+        // в префабе — без рантайм-свапа. Свап базового материала ломал per-instance путь спрайта (тинт/флип
+        // не подхватывались до первого MPB). Длительности/сила/цвет вспышки — из CombatFeelConfig (ApplyFeelConfig).
 
         [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
         [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
@@ -54,10 +66,11 @@ namespace Guildmaster.Presentation
         [Tooltip("Точка попадания: куда прилетают снаряды/цифры урона/вспышка (обычно грудь).")]
         [SerializeField] private Transform _hitPoint;
 
-        [Header("Gizmo — рекомендованный рост (только редактор, ни на что не влияет)")]
-        [Tooltip("Эталонная высота юнита в мировых юнитах (1 юнит = 1 метр). Рисуется линейкой с подписью — " +
-                 "ставь размер спрайта вручную под неё.")]
+        [Header("Gizmo — эталонный габарит + коллизия (только редактор)")]
+        [Tooltip("Эталонная ВЫСОТА юнита, мировые ед. (1 = 1 метр). Зелёная рамка — подгоняй размер спрайта под неё.")]
         [SerializeField] private float _recommendedHeight = 1.7f;
+        [Tooltip("Эталонная ШИРИНА юнита, мировые ед. Горизонталь у ног + рамка.")]
+        [SerializeField] private float _recommendedWidth = 0.7f;
         [Tooltip("Превью Size для гизмо круга коллизии, когда юнит ещё не заспавнен (рантайм берёт настоящий Size).")]
         [SerializeField] private float _gizmoPreviewSize = 1f;
         [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус = Size × SimTuning.BodyRadiusPerSize). Выключи, если мешает.")]
@@ -71,6 +84,21 @@ namespace Guildmaster.Presentation
         private RuntimeUnit _unit;
         private Vector2     _renderPosition;
 
+        // --- Feel (реакция на удар, LitMotion) — только презентация, сим не трогает ---
+        private Design.CombatFeelConfig _feel;          // параметры вспышки/сплющивания (из design-конфига)
+        private Color        _baseTint = Color.white;   // цвет-тинт тела (умножается на текстуру в шейдере)
+        private float        _flashAmount;               // 0..1 — сила вспышки (параметр _FlashAmount шейдера)
+        private bool         _flashApplied;              // держим ли сейчас MPB на спрайте (чтобы вернуть в 0 один раз)
+        private Vector3      _baseSpriteScale = Vector3.one; // масштаб узла сплющивания до эффекта
+        private Transform    _squashTarget;              // узел, который сплющиваем (выше Animator, чтобы не затирался)
+        private float        _hitstopRemaining;          // unscaled-окно заморозки анимации участников удара
+        private MaterialPropertyBlock _mpb;              // per-instance _FlashAmount без клонирования материала
+        private MotionHandle _flashHandle;
+        private MotionHandle _squashHandle;
+
+        private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
+        private static readonly int FlashColorId  = Shader.PropertyToID("_FlashColor");
+
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
         // Своя фаза анимации атаки (НЕ путать с сим-AttackPhase на RuntimeUnit): охватывает ВЕСЬ цикл
         // атаки — замах до кадра контакта + хвост-возврат, растянутый на «окно» до следующего замаха.
@@ -82,6 +110,15 @@ namespace Guildmaster.Presentation
         private AttackAnimPhase _attackPhase;
         private bool  _isDead;
         private float _deathRemaining;
+
+        // Секвенс смерти: ждём конца hit-flash → death-клип → на конце разлёт на осколки (DeathShatter).
+        private enum DeathPhase { None, WaitFlash, Dying, Shattering }
+        private DeathPhase _deathPhase;
+
+        private bool _freeRun;        // бой окончен → доигрываем анимации натурально, не скрабим по замершему симу
+        private bool _freeRunSettled; // уже осели в Idle после доигрыша
+        private bool  _holdHitFrame;  // финишер: держим кадр контакта весь финальный slowmo
+        private float _holdRemaining; // unscaled-остаток удержания
 
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
         private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
@@ -95,19 +132,38 @@ namespace Guildmaster.Presentation
             _renderPosition = unit.Position;
             transform.position = (Vector3)_renderPosition;
 
-            // Изначально все смотрят вправо (как нарисованы спрайты). Дальше разворот динамический —
-            // по положению текущей цели (ApplyFacing в Update).
-            if (_sprite != null) _sprite.flipX = false;
+            // Спрайты нарисованы лицом вправо: команда 0 (слева) так и смотрит, враги (справа) — влево.
+            // Дальше разворот динамический (ApplyFacing по цели/движению), но стартовый — по стороне, иначе
+            // стоящий без цели (напр. ассасин в инвизе) смотрит «от противника».
+            if (_sprite != null)
+            {
+                _sprite.flipX = unit.Team != 0;
+
+                // Сплющиваем узел ВЫШЕ Animator (родитель спрайта), иначе кадровая анимация тела его затирает.
+                _squashTarget    = _sprite.transform.parent != null ? _sprite.transform.parent : _sprite.transform;
+                _baseSpriteScale = _squashTarget.localScale;
+
+                // Праймим property block (flash=0) с первого кадра: спрайт с кастомным SRP-batcher-шейдером
+                // включает per-instance путь именно выставленным MPB — иначе тинт/флип не подхватывались до
+                // первого удара (наблюдалось как «юнит без своего цвета/прозрачности, пока не получит урон»).
+                PrimeFlashBlock();
+            }
 
             if (_healthBar != null) _healthBar.Bind(unit);
             if (_manaBar != null)   _manaBar.Bind(unit);
+
+            InitVisual(); // визуал/анимация — из самого префаба (см. InitVisual), без рантайм-подмены
         }
 
         /// <summary>Тинт тела юнита: один общий спрайт, разный цвет на персонажа (dev-харнесс, «пока один спрайт»).</summary>
         public void SetTint(Color color)
         {
-            if (_sprite != null) _sprite.color = color;
+            _baseTint = color;
+            ApplyColor(); // итоговый цвет = база + вспышка + альфа инвиза (единый писатель _sprite.color)
         }
+
+        /// <summary>Подать design-конфиг сочности (длительности/сила/цвет вспышки и сплющивания). CombatPresenter — при спавне.</summary>
+        public void ApplyFeelConfig(Design.CombatFeelConfig feel) => _feel = feel;
 
         /// <summary>Цвет HP-бара по принадлежности к смотрящему (из <c>CombatColorPalette</c>).</summary>
         public void SetHealthColor(Color color)
@@ -122,48 +178,39 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Подменить визуал в рантайме (пер-юнит визуал из реликвии, вики «13» шаг 4): все юниты
-        /// инстанцируются из одного префаба, но реликвия задаёт свой набор клипов. Юнит без клипов
-        /// оставляет статичный спрайт префаба (Animator выключается) — поведение dev-харнесса.
+        /// Инициализировать визуал из САМОГО префаба (вызывается из <see cref="Bind"/>): Animator уже несёт
+        /// контроллер с клипами персонажа — рантайм-подмены больше нет. Из <see cref="_visual"/> (задан на
+        /// префабе) берём только маркер контакта авто-атаки и темп бега для скраба анимации по симу. Нет
+        /// клипов/контроллера → статичный спрайт (Animator выключается).
         /// </summary>
-        public void SetVisual(UnitVisual visual)
+        private void InitVisual()
         {
-            _visual = visual;
             _state = UnitAnimationState.Idle;
             _attackPhase = AttackAnimPhase.None;
 
-            bool ready = _visual != null && _visual.HasClips && _animator != null && _baseController != null;
-            _animActive = ready;
+            // Данные юнита — только для маркера контакта/темпа бега (скраб по симу). Клипы играет контроллер.
+            _visual = _unit?.Unit != null ? _unit.Unit.Visual : null;
 
-            if (!ready)
+            // Анимация активна, если у Animator есть контроллер (клипы — в его стейтах). UnitVisual не обязателен.
+            _animActive = _animator != null && _animator.runtimeAnimatorController != null;
+
+            if (!_animActive)
             {
                 if (_animator != null) _animator.enabled = false;
                 return;
             }
 
-            var overrides = new AnimatorOverrideController(_baseController);
-            AssignClip(overrides, "Idle",   _visual.Clip(UnitAnimationState.Idle));
-            AssignClip(overrides, "Run",    _visual.Clip(UnitAnimationState.Run));
-            AssignClip(overrides, "Attack", _visual.Clip(UnitAnimationState.Attack));
-            AssignClip(overrides, "Death",  _visual.Clip(UnitAnimationState.Death));
-            AssignClip(overrides, "Hit",    _visual.HitClip);
-            for (int i = 0; i < 4; i++) AssignClip(overrides, "Skill" + (i + 1), _visual.SkillClip(i));
-
-            _animator.runtimeAnimatorController = overrides;
             _animator.fireEvents = false;
             _animator.enabled = true;
 
-            _attackMarkerNormalized = ClipMarkers.MarkerNormalized(_visual.AttackClip);
-            AnimationClip run = _visual.Clip(UnitAnimationState.Run);
+            // Маркер/темп — из UnitVisual (те же данные, что и у сима). Нет данных → удар без скраба (маркер=1).
+            _attackMarkerNormalized = _visual != null && _visual.AttackClip != null
+                ? ClipMarkers.MarkerNormalized(_visual.AttackClip) : 1f;
+            AnimationClip run = _visual != null ? _visual.Clip(UnitAnimationState.Run) : null;
             _runFrameRate = run != null && run.frameRate > 0f ? run.frameRate : 10f;
 
             _animator.Play(IdleHash, 0, 0f);
             _animator.speed = 1f;
-        }
-
-        private static void AssignClip(AnimatorOverrideController overrides, string slot, AnimationClip clip)
-        {
-            if (clip != null) overrides[slot] = clip;
         }
 
         /// <summary>
@@ -176,6 +223,11 @@ namespace Guildmaster.Presentation
 
             _renderPosition = Vector2.Lerp(_unit.PreviousPosition, _unit.Position, alpha);
             transform.position = new Vector3(_renderPosition.x, _renderPosition.y, 0f);
+
+            // Y-sort: кто ниже по Y (ближе к зрителю) — рисуется поверх. Явный ордер стабильнее, чем
+            // transparency-sort по позиции: у перекрытых спрайтов с ОДИНАКОВЫМ ордером иначе дрожит порядок.
+            if (_sprite != null)
+                _sprite.sortingOrder = -Mathf.RoundToInt(_renderPosition.y * YSortPrecision);
 
             if (_healthBar != null)
                 _healthBar.UpdateBar(_unit.CurrentHP, _unit.Stats.Get(Data.Stats.StatType.MaxHP));
@@ -194,18 +246,64 @@ namespace Guildmaster.Presentation
         /// <summary>Мировая точка головы (макушка) — якорь баров/статус-текста. Фолбэк — позиция юнита.</summary>
         public Vector3 HeadPoint => _headPoint != null ? _headPoint.position : transform.position;
 
-        /// <summary>Мировая точка выстрела (откуда визуально стартует снаряд/каст). Фолбэк — позиция юнита.</summary>
-        public Vector3 ShotPoint => _shotPoint != null ? _shotPoint.position : transform.position;
+        /// <summary>Мировая точка выстрела (откуда визуально стартует снаряд/каст), зеркалится по фейсингу. Фолбэк — позиция юнита.</summary>
+        public Vector3 ShotPoint => ResolveSocketFacing(_shotPoint);
 
-        /// <summary>Мировая точка попадания (куда прилетают снаряды/цифры урона). Фолбэк — позиция юнита.</summary>
-        public Vector3 HitPoint => _hitPoint != null ? _hitPoint.position : transform.position;
+        /// <summary>Мировая точка попадания (куда прилетают снаряды/цифры урона), зеркалится по фейсингу. Фолбэк — позиция юнита.</summary>
+        public Vector3 HitPoint => ResolveSocketFacing(_hitPoint);
+
+        /// <summary>Слой сортировки тела — для размещения VFX относительно юнита.</summary>
+        public int BodySortingLayerId => _sprite != null ? _sprite.sortingLayerID : 0;
+
+        /// <summary>Текущий ордер сортировки тела (Y-sort) — VFX ставим со смещением от него.</summary>
+        public int BodySortingOrder => _sprite != null ? _sprite.sortingOrder : 0;
+
+        // Сокет с учётом разворота: спрайт зеркалим через SpriteRenderer.flipX, а он НЕ зеркалит дочерние GO
+        // (сокеты живут в мировой иерархии). Поэтому для смотрящего влево отражаем локальную X сокета вручную —
+        // иначе дуло/грудь оказываются с «нарисованной» стороны, а не с той, куда юнит фактически повёрнут.
+        private Vector3 ResolveSocketFacing(Transform socket)
+        {
+            if (socket == null) return transform.position;
+            if (_sprite == null || !_sprite.flipX) return socket.position;
+            Vector3 local = transform.InverseTransformPoint(socket.position);
+            local.x = -local.x;
+            return transform.TransformPoint(local);
+        }
 
         private void Update()
         {
-            ApplyStealthAlpha(); // dev-подсветка инвиза — до guard'а, работает и без Animator
-            ApplyFacing();       // разворот по цели — тоже до guard'а (нужен и статичным спрайтам)
+            ApplyColor(); // вспышка + альфа инвиза видны даже в hitstop/паузе (единый писатель _sprite.color)
+
+            // Локальный hitstop: удар «весит» — участники замирают на unscaled-окно, толпа вокруг не стынет.
+            // Морозим только анимацию: позиция продолжает интерполироваться (≈50 мс дрейфа незаметны, зато
+            // нет снапа при выходе). unscaled — работает и во время global slowmo (2b), и на паузе.
+            if (_hitstopRemaining > 0f)
+            {
+                _hitstopRemaining -= Time.unscaledDeltaTime;
+                if (_animActive) _animator.speed = 0f;
+                return;
+            }
+
+            // Смерть перехватывает обычную анимацию: ждём hit-flash → death-клип → разлёт (см. DriveDeath).
+            if (_deathPhase != DeathPhase.None) { DriveDeath(); return; }
+
+            ApplyFacing(); // разворот по цели — до guard'а анимации (нужен и статичным спрайтам)
 
             if (!_animActive) return;
+
+            // Финишер: держим кадр контакта весь финальный slowmo (перекрывает free-run).
+            if (_holdHitFrame)
+            {
+                DriveHoldHitFrame();
+                return;
+            }
+
+            // Бой окончен: sim не тикает, скраб замер бы — доигрываем клип естественно (см. DriveFreeRun).
+            if (_freeRun)
+            {
+                DriveFreeRun();
+                return;
+            }
 
             float dt = Time.deltaTime;
             UpdateAttackPhase(dt);
@@ -233,12 +331,6 @@ namespace Guildmaster.Presentation
             }
 
             DriveAnimation(dt);
-
-            if (_isDead && _deathRemaining > 0f)
-            {
-                _deathRemaining -= dt;
-                if (_deathRemaining <= 0f) gameObject.SetActive(false);
-            }
         }
 
         private static int HashFor(UnitAnimationState state) => state switch
@@ -349,6 +441,58 @@ namespace Guildmaster.Presentation
             _attackPhase = AttackAnimPhase.None;
         }
 
+        /// <summary>Бой окончен: перестаём скрабить по замершему симу; даём анимации доиграть натурально.</summary>
+        public void OnBattleEnded()
+        {
+            if (_animActive) _freeRun = true;
+        }
+
+        /// <summary>
+        /// Финишер: застыть на кадре контакта на <paramref name="seconds"/> (unscaled — синхронно с финальным
+        /// slowmo). Срабатывает, только если юнит СЕЙЧАС в атаке (значит удар был мили) — иначе игнор, и
+        /// юнит идёт обычным free-run (снаряд/яд «финишеры» позу удара не держат).
+        /// </summary>
+        public void HoldHitFrame(float seconds)
+        {
+            if (!_animActive || _state != UnitAnimationState.Attack) return;
+            _holdHitFrame  = true;
+            _holdRemaining = seconds;
+        }
+
+        // Застываем на кадре контакта (маркер атаки), пока идёт финальный slowmo; на unscaled-времени —
+        // держим ровно столько же, сколько slowmo. По истечении «момента» — доигрываем и оседаем в Idle.
+        private void DriveHoldHitFrame()
+        {
+            _animator.speed = 0f;
+            _animator.Play(AttackHash, 0, _attackMarkerNormalized);
+            _holdRemaining -= Time.unscaledDeltaTime;
+            if (_holdRemaining <= 0f)
+            {
+                _holdHitFrame   = false;
+                _freeRun        = true;
+                _freeRunSettled = false;
+            }
+        }
+
+        // После конца боя sim не тикает → скраб застыл бы на кадре. Возвращаем Animator к естественному
+        // проигрышу (speed = 1): текущий замах/удар/восстановление доигрывается до конца, затем Idle.
+        private void DriveFreeRun()
+        {
+            _animator.speed = 1f;
+            if (_freeRunSettled) return;
+
+            // Пока текущий attack-клип не доигран — ждём (юнит завершает удар и хвост естественно).
+            if (_state == UnitAnimationState.Attack)
+            {
+                AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(0);
+                if (info.shortNameHash == AttackHash && info.normalizedTime < 1f) return;
+            }
+
+            _state = UnitAnimationState.Idle;
+            _animator.Play(IdleHash, 0, 0f);
+            _freeRunSettled = true;
+        }
+
         // Разворот тела по горизонтали (спрайты нарисованы «лицом вправо»):
         //  • ИДЁТ АТАКА (замах/хвост) — смотрим на цель: стрелок целится во врага, даже пятясь (кайт/побег);
         //  • иначе движемся — смотрим ТУДА, КУДА бежим (подход/побег без стрельбы);
@@ -390,39 +534,181 @@ namespace Guildmaster.Presentation
             return true;
         }
 
-        // Инвиз (dev, §10.5): пока висит тег Stealth — тело полупрозрачно; иначе непрозрачно.
-        // Перекрывает альфу из SetTint (RGB сохраняется), поллится каждый кадр.
-        private void ApplyStealthAlpha()
+        // Тинт тела (умножается на текстуру в шейдере) + альфа инвиза (dev, §10.5: тег Stealth → полупрозрачность).
+        // Вспышка попадания идёт НЕ здесь, а через _FlashAmount материала (ApplyFlash) — .color осветлить не может.
+        private void ApplyColor()
         {
-            if (_sprite == null || _unit == null) return;
-            bool stealthed = (_unit.EffectTagMask & EffectTag.Stealth) != 0;
-            Color c = _sprite.color;
+            if (_sprite == null) return;
+            Color c = _baseTint;
+            bool stealthed = _unit != null && (_unit.EffectTagMask & EffectTag.Stealth) != 0;
             c.a = stealthed ? 0.4f : 1f;
             _sprite.color = c;
+            ApplyFlash();
         }
 
-        /// <summary>Вызывается при получении урона.</summary>
+        // Праймит property block один раз в Bind: выставляет _FlashAmount=0, чтобы рендерер спрайта с первого
+        // кадра шёл по per-instance пути (иначе SpriteRenderer.color/flip кастомного SRP-batcher-шейдера не
+        // подхватывались до первой записи MPB). _feel в Bind ещё может быть null — цвет вспышки тут не важен (0).
+        private void PrimeFlashBlock()
+        {
+            if (_sprite == null) return;
+            _mpb ??= new MaterialPropertyBlock();
+            _sprite.GetPropertyBlock(_mpb);
+            _mpb.SetFloat(FlashAmountId, 0f);
+            _mpb.SetColor(FlashColorId, _feel != null ? _feel.FlashColor : Color.white);
+            _sprite.SetPropertyBlock(_mpb);
+            _flashApplied = false;
+        }
+
+        // Вспышка через MaterialPropertyBlock (per-instance _FlashAmount, без клонирования материала).
+        // Пишем блок, только пока вспышка активна, + один раз чтобы вернуть в 0 (не ломаем SRP-батчинг зря).
+        private void ApplyFlash()
+        {
+            if (_sprite == null) return;
+            bool active = _flashAmount > 0.0001f;
+            if (!active && !_flashApplied) return;
+
+            _mpb ??= new MaterialPropertyBlock();
+            _sprite.GetPropertyBlock(_mpb);
+            _mpb.SetFloat(FlashAmountId, _flashAmount);
+            _mpb.SetColor(FlashColorId, _feel != null ? _feel.FlashColor : Color.white);
+            _sprite.SetPropertyBlock(_mpb);
+            _flashApplied = active;
+        }
+
+        /// <summary>Вызывается при получении урона: локальная реакция цели (вспышка + сплющивание).</summary>
         public void OnDamageReceived(float damage)
         {
             _onHitFeedback?.Invoke();
+            PlayHitFlash();
+            PlayHitSquash();
         }
 
-        /// <summary>Вызывается при гибели юнита.</summary>
+        /// <summary>Заморозить анимацию этого вида на unscaled-окно (локальный hitstop участника удара).</summary>
+        public void OnHitstop(float unscaledSeconds)
+        {
+            if (unscaledSeconds <= 0f) return;
+            _hitstopRemaining = Mathf.Max(_hitstopRemaining, unscaledSeconds);
+        }
+
+        // Вспышка белым: подмешиваем _flashAmount 1→0, ApplyColor рисует. Bind со state (this) — zero-alloc.
+        private void PlayHitFlash()
+        {
+            if (_sprite == null) return;
+            if (_flashHandle.IsActive()) _flashHandle.Cancel();
+            _flashAmount = 1f;
+            float dur = _feel != null ? _feel.FlashDuration : 0.25f;
+            // Линейный спад: вспышка держится и ровно гаснет (OutQuad сваливал её в первые 1-2 кадра → «миг»).
+            _flashHandle = LMotion.Create(1f, 0f, dur)
+                .WithEase(Ease.Linear)
+                .Bind(this, static (v, self) => self._flashAmount = v)
+                .AddTo(gameObject);
+        }
+
+        // Сплющивание: на пике (v=1) X растягивается, Y сжимается на _hitSquashAmount; линейно возвращается
+        // к базе (v→0). Linear, а не Out* — тот сваливал весь эффект в первые 1-2 кадра («слабо/мгновенно»).
+        // Крутим _squashTarget (узел выше Animator), иначе кадровая анимация тела затирает scale.
+        private void PlayHitSquash()
+        {
+            if (_squashTarget == null) return;
+            if (_squashHandle.IsActive()) _squashHandle.Cancel();
+            float dur = _feel != null ? _feel.SquashDuration : 0.25f;
+            _squashHandle = LMotion.Create(1f, 0f, dur)
+                .WithEase(Ease.Linear)
+                .Bind(this, static (v, self) =>
+                {
+                    float amount = self._feel != null ? self._feel.SquashAmount : 0.4f;
+                    float a = amount * v;
+                    self._squashTarget.localScale = new Vector3(
+                        self._baseSpriteScale.x * (1f + a),
+                        self._baseSpriteScale.y * (1f - a),
+                        self._baseSpriteScale.z);
+                })
+                .AddTo(gameObject);
+        }
+
+        /// <summary>
+        /// Вызывается при гибели юнита. Секвенс: сначала даём догаснуть hit-flash (не рвём моргание удара),
+        /// затем проигрываем death-клип, на конце которого — вспышка в белый и разлёт спрайта на осколки
+        /// (<see cref="DeathShatter"/>). Сам разлёт/тайминги ведёт <see cref="DriveDeath"/>.
+        /// </summary>
         public void OnDeath()
         {
             _onDeathFeedback?.Invoke();
 
-            if (_animActive)
+            // Прячем весь world-UI одним контейнером (бары + подпись) — над трупом он не нужен.
+            if (_worldUi != null)
             {
-                _isDead = true;
-                AnimationClip death = _visual.Clip(UnitAnimationState.Death);
-                _deathRemaining = death != null ? death.length : 0f;
-                if (_deathRemaining <= 0f) gameObject.SetActive(false); // нет death-клипа → прячемся сразу
+                _worldUi.SetActive(false);
             }
             else
             {
-                gameObject.SetActive(false); // статичный фолбэк — прежнее поведение
+                // Фолбэк, если контейнер 'UI' не привязан: гасим бары и подпись поштучно.
+                if (_healthBar != null) _healthBar.gameObject.SetActive(false);
+                if (_manaBar   != null) _manaBar.gameObject.SetActive(false);
+                if (_nameLabel != null) _nameLabel.gameObject.SetActive(false);
             }
+
+            _isDead     = true;
+            _deathPhase = DeathPhase.WaitFlash; // дальше — DriveDeath (ждём hit-flash → death → разлёт)
+        }
+
+        // Секвенс смерти. WaitFlash: держим кадр, пока не догорит моргание удара. Dying: проигрываем death-клип
+        // натурально. По его концу (или сразу, если нет анимации) — StartShatter. Shattering: ждём, DeathShatter
+        // сам доиграет и по завершении спрячет юнит.
+        private void DriveDeath()
+        {
+            switch (_deathPhase)
+            {
+                case DeathPhase.WaitFlash:
+                    if (_animActive) _animator.speed = 0f; // держим кадр, пока гаснет вспышка удара
+                    // Ждём конца hit-flash: и активного твина, и остаточной величины (моргание должно догореть).
+                    if (_flashHandle.IsActive() || _flashAmount > 0.02f) return;
+
+                    if (_animActive)
+                    {
+                        _state = UnitAnimationState.Death;
+                        _animator.Play(DeathHash, 0, 0f);
+                        _animator.speed = 1f;
+                        AnimationClip death = _visual != null ? _visual.Clip(UnitAnimationState.Death) : null;
+                        _deathRemaining = death != null && death.length > 0f ? death.length : 0.6f;
+                        _deathPhase = DeathPhase.Dying;
+                    }
+                    else
+                    {
+                        StartShatter();
+                    }
+                    break;
+
+                case DeathPhase.Dying:
+                    _animator.speed = 1f;
+                    _deathRemaining -= Time.deltaTime;
+                    if (_deathRemaining <= 0f) StartShatter();
+                    break;
+
+                case DeathPhase.Shattering:
+                    // Разлёт ведёт DeathShatter; по завершении он вызовет callback → gameObject.SetActive(false).
+                    break;
+            }
+        }
+
+        // Конец death-клипа: прячем исходный спрайт и запускаем разлёт на осколки из его текущего кадра.
+        private void StartShatter()
+        {
+            _deathPhase = DeathPhase.Shattering;
+
+            if (_sprite == null || _sprite.sprite == null)
+            {
+                gameObject.SetActive(false); // нечего колоть — просто убираем
+                return;
+            }
+
+            var go = new GameObject("DeathShatter");
+            go.transform.SetParent(transform, worldPositionStays: false);
+            var shatter = go.AddComponent<DeathShatter>();
+            shatter.Play(_sprite, _feel, () => gameObject.SetActive(false));
+
+            _sprite.enabled = false; // дальше показывают осколки, исходный спрайт прячем
         }
 
 #if UNITY_EDITOR
@@ -441,23 +727,22 @@ namespace Guildmaster.Presentation
             Vector3 feet   = _feetPoint != null ? _feetPoint.position : root;     // низ фигуры (ноги)
             Vector3 rightN = transform.right;
 
-            // --- Линейка рекомендованного роста: от НОГ вверх на _recommendedHeight ---
-            float rec = Mathf.Max(0.01f, _recommendedHeight);
+            // --- Эталонный габарит: рамка рост × ширина от НОГ (подгоняй спрайт под неё) ---
             var green = new Color(0.35f, 0.95f, 0.55f, 0.95f);
-            Vector3 rBot = feet - rightN * 0.7f;
-            Vector3 rTop = rBot + Vector3.up * rec;
+            float rec = Mathf.Max(0.01f, _recommendedHeight);
+            float wid = Mathf.Max(0.01f, _recommendedWidth);
+            Vector3 wL = feet - rightN * (wid * 0.5f);
+            Vector3 wR = feet + rightN * (wid * 0.5f);
             Gizmos.color = green;
-            Gizmos.DrawLine(rBot, rTop);
-            Gizmos.DrawLine(rBot - rightN * 0.1f, rBot + rightN * 0.1f); // засечка низа (= ноги)
-            Gizmos.DrawLine(rTop - rightN * 0.1f, rTop + rightN * 0.1f); // засечка верха (= рек. рост)
-            // Тонкие горизонтальные ориентиры ног и макушки — сквозь фигуру, чтобы видеть где 0 и где рост.
-            Gizmos.color = new Color(green.r, green.g, green.b, 0.22f);
-            Gizmos.DrawLine(feet - rightN * 0.7f, feet + rightN * 0.7f);
-            Gizmos.DrawLine((feet + Vector3.up * rec) - rightN * 0.7f, (feet + Vector3.up * rec) + rightN * 0.7f);
+            Gizmos.DrawLine(wL, wR);                                             // ширина у ног
+            Gizmos.color = new Color(green.r, green.g, green.b, 0.5f);
+            Gizmos.DrawLine(wL, wL + Vector3.up * rec);                          // левая вертикаль (рост)
+            Gizmos.DrawLine(wR, wR + Vector3.up * rec);                          // правая вертикаль
+            Gizmos.DrawLine(wL + Vector3.up * rec, wR + Vector3.up * rec);       // верх рамки
             UnityEditor.Handles.color = green;
-            UnityEditor.Handles.Label(rTop + Vector3.up * 0.06f, "рек. рост " + rec.ToString("0.##") + " м");
+            UnityEditor.Handles.Label(wL + Vector3.up * (rec + 0.06f), $"рост {rec:0.##} × ширина {wid:0.##} м");
 
-            // --- Круг коллизии сима (радиус = Size × SimTuning.Default.BodyRadiusPerSize) в НОГАХ, как линейка. Тумблер. ---
+            // --- Круг коллизии сима (радиус = Size × SimTuning.Default.BodyRadiusPerSize) в НОГАХ. Тумблер. ---
             // В рантайме сим считает коллизию в unit.Position; презентация ставит юнита так, чтобы Feet Point
             // попал в неё (офсет спавна — фаза коллизии), поэтому центр здесь = feet.
             if (_showCollisionGizmo)

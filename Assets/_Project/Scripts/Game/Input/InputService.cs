@@ -23,6 +23,7 @@ namespace Guildmaster.Game.Input
         private readonly InputAction _zoom;
         private readonly InputAction _cycleView;
         private readonly InputAction _pauseToggle;
+        private readonly InputAction _gameSpeedCycle;
 
         private InputContext _context = InputContext.None;
 
@@ -33,6 +34,7 @@ namespace Guildmaster.Game.Input
 
         public event Action CycleViewRequested;
         public event Action PauseToggleRequested;
+        public event Action GameSpeedCycleRequested;
 
         public InputService()
         {
@@ -54,15 +56,17 @@ namespace Guildmaster.Game.Input
             _zoom = _cameraMap.AddAction("Zoom", InputActionType.Value, "<Mouse>/scroll/y");
             _cycleView = _cameraMap.AddAction("CycleView", InputActionType.Button, "<Keyboard>/tab");
 
-            // --- Карта «Combat»: пауза (Space). Рестарт боя/сцены (R/F5) — dev-инструменты (DevTools). ---
+            // --- Карта «Combat»: пауза (Space), смена скорости (.). Рестарт боя/сцены (R/F5) — dev (DevTools). ---
             _combatMap = new InputActionMap("Combat");
             _pauseToggle = _combatMap.AddAction("PauseToggle", InputActionType.Button, "<Keyboard>/space");
+            _gameSpeedCycle = _combatMap.AddAction("GameSpeedCycle", InputActionType.Button, "<Keyboard>/period");
 
             // --- Карта «UI»: пока пустой seam ---
             _uiMap = new InputActionMap("UI");
 
-            _cycleView.performed   += OnCycleView;
-            _pauseToggle.performed += OnPauseToggle;
+            _cycleView.performed     += OnCycleView;
+            _pauseToggle.performed   += OnPauseToggle;
+            _gameSpeedCycle.performed += OnGameSpeedCycle;
         }
 
         public void SetContext(InputContext context)
@@ -97,13 +101,15 @@ namespace Guildmaster.Game.Input
         public Vector2 CameraPan      => GameplaySuppressed ? Vector2.zero : _pan.ReadValue<Vector2>();
         public float   CameraZoomDelta => GameplaySuppressed ? 0f : _zoom.ReadValue<float>();
 
-        private void OnCycleView(InputAction.CallbackContext _)   { if (!GameplaySuppressed) CycleViewRequested?.Invoke(); }
-        private void OnPauseToggle(InputAction.CallbackContext _) { if (!GameplaySuppressed) PauseToggleRequested?.Invoke(); }
+        private void OnCycleView(InputAction.CallbackContext _)      { if (!GameplaySuppressed) CycleViewRequested?.Invoke(); }
+        private void OnPauseToggle(InputAction.CallbackContext _)    { if (!GameplaySuppressed) PauseToggleRequested?.Invoke(); }
+        private void OnGameSpeedCycle(InputAction.CallbackContext _) { if (!GameplaySuppressed) GameSpeedCycleRequested?.Invoke(); }
 
         public void Dispose()
         {
-            _cycleView.performed   -= OnCycleView;
-            _pauseToggle.performed -= OnPauseToggle;
+            _cycleView.performed     -= OnCycleView;
+            _pauseToggle.performed   -= OnPauseToggle;
+            _gameSpeedCycle.performed -= OnGameSpeedCycle;
 
             _cameraMap.Dispose();
             _combatMap.Dispose();

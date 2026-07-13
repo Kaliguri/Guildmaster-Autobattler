@@ -17204,6 +17204,8 @@ MonoBehaviour:
   _statsConfig: {fileID: 11400000, guid: ad16ddf55214b4f4f9fc8305dadd705e, type: 2}
   _simTuningConfig: {fileID: 11400000, guid: 84596659d7f25a649833a4fe7640a14f, type: 2}
   _spatialHashCellSize: 3
+  _fixedSeed: 0
+  _feelConfig: {fileID: 11400000, guid: b4321495354e86142b6e7f18dfd5b94d, type: 2}
 --- !u!4 &1496836686
 Transform:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Input;
 using Unity.Cinemachine;
@@ -23,7 +24,7 @@ namespace Guildmaster.Presentation
     /// в Overview/Dev; кламп видимой области границами арены — из данных (<see cref="ArenaLayoutData"/>),
     /// без коллайдера. Dev-камера клампу не подчиняется и в цикл попадает только при выданном доступе.
     /// </summary>
-    public sealed class CameraModeController : MonoBehaviour
+    public sealed class CameraModeController : MonoBehaviour, IScreenShake
     {
         [Header("Виртуальные камеры (Cinemachine)")]
         [SerializeField] private CinemachineCamera _actionCam;
@@ -63,9 +64,11 @@ namespace Guildmaster.Presentation
         private IInputService     _input;
         private ArenaLayoutData   _layout;
         private CombatFocusTarget _focus;
+        private Design.CombatFeelConfig _feel; // конфиг тряски → раздаётся ScreenShake-ам
 
         private CameraMode _mode = CameraMode.Action;
         private bool _devAccess;
+        private readonly List<ScreenShake> _shakers = new List<ScreenShake>(3); // тряска на каждой vcam
         // Удерживаемая цель зума экшн-камеры (обновляется через дедзону, см. DriveActionZoom). ≤0 = ещё не задана.
         private float _actionZoomTarget = -1f;
 
@@ -76,11 +79,12 @@ namespace Guildmaster.Presentation
         public CameraMode Mode => _mode;
 
         [Inject]
-        public void Construct(IInputService input, ArenaLayoutData layout, CombatFocusTarget focus)
+        public void Construct(IInputService input, ArenaLayoutData layout, CombatFocusTarget focus, Design.CombatFeelConfig feel)
         {
             _input  = input;
             _layout = layout;
             _focus  = focus;
+            _feel   = feel;
         }
 
         // Подписку и стартовую настройку делаем в Start, а НЕ в OnEnable: компонент инъектится
@@ -98,6 +102,26 @@ namespace Guildmaster.Presentation
             ApplyCameraDepth();
             SnapOverviewToArena();
             ApplyMode();
+
+            // Тряска — extension на каждой vcam (ставим кодом, префаб камеры не трогаем).
+            CollectShaker(_actionCam);
+            CollectShaker(_overviewCam);
+            CollectShaker(_devCam);
+        }
+
+        private void CollectShaker(CinemachineCamera cam)
+        {
+            if (cam == null) return;
+            var shaker = cam.GetComponent<ScreenShake>();
+            if (shaker == null) shaker = cam.gameObject.AddComponent<ScreenShake>();
+            shaker.ApplyConfig(_feel);
+            _shakers.Add(shaker);
+        }
+
+        /// <summary>Тряхнуть камеру (IScreenShake): рассылаем на все vcam — активная тряхнётся, прочие вхолостую.</summary>
+        public void Shake(float intensity)
+        {
+            for (int i = 0; i < _shakers.Count; i++) _shakers[i].Shake(intensity);
         }
 
         private void OnDestroy()
