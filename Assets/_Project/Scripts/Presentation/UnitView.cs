@@ -20,6 +20,7 @@ namespace Guildmaster.Presentation
     public sealed class UnitView : MonoBehaviour
     {
         private const float MoveEpsilonSq = 1e-6f;
+        private const int   YSortPrecision = 100; // ордеров на 1 мировую ед. Y (0.01 Y = 1 ордер) — Y-сортировка тел
 
         [Header("Components")]
         [SerializeField] private SpriteRenderer _sprite;
@@ -222,6 +223,11 @@ namespace Guildmaster.Presentation
 
             _renderPosition = Vector2.Lerp(_unit.PreviousPosition, _unit.Position, alpha);
             transform.position = new Vector3(_renderPosition.x, _renderPosition.y, 0f);
+
+            // Y-sort: кто ниже по Y (ближе к зрителю) — рисуется поверх. Явный ордер стабильнее, чем
+            // transparency-sort по позиции: у перекрытых спрайтов с ОДИНАКОВЫМ ордером иначе дрожит порядок.
+            if (_sprite != null)
+                _sprite.sortingOrder = -Mathf.RoundToInt(_renderPosition.y * YSortPrecision);
 
             if (_healthBar != null)
                 _healthBar.UpdateBar(_unit.CurrentHP, _unit.Stats.Get(Data.Stats.StatType.MaxHP));
