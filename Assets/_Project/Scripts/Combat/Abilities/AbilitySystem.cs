@@ -18,6 +18,9 @@ namespace Guildmaster.Combat
         // Переиспользуемый буфер для радиус-запросов (условие каста / AOE-цели) — без аллокаций.
         private readonly List<RuntimeUnit> _targets = new List<RuntimeUnit>();
 
+        /// <summary>Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).</summary>
+        public event System.Action<RuntimeUnit> OnAbilityCast;
+
         public void Tick(IReadOnlyList<RuntimeUnit> units, ICombatContext ctx, float dt)
         {
             for (int u = 0; u < units.Count; u++)
@@ -93,6 +96,7 @@ namespace Guildmaster.Combat
             else
                 ApplyToTarget(caster, target, data, ctx);
 
+            OnAbilityCast?.Invoke(caster); // презентация-сигнал «каст состоялся»
             return true;
         }
 
