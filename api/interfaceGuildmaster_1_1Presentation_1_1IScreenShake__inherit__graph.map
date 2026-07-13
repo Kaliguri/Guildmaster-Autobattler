@@ -1,7 +1,7 @@
 <map id="Guildmaster.Presentation.IScreenShake" name="Guildmaster.Presentation.IScreenShake">
-<area shape="rect" id="Node000001" title="Тряска боевой камеры по запросу режиссёра (CombatFeelDirector)." alt="" coords="108,5,291,85"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1CameraModeController.html" title="Управляет режимами камеры и потребляет IInputService (вики «16» §5)." alt="" coords="5,133,188,273"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,98,145,134,140,131,164,95"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1NullScreenShake.html" title="Заглушка тряски: подставляется, когда камеры&#45;рига в сцене нет (бой не должен падать из&#45;за визуала)." alt="" coords="212,163,395,243"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="235,96,280,162,275,165,231,98"/>
+<area shape="rect" id="Node000001" title="Тряска боевой камеры по запросу режиссёра (CombatFeelDirector)." alt="" coords="108,5,291,105"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1CameraModeController.html" title="Управляет режимами камеры и потребляет IInputService (вики «16» §5)." alt="" coords="5,153,188,313"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,119,145,155,141,152,162,116"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1NullScreenShake.html" title="Заглушка тряски: подставляется, когда камеры&#45;рига в сцене нет (бой не должен падать из&#45;за визуала)." alt="" coords="212,183,395,283"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="237,116,276,181,272,184,233,118"/>
 </map>

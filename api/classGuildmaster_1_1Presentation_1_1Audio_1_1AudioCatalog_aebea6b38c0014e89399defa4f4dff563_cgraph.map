@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.Audio.AudioCatalog.TryGetEvent" name="Guildmaster.Presentation.Audio.AudioCatalog.TryGetEvent">
+<area shape="rect" id="Node000001" title="Резолвнутый ключ (AudioResolver.Resolve) → FMOD&#45;событие: точная запись ({contentId}." alt="" coords="5,5,239,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Audio_1_1AudioResolver.html#a728ea9ceecfab0c00d8d69eb60c73511" title="Строковый вид действия для ключа (attack/hit/death/cast/ui)." alt="" coords="287,5,512,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="239,23,273,23,273,28,239,28"/>
+</map>

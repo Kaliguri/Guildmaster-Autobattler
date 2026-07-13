@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Fl
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.FloatingText:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1FloatingText__inherit__graph.svg" width="194" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1FloatingText__inherit__graph.svg" width="194" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.FloatingText:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1FloatingText__coll__graph.svg" width="194" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1FloatingText__coll__graph.svg" width="194" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -123,6 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a76c3ec9d355461fb3e26d4b144f9f323" id="r_a76c3ec9d355461fb3e26d4b144f9f323"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1FloatingText.html#a76c3ec9d355461fb3e26d4b144f9f323">Play</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">string</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">text</a>, Color <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">color</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">sizeScale</a>, System.Action&lt; <a class="el" href="classGuildmaster_1_1Presentation_1_1FloatingText.html">FloatingText</a> &gt; <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">onComplete</a>)</td></tr>
 <tr class="memdesc:a76c3ec9d355461fb3e26d4b144f9f323"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пул-версия: по завершении зовёт <em>onComplete</em>  (возврат в пул) вместо Destroy.  <br /></td></tr>
 <tr class="separator:a76c3ec9d355461fb3e26d4b144f9f323"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d5ed699eb6a700fe856ac4d8b9f2002" id="r_a9d5ed699eb6a700fe856ac4d8b9f2002"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1FloatingText.html#a9d5ed699eb6a700fe856ac4d8b9f2002">Cancel</a> ()</td></tr>
+<tr class="memdesc:a9d5ed699eb6a700fe856ac4d8b9f2002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Прервать полёт цифры при перезапуске боя: вернуть в пул (деактивирует) / уничтожить — без досчёта.  <br /></td></tr>
+<tr class="separator:a9d5ed699eb6a700fe856ac4d8b9f2002"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -134,6 +137,33 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Своя всплывающая боевая цифра (урон/хил) — один общий префаб с TMP-текстом. </p>
 <p>Всплывает вверх, во второй половине жизни гаснет, затем сам себя уничтожает. Размер/шрифт настраиваются на TMP в префабе; <b>цвет задаёт вызывающий</b> (CombatPresenter знает семантику: урон/хил), тайминг всплытия/затухания — поля ниже. Чисто презентация: сим не трогает. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9d5ed699eb6a700fe856ac4d8b9f2002" name="a9d5ed699eb6a700fe856ac4d8b9f2002"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d5ed699eb6a700fe856ac4d8b9f2002">&#9670;&#160;</a></span>Cancel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.FloatingText.Cancel </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Прервать полёт цифры при перезапуске боя: вернуть в пул (деактивирует) / уничтожить — без досчёта. </p>
+
+</div>
+</div>
 <a id="a600a846b806df410c85b2a5dbf0ecfe5" name="a600a846b806df410c85b2a5dbf0ecfe5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a600a846b806df410c85b2a5dbf0ecfe5">&#9670;&#160;</a></span>Play() <span class="overload">[1/3]</span></h2>
 

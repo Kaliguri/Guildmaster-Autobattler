@@ -104,16 +104,18 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Services_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Services.TimeScaleService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService__inherit__graph.svg" width="210" height="384"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService__inherit__graph.svg" width="210" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Services.TimeScaleService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService__coll__graph.svg" width="210" height="384"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService__coll__graph.svg" width="210" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a7cafbc91bb1d46f84b8be245a290dae0" id="r_a7cafbc91bb1d46f84b8be245a290dae0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a7cafbc91bb1d46f84b8be245a290dae0">TimeScaleService</a> (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">IAudioService</a> audio)</td></tr>
+<tr class="separator:a7cafbc91bb1d46f84b8be245a290dae0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10f4e0eea008862af8196d86b2a2b785" id="r_a10f4e0eea008862af8196d86b2a2b785"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a10f4e0eea008862af8196d86b2a2b785">SetGameSpeed</a> (float speed)</td></tr>
 <tr class="memdesc:a10f4e0eea008862af8196d86b2a2b785"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать игровую скорость. Пол 0.01 — чтобы не поймать нечаянный стоп мимо паузы.  <br /></td></tr>
 <tr class="separator:a10f4e0eea008862af8196d86b2a2b785"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,6 +134,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a397a1f1c1f4c5c2f9d3e2a9ff758d31c" id="r_a397a1f1c1f4c5c2f9d3e2a9ff758d31c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a397a1f1c1f4c5c2f9d3e2a9ff758d31c">SetPaused</a> (bool paused)</td></tr>
 <tr class="memdesc:a397a1f1c1f4c5c2f9d3e2a9ff758d31c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Поставить/снять жёсткую паузу (перекрывает game speed и cinematic).  <br /></td></tr>
 <tr class="separator:a397a1f1c1f4c5c2f9d3e2a9ff758d31c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5887e371d1cd08e69e19ea4ec53d923a" id="r_a5887e371d1cd08e69e19ea4ec53d923a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a5887e371d1cd08e69e19ea4ec53d923a">Reset</a> ()</td></tr>
+<tr class="memdesc:a5887e371d1cd08e69e19ea4ec53d923a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сбросить cinematic-состояние при перезапуске боя (dev-R): снять slowmo/пульс/секвенцию и вернуть множитель к 1.  <br /></td></tr>
+<tr class="separator:a5887e371d1cd08e69e19ea4ec53d923a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18a22e5fba41bbe8d7b171adea408105" id="r_a18a22e5fba41bbe8d7b171adea408105"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a18a22e5fba41bbe8d7b171adea408105">Dispose</a> ()</td></tr>
 <tr class="memdesc:a18a22e5fba41bbe8d7b171adea408105"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вернуть глобальный timeScale к 1 при выгрузке боя — иначе мир останется замороженным.  <br /></td></tr>
 <tr class="separator:a18a22e5fba41bbe8d7b171adea408105"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,7 +167,26 @@ Properties</h2></td></tr>
 <b>Paused</b> — жёсткий стоп, перекрывает всё (timeScale = 0). </li>
 </ul>
 <p>Итог: <code>paused ? 0 : GameSpeed * Cinematic</code>. Симуляция следует автоматически — CombatLoopService копит Time.deltaTime (уже масштабированный), как и анимации/партиклы на scaled-времени. Камера-пан на <code>unscaledDeltaTime</code> остаётся отзывчивой на паузе (вики «16»). Детерминизм цел: тики те же, меняется лишь сколько реального времени приходится на тик. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7cafbc91bb1d46f84b8be245a290dae0" name="a7cafbc91bb1d46f84b8be245a290dae0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7cafbc91bb1d46f84b8be245a290dae0">&#9670;&#160;</a></span>TimeScaleService()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Guildmaster.Game.Services.TimeScaleService.TimeScaleService </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html">IAudioService</a>&#160;</td>
+          <td class="paramname"><em>audio</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a031582c0e575e27827ec9b4736937455" name="a031582c0e575e27827ec9b4736937455"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a031582c0e575e27827ec9b4736937455">&#9670;&#160;</a></span>CinematicPulse()</h2>
 
@@ -219,6 +243,9 @@ Properties</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Game.Services.TimeScaleService.Dispose </td>
@@ -227,9 +254,15 @@ Properties</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Вернуть глобальный timeScale к 1 при выгрузке боя — иначе мир останется замороженным. </p>
+<p>Заодно сбрасываем аудио-параметр, чтобы следующий бой не начался со «смазанным» питчем. </p>
 
 </div>
 </div>
@@ -259,6 +292,34 @@ Properties</h2></td></tr>
 
 <p>Запустить многоступенчатую cinematic-секвенцию (напр. </p>
 <p>финишер: пауза → slowmo death → slowmo shatter → возврат). Проигрывается по CinematicSegment на unscaled-времени. Перебивает пульс/секвенцию. </p>
+
+</div>
+</div>
+<a id="a5887e371d1cd08e69e19ea4ec53d923a" name="a5887e371d1cd08e69e19ea4ec53d923a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5887e371d1cd08e69e19ea4ec53d923a">&#9670;&#160;</a></span>Reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Game.Services.TimeScaleService.Reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сбросить cinematic-состояние при перезапуске боя (dev-R): снять slowmo/пульс/секвенцию и вернуть множитель к 1. </p>
+<p>Игровую скорость и паузу игрока НЕ трогаем (это его выбор, переживает рестарт). Без этого застрявший finisher-slowmo перетирал бы Time.timeScale и новый бой шёл в замедлении. </p>
 
 </div>
 </div>

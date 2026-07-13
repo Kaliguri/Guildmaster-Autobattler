@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Services.FmodAudioService" name="Guildmaster.Game.Services.FmodAudioService">
+<area shape="rect" id="Node000001" title="FMOD&#45;реализация IAudioService (вики impl «09» §П3)." alt="" coords="5,219,204,419"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html" title="Фасад звуковой подсистемы." alt="" coords="20,5,189,171"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,184,107,218,102,218,102,184"/>
+</map>

@@ -93,6 +93,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1AbilityS
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#events">Events</a> &#124;
 <a href="classGuildmaster_1_1Combat_1_1AbilitySystem-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Combat.AbilitySystem Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -113,6 +114,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0cedfa4ba0cd96a1b321dbbde5983bc8" id="r_a0cedfa4ba0cd96a1b321dbbde5983bc8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html#a0cedfa4ba0cd96a1b321dbbde5983bc8">TryCast</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> caster, int abilityIndex, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt; units, <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">ICombatContext</a> ctx)</td></tr>
 <tr class="memdesc:a0cedfa4ba0cd96a1b321dbbde5983bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Попытаться скастовать способность <em>abilityIndex</em> .  <br /></td></tr>
 <tr class="separator:a0cedfa4ba0cd96a1b321dbbde5983bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
+Events</h2></td></tr>
+<tr class="memitem:a31ce06e9c54aaaa0ca2902b6c6fc9fba" id="r_a31ce06e9c54aaaa0ca2902b6c6fc9fba"><td class="memItemLeft" align="right" valign="top">System.Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AbilitySystem.html#a31ce06e9c54aaaa0ca2902b6c6fc9fba">OnAbilityCast</a></td></tr>
+<tr class="memdesc:a31ce06e9c54aaaa0ca2902b6c6fc9fba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).  <br /></td></tr>
+<tr class="separator:a31ce06e9c54aaaa0ca2902b6c6fc9fba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Тик способностей: убывание кулдаунов и детерминированный плейсхолдер-каст готовых активок (полный выбор «когда/что кастовать» — AI Фазы 3, вики «12» §1, §9). </p>
@@ -223,6 +230,23 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1AbilitySystem_a0cedfa4ba0cd96a1b321dbbde5983bc8_icgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
+
+</div>
+</div>
+<h2 class="groupheader">Event Documentation</h2>
+<a id="a31ce06e9c54aaaa0ca2902b6c6fc9fba" name="a31ce06e9c54aaaa0ca2902b6c6fc9fba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31ce06e9c54aaaa0ca2902b6c6fc9fba">&#9670;&#160;</a></span>OnAbilityCast</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">System.Action&lt;<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a>&gt; Guildmaster.Combat.AbilitySystem.OnAbilityCast</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает). </p>
 
 </div>
 </div>

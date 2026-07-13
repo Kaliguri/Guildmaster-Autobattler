@@ -103,12 +103,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Core_1_1Audio_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Audio.IAudioService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService__inherit__graph.svg" width="224" height="299"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService__inherit__graph.svg" width="432" height="439"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Audio.IAudioService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService__coll__graph.svg" width="224" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService__coll__graph.svg" width="224" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -119,9 +119,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1e645250a191f06f3a6b45a10b90e9f7" id="r_a1e645250a191f06f3a6b45a10b90e9f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html#a1e645250a191f06f3a6b45a10b90e9f7">Stop</a> (string soundKey)</td></tr>
 <tr class="memdesc:a1e645250a191f06f3a6b45a10b90e9f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Остановить звук по ключу.  <br /></td></tr>
 <tr class="separator:a1e645250a191f06f3a6b45a10b90e9f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2903bd6a8b31629337e8eadcaaf76276" id="r_a2903bd6a8b31629337e8eadcaaf76276"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html#a2903bd6a8b31629337e8eadcaaf76276">SetMasterVolume</a> (float volume)</td></tr>
+<tr class="memdesc:a2903bd6a8b31629337e8eadcaaf76276"><td class="mdescLeft">&#160;</td><td class="mdescRight">Установить громкость мастер-шины [0, 1] (общая громкость, bus:/).  <br /></td></tr>
+<tr class="separator:a2903bd6a8b31629337e8eadcaaf76276"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ea7c03535aa9e04486c1ede5eb37e05" id="r_a7ea7c03535aa9e04486c1ede5eb37e05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html#a7ea7c03535aa9e04486c1ede5eb37e05">SetMusicVolume</a> (float volume)</td></tr>
-<tr class="memdesc:a7ea7c03535aa9e04486c1ede5eb37e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Установить громкость музыки [0, 1].  <br /></td></tr>
+<tr class="memdesc:a7ea7c03535aa9e04486c1ede5eb37e05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Установить громкость музыки [0, 1] (bus:/Music).  <br /></td></tr>
 <tr class="separator:a7ea7c03535aa9e04486c1ede5eb37e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf329100aba7915c412b29be1158c88b" id="r_adf329100aba7915c412b29be1158c88b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html#adf329100aba7915c412b29be1158c88b">SetSfxVolume</a> (float volume)</td></tr>
+<tr class="memdesc:adf329100aba7915c412b29be1158c88b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Установить громкость SFX-шины [0, 1] (bus:/SFX).  <br /></td></tr>
+<tr class="separator:adf329100aba7915c412b29be1158c88b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf0bc32fd8c34ea223a4bc7ee2f7a732" id="r_acf0bc32fd8c34ea223a4bc7ee2f7a732"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html#acf0bc32fd8c34ea223a4bc7ee2f7a732">SetGlobalParameter</a> (string name, float value)</td></tr>
+<tr class="memdesc:acf0bc32fd8c34ea223a4bc7ee2f7a732"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать глобальный параметр микса (имена — AudioParameters).  <br /></td></tr>
+<tr class="separator:acf0bc32fd8c34ea223a4bc7ee2f7a732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Фасад звуковой подсистемы. </p>
@@ -145,7 +154,62 @@ Public Member Functions</h2></td></tr>
 
 <p>Воспроизвести звук по ключу. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#a197c8aa1dba9410b38e928115782bca8">Guildmaster.Game.Services.UnityAudioService</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html#ac004ffd625a38674f5a29f0cb675a46f">Guildmaster.Game.Services.FmodAudioService</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#a197c8aa1dba9410b38e928115782bca8">Guildmaster.Game.Services.UnityAudioService</a>.</p>
+
+</div>
+</div>
+<a id="acf0bc32fd8c34ea223a4bc7ee2f7a732" name="acf0bc32fd8c34ea223a4bc7ee2f7a732"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf0bc32fd8c34ea223a4bc7ee2f7a732">&#9670;&#160;</a></span>SetGlobalParameter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Audio.IAudioService.SetGlobalParameter </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Задать глобальный параметр микса (имена — AudioParameters). </p>
+<p>Напр. TimeScale — slowmo-питч боевой шины. Строки, не FMOD-типы, чтобы Core не знал о звижке. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html#a4a1869c915c3b8f41618d7018aeabe14">Guildmaster.Game.Services.FmodAudioService</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#a9f253f8245d85700fde0687f33aca01a">Guildmaster.Game.Services.UnityAudioService</a>.</p>
+
+</div>
+</div>
+<a id="a2903bd6a8b31629337e8eadcaaf76276" name="a2903bd6a8b31629337e8eadcaaf76276"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2903bd6a8b31629337e8eadcaaf76276">&#9670;&#160;</a></span>SetMasterVolume()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Audio.IAudioService.SetMasterVolume </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>volume</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Установить громкость мастер-шины [0, 1] (общая громкость, bus:/). </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html#ae88f3f7dc1e144cff71c9410529ddd65">Guildmaster.Game.Services.FmodAudioService</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#aae7d2f1c5600a6bb806de9b62c61eb45">Guildmaster.Game.Services.UnityAudioService</a>.</p>
 
 </div>
 </div>
@@ -165,9 +229,31 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Установить громкость музыки [0, 1]. </p>
+<p>Установить громкость музыки [0, 1] (bus:/Music). </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#a339bac2df3e6e81149a38474b4aef6b7">Guildmaster.Game.Services.UnityAudioService</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html#af5448b99b0a899865a7c8b75796896f4">Guildmaster.Game.Services.FmodAudioService</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#a339bac2df3e6e81149a38474b4aef6b7">Guildmaster.Game.Services.UnityAudioService</a>.</p>
+
+</div>
+</div>
+<a id="adf329100aba7915c412b29be1158c88b" name="adf329100aba7915c412b29be1158c88b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf329100aba7915c412b29be1158c88b">&#9670;&#160;</a></span>SetSfxVolume()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Audio.IAudioService.SetSfxVolume </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>volume</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Установить громкость SFX-шины [0, 1] (bus:/SFX). </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html#a86dbb42a74c0f6bc71cc098a52378c15">Guildmaster.Game.Services.FmodAudioService</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#ada189b1e4984f1061f0111a8aa149080">Guildmaster.Game.Services.UnityAudioService</a>.</p>
 
 </div>
 </div>
@@ -189,7 +275,7 @@ Public Member Functions</h2></td></tr>
 
 <p>Остановить звук по ключу. </p>
 
-<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#a7f8c731bf6d86ed269188d6b3d336740">Guildmaster.Game.Services.UnityAudioService</a>.</p>
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html#a2136db100b38df8ad008786d0dfcb294">Guildmaster.Game.Services.FmodAudioService</a>, and <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html#a7f8c731bf6d86ed269188d6b3d336740">Guildmaster.Game.Services.UnityAudioService</a>.</p>
 
 </div>
 </div>

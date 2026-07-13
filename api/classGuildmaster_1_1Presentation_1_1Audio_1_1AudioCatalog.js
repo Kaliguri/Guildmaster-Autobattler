@@ -4,6 +4,7 @@ var classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog =
     [ "Entry", "structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry.html", "structGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog_1_1Entry" ],
     [ "Contains", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aec07fefb6129c24b0e0c0205abe3aae7", null ],
     [ "HasDefault", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a7ab3baffc75f5a45bf6aa93ad4d73c6e", null ],
+    [ "TryGetEvent", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aebea6b38c0014e89399defa4f4dff563", null ],
     [ "Defaults", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#a64db238e0579f60e3863a9e4cf465d02", null ],
     [ "Entries", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aca6a8a2a166d5468977bb2ad811212b5", null ]
 ];

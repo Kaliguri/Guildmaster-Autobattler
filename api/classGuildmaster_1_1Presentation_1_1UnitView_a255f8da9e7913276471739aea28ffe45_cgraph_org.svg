@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#addca237a220d26640e8bef0b174d1134" target="_top" xlink:title="Привязать к юниту: оба слоя — на текущую долю мгновенно.">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#addca237a220d26640e8bef0b174d1134" target="_top" xlink:title="Привязать к юниту: доли — на текущее состояние мгновенно, trail без догона.">
 <polygon fill="white" stroke="#666666" points="322,-78 179,-78 179,-48 322,-48 322,-78"/>
 <text text-anchor="start" x="187" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
 <text text-anchor="middle" x="250.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">HealthBarView.Bind</text>
@@ -40,7 +40,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Presentation_1_1ManaBarView.html#afd13431e6bbe9158e47a0e8731260915" target="_top" xlink:title="Привязать к юниту: скрыть для безресурсных, иначе оба слоя — на текущую долю мгновенно.">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1Presentation_1_1ManaBarView.html#afd13431e6bbe9158e47a0e8731260915" target="_top" xlink:title="Привязать к юниту: скрыть для безресурсных, иначе — на текущую долю мгновенно.">
 <polygon fill="white" stroke="#666666" points="322,-30 179,-30 179,0 322,0 322,-30"/>
 <text text-anchor="start" x="187" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Presentation.</text>
 <text text-anchor="middle" x="250.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ManaBarView.Bind</text>

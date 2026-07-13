@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Ca
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.CameraModeController:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1CameraModeController__inherit__graph.svg" width="254" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1CameraModeController__inherit__graph.svg" width="267" height="304"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.CameraModeController:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1CameraModeController__coll__graph.svg" width="254" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1CameraModeController__coll__graph.svg" width="267" height="304"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -119,6 +119,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abea59b28019e170139abcfb202456ff8" id="r_abea59b28019e170139abcfb202456ff8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CameraModeController.html#abea59b28019e170139abcfb202456ff8">Shake</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">intensity</a>)</td></tr>
 <tr class="memdesc:abea59b28019e170139abcfb202456ff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тряхнуть камеру (IScreenShake): рассылаем на все vcam — активная тряхнётся, прочие вхолостую.  <br /></td></tr>
 <tr class="separator:abea59b28019e170139abcfb202456ff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04a79fda55f8b73b9ac43e1951eb364e" id="r_a04a79fda55f8b73b9ac43e1951eb364e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CameraModeController.html#a04a79fda55f8b73b9ac43e1951eb364e">ResetShake</a> ()</td></tr>
+<tr class="memdesc:a04a79fda55f8b73b9ac43e1951eb364e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять остаточную тряску со всех vcam-расширений (перезапуск боя).  <br /></td></tr>
+<tr class="separator:a04a79fda55f8b73b9ac43e1951eb364e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaae6c9b43be4e0d785579bbae274283f" id="r_aaae6c9b43be4e0d785579bbae274283f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CameraModeController.html#aaae6c9b43be4e0d785579bbae274283f">SetDevAccess</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">bool</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">granted</a>)</td></tr>
 <tr class="memdesc:aaae6c9b43be4e0d785579bbae274283f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выдать/забрать доступ к dev-камере (QFSW: gm_cam_dev). Забирая — уводим из Dev.  <br /></td></tr>
 <tr class="separator:aaae6c9b43be4e0d785579bbae274283f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,6 +184,35 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a04a79fda55f8b73b9ac43e1951eb364e" name="a04a79fda55f8b73b9ac43e1951eb364e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04a79fda55f8b73b9ac43e1951eb364e">&#9670;&#160;</a></span>ResetShake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.CameraModeController.ResetShake </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Снять остаточную тряску со всех vcam-расширений (перезапуск боя). </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html#a0b7325ce7e5e600f50adaca039da9a78">Guildmaster.Presentation.IScreenShake</a>.</p>
 
 </div>
 </div>

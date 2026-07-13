@@ -1,5 +1,5 @@
 <map id="Guildmaster.Presentation.ManaBarView.UpdateBar" name="Guildmaster.Presentation.ManaBarView.UpdateBar">
-<area shape="rect" id="Node000001" title="Обновить истинную долю ресурса (поллинг из UnitView каждый кадр)." alt="" coords="268,5,459,45"/>
+<area shape="rect" id="Node000001" title="Обновить ресурс (поллинг из UnitView каждый кадр)." alt="" coords="268,5,459,45"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a25961c760cc2434fa8f210178cf3e8e3" title="Обновить интерполированную позицию." alt="" coords="5,5,220,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,28,220,28,220,23,254,23"/>
 </map>

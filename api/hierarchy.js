@@ -10,7 +10,10 @@ var hierarchy =
     [ "Guildmaster.Core.Arena.ArenaBounds", "structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html", null ],
     [ "Guildmaster.Core.Arena.ArenaLayoutData", "classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html", null ],
     [ "Guildmaster.Combat.AttackTiming", "classGuildmaster_1_1Combat_1_1AttackTiming.html", null ],
+    [ "Guildmaster.Audio.Editor.AudioCatalogPopulator", "classGuildmaster_1_1Audio_1_1Editor_1_1AudioCatalogPopulator.html", null ],
+    [ "Guildmaster.Core.Audio.AudioParameters", "classGuildmaster_1_1Core_1_1Audio_1_1AudioParameters.html", null ],
     [ "Guildmaster.Presentation.Audio.AudioResolver", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioResolver.html", null ],
+    [ "Guildmaster.Core.Settings.AudioVolumeSettings", "structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html", null ],
     [ "Guildmaster.Combat.AutoAttackSystem", "classGuildmaster_1_1Combat_1_1AutoAttackSystem.html", null ],
     [ "Guildmaster.Presentation.BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", null ],
     [ "Guildmaster.Core.Random.BattleSeed", "classGuildmaster_1_1Core_1_1Random_1_1BattleSeed.html", null ],
@@ -61,6 +64,7 @@ var hierarchy =
       [ "Guildmaster.Presentation.Audio.AudioCatalog", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html", null ]
     ] ],
     [ "Guildmaster.Core.Audio.IAudioService", "interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html", [
+      [ "Guildmaster.Game.Services.FmodAudioService", "classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html", null ],
       [ "Guildmaster.Game.Services.UnityAudioService", "classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html", null ]
     ] ],
     [ "Guildmaster.Combat.IBattleView", "interfaceGuildmaster_1_1Combat_1_1IBattleView.html", [
@@ -77,7 +81,8 @@ var hierarchy =
       [ "Guildmaster.Game.Input.InputService", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html", null ],
       [ "Guildmaster.Game.Services.CombatFeelDirector", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html", null ],
       [ "Guildmaster.Game.Services.LocalizationService", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html", null ],
-      [ "Guildmaster.Game.Services.TimeScaleService", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html", null ]
+      [ "Guildmaster.Game.Services.TimeScaleService", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html", null ],
+      [ "Guildmaster.Presentation.Audio.AudioPresenter", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html", null ]
     ] ],
     [ "Guildmaster.Data.Definitions.IEffectComponent", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html", [
       [ "Guildmaster.Combat.Effects.IRuntimeEffectComponent", "interfaceGuildmaster_1_1Combat_1_1Effects_1_1IRuntimeEffectComponent.html", [
@@ -113,6 +118,9 @@ var hierarchy =
     [ "Guildmaster.Core.Localization.ILocalizationService", "interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html", [
       [ "Guildmaster.Game.Services.LocalizationService", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html", null ]
     ] ],
+    [ "Guildmaster.UI.IMenuRouter", "interfaceGuildmaster_1_1UI_1_1IMenuRouter.html", [
+      [ "Guildmaster.UI.MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html", null ]
+    ] ],
     [ "Guildmaster.Core.Random.IRngService", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html", [
       [ "Guildmaster.Core.Random.XorShiftRng", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html", null ]
     ] ],
@@ -125,6 +133,9 @@ var hierarchy =
       [ "Guildmaster.Presentation.CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", null ],
       [ "Guildmaster.Presentation.NullScreenShake", "classGuildmaster_1_1Presentation_1_1NullScreenShake.html", null ]
     ] ],
+    [ "Guildmaster.Core.Settings.ISettingsService", "interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html", [
+      [ "Guildmaster.Game.Services.SettingsService", "classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html", null ]
+    ] ],
     [ "Guildmaster.Core.Simulation.ISimCommand", "interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html", [
       [ "Guildmaster.Combat.ICombatCommand", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html", [
         [ "Guildmaster.Combat.Commands.PauseCommand", "classGuildmaster_1_1Combat_1_1Commands_1_1PauseCommand.html", null ],
@@ -135,7 +146,9 @@ var hierarchy =
     [ "Guildmaster.Core.Simulation.ISimEvent", "interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimEvent.html", null ],
     [ "IStartable", null, [
       [ "Guildmaster.Game.Input.BattleInputController", "classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html", null ],
-      [ "Guildmaster.Game.Services.CombatFeelDirector", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html", null ]
+      [ "Guildmaster.Game.Services.CombatFeelDirector", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html", null ],
+      [ "Guildmaster.Game.Services.SettingsService", "classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html", null ],
+      [ "Guildmaster.Presentation.Audio.AudioPresenter", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html", null ]
     ] ],
     [ "Guildmaster.Data.Stats.IStatReader", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html", [
       [ "Guildmaster.Combat.Stats", "classGuildmaster_1_1Combat_1_1Stats.html", null ]
@@ -158,7 +171,6 @@ var hierarchy =
       [ "Guildmaster.Game.ArenaLayoutAuthoring", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html", null ],
       [ "Guildmaster.Game.GameBootstrap", "classGuildmaster_1_1Game_1_1GameBootstrap.html", null ],
       [ "Guildmaster.Net.FacepunchTransportBootstrap", "classGuildmaster_1_1Net_1_1FacepunchTransportBootstrap.html", null ],
-      [ "Guildmaster.Presentation.Audio.AudioPresenter", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html", null ],
       [ "Guildmaster.Presentation.CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", null ],
       [ "Guildmaster.Presentation.CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", null ],
       [ "Guildmaster.Presentation.CombatDebugDraw", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html", null ],
@@ -173,7 +185,9 @@ var hierarchy =
       [ "Guildmaster.Presentation.PixelBurst", "classGuildmaster_1_1Presentation_1_1PixelBurst.html", null ],
       [ "Guildmaster.Presentation.ProjectileView", "classGuildmaster_1_1Presentation_1_1ProjectileView.html", null ],
       [ "Guildmaster.Presentation.UnitView", "classGuildmaster_1_1Presentation_1_1UnitView.html", null ],
-      [ "Guildmaster.Presentation.YSortSprite", "classGuildmaster_1_1Presentation_1_1YSortSprite.html", null ]
+      [ "Guildmaster.Presentation.YSortSprite", "classGuildmaster_1_1Presentation_1_1YSortSprite.html", null ],
+      [ "Guildmaster.UI.IntegerPanelScaler", "classGuildmaster_1_1UI_1_1IntegerPanelScaler.html", null ],
+      [ "Guildmaster.UI.UiRootBootstrap", "classGuildmaster_1_1UI_1_1UiRootBootstrap.html", null ]
     ] ],
     [ "Guildmaster.Combat.MovementSystem", "classGuildmaster_1_1Combat_1_1MovementSystem.html", null ],
     [ "Guildmaster.ContentHub.Editor.NavHistory< T >", "classGuildmaster_1_1ContentHub_1_1Editor_1_1NavHistory.html", null ],
@@ -231,6 +245,7 @@ var hierarchy =
       [ "Guildmaster.Presentation.Design.CombatFeelConfig", "classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html", null ]
     ] ],
     [ "Guildmaster.Combat.SeparationSystem", "classGuildmaster_1_1Combat_1_1SeparationSystem.html", null ],
+    [ "Guildmaster.UI.SettingsViewModel", "classGuildmaster_1_1UI_1_1SettingsViewModel.html", null ],
     [ "Guildmaster.Presentation.ShatterMesh", "classGuildmaster_1_1Presentation_1_1ShatterMesh.html", null ],
     [ "Guildmaster.Core.Simulation.SimConstants", "classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html", null ],
     [ "Guildmaster.Core.Simulation.SimTuning", "structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html", null ],
@@ -238,6 +253,7 @@ var hierarchy =
     [ "Guildmaster.ContentHub.Editor.StatCohort", "classGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort.html", null ],
     [ "Guildmaster.ContentHub.Editor.StatMath", "classGuildmaster_1_1ContentHub_1_1Editor_1_1StatMath.html", null ],
     [ "Guildmaster.Data.Stats.StatModifier", "structGuildmaster_1_1Data_1_1Stats_1_1StatModifier.html", null ],
+    [ "Guildmaster.UI.EditorTools.UiPreviewCapture", "classGuildmaster_1_1UI_1_1EditorTools_1_1UiPreviewCapture.html", null ],
     [ "Guildmaster.Presentation.UnitAnimationSelector", "classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html", null ],
     [ "Guildmaster.Presentation.UnitDiedEvent", "structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html", null ],
     [ "Guildmaster.Presentation.UnitSpawnedEvent", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html", null ],

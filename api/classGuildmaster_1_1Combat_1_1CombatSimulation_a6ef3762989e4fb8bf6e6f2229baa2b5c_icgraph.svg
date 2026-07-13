@@ -67,7 +67,7 @@ var sectionId = 'dynsection-3';
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aec99ab661f140b243f949108eae06a11" target="_top" xlink:title="Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a5766f4f7c6e06576c31a581348415cc5" target="_top" xlink:title="Заспавнить «Скрытного убийцу» (team 0) против болванчиков (team 1) — срез §10.5.">
 <polygon fill="white" stroke="#666666" points="186,-558 0,-558 0,-528 186,-528 186,-558"/>
 <text text-anchor="start" x="8" y="-546" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-535" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnAssassin</text>
@@ -86,7 +86,7 @@ var sectionId = 'dynsection-3';
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a6eab8074b6fe5df04aeb4779ed6ad274" target="_top" xlink:title="Поднять тест&#45;бой N×M юнитов с заданными HP.">
+<g id="a_Node000003"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a680f847d51ad9dc579b6f590b98edc08" target="_top" xlink:title="Поднять тест&#45;бой N×M юнитов с заданными HP.">
 <polygon fill="white" stroke="#666666" points="186,-492 0,-492 0,-462 186,-462 186,-492"/>
 <text text-anchor="start" x="8" y="-480" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-469" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnBattle</text>
@@ -105,7 +105,7 @@ var sectionId = 'dynsection-3';
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a40149c4b1a21190ed41b1b484a4b0519" target="_top" xlink:title="Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия).">
+<g id="a_Node000004"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a21be39888c757cfac49339b2155c7c81" target="_top" xlink:title="Плотный «клубок» юнитов обеих команд для теста расталкивания (SeparationSystem, коллизия).">
 <polygon fill="white" stroke="#666666" points="186,-426 0,-426 0,-396 186,-396 186,-426"/>
 <text text-anchor="start" x="8" y="-414" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-403" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnCrowd</text>
@@ -124,7 +124,7 @@ var sectionId = 'dynsection-3';
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a2eb2cbfe58040010e7e08fb0dec1afca" target="_top" xlink:title="Заспавнить «Криоманта» (team 0) против кластера болванчиков (team 1) — срез §10.2.">
+<g id="a_Node000005"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ae751b379c26601ad5a4809e67adc7560" target="_top" xlink:title="Заспавнить «Криоманта» (team 0) против кластера болванчиков (team 1) — срез §10.2.">
 <polygon fill="white" stroke="#666666" points="186,-360 0,-360 0,-330 186,-330 186,-360"/>
 <text text-anchor="start" x="8" y="-348" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-337" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnCryomancer</text>
@@ -143,7 +143,7 @@ var sectionId = 'dynsection-3';
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a7eb2484b459cdce5faab5334f56cf0b1" target="_top" xlink:title="Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10....">
+<g id="a_Node000006"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a470f1723cdd1fb9959c9f76bd86dd86d" target="_top" xlink:title="Заспавнить «Надёжного защитника» (team 0) против ударных болванчиков (team 1) — срез §10....">
 <polygon fill="white" stroke="#666666" points="186,-294 0,-294 0,-264 186,-264 186,-294"/>
 <text text-anchor="start" x="8" y="-282" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-271" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnDefender</text>
@@ -162,7 +162,7 @@ var sectionId = 'dynsection-3';
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a518bdb00fd636e525cf2a0ef7c622a3b" target="_top" xlink:title="Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10....">
+<g id="a_Node000007"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a8fd4250ba9c2785bc8ccbc5412100682" target="_top" xlink:title="Заспавнить «Монаха вихря» (team 0) против кластера болванчиков (team 1) — срез §10....">
 <polygon fill="white" stroke="#666666" points="186,-228 0,-228 0,-198 186,-198 186,-228"/>
 <text text-anchor="start" x="8" y="-216" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-205" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnMonk</text>
@@ -181,7 +181,7 @@ var sectionId = 'dynsection-3';
 <!-- Node8 -->
 <g id="Node000008" class="node">
 <title>Node8</title>
-<g id="a_Node000008"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#adefd6ab804702635d33e59dc7da95acb" target="_top" xlink:title="Заспавнить «Лесного следопыта» (team 0) против кластера болванчиков (team 1) — срез §10....">
+<g id="a_Node000008"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a815ae87e5011e8ccad14f052d6a0be51" target="_top" xlink:title="Заспавнить «Лесного следопыта» (team 0) против кластера болванчиков (team 1) — срез §10....">
 <polygon fill="white" stroke="#666666" points="186,-162 0,-162 0,-132 186,-132 186,-162"/>
 <text text-anchor="start" x="8" y="-150" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-139" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnRanger</text>
@@ -200,7 +200,7 @@ var sectionId = 'dynsection-3';
 <!-- Node9 -->
 <g id="Node000009" class="node">
 <title>Node9</title>
-<g id="a_Node000009"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a4f882498fd866ed62456644514bec367" target="_top" xlink:title="Заспавнить «Светлого пастыря» (team 0) + раненых союзников против болванчиков — срез §10....">
+<g id="a_Node000009"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a8de0618a57171f6dc7dce6d831244179" target="_top" xlink:title="Заспавнить «Светлого пастыря» (team 0) + раненых союзников против болванчиков — срез §10....">
 <polygon fill="white" stroke="#666666" points="186,-96 0,-96 0,-66 186,-66 186,-96"/>
 <text text-anchor="start" x="8" y="-84" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-73" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnShepherd</text>
@@ -219,7 +219,7 @@ var sectionId = 'dynsection-3';
 <!-- Node10 -->
 <g id="Node000010" class="node">
 <title>Node10</title>
-<g id="a_Node000010"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a81741c7cedaddfdaada0ce90d723615b" target="_top" xlink:title="Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.">
+<g id="a_Node000010"><a xlink:href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a871adee3d187d4d0253e6ef92c8d0822" target="_top" xlink:title="Заспавнить «Железного копейщика» (team 0) против кластера болванчиков (team 1) — срез шага 4.">
 <polygon fill="white" stroke="#666666" points="186,-30 0,-30 0,0 186,0 186,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.DevTools.Guildmaster</text>
 <text text-anchor="middle" x="93" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Commands.SpawnSpearman</text>

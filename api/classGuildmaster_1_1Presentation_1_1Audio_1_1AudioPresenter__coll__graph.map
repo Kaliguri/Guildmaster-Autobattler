@@ -1,5 +1,7 @@
 <map id="Guildmaster.Presentation.Audio.AudioPresenter" name="Guildmaster.Presentation.Audio.AudioPresenter">
-<area shape="rect" id="Node000001" title="Аудио&#45;презентер (вики «13» §7): подписывается на боевые MessagePipe&#45;события (по образцу CombatPresent..." alt="" coords="5,119,188,199"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="39,5,155,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,85,99,118,94,118,94,85"/>
+<area shape="rect" id="Node000001" title="Аудио&#45;презентер (вики impl «09» §П4): POCO&#45;entry&#45;point, подписан НАПРЯМУЮ на C#&#45;события боевой симуля..." alt="" coords="6,119,189,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,83,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,83,77,117,72,119,59,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="107,5,197,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="137,84,123,119,118,117,132,82"/>
 </map>

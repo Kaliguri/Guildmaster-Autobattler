@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Sc
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.ScreenShake:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1ScreenShake__inherit__graph.svg" width="223" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1ScreenShake__inherit__graph.svg" width="223" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.ScreenShake:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1ScreenShake__coll__graph.svg" width="223" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1ScreenShake__coll__graph.svg" width="223" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -117,6 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad0e8f78d812019f75b93a403eb00c2f4" id="r_ad0e8f78d812019f75b93a403eb00c2f4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ScreenShake.html#ad0e8f78d812019f75b93a403eb00c2f4">ApplyConfig</a> (<a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">Design.CombatFeelConfig</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">feel</a>)</td></tr>
 <tr class="memdesc:ad0e8f78d812019f75b93a403eb00c2f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Подать design-конфиг тряски.  <br /></td></tr>
 <tr class="separator:ad0e8f78d812019f75b93a403eb00c2f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c6945f8733bc3bdae1d6ba3c2900940" id="r_a4c6945f8733bc3bdae1d6ba3c2900940"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ScreenShake.html#a4c6945f8733bc3bdae1d6ba3c2900940">ResetShake</a> ()</td></tr>
+<tr class="memdesc:a4c6945f8733bc3bdae1d6ba3c2900940"><td class="mdescLeft">&#160;</td><td class="mdescRight">Снять остаточную амплитуду мгновенно (перезапуск боя).  <br /></td></tr>
+<tr class="separator:a4c6945f8733bc3bdae1d6ba3c2900940"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd0029806980a6c0aec7c29430ac1c57" id="r_abd0029806980a6c0aec7c29430ac1c57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ScreenShake.html#abd0029806980a6c0aec7c29430ac1c57">Shake</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">intensity</a>)</td></tr>
 <tr class="memdesc:abd0029806980a6c0aec7c29430ac1c57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тряхнуть: intensity 0..1. Берётся максимум с текущей амплитудой (удары не гасят друг друга).  <br /></td></tr>
 <tr class="separator:abd0029806980a6c0aec7c29430ac1c57"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,6 +198,25 @@ Protected Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4c6945f8733bc3bdae1d6ba3c2900940" name="a4c6945f8733bc3bdae1d6ba3c2900940"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c6945f8733bc3bdae1d6ba3c2900940">&#9670;&#160;</a></span>ResetShake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.ScreenShake.ResetShake </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Снять остаточную амплитуду мгновенно (перезапуск боя). </p>
 
 </div>
 </div>

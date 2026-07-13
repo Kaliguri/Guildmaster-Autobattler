@@ -1,6 +1,11 @@
 var annotated_dup =
 [
     [ "Guildmaster", "namespaceGuildmaster.html", [
+      [ "Audio", "namespaceGuildmaster_1_1Audio.html", [
+        [ "Editor", "namespaceGuildmaster_1_1Audio_1_1Editor.html", [
+          [ "AudioCatalogPopulator", "classGuildmaster_1_1Audio_1_1Editor_1_1AudioCatalogPopulator.html", "classGuildmaster_1_1Audio_1_1Editor_1_1AudioCatalogPopulator" ]
+        ] ]
+      ] ],
       [ "Combat", "namespaceGuildmaster_1_1Combat.html", [
         [ "Abilities", "namespaceGuildmaster_1_1Combat_1_1Abilities.html", [
           [ "AbilityRuntime", "classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html", "classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime" ]
@@ -96,6 +101,7 @@ var annotated_dup =
           [ "Rect2D", "structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html", "structGuildmaster_1_1Core_1_1Arena_1_1Rect2D" ]
         ] ],
         [ "Audio", "namespaceGuildmaster_1_1Core_1_1Audio.html", [
+          [ "AudioParameters", "classGuildmaster_1_1Core_1_1Audio_1_1AudioParameters.html", "classGuildmaster_1_1Core_1_1Audio_1_1AudioParameters" ],
           [ "IAudioService", "interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService.html", "interfaceGuildmaster_1_1Core_1_1Audio_1_1IAudioService" ]
         ] ],
         [ "Input", "namespaceGuildmaster_1_1Core_1_1Input.html", [
@@ -108,6 +114,10 @@ var annotated_dup =
           [ "BattleSeed", "classGuildmaster_1_1Core_1_1Random_1_1BattleSeed.html", "classGuildmaster_1_1Core_1_1Random_1_1BattleSeed" ],
           [ "IRngService", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService" ],
           [ "XorShiftRng", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng" ]
+        ] ],
+        [ "Settings", "namespaceGuildmaster_1_1Core_1_1Settings.html", [
+          [ "AudioVolumeSettings", "structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html", "structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings" ],
+          [ "ISettingsService", "interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html", "interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService" ]
         ] ],
         [ "Simulation", "namespaceGuildmaster_1_1Core_1_1Simulation.html", [
           [ "ISimCommand", "interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand.html", "interfaceGuildmaster_1_1Core_1_1Simulation_1_1ISimCommand" ],
@@ -182,9 +192,11 @@ var annotated_dup =
           [ "CinematicSegment", "structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment.html", "structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment" ],
           [ "CombatFeelDirector", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector" ],
           [ "CombatLoopService", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService" ],
+          [ "FmodAudioService", "classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html", "classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService" ],
           [ "GameFlow", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow" ],
           [ "LocalizationService", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService" ],
           [ "SceneLoader", "classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html", "classGuildmaster_1_1Game_1_1Services_1_1SceneLoader" ],
+          [ "SettingsService", "classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html", "classGuildmaster_1_1Game_1_1Services_1_1SettingsService" ],
           [ "TimeScaleService", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService" ],
           [ "UnityAudioService", "classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html", "classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService" ]
         ] ],
@@ -236,6 +248,16 @@ var annotated_dup =
         [ "UnitSpawnedEvent", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html", "structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent" ],
         [ "UnitView", "classGuildmaster_1_1Presentation_1_1UnitView.html", "classGuildmaster_1_1Presentation_1_1UnitView" ],
         [ "YSortSprite", "classGuildmaster_1_1Presentation_1_1YSortSprite.html", null ]
+      ] ],
+      [ "UI", "namespaceGuildmaster_1_1UI.html", [
+        [ "EditorTools", "namespaceGuildmaster_1_1UI_1_1EditorTools.html", [
+          [ "UiPreviewCapture", "classGuildmaster_1_1UI_1_1EditorTools_1_1UiPreviewCapture.html", "classGuildmaster_1_1UI_1_1EditorTools_1_1UiPreviewCapture" ]
+        ] ],
+        [ "IMenuRouter", "interfaceGuildmaster_1_1UI_1_1IMenuRouter.html", "interfaceGuildmaster_1_1UI_1_1IMenuRouter" ],
+        [ "IntegerPanelScaler", "classGuildmaster_1_1UI_1_1IntegerPanelScaler.html", null ],
+        [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html", "classGuildmaster_1_1UI_1_1MenuRouter" ],
+        [ "SettingsViewModel", "classGuildmaster_1_1UI_1_1SettingsViewModel.html", "classGuildmaster_1_1UI_1_1SettingsViewModel" ],
+        [ "UiRootBootstrap", "classGuildmaster_1_1UI_1_1UiRootBootstrap.html", "classGuildmaster_1_1UI_1_1UiRootBootstrap" ]
       ] ]
     ] ]
 ];

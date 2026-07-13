@@ -1,7 +1,7 @@
 var searchData=
 [
   ['self_0',['Self',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806',1,'Guildmaster::Data::Definitions']]],
-  ['shield_1',['Shield',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4',1,'Guildmaster::Data::Definitions']]],
+  ['shield_1',['shield',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4',1,'Guildmaster.Data.Definitions.Shield'],['../namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1a970da5f1f2e32aeb9e488dd017160ab4',1,'Guildmaster.Presentation.Audio.Shield']]],
   ['size_2',['Size',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a6f6cb72d544962fa333e2e34ce64f719',1,'Guildmaster::Data::Stats']]],
   ['skill1_3',['Skill1',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656a7255340c02ad7a4e4dbe394416683342',1,'Guildmaster::Data::Definitions']]],
   ['skill2_4',['Skill2',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656aa844affb27623abf8a1ae306db49e447',1,'Guildmaster::Data::Definitions']]],
@@ -11,5 +11,6 @@ var searchData=
   ['stackandrefresh_8',['StackAndRefresh',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021cadc2a20a77eca42f262a296f18be55278',1,'Guildmaster::Data::Definitions']]],
   ['startresource_9',['StartResource',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7fdc6c0e1455e6b04e10d4333e8a07da',1,'Guildmaster::Data::Stats']]],
   ['stealth_10',['Stealth',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628',1,'Guildmaster::Data::Definitions']]],
-  ['success_11',['Success',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a685d227543d73264d3c77b5ed5b0e02ca505a83f220c02df2f85c3810cd9ceb38',1,'Guildmaster::ContentHub::Editor::HubToasts']]]
+  ['stinger_11',['Stinger',['../namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1ae60b65c860681c0a53fcded0e33fc6de',1,'Guildmaster::Presentation::Audio']]],
+  ['success_12',['Success',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a685d227543d73264d3c77b5ed5b0e02ca505a83f220c02df2f85c3810cd9ceb38',1,'Guildmaster::ContentHub::Editor::HubToasts']]]
 ];

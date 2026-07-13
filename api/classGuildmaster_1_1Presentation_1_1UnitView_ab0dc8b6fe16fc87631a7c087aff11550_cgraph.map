@@ -1,5 +1,5 @@
 <map id="Guildmaster.Presentation.UnitView.SetHealthColor" name="Guildmaster.Presentation.UnitView.SetHealthColor">
 <area shape="rect" id="Node000001" title="Цвет HP&#45;бара по принадлежности к смотрящему (из CombatColorPalette)." alt="" coords="5,5,196,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html#aea59438517d7172e03813e8ca661ef36" title="Задать цвет основного слоя по принадлежности к смотрящему (из CombatColorPalette)." alt="" coords="244,5,453,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html#aea59438517d7172e03813e8ca661ef36" title="Цвет HP по принадлежности к смотрящему (из CombatColorPalette)." alt="" coords="244,5,453,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,23,230,23,230,28,196,28"/>
 </map>

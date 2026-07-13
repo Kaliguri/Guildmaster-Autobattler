@@ -11,12 +11,13 @@ var searchData=
   ['always_8',['Always',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612a68eec46437c384d8dad18d5464ebc35c',1,'Guildmaster::Data::Definitions']]],
   ['any_9',['Any',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20aed36a1ef76a59ee3f15180e0441188ad',1,'Guildmaster::Data::Definitions']]],
   ['anyhit_10',['AnyHit',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612afed8068cf66889c7c88bd5b7d3d02e4b',1,'Guildmaster::Data::Definitions']]],
-  ['applybuffeff_11',['ApplyBuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a04088b7ab0f8da1e1ee848296343a33f',1,'Guildmaster::Data::Stats']]],
-  ['applydebuffeff_12',['ApplyDebuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a604e868d3d14c15c08fd51a3c2d4a740',1,'Guildmaster::Data::Stats']]],
-  ['approach_13',['Approach',['../namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba40a68b5da4b9b224764558bb02ecd028',1,'Guildmaster::Combat']]],
-  ['attack_14',['attack',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6adcfafcb4323b102c7e204555d313ba0a',1,'Guildmaster.Data.Definitions.Attack'],['../namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1adcfafcb4323b102c7e204555d313ba0a',1,'Guildmaster.Presentation.Audio.Attack']]],
-  ['attackrange_15',['AttackRange',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab368d16134fba69bdd208d3d0c7c7c5b',1,'Guildmaster::Data::Stats']]],
-  ['attackspeed_16',['AttackSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa1039049ad899dd188ddd24169458b48',1,'Guildmaster::Data::Stats']]],
-  ['audio_17',['Audio',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentHubWindow.html#ab5f6ccad24d3b892d9ec5ad8e0b82010ab22f0418e8ac915eb66f829d262d14a2',1,'Guildmaster::ContentHub::Editor::ContentHubWindow']]],
-  ['autoattackdamage_18',['AutoAttackDamage',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a509dd58938824e6e3f298bde91ddc731',1,'Guildmaster::Data::Stats']]]
+  ['apply_11',['Apply',['../namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1a9639e32cab248434a17ab32237cb3b71',1,'Guildmaster::Presentation::Audio']]],
+  ['applybuffeff_12',['ApplyBuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a04088b7ab0f8da1e1ee848296343a33f',1,'Guildmaster::Data::Stats']]],
+  ['applydebuffeff_13',['ApplyDebuffEff',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a604e868d3d14c15c08fd51a3c2d4a740',1,'Guildmaster::Data::Stats']]],
+  ['approach_14',['Approach',['../namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba40a68b5da4b9b224764558bb02ecd028',1,'Guildmaster::Combat']]],
+  ['attack_15',['attack',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6adcfafcb4323b102c7e204555d313ba0a',1,'Guildmaster.Data.Definitions.Attack'],['../namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1adcfafcb4323b102c7e204555d313ba0a',1,'Guildmaster.Presentation.Audio.Attack']]],
+  ['attackrange_16',['AttackRange',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ab368d16134fba69bdd208d3d0c7c7c5b',1,'Guildmaster::Data::Stats']]],
+  ['attackspeed_17',['AttackSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa1039049ad899dd188ddd24169458b48',1,'Guildmaster::Data::Stats']]],
+  ['audio_18',['Audio',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentHubWindow.html#ab5f6ccad24d3b892d9ec5ad8e0b82010ab22f0418e8ac915eb66f829d262d14a2',1,'Guildmaster::ContentHub::Editor::ContentHubWindow']]],
+  ['autoattackdamage_19',['AutoAttackDamage',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a509dd58938824e6e3f298bde91ddc731',1,'Guildmaster::Data::Stats']]]
 ];

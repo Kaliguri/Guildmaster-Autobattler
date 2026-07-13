@@ -1,8 +1,10 @@
 var classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService =
 [
+    [ "TimeScaleService", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a7cafbc91bb1d46f84b8be245a290dae0", null ],
     [ "CinematicPulse", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a031582c0e575e27827ec9b4736937455", null ],
     [ "Dispose", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a18a22e5fba41bbe8d7b171adea408105", null ],
     [ "PlayCinematicSequence", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a2846f90d285981c360b298c989881687", null ],
+    [ "Reset", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a5887e371d1cd08e69e19ea4ec53d923a", null ],
     [ "SetCinematic", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a0e13d5a7189b0c75ef363fb9799586e2", null ],
     [ "SetGameSpeed", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a10f4e0eea008862af8196d86b2a2b785", null ],
     [ "SetPaused", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html#a397a1f1c1f4c5c2f9d3e2a9ff758d31c", null ],

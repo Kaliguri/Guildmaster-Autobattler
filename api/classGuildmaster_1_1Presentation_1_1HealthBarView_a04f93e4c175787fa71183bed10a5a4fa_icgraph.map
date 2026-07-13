@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.HealthBarView.SetShieldColor" name="Guildmaster.Presentation.HealthBarView.SetShieldColor">
+<area shape="rect" id="Node000001" title="Цвет щита (из CombatColorPalette, общий для всех)." alt="" coords="244,5,461,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1UnitView.html#a2cf1faea0e2ac5e64199d8ddcb8fed65" title="Цвет полоски щита (из CombatColorPalette, общий для всех)." alt="" coords="5,5,196,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="230,28,196,28,196,23,230,23"/>
+</map>

@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Ma
 </div><!--header-->
 <div class="contents">
 
-<p>Бар ресурса (мана/ярость) — по образцу HealthBarView, но для <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aade95fbe70d66fe6bc23c4ca18297005" title="Текущий ресурс (мана/ярость). Фаза 2.">RuntimeUnit.CurrentResource</a> / Data.Stats.StatType.MaxResource.  
+<p>Сегментированный бар ресурса (мана/ярость) на том же шейдере, что и HP-бар (<code>Guildmaster/UI/SegmentedHealthBar</code>), но БЕЗ щита: заливка ресурса + насечки фиксированного значения (_tickValue ресурса на минорную насечку, жирная каждые _majorTickValue).  
  <a href="classGuildmaster_1_1Presentation_1_1ManaBarView.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.ManaBarView:</div>
@@ -114,16 +114,16 @@ Collaboration diagram for Guildmaster.Presentation.ManaBarView:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:afd13431e6bbe9158e47a0e8731260915" id="r_afd13431e6bbe9158e47a0e8731260915"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ManaBarView.html#afd13431e6bbe9158e47a0e8731260915">Bind</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">unit</a>)</td></tr>
-<tr class="memdesc:afd13431e6bbe9158e47a0e8731260915"><td class="mdescLeft">&#160;</td><td class="mdescRight">Привязать к юниту: скрыть для безресурсных, иначе оба слоя — на текущую долю мгновенно.  <br /></td></tr>
+<tr class="memdesc:afd13431e6bbe9158e47a0e8731260915"><td class="mdescLeft">&#160;</td><td class="mdescRight">Привязать к юниту: скрыть для безресурсных, иначе — на текущую долю мгновенно.  <br /></td></tr>
 <tr class="separator:afd13431e6bbe9158e47a0e8731260915"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabbf78172ff358290f9a3e43c9b90a66" id="r_aabbf78172ff358290f9a3e43c9b90a66"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1ManaBarView.html#aabbf78172ff358290f9a3e43c9b90a66">UpdateBar</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">current</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">max</a>)</td></tr>
-<tr class="memdesc:aabbf78172ff358290f9a3e43c9b90a66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновить истинную долю ресурса (поллинг из UnitView каждый кадр).  <br /></td></tr>
+<tr class="memdesc:aabbf78172ff358290f9a3e43c9b90a66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновить ресурс (поллинг из UnitView каждый кадр).  <br /></td></tr>
 <tr class="separator:aabbf78172ff358290f9a3e43c9b90a66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Бар ресурса (мана/ярость) — по образцу HealthBarView, но для <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aade95fbe70d66fe6bc23c4ca18297005" title="Текущий ресурс (мана/ярость). Фаза 2.">RuntimeUnit.CurrentResource</a> / Data.Stats.StatType.MaxResource. </p>
-<p>Истинная доля ставится мгновенно поллингом из UnitView; «призрак» плавно догоняет по рендер-времени (НЕ сим — на чек-сумму не влияет), показывая свежую трату/добор ресурса.</p>
-<p>В отличие от HP: нет «низкого» красного порога (мало ресурса — не опасность, просто мало) и бар целиком скрывается для юнитов без ресурса (<code>MaxResource ≤ 0</code> — болванчики, безресурсные реликвии). </p>
+<div class="textblock"><p>Сегментированный бар ресурса (мана/ярость) на том же шейдере, что и HP-бар (<code>Guildmaster/UI/SegmentedHealthBar</code>), но БЕЗ щита: заливка ресурса + насечки фиксированного значения (_tickValue ресурса на минорную насечку, жирная каждые _majorTickValue). </p>
+<p>Нормировка простая — <code>scale = MaxResource</code> (ресурс не выходит за макс), поэтому частота насечек постоянна для юнита. Chip-дельта показывает свежую трату/добор.</p>
+<p>Скрывается целиком для безресурсных юнитов (<code>MaxResource ≤ 0</code> — болванчики, безресурсные реликвии). Динамика гонится в per-instance материал по рендер-времени (НЕ по сим-тику).</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="afd13431e6bbe9158e47a0e8731260915" name="afd13431e6bbe9158e47a0e8731260915"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd13431e6bbe9158e47a0e8731260915">&#9670;&#160;</a></span>Bind()</h2>
@@ -149,7 +149,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Привязать к юниту: скрыть для безресурсных, иначе оба слоя — на текущую долю мгновенно. </p>
+<p>Привязать к юниту: скрыть для безресурсных, иначе — на текущую долю мгновенно. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -192,7 +192,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Обновить истинную долю ресурса (поллинг из UnitView каждый кадр). </p>
+<p>Обновить ресурс (поллинг из UnitView каждый кадр). </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

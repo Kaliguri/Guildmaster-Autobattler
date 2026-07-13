@@ -103,12 +103,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1Nu
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.NullScreenShake:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1NullScreenShake__inherit__graph.svg" width="194" height="204"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1NullScreenShake__inherit__graph.svg" width="194" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.NullScreenShake:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1NullScreenShake__coll__graph.svg" width="194" height="204"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1NullScreenShake__coll__graph.svg" width="194" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -116,10 +116,42 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af6d2fca54899d3f882502054520a3044" id="r_af6d2fca54899d3f882502054520a3044"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1NullScreenShake.html#af6d2fca54899d3f882502054520a3044">Shake</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">intensity</a>)</td></tr>
 <tr class="memdesc:af6d2fca54899d3f882502054520a3044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тряхнуть камеру. <em>intensity</em>  0..1 (клампится); удары складываются вверх (берётся максимум).  <br /></td></tr>
 <tr class="separator:af6d2fca54899d3f882502054520a3044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89d84179c48ab5dd47cbc25b43005db7" id="r_a89d84179c48ab5dd47cbc25b43005db7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1NullScreenShake.html#a89d84179c48ab5dd47cbc25b43005db7">ResetShake</a> ()</td></tr>
+<tr class="memdesc:a89d84179c48ab5dd47cbc25b43005db7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мгновенно снять остаточную тряску (перезапуск боя). Не <code>Reset</code> — то магический колбэк MonoBehaviour.  <br /></td></tr>
+<tr class="separator:a89d84179c48ab5dd47cbc25b43005db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Заглушка тряски: подставляется, когда камеры-рига в сцене нет (бой не должен падать из-за визуала). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a89d84179c48ab5dd47cbc25b43005db7" name="a89d84179c48ab5dd47cbc25b43005db7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89d84179c48ab5dd47cbc25b43005db7">&#9670;&#160;</a></span>ResetShake()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.NullScreenShake.ResetShake </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Мгновенно снять остаточную тряску (перезапуск боя). Не <code>Reset</code> — то магический колбэк MonoBehaviour. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html#a0b7325ce7e5e600f50adaca039da9a78">Guildmaster.Presentation.IScreenShake</a>.</p>
+
+</div>
+</div>
 <a id="af6d2fca54899d3f882502054520a3044" name="af6d2fca54899d3f882502054520a3044"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af6d2fca54899d3f882502054520a3044">&#9670;&#160;</a></span>Shake()</h2>
 

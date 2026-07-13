@@ -98,35 +98,39 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Presentation_1_1He
 </div><!--header-->
 <div class="contents">
 
-<p>Двойной HP-бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA) на uGUI.  
+<p>Надголовный HP/щит-бар на uGUI (world-space).  
  <a href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Presentation.HealthBarView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView__inherit__graph.svg" width="194" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView__inherit__graph.svg" width="194" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Presentation.HealthBarView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView__coll__graph.svg" width="194" height="244"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView__coll__graph.svg" width="194" height="264"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aea59438517d7172e03813e8ca661ef36" id="r_aea59438517d7172e03813e8ca661ef36"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#aea59438517d7172e03813e8ca661ef36">SetMainColor</a> (Color <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">color</a>)</td></tr>
-<tr class="memdesc:aea59438517d7172e03813e8ca661ef36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Задать цвет основного слоя по принадлежности к смотрящему (из <code>CombatColorPalette</code>).  <br /></td></tr>
+<tr class="memdesc:aea59438517d7172e03813e8ca661ef36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цвет HP по принадлежности к смотрящему (из <code>CombatColorPalette</code>).  <br /></td></tr>
 <tr class="separator:aea59438517d7172e03813e8ca661ef36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04f93e4c175787fa71183bed10a5a4fa" id="r_a04f93e4c175787fa71183bed10a5a4fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#a04f93e4c175787fa71183bed10a5a4fa">SetShieldColor</a> (Color <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">color</a>)</td></tr>
+<tr class="memdesc:a04f93e4c175787fa71183bed10a5a4fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цвет щита (из <code>CombatColorPalette</code>, общий для всех).  <br /></td></tr>
+<tr class="separator:a04f93e4c175787fa71183bed10a5a4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:addca237a220d26640e8bef0b174d1134" id="r_addca237a220d26640e8bef0b174d1134"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#addca237a220d26640e8bef0b174d1134">Bind</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">unit</a>)</td></tr>
-<tr class="memdesc:addca237a220d26640e8bef0b174d1134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Привязать к юниту: оба слоя — на текущую долю мгновенно.  <br /></td></tr>
+<tr class="memdesc:addca237a220d26640e8bef0b174d1134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Привязать к юниту: доли — на текущее состояние мгновенно, trail без догона.  <br /></td></tr>
 <tr class="separator:addca237a220d26640e8bef0b174d1134"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0f426c83b1ecfeb629eb62bf7cd7598" id="r_ae0f426c83b1ecfeb629eb62bf7cd7598"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#ae0f426c83b1ecfeb629eb62bf7cd7598">UpdateBar</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">currentHp</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">maxHp</a>)</td></tr>
-<tr class="memdesc:ae0f426c83b1ecfeb629eb62bf7cd7598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновить истинную долю HP (поллинг из UnitView каждый кадр).  <br /></td></tr>
-<tr class="separator:ae0f426c83b1ecfeb629eb62bf7cd7598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfa37ca3f71f8e714ed3e65272ba35cc" id="r_adfa37ca3f71f8e714ed3e65272ba35cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#adfa37ca3f71f8e714ed3e65272ba35cc">UpdateBar</a> (<a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">currentHp</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">maxHp</a>, <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a> <a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">shield</a>)</td></tr>
+<tr class="memdesc:adfa37ca3f71f8e714ed3e65272ba35cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Обновить состояние (поллинг из UnitView каждый кадр).  <br /></td></tr>
+<tr class="separator:adfa37ca3f71f8e714ed3e65272ba35cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Двойной HP-бар (истинный + догоняющий «призрак», как в Dark Souls / MOBA) на uGUI. </p>
-<p>Истинная доля ставится мгновенно поллингом из UnitView; призрак плавно догоняет её по рендер-времени (НЕ сим — на чек-сумму не влияет).</p>
-<p>Оба слоя — Image с типом Filled (Horizontal, origin Left): доля = <code>fillAmount</code>. Порядок в иерархии: Background → TrailFill → MainFill (main рисуется поверх trail). Спереди видна МЕНЬШАЯ доля (main, зелёный/красный), сзади — БОЛЬШАЯ (trail), поэтому видна цветная «дельта»: • урон (target &lt; ghost): дельта [target, ghost] цветом _damageTrailColor; • хил (target &gt; ghost): дельта [ghost, target] цветом _healTrailColor. </p>
+<div class="textblock"><p>Надголовный HP/щит-бар на uGUI (world-space). </p>
+<p>Один Image с кастомным шейдером <code>Guildmaster/UI/SegmentedHealthBar</code> рисует за проход HP, щит, пустоту, chip-дельту урона/хила и насечки. Насечки — фиксированного ЗНАЧЕНИЯ (_tickValue EHP на насечку): их частота (<code>scale / tickValue</code>) растёт вместе с суммарным EHP, ширина бара при этом не меняется (трюк LoL).</p>
+<p>Нормировка: <code>scale = max(maxHP, HP+щит, trail)</code>. Без щита <code>scale = maxHP</code> — насечки как в LoL; щит появился — сгустились, доля цвета показывает соотношение HP↔щит.</p>
+<p>Разделение источников (чтобы материал был песочницей): <b>код</b> гонит только динамику (доли, плотность насечек) и цвета HP/щита из палитры; <b>материал</b> владеет статичным видом (цвета пустоты/урона/хила/насечек, толщина насечек) — крути его слайдеры в edit-mode и видишь бар живьём, эти же значения идут в бой. Всё гонится в per-instance материал по рендер-времени (НЕ по сим-тику — на чек-сумму не влияет).</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="addca237a220d26640e8bef0b174d1134" name="addca237a220d26640e8bef0b174d1134"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#addca237a220d26640e8bef0b174d1134">&#9670;&#160;</a></span>Bind()</h2>
@@ -152,7 +156,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Привязать к юниту: оба слоя — на текущую долю мгновенно. </p>
+<p>Привязать к юниту: доли — на текущее состояние мгновенно, trail без догона. </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -185,8 +189,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Задать цвет основного слоя по принадлежности к смотрящему (из <code>CombatColorPalette</code>). </p>
-<p>Пока не вызван — бар использует _fallbackColor. </p>
+<p>Цвет HP по принадлежности к смотрящему (из <code>CombatColorPalette</code>). </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -195,8 +198,41 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ae0f426c83b1ecfeb629eb62bf7cd7598" name="ae0f426c83b1ecfeb629eb62bf7cd7598"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0f426c83b1ecfeb629eb62bf7cd7598">&#9670;&#160;</a></span>UpdateBar()</h2>
+<a id="a04f93e4c175787fa71183bed10a5a4fa" name="a04f93e4c175787fa71183bed10a5a4fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04f93e4c175787fa71183bed10a5a4fa">&#9670;&#160;</a></span>SetShieldColor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">void</a> Guildmaster.Presentation.HealthBarView.SetShieldColor </td>
+          <td>(</td>
+          <td class="paramtype">Color&#160;</td>
+          <td class="paramname"><em>color</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Цвет щита (из <code>CombatColorPalette</code>, общий для всех). </p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView_a04f93e4c175787fa71183bed10a5a4fa_icgraph.svg" width="467" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="adfa37ca3f71f8e714ed3e65272ba35cc" name="adfa37ca3f71f8e714ed3e65272ba35cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfa37ca3f71f8e714ed3e65272ba35cc">&#9670;&#160;</a></span>UpdateBar()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -214,7 +250,13 @@ Here is the caller graph for this function:</div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td>
-          <td class="paramname"><em>maxHp</em>&#160;</td>
+          <td class="paramname"><em>maxHp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a004bf6c9a40003140292e97330236c53">float</a>&#160;</td>
+          <td class="paramname"><em>shield</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -229,11 +271,11 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>Обновить истинную долю HP (поллинг из UnitView каждый кадр). </p>
+<p>Обновить состояние (поллинг из UnitView каждый кадр). </p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView_ae0f426c83b1ecfeb629eb62bf7cd7598_icgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Presentation_1_1HealthBarView_adfa37ca3f71f8e714ed3e65272ba35cc_icgraph.svg" width="464" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

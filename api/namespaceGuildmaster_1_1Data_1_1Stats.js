@@ -7,7 +7,8 @@ var namespaceGuildmaster_1_1Data_1_1Stats =
     [ "ModifierOp", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0de", [
       [ "Flat", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea745e3db6a7ffd50e1a72b39482f0882d", null ],
       [ "PercentAdd", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea262a238a3da28a9ce8691194cf49d482", null ],
-      [ "PercentMult", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea2cc82caaddc987b7de92f0308b925ca5", null ]
+      [ "PercentMult", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea2cc82caaddc987b7de92f0308b925ca5", null ],
+      [ "Override", "namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea6da8e67225fdcfa78c3ea5dc3154b849", null ]
     ] ],
     [ "StatType", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284", [
       [ "MaxHP", "namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7328467362e04fb994455aeb50ac0449", null ],

@@ -145,6 +145,9 @@ Events</h2></td></tr>
 <tr class="memitem:a3169aaabda1fde22720d0c2bd6c55f1d" id="r_a3169aaabda1fde22720d0c2bd6c55f1d"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a3169aaabda1fde22720d0c2bd6c55f1d">GameSpeedCycleRequested</a></td></tr>
 <tr class="memdesc:a3169aaabda1fde22720d0c2bd6c55f1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Циклически сменить скорость боя (.): 1x → 2x → 3x → 1x.  <br /></td></tr>
 <tr class="separator:a3169aaabda1fde22720d0c2bd6c55f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbfc977da2284efc84481963d7ade147" id="r_abbfc977da2284efc84481963d7ade147"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#abbfc977da2284efc84481963d7ade147">MenuToggleRequested</a></td></tr>
+<tr class="memdesc:abbfc977da2284efc84481963d7ade147"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть/закрыть системное меню (Escape).  <br /></td></tr>
+<tr class="separator:abbfc977da2284efc84481963d7ade147"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Единая точка ввода игрока (вики «16» §2). </p>
@@ -309,6 +312,23 @@ Events</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Циклически сменить скорость боя (.): 1x → 2x → 3x → 1x. </p>
+
+</div>
+</div>
+<a id="abbfc977da2284efc84481963d7ade147" name="abbfc977da2284efc84481963d7ade147"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abbfc977da2284efc84481963d7ade147">&#9670;&#160;</a></span>MenuToggleRequested</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Core.Input.IInputService.MenuToggleRequested</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Открыть/закрыть системное меню (Escape). </p>
+<p>Это ОВЕРЛЕЙ, НЕ пауза (в хост-авторитативном коопе мир одному игроку не остановить; боевая пауза — отдельно на Space). Доступно из любого контекста и НЕ глушится GameplaySuppressed — иначе открытое меню нельзя закрыть. </p>
 
 </div>
 </div>

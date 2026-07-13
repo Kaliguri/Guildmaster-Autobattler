@@ -135,7 +135,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Рантайм стат-объект юнита. </p>
-<p>Хранит группы модификаторов по источнику, вычисляет итог по формуле <code>(base + ΣFlat) × (1 + ΣPercentAdd) × Π(1 + PercentMult)</code> и кэширует результат с инвалидацией по dirty-флагу (вики «10» §5.2, «11» §1). </p>
+<p>Хранит группы модификаторов по источнику, вычисляет итог по формуле <code>(baseTerm + ΣFlat) × (1 + ΣPercentAdd) × Π(1 + PercentMult)</code>, где <code>baseTerm = Override (если задан) ИНАЧЕ дефолт StatsConfig</code>, и кэширует результат с инвалидацией по dirty-флагу (вики «10» §5.2, «11» §1). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6bab4f42d41719cdce2a3b76a64f24b6" name="a6bab4f42d41719cdce2a3b76a64f24b6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6bab4f42d41719cdce2a3b76a64f24b6">&#9670;&#160;</a></span>Stats()</h2>

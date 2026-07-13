@@ -11,6 +11,7 @@ var classGuildmaster_1_1Presentation_1_1UnitView =
     [ "OnHitstop", "classGuildmaster_1_1Presentation_1_1UnitView.html#a656c42f5e2fdbe8a6c0b3f28cf6be827", null ],
     [ "SetHealthColor", "classGuildmaster_1_1Presentation_1_1UnitView.html#ab0dc8b6fe16fc87631a7c087aff11550", null ],
     [ "SetLabel", "classGuildmaster_1_1Presentation_1_1UnitView.html#a0f0ae1200d3f3e7c13dfc45a0bf25154", null ],
+    [ "SetShieldColor", "classGuildmaster_1_1Presentation_1_1UnitView.html#a2cf1faea0e2ac5e64199d8ddcb8fed65", null ],
     [ "SetTint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a871086ece5d0cc216dfcfa74353fa22b", null ],
     [ "UpdateInterpolation", "classGuildmaster_1_1Presentation_1_1UnitView.html#a25961c760cc2434fa8f210178cf3e8e3", null ],
     [ "BodySortingLayerId", "classGuildmaster_1_1Presentation_1_1UnitView.html#a6c2a38c9137a0fea7037b84660e95a81", null ],

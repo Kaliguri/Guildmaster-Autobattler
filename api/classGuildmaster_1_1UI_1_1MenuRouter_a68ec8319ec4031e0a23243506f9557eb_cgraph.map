@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.MenuRouter.ToggleSystemMenu" name="Guildmaster.UI.MenuRouter.ToggleSystemMenu">
+<area shape="rect" id="Node000001" title="ESC: пусто → открыть системное меню; вложенный экран → назад; корневой → закрыть всё." alt="" coords="5,5,211,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1MenuRouter.html#afa78f908f2bd7c7994d89f528cce385c" title="Закрыть все экраны и снять глушение ввода." alt="" coords="259,5,464,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,23,245,23,245,28,211,28"/>
+</map>

@@ -113,8 +113,8 @@ Collaboration diagram for Guildmaster.Game.Services.CombatFeelDirector:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8c5cae5ae31a7b69e1b90a72e834becc" id="r_a8c5cae5ae31a7b69e1b90a72e834becc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html#a8c5cae5ae31a7b69e1b90a72e834becc">CombatFeelDirector</a> (ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html">DamageDealtEvent</a> &gt; damageSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a> &gt; endedSub, <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html">TimeScaleService</a> time, <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html">IScreenShake</a> shake, <a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">CombatFeelConfig</a> cfg)</td></tr>
-<tr class="separator:a8c5cae5ae31a7b69e1b90a72e834becc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4247fc060f5c4566d10d9c637e560f0b" id="r_a4247fc060f5c4566d10d9c637e560f0b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html#a4247fc060f5c4566d10d9c637e560f0b">CombatFeelDirector</a> (ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html">DamageDealtEvent</a> &gt; damageSub, ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a> &gt; endedSub, <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> sim, <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html">TimeScaleService</a> time, <a class="el" href="interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html">IScreenShake</a> shake, <a class="el" href="classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html">CombatFeelConfig</a> cfg)</td></tr>
+<tr class="separator:a4247fc060f5c4566d10d9c637e560f0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a722cd7947acd8f168bc3636cd4f39414" id="r_a722cd7947acd8f168bc3636cd4f39414"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html#a722cd7947acd8f168bc3636cd4f39414">Start</a> ()</td></tr>
 <tr class="separator:a722cd7947acd8f168bc3636cd4f39414"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06385caa2b4e6b2f08831327f33fb23d" id="r_a06385caa2b4e6b2f08831327f33fb23d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html#a06385caa2b4e6b2f08831327f33fb23d">Dispose</a> ()</td></tr>
@@ -124,8 +124,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Режиссёр «сочности» боя: единая политика ЗНАЧИМОСТИ поверх sim-событий. </p>
 <p>Одно место решает, какое событие достойно global-эффекта (slowmo, дальше — screenshake), чтобы это не растекалось по UnitView. Per-hit локальный фидбэк (вспышка/сплющивание/hitstop) остаётся в презентации; сюда приходят только КРУПНЫЕ моменты — добивающий удар и конец боя. Подписка на MessagePipe (развязка от симуляции, как у <code>AudioPresenter</code>). Крита в модели нет — «момент» = <code>KilledTarget</code>. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8c5cae5ae31a7b69e1b90a72e834becc" name="a8c5cae5ae31a7b69e1b90a72e834becc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c5cae5ae31a7b69e1b90a72e834becc">&#9670;&#160;</a></span>CombatFeelDirector()</h2>
+<a id="a4247fc060f5c4566d10d9c637e560f0b" name="a4247fc060f5c4566d10d9c637e560f0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4247fc060f5c4566d10d9c637e560f0b">&#9670;&#160;</a></span>CombatFeelDirector()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -144,6 +144,12 @@ Public Member Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">ISubscriber&lt; <a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a> &gt;&#160;</td>
           <td class="paramname"><em>endedSub</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a>&#160;</td>
+          <td class="paramname"><em>sim</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -184,6 +190,9 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void Guildmaster.Game.Services.CombatFeelDirector.Dispose </td>
@@ -192,12 +201,12 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector_a06385caa2b4e6b2f08831327f33fb23d_cgraph.svg" width="486" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>

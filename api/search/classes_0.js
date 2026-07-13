@@ -14,7 +14,10 @@ var searchData=
   ['arenalayoutdata_11',['ArenaLayoutData',['../classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html',1,'Guildmaster::Core::Arena']]],
   ['attacktiming_12',['AttackTiming',['../classGuildmaster_1_1Combat_1_1AttackTiming.html',1,'Guildmaster::Combat']]],
   ['audiocatalog_13',['AudioCatalog',['../classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html',1,'Guildmaster::Presentation::Audio']]],
-  ['audiopresenter_14',['AudioPresenter',['../classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html',1,'Guildmaster::Presentation::Audio']]],
-  ['audioresolver_15',['AudioResolver',['../classGuildmaster_1_1Presentation_1_1Audio_1_1AudioResolver.html',1,'Guildmaster::Presentation::Audio']]],
-  ['autoattacksystem_16',['AutoAttackSystem',['../classGuildmaster_1_1Combat_1_1AutoAttackSystem.html',1,'Guildmaster::Combat']]]
+  ['audiocatalogpopulator_14',['AudioCatalogPopulator',['../classGuildmaster_1_1Audio_1_1Editor_1_1AudioCatalogPopulator.html',1,'Guildmaster::Audio::Editor']]],
+  ['audioparameters_15',['AudioParameters',['../classGuildmaster_1_1Core_1_1Audio_1_1AudioParameters.html',1,'Guildmaster::Core::Audio']]],
+  ['audiopresenter_16',['AudioPresenter',['../classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html',1,'Guildmaster::Presentation::Audio']]],
+  ['audioresolver_17',['AudioResolver',['../classGuildmaster_1_1Presentation_1_1Audio_1_1AudioResolver.html',1,'Guildmaster::Presentation::Audio']]],
+  ['audiovolumesettings_18',['AudioVolumeSettings',['../structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html',1,'Guildmaster::Core::Settings']]],
+  ['autoattacksystem_19',['AutoAttackSystem',['../classGuildmaster_1_1Combat_1_1AutoAttackSystem.html',1,'Guildmaster::Combat']]]
 ];

@@ -1,3 +1,51 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$classGuildmaster_1_1Presentation_1_1UnitAnimationSelector.html" title="Чистая проекция «состояние сима → состояние анимации» (спайк S4, вики «13» §5)." alt="" coords="5,5,196,45"/>
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html" title="Тряска боевой камеры по запросу режиссёра (CombatFeelDirector)." alt="" coords="5,37,196,77"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Presentation_1_1CameraModeController.html" title="Управляет режимами камеры и потребляет IInputService (вики «16» §5)." alt="" coords="274,69,465,109"/>
+<area shape="poly" id="edge61_Node000000_Node000001" title=" " alt="" coords="210,68,274,75,274,81,210,73"/>
+<area shape="rect" id="Node000024" href="$classGuildmaster_1_1Presentation_1_1NullScreenShake.html" title="Заглушка тряски: подставляется, когда камеры&#45;рига в сцене нет (бой не должен падать из&#45;за визуала)." alt="" coords="274,5,465,45"/>
+<area shape="poly" id="edge62_Node000000_Node000024" title=" " alt="" coords="210,42,274,34,274,39,210,47"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="39,735,163,761"/>
+<area shape="poly" id="edge68_Node000002_Node000001" title=" " alt="" coords="102,721,116,594,143,413,162,321,185,236,211,167,226,140,242,119,272,99,275,104,246,123,231,143,216,169,190,238,167,322,148,414,121,595,107,721"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1DevTools_1_1CombatUnitDebugView.html" title="Инспектор состояния всех юнитов симуляции в реальном времени." alt="" coords="260,133,479,173"/>
+<area shape="poly" id="edge63_Node000002_Node000003" title=" " alt="" coords="102,722,118,607,147,445,166,363,189,287,214,226,242,184,258,171,261,175,246,187,218,228,194,289,172,364,152,446,124,607,108,722"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html" title="Набор отладочных команд Quantum Console для Фазы 1 (вики «10» §9)." alt="" coords="245,197,493,237"/>
+<area shape="poly" id="edge64_Node000002_Node000004" title=" " alt="" coords="98,722,101,632,107,571,118,504,136,435,161,367,196,303,242,247,258,235,261,240,246,251,201,306,166,369,141,437,123,505,112,571,106,632,104,722"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html" title="Авторинг арены в сцене/префабе: задаёт границы поля и зоны расстановки, рисует их гизмо." alt="" coords="254,261,485,301"/>
+<area shape="poly" id="edge65_Node000002_Node000005" title=" " alt="" coords="100,721,106,642,114,589,126,531,144,472,169,413,201,359,242,311,258,299,262,304,246,315,205,362,173,416,149,473,131,532,119,590,111,642,105,722"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1GameBootstrap.html" title="Точка старта: поднимает RootLifetimeScope и запускает GameFlow.BootAsync." alt="" coords="244,326,495,351"/>
+<area shape="poly" id="edge66_Node000002_Node000006" title=" " alt="" coords="101,721,109,649,131,552,149,500,173,449,204,402,242,362,262,349,265,354,246,366,208,406,178,452,154,502,136,553,114,650,106,722"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Net_1_1FacepunchTransportBootstrap.html" title="Инициализирует Steam через Facepunch.Steamworks и Netcode for GameObjects." alt="" coords="269,376,469,416"/>
+<area shape="poly" id="edge67_Node000002_Node000007" title=" " alt="" coords="103,721,116,661,141,581,159,538,182,497,210,459,242,426,268,410,270,415,246,430,214,463,187,500,164,541,146,583,121,662,108,722"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html" title="Dev&#45;оверлей зон удара (вики «13» шаг 4): при линейной авто&#45;атаке и круговой активке рисует форму чере..." alt="" coords="274,440,465,480"/>
+<area shape="poly" id="edge69_Node000002_Node000008" title=" " alt="" coords="106,721,123,671,150,609,190,545,214,515,242,490,272,473,275,478,246,494,218,519,194,548,155,611,128,673,111,723"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html" title="Debug&#45;слой боя на базе Shapes: spatial hash сетка, радиусы атак, снаряды." alt="" coords="274,504,465,544"/>
+<area shape="poly" id="edge70_Node000002_Node000009" title=" " alt="" coords="111,721,131,684,160,638,198,592,243,554,272,539,275,543,245,558,201,596,165,641,136,686,116,724"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html" title="Цель слежения для экшн&#45;камеры (вики «16» §5): каждый кадр ставит свой transform в сглаженный центроид..." alt="" coords="274,568,465,608"/>
+<area shape="poly" id="edge71_Node000002_Node000010" title=" " alt="" coords="119,723,171,670,205,642,243,618,272,605,274,610,245,622,209,646,175,674,123,727"/>
+<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Presentation_1_1CombatPresenter.html" title="Мост «симуляция → презентация»." alt="" coords="274,632,465,672"/>
+<area shape="poly" id="edge72_Node000002_Node000011" title=" " alt="" coords="138,727,243,681,281,670,283,675,245,687,140,732"/>
+<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html" title="Dev&#45;подсветка статусов юнитов кольцами Shapes: метка/стан/щит/заморозка/усиление." alt="" coords="274,696,465,736"/>
+<area shape="poly" id="edge73_Node000002_Node000012" title=" " alt="" coords="176,736,274,725,274,730,177,742"/>
+<area shape="rect" id="Node000013" href="$classGuildmaster_1_1Presentation_1_1CombatVfx.html" title="Пул и спавн пиксельных боевых VFX&#45;брызгов (PixelBurst)." alt="" coords="274,760,465,800"/>
+<area shape="poly" id="edge74_Node000002_Node000013" title=" " alt="" coords="177,754,274,766,274,771,176,760"/>
+<area shape="rect" id="Node000014" href="$classGuildmaster_1_1Presentation_1_1DeathShatter.html" title="Разлёт спрайта юнита на осколки при смерти." alt="" coords="274,824,465,864"/>
+<area shape="poly" id="edge75_Node000002_Node000014" title=" " alt="" coords="140,764,245,809,283,821,281,826,243,815,138,769"/>
+<area shape="rect" id="Node000015" href="$classGuildmaster_1_1Presentation_1_1FloatingText.html" title="Своя всплывающая боевая цифра (урон/хил) — один общий префаб с TMP&#45;текстом." alt="" coords="274,888,465,928"/>
+<area shape="poly" id="edge76_Node000002_Node000015" title=" " alt="" coords="123,769,175,822,209,850,245,874,274,886,272,891,243,878,205,854,171,826,119,773"/>
+<area shape="rect" id="Node000016" href="$classGuildmaster_1_1Presentation_1_1HealthBarView.html" title="Надголовный HP/щит&#45;бар на uGUI (world&#45;space)." alt="" coords="274,952,465,992"/>
+<area shape="poly" id="edge77_Node000002_Node000016" title=" " alt="" coords="116,772,136,810,165,855,201,900,245,938,275,953,272,957,243,942,198,904,160,858,131,812,111,775"/>
+<area shape="rect" id="Node000017" href="$classGuildmaster_1_1Presentation_1_1ManaBarView.html" title="Сегментированный бар ресурса (мана/ярость) на том же шейдере, что и HP&#45;бар (Guildmaster/UI/SegmentedH..." alt="" coords="274,1016,465,1056"/>
+<area shape="poly" id="edge78_Node000002_Node000017" title=" " alt="" coords="111,773,128,823,155,885,194,948,218,977,246,1002,275,1018,272,1023,242,1006,214,981,190,951,150,887,123,825,106,775"/>
+<area shape="rect" id="Node000018" href="$classGuildmaster_1_1Presentation_1_1PixelBurst.html" title="Один пиксельный «брызг» частиц (hit&#45;spark / muzzle / dust / heal)." alt="" coords="274,1080,465,1120"/>
+<area shape="poly" id="edge79_Node000002_Node000018" title=" " alt="" coords="108,774,121,834,146,913,164,955,187,996,214,1033,246,1066,275,1083,272,1088,242,1070,210,1037,182,999,159,958,141,915,116,835,103,775"/>
+<area shape="rect" id="Node000019" href="$classGuildmaster_1_1Presentation_1_1ProjectileView.html" title="World&#45;space вид снаряда (Bullet)." alt="" coords="274,1144,465,1184"/>
+<area shape="poly" id="edge80_Node000002_Node000019" title=" " alt="" coords="106,774,115,846,138,942,156,993,179,1043,209,1090,246,1130,275,1148,272,1152,242,1134,205,1093,175,1046,151,995,133,943,110,846,101,775"/>
+<area shape="rect" id="Node000020" href="$classGuildmaster_1_1Presentation_1_1UnitView.html" title="World&#45;space визуальное представление RuntimeUnit." alt="" coords="274,1208,465,1248"/>
+<area shape="poly" id="edge81_Node000002_Node000020" title=" " alt="" coords="105,775,110,856,118,911,130,970,147,1030,172,1090,204,1146,246,1194,275,1213,272,1217,242,1198,200,1149,167,1093,142,1032,124,971,112,911,105,857,99,775"/>
+<area shape="rect" id="Node000021" href="$classGuildmaster_1_1Presentation_1_1YSortSprite.html" title="Y&#45;сортировка спрайта: каждый кадр ставит SpriteRenderer.sortingOrder по мировой Y — кто ниже (ближе к..." alt="" coords="274,1272,465,1312"/>
+<area shape="poly" id="edge82_Node000002_Node000021" title=" " alt="" coords="108,774,126,880,156,1026,175,1100,197,1167,220,1222,246,1258,275,1277,272,1281,242,1262,216,1224,192,1169,170,1101,151,1027,121,881,103,775"/>
+<area shape="rect" id="Node000022" href="$classGuildmaster_1_1UI_1_1IntegerPanelScaler.html" title="Держит UI Toolkit&#45;панель на ЦЕЛОМ множителе масштаба — ключ к хрусткому пиксель&#45;арту." alt="" coords="267,1336,471,1376"/>
+<area shape="poly" id="edge83_Node000002_Node000022" title=" " alt="" coords="108,774,123,892,152,1057,171,1141,193,1218,218,1280,232,1304,246,1322,269,1338,266,1343,242,1326,227,1307,213,1283,188,1219,166,1142,146,1058,118,893,102,775"/>
+<area shape="rect" id="Node000023" href="$classGuildmaster_1_1UI_1_1UiRootBootstrap.html" title="Точка входа рантайм&#45;UI: держит постоянный UIDocument (в CoreScene, живёт всю сессию),..." alt="" coords="254,1401,485,1426"/>
+<area shape="poly" id="edge84_Node000002_Node000023" title=" " alt="" coords="107,775,120,904,146,1089,165,1183,188,1270,215,1340,230,1366,246,1386,262,1398,259,1403,242,1390,226,1369,210,1342,183,1271,160,1185,141,1090,115,905,101,775"/>
 </map>

@@ -1,5 +1,7 @@
 <map id="Guildmaster.Presentation.Audio.AudioResolver.ActionKey" name="Guildmaster.Presentation.Audio.AudioResolver.ActionKey">
-<area shape="rect" id="Node000001" title="Строковый вид действия для ключа (attack/hit/death/cast/ui)." alt="" coords="265,5,491,45"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Audio_1_1AudioResolver.html#a37363a8f44b09af1977219e998ba3894" title="Ключ для проигрывания, либо null = тишина (нет ни точной записи, ни дефолта)." alt="" coords="5,5,217,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="252,28,218,28,218,23,252,23"/>
+<area shape="rect" id="Node000001" title="Строковый вид действия для ключа (attack/hit/death/cast/ui)." alt="" coords="287,37,512,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Presentation_1_1Audio_1_1AudioResolver.html#a37363a8f44b09af1977219e998ba3894" title="Ключ для проигрывания, либо null = тишина (нет ни точной записи, ни дефолта)." alt="" coords="16,5,228,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="272,45,228,40,229,35,273,40"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html#aebea6b38c0014e89399defa4f4dff563" title="Резолвнутый ключ (AudioResolver.Resolve) → FMOD&#45;событие: точная запись ({contentId}." alt="" coords="5,69,239,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="273,75,239,79,239,73,273,69"/>
 </map>
