@@ -590,11 +590,15 @@ namespace Guildmaster.Presentation
         {
             _onDeathFeedback?.Invoke();
 
+            // Прячем бары сразу — над трупом HP/ресурс не нужны (иначе висят и выглядит странно).
+            if (_healthBar != null) _healthBar.gameObject.SetActive(false);
+            if (_manaBar   != null) _manaBar.gameObject.SetActive(false);
+
             if (_animActive)
             {
                 _isDead = true;
-                AnimationClip death = _visual.Clip(UnitAnimationState.Death);
-                _deathRemaining = death != null ? death.length : 0f;
+                AnimationClip death = _visual != null ? _visual.Clip(UnitAnimationState.Death) : null;
+                _deathRemaining = death != null ? death.length : 1f; // нет длины → держим ~1с и прячемся
                 if (_deathRemaining <= 0f) gameObject.SetActive(false); // нет death-клипа → прячемся сразу
             }
             else
