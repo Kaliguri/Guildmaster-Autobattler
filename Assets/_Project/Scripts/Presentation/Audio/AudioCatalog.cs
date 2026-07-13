@@ -58,6 +58,18 @@ namespace Guildmaster.Presentation.Audio
         /// (<c>{contentId}.{action}</c>) либо дефолт действия (строка действия, напр. <c>hit</c>).
         /// Возвращает <c>false</c>, если события нет ИЛИ ссылка пустая (нет банка) — вызывающий молчит.
         /// </summary>
+#if UNITY_EDITOR
+        /// <summary>
+        /// Editor-only: перезаписать содержимое каталога (наполнение из FMOD-манифеста, вики impl «09» §П5).
+        /// Не для рантайма — только инструмент AudioCatalogPopulator. Вызывающий сам делает SetDirty/SaveAssets.
+        /// </summary>
+        public void EditorSetContents(Entry[] entries, ActionDefault[] defaults)
+        {
+            _entries = entries ?? Array.Empty<Entry>();
+            _defaults = defaults ?? Array.Empty<ActionDefault>();
+        }
+#endif
+
         public bool TryGetEvent(string key, out EventReference evt)
         {
             if (!string.IsNullOrEmpty(key))

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EventFolder" id="{6d157534-59e5-429b-b759-9b3036d5269a}">
+		<property name="name">
+			<value>frozen</value>
+		</property>
+		<relationship name="folder">
+			<destination>{56dabe35-7212-4c2b-bfae-f32cd56ad75b}</destination>
+		</relationship>
+	</object>
+</objects>

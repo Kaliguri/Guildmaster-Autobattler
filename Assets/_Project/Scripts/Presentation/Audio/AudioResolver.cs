@@ -18,12 +18,20 @@ namespace Guildmaster.Presentation.Audio
         /// <summary>Строковый вид действия для ключа (<c>attack</c>/<c>hit</c>/<c>death</c>/<c>cast</c>/<c>ui</c>).</summary>
         public static string ActionKey(AudioAction action) => action switch
         {
-            AudioAction.Attack => "attack",
-            AudioAction.Hit    => "hit",
-            AudioAction.Death  => "death",
-            AudioAction.Cast   => "cast",
-            AudioAction.Ui     => "ui",
-            _                  => action.ToString().ToLowerInvariant(),
+            AudioAction.Attack  => "attack",
+            AudioAction.Hit     => "hit",
+            AudioAction.Death   => "death",
+            AudioAction.Cast    => "cast",
+            AudioAction.Ui      => "ui",
+            AudioAction.Fire    => "fire",
+            AudioAction.Evade   => "evade",
+            AudioAction.Shield  => "shield",
+            AudioAction.Heal    => "heal",
+            AudioAction.Apply   => "apply",
+            AudioAction.Expire  => "expire",
+            AudioAction.Tick    => "tick",
+            AudioAction.Stinger => "stinger",
+            _                   => action.ToString().ToLowerInvariant(),
         };
 
         /// <summary>Ключ для проигрывания, либо <c>null</c> = тишина (нет ни точной записи, ни дефолта).</summary>

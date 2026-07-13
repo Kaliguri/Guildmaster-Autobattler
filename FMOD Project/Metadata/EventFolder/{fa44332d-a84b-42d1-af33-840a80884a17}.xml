@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EventFolder" id="{fa44332d-a84b-42d1-af33-840a80884a17}">
+		<property name="name">
+			<value>whirl_monk</value>
+		</property>
+		<relationship name="folder">
+			<destination>{ecbabcc5-7176-4e74-8279-56766e9016b1}</destination>
+		</relationship>
+	</object>
+</objects>
