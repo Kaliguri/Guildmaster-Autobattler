@@ -12,14 +12,15 @@ namespace Guildmaster.Presentation
     /// </summary>
     public sealed class ScreenShake : CinemachineExtension
     {
-        [Tooltip("Смещение камеры в мировых ед. при интенсивности 1.")]
-        [SerializeField] private float _positionStrength = 0.35f;
+        [Tooltip("Смещение как ДОЛЯ обзора камеры (orthoSize) при интенсивности 1 — не зависит от зума. " +
+                 "0.08 = ±8% полувысоты кадра.")]
+        [SerializeField] private float _positionFraction = 0.08f;
         [Tooltip("Крен (roll) в градусах при интенсивности 1.")]
-        [SerializeField] private float _rotationStrength = 1.6f;
+        [SerializeField] private float _rotationStrength = 4f;
         [Tooltip("Частота дрожания (Гц-подобная).")]
-        [SerializeField] private float _frequency = 24f;
-        [Tooltip("Скорость затухания амплитуды в секунду (unscaled).")]
-        [SerializeField] private float _decayPerSec = 3.5f;
+        [SerializeField] private float _frequency = 26f;
+        [Tooltip("Скорость затухания амплитуды в секунду (unscaled). Меньше = дольше трясёт.")]
+        [SerializeField] private float _decayPerSec = 2f;
 
         private float _amplitude;
         private float _seed;
@@ -39,13 +40,16 @@ namespace Guildmaster.Presentation
         {
             if (stage != CinemachineCore.Stage.Finalize || _amplitude <= 0.0001f) return;
 
-            float amp = _amplitude * _amplitude; // квадратичный ease — мягче хвост затухания
+            // Линейная амплитуда (без квадрата — тот втрое резал силу). Сдвиг привязан к обзору камеры
+            // (orthoSize), иначе на широком зуме абсолютные ед. незаметны.
+            float amp   = _amplitude;
+            float ortho = Mathf.Max(state.Lens.OrthographicSize, 1f);
             float t = Time.unscaledTime * _frequency;
             float nx = (Mathf.PerlinNoise(_seed,        t) - 0.5f) * 2f;
             float ny = (Mathf.PerlinNoise(_seed + 19f,  t) - 0.5f) * 2f;
             float nr = (Mathf.PerlinNoise(_seed + 43f,  t) - 0.5f) * 2f;
 
-            state.PositionCorrection    += new Vector3(nx, ny, 0f) * (_positionStrength * amp);
+            state.PositionCorrection    += new Vector3(nx, ny, 0f) * (_positionFraction * ortho * amp);
             state.OrientationCorrection  = state.OrientationCorrection * Quaternion.Euler(0f, 0f, nr * _rotationStrength * amp);
 
             _amplitude = Mathf.Max(0f, _amplitude - _decayPerSec * Time.unscaledDeltaTime);
