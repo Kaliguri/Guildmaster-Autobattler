@@ -47,10 +47,9 @@ namespace Guildmaster.Presentation
         [SerializeField] private UnityEvent _onDeathFeedback;
 
         [Header("Feel — реакция на попадание (LitMotion, код)")]
-        [Tooltip("Материал спрайта с параметром _FlashAmount (Guildmaster/Sprite/HitFlash). " +
-                 "Ставится на спрайт в Bind; пусто = вспышки не будет (обычный .color так не осветлить).")]
-        [SerializeField] private Material _flashMaterial;
-        // Длительности/сила/цвет вспышки и сплющивания — из CombatFeelConfig (ApplyFeelConfig), не с префаба.
+        // Материал вспышки (Guildmaster/Sprite/HitFlash с параметром _FlashAmount) стоит ПРЯМО на Body-спрайте
+        // в префабе — без рантайм-свапа. Свап базового материала ломал per-instance путь спрайта (тинт/флип
+        // не подхватывались до первого MPB). Длительности/сила/цвет вспышки — из CombatFeelConfig (ApplyFeelConfig).
 
         [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
         [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
@@ -135,13 +134,14 @@ namespace Guildmaster.Presentation
             {
                 _sprite.flipX = unit.Team != 0;
 
-                // Материал с flash-параметром: осветлить спрайт в белый через SpriteRenderer.color нельзя
-                // (это множитель), поэтому ставим шейдер с _FlashAmount поверх текстуры.
-                if (_flashMaterial != null) _sprite.sharedMaterial = _flashMaterial;
-
                 // Сплющиваем узел ВЫШЕ Animator (родитель спрайта), иначе кадровая анимация тела его затирает.
                 _squashTarget    = _sprite.transform.parent != null ? _sprite.transform.parent : _sprite.transform;
                 _baseSpriteScale = _squashTarget.localScale;
+
+                // Праймим property block (flash=0) с первого кадра: спрайт с кастомным SRP-batcher-шейдером
+                // включает per-instance путь именно выставленным MPB — иначе тинт/флип не подхватывались до
+                // первого удара (наблюдалось как «юнит без своего цвета/прозрачности, пока не получит урон»).
+                PrimeFlashBlock();
             }
 
             if (_healthBar != null) _healthBar.Bind(unit);
@@ -531,6 +531,20 @@ namespace Guildmaster.Presentation
             c.a = stealthed ? 0.4f : 1f;
             _sprite.color = c;
             ApplyFlash();
+        }
+
+        // Праймит property block один раз в Bind: выставляет _FlashAmount=0, чтобы рендерер спрайта с первого
+        // кадра шёл по per-instance пути (иначе SpriteRenderer.color/flip кастомного SRP-batcher-шейдера не
+        // подхватывались до первой записи MPB). _feel в Bind ещё может быть null — цвет вспышки тут не важен (0).
+        private void PrimeFlashBlock()
+        {
+            if (_sprite == null) return;
+            _mpb ??= new MaterialPropertyBlock();
+            _sprite.GetPropertyBlock(_mpb);
+            _mpb.SetFloat(FlashAmountId, 0f);
+            _mpb.SetColor(FlashColorId, _feel != null ? _feel.FlashColor : Color.white);
+            _sprite.SetPropertyBlock(_mpb);
+            _flashApplied = false;
         }
 
         // Вспышка через MaterialPropertyBlock (per-instance _FlashAmount, без клонирования материала).
