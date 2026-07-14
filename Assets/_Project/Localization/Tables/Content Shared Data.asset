@@ -243,6 +243,38 @@ MonoBehaviour:
     m_Key: effect.overgrowth.name
     m_Metadata:
       m_Items: []
+  - m_Id: 1419809709613056
+    m_Key: event.wandering_merchant.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750400
+    m_Key: event.wandering_merchant.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750401
+    m_Key: event.wandering_merchant.choice0.label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750402
+    m_Key: event.wandering_merchant.choice0.result
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750403
+    m_Key: event.wandering_merchant.choice1.label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750404
+    m_Key: event.wandering_merchant.choice1.result
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750405
+    m_Key: event.wandering_merchant.choice2.label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750406
+    m_Key: event.wandering_merchant.choice2.result
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

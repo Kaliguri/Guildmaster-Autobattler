@@ -173,5 +173,39 @@ namespace Guildmaster.Tests.EditMode.Content
                         $"filled (relic.base for an empty vessel) ({path}).");
             }
         }
+
+        // --- §8 правило 7: последствия ивента ссылаются на существующий контент ---
+
+        [Test]
+        public void TextEvents_EffectContentIdsExist()
+        {
+            // Ловит ровно тот класс багов, что был у демо-ивента: выбор выдавал relic.merchant_trinket,
+            // которой в контенте нет — награда уходила в пустоту, и молча.
+            var ids = new HashSet<string>(AllContent().Select(c => c.Id));
+
+            foreach (TextEventData ev in AllContent().OfType<TextEventData>())
+            {
+                string path = AssetDatabase.GetAssetPath(ev);
+                Assert.IsTrue(ev.Choices.Count >= 2,
+                    $"Text event '{ev.Id}' must offer at least 2 choices ({path}).");
+
+                for (int i = 0; i < ev.Choices.Count; i++)
+                {
+                    foreach (EventEffect effect in ev.Choices[i].Effects)
+                    {
+                        bool needsContent = effect.Kind is EventEffectKind.GrantRelic
+                                                        or EventEffectKind.RemoveRelic
+                                                        or EventEffectKind.GrantItem;
+                        if (!needsContent) continue;
+
+                        Assert.IsFalse(string.IsNullOrEmpty(effect.ContentId),
+                            $"Text event '{ev.Id}' choice {i}: effect {effect.Kind} has an empty content id ({path}).");
+                        Assert.IsTrue(ids.Contains(effect.ContentId),
+                            $"Text event '{ev.Id}' choice {i}: effect {effect.Kind} references unknown content id " +
+                            $"'{effect.ContentId}' ({path}).");
+                    }
+                }
+            }
+        }
     }
 }

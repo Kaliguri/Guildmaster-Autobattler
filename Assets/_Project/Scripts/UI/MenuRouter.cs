@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Input;
+using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,6 +21,7 @@ namespace Guildmaster.UI
         private readonly IInputService _input;
         private readonly SettingsViewModel _settingsVm;
         private readonly LoadoutViewModel _loadoutVm;
+        private readonly ILocalizationService _loc;
 
         private readonly Stack<VisualElement> _stack = new();
         private VisualElement _root;
@@ -28,11 +30,20 @@ namespace Guildmaster.UI
         private VisualTreeAsset _loadoutUxml;
         private InputContext _prevContext;
 
-        public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm)
+        public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
+                          ILocalizationService loc)
         {
             _input = input;
             _settingsVm = settingsVm;
             _loadoutVm = loadoutVm;
+            _loc = loc;
+        }
+
+        /// <summary>Строка по ключу из таблицы Content; фолбэк — если ключа/перевода ещё нет.</summary>
+        private string Text(string key, string fallback)
+        {
+            string value = _loc?.GetString(key);
+            return string.IsNullOrEmpty(value) ? fallback : value;
         }
 
         public bool IsOpen => _stack.Count > 0;
@@ -384,7 +395,7 @@ namespace Guildmaster.UI
             panel.style.maxWidth = 640;
             screen.Add(panel);
 
-            var title = new Label(ev.Title ?? ev.Id);
+            var title = new Label(Text(ev.TitleKey, ev.Id));
             title.AddToClassList("gm-panel__title");
             panel.Add(title);
 
@@ -400,7 +411,7 @@ namespace Guildmaster.UI
                 panel.Add(image);
             }
 
-            var body = new Label(ev.Body);
+            var body = new Label(Text(ev.BodyKey, string.Empty));
             body.style.whiteSpace = WhiteSpace.Normal;
             body.style.marginBottom = 10;
             panel.Add(body);
@@ -429,8 +440,9 @@ namespace Guildmaster.UI
             for (int i = 0; i < choices.Count; i++)
             {
                 int index = i; // захват копии
-                EventChoice choice = choices[i];
-                var btn = new Button(() => { Resolve(index); ShowResult(choice.ResultText); }) { text = choice.Label };
+                string label  = Text(ev.ChoiceLabelKey(i),  $"Вариант {i + 1}");
+                string result = Text(ev.ChoiceResultKey(i), string.Empty);
+                var btn = new Button(() => { Resolve(index); ShowResult(result); }) { text = label };
                 btn.AddToClassList("gm-button");
                 btn.style.marginTop = 4;
                 buttons.Add(btn);

@@ -50,7 +50,7 @@ namespace Guildmaster.Game.Flow
             }
 
             EventChoice chosen = choices[index];
-            Debug.Log($"[TextEventFlow] - ивент '{_event.Id}': выбор [{index}] «{chosen.Label}»");
+            Debug.Log($"[TextEventFlow] - ивент '{_event.Id}': выбор [{index}] ({_event.ChoiceLabelKey(index)})");
             _applier.Apply(chosen.Effects);
             return EventResult.Completed;
         }
