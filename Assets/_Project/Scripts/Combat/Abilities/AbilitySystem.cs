@@ -209,11 +209,18 @@ namespace Guildmaster.Combat
         private static void ApplyAllWithTag(RuntimeUnit caster, AbilityData data, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
         {
             EffectTag tag = data.TriggerTag;
+            float dmg = AbilityDamage(caster, data);
+            DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
+            DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
+
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit u = units[i];
                 if (u.IsDead || u.Team == caster.Team) continue;
                 if ((u.EffectTagMask & tag) == 0) continue;
+
+                // Детонация: урон по каждому тегнутому врагу («Взрыв спор», «Воспламенение»). 0 = только эффекты (крио).
+                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, u, dmg, school, ctx.ArmorK, affinity: affinity));
 
                 ApplyEffects(u, data, caster, ctx);
 

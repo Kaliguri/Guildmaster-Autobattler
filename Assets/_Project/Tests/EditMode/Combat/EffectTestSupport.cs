@@ -68,9 +68,13 @@ namespace Guildmaster.Tests.EditMode.Combat
             float castConditionHpPct = 0.5f,
             float castOverrideSelfHpPct = 0f,
             EffectTag triggerTag = EffectTag.None,
-            bool consumesTriggerTag = false)
+            bool consumesTriggerTag = false,
+            DamageSchoolOverride schoolOverride = DamageSchoolOverride.Inherit,
+            DamageAffinityOverride affinityOverride = DamageAffinityOverride.Inherit)
         {
             var a = new AbilityData();
+            Set(a, "_schoolOverride", schoolOverride);
+            Set(a, "_affinityOverride", affinityOverride);
             Set(a, "_effects", effects ?? System.Array.Empty<EffectData>());
             Set(a, "_baseCooldown", cooldown);
             Set(a, "_resourceCost", cost);
@@ -201,6 +205,9 @@ namespace Guildmaster.Tests.EditMode.Combat
         public float TotalRawDamage;
         public float TotalHealed;
 
+        /// <summary>Юниты, которые вернёт <see cref="QueryUnitsInRadius"/> (фильтр по команде применяется). Пусто = запрос пустой.</summary>
+        public readonly List<RuntimeUnit> UnitsInWorld = new List<RuntimeUnit>();
+
         public MockCombatContext(IRngService rng = null, EffectSystem effects = null)
         {
             _rng = rng ?? new XorShiftRng(1UL);
@@ -217,7 +224,21 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void SpawnProjectile(in ProjectileSpawn spawn) { }
 
         public int QueryUnitsInRadius(
-            Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam) => 0;
+            Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam)
+        {
+            results.Clear();
+            for (int i = 0; i < UnitsInWorld.Count; i++)
+            {
+                RuntimeUnit u = UnitsInWorld[i];
+                if (u.IsDead) continue;
+                if ((u.Position - center).sqrMagnitude > radius * radius) continue;
+                bool enemy = u.Team != requestingTeam;
+                if (filter == TargetFilter.Enemies && !enemy) continue;
+                if (filter == TargetFilter.Allies && enemy) continue;
+                results.Add(u);
+            }
+            return results.Count;
+        }
 
         public int QueryUnitsInLine(
             Vector2 origin, Vector2 direction, float length, float width,

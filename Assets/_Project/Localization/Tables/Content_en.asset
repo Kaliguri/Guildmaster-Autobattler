@@ -176,6 +176,57 @@ MonoBehaviour:
     m_Localized: Plain fighter kit worn by a vessel with no special relic.
     m_Metadata:
       m_Items: []
+  - m_Id: 1407021935222784
+    m_Localized: Druid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137344
+    m_Localized: 'A poison caster: his spores wither the enemy line, then burst all
+      at once.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137345
+    m_Localized: Flame Swordsman
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137346
+    m_Localized: "Every blade hit stokes his speed and sets the target ablaze \u2014
+      at the cost of his own blood."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137347
+    m_Localized: Treant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137348
+    m_Localized: 'A living wall: the tougher his bark, the more the thorns bite back
+      at everyone around.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137349
+    m_Localized: Fungal Spores
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137350
+    m_Localized: Burning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137351
+    m_Localized: Blazing Blades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137352
+    m_Localized: Blazing Blades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137353
+    m_Localized: Spiked Tree
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137354
+    m_Localized: Overgrowth
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -195,6 +195,54 @@ MonoBehaviour:
     m_Key: item.war_banner.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 1407021935222784
+    m_Key: relic.druid.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137344
+    m_Key: relic.druid.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137345
+    m_Key: relic.flame_swordsman.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137346
+    m_Key: relic.flame_swordsman.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137347
+    m_Key: relic.treant.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137348
+    m_Key: relic.treant.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137349
+    m_Key: effect.spore_cloud.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137350
+    m_Key: effect.burn.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137351
+    m_Key: effect.blazing_blades.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137352
+    m_Key: effect.blazing_blades_ramp.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137353
+    m_Key: effect.spiked_tree.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137354
+    m_Key: effect.overgrowth.name
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

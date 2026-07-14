@@ -43,16 +43,21 @@ namespace Guildmaster.Combat.Effects
         /// <summary>Теги, релевантные событию: для <see cref="CombatEvent.EffectExpired"/> — теги истёкшего эффекта. Иначе None.</summary>
         public readonly Data.Definitions.EffectTag Tags;
 
+        /// <summary>Урон-события: удар был АВТОАТАКОЙ. Реактивы «на удар клинка» (шипы, разгон атаки) гейтятся
+        /// по этому флагу — иначе их собственный урон порождает новые срабатывания.</summary>
+        public readonly bool IsAutoAttack;
+
         public CombatEventData(CombatEvent type, RuntimeUnit source, RuntimeUnit target, float amount)
             : this(type, source, target, amount, Data.Definitions.EffectTag.None) { }
 
-        public CombatEventData(CombatEvent type, RuntimeUnit source, RuntimeUnit target, float amount, Data.Definitions.EffectTag tags)
+        public CombatEventData(CombatEvent type, RuntimeUnit source, RuntimeUnit target, float amount, Data.Definitions.EffectTag tags, bool isAutoAttack = false)
         {
-            Type   = type;
-            Source = source;
-            Target = target;
-            Amount = amount;
-            Tags   = tags;
+            Type         = type;
+            Source       = source;
+            Target       = target;
+            Amount       = amount;
+            Tags         = tags;
+            IsAutoAttack = isAutoAttack;
         }
     }
 }
