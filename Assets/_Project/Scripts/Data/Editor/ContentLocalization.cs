@@ -43,6 +43,7 @@ namespace Guildmaster.Data.Editor
                 case "tag":
                 case "ai_preset":
                 case "encounter":
+                case "battle_preset":
                     return Array.Empty<string>();
                 case "effect":
                     return def is EffectData e && e.Icon != null ? NameAndDesc : NameOnly;

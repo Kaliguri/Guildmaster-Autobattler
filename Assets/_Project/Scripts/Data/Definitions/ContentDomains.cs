@@ -26,6 +26,7 @@ namespace Guildmaster.Data.Definitions
             { typeof(ItemData),        "item"        },
             { typeof(RunModifierData), "run_mod"     },
             { typeof(EncounterData),   "encounter"   },
+            { typeof(BattlePresetData),"battle_preset"},
         };
 
         /// <summary>Найти домен для типа (точное совпадение или ближайший зарегистрированный предок).</summary>

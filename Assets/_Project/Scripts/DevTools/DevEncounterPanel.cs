@@ -10,11 +10,10 @@ using VContainer.Unity;
 namespace Guildmaster.DevTools
 {
     /// <summary>
-    /// Dev-панель выбора энкаунтера (UI Toolkit; план шаг 1). Список всех <see cref="EncounterData"/> из
-    /// контент-БД, кнопка запуска на каждый; <b>F2</b> — показать/скрыть. Запускает бой через
-    /// <see cref="EncounterLoader"/>. Player-сторона — временная dev-реликвия (заглушка шага 1; в шаге 3
-    /// её сменит ростер <c>BattlePresetData</c>). <b>R</b> (рестарт на месте) идёт через единый владелец
-    /// <see cref="GuildmasterCommands"/> — панель лишь регистрирует свой рестарт (F5-безопасно).
+    /// Dev-панель запуска боёв (UI Toolkit; план шаги 1/3). Два списка: <b>Encounters</b> (только враги —
+    /// player-сторона = временная dev-реликвия) и <b>Battle Presets</b> (враги + свой player-ростер).
+    /// <b>F2</b> — показать/скрыть. Запускает через <see cref="EncounterLoader"/>; <b>R</b> (рестарт на
+    /// месте) идёт через единого владельца <see cref="GuildmasterCommands"/> (F5-безопасно).
     /// </summary>
     /// <remarks>
     /// Повесь на GameObject с <see cref="UIDocument"/> в BattleScene; на UIDocument назначь
@@ -24,12 +23,12 @@ namespace Guildmaster.DevTools
     [RequireComponent(typeof(UIDocument))]
     public sealed class DevEncounterPanel : MonoBehaviour
     {
-        [Header("Dev player side (заглушка шага 1)")]
-        [Tooltip("Временная player-реликвия (team 0), пока нет BattlePreset-ростера (шаг 3). " +
-                 "Пусто = бой без союзников (превью врагов).")]
+        [Header("Dev player side для списка Encounters (заглушка шага 1)")]
+        [Tooltip("Временная player-реликвия (team 0) для запуска ГОЛЫХ энкаунтеров. Пресеты используют свой ростер. " +
+                 "Пусто = энкаунтер без союзников (превью врагов).")]
         [SerializeField] private RelicData _devPlayerRelic;
 
-        [Tooltip("Позиция dev-player-реликвии на арене.")]
+        [Tooltip("Позиция dev-player-реликвии на арене (для списка Encounters).")]
         [SerializeField] private Vector2 _devPlayerPosition = new Vector2(-5f, 0f);
 
         [Tooltip("Показать панель при старте боя.")]
@@ -39,9 +38,10 @@ namespace Guildmaster.DevTools
         private IContentDatabase _content;
         private UIDocument       _document;
 
-        private VisualElement _overlay;      // обёртка в углу (тогглим display)
-        private VisualElement _listContainer;
-        private readonly List<(EncounterData enc, VisualElement row)> _rows = new();
+        private VisualElement _overlay;   // обёртка в углу (тогглим display)
+        private VisualElement _list;
+        private readonly List<(string key, VisualElement row)> _rows = new();
+        private string _activeKey;        // "e:<id>" | "p:<id>" — что запущено последним (подсветка)
         private bool _visible;
 
         [Inject]
@@ -78,7 +78,7 @@ namespace Guildmaster.DevTools
             VisualElement root = _document.rootVisualElement;
             root.Clear();
 
-            // Оверлей-обёртка в левом-верхнем углу — НЕ full-bleed (бой видно). Сама пропускает клики; ловит их панель.
+            // Оверлей в левом-верхнем углу — НЕ full-bleed (бой видно). Сам пропускает клики; ловит их панель.
             _overlay = new VisualElement { pickingMode = PickingMode.Ignore };
             _overlay.style.position = Position.Absolute;
             _overlay.style.left = 8;
@@ -87,11 +87,11 @@ namespace Guildmaster.DevTools
 
             var panel = new VisualElement();
             panel.AddToClassList("gm-panel");
-            panel.style.width = 260;
-            panel.style.maxHeight = 340;
+            panel.style.width = 280;
+            panel.style.maxHeight = 460;
             _overlay.Add(panel);
 
-            var title = new Label("Encounters (dev)");
+            var title = new Label("Battles (dev)");
             title.AddToClassList("gm-panel__title");
             panel.Add(title);
 
@@ -102,7 +102,7 @@ namespace Guildmaster.DevTools
             var scroll = new ScrollView(ScrollViewMode.Vertical);
             scroll.style.flexGrow = 1;
             panel.Add(scroll);
-            _listContainer = scroll.contentContainer;
+            _list = scroll.contentContainer;
 
             PopulateRows();
 
@@ -118,80 +118,129 @@ namespace Guildmaster.DevTools
         private void PopulateRows()
         {
             _rows.Clear();
-            _listContainer.Clear();
+            _list.Clear();
 
             IReadOnlyList<EncounterData> encounters = _content?.All<EncounterData>();
-            if (encounters == null || encounters.Count == 0)
+            IReadOnlyList<BattlePresetData> presets = _content?.All<BattlePresetData>();
+
+            bool any = (encounters != null && encounters.Count > 0) || (presets != null && presets.Count > 0);
+            if (!any)
             {
-                var empty = new Label("Нет энкаунтеров.\nСоздай ассеты + Sync Content Database.");
+                var empty = new Label("Нет боёв.\nСоздай ассеты + Sync Content Database.");
                 empty.AddToClassList("gm-text-muted");
                 empty.style.whiteSpace = WhiteSpace.Normal;
-                _listContainer.Add(empty);
+                _list.Add(empty);
                 return;
             }
 
-            for (int i = 0; i < encounters.Count; i++)
+            // ── Пресеты (готовые бои со своим ростером) ──
+            if (presets != null && presets.Count > 0)
             {
-                EncounterData enc = encounters[i];
+                AddSectionHeader("Presets");
+                for (int i = 0; i < presets.Count; i++)
+                {
+                    BattlePresetData p = presets[i];
+                    AddRow("p:" + p.Id, $"{Short(p.Id)}  ·  {RosterSize(p)}p", "Play", () => PlayPreset(p));
+                }
+            }
 
-                var row = new VisualElement();
-                row.style.flexDirection = FlexDirection.Row;
-                row.style.alignItems = Align.Center;
-                row.style.paddingTop = 2;
-                row.style.paddingBottom = 2;
-
-                var label = new Label($"{Short(enc.Id)}  ·  {enc.Tier}");
-                label.style.flexGrow = 1;
-                label.style.color = new Color(0.88f, 0.86f, 0.78f); // светлый на латунной панели (нет gm-класса под ряд)
-                row.Add(label);
-
-                var play = new Button(() => Play(enc)) { text = "Play" };
-                play.AddToClassList("gm-button");
-                play.style.marginTop = 0;
-                play.style.marginBottom = 0;
-                row.Add(play);
-
-                _listContainer.Add(row);
-                _rows.Add((enc, row));
+            // ── Энкаунтеры (только враги; player = dev-реликвия) ──
+            if (encounters != null && encounters.Count > 0)
+            {
+                AddSectionHeader("Encounters");
+                for (int i = 0; i < encounters.Count; i++)
+                {
+                    EncounterData e = encounters[i];
+                    AddRow("e:" + e.Id, $"{Short(e.Id)}  ·  {e.Tier}", "Play", () => PlayEncounter(e));
+                }
             }
 
             RefreshActiveHighlight();
         }
 
-        private void Play(EncounterData enc)
+        private void AddSectionHeader(string text)
         {
-            if (_loader == null) { Debug.LogWarning("[DevEncounterPanel] - EncounterLoader не внедрён (нет активного боя?)"); return; }
+            var h = new Label(text);
+            h.AddToClassList("gm-text-muted");
+            h.style.marginTop = 4;
+            h.style.marginBottom = 2;
+            h.style.unityFontStyleAndWeight = FontStyle.Bold;
+            _list.Add(h);
+        }
 
-            List<PlayerSpawn> side = BuildPlayerSide();
+        private void AddRow(string key, string label, string buttonText, System.Action onPlay)
+        {
+            var row = new VisualElement();
+            row.style.flexDirection = FlexDirection.Row;
+            row.style.alignItems = Align.Center;
+            row.style.paddingTop = 2;
+            row.style.paddingBottom = 2;
+
+            var lbl = new Label(label);
+            lbl.style.flexGrow = 1;
+            lbl.style.color = new Color(0.88f, 0.86f, 0.78f); // светлый на латунной панели (нет gm-класса под ряд)
+            row.Add(lbl);
+
+            var play = new Button(onPlay) { text = buttonText };
+            play.AddToClassList("gm-button");
+            play.style.marginTop = 0;
+            play.style.marginBottom = 0;
+            row.Add(play);
+
+            _list.Add(row);
+            _rows.Add((key, row));
+        }
+
+        private void PlayEncounter(EncounterData enc)
+        {
+            if (_loader == null) { Debug.LogWarning("[DevEncounterPanel] - EncounterLoader не внедрён"); return; }
+            List<PlayerSpawn> side = BuildDevPlayerSide();
             _loader.Load(enc, side);
-
-            // R — через единый владелец GuildmasterCommands. Делегат резолвит ЖИВОЙ скоуп (переживает F5).
-            GuildmasterCommands.SetLastBattle(_ => ReloadViaLiveScope(enc, side));
-
+            GuildmasterCommands.SetLastBattle(_ => ReloadEncounterViaLiveScope(enc, side));
+            _activeKey = "e:" + enc.Id;
             RefreshActiveHighlight();
         }
 
-        private List<PlayerSpawn> BuildPlayerSide()
+        private void PlayPreset(BattlePresetData preset)
+        {
+            if (_loader == null) { Debug.LogWarning("[DevEncounterPanel] - EncounterLoader не внедрён"); return; }
+            _loader.LoadPreset(preset);
+            GuildmasterCommands.SetLastBattle(_ => ReloadPresetViaLiveScope(preset));
+            _activeKey = "p:" + preset.Id;
+            RefreshActiveHighlight();
+        }
+
+        private List<PlayerSpawn> BuildDevPlayerSide()
         {
             if (_devPlayerRelic == null) return null;
             return new List<PlayerSpawn> { new PlayerSpawn(_devPlayerRelic, null, _devPlayerPosition) };
         }
 
         // Рестарт по R: находим ТЕКУЩИЙ боевой скоуп и его загрузчик (не захватываем старый — F5-безопасно).
-        private static void ReloadViaLiveScope(EncounterData enc, List<PlayerSpawn> side)
+        private static void ReloadEncounterViaLiveScope(EncounterData enc, List<PlayerSpawn> side)
+        {
+            var loader = LiveLoader();
+            if (loader != null) loader.Load(enc, side);
+        }
+
+        private static void ReloadPresetViaLiveScope(BattlePresetData preset)
+        {
+            var loader = LiveLoader();
+            if (loader != null) loader.LoadPreset(preset);
+        }
+
+        private static EncounterLoader LiveLoader()
         {
             var scope = LifetimeScope.Find<Guildmaster.Game.CombatLifetimeScope>();
-            var loader = scope != null ? scope.Container.Resolve<EncounterLoader>() : null;
-            if (loader != null) loader.Load(enc, side);
-            else Debug.LogWarning("[DevEncounterPanel] - R: боевой скоуп/загрузчик не найден");
+            if (scope == null) { Debug.LogWarning("[DevEncounterPanel] - R: боевой скоуп не найден"); return null; }
+            return scope.Container.Resolve<EncounterLoader>();
         }
 
         private void RefreshActiveHighlight()
         {
-            string activeId = _loader?.LastEncounterId;
             for (int i = 0; i < _rows.Count; i++)
             {
-                bool active = activeId != null && _rows[i].enc.Id == activeId;
+                bool active = _activeKey != null && _rows[i].key == _activeKey;
                 _rows[i].row.style.backgroundColor = active
                     ? new Color(1f, 1f, 1f, 0.10f)
                     : new Color(0f, 0f, 0f, 0f);
@@ -205,9 +254,13 @@ namespace Guildmaster.DevTools
                 _overlay.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
-        private static string Short(string id) =>
-            !string.IsNullOrEmpty(id) && id.StartsWith("encounter.")
-                ? id.Substring("encounter.".Length)
-                : id;
+        private static int RosterSize(BattlePresetData p) => p.Roster != null ? p.Roster.Count : 0;
+
+        private static string Short(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return id;
+            int dot = id.IndexOf('.');
+            return dot >= 0 ? id.Substring(dot + 1) : id;
+        }
     }
 }

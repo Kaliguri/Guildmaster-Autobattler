@@ -77,6 +77,36 @@ namespace Guildmaster.Combat
             Build(encounter, _lastPlayerSide);
         }
 
+        /// <summary>
+        /// Загрузить готовый бой (<see cref="BattlePresetData"/>): враги энкаунтера (team 1) + player-ростер
+        /// пресета (team 0). <see cref="DeploymentMode.Fixed"/> — спавн сразу по сохранённым позициям;
+        /// <see cref="DeploymentMode.Free"/> — интерактивная расстановка (шаг 4), пока ведёт себя как Fixed.
+        /// Реюзит <see cref="Load"/> — «последний бой» ставится для <see cref="Reload"/>/R.
+        /// </summary>
+        public void LoadPreset(BattlePresetData preset)
+        {
+            if (preset == null)          { Debug.LogWarning("[EncounterLoader] - LoadPreset: preset == null"); return; }
+            if (preset.Encounter == null) { Debug.LogWarning($"[EncounterLoader] - пресет '{preset.Id}': не задан энкаунтер"); return; }
+
+            if (preset.DeploymentMode == DeploymentMode.Free)
+                Debug.Log($"[EncounterLoader] - пресет '{preset.Id}': Free-расстановка пока = Fixed (интерактив — шаг 4)");
+
+            Load(preset.Encounter, BuildRosterSide(preset.Roster));
+        }
+
+        private static List<PlayerSpawn> BuildRosterSide(IReadOnlyList<PlayerSlot> roster)
+        {
+            if (roster == null || roster.Count == 0) return null;
+            var side = new List<PlayerSpawn>(roster.Count);
+            for (int i = 0; i < roster.Count; i++)
+            {
+                PlayerSlot slot = roster[i];
+                if (slot.Relic == null) continue; // слот релика должен быть заполнен (relic.base у «пустого» сосуда)
+                side.Add(new PlayerSpawn(slot.Relic, slot.Vessel, slot.Position));
+            }
+            return side;
+        }
+
         /// <summary>Перезапустить последний загруженный бой на месте (dev-R). No-op, если ничего не грузили.</summary>
         public void Reload()
         {

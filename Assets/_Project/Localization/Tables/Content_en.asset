@@ -168,6 +168,14 @@ MonoBehaviour:
     m_Localized: Fast knife goblin that flanks toward soft back-line targets.
     m_Metadata:
       m_Items: []
+  - m_Id: 1137885233537024
+    m_Localized: Base Kit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1137885267091456
+    m_Localized: Plain fighter kit worn by a vessel with no special relic.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

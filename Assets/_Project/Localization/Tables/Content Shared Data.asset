@@ -163,6 +163,14 @@ MonoBehaviour:
     m_Key: enemy.goblin_warrior.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 1137885233537024
+    m_Key: relic.base.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1137885267091456
+    m_Key: relic.base.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

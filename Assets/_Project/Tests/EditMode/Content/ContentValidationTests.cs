@@ -155,5 +155,23 @@ namespace Guildmaster.Tests.EditMode.Content
                 }
             }
         }
+
+        // --- §8 правило 7: BattlePreset — энкаунтер задан, слоты ростера имеют релик (кит) ---
+
+        [Test]
+        public void BattlePresets_Valid()
+        {
+            foreach (BattlePresetData preset in AllContent().OfType<BattlePresetData>())
+            {
+                string path = AssetDatabase.GetAssetPath(preset);
+                Assert.IsNotNull(preset.Encounter, $"Battle preset '{preset.Id}' has no encounter ({path}).");
+                Assert.IsNotNull(preset.Roster, $"Battle preset '{preset.Id}' has a null roster ({path}).");
+
+                foreach (PlayerSlot slot in preset.Roster)
+                    Assert.IsNotNull(slot.Relic,
+                        $"Battle preset '{preset.Id}' has a roster slot with no relic — the relic slot must always be " +
+                        $"filled (relic.base for an empty vessel) ({path}).");
+            }
+        }
     }
 }
