@@ -82,6 +82,9 @@ namespace Guildmaster.Game
             // Витрина наград после боя (A3): катит 1-из-3 реликов из контент-БД (детерминирован через RNG).
             builder.Register<RewardService>(Lifetime.Singleton);
 
+            // Применение последствий текстовых ивентов к RunState (план 11 §5.1).
+            builder.Register<EventEffectApplier>(Lifetime.Singleton);
+
             builder.Register<GameFlow>(Lifetime.Singleton);
 
             // Ввод глобален и переживает перезагрузку боевой сцены (вики «16» §3).

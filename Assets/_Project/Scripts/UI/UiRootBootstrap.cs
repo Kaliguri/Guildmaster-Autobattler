@@ -30,18 +30,22 @@ namespace Guildmaster.UI
         private IInputService _input;
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
         private ISubscriber<OpenRewardRequest> _openRewardSub;
+        private ISubscriber<OpenTextEventRequest> _openEventSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
+        private IDisposable _openEventSubscription;
         private UIDocument _doc;
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
-            ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub)
+            ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
+            ISubscriber<OpenTextEventRequest> openEventSub)
         {
             _router = router;
             _input = input;
             _openLoadoutSub = openLoadoutSub;
             _openRewardSub = openRewardSub;
+            _openEventSub = openEventSub;
         }
 
         private void Awake() => _doc = GetComponent<UIDocument>();
@@ -60,6 +64,8 @@ namespace Guildmaster.UI
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
             // Открытие экрана награды после боя (A3) — запрос из GameFlow.
             _openRewardSubscription = _openRewardSub?.Subscribe(req => _router.OpenReward(req));
+            // Открытие текстового ивента (StS-style) — запрос из GameFlow.
+            _openEventSubscription = _openEventSub?.Subscribe(req => _router.OpenTextEvent(req));
         }
 
         private void OnDestroy()
@@ -67,6 +73,7 @@ namespace Guildmaster.UI
             if (_input != null) _input.MenuToggleRequested -= OnMenuToggle;
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
+            _openEventSubscription?.Dispose();
         }
 
         private void OnMenuToggle() => _router.ToggleSystemMenu();

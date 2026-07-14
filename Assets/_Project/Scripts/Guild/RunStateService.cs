@@ -49,6 +49,13 @@ namespace Guildmaster.Guild
             return Current;
         }
 
+        /// <summary>Изменить золото забега (±). Клампится в ноль снизу. No-op без активного забега.</summary>
+        public void AddGold(int delta)
+        {
+            if (Current == null) return;
+            Current.Gold = System.Math.Max(0, Current.Gold + delta);
+        }
+
         /// <summary>Снапшот текущего забега на диск (точка автосейва). No-op без активного забега.</summary>
         public void Autosave()
         {

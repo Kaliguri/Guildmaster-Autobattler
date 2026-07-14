@@ -22,6 +22,12 @@ namespace Guildmaster.Game
         [Tooltip("Стартовый бой для A2-разреза (враги + ростер + режим расстановки). Нужен при включённом флаге.")]
         [SerializeField] private BattlePresetData _devStartPreset;
 
+        [Tooltip("ON: на старте показать текстовый ивент (нужен ассект ниже). Имеет приоритет над боем.")]
+        [SerializeField] private bool _runTextEventOnBoot;
+
+        [Tooltip("Стартовый текстовый ивент для дебага (StS-style). Нужен при включённом флаге ивента.")]
+        [SerializeField] private TextEventData _devStartEvent;
+
         [Inject] private GameFlow _gameFlow;
 
         private void Start()
@@ -32,6 +38,13 @@ namespace Guildmaster.Game
         private async UniTaskVoid StartBootAsync()
         {
             Debug.Log("[GameBootstrap] - Старт");
+
+            if (_runTextEventOnBoot && _devStartEvent != null)
+            {
+                Flow.EventResult ev = await _gameFlow.RunTextEventAsync(_devStartEvent);
+                Debug.Log($"[GameBootstrap] - dev текст-ивент завершён: {ev.Outcome}");
+                return;
+            }
 
             if (_runBattleFlowOnBoot && _devStartPreset != null)
             {

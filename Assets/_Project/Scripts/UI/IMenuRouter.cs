@@ -21,5 +21,12 @@ namespace Guildmaster.UI
         /// выбора (= пропуск), чтобы флоу забега не завис в ожидании.
         /// </summary>
         void OpenReward(Guildmaster.Data.Definitions.OpenRewardRequest req);
+
+        /// <summary>
+        /// Открыть экран текстового ивента (StS-style). Гарантирует ровно один вызов
+        /// <see cref="Guildmaster.Data.Definitions.OpenTextEventRequest.OnChosen"/> — закрытие без выбора
+        /// шлёт индекс -1 (пропуск), чтобы флоу не завис.
+        /// </summary>
+        void OpenTextEvent(Guildmaster.Data.Definitions.OpenTextEventRequest req);
     }
 }

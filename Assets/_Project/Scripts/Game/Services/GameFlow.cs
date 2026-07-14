@@ -23,29 +23,35 @@ namespace Guildmaster.Game.Services
         private readonly IBattleSession      _session;
         private readonly RunStateService     _runStates;
         private readonly RewardService       _rewards;
+        private readonly EventEffectApplier  _eventEffects;
         private readonly IRngService         _rng;
         private readonly IReadyGate          _readyGate;
         private readonly IPlayerIntentSource _intents;
-        private readonly IPublisher<OpenRewardRequest> _openRewardPub;
+        private readonly IPublisher<OpenRewardRequest>    _openRewardPub;
+        private readonly IPublisher<OpenTextEventRequest> _openEventPub;
 
         public GameFlow(
             ISceneLoader        scenes,
             IBattleSession      session,
             RunStateService     runStates,
             RewardService       rewards,
+            EventEffectApplier  eventEffects,
             IRngService         rng,
             IReadyGate          readyGate,
             IPlayerIntentSource intents,
-            IPublisher<OpenRewardRequest> openRewardPub)
+            IPublisher<OpenRewardRequest>    openRewardPub,
+            IPublisher<OpenTextEventRequest> openEventPub)
         {
             _scenes        = scenes;
             _session       = session;
             _runStates     = runStates;
             _rewards       = rewards;
+            _eventEffects  = eventEffects;
             _rng           = rng;
             _readyGate     = readyGate;
             _intents       = intents;
             _openRewardPub = openRewardPub;
+            _openEventPub  = openEventPub;
         }
 
         /// <summary>Legacy (Фаза 1): просто загрузить боевую сцену. Прямой dev-вход, бой запускает F2-панель.</summary>
@@ -84,6 +90,20 @@ namespace Guildmaster.Game.Services
                 await PresentRewardAsync(tier);
 
             return result;
+        }
+
+        /// <summary>
+        /// Прогнать узел текстового ивента (план 11 §5.1): показать ивент, дождаться выбора, применить
+        /// последствия к <see cref="RunState"/>. Заводит забег, если его ещё нет (dev-запуск в отрыве от боя).
+        /// </summary>
+        public async UniTask<EventResult> RunTextEventAsync(TextEventData ev)
+        {
+            RunState run = _runStates.Current
+                           ?? _runStates.NewRun(DateTime.UtcNow.Ticks, Array.Empty<RosterSlot>());
+
+            var ctx  = new RunContext(run, _rng, _readyGate, _intents);
+            var flow = new TextEventFlow(ev, _openEventPub, _eventEffects);
+            return await flow.Run(ctx);
         }
 
         /// <summary>

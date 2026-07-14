@@ -358,6 +358,93 @@ namespace Guildmaster.UI
             return screen;
         }
 
+        // Экран текстового ивента (StS-style). Построен кодом (без UXML). Выбор фиксирует последствие
+        // (колбэк → флоу применяет эффекты), затем показывается текст-результат. Закрытие без выбора = -1.
+        public void OpenTextEvent(OpenTextEventRequest req)
+        {
+            if (_root == null || req.Event == null) { req.OnChosen?.Invoke(-1); return; }
+            Push(BuildTextEventScreen(req));
+        }
+
+        private VisualElement BuildTextEventScreen(OpenTextEventRequest req)
+        {
+            TextEventData ev = req.Event;
+            bool resolved = false;
+
+            var screen = new VisualElement { pickingMode = PickingMode.Position };
+            screen.style.position = Position.Absolute;
+            screen.style.left = 0; screen.style.top = 0; screen.style.right = 0; screen.style.bottom = 0;
+            screen.style.alignItems = Align.Center;
+            screen.style.justifyContent = Justify.Center;
+            screen.style.backgroundColor = new Color(0f, 0f, 0f, 0.6f);
+
+            var panel = new VisualElement();
+            panel.AddToClassList("gm-panel");
+            panel.style.minWidth = 460;
+            panel.style.maxWidth = 640;
+            screen.Add(panel);
+
+            var title = new Label(ev.Title ?? ev.Id);
+            title.AddToClassList("gm-panel__title");
+            panel.Add(title);
+
+            var divider = new VisualElement(); divider.AddToClassList("gm-divider"); panel.Add(divider);
+
+            if (ev.Image != null)
+            {
+                var image = new VisualElement();
+                image.style.height = 180;
+                image.style.marginBottom = 8;
+                image.style.backgroundImage = new StyleBackground(ev.Image);
+                image.style.unityBackgroundScaleMode = ScaleMode.ScaleToFit;
+                panel.Add(image);
+            }
+
+            var body = new Label(ev.Body);
+            body.style.whiteSpace = WhiteSpace.Normal;
+            body.style.marginBottom = 10;
+            panel.Add(body);
+
+            var buttons = new VisualElement();
+            panel.Add(buttons);
+
+            void Resolve(int index)
+            {
+                if (resolved) return;
+                resolved = true;
+                req.OnChosen?.Invoke(index);
+            }
+
+            void ShowResult(string resultText)
+            {
+                buttons.Clear();
+                if (string.IsNullOrEmpty(resultText)) { CloseAll(); return; }
+                body.text = resultText;
+                var cont = new Button(CloseAll) { text = "Продолжить" };
+                cont.AddToClassList("gm-button");
+                buttons.Add(cont);
+            }
+
+            IReadOnlyList<EventChoice> choices = ev.Choices;
+            for (int i = 0; i < choices.Count; i++)
+            {
+                int index = i; // захват копии
+                EventChoice choice = choices[i];
+                var btn = new Button(() => { Resolve(index); ShowResult(choice.ResultText); }) { text = choice.Label };
+                btn.AddToClassList("gm-button");
+                btn.style.marginTop = 4;
+                buttons.Add(btn);
+            }
+
+            // Страховка: закрытие без выбора (ESC/CloseAll) = пропуск (-1), чтобы флоу не завис.
+            screen.RegisterCallback<DetachFromPanelEvent>(_ =>
+            {
+                if (!resolved) { resolved = true; req.OnChosen?.Invoke(-1); }
+            });
+
+            return screen;
+        }
+
         private static void Disable(Button b) { if (b != null) b.SetEnabled(false); }
 
         // Клон UXML → растянуть на весь корень панели (оверлей).
