@@ -134,5 +134,26 @@ namespace Guildmaster.Tests.EditMode.Content
                     $"StatsConfig: AttackSpeedMin должен быть < AttackSpeedMax ({AssetDatabase.GetAssetPath(cfg)}).");
             }
         }
+
+        // --- §8 правило 7: ссылочная целостность по id — враги энкаунтера существуют ---
+
+        [Test]
+        public void Encounters_EnemyIdsExist()
+        {
+            var enemyIds = new HashSet<string>(AllContent().OfType<EnemyData>().Select(e => e.Id));
+
+            foreach (EncounterData enc in AllContent().OfType<EncounterData>())
+            {
+                if (enc.Units == null) continue;
+                foreach (EncounterUnit u in enc.Units)
+                {
+                    Assert.IsFalse(string.IsNullOrEmpty(u.EnemyId),
+                        $"Encounter '{enc.Id}' has an empty EnemyId ({AssetDatabase.GetAssetPath(enc)}).");
+                    Assert.IsTrue(enemyIds.Contains(u.EnemyId),
+                        $"Encounter '{enc.Id}' references unknown enemy id '{u.EnemyId}' " +
+                        $"({AssetDatabase.GetAssetPath(enc)}).");
+                }
+            }
+        }
     }
 }

@@ -133,7 +133,9 @@ namespace Guildmaster.Game
                 r.Resolve<EffectSystem>(),
                 r.Resolve<CombatSimulation>()),
                 Lifetime.Scoped);
-            builder.Register<BattleSetupBuilder>(Lifetime.Scoped);
+            // Data-driven загрузчик боя из EncounterData (сменил заготовку BattleSetupBuilder, вики «13» §3.1).
+            // IContentDatabase — из RootScope (родитель); фабрика/симуляция — из этого скоупа.
+            builder.Register<EncounterLoader>(Lifetime.Scoped);
 
             builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped).AsSelf();
         }

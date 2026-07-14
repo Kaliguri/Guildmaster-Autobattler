@@ -30,8 +30,10 @@ namespace Guildmaster.Data.Editor
 
         /// <summary>
         /// Обязательные суффиксы ключей для типа (пусто = контент не локализуется). Политика:
-        /// tag / ai_preset — техническая таксономия и ИИ, игроку не видны; effect — <c>name</c> всегда,
-        /// <c>desc</c> лишь у эффекта с иконкой (видим в бафф-баре); прочий контент — <c>name</c>+<c>desc</c>.
+        /// tag / ai_preset — техническая таксономия и ИИ, игроку не видны; encounter — пока dev-конструкт
+        /// без player-facing текста (пикер показывает id; получит name/desc, когда станет узлом карты в
+        /// Фазе 5); effect — <c>name</c> всегда, <c>desc</c> лишь у эффекта с иконкой (видим в бафф-баре);
+        /// прочий контент — <c>name</c>+<c>desc</c>.
         /// </summary>
         public static IReadOnlyList<string> RequiredSuffixes(ContentDefinition def)
         {
@@ -40,6 +42,7 @@ namespace Guildmaster.Data.Editor
             {
                 case "tag":
                 case "ai_preset":
+                case "encounter":
                     return Array.Empty<string>();
                 case "effect":
                     return def is EffectData e && e.Icon != null ? NameAndDesc : NameOnly;

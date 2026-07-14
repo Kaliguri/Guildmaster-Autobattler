@@ -6,7 +6,7 @@ namespace Guildmaster.Data.Definitions
     /// <summary>
     /// Общий боевой кит всего, что выходит на арену (вики «13» §3.1). Наследники — <see cref="RelicData"/>
     /// (мета игрока) и <see cref="EnemyData"/> (мета врага). Сим и <c>RuntimeUnitFactory</c>/
-    /// <c>BattleSetupBuilder</c> работают с этим базовым типом — им всё равно, кто перед ними.
+    /// <c>EncounterLoader</c> работают с этим базовым типом — им всё равно, кто перед ними.
     /// <para>Поля кита перенесены из <see cref="RelicData"/> БЕЗ смены имён (сериализация сохранена).</para>
     /// </summary>
     public abstract class UnitData : ContentDefinition
