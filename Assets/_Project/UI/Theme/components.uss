@@ -147,3 +147,132 @@
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-sm);
 }
+
+/* ============================================================================
+ * Loadout-экран (шаг 5): табы, грид карточек реликов, панель деталей.
+ * ========================================================================== */
+
+/* --- Панель табов (Релик активен; Предметы/Улучшения/AI — заглушки) --- */
+.gm-tabbar {
+    flex-direction: row;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-tab {
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-subtle);
+    border-radius: var(--gm-radius-0);
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-body);
+    padding: var(--gm-space-1) var(--gm-space-3);
+    margin-right: var(--gm-space-2);
+}
+
+.gm-tab--active {
+    color: var(--gm-color-text);
+    border-color: var(--gm-color-accent);
+    -unity-font-style: bold;
+}
+
+.gm-tab:disabled {
+    color: var(--gm-color-disabled-text);
+    border-color: var(--gm-color-border-subtle);
+    opacity: 1;
+}
+
+/* --- Тело loadout: грид слева, детали справа --- */
+.gm-loadout-body {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* --- Грид карточек реликов --- */
+.gm-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    flex-grow: 1;
+}
+
+/* --- Карточка релика (плейсхолдер-спрайт + подпись; primary=спрайт по дизайну) --- */
+.gm-card {
+    width: 76px;
+    height: 88px;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    margin: var(--gm-space-1);
+    align-items: center;
+    justify-content: flex-end;
+    padding: var(--gm-space-1);
+    transition-property: border-color, background-color;
+    transition-duration: 0.08s;
+}
+
+.gm-card:hover {
+    border-color: var(--gm-color-hover-border);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-card--current {
+    border-color: var(--gm-color-border-inner);
+}
+
+.gm-card--selected {
+    border-color: var(--gm-color-accent);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-card__sprite {
+    flex-grow: 1;
+    width: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-card__name {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* --- Панель деталей выбранного релика --- */
+.gm-detail {
+    width: 190px;
+    flex-shrink: 0;
+    margin-left: var(--gm-space-3);
+    padding: var(--gm-space-3);
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-subtle);
+}
+
+.gm-detail__name {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    -unity-font-style: bold;
+    margin-bottom: var(--gm-space-2);
+    white-space: normal;
+}
+
+.gm-detail__desc {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    margin-bottom: var(--gm-space-2);
+    white-space: normal;
+}
+
+.gm-detail__tags {
+    color: var(--gm-color-accent);
+    font-size: var(--gm-font-sm);
+    margin-bottom: var(--gm-space-2);
+    white-space: normal;
+}
+
+.gm-detail__stats {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    white-space: normal;
+}

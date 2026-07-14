@@ -56,6 +56,7 @@ namespace Guildmaster.Game
             // Рантайм-UI (оверлеи меню/настроек): VM + роутер сессионные; бутстрап — UIDocument-компонент
             // в CoreScene (инъекция методом через RegisterComponentInHierarchy). ESC открывает меню.
             builder.Register<SettingsViewModel>(Lifetime.Singleton);
+            builder.Register<LoadoutViewModel>(Lifetime.Singleton);
             builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf().As<IMenuRouter>();
             builder.RegisterComponentInHierarchy<UiRootBootstrap>();
 

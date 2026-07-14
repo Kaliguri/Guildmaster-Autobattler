@@ -67,6 +67,9 @@ namespace Guildmaster.Game
 
             // Боевой ввод: пауза/скорость на время этого боя (вики «16» §4).
             builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
+
+            // Интерактивная фаза расстановки (шаг 4): активна на Free-пресетах; иначе спит.
+            builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
         }
 
         private ArenaLayoutData BuildArenaLayout()

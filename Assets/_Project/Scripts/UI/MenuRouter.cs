@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Input;
+using Guildmaster.Data.Definitions;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -18,27 +19,43 @@ namespace Guildmaster.UI
     {
         private readonly IInputService _input;
         private readonly SettingsViewModel _settingsVm;
+        private readonly LoadoutViewModel _loadoutVm;
 
         private readonly Stack<VisualElement> _stack = new();
         private VisualElement _root;
         private VisualTreeAsset _pauseUxml;
         private VisualTreeAsset _settingsUxml;
+        private VisualTreeAsset _loadoutUxml;
         private InputContext _prevContext;
 
-        public MenuRouter(IInputService input, SettingsViewModel settingsVm)
+        public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm)
         {
             _input = input;
             _settingsVm = settingsVm;
+            _loadoutVm = loadoutVm;
         }
 
         public bool IsOpen => _stack.Count > 0;
 
         /// <summary>Бутстрап отдаёт корень панели и UXML-шаблоны экранов (ссылки из сцены, не DI).</summary>
-        public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml)
+        public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
+            VisualTreeAsset loadoutUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
             _settingsUxml = settingsUxml;
+            _loadoutUxml = loadoutUxml;
+        }
+
+        /// <summary>
+        /// Открыть loadout-экран для юнита (по дабл-клику в фазе расстановки; публикуется как
+        /// <see cref="OpenLoadoutRequest"/>, бутстрап зовёт сюда). Пушится как обычный оверлей поверх боя.
+        /// </summary>
+        public void OpenLoadout(OpenLoadoutRequest req)
+        {
+            if (_root == null || _loadoutUxml == null) return;
+            _loadoutVm.Open(req);
+            Push(BuildLoadoutScreen());
         }
 
         public void ToggleSystemMenu()
@@ -133,6 +150,77 @@ namespace Guildmaster.UI
             screen.Q<Button>("btn-defaults").clicked += () => _settingsVm.ResetToDefaults();
             return screen;
         }
+
+        private VisualElement BuildLoadoutScreen()
+        {
+            var screen = FillRoot(_loadoutUxml.CloneTree());
+
+            var grid       = screen.Q<ScrollView>("relic-grid");
+            var detailName = screen.Q<Label>("detail-name");
+            var detailDesc = screen.Q<Label>("detail-desc");
+            var detailTags = screen.Q<Label>("detail-tags");
+            var detailStats = screen.Q<Label>("detail-stats");
+
+            grid.contentContainer.AddToClassList("gm-grid");
+            var cards = new List<(RelicData relic, VisualElement card)>();
+
+            void ShowDetail(RelicData r)
+            {
+                detailName.text  = _loadoutVm.Name(r);
+                detailDesc.text  = _loadoutVm.Desc(r);
+                detailTags.text  = _loadoutVm.Tags(r);
+                detailStats.text = _loadoutVm.StatsSummary(r);
+            }
+
+            void RefreshCards()
+            {
+                foreach (var (relic, card) in cards)
+                {
+                    card.EnableInClassList("gm-card--selected", _loadoutVm.IsSelected(relic));
+                    card.EnableInClassList("gm-card--current", _loadoutVm.IsCurrent(relic));
+                }
+            }
+
+            IReadOnlyList<RelicData> relics = _loadoutVm.Relics;
+            for (int i = 0; i < relics.Count; i++)
+            {
+                RelicData relic = relics[i];
+                var card = new VisualElement();
+                card.AddToClassList("gm-card");
+
+                var sprite = new VisualElement();
+                sprite.AddToClassList("gm-card__sprite");
+                if (relic.Icon != null) sprite.style.backgroundImage = new StyleBackground(relic.Icon);
+                card.Add(sprite);
+
+                var name = new Label(_loadoutVm.Name(relic));
+                name.AddToClassList("gm-card__name");
+                card.Add(name);
+
+                // Наведение → детали; клик → выбор (+звук) + предпросмотр деталей.
+                card.RegisterCallback<PointerEnterEvent>(_ => ShowDetail(relic));
+                card.RegisterCallback<ClickEvent>(_ => { _loadoutVm.Select(relic); RefreshCards(); ShowDetail(relic); });
+
+                grid.Add(card);
+                cards.Add((relic, card));
+            }
+
+            RefreshCards();
+            ShowDetail(_loadoutVm.Selected ?? (relics.Count > 0 ? relics[0] : null));
+
+            // Табы-заглушки (кроме Релик) — недоступны (структура на будущее: Предметы/Улучшения/AI).
+            Disable(screen.Q<Button>("tab-items"));
+            Disable(screen.Q<Button>("tab-upgrades"));
+            Disable(screen.Q<Button>("tab-ai"));
+
+            // Принять = применить + закрыть; Сохранить = применить, не закрывая; Закрыть = отмена.
+            screen.Q<Button>("btn-accept").clicked += () => { _loadoutVm.Apply(); Pop(); };
+            screen.Q<Button>("btn-save").clicked   += () => { _loadoutVm.Apply(); RefreshCards(); };
+            screen.Q<Button>("btn-close").clicked  += Pop;
+            return screen;
+        }
+
+        private static void Disable(Button b) { if (b != null) b.SetEnabled(false); }
 
         // Клон UXML → растянуть на весь корень панели (оверлей).
         private static VisualElement FillRoot(VisualElement tree)

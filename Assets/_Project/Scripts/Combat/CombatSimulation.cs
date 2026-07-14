@@ -522,6 +522,13 @@ namespace Guildmaster.Combat
             return hash;
         }
 
+        /// <summary>
+        /// Влить отложенные спавны в живой список БЕЗ тика систем (фаза расстановки, шаг 4): юниты должны
+        /// присутствовать и быть видимыми/двигаемыми, пока бой на паузе. Фактически арм <c>_hasSpawned</c>
+        /// и <c>OnUnitSpawned</c> (презентация строит виды) — безвредно до первого реального <see cref="Tick"/>.
+        /// </summary>
+        public void FlushSpawns() => FlushPendingSpawns();
+
         // --- Приватные ---
 
         private void FlushPendingSpawns()

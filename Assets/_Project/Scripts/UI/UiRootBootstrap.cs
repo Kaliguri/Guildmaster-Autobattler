@@ -1,4 +1,7 @@
+using System;
 using Guildmaster.Core.Input;
+using Guildmaster.Data.Definitions;
+using MessagePipe;
 using UnityEngine;
 using UnityEngine.UIElements;
 using VContainer;
@@ -20,15 +23,21 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана настроек (3 слайдера + Save/Cancel/Defaults).")]
         [SerializeField] private VisualTreeAsset _settingsScreen;
 
+        [Tooltip("UXML loadout-экрана (грид реликов + Accept/Save/Close). Открывается дабл-кликом по сосуду в расстановке.")]
+        [SerializeField] private VisualTreeAsset _loadoutScreen;
+
         private MenuRouter _router;
         private IInputService _input;
+        private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
+        private IDisposable _openLoadoutSubscription;
         private UIDocument _doc;
 
         [Inject]
-        public void Construct(MenuRouter router, IInputService input)
+        public void Construct(MenuRouter router, IInputService input, ISubscriber<OpenLoadoutRequest> openLoadoutSub)
         {
             _router = router;
             _input = input;
+            _openLoadoutSub = openLoadoutSub;
         }
 
         private void Awake() => _doc = GetComponent<UIDocument>();
@@ -41,13 +50,16 @@ namespace Guildmaster.UI
                                  "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
                 return;
             }
-            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen);
+            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen);
             _input.MenuToggleRequested += OnMenuToggle;
+            // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
+            _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
         }
 
         private void OnDestroy()
         {
             if (_input != null) _input.MenuToggleRequested -= OnMenuToggle;
+            _openLoadoutSubscription?.Dispose();
         }
 
         private void OnMenuToggle() => _router.ToggleSystemMenu();

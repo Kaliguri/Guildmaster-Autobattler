@@ -58,6 +58,14 @@ namespace Guildmaster.Combat
         public string LastEncounterId => _lastEncounter != null ? _lastEncounter.Id : null;
 
         /// <summary>
+        /// Поднимается, когда загружен пресет с <see cref="DeploymentMode.Free"/> (после того как ростер+враги
+        /// уже поставлены в очередь спавна). Слушатель — <c>DeploymentController</c> (шаг 4): ставит бой на
+        /// паузу, флашит спавны и входит в интерактивную фазу расстановки. Нет слушателя = Free ведёт себя как
+        /// Fixed (бой пойдёт по сохранённым позициям — безопасный фолбэк).
+        /// </summary>
+        public event System.Action<BattlePresetData> FreeDeploymentRequested;
+
+        /// <summary>
         /// Загрузить бой: прерывает текущий, спавнит врагов энкаунтера (team 1) + player-сторону (team 0),
         /// запоминает как «последний» для <see cref="Reload"/>.
         /// </summary>
@@ -88,10 +96,12 @@ namespace Guildmaster.Combat
             if (preset == null)          { Debug.LogWarning("[EncounterLoader] - LoadPreset: preset == null"); return; }
             if (preset.Encounter == null) { Debug.LogWarning($"[EncounterLoader] - пресет '{preset.Id}': не задан энкаунтер"); return; }
 
-            if (preset.DeploymentMode == DeploymentMode.Free)
-                Debug.Log($"[EncounterLoader] - пресет '{preset.Id}': Free-расстановка пока = Fixed (интерактив — шаг 4)");
-
+            // Ставим ростер (team 0) + врагов (team 1) в очередь спавна (ResetBattle внутри Load).
             Load(preset.Encounter, BuildRosterSide(preset.Roster));
+
+            // Free → отдаём управление фазе расстановки (пауза/флаш/drag). Fixed → бой стартует сам.
+            if (preset.DeploymentMode == DeploymentMode.Free)
+                FreeDeploymentRequested?.Invoke(preset);
         }
 
         private static List<PlayerSpawn> BuildRosterSide(IReadOnlyList<PlayerSlot> roster)

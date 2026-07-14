@@ -336,6 +336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.UI::Guildmaster.UI.UiRootBootstrap
   _pauseScreen: {fileID: 9197481963319205126, guid: 83346036989603340a05776972634b0c, type: 3}
   _settingsScreen: {fileID: 9197481963319205126, guid: ac79cb8fcfe667b4c8669094609ff498, type: 3}
+  _loadoutScreen: {fileID: 9197481963319205126, guid: 15c3d6ae3d7b0564e9f3085e3abba396, type: 3}
 --- !u!114 &101249934
 MonoBehaviour:
   m_ObjectHideFlags: 0
