@@ -220,6 +220,144 @@ namespace Guildmaster.UI
             return screen;
         }
 
+        // Экран награды (A3). Построен кодом (без UXML) — не требует правки сцены; дизайн-полиш/переезд на
+        // UXML отложены (implement-then-review). Гарантирует ровно один OnResolved, включая закрытие = пропуск.
+        public void OpenReward(OpenRewardRequest req)
+        {
+            if (_root == null) { req.OnResolved?.Invoke(RewardChoiceResult.Skip); return; }
+            Push(BuildRewardScreen(req));
+        }
+
+        private VisualElement BuildRewardScreen(OpenRewardRequest req)
+        {
+            RelicData chosen = null;
+            string    drop   = null;
+            bool      resolved = false;
+
+            var screen = new VisualElement { pickingMode = PickingMode.Position };
+            screen.style.position = Position.Absolute;
+            screen.style.left = 0; screen.style.top = 0; screen.style.right = 0; screen.style.bottom = 0;
+            screen.style.alignItems = Align.Center;
+            screen.style.justifyContent = Justify.Center;
+            screen.style.backgroundColor = new Color(0f, 0f, 0f, 0.55f); // затемнение боя за оверлеем
+
+            var panel = new VisualElement();
+            panel.AddToClassList("gm-panel");
+            panel.style.minWidth = 420;
+            panel.style.maxWidth = 640;
+            screen.Add(panel);
+
+            var title = new Label("Награда — выбери реликвию");
+            title.AddToClassList("gm-panel__title");
+            panel.Add(title);
+
+            var divider = new VisualElement(); divider.AddToClassList("gm-divider"); panel.Add(divider);
+
+            // ── Витрина выбора ──
+            var row = new VisualElement();
+            row.style.flexDirection = FlexDirection.Row;
+            row.style.justifyContent = Justify.Center;
+            panel.Add(row);
+
+            var takeBtn = new Button { text = "Взять" };
+            takeBtn.AddToClassList("gm-button");
+
+            var choiceCards = new List<(RelicData relic, VisualElement card)>();
+            var dropRows    = new List<(string id, VisualElement row)>();
+
+            void Refresh()
+            {
+                foreach (var (relic, card) in choiceCards)
+                    card.EnableInClassList("gm-card--selected", ReferenceEquals(relic, chosen));
+                foreach (var (id, r) in dropRows)
+                    r.style.backgroundColor = id == drop ? new Color(1f, 1f, 1f, 0.12f) : new Color(0, 0, 0, 0);
+                bool canTake = chosen != null && (!req.InventoryFull || drop != null);
+                takeBtn.SetEnabled(canTake);
+            }
+
+            IReadOnlyList<RelicData> choices = req.Choices;
+            for (int i = 0; i < choices.Count; i++)
+            {
+                RelicData relic = choices[i];
+                var card = new VisualElement();
+                card.AddToClassList("gm-card");
+                card.style.width = 150;
+
+                var sprite = new VisualElement();
+                sprite.AddToClassList("gm-card__sprite");
+                if (relic != null && relic.Icon != null) sprite.style.backgroundImage = new StyleBackground(relic.Icon);
+                card.Add(sprite);
+
+                var name = new Label(_loadoutVm.Name(relic));
+                name.AddToClassList("gm-card__name");
+                card.Add(name);
+
+                card.RegisterCallback<ClickEvent>(_ => { chosen = relic; Refresh(); });
+                row.Add(card);
+                choiceCards.Add((relic, card));
+            }
+
+            // ── Секция сброса (только при полном запасе, §5.4) ──
+            if (req.InventoryFull)
+            {
+                var full = new Label("Запас реликвий полон — выбери, что сбросить:");
+                full.AddToClassList("gm-text-muted");
+                full.style.whiteSpace = WhiteSpace.Normal;
+                full.style.marginTop = 6;
+                panel.Add(full);
+
+                IReadOnlyList<string> inv = req.CurrentInventory;
+                for (int i = 0; inv != null && i < inv.Count; i++)
+                {
+                    string id = inv[i];
+                    var r = new Label(id);
+                    r.AddToClassList("gm-text-muted");
+                    r.style.paddingTop = 2; r.style.paddingBottom = 2;
+                    r.RegisterCallback<ClickEvent>(_ => { drop = id; Refresh(); });
+                    panel.Add(r);
+                    dropRows.Add((id, r));
+                }
+            }
+
+            var footDivider = new VisualElement(); footDivider.AddToClassList("gm-divider"); panel.Add(footDivider);
+
+            void Resolve(RewardChoiceResult result)
+            {
+                if (resolved) return;
+                resolved = true;
+                req.OnResolved?.Invoke(result);
+                CloseAll();
+            }
+
+            var footer = new VisualElement();
+            footer.style.flexDirection = FlexDirection.Row;
+            footer.style.justifyContent = Justify.SpaceBetween;
+            panel.Add(footer);
+
+            var skipBtn = new Button(() => Resolve(RewardChoiceResult.Skip)) { text = "Пропустить" };
+            skipBtn.AddToClassList("gm-button");
+            footer.Add(skipBtn);
+
+            takeBtn.clicked += () =>
+            {
+                if (chosen == null) return;
+                Resolve(req.InventoryFull
+                    ? RewardChoiceResult.Swap(chosen, drop)
+                    : RewardChoiceResult.Take(chosen));
+            };
+            footer.Add(takeBtn);
+
+            Refresh();
+
+            // Страховка: любое снятие экрана без явного выбора (ESC/CloseAll) = пропуск, чтобы флоу не завис.
+            screen.RegisterCallback<DetachFromPanelEvent>(_ =>
+            {
+                if (!resolved) { resolved = true; req.OnResolved?.Invoke(RewardChoiceResult.Skip); }
+            });
+
+            return screen;
+        }
+
         private static void Disable(Button b) { if (b != null) b.SetEnabled(false); }
 
         // Клон UXML → растянуть на весь корень панели (оверлей).

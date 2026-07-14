@@ -29,15 +29,19 @@ namespace Guildmaster.UI
         private MenuRouter _router;
         private IInputService _input;
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
+        private ISubscriber<OpenRewardRequest> _openRewardSub;
         private IDisposable _openLoadoutSubscription;
+        private IDisposable _openRewardSubscription;
         private UIDocument _doc;
 
         [Inject]
-        public void Construct(MenuRouter router, IInputService input, ISubscriber<OpenLoadoutRequest> openLoadoutSub)
+        public void Construct(MenuRouter router, IInputService input,
+            ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub)
         {
             _router = router;
             _input = input;
             _openLoadoutSub = openLoadoutSub;
+            _openRewardSub = openRewardSub;
         }
 
         private void Awake() => _doc = GetComponent<UIDocument>();
@@ -54,12 +58,15 @@ namespace Guildmaster.UI
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
+            // Открытие экрана награды после боя (A3) — запрос из GameFlow.
+            _openRewardSubscription = _openRewardSub?.Subscribe(req => _router.OpenReward(req));
         }
 
         private void OnDestroy()
         {
             if (_input != null) _input.MenuToggleRequested -= OnMenuToggle;
             _openLoadoutSubscription?.Dispose();
+            _openRewardSubscription?.Dispose();
         }
 
         private void OnMenuToggle() => _router.ToggleSystemMenu();

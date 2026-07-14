@@ -5,6 +5,7 @@ using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Flow;
 using Guildmaster.Guild;
+using MessagePipe;
 using UnityEngine;
 
 namespace Guildmaster.Game.Services
@@ -21,24 +22,30 @@ namespace Guildmaster.Game.Services
         private readonly ISceneLoader        _scenes;
         private readonly IBattleSession      _session;
         private readonly RunStateService     _runStates;
+        private readonly RewardService       _rewards;
         private readonly IRngService         _rng;
         private readonly IReadyGate          _readyGate;
         private readonly IPlayerIntentSource _intents;
+        private readonly IPublisher<OpenRewardRequest> _openRewardPub;
 
         public GameFlow(
             ISceneLoader        scenes,
             IBattleSession      session,
             RunStateService     runStates,
+            RewardService       rewards,
             IRngService         rng,
             IReadyGate          readyGate,
-            IPlayerIntentSource intents)
+            IPlayerIntentSource intents,
+            IPublisher<OpenRewardRequest> openRewardPub)
         {
-            _scenes    = scenes;
-            _session   = session;
-            _runStates = runStates;
-            _rng       = rng;
-            _readyGate = readyGate;
-            _intents   = intents;
+            _scenes        = scenes;
+            _session       = session;
+            _runStates     = runStates;
+            _rewards       = rewards;
+            _rng           = rng;
+            _readyGate     = readyGate;
+            _intents       = intents;
+            _openRewardPub = openRewardPub;
         }
 
         /// <summary>Legacy (Фаза 1): просто загрузить боевую сцену. Прямой dev-вход, бой запускает F2-панель.</summary>
@@ -60,7 +67,8 @@ namespace Guildmaster.Game.Services
         /// Заводит забег (<see cref="RunState"/>), если его ещё нет. Возвращает исход узла для будущей
         /// награды/перехода (A3). Полноценная петля «узел за узлом» — на карте (B1).
         /// </summary>
-        public async UniTask<EventResult> RunSingleBattleAsync(BattlePresetData preset)
+        public async UniTask<EventResult> RunSingleBattleAsync(
+            BattlePresetData preset, RewardTier tier = RewardTier.Battle, bool presentReward = true)
         {
             RunState run = _runStates.Current
                            ?? _runStates.NewRun(DateTime.UtcNow.Ticks, Array.Empty<RosterSlot>());
@@ -70,7 +78,50 @@ namespace Guildmaster.Game.Services
 
             EventResult result = await flow.Run(ctx);
             _runStates.Autosave(); // точка автосейва после узла (вики «7» §5)
+
+            // Победа → награда (A3): витрина 1-из-3, выбор пишется в RunState (enforce вместимости — §5.4).
+            if (presentReward && result.Outcome == EventOutcome.Completed)
+                await PresentRewardAsync(tier);
+
             return result;
+        }
+
+        /// <summary>
+        /// Экран награды после победы (A3): катит витрину, публикует запрос в UI, ждёт выбор игрока, пишет его
+        /// в <see cref="RunState"/> через <see cref="RunStateService"/> (единая точка вместимости реликов).
+        /// Требует слушателя <c>OpenRewardRequest</c> (UiRootBootstrap в CoreScene) — иначе выбор не придёт.
+        /// </summary>
+        private async UniTask PresentRewardAsync(RewardTier tier)
+        {
+            var choices = _rewards.RollChoices(tier);
+            if (choices.Count == 0)
+            {
+                Debug.LogWarning("[GameFlow] - пул наград пуст (нет реликов в контент-БД) → без награды");
+                return;
+            }
+
+            RunState run  = _runStates.Current;
+            bool     full = _runStates.RelicInventoryFull;
+
+            var tcs = new UniTaskCompletionSource<RewardChoiceResult>();
+            _openRewardPub.Publish(new OpenRewardRequest(
+                choices, full, run.RelicInventory, r => tcs.TrySetResult(r)));
+
+            RewardChoiceResult result = await tcs.Task;
+            if (result.Skipped)
+            {
+                Debug.Log("[GameFlow] - награда пропущена");
+                return;
+            }
+
+            if (full && !string.IsNullOrEmpty(result.DropRelicId))
+                _runStates.RemoveRelic(result.DropRelicId);
+
+            bool added = _runStates.TryAddRelic(result.Chosen.Id);
+            Debug.Log($"[GameFlow] - награда: взят '{result.Chosen.Id}'" +
+                      (result.DropRelicId != null ? $" (сброшен '{result.DropRelicId}')" : "") +
+                      (added ? "" : " — НЕ добавлен (нет места?)"));
+            _runStates.Autosave();
         }
     }
 }

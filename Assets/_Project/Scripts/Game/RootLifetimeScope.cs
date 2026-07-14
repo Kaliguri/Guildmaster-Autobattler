@@ -79,6 +79,9 @@ namespace Guildmaster.Game
             builder.Register<SoloReadyGate>(Lifetime.Singleton).As<IReadyGate>();
             builder.Register<SoloPlayerIntentSource>(Lifetime.Singleton).As<IPlayerIntentSource>();
 
+            // Витрина наград после боя (A3): катит 1-из-3 реликов из контент-БД (детерминирован через RNG).
+            builder.Register<RewardService>(Lifetime.Singleton);
+
             builder.Register<GameFlow>(Lifetime.Singleton);
 
             // Ввод глобален и переживает перезагрузку боевой сцены (вики «16» §3).
