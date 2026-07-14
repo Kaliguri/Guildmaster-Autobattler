@@ -43,21 +43,29 @@ namespace Guildmaster.Combat.Effects
         /// <summary>Теги, релевантные событию: для <see cref="CombatEvent.EffectExpired"/> — теги истёкшего эффекта. Иначе None.</summary>
         public readonly Data.Definitions.EffectTag Tags;
 
-        /// <summary>Урон-события: удар был АВТОАТАКОЙ. Реактивы «на удар клинка» (шипы, разгон атаки) гейтятся
-        /// по этому флагу — иначе их собственный урон порождает новые срабатывания.</summary>
-        public readonly bool IsAutoAttack;
+        /// <summary>Урон-события: откуда пришёл урон. Реактивы «на удар» гейтятся по нему — иначе тики DoT и
+        /// их собственная ответка порождают новые срабатывания.</summary>
+        public readonly DamageSourceKind SourceKind;
+
+        /// <summary>Удар был авто-атакой (разгон «Пылающих клинков», уклонение убийцы).</summary>
+        public bool IsAutoAttack => SourceKind == DamageSourceKind.AutoAttack;
+
+        /// <summary>Прямой удар — авто-атака или атакующая способность (будит шипы и щиты; доты — нет).</summary>
+        public bool IsDirectHit => SourceKind is DamageSourceKind.AutoAttack or DamageSourceKind.Ability;
 
         public CombatEventData(CombatEvent type, RuntimeUnit source, RuntimeUnit target, float amount)
             : this(type, source, target, amount, Data.Definitions.EffectTag.None) { }
 
-        public CombatEventData(CombatEvent type, RuntimeUnit source, RuntimeUnit target, float amount, Data.Definitions.EffectTag tags, bool isAutoAttack = false)
+        public CombatEventData(CombatEvent type, RuntimeUnit source, RuntimeUnit target, float amount,
+                               Data.Definitions.EffectTag tags,
+                               DamageSourceKind sourceKind = DamageSourceKind.Ability)
         {
-            Type         = type;
-            Source       = source;
-            Target       = target;
-            Amount       = amount;
-            Tags         = tags;
-            IsAutoAttack = isAutoAttack;
+            Type       = type;
+            Source     = source;
+            Target     = target;
+            Amount     = amount;
+            Tags       = tags;
+            SourceKind = sourceKind;
         }
     }
 }

@@ -88,7 +88,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 relic: AssassinRelic(PassiveTrigger.AnyHit));
 
             ctx.ApplyEffect(assassin, DodgePassive(maxCharges: 2, rechargeSeconds: 8f), assassin);
-            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK, isAutoAttack: true);
+            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK, sourceKind: DamageSourceKind.AutoAttack);
 
             ctx.Tick = 0;
             Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx),  "1-й удар негейтнут (заряд 1)");
@@ -110,10 +110,10 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 8f), assassin);
 
-            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK, isAutoAttack: true));
+            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
             Assert.AreEqual(200f, assassin.CurrentHP, 1e-4f, "Первый удар негейтнут — HP не тронуто");
 
-            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK, isAutoAttack: true));
+            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
             Assert.AreEqual(150f, assassin.CurrentHP, 1e-4f, "Заряд израсходован — второй удар проходит");
         }
 
@@ -130,7 +130,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             ctx.Tick = 0;
             es.Apply(assassin, dodge, assassin, ctx);
 
-            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK, isAutoAttack: true);
+            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK, sourceKind: DamageSourceKind.AutoAttack);
             Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx),  "Заряд израсходован на 1-м ударе");
             Assert.IsFalse(es.RunPreDamage(assassin, in hit, ctx), "Зарядов больше нет");
 
@@ -154,7 +154,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var ability = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK); // isAutoAttack=false
             Assert.IsFalse(es.RunPreDamage(assassin, in ability, ctx), "Урон способности не уклоняется");
 
-            var auto = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK, isAutoAttack: true);
+            var auto = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK, sourceKind: DamageSourceKind.AutoAttack);
             Assert.IsTrue(es.RunPreDamage(assassin, in auto, ctx), "Заряд был цел — автоатака уклоняется");
         }
 

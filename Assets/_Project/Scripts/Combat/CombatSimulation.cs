@@ -278,8 +278,8 @@ namespace Guildmaster.Combat
             // Внутренние события для реактивных компонентов (vampiric/thorns). Два события на удар:
             // DamageDealt доставляется источнику, DamageTaken — цели (вики «12» §3.4).
             if (req.Source != null)
-                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.IsAutoAttack));
-            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.IsAutoAttack));
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind));
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind));
 
             // Убийство атрибутируется нанёсшему смертельный удар → доставляется УБИЙЦЕ (§10.5, «Скрытность»).
             if (result.KilledTarget && req.Source != null)

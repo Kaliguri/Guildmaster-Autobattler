@@ -246,7 +246,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static DamageRequest AffinityReq(RuntimeUnit src, RuntimeUnit tgt, float raw,
             DamageAffinity affinity, DamageSchool school = DamageSchool.Physical)
-            => new DamageRequest(src, tgt, raw, school, ArmorK, isAutoAttack: false, affinity: affinity);
+            => new DamageRequest(src, tgt, raw, school, ArmorK, sourceKind: DamageSourceKind.Ability, affinity: affinity);
 
         [Test]
         public void Poison_ImmuneAgainstUndeadAndConstruct()

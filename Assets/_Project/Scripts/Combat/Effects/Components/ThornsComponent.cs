@@ -42,7 +42,8 @@ namespace Guildmaster.Combat.Effects.Components
             float reflected = e.Amount * _reflectFraction * ctx.Stacks;
             if (reflected <= 0f) return;
 
-            ctx.Combat.DealDamage(new DamageRequest(ctx.Target, attacker, reflected, _damageSchool, ctx.Combat.ArmorK, affinity: _affinity));
+            ctx.Combat.DealDamage(new DamageRequest(ctx.Target, attacker, reflected, _damageSchool, ctx.Combat.ArmorK,
+                sourceKind: DamageSourceKind.Reactive, affinity: _affinity));
         }
     }
 }

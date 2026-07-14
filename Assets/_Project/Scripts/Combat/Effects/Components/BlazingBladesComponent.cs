@@ -43,7 +43,8 @@ namespace Guildmaster.Combat.Effects.Components
             if (selfDamage <= 0f) return;
 
             // Плата за клинки: True — не гасится собственной бронёй; не автоатака — не рекурсирует сюда.
-            ctx.Combat.DealDamage(new DamageRequest(self, self, selfDamage, DamageSchool.True, ctx.Combat.ArmorK));
+            ctx.Combat.DealDamage(new DamageRequest(self, self, selfDamage, DamageSchool.True, ctx.Combat.ArmorK,
+                sourceKind: DamageSourceKind.Reactive));
         }
     }
 }

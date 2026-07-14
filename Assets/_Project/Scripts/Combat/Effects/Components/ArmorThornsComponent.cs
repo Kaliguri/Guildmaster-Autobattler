@@ -7,17 +7,26 @@ using UnityEngine;
 namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
-    /// «Шипастое древо» (Древень): получив АВТОАТАКУ, носитель бьёт шипами ВСЕХ врагов вокруг себя.
-    /// Урон шипов масштабируется от БРОНИ носителя (а не от доли полученного урона, как
+    /// «Шипастое древо» (Древень): получив ПРЯМОЙ удар, носитель бьёт шипами ВСЕХ врагов вокруг себя.
+    /// Урон шипов масштабируется от БРОНИ носителя (а не от доли полученного удара, как
     /// <see cref="ThornsComponent"/>) — по карточке ГДД «100% статы брони».
     /// </summary>
     /// <remarks>
-    /// Гейт по <see cref="CombatEventData.IsAutoAttack"/> — принципиальный: урон самих шипов автоатакой
-    /// не является, поэтому встречные шипы не устраивают бесконечный пинг-понг.
+    /// Два гейта, оба принципиальные:
+    /// <list type="bullet">
+    /// <item>Только прямой удар (<see cref="CombatEventData.IsDirectHit"/>) — авто-атака или атакующая
+    /// способность. Тики DoT крону не будят (иначе яд превращал бы Древня в вечный дамаг-пульс), и свои же
+    /// шипы тоже: их урон помечен <see cref="DamageSourceKind.Reactive"/>, поэтому пинг-понга нет.</item>
+    /// <item>Микро-КД между залпами: без него четверо быстрых мили превращают ответку в пулемёт с частотой
+    /// ЧУЖОЙ скорости атаки. Кулдаун держим эффектом-маркером на носителе — компонент живёт в SO и общий для
+    /// всех юнитов, своё состояние в нём хранить нельзя.</item>
+    /// </list>
     /// </remarks>
     [Serializable]
     public sealed class ArmorThornsComponent : IReactiveComponent
     {
+        private const string CooldownMarkerId = "sys.thorns_cooldown";
+
         [Tooltip("Доля брони носителя, уходящая в урон шипов (1 = 100% статы брони).")]
         [SerializeField] private float _armorRatio = 1f;
 
@@ -30,8 +39,20 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Сродство урона шипов (Древень с апгрейдом «Ядовитые шипы» — Яд).")]
         [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
 
+        [Tooltip("Эффект «Разрастание»: каждый его стак раздувает радиус шипов (карточка ГДД). Пусто = радиус фиксирован.")]
+        [SerializeField] private EffectData _growthEffect;
+
+        [Tooltip("Прибавка к радиусу за стак «Разрастания» (0.2 = +20% от базового радиуса за стак).")]
+        [SerializeField] private float _radiusPerGrowthStack = 0.2f;
+
+        [Tooltip("Микро-КД между залпами шипов, сек. Ритм ответки задаёт Древень, а не скорость атаки врагов. 0 = без КД.")]
+        [SerializeField] private float _cooldownSeconds = 0.5f;
+
         // Буфер запроса — компонент stateless по игровому состоянию, буфер переиспользуется как в системах.
         [NonSerialized] private readonly List<RuntimeUnit> _hits = new List<RuntimeUnit>();
+
+        // Маркер КД строится в коде (как sys.airborne в симуляции) — системный эффект, не контент-ассет.
+        [NonSerialized] private EffectData _cooldownMarker;
 
         public CombatEvent Events => CombatEvent.DamageTaken;
 
@@ -40,23 +61,69 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnEvent(in EffectContext ctx, in CombatEventData e)
         {
-            if (!e.IsAutoAttack) return;
+            if (!e.IsDirectHit) return;
 
             RuntimeUnit self = ctx.Target;
             if (self == null || self.IsDead) return;
 
+            if (_cooldownSeconds > 0f && HasEffect(self, CooldownMarker())) return;
+
             float damage = self.Stats.Get(StatType.PhysArmor) * _armorRatio * ctx.Stacks;
             if (damage <= 0f) return;
 
-            ctx.Combat.ReportAreaHit(AreaHit.Circle(self.Position, _radius, self.Team));
-            ctx.Combat.QueryUnitsInRadius(self.Position, _radius, _hits, TargetFilter.Enemies, self.Team);
+            float radius = EffectiveRadius(self);
+
+            ctx.Combat.ReportAreaHit(AreaHit.Circle(self.Position, radius, self.Team));
+            ctx.Combat.QueryUnitsInRadius(self.Position, radius, _hits, TargetFilter.Enemies, self.Team);
 
             for (int i = 0; i < _hits.Count; i++)
             {
                 RuntimeUnit victim = _hits[i];
                 if (victim.IsDead) continue;
-                ctx.Combat.DealDamage(new DamageRequest(self, victim, damage, _school, ctx.Combat.ArmorK, affinity: _affinity));
+
+                // Reactive: ответка шипов сама реактивы не будит — иначе два Древня зациклят друг друга.
+                ctx.Combat.DealDamage(new DamageRequest(self, victim, damage, _school, ctx.Combat.ArmorK,
+                    sourceKind: DamageSourceKind.Reactive, affinity: _affinity));
             }
+
+            if (_cooldownSeconds > 0f) ctx.Combat.ApplyEffect(self, CooldownMarker(), self);
+        }
+
+        /// <summary>
+        /// Радиус шипов с учётом «Разрастания»: активка Древня раздувает не только HP и броню, но и крону
+        /// (карточка ГДД). Радиус — не стат, поэтому стаки читаем прямо с носителя.
+        /// </summary>
+        private float EffectiveRadius(RuntimeUnit self)
+        {
+            if (_growthEffect == null || _radiusPerGrowthStack <= 0f) return _radius;
+
+            int stacks = StacksOf(self, _growthEffect);
+            return stacks > 0 ? _radius * (1f + _radiusPerGrowthStack * stacks) : _radius;
+        }
+
+        /// <summary>Маркер микро-КД: системный эффект без компонентов, его наличие и есть «шипы на перезарядке».</summary>
+        private EffectData CooldownMarker()
+        {
+            return _cooldownMarker ??= EffectData.CreateRuntime(
+                CooldownMarkerId,
+                EffectPolarity.Neutral,     // Neutral: длительность КД не крутится статами эффективности эффектов
+                EffectTag.None,
+                baseDuration: _cooldownSeconds,
+                unremovable: true);         // диспелом КД не сбросить
+        }
+
+        private static bool HasEffect(RuntimeUnit unit, EffectData def)
+        {
+            for (int i = 0; i < unit.ActiveEffects.Count; i++)
+                if (unit.ActiveEffects[i].Def == def) return true;
+            return false;
+        }
+
+        private static int StacksOf(RuntimeUnit unit, EffectData def)
+        {
+            for (int i = 0; i < unit.ActiveEffects.Count; i++)
+                if (unit.ActiveEffects[i].Def == def) return unit.ActiveEffects[i].Stacks;
+            return 0;
         }
     }
 }

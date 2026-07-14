@@ -36,7 +36,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f);
             sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
 
-            var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None, isAutoAttack: true);
+            var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None, sourceKind: DamageSourceKind.AutoAttack);
             sys.Dispatch(treant, in hit, ctx);
 
             Assert.AreEqual(2, ctx.DamageCalls.Count, "Шипы бьют ВСЕХ врагов вокруг, не только атакующего");
@@ -44,7 +44,18 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
-        public void ArmorThorns_DoesNotRetaliate_OnNonAutoAttackDamage()
+        public void ArmorThorns_RetaliatesOnAbilityHit_ButNotOnDotOrReactive()
+        {
+            // Решение Макса: крону будит любой ПРЯМОЙ удар — и авто-атака, и атакующее заклинание.
+            // А тики DoT и чужие ответки — нет: иначе яд превращает Древня в вечный дамаг-пульс,
+            // а два Древня зацикливают друг друга.
+            Assert.AreEqual(1, ThornsVolleysFor(DamageSourceKind.Ability),  "атакующая способность будит шипы");
+            Assert.AreEqual(0, ThornsVolleysFor(DamageSourceKind.Periodic), "тик DoT шипы не будит");
+            Assert.AreEqual(0, ThornsVolleysFor(DamageSourceKind.Reactive), "чужая ответка шипы не будит (нет пинг-понга)");
+        }
+
+        [Test]
+        public void ArmorThorns_MicroCooldown_ThrottlesVolleys()
         {
             var sys = new EffectSystem();
             var ctx = new MockCombatContext(effects: sys);
@@ -54,13 +65,79 @@ namespace Guildmaster.Tests.EditMode.Combat
             var attacker = TestUnit.Make(team: 1);
             ctx.UnitsInWorld.Add(attacker);
 
-            sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: new ArmorThornsComponent()), treant, ctx);
+            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_cooldownSeconds", 0.5f);
+            sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
 
-            // Урон способности/DoT/чужих шипов — не авто-атака: ответка не срабатывает (нет пинг-понга шипов).
-            var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f);
+            var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None,
+                                          sourceKind: DamageSourceKind.AutoAttack);
+
+            // Три удара подряд в один тик (толпа быстрых мили) — залп должен быть ОДИН.
+            sys.Dispatch(treant, in hit, ctx);
+            sys.Dispatch(treant, in hit, ctx);
             sys.Dispatch(treant, in hit, ctx);
 
-            Assert.AreEqual(0, ctx.DamageCalls.Count);
+            Assert.AreEqual(1, ctx.DamageCalls.Count,
+                "микро-КД: ритм ответки задаёт Древень, а не скорость атаки окружившей его толпы");
+        }
+
+        [Test]
+        public void ArmorThorns_GrowthStacks_WidenTheRadius()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext(effects: sys);
+
+            var treant = TestUnit.Make(team: 0);
+            treant.Stats.AddModifiersFrom("armor", new[] { new StatModifier(StatType.PhysArmor, ModifierOp.Flat, 20f) });
+
+            var attacker = TestUnit.Make(team: 1);
+            var faraway  = TestUnit.Make(team: 1);
+            faraway.Position = new Vector2(3.5f, 0f); // за базовым радиусом 3, но внутри раздутого (3 × 1.4)
+            ctx.UnitsInWorld.Add(attacker);
+            ctx.UnitsInWorld.Add(faraway);
+
+            // «Разрастание»: 2 стака → радиус шипов +40% (карточка ГДД: активка раздувает и крону тоже).
+            EffectData growth = TestEffect.Make(baseDuration: -1f, stacking: StackRule.Stack, maxStacks: 5);
+            var comp = new ArmorThornsComponent()
+                .With("_armorRatio", 1f)
+                .With("_radius", 3f)
+                .With("_growthEffect", growth)
+                .With("_radiusPerGrowthStack", 0.2f)
+                .With("_cooldownSeconds", 0f); // КД тут не мешаем — проверяем ровно радиус
+
+            sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
+
+            var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None,
+                                          sourceKind: DamageSourceKind.AutoAttack);
+
+            sys.Dispatch(treant, in hit, ctx);
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "без «Разрастания» дальний враг вне радиуса шипов");
+
+            ctx.DamageCalls.Clear();
+            sys.Apply(treant, growth, treant, ctx);
+            sys.Apply(treant, growth, treant, ctx); // 2 стака
+
+            sys.Dispatch(treant, in hit, ctx);
+            Assert.AreEqual(2, ctx.DamageCalls.Count, "крона разрослась — дальний враг теперь достаётся шипами");
+        }
+
+        /// <summary>Сколько раз шипы ответили на один входящий удар данного вида.</summary>
+        private static int ThornsVolleysFor(DamageSourceKind kind)
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext(effects: sys);
+
+            var treant = TestUnit.Make(team: 0);
+            treant.Stats.AddModifiersFrom("armor", new[] { new StatModifier(StatType.PhysArmor, ModifierOp.Flat, 20f) });
+            var attacker = TestUnit.Make(team: 1);
+            ctx.UnitsInWorld.Add(attacker);
+
+            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f);
+            sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
+
+            var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None, sourceKind: kind);
+            sys.Dispatch(treant, in hit, ctx);
+
+            return ctx.DamageCalls.Count;
         }
 
         // --- Огненный мечник: разгон скорости атаки + само-урон за удар ---
@@ -92,7 +169,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             float baseAttackSpeed = pyre.Stats.Get(StatType.AttackSpeed);
 
-            var hit = new CombatEventData(CombatEvent.DamageDealt, pyre, victim, 100f, EffectTag.None, isAutoAttack: true);
+            var hit = new CombatEventData(CombatEvent.DamageDealt, pyre, victim, 100f, EffectTag.None, sourceKind: DamageSourceKind.AutoAttack);
             sys.Dispatch(pyre, in hit, ctx);
 
             Assert.Greater(pyre.Stats.Get(StatType.AttackSpeed), baseAttackSpeed, "Удар клинком разгоняет скорость атаки");
