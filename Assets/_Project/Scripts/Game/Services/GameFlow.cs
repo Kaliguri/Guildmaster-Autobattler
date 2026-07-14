@@ -1,35 +1,76 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
+using Guildmaster.Core.Random;
+using Guildmaster.Data.Definitions;
+using Guildmaster.Game.Flow;
+using Guildmaster.Guild;
 using UnityEngine;
 
 namespace Guildmaster.Game.Services
 {
     /// <summary>
-    /// Управляет макро-флоу игры: Boot → загрузка BattleScene → старт боя → результат.
-    /// Фаза 1 — тонкий слой: сразу грузит BattleScene.
-    /// Полный GameFlow (карта, магазины, переходы) — Фаза 5.
+    /// Оркестратор макро-флоу игры (план 11 §2, §4). A2: умеет прогнать узел боя через <see cref="BattleFlow"/>
+    /// (Prep→Combat→Outcome) поверх <see cref="RunState"/>. Полный флоу забега (MainMenu → карта → узлы →
+    /// награды) достраивается шагами A3/B/C; швы (<see cref="IReadyGate"/>, <see cref="IPlayerIntentSource"/>)
+    /// заведены сейчас, соло-тела. Legacy-вход <see cref="BootAsync"/> оставлен для прямого запуска боевой
+    /// сцены (dev-панель F2) — не ломает итерацию.
     /// </summary>
     public sealed class GameFlow
     {
-        private readonly SceneLoader _sceneLoader;
+        private readonly ISceneLoader        _scenes;
+        private readonly IBattleSession      _session;
+        private readonly RunStateService     _runStates;
+        private readonly IRngService         _rng;
+        private readonly IReadyGate          _readyGate;
+        private readonly IPlayerIntentSource _intents;
 
-        public GameFlow(SceneLoader sceneLoader)
+        public GameFlow(
+            ISceneLoader        scenes,
+            IBattleSession      session,
+            RunStateService     runStates,
+            IRngService         rng,
+            IReadyGate          readyGate,
+            IPlayerIntentSource intents)
         {
-            _sceneLoader = sceneLoader;
+            _scenes    = scenes;
+            _session   = session;
+            _runStates = runStates;
+            _rng       = rng;
+            _readyGate = readyGate;
+            _intents   = intents;
         }
 
-        /// <summary>Запустить стартовый флоу: загрузить боевую сцену.</summary>
+        /// <summary>Legacy (Фаза 1): просто загрузить боевую сцену. Прямой dev-вход, бой запускает F2-панель.</summary>
         public async UniTask BootAsync()
         {
-            Debug.Log("[GameFlow] - Boot: загружаю BattleScene");
-            await _sceneLoader.LoadBattleAsync();
+            Debug.Log("[GameFlow] - Boot (legacy): загружаю BattleScene");
+            await _scenes.LoadBattleAsync();
         }
 
-        /// <summary>Вызвать после завершения боя: выгрузить боевую сцену.</summary>
+        /// <summary>Legacy: выгрузить боевую сцену после боя (парный к <see cref="BootAsync"/>).</summary>
         public async UniTask OnBattleEndedAsync(BattleOutcome outcome)
         {
-            Debug.Log($"[GameFlow] - Бой завершён: {outcome}");
-            await _sceneLoader.UnloadBattleAsync();
+            Debug.Log($"[GameFlow] - Бой завершён (legacy): {outcome}");
+            await _scenes.UnloadBattleAsync();
+        }
+
+        /// <summary>
+        /// A2-разрез: прогнать один бой как узел забега — грузит сцену, ждёт исход (с ретраями), выгружает.
+        /// Заводит забег (<see cref="RunState"/>), если его ещё нет. Возвращает исход узла для будущей
+        /// награды/перехода (A3). Полноценная петля «узел за узлом» — на карте (B1).
+        /// </summary>
+        public async UniTask<EventResult> RunSingleBattleAsync(BattlePresetData preset)
+        {
+            RunState run = _runStates.Current
+                           ?? _runStates.NewRun(DateTime.UtcNow.Ticks, Array.Empty<RosterSlot>());
+
+            var ctx  = new RunContext(run, _rng, _readyGate, _intents);
+            var flow = new BattleFlow(preset, _scenes, _session);
+
+            EventResult result = await flow.Run(ctx);
+            _runStates.Autosave(); // точка автосейва после узла (вики «7» §5)
+            return result;
         }
     }
 }

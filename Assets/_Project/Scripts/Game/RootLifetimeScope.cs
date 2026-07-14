@@ -5,6 +5,7 @@ using Guildmaster.Core.Persistence;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Settings;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Game.Flow;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
 using Guildmaster.Guild;
@@ -70,7 +71,14 @@ namespace Guildmaster.Game
             // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4).
             builder.Register<RunStateService>(Lifetime.Singleton);
 
-            builder.Register<SceneLoader>(Lifetime.Singleton);
+            builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>().AsSelf();
+
+            // Флоу забега (план 11): рукопожатие в боевой скоуп + сетевые швы (соло-тела). BattleFlow создаётся
+            // per-node внутри GameFlow, потому в DI не регистрируется.
+            builder.Register<BattleSession>(Lifetime.Singleton).As<IBattleSession>();
+            builder.Register<SoloReadyGate>(Lifetime.Singleton).As<IReadyGate>();
+            builder.Register<SoloPlayerIntentSource>(Lifetime.Singleton).As<IPlayerIntentSource>();
+
             builder.Register<GameFlow>(Lifetime.Singleton);
 
             // Ввод глобален и переживает перезагрузку боевой сцены (вики «16» §3).
