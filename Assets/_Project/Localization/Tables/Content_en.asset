@@ -136,6 +136,38 @@ MonoBehaviour:
     m_Localized: A passive test target for playtesting.
     m_Metadata:
       m_Items: []
+  - m_Id: 1132609788960768
+    m_Localized: Goblin Grunt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132609788960769
+    m_Localized: "Weak club goblin \u2014 dangerous only in numbers."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132610745262080
+    m_Localized: Goblin Warrior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132610745262081
+    m_Localized: Sword-and-shield frontliner that holds the line.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132607029108736
+    m_Localized: Goblin Archer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132607058468864
+    m_Localized: Cowardly archer that peppers the party from the back line.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132608274817024
+    m_Localized: Goblin Cutthroat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132608274817025
+    m_Localized: Fast knife goblin that flanks toward soft back-line targets.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

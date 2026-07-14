@@ -1,0 +1,64 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63d49fa19860d104c90671a3fd8bb1e6, type: 3}
+  m_Name: GoblinCutthroat
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
+  _id: enemy.goblin_cutthroat
+  _damageType: 0
+  _attackType: 0
+  _resourceType: 0
+  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
+  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackEffects: []
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _resourceOnHit: 0
+  _stats:
+  - Stat: 0
+    Op: 3
+    Value: 220
+  - Stat: 7
+    Op: 3
+    Value: 65
+  - Stat: 8
+    Op: 3
+    Value: 1.3
+  - Stat: 3
+    Op: 3
+    Value: 0
+  - Stat: 20
+    Op: 3
+    Value: 4.5
+  _grantedEffects: []
+  _abilities: []
+  _aiPreset: {fileID: 11400000, guid: d05bbe58325e0e9428c3dd746969e8ff, type: 2}
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 0
+      FleeAtHpPct: 0.25
+      ReturnAtHpPct: 0.5
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags: []
+  _threatPoints: 2
+  _goldBounty: 0

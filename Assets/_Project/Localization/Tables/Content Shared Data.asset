@@ -131,6 +131,38 @@ MonoBehaviour:
     m_Key: enemy.training_dummy.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 1132607029108736
+    m_Key: enemy.goblin_archer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132607058468864
+    m_Key: enemy.goblin_archer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132608274817024
+    m_Key: enemy.goblin_cutthroat.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132608274817025
+    m_Key: enemy.goblin_cutthroat.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132609788960768
+    m_Key: enemy.goblin_grunt.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132609788960769
+    m_Key: enemy.goblin_grunt.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132610745262080
+    m_Key: enemy.goblin_warrior.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132610745262081
+    m_Key: enemy.goblin_warrior.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
