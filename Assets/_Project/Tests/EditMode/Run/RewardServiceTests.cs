@@ -72,19 +72,97 @@ namespace Guildmaster.Tests.EditMode.Run
                 "тот же сид → та же витрина (детерминизм для реплея/коопа)");
         }
 
+        // ===================== Ramp редкости выпадения =====================
+
+        [Test]
+        public void RollChoices_Boss_ShowcaseIsAllUnique()
+        {
+            var pool = new List<RelicData>
+            {
+                MakeRelic("relic.u1", DropRarity.Unique),
+                MakeRelic("relic.u2", DropRarity.Unique),
+                MakeRelic("relic.u3", DropRarity.Unique),
+                MakeRelic("relic.c1", DropRarity.Common),
+                MakeRelic("relic.c2", DropRarity.Common),
+                MakeRelic("relic.t1", DropRarity.Trash),
+            };
+            var service = new RewardService(new FakeContent(pool), new XorShiftRng(7));
+
+            IReadOnlyList<RelicData> choices = service.RollChoices(RewardTier.Boss, 3);
+
+            Assert.AreEqual(3, choices.Count);
+            Assert.IsTrue(choices.All(r => r.DropRarity == DropRarity.Unique),
+                "у босса шанс уника 100% → вся витрина уникальная");
+        }
+
+        [Test]
+        public void RollChoices_Battle_UniqueIsRare_EliteIsTwiceAsLikely()
+        {
+            // Статистика по многим роллам: наклон витрины должен читаться в частоте, а не в одном броске.
+            float battleRate = UniqueRate(RewardTier.Battle);
+            float eliteRate  = UniqueRate(RewardTier.Elite);
+
+            Assert.That(battleRate, Is.EqualTo(0.10f).Within(0.04f), "рядовой бой — примерно 10% уников");
+            Assert.That(eliteRate,  Is.EqualTo(0.20f).Within(0.05f), "элита — примерно 20% уников");
+            Assert.Less(battleRate, eliteRate, "элита щедрее рядового боя");
+        }
+
+        [Test]
+        public void RollChoices_NoUniquesInPool_StillFillsShowcase()
+        {
+            // Уников в контенте может не быть вовсе (сейчас так и есть) — витрина не должна пустеть у босса.
+            var pool = new List<RelicData>
+            {
+                MakeRelic("relic.c1", DropRarity.Common),
+                MakeRelic("relic.c2", DropRarity.Common),
+                MakeRelic("relic.c3", DropRarity.Common),
+            };
+            var service = new RewardService(new FakeContent(pool), new XorShiftRng(3));
+
+            IReadOnlyList<RelicData> choices = service.RollChoices(RewardTier.Boss, 3);
+
+            Assert.AreEqual(3, choices.Count, "нет уников — добираем из обычных, а не отдаём пустую витрину");
+        }
+
         // ── helpers ──────────────────────────────────────────────────────────
+
+        /// <summary>Доля уников среди всех слотов витрины за много роллов — так виден наклон по тиру.</summary>
+        private static float UniqueRate(RewardTier tier, int rolls = 400)
+        {
+            var pool = new List<RelicData>();
+            for (int i = 0; i < 6; i++) pool.Add(MakeRelic($"relic.u{i}", DropRarity.Unique));
+            for (int i = 0; i < 6; i++) pool.Add(MakeRelic($"relic.c{i}", DropRarity.Common));
+
+            var service = new RewardService(new FakeContent(pool), new XorShiftRng(11));
+
+            int uniques = 0, slots = 0;
+            for (int i = 0; i < rolls; i++)
+            {
+                foreach (RelicData r in service.RollChoices(tier, 3))
+                {
+                    slots++;
+                    if (r.DropRarity == DropRarity.Unique) uniques++;
+                }
+            }
+            return (float)uniques / slots;
+        }
+
+        private static RelicData MakeRelic(string id, DropRarity rarity = DropRarity.Common)
+        {
+            var relic = ScriptableObject.CreateInstance<RelicData>();
+            typeof(ContentDefinition)
+                .GetField("_id", BindingFlags.NonPublic | BindingFlags.Instance)
+                .SetValue(relic, id);
+            typeof(RelicData)
+                .GetField("_dropRarity", BindingFlags.NonPublic | BindingFlags.Instance)
+                .SetValue(relic, rarity);
+            return relic;
+        }
 
         private static List<RelicData> MakePool(params string[] ids)
         {
             var list = new List<RelicData>(ids.Length);
-            foreach (string id in ids)
-            {
-                var relic = ScriptableObject.CreateInstance<RelicData>();
-                typeof(ContentDefinition)
-                    .GetField("_id", BindingFlags.NonPublic | BindingFlags.Instance)
-                    .SetValue(relic, id);
-                list.Add(relic);
-            }
+            foreach (string id in ids) list.Add(MakeRelic(id));
             return list;
         }
 

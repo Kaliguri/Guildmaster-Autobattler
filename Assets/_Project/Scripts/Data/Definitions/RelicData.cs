@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Guildmaster.Data.Definitions
 {
@@ -14,8 +15,12 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Легаси строковые теги. Новый путь — InfoTags (TagData[]) на UnitData.")]
         [SerializeField] private string[] _tags;
 
-        [Tooltip("Редкость (GDD 5). У вертикального среза — все Common.")]
-        [SerializeField] private RelicRarity _rarity = RelicRarity.Common;
+        [Tooltip("Класс кита (GDD 5): обычный / проклятый (сила ценой платы) / божественный. Боевая характеристика, НЕ шанс выпадения.")]
+        [FormerlySerializedAs("_rarity")]
+        [SerializeField] private KitPower _kitPower = KitPower.Common;
+
+        [Tooltip("Редкость выпадения (экономика): как часто реликвия встречается в наградах и магазине. Ортогональна классу кита.")]
+        [SerializeField] private DropRarity _dropRarity = DropRarity.Common;
 
         [Tooltip("Нагрузка на весь забег (штрафы Cursed / бонусы Divine); у Common пусто. Чисто статовый штраф = EffectData со StatModifierComponent и бессрочной длительностью.")]
         [SerializeField] private EffectData[] _runEffects;
@@ -28,7 +33,8 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private bool _canUseExtendedDeployment;
 
         public string[] Tags => _tags;
-        public RelicRarity Rarity => _rarity;
+        public KitPower KitPower => _kitPower;
+        public DropRarity DropRarity => _dropRarity;
         public EffectData[] RunEffects => _runEffects;
         public AIPresetData[] AltAiPresets => _altAiPresets;
         public bool CanUseExtendedDeployment => _canUseExtendedDeployment;
