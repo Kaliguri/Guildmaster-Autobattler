@@ -10,6 +10,7 @@
     "Guildmaster.Combat",
     "Guildmaster.Presentation",
     "Guildmaster.Game",
+    "Guildmaster.Guild",
     "Guildmaster.ContentHub.Editor"
   ],
   "includePlatforms": [

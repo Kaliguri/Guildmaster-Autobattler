@@ -23,10 +23,18 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Слотов предметов на персонажа (Vessel-скоуп, вики «13» §3.2 ItemData.Scope).")]
         [SerializeField] private int _vesselItemSlots = 3;
 
+        [Tooltip("Стартовая вместимость коллекции реликов гильдии (запас ненадетых, план 11 §5.4).")]
+        [SerializeField] private int _relicCapacityBase = 8;
+
+        [Tooltip("Потолок вместимости коллекции реликов (апгрейд в магазине не поднимет выше).")]
+        [SerializeField] private int _relicCapacityMax = 16;
+
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
         public string DefaultLocale       => _defaultLocale;
         public int    VesselItemSlots     => _vesselItemSlots;
+        public int    RelicCapacityBase   => _relicCapacityBase;
+        public int    RelicCapacityMax    => _relicCapacityMax;
     }
 }

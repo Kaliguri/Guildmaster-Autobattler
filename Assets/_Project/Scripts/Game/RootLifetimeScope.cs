@@ -1,11 +1,13 @@
 using Guildmaster.Core.Audio;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
+using Guildmaster.Core.Persistence;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Settings;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Services;
+using Guildmaster.Guild;
 using Guildmaster.UI;
 using Guildmaster.Presentation.Audio;
 using MessagePipe;
@@ -62,6 +64,11 @@ namespace Guildmaster.Game
 
             // Локализация: сервис поверх String Tables (вики «13» §5). Потребители (UI) — Фаза 7.
             builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();
+
+            // Персистентность: соло-бэкенд JSON-файл за швом ISaveService (ES3/Steam Cloud — потом).
+            builder.Register<JsonFileSaveService>(Lifetime.Singleton).As<ISaveService>();
+            // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4).
+            builder.Register<RunStateService>(Lifetime.Singleton);
 
             builder.Register<SceneLoader>(Lifetime.Singleton);
             builder.Register<GameFlow>(Lifetime.Singleton);
