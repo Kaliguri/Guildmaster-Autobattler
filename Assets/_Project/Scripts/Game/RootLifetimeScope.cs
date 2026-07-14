@@ -2,11 +2,13 @@ using Guildmaster.Core.Audio;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
 using Guildmaster.Core.Persistence;
+using Guildmaster.Core.Players;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Settings;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Flow;
 using Guildmaster.Game.Input;
+using Guildmaster.Game.Players;
 using Guildmaster.Game.Services;
 using Guildmaster.Guild;
 using Guildmaster.UI;
@@ -70,6 +72,10 @@ namespace Guildmaster.Game
             builder.Register<JsonFileSaveService>(Lifetime.Singleton).As<ISaveService>();
             // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4).
             builder.Register<RunStateService>(Lifetime.Singleton);
+
+            // За какую команду играет этот клиент. Единственный источник ответа «мы победили?» —
+            // в бою есть команды, а не «сторона игрока» (шов под PvP).
+            builder.Register<SoloLocalPlayer>(Lifetime.Singleton).As<ILocalPlayer>();
 
             builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>().AsSelf();
 

@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
+using Guildmaster.Core.Players;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Flow;
@@ -27,6 +28,7 @@ namespace Guildmaster.Game.Services
         private readonly IRngService         _rng;
         private readonly IReadyGate          _readyGate;
         private readonly IPlayerIntentSource _intents;
+        private readonly ILocalPlayer        _localPlayer;
         private readonly IPublisher<OpenRewardRequest>    _openRewardPub;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
 
@@ -39,6 +41,7 @@ namespace Guildmaster.Game.Services
             IRngService         rng,
             IReadyGate          readyGate,
             IPlayerIntentSource intents,
+            ILocalPlayer        localPlayer,
             IPublisher<OpenRewardRequest>    openRewardPub,
             IPublisher<OpenTextEventRequest> openEventPub)
         {
@@ -50,6 +53,7 @@ namespace Guildmaster.Game.Services
             _rng           = rng;
             _readyGate     = readyGate;
             _intents       = intents;
+            _localPlayer   = localPlayer;
             _openRewardPub = openRewardPub;
             _openEventPub  = openEventPub;
         }
@@ -80,7 +84,7 @@ namespace Guildmaster.Game.Services
                            ?? _runStates.NewRun(DateTime.UtcNow.Ticks, Array.Empty<RosterSlot>());
 
             var ctx  = new RunContext(run, _rng, _readyGate, _intents);
-            var flow = new BattleFlow(preset, _scenes, _session);
+            var flow = new BattleFlow(preset, _scenes, _session, _localPlayer);
 
             EventResult result = await flow.Run(ctx);
             _runStates.Autosave(); // точка автосейва после узла (вики «7» §5)

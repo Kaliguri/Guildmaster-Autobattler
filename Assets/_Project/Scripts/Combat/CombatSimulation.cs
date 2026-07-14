@@ -594,29 +594,36 @@ namespace Guildmaster.Combat
             }
         }
 
+        /// <summary>
+        /// Бой кончается, когда живой остаётся не больше одной команды. Считаем по фактическим номерам
+        /// команд, а не по «своей/чужой»: сторон может быть больше двух (PvP, будущие режимы).
+        /// </summary>
         private void CheckOutcome()
         {
             // До первого спавна бой не оценивается. После — _units непуст (мёртвые остаются
             // помеченными, не удаляются), поэтому отдельная проверка на пустоту не нужна.
             if (!_hasSpawned) return;
 
-            bool teamAAlive = false;
-            bool teamBAlive = false;
+            int  aliveTeam = BattleOutcome.NoTeam;
+            bool anyAlive  = false;
 
             for (int i = 0; i < _units.Count; i++)
             {
-                if (_units[i].IsDead) continue;
-                if (_units[i].Team == 0) teamAAlive = true;
-                else                     teamBAlive = true;
+                RuntimeUnit u = _units[i];
+                if (u.IsDead) continue;
+
+                if (!anyAlive)
+                {
+                    aliveTeam = u.Team;
+                    anyAlive  = true;
+                }
+                else if (u.Team != aliveTeam)
+                {
+                    return; // живы минимум две команды — бой продолжается
+                }
             }
 
-            BattleOutcome newOutcome;
-            if (!teamAAlive && !teamBAlive) newOutcome = BattleOutcome.Draw;
-            else if (!teamBAlive)           newOutcome = BattleOutcome.TeamAWins;
-            else if (!teamAAlive)           newOutcome = BattleOutcome.TeamBWins;
-            else                            return;
-
-            _outcome = newOutcome;
+            _outcome = anyAlive ? BattleOutcome.Win(aliveTeam) : BattleOutcome.Draw;
             OnBattleEnded?.Invoke(_outcome);
         }
     }

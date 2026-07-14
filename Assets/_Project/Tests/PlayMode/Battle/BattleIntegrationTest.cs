@@ -98,7 +98,7 @@ namespace Guildmaster.Tests.PlayMode.Battle
 
             yield return null;
 
-            int winTeam = sim.Outcome == BattleOutcome.TeamAWins ? 0 : 1;
+            int winTeam = sim.Outcome.WinningTeam;
             bool anyLoserAlive = false;
 
             for (int i = 0; i < sim.Units.Count; i++)

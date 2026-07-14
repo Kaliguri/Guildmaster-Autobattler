@@ -1,6 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
+using Guildmaster.Core.Players;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Services;
 using UnityEngine;
@@ -22,15 +23,17 @@ namespace Guildmaster.Game.Flow
         private readonly BattlePresetData _preset;
         private readonly ISceneLoader     _scenes;
         private readonly IBattleSession   _session;
+        private readonly ILocalPlayer     _localPlayer;
         private readonly int              _maxRetries;
 
         public BattleFlow(BattlePresetData preset, ISceneLoader scenes, IBattleSession session,
-                          int maxRetries = DefaultMaxRetries)
+                          ILocalPlayer localPlayer, int maxRetries = DefaultMaxRetries)
         {
-            _preset     = preset;
-            _scenes     = scenes;
-            _session    = session;
-            _maxRetries = Mathf.Max(0, maxRetries);
+            _preset      = preset;
+            _scenes      = scenes;
+            _session     = session;
+            _localPlayer = localPlayer;
+            _maxRetries  = Mathf.Max(0, maxRetries);
         }
 
         public async UniTask<EventResult> Run(RunContext ctx)
@@ -50,7 +53,7 @@ namespace Guildmaster.Game.Flow
                 BattleOutcome outcome = await _session.WaitOutcomeAsync(CancellationToken.None);
 
                 int retries = 0;
-                while (!IsPlayerWin(outcome) && retries < _maxRetries)
+                while (!Won(outcome) && retries < _maxRetries)
                 {
                     retries++;
                     Debug.Log($"[BattleFlow] - поражение ({outcome}), ретрай {retries}/{_maxRetries}");
@@ -62,7 +65,7 @@ namespace Guildmaster.Game.Flow
                     outcome = await _session.WaitOutcomeAsync(CancellationToken.None);
                 }
 
-                bool won = IsPlayerWin(outcome);
+                bool won = Won(outcome);
                 Debug.Log($"[BattleFlow] - бой '{_preset.Id}' завершён: {outcome} → {(won ? "Completed" : "Defeated")}");
                 return won ? EventResult.Completed : EventResult.Defeated;
             }
@@ -72,7 +75,7 @@ namespace Guildmaster.Game.Flow
             }
         }
 
-        // Player-сторона всегда team 0 (EncounterLoader спавнит ростер team:0, врагов team:1) → TeamAWins = победа.
-        private static bool IsPlayerWin(BattleOutcome outcome) => outcome == BattleOutcome.TeamAWins;
+        // Победа = победила МОЯ команда. Ничья победой не считается → для игрока это поражение (ретрай).
+        private bool Won(BattleOutcome outcome) => outcome.IsWinFor(_localPlayer.Team);
     }
 }
