@@ -63,10 +63,11 @@ namespace Guildmaster.Combat
             bool panicSelf = data.CastOverrideSelfHpPct > 0f && HpPct(caster) <= data.CastOverrideSelfHpPct;
 
             bool isMassTag = data.TargetMode == AbilityTargetMode.AllEnemiesWithTag;
+            bool isAllyAura = data.TargetMode == AbilityTargetMode.AlliesInRadius;
 
             // Круговой удар и масс-по-тегу одиночной цели не требуют (центр = кастующий / список).
             RuntimeUnit target = (panicSelf && data.IsHeal) ? caster
-                               : isMassTag                  ? null
+                               : isMassTag || isAllyAura    ? null
                                : ResolveTarget(caster, data.TargetMode, units);
 
             // Требование валидной цели: Circle — центр = кастующий; масс-по-тегу — нужен хотя бы один
@@ -74,6 +75,10 @@ namespace Guildmaster.Combat
             if (isMassTag)
             {
                 if (CountEnemiesWithTag(caster, data.TriggerTag, units) == 0) return false;
+            }
+            else if (isAllyAura)
+            {
+                // Аура по союзникам всегда валидна: кастующий сам себе союзник.
             }
             else if (data.AreaShape != AreaShape.Circle && target == null)
             {
@@ -89,6 +94,8 @@ namespace Guildmaster.Combat
 
             if (data.Displaces)
                 ApplyDisplace(caster, target, data, ctx);
+            else if (isAllyAura)
+                ApplyAllyAura(caster, data, ctx);
             else if (isMassTag)
                 ApplyAllWithTag(caster, data, units, ctx);
             else if (data.AreaShape == AreaShape.Circle)
@@ -228,6 +235,33 @@ namespace Guildmaster.Combat
                 if (data.ConsumesTriggerTag)
                     ctx.Dispel(new DispelRequest(u, DispelTargetPolarity.Any, tag, dispelPower: int.MaxValue, maxCount: 0));
             }
+        }
+
+        /// <summary>
+        /// Групповой баф/хил по союзникам в радиусе («Командный клич» гоблин-командира). Кастующий входит в
+        /// список сам — клич бафает и его. Урон здесь не наносится (это опора поддержки, не AOE-удар).
+        /// </summary>
+        private void ApplyAllyAura(RuntimeUnit caster, AbilityData data, ICombatContext ctx)
+        {
+            ctx.ReportAreaHit(AreaHit.Circle(caster.Position, data.AreaRadius, caster.Team));
+            ctx.QueryUnitsInRadius(caster.Position, data.AreaRadius, _targets, TargetFilter.Allies, caster.Team);
+
+            bool casterIncluded = false;
+            for (int i = 0; i < _targets.Count; i++)
+            {
+                RuntimeUnit t = _targets[i];
+                if (t == caster) casterIncluded = true;
+                ApplyAura(t, data, caster, ctx);
+            }
+
+            if (!casterIncluded) ApplyAura(caster, data, caster, ctx);
+        }
+
+        private static void ApplyAura(RuntimeUnit t, AbilityData data, RuntimeUnit caster, ICombatContext ctx)
+        {
+            if (t.IsDead) return;
+            if (data.IsHeal) ctx.Heal(t, HealAmount(t, data), caster);
+            ApplyEffects(t, data, caster, ctx);
         }
 
         /// <summary>Круговой AOE-удар вокруг кастующего («Стальной вихрь»): урон + эффекты по всем врагам в радиусе.</summary>

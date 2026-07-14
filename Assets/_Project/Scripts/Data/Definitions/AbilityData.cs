@@ -20,6 +20,10 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Все живые враги с тегом <see cref="AbilityData.TriggerTag"/> — глобально, без ограничения дальности (масс-стан «Ледяные оковы» по «Заморозке»). Цель не одиночная.</summary>
         AllEnemiesWithTag = 4,
+
+        /// <summary>Все живые союзники в <see cref="AbilityData.AreaRadius"/> вокруг кастующего, включая его самого
+        /// (групповой баф «Командный клич»; лечение — если задана хил-нагрузка). Цель не одиночная.</summary>
+        AlliesInRadius = 5,
     }
 
     /// <summary>
