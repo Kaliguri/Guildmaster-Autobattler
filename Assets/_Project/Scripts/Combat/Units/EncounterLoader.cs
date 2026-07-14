@@ -15,11 +15,15 @@ namespace Guildmaster.Combat
         public readonly VesselData Vessel;
         public readonly Vector2    Position;
 
-        public PlayerSpawn(UnitData unit, VesselData vessel, Vector2 position)
+        /// <summary>Предметы (Vessel) + баннеры (Party) юнита — статовые моды/пассивки (D1). null = без предметов.</summary>
+        public readonly IReadOnlyList<ItemData> Items;
+
+        public PlayerSpawn(UnitData unit, VesselData vessel, Vector2 position, IReadOnlyList<ItemData> items = null)
         {
             Unit     = unit;
             Vessel   = vessel;
             Position = position;
+            Items    = items;
         }
     }
 
@@ -97,14 +101,16 @@ namespace Guildmaster.Combat
             if (preset.Encounter == null) { Debug.LogWarning($"[EncounterLoader] - пресет '{preset.Id}': не задан энкаунтер"); return; }
 
             // Ставим ростер (team 0) + врагов (team 1) в очередь спавна (ResetBattle внутри Load).
-            Load(preset.Encounter, BuildRosterSide(preset.Roster));
+            // Баннеры пресета (Party-скоуп) раздаются каждому юниту ростера (D1).
+            Load(preset.Encounter, BuildRosterSide(preset.Roster, preset.PartyItems));
 
             // Free → отдаём управление фазе расстановки (пауза/флаш/drag). Fixed → бой стартует сам.
             if (preset.DeploymentMode == DeploymentMode.Free)
                 FreeDeploymentRequested?.Invoke(preset);
         }
 
-        private static List<PlayerSpawn> BuildRosterSide(IReadOnlyList<PlayerSlot> roster)
+        private static List<PlayerSpawn> BuildRosterSide(IReadOnlyList<PlayerSlot> roster,
+                                                         IReadOnlyList<ItemData> partyItems)
         {
             if (roster == null || roster.Count == 0) return null;
             var side = new List<PlayerSpawn>(roster.Count);
@@ -112,9 +118,24 @@ namespace Guildmaster.Combat
             {
                 PlayerSlot slot = roster[i];
                 if (slot.Relic == null) continue; // слот релика должен быть заполнен (relic.base у «пустого» сосуда)
-                side.Add(new PlayerSpawn(slot.Relic, slot.Vessel, slot.Position));
+                IReadOnlyList<ItemData> items = CombineItems(slot.Items, partyItems);
+                side.Add(new PlayerSpawn(slot.Relic, slot.Vessel, slot.Position, items));
             }
             return side;
+        }
+
+        // Предметы слота (Vessel) + баннеры команды (Party) в один список для сборки юнита. null, если оба пусты.
+        private static IReadOnlyList<ItemData> CombineItems(IReadOnlyList<ItemData> vesselItems,
+                                                            IReadOnlyList<ItemData> partyItems)
+        {
+            bool hasVessel = vesselItems != null && vesselItems.Count > 0;
+            bool hasParty  = partyItems  != null && partyItems.Count  > 0;
+            if (!hasVessel && !hasParty) return null;
+
+            var combined = new List<ItemData>();
+            if (hasVessel) combined.AddRange(vesselItems);
+            if (hasParty)  combined.AddRange(partyItems);
+            return combined;
         }
 
         /// <summary>Перезапустить последний загруженный бой на месте (dev-R). No-op, если ничего не грузили.</summary>
@@ -141,7 +162,7 @@ namespace Guildmaster.Combat
                 {
                     PlayerSpawn p = playerSide[i];
                     if (p.Unit == null) continue;
-                    _simulation.EnqueueUnitSpawn(_factory.Create(p.Unit, p.Vessel, team: 0, p.Position));
+                    _simulation.EnqueueUnitSpawn(_factory.Create(p.Unit, p.Vessel, team: 0, p.Position, p.Items));
                 }
             }
 

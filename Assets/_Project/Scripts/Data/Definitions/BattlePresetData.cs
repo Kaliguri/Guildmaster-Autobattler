@@ -27,9 +27,13 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Сохранённая стартовая позиция на арене (team 0). Fixed спавнит прямо сюда; Free — старт фазы расстановки.")]
         [SerializeField] private Vector2 _position;
 
+        [Tooltip("Предметы юнита (Vessel-скоуп): статовые моды/пассивки, до VesselItemSlots штук (D1). Опц.")]
+        [SerializeField] private ItemData[] _items;
+
         public RelicData  Relic    => _relic;
         public VesselData Vessel   => _vessel;
         public Vector2    Position => _position;
+        public IReadOnlyList<ItemData> Items => _items;
     }
 
     /// <summary>
@@ -51,8 +55,12 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Fixed = спавн сразу по сохранённым позициям; Free = интерактивная расстановка (шаг 4; пока = Fixed).")]
         [SerializeField] private DeploymentMode _deploymentMode = DeploymentMode.Fixed;
 
+        [Tooltip("Баннеры боя (Party-скоуп предметы): действуют на всю команду team 0 (D1). Опц.")]
+        [SerializeField] private ItemData[] _partyItems;
+
         public EncounterData            Encounter      => _encounter;
         public IReadOnlyList<PlayerSlot> Roster        => _roster;
         public DeploymentMode           DeploymentMode => _deploymentMode;
+        public IReadOnlyList<ItemData>  PartyItems     => _partyItems;
     }
 }

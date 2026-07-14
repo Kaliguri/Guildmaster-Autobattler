@@ -171,6 +171,30 @@ MonoBehaviour:
     m_Key: relic.base.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 1377642756694016
+    m_Key: item.oaken_charm.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377642802831360
+    m_Key: item.oaken_charm.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377644530884608
+    m_Key: item.swift_boots.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377644530884609
+    m_Key: item.swift_boots.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377645722066944
+    m_Key: item.war_banner.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377645722066945
+    m_Key: item.war_banner.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
