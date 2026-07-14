@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: WhirlMonk
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.whirl_monk
-  _damageType: 0
+  _damageSchool: 0
+  _affinity: 0
+  _creatureType: 0
   _attackType: 0
   _resourceType: 1
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
@@ -55,6 +57,8 @@ MonoBehaviour:
     _resourceCost: 80
     _targetMode: 1
     _damageMultiplier: 0
+    _schoolOverride: 0
+    _affinityOverride: 0
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 0

@@ -48,6 +48,12 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Множитель прямого урона от AutoAttackDamage кастующего. 0 = только эффекты (поведение Ф2). «Стальной вихрь» = 3.")]
         [SerializeField] private float _damageMultiplier;
 
+        [Tooltip("Школа урона способности. Inherit = школа юнита-кастера (ГДД «8»: школа задаётся каждой атаке/способности отдельно).")]
+        [SerializeField] private DamageSchoolOverride _schoolOverride = DamageSchoolOverride.Inherit;
+
+        [Tooltip("Сродство урона способности (Яд/Свет/Тьма). Inherit = сродство юнита-кастера.")]
+        [SerializeField] private DamageAffinityOverride _affinityOverride = DamageAffinityOverride.Inherit;
+
         [Header("Area of effect (Phase 3)")]
         [Tooltip("Форма зоны поражения. None = одиночная цель по TargetMode (поведение Ф2).")]
         [SerializeField] private AreaShape _areaShape = AreaShape.None;
@@ -116,6 +122,8 @@ namespace Guildmaster.Data.Definitions
         public AbilityTargetMode TargetMode => _targetMode;
 
         public float DamageMultiplier => _damageMultiplier;
+        public DamageSchoolOverride SchoolOverride => _schoolOverride;
+        public DamageAffinityOverride AffinityOverride => _affinityOverride;
         public AreaShape AreaShape => _areaShape;
         public float AreaRadius => _areaRadius;
         public float HealFlat => _healFlat;

@@ -55,7 +55,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var periodic = new PeriodicDamageComponent()
                 .With("_interval", interval)
                 .With("_damagePerSecond", new ScalableValue(dps))
-                .With("_damageType", DamageType.Magic);
+                .With("_damageSchool", DamageSchool.Elemental);
             return TestEffect.Make(baseDuration: duration, tags: EffectTag.DoT, components: periodic);
         }
 

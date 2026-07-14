@@ -106,7 +106,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData[] grantedEffects = null,
             AbilityData[] abilities = null,
             AttackType attackType = AttackType.Melee,
-            DamageType damageType = DamageType.Physical,
+            DamageSchool school = DamageSchool.Physical,
             AreaShape autoAttackShape = AreaShape.None,
             float autoAttackWidth = 1f,
             float resourceOnHit = 0f,
@@ -114,14 +114,18 @@ namespace Guildmaster.Tests.EditMode.Combat
             AIProfile ai = null,
             EffectData[] autoAttackEffects = null,
             bool canAttackWhileMoving = false,
-            float movingAttackSpeedPenaltyPct = 0.5f)
+            float movingAttackSpeedPenaltyPct = 0.5f,
+            DamageAffinity affinity = DamageAffinity.None,
+            CreatureType creatureType = CreatureType.Living)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
+            Set(r, "_affinity", affinity);
+            Set(r, "_creatureType", creatureType);
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
             Set(r, "_grantedEffects", grantedEffects ?? Array.Empty<EffectData>());
             Set(r, "_abilities", abilities ?? Array.Empty<AbilityData>());
             Set(r, "_attackType", attackType);
-            Set(r, "_damageType", damageType);
+            Set(r, "_damageSchool", school);
             Set(r, "_autoAttackShape", autoAttackShape);
             Set(r, "_autoAttackWidth", autoAttackWidth);
             Set(r, "_resourceOnHit", resourceOnHit);

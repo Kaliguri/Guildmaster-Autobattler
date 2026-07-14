@@ -257,7 +257,10 @@ namespace Guildmaster.ContentHub.Editor
             badges.Add(Badge(TypeShort(entry.Type), accent: true));
             if (entry.Unit != null)
             {
-                badges.Add(Badge(entry.Unit.DamageType.ToString()));
+                badges.Add(Badge(entry.Unit.DamageSchool.ToString()));
+                if (entry.Unit.Affinity != Guildmaster.Data.Definitions.DamageAffinity.None)
+                    badges.Add(Badge(entry.Unit.Affinity.ToString()));
+                badges.Add(Badge(entry.Unit.CreatureType.ToString()));
                 badges.Add(Badge(entry.Unit.AttackType.ToString()));
                 if (entry.Unit.ResourceType != ResourceType.None)
                     badges.Add(Badge(entry.Unit.ResourceType.ToString()));

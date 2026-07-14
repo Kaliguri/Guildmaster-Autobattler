@@ -139,7 +139,7 @@ namespace Guildmaster.Combat
             // Рывок = смещение самого кастующего, без «ядра». Приземление (EffectExpired на себе) поднимет отбрасывание.
             ctx.Displace(new DisplaceRequest(
                 caster, caster, dashDir, dashDist, data.DisplaceTicks,
-                cannonball: false, damage: 0f, damageType: DamageType.Physical, width: 0f));
+                cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
         }
 
         /// <summary>Ближайший к точке живой враг команды <paramref name="selfTeam"/>, кроме <paramref name="exclude"/> (тай-брейк по Id).</summary>
@@ -232,13 +232,14 @@ namespace Guildmaster.Combat
             ctx.QueryUnitsInRadius(caster.Position, data.AreaRadius, _targets, TargetFilter.Enemies, caster.Team);
 
             float dmg = AbilityDamage(caster, data);
-            DamageType dmgType = caster.Unit != null ? caster.Unit.DamageType : DamageType.Physical;
+            DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
+            DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
 
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итог.
             for (int i = 0; i < _targets.Count; i++)
             {
                 RuntimeUnit t = _targets[i];
-                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, t, dmg, dmgType, ctx.ArmorK));
+                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, t, dmg, school, ctx.ArmorK, affinity: affinity));
                 ApplyEffects(t, data, caster, ctx);
             }
         }
@@ -256,8 +257,9 @@ namespace Guildmaster.Combat
                 float dmg = AbilityDamage(caster, data);
                 if (dmg > 0f)
                 {
-                    DamageType dmgType = caster.Unit != null ? caster.Unit.DamageType : DamageType.Physical;
-                    ctx.DealDamage(new DamageRequest(caster, target, dmg, dmgType, ctx.ArmorK));
+                    DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
+                    DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
+                    ctx.DealDamage(new DamageRequest(caster, target, dmg, school, ctx.ArmorK, affinity: affinity));
                 }
             }
             ApplyEffects(target, data, caster, ctx);

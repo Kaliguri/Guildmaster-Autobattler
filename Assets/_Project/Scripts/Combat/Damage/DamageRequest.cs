@@ -8,7 +8,7 @@ namespace Guildmaster.Combat
     /// </summary>
     public readonly struct DamageRequest
     {
-        /// <summary>Источник урона (для чтения DamageDealtEff, PhysPen/MagicPen и lifesteal).</summary>
+        /// <summary>Источник урона (для чтения DamageDealtEff, PhysPen/ElementalPen и lifesteal).</summary>
         public readonly RuntimeUnit Source;
 
         /// <summary>Цель урона.</summary>
@@ -17,8 +17,8 @@ namespace Guildmaster.Combat
         /// <summary>Базовый урон до модификаторов пайплайна.</summary>
         public readonly float RawDamage;
 
-        /// <summary>Тип урона определяет, какая броня используется (Physical/Magic/True).</summary>
-        public readonly DamageType DamageType;
+        /// <summary>Школа урона — определяет, какая броня используется (Physical/Elemental/True).</summary>
+        public readonly DamageSchool School;
 
         /// <summary>Константа K из StatsConfig (mult = K / (K + effArmor)).</summary>
         public readonly float ArmorK;
@@ -27,20 +27,25 @@ namespace Guildmaster.Combat
         /// Пре-дамаг реактивы, завязанные именно на автоатаку (напр. «Изворотливость» убийцы), гейтятся по этому флагу.</summary>
         public readonly bool IsAutoAttack;
 
+        /// <summary>Сродство урона (Яд/Свет/Тьма). Бронёй не гасится — множитель по типу существа цели (<see cref="AffinityTable"/>).</summary>
+        public readonly DamageAffinity Affinity;
+
         public DamageRequest(
             RuntimeUnit source,
             RuntimeUnit target,
             float rawDamage,
-            DamageType damageType,
+            DamageSchool school,
             float armorK,
-            bool isAutoAttack = false)
+            bool isAutoAttack = false,
+            DamageAffinity affinity = DamageAffinity.None)
         {
             Source       = source;
             Target       = target;
             RawDamage    = rawDamage;
-            DamageType   = damageType;
+            School       = school;
             ArmorK       = armorK;
             IsAutoAttack = isAutoAttack;
+            Affinity     = affinity;
         }
     }
 }

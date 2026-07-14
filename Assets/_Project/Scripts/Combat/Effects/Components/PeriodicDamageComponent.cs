@@ -2,6 +2,7 @@ using System;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Guildmaster.Combat.Effects.Components
 {
@@ -20,7 +21,12 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Урон В СЕКУНДУ (per-second rate). Скейлится статами источника.")]
         [SerializeField] private ScalableValue _damagePerSecond;
 
-        [SerializeField] private DamageType _damageType = DamageType.Magic;
+        [Tooltip("Школа урона DoT (гасится соответствующей бронёй).")]
+        [FormerlySerializedAs("_damageType")]
+        [SerializeField] private DamageSchool _damageSchool = DamageSchool.Elemental;
+
+        [Tooltip("Сродство урона DoT: Яд для отравления (иммунна Нежить/Конструкты), Тьма/Свет — по типу существа цели.")]
+        [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
 
         public float Interval => _interval;
         public ScalableValue Potency => _damagePerSecond;
@@ -33,7 +39,7 @@ namespace Guildmaster.Combat.Effects.Components
             float damage = ctx.Potency * ctx.Dt * ctx.Stacks;
             if (damage <= 0f) return;
 
-            ctx.Combat.DealDamage(new DamageRequest(ctx.Source, ctx.Target, damage, _damageType, ctx.Combat.ArmorK));
+            ctx.Combat.DealDamage(new DamageRequest(ctx.Source, ctx.Target, damage, _damageSchool, ctx.Combat.ArmorK, affinity: _affinity));
         }
     }
 }

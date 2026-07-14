@@ -36,7 +36,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.ApplyEffect(defender, BulwarkPassive(), defender);
 
             // True-урон 30: брони нет, эффективности 1.0. «Оплот» до Execute поднимает щит 20 + 15%×100 = 35.
-            sim.DealDamage(new DamageRequest(attacker, defender, 30f, DamageType.True, sim.ArmorK));
+            sim.DealDamage(new DamageRequest(attacker, defender, 30f, DamageSchool.True, sim.ArmorK));
 
             Assert.AreEqual(100f, defender.CurrentHP, 1e-4f, "Триггер-удар поглощён щитом — HP не просело");
             Assert.AreEqual(5f, defender.CurrentShield, 1e-4f, "Остаток щита = 35 − 30");
@@ -72,7 +72,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             ctx.ApplyEffect(defender, BulwarkPassive(), defender);
             RuntimeEffect bulwark = defender.ActiveEffects[0];
-            var incoming = new DamageRequest(null, defender, 10f, DamageType.True, ArmorK);
+            var incoming = new DamageRequest(null, defender, 10f, DamageSchool.True, ArmorK);
 
             int cd = Mathf.RoundToInt(7f * SimConstants.TickRate);
 
@@ -98,7 +98,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 relic: DefenderRelic(PassiveTrigger.None));
 
             ctx.ApplyEffect(defender, BulwarkPassive(), defender);
-            es.RunPreDamage(defender, new DamageRequest(null, defender, 50f, DamageType.True, ArmorK), ctx);
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 50f, DamageSchool.True, ArmorK), ctx);
 
             Assert.AreEqual(0f, defender.CurrentShield, 1e-4f, "Триггер None — щит не поднимается");
         }
@@ -114,7 +114,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var d = MakeUnit(0, 0, Vector2.zero, maxHp: 200f, hp: 200f,
                     relic: DefenderRelic(PassiveTrigger.OnHitAbovePctMaxHp, thresholdPct: 0.2f));
                 ctx.ApplyEffect(d, passive, d);
-                es.RunPreDamage(d, new DamageRequest(null, d, 30f, DamageType.True, ArmorK), ctx);
+                es.RunPreDamage(d, new DamageRequest(null, d, 30f, DamageSchool.True, ArmorK), ctx);
                 Assert.AreEqual(0f, d.CurrentShield, 1e-4f, "Удар ниже порога — нет щита");
             }
             {
@@ -122,7 +122,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var d = MakeUnit(0, 0, Vector2.zero, maxHp: 200f, hp: 200f,
                     relic: DefenderRelic(PassiveTrigger.OnHitAbovePctMaxHp, thresholdPct: 0.2f));
                 ctx.ApplyEffect(d, passive, d);
-                es.RunPreDamage(d, new DamageRequest(null, d, 50f, DamageType.True, ArmorK), ctx);
+                es.RunPreDamage(d, new DamageRequest(null, d, 50f, DamageSchool.True, ArmorK), ctx);
                 Assert.AreEqual(20f, d.CurrentShield, 1e-4f, "Удар выше порога — щит поднят (целый → плоские 20)");
             }
         }

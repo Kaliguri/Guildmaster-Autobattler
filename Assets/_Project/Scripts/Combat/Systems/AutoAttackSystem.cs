@@ -144,7 +144,8 @@ namespace Guildmaster.Combat
 
             AttackType attackType = unit.Unit != null ? unit.Unit.AttackType : AttackType.Melee;
             float raw = unit.Stats.Get(StatType.AutoAttackDamage);
-            DamageType dmgType = unit.Unit != null ? unit.Unit.DamageType : DamageType.Physical;
+            DamageSchool school = unit.DamageSchool;
+            DamageAffinity affinity = unit.Affinity;
             AreaShape shape = unit.Unit != null ? unit.Unit.AutoAttackShape : AreaShape.None;
 
             // Хил-режим (Светлый пастырь): вместо урона — tracking-хил-снаряд в снапшот-союзника.
@@ -155,7 +156,7 @@ namespace Guildmaster.Combat
                 float healRadius = unit.Stats.Get(StatType.Size) * ctx.Tuning.ProjectileHitRadiusFactor;
                 ctx.SpawnProjectile(new ProjectileSpawn(
                     unit, unit.Position, target,
-                    healSpeed, healRadius, raw, dmgType, ctx.ArmorK, maxPierces: 0, isHeal: true));
+                    healSpeed, healRadius, raw, school, ctx.ArmorK, maxPierces: 0, isHeal: true));
                 return;
             }
 
@@ -178,11 +179,11 @@ namespace Guildmaster.Combat
             {
                 if (shape == AreaShape.Line)
                 {
-                    DealLineDamage(unit, target, reach, raw, dmgType, ctx);
+                    DealLineDamage(unit, target, reach, raw, school, affinity, ctx);
                 }
                 else
                 {
-                    ctx.DealDamage(new DamageRequest(unit, target, raw, dmgType, ctx.ArmorK, isAutoAttack: true));
+                    ctx.DealDamage(new DamageRequest(unit, target, raw, school, ctx.ArmorK, isAutoAttack: true, affinity: affinity));
                     ApplyAutoAttackOnHit(unit, target, ctx); // §9.1 (мили single)
                 }
             }
@@ -195,9 +196,9 @@ namespace Guildmaster.Combat
                 // On-hit эффекты (§9.1) едут на снаряде — накладываются в ProjectileSystem при попадании.
                 ctx.SpawnProjectile(new ProjectileSpawn(
                     unit, unit.Position, target,
-                    speed, collRadius, raw, dmgType, ctx.ArmorK, pierces,
+                    speed, collRadius, raw, school, ctx.ArmorK, pierces,
                     onHitEffects: unit.Unit != null ? unit.Unit.AutoAttackEffects : null,
-                    isAutoAttack: true));
+                    isAutoAttack: true, affinity: affinity));
             }
         }
 
@@ -243,7 +244,7 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>Линейная авто-атака «Размашистый выпад»: полоса к цели, урон по всем врагам в ней.</summary>
-        private void DealLineDamage(RuntimeUnit unit, RuntimeUnit target, float length, float raw, DamageType dmgType, ICombatContext ctx)
+        private void DealLineDamage(RuntimeUnit unit, RuntimeUnit target, float length, float raw, DamageSchool school, DamageAffinity affinity, ICombatContext ctx)
         {
             float width = unit.Unit.AutoAttackWidth;
             Vector2 dir = target.Position - unit.Position;
@@ -256,7 +257,7 @@ namespace Guildmaster.Combat
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итоговое состояние.
             for (int t = 0; t < _lineTargets.Count; t++)
             {
-                ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, dmgType, ctx.ArmorK, isAutoAttack: true));
+                ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, school, ctx.ArmorK, isAutoAttack: true, affinity: affinity));
                 ApplyAutoAttackOnHit(unit, _lineTargets[t], ctx); // §9.1 (мили Line — по каждой задетой)
             }
         }

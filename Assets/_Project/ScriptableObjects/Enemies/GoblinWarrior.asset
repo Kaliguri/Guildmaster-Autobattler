@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: GoblinWarrior
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
   _id: enemy.goblin_warrior
-  _damageType: 0
+  _damageSchool: 0
+  _affinity: 0
+  _creatureType: 0
   _attackType: 0
   _resourceType: 0
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}

@@ -1,4 +1,4 @@
-#requires -Version 7
+﻿#requires -Version 7
 <#
 .SYNOPSIS
   Stat "database" tool for our ScriptableObject data (relics + enemies).
@@ -35,9 +35,9 @@ $ErrorActionPreference = 'Stop'
 
 # --- StatType enum (source of truth: Assets/_Project/Scripts/Data/Stats/StatType.cs) ---
 $StatNames = @(
-    'MaxHP', 'HpRegenFlat', 'HpRegenPct', 'PhysArmor', 'MagicArmor', 'DamageTakenEff', 'HealShieldTakenEff',
-    'AutoAttackDamage', 'AttackSpeed', 'AttackRange', 'AbilityPower', 'PhysPen', 'PhysPenPct', 'MagicPen',
-    'MagicPenPct', 'DamageDealtEff', 'Lifesteal', 'HealShieldDealtEff', 'ProjectileSpeed', 'ProjectilePierce',
+    'MaxHP', 'HpRegenFlat', 'HpRegenPct', 'PhysArmor', 'ElementalArmor', 'DamageTakenEff', 'HealShieldTakenEff',
+    'AutoAttackDamage', 'AttackSpeed', 'AttackRange', 'AbilityPower', 'PhysPen', 'PhysPenPct', 'ElementalPen',
+    'ElementalPenPct', 'DamageDealtEff', 'Lifesteal', 'HealShieldDealtEff', 'ProjectileSpeed', 'ProjectilePierce',
     'MoveSpeed', 'Size', 'ApplyBuffEff', 'ApplyDebuffEff', 'ReceiveBuffEff', 'ReceiveDebuffEff', 'CooldownEff',
     'MaxResource', 'StartResource', 'ResourceGainEff'
 )

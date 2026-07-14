@@ -32,7 +32,8 @@ namespace Guildmaster.Combat
         public readonly int          Ticks;
         public readonly bool         Cannonball;
         public readonly float        Damage;
-        public readonly DamageType   DamageType;
+        public readonly DamageSchool School;
+        public readonly DamageAffinity Affinity;
         public readonly float        Width;
 
         /// <summary>
@@ -52,11 +53,12 @@ namespace Guildmaster.Combat
             int         ticks,
             bool        cannonball,
             float       damage,
-            DamageType  damageType,
+            DamageSchool school,
             float       width,
             DisplaceKind kind = DisplaceKind.Knockback,
             float       chainDistance = 0f,
-            int         chainTicks = 0)
+            int         chainTicks = 0,
+            DamageAffinity affinity = DamageAffinity.None)
         {
             Kind          = kind;
             Target        = target;
@@ -66,7 +68,8 @@ namespace Guildmaster.Combat
             Ticks         = ticks;
             Cannonball    = cannonball;
             Damage        = damage;
-            DamageType    = damageType;
+            School        = school;
+            Affinity      = affinity;
             Width         = width;
             ChainDistance = chainDistance;
             ChainTicks    = chainTicks;
