@@ -42,5 +42,21 @@ namespace Guildmaster.Tests.EditMode.Content
                 service.Dispose();
             }
         }
+
+        [Test]
+        public void MissingKey_ResolvesToEmpty_NotPlaceholderOrKey()
+        {
+            var service = new LocalizationService();
+            try
+            {
+                string v = service.GetString("ui.__definitely_missing_key__");
+                // Незаведённый ключ → пусто, чтобы сработал RU-фолбэк вызывающего (а не плейсхолдер/ключ).
+                Assert.IsTrue(string.IsNullOrEmpty(v), $"Missing key must resolve to empty (was '{v}').");
+            }
+            finally
+            {
+                service.Dispose();
+            }
+        }
     }
 }

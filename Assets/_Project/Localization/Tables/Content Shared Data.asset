@@ -283,6 +283,70 @@ MonoBehaviour:
     m_Key: effect.pyre_rush.name
     m_Metadata:
       m_Items: []
+  - m_Id: 1700108406349824
+    m_Key: ui.event.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487168
+    m_Key: ui.hub.banners
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487169
+    m_Key: ui.hub.close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487170
+    m_Key: ui.hub.gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487171
+    m_Key: ui.hub.stash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487172
+    m_Key: ui.hub.team
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487173
+    m_Key: ui.hub.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487174
+    m_Key: ui.reward.drop_hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487175
+    m_Key: ui.reward.skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487176
+    m_Key: ui.reward.take
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487177
+    m_Key: ui.reward.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487178
+    m_Key: ui.run.act
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487179
+    m_Key: ui.run.gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487180
+    m_Key: ui.run.hub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487181
+    m_Key: ui.run.settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487182
+    m_Key: ui.run.start
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

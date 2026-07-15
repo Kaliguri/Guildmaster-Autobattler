@@ -53,15 +53,17 @@ namespace Guildmaster.Game.Services
             EnsureInitialized();
             try
             {
-                AsyncOperationHandle<string> op =
-                    LocalizationSettings.StringDatabase.GetLocalizedStringAsync(table, key);
-                string value = op.WaitForCompletion();
-                // Отсутствующий ключ виден как сам ключ, а не пустая строка (проще ловить пробелы в контенте).
-                return string.IsNullOrEmpty(value) ? key : value;
+                var op = LocalizationSettings.StringDatabase.GetTableEntryAsync(table, key);
+                var res = op.WaitForCompletion();
+                // Отсутствующий ключ → пустая строка, чтобы вызывающий применил свой RU-фолбэк
+                // (а не показывал Unity-плейсхолдер «No translation found …» или сам ключ). Это делает
+                // code-фолбэки экранов (L(key, "RU")) реальной страховкой на случай незаведённого ключа.
+                if (res.Entry == null) return string.Empty;
+                return res.Entry.GetLocalizedString() ?? string.Empty;
             }
             catch (Exception)
             {
-                return key;
+                return string.Empty;
             }
         }
 
