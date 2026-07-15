@@ -10,30 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
-  m_Name: Burn
+  m_Name: PyreRush
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
-  _id: effect.burn
-  _polarity: 1
-  _tags: 4106
-  _baseDuration: 4
-  _stacking: 1
-  _maxStacks: 99
+  _id: effect.pyre_rush
+  _polarity: 0
+  _tags: 1
+  _baseDuration: 3
+  _stacking: 0
+  _maxStacks: 1
   _cleanseTier: 0
   _unremovable: 0
   _components:
-  - rid: 5615026976500744324
+  - rid: 5615026976500744342
   _icon: {fileID: 0}
   _infoTags: []
   references:
     version: 2
     RefIds:
-    - rid: 5615026976500744324
-      type: {class: PeriodicDamageComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+    - rid: 5615026976500744342
+      type: {class: StatModifierComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _interval: 1
-        _damagePerSecond:
-          Base: 0
-          Scalings: []
-        _damageSchool: 1
-        _affinity: 0
-        _damagePctTargetMaxHp: 0.03
+        _modifiers:
+        - Stat: 8
+          Op: 1
+          Value: 1
+        - Stat: 20
+          Op: 1
+          Value: 1

@@ -242,5 +242,54 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.AreEqual(EffectTag.None, poisoned1.EffectTagMask & EffectTag.Poison, "Тег «Яд» израсходован взрывом");
         }
+
+        // --- Огненный мечник: «Воспламенение» досчитывает недонесённый урон поджогов ---
+
+        [Test]
+        public void Ignition_DetonatesBurn_ForRemainingDamage_AndConsumesIt()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext(effects: sys);
+
+            var pyre   = TestUnit.Make(team: 0);
+            var victim = TestUnit.Make(team: 1);
+
+            // «Поджог»: 10 урона/сек, 4 сек, флэтом (без доли от макс. HP — для детерминизма теста).
+            EffectData burn = TestEffect.Make(
+                baseDuration: 4f, polarity: EffectPolarity.Debuff,
+                tags: EffectTag.Debuff | EffectTag.DoT | EffectTag.Burn,
+                stacking: StackRule.Stack, maxStacks: 99,
+                components: new PeriodicDamageComponent()
+                    .With("_interval", 1f)
+                    .With("_damagePerSecond", new ScalableValue { Base = 10f })
+                    .With("_damageSchool", DamageSchool.Elemental));
+            sys.Apply(victim, burn, pyre, ctx);
+
+            // Детонация сразу после наложения: не натикано ничего → весь урон = 10 × 4 сек × 1 стак = 40.
+            EffectData ignition = TestEffect.Make(baseDuration: 0f, components:
+                new IgnitionComponent().With("_detonateTag", EffectTag.Burn).With("_school", DamageSchool.Elemental));
+            sys.Apply(victim, ignition, pyre, ctx);
+
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "Детонация наносит один удар — сумму остатка поджогов");
+            Assert.AreEqual(40f, ctx.DamageCalls[0].RawDamage, 1e-3f, "Недонесённый урон DoT: 10/сек × 4 сек");
+            Assert.AreEqual(DamageSchool.Elemental, ctx.DamageCalls[0].School);
+            Assert.AreEqual(EffectTag.None, victim.EffectTagMask & EffectTag.Burn, "«Поджог» израсходован взрывом");
+        }
+
+        [Test]
+        public void Ignition_NoBurn_DoesNothing()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext(effects: sys);
+
+            var pyre   = TestUnit.Make(team: 0);
+            var victim = TestUnit.Make(team: 1);
+
+            EffectData ignition = TestEffect.Make(baseDuration: 0f, components:
+                new IgnitionComponent().With("_detonateTag", EffectTag.Burn));
+            sys.Apply(victim, ignition, pyre, ctx);
+
+            Assert.AreEqual(0, ctx.DamageCalls.Count, "Нечего детонировать — урона нет");
+        }
     }
 }

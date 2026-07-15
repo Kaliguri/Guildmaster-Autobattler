@@ -51,11 +51,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 93590598bcde3dc4bb880b0f881266af, type: 2}
   _abilities:
   - _id: ignition
-    _effects: []
+    _effects:
+    - {fileID: 11400000, guid: fccdc612aba97e346a333a0c7c06de33, type: 2}
     _baseCooldown: 10
     _resourceCost: 0
-    _targetMode: 4
-    _damageMultiplier: 3
+    _targetMode: 1
+    _damageMultiplier: 0
     _schoolOverride: 2
     _affinityOverride: 0
     _areaShape: 0
@@ -68,7 +69,7 @@ MonoBehaviour:
     _castConditionHpPct: 0.5
     _castOverrideSelfHpPct: 0
     _triggerTag: 4096
-    _consumesTriggerTag: 1
+    _consumesTriggerTag: 0
     _displaces: 0
     _displaceDistance: 4
     _displaceTicks: 12
@@ -97,7 +98,8 @@ MonoBehaviour:
   - flame_swordsman
   - burn
   - common
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0

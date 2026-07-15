@@ -275,6 +275,14 @@ MonoBehaviour:
     m_Key: event.wandering_merchant.choice2.result
     m_Metadata:
       m_Items: []
+  - m_Id: 1475541784059904
+    m_Key: effect.ignition.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1475541830197248
+    m_Key: effect.pyre_rush.name
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
