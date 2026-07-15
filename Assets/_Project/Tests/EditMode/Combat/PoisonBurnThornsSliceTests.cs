@@ -243,6 +243,51 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(EffectTag.None, poisoned1.EffectTagMask & EffectTag.Poison, "Тег «Яд» израсходован взрывом");
         }
 
+        [Test]
+        public void SporeBurst_HealsAllies_PerUniquePoison_NotPerStack()
+        {
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+
+            var druid = TestUnit.Make(team: 0);
+            druid.Position = new Vector2(50f, 0f);            // далеко от эпицентра — сам не лечится, чистый assert
+            druid.Stats.AddModifiersFrom("base", new[] { new StatModifier(StatType.AutoAttackDamage, ModifierOp.Flat, 100f) });
+
+            var ally    = TestUnit.Make(team: 0);
+            ally.Position = new Vector2(1f, 0f);              // рядом с врагом → в облаке спор
+            var enemy   = TestUnit.Make(team: 1);
+            enemy.Position = Vector2.zero;
+
+            // ДВА РАЗНЫХ яда (разные Def) + один из них наложен дважды (стак). Уников должно быть 2, не 3.
+            EffectData poisonA = TestEffect.Make(baseDuration: 4f, polarity: EffectPolarity.Debuff,
+                tags: EffectTag.Debuff | EffectTag.Poison, stacking: StackRule.Stack, maxStacks: 5);
+            EffectData poisonB = TestEffect.Make(baseDuration: 4f, polarity: EffectPolarity.Debuff,
+                tags: EffectTag.Debuff | EffectTag.Poison, stacking: StackRule.Stack, maxStacks: 5);
+
+            var units = new List<RuntimeUnit> { druid, ally, enemy };
+            ctx.UnitsInWorld.AddRange(units);
+            effects.Apply(enemy, poisonA, druid, ctx);
+            effects.Apply(enemy, poisonA, druid, ctx); // второй стак того же яда — уник не добавляет
+            effects.Apply(enemy, poisonB, druid, ctx);
+
+            AbilityData burst = TestAbility.Make(
+                mode: AbilityTargetMode.AllEnemiesWithTag,
+                damageMultiplier: 2.5f,
+                areaRadius: 3.5f,
+                healFlat: 80f,                    // лечение союзнику за ОДИН уникальный яд
+                triggerTag: EffectTag.Poison,
+                consumesTriggerTag: true,
+                schoolOverride: DamageSchoolOverride.True,
+                affinityOverride: DamageAffinityOverride.Poison);
+            druid.Abilities.Add(new AbilityRuntime(burst));
+
+            Assert.IsTrue(new AbilitySystem().TryCast(druid, 0, units, ctx));
+
+            // 2 уникальных яда × 80 = 160 хила союзнику. Стак того же яда третьим уником НЕ считается.
+            Assert.AreEqual(160f, ctx.TotalHealed, 1e-3f, "Хил = за каждый уникальный яд, стаки не в счёт");
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "Взрыв всё ещё наносит урон отравленному врагу");
+        }
+
         // --- Огненный мечник: «Воспламенение» досчитывает недонесённый урон поджогов ---
 
         [Test]

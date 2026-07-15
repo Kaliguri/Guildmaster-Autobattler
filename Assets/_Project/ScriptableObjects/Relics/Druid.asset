@@ -61,8 +61,8 @@ MonoBehaviour:
     _schoolOverride: 3
     _affinityOverride: 2
     _areaShape: 0
-    _areaRadius: 0
-    _healFlat: 0
+    _areaRadius: 3.5
+    _healFlat: 80
     _healPctTargetMissingHp: 0
     _castCondition: 3
     _castConditionCount: 2
@@ -99,7 +99,8 @@ MonoBehaviour:
   - druid
   - poison
   - common
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0

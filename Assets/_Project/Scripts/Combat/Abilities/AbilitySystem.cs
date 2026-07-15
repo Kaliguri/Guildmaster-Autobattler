@@ -213,12 +213,16 @@ namespace Guildmaster.Combat
         /// <see cref="AbilityData.TriggerTag"/> (глобально), затем — при <see cref="AbilityData.ConsumesTriggerTag"/> —
         /// снять этот тег (конверсия «Заморозки» в стан). Обход по индексу списка — детерминизм.
         /// </summary>
-        private static void ApplyAllWithTag(RuntimeUnit caster, AbilityData data, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
+        private void ApplyAllWithTag(RuntimeUnit caster, AbilityData data, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
         {
             EffectTag tag = data.TriggerTag;
             float dmg = AbilityDamage(caster, data);
             DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
             DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
+
+            // «Взрыв спор» Друида: помимо урона лечит союзников вокруг КАЖДОЙ детонированной цели за каждый
+            // уникальный эффект-триггер на ней. Гейт по IsHeal+радиусу — у крио-«Оков» хила нет, они не лечат.
+            bool healsPerUnique = data.IsHeal && data.AreaRadius > 0f;
 
             for (int i = 0; i < units.Count; i++)
             {
@@ -231,9 +235,55 @@ namespace Guildmaster.Combat
 
                 ApplyEffects(u, data, caster, ctx);
 
+                // Хил за уникальные яды считаем ДО расхода тега (иначе Dispel их снимет и уники обнулятся).
+                if (healsPerUnique)
+                {
+                    int uniques = CountUniqueTagged(u, tag);
+                    if (uniques > 0) HealAlliesAround(caster, u, data, uniques, ctx);
+                }
+
                 // Конверсия: снять тег-триггер (напр. Frozen) после наложения стана — «Заморозка» превращается в стан.
                 if (data.ConsumesTriggerTag)
                     ctx.Dispel(new DispelRequest(u, DispelTargetPolarity.Any, tag, dispelPower: int.MaxValue, maxCount: 0));
+            }
+        }
+
+        /// <summary>Сколько РАЗНЫХ эффектов (по <c>Def</c>) с данным тегом висит на юните. Стаки одного эффекта = 1.</summary>
+        private static int CountUniqueTagged(RuntimeUnit unit, EffectTag tag)
+        {
+            int count = 0;
+            for (int i = 0; i < unit.ActiveEffects.Count; i++)
+            {
+                RuntimeEffect e = unit.ActiveEffects[i];
+                if (e.Def == null || (e.Def.Tags & tag) == 0) continue;
+
+                // Дубли по Def не считаем: ищем этот Def среди уже пройденных.
+                bool seen = false;
+                for (int j = 0; j < i; j++)
+                {
+                    RuntimeEffect prev = unit.ActiveEffects[j];
+                    if (prev.Def == e.Def && (prev.Def.Tags & tag) != 0) { seen = true; break; }
+                }
+                if (!seen) count++;
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// Лечит союзников кастующего в радиусе вокруг <paramref name="epicenter"/> (детонированного врага),
+        /// умножая лечение на число уникальных ядов на нём — «Взрыв спор» лечит тем сильнее, чем разнообразнее
+        /// отравлена цель. Хил каждому союзнику стакается от каждой взорванной рядом цели (внешний цикл).
+        /// </summary>
+        private void HealAlliesAround(RuntimeUnit caster, RuntimeUnit epicenter, AbilityData data, int multiplier, ICombatContext ctx)
+        {
+            ctx.QueryUnitsInRadius(epicenter.Position, data.AreaRadius, _targets, TargetFilter.Allies, caster.Team);
+            for (int i = 0; i < _targets.Count; i++)
+            {
+                RuntimeUnit ally = _targets[i];
+                if (ally.IsDead) continue;
+
+                float heal = HealAmount(ally, data) * multiplier;
+                if (heal > 0f) ctx.Heal(ally, heal, caster);
             }
         }
 
