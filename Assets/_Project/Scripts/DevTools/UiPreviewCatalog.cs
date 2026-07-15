@@ -26,6 +26,7 @@ namespace Guildmaster.DevTools
             ["event"]        = BuildEvent,
             ["loadout-hub"]  = BuildLoadoutHub,
             ["run-topbar"]   = BuildRunTopBar,
+            ["settings"]     = BuildSettings,
             ["gallery"]      = BuildGallery,
         };
 
@@ -164,6 +165,29 @@ namespace Guildmaster.DevTools
                 uxml, gold: 120, actNumber: 1, timerText: "12:34",
                 localize: null, onHub: () => { }, onSettings: () => { }, onStart: () => { });
             root.Add(screen);
+        }
+
+        private static void BuildSettings(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/SettingsScreen.uxml");
+            if (uxml == null) { AddError(root, "SettingsScreen.uxml не найден"); return; }
+
+            VisualElement screen = uxml.CloneTree();
+            VisualElement r = screen.childCount > 0 ? screen[0] : screen;
+
+            // Подписи/значения — как проставляет роутер из VM (стенду хватает статичных).
+            SetSliderRow(r, "row-master", "Общий", 0.8f);
+            SetSliderRow(r, "row-music",  "Музыка", 0.65f);
+            SetSliderRow(r, "row-sfx",    "Звук",  1.0f);
+            root.Add(r);
+        }
+
+        private static void SetSliderRow(VisualElement root, string name, string label, float value)
+        {
+            var row = root.Q<Guildmaster.UI.Components.SliderRow>(name);
+            if (row == null) return;
+            row.LabelText = label;
+            row.SetValueWithoutNotify(value);
         }
 
         private static void BuildGallery(VisualElement root)

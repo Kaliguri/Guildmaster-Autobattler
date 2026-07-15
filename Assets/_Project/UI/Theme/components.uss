@@ -102,6 +102,26 @@
     opacity: 0.55;
 }
 
+/* Кнопка, тянущаяся на равную долю в ряду (футер настроек и т.п.). */
+.gm-button--fill {
+    flex-grow: 1;
+}
+
+/* Ряд кнопок в подвале панели: равные доли с зазором. */
+.gm-button-row {
+    flex-direction: row;
+}
+
+.gm-button-row > .gm-button {
+    margin-left: var(--gm-space-1);
+    margin-right: var(--gm-space-1);
+}
+
+/* Панель настроек: чуть шире базовой под три строки-слайдера. */
+.gm-panel--settings {
+    min-width: 380px;
+}
+
 /* --- Строка слайдера: подпись слева, слайдер по центру, значение справа --- */
 .gm-slider-row {
     flex-direction: row;

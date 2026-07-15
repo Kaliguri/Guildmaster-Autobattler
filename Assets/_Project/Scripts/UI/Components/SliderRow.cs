@@ -45,6 +45,13 @@ namespace Guildmaster.UI.Components
         /// <summary>Прямой доступ к слайдеру для проводки (RegisterValueChangedCallback и т.п.).</summary>
         public Slider Slider => _slider;
 
+        /// <summary>Задать значение БЕЗ события (VM → UI), но с обновлением подписи-процента.</summary>
+        public void SetValueWithoutNotify(float v)
+        {
+            _slider.SetValueWithoutNotify(v);
+            UpdateValueLabel(v);
+        }
+
         public SliderRow()
         {
             AddToClassList("gm-slider-row");
