@@ -49,9 +49,11 @@ MonoBehaviour:
     - Guildmaster.Data
     - Guildmaster.DevTools
     - Guildmaster.Game
+    - Guildmaster.Guild
     - Guildmaster.Net
     - Guildmaster.Presentation
     - Guildmaster.Tests.PlayMode
+    - Guildmaster.UI
     - LitMotion
     - LitMotion.Extensions
     - Lofelt.NiceVibrations

@@ -109,3 +109,7 @@ site/
 
 # Claude Code local settings (per-user, not shared)
 .claude/settings.local.json
+
+# Dev debug screenshots (UiPreviewCapture / manual grabs)
+Assets/Screenshots/
+Assets/Screenshots.meta
