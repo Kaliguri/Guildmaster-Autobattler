@@ -133,6 +133,10 @@ namespace Guildmaster.Combat
         public BattleOutcome              Outcome  => _outcome;
         public bool                       IsPaused => _isPaused;
 
+        /// <summary>Сколько боевого времени прошло, сек. Идёт по симуляционным тикам, а не по стенным часам,
+        /// поэтому пауза и slowmo его не искажают. Основа для боевого таймера в HUD.</summary>
+        public float ElapsedSeconds => _currentTick * SimConstants.TickDelta;
+
         public CombatSimulation(
             IRngService       rng,
             float             armorK,
