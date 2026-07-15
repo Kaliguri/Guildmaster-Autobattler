@@ -10,7 +10,7 @@ attack_delivery:
 physical_damage:
   - Режущий
 elemental_damage: []
-special_damage: []
+affinity: []
 encounter_role: Фронтовая преграда
 mechanics: []
 ---

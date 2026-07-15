@@ -10,7 +10,7 @@ attack_delivery:
 physical_damage:
   - Дробящий
 elemental_damage: []
-special_damage: []
+affinity: []
 encounter_role: Ближняя масса
 mechanics: []
 ---

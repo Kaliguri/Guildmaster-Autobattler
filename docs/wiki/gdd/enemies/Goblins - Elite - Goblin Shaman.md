@@ -10,7 +10,7 @@ attack_delivery:
 physical_damage: []
 elemental_damage:
   - Огонь
-special_damage: []
+affinity: []
 encounter_role: Кастуемый AOE
 mechanics:
   - Каст

@@ -9,7 +9,7 @@ attack_delivery:
   - Снаряд
 physical_damage: []
 elemental_damage: []
-special_damage:
+affinity:
   - Тьма
 encounter_role: Контроль, усиление добивания и спасение отряда
 mechanics:

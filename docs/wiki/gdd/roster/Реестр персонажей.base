@@ -14,8 +14,8 @@ properties:
     displayName: Физический урон
   elemental_damage:
     displayName: Стихийный урон
-  special_damage:
-    displayName: Особый урон
+  affinity:
+    displayName: Сродство
   roles:
     displayName: Роли
   mechanics:
@@ -37,7 +37,7 @@ views:
       - attack_delivery
       - physical_damage
       - elemental_damage
-      - special_damage
+      - affinity
       - roles
       - mechanics
       - gender
@@ -53,7 +53,7 @@ views:
       - roles
       - physical_damage
       - elemental_damage
-      - special_damage
+      - affinity
       - mechanics
   - type: table
     name: Фланг

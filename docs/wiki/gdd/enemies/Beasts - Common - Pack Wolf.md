@@ -10,7 +10,7 @@ attack_delivery:
 physical_damage:
   - Колющий
 elemental_damage: []
-special_damage: []
+affinity: []
 encounter_role: Стайное давление
 mechanics:
   - Бонус стаи

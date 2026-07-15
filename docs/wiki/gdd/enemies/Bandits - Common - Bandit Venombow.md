@@ -10,7 +10,7 @@ attack_delivery:
 physical_damage:
   - Колющий
 elemental_damage: []
-special_damage:
+affinity:
   - Яд
 encounter_role: Дальний добиватель
 mechanics:
