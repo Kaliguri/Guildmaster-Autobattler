@@ -104,5 +104,59 @@ namespace Guildmaster.Tests.EditMode.Run
                 Object.DestroyImmediate(config);
             }
         }
+
+        [Test]
+        public void VesselItems_RespectPerVesselLimit()
+        {
+            var config = ScriptableObject.CreateInstance<GameConfig>(); // VesselItemSlots = 4
+            try
+            {
+                var svc = new RunStateService(new JsonFileSaveService(), config);
+                svc.NewRun(1L, new[] { new RosterSlot(), new RosterSlot() });
+
+                for (int i = 0; i < config.VesselItemSlots; i++)
+                    Assert.IsTrue(svc.TryAddVesselItem(0, "item.x" + i), "влезает до лимита слота");
+
+                Assert.AreEqual(config.VesselItemSlots, svc.VesselItems(0).Count);
+                Assert.IsFalse(svc.TryAddVesselItem(0, "item.overflow"), "слот сосуда полон → отказ");
+
+                // Лимит — на КАЖДЫЙ сосуд отдельно, не общий на отряд.
+                Assert.IsTrue(svc.TryAddVesselItem(1, "item.other"), "у второго сосуда свои слоты");
+
+                svc.RemoveVesselItem(0, "item.x0");
+                Assert.AreEqual(config.VesselItemSlots - 1, svc.VesselItems(0).Count);
+                Assert.IsTrue(svc.TryAddVesselItem(0, "item.again"), "освободился слот → снова влезает");
+
+                Assert.IsFalse(svc.TryAddVesselItem(5, "item.nope"), "индекс вне ростера → отказ");
+            }
+            finally
+            {
+                Object.DestroyImmediate(config);
+            }
+        }
+
+        [Test]
+        public void PartyBanners_RespectPartyLimit()
+        {
+            var config = ScriptableObject.CreateInstance<GameConfig>(); // PartyBannerSlots = 2
+            try
+            {
+                var svc = new RunStateService(new JsonFileSaveService(), config);
+                svc.NewRun(1L, new[] { new RosterSlot() });
+
+                for (int i = 0; i < config.PartyBannerSlots; i++)
+                    Assert.IsTrue(svc.TryAddBanner("item.banner" + i), "влезает до лимита отряда");
+
+                Assert.AreEqual(config.PartyBannerSlots, svc.Banners.Count);
+                Assert.IsFalse(svc.TryAddBanner("item.banner_overflow"), "лимит баннеров → отказ");
+
+                svc.RemoveBanner("item.banner0");
+                Assert.IsTrue(svc.TryAddBanner("item.banner_new"), "освободился слот баннера");
+            }
+            finally
+            {
+                Object.DestroyImmediate(config);
+            }
+        }
     }
 }

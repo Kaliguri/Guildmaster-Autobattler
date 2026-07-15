@@ -95,5 +95,72 @@ namespace Guildmaster.Guild
             Current.RelicCapacity++;
             return true;
         }
+
+        // ── Предметы сосуда (Vessel-скоуп, лимит GameConfig.VesselItemSlots) ──
+
+        /// <summary>Сколько предметов помещается на одного сосуда.</summary>
+        public int MaxVesselItems => _config.VesselItemSlots;
+
+        /// <summary>Предметы, надетые на сосуд слота (пустой массив, если слот вне ростера).</summary>
+        public IReadOnlyList<string> VesselItems(int slotIndex)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            return slot != null ? slot.VesselItemIds : Array.Empty<string>();
+        }
+
+        /// <summary>Надеть предмет на сосуд, если есть свободный слот. false = слот полон или индекс невалиден.</summary>
+        public bool TryAddVesselItem(int slotIndex, string itemId)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null || string.IsNullOrEmpty(itemId)) return false;
+            if (slot.VesselItemIds.Length >= _config.VesselItemSlots) return false;
+
+            var list = new List<string>(slot.VesselItemIds) { itemId };
+            slot.VesselItemIds = list.ToArray();
+            return true;
+        }
+
+        /// <summary>Снять один экземпляр предмета с сосуда слота.</summary>
+        public void RemoveVesselItem(int slotIndex, string itemId)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null) return;
+            var list = new List<string>(slot.VesselItemIds);
+            if (list.Remove(itemId)) slot.VesselItemIds = list.ToArray();
+        }
+
+        // ── Баннеры отряда (Party-скоуп, лимит GameConfig.PartyBannerSlots) ──
+
+        /// <summary>Сколько баннеров можно держать активными на весь отряд.</summary>
+        public int MaxPartyBanners => _config.PartyBannerSlots;
+
+        /// <summary>Активные баннеры отряда.</summary>
+        public IReadOnlyList<string> Banners =>
+            Current != null ? Current.PartyItemIds : Array.Empty<string>();
+
+        /// <summary>Взять баннер, если есть свободный слот. false = слотов нет или нет забега.</summary>
+        public bool TryAddBanner(string bannerId)
+        {
+            if (Current == null || string.IsNullOrEmpty(bannerId)) return false;
+            if (Current.PartyItemIds.Length >= _config.PartyBannerSlots) return false;
+
+            var list = new List<string>(Current.PartyItemIds) { bannerId };
+            Current.PartyItemIds = list.ToArray();
+            return true;
+        }
+
+        /// <summary>Убрать баннер из активных.</summary>
+        public void RemoveBanner(string bannerId)
+        {
+            if (Current == null) return;
+            var list = new List<string>(Current.PartyItemIds);
+            if (list.Remove(bannerId)) Current.PartyItemIds = list.ToArray();
+        }
+
+        private RosterSlot SlotAt(int slotIndex)
+        {
+            if (Current?.Guild == null || slotIndex < 0 || slotIndex >= Current.Guild.Length) return null;
+            return Current.Guild[slotIndex];
+        }
     }
 }

@@ -27,6 +27,9 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Слотов предметов на персонажа (Vessel-скоуп, вики «13» §3.2 ItemData.Scope).")]
         [SerializeField] private int _vesselItemSlots = 4;
 
+        [Tooltip("Сколько баннеров (Party-скоуп) можно взять активными на весь отряд.")]
+        [SerializeField] private int _partyBannerSlots = 2;
+
         [Tooltip("Стартовая вместимость коллекции реликов гильдии (запас ненадетых, план 11 §5.4).")]
         [SerializeField] private int _relicCapacityBase = 8;
 
@@ -39,6 +42,7 @@ namespace Guildmaster.Data.Definitions
         public string DefaultLocale       => _defaultLocale;
         public int    LocalPlayerTeam     => _localPlayerTeam;
         public int    VesselItemSlots     => _vesselItemSlots;
+        public int    PartyBannerSlots    => _partyBannerSlots;
         public int    RelicCapacityBase   => _relicCapacityBase;
         public int    RelicCapacityMax    => _relicCapacityMax;
     }
