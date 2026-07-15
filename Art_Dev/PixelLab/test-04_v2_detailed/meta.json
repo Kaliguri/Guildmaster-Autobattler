@@ -1,0 +1,21 @@
+{
+ "test": "test-04_v2_detailed",
+ "title": "Batch v2 — detailed+heavy",
+ "status": "batch-тест (только базовый спрайт, без анимаций) — зашумлён, потерял щит (перекрут детали)",
+ "endpoint": "/create-character-with-4-directions",
+ "prompt": "Medieval man-at-arms, mail hauberk, blue wool tabard, round wooden shield, arming sword, open-face helm, grounded battle stance, low fantasy, muted steel and leather",
+ "params": {
+  "view": "side",
+  "outline": "single_color_outline",
+  "shading": "heavy_shading",
+  "detail": "highly_detailed",
+  "proportions": {
+   "type": "preset",
+   "name": "realistic_male"
+  },
+  "image_size": "64→68 canvas"
+ },
+ "character_id": "d9c4adc3-91ef-49a3-bc0f-356f6b2b9e24",
+ "generations": 1,
+ "date": "2026-07-15"
+}

@@ -1,0 +1,22 @@
+{
+ "test": "test-05_td5_guidance",
+ "title": "TD5 — guidance 8",
+ "status": "ТОП-ДАУН (правильная проекция) — детальнее, строго по промпту",
+ "endpoint": "/create-character-with-4-directions (view=low top-down)",
+ "prompt": "Medieval man-at-arms, mail hauberk, blue wool tabard, round wooden shield, arming sword, open-face helm, grounded battle stance, low fantasy, muted steel and leather",
+ "params": {
+  "view": "low top-down",
+  "outline": "single_color_outline",
+  "shading": "medium_shading",
+  "detail": "moderate",
+  "proportions": {
+   "type": "preset",
+   "name": "realistic_male"
+  },
+  "text_guidance_scale": 8,
+  "color_image": "style-sheet (палитра)"
+ },
+ "character_id": "7a7bff26-a0fb-4fe6-8fde-79cfaab29d58",
+ "generations": 1,
+ "date": "2026-07-15"
+}

@@ -1,0 +1,21 @@
+{
+ "test": "test-04_v6_light_guard",
+ "title": "Batch v6 — light/stylized",
+ "status": "batch-тест (только базовый спрайт, без анимаций) — самый чистый/читаемый, чуть мультяшный",
+ "endpoint": "/create-character-with-4-directions",
+ "prompt": "Lightly armored town guard, leather jerkin over mail, small round buckler, short sword, simple open helmet, alert stance, low fantasy",
+ "params": {
+  "view": "side",
+  "outline": "double_outline",
+  "shading": "light_shading",
+  "detail": "moderate",
+  "proportions": {
+   "type": "preset",
+   "name": "stylized"
+  },
+  "image_size": "64→68 canvas"
+ },
+ "character_id": "be62e48e-7503-45ed-af2f-768107b25692",
+ "generations": 1,
+ "date": "2026-07-15"
+}

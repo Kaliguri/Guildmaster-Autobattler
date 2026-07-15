@@ -1,0 +1,17 @@
+{
+ "test": "02 hulk pro (Aegis style-ref)",
+ "status": "стиль ОК, но слишком гигантская броня; атаки вялые; дубли из-за бага раннера",
+ "endpoint": "/create-character-pro",
+ "method": "create_with_style",
+ "params": {
+  "image_size": "64 (canvas 128)",
+  "view": "side",
+  "reference": "FewSeconds Aegis 64px",
+  "no_background": true
+ },
+ "character_id": "8d478709-911f-4532-947d-fe6b3f73fce4",
+ "prompt": "A hulking armored guardian sentinel, broad and heavy, hoisting a massive tower shield and a short sword, dark weathered plate armor with glowing teal energy core and cyan rim-light, imposing defensive stance",
+ "animations": "idle(breathing-idle), walk(walking), hurt(taking_a_punch), death(falling_backward) годные; атаки generic слабые; дубли",
+ "generations_total_run": "~29 (pro 20 + anims ~9)",
+ "date": "2026-07-15"
+}
