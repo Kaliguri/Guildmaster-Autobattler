@@ -28,6 +28,8 @@ namespace Guildmaster.UI
         private VisualTreeAsset _pauseUxml;
         private VisualTreeAsset _settingsUxml;
         private VisualTreeAsset _loadoutUxml;
+        private VisualTreeAsset _rewardUxml;
+        private VisualTreeAsset _eventUxml;
         private InputContext _prevContext;
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
@@ -39,23 +41,18 @@ namespace Guildmaster.UI
             _loc = loc;
         }
 
-        /// <summary>Строка по ключу из таблицы Content; фолбэк — если ключа/перевода ещё нет.</summary>
-        private string Text(string key, string fallback)
-        {
-            string value = _loc?.GetString(key);
-            return string.IsNullOrEmpty(value) ? fallback : value;
-        }
-
         public bool IsOpen => _stack.Count > 0;
 
         /// <summary>Бутстрап отдаёт корень панели и UXML-шаблоны экранов (ссылки из сцены, не DI).</summary>
         public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
-            VisualTreeAsset loadoutUxml = null)
+            VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
             _settingsUxml = settingsUxml;
             _loadoutUxml = loadoutUxml;
+            _rewardUxml = rewardUxml;
+            _eventUxml = eventUxml;
         }
 
         /// <summary>
@@ -126,30 +123,28 @@ namespace Guildmaster.UI
         {
             var screen = FillRoot(_settingsUxml.CloneTree());
 
-            var master = screen.Q<Slider>("slider-master");
-            var music = screen.Q<Slider>("slider-music");
-            var sfx = screen.Q<Slider>("slider-sfx");
-            var masterVal = screen.Q<Label>("val-master");
-            var musicVal = screen.Q<Label>("val-music");
-            var sfxVal = screen.Q<Label>("val-sfx");
+            var master = screen.Q<Guildmaster.UI.Components.SliderRow>("row-master");
+            var music  = screen.Q<Guildmaster.UI.Components.SliderRow>("row-music");
+            var sfx    = screen.Q<Guildmaster.UI.Components.SliderRow>("row-sfx");
+            master.LabelText = "Общий";
+            music.LabelText  = "Музыка";
+            sfx.LabelText    = "Звук";
 
             _settingsVm.BeginEdit();
 
+            // SliderRow сам обновляет свою подпись-процент (в т.ч. в SetValueWithoutNotify).
             void Sync()
             {
                 master.SetValueWithoutNotify(_settingsVm.Master);
                 music.SetValueWithoutNotify(_settingsVm.Music);
                 sfx.SetValueWithoutNotify(_settingsVm.Sfx);
-                masterVal.text = Percent(_settingsVm.Master);
-                musicVal.text = Percent(_settingsVm.Music);
-                sfxVal.text = Percent(_settingsVm.Sfx);
             }
 
             Sync();
 
-            master.RegisterValueChangedCallback(e => { _settingsVm.SetMaster(e.newValue); masterVal.text = Percent(e.newValue); });
-            music.RegisterValueChangedCallback(e => { _settingsVm.SetMusic(e.newValue); musicVal.text = Percent(e.newValue); });
-            sfx.RegisterValueChangedCallback(e => { _settingsVm.SetSfx(e.newValue); sfxVal.text = Percent(e.newValue); });
+            master.Slider.RegisterValueChangedCallback(e => _settingsVm.SetMaster(e.newValue));
+            music.Slider.RegisterValueChangedCallback(e => _settingsVm.SetMusic(e.newValue));
+            sfx.Slider.RegisterValueChangedCallback(e => _settingsVm.SetSfx(e.newValue));
 
             // VM → слайдеры (Defaults/Cancel меняют значения «снаружи»). Отписка при снятии с панели.
             Action onChanged = Sync;
@@ -231,106 +226,17 @@ namespace Guildmaster.UI
             return screen;
         }
 
-        // Экран награды (A3). Построен кодом (без UXML) — не требует правки сцены; дизайн-полиш/переезд на
-        // UXML отложены (implement-then-review). Гарантирует ровно один OnResolved, включая закрытие = пропуск.
+        // Экран награды (A3) — на UXML (RewardScreen.uxml) через общий RewardScreenView. Гарантирует ровно
+        // один OnResolved, включая закрытие без выбора (= пропуск), чтобы флоу забега не завис.
         public void OpenReward(OpenRewardRequest req)
         {
-            if (_root == null) { req.OnResolved?.Invoke(RewardChoiceResult.Skip); return; }
+            if (_root == null || _rewardUxml == null) { req.OnResolved?.Invoke(RewardChoiceResult.Skip); return; }
             Push(BuildRewardScreen(req));
         }
 
         private VisualElement BuildRewardScreen(OpenRewardRequest req)
         {
-            RelicData chosen = null;
-            string    drop   = null;
-            bool      resolved = false;
-
-            var screen = new VisualElement { pickingMode = PickingMode.Position };
-            screen.style.position = Position.Absolute;
-            screen.style.left = 0; screen.style.top = 0; screen.style.right = 0; screen.style.bottom = 0;
-            screen.style.alignItems = Align.Center;
-            screen.style.justifyContent = Justify.Center;
-            screen.style.backgroundColor = new Color(0f, 0f, 0f, 0.55f); // затемнение боя за оверлеем
-
-            var panel = new VisualElement();
-            panel.AddToClassList("gm-panel");
-            panel.style.minWidth = 420;
-            panel.style.maxWidth = 640;
-            screen.Add(panel);
-
-            var title = new Label("Награда — выбери реликвию");
-            title.AddToClassList("gm-panel__title");
-            panel.Add(title);
-
-            var divider = new VisualElement(); divider.AddToClassList("gm-divider"); panel.Add(divider);
-
-            // ── Витрина выбора ──
-            var row = new VisualElement();
-            row.style.flexDirection = FlexDirection.Row;
-            row.style.justifyContent = Justify.Center;
-            panel.Add(row);
-
-            var takeBtn = new Button { text = "Взять" };
-            takeBtn.AddToClassList("gm-button");
-
-            var choiceCards = new List<(RelicData relic, VisualElement card)>();
-            var dropRows    = new List<(string id, VisualElement row)>();
-
-            void Refresh()
-            {
-                foreach (var (relic, card) in choiceCards)
-                    card.EnableInClassList("gm-card--selected", ReferenceEquals(relic, chosen));
-                foreach (var (id, r) in dropRows)
-                    r.style.backgroundColor = id == drop ? new Color(1f, 1f, 1f, 0.12f) : new Color(0, 0, 0, 0);
-                bool canTake = chosen != null && (!req.InventoryFull || drop != null);
-                takeBtn.SetEnabled(canTake);
-            }
-
-            IReadOnlyList<RelicData> choices = req.Choices;
-            for (int i = 0; i < choices.Count; i++)
-            {
-                RelicData relic = choices[i];
-                var card = new VisualElement();
-                card.AddToClassList("gm-card");
-                card.style.width = 150;
-
-                var sprite = new VisualElement();
-                sprite.AddToClassList("gm-card__sprite");
-                if (relic != null && relic.Icon != null) sprite.style.backgroundImage = new StyleBackground(relic.Icon);
-                card.Add(sprite);
-
-                var name = new Label(_loadoutVm.Name(relic));
-                name.AddToClassList("gm-card__name");
-                card.Add(name);
-
-                card.RegisterCallback<ClickEvent>(_ => { chosen = relic; Refresh(); });
-                row.Add(card);
-                choiceCards.Add((relic, card));
-            }
-
-            // ── Секция сброса (только при полном запасе, §5.4) ──
-            if (req.InventoryFull)
-            {
-                var full = new Label("Запас реликвий полон — выбери, что сбросить:");
-                full.AddToClassList("gm-text-muted");
-                full.style.whiteSpace = WhiteSpace.Normal;
-                full.style.marginTop = 6;
-                panel.Add(full);
-
-                IReadOnlyList<string> inv = req.CurrentInventory;
-                for (int i = 0; inv != null && i < inv.Count; i++)
-                {
-                    string id = inv[i];
-                    var r = new Label(id);
-                    r.AddToClassList("gm-text-muted");
-                    r.style.paddingTop = 2; r.style.paddingBottom = 2;
-                    r.RegisterCallback<ClickEvent>(_ => { drop = id; Refresh(); });
-                    panel.Add(r);
-                    dropRows.Add((id, r));
-                }
-            }
-
-            var footDivider = new VisualElement(); footDivider.AddToClassList("gm-divider"); panel.Add(footDivider);
+            bool resolved = false;
 
             void Resolve(RewardChoiceResult result)
             {
@@ -340,25 +246,17 @@ namespace Guildmaster.UI
                 CloseAll();
             }
 
-            var footer = new VisualElement();
-            footer.style.flexDirection = FlexDirection.Row;
-            footer.style.justifyContent = Justify.SpaceBetween;
-            panel.Add(footer);
-
-            var skipBtn = new Button(() => Resolve(RewardChoiceResult.Skip)) { text = "Пропустить" };
-            skipBtn.AddToClassList("gm-button");
-            footer.Add(skipBtn);
-
-            takeBtn.clicked += () =>
-            {
-                if (chosen == null) return;
-                Resolve(req.InventoryFull
-                    ? RewardChoiceResult.Swap(chosen, drop)
-                    : RewardChoiceResult.Take(chosen));
-            };
-            footer.Add(takeBtn);
-
-            Refresh();
+            VisualElement screen = RewardScreenView.Build(
+                _rewardUxml,
+                req.Choices,
+                req.InventoryFull,
+                req.CurrentInventory,
+                relic => _loadoutVm.Name(relic),
+                key => _loc?.GetString(key),
+                (chosen, dropId) => Resolve(dropId != null
+                    ? RewardChoiceResult.Swap(chosen, dropId)
+                    : RewardChoiceResult.Take(chosen)),
+                () => Resolve(RewardChoiceResult.Skip));
 
             // Страховка: любое снятие экрана без явного выбора (ESC/CloseAll) = пропуск, чтобы флоу не завис.
             screen.RegisterCallback<DetachFromPanelEvent>(_ =>
@@ -369,55 +267,18 @@ namespace Guildmaster.UI
             return screen;
         }
 
-        // Экран текстового ивента (StS-style). Построен кодом (без UXML). Выбор фиксирует последствие
-        // (колбэк → флоу применяет эффекты), затем показывается текст-результат. Закрытие без выбора = -1.
+        // Экран текстового ивента (StS-style) — на UXML (EventScreen.uxml) через общий EventScreenView.
+        // Выбор фиксирует последствие (колбэк → флоу применяет эффекты), затем показывается текст-результат.
+        // Закрытие без выбора (ESC/CloseAll) = -1, чтобы флоу не завис.
         public void OpenTextEvent(OpenTextEventRequest req)
         {
-            if (_root == null || req.Event == null) { req.OnChosen?.Invoke(-1); return; }
+            if (_root == null || _eventUxml == null || req.Event == null) { req.OnChosen?.Invoke(-1); return; }
             Push(BuildTextEventScreen(req));
         }
 
         private VisualElement BuildTextEventScreen(OpenTextEventRequest req)
         {
-            TextEventData ev = req.Event;
             bool resolved = false;
-
-            var screen = new VisualElement { pickingMode = PickingMode.Position };
-            screen.style.position = Position.Absolute;
-            screen.style.left = 0; screen.style.top = 0; screen.style.right = 0; screen.style.bottom = 0;
-            screen.style.alignItems = Align.Center;
-            screen.style.justifyContent = Justify.Center;
-            screen.style.backgroundColor = new Color(0f, 0f, 0f, 0.6f);
-
-            var panel = new VisualElement();
-            panel.AddToClassList("gm-panel");
-            panel.style.minWidth = 460;
-            panel.style.maxWidth = 640;
-            screen.Add(panel);
-
-            var title = new Label(Text(ev.TitleKey, ev.Id));
-            title.AddToClassList("gm-panel__title");
-            panel.Add(title);
-
-            var divider = new VisualElement(); divider.AddToClassList("gm-divider"); panel.Add(divider);
-
-            if (ev.Image != null)
-            {
-                var image = new VisualElement();
-                image.style.height = 180;
-                image.style.marginBottom = 8;
-                image.style.backgroundImage = new StyleBackground(ev.Image);
-                image.style.unityBackgroundScaleMode = ScaleMode.ScaleToFit;
-                panel.Add(image);
-            }
-
-            var body = new Label(Text(ev.BodyKey, string.Empty));
-            body.style.whiteSpace = WhiteSpace.Normal;
-            body.style.marginBottom = 10;
-            panel.Add(body);
-
-            var buttons = new VisualElement();
-            panel.Add(buttons);
 
             void Resolve(int index)
             {
@@ -426,27 +287,12 @@ namespace Guildmaster.UI
                 req.OnChosen?.Invoke(index);
             }
 
-            void ShowResult(string resultText)
-            {
-                buttons.Clear();
-                if (string.IsNullOrEmpty(resultText)) { CloseAll(); return; }
-                body.text = resultText;
-                var cont = new Button(CloseAll) { text = "Продолжить" };
-                cont.AddToClassList("gm-button");
-                buttons.Add(cont);
-            }
-
-            IReadOnlyList<EventChoice> choices = ev.Choices;
-            for (int i = 0; i < choices.Count; i++)
-            {
-                int index = i; // захват копии
-                string label  = Text(ev.ChoiceLabelKey(i),  $"Вариант {i + 1}");
-                string result = Text(ev.ChoiceResultKey(i), string.Empty);
-                var btn = new Button(() => { Resolve(index); ShowResult(result); }) { text = label };
-                btn.AddToClassList("gm-button");
-                btn.style.marginTop = 4;
-                buttons.Add(btn);
-            }
+            VisualElement screen = EventScreenView.Build(
+                _eventUxml,
+                req.Event,
+                key => _loc?.GetString(key),
+                Resolve,
+                CloseAll);
 
             // Страховка: закрытие без выбора (ESC/CloseAll) = пропуск (-1), чтобы флоу не завис.
             screen.RegisterCallback<DetachFromPanelEvent>(_ =>

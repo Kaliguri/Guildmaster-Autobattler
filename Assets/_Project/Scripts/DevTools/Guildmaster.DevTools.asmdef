@@ -7,6 +7,7 @@
     "Guildmaster.Combat",
     "Guildmaster.Game",
     "Guildmaster.Presentation",
+    "Guildmaster.UI",
     "QFSW.QC",
     "VContainer",
     "Unity.InputSystem"

@@ -17,8 +17,9 @@ namespace Guildmaster.DevTools
     /// </summary>
     /// <remarks>
     /// Повесь на GameObject с <see cref="UIDocument"/> в BattleScene; на UIDocument назначь
-    /// <c>GuildmasterPanelSettings</c> (тема .tss даёт gm-классы). VContainer инжектит зависимости; при
-    /// отсутствии — самоинжект из <c>CombatLifetimeScope</c> в Start (как <c>CombatUnitDebugView</c>).
+    /// <c>GuildmasterPanelSettings</c> (тема даёт gm-токены) и Source Asset = <c>DevBattlePicker.uxml</c>
+    /// (шелл панели + компактные dev-классы). Код только НАПОЛНЯЕТ список — вёрстка в UXML/USS.
+    /// VContainer инжектит зависимости; при отсутствии — самоинжект из <c>CombatLifetimeScope</c> в Start.
     /// </remarks>
     [RequireComponent(typeof(UIDocument))]
     public sealed class DevEncounterPanel : MonoBehaviour
@@ -76,119 +77,28 @@ namespace Guildmaster.DevTools
         private void BuildUi()
         {
             VisualElement root = _document.rootVisualElement;
-            root.Clear();
 
-            // Оверлей в левом-верхнем углу — НЕ full-bleed (бой видно). Сам пропускает клики; ловит их панель.
-            _overlay = new VisualElement { pickingMode = PickingMode.Ignore };
-            _overlay.style.position = Position.Absolute;
-            _overlay.style.left = 8;
-            _overlay.style.top  = 8;
-            root.Add(_overlay);
+            _overlay = root.Q<VisualElement>("gm-dev-overlay");
+            var scroll = root.Q<ScrollView>("gm-dev-scroll");
 
-            var panel = new VisualElement();
-            panel.AddToClassList("gm-panel");
-            panel.style.width = 280;
-            panel.style.maxHeight = 460;
-            _overlay.Add(panel);
+            if (_overlay == null || scroll == null)
+            {
+                Debug.LogWarning("[DevEncounterPanel] - на UIDocument не назначен DevBattlePicker.uxml " +
+                                 "(нет #gm-dev-overlay/#gm-dev-scroll). Source Asset панели пуст?");
+                enabled = false;
+                return;
+            }
 
-            var title = new Label("Battles (dev)");
-            title.AddToClassList("gm-panel__title");
-            panel.Add(title);
-
-            var divider = new VisualElement();
-            divider.AddToClassList("gm-divider");
-            panel.Add(divider);
-
-            var scroll = new ScrollView(ScrollViewMode.Vertical);
-            scroll.style.flexGrow = 1;
-            panel.Add(scroll);
             _list = scroll.contentContainer;
-
             PopulateRows();
-
-            var footer = new VisualElement();
-            footer.AddToClassList("gm-divider");
-            panel.Add(footer);
-
-            var hint = new Label("F2 — hide · R — restart");
-            hint.AddToClassList("gm-text-muted");
-            panel.Add(hint);
         }
 
         private void PopulateRows()
         {
-            _rows.Clear();
-            _list.Clear();
-
-            IReadOnlyList<EncounterData> encounters = _content?.All<EncounterData>();
-            IReadOnlyList<BattlePresetData> presets = _content?.All<BattlePresetData>();
-
-            bool any = (encounters != null && encounters.Count > 0) || (presets != null && presets.Count > 0);
-            if (!any)
-            {
-                var empty = new Label("Нет боёв.\nСоздай ассеты + Sync Content Database.");
-                empty.AddToClassList("gm-text-muted");
-                empty.style.whiteSpace = WhiteSpace.Normal;
-                _list.Add(empty);
-                return;
-            }
-
-            // ── Пресеты (готовые бои со своим ростером) ──
-            if (presets != null && presets.Count > 0)
-            {
-                AddSectionHeader("Presets");
-                for (int i = 0; i < presets.Count; i++)
-                {
-                    BattlePresetData p = presets[i];
-                    AddRow("p:" + p.Id, $"{Short(p.Id)}  ·  {RosterSize(p)}p", "Play", () => PlayPreset(p));
-                }
-            }
-
-            // ── Энкаунтеры (только враги; player = dev-реликвия) ──
-            if (encounters != null && encounters.Count > 0)
-            {
-                AddSectionHeader("Encounters");
-                for (int i = 0; i < encounters.Count; i++)
-                {
-                    EncounterData e = encounters[i];
-                    AddRow("e:" + e.Id, $"{Short(e.Id)}  ·  {e.Tier}", "Play", () => PlayEncounter(e));
-                }
-            }
-
+            // Разметку строк держит общий билдер (им же пользуется превью-стенд); панель отвечает за
+            // реальные действия Play и подсветку активного.
+            DevBattlePickerView.Populate(_list, _content, PlayPreset, PlayEncounter, _rows);
             RefreshActiveHighlight();
-        }
-
-        private void AddSectionHeader(string text)
-        {
-            var h = new Label(text);
-            h.AddToClassList("gm-text-muted");
-            h.style.marginTop = 4;
-            h.style.marginBottom = 2;
-            h.style.unityFontStyleAndWeight = FontStyle.Bold;
-            _list.Add(h);
-        }
-
-        private void AddRow(string key, string label, string buttonText, System.Action onPlay)
-        {
-            var row = new VisualElement();
-            row.style.flexDirection = FlexDirection.Row;
-            row.style.alignItems = Align.Center;
-            row.style.paddingTop = 2;
-            row.style.paddingBottom = 2;
-
-            var lbl = new Label(label);
-            lbl.style.flexGrow = 1;
-            lbl.style.color = new Color(0.88f, 0.86f, 0.78f); // светлый на латунной панели (нет gm-класса под ряд)
-            row.Add(lbl);
-
-            var play = new Button(onPlay) { text = buttonText };
-            play.AddToClassList("gm-button");
-            play.style.marginTop = 0;
-            play.style.marginBottom = 0;
-            row.Add(play);
-
-            _list.Add(row);
-            _rows.Add((key, row));
         }
 
         private void PlayEncounter(EncounterData enc)
@@ -241,9 +151,7 @@ namespace Guildmaster.DevTools
             for (int i = 0; i < _rows.Count; i++)
             {
                 bool active = _activeKey != null && _rows[i].key == _activeKey;
-                _rows[i].row.style.backgroundColor = active
-                    ? new Color(1f, 1f, 1f, 0.10f)
-                    : new Color(0f, 0f, 0f, 0f);
+                _rows[i].row.EnableInClassList("gm-dev-row--active", active);
             }
         }
 
@@ -252,15 +160,6 @@ namespace Guildmaster.DevTools
             _visible = visible;
             if (_overlay != null)
                 _overlay.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
-        }
-
-        private static int RosterSize(BattlePresetData p) => p.Roster != null ? p.Roster.Count : 0;
-
-        private static string Short(string id)
-        {
-            if (string.IsNullOrEmpty(id)) return id;
-            int dot = id.IndexOf('.');
-            return dot >= 0 ? id.Substring(dot + 1) : id;
         }
     }
 }

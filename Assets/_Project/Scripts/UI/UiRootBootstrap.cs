@@ -26,6 +26,12 @@ namespace Guildmaster.UI
         [Tooltip("UXML loadout-экрана (грид реликов + Accept/Save/Close). Открывается дабл-кликом по сосуду в расстановке.")]
         [SerializeField] private VisualTreeAsset _loadoutScreen;
 
+        [Tooltip("UXML экрана награды после боя (витрина реликвий + Взять/Пропустить).")]
+        [SerializeField] private VisualTreeAsset _rewardScreen;
+
+        [Tooltip("UXML экрана текстового ивента (StS-style: заголовок, тело, варианты ответа).")]
+        [SerializeField] private VisualTreeAsset _eventScreen;
+
         private MenuRouter _router;
         private IInputService _input;
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
@@ -58,7 +64,7 @@ namespace Guildmaster.UI
                                  "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
                 return;
             }
-            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen);
+            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));

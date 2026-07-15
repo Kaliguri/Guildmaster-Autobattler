@@ -181,7 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: 065e98615efcd16419800f6cabea2c81, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: ab9dd5eab98202d40b9b75a561dd32b1, type: 3}
   m_SortingOrder: 10
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -337,6 +337,8 @@ MonoBehaviour:
   _pauseScreen: {fileID: 9197481963319205126, guid: 83346036989603340a05776972634b0c, type: 3}
   _settingsScreen: {fileID: 9197481963319205126, guid: ac79cb8fcfe667b4c8669094609ff498, type: 3}
   _loadoutScreen: {fileID: 9197481963319205126, guid: 15c3d6ae3d7b0564e9f3085e3abba396, type: 3}
+  _rewardScreen: {fileID: 9197481963319205126, guid: d9f6be55684a5534086ba8b49b9215ab, type: 3}
+  _eventScreen: {fileID: 9197481963319205126, guid: 5f2c0deae1e055b4eaaf17257898cf83, type: 3}
 --- !u!114 &101249934
 MonoBehaviour:
   m_ObjectHideFlags: 0
