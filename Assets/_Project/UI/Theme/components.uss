@@ -94,6 +94,14 @@
     background-color: var(--gm-color-accent-active);
 }
 
+/* Disabled primary: приглушённая латунь, НЕ серый «сломанный» бокс — читается как «ещё недоступна». */
+.gm-button--primary:disabled {
+    background-color: var(--gm-color-accent-active);
+    border-color: var(--gm-color-border-frame);
+    color: var(--gm-color-text-muted);
+    opacity: 0.55;
+}
+
 /* --- Строка слайдера: подпись слева, слайдер по центру, значение справа --- */
 .gm-slider-row {
     flex-direction: row;
@@ -275,4 +283,352 @@
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-sm);
     white-space: normal;
+}
+
+/* ============================================================================
+ * Экран награды (A3): модальная витрина из N реликвий + опц. секция сброса.
+ * ========================================================================== */
+
+.gm-panel--reward {
+    min-width: 300px;
+    max-width: 380px;
+}
+
+/* Витрина: карточки в ряд по центру (перенос — страховка при узкой панели). */
+.gm-reward-choices {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Карточка витрины — крупная (фокус экрана: показываем анимированный спрайт персонажа). */
+.gm-card--reward {
+    width: 100px;
+    height: 136px;
+    margin: var(--gm-space-1);
+}
+
+.gm-reward-drop {
+    margin-top: var(--gm-space-1);
+}
+
+.gm-reward-drop__hint {
+    white-space: normal;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Строка запаса для сброса ради места (кликабельна). */
+.gm-reward-drop__row {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    padding-top: var(--gm-space-1);
+    padding-bottom: var(--gm-space-1);
+    padding-left: var(--gm-space-2);
+    border-left-width: 2px;
+    border-left-color: rgba(0, 0, 0, 0);
+}
+
+.gm-reward-drop__row:hover {
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-reward-drop__row--selected {
+    color: var(--gm-color-text);
+    background-color: var(--gm-color-hover-surface);
+    border-left-color: var(--gm-color-accent);
+}
+
+.gm-reward-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: var(--gm-space-1);
+}
+
+/* ============================================================================
+ * Экран текстового ивента (StS-style): заголовок, опц. картинка, тело, варианты.
+ * ========================================================================== */
+
+.gm-panel--event {
+    min-width: 240px;
+    max-width: 300px;
+}
+
+.gm-event-image {
+    height: 120px;
+    margin-bottom: var(--gm-space-3);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-event-body {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    white-space: normal;
+    margin-bottom: var(--gm-space-3);
+}
+
+/* Варианты ответа — колонка кнопок во всю ширину панели. */
+.gm-event-choice {
+    width: 100%;
+    margin-top: var(--gm-space-1);
+    margin-bottom: 0;
+}
+
+/* ============================================================================
+ * Хаб лоадаута: обзор команды (4 сосуда) + общая секция (баннеры, запас).
+ * ========================================================================== */
+
+.gm-panel--hub {
+    min-width: 420px;
+    max-width: 520px;
+}
+
+.gm-hub-section {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    -unity-font-style: bold;
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-2);
+}
+
+/* Ряд сосудов команды. */
+.gm-hub-roster {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* Карточка сосуда: имя сверху, надетый релик (иконка+имя) снизу. */
+.gm-hub-vessel {
+    width: 112px;
+    height: 96px;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-2);
+    justify-content: space-between;
+    transition-property: border-color, background-color;
+    transition-duration: 0.08s;
+}
+
+.gm-hub-vessel:hover {
+    border-color: var(--gm-color-hover-border);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-hub-vessel__name {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    -unity-font-style: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gm-hub-vessel__relic {
+    flex-direction: row;
+    align-items: center;
+}
+
+.gm-hub-vessel__relic-icon {
+    width: 28px;
+    height: 28px;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-subtle);
+    -unity-background-scale-mode: scale-to-fit;
+    margin-right: var(--gm-space-2);
+    flex-shrink: 0;
+}
+
+.gm-hub-vessel__relic-name {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+}
+
+/* Общая секция: две колонки — баннеры и запас. */
+.gm-hub-common {
+    flex-direction: row;
+}
+
+/* flex-basis НЕ 0: при 0 грид слотов считает перенос против нулевой ширины и раздувает высоту
+   колонки (готча flexbox) → мёртвая пустота в панели. 45% + grow даёт корректный перенос. */
+.gm-hub-common__col {
+    flex-grow: 1;
+    flex-basis: 45%;
+    margin-right: var(--gm-space-4);
+}
+
+.gm-hub-banners {
+    flex-direction: row;
+}
+
+/* Слот-плейсхолдер (баннер/предмет): пустой квадрат. */
+.gm-hub-slot {
+    width: 40px;
+    height: 40px;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-subtle);
+    -unity-background-scale-mode: scale-to-fit;
+    margin-right: var(--gm-space-2);
+}
+
+.gm-hub-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ============================================================================
+ * Верхняя панель забега (StS-style): полоса сверху экрана.
+ * ========================================================================== */
+
+.gm-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--gm-color-surface-panel);
+    border-bottom-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-2) var(--gm-space-3);
+}
+
+.gm-topbar__group {
+    flex-direction: row;
+    align-items: center;
+}
+
+.gm-topbar__group--center {
+    flex-grow: 1;
+    justify-content: center;
+}
+
+/* Компактная кнопка панели (меньше отступы, чем у gm-button). */
+.gm-topbar__btn {
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    padding: var(--gm-space-1) var(--gm-space-3);
+    margin: 0 var(--gm-space-1);
+}
+
+.gm-topbar__btn:hover {
+    background-color: var(--gm-color-hover-surface);
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-topbar__stat {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    margin: 0 var(--gm-space-2);
+}
+
+.gm-topbar__timer {
+    color: var(--gm-color-accent);
+    -unity-font-style: bold;
+}
+
+.gm-topbar__start {
+    margin: 0;
+    padding-left: var(--gm-space-6);
+    padding-right: var(--gm-space-6);
+}
+
+/* ============================================================================
+ * Слот (компонент Slot): рамка-квадрат с опц. иконкой. Пустой = плейсхолдер.
+ * ========================================================================== */
+
+.gm-slot {
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-subtle);
+    margin: var(--gm-space-1);
+}
+
+.gm-slot__icon {
+    flex-grow: 1;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-slot--sm {
+    width: 40px;
+    height: 40px;
+}
+
+.gm-slot--md {
+    width: 76px;
+    height: 76px;
+}
+
+/* Ряд слотов (запас/баннеры): перенос по ширине, БЕЗ flex-grow (не распирает панель). */
+.gm-slot-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+/* ============================================================================
+ * Подсказка (компонент Tooltip): всплывает при наведении на карточку.
+ * ========================================================================== */
+
+.gm-tooltip {
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-2) var(--gm-space-3);
+    max-width: 220px;
+}
+
+.gm-tooltip__title {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    -unity-font-style: bold;
+}
+
+.gm-tooltip__meta {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-tooltip__tags {
+    color: var(--gm-color-accent);
+    font-size: var(--gm-font-sm);
+}
+
+.gm-tooltip__desc {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    margin-top: var(--gm-space-1);
+}
+
+/* ============================================================================
+ * ЯРУС ШРИФТОВ: тело — Fira Sans, заголовки — Cormorant Garamond Medium (TextCore SDF).
+ * Живёт здесь (а не отдельным @import), т.к. тема .tss не подхватывала 4-й @import.
+ * Специфичность: дефолт-тема Unity вешает шрифт ПРЯМО на .unity-text-element, а прямое
+ * правило бьёт унаследованное — поэтому целим текст-элементы внутри экранов (2 класса),
+ * а не корень через наследование. Финальный арт заменит файлы — структура та же.
+ * ========================================================================== */
+
+/* Тело: ВСЕ текст-элементы = Fira Sans. Плоский `.unity-text-element` (спец. 1), но идёт
+   ПОСЛЕ дефолт-темы Unity в цепочке .tss → выигрывает по порядку. Фонтит и экраны, и галерею,
+   и любой будущий UI вне модалок (наследование от корня дефолт-тема бы перебила). */
+.unity-text-element {
+    -unity-font-definition: url("../Fonts/FiraSans-Regular SDF.asset");
+}
+
+/* Дисплей: заголовки панелей = Cormorant Medium. Идёт ПОСЛЕ правила тела → выигрывает на
+   титуле (та же спец.); синт-болд снимаем (вес Medium уже в файле). */
+.gm-panel__title {
+    -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
+    -unity-font-style: normal;
 }
