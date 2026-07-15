@@ -12,8 +12,9 @@ namespace Guildmaster.Game.Flow
     /// грузить» и ждёт исход; дочерний <c>BattleBootstrap</c> забирает запрос, запускает бой и репортит исход.
     /// Единственный шов, пересекающий границу скоупов — держит её тонкой и сетевой-ready (в Фазе 6 хост
     /// шлёт тот же запрос по сети, клиенты ждут исход через ту же абстракцию).
+    /// Реализует read-side <see cref="IBattleClock"/> (Data) — так UI читает фазу/время боя без ссылки на Game.
     /// </summary>
-    public interface IBattleSession
+    public interface IBattleSession : IBattleClock
     {
         /// <summary>root → child: поставить бой в очередь (перед загрузкой боевой сцены). Взводит ожидание исхода.</summary>
         void SetPending(BattlePresetData preset);
@@ -35,6 +36,25 @@ namespace Guildmaster.Game.Flow
 
         /// <summary>root → child: перезапустить бой (ретрай). Взводит новое ожидание. false = некому (нет боя).</summary>
         bool RequestRestart();
+
+        // ── Верхняя панель забега: часы + фаза + старт (план 12 Фаза 2) ──────────────
+        // Read-side (Phase / ElapsedSeconds / RequestStart) — в IBattleClock (Data). Здесь только write-side,
+        // которым боевой скоуп (DeploymentController) публикует состояние.
+
+        /// <summary>child → session: сменить фазу (расстановка → бой). Панель опрашивает <see cref="IBattleClock.Phase"/>.</summary>
+        void SetPhase(BattlePhase phase);
+
+        /// <summary>child → session: привязать источник времени боя (<c>CombatSimulation.ElapsedSeconds</c>).</summary>
+        void BindClock(Func<float> elapsedSeconds);
+
+        /// <summary>child → session: снять часы при выгрузке боевого скоупа (сбрасывает фазу в <see cref="BattlePhase.None"/>).</summary>
+        void UnbindClock();
+
+        /// <summary>child → session: привязать «начать бой из расстановки» (кнопка «Начать» на панели).</summary>
+        void BindStart(Action start);
+
+        /// <summary>child → session: снять делегат старта при выгрузке боевого скоупа.</summary>
+        void UnbindStart();
     }
 
     /// <summary>
@@ -46,6 +66,9 @@ namespace Guildmaster.Game.Flow
         private bool             _hasPending;
         private Action           _restart;
         private UniTaskCompletionSource<BattleOutcome> _outcome;
+
+        private Func<float> _clock;
+        private Action      _start;
 
         public void SetPending(BattlePresetData preset)
         {
@@ -88,5 +111,27 @@ namespace Guildmaster.Game.Flow
         // Взвести свежее ожидание исхода: гарантирует, что ReportOutcome, пришедший даже мгновенно
         // после запуска боя, будет пойман (TCS переживает до await).
         private void ArmOutcome() => _outcome = new UniTaskCompletionSource<BattleOutcome>();
+
+        // ── Панель: часы + фаза + старт ──────────────────────────────────────────
+
+        public BattlePhase Phase { get; private set; } = BattlePhase.None;
+
+        public float ElapsedSeconds => _clock?.Invoke() ?? 0f;
+
+        public void SetPhase(BattlePhase phase) => Phase = phase;
+
+        public void BindClock(Func<float> elapsedSeconds) => _clock = elapsedSeconds;
+
+        public void UnbindClock()
+        {
+            _clock = null;
+            Phase  = BattlePhase.None; // боевого скоупа больше нет — панель скрыта
+        }
+
+        public void BindStart(Action start) => _start = start;
+
+        public void UnbindStart() => _start = null;
+
+        public void RequestStart() => _start?.Invoke();
     }
 }

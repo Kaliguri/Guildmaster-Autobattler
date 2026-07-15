@@ -180,6 +180,16 @@ namespace Guildmaster.Tests.EditMode.Run
                 RestartCount++;
                 return true;
             }
+
+            // Часы/фаза/старт панели (план 12 Фаза 2) — не задействованы в этих тестах.
+            public BattlePhase Phase => BattlePhase.None;
+            public float ElapsedSeconds => 0f;
+            public void SetPhase(BattlePhase phase) { }
+            public void BindClock(Func<float> elapsedSeconds) { }
+            public void UnbindClock() { }
+            public void BindStart(Action start) { }
+            public void UnbindStart() { }
+            public void RequestStart() { }
         }
     }
 }

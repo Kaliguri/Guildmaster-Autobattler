@@ -339,6 +339,7 @@ MonoBehaviour:
   _loadoutScreen: {fileID: 9197481963319205126, guid: 15c3d6ae3d7b0564e9f3085e3abba396, type: 3}
   _rewardScreen: {fileID: 9197481963319205126, guid: d9f6be55684a5534086ba8b49b9215ab, type: 3}
   _eventScreen: {fileID: 9197481963319205126, guid: 5f2c0deae1e055b4eaaf17257898cf83, type: 3}
+  _runTopBar: {fileID: 9197481963319205126, guid: 94570721a23f87c4e851528c4b1212aa, type: 3}
 --- !u!114 &101249934
 MonoBehaviour:
   m_ObjectHideFlags: 0

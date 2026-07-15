@@ -5,6 +5,7 @@ using Guildmaster.Core.Arena;
 using Guildmaster.Core.Input;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
+using Guildmaster.Game.Flow;
 using Guildmaster.Presentation;
 using MessagePipe;
 using UnityEngine;
@@ -39,6 +40,7 @@ namespace Guildmaster.Game
         private readonly ArenaLayoutData  _layout;
         private readonly IPublisher<OpenLoadoutRequest> _openLoadoutPub;
         private readonly ISubscriber<EquipRelicRequest> _equipSub;
+        private readonly IBattleSession   _session;
 
         // Редактируемый ростер игрока в этой фазе (позиции/релики меняются перетаскиванием и loadout'ом).
         private sealed class Slot { public RelicData Relic; public VesselData Vessel; public Vector2 Pos; public int LiveUnitId = -1; }
@@ -65,7 +67,8 @@ namespace Guildmaster.Game
             CombatPresenter presenter,
             ArenaLayoutData layout,
             IPublisher<OpenLoadoutRequest> openLoadoutPub,
-            ISubscriber<EquipRelicRequest> equipSub)
+            ISubscriber<EquipRelicRequest> equipSub,
+            IBattleSession session)
         {
             _loader        = loader;
             _sim           = sim;
@@ -75,6 +78,7 @@ namespace Guildmaster.Game
             _layout        = layout;
             _openLoadoutPub = openLoadoutPub;
             _equipSub      = equipSub;
+            _session       = session;
         }
 
         public void Start()
@@ -83,6 +87,13 @@ namespace Guildmaster.Game
             _input.PointerPressed  += OnPointerPressed;
             _input.PointerReleased += OnPointerReleased;
             _equipSubscription = _equipSub.Subscribe(OnEquip);
+
+            // Верхняя панель забега (план 12): часы боя + кнопка «Начать». Дефолт-фаза Fighting —
+            // для Fixed-боёв без расстановки (таймер сразу); Free переопределит на Deployment ниже
+            // (эта подписка встаёт до LoadPreset в BattleBootstrap, порядок регистрации гарантирован).
+            _session.BindClock(() => _sim.ElapsedSeconds);
+            _session.BindStart(() => { if (_deploying) StartCombat(); });
+            _session.SetPhase(BattlePhase.Fighting);
         }
 
         public void Dispose()
@@ -91,6 +102,8 @@ namespace Guildmaster.Game
             _input.PointerPressed  -= OnPointerPressed;
             _input.PointerReleased -= OnPointerReleased;
             _equipSubscription?.Dispose();
+            _session.UnbindStart();
+            _session.UnbindClock(); // сбрасывает фазу в None → панель скрывается между боями
             if (_view != null) UnityEngine.Object.Destroy(_view.gameObject);
         }
 
@@ -113,6 +126,7 @@ namespace Guildmaster.Game
             _view.SetActive(true);
             _input.SetContext(InputContext.Deployment);
             _deploying = true;
+            _session.SetPhase(BattlePhase.Deployment); // центр панели = «Начать»
         }
 
         private void EnsureView()
@@ -256,6 +270,7 @@ namespace Guildmaster.Game
             _view?.SetActive(false);
             _sim.SetPaused(false);
             _input.SetContext(InputContext.Combat);
+            _session.SetPhase(BattlePhase.Fighting); // центр панели = таймер боя
         }
 
         // ── Хелперы ──────────────────────────────────────────────────────────

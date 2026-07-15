@@ -81,7 +81,9 @@ namespace Guildmaster.Game
 
             // Флоу забега (план 11): рукопожатие в боевой скоуп + сетевые швы (соло-тела). BattleFlow создаётся
             // per-node внутри GameFlow, потому в DI не регистрируется.
-            builder.Register<BattleSession>(Lifetime.Singleton).As<IBattleSession>();
+            // Один инстанс под двумя ролями: IBattleSession (write-side, боевой скоуп) + IBattleClock
+            // (read-side, верхняя панель в UI-слое, план 12 Фаза 2).
+            builder.Register<BattleSession>(Lifetime.Singleton).As<IBattleSession>().As<IBattleClock>();
             builder.Register<SoloReadyGate>(Lifetime.Singleton).As<IReadyGate>();
             builder.Register<SoloPlayerIntentSource>(Lifetime.Singleton).As<IPlayerIntentSource>();
 
