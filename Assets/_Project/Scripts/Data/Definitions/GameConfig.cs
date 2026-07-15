@@ -24,8 +24,8 @@ namespace Guildmaster.Data.Definitions
                  "есть команды, и победа определяется сравнением исхода с этим номером (шов под PvP).")]
         [SerializeField] private int _localPlayerTeam;
 
-        [Tooltip("Слотов предметов на персонажа (Vessel-скоуп, вики «13» §3.2 ItemData.Scope).")]
-        [SerializeField] private int _vesselItemSlots = 4;
+        [Tooltip("Слотов предметов на персонажа (Vessel-скоуп, вики «13» §3.2 ItemData.Scope). GDD 16: 3, не 4.")]
+        [SerializeField] private int _vesselItemSlots = 3;
 
         [Tooltip("Сколько баннеров (Party-скоуп) можно взять активными на весь отряд.")]
         [SerializeField] private int _partyBannerSlots = 2;
