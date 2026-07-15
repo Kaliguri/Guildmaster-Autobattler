@@ -1,5 +1,6 @@
 ---
 kind: enemy
+status: draft
 enemy_group: Элита
 faction: Големы
 subfaction: Земляные

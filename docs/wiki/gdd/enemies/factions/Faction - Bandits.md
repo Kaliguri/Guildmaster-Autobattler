@@ -1,5 +1,6 @@
 ---
 kind: enemy_faction
+status: draft
 faction: Разбойники
 ---
 

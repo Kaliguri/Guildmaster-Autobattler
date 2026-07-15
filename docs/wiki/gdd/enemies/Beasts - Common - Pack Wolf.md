@@ -1,5 +1,6 @@
 ---
 kind: enemy
+status: draft
 enemy_group: Обычный
 faction: Звери
 subfaction: Волчья стая

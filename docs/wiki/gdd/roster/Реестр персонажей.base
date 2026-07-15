@@ -2,6 +2,8 @@ filters:
   and:
     - kind == "character"
 properties:
+  status:
+    displayName: Готовность
   rarity:
     displayName: Редкость
   position:
@@ -31,6 +33,7 @@ views:
     name: Все персонажи
     order:
       - file.name
+      - status
       - rarity
       - position
       - combat_range
