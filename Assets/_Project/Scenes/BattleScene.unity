@@ -313,7 +313,6 @@ GameObject:
   m_Component:
   - component: {fileID: 101249936}
   - component: {fileID: 101249935}
-  - component: {fileID: 101249934}
   - component: {fileID: 101249933}
   m_Layer: 0
   m_Name: UI Root
@@ -340,20 +339,6 @@ MonoBehaviour:
   _rewardScreen: {fileID: 9197481963319205126, guid: d9f6be55684a5534086ba8b49b9215ab, type: 3}
   _eventScreen: {fileID: 9197481963319205126, guid: 5f2c0deae1e055b4eaaf17257898cf83, type: 3}
   _runTopBar: {fileID: 9197481963319205126, guid: 94570721a23f87c4e851528c4b1212aa, type: 3}
---- !u!114 &101249934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101249932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 321345f4278ef4a4b84b5446104ebe4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Guildmaster.UI::Guildmaster.UI.IntegerPanelScaler
-  _panelSettings: {fileID: 11400000, guid: 065e98615efcd16419800f6cabea2c81, type: 2}
-  _referenceHeight: 360
 --- !u!114 &101249935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -369,7 +354,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 065e98615efcd16419800f6cabea2c81, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 0}
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920

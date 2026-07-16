@@ -34,44 +34,55 @@ namespace Guildmaster.Game.Services
             _running     = true;
             _accumulator = 0f;
 
-            // Цикл живёт всю жизнь боевого скоупа. Тикает только при активном бою (Outcome == Ongoing);
-            // после конца боя простаивает (не копит время), а dev-рестарт на месте (ResetBattle → Ongoing)
-            // сам возобновляет тик — без перезапуска цикла и без перезагрузки сцены.
-            while (_running && !cancellation.IsCancellationRequested)
+            try
             {
-                if (_simulation.Outcome != BattleOutcome.Ongoing)
+                // Цикл живёт всю жизнь боевого скоупа. Тикает только при активном бою (Outcome == Ongoing);
+                // после конца боя простаивает (не копит время), а dev-рестарт на месте (ResetBattle → Ongoing)
+                // сам возобновляет тик — без перезапуска цикла и без перезагрузки сцены.
+                while (_running && !cancellation.IsCancellationRequested)
                 {
-                    _accumulator = 0f;
+                    if (_simulation.Outcome != BattleOutcome.Ongoing)
+                    {
+                        _accumulator = 0f;
+                        await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
+                        continue;
+                    }
+
+                    _accumulator += Time.deltaTime;
+
+                    // Анти-лавина: не больше N догоняющих тиков за кадр. Иначе один долгий кадр
+                    // (GC/загрузка/alt-tab) копит время → десятки тиков → ещё больший подвис.
+                    int ticksThisFrame = 0;
+                    while (_accumulator >= SimConstants.TickDelta
+                           && ticksThisFrame < SimConstants.MaxCatchUpTicksPerFrame)
+                    {
+                        _simulation.Tick(SimConstants.TickDelta);
+                        _accumulator -= SimConstants.TickDelta;
+                        ticksThisFrame++;
+
+                        if (_simulation.Outcome != BattleOutcome.Ongoing) break;
+                    }
+
+                    // Упёрлись в кап, а долг ещё есть — отбрасываем остаток, чтобы не копить лавину.
+                    if (ticksThisFrame >= SimConstants.MaxCatchUpTicksPerFrame
+                        && _accumulator > SimConstants.TickDelta)
+                    {
+                        _accumulator = 0f;
+                    }
+
                     await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
-                    continue;
                 }
-
-                _accumulator += Time.deltaTime;
-
-                // Анти-лавина: не больше N догоняющих тиков за кадр. Иначе один долгий кадр
-                // (GC/загрузка/alt-tab) копит время → десятки тиков → ещё больший подвис.
-                int ticksThisFrame = 0;
-                while (_accumulator >= SimConstants.TickDelta
-                       && ticksThisFrame < SimConstants.MaxCatchUpTicksPerFrame)
-                {
-                    _simulation.Tick(SimConstants.TickDelta);
-                    _accumulator -= SimConstants.TickDelta;
-                    ticksThisFrame++;
-
-                    if (_simulation.Outcome != BattleOutcome.Ongoing) break;
-                }
-
-                // Упёрлись в кап, а долг ещё есть — отбрасываем остаток, чтобы не копить лавину.
-                if (ticksThisFrame >= SimConstants.MaxCatchUpTicksPerFrame
-                    && _accumulator > SimConstants.TickDelta)
-                {
-                    _accumulator = 0f;
-                }
-
-                await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
             }
-
-            _running = false;
+            catch (System.OperationCanceledException)
+            {
+                // Штатное завершение: боевой скоуп выгружен или выход из play отменил токен.
+                // UniTask.Yield бросает OCE по отмене — это не ошибка, глушим (иначе VContainer
+                // EntryPointExceptionHandler залогирует её красным как падение EntryPoint).
+            }
+            finally
+            {
+                _running = false;
+            }
         }
 
         /// <summary>Остановить цикл принудительно (например, при выгрузке сцены).</summary>

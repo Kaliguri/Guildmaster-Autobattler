@@ -154,7 +154,36 @@ namespace Guildmaster.UI
             screen.Q<Button>("btn-save").clicked += () => { _settingsVm.Save(); Pop(); };
             screen.Q<Button>("btn-cancel").clicked += () => { _settingsVm.Cancel(); Pop(); };
             screen.Q<Button>("btn-defaults").clicked += () => _settingsVm.ResetToDefaults();
+
+            WireSettingsTabs(screen);
             return screen;
+        }
+
+        // Табы настроек (Игра/Графика/Звук) — визуал-каркас: клик показывает свою страницу и прячет прочие.
+        // Игра/Графика пока плейсхолдеры; Звук несёт живые слайдеры. Раскладка/стиль — из UXML/USS.
+        private static void WireSettingsTabs(VisualElement screen)
+        {
+            var tabGame  = screen.Q<Button>("tab-game");
+            var tabVideo = screen.Q<Button>("tab-video");
+            var tabAudio = screen.Q<Button>("tab-audio");
+            var pageGame  = screen.Q<VisualElement>("page-game");
+            var pageVideo = screen.Q<VisualElement>("page-video");
+            var pageAudio = screen.Q<VisualElement>("page-audio");
+            if (tabGame == null || tabVideo == null || tabAudio == null) return;
+
+            void Show(Button tab, VisualElement page)
+            {
+                tabGame.EnableInClassList("gm-tab--active", tab == tabGame);
+                tabVideo.EnableInClassList("gm-tab--active", tab == tabVideo);
+                tabAudio.EnableInClassList("gm-tab--active", tab == tabAudio);
+                pageGame?.EnableInClassList("gm-tab-page--hidden", page != pageGame);
+                pageVideo?.EnableInClassList("gm-tab-page--hidden", page != pageVideo);
+                pageAudio?.EnableInClassList("gm-tab-page--hidden", page != pageAudio);
+            }
+
+            tabGame.clicked  += () => Show(tabGame, pageGame);
+            tabVideo.clicked += () => Show(tabVideo, pageVideo);
+            tabAudio.clicked += () => Show(tabAudio, pageAudio);
         }
 
         private VisualElement BuildLoadoutScreen()

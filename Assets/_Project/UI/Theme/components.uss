@@ -117,9 +117,34 @@
     margin-right: var(--gm-space-1);
 }
 
-/* Панель настроек: чуть шире базовой под три строки-слайдера. */
+/* Меню-панель (ESC / Pause): привычный крупный размер с запасом «на будущее» под новые пункты. */
+.gm-panel--menu {
+    min-width: 460px;
+    min-height: 520px;
+}
+
+/* Панель настроек: шире и выше под табы (Игра/Графика/Звук) + запас под будущие опции. */
 .gm-panel--settings {
-    min-width: 380px;
+    min-width: 600px;
+    min-height: 520px;
+}
+
+/* Страница таба: занимает свободное место панели; скрытая — не в потоке. */
+.gm-tab-page {
+    flex-grow: 1;
+}
+
+.gm-tab-page--hidden {
+    display: none;
+}
+
+/* Плейсхолдер пустой вкладки (визуал-каркас «на будущее»). */
+.gm-tab-placeholder {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-body);
 }
 
 /* --- Строка слайдера: подпись слева, слайдер по центру, значение справа --- */
@@ -554,6 +579,14 @@
 }
 
 .gm-topbar__timer {
+    color: var(--gm-color-accent);
+    -unity-font-style: bold;
+}
+
+/* Таймер боя в центре: скрыт по умолчанию (фаза расстановки = кнопка «Начать»);
+   в бою показывается кодом (RunTopBarView.SetFighting). */
+.gm-topbar__battle-timer {
+    display: none;
     color: var(--gm-color-accent);
     -unity-font-style: bold;
 }

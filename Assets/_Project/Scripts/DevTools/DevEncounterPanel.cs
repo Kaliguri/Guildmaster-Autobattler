@@ -32,18 +32,20 @@ namespace Guildmaster.DevTools
         [Tooltip("Позиция dev-player-реликвии на арене (для списка Encounters).")]
         [SerializeField] private Vector2 _devPlayerPosition = new Vector2(-5f, 0f);
 
-        [Tooltip("Показать панель при старте боя.")]
-        [SerializeField] private bool _visibleOnStart = true;
+        /// <summary>Что показывает dev-панель сейчас (переключается F2/F1; None — скрыта).</summary>
+        private enum DevView { None, Battles, Screens }
 
         private EncounterLoader  _loader;
         private IContentDatabase _content;
         private UIDocument       _document;
 
-        private VisualElement _overlay;   // обёртка в углу (тогглим display)
+        private VisualElement _overlay;       // battles-режим (F2): обёртка в углу (тогглим display)
         private VisualElement _list;
+        private VisualElement _screensRoot;   // screens-режим (F1): полноэкранный просмотр экранов (editor-only)
+        private VisualElement _screenContent; // куда UiPreviewCatalog строит выбранный экран
         private readonly List<(string key, VisualElement row)> _rows = new();
-        private string _activeKey;        // "e:<id>" | "p:<id>" — что запущено последним (подсветка)
-        private bool _visible;
+        private string _activeKey;            // "e:<id>" | "p:<id>" — что запущено последним (подсветка)
+        private DevView _view = DevView.None;
 
         [Inject]
         public void Construct(EncounterLoader loader, IContentDatabase content)
@@ -65,13 +67,16 @@ namespace Guildmaster.DevTools
             if (_document == null) { Debug.LogWarning("[DevEncounterPanel] - нет UIDocument"); enabled = false; return; }
 
             BuildUi();
-            SetVisible(_visibleOnStart);
+            Apply(); // старт скрыт (DevView.None) — панель не мозолит глаз, пока не нажали F2/F1
         }
 
         private void Update()
         {
             Keyboard kb = Keyboard.current;
-            if (kb != null && kb.f2Key.wasPressedThisFrame) SetVisible(!_visible);
+            if (kb == null) return;
+            // F2 — бои, F1 — экраны UI; повторное нажатие того же режима прячет панель.
+            if (kb.f2Key.wasPressedThisFrame) Toggle(DevView.Battles);
+            if (kb.f1Key.wasPressedThisFrame) Toggle(DevView.Screens);
         }
 
         private void BuildUi()
@@ -91,6 +96,70 @@ namespace Guildmaster.DevTools
 
             _list = scroll.contentContainer;
             PopulateRows();
+            BuildScreensOverlay(root);
+        }
+
+        // F1-режим: полноэкранный просмотрщик UI-экранов (награда/ивент/хаб/галерея и т.д.) со стендовыми
+        // данными через UiPreviewCatalog — чтобы глазами проверить экраны, не гоняя весь флоу. Editor-only
+        // (каталог грузит UXML через AssetDatabase); в билде F1 просто не строится.
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        private void BuildScreensOverlay(VisualElement root)
+        {
+#if UNITY_EDITOR
+            _screensRoot = new VisualElement { name = "gm-dev-screens" };
+            _screensRoot.style.position = Position.Absolute;
+            _screensRoot.style.left = 0; _screensRoot.style.top = 0;
+            _screensRoot.style.right = 0; _screensRoot.style.bottom = 0;
+            _screensRoot.style.display = DisplayStyle.None;
+
+            // Слой контента — сюда каталог строит выбранный экран (у экранов свой полноэкранный scrim).
+            _screenContent = new VisualElement { name = "gm-dev-screen-content" };
+            _screenContent.style.position = Position.Absolute;
+            _screenContent.style.left = 0; _screenContent.style.top = 0;
+            _screenContent.style.right = 0; _screenContent.style.bottom = 0;
+            _screensRoot.Add(_screenContent);
+
+            // Верхняя лента-переключатель экранов (поверх контента).
+            var bar = new VisualElement();
+            bar.AddToClassList("gm-dev-screens-bar");
+            foreach (string id in UiPreviewCatalog.Ids)
+            {
+                if (id == "dev-picker") continue; // сам пикер здесь не нужен
+                string screenId = id;
+                var b = new Button(() => UiPreviewCatalog.Build(screenId, _screenContent)) { text = ScreenLabel(screenId) };
+                b.AddToClassList("gm-dev-play");
+                bar.Add(b);
+            }
+            _screensRoot.Add(bar);
+            root.Add(_screensRoot);
+#endif
+        }
+
+#if UNITY_EDITOR
+        private static string ScreenLabel(string id) => id switch
+        {
+            "reward"      => "Награда",
+            "event"       => "Ивент",
+            "loadout-hub" => "Лоадаут-хаб",
+            "run-topbar"  => "Верх. панель",
+            "settings"    => "Настройки",
+            "gallery"     => "Галерея",
+            _              => id,
+        };
+#endif
+
+        private void Toggle(DevView view)
+        {
+            _view = _view == view ? DevView.None : view;
+            Apply();
+        }
+
+        private void Apply()
+        {
+            if (_overlay != null)
+                _overlay.style.display = _view == DevView.Battles ? DisplayStyle.Flex : DisplayStyle.None;
+            if (_screensRoot != null)
+                _screensRoot.style.display = _view == DevView.Screens ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         private void PopulateRows()
@@ -155,11 +224,5 @@ namespace Guildmaster.DevTools
             }
         }
 
-        private void SetVisible(bool visible)
-        {
-            _visible = visible;
-            if (_overlay != null)
-                _overlay.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
-        }
     }
 }

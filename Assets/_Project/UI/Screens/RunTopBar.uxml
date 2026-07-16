@@ -9,7 +9,7 @@
 
         <ui:VisualElement class="gm-topbar__group gm-topbar__group--center">
             <ui:Button name="btn-start" text="Начать" class="gm-button gm-button--primary gm-topbar__start" />
-            <ui:Label name="battle-timer" text="00:00" class="gm-topbar__stat gm-topbar__battle-timer" style="display: none;" />
+            <ui:Label name="battle-timer" text="00:00" class="gm-topbar__stat gm-topbar__battle-timer" />
         </ui:VisualElement>
 
         <ui:VisualElement class="gm-topbar__group">
