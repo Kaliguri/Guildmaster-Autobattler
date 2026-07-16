@@ -10,13 +10,15 @@ description: >-
   displacement/knockback/separation, Brain/AI боя, RuntimeUnit, урон/щит/хил в
   бою, teamId/исход боя, или когда правишь что-либо под
   Assets/_Project/Scripts/Combat, боевые сервисы в Game/Services
-  (CombatLoopService, CombatFeelDirector, TimeScaleService) и боевой мост
+  (CombatLoopService, TimeScaleService — боевое время) и боевой мост
   Presentation (CombatPresenter, CombatEvents). Срабатывай, даже если слова
   «симуляция» нет, но по сути правится боевая логика или её развязка.
   НЕ применять к: балансу/id/loc определений (EffectData, UnitData, VesselData —
   это скилл data-authoring; здесь только ПОВЕДЕНИЕ), боевому uGUI-HUD
-  (Image.Filled и т.п.), чистому визуал-полишу/арту (FloatingText, PixelBurst,
-  DeathShatter — их правит Макс).
+  (Image.Filled и т.п.), джусу и визуальному фидбэку (CombatFeelDirector,
+  screen shake, hitstop, slowmo-политика, VFX/PixelBurst/DeathShatter,
+  FloatingText, feel-конфиги — это скилл gamefeel-vfx; здесь только КОНТРАКТ
+  боевого времени TimeScaleService), звуку (IAudioService, FMOD — скилл audio).
 ---
 
 # Combat Sim — рабочий контур Guildmaster
@@ -50,8 +52,8 @@ description: >-
 | Исход боя / стороны (teamId) | `Assets/_Project/Scripts/Combat/BattleOutcome.cs` |
 | Мост sim→presentation | `Assets/_Project/Scripts/Presentation/CombatPresenter.cs` |
 | MessagePipe-события боя | `Assets/_Project/Scripts/Presentation/Events/CombatEvents.cs` |
-| Режиссёр «значимости» (global-feel) | `Assets/_Project/Scripts/Game/Services/CombatFeelDirector.cs` |
-| Единственный писатель `Time.timeScale` | `Assets/_Project/Scripts/Game/Services/TimeScaleService.cs` |
+| Единственный писатель `Time.timeScale` (GameSpeed/пауза/Cinematic, шов хрономанта) | `Assets/_Project/Scripts/Game/Services/TimeScaleService.cs` |
+| Режиссёр значимости (global-feel) — **не combat-sim**, потребитель времени | `CombatFeelDirector.cs` → скилл `gamefeel-vfx` |
 | Combat-тесты (~29, slice-паттерн) | `Assets/_Project/Tests/EditMode/Combat/*.cs` |
 
 **Слои (asmdef) — зависимость строго вниз:** `Core ← Data ← Combat`; `Presentation`
@@ -134,8 +136,9 @@ FMOD, движковые presentation-либы. Это и есть headless-яд
   — единственный, кто на них подписан со стороны презентации, спавнит views и
   **ретранслирует в MessagePipe** (`CombatEvents.cs`). Audio/UI/feel слушают MessagePipe,
   не sim.
-- **global-feel только в `CombatFeelDirector`** (kill-slowmo, shake, финишер). Точечный
-  per-hit фидбэк — в презентере. Больше нигде глобальным временем/тряской не рулим.
+- **Джус и фидбэк — контур `gamefeel-vfx`, не combat-sim.** Global-feel (kill-slowmo, shake,
+  финишер) в `CombatFeelDirector`, per-hit фидбэк в презентере — их держит скилл `gamefeel-vfx`.
+  combat-sim владеет только боевым ВРЕМЕНЕМ (`TimeScaleService`), которое джус потребляет.
 - **`Time.timeScale` пишет только `TimeScaleService`.** Он же не трогает sim-время
   (`ElapsedSeconds = currentTick * TickDelta`): slowmo/пауза меняют реальное время на
   тик, но не детерминизм.
@@ -174,4 +177,5 @@ FMOD, движковые presentation-либы. Это и есть headless-яд
   теги/стакинг, шина `CombatEvent`, реактивы, displacement-как-эффект. Читать перед
   созданием эффекта.
 - `references/presentation-seam.md` — развязка sim→presentation, MessagePipe-события,
-  `CombatPresenter`, `CombatFeelDirector`, `TimeScaleService`, границы визуала.
+  `CombatPresenter`, `TimeScaleService` (боевое время), граница с джусом/фидбэком
+  (`gamefeel-vfx`).

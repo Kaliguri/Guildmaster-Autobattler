@@ -24,13 +24,13 @@ Audio/UI/gamefeel слушают **MessagePipe**, а не sim напрямую �
 ядра. Новый потребитель боевых событий (звук, HUD, аналитика) подписывается на MessagePipe,
 не на `CombatSimulation`.
 
-## Global-feel — только в `CombatFeelDirector`
+## Global-feel и per-hit фидбэк — контур `gamefeel-vfx`, не combat-sim
 
-`Game/Services/CombatFeelDirector.cs` — единственное место, решающее про ГЛОБАЛЬНЫЕ эффекты
-значимости: kill-slowmo + shake на добивающем ударе, shake по доле `MaxHP` на тяжёлом,
-финишер-секвенция на `BattleEndedEvent` (пауза → death-slowmo → shatter-slowmo → возврат).
-Сбрасывается по `OnBattleReset`. Точечный per-hit фидбэк (hitstop, искры, цифры) — в
-презентере. **Не размазывай глобальный feel по другим местам.**
+Политику значимости (`CombatFeelDirector`: kill-slowmo, shake, финишер) и точечный per-hit
+фидбэк (hitstop, искры, цифры) держит скилл **`gamefeel-vfx`**. combat-sim здесь отвечает лишь
+за то, что этот слой ПОТРЕБЛЯЕТ: боевое время (`TimeScaleService`, ниже) и шов sim→MessagePipe.
+Если задача про то, КАК трясём/замедляем/спавним VFX — это `gamefeel-vfx`; если про то, кто
+пишет `Time.timeScale` и как это не ломает детерминизм — combat-sim.
 
 ## `Time.timeScale` — пишет только `TimeScaleService`
 
