@@ -335,8 +335,8 @@
  * ========================================================================== */
 
 .gm-panel--reward {
-    min-width: 300px;
-    max-width: 380px;
+    min-width: 460px;
+    max-width: 540px;
 }
 
 /* Витрина: карточки в ряд по центру (перенос — страховка при узкой панели). */
@@ -348,7 +348,7 @@
 
 /* Карточка витрины — крупная (фокус экрана: показываем анимированный спрайт персонажа). */
 .gm-card--reward {
-    width: 100px;
+    width: 120px;
     height: 136px;
     margin: var(--gm-space-1);
 }
@@ -395,8 +395,8 @@
  * ========================================================================== */
 
 .gm-panel--event {
-    min-width: 240px;
-    max-width: 300px;
+    min-width: 520px;
+    max-width: 620px;
 }
 
 .gm-event-image {
@@ -424,8 +424,8 @@
  * ========================================================================== */
 
 .gm-panel--hub {
-    min-width: 420px;
-    max-width: 520px;
+    min-width: 480px;
+    max-width: 640px;
 }
 
 .gm-hub-section {
@@ -444,8 +444,8 @@
 
 /* Карточка сосуда: имя сверху, надетый релик (иконка+имя) снизу. */
 .gm-hub-vessel {
-    width: 112px;
-    height: 96px;
+    width: 130px;
+    height: 116px;
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-border-2);
     border-color: var(--gm-color-border-frame);
@@ -460,13 +460,13 @@
     background-color: var(--gm-color-hover-surface);
 }
 
+/* Имя сосуда: перенос в 2 строки вместо агрессивного эллипсиса (длинные классы —
+   «Криомант»/«Защитник» — не влезают одной строкой в компактную карточку). */
 .gm-hub-vessel__name {
     color: var(--gm-color-text);
     font-size: var(--gm-font-sm);
     -unity-font-style: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
 }
 
 .gm-hub-vessel__relic {
