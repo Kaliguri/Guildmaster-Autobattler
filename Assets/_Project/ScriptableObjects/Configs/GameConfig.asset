@@ -17,3 +17,5 @@ MonoBehaviour:
   _defaultSfxVolume: 1
   _defaultLocale: en
   _vesselItemSlots: 3
+  _relicCapacityBase: 8
+  _relicCapacityMax: 16

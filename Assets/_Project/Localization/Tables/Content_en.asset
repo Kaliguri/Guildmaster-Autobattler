@@ -136,6 +136,201 @@ MonoBehaviour:
     m_Localized: A passive test target for playtesting.
     m_Metadata:
       m_Items: []
+  - m_Id: 1132609788960768
+    m_Localized: Goblin Grunt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132609788960769
+    m_Localized: "Weak club goblin \u2014 dangerous only in numbers."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132610745262080
+    m_Localized: Goblin Warrior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132610745262081
+    m_Localized: Sword-and-shield frontliner that holds the line.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132607029108736
+    m_Localized: Goblin Archer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132607058468864
+    m_Localized: Cowardly archer that peppers the party from the back line.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132608274817024
+    m_Localized: Goblin Cutthroat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132608274817025
+    m_Localized: Fast knife goblin that flanks toward soft back-line targets.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1137885233537024
+    m_Localized: Base Kit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1137885267091456
+    m_Localized: Plain fighter kit worn by a vessel with no special relic.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021935222784
+    m_Localized: Druid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137344
+    m_Localized: 'A poison caster: his spores wither the enemy line, then burst all
+      at once.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137345
+    m_Localized: Flame Swordsman
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137346
+    m_Localized: "Every blade hit stokes his speed and sets the target ablaze \u2014
+      at the cost of his own blood."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137347
+    m_Localized: Treant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137348
+    m_Localized: 'A living wall: the tougher his bark, the more the thorns bite back
+      at everyone around.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137349
+    m_Localized: Fungal Spores
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137350
+    m_Localized: Burning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137351
+    m_Localized: Blazing Blades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137352
+    m_Localized: Blazing Blades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137353
+    m_Localized: Spiked Tree
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137354
+    m_Localized: Overgrowth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809709613056
+    m_Localized: '-'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750400
+    m_Localized: '-'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750401
+    m_Localized: '-'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750402
+    m_Localized: '-'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750403
+    m_Localized: '-'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750404
+    m_Localized: '-'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750405
+    m_Localized: '-'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750406
+    m_Localized: '-'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1475541784059904
+    m_Localized: '-'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1475541830197248
+    m_Localized: '-'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108406349824
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487168
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487169
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487170
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487171
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487172
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487173
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487174
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487175
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487176
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487177
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487178
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487179
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487180
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487181
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487182
+    m_Localized: "\u2014"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

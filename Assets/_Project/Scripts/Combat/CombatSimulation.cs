@@ -133,6 +133,10 @@ namespace Guildmaster.Combat
         public BattleOutcome              Outcome  => _outcome;
         public bool                       IsPaused => _isPaused;
 
+        /// <summary>Сколько боевого времени прошло, сек. Идёт по симуляционным тикам, а не по стенным часам,
+        /// поэтому пауза и slowmo его не искажают. Основа для боевого таймера в HUD.</summary>
+        public float ElapsedSeconds => _currentTick * SimConstants.TickDelta;
+
         public CombatSimulation(
             IRngService       rng,
             float             armorK,
@@ -278,8 +282,8 @@ namespace Guildmaster.Combat
             // Внутренние события для реактивных компонентов (vampiric/thorns). Два события на удар:
             // DamageDealt доставляется источнику, DamageTaken — цели (вики «12» §3.4).
             if (req.Source != null)
-                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage));
-            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage));
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind));
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind));
 
             // Убийство атрибутируется нанёсшему смертельный удар → доставляется УБИЙЦЕ (§10.5, «Скрытность»).
             if (result.KilledTarget && req.Source != null)
@@ -332,7 +336,8 @@ namespace Guildmaster.Combat
                 CollisionRadius  = spawn.CollisionRadius,
                 TargetUnit       = spawn.TargetUnit,
                 RawDamage        = spawn.RawDamage,
-                DamageType       = spawn.DamageType,
+                School           = spawn.School,
+                Affinity         = spawn.Affinity,
                 ArmorK           = spawn.ArmorK,
                 PiercesRemaining = spawn.MaxPierces,
                 IsHeal           = spawn.IsHeal,
@@ -522,6 +527,13 @@ namespace Guildmaster.Combat
             return hash;
         }
 
+        /// <summary>
+        /// Влить отложенные спавны в живой список БЕЗ тика систем (фаза расстановки, шаг 4): юниты должны
+        /// присутствовать и быть видимыми/двигаемыми, пока бой на паузе. Фактически арм <c>_hasSpawned</c>
+        /// и <c>OnUnitSpawned</c> (презентация строит виды) — безвредно до первого реального <see cref="Tick"/>.
+        /// </summary>
+        public void FlushSpawns() => FlushPendingSpawns();
+
         // --- Приватные ---
 
         private void FlushPendingSpawns()
@@ -586,29 +598,36 @@ namespace Guildmaster.Combat
             }
         }
 
+        /// <summary>
+        /// Бой кончается, когда живой остаётся не больше одной команды. Считаем по фактическим номерам
+        /// команд, а не по «своей/чужой»: сторон может быть больше двух (PvP, будущие режимы).
+        /// </summary>
         private void CheckOutcome()
         {
             // До первого спавна бой не оценивается. После — _units непуст (мёртвые остаются
             // помеченными, не удаляются), поэтому отдельная проверка на пустоту не нужна.
             if (!_hasSpawned) return;
 
-            bool teamAAlive = false;
-            bool teamBAlive = false;
+            int  aliveTeam = BattleOutcome.NoTeam;
+            bool anyAlive  = false;
 
             for (int i = 0; i < _units.Count; i++)
             {
-                if (_units[i].IsDead) continue;
-                if (_units[i].Team == 0) teamAAlive = true;
-                else                     teamBAlive = true;
+                RuntimeUnit u = _units[i];
+                if (u.IsDead) continue;
+
+                if (!anyAlive)
+                {
+                    aliveTeam = u.Team;
+                    anyAlive  = true;
+                }
+                else if (u.Team != aliveTeam)
+                {
+                    return; // живы минимум две команды — бой продолжается
+                }
             }
 
-            BattleOutcome newOutcome;
-            if (!teamAAlive && !teamBAlive) newOutcome = BattleOutcome.Draw;
-            else if (!teamBAlive)           newOutcome = BattleOutcome.TeamAWins;
-            else if (!teamAAlive)           newOutcome = BattleOutcome.TeamBWins;
-            else                            return;
-
-            _outcome = newOutcome;
+            _outcome = anyAlive ? BattleOutcome.Win(aliveTeam) : BattleOutcome.Draw;
             OnBattleEnded?.Invoke(_outcome);
         }
     }

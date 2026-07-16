@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -48,7 +49,13 @@ namespace Guildmaster.Combat
         /// <param name="vessel">SO «Пилот». null — перки не применяются.</param>
         /// <param name="team">Команда: 0 = союзники, 1 = враги.</param>
         /// <param name="spawnPosition">Начальная позиция на поле боя.</param>
-        public RuntimeUnit Create(UnitData data, VesselData vessel, int team, Vector2 spawnPosition)
+        /// <param name="items">
+        /// Предметы юнита (Vessel-скоуп) и баннеры команды (Party-скоуп) — их статовые моды и пассивки
+        /// (план 11 §5.5, D1). Применяются как перки: моды до инициализации HP (чтобы +MaxHP поднял старт).
+        /// null = без предметов. Активки предметов пока не реализованы (только статы/эффекты).
+        /// </param>
+        public RuntimeUnit Create(UnitData data, VesselData vessel, int team, Vector2 spawnPosition,
+                                  IReadOnlyList<ItemData> items = null)
         {
             var stats = new Stats(_config);
 
@@ -57,6 +64,15 @@ namespace Guildmaster.Combat
 
             if (vessel?.PerkModifiers != null && vessel.PerkModifiers.Length > 0)
                 stats.AddModifiersFrom(vessel, vessel.PerkModifiers);
+
+            // Предметы/баннеры: статовые моды (источник — сам предмет) до HP-init, наравне с перками сосуда.
+            if (items != null)
+                for (int i = 0; i < items.Count; i++)
+                {
+                    ItemData item = items[i];
+                    if (item?.Mods != null && item.Mods.Length > 0)
+                        stats.AddModifiersFrom(item, item.Mods);
+                }
 
             int id = _nextId++;
             var unit = new RuntimeUnit
@@ -76,12 +92,27 @@ namespace Guildmaster.Combat
             };
 
             RegisterPassives(unit, data);
+            RegisterItemPassives(unit, items);
             RegisterAbilities(unit, data);
 
             // CurrentHP — после пассивок: они могли поднять MaxHP, юнит должен стартовать с полным.
             unit.CurrentHP = stats.Get(StatType.MaxHP);
 
             return unit;
+        }
+
+        /// <summary>Наложить пассивные эффекты предметов/баннеров (источник — сам юнит, длительность из Def).</summary>
+        private void RegisterItemPassives(RuntimeUnit unit, IReadOnlyList<ItemData> items)
+        {
+            if (items == null || _effects == null) return;
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                EffectData[] granted = items[i]?.GrantedEffects;
+                if (granted == null) continue;
+                for (int j = 0; j < granted.Length; j++)
+                    if (granted[j] != null) _effects.Apply(unit, granted[j], unit, _combat);
+            }
         }
 
         /// <summary>Наложить пассивные эффекты кита (источник — сам юнит, длительность из Def, обычно −1).</summary>

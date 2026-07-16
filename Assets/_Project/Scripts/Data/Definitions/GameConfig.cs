@@ -20,13 +20,30 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private string _defaultLocale = "en";
 
         [Header("Rules")]
-        [Tooltip("Слотов предметов на персонажа (Vessel-скоуп, вики «13» §3.2 ItemData.Scope).")]
+        [Tooltip("Команда локального игрока. По умолчанию первая (0). В бою нет «стороны игрока» — " +
+                 "есть команды, и победа определяется сравнением исхода с этим номером (шов под PvP).")]
+        [SerializeField] private int _localPlayerTeam;
+
+        [Tooltip("Слотов предметов на персонажа (Vessel-скоуп, вики «13» §3.2 ItemData.Scope). GDD 16: 3, не 4.")]
         [SerializeField] private int _vesselItemSlots = 3;
+
+        [Tooltip("Сколько баннеров (Party-скоуп) можно взять активными на весь отряд.")]
+        [SerializeField] private int _partyBannerSlots = 2;
+
+        [Tooltip("Стартовая вместимость коллекции реликов гильдии (запас ненадетых, план 11 §5.4).")]
+        [SerializeField] private int _relicCapacityBase = 8;
+
+        [Tooltip("Потолок вместимости коллекции реликов (апгрейд в магазине не поднимет выше).")]
+        [SerializeField] private int _relicCapacityMax = 16;
 
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
         public string DefaultLocale       => _defaultLocale;
+        public int    LocalPlayerTeam     => _localPlayerTeam;
         public int    VesselItemSlots     => _vesselItemSlots;
+        public int    PartyBannerSlots    => _partyBannerSlots;
+        public int    RelicCapacityBase   => _relicCapacityBase;
+        public int    RelicCapacityMax    => _relicCapacityMax;
     }
 }

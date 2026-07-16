@@ -1,0 +1,21 @@
+{
+ "test": "test-05_td3_palette_heroic",
+ "title": "TD3 — palette+heroic",
+ "status": "ТОП-ДАУН (правильная проекция) — крупнее, брутальнее, меч вынесен",
+ "endpoint": "/create-character-with-4-directions (view=low top-down)",
+ "prompt": "Medieval man-at-arms, mail hauberk, blue wool tabard, round wooden shield, arming sword, open-face helm, grounded battle stance, low fantasy, muted steel and leather",
+ "params": {
+  "view": "low top-down",
+  "outline": "single_color_outline",
+  "shading": "medium_shading",
+  "detail": "moderate",
+  "proportions": {
+   "type": "preset",
+   "name": "heroic"
+  },
+  "color_image": "style-sheet (палитра)"
+ },
+ "character_id": "5ad0e781-7c5a-43dc-8629-0f560ffd94a8",
+ "generations": 1,
+ "date": "2026-07-15"
+}

@@ -1,11 +1,16 @@
 using Guildmaster.Core.Audio;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
+using Guildmaster.Core.Persistence;
+using Guildmaster.Core.Players;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Settings;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Game.Flow;
 using Guildmaster.Game.Input;
+using Guildmaster.Game.Players;
 using Guildmaster.Game.Services;
+using Guildmaster.Guild;
 using Guildmaster.UI;
 using Guildmaster.Presentation.Audio;
 using MessagePipe;
@@ -56,13 +61,38 @@ namespace Guildmaster.Game
             // Рантайм-UI (оверлеи меню/настроек): VM + роутер сессионные; бутстрап — UIDocument-компонент
             // в CoreScene (инъекция методом через RegisterComponentInHierarchy). ESC открывает меню.
             builder.Register<SettingsViewModel>(Lifetime.Singleton);
+            builder.Register<LoadoutViewModel>(Lifetime.Singleton);
             builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf().As<IMenuRouter>();
             builder.RegisterComponentInHierarchy<UiRootBootstrap>();
 
             // Локализация: сервис поверх String Tables (вики «13» §5). Потребители (UI) — Фаза 7.
             builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();
 
-            builder.Register<SceneLoader>(Lifetime.Singleton);
+            // Персистентность: соло-бэкенд JSON-файл за швом ISaveService (ES3/Steam Cloud — потом).
+            builder.Register<JsonFileSaveService>(Lifetime.Singleton).As<ISaveService>();
+            // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4).
+            builder.Register<RunStateService>(Lifetime.Singleton);
+
+            // За какую команду играет этот клиент. Единственный источник ответа «мы победили?» —
+            // в бою есть команды, а не «сторона игрока» (шов под PvP).
+            builder.Register<SoloLocalPlayer>(Lifetime.Singleton).As<ILocalPlayer>();
+
+            builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>().AsSelf();
+
+            // Флоу забега (план 11): рукопожатие в боевой скоуп + сетевые швы (соло-тела). BattleFlow создаётся
+            // per-node внутри GameFlow, потому в DI не регистрируется.
+            // Один инстанс под двумя ролями: IBattleSession (write-side, боевой скоуп) + IBattleClock
+            // (read-side, верхняя панель в UI-слое, план 12 Фаза 2).
+            builder.Register<BattleSession>(Lifetime.Singleton).As<IBattleSession>().As<IBattleClock>();
+            builder.Register<SoloReadyGate>(Lifetime.Singleton).As<IReadyGate>();
+            builder.Register<SoloPlayerIntentSource>(Lifetime.Singleton).As<IPlayerIntentSource>();
+
+            // Витрина наград после боя (A3): катит 1-из-3 реликов из контент-БД (детерминирован через RNG).
+            builder.Register<RewardService>(Lifetime.Singleton);
+
+            // Применение последствий текстовых ивентов к RunState (план 11 §5.1).
+            builder.Register<EventEffectApplier>(Lifetime.Singleton);
+
             builder.Register<GameFlow>(Lifetime.Singleton);
 
             // Ввод глобален и переживает перезагрузку боевой сцены (вики «16» §3).

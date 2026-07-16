@@ -1,6 +1,82 @@
 {
   "recentFiles": [
     {
+      "basename": "roadmap",
+      "path": "gdd/00-meta/roadmap.md"
+    },
+    {
+      "basename": "open",
+      "path": "gdd/00-meta/open.md"
+    },
+    {
+      "basename": "legacy",
+      "path": "gdd/00-meta/legacy.md"
+    },
+    {
+      "basename": "glossary",
+      "path": "gdd/00-meta/glossary.md"
+    },
+    {
+      "basename": "journal-adr",
+      "path": "gdd/00-meta/journal-adr.md"
+    },
+    {
+      "basename": "index",
+      "path": "gdd/00-meta/index.md"
+    },
+    {
+      "basename": "Faction - Bandits",
+      "path": "gdd/enemies/factions/Faction - Bandits.md"
+    },
+    {
+      "basename": "effects",
+      "path": "gdd/20-combat/effects.md"
+    },
+    {
+      "basename": "stats",
+      "path": "gdd/20-combat/stats.md"
+    },
+    {
+      "basename": "guildmaster",
+      "path": "gdd/10-vision/guildmaster.md"
+    },
+    {
+      "basename": "pillars",
+      "path": "gdd/10-vision/pillars.md"
+    },
+    {
+      "basename": "vision",
+      "path": "gdd/10-vision/vision.md"
+    },
+    {
+      "basename": "lore",
+      "path": "gdd/10-vision/lore.md"
+    },
+    {
+      "basename": "Faction - Goblins",
+      "path": "gdd/enemies/factions/Faction - Goblins.md"
+    },
+    {
+      "basename": "controls",
+      "path": "gdd/50-modes-ux/controls.md"
+    },
+    {
+      "basename": "relics-overview",
+      "path": "gdd/40-content/relics-overview.md"
+    },
+    {
+      "basename": "Faction - Golems",
+      "path": "gdd/enemies/factions/Faction - Golems.md"
+    },
+    {
+      "basename": "2026-07-16",
+      "path": "2026-07-16.md"
+    },
+    {
+      "basename": "meta-progression",
+      "path": "gdd/30-run-meta/meta-progression.md"
+    },
+    {
       "basename": "1. Обычная Редкость - Скрытный Убийца",
       "path": "Игровая документация - Геймдизайн/1. Контент - Реликвии/1. Обычная Редкость - Скрытный Убийца.md"
     },

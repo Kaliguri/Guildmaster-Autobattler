@@ -68,9 +68,13 @@ namespace Guildmaster.Tests.EditMode.Combat
             float castConditionHpPct = 0.5f,
             float castOverrideSelfHpPct = 0f,
             EffectTag triggerTag = EffectTag.None,
-            bool consumesTriggerTag = false)
+            bool consumesTriggerTag = false,
+            DamageSchoolOverride schoolOverride = DamageSchoolOverride.Inherit,
+            DamageAffinityOverride affinityOverride = DamageAffinityOverride.Inherit)
         {
             var a = new AbilityData();
+            Set(a, "_schoolOverride", schoolOverride);
+            Set(a, "_affinityOverride", affinityOverride);
             Set(a, "_effects", effects ?? System.Array.Empty<EffectData>());
             Set(a, "_baseCooldown", cooldown);
             Set(a, "_resourceCost", cost);
@@ -106,7 +110,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData[] grantedEffects = null,
             AbilityData[] abilities = null,
             AttackType attackType = AttackType.Melee,
-            DamageType damageType = DamageType.Physical,
+            DamageSchool school = DamageSchool.Physical,
             AreaShape autoAttackShape = AreaShape.None,
             float autoAttackWidth = 1f,
             float resourceOnHit = 0f,
@@ -114,14 +118,18 @@ namespace Guildmaster.Tests.EditMode.Combat
             AIProfile ai = null,
             EffectData[] autoAttackEffects = null,
             bool canAttackWhileMoving = false,
-            float movingAttackSpeedPenaltyPct = 0.5f)
+            float movingAttackSpeedPenaltyPct = 0.5f,
+            DamageAffinity affinity = DamageAffinity.None,
+            CreatureType creatureType = CreatureType.Living)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
+            Set(r, "_affinity", affinity);
+            Set(r, "_creatureType", creatureType);
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
             Set(r, "_grantedEffects", grantedEffects ?? Array.Empty<EffectData>());
             Set(r, "_abilities", abilities ?? Array.Empty<AbilityData>());
             Set(r, "_attackType", attackType);
-            Set(r, "_damageType", damageType);
+            Set(r, "_damageSchool", school);
             Set(r, "_autoAttackShape", autoAttackShape);
             Set(r, "_autoAttackWidth", autoAttackWidth);
             Set(r, "_resourceOnHit", resourceOnHit);
@@ -197,6 +205,9 @@ namespace Guildmaster.Tests.EditMode.Combat
         public float TotalRawDamage;
         public float TotalHealed;
 
+        /// <summary>Юниты, которые вернёт <see cref="QueryUnitsInRadius"/> (фильтр по команде применяется). Пусто = запрос пустой.</summary>
+        public readonly List<RuntimeUnit> UnitsInWorld = new List<RuntimeUnit>();
+
         public MockCombatContext(IRngService rng = null, EffectSystem effects = null)
         {
             _rng = rng ?? new XorShiftRng(1UL);
@@ -213,7 +224,21 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void SpawnProjectile(in ProjectileSpawn spawn) { }
 
         public int QueryUnitsInRadius(
-            Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam) => 0;
+            Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam)
+        {
+            results.Clear();
+            for (int i = 0; i < UnitsInWorld.Count; i++)
+            {
+                RuntimeUnit u = UnitsInWorld[i];
+                if (u.IsDead) continue;
+                if ((u.Position - center).sqrMagnitude > radius * radius) continue;
+                bool enemy = u.Team != requestingTeam;
+                if (filter == TargetFilter.Enemies && !enemy) continue;
+                if (filter == TargetFilter.Allies && enemy) continue;
+                results.Add(u);
+            }
+            return results.Count;
+        }
 
         public int QueryUnitsInLine(
             Vector2 origin, Vector2 direction, float length, float width,

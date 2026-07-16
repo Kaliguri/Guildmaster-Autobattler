@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
+  m_Name: Treant
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
+  _id: relic.treant
+  _damageSchool: 0
+  _affinity: 0
+  _creatureType: 0
+  _attackType: 0
+  _resourceType: 0
+  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
+  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackEffects: []
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _resourceOnHit: 0
+  _stats:
+  - Stat: 0
+    Op: 3
+    Value: 2400
+  - Stat: 7
+    Op: 3
+    Value: 90
+  - Stat: 8
+    Op: 3
+    Value: 0.6
+  - Stat: 9
+    Op: 3
+    Value: 1
+  - Stat: 3
+    Op: 3
+    Value: 20
+  - Stat: 4
+    Op: 3
+    Value: 10
+  - Stat: 20
+    Op: 3
+    Value: 1.8
+  _grantedEffects:
+  - {fileID: 11400000, guid: 9d09a9ee0098ff74f982416aaf3c1e3d, type: 2}
+  _abilities:
+  - _id: overgrowth
+    _effects:
+    - {fileID: 11400000, guid: df5e074a7146eda41a164fd1673993d7, type: 2}
+    _baseCooldown: 12
+    _resourceCost: 0
+    _targetMode: 0
+    _damageMultiplier: 0
+    _schoolOverride: 0
+    _affinityOverride: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _castCondition: 0
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceTicks: 12
+    _displaceDamageMult: 1
+    _displaceWidth: 1
+    _visualSlot: 0
+    _infoTags: []
+  _aiPreset: {fileID: 11400000, guid: 3df8532fd63186b4a9cd17af389a804a, type: 2}
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 0
+      FleeAtHpPct: 0.25
+      ReturnAtHpPct: 0.5
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags: []
+  _tags:
+  - treant
+  - thorns
+  - common
+  _rarity: 0
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0

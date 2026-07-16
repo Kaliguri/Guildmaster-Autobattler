@@ -1,6 +1,7 @@
 using System;
 using Guildmaster.Combat;
 using Guildmaster.Core.Audio;
+using Guildmaster.Core.Players;
 using VContainer.Unity;
 
 namespace Guildmaster.Presentation.Audio
@@ -21,17 +22,20 @@ namespace Guildmaster.Presentation.Audio
         private readonly AudioResolver _resolver;
         private readonly CombatSimulation _sim;
         private readonly AbilitySystem _abilities;
+        private readonly ILocalPlayer _localPlayer;
 
         public AudioPresenter(
             IAudioService audio,
             AudioCatalog catalog,
             CombatSimulation sim,
-            AbilitySystem abilities)
+            AbilitySystem abilities,
+            ILocalPlayer localPlayer)
         {
             _audio = audio;
             _resolver = new AudioResolver(catalog);
             _sim = sim;
             _abilities = abilities;
+            _localPlayer = localPlayer;
         }
 
         public void Start()
@@ -78,17 +82,12 @@ namespace Guildmaster.Presentation.Audio
 
         private void OnAbilityCast(RuntimeUnit caster) => PlayFor(caster, AudioAction.Cast);
 
-        // Конец боя → стингер победы/поражения. Допущение: TeamA — сторона игрока (перепроверить, если
-        // окажется наоборот, — поменять местами одну строку). Draw/Ongoing — без стингера.
+        // Конец боя → стингер победы/поражения ГЛАЗАМИ ЭТОГО клиента: победила моя команда или нет.
+        // В PvP один и тот же исход даст одному победу, другому поражение. Ничья — поражение (никто не выиграл).
         private void OnBattleEnded(BattleOutcome outcome)
         {
-            string key = outcome switch
-            {
-                BattleOutcome.TeamAWins => "battle.victory",
-                BattleOutcome.TeamBWins => "battle.defeat",
-                _ => null,
-            };
-            if (key != null) PlayKey(key, AudioAction.Stinger);
+            if (outcome.IsOngoing) return;
+            PlayKey(outcome.IsWinFor(_localPlayer.Team) ? "battle.victory" : "battle.defeat", AudioAction.Stinger);
         }
 
         private void PlayFor(RuntimeUnit unit, AudioAction action)

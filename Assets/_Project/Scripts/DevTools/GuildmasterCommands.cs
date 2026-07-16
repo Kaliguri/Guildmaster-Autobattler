@@ -60,6 +60,13 @@ namespace Guildmaster.DevTools
         // чтобы R после F5 всё ещё знал последний бой.
         private static System.Action<GuildmasterCommands> _lastBattleSetup;
 
+        /// <summary>
+        /// Задать «последний бой» для R извне (dev-панель энкаунтеров) — единый владелец R остаётся здесь,
+        /// а внешний источник просто регистрирует свой рестарт. Делегат должен резолвить живой скоуп сам
+        /// (переживает F5). Перекрывается следующим gm_spawn_* (last-write-wins).
+        /// </summary>
+        public static void SetLastBattle(System.Action<GuildmasterCommands> setup) => _lastBattleSetup = setup;
+
         [Inject]
         public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory,
             IInputService input, IContentDatabase contentDatabase)

@@ -6,9 +6,9 @@ namespace Guildmaster.Game.Services
 {
     /// <summary>
     /// Загрузка и выгрузка сцен. Фаза 1 — простая аддитивная загрузка.
-    /// NGO Scene Management подключится в Фазе 6 за этим фасадом.
+    /// NGO Scene Management подключится в Фазе 6 за фасадом <see cref="ISceneLoader"/>.
     /// </summary>
-    public sealed class SceneLoader
+    public sealed class SceneLoader : ISceneLoader
     {
         private const string BattleSceneName = "BattleScene";
 

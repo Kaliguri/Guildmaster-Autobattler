@@ -86,6 +86,12 @@ namespace Guildmaster.Presentation
             _feel                 = feel;
         }
 
+        /// <summary>
+        /// Вид живого юнита по его Id (единственная карта Id→вид). Нужен фазе расстановки (шаг 4), чтобы
+        /// нарисовать outline на наведённом/выбранном юните по его мировой позиции.
+        /// </summary>
+        public bool TryGetView(int unitId, out UnitView view) => _views.TryGetValue(unitId, out view);
+
         private void OnEnable()
         {
             if (_simulation == null) return;

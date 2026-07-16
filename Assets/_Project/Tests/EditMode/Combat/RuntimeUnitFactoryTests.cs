@@ -1,3 +1,4 @@
+using System.Reflection;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
@@ -88,6 +89,56 @@ namespace Guildmaster.Tests.EditMode.Combat
             // накладываются ДО инициализации CurrentHP.
             Assert.AreEqual(500f, unit.Stats.Get(StatType.MaxHP), 1e-4f);
             Assert.AreEqual(500f, unit.CurrentHP, 1e-4f, "Юнит стартует с полным HP, включая бонус пассивки");
+        }
+
+        // ── D1: предметы/баннеры (план 11 §5.5) ──────────────────────────────
+
+        [Test]
+        public void Item_StatMods_Applied_AndRaiseStartingHp()
+        {
+            var factory = MakeFactory(out _);
+            RelicData relic = TestRelic.Make(
+                stats: new[] { new StatModifier(StatType.MaxHP, ModifierOp.Flat, 300f) });
+            ItemData item = MakeItem(new StatModifier(StatType.MaxHP, ModifierOp.Flat, 150f));
+
+            RuntimeUnit unit = factory.Create(relic, null, team: 0, Vector2.zero, new[] { item });
+
+            Assert.AreEqual(450f, unit.Stats.Get(StatType.MaxHP), 1e-4f, "мод предмета сложился с базой кита");
+            Assert.AreEqual(450f, unit.CurrentHP, 1e-4f, "предмет с +MaxHP поднимает стартовый HP (моды до HP-init)");
+        }
+
+        [Test]
+        public void MultipleItems_AndBanners_AllApplied()
+        {
+            var factory = MakeFactory(out _);
+            RelicData relic = TestRelic.Make(
+                stats: new[] { new StatModifier(StatType.MaxHP, ModifierOp.Flat, 100f) });
+            ItemData vesselItem = MakeItem(new StatModifier(StatType.MaxHP, ModifierOp.Flat, 50f));
+            ItemData banner     = MakeItem(new StatModifier(StatType.MaxHP, ModifierOp.Flat, 25f));
+
+            RuntimeUnit unit = factory.Create(relic, null, team: 0, Vector2.zero, new[] { vesselItem, banner });
+
+            Assert.AreEqual(175f, unit.Stats.Get(StatType.MaxHP), 1e-4f, "моды всех предметов сложились (100+50+25)");
+        }
+
+        [Test]
+        public void NullItems_NoChange()
+        {
+            var factory = MakeFactory(out _);
+            RelicData relic = TestRelic.Make(
+                stats: new[] { new StatModifier(StatType.MaxHP, ModifierOp.Flat, 200f) });
+
+            RuntimeUnit unit = factory.Create(relic, null, team: 0, Vector2.zero, items: null);
+
+            Assert.AreEqual(200f, unit.Stats.Get(StatType.MaxHP), 1e-4f);
+        }
+
+        private static ItemData MakeItem(params StatModifier[] mods)
+        {
+            var item = ScriptableObject.CreateInstance<ItemData>();
+            typeof(ItemData).GetField("_mods", BindingFlags.NonPublic | BindingFlags.Instance)
+                            .SetValue(item, mods);
+            return item;
         }
     }
 }

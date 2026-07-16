@@ -119,6 +119,77 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &35160772
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 35160773}
+  - component: {fileID: 35160775}
+  - component: {fileID: 35160774}
+  m_Layer: 0
+  m_Name: Dev Encounter Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &35160773
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35160772}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 955133366}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &35160774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35160772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8063162b0910364b94740ef535afbf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.DevTools::Guildmaster.DevTools.DevEncounterPanel
+  _devPlayerRelic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
+  _devPlayerPosition: {x: -5, y: 0}
+  _visibleOnStart: 1
+--- !u!114 &35160775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 35160772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 065e98615efcd16419800f6cabea2c81, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: ab9dd5eab98202d40b9b75a561dd32b1, type: 3}
+  m_SortingOrder: 10
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
 --- !u!1001 &97069520
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -242,7 +313,6 @@ GameObject:
   m_Component:
   - component: {fileID: 101249936}
   - component: {fileID: 101249935}
-  - component: {fileID: 101249934}
   - component: {fileID: 101249933}
   m_Layer: 0
   m_Name: UI Root
@@ -265,20 +335,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.UI::Guildmaster.UI.UiRootBootstrap
   _pauseScreen: {fileID: 9197481963319205126, guid: 83346036989603340a05776972634b0c, type: 3}
   _settingsScreen: {fileID: 9197481963319205126, guid: ac79cb8fcfe667b4c8669094609ff498, type: 3}
---- !u!114 &101249934
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 101249932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 321345f4278ef4a4b84b5446104ebe4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Guildmaster.UI::Guildmaster.UI.IntegerPanelScaler
-  _panelSettings: {fileID: 11400000, guid: 065e98615efcd16419800f6cabea2c81, type: 2}
-  _referenceHeight: 360
+  _loadoutScreen: {fileID: 9197481963319205126, guid: 15c3d6ae3d7b0564e9f3085e3abba396, type: 3}
+  _rewardScreen: {fileID: 9197481963319205126, guid: d9f6be55684a5534086ba8b49b9215ab, type: 3}
+  _eventScreen: {fileID: 9197481963319205126, guid: 5f2c0deae1e055b4eaaf17257898cf83, type: 3}
+  _runTopBar: {fileID: 9197481963319205126, guid: 94570721a23f87c4e851528c4b1212aa, type: 3}
 --- !u!114 &101249935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,7 +354,7 @@ MonoBehaviour:
   m_PanelSettings: {fileID: 11400000, guid: 065e98615efcd16419800f6cabea2c81, type: 2}
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 0}
-  m_SortingOrder: 0
+  m_SortingOrder: 20
   m_Position: 0
   m_WorldSpaceSizeMode: 1
   m_WorldSpaceWidth: 1920
@@ -13979,6 +14039,7 @@ Transform:
   - {fileID: 442675913}
   - {fileID: 1277450837}
   - {fileID: 1713771495}
+  - {fileID: 35160773}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &969611257

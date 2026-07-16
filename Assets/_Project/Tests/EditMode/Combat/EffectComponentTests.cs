@@ -72,7 +72,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var comp = new PeriodicDamageComponent()
                 .With("_interval", 1f)
                 .With("_damagePerSecond", new ScalableValue(10f))
-                .With("_damageType", DamageType.True);
+                .With("_damageSchool", DamageSchool.True);
             EffectData def = TestEffect.Make(baseDuration: 3f, tags: EffectTag.DoT, components: comp);
 
             sys.Apply(unit, def, unit, ctx);

@@ -67,6 +67,14 @@ namespace Guildmaster.Game
 
             // Боевой ввод: пауза/скорость на время этого боя (вики «16» §4).
             builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
+
+            // Интерактивная фаза расстановки (шаг 4): активна на Free-пресетах; иначе спит.
+            builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
+
+            // Мост в макро-флоу (план 11 §4 A2): забирает запрос боя из IBattleSession и грузит его, репортит
+            // исход. Регистрируется ПОСЛЕ DeploymentController — чтобы его подписка на Free-расстановку встала
+            // до LoadPreset. Пусто (запуск из dev-панели) = просто ждёт исход, LoadPreset не зовёт.
+            builder.RegisterEntryPoint<Flow.BattleBootstrap>(Lifetime.Scoped);
         }
 
         private ArenaLayoutData BuildArenaLayout()
@@ -133,7 +141,9 @@ namespace Guildmaster.Game
                 r.Resolve<EffectSystem>(),
                 r.Resolve<CombatSimulation>()),
                 Lifetime.Scoped);
-            builder.Register<BattleSetupBuilder>(Lifetime.Scoped);
+            // Data-driven загрузчик боя из EncounterData (сменил заготовку BattleSetupBuilder, вики «13» §3.1).
+            // IContentDatabase — из RootScope (родитель); фабрика/симуляция — из этого скоупа.
+            builder.Register<EncounterLoader>(Lifetime.Scoped);
 
             builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped).AsSelf();
         }

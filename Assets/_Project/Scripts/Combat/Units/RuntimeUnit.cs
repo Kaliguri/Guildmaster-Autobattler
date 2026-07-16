@@ -119,6 +119,15 @@ namespace Guildmaster.Combat
         /// <summary>SO «Пилот»: идентичность, перки (Фаза 2/4).</summary>
         public VesselData Vessel;
 
+        /// <summary>Тип существа цели для сродств урона (<see cref="AffinityTable"/>). Без кита — считаем живым.</summary>
+        public CreatureType CreatureType => Unit != null ? Unit.CreatureType : CreatureType.Living;
+
+        /// <summary>Школа урона кита. Без кита — физика (дефолт пайплайна).</summary>
+        public DamageSchool DamageSchool => Unit != null ? Unit.DamageSchool : DamageSchool.Physical;
+
+        /// <summary>Сродство урона кита.</summary>
+        public DamageAffinity Affinity => Unit != null ? Unit.Affinity : DamageAffinity.None;
+
         // --- Эффекты (Фаза 2) ---
 
         /// <summary>Активные эффекты на юните. Мутирует только <c>EffectSystem</c> (через pending, не во время итерации).</summary>

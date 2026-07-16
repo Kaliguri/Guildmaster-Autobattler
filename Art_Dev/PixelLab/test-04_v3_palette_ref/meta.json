@@ -1,0 +1,22 @@
+{
+ "test": "test-04_v3_palette_ref",
+ "title": "Batch v3 — palette-ref",
+ "status": "batch-тест (только базовый спрайт, без анимаций) — холодная студийная палитра из color_image",
+ "endpoint": "/create-character-with-4-directions",
+ "prompt": "Medieval man-at-arms, mail hauberk, blue wool tabard, round wooden shield, arming sword, open-face helm, grounded battle stance, low fantasy, muted steel and leather",
+ "params": {
+  "view": "side",
+  "outline": "single_color_outline",
+  "shading": "medium_shading",
+  "detail": "moderate",
+  "proportions": {
+   "type": "preset",
+   "name": "realistic_male"
+  },
+  "color_image": "style-sheet (палитра)",
+  "image_size": "64→68 canvas"
+ },
+ "character_id": "8bc358b8-c1a0-44d5-9d34-a78f4e95cc71",
+ "generations": 1,
+ "date": "2026-07-15"
+}

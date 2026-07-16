@@ -17,6 +17,7 @@ namespace Guildmaster.Game.Input
     {
         private readonly InputActionMap _cameraMap;
         private readonly InputActionMap _combatMap;
+        private readonly InputActionMap _deploymentMap; // мышь фазы расстановки (шаг 4)
         private readonly InputActionMap _uiMap; // seam под меню/навигацию (реализация — будущая фаза)
 
         private readonly InputAction _pan;
@@ -24,6 +25,8 @@ namespace Guildmaster.Game.Input
         private readonly InputAction _cycleView;
         private readonly InputAction _pauseToggle;
         private readonly InputAction _gameSpeedCycle;
+        private readonly InputAction _pointerPos;    // <Mouse>/position — screen→world при пикинге/drag
+        private readonly InputAction _pointerPress;  // <Mouse>/leftButton — начало/конец протяжки
         private readonly InputAction _menuToggle; // Escape — оверлей системного меню, живёт вне контекст-карт (always-on)
 
         private InputContext _context = InputContext.None;
@@ -37,6 +40,8 @@ namespace Guildmaster.Game.Input
         public event Action PauseToggleRequested;
         public event Action GameSpeedCycleRequested;
         public event Action MenuToggleRequested;
+        public event Action PointerPressed;
+        public event Action PointerReleased;
 
         public InputService()
         {
@@ -63,6 +68,13 @@ namespace Guildmaster.Game.Input
             _pauseToggle = _combatMap.AddAction("PauseToggle", InputActionType.Button, "<Keyboard>/space");
             _gameSpeedCycle = _combatMap.AddAction("GameSpeedCycle", InputActionType.Button, "<Keyboard>/period");
 
+            // --- Карта «Deployment»: указатель мыши (позиция + ЛКМ) для фазы расстановки (шаг 4) ---
+            _deploymentMap = new InputActionMap("Deployment");
+            _pointerPos   = _deploymentMap.AddAction("PointerPosition", InputActionType.Value, "<Mouse>/position");
+            _pointerPress = _deploymentMap.AddAction("PointerPress", InputActionType.Button, "<Mouse>/leftButton");
+            _pointerPress.performed += OnPointerPressed;
+            _pointerPress.canceled  += OnPointerReleased;
+
             // --- Карта «UI»: пока пустой seam ---
             _uiMap = new InputActionMap("UI");
 
@@ -84,6 +96,7 @@ namespace Guildmaster.Game.Input
 
             _cameraMap.Disable();
             _combatMap.Disable();
+            _deploymentMap.Disable();
             _uiMap.Disable();
 
             switch (context)
@@ -93,6 +106,7 @@ namespace Guildmaster.Game.Input
                     break;
                 case InputContext.Deployment:
                     _cameraMap.Enable();
+                    _deploymentMap.Enable();
                     break;
                 case InputContext.Combat:
                     _cameraMap.Enable();
@@ -109,9 +123,15 @@ namespace Guildmaster.Game.Input
         public Vector2 CameraPan      => GameplaySuppressed ? Vector2.zero : _pan.ReadValue<Vector2>();
         public float   CameraZoomDelta => GameplaySuppressed ? 0f : _zoom.ReadValue<float>();
 
+        // Позиция указателя не гейтится (это просто «где мышь»); нажатие/зажатие — гейтится (модальный слой).
+        public Vector2 PointerScreenPosition => _pointerPos.ReadValue<Vector2>();
+        public bool    PointerHeld           => !GameplaySuppressed && _pointerPress.IsPressed();
+
         private void OnCycleView(InputAction.CallbackContext _)      { if (!GameplaySuppressed) CycleViewRequested?.Invoke(); }
         private void OnPauseToggle(InputAction.CallbackContext _)    { if (!GameplaySuppressed) PauseToggleRequested?.Invoke(); }
         private void OnGameSpeedCycle(InputAction.CallbackContext _) { if (!GameplaySuppressed) GameSpeedCycleRequested?.Invoke(); }
+        private void OnPointerPressed(InputAction.CallbackContext _)  { if (!GameplaySuppressed) PointerPressed?.Invoke(); }
+        private void OnPointerReleased(InputAction.CallbackContext _) { if (!GameplaySuppressed) PointerReleased?.Invoke(); }
 
         // Escape НЕ гейтится GameplaySuppressed: меню должно закрываться, даже когда геймплейный ввод заглушён.
         private void OnMenuToggle(InputAction.CallbackContext _) => MenuToggleRequested?.Invoke();
@@ -121,10 +141,13 @@ namespace Guildmaster.Game.Input
             _cycleView.performed     -= OnCycleView;
             _pauseToggle.performed   -= OnPauseToggle;
             _gameSpeedCycle.performed -= OnGameSpeedCycle;
+            _pointerPress.performed  -= OnPointerPressed;
+            _pointerPress.canceled   -= OnPointerReleased;
             _menuToggle.performed    -= OnMenuToggle;
 
             _cameraMap.Dispose();
             _combatMap.Dispose();
+            _deploymentMap.Dispose();
             _uiMap.Dispose();
             _menuToggle.Dispose();
         }

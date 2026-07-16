@@ -7,8 +7,8 @@ namespace Guildmaster.Combat
     /// <summary>
     /// Детерминированный конвейер урона. Все методы статические и чистые
     /// (in-параметры, мутация только HP/Shield цели через <see cref="DamageRequest"/>).
-    /// Порядок: raw → DamageDealtEff → броня/пробивание → DamageTakenEff → щит → HP
-    /// (вики «10» §5.4, «6» §6).
+    /// Порядок: raw → DamageDealtEff → броня/пробивание (школа) → сродство × тип существа →
+    /// DamageTakenEff → щит → HP (вики «10» §5.4, «6» §6; ГДД «8» §«Школа vs сродство»).
     /// </summary>
     public static class DamagePipeline
     {
@@ -24,12 +24,12 @@ namespace Guildmaster.Combat
             // 1. Множитель эффективности урона источника
             damage *= req.Source.Stats.Get(StatType.DamageDealtEff);
 
-            // 2. Броня (пропускается для True damage)
-            if (req.DamageType != DamageType.True)
+            // 2. Броня по школе урона (пропускается для True damage)
+            if (req.School != DamageSchool.True)
             {
                 float armor, pen, penPct;
 
-                if (req.DamageType == DamageType.Physical)
+                if (req.School == DamageSchool.Physical)
                 {
                     armor  = req.Target.Stats.Get(StatType.PhysArmor);
                     pen    = req.Source.Stats.Get(StatType.PhysPen);
@@ -37,14 +37,20 @@ namespace Guildmaster.Combat
                 }
                 else
                 {
-                    armor  = req.Target.Stats.Get(StatType.MagicArmor);
-                    pen    = req.Source.Stats.Get(StatType.MagicPen);
-                    penPct = req.Source.Stats.Get(StatType.MagicPenPct);
+                    armor  = req.Target.Stats.Get(StatType.ElementalArmor);
+                    pen    = req.Source.Stats.Get(StatType.ElementalPen);
+                    penPct = req.Source.Stats.Get(StatType.ElementalPenPct);
                 }
 
                 // Пробивание: сначала %, потом плоское; эффективная броня не уходит в минус
                 float effArmor = Mathf.Max(0f, armor * (1f - penPct) - pen);
                 damage *= req.ArmorK / (req.ArmorK + effArmor);
+            }
+
+            // 2.5. Сродство: бронёй НЕ гасится, зависит от типа существа цели. Действует и на True-урон.
+            if (req.Affinity != DamageAffinity.None)
+            {
+                damage *= AffinityTable.Multiplier(req.Affinity, req.Target.CreatureType);
             }
 
             // 3. Множитель эффективности получаемого урона

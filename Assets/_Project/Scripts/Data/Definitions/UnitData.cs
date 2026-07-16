@@ -1,18 +1,28 @@
 using Guildmaster.Data.Stats;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Guildmaster.Data.Definitions
 {
     /// <summary>
     /// Общий боевой кит всего, что выходит на арену (вики «13» §3.1). Наследники — <see cref="RelicData"/>
     /// (мета игрока) и <see cref="EnemyData"/> (мета врага). Сим и <c>RuntimeUnitFactory</c>/
-    /// <c>BattleSetupBuilder</c> работают с этим базовым типом — им всё равно, кто перед ними.
+    /// <c>EncounterLoader</c> работают с этим базовым типом — им всё равно, кто перед ними.
     /// <para>Поля кита перенесены из <see cref="RelicData"/> БЕЗ смены имён (сериализация сохранена).</para>
     /// </summary>
     public abstract class UnitData : ContentDefinition
     {
         [Header("Combat categories")]
-        [SerializeField] private DamageType _damageType = DamageType.Physical;
+        [Tooltip("Школа урона по умолчанию (гасится соответствующей бронёй). Способности могут переопределять её у себя.")]
+        [FormerlySerializedAs("_damageType")]
+        [SerializeField] private DamageSchool _damageSchool = DamageSchool.Physical;
+
+        [Tooltip("Сродство урона по умолчанию (Яд/Свет/Тьма). Бронёй не гасится — взаимодействует с типом существа цели.")]
+        [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
+
+        [Tooltip("Тип существа САМОГО юнита. Определяет, как по нему бьют сродства (Нежить иммунна к Яду, уязвима к Свету и т.д.).")]
+        [SerializeField] private CreatureType _creatureType = CreatureType.Living;
+
         [SerializeField] private AttackType _attackType = AttackType.Melee;
         [SerializeField] private ResourceType _resourceType = ResourceType.None;
 
@@ -76,7 +86,9 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Ручные информационные теги (роль, стиль); авто-теги считаются из DamageType и др. (§3.0).")]
         [SerializeField] private TagData[] _infoTags;
 
-        public DamageType DamageType => _damageType;
+        public DamageSchool DamageSchool => _damageSchool;
+        public DamageAffinity Affinity => _affinity;
+        public CreatureType CreatureType => _creatureType;
         public AttackType AttackType => _attackType;
         public ResourceType ResourceType => _resourceType;
         public UnitVisual Visual => _visual;

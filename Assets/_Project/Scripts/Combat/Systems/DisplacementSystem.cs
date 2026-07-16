@@ -24,7 +24,8 @@ namespace Guildmaster.Combat
             public int         TicksRemaining;
             public bool        Cannonball;
             public float       Damage;
-            public Data.Definitions.DamageType DamageType;
+            public Data.Definitions.DamageSchool School;
+            public Data.Definitions.DamageAffinity Affinity;
             public float       Width;
             public float       ChainDistance;
             public int         ChainTicks;
@@ -61,7 +62,8 @@ namespace Guildmaster.Combat
                 TicksRemaining = req.Ticks,
                 Cannonball     = req.Cannonball,
                 Damage         = req.Damage,
-                DamageType     = req.DamageType,
+                School         = req.School,
+                Affinity       = req.Affinity,
                 Width          = req.Width,
                 ChainDistance  = req.ChainDistance,
                 ChainTicks     = req.ChainTicks,
@@ -122,7 +124,7 @@ namespace Guildmaster.Combat
                 if (victim == a.Unit || victim.IsDead || a.Hit.Contains(victim)) continue;
 
                 a.Hit.Add(victim);
-                ctx.DealDamage(new DamageRequest(a.Source, victim, a.Damage, a.DamageType, ctx.ArmorK));
+                ctx.DealDamage(new DamageRequest(a.Source, victim, a.Damage, a.School, ctx.ArmorK, affinity: a.Affinity));
 
                 // §10.6: задетый «ядром» не только получает урон, но и сам слабо отбрасывается вдоль полёта.
                 // Источник — тот же (монах), поэтому конец этого цепного полёта тоже триггерит «Вихревой заход».
@@ -139,7 +141,7 @@ namespace Guildmaster.Combat
                     cdir = cdir.sqrMagnitude > 1e-6f ? cdir.normalized : fwd;
                     ctx.Displace(new DisplaceRequest(
                         victim, a.Source, cdir, a.ChainDistance, a.ChainTicks,
-                        cannonball: false, damage: 0f, damageType: a.DamageType, width: 0f));
+                        cannonball: false, damage: 0f, school: a.School, width: 0f));
                 }
             }
         }

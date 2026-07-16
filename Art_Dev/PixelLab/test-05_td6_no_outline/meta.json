@@ -1,0 +1,21 @@
+{
+ "test": "test-05_td6_no_outline",
+ "title": "TD6 — no outline",
+ "status": "ТОП-ДАУН (правильная проекция) — мягче, без чёрного контура",
+ "endpoint": "/create-character-with-4-directions (view=low top-down)",
+ "prompt": "Medieval man-at-arms, mail hauberk, blue wool tabard, round wooden shield, arming sword, open-face helm, grounded battle stance, low fantasy, muted steel and leather",
+ "params": {
+  "view": "low top-down",
+  "outline": "none",
+  "shading": "medium_shading",
+  "detail": "moderate",
+  "proportions": {
+   "type": "preset",
+   "name": "realistic_male"
+  },
+  "color_image": "style-sheet (палитра)"
+ },
+ "character_id": "89c4b389-3f0b-4df5-bf67-8b2116d9e6d7",
+ "generations": 1,
+ "date": "2026-07-15"
+}

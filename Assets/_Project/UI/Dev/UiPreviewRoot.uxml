@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <!-- Пустой полноэкранный корень: нужен только чтобы UIDocument создал рантайм-панель.
+         UiPreviewHost чистит его и строит выбранный экран внутрь. -->
+    <ui:VisualElement name="preview-root" style="flex-grow: 1;" />
+</ui:UXML>

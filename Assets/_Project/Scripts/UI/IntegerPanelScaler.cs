@@ -26,18 +26,34 @@ namespace Guildmaster.UI
 
         private void Update()
         {
-            if (Screen.height != _lastHeight) Apply();
+            if (CurrentHeight() != _lastHeight) Apply();
         }
 
         private void Apply()
         {
             if (_panelSettings == null || _referenceHeight <= 0) return;
 
-            _lastHeight = Screen.height;
+            _lastHeight = CurrentHeight();
             int scale = Mathf.Max(1, Mathf.FloorToInt((float)_lastHeight / _referenceHeight));
 
             _panelSettings.scaleMode = PanelScaleMode.ConstantPixelSize;
             _panelSettings.scale = scale;
+        }
+
+        /// <summary>
+        /// Высота вьюпорта для расчёта масштаба. В билде — <see cref="Screen.height"/>. В Editor
+        /// <c>Screen.height</c> НЕНАДЁЖЕН: возвращает размер активного вида (Game ИЛИ Scene), зависит от
+        /// фокуса окна, докинга и первых кадров play — из-за чего целочисленный scale «плавает» (UI то
+        /// гигантский, то нормальный), а мутация записывается в общий PanelSettings-ассет и залипает.
+        /// Поэтому в Editor берём фактический размер Game view.
+        /// </summary>
+        private int CurrentHeight()
+        {
+#if UNITY_EDITOR
+            Vector2 gameView = UnityEditor.Handles.GetMainGameViewSize();
+            if (gameView.y >= 1f) return Mathf.RoundToInt(gameView.y);
+#endif
+            return Screen.height;
         }
     }
 }
