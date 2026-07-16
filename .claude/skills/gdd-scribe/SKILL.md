@@ -36,20 +36,22 @@ Vault: `docs/wiki/` (Obsidian, публикуется Quartz на GitHub Pages).
 
 | Что | Где (текущее) |
 |---|---|
-| Индекс ГДД (легенда статусов) | `docs/wiki/gdd/0.0. README.md` |
-| **Журнал принятых решений (ADR)** | `docs/wiki/gdd/0.7. Журнал ГД-решений.md` |
-| Roadmap ГД (только НЕрешённое) | `docs/wiki/gdd/0.1. Roadmap ГД (дизайн-задачи и решения).md` |
-| Глоссарий терминов (RU\|EN) | `docs/wiki/gdd/0.4. Локализация.md` |
+| Индекс ГДД (MOC, легенда статусов) | `docs/wiki/gdd/00-meta/index.md` |
+| **Журнал принятых решений (ADR)** | `docs/wiki/gdd/00-meta/journal-adr.md` |
+| Roadmap ГД (только НЕрешённое) | `docs/wiki/gdd/00-meta/roadmap.md` |
+| Открытые вопросы и черновики | `docs/wiki/gdd/00-meta/open.md` |
+| Глоссарий терминов (RU\|EN) | `docs/wiki/gdd/00-meta/glossary.md` |
 | Нормативный справочник тегов | `docs/wiki/gdd/roster/Справочник тегов.md` |
-| Легаси (снятые механики) | `docs/wiki/gdd/0.5. Легаси (снятые механики).md` |
-| Главы дизайна | `docs/wiki/gdd/<N>. <Тема>.md` (1–16) |
+| Легаси (снятые механики) | `docs/wiki/gdd/00-meta/legacy.md` |
+| Главы дизайна (кластеры) | `docs/wiki/gdd/{10-vision,20-combat,30-run-meta,40-content,50-modes-ux}/<slug>.md` |
 | Карточки контента | `docs/wiki/gdd/{relics,roster,enemies,enemies/factions}/` |
-| Research-разборы жанра | `docs/wiki/research/autobattlers/` |
+| Research-разборы жанра | `docs/wiki/research/` (`depth`, `randomness-appendix`, `autobattlers/`) |
 | Тех-вика (НЕ ГДД) | `docs/wiki/tech/` — инженерные доки, чужая территория |
 
-> **Внимание:** нумерация и имена сейчас в переходном состоянии (см. «Целевая модель»
-> ниже и `references/structure-and-frontmatter.md`). Всегда сверяйся с фактическим
-> `0.0. README` перед тем, как ссылаться на конкретный файл.
+> **Статус:** миграция глав на слаги + кластеры + frontmatter выполнена (Фаза 1,
+> коммит `818be538`). Имена файлов — латинские слаги, отображаемое имя — `title`
+> кириллицей. Карточки `relics/roster/enemies` — ещё на старых именах (Фаза 2).
+> Сверяйся с `00-meta/index.md` (MOC) при ссылке на конкретный файл.
 
 ## Четыре правила, нарушение которых = переделка (HARD)
 
@@ -93,26 +95,25 @@ Vault: `docs/wiki/` (Obsidian, публикуется Quartz на GitHub Pages).
   стеной текста.
 - **frontmatter-статусы + Dataview-дашборд** готовности (правило 4).
 
-## Целевая модель структуры (переходим миграцией)
+## Структура (Фаза 1 выполнена)
 
 Папки-кластеры (Johnny.Decimal-lite: номер на уровне ПАПКИ, порядок файлов — `order`):
 
 ```
 docs/wiki/gdd/
-  00-meta/       readme·journal-adr·roadmap·open·glossary·legacy
-  10-vision/     vision·pillars·concept·lore
+  00-meta/       index(MOC)·journal-adr·roadmap·open·glossary·legacy
+  10-vision/     (⊕vision·⊕pillars)·concept·lore·guildmaster·difficulty-skill
   20-combat/     combat-system·stats·effects
   30-run-meta/   injuries-mettle·procedural-lore·meta-progression·events-minigames
-  40-content/    relics-overview + relics/·items-banners·roster/·enemies/
+  40-content/    relics-overview·items-banners  (+ relics/·roster/·enemies/ — Фаза 2)
   50-modes-ux/   multiplayer·controls
-  research/      depth·randomness-appendix·autobattlers/   (вынести из канона)
+  research/      depth·randomness-appendix·autobattlers/
 ```
 
 - Имена файлов — **латинские слаги** (`combat-system.md`), человекочитаемое имя — в
-  `title:` кириллицей (Obsidian/Quartz показывают title).
-- **Миграция — крупный разовый заход, только с QA Макса.** План и механика «переставить
-  без поломки ссылок» — в `references/structure-and-frontmatter.md`. Не мигрировать
-  автоматически без явного «да».
+  `title:` кириллицей (Obsidian/Quartz показывают title). `⊕` — ещё не заведено.
+- **Осталось:** карточки `relics/roster/enemies` → слаги (Фаза 2); Quartz Explorer
+  `sortFn` по `order` (untested TS, нужен билд сайта). Не запускать Фазу 2 без «да».
 - **agent-friendly:** MOC-навигация (живые индекс-страницы) + Templater-шаблоны карточек.
   `docs/AGENTS.md` НЕ заводим (работаем 90% через этот скилл; дубль правил = рассинхрон).
 
