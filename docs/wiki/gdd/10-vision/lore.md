@@ -1,5 +1,5 @@
 ---
-title: Лор
+title: "Vision - Lore"
 order: 13
 status: draft
 ---

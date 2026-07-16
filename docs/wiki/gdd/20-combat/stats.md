@@ -1,5 +1,5 @@
 ---
-title: Статы (характеристики юнитов)
+title: "Combat - Stats"
 order: 21
 status: needs_review
 ---

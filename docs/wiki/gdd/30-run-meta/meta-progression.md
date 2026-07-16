@@ -1,5 +1,5 @@
 ---
-title: Мета-прогрессия забега
+title: "Run - Meta Progression"
 order: 32
 status: draft
 ---

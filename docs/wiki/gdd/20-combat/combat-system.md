@@ -1,5 +1,5 @@
 ---
-title: Боевая система
+title: "Combat - System"
 order: 20
 status: needs_review
 ---

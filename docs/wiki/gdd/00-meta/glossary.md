@@ -1,5 +1,5 @@
 ---
-title: Локализация (глоссарий)
+title: "Meta - Glossary"
 order: 4
 status: living
 ---

@@ -1,5 +1,5 @@
 ---
-title: Легаси (снятые механики)
+title: "Meta - Legacy"
 order: 5
 status: archive
 ---

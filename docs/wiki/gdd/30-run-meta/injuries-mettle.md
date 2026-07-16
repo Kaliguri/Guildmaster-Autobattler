@@ -1,5 +1,5 @@
 ---
-title: Травмы и Закалка («Сосуд» в забеге)
+title: "Run - Injuries & Mettle"
 order: 30
 status: draft
 ---

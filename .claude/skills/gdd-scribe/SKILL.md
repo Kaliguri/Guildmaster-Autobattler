@@ -48,10 +48,11 @@ Vault: `docs/wiki/` (Obsidian, публикуется Quartz на GitHub Pages).
 | Research-разборы жанра | `docs/wiki/research/` (`depth`, `randomness-appendix`, `autobattlers/`) |
 | Тех-вика (НЕ ГДД) | `docs/wiki/tech/` — инженерные доки, чужая территория |
 
-> **Статус:** миграция выполнена (Фаза 1 `818be538` + Фаза 2 `c97c0f78`). Главы и
-> служебные/roster-доки — латинские слаги + `title` кириллицей; README каждой папки =
-> `index.md`. Индивидуальные КАРТОЧКИ `relics/enemies` намеренно оставлены на своих
-> именах (их показывает `.base` по `file.name`). Сверяйся с `00-meta/index.md` (MOC).
+> **Статус:** миграция выполнена. ВСЕ доки (главы, служебные, roster, И карточки
+> `relics/enemies/factions`) — латинские слаги + `title` по системе `Cluster - Name`
+> (см. правило 4); README каждой папки = `index.md`. Карточки переведены на слаги
+> 2026-07-16 (`the-bloom.md`, `bandit-bruiser.md`, `goblins.md`); `.base` показывает
+> `title`, не `file.name`. Сверяйся с `00-meta/index.md` (MOC).
 
 ## Четыре правила, нарушение которых = переделка (HARD)
 
@@ -77,12 +78,21 @@ Vault: `docs/wiki/` (Obsidian, публикуется Quartz на GitHub Pages).
    багов реализации и путаницы. См. `references/terminology-and-canon.md`.
 
 4. **Мета — в frontmatter, не в тексте и не в имени.** Каждый ГДД-док несёт YAML-шапку:
-   `title` (кириллицей), `order` (число — порядок), `status`
+   `title` (система `Cluster - Name`, см. ниже), `order` (число — порядок), `status`
    (`draft|needs_review|ready|living|archive`), `pillars` (опц.), `updated`. Порядок
    главы задаётся `order`, НЕ номером в имени файла; статус — полем, не текстовой строкой.
    *Почему:* порядок, отвязанный от имени, переставляется без переименования → ссылки не
    ломаются; машиночитаемый статус собирается в Dataview-дашборд «что готово». См.
    `references/structure-and-frontmatter.md`.
+
+   **Система тайтлов (решено 2026-07-16, EN):** `title = "<Кластер> - <Имя>"`, разделитель
+   ` - `, весь `title` на английском (по всему vault). Кластер — ярлык папки: `Meta`,
+   `Vision`, `Combat`, `Run`, `Content`, `Modes`, `Roster`. Карточки-сущности:
+   `Relic - <Common|Unique> - <Name (Class)>`, враги `<Faction> - <Tier> - <Name>`,
+   фракции `Faction - <Name>`. Обзорный файл раздела не дублирует префикс
+   (`combat-system` → `Combat - System`). Имя файла — короткий слаг; `title` показывают
+   Front Matter Title (встроенный проводник) и пропатченный File Tree Alternative
+   (`docs/obsidian/filetree-frontmatter-patch.py` — title + сортировка по `order`).
 
 ## Артефакты сильного ГДД (к чему ведём)
 

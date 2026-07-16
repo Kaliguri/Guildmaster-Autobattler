@@ -1,5 +1,5 @@
 ---
-title: Журнал ГД-решений
+title: "Meta - Decision Journal"
 order: 1
 status: living
 ---

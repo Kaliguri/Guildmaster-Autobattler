@@ -2,6 +2,8 @@ filters:
   and:
     - kind == "character"
 properties:
+  title:
+    displayName: Название
   status:
     displayName: Готовность
   rarity:
@@ -32,7 +34,7 @@ views:
   - type: table
     name: Все персонажи
     order:
-      - file.name
+      - title
       - status
       - rarity
       - position
@@ -52,7 +54,7 @@ views:
       and:
         - position == "Фронт"
     order:
-      - file.name
+      - title
       - roles
       - physical_damage
       - elemental_damage
@@ -64,7 +66,7 @@ views:
       and:
         - position == "Фланг"
     order:
-      - file.name
+      - title
       - roles
       - attack_delivery
       - mechanics

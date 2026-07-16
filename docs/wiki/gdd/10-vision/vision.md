@@ -1,5 +1,5 @@
 ---
-title: Vision (одностраничник)
+title: "Vision - Overview"
 order: 10
 status: needs_review
 ---

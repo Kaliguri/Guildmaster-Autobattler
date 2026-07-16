@@ -1,5 +1,5 @@
 ---
-title: Каталог противников
+title: "Enemies - Catalog"
 status: draft
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: Концепция
+title: "Vision - Concept"
 order: 12
 status: draft
 ---

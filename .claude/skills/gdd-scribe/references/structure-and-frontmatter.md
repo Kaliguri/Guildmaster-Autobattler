@@ -12,8 +12,31 @@
   меняется при переупорядочивании → ссылки вечны.
 - **Порядок** = поле `order` во frontmatter. Сменить порядок = поправить число в YAML,
   файл не трогается.
-- **Человеческое имя** = `title:` кириллицей. Obsidian и Quartz показывают `title`, а не
-  имя файла, — человек видит «Боевая система», агент/URL/git видят `combat-system`.
+- **Человеческое имя** = `title:` по системе `Cluster - Name` (EN, решено 2026-07-16).
+  Obsidian и Quartz показывают `title`, а не имя файла, — человек видит `Combat - System`,
+  агент/URL/git видят `combat-system`.
+
+### Система тайтлов (EN, `Cluster - Name`)
+
+`title = "<Кластер> - <Имя>"`, разделитель ` - `, весь заголовок на английском по всему
+vault (единый язык, совпадает с EN-каноном сущностей). Кластер — ярлык папки:
+
+| Папка | Кластер | Папка | Кластер |
+|---|---|---|---|
+| `00-meta` | `Meta` | `40-content` | `Content` |
+| `10-vision` | `Vision` | `50-modes-ux` | `Modes` |
+| `20-combat` | `Combat` | `roster` | `Roster` |
+| `30-run-meta` | `Run` | `enemies` | `Enemies` / `Faction` |
+
+- **Карточки-сущности** (слаги + структурный title): реликвии `Relic - <Common|Unique> -
+  <Name (Class)>` (`the-bloom.md` → `Relic - Common - The Bloom (Druid)`); враги
+  `<Faction> - <Tier> - <Name>` (`bandit-bruiser.md` → `Bandits - Common - Bandit Bruiser`);
+  фракции `Faction - <Name>` (`goblins.md` → `Faction - Goblins`).
+- **Обзорный файл раздела** не дублирует префикс: `combat-system` → `Combat - System`,
+  не `Combat - Combat`.
+- Показ `title` вместо имени файла: **Front Matter Title** (встроенный проводник) +
+  пропатченный **File Tree Alternative** (`docs/obsidian/filetree-frontmatter-patch.py` —
+  title + сортировка по `order`). `.base` показывает `title`, не `file.name`.
 
 Это индустриальный паттерн (Docusaurus `sidebar_position`, Jekyll `nav_order`); Quartz
 explorer сортирует по frontmatter-полю через `sortFn`.
@@ -22,7 +45,7 @@ explorer сортирует по frontmatter-полю через `sortFn`.
 
 ```yaml
 ---
-title: Боевая система          # кириллицей, для людей
+title: "Combat - System"       # EN, система Cluster - Name
 order: 20                      # порядок внутри кластера
 status: ready                  # draft | needs_review | ready | living | archive
 pillars: [readable-autobattle] # какие столпы затрагивает (опц.)

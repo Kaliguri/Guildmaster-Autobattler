@@ -1,5 +1,5 @@
 ---
-title: Ивенты и мини-игры
+title: "Run - Events & Minigames"
 order: 33
 status: draft
 ---

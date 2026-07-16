@@ -1,5 +1,5 @@
 ---
-title: Открытые вопросы и черновики
+title: "Meta - Open Questions"
 order: 3
 status: draft
 ---

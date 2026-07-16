@@ -1,5 +1,5 @@
 ---
-title: Мультиплеер
+title: "Modes - Multiplayer"
 order: 50
 status: draft
 ---

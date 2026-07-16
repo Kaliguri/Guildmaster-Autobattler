@@ -1,5 +1,5 @@
 ---
-title: Предметы и Знамёна
+title: "Content - Items & Banners"
 order: 41
 status: draft
 ---

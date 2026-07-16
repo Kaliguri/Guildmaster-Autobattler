@@ -1,5 +1,5 @@
 ---
-title: Система эффектов (каталог и идентичность стихий)
+title: "Combat - Effects"
 order: 22
 status: needs_review
 ---

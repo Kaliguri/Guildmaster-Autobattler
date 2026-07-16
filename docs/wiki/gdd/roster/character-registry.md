@@ -1,5 +1,5 @@
 ---
-title: Реестр персонажей
+title: "Roster - Character Registry"
 status: living
 ---
 

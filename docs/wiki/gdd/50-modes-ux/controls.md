@@ -1,5 +1,5 @@
 ---
-title: Управление (раскладка клавиш)
+title: "Modes - Controls"
 order: 51
 status: draft
 ---

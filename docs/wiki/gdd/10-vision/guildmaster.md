@@ -1,5 +1,5 @@
 ---
-title: Гильдмастер
+title: "Vision - Guildmaster"
 order: 14
 status: draft
 ---

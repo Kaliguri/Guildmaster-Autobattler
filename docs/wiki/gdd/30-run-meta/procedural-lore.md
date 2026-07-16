@@ -1,5 +1,5 @@
 ---
-title: Процедурный лор «Сосудов»
+title: "Run - Procedural Lore"
 order: 31
 status: draft
 ---

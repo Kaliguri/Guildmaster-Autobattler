@@ -1,5 +1,5 @@
 ---
-title: Каталог фракций
+title: "Factions - Index"
 status: draft
 ---
 

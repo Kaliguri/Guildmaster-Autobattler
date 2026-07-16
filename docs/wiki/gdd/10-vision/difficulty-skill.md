@@ -1,5 +1,5 @@
 ---
-title: Сложность, хардкор и скилл игрока
+title: "Vision - Difficulty & Skill"
 order: 15
 status: draft
 ---
