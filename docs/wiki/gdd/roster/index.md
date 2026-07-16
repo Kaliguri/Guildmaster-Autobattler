@@ -14,7 +14,7 @@ status: draft
 | Файл | Назначение |
 |---|---|
 | [Реестр персонажей.md](character-registry.md) | Как открыть интерактивный реестр (`.base`) и правило источника истины |
-| [Реестр персонажей.base](Реестр%20персонажей.base) | Obsidian Bases — интерактивная таблица всех карточек `kind: character` |
+| [character-registry.base](character-registry.base) | Obsidian Bases — интерактивная таблица всех карточек `kind: character` |
 | [Баланс ростера.md](roster-balance.md) | Dataview-срезы: роли, позиции, школы/сродства урона, тематика, пол, «требует уточнения» |
 | [Справочник тегов.md](tag-reference.md) | **Нормативный** словарь YAML-полей и допустимых значений (rarity/position/школы/affinity/creature_type/roles/mechanics/…) |
 

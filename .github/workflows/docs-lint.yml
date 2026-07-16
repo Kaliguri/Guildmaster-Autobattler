@@ -1,0 +1,25 @@
+name: Docs Lint
+
+on:
+  pull_request:
+    paths:
+      - "docs/wiki/**"
+      - "scripts/check-wiki-links.ps1"
+      - ".github/workflows/docs-lint.yml"
+  push:
+    branches: [dev, master]
+    paths:
+      - "docs/wiki/**"
+      - "scripts/check-wiki-links.ps1"
+      - ".github/workflows/docs-lint.yml"
+
+jobs:
+  wiki-links:
+    name: Check internal wiki links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check wiki links (fail on broken)
+        shell: pwsh
+        run: ./scripts/check-wiki-links.ps1 -VaultPath docs/wiki

@@ -15,7 +15,7 @@ updated: 2026-07-16
 
 ## 1. Отправная точка (факт на 2026-07-14)
 
-**Есть (одна играбельная клетка боя):** data-driven энкаунтеры/пресеты (`EncounterData`, `BattlePresetData`), гоблины, расстановка Free (`DeploymentController`), loadout релика (`LoadoutViewModel` + `MenuRouter`), `EncounterLoader`/`ResetBattle` как движок запуска, `BattleOutcome` + детект вайпа команды в `CombatSimulation`. Настройки-меню на UITK ([[ui-toolkit-settings-menu]]).
+**Есть (одна играбельная клетка боя):** data-driven энкаунтеры/пресеты (`EncounterData`, `BattlePresetData`), гоблины, расстановка Free (`DeploymentController`), loadout релика (`LoadoutViewModel` + `MenuRouter`), `EncounterLoader`/`ResetBattle` как движок запуска, `BattleOutcome` + детект вайпа команды в `CombatSimulation`. Настройки-меню на UITK (ui-toolkit-settings-menu).
 
 **Есть в данных, но не в петле:** `ItemData` (полный: скоупы `Vessel`/`Party`, `StatModifier[]`, активка, цена, вес пула), `GameConfig` (`VesselItemSlots = 3`), `AIPresetData` (по 1 пресету на релик, по 3 на гоблинов).
 
@@ -40,7 +40,7 @@ updated: 2026-07-16
 - `IEventFlow.Run(RunContext)` — хост исполняет, клиенты шлют интенты через `IPlayerIntentSource` (соло = локальный ввод). Интерфейсы вводим сейчас, тела соло.
 - Автосейв = снапшот `RunState` → он же основа репликации и реконнекта.
 
-Нельзя переусердствовать: **никаких NGO-типов, RPC, `NetworkVariable` в этом заходе.** Только чистые интерфейсы-швы с соло-телами. Правило [[seams-vs-defer]].
+Нельзя переусердствовать: **никаких NGO-типов, RPC, `NetworkVariable` в этом заходе.** Только чистые интерфейсы-швы с соло-телами. Правило seams-vs-defer.
 
 ---
 
@@ -68,7 +68,7 @@ public interface IEventFlow { UniTask<EventResult> Run(RunContext ctx); }
 Узел = `{ id, NodeType, полезная нагрузка (encounter/preset/textEventId/shopPoolId), рёбра }`. Граф либо генерится из сида (`IRngService`), либо берётся из **заготовки пролога** (§5.5). Хранится в `RunState.mapGraph`, доступен оверлеем в бою (read-only).
 
 ### 3.4. Ассеты-контент (SO)
-- `TextEventData : ContentDefinition` (домен `event`) — StS2-текст: заголовок, тело (лок-ключи), 2–4 `EventChoice { лок-текст, условие?, список Consequence }`. `Consequence` — уже есть в дата-слое (см. [[data-layer-part3-plan]]): дать/убрать релик, золото, предмет, травму. Переиспользуем, не изобретаем.
+- `TextEventData : ContentDefinition` (домен `event`) — StS2-текст: заголовок, тело (лок-ключи), 2–4 `EventChoice { лок-текст, условие?, список Consequence }`. `Consequence` — уже есть в дата-слое (см. data-layer-part3-plan): дать/убрать релик, золото, предмет, травму. Переиспользуем, не изобретаем.
 - `RunTemplateData : ContentDefinition` (домен `run_template`) — заранее выложенный граф для **пролога** (§5.5): фиксированные узлы со ссылками на `BattlePresetData` / `TextEventData` / shop-пул.
 - `ItemData`-ассеты — предметы (Vessel) и баннеры (Party), §5.6.
 - `AIPresetData`-ассеты — по 2–3 на релик, §5.7.
@@ -82,7 +82,7 @@ Data-first, как в [[tech/40-planning/deployment-encounters|Planning - Deploy
 ### Часть A — скелет петли (замыкает «бой → исход → награда → следующий бой»)
 
 **Шаг A1 — `RunState` + DTO + автосейв + `GameConfig`-лимиты** `[фундамент]`
-- `RunState` POCO (§3.1) в `Guildmaster.Guild` (или `Core`), DTO-слой + ES3-плумбинг ([[data-layer-principles]]: SO→POCO→DTO). Три точки автосейва ([[tech/20-explanation/run-flow|Explanation - Run Flow]] §5).
+- `RunState` POCO (§3.1) в `Guildmaster.Guild` (или `Core`), DTO-слой + ES3-плумбинг (data-layer-principles: SO→POCO→DTO). Три точки автосейва ([[tech/20-explanation/run-flow|Explanation - Run Flow]] §5).
 - `GameConfig`: добавить `RelicCapacityBase`, `RelicCapacityMax` (лимит реликов, §5.4). `VesselItemSlots` уже есть.
 - Тесты: сериализация round-trip, валидация лимитов.
 - Разблокирует: всё, что растёт между боями.
@@ -94,7 +94,7 @@ Data-first, как в [[tech/40-planning/deployment-encounters|Planning - Deploy
 - Разблокирует: узлы карты можно исполнять; появляется понятие «после боя».
 
 **Шаг A3 — Экран исхода + Экран наград (выбор 1 из 3 реликов)** `[сердце рогалика]`
-- Reward-экран на UITK/MVVM (реюз паттерна `LoadoutViewModel`/`MenuRouter`): 3 релика из пула наград (`IRngService`, ramp по [[meta-progression-economy]]: 1 из 3, шансы по типу боя) → выбор пишется в `RunState.relicInventory`.
+- Reward-экран на UITK/MVVM (реюз паттерна `LoadoutViewModel`/`MenuRouter`): 3 релика из пула наград (`IRngService`, ramp по meta-progression-economy: 1 из 3, шансы по типу боя) → выбор пишется в `RunState.relicInventory`.
 - **Тут же enforce лимит реликов** (§5.4): если `relicInventory` полон — выбрать, что сбросить, или пропустить награду.
 - Разблокирует: осмысленное золото/прогресс; ростер растёт.
 
@@ -118,7 +118,7 @@ Data-first, как в [[tech/40-planning/deployment-encounters|Planning - Deploy
 ### Часть C — вход в игру
 
 **Шаг C1 — Начальное меню (`MainMenu`)** `[обёртка]`
-- UITK/MVVM-экран: **Новый забег** (→ пролог, если не пройден, иначе выбор) · **Продолжить** (загрузить автосейв `RunState`) · **Настройки** (готово — [[ui-toolkit-settings-menu]]) · **Выход**.
+- UITK/MVVM-экран: **Новый забег** (→ пролог, если не пройден, иначе выбор) · **Продолжить** (загрузить автосейв `RunState`) · **Настройки** (готово — ui-toolkit-settings-menu) · **Выход**.
 - `GameFlow.Boot` ведёт в меню, а не сразу в бой.
 - Разблокирует: игра запускается как игра, а не как dev-сцена.
 
@@ -190,7 +190,7 @@ A-цепочка последовательна (каждый шаг встаё�
 1. **Лимит реликов — что именно?** Дефолт: вместимость коллекции запаса (§5.4). Альтернативы: лимит копий одного релика / размер боевого пула. Механика (кап+enforce+апгрейд) одна, меняется объект счёта. → **уточнить перед A1.**
 2. **Пролог — где живёт флаг «пройден»?** Дефолт: в профиле сохранения (мета вне забега), не в `RunState`. → мелочь, дефолт разумен.
 3. **Соло-first vs coop-ready-first.** Дефолт: соло-тела за сетевыми интерфейсами (§2), кооп — Фаза 6. Макс подтвердил направление «держать сетевой-ready, но не реализовывать». ✅ закрыто.
-4. **Ветка.** Все шаги 1–5 плана 10 не запушены на `feat/encounter-data-loader`. Дефолт: макро-петлю начинать новой веткой от неё (или от `dev` после мержа плана 10). → [[branch-hygiene-before-work]].
+4. **Ветка.** Все шаги 1–5 плана 10 не запушены на `feat/encounter-data-loader`. Дефолт: макро-петлю начинать новой веткой от неё (или от `dev` после мержа плана 10). → branch-hygiene-before-work.
 
 ---
 
@@ -198,6 +198,6 @@ A-цепочка последовательна (каждый шаг встаё�
 
 - **Data-first:** `RunState`/ассеты (event/template/item/ai) заводятся до интерактива поверх.
 - **Переиспользуем готовое:** `EncounterLoader`/`ResetBattle`, `DeploymentController`+loadout, `BattleOutcome`, `ItemData`, `AIPresetData`, `Consequence`, `MenuRouter`/MVVM-паттерн, `GameConfig` — не переписываем.
-- **Швы под кооп закладываем, реализацию откладываем** ([[netcode-host-authoritative]], [[seams-vs-defer]]).
+- **Швы под кооп закладываем, реализацию откладываем** (netcode-host-authoritative, seams-vs-defer).
 - **Каждый шаг = сессия + коммит.** Ресёрч перед B1 (генерация карты vs template), B3 (структура `Consequence`), D2 (осмысленные варианты AI по архетипу).
 - **Заглушки честные:** предметы/баннеры = только статы; табы предметов/AI оживают частично; активки предметов и полный туториал — помечены «позже», не спрятаны.
