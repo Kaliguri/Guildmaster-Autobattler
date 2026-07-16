@@ -31,27 +31,27 @@ status: draft
 
 | Карточка | Роль | Источник-идея (0.1) |
 |---|---|---|
-| [The Bulwark (Guardian)](1.%20Common%20-%20The%20Bulwark%20%28Guardian%29.md) | танк-контроллер фронта | базовый пример шаблона |
-| [The Winter (Cryomancer)](1.%20Common%20-%20The%20Winter%20%28Cryomancer%29.md) | контроллер-маг (заморозка→стан) | «Контроллер маг» |
-| [The Spear (Spearman)](1.%20Common%20-%20The%20Spear%20%28Spearman%29.md) | фронтлайн-брузер с AOE | «Авангард копейщик» |
-| [The Gale (Monk)](1.%20Common%20-%20The%20Gale%20%28Monk%29.md) | мобильный контроллер-дуэлянт | «Монах» |
-| [The Hunter (Ranger)](1.%20Common%20-%20The%20Hunter%20%28Ranger%29.md) | рейндж-дпс с меткой | «Рейнжер» |
-| [The Shepherd (Priest)](1.%20Common%20-%20The%20Shepherd%20%28Priest%29.md) | саппорт-хилер | «Хил» |
-| [The Verdict (Assassin)](1.%20Common%20-%20The%20Verdict%20%28Assassin%29.md) | ассасин-добиватель | — |
-| [The Bloom (Druid)](1.%20Common%20-%20The%20Bloom%20%28Druid%29.md) | контроллер-хилер через яды | — |
-| [The Storm (Stormcaller)](1.%20Common%20-%20The%20Storm%20%28Stormcaller%29.md) | цепной молниевый РДД | — |
-| [The Bonewright (Necromancer)](1.%20Common%20-%20The%20Bonewright%20%28Necromancer%29.md) | саммонер-баффер | «Некромант» |
-| [The Pyre (Swordsman)](1.%20Common%20-%20The%20Pyre%20%28Swordsman%29.md) | рискованный мили ДД через поджоги | — |
-| [The Tide (Tidecaller)](1.%20Common%20-%20The%20Tide%20%28Tidecaller%29.md) | гибридный хилер-баффер с контролем | — |
-| [The Thorn (Treant)](1.%20Common%20-%20The%20Thorn%20%28Treant%29.md) | танк-брузер с ответным уроном | — |
-| [The Cadence (Bard)](1.%20Common%20-%20The%20Cadence%20%28Bard%29.md) | каналящий хилер-баффер | — |
-| [The Bond (Shaman)](1.%20Common%20-%20The%20Bond%20%28Shaman%29.md) | саммонер-хилер с разделением урона | — |
-| [The Draugr (Berserker)](1.%20Common%20-%20The%20Draugr%20%28Berserker%29.md) | нежить-викинг — **дизайн не проработан** | — |
-| [The Mirror (Doppelganger)](1.%20Unique%20-%20The%20Mirror%20%28Doppelganger%29.md) — **Уникальная** | уникальный копировщик реликвии | — |
-| [The Runesmith (Smith)](1.%20Common%20-%20The%20Runesmith%20%28Smith%29.md) | шредер физброни + крафтер рун (энейблер) | «Рунный Кузнец» (0.1) |
-| [The Paragon (Juggernaut)](1.%20Unique%20-%20The%20Paragon%20%28Juggernaut%29.md) — **Уникальная / Божественная** | самоусиливающийся неубивашка-дилер | «Идеал» (0.1) |
-| [The Martyr](1.%20Common%20-%20The%20Martyr.md) — **черновик-идея** (быв. «Жертва») | само-баффер (проклятая) | — |
-| [The Warden](1.%20Common%20-%20The%20Warden.md) — **черновик-идея** (быв. «Эльф-Всадник») | призыв/контроль (олень) | — |
+| [[gdd/relics/the-bulwark|The Bulwark (Guardian)]] | танк-контроллер фронта | базовый пример шаблона |
+| [[gdd/relics/the-winter|The Winter (Cryomancer)]] | контроллер-маг (заморозка→стан) | «Контроллер маг» |
+| [[gdd/relics/the-spear|The Spear (Spearman)]] | фронтлайн-брузер с AOE | «Авангард копейщик» |
+| [[gdd/relics/the-gale|The Gale (Monk)]] | мобильный контроллер-дуэлянт | «Монах» |
+| [[gdd/relics/the-hunter|The Hunter (Ranger)]] | рейндж-дпс с меткой | «Рейнжер» |
+| [[gdd/relics/the-shepherd|The Shepherd (Priest)]] | саппорт-хилер | «Хил» |
+| [[gdd/relics/the-verdict|The Verdict (Assassin)]] | ассасин-добиватель | — |
+| [[gdd/relics/the-bloom|The Bloom (Druid)]] | контроллер-хилер через яды | — |
+| [[gdd/relics/the-storm|The Storm (Stormcaller)]] | цепной молниевый РДД | — |
+| [[gdd/relics/the-bonewright|The Bonewright (Necromancer)]] | саммонер-баффер | «Некромант» |
+| [[gdd/relics/the-pyre|The Pyre (Swordsman)]] | рискованный мили ДД через поджоги | — |
+| [[gdd/relics/the-tide|The Tide (Tidecaller)]] | гибридный хилер-баффер с контролем | — |
+| [[gdd/relics/the-thorn|The Thorn (Treant)]] | танк-брузер с ответным уроном | — |
+| [[gdd/relics/the-cadence|The Cadence (Bard)]] | каналящий хилер-баффер | — |
+| [[gdd/relics/the-bond|The Bond (Shaman)]] | саммонер-хилер с разделением урона | — |
+| [[gdd/relics/the-draugr|The Draugr (Berserker)]] | нежить-викинг — **дизайн не проработан** | — |
+| [[gdd/relics/the-mirror|The Mirror (Doppelganger)]] — **Уникальная** | уникальный копировщик реликвии | — |
+| [[gdd/relics/the-runesmith|The Runesmith (Smith)]] | шредер физброни + крафтер рун (энейблер) | «Рунный Кузнец» (0.1) |
+| [[gdd/relics/the-paragon|The Paragon (Juggernaut)]] — **Уникальная / Божественная** | самоусиливающийся неубивашка-дилер | «Идеал» (0.1) |
+| [[gdd/relics/the-martyr|The Martyr]] — **черновик-идея** (быв. «Жертва») | само-баффер (проклятая) | — |
+| [[gdd/relics/the-warden|The Warden]] — **черновик-идея** (быв. «Эльф-Всадник») | призыв/контроль (олень) | — |
 
 **Ещё не оформлены в карточки** (есть только в [0.1. Черновые идеи](draft-ideas.md)): **Маг-рыцарь**.
 
@@ -61,4 +61,4 @@ status: draft
 
 ## Связь с движком
 
-Часть механик карточек требует движковых расширений, которых нет в библиотеке Фазы 2 (заряды, атака в движении, хил-автоатака, линия/конус, смещения). Их перечень и ориентир по фазам — [Тех: 6. Боевая модель §10](../../tech/6.%20%D0%91%D0%BE%D0%B5%D0%B2%D0%B0%D1%8F%20%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%8C%20%28%D1%8E%D0%BD%D0%B8%D1%82%D1%8B%2C%20%D1%81%D1%82%D0%B0%D1%82%D1%8B%2C%20%D1%8D%D1%84%D1%84%D0%B5%D0%BA%D1%82%D1%8B%29.md). Реликвии тестируются вместе с AI-движком в Фазе 3 (test-arena lite).
+Часть механик карточек требует движковых расширений, которых нет в библиотеке Фазы 2 (заряды, атака в движении, хил-автоатака, линия/конус, смещения). Их перечень и ориентир по фазам — [[tech/reference/combat-model|Тех: 6. Боевая модель §10]]. Реликвии тестируются вместе с AI-движком в Фазе 3 (test-arena lite).

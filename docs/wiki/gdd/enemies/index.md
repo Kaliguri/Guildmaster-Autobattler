@@ -17,19 +17,19 @@ status: draft
 
 | Карточка | Группа | Задача во встрече |
 |---|---|---|
-| [Goblin Grunt](Goblins%20-%20Common%20-%20Goblin%20Grunt.md) | Обычный | базовый ближний напор |
-| [Goblin Cutthroat](Goblins%20-%20Common%20-%20Goblin%20Cutthroat.md) | Обычный | давление на вторую линию |
-| [Goblin Warrior](Goblins%20-%20Common%20-%20Goblin%20Warrior.md) | Обычный | плотный фронт и задержка команды |
-| [Goblin Archer](Goblins%20-%20Common%20-%20Goblin%20Archer.md) | Обычный | дальнее давление и кайт |
-| [Goblin Commander](Goblins%20-%20Elite%20-%20Goblin%20Commander.md) | Элита | усиливает серую массу рядом с собой |
-| [Goblin Shaman](Goblins%20-%20Elite%20-%20Goblin%20Shaman.md) | Элита | опасный кастуемый огненный AOE |
-| [Goblin Wolfrider](Goblins%20-%20Elite%20-%20Goblin%20Wolfrider.md) | Элита | врывается через первую цель и давит тыл |
-| [Pack Wolf](Beasts%20-%20Common%20-%20Pack%20Wolf.md) | Обычный | усиливается рядом с союзниками |
-| [Earth Golem](Golems%20-%20Elite%20-%20Earth%20Golem.md) | Элита | медленный бронированный брут с циклом тяжёлых атак |
-| [Bandit Venombow](Bandits%20-%20Common%20-%20Bandit%20Venombow.md) | Обычный | добивает раненых издалека и накладывает яд |
-| [Bandit Shieldman](Bandits%20-%20Common%20-%20Bandit%20Shieldman.md) | Обычный | удерживает цель и прикрывает стрелков |
-| [Bandit Bruiser](Bandits%20-%20Common%20-%20Bandit%20Bruiser.md) | Обычный | добивает в ближнем бою и кратко оглушает |
-| [Bandit Warlock](Bandits%20-%20Elite%20-%20Bandit%20Warlock.md) | Элита | фиксирует цель, усиливает урон по ней и спасает своих |
+| [[gdd/enemies/goblin-grunt|Goblin Grunt]] | Обычный | базовый ближний напор |
+| [[gdd/enemies/goblin-cutthroat|Goblin Cutthroat]] | Обычный | давление на вторую линию |
+| [[gdd/enemies/goblin-warrior|Goblin Warrior]] | Обычный | плотный фронт и задержка команды |
+| [[gdd/enemies/goblin-archer|Goblin Archer]] | Обычный | дальнее давление и кайт |
+| [[gdd/enemies/goblin-commander|Goblin Commander]] | Элита | усиливает серую массу рядом с собой |
+| [[gdd/enemies/goblin-shaman|Goblin Shaman]] | Элита | опасный кастуемый огненный AOE |
+| [[gdd/enemies/goblin-wolfrider|Goblin Wolfrider]] | Элита | врывается через первую цель и давит тыл |
+| [[gdd/enemies/pack-wolf|Pack Wolf]] | Обычный | усиливается рядом с союзниками |
+| [[gdd/enemies/earth-golem|Earth Golem]] | Элита | медленный бронированный брут с циклом тяжёлых атак |
+| [[gdd/enemies/bandit-venombow|Bandit Venombow]] | Обычный | добивает раненых издалека и накладывает яд |
+| [[gdd/enemies/bandit-shieldman|Bandit Shieldman]] | Обычный | удерживает цель и прикрывает стрелков |
+| [[gdd/enemies/bandit-bruiser|Bandit Bruiser]] | Обычный | добивает в ближнем бою и кратко оглушает |
+| [[gdd/enemies/bandit-warlock|Bandit Warlock]] | Элита | фиксирует цель, усиливает урон по ней и спасает своих |
 
 Шаблон новой карточки: [0.1. Шаблон карточки противника.md](template-enemy-card.md).
 
