@@ -5,7 +5,7 @@ status: archive
 updated: 2026-07-16
 ---
 
-**Статус:** План согласован (2026-07-14). Развилки §6 закрыты решениями Макса (порядок data-first, имя `BattlePresetData`, релик = весь кит, всё на UI Toolkit — не Odin). UI релика уточнён — полноэкранный loadout-экран (§5). Реализация — по шагам, каждый шаг отдельной сессией, с ресёрчем перед большими шагами. Остаются мелкие уточнения — §6.
+**Статус:** Частично реализовано. Data-слой и загрузчик боя в коде: `EncounterData` (домен `encounter`) + `EncounterLoader` + dev-срез готовых боёв. Полноэкранный loadout-экран (§5) и полная фаза расстановки — в работе (см. [[tech/planning/vertical-slice|Planning - Vertical Slice]], [[tech/planning/stabilization|Planning - Stabilization & UI Loop]]). Развилки §6 закрыты решениями Макса (порядок data-first, релик = весь кит, всё на UI Toolkit — не Odin).
 
 ---
 

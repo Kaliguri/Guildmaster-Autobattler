@@ -5,7 +5,7 @@ status: needs_review
 updated: 2026-07-16
 ---
 
-**Статус:** Ready — отражает код на 2026-06-19
+**Статус:** актуализирован 2026-07-16 (тик-ордер, имена классов); отдельные разделы — needs_review
 
 ---
 
@@ -74,14 +74,15 @@ Core                      — фундамент: RNG, константы сим
      │         RNG, Audio, SceneLoader,                  battle-RNG, все системы,
      │         GameFlow, MessagePipe                     CombatSimulation, презентеры
      ▼
-[Старт боя]  BattleSetupBuilder создаёт RuntimeUnit'ы из SO → EnqueueUnitSpawn
+[Старт боя]  EncounterLoader создаёт RuntimeUnit'ы из SO → EnqueueUnitSpawn
      │
      ▼
 [Пульс]      CombatLoopService (IAsyncStartable) копит Time.deltaTime и
      │         вызывает CombatSimulation.Tick() фиксированными шагами 30 Гц
      ▼
-[Тик]        Targeting → Abilities → Movement → SpatialHash → AutoAttack →
-     │         Projectiles → Regen → Effects → DrainEvents → Death → CheckOutcome
+[Тик]        ApplyCommands → Brain → Ability → Movement → Displacement →
+     │         Separation → SpatialHash → AutoAttack → Projectiles → Regen →
+     │         Effects → DrainEvents → Death → CheckOutcome
      ▼
 [События]    CombatSimulation шлёт C#-события (OnDamageDealt, OnUnitDied…)
      ▼
@@ -117,7 +118,8 @@ Core                      — фундамент: RNG, константы сим
 | `ICombatContext` | Шов: единственная точка мутаций боя для систем и компонентов эффектов |
 | `RuntimeUnit` | Рантайм-юнит на один бой (POCO, без `MonoBehaviour`) |
 | `Stats` | Слоистые модификаторы + кэш итоговых значений |
-| `*System` (Targeting/Movement/AutoAttack/Projectile/Death/Regen/Ability) | По одной системе на аспект тика |
+| `*System` (Brain/Movement/Displacement/Separation/AutoAttack/Projectile/Death/Regen/Ability) | По одной системе на аспект тика |
+| `EncounterLoader` | Data-driven сборка боя из `EncounterData`: спавн юнитов/врагов через `RuntimeUnitFactory` (в `Combat/Units`) |
 | `EffectSystem` | Жизненный цикл эффектов: наложение, стаки, тик, диспел, контроль |
 | `DamagePipeline` | Чистый расчёт урона (статические функции) |
 | `SpatialHash` | Бесалокационные пространственные запросы |
@@ -131,13 +133,12 @@ Core                      — фундамент: RNG, константы сим
 | `RootLifetimeScope` / `CombatLifetimeScope` | DI-скоупы сессии и боя |
 | `GameFlow` | Макро-флоу: Boot → BattleScene → результат |
 | `CombatLoopService` | Реалтайм-пульс: `Time.deltaTime` → фиксированные тики |
-| `BattleSetupBuilder` | Начальная расстановка юнитов |
 
 ### Presentation (тело)
 | Класс | Ответственность |
 |---|---|
 | `CombatPresenter` | Мост сим→визуал: подписка на события, спавн вью, ретрансляция в MessagePipe |
-| `UnitView`, `HealthBarView`, `DamageNumber(Spawner)` | Отображение и интерполяция |
+| `UnitView`, `HealthBarView`, `FloatingText` | Отображение и интерполяция (всплывающие числа — пул `FloatingText`) |
 
 ### Net (сеть)
 | Класс | Ответственность |

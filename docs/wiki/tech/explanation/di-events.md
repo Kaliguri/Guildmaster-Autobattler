@@ -88,7 +88,7 @@ protected override void Configure(IContainerBuilder builder)
 
 **(а) По типу — `builder.Register<T>(Lifetime.Scoped)`** — самый чистый. Контейнер сам найдёт конструктор и подставит зависимости.
 ```csharp
-builder.Register<TargetingSystem>(Lifetime.Scoped);   // нет хитрых аргументов
+builder.Register<BrainSystem>(Lifetime.Scoped);   // нет хитрых аргументов
 ```
 
 **(б) С `WithParameter` — для не-инъектируемых аргументов.** `CombatSimulation` берёт `float armorK` — примитив, который контейнер не умеет разрешать. Но остальные 10 зависимостей — умеет. Поэтому:
