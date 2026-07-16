@@ -5,7 +5,7 @@ status: needs_review
 updated: 2026-07-16
 ---
 
-**Статус:** Ready
+**Статус:** needs_review — AI-раздел и сейв актуализированы 2026-07-16 (Фаза 2a/2b); прочее — needs_review
 
 ---
 

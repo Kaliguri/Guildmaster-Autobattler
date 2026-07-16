@@ -58,7 +58,6 @@ updated: 2026-07-16
 ## Meta (`00-meta/`) — служебное
 
 - [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]] — реестр решений, changelog, открытый техдолг, реестр аудита. `living`
-- [[tech/00-meta/open|Open Questions]] — нерешённые технические вопросы. `draft`
 
 ---
 

@@ -5,7 +5,7 @@ status: needs_review
 updated: 2026-07-16
 ---
 
-**Статус:** Draft
+**Статус:** needs_review — бэкенд сейва актуализирован 2026-07-16 (`JsonFileSaveService`, ES3 отложен)
 
 ---
 
