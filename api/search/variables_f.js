@@ -7,9 +7,13 @@ var searchData=
   ['reactivereadytick_4',['ReactiveReadyTick',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#abf5796683cc2c01aec6eb0d914f483d9',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
   ['recoveryremaining_5',['RecoveryRemaining',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a9087d6d066e6294e91d3287dce1b2355',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['recoveryticks_6',['RecoveryTicks',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a23576b1527457888eb26cc63151ad400',1,'Guildmaster::Combat::RuntimeUnit']]],
-  ['remainingticks_7',['RemainingTicks',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ac4f0082e00dc1f4610994f29e7ac616b',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
-  ['reservedtags_8',['ReservedTags',['../classGuildmaster_1_1Combat_1_1Projectile.html#ae055ae9d6f77bd37fc909cc825f16872',1,'Guildmaster::Combat::Projectile']]],
-  ['result_9',['Result',['../structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html#a058298f83915cea972e339597e593323',1,'Guildmaster::Presentation::DamageDealtEvent']]],
-  ['returnathppct_10',['ReturnAtHpPct',['../structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html#aa18445ec3de8b8f315a7d4a661676321',1,'Guildmaster::Data::Definitions::Retreat']]],
-  ['root_11',['Root',['../classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths.html#a96c9ebbb8ec90394fd8ad1a208ec2877',1,'Guildmaster::Data::Editor::ContentPaths']]]
+  ['relic_7',['relic',['../structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html#af7b25c1bbae7144ea793388baed327a4',1,'Guildmaster.Data.Definitions.EquipRelicRequest.Relic'],['../structGuildmaster_1_1UI_1_1LoadoutHubView_1_1RosterEntry.html#a9b079f6db938856354bf4db1cfda9870',1,'Guildmaster.UI.LoadoutHubView.RosterEntry.Relic']]],
+  ['reliccapacity_8',['RelicCapacity',['../classGuildmaster_1_1Guild_1_1RunState.html#add135c8ee1ecfc0ff34a7f648e1158a0',1,'Guildmaster::Guild::RunState']]],
+  ['relicid_9',['RelicId',['../classGuildmaster_1_1Guild_1_1RosterSlot.html#aa6951a69eb6ac6008641c03f69512609',1,'Guildmaster::Guild::RosterSlot']]],
+  ['relicinventory_10',['RelicInventory',['../classGuildmaster_1_1Guild_1_1RunState.html#a134fcacf950fe785b45191c05812732f',1,'Guildmaster::Guild::RunState']]],
+  ['remainingticks_11',['RemainingTicks',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html#ac4f0082e00dc1f4610994f29e7ac616b',1,'Guildmaster::Combat::Effects::RuntimeEffect']]],
+  ['reservedtags_12',['ReservedTags',['../classGuildmaster_1_1Combat_1_1Projectile.html#ae055ae9d6f77bd37fc909cc825f16872',1,'Guildmaster::Combat::Projectile']]],
+  ['result_13',['Result',['../structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html#a058298f83915cea972e339597e593323',1,'Guildmaster::Presentation::DamageDealtEvent']]],
+  ['returnathppct_14',['ReturnAtHpPct',['../structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html#aa18445ec3de8b8f315a7d4a661676321',1,'Guildmaster::Data::Definitions::Retreat']]],
+  ['root_15',['Root',['../classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths.html#a96c9ebbb8ec90394fd8ad1a208ec2877',1,'Guildmaster::Data::Editor::ContentPaths']]]
 ];

@@ -1,0 +1,9 @@
+<map id="Guildmaster.Game.DeploymentController" name="Guildmaster.Game.DeploymentController">
+<area shape="rect" id="Node000001" title="Оркестратор интерактивной фазы расстановки (план шаг 4)." alt="" coords="33,119,253,259"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,83,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,81,99,117,94,120,70,84"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="107,5,179,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="145,84,145,118,140,118,140,84"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="203,5,293,71"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="220,83,194,120,190,117,216,80"/>
+</map>

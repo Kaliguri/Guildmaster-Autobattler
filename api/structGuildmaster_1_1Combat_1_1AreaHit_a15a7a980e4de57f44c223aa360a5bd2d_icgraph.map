@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.AreaHit.Circle" name="Guildmaster.Combat.AreaHit.Circle">
+<area shape="rect" id="Node000001" title=" " alt="" coords="324,13,537,53"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent.html#aa8bc5677b1910a0555fb126f2b0b9d29" title=" " alt="" coords="5,5,276,60"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="310,35,276,35,276,30,310,30"/>
+</map>

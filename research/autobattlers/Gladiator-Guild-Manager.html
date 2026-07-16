@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Gladiator Guild Manager | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Gladiator Guild Manager | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Gladiator Guild Manager | Guildmaster Wiki"/><meta name="twitter:description" content="Статус: Досье (ресерч) Gladiator Guild Manager Дата ресерча: 2026-07-15."/><meta property="og:description" content="Статус: Досье (ресерч) Gladiator Guild Manager Дата ресерча: 2026-07-15."/><meta property="og:image:alt" content="Статус: Досье (ресерч) Gladiator Guild Manager Дата ресерча: 2026-07-15."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Gladiator-Guild-Manager"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Gladiator-Guild-Manager"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Статус: Досье (ресерч) Gladiator Guild Manager Дата ресерча: 2026-07-15."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="research/autobattlers/Gladiator-Guild-Manager"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-93"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-93" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/">research</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/autobattlers/">autobattlers</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Gladiator Guild Manager</a></div></nav><h1 class="article-title">Gladiator Guild Manager</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-16T13:38:27.286Z">16 июл. 2026 г.</time><span>время чтения ~15 мин.</span></p></div></div><article class="popover-hint"><p><strong>Статус:</strong> Досье (ресерч)</p>
+<h1 id="gladiator-guild-manager">Gladiator Guild Manager<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#gladiator-guild-manager" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<p>Дата ресерча: 2026-07-15. Источник данных — только открытые веб-источники (Steam, форумы Steam, Kickstarter, обзоры, агрегаторы отзывов). Игра лично не проверялась.</p>
+<hr/>
+<h2 id="1-паспорт">1. Паспорт<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-паспорт" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Параметр</th><th>Значение</th></tr></thead><tbody><tr><td>Название</td><td>Gladiator Guild Manager (Steam app 1043260)</td></tr><tr><td>Разработчик</td><td><strong>Entertainment Forge</strong> — команда из 2 человек + фрилансеры</td></tr><tr><td><strong>Terror Dog Studio</strong></td><td><strong>Отношения к игре не имеет.</strong> Данных о какой-либо связи не найдено — гипотеза из задания не подтвердилась</td></tr><tr><td>Издатели</td><td>GrabTheGames, Gamirror Games, UpgradePoint</td></tr><tr><td>Жанр (теги Steam)</td><td>Auto Battler, Management, Strategy RPG, Tactical, Roguelite, Turn-Based Tactics, Pixel Graphics, Singleplayer, Resource Management</td></tr><tr><td>PVE / PVP</td><td>Чистый <strong>PVE</strong>, одиночная игра. PVP нет. Кооп нет. Есть лидерборды в турнирном (эндлесс) режиме</td></tr><tr><td>Цена</td><td>$14.99 / €14.79 (регулярно -50…-67%)</td></tr><tr><td>Отзывы Steam</td><td><strong>Very Positive, 81 % положительных из 1 609</strong> англоязычных отзывов; всего ~3 763 отзыва на всех языках. Recent: 81 % (44 отзыва)</td></tr><tr><td>Metacritic</td><td>Оценок критиков нет (tbd). Юзер-скор 7.0 на 6 голосах — нерепрезентативно</td></tr></tbody></table></div>
+<h3 id="путь-через-ранний-доступ">Путь через ранний доступ<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#путь-через-ранний-доступ" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Kickstarter №1</strong> (январь—февраль 2020) — <strong>провалился</strong>, цель не собрана.</li>
+<li><strong>Kickstarter №2</strong> (12.08.2020 — 11.09.2020) — <strong><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8389em;vertical-align:-0.1944em;"></span><span class="mord">20832</span><span class="mord cyrillic_fallback">прицели</span></span></span></span>20 000 (104 %)</strong>. К моменту кампании игра была в разработке уже ~14 месяцев.</li>
+<li><strong>Prologue</strong> (бесплатное демо, app 1332470) — ~<strong>94 % положительных при ~554 отзывах</strong>. Демо было заметно теплее принято, чем финальная игра (81 %). Это важный сигнал: то, что нравилось в коротком демо, при растяжении на 10–15 часов начало раздражать.</li>
+<li><strong>Ранний доступ</strong> — 13.10.2021.</li>
+<li><strong>Релиз 1.0</strong> — 22.06.2024. То есть <strong>2 года 8 месяцев в EA</strong>, общий цикл разработки — около 6 лет («these six years of development» — из поста разработчиков к 1.0).</li>
+<li>После 1.0 команда ушла на новый проект <strong>Dreadwoods Gatekeeper</strong>; в негативных отзывах это фиксируют как «забросили игру с багами».</li>
+</ul>
+<hr/>
+<h2 id="2-ядро-цикла">2. Ядро цикла<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-ядро-цикла" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Макро-слой — гильдия на непрерывном таймлайне.</strong> Идут дни/недели/месяцы, игрок управляет скоростью течения времени. По ходу таймлайна появляются квесты фракций, обновляется магазин, восстанавливаются раненые/убитые бойцы.</p>
+<p><strong>Что игрок делает между боями:</strong></p>
+<ul>
+<li>нанимает гладиаторов из ротирующегося магазина (более 20 классов: воины, маги, некроманты, звери и т. д.);</li>
+<li>строит и апгрейдит здания гильдии (в 1.0 добавили: crucible — апгрейд трейтов, workshop — универсальный апгрейд предметов, altar of respec — сброс и перераспределение статов);</li>
+<li>качает уровни, <strong>вручную распределяет главные статы</strong>;</li>
+<li>выбирает и качает трейты/квирки (есть узкое место — «чертежи»/blueprint-bottleneck);</li>
+<li>экипирует предметы, апгрейдит их;</li>
+<li>берёт квесты фракций, набирает репутацию (3 фракции → разные концовки).</li>
+</ul>
+<p><strong>Структура кампании.</strong> Месячные циклы; в месяце 5–8 боёв. Размер команды на бой растёт по ходу кампании: 3 / 4 / 5 / 6 / 7 / 8 / 8 / 9 / 9 / 10 / 10 / 12 — 12-й бой является условием победы. Прошлые арены можно переигрывать, чтобы подкачаться. Сюжет — <strong>~10–15 часов</strong>. Постгейм — Tournament Mode (эндлесс + лидерборд). Есть режимы сложности (Normal / Hard / Nightmare) и <strong>опция перма-смерти</strong>.</p>
+<p><strong>Бой:</strong></p>
+<ol>
+<li>Фаза подготовки: выбрать бойцов из ростера под конкретного противника, <strong>расставить их</strong> (не сетка — свободное размещение), назначить <strong>приоритеты целей</strong>.</li>
+<li>Нажать «в бой» → <strong>бой играется сам</strong>. Игрок смотрит.</li>
+<li>Скорость боя — <strong>до x5</strong>; в опциях есть настройка скорости по умолчанию.</li>
+</ol>
+<p><strong>Длина боя:</strong> точных цифр не найдено. Косвенно — короткие: на x5 «увидеть исход можно очень быстро», а в месяце помещается 5–8 боёв плюс менеджмент.</p>
+<hr/>
+<h2 id="3-интерактив-в-бою">3. Интерактив в бою<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-интерактив-в-бою" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Приказов во время боя нет.</strong> Весь контроль — до старта:</p>
+<ol>
+<li><strong>Расстановка</strong> — свободное размещение юнитов перед боем.</li>
+<li><strong>Priority Points (система приоритета целей)</strong> — главная и единственная «тактическая» ручка. Работает так:
+<ul>
+<li>выбрать своего гладиатора → назначить <strong>шаблон целей</strong> («первая линия» / «вторая линия» / «саппорт»), либо</li>
+<li><strong>вручную выставить веса 1–10</strong> на конкретных противников на поле.</li>
+<li>У саппортов есть отдельные флаги поведения — например, у Priestess по умолчанию включено «помогать тем, кого сейчас бьют», и это можно выключить.</li>
+<li>Пример осмысленного использования (из гайдов): пиромант поджигает конкретную цель, а мили-боец с топором «+40 % урона по горящим» получает приоритет на ту же цель.</li>
+</ul>
+</li>
+<li><strong>Скорость x1…x5.</strong></li>
+<li><strong>Auto-Pause</strong> — важное уточнение: добавленный к 1.0 авто-пауз относится <strong>к таймлайну менеджмента, а не к бою</strong>. Он останавливает время, когда «появился квест / готово Ring of Death / скидки в магазине». Разработчики про него: «In all honesty, we like playing without it» (Entertainment Forge).</li>
+</ol>
+<p><strong>Можно ли менять приоритеты посреди активного боя</strong> — однозначного подтверждения не найдено. Обзоры пишут «at the start of the battle», форумный ответ игрокам звучит как «включите чекбокс priorities в левом верхнем углу» боевого экрана. Скорее всего, это фаза подготовки на боевом экране. <strong>Данных на прямой вопрос не найдено.</strong></p>
+<p><strong>Как игроки это оценивают.</strong> Раскол по стажу — и он поучителен:</p>
+<ul>
+<li>Игроки с малым налётом (0.5–10 ч) пишут «а что я вообще делаю?».</li>
+<li>Игроки с 40–60 ч <strong>не жалуются на отсутствие контроля вообще</strong> — они жалуются на баланс, баги и поведение AI. То есть отсутствие контроля не является причиной оттока у тех, кто вошёл в игру.</li>
+</ul>
+<hr/>
+<h2 id="4-где-живёт-скилл-и-глубина">4. Где живёт скилл и глубина<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-где-живёт-скилл-и-глубина" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Позиция разработчика (прямая, с форума):</strong> «the main gameplay loop is building and optimizing team to overcome the enemies». Смысл игры — собрать команду, которая выиграет сама.</p>
+<p><strong>Что фактически требует скилла (по гайдам и отзывам ветеранов):</strong></p>
+<ul>
+<li><strong>Распределение главных статов</strong> — по отзывам, самая мощная ручка; топ-билды строятся на «стакании» одного стата (см. ниже про баланс — это же и слабость).</li>
+<li><strong>Порядок прокачки трейтов</strong> — упирается в дефицит чертежей, то есть это решение с реальной ценой.</li>
+<li><strong>Синергии предмет × трейт × способность</strong> — в 1.0 это специально усиливали («упрощая переплетение предметов, трейтов и способностей»).</li>
+<li><strong>Подбор состава под конкретного противника</strong> (у противников есть свои составы; переиграть арену можно, значит можно контрить).</li>
+<li><strong>Расстановка</strong> и <strong>приоритеты целей</strong>.</li>
+</ul>
+<p><strong>Признание игроков.</strong> Cynical-Red (44.8 ч) хвалит «tons of items and builds to grind out» и то, что скачки сложности заставляют экспериментировать со скейлящимися предметами. Nige Ward (12.6 ч) отмечает, что реальный вызов появляется только на Nightmare + перма-смерть, а Normal/Hard «слишком легко».</p>
+<p><strong>Слабое место глубины.</strong> Скилл на 100 % живёт в билд-крафте, а исполнение плана отдано AI, который игрок не контролирует и не может починить. Когда AI ошибается, у игрока нет ни одного инструмента спасения — и это стало главным источником жалоб (см. п. 7).</p>
+<hr/>
+<h2 id="5-рандом">5. Рандом<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-рандом" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Где рандом на входе (управляемый):</strong></p>
+<ul>
+<li>ротация магазина гладиаторов (кто вообще доступен к найму);</li>
+<li>предметы: и их появление, и роллы статов/эффектов;</li>
+<li>трейты/квирки (в том числе негативные квирки);</li>
+<li>квесты фракций.</li>
+</ul>
+<p><strong>Где рандом внутри боя (неуправляемый):</strong> есть — и это ключевое отличие от нашей схемы. Отзывы упоминают «inconsistent damage», проблемы пафинга и <strong>самопроизвольную смену цели</strong> юнитом. То есть бой у них не детерминирован и не воспроизводим.</p>
+<p><strong>Жалобы «рандом решает» — есть, и они конкретны:</strong></p>
+<ul>
+<li>Найм — «RNG-fest». Игроки описывают <strong>рестарты забега по 5/10/20 раз</strong> ради приличного стартового ролла бойцов и статов.</li>
+<li>Всплески сложности: игрок сообщил про врага <strong>114 уровня при своих 13</strong>. Разработчик выкатил хотфикс за 41 минуту и объяснил, что пики возникали <strong>после арен 3, 6 и 9</strong> из-за синергий трейтов/предметов у врага; «понизили их примерно на 50 %».</li>
+<li><strong>Отказ от динамического скейла сложности — сознательный.</strong> Разработчик прямо сказал, что не будет подкручивать сложность под игрока, потому что игрок должен понимать, победил ли он на самом деле или игра его пропустила. Это редкая по честности позиция, и она согласуется с нашей.</li>
+</ul>
+<hr/>
+<h2 id="6-что-хвалят-короткие-цитаты">6. Что хвалят (короткие цитаты)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-что-хвалят-короткие-цитаты" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>«very well put together little auto battler» — Cynical-Red, 44.8 ч, Steam.</li>
+<li>«tons of items and builds to grind out» — Cynical-Red, там же.</li>
+<li>«fun little game» с балансом «камень-ножницы-бумага» между классами — Sir Gamesalot, 61.1 ч, Steam.</li>
+<li>«Fun and engaging gameplay» — 56 упоминаний в агрегированном разборе отзывов (VaporLens).</li>
+<li>«great filler game» для казуальной стратегии — сводка обзоров/Backloggd.</li>
+<li>Хвалят: разнообразие 20+ классов с настоящими нишевыми ролями; удовлетворение от того, что «подобранная связка сработала»; ощущение владения командой; юмор и тон.</li>
+</ul>
+<hr/>
+<h2 id="7-на-что-жалуются-паттерны">7. На что жалуются: паттерны<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-на-что-жалуются-паттерны" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>A. «Смотрю, а не играю» (вход, малый налёт).</strong>
+«There’s no tactics, no turn based, no pause combat» — игрок Masked, форум Пролога. Классическая претензия новичка к жанру. <strong>Она НЕ является причиной оттока ветеранов</strong> — но она является причиной невхода. Проблема доносится до покупателя, а не до наигранного игрока.</p>
+<p><strong>B. Глупый AI ворует победы — ГЛАВНЫЙ содержательный паттерн.</strong></p>
+<ul>
+<li>«gladiators will just stop doing anything», разрушая стратегию — minicoaster, 10.4 ч (негативный отзыв).</li>
+<li>Юниты меняют цель, когда до добивания оставался один удар.</li>
+<li>Проблемы пафинга.</li>
+<li>Один отзыв прямо: «incredibly dumb AI» приводит к незаслуженным поражениям.</li>
+</ul>
+<p><strong>Вывод, который здесь спрятан:</strong> в игре без контроля ошибка AI переживается не как «я плохо сыграл», а как <strong>кража</strong>. Игрок не может ни исправить, ни доказать, ни перепрожить. В игре с микро-контролем та же ошибка была бы его собственной. Цена бага в AI в автобаттлере кратно выше, чем в тактике.</p>
+<p><strong>C. Микроменеджмент и рутина (тедиум).</strong></p>
+<ul>
+<li><strong>Нет сохранённых построений</strong> — расставлять команду вручную заново перед каждым боем. Игрок с 10.3 ч буквально пишет про «carpal tunnel» и перечисляет отсутствующие QoL: сохранённые формации, автопродажа шмота, запоминание скорости боя.</li>
+<li>«Having no formations and needing to put mercenaries on board every fight is tedious» — негативный отзыв, 8.0 ч.</li>
+<li>«way too much time dealing with equipment» — пользователь Metacritic, 16 ч, при в целом положительном впечатлении.</li>
+<li>Итог: слоёв менеджмента много, а рутина не автоматизирована ни в одном.</li>
+</ul>
+<p><strong>D. Повторяемость.</strong> 43 упоминания монотонности в агрегированном разборе отзывов (VaporLens); «становится repetitive and boring через 5 часов» (негативный отзыв, 7.6 ч); 27 упоминаний нехватки контента.</p>
+<p><strong>E. Тайм-гейт и «мёртвое время».</strong> Отдельная ветка форума: «this has become a sitting around waiting time gate game». Игроки жалуются, что большую часть времени смотрят, как крутится ползунок дней, ожидая доступную арену; «нет способа прокачать слабых бойцов, кроме боёв раз в неделю/месяц». Часть комьюнити защищает это как «время подумать» — но раскол сам по себе диагноз.</p>
+<p><strong>F. Баланс и снежный ком.</strong></p>
+<ul>
+<li>«No balance»: около <strong>30 % мили-классов — балласт</strong>; жизнеспособные билды сводятся к <strong>«single-stat abuse»</strong> — Hikki Tikki Tavi, 48.3 ч (самый наигранный негативный отзыв).</li>
+<li>Скачки сложности после определённых арен (см. п. 5).</li>
+<li>Враги сильно выше по уровню, «ваншотят всё».</li>
+<li>Normal/Hard слишком лёгкие, весь вызов — только на Nightmare + перма-смерть. То есть кривая сложности бинарная, а не плавная.</li>
+</ul>
+<p><strong>G. Баги и ощущение заброшенности.</strong> «Abilities frequently not working», случайные краши, «inconsistent damage», баги смертей. Плюс восприятие «разработчики уже переключились на другую игру» (что фактически так — Dreadwoods Gatekeeper). Для нас это не дизайн-урок, но это то, что съело часть 19 % негатива.</p>
+<p><strong>Сентимент (агрегированно, VaporLens):</strong> фрустрация 27 %, разочарование 19 %, удовольствие 19 %, удовлетворение 13 %, скука 7 %.</p>
+<hr/>
+<h2 id="8-решения-разработчиков">8. Решения разработчиков<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-решения-разработчиков" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>1. На «нет тактики» ответили НЕ микро-контролем, а расширением ПРЕДбоевого выражения.</strong>
+Ещё на форуме Пролога, в ответ на тред «needs more tactics» (игрок flynn4711 просил: «target ranged first», «prioritize attackers on healers», «AOE casters target largest group», «keep distance from enemy» — его хилеры «бегали без плана и умирали»), разработчики согласились и пообещали: в раннем доступе игрок сможет «давать гладиаторам инструкции, кого атаковать и на каком типе врагов фокусироваться». Реализовали это как <strong>Unit Priority Points</strong> (v0.627). Это буквально то, что у нас называется AI-профили.</p>
+<p><strong>2. Философия «владение без управления» — сформулирована прямо.</strong>
+Entertainment Forge: «you own these gladiators but they are your fighters who fight for you on their own». Игру вдохновили детские арены в картах Warcraft 3, где герои дрались сами. Ядро дизайна — «подготовка до боя, а затем наслаждение плодами удачного менеджмента».</p>
+<p><strong>3. Про «режим с контролем» — обещали осторожно и не сделали.</strong>
+«Perhaps when game is done we could build a special mode where you’d have some control over units (no promises)» — Entertainment Forge, форум Пролога. Такого режима в игре нет. Никто из наигранных игроков в отзывах о нём и не жалеет — просят они баланс и багфиксы.</p>
+<p><strong>4. Предупреждение от самих игроков про перегрузку.</strong>
+Тот же flynn4711, который просил больше тактики, тут же добавил: «don’t overcomplicate it. If i need a PhD to play the game!». Хороший маркер границы: игроки хотят выразительности, а не второй профессии.</p>
+<p><strong>5. Что вошло в 1.0</strong> (после 10 месяцев задержки, «слушали аудиторию»):</p>
+<ul>
+<li>реворк системы трейтов, <strong>+30 новых трейтов</strong>;</li>
+<li>переработка «нелюбимых» предметов + апгрейд предметов;</li>
+<li><strong>усиление синергий</strong> предмет × трейт × способность;</li>
+<li>3 новых здания (crucible / workshop / altar of respec);</li>
+<li>квесты фракций и репутация;</li>
+<li>полировка UI и звука;</li>
+<li><strong>Auto-Pause-Play Timeline</strong> (по событиям менеджмента, настраиваемый) + настройки скорости таймлайна и <strong>скорости боя по умолчанию</strong>.</li>
+</ul>
+<p><strong>6. Отказ от динамического скейла сложности</strong> — принципиальный (см. п. 5). Пики правили хотфиксами (вплоть до 41 минуты на реакцию), а не автоподстройкой.</p>
+<hr/>
+<h2 id="9-уроки-для-guildmaster">9. Уроки для Guildmaster<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-уроки-для-guildmaster" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Наша схема: 4 сосуда, реликвии-киты, полностью автономный детерминированный бой, весь контроль до боя (реликвии, свободная расстановка, AI-профили, предметы, драфт), StS-карта, рестарт боя до 2 раз, кооп 1–4.</p>
+<p><strong>ВЗЯТЬ</strong></p>
+<ol>
+<li>
+<p><strong>Отсутствие контроля в бою — не проблема. Проблема — нечитаемость и нечестность.</strong> Данные жёсткие: 81 % положительных при нулевом контроле, а ветераны с 40–60 ч не жалуются на контроль вообще. «Просто смотрю» — жалоба входа (0.5–10 ч), а не удержания. Значит наше решение вырезать заклинания Гильдмастера — не риск сам по себе. <strong>Риск в другом:</strong> сможем ли мы сделать бой понятным. Инвестировать надо в <strong>читаемость</strong> (почему юнит сделал то, что сделал; почему я проиграл), а не в интервенции.</p>
+</li>
+<li>
+<p><strong>AI-профили — это ядро скилл-выражения, а не вспомогательная настройка.</strong> Priority Points у GGM — прямой аналог, и он появился как ответ на «нет тактики». Делать по их модели, но лучше: <strong>обязательные пресеты-шаблоны</strong> (агрессивный / защитный / фокус на бэклайне) плюс <strong>опциональная ручная тонкая настройка</strong> для тех, кто хочет. И — их же грабли — <strong>UI должен быть виден</strong>: у них игроки физически не находили окно приоритетов и писали на форум.</p>
+</li>
+<li>
+<p><strong>Наш детерминизм — это то, чего у них нет, и это надо продавать как фичу.</strong> Главная боль GGM — «AI сделал глупость, я не мог ничего сделать, забег испорчен». У нас: нет крита, нет уклонения, фикс. тик 30 Гц, ноль рандома в бою. Плюс <strong>рестарт боя до 2 раз</strong>. Это значит, что поражение у нас <strong>всегда результат плана</strong>, и его <strong>можно перепрожить и исправить</strong>. Это буквально лечит главный источник фрустрации в этом жанре. Нужно, чтобы игрок это осознавал: показывать после боя «что пошло не так» (кто кого фокусил, когда сработала ульта, где сломалась линия) — тогда рестарт становится решением задачи, а не лотереей.</p>
+</li>
+<li>
+<p><strong>Пауза как инструмент обучения, а не контроля.</strong> У GGM auto-pause сделан только для таймлайна менеджмента, но не для боевых событий — и это упущение. У нас пауза = просмотр. Добавить <strong>авто-паузу по боевым событиям</strong> (первое срабатывание ульты, смерть юнита, триггер реликвии) как опцию — это даёт «полумикро»-ощущение вовлечённости <strong>без единого игрового решения</strong>, то есть без порчи честности и без микроменеджмента. Плюс скорость x1…x3(x5).</p>
+</li>
+</ol>
+<p><strong>ИЗБЕГАТЬ</strong></p>
+<ol start="5">
+<li>
+<p><strong>Не расставлять команду руками каждый бой.</strong> Это самая частая «душнота» у GGM — вплоть до «carpal tunnel» в отзывах. У нас свободная (не сеточная) расстановка = ещё выше цена ручного труда. <strong>Обязательны:</strong> сохранённые формации, «повторить прошлую расстановку», авто-раскладка по умолчанию, копирование формации между боями. Это не QoL «потом» — это условие, при котором свободная расстановка вообще жизнеспособна.</p>
+</li>
+<li>
+<p><strong>Не добавлять новых слоёв менеджмента — их у нас уже больше, чем у GGM.</strong> У них: статы + респек + трейты + чертежи + предметы + апгрейд предметов + здания + квесты + репутация + таймлайн → «way too much time dealing with equipment». У нас уже: реликвии по сосудам, расстановка, AI-профили, предметы, драфт 1-из-3, лимит вместимости коллекции, путь по карте, испытания. <strong>Каждый новый слой обязан удалять рутину, а не добавлять.</strong> Глубину искать не в новом слое, а в увеличении взаимодействия между уже существующими (у GGM это сработало: 1.0 усилили не количество систем, а <strong>синергии</strong> предмет × трейт × способность).</p>
+</li>
+<li>
+<p><strong>Не строить билды вокруг одного стата и не оставлять мёртвые классы.</strong> «~30 % мили-классов — балласт», «single-stat abuse» — приговор от самого наигранного негативного отзыва (48 ч). У нас реликвия = весь кит, значит мёртвая реликвия = мёртвый слот в драфте 1-из-3 и испорченный забег. Нужен регулярный аудит: <strong>каждая реликвия должна иметь состав, в котором она — лучший выбор.</strong></p>
+</li>
+<li>
+<p><strong>Не делать мёртвого времени.</strong> Тайм-гейт GGM («сидишь и смотришь на ползунок дней») — отдельная ветка жалоб. Наша StS-карта это решает by design: узел → выбор → бой → награда, без простоя. <strong>Не ломать это</strong> ради «симуляции жизни гильдии». Особенно в коопе: простой одного игрока умножается на четверых, и это убивает сессию.</p>
+</li>
+<li>
+<p><strong>Кооп — наш дифференциатор, и он смягчает «смотрю, а не играю».</strong> У GGM кооп-а нет, и «наблюдение» = одиночество. У нас совместный просмотр автономного боя — это социальное событие (обсуждение, спор, «я же говорил, что надо было ставить его слева»). Но это работает <strong>только если бой читаем</strong> (см. п. 1) и <strong>если фаза подготовки параллельна</strong> (все четверо что-то делают одновременно, а не ждут ходов друг друга).</p>
+</li>
+</ol>
+<hr/>
+<h2 id="10-источники">10. Источники<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-источники" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>Steam — Gladiator Guild Manager: <a href="https://store.steampowered.com/app/1043260/Gladiator_Guild_Manager/" class="external">https://store.steampowered.com/app/1043260/Gladiator_Guild_Manager/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam — Gladiator Guild Manager: Prologue: <a href="https://store.steampowered.com/app/1332470/Gladiator_Guild_Manager_Prologue/" class="external">https://store.steampowered.com/app/1332470/Gladiator_Guild_Manager_Prologue/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam — отзывы (top rated, EN): <a href="https://steamcommunity.com/app/1043260/reviews/?browsefilter=toprated" class="external">https://steamcommunity.com/app/1043260/reviews/?browsefilter=toprated<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam — негативные отзывы (top rated, EN): <a href="https://steamcommunity.com/app/1043260/negativereviews/?browsefilter=toprated&amp;filterLanguage=english" class="external">https://steamcommunity.com/app/1043260/negativereviews/?browsefilter=toprated&amp;filterLanguage=english<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam-форум Пролога — «This game is pretty cool but…» (спор про отсутствие контроля + ответ разработчика): <a href="https://steamcommunity.com/app/1332470/discussions/0/2994291378921586627/" class="external">https://steamcommunity.com/app/1332470/discussions/0/2994291378921586627/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam-форум Пролога — «needs more tactics» (запрос на приоритеты целей + обещание разработчика): <a href="https://steamcommunity.com/app/1332470/discussions/0/3033725235495039600/" class="external">https://steamcommunity.com/app/1332470/discussions/0/3033725235495039600/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam-форум — «Priority points» (как включить и как работает): <a href="https://steamcommunity.com/app/1043260/discussions/0/4424310458753664634/" class="external">https://steamcommunity.com/app/1043260/discussions/0/4424310458753664634/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam-форум — «wtf is the random difficulty spike?» (пики сложности, хотфикс, отказ от динамического скейла): <a href="https://steamcommunity.com/app/1043260/discussions/0/4345491945915359035/" class="external">https://steamcommunity.com/app/1043260/discussions/0/4345491945915359035/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam-форум — «this has become a sitting around waiting time gate game»: <a href="https://steamcommunity.com/app/1043260/discussions/0/3201493834358866521/" class="external">https://steamcommunity.com/app/1043260/discussions/0/3201493834358866521/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam — анонс патча v0.947 (Auto Pause-Play Timeline, настройки скорости): <a href="https://steamcommunity.com/games/1043260/announcements/detail/4156339938241147300" class="external">https://steamcommunity.com/games/1043260/announcements/detail/4156339938241147300<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Kickstarter — Gladiator Guild Manager: Epic Battle Simulator: <a href="https://www.kickstarter.com/projects/entertainment-forge/gladiator-guild-manager-epic-battle-simulator" class="external">https://www.kickstarter.com/projects/entertainment-forge/gladiator-guild-manager-epic-battle-simulator<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Kickstarter Update 17 (v0.627 — Unit Priority Points): <a href="https://www.kickstarter.com/projects/entertainment-forge/gladiator-guild-manager-epic-battle-simulator/posts/3229471" class="external">https://www.kickstarter.com/projects/entertainment-forge/gladiator-guild-manager-epic-battle-simulator/posts/3229471<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> (страница отдаёт 403 при автоматическом доступе; содержание известно по индексации)</li>
+<li>PCGamesN — «Raucous strategy game Gladiator Guild Manager hits 1.0 on Steam» (состав обновления 1.0, цитаты разработчиков): <a href="https://www.pcgamesn.com/gladiator-guild-manager/steam-launch" class="external">https://www.pcgamesn.com/gladiator-guild-manager/steam-launch<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>The Drastik Measure — PC (P)review (приоритеты целей, «little to no control»): <a href="https://www.thedrastikmeasure.com/2023/02/23/gladiator-guild-manager-pc-preview/" class="external">https://www.thedrastikmeasure.com/2023/02/23/gladiator-guild-manager-pc-preview/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>KosGuides — Campaign Starter Guide for V1.0 (структура кампании, где живёт скилл): <a href="https://kosguides.com/1404-gladiator-guild-manager-campaign-starter-guide-for-v1-0/" class="external">https://kosguides.com/1404-gladiator-guild-manager-campaign-starter-guide-for-v1-0/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>VaporLens — агрегированный разбор отзывов Steam (паттерны жалоб, сентимент): <a href="https://vaporlens.app/app/1043260/gladiator_guild_manager" class="external">https://vaporlens.app/app/1043260/gladiator_guild_manager<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Metacritic: <a href="https://www.metacritic.com/game/gladiator-guild-manager/" class="external">https://www.metacritic.com/game/gladiator-guild-manager/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam Community Guide — 100 % Achievements Guide and Game Tips: <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2938948447" class="external">https://steamcommunity.com/sharedfiles/filedetails/?id=2938948447<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> (при автоматическом доступе отдала 429; не вычитана)</li>
+<li>Press Attack — Review: Gladiator Guild Manager: <a href="https://www.pressattack.com.br/en/post/review-gladiator-guild-manager-1" class="external">https://www.pressattack.com.br/en/post/review-gladiator-guild-manager-1<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> (текст обзора не удалось извлечь целиком)</li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-69" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#gladiator-guild-manager" data-for="gladiator-guild-manager">Gladiator Guild Manager</a></li><li class="depth-1"><a href="#1-паспорт" data-for="1-паспорт">1. Паспорт</a></li><li class="depth-2"><a href="#путь-через-ранний-доступ" data-for="путь-через-ранний-доступ">Путь через ранний доступ</a></li><li class="depth-1"><a href="#2-ядро-цикла" data-for="2-ядро-цикла">2. Ядро цикла</a></li><li class="depth-1"><a href="#3-интерактив-в-бою" data-for="3-интерактив-в-бою">3. Интерактив в бою</a></li><li class="depth-1"><a href="#4-где-живёт-скилл-и-глубина" data-for="4-где-живёт-скилл-и-глубина">4. Где живёт скилл и глубина</a></li><li class="depth-1"><a href="#5-рандом" data-for="5-рандом">5. Рандом</a></li><li class="depth-1"><a href="#6-что-хвалят-короткие-цитаты" data-for="6-что-хвалят-короткие-цитаты">6. Что хвалят (короткие цитаты)</a></li><li class="depth-1"><a href="#7-на-что-жалуются-паттерны" data-for="7-на-что-жалуются-паттерны">7. На что жалуются: паттерны</a></li><li class="depth-1"><a href="#8-решения-разработчиков" data-for="8-решения-разработчиков">8. Решения разработчиков</a></li><li class="depth-1"><a href="#9-уроки-для-guildmaster" data-for="9-уроки-для-guildmaster">9. Уроки для Guildmaster</a></li><li class="depth-1"><a href="#10-источники" data-for="10-источники">10. Источники</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

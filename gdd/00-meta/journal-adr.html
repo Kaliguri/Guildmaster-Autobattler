@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Meta - Decision Journal | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Meta - Decision Journal | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Meta - Decision Journal | Guildmaster Wiki"/><meta name="twitter:description" content="Все принятые геймдизайнерские решения — с датой и причиной. Пишется в момент принятия."/><meta property="og:description" content="Все принятые геймдизайнерские решения — с датой и причиной. Пишется в момент принятия."/><meta property="og:image:alt" content="Все принятые геймдизайнерские решения — с датой и причиной. Пишется в момент принятия."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/journal-adr"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/gdd/00-meta/journal-adr"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Все принятые геймдизайнерские решения — с датой и причиной. Пишется в момент принятия."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="gdd/00-meta/journal-adr"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-5" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../gdd/">gdd</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../gdd/00-meta/">Meta   Index</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Meta   Decision Journal</a></div></nav><h1 class="article-title">Meta - Decision Journal</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-16T13:38:27.285Z">16 июл. 2026 г.</time><span>время чтения ~22 мин.</span></p></div></div><article class="popover-hint"><blockquote>
+<p><strong>Все принятые геймдизайнерские решения</strong> — с датой и причиной. Пишется в момент принятия.
+Отсюда решения расходятся по канон-документам; здесь — история и обоснования.</p>
+<p>Что ещё НЕ решено и требует проработки — <a href="../../gdd/00-meta/roadmap" class="internal alias" data-slug="gdd/00-meta/roadmap">Meta - Roadmap</a>.
+Снятые с дизайна механики — <a href="../../gdd/00-meta/legacy" class="internal" data-slug="gdd/00-meta/legacy">legacy</a>.</p>
+</blockquote>
+<hr/>
+<h2 id="оглавление">Оглавление<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#оглавление" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><a href="#2026-07-16--%D0%B4%D0%B8%D0%B7%D0%B0%D0%B9%D0%BD-%D1%81%D1%82%D0%BE%D0%BB%D0%BF%D1%8B-%D0%B8-vision" class="internal alias">2026-07-16 — дизайн-столпы и vision</a></li>
+<li><a href="#2026-07-15--%D1%81%D0%B5%D1%81%D1%81%D0%B8%D1%8F-%D1%81%D0%BA%D0%B8%D0%BB%D0%BB-%D1%80%D0%B0%D0%BD%D0%B4%D0%BE%D0%BC-%D0%B8-%D0%B3%D0%BB%D1%83%D0%B1%D0%B8%D0%BD%D0%B0-%D0%B2-pve-%D0%B0%D0%B2%D1%82%D0%BE%D0%B1%D0%B0%D1%82%D1%82%D0%BB%D0%B5%D1%80%D0%B5" class="internal alias">2026-07-15 — сессия «скилл, рандом и глубина в PVE-автобаттлере»</a></li>
+<li><a href="#2026-07-15-%D0%B2%D0%B5%D1%87%D0%B5%D1%80--%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%BD%D0%B0%D1%8F-%D1%80%D0%B0%D0%BC%D0%BA%D0%B0-%D0%B3%D0%B8%D0%BB%D1%8C%D0%B4%D0%B8%D0%B8-%D0%B1%D0%BB%D0%BE%D0%BA-0" class="internal alias">2026-07-15 (вечер) — структурная рамка гильдии (Блок 0)</a></li>
+<li><a href="#2026-07-15-%D0%B2%D0%B5%D1%87%D0%B5%D1%80--%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0-%D1%8D%D1%84%D1%84%D0%B5%D0%BA%D1%82%D0%BE%D0%B2-%D0%BA%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3" class="internal alias">2026-07-15 (вечер) — система эффектов, каталог</a></li>
+<li><a href="#2026-07-15-%D0%B2%D0%B5%D1%87%D0%B5%D1%80--%D0%BF%D1%80%D0%B5%D0%B4%D0%BC%D0%B5%D1%82%D1%8B-%D0%B8-%D0%B7%D0%BD%D0%B0%D0%BC%D1%91%D0%BD%D0%B0" class="internal alias">2026-07-15 (вечер) — предметы и Знамёна</a></li>
+<li><a href="#2026-07-15-%D0%B2%D0%B5%D1%87%D0%B5%D1%80--%D0%BF%D0%B5%D1%82%D0%BB%D1%8F-%D0%B7%D0%B0%D0%B1%D0%B5%D0%B3%D0%B0-%D0%BF%D0%B5%D1%80%D0%B5%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D0%BA-%D0%B8%D0%BD%D1%84%D0%BE-%D0%BE-%D0%B2%D1%80%D0%B0%D0%B3%D0%B5-%D0%B8%D1%81%D0%BF%D1%8B%D1%82%D0%B0%D0%BD%D0%B8%D1%8F" class="internal alias">2026-07-15 (вечер) — петля забега: перезапуск, инфо о враге, испытания</a></li>
+<li><a href="#%D1%80%D0%B0%D0%BD%D0%B5%D0%B5-%D0%B4%D0%BE-2026-07-15--%D0%B8%D0%BD%D0%B2%D0%B5%D0%BD%D1%82%D0%B0%D1%80%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F-%D0%BA%D0%B0%D0%BD%D0%BE%D0%BD%D0%B0" class="internal alias">Ранее (до 2026-07-15) — инвентаризация канона</a></li>
+<li><a href="#%D0%BF%D1%80%D0%BE%D1%82%D0%B8%D0%B2%D0%BE%D1%80%D0%B5%D1%87%D0%B8%D1%8F-%D0%B8-%D1%80%D0%B0%D1%81%D1%81%D0%B8%D0%BD%D1%85%D1%80%D0%BE%D0%BD%D1%8B-%D0%B2-%D0%B4%D0%BE%D0%BA%D1%83%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%86%D0%B8%D0%B8-%D0%BD%D0%B0-2026-07-15" class="internal alias">Противоречия и рассинхроны в документации (на 2026-07-15)</a></li>
+<li><a href="#%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF%D1%8B-%D0%BD%D0%B5-%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D0%BD%D0%B8%D0%B2%D0%B0%D1%8E%D1%82%D1%81%D1%8F-%D0%B1%D0%B5%D0%B7-%D1%8F%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE-%D0%BF%D0%B5%D1%80%D0%B5%D1%81%D0%BC%D0%BE%D1%82%D1%80%D0%B0" class="internal alias">Принципы (не размениваются без явного пересмотра)</a></li>
+</ul>
+<hr/>
+<h2 id="2026-07-16--дизайн-столпы-и-vision">2026-07-16 — дизайн-столпы и vision<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2026-07-16--дизайн-столпы-и-vision" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Контекст: заведение «ростовых» артефактов ГД под контур скилла <code>gdd-scribe</code> — явные
+дизайн-столпы и vision-одностраничник, вытянутые из ранее принятых решений.</p>
+<h3 id="видение">Видение<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#видение" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th><th>Статус</th><th>Канон</th></tr></thead><tbody><tr><td>1</td><td><strong>Приняты 4 дизайн-столпа:</strong> Честность прежде всего · Глубина из скейлинга/дефицита/синергий · «Сосуды» — живые личности · Гильдия — дом, забег — приключение</td><td>Нужен явный фильтр фич («служит столпу?») и общий язык о сути игры; столпы вытянуты из уже принятого (доктрина честности, ресерч глубины, рамка гильдии)</td><td>accepted</td><td><a href="../../gdd/10-vision/pillars" class="internal" data-slug="gdd/10-vision/pillars">pillars</a></td></tr><tr><td>2</td><td><strong>«Читаемый автобой без микро» — формат/медиум, не столп</strong></td><td>Читаемость обслуживает столп «Честность»; отсутствие микро — жанровый выбор, а не тест на принадлежность фич</td><td>accepted</td><td><a href="../../gdd/10-vision/vision" class="internal" data-slug="gdd/10-vision/vision">vision</a></td></tr></tbody></table></div>
+<hr/>
+<h2 id="2026-07-15--сессия-скилл-рандом-и-глубина-в-pve-автобаттлере">2026-07-15 — сессия «скилл, рандом и глубина в PVE-автобаттлере»<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2026-07-15--сессия-скилл-рандом-и-глубина-в-pve-автобаттлере" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Контекст: разбор страха «автобаттлер = мало скилла, много рандома, ощущается нечестно». Проведён ресерч 14 PVE-автобаттлеров (<a href="../../research/autobattlers/00.-Сводка-и-выводы" class="internal alias" data-slug="research/autobattlers/00.-Сводка-и-выводы">00. Сводка и выводы</a>) и ресерч теории рандома (<a href="../../research/randomness-appendix" class="internal" data-slug="research/randomness-appendix">randomness-appendix</a>).</p>
+<h3 id="бой">Бой<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#бой" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>1</td><td><strong>Бой остаётся полностью автономным.</strong> Ввода игрока во время боя нет — ни микро, ни «полумикро»</td><td>Ни одна из 14 разобранных игр не провалилась из-за отсутствия микро. Три команды с той же жалобой («нет глубины») ответили предбоевыми рычагами, а не микроконтролем. Legionbound имеет спеллы и перестановку в бою — и всё равно получил «alt tab simulator»: кнопки в бою сами по себе агентности не создают</td></tr><tr><td>2</td><td><strong>Заклинания Гильдмастера вырезаны</strong> (в легаси)</td><td>Механика разваливается при оптимизации: в Mage and Monsters игроки на ускорении сами перестают кастовать и просят автокаст; автор за 2.5 года не усилил её, а ослабил. В коопе — «один кастует, трое смотрят»</td></tr><tr><td>3</td><td><strong>Умный и читаемый AI — приоритет уровня gamefeel и красоты боя</strong>, а не полировка</td><td>В игре без контроля ошибка AI переживается <strong>не как своя ошибка, а как кража победы</strong> — и починить её игроку нечем (главная жалоба ветеранов Gladiator Guild Manager). Это основа ГД-баланса</td></tr><tr><td>4</td><td><strong>Перезапуск боя — тот же самый бой.</strong> Те же враги, та же расстановка, те же эффекты; меняется только подготовка игрока. Перезапуск <strong>платный</strong></td><td>Иначе ломается петля обучения: игрок не отличит «моя перестановка сработала» от «повезло с другим раскладом», и любое поражение спишется на рандом</td></tr></tbody></table></div>
+<h3 id="многофазовые-сражения-новое-2026-07-15">Многофазовые сражения (новое, 2026-07-15)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#многофазовые-сражения-новое-2026-07-15" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>5</td><td><strong>Многофазовые сражения — вводим.</strong> Один энкаунтер = несколько последовательных битв</td><td>Даёт драматургию и плотность решений. <strong>Между фазами есть окно подготовки</strong> — это законный способ вернуть решения внутрь сражения, не ломая автономность боя, детерминизм и кооп</td></tr><tr><td>6</td><td><strong>Только для элит, боссов и ивентов.</strong> Обычный бой на карте — всегда одна фаза</td><td>Уникальный формат должен быть событием. В каждом третьем бою он станет рутиной</td></tr><tr><td>7</td><td><strong>Урон между фазами НЕ переносится.</strong> Железно</td><td>Решение Макса</td></tr><tr><td>8</td><td><strong>Награда за фазу может быть не предметом, а снижением сложности следующей фазы</strong></td><td>Превращает бой в экономику внутри боя: рискнуть сейчас, чтобы стало легче потом</td></tr><tr><td>9</td><td><strong>Провал фазы — это провал фазы.</strong> Он наказывается и может привести к поражению в дальнейшем</td><td>Условие должно чего-то стоить, иначе оно декоративно</td></tr><tr><td>10</td><td><strong>При провале условия фазы игра предлагает переиграть.</strong> Штрафы — как при обычном перезапуске после поражения (или чуть мягче)</td><td>Игрок не остаётся в тупике, но второй шанс не бесплатен</td></tr><tr><td>11</td><td><strong>Перезапуск многофазного боя — на выбор игрока: с текущей фазы или с начала боя</strong></td><td>Гибкость; выбор сам по себе является решением</td></tr><tr><td>12</td><td><strong>Текстовые ивенты между фазами боя</strong> — можно и нужно</td><td>«Мегахайп» и уникально: ни у одной из 14 разобранных игр такого нет. Даёт нарратив прямо посреди сражения</td></tr></tbody></table></div>
+<h3 id="цели-боя-типы-битв">Цели боя (типы битв)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#цели-боя-типы-битв" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>13</td><td><strong>Уникальные цели боя — только в элитках, боссах и ивентах.</strong> Обычный бой = всегда «победить»</td><td>Уникальная цель должна быть событием. Обычные бои варьируются <strong>испытаниями</strong>, а не целями</td></tr><tr><td>14</td><td><strong>Нужна третья сторона в бою (союзники) И режим «все против всех»</strong></td><td>Резко увеличивает разнообразие задач; реализация не запредельная</td></tr><tr><td>15</td><td><strong>Провал уникальной цели = победа без бонусов или со штрафами</strong> (последствия: «герои плохо себя чувствуют, что не спасли мирных»). Номинально это <strong>победа</strong>, забег от этого не проигрывается</td><td>Уникальная цель — это сделка, а не ловушка. У боссов расклад может быть иным</td></tr><tr><td>16</td><td><strong>Уникальное событие → уникальная награда</strong> (не «больше золота», а другой класс награды)</td><td>Текстовые ивенты и особые бои должны быть <strong>запоминающимися</strong>; игрок может и не выбрать такой бой — значит выбор должен окупаться</td></tr></tbody></table></div>
+<h3 id="мета-прогрессия-и-экономика">Мета-прогрессия и экономика<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#мета-прогрессия-и-экономика" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>17</td><td><strong>Мета-прогрессия между забегами — будет 100%</strong></td><td>Её снятие уронило Mage and Monsters 2 с 89% до 83% отзывов. Требует отдельного ресерча</td></tr><tr><td>18</td><td><strong>Рероллы и баны реликвий/предметов — будут</strong> (в мета-прогрессии, по мере роста контента)</td><td>Контроль рандома игроком — главный рычаг против ощущения «решает рандом». Покрывает идею Seal из Time Walker</td></tr><tr><td>19</td><td><strong>Объём менеджмента — оптимален.</strong> Не резать и сильно не добавлять</td><td>Слоёв уже больше, чем у разобранных игр. Главное — чтобы менеджмент <strong>чувствовался</strong>, а не был для галочки</td></tr></tbody></table></div>
+<h3 id="режимы">Режимы<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#режимы" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>20</td><td><strong>Режим пазлов/испытаний</strong> (детерминированные бои-головоломки) — будет</td><td>Прямой ответ на «где скилл в PVE без оппонента». Despot’s Game выпустил ровно такой DLC. У нас уже есть детерминизм и <code>BattlePresetData(Fixed)</code> — стоит почти ничего</td></tr><tr><td>21</td><td><strong>Ежедневные испытания (как в Slay the Spire)</strong> — будут</td><td>Дёшево, добавляет разнообразия. Не главный акцент</td></tr></tbody></table></div>
+<h3 id="информация-и-читаемость">Информация и читаемость<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#информация-и-читаемость" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>22</td><td><strong>На узле карты видна только фракция противников и сложность боя.</strong> Точный состав врага — нет</td><td>Полное превью врага → подгонка контрпика вместо плана. (Оговорка: Legion TD 2 фиксирует волны полностью и продаёт это как фичу — см. открытый вопрос в <a href="../../gdd/00-meta/roadmap" class="internal alias" data-slug="gdd/00-meta/roadmap">Meta - Roadmap</a>)</td></tr><tr><td>23</td><td><strong>Пресеты формаций — делаем</strong></td><td>Ручная расстановка каждый бой = массовая жалоба на душноту (вплоть до туннельного синдрома в отзывах Gladiator Guild Manager). У нас расстановка свободная — цена ручного труда ещё выше</td></tr></tbody></table></div>
+<hr/>
+<h2 id="2026-07-15-вечер--структурная-рамка-гильдии-блок-0">2026-07-15 (вечер) — структурная рамка гильдии (Блок 0)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2026-07-15-вечер--структурная-рамка-гильдии-блок-0" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Контекст: разбор развилки «основной геймплей — забег или развитие гильдии» (<a href="../../gdd/00-meta/roadmap" class="internal alias" data-slug="gdd/00-meta/roadmap">Meta - Roadmap</a> Блок 0). Выбран промежуточный вариант: гильдия — дом и хаб, но БЕЗ силовой меты в духе Darkest Dungeon / XCOM.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>24</td><td><strong>Гильдия = дом и хаб прокачки; забег = ядро и единственный «серьёзный» режим.</strong> Прочие активности (испытания, пазлы, дейлики, новые сложности) — способ наградить <strong>уникальностью</strong> через мету, а НЕ конкурирующие режимы. Внимание игрока не растягиваем на другие режимы</td><td>Модель Hades: богатый дом поднимает рогалик, <strong>не понижая забег</strong> до соседа мини-игр. «Забег — одна из активностей» — слабая версия, размывает фокус</td></tr><tr><td>25</td><td><strong>Между забегами переносятся только ЛЮДИ и их летопись. Мощь/уровни НЕ переносятся</strong> (не Darkest Dungeon, не XCOM)</td><td>Сохраняет баланс забег-к-забегу и принцип «дефицит = глубина» (см. Принцип 3). Даёт эмоциональную преемственность без силовой инфляции</td></tr><tr><td>26</td><td><strong>Ростер = прегены</strong> (готовые герои, открываются метой, берутся как «Сосуд») <strong>+ «Сосуды», созданные игроком</strong> (косметика/имя/досье; механика по-прежнему из Реликвии и драфт-перков)</td><td>Прегены дают кураторскую уникальность и цель для меты; игрок-Сосуды — привязанность. Механику игрок НЕ задаёт (иначе имба + реоткрытие баланса)</td></tr><tr><td>27</td><td><strong>Прогрессивный ревил прегена: играя им, открываешь его уникальную Судьбу + новые перки.</strong> Открытие = <strong>новые ОПЦИИ</strong> (Судьба доступна к выбору, перки входят в драфт-пул), НЕ флэт-бафф к базе. Гейт — веха с героем, не обязательная победа</td><td>Вовлечение (причина играть разными) без силовой меты. «Прокачанный герой сильнее свежего» = мягкая силовая прогрессия между забегами, которую решение 25 отвергает</td></tr><tr><td>28</td><td><strong>Уникальность прегена ложится на существующую Судьбу (+ перки), НЕ на новый слой и НЕ на раздутый кит</strong></td><td>Держим шов «Сосуд пустой, кит в Реликвии». Киточный «уник-трейт» обесценил бы Реликвию как носитель кита</td></tr><tr><td>29</td><td><strong>Последствия — СТРОГО механика в границах забега.</strong> Бафф/дебафф на весь забег (от мелкой радости до вывихнутой ноги и тяжёлого проклятия). Снятие: часть за деньги (узел «Лечение»), часть проходит через N событий. В конце забега <strong>испаряются без следа. Героями НЕ запоминаются, в летопись НЕ пишутся</strong></td><td>Иначе Последствия протекут между забегами → возврат в силовую мету через заднюю дверь. Разделение чистое: болячка — расходник забега, память — отдельно</td></tr><tr><td>30</td><td><strong>Летопись «Сосуда» кормится боевыми ПОДВИГАМИ, не Последствиями.</strong> Триггеры: трипл-килл, личный рекорд по стату (щит/хил/урон), победа вопреки невзгодам. Запись = подвиг + <strong>конкретное число</strong> + «кем был тогда» (роль/Реликвия). Барки цитируют число, но триггер «памятного» — <strong>относительная значимость</strong> (рекорд / редкий порог), не абсолют</td><td>Системный сторителлинг («МОЯ история», как в RimWorld / Battle Brothers): реальное число + реальная значимость цепляет. Число без значимости = хвастовство ерундой (при скейле ×10 абсолют обманчив)</td></tr><tr><td>31</td><td><strong>Мета-открытия РАСШИРЯЮТ пул вширь</strong> (новые стили, паритет по силе со стартовыми), <strong>НЕ поднимают потолок мощи</strong></td><td>Иначе анлок = обязательный грайнд, новичок слаб — анти-паттерн «мета раздаёт мощь» и нарушение доктрины честности (GDD-13)</td></tr></tbody></table></div>
+<p><strong>Правит доки:</strong> GDD-9 (граница конца забега, Последствия не кормят нарратив), GDD-10 (летопись = подвиги; досье НЕ отражает Последствия), GDD-0.4 (термины «Летопись», «Прегены»). Остаток (валюта анлока, темп открытий, дерево прегенов) — в роадмап, Блок 1 (мета-прогрессия).</p>
+<hr/>
+<h2 id="2026-07-15-вечер--система-эффектов-каталог">2026-07-15 (вечер) — система эффектов, каталог<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2026-07-15-вечер--система-эффектов-каталог" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Контекст: проработка «где живёт глубина» → система эффектов как база для дизайна героев. Оформлен каталог <a href="../../gdd/20-combat/effects" class="internal" data-slug="gdd/20-combat/effects">effects</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>32</td><td><strong>Принцип эффектов: эффект = глагол, синергия = producer → consumer.</strong> У каждого статуса есть накладыватели и потребители; герой определяется стороной статуса</td><td>Ядро глубины драфта и интеграции героев. Урон-число вторично, идентичность несёт статус</td></tr><tr><td>33</td><td><strong>Кровотечение (Bleed) — новый статус: физический DoT под физической бронёй</strong></td><td>Даёт физ-билдам свой путь «урона во времени»; контрится бронёй. Близнец яда на другой оси</td></tr><tr><td>34</td><td><strong>Лёд — НЕ новый эффект.</strong> Накладывает обычные Замедление/Обездвиживание/Оглушение с источником-тегом «лёд» (для интеграций ледяных героев)</td><td>Не плодим примитивы; тег достаточно для синергий</td></tr><tr><td>35</td><td><strong>Тип существа как ГЛАВНЫЙ гейт сродств — отклонён</strong> (ненадёжно, бинарно, состав врага не виден). Остаётся <strong>редкой специей</strong> (отдельный враг устойчив/уязвим)</td><td>Сродство должно работать против любого врага; идентичность самодостаточна, а не «повезло с типом»</td></tr><tr><td>36</td><td><strong>Добавлены CC: Сон</strong> (стан, спадает при уроне), <strong>Очарование</strong> (временно за другую команду), <strong>Ярость</strong> (бьёт ближайшего любой команды)</td><td>Расширяют палитру контроля; читаемы</td></tr><tr><td>37</td><td><strong>Слепота</strong> (промах каждую X-ю атаку) и <strong>Меткость</strong> (крит + 100%-хит каждую X-ю) — <strong>детерминированно</strong>, не шансом. Меткость = билд на урон И контра слепоте</td><td>Держит детерминизм боя; «крит/промах» без рандома</td></tr><tr><td>38</td><td><strong>Стаки и длительность сосуществуют</strong> — не конфликт. Длительность стака крутят «эффективности», число стаков — независимая ось</td><td>Снят ложный вопрос</td></tr></tbody></table></div>
+<h3 id="идентичность-сродств-подтверждено-2026-07-15">Идентичность сродств (подтверждено 2026-07-15)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#идентичность-сродств-подтверждено-2026-07-15" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>39</td><td><strong>Яд = ВСЕГДА DoT + негативный дебафф</strong> (анти-хил / −дальность / −атака / …). Акцент варьируется по герою (DoT / детонация-на-пороге / ослабление), но связка постоянна</td><td>«Швейцарский нож порчи»: DoT — константа идентичности, дебафф — переменная. Сюда сворачивается grievous-wounds</td></tr><tr><td>40</td><td><strong>Свет = очищение</strong> (снятие эффектов: срыв баффов врага / чистка своих) + добротный урон, часть которого лечит союзника</td><td>Наступательный саппорт + анти-бафф</td></tr><tr><td>41</td><td><strong>Тьма = большой чистый урон и ничего больше.</strong> Намеренная подрывка «у каждого элемента глагол»: особенность в отсутствии особенностей. Простой, мощный, желанный</td><td>Ломаем шаблон осознанно; вожделенный «нюк без условий». Баланс — редкость + одномерность (мощь ценой утилиты = выбор, не апгрейд)</td></tr><tr><td>42</td><td><strong>Свет и Тьма — самые редкие сродства</strong> (яд доступнее)</td><td>Мощь/простота Тьмы и утилита Света уравновешены редкостью</td></tr><tr><td>43</td><td><strong>У яда нет своей брони: школу DoT задаёт конкретный яд</strong> (физ/стих, редко True). Яд — статус-форма «DoT+дебафф», не отдельный канал урона. Контра — очистка (+ броня по школе DoT)</td><td>Яд не должен быть «чистым уроном»; переменная школа = синергия-хук (физ-яд ↔ shred, стих-яд ↔ проникновение), не бага</td></tr><tr><td>44</td><td><strong>Свет и Тьма — оба бьют True (мимо брони)</strong>, потому оба самые редкие. Свет вкладывает «чистоту» в очищение + хил, Тьма — в мощь урона (условия/комбо вторичны). <strong>Яд — по обычной школе</strong> (гасится бронёй)</td><td>Армор-байпас = премиум, потому у двух самых редких сродств; массовый яд остаётся гасимым бронёй</td></tr><tr><td>45</td><td><strong>Зоны (наземные стойкие эффекты) — вводим.</strong> Стойкие области на арене (от способностей или самой арены): юнит внутри получает эффект/тег зоны (горит / мёрзнет / травится / электризуется / хил / усиление). Даёт расстановке и позиционированию ещё один рычаг. Детали (форма, стойкость, комбо зон) — TBD, проектируется вместе с кросс-элементами</td><td>Кросс-эффекты + читаемая пространственная глубина без грид-симуляции поверхностей DOS2</td></tr></tbody></table></div>
+<h3 id="теги-состояния-и-первые-комбо-2026-07-15">Теги-состояния и первые комбо (2026-07-15)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#теги-состояния-и-первые-комбо-2026-07-15" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>46</td><td><strong>Комбо строятся на тегах-состояниях</strong> (Мокрый / Наэлектризованный / Подожжённый / Обмороженный) — маркер «юнит сейчас/недавно под стихией». Наэлектризованный = получил молнию за 2–3 сек; Подожжённый = под DoT огня; Обмороженный = под CC льда; Мокрый = под состоянием «мокрый»</td><td>Простые состояния-флаги — «валюта комбинаций»; консюмер проверяет тег и даёт бонус</td></tr><tr><td>47</td><td><strong>Раскол:</strong> физ-удар, снявший ≥15% макс HP цели, по замороженной → доп. 15% макс HP <strong>чистым (True)</strong> + снимает заморозку; не чаще раза в 5 сек на цель</td><td>Гейт «15% одной атакой» = сам балансир; по жирному почти недостижимо</td></tr><tr><td>48</td><td><strong>Мокрый = +25% урона от молнии. Огонь снимает Мокрый и Обмороженный</strong> (сам поджог в этот удар не накладывается)</td><td>Простые читаемые взаимодействия; огонь = анти-контрслой</td></tr><tr><td>49</td><td><strong>Босс = комбинация юнитов, а не один HP-мешок</strong></td><td>%maxHP-эффекты естественно ограничены (по компоненту); AoE-комбо по кластеру, наоборот, эффективны</td></tr></tbody></table></div>
+<h3 id="рефайны-эффектов-и-комбо-2026-07-15">Рефайны эффектов и комбо (2026-07-15)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#рефайны-эффектов-и-комбо-2026-07-15" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>50</td><td><strong>Поджог = 5-сек DoT, обновляется (сам DoT не стакается), стабильный X.</strong> Отдельный эффект <strong>«Угли»</strong>: каждый урон огнём +1 стак, +1% урона огнём/стак; длится 5с, новый уголёк обновляет все стаки строго до 5с и сбрасывает ускорение; без подпитки сходят по одному с ускорением (до 1 стак/0.25с), мокрый ×2. <strong>Детонация</strong> читает число «Углей» и сбрасывает. <strong>Мечник:</strong> атаки не накладывают посторонний DoT, но по горящему бьют +половину огнём (поджигают, если не горит); <strong>детонирует, когда взрыв добивает</strong> (опц. паника при низком HP — потом)</td><td>Детонация от счётчика комбится чище стак-DoT; ускоряющийся сход тематичен и создаёт давление темпа; AI-правило простое (взрыв на добив)</td></tr><tr><td>51</td><td><strong>Наэлектризованный:</strong> удар молнии по нему → <strong>15% урона рикошетит в ближайшего врага</strong>; рикошет не электризует (без бесконечной цепи)</td><td>Читаемое распространение молнии без цепной лавины; заменяет прежний вариант-множитель</td></tr><tr><td>52</td><td><strong>Сон: пробуждающий удар ×2</strong> (сон спадает при уроне)</td><td>Награда за точечное пробуждение, а не пачкой</td></tr><tr><td>53</td><td><strong>Очарование: юнит по коду полностью союзен новой стороне на время и уносит свои баффы</strong></td><td>Простая кодовая реализация (смена команды); баффы уходят с ним — риск-награда «кого чармить»</td></tr></tbody></table></div>
+<p><strong>Следующий заход:</strong> расширить комбо-матрицу на сродства (яд/свет/тьма) и CC. Визуал молнии (снаряд-молния) — к реализации. Идеи набросаны (в чате), отбор — за Максом.</p>
+<hr/>
+<h2 id="2026-07-15-вечер--предметы-и-знамёна">2026-07-15 (вечер) — предметы и Знамёна<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2026-07-15-вечер--предметы-и-знамёна" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Контекст: первый дизайн-проход по контенту предметов (Vessel-скоуп) и Знамён (Party-скоуп). Оформлен каталог <a href="../../gdd/40-content/items-banners" class="internal" data-slug="gdd/40-content/items-banners">items-banners</a>. Систему <code>ItemData(Scope)</code> под это заложили ранее — теперь наполняем дизайном.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>54</td><td><strong>Предметов на «Сосуд» — 3, не 4</strong> (<code>GameConfig.VesselItemSlots = 3</code>)</td><td>Три достаточно; четыре размывают дефицит выбора</td></tr><tr><td>55</td><td><strong>Активки предметов — авто-триггеры, не ручной клик</strong> (срабатывают по событию: HP &lt; порога, не хватает маны на каст, …)</td><td>Бой автономен (реш. №1). Ручная активка вернула бы вырезанный микроконтроль. Единственная возможная форма микро (Manual Action Charges) — отдельно запаркована и к предметам не относится</td></tr><tr><td>56</td><td><strong>«Зелья» — перезаряжаемые каждый бой слоты, не одноразовые расходники StS.</strong> Слово «зелье» = флавор, механика = триггер-предмет с кулдауном раз/бой</td><td>Единая модель экипировки; одноразовые consumable — отдельная механика, не вводим</td></tr><tr><td>57</td><td><strong>Руны стихий (Холод/Пламя/Молния) = «зачарование»: меняют школу урона + навешивают канонический глагол стихии</strong> (Холод→Замедление+тег «лёд»; Пламя→Поджог+Угли; Молния→цепь/мультихит+Наэлектризованный/рикошет 15%). Тумблер «весь урон / только автоатаки» — dev, финал по тестам (ориентир — весь исходящий)</td><td>Ценность не в смене типа (тип не гейт, реш. №35), а в том, что «Сосуд» становится производителем стихийного статуса и заводит комбо (Раскол/Детонация/Проводимость, реш. 46–51)</td></tr><tr><td>58</td><td><strong>Инвиз и Маскировка — разведены в каталоге эффектов.</strong> Инвиз = полная нецелимость (атака снимает); Маскировка = нецелимость для всех, кроме юнитов в ближнем радиусе</td><td>Полный Инвиз уже был (Убийца); Маскировка — новый частый мягкий вариант скрытности</td></tr><tr><td>59</td><td><strong>Плащ Фей (Уникальный):</strong> при первом падении HP до 20% — Инвиз 3 сек; в Инвизе хилит (% макс HP/сек) и <strong>отбегает, не атакуя</strong> (атака сняла бы Инвиз) — режим бегства через <code>FleeSteering</code></td><td>Спасательный предмет с внятным поведением; строится на существующих Инвизе и flee-стиринге</td></tr><tr><td>60</td><td><strong>Проклятое Знамя даёт +5% УРОНА за последствие, не +10% HP</strong></td><td>HP-версия толкала фармить страдания и ломала роль последствий как наказания; урон менее ломок, держит архетип «страдание = сила»</td></tr><tr><td>61</td><td><strong>Сапоги-Скороходы: +30% скорости, не +50%</strong></td><td>+50% ломает pursuit-gate и кайт-стиринг (память <code>pursuit-attack-gate</code>)</td></tr><tr><td>62</td><td><strong>Знамя Предсказаний — в паркинг</strong> (не берём сейчас)</td><td>Бой детерминирован, ретрай = тот же бой → ценность предсказания размыта; «врёт 25%» рискует фрустрацией; требует headless-симуляции. Условия возврата — в <a href="../../gdd/40-content/items-banners" class="internal" data-slug="gdd/40-content/items-banners">items-banners</a> §Паркинг</td></tr><tr><td>63</td><td><strong>Две активные ячейки Знамён — принято как фича.</strong> Связка Проклятое+Летящее (оба кладут последствия) = осознанный архетип, не эксплойт; следим на балансе</td><td>Архетип «страдание = сила» желанен; при доминировании — взаимоисключение/кап</td></tr><tr><td>64</td><td><strong>Рабочий русский термин Party-предметов — «Знамя»</strong> (закрывает открытый вопрос «Знамя vs Талисман»). Отдельного тира редкости «Редкий» нет: «редкий» = Уникальная</td><td>Устойчивый выбор Макса; консистентность шкалы редкости с <a href="../../gdd/40-content/relics-overview" class="internal" data-slug="gdd/40-content/relics-overview">relics-overview</a></td></tr></tbody></table></div>
+<p><strong>Флаги на баланс/реализацию:</strong> фикс-числа → проценты/скейл (хил Плаща в % макс HP; проверить +30 маны, +1 голда/сек, 50 голды); форма рампа урона Золотого Знамени (линейный vs кривая vs кап); тумблер рун. При создании <code>ItemData</code>-ассетов — loc-ключи сразу, RU-only; id <code>item.*</code> / <code>banner.*</code>.</p>
+<p><strong>Правит доки:</strong> GDD-15 (Инвиз/Маскировка разведены), новый GDD-16, <code>GameConfig</code> (<code>VesselItemSlots=3</code>), GDD-0.0 (индекс).</p>
+<hr/>
+<h2 id="2026-07-15-вечер--петля-забега-перезапуск-инфо-о-враге-испытания">2026-07-15 (вечер) — петля забега: перезапуск, инфо о враге, испытания<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2026-07-15-вечер--петля-забега-перезапуск-инфо-о-враге-испытания" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Контекст: проход по открытым вопросам Блока 2 роадмапа (цена перезапуска, показ врага, испытания, жадность на карте, отложенные темы).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>#</th><th>Решение</th><th>Причина</th></tr></thead><tbody><tr><td>65</td><td><strong>Перезапуск боя — пул 2 на АКТ</strong> (не на бой). Каждый перезапуск тратит попытку; в начале акта пул сбрасывается до 2 (не копится). <strong>Поражение при пустом пуле = конец забега.</strong> Число — в <code>GameConfig</code></td><td>Заменяет прежнее «2 ретрая на каждый бой» (почти бесплатно). Дефицит наказывает без «спирали смерти»: игрока не ослабляет, но создаёт решение — приберечь на элитку/босса. Закрывает выбор цены из Блока 2 (золото/травма/сложность отклонены как рискующие спиралью)</td></tr><tr><td>66</td><td><strong>Показ врага на узле — только сложность</strong> (обычный / элитка); <strong>фракция — в тултипе при наведении</strong>. Точный состав — нет</td><td>Уточняет реш. №22. Сложность — мгновенный ориентир маршрута, фракция — по запросу; состав скрыт, чтобы не подгонять контрпик</td></tr><tr><td>67</td><td><strong>Испытание = квест игроку, НЕ модификатор боя.</strong> Бой (враги/арена/статы) не меняется. Два рода: ограничение состава («3 хила», «только ближники») и целевое условие («закончить за 20 сек»). Провал = без награды, не поражение</td><td>Держит принцип «испытание меняет правила игроку, а не крутит статы врагам». Согласуется с №13 (обычные бои варьируются испытаниями) и с ролью испытаний как рычага свапа (GDD-12)</td></tr><tr><td>68</td><td><strong>Испытание раскрывается при заходе в стадию размещения</strong> (до старта боя) — игрок успевает подстроить состав/расстановку и выполнить к концу боя</td><td>Закрывает открытый вопрос «когда узнаёт (A на карте / B на входе)» — <strong>вариант B</strong>. Раньше стадии размещения смысла нет (состав-квесты надо видеть до расстановки)</td></tr><tr><td>69</td><td><strong>Цена жадности на карте (лишний узел усиливает босса) — ОТКЛОНЕНО.</strong> Карта — как в <em>Slay the Spire</em></td><td>Жадность уже саморегулируется риском самих узлов; доп. штраф за посещение — лишний слой</td></tr><tr><td>70</td><td><strong>Соседство как отдельная механика — снято.</strong> Предметы могут зависеть от чего угодно, в т.ч. «работает, если рядом союзник» — но это <strong>условие эффекта предмета</strong>, а не отдельная система «расстановка↔предметы»</td><td>Не плодим систему там, где хватает выразительности эффектов предмета (GDD-16). Backpack-подобное «соседство» доступно как одно из условий, без нового слоя</td></tr><tr><td>71</td><td><strong>Подпорки позиционирования</strong> (точки интереса на арене, разброс скоростей/AoE как рычаг расстановки) — <strong>приняты в план, отложены надолго</strong></td><td>Ценно для глубины расстановки, но не в ближайших фазах</td></tr><tr><td>72</td><td><strong>Движущаяся мета</strong> (межактовые сдвиги правил — школы/сродства/глобальные моды) — <strong>принята в план, отложена надолго</strong></td><td>Лекарство от «мета устаканилась» (<em>Teamfight Manager</em>); не сейчас</td></tr></tbody></table></div>
+<p><strong>Реализационный долг:</strong> перезапуск сейчас в коде — счётчик на КАЖДЫЙ бой (BattleFlow <code>DefaultMaxRetries=2</code>). Переезд под реш. №65: пул уровня акта в <code>RunState</code>, число в <code>GameConfig</code>.</p>
+<p><strong>Правит доки:</strong> GDD-3 (§Перезапуск), GDD-12 (§Испытания — природа + тайминг), GDD-0.1 (Блок 2 — решённое убрано, отложенное перенесено в Блок 3).</p>
+<hr/>
+<h2 id="ранее-до-2026-07-15--инвентаризация-канона">Ранее (до 2026-07-15) — инвентаризация канона<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ранее-до-2026-07-15--инвентаризация-канона" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<blockquote>
+<p>Сведено из всей документации 2026-07-15. Здесь — суть; первоисточник указан. Решения этой сессии — выше.</p>
+</blockquote>
+<h3 id="бой-1">Бой<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#бой-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Бой полностью автономен, ввода игрока в бою нет.</strong> GDD-3 §Принцип, GDD-1, GDD-13/14.</li>
+<li><strong>Заклинания ГД и любые способности «вне юнитов» вырезаны</strong> (2026-07). Вместе с ними — слоты ГД, передача управления, мини-игра выбора ГД, роль «Арканист». GDD-4, GDD-0.5, GDD-0.2, TECH-6 §1.</li>
+<li><strong>ГД не на поле и не участвует в бою</strong>; = стартовый набор + гильдие-широкие моды + внебоевые правила. GDD-4, TECH-6 §1.</li>
+<li><strong>Детерминированная симуляция, фикс. тик 30 Гц, без Unity-физики.</strong> GDD-3 §Тех, TECH-3, TECH-13 §3.4.</li>
+<li><strong>Нулевой выходной рандом: нет крита/уклонения/промаха.</strong> Механика, вносящая случайность после «в бой», отклоняется по умолчанию. GDD-13 §2, GDD-8 §Принципы, TECH-6 §6.</li>
+<li><strong>Поле боя — непрерывное 2D</strong> (не клеточное). GDD-3, TECH-6.</li>
+<li><strong>Пауза = средство просмотра, не боевая механика</strong> (Space). GDD-3, GDD-11, TECH-11.</li>
+<li><strong>Перезапуск боя — до 2 раз, тот же бой</strong> (саб-сид = <code>runSeed + индекс_боя</code>, без номера попытки). Платный, цена — TBD. GDD-3 §Перезапуск, TECH-7 §6.</li>
+<li><strong>AI = Filter / Score / Override</strong>, настраивается вне боя, тик AI ~10 Гц. GDD-3, TECH-6 §2, TECH-13.</li>
+<li><strong>Модель урона: школы (гасятся бронёй: Физ + Стихия + True) vs сродства (Яд/Свет/Тьма — каждое самодостаточно, НЕ по типу существа).</strong> Свет/Тьма = True (мимо брони); Яд = DoT+дебафф по школе своего яда (гасится бронёй). «Разум» вырезан. Броня — процентная <code>K/(K+armor)</code>. GDD-8, GDD-15 (решения 35/43/44), TECH-6 §6.</li>
+<li><strong>Тип существа — редкая специя (НЕ главный гейт сродства; решение 35), отдельно от фракции.</strong> GDD-8, GDD-15.</li>
+<li><strong>Эффективности эффектов меняют ТОЛЬКО длительность, не силу.</strong> GDD-3, GDD-8, TECH-6 §5.2.</li>
+<li><strong>Единая модель эффектов</strong> (контейнер + <code>[SerializeReference] IEffectComponent[]</code>, скейл через <code>ScalableValue</code>). TECH-6 §5.</li>
+<li><strong>Контроль без diminishing returns</strong>; три ответа — снять/сократить/не пустить. TECH-6 §5.3, §5.6.</li>
+<li><strong>Диспел многоуровневый; смещение = эффект <code>Unremovable</code></strong> (knock-up не режется tenacity). TECH-6 §5.4, §10.</li>
+<li><strong>30 числовых статов</strong>, база от Реликвии поверх <code>StatsConfig</code>; операции <code>Flat / PercentAdd / PercentMult</code>. GDD-8, TECH-6 §3.</li>
+<li><strong>Типы боёв: Обычный / Элитный / Финал акта (гильдия-финалист).</strong> GDD-3, GDD-1.</li>
+</ul>
+<h3 id="реликвии-и-юниты">Реликвии и юниты<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#реликвии-и-юниты" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Идентичность «Сосуд + Реликвия» = «пилот + чемпион».</strong> Ровно 1 Реликвия на «Сосуда» в бою. GDD-5, TECH-6 §1.</li>
+<li><strong>Редкость = размер кита, не множитель статов: Треш / Обычная / Уникальная.</strong> Прежняя Common/Rare/Epic отменена 2026-07-13. GDD-5, TECH-6 §1, GDD-12.</li>
+<li><strong>Тип Реликвии (отдельная ось): Стандартная 85% / Проклятая 10% / Божественная 5%</strong> (Divine только из ивентов; «Стандартная» переименована из «Обычная» 2026-07-15, чтобы развести с осью редкости). GDD-5, GDD-0.4.</li>
+<li><strong>«Сосуд» = Судьба (1, из открытых достижениями) + перк «+» (1 из 3) + перк «−» (1 из 3).</strong> GDD-5.</li>
+<li><strong>Режим «Истинный герой»: рандом только перков за доп. награду; Судьба всегда вручную.</strong> GDD-5, GDD-6.</li>
+<li><strong>Визуал цельный на Реликвию, не модульный</strong> («Сосуд» на поле — только UI-портрет). TECH-6 §4.</li>
+<li><strong>Анимация — Unity Animation; маркеры контакта = AnimationEvent-данные, бейк в тики, <code>fireEvents=false</code>.</strong> TECH-6 §4, TECH-13 §3.1.</li>
+<li><strong>Иерархия данных <code>UnitData → RelicData / EnemyData</code>.</strong> TECH-13 §3.1.</li>
+<li><strong>Право на Extended-зону — флаг <code>RelicData.CanUseExtendedDeployment</code>.</strong> TECH-10 §3.</li>
+<li><strong>Ресурс привязан к Реликвии</strong> (Нет / Мана / Ярость / …). TECH-6 §1, GDD-8.</li>
+</ul>
+<h3 id="мета-прогрессия-и-экономика-1">Мета-прогрессия и экономика<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#мета-прогрессия-и-экономика-1" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Реворд-ramp: Обычный 1из3 / 10% уник; Элита 1из3 ×2 / 20%; Босс 1из3 (×2-3 TBD) / 100%.</strong> GDD-12.</li>
+<li><strong>Левел реликвий по копиям</strong> (общий ресурс на 4 «Сосудов», дубль → прогресс, не слот; пул 3+3, берём 4 из 6). GDD-12.</li>
+<li><strong>Статы вторичны — качаем ради трейт-развилки.</strong> GDD-12.</li>
+<li><strong>Испытания — главный экономический рычаг свапа</strong> (на команду, 1 на бой, реролл за деньги с возвратом 30%). GDD-12.</li>
+<li><strong>Анти-монопак = экономика сложности, не запрет.</strong> GDD-12.</li>
+<li><strong>Натяжение «вглубь vs вширь» на трёх уровнях.</strong> GDD-12.</li>
+<li><strong>Три оси хардкора разведены</strong> (Сложность / Хардкорность / Скилл / Дисперсия). GDD-13 §1.</li>
+<li><strong>Дисперсию режем, шанс — нет; защита от невезения обязательна</strong> (класс PRD/pity, не жёсткий счётчик). GDD-13 §4.5.</li>
+<li><strong>Мета между забегами не урезается; рероллы и баны пула — будут.</strong> GDD-14, GDD-5.</li>
+</ul>
+<h3 id="карта-и-забег">Карта и забег<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#карта-и-забег" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Структура карты — Slay the Spire</strong>, генерится из сида на старте акта. GDD-7, TECH-7 §8.</li>
+<li><strong>На узле видно фракцию + сложность; состав врага — нет.</strong> GDD-7, GDD-13 §4.1, TECH-7 §8.</li>
+<li><strong>Пять правил честности</strong> (инфо до решения / разбор после / читаемость / перезапуск=отладка / режем дисперсию). GDD-13 §4.</li>
+<li><strong>Скилловость измеряется</strong> (Returns to Skill на детерминизме). GDD-13 §6.</li>
+<li><strong>Флоу: макро (async UniTask) и микро-бой (fixed-tick) не смешивать; ивенты — <code>IEventFlow</code> без central switch.</strong> TECH-7 §1-3.</li>
+<li><strong><code>RunState</code> (durable, по строковым id) vs <code>RuntimeUnit</code> (эфемерный).</strong> Автосейв на 3 переходах. TECH-7 §4-5.</li>
+<li><strong>Сцены: Persistent Core + аддитивные Map/Battle; карта в бою = read-only оверлей.</strong> TECH-7 §9.</li>
+<li><strong>Типы узлов: Бой / Магазин / Тренировка / Лечение / Турнирное / Риск / мини-игры</strong> (<code>Guildmaster.MiniGames</code>, добровольные пропускаемы). GDD-7, TECH-7 §7.</li>
+</ul>
+<h3 id="травмы-и-закалка">Травмы и Закалка<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#травмы-и-закалка" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Injury ↔ Mettle — две полярности одной оси на «Сосуде» в <code>RunState</code>, сброс между забегами</strong>; механика = слоистые стат-моды (<code>source=&quot;injury&quot;/&quot;mettle&quot;</code>), детерминизм боя не трогает. GDD-9.</li>
+<li><strong>Травма: от поражения / финиша ниже порога HP / спец-механик; снимается только в «Лечении» за золото; потолок → выбытие.</strong> GDD-9.</li>
+<li><strong>Закалка: только за клатч, лечением не снимается, держится весь забег.</strong> GDD-9.</li>
+<li><strong>Данные — единый <code>ConsequenceData</code> (Polarity: Injury/Mettle).</strong> TECH-13 §3.2.</li>
+</ul>
+<h3 id="процедурный-лор-сосудов">Процедурный лор «Сосудов»<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#процедурный-лор-сосудов" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Досье = презентационный слой из сида (Мечта/Характер/История/Тайна), НЕ система механик</strong>; mad-libs + грамматика, хранение = сид + id + индексы. GDD-10, TECH-13 §3.3.</li>
+<li><strong>Явно НЕ делаем: LLM-генерация, ветвящийся нарратив, диалоги, отношения между «Сосудами».</strong> GDD-10.</li>
+</ul>
+<h3 id="кооп">Кооп<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#кооп" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Гильдия всегда 4 «Сосуда»; игроков 1-4; хост распределяет, распределение меняется в любой момент.</strong> GDD-6, GDD-12.</li>
+<li><strong>Вся агентность игроков — в подготовке; ГД — общий выбор, не боевая роль.</strong> GDD-6.</li>
+<li><strong>Кооп = структурная замена живому оппоненту</strong> (ниша пустая). GDD-14 §4.9.</li>
+<li><strong>Сеть host-authoritative</strong> (lockstep отклонён); дисконнект — «Сосуды» дерутся по AI; автопауза + отсчёт «3-2-1». TECH-7 §10.</li>
+</ul>
+<h3 id="контент--данные">Контент / данные<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#контент--данные" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Три слоя: Авторинг (SO) → Симуляция (POCO, бейк) → Персистентность (DTO+JSON/ES3).</strong> Ссылки только по строковому id; SO не мутируется в рантайме. TECH-13 §1.</li>
+<li><strong>Запреты: Odin Serializer; <code>AnimationCurve.Evaluate</code> в тике; мутация конфиг-SO; нарушение <code>[MovedFrom]</code>.</strong> TECH-13 §1.</li>
+<li><strong>id формата <code>domain.name</code>, стабильный, не переименовывается после релиза.</strong> TECH-13 §2.</li>
+<li><strong>Производные ключи — конвенция (<code>{id}.name</code> и т.д.), не поля.</strong> TECH-13 §2.4.</li>
+<li><strong><code>GuildmasterData.Spells</code> убрано</strong> (2026-07). TECH-13 §3.2.</li>
+<li><strong>Локализация — Unity Localization EN+RU, ключи из id; заполнять RU, прочие локали прочерк.</strong> TECH-13 §6.</li>
+<li><strong>Аудио — только за <code>IAudioService</code>, резолв через <code>AudioCatalog</code>.</strong> TECH-13 §7.</li>
+<li><strong>Валидация — EditMode-тесты в CI</strong> (Odin Validator не покупаем). TECH-13 §8.</li>
+<li><strong>Конфиги: бейк на старте боя; live-тюнинг = tainted-фича.</strong> TECH-13 §4.</li>
+<li><strong>Addressables только как плумбинг Localization</strong>, геймплейный контент — прямые ссылки через <code>IContentDatabase</code>. TECH-13 §5.</li>
+</ul>
+<h3 id="арена-и-расстановка">Арена и расстановка<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#арена-и-расстановка" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Геометрия = данные симуляции, не коллайдеры; бейк <code>ArenaLayoutData</code> на старте боя.</strong> TECH-10 §2-3.</li>
+<li><strong>prefab-per-arena через Addressables.</strong> TECH-10 §4.</li>
+<li><strong>Зоны Normal (всем) + Extended (по праву чемпиона); свободное размещение, валидация в <code>DeploymentService</code>.</strong> TECH-10 §3, §6.</li>
+</ul>
+<h3 id="ввод-и-камера">Ввод и камера<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#ввод-и-камера" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Весь ввод за <code>IInputService</code>; карты действий строятся в коде, не <code>.inputactions</code>.</strong> TECH-11 §2-3.</li>
+<li><strong>Камера — Cinemachine 3, режимы Action/Overview/Dev, кламп из данных арены.</strong> TECH-11 §5.</li>
+<li><strong>Dev-камера в билде за флагом <code>DevAccess</code>.</strong> TECH-11 §6.</li>
+<li><strong>Раскладка: пан WASD+стрелки, зум колесо, Tab цикл вида, Space пауза; dev — F5/R + консоль QFSW.</strong> GDD-11, TECH-11.</li>
+</ul>
+<h3 id="сеттинг--сид">Сеттинг / сид<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#сеттинг--сид" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
+<ul>
+<li><strong>Сеттинг: гильдия готовится к Великому Чемпионату; «Сосуды» — люди, несущие Реликвии павших героев.</strong> GDD-2.</li>
+<li><strong>Весь рандом через seeded <code>IRngService</code></strong> (не <code>UnityEngine.Random</code>); забег детерминирован сидом; ввод/шаринг сида — фича. TECH-3.</li>
+</ul>
+<hr/>
+<h2 id="противоречия-и-рассинхроны-в-документации-на-2026-07-15">Противоречия и рассинхроны в документации (на 2026-07-15)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#противоречия-и-рассинхроны-в-документации-на-2026-07-15" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Найдено инвентаризацией и ultracode-аудитом (<a href="../.././../../audits/2026-07-15/summary" class="internal" data-slug="audits/2026-07-15/summary"><code>../../../audits/2026-07-15/summary.md</code></a>). Прогон правок аудита — 2026-07-15.</p>
+<ol>
+<li><strong>[ИСПРАВЛЕНО]</strong> Глоссарий 0.4 писал про ГД «применяет заклинания» — противоречило вырезанным заклинаниям. Поправлено 2026-07-15.</li>
+<li><strong>[ИСПРАВЛЕНО]</strong> Термин «Перк» → EN <code>Trait</code>. GDD-5 теперь указывает <code>TraitData</code> (не <code>PerkModifiers</code>); «Перк» оставлен только как RU-термин. Аудит §3.1.</li>
+<li><strong>[ИСПРАВЛЕНО]</strong> «Обычная» — два значения. Решение Макса 2026-07-15: ось <strong>типа</strong> переименована в <strong>Стандартная / Проклятая / Божественная</strong>; «Обычная» осталась только за осью <strong>редкости</strong>. Прогнано по GDD-5, GDD-0.4, телам карточек. Код <code>RelicRarity</code> — п.4 ниже (сверка HEAD). Аудит §3.2.</li>
+<li><strong><code>RelicRarity</code> в коде = ось ТИПА (Common/Cursed/Divine)</strong>, а не редкости (Треш/Обычная/Уникальная). Память проекта фиксирует более поздний split rarity → KitPower + DropRarity — <strong>сверить с актуальным HEAD</strong> (handoff датирован раньше этих коммитов). <strong>Открыто (код).</strong></li>
+<li><strong>[ИСПРАВЛЕНО]</strong> Имя финального боя разведено: уровень сложности узла = «босс» (GDD-7/13), сущность боя = «гильдия-финалист» (лор, GDD-1/2/3), закреплено в глоссарии 0.4. Аудит §3.3.</li>
+<li><strong>[ИСПРАВЛЕНО]</strong> Статус пунктов про состав врага: решение 22 (состав скрыт) помечено «решено» в GDD-0.6/14; момент раскрытия испытания оставлен единственной открытой развилкой (GDD-0.2). Аудит §5.7.</li>
+</ol>
+<blockquote>
+<p>Также этим аудитом: разведён яд-vs-броня (§1.1), убран отменённый гейт «тип существа → сродство» из GDD-8/Справочника и из инвентаризации выше (§1.2), мигрирована легаси-таксономия урона Вода/Ветер/Земля/Разум (§1.4), починены каталоги-ссылки и порча карточек (§5.1-5.2). Осталось код-зависимое: модель огня The Pyre (§1.3), чистка <code>_spells</code> (§4.3).</p>
+</blockquote>
+<hr/>
+<h2 id="принципы-не-размениваются-без-явного-пересмотра">Принципы (не размениваются без явного пересмотра)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#принципы-не-размениваются-без-явного-пересмотра" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>Рандом даёт выбор и направление — никогда готовую силу.</strong> (Mechabellum: «I wanna outsmart and outplay, not gamba».)</li>
+<li><strong>Решения вне боя обязаны быть видны в бою.</strong> Если «Сосуд» с профилем «держи дистанцию» лезет в свалку — весь слой подготовки обесценен за один бой (провал Time Walker).</li>
+<li><strong>Дефицит и есть глубина.</strong> Лимит 4 «Сосудов» и вместимость коллекции не смягчать (Legionbound умер от изобилия).</li>
+<li><strong>Читаемость — функция, а не полировка.</strong></li>
+<li><strong>Плотность решений важнее длины забега.</strong> Никакого «непроигрываемого первого часа» (провал Dwarves).</li>
+<li><strong>Менеджмент должен чувствоваться.</strong> Слой, который не меняет исход заметно, лучше убрать, чем оставить для галочки.</li>
+<li><strong>Испытания меняют правила, а не крутят статы.</strong> Иначе «каждая партия одинакова» при любом объёме контента (провал There Are No Orcs).</li>
+</ol></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-1" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#оглавление" data-for="оглавление">Оглавление</a></li><li class="depth-0"><a href="#2026-07-16--дизайн-столпы-и-vision" data-for="2026-07-16--дизайн-столпы-и-vision">2026-07-16 — дизайн-столпы и vision</a></li><li class="depth-1"><a href="#видение" data-for="видение">Видение</a></li><li class="depth-0"><a href="#2026-07-15--сессия-скилл-рандом-и-глубина-в-pve-автобаттлере" data-for="2026-07-15--сессия-скилл-рандом-и-глубина-в-pve-автобаттлере">2026-07-15 — сессия «скилл, рандом и глубина в PVE-автобаттлере»</a></li><li class="depth-1"><a href="#бой" data-for="бой">Бой</a></li><li class="depth-1"><a href="#многофазовые-сражения-новое-2026-07-15" data-for="многофазовые-сражения-новое-2026-07-15">Многофазовые сражения (новое, 2026-07-15)</a></li><li class="depth-1"><a href="#цели-боя-типы-битв" data-for="цели-боя-типы-битв">Цели боя (типы битв)</a></li><li class="depth-1"><a href="#мета-прогрессия-и-экономика" data-for="мета-прогрессия-и-экономика">Мета-прогрессия и экономика</a></li><li class="depth-1"><a href="#режимы" data-for="режимы">Режимы</a></li><li class="depth-1"><a href="#информация-и-читаемость" data-for="информация-и-читаемость">Информация и читаемость</a></li><li class="depth-0"><a href="#2026-07-15-вечер--структурная-рамка-гильдии-блок-0" data-for="2026-07-15-вечер--структурная-рамка-гильдии-блок-0">2026-07-15 (вечер) — структурная рамка гильдии (Блок 0)</a></li><li class="depth-0"><a href="#2026-07-15-вечер--система-эффектов-каталог" data-for="2026-07-15-вечер--система-эффектов-каталог">2026-07-15 (вечер) — система эффектов, каталог</a></li><li class="depth-1"><a href="#идентичность-сродств-подтверждено-2026-07-15" data-for="идентичность-сродств-подтверждено-2026-07-15">Идентичность сродств (подтверждено 2026-07-15)</a></li><li class="depth-1"><a href="#теги-состояния-и-первые-комбо-2026-07-15" data-for="теги-состояния-и-первые-комбо-2026-07-15">Теги-состояния и первые комбо (2026-07-15)</a></li><li class="depth-1"><a href="#рефайны-эффектов-и-комбо-2026-07-15" data-for="рефайны-эффектов-и-комбо-2026-07-15">Рефайны эффектов и комбо (2026-07-15)</a></li><li class="depth-0"><a href="#2026-07-15-вечер--предметы-и-знамёна" data-for="2026-07-15-вечер--предметы-и-знамёна">2026-07-15 (вечер) — предметы и Знамёна</a></li><li class="depth-0"><a href="#2026-07-15-вечер--петля-забега-перезапуск-инфо-о-враге-испытания" data-for="2026-07-15-вечер--петля-забега-перезапуск-инфо-о-враге-испытания">2026-07-15 (вечер) — петля забега: перезапуск, инфо о враге, испытания</a></li><li class="depth-0"><a href="#ранее-до-2026-07-15--инвентаризация-канона" data-for="ранее-до-2026-07-15--инвентаризация-канона">Ранее (до 2026-07-15) — инвентаризация канона</a></li><li class="depth-1"><a href="#бой-1" data-for="бой-1">Бой</a></li><li class="depth-1"><a href="#реликвии-и-юниты" data-for="реликвии-и-юниты">Реликвии и юниты</a></li><li class="depth-1"><a href="#мета-прогрессия-и-экономика-1" data-for="мета-прогрессия-и-экономика-1">Мета-прогрессия и экономика</a></li><li class="depth-1"><a href="#карта-и-забег" data-for="карта-и-забег">Карта и забег</a></li><li class="depth-1"><a href="#травмы-и-закалка" data-for="травмы-и-закалка">Травмы и Закалка</a></li><li class="depth-1"><a href="#процедурный-лор-сосудов" data-for="процедурный-лор-сосудов">Процедурный лор «Сосудов»</a></li><li class="depth-1"><a href="#кооп" data-for="кооп">Кооп</a></li><li class="depth-1"><a href="#контент--данные" data-for="контент--данные">Контент / данные</a></li><li class="depth-1"><a href="#арена-и-расстановка" data-for="арена-и-расстановка">Арена и расстановка</a></li><li class="depth-1"><a href="#ввод-и-камера" data-for="ввод-и-камера">Ввод и камера</a></li><li class="depth-1"><a href="#сеттинг--сид" data-for="сеттинг--сид">Сеттинг / сид</a></li><li class="depth-0"><a href="#противоречия-и-рассинхроны-в-документации-на-2026-07-15" data-for="противоречия-и-рассинхроны-в-документации-на-2026-07-15">Противоречия и рассинхроны в документации (на 2026-07-15)</a></li><li class="depth-0"><a href="#принципы-не-размениваются-без-явного-пересмотра" data-for="принципы-не-размениваются-без-явного-пересмотра">Принципы (не размениваются без явного пересмотра)</a></li><li class="overflow-end"></li></ul></div><div class="backlinks"><h3>Обратные ссылки</h3><ul id="list-2" class="overflow"><li><a href="../../gdd/00-meta/" class="internal">Meta - Index</a></li><li><a href="../../gdd/00-meta/open" class="internal">Meta - Open Questions</a></li><li><a href="../../gdd/00-meta/roadmap" class="internal">Meta - Roadmap</a></li><li><a href="../../gdd/10-vision/pillars" class="internal">Дизайн-столпы</a></li><li><a href="../../gdd/40-content/items-banners" class="internal">Content - Items &amp; Banners</a></li><li><a href="../../research/depth" class="internal">Где живёт глубина (PVE-автобаттлер без микро)</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

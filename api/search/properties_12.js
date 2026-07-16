@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['value_0',['Value',['../classGuildmaster_1_1Core_1_1Random_1_1BattleSeed.html#a71a737bcc67d2358a9b27318d0e28077',1,'Guildmaster::Core::Random::BattleSeed']]],
-  ['vesselitemslots_1',['VesselItemSlots',['../classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a8c8d118636ff1c50e53def5183282153',1,'Guildmaster::Data::Definitions::GameConfig']]],
-  ['viewprefab_2',['ViewPrefab',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a8f9387e57aa937bf1ebf94efce9fd241',1,'Guildmaster::Data::Definitions::UnitData']]],
-  ['visual_3',['Visual',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#aa9edd77bd03c31aff370a3183fd645ee',1,'Guildmaster::Data::Definitions::UnitData']]],
-  ['visualslot_4',['VisualSlot',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a411acc6f595da12fa057f0c2a38400bd',1,'Guildmaster::Data::Definitions::AbilityData']]]
+  ['unbounded_0',['unbounded',['../structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html#a6544c30b216b3a689e965d8c6c0aefda',1,'Guildmaster.Core.Arena.ArenaBounds.Unbounded'],['../classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html#aec9bcd9b40e787777a83876bdb6f2063',1,'Guildmaster.Core.Arena.ArenaLayoutData.Unbounded']]],
+  ['uniqueeffects_1',['UniqueEffects',['../classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html#ae93b17d67c0eec4288e9b585b862b186',1,'Guildmaster::Data::Definitions::GuildmasterData']]],
+  ['unit_2',['Unit',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#a6a7a81c63d06221e9272930fe79ca025',1,'Guildmaster::ContentHub::Editor::ContentEntry']]],
+  ['units_3',['units',['../interfaceGuildmaster_1_1Combat_1_1IBattleView.html#a4ee208d8cea1934077746129389d1261',1,'Guildmaster.Combat.IBattleView.Units'],['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6a7d8e090ee8dcca46ee0aaf705e7d24',1,'Guildmaster.Combat.CombatSimulation.Units'],['../classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html#add9d3367aff7bfa6ab88f823462bec31',1,'Guildmaster.Data.Definitions.EncounterData.Units']]],
+  ['unremovable_4',['Unremovable',['../classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#a34da08cb0aa522f1298524ad8da61ac6',1,'Guildmaster::Data::Definitions::EffectData']]]
 ];

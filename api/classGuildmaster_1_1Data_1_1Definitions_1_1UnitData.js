@@ -1,6 +1,7 @@
 var classGuildmaster_1_1Data_1_1Definitions_1_1UnitData =
 [
     [ "Abilities", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#ac8b61ca708de6432f6316a5b74f23b55", null ],
+    [ "Affinity", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a430bc12de9aa012bf236ded32e0a665d", null ],
     [ "Ai", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#aac797685da3e9ab8bbd3981aac17ad8a", null ],
     [ "AiPreset", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#ab6f3885b304da645c1e130e07c173cae", null ],
     [ "AttackRecoverySeconds", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a16bf554be479332eafb6e86e0f6459bb", null ],
@@ -9,7 +10,8 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1UnitData =
     [ "AutoAttackShape", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#ab4497f7e564dcf1abe587a67a8caf45a", null ],
     [ "AutoAttackWidth", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a6f0c1ab13cd1dc8f4977d3bbc5540ac1", null ],
     [ "CanAttackWhileMoving", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#ad8b193ef47962a8bbcf48174a979687c", null ],
-    [ "DamageType", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a52902573797920311b4d81e9e1cf8116", null ],
+    [ "CreatureType", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a5bdd0c9562f9b057b5a899e3790656ed", null ],
+    [ "DamageSchool", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a3600f693dac4ec7a46c961704ecadc1b", null ],
     [ "GrantedEffects", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a05c1e43d9a533a551ef0a3cf4227d379", null ],
     [ "Icon", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a7a831fd484fd301ddcbb41939588f536", null ],
     [ "InfoTags", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a4bcf33d5d8237e05b72c16f7cb0a3cdd", null ],

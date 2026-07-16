@@ -227,6 +227,15 @@ Properties</h2></td></tr>
 <tr class="memitem:ae2e9433540f6fc645621c7098fe38923" id="r_ae2e9433540f6fc645621c7098fe38923"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae2e9433540f6fc645621c7098fe38923">IsWindingUp</a><code> [get]</code></td></tr>
 <tr class="memdesc:ae2e9433540f6fc645621c7098fe38923"><td class="mdescLeft">&#160;</td><td class="mdescRight">Идёт замах (windup): юнит занёс оружие, урон ещё не нанесён. Производный алиас Phase.  <br /></td></tr>
 <tr class="separator:ae2e9433540f6fc645621c7098fe38923"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb698b3eb2046593a2bfa3aa0de1f0cb" id="r_afb698b3eb2046593a2bfa3aa0de1f0cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a033b2c498dd4948de19277bf21fc2d4c">CreatureType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#afb698b3eb2046593a2bfa3aa0de1f0cb">CreatureType</a><code> [get]</code></td></tr>
+<tr class="memdesc:afb698b3eb2046593a2bfa3aa0de1f0cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип существа цели для сродств урона (AffinityTable). Без кита — считаем живым.  <br /></td></tr>
+<tr class="separator:afb698b3eb2046593a2bfa3aa0de1f0cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e2935abfd61136b5064ab1bf103bb9d" id="r_a0e2935abfd61136b5064ab1bf103bb9d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52">DamageSchool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a0e2935abfd61136b5064ab1bf103bb9d">DamageSchool</a><code> [get]</code></td></tr>
+<tr class="memdesc:a0e2935abfd61136b5064ab1bf103bb9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Школа урона кита. Без кита — физика (дефолт пайплайна).  <br /></td></tr>
+<tr class="separator:a0e2935abfd61136b5064ab1bf103bb9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4e02e41cf4217b37bef6dedd6e83577" id="r_ae4e02e41cf4217b37bef6dedd6e83577"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70">DamageAffinity</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae4e02e41cf4217b37bef6dedd6e83577">Affinity</a><code> [get]</code></td></tr>
+<tr class="memdesc:ae4e02e41cf4217b37bef6dedd6e83577"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сродство урона кита.  <br /></td></tr>
+<tr class="separator:ae4e02e41cf4217b37bef6dedd6e83577"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafdbde87b1d1613d182668813c73c8d3" id="r_aafdbde87b1d1613d182668813c73c8d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438">EffectTag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aafdbde87b1d1613d182668813c73c8d3">IncomingEffectTags</a><code> [get]</code></td></tr>
 <tr class="memdesc:aafdbde87b1d1613d182668813c73c8d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Битовое ИЛИ тегов эффектов, ЛЕТЯЩИХ в этого юнита (on-hit эффекты снарядов, ещё не легли).  <br /></td></tr>
 <tr class="separator:aafdbde87b1d1613d182668813c73c8d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -260,11 +269,6 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Забронировать теги летящего в юнита снаряда (при спавне снаряда). </p>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1RuntimeUnit_af770b3e1ea0e566b1eef009bd5b32aad_icgraph.svg" width="484" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -847,6 +851,78 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="ae4e02e41cf4217b37bef6dedd6e83577" name="ae4e02e41cf4217b37bef6dedd6e83577"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4e02e41cf4217b37bef6dedd6e83577">&#9670;&#160;</a></span>Affinity</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70">DamageAffinity</a> Guildmaster.Combat.RuntimeUnit.Affinity</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сродство урона кита. </p>
+
+</div>
+</div>
+<a id="afb698b3eb2046593a2bfa3aa0de1f0cb" name="afb698b3eb2046593a2bfa3aa0de1f0cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb698b3eb2046593a2bfa3aa0de1f0cb">&#9670;&#160;</a></span>CreatureType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a033b2c498dd4948de19277bf21fc2d4c">CreatureType</a> Guildmaster.Combat.RuntimeUnit.CreatureType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Тип существа цели для сродств урона (AffinityTable). Без кита — считаем живым. </p>
+
+</div>
+</div>
+<a id="a0e2935abfd61136b5064ab1bf103bb9d" name="a0e2935abfd61136b5064ab1bf103bb9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e2935abfd61136b5064ab1bf103bb9d">&#9670;&#160;</a></span>DamageSchool</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52">DamageSchool</a> Guildmaster.Combat.RuntimeUnit.DamageSchool</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Школа урона кита. Без кита — физика (дефолт пайплайна). </p>
+
+</div>
+</div>
 <a id="aafdbde87b1d1613d182668813c73c8d3" name="aafdbde87b1d1613d182668813c73c8d3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aafdbde87b1d1613d182668813c73c8d3">&#9670;&#160;</a></span>IncomingEffectTags</h2>
 

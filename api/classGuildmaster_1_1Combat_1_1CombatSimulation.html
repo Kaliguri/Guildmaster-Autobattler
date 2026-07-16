@@ -170,6 +170,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6d647c0229bc77cc9701a4272f36623c" id="r_a6d647c0229bc77cc9701a4272f36623c"><td class="memItemLeft" align="right" valign="top">ulong&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6d647c0229bc77cc9701a4272f36623c">ComputeChecksum</a> ()</td></tr>
 <tr class="memdesc:a6d647c0229bc77cc9701a4272f36623c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Детерминированный слепок состояния симуляции: хэш позиций, HP и текущего тика.  <br /></td></tr>
 <tr class="separator:a6d647c0229bc77cc9701a4272f36623c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae075b207bd2df17fd716f5eb298a4d57" id="r_ae075b207bd2df17fd716f5eb298a4d57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae075b207bd2df17fd716f5eb298a4d57">FlushSpawns</a> ()</td></tr>
+<tr class="memdesc:ae075b207bd2df17fd716f5eb298a4d57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Влить отложенные спавны в живой список БЕЗ тика систем (фаза расстановки, шаг 4): юниты должны присутствовать и быть видимыми/двигаемыми, пока бой на паузе.  <br /></td></tr>
+<tr class="separator:ae075b207bd2df17fd716f5eb298a4d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -194,10 +197,13 @@ Properties</h2></td></tr>
 <tr class="memitem:a6a7d8e090ee8dcca46ee0aaf705e7d24" id="r_a6a7d8e090ee8dcca46ee0aaf705e7d24"><td class="memItemLeft" align="right" valign="top">IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6a7d8e090ee8dcca46ee0aaf705e7d24">Units</a><code> [get]</code></td></tr>
 <tr class="memdesc:a6a7d8e090ee8dcca46ee0aaf705e7d24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Все юниты боя (живые и мёртвые — мозг сам фильтрует по <code>IsDead</code>/команде).  <br /></td></tr>
 <tr class="separator:a6a7d8e090ee8dcca46ee0aaf705e7d24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade014db043568a48011caded693155c1" id="r_ade014db043568a48011caded693155c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712">BattleOutcome</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ade014db043568a48011caded693155c1">Outcome</a><code> [get]</code></td></tr>
+<tr class="memitem:ade014db043568a48011caded693155c1" id="r_ade014db043568a48011caded693155c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ade014db043568a48011caded693155c1">Outcome</a><code> [get]</code></td></tr>
 <tr class="separator:ade014db043568a48011caded693155c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95b013883f25014e70b5ec816df42285" id="r_a95b013883f25014e70b5ec816df42285"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a95b013883f25014e70b5ec816df42285">IsPaused</a><code> [get]</code></td></tr>
 <tr class="separator:a95b013883f25014e70b5ec816df42285"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d25dff7fc28636a75a14b8b9e5653b1" id="r_a2d25dff7fc28636a75a14b8b9e5653b1"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a2d25dff7fc28636a75a14b8b9e5653b1">ElapsedSeconds</a><code> [get]</code></td></tr>
+<tr class="memdesc:a2d25dff7fc28636a75a14b8b9e5653b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сколько боевого времени прошло, сек.  <br /></td></tr>
+<tr class="separator:a2d25dff7fc28636a75a14b8b9e5653b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1ICombatContext"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1ICombatContext')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html">Guildmaster.Combat.ICombatContext</a></td></tr>
 <tr class="inherit_header properties_interfaceGuildmaster_1_1Combat_1_1IBattleView"><td colspan="2" onclick="javascript:toggleInherit('properties_interfaceGuildmaster_1_1Combat_1_1IBattleView')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interfaceGuildmaster_1_1Combat_1_1IBattleView.html">Guildmaster.Combat.IBattleView</a></td></tr>
 </table><table class="memberdecls">
@@ -224,7 +230,7 @@ Events</h2></td></tr>
 <tr class="memitem:ae73567a995a49a3e63bdcfb76cfa75bd" id="r_ae73567a995a49a3e63bdcfb76cfa75bd"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnit.html">RuntimeUnit</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae73567a995a49a3e63bdcfb76cfa75bd">OnAttackInterrupted</a></td></tr>
 <tr class="memdesc:ae73567a995a49a3e63bdcfb76cfa75bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Замах авто-атаки прерван (стан/смерть себя): View рвёт свинг в idle (вики «14»).  <br /></td></tr>
 <tr class="separator:ae73567a995a49a3e63bdcfb76cfa75bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a83041f340c0c1f635c66282dc3409d" id="r_a4a83041f340c0c1f635c66282dc3409d"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712">BattleOutcome</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4a83041f340c0c1f635c66282dc3409d">OnBattleEnded</a></td></tr>
+<tr class="memitem:a4a83041f340c0c1f635c66282dc3409d" id="r_a4a83041f340c0c1f635c66282dc3409d"><td class="memItemLeft" align="right" valign="top">Action&lt; <a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a4a83041f340c0c1f635c66282dc3409d">OnBattleEnded</a></td></tr>
 <tr class="memdesc:a4a83041f340c0c1f635c66282dc3409d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Бой завершён с итогом.  <br /></td></tr>
 <tr class="separator:a4a83041f340c0c1f635c66282dc3409d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8ab46bf85adfb0303a700a734db9d6da" id="r_a8ab46bf85adfb0303a700a734db9d6da"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a8ab46bf85adfb0303a700a734db9d6da">OnBattleReset</a></td></tr>
@@ -462,7 +468,7 @@ Events</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a6de925024d5473fc9537c6a36e39fe45_cgraph.svg" width="484" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a6de925024d5473fc9537c6a36e39fe45_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -577,6 +583,26 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a6ef3762989e4fb8bf6e6f2229baa2b5c_icgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="ae075b207bd2df17fd716f5eb298a4d57" name="ae075b207bd2df17fd716f5eb298a4d57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae075b207bd2df17fd716f5eb298a4d57">&#9670;&#160;</a></span>FlushSpawns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.FlushSpawns </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Влить отложенные спавны в живой список БЕЗ тика систем (фаза расстановки, шаг 4): юниты должны присутствовать и быть видимыми/двигаемыми, пока бой на паузе. </p>
+<p>Фактически арм <code>_hasSpawned</code> и <code>OnUnitSpawned</code> (презентация строит виды) — безвредно до первого реального Tick. </p>
 
 </div>
 </div>
@@ -946,11 +972,6 @@ Here is the caller graph for this function:</div>
 <p>Создать снаряд в симуляции. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#af77b3fed804337cb57884a18b5bff033">Guildmaster.Combat.ICombatContext</a>.</p>
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1CombatSimulation_a85465a46ea9d2ce38e263814ef54b9c2_cgraph.svg" width="484" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
 
 </div>
 </div>
@@ -1060,6 +1081,31 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="a2d25dff7fc28636a75a14b8b9e5653b1" name="a2d25dff7fc28636a75a14b8b9e5653b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d25dff7fc28636a75a14b8b9e5653b1">&#9670;&#160;</a></span>ElapsedSeconds</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.Combat.CombatSimulation.ElapsedSeconds</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сколько боевого времени прошло, сек. </p>
+<p>Идёт по симуляционным тикам, а не по стенным часам, поэтому пауза и slowmo его не искажают. Основа для боевого таймера в HUD. </p>
+
+</div>
+</div>
 <a id="a95b013883f25014e70b5ec816df42285" name="a95b013883f25014e70b5ec816df42285"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a95b013883f25014e70b5ec816df42285">&#9670;&#160;</a></span>IsPaused</h2>
 
@@ -1092,7 +1138,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712">BattleOutcome</a> Guildmaster.Combat.CombatSimulation.Outcome</td>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a> Guildmaster.Combat.CombatSimulation.Outcome</td>
         </tr>
       </table>
   </td>
@@ -1278,7 +1324,7 @@ Here is the call graph for this function:</div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Action&lt;<a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712">BattleOutcome</a>&gt; Guildmaster.Combat.CombatSimulation.OnBattleEnded</td>
+          <td class="memname">Action&lt;<a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a>&gt; Guildmaster.Combat.CombatSimulation.OnBattleEnded</td>
         </tr>
       </table>
 </div><div class="memdoc">

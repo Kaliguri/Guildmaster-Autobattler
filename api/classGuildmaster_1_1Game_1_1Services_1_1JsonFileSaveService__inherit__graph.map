@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Services.JsonFileSaveService" name="Guildmaster.Game.Services.JsonFileSaveService">
+<area shape="rect" id="Node000001" title="Соло&#45;бэкенд ISaveService: JSON&#45;файл на диск (Application.persistentDataPath) через JsonUtility." alt="" coords="5,179,204,319"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html" title="Шов персистентности (вики «2», «13» §1): сохранение/загрузка сериализуемых DTO по строковому ключу." alt="" coords="50,5,159,131"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,145,107,178,102,178,102,145"/>
+</map>

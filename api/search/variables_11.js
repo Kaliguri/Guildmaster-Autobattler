@@ -11,5 +11,5 @@ var searchData=
   ['tier_8',['Tier',['../structGuildmaster_1_1Core_1_1Arena_1_1DeploymentZone.html#ab4a89908f257ef1ef78add05daaec5b4',1,'Guildmaster::Core::Arena::DeploymentZone']]],
   ['time_9',['Time',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1ClipSpriteFrames_1_1Frame.html#a05a59c5c6a16acf01346dc1795b91798',1,'Guildmaster::ContentHub::Editor::ClipSpriteFrames::Frame']]],
   ['timescale_10',['TimeScale',['../classGuildmaster_1_1Core_1_1Audio_1_1AudioParameters.html#ae091269dd4e6a21728295f85c3567b7a',1,'Guildmaster::Core::Audio::AudioParameters']]],
-  ['type_11',['Type',['../structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html#a4c08464dad2b21d98ca161da5f350ebe',1,'Guildmaster::Combat::Effects::CombatEventData']]]
+  ['type_11',['type',['../structGuildmaster_1_1Combat_1_1Effects_1_1CombatEventData.html#a4c08464dad2b21d98ca161da5f350ebe',1,'Guildmaster.Combat.Effects.CombatEventData.Type'],['../classGuildmaster_1_1Guild_1_1MapNode.html#aa27b3459f5c5f91cba7e70355c5086a6',1,'Guildmaster.Guild.MapNode.Type']]]
 ];

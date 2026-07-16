@@ -1,0 +1,7 @@
+<map id="Guildmaster.UI.EventScreenView.Build" name="Guildmaster.UI.EventScreenView.Build">
+<area shape="rect" id="Node000001" title="Построить экран&#45;оверлей ивента." alt="" coords="5,37,209,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html#a52761d4e036929ff32d323cf34908a60" title="Ключ подписи кнопки варианта index ." alt="" coords="261,5,485,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,42,246,38,247,43,210,48"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html#ad2f0e613124999527b50f4301822c7f8" title="Ключ текста&#45;результата варианта index &#160;(может быть пустым в таблице)." alt="" coords="257,69,488,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="210,67,244,71,243,76,209,72"/>
+</map>

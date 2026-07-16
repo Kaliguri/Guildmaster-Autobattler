@@ -12,6 +12,8 @@ var EffectTag_8cs =
       [ "Frozen", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a68abcc3d0869f8a52c2b286b3c511dd3", null ],
       [ "Marked", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438ab80c545ea15439f0b585c86a6aab3226", null ],
       [ "KnockUp", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89", null ],
-      [ "Stealth", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628", null ]
+      [ "Stealth", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628", null ],
+      [ "Poison", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a3a9d1818d0d7f5646e63465baf7d366f", null ],
+      [ "Burn", "EffectTag_8cs.html#a4e7ad4bd70e81312e11f8afc21650438a11635778f116ce6922f6068638a39028", null ]
     ] ]
 ];

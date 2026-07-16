@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1UI_1_1IMenuRou
 <div class="dynheader">
 Inheritance diagram for Guildmaster.UI.IMenuRouter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1UI_1_1IMenuRouter__inherit__graph.svg" width="210" height="270"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1UI_1_1IMenuRouter__inherit__graph.svg" width="210" height="370"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.IMenuRouter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1UI_1_1IMenuRouter__coll__graph.svg" width="210" height="96"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1UI_1_1IMenuRouter__coll__graph.svg" width="210" height="136"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -120,6 +120,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9e849da98ad96cc9f930d07c8fae2745" id="r_a9e849da98ad96cc9f930d07c8fae2745"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#a9e849da98ad96cc9f930d07c8fae2745">CloseAll</a> ()</td></tr>
 <tr class="memdesc:a9e849da98ad96cc9f930d07c8fae2745"><td class="mdescLeft">&#160;</td><td class="mdescRight">Закрыть все экраны и снять глушение ввода.  <br /></td></tr>
 <tr class="separator:a9e849da98ad96cc9f930d07c8fae2745"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab818951ca677c638421e2c564fba057d" id="r_ab818951ca677c638421e2c564fba057d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#ab818951ca677c638421e2c564fba057d">OpenReward</a> (<a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html">Guildmaster.Data.Definitions.OpenRewardRequest</a> req)</td></tr>
+<tr class="memdesc:ab818951ca677c638421e2c564fba057d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть экран награды после боя (A3).  <br /></td></tr>
+<tr class="separator:ab818951ca677c638421e2c564fba057d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4736e742c441452f818862e547e123cf" id="r_a4736e742c441452f818862e547e123cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1UI_1_1IMenuRouter.html#a4736e742c441452f818862e547e123cf">OpenTextEvent</a> (<a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html">Guildmaster.Data.Definitions.OpenTextEventRequest</a> req)</td></tr>
+<tr class="memdesc:a4736e742c441452f818862e547e123cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Открыть экран текстового ивента (StS-style).  <br /></td></tr>
+<tr class="separator:a4736e742c441452f818862e547e123cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -149,6 +155,52 @@ Properties</h2></td></tr>
 <p>Закрыть все экраны и снять глушение ввода. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#afa78f908f2bd7c7994d89f528cce385c">Guildmaster.UI.MenuRouter</a>.</p>
+
+</div>
+</div>
+<a id="ab818951ca677c638421e2c564fba057d" name="ab818951ca677c638421e2c564fba057d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab818951ca677c638421e2c564fba057d">&#9670;&#160;</a></span>OpenReward()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.IMenuRouter.OpenReward </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html">Guildmaster.Data.Definitions.OpenRewardRequest</a>&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Открыть экран награды после боя (A3). </p>
+<p>Гарантирует ровно один вызов <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html#ae27ad82170510e262f95d007ac36a5cb" title="Колбэк результата выбора (ровно один вызов): взятый релик + опц. сброшенный, либо пропуск.">Guildmaster.Data.Definitions.OpenRewardRequest.OnResolved</a> — включая закрытие без выбора (= пропуск), чтобы флоу забега не завис в ожидании. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#af504f46c2b15d531ee0a261b277deb5a">Guildmaster.UI.MenuRouter</a>.</p>
+
+</div>
+</div>
+<a id="a4736e742c441452f818862e547e123cf" name="a4736e742c441452f818862e547e123cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4736e742c441452f818862e547e123cf">&#9670;&#160;</a></span>OpenTextEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.IMenuRouter.OpenTextEvent </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html">Guildmaster.Data.Definitions.OpenTextEventRequest</a>&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Открыть экран текстового ивента (StS-style). </p>
+<p>Гарантирует ровно один вызов <a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html#ae9e1fc8a386d7c4ab6d89cc54c0d0489" title="Колбэк выбора (ровно один вызов): индекс варианта в TextEventData.Choices.">Guildmaster.Data.Definitions.OpenTextEventRequest.OnChosen</a> — закрытие без выбора шлёт индекс -1 (пропуск), чтобы флоу не завис. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html#ad75cea58b1691f1375c50ddb27f6de9c">Guildmaster.UI.MenuRouter</a>.</p>
 
 </div>
 </div>

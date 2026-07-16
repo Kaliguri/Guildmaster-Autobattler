@@ -1,0 +1,7 @@
+<map id="Guildmaster.Game.Flow.IEventFlow" name="Guildmaster.Game.Flow.IEventFlow">
+<area shape="rect" id="Node000001" title="Полиморфный узел забега (вики «7» §3, план 11 §3.2): бой / текст&#45;ивент / магазин / риск — каждый новы..." alt="" coords="127,5,373,71"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html" title="Узел забега «бой» (план 11 §3.2, §4 A2): оборачивает готовую боевую клетку в IEventFlow." alt="" coords="5,126,249,211"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,83,169,128,165,124,208,79"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html" title="Узел забега «текстовый ивент» (план 11 §3.4, §5.1) в стиле Slay the Spire: показывает TextEventData (..." alt="" coords="273,119,475,219"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="292,79,329,117,325,120,288,83"/>
+</map>

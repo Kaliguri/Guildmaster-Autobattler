@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zones_0',['Zones',['../classGuildmaster_1_1Core_1_1Arena_1_1ArenaLayoutData.html#a800c95f0d7f27f36cfc3b95d2afcbe24',1,'Guildmaster::Core::Arena::ArenaLayoutData']]]
+  ['weight_0',['Weight',['../classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html#ab7224b94e5120db1786e2a6a9cd21fe6',1,'Guildmaster::Data::Definitions::ConsequenceData']]]
 ];

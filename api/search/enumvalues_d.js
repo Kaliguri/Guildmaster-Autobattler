@@ -1,21 +1,8 @@
 var searchData=
 [
-  ['party_0',['Party',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590a094a173d3b32f44f5b5c996e8710ae28',1,'Guildmaster::Data::Definitions']]],
-  ['pause_1',['Pause',['../namespaceGuildmaster_1_1Net.html#abfefa865c9eefe25d3d732f0c5c953f8a105b296a83f9c105355403f3332af50f',1,'Guildmaster::Net']]],
-  ['percentadd_2',['PercentAdd',['../namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea262a238a3da28a9ce8691194cf49d482',1,'Guildmaster::Data::Stats']]],
-  ['percentmult_3',['PercentMult',['../namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea2cc82caaddc987b7de92f0308b925ca5',1,'Guildmaster::Data::Stats']]],
-  ['physarmor_4',['PhysArmor',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a54f06c7358d259caa316edeed3a493f5',1,'Guildmaster::Data::Stats']]],
-  ['physical_5',['Physical',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3ace898d62ed9ca7653a01fe0c781e97e9',1,'Guildmaster::Data::Definitions']]],
-  ['physpen_6',['PhysPen',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284ad1742c8675710f479dde6c0866b960f5',1,'Guildmaster::Data::Stats']]],
-  ['physpenpct_7',['PhysPenPct',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a3109e6905a75ddc57761f609264efa85',1,'Guildmaster::Data::Stats']]],
-  ['player_8',['Player',['../namespaceGuildmaster_1_1Core_1_1Arena.html#ad2f8cdf4db07e9198b14b687d5091dd8a636da1d35e805b00eae0fcd8333f9234',1,'Guildmaster::Core::Arena']]],
-  ['players_9',['Players',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ae2772e0f6d732c1f22cce603b3958140a93ec972c68d5caca43370a9746a08cea',1,'Guildmaster::Data::Definitions']]],
-  ['playstyle_10',['Playstyle',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113a95c846c435277fef4a1d64748633b49f',1,'Guildmaster::Data::Definitions']]],
-  ['positive_11',['Positive',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a47d79e60de086a94265b32b9833971e1a3289297424e01eda5b788c083bbf3147',1,'Guildmaster::Data::Definitions']]],
-  ['prefertagged_12',['PreferTagged',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a759a43aa9baf11fa753e2836f04e0318',1,'Guildmaster::Data::Definitions']]],
-  ['preferuntagged_13',['PreferUntagged',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a1ab8a7777ec5957eeca9aabb3d5f9047',1,'Guildmaster::Data::Definitions']]],
-  ['projectileaoe_14',['ProjectileAoe',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1a8bbf55183f7d11e74da28d738216036a',1,'Guildmaster::Data::Definitions']]],
-  ['projectilepierce_15',['projectilepierce',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1a94eb18b9ccde1a738aa52a4576bcf84e',1,'Guildmaster.Data.Definitions.ProjectilePierce'],['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a94eb18b9ccde1a738aa52a4576bcf84e',1,'Guildmaster.Data.Stats.ProjectilePierce']]],
-  ['projectilespeed_16',['ProjectileSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a0d2990dac5e3917c766ec7e4a7bf81f8',1,'Guildmaster::Data::Stats']]],
-  ['pull_17',['Pull',['../namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea718f59718640c6506b3721fbc8bf3a4d',1,'Guildmaster::Combat']]]
+  ['ongoing_0',['Ongoing',['../namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0ca7ee7defde6dc3a1d4a4a891b3894e790',1,'Guildmaster::Combat']]],
+  ['onhitabovepctmaxhp_1',['OnHitAbovePctMaxHp',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612adc8d14d412fc6562b2323f42bab05a43',1,'Guildmaster::Data::Definitions']]],
+  ['other_2',['Other',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113a6311ae17c1ee52b36e68aaf4ad066387',1,'Guildmaster::Data::Definitions']]],
+  ['override_3',['Override',['../namespaceGuildmaster_1_1Data_1_1Stats.html#aae132bbc024dc11a826cb55da0cae0dea6da8e67225fdcfa78c3ea5dc3154b849',1,'Guildmaster::Data::Stats']]],
+  ['overview_4',['Overview',['../namespaceGuildmaster_1_1Presentation.html#a7008f013425bc03096abc74bc96c1319a3b878279a04dc47d60932cb294d96259',1,'Guildmaster::Presentation']]]
 ];

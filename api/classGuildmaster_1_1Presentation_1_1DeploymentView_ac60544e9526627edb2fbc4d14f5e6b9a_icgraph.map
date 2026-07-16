@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.DeploymentView.SetOutline" name="Guildmaster.Presentation.DeploymentView.SetOutline">
+<area shape="rect" id="Node000001" title="Кольцо&#45;outline вокруг наведённого/выбранного юнита." alt="" coords="281,5,487,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1DeploymentController.html#a57ae655e5d716938ba6444b90dca2ccb" title=" " alt="" coords="5,5,233,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="267,28,234,28,234,23,267,23"/>
+</map>

@@ -1,28 +1,43 @@
 var namespaceGuildmaster_1_1Data_1_1Definitions =
 [
     [ "AbilityData", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData" ],
+    [ "AffinityTable", "classGuildmaster_1_1Data_1_1Definitions_1_1AffinityTable.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AffinityTable" ],
     [ "AIPresetData", "classGuildmaster_1_1Data_1_1Definitions_1_1AIPresetData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AIPresetData" ],
     [ "AIProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile" ],
+    [ "BattlePresetData", "classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData" ],
     [ "ClipMarkers", "classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers" ],
     [ "ConsequenceData", "classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData" ],
     [ "ContentDatabase", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase" ],
     [ "ContentDefinition", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition" ],
     [ "ContentDomains", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains" ],
     [ "ContentRegistry", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentRegistry.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentRegistry" ],
+    [ "DamageCategories", "classGuildmaster_1_1Data_1_1Definitions_1_1DamageCategories.html", "classGuildmaster_1_1Data_1_1Definitions_1_1DamageCategories" ],
     [ "EffectData", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData" ],
+    [ "EncounterData", "classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData" ],
+    [ "EncounterUnit", "structGuildmaster_1_1Data_1_1Definitions_1_1EncounterUnit.html", "structGuildmaster_1_1Data_1_1Definitions_1_1EncounterUnit" ],
     [ "EnemyData", "classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData" ],
+    [ "EquipRelicRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest" ],
+    [ "EventChoice", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice" ],
+    [ "EventEffect", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect" ],
     [ "GameConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig" ],
     [ "GuildmasterData", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData" ],
+    [ "IBattleClock", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock" ],
     [ "IContentDatabase", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase" ],
     [ "IEffectComponent", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html", null ],
     [ "ItemData", "classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ItemData" ],
     [ "Kite", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite" ],
+    [ "OpenLoadoutRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenLoadoutRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenLoadoutRequest" ],
+    [ "OpenRewardRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest" ],
+    [ "OpenTextEventRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest" ],
+    [ "PlayerSlot", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot" ],
     [ "RelicData", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData" ],
     [ "Retreat", "structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html", "structGuildmaster_1_1Data_1_1Definitions_1_1Retreat" ],
+    [ "RewardChoiceResult", "structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html", "structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult" ],
     [ "RunModifierData", "classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData" ],
     [ "SimTuningConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1SimTuningConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1SimTuningConfig" ],
     [ "StatsConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig" ],
     [ "TagData", "classGuildmaster_1_1Data_1_1Definitions_1_1TagData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1TagData" ],
+    [ "TextEventData", "classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData" ],
     [ "TraitData", "classGuildmaster_1_1Data_1_1Definitions_1_1TraitData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1TraitData" ],
     [ "UnitData", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData" ],
     [ "UnitVisual", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual" ],
@@ -32,7 +47,8 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "NearestEnemy", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788", null ],
       [ "NearestAlly", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443", null ],
       [ "LowestHpAlly", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9", null ],
-      [ "AllEnemiesWithTag", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daca9a36847c82d52294021b89b7743fa5", null ]
+      [ "AllEnemiesWithTag", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daca9a36847c82d52294021b89b7743fa5", null ],
+      [ "AlliesInRadius", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da9b401d33d9fe08a83a3e8f989ac3b98b", null ]
     ] ],
     [ "AreaShape", "namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0bec", [
       [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca6adf97f83acf6453d4a6a4b1070f3754", null ],
@@ -49,6 +65,11 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "Damage", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a925836248f5be4ad63a124b9590397daab9f24e83531326204197015b2f43a93f", null ],
       [ "Heal", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a925836248f5be4ad63a124b9590397daaf357105e6becc3076a3da9b43465051a", null ]
     ] ],
+    [ "BattlePhase", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103a", [
+      [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103aa6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Deployment", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103aaea355214fd4bc7c57f471bd92918879b", null ],
+      [ "Fighting", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103aaef492f571a74192b637adada68fdd94a", null ]
+    ] ],
     [ "CastCondition", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0", [
       [ "Immediately", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0afd83e0ccb3e6312a62f888dd496dd0a5", null ],
       [ "EnemiesInRadius", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0a626752bceb9e413f86ffb1e63a444204", null ],
@@ -59,15 +80,50 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "Injury", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a47deba8478555be8eecd4256caa21c7b", null ],
       [ "Mettle", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a400419f1b352e7a735a9b391387e8e80", null ]
     ] ],
-    [ "DamageType", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3", [
-      [ "Physical", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3ace898d62ed9ca7653a01fe0c781e97e9", null ],
-      [ "Magic", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3a02700e454d679f31f27c6f0768986dd1", null ],
-      [ "True", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3af827cf462f62848df37c5e1e94a4da74", null ]
+    [ "CreatureType", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a033b2c498dd4948de19277bf21fc2d4c", [
+      [ "Living", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a033b2c498dd4948de19277bf21fc2d4ca73ba7cfe3119d4664483d59f10a19d30", null ],
+      [ "Undead", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a033b2c498dd4948de19277bf21fc2d4caa51041f7f7a1eb0546fbacdd6291b2fe", null ],
+      [ "Construct", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a033b2c498dd4948de19277bf21fc2d4ca280a09d571703899a5244cf6befe28e3", null ],
+      [ "Demon", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a033b2c498dd4948de19277bf21fc2d4ca300d4af0950c89b847cf6f7500e6060c", null ],
+      [ "Beast", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a033b2c498dd4948de19277bf21fc2d4ca8023727f8bbdfc6efb4944197420bf7e", null ]
+    ] ],
+    [ "DamageAffinity", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70", [
+      [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70a6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Poison", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70a3a9d1818d0d7f5646e63465baf7d366f", null ],
+      [ "Light", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70a9914a0ce04a7b7b6a8e39bec55064b82", null ],
+      [ "Dark", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70aa18366b217ebf811ad1886e4f4f865b2", null ]
+    ] ],
+    [ "DamageAffinityOverride", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aeedc377cc311c36aa2cff2f2e1a416b1", [
+      [ "Inherit", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aeedc377cc311c36aa2cff2f2e1a416b1ac49484faf79e2388b580e49444d6ac11", null ],
+      [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aeedc377cc311c36aa2cff2f2e1a416b1a6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Poison", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aeedc377cc311c36aa2cff2f2e1a416b1a3a9d1818d0d7f5646e63465baf7d366f", null ],
+      [ "Light", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aeedc377cc311c36aa2cff2f2e1a416b1a9914a0ce04a7b7b6a8e39bec55064b82", null ],
+      [ "Dark", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aeedc377cc311c36aa2cff2f2e1a416b1aa18366b217ebf811ad1886e4f4f865b2", null ]
+    ] ],
+    [ "DamageSchool", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52", [
+      [ "Physical", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52ace898d62ed9ca7653a01fe0c781e97e9", null ],
+      [ "Elemental", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52a02bc08a1ec4c7e7a49c63fe663cc6e2d", null ],
+      [ "True", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a229ec07b74f7b93a0fe073371d2eaf52af827cf462f62848df37c5e1e94a4da74", null ]
+    ] ],
+    [ "DamageSchoolOverride", "namespaceGuildmaster_1_1Data_1_1Definitions.html#af81a51ec2b0ebc9ce36f99234efcf91e", [
+      [ "Inherit", "namespaceGuildmaster_1_1Data_1_1Definitions.html#af81a51ec2b0ebc9ce36f99234efcf91eac49484faf79e2388b580e49444d6ac11", null ],
+      [ "Physical", "namespaceGuildmaster_1_1Data_1_1Definitions.html#af81a51ec2b0ebc9ce36f99234efcf91eace898d62ed9ca7653a01fe0c781e97e9", null ],
+      [ "Elemental", "namespaceGuildmaster_1_1Data_1_1Definitions.html#af81a51ec2b0ebc9ce36f99234efcf91ea02bc08a1ec4c7e7a49c63fe663cc6e2d", null ],
+      [ "True", "namespaceGuildmaster_1_1Data_1_1Definitions.html#af81a51ec2b0ebc9ce36f99234efcf91eaf827cf462f62848df37c5e1e94a4da74", null ]
+    ] ],
+    [ "DeploymentMode", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a96a1bdf0cb1a25fe5ecbb3602a9fcd9b", [
+      [ "Fixed", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a96a1bdf0cb1a25fe5ecbb3602a9fcd9ba4457d440870ad6d42bab9082d9bf9b61", null ],
+      [ "Free", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a96a1bdf0cb1a25fe5ecbb3602a9fcd9bab24ce0cd392a5b0b8dedc66c25213594", null ]
     ] ],
     [ "DispelTargetPolarity", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20", [
       [ "Any", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20aed36a1ef76a59ee3f15180e0441188ad", null ],
       [ "Buff", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a536e1a5d9f4fe868e6ea5ff628f51f25", null ],
       [ "Debuff", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a9cc3b75ee764cbdef4455c6ce72eee20a941c9c4ecaa0bb3ab530f13b0078be01", null ]
+    ] ],
+    [ "DropRarity", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a925db2d2a0c45c6708446a8c78dce0a6", [
+      [ "Trash", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a925db2d2a0c45c6708446a8c78dce0a6aa7e253cd8dd95da3e20daf45519a8dc2", null ],
+      [ "Common", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a925db2d2a0c45c6708446a8c78dce0a6ad13bc5b68b2bd9e18f29777db17cc563", null ],
+      [ "Unique", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a925db2d2a0c45c6708446a8c78dce0a6ad019979a29c88c8d69bab3a63388da97", null ]
     ] ],
     [ "EffectPolarity", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459", [
       [ "Buff", "namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459a536e1a5d9f4fe868e6ea5ff628f51f25", null ],
@@ -86,22 +142,38 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
       [ "Frozen", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a68abcc3d0869f8a52c2b286b3c511dd3", null ],
       [ "Marked", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438ab80c545ea15439f0b585c86a6aab3226", null ],
       [ "KnockUp", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89", null ],
-      [ "Stealth", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628", null ]
+      [ "Stealth", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628", null ],
+      [ "Poison", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a3a9d1818d0d7f5646e63465baf7d366f", null ],
+      [ "Burn", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a11635778f116ce6922f6068638a39028", null ]
+    ] ],
+    [ "EncounterTier", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532fa", [
+      [ "Common", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532faad13bc5b68b2bd9e18f29777db17cc563", null ],
+      [ "Elite", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532faab13082ea3fe2642f1fd1fb76de03058b", null ],
+      [ "Finalist", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532faa3dbf6495214c58bebbe19d455ab5f696", null ],
+      [ "Special", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532faab4c2b550635fe54fd29f2b64dfaca55d", null ]
+    ] ],
+    [ "EventEffectKind", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a77f110cb08935b14a4b3742c4dc83b80", [
+      [ "Gold", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a77f110cb08935b14a4b3742c4dc83b80a9768feb3fdb1f267b06093bc572952dd", null ],
+      [ "GrantRelic", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a77f110cb08935b14a4b3742c4dc83b80a9b3b387930440d8c65c02829a8380352", null ],
+      [ "RemoveRelic", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a77f110cb08935b14a4b3742c4dc83b80a101391afc2c0d5f640162e9f03f0cd04", null ],
+      [ "GainRelicCapacity", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a77f110cb08935b14a4b3742c4dc83b80a59bfa581cee5f82ea58c4ffc2073385f", null ],
+      [ "GrantItem", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a77f110cb08935b14a4b3742c4dc83b80aa5b8f311297ef640de3368f2c0ceee8c", null ],
+      [ "Custom", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a77f110cb08935b14a4b3742c4dc83b80a90589c47f06eb971d548591f23c285af", null ]
     ] ],
     [ "ItemScope", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590", [
       [ "Vessel", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590add85641c28bfd5bae3047879853d4a33", null ],
       [ "Party", "namespaceGuildmaster_1_1Data_1_1Definitions.html#adb3246db7673b2da9a0a4d4f4ffdd590a094a173d3b32f44f5b5c996e8710ae28", null ]
+    ] ],
+    [ "KitPower", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aee083e738438161de13eeb944ce80dea", [
+      [ "Common", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aee083e738438161de13eeb944ce80deaad13bc5b68b2bd9e18f29777db17cc563", null ],
+      [ "Cursed", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aee083e738438161de13eeb944ce80deaa2a31072f729cf6c21db67a11c9e8f433", null ],
+      [ "Divine", "namespaceGuildmaster_1_1Data_1_1Definitions.html#aee083e738438161de13eeb944ce80deaa178ccf18b360e8cff0fc1a4eb404def6", null ]
     ] ],
     [ "PassiveTrigger", "namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612", [
       [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612a6adf97f83acf6453d4a6a4b1070f3754", null ],
       [ "AnyHit", "namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612afed8068cf66889c7c88bd5b7d3d02e4b", null ],
       [ "OnHitAbovePctMaxHp", "namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612adc8d14d412fc6562b2323f42bab05a43", null ],
       [ "Always", "namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612a68eec46437c384d8dad18d5464ebc35c", null ]
-    ] ],
-    [ "RelicRarity", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a6f169d5cb69e236380c314f6148efed9", [
-      [ "Common", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a6f169d5cb69e236380c314f6148efed9ad13bc5b68b2bd9e18f29777db17cc563", null ],
-      [ "Cursed", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a6f169d5cb69e236380c314f6148efed9a2a31072f729cf6c21db67a11c9e8f433", null ],
-      [ "Divine", "namespaceGuildmaster_1_1Data_1_1Definitions.html#a6f169d5cb69e236380c314f6148efed9a178ccf18b360e8cff0fc1a4eb404def6", null ]
     ] ],
     [ "ResourceType", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0", [
       [ "None", "namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0a6adf97f83acf6453d4a6a4b1070f3754", null ],

@@ -1,8 +1,20 @@
 var searchData=
 [
-  ['teamawins_0',['TeamAWins',['../namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712aa66e17eee0daf633ec8090d0d97b2d42',1,'Guildmaster::Combat']]],
-  ['teambwins_1',['TeamBWins',['../namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712a58662d9ca10f6dd2162eaf4f825b317f',1,'Guildmaster::Combat']]],
-  ['teleport_2',['Teleport',['../namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea054fc7866c93a2496fd9048c493e6aed',1,'Guildmaster::Combat']]],
-  ['tick_3',['Tick',['../namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1a0b3516a5bbb77566f904f9d3877f4710',1,'Guildmaster::Presentation::Audio']]],
-  ['true_4',['True',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3af827cf462f62848df37c5e1e94a4da74',1,'Guildmaster::Data::Definitions']]]
+  ['self_0',['Self',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332daad6e7652b1bdfb38783486c2c3d5e806',1,'Guildmaster::Data::Definitions']]],
+  ['shield_1',['shield',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a970da5f1f2e32aeb9e488dd017160ab4',1,'Guildmaster.Data.Definitions.Shield'],['../namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1a970da5f1f2e32aeb9e488dd017160ab4',1,'Guildmaster.Presentation.Audio.Shield']]],
+  ['shop_2',['Shop',['../namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a9f82518d468b9fee614fcc92f76bb163',1,'Guildmaster::Guild']]],
+  ['size_3',['Size',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a6f6cb72d544962fa333e2e34ce64f719',1,'Guildmaster::Data::Stats']]],
+  ['skill1_4',['Skill1',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656a7255340c02ad7a4e4dbe394416683342',1,'Guildmaster::Data::Definitions']]],
+  ['skill2_5',['Skill2',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656aa844affb27623abf8a1ae306db49e447',1,'Guildmaster::Data::Definitions']]],
+  ['skill3_6',['Skill3',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656a40345553689931c458531932b60f8385',1,'Guildmaster::Data::Definitions']]],
+  ['skill4_7',['Skill4',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aaeb925456e7544419585e3138c3db656ad335f39a69a8ba5792b7f47c76cc5142',1,'Guildmaster::Data::Definitions']]],
+  ['sm_8',['Sm',['../classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a43dde70287e571242272c78764ea534da20c4c6104a283ee7383776e722439342',1,'Guildmaster::UI::Components::Slot']]],
+  ['special_9',['Special',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a53b7072a3ed6220e7fa7b6d7049532faab4c2b550635fe54fd29f2b64dfaca55d',1,'Guildmaster::Data::Definitions']]],
+  ['stack_10',['Stack',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca2187e1021a911b3807cc1bea2eb1a9ca',1,'Guildmaster::Data::Definitions']]],
+  ['stackandrefresh_11',['StackAndRefresh',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021cadc2a20a77eca42f262a296f18be55278',1,'Guildmaster::Data::Definitions']]],
+  ['start_12',['Start',['../namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625aa6122a65eaa676f700ae68d393054a37',1,'Guildmaster::Guild']]],
+  ['startresource_13',['StartResource',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7fdc6c0e1455e6b04e10d4333e8a07da',1,'Guildmaster::Data::Stats']]],
+  ['stealth_14',['Stealth',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a899db408cba5858a0f1701a2caef2628',1,'Guildmaster::Data::Definitions']]],
+  ['stinger_15',['Stinger',['../namespaceGuildmaster_1_1Presentation_1_1Audio.html#a0237365cea7b702ebea76dfd948d1da1ae60b65c860681c0a53fcded0e33fc6de',1,'Guildmaster::Presentation::Audio']]],
+  ['success_16',['Success',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a685d227543d73264d3c77b5ed5b0e02ca505a83f220c02df2f85c3810cd9ceb38',1,'Guildmaster::ContentHub::Editor::HubToasts']]]
 ];

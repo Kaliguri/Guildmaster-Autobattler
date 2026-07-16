@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['unit_0',['unit',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a5396847e5a6b2b2f9c1e60dccba9c0f1',1,'Guildmaster.Combat.RuntimeUnit.Unit'],['../structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html#a2a56e8a6aaa4aeab5cbc6f17c0683ad8',1,'Guildmaster.Presentation.UnitSpawnedEvent.Unit'],['../structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html#a664415595dd3ab33341c67bd63548d4c',1,'Guildmaster.Presentation.UnitDiedEvent.Unit']]],
-  ['usedby_1',['UsedBy',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#ad5f3756fc838fd374530d3cee5fef0c3',1,'Guildmaster::ContentHub::Editor::ContentEntry']]],
-  ['uses_2',['Uses',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#a1ecdfcfda7e1890ea5fdfce879603a02',1,'Guildmaster::ContentHub::Editor::ContentEntry']]]
+  ['uiposition_0',['UiPosition',['../classGuildmaster_1_1Guild_1_1MapNode.html#a98aba1241acc8f0c80d35b4e85f4d231',1,'Guildmaster::Guild::MapNode']]],
+  ['unit_1',['unit',['../structGuildmaster_1_1Combat_1_1PlayerSpawn.html#a0b48c6e4586444388a36026eb2920706',1,'Guildmaster.Combat.PlayerSpawn.Unit'],['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a5396847e5a6b2b2f9c1e60dccba9c0f1',1,'Guildmaster.Combat.RuntimeUnit.Unit'],['../structGuildmaster_1_1Presentation_1_1UnitSpawnedEvent.html#a2a56e8a6aaa4aeab5cbc6f17c0683ad8',1,'Guildmaster.Presentation.UnitSpawnedEvent.Unit'],['../structGuildmaster_1_1Presentation_1_1UnitDiedEvent.html#a664415595dd3ab33341c67bd63548d4c',1,'Guildmaster.Presentation.UnitDiedEvent.Unit']]],
+  ['unitid_2',['unitid',['../structGuildmaster_1_1Data_1_1Definitions_1_1OpenLoadoutRequest.html#af0518d2b4517b4a8c85ff4ee1bd7670b',1,'Guildmaster.Data.Definitions.OpenLoadoutRequest.UnitId'],['../structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html#aa5c653d1a7226fabb3a60c46f6520b2a',1,'Guildmaster.Data.Definitions.EquipRelicRequest.UnitId']]],
+  ['usedby_3',['UsedBy',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#ad5f3756fc838fd374530d3cee5fef0c3',1,'Guildmaster::ContentHub::Editor::ContentEntry']]],
+  ['uses_4',['Uses',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#a1ecdfcfda7e1890ea5fdfce879603a02',1,'Guildmaster::ContentHub::Editor::ContentEntry']]]
 ];

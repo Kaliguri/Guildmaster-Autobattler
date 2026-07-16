@@ -1,7 +1,7 @@
 <map id="Guildmaster.Game.Input.InputService" name="Guildmaster.Game.Input.InputService">
-<area shape="rect" id="Node000001" title="Реализация IInputService поверх Unity Input System (вики «16» §3)." alt="" coords="63,179,273,359"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html" title="Единая точка ввода игрока (вики «16» §2)." alt="" coords="5,5,176,131"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="122,143,136,178,131,180,117,145"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="200,35,291,101"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="231,114,205,179,200,177,226,112"/>
+<area shape="rect" id="Node000001" title="Реализация IInputService поверх Unity Input System (вики «16» §3)." alt="" coords="63,219,273,439"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html" title="Единая точка ввода игрока (вики «16» §2)." alt="" coords="5,5,176,171"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="124,183,135,218,130,219,119,185"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="200,55,291,121"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="233,135,206,219,201,218,228,133"/>
 </map>

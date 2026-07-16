@@ -1,0 +1,5 @@
+<map id="Guildmaster.Combat.BattleOutcome" name="Guildmaster.Combat.BattleOutcome">
+<area shape="rect" id="Node000001" title="Итог боя: «победила команда N», а не «победил игрок»." alt="" coords="15,119,206,479"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,216,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,85,113,119,108,119,108,85"/>
+</map>

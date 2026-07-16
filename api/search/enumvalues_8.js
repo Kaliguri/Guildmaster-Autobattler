@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['kite_0',['Kite',['../namespaceGuildmaster_1_1Combat.html#a0953455148734d6b10316354291b653ba65c449ad44e2c0b6c1fffc5c5cea7413',1,'Guildmaster::Combat']]],
-  ['knockback_1',['Knockback',['../namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96',1,'Guildmaster::Combat']]],
-  ['knockup_2',['KnockUp',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a250adeee118a0038bd8a4a34bacaaf89',1,'Guildmaster::Data::Definitions']]]
+  ['idle_0',['idle',['../namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fae599161956d626eda4cb0a5ffb85271c',1,'Guildmaster.Combat.Idle'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5bcc0ab90dcf45adb135592687f861a6ae599161956d626eda4cb0a5ffb85271c',1,'Guildmaster.Data.Definitions.Idle']]],
+  ['immediately_1',['Immediately',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a1decc8121468103a59b37c7903949ea0afd83e0ccb3e6312a62f888dd496dd0a5',1,'Guildmaster::Data::Definitions']]],
+  ['info_2',['Info',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html#a685d227543d73264d3c77b5ed5b0e02ca4059b0251f66a18cb56f544728796875',1,'Guildmaster::ContentHub::Editor::HubToasts']]],
+  ['inherit_3',['inherit',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#af81a51ec2b0ebc9ce36f99234efcf91eac49484faf79e2388b580e49444d6ac11',1,'Guildmaster.Data.Definitions.Inherit'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aeedc377cc311c36aa2cff2f2e1a416b1ac49484faf79e2388b580e49444d6ac11',1,'Guildmaster.Data.Definitions.Inherit']]],
+  ['injury_4',['Injury',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a47deba8478555be8eecd4256caa21c7b',1,'Guildmaster::Data::Definitions']]]
 ];

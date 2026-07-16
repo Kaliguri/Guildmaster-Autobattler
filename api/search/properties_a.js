@@ -1,10 +1,7 @@
 var searchData=
 [
-  ['master_0',['Master',['../classGuildmaster_1_1UI_1_1SettingsViewModel.html#aad3ef5a9466cb4d3083f1d888eddf2c8',1,'Guildmaster::UI::SettingsViewModel']]],
-  ['maxstacks_1',['MaxStacks',['../classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html#acdebab57fd4a6b784bd0a7d33d05ddfb',1,'Guildmaster::Data::Definitions::EffectData']]],
-  ['mode_2',['Mode',['../classGuildmaster_1_1Presentation_1_1CameraModeController.html#ac6f23405821c0044f9e4834ca45eca9b',1,'Guildmaster::Presentation::CameraModeController']]],
-  ['mods_3',['mods',['../classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html#afc80f94863d005acce5fcb38a58c8cc4',1,'Guildmaster.Data.Definitions.ConsequenceData.Mods'],['../classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html#a094c0fd0526cba4a28fdd2da0a69f4bf',1,'Guildmaster.Data.Definitions.GuildmasterData.Mods'],['../classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html#af29c1b621e3307a621c6193da268e28b',1,'Guildmaster.Data.Definitions.ItemData.Mods'],['../classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData.html#a6d29e703cbb1248f07214650f2d244b0',1,'Guildmaster.Data.Definitions.RunModifierData.Mods'],['../classGuildmaster_1_1Data_1_1Definitions_1_1TraitData.html#a28866a004b21c580ce8f9c20a087751b',1,'Guildmaster.Data.Definitions.TraitData.Mods']]],
-  ['movingattackspeedpenaltypct_4',['MovingAttackSpeedPenaltyPct',['../classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html#a0b1f68b36757fdb2947caea70973ab3f',1,'Guildmaster::Data::Definitions::UnitData']]],
-  ['music_5',['Music',['../classGuildmaster_1_1UI_1_1SettingsViewModel.html#ad349a222a93be968677c18cbc1fc1444',1,'Guildmaster::UI::SettingsViewModel']]],
-  ['muzzle_6',['Muzzle',['../classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html#a96a50a1c214704226eee1fb57d537fbe',1,'Guildmaster::Presentation::Design::CombatFeelConfig']]]
+  ['labeltext_0',['LabelText',['../classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html#aa46a99b280b7c83ccb2fe6948e876ec9',1,'Guildmaster::UI::Components::SliderRow']]],
+  ['lastencounterid_1',['LastEncounterId',['../classGuildmaster_1_1Combat_1_1EncounterLoader.html#a97e2564fafd86a8d1a4e43c28e7ac004',1,'Guildmaster::Combat::EncounterLoader']]],
+  ['localplayerteam_2',['LocalPlayerTeam',['../classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a49e22d89c51d9560d46fdc0042bf0472',1,'Guildmaster::Data::Definitions::GameConfig']]],
+  ['lowvalue_3',['LowValue',['../classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html#a246d6b1ce7ee4f9e141bd236873eaa26',1,'Guildmaster::UI::Components::SliderRow']]]
 ];

@@ -1,0 +1,9 @@
+<map id="Guildmaster.Data.Definitions.OpenTextEventRequest" name="Guildmaster.Data.Definitions.OpenTextEventRequest">
+<area shape="rect" id="Node000001" title="Запрос показать текстовый ивент (публикует флоу забега, слушает UI)." alt="" coords="5,457,212,537"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html" title="Текстовый ивент карты в стиле Slay the Spire (план 11 §3.4, GDD 7 «Риск&#45;ивент»): заголовок,..." alt="" coords="5,235,212,395"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,395,111,441,106,441,106,395"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="45,120,173,185"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="111,199,111,234,106,234,106,199"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="48,5,169,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="111,85,111,120,106,120,106,85"/>
+</map>

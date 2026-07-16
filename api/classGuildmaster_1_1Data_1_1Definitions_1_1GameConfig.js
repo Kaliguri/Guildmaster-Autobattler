@@ -4,5 +4,9 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig =
     [ "DefaultMasterVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a057b8ba6fcb4cd3d9a8312c502111590", null ],
     [ "DefaultMusicVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ace78569fefe75af6daab76e8ebfa3a8b", null ],
     [ "DefaultSfxVolume", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a229a933687c3a48a5c2ffddc4e92d638", null ],
+    [ "LocalPlayerTeam", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a49e22d89c51d9560d46fdc0042bf0472", null ],
+    [ "PartyBannerSlots", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#af390edfc6e969f2436e7d2e2cd707b0d", null ],
+    [ "RelicCapacityBase", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#ae47b24d888ed21ce5200d51c0bf6e158", null ],
+    [ "RelicCapacityMax", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#aba7b777b72139a734484392f76604ef8", null ],
     [ "VesselItemSlots", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a8c8d118636ff1c50e53def5183282153", null ]
 ];

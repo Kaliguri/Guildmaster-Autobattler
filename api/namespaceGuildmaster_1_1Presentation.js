@@ -12,6 +12,7 @@ var namespaceGuildmaster_1_1Presentation =
     [ "CombatVfx", "classGuildmaster_1_1Presentation_1_1CombatVfx.html", "classGuildmaster_1_1Presentation_1_1CombatVfx" ],
     [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],
     [ "DeathShatter", "classGuildmaster_1_1Presentation_1_1DeathShatter.html", "classGuildmaster_1_1Presentation_1_1DeathShatter" ],
+    [ "DeploymentView", "classGuildmaster_1_1Presentation_1_1DeploymentView.html", "classGuildmaster_1_1Presentation_1_1DeploymentView" ],
     [ "FloatingText", "classGuildmaster_1_1Presentation_1_1FloatingText.html", "classGuildmaster_1_1Presentation_1_1FloatingText" ],
     [ "HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", "classGuildmaster_1_1Presentation_1_1HealthBarView" ],
     [ "IScreenShake", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake" ],

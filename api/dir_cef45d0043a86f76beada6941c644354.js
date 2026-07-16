@@ -1,9 +1,12 @@
 var dir_cef45d0043a86f76beada6941c644354 =
 [
+    [ "ArmorThornsComponent.cs", "ArmorThornsComponent_8cs.html", "ArmorThornsComponent_8cs" ],
+    [ "BlazingBladesComponent.cs", "BlazingBladesComponent_8cs.html", "BlazingBladesComponent_8cs" ],
     [ "BulwarkComponent.cs", "BulwarkComponent_8cs.html", "BulwarkComponent_8cs" ],
     [ "ControlComponent.cs", "ControlComponent_8cs.html", "ControlComponent_8cs" ],
     [ "DispelComponent.cs", "DispelComponent_8cs.html", "DispelComponent_8cs" ],
     [ "DodgeComponent.cs", "DodgeComponent_8cs.html", "DodgeComponent_8cs" ],
+    [ "IgnitionComponent.cs", "IgnitionComponent_8cs.html", "IgnitionComponent_8cs" ],
     [ "LifestealComponent.cs", "LifestealComponent_8cs.html", "LifestealComponent_8cs" ],
     [ "MarkTransferComponent.cs", "MarkTransferComponent_8cs.html", "MarkTransferComponent_8cs" ],
     [ "MissingHpShieldComponent.cs", "MissingHpShieldComponent_8cs.html", "MissingHpShieldComponent_8cs" ],

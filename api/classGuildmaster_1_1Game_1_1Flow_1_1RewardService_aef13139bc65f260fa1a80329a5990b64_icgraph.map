@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.RewardService.UniqueChance" name="Guildmaster.Game.Flow.RewardService.UniqueChance">
+<area shape="rect" id="Node000001" title="Шанс уникальной реликвии в одном слоте витрины." alt="" coords="284,5,515,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html#a9e5b0c8041e64b8b95102aa8bb7ebbe4" title="Скатать витрину: до count &#160;РАЗНЫХ реликвий (без базовой)." alt="" coords="5,5,236,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="270,28,236,28,236,23,270,23"/>
+</map>

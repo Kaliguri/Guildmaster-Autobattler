@@ -7,8 +7,12 @@ var classGuildmaster_1_1Game_1_1Input_1_1InputService =
     [ "CameraZoomDelta", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a7a54aa34cec8709823c2b665abb5733a", null ],
     [ "Context", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a4d3955c0336d5d5245e1510b984d5ebe", null ],
     [ "GameplaySuppressed", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a2b972ff3543569ced32601310333958e", null ],
+    [ "PointerHeld", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a63fb3e49a680ac7472258dd30abb5740", null ],
+    [ "PointerScreenPosition", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#aa223262975813cbd75b97bef8b56aaaa", null ],
     [ "CycleViewRequested", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a3d76549b588de3b7b4fc460c80e1b571", null ],
     [ "GameSpeedCycleRequested", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a932fb5f60977f90f7259acd2484b3171", null ],
     [ "MenuToggleRequested", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a91cf2a4139d93192f56bf176e40d89f7", null ],
-    [ "PauseToggleRequested", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a46e9c32808dff6d9f17c4ced3b94ac53", null ]
+    [ "PauseToggleRequested", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a46e9c32808dff6d9f17c4ced3b94ac53", null ],
+    [ "PointerPressed", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a0b544ef08bda3f9cfb8f42ecc8ad3a2f", null ],
+    [ "PointerReleased", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a5c8ee74d8db81c8b9d638a882cdb1774", null ]
 ];

@@ -76,7 +76,7 @@ var sectionId = 'dynsection-23';
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#abb754b7167c368882ad44db99cd688e4" target="_top" xlink:title="Создать RuntimeUnit из SO&#45;данных.">
+<g id="a_Node000002"><a xlink:href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html#a70e9cf5d31e2c828b5913df2b51f7b5a" target="_top" xlink:title="Создать RuntimeUnit из SO&#45;данных.">
 <polygon fill="white" stroke="#666666" points="386,-78 225,-78 225,-48 386,-48 386,-78"/>
 <text text-anchor="start" x="233" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Runtime</text>
 <text text-anchor="middle" x="305.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">UnitFactory.Create</text>

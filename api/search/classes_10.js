@@ -1,7 +1,25 @@
 var searchData=
 [
-  ['tagdata_0',['TagData',['../classGuildmaster_1_1Data_1_1Definitions_1_1TagData.html',1,'Guildmaster::Data::Definitions']]],
-  ['thornscomponent_1',['ThornsComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ThornsComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
-  ['timescaleservice_2',['TimeScaleService',['../classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html',1,'Guildmaster::Game::Services']]],
-  ['traitdata_3',['TraitData',['../classGuildmaster_1_1Data_1_1Definitions_1_1TraitData.html',1,'Guildmaster::Data::Definitions']]]
+  ['rect2d_0',['Rect2D',['../structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html',1,'Guildmaster::Core::Arena']]],
+  ['regensystem_1',['RegenSystem',['../classGuildmaster_1_1Combat_1_1RegenSystem.html',1,'Guildmaster::Combat']]],
+  ['reliccard_2',['RelicCard',['../classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html',1,'Guildmaster::UI::Components']]],
+  ['reliccardvisualrig_3',['RelicCardVisualRig',['../classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html',1,'Guildmaster::UI::Components']]],
+  ['relicdata_4',['RelicData',['../classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html',1,'Guildmaster::Data::Definitions']]],
+  ['resumecommand_5',['ResumeCommand',['../classGuildmaster_1_1Combat_1_1Commands_1_1ResumeCommand.html',1,'Guildmaster::Combat::Commands']]],
+  ['retreat_6',['Retreat',['../structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html',1,'Guildmaster::Data::Definitions']]],
+  ['rewardchoiceresult_7',['RewardChoiceResult',['../structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html',1,'Guildmaster::Data::Definitions']]],
+  ['rewardscreenview_8',['RewardScreenView',['../classGuildmaster_1_1UI_1_1RewardScreenView.html',1,'Guildmaster::UI']]],
+  ['rewardservice_9',['RewardService',['../classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html',1,'Guildmaster::Game::Flow']]],
+  ['rootlifetimescope_10',['RootLifetimeScope',['../classGuildmaster_1_1Game_1_1RootLifetimeScope.html',1,'Guildmaster::Game']]],
+  ['rosterentry_11',['RosterEntry',['../structGuildmaster_1_1UI_1_1LoadoutHubView_1_1RosterEntry.html',1,'Guildmaster::UI::LoadoutHubView']]],
+  ['rosterslot_12',['RosterSlot',['../classGuildmaster_1_1Guild_1_1RosterSlot.html',1,'Guildmaster::Guild']]],
+  ['row_13',['Row',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1ConfigDiff_1_1Row.html',1,'Guildmaster::ContentHub::Editor::ConfigDiff']]],
+  ['runcontext_14',['RunContext',['../classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html',1,'Guildmaster::Game::Flow']]],
+  ['runmodifierdata_15',['RunModifierData',['../classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData.html',1,'Guildmaster::Data::Definitions']]],
+  ['runstate_16',['RunState',['../classGuildmaster_1_1Guild_1_1RunState.html',1,'Guildmaster::Guild']]],
+  ['runstateservice_17',['RunStateService',['../classGuildmaster_1_1Guild_1_1RunStateService.html',1,'Guildmaster::Guild']]],
+  ['runtimeeffect_18',['RuntimeEffect',['../classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html',1,'Guildmaster::Combat::Effects']]],
+  ['runtimeunit_19',['RuntimeUnit',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html',1,'Guildmaster::Combat']]],
+  ['runtimeunitfactory_20',['RuntimeUnitFactory',['../classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html',1,'Guildmaster::Combat']]],
+  ['runtopbarview_21',['RunTopBarView',['../classGuildmaster_1_1UI_1_1RunTopBarView.html',1,'Guildmaster::UI']]]
 ];

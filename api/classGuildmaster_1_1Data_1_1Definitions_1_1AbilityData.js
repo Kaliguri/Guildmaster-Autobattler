@@ -1,5 +1,6 @@
 var classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData =
 [
+    [ "AffinityOverride", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a8a8e1fe804c4a7cacbc86dc167523438", null ],
     [ "AreaRadius", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a4326c561eaf90b04edcc35b42b12188f", null ],
     [ "AreaShape", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a9d67ed5c19899885e136b0bc5351a081", null ],
     [ "BaseCooldown", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ab44c10d1f694c4206c06dd1f72dbcdaa", null ],
@@ -22,6 +23,7 @@ var classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData =
     [ "InfoTags", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a44bba82b615c2bc5092a3af1cb7f55a6", null ],
     [ "IsHeal", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#affc117a4c66868ae3facfeb803835cdb", null ],
     [ "ResourceCost", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a17c152b899a4a307611b1fa571104f10", null ],
+    [ "SchoolOverride", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ab435f389d078a52d54cdecd2ae2cacbb", null ],
     [ "TargetMode", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#ad7f696c9f85df4e7310ecdb087f2298b", null ],
     [ "TriggerTag", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#aa64427999e388aea2224c8b3d05fc2be", null ],
     [ "VisualSlot", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#a411acc6f595da12fa057f0c2a38400bd", null ]

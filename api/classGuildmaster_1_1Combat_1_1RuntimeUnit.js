@@ -36,6 +36,9 @@ var classGuildmaster_1_1Combat_1_1RuntimeUnit =
     [ "WindupRemaining", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a79722b472031d0629740f8f27bc0f430", null ],
     [ "WindupTarget", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aaca9226422a010ad8ebf303ba6d5d8d9", null ],
     [ "WindupTicks", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa53f7987a8b972c632526d949975cc31", null ],
+    [ "Affinity", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae4e02e41cf4217b37bef6dedd6e83577", null ],
+    [ "CreatureType", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#afb698b3eb2046593a2bfa3aa0de1f0cb", null ],
+    [ "DamageSchool", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a0e2935abfd61136b5064ab1bf103bb9d", null ],
     [ "IncomingEffectTags", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aafdbde87b1d1613d182668813c73c8d3", null ],
     [ "IsWindingUp", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html#ae2e9433540f6fc645621c7098fe38923", null ]
 ];

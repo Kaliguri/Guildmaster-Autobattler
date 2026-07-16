@@ -1,9 +1,12 @@
 var namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components =
 [
+    [ "ArmorThornsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent" ],
+    [ "BlazingBladesComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BlazingBladesComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BlazingBladesComponent" ],
     [ "BulwarkComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BulwarkComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BulwarkComponent" ],
     [ "ControlComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent" ],
     [ "DispelComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent" ],
     [ "DodgeComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent" ],
+    [ "IgnitionComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1IgnitionComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1IgnitionComponent" ],
     [ "LifestealComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent" ],
     [ "MarkTransferComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MarkTransferComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MarkTransferComponent" ],
     [ "MissingHpShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MissingHpShieldComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MissingHpShieldComponent" ],

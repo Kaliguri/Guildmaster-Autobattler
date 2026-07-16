@@ -1,16 +1,10 @@
 var searchData=
 [
-  ['magic_0',['Magic',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cce769078fcc3c898cb60f70d7d6ed3a02700e454d679f31f27c6f0768986dd1',1,'Guildmaster::Data::Definitions']]],
-  ['magicarmor_1',['MagicArmor',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a477daea460acacedc6e634a2211f9095',1,'Guildmaster::Data::Stats']]],
-  ['magicpen_2',['MagicPen',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aa70f25585e17da9922476a0b5e39d4ff',1,'Guildmaster::Data::Stats']]],
-  ['magicpenpct_3',['MagicPenPct',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284aacf956ece1e8110477cd8351ae2da7d0',1,'Guildmaster::Data::Stats']]],
-  ['mana_4',['Mana',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0a02fcc64668dd1b6a85e60ac9797f2dc7',1,'Guildmaster::Data::Definitions']]],
-  ['marked_5',['Marked',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438ab80c545ea15439f0b585c86a6aab3226',1,'Guildmaster::Data::Definitions']]],
-  ['maxhp_6',['MaxHP',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7328467362e04fb994455aeb50ac0449',1,'Guildmaster::Data::Stats']]],
-  ['maxresource_7',['MaxResource',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284af68a53a3ca5bacdb91f4eda90883f5ee',1,'Guildmaster::Data::Stats']]],
-  ['mechanic_8',['Mechanic',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113a64eb669723cae1983f03e34cca705c80',1,'Guildmaster::Data::Definitions']]],
-  ['melee_9',['Melee',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1afcbd772e48c4b07d7d3be13b37a82f5e',1,'Guildmaster::Data::Definitions']]],
-  ['menu_10',['Menu',['../namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8ab61541208db7fa7dba42c85224405911',1,'Guildmaster::Core::Input']]],
-  ['mettle_11',['Mettle',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a400419f1b352e7a735a9b391387e8e80',1,'Guildmaster::Data::Definitions']]],
-  ['movespeed_12',['MoveSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a3dfb8a09b650ce66270c54fdf5c2aa74',1,'Guildmaster::Data::Stats']]]
+  ['lifesteal_0',['Lifesteal',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a9d82a0f406f346bcb6fcd036e1b98175',1,'Guildmaster::Data::Stats']]],
+  ['light_1',['light',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#abf4d98e86566b1c68ea174f3ba9bec70a9914a0ce04a7b7b6a8e39bec55064b82',1,'Guildmaster.Data.Definitions.Light'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aeedc377cc311c36aa2cff2f2e1a416b1a9914a0ce04a7b7b6a8e39bec55064b82',1,'Guildmaster.Data.Definitions.Light']]],
+  ['line_2',['Line',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca4803e6b9e63dabf04de980788d6a13c4',1,'Guildmaster::Data::Definitions']]],
+  ['living_3',['Living',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a033b2c498dd4948de19277bf21fc2d4ca73ba7cfe3119d4664483d59f10a19d30',1,'Guildmaster::Data::Definitions']]],
+  ['lowesthpally_4',['LowestHpAlly',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da52c54f7cbbade6147ca7d3bf5e5cb1b9',1,'Guildmaster::Data::Definitions']]],
+  ['lowesthpflat_5',['LowestHpFlat',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a9d53288f15b47fea9649e71df44f2daa',1,'Guildmaster::Data::Definitions']]],
+  ['lowesthppercent_6',['LowestHpPercent',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a62b26dff6a549809754bedceaed05362',1,'Guildmaster::Data::Definitions']]]
 ];

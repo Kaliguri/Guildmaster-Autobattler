@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['localechanged_0',['localechanged',['../interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html#a546243337ba1464b85534c3d17dfa003',1,'Guildmaster.Core.Localization.ILocalizationService.LocaleChanged'],['../classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html#a35455be7f96997ec4f15438d1d47ed63',1,'Guildmaster.Game.Services.LocalizationService.LocaleChanged']]]
+  ['gamespeedcyclerequested_0',['gamespeedcyclerequested',['../interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a3169aaabda1fde22720d0c2bd6c55f1d',1,'Guildmaster.Core.Input.IInputService.GameSpeedCycleRequested'],['../classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a932fb5f60977f90f7259acd2484b3171',1,'Guildmaster.Game.Input.InputService.GameSpeedCycleRequested']]]
 ];

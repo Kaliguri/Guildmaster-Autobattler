@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.MapState" name="Guildmaster.Guild.MapState">
+<area shape="rect" id="Node000001" title="Состояние карты акта в RunState: граф узлов + где игрок сейчас." alt="" coords="5,233,203,299"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1MapNode.html" title="Узел графа акта (сериализуемый DTO)." alt="" coords="5,5,203,171"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,171,107,217,101,217,101,171"/>
+</map>

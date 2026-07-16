@@ -122,6 +122,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html">AutoAttackSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Двухфазная авто-атака (вики «14»): кулдаун → <b>замах (windup)</b> → удар на кадре контакта.  <a href="classGuildmaster_1_1Combat_1_1AutoAttackSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1BattleOutcome.html">BattleOutcome</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Итог боя: «победила команда N», а не «победил игрок».  <a href="structGuildmaster_1_1Combat_1_1BattleOutcome.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1BrainSystem.html">BrainSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тик AI (вики «13» §3.2, §4.1).  <a href="classGuildmaster_1_1Combat_1_1BrainSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,6 +155,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EffectSystem.html">EffectSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владелец жизненного цикла эффектов: наложение (длительность, стакинг, потенция, маска тегов), тик таймеров и периодики, истечение с корректным teardown.  <a href="classGuildmaster_1_1Combat_1_1EffectSystem.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EncounterLoader.html">EncounterLoader</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Data-driven строитель боя из EncounterData: сбрасывает текущий бой на месте (CombatSimulation.ResetBattle + RuntimeUnitFactory.ResetIds) и спавнит вражескую сторону из энкаунтера (team 1) + переданную player-сторону (team 0).  <a href="classGuildmaster_1_1Combat_1_1EncounterLoader.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1FleeSteering.html">FleeSteering</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Единая математика ПОБЕГА (Retreat и flee-фаза Kite): детерминированное steering-поле без RNG.  <a href="classGuildmaster_1_1Combat_1_1FleeSteering.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -169,6 +175,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1MovementSystem.html">MovementSystem</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Интегрирует позиции живых юнитов.  <a href="classGuildmaster_1_1Combat_1_1MovementSystem.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1PlayerSpawn.html">PlayerSpawn</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Один player-юнит для старта боя: кит (реликвия/база) + сосуд + позиция (team 0).  <a href="structGuildmaster_1_1Combat_1_1PlayerSpawn.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1ProfileBrain.html">ProfileBrain</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">v1-мозг (вики «13» §3.1, §4.2): интерпретирует AIProfile.  <a href="classGuildmaster_1_1Combat_1_1ProfileBrain.html#details">More...</a><br /></td></tr>
@@ -203,13 +212,19 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a1f5748cbbc1931b8421ebc5620edd712" id="r_a1f5748cbbc1931b8421ebc5620edd712"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712">BattleOutcome</a> { <a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712a7ee7defde6dc3a1d4a4a891b3894e790">Ongoing</a> = 0
-, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712aa66e17eee0daf633ec8090d0d97b2d42">TeamAWins</a> = 1
-, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712a58662d9ca10f6dd2162eaf4f825b317f">TeamBWins</a> = 2
-, <a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712a2d03c2d5a7ec65ef4619e0582c272ec2">Draw</a> = 3
+<tr class="memitem:ab2f687afcbfbed06c2eae345b78bfa0c" id="r_ab2f687afcbfbed06c2eae345b78bfa0c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0c">BattleOutcomeKind</a> { <a class="el" href="namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0ca7ee7defde6dc3a1d4a4a891b3894e790">Ongoing</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0cad7b0f13957c1d0c7c944c45c3cc1e725">TeamWin</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0ca2d03c2d5a7ec65ef4619e0582c272ec2">Draw</a> = 2
  }</td></tr>
-<tr class="memdesc:a1f5748cbbc1931b8421ebc5620edd712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Итог боя, устанавливается CombatSimulation после гибели одной из сторон.  <a href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712">More...</a><br /></td></tr>
-<tr class="separator:a1f5748cbbc1931b8421ebc5620edd712"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ab2f687afcbfbed06c2eae345b78bfa0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Чем кончился бой: ещё идёт, победила команда, или никого не осталось.  <a href="namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0c">More...</a><br /></td></tr>
+<tr class="separator:ab2f687afcbfbed06c2eae345b78bfa0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac65cd25c835ccb6455705a43a5adf70d" id="r_ac65cd25c835ccb6455705a43a5adf70d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a> { <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370">Ability</a> = 0
+, <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da4ab9f5061aa771d40b1640cbd5e1caaa">AutoAttack</a> = 1
+, <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70dacdcc32a064503184053bd2018d1c0e7e">Periodic</a> = 2
+, <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70dac0d2be90914e0cb1d969da682299d7f7">Reactive</a> = 3
+ }</td></tr>
+<tr class="memdesc:ac65cd25c835ccb6455705a43a5adf70d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Откуда пришёл урон.  <a href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">More...</a><br /></td></tr>
+<tr class="separator:ac65cd25c835ccb6455705a43a5adf70d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba96c0e816c07ca72f53c96500cbe0be" id="r_aba96c0e816c07ca72f53c96500cbe0be"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0be">DisplaceKind</a> { <a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea5cfc4f35bbc4deb96cfb6d2843084b96">Knockback</a> = 0
 , <a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea718f59718640c6506b3721fbc8bf3a4d">Pull</a> = 1
 , <a class="el" href="namespaceGuildmaster_1_1Combat.html#aba96c0e816c07ca72f53c96500cbe0bea054fc7866c93a2496fd9048c493e6aed">Teleport</a> = 2
@@ -261,24 +276,50 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
-<a id="a1f5748cbbc1931b8421ebc5620edd712" name="a1f5748cbbc1931b8421ebc5620edd712"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f5748cbbc1931b8421ebc5620edd712">&#9670;&#160;</a></span>BattleOutcome</h2>
+<a id="ab2f687afcbfbed06c2eae345b78bfa0c" name="ab2f687afcbfbed06c2eae345b78bfa0c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2f687afcbfbed06c2eae345b78bfa0c">&#9670;&#160;</a></span>BattleOutcomeKind</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Combat.html#a1f5748cbbc1931b8421ebc5620edd712">Guildmaster.Combat.BattleOutcome</a></td>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Combat.html#ab2f687afcbfbed06c2eae345b78bfa0c">Guildmaster.Combat.BattleOutcomeKind</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Итог боя, устанавливается CombatSimulation после гибели одной из сторон. </p>
+<p>Чем кончился бой: ещё идёт, победила команда, или никого не осталось. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1f5748cbbc1931b8421ebc5620edd712a7ee7defde6dc3a1d4a4a891b3894e790" name="a1f5748cbbc1931b8421ebc5620edd712a7ee7defde6dc3a1d4a4a891b3894e790"></a>Ongoing&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1f5748cbbc1931b8421ebc5620edd712aa66e17eee0daf633ec8090d0d97b2d42" name="a1f5748cbbc1931b8421ebc5620edd712aa66e17eee0daf633ec8090d0d97b2d42"></a>TeamAWins&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1f5748cbbc1931b8421ebc5620edd712a58662d9ca10f6dd2162eaf4f825b317f" name="a1f5748cbbc1931b8421ebc5620edd712a58662d9ca10f6dd2162eaf4f825b317f"></a>TeamBWins&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1f5748cbbc1931b8421ebc5620edd712a2d03c2d5a7ec65ef4619e0582c272ec2" name="a1f5748cbbc1931b8421ebc5620edd712a2d03c2d5a7ec65ef4619e0582c272ec2"></a>Draw&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab2f687afcbfbed06c2eae345b78bfa0ca7ee7defde6dc3a1d4a4a891b3894e790" name="ab2f687afcbfbed06c2eae345b78bfa0ca7ee7defde6dc3a1d4a4a891b3894e790"></a>Ongoing&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab2f687afcbfbed06c2eae345b78bfa0cad7b0f13957c1d0c7c944c45c3cc1e725" name="ab2f687afcbfbed06c2eae345b78bfa0cad7b0f13957c1d0c7c944c45c3cc1e725"></a>TeamWin&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab2f687afcbfbed06c2eae345b78bfa0ca2d03c2d5a7ec65ef4619e0582c272ec2" name="ab2f687afcbfbed06c2eae345b78bfa0ca2d03c2d5a7ec65ef4619e0582c272ec2"></a>Draw&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="ac65cd25c835ccb6455705a43a5adf70d" name="ac65cd25c835ccb6455705a43a5adf70d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac65cd25c835ccb6455705a43a5adf70d">&#9670;&#160;</a></span>DamageSourceKind</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">Guildmaster.Combat.DamageSourceKind</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Откуда пришёл урон. </p>
+<p>Определяет, будят ли его реактивы «на удар» (шипы, щиты, уклонение): прямой удар — будит, тик DoT и ответка реактива — нет. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370" name="ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370"></a>Ability&#160;</td><td class="fielddoc"><p>Урон способности (в т.ч. AOE и детонации). Прямой удар. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ac65cd25c835ccb6455705a43a5adf70da4ab9f5061aa771d40b1640cbd5e1caaa" name="ac65cd25c835ccb6455705a43a5adf70da4ab9f5061aa771d40b1640cbd5e1caaa"></a>AutoAttack&#160;</td><td class="fielddoc"><p>Урон авто-атаки (мили, линия, снаряд). Прямой удар. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ac65cd25c835ccb6455705a43a5adf70dacdcc32a064503184053bd2018d1c0e7e" name="ac65cd25c835ccb6455705a43a5adf70dacdcc32a064503184053bd2018d1c0e7e"></a>Periodic&#160;</td><td class="fielddoc"><p>Тик DoT. НЕ прямой удар: горение и яд не должны будить шипы и щиты каждым тиком. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ac65cd25c835ccb6455705a43a5adf70dac0d2be90914e0cb1d969da682299d7f7" name="ac65cd25c835ccb6455705a43a5adf70dac0d2be90914e0cb1d969da682299d7f7"></a>Reactive&#160;</td><td class="fielddoc"><p>Ответка самого реактива (шипы, само-урон). НЕ прямой удар — иначе шипы порождают шипы. </p>
+</td></tr>
 </table>
 
 </div>

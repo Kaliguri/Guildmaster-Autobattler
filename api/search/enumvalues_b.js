@@ -1,10 +1,13 @@
 var searchData=
 [
-  ['nearest_0',['Nearest',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9682e32b839e6220bb3b059bf07291c2a60494f02d440f316319dd0fad40ad007',1,'Guildmaster::Data::Definitions']]],
-  ['nearestally_1',['NearestAlly',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da768ccd25f237c17d334409cf90eda443',1,'Guildmaster::Data::Definitions']]],
-  ['nearestenemy_2',['NearestEnemy',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5344cc37ed9f1d1d575f21d566b5332da04af5e1f1b30aa26311baf028b724788',1,'Guildmaster::Data::Definitions']]],
-  ['negative_3',['Negative',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a47d79e60de086a94265b32b9833971e1affb9356ff2b7da85c75c92fa7ea03b8b',1,'Guildmaster::Data::Definitions']]],
-  ['neutral_4',['Neutral',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#afbf19b39e6c0c9a910df44fc60902459ae9bb5320b3890b6747c91b5a71ae5a01',1,'Guildmaster::Data::Definitions']]],
-  ['none_5',['none',['../namespaceGuildmaster_1_1Combat_1_1Effects.html#acbd5655c92bc3943fed6be07e5127066a6adf97f83acf6453d4a6a4b1070f3754',1,'Guildmaster.Combat.Effects.None'],['../namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8a6adf97f83acf6453d4a6a4b1070f3754',1,'Guildmaster.Core.Input.None'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#ac59314485558032c61c7eab5c58b6612a6adf97f83acf6453d4a6a4b1070f3754',1,'Guildmaster.Data.Definitions.None'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#acec7178e7ebe0be3c159a5ba373c0beca6adf97f83acf6453d4a6a4b1070f3754',1,'Guildmaster.Data.Definitions.None'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0a6adf97f83acf6453d4a6a4b1070f3754',1,'Guildmaster.Data.Definitions.None'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438a6adf97f83acf6453d4a6a4b1070f3754',1,'Guildmaster.Data.Definitions.None'],['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a5cad7d2863aa4076313a422e6c06021ca6adf97f83acf6453d4a6a4b1070f3754',1,'Guildmaster.Data.Definitions.None']]],
-  ['normal_6',['Normal',['../namespaceGuildmaster_1_1Core_1_1Arena.html#a92bfeab96a23ed0ff98de12620540de3a960b44c579bc2f6818d2daaf9e4c16f0',1,'Guildmaster::Core::Arena']]]
+  ['mana_0',['Mana',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#abefdaf8dabc6adb7c9017704d2fad3e0a02fcc64668dd1b6a85e60ac9797f2dc7',1,'Guildmaster::Data::Definitions']]],
+  ['marked_1',['Marked',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a4e7ad4bd70e81312e11f8afc21650438ab80c545ea15439f0b585c86a6aab3226',1,'Guildmaster::Data::Definitions']]],
+  ['maxhp_2',['MaxHP',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a7328467362e04fb994455aeb50ac0449',1,'Guildmaster::Data::Stats']]],
+  ['maxresource_3',['MaxResource',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284af68a53a3ca5bacdb91f4eda90883f5ee',1,'Guildmaster::Data::Stats']]],
+  ['md_4',['Md',['../classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a43dde70287e571242272c78764ea534daa9547b86268c5e29adedd500ff7eef45',1,'Guildmaster::UI::Components::Slot']]],
+  ['mechanic_5',['Mechanic',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a1ad7c124bf03fa0b4a000cd1effd2113a64eb669723cae1983f03e34cca705c80',1,'Guildmaster::Data::Definitions']]],
+  ['melee_6',['Melee',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#aa46c443b657817183811b564b53f74a1afcbd772e48c4b07d7d3be13b37a82f5e',1,'Guildmaster::Data::Definitions']]],
+  ['menu_7',['Menu',['../namespaceGuildmaster_1_1Core_1_1Input.html#a4c81028c2df2c0050893a9d7c4626ac8ab61541208db7fa7dba42c85224405911',1,'Guildmaster::Core::Input']]],
+  ['mettle_8',['Mettle',['../namespaceGuildmaster_1_1Data_1_1Definitions.html#a9ee0ec1813ac8fb109f708dc45051fe4a400419f1b352e7a735a9b391387e8e80',1,'Guildmaster::Data::Definitions']]],
+  ['movespeed_9',['MoveSpeed',['../namespaceGuildmaster_1_1Data_1_1Stats.html#af58d5e4a0de07916fbc3155322d6e284a3dfb8a09b650ce66270c54fdf5c2aa74',1,'Guildmaster::Data::Stats']]]
 ];

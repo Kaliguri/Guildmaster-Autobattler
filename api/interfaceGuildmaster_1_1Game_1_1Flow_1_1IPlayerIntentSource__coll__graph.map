@@ -1,0 +1,3 @@
+<map id="Guildmaster.Game.Flow.IPlayerIntentSource" name="Guildmaster.Game.Flow.IPlayerIntentSource">
+<area shape="rect" id="Node000001" title="Источник интентов игрока (план 11 §2): хост исполняет флоу, клиенты шлют интенты." alt="" coords="5,5,224,85"/>
+</map>

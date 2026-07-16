@@ -1,0 +1,3 @@
+<map id="Guildmaster.Game.Flow.EventEffectApplier" name="Guildmaster.Game.Flow.EventEffectApplier">
+<area shape="rect" id="Node000001" title="Применяет последствия выбора текстового ивента (EventEffect) к RunState через RunStateService — едины..." alt="" coords="5,5,216,105"/>
+</map>

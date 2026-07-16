@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Hadean Tactics | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Hadean Tactics | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Hadean Tactics | Guildmaster Wiki"/><meta name="twitter:description" content="Статус: Досье (ресерч) Hadean Tactics — досье Дата сбора: 2026-07-15."/><meta property="og:description" content="Статус: Досье (ресерч) Hadean Tactics — досье Дата сбора: 2026-07-15."/><meta property="og:image:alt" content="Статус: Досье (ресерч) Hadean Tactics — досье Дата сбора: 2026-07-15."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Hadean-Tactics"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Hadean-Tactics"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Статус: Досье (ресерч) Hadean Tactics — досье Дата сбора: 2026-07-15."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="research/autobattlers/Hadean-Tactics"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-94"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-94" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/">research</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/autobattlers/">autobattlers</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Hadean Tactics</a></div></nav><h1 class="article-title">Hadean Tactics</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-16T13:38:27.286Z">16 июл. 2026 г.</time><span>время чтения ~14 мин.</span></p></div></div><article class="popover-hint"><p><strong>Статус:</strong> Досье (ресерч)</p>
+<h1 id="hadean-tactics--досье">Hadean Tactics — досье<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#hadean-tactics--досье" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<p>Дата сбора: 2026-07-15. Ресерч под задачу Guildmaster: где брать глубину в PVE-автобаттлере и жизнеспособны ли формы ограниченного вмешательства в бой.</p>
+<hr/>
+<h2 id="1-паспорт">1. Паспорт<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-паспорт" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Параметр</th><th>Значение</th></tr></thead><tbody><tr><td>Название</td><td>Hadean Tactics</td></tr><tr><td>Разработчик / издатель</td><td>Emberfish Games (соло/микро-команда, самиздат)</td></tr><tr><td>Ранний доступ</td><td>25 февраля 2021</td></tr><tr><td>Релиз 1.0</td><td>24 августа 2023</td></tr><tr><td>Платформы</td><td>Windows / Mac / Linux, Steam Deck Playable</td></tr><tr><td>Жанр (теги Steam)</td><td>Roguelike Deckbuilder, Auto Battler, Card Battler, Strategy RPG, Dark Fantasy</td></tr><tr><td>Режим</td><td>Только одиночный PVE (кооп/PVP нет)</td></tr><tr><td>Отзывы Steam</td><td>89% положительных из 1 709 (Very Positive), на момент сбора</td></tr><tr><td>Metacritic</td><td>Критических рецензий нет (tbd), пользовательских — единицы</td></tr><tr><td>Поддержка</td><td>Живая: патчи 2.1.x в 2026, режимы Eternal Rift / Daily Rift, DLC «Moonhunter» (апрель 2026, 100% из 12 отзывов)</td></tr><tr><td>Объём контента (заявка Steam)</td><td>260+ карт, 34 юнита, 45+ альянсов, 140+ скиллов, 95+ предметов, 9 боссов, 20 уровней Corruption</td></tr></tbody></table></div>
+<p>Важно для нас: тираж скромный (~1.7k отзывов за 5 лет), то есть это нишевый инди-эксперимент, а не проверенный массовым рынком образец. Оценку «89%» надо читать как «понравилось тем, кто искал именно такой гибрид».</p>
+<hr/>
+<h2 id="2-ядро-цикла">2. Ядро цикла<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-ядро-цикла" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Между боями (StS-подобная макро-петля):</strong></p>
+<ul>
+<li>Выбор героя в начале забега (изначально 3 — воин/разбойник/маг; к 2026 — 6 вариантов героев + кастомный герой с собственной колодой и статами).</li>
+<li>Процедурная карта узлов внутри «кругов» (актов) — прямая калька Slay the Spire / Monster Train: бои, элиты, боссы, магазины, 40+ случайных событий.</li>
+<li>Драфт карт после боёв (или взять золото вместо карты), покупка/удаление карт в магазине, реликвии/предметы (95+), вербовка юнитов (34), прокачка юнитов («баннеры» — апгрейд юнита полностью его лечит).</li>
+<li>Управление составом: слоты для юнитов (старт — 3 слота, в solo-hero режиме 1) + скамейка. Вне боя юниты свободно переставляются между слотами/скамейкой; юниты на скамейке лучше восстанавливают HP между боями.</li>
+<li>«Альянсы» — трейт-синергии по типам юнитов (аналог origins/classes в TFT); эффекты одинаковых альянсов стакаются.</li>
+<li>20 уровней Corruption — ascension-лестница сложности.</li>
+</ul>
+<p><strong>Во время боя:</strong> см. п. 3.</p>
+<p><strong>Длина боя:</strong> бой измеряется «ходами» по 7 секунд реального времени. Точных цифр в источниках нет; по описаниям — рядовой бой это единицы таких ходов (порядка минуты), боссы — заметно дольше. Есть карты/механики манипуляции счётчиком ходов («Set Turn Counter»), то есть длину боя частично можно растягивать или сжимать под билд (важно для DoT-стратегий).</p>
+<hr/>
+<h2 id="3-интерактив-в-бою--точно-как-устроено">3. Интерактив в бою — ТОЧНО как устроено<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-интерактив-в-бою--точно-как-устроено" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Это главное, ради чего игра нас интересует. Слоёв интерактива три, и они разные по природе.</p>
+<p><strong>Слой 1. Карты в паузах ритма «7 секунд».</strong></p>
+<ul>
+<li>Бой идёт в реальном времени на сетке (обзоры называют доску «8x8 chess-style»; часть источников описывает гексы — точную геометрию считать неподтверждённой).</li>
+<li>Каждые ~7 секунд боевого времени игра <strong>останавливается</strong> и наступает «ход»: игрок добирает руку (обычно 5 карт), получает энергию (базово 3), играет карты, жмёт End Turn — и бой снова идёт 7 секунд.</li>
+<li>Первый ход — «тактическая фаза»: можно переставить юнитов и сыграть первую карту до начала мясорубки.</li>
+<li>Карты не отдают приказы напрямую, а <strong>влияют на действия юнитов</strong>: активируют атаку/перемещение/спецспособности, вешают баффы, щиты, дебаффы, спавнят существа. Итог действия зависит от типа атаки юнита, его скиллов, дистанции до врагов, накопленных эффектов карт и реликвий.</li>
+<li>Пауза не жёстко привязана к границе хода: игрок может <strong>поставить паузу посреди 7-секундного отрезка</strong> и разыграть карту в нужный момент (гайды прямо советуют так делать на высокой сложности — например, придержать защитную карту и сыграть её в момент удара). Отсюда и растут жалобы на «dexterity».</li>
+</ul>
+<p><strong>Слой 2. Manual Action Charges — прямые приказы юнитам.</strong></p>
+<ul>
+<li>В бою можно кликнуть юнита и приказать ему <strong>идти в точку или атаковать конкретную цель</strong> (горячая клавиша A).</li>
+<li>Это ресурс: <strong>ограниченное число зарядов на бой</strong>, счётчик показан в углу окна статов юнита; реликвии могут давать «+3 manual action charges».</li>
+<li>То есть это не «полный контроль», а дозированный override автономного AI — ровно тот «полумикро», который нас интересует.</li>
+<li>Важнейший факт: механика <strong>плохо объяснена</strong>. В треде на Steam игроки, прошедшие расширенные акты всеми героями, писали, что вообще не знали о её существовании: «I’ve finished the extended acts on all 3 chars and I never knew this» (игрок, Steam Discussions). Игра не учит своей же самой глубокой боевой механике.</li>
+</ul>
+<p><strong>Слой 3. Расстановка и косвенное управление таргетом.</strong></p>
+<ul>
+<li>Стартовая расстановка юнитов, «слайды» (принудительные смещения), тонты/провокации — совет комьюнити: «Micro-manage targeting. There are several ways how to micro-manage both ally and enemy targeting. Initial positioning, slides, taunts and importantly: the manual target/move (shortcut A)» (игрок, Steam Discussions).</li>
+</ul>
+<p><strong>Как это оценивают игроки — конкретно.</strong></p>
+<p>Положительно:</p>
+<ul>
+<li>«Addictive half auto battle… It did not became monotone even after more than 3 hours gameplay» (lksdfhj, 228 ч, Steam).</li>
+<li>«A brilliant roguelite mashup of deckbuilder and autobattler with a dash of turn based tactics» (nothingpants, 1 287 ч, Steam).</li>
+<li>«I do like the cards, the art, and way combat pauses every several seconds» (пользователь Metacritic, оценка 6/10 — то есть даже критик хвалит именно ритм пауз).</li>
+<li>Гайд-обзор: возможность выбирать цели в бою «elevates Hadean Tactics above its peers» — в отличие от большинства автобаттлеров, тут есть прямое вмешательство и скилл/адаптивность решают.</li>
+</ul>
+<p>Отрицательно (и это для нас ключевое):</p>
+<ul>
+<li>«5/10, feels clunky, don’t want dexterity and micromanaging mid-round in my autobattler» (негативный отзыв Steam, ~11 ч игры, 11 голосов «полезно»). Дословная формулировка нашего риска: часть аудитории автобаттлеров <strong>не хочет</strong> реакции и микро в бою.</li>
+<li>«The deckbuilding isn’t nearly as satisfying as Slay the Spire, and the autobattling isn’t nearly as satisfying as Teamfight Tactics» (негативный отзыв Steam, 10 ч, 10 голосов). Классический риск гибрида: обе половины слабее эталонов жанра.</li>
+<li>«This is 2 genres mashed together with little to no thought behind it» (негативный отзыв Steam).</li>
+<li>«For a game with “tactics” in the name, it doesn’t feel all that tactical» (негативный отзыв Steam).</li>
+</ul>
+<p>Вывод по разделу: интерактив в бою у них реальный и он <strong>не декоративный</strong> (карты + заряды приказов реально решают исход), но он же — главный источник ощущения «душноты/кликанья» у части игроков и источник дискуссии «а это вообще автобаттлер?».</p>
+<hr/>
+<h2 id="4-где-живёт-скилл-и-глубина">4. Где живёт скилл и глубина<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-где-живёт-скилл-и-глубина" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Дэкбилдинг:</strong> какие карты брать/не брать (совет комьюнити — не переливать колоду, часто выгоднее взять золото), баланс дешёвых «темповых» карт и дорогих «финишеров», обязательная доля защитных карт.</li>
+<li><strong>Энергетический тайминг в бою:</strong> копить энергию на решающий ход (например, сыграть щит Shell, когда юниты при смерти), карты вроде Thinking Ahead / Afterimage, снижение стоимости — то есть настоящая мини-CCG-экономика внутри автобоя.</li>
+<li><strong>Тайминг розыгрыша:</strong> играть карту не в начале хода, а в середине отрезка (щиты стираются, пока юниты идут и получают урон). Это скилл «когда», а не только «что».</li>
+<li><strong>Композиция и альянсы:</strong> сборка синергий по типам юнитов, стак одинаковых альянсов, апгрейд юнитов (в том числе как источник хила: «Upgrading a unit fully heals it», игрок Steam).</li>
+<li><strong>Экономика забега:</strong> не заходить в магазин без золота, копить на осмысленную покупку, планировать баннеры/апгрейды под будущий урон.</li>
+<li><strong>Микро-таргетинг:</strong> расстановка, тонты, слайды, ручные заряды приказов — фокус на опасной цели, размен позицией.</li>
+<li><strong>Экспоненциальные комбо:</strong> декларируемая цель мастерства — собрать движок карта+реликвия+альянс, который выигрывает бой за пару ходов.</li>
+</ul>
+<hr/>
+<h2 id="5-рандом-где-и-как-контролируется">5. Рандом: где и как контролируется<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-рандом-где-и-как-контролируется" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Много рандома на входе:</strong> процедурная карта, драфт карт 1-из-N, предложения юнитов, реликвии, 40+ событий, ассортимент магазина.</li>
+<li><strong>Рандом внутри боя — мал, но не ноль.</strong> Формулировка гайда: карта забега предсказуема, «little to no RNG involved when it comes to combat, just a small number of uncertain damage numbers or specific skills» — то есть отдельные скиллы/разбросы урона случайны, но крит/уклонение как система не заявлены.</li>
+<li><strong>Главный рандом боя — рука.</strong> Добор 5 карт каждые 7 секунд = рандом переносится из «броска кубика на удар» в «что пришло в руку». Это ровно ход Slay the Spire: рандом легитимен, потому что игрок сам собирал колоду.</li>
+<li><strong>Контроль рандома:</strong> прокачка героя, разрежение колоды, добор/цикл карт, реликвии на энергию и заряды, скамейка/перестановки, выбор пути по карте.</li>
+<li><strong>Претензия игроков:</strong> контроля недостаточно. «This game honestly is hilarious rng heavy. I feel like every run I stomp or get stomped» (игрок, Steam Discussions). На Corruption 20: «It feels like I don’t actually have any decisions to make because every run is dead on arrival or a total stomping» (игрок, Steam Discussions).</li>
+</ul>
+<hr/>
+<h2 id="6-что-хвалят-цитаты">6. Что хвалят (цитаты)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-что-хвалят-цитаты" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>«A brilliant roguelite mashup of deckbuilder and autobattler» — nothingpants, Steam (1 287 ч).</li>
+<li>«Overall, very well made. Great genre mix. I enjoyed it more than Slay the Spire» — SmarshY, Steam.</li>
+<li>«It makes me care for my units» — i_nive, Steam.</li>
+<li>«Flawed gem in need of rebalancing, but with a ton of potential» — топ-отзыв Steam (131 ч).</li>
+<li>«Perfect case of doing early access just right» — топ-отзыв Steam (87 ч), про отзывчивость разработчика.</li>
+<li>«Addictive half auto battle» — lksdfhj, Steam.</li>
+<li>Отдельно хвалят: объём контента (карты/реликвии/юниты/альянсы), кастомный герой и собственная колода, продакшен/визуал, фантазия власти от собранного комбо.</li>
+</ul>
+<hr/>
+<h2 id="7-на-что-жалуются--паттерны">7. На что жалуются — паттерны<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-на-что-жалуются--паттерны" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Собрано по массиву негативных отзывов Steam (топ по голосам) и тредам обсуждений.</p>
+<ol>
+<li><strong>Баланс и «обязательные» комбо</strong> — самый массовый паттерн. «Balance is incredibly broken, half of the cards and their intended interactions are just too weak» (28 голосов). Забеги «too heavily reliant on OP combos/synergies» (33 голоса). Некоторые связки убивают босса за два хода — и тогда «бой юнитов» вообще перестаёт что-либо значить.</li>
+<li><strong>Шум/мелкость выборов, ощущение мелководья</strong> — «The mechanics are a bit shallow for my taste… not many cards or relics that feel impactful»; «Its too short and systems are too shalow»; «Cards are boring, battles are boring, and there’s barely a drafting component».</li>
+<li><strong>Гибрид проигрывает обоим эталонам</strong> — «deckbuilding isn’t nearly as satisfying as Slay the Spire, and the autobattling isn’t nearly as satisfying as Teamfight Tactics».</li>
+<li><strong>Микро в бою как раздражитель</strong> — «don’t want dexterity and micromanaging mid-round in my autobattler». Меньшинство, но громкое и концептуально важное.</li>
+<li><strong>Непрозрачность</strong> — UI не объясняет активные эффекты и механики; ручные заряды приказов вообще проходят мимо игроков; описания предметов невнятные.</li>
+<li><strong>RNG-свинг и «спайки» сложности</strong> — стомп либо смерть; неизбежные элиты, к которым нет HP; боссы-губки.</li>
+<li><strong>Камера/читаемость поля</strong> — «Camera is so far out even zooming in feels useless as your just staring at the back of your units».</li>
+<li><strong>Вторичность</strong> — «if you have played slay the spire, monster train, across the obelisk… you aren’t getting anything new» (53 голоса — самый заплюсованный негативный отзыв).</li>
+</ol>
+<hr/>
+<h2 id="8-решения-разработчика-по-фидбеку">8. Решения разработчика по фидбеку<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-решения-разработчика-по-фидбеку" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Долгий EA (2021→2023) с ответом на фидбек</strong> — игроки прямо отмечают быстрые фиксы багов («Perfect case of doing early access just right»).</li>
+<li><strong>Наращивание контента как ответ на «мало вариативности»</strong>: с 1 героя и ~75 карт в EA до 6 вариантов героев и 260+ карт; кастомный герой и своя колода — прямой ответ на запрос вариативности.</li>
+<li><strong>Battle Log</strong> (патч 1.1): показывает нанесённый урон, хил, наложенные статусы — ответ на жалобы «не понимаю, что произошло в автобое». Показательно: непрозрачность автобоя лечили не упрощением боя, а <strong>логом/аналитикой постфактум</strong>.</li>
+<li><strong>Больше реликвий и событий по запросу игроков</strong> (патч 1.1), реворки событий, персональные концовки героев.</li>
+<li><strong>Поддержка геймпада</strong> (2023) — то есть боевой интерактив удалось уложить не только в мышь.</li>
+<li><strong>Пост-релизные режимы</strong>: Eternal Rift, Hardcore, Daily Rift (2026) — рогалик-эндгейм и ежедневный челлендж как ответ на «контент кончается».</li>
+<li><strong>DLC Moonhunter</strong> (апрель 2026) — новый контент вместо переработки ядра.</li>
+<li>Чего разработчик, по мнению игроков, <strong>не</strong> сделал: фундаментальный ребаланс. Пользовательский отзыв Metacritic (6/10) сетует, что дисбаланс билдов не чинят, несмотря на повторяющийся фидбек с релиза. В треде о спайках сложности официальных ответов разработчика нет.</li>
+</ul>
+<hr/>
+<h2 id="9-уроки-для-guildmaster">9. Уроки для Guildmaster<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-уроки-для-guildmaster" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Брать:</strong></p>
+<ol>
+<li><strong>Дозированный override AI — рабочая идея, и это ровно наш «полумикро».</strong> Manual Action Charges (ограниченное число ручных приказов «иди туда / бей вот его» за бой) — самая точная референс-механика под наш вопрос. Она даёт скилл-выражение и снимает бессилие, но не превращает автобой в RTS, потому что <strong>ресурс конечен</strong>. Если мы решим впустить вмешательство в бой — впускать надо именно так: конечный ресурс приказов, а не свободный контроль.</li>
+<li><strong>Пауза как инструмент решения, а не только просмотра — но с ритмом.</strong> У них пауза структурирована: каждые 7 сек. игра сама останавливается и просит решение. Это снимает требование к реакции лучше, чем «жми пробел когда успеешь». Если у нас появится вмешательство — оно должно жить в <strong>детерминированных точках остановки</strong>, а не в реальном времени.</li>
+<li><strong>Battle Log — забрать безусловно, независимо от решения по интерактиву.</strong> Автобой непрозрачен по своей природе; их ответ (лог урона/хила/статусов) — дешёвое и сильное лекарство от «я не понял, почему проиграл». Для нашего детерминированного боя лог тем более честен: в нём нет «не повезло».</li>
+<li><strong>Рандом на входе + предсказуемый бой — их же вывод совпадает с нашим.</strong> Игроки прямо ценят, что в бою почти нет RNG. Наш «ноль рандома в бою» — не экзотика, а усиление того, что у них хвалят.</li>
+<li><strong>Апгрейд юнита = полное лечение.</strong> Дешёвый и красивый экономический рычаг (создаёт решение «дать ли этому юниту потанковать перед баннером»). Хорошо ложится на наши реликвии/уровни.</li>
+<li><strong>Скамейка лечится лучше, чем боевой состав.</strong> Мягкое давление на ротацию состава, антимонопак без запретов — то, что мы и хотели через экономику, а не через запрет.</li>
+</ol>
+<p><strong>Избегать:</strong></p>
+<ol>
+<li><strong>Не делать вмешательство скиллом реакции.</strong> Их же игроки: «don’t want dexterity and micromanaging mid-round in my autobattler». Любая механика, где надо успеть нажать в правильную миллисекунду, — прямой удар по нашей аудитории (тем более в кооперативе с паузой на 4 игроков: чья пауза? чья рука?).</li>
+<li><strong>Не прятать главную боевую механику.</strong> Заряды приказов у них — самая интересная механика и самая неизвестная. Если мы даём ограниченное вмешательство, оно должно быть в лицо: счётчик на HUD, туториальный бой, подсветка «ты можешь это потратить».</li>
+<li><strong>Не допускать «комбо, убивающего бой за два хода».</strong> Их главная жалоба: экспоненциальные связки делают сам бой юнитов декоративным. У нас реликвия = весь кит юнита, риск тот же: если один пак реликвий сносит энкаунтер до того, как автобой что-то покажет, то весь наш автобой и расстановка обесцениваются.</li>
+<li><strong>Не собирать гибрид, слабый с обеих сторон.</strong> Их приговор («ни StS, ни TFT») — предупреждение: если мы добавляем карточно-подобный слой в бой, он должен быть либо полноценным, либо его быть не должно. Полумеры получают «clunky».</li>
+<li><strong>Не лечить дисбаланс количеством контента.</strong> Они доливали карты/реликвии/DLC, а претензия «половина карт мусор, выигрывают 2 билда» осталась и стала главным тормозом рейтинга.</li>
+</ol>
+<p><strong>ОТДЕЛЬНЫЙ ВЫВОД: работает ли их модель интерактива-в-автобое и стоит ли нам такое рассматривать.</strong></p>
+<p>Модель <strong>работает — с оговорками</strong>, и её надо читать как две разные механики, а не одну.</p>
+<ul>
+<li><strong>Карточный слой (розыгрыш карт в паузах каждые 7 сек.) — их идентичность, но он же ломает жанровый контракт.</strong> Он превращает игру из автобаттлера в «StS с автономными юнитами». Именно он даёт им 89% (тем, кто хотел этот гибрид) и он же порождает «clunky / не хочу микро / это не автобаттлер / обе половины хуже эталонов». <strong>Нам такое брать не стоит:</strong> у нас 1–4 игрока в кооперативе, и «пауза каждые 7 секунд, чтобы четверо разыграли руки» — это либо ад согласования, либо игра, где трое ждут одного. Наш заявленный контракт (бой автономный, ввода нет, пауза = просмотр) с этим прямо конфликтует, и ломать его ради карт я не советую.</li>
+<li><strong>Слой ограниченных ручных приказов (Manual Action Charges) — вот это стоит рассматривать всерьёз.</strong> Он совместим с автономным боем: заряды не отменяют AI, а точечно его перебивают («сфокусируй вот этого», «отойди»), их мало, они кончаются, и они не требуют реакции, если тратить их <strong>из паузы</strong>. Для кооператива он естественно делится: у каждого игрока — свои заряды на своих юнитов, конфликта нет. Ровно этот слой обзорщики называют тем, что поднимает игру над конкурентами, и ровно на него нет жалоб «душно» (на него есть жалоба «мы про неё не знали» — это лечится UI).</li>
+</ul>
+<p>Рекомендация: если Максу нужен клапан против бессилия в автобое — брать <strong>не карты, а ограниченные заряды приказов из паузы</strong>, с видимым счётчиком, 1–3 за бой, расширяемые предметами/реликвиями. Это добавляет скилл-выражение, не ломает детерминизм (приказ отдаётся в паузе, симуляция остаётся воспроизводимой при фиксации точки вмешательства), не требует дексетрити и не разваливает кооп. Полноценный карточный слой в бою — не брать.</p>
+<hr/>
+<h2 id="10-источники">10. Источники<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-источники" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>Steam, страница игры: <a href="https://store.steampowered.com/app/1260590/Hadean_Tactics/" class="external">https://store.steampowered.com/app/1260590/Hadean_Tactics/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, отзывы (top rated): <a href="https://steamcommunity.com/app/1260590/reviews/?browsefilter=toprated" class="external">https://steamcommunity.com/app/1260590/reviews/?browsefilter=toprated<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, API отзывов (позитивные/негативные, английский): <a href="https://store.steampowered.com/appreviews/1260590?json=1&amp;filter=all&amp;language=english" class="external">https://store.steampowered.com/appreviews/1260590?json=1&amp;filter=all&amp;language=english<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, обсуждение «Game is pretty hard, any tips?» (микро-таргетинг, shortcut A): <a href="https://steamcommunity.com/app/1260590/discussions/0/3043859512562227031/" class="external">https://steamcommunity.com/app/1260590/discussions/0/3043859512562227031/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, обсуждение «Manual Action Charges»: <a href="https://steamcommunity.com/app/1260590/discussions/0/3826425264480886684/" class="external">https://steamcommunity.com/app/1260590/discussions/0/3826425264480886684/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, обсуждение «This game should be called “Spikes”» (RNG/спайки): <a href="https://steamcommunity.com/app/1260590/discussions/0/4790130997101054617/" class="external">https://steamcommunity.com/app/1260590/discussions/0/4790130997101054617/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, все новости/патчи: <a href="https://steamcommunity.com/app/1260590/allnews/?l=english" class="external">https://steamcommunity.com/app/1260590/allnews/?l=english<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, DLC Moonhunter: <a href="https://store.steampowered.com/app/4323120/Hadean_Tactics_Moonhunter_DLC/" class="external">https://store.steampowered.com/app/4323120/Hadean_Tactics_Moonhunter_DLC/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>SteamDB, патчноуты: <a href="https://steamdb.info/app/1260590/patchnotes/" class="external">https://steamdb.info/app/1260590/patchnotes/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Обзор Two Clicks (Steam): <a href="https://steamcommunity.com/id/nourl1/recommended/1260590" class="external">https://steamcommunity.com/id/nourl1/recommended/1260590<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Обзор MGN «Slay the Spire meets Autochess»: <a href="https://mgn.gg/hadean-tactics-review-slay-the-spire-meets-autochess" class="external">https://mgn.gg/hadean-tactics-review-slay-the-spire-meets-autochess<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> (страница отдавала 500 при фетче; данные — из поисковых сниппетов)</li>
+<li>GamingOnLinux, анонс EA (realtime auto-battler with deck building): <a href="https://www.gamingonlinux.com/2021/02/hadean-tactics-a-realtime-auto-battler-with-deck-building-launches-today/" class="external">https://www.gamingonlinux.com/2021/02/hadean-tactics-a-realtime-auto-battler-with-deck-building-launches-today/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>GamingOnLinux, поддержка геймпада (2023): <a href="https://www.gamingonlinux.com/2023/08/auto-battling-deck-building-roguelike-hadean-tactics-adds-gamepad-support/" class="external">https://www.gamingonlinux.com/2023/08/auto-battling-deck-building-roguelike-hadean-tactics-adds-gamepad-support/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Сайт разработчика: <a href="https://emberfishgames.com/hadean-tactics" class="external">https://emberfishgames.com/hadean-tactics<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Metacritic: <a href="https://www.metacritic.com/game/hadean-tactics/" class="external">https://www.metacritic.com/game/hadean-tactics/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Fandom-вики (Units): <a href="https://hadean-tactics.fandom.com/wiki/Units" class="external">https://hadean-tactics.fandom.com/wiki/Units<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Гайд-агрегатор GameBuff (энергия, тайминг карт, слоты юнитов): <a href="http://gamebuff.cn/en/game/enhanced/hadean-tactics.html" class="external">http://gamebuff.cn/en/game/enhanced/hadean-tactics.html<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul>
+<p><strong>Ограничения ресерча:</strong> Reddit недоступен для фетча — прямых тредов оттуда нет. Геометрия поля (8x8 клетки vs гексы) в источниках расходится. Точная длина боя в ходах/минутах нигде явно не указана. Прямых постов разработчика с обоснованием дизайна боя (кроме патчноутов) найти не удалось.</p></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-70" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#hadean-tactics--досье" data-for="hadean-tactics--досье">Hadean Tactics — досье</a></li><li class="depth-1"><a href="#1-паспорт" data-for="1-паспорт">1. Паспорт</a></li><li class="depth-1"><a href="#2-ядро-цикла" data-for="2-ядро-цикла">2. Ядро цикла</a></li><li class="depth-1"><a href="#3-интерактив-в-бою--точно-как-устроено" data-for="3-интерактив-в-бою--точно-как-устроено">3. Интерактив в бою — ТОЧНО как устроено</a></li><li class="depth-1"><a href="#4-где-живёт-скилл-и-глубина" data-for="4-где-живёт-скилл-и-глубина">4. Где живёт скилл и глубина</a></li><li class="depth-1"><a href="#5-рандом-где-и-как-контролируется" data-for="5-рандом-где-и-как-контролируется">5. Рандом: где и как контролируется</a></li><li class="depth-1"><a href="#6-что-хвалят-цитаты" data-for="6-что-хвалят-цитаты">6. Что хвалят (цитаты)</a></li><li class="depth-1"><a href="#7-на-что-жалуются--паттерны" data-for="7-на-что-жалуются--паттерны">7. На что жалуются — паттерны</a></li><li class="depth-1"><a href="#8-решения-разработчика-по-фидбеку" data-for="8-решения-разработчика-по-фидбеку">8. Решения разработчика по фидбеку</a></li><li class="depth-1"><a href="#9-уроки-для-guildmaster" data-for="9-уроки-для-guildmaster">9. Уроки для Guildmaster</a></li><li class="depth-1"><a href="#10-источники" data-for="10-источники">10. Источники</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

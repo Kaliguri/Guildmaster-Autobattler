@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Components.Slot.Slot" name="Guildmaster.UI.Components.Slot.Slot">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,215,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a692b6ca8dec0f663ae0ec5e35c411ff9" title="Заполнить слот иконкой (null → пустой плейсхолдер)." alt="" coords="263,5,472,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,23,249,23,249,28,215,28"/>
+</map>

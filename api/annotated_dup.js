@@ -17,10 +17,13 @@ var annotated_dup =
         ] ],
         [ "Effects", "namespaceGuildmaster_1_1Combat_1_1Effects.html", [
           [ "Components", "namespaceGuildmaster_1_1Combat_1_1Effects_1_1Components.html", [
+            [ "ArmorThornsComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ArmorThornsComponent" ],
+            [ "BlazingBladesComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BlazingBladesComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BlazingBladesComponent" ],
             [ "BulwarkComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BulwarkComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1BulwarkComponent" ],
             [ "ControlComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1ControlComponent" ],
             [ "DispelComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DispelComponent" ],
             [ "DodgeComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent" ],
+            [ "IgnitionComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1IgnitionComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1IgnitionComponent" ],
             [ "LifestealComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1LifestealComponent" ],
             [ "MarkTransferComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MarkTransferComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MarkTransferComponent" ],
             [ "MissingHpShieldComponent", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MissingHpShieldComponent.html", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1MissingHpShieldComponent" ],
@@ -49,6 +52,7 @@ var annotated_dup =
         [ "AreaHit", "structGuildmaster_1_1Combat_1_1AreaHit.html", "structGuildmaster_1_1Combat_1_1AreaHit" ],
         [ "AttackTiming", "classGuildmaster_1_1Combat_1_1AttackTiming.html", "classGuildmaster_1_1Combat_1_1AttackTiming" ],
         [ "AutoAttackSystem", "classGuildmaster_1_1Combat_1_1AutoAttackSystem.html", "classGuildmaster_1_1Combat_1_1AutoAttackSystem" ],
+        [ "BattleOutcome", "structGuildmaster_1_1Combat_1_1BattleOutcome.html", "structGuildmaster_1_1Combat_1_1BattleOutcome" ],
         [ "BrainSystem", "classGuildmaster_1_1Combat_1_1BrainSystem.html", "classGuildmaster_1_1Combat_1_1BrainSystem" ],
         [ "CombatPositioning", "classGuildmaster_1_1Combat_1_1CombatPositioning.html", "classGuildmaster_1_1Combat_1_1CombatPositioning" ],
         [ "CombatSimulation", "classGuildmaster_1_1Combat_1_1CombatSimulation.html", "classGuildmaster_1_1Combat_1_1CombatSimulation" ],
@@ -59,12 +63,14 @@ var annotated_dup =
         [ "DisplacementSystem", "classGuildmaster_1_1Combat_1_1DisplacementSystem.html", "classGuildmaster_1_1Combat_1_1DisplacementSystem" ],
         [ "DisplaceRequest", "structGuildmaster_1_1Combat_1_1DisplaceRequest.html", "structGuildmaster_1_1Combat_1_1DisplaceRequest" ],
         [ "EffectSystem", "classGuildmaster_1_1Combat_1_1EffectSystem.html", "classGuildmaster_1_1Combat_1_1EffectSystem" ],
+        [ "EncounterLoader", "classGuildmaster_1_1Combat_1_1EncounterLoader.html", "classGuildmaster_1_1Combat_1_1EncounterLoader" ],
         [ "FleeSteering", "classGuildmaster_1_1Combat_1_1FleeSteering.html", "classGuildmaster_1_1Combat_1_1FleeSteering" ],
         [ "IBattleView", "interfaceGuildmaster_1_1Combat_1_1IBattleView.html", "interfaceGuildmaster_1_1Combat_1_1IBattleView" ],
         [ "ICombatCommand", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand.html", "interfaceGuildmaster_1_1Combat_1_1ICombatCommand" ],
         [ "ICombatContext", "interfaceGuildmaster_1_1Combat_1_1ICombatContext.html", "interfaceGuildmaster_1_1Combat_1_1ICombatContext" ],
         [ "IUnitBrain", "interfaceGuildmaster_1_1Combat_1_1IUnitBrain.html", "interfaceGuildmaster_1_1Combat_1_1IUnitBrain" ],
         [ "MovementSystem", "classGuildmaster_1_1Combat_1_1MovementSystem.html", "classGuildmaster_1_1Combat_1_1MovementSystem" ],
+        [ "PlayerSpawn", "structGuildmaster_1_1Combat_1_1PlayerSpawn.html", "structGuildmaster_1_1Combat_1_1PlayerSpawn" ],
         [ "ProfileBrain", "classGuildmaster_1_1Combat_1_1ProfileBrain.html", "classGuildmaster_1_1Combat_1_1ProfileBrain" ],
         [ "Projectile", "classGuildmaster_1_1Combat_1_1Projectile.html", "classGuildmaster_1_1Combat_1_1Projectile" ],
         [ "ProjectileSpawn", "structGuildmaster_1_1Combat_1_1ProjectileSpawn.html", "structGuildmaster_1_1Combat_1_1ProjectileSpawn" ],
@@ -110,6 +116,12 @@ var annotated_dup =
         [ "Localization", "namespaceGuildmaster_1_1Core_1_1Localization.html", [
           [ "ILocalizationService", "interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html", "interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService" ]
         ] ],
+        [ "Persistence", "namespaceGuildmaster_1_1Core_1_1Persistence.html", [
+          [ "ISaveService", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService" ]
+        ] ],
+        [ "Players", "namespaceGuildmaster_1_1Core_1_1Players.html", [
+          [ "ILocalPlayer", "interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html", "interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer" ]
+        ] ],
         [ "Random", "namespaceGuildmaster_1_1Core_1_1Random.html", [
           [ "BattleSeed", "classGuildmaster_1_1Core_1_1Random_1_1BattleSeed.html", "classGuildmaster_1_1Core_1_1Random_1_1BattleSeed" ],
           [ "IRngService", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService" ],
@@ -129,28 +141,43 @@ var annotated_dup =
       [ "Data", "namespaceGuildmaster_1_1Data.html", [
         [ "Definitions", "namespaceGuildmaster_1_1Data_1_1Definitions.html", [
           [ "AbilityData", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData" ],
+          [ "AffinityTable", "classGuildmaster_1_1Data_1_1Definitions_1_1AffinityTable.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AffinityTable" ],
           [ "AIPresetData", "classGuildmaster_1_1Data_1_1Definitions_1_1AIPresetData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AIPresetData" ],
           [ "AIProfile", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile.html", "classGuildmaster_1_1Data_1_1Definitions_1_1AIProfile" ],
+          [ "BattlePresetData", "classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData" ],
           [ "ClipMarkers", "classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers" ],
           [ "ConsequenceData", "classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData" ],
           [ "ContentDatabase", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase" ],
           [ "ContentDefinition", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition" ],
           [ "ContentDomains", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentDomains" ],
           [ "ContentRegistry", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentRegistry.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ContentRegistry" ],
+          [ "DamageCategories", "classGuildmaster_1_1Data_1_1Definitions_1_1DamageCategories.html", "classGuildmaster_1_1Data_1_1Definitions_1_1DamageCategories" ],
           [ "EffectData", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EffectData" ],
+          [ "EncounterData", "classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData" ],
+          [ "EncounterUnit", "structGuildmaster_1_1Data_1_1Definitions_1_1EncounterUnit.html", "structGuildmaster_1_1Data_1_1Definitions_1_1EncounterUnit" ],
           [ "EnemyData", "classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData" ],
+          [ "EquipRelicRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest" ],
+          [ "EventChoice", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice" ],
+          [ "EventEffect", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect" ],
           [ "GameConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig" ],
           [ "GuildmasterData", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData" ],
+          [ "IBattleClock", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock" ],
           [ "IContentDatabase", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase" ],
           [ "IEffectComponent", "interfaceGuildmaster_1_1Data_1_1Definitions_1_1IEffectComponent.html", null ],
           [ "ItemData", "classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1ItemData" ],
           [ "Kite", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite" ],
+          [ "OpenLoadoutRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenLoadoutRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenLoadoutRequest" ],
+          [ "OpenRewardRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenRewardRequest" ],
+          [ "OpenTextEventRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1OpenTextEventRequest" ],
+          [ "PlayerSlot", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot" ],
           [ "RelicData", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1RelicData" ],
           [ "Retreat", "structGuildmaster_1_1Data_1_1Definitions_1_1Retreat.html", "structGuildmaster_1_1Data_1_1Definitions_1_1Retreat" ],
+          [ "RewardChoiceResult", "structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult.html", "structGuildmaster_1_1Data_1_1Definitions_1_1RewardChoiceResult" ],
           [ "RunModifierData", "classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData" ],
           [ "SimTuningConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1SimTuningConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1SimTuningConfig" ],
           [ "StatsConfig", "classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html", "classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig" ],
           [ "TagData", "classGuildmaster_1_1Data_1_1Definitions_1_1TagData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1TagData" ],
+          [ "TextEventData", "classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData" ],
           [ "TraitData", "classGuildmaster_1_1Data_1_1Definitions_1_1TraitData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1TraitData" ],
           [ "UnitData", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitData" ],
           [ "UnitVisual", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html", "classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual" ],
@@ -178,15 +205,37 @@ var annotated_dup =
       ] ],
       [ "DevTools", "namespaceGuildmaster_1_1DevTools.html", [
         [ "CombatUnitDebugView", "classGuildmaster_1_1DevTools_1_1CombatUnitDebugView.html", "classGuildmaster_1_1DevTools_1_1CombatUnitDebugView" ],
-        [ "GuildmasterCommands", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands" ]
+        [ "DevBattlePickerView", "classGuildmaster_1_1DevTools_1_1DevBattlePickerView.html", "classGuildmaster_1_1DevTools_1_1DevBattlePickerView" ],
+        [ "DevEncounterPanel", "classGuildmaster_1_1DevTools_1_1DevEncounterPanel.html", "classGuildmaster_1_1DevTools_1_1DevEncounterPanel" ],
+        [ "GuildmasterCommands", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands" ],
+        [ "UiPreviewHost", "classGuildmaster_1_1DevTools_1_1UiPreviewHost.html", null ]
       ] ],
       [ "Game", "namespaceGuildmaster_1_1Game.html", [
         [ "Editor", "namespaceGuildmaster_1_1Game_1_1Editor.html", [
           [ "ArenaLayoutAuthoringEditor", "classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor.html", "classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor" ]
         ] ],
+        [ "Flow", "namespaceGuildmaster_1_1Game_1_1Flow.html", [
+          [ "BattleBootstrap", "classGuildmaster_1_1Game_1_1Flow_1_1BattleBootstrap.html", "classGuildmaster_1_1Game_1_1Flow_1_1BattleBootstrap" ],
+          [ "BattleFlow", "classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html", "classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow" ],
+          [ "BattleSession", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession" ],
+          [ "EventEffectApplier", "classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html", "classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier" ],
+          [ "EventResult", "structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html", "structGuildmaster_1_1Game_1_1Flow_1_1EventResult" ],
+          [ "IBattleSession", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession" ],
+          [ "IEventFlow", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IEventFlow.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IEventFlow" ],
+          [ "IPlayerIntentSource", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource" ],
+          [ "IReadyGate", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IReadyGate.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IReadyGate" ],
+          [ "RewardService", "classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html", "classGuildmaster_1_1Game_1_1Flow_1_1RewardService" ],
+          [ "RunContext", "classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html", "classGuildmaster_1_1Game_1_1Flow_1_1RunContext" ],
+          [ "SoloPlayerIntentSource", "classGuildmaster_1_1Game_1_1Flow_1_1SoloPlayerIntentSource.html", "classGuildmaster_1_1Game_1_1Flow_1_1SoloPlayerIntentSource" ],
+          [ "SoloReadyGate", "classGuildmaster_1_1Game_1_1Flow_1_1SoloReadyGate.html", "classGuildmaster_1_1Game_1_1Flow_1_1SoloReadyGate" ],
+          [ "TextEventFlow", "classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html", "classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow" ]
+        ] ],
         [ "Input", "namespaceGuildmaster_1_1Game_1_1Input.html", [
           [ "BattleInputController", "classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html", "classGuildmaster_1_1Game_1_1Input_1_1BattleInputController" ],
           [ "InputService", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html", "classGuildmaster_1_1Game_1_1Input_1_1InputService" ]
+        ] ],
+        [ "Players", "namespaceGuildmaster_1_1Game_1_1Players.html", [
+          [ "SoloLocalPlayer", "classGuildmaster_1_1Game_1_1Players_1_1SoloLocalPlayer.html", "classGuildmaster_1_1Game_1_1Players_1_1SoloLocalPlayer" ]
         ] ],
         [ "Services", "namespaceGuildmaster_1_1Game_1_1Services.html", [
           [ "CinematicSegment", "structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment.html", "structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment" ],
@@ -194,6 +243,8 @@ var annotated_dup =
           [ "CombatLoopService", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService" ],
           [ "FmodAudioService", "classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService.html", "classGuildmaster_1_1Game_1_1Services_1_1FmodAudioService" ],
           [ "GameFlow", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow" ],
+          [ "ISceneLoader", "interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html", "interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader" ],
+          [ "JsonFileSaveService", "classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html", "classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService" ],
           [ "LocalizationService", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService" ],
           [ "SceneLoader", "classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html", "classGuildmaster_1_1Game_1_1Services_1_1SceneLoader" ],
           [ "SettingsService", "classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html", "classGuildmaster_1_1Game_1_1Services_1_1SettingsService" ],
@@ -201,10 +252,17 @@ var annotated_dup =
           [ "UnityAudioService", "classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService.html", "classGuildmaster_1_1Game_1_1Services_1_1UnityAudioService" ]
         ] ],
         [ "ArenaLayoutAuthoring", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html", "classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring" ],
-        [ "BattleSetupBuilder", "classGuildmaster_1_1Game_1_1BattleSetupBuilder.html", "classGuildmaster_1_1Game_1_1BattleSetupBuilder" ],
         [ "CombatLifetimeScope", "classGuildmaster_1_1Game_1_1CombatLifetimeScope.html", "classGuildmaster_1_1Game_1_1CombatLifetimeScope" ],
+        [ "DeploymentController", "classGuildmaster_1_1Game_1_1DeploymentController.html", "classGuildmaster_1_1Game_1_1DeploymentController" ],
         [ "GameBootstrap", "classGuildmaster_1_1Game_1_1GameBootstrap.html", null ],
         [ "RootLifetimeScope", "classGuildmaster_1_1Game_1_1RootLifetimeScope.html", "classGuildmaster_1_1Game_1_1RootLifetimeScope" ]
+      ] ],
+      [ "Guild", "namespaceGuildmaster_1_1Guild.html", [
+        [ "MapNode", "classGuildmaster_1_1Guild_1_1MapNode.html", "classGuildmaster_1_1Guild_1_1MapNode" ],
+        [ "MapState", "classGuildmaster_1_1Guild_1_1MapState.html", "classGuildmaster_1_1Guild_1_1MapState" ],
+        [ "RosterSlot", "classGuildmaster_1_1Guild_1_1RosterSlot.html", "classGuildmaster_1_1Guild_1_1RosterSlot" ],
+        [ "RunState", "classGuildmaster_1_1Guild_1_1RunState.html", "classGuildmaster_1_1Guild_1_1RunState" ],
+        [ "RunStateService", "classGuildmaster_1_1Guild_1_1RunStateService.html", "classGuildmaster_1_1Guild_1_1RunStateService" ]
       ] ],
       [ "Net", "namespaceGuildmaster_1_1Net.html", [
         [ "FacepunchTransportBootstrap", "classGuildmaster_1_1Net_1_1FacepunchTransportBootstrap.html", null ],
@@ -233,6 +291,7 @@ var annotated_dup =
         [ "CombatVfx", "classGuildmaster_1_1Presentation_1_1CombatVfx.html", "classGuildmaster_1_1Presentation_1_1CombatVfx" ],
         [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],
         [ "DeathShatter", "classGuildmaster_1_1Presentation_1_1DeathShatter.html", "classGuildmaster_1_1Presentation_1_1DeathShatter" ],
+        [ "DeploymentView", "classGuildmaster_1_1Presentation_1_1DeploymentView.html", "classGuildmaster_1_1Presentation_1_1DeploymentView" ],
         [ "FloatingText", "classGuildmaster_1_1Presentation_1_1FloatingText.html", "classGuildmaster_1_1Presentation_1_1FloatingText" ],
         [ "HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", "classGuildmaster_1_1Presentation_1_1HealthBarView" ],
         [ "IScreenShake", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake" ],
@@ -250,12 +309,23 @@ var annotated_dup =
         [ "YSortSprite", "classGuildmaster_1_1Presentation_1_1YSortSprite.html", null ]
       ] ],
       [ "UI", "namespaceGuildmaster_1_1UI.html", [
-        [ "EditorTools", "namespaceGuildmaster_1_1UI_1_1EditorTools.html", [
-          [ "UiPreviewCapture", "classGuildmaster_1_1UI_1_1EditorTools_1_1UiPreviewCapture.html", "classGuildmaster_1_1UI_1_1EditorTools_1_1UiPreviewCapture" ]
+        [ "Components", "namespaceGuildmaster_1_1UI_1_1Components.html", [
+          [ "ModalPanel", "classGuildmaster_1_1UI_1_1Components_1_1ModalPanel.html", "classGuildmaster_1_1UI_1_1Components_1_1ModalPanel" ],
+          [ "RelicCard", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard" ],
+          [ "RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig" ],
+          [ "SliderRow", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow" ],
+          [ "Slot", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html", "classGuildmaster_1_1UI_1_1Components_1_1Slot" ],
+          [ "Tooltip", "classGuildmaster_1_1UI_1_1Components_1_1Tooltip.html", "classGuildmaster_1_1UI_1_1Components_1_1Tooltip" ],
+          [ "VesselCard", "classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html", "classGuildmaster_1_1UI_1_1Components_1_1VesselCard" ]
         ] ],
+        [ "EventScreenView", "classGuildmaster_1_1UI_1_1EventScreenView.html", "classGuildmaster_1_1UI_1_1EventScreenView" ],
         [ "IMenuRouter", "interfaceGuildmaster_1_1UI_1_1IMenuRouter.html", "interfaceGuildmaster_1_1UI_1_1IMenuRouter" ],
         [ "IntegerPanelScaler", "classGuildmaster_1_1UI_1_1IntegerPanelScaler.html", null ],
+        [ "LoadoutHubView", "classGuildmaster_1_1UI_1_1LoadoutHubView.html", "classGuildmaster_1_1UI_1_1LoadoutHubView" ],
+        [ "LoadoutViewModel", "classGuildmaster_1_1UI_1_1LoadoutViewModel.html", "classGuildmaster_1_1UI_1_1LoadoutViewModel" ],
         [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html", "classGuildmaster_1_1UI_1_1MenuRouter" ],
+        [ "RewardScreenView", "classGuildmaster_1_1UI_1_1RewardScreenView.html", "classGuildmaster_1_1UI_1_1RewardScreenView" ],
+        [ "RunTopBarView", "classGuildmaster_1_1UI_1_1RunTopBarView.html", "classGuildmaster_1_1UI_1_1RunTopBarView" ],
         [ "SettingsViewModel", "classGuildmaster_1_1UI_1_1SettingsViewModel.html", "classGuildmaster_1_1UI_1_1SettingsViewModel" ],
         [ "UiRootBootstrap", "classGuildmaster_1_1UI_1_1UiRootBootstrap.html", "classGuildmaster_1_1UI_1_1UiRootBootstrap" ]
       ] ]

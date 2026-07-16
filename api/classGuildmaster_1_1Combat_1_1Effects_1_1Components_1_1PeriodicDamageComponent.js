@@ -1,5 +1,6 @@
 var classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent =
 [
+    [ "DamagePerSecond", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#a34ab76f002a7de95b9c2d19a09634ce0", null ],
     [ "OnApply", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#ac912e2da798832336a1f1d9290974981", null ],
     [ "OnExpire", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#a0a839e0d600a5d2201274d4d8d50da97", null ],
     [ "OnTick", "classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1PeriodicDamageComponent.html#a058142e5c1c661b0fb98940b23dba80f", null ],

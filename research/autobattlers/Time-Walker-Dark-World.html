@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Time Walker Dark World | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Time Walker Dark World | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Time Walker Dark World | Guildmaster Wiki"/><meta name="twitter:description" content="Статус: Досье (ресерч) Time Walker: Dark World Дата ресерча: 2026-07-15."/><meta property="og:description" content="Статус: Досье (ресерч) Time Walker: Dark World Дата ресерча: 2026-07-15."/><meta property="og:image:alt" content="Статус: Досье (ресерч) Time Walker: Dark World Дата ресерча: 2026-07-15."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Time-Walker-Dark-World"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Time-Walker-Dark-World"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Статус: Досье (ресерч) Time Walker: Dark World Дата ресерча: 2026-07-15."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="research/autobattlers/Time-Walker-Dark-World"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-103"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-103" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/">research</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/autobattlers/">autobattlers</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Time Walker Dark World</a></div></nav><h1 class="article-title">Time Walker Dark World</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-16T13:38:27.287Z">16 июл. 2026 г.</time><span>время чтения ~11 мин.</span></p></div></div><article class="popover-hint"><p><strong>Статус:</strong> Досье (ресерч)</p>
+<h1 id="time-walker-dark-world">Time Walker: Dark World<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#time-walker-dark-world" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<p>Дата ресерча: 2026-07-15. Источник данных — открытый веб (Steam, обзоры прессы, гайды сообщества, форумы Steam). Reddit-тредов по игре найти не удалось — игра нишевая, обсуждается почти только в Steam.</p>
+<p>Игра важна для нас тем, что это <strong>ближайший найденный аналог целевой формы Guildmaster</strong>: PVE-автобаттлер-рогалик, отряд из 4 героев, вся мощь — в наборе способностей, бой полностью автономный, весь выбор игрока — между боями. То есть это «наш» жанр, доведённый до релиза, с 1400+ отзывами и внятной картиной жалоб.</p>
+<hr/>
+<h2 id="1-паспорт">1. Паспорт<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-паспорт" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Параметр</th><th>Значение</th></tr></thead><tbody><tr><td>Название</td><td>Time Walker: Dark World</td></tr><tr><td>Разработчик</td><td>Heartfun</td></tr><tr><td>Издатели</td><td>Leyo Games, 2P Games</td></tr><tr><td>Early Access</td><td>с 26 сентября 2022</td></tr><tr><td>Релиз (1.0)</td><td>29–30 ноября 2023 (Steam, Windows)</td></tr><tr><td>Порты</td><td>Nintendo Switch (2024)</td></tr><tr><td>Жанр (Steam-теги)</td><td>Auto Battler, Rogue-lite, Strategy, Turn-Based Strategy, Pixel Graphics, Dungeon Crawler, Fantasy</td></tr><tr><td>Режим</td><td>Только одиночный (PVE). Кооп/мультиплеер отсутствует</td></tr><tr><td>Отзывы Steam</td><td>«Очень положительные» — 85% из ~1427 (1287 положительных / 214 отрицательных)</td></tr><tr><td>Оценка SteamSpy</td><td>86%, владельцев ~200–500 тыс. (оценка), пик онлайна на момент замера — единицы (игра «отыграна»)</td></tr><tr><td>Цена</td><td>базово дёшево, регулярно уходит на скидки до ~$2.7</td></tr><tr><td>Статус</td><td>Полный релиз (не EA), есть DLC и бесплатное демо</td></tr></tbody></table></div>
+<p>Пресса: оценки разошлись сильно — GameGrin положительно («tons of depth»), The Game Slush Pile 8/10 (Switch), ps3blog 7.5/10, Movies Games and Tech — <strong>5/10</strong> с разгромной аргументацией (см. §7).</p>
+<hr/>
+<h2 id="2-ядро-цикла">2. Ядро цикла<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-ядро-цикла" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Забег.</strong> Игрок собирает отряд из 4 «Ходоков во времени» до старта: выбирает базовые классы (боец / убийца / лучник / маг + производные, всего ~11 персонажей) и берёт <strong>«контракт»</strong> — модификатор сложности (усиление врагов) в обмен на процентный бонус к валюте мета-прогрессии (Soul Crystals / «души»). Прямой аналог наших «испытаний».</p>
+<p><strong>Структура акта.</strong> ~17 стадий на «мир»: обычные бои, элитные бои (сложнее, награда лучше), «сокровищные» стадии (дают способности / книги атрибутов), магазин (на 16–17 стадии), финальный босс. Карта — узлы разной ценности; гайды сообщества советуют «всегда драться на фиолетовых (элитных) узлах», то есть риск-ревард по узлам действительно работает.</p>
+<p><strong>Между боями.</strong> Здесь живёт вся игра:</p>
+<ul>
+<li>выдача способности после стадии (пул ~40 базовых, всего заявлено 80+ с учётом улучшенных/EX);</li>
+<li><strong>мердж способностей</strong>: 3 одинаковых уровня I → уровень II, и т.д.; 2 способности уровня III → <strong>EX-способность</strong>;</li>
+<li>лут/предметы: сравнение, слияние одинаковых предметов в улучшенные, «рефордж»;</li>
+<li>распределение способностей и статов (книги атрибутов) по 4 героям — <strong>без классовых ограничений</strong> (можно собрать лучника-хилера, мага-ближника, убийцу-танка);</li>
+<li>расстановка/формация перед боем;</li>
+<li>магазин с покупкой способностей и рероллами.</li>
+</ul>
+<p><strong>Бой.</strong> Полностью автоматический. Длина — короткая, десятки секунд; у боя есть <strong>жёсткий таймаут</strong>: если не успел убить — мгновенное поражение (не овертайм). Игрок только смотрит и может <strong>менять скорость</strong>.</p>
+<p><strong>Мета-прогрессия.</strong> Soul Crystals за забег → панель перманентных апгрейдов: новые классы, модификации классов, статы. Ступени сложности: Easy → Normal → Hard → Expert → Hell → Endless.</p>
+<hr/>
+<h2 id="3-интерактив-в-бою">3. Интерактив в бою<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-интерактив-в-бою" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Его нет.</strong> Это прямое подтверждение нашей модели.</p>
+<ul>
+<li>Активных способностей по нажатию — нет.</li>
+<li>Паузы — нет (по обзору MGT: можно менять скорость, но нельзя ни поставить паузу, ни применить способность).</li>
+<li>Единственный «контрол» — ползунок/кнопка скорости боя.</li>
+<li>Формация задаётся до боя, но <strong>читается игроками как слабо работающая</strong>: юниты сваливаются в кучу.</li>
+</ul>
+<p>Оценка игроков: сама по себе автономность боя претензий почти не вызывает — жалуются не на «нет кнопок», а на то, что <strong>решения вне боя не читаются в бою</strong> (см. §7). Это ключевой нюанс: провал не в отсутствии интерактива, а в отсутствии обратной связи «моё решение → видимый эффект».</p>
+<hr/>
+<h2 id="4-где-живёт-скилл-и-глубина">4. Где живёт скилл и глубина<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-где-живёт-скилл-и-глубина" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>По отзывам игроков и гайдам, глубина сосредоточена в четырёх местах:</p>
+<ol>
+<li><strong>Отсутствие классовых ограничений на способности.</strong> Главное, что хвалят: «свобода комбинаций персонажей и способностей», «40+ способностей без классовых ограничений». Скилл = знание, какие способности на кого вешать.</li>
+<li><strong>Экономика мерджа.</strong> Нужно заранее планировать, какие способности собирать в тройки/EX, а какие — топливо. Это долгосрочное планирование поверх случайной выдачи.</li>
+<li><strong>Экономика магазина и рероллов.</strong> Гайды сообщества прямо учат тайминговым трюкам: «апгрейд магазина рероллит ассортимент — купи всё нужное ДО апгрейда; после апгрейда дают пачку бесплатных рероллов — потрать их до платных». То есть «скилл» частично выродился в знание сервисных эксплойтов интерфейса.</li>
+<li><strong>Пороговое планирование статов.</strong> Гайды оперируют жёсткими порогами: «довести танков до 100 защиты до бафов, хилера и баффера — до 50». Знание порогов = проходимость Hell.</li>
+<li><strong>Контракты (испытания).</strong> Осознанный выбор «сложнее бой ↔ больше мета-валюты».</li>
+</ol>
+<p><strong>Печальный вывод по глубине.</strong> Значительная часть отзывов (особенно азиатских) говорит, что <strong>глубина оказалась мнимой</strong>: «состав команды по факту фиксирован — танк/боец/атакер/хилер», «каждый забег ради прохождения приходится намертво фиксировать состав». То есть при большом номинальном пространстве билдов метагейм сошёлся к одному решению. Гайды это подтверждают: они выдают буквально один рецепт (Fighter + Priest + Idol + любой DPS; Frost Taunt на танка — «незаменим»).</p>
+<hr/>
+<h2 id="5-рандом">5. Рандом<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-рандом" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Где рандом:</p>
+<ul>
+<li>какая способность выпадет после стадии;</li>
+<li>ассортимент магазина;</li>
+<li>дроп «профессий»/классовых токенов с элитных врагов (случайный из выбранной четвёрки);</li>
+<li>лут и его характеристики;</li>
+<li>состав/тип узла на карте.</li>
+</ul>
+<p>Чем контролируется:</p>
+<ul>
+<li><strong>Реролл в магазине</strong> (платный + пачка бесплатных после апгрейда магазина);</li>
+<li><strong>Мердж</strong> — способ сконвертировать «мусорную» выдачу в нужную (дубликаты не мёртвый груз);</li>
+<li><strong>Seal (печать)</strong> — самое интересное: в Кодексе можно <strong>исключить конкретную способность из пула забега</strong>. То есть игрок сам чистит пул, повышая шанс встретить нужное. Классический «deck-thinning» на уровне мета-прогрессии. Механика <strong>очень плохо объяснена в игре</strong> — игроки спрашивают на форуме, что она вообще делает;</li>
+<li><strong>Выбор стартовых классов</strong> сужает, какие вещи вообще могут выпасть;</li>
+<li>Сознательный отказ от разблокировки лишних способностей в мета-прогрессии — игроки специально <strong>не открывают</strong> ненужное, чтобы «держать пул карт меньше». Это фактически эксплуатация Seal-логики через мету.</li>
+<li>Seed-режим/фиксированный сид: <strong>данных не найдено</strong>.</li>
+</ul>
+<p>Жалоба, которая всё это перечёркивает: «<em>reliance on luck rather than skill is the deciding factor in whether a run is successful</em>» (негативный отзыв Steam). То есть инструментов контроля рандома формально много, но их <strong>суммарной мощности не хватает</strong>, чтобы игрок чувствовал авторство результата.</p>
+<hr/>
+<h2 id="6-что-хвалят-цитаты">6. Что хвалят (цитаты)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-что-хвалят-цитаты" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>«Excellent auto-battler with tons of depth» — GameGrin, обзор.</li>
+<li>«The complexity draws you in and simply won’t let you go» — The Game Slush Pile, обзор Switch-версии.</li>
+<li>«Freedom of character and skill combinations» — положительный отзыв Steam.</li>
+<li>«Over 40 abilities without any class restrictions» — положительный отзыв Steam.</li>
+<li>«Merging abilities and reforging loot adds an exciting layer of strategy» — положительный отзыв Steam.</li>
+<li>«A must for autobattle lovers» — положительный отзыв Steam.</li>
+<li>«Hell mode is challenging enough» — положительный отзыв Steam.</li>
+<li>«Lots of characters, talents and abilities» — Movies Games and Tech (даже в разгромном обзоре 5/10).</li>
+</ul>
+<p>Общий знаменатель похвалы: <strong>свобода сборки билда + удовлетворение от мерджа/апгрейда</strong>. Никто не хвалит сам бой.</p>
+<hr/>
+<h2 id="7-на-что-жалуются-паттерны">7. На что жалуются (паттерны)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-на-что-жалуются-паттерны" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>П1. «Ни рыба ни мясо» — жанровая ловушка.</strong> Главный содержательный удар, MGT (5/10): «<em>Too hands-off to be a proper RPG, too much inventory management to function like an idle game</em>». Игра слишком пассивна, чтобы быть RPG, и слишком много микроменеджмента, чтобы быть idle. Тот же обзор: игровой процесс — «<em>essentially, manipulating columns on a spreadsheet</em>», а «<em>most of my playtime was spent comparing stats and tidying up inventory</em>».
+<strong>Это ровно наша заявленная проблема, реализовавшаяся в чужой игре.</strong></p>
+<p><strong>П2. Расстановка не работает / не читается.</strong> «<em>No matter where I put my archer, they still just charge directly into the middle of everything</em>» (MGT). Игрок принимает решение — и не видит его последствий. Убивает главный источник агентности в автобое.</p>
+<p><strong>П3. «Решает рандом, а не скилл».</strong> «<em>Reliance on luck rather than skill is the deciding factor in whether a run is successful</em>» (негативный отзыв Steam).</p>
+<p><strong>П4. Метагейм сошёлся — состав фиксирован.</strong> Японские/китайские отзывы: «состав по факту фиксируется в танк/боец/атакер/хилер», «каждый забег приходится жёстко залочивать один состав». Номинальные 80 способностей → один рабочий билд.</p>
+<p><strong>П5. Повторяемость + длинный забег.</strong> «Забег длинный, из-за чего разблокировки ощущаются мучительно», «монотонно». Мета-гринд плохо сочетается с длиной забега.</p>
+<p><strong>П6. Таймаут боя = мгновенный проигрыш.</strong> Негативный отзыв: если бой не закончен за отведённое время — «<em>you just instantly lose</em>», без овертайма. Ощущается как произвольное наказание, а не как правило.</p>
+<p><strong>П7. Баланс/сложность «не с той стороны».</strong> Поздние карты завалены боями со стартовым окружением (pincer/зажим с двух сторон); сложность растёт за счёт стартовых условий, а не за счёт интереснее устроенного противника. MGT: сложность трудно судить, «потому что игра почти не вовлекает игрока».</p>
+<p><strong>П8. Производственное качество.</strong> Плохая английская локализация («Google Translated it and just called it a day»), однотипные спрайты и карты («all look identical»), отсутствующие базовые вещи UI (нет карты забега, кнопки не подсвечиваются при наведении), плохие туториалы, баги (таунт не работает: «<em>I put taunt on a character and enemies targeted everyone else</em>»), краши. Часть игроков: «должно было быть Early Access, а не полный релиз».</p>
+<p><strong>П9. DLC-претензии.</strong> «DLC will paywall stuff that was already present in the game».</p>
+<hr/>
+<h2 id="8-решения-разработчиков-по-фидбеку">8. Решения разработчиков по фидбеку<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-решения-разработчиков-по-фидбеку" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Данных почти не найдено.</strong> Патч-ноуты и посты разработчиков не удалось вытащить в машиночитаемом виде (Steam News блокирует автоматическую выгрузку). Что достоверно известно:</p>
+<ul>
+<li>Игра прошла ~14 месяцев Early Access (сент. 2022 → ноя. 2023) до релиза 1.0.</li>
+<li>Издатель (Leyo Games) держит <strong>закреплённые треды сбора фидбека</strong> на форуме Steam — отдельно на английском и китайском.</li>
+<li>После релиза вышли DLC и бесплатное демо (июль, отдельный App ID 2476460) — то есть игру продолжали поддерживать контентом.</li>
+<li>Явных публичных «мы услышали жалобы и переработали X» заявлений найти не удалось.</li>
+</ul>
+<p>Не выдумываю: <strong>конкретных решений по фидбеку с источниками у меня нет</strong>.</p>
+<hr/>
+<h2 id="9-уроки-для-guildmaster">9. Уроки для Guildmaster<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-уроки-для-guildmaster" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>ВЗЯТЬ</strong></p>
+<ol>
+<li><strong>«Печать» (Seal) — сделать её первоклассной механикой, а не спрятанной.</strong> Возможность исключить реликвию/предмет из пула забега — самый дешёвый и самый мощный рычаг контроля рандома в PVE-автобаттлере. У них она есть, но закопана в Кодекс и не объяснена — игроки на форуме буквально спрашивают, что это. У нас это должно быть на видном месте в мета-экране («пул забега») и объяснено одним экраном. Это напрямую бьёт по жалобе П3.</li>
+<li><strong>Контракты = наши испытания, они работают.</strong> Схема «добровольно усилить врагов ↔ бонус к мета-валюте» игроками принята и не вызывает жалоб. Наш дизайн «испытания на команду как главный рычаг свапа» — в ту же сторону, подтверждается.</li>
+<li><strong>Дубликат должен быть топливом, а не мусором.</strong> Мердж (3→1, 2×III→EX) — то, что игроки хвалят прямым текстом. У нас уже есть «уровень реликвии по копиям» — это правильная ветка, держать её.</li>
+<li><strong>Отсутствие классовых ограничений хвалят громче всего.</strong> «Реликвия = весь кит, сосуд = пустой носитель» даёт ровно эту свободу и даже чище, чем у них. Не разбавлять её ограничениями по «типу сосуда».</li>
+</ol>
+<p><strong>ИЗБЕГАТЬ</strong></p>
+<ol start="5">
+<li><strong>Расстановка обязана быть ЧИТАЕМОЙ, иначе она хуже, чем ничего.</strong> Их главный провал: игрок ставит лучника сзади, лучник бежит в свалку. Свободная расстановка + AI-профили у нас работают только если поведение юнита <strong>предсказуемо и наблюдаемо</strong>. Практически: AI-профиль должен визуально проговариваться до боя («держит дистанцию X», «идёт в ближний бой»), и юнит обязан ему следовать. Если наш <code>FleeSteering</code>/pursuit-логика в бою заставляет «стрелка» лезть в кучу — это баг класса П2, а не мелочь тюнинга. <strong>Это самый важный урок из всего досье.</strong></li>
+<li><strong>Микроменеджмент между боями — это и есть «душнота».</strong> «Manipulating columns on a spreadsheet», «сравнивал статы и разбирал инвентарь». У них лут-слой (предметы + рефордж + сравнение) размазал внимание и убил темп. У нас уже есть предметы + реликвии + AI-профили + расстановка + драфт + карта + магазин + ивенты — <strong>это очень близко к их набору</strong>. Урок: количество решений между боями надо не наращивать, а <strong>укрупнять</strong> — меньше сущностей, каждая весомее. Каждый добавленный слой инвентаря надо защищать вопросом «а он весомее сравнения двух чисел?».</li>
+<li><strong>Следить за схлопыванием метагейма.</strong> 80 способностей → один рабочий состав «танк/хилер/дпс». Наши 16+ реликвий на 4 сосуда рискуют схлопнуться так же. Лечение — то, что мы уже заложили: испытания, которые <strong>экономически наказывают монопак</strong> (а не запрещают его), плюс награды, ломающие «стандартный» состав. Проверять это надо не глазами, а симом: если решение задачи «пройти акт 3» одно — метагейм мёртв.</li>
+<li><strong>Жёсткий таймаут боя с мгновенным поражением — плохая механика.</strong> Если у нас будет лимит времени боя (а для автобоя он нужен как антизатяг), это должен быть <strong>овертайм/эскалация</strong> (усиление врагов, зона сужается, начинают тикать штрафы), а не «время вышло — вы проиграли». Наш «перезапуск боя до 2 раз» частично амортизирует, но не отменяет ощущения произвола.</li>
+<li><strong>Длина забега × мета-гринд.</strong> «Забег длинный, разблокировки мучительны». Наша структура StS-подобная — держать забег в пределах, где неудача не ощущается как потерянный вечер. Мета-валюта должна капать так, чтобы проигранный забег всё равно двигал вперёд.</li>
+</ol>
+<hr/>
+<h2 id="10-источники">10. Источники<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-источники" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>Steam, страница игры: <a href="https://store.steampowered.com/app/2093910/Time_Walker_Dark_World/" class="external">https://store.steampowered.com/app/2093910/Time_Walker_Dark_World/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, демо: <a href="https://store.steampowered.com/app/2476460/Time_Walker_Dark_World_Demo/" class="external">https://store.steampowered.com/app/2476460/Time_Walker_Dark_World_Demo/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam Community, хаб: <a href="https://steamcommunity.com/app/2093910" class="external">https://steamcommunity.com/app/2093910<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam Community, обсуждения: <a href="https://steamcommunity.com/app/2093910/discussions/" class="external">https://steamcommunity.com/app/2093910/discussions/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam Community, тред про механику Seal: <a href="https://steamcommunity.com/app/2093910/discussions/0/4036976796103789981/" class="external">https://steamcommunity.com/app/2093910/discussions/0/4036976796103789981/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam Community, гайд игрока: <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3108243024" class="external">https://steamcommunity.com/sharedfiles/filedetails/?id=3108243024<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Movies Games and Tech, обзор (5/10): <a href="https://moviesgamesandtech.com/2024/01/15/review-time-walker-dark-world/" class="external">https://moviesgamesandtech.com/2024/01/15/review-time-walker-dark-world/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>GameGrin, обзор: <a href="https://www.gamegrin.com/reviews/time-walker-dark-world-review/" class="external">https://www.gamegrin.com/reviews/time-walker-dark-world-review/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>The Game Slush Pile, обзор Switch (8/10): <a href="https://gameslushpile.com/2024/11/25/time-walker-dark-world-switch-review/" class="external">https://gameslushpile.com/2024/11/25/time-walker-dark-world-switch-review/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>ps3blog.net, обзор Switch (7.5/10): <a href="https://www.ps3blog.net/2024/12/17/nintendo-switch-time-walker-dark-world-review/" class="external">https://www.ps3blog.net/2024/12/17/nintendo-switch-time-walker-dark-world-review/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>SteamSpy: <a href="https://steamspy.com/app/2093910" class="external">https://steamspy.com/app/2093910<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>gameplay.tips, общий гайд: <a href="https://gameplay.tips/guides/time-walker-dark-world-general-guide-strategy-build-unlocks-and-more.html" class="external">https://gameplay.tips/guides/time-walker-dark-world-general-guide-strategy-build-unlocks-and-more.html<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>naguide, билды и стратегии: <a href="https://www.naguide.com/time-walker-dark-world-builds-strategies-skills/" class="external">https://www.naguide.com/time-walker-dark-world-builds-strategies-skills/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Metacritic: <a href="https://www.metacritic.com/game/time-walker-dark-world/" class="external">https://www.metacritic.com/game/time-walker-dark-world/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul>
+<p><strong>Пробелы в данных (честно):</strong></p>
+<ul>
+<li>Патч-ноуты и посты разработчиков вытащить не удалось (Steam News отдаёт 403 автоматике) — раздел 8 почти пустой.</li>
+<li>Reddit-обсуждений игры не найдено вообще.</li>
+<li>Точная длина одного боя в секундах и точное значение таймаута — не найдены, известно только, что таймаут короткий («about a minute» из отзыва) и приводит к мгновенному поражению.</li>
+<li>Наличие фиксированного seed / шаринга сидов — не найдено.</li>
+<li>Fandom-вики недоступна для автоматической выгрузки.</li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-79" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#time-walker-dark-world" data-for="time-walker-dark-world">Time Walker: Dark World</a></li><li class="depth-1"><a href="#1-паспорт" data-for="1-паспорт">1. Паспорт</a></li><li class="depth-1"><a href="#2-ядро-цикла" data-for="2-ядро-цикла">2. Ядро цикла</a></li><li class="depth-1"><a href="#3-интерактив-в-бою" data-for="3-интерактив-в-бою">3. Интерактив в бою</a></li><li class="depth-1"><a href="#4-где-живёт-скилл-и-глубина" data-for="4-где-живёт-скилл-и-глубина">4. Где живёт скилл и глубина</a></li><li class="depth-1"><a href="#5-рандом" data-for="5-рандом">5. Рандом</a></li><li class="depth-1"><a href="#6-что-хвалят-цитаты" data-for="6-что-хвалят-цитаты">6. Что хвалят (цитаты)</a></li><li class="depth-1"><a href="#7-на-что-жалуются-паттерны" data-for="7-на-что-жалуются-паттерны">7. На что жалуются (паттерны)</a></li><li class="depth-1"><a href="#8-решения-разработчиков-по-фидбеку" data-for="8-решения-разработчиков-по-фидбеку">8. Решения разработчиков по фидбеку</a></li><li class="depth-1"><a href="#9-уроки-для-guildmaster" data-for="9-уроки-для-guildmaster">9. Уроки для Guildmaster</a></li><li class="depth-1"><a href="#10-источники" data-for="10-источники">10. Источники</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

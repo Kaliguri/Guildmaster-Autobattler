@@ -102,7 +102,11 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Game.html','')
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceGuildmaster_1_1Game_1_1Editor" id="r_namespaceGuildmaster_1_1Game_1_1Editor"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Editor.html">Editor</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceGuildmaster_1_1Game_1_1Flow" id="r_namespaceGuildmaster_1_1Game_1_1Flow"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Flow.html">Flow</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceGuildmaster_1_1Game_1_1Input" id="r_namespaceGuildmaster_1_1Game_1_1Input"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Input.html">Input</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespaceGuildmaster_1_1Game_1_1Players" id="r_namespaceGuildmaster_1_1Game_1_1Players"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Players.html">Players</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespaceGuildmaster_1_1Game_1_1Services" id="r_namespaceGuildmaster_1_1Game_1_1Services"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Game_1_1Services.html">Services</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -112,14 +116,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html">ArenaLayoutAuthoring</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Авторинг арены в сцене/префабе: задаёт границы поля и зоны расстановки, рисует их гизмо.  <a href="classGuildmaster_1_1Game_1_1ArenaLayoutAuthoring.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1BattleSetupBuilder.html">BattleSetupBuilder</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Минимальный строитель начального состояния боя для Фазы 1: принимает массивы SO реликвий/сосудов и передаёт юнитов в симуляцию через <a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a6ef3762989e4fb8bf6e6f2229baa2b5c" title="Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию).">CombatSimulation.EnqueueUnitSpawn</a>.  <a href="classGuildmaster_1_1Game_1_1BattleSetupBuilder.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1CombatLifetimeScope.html">CombatLifetimeScope</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Дочерний DI-скоуп BattleScene.  <a href="classGuildmaster_1_1Game_1_1CombatLifetimeScope.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1DeploymentController.html">DeploymentController</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Оркестратор интерактивной фазы расстановки (план шаг 4).  <a href="classGuildmaster_1_1Game_1_1DeploymentController.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1GameBootstrap.html">GameBootstrap</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Точка старта: поднимает RootLifetimeScope и запускает <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html#aa9929c253f14ccf778d55252addbe0a4" title="Запустить стартовый флоу: загрузить боевую сцену.">GameFlow.BootAsync</a>.  <a href="classGuildmaster_1_1Game_1_1GameBootstrap.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Точка старта: поднимает RootLifetimeScope и запускает флоу.  <a href="classGuildmaster_1_1Game_1_1GameBootstrap.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1RootLifetimeScope.html">RootLifetimeScope</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Корневой DI-скоуп, живёт всю сессию вместе с CoreScene.  <a href="classGuildmaster_1_1Game_1_1RootLifetimeScope.html#details">More...</a><br /></td></tr>

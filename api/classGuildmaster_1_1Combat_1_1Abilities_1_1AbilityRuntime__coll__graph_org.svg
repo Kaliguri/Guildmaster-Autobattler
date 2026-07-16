@@ -35,31 +35,31 @@
 <polygon fill="white" stroke="transparent" points="156,-332 1,-332 1,-122 156,-122 156,-332"/>
 <text text-anchor="start" x="6.5" y="-320" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Data.Definitions.</text>
 <text text-anchor="start" x="51.5" y="-309" font-family="Helvetica,sans-Serif" font-size="10.00">AbilityData</text>
-<text text-anchor="start" x="9" y="-294" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-294" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
-<text text-anchor="start" x="9" y="-279" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-279" font-family="Helvetica,sans-Serif" font-size="10.00">Effects</text>
-<text text-anchor="start" x="9" y="-264" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-264" font-family="Helvetica,sans-Serif" font-size="10.00">BaseCooldown</text>
-<text text-anchor="start" x="9" y="-249" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-249" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceCost</text>
-<text text-anchor="start" x="9" y="-234" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-234" font-family="Helvetica,sans-Serif" font-size="10.00">TargetMode</text>
-<text text-anchor="start" x="9" y="-219" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-219" font-family="Helvetica,sans-Serif" font-size="10.00">DamageMultiplier</text>
-<text text-anchor="start" x="9" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00">AreaShape</text>
-<text text-anchor="start" x="9" y="-189" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-189" font-family="Helvetica,sans-Serif" font-size="10.00">AreaRadius</text>
-<text text-anchor="start" x="9" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">HealFlat</text>
-<text text-anchor="start" x="9" y="-159" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="25.5" y="-159" font-family="Helvetica,sans-Serif" font-size="10.00">HealPctTargetMissingHp</text>
-<text text-anchor="start" x="25.5" y="-144" font-family="Helvetica,sans-Serif" font-size="10.00">and 15 more...</text>
+<text text-anchor="start" x="17" y="-294" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="41.5" y="-294" font-family="Helvetica,sans-Serif" font-size="10.00">Id</text>
+<text text-anchor="start" x="17" y="-279" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="41.5" y="-279" font-family="Helvetica,sans-Serif" font-size="10.00">Effects</text>
+<text text-anchor="start" x="17" y="-264" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="41.5" y="-264" font-family="Helvetica,sans-Serif" font-size="10.00">BaseCooldown</text>
+<text text-anchor="start" x="17" y="-249" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="41.5" y="-249" font-family="Helvetica,sans-Serif" font-size="10.00">ResourceCost</text>
+<text text-anchor="start" x="17" y="-234" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="41.5" y="-234" font-family="Helvetica,sans-Serif" font-size="10.00">TargetMode</text>
+<text text-anchor="start" x="17" y="-219" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="41.5" y="-219" font-family="Helvetica,sans-Serif" font-size="10.00">DamageMultiplier</text>
+<text text-anchor="start" x="17" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="41.5" y="-204" font-family="Helvetica,sans-Serif" font-size="10.00">SchoolOverride</text>
+<text text-anchor="start" x="17" y="-189" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="41.5" y="-189" font-family="Helvetica,sans-Serif" font-size="10.00">AffinityOverride</text>
+<text text-anchor="start" x="17" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="41.5" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00">AreaShape</text>
+<text text-anchor="start" x="17" y="-159" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="41.5" y="-159" font-family="Helvetica,sans-Serif" font-size="10.00">AreaRadius</text>
+<text text-anchor="start" x="41.5" y="-144" font-family="Helvetica,sans-Serif" font-size="10.00">and 17 more...</text>
 <text text-anchor="start" x="77" y="-129" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
 <polygon fill="#666666" stroke="#666666" points="1.5,-304 1.5,-304 156.5,-304 156.5,-304 1.5,-304"/>
-<polygon fill="#666666" stroke="#666666" points="1.5,-139 1.5,-139 23.5,-139 23.5,-139 1.5,-139"/>
-<polygon fill="#666666" stroke="#666666" points="23.5,-139 23.5,-139 156.5,-139 156.5,-139 23.5,-139"/>
+<polygon fill="#666666" stroke="#666666" points="1.5,-139 1.5,-139 39.5,-139 39.5,-139 1.5,-139"/>
+<polygon fill="#666666" stroke="#666666" points="39.5,-139 39.5,-139 156.5,-139 156.5,-139 39.5,-139"/>
 <polygon fill="none" stroke="#666666" points="1,-122 1,-332 156,-332 156,-122 1,-122"/>
 </a>
 </g>

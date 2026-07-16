@@ -4,6 +4,8 @@ var dir_3ac238596ff45257c5c272ceac142e25 =
     [ "CombatLoopService.cs", "CombatLoopService_8cs.html", "CombatLoopService_8cs" ],
     [ "FmodAudioService.cs", "FmodAudioService_8cs.html", "FmodAudioService_8cs" ],
     [ "GameFlow.cs", "GameFlow_8cs.html", "GameFlow_8cs" ],
+    [ "ISceneLoader.cs", "ISceneLoader_8cs.html", "ISceneLoader_8cs" ],
+    [ "JsonFileSaveService.cs", "JsonFileSaveService_8cs.html", "JsonFileSaveService_8cs" ],
     [ "LocalizationService.cs", "LocalizationService_8cs.html", "LocalizationService_8cs" ],
     [ "SceneLoader.cs", "SceneLoader_8cs.html", "SceneLoader_8cs" ],
     [ "SettingsService.cs", "SettingsService_8cs.html", "SettingsService_8cs" ],

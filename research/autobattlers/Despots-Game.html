@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr"><head><title>Despots Game | Guildmaster Wiki</title><meta charset="utf-8"/><link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com"/><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted Grotesk:wght@400;700&amp;family=Source Sans Pro:ital,wght@0,400;0,600;1,400;1,600&amp;family=IBM Plex Mono:wght@400;600&amp;display=swap"/><link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="og:site_name" content="Guildmaster — Autobattler"/><meta property="og:title" content="Despots Game | Guildmaster Wiki"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="Despots Game | Guildmaster Wiki"/><meta name="twitter:description" content="Статус: Досье (ресерч) Despot’s Game: Dystopian Army Builder / Dystopian Battle Simulator Дата ресерча: 2026-07-15."/><meta property="og:description" content="Статус: Досье (ресерч) Despot’s Game: Dystopian Army Builder / Dystopian Battle Simulator Дата ресерча: 2026-07-15."/><meta property="og:image:alt" content="Статус: Досье (ресерч) Despot’s Game: Dystopian Army Builder / Dystopian Battle Simulator Дата ресерча: 2026-07-15."/><meta property="og:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta name="twitter:image" content="https://kaliguri.github.io/Guildmaster-Autobattler/static/og-image.png"/><meta property="og:image:type" content="image/.png"/><meta property="twitter:domain" content="kaliguri.github.io/Guildmaster-Autobattler"/><meta property="og:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Despots-Game"/><meta property="twitter:url" content="https://kaliguri.github.io/Guildmaster-Autobattler/research/autobattlers/Despots-Game"/><link rel="icon" href="../../static/icon.png"/><meta name="description" content="Статус: Досье (ресерч) Despot’s Game: Dystopian Army Builder / Dystopian Battle Simulator Дата ресерча: 2026-07-15."/><meta name="generator" content="Quartz"/><link href="../../index.css" rel="stylesheet" type="text/css" spa-preserve/><style>.expand-button {
+  position: absolute;
+  display: flex;
+  float: right;
+  padding: 0.4rem;
+  margin: 0.3rem;
+  right: 0;
+  color: var(--gray);
+  border-color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid;
+  border-radius: 5px;
+  opacity: 0;
+  transition: 0.2s;
+}
+.expand-button > svg {
+  fill: var(--light);
+  filter: contrast(0.3);
+}
+.expand-button:hover {
+  cursor: pointer;
+  border-color: var(--secondary);
+}
+.expand-button:focus {
+  outline: 0;
+}
+
+pre:hover > .expand-button {
+  opacity: 1;
+  transition: 0.2s;
+}
+
+#mermaid-container {
+  position: fixed;
+  contain: layout;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: none;
+  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.5);
+}
+#mermaid-container.active {
+  display: inline-block;
+}
+#mermaid-container > #mermaid-space {
+  border: 1px solid var(--lightgray);
+  background-color: var(--light);
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80vh;
+  width: 80vw;
+  overflow: hidden;
+}
+#mermaid-container > #mermaid-space > .mermaid-content {
+  padding: 2rem;
+  position: relative;
+  transform-origin: 0 0;
+  transition: transform 0.1s ease;
+  overflow: visible;
+  min-height: 200px;
+  min-width: 200px;
+}
+#mermaid-container > #mermaid-space > .mermaid-content pre {
+  margin: 0;
+  border: none;
+}
+#mermaid-container > #mermaid-space > .mermaid-content svg {
+  max-width: none;
+  height: auto;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--light);
+  border: 1px solid var(--lightgray);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--lightgray);
+  background: var(--light);
+  color: var(--dark);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: var(--bodyFont);
+  transition: all 0.2s ease;
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:hover {
+  background: var(--lightgray);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:active {
+  transform: translateY(1px);
+}
+#mermaid-container > #mermaid-space > .mermaid-controls .mermaid-control-button:nth-child(2) {
+  width: auto;
+  padding: 0 12px;
+  font-size: 14px;
+}
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiL2hvbWUvcnVubmVyL3dvcmsvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvR3VpbGRtYXN0ZXItQXV0b2JhdHRsZXIvcXVhcnR6LWJ1aWxkL3F1YXJ0ei9jb21wb25lbnRzL3N0eWxlcyIsInNvdXJjZXMiOlsibWVybWFpZC5pbmxpbmUuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTs7QUFHRjtFQUNFO0VBQ0E7O0FBR0Y7RUFDRTs7O0FBS0Y7RUFDRTtFQUNBOzs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTs7QUFHRjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBOztBQUdGO0VBQ0U7RUFDQTs7QUFJSjtFQUNFO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7O0FBRUE7RUFDRTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBOztBQUVBO0VBQ0U7O0FBR0Y7RUFDRTs7QUFJRjtFQUNFO0VBQ0E7RUFDQSIsInNvdXJjZXNDb250ZW50IjpbIi5leHBhbmQtYnV0dG9uIHtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBkaXNwbGF5OiBmbGV4O1xuICBmbG9hdDogcmlnaHQ7XG4gIHBhZGRpbmc6IDAuNHJlbTtcbiAgbWFyZ2luOiAwLjNyZW07XG4gIHJpZ2h0OiAwOyAvLyBOT1RFOiByaWdodCB3aWxsIGJlIHNldCBpbiBtZXJtYWlkLmlubGluZS50c1xuICBjb2xvcjogdmFyKC0tZ3JheSk7XG4gIGJvcmRlci1jb2xvcjogdmFyKC0tZGFyayk7XG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWxpZ2h0KTtcbiAgYm9yZGVyOiAxcHggc29saWQ7XG4gIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgb3BhY2l0eTogMDtcbiAgdHJhbnNpdGlvbjogMC4ycztcblxuICAmID4gc3ZnIHtcbiAgICBmaWxsOiB2YXIoLS1saWdodCk7XG4gICAgZmlsdGVyOiBjb250cmFzdCgwLjMpO1xuICB9XG5cbiAgJjpob3ZlciB7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGJvcmRlci1jb2xvcjogdmFyKC0tc2Vjb25kYXJ5KTtcbiAgfVxuXG4gICY6Zm9jdXMge1xuICAgIG91dGxpbmU6IDA7XG4gIH1cbn1cblxucHJlIHtcbiAgJjpob3ZlciA+IC5leHBhbmQtYnV0dG9uIHtcbiAgICBvcGFjaXR5OiAxO1xuICAgIHRyYW5zaXRpb246IDAuMnM7XG4gIH1cbn1cblxuI21lcm1haWQtY29udGFpbmVyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICBjb250YWluOiBsYXlvdXQ7XG4gIHotaW5kZXg6IDk5OTtcbiAgbGVmdDogMDtcbiAgdG9wOiAwO1xuICB3aWR0aDogMTAwdnc7XG4gIGhlaWdodDogMTAwdmg7XG4gIG92ZXJmbG93OiBoaWRkZW47XG4gIGRpc3BsYXk6IG5vbmU7XG4gIGJhY2tkcm9wLWZpbHRlcjogYmx1cig0cHgpO1xuICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuNSk7XG5cbiAgJi5hY3RpdmUge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgfVxuXG4gICYgPiAjbWVybWFpZC1zcGFjZSB7XG4gICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiB2YXIoLS1saWdodCk7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHBvc2l0aW9uOiBmaXhlZDtcbiAgICB0b3A6IDUwJTtcbiAgICBsZWZ0OiA1MCU7XG4gICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XG4gICAgaGVpZ2h0OiA4MHZoO1xuICAgIHdpZHRoOiA4MHZ3O1xuICAgIG92ZXJmbG93OiBoaWRkZW47XG5cbiAgICAmID4gLm1lcm1haWQtY29udGVudCB7XG4gICAgICBwYWRkaW5nOiAycmVtO1xuICAgICAgcG9zaXRpb246IHJlbGF0aXZlO1xuICAgICAgdHJhbnNmb3JtLW9yaWdpbjogMCAwO1xuICAgICAgdHJhbnNpdGlvbjogdHJhbnNmb3JtIDAuMXMgZWFzZTtcbiAgICAgIG92ZXJmbG93OiB2aXNpYmxlO1xuICAgICAgbWluLWhlaWdodDogMjAwcHg7XG4gICAgICBtaW4td2lkdGg6IDIwMHB4O1xuXG4gICAgICBwcmUge1xuICAgICAgICBtYXJnaW46IDA7XG4gICAgICAgIGJvcmRlcjogbm9uZTtcbiAgICAgIH1cblxuICAgICAgc3ZnIHtcbiAgICAgICAgbWF4LXdpZHRoOiBub25lO1xuICAgICAgICBoZWlnaHQ6IGF1dG87XG4gICAgICB9XG4gICAgfVxuXG4gICAgJiA+IC5tZXJtYWlkLWNvbnRyb2xzIHtcbiAgICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICAgIGJvdHRvbTogMjBweDtcbiAgICAgIHJpZ2h0OiAyMHB4O1xuICAgICAgZGlzcGxheTogZmxleDtcbiAgICAgIGdhcDogOHB4O1xuICAgICAgcGFkZGluZzogOHB4O1xuICAgICAgYmFja2dyb3VuZDogdmFyKC0tbGlnaHQpO1xuICAgICAgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGlnaHRncmF5KTtcbiAgICAgIGJvcmRlci1yYWRpdXM6IDZweDtcbiAgICAgIGJveC1zaGFkb3c6IDAgMnB4IDRweCByZ2JhKDAsIDAsIDAsIDAuMSk7XG4gICAgICB6LWluZGV4OiAyO1xuXG4gICAgICAubWVybWFpZC1jb250cm9sLWJ1dHRvbiB7XG4gICAgICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XG4gICAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyO1xuICAgICAgICB3aWR0aDogMzJweDtcbiAgICAgICAgaGVpZ2h0OiAzMnB4O1xuICAgICAgICBwYWRkaW5nOiAwO1xuICAgICAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodCk7XG4gICAgICAgIGNvbG9yOiB2YXIoLS1kYXJrKTtcbiAgICAgICAgYm9yZGVyLXJhZGl1czogNHB4O1xuICAgICAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgICAgIGZvbnQtc2l6ZTogMTZweDtcbiAgICAgICAgZm9udC1mYW1pbHk6IHZhcigtLWJvZHlGb250KTtcbiAgICAgICAgdHJhbnNpdGlvbjogYWxsIDAuMnMgZWFzZTtcblxuICAgICAgICAmOmhvdmVyIHtcbiAgICAgICAgICBiYWNrZ3JvdW5kOiB2YXIoLS1saWdodGdyYXkpO1xuICAgICAgICB9XG5cbiAgICAgICAgJjphY3RpdmUge1xuICAgICAgICAgIHRyYW5zZm9ybTogdHJhbnNsYXRlWSgxcHgpO1xuICAgICAgICB9XG5cbiAgICAgICAgLy8gU3R5bGUgdGhlIHJlc2V0IGJ1dHRvbiBkaWZmZXJlbnRseVxuICAgICAgICAmOm50aC1jaGlsZCgyKSB7XG4gICAgICAgICAgd2lkdGg6IGF1dG87XG4gICAgICAgICAgcGFkZGluZzogMCAxMnB4O1xuICAgICAgICAgIGZvbnQtc2l6ZTogMTRweDtcbiAgICAgICAgfVxuICAgICAgfVxuICAgIH1cbiAgfVxufVxuIl19 */</style><link href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" rel="stylesheet" type="text/css" spa-preserve/><script src="../../prescript.js" type="application/javascript" spa-preserve></script><script type="application/javascript" spa-preserve>const fetchData = fetch("../../static/contentIndex.json").then(data => data.json())</script><link rel="alternate" type="application/rss+xml" title="RSS Feed" href="https://kaliguri.github.io/Guildmaster-Autobattler/index.xml"/></head><body data-slug="research/autobattlers/Despots-Game"><div id="quartz-root" class="page"><div id="quartz-body"><div class="left sidebar"><h2 class="page-title"><a href="../..">Guildmaster — Autobattler</a></h2><div class="spacer mobile-only"></div><div class="flex-component" style="flex-direction: row; flex-wrap: nowrap; gap: 1rem;"><div style="flex-grow: 1; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><div class="search"><button class="search-button"><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.9 19.7"><title>Search</title><g class="search-path" fill="none"><path stroke-linecap="square" d="M18.5 18.3l-5.4-5.4"></path><circle cx="8" cy="8" r="7"></circle></g></svg><p>Поиск</p></button><div class="search-container"><div class="search-space"><input autocomplete="off" class="search-bar" name="search" type="text" aria-label="Найти что-нибудь" placeholder="Найти что-нибудь"/><div class="search-layout" data-preview="true"></div></div></div></div></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="darkmode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="dayIcon" x="0px" y="0px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35" xml:space="preserve" aria-label="Тёмный режим"><title>Тёмный режим</title><path d="M6,17.5C6,16.672,5.328,16,4.5,16h-3C0.672,16,0,16.672,0,17.5    S0.672,19,1.5,19h3C5.328,19,6,18.328,6,17.5z M7.5,26c-0.414,0-0.789,0.168-1.061,0.439l-2,2C4.168,28.711,4,29.086,4,29.5    C4,30.328,4.671,31,5.5,31c0.414,0,0.789-0.168,1.06-0.44l2-2C8.832,28.289,9,27.914,9,27.5C9,26.672,8.329,26,7.5,26z M17.5,6    C18.329,6,19,5.328,19,4.5v-3C19,0.672,18.329,0,17.5,0S16,0.672,16,1.5v3C16,5.328,16.671,6,17.5,6z M27.5,9    c0.414,0,0.789-0.168,1.06-0.439l2-2C30.832,6.289,31,5.914,31,5.5C31,4.672,30.329,4,29.5,4c-0.414,0-0.789,0.168-1.061,0.44    l-2,2C26.168,6.711,26,7.086,26,7.5C26,8.328,26.671,9,27.5,9z M6.439,8.561C6.711,8.832,7.086,9,7.5,9C8.328,9,9,8.328,9,7.5    c0-0.414-0.168-0.789-0.439-1.061l-2-2C6.289,4.168,5.914,4,5.5,4C4.672,4,4,4.672,4,5.5c0,0.414,0.168,0.789,0.439,1.06    L6.439,8.561z M33.5,16h-3c-0.828,0-1.5,0.672-1.5,1.5s0.672,1.5,1.5,1.5h3c0.828,0,1.5-0.672,1.5-1.5S34.328,16,33.5,16z     M28.561,26.439C28.289,26.168,27.914,26,27.5,26c-0.828,0-1.5,0.672-1.5,1.5c0,0.414,0.168,0.789,0.439,1.06l2,2    C28.711,30.832,29.086,31,29.5,31c0.828,0,1.5-0.672,1.5-1.5c0-0.414-0.168-0.789-0.439-1.061L28.561,26.439z M17.5,29    c-0.829,0-1.5,0.672-1.5,1.5v3c0,0.828,0.671,1.5,1.5,1.5s1.5-0.672,1.5-1.5v-3C19,29.672,18.329,29,17.5,29z M17.5,7    C11.71,7,7,11.71,7,17.5S11.71,28,17.5,28S28,23.29,28,17.5S23.29,7,17.5,7z M17.5,25c-4.136,0-7.5-3.364-7.5-7.5    c0-4.136,3.364-7.5,7.5-7.5c4.136,0,7.5,3.364,7.5,7.5C25,21.636,21.636,25,17.5,25z"></path></svg><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="nightIcon" x="0px" y="0px" viewBox="0 0 100 100" style="enable-background:new 0 0 100 100" xml:space="preserve" aria-label="Светлый режим"><title>Светлый режим</title><path d="M96.76,66.458c-0.853-0.852-2.15-1.064-3.23-0.534c-6.063,2.991-12.858,4.571-19.655,4.571  C62.022,70.495,50.88,65.88,42.5,57.5C29.043,44.043,25.658,23.536,34.076,6.47c0.532-1.08,0.318-2.379-0.534-3.23  c-0.851-0.852-2.15-1.064-3.23-0.534c-4.918,2.427-9.375,5.619-13.246,9.491c-9.447,9.447-14.65,22.008-14.65,35.369  c0,13.36,5.203,25.921,14.65,35.368s22.008,14.65,35.368,14.65c13.361,0,25.921-5.203,35.369-14.65  c3.872-3.871,7.064-8.328,9.491-13.246C97.826,68.608,97.611,67.309,96.76,66.458z"></path></svg></button></div><div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="readermode"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" class="readerIcon" fill="currentColor" stroke="currentColor" stroke-width="0.2" stroke-linecap="round" stroke-linejoin="round" width="64px" height="64px" viewBox="0 0 24 24" aria-label="Режим чтения"><title>Режим чтения</title><g transform="translate(-1.8, -1.8) scale(1.15, 1.2)"><path d="M8.9891247,2.5 C10.1384702,2.5 11.2209868,2.96705384 12.0049645,3.76669482 C12.7883914,2.96705384 13.8709081,2.5 15.0202536,2.5 L18.7549359,2.5 C19.1691495,2.5 19.5049359,2.83578644 19.5049359,3.25 L19.5046891,4.004 L21.2546891,4.00457396 C21.6343849,4.00457396 21.9481801,4.28672784 21.9978425,4.6528034 L22.0046891,4.75457396 L22.0046891,20.25 C22.0046891,20.6296958 21.7225353,20.943491 21.3564597,20.9931534 L21.2546891,21 L2.75468914,21 C2.37499337,21 2.06119817,20.7178461 2.01153575,20.3517706 L2.00468914,20.25 L2.00468914,4.75457396 C2.00468914,4.37487819 2.28684302,4.061083 2.65291858,4.01142057 L2.75468914,4.00457396 L4.50368914,4.004 L4.50444233,3.25 C4.50444233,2.87030423 4.78659621,2.55650904 5.15267177,2.50684662 L5.25444233,2.5 L8.9891247,2.5 Z M4.50368914,5.504 L3.50468914,5.504 L3.50468914,19.5 L10.9478955,19.4998273 C10.4513189,18.9207296 9.73864328,18.5588115 8.96709342,18.5065584 L8.77307039,18.5 L5.25444233,18.5 C4.87474657,18.5 4.56095137,18.2178461 4.51128895,17.8517706 L4.50444233,17.75 L4.50368914,5.504 Z M19.5049359,17.75 C19.5049359,18.1642136 19.1691495,18.5 18.7549359,18.5 L15.2363079,18.5 C14.3910149,18.5 13.5994408,18.8724714 13.0614828,19.4998273 L20.5046891,19.5 L20.5046891,5.504 L19.5046891,5.504 L19.5049359,17.75 Z M18.0059359,3.999 L15.0202536,4 L14.8259077,4.00692283 C13.9889509,4.06666544 13.2254227,4.50975805 12.7549359,5.212 L12.7549359,17.777 L12.7782651,17.7601316 C13.4923805,17.2719483 14.3447024,17 15.2363079,17 L18.0059359,16.999 L18.0056891,4.798 L18.0033792,4.75457396 L18.0056891,4.71 L18.0059359,3.999 Z M8.9891247,4 L6.00368914,3.999 L6.00599909,4.75457396 L6.00599909,4.75457396 L6.00368914,4.783 L6.00368914,16.999 L8.77307039,17 C9.57551536,17 10.3461406,17.2202781 11.0128313,17.6202194 L11.2536891,17.776 L11.2536891,5.211 C10.8200889,4.56369974 10.1361548,4.13636104 9.37521067,4.02745763 L9.18347055,4.00692283 L8.9891247,4 Z"></path></g></svg></button></div></div><div class="explorer" data-behavior="link" data-collapsed="collapsed" data-savestate="true" data-data-fns="{&quot;order&quot;:[&quot;filter&quot;,&quot;map&quot;,&quot;sort&quot;],&quot;sortFn&quot;:&quot;(a,b)=>!a.isFolder&amp;&amp;!b.isFolder||a.isFolder&amp;&amp;b.isFolder?a.displayName.localeCompare(b.displayName,void 0,{numeric:!0,sensitivity:\&quot;base\&quot;}):!a.isFolder&amp;&amp;b.isFolder?1:-1&quot;,&quot;filterFn&quot;:&quot;node=>node.slugSegment!==\&quot;tags\&quot;&quot;,&quot;mapFn&quot;:&quot;node=>node&quot;}"><button type="button" class="explorer-toggle mobile-explorer hide-until-loaded" data-mobile="true" aria-controls="explorer-91"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-menu"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg></button><button type="button" class="title-button explorer-toggle desktop-explorer" data-mobile="false" aria-expanded="true"><h2>Проводник</h2><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><div id="explorer-91" class="explorer-content" aria-expanded="false" role="group"><ul class="explorer-ul overflow" id="list-0"><li class="overflow-end"></li></ul></div><template id="template-file"><li><a href="#"></a></li></template><template id="template-folder"><li><div class="folder-container"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="5 8 14 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="folder-icon"><polyline points="6 9 12 15 18 9"></polyline></svg><div><button class="folder-button"><span class="folder-title"></span></button></div></div><div class="folder-outer"><ul class="content"></ul></div></li></template></div></div><div class="center"><div class="page-header"><div class="popover-hint"><nav class="breadcrumb-container" aria-label="breadcrumbs"><div class="breadcrumb-element"><a href="../../">Home</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/">research</a><p> ❯ </p></div><div class="breadcrumb-element"><a href="../../research/autobattlers/">autobattlers</a><p> ❯ </p></div><div class="breadcrumb-element"><a href>Despots Game</a></div></nav><h1 class="article-title">Despots Game</h1><p show-comma="true" class="content-meta"><time datetime="2026-07-16T13:38:27.286Z">16 июл. 2026 г.</time><span>время чтения ~12 мин.</span></p></div></div><article class="popover-hint"><p><strong>Статус:</strong> Досье (ресерч)</p>
+<h1 id="despots-game-dystopian-army-builder--dystopian-battle-simulator">Despot’s Game: Dystopian Army Builder / Dystopian Battle Simulator<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#despots-game-dystopian-army-builder--dystopian-battle-simulator" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h1>
+<p>Дата ресерча: 2026-07-15. Источник данных — открытые веб-материалы (Steam, обзоры, форумы, интервью). Всё, что не подтверждено источником, помечено как «данных не найдено».</p>
+<hr/>
+<h2 id="1-паспорт">1. Паспорт<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#1-паспорт" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="table-container"><table><thead><tr><th>Параметр</th><th>Значение</th></tr></thead><tbody><tr><td>Разработчик</td><td>Konfa Games (Николай Кузнецов — game creator)</td></tr><tr><td>Издатель</td><td>tinyBuild (купил Konfa Games в ходе разработки, сделка до $5.4M)</td></tr><tr><td>Релиз</td><td>29 сентября 2022 (до этого — ранний доступ с 2021)</td></tr><tr><td>Платформы</td><td>PC (Steam, EGS, GOG), macOS, Linux, Switch, PS, Xbox, iOS/Android</td></tr><tr><td>Жанр</td><td>Auto Battler / Roguelike / Tactics (пиксель-арт, тёмный юмор)</td></tr><tr><td>Режимы</td><td>Одиночная кампания + <strong>асинхронный онлайн-PVP</strong> (King of the Hill, Brawl)</td></tr><tr><td><strong>Кооператива НЕТ</strong></td><td>В Steam-категориях только Single-player и Online PvP. Совместного прохождения лабиринта с друзьями не существует. Это ключевое расхождение с Guildmaster.</td></tr><tr><td>Отзывы Steam</td><td>«Very Positive», 82% из ~1 295 англоязычных отзывов; всего по всем языкам ~3 336 отзывов, ~2 805 положительных (~84%). Recent — «Mostly Positive» (78%).</td></tr><tr><td>Metacritic</td><td>73/100 («mixed or average»), пресса заметно холоднее пользователей</td></tr><tr><td>Цена</td><td>19.99 EUR; DLC: Soundtrack, <strong>Challenges</strong> (3.99 EUR)</td></tr><tr><td>Продолжение линейки</td><td>Despotism 3K (2018) → Despot’s Game (2022) → Slime 3K (2024) → новый проект (анонс 2025, вдохновение — Balatro и FTL)</td></tr></tbody></table></div>
+<p>Средняя длина забега по словам игроков — <strong>30–40 минут</strong>.</p>
+<hr/>
+<h2 id="2-ядро-цикла">2. Ядро цикла<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#2-ядро-цикла" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p><strong>Между боями (где вся игра):</strong></p>
+<ul>
+<li>Лабиринт: процедурная карта комнат по этажам (биомам). Комнаты — бои, магазины, еда, алтарь мутаций, текстовые события (<code>!?</code>), телепорты. Игрок выбирает маршрут по комнатам — прямой аналог карты Slay the Spire, но с ресурсным штрафом за лишние шаги (см. «еда»).</li>
+<li><strong>Экономика — единая валюта («токены»)</strong>. За токены покупается ВСЁ: новые люди, оружие/предметы, еда, мутации, апгрейды магазина. Одна валюта на всё — сознательное решение, и оно же корень главной жалобы (см. §7).</li>
+<li><strong>Еда</strong>: переход в любую комнату стоит еды = числу людей в отряде. Не хватило — дебафф всей команде: при 3/6–5/6 шкалы штраф ~40% к броне и урону, при 0/6–2/6 — ~70%. То есть большая армия дороже в содержании, а исследование карты (backtracking) прямо наказывается.</li>
+<li><strong>Класс = оружие/предмет.</strong> Юнит-«человечек» сам по себе нулевой; класс задаётся экипировкой (Fighter, Tank, Shooter, Mage, Healer, Trickster, Thrower, Cultist, Egghead и др.). Снял предмет — юнит снова пустышка.</li>
+<li><strong>Синергия через «уникальные предметы»</strong>: уровень классовой способности растёт от числа УНИКАЛЬНЫХ предметов этого класса на поле (например, три разных предмета хилеров → дополнительная способность лечения у всех хилеров). Это их аналог наших «реликвий/сетов».</li>
+<li><strong>Мутации</strong>: глобальные или классовые баффы, дают на алтарях/в комнатах, драфт из трёх с рероллами (базово 2 бесплатных, больше — за апгрейд). Есть «проклятые» мутации (сила + минус). Есть дерево мутаций с покупаемыми уровнями.</li>
+<li><strong>Расстановка</strong>: перед боем юниты свободно ставятся в зону 7x7 (есть кнопка авто-расстановки). Порядок и позиция значат.</li>
+<li>Смерть юнита <strong>перманентна</strong>, а с ним теряется накопленный опыт/уровень.</li>
+</ul>
+<p><strong>Во время боя:</strong></p>
+<ul>
+<li>Полностью автономный real-time. Юниты сами выбирают цели, сами кастуют способности по мане/кулдауну.</li>
+<li>Армия крупная — до ~49 юнитов; это «толпа», а не 4 героя.</li>
+</ul>
+<p><strong>Структура забега:</strong> несколько этажей-биомов → мини-боссы/боссы этажей → финальный босс (Despot). После первой победы открывается PVP-режим King of the Hill.</p>
+<hr/>
+<h2 id="3-интерактив-в-бою">3. Интерактив в бою<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#3-интерактив-в-бою" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Прямого ввода в бою нет.</strong> Формулировка обзоров: единственный контроль — это расстановка; как только бой начался, сделать нельзя ничего.</li>
+<li>Есть <strong>управление скоростью</strong> боя (ускорение). Пауза как тактический инструмент — данных не найдено; в интерфейсе она не преподносится как элемент решений.</li>
+<li>Никаких «полумер» интерактива (активок по кнопке, перекидывания цели, ручных ультов) в бою нет вообще — и это важно: игра прожила 4 года как чистый zero-input автобой, добавляя глубину исключительно на входе.</li>
+<li>Оценка игроков раздваивается ровно по этой линии:
+<ul>
+<li>плюс — «doesn’t require reflexes» (положительный отзыв Steam, 8.3 ч): игра для тех, кто не хочет механики;</li>
+<li>минус — «I hate the helpless feeling of seeing them get crushed» (Cog Connected, 75/100). Там же: «You can choose where to place your units. But they still more or less do their own thing during battle».</li>
+</ul>
+</li>
+<li>Бой при этом воспринимается как <strong>детерминированный</strong>: игроки в разборах на форуме описывают исход как функцию статов, позиций и синергий, без «броска кубика» в бою. (Полной формальной гарантии детерминизма разработчики не давали — данных не найдено.)</li>
+<li>Проблема читаемости: игроки жалуются, что <strong>нет пост-боевой статистики</strong> («хотелось бы видеть, кто сколько сделал»), поэтому обучение на своих ошибках буксует — бой прошёл, а почему проиграл, непонятно.</li>
+</ul>
+<hr/>
+<h2 id="4-где-живёт-скилл-и-глубина">4. Где живёт скилл и глубина<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#4-где-живёт-скилл-и-глубина" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>По игрокам и гайдам скилл-выражение сидит в четырёх местах:</p>
+<ol>
+<li><strong>Композиция и синергии.</strong> Знание, какие связки ломают игру («Shooters + Fencers is really OP» — разбор на форуме Steam), и понимание правила «уникальные предметы качают уровень классовой способности» — то есть выгоднее набирать РАЗНЫЕ предметы класса, а не дубли.</li>
+<li><strong>Экономика.</strong> Единая валюта превращает каждый токен в выбор: еда vs новый юнит vs апгрейд магазина vs мутация. Классический совет гайдов: «при сомнении — покупай мутации, а не людей», «апгрейди магазин раз в этаж».</li>
+<li><strong>Расстановка</strong> в 7x7: ротация фронтлайна, прикрытие хилеров, разведение мили, чтобы не слипались.</li>
+<li><strong>Метагейм-знания</strong>: какие враги/боссы что требуют (типовые матчапы классов), что покупать под конкретный этаж.</li>
+</ol>
+<p>Обратная сторона: значительная часть обзоров считает эту глубину <strong>иллюзорной</strong>. SuperJump прямо: «there isn’t really much tactical depth to this game», и главное для нас наблюдение оттуда — классические автобатлеры держат интерес тем, что «watching your tactical decisions match up against other players», а PVE-версия этого драйва лишена; масштабная свалка из 40 юнитов читается как хаос, а не как проверка твоей тактики.</p>
+<p><strong>Показательный ход разработчиков:</strong> DLC «Challenges» — 20 миссий-головоломок с <strong>нулевым рандомом</strong> (каждый предмет всегда в одном месте, каждый монстр на своём спавне), «исход решает только твой тактический скилл». Фактически они признали: чтобы скилл был виден, надо убрать рандом и дать выверенную задачу. Это же и есть ответ на наш вопрос «где скилл в PVE-автобатлере».</p>
+<hr/>
+<h2 id="5-рандом-где-он-и-как-контролируется">5. Рандом: где он и как контролируется<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#5-рандом-где-он-и-как-контролируется" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Рандом — весь на входе, как и у нас:</p>
+<ul>
+<li>генерация карты/комнат и того, какая комната окажется магазином;</li>
+<li><strong>ассортимент магазина</strong> (какие предметы вообще выпадут; реролл стока — за токены, «gamble at best»);</li>
+<li><strong>драфт мутаций</strong> (3 из пула, 2+ бесплатных реролла);</li>
+<li>случайные события и награды.</li>
+</ul>
+<p>Инструменты смягчения, которые они дали: рероллы мутаций (и апгрейд «Wide Selection» на +2 реролла), апгрейд магазина (повышает шанс T5-предметов), реролл ассортимента, мутация «Living on Scraps» (-20% расхода еды), сезонные правки цен/наград.</p>
+<p><strong>Жалобы «рандом решает забег» — есть, и они системные:</strong></p>
+<ul>
+<li>«progression to maximize team combos depends too much on the randomness of getting the right mutations» (обзорная критика);</li>
+<li>ключевые способности «locked behind RNG» (SuperJump), и нет «skill-based economy management», чтобы это компенсировать;</li>
+<li>«I’ve had to watch several armies melt away, simply because some class type was insufficiently represented» (Cog Connected) — то есть магазин просто не выдал нужный класс под матчап, и сделать с этим нечего.</li>
+<li>Контраргумент из положительных отзывов тоже звучит: часть игроков (19.4 ч) хвалит «excellent balance between RNG and Skill» и говорит, что редко чувствует поражение как невезение. Раскол мнений ровно по оси «сколько ты знаешь мету».</li>
+</ul>
+<hr/>
+<h2 id="6-что-хвалят-цитаты-атрибуция">6. Что хвалят (цитаты, атрибуция)<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#6-что-хвалят-цитаты-атрибуция" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>«easy to start, difficult to master» — Gamecritics (8/10).</li>
+<li>«great humor» — Gamecritics (8/10).</li>
+<li>«doesn’t require reflexes» — положительный отзыв Steam, 8.3 ч.</li>
+<li>«fun autobattler which I’ve never seen before» — положительный отзыв Steam, 14.7 ч.</li>
+<li>«addictive», «tactical demanding» — положительный отзыв Steam, 19.4 ч.</li>
+<li>«charming sprites and goofy sound effects, which show a lot of personality» — SuperJump.</li>
+<li>«great variety in mutations and the different classes are quite distinct» — SuperJump.</li>
+<li>«Cool character designs», «satisfying gameplay loop», «snappy writing» — Cog Connected (75/100).</li>
+<li>Хвалят также прозрачность боевых действий (понятно, кто что делает) и сам факт «армия — расходник, а сила в предметах».</li>
+</ul>
+<hr/>
+<h2 id="7-на-что-жалуются-паттерны">7. На что жалуются: паттерны<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#7-на-что-жалуются-паттерны" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<p>Сгруппировано по частоте/весу.</p>
+<ol>
+<li><strong>Смертельная спираль (snowball вниз).</strong> Смерть юнита = потеря его опыта и предмета-класса; одна проваленная драка выбивает танков/хилов, и армия сыпется дальше по инерции. Отзыв (2.7 ч): «the game is extremely prone to death spirals». Единая валюта усиливает это: когда ты в яме, все токены уходят на выживание (еда, восполнение потерь), а не на усиление.</li>
+<li><strong>«Забег уже проигран, но игра тебе не сказала».</strong> Gamecritics: игрок продолжает ещё «seven or eight rooms» после того, как забег фактически стал «runs that were basically impossible to win». Игра не даёт ни передышки, ни сигнала «ты уже труп».</li>
+<li><strong>Магазин-рулетка ломает план.</strong> Нет гарантии, что появятся нужный класс/апгрейд; реролл — тоже лотерея. Отсюда «тайп-матчапы обязательны, но выдать нужный тип игра не обязана».</li>
+<li><strong>Нельзя разведать бой заранее.</strong> Отзыв (17.6 ч): «Cannot see enemies before battles» — расстановка вслепую обесценивает главный (и единственный) тактический рычаг.</li>
+<li><strong>Мало глубины / быстро приедается.</strong> Отзывы: «The mechanics get old pretty fast» (17.6 ч); «it doesn’t have much depth. All units are unlocked at the start… nothing to unlock or work towards» (14.0 ч); «seems very lean on content» (3.6 ч). Пресса: «will get stale fairly quickly» (SuperJump).</li>
+<li><strong>Еда наказывает исследование.</strong> «The food mechanic in this game kills it for me» (0.5 ч); еда штрафует именно то поведение, которое рогалик обычно поощряет — осматриваться и собирать.</li>
+<li><strong>Обязательные роли → узкая мета.</strong> «Healers are mandatory», танки без ротации мрут; жизнеспособных билдов ощутимо меньше, чем декларируется. «Requires learning specific meta builds to succeed» (18.8 ч).</li>
+<li><strong>Крен в PVP и слабый эндгейм PVE.</strong> «I wish single player got more love. Dev is very pvp minded» (21.5 ч); «there’s nothing after that, the whole endgame is underwhelming» (7.6 ч). Эндгейм = KotH, а он не всем нужен.</li>
+<li><strong>Кривая сложности/несправедливые энкаунтеры.</strong> «the later levels can be unfair… mushrooms and Cerberus boss are still OP» (18.8 ч); Cog Connected — «sharp difficulty curve».</li>
+<li><strong>Пасфайндинг/слипание юнитов.</strong> Хилеры вылезают вперёд фронта, мили клипаются друг в друга, юниты застревают внутри других — прямой удар по доверию к автобою (разбор на форуме Steam). Нам это особенно близко: у нас уже есть SeparationSystem, и это правильно.</li>
+</ol>
+<hr/>
+<h2 id="8-решения-разработчиков-по-фидбеку">8. Решения разработчиков по фидбеку<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#8-решения-разработчиков-по-фидбеку" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li><strong>Ранний доступ ~1 год</strong> и переработка механик перед 1.0. Николай Кузнецов: «Over the past months, we really listened to our community… From that came exciting revamped mechanics».</li>
+<li><strong>Разделили аудитории по режимам вместо одного «сложного» баланса:</strong>
+<ul>
+<li>Easy для обучения;</li>
+<li><strong>Director’s Cut</strong> — переработанный Hard: усиленные монстры, другие значения мутаций, перекроенные комнаты, «максимальная версия для PvE-игроков, которым нужно больше рогалика и челленджа»;</li>
+<li><strong>Brawl</strong> — гибрид PVE/PVP (каждые 3 комнаты — бой с чужой командой, «босс уровня» = другой игрок);</li>
+<li><strong>King of the Hill</strong> — асинхронный ранговый PVP после победы над боссом (5–6 боёв, лиги от Greenhorn до Grandmaster, сезоны).</li>
+</ul>
+</li>
+<li><strong>DLC Challenges</strong> — 20 детерминированных миссий-головоломок без рандома (см. §4). Ответ на «где скилл».</li>
+<li><strong>Сезоны как живой сервис (актуально до сих пор, сезон 56+ в 2026).</strong> Каждый сезон — глобальный модификатор правил и пачка баланса: «Season of Mana Drought» (+50% к стоимости маны у классовых способностей), «Season of Inspiration» (-50% к стоимости маны от мутаций + удешевление дерева мутаций), «Season of Puny Humans» (новобранцы вдвое дороже, но вдвое сильнее), «Season of the Labyrinth» (больше комнат на этаже), «Season of Despotic Generosity» (доп. реролл на алтаре). То есть <strong>лечение повторяемости — не новым контентом, а ротацией правил</strong>.</li>
+<li>Точечные нерфы доминантной меты: Mass Taunt резали несколько раз (требование танков 7→10, множитель КД 0.5→0.2), Fighters’ Link, Mage Gene; и наоборот, бафф слабых (Medic-хилы, мутации мобильности).</li>
+<li>Комбек-механики (по обзорам): открываемые стартовые классы и смягчение спирали — но, как видно из §7.1, проблему они не закрыли.</li>
+<li>Мобильный F2P-порт с сезонной моделью — та же сезонная схема на другой платформе.</li>
+</ul>
+<hr/>
+<h2 id="9-уроки-для-guildmaster">9. Уроки для Guildmaster<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#9-уроки-для-guildmaster" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ol>
+<li><strong>ВЗЯТЬ: ротация правил вместо новых сущностей.</strong> Их сезоны («сезон засухи маны», «сезон лабиринта») — дешёвый и мощный лекарь повторяемости: те же данные, другая экономика. У нас есть «испытания на команду» — это тот же рычаг; стоит явно спроектировать глобальные модификаторы забега (акт-модификаторы / сезонные правила), а не гнаться за объёмом контента. Плюс — они у нас чистые данные, без нового кода.</li>
+<li><strong>ВЗЯТЬ: детерминированные «испытания» как витрина скилла.</strong> DLC Challenges (нулевой рандом, фиксированные спавны и предметы, «исход решает только тактика») — это ровно ответ на нашу проблему «где скилл в PVE без оппонента». У нас уже есть <code>BattlePreset</code> (Fixed/Free) и детерминированный бой — значит, детерминированный «пазл-энкаунтер» (та же арена, тот же сид, задача: собери расстановку/AI-профили так, чтобы победить) стоит почти ничего и даёт чистое скилл-выражение. Это сильнее любых «полумер интерактива в бою».</li>
+<li><strong>ИЗБЕГАТЬ: чистой смертельной спирали.</strong> Их главный убийца забега: перманентная смерть юнита + потеря его опыта + одна валюта на всё → упал = потратил всё на восстановление, а не на рост. У нас 4 Сосуда и реликвии, поэтому нужно жёстко решить: <strong>реликвии не теряются</strong>, а потери должны быть «дорогими, но восполняемыми» (травма/износ, а не удаление кита). Валюты стоит развести хотя бы на две (боевая экономика vs предметы/шоп), чтобы «яма» не съедала весь рост.</li>
+<li><strong>ИЗБЕГАТЬ: боя вслепую.</strong> Жалоба «нельзя посмотреть врагов до боя» бьёт прямо по единственному тактическому рычагу. У нас расстановка и AI-профили — центральные решения, значит <strong>разведка обязана быть</strong>: полный состав врага, его статы и его расстановка ДО подтверждения боя, с возможностью перепланировать. Иначе свободная расстановка деградирует в «поставил как обычно».</li>
+<li><strong>ВЗЯТЬ: пост-боевую аналитику.</strong> Игроки Despot’s Game жалуются, что не понимают, почему проиграли, — и обучение не идёт. Для автономного боя это критично: нужен разбор (урон/лечение/поглощено/кто кого бил/кто простоял), иначе «глубина» есть, а игрок её не видит и называет игру мелкой. Дешёвая фича с огромной отдачей — у нас уже есть событийный поток боя.</li>
+<li><strong>ВЗЯТЬ: сигнал «забег в опасности» + управляемый выход.</strong> Их провал — «ты проиграл 8 комнат назад, но игра молчала». Нужен честный индикатор силы отряда относительно кривой акта (power-check перед узлом: «этот бой сильно выше твоего уровня») и возможность отыграться (лечащие узлы, ре-драфт, сброс реликвии в шопе).</li>
+<li><strong>ИЗБЕГАТЬ: «обязательных ролей» и роли-затычки.</strong> У них хилер стал обязательным, а танки без ротации бесполезны — мета сузилась до 2–3 билдов. У нас 4 слота на команду, поэтому цена «обязательной роли» ещё выше: один обязательный класс = 25% команды заморожено. Тестировать надо не «сбалансирован ли юнит», а «существует ли билд без роли X».</li>
+<li><strong>К СВЕДЕНИЮ: кооп они так и не сделали.</strong> У Despot’s Game только асинхронный PVP; кооп-PVE-автобатлер на 4 игроков — практически незанятая ниша, но и без чужих граблей: как делить драфт, расстановку и решения между 4 игроками — придётся решать самим (их опыт тут не поможет).</li>
+</ol>
+<hr/>
+<h2 id="10-источники">10. Источники<a role="anchor" aria-hidden="true" tabindex="-1" data-no-popover="true" href="#10-источники" class="internal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
+<ul>
+<li>Steam, страница игры: <a href="https://store.steampowered.com/app/1227280/Despots_Game_Dystopian_Battle_Simulator/" class="external">https://store.steampowered.com/app/1227280/Despots_Game_Dystopian_Battle_Simulator/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, DLC Challenges: <a href="https://store.steampowered.com/app/2089800/Despots_Game__Challenges/" class="external">https://store.steampowered.com/app/2089800/Despots_Game__Challenges/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, негативные отзывы (top rated): <a href="https://steamcommunity.com/app/1227280/negativereviews/?browsefilter=toprated" class="external">https://steamcommunity.com/app/1227280/negativereviews/?browsefilter=toprated<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, положительные отзывы (top rated): <a href="https://steamcommunity.com/app/1227280/positivereviews/?browsefilter=toprated" class="external">https://steamcommunity.com/app/1227280/positivereviews/?browsefilter=toprated<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam, анонсы и патчноуты (сезоны): <a href="https://steamcommunity.com/app/1227280/allnews/" class="external">https://steamcommunity.com/app/1227280/allnews/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam-форум, «How does the PVP work?»: <a href="https://steamcommunity.com/app/1227280/discussions/0/5221353200090794163/" class="external">https://steamcommunity.com/app/1227280/discussions/0/5221353200090794163/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam-форум, «How long to beat? How is King of the Hill mode?»: <a href="https://steamcommunity.com/app/1227280/discussions/0/5221353200097031879/" class="external">https://steamcommunity.com/app/1227280/discussions/0/5221353200097031879/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam-форум, «In Depth Overview and Findings»: <a href="https://steamcommunity.com/app/1227280/discussions/0/3109140779861329583/" class="external">https://steamcommunity.com/app/1227280/discussions/0/3109140779861329583/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Steam-гайд «Tips to get YOU going»: <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2657431775" class="external">https://steamcommunity.com/sharedfiles/filedetails/?id=2657431775<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Despot's_Game" class="external">https://en.wikipedia.org/wiki/Despot’s_Game<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Gamecritics (8/10): <a href="https://gamecritics.com/eugene-sax/despots-game-dystopian-army-builder-review/" class="external">https://gamecritics.com/eugene-sax/despots-game-dystopian-army-builder-review/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Cog Connected (75/100): <a href="https://cogconnected.com/review/despots-game-dystopian-army-builder-review/" class="external">https://cogconnected.com/review/despots-game-dystopian-army-builder-review/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>SuperJump: <a href="https://www.superjumpmagazine.com/despots-game-review/" class="external">https://www.superjumpmagazine.com/despots-game-review/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Metacritic (73): <a href="https://www.metacritic.com/game/despots-game/" class="external">https://www.metacritic.com/game/despots-game/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Gamereactor, интервью с Николаем Кузнецовым (2025, о следующей игре, Balatro/FTL, отказ от мета-прогрессии): <a href="https://www.gamereactor.eu/konfa-games-tells-us-about-the-next-chapter-in-the-despot-saga-1635073/" class="external">https://www.gamereactor.eu/konfa-games-tells-us-about-the-next-chapter-in-the-despot-saga-1635073/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Game Rant, 10 Beginner Tips: <a href="https://gamerant.com/beginner-tips-despots-game-dystopian-army-builder-tricks-advice-how-win/" class="external">https://gamerant.com/beginner-tips-despots-game-dystopian-army-builder-tricks-advice-how-win/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Fandom Wiki (мутации, еда, классы): <a href="https://despots-game.fandom.com/wiki/Mutations" class="external">https://despots-game.fandom.com/wiki/Mutations<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> , <a href="https://despots-game.fandom.com/wiki/Food" class="external">https://despots-game.fandom.com/wiki/Food<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a> , <a href="https://despots-game.fandom.com/wiki/Classes_overview" class="external">https://despots-game.fandom.com/wiki/Classes_overview<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>Indiecator, обзор раннего доступа: <a href="https://indiecator.org/2021/11/07/indietail-despots-game-dystopian-army-builder/" class="external">https://indiecator.org/2021/11/07/indietail-despots-game-dystopian-army-builder/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+<li>wasdland (сводка Steam-категорий и статистики): <a href="https://www.wasdland.com/game/despots-game-dystopian-battle-simulator-1227280/" class="external">https://www.wasdland.com/game/despots-game-dystopian-battle-simulator-1227280/<svg aria-hidden="true" class="external-icon" style="max-width:0.8em;max-height:0.8em;" viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z"></path></svg></a></li>
+</ul></article><hr/><div class="page-footer"></div></div><div class="right sidebar"><div class="graph"><h3>Вид графа</h3><div class="graph-outer"><div class="graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:1,&quot;scale&quot;:1.1,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.3,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:false,&quot;enableRadial&quot;:false}"></div><button class="global-graph-icon" aria-label="Global Graph"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55 55" fill="currentColor" xml:space="preserve"><path d="M49,0c-3.309,0-6,2.691-6,6c0,1.035,0.263,2.009,0.726,2.86l-9.829,9.829C32.542,17.634,30.846,17,29,17
+                s-3.542,0.634-4.898,1.688l-7.669-7.669C16.785,10.424,17,9.74,17,9c0-2.206-1.794-4-4-4S9,6.794,9,9s1.794,4,4,4
+                c0.74,0,1.424-0.215,2.019-0.567l7.669,7.669C21.634,21.458,21,23.154,21,25s0.634,3.542,1.688,4.897L10.024,42.562
+                C8.958,41.595,7.549,41,6,41c-3.309,0-6,2.691-6,6s2.691,6,6,6s6-2.691,6-6c0-1.035-0.263-2.009-0.726-2.86l12.829-12.829
+                c1.106,0.86,2.44,1.436,3.898,1.619v10.16c-2.833,0.478-5,2.942-5,5.91c0,3.309,2.691,6,6,6s6-2.691,6-6c0-2.967-2.167-5.431-5-5.91
+                v-10.16c1.458-0.183,2.792-0.759,3.898-1.619l7.669,7.669C41.215,39.576,41,40.26,41,41c0,2.206,1.794,4,4,4s4-1.794,4-4
+                s-1.794-4-4-4c-0.74,0-1.424,0.215-2.019,0.567l-7.669-7.669C36.366,28.542,37,26.846,37,25s-0.634-3.542-1.688-4.897l9.665-9.665
+                C46.042,11.405,47.451,12,49,12c3.309,0,6-2.691,6-6S52.309,0,49,0z M11,9c0-1.103,0.897-2,2-2s2,0.897,2,2s-0.897,2-2,2
+                S11,10.103,11,9z M6,51c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S8.206,51,6,51z M33,49c0,2.206-1.794,4-4,4s-4-1.794-4-4
+                s1.794-4,4-4S33,46.794,33,49z M29,31c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S32.309,31,29,31z M47,41c0,1.103-0.897,2-2,2
+                s-2-0.897-2-2s0.897-2,2-2S47,39.897,47,41z M49,10c-2.206,0-4-1.794-4-4s1.794-4,4-4s4,1.794,4,4S51.206,10,49,10z"></path></svg></button></div><div class="global-graph-outer"><div class="global-graph-container" data-cfg="{&quot;drag&quot;:true,&quot;zoom&quot;:true,&quot;depth&quot;:-1,&quot;scale&quot;:0.9,&quot;repelForce&quot;:0.5,&quot;centerForce&quot;:0.2,&quot;linkDistance&quot;:30,&quot;fontSize&quot;:0.6,&quot;opacityScale&quot;:1,&quot;showTags&quot;:true,&quot;removeTags&quot;:[],&quot;focusOnHover&quot;:true,&quot;enableRadial&quot;:true}"></div></div></div><div class="toc desktop-only"><button type="button" class="toc-header" aria-controls="toc-67" aria-expanded="true"><h3>Оглавление</h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fold"><polyline points="6 9 12 15 18 9"></polyline></svg></button><ul id="list-1" class="toc-content overflow"><li class="depth-0"><a href="#despots-game-dystopian-army-builder--dystopian-battle-simulator" data-for="despots-game-dystopian-army-builder--dystopian-battle-simulator">Despot’s Game: Dystopian Army Builder / Dystopian Battle Simulator</a></li><li class="depth-1"><a href="#1-паспорт" data-for="1-паспорт">1. Паспорт</a></li><li class="depth-1"><a href="#2-ядро-цикла" data-for="2-ядро-цикла">2. Ядро цикла</a></li><li class="depth-1"><a href="#3-интерактив-в-бою" data-for="3-интерактив-в-бою">3. Интерактив в бою</a></li><li class="depth-1"><a href="#4-где-живёт-скилл-и-глубина" data-for="4-где-живёт-скилл-и-глубина">4. Где живёт скилл и глубина</a></li><li class="depth-1"><a href="#5-рандом-где-он-и-как-контролируется" data-for="5-рандом-где-он-и-как-контролируется">5. Рандом: где он и как контролируется</a></li><li class="depth-1"><a href="#6-что-хвалят-цитаты-атрибуция" data-for="6-что-хвалят-цитаты-атрибуция">6. Что хвалят (цитаты, атрибуция)</a></li><li class="depth-1"><a href="#7-на-что-жалуются-паттерны" data-for="7-на-что-жалуются-паттерны">7. На что жалуются: паттерны</a></li><li class="depth-1"><a href="#8-решения-разработчиков-по-фидбеку" data-for="8-решения-разработчиков-по-фидбеку">8. Решения разработчиков по фидбеку</a></li><li class="depth-1"><a href="#9-уроки-для-guildmaster" data-for="9-уроки-для-guildmaster">9. Уроки для Guildmaster</a></li><li class="depth-1"><a href="#10-источники" data-for="10-источники">10. Источники</a></li><li class="overflow-end"></li></ul></div></div><footer class><p>Создано с помощью <a href="https://quartz.jzhao.xyz/">Quartz v4.5.2</a> © 2026</p><ul><li><a href="https://github.com/Kaliguri/Guildmaster-Autobattler">GitHub</a></li><li><a href="/Guildmaster-Autobattler/api/">C# API Reference</a></li></ul></footer></div></div></body><script type="application/javascript">function n(){let t=this.parentElement;t.classList.toggle("is-collapsed");let e=t.getElementsByClassName("callout-content")[0];if(!e)return;let l=t.classList.contains("is-collapsed");e.style.gridTemplateRows=l?"0fr":"1fr"}function c(){let t=document.getElementsByClassName("callout is-collapsible");for(let e of t){let l=e.getElementsByClassName("callout-title")[0],s=e.getElementsByClassName("callout-content")[0];if(!l||!s)continue;l.addEventListener("click",n),window.addCleanup(()=>l.removeEventListener("click",n));let o=e.classList.contains("is-collapsed");s.style.gridTemplateRows=o?"0fr":"1fr"}}document.addEventListener("nav",c);
+</script><script type="module">function f(i,e){if(!i)return;function r(o){o.target===this&&(o.preventDefault(),o.stopPropagation(),e())}function t(o){o.key.startsWith("Esc")&&(o.preventDefault(),e())}i?.addEventListener("click",r),window.addCleanup(()=>i?.removeEventListener("click",r)),document.addEventListener("keydown",t),window.addCleanup(()=>document.removeEventListener("keydown",t))}function y(i){for(;i.firstChild;)i.removeChild(i.firstChild)}var h=class{constructor(e,r){this.container=e;this.content=r;this.setupEventListeners(),this.setupNavigationControls(),this.resetTransform()}isDragging=!1;startPan={x:0,y:0};currentPan={x:0,y:0};scale=1;MIN_SCALE=.5;MAX_SCALE=3;cleanups=[];setupEventListeners(){let e=this.onMouseDown.bind(this),r=this.onMouseMove.bind(this),t=this.onMouseUp.bind(this),o=this.resetTransform.bind(this);this.container.addEventListener("mousedown",e),document.addEventListener("mousemove",r),document.addEventListener("mouseup",t),window.addEventListener("resize",o),this.cleanups.push(()=>this.container.removeEventListener("mousedown",e),()=>document.removeEventListener("mousemove",r),()=>document.removeEventListener("mouseup",t),()=>window.removeEventListener("resize",o))}cleanup(){for(let e of this.cleanups)e()}setupNavigationControls(){let e=document.createElement("div");e.className="mermaid-controls";let r=this.createButton("+",()=>this.zoom(.1)),t=this.createButton("-",()=>this.zoom(-.1)),o=this.createButton("Reset",()=>this.resetTransform());e.appendChild(t),e.appendChild(o),e.appendChild(r),this.container.appendChild(e)}createButton(e,r){let t=document.createElement("button");return t.textContent=e,t.className="mermaid-control-button",t.addEventListener("click",r),window.addCleanup(()=>t.removeEventListener("click",r)),t}onMouseDown(e){e.button===0&&(this.isDragging=!0,this.startPan={x:e.clientX-this.currentPan.x,y:e.clientY-this.currentPan.y},this.container.style.cursor="grabbing")}onMouseMove(e){this.isDragging&&(e.preventDefault(),this.currentPan={x:e.clientX-this.startPan.x,y:e.clientY-this.startPan.y},this.updateTransform())}onMouseUp(){this.isDragging=!1,this.container.style.cursor="grab"}zoom(e){let r=Math.min(Math.max(this.scale+e,this.MIN_SCALE),this.MAX_SCALE),t=this.content.getBoundingClientRect(),o=t.width/2,n=t.height/2,c=r-this.scale;this.currentPan.x-=o*c,this.currentPan.y-=n*c,this.scale=r,this.updateTransform()}updateTransform(){this.content.style.transform=`translate(${this.currentPan.x}px, ${this.currentPan.y}px) scale(${this.scale})`}resetTransform(){this.scale=1;let e=this.content.querySelector("svg");this.currentPan={x:e.getBoundingClientRect().width/2,y:e.getBoundingClientRect().height/2},this.updateTransform()}},C=["--secondary","--tertiary","--gray","--light","--lightgray","--highlight","--dark","--darkgray","--codeFont"],E;document.addEventListener("nav",async()=>{let e=document.querySelector(".center").querySelectorAll("code.mermaid");if(e.length===0)return;E||=await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.esm.min.mjs");let r=E.default,t=new WeakMap;for(let n of e)t.set(n,n.innerText);async function o(){for(let s of e){s.removeAttribute("data-processed");let a=t.get(s);a&&(s.innerHTML=a)}let n=C.reduce((s,a)=>(s[a]=window.getComputedStyle(document.documentElement).getPropertyValue(a),s),{}),c=document.documentElement.getAttribute("saved-theme")==="dark";r.initialize({startOnLoad:!1,securityLevel:"loose",theme:c?"dark":"base",themeVariables:{fontFamily:n["--codeFont"],primaryColor:n["--light"],primaryTextColor:n["--darkgray"],primaryBorderColor:n["--tertiary"],lineColor:n["--darkgray"],secondaryColor:n["--secondary"],tertiaryColor:n["--tertiary"],clusterBkg:n["--light"],edgeLabelBackground:n["--highlight"]}}),await r.run({nodes:e})}await o(),document.addEventListener("themechange",o),window.addCleanup(()=>document.removeEventListener("themechange",o));for(let n=0;n<e.length;n++){let v=function(){let g=l.querySelector("#mermaid-space"),m=l.querySelector(".mermaid-content");if(!m)return;y(m);let w=c.querySelector("svg").cloneNode(!0);m.appendChild(w),l.classList.add("active"),g.style.cursor="grab",u=new h(g,m)},M=function(){l.classList.remove("active"),u?.cleanup(),u=null},c=e[n],s=c.parentElement,a=s.querySelector(".clipboard-button"),d=s.querySelector(".expand-button"),p=window.getComputedStyle(a),L=a.offsetWidth+parseFloat(p.marginLeft||"0")+parseFloat(p.marginRight||"0");d.style.right=`calc(${L}px + 0.3rem)`,s.prepend(d);let l=s.querySelector("#mermaid-container");if(!l)return;let u=null;d.addEventListener("click",v),f(l,M),window.addCleanup(()=>{u?.cleanup(),d.removeEventListener("click",v)})}});
+</script><script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/copy-tex.min.js" type="application/javascript"></script><script src="../../postscript.js" type="module"></script></html>

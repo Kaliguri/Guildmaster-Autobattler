@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Core_1_1Input_
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Input.IInputService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__inherit__graph.svg" width="222" height="379"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__inherit__graph.svg" width="222" height="459"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Input.IInputService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__coll__graph.svg" width="216" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService__coll__graph.svg" width="216" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -133,12 +133,24 @@ Properties</h2></td></tr>
 <tr class="memitem:ae2614daad90dc536487ffa8f5c6a9fbb" id="r_ae2614daad90dc536487ffa8f5c6a9fbb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#ae2614daad90dc536487ffa8f5c6a9fbb">CameraZoomDelta</a><code> [get]</code></td></tr>
 <tr class="memdesc:ae2614daad90dc536487ffa8f5c6a9fbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Дельта зума за кадр (колесо мыши): &gt;0 — приблизить, &lt;0 — отдалить.  <br /></td></tr>
 <tr class="separator:ae2614daad90dc536487ffa8f5c6a9fbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9455ad28d5ee6370328136d9b7d61661" id="r_a9455ad28d5ee6370328136d9b7d61661"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a9455ad28d5ee6370328136d9b7d61661">PointerScreenPosition</a><code> [get]</code></td></tr>
+<tr class="memdesc:a9455ad28d5ee6370328136d9b7d61661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Позиция указателя на экране (пиксели), для screen→world при пикинге/drag. Поллинг каждый кадр.  <br /></td></tr>
+<tr class="separator:a9455ad28d5ee6370328136d9b7d61661"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64dd7151a2cca9ea7c512cfba9a1fb02" id="r_a64dd7151a2cca9ea7c512cfba9a1fb02"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a64dd7151a2cca9ea7c512cfba9a1fb02">PointerHeld</a><code> [get]</code></td></tr>
+<tr class="memdesc:a64dd7151a2cca9ea7c512cfba9a1fb02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Указатель зажат (ЛКМ) — для протяжки. Поллинг. Ноль/false при GameplaySuppressed.  <br /></td></tr>
+<tr class="separator:a64dd7151a2cca9ea7c512cfba9a1fb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
 <tr class="memitem:a3af6bad4dbd792ea37e6240dec0ea408" id="r_a3af6bad4dbd792ea37e6240dec0ea408"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a3af6bad4dbd792ea37e6240dec0ea408">CycleViewRequested</a></td></tr>
 <tr class="memdesc:a3af6bad4dbd792ea37e6240dec0ea408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Циклическое переключение вида камеры (Tab): Action → Overview → [Dev].  <br /></td></tr>
 <tr class="separator:a3af6bad4dbd792ea37e6240dec0ea408"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ed78db1def2d00028181af33ca98202" id="r_a5ed78db1def2d00028181af33ca98202"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a5ed78db1def2d00028181af33ca98202">PointerPressed</a></td></tr>
+<tr class="memdesc:a5ed78db1def2d00028181af33ca98202"><td class="mdescLeft">&#160;</td><td class="mdescRight">ЛКМ нажата в этом кадре (начало клика/drag/дабл-клика). Не поднимается при GameplaySuppressed.  <br /></td></tr>
+<tr class="separator:a5ed78db1def2d00028181af33ca98202"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15ae65cafe085886a34aba168d4c56a1" id="r_a15ae65cafe085886a34aba168d4c56a1"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a15ae65cafe085886a34aba168d4c56a1">PointerReleased</a></td></tr>
+<tr class="memdesc:a15ae65cafe085886a34aba168d4c56a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">ЛКМ отпущена в этом кадре (drop/конец клика).  <br /></td></tr>
+<tr class="separator:a15ae65cafe085886a34aba168d4c56a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b97242d655b5388789f6dfd8fa6a490" id="r_a7b97242d655b5388789f6dfd8fa6a490"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#a7b97242d655b5388789f6dfd8fa6a490">PauseToggleRequested</a></td></tr>
 <tr class="memdesc:a7b97242d655b5388789f6dfd8fa6a490"><td class="mdescLeft">&#160;</td><td class="mdescRight">Переключить паузу боя (Space): пауза ↔ продолжить.  <br /></td></tr>
 <tr class="separator:a7b97242d655b5388789f6dfd8fa6a490"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -282,6 +294,58 @@ Events</h2></td></tr>
 
 </div>
 </div>
+<a id="a64dd7151a2cca9ea7c512cfba9a1fb02" name="a64dd7151a2cca9ea7c512cfba9a1fb02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64dd7151a2cca9ea7c512cfba9a1fb02">&#9670;&#160;</a></span>PointerHeld</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Core.Input.IInputService.PointerHeld</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Указатель зажат (ЛКМ) — для протяжки. Поллинг. Ноль/false при GameplaySuppressed. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#a63fb3e49a680ac7472258dd30abb5740">Guildmaster.Game.Input.InputService</a>.</p>
+
+</div>
+</div>
+<a id="a9455ad28d5ee6370328136d9b7d61661" name="a9455ad28d5ee6370328136d9b7d61661"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9455ad28d5ee6370328136d9b7d61661">&#9670;&#160;</a></span>PointerScreenPosition</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Vector2 Guildmaster.Core.Input.IInputService.PointerScreenPosition</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Позиция указателя на экране (пиксели), для screen→world при пикинге/drag. Поллинг каждый кадр. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Input_1_1InputService.html#aa223262975813cbd75b97bef8b56aaaa">Guildmaster.Game.Input.InputService</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Event Documentation</h2>
 <a id="a3af6bad4dbd792ea37e6240dec0ea408" name="a3af6bad4dbd792ea37e6240dec0ea408"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3af6bad4dbd792ea37e6240dec0ea408">&#9670;&#160;</a></span>CycleViewRequested</h2>
@@ -345,6 +409,38 @@ Events</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Переключить паузу боя (Space): пауза ↔ продолжить. </p>
+
+</div>
+</div>
+<a id="a5ed78db1def2d00028181af33ca98202" name="a5ed78db1def2d00028181af33ca98202"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ed78db1def2d00028181af33ca98202">&#9670;&#160;</a></span>PointerPressed</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Core.Input.IInputService.PointerPressed</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ЛКМ нажата в этом кадре (начало клика/drag/дабл-клика). Не поднимается при GameplaySuppressed. </p>
+
+</div>
+</div>
+<a id="a15ae65cafe085886a34aba168d4c56a1" name="a15ae65cafe085886a34aba168d4c56a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15ae65cafe085886a34aba168d4c56a1">&#9670;&#160;</a></span>PointerReleased</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Action Guildmaster.Core.Input.IInputService.PointerReleased</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>ЛКМ отпущена в этом кадре (drop/конец клика). </p>
 
 </div>
 </div>

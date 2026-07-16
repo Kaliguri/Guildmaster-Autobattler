@@ -114,7 +114,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Детерминированный конвейер урона. </p>
-<p>Все методы статические и чистые (in-параметры, мутация только HP/Shield цели через DamageRequest). Порядок: raw → DamageDealtEff → броня/пробивание → DamageTakenEff → щит → HP (вики «10» §5.4, «6» §6). </p>
+<p>Все методы статические и чистые (in-параметры, мутация только HP/Shield цели через DamageRequest). Порядок: raw → DamageDealtEff → броня/пробивание (школа) → сродство × тип существа → DamageTakenEff → щит → HP (вики «10» §5.4, «6» §6; ГДД «8» §«Школа vs сродство»). </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a92f4da6e6fd513be46129dbf0ec6a32d" name="a92f4da6e6fd513be46129dbf0ec6a32d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a92f4da6e6fd513be46129dbf0ec6a32d">&#9670;&#160;</a></span>Execute()</h2>
@@ -148,6 +148,11 @@ Static Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Детализированный результат для триггеров (lifesteal, шипы — Фаза 2).</dd></dl>
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1DamagePipeline_a92f4da6e6fd513be46129dbf0ec6a32d_cgraph.svg" width="488" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">

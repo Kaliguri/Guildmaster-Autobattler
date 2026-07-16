@@ -10,6 +10,7 @@ var dir_9c4489f7376784a5a639cc520f6e7ee8 =
     [ "CombatStatusOverlay.cs", "CombatStatusOverlay_8cs.html", "CombatStatusOverlay_8cs" ],
     [ "CombatVfx.cs", "CombatVfx_8cs.html", "CombatVfx_8cs" ],
     [ "DeathShatter.cs", "DeathShatter_8cs.html", "DeathShatter_8cs" ],
+    [ "DeploymentView.cs", "DeploymentView_8cs.html", "DeploymentView_8cs" ],
     [ "FloatingText.cs", "FloatingText_8cs.html", "FloatingText_8cs" ],
     [ "HealthBarView.cs", "HealthBarView_8cs.html", "HealthBarView_8cs" ],
     [ "ManaBarView.cs", "ManaBarView_8cs.html", "ManaBarView_8cs" ],

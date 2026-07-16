@@ -9,6 +9,7 @@ var classGuildmaster_1_1DevTools_1_1GuildmasterCommands =
     [ "SepRadius", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#aa2458c149ad1867ee32cd9c5f732b4ed", null ],
     [ "SepStrength", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a50a4653b04f364e29dd24396ef6139a7", null ],
     [ "SetHp", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a1a73a4089cf1a0e9890d4ed1c0b5d871", null ],
+    [ "SetLastBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab565e7b0719ecbd4cf5289726e9ec43b", null ],
     [ "SetRngSeed", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a97c2560d6ac8662a17c250f67c67468a", null ],
     [ "SkipBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ad2371ad3aa2e954271e07b2ac7622176", null ],
     [ "SpawnAssassin", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a5766f4f7c6e06576c31a581348415cc5", null ],
