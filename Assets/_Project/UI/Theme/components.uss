@@ -41,8 +41,11 @@
 }
 
 .gm-divider {
-    height: 1px;
-    background-color: var(--gm-color-border-subtle);
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("../../Art/UI/Honeti-gm/Separator_gm.png");
+    -unity-slice-left: 1;
+    -unity-slice-right: 1;
     margin-top: var(--gm-space-2);
     margin-bottom: var(--gm-space-3);
 }
@@ -71,6 +74,10 @@
     background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
 }
 
+.gm-button:active {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedDown_gm.png");
+}
+
 .gm-button:disabled {
     background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
     color: var(--gm-color-disabled-text);
@@ -87,11 +94,16 @@
     background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
 }
 
-/* Disabled primary: та же тусклая деревянная плашка, что и у secondary. */
+.gm-button--primary:active {
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Down_gm.png");
+}
+
+/* Disabled primary: та же тусклая деревянная плашка, что и у secondary.
+   БЕЗ opacity — полупрозрачность пускала бы дефолтный серый фон Button сквозь спрайт. */
 .gm-button--primary:disabled {
+    background-color: var(--gm-color-surface-raised);
     background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
     color: var(--gm-color-text-muted);
-    opacity: 0.55;
 }
 
 /* Кнопка, тянущаяся на равную долю в ряду (футер настроек и т.п.). */
@@ -205,8 +217,13 @@
 
 .gm-tab {
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-subtle);
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     border-radius: var(--gm-radius-0);
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-body);
@@ -214,9 +231,10 @@
     margin-right: var(--gm-space-2);
 }
 
+/* Активный таб: латунный контур Honeti (вместо тусклой плашки неактивного). */
 .gm-tab--active {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
     color: var(--gm-color-text);
-    border-color: var(--gm-color-accent);
     -unity-font-style: bold;
 }
 
@@ -245,28 +263,30 @@
     width: 76px;
     height: 88px;
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-frame);
-    border-radius: var(--gm-radius-0);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     margin: var(--gm-space-1);
     align-items: center;
     justify-content: flex-end;
     padding: var(--gm-space-1);
-    transition-property: border-color, background-color;
-    transition-duration: 0.08s;
 }
 
 .gm-card:hover {
-    border-color: var(--gm-color-hover-border);
-    background-color: var(--gm-color-hover-surface);
+    -unity-background-image-tint-color: var(--gm-color-hover-border);
 }
 
+/* Надетая/выбранная: подсветка рамки через tint (border теперь в спрайте). */
 .gm-card--current {
-    border-color: var(--gm-color-border-inner);
+    -unity-background-image-tint-color: var(--gm-color-accent);
 }
 
 .gm-card--selected {
-    border-color: var(--gm-color-accent);
+    -unity-background-image-tint-color: var(--gm-color-focus-ring);
     background-color: var(--gm-color-hover-surface);
 }
 
@@ -439,17 +459,19 @@
     width: 130px;
     height: 116px;
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     padding: var(--gm-space-2);
     justify-content: space-between;
-    transition-property: border-color, background-color;
-    transition-duration: 0.08s;
 }
 
 .gm-hub-vessel:hover {
-    border-color: var(--gm-color-hover-border);
-    background-color: var(--gm-color-hover-surface);
+    -unity-background-image-tint-color: var(--gm-color-hover-border);
 }
 
 /* Имя сосуда: перенос в 2 строки вместо агрессивного эллипсиса (длинные классы —
@@ -595,8 +617,13 @@
 
 .gm-slot {
     background-color: var(--gm-color-surface-sunken);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-subtle);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     margin: var(--gm-space-1);
 }
 
