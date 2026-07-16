@@ -146,7 +146,7 @@ updated: 2026-07-16
 
 Cast-условия способностей живут по-способности на `AbilityData` (блоки C/D/E), не в профиле.
 
-**`AIPresetData`** — SO-обёртка (`ContentDefinition`) над `AIProfile`: дефолт юнита — `UnitData.AiPreset`, альтернативы игрока в Prep — `RelicData.AltAiPresets`. Roadmap: «2–3 пресета на архетип». Пользовательские профили, шаринг файлом / через Workshop и сравнение — **post-festival** (см. [[tech/reference/steam-workshop|Reference - Steam Workshop]]); сейчас в бою — фиксированные пресеты, не user-facing конструктор графа.
+**`AIPresetData`** — SO-обёртка (`ContentDefinition`) над `AIProfile`: дефолт юнита — `UnitData.AiPreset`, альтернативы игрока в Prep — `RelicData.AltAiPresets`. Roadmap: «2–3 пресета на архетип». Пользовательские профили, шаринг файлом / через Workshop и сравнение — **post-festival** (см. [[tech/planning/steam-workshop|Reference - Steam Workshop]]); сейчас в бою — фиксированные пресеты, не user-facing конструктор графа.
 
 **Исполнение (`ProfileBrain.Decide`):** конвейер `Filter → Score → Override` — это приватная логика ОДНОГО мозга, не полиморфные кирпичики:
 

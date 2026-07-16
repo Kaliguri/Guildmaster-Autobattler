@@ -24,19 +24,19 @@ updated: 2026-07-16
 - [[tech/planning/vertical-slice|Vertical Slice]] — петля забега, пролог, мета-заглушки. `living`
 - [[tech/planning/stabilization|Stabilization & UI Loop]] — стабилизация, UI-петля, недостающие механики. `living` (текущее)
 - [[tech/planning/visual-harness|Visual Harness]] — asmdef-слой презентации, играбельный харнесс боя. `история`
+- [[tech/planning/seed|Seed & RNG]] — сиды, генерация забега, воспроизводимость. `planned`
+- [[tech/planning/steam-workshop|Steam Workshop]] — Workshop-процессы, версионирование схемы (post-festival). `planned`
 
 ## Reference (`reference/`) — сухие факты
 
 - [[tech/reference/tech-stack|Reference - Tech Stack]] — утверждённый стек, паттерны, уроки прошлого проекта. `needs_review`
-- [[tech/reference/assemblies|Assemblies]] — карта asmdef, граф зависимостей, правила. `needs_review`
+- [[tech/reference/assemblies|Assemblies]] — карта asmdef, граф зависимостей, правила. `ready`
 - [[tech/reference/combat-model|Combat Model]] — «Сосуд + Реликвия», стат-система, модель эффектов/диспела. `ready`
 - [[tech/reference/data-layer|Data Layer]] — три слоя данных, каталог SO, id/лок-конвенции, реестр, валидация. `ready`
 - [[tech/reference/saves|Saves]] — автосейв, хост, мультиплеер. `needs_review`
-- [[tech/reference/seed|Seed & RNG]] — сиды, генерация забега, воспроизводимость. `ready`
 - [[tech/reference/scene-sorting|Scene & Sorting]] — иерархия BattleScene, сортировочные слои 2D, Y-sort. `needs_review`
 - [[tech/reference/input-camera|Input & Camera]] — Input System за `IInputService`, Cinemachine (3 режима). `ready`
 - [[tech/reference/arena|Arena & Deployment]] — геометрия арены как данные, зоны Normal/Extended. `needs_review`
-- [[tech/reference/steam-workshop|Steam Workshop]] — Workshop-процессы, версионирование схемы (post-festival). `ready`
 
 ## Explanation (`explanation/`) — как устроен код
 
@@ -63,4 +63,4 @@ updated: 2026-07-16
 
 ## Легенда статусов (frontmatter `status`)
 
-- `draft` — набросок · `needs_review` — готов, нужна сверка/ревизия · `ready` — актуально · `living` — вечно живой (роадмап/changelog) · `archive` — исторический
+- `draft` — набросок · `needs_review` — готов, нужна сверка/ревизия · `ready` — актуально · `planned` — план на будущее (реализации ещё нет) · `living` — вечно живой (роадмап/changelog) · `archive` — исторический

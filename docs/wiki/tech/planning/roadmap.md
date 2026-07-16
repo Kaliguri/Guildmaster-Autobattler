@@ -11,7 +11,7 @@ updated: 2026-07-16
 
 > План реализации (execution roadmap): фазы, что/зачем/когда, оценки усилий, риски, приоритеты.
 > Единый план разработки проекта (отдельного GDD-роадмапа больше нет — он консолидирован сюда).
-> Опирается на архитектуру [[tech/reference/tech-stack|5]] / [[tech/reference/combat-model|6]] / [[tech/explanation/run-flow|7]] / [[tech/reference/steam-workshop|8]].
+> Опирается на архитектуру [[tech/reference/tech-stack|5]] / [[tech/reference/combat-model|6]] / [[tech/explanation/run-flow|7]] / [[tech/planning/steam-workshop|8]].
 
 ---
 

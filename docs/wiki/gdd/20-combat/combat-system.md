@@ -114,4 +114,4 @@ status: needs_review
 - Бой — **детерминированная симуляция с фиксированным тиком** (без Unity-физики), что даёт реплеи, сравнение AI-профилей и синхронный мультиплеер.
 - AI «Сосудов» (фокус цели, отступление, условия каста, позиционирование) строится по схеме **Filter / Score / Override** — настраивается вне боя, в бою не меняется.
 
-Детали реализации — [[tech/reference/tech-stack|Reference - Tech Stack]] и [[tech/reference/seed|Reference - Seed & RNG]]. Полный список статов — [[tech/planning/stat-system|Planning - Stat System]]. Сырые заметки по AI и статам — [[gdd/00-meta/open|Meta - Open Questions]].
+Детали реализации — [[tech/reference/tech-stack|Reference - Tech Stack]] и [[tech/planning/seed|Reference - Seed & RNG]]. Полный список статов — [[tech/planning/stat-system|Planning - Stat System]]. Сырые заметки по AI и статам — [[gdd/00-meta/open|Meta - Open Questions]].

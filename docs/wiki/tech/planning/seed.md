@@ -1,11 +1,11 @@
 ---
-title: "Reference - Seed & RNG"
-order: 50
-status: ready
+title: "Planning - Seed & RNG"
+order: 130
+status: planned
 updated: 2026-07-16
 ---
 
-**Статус:** Draft
+**Статус:** План. Контракт `IRngService` существует (`Guildmaster.Core`); наполнение генерации (карта/награды/магазин/ивенты) — по мере готовности флоу забега.
 
 ---
 

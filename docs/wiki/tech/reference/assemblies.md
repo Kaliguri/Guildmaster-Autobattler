@@ -1,11 +1,11 @@
 ---
 title: "Reference - Assemblies"
 order: 10
-status: needs_review
+status: ready
 updated: 2026-07-16
 ---
 
-**Статус:** Draft
+**Статус:** Сверено с `.asmdef` (2026-07-16)
 
 ---
 
@@ -17,6 +17,8 @@ updated: 2026-07-16
 
 ## Граф зависимостей
 
+Рантайм-сборки (`includePlatforms: []` — все платформы):
+
 ```
 Core
  ├─ Data            → Core
@@ -26,32 +28,67 @@ Core
  ├─ Net             → Core, Combat
  ├─ Presentation    → Core, Data, Combat
  ├─ UI              → Core, Data, Guild
- ├─ DevTools        → Core, Data, Combat, Game
+ ├─ DevTools        → Core, Data, Combat, Presentation, UI, Game
  └─ Game            → Core, Data, Combat, Guild, MiniGames, Net, Presentation, UI
 ```
 
-Стрелка означает «зависит от». Всё зависит **только вниз**. `Game` — единственный, кто знает всех (composition root). `Core` ни от чего не зависит.
+Стрелка означает «зависит от». Всё зависит **только вниз**. `Game` — единственный рантайм-модуль, кто знает всех (composition root). `Core` ни от чего не зависит.
+
+Editor-only сборки (`includePlatforms: ["Editor"]` — в билд не попадают):
+
+```
+Data.Editor        → Data, Core
+Game.Editor        → Game, Core
+Audio.Editor       → Presentation
+ContentHub.Editor  → Data, Data.Editor, Core, Combat, Presentation
+UI.Editor          → (нет ссылок)
+```
+
+Тестовые сборки (`UNITY_INCLUDE_TESTS`):
+
+```
+Tests.EditMode  → Core, Data, Data.Editor, Combat, Presentation, Game, Guild, ContentHub.Editor   [Editor]
+Tests.PlayMode  → Core, Data, Combat, Game
+```
 
 ---
 
 ## Текущие сборки
 
-| Сборка | Путь | Зависит от | Внешние пакеты | Назначение |
+### Рантайм
+
+| Сборка | Путь | Зависит от (внутр.) | Внешние пакеты | Назначение |
 |---|---|---|---|---|
-| `Guildmaster.Core` | `Scripts/Core/` | — | — (по возможности `noEngineReferences`) | `IRngService`, математика сим, тик-контракты, базовые интерфейсы команд/событий |
-| `Guildmaster.Data` | `Scripts/Data/` | Core | Odin, UnityEngine | ScriptableObject-определения (`StatsConfig`, `RelicData`, `VesselData`, `EffectData`), `StatType`, `ScalableValue`, полиморфные интерфейсы поведения (`IEffectComponent`) |
+| `Guildmaster.Core` | `Scripts/Core/` | — | — | `IRngService`, математика сим, тик-контракты, базовые интерфейсы команд/событий |
+| `Guildmaster.Data` | `Scripts/Data/` | Core | Odin (атрибуты, автореференс) | ScriptableObject-определения (`StatsConfig`, `RelicData`, `VesselData`, `EffectData`), `StatType`, `ScalableValue`, полиморфные интерфейсы поведения (`IEffectComponent`) |
 | `Guildmaster.Combat` | `Scripts/Combat/` | Core, Data | — (чистая логика, без VContainer/UniTask/физики) | Детерминированная симуляция: `RuntimeUnit`, `Stats`, тик-степпер, системы, пайплайн урона, `ICombatContext`, spatial hash |
 | `Guildmaster.Guild` | `Scripts/Guild/` | Core, Data | — | Ростер, `RunState`, ресурсы (стаб до Фазы 5) |
 | `Guildmaster.MiniGames` | `Scripts/MiniGames/` | Core, Data | — | Изолированные мини-игры за `IMiniGame` (стаб) |
-| `Guildmaster.Net` | `Scripts/Net/` | Core, Combat | NGO, Facepunch.Steamworks | Host-authoritative реле команд, инициализация транспорта (спайк в Фазе 1) |
-| `Guildmaster.Presentation` | `Scripts/Presentation/` | Core, Data, Combat | Shapes, Feel, LitMotion, MessagePipe, UniTask | World-space вид боя: спрайты, HP-бары, damage numbers, debug-draw, фидбэк. **Только читает сим** |
-| `Guildmaster.UI` | `Scripts/UI/` | Core, Data, Guild | UI Toolkit, MessagePipe | Экраны меню/HUD/карты, MVVM (стаб до Фазы 7) |
-| `Guildmaster.DevTools` | `Scripts/DevTools/` | Core, Data, Combat, Game | Quantum Console | Debug-команды `gm_*` |
-| `Guildmaster.Game` | `Scripts/Game/` | все выше | VContainer, MessagePipe, UniTask, NGO | Composition root (`RootLifetimeScope`/`CombatLifetimeScope`), GameFlow, загрузка сцен, пуск тик-цикла |
-| `Guildmaster.Tests.EditMode` | `Tests/EditMode/` | Core, Data, Combat | NUnit | Детерминизм, урон, статы, spatial hash, снаряды |
-| `Guildmaster.Tests.PlayMode` | `Tests/PlayMode/` | Core, Data, Combat, Game | NUnit | Интеграция: battle start → loop → end |
+| `Guildmaster.Net` | `Scripts/Net/` | Core, Combat | NGO (`Unity.Netcode.Runtime`), VContainer | Host-authoritative реле команд, инициализация транспорта (спайк в Фазе 1) |
+| `Guildmaster.Presentation` | `Scripts/Presentation/` | Core, Data, Combat | Shapes, LitMotion, UniTask, MessagePipe, VContainer, TextMeshPro, UnityEngine.UI, Cinemachine, FMOD | World-space вид боя: спрайты, HP-бары, damage numbers, debug-draw, фидбэк, боевая камера. **Только читает сим** |
+| `Guildmaster.UI` | `Scripts/UI/` | Core, Data, Guild | VContainer, UniTask, MessagePipe(+VContainer), Localization | Экраны меню/HUD/карты на UI Toolkit, MVVM (стаб до Фазы 7) |
+| `Guildmaster.DevTools` | `Scripts/DevTools/` | Core, Data, Combat, Presentation, UI, Game | Quantum Console (`QFSW.QC`), VContainer, Input System | Debug-команды `gm_*` |
+| `Guildmaster.Game` | `Scripts/Game/` | Core, Data, Combat, Guild, MiniGames, Net, Presentation, UI | VContainer, UniTask, MessagePipe(+VContainer), FMOD, Input System, Localization, ResourceManager | Composition root (`RootLifetimeScope`/`CombatLifetimeScope`), GameFlow, загрузка сцен, пуск тик-цикла. NGO приходит транзитивно через `Net` |
 
-> Все пути — относительно `Assets/_Project/Scripts/` (рантайм) и `Assets/Tests/` (тесты).
+### Editor-only (`includePlatforms: ["Editor"]`, в билд не попадают)
+
+| Сборка | Путь | Зависит от (внутр.) | Внешние пакеты | Назначение |
+|---|---|---|---|---|
+| `Guildmaster.Data.Editor` | `Scripts/Data/Editor/` | Data, Core | Odin, Localization(+Editor) | Редакторные инспекторы и утилиты для контент-SO |
+| `Guildmaster.Game.Editor` | `Scripts/Game/Editor/` | Game, Core | Odin | Редакторные утилиты композиции/Game |
+| `Guildmaster.Audio.Editor` | `Scripts/EditorTools/Audio/` | Presentation | FMOD (+Editor) | Редакторный аудио-инструментарий (мост FMOD Studio) |
+| `Guildmaster.ContentHub.Editor` | `Scripts/EditorTools/ContentHub/` | Data, Data.Editor, Core, Combat, Presentation | — | Окно Content Hub (авторинг контента) |
+| `Guildmaster.UI.Editor` | `Scripts/EditorTools/UI/` | — | — | Редакторный UITK-инструментарий (namespace `Guildmaster.UI.EditorTools`) |
+
+### Тесты
+
+| Сборка | Путь | Зависит от (внутр.) | Внешние пакеты | Назначение |
+|---|---|---|---|---|
+| `Guildmaster.Tests.EditMode` | `Tests/EditMode/` | Core, Data, Data.Editor, Combat, Presentation, Game, Guild, ContentHub.Editor | NUnit, UniTask, TestRunner | Детерминизм, урон, статы, spatial hash, снаряды, контент-валидация (`Editor`-платформа) |
+| `Guildmaster.Tests.PlayMode` | `Tests/PlayMode/` | Core, Data, Combat, Game | NUnit, TestRunner | Интеграция: battle start → loop → end |
+
+> Пути рантайм/Editor-сборок — относительно `Assets/_Project/Scripts/`; тесты — относительно `Assets/_Project/Tests/`.
+> Editor-сборки `Data.Editor` и `Game.Editor` включают Odin через `overrideReferences` + `precompiledReferences` (Sirenix DLL).
 
 ---
 
@@ -68,6 +105,7 @@ Core
 7. **Экранный UI** (UI Toolkit, меню, HUD, MVVM) → `UI`
 8. **Debug-команды** (`gm_*`, Quantum Console) → `DevTools`
 9. **Composition root, GameFlow, загрузка сцен, тик-пульс** → `Game`
+10. **Редакторные инструменты** (инспекторы, окна, авторинг-тулзы) → `<Module>/Editor/` или `EditorTools/<Tool>/`, отдельная `*.Editor`-сборка с `includePlatforms: ["Editor"]`
 
 ### Запрещённые зависимости
 
@@ -75,7 +113,7 @@ Core
 - `Data` зависит только от `Core` (никакой боевой/сетевой логики)
 - `Combat` — чистая C#-логика: **без VContainer, UniTask, Unity-физики**; зависимости приходят через конструкторы, не `[Inject]`
 - `Presentation`/`UI` **только читают** сим — не мутируют состояние боя
-- Зависеть от `Game` может только `DevTools`; сам `Game` — вершина, его никто (кроме DevTools) не импортирует
+- `Game` — вершина рантайма; из рантайм-сборок его импортирует только `DevTools`. Помимо этого на `Game` завязаны редакторные (`Game.Editor`) и тестовые (`Tests.*`) сборки — это допустимо, они вне рантайм-графа
 - Циклические зависимости запрещены
 
 > Если зависимость тянет вверх (`Combat` хочет знать о `Guild`) — вынеси общий интерфейс в `Core`. Если SO-определение тянет поведение (`RelicData` → `EffectData`/`IEffectComponent`) — оба живут в `Data`, ниже `Combat`.
@@ -105,3 +143,4 @@ Core
 |---|---|
 | 2026-05-28 | Начальная структура: Core, Units, Combat, Guild, UI |
 | 2026-05-30 | Рефактор графа под Фазу 1 (док 10 §2): `Units`→`Data`; добавлены `MiniGames`, `Net`, `Presentation`, `DevTools`, `Game`. Тесты переведены на `Data` |
+| 2026-07-16 | Сверка с реальными `.asmdef`: добавлен Editor-слой (`Data.Editor`, `Game.Editor`, `Audio.Editor`, `ContentHub.Editor`, `UI.Editor`); уточнены внешние пакеты и внутренние ссылки (`Net`→VContainer, `DevTools`→Presentation/UI, `Game`↛NGO напрямую); исправлен путь тестов (`Assets/_Project/Tests/`) |

@@ -1,11 +1,11 @@
 ---
-title: "Reference - Steam Workshop"
-order: 90
-status: ready
+title: "Planning - Steam Workshop"
+order: 140
+status: planned
 updated: 2026-07-16
 ---
 
-**Статус:** Draft
+**Статус:** План. Реализация — post-festival; здесь фиксируются процессы и то, что закладываем в контент-модель уже сейчас.
 
 ---
 

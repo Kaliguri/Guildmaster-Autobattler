@@ -23,7 +23,7 @@ updated: 2026-07-16
 | 2026-06-19 | `SimSyncProbe` запаркован в `Net/_Parked/` (lockstep-инструмент) | [[tech/explanation/netcode|Explanation - Netcode]] |
 | 2026-06-19 | **«Эффекты кормят статы»**: Lifesteal/реген — статы-накопители; временные баффы = эффект со `StatModifierComponent`. `LifestealComponent` избыточен | [[tech/explanation/data-stats-damage|Explanation - Data, Stats, Damage]] §4, [[tech/explanation/effects-abilities|Explanation - Effects & Abilities]] |
 | 2026-06-19 | Анимация юнитов — **пиксель-кадровая** (sprite sheets), не скелетная | [[tech/explanation/presentation|Explanation - Presentation]] |
-| 2026-06-19 | SO-слой — **простой сейчас, моддинг потом** (прямые ссылки, id по мере нужды; UGC — post-festival) | [[tech/reference/steam-workshop|Reference - Steam Workshop]] |
+| 2026-06-19 | SO-слой — **простой сейчас, моддинг потом** (прямые ссылки, id по мере нужды; UGC — post-festival) | [[tech/planning/steam-workshop|Reference - Steam Workshop]] |
 | — | Симуляция отделена от презентации (чистый C#-сим, read-only визуал) | [[tech/explanation/simulation|Explanation - Simulation & Tick]], [[tech/explanation/presentation|Explanation - Presentation]] |
 | — | Никаких синглтонов — только DI через VContainer | [[tech/explanation/di-events|Explanation - DI & Events]] |
 | — | Потенция эффекта — снимок при наложении, не пересчитывается при стаке | [[tech/explanation/effects-abilities|Explanation - Effects & Abilities]] §4.2 |
