@@ -95,6 +95,9 @@ ehthumbs.db
 docs/wiki/.obsidian/workspace.json
 docs/wiki/.obsidian/workspace-mobile.json
 docs/wiki/.obsidian/cache
+# Per-user plugin state that constantly drifts (recent-files = list of files YOU opened).
+# Only personal-state data.json belongs here; plugin *config* data.json stays tracked.
+docs/wiki/.obsidian/plugins/recent-files-obsidian/data.json
 
 # Obsidian community plugins — track manifest.json only, not compiled bundles.
 # main.js is large & re-downloadable; full inventory in docs/obsidian-plugins-backup.md
