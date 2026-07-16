@@ -14,12 +14,12 @@
 | **uitk** [готов] | UI Toolkit: экраны UXML/USS, дизайн-система токенов, компоненты, MVVM, UI-тесты. |
 | **combat-sim** [готов] | Боевая симуляция: детерминированное ядро 30 Гц, эффекты, displacement/separation, способности, юнит-POCO + контракт развязки sim→presentation. |
 | **gdd-scribe** [готов] | Ведение ГДД (Obsidian-vault): роль писарь-редактор; append-only ADR-журнал (`0.7`), решено→разнесено (single source), термины через глоссарий (`0.4`), мета в frontmatter (`title`/`order`/`status`); артефакты — vision/столпы/Mermaid/Dataview-дашборд; целевые папки-кластеры + латинские слаги. **Тянет за собой миграцию vault (см. ниже).** |
+| **data-authoring** [готов] | Контент-слой: 3 слоя `SO→POCO→DTO`, `id = domain.name` (закрытый `ContentDomains`), контент-SO (`UnitData`/`RelicData`/`EffectData`/…), стат-блок через `Override` + `StatsConfig`, реестр `IContentDatabase`, лок-ключи `{id}.suffix` (RU-only), валидация (`ContentValidationService`), запреты (Odin **Serializer**, curve в тике, `Resources.Load`, тихий null-fallback, мутация SO), Addressables только под Loc, source-namespace шов под моды (не построен). | Владеет ОПРЕДЕЛЕНИЕМ (SO/баланс/id/loc/состав); ПОВЕДЕНИЕ эффекта — `combat-sim`; ОКНО Content Hub — `content-hub`; плумбинг сейвов — `save-system`. Odin **Inspector** разрешён, Serializer забанен. |
 
 ## Ближайшая очередь (утверждено)
 
 | Скилл | Покрывает | Границы / стык |
 |---|---|---|
-| **data-authoring** [план] | Контент-слой: 3 слоя `SO→POCO→DTO`, `id = domain.name`, `EffectData`/`UnitData`/`VesselData`, `StatsConfig`/`Override`, конфиг-бейк, запреты (Odin Serializer, curve в тике, мутация SO), Addressables только под Loc. | Владеет ОПРЕДЕЛЕНИЕМ эффекта (SO, баланс, id, loc); ПОВЕДЕНИЕ — за `combat-sim`. Взаимная ссылка. |
 | **gamefeel-vfx** [план] | Джус и визуальный фидбэк: `CombatFeelDirector`/`TimeScaleService` (правила «значимости»), Pixel VFX/бёрсты, `DeathShatter`, screen shake, hitstop, LitMotion-твины, config-SO фидбэка. Зона, которую `combat-sim` намеренно НЕ покрывает. | Визуальную приёмку делает Макс; скилл держит контракт feel + технику. Стык с `combat-sim` (шов событий) и `uitk`. |
 | **project-conventions** [план] | Bundle мелких HARD-правил: тесты-под-игру (не наоборот), loc-ключи RU-only, git-flow master/dev + squash→delete + коммиты только от Max Gaida. | Сквозной; gdd вынесен в отдельный `gdd-scribe`. |
 | **audio-sfx** [план] | FMOD за `IAudioService`, банки в StreamingAssets, ~30 событий, готчи `fmodstudiocl`. | Повышен из кандидатов (2026-07-16) — приоритетнее прочих нишевых. |
