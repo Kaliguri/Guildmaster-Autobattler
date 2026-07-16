@@ -1,5 +1,7 @@
-﻿**Статус:** Draft
-
+---
+title: Лор
+order: 13
+status: draft
 ---
 
 ## Сеттинг
