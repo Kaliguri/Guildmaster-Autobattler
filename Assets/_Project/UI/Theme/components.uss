@@ -17,11 +17,16 @@
     justify-content: center;
 }
 
-/* --- Панель: латунная рамка, острые углы --- */
+/* --- Панель: пиксель-арт рамка Honeti (перекрашена в нашу палитру, 9-slice) --- */
 .gm-panel {
     background-color: var(--gm-color-surface-panel);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 3px;
+    border-width: 0;
     border-radius: var(--gm-radius-0);
     padding: var(--gm-inset-panel);
     min-width: 260px;
@@ -42,62 +47,49 @@
     margin-bottom: var(--gm-space-3);
 }
 
-/* --- Кнопка (secondary по умолчанию) --- */
+/* --- Кнопка (secondary по умолчанию): пиксель-арт контур Honeti (9-slice) --- */
+/* background-color ОБЯЗАТЕЛЕН: центр контур-спрайта прозрачный, без него проступает
+   дефолтный светло-серый фон Button из темы Unity. */
 .gm-button {
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 3px;
+    border-width: 0;
     border-radius: var(--gm-radius-0);
     color: var(--gm-color-text);
     font-size: var(--gm-font-body);
     padding: var(--gm-space-2) var(--gm-space-4);
     margin-top: var(--gm-space-2);
     margin-bottom: var(--gm-space-2);
-    transition-property: background-color, border-color;
-    transition-duration: 0.08s;
 }
 
 .gm-button:hover {
-    background-color: var(--gm-color-hover-surface);
-    border-color: var(--gm-color-hover-border);
-}
-
-.gm-button:active {
-    background-color: var(--gm-color-accent);
-    border-color: var(--gm-color-accent-active);
-    color: var(--gm-color-text-on-accent);
-}
-
-.gm-button:focus {
-    border-color: var(--gm-color-focus-ring);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
 }
 
 .gm-button:disabled {
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
     color: var(--gm-color-disabled-text);
-    border-color: var(--gm-color-border-subtle);
     opacity: 1;
 }
 
-/* --- Кнопка: primary (латунная заливка) — не более одной на экран --- */
+/* --- Кнопка: primary (латунная заливка Honeti) — не более одной на экран --- */
 .gm-button--primary {
-    background-color: var(--gm-color-accent);
-    border-color: var(--gm-color-accent-active);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
     color: var(--gm-color-text-on-accent);
 }
 
 .gm-button--primary:hover {
-    background-color: var(--gm-color-accent-hover);
-    border-color: var(--gm-color-hover-border);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
 }
 
-.gm-button--primary:active {
-    background-color: var(--gm-color-accent-active);
-}
-
-/* Disabled primary: приглушённая латунь, НЕ серый «сломанный» бокс — читается как «ещё недоступна». */
+/* Disabled primary: та же тусклая деревянная плашка, что и у secondary. */
 .gm-button--primary:disabled {
-    background-color: var(--gm-color-accent-active);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
     color: var(--gm-color-text-muted);
     opacity: 0.55;
 }
