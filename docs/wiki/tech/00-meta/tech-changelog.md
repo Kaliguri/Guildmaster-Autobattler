@@ -11,7 +11,7 @@ updated: 2026-07-16
 
 > Что мы сознательно отложили, что недавно починили (и почему), и какие вопросы открыты. Живая страница: сюда сваливаем технические решения и долг, чтобы они не терялись и взрывались не внезапно, а по плану.
 >
-> Связано с [[tech/explanation/index|Explanation - Code Map]], [[tech/explanation/netcode|Explanation - Netcode]].
+> Связано с [[tech/20-explanation/index|Explanation - Code Map]], [[tech/20-explanation/netcode|Explanation - Netcode]].
 
 ---
 
@@ -19,16 +19,16 @@ updated: 2026-07-16
 
 | Дата | Решение | Где подробно |
 |---|---|---|
-| 2026-06-19 | Сетевая модель — **host-authoritative** (не lockstep) | [[tech/explanation/netcode|Explanation - Netcode]] |
-| 2026-06-19 | `SimSyncProbe` запаркован в `Net/_Parked/` (lockstep-инструмент) | [[tech/explanation/netcode|Explanation - Netcode]] |
-| 2026-06-19 | **«Эффекты кормят статы»**: Lifesteal/реген — статы-накопители; временные баффы = эффект со `StatModifierComponent`. `LifestealComponent` избыточен | [[tech/explanation/data-stats-damage|Explanation - Data, Stats, Damage]] §4, [[tech/explanation/effects-abilities|Explanation - Effects & Abilities]] |
-| 2026-06-19 | Анимация юнитов — **пиксель-кадровая** (sprite sheets), не скелетная | [[tech/explanation/presentation|Explanation - Presentation]] |
-| 2026-06-19 | SO-слой — **простой сейчас, моддинг потом** (прямые ссылки, id по мере нужды; UGC — post-festival) | [[tech/planning/steam-workshop|Reference - Steam Workshop]] |
-| — | Симуляция отделена от презентации (чистый C#-сим, read-only визуал) | [[tech/explanation/simulation|Explanation - Simulation & Tick]], [[tech/explanation/presentation|Explanation - Presentation]] |
-| — | Никаких синглтонов — только DI через VContainer | [[tech/explanation/di-events|Explanation - DI & Events]] |
-| — | Потенция эффекта — снимок при наложении, не пересчитывается при стаке | [[tech/explanation/effects-abilities|Explanation - Effects & Abilities]] §4.2 |
+| 2026-06-19 | Сетевая модель — **host-authoritative** (не lockstep) | [[tech/20-explanation/netcode|Explanation - Netcode]] |
+| 2026-06-19 | `SimSyncProbe` запаркован в `Net/_Parked/` (lockstep-инструмент) | [[tech/20-explanation/netcode|Explanation - Netcode]] |
+| 2026-06-19 | **«Эффекты кормят статы»**: Lifesteal/реген — статы-накопители; временные баффы = эффект со `StatModifierComponent`. `LifestealComponent` избыточен | [[tech/20-explanation/data-stats-damage|Explanation - Data, Stats, Damage]] §4, [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]] |
+| 2026-06-19 | Анимация юнитов — **пиксель-кадровая** (sprite sheets), не скелетная | [[tech/20-explanation/presentation|Explanation - Presentation]] |
+| 2026-06-19 | SO-слой — **простой сейчас, моддинг потом** (прямые ссылки, id по мере нужды; UGC — post-festival) | [[tech/40-planning/steam-workshop|Reference - Steam Workshop]] |
+| — | Симуляция отделена от презентации (чистый C#-сим, read-only визуал) | [[tech/20-explanation/simulation|Explanation - Simulation & Tick]], [[tech/20-explanation/presentation|Explanation - Presentation]] |
+| — | Никаких синглтонов — только DI через VContainer | [[tech/20-explanation/di-events|Explanation - DI & Events]] |
+| — | Потенция эффекта — снимок при наложении, не пересчитывается при стаке | [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]] §4.2 |
 | 2026-07-10 | **Смещение — это эффект** (тег `KnockUp`, `Neutral` → длительность не скейлится; траекторию всё равно ведёт `DisplacementSystem`). Единый шов **`EffectExpired`** вместо `UnitDisplaced` — реактивы фильтруют по тегам эффекта + команде юнита | §2.6 |
-| 2026-07-11 | **Контент-каркас (Фаза 4)**: `ContentDefinition`-база + стабильные id `domain.name`, `ContentDatabase` **единым плоским списком** (не per-domain), `StatsConfig` с базой статов + реликвии как Flat-диффы, `IAudioService` → `Core.Audio`, часть тайминг-констант оставлена в `SimConstants` | §2.7, [[tech/reference/data-layer|Reference - Data Layer]] §12 |
+| 2026-07-11 | **Контент-каркас (Фаза 4)**: `ContentDefinition`-база + стабильные id `domain.name`, `ContentDatabase` **единым плоским списком** (не per-domain), `StatsConfig` с базой статов + реликвии как Flat-диффы, `IAudioService` → `Core.Audio`, часть тайминг-констант оставлена в `SimConstants` | §2.7, [[tech/10-reference/data-layer|Reference - Data Layer]] §12 |
 
 ---
 
@@ -48,7 +48,7 @@ updated: 2026-07-16
 | ⑨ | Ручной DI-бойлерплейт (10 `Resolve` на конструктор) | `WithParameter("armorK", …)` + авторазрешение | `CombatLifetimeScope` |
 | — | `LifestealComponent` дублирует стат-путь под моделью B | Помечен баннером «избыточен, см. 07 §3.7» (удаление — позже) | `LifestealComponent` |
 
-> ⑧ (сетевая модель) — не «фикс», а решение: см. [[tech/explanation/netcode|Explanation - Netcode]].
+> ⑧ (сетевая модель) — не «фикс», а решение: см. [[tech/20-explanation/netcode|Explanation - Netcode]].
 
 ---
 
@@ -157,7 +157,7 @@ updated: 2026-07-16
 
 ## 2.7 Changelog 2026-07-11 — Фаза 4 «Контент-каркас» (пакеты 0–7)
 
-Ветка `feat/content-framework` (13 коммитов над `dev`). Построен весь слой данных по [[tech/reference/data-layer|Reference - Data Layer]] §10, порядок 0→7 пройден целиком. **221/221 EditMode зелёные.** Дизайн-файл 13 переведён в статус «Реализовано» (+§12 отступления).
+Ветка `feat/content-framework` (13 коммитов над `dev`). Построен весь слой данных по [[tech/10-reference/data-layer|Reference - Data Layer]] §10, порядок 0→7 пройден целиком. **221/221 EditMode зелёные.** Дизайн-файл 13 переведён в статус «Реализовано» (+§12 отступления).
 
 | Пакет | Что | Ключевое |
 |---|---|---|
@@ -170,7 +170,7 @@ updated: 2026-07-16
 | **6** `e5c0cca1` | Localization EN/RU + Addressables-плумбинг | Addressables 2.3.1→2.3.16; таблицы `Content`(+`UI`-stub), Locales en/ru; `ILocalizationService` (Core) + `LocalizationService` (Game); лок-помощник Name/Desc в инспекторе + create-missing-keys; валидация ключей §8.4 (7 реликвий name+desc, 13 эффектов name) |
 | **7** `cd70c751` | `AudioCatalog` + резолвер (FMOD-шов) | `AudioAction`-enum, `AudioCatalog` SO, `AudioResolver` (`{id}.{action}`→дефолт действия→тишина+лог, чисто-тестируемый), `AudioPresenter` (MessagePipe DamageDealt→hit / UnitDied→death). Звука ещё нет — `IAudioService` = Debug.Log-stub |
 
-**Отступления от дизайна** (полная таблица — [[tech/reference/data-layer|Reference - Data Layer]] §12): (1) `ContentDatabase` единым плоским списком, не per-domain §3.6; (2) `DisplayNameKey` убран — имя только через лок-ключи; (3) `StatsConfig` получил базу статов, реликвии переписаны как Flat-диффы (числа провизорные, баланс за Максом); (4) `IAudioService` переехал в `Core.Audio` (зеркалит `ILocalizationService`); (5) `AiTickRate`/`MaxAttackAnimTicks`/`MinWindupTicks` оставлены в `SimConstants` (структурные/тайминговые, не балансные ручки); (6) деспаун снаряда по `CameraZone`, не по краю арены.
+**Отступления от дизайна** (полная таблица — [[tech/10-reference/data-layer|Reference - Data Layer]] §12): (1) `ContentDatabase` единым плоским списком, не per-domain §3.6; (2) `DisplayNameKey` убран — имя только через лок-ключи; (3) `StatsConfig` получил базу статов, реликвии переписаны как Flat-диффы (числа провизорные, баланс за Максом); (4) `IAudioService` переехал в `Core.Audio` (зеркалит `ILocalizationService`); (5) `AiTickRate`/`MaxAttackAnimTicks`/`MinWindupTicks` оставлены в `SimConstants` (структурные/тайминговые, не балансные ручки); (6) деспаун снаряда по `CameraZone`, не по краю арены.
 
 > **NB по контенту:** база = 28 записей (7 реликвий + 13 эффектов + 7 AI-пресетов + 1 болванчик `enemy.training_dummy`). `VesselData`/`TraitData`/`ItemData`-ассетов ещё нет — типы готовы, наполнение по мере строительства флоу. EN-переводы реликвий — черновик (Макс полирует позже). FMOD-звук и VFX-каталог — Фаза 7/9. Опциональный хвост Фазы 4: перевод реликвий с общего temp-визуала (`MedievalWarrior`) на свои по мере готовности арта (Pack 2/3 нарезаны).
 
@@ -266,7 +266,7 @@ updated: 2026-07-16
 
 ## 4. Главная будущая таска (вынесено отдельно)
 
-> 🎯 **Сетевой кооп — host-authoritative (Фаза MP).** Репликация состояния юнитов через NGO, клиент рендерит из реплик-состояния, гейт тика на хосте, релей команд для полного ввода, синхрон паузы, late-join/реконнект, сид боя от хоста. Полный состав — [[tech/explanation/netcode|Explanation - Netcode]] §4. Сейчас не трогаем (в одиночке сеть спит).
+> 🎯 **Сетевой кооп — host-authoritative (Фаза MP).** Репликация состояния юнитов через NGO, клиент рендерит из реплик-состояния, гейт тика на хосте, релей команд для полного ввода, синхрон паузы, late-join/реконнект, сид боя от хоста. Полный состав — [[tech/20-explanation/netcode|Explanation - Netcode]] §4. Сейчас не трогаем (в одиночке сеть спит).
 
 ---
 

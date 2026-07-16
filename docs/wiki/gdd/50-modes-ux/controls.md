@@ -6,9 +6,9 @@ status: draft
 
 > Полная раскладка управления игрока: камера и бой. Единый источник правды для клавиш — синхронно с кодом слоя ввода.
 >
-> Связано: [[tech/reference/input-camera|Reference - Input & Camera]], [[combat-system]].
+> Связано: [[tech/10-reference/input-camera|Reference - Input & Camera]], [[combat-system]].
 
-**Статус:** актуально на 2026-07-10 (ветка `feat/input-system-and-camera`). Технику см. в [[tech/reference/input-camera|Reference - Input & Camera]]. При изменении клавиш — править и здесь, и в `InputService`/`GuildmasterCommands`.
+**Статус:** актуально на 2026-07-10 (ветка `feat/input-system-and-camera`). Технику см. в [[tech/10-reference/input-camera|Reference - Input & Camera]]. При изменении клавиш — править и здесь, и в `InputService`/`GuildmasterCommands`.
 
 ---
 
