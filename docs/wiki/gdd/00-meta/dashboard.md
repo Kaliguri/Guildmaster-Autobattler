@@ -1,5 +1,5 @@
 ---
-title: Пульт ГДД (обзор)
+title: Main Page
 order: 0
 status: living
 ---
