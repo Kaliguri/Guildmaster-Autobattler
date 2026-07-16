@@ -22,6 +22,7 @@ description: >-
   sim-логике (combat-sim), ОПРЕДЕЛЕНИЮ игрового контента и id (UnitData/EffectData,
   ContentDomains — data-authoring; звук лишь резолвит по чужому id), самому
   FMOD-Studio-проекту и звуковому контенту/сведению (аудио-дизайнер/Макс).
+  Инженерную тех-доку об аудио-слое (docs/wiki/tech) ведёт tech-scribe.
 ---
 
 # Audio — рабочий контур Guildmaster

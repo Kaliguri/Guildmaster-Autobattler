@@ -8,7 +8,8 @@ description: >-
   панели, дизайн-система, или когда правишь что-либо под Assets/_Project/UI и
   Assets/_Project/Scripts/UI. Срабатывай, даже если слова «UI Toolkit» нет, но по
   сути строится или правится игровой интерфейс. Не применять к боевому uGUI-HUD
-  (Image.Filled и т.п.) и к inspector-логике вне UITK.
+  (Image.Filled и т.п.) и к inspector-логике вне UITK. Инженерную тех-доку об
+  UI-слое (docs/wiki/tech) ведёт tech-scribe.
 ---
 
 # UI Toolkit — рабочий контур Guildmaster

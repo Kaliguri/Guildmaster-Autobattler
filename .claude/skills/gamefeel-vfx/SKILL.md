@@ -22,7 +22,8 @@ description: >-
   FMOD, стингеры, микс — это скилл audio), поведению эффектов и sim-логике
   (combat-sim), ОПРЕДЕЛЕНИЮ VfxData/пресетов как контента-SO (id, баланс — это
   data-authoring; здесь спавн-механика и пул), боевому uGUI-HUD (Image.Filled) и
-  рантайм-UITK-экранам (uitk).
+  рантайм-UITK-экранам (uitk). Инженерную тех-доку о джус/VFX-слое
+  (docs/wiki/tech) ведёт tech-scribe.
 ---
 
 # Gamefeel & VFX — рабочий контур Guildmaster

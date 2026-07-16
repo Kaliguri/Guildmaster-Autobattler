@@ -19,6 +19,7 @@ description: >-
   screen shake, hitstop, slowmo-политика, VFX/PixelBurst/DeathShatter,
   FloatingText, feel-конфиги — это скилл gamefeel-vfx; здесь только КОНТРАКТ
   боевого времени TimeScaleService), звуку (IAudioService, FMOD — скилл audio).
+  Инженерную тех-доку об этих системах (docs/wiki/tech) ведёт tech-scribe.
 ---
 
 # Combat Sim — рабочий контур Guildmaster

@@ -19,7 +19,8 @@ description: >-
   Content Hub (ContentHubWindow — будущий скилл content-hub; здесь только
   контракты данных, которые окно правит); плумбингу сейв/загрузки (Easy Save 3,
   Steam Cloud — будущий save-system; здесь только форма DTO); дизайн-тексту ГДД
-  (gdd-scribe); рантайм-UI (uitk).
+  (gdd-scribe); рантайм-UI (uitk). Инженерную тех-доку о дата-слое
+  (docs/wiki/tech) ведёт tech-scribe.
 ---
 
 # Data Authoring — рабочий контур Guildmaster
