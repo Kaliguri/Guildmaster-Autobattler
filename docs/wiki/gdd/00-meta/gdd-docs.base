@@ -1,0 +1,31 @@
+filters:
+  or:
+    - file.folder == "gdd/00-meta"
+    - file.folder == "gdd/10-vision"
+    - file.folder == "gdd/20-combat"
+    - file.folder == "gdd/30-run-meta"
+    - file.folder == "gdd/40-content"
+    - file.folder == "gdd/50-modes-ux"
+properties:
+  note.title:
+    displayName: Документ
+  note.status:
+    displayName: Статус
+  note.order:
+    displayName: "№"
+  file.folder:
+    displayName: Кластер
+views:
+  - type: cards
+    name: Галерея
+    order:
+      - note.title
+      - note.status
+      - file.folder
+  - type: table
+    name: Таблица
+    order:
+      - note.order
+      - note.title
+      - note.status
+      - file.folder
