@@ -30,7 +30,7 @@ MonoBehaviour:
   _stats:
   - Stat: 0
     Op: 3
-    Value: 1600
+    Value: 2400
   - Stat: 3
     Op: 3
     Value: 6
@@ -98,7 +98,8 @@ MonoBehaviour:
   - monk
   - controller
   - common
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0

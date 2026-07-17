@@ -30,7 +30,7 @@ MonoBehaviour:
   _stats:
   - Stat: 0
     Op: 3
-    Value: 2400
+    Value: 3600
   - Stat: 7
     Op: 3
     Value: 90
@@ -100,7 +100,8 @@ MonoBehaviour:
   - treant
   - thorns
   - common
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0
