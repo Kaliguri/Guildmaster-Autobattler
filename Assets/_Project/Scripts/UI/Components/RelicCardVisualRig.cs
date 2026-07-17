@@ -78,6 +78,9 @@ namespace Guildmaster.UI.Components
                 if (entry.Animator != null)
                 {
                     entry.Animator.enabled = true;
+                    // Маркеры клипов — это ДАННЫЕ (ClipMarkers), не колбэки: глушим fireEvents, иначе Attack на
+                    // ховере шлёт AnimationEvent 'Marker' в пустоту («has no receiver»). Тот же инвариант, что в UnitView.
+                    entry.Animator.fireEvents = false;
                     entry.Animator.Play(IdleHash, 0, 0f);
                 }
             }
