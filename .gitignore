@@ -9,6 +9,9 @@
 [Mm]emoryCaptures/
 [Rr]ecordings/
 
+# SimBench balance reports (generated tool output)
+BalanceReports/
+
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
