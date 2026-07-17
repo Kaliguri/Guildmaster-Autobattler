@@ -12,6 +12,9 @@ namespace Guildmaster.UI
         /// <summary>ESC: пусто → открыть системное меню; вложенный экран → назад; корневой → закрыть всё.</summary>
         void ToggleSystemMenu();
 
+        /// <summary>Открыть настройки оверлеем поверх текущего экрана (топбар «Опции» во время забега). Закрытие — Pop, забег не рвётся.</summary>
+        void OpenSettings();
+
         /// <summary>Закрыть все экраны и снять глушение ввода.</summary>
         void CloseAll();
 

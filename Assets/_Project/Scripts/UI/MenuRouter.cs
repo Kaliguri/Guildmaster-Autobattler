@@ -81,6 +81,14 @@ namespace Guildmaster.UI
             Push(BuildLoadoutScreen());
         }
 
+        // Настройки поверх текущего экрана (топбар «Опции»): Push, а не ToggleSystemMenu — иначе при одном
+        // экране на стеке (карта забега) сработал бы CloseAll и оборвал бы забег. Save/Cancel в настройках — Pop.
+        public void OpenSettings()
+        {
+            if (_root == null || _settingsUxml == null) return;
+            Push(BuildSettingsScreen());
+        }
+
         public void ToggleSystemMenu()
         {
             if (_root == null) return;

@@ -151,7 +151,7 @@ namespace Guildmaster.UI
                 _runTopBar,
                 key => _loc?.GetString(key),
                 onHub: OnHubClicked,
-                onSettings: () => _router.ToggleSystemMenu(),
+                onSettings: () => _router.OpenSettings(),
                 onStart: () => _clock?.RequestStart());
             _topBar.Root.style.display = DisplayStyle.None; // скрыта, пока нет активного боя
             _doc.rootVisualElement.Add(_topBar.Root);
