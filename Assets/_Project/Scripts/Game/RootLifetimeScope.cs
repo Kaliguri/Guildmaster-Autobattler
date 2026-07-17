@@ -65,6 +65,10 @@ namespace Guildmaster.Game
             builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf().As<IMenuRouter>();
             builder.RegisterComponentInHierarchy<UiRootBootstrap>();
 
+            // Точка входа игры (D1): GameBootstrap в персистентной CoreScene получает GameFlow и крутит
+            // верхний цикл меню→забег→меню. Инъекция полей — через RegisterComponentInHierarchy.
+            builder.RegisterComponentInHierarchy<GameBootstrap>();
+
             // Локализация: сервис поверх String Tables (вики «13» §5). Потребители (UI) — Фаза 7.
             builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();
 
