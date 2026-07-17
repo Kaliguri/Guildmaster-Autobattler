@@ -46,6 +46,8 @@
     background-image: url("../../Art/UI/Honeti-gm/Separator_gm.png");
     -unity-slice-left: 1;
     -unity-slice-right: 1;
+    -unity-slice-top: 1;
+    -unity-slice-bottom: 1;
     margin-top: var(--gm-space-2);
     margin-bottom: var(--gm-space-3);
 }
