@@ -29,6 +29,7 @@ updated: 2026-07-16
 | — | Потенция эффекта — снимок при наложении, не пересчитывается при стаке | [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]] §4.2 |
 | 2026-07-10 | **Смещение — это эффект** (тег `KnockUp`, `Neutral` → длительность не скейлится; траекторию всё равно ведёт `DisplacementSystem`). Единый шов **`EffectExpired`** вместо `UnitDisplaced` — реактивы фильтруют по тегам эффекта + команде юнита | §2.6 |
 | 2026-07-11 | **Контент-каркас (Фаза 4)**: `ContentDefinition`-база + стабильные id `domain.name`, `ContentDatabase` **единым плоским списком** (не per-domain), `StatsConfig` с базой статов + реликвии как Flat-диффы, `IAudioService` → `Core.Audio`, часть тайминг-констант оставлена в `SimConstants` | §2.7, [[tech/10-reference/data-layer|Reference - Data Layer]] §12 |
+| 2026-07-17 | **SimBench (инструменты баланса)**: headless-стенд поверх боевого ядра (editor-only, `Guildmaster.Balance[.Editor]`), метрики через outward-events, бенчи процедурные, экспорт CSV/MD. Причина: ядро уже headless-совместимо (даром не использовать грех), нужен стартовый баланс как доп-инфо для ГД. Стенд **не решает** баланс, сочетания не ловит. **Регрессия баланса в CI — вырезана** (наблюдательность на Максе). Оговорка: бой сейчас RNG-free → Monte-Carlo по сидам вырожден, закладываем шов на будущее | [[tech/40-planning/simbench|Planning - SimBench Balance Harness]] |
 
 ---
 
