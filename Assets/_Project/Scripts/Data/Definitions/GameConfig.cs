@@ -64,6 +64,13 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Пул перезапусков боя НА АКТ (реш. №65): сбрасывается в начале акта, не копится.")]
         [SerializeField] private int _restartsPerAct = 2;
 
+        [Header("Guild (starting run)")]
+        [Tooltip("Размер стартовой гильдии игрока (стандартных сосудов). GDD: 4. <=0 = дефолт 4.")]
+        [SerializeField] private int _guildSize = 4;
+
+        [Tooltip("Релик на стартовом сосуде (пустой кит) — игрок навешивает собранное в лоадауте. Пусто = relic.base.")]
+        [SerializeField] private string _startingRelicId = "relic.base";
+
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
@@ -83,5 +90,8 @@ namespace Guildmaster.Data.Definitions
         public float  SellPercent         => _sellPercent;
         public int    ShopRerollCost      => _shopRerollCost;
         public int    RestartsPerAct      => _restartsPerAct;
+
+        public int    GuildSize           => _guildSize;
+        public string StartingRelicId     => _startingRelicId;
     }
 }

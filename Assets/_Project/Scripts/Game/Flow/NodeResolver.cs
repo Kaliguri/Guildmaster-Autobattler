@@ -70,7 +70,21 @@ namespace Guildmaster.Game.Flow
                         Debug.LogWarning($"[NodeResolver] - нет BattlePresetData в контент-БД для '{node.Id}' → заглушка");
                         return new CompletedStubFlow(node.Type);
                     }
-                    var battle = new BattleFlow(preset, _scenes, _session, _localPlayer,
+
+                    // Забег деплоит СВОЮ гильдию (уточн. Макса): ростер — из RunState (4 сосуда + надетые релики),
+                    // враги — из выбранного пресета, режим — Free (фаза расстановки + «Начать» перед боем).
+                    // Пустая гильдия (dev/тест без ростера) → берём пресет как есть (канон-ростер, его режим).
+                    BattlePresetData effective = preset;
+                    PlayerSlot[] guildRoster = GuildRoster.Resolve(_runStates.Current, _content);
+                    if (guildRoster.Length > 0)
+                    {
+                        ItemData[] party = GuildRoster.ResolveItems(_runStates.Current.PartyItemIds, _content);
+                        effective = BattlePresetData.CreateRuntime(
+                            preset.Encounter, guildRoster, DeploymentMode.Free, party, preset.IsElite,
+                            $"battle.run.{node.Id}");
+                    }
+
+                    var battle = new BattleFlow(effective, _scenes, _session, _localPlayer,
                                                 () => _runStates.TrySpendRestart()); // пул перезапусков акта (C1)
                     int rewardCount = wantElite ? 2 : 1;   // элитка — два выбора реликвии подряд (B5)
                     return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, rewardCount);

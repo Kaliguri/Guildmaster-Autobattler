@@ -87,7 +87,7 @@ namespace Guildmaster.Game.Services
             BattlePresetData preset, RewardTier tier = RewardTier.Battle, bool presentReward = true)
         {
             RunState run = _runStates.Current
-                           ?? _runStates.NewRun(DateTime.UtcNow.Ticks, Array.Empty<RosterSlot>());
+                           ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
             var ctx  = new RunContext(run, _rng, _readyGate, _intents);
             var flow = new BattleFlow(preset, _scenes, _session, _localPlayer);
@@ -120,7 +120,7 @@ namespace Guildmaster.Game.Services
                 }
                 else
                 {
-                    _runStates.NewRun(DateTime.UtcNow.Ticks, Array.Empty<RosterSlot>());
+                    _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
                 }
 
                 await RunActAsync(); // BeginAct + петля + экран исхода + чистка сейва
@@ -145,7 +145,7 @@ namespace Guildmaster.Game.Services
         public async UniTask<EventResult> RunActAsync()
         {
             RunState run = _runStates.Current
-                           ?? _runStates.NewRun(DateTime.UtcNow.Ticks, Array.Empty<RosterSlot>());
+                           ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
             _runStates.BeginAct();       // генерация карты из под-сида (no-op, если уже есть)
             _runStates.Autosave();       // зафиксировать свежую карту
@@ -171,7 +171,7 @@ namespace Guildmaster.Game.Services
         public async UniTask<EventResult> RunTextEventAsync(TextEventData ev)
         {
             RunState run = _runStates.Current
-                           ?? _runStates.NewRun(DateTime.UtcNow.Ticks, Array.Empty<RosterSlot>());
+                           ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
             var ctx  = new RunContext(run, _rng, _readyGate, _intents);
             var flow = new TextEventFlow(ev, _openEventPub, _eventEffects);

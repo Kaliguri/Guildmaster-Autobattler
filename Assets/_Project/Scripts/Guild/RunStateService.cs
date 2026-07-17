@@ -44,6 +44,32 @@ namespace Guildmaster.Guild
             return Current;
         }
 
+        /// <summary>
+        /// Начать новый забег со СТАНДАРТНОЙ стартовой гильдией (уточн. Макса 2026-07-17): гильдия — это
+        /// <see cref="GameConfig.GuildSize"/> одинаковых сосудов, у каждого базовый релик (пустой кит);
+        /// прогрессия — реликвии, которые игрок навешивает на них в лоадауте. Сосуд-контента пока нет →
+        /// <c>VesselId</c> пуст. Стартовые позиции — колонка на стороне team 0 (Free-расстановка перед боем
+        /// позволяет переставить). Дефолты-фолбэки, если конфиг не проставлен (старый ассет).
+        /// </summary>
+        public RunState NewDefaultRun(long seed)
+        {
+            int    size    = _config.GuildSize > 0 ? _config.GuildSize : 4;
+            string relicId = string.IsNullOrEmpty(_config.StartingRelicId) ? "relic.base" : _config.StartingRelicId;
+
+            var guild = new RosterSlot[size];
+            float top = (size - 1) * 0.5f; // центрируем колонку по вертикали
+            for (int i = 0; i < size; i++)
+            {
+                guild[i] = new RosterSlot
+                {
+                    VesselId      = string.Empty,
+                    RelicId       = relicId,
+                    SavedPosition = new UnityEngine.Vector2(-6f, (top - i) * 1.5f),
+                };
+            }
+            return NewRun(seed, guild);
+        }
+
         /// <summary>Загрузить забег из автосейва (или null, если нет). Устанавливает <see cref="Current"/>.</summary>
         public RunState Load()
         {

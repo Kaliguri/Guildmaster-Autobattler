@@ -34,6 +34,15 @@ namespace Guildmaster.Data.Definitions
         public VesselData Vessel   => _vessel;
         public Vector2    Position => _position;
         public IReadOnlyList<ItemData> Items => _items;
+
+        /// <summary>Рантайм-слот (бридж гильдии игрока в бой): собирается из <c>RunState</c>, не из инспектора.</summary>
+        public PlayerSlot(RelicData relic, VesselData vessel, Vector2 position, ItemData[] items = null)
+        {
+            _relic    = relic;
+            _vessel   = vessel;
+            _position = position;
+            _items    = items;
+        }
     }
 
     /// <summary>
@@ -66,5 +75,25 @@ namespace Guildmaster.Data.Definitions
         public DeploymentMode           DeploymentMode => _deploymentMode;
         public IReadOnlyList<ItemData>  PartyItems     => _partyItems;
         public bool                     IsElite        => _isElite;
+
+        /// <summary>
+        /// Собрать ТРАНЗИЕНТНЫЙ пресет боя в рантайме (узел забега): враги — из авторского пресета, а player-ростер —
+        /// из гильдии игрока (<c>RunState</c>), режим — обычно <see cref="DeploymentMode.Free"/> (расстановка перед
+        /// боем). Не ассет, в контент-БД не регистрируется, живёт один бой. Так узел деплоит СВОЮ четвёрку, а не
+        /// канон-ростер пресета. Весь боевой пайплайн (загрузчик/расстановка) остаётся нетронутым.
+        /// </summary>
+        public static BattlePresetData CreateRuntime(
+            EncounterData encounter, PlayerSlot[] roster, DeploymentMode mode,
+            ItemData[] partyItems = null, bool isElite = false, string id = "battle.runtime")
+        {
+            var preset = CreateInstance<BattlePresetData>();
+            preset._encounter      = encounter;
+            preset._roster         = roster ?? System.Array.Empty<PlayerSlot>();
+            preset._deploymentMode = mode;
+            preset._partyItems     = partyItems;
+            preset._isElite        = isElite;
+            preset.SetId(id);
+            return preset;
+        }
     }
 }
