@@ -110,6 +110,22 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
+        public void RunAct_AwardsBattleGold_PerBattleNode()
+        {
+            var ctx = NewRunWithMap();
+            int startGold = _runStates.Gold; // = GameConfig.StartGold (код-дефолт 100)
+            var runner = NewRunner(new StubResolver(_ => EventResult.Completed), new CountingReward());
+
+            runner.RunActAsync(ctx).GetAwaiter().GetResult();
+
+            int battleNodes = ctx.RunState.Map.Nodes.Count(n =>
+                n.Cleared && n.Type != MapNodeType.Start && IsBattleish(n.Type));
+            // +20 (GameConfig.BattleGoldReward, код-дефолт) за каждый пройденный боевой узел.
+            Assert.AreEqual(startGold + 20 * battleNodes, _runStates.Gold);
+            Assert.Greater(_runStates.Gold, startGold, "На пути до босса золото прибавилось (босс — боевой узел).");
+        }
+
+        [Test]
         public void RunAct_Autosaves_DuringTraversal()
         {
             var ctx = NewRunWithMap();

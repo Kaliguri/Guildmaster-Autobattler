@@ -89,6 +89,8 @@ namespace Guildmaster.Game
 
             // Витрина наград после боя (A3): катит 1-из-3 реликов из контент-БД (детерминирован через RNG).
             builder.Register<RewardService>(Lifetime.Singleton);
+            // Ценообразование реликвий (B1): цена по KitPower + разброс на сиде витрины.
+            builder.Register<RelicPricer>(Lifetime.Singleton);
             // Показ награды (вынесен из GameFlow — переиспользуют петля акта и legacy-вход одного боя).
             builder.Register<RewardPresenter>(Lifetime.Singleton).As<IRewardPresenter>();
             // Единая кнопка «Продолжить» (A4) — бит между разрешённым узлом и возвратом на карту.

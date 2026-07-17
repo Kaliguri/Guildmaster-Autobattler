@@ -36,6 +36,34 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Потолок вместимости коллекции реликов (апгрейд в магазине не поднимет выше).")]
         [SerializeField] private int _relicCapacityMax = 16;
 
+        [Header("Economy (план act-map-run-loop §3.3)")]
+        [Tooltip("Стартовое золото забега.")]
+        [SerializeField] private int _startGold = 100;
+
+        [Tooltip("Награда золотом за победу в бою (обычный/элита/босс).")]
+        [SerializeField] private int _battleGoldReward = 20;
+
+        [Tooltip("Базовая цена покупки реликвии по KitPower: Common.")]
+        [SerializeField] private int _priceCommon = 50;
+
+        [Tooltip("Базовая цена покупки реликвии по KitPower: Cursed.")]
+        [SerializeField] private int _priceCursed = 100;
+
+        [Tooltip("Базовая цена покупки реликвии по KitPower: Divine.")]
+        [SerializeField] private int _priceDivine = 150;
+
+        [Tooltip("Случайный разброс цены вокруг базы (доля, напр. 0.2 = ±20%), детерминирован сидом.")]
+        [Range(0f, 0.9f)] [SerializeField] private float _priceSpread = 0.2f;
+
+        [Tooltip("Доля цены покупки, которую игрок получает при продаже реликвии (напр. 0.25 = 25%).")]
+        [Range(0f, 1f)] [SerializeField] private float _sellPercent = 0.25f;
+
+        [Tooltip("Стоимость реролла витрины магазина (перекат всех слотов).")]
+        [SerializeField] private int _shopRerollCost = 50;
+
+        [Tooltip("Пул перезапусков боя НА АКТ (реш. №65): сбрасывается в начале акта, не копится.")]
+        [SerializeField] private int _restartsPerAct = 2;
+
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
@@ -45,5 +73,15 @@ namespace Guildmaster.Data.Definitions
         public int    PartyBannerSlots    => _partyBannerSlots;
         public int    RelicCapacityBase   => _relicCapacityBase;
         public int    RelicCapacityMax    => _relicCapacityMax;
+
+        public int    StartGold           => _startGold;
+        public int    BattleGoldReward    => _battleGoldReward;
+        public int    PriceCommon         => _priceCommon;
+        public int    PriceCursed         => _priceCursed;
+        public int    PriceDivine         => _priceDivine;
+        public float  PriceSpread         => _priceSpread;
+        public float  SellPercent         => _sellPercent;
+        public int    ShopRerollCost      => _shopRerollCost;
+        public int    RestartsPerAct      => _restartsPerAct;
     }
 }

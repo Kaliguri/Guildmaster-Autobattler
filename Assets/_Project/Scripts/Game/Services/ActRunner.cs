@@ -74,9 +74,13 @@ namespace Guildmaster.Game.Services
                     return EventResult.Defeated;
                 }
 
-                // Узел пройден: награда (для боевых) → единая кнопка «Продолжить» → продвижение позиции, автосейв.
+                // Узел пройден: золото + награда (для боевых) → единая кнопка «Продолжить» → продвижение, автосейв.
                 RewardTier? tier = RewardTierFor(node.Type);
-                if (tier.HasValue) await _reward.PresentAsync(tier.Value);
+                if (tier.HasValue)
+                {
+                    _runStates.AwardBattleReward();       // +золото за победу (B1)
+                    await _reward.PresentAsync(tier.Value);
+                }
 
                 await _continue.WaitForContinueAsync();
 

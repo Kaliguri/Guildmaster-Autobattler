@@ -36,6 +36,7 @@ namespace Guildmaster.Guild
             Current = new RunState
             {
                 Seed          = seed,
+                Gold          = _config.StartGold,
                 RelicCapacity = _config.RelicCapacityBase,
                 Guild         = guild,
                 SlotOwner     = new int[guild.Length], // соло: все 0
@@ -70,6 +71,20 @@ namespace Guildmaster.Guild
             if (Current == null) return;
             Current.Gold = System.Math.Max(0, Current.Gold + delta);
         }
+
+        /// <summary>Текущее золото забега (0 без активного забега).</summary>
+        public int Gold => Current?.Gold ?? 0;
+
+        /// <summary>Списать золото, если хватает. false = недостаточно (ничего не списано) или нет забега.</summary>
+        public bool TrySpendGold(int amount)
+        {
+            if (Current == null || amount < 0 || Current.Gold < amount) return false;
+            Current.Gold -= amount;
+            return true;
+        }
+
+        /// <summary>Начислить награду золотом за победу в бою (из <see cref="GameConfig"/>).</summary>
+        public void AwardBattleReward() => AddGold(_config.BattleGoldReward);
 
         /// <summary>Снапшот текущего забега на диск (точка автосейва). No-op без активного забега.</summary>
         public void Autosave()
