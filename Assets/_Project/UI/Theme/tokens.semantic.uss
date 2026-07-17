@@ -46,6 +46,11 @@
     --gm-inset-control: var(--gm-space-3);
     --gm-gap-stack: var(--gm-space-3);
 
+    /* --- Редкость реликвий (рамка карточки): тускло → латунь → золото --- */
+    --gm-color-rarity-trash:  var(--gm-ink-300);    /* мусорная — сливается с деревом */
+    --gm-color-rarity-common: var(--gm-brass-700);  /* обычная — тусклая латунь (дефолт) */
+    --gm-color-rarity-unique: var(--gm-brass-200);  /* уникальная — сияющее золото */
+
     /* --- Карта акта (узлы графа + рёбра) --- */
     --gm-color-map-edge: var(--gm-ink-300);          /* тихое ребро между узлами */
     --gm-color-map-edge-active: var(--gm-brass-400); /* ребро из текущего узла к доступному */

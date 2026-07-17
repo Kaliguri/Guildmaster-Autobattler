@@ -278,6 +278,11 @@
     padding: var(--gm-space-1);
 }
 
+/* Редкость: базовый тинт рамки (интерактив ниже — hover/current/selected — переопределяет по порядку). */
+.gm-card--rarity-trash  { -unity-background-image-tint-color: var(--gm-color-rarity-trash); }
+.gm-card--rarity-common { -unity-background-image-tint-color: var(--gm-color-rarity-common); }
+.gm-card--rarity-unique { -unity-background-image-tint-color: var(--gm-color-rarity-unique); }
+
 .gm-card:hover {
     -unity-background-image-tint-color: var(--gm-color-hover-border);
 }
@@ -303,6 +308,37 @@
     font-size: var(--gm-font-sm);
     -unity-text-align: middle-center;
     white-space: normal;
+}
+
+/* Ряд info-тегов под именем: чипы переносятся, если не влезают в ширину карточки. */
+.gm-card__tags {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--gm-space-1);
+}
+
+/* Чип тега: иконка (опц.) + подпись. Тускло-акцентный, чтобы не спорить с именем. */
+.gm-card__tag {
+    flex-direction: row;
+    align-items: center;
+    margin: 2px;
+}
+
+.gm-card__tag-icon {
+    width: 18px;
+    height: 18px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-card__tag-label {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+}
+
+/* Только иконки (нет подписей) — контейнер плотнее. */
+.gm-card__tag--icon-only .gm-card__tag-label {
+    display: none;
 }
 
 /* --- Панель деталей выбранного релика --- */
