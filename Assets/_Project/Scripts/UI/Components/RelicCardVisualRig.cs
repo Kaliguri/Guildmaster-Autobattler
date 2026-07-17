@@ -78,14 +78,21 @@ namespace Guildmaster.UI.Components
                 if (entry.Animator != null)
                 {
                     entry.Animator.enabled = true;
+                    // Маркеры клипов — это ДАННЫЕ (ClipMarkers), не колбэки: глушим fireEvents, иначе Attack на
+                    // ховере шлёт AnimationEvent 'Marker' в пустоту («has no receiver»). Тот же инвариант, что в UnitView.
+                    entry.Animator.fireEvents = false;
                     entry.Animator.Play(IdleHash, 0, 0f);
                 }
             }
 
-            // Камера НА этот юнит: включена, рендерит в свою RT автоматически (URP).
+            // Камера НА этот юнит: рендерит в свою RT автоматически (URP).
+            // ВАЖНО: камера рождается disabled и включается ТОЛЬКО после назначения targetTexture —
+            // enabled-камера без RT рисует на экран (Display 0). Тот же инвариант держим в Dispose.
             var camGo = new GameObject("RigCamera") { hideFlags = HideFlags.HideAndDontSave };
             camGo.transform.SetParent(_root, false);
             var cam = camGo.AddComponent<Camera>();
+            cam.enabled          = false;                     // не рендерить, пока нет targetTexture
+            cam.depth            = -100f;                      // страховка: даже без RT не перекроет игровую камеру
             cam.orthographic     = true;
             cam.clearFlags       = CameraClearFlags.SolidColor;
             cam.backgroundColor  = new Color(0f, 0f, 0f, 0f); // прозрачный фон — карточка просвечивает
@@ -93,6 +100,7 @@ namespace Guildmaster.UI.Components
             cam.farClipPlane     = 100f;
             cam.targetTexture    = rt;
             FrameByRecommendedSize(cam, entry.Unit, pos); // кадрируем по гизмо-габариту юнита
+            cam.enabled          = true;                      // RT назначена — теперь можно рендерить
             entry.Camera = cam;
 
             _entries.Add(entry);
@@ -174,11 +182,34 @@ namespace Guildmaster.UI.Components
             for (int i = 0; i < _entries.Count; i++)
             {
                 Entry e = _entries[i];
-                if (e.Camera != null) e.Camera.targetTexture = null;
-                if (e.Rt != null) { e.Rt.Release(); Object.Destroy(e.Rt); }
+
+                // Порядок критичен (см. коммент рига): гасим камеру ПЕРЕД снятием RT, чтобы ни одного
+                // кадра не было enabled-камеры без targetTexture (иначе она рисует юнита на экран и залипает).
+                if (e.Camera != null)
+                {
+                    e.Camera.enabled = false;
+                    e.Camera.targetTexture = null;
+                    DestroyObject(e.Camera.gameObject);
+                }
+
+                // Гасим Animator перед уничтожением юнита — иначе его PlayableGraph утекает
+                // ("PlayableGraph was not destroyed").
+                if (e.Animator != null) e.Animator.enabled = false;
+                if (e.Unit != null) DestroyObject(e.Unit);
+
+                if (e.Rt != null) { e.Rt.Release(); DestroyObject(e.Rt); }
             }
             _entries.Clear();
-            if (_root != null) Object.Destroy(_root.gameObject);
+            if (_root != null) DestroyObject(_root.gameObject);
+        }
+
+        // В play-mode отложенный Destroy ок; в edit-mode (превью-стенд, UI Builder) Object.Destroy НЕ
+        // уничтожает — нужен DestroyImmediate, иначе камера-риг остаётся в сцене намертво до перезапуска.
+        private static void DestroyObject(Object obj)
+        {
+            if (obj == null) return;
+            if (Application.isPlaying) Object.Destroy(obj);
+            else Object.DestroyImmediate(obj);
         }
     }
 }

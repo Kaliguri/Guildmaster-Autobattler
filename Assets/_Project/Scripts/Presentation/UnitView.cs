@@ -264,6 +264,25 @@ namespace Guildmaster.Presentation
         /// <summary>Текущий ордер сортировки тела (Y-sort) — VFX ставим со смещением от него.</summary>
         public int BodySortingOrder => _sprite != null ? _sprite.sortingOrder : 0;
 
+        /// <summary>
+        /// Попадает ли мировая точка в спрайт тела (AABB). Используется захватом в расстановке — «схватить за
+        /// всю фигуру», а не за круг тела у ног (тот — метрика коллизии/сепарации, целиться в ступни неудобно).
+        /// </summary>
+        public bool SpriteContainsWorldPoint(Vector2 world)
+        {
+            if (_sprite == null || _sprite.sprite == null) return false;
+            Bounds b = _sprite.bounds;
+            return world.x >= b.min.x && world.x <= b.max.x && world.y >= b.min.y && world.y <= b.max.y;
+        }
+
+        /// <summary>Мировые границы спрайта тела (AABB). false = нет спрайта (ховер-подсветка возьмёт фолбэк).</summary>
+        public bool TryGetSpriteBounds(out Bounds bounds)
+        {
+            if (_sprite != null && _sprite.sprite != null) { bounds = _sprite.bounds; return true; }
+            bounds = default;
+            return false;
+        }
+
         // Сокет с учётом разворота: спрайт зеркалим через SpriteRenderer.flipX, а он НЕ зеркалит дочерние GO
         // (сокеты живут в мировой иерархии). Поэтому для смотрящего влево отражаем локальную X сокета вручную —
         // иначе дуло/грудь оказываются с «нарисованной» стороны, а не с той, куда юнит фактически повёрнут.

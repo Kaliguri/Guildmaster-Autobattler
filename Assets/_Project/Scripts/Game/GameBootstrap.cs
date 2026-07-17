@@ -15,6 +15,10 @@ namespace Guildmaster.Game
     public sealed class GameBootstrap : MonoBehaviour
     {
         [Header("A2 dev-разрез (план 11)")]
+        [Tooltip("ON: на старте прогнать ВЕСЬ АКТ через петлю (карта из сида → узлы авто-обходом). " +
+                 "Имеет приоритет над одиночным боем и ивентом. Нужен контент в БД (пресеты/ивенты).")]
+        [SerializeField] private bool _runActOnBoot;
+
         [Tooltip("ON: на старте прогнать один бой через полный BattleFlow (нужен пресет ниже). " +
                  "OFF (по умолчанию): legacy — грузить BattleScene, бой запускать dev-панелью F2.")]
         [SerializeField] private bool _runBattleFlowOnBoot;
@@ -28,6 +32,10 @@ namespace Guildmaster.Game
         [Tooltip("Стартовый текстовый ивент для дебага (StS-style). Нужен при включённом флаге ивента.")]
         [SerializeField] private TextEventData _devStartEvent;
 
+        [Tooltip("ON: legacy-вход — грузить BattleScene, бой запускать F2-панелью (без главного меню). " +
+                 "OFF (по умолчанию): главное меню → забег (D1).")]
+        [SerializeField] private bool _legacyBattleScene;
+
         [Inject] private GameFlow _gameFlow;
 
         private void Start()
@@ -38,6 +46,13 @@ namespace Guildmaster.Game
         private async UniTaskVoid StartBootAsync()
         {
             Debug.Log("[GameBootstrap] - Старт");
+
+            if (_runActOnBoot)
+            {
+                Flow.EventResult act = await _gameFlow.RunActAsync();
+                Debug.Log($"[GameBootstrap] - забег (акт) завершён: {act.Outcome}");
+                return;
+            }
 
             if (_runTextEventOnBoot && _devStartEvent != null)
             {
@@ -56,7 +71,13 @@ namespace Guildmaster.Game
             if (_runBattleFlowOnBoot)
                 Debug.LogWarning("[GameBootstrap] - флаг BattleFlow включён, но пресет не назначен → legacy-вход");
 
-            await _gameFlow.BootAsync();
+            if (_legacyBattleScene)
+            {
+                await _gameFlow.BootAsync(); // legacy: грузить BattleScene, бой запускать F2-панелью
+                return;
+            }
+
+            await _gameFlow.RunGameAsync(); // D1: главное меню → забег → меню
         }
     }
 }

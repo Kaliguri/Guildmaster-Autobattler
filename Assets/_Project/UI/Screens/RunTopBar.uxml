@@ -4,6 +4,8 @@
         <ui:VisualElement class="gm-topbar__group">
             <ui:Button name="btn-hub" text="Гильдия" class="gm-topbar__btn" />
             <ui:Button name="btn-settings" text="Опции" class="gm-topbar__btn" />
+            <!-- ХП забега (перезапуски-на-акт, реш. №65): всегда виден. Пипсы наполняет код. -->
+            <ui:VisualElement name="topbar-hp" class="gm-topbar__hp" />
             <ui:Label name="topbar-gold" text="Золото: 0" class="gm-topbar__stat" />
         </ui:VisualElement>
 

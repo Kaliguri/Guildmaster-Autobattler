@@ -30,7 +30,7 @@ MonoBehaviour:
   _stats:
   - Stat: 0
     Op: 3
-    Value: 400
+    Value: 600
   - Stat: 7
     Op: 3
     Value: 45

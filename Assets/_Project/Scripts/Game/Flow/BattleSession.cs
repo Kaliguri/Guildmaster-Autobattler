@@ -37,6 +37,13 @@ namespace Guildmaster.Game.Flow
         /// <summary>root → child: перезапустить бой (ретрай). Взводит новое ожидание. false = некому (нет боя).</summary>
         bool RequestRestart();
 
+        /// <summary>
+        /// dev → перезапустить текущий бой НА МЕСТЕ, НЕ трогая ожидание исхода (в отличие от <see cref="RequestRestart"/>):
+        /// текущий await флоу остаётся валиден и разрешится концом перезапущенного боя. Для dev-хоткея R.
+        /// false = боя нет (некому перезапускать). Не для ретрай-логики флоу — только ручной dev-перезапуск.
+        /// </summary>
+        bool RestartInPlace();
+
         // ── Верхняя панель забега: часы + фаза + старт (план 12 Фаза 2) ──────────────
         // Read-side (Phase / ElapsedSeconds / RequestStart) — в IBattleClock (Data). Здесь только write-side,
         // которым боевой скоуп (DeploymentController) публикует состояние.
@@ -105,6 +112,13 @@ namespace Guildmaster.Game.Flow
             if (_restart == null) return false;
             ArmOutcome();       // ждём новый исход до фактического перезапуска
             _restart.Invoke();
+            return true;
+        }
+
+        public bool RestartInPlace()
+        {
+            if (_restart == null) return false;
+            _restart.Invoke();  // БЕЗ ArmOutcome: текущее ожидание флоу цело, разрешится концом нового боя
             return true;
         }
 

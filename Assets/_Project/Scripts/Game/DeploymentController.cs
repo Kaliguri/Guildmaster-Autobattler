@@ -40,6 +40,7 @@ namespace Guildmaster.Game
         private readonly ArenaLayoutData  _layout;
         private readonly IPublisher<OpenLoadoutRequest> _openLoadoutPub;
         private readonly ISubscriber<EquipRelicRequest> _equipSub;
+        private readonly ISubscriber<EquipRelicAtCursorRequest> _equipAtCursorSub;
         private readonly IBattleSession   _session;
 
         // Редактируемый ростер игрока в этой фазе (позиции/релики меняются перетаскиванием и loadout'ом).
@@ -50,6 +51,7 @@ namespace Guildmaster.Game
         private DeploymentView _view;
         private Camera _camera;
         private IDisposable _equipSubscription;
+        private IDisposable _equipAtCursorSubscription;
 
         private bool _deploying;
         private RuntimeUnit _dragged;
@@ -68,6 +70,7 @@ namespace Guildmaster.Game
             ArenaLayoutData layout,
             IPublisher<OpenLoadoutRequest> openLoadoutPub,
             ISubscriber<EquipRelicRequest> equipSub,
+            ISubscriber<EquipRelicAtCursorRequest> equipAtCursorSub,
             IBattleSession session)
         {
             _loader        = loader;
@@ -78,6 +81,7 @@ namespace Guildmaster.Game
             _layout        = layout;
             _openLoadoutPub = openLoadoutPub;
             _equipSub      = equipSub;
+            _equipAtCursorSub = equipAtCursorSub;
             _session       = session;
         }
 
@@ -87,6 +91,7 @@ namespace Guildmaster.Game
             _input.PointerPressed  += OnPointerPressed;
             _input.PointerReleased += OnPointerReleased;
             _equipSubscription = _equipSub.Subscribe(OnEquip);
+            _equipAtCursorSubscription = _equipAtCursorSub.Subscribe(OnEquipAtCursor);
 
             // Верхняя панель забега (план 12): часы боя + кнопка «Начать». Дефолт-фаза Fighting —
             // для Fixed-боёв без расстановки (таймер сразу); Free переопределит на Deployment ниже
@@ -102,6 +107,7 @@ namespace Guildmaster.Game
             _input.PointerPressed  -= OnPointerPressed;
             _input.PointerReleased -= OnPointerReleased;
             _equipSubscription?.Dispose();
+            _equipAtCursorSubscription?.Dispose();
             _session.UnbindStart();
             _session.UnbindClock(); // сбрасывает фазу в None → панель скрывается между боями
             if (_view != null) UnityEngine.Object.Destroy(_view.gameObject);
@@ -181,7 +187,7 @@ namespace Guildmaster.Game
                 RuntimeUnit hover = PickUnit(world);
                 _hoverUnitId = hover != null ? hover.Id : -1;
                 _view.SetGhost(false, default, 0f, false);
-                if (hover != null) _view.SetOutline(true, hover.Position, BodyRadius(hover));
+                if (hover != null) SetHoverOutline(hover);
                 else _view.SetOutline(false, default, 0f);
             }
         }
@@ -239,10 +245,26 @@ namespace Guildmaster.Game
 
         private void OnEquip(EquipRelicRequest req)
         {
+            if (req.Relic == null) return;
+            EquipOn(req.UnitId, req.Relic);
+        }
+
+        // Дроп карточки релика в поле: сосуд под курсором резолвим сами — тем же экраном→миром и пикингом, что
+        // и деплой-драг, поэтому попадание совпадает с ховер-кольцом. Мимо сосуда (пустое поле) → no-op.
+        private void OnEquipAtCursor(EquipRelicAtCursorRequest req)
+        {
             if (!_deploying || req.Relic == null) return;
-            Slot slot = FindSlot(req.UnitId);
+            RuntimeUnit unit = PickUnit(ScreenToWorld(req.ScreenPosition));
+            if (unit == null) return;
+            EquipOn(unit.Id, req.Relic);
+        }
+
+        private void EquipOn(int unitId, RelicData relic)
+        {
+            if (!_deploying) return;
+            Slot slot = FindSlot(unitId);
             if (slot == null) return;
-            slot.Relic = req.Relic;
+            slot.Relic = relic;
             RebuildPreview();
         }
 
@@ -280,20 +302,48 @@ namespace Guildmaster.Game
             return kb != null && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame);
         }
 
+        // Захват по ВСЕЙ фигуре (границы спрайта через presenter), а не по кругу тела у ног (тот — метрика
+        // сепарации/коллизии; целиться в ступни неудобно). При наложении фигур берём фронтального (макс.
+        // sortingOrder = ниже по Y). Фолбэк на круг тела, если вью недоступен (headless / спрайт не готов).
         private RuntimeUnit PickUnit(Vector2 world)
         {
-            RuntimeUnit best = null;
-            float bestSq = float.MaxValue;
+            RuntimeUnit bySprite = null;
+            int         bestOrder = int.MinValue;
+            RuntimeUnit byBody = null;
+            float       bestSq = float.MaxValue;
+
             IReadOnlyList<RuntimeUnit> units = _sim.Units;
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit u = units[i];
                 if (u.Team != 0 || u.IsDead) continue;
-                float r = BodyRadius(u);
+
+                if (_presenter != null && _presenter.TryGetView(u.Id, out UnitView view)
+                    && view != null && view.SpriteContainsWorldPoint(world) && view.BodySortingOrder > bestOrder)
+                {
+                    bestOrder = view.BodySortingOrder;
+                    bySprite  = u;
+                }
+
+                float r  = BodyRadius(u);
                 float sq = (world - u.Position).sqrMagnitude;
-                if (sq <= r * r && sq < bestSq) { best = u; bestSq = sq; }
+                if (sq <= r * r && sq < bestSq) { byBody = u; bestSq = sq; }
             }
-            return best;
+            return bySprite ?? byBody;
+        }
+
+        // Ховер-подсветка: кольцо вокруг ВСЕЙ фигуры (по границам спрайта), а не крохотное кольцо у ног.
+        private void SetHoverOutline(RuntimeUnit u)
+        {
+            if (_presenter != null && _presenter.TryGetView(u.Id, out UnitView view)
+                && view != null && view.TryGetSpriteBounds(out Bounds b))
+            {
+                _view.SetOutline(true, new Vector2(b.center.x, b.center.y), Mathf.Max(b.extents.x, b.extents.y));
+            }
+            else
+            {
+                _view.SetOutline(true, u.Position, BodyRadius(u));
+            }
         }
 
         private bool Overlaps(Vector2 pos, RuntimeUnit exclude)

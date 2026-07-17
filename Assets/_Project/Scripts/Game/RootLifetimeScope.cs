@@ -62,8 +62,13 @@ namespace Guildmaster.Game
             // в CoreScene (инъекция методом через RegisterComponentInHierarchy). ESC открывает меню.
             builder.Register<SettingsViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutViewModel>(Lifetime.Singleton);
+            builder.Register<LoadoutHubViewModel>(Lifetime.Singleton);
             builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf().As<IMenuRouter>();
             builder.RegisterComponentInHierarchy<UiRootBootstrap>();
+
+            // Точка входа игры (D1): GameBootstrap в персистентной CoreScene получает GameFlow и крутит
+            // верхний цикл меню→забег→меню. Инъекция полей — через RegisterComponentInHierarchy.
+            builder.RegisterComponentInHierarchy<GameBootstrap>();
 
             // Локализация: сервис поверх String Tables (вики «13» §5). Потребители (UI) — Фаза 7.
             builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();
@@ -89,9 +94,28 @@ namespace Guildmaster.Game
 
             // Витрина наград после боя (A3): катит 1-из-3 реликов из контент-БД (детерминирован через RNG).
             builder.Register<RewardService>(Lifetime.Singleton);
+            // Ценообразование реликвий (B1): цена по KitPower + разброс на сиде витрины.
+            builder.Register<RelicPricer>(Lifetime.Singleton);
+            // Показ награды (вынесен из GameFlow — переиспользуют петля акта и legacy-вход одного боя).
+            builder.Register<RewardPresenter>(Lifetime.Singleton).As<IRewardPresenter>();
+            // Единая кнопка «Продолжить» (A4) — бит между разрешённым узлом и возвратом на карту.
+            builder.Register<ContinuePresenter>(Lifetime.Singleton).As<IContinuePresenter>();
+            // Экран исхода забега (C2) — победа/поражение после акта.
+            builder.Register<OutcomePresenter>(Lifetime.Singleton).As<IOutcomePresenter>();
+            // Главное меню (D1) — верхний цикл игры.
+            builder.Register<MainMenuPresenter>(Lifetime.Singleton).As<IMainMenuPresenter>();
 
             // Применение последствий текстовых ивентов к RunState (план 11 §5.1).
             builder.Register<EventEffectApplier>(Lifetime.Singleton);
+
+            // Магазин (B2): логика витрины/покупки/продажи за IShopController; UI биндится к экземпляру из запроса.
+            builder.Register<ShopController>(Lifetime.Singleton);
+
+            // Петля акта (план act-map-run-loop §3.2): резолвер узлов + выбор узла через экран карты (A3) + раннер.
+            // AutoFirstNodeChooser остаётся для headless/тестов; в игре узел выбирает игрок кликом по MapScreen.
+            builder.Register<NodeResolver>(Lifetime.Singleton).As<INodeResolver>();
+            builder.Register<MapScreenNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
+            builder.Register<ActRunner>(Lifetime.Singleton);
 
             builder.Register<GameFlow>(Lifetime.Singleton);
 

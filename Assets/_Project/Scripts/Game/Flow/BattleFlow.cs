@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
@@ -17,23 +18,24 @@ namespace Guildmaster.Game.Flow
     /// </summary>
     public sealed class BattleFlow : IEventFlow
     {
-        /// <summary>Число ретраев поражения по умолчанию (вики «7» §6). TODO: вынести в GameConfig под баланс.</summary>
-        public const int DefaultMaxRetries = 2;
-
         private readonly BattlePresetData _preset;
         private readonly ISceneLoader     _scenes;
         private readonly IBattleSession   _session;
         private readonly ILocalPlayer     _localPlayer;
-        private readonly int              _maxRetries;
+        private readonly Func<bool>       _tryConsumeRestart;
 
+        /// <param name="tryConsumeRestart">
+        /// Спросить пул перезапусков акта (реш. №65): вернуть true и списать одну попытку, если можно переиграть.
+        /// null = без перезапусков (legacy dev-бой). Заменяет прежний фикс-счётчик на бой (техдолг).
+        /// </param>
         public BattleFlow(BattlePresetData preset, ISceneLoader scenes, IBattleSession session,
-                          ILocalPlayer localPlayer, int maxRetries = DefaultMaxRetries)
+                          ILocalPlayer localPlayer, Func<bool> tryConsumeRestart = null)
         {
-            _preset      = preset;
-            _scenes      = scenes;
-            _session     = session;
-            _localPlayer = localPlayer;
-            _maxRetries  = Mathf.Max(0, maxRetries);
+            _preset            = preset;
+            _scenes            = scenes;
+            _session           = session;
+            _localPlayer       = localPlayer;
+            _tryConsumeRestart = tryConsumeRestart;
         }
 
         public async UniTask<EventResult> Run(RunContext ctx)
@@ -52,11 +54,10 @@ namespace Guildmaster.Game.Flow
             {
                 BattleOutcome outcome = await _session.WaitOutcomeAsync(CancellationToken.None);
 
-                int retries = 0;
-                while (!Won(outcome) && retries < _maxRetries)
+                // Поражение → тратим перезапуск из пула акта (реш. №65) и переигрываем ТОТ ЖЕ бой.
+                while (!Won(outcome) && _tryConsumeRestart != null && _tryConsumeRestart())
                 {
-                    retries++;
-                    Debug.Log($"[BattleFlow] - поражение ({outcome}), ретрай {retries}/{_maxRetries}");
+                    Debug.Log("[BattleFlow] - поражение, трачу перезапуск акта");
                     if (!_session.RequestRestart())
                     {
                         Debug.LogWarning("[BattleFlow] - некому перезапустить бой (нет боевого скоупа) → Defeated");

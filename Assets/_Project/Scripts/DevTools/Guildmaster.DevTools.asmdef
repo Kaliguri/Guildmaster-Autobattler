@@ -6,6 +6,7 @@
     "Guildmaster.Data",
     "Guildmaster.Combat",
     "Guildmaster.Game",
+    "Guildmaster.Guild",
     "Guildmaster.Presentation",
     "Guildmaster.UI",
     "QFSW.QC",

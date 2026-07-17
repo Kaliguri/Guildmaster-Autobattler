@@ -16,7 +16,7 @@ namespace Guildmaster.Tests.EditMode.Run
 {
     /// <summary>
     /// Логика узла боя (план 11 §4 A2): маппинг <see cref="BattleOutcome"/> → <see cref="EventResult"/> и
-    /// ретраи поражения. Проверяется на фейковых швах (без реальной сцены и симуляции).
+    /// перезапуски поражения из пула акта (реш. №65, колбэк). Проверяется на фейковых швах (без сцены и симуляции).
     /// <para>Отдельно закреплено главное: победа — это победа МОЕЙ команды, а не команды с номером 0.
     /// Один и тот же исход боя для клиента из другой команды означает поражение (шов под PvP).</para>
     /// </summary>
@@ -30,7 +30,7 @@ namespace Guildmaster.Tests.EditMode.Run
         {
             var session = new FakeSession(BattleOutcome.Win(MyTeam));
             var scenes  = new FakeScenes();
-            var flow    = new BattleFlow(NewPreset(), scenes, session, Player(MyTeam), maxRetries: 2);
+            var flow    = new BattleFlow(NewPreset(), scenes, session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -44,7 +44,7 @@ namespace Guildmaster.Tests.EditMode.Run
         public void Loss_ThenWin_RetriesOnce_Completed()
         {
             var session = new FakeSession(BattleOutcome.Win(EnemyTeam), BattleOutcome.Win(MyTeam));
-            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), maxRetries: 2);
+            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -58,12 +58,12 @@ namespace Guildmaster.Tests.EditMode.Run
             // 1 бой + 2 ретрая = 3 поражения подряд.
             var session = new FakeSession(BattleOutcome.Win(EnemyTeam), BattleOutcome.Win(EnemyTeam),
                                           BattleOutcome.Win(EnemyTeam));
-            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), maxRetries: 2);
+            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
             Assert.AreEqual(EventOutcome.PlayerDefeated, result.Outcome);
-            Assert.AreEqual(2, session.RestartCount, "должно быть ровно maxRetries перезапусков");
+            Assert.AreEqual(2, session.RestartCount, "должно быть ровно 2 перезапуска (пул акта)");
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace Guildmaster.Tests.EditMode.Run
         {
             // Ничья победой не считается ни для кого → для игрока это поражение.
             var session = new FakeSession(BattleOutcome.Draw, BattleOutcome.Win(MyTeam));
-            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), maxRetries: 2);
+            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -86,9 +86,9 @@ namespace Guildmaster.Tests.EditMode.Run
             BattleOutcome outcome = BattleOutcome.Win(EnemyTeam);
 
             var winner = new BattleFlow(NewPreset(), new FakeScenes(), new FakeSession(outcome),
-                                        Player(EnemyTeam), maxRetries: 0);
+                                        Player(EnemyTeam), Restarts(0));
             var loser  = new BattleFlow(NewPreset(), new FakeScenes(), new FakeSession(outcome),
-                                        Player(MyTeam), maxRetries: 0);
+                                        Player(MyTeam), Restarts(0));
 
             Assert.AreEqual(EventOutcome.Completed,     Run(winner).Outcome, "для команды-победителя это победа");
             Assert.AreEqual(EventOutcome.PlayerDefeated, Run(loser).Outcome, "для другой команды тот же бой — поражение");
@@ -98,7 +98,7 @@ namespace Guildmaster.Tests.EditMode.Run
         public void Loss_NoRestartBinding_DefeatedImmediately()
         {
             var session = new FakeSession(BattleOutcome.Win(EnemyTeam)) { CanRestart = false };
-            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), maxRetries: 2);
+            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -110,7 +110,7 @@ namespace Guildmaster.Tests.EditMode.Run
         public void NullPreset_Aborted_NoSceneLoad()
         {
             var scenes = new FakeScenes();
-            var flow   = new BattleFlow(null, scenes, new FakeSession(), Player(MyTeam), maxRetries: 2);
+            var flow   = new BattleFlow(null, scenes, new FakeSession(), Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -128,6 +128,13 @@ namespace Guildmaster.Tests.EditMode.Run
         }
 
         private static ILocalPlayer Player(int team) => new FakeLocalPlayer(team);
+
+        // Фейковый пул перезапусков акта: возвращает true (списывает попытку) n раз, затем false.
+        private static Func<bool> Restarts(int n)
+        {
+            int left = n;
+            return () => { if (left <= 0) return false; left--; return true; };
+        }
 
         private static BattlePresetData NewPreset()
         {
@@ -180,6 +187,8 @@ namespace Guildmaster.Tests.EditMode.Run
                 RestartCount++;
                 return true;
             }
+
+            public bool RestartInPlace() => false; // dev-хоткей R, во флоу-тестах не задействован
 
             // Часы/фаза/старт панели (план 12 Фаза 2) — не задействованы в этих тестах.
             public BattlePhase Phase => BattlePhase.None;

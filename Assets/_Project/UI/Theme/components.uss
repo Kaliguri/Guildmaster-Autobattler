@@ -17,11 +17,16 @@
     justify-content: center;
 }
 
-/* --- Панель: латунная рамка, острые углы --- */
+/* --- Панель: пиксель-арт рамка Honeti (перекрашена в нашу палитру, 9-slice) --- */
 .gm-panel {
     background-color: var(--gm-color-surface-panel);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 3px;
+    border-width: 0;
     border-radius: var(--gm-radius-0);
     padding: var(--gm-inset-panel);
     min-width: 260px;
@@ -36,70 +41,71 @@
 }
 
 .gm-divider {
-    height: 1px;
-    background-color: var(--gm-color-border-subtle);
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("../../Art/UI/Honeti-gm/Separator_gm.png");
+    -unity-slice-left: 1;
+    -unity-slice-right: 1;
+    -unity-slice-top: 1;
+    -unity-slice-bottom: 1;
     margin-top: var(--gm-space-2);
     margin-bottom: var(--gm-space-3);
 }
 
-/* --- Кнопка (secondary по умолчанию) --- */
+/* --- Кнопка (secondary по умолчанию): пиксель-арт контур Honeti (9-slice) --- */
+/* background-color ОБЯЗАТЕЛЕН: центр контур-спрайта прозрачный, без него проступает
+   дефолтный светло-серый фон Button из темы Unity. */
 .gm-button {
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 3px;
+    border-width: 0;
     border-radius: var(--gm-radius-0);
     color: var(--gm-color-text);
     font-size: var(--gm-font-body);
     padding: var(--gm-space-2) var(--gm-space-4);
     margin-top: var(--gm-space-2);
     margin-bottom: var(--gm-space-2);
-    transition-property: background-color, border-color;
-    transition-duration: 0.08s;
 }
 
 .gm-button:hover {
-    background-color: var(--gm-color-hover-surface);
-    border-color: var(--gm-color-hover-border);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
 }
 
 .gm-button:active {
-    background-color: var(--gm-color-accent);
-    border-color: var(--gm-color-accent-active);
-    color: var(--gm-color-text-on-accent);
-}
-
-.gm-button:focus {
-    border-color: var(--gm-color-focus-ring);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedDown_gm.png");
 }
 
 .gm-button:disabled {
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
     color: var(--gm-color-disabled-text);
-    border-color: var(--gm-color-border-subtle);
     opacity: 1;
 }
 
-/* --- Кнопка: primary (латунная заливка) — не более одной на экран --- */
+/* --- Кнопка: primary (латунная заливка Honeti) — не более одной на экран --- */
 .gm-button--primary {
-    background-color: var(--gm-color-accent);
-    border-color: var(--gm-color-accent-active);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
     color: var(--gm-color-text-on-accent);
 }
 
 .gm-button--primary:hover {
-    background-color: var(--gm-color-accent-hover);
-    border-color: var(--gm-color-hover-border);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
 }
 
 .gm-button--primary:active {
-    background-color: var(--gm-color-accent-active);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Down_gm.png");
 }
 
-/* Disabled primary: приглушённая латунь, НЕ серый «сломанный» бокс — читается как «ещё недоступна». */
+/* Disabled primary: та же тусклая деревянная плашка, что и у secondary.
+   БЕЗ opacity — полупрозрачность пускала бы дефолтный серый фон Button сквозь спрайт. */
 .gm-button--primary:disabled {
-    background-color: var(--gm-color-accent-active);
-    border-color: var(--gm-color-border-frame);
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
     color: var(--gm-color-text-muted);
-    opacity: 0.55;
 }
 
 /* Кнопка, тянущаяся на равную долю в ряду (футер настроек и т.п.). */
@@ -213,8 +219,13 @@
 
 .gm-tab {
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-subtle);
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     border-radius: var(--gm-radius-0);
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-body);
@@ -222,9 +233,10 @@
     margin-right: var(--gm-space-2);
 }
 
+/* Активный таб: латунный контур Honeti (вместо тусклой плашки неактивного). */
 .gm-tab--active {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
     color: var(--gm-color-text);
-    border-color: var(--gm-color-accent);
     -unity-font-style: bold;
 }
 
@@ -253,28 +265,35 @@
     width: 76px;
     height: 88px;
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-frame);
-    border-radius: var(--gm-radius-0);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     margin: var(--gm-space-1);
     align-items: center;
     justify-content: flex-end;
     padding: var(--gm-space-1);
-    transition-property: border-color, background-color;
-    transition-duration: 0.08s;
 }
+
+/* Редкость: базовый тинт рамки (интерактив ниже — hover/current/selected — переопределяет по порядку). */
+.gm-card--rarity-trash  { -unity-background-image-tint-color: var(--gm-color-rarity-trash); }
+.gm-card--rarity-common { -unity-background-image-tint-color: var(--gm-color-rarity-common); }
+.gm-card--rarity-unique { -unity-background-image-tint-color: var(--gm-color-rarity-unique); }
 
 .gm-card:hover {
-    border-color: var(--gm-color-hover-border);
-    background-color: var(--gm-color-hover-surface);
+    -unity-background-image-tint-color: var(--gm-color-hover-border);
 }
 
+/* Надетая/выбранная: подсветка рамки через tint (border теперь в спрайте). */
 .gm-card--current {
-    border-color: var(--gm-color-border-inner);
+    -unity-background-image-tint-color: var(--gm-color-accent);
 }
 
 .gm-card--selected {
-    border-color: var(--gm-color-accent);
+    -unity-background-image-tint-color: var(--gm-color-focus-ring);
     background-color: var(--gm-color-hover-surface);
 }
 
@@ -291,6 +310,37 @@
     white-space: normal;
 }
 
+/* Ряд info-тегов под именем: чипы переносятся, если не влезают в ширину карточки. */
+.gm-card__tags {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--gm-space-1);
+}
+
+/* Чип тега: иконка (опц.) + подпись. Тускло-акцентный, чтобы не спорить с именем. */
+.gm-card__tag {
+    flex-direction: row;
+    align-items: center;
+    margin: 2px;
+}
+
+.gm-card__tag-icon {
+    width: 18px;
+    height: 18px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-card__tag-label {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+}
+
+/* Только иконки (нет подписей) — контейнер плотнее. */
+.gm-card__tag--icon-only .gm-card__tag-label {
+    display: none;
+}
+
 /* --- Панель деталей выбранного релика --- */
 .gm-detail {
     width: 190px;
@@ -298,8 +348,13 @@
     margin-left: var(--gm-space-3);
     padding: var(--gm-space-3);
     background-color: var(--gm-color-surface-sunken);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-subtle);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
 }
 
 .gm-detail__name {
@@ -335,8 +390,8 @@
  * ========================================================================== */
 
 .gm-panel--reward {
-    min-width: 300px;
-    max-width: 380px;
+    min-width: 460px;
+    max-width: 540px;
 }
 
 /* Витрина: карточки в ряд по центру (перенос — страховка при узкой панели). */
@@ -348,7 +403,7 @@
 
 /* Карточка витрины — крупная (фокус экрана: показываем анимированный спрайт персонажа). */
 .gm-card--reward {
-    width: 100px;
+    width: 120px;
     height: 136px;
     margin: var(--gm-space-1);
 }
@@ -395,8 +450,8 @@
  * ========================================================================== */
 
 .gm-panel--event {
-    min-width: 240px;
-    max-width: 300px;
+    min-width: 520px;
+    max-width: 620px;
 }
 
 .gm-event-image {
@@ -424,8 +479,8 @@
  * ========================================================================== */
 
 .gm-panel--hub {
-    min-width: 420px;
-    max-width: 520px;
+    min-width: 480px;
+    max-width: 640px;
 }
 
 .gm-hub-section {
@@ -444,29 +499,31 @@
 
 /* Карточка сосуда: имя сверху, надетый релик (иконка+имя) снизу. */
 .gm-hub-vessel {
-    width: 112px;
-    height: 96px;
+    width: 130px;
+    height: 116px;
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     padding: var(--gm-space-2);
     justify-content: space-between;
-    transition-property: border-color, background-color;
-    transition-duration: 0.08s;
 }
 
 .gm-hub-vessel:hover {
-    border-color: var(--gm-color-hover-border);
-    background-color: var(--gm-color-hover-surface);
+    -unity-background-image-tint-color: var(--gm-color-hover-border);
 }
 
+/* Имя сосуда: перенос в 2 строки вместо агрессивного эллипсиса (длинные классы —
+   «Криомант»/«Защитник» — не влезают одной строкой в компактную карточку). */
 .gm-hub-vessel__name {
     color: var(--gm-color-text);
     font-size: var(--gm-font-sm);
     -unity-font-style: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
 }
 
 .gm-hub-vessel__relic {
@@ -556,11 +613,16 @@
     justify-content: center;
 }
 
-/* Компактная кнопка панели (меньше отступы, чем у gm-button). */
+/* Компактная кнопка панели (меньше отступы, чем у gm-button) — Honeti-контур. */
 .gm-topbar__btn {
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     color: var(--gm-color-text);
     font-size: var(--gm-font-sm);
     padding: var(--gm-space-1) var(--gm-space-3);
@@ -568,8 +630,7 @@
 }
 
 .gm-topbar__btn:hover {
-    background-color: var(--gm-color-hover-surface);
-    border-color: var(--gm-color-hover-border);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
 }
 
 .gm-topbar__stat {
@@ -591,10 +652,13 @@
     -unity-font-style: bold;
 }
 
+/* Кнопка «Начать» — primary латунная заливка (перебивает контур gm-topbar__btn). */
 .gm-topbar__start {
     margin: 0;
     padding-left: var(--gm-space-6);
     padding-right: var(--gm-space-6);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
+    color: var(--gm-color-text-on-accent);
 }
 
 /* ============================================================================
@@ -603,9 +667,33 @@
 
 .gm-slot {
     background-color: var(--gm-color-surface-sunken);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-subtle);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     margin: var(--gm-space-1);
+}
+
+/* Наведение/выбор слота (запас реликвий в хабе): подсветка рамки через tint. */
+.gm-slot:hover {
+    -unity-background-image-tint-color: var(--gm-color-hover-border);
+}
+
+.gm-slot--selected {
+    -unity-background-image-tint-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
+/* Ghost перетаскиваемой реликвии (лоадаут-хаб): иконка под курсором во время драга. */
+.gm-drag-ghost {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    -unity-background-scale-mode: scale-to-fit;
+    opacity: 0.85;
 }
 
 .gm-slot__icon {
@@ -635,8 +723,13 @@
 
 .gm-tooltip {
     background-color: var(--gm-color-surface-panel);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     padding: var(--gm-space-2) var(--gm-space-3);
     max-width: 220px;
 }
@@ -684,4 +777,334 @@
 .gm-panel__title {
     -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
     -unity-font-style: normal;
+}
+
+/* ============================================================================
+ * КАРТА АКТА (A3): панель-оверлей + граф узлов слева→направо (Across the Obelisk).
+ * Узлы позиционирует C# (MapGraph) абсолютно по UiPosition; рёбра рисует painter2D.
+ * ТИП узла = цветная полоса-акцент сверху; СОСТОЯНИЕ = рамка/прозрачность (не конфликтуют).
+ * ========================================================================== */
+
+/* Панель карты — крупный оверлей почти на весь экран. */
+.gm-panel--map {
+    min-width: 1600px;
+    min-height: 860px;
+}
+
+.gm-map {
+    flex-grow: 1;
+    width: 100%;
+}
+
+/* Холст графа: заполняет панель; сюда C# кладёт узлы и рисует рёбра. */
+.gm-map__graph {
+    flex-grow: 1;
+    min-height: 700px;
+    --gm-map-edge: var(--gm-color-map-edge);
+    --gm-map-edge-active: var(--gm-color-map-edge-active);
+}
+
+/* Узел графа: позицию задаёт C#. По умолчанию — вне досягаемости (тускло). */
+.gm-map__node {
+    position: absolute;
+    width: 132px;
+    height: 92px;
+    flex-direction: column;
+    background-color: var(--gm-color-map-node-locked);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-inner);
+    border-radius: var(--gm-radius-0);
+    opacity: 0.55;
+    overflow: hidden;
+}
+
+.gm-map__node-accent {
+    height: 10px;
+    width: 100%;
+    background-color: var(--gm-color-border-subtle);
+}
+
+.gm-map__node-label {
+    flex-grow: 1;
+    font-size: var(--gm-font-sm);
+    color: var(--gm-color-text-muted);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* Состояния */
+.gm-map__node--cleared {
+    opacity: 0.9;
+    background-color: var(--gm-color-map-node-cleared);
+}
+
+.gm-map__node--available {
+    opacity: 1;
+    background-color: var(--gm-color-surface-raised);
+    border-color: var(--gm-color-accent);
+}
+
+.gm-map__node--available:hover {
+    border-color: var(--gm-color-hover-border);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-map__node--available .gm-map__node-label {
+    color: var(--gm-color-text);
+}
+
+.gm-map__node--current {
+    opacity: 1;
+    border-color: var(--gm-color-map-node-current);
+}
+
+/* Тип узла — цвет полосы-акцента (не трогает рамку/фон состояния) */
+.gm-map__node-accent--start     { background-color: var(--gm-color-border-subtle); }
+.gm-map__node-accent--battle    { background-color: var(--gm-color-accent); }
+.gm-map__node-accent--elite     { background-color: var(--gm-color-danger); }
+.gm-map__node-accent--boss      { background-color: var(--gm-color-danger-hover); }
+.gm-map__node-accent--shop      { background-color: var(--gm-brass-300); }
+.gm-map__node-accent--chest     { background-color: var(--gm-brass-200); }
+.gm-map__node-accent--textevent { background-color: var(--gm-parchment-300); }
+.gm-map__node-accent--unknown   { background-color: var(--gm-color-text-muted); }
+
+/* Единая кнопка «Продолжить» (A4): полноэкранный слой-гейт, кнопка всегда в правом нижнем углу. */
+.gm-continue-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.gm-continue {
+    position: absolute;
+    right: var(--gm-space-5);
+    bottom: var(--gm-space-5);
+    min-width: 220px;
+}
+
+/* ============================================================================
+ * МАГАЗИН (B2): витрина 4 слота + реролл + панель продажи + тост «нет места».
+ * ========================================================================== */
+.gm-panel--shop {
+    min-width: 1100px;
+    min-height: 760px;
+}
+
+.gm-shop__topbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-shop__gold {
+    font-size: var(--gm-font-title);
+    color: var(--gm-brass-300);
+}
+
+.gm-shop__shelf {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.gm-shop__card {
+    width: 200px;
+    align-items: center;
+    padding: var(--gm-space-2);
+    margin: var(--gm-space-1);
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-inner);
+}
+
+.gm-shop__card--sold {
+    opacity: 0.4;
+}
+
+.gm-shop__price {
+    font-size: var(--gm-font-body);
+    color: var(--gm-brass-300);
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-shop__section-title {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-shop__stash {
+    max-height: 240px;
+}
+
+.gm-shop__stash-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--gm-space-1);
+    border-bottom-width: var(--gm-border-1);
+    border-bottom-color: var(--gm-color-border-subtle);
+}
+
+.gm-shop__stash-name {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text);
+}
+
+.gm-shop__footer {
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: var(--gm-space-2);
+}
+
+/* Тост «нет места»: полноэкранный слой по центру, клики сквозь. */
+.gm-shop__toast {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-shop__toast-label {
+    font-size: var(--gm-font-lg);
+    color: var(--gm-danger-400);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+/* ============================================================================
+ * СУНДУК (B3): фасад с кликабельной крышкой (арт-плейсхолдер до пиксель-спрайта).
+ * ========================================================================== */
+.gm-panel--chest {
+    min-width: 640px;
+    min-height: 520px;
+    align-items: center;
+}
+
+.gm-chest__body {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-chest__lid {
+    width: 220px;
+    height: 160px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-brass-400);
+    transition-property: scale, opacity;
+    transition-duration: 0.13s;
+}
+
+.gm-chest__lid:hover {
+    scale: 1.04 1.04;
+    border-color: var(--gm-brass-300);
+}
+
+.gm-chest__lid--open {
+    scale: 0.9 0.9;
+    opacity: 0.5;
+}
+
+.gm-chest__glyph {
+    font-size: var(--gm-font-lg);
+    color: var(--gm-brass-300);
+}
+
+.gm-chest__hint {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    margin-top: var(--gm-space-3);
+}
+
+/* ============================================================================
+ * ХП забега в топ-баре (C1, реш. №65): пипсы-сердца (перезапуски на акт).
+ * Иконка Honeti HeartRed; потраченный пипс — тот же спрайт тусклым.
+ * ========================================================================== */
+.gm-topbar__hp {
+    flex-direction: row;
+    align-items: center;
+    margin-left: var(--gm-space-2);
+    margin-right: var(--gm-space-2);
+}
+
+.gm-topbar__hp-pip {
+    width: 34px;
+    height: 34px;
+    margin-right: var(--gm-space-1);
+    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/HeartRed.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-topbar__hp-pip--empty {
+    opacity: 0.25;
+}
+
+/* ============================================================================
+ * ЭКРАН ИСХОДА ЗАБЕГА (C2): Победа / Поражение → «В меню».
+ * ========================================================================== */
+.gm-panel--outcome {
+    min-width: 560px;
+    min-height: 360px;
+    align-items: center;
+}
+
+.gm-outcome__title {
+    color: var(--gm-brass-300);
+}
+
+.gm-outcome__title--defeat {
+    color: var(--gm-danger-400);
+}
+
+.gm-outcome__sub {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    -unity-text-align: middle-center;
+    flex-grow: 1;
+    margin-top: var(--gm-space-3);
+}
+
+.gm-outcome__footer {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: var(--gm-space-3);
+}
+
+/* ============================================================================
+ * ГЛАВНОЕ МЕНЮ (D1): Начать / Продолжить / Настройки / Выход.
+ * ========================================================================== */
+.gm-panel--mainmenu {
+    min-width: 520px;
+    min-height: 560px;
+    align-items: center;
+}
+
+.gm-mainmenu__title {
+    font-size: var(--gm-font-lg);
+    color: var(--gm-brass-300);
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-mainmenu__buttons {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: stretch;
+    min-width: 360px;
+}
+
+.gm-mainmenu__btn {
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
 }

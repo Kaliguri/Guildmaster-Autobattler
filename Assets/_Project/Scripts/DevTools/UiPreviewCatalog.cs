@@ -27,6 +27,11 @@ namespace Guildmaster.DevTools
             ["loadout-hub"]  = BuildLoadoutHub,
             ["run-topbar"]   = BuildRunTopBar,
             ["settings"]     = BuildSettings,
+            ["map"]          = BuildMap,
+            ["shop"]         = BuildShop,
+            ["chest"]        = BuildChest,
+            ["outcome"]      = BuildOutcome,
+            ["mainmenu"]     = BuildMainMenu,
             ["gallery"]      = BuildGallery,
         };
 
@@ -152,7 +157,7 @@ namespace Guildmaster.DevTools
             VisualElement screen = Guildmaster.UI.LoadoutHubView.Build(
                 uxml, roster, banners, stash, gold: 120,
                 nameOf: id => RuName(id), localize: RuValue,
-                onVesselClick: _ => { }, onClose: () => { });
+                onClose: () => { });
             root.Add(screen);
         }
 
@@ -163,7 +168,8 @@ namespace Guildmaster.DevTools
 
             VisualElement screen = Guildmaster.UI.RunTopBarView.Build(
                 uxml, gold: 120, actNumber: 1, timerText: "12:34",
-                localize: null, onHub: () => { }, onSettings: () => { }, onStart: () => { });
+                localize: null, onHub: () => { }, onSettings: () => { }, onStart: () => { },
+                restartsRemaining: 1, restartsMax: 2);
             root.Add(screen);
         }
 
@@ -188,6 +194,93 @@ namespace Guildmaster.DevTools
             if (row == null) return;
             row.LabelText = label;
             row.SetValueWithoutNotify(value);
+        }
+
+        private static void BuildMap(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/MapScreen.uxml");
+            if (uxml == null) { AddError(root, "MapScreen.uxml не найден"); return; }
+
+            // Стендовая карта из фикс-сида (детерминирована), доступные узлы — соседи старта.
+            var map = Guildmaster.Guild.MapGenerator.Generate(
+                new Guildmaster.Core.Random.XorShiftRng(7), new Guildmaster.Guild.MapGenConfig());
+            var available = new HashSet<string>();
+            foreach (var n in Guildmaster.Guild.MapTraversal.AvailableNext(map)) available.Add(n.Id);
+
+            VisualElement screen = Guildmaster.UI.MapScreenView.Build(uxml, map, available, RuValue, _ => { });
+            root.Add(screen);
+        }
+
+        private static void BuildShop(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/ShopScreen.uxml");
+            if (uxml == null) { AddError(root, "ShopScreen.uxml не найден"); return; }
+
+            IContentDatabase content = LoadContent();
+            var relics = new List<RelicData>();
+            if (content != null)
+            {
+                IReadOnlyList<RelicData> all = content.All<RelicData>();
+                for (int i = 0; all != null && i < all.Count && relics.Count < 6; i++)
+                    if (all[i] != null && all[i].Id != "relic.base") relics.Add(all[i]);
+            }
+
+            var shelf = new List<Guildmaster.Guild.ShopItem>();
+            for (int i = 0; i < 4 && i < relics.Count; i++)
+                shelf.Add(new Guildmaster.Guild.ShopItem { Relic = relics[i], Price = 50 + i * 30, Sold = i == 1 });
+            var stash = new List<Guildmaster.Guild.ShopStashItem>();
+            for (int i = 4; i < relics.Count && stash.Count < 3; i++)
+                stash.Add(new Guildmaster.Guild.ShopStashItem { Relic = relics[i], SellValue = 15 });
+
+            var shop = new PreviewShop(shelf, stash);
+            VisualElement screen = Guildmaster.UI.ShopScreenView.Build(
+                uxml, shop, r => RuName(r?.Id), RuValue, () => { });
+            root.Add(screen);
+        }
+
+        // Фейковый контроллер магазина для стенда: без DI/RunState, только показать раскладку.
+        private sealed class PreviewShop : Guildmaster.Guild.IShopController
+        {
+            private readonly List<Guildmaster.Guild.ShopItem> _shelf;
+            private readonly List<Guildmaster.Guild.ShopStashItem> _stash;
+            public PreviewShop(List<Guildmaster.Guild.ShopItem> shelf, List<Guildmaster.Guild.ShopStashItem> stash)
+            { _shelf = shelf; _stash = stash; }
+            public event System.Action Changed;
+            public int Gold => 250;
+            public int RerollCost => 50;
+            public IReadOnlyList<Guildmaster.Guild.ShopItem> Shelf => _shelf;
+            public IReadOnlyList<Guildmaster.Guild.ShopStashItem> Stash => _stash;
+            public Guildmaster.Guild.ShopBuyOutcome Buy(int index)
+            {
+                if (index >= 0 && index < _shelf.Count) { _shelf[index].Sold = true; Changed?.Invoke(); }
+                return Guildmaster.Guild.ShopBuyOutcome.Bought;
+            }
+            public bool Reroll() { Changed?.Invoke(); return true; }
+            public bool Sell(RelicData relic) { Changed?.Invoke(); return true; }
+        }
+
+        private static void BuildChest(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/ChestScreen.uxml");
+            if (uxml == null) { AddError(root, "ChestScreen.uxml не найден"); return; }
+            root.Add(Guildmaster.UI.ChestScreenView.Build(uxml, RuValue, () => { }));
+        }
+
+        private static void BuildOutcome(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/OutcomeScreen.uxml");
+            if (uxml == null) { AddError(root, "OutcomeScreen.uxml не найден"); return; }
+            // Стенд показывает победу; поражение — тот же экран с victory:false.
+            root.Add(Guildmaster.UI.OutcomeScreenView.Build(uxml, victory: true, RuValue, () => { }));
+        }
+
+        private static void BuildMainMenu(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/MainMenuScreen.uxml");
+            if (uxml == null) { AddError(root, "MainMenuScreen.uxml не найден"); return; }
+            // Стенд: hasSave=true (кнопка «Продолжить» активна).
+            root.Add(Guildmaster.UI.MainMenuScreenView.Build(
+                uxml, hasSave: true, RuValue, () => { }, () => { }, () => { }, () => { }));
         }
 
         private static void BuildGallery(VisualElement root)

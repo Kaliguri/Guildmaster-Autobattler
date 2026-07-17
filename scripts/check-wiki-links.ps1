@@ -130,6 +130,9 @@ foreach ($f in $mdFiles) {
     $raw = Get-Content -LiteralPath $f.FullName -Raw
     if ([string]::IsNullOrEmpty($raw)) { continue }
     $text = Remove-Code $raw
+    # Внутри Markdown-таблиц пайп алиаса экранируется: [[target\|alias]]. Obsidian трактует \| как |,
+    # поэтому снимаем экранирование до парсинга, иначе '\' прилипает к target и ссылка ложно-битая.
+    $text = $text.Replace('\|', '|')
 
     foreach ($m in $wikiRe.Matches($text)) {
         $target = $m.Groups[1].Value

@@ -24,6 +24,7 @@ namespace Guildmaster.Tests.EditMode.Run
             var config = ScriptableObject.CreateInstance<GameConfig>(); // Base=8, Max=16
             _run = new RunStateService(new FakeSave(), config);
             _run.NewRun(1, Array.Empty<RosterSlot>());
+            _run.Current.Gold = 0; // старт-золото забега — не предмет этих тестов (проверяем дельту эффекта)
             _applier = new EventEffectApplier(_run);
         }
 

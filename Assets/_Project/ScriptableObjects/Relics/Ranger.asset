@@ -24,7 +24,7 @@ MonoBehaviour:
   _autoAttackWidth: 1
   _autoAttackEffects: []
   _canAttackWhileMoving: 1
-  _movingAttackSpeedPenaltyPct: 0.5
+  _movingAttackSpeedPenaltyPct: 0.6
   _attackRecoverySeconds: 0
   _resourceOnHit: 15
   _stats:
@@ -102,7 +102,8 @@ MonoBehaviour:
   - ranger
   - ranged
   - common
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0

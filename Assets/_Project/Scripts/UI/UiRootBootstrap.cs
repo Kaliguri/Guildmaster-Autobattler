@@ -34,37 +34,81 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана текстового ивента (StS-style: заголовок, тело, варианты ответа).")]
         [SerializeField] private VisualTreeAsset _eventScreen;
 
+        [Tooltip("UXML экрана карты акта (граф узлов слева→направо, клик по доступному узлу).")]
+        [SerializeField] private VisualTreeAsset _mapScreen;
+
+        [Tooltip("UXML единой кнопки «Продолжить» (правый нижний угол, бит между узлом и картой).")]
+        [SerializeField] private VisualTreeAsset _continueScreen;
+
+        [Tooltip("UXML экрана магазина (витрина 4 слота, реролл, продажа).")]
+        [SerializeField] private VisualTreeAsset _shopScreen;
+
+        [Tooltip("UXML экрана сундука (фасад с кликабельной крышкой → награда 1-из-3).")]
+        [SerializeField] private VisualTreeAsset _chestScreen;
+
+        [Tooltip("UXML экрана исхода забега (Победа/Поражение → В меню).")]
+        [SerializeField] private VisualTreeAsset _outcomeScreen;
+
+        [Tooltip("UXML главного меню (Начать/Продолжить/Настройки/Выход).")]
+        [SerializeField] private VisualTreeAsset _mainMenuScreen;
+
         [Tooltip("UXML верхней панели забега (StS-style: хаб/опции/золото, центр «Начать»↔таймер, акт/время).")]
         [SerializeField] private VisualTreeAsset _runTopBar;
+
+        [Tooltip("UXML лоадаут-хаба (гильдия: 4 сосуда + навешивание реликвий из запаса). Открывается кнопкой «Хаб».")]
+        [SerializeField] private VisualTreeAsset _loadoutHubScreen;
 
         private MenuRouter _router;
         private IInputService _input;
         private IBattleClock _clock;
         private RunStateService _runStates;
+        private GameConfig _config;
         private ILocalizationService _loc;
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
         private ISubscriber<OpenRewardRequest> _openRewardSub;
         private ISubscriber<OpenTextEventRequest> _openEventSub;
+        private ISubscriber<OpenMapRequest> _openMapSub;
+        private ISubscriber<OpenContinueRequest> _openContinueSub;
+        private ISubscriber<OpenShopRequest> _openShopSub;
+        private ISubscriber<OpenChestRequest> _openChestSub;
+        private ISubscriber<OpenOutcomeRequest> _openOutcomeSub;
+        private ISubscriber<OpenMainMenuRequest> _openMainMenuSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
         private IDisposable _openEventSubscription;
+        private IDisposable _openMapSubscription;
+        private IDisposable _openContinueSubscription;
+        private IDisposable _openShopSubscription;
+        private IDisposable _openChestSubscription;
+        private IDisposable _openOutcomeSubscription;
+        private IDisposable _openMainMenuSubscription;
         private UIDocument _doc;
         private RunTopBarView _topBar;
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
-            IBattleClock clock, RunStateService runStates, ILocalizationService loc,
+            IBattleClock clock, RunStateService runStates, GameConfig config, ILocalizationService loc,
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
-            ISubscriber<OpenTextEventRequest> openEventSub)
+            ISubscriber<OpenTextEventRequest> openEventSub, ISubscriber<OpenMapRequest> openMapSub,
+            ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
+            ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
+            ISubscriber<OpenMainMenuRequest> openMainMenuSub)
         {
             _router = router;
             _input = input;
             _clock = clock;
             _runStates = runStates;
+            _config = config;
             _loc = loc;
             _openLoadoutSub = openLoadoutSub;
             _openRewardSub = openRewardSub;
             _openEventSub = openEventSub;
+            _openMapSub = openMapSub;
+            _openContinueSub = openContinueSub;
+            _openShopSub = openShopSub;
+            _openChestSub = openChestSub;
+            _openOutcomeSub = openOutcomeSub;
+            _openMainMenuSub = openMainMenuSub;
         }
 
         private void Awake() => _doc = GetComponent<UIDocument>();
@@ -77,7 +121,7 @@ namespace Guildmaster.UI
                                  "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
                 return;
             }
-            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen);
+            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -85,6 +129,18 @@ namespace Guildmaster.UI
             _openRewardSubscription = _openRewardSub?.Subscribe(req => _router.OpenReward(req));
             // Открытие текстового ивента (StS-style) — запрос из GameFlow.
             _openEventSubscription = _openEventSub?.Subscribe(req => _router.OpenTextEvent(req));
+            // Открытие карты акта — запрос из петли акта (MapScreenNodeChooser).
+            _openMapSubscription = _openMapSub?.Subscribe(req => _router.OpenMap(req));
+            // Единая кнопка «Продолжить» — запрос из петли акта (ContinuePresenter).
+            _openContinueSubscription = _openContinueSub?.Subscribe(req => _router.ShowContinue(req));
+            // Магазин — запрос из узла магазина (ShopFlow).
+            _openShopSubscription = _openShopSub?.Subscribe(req => _router.OpenShop(req));
+            // Сундук — запрос из узла сундука (ChestFlow).
+            _openChestSubscription = _openChestSub?.Subscribe(req => _router.OpenChest(req));
+            // Исход забега — запрос из GameFlow после акта.
+            _openOutcomeSubscription = _openOutcomeSub?.Subscribe(req => _router.ShowOutcome(req));
+            // Главное меню — запрос из GameFlow (верхний цикл).
+            _openMainMenuSubscription = _openMainMenuSub?.Subscribe(req => _router.OpenMainMenu(req));
 
             InitTopBar();
         }
@@ -98,7 +154,7 @@ namespace Guildmaster.UI
                 _runTopBar,
                 key => _loc?.GetString(key),
                 onHub: OnHubClicked,
-                onSettings: () => _router.ToggleSystemMenu(),
+                onSettings: () => _router.OpenSettings(),
                 onStart: () => _clock?.RequestStart());
             _topBar.Root.style.display = DisplayStyle.None; // скрыта, пока нет активного боя
             _doc.rootVisualElement.Add(_topBar.Root);
@@ -108,19 +164,25 @@ namespace Guildmaster.UI
         {
             if (_topBar == null || _clock == null) return;
 
-            BattlePhase phase = _clock.Phase;
-            bool visible = phase != BattlePhase.None;
-            _topBar.Root.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
-            if (!visible) return;
-
+            // ХП/золото/акт видны ВЕСЬ забег (реш. №65, STS-style), а не только в бою.
             RunState run = _runStates?.Current;
-            _topBar.SetGold(run?.Gold ?? 0);
-            _topBar.SetAct((run?.CurrentActIndex ?? 0) + 1);
-            _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
+            bool runActive = run != null;
+            _topBar.Root.style.display = runActive ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!runActive) return;
+
+            _topBar.Root.BringToFront(); // держим топ-бар поверх оверлеев узлов (карта/магазин/награда)
+            _topBar.SetGold(run.Gold);
+            _topBar.SetAct(run.CurrentActIndex + 1);
+            _topBar.SetRestarts(run.RestartsRemaining, _config != null ? _config.RestartsPerAct : run.RestartsRemaining);
+
+            BattlePhase phase = _clock.Phase;
+            if (phase == BattlePhase.None) _topBar.HideBattleCenter();       // карта/магазин — центр пуст
+            else _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
         }
 
-        // Заглушка: хаб оживёт в под-шаге 2 (переключение сосудов + вкладки). Пока — лог.
-        private void OnHubClicked() => Debug.Log("[UiRootBootstrap] Хаб — заглушка (под-шаг 2).");
+        // Кнопка «Хаб» в топбаре открывает лоадаут-хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание
+        // собранных реликвий из запаса на 4 сосуда. Оверлей поверх карты; правки durable (RunState).
+        private void OnHubClicked() => _router.OpenHub();
 
         private static string FormatTime(float seconds)
         {
@@ -135,6 +197,12 @@ namespace Guildmaster.UI
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();
+            _openMapSubscription?.Dispose();
+            _openContinueSubscription?.Dispose();
+            _openShopSubscription?.Dispose();
+            _openChestSubscription?.Dispose();
+            _openOutcomeSubscription?.Dispose();
+            _openMainMenuSubscription?.Dispose();
         }
 
         private void OnMenuToggle() => _router.ToggleSystemMenu();

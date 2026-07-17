@@ -1,0 +1,21 @@
+{
+  "name": "Guildmaster.Balance.Editor",
+  "rootNamespace": "Guildmaster.Balance.Editor",
+  "references": [
+    "Guildmaster.Balance",
+    "Guildmaster.Core",
+    "Guildmaster.Data",
+    "Guildmaster.Combat"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

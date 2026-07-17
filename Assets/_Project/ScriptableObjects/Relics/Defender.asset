@@ -30,7 +30,7 @@ MonoBehaviour:
   _stats:
   - Stat: 0
     Op: 3
-    Value: 2200
+    Value: 3300
   - Stat: 3
     Op: 3
     Value: 12
@@ -107,7 +107,8 @@ MonoBehaviour:
   - defender
   - tank
   - common
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0

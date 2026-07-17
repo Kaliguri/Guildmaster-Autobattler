@@ -10,7 +10,12 @@ namespace Guildmaster.UI
     /// <summary>
     /// Сборка хаба лоадаута (Фаза 2) из UXML-шаблона — обзор команды (4 сосуда) + общая секция
     /// (баннеры party-скоупа, запас реликвий, золото). Общий код для живого роутера и превью-стенда.
-    /// Клик по сосуду уводит в per-unit loadout (существующий экран) через <paramref name="onVesselClick"/>.
+    /// <para>
+    /// Реликвии переносятся ДРАГОМ через переиспользуемый примитив <see cref="UiDragDrop"/> (не самопис): слоты
+    /// запаса — источники (payload <see cref="StashRelic"/>), карточки сосудов — цели надевания (принимают
+    /// StashRelic) и источники снятия (payload <see cref="VesselRelic"/>, если надет не базовый кит), бокс
+    /// запаса — цель снятия. Тот же примитив переиспользуют будущие вкладки предметов/баннеров.
+    /// </para>
     /// Разметка/стиль — только из <c>LoadoutHubScreen.uxml</c> + классы дизайн-системы.
     /// </summary>
     public static class LoadoutHubView
@@ -23,6 +28,12 @@ namespace Guildmaster.UI
             public RosterEntry(VesselData vessel, RelicData relic) { Vessel = vessel; Relic = relic; }
         }
 
+        // Payload'ы драга (доменные, для UiDragDrop): откуда тянут реликвию.
+        private sealed class StashRelic  { public readonly int Index; public StashRelic(int i)  => Index = i; }
+        private sealed class VesselRelic { public readonly int Index; public VesselRelic(int i) => Index = i; }
+
+        private const string BaseRelicId = "relic.base";
+
         public static VisualElement Build(
             VisualTreeAsset uxml,
             IReadOnlyList<RosterEntry> roster,
@@ -31,8 +42,9 @@ namespace Guildmaster.UI
             int gold,
             Func<string, string> nameOf,
             Func<string, string> localize,
-            Action<int> onVesselClick,
-            Action onClose)
+            Action onClose,
+            Action<int, int> onEquip = null,   // (vesselIndex, stashIndex): надеть релик из запаса на сосуд
+            Action<int> onUnequip = null)       // (vesselIndex): снять релик с сосуда обратно в запас
         {
             string L(string key, string ru)
             {
@@ -49,13 +61,18 @@ namespace Guildmaster.UI
             SetText(root, "hub-team-header",     L("ui.hub.team", "Команда"));
             SetText(root, "hub-banners-header",  L("ui.hub.banners", "Баннеры"));
             SetText(root, "hub-stash-header",    L("ui.hub.stash", "Запас реликвий"));
+            SetText(root, "hub-hint",            L("ui.hub.hint", "Перетащи реликвию из запаса на сосуд — наденешь; с сосуда в запас — снимешь."));
             SetText(root, "hub-gold",            L("ui.hub.gold", "Золото") + ": " + gold);
 
             var close = root.Q<Button>("btn-close");
             if (close != null) { close.text = L("ui.hub.close", "Закрыть"); close.clicked += () => onClose?.Invoke(); }
 
-            // ── Команда: карточки сосудов (компонент VesselCard) ──
             var rosterBox = root.Q<VisualElement>("hub-roster");
+            var stashBox  = root.Q<VisualElement>("hub-stash");
+
+            var drag = new UiDragDrop(root);
+
+            // ── Команда: карточки сосудов — цель надевания (принимает StashRelic) + источник снятия (VesselRelic) ──
             for (int i = 0; roster != null && rosterBox != null && i < roster.Count; i++)
             {
                 RosterEntry e = roster[i];
@@ -70,7 +87,13 @@ namespace Guildmaster.UI
                     RelicName  = e.Relic != null ? Name(e.Relic.Id) : "—",
                 };
                 card.SetRelicIcon(RelicSprite(e.Relic));
-                card.Clicked += () => onVesselClick?.Invoke(idx);
+
+                drag.AddTarget(card, p => p is StashRelic, p => onEquip?.Invoke(idx, ((StashRelic)p).Index));
+
+                bool hasRealRelic = e.Relic != null && e.Relic.Id != BaseRelicId;
+                if (hasRealRelic)
+                    drag.AddSource(card, new VesselRelic(idx), RelicSprite(e.Relic));
+
                 rosterBox.Add(card);
             }
 
@@ -83,12 +106,16 @@ namespace Guildmaster.UI
                 bannersBox.Add(slot);
             }
 
-            // ── Запас реликвий — слоты (без flex-grow: не распираем панель) ──
-            var stashBox = root.Q<VisualElement>("hub-stash");
+            // ── Запас реликвий: бокс — цель снятия (принимает VesselRelic); слоты — источники надевания ──
+            if (stashBox != null)
+                drag.AddTarget(stashBox, p => p is VesselRelic, p => onUnequip?.Invoke(((VesselRelic)p).Index));
+
             for (int i = 0; stash != null && stashBox != null && i < stash.Count; i++)
             {
                 var slot = new Slot { Size = Slot.SlotSize.Sm };
-                slot.SetIcon(RelicSprite(stash[i]));
+                Sprite icon = RelicSprite(stash[i]);
+                slot.SetIcon(icon);
+                drag.AddSource(slot, new StashRelic(i), icon);
                 stashBox.Add(slot);
             }
 
