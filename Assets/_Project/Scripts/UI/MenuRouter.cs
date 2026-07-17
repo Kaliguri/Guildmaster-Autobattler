@@ -286,8 +286,8 @@ namespace Guildmaster.UI
             {
                 if (resolved) return;
                 resolved = true;
+                CloseAll();                      // закрыть ДО колбэка: его inline-продолжение может открыть следующий экран
                 req.OnResolved?.Invoke(result);
-                CloseAll();
             }
 
             VisualElement screen = RewardScreenView.Build(
@@ -363,8 +363,8 @@ namespace Guildmaster.UI
             {
                 if (resolved) return;
                 resolved = true;
+                CloseAll();                      // закрыть карту ДО колбэка (его продолжение откроет узел)
                 req.OnChosen?.Invoke(nodeId);
-                CloseAll();
             }
 
             VisualElement screen = MapScreenView.Build(
@@ -399,8 +399,8 @@ namespace Guildmaster.UI
             {
                 if (resolved) return;
                 resolved = true;
+                CloseAll();                      // закрыть ДО колбэка (его продолжение вернёт на карту)
                 req.OnContinue?.Invoke();
-                CloseAll();
             }
 
             var screen = FillRoot(_continueUxml.CloneTree());
@@ -436,8 +436,8 @@ namespace Guildmaster.UI
             {
                 if (resolved) return;
                 resolved = true;
+                CloseAll();                      // закрыть магазин ДО колбэка (его продолжение вернёт на карту)
                 req.OnLeave?.Invoke();
-                CloseAll();
             }
 
             VisualElement screen = ShopScreenView.Build(
@@ -468,8 +468,8 @@ namespace Guildmaster.UI
             {
                 if (resolved) return;
                 resolved = true;
+                CloseAll();                      // закрыть сундук ДО колбэка (его продолжение откроет награду)
                 req.OnOpen?.Invoke();
-                CloseAll();
             }
 
             VisualElement screen = ChestScreenView.Build(_chestUxml, key => _loc?.GetString(key), Resolve);
@@ -492,8 +492,8 @@ namespace Guildmaster.UI
             {
                 if (resolved) return;
                 resolved = true;
+                CloseAll();                      // закрыть исход ДО колбэка (его продолжение откроет меню)
                 req.OnToMenu?.Invoke();
-                CloseAll();
             }
 
             VisualElement screen = OutcomeScreenView.Build(_outcomeUxml, req.Victory, key => _loc?.GetString(key), Resolve);
@@ -517,8 +517,8 @@ namespace Guildmaster.UI
             {
                 if (resolved) return;
                 resolved = true;
+                CloseAll();                      // закрыть меню ДО колбэка (его продолжение откроет карту забега)
                 req.OnChoice?.Invoke(choice);
-                CloseAll();
             }
 
             VisualElement screen = MainMenuScreenView.Build(
