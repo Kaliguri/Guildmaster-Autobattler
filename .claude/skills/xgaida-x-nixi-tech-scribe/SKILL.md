@@ -1,5 +1,5 @@
 ---
-name: tech-scribe
+name: xgaida-x-nixi-tech-scribe
 description: >-
   Рабочий контур ведения технической вики Guildmaster в Obsidian-vault
   docs/wiki/tech. Роль — тех-писарь-синхронизатор при коде: держу инженерные

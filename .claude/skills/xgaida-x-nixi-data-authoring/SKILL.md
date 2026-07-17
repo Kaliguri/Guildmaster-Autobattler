@@ -1,5 +1,5 @@
 ---
-name: data-authoring
+name: xgaida-x-nixi-data-authoring
 description: >-
   Рабочий контур дата-слоя (data authoring) Guildmaster — авторинг игрового
   контента и конфигов: три слоя SO→POCO→DTO, строковые id `domain.name`,

@@ -1,5 +1,5 @@
 ---
-name: gamefeel-vfx
+name: xgaida-x-nixi-gamefeel-vfx
 description: >-
   Рабочий контур джуса и визуального фидбэка (gamefeel / VFX) Guildmaster — слой
   «сочности» поверх боя: политика значимости (CombatFeelDirector — что достойно

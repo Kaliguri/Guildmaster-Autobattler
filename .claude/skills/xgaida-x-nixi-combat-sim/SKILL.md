@@ -1,5 +1,5 @@
 ---
-name: combat-sim
+name: xgaida-x-nixi-combat-sim
 description: >-
   Рабочий контур боевой симуляции (combat sim) Guildmaster — детерминированное
   ядро боя на 30 Гц, система эффектов (producer→consumer, теги, стакинг),

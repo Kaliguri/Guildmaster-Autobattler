@@ -1,5 +1,5 @@
 ---
-name: audio
+name: xgaida-x-nixi-audio
 description: >-
   Рабочий контур звука (audio / SFX / музыка) Guildmaster — весь аудио-слой за
   фасадом IAudioService: Core-фасад и две реализации (FmodAudioService на FMOD,

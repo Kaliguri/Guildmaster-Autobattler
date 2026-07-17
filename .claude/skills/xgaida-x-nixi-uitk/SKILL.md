@@ -1,5 +1,5 @@
 ---
-name: uitk
+name: xgaida-x-nixi-uitk
 description: >-
   Рабочий контур для UI Toolkit (UITK) в проекте Guildmaster — рантайм-экраны на
   UXML/USS, дизайн-система токенов, компоненты, MVVM и UI-тесты. Используй ВСЕГДА,

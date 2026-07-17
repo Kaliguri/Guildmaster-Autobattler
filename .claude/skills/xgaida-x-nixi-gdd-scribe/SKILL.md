@@ -1,5 +1,5 @@
 ---
-name: gdd-scribe
+name: xgaida-x-nixi-gdd-scribe
 description: >-
   Рабочий контур ведения GDD (геймдизайн-документации) Guildmaster в
   Obsidian-vault docs/wiki/gdd. Роль — писарь-редактор при Максе: оформляю и
