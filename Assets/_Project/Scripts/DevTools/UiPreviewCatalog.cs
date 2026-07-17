@@ -27,6 +27,7 @@ namespace Guildmaster.DevTools
             ["loadout-hub"]  = BuildLoadoutHub,
             ["run-topbar"]   = BuildRunTopBar,
             ["settings"]     = BuildSettings,
+            ["map"]          = BuildMap,
             ["gallery"]      = BuildGallery,
         };
 
@@ -188,6 +189,21 @@ namespace Guildmaster.DevTools
             if (row == null) return;
             row.LabelText = label;
             row.SetValueWithoutNotify(value);
+        }
+
+        private static void BuildMap(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/MapScreen.uxml");
+            if (uxml == null) { AddError(root, "MapScreen.uxml не найден"); return; }
+
+            // Стендовая карта из фикс-сида (детерминирована), доступные узлы — соседи старта.
+            var map = Guildmaster.Guild.MapGenerator.Generate(
+                new Guildmaster.Core.Random.XorShiftRng(7), new Guildmaster.Guild.MapGenConfig());
+            var available = new HashSet<string>();
+            foreach (var n in Guildmaster.Guild.MapTraversal.AvailableNext(map)) available.Add(n.Id);
+
+            VisualElement screen = Guildmaster.UI.MapScreenView.Build(uxml, map, available, RuValue, _ => { });
+            root.Add(screen);
         }
 
         private static void BuildGallery(VisualElement root)

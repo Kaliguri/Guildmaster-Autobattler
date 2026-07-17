@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Guild;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -30,6 +31,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _loadoutUxml;
         private VisualTreeAsset _rewardUxml;
         private VisualTreeAsset _eventUxml;
+        private VisualTreeAsset _mapUxml;
         private InputContext _prevContext;
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
@@ -45,7 +47,8 @@ namespace Guildmaster.UI
 
         /// <summary>Бутстрап отдаёт корень панели и UXML-шаблоны экранов (ссылки из сцены, не DI).</summary>
         public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
-            VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null)
+            VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
+            VisualTreeAsset mapUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
@@ -53,6 +56,7 @@ namespace Guildmaster.UI
             _loadoutUxml = loadoutUxml;
             _rewardUxml = rewardUxml;
             _eventUxml = eventUxml;
+            _mapUxml = mapUxml;
         }
 
         /// <summary>
@@ -327,6 +331,42 @@ namespace Guildmaster.UI
             screen.RegisterCallback<DetachFromPanelEvent>(_ =>
             {
                 if (!resolved) { resolved = true; req.OnChosen?.Invoke(-1); }
+            });
+
+            return screen;
+        }
+
+        // Экран карты акта (A3) — на UXML (MapScreen.uxml) через общий MapScreenView. Клик по доступному узлу
+        // возвращает его id и закрывает экран; закрытие без выбора (ESC/CloseAll) шлёт null, чтобы петля не завис.
+        public void OpenMap(OpenMapRequest req)
+        {
+            if (_root == null || _mapUxml == null) { req.OnChosen?.Invoke(null); return; }
+            Push(BuildMapScreen(req));
+        }
+
+        private VisualElement BuildMapScreen(OpenMapRequest req)
+        {
+            bool resolved = false;
+
+            void Resolve(string nodeId)
+            {
+                if (resolved) return;
+                resolved = true;
+                req.OnChosen?.Invoke(nodeId);
+                CloseAll();
+            }
+
+            VisualElement screen = MapScreenView.Build(
+                _mapUxml,
+                req.Map,
+                new HashSet<string>(req.AvailableNodeIds),
+                key => _loc?.GetString(key),
+                Resolve);
+
+            // Страховка: снятие экрана без выбора (ESC/CloseAll) = null, чтобы петля акта не зависла.
+            screen.RegisterCallback<DetachFromPanelEvent>(_ =>
+            {
+                if (!resolved) { resolved = true; req.OnChosen?.Invoke(null); }
             });
 
             return screen;

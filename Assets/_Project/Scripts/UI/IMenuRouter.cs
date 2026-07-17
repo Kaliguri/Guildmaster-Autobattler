@@ -28,5 +28,12 @@ namespace Guildmaster.UI
         /// шлёт индекс -1 (пропуск), чтобы флоу не завис.
         /// </summary>
         void OpenTextEvent(Guildmaster.Data.Definitions.OpenTextEventRequest req);
+
+        /// <summary>
+        /// Открыть экран карты акта для выбора следующего узла (A3). Гарантирует ровно один вызов
+        /// <see cref="Guildmaster.Guild.OpenMapRequest.OnChosen"/> — закрытие без выбора шлёт null, чтобы
+        /// петля акта не зависла (трактуется как прерывание).
+        /// </summary>
+        void OpenMap(Guildmaster.Guild.OpenMapRequest req);
     }
 }

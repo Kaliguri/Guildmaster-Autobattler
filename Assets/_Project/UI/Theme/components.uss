@@ -721,3 +721,92 @@
     -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
     -unity-font-style: normal;
 }
+
+/* ============================================================================
+ * КАРТА АКТА (A3): панель-оверлей + граф узлов слева→направо (Across the Obelisk).
+ * Узлы позиционирует C# (MapGraph) абсолютно по UiPosition; рёбра рисует painter2D.
+ * ТИП узла = цветная полоса-акцент сверху; СОСТОЯНИЕ = рамка/прозрачность (не конфликтуют).
+ * ========================================================================== */
+
+/* Панель карты — крупный оверлей почти на весь экран. */
+.gm-panel--map {
+    min-width: 1600px;
+    min-height: 860px;
+}
+
+.gm-map {
+    flex-grow: 1;
+    width: 100%;
+}
+
+/* Холст графа: заполняет панель; сюда C# кладёт узлы и рисует рёбра. */
+.gm-map__graph {
+    flex-grow: 1;
+    min-height: 700px;
+    --gm-map-edge: var(--gm-color-map-edge);
+    --gm-map-edge-active: var(--gm-color-map-edge-active);
+}
+
+/* Узел графа: позицию задаёт C#. По умолчанию — вне досягаемости (тускло). */
+.gm-map__node {
+    position: absolute;
+    width: 132px;
+    height: 92px;
+    flex-direction: column;
+    background-color: var(--gm-color-map-node-locked);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-inner);
+    border-radius: var(--gm-radius-0);
+    opacity: 0.55;
+    overflow: hidden;
+}
+
+.gm-map__node-accent {
+    height: 10px;
+    width: 100%;
+    background-color: var(--gm-color-border-subtle);
+}
+
+.gm-map__node-label {
+    flex-grow: 1;
+    font-size: var(--gm-font-sm);
+    color: var(--gm-color-text-muted);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* Состояния */
+.gm-map__node--cleared {
+    opacity: 0.9;
+    background-color: var(--gm-color-map-node-cleared);
+}
+
+.gm-map__node--available {
+    opacity: 1;
+    background-color: var(--gm-color-surface-raised);
+    border-color: var(--gm-color-accent);
+}
+
+.gm-map__node--available:hover {
+    border-color: var(--gm-color-hover-border);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-map__node--available .gm-map__node-label {
+    color: var(--gm-color-text);
+}
+
+.gm-map__node--current {
+    opacity: 1;
+    border-color: var(--gm-color-map-node-current);
+}
+
+/* Тип узла — цвет полосы-акцента (не трогает рамку/фон состояния) */
+.gm-map__node-accent--start     { background-color: var(--gm-color-border-subtle); }
+.gm-map__node-accent--battle    { background-color: var(--gm-color-accent); }
+.gm-map__node-accent--elite     { background-color: var(--gm-color-danger); }
+.gm-map__node-accent--boss      { background-color: var(--gm-color-danger-hover); }
+.gm-map__node-accent--shop      { background-color: var(--gm-brass-300); }
+.gm-map__node-accent--chest     { background-color: var(--gm-brass-200); }
+.gm-map__node-accent--textevent { background-color: var(--gm-parchment-300); }
+.gm-map__node-accent--unknown   { background-color: var(--gm-color-text-muted); }

@@ -34,6 +34,9 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана текстового ивента (StS-style: заголовок, тело, варианты ответа).")]
         [SerializeField] private VisualTreeAsset _eventScreen;
 
+        [Tooltip("UXML экрана карты акта (граф узлов слева→направо, клик по доступному узлу).")]
+        [SerializeField] private VisualTreeAsset _mapScreen;
+
         [Tooltip("UXML верхней панели забега (StS-style: хаб/опции/золото, центр «Начать»↔таймер, акт/время).")]
         [SerializeField] private VisualTreeAsset _runTopBar;
 
@@ -45,9 +48,11 @@ namespace Guildmaster.UI
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
         private ISubscriber<OpenRewardRequest> _openRewardSub;
         private ISubscriber<OpenTextEventRequest> _openEventSub;
+        private ISubscriber<OpenMapRequest> _openMapSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
         private IDisposable _openEventSubscription;
+        private IDisposable _openMapSubscription;
         private UIDocument _doc;
         private RunTopBarView _topBar;
 
@@ -55,7 +60,7 @@ namespace Guildmaster.UI
         public void Construct(MenuRouter router, IInputService input,
             IBattleClock clock, RunStateService runStates, ILocalizationService loc,
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
-            ISubscriber<OpenTextEventRequest> openEventSub)
+            ISubscriber<OpenTextEventRequest> openEventSub, ISubscriber<OpenMapRequest> openMapSub)
         {
             _router = router;
             _input = input;
@@ -65,6 +70,7 @@ namespace Guildmaster.UI
             _openLoadoutSub = openLoadoutSub;
             _openRewardSub = openRewardSub;
             _openEventSub = openEventSub;
+            _openMapSub = openMapSub;
         }
 
         private void Awake() => _doc = GetComponent<UIDocument>();
@@ -77,7 +83,7 @@ namespace Guildmaster.UI
                                  "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
                 return;
             }
-            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen);
+            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -85,6 +91,8 @@ namespace Guildmaster.UI
             _openRewardSubscription = _openRewardSub?.Subscribe(req => _router.OpenReward(req));
             // Открытие текстового ивента (StS-style) — запрос из GameFlow.
             _openEventSubscription = _openEventSub?.Subscribe(req => _router.OpenTextEvent(req));
+            // Открытие карты акта — запрос из петли акта (MapScreenNodeChooser).
+            _openMapSubscription = _openMapSub?.Subscribe(req => _router.OpenMap(req));
 
             InitTopBar();
         }
@@ -135,6 +143,7 @@ namespace Guildmaster.UI
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();
+            _openMapSubscription?.Dispose();
         }
 
         private void OnMenuToggle() => _router.ToggleSystemMenu();

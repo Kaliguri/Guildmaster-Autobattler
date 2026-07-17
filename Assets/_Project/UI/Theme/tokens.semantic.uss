@@ -45,4 +45,11 @@
     --gm-inset-panel: var(--gm-space-5);
     --gm-inset-control: var(--gm-space-3);
     --gm-gap-stack: var(--gm-space-3);
+
+    /* --- Карта акта (узлы графа + рёбра) --- */
+    --gm-color-map-edge: var(--gm-ink-300);          /* тихое ребро между узлами */
+    --gm-color-map-edge-active: var(--gm-brass-400); /* ребро из текущего узла к доступному */
+    --gm-color-map-node-locked: var(--gm-ink-500);   /* узел вне досягаемости (тускло) */
+    --gm-color-map-node-cleared: var(--gm-ink-600);  /* пройденный узел */
+    --gm-color-map-node-current: var(--gm-brass-300); /* рамка текущей позиции */
 }

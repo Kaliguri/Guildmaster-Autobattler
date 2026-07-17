@@ -95,9 +95,10 @@ namespace Guildmaster.Game
             // Применение последствий текстовых ивентов к RunState (план 11 §5.1).
             builder.Register<EventEffectApplier>(Lifetime.Singleton);
 
-            // Петля акта (план act-map-run-loop §3.2, A2): резолвер узлов + выбор узла (A2 — авто) + сам раннер.
+            // Петля акта (план act-map-run-loop §3.2): резолвер узлов + выбор узла через экран карты (A3) + раннер.
+            // AutoFirstNodeChooser остаётся для headless/тестов; в игре узел выбирает игрок кликом по MapScreen.
             builder.Register<NodeResolver>(Lifetime.Singleton).As<INodeResolver>();
-            builder.Register<AutoFirstNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
+            builder.Register<MapScreenNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
             builder.Register<ActRunner>(Lifetime.Singleton);
 
             builder.Register<GameFlow>(Lifetime.Singleton);
