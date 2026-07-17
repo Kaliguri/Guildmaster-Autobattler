@@ -28,6 +28,7 @@ namespace Guildmaster.DevTools
             ["run-topbar"]   = BuildRunTopBar,
             ["settings"]     = BuildSettings,
             ["map"]          = BuildMap,
+            ["shop"]         = BuildShop,
             ["gallery"]      = BuildGallery,
         };
 
@@ -204,6 +205,54 @@ namespace Guildmaster.DevTools
 
             VisualElement screen = Guildmaster.UI.MapScreenView.Build(uxml, map, available, RuValue, _ => { });
             root.Add(screen);
+        }
+
+        private static void BuildShop(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/ShopScreen.uxml");
+            if (uxml == null) { AddError(root, "ShopScreen.uxml не найден"); return; }
+
+            IContentDatabase content = LoadContent();
+            var relics = new List<RelicData>();
+            if (content != null)
+            {
+                IReadOnlyList<RelicData> all = content.All<RelicData>();
+                for (int i = 0; all != null && i < all.Count && relics.Count < 6; i++)
+                    if (all[i] != null && all[i].Id != "relic.base") relics.Add(all[i]);
+            }
+
+            var shelf = new List<Guildmaster.Guild.ShopItem>();
+            for (int i = 0; i < 4 && i < relics.Count; i++)
+                shelf.Add(new Guildmaster.Guild.ShopItem { Relic = relics[i], Price = 50 + i * 30, Sold = i == 1 });
+            var stash = new List<Guildmaster.Guild.ShopStashItem>();
+            for (int i = 4; i < relics.Count && stash.Count < 3; i++)
+                stash.Add(new Guildmaster.Guild.ShopStashItem { Relic = relics[i], SellValue = 15 });
+
+            var shop = new PreviewShop(shelf, stash);
+            VisualElement screen = Guildmaster.UI.ShopScreenView.Build(
+                uxml, shop, r => RuName(r?.Id), RuValue, () => { });
+            root.Add(screen);
+        }
+
+        // Фейковый контроллер магазина для стенда: без DI/RunState, только показать раскладку.
+        private sealed class PreviewShop : Guildmaster.Guild.IShopController
+        {
+            private readonly List<Guildmaster.Guild.ShopItem> _shelf;
+            private readonly List<Guildmaster.Guild.ShopStashItem> _stash;
+            public PreviewShop(List<Guildmaster.Guild.ShopItem> shelf, List<Guildmaster.Guild.ShopStashItem> stash)
+            { _shelf = shelf; _stash = stash; }
+            public event System.Action Changed;
+            public int Gold => 250;
+            public int RerollCost => 50;
+            public IReadOnlyList<Guildmaster.Guild.ShopItem> Shelf => _shelf;
+            public IReadOnlyList<Guildmaster.Guild.ShopStashItem> Stash => _stash;
+            public Guildmaster.Guild.ShopBuyOutcome Buy(int index)
+            {
+                if (index >= 0 && index < _shelf.Count) { _shelf[index].Sold = true; Changed?.Invoke(); }
+                return Guildmaster.Guild.ShopBuyOutcome.Bought;
+            }
+            public bool Reroll() { Changed?.Invoke(); return true; }
+            public bool Sell(RelicData relic) { Changed?.Invoke(); return true; }
         }
 
         private static void BuildGallery(VisualElement root)

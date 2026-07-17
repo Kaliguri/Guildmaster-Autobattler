@@ -826,3 +826,99 @@
     bottom: var(--gm-space-5);
     min-width: 220px;
 }
+
+/* ============================================================================
+ * МАГАЗИН (B2): витрина 4 слота + реролл + панель продажи + тост «нет места».
+ * ========================================================================== */
+.gm-panel--shop {
+    min-width: 1100px;
+    min-height: 760px;
+}
+
+.gm-shop__topbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-shop__gold {
+    font-size: var(--gm-font-title);
+    color: var(--gm-brass-300);
+}
+
+.gm-shop__shelf {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.gm-shop__card {
+    width: 200px;
+    align-items: center;
+    padding: var(--gm-space-2);
+    margin: var(--gm-space-1);
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-inner);
+}
+
+.gm-shop__card--sold {
+    opacity: 0.4;
+}
+
+.gm-shop__price {
+    font-size: var(--gm-font-body);
+    color: var(--gm-brass-300);
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-shop__section-title {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-shop__stash {
+    max-height: 240px;
+}
+
+.gm-shop__stash-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--gm-space-1);
+    border-bottom-width: var(--gm-border-1);
+    border-bottom-color: var(--gm-color-border-subtle);
+}
+
+.gm-shop__stash-name {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text);
+}
+
+.gm-shop__footer {
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: var(--gm-space-2);
+}
+
+/* Тост «нет места»: полноэкранный слой по центру, клики сквозь. */
+.gm-shop__toast {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-shop__toast-label {
+    font-size: var(--gm-font-lg);
+    color: var(--gm-danger-400);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}

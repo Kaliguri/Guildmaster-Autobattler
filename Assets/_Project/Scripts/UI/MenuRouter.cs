@@ -33,6 +33,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _eventUxml;
         private VisualTreeAsset _mapUxml;
         private VisualTreeAsset _continueUxml;
+        private VisualTreeAsset _shopUxml;
         private InputContext _prevContext;
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
@@ -49,7 +50,7 @@ namespace Guildmaster.UI
         /// <summary>Бутстрап отдаёт корень панели и UXML-шаблоны экранов (ссылки из сцены, не DI).</summary>
         public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
-            VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null)
+            VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
@@ -59,6 +60,7 @@ namespace Guildmaster.UI
             _eventUxml = eventUxml;
             _mapUxml = mapUxml;
             _continueUxml = continueUxml;
+            _shopUxml = shopUxml;
         }
 
         /// <summary>
@@ -408,6 +410,38 @@ namespace Guildmaster.UI
 
             // Страховка: снятие без нажатия (ESC/CloseAll) = резолв, чтобы петля не зависла.
             screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnContinue?.Invoke(); } });
+            return screen;
+        }
+
+        // Экран магазина (B2) — на UXML (ShopScreen.uxml) через общий ShopScreenView, биндится к IShopController.
+        // «Уйти»/закрытие резолвит OnLeave (петля продолжается). Ровно один вызов.
+        public void OpenShop(OpenShopRequest req)
+        {
+            if (_root == null || _shopUxml == null || req.Shop == null) { req.OnLeave?.Invoke(); return; }
+            Push(BuildShopScreen(req));
+        }
+
+        private VisualElement BuildShopScreen(OpenShopRequest req)
+        {
+            bool resolved = false;
+
+            void Resolve()
+            {
+                if (resolved) return;
+                resolved = true;
+                req.OnLeave?.Invoke();
+                CloseAll();
+            }
+
+            VisualElement screen = ShopScreenView.Build(
+                _shopUxml,
+                req.Shop,
+                relic => _loadoutVm.Name(relic),
+                key => _loc?.GetString(key),
+                Resolve);
+
+            // Растянуть оверлей на весь корень + страховка: закрытие без «Уйти» = резолв, чтобы петля не зависла.
+            screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnLeave?.Invoke(); } });
             return screen;
         }
 

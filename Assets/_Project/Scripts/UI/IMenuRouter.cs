@@ -42,5 +42,11 @@ namespace Guildmaster.UI
         /// чтобы петля акта не зависла.
         /// </summary>
         void ShowContinue(Guildmaster.Guild.OpenContinueRequest req);
+
+        /// <summary>
+        /// Открыть экран магазина (B2). Гарантирует ровно один вызов
+        /// <see cref="Guildmaster.Guild.OpenShopRequest.OnLeave"/> — включая закрытие без нажатия «Уйти».
+        /// </summary>
+        void OpenShop(Guildmaster.Guild.OpenShopRequest req);
     }
 }

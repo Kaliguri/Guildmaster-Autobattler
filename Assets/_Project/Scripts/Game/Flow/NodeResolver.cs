@@ -28,18 +28,22 @@ namespace Guildmaster.Game.Flow
         private readonly IBattleSession     _session;
         private readonly ILocalPlayer       _localPlayer;
         private readonly EventEffectApplier _eventEffects;
+        private readonly ShopController     _shop;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
+        private readonly IPublisher<OpenShopRequest>      _openShopPub;
 
         public NodeResolver(IContentDatabase content, ISceneLoader scenes, IBattleSession session,
-                            ILocalPlayer localPlayer, EventEffectApplier eventEffects,
-                            IPublisher<OpenTextEventRequest> openEventPub)
+                            ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
+                            IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub)
         {
             _content      = content;
             _scenes       = scenes;
             _session      = session;
             _localPlayer  = localPlayer;
             _eventEffects = eventEffects;
+            _shop         = shop;
             _openEventPub = openEventPub;
+            _openShopPub  = openShopPub;
         }
 
         public IEventFlow Resolve(MapNode node, RunContext ctx)
@@ -70,8 +74,10 @@ namespace Guildmaster.Game.Flow
                     return new TextEventFlow(ev, _openEventPub, _eventEffects);
                 }
 
-                // A2: магазин/сундук/«?» ещё не реализованы — проходим как no-op (фазы B2-B4).
                 case MapNodeType.Shop:
+                    return new ShopFlow(_shop, _openShopPub);
+
+                // Сундук/«?» ещё не реализованы — проходим как no-op (фазы B3-B4).
                 case MapNodeType.Chest:
                 case MapNodeType.Unknown:
                     return new CompletedStubFlow(node.Type);

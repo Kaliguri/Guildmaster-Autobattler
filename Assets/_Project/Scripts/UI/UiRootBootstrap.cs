@@ -40,6 +40,9 @@ namespace Guildmaster.UI
         [Tooltip("UXML единой кнопки «Продолжить» (правый нижний угол, бит между узлом и картой).")]
         [SerializeField] private VisualTreeAsset _continueScreen;
 
+        [Tooltip("UXML экрана магазина (витрина 4 слота, реролл, продажа).")]
+        [SerializeField] private VisualTreeAsset _shopScreen;
+
         [Tooltip("UXML верхней панели забега (StS-style: хаб/опции/золото, центр «Начать»↔таймер, акт/время).")]
         [SerializeField] private VisualTreeAsset _runTopBar;
 
@@ -53,11 +56,13 @@ namespace Guildmaster.UI
         private ISubscriber<OpenTextEventRequest> _openEventSub;
         private ISubscriber<OpenMapRequest> _openMapSub;
         private ISubscriber<OpenContinueRequest> _openContinueSub;
+        private ISubscriber<OpenShopRequest> _openShopSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
         private IDisposable _openEventSubscription;
         private IDisposable _openMapSubscription;
         private IDisposable _openContinueSubscription;
+        private IDisposable _openShopSubscription;
         private UIDocument _doc;
         private RunTopBarView _topBar;
 
@@ -66,7 +71,7 @@ namespace Guildmaster.UI
             IBattleClock clock, RunStateService runStates, ILocalizationService loc,
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
             ISubscriber<OpenTextEventRequest> openEventSub, ISubscriber<OpenMapRequest> openMapSub,
-            ISubscriber<OpenContinueRequest> openContinueSub)
+            ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub)
         {
             _router = router;
             _input = input;
@@ -78,6 +83,7 @@ namespace Guildmaster.UI
             _openEventSub = openEventSub;
             _openMapSub = openMapSub;
             _openContinueSub = openContinueSub;
+            _openShopSub = openShopSub;
         }
 
         private void Awake() => _doc = GetComponent<UIDocument>();
@@ -90,7 +96,7 @@ namespace Guildmaster.UI
                                  "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
                 return;
             }
-            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen);
+            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -102,6 +108,8 @@ namespace Guildmaster.UI
             _openMapSubscription = _openMapSub?.Subscribe(req => _router.OpenMap(req));
             // Единая кнопка «Продолжить» — запрос из петли акта (ContinuePresenter).
             _openContinueSubscription = _openContinueSub?.Subscribe(req => _router.ShowContinue(req));
+            // Магазин — запрос из узла магазина (ShopFlow).
+            _openShopSubscription = _openShopSub?.Subscribe(req => _router.OpenShop(req));
 
             InitTopBar();
         }
@@ -154,6 +162,7 @@ namespace Guildmaster.UI
             _openEventSubscription?.Dispose();
             _openMapSubscription?.Dispose();
             _openContinueSubscription?.Dispose();
+            _openShopSubscription?.Dispose();
         }
 
         private void OnMenuToggle() => _router.ToggleSystemMenu();

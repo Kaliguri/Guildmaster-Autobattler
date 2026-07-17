@@ -99,6 +99,9 @@ namespace Guildmaster.Game
             // Применение последствий текстовых ивентов к RunState (план 11 §5.1).
             builder.Register<EventEffectApplier>(Lifetime.Singleton);
 
+            // Магазин (B2): логика витрины/покупки/продажи за IShopController; UI биндится к экземпляру из запроса.
+            builder.Register<ShopController>(Lifetime.Singleton);
+
             // Петля акта (план act-map-run-loop §3.2): резолвер узлов + выбор узла через экран карты (A3) + раннер.
             // AutoFirstNodeChooser остаётся для headless/тестов; в игре узел выбирает игрок кликом по MapScreen.
             builder.Register<NodeResolver>(Lifetime.Singleton).As<INodeResolver>();
