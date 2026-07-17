@@ -91,6 +91,8 @@ namespace Guildmaster.Game
             builder.Register<RewardService>(Lifetime.Singleton);
             // Показ награды (вынесен из GameFlow — переиспользуют петля акта и legacy-вход одного боя).
             builder.Register<RewardPresenter>(Lifetime.Singleton).As<IRewardPresenter>();
+            // Единая кнопка «Продолжить» (A4) — бит между разрешённым узлом и возвратом на карту.
+            builder.Register<ContinuePresenter>(Lifetime.Singleton).As<IContinuePresenter>();
 
             // Применение последствий текстовых ивентов к RunState (план 11 §5.1).
             builder.Register<EventEffectApplier>(Lifetime.Singleton);

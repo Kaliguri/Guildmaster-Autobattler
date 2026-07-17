@@ -810,3 +810,19 @@
 .gm-map__node-accent--chest     { background-color: var(--gm-brass-200); }
 .gm-map__node-accent--textevent { background-color: var(--gm-parchment-300); }
 .gm-map__node-accent--unknown   { background-color: var(--gm-color-text-muted); }
+
+/* Единая кнопка «Продолжить» (A4): полноэкранный слой-гейт, кнопка всегда в правом нижнем углу. */
+.gm-continue-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.gm-continue {
+    position: absolute;
+    right: var(--gm-space-5);
+    bottom: var(--gm-space-5);
+    min-width: 220px;
+}

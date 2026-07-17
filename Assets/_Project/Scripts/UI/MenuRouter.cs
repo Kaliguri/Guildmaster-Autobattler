@@ -32,6 +32,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _rewardUxml;
         private VisualTreeAsset _eventUxml;
         private VisualTreeAsset _mapUxml;
+        private VisualTreeAsset _continueUxml;
         private InputContext _prevContext;
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
@@ -48,7 +49,7 @@ namespace Guildmaster.UI
         /// <summary>Бутстрап отдаёт корень панели и UXML-шаблоны экранов (ссылки из сцены, не DI).</summary>
         public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
-            VisualTreeAsset mapUxml = null)
+            VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
@@ -57,6 +58,7 @@ namespace Guildmaster.UI
             _rewardUxml = rewardUxml;
             _eventUxml = eventUxml;
             _mapUxml = mapUxml;
+            _continueUxml = continueUxml;
         }
 
         /// <summary>
@@ -369,6 +371,43 @@ namespace Guildmaster.UI
                 if (!resolved) { resolved = true; req.OnChosen?.Invoke(null); }
             });
 
+            return screen;
+        }
+
+        // Единая кнопка «Продолжить» (A4) — оверлей с кнопкой в правом нижнем углу. Нажатие резолвит и закрывает;
+        // закрытие без нажатия (ESC/CloseAll) тоже резолвит, чтобы петля акта не зависла.
+        public void ShowContinue(OpenContinueRequest req)
+        {
+            if (_root == null || _continueUxml == null) { req.OnContinue?.Invoke(); return; }
+            Push(BuildContinueScreen(req));
+        }
+
+        private VisualElement BuildContinueScreen(OpenContinueRequest req)
+        {
+            bool resolved = false;
+
+            void Resolve()
+            {
+                if (resolved) return;
+                resolved = true;
+                req.OnContinue?.Invoke();
+                CloseAll();
+            }
+
+            var screen = FillRoot(_continueUxml.CloneTree());
+            var btn = screen.Q<Button>("btn-continue");
+            if (btn != null)
+            {
+                if (!string.IsNullOrEmpty(req.LabelKey))
+                {
+                    string label = _loc?.GetString(req.LabelKey);
+                    if (!string.IsNullOrEmpty(label)) btn.text = label;
+                }
+                btn.clicked += Resolve;
+            }
+
+            // Страховка: снятие без нажатия (ESC/CloseAll) = резолв, чтобы петля не зависла.
+            screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnContinue?.Invoke(); } });
             return screen;
         }
 

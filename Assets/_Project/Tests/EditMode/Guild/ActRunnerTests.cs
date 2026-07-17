@@ -40,7 +40,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         private ActRunner NewRunner(INodeResolver resolver, IRewardPresenter reward) =>
-            new ActRunner(resolver, reward, new AutoFirstNodeChooser(), _runStates);
+            new ActRunner(resolver, reward, new ImmediateContinue(), new AutoFirstNodeChooser(), _runStates);
 
         private static bool IsBattleish(MapNodeType t) =>
             t == MapNodeType.Battle || t == MapNodeType.Elite || t == MapNodeType.Boss;
@@ -140,6 +140,11 @@ namespace Guildmaster.Tests.EditMode.Guild
         {
             public int TotalCalls { get; private set; }
             public UniTask PresentAsync(RewardTier tier) { TotalCalls++; return UniTask.CompletedTask; }
+        }
+
+        private sealed class ImmediateContinue : IContinuePresenter
+        {
+            public UniTask WaitForContinueAsync(string labelKey = null) => UniTask.CompletedTask;
         }
 
         private sealed class InMemorySave : ISaveService

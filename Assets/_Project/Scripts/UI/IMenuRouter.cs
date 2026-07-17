@@ -35,5 +35,12 @@ namespace Guildmaster.UI
         /// петля акта не зависла (трактуется как прерывание).
         /// </summary>
         void OpenMap(Guildmaster.Guild.OpenMapRequest req);
+
+        /// <summary>
+        /// Показать единую кнопку «Продолжить» (A4) в правом нижнем углу. Гарантирует ровно один вызов
+        /// <see cref="Guildmaster.Guild.OpenContinueRequest.OnContinue"/> — включая закрытие без нажатия,
+        /// чтобы петля акта не зависла.
+        /// </summary>
+        void ShowContinue(Guildmaster.Guild.OpenContinueRequest req);
     }
 }

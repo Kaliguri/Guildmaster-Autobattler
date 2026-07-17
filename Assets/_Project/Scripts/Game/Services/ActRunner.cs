@@ -16,16 +16,18 @@ namespace Guildmaster.Game.Services
     /// </summary>
     public sealed class ActRunner
     {
-        private readonly INodeResolver    _resolver;
-        private readonly IRewardPresenter _reward;
-        private readonly IMapNodeChooser  _chooser;
-        private readonly RunStateService  _runStates;
+        private readonly INodeResolver     _resolver;
+        private readonly IRewardPresenter  _reward;
+        private readonly IContinuePresenter _continue;
+        private readonly IMapNodeChooser   _chooser;
+        private readonly RunStateService   _runStates;
 
-        public ActRunner(INodeResolver resolver, IRewardPresenter reward, IMapNodeChooser chooser,
-                         RunStateService runStates)
+        public ActRunner(INodeResolver resolver, IRewardPresenter reward, IContinuePresenter continuePresenter,
+                         IMapNodeChooser chooser, RunStateService runStates)
         {
             _resolver  = resolver;
             _reward    = reward;
+            _continue  = continuePresenter;
             _chooser   = chooser;
             _runStates = runStates;
         }
@@ -72,9 +74,11 @@ namespace Guildmaster.Game.Services
                     return EventResult.Defeated;
                 }
 
-                // Узел пройден: награда (для боевых), продвижение позиции, автосейв.
+                // Узел пройден: награда (для боевых) → единая кнопка «Продолжить» → продвижение позиции, автосейв.
                 RewardTier? tier = RewardTierFor(node.Type);
                 if (tier.HasValue) await _reward.PresentAsync(tier.Value);
+
+                await _continue.WaitForContinueAsync();
 
                 MapTraversal.Advance(map, node.Id);
                 _runStates.Autosave();
