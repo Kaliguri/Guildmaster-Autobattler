@@ -5,6 +5,7 @@ var interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession =
     [ "BindStart", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a3e2240a9c7e71eb443836ef4f8a5816b", null ],
     [ "ReportOutcome", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a56c49df7bba0c8f122afa0f6b768550b", null ],
     [ "RequestRestart", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#ac5e46b02d162646511d1bf36c9e942c5", null ],
+    [ "RestartInPlace", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a6a6365bea30a8c80244ecd2773514f06", null ],
     [ "SetPending", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a3a99d05b00402f6c6ef3cc7dbb7b2598", null ],
     [ "SetPhase", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a1f914f2674e41bb06bcfde721cd8878c", null ],
     [ "TryConsumePending", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#aa3fa06f2ca54b4e4c16bc0014b3ef87c", null ],

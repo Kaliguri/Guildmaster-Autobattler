@@ -1,0 +1,17 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,205,121,230"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1UI_1_1Components_1_1MapGraph.html" title="Холст графа карты акта (план [[act&#45;map&#45;run&#45;loop]] §3.2, A3): раскладывает узлы абсолютно по MapNode...." alt="" coords="182,5,391,45"/>
+<area shape="poly" id="edge147_Node000000_Node000001" title=" " alt="" coords="72,190,107,123,134,86,168,55,188,43,191,48,171,59,138,90,112,126,77,193"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1Components_1_1ModalPanel.html" title="Каркас модального оверлея: затемняющий scrim + центр&#45;панель + заголовок + дивайдер + тело." alt="" coords="182,69,391,109"/>
+<area shape="poly" id="edge148_Node000000_Node000002" title=" " alt="" coords="83,192,120,154,168,119,194,107,197,112,171,124,123,158,86,196"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html" title="Карточка реликвии: рамка + область ВИЗУАЛА + имя + состояния (текущая/выбранная)." alt="" coords="182,133,391,173"/>
+<area shape="poly" id="edge149_Node000000_Node000003" title=" " alt="" coords="118,198,169,183,211,171,212,176,170,188,119,203"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html" title="Строка слайдера: подпись слева + слайдер + значение в процентах справа." alt="" coords="182,197,391,237"/>
+<area shape="poly" id="edge150_Node000000_Node000004" title=" " alt="" coords="135,215,182,215,182,220,135,220"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1UI_1_1Components_1_1Slot.html" title="Слот: рамка&#45;квадрат с опциональной иконкой." alt="" coords="169,262,404,287"/>
+<area shape="poly" id="edge151_Node000000_Node000005" title=" " alt="" coords="117,232,170,247,223,259,222,265,169,252,116,237"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1UI_1_1Components_1_1Tooltip.html" title="Всплывающая подсказка при наведении (план 10 §5): заголовок + мета&#45;строка + теги + описание." alt="" coords="182,312,391,352"/>
+<area shape="poly" id="edge152_Node000000_Node000006" title=" " alt="" coords="89,237,126,268,171,296,202,309,200,314,168,301,123,272,86,242"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html" title="Карточка сосуда команды: имя носителя + строка надетого релика (мини&#45;иконка + имя)." alt="" coords="182,376,391,416"/>
+<area shape="poly" id="edge153_Node000000_Node000007" title=" " alt="" coords="78,241,114,302,140,335,171,362,192,373,189,378,168,366,136,338,110,305,74,244"/>
+</map>

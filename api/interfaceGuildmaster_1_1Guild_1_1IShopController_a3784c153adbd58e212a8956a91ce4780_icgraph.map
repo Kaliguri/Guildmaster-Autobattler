@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.IShopController.Reroll" name="Guildmaster.Guild.IShopController.Reroll">
+<area shape="rect" id="Node000001" title="Перекатить всю витрину за RerollCost. false = не хватило золота." alt="" coords="252,5,499,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1ShopScreenView.html#a70673ac599c769fbe9ab86c62fc6c46c" title=" " alt="" coords="5,5,204,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,28,204,28,204,23,238,23"/>
+</map>

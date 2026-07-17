@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.IShopController.Sell" name="Guildmaster.Guild.IShopController.Sell">
+<area shape="rect" id="Node000001" title="Продать реликвию из запаса (освободить место). false = такой в запасе нет." alt="" coords="252,13,523,38"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1ShopScreenView.html#a70673ac599c769fbe9ab86c62fc6c46c" title=" " alt="" coords="5,5,204,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="238,28,204,28,204,23,238,23"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.MapGenerator.Generate" name="Guildmaster.Guild.MapGenerator.Generate">
+<area shape="rect" id="Node000001" title="Строит карту акта из rng &#160;по параметрам config ." alt="" coords="256,5,495,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#ade85486b137b5ce32d7773fc078ac12a" title="Сгенерировать карту текущего акта, если её ещё нет (план [[act&#45;map&#45;run&#45;loop]] §3.1)." alt="" coords="5,5,208,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="242,28,208,28,208,23,242,23"/>
+</map>

@@ -15,49 +15,48 @@
 <polygon fill="#999999" stroke="transparent" points="146,-330 0,-330 0,0 146,0 146,-330"/>
 <text text-anchor="start" x="5" y="-318" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Guild.RunState</text>
 <text text-anchor="start" x="54.5" y="-307" font-family="Helvetica,sans-Serif" font-size="10.00">Service</text>
-<text text-anchor="start" x="9.5" y="-292" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-292" font-family="Helvetica,sans-Serif" font-size="10.00">Current</text>
-<text text-anchor="start" x="9.5" y="-277" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-277" font-family="Helvetica,sans-Serif" font-size="10.00">HasSave</text>
-<text text-anchor="start" x="9.5" y="-262" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-262" font-family="Helvetica,sans-Serif" font-size="10.00">RelicInventoryFull</text>
-<text text-anchor="start" x="9.5" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00">MaxVesselItems</text>
-<text text-anchor="start" x="9.5" y="-232" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-232" font-family="Helvetica,sans-Serif" font-size="10.00">MaxPartyBanners</text>
-<text text-anchor="start" x="9.5" y="-217" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-217" font-family="Helvetica,sans-Serif" font-size="10.00">Banners</text>
-<text text-anchor="start" x="9.5" y="-202" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-202" font-family="Helvetica,sans-Serif" font-size="10.00">RunStateService()</text>
-<text text-anchor="start" x="9.5" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">NewRun()</text>
-<text text-anchor="start" x="9.5" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">Load()</text>
-<text text-anchor="start" x="9.5" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">AddGold()</text>
-<text text-anchor="start" x="9.5" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">Autosave()</text>
-<text text-anchor="start" x="9.5" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">DeleteSave()</text>
-<text text-anchor="start" x="9.5" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">TryAddRelic()</text>
-<text text-anchor="start" x="9.5" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">RemoveRelic()</text>
-<text text-anchor="start" x="9.5" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">IncreaseCapacity()</text>
-<text text-anchor="start" x="9.5" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">VesselItems()</text>
-<text text-anchor="start" x="9.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">TryAddVesselItem()</text>
-<text text-anchor="start" x="9.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">RemoveVesselItem()</text>
-<text text-anchor="start" x="9.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">TryAddBanner()</text>
-<text text-anchor="start" x="9.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="28" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">RemoveBanner()</text>
+<text text-anchor="start" x="9" y="-292" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-292" font-family="Helvetica,sans-Serif" font-size="10.00">Current</text>
+<text text-anchor="start" x="9" y="-277" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-277" font-family="Helvetica,sans-Serif" font-size="10.00">HasSave</text>
+<text text-anchor="start" x="9" y="-262" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-262" font-family="Helvetica,sans-Serif" font-size="10.00">Gold</text>
+<text text-anchor="start" x="9" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-247" font-family="Helvetica,sans-Serif" font-size="10.00">RestartsRemaining</text>
+<text text-anchor="start" x="9" y="-232" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-232" font-family="Helvetica,sans-Serif" font-size="10.00">RelicInventoryFull</text>
+<text text-anchor="start" x="9" y="-217" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-217" font-family="Helvetica,sans-Serif" font-size="10.00">BaseRelicId</text>
+<text text-anchor="start" x="9" y="-202" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-202" font-family="Helvetica,sans-Serif" font-size="10.00">MaxVesselItems</text>
+<text text-anchor="start" x="9" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-187" font-family="Helvetica,sans-Serif" font-size="10.00">MaxPartyBanners</text>
+<text text-anchor="start" x="9" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-172" font-family="Helvetica,sans-Serif" font-size="10.00">Banners</text>
+<text text-anchor="start" x="9" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-157" font-family="Helvetica,sans-Serif" font-size="10.00">RunStateService()</text>
+<text text-anchor="start" x="9" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-142" font-family="Helvetica,sans-Serif" font-size="10.00">NewRun()</text>
+<text text-anchor="start" x="9" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-127" font-family="Helvetica,sans-Serif" font-size="10.00">NewDefaultRun()</text>
+<text text-anchor="start" x="9" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-112" font-family="Helvetica,sans-Serif" font-size="10.00">Load()</text>
+<text text-anchor="start" x="9" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-97" font-family="Helvetica,sans-Serif" font-size="10.00">BeginAct()</text>
+<text text-anchor="start" x="9" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-82" font-family="Helvetica,sans-Serif" font-size="10.00">AddGold()</text>
+<text text-anchor="start" x="9" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-67" font-family="Helvetica,sans-Serif" font-size="10.00">TrySpendGold()</text>
+<text text-anchor="start" x="9" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">AwardBattleReward()</text>
+<text text-anchor="start" x="9" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">TrySpendRestart()</text>
+<text text-anchor="start" x="9" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="27" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">Autosave()</text>
+<text text-anchor="start" x="27" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">and 11 more...</text>
 <polygon fill="#666666" stroke="#666666" points="0,-302 0,-302 146,-302 146,-302 0,-302"/>
-<polygon fill="#666666" stroke="#666666" points="0,-212 0,-212 26,-212 26,-212 0,-212"/>
-<polygon fill="#666666" stroke="#666666" points="26,-212 26,-212 146,-212 146,-212 26,-212"/>
+<polygon fill="#666666" stroke="#666666" points="0,-167 0,-167 25,-167 25,-167 0,-167"/>
+<polygon fill="#666666" stroke="#666666" points="25,-167 25,-167 146,-167 146,-167 25,-167"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-330 146,-330 146,0 0,0"/>
 </a>
 </g>

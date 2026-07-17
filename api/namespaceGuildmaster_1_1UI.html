@@ -105,6 +105,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1ChestScreenView.html">ChestScreenView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сборка экрана сундука (план [[act-map-run-loop]] §4 B3): фасад с кликабельной крышкой.  <a href="classGuildmaster_1_1UI_1_1ChestScreenView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1EventScreenView.html">EventScreenView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сборка экрана текстового ивента (StS-style) из UXML-шаблона — общий код для живого роутера (MenuRouter) и превью-стенда (<code>UiPreviewCatalog</code>).  <a href="classGuildmaster_1_1UI_1_1EventScreenView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,11 +120,23 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutHubView.html">LoadoutHubView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сборка хаба лоадаута (Фаза 2) из UXML-шаблона — обзор команды (4 сосуда) + общая секция (баннеры party-скоупа, запас реликвий, золото).  <a href="classGuildmaster_1_1UI_1_1LoadoutHubView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutHubViewModel.html">LoadoutHubViewModel</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ViewModel лоадаут-хаба (кольцо реликвий, Фаза 2): читает durable-гильдию забега (RunState) и отдаёт вью обзор команды (сосуды + надетый релик), запас реликвий и баннеры; применяет надевание/снятие релика через RunStateService (durable + автосейв).  <a href="classGuildmaster_1_1UI_1_1LoadoutHubViewModel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html">LoadoutViewModel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ViewModel loadout-экрана (план шаг 5): держит цель (юнит + текущий/выбранный релик), отдаёт грид доступных реликов и применяет выбор через EquipRelicRequest (слушает фаза расстановки).  <a href="classGuildmaster_1_1UI_1_1LoadoutViewModel.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MainMenuScreenView.html">MainMenuScreenView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сборка главного меню (план [[act-map-run-loop]] §4 D1): Начать / Продолжить / Настройки / Выход.  <a href="classGuildmaster_1_1UI_1_1MainMenuScreenView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MapScreenView.html">MapScreenView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сборка экрана карты акта из UXML-шаблона (план [[act-map-run-loop]] §3.2, A3) — общий код для живого роутера (MenuRouter) и превью-стенда.  <a href="classGuildmaster_1_1UI_1_1MapScreenView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1MenuRouter.html">MenuRouter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Реализация IMenuRouter: стек оверлейных экранов над корнем UITK-панели.  <a href="classGuildmaster_1_1UI_1_1MenuRouter.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1OutcomeScreenView.html">OutcomeScreenView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сборка экрана исхода забега (план [[act-map-run-loop]] §4 C2): заголовок Победа/Поражение + «В меню».  <a href="classGuildmaster_1_1UI_1_1OutcomeScreenView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1RewardScreenView.html">RewardScreenView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сборка экрана награды (A3) из UXML-шаблона — общий код для живого роутера (MenuRouter) и превью-стенда (<code>UiPreviewCatalog</code>).  <a href="classGuildmaster_1_1UI_1_1RewardScreenView.html#details">More...</a><br /></td></tr>
@@ -131,6 +146,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1SettingsViewModel.html">SettingsViewModel</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ViewModel экрана настроек — посредник между ISettingsService (модель) и View (UXML).  <a href="classGuildmaster_1_1UI_1_1SettingsViewModel.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1ShopScreenView.html">ShopScreenView</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сборка экрана магазина (план [[act-map-run-loop]] §4 B2) из UXML — общий код для роутера и превью-стенда.  <a href="classGuildmaster_1_1UI_1_1ShopScreenView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1UiRootBootstrap.html">UiRootBootstrap</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Точка входа рантайм-UI: держит постоянный UIDocument (в CoreScene, живёт всю сессию), отдаёт его корень роутеру и заводит ESC-открытие меню (<a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html#abbfc977da2284efc84481963d7ade147" title="Открыть/закрыть системное меню (Escape).">IInputService.MenuToggleRequested</a>).  <a href="classGuildmaster_1_1UI_1_1UiRootBootstrap.html#details">More...</a><br /></td></tr>

@@ -135,6 +135,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4cddca68c4be4f1284b6af1355290f43" id="r_a4cddca68c4be4f1284b6af1355290f43"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a4cddca68c4be4f1284b6af1355290f43">RequestRestart</a> ()</td></tr>
 <tr class="memdesc:a4cddca68c4be4f1284b6af1355290f43"><td class="mdescLeft">&#160;</td><td class="mdescRight">root → child: перезапустить бой (ретрай). Взводит новое ожидание. false = некому (нет боя).  <br /></td></tr>
 <tr class="separator:a4cddca68c4be4f1284b6af1355290f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a853c16afcf71248cb595f13eb27a8681" id="r_a853c16afcf71248cb595f13eb27a8681"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a853c16afcf71248cb595f13eb27a8681">RestartInPlace</a> ()</td></tr>
+<tr class="memdesc:a853c16afcf71248cb595f13eb27a8681"><td class="mdescLeft">&#160;</td><td class="mdescRight">dev → перезапустить текущий бой НА МЕСТЕ, НЕ трогая ожидание исхода (в отличие от RequestRestart): текущий await флоу остаётся валиден и разрешится концом перезапущенного боя.  <br /></td></tr>
+<tr class="separator:a853c16afcf71248cb595f13eb27a8681"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8efed7165633ba6875a3f10f5be1e22c" id="r_a8efed7165633ba6875a3f10f5be1e22c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a8efed7165633ba6875a3f10f5be1e22c">SetPhase</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103a">BattlePhase</a> phase)</td></tr>
 <tr class="memdesc:a8efed7165633ba6875a3f10f5be1e22c"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: сменить фазу (расстановка → бой). Панель опрашивает <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#ad8e294c9ebea9f52a6d087b164a8c363" title="Текущая фаза боя (пусто/расстановка/бой). Панель опрашивает каждый кадр.">IBattleClock.Phase</a>.  <br /></td></tr>
 <tr class="separator:a8efed7165633ba6875a3f10f5be1e22c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -303,6 +306,36 @@ Properties</h2></td></tr>
 <p>UI → бой: начать бой из фазы расстановки (кнопка «Начать»). No-op, если некому. </p>
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#a769fafb7ea4fc8f96ba51ac744f6381b">Guildmaster.Data.Definitions.IBattleClock</a>.</p>
+
+</div>
+</div>
+<a id="a853c16afcf71248cb595f13eb27a8681" name="a853c16afcf71248cb595f13eb27a8681"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a853c16afcf71248cb595f13eb27a8681">&#9670;&#160;</a></span>RestartInPlace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Flow.BattleSession.RestartInPlace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>dev → перезапустить текущий бой НА МЕСТЕ, НЕ трогая ожидание исхода (в отличие от RequestRestart): текущий await флоу остаётся валиден и разрешится концом перезапущенного боя. </p>
+<p>Для dev-хоткея R. false = боя нет (некому перезапускать). Не для ретрай-логики флоу — только ручной dev-перезапуск. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a6a6365bea30a8c80244ecd2773514f06">Guildmaster.Game.Flow.IBattleSession</a>.</p>
 
 </div>
 </div>

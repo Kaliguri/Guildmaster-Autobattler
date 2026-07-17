@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1RunTopBarVie
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.RunTopBarView:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1RunTopBarView__coll__graph.svg" width="227" height="176"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1RunTopBarView__coll__graph.svg" width="227" height="216"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -121,15 +121,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0a6f9ad4068239d3d724cb7bb355b015" id="r_a0a6f9ad4068239d3d724cb7bb355b015"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1RunTopBarView.html#a0a6f9ad4068239d3d724cb7bb355b015">SetRunTime</a> (string timerText)</td></tr>
 <tr class="memdesc:a0a6f9ad4068239d3d724cb7bb355b015"><td class="mdescLeft">&#160;</td><td class="mdescRight">Время забега (справа) — форматированная строка mm:ss.  <br /></td></tr>
 <tr class="separator:a0a6f9ad4068239d3d724cb7bb355b015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b91261e039c6698d62a1d60a13ce4bd" id="r_a6b91261e039c6698d62a1d60a13ce4bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1RunTopBarView.html#a6b91261e039c6698d62a1d60a13ce4bd">SetRestarts</a> (int remaining, int max)</td></tr>
+<tr class="memdesc:a6b91261e039c6698d62a1d60a13ce4bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">ХП забега = перезапуски-на-акт (реш.  <br /></td></tr>
+<tr class="separator:a6b91261e039c6698d62a1d60a13ce4bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c64fe44fdb4b0bbc6b29fbe0f169cf" id="r_a44c64fe44fdb4b0bbc6b29fbe0f169cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1RunTopBarView.html#a44c64fe44fdb4b0bbc6b29fbe0f169cf">HideBattleCenter</a> ()</td></tr>
+<tr class="memdesc:a44c64fe44fdb4b0bbc6b29fbe0f169cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Скрыть центр панели (нет боя: карта/магазин) — ни «Начать», ни таймера.  <br /></td></tr>
+<tr class="separator:a44c64fe44fdb4b0bbc6b29fbe0f169cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0aeeaeb8cb3611373d5f442a97b37763" id="r_a0aeeaeb8cb3611373d5f442a97b37763"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1RunTopBarView.html#a0aeeaeb8cb3611373d5f442a97b37763">SetFighting</a> (bool fighting, string battleTime)</td></tr>
 <tr class="memdesc:a0aeeaeb8cb3611373d5f442a97b37763"><td class="mdescLeft">&#160;</td><td class="mdescRight">Переключить центр панели: бой идёт (<em>fighting</em> =true) → таймер боя вместо кнопки «Начать»; расстановка → кнопка «Начать» вместо таймера.  <br /></td></tr>
 <tr class="separator:a0aeeaeb8cb3611373d5f442a97b37763"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:af6f68a4e122ce1013bf34222a8f55ec6" id="r_af6f68a4e122ce1013bf34222a8f55ec6"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1RunTopBarView.html#af6f68a4e122ce1013bf34222a8f55ec6">Build</a> (VisualTreeAsset uxml, int gold, int actNumber, string timerText, Func&lt; string, string &gt; localize, Action onHub, Action onSettings, Action onStart)</td></tr>
-<tr class="memdesc:af6f68a4e122ce1013bf34222a8f55ec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тонкая обёртка для превью-стенда: разовый снимок панели без live-обновления.  <br /></td></tr>
-<tr class="separator:af6f68a4e122ce1013bf34222a8f55ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a910b719aeca197ea33d272943f1d8785" id="r_a910b719aeca197ea33d272943f1d8785"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1RunTopBarView.html#a910b719aeca197ea33d272943f1d8785">Build</a> (VisualTreeAsset uxml, int gold, int actNumber, string timerText, Func&lt; string, string &gt; localize, Action onHub, Action onSettings, Action onStart, int restartsRemaining=2, int restartsMax=2)</td></tr>
+<tr class="memdesc:a910b719aeca197ea33d272943f1d8785"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тонкая обёртка для превью-стенда: разовый снимок панели без live-обновления.  <br /></td></tr>
+<tr class="separator:a910b719aeca197ea33d272943f1d8785"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -196,8 +202,8 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="af6f68a4e122ce1013bf34222a8f55ec6" name="af6f68a4e122ce1013bf34222a8f55ec6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6f68a4e122ce1013bf34222a8f55ec6">&#9670;&#160;</a></span>Build()</h2>
+<a id="a910b719aeca197ea33d272943f1d8785" name="a910b719aeca197ea33d272943f1d8785"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a910b719aeca197ea33d272943f1d8785">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -251,7 +257,19 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onStart</em>&#160;</td>
+          <td class="paramname"><em>onStart</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>restartsRemaining</em> = <code>2</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>restartsMax</em> = <code>2</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -267,6 +285,33 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Тонкая обёртка для превью-стенда: разовый снимок панели без live-обновления. </p>
+
+</div>
+</div>
+<a id="a44c64fe44fdb4b0bbc6b29fbe0f169cf" name="a44c64fe44fdb4b0bbc6b29fbe0f169cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44c64fe44fdb4b0bbc6b29fbe0f169cf">&#9670;&#160;</a></span>HideBattleCenter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.RunTopBarView.HideBattleCenter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Скрыть центр панели (нет боя: карта/магазин) — ни «Начать», ни таймера. </p>
 
 </div>
 </div>
@@ -345,6 +390,45 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Золото гильдии (слева). </p>
+
+</div>
+</div>
+<a id="a6b91261e039c6698d62a1d60a13ce4bd" name="a6b91261e039c6698d62a1d60a13ce4bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b91261e039c6698d62a1d60a13ce4bd">&#9670;&#160;</a></span>SetRestarts()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.RunTopBarView.SetRestarts </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>remaining</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ХП забега = перезапуски-на-акт (реш. </p>
+<p>№65): рисует <em>max</em>  сердец-пипсов, первые <em>remaining</em>  — полные, остальные — потраченные (тусклые). Всегда виден в топ-баре. </p>
 
 </div>
 </div>

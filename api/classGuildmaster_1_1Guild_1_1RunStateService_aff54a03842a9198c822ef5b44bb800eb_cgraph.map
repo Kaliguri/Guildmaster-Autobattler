@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.RunStateService.NewDefaultRun" name="Guildmaster.Guild.RunStateService.NewDefaultRun">
+<area shape="rect" id="Node000001" title="Начать новый забег со СТАНДАРТНОЙ стартовой гильдией (уточн." alt="" coords="5,5,208,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RunStateService.html#a42b5f7b8c98688812518b9d22b64c89f" title="Начать новый забег: свежий RunState с базовой вместимостью реликов из конфига." alt="" coords="256,5,459,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,23,242,23,242,28,208,28"/>
+</map>

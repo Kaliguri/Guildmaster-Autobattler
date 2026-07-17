@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1Components_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.UI.Components.RelicCard:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1RelicCard__inherit__graph.svg" width="212" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1RelicCard__inherit__graph.svg" width="212" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.Components.RelicCard:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1RelicCard__coll__graph.svg" width="212" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1RelicCard__coll__graph.svg" width="212" height="344"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -122,6 +122,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:affc2439e738bc05e8ace8956b3b60d92" id="r_affc2439e738bc05e8ace8956b3b60d92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html#affc2439e738bc05e8ace8956b3b60d92">SetVisual</a> (Texture texture)</td></tr>
 <tr class="memdesc:affc2439e738bc05e8ace8956b3b60d92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Анимированный визуал: RenderTexture с боевого рига (реальный юнит, idle/attack).  <br /></td></tr>
 <tr class="separator:affc2439e738bc05e8ace8956b3b60d92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6188788d01f4c8c44597df9e5b740971" id="r_a6188788d01f4c8c44597df9e5b740971"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html#a6188788d01f4c8c44597df9e5b740971">SetInfoTags</a> (IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1Components_1_1RelicCardTag.html">RelicCardTag</a> &gt; tags)</td></tr>
+<tr class="memdesc:a6188788d01f4c8c44597df9e5b740971"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ряд info-тегов под именем (иконки + подписи).  <br /></td></tr>
+<tr class="separator:a6188788d01f4c8c44597df9e5b740971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03639cd92058ca2578f171df70c9e2c5" id="r_a03639cd92058ca2578f171df70c9e2c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html#a03639cd92058ca2578f171df70c9e2c5">SetRarity</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a925db2d2a0c45c6708446a8c78dce0a6">DropRarity</a> rarity)</td></tr>
+<tr class="memdesc:a03639cd92058ca2578f171df70c9e2c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Редкость → цвет рамки карточки (класс <code>.gm-card&ndash;rarity-*</code>). Интерактив (hover/selected) поверх.  <br /></td></tr>
+<tr class="separator:a03639cd92058ca2578f171df70c9e2c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac315431091c82a87b7696e803e9b6ad2" id="r_ac315431091c82a87b7696e803e9b6ad2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html#ac315431091c82a87b7696e803e9b6ad2">SetTooltip</a> (string text)</td></tr>
+<tr class="memdesc:ac315431091c82a87b7696e803e9b6ad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тултип карточки (полное описание релика при наведении). Пустая строка — снять тултип.  <br /></td></tr>
+<tr class="separator:ac315431091c82a87b7696e803e9b6ad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -164,6 +173,63 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6188788d01f4c8c44597df9e5b740971" name="a6188788d01f4c8c44597df9e5b740971"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6188788d01f4c8c44597df9e5b740971">&#9670;&#160;</a></span>SetInfoTags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.Components.RelicCard.SetInfoTags </td>
+          <td>(</td>
+          <td class="paramtype">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1Components_1_1RelicCardTag.html">RelicCardTag</a> &gt;&#160;</td>
+          <td class="paramname"><em>tags</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Ряд info-тегов под именем (иконки + подписи). </p>
+<p>Подаются готовыми: иконка из TagData, подпись — уже локализованная строка (loc резолвит потребитель, как и RelicName). Пустой/пропущенный набор прячет ряд. Чипы без подписей рисуются как «только иконки» (плотнее). </p>
+
+</div>
+</div>
+<a id="a03639cd92058ca2578f171df70c9e2c5" name="a03639cd92058ca2578f171df70c9e2c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03639cd92058ca2578f171df70c9e2c5">&#9670;&#160;</a></span>SetRarity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.Components.RelicCard.SetRarity </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a925db2d2a0c45c6708446a8c78dce0a6">DropRarity</a>&#160;</td>
+          <td class="paramname"><em>rarity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Редкость → цвет рамки карточки (класс <code>.gm-card&ndash;rarity-*</code>). Интерактив (hover/selected) поверх. </p>
+
+</div>
+</div>
 <a id="ac337391be38670feb6c8430167575e64" name="ac337391be38670feb6c8430167575e64"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac337391be38670feb6c8430167575e64">&#9670;&#160;</a></span>SetSprite()</h2>
 
@@ -189,6 +255,26 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Статичный визуал карточки: портрет/спрайт (фолбэк, когда нет анимированного рига). </p>
+
+</div>
+</div>
+<a id="ac315431091c82a87b7696e803e9b6ad2" name="ac315431091c82a87b7696e803e9b6ad2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac315431091c82a87b7696e803e9b6ad2">&#9670;&#160;</a></span>SetTooltip()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.Components.RelicCard.SetTooltip </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>text</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Тултип карточки (полное описание релика при наведении). Пустая строка — снять тултип. </p>
 
 </div>
 </div>

@@ -1,0 +1,9 @@
+<map id="Guildmaster.UI.ShopScreenView.Build" name="Guildmaster.UI.ShopScreenView.Build">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,204,95"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Guild_1_1IShopController.html#aa869d6dc9d18e8bc7abdb002464ece04" title="Купить слот витрины по индексу." alt="" coords="252,5,523,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="195,53,251,41,303,31,304,36,253,46,196,58"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Guild_1_1IShopController.html#a3784c153adbd58e212a8956a91ce4780" title="Перекатить всю витрину за RerollCost. false = не хватило золота." alt="" coords="264,55,511,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,73,250,73,250,78,204,78"/>
+<area shape="rect" id="Node000004" href="$interfaceGuildmaster_1_1Guild_1_1IShopController.html#ad0a51a41d14da144d4e9c5b477f56588" title="Продать реликвию из запаса (освободить место). false = такой в запасе нет." alt="" coords="252,120,523,145"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="196,93,253,105,304,115,303,120,251,110,195,98"/>
+</map>

@@ -105,13 +105,13 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Combat_1_1DamageR
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.DamageResult:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Combat_1_1DamageResult__coll__graph.svg" width="218" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Combat_1_1DamageResult__coll__graph.svg" width="218" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad89b31d33fed6fc4c0154eddd673b68b" id="r_ad89b31d33fed6fc4c0154eddd673b68b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#ad89b31d33fed6fc4c0154eddd673b68b">DamageResult</a> (float hpDamage, float shieldDamage, bool killedTarget)</td></tr>
-<tr class="separator:ad89b31d33fed6fc4c0154eddd673b68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a664d78252276c81aee6518a223a7b561" id="r_a664d78252276c81aee6518a223a7b561"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a664d78252276c81aee6518a223a7b561">DamageResult</a> (float hpDamage, float shieldDamage, bool killedTarget, <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a> sourceKind=<a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370">DamageSourceKind.Ability</a>)</td></tr>
+<tr class="separator:a664d78252276c81aee6518a223a7b561"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -124,6 +124,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:af1d2b6e49c96453124e9df11b2bb720e" id="r_af1d2b6e49c96453124e9df11b2bb720e"><td class="memItemLeft" align="right" valign="top">readonly bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#af1d2b6e49c96453124e9df11b2bb720e">KilledTarget</a></td></tr>
 <tr class="memdesc:af1d2b6e49c96453124e9df11b2bb720e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель погибла в результате этого удара.  <br /></td></tr>
 <tr class="separator:af1d2b6e49c96453124e9df11b2bb720e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83cec0c48420b5ad221955963a88ea9d" id="r_a83cec0c48420b5ad221955963a88ea9d"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Combat_1_1DamageResult.html#a83cec0c48420b5ad221955963a88ea9d">SourceKind</a></td></tr>
+<tr class="memdesc:a83cec0c48420b5ad221955963a88ea9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Откуда пришёл урон (авто-атака/способность/DoT/ответка).  <br /></td></tr>
+<tr class="separator:a83cec0c48420b5ad221955963a88ea9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -135,8 +138,8 @@ Properties</h2></td></tr>
 <div class="textblock"><p>Результат пайплайна урона после применения к цели. </p>
 <p>Возвращается DamagePipeline.Execute для последующих триггеров (lifesteal, шипы — Фаза 2). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ad89b31d33fed6fc4c0154eddd673b68b" name="ad89b31d33fed6fc4c0154eddd673b68b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad89b31d33fed6fc4c0154eddd673b68b">&#9670;&#160;</a></span>DamageResult()</h2>
+<a id="a664d78252276c81aee6518a223a7b561" name="a664d78252276c81aee6518a223a7b561"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a664d78252276c81aee6518a223a7b561">&#9670;&#160;</a></span>DamageResult()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,7 +163,13 @@ Properties</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>killedTarget</em>&#160;</td>
+          <td class="paramname"><em>killedTarget</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a>&#160;</td>
+          <td class="paramname"><em>sourceKind</em> = <code><a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70da698dcef315bbeccaa57c333577736370">DamageSourceKind::Ability</a></code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -223,6 +232,23 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Урон, поглощённый щитом. </p>
+
+</div>
+</div>
+<a id="a83cec0c48420b5ad221955963a88ea9d" name="a83cec0c48420b5ad221955963a88ea9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83cec0c48420b5ad221955963a88ea9d">&#9670;&#160;</a></span>SourceKind</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="namespaceGuildmaster_1_1Combat.html#ac65cd25c835ccb6455705a43a5adf70d">DamageSourceKind</a> Guildmaster.Combat.DamageResult.SourceKind</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Откуда пришёл урон (авто-атака/способность/DoT/ответка). </p>
+<p>Эхо DamageRequest.SourceKind — чтобы потребители события (метрики стенда, презентация) могли раскладывать урон по источнику, не меняя сигнатуру <code>OnDamageDealt</code> (шов sim→presentation остаётся неизменным). </p>
 
 </div>
 </div>

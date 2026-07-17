@@ -1,9 +1,9 @@
 <map id="Guildmaster.Guild.RunState" name="Guildmaster.Guild.RunState">
-<area shape="rect" id="Node000001" title="Durable&#45;состояние забега (план 11 §3.1, вики «7» §4): единственный источник истины забега,..." alt="" coords="85,441,280,667"/>
+<area shape="rect" id="Node000001" title="Durable&#45;состояние забега (план 11 §3.1, вики «7» §4): единственный источник истины забега,..." alt="" coords="85,441,280,687"/>
 <area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1RosterSlot.html" title="Слот ростера гильдии (план 11 §3.1): сосуд + надетый релик (весь кит) + пресет AI + предметы + позици..." alt="" coords="5,233,208,379"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="131,378,146,425,141,427,126,380"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="130,378,144,425,139,426,125,380"/>
 <area shape="rect" id="Node000003" href="$classGuildmaster_1_1Guild_1_1MapState.html" title="Состояние карты акта в RunState: граф узлов + где игрок сейчас." alt="" coords="232,273,429,339"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="314,340,261,429,256,426,309,338"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="315,340,264,428,259,426,310,338"/>
 <area shape="rect" id="Node000004" href="$classGuildmaster_1_1Guild_1_1MapNode.html" title="Узел графа акта (сериализуемый DTO)." alt="" coords="232,5,429,171"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="333,171,333,257,328,257,328,171"/>
 </map>

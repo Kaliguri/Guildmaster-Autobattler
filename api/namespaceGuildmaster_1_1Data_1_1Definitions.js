@@ -16,6 +16,7 @@ var namespaceGuildmaster_1_1Data_1_1Definitions =
     [ "EncounterData", "classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData" ],
     [ "EncounterUnit", "structGuildmaster_1_1Data_1_1Definitions_1_1EncounterUnit.html", "structGuildmaster_1_1Data_1_1Definitions_1_1EncounterUnit" ],
     [ "EnemyData", "classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData" ],
+    [ "EquipRelicAtCursorRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicAtCursorRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicAtCursorRequest" ],
     [ "EquipRelicRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest" ],
     [ "EventChoice", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice" ],
     [ "EventEffect", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect" ],

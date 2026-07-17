@@ -17,5 +17,7 @@ var searchData=
   ['dispelrequest_14',['DispelRequest',['../structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html',1,'Guildmaster::Combat::Effects']]],
   ['displacementsystem_15',['DisplacementSystem',['../classGuildmaster_1_1Combat_1_1DisplacementSystem.html',1,'Guildmaster::Combat']]],
   ['displacerequest_16',['DisplaceRequest',['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html',1,'Guildmaster::Combat']]],
-  ['dodgecomponent_17',['DodgeComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html',1,'Guildmaster::Combat::Effects::Components']]]
+  ['dodgecomponent_17',['DodgeComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1DodgeComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
+  ['dpsbench_18',['DpsBench',['../classGuildmaster_1_1Balance_1_1Editor_1_1DpsBench.html',1,'Guildmaster::Balance::Editor']]],
+  ['duelmatrixbench_19',['DuelMatrixBench',['../classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html',1,'Guildmaster::Balance::Editor']]]
 ];

@@ -1,0 +1,7 @@
+<map id="Guildmaster.Guild.MapTraversal.AvailableNext" name="Guildmaster.Guild.MapTraversal.AvailableNext">
+<area shape="rect" id="Node000001" title="Узлы, доступные для входа с текущей позиции: соседи по MapNode.Edges текущего узла,..." alt="" coords="5,37,240,77"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1MapTraversal.html#ae0ea3b912d94790c6536cfeb3bacb461" title="Текущий узел, на котором стоит игрок." alt="" coords="288,5,523,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,41,274,38,275,43,241,47"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Guild_1_1MapTraversal.html#a721fde020c5af40f44f2489be218718c" title="Узел по id, либо null если такого нет." alt="" coords="288,69,523,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="241,68,275,72,274,77,240,73"/>
+</map>

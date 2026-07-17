@@ -6,6 +6,16 @@ var annotated_dup =
           [ "AudioCatalogPopulator", "classGuildmaster_1_1Audio_1_1Editor_1_1AudioCatalogPopulator.html", "classGuildmaster_1_1Audio_1_1Editor_1_1AudioCatalogPopulator" ]
         ] ]
       ] ],
+      [ "Balance", "namespaceGuildmaster_1_1Balance.html", [
+        [ "Editor", "namespaceGuildmaster_1_1Balance_1_1Editor.html", [
+          [ "ContentAuditor", "classGuildmaster_1_1Balance_1_1Editor_1_1ContentAuditor.html", "classGuildmaster_1_1Balance_1_1Editor_1_1ContentAuditor" ],
+          [ "DpsBench", "classGuildmaster_1_1Balance_1_1Editor_1_1DpsBench.html", "classGuildmaster_1_1Balance_1_1Editor_1_1DpsBench" ],
+          [ "DuelMatrixBench", "classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html", "classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench" ],
+          [ "ScenarioBench", "classGuildmaster_1_1Balance_1_1Editor_1_1ScenarioBench.html", "classGuildmaster_1_1Balance_1_1Editor_1_1ScenarioBench" ],
+          [ "SurvivabilityBench", "classGuildmaster_1_1Balance_1_1Editor_1_1SurvivabilityBench.html", "classGuildmaster_1_1Balance_1_1Editor_1_1SurvivabilityBench" ]
+        ] ],
+        [ "BalanceScenarioData", "classGuildmaster_1_1Balance_1_1BalanceScenarioData.html", "classGuildmaster_1_1Balance_1_1BalanceScenarioData" ]
+      ] ],
       [ "Combat", "namespaceGuildmaster_1_1Combat.html", [
         [ "Abilities", "namespaceGuildmaster_1_1Combat_1_1Abilities.html", [
           [ "AbilityRuntime", "classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime.html", "classGuildmaster_1_1Combat_1_1Abilities_1_1AbilityRuntime" ]
@@ -156,6 +166,7 @@ var annotated_dup =
           [ "EncounterData", "classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData" ],
           [ "EncounterUnit", "structGuildmaster_1_1Data_1_1Definitions_1_1EncounterUnit.html", "structGuildmaster_1_1Data_1_1Definitions_1_1EncounterUnit" ],
           [ "EnemyData", "classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData" ],
+          [ "EquipRelicAtCursorRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicAtCursorRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicAtCursorRequest" ],
           [ "EquipRelicRequest", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html", "structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest" ],
           [ "EventChoice", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventChoice" ],
           [ "EventEffect", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect.html", "classGuildmaster_1_1Data_1_1Definitions_1_1EventEffect" ],
@@ -192,6 +203,7 @@ var annotated_dup =
           [ "ContentCrudService", "classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentCrudService" ],
           [ "ContentDatabaseSync", "classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentDatabaseSync" ],
           [ "ContentDefinitionEditor", "classGuildmaster_1_1Data_1_1Editor_1_1ContentDefinitionEditor.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentDefinitionEditor" ],
+          [ "ContentEditService", "classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService" ],
           [ "ContentIdUtility", "classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentIdUtility" ],
           [ "ContentLocalization", "classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentLocalization" ],
           [ "ContentPaths", "classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths.html", "classGuildmaster_1_1Data_1_1Editor_1_1ContentPaths" ]
@@ -215,17 +227,38 @@ var annotated_dup =
           [ "ArenaLayoutAuthoringEditor", "classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor.html", "classGuildmaster_1_1Game_1_1Editor_1_1ArenaLayoutAuthoringEditor" ]
         ] ],
         [ "Flow", "namespaceGuildmaster_1_1Game_1_1Flow.html", [
+          [ "AutoFirstNodeChooser", "classGuildmaster_1_1Game_1_1Flow_1_1AutoFirstNodeChooser.html", "classGuildmaster_1_1Game_1_1Flow_1_1AutoFirstNodeChooser" ],
           [ "BattleBootstrap", "classGuildmaster_1_1Game_1_1Flow_1_1BattleBootstrap.html", "classGuildmaster_1_1Game_1_1Flow_1_1BattleBootstrap" ],
           [ "BattleFlow", "classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html", "classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow" ],
+          [ "BattleNodeFlow", "classGuildmaster_1_1Game_1_1Flow_1_1BattleNodeFlow.html", "classGuildmaster_1_1Game_1_1Flow_1_1BattleNodeFlow" ],
           [ "BattleSession", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession" ],
+          [ "ChestFlow", "classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow.html", "classGuildmaster_1_1Game_1_1Flow_1_1ChestFlow" ],
+          [ "CompletedStubFlow", "classGuildmaster_1_1Game_1_1Flow_1_1CompletedStubFlow.html", "classGuildmaster_1_1Game_1_1Flow_1_1CompletedStubFlow" ],
+          [ "ContinuePresenter", "classGuildmaster_1_1Game_1_1Flow_1_1ContinuePresenter.html", "classGuildmaster_1_1Game_1_1Flow_1_1ContinuePresenter" ],
           [ "EventEffectApplier", "classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier.html", "classGuildmaster_1_1Game_1_1Flow_1_1EventEffectApplier" ],
           [ "EventResult", "structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html", "structGuildmaster_1_1Game_1_1Flow_1_1EventResult" ],
+          [ "GuildRoster", "classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html", "classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster" ],
           [ "IBattleSession", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession" ],
+          [ "IContinuePresenter", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IContinuePresenter" ],
           [ "IEventFlow", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IEventFlow.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IEventFlow" ],
+          [ "IMainMenuPresenter", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IMainMenuPresenter.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IMainMenuPresenter" ],
+          [ "IMapNodeChooser", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser" ],
+          [ "INodeResolver", "interfaceGuildmaster_1_1Game_1_1Flow_1_1INodeResolver.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1INodeResolver" ],
+          [ "IOutcomePresenter", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IOutcomePresenter" ],
           [ "IPlayerIntentSource", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IPlayerIntentSource" ],
           [ "IReadyGate", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IReadyGate.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IReadyGate" ],
+          [ "IRewardPresenter", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter.html", "interfaceGuildmaster_1_1Game_1_1Flow_1_1IRewardPresenter" ],
+          [ "MainMenuPresenter", "classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter.html", "classGuildmaster_1_1Game_1_1Flow_1_1MainMenuPresenter" ],
+          [ "MapScreenNodeChooser", "classGuildmaster_1_1Game_1_1Flow_1_1MapScreenNodeChooser.html", "classGuildmaster_1_1Game_1_1Flow_1_1MapScreenNodeChooser" ],
+          [ "NodeResolver", "classGuildmaster_1_1Game_1_1Flow_1_1NodeResolver.html", "classGuildmaster_1_1Game_1_1Flow_1_1NodeResolver" ],
+          [ "OutcomePresenter", "classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter.html", "classGuildmaster_1_1Game_1_1Flow_1_1OutcomePresenter" ],
+          [ "RandomEventFlow", "classGuildmaster_1_1Game_1_1Flow_1_1RandomEventFlow.html", "classGuildmaster_1_1Game_1_1Flow_1_1RandomEventFlow" ],
+          [ "RelicPricer", "classGuildmaster_1_1Game_1_1Flow_1_1RelicPricer.html", "classGuildmaster_1_1Game_1_1Flow_1_1RelicPricer" ],
+          [ "RewardPresenter", "classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter.html", "classGuildmaster_1_1Game_1_1Flow_1_1RewardPresenter" ],
           [ "RewardService", "classGuildmaster_1_1Game_1_1Flow_1_1RewardService.html", "classGuildmaster_1_1Game_1_1Flow_1_1RewardService" ],
           [ "RunContext", "classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html", "classGuildmaster_1_1Game_1_1Flow_1_1RunContext" ],
+          [ "ShopController", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController.html", "classGuildmaster_1_1Game_1_1Flow_1_1ShopController" ],
+          [ "ShopFlow", "classGuildmaster_1_1Game_1_1Flow_1_1ShopFlow.html", "classGuildmaster_1_1Game_1_1Flow_1_1ShopFlow" ],
           [ "SoloPlayerIntentSource", "classGuildmaster_1_1Game_1_1Flow_1_1SoloPlayerIntentSource.html", "classGuildmaster_1_1Game_1_1Flow_1_1SoloPlayerIntentSource" ],
           [ "SoloReadyGate", "classGuildmaster_1_1Game_1_1Flow_1_1SoloReadyGate.html", "classGuildmaster_1_1Game_1_1Flow_1_1SoloReadyGate" ],
           [ "TextEventFlow", "classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html", "classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow" ]
@@ -238,6 +271,7 @@ var annotated_dup =
           [ "SoloLocalPlayer", "classGuildmaster_1_1Game_1_1Players_1_1SoloLocalPlayer.html", "classGuildmaster_1_1Game_1_1Players_1_1SoloLocalPlayer" ]
         ] ],
         [ "Services", "namespaceGuildmaster_1_1Game_1_1Services.html", [
+          [ "ActRunner", "classGuildmaster_1_1Game_1_1Services_1_1ActRunner.html", "classGuildmaster_1_1Game_1_1Services_1_1ActRunner" ],
           [ "CinematicSegment", "structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment.html", "structGuildmaster_1_1Game_1_1Services_1_1CinematicSegment" ],
           [ "CombatFeelDirector", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector" ],
           [ "CombatLoopService", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService.html", "classGuildmaster_1_1Game_1_1Services_1_1CombatLoopService" ],
@@ -258,16 +292,31 @@ var annotated_dup =
         [ "RootLifetimeScope", "classGuildmaster_1_1Game_1_1RootLifetimeScope.html", "classGuildmaster_1_1Game_1_1RootLifetimeScope" ]
       ] ],
       [ "Guild", "namespaceGuildmaster_1_1Guild.html", [
+        [ "IShopController", "interfaceGuildmaster_1_1Guild_1_1IShopController.html", "interfaceGuildmaster_1_1Guild_1_1IShopController" ],
+        [ "MapGenConfig", "classGuildmaster_1_1Guild_1_1MapGenConfig.html", "classGuildmaster_1_1Guild_1_1MapGenConfig" ],
+        [ "MapGenerator", "classGuildmaster_1_1Guild_1_1MapGenerator.html", "classGuildmaster_1_1Guild_1_1MapGenerator" ],
         [ "MapNode", "classGuildmaster_1_1Guild_1_1MapNode.html", "classGuildmaster_1_1Guild_1_1MapNode" ],
         [ "MapState", "classGuildmaster_1_1Guild_1_1MapState.html", "classGuildmaster_1_1Guild_1_1MapState" ],
+        [ "MapTraversal", "classGuildmaster_1_1Guild_1_1MapTraversal.html", "classGuildmaster_1_1Guild_1_1MapTraversal" ],
+        [ "OpenChestRequest", "structGuildmaster_1_1Guild_1_1OpenChestRequest.html", "structGuildmaster_1_1Guild_1_1OpenChestRequest" ],
+        [ "OpenContinueRequest", "structGuildmaster_1_1Guild_1_1OpenContinueRequest.html", "structGuildmaster_1_1Guild_1_1OpenContinueRequest" ],
+        [ "OpenMainMenuRequest", "structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html", "structGuildmaster_1_1Guild_1_1OpenMainMenuRequest" ],
+        [ "OpenMapRequest", "structGuildmaster_1_1Guild_1_1OpenMapRequest.html", "structGuildmaster_1_1Guild_1_1OpenMapRequest" ],
+        [ "OpenOutcomeRequest", "structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html", "structGuildmaster_1_1Guild_1_1OpenOutcomeRequest" ],
+        [ "OpenShopRequest", "structGuildmaster_1_1Guild_1_1OpenShopRequest.html", "structGuildmaster_1_1Guild_1_1OpenShopRequest" ],
         [ "RosterSlot", "classGuildmaster_1_1Guild_1_1RosterSlot.html", "classGuildmaster_1_1Guild_1_1RosterSlot" ],
         [ "RunState", "classGuildmaster_1_1Guild_1_1RunState.html", "classGuildmaster_1_1Guild_1_1RunState" ],
-        [ "RunStateService", "classGuildmaster_1_1Guild_1_1RunStateService.html", "classGuildmaster_1_1Guild_1_1RunStateService" ]
+        [ "RunStateService", "classGuildmaster_1_1Guild_1_1RunStateService.html", "classGuildmaster_1_1Guild_1_1RunStateService" ],
+        [ "ShopItem", "classGuildmaster_1_1Guild_1_1ShopItem.html", "classGuildmaster_1_1Guild_1_1ShopItem" ],
+        [ "ShopStashItem", "classGuildmaster_1_1Guild_1_1ShopStashItem.html", "classGuildmaster_1_1Guild_1_1ShopStashItem" ]
       ] ],
       [ "Net", "namespaceGuildmaster_1_1Net.html", [
         [ "FacepunchTransportBootstrap", "classGuildmaster_1_1Net_1_1FacepunchTransportBootstrap.html", null ],
         [ "NetworkCommandRelay", "classGuildmaster_1_1Net_1_1NetworkCommandRelay.html", "classGuildmaster_1_1Net_1_1NetworkCommandRelay" ],
         [ "SimSyncProbe", "classGuildmaster_1_1Net_1_1SimSyncProbe.html", "classGuildmaster_1_1Net_1_1SimSyncProbe" ]
+      ] ],
+      [ "PaletteRemap", "namespaceGuildmaster_1_1PaletteRemap.html", [
+        [ "PaletteRemapWindow", "classGuildmaster_1_1PaletteRemap_1_1PaletteRemapWindow.html", "classGuildmaster_1_1PaletteRemap_1_1PaletteRemapWindow" ]
       ] ],
       [ "Presentation", "namespaceGuildmaster_1_1Presentation.html", [
         [ "Audio", "namespaceGuildmaster_1_1Presentation_1_1Audio.html", [
@@ -310,23 +359,32 @@ var annotated_dup =
       ] ],
       [ "UI", "namespaceGuildmaster_1_1UI.html", [
         [ "Components", "namespaceGuildmaster_1_1UI_1_1Components.html", [
+          [ "MapGraph", "classGuildmaster_1_1UI_1_1Components_1_1MapGraph.html", "classGuildmaster_1_1UI_1_1Components_1_1MapGraph" ],
           [ "ModalPanel", "classGuildmaster_1_1UI_1_1Components_1_1ModalPanel.html", "classGuildmaster_1_1UI_1_1Components_1_1ModalPanel" ],
           [ "RelicCard", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard" ],
+          [ "RelicCardTag", "structGuildmaster_1_1UI_1_1Components_1_1RelicCardTag.html", "structGuildmaster_1_1UI_1_1Components_1_1RelicCardTag" ],
           [ "RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig" ],
           [ "SliderRow", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow" ],
           [ "Slot", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html", "classGuildmaster_1_1UI_1_1Components_1_1Slot" ],
           [ "Tooltip", "classGuildmaster_1_1UI_1_1Components_1_1Tooltip.html", "classGuildmaster_1_1UI_1_1Components_1_1Tooltip" ],
+          [ "UiDragDrop", "classGuildmaster_1_1UI_1_1Components_1_1UiDragDrop.html", "classGuildmaster_1_1UI_1_1Components_1_1UiDragDrop" ],
           [ "VesselCard", "classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html", "classGuildmaster_1_1UI_1_1Components_1_1VesselCard" ]
         ] ],
+        [ "ChestScreenView", "classGuildmaster_1_1UI_1_1ChestScreenView.html", "classGuildmaster_1_1UI_1_1ChestScreenView" ],
         [ "EventScreenView", "classGuildmaster_1_1UI_1_1EventScreenView.html", "classGuildmaster_1_1UI_1_1EventScreenView" ],
         [ "IMenuRouter", "interfaceGuildmaster_1_1UI_1_1IMenuRouter.html", "interfaceGuildmaster_1_1UI_1_1IMenuRouter" ],
         [ "IntegerPanelScaler", "classGuildmaster_1_1UI_1_1IntegerPanelScaler.html", null ],
         [ "LoadoutHubView", "classGuildmaster_1_1UI_1_1LoadoutHubView.html", "classGuildmaster_1_1UI_1_1LoadoutHubView" ],
+        [ "LoadoutHubViewModel", "classGuildmaster_1_1UI_1_1LoadoutHubViewModel.html", "classGuildmaster_1_1UI_1_1LoadoutHubViewModel" ],
         [ "LoadoutViewModel", "classGuildmaster_1_1UI_1_1LoadoutViewModel.html", "classGuildmaster_1_1UI_1_1LoadoutViewModel" ],
+        [ "MainMenuScreenView", "classGuildmaster_1_1UI_1_1MainMenuScreenView.html", "classGuildmaster_1_1UI_1_1MainMenuScreenView" ],
+        [ "MapScreenView", "classGuildmaster_1_1UI_1_1MapScreenView.html", "classGuildmaster_1_1UI_1_1MapScreenView" ],
         [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html", "classGuildmaster_1_1UI_1_1MenuRouter" ],
+        [ "OutcomeScreenView", "classGuildmaster_1_1UI_1_1OutcomeScreenView.html", "classGuildmaster_1_1UI_1_1OutcomeScreenView" ],
         [ "RewardScreenView", "classGuildmaster_1_1UI_1_1RewardScreenView.html", "classGuildmaster_1_1UI_1_1RewardScreenView" ],
         [ "RunTopBarView", "classGuildmaster_1_1UI_1_1RunTopBarView.html", "classGuildmaster_1_1UI_1_1RunTopBarView" ],
         [ "SettingsViewModel", "classGuildmaster_1_1UI_1_1SettingsViewModel.html", "classGuildmaster_1_1UI_1_1SettingsViewModel" ],
+        [ "ShopScreenView", "classGuildmaster_1_1UI_1_1ShopScreenView.html", "classGuildmaster_1_1UI_1_1ShopScreenView" ],
         [ "UiRootBootstrap", "classGuildmaster_1_1UI_1_1UiRootBootstrap.html", "classGuildmaster_1_1UI_1_1UiRootBootstrap" ]
       ] ]
     ] ]

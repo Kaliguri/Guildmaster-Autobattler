@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Components.MapGraph" name="Guildmaster.UI.Components.MapGraph">
+<area shape="rect" id="Node000001" title="Холст графа карты акта (план [[act&#45;map&#45;run&#45;loop]] §3.2, A3): раскладывает узлы абсолютно по MapNode...." alt="" coords="5,119,207,219"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="52,5,160,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,84,109,119,103,119,103,84"/>
+</map>

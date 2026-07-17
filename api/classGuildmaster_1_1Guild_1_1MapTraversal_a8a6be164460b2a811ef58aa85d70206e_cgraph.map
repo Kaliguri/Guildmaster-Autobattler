@@ -1,0 +1,5 @@
+<map id="Guildmaster.Guild.MapTraversal.IsActComplete" name="Guildmaster.Guild.MapTraversal.IsActComplete">
+<area shape="rect" id="Node000001" title="Акт пройден: игрок стоит на боссе и тот пройден." alt="" coords="5,5,240,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1MapTraversal.html#ae0ea3b912d94790c6536cfeb3bacb461" title="Текущий узел, на котором стоит игрок." alt="" coords="288,5,523,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="240,23,274,23,274,28,240,28"/>
+</map>

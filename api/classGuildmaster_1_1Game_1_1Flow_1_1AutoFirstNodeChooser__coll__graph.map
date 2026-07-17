@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.AutoFirstNodeChooser" name="Guildmaster.Game.Flow.AutoFirstNodeChooser">
+<area shape="rect" id="Node000001" title="A2&#45;реализация: авто&#45;выбор первого доступного узла (без UI) — забег проходится headless по «верхнему» ..." alt="" coords="5,119,209,199"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IMapNodeChooser.html" title="Шов выбора следующего узла на карте (план [[act&#45;map&#45;run&#45;loop]] §3.2)." alt="" coords="41,5,174,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,85,110,118,105,118,105,85"/>
+</map>

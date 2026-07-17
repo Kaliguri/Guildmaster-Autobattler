@@ -24,15 +24,13 @@
 <g id="a_Node000001"><a xlink:title="Узел забега «бой» (план 11 §3.2, §4 A2): оборачивает готовую боевую клетку в IEventFlow.">
 <polygon fill="#999999" stroke="transparent" points="183,-64 0,-64 0,0 183,0 183,-64"/>
 <text text-anchor="start" x="5.5" y="-52" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Game.Flow.BattleFlow</text>
-<text text-anchor="start" x="22" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="52.5" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00">DefaultMaxRetries</text>
-<text text-anchor="start" x="22" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="52.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">BattleFlow()</text>
-<text text-anchor="start" x="22" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="52.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Run()</text>
+<text text-anchor="start" x="90" y="-37" font-family="Helvetica,sans-Serif" font-size="10.00"> </text>
+<text text-anchor="start" x="29.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="67.5" y="-22" font-family="Helvetica,sans-Serif" font-size="10.00">BattleFlow()</text>
+<text text-anchor="start" x="29.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="67.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Run()</text>
 <polygon fill="#666666" stroke="#666666" points="0.5,-47 0.5,-47 183.5,-47 183.5,-47 0.5,-47"/>
-<polygon fill="#666666" stroke="#666666" points="0.5,-32 0.5,-32 50.5,-32 50.5,-32 0.5,-32"/>
-<polygon fill="#666666" stroke="#666666" points="50.5,-32 50.5,-32 183.5,-32 183.5,-32 50.5,-32"/>
+<polygon fill="#666666" stroke="#666666" points="0.5,-32 0.5,-32 183.5,-32 183.5,-32 0.5,-32"/>
 <polygon fill="none" stroke="#666666" points="0,0 0,-64 183,-64 183,0 0,0"/>
 </a>
 </g>

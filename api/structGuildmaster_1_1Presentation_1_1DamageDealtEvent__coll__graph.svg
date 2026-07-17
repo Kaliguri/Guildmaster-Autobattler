@@ -337,23 +337,25 @@ var sectionId = 'dynsection-0';
 <g id="Node000010" class="node">
 <title>Node10</title>
 <g id="a_Node000010"><a xlink:href="structGuildmaster_1_1Combat_1_1DamageResult.html" target="_top" xlink:title="Результат пайплайна урона после применения к цели.">
-<polygon fill="white" stroke="transparent" points="675,-315 520,-315 520,-210 675,-210 675,-315"/>
-<text text-anchor="start" x="525.5" y="-302.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Damage</text>
-<text text-anchor="start" x="582.5" y="-291.5" font-family="Helvetica,sans-Serif" font-size="10.00">Result</text>
-<text text-anchor="start" x="538" y="-276.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="564.5" y="-276.5" font-family="Helvetica,sans-Serif" font-size="10.00">HpDamage</text>
-<text text-anchor="start" x="538" y="-261.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="564.5" y="-261.5" font-family="Helvetica,sans-Serif" font-size="10.00">ShieldDamage</text>
-<text text-anchor="start" x="538" y="-246.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="564.5" y="-246.5" font-family="Helvetica,sans-Serif" font-size="10.00">KilledTarget</text>
-<text text-anchor="start" x="538" y="-231.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="564.5" y="-231.5" font-family="Helvetica,sans-Serif" font-size="10.00">TotalDamage</text>
-<text text-anchor="start" x="538" y="-216.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="564.5" y="-216.5" font-family="Helvetica,sans-Serif" font-size="10.00">DamageResult()</text>
-<polygon fill="#666666" stroke="#666666" points="520.5,-286.5 520.5,-286.5 675.5,-286.5 675.5,-286.5 520.5,-286.5"/>
-<polygon fill="#666666" stroke="#666666" points="520.5,-226.5 520.5,-226.5 562.5,-226.5 562.5,-226.5 520.5,-226.5"/>
-<polygon fill="#666666" stroke="#666666" points="562.5,-226.5 562.5,-226.5 675.5,-226.5 675.5,-226.5 562.5,-226.5"/>
-<polygon fill="none" stroke="#666666" points="520,-210 520,-315 675,-315 675,-210 520,-210"/>
+<polygon fill="white" stroke="transparent" points="675,-322.5 520,-322.5 520,-202.5 675,-202.5 675,-322.5"/>
+<text text-anchor="start" x="525.5" y="-310.5" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Damage</text>
+<text text-anchor="start" x="582.5" y="-299.5" font-family="Helvetica,sans-Serif" font-size="10.00">Result</text>
+<text text-anchor="start" x="538" y="-284.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="564.5" y="-284.5" font-family="Helvetica,sans-Serif" font-size="10.00">HpDamage</text>
+<text text-anchor="start" x="538" y="-269.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="564.5" y="-269.5" font-family="Helvetica,sans-Serif" font-size="10.00">ShieldDamage</text>
+<text text-anchor="start" x="538" y="-254.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="564.5" y="-254.5" font-family="Helvetica,sans-Serif" font-size="10.00">KilledTarget</text>
+<text text-anchor="start" x="538" y="-239.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="564.5" y="-239.5" font-family="Helvetica,sans-Serif" font-size="10.00">SourceKind</text>
+<text text-anchor="start" x="538" y="-224.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="564.5" y="-224.5" font-family="Helvetica,sans-Serif" font-size="10.00">TotalDamage</text>
+<text text-anchor="start" x="538" y="-209.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
+<text text-anchor="start" x="564.5" y="-209.5" font-family="Helvetica,sans-Serif" font-size="10.00">DamageResult()</text>
+<polygon fill="#666666" stroke="#666666" points="520.5,-294.5 520.5,-294.5 675.5,-294.5 675.5,-294.5 520.5,-294.5"/>
+<polygon fill="#666666" stroke="#666666" points="520.5,-219.5 520.5,-219.5 562.5,-219.5 562.5,-219.5 520.5,-219.5"/>
+<polygon fill="#666666" stroke="#666666" points="562.5,-219.5 562.5,-219.5 675.5,-219.5 675.5,-219.5 562.5,-219.5"/>
+<polygon fill="none" stroke="#666666" points="520,-202.5 520,-322.5 675,-322.5 675,-202.5 520,-202.5"/>
 </a>
 </g>
 </g>
@@ -361,7 +363,7 @@ var sectionId = 'dynsection-0';
 <g id="edge10_Node000001_Node000010" class="edge">
 <title>Node10&#45;&gt;Node1</title>
 <g id="a_edge10_Node000001_Node000010"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M568.58,-209.93C552.4,-182.1 531.34,-147.51 510.5,-118 498.97,-101.67 485.29,-84.46 473.02,-69.7"/>
+<path fill="none" stroke="#63b8ff" d="M564.16,-202.37C548.66,-176.01 529.49,-144.89 510.5,-118 498.97,-101.67 485.29,-84.46 473.02,-69.7"/>
 <polygon fill="none" stroke="#63b8ff" points="472.92,-69.58 466,-67.56 465.21,-60.39 472.13,-62.41 472.92,-69.58"/>
 </a>
 </g>

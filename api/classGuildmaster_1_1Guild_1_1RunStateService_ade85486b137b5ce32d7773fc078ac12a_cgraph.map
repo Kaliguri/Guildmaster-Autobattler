@@ -1,0 +1,7 @@
+<map id="Guildmaster.Guild.RunStateService.BeginAct" name="Guildmaster.Guild.RunStateService.BeginAct">
+<area shape="rect" id="Node000001" title="Сгенерировать карту текущего акта, если её ещё нет (план [[act&#45;map&#45;run&#45;loop]] §3.1)." alt="" coords="5,5,208,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1MapGenerator.html#a054078ab44d9a06131a10ac5b5135ead" title="Строит карту акта из rng &#160;по параметрам config ." alt="" coords="256,5,495,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="208,23,242,23,242,28,208,28"/>
+<area shape="rect" id="Node000003" href="$interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html#a617abe18db847883d98fd932d48a206c" title="Случайное целое в полуинтервале [minInclusive, maxExclusive)." alt="" coords="543,5,740,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="495,23,529,23,529,28,495,28"/>
+</map>

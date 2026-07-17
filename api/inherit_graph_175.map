@@ -1,0 +1,36 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" title=" " alt="" coords="67,211,165,237"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1DeploymentController.html" title="Оркестратор интерактивной фазы расстановки (план шаг 4)." alt="" coords="275,69,503,109"/>
+<area shape="poly" id="edge120_Node000000_Node000001" title=" " alt="" coords="143,201,201,160,274,119,305,107,307,112,276,124,204,164,146,205"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleBootstrap.html" title="Дочерний EntryPoint боевого скоупа (план 11 §4 A2): связывает готовую боевую клетку с макро&#45;флоу чере..." alt="" coords="278,133,499,173"/>
+<area shape="poly" id="edge121_Node000000_Node000003" title=" " alt="" coords="178,205,310,171,312,176,180,210"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html" title="Связывает боевые действия ввода с симуляцией на время одного боя (вики «16» §4)." alt="" coords="277,197,501,237"/>
+<area shape="poly" id="edge122_Node000000_Node000004" title=" " alt="" coords="179,220,276,217,276,223,179,225"/>
+<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Game_1_1Input_1_1InputService.html" title="Реализация IInputService поверх Unity Input System (вики «16» §3)." alt="" coords="279,389,498,429"/>
+<area shape="poly" id="edge123_Node000000_Node000011" title=" " alt="" coords="180,227,205,235,228,250,242,266,249,282,254,314,257,346,264,361,276,375,293,387,290,391,273,379,260,363,252,347,248,315,244,283,237,269,225,254,203,240,178,232"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html" title="Режиссёр «сочности» боя: единая политика ЗНАЧИМОСТИ поверх sim&#45;событий." alt="" coords="285,261,492,301"/>
+<area shape="poly" id="edge124_Node000000_Node000005" title=" " alt="" coords="180,234,294,259,292,264,178,240"/>
+<area shape="rect" id="Node000013" href="$classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html" title="Реализация ILocalizationService поверх Unity String Tables (вики «13» §5)." alt="" coords="285,453,492,493"/>
+<area shape="poly" id="edge125_Node000000_Node000013" title=" " alt="" coords="180,226,206,234,229,250,246,274,254,298,256,323,254,347,252,370,253,394,260,417,277,439,291,451,288,455,273,443,255,419,248,395,246,370,248,346,250,322,249,299,241,276,225,254,203,239,178,231"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html" title="Единственный писатель UnityEngine.Time.timeScale в бою." alt="" coords="285,5,492,45"/>
+<area shape="poly" id="edge126_Node000000_Node000010" title=" " alt="" coords="131,198,188,127,228,88,273,55,297,43,300,48,276,60,232,92,192,131,136,202"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html" title="Аудио&#45;презентер (вики impl «09» §П4): POCO&#45;entry&#45;point, подписан НАПРЯМУЮ на C#&#45;события боевой симуля..." alt="" coords="293,325,484,365"/>
+<area shape="poly" id="edge127_Node000000_Node000008" title=" " alt="" coords="180,230,205,238,228,250,244,265,253,281,261,297,276,311,298,323,295,327,273,315,257,300,248,284,240,268,225,254,203,243,178,235"/>
+<area shape="rect" id="Node000012" href="$interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html" title="Единая точка ввода игрока (вики «16» §2)." alt="" coords="9,389,223,429"/>
+<area shape="poly" id="edge128_Node000012_Node000011" title=" " alt="" coords="236,407,279,407,279,412,236,412"/>
+<area shape="rect" id="Node000014" href="$interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html" title="Единая точка локализации (вики «13» §5)." alt="" coords="5,453,227,493"/>
+<area shape="poly" id="edge129_Node000014_Node000013" title=" " alt="" coords="240,471,285,471,285,476,240,476"/>
+<area shape="rect" id="Node000007" href="$interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html" title="Единый источник пользовательских настроек + персист (ES3) + живое применение в аудио." alt="" coords="18,517,214,557"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html" title="Реализация ISettingsService." alt="" coords="285,517,492,557"/>
+<area shape="poly" id="edge130_Node000007_Node000006" title=" " alt="" coords="228,535,285,535,285,540,228,540"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="73,265,159,290"/>
+<area shape="poly" id="edge131_Node000002_Node000001" title=" " alt="" coords="172,270,200,261,225,246,237,231,244,216,248,184,252,152,259,135,273,119,289,107,293,112,276,123,264,138,257,153,253,185,249,218,242,234,228,250,202,266,173,275"/>
+<area shape="poly" id="edge132_Node000002_Node000003" title=" " alt="" coords="171,267,199,259,225,246,240,231,248,216,257,199,273,183,295,171,298,176,276,187,261,202,253,218,245,234,228,250,201,264,173,273"/>
+<area shape="poly" id="edge133_Node000002_Node000004" title=" " alt="" coords="171,263,296,235,298,240,173,268"/>
+<area shape="poly" id="edge134_Node000002_Node000005" title=" " alt="" coords="173,275,285,277,285,282,173,281"/>
+<area shape="poly" id="edge136_Node000002_Node000008" title=" " alt="" coords="173,289,308,323,307,328,171,294"/>
+<area shape="poly" id="edge135_Node000002_Node000006" title=" " alt="" coords="149,296,190,331,229,376,239,395,245,412,249,444,256,474,263,489,276,503,293,515,289,519,273,507,259,492,251,476,244,445,240,413,234,397,224,379,186,335,145,300"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="76,45,156,70"/>
+<area shape="poly" id="edge137_Node000009_Node000001" title=" " alt="" coords="170,61,275,73,274,79,169,66"/>
+<area shape="poly" id="edge138_Node000009_Node000010" title=" " alt="" coords="169,49,285,35,286,40,170,54"/>
+</map>

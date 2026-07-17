@@ -1,16 +1,18 @@
 var searchData=
 [
-  ['map_0',['Map',['../classGuildmaster_1_1Guild_1_1RunState.html#a8f98c130ef9f2ccee5f5dddc12e52fd4',1,'Guildmaster::Guild::RunState']]],
+  ['map_0',['map',['../structGuildmaster_1_1Guild_1_1OpenMapRequest.html#a2092ee19f0c8cdaa9f32391ecad55328',1,'Guildmaster.Guild.OpenMapRequest.Map'],['../classGuildmaster_1_1Guild_1_1RunState.html#a8f98c130ef9f2ccee5f5dddc12e52fd4',1,'Guildmaster.Guild.RunState.Map']]],
   ['markerfunction_1',['MarkerFunction',['../classGuildmaster_1_1Data_1_1Definitions_1_1ClipMarkers.html#a01eeddc0d91b22cfd797bb315f3b5811',1,'Guildmaster::Data::Definitions::ClipMarkers']]],
   ['master_2',['Master',['../structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html#ad98bea5f2c025184ed7eab79b26dfeeb',1,'Guildmaster::Core::Settings::AudioVolumeSettings']]],
   ['max_3',['Max',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#a0b7a7a38c58cb179e8c211b2dc16fd19',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]],
   ['maxattackanimticks_4',['MaxAttackAnimTicks',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a129143e126b52371be6845abae80aa05',1,'Guildmaster::Core::Simulation::SimConstants']]],
   ['maxcatchupticksperframe_5',['MaxCatchUpTicksPerFrame',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#a8d6237eec05d62b3bf98445eacd29cbb',1,'Guildmaster::Core::Simulation::SimConstants']]],
-  ['maxcount_6',['MaxCount',['../structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#acb301de01e1d9811d144c3da205281bb',1,'Guildmaster::Combat::Effects::DispelRequest']]],
-  ['maxpierces_7',['MaxPierces',['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a05bbcf10908d114d889e5e48f49bdd88',1,'Guildmaster::Combat::ProjectileSpawn']]],
-  ['median_8',['Median',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#a146dda59ff1a89c52dd846162fa25e7a',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]],
-  ['message_9',['Message',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ValidationIssue.html#acc73e6ed313e5ef20f10d6fef380e788',1,'Guildmaster::ContentHub::Editor::ValidationIssue']]],
-  ['min_10',['Min',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#ac0216bea761d79917d914846da8d701a',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]],
-  ['minwindupticks_11',['MinWindupTicks',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#ac4fd96970ed2ea6969d5bcebc78703ea',1,'Guildmaster::Core::Simulation::SimConstants']]],
-  ['music_12',['Music',['../structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html#a3ddf57b8e41610eba7ed8760400e0185',1,'Guildmaster::Core::Settings::AudioVolumeSettings']]]
+  ['maxcolumnwidth_6',['MaxColumnWidth',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#a37b3c58b31b92c31a23eef69778543da',1,'Guildmaster::Guild::MapGenConfig']]],
+  ['maxcount_7',['MaxCount',['../structGuildmaster_1_1Combat_1_1Effects_1_1DispelRequest.html#acb301de01e1d9811d144c3da205281bb',1,'Guildmaster::Combat::Effects::DispelRequest']]],
+  ['maxpierces_8',['MaxPierces',['../structGuildmaster_1_1Combat_1_1ProjectileSpawn.html#a05bbcf10908d114d889e5e48f49bdd88',1,'Guildmaster::Combat::ProjectileSpawn']]],
+  ['median_9',['Median',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#a146dda59ff1a89c52dd846162fa25e7a',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]],
+  ['message_10',['Message',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ValidationIssue.html#acc73e6ed313e5ef20f10d6fef380e788',1,'Guildmaster::ContentHub::Editor::ValidationIssue']]],
+  ['min_11',['Min',['../structGuildmaster_1_1ContentHub_1_1Editor_1_1StatCohort_1_1Agg.html#ac0216bea761d79917d914846da8d701a',1,'Guildmaster::ContentHub::Editor::StatCohort::Agg']]],
+  ['mincolumnwidth_12',['MinColumnWidth',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#a95841f2b153d43dda65c5fa3e04ace3c',1,'Guildmaster::Guild::MapGenConfig']]],
+  ['minwindupticks_13',['MinWindupTicks',['../classGuildmaster_1_1Core_1_1Simulation_1_1SimConstants.html#ac4fd96970ed2ea6969d5bcebc78703ea',1,'Guildmaster::Core::Simulation::SimConstants']]],
+  ['music_14',['Music',['../structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html#a3ddf57b8e41610eba7ed8760400e0185',1,'Guildmaster::Core::Settings::AudioVolumeSettings']]]
 ];

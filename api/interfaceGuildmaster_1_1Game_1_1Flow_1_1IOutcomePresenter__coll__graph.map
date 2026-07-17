@@ -1,0 +1,3 @@
+<map id="Guildmaster.Game.Flow.IOutcomePresenter" name="Guildmaster.Game.Flow.IOutcomePresenter">
+<area shape="rect" id="Node000001" title="Показ экрана исхода забега (победа/поражение) и ожидание «В меню» (план C2)." alt="" coords="5,5,243,85"/>
+</map>

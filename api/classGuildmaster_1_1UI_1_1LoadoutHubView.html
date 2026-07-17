@@ -115,15 +115,17 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:aa1aede58e101e4b33cefb443651048fd" id="r_aa1aede58e101e4b33cefb443651048fd"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutHubView.html#aa1aede58e101e4b33cefb443651048fd">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1LoadoutHubView_1_1RosterEntry.html">RosterEntry</a> &gt; roster, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a> &gt; banners, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; stash, int gold, Func&lt; string, string &gt; nameOf, Func&lt; string, string &gt; localize, Action&lt; int &gt; onVesselClick, Action onClose)</td></tr>
-<tr class="separator:aa1aede58e101e4b33cefb443651048fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4560506c3f4b25e097cc94b17067360" id="r_ab4560506c3f4b25e097cc94b17067360"><td class="memItemLeft" align="right" valign="top">static VisualElement&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1LoadoutHubView.html#ab4560506c3f4b25e097cc94b17067360">Build</a> (VisualTreeAsset uxml, IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1UI_1_1LoadoutHubView_1_1RosterEntry.html">RosterEntry</a> &gt; roster, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a> &gt; banners, IReadOnlyList&lt; <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> &gt; stash, int gold, Func&lt; string, string &gt; nameOf, Func&lt; string, string &gt; localize, Action onClose, Action&lt; int, int &gt; onEquip=null, Action&lt; int &gt; onUnequip=null)</td></tr>
+<tr class="separator:ab4560506c3f4b25e097cc94b17067360"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Сборка хаба лоадаута (Фаза 2) из UXML-шаблона — обзор команды (4 сосуда) + общая секция (баннеры party-скоупа, запас реликвий, золото). </p>
-<p>Общий код для живого роутера и превью-стенда. Клик по сосуду уводит в per-unit loadout (существующий экран) через <em>onVesselClick</em> . Разметка/стиль — только из <code>LoadoutHubScreen.uxml</code> + классы дизайн-системы. </p>
+<p>Общий код для живого роутера и превью-стенда. </p>
+<p>Реликвии переносятся ДРАГОМ через переиспользуемый примитив UiDragDrop (не самопис): слоты запаса — источники (payload StashRelic), карточки сосудов — цели надевания (принимают StashRelic) и источники снятия (payload VesselRelic, если надет не базовый кит), бокс запаса — цель снятия. Тот же примитив переиспользуют будущие вкладки предметов/баннеров. </p>
+<p>Разметка/стиль — только из <code>LoadoutHubScreen.uxml</code> + классы дизайн-системы. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa1aede58e101e4b33cefb443651048fd" name="aa1aede58e101e4b33cefb443651048fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1aede58e101e4b33cefb443651048fd">&#9670;&#160;</a></span>Build()</h2>
+<a id="ab4560506c3f4b25e097cc94b17067360" name="ab4560506c3f4b25e097cc94b17067360"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4560506c3f4b25e097cc94b17067360">&#9670;&#160;</a></span>Build()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,14 +178,20 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Action&lt; int &gt;&#160;</td>
-          <td class="paramname"><em>onVesselClick</em>, </td>
+          <td class="paramtype">Action&#160;</td>
+          <td class="paramname"><em>onClose</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Action&#160;</td>
-          <td class="paramname"><em>onClose</em>&#160;</td>
+          <td class="paramtype">Action&lt; int, int &gt;&#160;</td>
+          <td class="paramname"><em>onEquip</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; int &gt;&#160;</td>
+          <td class="paramname"><em>onUnequip</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -197,6 +205,11 @@ Static Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1LoadoutHubView_ab4560506c3f4b25e097cc94b17067360_icgraph.svg" width="466" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>

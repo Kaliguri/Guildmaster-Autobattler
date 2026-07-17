@@ -108,7 +108,7 @@ Inheritance diagram for Guildmaster.Game.Flow.IBattleSession:</div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Flow.IBattleSession:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession__coll__graph.svg" width="228" height="444"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession__coll__graph.svg" width="228" height="464"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -134,6 +134,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac5e46b02d162646511d1bf36c9e942c5" id="r_ac5e46b02d162646511d1bf36c9e942c5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#ac5e46b02d162646511d1bf36c9e942c5">RequestRestart</a> ()</td></tr>
 <tr class="memdesc:ac5e46b02d162646511d1bf36c9e942c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">root → child: перезапустить бой (ретрай). Взводит новое ожидание. false = некому (нет боя).  <br /></td></tr>
 <tr class="separator:ac5e46b02d162646511d1bf36c9e942c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a6365bea30a8c80244ecd2773514f06" id="r_a6a6365bea30a8c80244ecd2773514f06"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a6a6365bea30a8c80244ecd2773514f06">RestartInPlace</a> ()</td></tr>
+<tr class="memdesc:a6a6365bea30a8c80244ecd2773514f06"><td class="mdescLeft">&#160;</td><td class="mdescRight">dev → перезапустить текущий бой НА МЕСТЕ, НЕ трогая ожидание исхода (в отличие от RequestRestart): текущий await флоу остаётся валиден и разрешится концом перезапущенного боя.  <br /></td></tr>
+<tr class="separator:a6a6365bea30a8c80244ecd2773514f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f914f2674e41bb06bcfde721cd8878c" id="r_a1f914f2674e41bb06bcfde721cd8878c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html#a1f914f2674e41bb06bcfde721cd8878c">SetPhase</a> (<a class="el" href="namespaceGuildmaster_1_1Data_1_1Definitions.html#a8dfef43b870791c6c04b4600ff66103a">BattlePhase</a> phase)</td></tr>
 <tr class="memdesc:a1f914f2674e41bb06bcfde721cd8878c"><td class="mdescLeft">&#160;</td><td class="mdescRight">child → session: сменить фазу (расстановка → бой). Панель опрашивает <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html#ad8e294c9ebea9f52a6d087b164a8c363" title="Текущая фаза боя (пусто/расстановка/бой). Панель опрашивает каждый кадр.">IBattleClock.Phase</a>.  <br /></td></tr>
 <tr class="separator:a1f914f2674e41bb06bcfde721cd8878c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -274,6 +277,28 @@ Additional Inherited Members</h2></td></tr>
 <p>root → child: перезапустить бой (ретрай). Взводит новое ожидание. false = некому (нет боя). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a4cddca68c4be4f1284b6af1355290f43">Guildmaster.Game.Flow.BattleSession</a>.</p>
+
+</div>
+</div>
+<a id="a6a6365bea30a8c80244ecd2773514f06" name="a6a6365bea30a8c80244ecd2773514f06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a6365bea30a8c80244ecd2773514f06">&#9670;&#160;</a></span>RestartInPlace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Guildmaster.Game.Flow.IBattleSession.RestartInPlace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>dev → перезапустить текущий бой НА МЕСТЕ, НЕ трогая ожидание исхода (в отличие от RequestRestart): текущий await флоу остаётся валиден и разрешится концом перезапущенного боя. </p>
+<p>Для dev-хоткея R. false = боя нет (некому перезапускать). Не для ретрай-логики флоу — только ручной dev-перезапуск. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a853c16afcf71248cb595f13eb27a8681">Guildmaster.Game.Flow.BattleSession</a>.</p>
 
 </div>
 </div>

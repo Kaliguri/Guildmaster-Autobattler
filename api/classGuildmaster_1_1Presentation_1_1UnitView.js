@@ -13,6 +13,8 @@ var classGuildmaster_1_1Presentation_1_1UnitView =
     [ "SetLabel", "classGuildmaster_1_1Presentation_1_1UnitView.html#a0f0ae1200d3f3e7c13dfc45a0bf25154", null ],
     [ "SetShieldColor", "classGuildmaster_1_1Presentation_1_1UnitView.html#a2cf1faea0e2ac5e64199d8ddcb8fed65", null ],
     [ "SetTint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a871086ece5d0cc216dfcfa74353fa22b", null ],
+    [ "SpriteContainsWorldPoint", "classGuildmaster_1_1Presentation_1_1UnitView.html#a2454cda72945fc7f9fe231833e844ce0", null ],
+    [ "TryGetSpriteBounds", "classGuildmaster_1_1Presentation_1_1UnitView.html#a1ebfeb4ab7c422e188be6531c2f67028", null ],
     [ "UpdateInterpolation", "classGuildmaster_1_1Presentation_1_1UnitView.html#a25961c760cc2434fa8f210178cf3e8e3", null ],
     [ "BodySortingLayerId", "classGuildmaster_1_1Presentation_1_1UnitView.html#a6c2a38c9137a0fea7037b84660e95a81", null ],
     [ "BodySortingOrder", "classGuildmaster_1_1Presentation_1_1UnitView.html#a93a9e5b56083c42f1ae8ae4ac2993c41", null ],

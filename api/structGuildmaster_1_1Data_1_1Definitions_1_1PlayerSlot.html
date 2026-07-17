@@ -92,6 +92,7 @@ $(document).ready(function(){initNavTree('structGuildmaster_1_1Data_1_1Definitio
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Data.Definitions.PlayerSlot Struct Reference</div></div>
@@ -106,6 +107,12 @@ Collaboration diagram for Guildmaster.Data.Definitions.PlayerSlot:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot__coll__graph.svg" width="218" height="151"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a671b8bff43c315ead9987e52a68a1e4f" id="r_a671b8bff43c315ead9987e52a68a1e4f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html#a671b8bff43c315ead9987e52a68a1e4f">PlayerSlot</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a> relic, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a> vessel, Vector2 position, <a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a>[] items=null)</td></tr>
+<tr class="memdesc:a671b8bff43c315ead9987e52a68a1e4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Рантайм-слот (бридж гильдии игрока в бой): собирается из <code>RunState</code>, не из инспектора.  <br /></td></tr>
+<tr class="separator:a671b8bff43c315ead9987e52a68a1e4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:af2ce2179e31356ea2647f7e87df5f5f0" id="r_af2ce2179e31356ea2647f7e87df5f5f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html#af2ce2179e31356ea2647f7e87df5f5f0">Relic</a><code> [get]</code></td></tr>
@@ -120,7 +127,58 @@ Properties</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Слот player-ростера: сосуд + надетый на него релик (весь боевой кит) + сохранённая стартовая позиция (team 0). </p>
 <p>Модель «фигурка = Сосуд, релик даёт кит»: слот релика всегда заполнен — у «пустого» сосуда стоит базовый релик без особенностей (<code>relic.base</code>). </p>
-</div><h2 class="groupheader">Property Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a671b8bff43c315ead9987e52a68a1e4f" name="a671b8bff43c315ead9987e52a68a1e4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a671b8bff43c315ead9987e52a68a1e4f">&#9670;&#160;</a></span>PlayerSlot()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Guildmaster.Data.Definitions.PlayerSlot.PlayerSlot </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html">RelicData</a>&#160;</td>
+          <td class="paramname"><em>relic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html">VesselData</a>&#160;</td>
+          <td class="paramname"><em>vessel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html">ItemData</a>[]&#160;</td>
+          <td class="paramname"><em>items</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Рантайм-слот (бридж гильдии игрока в бой): собирается из <code>RunState</code>, не из инспектора. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
 <a id="a0fef9d02f966fb5e116c654dd308e37a" name="a0fef9d02f966fb5e116c654dd308e37a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0fef9d02f966fb5e116c654dd308e37a">&#9670;&#160;</a></span>Items</h2>
 

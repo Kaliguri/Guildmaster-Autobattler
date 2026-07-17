@@ -1,0 +1,5 @@
+<map id="Guildmaster.Data.Editor.ContentEditService.Resolve&lt; T &gt;" name="Guildmaster.Data.Editor.ContentEditService.Resolve&lt; T &gt;">
+<area shape="rect" id="Node000001" title="Найти контент по id (domain.name) или, как запасной путь, по имени ассета." alt="" coords="5,5,245,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#a559ddcb178ece6857dbfe89e7652d266" title="Все ассеты типа T &#160;(стабильный порядок по пути)." alt="" coords="293,5,529,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="246,23,280,23,280,28,246,28"/>
+</map>

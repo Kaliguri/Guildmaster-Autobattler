@@ -15,5 +15,7 @@ var searchData=
   ['dispelrequest_2ecs_12',['DispelRequest.cs',['../DispelRequest_8cs.html',1,'']]],
   ['displacementsystem_2ecs_13',['DisplacementSystem.cs',['../DisplacementSystem_8cs.html',1,'']]],
   ['displacerequest_2ecs_14',['DisplaceRequest.cs',['../DisplaceRequest_8cs.html',1,'']]],
-  ['dodgecomponent_2ecs_15',['DodgeComponent.cs',['../DodgeComponent_8cs.html',1,'']]]
+  ['dodgecomponent_2ecs_15',['DodgeComponent.cs',['../DodgeComponent_8cs.html',1,'']]],
+  ['dpsbench_2ecs_16',['DpsBench.cs',['../DpsBench_8cs.html',1,'']]],
+  ['duelmatrixbench_2ecs_17',['DuelMatrixBench.cs',['../DuelMatrixBench_8cs.html',1,'']]]
 ];

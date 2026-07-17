@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.LoadoutHubView.Build" name="Guildmaster.UI.LoadoutHubView.Build">
+<area shape="rect" id="Node000001" title=" " alt="" coords="259,5,460,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1MenuRouter.html#a245ca12ce365317c6c98e82be264fa4c" title="Лоадаут&#45;хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание собранных реликвий на сосуды." alt="" coords="5,5,211,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="245,28,211,28,211,23,245,23"/>
+</map>

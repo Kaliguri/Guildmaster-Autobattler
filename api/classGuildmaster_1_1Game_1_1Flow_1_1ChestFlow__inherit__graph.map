@@ -1,0 +1,5 @@
+<map id="Guildmaster.Game.Flow.ChestFlow" name="Guildmaster.Game.Flow.ChestFlow">
+<area shape="rect" id="Node000001" title="Узел забега «сундук» (план [[act&#45;map&#45;run&#45;loop]] §4 B3): показывает фасад сундука, ждёт клик по крышке..." alt="" coords="5,119,248,204"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IEventFlow.html" title="Полиморфный узел забега (вики «7» §3, план 11 §3.2): бой / текст&#45;ивент / магазин / риск — каждый новы..." alt="" coords="83,5,170,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,85,129,119,124,119,124,85"/>
+</map>

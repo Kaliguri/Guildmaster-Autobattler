@@ -1,0 +1,55 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Presentation_1_1Audio_1_1IAudioCatalog.html" title="Читаемый интерфейс аудио&#45;каталога для AudioResolver — только предикаты наличия, без FMOD&#45;типов,..." alt="" coords="5,197,196,237"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Presentation_1_1Audio_1_1AudioCatalog.html" title="Каталог соответствий «ключ звука → FMOD&#45;событие» (вики «13» §3.5, §7)." alt="" coords="256,197,447,237"/>
+<area shape="poly" id="edge65_Node000000_Node000001" title=" " alt="" coords="210,215,256,215,256,220,210,220"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="36,493,165,518"/>
+<area shape="poly" id="edge88_Node000002_Node000001" title=" " alt="" coords="107,478,124,429,151,367,190,303,215,273,242,247,261,235,264,240,246,251,219,277,195,306,156,369,129,431,112,480"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Balance_1_1BalanceScenarioData.html" title="Контракт кастом&#45;боя для стенда баланса SimBench: два состава, потолок длительности,..." alt="" coords="245,261,458,301"/>
+<area shape="poly" id="edge66_Node000002_Node000003" title=" " alt="" coords="112,479,132,442,161,396,198,350,242,311,264,299,266,304,246,316,202,354,165,399,136,444,116,481"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDatabase.html" title="Реестр всего контент&#45;контента проекта (вики «13» §3.6)." alt="" coords="244,325,459,365"/>
+<area shape="poly" id="edge67_Node000002_Node000004" title=" " alt="" coords="120,480,172,428,206,399,243,375,269,363,271,368,245,380,209,404,176,432,124,484"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="244,389,459,429"/>
+<area shape="poly" id="edge68_Node000002_Node000005" title=" " alt="" coords="139,484,243,439,278,427,280,432,245,444,141,489"/>
+<area shape="rect" id="Node000021" href="$classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html" title="Общие дефолты игры (вики «13» §3.4): начальные пользовательские настройки (громкости,..." alt="" coords="244,453,459,493"/>
+<area shape="poly" id="edge84_Node000002_Node000021" title=" " alt="" coords="179,493,243,484,244,490,180,498"/>
+<area shape="rect" id="Node000022" href="$classGuildmaster_1_1Data_1_1Definitions_1_1SimTuningConfig.html" title="Балансные тюнинг&#45;ручки симуляции (вики «13» §3.4)." alt="" coords="244,517,459,557"/>
+<area shape="poly" id="edge85_Node000002_Node000022" title=" " alt="" coords="180,513,244,521,243,526,179,518"/>
+<area shape="rect" id="Node000023" href="$classGuildmaster_1_1Data_1_1Definitions_1_1StatsConfig.html" title="Глобальный шаблон стат&#45;системы: дефолты статов + тюнинг&#45;константы пайплайна (armor&#45;константа,..." alt="" coords="244,581,459,621"/>
+<area shape="poly" id="edge86_Node000002_Node000023" title=" " alt="" coords="141,522,245,567,280,579,278,584,243,572,139,526"/>
+<area shape="rect" id="Node000024" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitVisual.html" title="Визуальный набор реликвии на AnimationClip&#45;слотах (вики «13» §3.1): состояния Idle/Run/Attack/Death/H..." alt="" coords="244,645,459,685"/>
+<area shape="poly" id="edge87_Node000002_Node000024" title=" " alt="" coords="124,527,176,579,209,607,245,631,271,643,269,648,243,636,206,611,172,583,120,530"/>
+<area shape="rect" id="Node000025" href="$classGuildmaster_1_1Presentation_1_1Design_1_1CombatColorPalette.html" title="Первый SO дизайн&#45;системы боя: палитра цветов боевого UI." alt="" coords="251,709,452,749"/>
+<area shape="poly" id="edge89_Node000002_Node000025" title=" " alt="" coords="116,529,136,566,165,611,202,656,246,695,266,707,264,711,242,700,198,660,161,614,132,569,112,532"/>
+<area shape="rect" id="Node000026" href="$classGuildmaster_1_1Presentation_1_1Design_1_1CombatFeelConfig.html" title="Единый конфиг «сочности» боя (design&#45;система): все параметры impact&#45;слоя в одном ассете,..." alt="" coords="256,773,447,813"/>
+<area shape="poly" id="edge90_Node000002_Node000026" title=" " alt="" coords="112,531,129,580,156,641,195,705,219,734,246,759,264,771,261,775,242,763,215,738,190,708,151,644,124,582,107,532"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Data_1_1Definitions_1_1AIPresetData.html" title="Пресет поведения AI (roadmap «2–3 пресета на архетип», вики «13» §3.2)." alt="" coords="507,5,721,45"/>
+<area shape="poly" id="edge69_Node000005_Node000006" title=" " alt="" coords="454,378,457,376,471,356,481,336,490,297,488,257,480,218,472,178,470,138,479,97,489,76,505,56,518,44,522,48,509,59,494,79,484,99,475,138,478,177,485,217,493,257,495,297,486,338,476,358,461,379,458,382"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html" title="Готовый бой (план шаг 3): вражеская сторона (EncounterData) + player&#45;ростер (PlayerSlot[]) + режим ра..." alt="" coords="507,69,721,109"/>
+<area shape="poly" id="edge70_Node000005_Node000007" title=" " alt="" coords="454,379,457,376,477,344,485,313,485,281,480,250,475,218,475,185,483,152,505,120,519,107,522,111,509,123,488,155,480,186,481,217,485,249,490,281,491,313,482,346,461,379,457,382"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ConsequenceData.html" title="Последствие боя: травма или закалка (объединяет бывш." alt="" coords="507,133,721,173"/>
+<area shape="poly" id="edge71_Node000005_Node000008" title=" " alt="" coords="453,379,457,376,473,352,481,329,482,305,480,282,478,257,479,233,487,208,505,184,520,171,523,175,509,187,492,210,485,234,483,257,485,281,487,305,486,330,478,355,461,379,457,383"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EffectData.html" title="Иммутабельное определение таймированного эффекта: идентичность, полярность, категориальные теги,..." alt="" coords="507,197,721,237"/>
+<area shape="poly" id="edge72_Node000005_Node000009" title=" " alt="" coords="452,380,457,375,469,360,476,345,480,313,484,280,491,264,505,247,521,235,525,240,508,251,496,266,489,282,485,314,481,346,474,363,461,379,455,384"/>
+<area shape="rect" id="Node000010" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html" title="Состав боя (вражеская сторона): кто и где стоит из врагов (вики «13» §3.3, «10» §3)." alt="" coords="507,261,721,301"/>
+<area shape="poly" id="edge73_Node000005_Node000010" title=" " alt="" coords="448,381,457,375,472,360,480,344,489,327,505,311,526,299,529,304,508,315,493,331,485,347,477,363,460,379,451,385"/>
+<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Data_1_1Definitions_1_1GuildmasterData.html" title="Гильдмастер (GDD 4, вики «13» §3.2): начальные заклинания, пассивный бонус гильдии,..." alt="" coords="507,325,721,365"/>
+<area shape="poly" id="edge74_Node000005_Node000011" title=" " alt="" coords="447,383,531,363,532,368,448,389"/>
+<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ItemData.html" title="Предмет двух скоупов в одном типе (вики «13» §3.2): ItemScope.Vessel — на персонажа (до N слотов,..." alt="" coords="507,389,721,429"/>
+<area shape="poly" id="edge75_Node000005_Node000012" title=" " alt="" coords="472,407,506,407,506,412,472,412"/>
+<area shape="rect" id="Node000013" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData.html" title="Модификатор забега (заготовка ascension/pact, вики «13» §3.2)." alt="" coords="507,453,721,493"/>
+<area shape="poly" id="edge76_Node000005_Node000013" title=" " alt="" coords="448,430,532,451,531,456,447,435"/>
+<area shape="rect" id="Node000014" href="$classGuildmaster_1_1Data_1_1Definitions_1_1TagData.html" title="Информационный тег для тултипов/фильтров (вики «13» §3.0): чисто UI&#45;слой, НЕ путать с боевыми EffectT..." alt="" coords="507,517,721,557"/>
+<area shape="poly" id="edge77_Node000005_Node000014" title=" " alt="" coords="451,434,460,439,477,455,485,472,493,488,508,503,529,515,526,519,505,507,489,491,480,475,472,459,457,443,448,438"/>
+<area shape="rect" id="Node000015" href="$classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html" title="Текстовый ивент карты в стиле Slay the Spire (план 11 §3.4, GDD 7 «Риск&#45;ивент»): заголовок,..." alt="" coords="507,581,721,621"/>
+<area shape="poly" id="edge78_Node000005_Node000015" title=" " alt="" coords="455,435,461,439,474,456,481,472,485,505,489,537,496,552,508,567,525,579,521,583,505,571,491,555,484,538,480,506,476,474,469,458,457,443,452,439"/>
+<area shape="rect" id="Node000016" href="$classGuildmaster_1_1Data_1_1Definitions_1_1TraitData.html" title="Трейт «Сосуда» (бывш." alt="" coords="507,645,721,685"/>
+<area shape="poly" id="edge79_Node000005_Node000016" title=" " alt="" coords="457,436,461,440,478,464,486,489,487,513,485,538,483,561,485,585,492,608,509,632,523,643,520,647,505,635,487,611,479,586,478,561,480,537,482,513,481,490,473,466,457,443,453,440"/>
+<area shape="rect" id="Node000017" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html" title="Общий боевой кит всего, что выходит на арену (вики «13» §3.1)." alt="" coords="507,709,721,749"/>
+<area shape="poly" id="edge80_Node000005_Node000017" title=" " alt="" coords="457,436,461,440,482,472,491,505,490,538,485,570,481,601,480,633,488,664,509,696,522,707,519,711,505,699,483,666,475,633,475,601,480,569,485,537,485,506,477,475,457,443,454,440"/>
+<area shape="rect" id="Node000020" href="$classGuildmaster_1_1Data_1_1Definitions_1_1VesselData.html" title="«Пилот» — носитель реликвии." alt="" coords="507,773,721,813"/>
+<area shape="poly" id="edge83_Node000005_Node000020" title=" " alt="" coords="458,437,461,440,476,460,486,481,495,522,493,562,485,602,478,641,475,681,484,720,494,740,509,760,522,771,518,775,505,763,489,742,479,722,470,681,472,641,480,601,488,561,490,522,481,483,471,463,457,443,454,440"/>
+<area shape="rect" id="Node000018" href="$classGuildmaster_1_1Data_1_1Definitions_1_1EnemyData.html" title="Вражеский юнит: боевой кит (UnitData) + мета врага (очки опасности, награда)." alt="" coords="769,677,984,717"/>
+<area shape="poly" id="edge81_Node000017_Node000018" title=" " alt="" coords="734,712,769,708,769,713,735,717"/>
+<area shape="rect" id="Node000019" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — реликвия игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,..." alt="" coords="769,741,984,781"/>
+<area shape="poly" id="edge82_Node000017_Node000019" title=" " alt="" coords="735,741,769,746,769,751,734,747"/>
+</map>

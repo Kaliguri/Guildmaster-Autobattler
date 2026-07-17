@@ -13,6 +13,7 @@ var searchData=
   ['positioning_10',['Positioning',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa95fa045315d83e9b2e840d3d19b30c6',1,'Guildmaster::Combat::RuntimeUnit']]],
   ['potency_11',['Potency',['../structGuildmaster_1_1Combat_1_1Effects_1_1EffectContext.html#a67c7cc29e376bb528fd5ff0ce5b601b3',1,'Guildmaster::Combat::Effects::EffectContext']]],
   ['previousposition_12',['previousposition',['../classGuildmaster_1_1Combat_1_1Projectile.html#a5f4082554f82eb6bde78d57de9252b65',1,'Guildmaster.Combat.Projectile.PreviousPosition'],['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aecb0992328b22064b9ac4972ac27d5e9',1,'Guildmaster.Combat.RuntimeUnit.PreviousPosition']]],
-  ['projectiledespawnmargin_13',['ProjectileDespawnMargin',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#acd93afba60423ea23fe8c385098a123f',1,'Guildmaster::Core::Simulation::SimTuning']]],
-  ['projectilehitradiusfactor_14',['ProjectileHitRadiusFactor',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a0f3cbf6825341739566213eadb00bb9a',1,'Guildmaster::Core::Simulation::SimTuning']]]
+  ['price_13',['Price',['../classGuildmaster_1_1Guild_1_1ShopItem.html#ae3aa74742cd5fb8089baa0c2f39fa3e9',1,'Guildmaster::Guild::ShopItem']]],
+  ['projectiledespawnmargin_14',['ProjectileDespawnMargin',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#acd93afba60423ea23fe8c385098a123f',1,'Guildmaster::Core::Simulation::SimTuning']]],
+  ['projectilehitradiusfactor_15',['ProjectileHitRadiusFactor',['../structGuildmaster_1_1Core_1_1Simulation_1_1SimTuning.html#a0f3cbf6825341739566213eadb00bb9a',1,'Guildmaster::Core::Simulation::SimTuning']]]
 ];

@@ -1,0 +1,3 @@
+<map id="Guildmaster.Game.Flow.IRewardPresenter" name="Guildmaster.Game.Flow.IRewardPresenter">
+<area shape="rect" id="Node000001" title="Показ экрана награды после узла (витрина 1&#45;из&#45;N → запись выбора в RunState)." alt="" coords="5,5,232,85"/>
+</map>

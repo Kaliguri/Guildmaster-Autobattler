@@ -100,11 +100,41 @@ $(document).ready(function(){initNavTree('namespaceGuildmaster_1_1Guild.html',''
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Guild_1_1IShopController.html">IShopController</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Контракт магазина (план [[act-map-run-loop]] §4 B2).  <a href="interfaceGuildmaster_1_1Guild_1_1IShopController.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenConfig.html">MapGenConfig</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Параметры генерации карты акта (MapGenerator, план [[act-map-run-loop]] §3.1).  <a href="classGuildmaster_1_1Guild_1_1MapGenConfig.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapGenerator.html">MapGenerator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строит граф карты акта (MapState) из детерминированного IRngService — план [[act-map-run-loop]] §3.1.  <a href="classGuildmaster_1_1Guild_1_1MapGenerator.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapNode.html">MapNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Узел графа акта (сериализуемый DTO).  <a href="classGuildmaster_1_1Guild_1_1MapNode.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapState.html">MapState</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Состояние карты акта в RunState: граф узлов + где игрок сейчас.  <a href="classGuildmaster_1_1Guild_1_1MapState.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1MapTraversal.html">MapTraversal</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хелперы обхода карты акта (план [[act-map-run-loop]] §3.2).  <a href="classGuildmaster_1_1Guild_1_1MapTraversal.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html">OpenChestRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать фасад сундука (план [[act-map-run-loop]] §4 B3): ЛКМ по крышке → OnOpen (флоу дальше катит награду 1-из-3).  <a href="structGuildmaster_1_1Guild_1_1OpenChestRequest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html">OpenContinueRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать единую кнопку «Продолжить» (план [[act-map-run-loop]] §4 A4) — консистентный «бит» между разрешённым узлом и возвратом на карту.  <a href="structGuildmaster_1_1Guild_1_1OpenContinueRequest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html">OpenMainMenuRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать главное меню (D1): Начать / Продолжить / Настройки / Выход.  <a href="structGuildmaster_1_1Guild_1_1OpenMainMenuRequest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenMapRequest.html">OpenMapRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать экран карты акта и выбрать следующий узел (план [[act-map-run-loop]] §3.2, A3).  <a href="structGuildmaster_1_1Guild_1_1OpenMapRequest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html">OpenOutcomeRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос показать экран исхода забега (план [[act-map-run-loop]] §4 C2): победа (босс пройден) или поражение (пул перезапусков пуст).  <a href="structGuildmaster_1_1Guild_1_1OpenOutcomeRequest.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html">OpenShopRequest</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Запрос открыть экран магазина (план B2).  <a href="structGuildmaster_1_1Guild_1_1OpenShopRequest.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RosterSlot.html">RosterSlot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слот ростера гильдии (план 11 §3.1): сосуд + надетый релик (весь кит) + пресет AI + предметы + позиция.  <a href="classGuildmaster_1_1Guild_1_1RosterSlot.html#details">More...</a><br /></td></tr>
@@ -115,9 +145,21 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1RunStateService.html">RunStateService</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Владелец durable-состояния забега (RunState) и единая точка его сейва/загрузки и правил вместимости коллекции реликов (план 11 §5.4).  <a href="classGuildmaster_1_1Guild_1_1RunStateService.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1ShopItem.html">ShopItem</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Слот витрины магазина: реликвия + её цена + признак «уже куплено» (слот пуст).  <a href="classGuildmaster_1_1Guild_1_1ShopItem.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Guild_1_1ShopStashItem.html">ShopStashItem</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Строка панели продажи: реликвия из запаса игрока + сколько за неё дадут.  <a href="classGuildmaster_1_1Guild_1_1ShopStashItem.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:adc2cf6e640fbe56de6c2472e56fba7e8" id="r_adc2cf6e640fbe56de6c2472e56fba7e8"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8">MainMenuChoice</a> { <a class="el" href="namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8a6a02dcd71ef52c111aacd6a6a06d0248">StartRun</a>
+, <a class="el" href="namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8aa0bfb8e59e6c13fc8d990781f77694fe">Continue</a>
+, <a class="el" href="namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8a0d82790b0612935992bd564a17ce37d6">Quit</a>
+ }</td></tr>
+<tr class="memdesc:adc2cf6e640fbe56de6c2472e56fba7e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Выбор в главном меню (план [[act-map-run-loop]] §4 D1).  <a href="namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8">More...</a><br /></td></tr>
+<tr class="separator:adc2cf6e640fbe56de6c2472e56fba7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8140c69a5f32631737e488f345f16625" id="r_a8140c69a5f32631737e488f345f16625"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625">MapNodeType</a> { <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625aa6122a65eaa676f700ae68d393054a37">Start</a>
 , <a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a747d99f92ee9c080ba26108ac5d26488">Battle</a>
@@ -126,12 +168,41 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a9f82518d468b9fee614fcc92f76bb163">Shop</a>
 , <a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a5859831e2b3db23528c710b1451e13fc">Boss</a>
+, <a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a080a546abcbea74459f27ba33313993d">Chest</a>
+, <a class="el" href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625a88183b946cc5f0e8c96b2e66e1c74a7e">Unknown</a>
 <br />
  }</td></tr>
-<tr class="memdesc:a8140c69a5f32631737e488f345f16625"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип узла карты акта (план 11 §3.3). Полезная нагрузка — по строковому id соответствующего типа.  <a href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625">More...</a><br /></td></tr>
+<tr class="memdesc:a8140c69a5f32631737e488f345f16625"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тип узла карты акта (план 11 §3.3, [[act-map-run-loop]] §3.1).  <a href="namespaceGuildmaster_1_1Guild.html#a8140c69a5f32631737e488f345f16625">More...</a><br /></td></tr>
 <tr class="separator:a8140c69a5f32631737e488f345f16625"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcea6b7c65659bfd1d6925299e6e0f09" id="r_afcea6b7c65659bfd1d6925299e6e0f09"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09">ShopBuyOutcome</a> { <a class="el" href="namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09afe5a7fc9d9c907efdf6a384a71cd53fc">Bought</a>
+, <a class="el" href="namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09a386db817f2654b1891d02619c5337fac">NotEnoughGold</a>
+, <a class="el" href="namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09a533ddf198ed1163ad815ad0e4a2445f2">NoSpace</a>
+ }</td></tr>
+<tr class="memdesc:afcea6b7c65659bfd1d6925299e6e0f09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Итог попытки покупки (план [[act-map-run-loop]] §5.4).  <a href="namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09">More...</a><br /></td></tr>
+<tr class="separator:afcea6b7c65659bfd1d6925299e6e0f09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="adc2cf6e640fbe56de6c2472e56fba7e8" name="adc2cf6e640fbe56de6c2472e56fba7e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc2cf6e640fbe56de6c2472e56fba7e8">&#9670;&#160;</a></span>MainMenuChoice</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Guild.html#adc2cf6e640fbe56de6c2472e56fba7e8">Guildmaster.Guild.MainMenuChoice</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Выбор в главном меню (план [[act-map-run-loop]] §4 D1). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adc2cf6e640fbe56de6c2472e56fba7e8a6a02dcd71ef52c111aacd6a6a06d0248" name="adc2cf6e640fbe56de6c2472e56fba7e8a6a02dcd71ef52c111aacd6a6a06d0248"></a>StartRun&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adc2cf6e640fbe56de6c2472e56fba7e8aa0bfb8e59e6c13fc8d990781f77694fe" name="adc2cf6e640fbe56de6c2472e56fba7e8aa0bfb8e59e6c13fc8d990781f77694fe"></a>Continue&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adc2cf6e640fbe56de6c2472e56fba7e8a0d82790b0612935992bd564a17ce37d6" name="adc2cf6e640fbe56de6c2472e56fba7e8a0d82790b0612935992bd564a17ce37d6"></a>Quit&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="a8140c69a5f32631737e488f345f16625" name="a8140c69a5f32631737e488f345f16625"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8140c69a5f32631737e488f345f16625">&#9670;&#160;</a></span>MapNodeType</h2>
 
@@ -144,7 +215,8 @@ Enumerations</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Тип узла карты акта (план 11 §3.3). Полезная нагрузка — по строковому id соответствующего типа. </p>
+<p>Тип узла карты акта (план 11 §3.3, [[act-map-run-loop]] §3.1). </p>
+<p>Полезная нагрузка — по строковому id соответствующего типа. Значения только <b>дописываются</b> (сериализуется в сейв по индексу) — порядок существующих не менять. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a8140c69a5f32631737e488f345f16625aa6122a65eaa676f700ae68d393054a37" name="a8140c69a5f32631737e488f345f16625aa6122a65eaa676f700ae68d393054a37"></a>Start&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a8140c69a5f32631737e488f345f16625a747d99f92ee9c080ba26108ac5d26488" name="a8140c69a5f32631737e488f345f16625a747d99f92ee9c080ba26108ac5d26488"></a>Battle&#160;</td><td class="fielddoc"></td></tr>
@@ -152,6 +224,29 @@ Enumerations</h2></td></tr>
 <tr><td class="fieldname"><a id="a8140c69a5f32631737e488f345f16625ab7c26a94f35cfb5f53e21d5b94b98937" name="a8140c69a5f32631737e488f345f16625ab7c26a94f35cfb5f53e21d5b94b98937"></a>TextEvent&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a8140c69a5f32631737e488f345f16625a9f82518d468b9fee614fcc92f76bb163" name="a8140c69a5f32631737e488f345f16625a9f82518d468b9fee614fcc92f76bb163"></a>Shop&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a8140c69a5f32631737e488f345f16625a5859831e2b3db23528c710b1451e13fc" name="a8140c69a5f32631737e488f345f16625a5859831e2b3db23528c710b1451e13fc"></a>Boss&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8140c69a5f32631737e488f345f16625a080a546abcbea74459f27ba33313993d" name="a8140c69a5f32631737e488f345f16625a080a546abcbea74459f27ba33313993d"></a>Chest&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8140c69a5f32631737e488f345f16625a88183b946cc5f0e8c96b2e66e1c74a7e" name="a8140c69a5f32631737e488f345f16625a88183b946cc5f0e8c96b2e66e1c74a7e"></a>Unknown&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="afcea6b7c65659bfd1d6925299e6e0f09" name="afcea6b7c65659bfd1d6925299e6e0f09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcea6b7c65659bfd1d6925299e6e0f09">&#9670;&#160;</a></span>ShopBuyOutcome</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="namespaceGuildmaster_1_1Guild.html#afcea6b7c65659bfd1d6925299e6e0f09">Guildmaster.Guild.ShopBuyOutcome</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Итог попытки покупки (план [[act-map-run-loop]] §5.4). </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afcea6b7c65659bfd1d6925299e6e0f09afe5a7fc9d9c907efdf6a384a71cd53fc" name="afcea6b7c65659bfd1d6925299e6e0f09afe5a7fc9d9c907efdf6a384a71cd53fc"></a>Bought&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="afcea6b7c65659bfd1d6925299e6e0f09a386db817f2654b1891d02619c5337fac" name="afcea6b7c65659bfd1d6925299e6e0f09a386db817f2654b1891d02619c5337fac"></a>NotEnoughGold&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="afcea6b7c65659bfd1d6925299e6e0f09a533ddf198ed1163ad815ad0e4a2445f2" name="afcea6b7c65659bfd1d6925299e6e0f09a533ddf198ed1163ad815ad0e4a2445f2"></a>NoSpace&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>

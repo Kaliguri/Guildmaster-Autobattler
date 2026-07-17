@@ -1,5 +1,6 @@
 var structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot =
 [
+    [ "PlayerSlot", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html#a671b8bff43c315ead9987e52a68a1e4f", null ],
     [ "Items", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html#a0fef9d02f966fb5e116c654dd308e37a", null ],
     [ "Position", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html#a6a93056d4ee92987c5bdf193696f8c38", null ],
     [ "Relic", "structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html#af2ce2179e31356ea2647f7e87df5f5f0", null ],

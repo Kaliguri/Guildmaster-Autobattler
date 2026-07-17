@@ -6,6 +6,7 @@ var classGuildmaster_1_1Game_1_1Flow_1_1BattleSession =
     [ "ReportOutcome", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#af73e48c5a75e0baf40c998ae9553f831", null ],
     [ "RequestRestart", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a4cddca68c4be4f1284b6af1355290f43", null ],
     [ "RequestStart", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a1996312ca2f53a29871e9b904c586793", null ],
+    [ "RestartInPlace", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a853c16afcf71248cb595f13eb27a8681", null ],
     [ "SetPending", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#af960dc3a609a787a51997bb9be4a266a", null ],
     [ "SetPhase", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a8efed7165633ba6875a3f10f5be1e22c", null ],
     [ "TryConsumePending", "classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html#a3f904064e36376e870be2d93a4d508e2", null ],

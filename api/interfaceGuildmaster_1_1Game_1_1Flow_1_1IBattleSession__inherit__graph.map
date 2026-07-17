@@ -1,7 +1,7 @@
 <map id="Guildmaster.Game.Flow.IBattleSession" name="Guildmaster.Game.Flow.IBattleSession">
-<area shape="rect" id="Node000001" title="Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (CombatLifetimeScope,..." alt="" coords="5,139,223,439"/>
-<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html" title="Соло&#45;реализация IBattleSession (план 11 §2)." alt="" coords="7,487,221,827"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="117,453,117,486,111,486,111,453"/>
+<area shape="rect" id="Node000001" title="Рукопожатие между BattleFlow (RootScope, оркестрирует забег) и боевым скоупом (CombatLifetimeScope,..." alt="" coords="5,139,223,459"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleSession.html" title="Соло&#45;реализация IBattleSession (план 11 §2)." alt="" coords="7,507,221,867"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="117,473,117,506,111,506,111,473"/>
 <area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Data_1_1Definitions_1_1IBattleClock.html" title="Read&#45;side абстракция боевого таймера/фазы для UI&#45;слоя (план 12 Фаза 2)." alt="" coords="47,5,181,91"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,104,117,138,111,138,111,104"/>
 </map>

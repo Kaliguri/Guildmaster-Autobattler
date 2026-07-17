@@ -93,7 +93,6 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Game_1_1Flow_1_1Ba
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Guildmaster.Game.Flow.BattleFlow Class Reference<span class="mlabels"><span class="mlabel">sealed</span></span></div></div>
 </div><!--header-->
@@ -114,23 +113,24 @@ Collaboration diagram for Guildmaster.Game.Flow.BattleFlow:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a01babf12366585889427d8677521a4dd" id="r_a01babf12366585889427d8677521a4dd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html#a01babf12366585889427d8677521a4dd">BattleFlow</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html">BattlePresetData</a> preset, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html">ISceneLoader</a> scenes, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html">IBattleSession</a> session, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html">ILocalPlayer</a> localPlayer, int maxRetries=<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html#ae2aee076a410a1ce09885f45454f54f4">DefaultMaxRetries</a>)</td></tr>
-<tr class="separator:a01babf12366585889427d8677521a4dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab55a30c7e8541554feabad0f93690771" id="r_ab55a30c7e8541554feabad0f93690771"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html#ab55a30c7e8541554feabad0f93690771">BattleFlow</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1BattlePresetData.html">BattlePresetData</a> preset, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html">ISceneLoader</a> scenes, <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IBattleSession.html">IBattleSession</a> session, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Players_1_1ILocalPlayer.html">ILocalPlayer</a> localPlayer, Func&lt; bool &gt; tryConsumeRestart=null)</td></tr>
+<tr class="memdesc:ab55a30c7e8541554feabad0f93690771"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tryConsumeRestart</td><td>Спросить пул перезапусков акта (реш. </td></tr>
+  </table>
+  </dd>
+</dl>
+ <br /></td></tr>
+<tr class="separator:ab55a30c7e8541554feabad0f93690771"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a232110b9d7b6754ffd0dc8a2dd74dc" id="r_a1a232110b9d7b6754ffd0dc8a2dd74dc"><td class="memItemLeft" align="right" valign="top">async UniTask&lt; <a class="el" href="structGuildmaster_1_1Game_1_1Flow_1_1EventResult.html">EventResult</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html#a1a232110b9d7b6754ffd0dc8a2dd74dc">Run</a> (<a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1RunContext.html">RunContext</a> ctx)</td></tr>
 <tr class="separator:a1a232110b9d7b6754ffd0dc8a2dd74dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
-<tr class="memitem:ae2aee076a410a1ce09885f45454f54f4" id="r_ae2aee076a410a1ce09885f45454f54f4"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html#ae2aee076a410a1ce09885f45454f54f4">DefaultMaxRetries</a> = 2</td></tr>
-<tr class="memdesc:ae2aee076a410a1ce09885f45454f54f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Число ретраев поражения по умолчанию (вики «7» §6). TODO: вынести в GameConfig под баланс.  <br /></td></tr>
-<tr class="separator:ae2aee076a410a1ce09885f45454f54f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Узел забега «бой» (план 11 §3.2, §4 A2): оборачивает готовую боевую клетку в IEventFlow. </p>
 <p>Prep (расстановка/loadout — <code>DeploymentController</code> в боевом скоупе) и Combat (<code>CombatLoopService</code>) уже готовы; здесь добавлен слой <b>Outcome</b>: маппинг BattleOutcome в EventResult с ретраями поражения (вики «7» §6). Бой грузится через IBattleSession (мост в боевой скоуп), а не из dev-панели. Данные узла — BattlePresetData (враги + ростер + режим расстановки). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a01babf12366585889427d8677521a4dd" name="a01babf12366585889427d8677521a4dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a01babf12366585889427d8677521a4dd">&#9670;&#160;</a></span>BattleFlow()</h2>
+<a id="ab55a30c7e8541554feabad0f93690771" name="ab55a30c7e8541554feabad0f93690771"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab55a30c7e8541554feabad0f93690771">&#9670;&#160;</a></span>BattleFlow()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -165,8 +165,8 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>maxRetries</em> = <code><a class="el" href="classGuildmaster_1_1Game_1_1Flow_1_1BattleFlow.html#ae2aee076a410a1ce09885f45454f54f4">DefaultMaxRetries</a></code>&#160;</td>
+          <td class="paramtype">Func&lt; bool &gt;&#160;</td>
+          <td class="paramname"><em>tryConsumeRestart</em> = <code>null</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -180,6 +180,15 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tryConsumeRestart</td><td>Спросить пул перезапусков акта (реш. </td></tr>
+  </table>
+  </dd>
+</dl>
+</p>
+<p>№65): вернуть true и списать одну попытку, если можно переиграть. null = без перезапусков (legacy dev-бой). Заменяет прежний фикс-счётчик на бой (техдолг). </p>
 
 </div>
 </div>
@@ -209,31 +218,6 @@ Static Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="interfaceGuildmaster_1_1Game_1_1Flow_1_1IEventFlow.html#a35d95556c458272978eea595b1163ca5">Guildmaster.Game.Flow.IEventFlow</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ae2aee076a410a1ce09885f45454f54f4" name="ae2aee076a410a1ce09885f45454f54f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2aee076a410a1ce09885f45454f54f4">&#9670;&#160;</a></span>DefaultMaxRetries</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const int Guildmaster.Game.Flow.BattleFlow.DefaultMaxRetries = 2</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Число ретраев поражения по умолчанию (вики «7» §6). TODO: вынести в GameConfig под баланс. </p>
 
 </div>
 </div>

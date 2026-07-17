@@ -1,0 +1,20 @@
+<map id="Guildmaster.Game.Services.ActRunner.RunActAsync" name="Guildmaster.Game.Services.ActRunner.RunActAsync">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,112,212,152"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Guild_1_1MapTraversal.html#a8f3d8ffd8af73e688b2b32ca358ee16c" title="Продвигает позицию в узел nodeId : помечает его пройденным и делает текущим." alt="" coords="260,48,495,88"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,109,279,89,280,94,194,115"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Guild_1_1MapTraversal.html#a0b7dacdd34d805731328312e97fa6857" title="Можно ли войти в узел nodeId &#160;прямо сейчас (сосед текущего, не пройден)." alt="" coords="543,5,777,45"/>
+<area shape="poly" id="edge7_Node000001_Node000003" title=" " alt="" coords="131,109,187,69,222,49,259,33,327,18,397,9,466,7,529,9,529,14,466,12,398,15,328,23,261,39,224,53,190,73,134,114"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Guild_1_1MapTraversal.html#a3510b7b751fdc7ff9cdb94327905a5c6" title="Узлы, доступные для входа с текущей позиции: соседи по MapNode.Edges текущего узла,..." alt="" coords="260,112,495,152"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="212,129,246,129,246,135,212,135"/>
+<area shape="rect" id="Node000007" href="$classGuildmaster_1_1Guild_1_1MapTraversal.html#a8a6be164460b2a811ef58aa85d70206e" title="Акт пройден: игрок стоит на боссе и тот пройден." alt="" coords="260,176,495,216"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="194,149,280,170,279,175,193,155"/>
+<area shape="rect" id="Node000008" href="$interfaceGuildmaster_1_1Game_1_1Flow_1_1IEventFlow.html#a35d95556c458272978eea595b1163ca5" title=" " alt="" coords="266,240,489,280"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="138,150,193,188,261,226,279,233,277,238,259,230,190,193,135,154"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="495,48,529,42,529,48,495,53"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Guild_1_1MapTraversal.html#a721fde020c5af40f44f2489be218718c" title="Узел по id, либо null если такого нет." alt="" coords="543,84,777,124"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="495,80,529,85,529,90,495,86"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="495,118,528,114,529,120,495,123"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Guild_1_1MapTraversal.html#ae0ea3b912d94790c6536cfeb3bacb461" title="Текущий узел, на котором стоит игрок." alt="" coords="543,148,777,188"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="495,144,529,149,529,154,495,150"/>
+<area shape="poly" id="edge9_Node000007_Node000006" title=" " alt="" coords="495,182,528,178,529,184,495,187"/>
+</map>

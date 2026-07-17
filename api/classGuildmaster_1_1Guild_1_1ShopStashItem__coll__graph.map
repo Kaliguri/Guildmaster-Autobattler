@@ -1,0 +1,9 @@
+<map id="Guildmaster.Guild.ShopStashItem" name="Guildmaster.Guild.ShopStashItem">
+<area shape="rect" id="Node000001" title="Строка панели продажи: реликвия из запаса игрока + сколько за неё дадут." alt="" coords="5,677,239,743"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Data_1_1Definitions_1_1RelicData.html" title="«Чемпион» — реликвия игрока: боевой кит (UnitData) + мета забега (редкость, нагрузка на забег,..." alt="" coords="12,435,232,615"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,615,125,661,119,661,119,615"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Data_1_1Definitions_1_1UnitData.html" title="Общий боевой кит всего, что выходит на арену (вики «13» §3.1)." alt="" coords="49,120,195,385"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="125,399,125,434,119,434,119,399"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Data_1_1Definitions_1_1ContentDefinition.html" title="Базовый класс всех контент&#45;SO: несёт канонический строковый id (domain.name), по которому связываются..." alt="" coords="58,5,186,71"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="125,85,125,120,119,120,119,85"/>
+</map>

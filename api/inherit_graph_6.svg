@@ -11,10 +11,10 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Combat_1_1AttackTiming.html" target="_top" xlink:title="Чистая детерминированная арифметика тайминга авто&#45;атаки (вики «14»).">
+<g id="a_Node000000"><a xlink:href="classGuildmaster_1_1Balance_1_1Editor_1_1DuelMatrixBench.html" target="_top" xlink:title="Фаза 2 — round&#45;robin дуэли всех реликвий 1v1 + рейтинг Bradley&#45;Terry.">
 <polygon fill="white" stroke="#666666" points="152,-30 0,-30 0,0 152,0 152,-30"/>
-<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Combat.Attack</text>
-<text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Timing</text>
+<text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">Guildmaster.Balance.Editor.</text>
+<text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">DuelMatrixBench</text>
 </a>
 </g>
 </g>

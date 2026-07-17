@@ -114,8 +114,8 @@ Collaboration diagram for Guildmaster.DevTools.GuildmasterCommands:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ab0a7449a295942e484c6fe86b0fe3e09" id="r_ab0a7449a295942e484c6fe86b0fe3e09"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab0a7449a295942e484c6fe86b0fe3e09">Construct</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation, <a class="el" href="classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html">CombatDebugDraw</a> debugDraw, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html">RuntimeUnitFactory</a> factory, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a> input, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> contentDatabase)</td></tr>
-<tr class="separator:ab0a7449a295942e484c6fe86b0fe3e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7b7f36506f72809c71e07f08fd6b715" id="r_ae7b7f36506f72809c71e07f08fd6b715"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ae7b7f36506f72809c71e07f08fd6b715">Construct</a> (<a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html">CombatSimulation</a> simulation, <a class="el" href="classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html">CombatDebugDraw</a> debugDraw, <a class="el" href="classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html">RuntimeUnitFactory</a> factory, <a class="el" href="interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html">IInputService</a> input, <a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a> contentDatabase, IObjectResolver resolver)</td></tr>
+<tr class="separator:ae7b7f36506f72809c71e07f08fd6b715"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97c2560d6ac8662a17c250f67c67468a" id="r_a97c2560d6ac8662a17c250f67c67468a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a97c2560d6ac8662a17c250f67c67468a">SetRngSeed</a> (ulong seed)</td></tr>
 <tr class="memdesc:a97c2560d6ac8662a17c250f67c67468a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Зафиксировать сид боя для детерминизм-отладки (только до старта).  <br /></td></tr>
 <tr class="separator:a97c2560d6ac8662a17c250f67c67468a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,8 +193,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Набор отладочных команд Quantum Console для Фазы 1 (вики «10» §9). </p>
 <p>Инъектируется через VContainer — зависимости появляются только при наличии активной симуляции. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab0a7449a295942e484c6fe86b0fe3e09" name="ab0a7449a295942e484c6fe86b0fe3e09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0a7449a295942e484c6fe86b0fe3e09">&#9670;&#160;</a></span>Construct()</h2>
+<a id="ae7b7f36506f72809c71e07f08fd6b715" name="ae7b7f36506f72809c71e07f08fd6b715"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae7b7f36506f72809c71e07f08fd6b715">&#9670;&#160;</a></span>Construct()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,7 +230,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="interfaceGuildmaster_1_1Data_1_1Definitions_1_1IContentDatabase.html">IContentDatabase</a>&#160;</td>
-          <td class="paramname"><em>contentDatabase</em>&#160;</td>
+          <td class="paramname"><em>contentDatabase</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IObjectResolver&#160;</td>
+          <td class="paramname"><em>resolver</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

@@ -1,6 +1,6 @@
 var classGuildmaster_1_1DevTools_1_1GuildmasterCommands =
 [
-    [ "Construct", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ab0a7449a295942e484c6fe86b0fe3e09", null ],
+    [ "Construct", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#ae7b7f36506f72809c71e07f08fd6b715", null ],
     [ "Restart", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a223c0b90fe8f830bb71e3ed9196b4f9b", null ],
     [ "RestartLastBattle", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#a0e8ffc130d2adb84e307f5c10d183490", null ],
     [ "SepAlly", "classGuildmaster_1_1DevTools_1_1GuildmasterCommands.html#af21577e0f97d9648fddbf8ae2bed00b3", null ],
