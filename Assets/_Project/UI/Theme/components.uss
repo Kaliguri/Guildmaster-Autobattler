@@ -993,3 +993,34 @@
 .gm-topbar__hp-pip--empty {
     opacity: 0.25;
 }
+
+/* ============================================================================
+ * ЭКРАН ИСХОДА ЗАБЕГА (C2): Победа / Поражение → «В меню».
+ * ========================================================================== */
+.gm-panel--outcome {
+    min-width: 560px;
+    min-height: 360px;
+    align-items: center;
+}
+
+.gm-outcome__title {
+    color: var(--gm-brass-300);
+}
+
+.gm-outcome__title--defeat {
+    color: var(--gm-danger-400);
+}
+
+.gm-outcome__sub {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    -unity-text-align: middle-center;
+    flex-grow: 1;
+    margin-top: var(--gm-space-3);
+}
+
+.gm-outcome__footer {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: var(--gm-space-3);
+}

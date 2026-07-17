@@ -30,6 +30,7 @@ namespace Guildmaster.DevTools
             ["map"]          = BuildMap,
             ["shop"]         = BuildShop,
             ["chest"]        = BuildChest,
+            ["outcome"]      = BuildOutcome,
             ["gallery"]      = BuildGallery,
         };
 
@@ -262,6 +263,14 @@ namespace Guildmaster.DevTools
             var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/ChestScreen.uxml");
             if (uxml == null) { AddError(root, "ChestScreen.uxml не найден"); return; }
             root.Add(Guildmaster.UI.ChestScreenView.Build(uxml, RuValue, () => { }));
+        }
+
+        private static void BuildOutcome(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/OutcomeScreen.uxml");
+            if (uxml == null) { AddError(root, "OutcomeScreen.uxml не найден"); return; }
+            // Стенд показывает победу; поражение — тот же экран с victory:false.
+            root.Add(Guildmaster.UI.OutcomeScreenView.Build(uxml, victory: true, RuValue, () => { }));
         }
 
         private static void BuildGallery(VisualElement root)

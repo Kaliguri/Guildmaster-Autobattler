@@ -54,5 +54,11 @@ namespace Guildmaster.UI
         /// <see cref="Guildmaster.Guild.OpenChestRequest.OnOpen"/> — включая закрытие без клика по крышке.
         /// </summary>
         void OpenChest(Guildmaster.Guild.OpenChestRequest req);
+
+        /// <summary>
+        /// Показать экран исхода забега (C2). Гарантирует ровно один вызов
+        /// <see cref="Guildmaster.Guild.OpenOutcomeRequest.OnToMenu"/> — включая закрытие без нажатия.
+        /// </summary>
+        void ShowOutcome(Guildmaster.Guild.OpenOutcomeRequest req);
     }
 }

@@ -95,6 +95,8 @@ namespace Guildmaster.Game
             builder.Register<RewardPresenter>(Lifetime.Singleton).As<IRewardPresenter>();
             // Единая кнопка «Продолжить» (A4) — бит между разрешённым узлом и возвратом на карту.
             builder.Register<ContinuePresenter>(Lifetime.Singleton).As<IContinuePresenter>();
+            // Экран исхода забега (C2) — победа/поражение после акта.
+            builder.Register<OutcomePresenter>(Lifetime.Singleton).As<IOutcomePresenter>();
 
             // Применение последствий текстовых ивентов к RunState (план 11 §5.1).
             builder.Register<EventEffectApplier>(Lifetime.Singleton);

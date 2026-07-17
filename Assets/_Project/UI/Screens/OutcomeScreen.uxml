@@ -1,0 +1,12 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--outcome">
+            <ui:Label name="outcome-title" text="Победа" class="gm-panel__title gm-outcome__title" />
+            <ui:VisualElement class="gm-divider" />
+            <ui:Label name="outcome-sub" text="" class="gm-outcome__sub" />
+            <ui:VisualElement class="gm-outcome__footer">
+                <ui:Button name="btn-menu" text="В меню" class="gm-button gm-button--primary" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

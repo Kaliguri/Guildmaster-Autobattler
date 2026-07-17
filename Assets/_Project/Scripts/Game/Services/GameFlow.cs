@@ -24,6 +24,7 @@ namespace Guildmaster.Game.Services
         private readonly IBattleSession      _session;
         private readonly RunStateService     _runStates;
         private readonly IRewardPresenter    _rewardPresenter;
+        private readonly IOutcomePresenter   _outcomePresenter;
         private readonly ActRunner           _actRunner;
         private readonly EventEffectApplier  _eventEffects;
         private readonly IRngService         _rng;
@@ -37,6 +38,7 @@ namespace Guildmaster.Game.Services
             IBattleSession      session,
             RunStateService     runStates,
             IRewardPresenter    rewardPresenter,
+            IOutcomePresenter   outcomePresenter,
             ActRunner           actRunner,
             EventEffectApplier  eventEffects,
             IRngService         rng,
@@ -47,8 +49,9 @@ namespace Guildmaster.Game.Services
         {
             _scenes          = scenes;
             _session         = session;
-            _runStates       = runStates;
-            _rewardPresenter = rewardPresenter;
+            _runStates        = runStates;
+            _rewardPresenter  = rewardPresenter;
+            _outcomePresenter = outcomePresenter;
             _actRunner       = actRunner;
             _eventEffects    = eventEffects;
             _rng             = rng;
@@ -111,9 +114,15 @@ namespace Guildmaster.Game.Services
 
             var ctx = new RunContext(run, _rng, _readyGate, _intents);
             EventResult result = await _actRunner.RunActAsync(ctx);
-
             _runStates.Autosave();
             Debug.Log($"[GameFlow] - акт завершён: {result.Outcome}");
+
+            // Экран исхода (C2): победа (босс) / поражение (пул перезапусков пуст). Забег окончен — чистим сейв.
+            if (result.Outcome == EventOutcome.Completed || result.Outcome == EventOutcome.PlayerDefeated)
+            {
+                await _outcomePresenter.ShowAsync(result.Outcome == EventOutcome.Completed);
+                _runStates.DeleteSave();
+            }
             return result;
         }
 

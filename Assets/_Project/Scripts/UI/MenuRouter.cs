@@ -35,6 +35,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _continueUxml;
         private VisualTreeAsset _shopUxml;
         private VisualTreeAsset _chestUxml;
+        private VisualTreeAsset _outcomeUxml;
         private InputContext _prevContext;
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
@@ -52,7 +53,7 @@ namespace Guildmaster.UI
         public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
             VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
-            VisualTreeAsset chestUxml = null)
+            VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
@@ -64,6 +65,7 @@ namespace Guildmaster.UI
             _continueUxml = continueUxml;
             _shopUxml = shopUxml;
             _chestUxml = chestUxml;
+            _outcomeUxml = outcomeUxml;
         }
 
         /// <summary>
@@ -470,6 +472,30 @@ namespace Guildmaster.UI
 
             VisualElement screen = ChestScreenView.Build(_chestUxml, key => _loc?.GetString(key), Resolve);
             screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnOpen?.Invoke(); } });
+            return screen;
+        }
+
+        // Экран исхода забега (C2) — на UXML (OutcomeScreen.uxml). «В меню» резолвит OnToMenu; закрытие тоже.
+        public void ShowOutcome(OpenOutcomeRequest req)
+        {
+            if (_root == null || _outcomeUxml == null) { req.OnToMenu?.Invoke(); return; }
+            Push(BuildOutcomeScreen(req));
+        }
+
+        private VisualElement BuildOutcomeScreen(OpenOutcomeRequest req)
+        {
+            bool resolved = false;
+
+            void Resolve()
+            {
+                if (resolved) return;
+                resolved = true;
+                req.OnToMenu?.Invoke();
+                CloseAll();
+            }
+
+            VisualElement screen = OutcomeScreenView.Build(_outcomeUxml, req.Victory, key => _loc?.GetString(key), Resolve);
+            screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnToMenu?.Invoke(); } });
             return screen;
         }
 
