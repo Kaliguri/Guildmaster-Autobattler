@@ -23,20 +23,32 @@ namespace Guildmaster.Balance.Editor
             int cap = SimBench.TicksFromSeconds(CapSeconds);
             List<RelicData> relics = BalanceAssets.LoadRelics();
 
-            var headers = new List<string> { "Relic", "DPS_solo", "DPS_aoe", "AoE_ratio" };
+            var headers = new List<string> { "Relic", "DPS_solo", "DPS_aoe", "AoE_ratio", "Auto%", "Ability%", "DoT%" };
             var table = new List<IReadOnlyList<object>>();
 
             foreach (RelicData relic in relics)
             {
-                double solo = RunDps(config, relic, aoe: false, cap);
-                double aoe = RunDps(config, relic, aoe: true, cap);
+                BattleReport soloReport = RunDps(config, relic, aoe: false, cap);
+                UnitMetric a = soloReport.Find(0);
+                double solo = a != null && soloReport.Seconds > 0 ? a.DamageDealt / soloReport.Seconds : 0.0;
+
+                BattleReport aoeReport = RunDps(config, relic, aoe: true, cap);
+                UnitMetric aa = aoeReport.Find(0);
+                double aoe = aa != null && aoeReport.Seconds > 0 ? aa.DamageDealt / aoeReport.Seconds : 0.0;
+
                 double ratio = solo > 1e-6 ? aoe / solo : 0.0;
-                table.Add(new object[] { relic.name, solo, aoe, ratio });
+                double total = a != null ? a.DamageDealt : 0.0;
+                double autoP = total > 1e-6 ? 100.0 * a.DamageAuto / total : 0.0;
+                double abilP = total > 1e-6 ? 100.0 * a.DamageAbility / total : 0.0;
+                double dotP = total > 1e-6 ? 100.0 * a.DamagePeriodic / total : 0.0;
+
+                table.Add(new object[] { relic.name, solo, aoe, ratio, autoP, abilP, dotP });
             }
 
             string notes =
                 $"**DPS-бенч**: урон/сек до убийства эталонной цели HP={DummyHp:0} (или до потолка {CapSeconds:0} с). " +
                 $"DPS_solo — одна цель; DPS_aoe — кластер {ClusterSize} целей (для AoE-китов выше, ratio>1). " +
+                "Auto/Ability/DoT% — разбивка нанесённого урона по источнику (solo-прогон; ответка-шипы сюда не входят, у атакующего их нет). " +
                 "Фикс-HP цели (не 1e9) — чтобы механики «% от HP» не взрывали цифру. Чувствительно к расстановке; " +
                 "wind-up первых кадров занижает DPS. Способности/on-hit учтены (полный сим). DPS=0 — кит не бьёт цель (напр. хилер).";
 
@@ -45,7 +57,7 @@ namespace Guildmaster.Balance.Editor
             return (csv, md);
         }
 
-        private static double RunDps(StatsConfig config, RelicData relic, bool aoe, int cap)
+        private static BattleReport RunDps(StatsConfig config, RelicData relic, bool aoe, int cap)
         {
             var env = new SimEnvironment(Seed, config);
             var tracked = new List<TrackedUnit>
@@ -69,9 +81,7 @@ namespace Guildmaster.Balance.Editor
             }
 
             // UntilOutcome: бой кончается, когда цель(и) мертвы → Seconds = время до убийства (или потолок).
-            BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, cap);
-            UnitMetric attacker = report.Find(0);
-            return attacker != null && report.Seconds > 0 ? attacker.DamageDealt / report.Seconds : 0.0;
+            return SimBench.Drive(env, tracked, RunMode.UntilOutcome, cap);
         }
     }
 }

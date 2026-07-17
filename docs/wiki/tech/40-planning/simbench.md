@@ -7,6 +7,10 @@ updated: 2026-07-17
 
 **Статус:** Реализовано (Фазы 0–2, 2026-07-17), ветка `feat/run-loop-and-simbench`. Код — `Assets/_Project/Scripts/Balance` (+ `/Editor`), меню `Tools/Balance/*`, тесты `Guildmaster.Balance.Tests` (3/3 зелёные). Верифицировано на реальном контенте (10 архетипов + 4 гоблина): цифры дискриминирующие. «Регрессия баланса в CI» — вырезана (наблюдательность на Максе).
 
+> **Дожатия (2026-07-17):**
+> - **Разбивка урона по источнику** (§1.3) — реализована через `DamageResult.SourceKind` (эхо `DamageRequest.SourceKind`), а НЕ через смену сигнатуры `OnDamageDealt` — шов sim→presentation не тронут. Колонки Auto/Ability/DoT% в DPS-бенче и per-source в сценарии.
+> - **Write-сторона петли баланса** — `ContentEditService` (`Guildmaster.Data.Editor`): безопасная правка значений контент-SO (SerializedObject+Undo, change-log). SimBench (read) + ContentEditService (write) = петля read→edit→read. Черновик общего скилла — `.claude/skills/xgaida-x-nixi-balance/DRAFT.md`.
+
 > **Коррекция против эскиза (§1.4):** DPS-бенч мерит урон/сек до убийства эталонной цели **фикс-HP (3000)**, а не по бессмертному 1e9. Причина: бессмертный 1e9-манекен взрывал механики «% от HP цели» (FlameSwordsman давал 127M «DPS»). Фикс-HP цель корректна и для %HP-китов. Прочие бенчи — по эскизу.
 >
 > Ниже — исходный эскиз (историческая ценность замысла).

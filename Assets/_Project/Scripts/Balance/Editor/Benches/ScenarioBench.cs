@@ -25,7 +25,7 @@ namespace Guildmaster.Balance.Editor
             int cap = SimBench.TicksFromSeconds(scenario.MaxSeconds);
             BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, cap);
 
-            var headers = new List<string> { "Side", "Unit", "DmgDealt", "DmgTaken", "Healing", "Died", "DeathSec" };
+            var headers = new List<string> { "Side", "Unit", "DmgDealt", "DmgAuto", "DmgAbility", "DmgDoT", "DmgTaken", "Healing", "Died", "DeathSec" };
             var table = new List<IReadOnlyList<object>>();
             foreach (UnitMetric m in report.Units)
             {
@@ -34,6 +34,9 @@ namespace Guildmaster.Balance.Editor
                     m.Team == 0 ? "A" : "B",
                     m.Label,
                     m.DamageDealt,
+                    m.DamageAuto,
+                    m.DamageAbility,
+                    m.DamagePeriodic,
                     m.DamageTaken,
                     m.HealingDone,
                     m.Died ? "yes" : "no",

@@ -18,6 +18,12 @@ namespace Guildmaster.Balance.Editor
         public double Overkill;
         public double HealingDone;
 
+        // Разбивка нанесённого урона по источнику (авто-атака / способность / DoT / ответка).
+        public double DamageAuto;
+        public double DamageAbility;
+        public double DamagePeriodic;
+        public double DamageReactive;
+
         public bool Died;
         public int DeathTick = -1;
     }
@@ -73,7 +79,16 @@ namespace Guildmaster.Balance.Editor
         private void HandleDamage(RuntimeUnit source, RuntimeUnit target, DamageResult result)
         {
             if (source != null && _byId.TryGetValue(source.Id, out UnitMetric sm))
+            {
                 sm.DamageDealt += result.TotalDamage;
+                switch (result.SourceKind)
+                {
+                    case DamageSourceKind.AutoAttack: sm.DamageAuto += result.TotalDamage; break;
+                    case DamageSourceKind.Ability:    sm.DamageAbility += result.TotalDamage; break;
+                    case DamageSourceKind.Periodic:   sm.DamagePeriodic += result.TotalDamage; break;
+                    case DamageSourceKind.Reactive:   sm.DamageReactive += result.TotalDamage; break;
+                }
+            }
 
             if (target != null && _byId.TryGetValue(target.Id, out UnitMetric tm))
             {
