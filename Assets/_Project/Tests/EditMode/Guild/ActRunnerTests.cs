@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Core.Random;
@@ -14,9 +13,9 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Guild
 {
     /// <summary>
-    /// Петля акта <see cref="ActRunner"/> (план act-map-run-loop §3.2, A2) на фейковых швах — без сцен/UI/боя.
-    /// Закрепляет: проход до босса, награда только за боевые узлы, остановка на поражении, автосейв на переходах,
-    /// защита от пустой карты.
+    /// Петля акта <see cref="ActRunner"/> (план act-map-run-loop §3.2) на фейковых швах — без сцен/UI/боя.
+    /// Закрепляет: проход до босса, остановка на поражении без сдвига позиции, автосейв на переходах, защита
+    /// от пустой карты. Награда/золото боя проверяются отдельно (BattleNodeFlowTests).
     /// </summary>
     public sealed class ActRunnerTests
     {
@@ -39,11 +38,8 @@ namespace Guildmaster.Tests.EditMode.Guild
                                   new SoloPlayerIntentSource());
         }
 
-        private ActRunner NewRunner(INodeResolver resolver, IRewardPresenter reward) =>
-            new ActRunner(resolver, reward, new ImmediateContinue(), new AutoFirstNodeChooser(), _runStates);
-
-        private static bool IsBattleish(MapNodeType t) =>
-            t == MapNodeType.Battle || t == MapNodeType.Elite || t == MapNodeType.Boss;
+        private ActRunner NewRunner(INodeResolver resolver) =>
+            new ActRunner(resolver, new ImmediateContinue(), new AutoFirstNodeChooser(), _runStates);
 
         [Test]
         public void RunAct_EmptyMap_ReturnsAborted()
@@ -51,7 +47,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             _runStates.NewRun(1L, Array.Empty<RosterSlot>()); // без BeginAct → карта пустая
             var ctx = new RunContext(_runStates.Current, new XorShiftRng(1), new SoloReadyGate(),
                                      new SoloPlayerIntentSource());
-            var runner = NewRunner(new StubResolver(_ => EventResult.Completed), new CountingReward());
+            var runner = NewRunner(new StubResolver(_ => EventResult.Completed));
 
             EventResult result = runner.RunActAsync(ctx).GetAwaiter().GetResult();
             Assert.AreEqual(EventOutcome.Aborted, result.Outcome);
@@ -61,29 +57,13 @@ namespace Guildmaster.Tests.EditMode.Guild
         public void RunAct_WalksToBoss_ReturnsCompleted()
         {
             var ctx = NewRunWithMap();
-            var runner = NewRunner(new StubResolver(_ => EventResult.Completed), new CountingReward());
+            var runner = NewRunner(new StubResolver(_ => EventResult.Completed));
 
             EventResult result = runner.RunActAsync(ctx).GetAwaiter().GetResult();
 
             Assert.AreEqual(EventOutcome.Completed, result.Outcome);
             Assert.IsTrue(MapTraversal.IsActComplete(ctx.RunState.Map));
             Assert.AreEqual(MapNodeType.Boss, MapTraversal.Current(ctx.RunState.Map).Type);
-        }
-
-        [Test]
-        public void RunAct_PresentsReward_OnlyForBattleNodes()
-        {
-            var ctx = NewRunWithMap();
-            var reward = new CountingReward();
-            var runner = NewRunner(new StubResolver(_ => EventResult.Completed), reward);
-
-            runner.RunActAsync(ctx).GetAwaiter().GetResult();
-
-            // Награда выдаётся ровно за пройденные боевые узлы (Battle/Elite/Boss), исключая Start.
-            int expected = ctx.RunState.Map.Nodes.Count(n =>
-                n.Cleared && n.Type != MapNodeType.Start && IsBattleish(n.Type));
-            Assert.AreEqual(expected, reward.TotalCalls, "Награда — только за боевые узлы на пройденном пути.");
-            Assert.Greater(expected, 0, "На пути до босса есть хотя бы один боевой узел (сам босс).");
         }
 
         [Test]
@@ -100,7 +80,7 @@ namespace Guildmaster.Tests.EditMode.Guild
                 first = false;
                 return EventResult.Defeated;
             });
-            var runner = NewRunner(resolver, new CountingReward());
+            var runner = NewRunner(resolver);
 
             EventResult result = runner.RunActAsync(ctx).GetAwaiter().GetResult();
 
@@ -110,27 +90,11 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
-        public void RunAct_AwardsBattleGold_PerBattleNode()
-        {
-            var ctx = NewRunWithMap();
-            int startGold = _runStates.Gold; // = GameConfig.StartGold (код-дефолт 100)
-            var runner = NewRunner(new StubResolver(_ => EventResult.Completed), new CountingReward());
-
-            runner.RunActAsync(ctx).GetAwaiter().GetResult();
-
-            int battleNodes = ctx.RunState.Map.Nodes.Count(n =>
-                n.Cleared && n.Type != MapNodeType.Start && IsBattleish(n.Type));
-            // +20 (GameConfig.BattleGoldReward, код-дефолт) за каждый пройденный боевой узел.
-            Assert.AreEqual(startGold + 20 * battleNodes, _runStates.Gold);
-            Assert.Greater(_runStates.Gold, startGold, "На пути до босса золото прибавилось (босс — боевой узел).");
-        }
-
-        [Test]
         public void RunAct_Autosaves_DuringTraversal()
         {
             var ctx = NewRunWithMap();
             _save.Clear(); // сбросить сейв после BeginAct, чтобы проверить именно автосейв петли
-            var runner = NewRunner(new StubResolver(_ => EventResult.Completed), new CountingReward());
+            var runner = NewRunner(new StubResolver(_ => EventResult.Completed));
 
             runner.RunActAsync(ctx).GetAwaiter().GetResult();
             Assert.IsTrue(_save.Exists("run"), "Петля автосохраняет забег на переходах.");
@@ -150,12 +114,6 @@ namespace Guildmaster.Tests.EditMode.Guild
             private readonly EventResult _result;
             public StubFlow(EventResult result) => _result = result;
             public UniTask<EventResult> Run(RunContext ctx) => UniTask.FromResult(_result);
-        }
-
-        private sealed class CountingReward : IRewardPresenter
-        {
-            public int TotalCalls { get; private set; }
-            public UniTask PresentAsync(RewardTier tier) { TotalCalls++; return UniTask.CompletedTask; }
         }
 
         private sealed class ImmediateContinue : IContinuePresenter

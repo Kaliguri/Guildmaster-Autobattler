@@ -30,14 +30,16 @@ namespace Guildmaster.Game.Flow
         private readonly EventEffectApplier _eventEffects;
         private readonly ShopController     _shop;
         private readonly IRewardPresenter   _reward;
+        private readonly RunStateService    _runStates;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<OpenShopRequest>      _openShopPub;
         private readonly IPublisher<OpenChestRequest>     _openChestPub;
 
         public NodeResolver(IContentDatabase content, ISceneLoader scenes, IBattleSession session,
                             ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
-                            IRewardPresenter reward, IPublisher<OpenTextEventRequest> openEventPub,
-                            IPublisher<OpenShopRequest> openShopPub, IPublisher<OpenChestRequest> openChestPub)
+                            IRewardPresenter reward, RunStateService runStates,
+                            IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub,
+                            IPublisher<OpenChestRequest> openChestPub)
         {
             _content      = content;
             _scenes       = scenes;
@@ -46,6 +48,7 @@ namespace Guildmaster.Game.Flow
             _eventEffects = eventEffects;
             _shop         = shop;
             _reward       = reward;
+            _runStates    = runStates;
             _openEventPub = openEventPub;
             _openShopPub  = openShopPub;
             _openChestPub = openChestPub;
@@ -65,7 +68,8 @@ namespace Guildmaster.Game.Flow
                         Debug.LogWarning($"[NodeResolver] - нет BattlePresetData в контент-БД для '{node.Id}' → заглушка");
                         return new CompletedStubFlow(node.Type);
                     }
-                    return new BattleFlow(preset, _scenes, _session, _localPlayer);
+                    var battle = new BattleFlow(preset, _scenes, _session, _localPlayer);
+                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates);
                 }
 
                 case MapNodeType.TextEvent:
@@ -85,14 +89,22 @@ namespace Guildmaster.Game.Flow
                 case MapNodeType.Chest:
                     return new ChestFlow(_openChestPub, _reward);
 
-                // «?» ещё не реализован — проходим как no-op (фаза B4).
+                // «?»: тип роллится на входе, делегируем себе же (B4).
                 case MapNodeType.Unknown:
-                    return new CompletedStubFlow(node.Type);
+                    return new RandomEventFlow(this);
 
                 default:
                     return new CompletedStubFlow(node.Type);
             }
         }
+
+        /// <summary>Тир награды по боевому типу узла.</summary>
+        private static RewardTier TierFor(MapNodeType type) => type switch
+        {
+            MapNodeType.Elite => RewardTier.Elite,
+            MapNodeType.Boss  => RewardTier.Boss,
+            _                 => RewardTier.Battle,
+        };
 
         /// <summary>Контент по payload-id, иначе случайный из пула типа T (детерминировано через RNG). null = пул пуст.</summary>
         private T PickContent<T>(MapNode node, RunContext ctx) where T : ContentDefinition

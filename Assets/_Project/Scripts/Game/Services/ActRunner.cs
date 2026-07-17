@@ -16,17 +16,15 @@ namespace Guildmaster.Game.Services
     /// </summary>
     public sealed class ActRunner
     {
-        private readonly INodeResolver     _resolver;
-        private readonly IRewardPresenter  _reward;
+        private readonly INodeResolver      _resolver;
         private readonly IContinuePresenter _continue;
-        private readonly IMapNodeChooser   _chooser;
-        private readonly RunStateService   _runStates;
+        private readonly IMapNodeChooser    _chooser;
+        private readonly RunStateService    _runStates;
 
-        public ActRunner(INodeResolver resolver, IRewardPresenter reward, IContinuePresenter continuePresenter,
+        public ActRunner(INodeResolver resolver, IContinuePresenter continuePresenter,
                          IMapNodeChooser chooser, RunStateService runStates)
         {
             _resolver  = resolver;
-            _reward    = reward;
             _continue  = continuePresenter;
             _chooser   = chooser;
             _runStates = runStates;
@@ -74,14 +72,7 @@ namespace Guildmaster.Game.Services
                     return EventResult.Defeated;
                 }
 
-                // Узел пройден: золото + награда (для боевых) → единая кнопка «Продолжить» → продвижение, автосейв.
-                RewardTier? tier = RewardTierFor(node.Type);
-                if (tier.HasValue)
-                {
-                    _runStates.AwardBattleReward();       // +золото за победу (B1)
-                    await _reward.PresentAsync(tier.Value);
-                }
-
+                // Узел пройден (награда/золото — внутри самого flow) → «Продолжить» → продвижение, автосейв.
                 await _continue.WaitForContinueAsync();
 
                 MapTraversal.Advance(map, node.Id);
@@ -91,14 +82,5 @@ namespace Guildmaster.Game.Services
             Debug.Log("[ActRunner] - босс пройден → акт выигран");
             return EventResult.Completed;
         }
-
-        /// <summary>Тир награды по типу узла; null = узел награду не даёт (обрабатывает свой flow сам).</summary>
-        private static RewardTier? RewardTierFor(MapNodeType type) => type switch
-        {
-            MapNodeType.Battle => RewardTier.Battle,
-            MapNodeType.Elite  => RewardTier.Elite,
-            MapNodeType.Boss   => RewardTier.Boss,
-            _                  => null,
-        };
     }
 }
