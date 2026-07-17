@@ -3,7 +3,11 @@ using UnityEngine;
 
 namespace Guildmaster.Guild
 {
-    /// <summary>Тип узла карты акта (план 11 §3.3). Полезная нагрузка — по строковому id соответствующего типа.</summary>
+    /// <summary>
+    /// Тип узла карты акта (план 11 §3.3, [[act-map-run-loop]] §3.1). Полезная нагрузка — по строковому id
+    /// соответствующего типа. Значения только <b>дописываются</b> (сериализуется в сейв по индексу) —
+    /// порядок существующих не менять.
+    /// </summary>
     public enum MapNodeType
     {
         Start,      // стартовый узел (без нагрузки)
@@ -12,6 +16,8 @@ namespace Guildmaster.Guild
         TextEvent,  // текстовый ивент (payload = event.*)
         Shop,       // магазин (payload = shop.* пул; пусто = дефолт)
         Boss,       // финалист акта
+        Chest,      // сундук: сцена-фасад → награда 1-из-3 (payload = reward-пул; пусто = дефолт)
+        Unknown,    // «?»-узел: тип роллится на входе (RandomEventFlow, план §5.4/B4)
     }
 
     /// <summary>
