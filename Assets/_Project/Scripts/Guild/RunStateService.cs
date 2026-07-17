@@ -167,6 +167,52 @@ namespace Guildmaster.Guild
             return true;
         }
 
+        // ── Лоадаут: надеть/снять релик на сосуд гильдии (кольцо реликвий, Фаза 2) ──
+
+        /// <summary>Id «пустого» кита (базовый релик). Из конфига, дефолт <c>relic.base</c>.</summary>
+        private string BaseRelicId => string.IsNullOrEmpty(_config.StartingRelicId) ? "relic.base" : _config.StartingRelicId;
+
+        /// <summary>
+        /// Надеть релик из запаса на сосуд слота (лоадаут-хаб): релик снимается с запаса и встаёт на слот, а
+        /// прежний кит слота (если не базовый) возвращается в запас — это свап, не потеря. Требует, чтобы
+        /// <paramref name="relicId"/> лежал в запасе. false = нет забега / слот вне ростера / релика нет в запасе.
+        /// </summary>
+        public bool EquipRelic(int slotIndex, string relicId)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null || string.IsNullOrEmpty(relicId)) return false;
+
+            var inv = new List<string>(Current.RelicInventory);
+            if (!inv.Remove(relicId)) return false; // релик должен лежать в запасе
+
+            string prev = slot.RelicId;
+            slot.RelicId = relicId;
+            if (!string.IsNullOrEmpty(prev) && prev != BaseRelicId)
+                inv.Add(prev); // прежний кит уходит обратно в запас (свап)
+
+            Current.RelicInventory = inv.ToArray();
+            return true;
+        }
+
+        /// <summary>
+        /// Снять релик со слота обратно в запас; слот возвращается к базовому киту. No-op, если на слоте уже
+        /// базовый кит. false также при полном запасе (некуда вернуть — релик не теряем).
+        /// </summary>
+        public bool UnequipRelic(int slotIndex)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null) return false;
+
+            string cur = slot.RelicId;
+            if (string.IsNullOrEmpty(cur) || cur == BaseRelicId) return false; // уже пусто
+            if (RelicInventoryFull) return false;                              // некуда вернуть
+
+            var inv = new List<string>(Current.RelicInventory) { cur };
+            Current.RelicInventory = inv.ToArray();
+            slot.RelicId = BaseRelicId;
+            return true;
+        }
+
         // ── Предметы сосуда (Vessel-скоуп, лимит GameConfig.VesselItemSlots) ──
 
         /// <summary>Сколько предметов помещается на одного сосуда.</summary>
