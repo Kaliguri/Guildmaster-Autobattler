@@ -62,6 +62,7 @@ namespace Guildmaster.Game
             // в CoreScene (инъекция методом через RegisterComponentInHierarchy). ESC открывает меню.
             builder.Register<SettingsViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutViewModel>(Lifetime.Singleton);
+            builder.Register<LoadoutHubViewModel>(Lifetime.Singleton);
             builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf().As<IMenuRouter>();
             builder.RegisterComponentInHierarchy<UiRootBootstrap>();
 

@@ -2,6 +2,7 @@
     <ui:VisualElement class="gm-screen">
         <ui:VisualElement class="gm-panel gm-panel--hub">
             <ui:Label name="hub-title" text="Гильдия" class="gm-panel__title" />
+            <ui:Label name="hub-hint" text="" class="gm-text-muted" />
             <ui:VisualElement class="gm-divider" />
 
             <!-- Команда: ряд из 4 сосудов. Карточки катит код. -->

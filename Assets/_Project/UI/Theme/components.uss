@@ -641,6 +641,16 @@
     margin: var(--gm-space-1);
 }
 
+/* Наведение/выбор слота (запас реликвий в хабе): подсветка рамки через tint. */
+.gm-slot:hover {
+    -unity-background-image-tint-color: var(--gm-color-hover-border);
+}
+
+.gm-slot--selected {
+    -unity-background-image-tint-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
 .gm-slot__icon {
     flex-grow: 1;
     -unity-background-scale-mode: scale-to-fit;

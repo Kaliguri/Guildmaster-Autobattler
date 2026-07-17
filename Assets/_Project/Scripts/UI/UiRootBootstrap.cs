@@ -55,6 +55,9 @@ namespace Guildmaster.UI
         [Tooltip("UXML верхней панели забега (StS-style: хаб/опции/золото, центр «Начать»↔таймер, акт/время).")]
         [SerializeField] private VisualTreeAsset _runTopBar;
 
+        [Tooltip("UXML лоадаут-хаба (гильдия: 4 сосуда + навешивание реликвий из запаса). Открывается кнопкой «Хаб».")]
+        [SerializeField] private VisualTreeAsset _loadoutHubScreen;
+
         private MenuRouter _router;
         private IInputService _input;
         private IBattleClock _clock;
@@ -118,7 +121,7 @@ namespace Guildmaster.UI
                                  "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
                 return;
             }
-            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen);
+            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -177,8 +180,9 @@ namespace Guildmaster.UI
             else _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
         }
 
-        // Заглушка: хаб оживёт в под-шаге 2 (переключение сосудов + вкладки). Пока — лог.
-        private void OnHubClicked() => Debug.Log("[UiRootBootstrap] Хаб — заглушка (под-шаг 2).");
+        // Кнопка «Хаб» в топбаре открывает лоадаут-хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание
+        // собранных реликвий из запаса на 4 сосуда. Оверлей поверх карты; правки durable (RunState).
+        private void OnHubClicked() => _router.OpenHub();
 
         private static string FormatTime(float seconds)
         {

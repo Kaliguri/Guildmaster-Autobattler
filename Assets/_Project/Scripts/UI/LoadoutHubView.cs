@@ -32,7 +32,9 @@ namespace Guildmaster.UI
             Func<string, string> nameOf,
             Func<string, string> localize,
             Action<int> onVesselClick,
-            Action onClose)
+            Action onClose,
+            Action<int> onStashClick = null,
+            int selectedStashIndex = -1)
         {
             string L(string key, string ru)
             {
@@ -49,6 +51,7 @@ namespace Guildmaster.UI
             SetText(root, "hub-team-header",     L("ui.hub.team", "Команда"));
             SetText(root, "hub-banners-header",  L("ui.hub.banners", "Баннеры"));
             SetText(root, "hub-stash-header",    L("ui.hub.stash", "Запас реликвий"));
+            SetText(root, "hub-hint",            L("ui.hub.hint", "Реликвию из запаса → на сосуд. Клик по сосуду без выбора снимает релик."));
             SetText(root, "hub-gold",            L("ui.hub.gold", "Золото") + ": " + gold);
 
             var close = root.Q<Button>("btn-close");
@@ -83,12 +86,19 @@ namespace Guildmaster.UI
                 bannersBox.Add(slot);
             }
 
-            // ── Запас реликвий — слоты (без flex-grow: не распираем панель) ──
+            // ── Запас реликвий — слоты (без flex-grow: не распираем панель); клик «взводит» реликвию ──
             var stashBox = root.Q<VisualElement>("hub-stash");
             for (int i = 0; stash != null && stashBox != null && i < stash.Count; i++)
             {
+                int idx = i;
                 var slot = new Slot { Size = Slot.SlotSize.Sm };
                 slot.SetIcon(RelicSprite(stash[i]));
+                slot.SetSelected(i == selectedStashIndex);
+                if (onStashClick != null)
+                {
+                    slot.pickingMode = PickingMode.Position;
+                    slot.RegisterCallback<ClickEvent>(_ => onStashClick(idx));
+                }
                 stashBox.Add(slot);
             }
 

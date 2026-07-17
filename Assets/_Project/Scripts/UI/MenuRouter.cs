@@ -22,6 +22,7 @@ namespace Guildmaster.UI
         private readonly IInputService _input;
         private readonly SettingsViewModel _settingsVm;
         private readonly LoadoutViewModel _loadoutVm;
+        private readonly LoadoutHubViewModel _hubVm;
         private readonly ILocalizationService _loc;
 
         private readonly Stack<VisualElement> _stack = new();
@@ -37,14 +38,16 @@ namespace Guildmaster.UI
         private VisualTreeAsset _chestUxml;
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
+        private VisualTreeAsset _loadoutHubUxml;
         private InputContext _prevContext;
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
-                          ILocalizationService loc)
+                          LoadoutHubViewModel hubVm, ILocalizationService loc)
         {
             _input = input;
             _settingsVm = settingsVm;
             _loadoutVm = loadoutVm;
+            _hubVm = hubVm;
             _loc = loc;
         }
 
@@ -54,7 +57,8 @@ namespace Guildmaster.UI
         public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
             VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
-            VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null)
+            VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
+            VisualTreeAsset loadoutHubUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
@@ -68,6 +72,7 @@ namespace Guildmaster.UI
             _chestUxml = chestUxml;
             _outcomeUxml = outcomeUxml;
             _mainMenuUxml = mainMenuUxml;
+            _loadoutHubUxml = loadoutHubUxml;
         }
 
         /// <summary>
@@ -87,6 +92,46 @@ namespace Guildmaster.UI
         {
             if (_root == null || _settingsUxml == null) return;
             Push(BuildSettingsScreen());
+        }
+
+        /// <summary>
+        /// Лоадаут-хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание собранных реликвий на сосуды.
+        /// Открывается кнопкой «Хаб» в топбаре, пушится оверлеем поверх карты. Взаимодействие: клик по слоту
+        /// запаса «взводит» реликвию, клик по сосуду надевает взведённую (свап) либо снимает текущую (если
+        /// ничего не взведено). Правки durable (RunState) — контент ребилдится на каждое действие (хаб дёшев).
+        /// </summary>
+        public void OpenHub()
+        {
+            if (_root == null || _loadoutHubUxml == null) return;
+
+            var container = new VisualElement { name = "hub-container" };
+            container.style.position = Position.Absolute;
+            container.style.left = 0; container.style.top = 0; container.style.right = 0; container.style.bottom = 0;
+
+            int selectedStash = -1;
+
+            void Rebuild()
+            {
+                container.Clear();
+                VisualElement hub = LoadoutHubView.Build(
+                    _loadoutHubUxml,
+                    _hubVm.Roster(), _hubVm.Banners(), _hubVm.Stash(), _hubVm.Gold,
+                    nameOf: id => _hubVm.NameOf(id),
+                    localize: key => _loc?.GetString(key),
+                    onVesselClick: v =>
+                    {
+                        if (selectedStash >= 0) { _hubVm.Equip(v, selectedStash); selectedStash = -1; }
+                        else _hubVm.Unequip(v);
+                        Rebuild();
+                    },
+                    onClose: Pop,
+                    onStashClick: i => { selectedStash = (selectedStash == i) ? -1 : i; Rebuild(); },
+                    selectedStashIndex: selectedStash);
+                container.Add(hub);
+            }
+
+            Rebuild();
+            Push(container);
         }
 
         public void ToggleSystemMenu()
