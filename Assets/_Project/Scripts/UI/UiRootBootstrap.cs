@@ -53,6 +53,7 @@ namespace Guildmaster.UI
         private IInputService _input;
         private IBattleClock _clock;
         private RunStateService _runStates;
+        private GameConfig _config;
         private ILocalizationService _loc;
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
         private ISubscriber<OpenRewardRequest> _openRewardSub;
@@ -73,7 +74,7 @@ namespace Guildmaster.UI
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
-            IBattleClock clock, RunStateService runStates, ILocalizationService loc,
+            IBattleClock clock, RunStateService runStates, GameConfig config, ILocalizationService loc,
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
             ISubscriber<OpenTextEventRequest> openEventSub, ISubscriber<OpenMapRequest> openMapSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
@@ -83,6 +84,7 @@ namespace Guildmaster.UI
             _input = input;
             _clock = clock;
             _runStates = runStates;
+            _config = config;
             _loc = loc;
             _openLoadoutSub = openLoadoutSub;
             _openRewardSub = openRewardSub;
@@ -142,15 +144,20 @@ namespace Guildmaster.UI
         {
             if (_topBar == null || _clock == null) return;
 
-            BattlePhase phase = _clock.Phase;
-            bool visible = phase != BattlePhase.None;
-            _topBar.Root.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
-            if (!visible) return;
-
+            // ХП/золото/акт видны ВЕСЬ забег (реш. №65, STS-style), а не только в бою.
             RunState run = _runStates?.Current;
-            _topBar.SetGold(run?.Gold ?? 0);
-            _topBar.SetAct((run?.CurrentActIndex ?? 0) + 1);
-            _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
+            bool runActive = run != null;
+            _topBar.Root.style.display = runActive ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!runActive) return;
+
+            _topBar.Root.BringToFront(); // держим топ-бар поверх оверлеев узлов (карта/магазин/награда)
+            _topBar.SetGold(run.Gold);
+            _topBar.SetAct(run.CurrentActIndex + 1);
+            _topBar.SetRestarts(run.RestartsRemaining, _config != null ? _config.RestartsPerAct : run.RestartsRemaining);
+
+            BattlePhase phase = _clock.Phase;
+            if (phase == BattlePhase.None) _topBar.HideBattleCenter();       // карта/магазин — центр пуст
+            else _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
         }
 
         // Заглушка: хаб оживёт в под-шаге 2 (переключение сосудов + вкладки). Пока — лог.

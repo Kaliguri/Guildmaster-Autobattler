@@ -20,6 +20,7 @@ namespace Guildmaster.UI
         private readonly Label  _runTimer;
         private readonly Label  _battleTimer;
         private readonly Button _start;
+        private readonly VisualElement _hp;
         private readonly Func<string, string> _loc;
 
         public RunTopBarView(
@@ -39,6 +40,7 @@ namespace Guildmaster.UI
             _runTimer    = Root.Q<Label>("topbar-timer");
             _battleTimer = Root.Q<Label>("battle-timer");
             _start       = Root.Q<Button>("btn-start");
+            _hp          = Root.Q<VisualElement>("topbar-hp");
 
             var hub = Root.Q<Button>("btn-hub");
             if (hub != null) { hub.text = L("ui.run.hub", "Гильдия"); hub.clicked += () => onHub?.Invoke(); }
@@ -57,6 +59,30 @@ namespace Guildmaster.UI
 
         /// <summary>Время забега (справа) — форматированная строка mm:ss.</summary>
         public void SetRunTime(string timerText) => SetText(_runTimer, timerText);
+
+        /// <summary>
+        /// ХП забега = перезапуски-на-акт (реш. №65): рисует <paramref name="max"/> сердец-пипсов, первые
+        /// <paramref name="remaining"/> — полные, остальные — потраченные (тусклые). Всегда виден в топ-баре.
+        /// </summary>
+        public void SetRestarts(int remaining, int max)
+        {
+            if (_hp == null) return;
+            _hp.Clear();
+            for (int i = 0; i < max; i++)
+            {
+                var pip = new VisualElement();
+                pip.AddToClassList("gm-topbar__hp-pip");
+                if (i >= remaining) pip.AddToClassList("gm-topbar__hp-pip--empty");
+                _hp.Add(pip);
+            }
+        }
+
+        /// <summary>Скрыть центр панели (нет боя: карта/магазин) — ни «Начать», ни таймера.</summary>
+        public void HideBattleCenter()
+        {
+            if (_start != null)       _start.style.display       = DisplayStyle.None;
+            if (_battleTimer != null) _battleTimer.style.display = DisplayStyle.None;
+        }
 
         /// <summary>
         /// Переключить центр панели: бой идёт (<paramref name="fighting"/>=true) → таймер боя вместо кнопки
@@ -81,12 +107,15 @@ namespace Guildmaster.UI
             Func<string, string> localize,
             Action onHub,
             Action onSettings,
-            Action onStart)
+            Action onStart,
+            int restartsRemaining = 2,
+            int restartsMax = 2)
         {
             var view = new RunTopBarView(uxml, localize, onHub, onSettings, onStart);
             view.SetGold(gold);
             view.SetAct(actNumber);
             view.SetRunTime(timerText);
+            view.SetRestarts(restartsRemaining, restartsMax);
             return view.Root;
         }
 

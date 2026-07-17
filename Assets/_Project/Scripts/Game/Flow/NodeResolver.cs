@@ -70,7 +70,8 @@ namespace Guildmaster.Game.Flow
                         Debug.LogWarning($"[NodeResolver] - нет BattlePresetData в контент-БД для '{node.Id}' → заглушка");
                         return new CompletedStubFlow(node.Type);
                     }
-                    var battle = new BattleFlow(preset, _scenes, _session, _localPlayer);
+                    var battle = new BattleFlow(preset, _scenes, _session, _localPlayer,
+                                                () => _runStates.TrySpendRestart()); // пул перезапусков акта (C1)
                     int rewardCount = wantElite ? 2 : 1;   // элитка — два выбора реликвии подряд (B5)
                     return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, rewardCount);
                 }

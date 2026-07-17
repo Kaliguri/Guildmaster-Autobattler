@@ -970,3 +970,26 @@
     color: var(--gm-color-text-muted);
     margin-top: var(--gm-space-3);
 }
+
+/* ============================================================================
+ * ХП забега в топ-баре (C1, реш. №65): пипсы-сердца (перезапуски на акт).
+ * Иконка Honeti HeartRed; потраченный пипс — тот же спрайт тусклым.
+ * ========================================================================== */
+.gm-topbar__hp {
+    flex-direction: row;
+    align-items: center;
+    margin-left: var(--gm-space-2);
+    margin-right: var(--gm-space-2);
+}
+
+.gm-topbar__hp-pip {
+    width: 34px;
+    height: 34px;
+    margin-right: var(--gm-space-1);
+    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/HeartRed.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-topbar__hp-pip--empty {
+    opacity: 0.25;
+}

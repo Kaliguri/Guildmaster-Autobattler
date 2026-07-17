@@ -75,6 +75,9 @@ namespace Guildmaster.Guild
         public int    Difficulty;
         public int    Gold;
 
+        /// <summary>Перезапуски боя, оставшиеся В ЭТОМ АКТЕ (реш. №65). Сброс в начале акта, не копится между актами.</summary>
+        public int    RestartsRemaining;
+
         /// <summary>Вместимость коллекции запаса реликов (план 11 §5.4). База/потолок — в GameConfig.</summary>
         public int    RelicCapacity;
 

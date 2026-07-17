@@ -166,7 +166,8 @@ namespace Guildmaster.DevTools
 
             VisualElement screen = Guildmaster.UI.RunTopBarView.Build(
                 uxml, gold: 120, actNumber: 1, timerText: "12:34",
-                localize: null, onHub: () => { }, onSettings: () => { }, onStart: () => { });
+                localize: null, onHub: () => { }, onSettings: () => { }, onStart: () => { },
+                restartsRemaining: 1, restartsMax: 2);
             root.Add(screen);
         }
 

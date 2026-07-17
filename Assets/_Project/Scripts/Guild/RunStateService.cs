@@ -61,6 +61,8 @@ namespace Guildmaster.Guild
             if (Current == null) return;
             if (Current.Map != null && Current.Map.Nodes.Length > 0) return; // уже сгенерирована/загружена
 
+            Current.RestartsRemaining = _config.RestartsPerAct; // пул перезапусков на акт (реш. №65)
+
             var rng = new XorShiftRng(unchecked((ulong)(Current.Seed + Current.CurrentActIndex)));
             Current.Map = MapGenerator.Generate(rng, mapConfig ?? new MapGenConfig());
         }
@@ -85,6 +87,19 @@ namespace Guildmaster.Guild
 
         /// <summary>Начислить награду золотом за победу в бою (из <see cref="GameConfig"/>).</summary>
         public void AwardBattleReward() => AddGold(_config.BattleGoldReward);
+
+        // ── Перезапуски боя на акт (реш. №65) ────────────────────────────────
+
+        /// <summary>Оставшиеся перезапуски боя в текущем акте.</summary>
+        public int RestartsRemaining => Current?.RestartsRemaining ?? 0;
+
+        /// <summary>Потратить один перезапуск, если есть. false = пул пуст (поражение = конец забега).</summary>
+        public bool TrySpendRestart()
+        {
+            if (Current == null || Current.RestartsRemaining <= 0) return false;
+            Current.RestartsRemaining--;
+            return true;
+        }
 
         /// <summary>Снапшот текущего забега на диск (точка автосейва). No-op без активного забега.</summary>
         public void Autosave()
