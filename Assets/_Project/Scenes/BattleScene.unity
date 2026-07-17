@@ -166,7 +166,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.DevTools::Guildmaster.DevTools.DevEncounterPanel
   _devPlayerRelic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
   _devPlayerPosition: {x: -5, y: 0}
-  _visibleOnStart: 1
 --- !u!114 &35160775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,6 +337,12 @@ MonoBehaviour:
   _loadoutScreen: {fileID: 9197481963319205126, guid: 15c3d6ae3d7b0564e9f3085e3abba396, type: 3}
   _rewardScreen: {fileID: 9197481963319205126, guid: d9f6be55684a5534086ba8b49b9215ab, type: 3}
   _eventScreen: {fileID: 9197481963319205126, guid: 5f2c0deae1e055b4eaaf17257898cf83, type: 3}
+  _mapScreen: {fileID: 9197481963319205126, guid: af9fe6ae599511449b59ad30576aad90, type: 3}
+  _continueScreen: {fileID: 9197481963319205126, guid: 4fda0ea06bc1e234e8ceaa9ebc8bb51e, type: 3}
+  _shopScreen: {fileID: 9197481963319205126, guid: cfc0777af5f00e44896f6b4a073c626b, type: 3}
+  _chestScreen: {fileID: 9197481963319205126, guid: 1ff8b7142418a244dbb702afa6cb314a, type: 3}
+  _outcomeScreen: {fileID: 9197481963319205126, guid: 23b1ecddbec3ffa47bcda35390fcd78b, type: 3}
+  _mainMenuScreen: {fileID: 9197481963319205126, guid: 6b74acde43d6f2845a61d543591cccb0, type: 3}
   _runTopBar: {fileID: 9197481963319205126, guid: 94570721a23f87c4e851528c4b1212aa, type: 3}
 --- !u!114 &101249935
 MonoBehaviour:
