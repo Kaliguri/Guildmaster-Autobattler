@@ -1,6 +1,6 @@
 ---
 title: "Effect - CC Primitives"
-kind: effect-collection
+order: 20
 status: draft
 ---
 

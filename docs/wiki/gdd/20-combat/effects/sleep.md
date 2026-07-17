@@ -1,18 +1,13 @@
 ---
 title: "Effect - Sleep"
-kind: effect
+order: 12
 status: draft
-effect_class: [CC]
-polarity: Debuff
-tags: [Control, Sleep]
-stacking: Refresh
-max_stacks: —
-cleanse_tier: T1
-school: —
-affinity: —
 ---
 
 # Сон (Sleep)
+
+> **[[property-reference#Класс|Класс]]:** CC · **[[property-reference#Полярность|Полярность]]:** Debuff · **[[property-reference#Теги|Теги]]:** `Control`, `Sleep`
+> **[[property-reference#Стакинг|Стакинг]]:** Refresh · **[[property-reference#Снимаемость|Снятие]]:** T1
 
 Усыпление: цель не действует, но **просыпается от первого же урона**. Контроль со встроенным
 риском/наградой — усыпить пачку выгодно, но любой тик разбудит; точечное пробуждение
@@ -26,13 +21,13 @@ affinity: —
 
 ## Снятие и контра
 
-Любой урон будит. Диспел снимает (`T1`); tenacity (`ReceiveDebuffEff`) сокращает длительность
-(без diminishing returns); не пустить — иммунитет.
+Любой урон будит. Диспел снимает; tenacity (`ReceiveDebuffEff`) сокращает длительность (без
+diminishing returns); не пустить — иммунитет.
 
 ## Комбо
 
 Пейоф — **пробуждающий удар ×2** (встроен, не отдельное комбо-правило). Прочие
-взаимодействия — [[gdd/20-combat/effects/combo-rules|матрица комбо-правил]].
+взаимодействия — [[combo-rules|матрица комбо-правил]].
 
 ## Баланс-флаги
 
