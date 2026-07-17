@@ -310,8 +310,13 @@
     margin-left: var(--gm-space-3);
     padding: var(--gm-space-3);
     background-color: var(--gm-color-surface-sunken);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-subtle);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
 }
 
 .gm-detail__name {
@@ -570,11 +575,16 @@
     justify-content: center;
 }
 
-/* Компактная кнопка панели (меньше отступы, чем у gm-button). */
+/* Компактная кнопка панели (меньше отступы, чем у gm-button) — Honeti-контур. */
 .gm-topbar__btn {
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     color: var(--gm-color-text);
     font-size: var(--gm-font-sm);
     padding: var(--gm-space-1) var(--gm-space-3);
@@ -582,8 +592,7 @@
 }
 
 .gm-topbar__btn:hover {
-    background-color: var(--gm-color-hover-surface);
-    border-color: var(--gm-color-hover-border);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
 }
 
 .gm-topbar__stat {
@@ -605,10 +614,13 @@
     -unity-font-style: bold;
 }
 
+/* Кнопка «Начать» — primary латунная заливка (перебивает контур gm-topbar__btn). */
 .gm-topbar__start {
     margin: 0;
     padding-left: var(--gm-space-6);
     padding-right: var(--gm-space-6);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
+    color: var(--gm-color-text-on-accent);
 }
 
 /* ============================================================================
@@ -654,8 +666,13 @@
 
 .gm-tooltip {
     background-color: var(--gm-color-surface-panel);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
     padding: var(--gm-space-2) var(--gm-space-3);
     max-width: 220px;
 }
