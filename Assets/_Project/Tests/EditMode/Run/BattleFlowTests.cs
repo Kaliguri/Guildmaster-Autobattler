@@ -188,6 +188,8 @@ namespace Guildmaster.Tests.EditMode.Run
                 return true;
             }
 
+            public bool RestartInPlace() => false; // dev-хоткей R, во флоу-тестах не задействован
+
             // Часы/фаза/старт панели (план 12 Фаза 2) — не задействованы в этих тестах.
             public BattlePhase Phase => BattlePhase.None;
             public float ElapsedSeconds => 0f;
