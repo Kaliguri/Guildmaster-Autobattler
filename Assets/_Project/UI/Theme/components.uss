@@ -922,3 +922,51 @@
     -unity-font-style: bold;
     -unity-text-align: middle-center;
 }
+
+/* ============================================================================
+ * СУНДУК (B3): фасад с кликабельной крышкой (арт-плейсхолдер до пиксель-спрайта).
+ * ========================================================================== */
+.gm-panel--chest {
+    min-width: 640px;
+    min-height: 520px;
+    align-items: center;
+}
+
+.gm-chest__body {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-chest__lid {
+    width: 220px;
+    height: 160px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-brass-400);
+    transition-property: scale, opacity;
+    transition-duration: 0.13s;
+}
+
+.gm-chest__lid:hover {
+    scale: 1.04 1.04;
+    border-color: var(--gm-brass-300);
+}
+
+.gm-chest__lid--open {
+    scale: 0.9 0.9;
+    opacity: 0.5;
+}
+
+.gm-chest__glyph {
+    font-size: var(--gm-font-lg);
+    color: var(--gm-brass-300);
+}
+
+.gm-chest__hint {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    margin-top: var(--gm-space-3);
+}

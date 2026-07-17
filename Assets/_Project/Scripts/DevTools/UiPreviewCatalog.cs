@@ -29,6 +29,7 @@ namespace Guildmaster.DevTools
             ["settings"]     = BuildSettings,
             ["map"]          = BuildMap,
             ["shop"]         = BuildShop,
+            ["chest"]        = BuildChest,
             ["gallery"]      = BuildGallery,
         };
 
@@ -253,6 +254,13 @@ namespace Guildmaster.DevTools
             }
             public bool Reroll() { Changed?.Invoke(); return true; }
             public bool Sell(RelicData relic) { Changed?.Invoke(); return true; }
+        }
+
+        private static void BuildChest(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/ChestScreen.uxml");
+            if (uxml == null) { AddError(root, "ChestScreen.uxml не найден"); return; }
+            root.Add(Guildmaster.UI.ChestScreenView.Build(uxml, RuValue, () => { }));
         }
 
         private static void BuildGallery(VisualElement root)

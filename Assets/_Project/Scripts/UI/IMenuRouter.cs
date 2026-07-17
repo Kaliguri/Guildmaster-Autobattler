@@ -48,5 +48,11 @@ namespace Guildmaster.UI
         /// <see cref="Guildmaster.Guild.OpenShopRequest.OnLeave"/> — включая закрытие без нажатия «Уйти».
         /// </summary>
         void OpenShop(Guildmaster.Guild.OpenShopRequest req);
+
+        /// <summary>
+        /// Открыть экран сундука (B3). Гарантирует ровно один вызов
+        /// <see cref="Guildmaster.Guild.OpenChestRequest.OnOpen"/> — включая закрытие без клика по крышке.
+        /// </summary>
+        void OpenChest(Guildmaster.Guild.OpenChestRequest req);
     }
 }

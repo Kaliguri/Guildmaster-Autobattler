@@ -29,12 +29,15 @@ namespace Guildmaster.Game.Flow
         private readonly ILocalPlayer       _localPlayer;
         private readonly EventEffectApplier _eventEffects;
         private readonly ShopController     _shop;
+        private readonly IRewardPresenter   _reward;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<OpenShopRequest>      _openShopPub;
+        private readonly IPublisher<OpenChestRequest>     _openChestPub;
 
         public NodeResolver(IContentDatabase content, ISceneLoader scenes, IBattleSession session,
                             ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
-                            IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub)
+                            IRewardPresenter reward, IPublisher<OpenTextEventRequest> openEventPub,
+                            IPublisher<OpenShopRequest> openShopPub, IPublisher<OpenChestRequest> openChestPub)
         {
             _content      = content;
             _scenes       = scenes;
@@ -42,8 +45,10 @@ namespace Guildmaster.Game.Flow
             _localPlayer  = localPlayer;
             _eventEffects = eventEffects;
             _shop         = shop;
+            _reward       = reward;
             _openEventPub = openEventPub;
             _openShopPub  = openShopPub;
+            _openChestPub = openChestPub;
         }
 
         public IEventFlow Resolve(MapNode node, RunContext ctx)
@@ -77,8 +82,10 @@ namespace Guildmaster.Game.Flow
                 case MapNodeType.Shop:
                     return new ShopFlow(_shop, _openShopPub);
 
-                // Сундук/«?» ещё не реализованы — проходим как no-op (фазы B3-B4).
                 case MapNodeType.Chest:
+                    return new ChestFlow(_openChestPub, _reward);
+
+                // «?» ещё не реализован — проходим как no-op (фаза B4).
                 case MapNodeType.Unknown:
                     return new CompletedStubFlow(node.Type);
 

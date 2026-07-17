@@ -34,6 +34,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _mapUxml;
         private VisualTreeAsset _continueUxml;
         private VisualTreeAsset _shopUxml;
+        private VisualTreeAsset _chestUxml;
         private InputContext _prevContext;
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
@@ -50,7 +51,8 @@ namespace Guildmaster.UI
         /// <summary>Бутстрап отдаёт корень панели и UXML-шаблоны экранов (ссылки из сцены, не DI).</summary>
         public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
-            VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null)
+            VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
+            VisualTreeAsset chestUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
@@ -61,6 +63,7 @@ namespace Guildmaster.UI
             _mapUxml = mapUxml;
             _continueUxml = continueUxml;
             _shopUxml = shopUxml;
+            _chestUxml = chestUxml;
         }
 
         /// <summary>
@@ -442,6 +445,31 @@ namespace Guildmaster.UI
 
             // Растянуть оверлей на весь корень + страховка: закрытие без «Уйти» = резолв, чтобы петля не зависла.
             screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnLeave?.Invoke(); } });
+            return screen;
+        }
+
+        // Экран сундука (B3) — на UXML (ChestScreen.uxml). Клик по крышке резолвит OnOpen (флоу катит награду),
+        // затем сундук закрывается. Закрытие без клика тоже резолвит, чтобы флоу не завис.
+        public void OpenChest(OpenChestRequest req)
+        {
+            if (_root == null || _chestUxml == null) { req.OnOpen?.Invoke(); return; }
+            Push(BuildChestScreen(req));
+        }
+
+        private VisualElement BuildChestScreen(OpenChestRequest req)
+        {
+            bool resolved = false;
+
+            void Resolve()
+            {
+                if (resolved) return;
+                resolved = true;
+                req.OnOpen?.Invoke();
+                CloseAll();
+            }
+
+            VisualElement screen = ChestScreenView.Build(_chestUxml, key => _loc?.GetString(key), Resolve);
+            screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnOpen?.Invoke(); } });
             return screen;
         }
 
