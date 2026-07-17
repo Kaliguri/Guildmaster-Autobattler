@@ -45,6 +45,19 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
+        public void EliteWin_PresentsReward_Twice()
+        {
+            var ctx = Ctx();
+            var reward = new CountingReward();
+            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Elite, reward, _runStates,
+                                          rewardCount: 2);
+
+            flow.Run(ctx).GetAwaiter().GetResult();
+
+            Assert.AreEqual(2, reward.Calls, "Элитка — два выбора реликвии подряд (награда ×2).");
+        }
+
+        [Test]
         public void Defeat_NoGold_NoReward_PassesThrough()
         {
             var ctx = Ctx();

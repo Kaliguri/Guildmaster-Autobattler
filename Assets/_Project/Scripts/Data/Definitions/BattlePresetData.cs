@@ -58,9 +58,13 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Баннеры боя (Party-скоуп предметы): действуют на всю команду team 0 (D1). Опц.")]
         [SerializeField] private ItemData[] _partyItems;
 
+        [Tooltip("Элитный бой (план act-map-run-loop B5): резолвится на узлы Elite (больше врагов, награда ×2).")]
+        [SerializeField] private bool _isElite;
+
         public EncounterData            Encounter      => _encounter;
         public IReadOnlyList<PlayerSlot> Roster        => _roster;
         public DeploymentMode           DeploymentMode => _deploymentMode;
         public IReadOnlyList<ItemData>  PartyItems     => _partyItems;
+        public bool                     IsElite        => _isElite;
     }
 }

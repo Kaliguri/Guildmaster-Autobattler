@@ -15,13 +15,16 @@ namespace Guildmaster.Game.Flow
         private readonly RewardTier       _tier;
         private readonly IRewardPresenter _reward;
         private readonly RunStateService  _runStates;
+        private readonly int              _rewardCount;
 
-        public BattleNodeFlow(IEventFlow battle, RewardTier tier, IRewardPresenter reward, RunStateService runStates)
+        public BattleNodeFlow(IEventFlow battle, RewardTier tier, IRewardPresenter reward, RunStateService runStates,
+                              int rewardCount = 1)
         {
-            _battle    = battle;
-            _tier      = tier;
-            _reward    = reward;
-            _runStates = runStates;
+            _battle       = battle;
+            _tier         = tier;
+            _reward       = reward;
+            _runStates    = runStates;
+            _rewardCount  = rewardCount < 1 ? 1 : rewardCount;
         }
 
         public async UniTask<EventResult> Run(RunContext ctx)
@@ -29,8 +32,9 @@ namespace Guildmaster.Game.Flow
             EventResult result = await _battle.Run(ctx);
             if (result.Outcome != EventOutcome.Completed) return result;
 
-            _runStates.AwardBattleReward();       // +золото за победу (B1)
-            await _reward.PresentAsync(_tier);    // витрина 1-из-3 (A3)
+            _runStates.AwardBattleReward();               // +золото за победу (B1)
+            for (int i = 0; i < _rewardCount; i++)        // элитка = 2 выбора подряд (B5)
+                await _reward.PresentAsync(_tier);
             return result;
         }
     }

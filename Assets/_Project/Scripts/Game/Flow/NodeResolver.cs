@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Core.Players;
 using Guildmaster.Data.Definitions;
@@ -62,14 +63,16 @@ namespace Guildmaster.Game.Flow
                 case MapNodeType.Elite:
                 case MapNodeType.Boss:
                 {
-                    BattlePresetData preset = PickContent<BattlePresetData>(node, ctx);
+                    bool wantElite = node.Type == MapNodeType.Elite;
+                    BattlePresetData preset = PickBattlePreset(node, ctx, wantElite);
                     if (preset == null)
                     {
                         Debug.LogWarning($"[NodeResolver] - нет BattlePresetData в контент-БД для '{node.Id}' → заглушка");
                         return new CompletedStubFlow(node.Type);
                     }
                     var battle = new BattleFlow(preset, _scenes, _session, _localPlayer);
-                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates);
+                    int rewardCount = wantElite ? 2 : 1;   // элитка — два выбора реликвии подряд (B5)
+                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, rewardCount);
                 }
 
                 case MapNodeType.TextEvent:
@@ -114,6 +117,30 @@ namespace Guildmaster.Game.Flow
 
             var all = _content.All<T>();
             return all.Count == 0 ? null : all[ctx.Rng.NextInt(0, all.Count)];
+        }
+
+        /// <summary>
+        /// Боевой пресет для узла: по payload-id, иначе случайный из пула нужного вида (элитный/обычный). Если
+        /// элит-пресетов ещё нет (ассеты — контент B5), откатываемся на обычные (элитка = обычный бой + награда ×2).
+        /// </summary>
+        private BattlePresetData PickBattlePreset(MapNode node, RunContext ctx, bool wantElite)
+        {
+            if (!string.IsNullOrEmpty(node.PayloadId) && _content.TryGet<BattlePresetData>(node.PayloadId, out var byId))
+                return byId;
+
+            var all = _content.All<BattlePresetData>();
+            if (all.Count == 0) return null;
+
+            var pool = new List<BattlePresetData>(all.Count);
+            foreach (var p in all)
+                if (p != null && p.IsElite == wantElite) pool.Add(p);
+
+            if (pool.Count == 0)
+            {
+                if (wantElite) Debug.LogWarning("[NodeResolver] - нет элит-пресетов → беру обычный бой (награда ×2 остаётся)");
+                return all[ctx.Rng.NextInt(0, all.Count)]; // фолбэк на любой
+            }
+            return pool[ctx.Rng.NextInt(0, pool.Count)];
         }
     }
 
