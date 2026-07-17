@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Persistence;
+using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
 
 namespace Guildmaster.Guild
@@ -47,6 +48,20 @@ namespace Guildmaster.Guild
         {
             Current = _save.Load<RunState>(SaveKey);
             return Current;
+        }
+
+        /// <summary>
+        /// Сгенерировать карту текущего акта, если её ещё нет (план [[act-map-run-loop]] §3.1). Детерминирована
+        /// под-сидом <c>Seed + CurrentActIndex</c> — перезаход в тот же акт даёт ту же карту; при загрузке из
+        /// автосейва карта уже есть, повторно не генерим. No-op без активного забега.
+        /// </summary>
+        public void BeginAct(MapGenConfig mapConfig = null)
+        {
+            if (Current == null) return;
+            if (Current.Map != null && Current.Map.Nodes.Length > 0) return; // уже сгенерирована/загружена
+
+            var rng = new XorShiftRng(unchecked((ulong)(Current.Seed + Current.CurrentActIndex)));
+            Current.Map = MapGenerator.Generate(rng, mapConfig ?? new MapGenConfig());
         }
 
         /// <summary>Изменить золото забега (±). Клампится в ноль снизу. No-op без активного забега.</summary>

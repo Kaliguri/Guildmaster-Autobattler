@@ -89,9 +89,16 @@ namespace Guildmaster.Game
 
             // Витрина наград после боя (A3): катит 1-из-3 реликов из контент-БД (детерминирован через RNG).
             builder.Register<RewardService>(Lifetime.Singleton);
+            // Показ награды (вынесен из GameFlow — переиспользуют петля акта и legacy-вход одного боя).
+            builder.Register<RewardPresenter>(Lifetime.Singleton).As<IRewardPresenter>();
 
             // Применение последствий текстовых ивентов к RunState (план 11 §5.1).
             builder.Register<EventEffectApplier>(Lifetime.Singleton);
+
+            // Петля акта (план act-map-run-loop §3.2, A2): резолвер узлов + выбор узла (A2 — авто) + сам раннер.
+            builder.Register<NodeResolver>(Lifetime.Singleton).As<INodeResolver>();
+            builder.Register<AutoFirstNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
+            builder.Register<ActRunner>(Lifetime.Singleton);
 
             builder.Register<GameFlow>(Lifetime.Singleton);
 

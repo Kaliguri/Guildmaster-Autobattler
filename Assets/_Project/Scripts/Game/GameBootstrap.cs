@@ -15,6 +15,10 @@ namespace Guildmaster.Game
     public sealed class GameBootstrap : MonoBehaviour
     {
         [Header("A2 dev-разрез (план 11)")]
+        [Tooltip("ON: на старте прогнать ВЕСЬ АКТ через петлю (карта из сида → узлы авто-обходом). " +
+                 "Имеет приоритет над одиночным боем и ивентом. Нужен контент в БД (пресеты/ивенты).")]
+        [SerializeField] private bool _runActOnBoot;
+
         [Tooltip("ON: на старте прогнать один бой через полный BattleFlow (нужен пресет ниже). " +
                  "OFF (по умолчанию): legacy — грузить BattleScene, бой запускать dev-панелью F2.")]
         [SerializeField] private bool _runBattleFlowOnBoot;
@@ -38,6 +42,13 @@ namespace Guildmaster.Game
         private async UniTaskVoid StartBootAsync()
         {
             Debug.Log("[GameBootstrap] - Старт");
+
+            if (_runActOnBoot)
+            {
+                Flow.EventResult act = await _gameFlow.RunActAsync();
+                Debug.Log($"[GameBootstrap] - забег (акт) завершён: {act.Outcome}");
+                return;
+            }
 
             if (_runTextEventOnBoot && _devStartEvent != null)
             {
