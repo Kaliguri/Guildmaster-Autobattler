@@ -25,7 +25,7 @@ status: living
 | ↳ [[gdd/40-content/authoring/unit-enemy\|Юнит: противник]] | Задача во встрече, тиры, читаемость врага | living |
 | [[gdd/40-content/authoring/relic-upgrades\|Улучшения реликвий]] | Шаг 6 карточки: модель улучшений, комбинируемость, чеклист | living |
 | [[gdd/40-content/authoring/effect\|Создание эффекта]] | Классы, карточка vs сборник, тех-поля как ГД-инфа | living |
-| Создание предмета / Знамени | Vessel- и Party-скоуп | планируется |
+| [[gdd/40-content/authoring/item\|Создание предмета]] | Vessel-предметы: теги, авто-триггеры, формат | living |
 
 ---
 
