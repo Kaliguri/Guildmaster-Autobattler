@@ -157,7 +157,7 @@ namespace Guildmaster.DevTools
             VisualElement screen = Guildmaster.UI.LoadoutHubView.Build(
                 uxml, roster, banners, stash, gold: 120,
                 nameOf: id => RuName(id), localize: RuValue,
-                onVesselClick: _ => { }, onClose: () => { });
+                onClose: () => { });
             root.Add(screen);
         }
 

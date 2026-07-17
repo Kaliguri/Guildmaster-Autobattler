@@ -96,9 +96,9 @@ namespace Guildmaster.UI
 
         /// <summary>
         /// Лоадаут-хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание собранных реликвий на сосуды.
-        /// Открывается кнопкой «Хаб» в топбаре, пушится оверлеем поверх карты. Взаимодействие: клик по слоту
-        /// запаса «взводит» реликвию, клик по сосуду надевает взведённую (свап) либо снимает текущую (если
-        /// ничего не взведено). Правки durable (RunState) — контент ребилдится на каждое действие (хаб дёшев).
+        /// Открывается кнопкой «Хаб» в топбаре, пушится оверлеем поверх карты. Реликвии переносятся драгом
+        /// (тащишь из запаса на сосуд → надеть; с сосуда в запас → снять). Правки durable (RunState) — контент
+        /// ребилдится на каждое действие (хаб дёшев).
         /// </summary>
         public void OpenHub()
         {
@@ -108,8 +108,6 @@ namespace Guildmaster.UI
             container.style.position = Position.Absolute;
             container.style.left = 0; container.style.top = 0; container.style.right = 0; container.style.bottom = 0;
 
-            int selectedStash = -1;
-
             void Rebuild()
             {
                 container.Clear();
@@ -118,15 +116,9 @@ namespace Guildmaster.UI
                     _hubVm.Roster(), _hubVm.Banners(), _hubVm.Stash(), _hubVm.Gold,
                     nameOf: id => _hubVm.NameOf(id),
                     localize: key => _loc?.GetString(key),
-                    onVesselClick: v =>
-                    {
-                        if (selectedStash >= 0) { _hubVm.Equip(v, selectedStash); selectedStash = -1; }
-                        else _hubVm.Unequip(v);
-                        Rebuild();
-                    },
                     onClose: Pop,
-                    onStashClick: i => { selectedStash = (selectedStash == i) ? -1 : i; Rebuild(); },
-                    selectedStashIndex: selectedStash);
+                    onEquip: (vessel, stash) => { _hubVm.Equip(vessel, stash); Rebuild(); },
+                    onUnequip: vessel => { _hubVm.Unequip(vessel); Rebuild(); });
                 container.Add(hub);
             }
 
