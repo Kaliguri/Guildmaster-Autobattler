@@ -32,6 +32,10 @@ namespace Guildmaster.Game
         [Tooltip("Стартовый текстовый ивент для дебага (StS-style). Нужен при включённом флаге ивента.")]
         [SerializeField] private TextEventData _devStartEvent;
 
+        [Tooltip("ON: legacy-вход — грузить BattleScene, бой запускать F2-панелью (без главного меню). " +
+                 "OFF (по умолчанию): главное меню → забег (D1).")]
+        [SerializeField] private bool _legacyBattleScene;
+
         [Inject] private GameFlow _gameFlow;
 
         private void Start()
@@ -67,7 +71,13 @@ namespace Guildmaster.Game
             if (_runBattleFlowOnBoot)
                 Debug.LogWarning("[GameBootstrap] - флаг BattleFlow включён, но пресет не назначен → legacy-вход");
 
-            await _gameFlow.BootAsync();
+            if (_legacyBattleScene)
+            {
+                await _gameFlow.BootAsync(); // legacy: грузить BattleScene, бой запускать F2-панелью
+                return;
+            }
+
+            await _gameFlow.RunGameAsync(); // D1: главное меню → забег → меню
         }
     }
 }

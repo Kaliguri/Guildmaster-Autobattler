@@ -31,6 +31,7 @@ namespace Guildmaster.DevTools
             ["shop"]         = BuildShop,
             ["chest"]        = BuildChest,
             ["outcome"]      = BuildOutcome,
+            ["mainmenu"]     = BuildMainMenu,
             ["gallery"]      = BuildGallery,
         };
 
@@ -271,6 +272,15 @@ namespace Guildmaster.DevTools
             if (uxml == null) { AddError(root, "OutcomeScreen.uxml не найден"); return; }
             // Стенд показывает победу; поражение — тот же экран с victory:false.
             root.Add(Guildmaster.UI.OutcomeScreenView.Build(uxml, victory: true, RuValue, () => { }));
+        }
+
+        private static void BuildMainMenu(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/MainMenuScreen.uxml");
+            if (uxml == null) { AddError(root, "MainMenuScreen.uxml не найден"); return; }
+            // Стенд: hasSave=true (кнопка «Продолжить» активна).
+            root.Add(Guildmaster.UI.MainMenuScreenView.Build(
+                uxml, hasSave: true, RuValue, () => { }, () => { }, () => { }, () => { }));
         }
 
         private static void BuildGallery(VisualElement root)

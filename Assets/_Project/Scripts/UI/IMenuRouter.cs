@@ -60,5 +60,12 @@ namespace Guildmaster.UI
         /// <see cref="Guildmaster.Guild.OpenOutcomeRequest.OnToMenu"/> — включая закрытие без нажатия.
         /// </summary>
         void ShowOutcome(Guildmaster.Guild.OpenOutcomeRequest req);
+
+        /// <summary>
+        /// Показать главное меню (D1). Гарантирует ровно один вызов
+        /// <see cref="Guildmaster.Guild.OpenMainMenuRequest.OnChoice"/> (Начать/Продолжить/Выход);
+        /// «Настройки» открываются поверх меню и его не закрывают.
+        /// </summary>
+        void OpenMainMenu(Guildmaster.Guild.OpenMainMenuRequest req);
     }
 }

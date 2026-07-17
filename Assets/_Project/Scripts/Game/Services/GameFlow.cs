@@ -25,6 +25,7 @@ namespace Guildmaster.Game.Services
         private readonly RunStateService     _runStates;
         private readonly IRewardPresenter    _rewardPresenter;
         private readonly IOutcomePresenter   _outcomePresenter;
+        private readonly IMainMenuPresenter  _mainMenuPresenter;
         private readonly ActRunner           _actRunner;
         private readonly EventEffectApplier  _eventEffects;
         private readonly IRngService         _rng;
@@ -39,6 +40,7 @@ namespace Guildmaster.Game.Services
             RunStateService     runStates,
             IRewardPresenter    rewardPresenter,
             IOutcomePresenter   outcomePresenter,
+            IMainMenuPresenter  mainMenuPresenter,
             ActRunner           actRunner,
             EventEffectApplier  eventEffects,
             IRngService         rng,
@@ -52,6 +54,7 @@ namespace Guildmaster.Game.Services
             _runStates        = runStates;
             _rewardPresenter  = rewardPresenter;
             _outcomePresenter = outcomePresenter;
+            _mainMenuPresenter = mainMenuPresenter;
             _actRunner       = actRunner;
             _eventEffects    = eventEffects;
             _rng             = rng;
@@ -97,6 +100,41 @@ namespace Guildmaster.Game.Services
                 await _rewardPresenter.PresentAsync(tier);
 
             return result;
+        }
+
+        /// <summary>
+        /// Верхний цикл игры (план D1): главное меню → забег → меню. Начать = новый забег, Продолжить = из
+        /// автосейва, Выход = закрыть игру. Точка входа при обычном старте (не dev-разрез).
+        /// </summary>
+        public async UniTask RunGameAsync()
+        {
+            while (true)
+            {
+                MainMenuChoice choice = await _mainMenuPresenter.ShowAsync(_runStates.HasSave);
+
+                if (choice == MainMenuChoice.Quit) { QuitGame(); return; }
+
+                if (choice == MainMenuChoice.Continue)
+                {
+                    if (_runStates.Load() == null) { Debug.LogWarning("[GameFlow] - нет автосейва → назад в меню"); continue; }
+                }
+                else
+                {
+                    _runStates.NewRun(DateTime.UtcNow.Ticks, Array.Empty<RosterSlot>());
+                }
+
+                await RunActAsync(); // BeginAct + петля + экран исхода + чистка сейва
+            }
+        }
+
+        private static void QuitGame()
+        {
+            Debug.Log("[GameFlow] - выход из игры");
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
         }
 
         /// <summary>

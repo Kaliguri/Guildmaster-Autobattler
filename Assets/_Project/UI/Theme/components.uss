@@ -1024,3 +1024,30 @@
     justify-content: center;
     margin-top: var(--gm-space-3);
 }
+
+/* ============================================================================
+ * ГЛАВНОЕ МЕНЮ (D1): Начать / Продолжить / Настройки / Выход.
+ * ========================================================================== */
+.gm-panel--mainmenu {
+    min-width: 520px;
+    min-height: 560px;
+    align-items: center;
+}
+
+.gm-mainmenu__title {
+    font-size: var(--gm-font-lg);
+    color: var(--gm-brass-300);
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-mainmenu__buttons {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: stretch;
+    min-width: 360px;
+}
+
+.gm-mainmenu__btn {
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
+}

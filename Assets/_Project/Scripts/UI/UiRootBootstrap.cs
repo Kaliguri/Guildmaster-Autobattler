@@ -49,6 +49,9 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана исхода забега (Победа/Поражение → В меню).")]
         [SerializeField] private VisualTreeAsset _outcomeScreen;
 
+        [Tooltip("UXML главного меню (Начать/Продолжить/Настройки/Выход).")]
+        [SerializeField] private VisualTreeAsset _mainMenuScreen;
+
         [Tooltip("UXML верхней панели забега (StS-style: хаб/опции/золото, центр «Начать»↔таймер, акт/время).")]
         [SerializeField] private VisualTreeAsset _runTopBar;
 
@@ -66,6 +69,7 @@ namespace Guildmaster.UI
         private ISubscriber<OpenShopRequest> _openShopSub;
         private ISubscriber<OpenChestRequest> _openChestSub;
         private ISubscriber<OpenOutcomeRequest> _openOutcomeSub;
+        private ISubscriber<OpenMainMenuRequest> _openMainMenuSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
         private IDisposable _openEventSubscription;
@@ -74,6 +78,7 @@ namespace Guildmaster.UI
         private IDisposable _openShopSubscription;
         private IDisposable _openChestSubscription;
         private IDisposable _openOutcomeSubscription;
+        private IDisposable _openMainMenuSubscription;
         private UIDocument _doc;
         private RunTopBarView _topBar;
 
@@ -83,7 +88,8 @@ namespace Guildmaster.UI
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
             ISubscriber<OpenTextEventRequest> openEventSub, ISubscriber<OpenMapRequest> openMapSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
-            ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub)
+            ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
+            ISubscriber<OpenMainMenuRequest> openMainMenuSub)
         {
             _router = router;
             _input = input;
@@ -99,6 +105,7 @@ namespace Guildmaster.UI
             _openShopSub = openShopSub;
             _openChestSub = openChestSub;
             _openOutcomeSub = openOutcomeSub;
+            _openMainMenuSub = openMainMenuSub;
         }
 
         private void Awake() => _doc = GetComponent<UIDocument>();
@@ -111,7 +118,7 @@ namespace Guildmaster.UI
                                  "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
                 return;
             }
-            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen);
+            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -129,6 +136,8 @@ namespace Guildmaster.UI
             _openChestSubscription = _openChestSub?.Subscribe(req => _router.OpenChest(req));
             // Исход забега — запрос из GameFlow после акта.
             _openOutcomeSubscription = _openOutcomeSub?.Subscribe(req => _router.ShowOutcome(req));
+            // Главное меню — запрос из GameFlow (верхний цикл).
+            _openMainMenuSubscription = _openMainMenuSub?.Subscribe(req => _router.OpenMainMenu(req));
 
             InitTopBar();
         }
@@ -189,6 +198,7 @@ namespace Guildmaster.UI
             _openShopSubscription?.Dispose();
             _openChestSubscription?.Dispose();
             _openOutcomeSubscription?.Dispose();
+            _openMainMenuSubscription?.Dispose();
         }
 
         private void OnMenuToggle() => _router.ToggleSystemMenu();

@@ -36,6 +36,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _shopUxml;
         private VisualTreeAsset _chestUxml;
         private VisualTreeAsset _outcomeUxml;
+        private VisualTreeAsset _mainMenuUxml;
         private InputContext _prevContext;
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
@@ -53,7 +54,7 @@ namespace Guildmaster.UI
         public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
             VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
-            VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null)
+            VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
@@ -66,6 +67,7 @@ namespace Guildmaster.UI
             _shopUxml = shopUxml;
             _chestUxml = chestUxml;
             _outcomeUxml = outcomeUxml;
+            _mainMenuUxml = mainMenuUxml;
         }
 
         /// <summary>
@@ -496,6 +498,40 @@ namespace Guildmaster.UI
 
             VisualElement screen = OutcomeScreenView.Build(_outcomeUxml, req.Victory, key => _loc?.GetString(key), Resolve);
             screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnToMenu?.Invoke(); } });
+            return screen;
+        }
+
+        // Главное меню (D1) — на UXML (MainMenuScreen.uxml). Начать/Продолжить/Выход резолвят OnChoice и закрывают
+        // меню; «Настройки» открываются поверх (Push) и меню не закрывают.
+        public void OpenMainMenu(OpenMainMenuRequest req)
+        {
+            if (_root == null || _mainMenuUxml == null) { req.OnChoice?.Invoke(MainMenuChoice.Quit); return; }
+            Push(BuildMainMenuScreen(req));
+        }
+
+        private VisualElement BuildMainMenuScreen(OpenMainMenuRequest req)
+        {
+            bool resolved = false;
+
+            void Resolve(MainMenuChoice choice)
+            {
+                if (resolved) return;
+                resolved = true;
+                req.OnChoice?.Invoke(choice);
+                CloseAll();
+            }
+
+            VisualElement screen = MainMenuScreenView.Build(
+                _mainMenuUxml,
+                req.HasSave,
+                key => _loc?.GetString(key),
+                onStart:    () => Resolve(MainMenuChoice.StartRun),
+                onContinue: () => Resolve(MainMenuChoice.Continue),
+                onSettings: () => Push(BuildSettingsScreen()),
+                onQuit:     () => Resolve(MainMenuChoice.Quit));
+
+            // Страховка: снятие без выбора = выход, чтобы верхний цикл не завис.
+            screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnChoice?.Invoke(MainMenuChoice.Quit); } });
             return screen;
         }
 

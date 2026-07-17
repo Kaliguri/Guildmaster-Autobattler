@@ -97,6 +97,8 @@ namespace Guildmaster.Game
             builder.Register<ContinuePresenter>(Lifetime.Singleton).As<IContinuePresenter>();
             // Экран исхода забега (C2) — победа/поражение после акта.
             builder.Register<OutcomePresenter>(Lifetime.Singleton).As<IOutcomePresenter>();
+            // Главное меню (D1) — верхний цикл игры.
+            builder.Register<MainMenuPresenter>(Lifetime.Singleton).As<IMainMenuPresenter>();
 
             // Применение последствий текстовых ивентов к RunState (план 11 §5.1).
             builder.Register<EventEffectApplier>(Lifetime.Singleton);
