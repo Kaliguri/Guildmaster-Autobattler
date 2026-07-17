@@ -69,11 +69,13 @@ status: living
 | 9 | **Producer/consumer НЕ ведём в ГД-доках** — выводится движком (накладыватель = у кого компонент; потребитель = reactive на тег) | Ручной реестр носителей рассинхронится и грузит поддержку; движок знает точнее (реш. Макса) | accepted | [[gdd/40-content/authoring/effect]] |
 | 10 | **Формат карточки эффекта — свойства-блок в теле + проза, без шагов и без Obsidian Bases.** Классификация (класс/полярность/теги/стакинг/снятие/школа) — читаемым блоком вверху тела со ссылками на **справочник свойств** [[gdd/20-combat/effects/property-reference]] (аналог [[gdd/relics/ai-settings-model]]); frontmatter минимальный (`title`/`order`/`status`), порядок в папке — через `order`. Числа-ориентиры в тексте, финальный баланс — в Unity. Имя по EN-канону, `id` в ассете. Общий [[gdd/00-meta/glossary]] дополнен боевыми терминами | Bases неудобен и не используется (реш. Макса); свойства-блок читается и кликается; single-source значений в справочнике; порядок — по `order` (скилл) | accepted | [[gdd/40-content/authoring/effect]] |
 
-**Правит доки:** новая [[gdd/40-content/authoring/effect|методичка эффектов]] + шаблон
+**Правит доки:** [[gdd/40-content/authoring/effect|методичка эффектов]] + шаблон
 [[gdd/20-combat/effects/template-effect-card|template-effect-card]] + **справочник свойств**
-[[gdd/20-combat/effects/property-reference]] + прототип-карточки (poison / burn / sleep) +
-сборник cc-primitives; каталог авторинга; общий [[gdd/00-meta/glossary|глоссарий]] (боевые
-термины); [[gdd/20-combat/effects|effects]] (станет MOC при полном распиле — отдельный заход).
+[[gdd/20-combat/effects/property-reference]]; каталог авторинга; общий
+[[gdd/00-meta/glossary|глоссарий]] (боевые термины). **Пул распилен** — 12 карточек
+(poison / burn / bleed / sleep / charm / frenzy / displace / shield / heal / cleanse / stealth /
+mark) + 5 сборников (cc-primitives / stat-modifiers / triggers / combo-rules / state-tags);
+[[gdd/20-combat/effects|effects]] → индекс-MOC (`status: living`).
 
 ---
 
