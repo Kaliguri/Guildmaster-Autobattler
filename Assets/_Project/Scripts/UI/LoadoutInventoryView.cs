@@ -31,7 +31,8 @@ namespace Guildmaster.UI
             Func<RelicData, string> titleOf,
             Func<RelicData, string> narrativeOf,
             Func<string, string> localize,
-            int lockedSlots = 0)
+            int lockedSlots = 0,
+            RenderTexture battleRt = null)
         {
             string L(string key, string ru)
             {
@@ -45,6 +46,15 @@ namespace Guildmaster.UI
 
             // ── Хром тела (гильдия/режимы/золото/меню теперь в глобальном топбаре RunModeBar) ──
             SetText(root, "battle-hint", L("ui.loadout.deployment", "Живая расстановка"));
+
+            // ── Живая арена-«окно в мир» (Ф3b.1): RT roster-stage как фон левой зоны; подсказка гаснет. ──
+            var battleZone = root.Q<VisualElement>("battle-zone");
+            if (battleZone != null && battleRt != null)
+            {
+                battleZone.style.backgroundImage = new StyleBackground(Background.FromRenderTexture(battleRt));
+                var hint = root.Q<Label>("battle-hint");
+                if (hint != null) hint.style.display = DisplayStyle.None;
+            }
             SetBtn (root, "filter-relics",  L("ui.loadout.filter.relics", "Реликвии"));
             SetBtn (root, "filter-items",   L("ui.loadout.filter.items", "Предметы"));
             SetBtn (root, "filter-banners", L("ui.loadout.filter.banners", "Знамёна"));

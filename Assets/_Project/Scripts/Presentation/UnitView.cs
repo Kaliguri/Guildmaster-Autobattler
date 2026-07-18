@@ -1,4 +1,5 @@
 using Guildmaster.Combat;
+using Guildmaster.Core.Presentation;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using LitMotion;
@@ -153,6 +154,57 @@ namespace Guildmaster.Presentation
             if (_manaBar != null)   _manaBar.Bind(unit);
 
             InitVisual(); // визуал/анимация — из самого префаба (см. InitVisual), без рантайм-подмены
+        }
+
+        /// <summary>
+        /// Превью-визуал БЕЗ симуляции (roster-stage вне боя, таро-карточки): применяет тот же тинт+флип+
+        /// прайминг, что и <see cref="Bind"/> в бою, но без <see cref="RuntimeUnit"/>. Правила визуала берутся
+        /// из общего <see cref="UnitVisualResolver"/> — юнит выглядит «как в бою» из одного источника.
+        /// <para><c>_unit</c> остаётся null: <see cref="Update"/> безопасно оседает в Idle (все ветки guard'ят
+        /// null-юнит), Animator при наличии контроллера сам гоняет Idle-петлю. Тинт держится через ApplyColor.</para>
+        /// </summary>
+        public void ApplyPreview(UnitData data, int team)
+        {
+            if (_sprite != null)
+            {
+                _sprite.flipX = UnitVisualResolver.FlipXFor(team);
+
+                // Тот же узел сплющивания и прайминг, что в Bind: без MPB кастомный шейдер не подхватит тинт/флип.
+                _squashTarget    = _sprite.transform.parent != null ? _sprite.transform.parent : _sprite.transform;
+                _baseSpriteScale = _squashTarget.localScale;
+                PrimeFlashBlock();
+            }
+
+            SetTint(UnitVisualResolver.TintFor(data != null ? data.name : null, team));
+
+            // Расстановочное превью — только фигура: гасим world-UI (бары + подпись), как риг карточек.
+            if (_worldUi != null)
+            {
+                _worldUi.SetActive(false);
+            }
+            else
+            {
+                if (_healthBar != null) _healthBar.gameObject.SetActive(false);
+                if (_manaBar   != null) _manaBar.gameObject.SetActive(false);
+                if (_nameLabel != null) _nameLabel.gameObject.SetActive(false);
+            }
+
+            // Idle-петля из самого префаба (контроллер уже на Animator). Нет контроллера → статичный спрайт.
+            _state       = UnitAnimationState.Idle;
+            _attackPhase = AttackAnimPhase.None;
+            _visual      = data != null ? data.Visual : null;
+            _animActive  = _animator != null && _animator.runtimeAnimatorController != null;
+            if (_animActive)
+            {
+                _animator.fireEvents = false;
+                _animator.enabled    = true;
+                _animator.Play(IdleHash, 0, 0f);
+                _animator.speed      = 1f;
+            }
+            else if (_animator != null)
+            {
+                _animator.enabled = false;
+            }
         }
 
         /// <summary>Тинт тела юнита: один общий спрайт, разный цвет на персонажа (dev-харнесс, «пока один спрайт»).</summary>
