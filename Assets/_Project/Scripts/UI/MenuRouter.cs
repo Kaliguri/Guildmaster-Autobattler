@@ -149,23 +149,14 @@ namespace Guildmaster.UI
                 localize: key => _loc?.GetString(key),
                 lockedSlots: 0);
 
-            // Закрытие по любому пути → onClose (топбар вернётся). Табы-режимы (кроме активного «Инвентарь»)
-            // выходят в игру; шестерёнка открывает настройки поверх.
+            // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar).
+            // Закрытие по любому пути (Pop/Esc/CloseAll) → onClose (бутстрап снимет подсветку режима).
             screen.RegisterCallback<DetachFromPanelEvent>(_ => onClose?.Invoke());
-            WireClick(screen, "mode-map", Pop);
-            WireClick(screen, "mode-battle", Pop);
-            WireClick(screen, "mode-tactics", Pop);
-            WireClick(screen, "mode-compendium", Pop);
-            WireClick(screen, "btn-menu", () => Push(BuildSettingsScreen()));
-
             Push(screen);
         }
 
-        private static void WireClick(VisualElement root, string name, Action action)
-        {
-            var b = root.Q<Button>(name);
-            if (b != null) b.clicked += action;
-        }
+        /// <summary>Закрыть все оверлеи (режим «Бой»/выход в игру из глобального топбара).</summary>
+        public void CloseOverlays() => CloseAll();
 
         // Титул таро-карты в стиле ГДД (аркан «The X»): «relic.flame_swordsman» → «The Flame Swordsman».
         private static string ArcanaTitle(string id)

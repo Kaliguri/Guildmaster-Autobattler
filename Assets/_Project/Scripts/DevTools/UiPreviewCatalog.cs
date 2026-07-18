@@ -177,7 +177,7 @@ namespace Guildmaster.DevTools
                     if (all[i] != null && all[i].Id != "relic.base") relics.Add(all[i]);
             }
 
-            // Владеемые релики слева + 4 заблокированных (задел под фильтр по владению, Фаза 5).
+            // Владеемые релики слева + 3 заблокированных (задел под фильтр по владению, Фаза 5).
             VisualElement screen = Guildmaster.UI.LoadoutInventoryView.Build(
                 screenUxml, cardUxml, relics, gold: 100,
                 titleOf: r => ArcanaTitle(r?.Id),
@@ -185,6 +185,22 @@ namespace Guildmaster.DevTools
                 localize: RuValue,
                 lockedSlots: 3);
             root.Add(screen);
+
+            // Глобальная панель забега (app-shell): статичная для стенда, режим «Инвентарь» активен.
+            var barUxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/RunModeBar.uxml");
+            if (barUxml != null)
+            {
+                var bar = new Guildmaster.UI.RunModeBarView(
+                    barUxml, RuValue,
+                    () => { }, () => { }, () => { }, () => { }, () => { }, () => { }, () => { });
+                bar.SetGold(100);
+                bar.SetAct(4);
+                bar.SetRestarts(2, 2);
+                bar.SetRunTime("12:34");
+                bar.SetActiveMode("inventory");
+                bar.HideBattleCenter();
+                root.Add(bar.Root);
+            }
         }
 
         // «flame_swordsman» → «Flame Swordsman» (англ. титул таро-карты из id, когда loc RU не нужен).

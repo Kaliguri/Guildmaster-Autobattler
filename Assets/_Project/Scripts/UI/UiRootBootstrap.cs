@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
@@ -52,8 +53,11 @@ namespace Guildmaster.UI
         [Tooltip("UXML главного меню (Начать/Продолжить/Настройки/Выход).")]
         [SerializeField] private VisualTreeAsset _mainMenuScreen;
 
-        [Tooltip("UXML верхней панели забега (StS-style: хаб/опции/золото, центр «Начать»↔таймер, акт/время).")]
+        [Tooltip("UXML верхней панели забега (StS-style: хаб/опции/золото, центр «Начать»↔таймер, акт/время). LEGACY — заменён на _runModeBar.")]
         [SerializeField] private VisualTreeAsset _runTopBar;
+
+        [Tooltip("UXML глобальной панели забега (app-shell редизайн): режимы-навигация + HP/золото/акт/таймер/меню. Заменяет _runTopBar.")]
+        [SerializeField] private VisualTreeAsset _runModeBar;
 
         [Tooltip("UXML лоадаут-хаба (гильдия: 4 сосуда + навешивание реликвий из запаса). Открывается кнопкой «Хаб».")]
         [SerializeField] private VisualTreeAsset _loadoutHubScreen;
@@ -89,8 +93,9 @@ namespace Guildmaster.UI
         private IDisposable _openOutcomeSubscription;
         private IDisposable _openMainMenuSubscription;
         private UIDocument _doc;
-        private RunTopBarView _topBar;
-        private bool _inventoryOpen; // новый инвентарь открыт (полноэкранный) → прячем ран-топбар, чтоб не дублировался
+        private IRunTopBar _topBar;
+        private bool _inventoryOpen; // инвентарь открыт → подсветить режим «Инвентарь» + тумблер
+        private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -152,18 +157,38 @@ namespace Guildmaster.UI
             InitTopBar();
         }
 
-        // Верхняя панель забега (план 12 Фаза 2) — постоянный НЕ-модальный слой в корне панели (в обход
-        // стека MenuRouter, чтобы не глушить ввод). Видимость и центр (Начать↔таймер) — по фазе боя в Update.
+        // Глобальная панель забега (app-shell) — постоянный НЕ-модальный слой сверху (в обход стека
+        // MenuRouter, чтобы не глушить ввод). Режимы-навигация + HP/золото/акт/таймер/меню. Тело экранов
+        // сдвинуто под неё (padding-top). Видимость и центр (Начать↔таймер) — по фазе боя в Update.
         private void InitTopBar()
         {
-            if (_runTopBar == null) return;
-            _topBar = new RunTopBarView(
-                _runTopBar,
-                key => _loc?.GetString(key),
-                onHub: OnHubClicked,
-                onSettings: () => _router.OpenSettings(),
-                onStart: () => _clock?.RequestStart());
-            _topBar.Root.style.display = DisplayStyle.None; // скрыта, пока нет активного боя
+            if (_runModeBar != null)
+            {
+                _topBar = new RunModeBarView(
+                    _runModeBar,
+                    key => _loc?.GetString(key),
+                    onMap: OpenMapView,
+                    onBattle: () => _router.CloseOverlays(),
+                    onInventory: ToggleInventory,
+                    onTactics: () => { },       // задел под будущий экран AI-тактики
+                    onCompendium: () => { },    // задел под компендиум
+                    onMenu: () => _router.ToggleSystemMenu(),
+                    onStart: () => _clock?.RequestStart());
+            }
+            else if (_runTopBar != null)
+            {
+                // Фолбэк, пока _runModeBar не назначен в CoreScene (координация с параллельной работой по сцене):
+                // старая панель работает как раньше, «Гильдия» открывает новый инвентарь.
+                _topBar = new RunTopBarView(
+                    _runTopBar,
+                    key => _loc?.GetString(key),
+                    onHub: ToggleInventory,
+                    onSettings: () => _router.OpenSettings(),
+                    onStart: () => _clock?.RequestStart());
+            }
+            else return;
+
+            _topBar.Root.style.display = DisplayStyle.None; // скрыта, пока нет активного забега
             _doc.rootVisualElement.Add(_topBar.Root);
         }
 
@@ -171,32 +196,43 @@ namespace Guildmaster.UI
         {
             if (_topBar == null || _clock == null) return;
 
-            // ХП/золото/акт видны ВЕСЬ забег (реш. №65, STS-style), а не только в бою.
+            // Глобальный топбар виден ВЕСЬ забег (реш. №65, STS-style); тело экранов под ним (padding-top).
             RunState run = _runStates?.Current;
             bool runActive = run != null;
-            // Новый инвентарь полноэкранный и несёт свой топбар-режимы → прячем ран-топбар, пока он открыт.
-            bool showTopBar = runActive && !_inventoryOpen;
-            _topBar.Root.style.display = showTopBar ? DisplayStyle.Flex : DisplayStyle.None;
-            if (!showTopBar) return;
+            _topBar.Root.style.display = runActive ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!runActive) { _runElapsed = 0f; return; }
 
-            _topBar.Root.BringToFront(); // держим топ-бар поверх оверлеев узлов (карта/магазин/награда)
+            _runElapsed += UnityEngine.Time.unscaledDeltaTime; // «рабочий» таймер забега
+            _topBar.Root.BringToFront(); // держим топбар поверх оверлеев узлов (карта/магазин/награда/инвентарь)
             _topBar.SetGold(run.Gold);
             _topBar.SetAct(run.CurrentActIndex + 1);
             _topBar.SetRestarts(run.RestartsRemaining, _config != null ? _config.RestartsPerAct : run.RestartsRemaining);
+            _topBar.SetRunTime(FormatTime(_runElapsed));
+            if (_topBar is RunModeBarView modeBar) modeBar.SetActiveMode(_inventoryOpen ? "inventory" : null);
 
             BattlePhase phase = _clock.Phase;
             if (phase == BattlePhase.None) _topBar.HideBattleCenter();       // карта/магазин — центр пуст
             else _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
         }
 
-        // Кнопка «Хаб» в топбаре открывает НОВЫЙ инвентарь-экран (редизайн, Ф3a) поверх забега. Прячем
-        // ран-топбар на время (у экрана свой топбар-режимы), возвращаем на закрытии (по onClose из DetachFromPanel).
-        private void OnHubClicked()
+        // Режим «Инвентарь» — тумблер: открыт → закрыть, закрыт → открыть новый инвентарь-экран (тело под топбаром).
+        private void ToggleInventory()
         {
+            if (_inventoryOpen) { _router.CloseOverlays(); return; }
             if (_loadoutInventoryScreen == null) { _router.OpenHub(); return; } // фолбэк на старый хаб, если ассет не назначен
             _inventoryOpen = true;
             int gold = _runStates?.Current != null ? _runStates.Current.Gold : 0;
             _router.OpenInventory(gold, () => _inventoryOpen = false);
+        }
+
+        // Режим «Карта» — открыть карту акта read-only (просмотр текущей карты; клик по узлу закрывает просмотр).
+        private void OpenMapView()
+        {
+            RunState run = _runStates?.Current;
+            if (run?.Map == null || run.Map.Nodes == null || run.Map.Nodes.Length == 0) return;
+            var ids = new List<string>();
+            foreach (var n in Guildmaster.Guild.MapTraversal.AvailableNext(run.Map)) ids.Add(n.Id);
+            _router.OpenMap(new Guildmaster.Guild.OpenMapRequest(run.Map, ids, _ => _router.CloseOverlays()));
         }
 
         private static string FormatTime(float seconds)

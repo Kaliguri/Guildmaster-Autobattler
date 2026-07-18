@@ -43,14 +43,7 @@ namespace Guildmaster.UI
             VisualElement root = screen.childCount > 0 ? screen[0] : screen;
             root.pickingMode = PickingMode.Position;
 
-            // ── Топбар-режимы + хром (локализованные строки поверх RU-плейсхолдеров UXML) ──
-            SetText(root, "guild-name",  L("ui.loadout.guild", "Alebardium"));
-            SetText(root, "guild-asc",   L("ui.loadout.ascension", "ВОЗВЫШЕНИЕ") + " · IV");
-            SetBtn (root, "mode-map",        L("ui.mode.map", "Карта"));
-            SetBtn (root, "mode-battle",     L("ui.mode.battle", "Бой"));
-            SetBtn (root, "mode-inventory",  L("ui.mode.inventory", "Инвентарь"));
-            SetBtn (root, "mode-tactics",    L("ui.mode.tactics", "Тактика"));
-            SetBtn (root, "mode-compendium", L("ui.mode.compendium", "Компендиум"));
+            // ── Хром тела (гильдия/режимы/золото/меню теперь в глобальном топбаре RunModeBar) ──
             SetText(root, "battle-hint", L("ui.loadout.deployment", "Живая расстановка"));
             SetBtn (root, "filter-relics",  L("ui.loadout.filter.relics", "Реликвии"));
             SetBtn (root, "filter-items",   L("ui.loadout.filter.items", "Предметы"));
@@ -58,7 +51,6 @@ namespace Guildmaster.UI
             SetBtn (root, "sort", L("ui.loadout.sort.name", "Имя") + " ↓");
             SetText(root, "video-hint", L("ui.loadout.video", "видео-вставка 16:9"));
             SetText(root, "skills-label", L("ui.loadout.skills", "способности"));
-            SetText(root, "gold", gold.ToString());
 
             var search = root.Q<TextField>("search");
             if (search != null) SetPlaceholder(search, L("ui.loadout.search", "Поиск…"));

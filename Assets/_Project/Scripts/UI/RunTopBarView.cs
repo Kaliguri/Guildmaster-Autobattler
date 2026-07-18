@@ -10,7 +10,7 @@ namespace Guildmaster.UI
     /// Инстанс держит ссылки на элементы и обновляется live-сеттерами (<see cref="SetGold"/> и др.);
     /// статический <see cref="Build"/> — тонкая обёртка для стенда (разовый снимок).
     /// </summary>
-    public sealed class RunTopBarView
+    public sealed class RunTopBarView : IRunTopBar
     {
         /// <summary>Корневой элемент панели (добавить в HUD-слой / превью-контейнер).</summary>
         public VisualElement Root { get; }

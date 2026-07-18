@@ -1129,6 +1129,56 @@
     bottom: 0;
     background-color: var(--gm-color-surface-sunken);
     flex-direction: column;
+    /* Тело сдвинуто под глобальный топбар забега (app-shell): он рисуется поверх этой полосы. */
+    padding-top: var(--gm-topbar-height);
+}
+
+/* Глобальная панель забега: тот же вид, что топбар инвентаря, но абсолютно закреплён сверху с фикс-высотой. */
+.gm-runbar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: var(--gm-topbar-height);
+}
+
+/* Стат-лейбл в глобальной панели (золото/акт/таймер). */
+.gm-loadout__stat {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    margin-left: var(--gm-space-1);
+    margin-right: var(--gm-space-1);
+}
+
+.gm-loadout__stat--timer {
+    color: var(--gm-color-accent);
+    -unity-font-style: bold;
+}
+
+/* Таймер боя виден только в бою (RunModeBarView.SetFighting). */
+.gm-loadout__battle-timer {
+    display: none;
+}
+
+/* Кнопка «Начать» бой — латунная заливка (primary), компактно. */
+.gm-loadout__start-btn {
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    color: var(--gm-color-text-on-accent);
+    font-size: var(--gm-font-sm);
+    padding: var(--gm-space-1) var(--gm-space-4);
+    margin-left: var(--gm-space-2);
+    margin-right: var(--gm-space-2);
+}
+
+.gm-loadout__start-btn:hover {
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
 }
 
 /* --- Топбар-режимы: 3 зоны (гильдия | табы-режимы по центру | время+меню). --- */
