@@ -73,6 +73,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             public float NextFloat(float minInclusive, float maxExclusive) => minInclusive;
             public bool Chance(float probability) => false;
             public ulong Snapshot() => 0UL;
+            public void Reseed(ulong seed) { } // значение фиксировано — пересев ничего не меняет
         }
     }
 }

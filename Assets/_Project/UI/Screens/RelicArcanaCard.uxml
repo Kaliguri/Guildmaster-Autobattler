@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <!-- Таро-карточка релика (пуре-визуальный темплейт; клонится во View, наполняется данными).
+         Кайма-в-кайме: внешняя рамка карты + внутренняя рамка вокруг арта. Номер аркана — в углу
+         арта, титул КАПСОМ — на нижней плашке через латунную линию. Состояния (selected/current)
+         навешивает View классами-модификаторами gm-arcana-card. -->
+    <ui:VisualElement class="gm-arcana-card">
+        <ui:VisualElement class="gm-arcana-card__frame">
+            <ui:VisualElement name="art" class="gm-arcana-card__art" />
+            <ui:Label name="num" text="0" class="gm-arcana-card__num" />
+        </ui:VisualElement>
+        <ui:VisualElement class="gm-arcana-card__plaque">
+            <ui:Label name="title" text="RELIC" class="gm-arcana-card__title" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -152,6 +152,8 @@ namespace Guildmaster.Tests.EditMode.Run
         {
             public int Loaded;
             public int Unloaded;
+            public int WorldLoaded;
+            public UniTask LoadWorldAsync()    { WorldLoaded++; return UniTask.CompletedTask; }
             public UniTask LoadBattleAsync()   { Loaded++;   return UniTask.CompletedTask; }
             public UniTask UnloadBattleAsync() { Unloaded++; return UniTask.CompletedTask; }
         }

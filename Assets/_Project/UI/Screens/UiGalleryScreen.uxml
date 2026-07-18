@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement name="gallery-root" style="flex-grow: 1; background-color: rgb(18, 16, 13); padding: 24px;">
         <ui:Label text="Guildmaster UI — component gallery" class="gm-panel__title" style="-unity-text-align: upper-left; font-size: 24px; margin-bottom: 4px;" />
         <ui:Label text="dev-каталог: токены и gm-* компоненты в одном месте (визуальная приёмка)" class="gm-text-muted" />
@@ -61,6 +61,8 @@
                 <ui:Slider class="gm-slider" low-value="0" high-value="1" value="1" />
                 <ui:Label text="100%" class="gm-slider-row__value" />
             </ui:VisualElement>
+            <gm:ToggleRow LabelText="Анимация карточек" Value="true" />
+            <gm:ToggleRow LabelText="Анимация атаки карточек" Value="true" />
             <ui:VisualElement class="gm-divider" />
             <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
                 <ui:Button text="Save" class="gm-button gm-button--primary" style="flex-grow: 1; margin-right: 8px;" />

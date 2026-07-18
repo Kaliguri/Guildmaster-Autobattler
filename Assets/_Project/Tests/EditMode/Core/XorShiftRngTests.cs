@@ -134,6 +134,41 @@ namespace Guildmaster.Tests.EditMode.Core
 
             Assert.AreNotEqual(before, after, "Отпечаток не изменился после продвижения генератора");
         }
+
+        [Test]
+        public void Reseed_MatchesFreshInstanceSequence()
+        {
+            // Persist-мир: сервис не пересоздаётся между боями — Reseed должен дать РОВНО ту же
+            // последовательность, что свежий инстанс с тем же сидом (иначе теряется воспроизводимость).
+            var reused = new XorShiftRng(Seed);
+            for (int i = 0; i < Samples; i++) reused.NextUInt(); // «уводим» состояние прошлым боем
+
+            const ulong battleSeed = 987654321UL;
+            reused.Reseed(battleSeed);
+            var fresh = new XorShiftRng(battleSeed);
+
+            for (int i = 0; i < Samples; i++)
+                Assert.AreEqual(fresh.NextUInt(), reused.NextUInt(), $"Reseed разошёлся со свежим инстансом на шаге {i}");
+        }
+
+        [Test]
+        public void Reseed_NewSeed_DivergesFromPreReseedSequence()
+        {
+            var rng = new XorShiftRng(Seed);
+            uint firstBefore = rng.NextUInt();
+
+            rng.Reseed(Seed + 42UL); // другой сид → генератор не должен «застрять» на прежней последовательности
+            bool anyDifference = false;
+            var reference = new XorShiftRng(Seed);
+            reference.NextUInt(); // тот же индекс, что уже сдвинули выше
+            for (int i = 0; i < Samples; i++)
+            {
+                if (rng.NextUInt() != reference.NextUInt()) { anyDifference = true; break; }
+            }
+
+            Assert.IsTrue(anyDifference, "Reseed новым сидом дал прежнюю последовательность");
+            Assert.AreNotEqual(0u, firstBefore); // защита от тривиального прохода на нулях
+        }
     }
 
     /// <summary>Константы тиковой симуляции — защита от случайного рассогласования частот.</summary>

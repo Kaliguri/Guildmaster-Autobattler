@@ -25,6 +25,7 @@ namespace Guildmaster.DevTools
             ["reward"]       = BuildReward,
             ["event"]        = BuildEvent,
             ["loadout-hub"]  = BuildLoadoutHub,
+            ["loadout-inventory"] = BuildLoadoutInventory,
             ["run-topbar"]   = BuildRunTopBar,
             ["settings"]     = BuildSettings,
             ["map"]          = BuildMap,
@@ -160,6 +161,60 @@ namespace Guildmaster.DevTools
                 onClose: () => { });
             root.Add(screen);
         }
+
+        private static void BuildLoadoutInventory(VisualElement root)
+        {
+            var screenUxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/LoadoutInventoryScreen.uxml");
+            var cardUxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/RelicArcanaCard.uxml");
+            if (screenUxml == null || cardUxml == null) { AddError(root, "LoadoutInventoryScreen/RelicArcanaCard.uxml не найден"); return; }
+
+            IContentDatabase content = LoadContent();
+            var relics = new List<RelicData>();
+            if (content != null)
+            {
+                IReadOnlyList<RelicData> all = content.All<RelicData>();
+                for (int i = 0; all != null && i < all.Count; i++)
+                    if (all[i] != null && all[i].Id != "relic.base") relics.Add(all[i]);
+            }
+
+            // Владеемые релики слева + 3 заблокированных (задел под фильтр по владению, Фаза 5).
+            VisualElement screen = Guildmaster.UI.LoadoutInventoryView.Build(
+                screenUxml, cardUxml, relics, gold: 100,
+                titleOf: r => ArcanaTitle(r?.Id),
+                narrativeOf: r => Coalesce(RuValue((r?.Id) + ".desc"), "«Древний завет, что тлеет в глубине веков…»"),
+                localize: RuValue,
+                lockedSlots: 3);
+            root.Add(screen);
+
+            // Глобальная панель забега (app-shell): статичная для стенда, режим «Инвентарь» активен.
+            var barUxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/RunModeBar.uxml");
+            if (barUxml != null)
+            {
+                var bar = new Guildmaster.UI.RunModeBarView(
+                    barUxml, RuValue,
+                    () => { }, () => { }, () => { }, () => { }, () => { }, () => { }, () => { });
+                bar.SetGold(100);
+                bar.SetAct(4);
+                bar.SetRestarts(2, 2);
+                bar.SetRunTime("12:34");
+                bar.SetActiveMode("inventory");
+                bar.HideBattleCenter();
+                root.Add(bar.Root);
+            }
+        }
+
+        // «flame_swordsman» → «Flame Swordsman» (англ. титул таро-карты из id, когда loc RU не нужен).
+        private static string TitleCase(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return s;
+            var parts = s.Replace('_', ' ').Split(' ');
+            for (int i = 0; i < parts.Length; i++)
+                if (parts[i].Length > 0) parts[i] = char.ToUpper(parts[i][0]) + parts[i].Substring(1);
+            return string.Join(" ", parts);
+        }
+
+        // Титул таро-карты в стиле ГДД (аркан «The X»): «relic.flame_swordsman» → «The Flame Swordsman».
+        private static string ArcanaTitle(string id) => "The " + TitleCase(Short(id));
 
         private static void BuildRunTopBar(VisualElement root)
         {

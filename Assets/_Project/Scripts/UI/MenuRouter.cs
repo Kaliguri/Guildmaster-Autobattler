@@ -39,6 +39,8 @@ namespace Guildmaster.UI
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
         private VisualTreeAsset _loadoutHubUxml;
+        private VisualTreeAsset _loadoutInventoryUxml;
+        private VisualTreeAsset _arcanaCardUxml;
         private InputContext _prevContext;
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
@@ -58,7 +60,8 @@ namespace Guildmaster.UI
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
             VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
             VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
-            VisualTreeAsset loadoutHubUxml = null)
+            VisualTreeAsset loadoutHubUxml = null, VisualTreeAsset loadoutInventoryUxml = null,
+            VisualTreeAsset arcanaCardUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
@@ -73,6 +76,8 @@ namespace Guildmaster.UI
             _outcomeUxml = outcomeUxml;
             _mainMenuUxml = mainMenuUxml;
             _loadoutHubUxml = loadoutHubUxml;
+            _loadoutInventoryUxml = loadoutInventoryUxml;
+            _arcanaCardUxml = arcanaCardUxml;
         }
 
         /// <summary>
@@ -124,6 +129,48 @@ namespace Guildmaster.UI
 
             Rebuild();
             Push(container);
+        }
+
+        /// <summary>
+        /// Новый полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро-карточек реликвий + детали.
+        /// Открывается кнопкой «Хаб» в топбаре (заменил старый хаб-оверлей). <paramref name="onClose"/>
+        /// зовётся на ЛЮБОМ закрытии (Pop/Esc/CloseAll) через DetachFromPanelEvent — бутстрап по нему
+        /// возвращает ран-топбар. Реликвии — весь контент (фильтр по владению — Фаза 5); gold из RunState.
+        /// </summary>
+        public void OpenInventory(int gold, Action onClose)
+        {
+            if (_root == null || _loadoutInventoryUxml == null || _arcanaCardUxml == null) return;
+
+            VisualElement screen = LoadoutInventoryView.Build(
+                _loadoutInventoryUxml, _arcanaCardUxml,
+                _loadoutVm.Relics, gold,
+                titleOf: r => ArcanaTitle(r != null ? r.Id : null),
+                narrativeOf: r => _loadoutVm.Desc(r),
+                localize: key => _loc?.GetString(key),
+                lockedSlots: 0,
+                cardAnimations: _settingsVm.CardAnimations,
+                cardAttackAnimation: _settingsVm.CardAttackAnimation);
+
+            // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar).
+            // Закрытие по любому пути (Pop/Esc/CloseAll) → onClose (бутстрап снимет подсветку режима).
+            screen.RegisterCallback<DetachFromPanelEvent>(_ => onClose?.Invoke());
+            Push(screen);
+        }
+
+        /// <summary>Закрыть все оверлеи (режим «Бой»/выход в игру из глобального топбара). No-op если ничего не открыто
+        /// (иначе ExitMenuMode на пустом стеке восстанавливал бы контекст ввода вслепую — источник вылета).</summary>
+        public void CloseOverlays() { if (IsOpen) CloseAll(); }
+
+        // Титул таро-карты в стиле ГДД (аркан «The X»): «relic.flame_swordsman» → «The Flame Swordsman».
+        private static string ArcanaTitle(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return "—";
+            int dot = id.LastIndexOf('.');
+            string s = (dot >= 0 ? id.Substring(dot + 1) : id).Replace('_', ' ');
+            var parts = s.Split(' ');
+            for (int i = 0; i < parts.Length; i++)
+                if (parts[i].Length > 0) parts[i] = char.ToUpper(parts[i][0]) + parts[i].Substring(1);
+            return "The " + string.Join(" ", parts);
         }
 
         public void ToggleSystemMenu()
@@ -190,14 +237,26 @@ namespace Guildmaster.UI
             music.LabelText  = "Музыка";
             sfx.LabelText    = "Звук";
 
+            // Таб «Игра»: тумблеры презентации (анимация карточек / анимация атаки). Подписи через loc
+            // с RU-фолбэком (как остальной новый UI); значения проводятся из VM.
+            string L(string key, string ru) { string v = _loc?.GetString(key); return string.IsNullOrEmpty(v) ? ru : v; }
+            var cardAnim   = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-card-anim");
+            var cardAttack = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-card-attack");
+            if (cardAnim   != null) cardAnim.LabelText   = L("ui.settings.card_anim", "Анимация карточек");
+            if (cardAttack != null) cardAttack.LabelText = L("ui.settings.card_attack", "Анимация атаки карточек");
+
             _settingsVm.BeginEdit();
 
-            // SliderRow сам обновляет свою подпись-процент (в т.ч. в SetValueWithoutNotify).
+            // SliderRow/ToggleRow сами обновляют свой вид (в т.ч. в SetValueWithoutNotify).
             void Sync()
             {
                 master.SetValueWithoutNotify(_settingsVm.Master);
                 music.SetValueWithoutNotify(_settingsVm.Music);
                 sfx.SetValueWithoutNotify(_settingsVm.Sfx);
+                cardAnim?.SetValueWithoutNotify(_settingsVm.CardAnimations);
+                cardAttack?.SetValueWithoutNotify(_settingsVm.CardAttackAnimation);
+                // «Атака» осмысленна только при включённой анимации карточек.
+                cardAttack?.SetEnabled(_settingsVm.CardAnimations);
             }
 
             Sync();
@@ -205,6 +264,8 @@ namespace Guildmaster.UI
             master.Slider.RegisterValueChangedCallback(e => _settingsVm.SetMaster(e.newValue));
             music.Slider.RegisterValueChangedCallback(e => _settingsVm.SetMusic(e.newValue));
             sfx.Slider.RegisterValueChangedCallback(e => _settingsVm.SetSfx(e.newValue));
+            cardAnim?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAnimations(e.newValue));
+            cardAttack?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAttackAnimation(e.newValue));
 
             // VM → слайдеры (Defaults/Cancel меняют значения «снаружи»). Отписка при снятии с панели.
             Action onChanged = Sync;

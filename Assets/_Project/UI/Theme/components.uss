@@ -153,6 +153,41 @@
     font-size: var(--gm-font-body);
 }
 
+/* --- Строка тумблера: подпись слева (растянута), чекбокс справа в колонку. Пара к gm-slider-row --- */
+.gm-toggle-row {
+    flex-direction: row;
+    align-items: center;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-toggle-row__label {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    flex-grow: 1;
+}
+
+/* Приглушить подпись, когда строка недоступна (напр. «атака» при выключенной анимации). */
+.gm-toggle-row:disabled .gm-toggle-row__label {
+    color: var(--gm-color-disabled-text);
+}
+
+.gm-toggle-row__check {
+    flex-shrink: 0;
+    margin-left: var(--gm-space-3);
+}
+
+/* Чекбокс под тему-гроссбух: утопленный фон, латунная рамка, галка-пергамент (вместо белого дефолта). */
+.gm-toggle-row__check .unity-toggle__checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    -unity-background-image-tint-color: var(--gm-color-text);
+}
+
 /* --- Строка слайдера: подпись слева, слайдер по центру, значение справа --- */
 .gm-slider-row {
     flex-direction: row;
@@ -711,6 +746,11 @@
     height: 76px;
 }
 
+.gm-slot--lg {
+    width: 92px;
+    height: 92px;
+}
+
 /* Ряд слотов (запас/баннеры): перенос по ширине, БЕЗ flex-grow (не распирает панель). */
 .gm-slot-grid {
     flex-direction: row;
@@ -1107,4 +1147,498 @@
 .gm-mainmenu__btn {
     margin-top: var(--gm-space-2);
     margin-bottom: var(--gm-space-2);
+}
+
+/* ============================================================================
+ * ЛОАДАУТ-ЭКРАН — РЕДИЗАЙН (Ф3a): полноэкранный трёхколоночник (реф Bloodlines/Blasphemous).
+ * НЕ модалка-оверлей: занимает весь экран. Топбар-режимы сверху; тело = боевая зона
+ * (сквозная «дырка» слева, в Ф3b под ней camera.rect) | грид таро-карточек | панель деталей.
+ * Нижняя панель золота сидит ТОЛЬКО под центром+правым (боевую зону не режет).
+ * ========================================================================== */
+
+.gm-loadout {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    /* Корень ПРОЗРАЧЕН (Ф3b P1): левая зона — дырка сквозь панель к реальной боевой камере; непрозрачную
+       подложку несёт .gm-loadout__main (центр+детали). PanelSettings не заливает фон (ClearColor off). */
+    flex-direction: column;
+    /* Тело сдвинуто под глобальный топбар забега (app-shell): он рисуется поверх этой полосы. */
+    padding-top: var(--gm-topbar-height);
+}
+
+/* Глобальная панель забега: тот же вид, что топбар инвентаря, но абсолютно закреплён сверху с фикс-высотой. */
+.gm-runbar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: var(--gm-topbar-height);
+}
+
+/* Стат-лейбл в глобальной панели (золото/акт/таймер). */
+.gm-loadout__stat {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    margin-left: var(--gm-space-1);
+    margin-right: var(--gm-space-1);
+}
+
+.gm-loadout__stat--timer {
+    color: var(--gm-color-accent);
+    -unity-font-style: bold;
+}
+
+/* Таймер боя виден только в бою (RunModeBarView.SetFighting). */
+.gm-loadout__battle-timer {
+    display: none;
+}
+
+/* Кнопка «Начать» бой — латунная заливка (primary), компактно. */
+.gm-loadout__start-btn {
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    color: var(--gm-color-text-on-accent);
+    font-size: var(--gm-font-sm);
+    padding: var(--gm-space-1) var(--gm-space-4);
+    margin-left: var(--gm-space-2);
+    margin-right: var(--gm-space-2);
+}
+
+.gm-loadout__start-btn:hover {
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
+}
+
+/* --- Топбар-режимы: 3 зоны (гильдия | табы-режимы по центру | время+меню). --- */
+/* Боковые зоны растут поровну (flex-basis:0 + grow:1) → центр всегда строго по центру. */
+.gm-loadout__topbar {
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--gm-color-surface-panel);
+    border-bottom-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-2) var(--gm-space-3);
+}
+
+.gm-loadout__topbar-side {
+    flex-direction: row;
+    align-items: center;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.gm-loadout__topbar-side--right {
+    justify-content: flex-end;
+}
+
+.gm-loadout__topbar-center {
+    flex-direction: row;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Гильдия + круг возвышения (слева). */
+.gm-loadout__guild-name {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    -unity-font-style: bold;
+}
+
+.gm-loadout__guild-asc {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    letter-spacing: 2px;
+}
+
+/* Таб-режим (Карта/Бой/Инвентарь/Тактика/Компендиум) — тусклая плашка; активный — латунный контур. */
+.gm-loadout__mode {
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    border-radius: var(--gm-radius-0);
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-body);
+    padding: var(--gm-space-1) var(--gm-space-3);
+    margin: 0 var(--gm-space-1);
+}
+
+.gm-loadout__mode:hover {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
+    color: var(--gm-color-text);
+}
+
+.gm-loadout__mode--active {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    color: var(--gm-color-text);
+    -unity-font-style: bold;
+}
+
+/* Время забега + бургер-меню (справа). */
+.gm-loadout__time {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    margin-right: var(--gm-space-2);
+}
+
+.gm-loadout__menu-btn {
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    padding: var(--gm-space-1) var(--gm-space-3);
+    margin: 0;
+}
+
+.gm-loadout__menu-btn:hover {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
+}
+
+/* --- Тело: боевая зона | (центр + правый + нижняя панель золота) --- */
+.gm-loadout__body {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* Боевая зона-«дырка»: сквозная на всю высоту, ПРОЗРАЧНА (Ф3b P1) — сквозь неё виден реальный вид
+   боевой камеры (пока загружена боевая сцена). Рамка справа — визуальный разделитель с телом инвентаря.
+   Нижняя панель золота её НЕ перекрывает (сидит в __main). */
+.gm-loadout__battle {
+    width: 31%;
+    flex-shrink: 0;
+    border-right-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-loadout__battle-hint {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* Правая часть тела: центр+детали в ряд, снизу — панель золота. Несёт непрозрачную подложку тела
+   (корень прозрачен ради дырки слева) — центр/детали остаются читаемыми поверх мира/фона. */
+.gm-loadout__main {
+    flex-grow: 1;
+    flex-direction: column;
+    background-color: var(--gm-color-surface-sunken);
+}
+
+.gm-loadout__cols {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* --- Центр: фильтр-табы (по центру) + поиск/сортировка + грид карточек --- */
+.gm-loadout__center {
+    flex-grow: 1;
+    padding: var(--gm-space-2);
+}
+
+.gm-loadout__filters {
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+/* Слим фильтр-табов под лоадаут (без правки глобального gm-tab): компактнее под реф. */
+.gm-loadout__filters .gm-tab {
+    font-size: var(--gm-font-sm);
+    padding-top: var(--gm-space-1);
+    padding-bottom: var(--gm-space-1);
+}
+
+.gm-loadout__toolbar {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+/* Поле поиска: пиксель-рамка Honeti, тянется на всю ширину; компактная высота, текст по центру. */
+.gm-loadout__search {
+    flex-grow: 1;
+    margin-right: var(--gm-space-2);
+}
+
+.gm-loadout__search .unity-text-field__input {
+    background-color: var(--gm-color-surface-sunken);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    height: 44px;
+    padding-left: var(--gm-space-2);
+    padding-right: var(--gm-space-2);
+    -unity-text-align: middle-left;
+}
+
+/* Сортировка: кнопка «Имя ↓» — клик циклит ключ + переключает стрелку (логика во View). Высота = поиск. */
+.gm-loadout__sort {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    height: 44px;
+    padding-left: var(--gm-space-3);
+    padding-right: var(--gm-space-3);
+}
+
+.gm-loadout__sort:hover {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
+}
+
+/* Грид таро-карточек: перенос по ширине, лево-паковка (владеемые — слева, пустые-локи — далее вправо).
+   width:100% ОБЯЗАТЕЛЕН — в ScrollView contentContainer иначе тянется по контенту вширь
+   (ряд не заворачивается, карточки уезжают/клипаются вместо переноса). */
+.gm-loadout__grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+/* Скроллбар грида: тонкий, тёмный трек + латунная ручка, без стрелок (дефолтный серый клашит с темой). */
+.gm-loadout .unity-scroller--vertical {
+    width: 14px;
+    background-color: var(--gm-color-surface-sunken);
+}
+
+.gm-loadout .unity-scroller--vertical .unity-base-slider__tracker {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}
+
+.gm-loadout .unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: var(--gm-color-accent);
+    border-width: 0;
+    border-radius: var(--gm-radius-0);
+    width: 10px;
+    left: 2px;
+}
+
+.gm-loadout .unity-scroller__low-button,
+.gm-loadout .unity-scroller__high-button {
+    display: none;
+}
+
+/* --- Таро-карточка релика: кайма-в-кайме, номер аркана в углу, титул на нижней плашке --- */
+.gm-arcana-card {
+    width: 248px;
+    height: 340px;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    margin: var(--gm-space-1);
+    padding: var(--gm-space-1);
+    flex-direction: column;
+}
+
+.gm-arcana-card:hover {
+    border-color: var(--gm-color-hover-border);
+}
+
+/* Выбранная (ЛКМ) — латунная рамка + лёгкая заливка. */
+.gm-arcana-card--selected {
+    border-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
+/* Надета сейчас — акцентная рамка (отличается от «выбрана»). */
+.gm-arcana-card--current {
+    border-color: var(--gm-color-accent);
+}
+
+/* Заблокированная (не открытая) карта: тусклая, в центре — замок вместо арта, без номера/титула. */
+.gm-arcana-card--locked {
+    opacity: 0.45;
+}
+
+.gm-arcana-card--locked .gm-arcana-card__art {
+    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/LockGold.png");
+    -unity-background-image-tint-color: var(--gm-color-text-muted);
+    width: 40px;
+    flex-grow: 0;
+    height: 40px;
+}
+
+/* Внутренняя рамка вокруг арта — вторая кайма таро. */
+.gm-arcana-card__frame {
+    flex-grow: 1;
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-inner);
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.gm-arcana-card__art {
+    flex-grow: 1;
+    width: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* Номер аркана (по ID релика) — латунь, верхний-правый угол арта. */
+.gm-arcana-card__num {
+    position: absolute;
+    top: var(--gm-space-1);
+    right: var(--gm-space-1);
+    color: var(--gm-brass-300);
+    font-size: var(--gm-font-sm);
+}
+
+/* Нижняя плашка титула: отделена латунной линией сверху. */
+.gm-arcana-card__plaque {
+    border-top-width: var(--gm-border-1);
+    border-top-color: var(--gm-color-border-frame);
+    margin-top: var(--gm-space-1);
+    padding-top: var(--gm-space-1);
+}
+
+/* Титул таро-карты: одна строка, без переноса. Размер sm — чтобы длинные имена
+   («THE FLAME SWORDSMAN») влезали целиком в одну строку; очень длинное — эллипсис-страховка. */
+.gm-arcana-card__title {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- Правая панель деталей: видео 16:9, титул, способности, улучшения, нарратив --- */
+.gm-loadout__detail {
+    width: 460px;
+    flex-shrink: 0;
+    background-color: var(--gm-color-surface-panel);
+    border-left-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-2);
+    flex-direction: column;
+}
+
+/* Видео-вставка геймплея 16:9 (пока плейсхолдер; высота под ширину панели ~398px). */
+.gm-loadout__video {
+    width: 100%;
+    height: 224px;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-loadout__video-hint {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+}
+
+/* Имя персонажа — НАД видео, компактно (не плакат). */
+.gm-loadout__detail-title {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    letter-spacing: 1px;
+    -unity-font-style: bold;
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Секция-подпанель правой колонки (способности / нарратив / улучшения): заметная подложка + рамка. */
+.gm-loadout__section {
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-inner);
+    padding: var(--gm-space-2);
+    margin-top: var(--gm-space-2);
+}
+
+.gm-loadout__section--grow {
+    flex-grow: 1;
+    justify-content: center;
+}
+
+/* Мелкая подпись секции (размер как «видео-вставка»). */
+.gm-loadout__section-label {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Ряд иконок способностей (тултип-описание при наведении). */
+.gm-loadout__abilities {
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Зона улучшений: 2 ряда × 3 узла (подложку/рамку даёт секция-обёртка). */
+.gm-loadout__upgrades {
+    justify-content: center;
+}
+
+.gm-loadout__upgrade-row {
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
+}
+
+/* Нарратив — курсив, сериф-голос (подложку/рамку даёт секция-обёртка). */
+.gm-loadout__narrative-text {
+    -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
+    -unity-font-style: italic;
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    white-space: normal;
+}
+
+/* --- Нижняя панель золота: только под центром+правым (в __main, не в __body). --- */
+.gm-loadout__footer {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: var(--gm-color-surface-panel);
+    border-top-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-1) var(--gm-space-3);
+}
+
+.gm-loadout__gold {
+    color: var(--gm-brass-300);
+    font-size: var(--gm-font-sm);
 }

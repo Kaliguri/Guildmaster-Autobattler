@@ -11,8 +11,25 @@ namespace Guildmaster.Game.Services
     public sealed class SceneLoader : ISceneLoader
     {
         private const string BattleSceneName = "BattleScene";
+        private const string WorldSceneName = "WorldScene";
 
         private Scene _loadedBattleScene;
+
+        /// <summary>
+        /// Аддитивно загрузить персистентную WorldScene (единый мир: камера-риг + арена).
+        /// Грузится один раз на буте и НЕ выгружается — переживает бои.
+        /// </summary>
+        public async UniTask LoadWorldAsync()
+        {
+            if (SceneManager.GetSceneByName(WorldSceneName).isLoaded)
+            {
+                Debug.LogWarning("[SceneLoader] - WorldScene уже загружена");
+                return;
+            }
+
+            await SceneManager.LoadSceneAsync(WorldSceneName, LoadSceneMode.Additive);
+            Debug.Log("[SceneLoader] - WorldScene загружена (persist)");
+        }
 
         /// <summary>Аддитивно загрузить BattleScene.</summary>
         public async UniTask LoadBattleAsync()

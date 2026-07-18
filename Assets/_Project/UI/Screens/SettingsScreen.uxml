@@ -11,9 +11,10 @@
                 <ui:Button name="tab-audio" text="Звук" class="gm-tab gm-tab--active" />
             </ui:VisualElement>
 
-            <!-- Страница «Игра» — заглушка под будущие опции. -->
+            <!-- Страница «Игра»: тумблеры презентации. Подписи + значения проставляет роутер из VM (loc). -->
             <ui:VisualElement name="page-game" class="gm-tab-page gm-tab-page--hidden">
-                <ui:Label text="Настройки игры — скоро" class="gm-tab-placeholder" />
+                <gm:ToggleRow name="toggle-card-anim" />
+                <gm:ToggleRow name="toggle-card-attack" />
             </ui:VisualElement>
 
             <!-- Страница «Графика» — заглушка под будущие опции. -->
