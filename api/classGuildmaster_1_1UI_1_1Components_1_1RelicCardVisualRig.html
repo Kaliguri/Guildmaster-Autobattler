@@ -104,12 +104,12 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1UI_1_1Components_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.UI.Components.RelicCardVisualRig:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig__inherit__graph.svg" width="212" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig__inherit__graph.svg" width="212" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.UI.Components.RelicCardVisualRig:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig__coll__graph.svg" width="212" height="284"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig__coll__graph.svg" width="212" height="324"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -129,6 +129,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a99f1279b65b32eccbccd1f096b337032" id="r_a99f1279b65b32eccbccd1f096b337032"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#a99f1279b65b32eccbccd1f096b337032">PlayAttack</a> (RenderTexture rt)</td></tr>
 <tr class="memdesc:a99f1279b65b32eccbccd1f096b337032"><td class="mdescLeft">&#160;</td><td class="mdescRight">Проиграть анимацию атаки (выбор карточки).  <br /></td></tr>
 <tr class="separator:a99f1279b65b32eccbccd1f096b337032"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e0a53463792122bc4202eb37701c77d" id="r_a1e0a53463792122bc4202eb37701c77d"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#a1e0a53463792122bc4202eb37701c77d">AttackLengthSeconds</a> (RenderTexture rt)</td></tr>
+<tr class="memdesc:a1e0a53463792122bc4202eb37701c77d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Длина клипа атаки (сек) — чтобы вызывающий вернул карту в idle РОВНО после проигрыша атаки (клип не имеет exit-перехода в Idle, иначе застревает на последнем кадре).  <br /></td></tr>
+<tr class="separator:a1e0a53463792122bc4202eb37701c77d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa22d65be108f943d136f577d7924673b" id="r_aa22d65be108f943d136f577d7924673b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#aa22d65be108f943d136f577d7924673b">SetFrozen</a> (RenderTexture rt, bool frozen)</td></tr>
+<tr class="memdesc:aa22d65be108f943d136f577d7924673b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заморозить/разморозить карточку: замороженная стоит на первом кадре Idle (speed 0) — статична; размороженная гоняет анимацию (speed 1).  <br /></td></tr>
+<tr class="separator:aa22d65be108f943d136f577d7924673b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcfbdf89801689e9de16133fc77df8af" id="r_adcfbdf89801689e9de16133fc77df8af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html#adcfbdf89801689e9de16133fc77df8af">PlayIdle</a> (RenderTexture rt)</td></tr>
 <tr class="memdesc:adcfbdf89801689e9de16133fc77df8af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Вернуть карточку в idle.  <br /></td></tr>
 <tr class="separator:adcfbdf89801689e9de16133fc77df8af"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,6 +231,35 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a1e0a53463792122bc4202eb37701c77d" name="a1e0a53463792122bc4202eb37701c77d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e0a53463792122bc4202eb37701c77d">&#9670;&#160;</a></span>AttackLengthSeconds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Guildmaster.UI.Components.RelicCardVisualRig.AttackLengthSeconds </td>
+          <td>(</td>
+          <td class="paramtype">RenderTexture&#160;</td>
+          <td class="paramname"><em>rt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Длина клипа атаки (сек) — чтобы вызывающий вернул карту в idle РОВНО после проигрыша атаки (клип не имеет exit-перехода в Idle, иначе застревает на последнем кадре). </p>
+<p>0 — нет клипа/аниматора. </p>
+
+</div>
+</div>
 <a id="a89319bb6e16db7a32f18e8fa2a82e879" name="a89319bb6e16db7a32f18e8fa2a82e879"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a89319bb6e16db7a32f18e8fa2a82e879">&#9670;&#160;</a></span>Dispose()</h2>
 
@@ -303,6 +338,45 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Вернуть карточку в idle. </p>
+
+</div>
+</div>
+<a id="aa22d65be108f943d136f577d7924673b" name="aa22d65be108f943d136f577d7924673b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa22d65be108f943d136f577d7924673b">&#9670;&#160;</a></span>SetFrozen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.UI.Components.RelicCardVisualRig.SetFrozen </td>
+          <td>(</td>
+          <td class="paramtype">RenderTexture&#160;</td>
+          <td class="paramname"><em>rt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>frozen</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Заморозить/разморозить карточку: замороженная стоит на первом кадре Idle (speed 0) — статична; размороженная гоняет анимацию (speed 1). </p>
+<p>Нужно, чтобы двигался ТОЛЬКО выбранный юнит, а не все. </p>
 
 </div>
 </div>

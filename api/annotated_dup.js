@@ -139,6 +139,7 @@ var annotated_dup =
         ] ],
         [ "Settings", "namespaceGuildmaster_1_1Core_1_1Settings.html", [
           [ "AudioVolumeSettings", "structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html", "structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings" ],
+          [ "GameplaySettings", "structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings.html", "structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings" ],
           [ "ISettingsService", "interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html", "interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService" ]
         ] ],
         [ "Simulation", "namespaceGuildmaster_1_1Core_1_1Simulation.html", [
@@ -289,7 +290,8 @@ var annotated_dup =
         [ "CombatLifetimeScope", "classGuildmaster_1_1Game_1_1CombatLifetimeScope.html", "classGuildmaster_1_1Game_1_1CombatLifetimeScope" ],
         [ "DeploymentController", "classGuildmaster_1_1Game_1_1DeploymentController.html", "classGuildmaster_1_1Game_1_1DeploymentController" ],
         [ "GameBootstrap", "classGuildmaster_1_1Game_1_1GameBootstrap.html", null ],
-        [ "RootLifetimeScope", "classGuildmaster_1_1Game_1_1RootLifetimeScope.html", "classGuildmaster_1_1Game_1_1RootLifetimeScope" ]
+        [ "RootLifetimeScope", "classGuildmaster_1_1Game_1_1RootLifetimeScope.html", "classGuildmaster_1_1Game_1_1RootLifetimeScope" ],
+        [ "WorldLifetimeScope", "classGuildmaster_1_1Game_1_1WorldLifetimeScope.html", "classGuildmaster_1_1Game_1_1WorldLifetimeScope" ]
       ] ],
       [ "Guild", "namespaceGuildmaster_1_1Guild.html", [
         [ "IShopController", "interfaceGuildmaster_1_1Guild_1_1IShopController.html", "interfaceGuildmaster_1_1Guild_1_1IShopController" ],
@@ -331,9 +333,11 @@ var annotated_dup =
           [ "PixelBurstPreset", "classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset.html", "classGuildmaster_1_1Presentation_1_1Design_1_1PixelBurstPreset" ]
         ] ],
         [ "BattleEndedEvent", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html", "structGuildmaster_1_1Presentation_1_1BattleEndedEvent" ],
+        [ "BattleFocusBinder", "classGuildmaster_1_1Presentation_1_1BattleFocusBinder.html", "classGuildmaster_1_1Presentation_1_1BattleFocusBinder" ],
         [ "CameraModeController", "classGuildmaster_1_1Presentation_1_1CameraModeController.html", "classGuildmaster_1_1Presentation_1_1CameraModeController" ],
         [ "CombatAreaFlash", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash.html", "classGuildmaster_1_1Presentation_1_1CombatAreaFlash" ],
         [ "CombatDebugDraw", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html", "classGuildmaster_1_1Presentation_1_1CombatDebugDraw" ],
+        [ "CombatFocusPointSource", "classGuildmaster_1_1Presentation_1_1CombatFocusPointSource.html", "classGuildmaster_1_1Presentation_1_1CombatFocusPointSource" ],
         [ "CombatFocusTarget", "classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html", "classGuildmaster_1_1Presentation_1_1CombatFocusTarget" ],
         [ "CombatPresenter", "classGuildmaster_1_1Presentation_1_1CombatPresenter.html", "classGuildmaster_1_1Presentation_1_1CombatPresenter" ],
         [ "CombatStatusOverlay", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay.html", "classGuildmaster_1_1Presentation_1_1CombatStatusOverlay" ],
@@ -341,8 +345,10 @@ var annotated_dup =
         [ "DamageDealtEvent", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent.html", "structGuildmaster_1_1Presentation_1_1DamageDealtEvent" ],
         [ "DeathShatter", "classGuildmaster_1_1Presentation_1_1DeathShatter.html", "classGuildmaster_1_1Presentation_1_1DeathShatter" ],
         [ "DeploymentView", "classGuildmaster_1_1Presentation_1_1DeploymentView.html", "classGuildmaster_1_1Presentation_1_1DeploymentView" ],
+        [ "EmptyFocusPointSource", "classGuildmaster_1_1Presentation_1_1EmptyFocusPointSource.html", "classGuildmaster_1_1Presentation_1_1EmptyFocusPointSource" ],
         [ "FloatingText", "classGuildmaster_1_1Presentation_1_1FloatingText.html", "classGuildmaster_1_1Presentation_1_1FloatingText" ],
         [ "HealthBarView", "classGuildmaster_1_1Presentation_1_1HealthBarView.html", "classGuildmaster_1_1Presentation_1_1HealthBarView" ],
+        [ "IFocusPointSource", "interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource.html", "interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource" ],
         [ "IScreenShake", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html", "interfaceGuildmaster_1_1Presentation_1_1IScreenShake" ],
         [ "ManaBarView", "classGuildmaster_1_1Presentation_1_1ManaBarView.html", "classGuildmaster_1_1Presentation_1_1ManaBarView" ],
         [ "NullScreenShake", "classGuildmaster_1_1Presentation_1_1NullScreenShake.html", "classGuildmaster_1_1Presentation_1_1NullScreenShake" ],
@@ -366,6 +372,7 @@ var annotated_dup =
           [ "RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig" ],
           [ "SliderRow", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow" ],
           [ "Slot", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html", "classGuildmaster_1_1UI_1_1Components_1_1Slot" ],
+          [ "ToggleRow", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow" ],
           [ "Tooltip", "classGuildmaster_1_1UI_1_1Components_1_1Tooltip.html", "classGuildmaster_1_1UI_1_1Components_1_1Tooltip" ],
           [ "UiDragDrop", "classGuildmaster_1_1UI_1_1Components_1_1UiDragDrop.html", "classGuildmaster_1_1UI_1_1Components_1_1UiDragDrop" ],
           [ "VesselCard", "classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html", "classGuildmaster_1_1UI_1_1Components_1_1VesselCard" ]
@@ -374,14 +381,17 @@ var annotated_dup =
         [ "EventScreenView", "classGuildmaster_1_1UI_1_1EventScreenView.html", "classGuildmaster_1_1UI_1_1EventScreenView" ],
         [ "IMenuRouter", "interfaceGuildmaster_1_1UI_1_1IMenuRouter.html", "interfaceGuildmaster_1_1UI_1_1IMenuRouter" ],
         [ "IntegerPanelScaler", "classGuildmaster_1_1UI_1_1IntegerPanelScaler.html", null ],
+        [ "IRunTopBar", "interfaceGuildmaster_1_1UI_1_1IRunTopBar.html", "interfaceGuildmaster_1_1UI_1_1IRunTopBar" ],
         [ "LoadoutHubView", "classGuildmaster_1_1UI_1_1LoadoutHubView.html", "classGuildmaster_1_1UI_1_1LoadoutHubView" ],
         [ "LoadoutHubViewModel", "classGuildmaster_1_1UI_1_1LoadoutHubViewModel.html", "classGuildmaster_1_1UI_1_1LoadoutHubViewModel" ],
+        [ "LoadoutInventoryView", "classGuildmaster_1_1UI_1_1LoadoutInventoryView.html", "classGuildmaster_1_1UI_1_1LoadoutInventoryView" ],
         [ "LoadoutViewModel", "classGuildmaster_1_1UI_1_1LoadoutViewModel.html", "classGuildmaster_1_1UI_1_1LoadoutViewModel" ],
         [ "MainMenuScreenView", "classGuildmaster_1_1UI_1_1MainMenuScreenView.html", "classGuildmaster_1_1UI_1_1MainMenuScreenView" ],
         [ "MapScreenView", "classGuildmaster_1_1UI_1_1MapScreenView.html", "classGuildmaster_1_1UI_1_1MapScreenView" ],
         [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html", "classGuildmaster_1_1UI_1_1MenuRouter" ],
         [ "OutcomeScreenView", "classGuildmaster_1_1UI_1_1OutcomeScreenView.html", "classGuildmaster_1_1UI_1_1OutcomeScreenView" ],
         [ "RewardScreenView", "classGuildmaster_1_1UI_1_1RewardScreenView.html", "classGuildmaster_1_1UI_1_1RewardScreenView" ],
+        [ "RunModeBarView", "classGuildmaster_1_1UI_1_1RunModeBarView.html", "classGuildmaster_1_1UI_1_1RunModeBarView" ],
         [ "RunTopBarView", "classGuildmaster_1_1UI_1_1RunTopBarView.html", "classGuildmaster_1_1UI_1_1RunTopBarView" ],
         [ "SettingsViewModel", "classGuildmaster_1_1UI_1_1SettingsViewModel.html", "classGuildmaster_1_1UI_1_1SettingsViewModel" ],
         [ "ShopScreenView", "classGuildmaster_1_1UI_1_1ShopScreenView.html", "classGuildmaster_1_1UI_1_1ShopScreenView" ],

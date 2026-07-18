@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.RunModeBarView" name="Guildmaster.UI.RunModeBarView">
+<area shape="rect" id="Node000001" title="Глобальная панель забега (app&#45;shell, редизайн): всегда сверху во время забега, тело экранов сдвинуто ..." alt="" coords="5,219,236,424"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1UI_1_1IRunTopBar.html" title="Общий контракт верхней панели забега: старая RunTopBarView и новая (app&#45;shell) RunModeBarView." alt="" coords="45,5,196,171"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="123,185,123,219,118,219,118,185"/>
+</map>

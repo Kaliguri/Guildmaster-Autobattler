@@ -158,6 +158,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab1642b518cd60e4ef9037e3636dcd887"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3092fa6133f040d7b2b7af1c28540c4" id="r_ae3092fa6133f040d7b2b7af1c28540c4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae3092fa6133f040d7b2b7af1c28540c4">SetPaused</a> (bool paused)</td></tr>
 <tr class="separator:ae3092fa6133f040d7b2b7af1c28540c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa568b7c4c558f73eb3185e20d9393217" id="r_aa568b7c4c558f73eb3185e20d9393217"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#aa568b7c4c558f73eb3185e20d9393217">SetArena</a> (<a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a> arena, <a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html">Rect2D</a>? cameraZone=null)</td></tr>
+<tr class="memdesc:aa568b7c4c558f73eb3185e20d9393217"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сменить арену НА МЕСТЕ, без пересоздания сима (persist-мир: тест-зона ↔ боевая арена).  <br /></td></tr>
+<tr class="separator:aa568b7c4c558f73eb3185e20d9393217"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a466fdfbb0c077b3fc94f81db8b810867" id="r_a466fdfbb0c077b3fc94f81db8b810867"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1CombatSimulation.html#a466fdfbb0c077b3fc94f81db8b810867">ResetBattle</a> ()</td></tr>
 <tr class="memdesc:a466fdfbb0c077b3fc94f81db8b810867"><td class="mdescLeft">&#160;</td><td class="mdescRight">Сбросить бой для перезапуска НА МЕСТЕ (dev-R): чистим всех юнитов/снаряды/очереди и возвращаем исход в BattleOutcome.Ongoing.  <br /></td></tr>
 <tr class="separator:a466fdfbb0c077b3fc94f81db8b810867"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -924,6 +927,45 @@ Here is the caller graph for this function:</div>
 
 <p>Сбросить бой для перезапуска НА МЕСТЕ (dev-R): чистим всех юнитов/снаряды/очереди и возвращаем исход в BattleOutcome.Ongoing. </p>
 <p>Сцена/камера НЕ трогаются — их не перезагружаем. Тик-цикл (CombatLoopService) простаивает, пока не-Ongoing, и сам возобновится после сброса. Дальше вызывающий заново расставляет бой (тот же сетап) через EnqueueUnitSpawn. </p>
+
+</div>
+</div>
+<a id="aa568b7c4c558f73eb3185e20d9393217" name="aa568b7c4c558f73eb3185e20d9393217"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa568b7c4c558f73eb3185e20d9393217">&#9670;&#160;</a></span>SetArena()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.CombatSimulation.SetArena </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1ArenaBounds.html">ArenaBounds</a>&#160;</td>
+          <td class="paramname"><em>arena</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structGuildmaster_1_1Core_1_1Arena_1_1Rect2D.html">Rect2D</a>?&#160;</td>
+          <td class="paramname"><em>cameraZone</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Сменить арену НА МЕСТЕ, без пересоздания сима (persist-мир: тест-зона ↔ боевая арена). </p>
+<p>Обновляет границы поля (движение/отбрасывание) и зону деспавна снарядов. Звать на пустом или сброшенном симе (между боями / на входе в бой), не посреди активного тика. </p>
 
 </div>
 </div>

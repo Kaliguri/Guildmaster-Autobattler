@@ -1,0 +1,7 @@
+<map id="Guildmaster.Presentation.BattleFocusBinder" name="Guildmaster.Presentation.BattleFocusBinder">
+<area shape="rect" id="Node000001" title="Боевой мост камеры к симуляции: живёт один бой (EntryPoint боевого скоупа)." alt="" coords="6,119,189,239"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,83,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="64,83,77,117,72,119,59,85"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="107,5,197,71"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="137,84,123,119,118,117,132,82"/>
+</map>

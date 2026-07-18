@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['value_0',['value',['../classGuildmaster_1_1Core_1_1Random_1_1BattleSeed.html#a71a737bcc67d2358a9b27318d0e28077',1,'Guildmaster.Core.Random.BattleSeed.Value'],['../classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html#a4bc966f26852d79b95841ed59cf83730',1,'Guildmaster.UI.Components.SliderRow.Value']]],
+  ['value_0',['value',['../classGuildmaster_1_1Core_1_1Random_1_1BattleSeed.html#a71a737bcc67d2358a9b27318d0e28077',1,'Guildmaster.Core.Random.BattleSeed.Value'],['../classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html#a4bc966f26852d79b95841ed59cf83730',1,'Guildmaster.UI.Components.SliderRow.Value'],['../classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html#a679a47966e9abb40359d0a2386f535dc',1,'Guildmaster.UI.Components.ToggleRow.Value']]],
   ['vessel_1',['Vessel',['../structGuildmaster_1_1Data_1_1Definitions_1_1PlayerSlot.html#a29dd3398bde0b376aac191cc176aec3a',1,'Guildmaster::Data::Definitions::PlayerSlot']]],
   ['vesselitemslots_2',['VesselItemSlots',['../classGuildmaster_1_1Data_1_1Definitions_1_1GameConfig.html#a8c8d118636ff1c50e53def5183282153',1,'Guildmaster::Data::Definitions::GameConfig']]],
   ['vesselname_3',['VesselName',['../classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html#a6aa587fe1d5de690b4eb524582206862',1,'Guildmaster::UI::Components::VesselCard']]],

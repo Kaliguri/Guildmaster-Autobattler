@@ -8,6 +8,7 @@ var searchData=
   ['texteventmessages_2ecs_5',['TextEventMessages.cs',['../TextEventMessages_8cs.html',1,'']]],
   ['thornscomponent_2ecs_6',['ThornsComponent.cs',['../ThornsComponent_8cs.html',1,'']]],
   ['timescaleservice_2ecs_7',['TimeScaleService.cs',['../TimeScaleService_8cs.html',1,'']]],
-  ['tooltip_2ecs_8',['Tooltip.cs',['../Tooltip_8cs.html',1,'']]],
-  ['traitdata_2ecs_9',['TraitData.cs',['../TraitData_8cs.html',1,'']]]
+  ['togglerow_2ecs_8',['ToggleRow.cs',['../ToggleRow_8cs.html',1,'']]],
+  ['tooltip_2ecs_9',['Tooltip.cs',['../Tooltip_8cs.html',1,'']]],
+  ['traitdata_2ecs_10',['TraitData.cs',['../TraitData_8cs.html',1,'']]]
 ];

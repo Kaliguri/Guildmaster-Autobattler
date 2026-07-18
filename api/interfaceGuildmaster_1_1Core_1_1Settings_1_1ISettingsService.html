@@ -105,12 +105,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Core_1_1Settin
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Settings.ISettingsService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService__inherit__graph.svg" width="210" height="459"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService__inherit__graph.svg" width="210" height="579"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Settings.ISettingsService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService__coll__graph.svg" width="199" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService__coll__graph.svg" width="210" height="251"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -124,6 +124,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a37bc8dae286cb0250b5d6bc56a55ccfa" id="r_a37bc8dae286cb0250b5d6bc56a55ccfa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a37bc8dae286cb0250b5d6bc56a55ccfa">SetSfxVolume</a> (float volume01)</td></tr>
 <tr class="memdesc:a37bc8dae286cb0250b5d6bc56a55ccfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Громкость SFX [0..1].  <br /></td></tr>
 <tr class="separator:a37bc8dae286cb0250b5d6bc56a55ccfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf9c5893be5db197a83093e90c8fe6ac" id="r_aaf9c5893be5db197a83093e90c8fe6ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#aaf9c5893be5db197a83093e90c8fe6ac">SetCardAnimations</a> (bool enabled)</td></tr>
+<tr class="memdesc:aaf9c5893be5db197a83093e90c8fe6ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Включить/выключить анимацию карточек реликвий целиком (idle+attack). Поднимает Changed.  <br /></td></tr>
+<tr class="separator:aaf9c5893be5db197a83093e90c8fe6ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1133406067f187a6250b2c2c6cbf2e8e" id="r_a1133406067f187a6250b2c2c6cbf2e8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a1133406067f187a6250b2c2c6cbf2e8e">SetCardAttackAnimation</a> (bool enabled)</td></tr>
+<tr class="memdesc:a1133406067f187a6250b2c2c6cbf2e8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Включить/выключить анимацию атаки выбранной карточки (при включённой анимации). Поднимает Changed.  <br /></td></tr>
+<tr class="separator:a1133406067f187a6250b2c2c6cbf2e8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60e11114c1594a17dfa1ebb1937c6064" id="r_a60e11114c1594a17dfa1ebb1937c6064"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a60e11114c1594a17dfa1ebb1937c6064">Load</a> ()</td></tr>
 <tr class="memdesc:a60e11114c1594a17dfa1ebb1937c6064"><td class="mdescLeft">&#160;</td><td class="mdescRight">Загрузить с диска (ES3) или взять дефолты GameConfig, затем применить в аудио.  <br /></td></tr>
 <tr class="separator:a60e11114c1594a17dfa1ebb1937c6064"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,6 +145,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a76af87116993c92a0ea1231b1ca18c6d" id="r_a76af87116993c92a0ea1231b1ca18c6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Settings_1_1AudioVolumeSettings.html">AudioVolumeSettings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#a76af87116993c92a0ea1231b1ca18c6d">Audio</a><code> [get]</code></td></tr>
 <tr class="memdesc:a76af87116993c92a0ea1231b1ca18c6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущие значения звука (то, что применено сейчас).  <br /></td></tr>
 <tr class="separator:a76af87116993c92a0ea1231b1ca18c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af372e89079612dd0d136463aa09d0420" id="r_af372e89079612dd0d136463aa09d0420"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings.html">GameplaySettings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html#af372e89079612dd0d136463aa09d0420">Gameplay</a><code> [get]</code></td></tr>
+<tr class="memdesc:af372e89079612dd0d136463aa09d0420"><td class="mdescLeft">&#160;</td><td class="mdescRight">Текущие геймплей-настройки презентации (анимация карточек и т.п.).  <br /></td></tr>
+<tr class="separator:af372e89079612dd0d136463aa09d0420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="events" name="events"></a>
 Events</h2></td></tr>
@@ -211,6 +220,50 @@ Events</h2></td></tr>
 <p>Сохранить текущие значения на диск (ES3). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#a1e17f2e840d3ea4b449283f26ee91b92">Guildmaster.Game.Services.SettingsService</a>.</p>
+
+</div>
+</div>
+<a id="aaf9c5893be5db197a83093e90c8fe6ac" name="aaf9c5893be5db197a83093e90c8fe6ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf9c5893be5db197a83093e90c8fe6ac">&#9670;&#160;</a></span>SetCardAnimations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Settings.ISettingsService.SetCardAnimations </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Включить/выключить анимацию карточек реликвий целиком (idle+attack). Поднимает Changed. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#ab1a21d734f4997207adc12348b0b918f">Guildmaster.Game.Services.SettingsService</a>.</p>
+
+</div>
+</div>
+<a id="a1133406067f187a6250b2c2c6cbf2e8e" name="a1133406067f187a6250b2c2c6cbf2e8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1133406067f187a6250b2c2c6cbf2e8e">&#9670;&#160;</a></span>SetCardAttackAnimation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Settings.ISettingsService.SetCardAttackAnimation </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enabled</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Включить/выключить анимацию атаки выбранной карточки (при включённой анимации). Поднимает Changed. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#afdd3e554587e94aa207566b47616096f">Guildmaster.Game.Services.SettingsService</a>.</p>
 
 </div>
 </div>
@@ -304,6 +357,32 @@ Events</h2></td></tr>
 <p>Текущие значения звука (то, что применено сейчас). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#ac3f40ed9436f67130602a0a9f1d68de9">Guildmaster.Game.Services.SettingsService</a>.</p>
+
+</div>
+</div>
+<a id="af372e89079612dd0d136463aa09d0420" name="af372e89079612dd0d136463aa09d0420"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af372e89079612dd0d136463aa09d0420">&#9670;&#160;</a></span>Gameplay</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings.html">GameplaySettings</a> Guildmaster.Core.Settings.ISettingsService.Gameplay</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Текущие геймплей-настройки презентации (анимация карточек и т.п.). </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html#af60eec15b48979cc4cae5d18d1b6d36a">Guildmaster.Game.Services.SettingsService</a>.</p>
 
 </div>
 </div>

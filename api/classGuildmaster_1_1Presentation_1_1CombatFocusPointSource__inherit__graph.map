@@ -1,0 +1,5 @@
+<map id="Guildmaster.Presentation.CombatFocusPointSource" name="Guildmaster.Presentation.CombatFocusPointSource">
+<area shape="rect" id="Node000001" title="Боевой источник точек фокуса: позиции живых юнитов активной симуляции." alt="" coords="5,119,209,199"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource.html" title="Источник точек фокуса экшн&#45;камеры (вики «16» §5): позиции сущностей, которые камера держит в кадре." alt="" coords="41,5,173,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="110,85,110,118,105,118,105,85"/>
+</map>

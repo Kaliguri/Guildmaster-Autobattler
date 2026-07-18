@@ -7,6 +7,7 @@ var namespaceGuildmaster_1_1UI_1_1Components =
     [ "RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig" ],
     [ "SliderRow", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow" ],
     [ "Slot", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html", "classGuildmaster_1_1UI_1_1Components_1_1Slot" ],
+    [ "ToggleRow", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow" ],
     [ "Tooltip", "classGuildmaster_1_1UI_1_1Components_1_1Tooltip.html", "classGuildmaster_1_1UI_1_1Components_1_1Tooltip" ],
     [ "UiDragDrop", "classGuildmaster_1_1UI_1_1Components_1_1UiDragDrop.html", "classGuildmaster_1_1UI_1_1Components_1_1UiDragDrop" ],
     [ "VesselCard", "classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html", "classGuildmaster_1_1UI_1_1Components_1_1VesselCard" ]

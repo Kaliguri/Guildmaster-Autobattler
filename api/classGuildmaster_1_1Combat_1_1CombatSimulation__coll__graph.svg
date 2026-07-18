@@ -101,7 +101,7 @@ var sectionId = 'dynsection-1';
 <text text-anchor="start" x="90" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">ApplyEffect()</text>
 <text text-anchor="start" x="70.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="90" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">ReportAreaHit()</text>
-<text text-anchor="start" x="90" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 10 more...</text>
+<text text-anchor="start" x="90" y="-6.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 11 more...</text>
 <polygon fill="#666666" stroke="#666666" points="60,-316.5 60,-316.5 212,-316.5 212,-316.5 60,-316.5"/>
 <polygon fill="#666666" stroke="#666666" points="60,-166.5 60,-166.5 88,-166.5 88,-166.5 60,-166.5"/>
 <polygon fill="#666666" stroke="#666666" points="88,-166.5 88,-166.5 212,-166.5 212,-166.5 88,-166.5"/>

@@ -103,12 +103,12 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Core_1_1Random
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Random.IRngService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService__inherit__graph.svg" width="200" height="439"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService__inherit__graph.svg" width="200" height="479"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Random.IRngService:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService__coll__graph.svg" width="200" height="191"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService__coll__graph.svg" width="200" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -131,6 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a99ff1884837b9f0e3e7afec18b957e06" id="r_a99ff1884837b9f0e3e7afec18b957e06"><td class="memItemLeft" align="right" valign="top">ulong&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html#a99ff1884837b9f0e3e7afec18b957e06">Snapshot</a> ()</td></tr>
 <tr class="memdesc:a99ff1884837b9f0e3e7afec18b957e06"><td class="mdescLeft">&#160;</td><td class="mdescRight">64-битный отпечаток текущего состояния генератора.  <br /></td></tr>
 <tr class="separator:a99ff1884837b9f0e3e7afec18b957e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f443a5423fdbab69438db71f805c6d2" id="r_a6f443a5423fdbab69438db71f805c6d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html#a6f443a5423fdbab69438db71f805c6d2">Reseed</a> (ulong seed)</td></tr>
+<tr class="memdesc:a6f443a5423fdbab69438db71f805c6d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Переинициализировать генератор из сида — свежая детерминированная последовательность БЕЗ пересоздания сервиса.  <br /></td></tr>
+<tr class="separator:a6f443a5423fdbab69438db71f805c6d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Детерминированный источник случайности симуляции. </p>
@@ -267,6 +270,29 @@ Here is the caller graph for this function:</div>
 <p>Следующее 32-битное беззнаковое значение. Базовая операция генератора. </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#af1a74306ae2468c62d4016e1e0039267">Guildmaster.Core.Random.XorShiftRng</a>.</p>
+
+</div>
+</div>
+<a id="a6f443a5423fdbab69438db71f805c6d2" name="a6f443a5423fdbab69438db71f805c6d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f443a5423fdbab69438db71f805c6d2">&#9670;&#160;</a></span>Reseed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Random.IRngService.Reseed </td>
+          <td>(</td>
+          <td class="paramtype">ulong&#160;</td>
+          <td class="paramname"><em>seed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Переинициализировать генератор из сида — свежая детерминированная последовательность БЕЗ пересоздания сервиса. </p>
+<p>Нужно для persist-мира: боевой скоуп не умирает между боями, поэтому на каждый бой RNG пересевается суб-сидом (<code>runSeed + battleIndex + attempt</code>), иначе повторный бой пошёл бы с «уехавшего» состояния → потеря воспроизводимости и рассинхрон в коопе. Тот же сид → та же последовательность, что у свежего инстанса. </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#a0f07ed67dfe9eba7f0a21ef39a4d8a25">Guildmaster.Core.Random.XorShiftRng</a>.</p>
 
 </div>
 </div>

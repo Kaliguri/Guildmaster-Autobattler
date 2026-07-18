@@ -75,6 +75,7 @@ var hierarchy =
     [ "Guildmaster.Combat.FleeSteering", "classGuildmaster_1_1Combat_1_1FleeSteering.html", null ],
     [ "Guildmaster.ContentHub.Editor.ClipSpriteFrames.Frame", "structGuildmaster_1_1ContentHub_1_1Editor_1_1ClipSpriteFrames_1_1Frame.html", null ],
     [ "Guildmaster.Game.Services.GameFlow", "classGuildmaster_1_1Game_1_1Services_1_1GameFlow.html", null ],
+    [ "Guildmaster.Core.Settings.GameplaySettings", "structGuildmaster_1_1Core_1_1Settings_1_1GameplaySettings.html", null ],
     [ "Guildmaster.Game.Flow.GuildRoster", "classGuildmaster_1_1Game_1_1Flow_1_1GuildRoster.html", null ],
     [ "Guildmaster.ContentHub.Editor.HubToasts", "classGuildmaster_1_1ContentHub_1_1Editor_1_1HubToasts.html", null ],
     [ "IAsyncStartable", null, [
@@ -112,7 +113,8 @@ var hierarchy =
       [ "Guildmaster.Game.Services.CombatFeelDirector", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html", null ],
       [ "Guildmaster.Game.Services.LocalizationService", "classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html", null ],
       [ "Guildmaster.Game.Services.TimeScaleService", "classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html", null ],
-      [ "Guildmaster.Presentation.Audio.AudioPresenter", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html", null ]
+      [ "Guildmaster.Presentation.Audio.AudioPresenter", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html", null ],
+      [ "Guildmaster.Presentation.BattleFocusBinder", "classGuildmaster_1_1Presentation_1_1BattleFocusBinder.html", null ]
     ] ],
     [ "System.IDisposable", null, [
       [ "Guildmaster.UI.Components.RelicCardVisualRig", "classGuildmaster_1_1UI_1_1Components_1_1RelicCardVisualRig.html", null ]
@@ -160,6 +162,10 @@ var hierarchy =
       [ "Guildmaster.Game.Flow.ShopFlow", "classGuildmaster_1_1Game_1_1Flow_1_1ShopFlow.html", null ],
       [ "Guildmaster.Game.Flow.TextEventFlow", "classGuildmaster_1_1Game_1_1Flow_1_1TextEventFlow.html", null ]
     ] ],
+    [ "Guildmaster.Presentation.IFocusPointSource", "interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource.html", [
+      [ "Guildmaster.Presentation.CombatFocusPointSource", "classGuildmaster_1_1Presentation_1_1CombatFocusPointSource.html", null ],
+      [ "Guildmaster.Presentation.EmptyFocusPointSource", "classGuildmaster_1_1Presentation_1_1EmptyFocusPointSource.html", null ]
+    ] ],
     [ "Guildmaster.Core.Input.IInputService", "interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html", [
       [ "Guildmaster.Game.Input.InputService", "classGuildmaster_1_1Game_1_1Input_1_1InputService.html", null ]
     ] ],
@@ -197,6 +203,10 @@ var hierarchy =
     [ "Guildmaster.Core.Random.IRngService", "interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html", [
       [ "Guildmaster.Core.Random.XorShiftRng", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html", null ]
     ] ],
+    [ "Guildmaster.UI.IRunTopBar", "interfaceGuildmaster_1_1UI_1_1IRunTopBar.html", [
+      [ "Guildmaster.UI.RunModeBarView", "classGuildmaster_1_1UI_1_1RunModeBarView.html", null ],
+      [ "Guildmaster.UI.RunTopBarView", "classGuildmaster_1_1UI_1_1RunTopBarView.html", null ]
+    ] ],
     [ "Guildmaster.Core.Persistence.ISaveService", "interfaceGuildmaster_1_1Core_1_1Persistence_1_1ISaveService.html", [
       [ "Guildmaster.Game.Services.JsonFileSaveService", "classGuildmaster_1_1Game_1_1Services_1_1JsonFileSaveService.html", null ]
     ] ],
@@ -232,7 +242,8 @@ var hierarchy =
       [ "Guildmaster.Game.Input.BattleInputController", "classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html", null ],
       [ "Guildmaster.Game.Services.CombatFeelDirector", "classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html", null ],
       [ "Guildmaster.Game.Services.SettingsService", "classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html", null ],
-      [ "Guildmaster.Presentation.Audio.AudioPresenter", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html", null ]
+      [ "Guildmaster.Presentation.Audio.AudioPresenter", "classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html", null ],
+      [ "Guildmaster.Presentation.BattleFocusBinder", "classGuildmaster_1_1Presentation_1_1BattleFocusBinder.html", null ]
     ] ],
     [ "Guildmaster.Data.Stats.IStatReader", "interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html", [
       [ "Guildmaster.Combat.Stats", "classGuildmaster_1_1Combat_1_1Stats.html", null ]
@@ -247,10 +258,12 @@ var hierarchy =
     [ "Guildmaster.Data.Definitions.Kite", "structGuildmaster_1_1Data_1_1Definitions_1_1Kite.html", null ],
     [ "LifetimeScope", null, [
       [ "Guildmaster.Game.CombatLifetimeScope", "classGuildmaster_1_1Game_1_1CombatLifetimeScope.html", null ],
-      [ "Guildmaster.Game.RootLifetimeScope", "classGuildmaster_1_1Game_1_1RootLifetimeScope.html", null ]
+      [ "Guildmaster.Game.RootLifetimeScope", "classGuildmaster_1_1Game_1_1RootLifetimeScope.html", null ],
+      [ "Guildmaster.Game.WorldLifetimeScope", "classGuildmaster_1_1Game_1_1WorldLifetimeScope.html", null ]
     ] ],
     [ "Guildmaster.UI.LoadoutHubView", "classGuildmaster_1_1UI_1_1LoadoutHubView.html", null ],
     [ "Guildmaster.UI.LoadoutHubViewModel", "classGuildmaster_1_1UI_1_1LoadoutHubViewModel.html", null ],
+    [ "Guildmaster.UI.LoadoutInventoryView", "classGuildmaster_1_1UI_1_1LoadoutInventoryView.html", null ],
     [ "Guildmaster.UI.LoadoutViewModel", "classGuildmaster_1_1UI_1_1LoadoutViewModel.html", null ],
     [ "Guildmaster.UI.MainMenuScreenView", "classGuildmaster_1_1UI_1_1MainMenuScreenView.html", null ],
     [ "Guildmaster.Guild.MapGenConfig", "classGuildmaster_1_1Guild_1_1MapGenConfig.html", null ],
@@ -336,7 +349,6 @@ var hierarchy =
     [ "Guildmaster.Combat.Effects.RuntimeEffect", "classGuildmaster_1_1Combat_1_1Effects_1_1RuntimeEffect.html", null ],
     [ "Guildmaster.Combat.RuntimeUnit", "classGuildmaster_1_1Combat_1_1RuntimeUnit.html", null ],
     [ "Guildmaster.Combat.RuntimeUnitFactory", "classGuildmaster_1_1Combat_1_1RuntimeUnitFactory.html", null ],
-    [ "Guildmaster.UI.RunTopBarView", "classGuildmaster_1_1UI_1_1RunTopBarView.html", null ],
     [ "Guildmaster.Data.Stats.ScalableValue", "structGuildmaster_1_1Data_1_1Stats_1_1ScalableValue.html", null ],
     [ "Guildmaster.Data.Stats.ScalingTerm", "structGuildmaster_1_1Data_1_1Stats_1_1ScalingTerm.html", null ],
     [ "Guildmaster.Balance.Editor.ScenarioBench", "classGuildmaster_1_1Balance_1_1Editor_1_1ScenarioBench.html", null ],
@@ -394,6 +406,7 @@ var hierarchy =
       [ "Guildmaster.UI.Components.RelicCard", "classGuildmaster_1_1UI_1_1Components_1_1RelicCard.html", null ],
       [ "Guildmaster.UI.Components.SliderRow", "classGuildmaster_1_1UI_1_1Components_1_1SliderRow.html", null ],
       [ "Guildmaster.UI.Components.Slot", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html", null ],
+      [ "Guildmaster.UI.Components.ToggleRow", "classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html", null ],
       [ "Guildmaster.UI.Components.Tooltip", "classGuildmaster_1_1UI_1_1Components_1_1Tooltip.html", null ],
       [ "Guildmaster.UI.Components.VesselCard", "classGuildmaster_1_1UI_1_1Components_1_1VesselCard.html", null ]
     ] ]

@@ -103,18 +103,21 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Core_1_1Random_1_1
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Core.Random.XorShiftRng:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng__inherit__graph.svg" width="200" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng__inherit__graph.svg" width="200" height="464"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Core.Random.XorShiftRng:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng__coll__graph.svg" width="200" height="424"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng__coll__graph.svg" width="200" height="464"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a10437674290b7bc3bc8d9e8d537ce261" id="r_a10437674290b7bc3bc8d9e8d537ce261"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#a10437674290b7bc3bc8d9e8d537ce261">XorShiftRng</a> (ulong seed)</td></tr>
 <tr class="separator:a10437674290b7bc3bc8d9e8d537ce261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f07ed67dfe9eba7f0a21ef39a4d8a25" id="r_a0f07ed67dfe9eba7f0a21ef39a4d8a25"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#a0f07ed67dfe9eba7f0a21ef39a4d8a25">Reseed</a> (ulong seed)</td></tr>
+<tr class="memdesc:a0f07ed67dfe9eba7f0a21ef39a4d8a25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Переинициализировать генератор из сида — свежая детерминированная последовательность БЕЗ пересоздания сервиса.Нужно для persist-мира: боевой скоуп не умирает между боями, поэтому на каждый бой RNG пересевается суб-сидом (<code>runSeed + battleIndex + attempt</code>), иначе повторный бой пошёл бы с «уехавшего» состояния → потеря воспроизводимости и рассинхрон в коопе. Тот же сид → та же последовательность, что у свежего инстанса.  <br /></td></tr>
+<tr class="separator:a0f07ed67dfe9eba7f0a21ef39a4d8a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1a74306ae2468c62d4016e1e0039267" id="r_af1a74306ae2468c62d4016e1e0039267"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#af1a74306ae2468c62d4016e1e0039267">NextUInt</a> ()</td></tr>
 <tr class="memdesc:af1a74306ae2468c62d4016e1e0039267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Следующее 32-битное беззнаковое значение. Базовая операция генератора.  <br /></td></tr>
 <tr class="separator:af1a74306ae2468c62d4016e1e0039267"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,9 +147,6 @@ Public Member Functions</h2></td></tr>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">Guildmaster.Core.Random.XorShiftRng.XorShiftRng </td>
@@ -156,11 +156,6 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -361,6 +356,36 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng_af1a74306ae2468c62d4016e1e0039267_icgraph.svg" width="100%" height="410"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="a0f07ed67dfe9eba7f0a21ef39a4d8a25" name="a0f07ed67dfe9eba7f0a21ef39a4d8a25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f07ed67dfe9eba7f0a21ef39a4d8a25">&#9670;&#160;</a></span>Reseed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Core.Random.XorShiftRng.Reseed </td>
+          <td>(</td>
+          <td class="paramtype">ulong&#160;</td>
+          <td class="paramname"><em>seed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Переинициализировать генератор из сида — свежая детерминированная последовательность БЕЗ пересоздания сервиса.Нужно для persist-мира: боевой скоуп не умирает между боями, поэтому на каждый бой RNG пересевается суб-сидом (<code>runSeed + battleIndex + attempt</code>), иначе повторный бой пошёл бы с «уехавшего» состояния → потеря воспроизводимости и рассинхрон в коопе. Тот же сид → та же последовательность, что у свежего инстанса. </p>
+
+<p>Implements <a class="el" href="interfaceGuildmaster_1_1Core_1_1Random_1_1IRngService.html#a6f443a5423fdbab69438db71f805c6d2">Guildmaster.Core.Random.IRngService</a>.</p>
 
 </div>
 </div>

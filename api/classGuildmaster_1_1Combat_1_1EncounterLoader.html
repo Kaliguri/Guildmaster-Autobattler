@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('classGuildmaster_1_1Combat_1_1Encounte
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Combat.EncounterLoader:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EncounterLoader__coll__graph.svg" width="228" height="171"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classGuildmaster_1_1Combat_1_1EncounterLoader__coll__graph.svg" width="228" height="211"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -121,6 +121,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afb4017e459e3251ee825046c8eb233c5" id="r_afb4017e459e3251ee825046c8eb233c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EncounterLoader.html#afb4017e459e3251ee825046c8eb233c5">Reload</a> ()</td></tr>
 <tr class="memdesc:afb4017e459e3251ee825046c8eb233c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Перезапустить последний загруженный бой на месте (dev-R). No-op, если ничего не грузили.  <br /></td></tr>
 <tr class="separator:afb4017e459e3251ee825046c8eb233c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad926e664411b1d1f18d0b40b89c8b2ec" id="r_ad926e664411b1d1f18d0b40b89c8b2ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EncounterLoader.html#ad926e664411b1d1f18d0b40b89c8b2ec">SpawnPlayerSide</a> (IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Combat_1_1PlayerSpawn.html">PlayerSpawn</a> &gt; playerSide)</td></tr>
+<tr class="memdesc:ad926e664411b1d1f18d0b40b89c8b2ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заспавнить player-сторону (team 0) в очередь спавна — БЕЗ сброса боя.  <br /></td></tr>
+<tr class="separator:ad926e664411b1d1f18d0b40b89c8b2ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a314ddd848e9a3967a71ff04d1e292e00" id="r_a314ddd848e9a3967a71ff04d1e292e00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Combat_1_1EncounterLoader.html#a314ddd848e9a3967a71ff04d1e292e00">SpawnEnemies</a> (<a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html">EncounterData</a> encounter)</td></tr>
+<tr class="memdesc:a314ddd848e9a3967a71ff04d1e292e00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Заспавнить вражескую сторону (team 1) из энкаунтера — БЕЗ сброса боя.  <br /></td></tr>
+<tr class="separator:a314ddd848e9a3967a71ff04d1e292e00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
@@ -293,6 +299,64 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 
 <p>Перезапустить последний загруженный бой на месте (dev-R). No-op, если ничего не грузили. </p>
+
+</div>
+</div>
+<a id="a314ddd848e9a3967a71ff04d1e292e00" name="a314ddd848e9a3967a71ff04d1e292e00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a314ddd848e9a3967a71ff04d1e292e00">&#9670;&#160;</a></span>SpawnEnemies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.EncounterLoader.SpawnEnemies </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html">EncounterData</a>&#160;</td>
+          <td class="paramname"><em>encounter</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Заспавнить вражескую сторону (team 1) из энкаунтера — БЕЗ сброса боя. </p>
+<p>Для persist-мира — доспавн врагов на входе в бой поверх уже стоящего отряда игрока. </p>
+
+</div>
+</div>
+<a id="ad926e664411b1d1f18d0b40b89c8b2ec" name="ad926e664411b1d1f18d0b40b89c8b2ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad926e664411b1d1f18d0b40b89c8b2ec">&#9670;&#160;</a></span>SpawnPlayerSide()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Guildmaster.Combat.EncounterLoader.SpawnPlayerSide </td>
+          <td>(</td>
+          <td class="paramtype">IReadOnlyList&lt; <a class="el" href="structGuildmaster_1_1Combat_1_1PlayerSpawn.html">PlayerSpawn</a> &gt;&#160;</td>
+          <td class="paramname"><em>playerSide</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Заспавнить player-сторону (team 0) в очередь спавна — БЕЗ сброса боя. </p>
+<p>Для persist-мира: отряд можно поставить на тест-арену ВНЕ боя, а врагов доспавнить позже (SpawnEnemies) на входе в бой. Звать после фазы сброса (CombatSimulation.ResetBattle + RuntimeUnitFactory.ResetIds), не посреди активного боя. </p>
 
 </div>
 </div>

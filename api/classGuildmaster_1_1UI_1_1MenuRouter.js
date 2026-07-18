@@ -2,9 +2,11 @@ var classGuildmaster_1_1UI_1_1MenuRouter =
 [
     [ "MenuRouter", "classGuildmaster_1_1UI_1_1MenuRouter.html#a177d8f2d5447f3f6fafceda526a5fb20", null ],
     [ "CloseAll", "classGuildmaster_1_1UI_1_1MenuRouter.html#afa78f908f2bd7c7994d89f528cce385c", null ],
-    [ "Initialize", "classGuildmaster_1_1UI_1_1MenuRouter.html#a8525beea2e12ff5c2b664b2bdfac05f0", null ],
+    [ "CloseOverlays", "classGuildmaster_1_1UI_1_1MenuRouter.html#a7a6fdd18191e2c59babd3bb20a849cd1", null ],
+    [ "Initialize", "classGuildmaster_1_1UI_1_1MenuRouter.html#a35b03784958779e26edc7f25ddc2dc75", null ],
     [ "OpenChest", "classGuildmaster_1_1UI_1_1MenuRouter.html#aae0f6d6efa1aca7fbee2a95d39bf38dd", null ],
     [ "OpenHub", "classGuildmaster_1_1UI_1_1MenuRouter.html#a245ca12ce365317c6c98e82be264fa4c", null ],
+    [ "OpenInventory", "classGuildmaster_1_1UI_1_1MenuRouter.html#a3da3c250576c978e2d3d63fc86132400", null ],
     [ "OpenLoadout", "classGuildmaster_1_1UI_1_1MenuRouter.html#acdaa22739b232ec8640606775823f8a5", null ],
     [ "OpenMainMenu", "classGuildmaster_1_1UI_1_1MenuRouter.html#a307c609fb2b9237070078e48f5b13a54", null ],
     [ "OpenMap", "classGuildmaster_1_1UI_1_1MenuRouter.html#a9b615a0c72602a242169e95b16b5ab0f", null ],

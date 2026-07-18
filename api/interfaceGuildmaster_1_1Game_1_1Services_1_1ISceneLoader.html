@@ -103,16 +103,19 @@ $(document).ready(function(){initNavTree('interfaceGuildmaster_1_1Game_1_1Servic
 <div class="dynheader">
 Inheritance diagram for Guildmaster.Game.Services.ISceneLoader:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader__inherit__graph.svg" width="210" height="259"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader__inherit__graph.svg" width="210" height="299"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for Guildmaster.Game.Services.ISceneLoader:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader__coll__graph.svg" width="210" height="111"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader__coll__graph.svg" width="210" height="131"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a6897a6adf5ce33c09462d1917fa695d1" id="r_a6897a6adf5ce33c09462d1917fa695d1"><td class="memItemLeft" align="right" valign="top">UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html#a6897a6adf5ce33c09462d1917fa695d1">LoadWorldAsync</a> ()</td></tr>
+<tr class="memdesc:a6897a6adf5ce33c09462d1917fa695d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Аддитивно загрузить персистентную WorldScene (единый мир: камера-риг + арена).  <br /></td></tr>
+<tr class="separator:a6897a6adf5ce33c09462d1917fa695d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46a753f76962e8f67ebac169ba3ccaea" id="r_a46a753f76962e8f67ebac169ba3ccaea"><td class="memItemLeft" align="right" valign="top">UniTask&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html#a46a753f76962e8f67ebac169ba3ccaea">LoadBattleAsync</a> ()</td></tr>
 <tr class="memdesc:a46a753f76962e8f67ebac169ba3ccaea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Аддитивно загрузить BattleScene (no-op, если уже загружена).  <br /></td></tr>
 <tr class="separator:a46a753f76962e8f67ebac169ba3ccaea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,6 +145,28 @@ Public Member Functions</h2></td></tr>
 <p>Аддитивно загрузить BattleScene (no-op, если уже загружена). </p>
 
 <p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html#a47edfd49557385afca1d3febca010d1a">Guildmaster.Game.Services.SceneLoader</a>.</p>
+
+</div>
+</div>
+<a id="a6897a6adf5ce33c09462d1917fa695d1" name="a6897a6adf5ce33c09462d1917fa695d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6897a6adf5ce33c09462d1917fa695d1">&#9670;&#160;</a></span>LoadWorldAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">UniTask Guildmaster.Game.Services.ISceneLoader.LoadWorldAsync </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Аддитивно загрузить персистентную WorldScene (единый мир: камера-риг + арена). </p>
+<p>Грузится один раз на буте и НЕ выгружается — переживает бои (no-op, если уже загружена). </p>
+
+<p>Implemented in <a class="el" href="classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html#a05cae0c90e88c6b320a4e71683bef38c">Guildmaster.Game.Services.SceneLoader</a>.</p>
 
 </div>
 </div>

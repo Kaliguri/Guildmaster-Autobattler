@@ -17,6 +17,7 @@ var classGuildmaster_1_1Combat_1_1CombatSimulation =
     [ "RebakeTuning", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a0bbce927646fde43a9fb3d555050012b", null ],
     [ "ReportAreaHit", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a96609f5e3bf5177b8fb1959d275f1b44", null ],
     [ "ResetBattle", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a466fdfbb0c077b3fc94f81db8b810867", null ],
+    [ "SetArena", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#aa568b7c4c558f73eb3185e20d9393217", null ],
     [ "SetPaused", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ae3092fa6133f040d7b2b7af1c28540c4", null ],
     [ "SpawnProjectile", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#a85465a46ea9d2ce38e263814ef54b9c2", null ],
     [ "Tick", "classGuildmaster_1_1Combat_1_1CombatSimulation.html#ac7aab9f602bf9130070f6f808e6b9f4f", null ],

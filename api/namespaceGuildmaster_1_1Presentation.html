@@ -110,6 +110,9 @@ Namespaces</h2></td></tr>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGuildmaster_1_1Presentation_1_1BattleEndedEvent.html">BattleEndedEvent</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1BattleFocusBinder.html">BattleFocusBinder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Боевой мост камеры к симуляции: живёт один бой (EntryPoint боевого скоупа).  <a href="classGuildmaster_1_1Presentation_1_1BattleFocusBinder.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CameraModeController.html">CameraModeController</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Управляет режимами камеры и потребляет IInputService (вики «16» §5).  <a href="classGuildmaster_1_1Presentation_1_1CameraModeController.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,8 +122,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html">CombatDebugDraw</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debug-слой боя на базе Shapes: spatial hash сетка, радиусы атак, снаряды.  <a href="classGuildmaster_1_1Presentation_1_1CombatDebugDraw.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatFocusPointSource.html">CombatFocusPointSource</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Боевой источник точек фокуса: позиции живых юнитов активной симуляции.  <a href="classGuildmaster_1_1Presentation_1_1CombatFocusPointSource.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html">CombatFocusTarget</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель слежения для экшн-камеры (вики «16» §5): каждый кадр ставит свой transform в сглаженный центроид живых юнитов и считает «разброс» боя (для динамического зума).  <a href="classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Цель слежения для экшн-камеры (вики «16» §5): каждый кадр ставит свой transform в сглаженный центроид точек фокуса и считает «разброс» боя (для динамического зума).  <a href="classGuildmaster_1_1Presentation_1_1CombatFocusTarget.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1CombatPresenter.html">CombatPresenter</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Мост «симуляция → презентация».  <a href="classGuildmaster_1_1Presentation_1_1CombatPresenter.html#details">More...</a><br /></td></tr>
@@ -139,11 +145,17 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1DeploymentView.html">DeploymentView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Рантайм-оверлей фазы расстановки (шаг 4) на Shapes: рамки player-зон, ghost-превью перетаскивания (диск, зелёный/красный по валидности) и outline наведённого/выбранного юнита (кольцо).  <a href="classGuildmaster_1_1Presentation_1_1DeploymentView.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1EmptyFocusPointSource.html">EmptyFocusPointSource</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Пустой источник точек фокуса: камера ни за кем не следует.  <a href="classGuildmaster_1_1Presentation_1_1EmptyFocusPointSource.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1FloatingText.html">FloatingText</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Своя всплывающая боевая цифра (урон/хил) — один общий префаб с TMP-текстом.  <a href="classGuildmaster_1_1Presentation_1_1FloatingText.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGuildmaster_1_1Presentation_1_1HealthBarView.html">HealthBarView</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Надголовный HP/щит-бар на uGUI (world-space).  <a href="classGuildmaster_1_1Presentation_1_1HealthBarView.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource.html">IFocusPointSource</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Источник точек фокуса экшн-камеры (вики «16» §5): позиции сущностей, которые камера держит в кадре.  <a href="interfaceGuildmaster_1_1Presentation_1_1IFocusPointSource.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">interface &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html">IScreenShake</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Тряска боевой камеры по запросу режиссёра (<code>CombatFeelDirector</code>).  <a href="interfaceGuildmaster_1_1Presentation_1_1IScreenShake.html#details">More...</a><br /></td></tr>

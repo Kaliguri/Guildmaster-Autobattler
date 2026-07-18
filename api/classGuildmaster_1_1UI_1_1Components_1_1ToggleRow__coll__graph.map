@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.Components.ToggleRow" name="Guildmaster.UI.Components.ToggleRow">
+<area shape="rect" id="Node000001" title="Строка тумблера: подпись слева (растянута) + чекбокс справа, выровненный в колонку." alt="" coords="5,119,207,259"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="52,5,160,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="109,84,109,118,103,118,103,84"/>
+</map>

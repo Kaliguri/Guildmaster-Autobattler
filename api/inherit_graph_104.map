@@ -1,5 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$interfaceGuildmaster_1_1Data_1_1Stats_1_1IStatReader.html" title="Только&#45;чтение собранных статов." alt="" coords="5,5,212,45"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Combat_1_1Stats.html" title="Рантайм стат&#45;объект юнита." alt="" coords="260,13,453,38"/>
-<area shape="poly" id="edge46_Node000000_Node000001" title=" " alt="" coords="226,23,260,23,260,28,226,28"/>
+<area shape="rect" id="Node000000" href="$classGuildmaster_1_1Data_1_1Editor_1_1Migrations_1_1Phase4Package3StatsBaseMigration.html" title="Одноразовая миграция Фазы 4, пакет 2/3 (вики «13» §3.4): заполнить StatsConfig.Defaults базой «типичн..." alt="" coords="5,5,241,60"/>
 </map>

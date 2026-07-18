@@ -1,7 +1,39 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,42,148,67"/>
-<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Net_1_1NetworkCommandRelay.html" title="Реле команд симуляции." alt="" coords="196,5,451,45"/>
-<area shape="poly" id="edge142_Node000000_Node000001" title=" " alt="" coords="162,42,196,38,196,43,162,47"/>
-<area shape="rect" id="Node000002" href="$classGuildmaster_1_1Net_1_1SimSyncProbe.html" title="⛔ ЗАПАРКОВАНО (lockstep)." alt="" coords="211,70,436,95"/>
-<area shape="poly" id="edge143_Node000000_Node000002" title=" " alt="" coords="163,62,212,67,211,73,162,67"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="67,269,165,294"/>
+<area shape="rect" id="Node000001" href="$classGuildmaster_1_1Game_1_1DeploymentController.html" title="Оркестратор интерактивной фазы расстановки (план шаг 4)." alt="" coords="275,133,503,173"/>
+<area shape="poly" id="edge124_Node000000_Node000001" title=" " alt="" coords="144,258,203,220,274,183,305,171,307,176,276,188,205,225,147,263"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1Game_1_1Flow_1_1BattleBootstrap.html" title="Дочерний EntryPoint боевого скоупа (план 11 §4 A2): связывает готовую боевую клетку с макро&#45;флоу чере..." alt="" coords="278,325,499,365"/>
+<area shape="poly" id="edge125_Node000000_Node000003" title=" " alt="" coords="179,293,304,323,302,328,178,298"/>
+<area shape="rect" id="Node000004" href="$classGuildmaster_1_1Game_1_1Input_1_1BattleInputController.html" title="Связывает боевые действия ввода с симуляцией на время одного боя (вики «16» §4)." alt="" coords="277,389,501,429"/>
+<area shape="poly" id="edge126_Node000000_Node000004" title=" " alt="" coords="180,294,205,304,228,318,244,333,253,348,261,362,276,375,298,387,296,391,273,380,257,365,248,350,240,336,225,322,202,309,178,299"/>
+<area shape="rect" id="Node000012" href="$classGuildmaster_1_1Game_1_1Input_1_1InputService.html" title="Реализация IInputService поверх Unity Input System (вики «16» §3)." alt="" coords="279,5,498,45"/>
+<area shape="poly" id="edge127_Node000000_Node000012" title=" " alt="" coords="136,257,178,206,224,144,237,119,244,97,254,76,273,55,292,43,295,48,276,59,258,79,249,99,242,121,229,147,183,209,140,260"/>
+<area shape="rect" id="Node000005" href="$classGuildmaster_1_1Game_1_1Services_1_1CombatFeelDirector.html" title="Режиссёр «сочности» боя: единая политика ЗНАЧИМОСТИ поверх sim&#45;событий." alt="" coords="285,453,492,493"/>
+<area shape="poly" id="edge128_Node000000_Node000005" title=" " alt="" coords="180,291,206,302,228,318,241,334,248,350,253,381,257,411,264,425,276,439,293,451,290,455,273,443,260,428,252,412,248,382,243,351,237,337,225,322,203,306,178,295"/>
+<area shape="rect" id="Node000014" href="$classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html" title="Реализация ILocalizationService поверх Unity String Tables (вики «13» §5)." alt="" coords="285,517,492,557"/>
+<area shape="poly" id="edge129_Node000000_Node000014" title=" " alt="" coords="180,289,206,301,229,318,245,342,253,366,253,413,251,436,253,459,260,481,277,503,291,515,288,519,273,507,256,484,248,460,246,436,247,413,247,367,240,345,225,322,203,305,178,294"/>
+<area shape="rect" id="Node000011" href="$classGuildmaster_1_1Game_1_1Services_1_1TimeScaleService.html" title="Единственный писатель UnityEngine.Time.timeScale в бою." alt="" coords="285,69,492,109"/>
+<area shape="poly" id="edge130_Node000000_Node000011" title=" " alt="" coords="132,256,190,188,229,151,273,119,298,107,300,112,276,124,233,155,194,191,136,259"/>
+<area shape="rect" id="Node000008" href="$classGuildmaster_1_1Presentation_1_1Audio_1_1AudioPresenter.html" title="Аудио&#45;презентер (вики impl «09» §П4): POCO&#45;entry&#45;point, подписан НАПРЯМУЮ на C#&#45;события боевой симуля..." alt="" coords="293,197,484,237"/>
+<area shape="poly" id="edge131_Node000000_Node000008" title=" " alt="" coords="178,264,302,235,304,240,179,269"/>
+<area shape="rect" id="Node000009" href="$classGuildmaster_1_1Presentation_1_1BattleFocusBinder.html" title="Боевой мост камеры к симуляции: живёт один бой (EntryPoint боевого скоупа)." alt="" coords="293,261,484,301"/>
+<area shape="poly" id="edge132_Node000000_Node000009" title=" " alt="" coords="179,279,293,279,293,284,179,284"/>
+<area shape="rect" id="Node000013" href="$interfaceGuildmaster_1_1Core_1_1Input_1_1IInputService.html" title="Единая точка ввода игрока (вики «16» §2)." alt="" coords="9,5,223,45"/>
+<area shape="poly" id="edge133_Node000013_Node000012" title=" " alt="" coords="236,23,279,23,279,28,236,28"/>
+<area shape="rect" id="Node000015" href="$interfaceGuildmaster_1_1Core_1_1Localization_1_1ILocalizationService.html" title="Единая точка локализации (вики «13» §5)." alt="" coords="5,517,227,557"/>
+<area shape="poly" id="edge134_Node000015_Node000014" title=" " alt="" coords="240,535,285,535,285,540,240,540"/>
+<area shape="rect" id="Node000007" href="$interfaceGuildmaster_1_1Core_1_1Settings_1_1ISettingsService.html" title="Единый источник пользовательских настроек + персист (ES3) + живое применение в аудио." alt="" coords="18,581,214,621"/>
+<area shape="rect" id="Node000006" href="$classGuildmaster_1_1Game_1_1Services_1_1SettingsService.html" title="Реализация ISettingsService." alt="" coords="285,581,492,621"/>
+<area shape="poly" id="edge135_Node000007_Node000006" title=" " alt="" coords="228,599,285,599,285,604,228,604"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="73,333,159,358"/>
+<area shape="poly" id="edge136_Node000002_Node000001" title=" " alt="" coords="171,333,200,321,225,303,237,289,243,274,247,244,252,214,260,198,273,183,290,171,293,176,276,187,264,201,258,215,253,245,248,276,241,292,228,307,202,326,173,337"/>
+<area shape="poly" id="edge137_Node000002_Node000003" title=" " alt="" coords="173,343,277,343,277,348,173,348"/>
+<area shape="poly" id="edge138_Node000002_Node000004" title=" " alt="" coords="173,356,303,387,302,392,171,361"/>
+<area shape="poly" id="edge139_Node000002_Node000005" title=" " alt="" coords="147,364,205,402,276,439,307,451,305,456,274,444,203,406,144,368"/>
+<area shape="poly" id="edge141_Node000002_Node000008" title=" " alt="" coords="171,329,199,318,225,303,240,290,248,276,257,261,273,247,297,235,299,240,276,252,261,265,253,278,244,293,228,307,201,323,173,334"/>
+<area shape="poly" id="edge142_Node000002_Node000009" title=" " alt="" coords="171,330,302,299,303,304,173,335"/>
+<area shape="poly" id="edge140_Node000002_Node000006" title=" " alt="" coords="136,368,217,486,276,567,297,579,294,584,273,571,213,490,131,371"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="76,109,156,134"/>
+<area shape="poly" id="edge143_Node000010_Node000001" title=" " alt="" coords="170,125,275,137,274,143,169,130"/>
+<area shape="poly" id="edge144_Node000010_Node000011" title=" " alt="" coords="169,113,285,99,286,104,170,118"/>
 </map>

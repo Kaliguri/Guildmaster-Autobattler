@@ -1,3 +1,3 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicRequest.html" title="Запрос надеть релик на юнита (публикует loadout&#45;UI по «Принять»/«Сохранить», слушает фаза расстановки..." alt="" coords="5,5,220,45"/>
+<area shape="rect" id="Node000000" href="$structGuildmaster_1_1Data_1_1Definitions_1_1EquipRelicAtCursorRequest.html" title="Запрос надеть релик на сосуд ПОД КУРСОРОМ (публикует UITK&#45;панель расстановки на дропе карточки релика..." alt="" coords="5,5,220,45"/>
 </map>

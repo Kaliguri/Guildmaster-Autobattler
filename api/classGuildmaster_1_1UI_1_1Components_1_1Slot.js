@@ -2,7 +2,8 @@ var classGuildmaster_1_1UI_1_1Components_1_1Slot =
 [
     [ "SlotSize", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a43dde70287e571242272c78764ea534d", [
       [ "Sm", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a43dde70287e571242272c78764ea534da20c4c6104a283ee7383776e722439342", null ],
-      [ "Md", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a43dde70287e571242272c78764ea534daa9547b86268c5e29adedd500ff7eef45", null ]
+      [ "Md", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a43dde70287e571242272c78764ea534daa9547b86268c5e29adedd500ff7eef45", null ],
+      [ "Lg", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a43dde70287e571242272c78764ea534da1da8d5d4ca9c3118679d17b8075f3fe9", null ]
     ] ],
     [ "Slot", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a9871f94718355c99d9d826b79af77338", null ],
     [ "SetIcon", "classGuildmaster_1_1UI_1_1Components_1_1Slot.html#a692b6ca8dec0f663ae0ec5e35c411ff9", null ],

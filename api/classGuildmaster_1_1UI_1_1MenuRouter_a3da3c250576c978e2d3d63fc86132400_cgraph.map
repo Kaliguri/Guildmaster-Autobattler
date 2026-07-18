@@ -1,0 +1,5 @@
+<map id="Guildmaster.UI.MenuRouter.OpenInventory" name="Guildmaster.UI.MenuRouter.OpenInventory">
+<area shape="rect" id="Node000001" title="Новый полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро&#45;карточек реликвий + детали." alt="" coords="5,5,211,45"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1LoadoutInventoryView.html#a0c77fedc9b3a69d4d55fb6e032d49a21" title=" " alt="" coords="259,5,496,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="211,23,245,23,245,28,211,28"/>
+</map>

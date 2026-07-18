@@ -1,5 +1,5 @@
 <map id="Guildmaster.Presentation.CombatFocusTarget" name="Guildmaster.Presentation.CombatFocusTarget">
-<area shape="rect" id="Node000001" title="Цель слежения для экшн&#45;камеры (вики «16» §5): каждый кадр ставит свой transform в сглаженный центроид..." alt="" coords="5,119,188,219"/>
+<area shape="rect" id="Node000001" title="Цель слежения для экшн&#45;камеры (вики «16» §5): каждый кадр ставит свой transform в сглаженный центроид..." alt="" coords="5,119,188,239"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="39,5,155,71"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,84,99,119,94,119,94,84"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="99,85,99,118,94,118,94,85"/>
 </map>

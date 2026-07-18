@@ -1,5 +1,5 @@
 <map id="Guildmaster.Game.Services.SceneLoader" name="Guildmaster.Game.Services.SceneLoader">
-<area shape="rect" id="Node000001" title="Загрузка и выгрузка сцен." alt="" coords="5,139,204,239"/>
-<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html" title="Шов загрузки/выгрузки боевой сцены (план 11 §2, вики «10» §8)." alt="" coords="23,5,186,91"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,104,107,138,102,138,102,104"/>
+<area shape="rect" id="Node000001" title="Загрузка и выгрузка сцен." alt="" coords="5,159,204,279"/>
+<area shape="rect" id="Node000002" href="$interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html" title="Шов загрузки/выгрузки боевой сцены (план 11 §2, вики «10» §8)." alt="" coords="23,5,186,111"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,124,107,158,102,158,102,124"/>
 </map>

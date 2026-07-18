@@ -10,10 +10,10 @@ var searchData=
   ['weightshop_7',['WeightShop',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#a7ed4772d6655b7dfaf23f5947a580b17',1,'Guildmaster::Guild::MapGenConfig']]],
   ['weighttextevent_8',['WeightTextEvent',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#a5ee704483abb7e356fe2491e6122e1b8',1,'Guildmaster::Guild::MapGenConfig']]],
   ['weightunknown_9',['WeightUnknown',['../classGuildmaster_1_1Guild_1_1MapGenConfig.html#aeccc0f2fc8540ee0656955f5bc3dfb3b',1,'Guildmaster::Guild::MapGenConfig']]],
-  ['whenallready_10',['whenallready',['../interfaceGuildmaster_1_1Game_1_1Flow_1_1IReadyGate.html#aba812f52ec623d44ad9d00c0a3143333',1,'Guildmaster.Game.Flow.IReadyGate.WhenAllReady()'],['../classGuildmaster_1_1Game_1_1Flow_1_1SoloReadyGate.html#ab22f5c3fa67dc229291daf447191f000',1,'Guildmaster.Game.Flow.SoloReadyGate.WhenAllReady()']]],
+  ['whenallready_10',['whenallready',['../classGuildmaster_1_1Game_1_1Flow_1_1SoloReadyGate.html#ab22f5c3fa67dc229291daf447191f000',1,'Guildmaster.Game.Flow.SoloReadyGate.WhenAllReady()'],['../interfaceGuildmaster_1_1Game_1_1Flow_1_1IReadyGate.html#aba812f52ec623d44ad9d00c0a3143333',1,'Guildmaster.Game.Flow.IReadyGate.WhenAllReady()']]],
   ['whirldashlandingcomponent_11',['WhirlDashLandingComponent',['../classGuildmaster_1_1Combat_1_1Effects_1_1Components_1_1WhirlDashLandingComponent.html',1,'Guildmaster::Combat::Effects::Components']]],
   ['whirldashlandingcomponent_2ecs_12',['WhirlDashLandingComponent.cs',['../WhirlDashLandingComponent_8cs.html',1,'']]],
-  ['width_13',['width',['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html#abb64ae5590053cff0157d59123189589',1,'Guildmaster.Combat.DisplaceRequest.Width'],['../structGuildmaster_1_1Combat_1_1AreaHit.html#a55492ed72cf676e51b87cdf64cd3d2a1',1,'Guildmaster.Combat.AreaHit.Width']]],
+  ['width_13',['width',['../structGuildmaster_1_1Combat_1_1AreaHit.html#a55492ed72cf676e51b87cdf64cd3d2a1',1,'Guildmaster.Combat.AreaHit.Width'],['../structGuildmaster_1_1Combat_1_1DisplaceRequest.html#abb64ae5590053cff0157d59123189589',1,'Guildmaster.Combat.DisplaceRequest.Width']]],
   ['win_14',['Win',['../structGuildmaster_1_1Combat_1_1BattleOutcome.html#af8e654e0057390dc7e00aca7bbe89d6e',1,'Guildmaster::Combat::BattleOutcome']]],
   ['windup_15',['Windup',['../namespaceGuildmaster_1_1Combat.html#a12d1be24d63d2d978fb9ed01e13b676fa3d501c93b1c2ecdb8ca9ffc8ef9c7055',1,'Guildmaster::Combat']]],
   ['windupremaining_16',['WindupRemaining',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#a79722b472031d0629740f8f27bc0f430',1,'Guildmaster::Combat::RuntimeUnit']]],
@@ -21,5 +21,7 @@ var searchData=
   ['windupticks_18',['windupticks',['../classGuildmaster_1_1Combat_1_1RuntimeUnit.html#aa53f7987a8b972c632526d949975cc31',1,'Guildmaster.Combat.RuntimeUnit.WindupTicks'],['../classGuildmaster_1_1Combat_1_1AttackTiming.html#a0b4ea555d2297b9817a0763eed8ae822',1,'Guildmaster.Combat.AttackTiming.WindupTicks(int hitFrame, int frameCount, int intervalTicks)']]],
   ['windupticksfor_19',['WindupTicksFor',['../classGuildmaster_1_1Combat_1_1AttackTiming.html#a627a13ac427fbcb0bb8a5f2fc98891db',1,'Guildmaster::Combat::AttackTiming']]],
   ['winningteam_20',['WinningTeam',['../structGuildmaster_1_1Combat_1_1BattleOutcome.html#aeba95cddcf5497f67615608d805c6f8d',1,'Guildmaster::Combat::BattleOutcome']]],
-  ['writechangelog_21',['WriteChangeLog',['../classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#aed9c8786a539560fa29cc6cf18700503',1,'Guildmaster::Data::Editor::ContentEditService']]]
+  ['worldlifetimescope_21',['WorldLifetimeScope',['../classGuildmaster_1_1Game_1_1WorldLifetimeScope.html',1,'Guildmaster::Game']]],
+  ['worldlifetimescope_2ecs_22',['WorldLifetimeScope.cs',['../WorldLifetimeScope_8cs.html',1,'']]],
+  ['writechangelog_23',['WriteChangeLog',['../classGuildmaster_1_1Data_1_1Editor_1_1ContentEditService.html#aed9c8786a539560fa29cc6cf18700503',1,'Guildmaster::Data::Editor::ContentEditService']]]
 ];

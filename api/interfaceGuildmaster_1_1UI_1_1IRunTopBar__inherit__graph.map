@@ -1,0 +1,7 @@
+<map id="Guildmaster.UI.IRunTopBar" name="Guildmaster.UI.IRunTopBar">
+<area shape="rect" id="Node000001" title="Общий контракт верхней панели забега: старая RunTopBarView и новая (app&#45;shell) RunModeBarView." alt="" coords="151,5,339,171"/>
+<area shape="rect" id="Node000002" href="$classGuildmaster_1_1UI_1_1RunModeBarView.html" title="Глобальная панель забега (app&#45;shell, редизайн): всегда сверху во время забега, тело экранов сдвинуто ..." alt="" coords="5,219,236,424"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="197,185,178,220,173,217,192,182"/>
+<area shape="rect" id="Node000003" href="$classGuildmaster_1_1UI_1_1RunTopBarView.html" title="Верхняя панель забега (StS&#45;style, план 12 Фаза 2) из UXML&#45;шаблона — общий код для живого HUD и превью..." alt="" coords="261,219,477,424"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="298,182,316,217,312,220,293,185"/>
+</map>

@@ -6,5 +6,6 @@ var classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng =
     [ "NextFloat", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#ad27d26ac527e0a02ecd473997c2e7206", null ],
     [ "NextInt", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#a0f6c4dd3c968a04245f5e459d7c8946d", null ],
     [ "NextUInt", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#af1a74306ae2468c62d4016e1e0039267", null ],
+    [ "Reseed", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#a0f07ed67dfe9eba7f0a21ef39a4d8a25", null ],
     [ "Snapshot", "classGuildmaster_1_1Core_1_1Random_1_1XorShiftRng.html#ac6da0a245ae4168f6db592d8aa142d57", null ]
 ];

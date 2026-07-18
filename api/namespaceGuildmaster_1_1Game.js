@@ -9,5 +9,6 @@ var namespaceGuildmaster_1_1Game =
     [ "CombatLifetimeScope", "classGuildmaster_1_1Game_1_1CombatLifetimeScope.html", "classGuildmaster_1_1Game_1_1CombatLifetimeScope" ],
     [ "DeploymentController", "classGuildmaster_1_1Game_1_1DeploymentController.html", "classGuildmaster_1_1Game_1_1DeploymentController" ],
     [ "GameBootstrap", "classGuildmaster_1_1Game_1_1GameBootstrap.html", null ],
-    [ "RootLifetimeScope", "classGuildmaster_1_1Game_1_1RootLifetimeScope.html", "classGuildmaster_1_1Game_1_1RootLifetimeScope" ]
+    [ "RootLifetimeScope", "classGuildmaster_1_1Game_1_1RootLifetimeScope.html", "classGuildmaster_1_1Game_1_1RootLifetimeScope" ],
+    [ "WorldLifetimeScope", "classGuildmaster_1_1Game_1_1WorldLifetimeScope.html", "classGuildmaster_1_1Game_1_1WorldLifetimeScope" ]
 ];

@@ -9,5 +9,6 @@ var dir_2f29ab2b9a8f78205faf1e69f20a0b8f =
     [ "CombatLifetimeScope.cs", "CombatLifetimeScope_8cs.html", "CombatLifetimeScope_8cs" ],
     [ "DeploymentController.cs", "DeploymentController_8cs.html", "DeploymentController_8cs" ],
     [ "GameBootstrap.cs", "GameBootstrap_8cs.html", "GameBootstrap_8cs" ],
-    [ "RootLifetimeScope.cs", "RootLifetimeScope_8cs.html", "RootLifetimeScope_8cs" ]
+    [ "RootLifetimeScope.cs", "RootLifetimeScope_8cs.html", "RootLifetimeScope_8cs" ],
+    [ "WorldLifetimeScope.cs", "WorldLifetimeScope_8cs.html", "WorldLifetimeScope_8cs" ]
 ];

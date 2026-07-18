@@ -8,5 +8,6 @@ var searchData=
   ['loadouthubviewmodel_5',['LoadoutHubViewModel',['../classGuildmaster_1_1UI_1_1LoadoutHubViewModel.html#a6eb865e29dde1f92790e4cbd9922f779',1,'Guildmaster::UI::LoadoutHubViewModel']]],
   ['loadoutviewmodel_6',['LoadoutViewModel',['../classGuildmaster_1_1UI_1_1LoadoutViewModel.html#acb1e74aee570dc87db0026ec39dc60b3',1,'Guildmaster::UI::LoadoutViewModel']]],
   ['loadpreset_7',['LoadPreset',['../classGuildmaster_1_1Combat_1_1EncounterLoader.html#a8b4e269fe9f7fa04cff088eeca271523',1,'Guildmaster::Combat::EncounterLoader']]],
-  ['localizationservice_8',['LocalizationService',['../classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html#ac2657d3a4afdfca66844a184ccf9d9aa',1,'Guildmaster::Game::Services::LocalizationService']]]
+  ['loadworldasync_8',['loadworldasync',['../interfaceGuildmaster_1_1Game_1_1Services_1_1ISceneLoader.html#a6897a6adf5ce33c09462d1917fa695d1',1,'Guildmaster.Game.Services.ISceneLoader.LoadWorldAsync()'],['../classGuildmaster_1_1Game_1_1Services_1_1SceneLoader.html#a05cae0c90e88c6b320a4e71683bef38c',1,'Guildmaster.Game.Services.SceneLoader.LoadWorldAsync()']]],
+  ['localizationservice_9',['LocalizationService',['../classGuildmaster_1_1Game_1_1Services_1_1LocalizationService.html#ac2657d3a4afdfca66844a184ccf9d9aa',1,'Guildmaster::Game::Services::LocalizationService']]]
 ];

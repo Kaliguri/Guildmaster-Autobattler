@@ -12,8 +12,9 @@ var searchData=
   ['tier_9',['tier',['../classGuildmaster_1_1Data_1_1Definitions_1_1EncounterData.html#a331cf8fe45060b0f3bd04b372a454f74',1,'Guildmaster.Data.Definitions.EncounterData.Tier'],['../classGuildmaster_1_1Data_1_1Definitions_1_1RunModifierData.html#a5894d08e4e13d85f54c9809f3582b404',1,'Guildmaster.Data.Definitions.RunModifierData.Tier']]],
   ['title_10',['Title',['../classGuildmaster_1_1UI_1_1Components_1_1ModalPanel.html#a250ce106d3bdb10ab8ad6edfbdb8188c',1,'Guildmaster::UI::Components::ModalPanel']]],
   ['titlekey_11',['TitleKey',['../classGuildmaster_1_1Data_1_1Definitions_1_1TextEventData.html#a0e3453c5c2623605c6d1418ed22b52da',1,'Guildmaster::Data::Definitions::TextEventData']]],
-  ['totaldamage_12',['TotalDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#aee606a37b8e57d2f7c2eaff6452c2239',1,'Guildmaster::Combat::DamageResult']]],
-  ['triggertag_13',['TriggerTag',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#aa64427999e388aea2224c8b3d05fc2be',1,'Guildmaster::Data::Definitions::AbilityData']]],
-  ['tuning_14',['tuning',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a5c1c25bef2787d28f77d0e8c2e328e8a',1,'Guildmaster.Combat.CombatSimulation.Tuning'],['../interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a1aea321bfdcbf858e7acbfabd5b390ad',1,'Guildmaster.Combat.ICombatContext.Tuning']]],
-  ['type_15',['Type',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#a7684356db35e9b8a807698ca42ade61a',1,'Guildmaster::ContentHub::Editor::ContentEntry']]]
+  ['toggle_12',['Toggle',['../classGuildmaster_1_1UI_1_1Components_1_1ToggleRow.html#a75ce243fa0d3ebf77e630fbda0f3a29f',1,'Guildmaster::UI::Components::ToggleRow']]],
+  ['totaldamage_13',['TotalDamage',['../structGuildmaster_1_1Combat_1_1DamageResult.html#aee606a37b8e57d2f7c2eaff6452c2239',1,'Guildmaster::Combat::DamageResult']]],
+  ['triggertag_14',['TriggerTag',['../classGuildmaster_1_1Data_1_1Definitions_1_1AbilityData.html#aa64427999e388aea2224c8b3d05fc2be',1,'Guildmaster::Data::Definitions::AbilityData']]],
+  ['tuning_15',['tuning',['../classGuildmaster_1_1Combat_1_1CombatSimulation.html#a5c1c25bef2787d28f77d0e8c2e328e8a',1,'Guildmaster.Combat.CombatSimulation.Tuning'],['../interfaceGuildmaster_1_1Combat_1_1ICombatContext.html#a1aea321bfdcbf858e7acbfabd5b390ad',1,'Guildmaster.Combat.ICombatContext.Tuning']]],
+  ['type_16',['Type',['../classGuildmaster_1_1ContentHub_1_1Editor_1_1ContentEntry.html#a7684356db35e9b8a807698ca42ade61a',1,'Guildmaster::ContentHub::Editor::ContentEntry']]]
 ];
