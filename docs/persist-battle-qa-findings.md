@@ -116,7 +116,8 @@ UITK за меню-стеком, либо скрывать/затемнять а
 **Нужно:** null-чек в `actionOnDestroy` пула FloatingText (`if (ft != null) ...`). Косметика, только
 при остановке play.
 
-**Статус:** не исправлено. P3.
+**Статус:** ИСПРАВЛЕНО. `CombatPresenter.cs:388` — `actionOnDestroy: ft => { if (ft != null) Destroy(ft.gameObject); }`
+(Unity-оверлоад `!=` ловит уже уничтоженный объект при teardown play).
 
 ---
 
@@ -130,7 +131,11 @@ supported by 2D SRP Batcher. SRP batching will be disabled for 2D Renderers usin
 
 **Нужно:** убрать `_TexelSize`/`_ST` из шейдера hit-flash или пометить совместимо. Не срочно.
 
-**Статус:** не исправлено. P3.
+**Статус:** ОТЛОЖЕНО ОСОЗНАННО (не правлю вслепую). Кандидат-фикс: в `SH_Sprite_HitFlash.shader`
+поменять `half4 _MainTex_ST` → `float4 _MainTex_ST` в обоих CBUFFER (2D SRP Batcher требует float4-layout
+для `_ST`). НО это боевой ВИЗУАЛЬНЫЙ шейдер (тинт/флип/вспышка) — правка вслепую рискует сломать рендер
+спрайтов; проверить уход warning можно только в play (visual-QA Макса). P3 микро-перф — делать аккуратно
+вместе с Максом, не ради галочки.
 
 ---
 

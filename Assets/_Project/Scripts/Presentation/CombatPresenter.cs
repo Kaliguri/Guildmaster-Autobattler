@@ -385,7 +385,7 @@ namespace Guildmaster.Presentation
                 createFunc: () => Instantiate(_floatingTextPrefab, transform).GetComponent<FloatingText>(),
                 actionOnGet: ft => ft.gameObject.SetActive(true),
                 actionOnRelease: ft => ft.gameObject.SetActive(false),
-                actionOnDestroy: ft => Destroy(ft.gameObject),
+                actionOnDestroy: ft => { if (ft != null) Destroy(ft.gameObject); }, // ft может быть уже уничтожен при teardown play
                 collectionCheck: false,
                 defaultCapacity: 16,
                 maxSize: 64);
