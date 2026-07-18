@@ -168,7 +168,10 @@ namespace Guildmaster.UI
                     _runModeBar,
                     key => _loc?.GetString(key),
                     onMap: OpenMapView,
-                    onBattle: () => _router.CloseOverlays(),
+                    // «Бой» = вернуться в боевой вид, ТОЛЬКО когда бой реально идёт. Вне боя (Phase None)
+                    // на стеке висит карта петли акта — её CloseOverlays снёс бы, а DetachFromPanelEvent
+                    // резолвил бы выбор узла как null → петля акта падает (вылет из play). No-op вне боя.
+                    onBattle: () => { if (_clock != null && _clock.Phase != BattlePhase.None) _router.CloseOverlays(); },
                     onInventory: ToggleInventory,
                     onTactics: () => { },       // задел под будущий экран AI-тактики
                     onCompendium: () => { },    // задел под компендиум
