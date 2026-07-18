@@ -1,0 +1,31 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--shop">
+            <ui:Label name="shop-title" text="Лавка" class="gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <!-- Шапка: золото + реролл -->
+            <ui:VisualElement class="gm-shop__topbar">
+                <ui:Label name="shop-gold" text="Золото: 0" class="gm-shop__gold" />
+                <ui:Button name="btn-reroll" text="Обновить" class="gm-button" />
+            </ui:VisualElement>
+
+            <!-- Витрина: 4 слота (наполняет код) -->
+            <ui:VisualElement name="shop-shelf" class="gm-shop__shelf" />
+
+            <ui:VisualElement class="gm-divider" />
+
+            <!-- Продажа: запас игрока (наполняет код) -->
+            <ui:Label text="Продать реликвии" class="gm-shop__section-title" />
+            <ui:ScrollView name="shop-stash" class="gm-shop__stash" />
+
+            <!-- Подвал -->
+            <ui:VisualElement class="gm-shop__footer">
+                <ui:Button name="btn-leave" text="Уйти" class="gm-button gm-button--primary" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- Хост тоста «нет места» (по центру, наполняет код) -->
+        <ui:VisualElement name="shop-toast" class="gm-shop__toast" picking-mode="Ignore" />
+    </ui:VisualElement>
+</ui:UXML>

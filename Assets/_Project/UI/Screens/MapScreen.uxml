@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--map">
+            <ui:Label name="map-title" text="Карта акта" class="gm-panel__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <!-- Холст графа: узлы и рёбра рисует C# (MapGraph), см. MapScreenView. -->
+            <ui:VisualElement name="map-graph" class="gm-map" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

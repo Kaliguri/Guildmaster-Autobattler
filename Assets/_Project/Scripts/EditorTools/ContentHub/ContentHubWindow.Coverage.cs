@@ -20,7 +20,7 @@ namespace Guildmaster.ContentHub.Editor
             if (units.Count > 0)
             {
                 AddCountSection(inner, "Юниты по типу урона",
-                    units.GroupBy(e => e.Unit.DamageType.ToString()).Select(g => (g.Key, g.Count()))
+                    units.GroupBy(e => e.Unit.DamageSchool.ToString()).Select(g => (g.Key, g.Count()))
                          .OrderByDescending(x => x.Item2).ToList());
                 AddCountSection(inner, "Юниты по типу атаки",
                     units.GroupBy(e => e.Unit.AttackType.ToString()).Select(g => (g.Key, g.Count()))

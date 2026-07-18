@@ -1,0 +1,174 @@
+/* ============================================================================
+ * Dev battle picker — дев-инструмент запуска боёв (F2).
+ * Стиль (шрифты/отступы/рамки/цвета) — ТОЛЬКО из gm-токенов (без хардкода).
+ * Оставлены явными лишь layout-габариты самого dev-контейнера (ширина/потолок
+ * высоты/сдвиг под верхнюю панель) — их размерных токенов в системе пока нет.
+ * ========================================================================== */
+
+/* Сдвинута под верхнюю панель забега, чтобы НЕ касаться её (нет тангенты).
+   Скрыта по умолчанию — не мозолит глаз в Game view до play (UIDocument рендерит и в edit-mode);
+   показывается кодом по F2/F1 (DevEncounterPanel.SetVisible). */
+.gm-dev-overlay {
+    position: absolute;
+    left: var(--gm-space-3);
+    top: 96px; /* layout: ниже верхней панели (её высота не токенизирована) */
+    display: none;
+}
+
+.gm-dev-panel {
+    background-color: var(--gm-color-surface-panel);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-2) var(--gm-space-3);
+    width: 420px;      /* layout: ширина dev-списка (шире — длинные имена и зазор под скролл) */
+    max-height: 560px; /* layout: потолок высоты (дальше — внутренний скролл) */
+    overflow: hidden;  /* клип содержимого ScrollView, чтобы контент не вылезал за рамку вбок */
+}
+
+.gm-dev-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gm-dev-title {
+    color: var(--gm-color-accent);
+    font-size: var(--gm-font-body);
+    -unity-font-style: bold;
+}
+
+.gm-dev-hint {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+}
+
+.gm-dev-rule {
+    height: var(--gm-border-1);
+    background-color: var(--gm-color-border-subtle);
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-dev-scroll {
+    flex-shrink: 1;
+    /* Без min-height:0 flex-элемент не сжимается меньше контента (min-height:auto),
+       поэтому список вываливается за панель вместо внутреннего скролла. */
+    min-height: 0;
+}
+
+/* Резерв места под скроллбар в самом viewport контента — строки не заезжают под дорожку. */
+.gm-dev-scroll .unity-scroll-view__content-viewport {
+    padding-right: var(--gm-space-4);
+}
+
+/* Тонкий тёмный скроллбар без стрелок вместо жирного дефолтного. */
+.gm-dev-scroll .unity-scroller--vertical {
+    width: var(--gm-space-2);
+}
+.gm-dev-scroll .unity-scroller__low-button,
+.gm-dev-scroll .unity-scroller__high-button {
+    display: none;
+}
+.gm-dev-scroll .unity-scroller--vertical .unity-base-slider__tracker {
+    background-color: var(--gm-color-track);
+    border-width: 0;
+    margin: 0;
+}
+.gm-dev-scroll .unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: var(--gm-color-border-frame);
+    border-width: 0;
+    border-radius: var(--gm-radius-0);
+    width: var(--gm-space-2);
+    left: 0;
+}
+
+.gm-dev-section {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    -unity-font-style: bold;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-dev-empty {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    white-space: normal;
+    padding-top: var(--gm-space-1);
+    padding-bottom: var(--gm-space-1);
+}
+
+.gm-dev-row {
+    flex-direction: row;
+    align-items: center;
+    padding-top: var(--gm-space-1);
+    padding-bottom: var(--gm-space-1);
+    padding-left: var(--gm-space-1);
+    border-left-width: var(--gm-border-2);
+    border-left-color: rgba(0, 0, 0, 0);
+}
+
+.gm-dev-row:hover {
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-dev-row--active {
+    background-color: var(--gm-color-hover-surface);
+    border-left-color: var(--gm-color-accent);
+}
+
+.gm-dev-row__label {
+    flex-grow: 1;
+    flex-shrink: 1;
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: var(--gm-space-2);
+}
+
+.gm-dev-play {
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    padding-top: var(--gm-space-1);
+    padding-bottom: var(--gm-space-1);
+    padding-left: var(--gm-space-2);
+    padding-right: var(--gm-space-2);
+    margin: 0;
+    min-width: 44px; /* layout: минимальная ширина кнопки Play */
+    flex-shrink: 0;
+}
+
+.gm-dev-play:hover {
+    background-color: var(--gm-color-hover-surface);
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-dev-play:active {
+    background-color: var(--gm-color-accent);
+    border-color: var(--gm-color-accent-active);
+    color: var(--gm-color-text-on-accent);
+}
+
+/* F1-просмотрщик экранов: лента-переключатель поверх контента экрана.
+   top под верхней панелью — её UIDocument (order 20) рисуется выше dev (order 10). */
+.gm-dev-screens-bar {
+    position: absolute;
+    left: 0;
+    top: 96px; /* layout: ниже верхней панели */
+    right: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: var(--gm-color-surface-panel);
+    border-bottom-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-2);
+}
+
+.gm-dev-screens-bar .gm-dev-play {
+    margin: var(--gm-space-1);
+}

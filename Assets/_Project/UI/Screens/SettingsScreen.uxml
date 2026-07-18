@@ -1,30 +1,39 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel" style="min-width: 380px;">
-            <ui:Label text="Audio" class="gm-panel__title" />
+        <ui:VisualElement class="gm-panel gm-panel--settings">
+            <ui:Label text="Настройки" class="gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
-            <ui:VisualElement class="gm-slider-row">
-                <ui:Label text="Master" class="gm-slider-row__label" />
-                <ui:Slider name="slider-master" class="gm-slider" low-value="0" high-value="1" />
-                <ui:Label name="val-master" text="100%" class="gm-slider-row__value" />
+            <!-- Табы (визуал-каркас на будущее): Игра / Графика / Звук. Переключение — в MenuRouter. -->
+            <ui:VisualElement class="gm-tabbar">
+                <ui:Button name="tab-game" text="Игра" class="gm-tab" />
+                <ui:Button name="tab-video" text="Графика" class="gm-tab" />
+                <ui:Button name="tab-audio" text="Звук" class="gm-tab gm-tab--active" />
             </ui:VisualElement>
-            <ui:VisualElement class="gm-slider-row">
-                <ui:Label text="Music" class="gm-slider-row__label" />
-                <ui:Slider name="slider-music" class="gm-slider" low-value="0" high-value="1" />
-                <ui:Label name="val-music" text="100%" class="gm-slider-row__value" />
+
+            <!-- Страница «Игра»: тумблеры презентации. Подписи + значения проставляет роутер из VM (loc). -->
+            <ui:VisualElement name="page-game" class="gm-tab-page gm-tab-page--hidden">
+                <gm:ToggleRow name="toggle-card-anim" />
+                <gm:ToggleRow name="toggle-card-attack" />
             </ui:VisualElement>
-            <ui:VisualElement class="gm-slider-row">
-                <ui:Label text="SFX" class="gm-slider-row__label" />
-                <ui:Slider name="slider-sfx" class="gm-slider" low-value="0" high-value="1" />
-                <ui:Label name="val-sfx" text="100%" class="gm-slider-row__value" />
+
+            <!-- Страница «Графика» — заглушка под будущие опции. -->
+            <ui:VisualElement name="page-video" class="gm-tab-page gm-tab-page--hidden">
+                <ui:Label text="Настройки графики — скоро" class="gm-tab-placeholder" />
+            </ui:VisualElement>
+
+            <!-- Страница «Звук» — активная: три строки-слайдера (подписи/значения проставляет роутер из VM). -->
+            <ui:VisualElement name="page-audio" class="gm-tab-page">
+                <gm:SliderRow name="row-master" />
+                <gm:SliderRow name="row-music" />
+                <gm:SliderRow name="row-sfx" />
             </ui:VisualElement>
 
             <ui:VisualElement class="gm-divider" />
-            <ui:VisualElement style="flex-direction: row;">
-                <ui:Button name="btn-save" text="Save" class="gm-button gm-button--primary" style="flex-grow: 1; margin-right: 8px;" />
-                <ui:Button name="btn-cancel" text="Cancel" class="gm-button" style="flex-grow: 1; margin-right: 8px;" />
-                <ui:Button name="btn-defaults" text="Defaults" class="gm-button" style="flex-grow: 1;" />
+            <ui:VisualElement class="gm-button-row">
+                <ui:Button name="btn-save" text="Сохранить" class="gm-button gm-button--primary gm-button--fill" />
+                <ui:Button name="btn-cancel" text="Отмена" class="gm-button gm-button--fill" />
+                <ui:Button name="btn-defaults" text="Сброс" class="gm-button gm-button--fill" />
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

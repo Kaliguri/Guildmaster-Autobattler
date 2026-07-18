@@ -1,0 +1,15 @@
+{
+ "test": "06 UI kits",
+ "title": "PixelLab UI-киты (3 стиля)",
+ "status": "ТЕСТ — качество годное для UI; стиль-фит открыт",
+ "endpoint": "/create-ui-asset (elements composed)",
+ "elements": "window,panel,button x3,health_bar,avatar,icon_button x2,tab",
+ "styles": {
+  "A_iron_teal": "dark iron + teal",
+  "B_wood_gold": "weathered wood + gold",
+  "C_stone_violet": "slate stone + violet runes"
+ },
+ "cost": "25 генераций/лист (3 = 75)",
+ "note": "композитные мокапы, не нарезанные 9-slice; текст на кнопках лезет даже с no text",
+ "date": "2026-07-15"
+}

@@ -63,10 +63,11 @@ namespace Guildmaster.Combat
             bool panicSelf = data.CastOverrideSelfHpPct > 0f && HpPct(caster) <= data.CastOverrideSelfHpPct;
 
             bool isMassTag = data.TargetMode == AbilityTargetMode.AllEnemiesWithTag;
+            bool isAllyAura = data.TargetMode == AbilityTargetMode.AlliesInRadius;
 
             // Круговой удар и масс-по-тегу одиночной цели не требуют (центр = кастующий / список).
             RuntimeUnit target = (panicSelf && data.IsHeal) ? caster
-                               : isMassTag                  ? null
+                               : isMassTag || isAllyAura    ? null
                                : ResolveTarget(caster, data.TargetMode, units);
 
             // Требование валидной цели: Circle — центр = кастующий; масс-по-тегу — нужен хотя бы один
@@ -74,6 +75,10 @@ namespace Guildmaster.Combat
             if (isMassTag)
             {
                 if (CountEnemiesWithTag(caster, data.TriggerTag, units) == 0) return false;
+            }
+            else if (isAllyAura)
+            {
+                // Аура по союзникам всегда валидна: кастующий сам себе союзник.
             }
             else if (data.AreaShape != AreaShape.Circle && target == null)
             {
@@ -89,6 +94,8 @@ namespace Guildmaster.Combat
 
             if (data.Displaces)
                 ApplyDisplace(caster, target, data, ctx);
+            else if (isAllyAura)
+                ApplyAllyAura(caster, data, ctx);
             else if (isMassTag)
                 ApplyAllWithTag(caster, data, units, ctx);
             else if (data.AreaShape == AreaShape.Circle)
@@ -139,7 +146,7 @@ namespace Guildmaster.Combat
             // Рывок = смещение самого кастующего, без «ядра». Приземление (EffectExpired на себе) поднимет отбрасывание.
             ctx.Displace(new DisplaceRequest(
                 caster, caster, dashDir, dashDist, data.DisplaceTicks,
-                cannonball: false, damage: 0f, damageType: DamageType.Physical, width: 0f));
+                cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
         }
 
         /// <summary>Ближайший к точке живой враг команды <paramref name="selfTeam"/>, кроме <paramref name="exclude"/> (тай-брейк по Id).</summary>
@@ -206,21 +213,105 @@ namespace Guildmaster.Combat
         /// <see cref="AbilityData.TriggerTag"/> (глобально), затем — при <see cref="AbilityData.ConsumesTriggerTag"/> —
         /// снять этот тег (конверсия «Заморозки» в стан). Обход по индексу списка — детерминизм.
         /// </summary>
-        private static void ApplyAllWithTag(RuntimeUnit caster, AbilityData data, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
+        private void ApplyAllWithTag(RuntimeUnit caster, AbilityData data, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
         {
             EffectTag tag = data.TriggerTag;
+            float dmg = AbilityDamage(caster, data);
+            DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
+            DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
+
+            // «Взрыв спор» Друида: помимо урона лечит союзников вокруг КАЖДОЙ детонированной цели за каждый
+            // уникальный эффект-триггер на ней. Гейт по IsHeal+радиусу — у крио-«Оков» хила нет, они не лечат.
+            bool healsPerUnique = data.IsHeal && data.AreaRadius > 0f;
+
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit u = units[i];
                 if (u.IsDead || u.Team == caster.Team) continue;
                 if ((u.EffectTagMask & tag) == 0) continue;
 
+                // Детонация: урон по каждому тегнутому врагу («Взрыв спор», «Воспламенение»). 0 = только эффекты (крио).
+                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, u, dmg, school, ctx.ArmorK, affinity: affinity));
+
                 ApplyEffects(u, data, caster, ctx);
+
+                // Хил за уникальные яды считаем ДО расхода тега (иначе Dispel их снимет и уники обнулятся).
+                if (healsPerUnique)
+                {
+                    int uniques = CountUniqueTagged(u, tag);
+                    if (uniques > 0) HealAlliesAround(caster, u, data, uniques, ctx);
+                }
 
                 // Конверсия: снять тег-триггер (напр. Frozen) после наложения стана — «Заморозка» превращается в стан.
                 if (data.ConsumesTriggerTag)
                     ctx.Dispel(new DispelRequest(u, DispelTargetPolarity.Any, tag, dispelPower: int.MaxValue, maxCount: 0));
             }
+        }
+
+        /// <summary>Сколько РАЗНЫХ эффектов (по <c>Def</c>) с данным тегом висит на юните. Стаки одного эффекта = 1.</summary>
+        private static int CountUniqueTagged(RuntimeUnit unit, EffectTag tag)
+        {
+            int count = 0;
+            for (int i = 0; i < unit.ActiveEffects.Count; i++)
+            {
+                RuntimeEffect e = unit.ActiveEffects[i];
+                if (e.Def == null || (e.Def.Tags & tag) == 0) continue;
+
+                // Дубли по Def не считаем: ищем этот Def среди уже пройденных.
+                bool seen = false;
+                for (int j = 0; j < i; j++)
+                {
+                    RuntimeEffect prev = unit.ActiveEffects[j];
+                    if (prev.Def == e.Def && (prev.Def.Tags & tag) != 0) { seen = true; break; }
+                }
+                if (!seen) count++;
+            }
+            return count;
+        }
+
+        /// <summary>
+        /// Лечит союзников кастующего в радиусе вокруг <paramref name="epicenter"/> (детонированного врага),
+        /// умножая лечение на число уникальных ядов на нём — «Взрыв спор» лечит тем сильнее, чем разнообразнее
+        /// отравлена цель. Хил каждому союзнику стакается от каждой взорванной рядом цели (внешний цикл).
+        /// </summary>
+        private void HealAlliesAround(RuntimeUnit caster, RuntimeUnit epicenter, AbilityData data, int multiplier, ICombatContext ctx)
+        {
+            ctx.QueryUnitsInRadius(epicenter.Position, data.AreaRadius, _targets, TargetFilter.Allies, caster.Team);
+            for (int i = 0; i < _targets.Count; i++)
+            {
+                RuntimeUnit ally = _targets[i];
+                if (ally.IsDead) continue;
+
+                float heal = HealAmount(ally, data) * multiplier;
+                if (heal > 0f) ctx.Heal(ally, heal, caster);
+            }
+        }
+
+        /// <summary>
+        /// Групповой баф/хил по союзникам в радиусе («Командный клич» гоблин-командира). Кастующий входит в
+        /// список сам — клич бафает и его. Урон здесь не наносится (это опора поддержки, не AOE-удар).
+        /// </summary>
+        private void ApplyAllyAura(RuntimeUnit caster, AbilityData data, ICombatContext ctx)
+        {
+            ctx.ReportAreaHit(AreaHit.Circle(caster.Position, data.AreaRadius, caster.Team));
+            ctx.QueryUnitsInRadius(caster.Position, data.AreaRadius, _targets, TargetFilter.Allies, caster.Team);
+
+            bool casterIncluded = false;
+            for (int i = 0; i < _targets.Count; i++)
+            {
+                RuntimeUnit t = _targets[i];
+                if (t == caster) casterIncluded = true;
+                ApplyAura(t, data, caster, ctx);
+            }
+
+            if (!casterIncluded) ApplyAura(caster, data, caster, ctx);
+        }
+
+        private static void ApplyAura(RuntimeUnit t, AbilityData data, RuntimeUnit caster, ICombatContext ctx)
+        {
+            if (t.IsDead) return;
+            if (data.IsHeal) ctx.Heal(t, HealAmount(t, data), caster);
+            ApplyEffects(t, data, caster, ctx);
         }
 
         /// <summary>Круговой AOE-удар вокруг кастующего («Стальной вихрь»): урон + эффекты по всем врагам в радиусе.</summary>
@@ -232,13 +323,14 @@ namespace Guildmaster.Combat
             ctx.QueryUnitsInRadius(caster.Position, data.AreaRadius, _targets, TargetFilter.Enemies, caster.Team);
 
             float dmg = AbilityDamage(caster, data);
-            DamageType dmgType = caster.Unit != null ? caster.Unit.DamageType : DamageType.Physical;
+            DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
+            DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
 
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итог.
             for (int i = 0; i < _targets.Count; i++)
             {
                 RuntimeUnit t = _targets[i];
-                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, t, dmg, dmgType, ctx.ArmorK));
+                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, t, dmg, school, ctx.ArmorK, affinity: affinity));
                 ApplyEffects(t, data, caster, ctx);
             }
         }
@@ -256,8 +348,9 @@ namespace Guildmaster.Combat
                 float dmg = AbilityDamage(caster, data);
                 if (dmg > 0f)
                 {
-                    DamageType dmgType = caster.Unit != null ? caster.Unit.DamageType : DamageType.Physical;
-                    ctx.DealDamage(new DamageRequest(caster, target, dmg, dmgType, ctx.ArmorK));
+                    DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
+                    DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
+                    ctx.DealDamage(new DamageRequest(caster, target, dmg, school, ctx.ArmorK, affinity: affinity));
                 }
             }
             ApplyEffects(target, data, caster, ctx);

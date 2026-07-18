@@ -14,7 +14,10 @@ namespace Guildmaster.Combat
         public readonly float       Speed;
         public readonly float       CollisionRadius;
         public readonly float       RawDamage;
-        public readonly DamageType  DamageType;
+        public readonly DamageSchool School;
+
+        /// <summary>Сродство урона снаряда (Яд/Свет/Тьма).</summary>
+        public readonly DamageAffinity Affinity;
         public readonly float       ArmorK;
         public readonly int         MaxPierces;
 
@@ -34,12 +37,13 @@ namespace Guildmaster.Combat
             float        speed,
             float        collisionRadius,
             float        rawDamage,
-            DamageType   damageType,
+            DamageSchool school,
             float        armorK,
             int          maxPierces   = 0,
             bool         isHeal       = false,
             EffectData[] onHitEffects = null,
-            bool         isAutoAttack = false)
+            bool         isAutoAttack = false,
+            DamageAffinity affinity = DamageAffinity.None)
         {
             Source          = source;
             StartPosition   = startPosition;
@@ -47,7 +51,8 @@ namespace Guildmaster.Combat
             Speed           = speed;
             CollisionRadius = collisionRadius;
             RawDamage       = rawDamage;
-            DamageType      = damageType;
+            School          = school;
+            Affinity        = affinity;
             ArmorK          = armorK;
             MaxPierces      = maxPierces;
             IsHeal          = isHeal;

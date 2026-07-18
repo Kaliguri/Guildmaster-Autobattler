@@ -134,5 +134,78 @@ namespace Guildmaster.Tests.EditMode.Content
                     $"StatsConfig: AttackSpeedMin должен быть < AttackSpeedMax ({AssetDatabase.GetAssetPath(cfg)}).");
             }
         }
+
+        // --- §8 правило 7: ссылочная целостность по id — враги энкаунтера существуют ---
+
+        [Test]
+        public void Encounters_EnemyIdsExist()
+        {
+            var enemyIds = new HashSet<string>(AllContent().OfType<EnemyData>().Select(e => e.Id));
+
+            foreach (EncounterData enc in AllContent().OfType<EncounterData>())
+            {
+                if (enc.Units == null) continue;
+                foreach (EncounterUnit u in enc.Units)
+                {
+                    Assert.IsFalse(string.IsNullOrEmpty(u.EnemyId),
+                        $"Encounter '{enc.Id}' has an empty EnemyId ({AssetDatabase.GetAssetPath(enc)}).");
+                    Assert.IsTrue(enemyIds.Contains(u.EnemyId),
+                        $"Encounter '{enc.Id}' references unknown enemy id '{u.EnemyId}' " +
+                        $"({AssetDatabase.GetAssetPath(enc)}).");
+                }
+            }
+        }
+
+        // --- §8 правило 7: BattlePreset — энкаунтер задан, слоты ростера имеют релик (кит) ---
+
+        [Test]
+        public void BattlePresets_Valid()
+        {
+            foreach (BattlePresetData preset in AllContent().OfType<BattlePresetData>())
+            {
+                string path = AssetDatabase.GetAssetPath(preset);
+                Assert.IsNotNull(preset.Encounter, $"Battle preset '{preset.Id}' has no encounter ({path}).");
+                Assert.IsNotNull(preset.Roster, $"Battle preset '{preset.Id}' has a null roster ({path}).");
+
+                foreach (PlayerSlot slot in preset.Roster)
+                    Assert.IsNotNull(slot.Relic,
+                        $"Battle preset '{preset.Id}' has a roster slot with no relic — the relic slot must always be " +
+                        $"filled (relic.base for an empty vessel) ({path}).");
+            }
+        }
+
+        // --- §8 правило 7: последствия ивента ссылаются на существующий контент ---
+
+        [Test]
+        public void TextEvents_EffectContentIdsExist()
+        {
+            // Ловит ровно тот класс багов, что был у демо-ивента: выбор выдавал relic.merchant_trinket,
+            // которой в контенте нет — награда уходила в пустоту, и молча.
+            var ids = new HashSet<string>(AllContent().Select(c => c.Id));
+
+            foreach (TextEventData ev in AllContent().OfType<TextEventData>())
+            {
+                string path = AssetDatabase.GetAssetPath(ev);
+                Assert.IsTrue(ev.Choices.Count >= 2,
+                    $"Text event '{ev.Id}' must offer at least 2 choices ({path}).");
+
+                for (int i = 0; i < ev.Choices.Count; i++)
+                {
+                    foreach (EventEffect effect in ev.Choices[i].Effects)
+                    {
+                        bool needsContent = effect.Kind is EventEffectKind.GrantRelic
+                                                        or EventEffectKind.RemoveRelic
+                                                        or EventEffectKind.GrantItem;
+                        if (!needsContent) continue;
+
+                        Assert.IsFalse(string.IsNullOrEmpty(effect.ContentId),
+                            $"Text event '{ev.Id}' choice {i}: effect {effect.Kind} has an empty content id ({path}).");
+                        Assert.IsTrue(ids.Contains(effect.ContentId),
+                            $"Text event '{ev.Id}' choice {i}: effect {effect.Kind} references unknown content id " +
+                            $"'{effect.ContentId}' ({path}).");
+                    }
+                }
+            }
+        }
     }
 }

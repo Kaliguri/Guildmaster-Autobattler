@@ -1,0 +1,61 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <!-- Лоадаут/инвентарь — редизайн (Ф3a): ТОЛЬКО тело (боевая зона | грид таро-карточек | детали).
+         Глобальный топбар забега (режимы/HP/золото/акт/таймер) — отдельный RunModeBar сверху (app-shell);
+         тело сдвинуто под него через padding-top у .gm-loadout.
+         Текст здесь — RU-плейсхолдер; локализованные строки проставляет LoadoutInventoryView (ключи ui.loadout.*). -->
+    <ui:VisualElement name="loadout-root" class="gm-loadout">
+
+        <!-- ── Тело ── -->
+        <ui:VisualElement class="gm-loadout__body">
+
+            <!-- Боевая зона-«дырка» (сквозная; в Ф3b — прозрачна под camera.rect). -->
+            <ui:VisualElement name="battle-zone" class="gm-loadout__battle">
+                <ui:Label name="battle-hint" text="Живая расстановка" class="gm-loadout__battle-hint" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="gm-loadout__main">
+                <ui:VisualElement class="gm-loadout__cols">
+
+                    <!-- Центр: фильтр-табы (центр) + поиск/сортировка + грид -->
+                    <ui:VisualElement class="gm-loadout__center">
+                        <ui:VisualElement class="gm-loadout__filters">
+                            <ui:Button name="filter-relics" text="Реликвии" class="gm-tab gm-tab--active" />
+                            <ui:Button name="filter-items" text="Предметы" class="gm-tab" />
+                            <ui:Button name="filter-banners" text="Знамёна" class="gm-tab" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="gm-loadout__toolbar">
+                            <ui:TextField name="search" class="gm-loadout__search" />
+                            <ui:Button name="sort" text="Имя ↓" class="gm-loadout__sort" />
+                        </ui:VisualElement>
+
+                        <ui:ScrollView name="relic-grid" style="flex-grow: 1;" />
+                    </ui:VisualElement>
+
+                    <!-- Правая панель деталей: имя (сверху, мелко) → видео 16:9 → секции (способности / нарратив / улучшения) -->
+                    <ui:VisualElement class="gm-loadout__detail">
+                        <ui:Label name="detail-title" text="—" class="gm-loadout__detail-title" />
+                        <ui:VisualElement class="gm-loadout__video">
+                            <ui:Label name="video-hint" text="видео-вставка 16:9" class="gm-loadout__video-hint" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="gm-loadout__section">
+                            <ui:Label name="skills-label" text="способности" class="gm-loadout__section-label" />
+                            <ui:VisualElement name="detail-abilities" class="gm-loadout__abilities" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="gm-loadout__section">
+                            <ui:Label name="detail-narrative" text="" class="gm-loadout__narrative-text" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="gm-loadout__section gm-loadout__section--grow">
+                            <ui:VisualElement class="gm-loadout__upgrades">
+                                <ui:VisualElement name="upgrade-row-1" class="gm-loadout__upgrade-row" />
+                                <ui:VisualElement name="upgrade-row-2" class="gm-loadout__upgrade-row" />
+                            </ui:VisualElement>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

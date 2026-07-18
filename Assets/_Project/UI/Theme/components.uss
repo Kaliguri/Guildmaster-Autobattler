@@ -17,11 +17,16 @@
     justify-content: center;
 }
 
-/* --- Панель: латунная рамка, острые углы --- */
+/* --- Панель: пиксель-арт рамка Honeti (перекрашена в нашу палитру, 9-slice) --- */
 .gm-panel {
     background-color: var(--gm-color-surface-panel);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 3px;
+    border-width: 0;
     border-radius: var(--gm-radius-0);
     padding: var(--gm-inset-panel);
     min-width: 260px;
@@ -36,62 +41,151 @@
 }
 
 .gm-divider {
-    height: 1px;
-    background-color: var(--gm-color-border-subtle);
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("../../Art/UI/Honeti-gm/Separator_gm.png");
+    -unity-slice-left: 1;
+    -unity-slice-right: 1;
+    -unity-slice-top: 1;
+    -unity-slice-bottom: 1;
     margin-top: var(--gm-space-2);
     margin-bottom: var(--gm-space-3);
 }
 
-/* --- Кнопка (secondary по умолчанию) --- */
+/* --- Кнопка (secondary по умолчанию): пиксель-арт контур Honeti (9-slice) --- */
+/* background-color ОБЯЗАТЕЛЕН: центр контур-спрайта прозрачный, без него проступает
+   дефолтный светло-серый фон Button из темы Unity. */
 .gm-button {
     background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-2);
-    border-color: var(--gm-color-border-frame);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 3px;
+    border-width: 0;
     border-radius: var(--gm-radius-0);
     color: var(--gm-color-text);
     font-size: var(--gm-font-body);
     padding: var(--gm-space-2) var(--gm-space-4);
     margin-top: var(--gm-space-2);
     margin-bottom: var(--gm-space-2);
-    transition-property: background-color, border-color;
-    transition-duration: 0.08s;
 }
 
 .gm-button:hover {
-    background-color: var(--gm-color-hover-surface);
-    border-color: var(--gm-color-hover-border);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
 }
 
 .gm-button:active {
-    background-color: var(--gm-color-accent);
-    border-color: var(--gm-color-accent-active);
-    color: var(--gm-color-text-on-accent);
-}
-
-.gm-button:focus {
-    border-color: var(--gm-color-focus-ring);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedDown_gm.png");
 }
 
 .gm-button:disabled {
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
     color: var(--gm-color-disabled-text);
-    border-color: var(--gm-color-border-subtle);
     opacity: 1;
 }
 
-/* --- Кнопка: primary (латунная заливка) — не более одной на экран --- */
+/* --- Кнопка: primary (латунная заливка Honeti) — не более одной на экран --- */
 .gm-button--primary {
-    background-color: var(--gm-color-accent);
-    border-color: var(--gm-color-accent-active);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
     color: var(--gm-color-text-on-accent);
 }
 
 .gm-button--primary:hover {
-    background-color: var(--gm-color-accent-hover);
-    border-color: var(--gm-color-hover-border);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
 }
 
 .gm-button--primary:active {
-    background-color: var(--gm-color-accent-active);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Down_gm.png");
+}
+
+/* Disabled primary: та же тусклая деревянная плашка, что и у secondary.
+   БЕЗ opacity — полупрозрачность пускала бы дефолтный серый фон Button сквозь спрайт. */
+.gm-button--primary:disabled {
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
+    color: var(--gm-color-text-muted);
+}
+
+/* Кнопка, тянущаяся на равную долю в ряду (футер настроек и т.п.). */
+.gm-button--fill {
+    flex-grow: 1;
+}
+
+/* Ряд кнопок в подвале панели: равные доли с зазором. */
+.gm-button-row {
+    flex-direction: row;
+}
+
+.gm-button-row > .gm-button {
+    margin-left: var(--gm-space-1);
+    margin-right: var(--gm-space-1);
+}
+
+/* Меню-панель (ESC / Pause): привычный крупный размер с запасом «на будущее» под новые пункты. */
+.gm-panel--menu {
+    min-width: 460px;
+    min-height: 520px;
+}
+
+/* Панель настроек: шире и выше под табы (Игра/Графика/Звук) + запас под будущие опции. */
+.gm-panel--settings {
+    min-width: 600px;
+    min-height: 520px;
+}
+
+/* Страница таба: занимает свободное место панели; скрытая — не в потоке. */
+.gm-tab-page {
+    flex-grow: 1;
+}
+
+.gm-tab-page--hidden {
+    display: none;
+}
+
+/* Плейсхолдер пустой вкладки (визуал-каркас «на будущее»). */
+.gm-tab-placeholder {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-body);
+}
+
+/* --- Строка тумблера: подпись слева (растянута), чекбокс справа в колонку. Пара к gm-slider-row --- */
+.gm-toggle-row {
+    flex-direction: row;
+    align-items: center;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-toggle-row__label {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    flex-grow: 1;
+}
+
+/* Приглушить подпись, когда строка недоступна (напр. «атака» при выключенной анимации). */
+.gm-toggle-row:disabled .gm-toggle-row__label {
+    color: var(--gm-color-disabled-text);
+}
+
+.gm-toggle-row__check {
+    flex-shrink: 0;
+    margin-left: var(--gm-space-3);
+}
+
+/* Чекбокс под тему-гроссбух: утопленный фон, латунная рамка, галка-пергамент (вместо белого дефолта). */
+.gm-toggle-row__check .unity-toggle__checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    -unity-background-image-tint-color: var(--gm-color-text);
 }
 
 /* --- Строка слайдера: подпись слева, слайдер по центру, значение справа --- */
@@ -145,5 +239,1406 @@
 /* --- Текстовые роли --- */
 .gm-text-muted {
     color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+}
+
+/* ============================================================================
+ * Loadout-экран (шаг 5): табы, грид карточек реликов, панель деталей.
+ * ========================================================================== */
+
+/* --- Панель табов (Релик активен; Предметы/Улучшения/AI — заглушки) --- */
+.gm-tabbar {
+    flex-direction: row;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-tab {
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    border-radius: var(--gm-radius-0);
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-body);
+    padding: var(--gm-space-1) var(--gm-space-3);
+    margin-right: var(--gm-space-2);
+}
+
+/* Активный таб: латунный контур Honeti (вместо тусклой плашки неактивного). */
+.gm-tab--active {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    color: var(--gm-color-text);
+    -unity-font-style: bold;
+}
+
+.gm-tab:disabled {
+    color: var(--gm-color-disabled-text);
+    border-color: var(--gm-color-border-subtle);
+    opacity: 1;
+}
+
+/* --- Тело loadout: грид слева, детали справа --- */
+.gm-loadout-body {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* --- Грид карточек реликов --- */
+.gm-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    flex-grow: 1;
+}
+
+/* --- Карточка релика (плейсхолдер-спрайт + подпись; primary=спрайт по дизайну) --- */
+.gm-card {
+    width: 76px;
+    height: 88px;
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    margin: var(--gm-space-1);
+    align-items: center;
+    justify-content: flex-end;
+    padding: var(--gm-space-1);
+}
+
+/* Редкость: базовый тинт рамки (интерактив ниже — hover/current/selected — переопределяет по порядку). */
+.gm-card--rarity-trash  { -unity-background-image-tint-color: var(--gm-color-rarity-trash); }
+.gm-card--rarity-common { -unity-background-image-tint-color: var(--gm-color-rarity-common); }
+.gm-card--rarity-unique { -unity-background-image-tint-color: var(--gm-color-rarity-unique); }
+
+.gm-card:hover {
+    -unity-background-image-tint-color: var(--gm-color-hover-border);
+}
+
+/* Надетая/выбранная: подсветка рамки через tint (border теперь в спрайте). */
+.gm-card--current {
+    -unity-background-image-tint-color: var(--gm-color-accent);
+}
+
+.gm-card--selected {
+    -unity-background-image-tint-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-card__sprite {
+    flex-grow: 1;
+    width: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-card__name {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* Ряд info-тегов под именем: чипы переносятся, если не влезают в ширину карточки. */
+.gm-card__tags {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: var(--gm-space-1);
+}
+
+/* Чип тега: иконка (опц.) + подпись. Тускло-акцентный, чтобы не спорить с именем. */
+.gm-card__tag {
+    flex-direction: row;
+    align-items: center;
+    margin: 2px;
+}
+
+.gm-card__tag-icon {
+    width: 18px;
+    height: 18px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-card__tag-label {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+}
+
+/* Только иконки (нет подписей) — контейнер плотнее. */
+.gm-card__tag--icon-only .gm-card__tag-label {
+    display: none;
+}
+
+/* --- Панель деталей выбранного релика --- */
+.gm-detail {
+    width: 190px;
+    flex-shrink: 0;
+    margin-left: var(--gm-space-3);
+    padding: var(--gm-space-3);
+    background-color: var(--gm-color-surface-sunken);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+}
+
+.gm-detail__name {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    -unity-font-style: bold;
+    margin-bottom: var(--gm-space-2);
+    white-space: normal;
+}
+
+.gm-detail__desc {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    margin-bottom: var(--gm-space-2);
+    white-space: normal;
+}
+
+.gm-detail__tags {
+    color: var(--gm-color-accent);
+    font-size: var(--gm-font-sm);
+    margin-bottom: var(--gm-space-2);
+    white-space: normal;
+}
+
+.gm-detail__stats {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    white-space: normal;
+}
+
+/* ============================================================================
+ * Экран награды (A3): модальная витрина из N реликвий + опц. секция сброса.
+ * ========================================================================== */
+
+.gm-panel--reward {
+    min-width: 460px;
+    max-width: 540px;
+}
+
+/* Витрина: карточки в ряд по центру (перенос — страховка при узкой панели). */
+.gm-reward-choices {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Карточка витрины — крупная (фокус экрана: показываем анимированный спрайт персонажа). */
+.gm-card--reward {
+    width: 120px;
+    height: 136px;
+    margin: var(--gm-space-1);
+}
+
+.gm-reward-drop {
+    margin-top: var(--gm-space-1);
+}
+
+.gm-reward-drop__hint {
+    white-space: normal;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Строка запаса для сброса ради места (кликабельна). */
+.gm-reward-drop__row {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    padding-top: var(--gm-space-1);
+    padding-bottom: var(--gm-space-1);
+    padding-left: var(--gm-space-2);
+    border-left-width: 2px;
+    border-left-color: rgba(0, 0, 0, 0);
+}
+
+.gm-reward-drop__row:hover {
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-reward-drop__row--selected {
+    color: var(--gm-color-text);
+    background-color: var(--gm-color-hover-surface);
+    border-left-color: var(--gm-color-accent);
+}
+
+.gm-reward-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: var(--gm-space-1);
+}
+
+/* ============================================================================
+ * Экран текстового ивента (StS-style): заголовок, опц. картинка, тело, варианты.
+ * ========================================================================== */
+
+.gm-panel--event {
+    min-width: 520px;
+    max-width: 620px;
+}
+
+.gm-event-image {
+    height: 120px;
+    margin-bottom: var(--gm-space-3);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-event-body {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    white-space: normal;
+    margin-bottom: var(--gm-space-3);
+}
+
+/* Варианты ответа — колонка кнопок во всю ширину панели. */
+.gm-event-choice {
+    width: 100%;
+    margin-top: var(--gm-space-1);
+    margin-bottom: 0;
+}
+
+/* ============================================================================
+ * Хаб лоадаута: обзор команды (4 сосуда) + общая секция (баннеры, запас).
+ * ========================================================================== */
+
+.gm-panel--hub {
+    min-width: 480px;
+    max-width: 640px;
+}
+
+.gm-hub-section {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    -unity-font-style: bold;
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-2);
+}
+
+/* Ряд сосудов команды. */
+.gm-hub-roster {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* Карточка сосуда: имя сверху, надетый релик (иконка+имя) снизу. */
+.gm-hub-vessel {
+    width: 130px;
+    height: 116px;
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    padding: var(--gm-space-2);
+    justify-content: space-between;
+}
+
+.gm-hub-vessel:hover {
+    -unity-background-image-tint-color: var(--gm-color-hover-border);
+}
+
+/* Имя сосуда: перенос в 2 строки вместо агрессивного эллипсиса (длинные классы —
+   «Криомант»/«Защитник» — не влезают одной строкой в компактную карточку). */
+.gm-hub-vessel__name {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    -unity-font-style: bold;
+    white-space: normal;
+}
+
+.gm-hub-vessel__relic {
+    flex-direction: row;
+    align-items: center;
+}
+
+.gm-hub-vessel__relic-icon {
+    width: 28px;
+    height: 28px;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-subtle);
+    -unity-background-scale-mode: scale-to-fit;
+    margin-right: var(--gm-space-2);
+    flex-shrink: 0;
+}
+
+.gm-hub-vessel__relic-name {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+}
+
+/* Общая секция: две колонки — баннеры и запас. */
+.gm-hub-common {
+    flex-direction: row;
+}
+
+/* flex-basis НЕ 0: при 0 грид слотов считает перенос против нулевой ширины и раздувает высоту
+   колонки (готча flexbox) → мёртвая пустота в панели. 45% + grow даёт корректный перенос. */
+.gm-hub-common__col {
+    flex-grow: 1;
+    flex-basis: 45%;
+    margin-right: var(--gm-space-4);
+}
+
+.gm-hub-banners {
+    flex-direction: row;
+}
+
+/* Слот-плейсхолдер (баннер/предмет): пустой квадрат. */
+.gm-hub-slot {
+    width: 40px;
+    height: 40px;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-subtle);
+    -unity-background-scale-mode: scale-to-fit;
+    margin-right: var(--gm-space-2);
+}
+
+.gm-hub-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ============================================================================
+ * Верхняя панель забега (StS-style): полоса сверху экрана.
+ * ========================================================================== */
+
+.gm-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--gm-color-surface-panel);
+    border-bottom-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-2) var(--gm-space-3);
+}
+
+.gm-topbar__group {
+    flex-direction: row;
+    align-items: center;
+}
+
+.gm-topbar__group--center {
+    flex-grow: 1;
+    justify-content: center;
+}
+
+/* Компактная кнопка панели (меньше отступы, чем у gm-button) — Honeti-контур. */
+.gm-topbar__btn {
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    padding: var(--gm-space-1) var(--gm-space-3);
+    margin: 0 var(--gm-space-1);
+}
+
+.gm-topbar__btn:hover {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
+}
+
+.gm-topbar__stat {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    margin: 0 var(--gm-space-2);
+}
+
+.gm-topbar__timer {
+    color: var(--gm-color-accent);
+    -unity-font-style: bold;
+}
+
+/* Таймер боя в центре: скрыт по умолчанию (фаза расстановки = кнопка «Начать»);
+   в бою показывается кодом (RunTopBarView.SetFighting). */
+.gm-topbar__battle-timer {
+    display: none;
+    color: var(--gm-color-accent);
+    -unity-font-style: bold;
+}
+
+/* Кнопка «Начать» — primary латунная заливка (перебивает контур gm-topbar__btn). */
+.gm-topbar__start {
+    margin: 0;
+    padding-left: var(--gm-space-6);
+    padding-right: var(--gm-space-6);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
+    color: var(--gm-color-text-on-accent);
+}
+
+/* ============================================================================
+ * Слот (компонент Slot): рамка-квадрат с опц. иконкой. Пустой = плейсхолдер.
+ * ========================================================================== */
+
+.gm-slot {
+    background-color: var(--gm-color-surface-sunken);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    margin: var(--gm-space-1);
+}
+
+/* Наведение/выбор слота (запас реликвий в хабе): подсветка рамки через tint. */
+.gm-slot:hover {
+    -unity-background-image-tint-color: var(--gm-color-hover-border);
+}
+
+.gm-slot--selected {
+    -unity-background-image-tint-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
+/* Ghost перетаскиваемой реликвии (лоадаут-хаб): иконка под курсором во время драга. */
+.gm-drag-ghost {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    -unity-background-scale-mode: scale-to-fit;
+    opacity: 0.85;
+}
+
+.gm-slot__icon {
+    flex-grow: 1;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-slot--sm {
+    width: 40px;
+    height: 40px;
+}
+
+.gm-slot--md {
+    width: 76px;
+    height: 76px;
+}
+
+.gm-slot--lg {
+    width: 92px;
+    height: 92px;
+}
+
+/* Ряд слотов (запас/баннеры): перенос по ширине, БЕЗ flex-grow (не распирает панель). */
+.gm-slot-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+/* ============================================================================
+ * Подсказка (компонент Tooltip): всплывает при наведении на карточку.
+ * ========================================================================== */
+
+.gm-tooltip {
+    background-color: var(--gm-color-surface-panel);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    padding: var(--gm-space-2) var(--gm-space-3);
+    max-width: 220px;
+}
+
+.gm-tooltip__title {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    -unity-font-style: bold;
+}
+
+.gm-tooltip__meta {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-tooltip__tags {
+    color: var(--gm-color-accent);
+    font-size: var(--gm-font-sm);
+}
+
+.gm-tooltip__desc {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    margin-top: var(--gm-space-1);
+}
+
+/* ============================================================================
+ * ЯРУС ШРИФТОВ: тело — Fira Sans, заголовки — Cormorant Garamond Medium (TextCore SDF).
+ * Живёт здесь (а не отдельным @import), т.к. тема .tss не подхватывала 4-й @import.
+ * Специфичность: дефолт-тема Unity вешает шрифт ПРЯМО на .unity-text-element, а прямое
+ * правило бьёт унаследованное — поэтому целим текст-элементы внутри экранов (2 класса),
+ * а не корень через наследование. Финальный арт заменит файлы — структура та же.
+ * ========================================================================== */
+
+/* Тело: ВСЕ текст-элементы = Fira Sans. Плоский `.unity-text-element` (спец. 1), но идёт
+   ПОСЛЕ дефолт-темы Unity в цепочке .tss → выигрывает по порядку. Фонтит и экраны, и галерею,
+   и любой будущий UI вне модалок (наследование от корня дефолт-тема бы перебила). */
+.unity-text-element {
+    -unity-font-definition: url("../Fonts/FiraSans-Regular SDF.asset");
+}
+
+/* Дисплей: заголовки панелей = Cormorant Medium. Идёт ПОСЛЕ правила тела → выигрывает на
+   титуле (та же спец.); синт-болд снимаем (вес Medium уже в файле). */
+.gm-panel__title {
+    -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
+    -unity-font-style: normal;
+}
+
+/* ============================================================================
+ * КАРТА АКТА (A3): панель-оверлей + граф узлов слева→направо (Across the Obelisk).
+ * Узлы позиционирует C# (MapGraph) абсолютно по UiPosition; рёбра рисует painter2D.
+ * ТИП узла = цветная полоса-акцент сверху; СОСТОЯНИЕ = рамка/прозрачность (не конфликтуют).
+ * ========================================================================== */
+
+/* Панель карты — крупный оверлей почти на весь экран. */
+.gm-panel--map {
+    min-width: 1600px;
+    min-height: 860px;
+}
+
+.gm-map {
+    flex-grow: 1;
+    width: 100%;
+}
+
+/* Холст графа: заполняет панель; сюда C# кладёт узлы и рисует рёбра. */
+.gm-map__graph {
+    flex-grow: 1;
+    min-height: 700px;
+    --gm-map-edge: var(--gm-color-map-edge);
+    --gm-map-edge-active: var(--gm-color-map-edge-active);
+}
+
+/* Узел графа: позицию задаёт C#. По умолчанию — вне досягаемости (тускло). */
+.gm-map__node {
+    position: absolute;
+    width: 132px;
+    height: 92px;
+    flex-direction: column;
+    background-color: var(--gm-color-map-node-locked);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-inner);
+    border-radius: var(--gm-radius-0);
+    opacity: 0.55;
+    overflow: hidden;
+}
+
+.gm-map__node-accent {
+    height: 10px;
+    width: 100%;
+    background-color: var(--gm-color-border-subtle);
+}
+
+.gm-map__node-label {
+    flex-grow: 1;
+    font-size: var(--gm-font-sm);
+    color: var(--gm-color-text-muted);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* Состояния */
+.gm-map__node--cleared {
+    opacity: 0.9;
+    background-color: var(--gm-color-map-node-cleared);
+}
+
+.gm-map__node--available {
+    opacity: 1;
+    background-color: var(--gm-color-surface-raised);
+    border-color: var(--gm-color-accent);
+}
+
+.gm-map__node--available:hover {
+    border-color: var(--gm-color-hover-border);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-map__node--available .gm-map__node-label {
+    color: var(--gm-color-text);
+}
+
+.gm-map__node--current {
+    opacity: 1;
+    border-color: var(--gm-color-map-node-current);
+}
+
+/* Тип узла — цвет полосы-акцента (не трогает рамку/фон состояния) */
+.gm-map__node-accent--start     { background-color: var(--gm-color-border-subtle); }
+.gm-map__node-accent--battle    { background-color: var(--gm-color-accent); }
+.gm-map__node-accent--elite     { background-color: var(--gm-color-danger); }
+.gm-map__node-accent--boss      { background-color: var(--gm-color-danger-hover); }
+.gm-map__node-accent--shop      { background-color: var(--gm-brass-300); }
+.gm-map__node-accent--chest     { background-color: var(--gm-brass-200); }
+.gm-map__node-accent--textevent { background-color: var(--gm-parchment-300); }
+.gm-map__node-accent--unknown   { background-color: var(--gm-color-text-muted); }
+
+/* Единая кнопка «Продолжить» (A4): полноэкранный слой-гейт, кнопка всегда в правом нижнем углу. */
+.gm-continue-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.gm-continue {
+    position: absolute;
+    right: var(--gm-space-5);
+    bottom: var(--gm-space-5);
+    min-width: 220px;
+}
+
+/* ============================================================================
+ * МАГАЗИН (B2): витрина 4 слота + реролл + панель продажи + тост «нет места».
+ * ========================================================================== */
+.gm-panel--shop {
+    min-width: 1100px;
+    min-height: 760px;
+}
+
+.gm-shop__topbar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-shop__gold {
+    font-size: var(--gm-font-title);
+    color: var(--gm-brass-300);
+}
+
+.gm-shop__shelf {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.gm-shop__card {
+    width: 200px;
+    align-items: center;
+    padding: var(--gm-space-2);
+    margin: var(--gm-space-1);
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-inner);
+}
+
+.gm-shop__card--sold {
+    opacity: 0.4;
+}
+
+.gm-shop__price {
+    font-size: var(--gm-font-body);
+    color: var(--gm-brass-300);
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-shop__section-title {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-shop__stash {
+    max-height: 240px;
+}
+
+.gm-shop__stash-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--gm-space-1);
+    border-bottom-width: var(--gm-border-1);
+    border-bottom-color: var(--gm-color-border-subtle);
+}
+
+.gm-shop__stash-name {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text);
+}
+
+.gm-shop__footer {
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-top: var(--gm-space-2);
+}
+
+/* Тост «нет места»: полноэкранный слой по центру, клики сквозь. */
+.gm-shop__toast {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-shop__toast-label {
+    font-size: var(--gm-font-lg);
+    color: var(--gm-danger-400);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+/* ============================================================================
+ * СУНДУК (B3): фасад с кликабельной крышкой (арт-плейсхолдер до пиксель-спрайта).
+ * ========================================================================== */
+.gm-panel--chest {
+    min-width: 640px;
+    min-height: 520px;
+    align-items: center;
+}
+
+.gm-chest__body {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-chest__lid {
+    width: 220px;
+    height: 160px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-2);
+    border-color: var(--gm-brass-400);
+    transition-property: scale, opacity;
+    transition-duration: 0.13s;
+}
+
+.gm-chest__lid:hover {
+    scale: 1.04 1.04;
+    border-color: var(--gm-brass-300);
+}
+
+.gm-chest__lid--open {
+    scale: 0.9 0.9;
+    opacity: 0.5;
+}
+
+.gm-chest__glyph {
+    font-size: var(--gm-font-lg);
+    color: var(--gm-brass-300);
+}
+
+.gm-chest__hint {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    margin-top: var(--gm-space-3);
+}
+
+/* ============================================================================
+ * ХП забега в топ-баре (C1, реш. №65): пипсы-сердца (перезапуски на акт).
+ * Иконка Honeti HeartRed; потраченный пипс — тот же спрайт тусклым.
+ * ========================================================================== */
+.gm-topbar__hp {
+    flex-direction: row;
+    align-items: center;
+    margin-left: var(--gm-space-2);
+    margin-right: var(--gm-space-2);
+}
+
+.gm-topbar__hp-pip {
+    width: 34px;
+    height: 34px;
+    margin-right: var(--gm-space-1);
+    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/HeartRed.png");
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-topbar__hp-pip--empty {
+    opacity: 0.25;
+}
+
+/* ============================================================================
+ * ЭКРАН ИСХОДА ЗАБЕГА (C2): Победа / Поражение → «В меню».
+ * ========================================================================== */
+.gm-panel--outcome {
+    min-width: 560px;
+    min-height: 360px;
+    align-items: center;
+}
+
+.gm-outcome__title {
+    color: var(--gm-brass-300);
+}
+
+.gm-outcome__title--defeat {
+    color: var(--gm-danger-400);
+}
+
+.gm-outcome__sub {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    -unity-text-align: middle-center;
+    flex-grow: 1;
+    margin-top: var(--gm-space-3);
+}
+
+.gm-outcome__footer {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: var(--gm-space-3);
+}
+
+/* ============================================================================
+ * ГЛАВНОЕ МЕНЮ (D1): Начать / Продолжить / Настройки / Выход.
+ * ========================================================================== */
+.gm-panel--mainmenu {
+    min-width: 520px;
+    min-height: 560px;
+    align-items: center;
+}
+
+.gm-mainmenu__title {
+    font-size: var(--gm-font-lg);
+    color: var(--gm-brass-300);
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-mainmenu__buttons {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: stretch;
+    min-width: 360px;
+}
+
+.gm-mainmenu__btn {
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
+}
+
+/* ============================================================================
+ * ЛОАДАУТ-ЭКРАН — РЕДИЗАЙН (Ф3a): полноэкранный трёхколоночник (реф Bloodlines/Blasphemous).
+ * НЕ модалка-оверлей: занимает весь экран. Топбар-режимы сверху; тело = боевая зона
+ * (сквозная «дырка» слева, в Ф3b под ней camera.rect) | грид таро-карточек | панель деталей.
+ * Нижняя панель золота сидит ТОЛЬКО под центром+правым (боевую зону не режет).
+ * ========================================================================== */
+
+.gm-loadout {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    /* Корень ПРОЗРАЧЕН (Ф3b P1): левая зона — дырка сквозь панель к реальной боевой камере; непрозрачную
+       подложку несёт .gm-loadout__main (центр+детали). PanelSettings не заливает фон (ClearColor off). */
+    flex-direction: column;
+    /* Тело сдвинуто под глобальный топбар забега (app-shell): он рисуется поверх этой полосы. */
+    padding-top: var(--gm-topbar-height);
+}
+
+/* Глобальная панель забега: тот же вид, что топбар инвентаря, но абсолютно закреплён сверху с фикс-высотой. */
+.gm-runbar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: var(--gm-topbar-height);
+}
+
+/* Стат-лейбл в глобальной панели (золото/акт/таймер). */
+.gm-loadout__stat {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    margin-left: var(--gm-space-1);
+    margin-right: var(--gm-space-1);
+}
+
+.gm-loadout__stat--timer {
+    color: var(--gm-color-accent);
+    -unity-font-style: bold;
+}
+
+/* Таймер боя виден только в бою (RunModeBarView.SetFighting). */
+.gm-loadout__battle-timer {
+    display: none;
+}
+
+/* Кнопка «Начать» бой — латунная заливка (primary), компактно. */
+.gm-loadout__start-btn {
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    color: var(--gm-color-text-on-accent);
+    font-size: var(--gm-font-sm);
+    padding: var(--gm-space-1) var(--gm-space-4);
+    margin-left: var(--gm-space-2);
+    margin-right: var(--gm-space-2);
+}
+
+.gm-loadout__start-btn:hover {
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
+}
+
+/* --- Топбар-режимы: 3 зоны (гильдия | табы-режимы по центру | время+меню). --- */
+/* Боковые зоны растут поровну (flex-basis:0 + grow:1) → центр всегда строго по центру. */
+.gm-loadout__topbar {
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--gm-color-surface-panel);
+    border-bottom-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-2) var(--gm-space-3);
+}
+
+.gm-loadout__topbar-side {
+    flex-direction: row;
+    align-items: center;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.gm-loadout__topbar-side--right {
+    justify-content: flex-end;
+}
+
+.gm-loadout__topbar-center {
+    flex-direction: row;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Гильдия + круг возвышения (слева). */
+.gm-loadout__guild-name {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    -unity-font-style: bold;
+}
+
+.gm-loadout__guild-asc {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    letter-spacing: 2px;
+}
+
+/* Таб-режим (Карта/Бой/Инвентарь/Тактика/Компендиум) — тусклая плашка; активный — латунный контур. */
+.gm-loadout__mode {
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    border-radius: var(--gm-radius-0);
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-body);
+    padding: var(--gm-space-1) var(--gm-space-3);
+    margin: 0 var(--gm-space-1);
+}
+
+.gm-loadout__mode:hover {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
+    color: var(--gm-color-text);
+}
+
+.gm-loadout__mode--active {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    color: var(--gm-color-text);
+    -unity-font-style: bold;
+}
+
+/* Время забега + бургер-меню (справа). */
+.gm-loadout__time {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    margin-right: var(--gm-space-2);
+}
+
+.gm-loadout__menu-btn {
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    padding: var(--gm-space-1) var(--gm-space-3);
+    margin: 0;
+}
+
+.gm-loadout__menu-btn:hover {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
+}
+
+/* --- Тело: боевая зона | (центр + правый + нижняя панель золота) --- */
+.gm-loadout__body {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* Боевая зона-«дырка»: сквозная на всю высоту, ПРОЗРАЧНА (Ф3b P1) — сквозь неё виден реальный вид
+   боевой камеры (пока загружена боевая сцена). Рамка справа — визуальный разделитель с телом инвентаря.
+   Нижняя панель золота её НЕ перекрывает (сидит в __main). */
+.gm-loadout__battle {
+    width: 31%;
+    flex-shrink: 0;
+    border-right-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-loadout__battle-hint {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    -unity-text-align: middle-center;
+    white-space: normal;
+}
+
+/* Правая часть тела: центр+детали в ряд, снизу — панель золота. Несёт непрозрачную подложку тела
+   (корень прозрачен ради дырки слева) — центр/детали остаются читаемыми поверх мира/фона. */
+.gm-loadout__main {
+    flex-grow: 1;
+    flex-direction: column;
+    background-color: var(--gm-color-surface-sunken);
+}
+
+.gm-loadout__cols {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+/* --- Центр: фильтр-табы (по центру) + поиск/сортировка + грид карточек --- */
+.gm-loadout__center {
+    flex-grow: 1;
+    padding: var(--gm-space-2);
+}
+
+.gm-loadout__filters {
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+/* Слим фильтр-табов под лоадаут (без правки глобального gm-tab): компактнее под реф. */
+.gm-loadout__filters .gm-tab {
+    font-size: var(--gm-font-sm);
+    padding-top: var(--gm-space-1);
+    padding-bottom: var(--gm-space-1);
+}
+
+.gm-loadout__toolbar {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+/* Поле поиска: пиксель-рамка Honeti, тянется на всю ширину; компактная высота, текст по центру. */
+.gm-loadout__search {
+    flex-grow: 1;
+    margin-right: var(--gm-space-2);
+}
+
+.gm-loadout__search .unity-text-field__input {
+    background-color: var(--gm-color-surface-sunken);
+    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
+    -unity-slice-left: 8;
+    -unity-slice-right: 8;
+    -unity-slice-top: 8;
+    -unity-slice-bottom: 8;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    height: 44px;
+    padding-left: var(--gm-space-2);
+    padding-right: var(--gm-space-2);
+    -unity-text-align: middle-left;
+}
+
+/* Сортировка: кнопка «Имя ↓» — клик циклит ключ + переключает стрелку (логика во View). Высота = поиск. */
+.gm-loadout__sort {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gm-color-surface-raised);
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
+    -unity-slice-left: 5;
+    -unity-slice-right: 5;
+    -unity-slice-top: 5;
+    -unity-slice-bottom: 5;
+    -unity-slice-scale: 2px;
+    border-width: 0;
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    height: 44px;
+    padding-left: var(--gm-space-3);
+    padding-right: var(--gm-space-3);
+}
+
+.gm-loadout__sort:hover {
+    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
+}
+
+/* Грид таро-карточек: перенос по ширине, лево-паковка (владеемые — слева, пустые-локи — далее вправо).
+   width:100% ОБЯЗАТЕЛЕН — в ScrollView contentContainer иначе тянется по контенту вширь
+   (ряд не заворачивается, карточки уезжают/клипаются вместо переноса). */
+.gm-loadout__grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+/* Скроллбар грида: тонкий, тёмный трек + латунная ручка, без стрелок (дефолтный серый клашит с темой). */
+.gm-loadout .unity-scroller--vertical {
+    width: 14px;
+    background-color: var(--gm-color-surface-sunken);
+}
+
+.gm-loadout .unity-scroller--vertical .unity-base-slider__tracker {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}
+
+.gm-loadout .unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: var(--gm-color-accent);
+    border-width: 0;
+    border-radius: var(--gm-radius-0);
+    width: 10px;
+    left: 2px;
+}
+
+.gm-loadout .unity-scroller__low-button,
+.gm-loadout .unity-scroller__high-button {
+    display: none;
+}
+
+/* --- Таро-карточка релика: кайма-в-кайме, номер аркана в углу, титул на нижней плашке --- */
+.gm-arcana-card {
+    width: 248px;
+    height: 340px;
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    margin: var(--gm-space-1);
+    padding: var(--gm-space-1);
+    flex-direction: column;
+}
+
+.gm-arcana-card:hover {
+    border-color: var(--gm-color-hover-border);
+}
+
+/* Выбранная (ЛКМ) — латунная рамка + лёгкая заливка. */
+.gm-arcana-card--selected {
+    border-color: var(--gm-color-focus-ring);
+    background-color: var(--gm-color-hover-surface);
+}
+
+/* Надета сейчас — акцентная рамка (отличается от «выбрана»). */
+.gm-arcana-card--current {
+    border-color: var(--gm-color-accent);
+}
+
+/* Заблокированная (не открытая) карта: тусклая, в центре — замок вместо арта, без номера/титула. */
+.gm-arcana-card--locked {
+    opacity: 0.45;
+}
+
+.gm-arcana-card--locked .gm-arcana-card__art {
+    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/LockGold.png");
+    -unity-background-image-tint-color: var(--gm-color-text-muted);
+    width: 40px;
+    flex-grow: 0;
+    height: 40px;
+}
+
+/* Внутренняя рамка вокруг арта — вторая кайма таро. */
+.gm-arcana-card__frame {
+    flex-grow: 1;
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-inner);
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.gm-arcana-card__art {
+    flex-grow: 1;
+    width: 100%;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+/* Номер аркана (по ID релика) — латунь, верхний-правый угол арта. */
+.gm-arcana-card__num {
+    position: absolute;
+    top: var(--gm-space-1);
+    right: var(--gm-space-1);
+    color: var(--gm-brass-300);
+    font-size: var(--gm-font-sm);
+}
+
+/* Нижняя плашка титула: отделена латунной линией сверху. */
+.gm-arcana-card__plaque {
+    border-top-width: var(--gm-border-1);
+    border-top-color: var(--gm-color-border-frame);
+    margin-top: var(--gm-space-1);
+    padding-top: var(--gm-space-1);
+}
+
+/* Титул таро-карты: одна строка, без переноса. Размер sm — чтобы длинные имена
+   («THE FLAME SWORDSMAN») влезали целиком в одну строку; очень длинное — эллипсис-страховка. */
+.gm-arcana-card__title {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    -unity-text-align: middle-center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- Правая панель деталей: видео 16:9, титул, способности, улучшения, нарратив --- */
+.gm-loadout__detail {
+    width: 460px;
+    flex-shrink: 0;
+    background-color: var(--gm-color-surface-panel);
+    border-left-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-2);
+    flex-direction: column;
+}
+
+/* Видео-вставка геймплея 16:9 (пока плейсхолдер; высота под ширину панели ~398px). */
+.gm-loadout__video {
+    width: 100%;
+    height: 224px;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-loadout__video-hint {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+}
+
+/* Имя персонажа — НАД видео, компактно (не плакат). */
+.gm-loadout__detail-title {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    letter-spacing: 1px;
+    -unity-font-style: bold;
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Секция-подпанель правой колонки (способности / нарратив / улучшения): заметная подложка + рамка. */
+.gm-loadout__section {
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-inner);
+    padding: var(--gm-space-2);
+    margin-top: var(--gm-space-2);
+}
+
+.gm-loadout__section--grow {
+    flex-grow: 1;
+    justify-content: center;
+}
+
+/* Мелкая подпись секции (размер как «видео-вставка»). */
+.gm-loadout__section-label {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Ряд иконок способностей (тултип-описание при наведении). */
+.gm-loadout__abilities {
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Зона улучшений: 2 ряда × 3 узла (подложку/рамку даёт секция-обёртка). */
+.gm-loadout__upgrades {
+    justify-content: center;
+}
+
+.gm-loadout__upgrade-row {
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
+}
+
+/* Нарратив — курсив, сериф-голос (подложку/рамку даёт секция-обёртка). */
+.gm-loadout__narrative-text {
+    -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
+    -unity-font-style: italic;
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+    white-space: normal;
+}
+
+/* --- Нижняя панель золота: только под центром+правым (в __main, не в __body). --- */
+.gm-loadout__footer {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: var(--gm-color-surface-panel);
+    border-top-width: var(--gm-border-2);
+    border-color: var(--gm-color-border-frame);
+    padding: var(--gm-space-1) var(--gm-space-3);
+}
+
+.gm-loadout__gold {
+    color: var(--gm-brass-300);
     font-size: var(--gm-font-sm);
 }

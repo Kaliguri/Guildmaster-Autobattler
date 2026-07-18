@@ -10,7 +10,9 @@
     "Guildmaster.Combat",
     "Guildmaster.Presentation",
     "Guildmaster.Game",
-    "Guildmaster.ContentHub.Editor"
+    "Guildmaster.Guild",
+    "Guildmaster.ContentHub.Editor",
+    "UniTask"
   ],
   "includePlatforms": [
     "Editor"

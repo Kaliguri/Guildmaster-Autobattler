@@ -1,0 +1,21 @@
+{
+ "test": "test-04_v1_baseline",
+ "title": "Batch v1 — baseline",
+ "status": "batch-тест (только базовый спрайт, без анимаций) — чистый силуэт, годная база",
+ "endpoint": "/create-character-with-4-directions",
+ "prompt": "Medieval man-at-arms, mail hauberk, blue wool tabard, round wooden shield, arming sword, open-face helm, grounded battle stance, low fantasy, muted steel and leather",
+ "params": {
+  "view": "side",
+  "outline": "single_color_outline",
+  "shading": "medium_shading",
+  "detail": "moderate",
+  "proportions": {
+   "type": "preset",
+   "name": "realistic_male"
+  },
+  "image_size": "64→68 canvas"
+ },
+ "character_id": "d6aaf2b6-a16b-4f6e-8181-78db97ad6503",
+ "generations": 1,
+ "date": "2026-07-15"
+}

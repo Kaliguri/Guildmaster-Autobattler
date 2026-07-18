@@ -3,12 +3,31 @@ using Guildmaster.Data.Definitions;
 namespace Guildmaster.Combat
 {
     /// <summary>
+    /// Откуда пришёл урон. Определяет, будят ли его реактивы «на удар» (шипы, щиты, уклонение):
+    /// прямой удар — будит, тик DoT и ответка реактива — нет.
+    /// </summary>
+    public enum DamageSourceKind
+    {
+        /// <summary>Урон способности (в т.ч. AOE и детонации). Прямой удар.</summary>
+        Ability = 0,
+
+        /// <summary>Урон авто-атаки (мили, линия, снаряд). Прямой удар.</summary>
+        AutoAttack = 1,
+
+        /// <summary>Тик DoT. НЕ прямой удар: горение и яд не должны будить шипы и щиты каждым тиком.</summary>
+        Periodic = 2,
+
+        /// <summary>Ответка самого реактива (шипы, само-урон). НЕ прямой удар — иначе шипы порождают шипы.</summary>
+        Reactive = 3,
+    }
+
+    /// <summary>
     /// Входные данные пайплайна урона. Чистая структура — никакого состояния или ссылок на сервисы
     /// (вики «10» §5.4). <see cref="DamagePipeline.Execute"/> мутирует HP/Shield цели.
     /// </summary>
     public readonly struct DamageRequest
     {
-        /// <summary>Источник урона (для чтения DamageDealtEff, PhysPen/MagicPen и lifesteal).</summary>
+        /// <summary>Источник урона (для чтения DamageDealtEff, PhysPen/ElementalPen и lifesteal).</summary>
         public readonly RuntimeUnit Source;
 
         /// <summary>Цель урона.</summary>
@@ -17,30 +36,43 @@ namespace Guildmaster.Combat
         /// <summary>Базовый урон до модификаторов пайплайна.</summary>
         public readonly float RawDamage;
 
-        /// <summary>Тип урона определяет, какая броня используется (Physical/Magic/True).</summary>
-        public readonly DamageType DamageType;
+        /// <summary>Школа урона — определяет, какая броня используется (Physical/Elemental/True).</summary>
+        public readonly DamageSchool School;
 
         /// <summary>Константа K из StatsConfig (mult = K / (K + effArmor)).</summary>
         public readonly float ArmorK;
 
-        /// <summary>Это урон АВТОАТАКИ (мили single/линия или снаряд-автоатака)? Урон способностей/DoT/шипов = false.
-        /// Пре-дамаг реактивы, завязанные именно на автоатаку (напр. «Изворотливость» убийцы), гейтятся по этому флагу.</summary>
-        public readonly bool IsAutoAttack;
+        /// <summary>Откуда пришёл урон — гейт для реактивов «на удар».</summary>
+        public readonly DamageSourceKind SourceKind;
+
+        /// <summary>Сродство урона (Яд/Свет/Тьма). Бронёй не гасится — множитель по типу существа цели (<see cref="AffinityTable"/>).</summary>
+        public readonly DamageAffinity Affinity;
+
+        /// <summary>Урон авто-атаки. «Изворотливость» убийцы уклоняется только от таких.</summary>
+        public bool IsAutoAttack => SourceKind == DamageSourceKind.AutoAttack;
+
+        /// <summary>
+        /// Прямой удар — авто-атака или атакующая способность. Именно он будит реактивы «на удар»
+        /// (шипы Древня, щиты): доты и ответки реактивов не будят, иначе получается каскад.
+        /// </summary>
+        public bool IsDirectHit => SourceKind is DamageSourceKind.AutoAttack or DamageSourceKind.Ability;
 
         public DamageRequest(
             RuntimeUnit source,
             RuntimeUnit target,
             float rawDamage,
-            DamageType damageType,
+            DamageSchool school,
             float armorK,
-            bool isAutoAttack = false)
+            DamageSourceKind sourceKind = DamageSourceKind.Ability,
+            DamageAffinity affinity = DamageAffinity.None)
         {
-            Source       = source;
-            Target       = target;
-            RawDamage    = rawDamage;
-            DamageType   = damageType;
-            ArmorK       = armorK;
-            IsAutoAttack = isAutoAttack;
+            Source     = source;
+            Target     = target;
+            RawDamage  = rawDamage;
+            School     = school;
+            ArmorK     = armorK;
+            SourceKind = sourceKind;
+            Affinity   = affinity;
         }
     }
 }

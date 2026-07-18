@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <!-- Верхняя панель забега (StS-style): слева хаб/опции/золото, центр «Начать», справа акт/таймер. -->
+    <ui:VisualElement class="gm-topbar">
+        <ui:VisualElement class="gm-topbar__group">
+            <ui:Button name="btn-hub" text="Гильдия" class="gm-topbar__btn" />
+            <ui:Button name="btn-settings" text="Опции" class="gm-topbar__btn" />
+            <!-- ХП забега (перезапуски-на-акт, реш. №65): всегда виден. Пипсы наполняет код. -->
+            <ui:VisualElement name="topbar-hp" class="gm-topbar__hp" />
+            <ui:Label name="topbar-gold" text="Золото: 0" class="gm-topbar__stat" />
+        </ui:VisualElement>
+
+        <ui:VisualElement class="gm-topbar__group gm-topbar__group--center">
+            <ui:Button name="btn-start" text="Начать" class="gm-button gm-button--primary gm-topbar__start" />
+            <ui:Label name="battle-timer" text="00:00" class="gm-topbar__stat gm-topbar__battle-timer" />
+        </ui:VisualElement>
+
+        <ui:VisualElement class="gm-topbar__group">
+            <ui:Label name="topbar-act" text="Акт 1" class="gm-topbar__stat" />
+            <ui:Label name="topbar-timer" text="00:00" class="gm-topbar__stat gm-topbar__timer" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

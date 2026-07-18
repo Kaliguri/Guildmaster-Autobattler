@@ -1,0 +1,20 @@
+{
+ "test": "test-05_td4_stylized",
+ "title": "TD4 — stylized (крестонос)",
+ "status": "ТОП-ДАУН (правильная проекция) — чистый читаемый, крестоносный щит",
+ "endpoint": "/create-character-with-4-directions (view=low top-down)",
+ "prompt": "Medieval man-at-arms, mail hauberk, blue wool tabard, round wooden shield, arming sword, open-face helm, grounded battle stance, low fantasy, muted steel and leather",
+ "params": {
+  "view": "low top-down",
+  "outline": "double_outline",
+  "shading": "light_shading",
+  "detail": "moderate",
+  "proportions": {
+   "type": "preset",
+   "name": "stylized"
+  }
+ },
+ "character_id": "5701a37b-c2fd-45da-958f-f717403ce0d5",
+ "generations": 1,
+ "date": "2026-07-15"
+}

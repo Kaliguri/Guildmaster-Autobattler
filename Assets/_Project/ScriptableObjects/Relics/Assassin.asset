@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Assassin
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.assassin
-  _damageType: 0
+  _damageSchool: 0
+  _affinity: 0
+  _creatureType: 0
   _attackType: 0
   _resourceType: 0
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
@@ -28,7 +30,7 @@ MonoBehaviour:
   _stats:
   - Stat: 0
     Op: 3
-    Value: 1100
+    Value: 1650
   - Stat: 3
     Op: 3
     Value: 3
@@ -69,7 +71,8 @@ MonoBehaviour:
   - assassin
   - melee
   - common
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0

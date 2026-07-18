@@ -47,6 +47,7 @@ namespace Guildmaster.DevTools
         private RuntimeUnitFactory _factory;
         private IInputService      _input;
         private QuantumConsole     _console;
+        private Guildmaster.Game.Flow.IBattleSession _session; // опц.: перезапуск боя забега на R (null в standalone-арене)
 
         // Дамми-болванчики оформлены как полноценный юнит (EnemyData «enemy.training_dummy»): свой SO,
         // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
@@ -60,15 +61,24 @@ namespace Guildmaster.DevTools
         // чтобы R после F5 всё ещё знал последний бой.
         private static System.Action<GuildmasterCommands> _lastBattleSetup;
 
+        /// <summary>
+        /// Задать «последний бой» для R извне (dev-панель энкаунтеров) — единый владелец R остаётся здесь,
+        /// а внешний источник просто регистрирует свой рестарт. Делегат должен резолвить живой скоуп сам
+        /// (переживает F5). Перекрывается следующим gm_spawn_* (last-write-wins).
+        /// </summary>
+        public static void SetLastBattle(System.Action<GuildmasterCommands> setup) => _lastBattleSetup = setup;
+
         [Inject]
         public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory,
-            IInputService input, IContentDatabase contentDatabase)
+            IInputService input, IContentDatabase contentDatabase, IObjectResolver resolver)
         {
             _simulation = simulation;
             _debugDraw  = debugDraw;
             _factory    = factory;
             _input      = input;
             contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
+            // Сессия боя живёт в RootScope: в реальном забеге резолвится, в standalone dev-арене (без Root) — null.
+            resolver.TryResolve(out _session);
         }
 
         // Пауза сима, пока консоль открыта: настраиваешь бой за консолью, закрываешь — он идёт с начала
@@ -118,7 +128,13 @@ namespace Guildmaster.DevTools
             if (kb.f5Key.wasPressedThisFrame) Restart();
 
             // R (перезапуск боя) глушим, пока консоль открыта: иначе буква «r» в команде дёргает рестарт.
-            if (!_consoleOpen && kb.rKey.wasPressedThisFrame) RestartLastBattle();
+            // Dev-спавн (gm_spawn_*) задал последний бой → перезапускаем его; иначе это бой ЗАБЕГА (грузится
+            // BattleFlow→BattleBootstrap, dev-сетап пуст) → перезапуск на месте через сессию.
+            if (!_consoleOpen && kb.rKey.wasPressedThisFrame)
+            {
+                if (_lastBattleSetup != null) RestartLastBattle();
+                else if (_session == null || !_session.RestartInPlace()) RestartLastBattle(); // варнинг «нет боя»
+            }
         }
 
         /// <summary>Зафиксировать сид боя для детерминизм-отладки (только до старта).</summary>

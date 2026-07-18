@@ -1,0 +1,81 @@
+# Валидация и авторинг
+
+Читать перед заведением валидации, массовой правкой ассетов или созданием нового контент-типа.
+
+## Валидация = часть дата-слоя
+
+Валидация контента — инвариант ДАННЫХ, живёт в этом контуре (Odin Validator решено НЕ покупать —
+валидируем своими тестами и сервисом). Не путать с дисциплиной «тесты-под-игру» (будущий
+project-conventions) — там про то, КАК тестировать; здесь про то, ЧТО именно проверяем в контенте.
+
+## ContentValidationService
+
+`Assets/_Project/Scripts/EditorTools/ContentHub/Core/ContentValidationService.cs` — уже
+реализованные правила (Browser зовёт `Validate`, Doctor — `ValidateAll`):
+
+- **Формат id** регэкспом `^[a-z0-9_]+\.[a-z0-9_]+$`; пустой id — ошибка.
+- **Домен под тип:** id должен начинаться с `{domain}.` (домен из `ContentDomains`).
+- **Дубликаты id** по индексу контента — ошибка.
+- **Битые object-ссылки** (missing): поле-ссылка null, но `instanceID != 0`.
+- **null-компоненты `[SerializeReference]`** у `EffectData` (потерянный тип) — ошибка.
+
+Находка — `ValidationIssue { Entry, Severity (Warning|Error), Message }`.
+
+Реестр (`ContentRegistry`) — тоже валидатор: кидает на пустой/дублирующийся id при сборке DI. То есть
+часть инвариантов ловится и в редакторе (сервис), и на старте (реестр).
+
+## Инварианты, которые должен покрывать EditMode-тест
+
+При добавлении контент-типа/поля убедись, что покрыты (или добавь в
+`Tests/EditMode/Content/*`, `Tests/EditMode/ContentHub/*`):
+
+- Уникальность и формат id по всему реестру.
+- Полнота реестра (каждый контент-тип попадает в `ContentDatabase`).
+- Отсутствие null в `[SerializeReference]`-полях.
+- Полнота обязательных лок-ключей (по политике `ContentLocalization.RequiredSuffixes`).
+- Ссылочная целостность по id (ссылки указывают на существующий контент).
+- Кросс-инварианты домена (напр. слоты способностей по редкости, если это правило данных).
+
+## Связь с Content Hub (инструмент, не наш скилл)
+
+`ContentHubWindow` (`Assets/_Project/Scripts/EditorTools/ContentHub/`) — единое UITK-окно дата-слоя
+(Browser / Balance / Audio / Doctor / Configs), уже написано на **чистом UI Toolkit** (не
+OdinMenuEditorWindow — это устаревшая заметка). Окно — контур будущего скилла **content-hub**.
+
+Здесь мы:
+- **используем** окно как инструмент авторинга/валидации/бейка;
+- владеем **контрактами данных и инвариантами**, которые окно правит и проверяет;
+- НЕ перестраиваем окно и его страницы — правки UI-окна идут по content-hub.
+
+CRUD-логика вынесена в plain editor-сервисы (шов под UI) — Duplicate обязан регенерировать id.
+
+## Odin в инспекторе — разрешён; Serializer — забанен
+
+- **Odin Inspector** остаётся для удобства инспектора SO: type-picker для `[SerializeReference]`
+  (состав компонентов `EffectData`), атрибуты `LabelText`/`Button`/`EnableIf`/`PropertyOrder`.
+  Писать свои UITK-property-drawer'ы ради ухода с Odin в инспекторе — много работы ради малого;
+  не делаем без явной причины.
+- **Odin Serializer** (`SerializedScriptableObject`) — запрещён навсегда (blob, AOT, конфликты
+  netcode/Workshop). Полиморфные данные — через Unity `[SerializeReference]`, не Odin-сериализацию.
+
+## Процедура авторинга ассета
+
+1. **Новый контент-тип:** зарегистрируй домен в `ContentDomains.Domains` → создай класс-наследник
+   `ContentDefinition`/`UnitData` → добавь тип в `ContentDatabase`/реестр → заведи инвариант
+   валидации → политику лок-суффиксов в `ContentLocalization` (если есть текст).
+2. **После C#-правок** — `read_console` (Unity MCP): дождись компиляции, ноль ошибок.
+3. **Создай ассет** через `CreateAssetMenu`/Content Hub. id авто-заполнится из имени (`OnValidate`).
+4. **Заполни статы/поля** в ассете (не в инициализаторе поля). База юнита — `Override` в стат-блоке
+   (см. `stats-and-configs.md`).
+5. **Лок-ключи** — `ContentLocalization.CreateMissingKeys` → заполни RU-значения.
+6. **Прогони** `run_tests` по Content/ContentHub-подмножеству.
+
+## Editor-миграции ассетов
+
+Массовая правка формы существующих ассетов (rename поля, перенос типа, смена схемы) — **только
+editor-миграцией**, не руками и не hand-YAML (Unity перезапишет). Образцы:
+`Assets/_Project/Scripts/Data/Editor/Migrations/Phase4Package*Migration.cs`.
+
+Порядок: `[MovedFrom]`/`[FormerlySerializedAs]` там, где Unity смэтчит сам; миграционный скрипт —
+там, где логику переноса Unity не выведет (сплит поля, вычисление нового значения из старого).
+После миграции — `run_tests` + выборочная проверка ассетов.

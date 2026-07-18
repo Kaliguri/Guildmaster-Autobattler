@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 510709c0768a8b54a9cb0853ec931536, type: 3}
+  m_Name: PresetCryomancer
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.BattlePresetData
+  _id: battle_preset.cryomancer
+  _encounter: {fileID: 11400000, guid: eb1f7397d2db9e7448f2185e71269b2c, type: 2}
+  _roster:
+  - _relic: {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
+    _vessel: {fileID: 0}
+    _position: {x: -6, y: 0}
+  _deploymentMode: 0

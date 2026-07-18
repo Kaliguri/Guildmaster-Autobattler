@@ -22,15 +22,18 @@ namespace Guildmaster.Game.Services
         private readonly IAudioService _audio;
         private readonly GameConfig _config;
         private AudioVolumeSettings _audio01;
+        private GameplaySettings _gameplay;
 
         public SettingsService(IAudioService audio, GameConfig config)
         {
             _audio = audio;
             _config = config;
             _audio01 = Defaults();
+            _gameplay = GameplaySettings.Defaults();
         }
 
         public AudioVolumeSettings Audio => _audio01;
+        public GameplaySettings Gameplay => _gameplay;
         public event Action Changed;
 
         void IStartable.Start() => Load();
@@ -56,10 +59,23 @@ namespace Guildmaster.Game.Services
             Changed?.Invoke();
         }
 
+        // Геймплей-тумблеры не имеют «живого применения» в аудио — их читает инвентарь при открытии.
+        // Поднимаем Changed, чтобы UI-биндинг (тумблеры/Cancel/Defaults) синхронизировался.
+        public void SetCardAnimations(bool enabled)
+        {
+            _gameplay.CardAnimations = enabled;
+            Changed?.Invoke();
+        }
+
+        public void SetCardAttackAnimation(bool enabled)
+        {
+            _gameplay.CardAttackAnimation = enabled;
+            Changed?.Invoke();
+        }
+
         public void Load()
         {
-            var loaded = ReadFromDisk(out bool ok);
-            _audio01 = ok ? loaded : Defaults();
+            ReadFromDisk();
             ApplyAll();
             Changed?.Invoke();
         }
@@ -68,7 +84,15 @@ namespace Guildmaster.Game.Services
         {
             try
             {
-                File.WriteAllText(FilePath, JsonUtility.ToJson(_audio01));
+                var model = new PersistModel
+                {
+                    Master              = _audio01.Master,
+                    Music               = _audio01.Music,
+                    Sfx                 = _audio01.Sfx,
+                    CardAnimations      = _gameplay.CardAnimations,
+                    CardAttackAnimation = _gameplay.CardAttackAnimation,
+                };
+                File.WriteAllText(FilePath, JsonUtility.ToJson(model));
             }
             catch (Exception e)
             {
@@ -79,6 +103,7 @@ namespace Guildmaster.Game.Services
         public void ResetToDefaults()
         {
             _audio01 = Defaults();
+            _gameplay = GameplaySettings.Defaults();
             ApplyAll();
             Changed?.Invoke();
         }
@@ -86,24 +111,44 @@ namespace Guildmaster.Game.Services
         private AudioVolumeSettings Defaults() =>
             new AudioVolumeSettings(_config.DefaultMasterVolume, _config.DefaultMusicVolume, _config.DefaultSfxVolume);
 
-        private AudioVolumeSettings ReadFromDisk(out bool ok)
+        // Читает файл в _audio01 + _gameplay. Дефолты берутся из модели ДО чтения (FromJsonOverwrite
+        // трогает только присутствующие в JSON поля) — поэтому старый файл (лишь громкости) корректно
+        // подхватит новые тумблеры как ВКЛ, а не как default(bool)=false. Нет файла/ошибка → дефолты.
+        private void ReadFromDisk()
         {
-            ok = false;
+            AudioVolumeSettings audioDefaults = Defaults();
+            var model = new PersistModel
+            {
+                Master              = audioDefaults.Master,
+                Music               = audioDefaults.Music,
+                Sfx                 = audioDefaults.Sfx,
+                CardAnimations      = true,
+                CardAttackAnimation = true,
+            };
+
             try
             {
-                if (!File.Exists(FilePath)) return default;
-                var data = JsonUtility.FromJson<AudioVolumeSettings>(File.ReadAllText(FilePath));
-                data.Master = Clamp01(data.Master);
-                data.Music = Clamp01(data.Music);
-                data.Sfx = Clamp01(data.Sfx);
-                ok = true;
-                return data;
+                if (File.Exists(FilePath))
+                    JsonUtility.FromJsonOverwrite(File.ReadAllText(FilePath), model);
             }
             catch (Exception e)
             {
                 Debug.LogWarning($"[Settings] Не удалось прочитать настройки, беру дефолты: {e.Message}");
-                return default;
             }
+
+            _audio01  = new AudioVolumeSettings(Clamp01(model.Master), Clamp01(model.Music), Clamp01(model.Sfx));
+            _gameplay = new GameplaySettings(model.CardAnimations, model.CardAttackAnimation);
+        }
+
+        // Плоская форма персиста (совместима со старым файлом, где были только Master/Music/Sfx).
+        [Serializable]
+        private sealed class PersistModel
+        {
+            public float Master;
+            public float Music;
+            public float Sfx;
+            public bool  CardAnimations;
+            public bool  CardAttackAnimation;
         }
 
         private void ApplyAll()

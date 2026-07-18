@@ -20,6 +20,10 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Все живые враги с тегом <see cref="AbilityData.TriggerTag"/> — глобально, без ограничения дальности (масс-стан «Ледяные оковы» по «Заморозке»). Цель не одиночная.</summary>
         AllEnemiesWithTag = 4,
+
+        /// <summary>Все живые союзники в <see cref="AbilityData.AreaRadius"/> вокруг кастующего, включая его самого
+        /// (групповой баф «Командный клич»; лечение — если задана хил-нагрузка). Цель не одиночная.</summary>
+        AlliesInRadius = 5,
     }
 
     /// <summary>
@@ -47,6 +51,12 @@ namespace Guildmaster.Data.Definitions
         [Header("Direct damage (Phase 3)")]
         [Tooltip("Множитель прямого урона от AutoAttackDamage кастующего. 0 = только эффекты (поведение Ф2). «Стальной вихрь» = 3.")]
         [SerializeField] private float _damageMultiplier;
+
+        [Tooltip("Школа урона способности. Inherit = школа юнита-кастера (ГДД «8»: школа задаётся каждой атаке/способности отдельно).")]
+        [SerializeField] private DamageSchoolOverride _schoolOverride = DamageSchoolOverride.Inherit;
+
+        [Tooltip("Сродство урона способности (Яд/Свет/Тьма). Inherit = сродство юнита-кастера.")]
+        [SerializeField] private DamageAffinityOverride _affinityOverride = DamageAffinityOverride.Inherit;
 
         [Header("Area of effect (Phase 3)")]
         [Tooltip("Форма зоны поражения. None = одиночная цель по TargetMode (поведение Ф2).")]
@@ -116,6 +126,8 @@ namespace Guildmaster.Data.Definitions
         public AbilityTargetMode TargetMode => _targetMode;
 
         public float DamageMultiplier => _damageMultiplier;
+        public DamageSchoolOverride SchoolOverride => _schoolOverride;
+        public DamageAffinityOverride AffinityOverride => _affinityOverride;
         public AreaShape AreaShape => _areaShape;
         public float AreaRadius => _areaRadius;
         public float HealFlat => _healFlat;

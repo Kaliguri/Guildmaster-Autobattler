@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <!-- Лёгкий полноэкранный слой-гейт: контент прозрачен, кнопка — в правом нижнем углу (единое место). -->
+    <ui:VisualElement class="gm-continue-screen">
+        <ui:Button name="btn-continue" text="Продолжить" class="gm-button gm-button--primary gm-continue" />
+    </ui:VisualElement>
+</ui:UXML>

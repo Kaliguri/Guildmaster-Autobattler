@@ -23,7 +23,8 @@ namespace Guildmaster.Combat
 
         /// <summary>Полезная нагрузка снаряда. Для урона — сырой урон; для хил-снаряда (<see cref="IsHeal"/>) — сырое лечение.</summary>
         public float       RawDamage;
-        public DamageType  DamageType;
+        public DamageSchool School;
+        public DamageAffinity Affinity;
         public float       ArmorK;
         public int         PiercesRemaining;
 

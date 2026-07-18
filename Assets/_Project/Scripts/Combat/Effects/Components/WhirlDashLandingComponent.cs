@@ -60,7 +60,7 @@ namespace Guildmaster.Combat.Effects.Components
             float dmg = _displaceDamageMult > 0f
                 ? _displaceDamageMult * monk.Stats.Get(StatType.AutoAttackDamage)
                 : 0f;
-            DamageType dmgType = monk.Unit != null ? monk.Unit.DamageType : DamageType.Physical;
+            DamageSchool school = monk.DamageSchool;
 
             ctx.Combat.ReportAreaHit(AreaHit.Line(
                 victim.Position, dir.sqrMagnitude > 1e-6f ? dir.normalized : Vector2.right,
@@ -68,7 +68,8 @@ namespace Guildmaster.Combat.Effects.Components
 
             ctx.Combat.Displace(new DisplaceRequest(
                 victim, monk, dir, _displaceDistance, _displaceTicks,
-                cannonball: true, damage: dmg, damageType: dmgType, width: _displaceWidth,
+                cannonball: true, damage: dmg, school: school, width: _displaceWidth,
+                affinity: monk.Affinity,
                 kind: DisplaceKind.Knockback, chainDistance: _chainDistance, chainTicks: _chainTicks));
         }
 

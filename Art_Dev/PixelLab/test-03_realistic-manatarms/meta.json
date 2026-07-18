@@ -1,0 +1,27 @@
+{
+ "test": "03 realistic man-at-arms",
+ "title": "Защитник — реалистичный латник",
+ "status": "ГОДНО — низкое фэнтези, v3-атаки честные",
+ "endpoint": "/create-character-pro",
+ "method": "create_with_style",
+ "reference": "style-sheet из 4 героев FewSeconds (Rifleman/Chess Master/Skeleton Priest/Aegis)",
+ "params": {
+  "image_size": "64 (canvas 128)",
+  "view": "side",
+  "no_background": true,
+  "style_description": "dark painterly pixel art, bold black outline, grounded low-fantasy, muted earthy palette"
+ },
+ "character_id": "0edc6219-d4a9-4449-9fd8-fac91f61f9c3",
+ "prompt": "A realistic medieval man-at-arms with normal human proportions, average athletic build (not bulky), chainmail hauberk over padded gambeson, muted blue wool tabard, open-face helm, round wooden shield + arming sword, grounded battle stance, low fantasy, no glow",
+ "animations": {
+  "idle": "breathing-idle",
+  "walk": "walking-8-frames",
+  "hurt": "taking-punch",
+  "death": "falling-back-death",
+  "attack_slash": "v3: overhead sword slash arc (9f, start=idle)",
+  "attack_shieldbash": "v3: shield bash lunge (7f, start=idle)"
+ },
+ "postprocess": "auto-clean disconnected islands (montage-bleed), single-palette GIF",
+ "generations_this_run": 34,
+ "date": "2026-07-15"
+}

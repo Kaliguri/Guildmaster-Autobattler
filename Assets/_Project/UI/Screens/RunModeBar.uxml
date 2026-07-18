@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <!-- Глобальная панель забега (app-shell): всегда сверху во время забега, тело экранов сдвинуто под неё.
+         Слева гильдия + возвышение; центр — режимы-навигация (Карта/Бой/Инвентарь/Тактика/Компендиум);
+         справа — HP-сердечки, золото, акт, таймер забега, кнопка «Начать»/таймер боя, бургер-меню.
+         Строки-плейсхолдеры RU; локализованные проставляет RunModeBarView (ключи ui.*). -->
+    <ui:VisualElement name="runbar-root" class="gm-loadout__topbar gm-runbar">
+        <ui:VisualElement class="gm-loadout__topbar-side">
+            <ui:VisualElement>
+                <ui:Label name="guild-name" text="Alebardium" class="gm-loadout__guild-name" />
+                <ui:Label name="guild-asc" text="ASCENSION · IV" class="gm-loadout__guild-asc" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement class="gm-loadout__topbar-center">
+            <ui:Button name="mode-map" text="Карта" class="gm-loadout__mode" />
+            <ui:Button name="mode-battle" text="Бой" class="gm-loadout__mode" />
+            <ui:Button name="mode-inventory" text="Инвентарь" class="gm-loadout__mode" />
+            <ui:Button name="mode-tactics" text="Тактика" class="gm-loadout__mode" />
+            <ui:Button name="mode-compendium" text="Компендиум" class="gm-loadout__mode" />
+        </ui:VisualElement>
+
+        <ui:VisualElement class="gm-loadout__topbar-side gm-loadout__topbar-side--right">
+            <ui:VisualElement name="topbar-hp" class="gm-topbar__hp" />
+            <ui:Label name="topbar-gold" text="Золото: 0" class="gm-loadout__stat" />
+            <ui:Label name="topbar-act" text="Акт 1" class="gm-loadout__stat" />
+            <ui:Label name="topbar-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer" />
+            <ui:Button name="btn-start" text="Начать" class="gm-loadout__start-btn" />
+            <ui:Label name="battle-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer gm-loadout__battle-timer" />
+            <ui:Button name="btn-menu" text="≡" class="gm-loadout__menu-btn" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

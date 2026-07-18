@@ -30,6 +30,7 @@
     "com.unity.test-framework": "1.6.0",
     "com.unity.timeline": "1.8.12",
     "com.unity.ugui": "2.0.0",
+    "com.unity.ui.test-framework": "6.4.0",
     "com.unity.visualeffectgraph": "17.4.0",
     "com.unity.visualscripting": "1.9.11",
     "jp.hadashikick.vcontainer": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.18.0",

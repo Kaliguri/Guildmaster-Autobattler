@@ -1,0 +1,20 @@
+{
+ "test": "test-05_td1_baseline",
+ "title": "TD1 — baseline",
+ "status": "ТОП-ДАУН (правильная проекция) — чистый грунтованный латник",
+ "endpoint": "/create-character-with-4-directions (view=low top-down)",
+ "prompt": "Medieval man-at-arms, mail hauberk, blue wool tabard, round wooden shield, arming sword, open-face helm, grounded battle stance, low fantasy, muted steel and leather",
+ "params": {
+  "view": "low top-down",
+  "outline": "single_color_outline",
+  "shading": "medium_shading",
+  "detail": "moderate",
+  "proportions": {
+   "type": "preset",
+   "name": "realistic_male"
+  }
+ },
+ "character_id": "e7c6de30-0103-49b8-b9a5-0d6ea193bc74",
+ "generations": 1,
+ "date": "2026-07-15"
+}

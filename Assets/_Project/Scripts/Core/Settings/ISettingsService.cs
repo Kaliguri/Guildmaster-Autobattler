@@ -14,6 +14,9 @@ namespace Guildmaster.Core.Settings
         /// <summary>Текущие значения звука (то, что применено сейчас).</summary>
         AudioVolumeSettings Audio { get; }
 
+        /// <summary>Текущие геймплей-настройки презентации (анимация карточек и т.п.).</summary>
+        GameplaySettings Gameplay { get; }
+
         /// <summary>Поднимается при любом изменении значений (для биндинга UI).</summary>
         event Action Changed;
 
@@ -25,6 +28,12 @@ namespace Guildmaster.Core.Settings
 
         /// <summary>Громкость SFX [0..1].</summary>
         void SetSfxVolume(float volume01);
+
+        /// <summary>Включить/выключить анимацию карточек реликвий целиком (idle+attack). Поднимает <see cref="Changed"/>.</summary>
+        void SetCardAnimations(bool enabled);
+
+        /// <summary>Включить/выключить анимацию атаки выбранной карточки (при включённой анимации). Поднимает <see cref="Changed"/>.</summary>
+        void SetCardAttackAnimation(bool enabled);
 
         /// <summary>Загрузить с диска (ES3) или взять дефолты GameConfig, затем применить в аудио.</summary>
         void Load();

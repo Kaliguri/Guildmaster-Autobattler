@@ -1,0 +1,21 @@
+{
+ "test": "test-05_td2_palette",
+ "title": "TD2 — palette-ref",
+ "status": "ТОП-ДАУН (правильная проекция) — холоднее/сдержаннее (палитра-реф)",
+ "endpoint": "/create-character-with-4-directions (view=low top-down)",
+ "prompt": "Medieval man-at-arms, mail hauberk, blue wool tabard, round wooden shield, arming sword, open-face helm, grounded battle stance, low fantasy, muted steel and leather",
+ "params": {
+  "view": "low top-down",
+  "outline": "single_color_outline",
+  "shading": "medium_shading",
+  "detail": "moderate",
+  "proportions": {
+   "type": "preset",
+   "name": "realistic_male"
+  },
+  "color_image": "style-sheet (палитра)"
+ },
+ "character_id": "41538e3f-2579-4a51-b1d8-815c57c0ca2a",
+ "generations": 1,
+ "date": "2026-07-15"
+}

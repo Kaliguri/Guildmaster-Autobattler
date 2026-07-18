@@ -32,24 +32,27 @@
     --gm-danger-500: rgb(168, 80, 58);
     --gm-danger-400: rgb(194, 98, 68);
 
-    /* --- Шкала отступов (UI-пиксели при базе 640x360) --- */
-    --gm-space-1: 4px;
-    --gm-space-2: 8px;
-    --gm-space-3: 12px;
-    --gm-space-4: 16px;
-    --gm-space-5: 24px;
-    --gm-space-6: 32px;
+    /* --- Шкала отступов (UI-пиксели под нативную канву 1920x1080, PanelSettings scale=1) --- */
+    --gm-space-1: 8px;
+    --gm-space-2: 16px;
+    --gm-space-3: 24px;
+    --gm-space-4: 32px;
+    --gm-space-5: 48px;
+    --gm-space-6: 64px;
 
     /* --- Толщина рамок --- */
-    --gm-border-1: 1px;
-    --gm-border-2: 2px;
+    --gm-border-1: 2px;
+    --gm-border-2: 3px;
 
-    /* --- Размеры шрифта --- */
-    --gm-font-sm: 12px;
-    --gm-font-body: 14px;
-    --gm-font-title: 18px;
-    --gm-font-lg: 24px;
+    /* --- Размеры шрифта (под 1080p) --- */
+    --gm-font-sm: 22px;
+    --gm-font-body: 26px;
+    --gm-font-title: 34px;
+    --gm-font-lg: 48px;
 
     /* --- Радиус: 0 = острые пиксельные углы --- */
     --gm-radius-0: 0;
+
+    /* --- Высота глобального топбара забега (app-shell): тело экранов сдвигается под него на эту величину --- */
+    --gm-topbar-height: 84px;
 }

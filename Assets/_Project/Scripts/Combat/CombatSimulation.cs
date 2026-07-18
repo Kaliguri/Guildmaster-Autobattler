@@ -22,10 +22,12 @@ namespace Guildmaster.Combat
     {
         private readonly IRngService         _rng;
         private readonly float               _armorK;
-        private readonly ArenaBounds         _arena;
+        // Не readonly: persist-мир сменяет арену на месте (тест-зона ↔ боевая) через SetArena, без
+        // пересоздания сима (единая живущая сцена, вики «16» §5 / план persist-геймплея).
+        private ArenaBounds                  _arena;
         // Зона деспавна снарядов = видимая область камеры (CameraZone) + margin: снаряд гаснет ЗА
         // пределами видимого игроку, а не на краю арены (решение Макса). Фолбэк — границы арены.
-        private readonly ArenaBounds         _projectileDespawnBounds;
+        private ArenaBounds                  _projectileDespawnBounds;
         // Не readonly: dev re-bake (gm_tuning_rebake) применяет новый тюнинг к идущему бою (tainted).
         private SimTuning                    _tuning;
         private readonly SpatialHash         _spatialHash;
@@ -132,6 +134,10 @@ namespace Guildmaster.Combat
         public IReadOnlyList<RuntimeUnit> Units    => _units;
         public BattleOutcome              Outcome  => _outcome;
         public bool                       IsPaused => _isPaused;
+
+        /// <summary>Сколько боевого времени прошло, сек. Идёт по симуляционным тикам, а не по стенным часам,
+        /// поэтому пауза и slowmo его не искажают. Основа для боевого таймера в HUD.</summary>
+        public float ElapsedSeconds => _currentTick * SimConstants.TickDelta;
 
         public CombatSimulation(
             IRngService       rng,
@@ -278,8 +284,8 @@ namespace Guildmaster.Combat
             // Внутренние события для реактивных компонентов (vampiric/thorns). Два события на удар:
             // DamageDealt доставляется источнику, DamageTaken — цели (вики «12» §3.4).
             if (req.Source != null)
-                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage));
-            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage));
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind));
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind));
 
             // Убийство атрибутируется нанёсшему смертельный удар → доставляется УБИЙЦЕ (§10.5, «Скрытность»).
             if (result.KilledTarget && req.Source != null)
@@ -332,7 +338,8 @@ namespace Guildmaster.Combat
                 CollisionRadius  = spawn.CollisionRadius,
                 TargetUnit       = spawn.TargetUnit,
                 RawDamage        = spawn.RawDamage,
-                DamageType       = spawn.DamageType,
+                School           = spawn.School,
+                Affinity         = spawn.Affinity,
                 ArmorK           = spawn.ArmorK,
                 PiercesRemaining = spawn.MaxPierces,
                 IsHeal           = spawn.IsHeal,
@@ -448,6 +455,18 @@ namespace Guildmaster.Combat
         public void SetPaused(bool paused) => _isPaused = paused;
 
         /// <summary>
+        /// Сменить арену НА МЕСТЕ, без пересоздания сима (persist-мир: тест-зона ↔ боевая арена).
+        /// Обновляет границы поля (движение/отбрасывание) и зону деспавна снарядов. Звать на пустом
+        /// или сброшенном симе (между боями / на входе в бой), не посреди активного тика.
+        /// </summary>
+        public void SetArena(ArenaBounds arena, Rect2D? cameraZone = null)
+        {
+            _arena = arena;
+            // Как в конструкторе: деспавн снарядов — по видимой зоне камеры; не задана → границы арены.
+            _projectileDespawnBounds = new ArenaBounds(cameraZone ?? _arena.Rect);
+        }
+
+        /// <summary>
         /// Сбросить бой для перезапуска НА МЕСТЕ (dev-R): чистим всех юнитов/снаряды/очереди и возвращаем
         /// исход в <see cref="BattleOutcome.Ongoing"/>. Сцена/камера НЕ трогаются — их не перезагружаем.
         /// Тик-цикл (<see cref="CombatLoopService"/>) простаивает, пока не-Ongoing, и сам возобновится после сброса.
@@ -522,6 +541,13 @@ namespace Guildmaster.Combat
             return hash;
         }
 
+        /// <summary>
+        /// Влить отложенные спавны в живой список БЕЗ тика систем (фаза расстановки, шаг 4): юниты должны
+        /// присутствовать и быть видимыми/двигаемыми, пока бой на паузе. Фактически арм <c>_hasSpawned</c>
+        /// и <c>OnUnitSpawned</c> (презентация строит виды) — безвредно до первого реального <see cref="Tick"/>.
+        /// </summary>
+        public void FlushSpawns() => FlushPendingSpawns();
+
         // --- Приватные ---
 
         private void FlushPendingSpawns()
@@ -586,29 +612,36 @@ namespace Guildmaster.Combat
             }
         }
 
+        /// <summary>
+        /// Бой кончается, когда живой остаётся не больше одной команды. Считаем по фактическим номерам
+        /// команд, а не по «своей/чужой»: сторон может быть больше двух (PvP, будущие режимы).
+        /// </summary>
         private void CheckOutcome()
         {
             // До первого спавна бой не оценивается. После — _units непуст (мёртвые остаются
             // помеченными, не удаляются), поэтому отдельная проверка на пустоту не нужна.
             if (!_hasSpawned) return;
 
-            bool teamAAlive = false;
-            bool teamBAlive = false;
+            int  aliveTeam = BattleOutcome.NoTeam;
+            bool anyAlive  = false;
 
             for (int i = 0; i < _units.Count; i++)
             {
-                if (_units[i].IsDead) continue;
-                if (_units[i].Team == 0) teamAAlive = true;
-                else                     teamBAlive = true;
+                RuntimeUnit u = _units[i];
+                if (u.IsDead) continue;
+
+                if (!anyAlive)
+                {
+                    aliveTeam = u.Team;
+                    anyAlive  = true;
+                }
+                else if (u.Team != aliveTeam)
+                {
+                    return; // живы минимум две команды — бой продолжается
+                }
             }
 
-            BattleOutcome newOutcome;
-            if (!teamAAlive && !teamBAlive) newOutcome = BattleOutcome.Draw;
-            else if (!teamBAlive)           newOutcome = BattleOutcome.TeamAWins;
-            else if (!teamAAlive)           newOutcome = BattleOutcome.TeamBWins;
-            else                            return;
-
-            _outcome = newOutcome;
+            _outcome = anyAlive ? BattleOutcome.Win(aliveTeam) : BattleOutcome.Draw;
             OnBattleEnded?.Invoke(_outcome);
         }
     }

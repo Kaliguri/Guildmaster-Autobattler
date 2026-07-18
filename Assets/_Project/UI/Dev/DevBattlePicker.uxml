@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <Style src="DevBattlePicker.uss" />
+    <ui:VisualElement name="gm-dev-overlay" class="gm-dev-overlay" picking-mode="Ignore">
+        <ui:VisualElement class="gm-dev-panel">
+            <ui:VisualElement class="gm-dev-header">
+                <ui:Label text="Бои (dev)" class="gm-dev-title" />
+                <ui:Label text="F2 · R" class="gm-dev-hint" />
+            </ui:VisualElement>
+            <ui:VisualElement class="gm-dev-rule" />
+            <ui:ScrollView name="gm-dev-scroll" class="gm-dev-scroll" mode="Vertical" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

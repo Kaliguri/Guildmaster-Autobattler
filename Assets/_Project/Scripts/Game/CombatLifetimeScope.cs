@@ -67,6 +67,14 @@ namespace Guildmaster.Game
 
             // Боевой ввод: пауза/скорость на время этого боя (вики «16» §4).
             builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
+
+            // Интерактивная фаза расстановки (шаг 4): активна на Free-пресетах; иначе спит.
+            builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
+
+            // Мост в макро-флоу (план 11 §4 A2): забирает запрос боя из IBattleSession и грузит его, репортит
+            // исход. Регистрируется ПОСЛЕ DeploymentController — чтобы его подписка на Free-расстановку встала
+            // до LoadPreset. Пусто (запуск из dev-панели) = просто ждёт исход, LoadPreset не зовёт.
+            builder.RegisterEntryPoint<Flow.BattleBootstrap>(Lifetime.Scoped);
         }
 
         private ArenaLayoutData BuildArenaLayout()
@@ -133,7 +141,9 @@ namespace Guildmaster.Game
                 r.Resolve<EffectSystem>(),
                 r.Resolve<CombatSimulation>()),
                 Lifetime.Scoped);
-            builder.Register<BattleSetupBuilder>(Lifetime.Scoped);
+            // Data-driven загрузчик боя из EncounterData (сменил заготовку BattleSetupBuilder, вики «13» §3.1).
+            // IContentDatabase — из RootScope (родитель); фабрика/симуляция — из этого скоупа.
+            builder.Register<EncounterLoader>(Lifetime.Scoped);
 
             builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped).AsSelf();
         }
@@ -144,19 +154,10 @@ namespace Guildmaster.Game
             builder.RegisterComponentInHierarchy<CombatDebugDraw>();
             builder.RegisterComponentInHierarchy<CombatAreaFlash>();
 
-            // Камера (вики «16» §5): регистрируем ТОЛЬКО если риг собран в сцене — иначе бой не падает.
-            // Держим здесь, рядом с прочей презентацией (отдельный метод внешний форматтер уже сносил).
-            if (FindFirstObjectByType<Presentation.CameraModeController>() != null)
-            {
-                builder.RegisterComponentInHierarchy<Presentation.CombatFocusTarget>();
-                builder.RegisterComponentInHierarchy<Presentation.CameraModeController>()
-                       .AsSelf().As<Presentation.IScreenShake>();
-            }
-            else
-            {
-                // Нет камеры-рига → тряска-заглушка, чтобы CombatFeelDirector резолвился и бой не падал.
-                builder.RegisterInstance<Presentation.IScreenShake>(new Presentation.NullScreenShake());
-            }
+            // Камера-риг (focus/controller/IScreenShake, вики «16» §5) переехал в персистентный
+            // WorldLifetimeScope — боевой скоуп дочерний к нему и резолвит риг из предка (единая камера,
+            // без дублей Brain). Здесь только боевой мост: на время боя подаём камере живые точки фокуса.
+            builder.RegisterEntryPoint<Presentation.BattleFocusBinder>(Lifetime.Scoped);
         }
 
         // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя) и лечь в BattleSeed,

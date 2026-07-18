@@ -1,6 +1,7 @@
 using System;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Guildmaster.Combat.Effects.Components
 {
@@ -20,7 +21,12 @@ namespace Guildmaster.Combat.Effects.Components
         [Range(0f, 1f)]
         [SerializeField] private float _reflectFraction = 0.15f;
 
-        [SerializeField] private DamageType _damageType = DamageType.Magic;
+        [Tooltip("Школа отражённого урона.")]
+        [FormerlySerializedAs("_damageType")]
+        [SerializeField] private DamageSchool _damageSchool = DamageSchool.Elemental;
+
+        [Tooltip("Сродство отражённого урона.")]
+        [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
 
         public CombatEvent Events => CombatEvent.DamageTaken;
 
@@ -36,7 +42,8 @@ namespace Guildmaster.Combat.Effects.Components
             float reflected = e.Amount * _reflectFraction * ctx.Stacks;
             if (reflected <= 0f) return;
 
-            ctx.Combat.DealDamage(new DamageRequest(ctx.Target, attacker, reflected, _damageType, ctx.Combat.ArmorK));
+            ctx.Combat.DealDamage(new DamageRequest(ctx.Target, attacker, reflected, _damageSchool, ctx.Combat.ArmorK,
+                sourceKind: DamageSourceKind.Reactive, affinity: _affinity));
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CollisionRadius  = 0.25f,
                 TargetUnit       = enemy,
                 RawDamage        = 15f,
-                DamageType       = DamageType.Physical,
+                School           = DamageSchool.Physical,
                 OnHitEffects     = new[] { frozen },
                 IsAlive          = true,
             };

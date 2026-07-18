@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement class="gm-screen">
+        <ui:VisualElement class="gm-panel gm-panel--mainmenu">
+            <ui:Label name="menu-title" text="Гильдмастер" class="gm-panel__title gm-mainmenu__title" />
+            <ui:VisualElement class="gm-divider" />
+
+            <ui:VisualElement class="gm-mainmenu__buttons">
+                <ui:Button name="btn-start" text="Начать забег" class="gm-button gm-button--primary gm-mainmenu__btn" />
+                <ui:Button name="btn-continue" text="Продолжить" class="gm-button gm-mainmenu__btn" />
+                <ui:Button name="btn-settings" text="Настройки" class="gm-button gm-mainmenu__btn" />
+                <ui:Button name="btn-quit" text="Выход" class="gm-button gm-mainmenu__btn" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

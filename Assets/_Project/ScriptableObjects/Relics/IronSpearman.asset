@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: IronSpearman
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.iron_spearman
-  _damageType: 0
+  _damageSchool: 0
+  _affinity: 0
+  _creatureType: 0
   _attackType: 0
   _resourceType: 2
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
@@ -28,7 +30,7 @@ MonoBehaviour:
   _stats:
   - Stat: 0
     Op: 3
-    Value: 2200
+    Value: 3300
   - Stat: 7
     Op: 3
     Value: 140
@@ -58,6 +60,8 @@ MonoBehaviour:
     _resourceCost: 80
     _targetMode: 0
     _damageMultiplier: 3
+    _schoolOverride: 0
+    _affinityOverride: 0
     _areaShape: 2
     _areaRadius: 2.5
     _healFlat: 0
@@ -96,7 +100,8 @@ MonoBehaviour:
   _tags:
   - spearman
   - common
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0

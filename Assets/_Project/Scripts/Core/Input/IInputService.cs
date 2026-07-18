@@ -39,6 +39,20 @@ namespace Guildmaster.Core.Input
         /// <summary>Циклическое переключение вида камеры (Tab): Action → Overview → [Dev].</summary>
         event Action CycleViewRequested;
 
+        // --- Расстановка: указатель (мышь) — активен в контексте Deployment ---
+
+        /// <summary>Позиция указателя на экране (пиксели), для screen→world при пикинге/drag. Поллинг каждый кадр.</summary>
+        Vector2 PointerScreenPosition { get; }
+
+        /// <summary>Указатель зажат (ЛКМ) — для протяжки. Поллинг. Ноль/false при <see cref="GameplaySuppressed"/>.</summary>
+        bool PointerHeld { get; }
+
+        /// <summary>ЛКМ нажата в этом кадре (начало клика/drag/дабл-клика). Не поднимается при <see cref="GameplaySuppressed"/>.</summary>
+        event Action PointerPressed;
+
+        /// <summary>ЛКМ отпущена в этом кадре (drop/конец клика).</summary>
+        event Action PointerReleased;
+
         // --- Бой: дискретные события ---
 
         /// <summary>Переключить паузу боя (Space): пауза ↔ продолжить.</summary>

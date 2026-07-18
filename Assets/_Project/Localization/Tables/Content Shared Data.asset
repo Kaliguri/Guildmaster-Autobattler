@@ -131,6 +131,222 @@ MonoBehaviour:
     m_Key: enemy.training_dummy.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 1132607029108736
+    m_Key: enemy.goblin_archer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132607058468864
+    m_Key: enemy.goblin_archer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132608274817024
+    m_Key: enemy.goblin_cutthroat.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132608274817025
+    m_Key: enemy.goblin_cutthroat.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132609788960768
+    m_Key: enemy.goblin_grunt.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132609788960769
+    m_Key: enemy.goblin_grunt.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132610745262080
+    m_Key: enemy.goblin_warrior.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1132610745262081
+    m_Key: enemy.goblin_warrior.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1137885233537024
+    m_Key: relic.base.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1137885267091456
+    m_Key: relic.base.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377642756694016
+    m_Key: item.oaken_charm.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377642802831360
+    m_Key: item.oaken_charm.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377644530884608
+    m_Key: item.swift_boots.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377644530884609
+    m_Key: item.swift_boots.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377645722066944
+    m_Key: item.war_banner.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1377645722066945
+    m_Key: item.war_banner.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021935222784
+    m_Key: relic.druid.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137344
+    m_Key: relic.druid.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137345
+    m_Key: relic.flame_swordsman.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137346
+    m_Key: relic.flame_swordsman.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137347
+    m_Key: relic.treant.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137348
+    m_Key: relic.treant.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137349
+    m_Key: effect.spore_cloud.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137350
+    m_Key: effect.burn.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137351
+    m_Key: effect.blazing_blades.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137352
+    m_Key: effect.blazing_blades_ramp.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137353
+    m_Key: effect.spiked_tree.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1407021998137354
+    m_Key: effect.overgrowth.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809709613056
+    m_Key: event.wandering_merchant.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750400
+    m_Key: event.wandering_merchant.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750401
+    m_Key: event.wandering_merchant.choice0.label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750402
+    m_Key: event.wandering_merchant.choice0.result
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750403
+    m_Key: event.wandering_merchant.choice1.label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750404
+    m_Key: event.wandering_merchant.choice1.result
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750405
+    m_Key: event.wandering_merchant.choice2.label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1419809755750406
+    m_Key: event.wandering_merchant.choice2.result
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1475541784059904
+    m_Key: effect.ignition.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1475541830197248
+    m_Key: effect.pyre_rush.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108406349824
+    m_Key: ui.event.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487168
+    m_Key: ui.hub.banners
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487169
+    m_Key: ui.hub.close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487170
+    m_Key: ui.hub.gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487171
+    m_Key: ui.hub.stash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487172
+    m_Key: ui.hub.team
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487173
+    m_Key: ui.hub.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487174
+    m_Key: ui.reward.drop_hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487175
+    m_Key: ui.reward.skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487176
+    m_Key: ui.reward.take
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487177
+    m_Key: ui.reward.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487178
+    m_Key: ui.run.act
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487179
+    m_Key: ui.run.gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487180
+    m_Key: ui.run.hub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487181
+    m_Key: ui.run.settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1700108452487182
+    m_Key: ui.run.start
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

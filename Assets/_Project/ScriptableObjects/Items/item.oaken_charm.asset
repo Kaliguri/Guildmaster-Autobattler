@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bc6a4211f2dc024dbe83e32d890d18a, type: 3}
+  m_Name: item.oaken_charm
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.ItemData
+  _id: item.oaken_charm
+  _scope: 0
+  _mods:
+  - Stat: 0
+    Op: 0
+    Value: 200
+  _grantedEffects: []
+  _activeAbility:
+    _id: 
+    _effects: []
+    _baseCooldown: 5
+    _resourceCost: 0
+    _targetMode: 1
+    _damageMultiplier: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _castCondition: 0
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceTicks: 12
+    _displaceDamageMult: 1
+    _displaceWidth: 1
+    _visualSlot: 0
+    _infoTags: []
+  _charges: 0
+  _cost: 60
+  _shopWeight: 1
+  _icon: {fileID: 0}
+  _infoTags: []
