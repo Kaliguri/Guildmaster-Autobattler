@@ -38,18 +38,31 @@ namespace Guildmaster.Game.Flow
             // Ретрай = перезапуск последнего боя на месте (dev-R путь), без перезагрузки сцены.
             _session.BindRestart(() => _loader.Reload());
 
-            // Запуск боя из флоу. Пусто = бой стартует иначе (dev-панель вручную) — тогда просто ждём.
-            if (_session.TryConsumePending(out Data.Definitions.BattlePresetData preset))
+            // Persist-мир: боевой скоуп живёт всю сессию, поэтому «запуск боя» — не создание сцены,
+            // а команда в живой sim. RequestLaunch из BattleFlow дёрнет этот делегат (см. IBattleSession).
+            _session.BindLaunch(LaunchBattle);
+
+            // Legacy-совместимость: если бой всё же положили через SetPending (старый путь до persist), заберём его.
+            if (_session.TryConsumePending(out Data.Definitions.BattlePresetData pending))
             {
-                if (preset != null) _loader.LoadPreset(preset);
+                if (pending != null) LaunchBattle(pending);
                 else Debug.LogWarning("[BattleBootstrap] - pending-запрос пуст (preset == null)");
             }
         }
 
         public void Dispose()
         {
+            _session.UnbindLaunch();
             _session.UnbindRestart();
             _endedSubscription?.Dispose();
+        }
+
+        // Запуск боя в живом боевом скоупе. Пока — полный LoadPreset (отряд+враги из пресета, как раньше);
+        // в Ф2.3 отряд переедет на persist (split-spawn), и здесь останется только доспавн врагов.
+        private void LaunchBattle(Data.Definitions.BattlePresetData preset)
+        {
+            if (preset == null) { Debug.LogWarning("[BattleBootstrap] - LaunchBattle: preset == null"); return; }
+            _loader.LoadPreset(preset);
         }
 
         private void OnBattleEnded(BattleEndedEvent e) => _session.ReportOutcome(e.Outcome);

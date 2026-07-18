@@ -46,34 +46,32 @@ namespace Guildmaster.Game.Flow
                 return EventResult.Aborted;
             }
 
-            // Ставим бой в очередь ДО загрузки сцены: боевой bootstrap заберёт запрос на своём старте.
-            _session.SetPending(_preset);
-            await _scenes.LoadBattleAsync();
-
-            try
+            // Persist-мир: боевой скоуп уже жив (BattleScene загружена на буте и не выгружается). «Запуск боя»
+            // = команда в живой sim (доспавн врагов + снятие паузы), а не загрузка сцены. RequestLaunch взводит
+            // ожидание исхода сам. false = скоуп ещё не поднят (сбой бута) → Aborted.
+            if (!_session.RequestLaunch(_preset))
             {
-                BattleOutcome outcome = await _session.WaitOutcomeAsync(CancellationToken.None);
+                Debug.LogWarning("[BattleFlow] - некому запустить бой (боевой скоуп не поднят) → Aborted");
+                return EventResult.Aborted;
+            }
 
-                // Поражение → тратим перезапуск из пула акта (реш. №65) и переигрываем ТОТ ЖЕ бой.
-                while (!Won(outcome) && _tryConsumeRestart != null && _tryConsumeRestart())
+            BattleOutcome outcome = await _session.WaitOutcomeAsync(CancellationToken.None);
+
+            // Поражение → тратим перезапуск из пула акта (реш. №65) и переигрываем ТОТ ЖЕ бой.
+            while (!Won(outcome) && _tryConsumeRestart != null && _tryConsumeRestart())
+            {
+                Debug.Log("[BattleFlow] - поражение, трачу перезапуск акта");
+                if (!_session.RequestRestart())
                 {
-                    Debug.Log("[BattleFlow] - поражение, трачу перезапуск акта");
-                    if (!_session.RequestRestart())
-                    {
-                        Debug.LogWarning("[BattleFlow] - некому перезапустить бой (нет боевого скоупа) → Defeated");
-                        break;
-                    }
-                    outcome = await _session.WaitOutcomeAsync(CancellationToken.None);
+                    Debug.LogWarning("[BattleFlow] - некому перезапустить бой (нет боевого скоупа) → Defeated");
+                    break;
                 }
+                outcome = await _session.WaitOutcomeAsync(CancellationToken.None);
+            }
 
-                bool won = Won(outcome);
-                Debug.Log($"[BattleFlow] - бой '{_preset.Id}' завершён: {outcome} → {(won ? "Completed" : "Defeated")}");
-                return won ? EventResult.Completed : EventResult.Defeated;
-            }
-            finally
-            {
-                await _scenes.UnloadBattleAsync();
-            }
+            bool won = Won(outcome);
+            Debug.Log($"[BattleFlow] - бой '{_preset.Id}' завершён: {outcome} → {(won ? "Completed" : "Defeated")}");
+            return won ? EventResult.Completed : EventResult.Defeated;
         }
 
         // Победа = победила МОЯ команда. Ничья победой не считается → для игрока это поражение (ретрай).

@@ -29,15 +29,13 @@ namespace Guildmaster.Tests.EditMode.Run
         public void Win_FirstTry_Completed_NoRetries()
         {
             var session = new FakeSession(BattleOutcome.Win(MyTeam));
-            var scenes  = new FakeScenes();
-            var flow    = new BattleFlow(NewPreset(), scenes, session, Player(MyTeam), Restarts(2));
+            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
             Assert.AreEqual(EventOutcome.Completed, result.Outcome);
             Assert.AreEqual(0, session.RestartCount, "победа с первого раза не должна перезапускать бой");
-            Assert.AreEqual(1, scenes.Loaded);
-            Assert.AreEqual(1, scenes.Unloaded, "сцена должна выгружаться даже при успехе");
+            Assert.AreEqual(1, session.LaunchCount, "бой запускается один раз (launch в живом скоупе, persist-мир)");
         }
 
         [Test]
@@ -107,15 +105,15 @@ namespace Guildmaster.Tests.EditMode.Run
         }
 
         [Test]
-        public void NullPreset_Aborted_NoSceneLoad()
+        public void NullPreset_Aborted_NoLaunch()
         {
-            var scenes = new FakeScenes();
-            var flow   = new BattleFlow(null, scenes, new FakeSession(), Player(MyTeam), Restarts(2));
+            var session = new FakeSession();
+            var flow    = new BattleFlow(null, new FakeScenes(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
             Assert.AreEqual(EventOutcome.Aborted, result.Outcome);
-            Assert.AreEqual(0, scenes.Loaded, "нет пресета — сцену грузить не должны");
+            Assert.AreEqual(0, session.LaunchCount, "нет пресета — бой запускать не должны");
         }
 
         // ── helpers ──────────────────────────────────────────────────────────
@@ -171,6 +169,18 @@ namespace Guildmaster.Tests.EditMode.Run
 
             public void SetPending(BattlePresetData preset) { }
             public bool TryConsumePending(out BattlePresetData preset) { preset = null; return false; }
+
+            // Persist-мир: launch боя в живом скоупе (заменил SetPending+LoadBattleAsync).
+            public int  LaunchCount;
+            public bool CanLaunch = true;
+            public void BindLaunch(Action<BattlePresetData> launch) { }
+            public void UnbindLaunch() { }
+            public bool RequestLaunch(BattlePresetData preset)
+            {
+                if (!CanLaunch) return false;
+                LaunchCount++;
+                return true;
+            }
 
             public UniTask<BattleOutcome> WaitOutcomeAsync(CancellationToken ct)
             {

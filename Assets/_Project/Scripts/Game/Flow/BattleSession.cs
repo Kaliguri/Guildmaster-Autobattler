@@ -22,6 +22,22 @@ namespace Guildmaster.Game.Flow
         /// <summary>child → session: забрать запрос (single-shot). false = запуск не из флоу (dev-панель вручную).</summary>
         bool TryConsumePending(out BattlePresetData preset);
 
+        // ── Persist-мир: launch боя в ЖИВОМ боевом скоупе (сцена не перезагружается) ──
+        // Заменяет связку SetPending+LoadBattleAsync: боевой скоуп живёт всю сессию, поэтому «запуск боя»
+        // — это доспавн врагов + снятие паузы в уже готовом sim, а не создание нового скоупа/сцены.
+
+        /// <summary>child → session: как запустить бой на месте (доспавн врагов + снять паузу). Привязывает боевой скоуп на старте.</summary>
+        void BindLaunch(Action<BattlePresetData> launch);
+
+        /// <summary>child → session: снять делегат launch (при выгрузке боевого скоупа, если она когда-то будет).</summary>
+        void UnbindLaunch();
+
+        /// <summary>
+        /// root → child: запустить бой в живом скоупе (persist-мир). Взводит новое ожидание исхода.
+        /// false = некому запускать (боевой скоуп ещё не поднят).
+        /// </summary>
+        bool RequestLaunch(BattlePresetData preset);
+
         /// <summary>root: дождаться исхода текущего боя (следующий <see cref="ReportOutcome"/> после взвода).</summary>
         UniTask<BattleOutcome> WaitOutcomeAsync(CancellationToken ct);
 
@@ -72,6 +88,7 @@ namespace Guildmaster.Game.Flow
         private BattlePresetData _pending;
         private bool             _hasPending;
         private Action           _restart;
+        private Action<BattlePresetData> _launch;
         private UniTaskCompletionSource<BattleOutcome> _outcome;
 
         private Func<float> _clock;
@@ -106,6 +123,18 @@ namespace Guildmaster.Game.Flow
         public void BindRestart(Action restart) => _restart = restart;
 
         public void UnbindRestart() => _restart = null;
+
+        public void BindLaunch(Action<BattlePresetData> launch) => _launch = launch;
+
+        public void UnbindLaunch() => _launch = null;
+
+        public bool RequestLaunch(BattlePresetData preset)
+        {
+            if (_launch == null) return false;
+            ArmOutcome();          // ждём исход до фактического запуска (ReportOutcome ловится даже мгновенный)
+            _launch.Invoke(preset);
+            return true;
+        }
 
         public bool RequestRestart()
         {
