@@ -48,6 +48,7 @@ SORT updated ASC, file.name ASC
 - [[tech/40-planning/vertical-slice|Vertical Slice]] — петля забега, пролог, мета-заглушки. `living`
 - [[tech/40-planning/stabilization|Stabilization & UI Loop]] — стабилизация, UI-петля, недостающие механики. `living` (текущее)
 - [[tech/40-planning/visual-harness|Visual Harness]] — asmdef-слой презентации, играбельный харнесс боя. `история`
+- [[tech/40-planning/lighting-2d|2D Lighting]] — динамический 2D-свет, тёмные сцены, normal-карты через Laigter. `planned`
 - [[tech/40-planning/seed|Seed & RNG]] — сиды, генерация забега, воспроизводимость. `planned`
 - [[tech/40-planning/steam-workshop|Steam Workshop]] — Workshop-процессы, версионирование схемы (post-festival). `planned`
 
