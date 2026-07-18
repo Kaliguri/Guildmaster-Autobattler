@@ -33,6 +33,7 @@ namespace Guildmaster.Game.Services
         private readonly IPlayerIntentSource _intents;
         private readonly ILocalPlayer        _localPlayer;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
+        private readonly IPublisher<RunPartyReadyEvent>   _partyReadyPub;
 
         public GameFlow(
             ISceneLoader        scenes,
@@ -47,7 +48,8 @@ namespace Guildmaster.Game.Services
             IReadyGate          readyGate,
             IPlayerIntentSource intents,
             ILocalPlayer        localPlayer,
-            IPublisher<OpenTextEventRequest> openEventPub)
+            IPublisher<OpenTextEventRequest> openEventPub,
+            IPublisher<RunPartyReadyEvent>   partyReadyPub)
         {
             _scenes          = scenes;
             _session         = session;
@@ -62,6 +64,7 @@ namespace Guildmaster.Game.Services
             _intents         = intents;
             _localPlayer     = localPlayer;
             _openEventPub    = openEventPub;
+            _partyReadyPub   = partyReadyPub;
         }
 
         /// <summary>Legacy (Фаза 1): просто загрузить боевую сцену. Прямой dev-вход, бой запускает F2-панель.</summary>
@@ -149,6 +152,10 @@ namespace Guildmaster.Game.Services
 
             _runStates.BeginAct();       // генерация карты из под-сида (no-op, если уже есть)
             _runStates.Autosave();       // зафиксировать свежую карту
+
+            // Persist-мир (план 12 Ф2): отряд забега готов → боевой скоуп ставит его на тест-арену вне боя.
+            // Публикуем ПОСЛЕ BeginAct (гильдия+карта собраны) и ДО обхода узлов, чтобы отряд уже стоял.
+            _partyReadyPub.Publish(new RunPartyReadyEvent());
 
             var ctx = new RunContext(run, _rng, _readyGate, _intents);
             EventResult result = await _actRunner.RunActAsync(ctx);
