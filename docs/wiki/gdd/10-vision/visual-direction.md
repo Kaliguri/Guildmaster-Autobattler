@@ -189,5 +189,18 @@ _(черновик — заполнить)_
 
 ---
 
+## Детальные каталоги приёмов (ресёрч 2026-07-18)
+
+Этот док — зонтик (намерение + дорожная карта). Полные каталоги конкретных приёмов с
+инструментом, стоимостью и источниками (собраны deep-research 2026-07-18, статус `proposed`):
+
+- [[backlog-vfx-particles-shaders|VFX: Particle System + Shader Graph/VFX Graph]] — боевые эффекты в мире (shockwave-дисторсия, GPU-импакты, щиты, dissolve).
+- [[backlog-ui-juice|UI-juice]] — HUD, damage numbers, HP-бары, экраны, boss-intro card.
+- [[backlog-gamefeel|Gamefeel]] — тактильно-временной слой (hitstop/shake/slowmo/ramps) + принципы.
+- [[backlog-atmosphere-light-post|Свет + пост + атмосфера + переходы]] — URP 2D свет, пиксель-арт пост, погода, SAO-переходы.
+- [[backlog-audio-sfx|Аудио / SFX]] — impact-слои, FMOD voices, sidechain, адаптивная музыка, звуковой телеграф.
+
+---
+
 Связь: [[concept]] (дух вечеринки, запоминаемость), [[difficulty-skill]] (честность/читаемость),
 [[gdd/00-meta/open|Meta - Open Questions]] (мета-нарратив, посевы).
