@@ -1127,7 +1127,8 @@
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--gm-color-surface-sunken);
+    /* Корень ПРОЗРАЧЕН (Ф3b P1): левая зона — дырка сквозь панель к реальной боевой камере; непрозрачную
+       подложку несёт .gm-loadout__main (центр+детали). PanelSettings не заливает фон (ClearColor off). */
     flex-direction: column;
     /* Тело сдвинуто под глобальный топбар забега (app-shell): он рисуется поверх этой полосы. */
     padding-top: var(--gm-topbar-height);
@@ -1282,12 +1283,12 @@
     flex-grow: 1;
 }
 
-/* Боевая зона-«дырка»: сквозная на всю высоту. В Ф3b — прозрачна под camera.rect;
-   пока плейсхолдер-подложка. Нижняя панель золота её НЕ перекрывает (сидит в __main). */
+/* Боевая зона-«дырка»: сквозная на всю высоту, ПРОЗРАЧНА (Ф3b P1) — сквозь неё виден реальный вид
+   боевой камеры (пока загружена боевая сцена). Рамка справа — визуальный разделитель с телом инвентаря.
+   Нижняя панель золота её НЕ перекрывает (сидит в __main). */
 .gm-loadout__battle {
     width: 31%;
     flex-shrink: 0;
-    background-color: var(--gm-color-surface-sunken);
     border-right-width: var(--gm-border-2);
     border-color: var(--gm-color-border-frame);
     align-items: center;
@@ -1301,10 +1302,12 @@
     white-space: normal;
 }
 
-/* Правая часть тела: центр+детали в ряд, снизу — панель золота. */
+/* Правая часть тела: центр+детали в ряд, снизу — панель золота. Несёт непрозрачную подложку тела
+   (корень прозрачен ради дырки слева) — центр/детали остаются читаемыми поверх мира/фона. */
 .gm-loadout__main {
     flex-grow: 1;
     flex-direction: column;
+    background-color: var(--gm-color-surface-sunken);
 }
 
 .gm-loadout__cols {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
-using Guildmaster.Core.Presentation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
 using UnityEngine;
@@ -138,7 +137,7 @@ namespace Guildmaster.UI
         /// зовётся на ЛЮБОМ закрытии (Pop/Esc/CloseAll) через DetachFromPanelEvent — бутстрап по нему
         /// возвращает ран-топбар. Реликвии — весь контент (фильтр по владению — Фаза 5); gold из RunState.
         /// </summary>
-        public void OpenInventory(int gold, IRosterStage battleStage, Action onClose)
+        public void OpenInventory(int gold, Action onClose)
         {
             if (_root == null || _loadoutInventoryUxml == null || _arcanaCardUxml == null) return;
 
@@ -148,8 +147,7 @@ namespace Guildmaster.UI
                 titleOf: r => ArcanaTitle(r != null ? r.Id : null),
                 narrativeOf: r => _loadoutVm.Desc(r),
                 localize: key => _loc?.GetString(key),
-                lockedSlots: 0,
-                battleStage: battleStage);
+                lockedSlots: 0);
 
             // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar).
             // Закрытие по любому пути (Pop/Esc/CloseAll) → onClose (бутстрап снимет подсветку режима).

@@ -3,7 +3,6 @@ using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Core.Players;
-using Guildmaster.Core.Presentation;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Settings;
 using Guildmaster.Data.Definitions;
@@ -66,10 +65,6 @@ namespace Guildmaster.Game
             builder.Register<LoadoutHubViewModel>(Lifetime.Singleton);
             builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf().As<IMenuRouter>();
             builder.RegisterComponentInHierarchy<UiRootBootstrap>();
-
-            // Живая арена расстановки (Ф3b): строит окно-в-мир по требованию при открытии инвентаря.
-            // Реализация в Game-слое (нужен доступ к Presentation/гильдии); UI держит лишь IRosterStage + RT.
-            builder.Register<RosterStageController>(Lifetime.Singleton).As<IRosterStage>();
 
             // Точка входа игры (D1): GameBootstrap в персистентной CoreScene получает GameFlow и крутит
             // верхний цикл меню→забег→меню. Инъекция полей — через RegisterComponentInHierarchy.
