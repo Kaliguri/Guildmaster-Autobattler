@@ -104,12 +104,9 @@ namespace Guildmaster.UI
                 if (activeRt == null) return;
                 rig.SetFrozen(activeRt, false);
                 rig.PlayIdle(activeRt);
-                bool attack = false;
-                animLoop = root.schedule.Execute(() =>
-                {
-                    attack = !attack;
-                    if (attack) rig.PlayAttack(activeRt); else rig.PlayIdle(activeRt);
-                }).Every(900);
+                // Цикл: 2с idle → атака → 2с idle → атака. Attack проигрывается и возвращается в idle,
+                // затем снова пауза перед следующим ударом.
+                animLoop = root.schedule.Execute(() => rig.PlayAttack(activeRt)).Every(2000);
             }
 
             for (int i = 0; relics != null && i < relics.Count; i++)

@@ -155,8 +155,9 @@ namespace Guildmaster.UI
             Push(screen);
         }
 
-        /// <summary>Закрыть все оверлеи (режим «Бой»/выход в игру из глобального топбара).</summary>
-        public void CloseOverlays() => CloseAll();
+        /// <summary>Закрыть все оверлеи (режим «Бой»/выход в игру из глобального топбара). No-op если ничего не открыто
+        /// (иначе ExitMenuMode на пустом стеке восстанавливал бы контекст ввода вслепую — источник вылета).</summary>
+        public void CloseOverlays() { if (IsOpen) CloseAll(); }
 
         // Титул таро-карты в стиле ГДД (аркан «The X»): «relic.flame_swordsman» → «The Flame Swordsman».
         private static string ArcanaTitle(string id)
