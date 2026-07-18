@@ -1,0 +1,715 @@
+fileFormatVersion: 2
+guid: c66a49d9139abf349b0c9d3c2151e1b3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7652370921428806075
+    second: EggBlast (64x64)_0
+  - first:
+      213: -6974122648198368174
+    second: EggBlast (64x64)_1
+  - first:
+      213: 662697966205988111
+    second: EggBlast (64x64)_2
+  - first:
+      213: 5164631009453809183
+    second: EggBlast (64x64)_3
+  - first:
+      213: -7204976562103115652
+    second: EggBlast (64x64)_4
+  - first:
+      213: 5750994464420673998
+    second: EggBlast (64x64)_5
+  - first:
+      213: -3444450234233328325
+    second: EggBlast (64x64)_6
+  - first:
+      213: 8827018810136350491
+    second: EggBlast (64x64)_7
+  - first:
+      213: -2034156473965400479
+    second: EggBlast (64x64)_8
+  - first:
+      213: 4275744833587313027
+    second: EggBlast (64x64)_9
+  - first:
+      213: 5666186540536138784
+    second: EggBlast (64x64)_10
+  - first:
+      213: 8266951535406761235
+    second: EggBlast (64x64)_11
+  - first:
+      213: -4669107755726632389
+    second: EggBlast (64x64)_12
+  - first:
+      213: -1439109956163513869
+    second: EggBlast (64x64)_13
+  - first:
+      213: 1648905926144126896
+    second: EggBlast (64x64)_14
+  - first:
+      213: -3932557375799433800
+    second: EggBlast (64x64)_15
+  - first:
+      213: 2327717324010712077
+    second: EggBlast (64x64)_16
+  - first:
+      213: -5056779737051010833
+    second: EggBlast (64x64)_17
+  - first:
+      213: -7367329352048270666
+    second: EggBlast (64x64)_18
+  - first:
+      213: 5802131977350071581
+    second: EggBlast (64x64)_19
+  - first:
+      213: -7214201043772534073
+    second: EggBlast (64x64)_20
+  - first:
+      213: -511633765387756665
+    second: EggBlast (64x64)_21
+  - first:
+      213: 5140763879541017274
+    second: EggBlast (64x64)_22
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: EggBlast (64x64)_0
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 0
+        width: 62
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54615b2e0315dc590800000000000000
+      internalID: -7652370921428806075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_1
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 44
+        width: 36
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2543126e660f63f90800000000000000
+      internalID: -6974122648198368174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_2
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 0
+        width: 62
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0de4150a40623900800000000000000
+      internalID: 662697966205988111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_3
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 6
+        width: 22
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f1e167a2a847ca740800000000000000
+      internalID: 5164631009453809183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_4
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 30
+        width: 30
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7024d88df7c20c90800000000000000
+      internalID: -7204976562103115652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_5
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 0
+        width: 61
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec9380dcef2afcf40800000000000000
+      internalID: 5750994464420673998
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_6
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 0
+        width: 61
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3de20ee2cad230d0800000000000000
+      internalID: -3444450234233328325
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_7
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 0
+        width: 61
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b1f4edb17dedf7a70800000000000000
+      internalID: 8827018810136350491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_8
+      rect:
+        serializedVersion: 2
+        x: 450
+        y: 0
+        width: 61
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 16e2bbfd67935c3e0800000000000000
+      internalID: -2034156473965400479
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_9
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 0
+        width: 61
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 389fe24b54f765b30800000000000000
+      internalID: 4275744833587313027
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_10
+      rect:
+        serializedVersion: 2
+        x: 557
+        y: 28
+        width: 36
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02c81cb43a652ae40800000000000000
+      internalID: 5666186540536138784
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_11
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 0
+        width: 44
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3154a4b0f9c1ab270800000000000000
+      internalID: 8266951535406761235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_12
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 0
+        width: 46
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3a84e1fb3ff33fb0800000000000000
+      internalID: -4669107755726632389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_13
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 0
+        width: 41
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f1552e9e11470ce0800000000000000
+      internalID: -1439109956163513869
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_14
+      rect:
+        serializedVersion: 2
+        x: 520
+        y: 33
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bf6bdb143712e610800000000000000
+      internalID: 1648905926144126896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_15
+      rect:
+        serializedVersion: 2
+        x: 550
+        y: 26
+        width: 12
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b5e1acf6efbc69c0800000000000000
+      internalID: -3932557375799433800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_16
+      rect:
+        serializedVersion: 2
+        x: 243
+        y: 0
+        width: 12
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0c6e2bc296bd4020800000000000000
+      internalID: 2327717324010712077
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_17
+      rect:
+        serializedVersion: 2
+        x: 537
+        y: 22
+        width: 15
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe86ea10f95b2d9b0800000000000000
+      internalID: -5056779737051010833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_18
+      rect:
+        serializedVersion: 2
+        x: 538
+        y: 9
+        width: 15
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6b2aad3fcfcf1c990800000000000000
+      internalID: -7367329352048270666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_19
+      rect:
+        serializedVersion: 2
+        x: 261
+        y: 13
+        width: 7
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d15c2e9da40558050800000000000000
+      internalID: 5802131977350071581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_20
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 8
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c29fa78f5202eb90800000000000000
+      internalID: -7214201043772534073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_21
+      rect:
+        serializedVersion: 2
+        x: 199
+        y: 0
+        width: 7
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78b97f61dcf46e8f0800000000000000
+      internalID: -511633765387756665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: EggBlast (64x64)_22
+      rect:
+        serializedVersion: 2
+        x: 543
+        y: 0
+        width: 11
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aba8332f289a75740800000000000000
+      internalID: 5140763879541017274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      EggBlast (64x64)_0: -7652370921428806075
+      EggBlast (64x64)_1: -6974122648198368174
+      EggBlast (64x64)_10: 5666186540536138784
+      EggBlast (64x64)_11: 8266951535406761235
+      EggBlast (64x64)_12: -4669107755726632389
+      EggBlast (64x64)_13: -1439109956163513869
+      EggBlast (64x64)_14: 1648905926144126896
+      EggBlast (64x64)_15: -3932557375799433800
+      EggBlast (64x64)_16: 2327717324010712077
+      EggBlast (64x64)_17: -5056779737051010833
+      EggBlast (64x64)_18: -7367329352048270666
+      EggBlast (64x64)_19: 5802131977350071581
+      EggBlast (64x64)_2: 662697966205988111
+      EggBlast (64x64)_20: -7214201043772534073
+      EggBlast (64x64)_21: -511633765387756665
+      EggBlast (64x64)_22: 5140763879541017274
+      EggBlast (64x64)_3: 5164631009453809183
+      EggBlast (64x64)_4: -7204976562103115652
+      EggBlast (64x64)_5: 5750994464420673998
+      EggBlast (64x64)_6: -3444450234233328325
+      EggBlast (64x64)_7: 8827018810136350491
+      EggBlast (64x64)_8: -2034156473965400479
+      EggBlast (64x64)_9: 4275744833587313027
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
