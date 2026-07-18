@@ -11,3 +11,9 @@ scripts/*.ps1   linguist-documentation
 *.cs            linguist-language=C#
 *.asmdef        linguist-documentation
 *.shader        linguist-language=GLSL
+
+# TMP SDF font assets carry a baked glyph atlas (large, effectively binary).
+# A regenerated atlas otherwise shows as hundreds of thousands of diff lines
+# and line-merges into garbage. Treat as binary: one-line diff, no auto-merge.
+# The real cure is Static atlas population (see docs); this is the safety net.
+*SDF*.asset     -diff -merge
