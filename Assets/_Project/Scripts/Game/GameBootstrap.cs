@@ -37,6 +37,7 @@ namespace Guildmaster.Game
         [SerializeField] private bool _legacyBattleScene;
 
         [Inject] private GameFlow _gameFlow;
+        [Inject] private ISceneLoader _sceneLoader;
 
         private void Start()
         {
@@ -46,6 +47,10 @@ namespace Guildmaster.Game
         private async UniTaskVoid StartBootAsync()
         {
             Debug.Log("[GameBootstrap] - Старт");
+
+            // Персистентный мир (камера-риг + арена) поднимаем ПЕРВЫМ и держим всю сессию: вне боя он
+            // даёт вид арены (карта/инвентарь), в бою переиспользуется. Бой (BattleScene) ложится поверх.
+            await _sceneLoader.LoadWorldAsync();
 
             if (_runActOnBoot)
             {

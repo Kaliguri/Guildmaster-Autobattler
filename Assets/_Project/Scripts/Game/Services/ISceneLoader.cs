@@ -9,6 +9,12 @@ namespace Guildmaster.Game.Services
     /// </summary>
     public interface ISceneLoader
     {
+        /// <summary>
+        /// Аддитивно загрузить персистентную WorldScene (единый мир: камера-риг + арена). Грузится
+        /// один раз на буте и НЕ выгружается — переживает бои (no-op, если уже загружена).
+        /// </summary>
+        UniTask LoadWorldAsync();
+
         /// <summary>Аддитивно загрузить BattleScene (no-op, если уже загружена).</summary>
         UniTask LoadBattleAsync();
 
