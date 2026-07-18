@@ -12,7 +12,10 @@ namespace Guildmaster.Core.Random
     {
         private uint _x, _y, _z, _w;
 
-        public XorShiftRng(ulong seed)
+        public XorShiftRng(ulong seed) => Reseed(seed);
+
+        /// <inheritdoc/>
+        public void Reseed(ulong seed)
         {
             _x = NextSplitMix(ref seed);
             _y = NextSplitMix(ref seed);

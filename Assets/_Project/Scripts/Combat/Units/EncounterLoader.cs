@@ -156,21 +156,33 @@ namespace Guildmaster.Combat
             _factory.ResetIds();
 
             // Player-сторона (team 0) — сначала, чтобы Id союзников шли раньше врагов (стабильнее для отладки).
-            if (playerSide != null)
-            {
-                for (int i = 0; i < playerSide.Count; i++)
-                {
-                    PlayerSpawn p = playerSide[i];
-                    if (p.Unit == null) continue;
-                    _simulation.EnqueueUnitSpawn(_factory.Create(p.Unit, p.Vessel, team: 0, p.Position, p.Items));
-                }
-            }
-
+            SpawnPlayerSide(playerSide);
             // Вражеская сторона (team 1) — из энкаунтера, по строковым id через реестр.
             SpawnEnemies(encounter);
         }
 
-        private void SpawnEnemies(EncounterData encounter)
+        /// <summary>
+        /// Заспавнить player-сторону (team 0) в очередь спавна — БЕЗ сброса боя. Для persist-мира: отряд
+        /// можно поставить на тест-арену ВНЕ боя, а врагов доспавнить позже (<see cref="SpawnEnemies"/>) на
+        /// входе в бой. Звать после фазы сброса (<see cref="CombatSimulation.ResetBattle"/> +
+        /// <see cref="RuntimeUnitFactory.ResetIds"/>), не посреди активного боя.
+        /// </summary>
+        public void SpawnPlayerSide(IReadOnlyList<PlayerSpawn> playerSide)
+        {
+            if (playerSide == null) return;
+            for (int i = 0; i < playerSide.Count; i++)
+            {
+                PlayerSpawn p = playerSide[i];
+                if (p.Unit == null) continue;
+                _simulation.EnqueueUnitSpawn(_factory.Create(p.Unit, p.Vessel, team: 0, p.Position, p.Items));
+            }
+        }
+
+        /// <summary>
+        /// Заспавнить вражескую сторону (team 1) из энкаунтера — БЕЗ сброса боя. Для persist-мира —
+        /// доспавн врагов на входе в бой поверх уже стоящего отряда игрока.
+        /// </summary>
+        public void SpawnEnemies(EncounterData encounter)
         {
             IReadOnlyList<EncounterUnit> units = encounter.Units;
             if (units == null) return;
