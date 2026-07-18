@@ -158,6 +158,9 @@ namespace Guildmaster.Game
             // Держим здесь, рядом с прочей презентацией (отдельный метод внешний форматтер уже сносил).
             if (FindFirstObjectByType<Presentation.CameraModeController>() != null)
             {
+                // Боевой источник точек фокуса (живые юниты этого боя) → цель слежения камеры.
+                // Развязка sim→presentation: focus зависит от IFocusPointSource, а не от CombatSimulation.
+                builder.Register<Presentation.IFocusPointSource, Presentation.CombatFocusPointSource>(Lifetime.Scoped);
                 builder.RegisterComponentInHierarchy<Presentation.CombatFocusTarget>();
                 builder.RegisterComponentInHierarchy<Presentation.CameraModeController>()
                        .AsSelf().As<Presentation.IScreenShake>();
