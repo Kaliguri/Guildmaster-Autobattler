@@ -16,6 +16,9 @@ namespace Guildmaster.Core.Presentation
         /// <summary>Открыто ли окно (стейдж построен).</summary>
         bool IsOpen { get; }
 
+        /// <summary>Текущая RT окна (null, если закрыто) — для показа фоном UI-элемента.</summary>
+        RenderTexture Texture { get; }
+
         /// <summary>
         /// Построить стейдж (мок-арена + отряд из гильдии) и камеру, отдать её <see cref="RenderTexture"/>
         /// заданного пиксельного размера для показа в UI. Повторный вызов на открытом окне возвращает
@@ -25,5 +28,14 @@ namespace Guildmaster.Core.Presentation
 
         /// <summary>Разобрать стейдж, камеру и освободить RT. Идемпотентно.</summary>
         void Close();
+
+        /// <summary>
+        /// Панорама камеры «схватом мира»: сдвиг задаётся ДОЛЕЙ вьюпорта (пиксельная дельта курсора ÷ размер
+        /// окна), контроллер переводит её в мировые единицы по текущему зуму. Клампится зоной арены (Ф3b.2).
+        /// </summary>
+        void PanByFraction(Vector2 fractionDelta);
+
+        /// <summary>Зум камеры шагами (колесо): +1 приближает, −1 отдаляет. Клампится [мин; вся арена].</summary>
+        void ZoomBy(float steps);
     }
 }

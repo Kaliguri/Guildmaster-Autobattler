@@ -226,9 +226,9 @@ namespace Guildmaster.UI
             if (_loadoutInventoryScreen == null) { _router.OpenHub(); return; } // фолбэк на старый хаб, если ассет не назначен
             _inventoryOpen = true;
             int gold = _runStates?.Current != null ? _runStates.Current.Gold : 0;
-            // Живая арена расстановки (Ф3b): строим окно-в-мир (RT), разбираем стейдж на ЛЮБОМ закрытии инвентаря.
-            RenderTexture battleRt = _rosterStage != null ? _rosterStage.Open(720, 1280) : null;
-            _router.OpenInventory(gold, battleRt, () => { _inventoryOpen = false; _rosterStage?.Close(); });
+            // Живая арена расстановки (Ф3b): строим окно-в-мир, разбираем стейдж на ЛЮБОМ закрытии инвентаря.
+            _rosterStage?.Open(720, 1280);
+            _router.OpenInventory(gold, _rosterStage, () => { _inventoryOpen = false; _rosterStage?.Close(); });
         }
 
         // Режим «Карта» — открыть карту акта read-only (просмотр текущей карты; клик по узлу закрывает просмотр).

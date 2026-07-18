@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Guildmaster.Core.Presentation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.UI.Components;
 using UnityEngine;
@@ -32,7 +33,7 @@ namespace Guildmaster.UI
             Func<RelicData, string> narrativeOf,
             Func<string, string> localize,
             int lockedSlots = 0,
-            RenderTexture battleRt = null)
+            IRosterStage battleStage = null)
         {
             string L(string key, string ru)
             {
@@ -48,12 +49,14 @@ namespace Guildmaster.UI
             SetText(root, "battle-hint", L("ui.loadout.deployment", "Живая расстановка"));
 
             // ── Живая арена-«окно в мир» (Ф3b.1): RT roster-stage как фон левой зоны; подсказка гаснет. ──
+            // Ф3b.2: пан/зум камеры — нативными UITK-событиями прямо на элементе (окно = UITK, не «дырка»).
             var battleZone = root.Q<VisualElement>("battle-zone");
-            if (battleZone != null && battleRt != null)
+            if (battleZone != null && battleStage != null && battleStage.Texture != null)
             {
-                battleZone.style.backgroundImage = new StyleBackground(Background.FromRenderTexture(battleRt));
+                battleZone.style.backgroundImage = new StyleBackground(Background.FromRenderTexture(battleStage.Texture));
                 var hint = root.Q<Label>("battle-hint");
                 if (hint != null) hint.style.display = DisplayStyle.None;
+                AttachCameraInput(battleZone, battleStage);
             }
             SetBtn (root, "filter-relics",  L("ui.loadout.filter.relics", "Реликвии"));
             SetBtn (root, "filter-items",   L("ui.loadout.filter.items", "Предметы"));
@@ -168,6 +171,42 @@ namespace Guildmaster.UI
             if (cards.Count > 0) ShowDetail(cards[0].relic);
 
             return root;
+        }
+
+        // Управление камерой окна (Ф3b.2): ЛКМ-драг = пан «схватом мира», колесо = зум. События приходят
+        // на сам элемент (RT-окно = обычный VisualElement) — panel.Pick-зонирование тут не нужно (оно для
+        // драга релик→юнит в Ф3b.3). Дельту курсора отдаём долей вьюпорта — контроллер переводит в мир.
+        private static void AttachCameraInput(VisualElement zone, IRosterStage stage)
+        {
+            bool dragging = false;
+            Vector2 last = default;
+
+            zone.RegisterCallback<PointerDownEvent>(e =>
+            {
+                dragging = true;
+                last = (Vector2)e.position;
+                zone.CapturePointer(e.pointerId);
+                e.StopPropagation();
+            });
+            zone.RegisterCallback<PointerMoveEvent>(e =>
+            {
+                if (!dragging) return;
+                Vector2 size = zone.contentRect.size;
+                if (size.x < 1f || size.y < 1f) return;
+                Vector2 delta = (Vector2)e.position - last;
+                last = (Vector2)e.position;
+                stage.PanByFraction(new Vector2(delta.x / size.x, delta.y / size.y));
+            });
+            zone.RegisterCallback<PointerUpEvent>(e =>
+            {
+                dragging = false;
+                if (zone.HasPointerCapture(e.pointerId)) zone.ReleasePointer(e.pointerId);
+            });
+            zone.RegisterCallback<WheelEvent>(e =>
+            {
+                stage.ZoomBy(-Mathf.Sign(e.delta.y)); // колесо вверх (delta.y<0) → приближение
+                e.StopPropagation();
+            });
         }
 
         private static void FillUpgradeRow(VisualElement row)

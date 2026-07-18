@@ -38,6 +38,15 @@ namespace Guildmaster.Game
         private readonly List<GameObject> _units = new List<GameObject>();
         private Sprite _quad; // общий 1×1 белый спрайт (Texture2D.whiteTexture) — тинтуется/масштабируется под примитивы
 
+        // Управление камерой (Ф3b.2): орто-размер + центр в мировых координатах, кламп зоной арены.
+        private const float ZoomStep = 1.2f;
+        private const float MinSize  = 2.5f;
+        private float   _aspect = 1f;
+        private float   _size;
+        private float   _maxSize;
+        private Vector2 _center;
+        private Vector2 _zoneHalf;
+
         public RosterStageController(IContentDatabase content, RunStateService runStates)
         {
             _content   = content;
@@ -45,6 +54,7 @@ namespace Guildmaster.Game
         }
 
         public bool IsOpen => _root != null;
+        public RenderTexture Texture => _rt;
 
         public RenderTexture Open(int width, int height)
         {
@@ -177,17 +187,49 @@ namespace Guildmaster.Game
             cam.nearClipPlane   = 0.01f;
             cam.farClipPlane    = 100f;
             cam.targetTexture   = _rt;
-
-            // Портретное окно: заполняем по ВЫСОТЕ арены, наводимся на зону игрока (там стоит отряд).
-            // Ширина кропится — полный обзор/пан/зум придут в Ф3b.2.
-            float halfH = ArenaSize.y * 0.5f;
-            cam.orthographicSize = halfH * 1.06f;
-
-            Vector2 origin = _root.position;
-            float focusX = origin.x - ArenaSize.x * 0.24f; // центр зоны игрока
-            cam.transform.position = new Vector3(focusX, origin.y, -10f);
-            cam.enabled = true;                              // RT назначена — теперь можно рендерить
             _camera = cam;
+
+            // Габариты/кламп камеры (Ф3b.2). Зона пана = арена с небольшим полем; полный отзум = вся арена.
+            Vector2 origin = _root.position;
+            _aspect   = (float)width / height;
+            _zoneHalf = new Vector2(ArenaSize.x * 0.5f * 1.05f, ArenaSize.y * 0.5f * 1.05f);
+            _maxSize  = Mathf.Max(ArenaSize.y * 0.5f, ArenaSize.x * 0.5f / Mathf.Max(0.01f, _aspect)) * 1.06f;
+
+            // Старт: заполняем по высоте, наводимся на зону игрока (там отряд). Пан/зум откроют остальное.
+            _size   = Mathf.Min(_maxSize, ArenaSize.y * 0.5f * 1.06f);
+            _center = new Vector2(origin.x - ArenaSize.x * 0.24f, origin.y);
+
+            ApplyCamera();
+            cam.enabled = true;                              // RT назначена — теперь можно рендерить
+        }
+
+        public void PanByFraction(Vector2 fractionDelta)
+        {
+            if (_camera == null) return;
+            // Схват мира: тянем вправо → мир вправо → камера влево. UITK y вниз (+) → мир вверх (+).
+            _center.x -= fractionDelta.x * (2f * _size * _aspect);
+            _center.y += fractionDelta.y * (2f * _size);
+            ApplyCamera();
+        }
+
+        public void ZoomBy(float steps)
+        {
+            if (_camera == null) return;
+            _size = Mathf.Clamp(_size - steps * ZoomStep, MinSize, _maxSize);
+            ApplyCamera();
+        }
+
+        // Применить зум+центр к камере с клампом: видимая область не выходит за зону арены; когда область
+        // шире/выше зоны (полный отзум) — центрируем по соответствующей оси.
+        private void ApplyCamera()
+        {
+            _camera.orthographicSize = _size;
+            Vector2 zc = new Vector2(_root.position.x, _root.position.y);
+            float slackX = _zoneHalf.x - _size * _aspect;
+            float slackY = _zoneHalf.y - _size;
+            float x = slackX <= 0f ? zc.x : Mathf.Clamp(_center.x, zc.x - slackX, zc.x + slackX);
+            float y = slackY <= 0f ? zc.y : Mathf.Clamp(_center.y, zc.y - slackY, zc.y + slackY);
+            _camera.transform.position = new Vector3(x, y, -10f);
         }
 
         private static void DestroyObject(Object obj)
