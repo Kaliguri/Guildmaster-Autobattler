@@ -58,6 +58,12 @@ namespace Guildmaster.UI
         [Tooltip("UXML лоадаут-хаба (гильдия: 4 сосуда + навешивание реликвий из запаса). Открывается кнопкой «Хаб».")]
         [SerializeField] private VisualTreeAsset _loadoutHubScreen;
 
+        [Tooltip("UXML нового лоадаут/инвентарь-экрана (редизайн, Ф3a: трёхколоночник с таро-карточками). Открывается кнопкой «Хаб».")]
+        [SerializeField] private VisualTreeAsset _loadoutInventoryScreen;
+
+        [Tooltip("UXML таро-карточки реликвии (клонируется в грид нового инвентаря).")]
+        [SerializeField] private VisualTreeAsset _arcanaCard;
+
         private MenuRouter _router;
         private IInputService _input;
         private IBattleClock _clock;
@@ -84,6 +90,7 @@ namespace Guildmaster.UI
         private IDisposable _openMainMenuSubscription;
         private UIDocument _doc;
         private RunTopBarView _topBar;
+        private bool _inventoryOpen; // новый инвентарь открыт (полноэкранный) → прячем ран-топбар, чтоб не дублировался
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -121,7 +128,7 @@ namespace Guildmaster.UI
                                  "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
                 return;
             }
-            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen);
+            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -167,8 +174,10 @@ namespace Guildmaster.UI
             // ХП/золото/акт видны ВЕСЬ забег (реш. №65, STS-style), а не только в бою.
             RunState run = _runStates?.Current;
             bool runActive = run != null;
-            _topBar.Root.style.display = runActive ? DisplayStyle.Flex : DisplayStyle.None;
-            if (!runActive) return;
+            // Новый инвентарь полноэкранный и несёт свой топбар-режимы → прячем ран-топбар, пока он открыт.
+            bool showTopBar = runActive && !_inventoryOpen;
+            _topBar.Root.style.display = showTopBar ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!showTopBar) return;
 
             _topBar.Root.BringToFront(); // держим топ-бар поверх оверлеев узлов (карта/магазин/награда)
             _topBar.SetGold(run.Gold);
@@ -180,9 +189,15 @@ namespace Guildmaster.UI
             else _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
         }
 
-        // Кнопка «Хаб» в топбаре открывает лоадаут-хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание
-        // собранных реликвий из запаса на 4 сосуда. Оверлей поверх карты; правки durable (RunState).
-        private void OnHubClicked() => _router.OpenHub();
+        // Кнопка «Хаб» в топбаре открывает НОВЫЙ инвентарь-экран (редизайн, Ф3a) поверх забега. Прячем
+        // ран-топбар на время (у экрана свой топбар-режимы), возвращаем на закрытии (по onClose из DetachFromPanel).
+        private void OnHubClicked()
+        {
+            if (_loadoutInventoryScreen == null) { _router.OpenHub(); return; } // фолбэк на старый хаб, если ассет не назначен
+            _inventoryOpen = true;
+            int gold = _runStates?.Current != null ? _runStates.Current.Gold : 0;
+            _router.OpenInventory(gold, () => _inventoryOpen = false);
+        }
 
         private static string FormatTime(float seconds)
         {

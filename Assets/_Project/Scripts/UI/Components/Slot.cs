@@ -10,7 +10,7 @@ namespace Guildmaster.UI.Components
     [UxmlElement]
     public partial class Slot : VisualElement
     {
-        public enum SlotSize { Sm, Md }
+        public enum SlotSize { Sm, Md, Lg }
 
         private readonly VisualElement _icon;
         private SlotSize _size = SlotSize.Md;
@@ -48,6 +48,7 @@ namespace Guildmaster.UI.Components
         {
             EnableInClassList("gm-slot--sm", _size == SlotSize.Sm);
             EnableInClassList("gm-slot--md", _size == SlotSize.Md);
+            EnableInClassList("gm-slot--lg", _size == SlotSize.Lg);
         }
     }
 }

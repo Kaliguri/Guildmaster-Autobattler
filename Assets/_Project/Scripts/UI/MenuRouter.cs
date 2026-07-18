@@ -39,6 +39,8 @@ namespace Guildmaster.UI
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
         private VisualTreeAsset _loadoutHubUxml;
+        private VisualTreeAsset _loadoutInventoryUxml;
+        private VisualTreeAsset _arcanaCardUxml;
         private InputContext _prevContext;
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
@@ -58,7 +60,8 @@ namespace Guildmaster.UI
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
             VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
             VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
-            VisualTreeAsset loadoutHubUxml = null)
+            VisualTreeAsset loadoutHubUxml = null, VisualTreeAsset loadoutInventoryUxml = null,
+            VisualTreeAsset arcanaCardUxml = null)
         {
             _root = root;
             _pauseUxml = pauseUxml;
@@ -73,6 +76,8 @@ namespace Guildmaster.UI
             _outcomeUxml = outcomeUxml;
             _mainMenuUxml = mainMenuUxml;
             _loadoutHubUxml = loadoutHubUxml;
+            _loadoutInventoryUxml = loadoutInventoryUxml;
+            _arcanaCardUxml = arcanaCardUxml;
         }
 
         /// <summary>
@@ -124,6 +129,54 @@ namespace Guildmaster.UI
 
             Rebuild();
             Push(container);
+        }
+
+        /// <summary>
+        /// Новый полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро-карточек реликвий + детали.
+        /// Открывается кнопкой «Хаб» в топбаре (заменил старый хаб-оверлей). <paramref name="onClose"/>
+        /// зовётся на ЛЮБОМ закрытии (Pop/Esc/CloseAll) через DetachFromPanelEvent — бутстрап по нему
+        /// возвращает ран-топбар. Реликвии — весь контент (фильтр по владению — Фаза 5); gold из RunState.
+        /// </summary>
+        public void OpenInventory(int gold, Action onClose)
+        {
+            if (_root == null || _loadoutInventoryUxml == null || _arcanaCardUxml == null) return;
+
+            VisualElement screen = LoadoutInventoryView.Build(
+                _loadoutInventoryUxml, _arcanaCardUxml,
+                _loadoutVm.Relics, gold,
+                titleOf: r => ArcanaTitle(r != null ? r.Id : null),
+                narrativeOf: r => _loadoutVm.Desc(r),
+                localize: key => _loc?.GetString(key),
+                lockedSlots: 0);
+
+            // Закрытие по любому пути → onClose (топбар вернётся). Табы-режимы (кроме активного «Инвентарь»)
+            // выходят в игру; шестерёнка открывает настройки поверх.
+            screen.RegisterCallback<DetachFromPanelEvent>(_ => onClose?.Invoke());
+            WireClick(screen, "mode-map", Pop);
+            WireClick(screen, "mode-battle", Pop);
+            WireClick(screen, "mode-tactics", Pop);
+            WireClick(screen, "mode-compendium", Pop);
+            WireClick(screen, "btn-menu", () => Push(BuildSettingsScreen()));
+
+            Push(screen);
+        }
+
+        private static void WireClick(VisualElement root, string name, Action action)
+        {
+            var b = root.Q<Button>(name);
+            if (b != null) b.clicked += action;
+        }
+
+        // Титул таро-карты в стиле ГДД (аркан «The X»): «relic.flame_swordsman» → «The Flame Swordsman».
+        private static string ArcanaTitle(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return "—";
+            int dot = id.LastIndexOf('.');
+            string s = (dot >= 0 ? id.Substring(dot + 1) : id).Replace('_', ' ');
+            var parts = s.Split(' ');
+            for (int i = 0; i < parts.Length; i++)
+                if (parts[i].Length > 0) parts[i] = char.ToUpper(parts[i][0]) + parts[i].Substring(1);
+            return "The " + string.Join(" ", parts);
         }
 
         public void ToggleSystemMenu()

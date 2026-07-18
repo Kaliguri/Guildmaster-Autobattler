@@ -162,6 +162,8 @@ MonoBehaviour:
   _mainMenuScreen: {fileID: 9197481963319205126, guid: 6b74acde43d6f2845a61d543591cccb0, type: 3}
   _runTopBar: {fileID: 9197481963319205126, guid: 94570721a23f87c4e851528c4b1212aa, type: 3}
   _loadoutHubScreen: {fileID: 9197481963319205126, guid: b101555f184c6db48b81893633a005ee, type: 3}
+  _loadoutInventoryScreen: {fileID: 9197481963319205126, guid: 57e9cea668276b146bb6ddbf4646c5ae, type: 3}
+  _arcanaCard: {fileID: 9197481963319205126, guid: f3c82685632320143bae2eb20e6d7db1, type: 3}
 --- !u!114 &101249935
 MonoBehaviour:
   m_ObjectHideFlags: 0

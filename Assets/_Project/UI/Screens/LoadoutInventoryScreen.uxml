@@ -1,0 +1,86 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <!-- Лоадаут/инвентарь — редизайн (Ф3a каркас): полноэкранный трёхколоночник.
+         Топбар-режимы сверху; тело = боевая зона-«дырка» слева | грид таро-карточек | панель деталей;
+         нижняя панель золота под центром+правым (боевую зону не режет).
+         Текст здесь — RU-плейсхолдер; локализованные строки проставляет LoadoutInventoryView (ключи ui.loadout.*). -->
+    <ui:VisualElement name="loadout-root" class="gm-loadout">
+
+        <!-- ── Топбар-режимы: гильдия | табы-режимы (центр) | время + меню ── -->
+        <ui:VisualElement class="gm-loadout__topbar">
+            <ui:VisualElement class="gm-loadout__topbar-side">
+                <ui:VisualElement>
+                    <ui:Label name="guild-name" text="Alebardium" class="gm-loadout__guild-name" />
+                    <ui:Label name="guild-asc" text="ASCENSION · IV" class="gm-loadout__guild-asc" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+            <ui:VisualElement class="gm-loadout__topbar-center">
+                <ui:Button name="mode-map" text="Карта" class="gm-loadout__mode" />
+                <ui:Button name="mode-battle" text="Бой" class="gm-loadout__mode" />
+                <ui:Button name="mode-inventory" text="Инвентарь" class="gm-loadout__mode gm-loadout__mode--active" />
+                <ui:Button name="mode-tactics" text="Тактика" class="gm-loadout__mode" />
+                <ui:Button name="mode-compendium" text="Компендиум" class="gm-loadout__mode" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="gm-loadout__topbar-side gm-loadout__topbar-side--right">
+                <ui:Label name="run-time" text="12:34" class="gm-loadout__time" />
+                <ui:Button name="btn-menu" class="gm-loadout__menu-btn">
+                    <ui:VisualElement class="gm-loadout__menu-icon" />
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- ── Тело ── -->
+        <ui:VisualElement class="gm-loadout__body">
+
+            <!-- Боевая зона-«дырка» (сквозная; в Ф3b — прозрачна под camera.rect). -->
+            <ui:VisualElement name="battle-zone" class="gm-loadout__battle">
+                <ui:Label name="battle-hint" text="Живая расстановка" class="gm-loadout__battle-hint" />
+            </ui:VisualElement>
+
+            <ui:VisualElement class="gm-loadout__main">
+                <ui:VisualElement class="gm-loadout__cols">
+
+                    <!-- Центр: фильтр-табы (центр) + поиск/сортировка + грид -->
+                    <ui:VisualElement class="gm-loadout__center">
+                        <ui:VisualElement class="gm-loadout__filters">
+                            <ui:Button name="filter-relics" text="Реликвии" class="gm-tab gm-tab--active" />
+                            <ui:Button name="filter-items" text="Предметы" class="gm-tab" />
+                            <ui:Button name="filter-banners" text="Знамёна" class="gm-tab" />
+                        </ui:VisualElement>
+
+                        <ui:VisualElement class="gm-loadout__toolbar">
+                            <ui:TextField name="search" class="gm-loadout__search" />
+                            <ui:Button name="sort" text="Имя ↓" class="gm-loadout__sort" />
+                        </ui:VisualElement>
+
+                        <ui:ScrollView name="relic-grid" style="flex-grow: 1;" />
+                    </ui:VisualElement>
+
+                    <!-- Правая панель деталей -->
+                    <ui:VisualElement class="gm-loadout__detail">
+                        <ui:VisualElement class="gm-loadout__video">
+                            <ui:Label name="video-hint" text="видео-вставка 16:9" class="gm-loadout__video-hint" />
+                        </ui:VisualElement>
+                        <ui:Label name="detail-title" text="—" class="gm-loadout__detail-title" />
+                        <ui:VisualElement name="detail-abilities" class="gm-loadout__abilities" />
+                        <ui:VisualElement class="gm-loadout__upgrades">
+                            <ui:VisualElement name="upgrade-row-1" class="gm-loadout__upgrade-row" />
+                            <ui:VisualElement name="upgrade-row-2" class="gm-loadout__upgrade-row" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="gm-loadout__narrative">
+                            <ui:Label name="detail-narrative" text="" class="gm-loadout__narrative-text" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+
+                </ui:VisualElement>
+
+                <!-- Нижняя панель золота (под центром+правым) -->
+                <ui:VisualElement class="gm-loadout__footer">
+                    <ui:Label name="gold" text="100" class="gm-loadout__gold" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
