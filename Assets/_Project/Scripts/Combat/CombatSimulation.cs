@@ -22,10 +22,12 @@ namespace Guildmaster.Combat
     {
         private readonly IRngService         _rng;
         private readonly float               _armorK;
-        private readonly ArenaBounds         _arena;
+        // Не readonly: persist-мир сменяет арену на месте (тест-зона ↔ боевая) через SetArena, без
+        // пересоздания сима (единая живущая сцена, вики «16» §5 / план persist-геймплея).
+        private ArenaBounds                  _arena;
         // Зона деспавна снарядов = видимая область камеры (CameraZone) + margin: снаряд гаснет ЗА
         // пределами видимого игроку, а не на краю арены (решение Макса). Фолбэк — границы арены.
-        private readonly ArenaBounds         _projectileDespawnBounds;
+        private ArenaBounds                  _projectileDespawnBounds;
         // Не readonly: dev re-bake (gm_tuning_rebake) применяет новый тюнинг к идущему бою (tainted).
         private SimTuning                    _tuning;
         private readonly SpatialHash         _spatialHash;
@@ -451,6 +453,18 @@ namespace Guildmaster.Combat
         // --- Управление симуляцией (вызывается командами) ---
 
         public void SetPaused(bool paused) => _isPaused = paused;
+
+        /// <summary>
+        /// Сменить арену НА МЕСТЕ, без пересоздания сима (persist-мир: тест-зона ↔ боевая арена).
+        /// Обновляет границы поля (движение/отбрасывание) и зону деспавна снарядов. Звать на пустом
+        /// или сброшенном симе (между боями / на входе в бой), не посреди активного тика.
+        /// </summary>
+        public void SetArena(ArenaBounds arena, Rect2D? cameraZone = null)
+        {
+            _arena = arena;
+            // Как в конструкторе: деспавн снарядов — по видимой зоне камеры; не задана → границы арены.
+            _projectileDespawnBounds = new ArenaBounds(cameraZone ?? _arena.Rect);
+        }
 
         /// <summary>
         /// Сбросить бой для перезапуска НА МЕСТЕ (dev-R): чистим всех юнитов/снаряды/очереди и возвращаем
