@@ -93,7 +93,7 @@ namespace Guildmaster.Presentation
                 (float)rng.NextDouble(),  // r = speed
                 (float)rng.NextDouble(),  // g = spin
                 (float)rng.NextDouble(),  // b = dir jitter
-                1f);
+                (float)rng.NextDouble()); // a = tumble axis/phase (псевдо-3D кувыркание)
 
             int start = verts.Count;
             AddVertex(bl, fx0, fy0, centroid, rand, uvRect, verts, uvs, centroids, colors);
