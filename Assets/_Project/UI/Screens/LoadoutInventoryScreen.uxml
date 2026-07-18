@@ -24,9 +24,7 @@
 
             <ui:VisualElement class="gm-loadout__topbar-side gm-loadout__topbar-side--right">
                 <ui:Label name="run-time" text="12:34" class="gm-loadout__time" />
-                <ui:Button name="btn-menu" class="gm-loadout__menu-btn">
-                    <ui:VisualElement class="gm-loadout__menu-icon" />
-                </ui:Button>
+                <ui:Button name="btn-menu" text="≡" class="gm-loadout__menu-btn" />
             </ui:VisualElement>
         </ui:VisualElement>
 
@@ -57,19 +55,24 @@
                         <ui:ScrollView name="relic-grid" style="flex-grow: 1;" />
                     </ui:VisualElement>
 
-                    <!-- Правая панель деталей -->
+                    <!-- Правая панель деталей: имя (сверху, мелко) → видео 16:9 → секции (способности / нарратив / улучшения) -->
                     <ui:VisualElement class="gm-loadout__detail">
+                        <ui:Label name="detail-title" text="—" class="gm-loadout__detail-title" />
                         <ui:VisualElement class="gm-loadout__video">
                             <ui:Label name="video-hint" text="видео-вставка 16:9" class="gm-loadout__video-hint" />
                         </ui:VisualElement>
-                        <ui:Label name="detail-title" text="—" class="gm-loadout__detail-title" />
-                        <ui:VisualElement name="detail-abilities" class="gm-loadout__abilities" />
-                        <ui:VisualElement class="gm-loadout__upgrades">
-                            <ui:VisualElement name="upgrade-row-1" class="gm-loadout__upgrade-row" />
-                            <ui:VisualElement name="upgrade-row-2" class="gm-loadout__upgrade-row" />
+                        <ui:VisualElement class="gm-loadout__section">
+                            <ui:Label name="skills-label" text="способности" class="gm-loadout__section-label" />
+                            <ui:VisualElement name="detail-abilities" class="gm-loadout__abilities" />
                         </ui:VisualElement>
-                        <ui:VisualElement class="gm-loadout__narrative">
+                        <ui:VisualElement class="gm-loadout__section">
                             <ui:Label name="detail-narrative" text="" class="gm-loadout__narrative-text" />
+                        </ui:VisualElement>
+                        <ui:VisualElement class="gm-loadout__section gm-loadout__section--grow">
+                            <ui:VisualElement class="gm-loadout__upgrades">
+                                <ui:VisualElement name="upgrade-row-1" class="gm-loadout__upgrade-row" />
+                                <ui:VisualElement name="upgrade-row-2" class="gm-loadout__upgrade-row" />
+                            </ui:VisualElement>
                         </ui:VisualElement>
                     </ui:VisualElement>
 

@@ -57,6 +57,7 @@ namespace Guildmaster.UI
             SetBtn (root, "filter-banners", L("ui.loadout.filter.banners", "Знамёна"));
             SetBtn (root, "sort", L("ui.loadout.sort.name", "Имя") + " ↓");
             SetText(root, "video-hint", L("ui.loadout.video", "видео-вставка 16:9"));
+            SetText(root, "skills-label", L("ui.loadout.skills", "способности"));
             SetText(root, "gold", gold.ToString());
 
             var search = root.Q<TextField>("search");
@@ -85,21 +86,38 @@ namespace Guildmaster.UI
 
             var cards = new List<(RelicData relic, VisualElement card)>();
             var rts = new Dictionary<RelicData, RenderTexture>();
-            RelicData selected = null;
+            IVisualElementScheduledItem animLoop = null;
+            RenderTexture activeRt = null;
 
-            // Риг анимированных спрайтов карточек: боевой ViewPrefab → RT (idle), attack при выборе
-            // (план 10 §5, как в экране награды). Живёт, пока открыт экран (dispose при detach).
+            // Риг анимированных спрайтов карточек: боевой ViewPrefab → RT. ВСЕ карты стоят статично (idle-кадр);
+            // двигается ТОЛЬКО выбранный юнит — цикл idle→attack (план 10 §5). Живёт, пока открыт экран.
             var rig = new RelicCardVisualRig();
-            root.RegisterCallback<DetachFromPanelEvent>(_ => rig.Dispose());
+            root.RegisterCallback<DetachFromPanelEvent>(_ => { animLoop?.Pause(); rig.Dispose(); });
 
+            // ТОЛЬКО детали + подсветка выбора. Анимацию НЕ трогает (на старте всё статично, пока не кликнули).
             void ShowDetail(RelicData r)
             {
-                selected = r;
                 SetText(root, "detail-title", (Title(r, titleOf) ?? "—").ToUpperInvariant());
                 SetText(root, "detail-narrative", narrativeOf?.Invoke(r) ?? string.Empty);
                 foreach (var (relic, card) in cards)
                     card.EnableInClassList("gm-arcana-card--selected", relic == r);
-                if (rts.TryGetValue(r, out RenderTexture rt) && rt != null) rig.PlayAttack(rt); // выбор → атака
+            }
+
+            // Выбранный юнит гоняет idle→attack по кругу; предыдущий замораживается обратно в статику.
+            void Animate(RelicData r)
+            {
+                animLoop?.Pause();
+                if (activeRt != null) rig.SetFrozen(activeRt, true);
+                activeRt = (r != null && rts.TryGetValue(r, out RenderTexture rt)) ? rt : null;
+                if (activeRt == null) return;
+                rig.SetFrozen(activeRt, false);
+                rig.PlayIdle(activeRt);
+                bool attack = false;
+                animLoop = root.schedule.Execute(() =>
+                {
+                    attack = !attack;
+                    if (attack) rig.PlayAttack(activeRt); else rig.PlayIdle(activeRt);
+                }).Every(900);
             }
 
             for (int i = 0; relics != null && i < relics.Count; i++)
@@ -108,13 +126,14 @@ namespace Guildmaster.UI
                 VisualElement card = cardUxml.CloneTree();
                 VisualElement cardRoot = card.childCount > 0 ? card[0] : card;
 
-                // Визуал карточки: анимированный боевой спрайт через риг; нет ViewPrefab → портрет/иконка-фолбэк.
+                // Визуал карточки: боевой спрайт через риг, СРАЗУ заморожен (статичный idle); нет ViewPrefab → портрет.
                 var art = cardRoot.Q<VisualElement>("art");
                 if (art != null)
                 {
                     if (relic != null && relic.ViewPrefab != null)
                     {
                         RenderTexture rt = rig.Acquire(relic);
+                        rig.SetFrozen(rt, true);
                         art.style.backgroundImage = new StyleBackground(Background.FromRenderTexture(rt));
                         rts[relic] = rt;
                     }
@@ -128,7 +147,8 @@ namespace Guildmaster.UI
                 SetText(cardRoot, "num", Roman(i + 1));
                 SetText(cardRoot, "title", (Title(relic, titleOf) ?? relic.Id).ToUpperInvariant());
 
-                cardRoot.RegisterCallback<ClickEvent>(_ => ShowDetail(relic));
+                // Клик → детали + запуск анимации ЭТОГО юнита (остальные замирают).
+                cardRoot.RegisterCallback<ClickEvent>(_ => { ShowDetail(relic); Animate(relic); });
                 gridEl.Add(cardRoot);
                 cards.Add((relic, cardRoot));
             }

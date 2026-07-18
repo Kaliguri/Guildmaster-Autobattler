@@ -1226,16 +1226,6 @@
     background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
 }
 
-/* Иконка настроек на кнопке меню (пак Honeti — гаечный ключ; шестерёнки в паке нет).
-   Тинт в латунь, чтобы читалась на тёмной кнопке. */
-.gm-loadout__menu-icon {
-    width: 28px;
-    height: 28px;
-    -unity-background-scale-mode: scale-to-fit;
-    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/32/Wrench.png");
-    -unity-background-image-tint-color: var(--gm-color-accent);
-}
-
 /* --- Тело: боевая зона | (центр + правый + нижняя панель золота) --- */
 .gm-loadout__body {
     flex-direction: row;
@@ -1492,11 +1482,33 @@
     font-size: var(--gm-font-sm);
 }
 
+/* Имя персонажа — НАД видео, компактно (не плакат). */
 .gm-loadout__detail-title {
     color: var(--gm-color-text);
-    font-size: var(--gm-font-title);
+    font-size: var(--gm-font-body);
     letter-spacing: 1px;
     -unity-font-style: bold;
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Секция-подпанель правой колонки (способности / нарратив / улучшения): заметная подложка + рамка. */
+.gm-loadout__section {
+    background-color: var(--gm-color-surface-raised);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-inner);
+    padding: var(--gm-space-2);
+    margin-top: var(--gm-space-2);
+}
+
+.gm-loadout__section--grow {
+    flex-grow: 1;
+    justify-content: center;
+}
+
+/* Мелкая подпись секции (размер как «видео-вставка»). */
+.gm-loadout__section-label {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
     margin-bottom: var(--gm-space-1);
 }
 
@@ -1504,16 +1516,10 @@
 .gm-loadout__abilities {
     flex-direction: row;
     align-items: center;
-    margin-bottom: var(--gm-space-2);
 }
 
-/* Зона улучшений на фоне-подложке (разделение зоны): 2 ряда × 3 узла. */
+/* Зона улучшений: 2 ряда × 3 узла (подложку/рамку даёт секция-обёртка). */
 .gm-loadout__upgrades {
-    flex-grow: 1;
-    background-color: var(--gm-color-surface-sunken);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-inner);
-    padding: var(--gm-space-2);
     justify-content: center;
 }
 
@@ -1524,13 +1530,7 @@
     margin-bottom: var(--gm-space-2);
 }
 
-/* Нарратив — маленькая курсивная плашка внизу (сериф-голос). */
-.gm-loadout__narrative {
-    background-color: var(--gm-color-surface-sunken);
-    padding: var(--gm-space-2);
-    margin-top: var(--gm-space-2);
-}
-
+/* Нарратив — курсив, сериф-голос (подложку/рамку даёт секция-обёртка). */
 .gm-loadout__narrative-text {
     -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
     -unity-font-style: italic;

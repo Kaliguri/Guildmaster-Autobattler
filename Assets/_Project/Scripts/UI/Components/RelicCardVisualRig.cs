@@ -114,6 +114,18 @@ namespace Guildmaster.UI.Components
             if (e?.Animator != null) e.Animator.Play(AttackHash, 0, 0f);
         }
 
+        /// <summary>
+        /// Заморозить/разморозить карточку: замороженная стоит на первом кадре Idle (speed 0) — статична;
+        /// размороженная гоняет анимацию (speed 1). Нужно, чтобы двигался ТОЛЬКО выбранный юнит, а не все.
+        /// </summary>
+        public void SetFrozen(RenderTexture rt, bool frozen)
+        {
+            Entry e = Find(rt);
+            if (e?.Animator == null) return;
+            if (frozen) { e.Animator.Play(IdleHash, 0, 0f); e.Animator.speed = 0f; }
+            else e.Animator.speed = 1f;
+        }
+
         /// <summary>Вернуть карточку в idle.</summary>
         public void PlayIdle(RenderTexture rt)
         {
