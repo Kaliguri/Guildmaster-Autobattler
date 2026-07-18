@@ -94,6 +94,7 @@ namespace Guildmaster.UI
         private IDisposable _openMainMenuSubscription;
         private UIDocument _doc;
         private IRunTopBar _topBar;
+        private VisualElement _backdrop; // постоянный задний фон под не-боевыми экранами (выкл в бою/инвентаре)
         private bool _inventoryOpen; // инвентарь открыт → подсветить режим «Инвентарь» + тумблер
         private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
 
@@ -162,6 +163,14 @@ namespace Guildmaster.UI
         // сдвинуто под неё (padding-top). Видимость и центр (Начать↔таймер) — по фазе боя в Update.
         private void InitTopBar()
         {
+            // Постоянный задний фон забега: лежит ПОД всем UI (SendToBack), виден на не-боевых экранах.
+            // Видимостью управляет Update (выкл в бою и в инвентаре). pickingMode Ignore — ввод не перехватывает.
+            _backdrop = new VisualElement { name = "run-backdrop", pickingMode = PickingMode.Ignore };
+            _backdrop.AddToClassList("gm-screen-backdrop");
+            _backdrop.style.display = DisplayStyle.None;
+            _doc.rootVisualElement.Add(_backdrop);
+            _backdrop.SendToBack();
+
             if (_runModeBar != null)
             {
                 _topBar = new RunModeBarView(
@@ -198,6 +207,14 @@ namespace Guildmaster.UI
         private void Update()
         {
             if (_topBar == null || _clock == null) return;
+
+            // Задний фон: виден на не-боевых экранах (меню/карта/ивент/сундук). Выключается в бою
+            // (Phase != None — видна арена с юнитами) и в инвентаре (прозрачный оверлей поверх арены).
+            if (_backdrop != null)
+            {
+                bool showBackdrop = _clock.Phase == BattlePhase.None && !_inventoryOpen;
+                _backdrop.style.display = showBackdrop ? DisplayStyle.Flex : DisplayStyle.None;
+            }
 
             // Глобальный топбар виден ВЕСЬ забег (реш. №65, STS-style); тело экранов под ним (padding-top).
             RunState run = _runStates?.Current;
