@@ -192,6 +192,14 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
+        /// Persist-мир: войти в фазу расстановки для уже стоящего боя (отряд + доспавненные враги на арене).
+        /// Поднимает <see cref="FreeDeploymentRequested"/> — <c>DeploymentController</c> ставит паузу, показывает
+        /// расстановку и кнопку «Начать». В отличие от <see cref="LoadPreset"/> НЕ сбрасывает бой (отряд/враги
+        /// уже на месте). Нет слушателя = no-op (бой останется на паузе — безопасно).
+        /// </summary>
+        public void RequestDeployment(BattlePresetData preset) => FreeDeploymentRequested?.Invoke(preset);
+
+        /// <summary>
         /// Заспавнить вражескую сторону (team 1) из энкаунтера — БЕЗ сброса боя. Для persist-мира —
         /// доспавн врагов на входе в бой поверх уже стоящего отряда игрока.
         /// </summary>

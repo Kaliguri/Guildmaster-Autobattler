@@ -69,8 +69,9 @@ namespace Guildmaster.Game.Flow
 
         // ── Переходы боевого цикла ───────────────────────────────────────────
 
-        // Запуск боя: доспавн врагов к СТОЯЩЕМУ отряду + снятие паузы. Отряд обычно уже на арене
-        // (WorldStageController поставил на старте забега); если нет (dev-одиночный бой) — ставим сейчас.
+        // Запуск боя: доспавн врагов к СТОЯЩЕМУ отряду, затем ОБЯЗАТЕЛЬНАЯ фаза расстановки (пауза, враги
+        // видны, отряд двигается) — «Начать» из панели снимет паузу и запустит бой. Отряд обычно уже на
+        // арене (WorldStageController поставил на старте забега); если нет (dev-одиночный) — ставим сейчас.
         private void LaunchBattle(BattlePresetData preset)
         {
             if (preset == null || preset.Encounter == null)
@@ -84,25 +85,28 @@ namespace Guildmaster.Game.Flow
 
             _loader.SpawnEnemies(preset.Encounter);
             _sim.FlushSpawns();
-            _sim.SetPaused(false);
+            _sim.SetPaused(true);               // пауза — фаза расстановки, а не сразу бой
+            _loader.RequestDeployment(preset);  // DeploymentController: показать врагов, drag, кнопка «Начать»
         }
 
         // После боя: вернуть вне-боевое состояние. PlaceParty внутри DeployParty делает ResetBattle —
-        // это убирает и врагов, и старый отряд; отряд встаёт заново из RunState (полный HP), пауза.
+        // это убирает и врагов, и старый отряд; отряд встаёт заново из RunState (полный HP), пауза, фаза None.
         private void ResetToWorld()
         {
             DeployParty();
             _sim.FlushSpawns();
             _sim.SetPaused(true);
+            _session.SetPhase(BattlePhase.None); // вне боя — топбар прячет таймер/«Начать», guard'ы защищают
         }
 
-        // Ретрай боя на месте (пул перезапусков акта + dev-R): пере-поставить отряд и врагов, снять паузу.
+        // Ретрай боя (пул перезапусков акта + dev-R): пере-поставить отряд и врагов, снова в фазу расстановки.
         private void RestartBattle()
         {
             DeployParty();
             if (_lastPreset?.Encounter != null) _loader.SpawnEnemies(_lastPreset.Encounter);
             _sim.FlushSpawns();
-            _sim.SetPaused(false);
+            _sim.SetPaused(true);
+            if (_lastPreset != null) _loader.RequestDeployment(_lastPreset);
         }
 
         private void DeployParty() => RosterDeployer.Deploy(_loader, _runStates.Current, _content);

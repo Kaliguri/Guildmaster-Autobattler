@@ -93,12 +93,13 @@ namespace Guildmaster.Game
             _equipSubscription = _equipSub.Subscribe(OnEquip);
             _equipAtCursorSubscription = _equipAtCursorSub.Subscribe(OnEquipAtCursor);
 
-            // Верхняя панель забега (план 12): часы боя + кнопка «Начать». Дефолт-фаза Fighting —
-            // для Fixed-боёв без расстановки (таймер сразу); Free переопределит на Deployment ниже
-            // (эта подписка встаёт до LoadPreset в BattleBootstrap, порядок регистрации гарантирован).
+            // Верхняя панель забега (план 12): часы боя + кнопка «Начать».
+            // Persist-мир: скоуп живёт всю сессию, поэтому фазу НЕ выставляем на Start (иначе вне боя
+            // Phase залипал бы на Fighting и ломал guard'ы топбара — вылет при клике «Бой» на ивенте).
+            // Фаза выставляется по факту: Deployment на входе в бой (OnFreeDeployment), Fighting на «Начать»,
+            // None — вне боя (сброс через BattleBootstrap.ResetToWorld).
             _session.BindClock(() => _sim.ElapsedSeconds);
             _session.BindStart(() => { if (_deploying) StartCombat(); });
-            _session.SetPhase(BattlePhase.Fighting);
         }
 
         public void Dispose()
