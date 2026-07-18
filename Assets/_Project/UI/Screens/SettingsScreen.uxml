@@ -11,11 +11,10 @@
                 <ui:Button name="tab-audio" text="Звук" class="gm-tab gm-tab--active" />
             </ui:VisualElement>
 
-            <!-- Страница «Игра»: тумблеры презентации. Подписи — хардкод RU, как и весь этот экран
-                 (loc всего SettingsScreen — отдельный долг). Значения биндит роутер из VM. -->
+            <!-- Страница «Игра»: тумблеры презентации. Подписи + значения проставляет роутер из VM (loc). -->
             <ui:VisualElement name="page-game" class="gm-tab-page gm-tab-page--hidden">
-                <ui:Toggle name="toggle-card-anim" label="Анимация карточек" class="gm-toggle" />
-                <ui:Toggle name="toggle-card-attack" label="Анимация атаки карточек" class="gm-toggle" />
+                <gm:ToggleRow name="toggle-card-anim" />
+                <gm:ToggleRow name="toggle-card-attack" />
             </ui:VisualElement>
 
             <!-- Страница «Графика» — заглушка под будущие опции. -->

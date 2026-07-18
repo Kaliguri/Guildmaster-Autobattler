@@ -153,18 +153,39 @@
     font-size: var(--gm-font-body);
 }
 
-/* Тумблер на странице настроек: подпись читаема на тёмной теме (UITK по умолчанию не темизирует
-   __label), строки разнесены по вертикали. Чекбокс — стандартный UITK-визуал. */
-.gm-toggle {
-    margin-top: 6px;
-    margin-bottom: 6px;
+/* --- Строка тумблера: подпись слева (растянута), чекбокс справа в колонку. Пара к gm-slider-row --- */
+.gm-toggle-row {
+    flex-direction: row;
+    align-items: center;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
 }
 
-.gm-toggle .unity-toggle__label {
+.gm-toggle-row__label {
     color: var(--gm-color-text);
     font-size: var(--gm-font-body);
-    -unity-text-align: middle-left;
-    margin-right: 12px;
+    flex-grow: 1;
+}
+
+/* Приглушить подпись, когда строка недоступна (напр. «атака» при выключенной анимации). */
+.gm-toggle-row:disabled .gm-toggle-row__label {
+    color: var(--gm-color-disabled-text);
+}
+
+.gm-toggle-row__check {
+    flex-shrink: 0;
+    margin-left: var(--gm-space-3);
+}
+
+/* Чекбокс под тему-гроссбух: утопленный фон, латунная рамка, галка-пергамент (вместо белого дефолта). */
+.gm-toggle-row__check .unity-toggle__checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    -unity-background-image-tint-color: var(--gm-color-text);
 }
 
 /* --- Строка слайдера: подпись слева, слайдер по центру, значение справа --- */
