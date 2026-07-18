@@ -115,6 +115,21 @@ namespace Guildmaster.UI.Components
         }
 
         /// <summary>
+        /// Длина клипа атаки (сек) — чтобы вызывающий вернул карту в idle РОВНО после проигрыша атаки
+        /// (клип не имеет exit-перехода в Idle, иначе застревает на последнем кадре). 0 — нет клипа/аниматора.
+        /// </summary>
+        public float AttackLengthSeconds(RenderTexture rt)
+        {
+            Entry e = Find(rt);
+            var ctrl = e?.Animator != null ? e.Animator.runtimeAnimatorController : null;
+            if (ctrl == null) return 0f;
+            foreach (AnimationClip clip in ctrl.animationClips)
+                if (clip != null && clip.name.IndexOf("Attack", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                    return clip.length;
+            return 0f;
+        }
+
+        /// <summary>
         /// Заморозить/разморозить карточку: замороженная стоит на первом кадре Idle (speed 0) — статична;
         /// размороженная гоняет анимацию (speed 1). Нужно, чтобы двигался ТОЛЬКО выбранный юнит, а не все.
         /// </summary>

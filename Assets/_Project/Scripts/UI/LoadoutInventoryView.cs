@@ -117,9 +117,23 @@ namespace Guildmaster.UI
                 if (activeRt == null) return;
                 rig.SetFrozen(activeRt, false);
                 rig.PlayIdle(activeRt);
-                // Цикл: 2с idle → атака → 2с idle → атака. Attack проигрывается и возвращается в idle,
-                // затем снова пауза перед следующим ударом.
-                animLoop = root.schedule.Execute(() => rig.PlayAttack(activeRt)).Every(2000);
+
+                // Цикл: атака → ВОЗВРАТ в idle (ровно после клипа) → пауза 3с → снова атака. Раньше карта
+                // застревала на последнем кадре атаки (у клипа нет exit-перехода в Idle) — возвращаем вручную
+                // по длине клипа. Длина 0 (нет клипа) → фолбэк 800 мс.
+                long attackMs = (long)(rig.AttackLengthSeconds(activeRt) * 1000f);
+                if (attackMs <= 0) attackMs = 800;
+                const long idleHoldMs = 3000;
+
+                void Cycle()
+                {
+                    RenderTexture rt2 = activeRt;
+                    if (rt2 == null) return;
+                    rig.PlayAttack(rt2);
+                    root.schedule.Execute(() => rig.PlayIdle(rt2)).StartingIn(attackMs);
+                }
+
+                animLoop = root.schedule.Execute(Cycle).Every(attackMs + idleHoldMs);
             }
 
             for (int i = 0; relics != null && i < relics.Count; i++)
