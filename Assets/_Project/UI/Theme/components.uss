@@ -153,6 +153,20 @@
     font-size: var(--gm-font-body);
 }
 
+/* Тумблер на странице настроек: подпись читаема на тёмной теме (UITK по умолчанию не темизирует
+   __label), строки разнесены по вертикали. Чекбокс — стандартный UITK-визуал. */
+.gm-toggle {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.gm-toggle .unity-toggle__label {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    -unity-text-align: middle-left;
+    margin-right: 12px;
+}
+
 /* --- Строка слайдера: подпись слева, слайдер по центру, значение справа --- */
 .gm-slider-row {
     flex-direction: row;

@@ -31,7 +31,9 @@ namespace Guildmaster.UI
             Func<RelicData, string> titleOf,
             Func<RelicData, string> narrativeOf,
             Func<string, string> localize,
-            int lockedSlots = 0)
+            int lockedSlots = 0,
+            bool cardAnimations = true,
+            bool cardAttackAnimation = true)
         {
             string L(string key, string ru)
             {
@@ -108,6 +110,9 @@ namespace Guildmaster.UI
                 rig.SetFrozen(activeRt, false);
                 rig.PlayIdle(activeRt);
 
+                // Настройка «анимация атаки» выключена → выбранная карта живёт только в idle, без attack-цикла.
+                if (!cardAttackAnimation) return;
+
                 // Цикл: атака → ВОЗВРАТ в idle (ровно после клипа) → пауза 3с → снова атака. Раньше карта
                 // застревала на последнем кадре атаки (у клипа нет exit-перехода в Idle) — возвращаем вручную
                 // по длине клипа. Длина 0 (нет клипа) → фолбэк 800 мс.
@@ -153,8 +158,13 @@ namespace Guildmaster.UI
                 SetText(cardRoot, "num", Roman(i + 1));
                 SetText(cardRoot, "title", (Title(relic, titleOf) ?? relic.Id).ToUpperInvariant());
 
-                // Клик → детали + запуск анимации ЭТОГО юнита (остальные замирают).
-                cardRoot.RegisterCallback<ClickEvent>(_ => { ShowDetail(relic); Animate(relic); });
+                // Клик → детали + запуск анимации ЭТОГО юнита (остальные замирают). Настройка «анимация
+                // карточек» выключена → карты статичны (idle-кадр), Animate не зовём.
+                cardRoot.RegisterCallback<ClickEvent>(_ =>
+                {
+                    ShowDetail(relic);
+                    if (cardAnimations) Animate(relic);
+                });
                 gridEl.Add(cardRoot);
                 cards.Add((relic, cardRoot));
             }

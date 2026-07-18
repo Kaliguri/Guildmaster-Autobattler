@@ -147,7 +147,9 @@ namespace Guildmaster.UI
                 titleOf: r => ArcanaTitle(r != null ? r.Id : null),
                 narrativeOf: r => _loadoutVm.Desc(r),
                 localize: key => _loc?.GetString(key),
-                lockedSlots: 0);
+                lockedSlots: 0,
+                cardAnimations: _settingsVm.CardAnimations,
+                cardAttackAnimation: _settingsVm.CardAttackAnimation);
 
             // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar).
             // Закрытие по любому пути (Pop/Esc/CloseAll) → onClose (бутстрап снимет подсветку режима).
@@ -235,6 +237,10 @@ namespace Guildmaster.UI
             music.LabelText  = "Музыка";
             sfx.LabelText    = "Звук";
 
+            // Таб «Игра»: тумблеры презентации (анимация карточек / анимация атаки).
+            var cardAnim   = screen.Q<Toggle>("toggle-card-anim");
+            var cardAttack = screen.Q<Toggle>("toggle-card-attack");
+
             _settingsVm.BeginEdit();
 
             // SliderRow сам обновляет свою подпись-процент (в т.ч. в SetValueWithoutNotify).
@@ -243,6 +249,10 @@ namespace Guildmaster.UI
                 master.SetValueWithoutNotify(_settingsVm.Master);
                 music.SetValueWithoutNotify(_settingsVm.Music);
                 sfx.SetValueWithoutNotify(_settingsVm.Sfx);
+                cardAnim?.SetValueWithoutNotify(_settingsVm.CardAnimations);
+                cardAttack?.SetValueWithoutNotify(_settingsVm.CardAttackAnimation);
+                // «Атака» осмысленна только при включённой анимации карточек.
+                cardAttack?.SetEnabled(_settingsVm.CardAnimations);
             }
 
             Sync();
@@ -250,6 +260,8 @@ namespace Guildmaster.UI
             master.Slider.RegisterValueChangedCallback(e => _settingsVm.SetMaster(e.newValue));
             music.Slider.RegisterValueChangedCallback(e => _settingsVm.SetMusic(e.newValue));
             sfx.Slider.RegisterValueChangedCallback(e => _settingsVm.SetSfx(e.newValue));
+            cardAnim?.RegisterValueChangedCallback(e => _settingsVm.SetCardAnimations(e.newValue));
+            cardAttack?.RegisterValueChangedCallback(e => _settingsVm.SetCardAttackAnimation(e.newValue));
 
             // VM → слайдеры (Defaults/Cancel меняют значения «снаружи»). Отписка при снятии с панели.
             Action onChanged = Sync;
