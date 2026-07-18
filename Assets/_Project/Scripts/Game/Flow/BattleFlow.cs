@@ -69,6 +69,10 @@ namespace Guildmaster.Game.Flow
                 outcome = await _session.WaitOutcomeAsync(CancellationToken.None);
             }
 
+            // Persist-мир: бой кончился — вернуть арену во вне-боевое состояние (враги прочь, отряд к строю,
+            // пауза). Скоуп не выгружается, поэтому чистка явная, а не через смерть сцены.
+            _session.RequestReset();
+
             bool won = Won(outcome);
             Debug.Log($"[BattleFlow] - бой '{_preset.Id}' завершён: {outcome} → {(won ? "Completed" : "Defeated")}");
             return won ? EventResult.Completed : EventResult.Defeated;

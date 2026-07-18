@@ -48,10 +48,7 @@ namespace Guildmaster.Game.Flow
                 return;
             }
 
-            PlayerSlot[] roster = GuildRoster.Resolve(run, _content);
-            ItemData[]   party  = GuildRoster.ResolveItems(run.PartyItemIds, _content);
-
-            _loader.PlaceParty(roster, party);
+            RosterDeployer.Deploy(_loader, run, _content);
             _sim.FlushSpawns();   // материализовать очередь спавна (юниты присутствуют)
             _sim.SetPaused(true); // отряд стоит замороженным на тест-арене, пока не начался бой
         }

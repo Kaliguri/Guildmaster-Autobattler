@@ -182,6 +182,12 @@ namespace Guildmaster.Tests.EditMode.Run
                 return true;
             }
 
+            // Persist-мир: сброс во вне-боевое состояние после боя.
+            public int  ResetCount;
+            public void BindReset(Action reset) { }
+            public void UnbindReset() { }
+            public bool RequestReset() { ResetCount++; return true; }
+
             public UniTask<BattleOutcome> WaitOutcomeAsync(CancellationToken ct)
             {
                 // Пустая очередь = защитный дефолт (не должно случаться при корректной логике флоу).

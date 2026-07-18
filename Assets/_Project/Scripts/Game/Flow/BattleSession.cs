@@ -38,6 +38,18 @@ namespace Guildmaster.Game.Flow
         /// </summary>
         bool RequestLaunch(BattlePresetData preset);
 
+        /// <summary>child → session: как вернуть вне-боевое состояние (враги прочь, отряд к строю, пауза).</summary>
+        void BindReset(Action reset);
+
+        /// <summary>child → session: снять делегат сброса (при выгрузке боевого скоупа).</summary>
+        void UnbindReset();
+
+        /// <summary>
+        /// root → child: после боя вернуть арену во вне-боевое состояние (persist-мир): убрать врагов,
+        /// пере-поставить отряд из <c>RunState.Guild</c>, пауза. false = некому (скоуп не поднят).
+        /// </summary>
+        bool RequestReset();
+
         /// <summary>root: дождаться исхода текущего боя (следующий <see cref="ReportOutcome"/> после взвода).</summary>
         UniTask<BattleOutcome> WaitOutcomeAsync(CancellationToken ct);
 
@@ -89,6 +101,7 @@ namespace Guildmaster.Game.Flow
         private bool             _hasPending;
         private Action           _restart;
         private Action<BattlePresetData> _launch;
+        private Action           _reset;
         private UniTaskCompletionSource<BattleOutcome> _outcome;
 
         private Func<float> _clock;
@@ -133,6 +146,17 @@ namespace Guildmaster.Game.Flow
             if (_launch == null) return false;
             ArmOutcome();          // ждём исход до фактического запуска (ReportOutcome ловится даже мгновенный)
             _launch.Invoke(preset);
+            return true;
+        }
+
+        public void BindReset(Action reset) => _reset = reset;
+
+        public void UnbindReset() => _reset = null;
+
+        public bool RequestReset()
+        {
+            if (_reset == null) return false;
+            _reset.Invoke();       // БЕЗ ArmOutcome: бой уже кончился, ожидание не взводим
             return true;
         }
 
