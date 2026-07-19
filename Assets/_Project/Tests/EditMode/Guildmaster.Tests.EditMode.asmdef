@@ -11,6 +11,7 @@
     "Guildmaster.Presentation",
     "Guildmaster.Game",
     "Guildmaster.Guild",
+    "Guildmaster.UI",
     "Guildmaster.ContentHub.Editor",
     "UniTask"
   ],
