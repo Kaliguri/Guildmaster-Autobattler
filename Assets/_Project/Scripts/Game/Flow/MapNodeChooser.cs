@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Guild;
 using UnityEngine;
@@ -12,8 +13,9 @@ namespace Guildmaster.Game.Flow
     /// </summary>
     public interface IMapNodeChooser
     {
-        /// <summary>Выбрать один узел из доступных. Возвращает выбранный (или null при отмене/ошибке).</summary>
-        UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available);
+        /// <summary>Выбрать один узел из доступных. Возвращает выбранный (или null при отмене/ошибке).
+        /// <paramref name="ct"/> прерывает ожидание выбора при выходе из забега (QA #18).</summary>
+        UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available, CancellationToken ct = default);
     }
 
     /// <summary>
@@ -22,7 +24,7 @@ namespace Guildmaster.Game.Flow
     /// </summary>
     public sealed class AutoFirstNodeChooser : IMapNodeChooser
     {
-        public UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available)
+        public UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available, CancellationToken ct = default)
         {
             MapNode pick = available != null && available.Count > 0 ? available[0] : null;
             if (pick != null) Debug.Log($"[AutoFirstNodeChooser] - авто-выбор узла '{pick.Id}' ({pick.Type})");

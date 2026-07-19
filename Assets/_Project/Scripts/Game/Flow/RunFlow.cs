@@ -1,3 +1,4 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Core.Random;
 using Guildmaster.Guild;
@@ -44,12 +45,18 @@ namespace Guildmaster.Game.Flow
         public IReadyGate          ReadyGate { get; }
         public IPlayerIntentSource Intents   { get; }
 
-        public RunContext(RunState runState, IRngService rng, IReadyGate readyGate, IPlayerIntentSource intents)
+        /// <summary>Токен отмены забега (QA #18 «В главное меню»): взводится <c>GameFlow</c>, прерывает
+        /// висящие await'ы петли (выбор узла/«Продолжить»/исход боя). default = без отмены (dev/тесты).</summary>
+        public CancellationToken   Cancellation { get; }
+
+        public RunContext(RunState runState, IRngService rng, IReadyGate readyGate, IPlayerIntentSource intents,
+                          CancellationToken cancellation = default)
         {
-            RunState  = runState;
-            Rng       = rng;
-            ReadyGate = readyGate;
-            Intents   = intents;
+            RunState     = runState;
+            Rng          = rng;
+            ReadyGate    = readyGate;
+            Intents      = intents;
+            Cancellation = cancellation;
         }
     }
 }

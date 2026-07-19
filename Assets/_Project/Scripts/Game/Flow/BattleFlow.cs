@@ -1,5 +1,4 @@
 using System;
-using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
 using Guildmaster.Core.Players;
@@ -55,7 +54,7 @@ namespace Guildmaster.Game.Flow
                 return EventResult.Aborted;
             }
 
-            BattleOutcome outcome = await _session.WaitOutcomeAsync(CancellationToken.None);
+            BattleOutcome outcome = await _session.WaitOutcomeAsync(ctx.Cancellation);
 
             // Поражение → тратим перезапуск из пула акта (реш. №65) и переигрываем ТОТ ЖЕ бой.
             while (!Won(outcome) && _tryConsumeRestart != null && _tryConsumeRestart())
@@ -66,7 +65,7 @@ namespace Guildmaster.Game.Flow
                     Debug.LogWarning("[BattleFlow] - некому перезапустить бой (нет боевого скоупа) → Defeated");
                     break;
                 }
-                outcome = await _session.WaitOutcomeAsync(CancellationToken.None);
+                outcome = await _session.WaitOutcomeAsync(ctx.Cancellation);
             }
 
             // Persist-мир: бой кончился — вернуть арену во вне-боевое состояние (враги прочь, отряд к строю,

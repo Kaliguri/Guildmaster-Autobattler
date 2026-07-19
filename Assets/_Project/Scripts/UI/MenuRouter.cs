@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Guildmaster.Core.Flow;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
@@ -24,6 +25,7 @@ namespace Guildmaster.UI
         private readonly LoadoutViewModel _loadoutVm;
         private readonly LoadoutHubViewModel _hubVm;
         private readonly ILocalizationService _loc;
+        private readonly IRunControl _runControl; // QA #18: «В главное меню»/«Выход» из системного меню
 
         private readonly Stack<VisualElement> _stack = new();
         private VisualElement _root;
@@ -45,13 +47,14 @@ namespace Guildmaster.UI
         private bool _menuModeActive; // вошли ли в модальный режим (suppress+Menu-контекст); прозрачный инвентарь его не поднимает
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
-                          LoadoutHubViewModel hubVm, ILocalizationService loc)
+                          LoadoutHubViewModel hubVm, ILocalizationService loc, IRunControl runControl)
         {
             _input = input;
             _settingsVm = settingsVm;
             _loadoutVm = loadoutVm;
             _hubVm = hubVm;
             _loc = loc;
+            _runControl = runControl;
         }
 
         public bool IsOpen => _stack.Count > 0;
@@ -250,7 +253,28 @@ namespace Guildmaster.UI
             screen.AddToClassList(PauseScreenClass); // маркер «системное меню» для ToggleSystemMenu (QA #12)
             screen.Q<Button>("btn-return").clicked += CloseAll;
             screen.Q<Button>("btn-settings").clicked += () => Push(BuildSettingsScreen());
+
+            // QA #18: «В главное меню» прерывает забег (сейв остаётся — можно продолжить); «Выход» закрывает игру.
+            var toMenu = screen.Q<Button>("btn-main-menu");
+            if (toMenu != null)
+            {
+                toMenu.text = Loc("ui.menu.to_main_menu", "В главное меню");
+                toMenu.clicked += () => { CloseAll(); _runControl?.RequestReturnToMainMenu(); };
+            }
+            var quit = screen.Q<Button>("btn-quit");
+            if (quit != null)
+            {
+                quit.text = Loc("ui.menu.quit", "Выйти из игры");
+                quit.clicked += () => _runControl?.RequestQuit();
+            }
             return screen;
+        }
+
+        // Локализованная строка с RU-фолбэком (весь новый UI на code-fallback до записи в String Table).
+        private string Loc(string key, string ru)
+        {
+            string v = _loc?.GetString(key);
+            return string.IsNullOrEmpty(v) ? ru : v;
         }
 
         private VisualElement BuildSettingsScreen()

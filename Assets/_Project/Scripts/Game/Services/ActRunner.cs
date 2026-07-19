@@ -48,7 +48,7 @@ namespace Guildmaster.Game.Services
                     return EventResult.Aborted;
                 }
 
-                MapNode node = await _chooser.ChooseAsync(map, available);
+                MapNode node = await _chooser.ChooseAsync(map, available, ctx.Cancellation);
                 if (node == null || !MapTraversal.CanEnter(map, node.Id))
                 {
                     Debug.LogWarning($"[ActRunner] - выбран недоступный узел '{node?.Id ?? "null"}' → Aborted");
@@ -73,7 +73,7 @@ namespace Guildmaster.Game.Services
                 }
 
                 // Узел пройден (награда/золото — внутри самого flow) → «Продолжить» → продвижение, автосейв.
-                await _continue.WaitForContinueAsync();
+                await _continue.WaitForContinueAsync(ct: ctx.Cancellation);
 
                 MapTraversal.Advance(map, node.Id);
                 _runStates.Autosave();

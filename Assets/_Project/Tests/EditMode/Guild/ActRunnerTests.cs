@@ -118,7 +118,8 @@ namespace Guildmaster.Tests.EditMode.Guild
 
         private sealed class ImmediateContinue : IContinuePresenter
         {
-            public UniTask WaitForContinueAsync(string labelKey = null) => UniTask.CompletedTask;
+            public UniTask WaitForContinueAsync(string labelKey = null, System.Threading.CancellationToken ct = default)
+                => UniTask.CompletedTask;
         }
 
         private sealed class InMemorySave : ISaveService

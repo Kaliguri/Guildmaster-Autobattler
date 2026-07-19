@@ -117,7 +117,8 @@ namespace Guildmaster.Game
             builder.Register<MapScreenNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
             builder.Register<ActRunner>(Lifetime.Singleton);
 
-            builder.Register<GameFlow>(Lifetime.Singleton);
+            // GameFlow ведёт верхний цикл + реализует IRunControl (QA #18): системное меню прерывает забег.
+            builder.Register<GameFlow>(Lifetime.Singleton).AsSelf().As<Guildmaster.Core.Flow.IRunControl>();
 
             // Ввод глобален и переживает перезагрузку боевой сцены (вики «16» §3).
             builder.Register<InputService>(Lifetime.Singleton).As<IInputService>();

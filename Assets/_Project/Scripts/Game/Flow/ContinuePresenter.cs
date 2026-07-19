@@ -1,3 +1,4 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Guild;
 using MessagePipe;
@@ -7,8 +8,9 @@ namespace Guildmaster.Game.Flow
     /// <summary>Показ единой кнопки «Продолжить» и ожидание нажатия (план A4).</summary>
     public interface IContinuePresenter
     {
-        /// <summary>Показать «Продолжить» (правый нижний угол) и дождаться нажатия. labelKey пуст → дефолт.</summary>
-        UniTask WaitForContinueAsync(string labelKey = null);
+        /// <summary>Показать «Продолжить» (правый нижний угол) и дождаться нажатия. labelKey пуст → дефолт.
+        /// <paramref name="ct"/> прерывает ожидание при выходе из забега (QA #18).</summary>
+        UniTask WaitForContinueAsync(string labelKey = null, CancellationToken ct = default);
     }
 
     /// <summary>
@@ -22,11 +24,11 @@ namespace Guildmaster.Game.Flow
 
         public ContinuePresenter(IPublisher<OpenContinueRequest> pub) => _pub = pub;
 
-        public async UniTask WaitForContinueAsync(string labelKey = null)
+        public async UniTask WaitForContinueAsync(string labelKey = null, CancellationToken ct = default)
         {
             var tcs = new UniTaskCompletionSource();
             _pub.Publish(new OpenContinueRequest(labelKey, () => tcs.TrySetResult()));
-            await tcs.Task;
+            await tcs.Task.AttachExternalCancellation(ct);
         }
     }
 }
