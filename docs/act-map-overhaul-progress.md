@@ -100,3 +100,76 @@
   - Тесты `MapGeneratorTests`: убран тест EliteMinColumn; добавлены зонные инварианты
     (глубина=14, зона разогрева только бой/событие, якорь-этаж = весь тип колонки, элита не в разогреве).
   - Балансную приёмку карты (как ощущается акт) — play-mode Макса. Веса легко крутить в ActConfig.asset.
+
+## Коммиты сессии 2026-07-19
+
+- `b1499040` feat(visual): single source of unit body tint (combat + inventory card) — фаза A/п.0a
+- `c6b7be84` feat(run): gate battle reward behind a 'to rewards' button after a delay — фаза B/п.4
+- `85cfc0ae` feat(map): zone-based act generation, 12-node depth, ActConfig SO — фаза C/п.5+п.1
+
+Ветка `feat/act-map-overhaul` (от dev = PR #20). НЕ запушена (пуш не авто). Три фазы на 421/421 EditMode.
+
+---
+
+# СЛЕДУЮЩАЯ СЕССИЯ — план (скорее всего фаза D: карта)
+
+## Фаза D (крупная) — п.6 + п.2 + п.3: переезд карты в world-space
+
+**Цель:** карта акта из screen-space UITK → world-space гибрид. Карта/узлы/пути/фон/VFX — в мире с
+БОЕВОЙ камерой (единое управление pan/zoom как в бою); кнопки/тултипы/топбар — UITK поверх.
+Плюс: полноэкранность (п.2), фон+оформление в духе AtO/StS2 + пунктиры (п.3), анимация перехода
+фишки от узла к узлу (~1.5с, дабл-клик сильно ускоряет; п.3).
+
+**НЕ ТРОГАТЬ (переиспользуется как есть):** генерация и данные карты —
+`Guild/MapGenerator.cs`, `Guild/RunState.cs` (`MapState`/`MapNode`, у узла уже есть `UiPosition`
+= (col, row) для раскладки), `Guild/MapTraversal.cs` (`AvailableNext`/`Advance`/`CanEnter`).
+Петля `Game/Services/ActRunner.cs` зовёт `IMapNodeChooser.ChooseAsync` — КОНТРАКТ сохранить,
+подменив реализацию на world-версию (петля не меняется).
+
+**Что переписывается (слой презентации карты):**
+- Текущий UITK-путь: `UI/Screens/MapScreen.uxml`, `UI/Components/MapGraph.cs` (painter2D узлы+рёбра),
+  `UI/MapScreenView.cs` (Build), роутер `UI/MenuRouter.cs:589` (`OpenMap`/`ShowMapAsync`,
+  `RouterResultScreen<string>` modeTag "map"), запрос `Guild/MapMessages.cs` (`OpenMapRequest`),
+  выбор `Game/Flow/MapScreenNodeChooser.cs` (`ChooseAsync`). Судьба после переезда — снести UITK-карту
+  или оставить фолбэком (решить в сессии).
+
+**Опоры для world-space (из погодной ветки, уже в dev):**
+- Единая камера + арена persist: `Game/WorldLifetimeScope.cs` (камера+арена, НЕ плодить вторую).
+- pan/zoom риг уже делали в roster-stage window (коммиты `bc286337`/`c2c8745d`) — переиспользовать.
+- Камера-режимы: `CameraModeController` в `Guildmaster.Presentation` (есть Action/Overview/Dev —
+  возможно добавить Map-режим).
+- Векторная отрисовка: **Shapes** (Freya Holmer) уже в `Guildmaster.Presentation` — пути/пунктиры/свечение.
+- Постобработка: battle post-processing volume (`964a48aa`) — bloom для «сочной» карты.
+- persist-мир: карта = слой в WorldScene (см. [[persist-world-decisions]]).
+
+**Подход (черновик, уточнить с кодом в руках):**
+1. World-объекты узлов (спрайт/Shapes) в WorldScene, раскладка по `MapNode.UiPosition`; типы узлов —
+   иконки по `MapNodeType`.
+2. Пути между узлами (`MapNode.Edges`) — Shapes/LineRenderer, ПУНКТИР; доступные (из текущего узла) —
+   подсвечены/ярче, пройденные — тускло. Опора: текущий `MapGraph.OnGenerateVisualContent` (логика
+   active/available рёбер — перенести смысл в world).
+3. «Фишка» игрока — world-объект; при выборе узла едет по кривой (Безье) к целевому за ~1.5с;
+   дабл-клик по узлу = сильное ускорение анимации. На время анимации блокировать выбор.
+4. Клик по узлу — world-raycast (не UITK ClickEvent); резолвить в `IMapNodeChooser` контракт
+   (новый `WorldMapNodeChooser` вместо `MapScreenNodeChooser`, DI-подмена в `RootLifetimeScope:121`).
+5. Камера карты: pan/zoom как в бою; при входе в узел — переход к бою (уже работает через ActRunner).
+6. Фон карты (п.2) — параллакс/арт world-space на весь экран (кроме топбара UITK-app-shell).
+
+**Развилки для сессии (решить с Максом):**
+- Где физически живут map-объекты: постоянно в WorldScene (persist-слой) vs спавнятся на время карты.
+- Ввод карты через `IInputService` (context по фазе) — как в бою; согласовать с навигатором UI (стек).
+- Судьба UITK MapGraph/MapScreen (снести vs фолбэк).
+- delay=2с из п.4 — можно заодно вынести в `ActConfig` (сейчас хардкод-дефолт `BattleNodeFlow`).
+
+**Готчи:** ввод — только `IInputService` (проект на новом Input System); камеру не плодить (единая
+WorldLifetimeScope); генерацию/traversal не трогать; screenshot карты в чат при показе UI (HARD-правило).
+
+## Трек п.0b — физрасстановка Grok-спрайтов (параллельно/по желанию)
+
+Отдельный арт-трек, НЕ блокирует фазу D. Инфраструктура готова (фаза A: единый тинт + `ViewPrefab`
+на юнита уже поддержан). Осталось физически: (1) критразбор Grok-маппинга
+`docs/wiki/research/sprite-recommendations.md` (Макс просил ОЦЕНКУ, не слепое доверие);
+(2) на ~15 юнитов (10 RelicData + 5 EnemyData): нарезка листов из `Art/Sprites` (~5219 файлов ЕСТЬ
+в репо) → Animator-контроллеры (Idle/Run/Attack/Death/Hit по именам стейтов) → per-champion `ViewPrefab`
+(с `UnitView`, `_sprite`, сокеты, `_recommendedHeight`) → прописать `_viewPrefab` в SO. Приёмка Макса
+по каждому (визуал = его). Никси не пиксель-художник — арт кладёт человек/пайплайн, моё = сборка/провод.
