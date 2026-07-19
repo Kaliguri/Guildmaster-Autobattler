@@ -166,7 +166,9 @@ namespace Guildmaster.Game
             if (!_input.GameplaySuppressed && ReadyPressed()) { StartCombat(); return; }
 
             // Меню loadout открыто (ввод заглушён) — прячем hover/ghost, не интеракчим.
-            if (_input.GameplaySuppressed)
+            // Плюс курсор над непрозрачной UITK-панелью (инвентарь) вне активного драга — ховер сквозь панель
+            // не пикаем (клики туда уже не проходят через IInputService.PointerOverUI).
+            if (_input.GameplaySuppressed || (_input.PointerOverUI && _dragged == null))
             {
                 _view.SetGhost(false, default, 0f, false);
                 _view.SetOutline(false, default, 0f);

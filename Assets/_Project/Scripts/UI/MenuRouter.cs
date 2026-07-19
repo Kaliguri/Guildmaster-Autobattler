@@ -42,6 +42,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _loadoutInventoryUxml;
         private VisualTreeAsset _arcanaCardUxml;
         private InputContext _prevContext;
+        private bool _menuModeActive; // вошли ли в модальный режим (suppress+Menu-контекст); прозрачный инвентарь его не поднимает
 
         public MenuRouter(IInputService input, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
                           LoadoutHubViewModel hubVm, ILocalizationService loc)
@@ -152,6 +153,9 @@ namespace Guildmaster.UI
                 cardAttackAnimation: _settingsVm.CardAttackAnimation);
 
             // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar).
+            // Прозрачный оверлей: помечаем классом, чтобы SyncSuppress НЕ глушил геймплей — под инвентарём
+            // живут юниты/камера (клики разводит IInputService.PointerOverUI над панелями vs дыркой).
+            screen.AddToClassList(TransparentScreenClass);
             // Закрытие по любому пути (Pop/Esc/CloseAll) → onClose (бутстрап снимет подсветку режима).
             screen.RegisterCallback<DetachFromPanelEvent>(_ => onClose?.Invoke());
             Push(screen);
@@ -184,15 +188,15 @@ namespace Guildmaster.UI
         public void CloseAll()
         {
             while (_stack.Count > 0) _root.Remove(_stack.Pop());
-            ExitMenuMode();
+            SyncSuppress();
         }
 
         private void Push(VisualElement screen)
         {
-            if (_stack.Count == 0) EnterMenuMode();
-            else _stack.Peek().style.display = DisplayStyle.None;
+            if (_stack.Count > 0) _stack.Peek().style.display = DisplayStyle.None;
             _stack.Push(screen);
             _root.Add(screen);
+            SyncSuppress();
         }
 
         private void Pop()
@@ -200,7 +204,19 @@ namespace Guildmaster.UI
             if (_stack.Count == 0) return;
             _root.Remove(_stack.Pop());
             if (_stack.Count > 0) _stack.Peek().style.display = DisplayStyle.Flex;
-            else ExitMenuMode();
+            SyncSuppress();
+        }
+
+        // Прозрачные оверлеи (инвентарь) НЕ глушат геймплей — под ними живёт мир (юниты/камера, развязка
+        // через IInputService.PointerOverUI). Модальные (pause/settings/карта/ивент/…) — глушат (ESC глушит
+        // всё, подтверждено). Suppress определяет ВЕРХНИЙ экран стека; пересчитывается на каждый Push/Pop.
+        private const string TransparentScreenClass = "gm-screen--transparent";
+
+        private void SyncSuppress()
+        {
+            bool wantSuppress = _stack.Count > 0 && !_stack.Peek().ClassListContains(TransparentScreenClass);
+            if (wantSuppress && !_menuModeActive) EnterMenuMode();
+            else if (!wantSuppress && _menuModeActive) ExitMenuMode();
         }
 
         private void EnterMenuMode()
@@ -208,12 +224,14 @@ namespace Guildmaster.UI
             _prevContext = _input.Context;
             _input.GameplaySuppressed = true;
             _input.SetContext(InputContext.Menu);
+            _menuModeActive = true;
         }
 
         private void ExitMenuMode()
         {
             _input.GameplaySuppressed = false;
             _input.SetContext(_prevContext);
+            _menuModeActive = false;
         }
 
         // --- Экраны ---

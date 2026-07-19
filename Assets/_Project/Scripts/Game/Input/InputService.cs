@@ -2,6 +2,7 @@ using System;
 using Guildmaster.Core.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace Guildmaster.Game.Input
 {
@@ -22,6 +23,8 @@ namespace Guildmaster.Game.Input
 
         private readonly InputAction _pan;
         private readonly InputAction _zoom;
+        private readonly InputAction _middlePan;   // <Mouse>/middleButton — зажата = пан драгом
+        private readonly InputAction _pointerDelta; // <Mouse>/delta — дельта мыши за кадр (для MMB-пана)
         private readonly InputAction _cycleView;
         private readonly InputAction _pauseToggle;
         private readonly InputAction _gameSpeedCycle;
@@ -61,6 +64,8 @@ namespace Guildmaster.Game.Input
                 .With("Right", "<Keyboard>/rightArrow");
 
             _zoom = _cameraMap.AddAction("Zoom", InputActionType.Value, "<Mouse>/scroll/y");
+            _middlePan    = _cameraMap.AddAction("MiddlePan", InputActionType.Button, "<Mouse>/middleButton");
+            _pointerDelta = _cameraMap.AddAction("PointerDelta", InputActionType.Value, "<Mouse>/delta");
             _cycleView = _cameraMap.AddAction("CycleView", InputActionType.Button, "<Keyboard>/tab");
 
             // --- Карта «Combat»: пауза (Space), смена скорости (.). Рестарт боя/сцены (R/F5) — dev (DevTools). ---
@@ -123,14 +128,45 @@ namespace Guildmaster.Game.Input
         public Vector2 CameraPan      => GameplaySuppressed ? Vector2.zero : _pan.ReadValue<Vector2>();
         public float   CameraZoomDelta => GameplaySuppressed ? 0f : _zoom.ReadValue<float>();
 
+        // Пан драгом средней кнопки: дельта мыши, пока MMB зажата (иначе ноль). Гейтится модальным слоем.
+        public Vector2 CameraPanDrag =>
+            (GameplaySuppressed || !_middlePan.IsPressed()) ? Vector2.zero : _pointerDelta.ReadValue<Vector2>();
+
         // Позиция указателя не гейтится (это просто «где мышь»); нажатие/зажатие — гейтится (модальный слой).
         public Vector2 PointerScreenPosition => _pointerPos.ReadValue<Vector2>();
         public bool    PointerHeld           => !GameplaySuppressed && _pointerPress.IsPressed();
 
+        // --- Шов развязки UI↔мир: hit-тест panel.Pick над курсором ---
+        // Ленивый кеш UIDocument (один в сцене, живёт весь сеанс). rootVisualElement.panel — рантайм-панель.
+        private UIDocument _uiDoc;
+        private IPanel UiPanel
+        {
+            get
+            {
+                if (_uiDoc == null) _uiDoc = UnityEngine.Object.FindFirstObjectByType<UIDocument>();
+                return _uiDoc != null ? _uiDoc.rootVisualElement?.panel : null;
+            }
+        }
+
+        public bool PointerOverUI
+        {
+            get
+            {
+                IPanel panel = UiPanel;
+                if (panel == null) return false;
+                Vector2 screen = _pointerPos.ReadValue<Vector2>();
+                Vector2 panelPos = RuntimePanelUtils.ScreenToPanel(panel, screen);
+                // Pick пропускает pickingMode=Ignore (прозрачная боевая «дырка») → null над миром, панель над UI.
+                return panel.Pick(panelPos) != null;
+            }
+        }
+
         private void OnCycleView(InputAction.CallbackContext _)      { if (!GameplaySuppressed) CycleViewRequested?.Invoke(); }
         private void OnPauseToggle(InputAction.CallbackContext _)    { if (!GameplaySuppressed) PauseToggleRequested?.Invoke(); }
         private void OnGameSpeedCycle(InputAction.CallbackContext _) { if (!GameplaySuppressed) GameSpeedCycleRequested?.Invoke(); }
-        private void OnPointerPressed(InputAction.CallbackContext _)  { if (!GameplaySuppressed) PointerPressed?.Invoke(); }
+        // Клик над непрозрачной UITK-панелью не начинает деплой-пик (уходит в UI). Drag, начатый над миром,
+        // продолжается и над панелью (PointerHeld этот флаг не гейтит — иначе протяжка рвалась бы у края панели).
+        private void OnPointerPressed(InputAction.CallbackContext _)  { if (!GameplaySuppressed && !PointerOverUI) PointerPressed?.Invoke(); }
         private void OnPointerReleased(InputAction.CallbackContext _) { if (!GameplaySuppressed) PointerReleased?.Invoke(); }
 
         // Escape НЕ гейтится GameplaySuppressed: меню должно закрываться, даже когда геймплейный ввод заглушён.

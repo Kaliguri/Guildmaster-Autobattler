@@ -237,6 +237,16 @@ namespace Guildmaster.Presentation
             pos.x += pan.x * panSpeed * dt;
             pos.y += pan.y * panSpeed * dt;
 
+            // Пан средней кнопкой мыши (MMB-drag): дельта в пикселях → мир, инверсия (тянем мир под курсором).
+            // Масштаб по орто-размеру, чтобы скорость пана совпадала с движением курсора на любом зуме.
+            Vector2 drag = _input.CameraPanDrag;
+            if (drag.sqrMagnitude > 0f)
+            {
+                float worldPerPixel = size * 2f / Mathf.Max(1, Screen.height);
+                pos.x -= drag.x * worldPerPixel;
+                pos.y -= drag.y * worldPerPixel;
+            }
+
             if (clampToZone) pos = ClampVisibleCenter(pos, size);
             pos.z = _cameraZ; // держим 2D-глубину (иначе спрайты на z=0 отсекаются)
             cam.transform.position = pos;
