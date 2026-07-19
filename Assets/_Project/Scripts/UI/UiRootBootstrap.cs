@@ -96,6 +96,7 @@ namespace Guildmaster.UI
         private IRunTopBar _topBar;
         private VisualElement _backdrop; // постоянный задний фон под не-боевыми экранами (выкл в бою/инвентаре)
         private bool _inventoryOpen; // инвентарь открыт → подсветить режим «Инвентарь» + тумблер
+        private bool _mapOpen;       // read-only карта (кнопка «Карта») открыта → подсветить режим «Карта»
         private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
 
         [Inject]
@@ -228,9 +229,12 @@ namespace Guildmaster.UI
             _topBar.SetAct(run.CurrentActIndex + 1);
             _topBar.SetRestarts(run.RestartsRemaining, _config != null ? _config.RestartsPerAct : run.RestartsRemaining);
             _topBar.SetRunTime(FormatTime(_runElapsed));
-            if (_topBar is RunModeBarView modeBar) modeBar.SetActiveMode(_inventoryOpen ? "inventory" : null);
 
             BattlePhase phase = _clock.Phase;
+            // QA #11: подсвечивать активный режим по факту (не только инвентарь). Инвентарь поверх боя →
+            // приоритетнее; иначе идёт бой/расстановка → «Бой»; иначе открыта read-only карта → «Карта».
+            if (_topBar is RunModeBarView modeBar) modeBar.SetActiveMode(ActiveMode(phase));
+
             if (phase == BattlePhase.None) _topBar.HideBattleCenter();       // карта/магазин — центр пуст
             else _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
         }
@@ -252,7 +256,19 @@ namespace Guildmaster.UI
             if (run?.Map == null || run.Map.Nodes == null || run.Map.Nodes.Length == 0) return;
             var ids = new List<string>();
             foreach (var n in Guildmaster.Guild.MapTraversal.AvailableNext(run.Map)) ids.Add(n.Id);
-            _router.OpenMap(new Guildmaster.Guild.OpenMapRequest(run.Map, ids, _ => _router.CloseOverlays()));
+            _mapOpen = true; // QA #11: подсветить режим «Карта», снять на закрытии (клик узла/ESC)
+            _router.OpenMap(new Guildmaster.Guild.OpenMapRequest(run.Map, ids, _ => { _mapOpen = false; _router.CloseOverlays(); }));
+        }
+
+        // Активный режим для подсветки таба (QA #11). Инвентарь поверх → приоритет; иначе бой/расстановка;
+        // иначе read-only карта. NB: карта петли акта (обход узлов) идёт через флоу, не через этот бутстрап —
+        // её подсветка потребует отдельного шва флоу→топбар (не покрыто здесь).
+        private string ActiveMode(BattlePhase phase)
+        {
+            if (_inventoryOpen)            return "inventory";
+            if (phase != BattlePhase.None) return "battle";
+            if (_mapOpen)                  return "map";
+            return null;
         }
 
         private static string FormatTime(float seconds)

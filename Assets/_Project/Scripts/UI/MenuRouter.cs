@@ -177,12 +177,17 @@ namespace Guildmaster.UI
             return "The " + string.Join(" ", parts);
         }
 
+        // QA #12: ☰/ESC ОТКРЫВАЮТ системное меню ПОВЕРХ текущего экрана (инвентарь/карта/бой), не закрывая
+        // его. Если мы уже в меню (pause в стеке) — шаг назад (settings→pause→закрыть). Заодно чинит готчу
+        // сноса flow-модалок: карта петли акта больше не рушится в null от CloseAll по ☰/ESC.
         public void ToggleSystemMenu()
         {
             if (_root == null) return;
-            if (_stack.Count == 0) Push(BuildPauseScreen());
-            else if (_stack.Count == 1) CloseAll();
-            else Pop();
+            bool inMenu = false;
+            foreach (VisualElement s in _stack)
+                if (s.ClassListContains(PauseScreenClass)) { inMenu = true; break; }
+            if (inMenu) Pop();                 // уже в системном меню → назад/закрыть
+            else Push(BuildPauseScreen());     // открыть меню поверх текущего
         }
 
         public void CloseAll()
@@ -212,6 +217,9 @@ namespace Guildmaster.UI
         // всё, подтверждено). Suppress определяет ВЕРХНИЙ экран стека; пересчитывается на каждый Push/Pop.
         private const string TransparentScreenClass = "gm-screen--transparent";
 
+        // Маркер экрана системного меню (pause) — ToggleSystemMenu отличает «мы в меню» от «поверх игры» (QA #12).
+        private const string PauseScreenClass = "gm-pause-root";
+
         private void SyncSuppress()
         {
             bool wantSuppress = _stack.Count > 0 && !_stack.Peek().ClassListContains(TransparentScreenClass);
@@ -239,6 +247,7 @@ namespace Guildmaster.UI
         private VisualElement BuildPauseScreen()
         {
             var screen = FillRoot(_pauseUxml.CloneTree());
+            screen.AddToClassList(PauseScreenClass); // маркер «системное меню» для ToggleSystemMenu (QA #12)
             screen.Q<Button>("btn-return").clicked += CloseAll;
             screen.Q<Button>("btn-settings").clicked += () => Push(BuildSettingsScreen());
             return screen;

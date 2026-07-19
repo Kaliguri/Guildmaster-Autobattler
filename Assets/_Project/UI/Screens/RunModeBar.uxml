@@ -24,9 +24,14 @@
             <ui:Label name="topbar-gold" text="Золото: 0" class="gm-loadout__stat" />
             <ui:Label name="topbar-act" text="Акт 1" class="gm-loadout__stat" />
             <ui:Label name="topbar-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer" />
+            <ui:Button name="btn-menu" text="≡" class="gm-loadout__menu-btn" />
+        </ui:VisualElement>
+
+        <!-- Центр-слот «Начать»/таймер боя (QA #14): по центру, ЧУТЬ НИЖЕ панели (absolute под топбаром),
+             единая точка — расстановка показывает «Начать», бой заменяет его таймером в ТОЙ ЖЕ точке. -->
+        <ui:VisualElement name="battle-center" class="gm-loadout__battle-center">
             <ui:Button name="btn-start" text="Начать" class="gm-loadout__start-btn" />
             <ui:Label name="battle-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer gm-loadout__battle-timer" />
-            <ui:Button name="btn-menu" text="≡" class="gm-loadout__menu-btn" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
