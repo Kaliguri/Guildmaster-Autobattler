@@ -16,10 +16,10 @@
 | Ф1 Скелет навигатора | ✅ влито | `bced833a` | `Navigation/` + 12 тестов; создан, НЕ подключён |
 | Ф2 Своп ядра MenuRouter | ✅ влито | `7756b948` | делегация стека/ввода навигатору, поведение 1:1 |
 | Ф3 Flow через ShowAsync | ✅ влито | `168f747f` | 7 flow-экранов на ShowAsync, Detach-страховки сняты |
-| **Ф4 Слои-контейнеры** | ⏳ следующий | — | контейнеры вместо BringToFront/репарента |
-| Ф5 Тест-зона | ⬜ | — | Sheet-экран + единый источник TestZone |
-| Ф6 Инвентарь | ⬜ | — | формальный Sheet, смерть `_inventoryOpen` |
-| Ф7 Чистка + доки | ⬜ | — | снос мёртвого, tech-scribe |
+| **Ф4 Слои-контейнеры** | ✅ влито | `539d048e` | 8 слоёв в корне; K1-K4 снесены; QA #32/#33/#35/#36; шов локали |
+| **Ф5 Тест-зона** | ✅ влито | `85ecdef9` | Sheet-экран + единый источник TestZoneChangedEvent; K5-K8 сняты |
+| **Ф6 Инвентарь** | ✅ влито | `85ecdef9` | формальный Sheet, смерть `_inventoryOpen`; закрытие=Remove не PopAll |
+| Ф7 Чистка + доки | ⏳ следующий | — | снос мёртвого, tech-scribe |
 
 **Точка остановки задана Максом (2026-07-19):** гнать Ф1→Ф2→Ф3 автономно, **стоп после Ф3**
 на его play (полный забег) — НЕ после Ф2, как в протоколе плана. Ф0–Ф3 влиты.
@@ -35,7 +35,44 @@
 ресёрч подтвердил cooperative-cancellation паттерн). Токен забега пробрасывается через всю цепочку показа
 (6 запросов +`ct`, 4 флоу +`AttachExternalCancellation`, `UiNavigator.Push` +`ct`-оверлоад, `MenuRouter`
 проброс + `CloseAll`→`Pop` в паузе, `ActRunner` различает отмену/Aborted + лог). Снесены K11+K12. Регресс-тест
-в `ActRunnerTests`. Детали — QA-трекер #37/#37b. **СЛЕДУЮЩЕЕ: Ф4 (слои-контейнеры).**
+в `ActRunnerTests`. Детали — QA-трекер #37/#37b.
+
+**► Ф4 СДЕЛАНА (2026-07-19, `539d048e`, ждёт play-QA, 412/412).** Скелет из 8 слоёв-контейнеров в корне
+UIDocument (порядок Add = z): `backdrop / battle-center / screens / topbar / modal / cursors / tooltip /
+system` (последние три — пустые заделы под курсоры/тултипы/тосты). Навигатор кладёт экран по `ScreenKind`:
+Page/Sheet → screens (под топбаром), Modal → modal (над топбаром). Снятие — `RemoveFromHierarchy`.
+**Снесены K1-K4:** BringToFront-каждый-кадр (топбар в своём слое); SendToBack-жонглирование battle-center
+(узел переезжает в свой слой, ссылки RunModeBarView живы); поллинг структуры каждый кадр → подписка
+`nav.Changed` + ребро фазы/инвентаря (данные боя остаются в Update); подсветка таба из верхнего НЕ-Modal
+экрана (`ActiveModeTag` игнорит Modal). **QA:** #36 (Modal-scrim `.gm-screen` в layer-modal затемняет+
+блокирует топбар, не скрывает — структурно, без спец-кода), #32 (ESC-меню только при `RunState.Current`),
+#33 (`.gm-tab-page min-height:340` — панель настроек не прыгает по табам), #35 (единый источник подсветки).
+**Шов II.9.2** локаль-hot-swap: подписка `ILocalizationService.LocaleChanged` → `RebuildTopBar`.
+Верификация: 412/412 EditMode (+4 теста навигатора), структура слоёв программно (порядок точный,
+Modal→layer-modal), скрины Modal-scrim + табы (#33) в чат.
+
+**► Ф5+Ф6 СДЕЛАНЫ (2026-07-19, `85ecdef9`, ждут play-QA, 414/414).** Триггер — play-QA Макса поймал «главный
+баг»: `CloseOverlays()`=`PopAll()` сносил карту петли акта (result-экран) при «Бой»/«Инвентарь» поверх неё
+→ résolve узла null → `ActRunner` Aborted (+ рассинхрон подсветки/просвечивание карты). Это был класс #31/#30,
+ждавший Ф5/Ф6 — не регрессия Ф4.
+**МОДЕЛЬ (Макс, зафиксирована в [[persist-world-decisions]]):** карта и геймплей — ВЗАИМОИСКЛЮЧАЮЩИЕ
+полноэкранные пространства (геймплей целиком закрывает карту и наоборот); инвентарь = геймплей (карта скрыта)
++ UI поверх. Карту петли акта НЕ снимать (result-экран, ждёт выбор — снять=Aborted), а ПРЯТАТЬ `display:none`.
+Топбар над картой: прячет карту, входит в геймплей, карта ждёт возврата (решение Макса).
+**Реализация:**
+- **Навигатор `SyncVisibility` переписан:** Sheet (геймплей: инвентарь/тест-зона) ПРЯЧЕТ Page (карту) под собой;
+  соседние Sheet друг друга не прячут; Modal не прячет структурно. + публичный `Remove(screen)` (снять из середины).
+- **Ф5 тест-зона:** новое `TestZoneChangedEvent(bool)` — СОСТОЯНИЕ (vs интент `ToggleTestZoneRequest`).
+  `DeploymentController` — единственный владелец (вещает на enter/exit/start/free-deploy + гейт входа при Fighting).
+  `TestZoneArenaSkin` слушает состояние (смерть самотога `_gray` → #28). Тест-зона = Sheet-экран (`ModeTag "battle"`,
+  прозрачный, Ignore) по подписке бутстрапа; карта прячется правилом видимости. «Начать» в тест-зоне = no-op
+  (бой пока только через боевую расстановку — решение Макса). Сняты K5 (`HideTopForTest`/`ShowHiddenForTest`).
+- **Ф6 инвентарь:** роутер владеет Sheet-экраном (`ModeTag "inventory"`); тумблер = `Remove(screen)`/`Push`.
+  Закрытие = `Remove` ТОГО экрана, НЕ `PopAll` → карта петли под ним цела → нет Aborted. `RouterScreen.onExit`
+  самообнуляет ссылку при любом снятии. Смерть `_inventoryOpen` (K6), `onClose`-Detach, веника `CloseOverlays`.
+Верификация: 414/414 EditMode (+3 теста видимости), play (тест-зона Sheet по состоянию, pickingMode Ignore,
+DI чист, 0 ошибок). Главный баг устранён СТРУКТУРНО (закрытие=Remove конкретного, не PopAll). **СЛЕДУЮЩЕЕ: Ф7
+(чистка мёртвого + tech-scribe).** Полный play-сценарий (карта→бой→инвентарь без Aborted) — на play-QA Макса.
 
 ---
 
@@ -150,14 +187,14 @@ map `Kind→layer`. Рекомендую (а) — просто и явно. За
 
 | # | Костыль | Где | Снос |
 |---|---|---|---|
-| K1 | `BringToFront()` топбара КАЖДЫЙ кадр (императивный z-порядок) | `UiRootBootstrap.Update` | Ф4 (слои) |
-| K2 | Репарент `battle-center` из топбара в root + `SendToBack` | `UiRootBootstrap.InitTopBar` | Ф4 |
-| K3 | Поллинг `Phase` в `Update` вместо события | `UiRootBootstrap.Update` | Ф4/Ф5 (событие/подписка) |
-| K4 | Подсветка табов `ActiveScreenMode ?? фаза` — прыгает при pause | `UiRootBootstrap.ActiveMode` | Ф4 (единый источник, QA #35) |
-| K5 | `HideTopForTest`/`ShowHiddenForTest`/`_hiddenForTest` мост | `MenuRouter` | Ф5 (тест-зона = Sheet) |
-| K6 | `_testActive` флаг-тумблер тест-зоны (рассинхрон) | `UiRootBootstrap.OnBattleMode` | Ф5 (QA #34) |
-| K7 | `TestZoneArenaSkin` самотогл на бродкаст (а не на состояние) | `TestZoneArenaSkin` | Ф5 |
-| K8 | Мультиписатель контекста: `SetContext` мимо навигатора | `DeploymentController` | Ф5 (Ф5.5) |
+| ~~K1~~ | ~~`BringToFront()` топбара КАЖДЫЙ кадр~~ | `UiRootBootstrap.Update` | ✅ СНЕСЕНО (Ф4 `539d048e`, топбар в `layer-topbar`) |
+| ~~K2~~ | ~~Репарент `battle-center` в root + `SendToBack`~~ | `UiRootBootstrap.InitTopBar` | ✅ СНЕСЕНО (Ф4, узел в `layer-battle-center`; полный вынос в UXML НЕ делали — не оправдан, ссылки RunModeBarView живы) |
+| ~~K3~~ | ~~Поллинг структуры (backdrop/подсветка) каждый кадр~~ | `UiRootBootstrap.Update` | ✅ СНЕСЕНО (Ф4, подписка `nav.Changed` + ребро фазы/инвентаря; поллинг ДАННЫХ боя оставлен — законно; событие фазы у IBattleClock всё ещё НЕТ, реш.3) |
+| ~~K4~~ | ~~Подсветка табов `ActiveScreenMode ?? фаза` — прыгает при pause~~ | `UiRootBootstrap.ActiveMode` | ✅ СНЕСЕНО (Ф4, `ActiveModeTag` = верхний НЕ-Modal, QA #35) |
+| ~~K5~~ | ~~`HideTopForTest`/`ShowHiddenForTest`/`_hiddenForTest` мост~~ | `MenuRouter` | ✅ СНЕСЕНО (Ф5 `85ecdef9`, тест-зона = Sheet, карта прячется правилом видимости) |
+| ~~K6~~ | ~~`_testActive`/`_inventoryOpen` флаги-тумблеры (рассинхрон)~~ | `UiRootBootstrap` | ✅ СНЕСЕНО (Ф5/Ф6, состояние = `TestZoneChangedEvent` + `_router.IsInventoryOpen`, QA #34) |
+| ~~K7~~ | ~~`TestZoneArenaSkin` самотогл на бродкаст (а не на состояние)~~ | `TestZoneArenaSkin` | ✅ СНЕСЕНО (Ф5, слушает `TestZoneChangedEvent.Active`, #28) |
+| K8 | Мультиписатель контекста: `SetContext` мимо навигатора | `DeploymentController` | ЧАСТИЧНО (Ф5: навигатор перезаписывает верно на Push/Pop; боевая расстановка без Push ещё полагается на прямой SetContext — полный снос ждёт события смены фазы, реш.3) |
 | K9 | `Keyboard.current` напрямую (Enter расстановки) | `DeploymentController.ReadyPressed` | Трек Х |
 | K10 | Text event на Push+Detach (выбор ≠ закрытие, не ShowAsync) | `MenuRouter` | отдельно |
 | ~~K11~~ | ~~`btn-main-menu`: `CloseAll()`+`RequestReturnToMainMenu` = двойной путь → Aborted~~ | `MenuRouter.BuildPauseScreen` | ✅ СНЕСЕНО (QA #37, `Pop`+отмена) |
