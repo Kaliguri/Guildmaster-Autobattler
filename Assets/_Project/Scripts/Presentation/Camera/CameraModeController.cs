@@ -173,6 +173,33 @@ namespace Guildmaster.Presentation
             }
         }
 
+        /// <summary>
+        /// Войти в свободную камеру фазы расстановки (QA #4): режим Overview (ручной пан/зум в пределах зоны),
+        /// но СТАРТОВЫЙ кадр — как у экшн-камеры (центр боя + зум под разброс), а НЕ отзум на всю зону.
+        /// Кадр приходит явно из <c>DeploymentController</c> (позиции живых юнитов) — без гонки с focus-таймингом.
+        /// </summary>
+        public void EnterDeployment(Vector2 center, float spread)
+        {
+            _mode = CameraMode.Overview;
+            ApplyMode();
+            if (_overviewCam == null) return;
+
+            float size = Mathf.Clamp(spread + _actionZoomPadding, _minZoom, MaxZoomForZone());
+            Vector3 pos = ClampVisibleCenter(new Vector3(center.x, center.y, _cameraZ), size);
+            _overviewCam.transform.position = pos;
+
+            LensSettings lens = _overviewCam.Lens;
+            lens.OrthographicSize = size;
+            _overviewCam.Lens = lens;
+        }
+
+        /// <summary>Вернуть боевой вид (экшн-камера, слежение за дракой) — на старте боя из расстановки.</summary>
+        public void ExitToActionView()
+        {
+            _mode = CameraMode.Action;
+            ApplyMode();
+        }
+
         private void OnCycleView()
         {
             _mode = NextMode(_mode, _devAccess);

@@ -42,6 +42,7 @@ namespace Guildmaster.Game
         private readonly ISubscriber<EquipRelicRequest> _equipSub;
         private readonly ISubscriber<EquipRelicAtCursorRequest> _equipAtCursorSub;
         private readonly IBattleSession   _session;
+        private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
 
         // Редактируемый ростер игрока в этой фазе (позиции/релики меняются перетаскиванием и loadout'ом).
         private sealed class Slot { public RelicData Relic; public VesselData Vessel; public Vector2 Pos; public int LiveUnitId = -1; }
@@ -71,7 +72,8 @@ namespace Guildmaster.Game
             IPublisher<OpenLoadoutRequest> openLoadoutPub,
             ISubscriber<EquipRelicRequest> equipSub,
             ISubscriber<EquipRelicAtCursorRequest> equipAtCursorSub,
-            IBattleSession session)
+            IBattleSession session,
+            CameraModeController cameraModes)
         {
             _loader        = loader;
             _sim           = sim;
@@ -83,6 +85,7 @@ namespace Guildmaster.Game
             _equipSub      = equipSub;
             _equipAtCursorSub = equipAtCursorSub;
             _session       = session;
+            _cameraModes   = cameraModes;
         }
 
         public void Start()
@@ -134,6 +137,35 @@ namespace Guildmaster.Game
             _input.SetContext(InputContext.Deployment);
             _deploying = true;
             _session.SetPhase(BattlePhase.Deployment); // центр панели = «Начать»
+            FrameCameraForDeployment(); // QA #4: свободная камера со стартовым боевым кадром (не отзум на всю зону)
+        }
+
+        // Стартовый кадр расстановки: центр и разброс ВСЕХ живых юнитов (свои + враги — видно противника).
+        // Считаем сами (не через focus-таймер) — детерминированно на входе, без гонки с LateUpdate камеры.
+        private void FrameCameraForDeployment()
+        {
+            if (_cameraModes == null) return;
+
+            IReadOnlyList<RuntimeUnit> units = _sim.Units;
+            Vector2 sum = Vector2.zero;
+            int n = 0;
+            for (int i = 0; i < units.Count; i++)
+            {
+                if (units[i].IsDead) continue;
+                sum += units[i].Position;
+                n++;
+            }
+            if (n == 0) return; // нет юнитов — камера остаётся как есть
+
+            Vector2 center = sum / n;
+            float maxSq = 0f;
+            for (int i = 0; i < units.Count; i++)
+            {
+                if (units[i].IsDead) continue;
+                float d = (units[i].Position - center).sqrMagnitude;
+                if (d > maxSq) maxSq = d;
+            }
+            _cameraModes.EnterDeployment(center, Mathf.Sqrt(maxSq));
         }
 
         private void EnsureView()
@@ -295,6 +327,7 @@ namespace Guildmaster.Game
             _view?.SetActive(false);
             _sim.SetPaused(false);
             _input.SetContext(InputContext.Combat);
+            _cameraModes?.ExitToActionView(); // QA #4: вернуть боевой вид (слежение) на старте боя
             _session.SetPhase(BattlePhase.Fighting); // центр панели = таймер боя
         }
 

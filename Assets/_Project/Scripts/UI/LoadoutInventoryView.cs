@@ -43,7 +43,12 @@ namespace Guildmaster.UI
 
             VisualElement screen = screenUxml.CloneTree();
             VisualElement root = screen.childCount > 0 ? screen[0] : screen;
-            root.pickingMode = PickingMode.Position;
+            // Корень/тело/боевая «дырка» — picking-mode Ignore (задано в UXML): panel.Pick над ними
+            // возвращает null, и ввод под инвентарём идёт в мир (drag юнитов и камера в расстановке).
+            // НЕ ставить Position: он перехватывает pick на ВЕСЬ экран (root покрывает всё) и глушит
+            // дырку — под инвентарём переставал стартовать деплой-драг (press гейтится !PointerOverUI).
+            // Непрозрачные панели .gm-loadout__main ловят pick сами (дефолтный Position).
+            root.pickingMode = PickingMode.Ignore;
 
             // ── Хром тела (гильдия/режимы/золото/меню теперь в глобальном топбаре RunModeBar) ──
             // Левая зона (battle-zone) — «дырка» СКВОЗЬ панель к реальной боевой камере (Ф3b P1): прозрачна,
