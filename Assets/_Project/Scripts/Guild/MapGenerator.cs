@@ -13,8 +13,8 @@ namespace Guildmaster.Guild
     /// <remarks>
     /// Связь соседних колонок — алгоритмом «монотонной лестницы» (см. <see cref="ConnectColumns"/>): он
     /// гарантирует связность (у каждого узла есть входящее и исходящее ребро), планарность (рёбра не
-    /// пересекаются крест-накрест) и естественные развилки/схождения. Правила: элитки не раньше
-    /// <see cref="MapGenConfig.EliteMinColumn"/>, гарантированно ≥1 магазин до босса.
+    /// пересекаются крест-накрест) и естественные развилки/схождения. Типы узлов — по ЗОНАМ этажей и
+    /// ЯКОРЯМ (<see cref="MapGenConfig.Zones"/>/<see cref="MapGenConfig.Anchors"/>); гарантированно ≥1 магазин до босса.
     /// <para><b>Payload узлов не назначается здесь</b> — генератор строит только топологию и типы; конкретный
     /// контент (энкаунтер/ивент/пул) выбирает <c>NodeResolver</c> на входе в узел (фаза A2).</para>
     /// </remarks>
@@ -81,31 +81,44 @@ namespace Guildmaster.Guild
             UiPosition = new Vector2(col, row - (width - 1) * 0.5f),
         };
 
-        /// <summary>Взвешенный ролл типа промежуточного узла; элитка исключается в ранних колонках.</summary>
+        /// <summary>
+        /// Тип промежуточного узла на этаже <paramref name="col"/> по ЗОНАМ и ЯКОРЯМ конфига. Якорь этажа
+        /// перекрывает зонные веса (сундук-ряд / привал перед боссом); иначе — взвешенный ролл по первой
+        /// покрывающей зоне; этаж вне зон/якорей → безопасный дефолт (Бой).
+        /// </summary>
         private static MapNodeType RollNodeType(IRngService rng, MapGenConfig cfg, int col)
         {
-            bool eliteAllowed = col >= cfg.EliteMinColumn;
+            // Якорь перекрывает всё: вся колонка этого этажа — фиксированного типа.
+            for (int i = 0; i < cfg.Anchors.Length; i++)
+                if (cfg.Anchors[i].Floor == col) return cfg.Anchors[i].Type;
 
-            // Пары (тип, вес) — порядок стабилен для детерминизма.
-            var weighted = new List<(MapNodeType type, int weight)>
+            // Первая зона, покрывающая этаж → взвешенный ролл по её типам.
+            for (int i = 0; i < cfg.Zones.Length; i++)
             {
-                (MapNodeType.Battle,    cfg.WeightBattle),
-                (MapNodeType.Elite,     eliteAllowed ? cfg.WeightElite : 0),
-                (MapNodeType.TextEvent, cfg.WeightTextEvent),
-                (MapNodeType.Shop,      cfg.WeightShop),
-                (MapNodeType.Chest,     cfg.WeightChest),
-                (MapNodeType.Unknown,   cfg.WeightUnknown),
-            };
+                ZoneRule zone = cfg.Zones[i];
+                if (!zone.Covers(col)) continue;
+                return WeightedPick(rng, zone.Weights);
+            }
 
-            int total = weighted.Sum(w => w.weight);
-            if (total <= 0) return MapNodeType.Battle; // защита от нулевых весов
+            return MapNodeType.Battle; // этаж вне зон и якорей — безопасный дефолт
+        }
+
+        /// <summary>Взвешенный выбор типа по весам зоны (порядок стабилен для детерминизма). Пусто/нули → Бой.</summary>
+        private static MapNodeType WeightedPick(IRngService rng, NodeTypeWeight[] weights)
+        {
+            if (weights == null || weights.Length == 0) return MapNodeType.Battle;
+
+            int total = 0;
+            for (int i = 0; i < weights.Length; i++)
+                if (weights[i].Weight > 0) total += weights[i].Weight;
+            if (total <= 0) return MapNodeType.Battle;
 
             int roll = rng.NextInt(0, total);
-            foreach (var (type, weight) in weighted)
+            for (int i = 0; i < weights.Length; i++)
             {
-                if (weight <= 0) continue;
-                roll -= weight;
-                if (roll < 0) return type;
+                if (weights[i].Weight <= 0) continue;
+                roll -= weights[i].Weight;
+                if (roll < 0) return weights[i].Type;
             }
             return MapNodeType.Battle; // недостижимо при total>0
         }

@@ -33,6 +33,7 @@ namespace Guildmaster.Game.Services
         private readonly IOutcomePresenter   _outcomePresenter;
         private readonly IMainMenuPresenter  _mainMenuPresenter;
         private readonly ActRunner           _actRunner;
+        private readonly ActConfig           _actConfig;
         private readonly EventEffectApplier  _eventEffects;
         private readonly IRngService         _rng;
         private readonly IReadyGate          _readyGate;
@@ -49,6 +50,7 @@ namespace Guildmaster.Game.Services
             IOutcomePresenter   outcomePresenter,
             IMainMenuPresenter  mainMenuPresenter,
             ActRunner           actRunner,
+            ActConfig           actConfig,
             EventEffectApplier  eventEffects,
             IRngService         rng,
             IReadyGate          readyGate,
@@ -64,6 +66,7 @@ namespace Guildmaster.Game.Services
             _outcomePresenter = outcomePresenter;
             _mainMenuPresenter = mainMenuPresenter;
             _actRunner       = actRunner;
+            _actConfig       = actConfig;
             _eventEffects    = eventEffects;
             _rng             = rng;
             _readyGate       = readyGate;
@@ -163,7 +166,7 @@ namespace Guildmaster.Game.Services
             RunState run = _runStates.Current
                            ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
-            _runStates.BeginAct();       // генерация карты из под-сида (no-op, если уже есть)
+            _runStates.BeginAct(_actConfig != null ? _actConfig.ToGenConfig() : null); // карта из под-сида по ActConfig (no-op, если уже есть)
             _runStates.Autosave();       // зафиксировать свежую карту
 
             // Persist-мир (план 12 Ф2): отряд забега готов → боевой скоуп ставит его на тест-арену вне боя.

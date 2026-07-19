@@ -77,17 +77,67 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
-        public void Generate_NoElite_BeforeEliteMinColumn()
+        public void Generate_DefaultDepth_Is14Columns()
         {
-            var cfg = new MapGenConfig { EliteMinColumn = 2 };
-            // Прогоняем несколько сидов — правило должно держаться на всех.
+            // Дефолт (реш. Макса 2026-07-19): Start + 12 испытаний + Boss.
+            var map = Generate(3UL);
+            int columns = map.Nodes.Select(n => n.UiPosition.x).Distinct().Count();
+            Assert.AreEqual(14, columns, "Дефолтная глубина = Start + 12 испытаний + Boss.");
+        }
+
+        [Test]
+        public void Generate_NoElite_InWarmupZone()
+        {
+            var cfg = new MapGenConfig();
+            int firstEliteFloor = FirstFloorAllowing(cfg, MapNodeType.Elite);
             for (ulong seed = 1; seed <= 20; seed++)
             {
                 var map = Generate(seed, cfg);
                 foreach (var elite in map.Nodes.Where(n => n.Type == MapNodeType.Elite))
-                    Assert.GreaterOrEqual(elite.UiPosition.x, cfg.EliteMinColumn,
-                        $"Элитка в колонке {elite.UiPosition.x} раньше EliteMinColumn (сид {seed}).");
+                    Assert.GreaterOrEqual(elite.UiPosition.x, firstEliteFloor,
+                        $"Элитка на этаже {elite.UiPosition.x} раньше зоны, разрешающей элиту ({firstEliteFloor}) (сид {seed}).");
             }
+        }
+
+        [Test]
+        public void Generate_WarmupZone_OnlyBattleOrEvent()
+        {
+            // Зона разогрева (этажи 1–4): игрока не встречает сундук/элита/магазин в лицо.
+            for (ulong seed = 1; seed <= 20; seed++)
+            {
+                var map = Generate(seed);
+                foreach (var n in map.Nodes.Where(x => x.UiPosition.x >= 1 && x.UiPosition.x <= 4))
+                    Assert.IsTrue(n.Type == MapNodeType.Battle || n.Type == MapNodeType.TextEvent,
+                        $"Разогрев (этаж {n.UiPosition.x}): только бой/событие, не {n.Type} (сид {seed}).");
+            }
+        }
+
+        [Test]
+        public void Generate_AnchorFloors_ForceWholeColumnType()
+        {
+            // Якорь-этаж (сундук-ряд, привал перед боссом) окрашивает ВСЮ свою колонку в один тип.
+            var cfg = new MapGenConfig();
+            for (ulong seed = 1; seed <= 20; seed++)
+            {
+                var map = Generate(seed, cfg);
+                foreach (var anchor in cfg.Anchors)
+                {
+                    var atFloor = map.Nodes.Where(n => (int)n.UiPosition.x == anchor.Floor).ToList();
+                    Assert.IsNotEmpty(atFloor, $"Этаж-якорь {anchor.Floor} существует (сид {seed}).");
+                    Assert.IsTrue(atFloor.All(n => n.Type == anchor.Type),
+                        $"Этаж {anchor.Floor} — вся колонка типа {anchor.Type} (сид {seed}).");
+                }
+            }
+        }
+
+        // Первый этаж, где зоны разрешают данный тип (вес > 0). int.MaxValue = не разрешён нигде.
+        private static int FirstFloorAllowing(MapGenConfig cfg, MapNodeType type)
+        {
+            int best = int.MaxValue;
+            foreach (var zone in cfg.Zones)
+                foreach (var w in zone.Weights)
+                    if (w.Type == type && w.Weight > 0) { best = System.Math.Min(best, zone.FromFloor); break; }
+            return best;
         }
 
         [Test]

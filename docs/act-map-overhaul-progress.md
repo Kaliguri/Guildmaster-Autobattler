@@ -84,3 +84,19 @@
   - Тесты `BattleNodeFlowTests` адаптированы: фейк `ImmediateContinue` + `postWinDelaySeconds:0`.
   - Приёмка потока (бой→досмотр→кнопка→ревард) — play-mode Макса; delay ещё можно подкрутить.
   - Порядок delay=2с сейчас захардкожен дефолтом конструктора → позже вынести в ActConfig-SO (фаза C).
+
+- **Фаза C / п.5+п.1 — зоны спавна + глубина 12 узлов + ActConfig-SO (готово, 421/421 EditMode).**
+  - `MapGenConfig` переписан на ЗОННУЮ модель: `Columns=14` (Start+12 испытаний+Boss),
+    `Zones[]` (диапазон этажей → веса типов) + `Anchors[]` (этаж → тип всей колонки). Убраны
+    плоские веса и `EliteMinColumn`. Дефолты = одобренная раскладка:
+    зоны [1-4 бой/событие][5-8 +элита/магазин][9-11 +элита/сундук], якоря [7=Сундук][12=Магазин].
+  - `MapGenerator.RollNodeType` → якорь перекрывает зону; иначе взвешенный ролл по покрывающей
+    зоне; вне зон/якорей → Бой. `WeightedPick` вынесен. `EnsureShopExists` оставлен как страховка
+    (для кастомных конфигов без Shop-якоря / малых Columns).
+  - `ActConfig`-SO (`Scripts/Guild/ActConfig.cs`) — авторинг-обёртка `MapGenConfig`; ассет
+    `ScriptableObjects/Configs/ActConfig.asset` (дефолты сериализованы: 14 кол / 3 зоны / 2 якоря).
+    Проводка: `RootLifetimeScope` (SerializeField+RegisterInstance, фолбэк на дефолтный инстанс) →
+    `GameFlow.BeginAct(_actConfig.ToGenConfig())`. Ассет назначен на скоуп в CoreScene (diff = 1 строка).
+  - Тесты `MapGeneratorTests`: убран тест EliteMinColumn; добавлены зонные инварианты
+    (глубина=14, зона разогрева только бой/событие, якорь-этаж = весь тип колонки, элита не в разогреве).
+  - Балансную приёмку карты (как ощущается акт) — play-mode Макса. Веса легко крутить в ActConfig.asset.

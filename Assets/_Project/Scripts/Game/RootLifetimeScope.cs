@@ -37,6 +37,10 @@ namespace Guildmaster.Game
                  "Пусто = игра не падает, но звука нет: назначить ассет Assets/_Project/ScriptableObjects/Audio/AudioCatalog.")]
         [SerializeField] private AudioCatalog _audioCatalog;
 
+        [Tooltip("Параметры генерации карты акта (глубина/зоны/якоря; оверхол карты 2026-07). Потребитель — GameFlow.BeginAct. " +
+                 "Пусто = фолбэк на дефолтный конфиг (Start+12 испытаний+Boss, зоны разогрев/развитие/пик).")]
+        [SerializeField] private ActConfig _actConfig;
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<IRngService>(_ => new XorShiftRng(GenerateRootSeed()), Lifetime.Singleton);
@@ -46,6 +50,10 @@ namespace Guildmaster.Game
 
             // Общие дефолты игры (потребителей пока нет — тип/ассет/DI под Фазу 6/7).
             builder.RegisterInstance(_gameConfig);
+
+            // Конфиг генерации карты акта (оверхол 2026-07). Ассет не назначен → дефолтный инстанс (POCO-дефолты
+            // с зонами/якорями), игра не падает — тот же приём, что у AudioCatalog. Потребитель — GameFlow.
+            builder.RegisterInstance(_actConfig != null ? _actConfig : ScriptableObject.CreateInstance<ActConfig>());
 
             // Каталог доступен обоим потребителям (FmodAudioService резолвит ключ→событие, AudioPresenter
             // строит поверх него резолвер). Ассет не назначен → пустой рантайм-инстанс (всё в тишину, бой
