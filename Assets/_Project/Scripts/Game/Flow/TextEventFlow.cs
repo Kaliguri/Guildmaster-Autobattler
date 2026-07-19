@@ -40,8 +40,8 @@ namespace Guildmaster.Game.Flow
             }
 
             var tcs = new UniTaskCompletionSource<int>();
-            _openPub.Publish(new OpenTextEventRequest(_event, i => tcs.TrySetResult(i)));
-            int index = await tcs.Task;
+            _openPub.Publish(new OpenTextEventRequest(_event, i => tcs.TrySetResult(i), ctx.Cancellation)); // ct → закрыть при отмене (QA #37)
+            int index = await tcs.Task.AttachExternalCancellation(ctx.Cancellation);
 
             if (index < 0 || index >= choices.Count)
             {

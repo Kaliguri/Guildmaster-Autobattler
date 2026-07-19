@@ -2,7 +2,7 @@
 title: "Meta - Index"
 order: 0
 status: living
-updated: 2026-07-16
+updated: 2026-07-19
 ---
 
 Карта технической документации (MOC). Здесь — **реализация**, не геймдизайн (дизайн — в `gdd/`). Порядок внутри кластеров задаётся полем `order`, отображаемое имя — `title`, имена файлов — латинские слаги. Ведение — контур скилла `tech-scribe` (в разработке).
@@ -48,6 +48,7 @@ SORT updated ASC, file.name ASC
 - [[tech/40-planning/vertical-slice|Vertical Slice]] — петля забега, пролог, мета-заглушки. `living`
 - [[tech/40-planning/stabilization|Stabilization & UI Loop]] — стабилизация, UI-петля, недостающие механики. `living` (текущее)
 - [[tech/40-planning/visual-harness|Visual Harness]] — asmdef-слой презентации, играбельный харнесс боя. `история`
+- [[tech/40-planning/lighting-2d|2D Lighting]] — динамический 2D-свет, тёмные сцены, normal-карты через Laigter. `planned`
 - [[tech/40-planning/seed|Seed & RNG]] — сиды, генерация забега, воспроизводимость. `planned`
 - [[tech/40-planning/steam-workshop|Steam Workshop]] — Workshop-процессы, версионирование схемы (post-festival). `planned`
 
@@ -60,6 +61,7 @@ SORT updated ASC, file.name ASC
 - [[tech/10-reference/saves|Saves]] — автосейв, хост, мультиплеер. `needs_review`
 - [[tech/10-reference/scene-sorting|Scene & Sorting]] — иерархия BattleScene, сортировочные слои 2D, Y-sort. `needs_review`
 - [[tech/10-reference/input-camera|Input & Camera]] — Input System за `IInputService`, Cinemachine (3 режима). `ready`
+- [[tech/10-reference/ui-navigation|UI Navigation]] — стек-навигатор, типы экранов/слои, ввод = f(стек, фаза), `PointerOverUI`. `ready`
 - [[tech/10-reference/arena|Arena & Deployment]] — геометрия арены как данные, зоны Normal/Extended. `needs_review`
 
 ## Explanation (`20-explanation/`) — как устроен код

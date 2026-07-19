@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Guild;
 using MessagePipe;
@@ -16,15 +17,17 @@ namespace Guildmaster.Game.Flow
 
         public MapScreenNodeChooser(IPublisher<OpenMapRequest> openMapPub) => _openMapPub = openMapPub;
 
-        public async UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available)
+        public async UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available, CancellationToken ct = default)
         {
             var ids = new List<string>(available.Count);
             foreach (var node in available) ids.Add(node.Id);
 
             var tcs = new UniTaskCompletionSource<string>();
-            _openMapPub.Publish(new OpenMapRequest(map, ids, id => tcs.TrySetResult(id)));
+            // ct несётся в запрос: отмена забега («В меню») закрывает экран карты через навигатор (QA #37),
+            // а AttachExternalCancellation ниже размотает это ожидание в OperationCanceledException.
+            _openMapPub.Publish(new OpenMapRequest(map, ids, id => tcs.TrySetResult(id), ct));
 
-            string chosenId = await tcs.Task;
+            string chosenId = await tcs.Task.AttachExternalCancellation(ct);
             foreach (var node in available)
                 if (node.Id == chosenId) return node;
             return null;

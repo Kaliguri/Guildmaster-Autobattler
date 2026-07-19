@@ -1,0 +1,1287 @@
+fileFormatVersion: 2
+guid: 9a1f0954a4704e848a2e8caa2df812e9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1776560362412992470
+    second: HunterOrc-Sheet_0
+  - first:
+      213: 7798833101198028002
+    second: HunterOrc-Sheet_1
+  - first:
+      213: -4047774166494167058
+    second: HunterOrc-Sheet_2
+  - first:
+      213: -8963849261208277737
+    second: HunterOrc-Sheet_3
+  - first:
+      213: -3351319259336012225
+    second: HunterOrc-Sheet_4
+  - first:
+      213: 6802376714520132293
+    second: HunterOrc-Sheet_5
+  - first:
+      213: -2081663766480313641
+    second: HunterOrc-Sheet_6
+  - first:
+      213: 3149949298021701076
+    second: HunterOrc-Sheet_7
+  - first:
+      213: -3727553793537388217
+    second: HunterOrc-Sheet_8
+  - first:
+      213: 5464864190948762572
+    second: HunterOrc-Sheet_9
+  - first:
+      213: -2958179636793609923
+    second: HunterOrc-Sheet_10
+  - first:
+      213: -1441958344944596436
+    second: HunterOrc-Sheet_11
+  - first:
+      213: -4951390331918675899
+    second: HunterOrc-Sheet_12
+  - first:
+      213: -2763433273072918321
+    second: HunterOrc-Sheet_13
+  - first:
+      213: -6087619350330841312
+    second: HunterOrc-Sheet_14
+  - first:
+      213: 5711013580833901729
+    second: HunterOrc-Sheet_15
+  - first:
+      213: 7788433069799383637
+    second: HunterOrc-Sheet_16
+  - first:
+      213: -321564775862485355
+    second: HunterOrc-Sheet_17
+  - first:
+      213: -3087905111984472236
+    second: HunterOrc-Sheet_18
+  - first:
+      213: 5878291033853985736
+    second: HunterOrc-Sheet_19
+  - first:
+      213: 5759646108860763682
+    second: HunterOrc-Sheet_20
+  - first:
+      213: 1441718216340021868
+    second: HunterOrc-Sheet_21
+  - first:
+      213: -6400384876044832787
+    second: HunterOrc-Sheet_22
+  - first:
+      213: -4873082913125613312
+    second: HunterOrc-Sheet_23
+  - first:
+      213: -6050369976762974878
+    second: HunterOrc-Sheet_24
+  - first:
+      213: -3424585924780253644
+    second: HunterOrc-Sheet_25
+  - first:
+      213: 5271905122880693860
+    second: HunterOrc-Sheet_26
+  - first:
+      213: 7399810544224359383
+    second: HunterOrc-Sheet_27
+  - first:
+      213: 1755768566636957273
+    second: HunterOrc-Sheet_28
+  - first:
+      213: 1978473029624735144
+    second: HunterOrc-Sheet_29
+  - first:
+      213: -827640444498008290
+    second: HunterOrc-Sheet_30
+  - first:
+      213: -161559405020262840
+    second: HunterOrc-Sheet_31
+  - first:
+      213: 7746324085567630910
+    second: HunterOrc-Sheet_32
+  - first:
+      213: 4877460182624586817
+    second: HunterOrc-Sheet_33
+  - first:
+      213: 4760098546830029845
+    second: HunterOrc-Sheet_34
+  - first:
+      213: 9076655983936401449
+    second: HunterOrc-Sheet_35
+  - first:
+      213: 8451750983325273341
+    second: HunterOrc-Sheet_36
+  - first:
+      213: -3563470016765376831
+    second: HunterOrc-Sheet_37
+  - first:
+      213: 5498613786979046578
+    second: HunterOrc-Sheet_38
+  - first:
+      213: 4224578866646444246
+    second: HunterOrc-Sheet_39
+  - first:
+      213: -8545067445390682627
+    second: HunterOrc-Sheet_40
+  - first:
+      213: -1246483267879935012
+    second: HunterOrc-Sheet_41
+  - first:
+      213: -3587806054807174243
+    second: HunterOrc-Sheet_42
+  - first:
+      213: 3685993339868732926
+    second: HunterOrc-Sheet_43
+  - first:
+      213: -3048964755653081834
+    second: HunterOrc-Sheet_44
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 514
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a28955453c36857e0800000000000000
+      internalID: -1776560362412992470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 514
+        width: 29
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ec6773b2650b3c60800000000000000
+      internalID: 7798833101198028002
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 514
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eefbc1377da63d7c0800000000000000
+      internalID: -4047774166494167058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 514
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71d6885e6920a9380800000000000000
+      internalID: -8963849261208277737
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 418
+        width: 27
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3e0a52c3e8bd71d0800000000000000
+      internalID: -3351319259336012225
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 420
+        width: 26
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5ca7c51d495e66e50800000000000000
+      internalID: 6802376714520132293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 420
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d2a32165d17c13e0800000000000000
+      internalID: -2081663766480313641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 420
+        width: 28
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4d51319823ed6bb20800000000000000
+      internalID: 3149949298021701076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 419
+        width: 29
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7415b0ff291154cc0800000000000000
+      internalID: -3727553793537388217
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 418
+        width: 31
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc3e04f070917db40800000000000000
+      internalID: 5464864190948762572
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 418
+        width: 30
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d317f1f1b4f62f6d0800000000000000
+      internalID: -2958179636793609923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 418
+        width: 29
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2acaac66822dfbe0800000000000000
+      internalID: -1441958344944596436
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 322
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5401fa90ab0294bb0800000000000000
+      internalID: -4951390331918675899
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 322
+        width: 29
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc06ef5541056a9d0800000000000000
+      internalID: -2763433273072918321
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 322
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0276cb7547e648ba0800000000000000
+      internalID: -6087619350330841312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 322
+        width: 34
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ac4901f798914f40800000000000000
+      internalID: 5711013580833901729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 322
+        width: 36
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5522c42bc92161c60800000000000000
+      internalID: 7788433069799383637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 322
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59e30724a82998bf0800000000000000
+      internalID: -321564775862485355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_18
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 322
+        width: 43
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45f7d0c39ae8525d0800000000000000
+      internalID: -3087905111984472236
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_19
+      rect:
+        serializedVersion: 2
+        x: 707
+        y: 322
+        width: 33
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8c30b3ffc82e39150800000000000000
+      internalID: 5878291033853985736
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_20
+      rect:
+        serializedVersion: 2
+        x: 802
+        y: 322
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22e4b9ebe9f5eef40800000000000000
+      internalID: 5759646108860763682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_21
+      rect:
+        serializedVersion: 2
+        x: 35
+        y: 226
+        width: 27
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6228274413020410800000000000000
+      internalID: 1441718216340021868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_22
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 226
+        width: 29
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: defa09dadd34d27a0800000000000000
+      internalID: -6400384876044832787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_23
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 226
+        width: 29
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0014f12c8e45f5cb0800000000000000
+      internalID: -4873082913125613312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_24
+      rect:
+        serializedVersion: 2
+        x: 319
+        y: 226
+        width: 32
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26dba57ff84c80ca0800000000000000
+      internalID: -6050369976762974878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_25
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 226
+        width: 29
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43e9ba2ee3d6970d0800000000000000
+      internalID: -3424585924780253644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_26
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 226
+        width: 32
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 466adda07c1992940800000000000000
+      internalID: 5271905122880693860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_27
+      rect:
+        serializedVersion: 2
+        x: 609
+        y: 226
+        width: 36
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d3deadeb7861b660800000000000000
+      internalID: 7399810544224359383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_28
+      rect:
+        serializedVersion: 2
+        x: 706
+        y: 226
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95e413a753ebd5810800000000000000
+      internalID: 1755768566636957273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_29
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 226
+        width: 43
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a52970fcb2f47b10800000000000000
+      internalID: 1978473029624735144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_30
+      rect:
+        serializedVersion: 2
+        x: 899
+        y: 226
+        width: 33
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1723f79661a384f0800000000000000
+      internalID: -827640444498008290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_31
+      rect:
+        serializedVersion: 2
+        x: 994
+        y: 226
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84ec4adb39602cdf0800000000000000
+      internalID: -161559405020262840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_32
+      rect:
+        serializedVersion: 2
+        x: 1090
+        y: 226
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3eaf4bc6b8708b60800000000000000
+      internalID: 7746324085567630910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_33
+      rect:
+        serializedVersion: 2
+        x: 1186
+        y: 226
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 14c4377b13830b340800000000000000
+      internalID: 4877460182624586817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_34
+      rect:
+        serializedVersion: 2
+        x: 1282
+        y: 226
+        width: 29
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 51438a388644f0240800000000000000
+      internalID: 4760098546830029845
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_35
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 130
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 920f3f6f682c6fd70800000000000000
+      internalID: 9076655983936401449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_36
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 130
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dfc49237db6aa4570800000000000000
+      internalID: 8451750983325273341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_37
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 130
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1c6c1fa56e20c8ec0800000000000000
+      internalID: -3563470016765376831
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_38
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 130
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b493f93b100f4c40800000000000000
+      internalID: 5498613786979046578
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_39
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 34
+        width: 32
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d86510b818b0aa30800000000000000
+      internalID: 4224578866646444246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_40
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 34
+        width: 30
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df5dbbf9e62d96980800000000000000
+      internalID: -8545067445390682627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_41
+      rect:
+        serializedVersion: 2
+        x: 225
+        y: 34
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd36c8f621a93bee0800000000000000
+      internalID: -1246483267879935012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_42
+      rect:
+        serializedVersion: 2
+        x: 323
+        y: 34
+        width: 29
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d930934f66d853ec0800000000000000
+      internalID: -3587806054807174243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_43
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 35
+        width: 33
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efdd453d967472330800000000000000
+      internalID: 3685993339868732926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HunterOrc-Sheet_44
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 31
+        width: 34
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 615cc9675b6efa5d0800000000000000
+      internalID: -3048964755653081834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      HunterOrc-Sheet_0: -1776560362412992470
+      HunterOrc-Sheet_1: 7798833101198028002
+      HunterOrc-Sheet_10: -2958179636793609923
+      HunterOrc-Sheet_11: -1441958344944596436
+      HunterOrc-Sheet_12: -4951390331918675899
+      HunterOrc-Sheet_13: -2763433273072918321
+      HunterOrc-Sheet_14: -6087619350330841312
+      HunterOrc-Sheet_15: 5711013580833901729
+      HunterOrc-Sheet_16: 7788433069799383637
+      HunterOrc-Sheet_17: -321564775862485355
+      HunterOrc-Sheet_18: -3087905111984472236
+      HunterOrc-Sheet_19: 5878291033853985736
+      HunterOrc-Sheet_2: -4047774166494167058
+      HunterOrc-Sheet_20: 5759646108860763682
+      HunterOrc-Sheet_21: 1441718216340021868
+      HunterOrc-Sheet_22: -6400384876044832787
+      HunterOrc-Sheet_23: -4873082913125613312
+      HunterOrc-Sheet_24: -6050369976762974878
+      HunterOrc-Sheet_25: -3424585924780253644
+      HunterOrc-Sheet_26: 5271905122880693860
+      HunterOrc-Sheet_27: 7399810544224359383
+      HunterOrc-Sheet_28: 1755768566636957273
+      HunterOrc-Sheet_29: 1978473029624735144
+      HunterOrc-Sheet_3: -8963849261208277737
+      HunterOrc-Sheet_30: -827640444498008290
+      HunterOrc-Sheet_31: -161559405020262840
+      HunterOrc-Sheet_32: 7746324085567630910
+      HunterOrc-Sheet_33: 4877460182624586817
+      HunterOrc-Sheet_34: 4760098546830029845
+      HunterOrc-Sheet_35: 9076655983936401449
+      HunterOrc-Sheet_36: 8451750983325273341
+      HunterOrc-Sheet_37: -3563470016765376831
+      HunterOrc-Sheet_38: 5498613786979046578
+      HunterOrc-Sheet_39: 4224578866646444246
+      HunterOrc-Sheet_4: -3351319259336012225
+      HunterOrc-Sheet_40: -8545067445390682627
+      HunterOrc-Sheet_41: -1246483267879935012
+      HunterOrc-Sheet_42: -3587806054807174243
+      HunterOrc-Sheet_43: 3685993339868732926
+      HunterOrc-Sheet_44: -3048964755653081834
+      HunterOrc-Sheet_5: 6802376714520132293
+      HunterOrc-Sheet_6: -2081663766480313641
+      HunterOrc-Sheet_7: 3149949298021701076
+      HunterOrc-Sheet_8: -3727553793537388217
+      HunterOrc-Sheet_9: 5464864190948762572
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

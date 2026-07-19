@@ -5,6 +5,18 @@
  * Ссылается ТОЛЬКО на семантические токены. Требует primitives + semantic раньше в списке.
  * ========================================================================== */
 
+/* --- Постоянный задний фон забега: лежит ПОД всем UI, виден на не-боевых экранах (меню/карта/ивент/
+ *     сундук/награда). Выключается в бою (Phase != None) и в инвентаре — там нужен вид реальной арены
+ *     сквозь прозрачный UI. Непрозрачный (арену не просвечивает). Арт/паттерн (background-image) — позже. --- */
+.gm-screen-backdrop {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--gm-color-surface-sunken);
+}
+
 /* --- Экран-оверлей: затемняющий scrim, контент по центру --- */
 .gm-screen {
     position: absolute;
@@ -135,9 +147,12 @@
     min-height: 520px;
 }
 
-/* Страница таба: занимает свободное место панели; скрытая — не в потоке. */
+/* Страница таба: занимает свободное место панели; скрытая — не в потоке.
+ * QA #33: min-height фиксирует высоту области под самый высокий таб (Звук: 3 слайдера) — панель
+ * настроек не «прыгает» по высоте при переключении Игра/Графика/Звук. */
 .gm-tab-page {
     flex-grow: 1;
+    min-height: 340px;
 }
 
 .gm-tab-page--hidden {
@@ -1250,12 +1265,26 @@
     color: var(--gm-color-text);
     font-size: var(--gm-font-body);
     -unity-font-style: bold;
+    margin: 0;                 /* QA #15: убрать лишний вертикальный спейс между строками */
 }
 
 .gm-loadout__guild-asc {
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-sm);
     letter-spacing: 2px;
+    margin: 0;
+    margin-top: -2px;          /* QA #15: подтянуть «Возвышение» под название гильдии */
+}
+
+/* Центр-слот «Начать»/таймер боя (QA #14): по центру X, ЧУТЬ НИЖЕ панели (absolute под топбаром). */
+.gm-loadout__battle-center {
+    position: absolute;
+    top: var(--gm-topbar-height);
+    left: 50%;
+    translate: -50% 0;
+    flex-direction: row;
+    align-items: center;
+    padding-top: var(--gm-space-1);
 }
 
 /* Таб-режим (Карта/Бой/Инвентарь/Тактика/Компендиум) — тусклая плашка; активный — латунный контур. */

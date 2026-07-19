@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Guildmaster.Guild
 {
@@ -20,11 +21,17 @@ namespace Guildmaster.Guild
         /// <summary>Колбэк выбора (ровно один вызов): id выбранного узла, либо null = экран закрыт без выбора.</summary>
         public readonly Action<string> OnChosen;
 
-        public OpenMapRequest(MapState map, IReadOnlyList<string> availableNodeIds, Action<string> onChosen)
+        /// <summary>Токен отмены забега (QA #37): отмена закрывает экран карты через навигатор — не через
+        /// веник CloseAll (тот резолвил карту в null → петля трактовала как Aborted → вылет).</summary>
+        public readonly CancellationToken Cancellation;
+
+        public OpenMapRequest(MapState map, IReadOnlyList<string> availableNodeIds, Action<string> onChosen,
+                              CancellationToken cancellation = default)
         {
             Map              = map;
             AvailableNodeIds = availableNodeIds;
             OnChosen         = onChosen;
+            Cancellation     = cancellation;
         }
     }
 }

@@ -44,6 +44,7 @@ MonoBehaviour:
     - glTFast.dots
     - glTFast.Export
     - glTFast.Newtonsoft
+    - Guildmaster.Balance
     - Guildmaster.Combat
     - Guildmaster.Core
     - Guildmaster.Data

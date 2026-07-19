@@ -8,8 +8,8 @@ namespace Guildmaster.Game.Input
 {
     /// <summary>
     /// Связывает боевые действия ввода с симуляцией на время одного боя (вики «16» §4).
-    /// Живёт в боевом скоупе: на старте ставит контекст <see cref="InputContext.Combat"/> и
-    /// подписывается на паузу/смену скорости, на уничтожении скоупа — отписывается и гасит контекст.
+    /// Живёт в боевом скоупе: подписывается на паузу/смену скорости, на уничтожении скоупа — отписывается.
+    /// Контекст ввода НЕ трогает — им единолично владеет навигатор (пересчитывает из фазы боя, снос K8).
     /// <para>Рестарт боя (R) и рестарт сцены (F5) — это dev-инструменты (см. DevTools), а не
     /// игровой ввод, поэтому их здесь нет.</para>
     /// </summary>
@@ -33,7 +33,6 @@ namespace Guildmaster.Game.Input
 
         public void Start()
         {
-            _input.SetContext(InputContext.Combat);
             _input.PauseToggleRequested   += OnPauseToggle;
             _input.GameSpeedCycleRequested += OnGameSpeedCycle;
         }
@@ -42,7 +41,7 @@ namespace Guildmaster.Game.Input
         {
             _input.PauseToggleRequested   -= OnPauseToggle;
             _input.GameSpeedCycleRequested -= OnGameSpeedCycle;
-            _input.SetContext(InputContext.None);
+            // Контекст ввода не гасим — навигатор пересчитает из фазы None при выгрузке боя (K8).
             // Time.timeScale владеет TimeScaleService — он же вернёт его к 1 при разрушении скоупа.
         }
 

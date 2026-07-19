@@ -26,7 +26,6 @@ namespace Guildmaster.DevTools
             ["event"]        = BuildEvent,
             ["loadout-hub"]  = BuildLoadoutHub,
             ["loadout-inventory"] = BuildLoadoutInventory,
-            ["run-topbar"]   = BuildRunTopBar,
             ["settings"]     = BuildSettings,
             ["map"]          = BuildMap,
             ["shop"]         = BuildShop,
@@ -215,18 +214,6 @@ namespace Guildmaster.DevTools
 
         // Титул таро-карты в стиле ГДД (аркан «The X»): «relic.flame_swordsman» → «The Flame Swordsman».
         private static string ArcanaTitle(string id) => "The " + TitleCase(Short(id));
-
-        private static void BuildRunTopBar(VisualElement root)
-        {
-            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/RunTopBar.uxml");
-            if (uxml == null) { AddError(root, "RunTopBar.uxml не найден"); return; }
-
-            VisualElement screen = Guildmaster.UI.RunTopBarView.Build(
-                uxml, gold: 120, actNumber: 1, timerText: "12:34",
-                localize: null, onHub: () => { }, onSettings: () => { }, onStart: () => { },
-                restartsRemaining: 1, restartsMax: 2);
-            root.Add(screen);
-        }
 
         private static void BuildSettings(VisualElement root)
         {

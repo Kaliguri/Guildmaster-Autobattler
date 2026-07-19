@@ -283,6 +283,19 @@ namespace Guildmaster.Presentation
             return false;
         }
 
+        // --- Силуэт для drag-призрака расстановки (QA #9): копия текущего кадра спрайта тела ---
+        /// <summary>Текущий спрайт тела (кадр); null — нет визуала.</summary>
+        public Sprite BodySprite => _sprite != null ? _sprite.sprite : null;
+
+        /// <summary>Отражён ли спрайт тела по X (сторона/фейсинг).</summary>
+        public bool BodyFlipX => _sprite != null && _sprite.flipX;
+
+        /// <summary>Мировой масштаб спрайта тела (учитывает узел сплющивания/масштаб арта).</summary>
+        public Vector3 BodyLossyScale => _sprite != null ? _sprite.transform.lossyScale : Vector3.one;
+
+        /// <summary>Мировая позиция спрайта тела (со смещением арта от ног). Фолбэк — позиция юнита.</summary>
+        public Vector3 BodyWorldPosition => _sprite != null ? _sprite.transform.position : transform.position;
+
         // Сокет с учётом разворота: спрайт зеркалим через SpriteRenderer.flipX, а он НЕ зеркалит дочерние GO
         // (сокеты живут в мировой иерархии). Поэтому для смотрящего влево отражаем локальную X сокета вручную —
         // иначе дуло/грудь оказываются с «нарисованной» стороны, а не с той, куда юнит фактически повёрнут.

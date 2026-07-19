@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Core.Random;
@@ -83,7 +84,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         {
             public int Calls { get; private set; }
             public RewardTier LastTier { get; private set; }
-            public UniTask PresentAsync(RewardTier tier) { Calls++; LastTier = tier; return UniTask.CompletedTask; }
+            public UniTask PresentAsync(RewardTier tier, CancellationToken ct = default) { Calls++; LastTier = tier; return UniTask.CompletedTask; }
         }
 
         private sealed class MemSave : ISaveService

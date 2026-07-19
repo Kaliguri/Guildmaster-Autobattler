@@ -173,6 +173,33 @@ namespace Guildmaster.Presentation
             }
         }
 
+        /// <summary>
+        /// Войти в свободную камеру фазы расстановки (QA #4): режим Overview (ручной пан/зум в пределах зоны),
+        /// но СТАРТОВЫЙ кадр — как у экшн-камеры (центр боя + зум под разброс), а НЕ отзум на всю зону.
+        /// Кадр приходит явно из <c>DeploymentController</c> (позиции живых юнитов) — без гонки с focus-таймингом.
+        /// </summary>
+        public void EnterDeployment(Vector2 center, float spread)
+        {
+            _mode = CameraMode.Overview;
+            ApplyMode();
+            if (_overviewCam == null) return;
+
+            float size = Mathf.Clamp(spread + _actionZoomPadding, _minZoom, MaxZoomForZone());
+            Vector3 pos = ClampVisibleCenter(new Vector3(center.x, center.y, _cameraZ), size);
+            _overviewCam.transform.position = pos;
+
+            LensSettings lens = _overviewCam.Lens;
+            lens.OrthographicSize = size;
+            _overviewCam.Lens = lens;
+        }
+
+        /// <summary>Вернуть боевой вид (экшн-камера, слежение за дракой) — на старте боя из расстановки.</summary>
+        public void ExitToActionView()
+        {
+            _mode = CameraMode.Action;
+            ApplyMode();
+        }
+
         private void OnCycleView()
         {
             _mode = NextMode(_mode, _devAccess);
@@ -236,6 +263,16 @@ namespace Guildmaster.Presentation
             Vector3 pos = cam.transform.position;
             pos.x += pan.x * panSpeed * dt;
             pos.y += pan.y * panSpeed * dt;
+
+            // Пан средней кнопкой мыши (MMB-drag): дельта в пикселях → мир, инверсия (тянем мир под курсором).
+            // Масштаб по орто-размеру, чтобы скорость пана совпадала с движением курсора на любом зуме.
+            Vector2 drag = _input.CameraPanDrag;
+            if (drag.sqrMagnitude > 0f)
+            {
+                float worldPerPixel = size * 2f / Mathf.Max(1, Screen.height);
+                pos.x -= drag.x * worldPerPixel;
+                pos.y -= drag.y * worldPerPixel;
+            }
 
             if (clampToZone) pos = ClampVisibleCenter(pos, size);
             pos.z = _cameraZ; // держим 2D-глубину (иначе спрайты на z=0 отсекаются)

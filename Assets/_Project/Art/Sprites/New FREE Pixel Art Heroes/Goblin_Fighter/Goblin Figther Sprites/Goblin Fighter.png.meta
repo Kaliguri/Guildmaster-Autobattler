@@ -1,0 +1,1053 @@
+fileFormatVersion: 2
+guid: 0857089098ff8514a91141dbbee903d9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2922044426688813658
+    second: Goblin Fighter_0
+  - first:
+      213: 8365137240603431585
+    second: Goblin Fighter_1
+  - first:
+      213: 3930507378682194005
+    second: Goblin Fighter_2
+  - first:
+      213: 642169623842251704
+    second: Goblin Fighter_3
+  - first:
+      213: 8294022791788095973
+    second: Goblin Fighter_4
+  - first:
+      213: -772051752523360142
+    second: Goblin Fighter_5
+  - first:
+      213: -5863843132423103294
+    second: Goblin Fighter_6
+  - first:
+      213: 8466520221995301962
+    second: Goblin Fighter_7
+  - first:
+      213: 7746162399199890345
+    second: Goblin Fighter_8
+  - first:
+      213: -3500613295853207229
+    second: Goblin Fighter_9
+  - first:
+      213: -8663030412253317531
+    second: Goblin Fighter_10
+  - first:
+      213: -90107521005835879
+    second: Goblin Fighter_11
+  - first:
+      213: 5507394086449207403
+    second: Goblin Fighter_12
+  - first:
+      213: 2737001629801241187
+    second: Goblin Fighter_13
+  - first:
+      213: -2167765539659297229
+    second: Goblin Fighter_14
+  - first:
+      213: 4870220778424880980
+    second: Goblin Fighter_15
+  - first:
+      213: 5074023485296496289
+    second: Goblin Fighter_16
+  - first:
+      213: 8198534716439954705
+    second: Goblin Fighter_17
+  - first:
+      213: 3466518302496543941
+    second: Goblin Fighter_18
+  - first:
+      213: -3164913642841250928
+    second: Goblin Fighter_19
+  - first:
+      213: -4838111508791794469
+    second: Goblin Fighter_20
+  - first:
+      213: -113987614051924667
+    second: Goblin Fighter_21
+  - first:
+      213: 4312048095896750282
+    second: Goblin Fighter_22
+  - first:
+      213: 847407553053283607
+    second: Goblin Fighter_23
+  - first:
+      213: -3077660101801704569
+    second: Goblin Fighter_24
+  - first:
+      213: 804654495308774482
+    second: Goblin Fighter_25
+  - first:
+      213: 8512399735731015703
+    second: Goblin Fighter_26
+  - first:
+      213: -8915851276148454757
+    second: Goblin Fighter_27
+  - first:
+      213: -8013458358860516253
+    second: Goblin Fighter_28
+  - first:
+      213: 7789001695349722335
+    second: Goblin Fighter_29
+  - first:
+      213: -6087771492424817210
+    second: Goblin Fighter_30
+  - first:
+      213: -7579749165555691627
+    second: Goblin Fighter_31
+  - first:
+      213: -2901178188225349430
+    second: Goblin Fighter_32
+  - first:
+      213: -5331335796968007961
+    second: Goblin Fighter_33
+  - first:
+      213: -347082345640676003
+    second: Goblin Fighter_34
+  - first:
+      213: 8547198151435662925
+    second: Goblin Fighter_35
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Goblin Fighter_0
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 559
+        width: 26
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5a52b6acef2d8820800000000000000
+      internalID: 2922044426688813658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_1
+      rect:
+        serializedVersion: 2
+        x: 174
+        y: 559
+        width: 36
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1a21f8bffffe61470800000000000000
+      internalID: 8365137240603431585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_2
+      rect:
+        serializedVersion: 2
+        x: 302
+        y: 559
+        width: 35
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 558676dd2a7fb8630800000000000000
+      internalID: 3930507378682194005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_3
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 544
+        width: 67
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b3e9aaded179e800800000000000000
+      internalID: 642169623842251704
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_4
+      rect:
+        serializedVersion: 2
+        x: 548
+        y: 540
+        width: 75
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5e9e58719c94a1370800000000000000
+      internalID: 8294022791788095973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_5
+      rect:
+        serializedVersion: 2
+        x: 676
+        y: 543
+        width: 78
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27890a6850f1945f0800000000000000
+      internalID: -772051752523360142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_6
+      rect:
+        serializedVersion: 2
+        x: 804
+        y: 543
+        width: 41
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cc9e413db17f9ea0800000000000000
+      internalID: -5863843132423103294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_7
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 431
+        width: 32
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4cf0bbc84f1f7570800000000000000
+      internalID: 8466520221995301962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_8
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 431
+        width: 46
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ab0cc049a5ef7b60800000000000000
+      internalID: 7746162399199890345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_9
+      rect:
+        serializedVersion: 2
+        x: 290
+        y: 444
+        width: 60
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34109a421c25b6fc0800000000000000
+      internalID: -3500613295853207229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_10
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 443
+        width: 37
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5663c3f1dbbb6c780800000000000000
+      internalID: -8663030412253317531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_11
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 435
+        width: 16
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9992bd2efafdfbef0800000000000000
+      internalID: -90107521005835879
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_12
+      rect:
+        serializedVersion: 2
+        x: 690
+        y: 435
+        width: 9
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6854e00eb13e6c40800000000000000
+      internalID: 5507394086449207403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_13
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 429
+        width: 37
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 36ad7f52b78cbf520800000000000000
+      internalID: 2737001629801241187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_14
+      rect:
+        serializedVersion: 2
+        x: 526
+        y: 429
+        width: 37
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 33e464c1abc8ae1e0800000000000000
+      internalID: -2167765539659297229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_15
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 429
+        width: 37
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45fcdb39eff769340800000000000000
+      internalID: 4870220778424880980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_16
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 303
+        width: 32
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ae461ff97d8a6640800000000000000
+      internalID: 5074023485296496289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_17
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 303
+        width: 46
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1158c1c03eb07c170800000000000000
+      internalID: 8198534716439954705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_18
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 303
+        width: 47
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c452bb970c8b1030800000000000000
+      internalID: 3466518302496543941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_19
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 303
+        width: 26
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 093e8ad6fc7f314d0800000000000000
+      internalID: -3164913642841250928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_20
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 175
+        width: 26
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bd46cb657339bdcb0800000000000000
+      internalID: -4838111508791794469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_21
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 175
+        width: 26
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54504a37ed80b6ef0800000000000000
+      internalID: -113987614051924667
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_22
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 175
+        width: 26
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac84352a5e877db30800000000000000
+      internalID: 4312048095896750282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_23
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 175
+        width: 26
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71559b30ea892cb00800000000000000
+      internalID: 847407553053283607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_24
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 175
+        width: 26
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78387bc8174f945d0800000000000000
+      internalID: -3077660101801704569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_25
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 175
+        width: 26
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25cfccf0005ba2b00800000000000000
+      internalID: 804654495308774482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_26
+      rect:
+        serializedVersion: 2
+        x: 821
+        y: 175
+        width: 26
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7105062857e122670800000000000000
+      internalID: 8512399735731015703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_27
+      rect:
+        serializedVersion: 2
+        x: 949
+        y: 175
+        width: 26
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b9a45f6a088844480800000000000000
+      internalID: -8915851276148454757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_28
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 46
+        width: 22
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 364fbb9641a7ac090800000000000000
+      internalID: -8013458358860516253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_29
+      rect:
+        serializedVersion: 2
+        x: 183
+        y: 48
+        width: 22
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fdc4c3626c7181c60800000000000000
+      internalID: 7789001695349722335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_30
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 47
+        width: 16
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6c5e4400514e38ba0800000000000000
+      internalID: -6087771492424817210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_31
+      rect:
+        serializedVersion: 2
+        x: 441
+        y: 47
+        width: 20
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 59f4d7c0b425fc690800000000000000
+      internalID: -7579749165555691627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_32
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 47
+        width: 23
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac877b41fc1fcb7d0800000000000000
+      internalID: -2901178188225349430
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_33
+      rect:
+        serializedVersion: 2
+        x: 694
+        y: 47
+        width: 23
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e6d56bd65a4306b0800000000000000
+      internalID: -5331335796968007961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_34
+      rect:
+        serializedVersion: 2
+        x: 826
+        y: 46
+        width: 16
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d553740127aee2bf0800000000000000
+      internalID: -347082345640676003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_35
+      rect:
+        serializedVersion: 2
+        x: 954
+        y: 46
+        width: 19
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d46b2390f6fbd9670800000000000000
+      internalID: 8547198151435662925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Goblin Fighter_0: 2922044426688813658
+      Goblin Fighter_1: 8365137240603431585
+      Goblin Fighter_10: -8663030412253317531
+      Goblin Fighter_11: -90107521005835879
+      Goblin Fighter_12: 5507394086449207403
+      Goblin Fighter_13: 2737001629801241187
+      Goblin Fighter_14: -2167765539659297229
+      Goblin Fighter_15: 4870220778424880980
+      Goblin Fighter_16: 5074023485296496289
+      Goblin Fighter_17: 8198534716439954705
+      Goblin Fighter_18: 3466518302496543941
+      Goblin Fighter_19: -3164913642841250928
+      Goblin Fighter_2: 3930507378682194005
+      Goblin Fighter_20: -4838111508791794469
+      Goblin Fighter_21: -113987614051924667
+      Goblin Fighter_22: 4312048095896750282
+      Goblin Fighter_23: 847407553053283607
+      Goblin Fighter_24: -3077660101801704569
+      Goblin Fighter_25: 804654495308774482
+      Goblin Fighter_26: 8512399735731015703
+      Goblin Fighter_27: -8915851276148454757
+      Goblin Fighter_28: -8013458358860516253
+      Goblin Fighter_29: 7789001695349722335
+      Goblin Fighter_3: 642169623842251704
+      Goblin Fighter_30: -6087771492424817210
+      Goblin Fighter_31: -7579749165555691627
+      Goblin Fighter_32: -2901178188225349430
+      Goblin Fighter_33: -5331335796968007961
+      Goblin Fighter_34: -347082345640676003
+      Goblin Fighter_35: 8547198151435662925
+      Goblin Fighter_4: 8294022791788095973
+      Goblin Fighter_5: -772051752523360142
+      Goblin Fighter_6: -5863843132423103294
+      Goblin Fighter_7: 8466520221995301962
+      Goblin Fighter_8: 7746162399199890345
+      Goblin Fighter_9: -3500613295853207229
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

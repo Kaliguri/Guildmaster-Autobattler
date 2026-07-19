@@ -30,6 +30,37 @@ namespace Guildmaster.Tests.EditMode.Run
         }
 
         [Test]
+        public void SetPhase_RaisesPhaseChanged_OnlyOnRealChange()
+        {
+            var session = new BattleSession();
+            int calls = 0;
+            session.PhaseChanged += () => calls++;
+
+            session.SetPhase(BattlePhase.Deployment);
+            Assert.AreEqual(1, calls, "None→Deployment = одно событие");
+
+            session.SetPhase(BattlePhase.Deployment);
+            Assert.AreEqual(1, calls, "тот же phase = без события (навигатор не дёргается зря)");
+
+            session.SetPhase(BattlePhase.Fighting);
+            Assert.AreEqual(2, calls, "Deployment→Fighting = ещё одно");
+        }
+
+        [Test]
+        public void UnbindClock_RaisesPhaseChanged_WhenPhaseWasNotNone()
+        {
+            var session = new BattleSession();
+            session.SetPhase(BattlePhase.Fighting);
+            int calls = 0;
+            session.PhaseChanged += () => calls++;
+
+            session.UnbindClock(); // сброс Fighting→None → событие (навигатор погасит контекст в None)
+
+            Assert.AreEqual(1, calls);
+            Assert.AreEqual(BattlePhase.None, session.Phase);
+        }
+
+        [Test]
         public void BindClock_ElapsedReadsDelegate()
         {
             var session = new BattleSession();

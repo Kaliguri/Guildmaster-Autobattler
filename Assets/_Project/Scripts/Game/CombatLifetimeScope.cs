@@ -71,6 +71,9 @@ namespace Guildmaster.Game
             // Интерактивная фаза расстановки (шаг 4): активна на Free-пресетах; иначе спит.
             builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
 
+            // Persist-мир (план 12 Ф2): ставит отряд забега на тест-арену вне боя по RunPartyReadyEvent.
+            builder.RegisterEntryPoint<Flow.WorldStageController>(Lifetime.Scoped);
+
             // Мост в макро-флоу (план 11 §4 A2): забирает запрос боя из IBattleSession и грузит его, репортит
             // исход. Регистрируется ПОСЛЕ DeploymentController — чтобы его подписка на Free-расстановку встала
             // до LoadPreset. Пусто (запуск из dev-панели) = просто ждёт исход, LoadPreset не зовёт.

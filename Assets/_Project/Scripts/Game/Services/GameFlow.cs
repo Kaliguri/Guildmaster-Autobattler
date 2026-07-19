@@ -1,6 +1,8 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
+using Guildmaster.Core.Flow;
 using Guildmaster.Core.Players;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
@@ -18,8 +20,12 @@ namespace Guildmaster.Game.Services
     /// заведены сейчас, соло-тела. Legacy-вход <see cref="BootAsync"/> оставлен для прямого запуска боевой
     /// сцены (dev-панель F2) — не ломает итерацию.
     /// </summary>
-    public sealed class GameFlow
+    public sealed class GameFlow : IRunControl
     {
+        // Токен отмены текущего забега (QA #18): взводится на время RunActAsync, Cancel() из системного меню
+        // прерывает висящие await'ы петли (выбор узла/«Продолжить»/исход боя) → возврат в главное меню.
+        private CancellationTokenSource _runCts;
+
         private readonly ISceneLoader        _scenes;
         private readonly IBattleSession      _session;
         private readonly RunStateService     _runStates;
@@ -33,6 +39,7 @@ namespace Guildmaster.Game.Services
         private readonly IPlayerIntentSource _intents;
         private readonly ILocalPlayer        _localPlayer;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
+        private readonly IPublisher<RunPartyReadyEvent>   _partyReadyPub;
 
         public GameFlow(
             ISceneLoader        scenes,
@@ -47,7 +54,8 @@ namespace Guildmaster.Game.Services
             IReadyGate          readyGate,
             IPlayerIntentSource intents,
             ILocalPlayer        localPlayer,
-            IPublisher<OpenTextEventRequest> openEventPub)
+            IPublisher<OpenTextEventRequest> openEventPub,
+            IPublisher<RunPartyReadyEvent>   partyReadyPub)
         {
             _scenes          = scenes;
             _session         = session;
@@ -62,6 +70,7 @@ namespace Guildmaster.Game.Services
             _intents         = intents;
             _localPlayer     = localPlayer;
             _openEventPub    = openEventPub;
+            _partyReadyPub   = partyReadyPub;
         }
 
         /// <summary>Legacy (Фаза 1): просто загрузить боевую сцену. Прямой dev-вход, бой запускает F2-панель.</summary>
@@ -123,7 +132,14 @@ namespace Guildmaster.Game.Services
                     _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
                 }
 
-                await RunActAsync(); // BeginAct + петля + экран исхода + чистка сейва
+                // QA #18: «В главное меню» из системного меню отменяет забег → OperationCanceledException
+                // всплывает из петли акта; ловим и уходим на новый виток while (показ главного меню). Сейв
+                // остаётся (autosave по ходу) — забег можно продолжить.
+                try { await RunActAsync(); } // BeginAct + петля + экран исхода + чистка сейва
+                catch (OperationCanceledException)
+                {
+                    Debug.Log("[GameFlow] - забег прерван из меню → возврат в главное меню");
+                }
             }
         }
 
@@ -150,19 +166,43 @@ namespace Guildmaster.Game.Services
             _runStates.BeginAct();       // генерация карты из под-сида (no-op, если уже есть)
             _runStates.Autosave();       // зафиксировать свежую карту
 
-            var ctx = new RunContext(run, _rng, _readyGate, _intents);
-            EventResult result = await _actRunner.RunActAsync(ctx);
-            _runStates.Autosave();
-            Debug.Log($"[GameFlow] - акт завершён: {result.Outcome}");
+            // Persist-мир (план 12 Ф2): отряд забега готов → боевой скоуп ставит его на тест-арену вне боя.
+            // Публикуем ПОСЛЕ BeginAct (гильдия+карта собраны) и ДО обхода узлов, чтобы отряд уже стоял.
+            _partyReadyPub.Publish(new RunPartyReadyEvent());
 
-            // Экран исхода (C2): победа (босс) / поражение (пул перезапусков пуст). Забег окончен — чистим сейв.
-            if (result.Outcome == EventOutcome.Completed || result.Outcome == EventOutcome.PlayerDefeated)
+            // Токен отмены забега на время акта (QA #18): «В главное меню» → Cancel → OperationCanceledException.
+            _runCts?.Dispose();
+            _runCts = new CancellationTokenSource();
+            try
             {
-                await _outcomePresenter.ShowAsync(result.Outcome == EventOutcome.Completed);
-                _runStates.DeleteSave();
+                var ctx = new RunContext(run, _rng, _readyGate, _intents, _runCts.Token);
+                EventResult result = await _actRunner.RunActAsync(ctx);
+                _runStates.Autosave();
+                Debug.Log($"[GameFlow] - акт завершён: {result.Outcome}");
+
+                // Экран исхода (C2): победа (босс) / поражение (пул перезапусков пуст). Забег окончен — чистим сейв.
+                if (result.Outcome == EventOutcome.Completed || result.Outcome == EventOutcome.PlayerDefeated)
+                {
+                    await _outcomePresenter.ShowAsync(result.Outcome == EventOutcome.Completed);
+                    _runStates.DeleteSave();
+                }
+                return result;
             }
-            return result;
+            finally
+            {
+                _runCts.Dispose();
+                _runCts = null;
+            }
         }
+
+        // QA #18: управление забегом из системного меню (pause) через IRunControl.
+        public void RequestReturnToMainMenu()
+        {
+            Debug.Log("[GameFlow] - запрос «В главное меню» → прерываю текущий забег");
+            _runCts?.Cancel();
+        }
+
+        public void RequestQuit() => QuitGame();
 
         /// <summary>
         /// Прогнать узел текстового ивента (план 11 §5.1): показать ивент, дождаться выбора, применить

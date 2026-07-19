@@ -33,7 +33,8 @@ namespace Guildmaster.UI
             Func<string, string> localize,
             int lockedSlots = 0,
             bool cardAnimations = true,
-            bool cardAttackAnimation = true)
+            bool cardAttackAnimation = true,
+            Action<RelicData, RelicDragPhase> onRelicDrag = null)
         {
             string L(string key, string ru)
             {
@@ -43,7 +44,12 @@ namespace Guildmaster.UI
 
             VisualElement screen = screenUxml.CloneTree();
             VisualElement root = screen.childCount > 0 ? screen[0] : screen;
-            root.pickingMode = PickingMode.Position;
+            // Корень/тело/боевая «дырка» — picking-mode Ignore (задано в UXML): panel.Pick над ними
+            // возвращает null, и ввод под инвентарём идёт в мир (drag юнитов и камера в расстановке).
+            // НЕ ставить Position: он перехватывает pick на ВЕСЬ экран (root покрывает всё) и глушит
+            // дырку — под инвентарём переставал стартовать деплой-драг (press гейтится !PointerOverUI).
+            // Непрозрачные панели .gm-loadout__main ловят pick сами (дефолтный Position).
+            root.pickingMode = PickingMode.Ignore;
 
             // ── Хром тела (гильдия/режимы/золото/меню теперь в глобальном топбаре RunModeBar) ──
             // Левая зона (battle-zone) — «дырка» СКВОЗЬ панель к реальной боевой камере (Ф3b P1): прозрачна,
@@ -165,6 +171,7 @@ namespace Guildmaster.UI
                     ShowDetail(relic);
                     if (cardAnimations) Animate(relic);
                 });
+                WireRelicDrag(cardRoot, relic, onRelicDrag); // QA #5: тащить реликвию на юнита в мире
                 gridEl.Add(cardRoot);
                 cards.Add((relic, cardRoot));
             }
@@ -185,6 +192,44 @@ namespace Guildmaster.UI
             if (cards.Count > 0) ShowDetail(cards[0].relic);
 
             return root;
+        }
+
+        private const float RelicDragThresholdSq = 36f; // (6 панельных ед)² — меньше сдвиг = клик, больше = drag
+
+        // Drag карточки реликвии на юнита в мире (QA #5): pointer-capture на карте, порог клик/drag; за порогом
+        // публикуем Start/Move/Drop — позицию курсора фаза расстановки берёт из своего ввода (событие лишь
+        // держит жест активным). Клик (без drag) не трогаем — ClickEvent карты (выбор) срабатывает как раньше.
+        private static void WireRelicDrag(VisualElement card, RelicData relic,
+            Action<RelicData, RelicDragPhase> onDrag)
+        {
+            if (onDrag == null || relic == null) return;
+            bool armed = false, dragging = false;
+            Vector2 start = default;
+            int ptr = -1;
+
+            card.RegisterCallback<PointerDownEvent>(e =>
+            {
+                if (e.button != 0) return;
+                armed = true; dragging = false; start = e.position; ptr = e.pointerId;
+                card.CapturePointer(e.pointerId);
+            });
+            card.RegisterCallback<PointerMoveEvent>(e =>
+            {
+                if (!armed) return;
+                if (!dragging)
+                {
+                    if (((Vector2)e.position - start).sqrMagnitude < RelicDragThresholdSq) return; // ещё клик
+                    dragging = true;
+                    onDrag(relic, RelicDragPhase.Start);
+                }
+                onDrag(relic, RelicDragPhase.Move);
+            });
+            card.RegisterCallback<PointerUpEvent>(e =>
+            {
+                if (card.HasPointerCapture(ptr)) card.ReleasePointer(ptr);
+                if (dragging) onDrag(relic, RelicDragPhase.Drop);
+                armed = false; dragging = false;
+            });
         }
 
         private static void FillUpgradeRow(VisualElement row)

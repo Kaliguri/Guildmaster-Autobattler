@@ -1,0 +1,35 @@
+Slime Enemy | Pixel Monsters Vol.1 CHANGELOG
+============================================
+
+Version 1.1.0 - 2026-06-27
+--------------------------
+-Added animations:
+	-Attack 2
+-Added color variants:
+	-Cyan
+	-Silver
+	-Red
+	-Yellow
+-Added color outline
+
+Version 1.0.0 - 2026-01-01
+--------------------------
+-Release version.
+-Included animations:
+	-Idle
+	-Walk
+	-Bounce (displaced)
+	-Bounce (centered)
+	-Slide start
+	-Slide loop
+	-Attack
+	-Hurt 1
+	-Hurt 2
+	-Death
+	-Revive
+-Included color variants:
+	-Green
+	-Blue
+	-Purple
+
+

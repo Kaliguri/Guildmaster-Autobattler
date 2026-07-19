@@ -52,6 +52,10 @@ namespace Guildmaster.Game
             // даёт вид арены (карта/инвентарь), в бою переиспользуется. Бой (BattleScene) ложится поверх.
             await _sceneLoader.LoadWorldAsync();
 
+            // BattleScene тоже persist (план 12 Ф2): боевой скоуп живёт всю сессию, бой запускается командой
+            // в живой sim (RequestLaunch), а не загрузкой/выгрузкой сцены на каждый узел. Грузим один раз здесь.
+            await _sceneLoader.LoadBattleAsync();
+
             if (_runActOnBoot)
             {
                 Flow.EventResult act = await _gameFlow.RunActAsync();

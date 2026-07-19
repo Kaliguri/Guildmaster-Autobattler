@@ -34,7 +34,7 @@ namespace Guildmaster.Game.Flow
 
             _runStates.AwardBattleReward();               // +золото за победу (B1)
             for (int i = 0; i < _rewardCount; i++)        // элитка = 2 выбора подряд (B5)
-                await _reward.PresentAsync(_tier);
+                await _reward.PresentAsync(_tier, ctx.Cancellation); // ct → отмена забега размотает награду (QA #37)
             return result;
         }
     }

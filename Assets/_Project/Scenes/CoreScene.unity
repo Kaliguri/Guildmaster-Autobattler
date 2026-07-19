@@ -160,7 +160,6 @@ MonoBehaviour:
   _chestScreen: {fileID: 9197481963319205126, guid: 1ff8b7142418a244dbb702afa6cb314a, type: 3}
   _outcomeScreen: {fileID: 9197481963319205126, guid: 23b1ecddbec3ffa47bcda35390fcd78b, type: 3}
   _mainMenuScreen: {fileID: 9197481963319205126, guid: 6b74acde43d6f2845a61d543591cccb0, type: 3}
-  _runTopBar: {fileID: 9197481963319205126, guid: 94570721a23f87c4e851528c4b1212aa, type: 3}
   _runModeBar: {fileID: 9197481963319205126, guid: 919b5073000fd104e8e188b2a2624dd5, type: 3}
   _loadoutHubScreen: {fileID: 9197481963319205126, guid: b101555f184c6db48b81893633a005ee, type: 3}
   _loadoutInventoryScreen: {fileID: 9197481963319205126, guid: 57e9cea668276b146bb6ddbf4646c5ae, type: 3}
@@ -288,7 +287,7 @@ MonoBehaviour:
   autoInjectGameObjects: []
   _contentDatabase: {fileID: 11400000, guid: 6ee93f01d460d5942962e5433b56e5d8, type: 2}
   _gameConfig: {fileID: 11400000, guid: 3f479309a3dcb31429f94c65a88fb275, type: 2}
-  _audioCatalog: {fileID: 0}
+  _audioCatalog: {fileID: 11400000, guid: fe034423cf8b8c5409a5cf3289ab74cc, type: 2}
 --- !u!4 &265839542
 Transform:
   m_ObjectHideFlags: 0

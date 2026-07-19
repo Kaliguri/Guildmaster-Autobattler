@@ -63,7 +63,11 @@ namespace Guildmaster.Game
             builder.Register<SettingsViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutHubViewModel>(Lifetime.Singleton);
-            builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf().As<IMenuRouter>();
+            builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf();
+            // Навигатор экранов (UI-реворк Ф1): единый владелец видимости/ввода. Пока СОЗДАётся, но не
+            // подключён к роутеру — переезд MenuRouter на него в Ф2. Зависимости (IInputService, IBattleClock)
+            // резолвятся ниже в этом же скоупе.
+            builder.Register<UiNavigator>(Lifetime.Singleton);
             builder.RegisterComponentInHierarchy<UiRootBootstrap>();
 
             // Точка входа игры (D1): GameBootstrap в персистентной CoreScene получает GameFlow и крутит
@@ -117,7 +121,8 @@ namespace Guildmaster.Game
             builder.Register<MapScreenNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
             builder.Register<ActRunner>(Lifetime.Singleton);
 
-            builder.Register<GameFlow>(Lifetime.Singleton);
+            // GameFlow ведёт верхний цикл + реализует IRunControl (QA #18): системное меню прерывает забег.
+            builder.Register<GameFlow>(Lifetime.Singleton).AsSelf().As<Guildmaster.Core.Flow.IRunControl>();
 
             // Ввод глобален и переживает перезагрузку боевой сцены (вики «16» §3).
             builder.Register<InputService>(Lifetime.Singleton).As<IInputService>();

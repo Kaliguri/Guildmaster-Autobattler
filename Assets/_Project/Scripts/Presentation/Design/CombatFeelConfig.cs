@@ -72,6 +72,18 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private float _shatterSpread = 1.2f;
         [Tooltip("Размер чанка-осколка в ИСХОДНЫХ пикселях спрайта (меньше = мельче куски, больше = крупнее блоки).")]
         [SerializeField, Range(2, 16)] private int _shatterBlockPixels = 6;
+        [Tooltip("Сила ПСЕВДО-3D кувыркания осколков (переворот вокруг случайной оси). 0 = плоско, больше = активнее кувыркаются.")]
+        [SerializeField] private float _shatterTumble = 9f;
+        [Tooltip("Восходящий дрейф: смещает разлёт вверх-и-наружу (0 = строго радиально, больше = осколки уходят вверх).")]
+        [SerializeField] private float _shatterUpBias = 0.6f;
+        [Tooltip("За сколько секунд impact-вспышка спадает обратно (осколки возвращают исходный цвет юнита перед выцветанием).")]
+        [SerializeField] private float _shatterFlashOut = 0.12f;
+        [Tooltip("Цвет выцветания осколков к концу (SAO-бирюза). HDR — яркость >1 ловит bloom.")]
+        [ColorUsage(true, true)] [SerializeField] private Color _shatterEmberColor = new Color(0.25f, 0.9f, 1f, 1f);
+        [Tooltip("Множитель яркости цвета выцветания (emissive под bloom). 1 = как есть, больше = сильнее светятся.")]
+        [SerializeField] private float _shatterEmberBoost = 2f;
+        [Tooltip("С какого прогресса разлёта (0..1) осколки начинают выцветать в ember-цвет.")]
+        [SerializeField, Range(0f, 1f)] private float _shatterEmberStart = 0.4f;
 
         // --- Slowmo — добивающий удар (CombatFeelDirector) ---
         [Header("Slowmo — добивающий удар (kill)")]
@@ -145,6 +157,12 @@ namespace Guildmaster.Presentation.Design
         public float ShatterSpin       => _shatterSpin;
         public float ShatterSpread     => _shatterSpread;
         public int   ShatterBlockPixels => _shatterBlockPixels;
+        public float ShatterTumble     => _shatterTumble;
+        public float ShatterUpBias     => _shatterUpBias;
+        public float ShatterFlashOut   => _shatterFlashOut;
+        public Color ShatterEmberColor => _shatterEmberColor;
+        public float ShatterEmberBoost => _shatterEmberBoost;
+        public float ShatterEmberStart => _shatterEmberStart;
 
         public PixelBurstPreset HitSpark   => _hitSpark;
         public PixelBurstPreset Muzzle     => _muzzle;

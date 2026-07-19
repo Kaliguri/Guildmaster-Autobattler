@@ -22,6 +22,34 @@ namespace Guildmaster.Game.Flow
         /// <summary>child → session: забрать запрос (single-shot). false = запуск не из флоу (dev-панель вручную).</summary>
         bool TryConsumePending(out BattlePresetData preset);
 
+        // ── Persist-мир: launch боя в ЖИВОМ боевом скоупе (сцена не перезагружается) ──
+        // Заменяет связку SetPending+LoadBattleAsync: боевой скоуп живёт всю сессию, поэтому «запуск боя»
+        // — это доспавн врагов + снятие паузы в уже готовом sim, а не создание нового скоупа/сцены.
+
+        /// <summary>child → session: как запустить бой на месте (доспавн врагов + снять паузу). Привязывает боевой скоуп на старте.</summary>
+        void BindLaunch(Action<BattlePresetData> launch);
+
+        /// <summary>child → session: снять делегат launch (при выгрузке боевого скоупа, если она когда-то будет).</summary>
+        void UnbindLaunch();
+
+        /// <summary>
+        /// root → child: запустить бой в живом скоупе (persist-мир). Взводит новое ожидание исхода.
+        /// false = некому запускать (боевой скоуп ещё не поднят).
+        /// </summary>
+        bool RequestLaunch(BattlePresetData preset);
+
+        /// <summary>child → session: как вернуть вне-боевое состояние (враги прочь, отряд к строю, пауза).</summary>
+        void BindReset(Action reset);
+
+        /// <summary>child → session: снять делегат сброса (при выгрузке боевого скоупа).</summary>
+        void UnbindReset();
+
+        /// <summary>
+        /// root → child: после боя вернуть арену во вне-боевое состояние (persist-мир): убрать врагов,
+        /// пере-поставить отряд из <c>RunState.Guild</c>, пауза. false = некому (скоуп не поднят).
+        /// </summary>
+        bool RequestReset();
+
         /// <summary>root: дождаться исхода текущего боя (следующий <see cref="ReportOutcome"/> после взвода).</summary>
         UniTask<BattleOutcome> WaitOutcomeAsync(CancellationToken ct);
 
@@ -72,6 +100,8 @@ namespace Guildmaster.Game.Flow
         private BattlePresetData _pending;
         private bool             _hasPending;
         private Action           _restart;
+        private Action<BattlePresetData> _launch;
+        private Action           _reset;
         private UniTaskCompletionSource<BattleOutcome> _outcome;
 
         private Func<float> _clock;
@@ -107,6 +137,29 @@ namespace Guildmaster.Game.Flow
 
         public void UnbindRestart() => _restart = null;
 
+        public void BindLaunch(Action<BattlePresetData> launch) => _launch = launch;
+
+        public void UnbindLaunch() => _launch = null;
+
+        public bool RequestLaunch(BattlePresetData preset)
+        {
+            if (_launch == null) return false;
+            ArmOutcome();          // ждём исход до фактического запуска (ReportOutcome ловится даже мгновенный)
+            _launch.Invoke(preset);
+            return true;
+        }
+
+        public void BindReset(Action reset) => _reset = reset;
+
+        public void UnbindReset() => _reset = null;
+
+        public bool RequestReset()
+        {
+            if (_reset == null) return false;
+            _reset.Invoke();       // БЕЗ ArmOutcome: бой уже кончился, ожидание не взводим
+            return true;
+        }
+
         public bool RequestRestart()
         {
             if (_restart == null) return false;
@@ -132,14 +185,22 @@ namespace Guildmaster.Game.Flow
 
         public float ElapsedSeconds => _clock?.Invoke() ?? 0f;
 
-        public void SetPhase(BattlePhase phase) => Phase = phase;
+        /// <inheritdoc/>
+        public event Action PhaseChanged;
+
+        public void SetPhase(BattlePhase phase)
+        {
+            if (Phase == phase) return;   // реальная смена → ровно одно событие (навигатор пересчитает ввод)
+            Phase = phase;
+            PhaseChanged?.Invoke();
+        }
 
         public void BindClock(Func<float> elapsedSeconds) => _clock = elapsedSeconds;
 
         public void UnbindClock()
         {
             _clock = null;
-            Phase  = BattlePhase.None; // боевого скоупа больше нет — панель скрыта
+            SetPhase(BattlePhase.None); // боевого скоупа больше нет — панель скрыта + событие (снос ручного SetContext, K8)
         }
 
         public void BindStart(Action start) => _start = start;

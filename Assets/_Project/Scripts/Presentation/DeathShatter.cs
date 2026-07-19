@@ -22,6 +22,11 @@ namespace Guildmaster.Presentation
         private static readonly int GravityId    = Shader.PropertyToID("_Gravity");
         private static readonly int SpinId       = Shader.PropertyToID("_Spin");
         private static readonly int SpreadId     = Shader.PropertyToID("_Spread");
+        private static readonly int TumbleId     = Shader.PropertyToID("_Tumble");
+        private static readonly int UpBiasId     = Shader.PropertyToID("_UpBias");
+        private static readonly int EmberColorId = Shader.PropertyToID("_EmberColor");
+        private static readonly int EmberBoostId = Shader.PropertyToID("_EmberBoost");
+        private static readonly int EmberStartId = Shader.PropertyToID("_EmberStart");
 
         private static Material _sharedMat;
 
@@ -30,7 +35,7 @@ namespace Guildmaster.Presentation
         private Mesh                  _mesh;   // per-instance — уничтожаем вместе с эффектом
         private MaterialPropertyBlock _mpb;
         private System.Action         _onComplete;
-        private float _flashIn, _duration, _elapsed;
+        private float _flashIn, _flashOut, _duration, _elapsed;
         private bool  _running;
 
         /// <summary>Запустить разлёт из текущего состояния спрайта <paramref name="src"/>.</summary>
@@ -38,6 +43,7 @@ namespace Guildmaster.Presentation
         {
             _onComplete = onComplete;
             _flashIn  = cfg != null ? cfg.ShatterFlashIn  : 0.08f;
+            _flashOut = cfg != null ? cfg.ShatterFlashOut : 0.12f;
             _duration = cfg != null ? cfg.ShatterDuration : 0.75f;
 
             Sprite sprite = src.sprite;
@@ -88,6 +94,11 @@ namespace Guildmaster.Presentation
             _mpb.SetFloat(GravityId, (cfg != null ? cfg.ShatterGravity : 0f)  * h);
             _mpb.SetFloat(SpinId,    cfg != null ? cfg.ShatterSpin   : 3f);
             _mpb.SetFloat(SpreadId,  cfg != null ? cfg.ShatterSpread : 1.2f);
+            _mpb.SetFloat(TumbleId,  cfg != null ? cfg.ShatterTumble : 9f);
+            _mpb.SetFloat(UpBiasId,  cfg != null ? cfg.ShatterUpBias : 0.6f);
+            _mpb.SetColor(EmberColorId, cfg != null ? cfg.ShatterEmberColor : new Color(0.25f, 0.9f, 1f, 1f));
+            _mpb.SetFloat(EmberBoostId, cfg != null ? cfg.ShatterEmberBoost : 2f);
+            _mpb.SetFloat(EmberStartId, cfg != null ? cfg.ShatterEmberStart : 0.4f);
             _mpb.SetFloat(FlashAmtId, 0f);
             _mpb.SetFloat(ShatterId,  0f);
             _mr.SetPropertyBlock(_mpb);
@@ -104,10 +115,15 @@ namespace Guildmaster.Presentation
             _elapsed += Time.deltaTime;
 
             float shatter = _duration > 0f ? Mathf.Clamp01((_elapsed - _flashIn) / _duration) : 1f;
-            // Осколки остаются БЕЛЫМИ весь разлёт (не возвращают свой цвет) — вспыхивают и так летят, тают альфой.
-            float flash = _elapsed >= _flashIn || _flashIn <= 0f
-                ? 1f
-                : Mathf.Clamp01(_elapsed / _flashIn);
+            // Вспышка — ИМПУЛЬС: растёт за flashIn, затем спадает за flashOut → осколки ВОЗВРАЩАЮТ исходный цвет,
+            // а к концу выцветают в ember-бирюзу (в шейдере). Три фазы вместо «всегда белые».
+            float flash;
+            if (_flashIn <= 0f)
+                flash = Mathf.Clamp01(1f - _elapsed / Mathf.Max(0.0001f, _flashOut));
+            else if (_elapsed < _flashIn)
+                flash = _elapsed / _flashIn;
+            else
+                flash = Mathf.Clamp01(1f - (_elapsed - _flashIn) / Mathf.Max(0.0001f, _flashOut));
 
             _mr.GetPropertyBlock(_mpb);
             _mpb.SetFloat(FlashAmtId, flash);
