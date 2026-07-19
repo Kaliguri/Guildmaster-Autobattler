@@ -2,12 +2,12 @@
 title: "Reference - Input & Camera"
 order: 70
 status: ready
-updated: 2026-07-16
+updated: 2026-07-19
 ---
 
 > Слой пользовательского ввода (Input System) и боевая камера (Cinemachine): единая точка ввода за интерфейсом, контексты по фазе игры, три режима камеры с data-клампом, dev-камера в билде за флагом доступа.
 >
-> Связано: [[tech/10-reference/arena|Reference - Arena & Deployment]], [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]], [[tech/20-explanation/presentation|Explanation - Presentation]], [[tech/20-explanation/di-events|Explanation - DI & Events]], [[controls]].
+> Связано: [[tech/10-reference/ui-navigation|Reference - UI Navigation]], [[tech/10-reference/arena|Reference - Arena & Deployment]], [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]], [[tech/20-explanation/presentation|Explanation - Presentation]], [[tech/20-explanation/di-events|Explanation - DI & Events]], [[controls]].
 
 **Статус:** дизайн согласован и реализован в коде (2026-07-10, ветка `feat/input-system-and-camera`, EditMode 187/187). Слой ввода, пауза (Space), dev-хоткеи (R/F5) — готовы и тестируемы. Скрипты камеры и DI-проводка готовы; **сборка рига камеры в сцене (Cinemachine Brain + 3 виртуальные камеры + focus-target) и визуальная настройка (демпинг/зум/зона) — за Максом** (см. §6, §7). Отклонения от исходного плана помечены ниже (§3).
 
@@ -48,14 +48,21 @@ interface IInputService
 
 | Контекст | Активные карты |
 |---|---|
-| `None` | ничего (загрузка/переходы) |
-| `Menu` | UI (заглушка под будущее меню) |
-| `Deployment` | Camera (расстановка — будущая фаза) |
-| `Combat` | Camera + Combat |
+| `None` | ничего (загрузка/переходы, вне боя) |
+| `Menu` | UI-навигация (открыт Page/Modal-экран поверх мира) |
+| `Deployment` | Camera (фаза расстановки/тест-зоны) |
+| `Combat` | Camera + Combat (идёт бой) |
 
 Пауза — это **состояние симуляции**, а не отдельный контекст: действие `PauseToggle` работает и в идущем, и в приостановленном бою.
 
-**Жизненный цикл.** `InputService` (`Guildmaster.Game.Input`) регистрируется в `RootLifetimeScope` как singleton — ввод глобален и переживает перезагрузку боевой сцены. Карты действий строятся в конструкторе, включаются/гасятся по `SetContext`. `BattleInputController` (боевой скоуп, `IStartable`/`IDisposable`) на старте боя ставит контекст `Combat` и подписывает Space→пауза, на уничтожении — отписывается и гасит контекст в `None`.
+**Жизненный цикл.** `InputService` (`Guildmaster.Game.Input`) регистрируется в `RootLifetimeScope` как singleton — ввод глобален и переживает перезагрузку боевой сцены. Карты действий строятся в конструкторе, включаются/гасятся по `SetContext`. `BattleInputController` (боевой скоуп, `IStartable`/`IDisposable`) подписывает Space→пауза и «.»→скорость, на уничтожении отписывается; контекст ввода он **не трогает**.
+
+**Единственный писатель контекста — `UiNavigator`** (UI-реворк, 2026-07-19; см.
+[[tech/10-reference/ui-navigation|Reference - UI Navigation]] §4). `GameplaySuppressed` и `Context`
+не мутируются вручную, а ВЫЧИСЛЯЮТСЯ из `(верх стека экранов, BattlePhase)`: навигатор пересчитывает
+их на каждое изменение стека и по событию `IBattleClock.PhaseChanged`. Боевой слой
+(`DeploymentController`, `BattleInputController`) зовёт только `SetPhase`, а не `SetContext`. Один
+легитимный внешний писатель `GameplaySuppressed` остаётся — dev-консоль QFSW (до Трека К).
 
 ---
 
