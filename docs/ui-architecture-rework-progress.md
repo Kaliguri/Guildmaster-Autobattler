@@ -19,7 +19,8 @@
 | **Ф4 Слои-контейнеры** | ✅ влито | `539d048e` | 8 слоёв в корне; K1-K4 снесены; QA #32/#33/#35/#36; шов локали |
 | **Ф5 Тест-зона** | ✅ влито | `85ecdef9` | Sheet-экран + единый источник TestZoneChangedEvent; K5-K8 сняты |
 | **Ф6 Инвентарь** | ✅ влито | `85ecdef9` | формальный Sheet, смерть `_inventoryOpen`; закрытие=Remove не PopAll |
-| Ф7 Чистка + доки | ⏳ следующий | — | снос мёртвого, tech-scribe |
+| **Ф7 Чистка (A/C/B)** | ✅ влито | `f3cc0f1f`/`1ea4c9b5`/`b0da2773` | снос легаси RunTopBar+IRunTopBar; растворён IMenuRouter+OpenSettings; закрыт K8 (событие фазы) |
+| Ф7 Доки (D) | ⏳ следующий | — | tech-scribe docs/wiki/tech по UI-слою |
 
 **Точка остановки задана Максом (2026-07-19):** гнать Ф1→Ф2→Ф3 автономно, **стоп после Ф3**
 на его play (полный забег) — НЕ после Ф2, как в протоколе плана. Ф0–Ф3 влиты.
@@ -97,10 +98,31 @@ read-only. Контроллер `OnSetTestZone`: Active+!deploying+phase==None�
 (Show/HideInventory/TestZone), бутстрапе (GoTo*), контроллере (OnSetTestZone/Enter/Exit). Включать точечно
 при разборе переключений режимов/стека — вытягивать `[UITRACE]` из консоли (`read_console filter UITRACE`).
 
-**СЛЕДУЮЩЕЕ: Ф7 (чистка мёртвого + tech-scribe).** Осталось: снести мёртвое (легаси RunTopBar-путь если
-`_runModeBar` назначен, неиспользуемые IMenuRouter-методы), tech-scribe обновляет docs/wiki/tech (UI-слой:
-навигатор/типы экранов/слои/радио-режимы/модель пространств), закрыть K8 (событие смены фазы), рассмотреть
-трек Х/Т. Возможно финал реворка в след. сессии.
+**► Ф7 A/C/B СДЕЛАНЫ (2026-07-19, три коммита, 418/418).** Чистка мёртвого + закрытие K8.
+- **Блок A `f3cc0f1f` (−237):** снесён легаси RunTopBar-путь. В CoreScene назначен `_runModeBar` → фолбэк
+  `RunTopBarView` мёртв. Удалены `RunTopBarView.cs`, `RunTopBar.uxml`, поле `_runTopBar`+фолбэк-ветка бутстрапа,
+  пункт `run-topbar` в `UiPreviewCatalog`. **`IRunTopBar` растворён** (один имплементор `RunModeBarView` →
+  `_topBar` конкретного типа, `is`-каст в RefreshShell ушёл). Снята мёртвая ссылка `_runTopBar` из CoreScene.
+- **Блок C `1ea4c9b5` (−93):** **`IMenuRouter` растворён** — интерфейс никем не потреблялся как абстракция
+  (все берут конкретный `MenuRouter`); DI `.As<IMenuRouter>()` снят. Снесён мёртвый `OpenSettings()` (осиротел
+  после блока A — pause-меню строит настройки напрямую). `CloseAll()` сужен до `private` (единственный вызов —
+  внутренний close-callback text-event; завершение забега = единая отмена, не веник). НЕ тронут `OpenHub`/
+  `OpenLoadout` (легаси-лоадаут = Трек Д).
+- **Блок B `b0da2773` (+110):** **K8 закрыт.** `IBattleClock.PhaseChanged` (поднимается `BattleSession.SetPhase`
+  только на РЕАЛЬНОЙ смене; `UnbindClock` переиспользует `SetPhase(None)`). `UiNavigator` подписан в
+  конструкторе (стал `IDisposable`) → смена фазы САМА пересчитывает `GameplaySuppressed`/`Context`. Убраны
+  `SetContext` из `DeploymentController` (4×) и `BattleInputController` (2×, ставил Combat единожды при старте
+  persist-скоупа при фазе None — тот самый мультиписатель). Единственные писатели контекста теперь: навигатор
+  (штатно) + QFSW dev-консоль (до Трека К). +4 EditMode-теста. Комментарии-хвосты K3 про «нет события фазы»
+  поправлены; ребро фазы в Update для ВИЗУАЛА shell осознанно оставлено (кадр задержки визуалу не вреден,
+  подписка добавила бы lifecycle-NRE-риск; ВВОД — на событии, это критично).
+
+**ЖДЁТ play-QA Макса:** блок B тронул боевой ввод-поток (контекст в расстановке/бою/тест-зоне/паузе) — проверить
+сценарии 1/5/6/7 чек-листа приёмки (ESC-меню в бою, инвентарь в расстановке, В меню, тест-зона многократно).
+
+**СЛЕДУЮЩЕЕ: Ф7 D (tech-scribe).** Осталось: tech-scribe обновляет docs/wiki/tech (UI-слой: навигатор/типы
+экранов/слои/функция ввода=f(стек,фаза)/PointerOverUI-инварианты/радио-режимы/модель пространств) + инженерный
+changelog + правка упоминаний `RunTopBarView` (`act-map-run-loop.md`). Плюс трек Х/Т/Д/К. Финал реворка близок.
 
 ---
 
@@ -222,7 +244,7 @@ map `Kind→layer`. Рекомендую (а) — просто и явно. За
 | ~~K5~~ | ~~`HideTopForTest`/`ShowHiddenForTest`/`_hiddenForTest` мост~~ | `MenuRouter` | ✅ СНЕСЕНО (Ф5 `85ecdef9`, тест-зона = Sheet, карта прячется правилом видимости) |
 | ~~K6~~ | ~~`_testActive`/`_inventoryOpen` флаги-тумблеры (рассинхрон)~~ | `UiRootBootstrap` | ✅ СНЕСЕНО (Ф5/Ф6, состояние = `TestZoneChangedEvent` + `_router.IsInventoryOpen`, QA #34) |
 | ~~K7~~ | ~~`TestZoneArenaSkin` самотогл на бродкаст (а не на состояние)~~ | `TestZoneArenaSkin` | ✅ СНЕСЕНО (Ф5, слушает `TestZoneChangedEvent.Active`, #28) |
-| K8 | Мультиписатель контекста: `SetContext` мимо навигатора | `DeploymentController` | ЧАСТИЧНО (Ф5: навигатор перезаписывает верно на Push/Pop; боевая расстановка без Push ещё полагается на прямой SetContext — полный снос ждёт события смены фазы, реш.3) |
+| ~~K8~~ | ~~Мультиписатель контекста: `SetContext` мимо навигатора~~ | `DeploymentController`/`BattleInputController` | ✅ СНЕСЕНО (Ф7b `b0da2773`: `IBattleClock.PhaseChanged` → навигатор пересчитывает ввод; DeploymentController 4× и BattleInputController 2× SetContext убраны. Остался легитимный dev-писатель QFSW до Трека К) |
 | K9 | `Keyboard.current` напрямую (Enter расстановки) | `DeploymentController.ReadyPressed` | Трек Х |
 | K10 | Text event на Push+Detach (выбор ≠ закрытие, не ShowAsync) | `MenuRouter` | отдельно |
 | ~~K11~~ | ~~`btn-main-menu`: `CloseAll()`+`RequestReturnToMainMenu` = двойной путь → Aborted~~ | `MenuRouter.BuildPauseScreen` | ✅ СНЕСЕНО (QA #37, `Pop`+отмена) |
