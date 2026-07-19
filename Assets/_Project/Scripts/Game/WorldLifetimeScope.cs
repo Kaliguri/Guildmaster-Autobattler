@@ -40,6 +40,9 @@ namespace Guildmaster.Game
             builder.RegisterComponentInHierarchy<Presentation.CombatFocusTarget>();
             builder.RegisterComponentInHierarchy<Presentation.CameraModeController>()
                    .AsSelf().As<Presentation.IScreenShake>();
+
+            // «Серая зона» тест-арены (QA #2): свапает цветной/grayscale пол по тумблеру тест-зоны.
+            builder.RegisterComponentInHierarchy<Presentation.TestZoneArenaSkin>();
         }
 
         private ArenaLayoutData BuildArenaLayout()
