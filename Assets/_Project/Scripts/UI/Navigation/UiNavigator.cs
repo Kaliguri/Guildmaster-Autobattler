@@ -47,6 +47,14 @@ namespace Guildmaster.UI
         /// <summary>Тег режима верхнего экрана — единый источник подсветки таба топбара.</summary>
         public string ActiveModeTag => Top?.ModeTag;
 
+        /// <summary>Есть ли в стеке экран, удовлетворяющий предикату (напр. «системное меню где-то открыто»).</summary>
+        public bool AnyScreen(Func<UiScreen, bool> predicate)
+        {
+            for (int i = 0; i < _stack.Count; i++)
+                if (predicate(_stack[i])) return true;
+            return false;
+        }
+
         /// <summary>Меняется на каждый Push/Pop/резолв — топбар/backdrop подписываются вместо поллинга структуры.</summary>
         public event Action Changed;
 
