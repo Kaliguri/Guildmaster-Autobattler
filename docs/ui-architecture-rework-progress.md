@@ -54,6 +54,20 @@
    фазы — заложено под Ф4/Ф5). Событие в боевой слой НЕ добавляла (это территория Ф5).
 4. **Навигатор в Ф2 кладёт экраны прямо в корень панели** (слой = сам root). Именованные
    слои-контейнеры — Ф4. Топбар держится поверх через `BringToFront` бутстрапа (как было).
+5. **ЕДИНАЯ СИСТЕМА ОТМЕНЫ ЗАБЕГА (Макс за неё, 2026-07-19; #37).** Вместо точечной латки карты — токен
+   забега (`RunContext.Cancellation`) пробрасывается через ВСЮ цепочку показа (карта/continue/награда/
+   магазин/сундук/ивент). Ресёрч подтвердил: это канонический cooperative-cancellation паттерн (CTS →
+   токен во все await → один `catch OCE` на верхнем цикле — у `GameFlow` уже был). Обоснование объёма:
+   узловые флоу (reward/shop/chest/event) ждали `await tcs.Task` БЕЗ токена → сами не закрывались →
+   `CloseAll`-веник был единственным что их захлопывало; для карты его дефолт=null=Aborted=вылет. Точечно
+   не чинилось без нового костыля. **Реализация:** см. верх файла (#37) + QA-трекер. **Ключ на будущее:**
+   любой НОВЫЙ экран забега ОБЯЗАН нести `ct` в своём Request и вешать `AttachExternalCancellation` —
+   иначе «В меню» с него оставит зомби. Простой экран (не result) → `UiNavigator.Push(screen, ct)`.
+6. **СЕМАНТИКА ESC (Макс уточнил, 2026-07-19) — записана в план II.4 (КОНСТИТУЦИЯ).** ESC = НЕ «закрыть
+   окно». Приоритет: drag → тултип → (в меню: шаг назад) → иначе открыть меню. ESC НИКОГДА не закрывает
+   обычные окна (их закрывают свои контролы/завершение забега). Два «закрыть» РАЗВЕДЕНЫ (план II.5a):
+   завершение забега (токен-отмена) vs ESC-навигация — не смешивать веником. Влияет на Ф4 (#32/#35/#36),
+   Трек Т (тултип-ESC), Трек Х (drag-ESC).
 
 ---
 
@@ -65,9 +79,13 @@
 - **ConfirmDialog** (II.9.3, «В меню»/«Выход» с подтверждением) — отложен. Требует полноценного
   UXML-экрана + SerializeField в бутстрапе + проводки в CoreScene (кодом строить = нарушить
   правило «разметка в UXML»). Без него «В меню» = 1:1 с прежним. Сделать отдельным шагом.
-- **Text event НЕ переведён на ShowAsync** — оставлен на `PushScreen`+`DetachFromPanelEvent`.
+- **Text event НЕ переведён на ShowAsync** — оставлен на `PushScreen`+`DetachFromPanelEvent` (K10).
   Причина: его выбор варианта НЕ закрывает экран (показывает результат-текст на месте, закрытие —
   отдельной кнопкой), не ложится в модель «резолв = закрытие». Адресовать отдельно.
+  **UPD #37:** ивент теперь ct-aware — `TextEventFlow` вешает `AttachExternalCancellation(ctx.Cancellation)`,
+  `OpenTextEvent` пушится через `PushScreen(..., ct: req.Cancellation)` → отмена забега размотает flow И
+  снимет экран через навигатор. Т.е. «В меню» с ивента больше не оставляет зомби. Но контракт «выбор ≠
+  закрытие» (K10) сам по себе НЕ снят — полный перевод на result-модель по-прежнему отдельная задача.
 - **`HideTopForTest`/`ShowHiddenForTest`/`_hiddenForTest`** — мост через `_nav.Top.Root.display` +
   `_nav.SyncInput()`. Умирают в Ф5 (тест-зона станет Sheet поверх карты).
 - **`SyncInput` на смене фазы бутстрапом** — доработка Ф4/Ф5. Сейчас контекст боя держит
@@ -80,11 +98,44 @@
 **Файлы:** `UiRootBootstrap.cs` (`InitTopBar`, `Update`), `RunModeBarView.cs`, возможно `RunModeBar.uxml`.
 **Суть (план II.4 + Ф4):** в корне UIDocument создать фиксированные слои-контейнеры (порядок
 добавления = z-order): `layer-backdrop / layer-battle-center / layer-screens / layer-topbar /
-layer-cursors / layer-tooltip / layer-system`. Навигатор кладёт экраны в `layer-screens`.
+layer-modal / layer-cursors / layer-tooltip / layer-system`. Навигатор кладёт Page/Sheet в
+`layer-screens` (ПОД топбаром), Modal (pause/settings) — в `layer-modal` (ВЫШЕ топбара).
 Умирают: `BringToFront()` в Update, `SendToBack`-жонглирование, репарент `battle-center`.
 Backdrop/подсветка табов — по подписке на `navigator.Changed`, не поллинг структуры.
 Швы Ф4: локаль-hot-swap persistent-слоёв (II.9.2); UI-звуки delegation-подпиской (II.9.4);
 `ActiveSpace` навигатора под live-курсоры (II.14).
+
+**КАРТА КОСТЫЛЕЙ Ф4 (разведано 2026-07-19, точные места — новой сессии НЕ перечитывать 4 файла):**
+- **K1** `_topBar.Root.BringToFront()` — `UiRootBootstrap.Update` стр. ~255 (каждый кадр). Снос: топбар в
+  `layer-topbar` один раз.
+- **K2** репарент `battle-center` + `SendToBack` — `UiRootBootstrap.InitTopBar` стр. ~213-220. Снос:
+  строить `battle-center` сразу в `layer-battle-center` (под `layer-screens`, над backdrop). Готча:
+  `RunModeBarView` держит ссылки на `btn-start`/`battle-timer` по `Q(...)` в конструкторе — они должны
+  пережить переезд слота (сейчас переживают репарент; при выносе в UXML слоя — перепроверить `Q`).
+- **K3** поллинг `Phase`/backdrop/`runActive` в `Update` — `UiRootBootstrap.Update` стр. 223-263. Backdrop
+  и подсветка табов → на подписку `navigator.Changed`. Поллинг ДАННЫХ (золото/акт/таймер/`SetFighting`) —
+  ОСТАВИТЬ (законно, это не структура). `IBattleClock` события фазы НЕТ (реш. 3) → фаза пока поллится или
+  бутстрап дёргает `navigator.SyncInput()` на смене (Ф4/Ф5).
+- **K4/#35** `ActiveMode(phase)` — `UiRootBootstrap` стр. 322-328: `router.ActiveScreenMode ?? (phase!=None
+  ? battle)`. Баг: когда pause (Modal, `ModeTag=null`) сверху → `ActiveScreenMode`=null → падает на фазу →
+  подсветка «прыгает» на бой/карту при открытии ESC-меню. Фикс: подсветка из ВЕРХНЕГО НЕ-Modal экрана
+  (Modal-меню не должно менять подсветку таба) — навигатору нужен «верхний тег, игнорируя Modal».
+
+**QA-находки, чинимые в Ф4 (из П1 play-QA):**
+- **#36** ESC-scrim затемняет+блокирует топбар, НЕ скрывает (план II.4 обновлён; Modal в `layer-modal`
+  выше топбара, fullscreen-scrim `pickingMode Position`). Стиль scrim — `--gm-color-scrim` (есть,
+  `tokens.semantic.uss:8`), класс `.gm-screen` scrim (`components.uss:20-27`), backdrop `.gm-screen-backdrop`
+  (`components.uss:11`).
+- **#35** подсветка табов из единого источника (см. K4 выше).
+- **#32** ESC-меню только В ЗАБЕГЕ — гейт по `_runStates.Current != null` в `OnMenuToggle`/`ToggleSystemMenu`
+  (сейчас ESC всегда открывает pause, даже в главном меню).
+- **#33** фикс-высота панели настроек (не прыгает по табам) — `min-height` в USS. Попутно или Трек Д.
+
+**РАЗВИЛКА Ф4 (решить в начале):** навигатору нужен ВТОРОЙ слой (`layer-modal`) — сейчас
+`UiNavigator.Initialize(screensLayer, ctx)` знает один слой. Варианты: (а) `Initialize(screensLayer,
+modalLayer, ctx)` и `Push` кладёт по `Kind` (Modal→modalLayer, иначе screensLayer); (б) навигатор держит
+map `Kind→layer`. Рекомендую (а) — просто и явно. Затрагивает `UiNavigator.Push`/`RemoveScreen`/`PopAll`
+(снимать из правильного слоя — хранить у экрана его слой или искать в обоих).
 
 **Навигатор уже готов к Ф4:** есть `event Changed`, слой отдаётся в `Initialize(screensLayer, ctx)` —
 достаточно передать `layer-screens` вместо корня.
@@ -144,6 +195,15 @@ Backdrop/подсветка табов — по подписке на `navigator
   а не PS here-string `@'…'@` (запорет subject литеральным `@`).
 - **git add точечно** (ветка общая по конвенции): свои файлы; папочные `.meta` Unity кладёт на
   уровень ВЫШЕ новой папки (`Navigation.meta` рядом с `Navigation/`) — добавлять отдельно.
+- **run_tests после правки:** `refresh_unity(compile:request, force)` → `read_console(filter CS)` (0 ошибок)
+  → `run_tests(EditMode)` → `get_test_job(wait_timeout:180)`. **Готча:** первый `get_test_job` после
+  компиляции может вернуть «No Unity Editor instances found» (domain reload отвалил мост на секунды) —
+  просто переспросить `get_test_job` тем же `job_id`, мост переподключится. Текущий baseline: **408/408**
+  EditMode (#37 добавил 1 регресс-тест к 407).
+- **LF→CRLF warnings** при `git add` .cs на Windows — НОРМА (`autocrlf`), не ошибка, игнорировать.
+- **Cooperative-cancellation (для будущих флоу):** ждать чужой tcs по токену = `await
+  tcs.Task.AttachExternalCancellation(ct)` (UniTask) — при отмене бросает `OperationCanceledException`.
+  Это паттерн всех узловых флоу после #37.
 
 ---
 
