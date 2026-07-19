@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Diagnostics;
 using Guildmaster.Guild;
 using MessagePipe;
 using UnityEngine;
@@ -108,7 +109,7 @@ namespace Guildmaster.UI
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
         private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
         private IPublisher<RelicDragEvent> _relicDragPub; // QA #5: drag реликвии из грида → фаза расстановки
-        private IPublisher<ToggleTestZoneRequest> _testZonePub; // QA #2: «Бой» вне забега = ИНТЕНТ тумблера тест-зоны
+        private IPublisher<SetTestZoneRequest> _testZonePub; // радио-табы: целевое состояние тест-зоны (бой/не-бой)
         private ISubscriber<TestZoneChangedEvent> _testZoneChangedSub; // Ф5: СОСТОЯНИЕ тест-зоны → Sheet-экран
         private IDisposable _testZoneChangedSubscription;
 
@@ -120,7 +121,7 @@ namespace Guildmaster.UI
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
             ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub,
-            IPublisher<ToggleTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub)
+            IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub)
         {
             _router = router;
             _relicDragPub = relicDragPub;
@@ -185,6 +186,7 @@ namespace Guildmaster.UI
             // Ф5: СОСТОЯНИЕ тест-зоны (владелец — DeploymentController) → показать/снять Sheet-экран «Бой».
             _testZoneChangedSubscription = _testZoneChangedSub?.Subscribe(e =>
             {
+                UiTrace.Log($"bootstrap: TestZoneChanged(Active={e.Active}) → {(e.Active ? "ShowTestZone" : "HideTestZone")}");
                 if (e.Active) _router.ShowTestZone();
                 else          _router.HideTestZone();
             });
@@ -243,9 +245,9 @@ namespace Guildmaster.UI
                 _topBar = new RunModeBarView(
                     _runModeBar,
                     key => _loc?.GetString(key),
-                    onMap: OpenMapView,
-                    onBattle: OnBattleMode,
-                    onInventory: ToggleInventory,
+                    onMap: GoToMap,             // радио-режимы: таб = перейти в режим (не тумблер)
+                    onBattle: GoToBattle,
+                    onInventory: GoToInventory,
                     onTactics: () => { },       // задел под будущий экран AI-тактики
                     onCompendium: () => { },    // задел под компендиум
                     onMenu: () => _router.ToggleSystemMenu(),
@@ -258,7 +260,7 @@ namespace Guildmaster.UI
                 _topBar = new RunTopBarView(
                     _runTopBar,
                     key => _loc?.GetString(key),
-                    onHub: ToggleInventory,
+                    onHub: GoToInventory,
                     onSettings: () => _router.OpenSettings(),
                     onStart: () => _clock?.RequestStart());
             }
@@ -348,32 +350,51 @@ namespace Guildmaster.UI
             if (_topBar is RunModeBarView modeBar) modeBar.SetActiveMode(ActiveMode(phase));
         }
 
-        // Режим «Инвентарь» — тумблер (Ф6): роутер сам решает открыть/снять по своей ссылке (смерть _inventoryOpen).
-        private void ToggleInventory()
+        // ── Радио-режимы табов (Карта/Бой/Инвентарь — включён РОВНО один; таб = перейти в режим, НЕ тумблер) ──
+        // Каждый метод приводит стек+мир к целевому режиму идемпотентными действиями (повтор = no-op).
+
+        // «Инвентарь» = бой + инвентарь над ним: войти в бой (скрыть карту) + показать инвентарь поверх мира.
+        private void GoToInventory()
         {
+            UiTrace.Log($"topbar «Инвентарь» → GoToInventory (invOpen={_router.IsInventoryOpen}, phase={_clock?.Phase}, hasMap={_router.HasMapInStack})");
             if (_loadoutInventoryScreen == null) { _router.OpenHub(); return; } // фолбэк на старый хаб, если ассет не назначен
+            RequestTestZone(true); // сначала бой (скрыть карту петли) — идемпотентно
             int gold = _runStates?.Current != null ? _runStates.Current.Gold : 0;
             // QA #5: drag карточки реликвии → публикуем RelicDragEvent, фаза расстановки рисует призрак и надевает.
-            _router.ToggleInventory(gold, PublishRelicDrag);
+            _router.ShowInventory(gold, PublishRelicDrag); // инвентарь над боем — идемпотентно
         }
 
         private void PublishRelicDrag(Guildmaster.Data.Definitions.RelicData relic, RelicDragPhase phase)
             => _relicDragPub?.Publish(new RelicDragEvent(relic, phase));
 
-        // Кнопка «Бой» (Ф5): инвентарь открыт → «Бой» его закрывает (вернуться к чистому виду геймплея; карта под
-        // ним живёт — не PopAll). Иначе — ИНТЕНТ тумблера тест-зоны: решение вход/выход и показ Sheet принимает
-        // владелец состояния (DeploymentController + подписка на TestZoneChangedEvent). Карту НЕ трогаем — она
-        // прячется правилом видимости под Sheet тест-зоны (снос ручного HideTopForTest, K5).
-        private void OnBattleMode()
+        // «Бой» = чистый бой: закрыть инвентарь + войти в бой (скрыть карту). Повтор «Бой» = уже в бою = no-op
+        // (никакого выхода на карту — это был баг тумблера). Выход из боя на карту = таб «Карта».
+        private void GoToBattle()
         {
             if (_clock == null) return;
-            if (_router.IsInventoryOpen) { ToggleInventory(); return; }
-            _testZonePub?.Publish(new ToggleTestZoneRequest());
+            UiTrace.Log($"topbar «Бой» → GoToBattle (invOpen={_router.IsInventoryOpen}, phase={_clock.Phase}, hasMap={_router.HasMapInStack})");
+            _router.HideInventory(); // идемпотентно
+            RequestTestZone(true);   // войти в бой (скрыть карту) — идемпотентно
         }
+
+        // «Карта» = показать карту: закрыть инвентарь + выйти из боя (карта петли под геймплеем вернётся). Если
+        // карты петли в стеке нет (реальный бой/меню) — read-only просмотр текущей карты поверх мира.
+        private void GoToMap()
+        {
+            UiTrace.Log($"topbar «Карта» → GoToMap (invOpen={_router.IsInventoryOpen}, phase={_clock?.Phase}, hasMap={_router.HasMapInStack})");
+            _router.HideInventory();  // идемпотентно
+            RequestTestZone(false);   // выйти из тест-зоны → карта петли покажется (SyncVisibility) — идемпотентно
+            if (!_router.HasMapInStack) OpenMapView(); // карты петли нет → read-only просмотр
+        }
+
+        // Publish целевого состояния тест-зоны (радио). Владелец (DeploymentController) приводит мир к бою/не-бою
+        // идемпотентно; результат — TestZoneChangedEvent → Sheet-экран навигатора.
+        private void RequestTestZone(bool active) => _testZonePub?.Publish(new SetTestZoneRequest(active));
 
         // Режим «Карта» — открыть карту акта read-only (просмотр текущей карты; клик по узлу закрывает просмотр).
         private void OpenMapView()
         {
+            UiTrace.Log("  → OpenMapView (read-only просмотр текущей карты)");
             RunState run = _runStates?.Current;
             if (run?.Map == null || run.Map.Nodes == null || run.Map.Nodes.Length == 0) return;
             var ids = new List<string>();

@@ -43,7 +43,7 @@ namespace Guildmaster.Game
         private readonly ISubscriber<EquipRelicRequest> _equipSub;
         private readonly ISubscriber<EquipRelicAtCursorRequest> _equipAtCursorSub;
         private readonly ISubscriber<RelicDragEvent> _relicDragSub; // QA #5: drag реликвии из инвентаря на юнита
-        private readonly ISubscriber<ToggleTestZoneRequest> _testZoneSub; // QA #2: «Бой» вне забега = тест-зона (интент)
+        private readonly ISubscriber<SetTestZoneRequest> _testZoneSub; // радио-табы: целевое состояние тест-зоны (интент)
         private readonly IPublisher<TestZoneChangedEvent> _testZoneChangedPub; // Ф5: вещаем СОСТОЯНИЕ (единый источник)
         private readonly IBattleSession   _session;
         private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
@@ -82,7 +82,7 @@ namespace Guildmaster.Game
             ISubscriber<EquipRelicRequest> equipSub,
             ISubscriber<EquipRelicAtCursorRequest> equipAtCursorSub,
             ISubscriber<RelicDragEvent> relicDragSub,
-            ISubscriber<ToggleTestZoneRequest> testZoneSub,
+            ISubscriber<SetTestZoneRequest> testZoneSub,
             IPublisher<TestZoneChangedEvent> testZoneChangedPub,
             IBattleSession session,
             CameraModeController cameraModes)
@@ -111,7 +111,7 @@ namespace Guildmaster.Game
             _equipSubscription = _equipSub.Subscribe(OnEquip);
             _equipAtCursorSubscription = _equipAtCursorSub.Subscribe(OnEquipAtCursor);
             _relicDragSubscription = _relicDragSub?.Subscribe(OnRelicDrag);
-            _testZoneSubscription = _testZoneSub?.Subscribe(OnToggleTestZone);
+            _testZoneSubscription = _testZoneSub?.Subscribe(OnSetTestZone);
 
             // Верхняя панель забега (план 12): часы боя + кнопка «Начать».
             // Persist-мир: скоуп живёт всю сессию, поэтому фазу НЕ выставляем на Start (иначе вне боя
@@ -166,15 +166,23 @@ namespace Guildmaster.Game
         // ── Тест-зона (QA #2): «Бой» вне забега → расстановка стоящего отряда БЕЗ врагов ────────
         // Отряд уже стоит на арене вне боя (WorldStageController по RunPartyReadyEvent). Тумблер: вошли в
         // тест-расстановку → «Бой» ещё раз выходит. Боевую расстановку (узел боя) тумблер не трогает.
-        private void OnToggleTestZone(ToggleTestZoneRequest _)
+        // Радио-режимы: топбар просит целевое СОСТОЯНИЕ (Active=бой, !Active=не-бой). Идемпотентно — повтор
+        // того же = no-op (табы переключают режим, не тоглят). Вход только вне боя из стоящего отряда;
+        // выход — только из ТЕСТ-расстановки (боевую, !testZone, «Карта» не трогает).
+        private void OnSetTestZone(SetTestZoneRequest req)
         {
-            if (_deploying)
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.OnSetTestZone(Active={req.Active}) (deploying={_deploying}, testZone={_testZone}, phase={_session.Phase})");
+            if (req.Active)
             {
-                if (_testZone) ExitTestZone(); // из тест-расстановки — выйти; боевую (!_testZone) не трогаем
-                return;
+                if (_deploying) { Guildmaster.Diagnostics.UiTrace.Log("ctrl: уже в расстановке — no-op"); return; } // тест или боевая — уже в бою
+                if (_session.Phase != BattlePhase.None) { Guildmaster.Diagnostics.UiTrace.Log("ctrl: идёт бой (phase!=None) — вход в тест-зону запрещён"); return; }
+                EnterTestZone();
             }
-            if (_session.Phase != BattlePhase.None) return; // идёт бой (Fighting) — в тест-зону не входим
-            EnterTestZone();
+            else
+            {
+                if (_deploying && _testZone) ExitTestZone(); // выйти из ТЕСТ-расстановки; боевую не трогаем
+                else Guildmaster.Diagnostics.UiTrace.Log("ctrl: не в тест-зоне — выходить нечего (no-op)");
+            }
         }
 
         private void EnterTestZone()
@@ -189,6 +197,7 @@ namespace Guildmaster.Game
                 if (u.Team != 0 || u.IsDead) continue;
                 _slots.Add(new Slot { Relic = u.Unit as RelicData, Pos = u.Position, LiveUnitId = u.Id });
             }
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.EnterTestZone (слотов из стоящих team-0: {_slots.Count})");
             if (_slots.Count == 0)
             {
                 Debug.LogWarning("[DeploymentController] - тест-зона: отряд не стоит (нет активного забега) → пропуск");
@@ -209,6 +218,7 @@ namespace Guildmaster.Game
 
         private void ExitTestZone()
         {
+            Guildmaster.Diagnostics.UiTrace.Log("ctrl.ExitTestZone → phase None, TestZoneChanged(false)");
             _deploying = false;
             _testZone  = false;
             _dragged   = null;

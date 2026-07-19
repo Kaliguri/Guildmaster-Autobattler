@@ -6,6 +6,7 @@ using Guildmaster.Core.Flow;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Diagnostics;
 using Guildmaster.Guild;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -226,15 +227,30 @@ namespace Guildmaster.UI
         /// <summary>Открыт ли инвентарь (для backdrop-логики бутстрапа — единый источник вместо флага).</summary>
         public bool IsInventoryOpen => _inventoryScreen != null;
 
-        /// <summary>Тумблер инвентаря: открыт → снять; закрыт → построить Sheet-тело и показать поверх геймплея.</summary>
-        public void ToggleInventory(int gold, Action<RelicData, RelicDragPhase> onRelicDrag = null)
-        {
-            if (_inventoryScreen != null) { _nav.Remove(_inventoryScreen); return; } // OnExit обнулит ссылку
-            if (_root == null || _loadoutInventoryUxml == null || _arcanaCardUxml == null) return;
+        /// <summary>Есть ли карта петли акта в стеке (result-экран выбора узла) — скрытая под геймплеем или видимая.
+        /// Отличает «вернуться на карту петли» (выйти из боя) от read-only просмотра (нет карты петли).</summary>
+        public bool HasMapInStack => _nav.AnyScreen(s => s.ModeTag == "map");
 
+        /// <summary>Показать инвентарь (радио-режим): Sheet-тело поверх геймплея. Идемпотентно (уже открыт → no-op).</summary>
+        public void ShowInventory(int gold, Action<RelicData, RelicDragPhase> onRelicDrag = null)
+        {
+            if (_inventoryScreen != null) { UiTrace.Log("router.ShowInventory: уже открыт → no-op"); return; }
+            if (_root == null || _loadoutInventoryUxml == null || _arcanaCardUxml == null)
+            {
+                UiTrace.Log("router.ShowInventory: ассеты не готовы → no-op");
+                return;
+            }
+            UiTrace.Log("router.ShowInventory: Push inventory Sheet");
             _inventoryScreen = new RouterScreen(ScreenKind.Sheet, () => BuildInventory(gold, onRelicDrag),
                                                 modeTag: "inventory", onExit: () => _inventoryScreen = null);
             _nav.Push(_inventoryScreen); // QA #21: ModeTag "inventory" подсвечивает таб
+        }
+
+        /// <summary>Снять инвентарь (радио-режим). Идемпотентно (не открыт → no-op). Remove из любого места стека.</summary>
+        public void HideInventory()
+        {
+            UiTrace.Log($"router.HideInventory: {(_inventoryScreen != null ? "Remove inventory" : "нет экрана → no-op")}");
+            if (_inventoryScreen != null) _nav.Remove(_inventoryScreen); // OnExit обнулит ссылку
         }
 
         private VisualElement BuildInventory(int gold, Action<RelicData, RelicDragPhase> onRelicDrag)
@@ -266,7 +282,8 @@ namespace Guildmaster.UI
         /// <summary>Войти в UI тест-зоны: Sheet-пространство «Бой» поверх стека (карта под ним прячется).</summary>
         public void ShowTestZone()
         {
-            if (_testZoneScreen != null) return;
+            if (_testZoneScreen != null) { UiTrace.Log("router.ShowTestZone: уже показан → no-op"); return; }
+            UiTrace.Log("router.ShowTestZone: Push test-zone Sheet");
             _testZoneScreen = new RouterScreen(ScreenKind.Sheet, BuildTestZoneSpace, modeTag: "battle",
                                                onExit: () => _testZoneScreen = null);
             _nav.Push(_testZoneScreen);
@@ -275,6 +292,7 @@ namespace Guildmaster.UI
         /// <summary>Выйти из UI тест-зоны: снять Sheet-пространство из любого места стека (даже под инвентарём).</summary>
         public void HideTestZone()
         {
+            UiTrace.Log($"router.HideTestZone: {(_testZoneScreen != null ? "Remove test-zone" : "нет экрана → no-op")}");
             if (_testZoneScreen != null) _nav.Remove(_testZoneScreen); // OnExit обнулит _testZoneScreen
         }
 

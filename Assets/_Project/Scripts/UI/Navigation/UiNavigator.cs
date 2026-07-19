@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Core.Input;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Diagnostics;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -102,6 +104,7 @@ namespace Guildmaster.UI
             SyncInput();
             FocusTop();
             Changed?.Invoke();
+            UiTrace.Log($"nav.Push {Desc(screen)} → [{StackDesc()}] suppress={_input?.GameplaySuppressed}");
 
             if (ct.CanBeCanceled)
                 ct.Register(() => RemoveScreen(screen)); // RemoveScreen идемпотентен (уже снят → no-op)
@@ -121,6 +124,8 @@ namespace Guildmaster.UI
             Top?.OnFocus();
             FocusTop();
             Changed?.Invoke();
+
+            UiTrace.Log($"nav.Pop {Desc(top)} → [{StackDesc()}] suppress={_input?.GameplaySuppressed}");
 
             // Резолв ПОСЛЕ снятия из стека и layer — гарантия «закрыть ДО колбэка» (II.5): продолжение
             // потребителя (напр. открыть следующий экран) выполняется, когда этот экран уже снят.
@@ -152,6 +157,7 @@ namespace Guildmaster.UI
             SyncVisibility();
             SyncInput();
             Changed?.Invoke();
+            UiTrace.Log($"nav.PopAll ({snapshot.Length} снято) → [{StackDesc()}] suppress={_input?.GameplaySuppressed}");
 
             foreach (UiScreen s in snapshot) s.ResolveDefaultIfPending();
         }
@@ -205,7 +211,7 @@ namespace Guildmaster.UI
         private void RemoveScreen(UiScreen screen)
         {
             int idx = _stack.IndexOf(screen);
-            if (idx < 0) return; // уже снят (напр. Pop уже удалил, а мы пришли из ResolveDefaultIfPending)
+            if (idx < 0) { UiTrace.Log($"nav.Remove {Desc(screen)} — УЖЕ СНЯТ (no-op)"); return; }
             _stack.RemoveAt(idx);
             screen.Root?.RemoveFromHierarchy();
             screen.OnExit();
@@ -214,6 +220,25 @@ namespace Guildmaster.UI
             SyncInput();
             FocusTop();
             Changed?.Invoke();
+            UiTrace.Log($"nav.Remove {Desc(screen)} (был idx {idx}) → [{StackDesc()}] suppress={_input?.GameplaySuppressed}");
+        }
+
+        // Компактное описание экрана и стека для трейса (UiTrace). vis/hid = фактический display корня.
+        private static string Desc(UiScreen s)
+            => s == null ? "null" : $"{s.Kind}:{s.ModeTag ?? "-"}";
+
+        private string StackDesc()
+        {
+            if (_stack.Count == 0) return "пусто";
+            var sb = new StringBuilder();
+            for (int i = 0; i < _stack.Count; i++)
+            {
+                UiScreen s = _stack[i];
+                bool vis = s.Root != null && s.Root.style.display.value == DisplayStyle.Flex;
+                sb.Append(Desc(s)).Append(vis ? ",vis" : ",hid");
+                if (i < _stack.Count - 1) sb.Append(" | ");
+            }
+            return sb.ToString();
         }
 
         // Видимость по модели «карта ↔ геймплей — взаимоисключающие пространства» (решение Макса, Ф5).
