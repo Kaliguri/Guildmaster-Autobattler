@@ -54,10 +54,7 @@ namespace Guildmaster.UI
         [Tooltip("UXML главного меню (Начать/Продолжить/Настройки/Выход).")]
         [SerializeField] private VisualTreeAsset _mainMenuScreen;
 
-        [Tooltip("UXML верхней панели забега (StS-style: хаб/опции/золото, центр «Начать»↔таймер, акт/время). LEGACY — заменён на _runModeBar.")]
-        [SerializeField] private VisualTreeAsset _runTopBar;
-
-        [Tooltip("UXML глобальной панели забега (app-shell редизайн): режимы-навигация + HP/золото/акт/таймер/меню. Заменяет _runTopBar.")]
+        [Tooltip("UXML глобальной панели забега (app-shell): режимы-навигация + HP/золото/акт/таймер/меню.")]
         [SerializeField] private VisualTreeAsset _runModeBar;
 
         [Tooltip("UXML лоадаут-хаба (гильдия: 4 сосуда + навешивание реликвий из запаса). Открывается кнопкой «Хаб».")]
@@ -94,7 +91,7 @@ namespace Guildmaster.UI
         private IDisposable _openOutcomeSubscription;
         private IDisposable _openMainMenuSubscription;
         private UIDocument _doc;
-        private IRunTopBar _topBar;
+        private RunModeBarView _topBar;
         private VisualElement _backdrop; // постоянный задний фон под не-боевыми экранами (выкл в бою/инвентаре)
 
         // Слои-контейнеры (Ф4, план II.4): фиксированный z-порядок = порядок добавления в корень панели.
@@ -240,31 +237,17 @@ namespace Guildmaster.UI
         // живут в ОТДЕЛЬНОМ слое ПОД экранами (QA #19/#23) — порядок слоёв даёт z без SendToBack (снос K2).
         private void CreateAndPlaceTopBar()
         {
-            if (_runModeBar != null)
-            {
-                _topBar = new RunModeBarView(
-                    _runModeBar,
-                    key => _loc?.GetString(key),
-                    onMap: GoToMap,             // радио-режимы: таб = перейти в режим (не тумблер)
-                    onBattle: GoToBattle,
-                    onInventory: GoToInventory,
-                    onTactics: () => { },       // задел под будущий экран AI-тактики
-                    onCompendium: () => { },    // задел под компендиум
-                    onMenu: () => _router.ToggleSystemMenu(),
-                    onStart: () => _clock?.RequestStart());
-            }
-            else if (_runTopBar != null)
-            {
-                // Фолбэк, пока _runModeBar не назначен в CoreScene (координация с параллельной работой по сцене):
-                // старая панель работает как раньше, «Гильдия» открывает новый инвентарь.
-                _topBar = new RunTopBarView(
-                    _runTopBar,
-                    key => _loc?.GetString(key),
-                    onHub: GoToInventory,
-                    onSettings: () => _router.OpenSettings(),
-                    onStart: () => _clock?.RequestStart());
-            }
-            else return;
+            if (_runModeBar == null) return;
+            _topBar = new RunModeBarView(
+                _runModeBar,
+                key => _loc?.GetString(key),
+                onMap: GoToMap,             // радио-режимы: таб = перейти в режим (не тумблер)
+                onBattle: GoToBattle,
+                onInventory: GoToInventory,
+                onTactics: () => { },       // задел под будущий экран AI-тактики
+                onCompendium: () => { },    // задел под компендиум
+                onMenu: () => _router.ToggleSystemMenu(),
+                onStart: () => _clock?.RequestStart());
 
             _topBar.Root.style.display = DisplayStyle.None; // скрыта, пока нет активного забега
             _layerTopbar.Add(_topBar.Root);
@@ -347,7 +330,7 @@ namespace Guildmaster.UI
 
             // QA #11/#21/#35: подсветка активного таба из единого источника — верхний НЕ-Modal экран навигатора
             // (ActiveScreenMode = nav.ActiveModeTag, игнорит Modal) либо «Бой» по фазе. Modal-меню не сбивает таб.
-            if (_topBar is RunModeBarView modeBar) modeBar.SetActiveMode(ActiveMode(phase));
+            _topBar.SetActiveMode(ActiveMode(phase));
         }
 
         // ── Радио-режимы табов (Карта/Бой/Инвентарь — включён РОВНО один; таб = перейти в режим, НЕ тумблер) ──
