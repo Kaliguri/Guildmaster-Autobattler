@@ -35,7 +35,8 @@ namespace Guildmaster.Tests.EditMode.Guild
             var ctx = Ctx();
             int before = _runStates.Gold;
             var reward = new CountingReward();
-            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Battle, reward, _runStates);
+            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Battle, reward, _runStates,
+                                          new ImmediateContinue(), postWinDelaySeconds: 0f);
 
             EventResult result = flow.Run(ctx).GetAwaiter().GetResult();
 
@@ -51,7 +52,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             var ctx = Ctx();
             var reward = new CountingReward();
             var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Elite, reward, _runStates,
-                                          rewardCount: 2);
+                                          new ImmediateContinue(), rewardCount: 2, postWinDelaySeconds: 0f);
 
             flow.Run(ctx).GetAwaiter().GetResult();
 
@@ -64,7 +65,8 @@ namespace Guildmaster.Tests.EditMode.Guild
             var ctx = Ctx();
             int before = _runStates.Gold;
             var reward = new CountingReward();
-            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Defeated), RewardTier.Elite, reward, _runStates);
+            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Defeated), RewardTier.Elite, reward, _runStates,
+                                          new ImmediateContinue(), postWinDelaySeconds: 0f);
 
             EventResult result = flow.Run(ctx).GetAwaiter().GetResult();
 
@@ -85,6 +87,12 @@ namespace Guildmaster.Tests.EditMode.Guild
             public int Calls { get; private set; }
             public RewardTier LastTier { get; private set; }
             public UniTask PresentAsync(RewardTier tier, CancellationToken ct = default) { Calls++; LastTier = tier; return UniTask.CompletedTask; }
+        }
+
+        // Headless-мост «К наградам»: резолвит мгновенно (в бою эту кнопку показывает UI).
+        private sealed class ImmediateContinue : IContinuePresenter
+        {
+            public UniTask WaitForContinueAsync(string labelKey = null, CancellationToken ct = default) => UniTask.CompletedTask;
         }
 
         private sealed class MemSave : ISaveService

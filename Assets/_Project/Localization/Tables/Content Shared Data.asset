@@ -347,6 +347,10 @@ MonoBehaviour:
     m_Key: ui.run.start
     m_Metadata:
       m_Items: []
+  - m_Id: 3208402883043328
+    m_Key: ui.reward.continue
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

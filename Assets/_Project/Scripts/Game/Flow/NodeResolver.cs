@@ -32,13 +32,14 @@ namespace Guildmaster.Game.Flow
         private readonly ShopController     _shop;
         private readonly IRewardPresenter   _reward;
         private readonly RunStateService    _runStates;
+        private readonly IContinuePresenter _continue;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<OpenShopRequest>      _openShopPub;
         private readonly IPublisher<OpenChestRequest>     _openChestPub;
 
         public NodeResolver(IContentDatabase content, ISceneLoader scenes, IBattleSession session,
                             ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
-                            IRewardPresenter reward, RunStateService runStates,
+                            IRewardPresenter reward, RunStateService runStates, IContinuePresenter continuePresenter,
                             IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub,
                             IPublisher<OpenChestRequest> openChestPub)
         {
@@ -50,6 +51,7 @@ namespace Guildmaster.Game.Flow
             _shop         = shop;
             _reward       = reward;
             _runStates    = runStates;
+            _continue     = continuePresenter;
             _openEventPub = openEventPub;
             _openShopPub  = openShopPub;
             _openChestPub = openChestPub;
@@ -87,7 +89,7 @@ namespace Guildmaster.Game.Flow
                     var battle = new BattleFlow(effective, _scenes, _session, _localPlayer,
                                                 () => _runStates.TrySpendRestart()); // пул перезапусков акта (C1)
                     int rewardCount = wantElite ? 2 : 1;   // элитка — два выбора реликвии подряд (B5)
-                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, rewardCount);
+                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, _continue, rewardCount);
                 }
 
                 case MapNodeType.TextEvent:
