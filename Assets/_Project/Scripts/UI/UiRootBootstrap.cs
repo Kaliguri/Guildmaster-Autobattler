@@ -274,19 +274,33 @@ namespace Guildmaster.UI
         private void PublishRelicDrag(Guildmaster.Data.Definitions.RelicData relic, RelicDragPhase phase)
             => _relicDragPub?.Publish(new RelicDragEvent(relic, phase));
 
-        // Кнопка «Бой» (QA #2): в бою — вернуть боевой вид (закрыть оверлеи). Вне боя — тумблер тест-зоны
-        // (серая арена с отрядом, без врагов). НО не поверх flow-экрана (карта петли акта/ивент/магазин):
-        // их снос уронил бы забег (resolve узла = null). Только когда чисто или открыт лишь инвентарь.
+        private bool _testActive; // тест-зона активна (вошли по «Бой» вне боя)
+
+        // Кнопка «Бой» (QA #2): в бою — вернуть боевой вид. Вне боя — ТУМБЛЕР тест-зоны (серая арена + расстановка
+        // отряда без врагов). С КАРТЫ петли акта тоже можно (расставиться сразу после старта): карту не сносим
+        // (иначе resolve узла = null → Aborted), а ПРЯЧЕМ — на выходе возвращаем. Инвентарь/пусто — входим; прочий
+        // модальный flow (ивент/магазин/меню) — no-op (не мешаем).
         private void OnBattleMode()
         {
             if (_clock == null) return;
             if (_clock.Phase == BattlePhase.Fighting) { _router.CloseOverlays(); return; }
 
-            string mode = _router.ActiveScreenMode;
-            if (mode != null && mode != "inventory") return; // на карте/ивенте «Бой» = no-op (не мешаем забегу)
+            if (_testActive)
+            {
+                _testZonePub?.Publish(new ToggleTestZoneRequest()); // выйти из тест-зоны
+                _router.ShowHiddenForTest();                        // вернуть скрытую карту (если была)
+                _testActive = false;
+                return;
+            }
 
-            _router.CloseOverlays();                          // закрыть инвентарь → показать арену
+            string mode = _router.ActiveScreenMode;
+            if (mode == "map")            _router.HideTopForTest();  // скрыть карту петли (забег цел), отдать ввод миру
+            else if (mode == "inventory") _router.CloseOverlays();   // закрыть инвентарь → показать арену
+            else if (_router.IsOpen)      return;                    // ивент/магазин/меню — не трогаем
+            // иначе стек пуст — просто входим
+
             _testZonePub?.Publish(new ToggleTestZoneRequest());
+            _testActive = true;
         }
 
         // Режим «Карта» — открыть карту акта read-only (просмотр текущей карты; клик по узлу закрывает просмотр).

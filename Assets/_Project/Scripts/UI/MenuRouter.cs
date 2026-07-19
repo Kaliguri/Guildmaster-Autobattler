@@ -223,6 +223,32 @@ namespace Guildmaster.UI
         /// <summary>Режим-таб верхнего оверлея (QA #21): "inventory"/"map"/null. Единый источник подсветки топбара.</summary>
         public string ActiveScreenMode => _stack.Count > 0 ? _stack.Peek().userData as string : null;
 
+        // Верхний экран, ВРЕМЕННО скрытый под тест-зоной (QA #2): карту петли акта не сносим (иначе resolve
+        // узла = null → Aborted забег), а прячем — на выходе из тест-зоны возвращаем. Suppress снимаем, чтобы
+        // ввод шёл в мир (расстановка), и восстанавливаем на возврате.
+        private VisualElement _hiddenForTest;
+
+        /// <summary>Скрыть верхний оверлей на время тест-зоны (не detach) и отдать ввод миру (QA #2).</summary>
+        public void HideTopForTest()
+        {
+            if (_stack.Count == 0) return;
+            _hiddenForTest = _stack.Peek();
+            _hiddenForTest.style.display = DisplayStyle.None;
+            _input.GameplaySuppressed = false;
+        }
+
+        /// <summary>Вернуть скрытый оверлей после тест-зоны и восстановить его модальный suppress (QA #2).</summary>
+        public void ShowHiddenForTest()
+        {
+            if (_hiddenForTest == null) return;
+            _hiddenForTest.style.display = DisplayStyle.Flex;
+            _hiddenForTest = null;
+            _input.GameplaySuppressed = _stack.Count > 0 && !_stack.Peek().ClassListContains(TransparentScreenClass);
+        }
+
+        /// <summary>Скрыт ли сейчас оверлей под тест-зоной (карта петли акта).</summary>
+        public bool HasHiddenForTest => _hiddenForTest != null;
+
         private void Pop()
         {
             if (_stack.Count == 0) return;
