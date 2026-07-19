@@ -43,7 +43,8 @@ namespace Guildmaster.Game
         private readonly ISubscriber<EquipRelicRequest> _equipSub;
         private readonly ISubscriber<EquipRelicAtCursorRequest> _equipAtCursorSub;
         private readonly ISubscriber<RelicDragEvent> _relicDragSub; // QA #5: drag реликвии из инвентаря на юнита
-        private readonly ISubscriber<ToggleTestZoneRequest> _testZoneSub; // QA #2: «Бой» вне забега = тест-зона
+        private readonly ISubscriber<ToggleTestZoneRequest> _testZoneSub; // QA #2: «Бой» вне забега = тест-зона (интент)
+        private readonly IPublisher<TestZoneChangedEvent> _testZoneChangedPub; // Ф5: вещаем СОСТОЯНИЕ (единый источник)
         private readonly IBattleSession   _session;
         private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
 
@@ -82,6 +83,7 @@ namespace Guildmaster.Game
             ISubscriber<EquipRelicAtCursorRequest> equipAtCursorSub,
             ISubscriber<RelicDragEvent> relicDragSub,
             ISubscriber<ToggleTestZoneRequest> testZoneSub,
+            IPublisher<TestZoneChangedEvent> testZoneChangedPub,
             IBattleSession session,
             CameraModeController cameraModes)
         {
@@ -96,6 +98,7 @@ namespace Guildmaster.Game
             _equipAtCursorSub = equipAtCursorSub;
             _relicDragSub  = relicDragSub;
             _testZoneSub   = testZoneSub;
+            _testZoneChangedPub = testZoneChangedPub;
             _session       = session;
             _cameraModes   = cameraModes;
         }
@@ -116,7 +119,9 @@ namespace Guildmaster.Game
             // Фаза выставляется по факту: Deployment на входе в бой (OnFreeDeployment), Fighting на «Начать»,
             // None — вне боя (сброс через BattleBootstrap.ResetToWorld).
             _session.BindClock(() => _sim.ElapsedSeconds);
-            _session.BindStart(() => { if (_deploying) StartCombat(); });
+            // «Начать» стартует бой только из БОЕВОЙ расстановки. В тест-зоне бой пока не запускается (полигон
+            // только для расстановки/реликвий — решение Макса); кнопка там — no-op до появления боя в тест-зоне.
+            _session.BindStart(() => { if (_deploying && !_testZone) StartCombat(); });
         }
 
         public void Dispose()
@@ -154,6 +159,7 @@ namespace Guildmaster.Game
             _deploying = true;
             _testZone  = false; // боевая расстановка (узел боя), не тест-зона
             _session.SetPhase(BattlePhase.Deployment); // центр панели = «Начать»
+            _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: боевая расстановка ≠ тест-зона (гарантия сброса)
             FrameCameraForDeployment(); // QA #4: свободная камера со стартовым боевым кадром (не отзум на всю зону)
         }
 
@@ -167,6 +173,7 @@ namespace Guildmaster.Game
                 if (_testZone) ExitTestZone(); // из тест-расстановки — выйти; боевую (!_testZone) не трогаем
                 return;
             }
+            if (_session.Phase != BattlePhase.None) return; // идёт бой (Fighting) — в тест-зону не входим
             EnterTestZone();
         }
 
@@ -196,6 +203,7 @@ namespace Guildmaster.Game
             _deploying = true;
             _testZone  = true;
             _session.SetPhase(BattlePhase.Deployment);
+            _testZoneChangedPub?.Publish(new TestZoneChangedEvent(true)); // Ф5: состояние → скин серой зоны + UI-Sheet
             FrameCameraForDeployment();
         }
 
@@ -209,6 +217,7 @@ namespace Guildmaster.Game
             _input.SetContext(InputContext.None);
             _cameraModes?.ExitToActionView();
             _session.SetPhase(BattlePhase.None); // вне боя — панель без «Начать»/таймера
+            _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: вышли → цветная арена + снять Sheet
         }
 
         // Стартовый кадр расстановки: центр и разброс ВСЕХ живых юнитов (свои + враги — видно противника).
@@ -497,6 +506,7 @@ namespace Guildmaster.Game
             _input.SetContext(InputContext.Combat);
             _cameraModes?.ExitToActionView(); // QA #4: вернуть боевой вид (слежение) на старте боя
             _session.SetPhase(BattlePhase.Fighting); // центр панели = таймер боя
+            _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: бой начался → не тест-зона (гарантия сброса)
         }
 
         // ── Хелперы ──────────────────────────────────────────────────────────

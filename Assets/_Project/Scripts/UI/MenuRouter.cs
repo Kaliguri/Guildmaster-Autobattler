@@ -109,19 +109,26 @@ namespace Guildmaster.UI
         private sealed class RouterScreen : UiScreen
         {
             private readonly Func<VisualElement> _build;
+            private readonly Action _onExit;
             public override ScreenKind Kind { get; }
             public override string ModeTag { get; }
             public string ScreenId { get; }
 
-            public RouterScreen(ScreenKind kind, Func<VisualElement> build, string modeTag = null, string screenId = null)
+            public RouterScreen(ScreenKind kind, Func<VisualElement> build, string modeTag = null,
+                                string screenId = null, Action onExit = null)
             {
                 Kind = kind;
                 _build = build;
                 ModeTag = modeTag;
                 ScreenId = screenId;
+                _onExit = onExit;
             }
 
             public override void Build(UiScreenContext ctx) => Root = _build();
+
+            // Владелец persistent-оверлея (тест-зона/инвентарь, Ф5/Ф6) обнуляет свою ссылку при ЛЮБОМ снятии
+            // (Pop/PopAll/Remove) — иначе PopAll завершения забега оставил бы висячую ссылку → рассинхрон.
+            public override void OnExit() => _onExit?.Invoke();
         }
 
         private void PushScreen(Func<VisualElement> build, ScreenKind kind, string modeTag = null, string screenId = null,
@@ -210,11 +217,28 @@ namespace Guildmaster.UI
         /// зовётся на ЛЮБОМ закрытии (Pop/Esc/PopAll) через DetachFromPanelEvent — бутстрап по нему
         /// возвращает ран-топбар. Реликвии — весь контент (фильтр по владению — Фаза 5); gold из RunState.
         /// </summary>
-        public void OpenInventory(int gold, Action onClose,
-            Action<RelicData, RelicDragPhase> onRelicDrag = null)
+        // Инвентарь (Ф6): формальный Sheet-экран навигатора. ТУМБЛЕР — открыт → снять (Remove из любого места
+        // стека, даже под паузой), закрыт → построить и Push. Владеет экраном роутер (ссылка _inventoryScreen,
+        // обнуляется onExit при ЛЮБОМ снятии — смерть _inventoryOpen/onClose-Detach в бутстрапе, K6). Закрытие
+        // НЕ через PopAll → карта петли акта под инвентарём НЕ сносится (нет Aborted, класс #31).
+        private UiScreen _inventoryScreen;
+
+        /// <summary>Открыт ли инвентарь (для backdrop-логики бутстрапа — единый источник вместо флага).</summary>
+        public bool IsInventoryOpen => _inventoryScreen != null;
+
+        /// <summary>Тумблер инвентаря: открыт → снять; закрыт → построить Sheet-тело и показать поверх геймплея.</summary>
+        public void ToggleInventory(int gold, Action<RelicData, RelicDragPhase> onRelicDrag = null)
         {
+            if (_inventoryScreen != null) { _nav.Remove(_inventoryScreen); return; } // OnExit обнулит ссылку
             if (_root == null || _loadoutInventoryUxml == null || _arcanaCardUxml == null) return;
 
+            _inventoryScreen = new RouterScreen(ScreenKind.Sheet, () => BuildInventory(gold, onRelicDrag),
+                                                modeTag: "inventory", onExit: () => _inventoryScreen = null);
+            _nav.Push(_inventoryScreen); // QA #21: ModeTag "inventory" подсвечивает таб
+        }
+
+        private VisualElement BuildInventory(int gold, Action<RelicData, RelicDragPhase> onRelicDrag)
+        {
             VisualElement screen = LoadoutInventoryView.Build(
                 _loadoutInventoryUxml, _arcanaCardUxml,
                 _loadoutVm.Relics, gold,
@@ -226,18 +250,43 @@ namespace Guildmaster.UI
                 cardAttackAnimation: _settingsVm.CardAttackAnimation,
                 onRelicDrag: onRelicDrag); // QA #5: drag карточки реликвии на юнита в мире
 
-            // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar).
-            // Sheet: навигатор НЕ глушит геймплей — под инвентарём живут юниты/камера (клики разводит
-            // IInputService.PointerOverUI над панелями vs дыркой). Класс gm-screen--transparent остаётся
-            // только как СТИЛЬ (прозрачный фон), из логики suppress ушёл в ScreenKind.Sheet.
+            // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar). Sheet:
+            // навигатор НЕ глушит геймплей — под инвентарём живут юниты/камера (клики разводит PointerOverUI над
+            // панелями vs дыркой). Класс gm-screen--transparent — только СТИЛЬ (прозрачный фон), suppress = Kind.
             screen.AddToClassList(TransparentScreenClass);
-            // Закрытие по любому пути (Pop/Esc/PopAll) → onClose (бутстрап снимет подсветку режима).
-            screen.RegisterCallback<DetachFromPanelEvent>(_ => onClose?.Invoke());
-            PushScreen(() => screen, ScreenKind.Sheet, modeTag: "inventory"); // QA #21: подсветка таба «Инвентарь»
+            return screen;
         }
 
-        /// <summary>Закрыть все оверлеи (режим «Бой»/выход в игру из глобального топбара). No-op если ничего не открыто.</summary>
-        public void CloseOverlays() { if (_nav.IsOpen) _nav.PopAll(); }
+        // Тест-зона (Ф5): «геймплей»-пространство = Sheet-экран навигатора (ModeTag "battle", прозрачный корень,
+        // pickingMode Ignore — мир под ним живёт и кликается). Карта петли акта (Page) под ним прячется правилом
+        // видимости (Sheet скрывает Page) — БЕЗ ручного HideTopForTest (снос K5). Показ/скрытие — по СОСТОЯНИЮ
+        // TestZoneChangedEvent (бутстрап), владелец состояния — DeploymentController. Идемпотентно.
+        private UiScreen _testZoneScreen;
+
+        /// <summary>Войти в UI тест-зоны: Sheet-пространство «Бой» поверх стека (карта под ним прячется).</summary>
+        public void ShowTestZone()
+        {
+            if (_testZoneScreen != null) return;
+            _testZoneScreen = new RouterScreen(ScreenKind.Sheet, BuildTestZoneSpace, modeTag: "battle",
+                                               onExit: () => _testZoneScreen = null);
+            _nav.Push(_testZoneScreen);
+        }
+
+        /// <summary>Выйти из UI тест-зоны: снять Sheet-пространство из любого места стека (даже под инвентарём).</summary>
+        public void HideTestZone()
+        {
+            if (_testZoneScreen != null) _nav.Remove(_testZoneScreen); // OnExit обнулит _testZoneScreen
+        }
+
+        // Прозрачное полноэкранное «окно в мир» тест-зоны: не рисует контента (мир виден сквозь), не ловит ввод
+        // (Ignore — клики идут в мир через PointerOverUI). Несёт лишь роль «мы в геймплей-пространстве тест-зоны».
+        private static VisualElement BuildTestZoneSpace()
+        {
+            var space = new VisualElement { name = "test-zone-space", pickingMode = PickingMode.Ignore };
+            space.style.position = Position.Absolute;
+            space.style.left = 0; space.style.top = 0; space.style.right = 0; space.style.bottom = 0;
+            return space;
+        }
 
         // Титул таро-карты в стиле ГДД (аркан «The X»): «relic.flame_swordsman» → «The Flame Swordsman».
         private static string ArcanaTitle(string id)
@@ -266,30 +315,6 @@ namespace Guildmaster.UI
 
         /// <summary>Режим-таб верхнего оверлея (QA #21): "inventory"/"map"/null. Единый источник подсветки топбара.</summary>
         public string ActiveScreenMode => _nav.ActiveModeTag;
-
-        // Верхний экран, ВРЕМЕННО скрытый под тест-зоной (QA #2): карту петли акта не сносим (иначе resolve
-        // узла = null → Aborted забег), а прячем — на выходе из тест-зоны возвращаем. Мост до Ф5 (там тест-зона
-        // станет Sheet поверх карты и эти методы уйдут); suppress снимаем/пересчитываем через навигатор.
-        private UiScreen _hiddenForTest;
-
-        /// <summary>Скрыть верхний оверлей на время тест-зоны (не detach) и отдать ввод миру (QA #2).</summary>
-        public void HideTopForTest()
-        {
-            _hiddenForTest = _nav.Top;
-            if (_hiddenForTest?.Root != null) _hiddenForTest.Root.style.display = DisplayStyle.None;
-            _input.GameplaySuppressed = false;
-        }
-
-        /// <summary>Вернуть скрытый оверлей после тест-зоны и пересчитать suppress из стека/фазы (QA #2).</summary>
-        public void ShowHiddenForTest()
-        {
-            if (_hiddenForTest?.Root != null) _hiddenForTest.Root.style.display = DisplayStyle.Flex;
-            _hiddenForTest = null;
-            _nav.SyncInput();
-        }
-
-        /// <summary>Скрыт ли сейчас оверлей под тест-зоной (карта петли акта).</summary>
-        public bool HasHiddenForTest => _hiddenForTest != null;
 
         // Прозрачные оверлеи (инвентарь) НЕ глушат геймплей — под ними живёт мир (юниты/камера, развязка
         // через IInputService.PointerOverUI). Класс остаётся ТОЛЬКО как стиль (прозрачный фон); поведение

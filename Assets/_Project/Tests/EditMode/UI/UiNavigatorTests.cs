@@ -131,7 +131,7 @@ namespace Guildmaster.Tests.EditMode.UI
         }
 
         [Test]
-        public void Modal_And_Sheet_KeepScreenBelowVisible()
+        public void Modal_KeepsPageBelowVisible()
         {
             var nav = NewNav(out _, out _);
             var below = new TestScreen(ScreenKind.Page);
@@ -139,12 +139,43 @@ namespace Guildmaster.Tests.EditMode.UI
 
             nav.Push(below);
             nav.Push(modal);
-            Assert.IsTrue(IsVisible(below), "Modal НЕ прячет нижний");
-
-            var sheet = new TestScreen(ScreenKind.Sheet);
-            nav.Push(sheet);
-            Assert.IsTrue(IsVisible(below), "Sheet НЕ прячет нижний");
+            Assert.IsTrue(IsVisible(below), "Modal (scrim) НЕ прячет нижний структурно");
             Assert.IsTrue(IsVisible(modal));
+        }
+
+        [Test]
+        public void Sheet_HidesPageBelow_ButNotSiblingSheet()
+        {
+            var nav = NewNav(out _, out _);
+            var map = new TestScreen(ScreenKind.Page);       // карта петли акта
+            var testZone = new TestScreen(ScreenKind.Sheet); // геймплей: тест-зона
+            var inventory = new TestScreen(ScreenKind.Sheet);// геймплей: инвентарь поверх
+
+            nav.Push(map);
+            nav.Push(testZone);
+            Assert.IsFalse(IsVisible(map), "Sheet (геймплей) ПРЯЧЕТ карту-Page под собой — взаимоисключающие пространства");
+            Assert.IsTrue(IsVisible(testZone));
+
+            nav.Push(inventory);
+            Assert.IsFalse(IsVisible(map), "карта всё ещё скрыта под геймплеем");
+            Assert.IsTrue(IsVisible(testZone), "соседний Sheet не прячет Sheet (оба — окна в один мир)");
+            Assert.IsTrue(IsVisible(inventory));
+        }
+
+        [Test]
+        public void Modal_OverSheetOverPage_PageHidden_RestVisible()
+        {
+            var nav = NewNav(out _, out _);
+            var map = new TestScreen(ScreenKind.Page);
+            var inventory = new TestScreen(ScreenKind.Sheet);
+            var pause = new TestScreen(ScreenKind.Modal);
+
+            nav.Push(map);
+            nav.Push(inventory);
+            nav.Push(pause);
+            Assert.IsFalse(IsVisible(map), "карта скрыта под геймплеем (Sheet)");
+            Assert.IsTrue(IsVisible(inventory), "инвентарь виден под scrim паузы");
+            Assert.IsTrue(IsVisible(pause));
         }
 
         // --- Слои-контейнеры (Ф4): Modal → modalLayer, Page/Sheet → screensLayer ---

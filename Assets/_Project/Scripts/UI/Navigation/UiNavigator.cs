@@ -127,6 +127,12 @@ namespace Guildmaster.UI
             top.ResolveDefaultIfPending();
         }
 
+        /// <summary>
+        /// Снять КОНКРЕТНЫЙ экран из любого места стека (не обязательно верхний) — для persistent-оверлеев вроде
+        /// тест-зоны (Ф5): состояние гасит владелец (сессия), даже если поверх открыт инвентарь. Идемпотентно.
+        /// </summary>
+        public void Remove(UiScreen screen) => RemoveScreen(screen);
+
         /// <summary>Снять все экраны (бывший CloseAll). Result-экраны резолвятся дефолтом.</summary>
         public void PopAll()
         {
@@ -210,17 +216,26 @@ namespace Guildmaster.UI
             Changed?.Invoke();
         }
 
-        // Видимость: экран виден, пока над ним нет непрозрачного Page. Идём сверху вниз — как только прошли
-        // Page, всё под ним скрыто. Modal/Sheet прозрачны/со scrim → нижние остаются отрисованными.
+        // Видимость по модели «карта ↔ геймплей — взаимоисключающие пространства» (решение Макса, Ф5).
+        // Идём сверху вниз:
+        //  - Page (карта/магазин/ивент — непрозрачный) скрывает ВСЁ под собой.
+        //  - Sheet (инвентарь/тест-зона — «геймплей») прозрачен и виден сам, НО скрывает Page под собой:
+        //    геймплей целиком закрывает карту (мир виден сквозь Sheet, карта не должна просвечивать). Соседние
+        //    Sheet друг друга не прячут (оба — прозрачные окна в один мир).
+        //  - Modal (пауза/настройки, scrim) не прячет ничего структурно — нижнее видно за затемнением.
         private void SyncVisibility()
         {
-            bool hiddenBelow = false;
+            bool pageAbove = false;  // выше есть непрозрачный Page → всё под ним скрыто
+            bool sheetAbove = false; // выше есть Sheet (геймплей) → Page под ним скрыт (карта уходит)
             for (int i = _stack.Count - 1; i >= 0; i--)
             {
                 UiScreen s = _stack[i];
+                bool hidden = pageAbove || (sheetAbove && s.Kind == ScreenKind.Page);
                 if (s.Root != null)
-                    s.Root.style.display = hiddenBelow ? DisplayStyle.None : DisplayStyle.Flex;
-                if (s.Kind == ScreenKind.Page) hiddenBelow = true;
+                    s.Root.style.display = hidden ? DisplayStyle.None : DisplayStyle.Flex;
+
+                if (s.Kind == ScreenKind.Page) pageAbove = true;
+                else if (s.Kind == ScreenKind.Sheet) sheetAbove = true;
             }
         }
 

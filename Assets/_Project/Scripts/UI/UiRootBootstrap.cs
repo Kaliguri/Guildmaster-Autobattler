@@ -104,12 +104,13 @@ namespace Guildmaster.UI
         private VisualElement _layerScreens;      // [2] Page/Sheet навигатора (под топбаром)
         private VisualElement _layerTopbar;       // [3] RunModeBar (над обычными экранами)
         private VisualElement _layerModal;        // [4] Modal навигатора (над топбаром, scrim накрывает его)
-        private bool _inventoryOpen; // инвентарь открыт → тумблер + backdrop-логика (подсветка режима — из router)
         private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
-        private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4)
+        private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
         private IPublisher<RelicDragEvent> _relicDragPub; // QA #5: drag реликвии из грида → фаза расстановки
-        private IPublisher<ToggleTestZoneRequest> _testZonePub; // QA #2: «Бой» вне забега = тумблер тест-зоны
+        private IPublisher<ToggleTestZoneRequest> _testZonePub; // QA #2: «Бой» вне забега = ИНТЕНТ тумблера тест-зоны
+        private ISubscriber<TestZoneChangedEvent> _testZoneChangedSub; // Ф5: СОСТОЯНИЕ тест-зоны → Sheet-экран
+        private IDisposable _testZoneChangedSubscription;
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -119,11 +120,12 @@ namespace Guildmaster.UI
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
             ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub,
-            IPublisher<ToggleTestZoneRequest> testZonePub)
+            IPublisher<ToggleTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub)
         {
             _router = router;
             _relicDragPub = relicDragPub;
             _testZonePub = testZonePub;
+            _testZoneChangedSub = testZoneChangedSub;
             _input = input;
             _clock = clock;
             _runStates = runStates;
@@ -180,6 +182,12 @@ namespace Guildmaster.UI
             _router.Changed += RefreshShell;
             // Шов II.9.2: смена языка на лету перестраивает персистентный топбар (стек-экраны пересоздаются сами).
             if (_loc != null) _loc.LocaleChanged += RebuildTopBar;
+            // Ф5: СОСТОЯНИЕ тест-зоны (владелец — DeploymentController) → показать/снять Sheet-экран «Бой».
+            _testZoneChangedSubscription = _testZoneChangedSub?.Subscribe(e =>
+            {
+                if (e.Active) _router.ShowTestZone();
+                else          _router.HideTestZone();
+            });
             RefreshShell();
         }
 
@@ -303,10 +311,11 @@ namespace Guildmaster.UI
 
             // Ф4: структуру shell (backdrop + подсветка таба) пересчитываем по РЕБРУ фазы/инвентаря — у IBattleClock
             // нет события фазы (реш. 3), а стек ловится подпиской nav.Changed → RefreshShell. Не каждый кадр (K3/K4).
-            if (phase != _lastPhase || _inventoryOpen != _lastInventoryOpen)
+            bool inventoryOpen = _router.IsInventoryOpen;
+            if (phase != _lastPhase || inventoryOpen != _lastInventoryOpen)
             {
                 _lastPhase = phase;
-                _lastInventoryOpen = _inventoryOpen;
+                _lastInventoryOpen = inventoryOpen;
                 RefreshShell();
             }
 
@@ -330,7 +339,7 @@ namespace Guildmaster.UI
             // и в инвентаре (прозрачный оверлей поверх арены).
             if (_backdrop != null)
             {
-                bool showBackdrop = phase == BattlePhase.None && !_inventoryOpen;
+                bool showBackdrop = phase == BattlePhase.None && !_router.IsInventoryOpen;
                 _backdrop.style.display = showBackdrop ? DisplayStyle.Flex : DisplayStyle.None;
             }
 
@@ -339,47 +348,27 @@ namespace Guildmaster.UI
             if (_topBar is RunModeBarView modeBar) modeBar.SetActiveMode(ActiveMode(phase));
         }
 
-        // Режим «Инвентарь» — тумблер: открыт → закрыть, закрыт → открыть новый инвентарь-экран (тело под топбаром).
+        // Режим «Инвентарь» — тумблер (Ф6): роутер сам решает открыть/снять по своей ссылке (смерть _inventoryOpen).
         private void ToggleInventory()
         {
-            if (_inventoryOpen) { _router.CloseOverlays(); return; }
             if (_loadoutInventoryScreen == null) { _router.OpenHub(); return; } // фолбэк на старый хаб, если ассет не назначен
-            _inventoryOpen = true;
             int gold = _runStates?.Current != null ? _runStates.Current.Gold : 0;
             // QA #5: drag карточки реликвии → публикуем RelicDragEvent, фаза расстановки рисует призрак и надевает.
-            _router.OpenInventory(gold, () => _inventoryOpen = false, PublishRelicDrag);
+            _router.ToggleInventory(gold, PublishRelicDrag);
         }
 
         private void PublishRelicDrag(Guildmaster.Data.Definitions.RelicData relic, RelicDragPhase phase)
             => _relicDragPub?.Publish(new RelicDragEvent(relic, phase));
 
-        private bool _testActive; // тест-зона активна (вошли по «Бой» вне боя)
-
-        // Кнопка «Бой» (QA #2): в бою — вернуть боевой вид. Вне боя — ТУМБЛЕР тест-зоны (серая арена + расстановка
-        // отряда без врагов). С КАРТЫ петли акта тоже можно (расставиться сразу после старта): карту не сносим
-        // (иначе resolve узла = null → Aborted), а ПРЯЧЕМ — на выходе возвращаем. Инвентарь/пусто — входим; прочий
-        // модальный flow (ивент/магазин/меню) — no-op (не мешаем).
+        // Кнопка «Бой» (Ф5): инвентарь открыт → «Бой» его закрывает (вернуться к чистому виду геймплея; карта под
+        // ним живёт — не PopAll). Иначе — ИНТЕНТ тумблера тест-зоны: решение вход/выход и показ Sheet принимает
+        // владелец состояния (DeploymentController + подписка на TestZoneChangedEvent). Карту НЕ трогаем — она
+        // прячется правилом видимости под Sheet тест-зоны (снос ручного HideTopForTest, K5).
         private void OnBattleMode()
         {
             if (_clock == null) return;
-            if (_clock.Phase == BattlePhase.Fighting) { _router.CloseOverlays(); return; }
-
-            if (_testActive)
-            {
-                _testZonePub?.Publish(new ToggleTestZoneRequest()); // выйти из тест-зоны
-                _router.ShowHiddenForTest();                        // вернуть скрытую карту (если была)
-                _testActive = false;
-                return;
-            }
-
-            string mode = _router.ActiveScreenMode;
-            if (mode == "map")            _router.HideTopForTest();  // скрыть карту петли (забег цел), отдать ввод миру
-            else if (mode == "inventory") _router.CloseOverlays();   // закрыть инвентарь → показать арену
-            else if (_router.IsOpen)      return;                    // ивент/магазин/меню — не трогаем
-            // иначе стек пуст — просто входим
-
+            if (_router.IsInventoryOpen) { ToggleInventory(); return; }
             _testZonePub?.Publish(new ToggleTestZoneRequest());
-            _testActive = true;
         }
 
         // Режим «Карта» — открыть карту акта read-only (просмотр текущей карты; клик по узлу закрывает просмотр).
@@ -389,7 +378,9 @@ namespace Guildmaster.UI
             if (run?.Map == null || run.Map.Nodes == null || run.Map.Nodes.Length == 0) return;
             var ids = new List<string>();
             foreach (var n in Guildmaster.Guild.MapTraversal.AvailableNext(run.Map)) ids.Add(n.Id);
-            _router.OpenMap(new Guildmaster.Guild.OpenMapRequest(run.Map, ids, _ => _router.CloseOverlays()));
+            // Read-only просмотр: клик по узлу закрывает просмотр. Карта — result-экран, résolve СНИМАЕТ её сам
+            // (навигатор), поэтому callback = no-op. НЕ CloseOverlays/PopAll — иначе снёс бы геймплей под картой.
+            _router.OpenMap(new Guildmaster.Guild.OpenMapRequest(run.Map, ids, _ => { }));
         }
 
         // Активный режим для подсветки таба (QA #11/#21) — ЕДИНЫЙ источник: верхний оверлей роутера несёт
@@ -450,6 +441,7 @@ namespace Guildmaster.UI
             if (_input != null) _input.MenuToggleRequested -= OnMenuToggle;
             if (_router != null) _router.Changed -= RefreshShell;     // Ф4
             if (_loc != null) _loc.LocaleChanged -= RebuildTopBar;    // шов II.9.2
+            _testZoneChangedSubscription?.Dispose();                  // Ф5
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();
