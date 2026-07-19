@@ -98,6 +98,7 @@ namespace Guildmaster.UI
         private bool _inventoryOpen; // инвентарь открыт → тумблер + backdrop-логика (подсветка режима — из router)
         private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
         private IPublisher<RelicDragEvent> _relicDragPub; // QA #5: drag реликвии из грида → фаза расстановки
+        private IPublisher<ToggleTestZoneRequest> _testZonePub; // QA #2: «Бой» вне забега = тумблер тест-зоны
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -106,10 +107,12 @@ namespace Guildmaster.UI
             ISubscriber<OpenTextEventRequest> openEventSub, ISubscriber<OpenMapRequest> openMapSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
-            ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub)
+            ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub,
+            IPublisher<ToggleTestZoneRequest> testZonePub)
         {
             _router = router;
             _relicDragPub = relicDragPub;
+            _testZonePub = testZonePub;
             _input = input;
             _clock = clock;
             _runStates = runStates;
@@ -179,10 +182,7 @@ namespace Guildmaster.UI
                     _runModeBar,
                     key => _loc?.GetString(key),
                     onMap: OpenMapView,
-                    // «Бой» = вернуться в боевой вид, ТОЛЬКО когда бой реально идёт. Вне боя (Phase None)
-                    // на стеке висит карта петли акта — её CloseOverlays снёс бы, а DetachFromPanelEvent
-                    // резолвил бы выбор узла как null → петля акта падает (вылет из play). No-op вне боя.
-                    onBattle: () => { if (_clock != null && _clock.Phase != BattlePhase.None) _router.CloseOverlays(); },
+                    onBattle: OnBattleMode,
                     onInventory: ToggleInventory,
                     onTactics: () => { },       // задел под будущий экран AI-тактики
                     onCompendium: () => { },    // задел под компендиум
@@ -273,6 +273,21 @@ namespace Guildmaster.UI
 
         private void PublishRelicDrag(Guildmaster.Data.Definitions.RelicData relic, RelicDragPhase phase)
             => _relicDragPub?.Publish(new RelicDragEvent(relic, phase));
+
+        // Кнопка «Бой» (QA #2): в бою — вернуть боевой вид (закрыть оверлеи). Вне боя — тумблер тест-зоны
+        // (серая арена с отрядом, без врагов). НО не поверх flow-экрана (карта петли акта/ивент/магазин):
+        // их снос уронил бы забег (resolve узла = null). Только когда чисто или открыт лишь инвентарь.
+        private void OnBattleMode()
+        {
+            if (_clock == null) return;
+            if (_clock.Phase == BattlePhase.Fighting) { _router.CloseOverlays(); return; }
+
+            string mode = _router.ActiveScreenMode;
+            if (mode != null && mode != "inventory") return; // на карте/ивенте «Бой» = no-op (не мешаем забегу)
+
+            _router.CloseOverlays();                          // закрыть инвентарь → показать арену
+            _testZonePub?.Publish(new ToggleTestZoneRequest());
+        }
 
         // Режим «Карта» — открыть карту акта read-only (просмотр текущей карты; клик по узлу закрывает просмотр).
         private void OpenMapView()

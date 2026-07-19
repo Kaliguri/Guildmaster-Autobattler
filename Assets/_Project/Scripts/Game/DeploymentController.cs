@@ -43,6 +43,7 @@ namespace Guildmaster.Game
         private readonly ISubscriber<EquipRelicRequest> _equipSub;
         private readonly ISubscriber<EquipRelicAtCursorRequest> _equipAtCursorSub;
         private readonly ISubscriber<RelicDragEvent> _relicDragSub; // QA #5: drag реликвии из инвентаря на юнита
+        private readonly ISubscriber<ToggleTestZoneRequest> _testZoneSub; // QA #2: «Бой» вне забега = тест-зона
         private readonly IBattleSession   _session;
         private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
 
@@ -56,8 +57,10 @@ namespace Guildmaster.Game
         private IDisposable _equipSubscription;
         private IDisposable _equipAtCursorSubscription;
         private IDisposable _relicDragSubscription;
+        private IDisposable _testZoneSubscription;
 
         private bool _deploying;
+        private bool _testZone; // QA #2: текущая расстановка — тест-зона вне забега (не боевой узел)
         private RuntimeUnit _dragged;
         private Vector2 _dragStartWorld;
         private bool _dragMoved;
@@ -78,6 +81,7 @@ namespace Guildmaster.Game
             ISubscriber<EquipRelicRequest> equipSub,
             ISubscriber<EquipRelicAtCursorRequest> equipAtCursorSub,
             ISubscriber<RelicDragEvent> relicDragSub,
+            ISubscriber<ToggleTestZoneRequest> testZoneSub,
             IBattleSession session,
             CameraModeController cameraModes)
         {
@@ -91,6 +95,7 @@ namespace Guildmaster.Game
             _equipSub      = equipSub;
             _equipAtCursorSub = equipAtCursorSub;
             _relicDragSub  = relicDragSub;
+            _testZoneSub   = testZoneSub;
             _session       = session;
             _cameraModes   = cameraModes;
         }
@@ -103,6 +108,7 @@ namespace Guildmaster.Game
             _equipSubscription = _equipSub.Subscribe(OnEquip);
             _equipAtCursorSubscription = _equipAtCursorSub.Subscribe(OnEquipAtCursor);
             _relicDragSubscription = _relicDragSub?.Subscribe(OnRelicDrag);
+            _testZoneSubscription = _testZoneSub?.Subscribe(OnToggleTestZone);
 
             // Верхняя панель забега (план 12): часы боя + кнопка «Начать».
             // Persist-мир: скоуп живёт всю сессию, поэтому фазу НЕ выставляем на Start (иначе вне боя
@@ -121,6 +127,7 @@ namespace Guildmaster.Game
             _equipSubscription?.Dispose();
             _equipAtCursorSubscription?.Dispose();
             _relicDragSubscription?.Dispose();
+            _testZoneSubscription?.Dispose();
             _session.UnbindStart();
             _session.UnbindClock(); // сбрасывает фазу в None → панель скрывается между боями
             if (_view != null) UnityEngine.Object.Destroy(_view.gameObject);
@@ -145,8 +152,63 @@ namespace Guildmaster.Game
             _view.SetActive(true);
             _input.SetContext(InputContext.Deployment);
             _deploying = true;
+            _testZone  = false; // боевая расстановка (узел боя), не тест-зона
             _session.SetPhase(BattlePhase.Deployment); // центр панели = «Начать»
             FrameCameraForDeployment(); // QA #4: свободная камера со стартовым боевым кадром (не отзум на всю зону)
+        }
+
+        // ── Тест-зона (QA #2): «Бой» вне забега → расстановка стоящего отряда БЕЗ врагов ────────
+        // Отряд уже стоит на арене вне боя (WorldStageController по RunPartyReadyEvent). Тумблер: вошли в
+        // тест-расстановку → «Бой» ещё раз выходит. Боевую расстановку (узел боя) тумблер не трогает.
+        private void OnToggleTestZone(ToggleTestZoneRequest _)
+        {
+            if (_deploying)
+            {
+                if (_testZone) ExitTestZone(); // из тест-расстановки — выйти; боевую (!_testZone) не трогаем
+                return;
+            }
+            EnterTestZone();
+        }
+
+        private void EnterTestZone()
+        {
+            // Строим редактируемые слоты из УЖЕ стоящих team-0 юнитов (не пере-спавниваем). Нет отряда
+            // (забег не начат) → нечего расставлять; демо-отряд для теста из главного меню — отдельная итерация.
+            _slots.Clear();
+            IReadOnlyList<RuntimeUnit> units = _sim.Units;
+            for (int i = 0; i < units.Count; i++)
+            {
+                RuntimeUnit u = units[i];
+                if (u.Team != 0 || u.IsDead) continue;
+                _slots.Add(new Slot { Relic = u.Unit as RelicData, Pos = u.Position, LiveUnitId = u.Id });
+            }
+            if (_slots.Count == 0)
+            {
+                Debug.LogWarning("[DeploymentController] - тест-зона: отряд не стоит (нет активного забега) → пропуск");
+                return;
+            }
+
+            _encounter = null;     // без врагов — полигон
+            _sim.SetPaused(true);
+            EnsureView();
+            _view.SetActive(true);
+            _input.SetContext(InputContext.Deployment);
+            _deploying = true;
+            _testZone  = true;
+            _session.SetPhase(BattlePhase.Deployment);
+            FrameCameraForDeployment();
+        }
+
+        private void ExitTestZone()
+        {
+            _deploying = false;
+            _testZone  = false;
+            _dragged   = null;
+            _relicDrag = null;
+            _view?.SetActive(false);
+            _input.SetContext(InputContext.None);
+            _cameraModes?.ExitToActionView();
+            _session.SetPhase(BattlePhase.None); // вне боя — панель без «Начать»/таймера
         }
 
         // Стартовый кадр расстановки: центр и разброс ВСЕХ живых юнитов (свои + враги — видно противника).
@@ -428,6 +490,7 @@ namespace Guildmaster.Game
         private void StartCombat()
         {
             _deploying = false;
+            _testZone = false;
             _dragged = null;
             _view?.SetActive(false);
             _sim.SetPaused(false);
