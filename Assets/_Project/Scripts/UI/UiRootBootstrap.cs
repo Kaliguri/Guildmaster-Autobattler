@@ -97,6 +97,7 @@ namespace Guildmaster.UI
         private VisualElement _backdrop; // постоянный задний фон под не-боевыми экранами (выкл в бою/инвентаре)
         private bool _inventoryOpen; // инвентарь открыт → тумблер + backdrop-логика (подсветка режима — из router)
         private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
+        private IPublisher<RelicDragEvent> _relicDragPub; // QA #5: drag реликвии из грида → фаза расстановки
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -105,9 +106,10 @@ namespace Guildmaster.UI
             ISubscriber<OpenTextEventRequest> openEventSub, ISubscriber<OpenMapRequest> openMapSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
-            ISubscriber<OpenMainMenuRequest> openMainMenuSub)
+            ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub)
         {
             _router = router;
+            _relicDragPub = relicDragPub;
             _input = input;
             _clock = clock;
             _runStates = runStates;
@@ -265,8 +267,12 @@ namespace Guildmaster.UI
             if (_loadoutInventoryScreen == null) { _router.OpenHub(); return; } // фолбэк на старый хаб, если ассет не назначен
             _inventoryOpen = true;
             int gold = _runStates?.Current != null ? _runStates.Current.Gold : 0;
-            _router.OpenInventory(gold, () => _inventoryOpen = false);
+            // QA #5: drag карточки реликвии → публикуем RelicDragEvent, фаза расстановки рисует призрак и надевает.
+            _router.OpenInventory(gold, () => _inventoryOpen = false, PublishRelicDrag);
         }
+
+        private void PublishRelicDrag(Guildmaster.Data.Definitions.RelicData relic, RelicDragPhase phase)
+            => _relicDragPub?.Publish(new RelicDragEvent(relic, phase));
 
         // Режим «Карта» — открыть карту акта read-only (просмотр текущей карты; клик по узлу закрывает просмотр).
         private void OpenMapView()

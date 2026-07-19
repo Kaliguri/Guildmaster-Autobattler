@@ -141,7 +141,8 @@ namespace Guildmaster.UI
         /// зовётся на ЛЮБОМ закрытии (Pop/Esc/CloseAll) через DetachFromPanelEvent — бутстрап по нему
         /// возвращает ран-топбар. Реликвии — весь контент (фильтр по владению — Фаза 5); gold из RunState.
         /// </summary>
-        public void OpenInventory(int gold, Action onClose)
+        public void OpenInventory(int gold, Action onClose,
+            Action<RelicData, RelicDragPhase> onRelicDrag = null)
         {
             if (_root == null || _loadoutInventoryUxml == null || _arcanaCardUxml == null) return;
 
@@ -153,7 +154,8 @@ namespace Guildmaster.UI
                 localize: key => _loc?.GetString(key),
                 lockedSlots: 0,
                 cardAnimations: _settingsVm.CardAnimations,
-                cardAttackAnimation: _settingsVm.CardAttackAnimation);
+                cardAttackAnimation: _settingsVm.CardAttackAnimation,
+                onRelicDrag: onRelicDrag); // QA #5: drag карточки реликвии на юнита в мире
 
             // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar).
             // Прозрачный оверлей: помечаем классом, чтобы SyncSuppress НЕ глушил геймплей — под инвентарём

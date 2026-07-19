@@ -42,6 +42,28 @@ namespace Guildmaster.Data.Definitions
         }
     }
 
+    /// <summary>Фаза перетаскивания карточки реликвии из инвентаря к юниту на поле (QA #5).</summary>
+    public enum RelicDragPhase { Start, Move, Drop }
+
+    /// <summary>
+    /// Перетаскивание карточки реликвии из грида инвентаря на юнита в мире (QA #5). Публикует UITK-грид
+    /// (pointer-capture на карточке), слушает фаза расстановки: пока тащим (Start/Move) рисует world-призрак
+    /// силуэта реликвии у курсора (единый вид «в руке», как drag юнита), на Drop надевает реликвию на юнита
+    /// под курсором. Позицию курсора фаза расстановки берёт из своего источника ввода (тот же, что deployment-
+    /// pick), поэтому событие несёт лишь реликвию и фазу — UI не тащит камеру/пикинг/конверсию координат.
+    /// </summary>
+    public readonly struct RelicDragEvent
+    {
+        public readonly RelicData      Relic;
+        public readonly RelicDragPhase Phase;
+
+        public RelicDragEvent(RelicData relic, RelicDragPhase phase)
+        {
+            Relic = relic;
+            Phase = phase;
+        }
+    }
+
     /// <summary>
     /// Запрос надеть релик на сосуд ПОД КУРСОРОМ (публикует UITK-панель расстановки на дропе карточки релика
     /// в поле). Юнита панель не знает — несёт лишь экранную позицию дропа; фаза расстановки резолвит сосуд

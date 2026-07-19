@@ -42,6 +42,7 @@ namespace Guildmaster.Game
         private readonly IPublisher<OpenLoadoutRequest> _openLoadoutPub;
         private readonly ISubscriber<EquipRelicRequest> _equipSub;
         private readonly ISubscriber<EquipRelicAtCursorRequest> _equipAtCursorSub;
+        private readonly ISubscriber<RelicDragEvent> _relicDragSub; // QA #5: drag реликвии из инвентаря на юнита
         private readonly IBattleSession   _session;
         private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
 
@@ -54,6 +55,7 @@ namespace Guildmaster.Game
         private Camera _camera;
         private IDisposable _equipSubscription;
         private IDisposable _equipAtCursorSubscription;
+        private IDisposable _relicDragSubscription;
 
         private bool _deploying;
         private RuntimeUnit _dragged;
@@ -62,6 +64,8 @@ namespace Guildmaster.Game
         private int _hoverUnitId = -1;
         private float _lastClickTime;
         private int _lastClickUnitId = -1;
+
+        private RelicData _relicDrag;        // QA #5: тащим реликвию из инвентаря (null = нет); ghost её силуэта
 
         public DeploymentController(
             EncounterLoader loader,
@@ -73,6 +77,7 @@ namespace Guildmaster.Game
             IPublisher<OpenLoadoutRequest> openLoadoutPub,
             ISubscriber<EquipRelicRequest> equipSub,
             ISubscriber<EquipRelicAtCursorRequest> equipAtCursorSub,
+            ISubscriber<RelicDragEvent> relicDragSub,
             IBattleSession session,
             CameraModeController cameraModes)
         {
@@ -85,6 +90,7 @@ namespace Guildmaster.Game
             _openLoadoutPub = openLoadoutPub;
             _equipSub      = equipSub;
             _equipAtCursorSub = equipAtCursorSub;
+            _relicDragSub  = relicDragSub;
             _session       = session;
             _cameraModes   = cameraModes;
         }
@@ -96,6 +102,7 @@ namespace Guildmaster.Game
             _input.PointerReleased += OnPointerReleased;
             _equipSubscription = _equipSub.Subscribe(OnEquip);
             _equipAtCursorSubscription = _equipAtCursorSub.Subscribe(OnEquipAtCursor);
+            _relicDragSubscription = _relicDragSub?.Subscribe(OnRelicDrag);
 
             // Верхняя панель забега (план 12): часы боя + кнопка «Начать».
             // Persist-мир: скоуп живёт всю сессию, поэтому фазу НЕ выставляем на Start (иначе вне боя
@@ -113,6 +120,7 @@ namespace Guildmaster.Game
             _input.PointerReleased -= OnPointerReleased;
             _equipSubscription?.Dispose();
             _equipAtCursorSubscription?.Dispose();
+            _relicDragSubscription?.Dispose();
             _session.UnbindStart();
             _session.UnbindClock(); // сбрасывает фазу в None → панель скрывается между боями
             if (_view != null) UnityEngine.Object.Destroy(_view.gameObject);
@@ -198,6 +206,11 @@ namespace Guildmaster.Game
             // «Готово» — стартуем бой (Enter). Работает даже при открытом меню? нет — только в чистой фазе.
             if (!_input.GameplaySuppressed && ReadyPressed()) { StartCombat(); return; }
 
+            // Реликвия-drag из инвентаря (QA #5): призрак силуэта реликвии виден ВЕЗДЕ, пока тащим (в т.ч. над
+            // панелью грида — ghost рисуется поверх мира), цель эквипа под курсором подсвечиваем кругом. Юнит-
+            // drag/ховер в это время не трогаем — это отдельный жест поверх UI.
+            if (_relicDrag != null) { DrawRelicDragGhost(); return; }
+
             // Меню loadout открыто (ввод заглушён) или курсор над непрозрачной UITK-панелью (инвентарь) вне
             // активного драга — не интеракчим (ховер/ghost гасим), но круги-опоры оставляем видимыми (QA #20:
             // читаемость поля не зависит от того, где курсор).
@@ -255,21 +268,17 @@ namespace Guildmaster.Game
             _view.SetUnitRings(_ringBuffer);
         }
 
-        // Призрак-силуэт перетаскиваемого юнита (копия текущего кадра) в целевой точке ног. Нет вида
-        // (headless / спрайт не готов) → без призрака (круг DragValid/Invalid всё равно ведёт цель).
+        // Призрак-силуэт перетаскиваемого юнита в целевой точке ног — через ЕДИНЫЙ источник UnitSilhouette
+        // (QA #5: тот же вид «в руке», что и при drag реликвии из инвентаря). Нет вида (headless / спрайт не
+        // готов) → без призрака (круг DragValid/Invalid всё равно ведёт цель).
         private void ShowDragGhost(Vector2 targetFeet, bool valid)
         {
-            if (_presenter != null && _presenter.TryGetView(_dragged.Id, out UnitView dv)
-                && dv != null && dv.BodySprite != null)
-            {
-                Vector3 off = dv.BodyWorldPosition - new Vector3(_dragged.Position.x, _dragged.Position.y, 0f);
-                _view.SetGhost(true, targetFeet, new Vector2(off.x, off.y),
-                               dv.BodySprite, dv.BodyFlipX, dv.BodyLossyScale, valid);
-            }
-            else
-            {
-                HideGhostSprite();
-            }
+            UnitSilhouette sil = UnitSilhouette.None;
+            if (_presenter != null && _presenter.TryGetView(_dragged.Id, out UnitView dv))
+                sil = UnitSilhouette.FromView(dv, _dragged.Position);
+
+            if (sil.Valid) _view.SetGhost(true, targetFeet, sil.Offset, sil.Sprite, sil.FlipX, sil.Scale, valid);
+            else HideGhostSprite();
         }
 
         // Мировая точка ног юнита (визуальный FeetPoint из вида, а не сим-центр) — круг/pick садятся под ноги
@@ -287,6 +296,41 @@ namespace Guildmaster.Game
         private void HideGhostSprite() => _view.SetGhost(false, default, default, null, false, Vector3.one, false);
 
         private void HideDragVisuals() => HideGhostSprite();
+
+        // ── Drag реликвии из инвентаря на юнита (QA #5) ───────────────────────
+        // UITK-грид публикует RelicDragEvent (Start/Move/Drop). Вне расстановки пока не поддержано — эквип
+        // на тест-арене придёт с #26. Ghost/подсветку рисует DrawRelicDragGhost из Tick, Drop надевает реликвию.
+        private void OnRelicDrag(RelicDragEvent e)
+        {
+            if (!_deploying) return;
+            switch (e.Phase)
+            {
+                case RelicDragPhase.Start:
+                case RelicDragPhase.Move:
+                    _relicDrag = e.Relic; // позицию берём из _input в Tick/Drop (тот же источник, что deployment-pick)
+                    break;
+                case RelicDragPhase.Drop:
+                    RuntimeUnit target = e.Relic != null ? PickUnit(ScreenToWorld(_input.PointerScreenPosition)) : null;
+                    if (target != null && e.Relic != null) EquipOn(target.Id, e.Relic);
+                    _relicDrag = null;
+                    HideGhostSprite();
+                    break;
+            }
+        }
+
+        // Призрак силуэта реликвии у курсора (единый вид «в руке», как drag юнита — из ViewPrefab, т.к. юнита
+        // на поле ещё нет) + подсветка юнита под курсором (цель эквипа). Круги-опоры остаются видимыми.
+        private void DrawRelicDragGhost()
+        {
+            Vector2 world = ScreenToWorld(_input.PointerScreenPosition);
+            RuntimeUnit target = PickUnit(world);
+
+            UnitSilhouette sil = UnitSilhouette.FromPrefab(_relicDrag != null ? _relicDrag.ViewPrefab : null);
+            if (sil.Valid) _view.SetGhost(true, world, sil.Offset, sil.Sprite, sil.FlipX, sil.Scale, target != null);
+            else HideGhostSprite();
+
+            UpdateUnitRings(target != null ? target.Id : -1, default, false, false);
+        }
 
         private void OnPointerPressed()
         {
