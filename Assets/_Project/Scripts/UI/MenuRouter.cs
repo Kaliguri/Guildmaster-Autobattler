@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Guildmaster.Core.Flow;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Localization;
@@ -113,6 +114,29 @@ namespace Guildmaster.UI
 
         private void PushScreen(Func<VisualElement> build, ScreenKind kind, string modeTag = null, string screenId = null)
             => _nav.Push(new RouterScreen(kind, build, modeTag, screenId));
+
+        // Обёртка flow-экрана с результатом (Ф3): вью-билдер получает делегат Resolve и связывает с ним свои
+        // колбэки (выбор/пропуск). Навигатор гарантирует РОВНО ОДИН резолв — явный или DefaultResult при снятии
+        // без выбора. Снимает нужду в resolved-guard'ах и DetachFromPanelEvent-страховках внутри билдеров.
+        private sealed class RouterResultScreen<TResult> : UiScreen<TResult>
+        {
+            private readonly Func<Action<TResult>, VisualElement> _build;
+            private readonly TResult _default;
+            public override ScreenKind Kind { get; }
+            public override string ModeTag { get; }
+            public override TResult DefaultResult => _default;
+
+            public RouterResultScreen(ScreenKind kind, TResult defaultResult,
+                Func<Action<TResult>, VisualElement> build, string modeTag = null)
+            {
+                Kind = kind;
+                _default = defaultResult;
+                _build = build;
+                ModeTag = modeTag;
+            }
+
+            public override void Build(UiScreenContext ctx) => Root = _build(Resolve);
+        }
 
         private void Pop() => _nav.Pop();
 
@@ -444,45 +468,31 @@ namespace Guildmaster.UI
             return screen;
         }
 
-        // Экран награды (A3) — на UXML (RewardScreen.uxml) через общий RewardScreenView. Гарантирует ровно
-        // один OnResolved, включая закрытие без выбора (= пропуск), чтобы флоу забега не завис.
+        // Экран награды (A3) — на UXML (RewardScreen.uxml) через общий RewardScreenView. Навигатор гарантирует
+        // ровно один OnResolved, включая закрытие без выбора (= пропуск), чтобы флоу забега не завис (Ф3).
         public void OpenReward(OpenRewardRequest req)
         {
             if (_root == null || _rewardUxml == null) { req.OnResolved?.Invoke(RewardChoiceResult.Skip); return; }
-            PushScreen(() => BuildRewardScreen(req), ScreenKind.Page);
+            ShowRewardAsync(req).Forget();
         }
 
-        private VisualElement BuildRewardScreen(OpenRewardRequest req)
+        private async UniTaskVoid ShowRewardAsync(OpenRewardRequest req)
         {
-            bool resolved = false;
+            var screen = new RouterResultScreen<RewardChoiceResult>(ScreenKind.Page, RewardChoiceResult.Skip,
+                resolve => RewardScreenView.Build(
+                    _rewardUxml,
+                    req.Choices,
+                    req.InventoryFull,
+                    req.CurrentInventory,
+                    relic => _loadoutVm.Name(relic),
+                    key => _loc?.GetString(key),
+                    (chosen, dropId) => resolve(dropId != null
+                        ? RewardChoiceResult.Swap(chosen, dropId)
+                        : RewardChoiceResult.Take(chosen)),
+                    () => resolve(RewardChoiceResult.Skip)));
 
-            void Resolve(RewardChoiceResult result)
-            {
-                if (resolved) return;
-                resolved = true;
-                CloseAll();                      // закрыть ДО колбэка: его inline-продолжение может открыть следующий экран
-                req.OnResolved?.Invoke(result);
-            }
-
-            VisualElement screen = RewardScreenView.Build(
-                _rewardUxml,
-                req.Choices,
-                req.InventoryFull,
-                req.CurrentInventory,
-                relic => _loadoutVm.Name(relic),
-                key => _loc?.GetString(key),
-                (chosen, dropId) => Resolve(dropId != null
-                    ? RewardChoiceResult.Swap(chosen, dropId)
-                    : RewardChoiceResult.Take(chosen)),
-                () => Resolve(RewardChoiceResult.Skip));
-
-            // Страховка: любое снятие экрана без явного выбора (ESC/PopAll) = пропуск, чтобы флоу не завис.
-            screen.RegisterCallback<DetachFromPanelEvent>(_ =>
-            {
-                if (!resolved) { resolved = true; req.OnResolved?.Invoke(RewardChoiceResult.Skip); }
-            });
-
-            return screen;
+            RewardChoiceResult result = await _nav.ShowAsync(screen); // экран снят ДО колбэка (навигатор, II.5)
+            req.OnResolved?.Invoke(result);
         }
 
         // Экран текстового ивента (StS-style) — на UXML (EventScreen.uxml) через общий EventScreenView.
@@ -526,35 +536,22 @@ namespace Guildmaster.UI
         public void OpenMap(OpenMapRequest req)
         {
             if (_root == null || _mapUxml == null) { req.OnChosen?.Invoke(null); return; }
-            PushScreen(() => BuildMapScreen(req), ScreenKind.Page, modeTag: "map"); // QA #21: подсветка таба «Карта»
+            ShowMapAsync(req).Forget();
         }
 
-        private VisualElement BuildMapScreen(OpenMapRequest req)
+        private async UniTaskVoid ShowMapAsync(OpenMapRequest req)
         {
-            bool resolved = false;
+            var screen = new RouterResultScreen<string>(ScreenKind.Page, null,
+                resolve => MapScreenView.Build(
+                    _mapUxml,
+                    req.Map,
+                    new HashSet<string>(req.AvailableNodeIds),
+                    key => _loc?.GetString(key),
+                    resolve),
+                modeTag: "map"); // QA #21: подсветка таба «Карта»
 
-            void Resolve(string nodeId)
-            {
-                if (resolved) return;
-                resolved = true;
-                CloseAll();                      // закрыть карту ДО колбэка (его продолжение откроет узел)
-                req.OnChosen?.Invoke(nodeId);
-            }
-
-            VisualElement screen = MapScreenView.Build(
-                _mapUxml,
-                req.Map,
-                new HashSet<string>(req.AvailableNodeIds),
-                key => _loc?.GetString(key),
-                Resolve);
-
-            // Страховка: снятие экрана без выбора (ESC/PopAll) = null, чтобы петля акта не зависла.
-            screen.RegisterCallback<DetachFromPanelEvent>(_ =>
-            {
-                if (!resolved) { resolved = true; req.OnChosen?.Invoke(null); }
-            });
-
-            return screen;
+            string nodeId = await _nav.ShowAsync(screen);
+            req.OnChosen?.Invoke(nodeId);
         }
 
         // Единая кнопка «Продолжить» (A4) — оверлей с кнопкой в правом нижнем углу. Нажатие резолвит и закрывает;
@@ -562,36 +559,29 @@ namespace Guildmaster.UI
         public void ShowContinue(OpenContinueRequest req)
         {
             if (_root == null || _continueUxml == null) { req.OnContinue?.Invoke(); return; }
-            PushScreen(() => BuildContinueScreen(req), ScreenKind.Page);
+            ShowContinueAsync(req).Forget();
         }
 
-        private VisualElement BuildContinueScreen(OpenContinueRequest req)
+        private async UniTaskVoid ShowContinueAsync(OpenContinueRequest req)
         {
-            bool resolved = false;
-
-            void Resolve()
+            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false, resolve =>
             {
-                if (resolved) return;
-                resolved = true;
-                CloseAll();                      // закрыть ДО колбэка (его продолжение вернёт на карту)
-                req.OnContinue?.Invoke();
-            }
-
-            var screen = FillRoot(_continueUxml.CloneTree());
-            var btn = screen.Q<Button>("btn-continue");
-            if (btn != null)
-            {
-                if (!string.IsNullOrEmpty(req.LabelKey))
+                var body = FillRoot(_continueUxml.CloneTree());
+                var btn = body.Q<Button>("btn-continue");
+                if (btn != null)
                 {
-                    string label = _loc?.GetString(req.LabelKey);
-                    if (!string.IsNullOrEmpty(label)) btn.text = label;
+                    if (!string.IsNullOrEmpty(req.LabelKey))
+                    {
+                        string label = _loc?.GetString(req.LabelKey);
+                        if (!string.IsNullOrEmpty(label)) btn.text = label;
+                    }
+                    btn.clicked += () => resolve(true);
                 }
-                btn.clicked += Resolve;
-            }
+                return body;
+            });
 
-            // Страховка: снятие без нажатия (ESC/PopAll) = резолв, чтобы петля не зависла.
-            screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnContinue?.Invoke(); } });
-            return screen;
+            await _nav.ShowAsync(screen); // явный «Продолжить» и закрытие без нажатия → OnContinue (петля не виснет)
+            req.OnContinue?.Invoke();
         }
 
         // Экран магазина (B2) — на UXML (ShopScreen.uxml) через общий ShopScreenView, биндится к IShopController.
@@ -599,31 +589,21 @@ namespace Guildmaster.UI
         public void OpenShop(OpenShopRequest req)
         {
             if (_root == null || _shopUxml == null || req.Shop == null) { req.OnLeave?.Invoke(); return; }
-            PushScreen(() => BuildShopScreen(req), ScreenKind.Page);
+            ShowShopAsync(req).Forget();
         }
 
-        private VisualElement BuildShopScreen(OpenShopRequest req)
+        private async UniTaskVoid ShowShopAsync(OpenShopRequest req)
         {
-            bool resolved = false;
+            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
+                resolve => ShopScreenView.Build(
+                    _shopUxml,
+                    req.Shop,
+                    relic => _loadoutVm.Name(relic),
+                    key => _loc?.GetString(key),
+                    () => resolve(true)));
 
-            void Resolve()
-            {
-                if (resolved) return;
-                resolved = true;
-                CloseAll();                      // закрыть магазин ДО колбэка (его продолжение вернёт на карту)
-                req.OnLeave?.Invoke();
-            }
-
-            VisualElement screen = ShopScreenView.Build(
-                _shopUxml,
-                req.Shop,
-                relic => _loadoutVm.Name(relic),
-                key => _loc?.GetString(key),
-                Resolve);
-
-            // Растянуть оверлей на весь корень + страховка: закрытие без «Уйти» = резолв, чтобы петля не зависла.
-            screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnLeave?.Invoke(); } });
-            return screen;
+            await _nav.ShowAsync(screen); // «Уйти» и закрытие → OnLeave (петля продолжается)
+            req.OnLeave?.Invoke();
         }
 
         // Экран сундука (B3) — на UXML (ChestScreen.uxml). Клик по крышке резолвит OnOpen (флоу катит награду),
@@ -631,48 +611,32 @@ namespace Guildmaster.UI
         public void OpenChest(OpenChestRequest req)
         {
             if (_root == null || _chestUxml == null) { req.OnOpen?.Invoke(); return; }
-            PushScreen(() => BuildChestScreen(req), ScreenKind.Page);
+            ShowChestAsync(req).Forget();
         }
 
-        private VisualElement BuildChestScreen(OpenChestRequest req)
+        private async UniTaskVoid ShowChestAsync(OpenChestRequest req)
         {
-            bool resolved = false;
+            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
+                resolve => ChestScreenView.Build(_chestUxml, key => _loc?.GetString(key), () => resolve(true)));
 
-            void Resolve()
-            {
-                if (resolved) return;
-                resolved = true;
-                CloseAll();                      // закрыть сундук ДО колбэка (его продолжение откроет награду)
-                req.OnOpen?.Invoke();
-            }
-
-            VisualElement screen = ChestScreenView.Build(_chestUxml, key => _loc?.GetString(key), Resolve);
-            screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnOpen?.Invoke(); } });
-            return screen;
+            await _nav.ShowAsync(screen); // клик по крышке и закрытие → OnOpen (флоу катит награду)
+            req.OnOpen?.Invoke();
         }
 
         // Экран исхода забега (C2) — на UXML (OutcomeScreen.uxml). «В меню» резолвит OnToMenu; закрытие тоже.
         public void ShowOutcome(OpenOutcomeRequest req)
         {
             if (_root == null || _outcomeUxml == null) { req.OnToMenu?.Invoke(); return; }
-            PushScreen(() => BuildOutcomeScreen(req), ScreenKind.Page);
+            ShowOutcomeAsync(req).Forget();
         }
 
-        private VisualElement BuildOutcomeScreen(OpenOutcomeRequest req)
+        private async UniTaskVoid ShowOutcomeAsync(OpenOutcomeRequest req)
         {
-            bool resolved = false;
+            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
+                resolve => OutcomeScreenView.Build(_outcomeUxml, req.Victory, key => _loc?.GetString(key), () => resolve(true)));
 
-            void Resolve()
-            {
-                if (resolved) return;
-                resolved = true;
-                CloseAll();                      // закрыть исход ДО колбэка (его продолжение откроет меню)
-                req.OnToMenu?.Invoke();
-            }
-
-            VisualElement screen = OutcomeScreenView.Build(_outcomeUxml, req.Victory, key => _loc?.GetString(key), Resolve);
-            screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnToMenu?.Invoke(); } });
-            return screen;
+            await _nav.ShowAsync(screen); // «В меню» и закрытие → OnToMenu
+            req.OnToMenu?.Invoke();
         }
 
         // Главное меню (D1) — на UXML (MainMenuScreen.uxml). Начать/Продолжить/Выход резолвят OnChoice и закрывают
@@ -680,33 +644,23 @@ namespace Guildmaster.UI
         public void OpenMainMenu(OpenMainMenuRequest req)
         {
             if (_root == null || _mainMenuUxml == null) { req.OnChoice?.Invoke(MainMenuChoice.Quit); return; }
-            PushScreen(() => BuildMainMenuScreen(req), ScreenKind.Page);
+            ShowMainMenuAsync(req).Forget();
         }
 
-        private VisualElement BuildMainMenuScreen(OpenMainMenuRequest req)
+        private async UniTaskVoid ShowMainMenuAsync(OpenMainMenuRequest req)
         {
-            bool resolved = false;
+            var screen = new RouterResultScreen<MainMenuChoice>(ScreenKind.Page, MainMenuChoice.Quit,
+                resolve => MainMenuScreenView.Build(
+                    _mainMenuUxml,
+                    req.HasSave,
+                    key => _loc?.GetString(key),
+                    onStart:    () => resolve(MainMenuChoice.StartRun),
+                    onContinue: () => resolve(MainMenuChoice.Continue),
+                    onSettings: () => PushScreen(BuildSettingsScreen, ScreenKind.Modal), // поверх меню, НЕ резолв
+                    onQuit:     () => resolve(MainMenuChoice.Quit)));
 
-            void Resolve(MainMenuChoice choice)
-            {
-                if (resolved) return;
-                resolved = true;
-                CloseAll();                      // закрыть меню ДО колбэка (его продолжение откроет карту забега)
-                req.OnChoice?.Invoke(choice);
-            }
-
-            VisualElement screen = MainMenuScreenView.Build(
-                _mainMenuUxml,
-                req.HasSave,
-                key => _loc?.GetString(key),
-                onStart:    () => Resolve(MainMenuChoice.StartRun),
-                onContinue: () => Resolve(MainMenuChoice.Continue),
-                onSettings: () => PushScreen(BuildSettingsScreen, ScreenKind.Modal),
-                onQuit:     () => Resolve(MainMenuChoice.Quit));
-
-            // Страховка: снятие без выбора = выход, чтобы верхний цикл не завис.
-            screen.RegisterCallback<DetachFromPanelEvent>(_ => { if (!resolved) { resolved = true; req.OnChoice?.Invoke(MainMenuChoice.Quit); } });
-            return screen;
+            MainMenuChoice choice = await _nav.ShowAsync(screen); // снятие без выбора = Quit (верхний цикл не виснет)
+            req.OnChoice?.Invoke(choice);
         }
 
         private static void Disable(Button b) { if (b != null) b.SetEnabled(false); }
