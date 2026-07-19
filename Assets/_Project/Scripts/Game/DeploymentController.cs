@@ -202,8 +202,7 @@ namespace Guildmaster.Game
             // не пикаем (клики туда уже не проходят через IInputService.PointerOverUI).
             if (_input.GameplaySuppressed || (_input.PointerOverUI && _dragged == null))
             {
-                _view.SetGhost(false, default, 0f, false);
-                _view.SetOutline(false, default, 0f);
+                HideDragVisuals();
                 return;
             }
 
@@ -212,19 +211,45 @@ namespace Guildmaster.Game
             if (_dragged != null)
             {
                 if ((world - _dragStartWorld).sqrMagnitude > DragMinDelta * DragMinDelta) _dragMoved = true;
-                float r = BodyRadius(_dragged);
                 bool valid = _deploy.CanPlace(world, DeploymentSide.Player, CanUseExtended(_dragged)) && !Overlaps(world, _dragged);
-                _view.SetGhost(true, world, r, valid);
-                _view.SetOutline(true, _dragged.Position, r);
+                ShowDragGhost(world, valid); // призрак-силуэт + тень у целевых ног (QA #9)
             }
             else
             {
                 RuntimeUnit hover = PickUnit(world);
                 _hoverUnitId = hover != null ? hover.Id : -1;
-                _view.SetGhost(false, default, 0f, false);
-                if (hover != null) SetHoverOutline(hover);
-                else _view.SetOutline(false, default, 0f);
+                HideGhostSprite();
+                // Тень-эллипс у ног наведённого юнита (сим-позиция = ноги) — не кольцо по всей фигуре (QA #8).
+                if (hover != null) _view.SetShadow(true, hover.Position, BodyRadius(hover));
+                else _view.SetShadow(false, default, 0f);
             }
+        }
+
+        // Призрак-силуэт перетаскиваемого юнита (копия текущего кадра) + тень у целевых ног. Нет вида
+        // (headless / спрайт не готов) → только тень, без призрака.
+        private void ShowDragGhost(Vector2 targetFeet, bool valid)
+        {
+            _view.SetShadow(true, targetFeet, BodyRadius(_dragged));
+
+            if (_presenter != null && _presenter.TryGetView(_dragged.Id, out UnitView dv)
+                && dv != null && dv.BodySprite != null)
+            {
+                Vector3 off = dv.BodyWorldPosition - new Vector3(_dragged.Position.x, _dragged.Position.y, 0f);
+                _view.SetGhost(true, targetFeet, new Vector2(off.x, off.y),
+                               dv.BodySprite, dv.BodyFlipX, dv.BodyLossyScale, valid);
+            }
+            else
+            {
+                HideGhostSprite();
+            }
+        }
+
+        private void HideGhostSprite() => _view.SetGhost(false, default, default, null, false, Vector3.one, false);
+
+        private void HideDragVisuals()
+        {
+            HideGhostSprite();
+            _view.SetShadow(false, default, 0f);
         }
 
         private void OnPointerPressed()
@@ -267,7 +292,7 @@ namespace Guildmaster.Game
 
             _dragged = null;
             _dragMoved = false;
-            _view.SetGhost(false, default, 0f, false);
+            HideDragVisuals();
             _view.SetExtendedHighlight(false);
         }
 
@@ -366,20 +391,6 @@ namespace Guildmaster.Game
                 if (sq <= r * r && sq < bestSq) { byBody = u; bestSq = sq; }
             }
             return bySprite ?? byBody;
-        }
-
-        // Ховер-подсветка: кольцо вокруг ВСЕЙ фигуры (по границам спрайта), а не крохотное кольцо у ног.
-        private void SetHoverOutline(RuntimeUnit u)
-        {
-            if (_presenter != null && _presenter.TryGetView(u.Id, out UnitView view)
-                && view != null && view.TryGetSpriteBounds(out Bounds b))
-            {
-                _view.SetOutline(true, new Vector2(b.center.x, b.center.y), Mathf.Max(b.extents.x, b.extents.y));
-            }
-            else
-            {
-                _view.SetOutline(true, u.Position, BodyRadius(u));
-            }
         }
 
         private bool Overlaps(Vector2 pos, RuntimeUnit exclude)
