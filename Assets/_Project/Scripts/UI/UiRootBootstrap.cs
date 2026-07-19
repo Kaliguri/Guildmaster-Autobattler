@@ -133,6 +133,7 @@ namespace Guildmaster.UI
 
         private void Start()
         {
+            ApplyDeviceProfile(); // II.12.9: device-профиль на корне панели до прочей инициализации
             if (_router == null || _input == null)
             {
                 Debug.LogWarning("[UiRootBootstrap] Нет инъекции (MenuRouter/IInputService) — в этой сцене отсутствует " +
@@ -221,6 +222,7 @@ namespace Guildmaster.UI
 
         private void Update()
         {
+            ApplyDeviceProfile(); // II.12.9: переоценка профиля при смене разрешения (дёшево — сравнение int)
             if (_topBar == null || _clock == null) return;
 
             // Задний фон: виден на не-боевых экранах (меню/карта/ивент/сундук). Выключается в бою
@@ -330,6 +332,40 @@ namespace Guildmaster.UI
             if (seconds < 0f) seconds = 0f;
             int total = Mathf.FloorToInt(seconds);
             return (total / 60).ToString("00") + ":" + (total % 60).ToString("00");
+        }
+
+        // --- Device-профили (II.12.9): USS-класс профиля на корне панели под адаптивные правки.
+        // В UITK нет media queries → профиль выражаем классом, а Deck/ultrawide-стили вешаются
+        // ПОЗЖЕ точечно правилами под этими классами (сейчас правил ноль — это только шов).
+        // HARD: никаких C#-ветвлений по разрешению в экранах — только эти классы.
+        private const string DeviceDesktop = "gm-device--desktop";
+        private const string DeviceDeck = "gm-device--deck";
+        private const string DeviceUltrawide = "gm-device--ultrawide";
+        private int _lastDeviceW = -1;
+        private int _lastDeviceH = -1;
+
+        private void ApplyDeviceProfile()
+        {
+            if (_doc == null) return;
+            int w = Screen.width, h = Screen.height;
+            if (w == _lastDeviceW && h == _lastDeviceH) return;
+            _lastDeviceW = w;
+            _lastDeviceH = h;
+
+            VisualElement root = _doc.rootVisualElement;
+            if (root == null) return;
+            root.RemoveFromClassList(DeviceDesktop);
+            root.RemoveFromClassList(DeviceDeck);
+            root.RemoveFromClassList(DeviceUltrawide);
+
+            float aspect = h > 0 ? (float)w / h : 0f;
+            string profile;
+            // Steam Deck — нативная панель 1280×800 (aspect 1.6). Полноценный детект через
+            // Facepunch SteamUtils отложен до появления Steam-фасада (без него API не дёргаем).
+            if (w == 1280 && h == 800) profile = DeviceDeck;
+            else if (aspect >= 2.2f)   profile = DeviceUltrawide; // ultrawide 21:9+ (II.12.9)
+            else                       profile = DeviceDesktop;
+            root.AddToClassList(profile);
         }
 
         private void OnDestroy()
