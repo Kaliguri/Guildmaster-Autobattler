@@ -31,6 +31,7 @@ namespace Guildmaster.Game
     {
         private const float DoubleClickWindow = 0.30f;
         private const float DragMinDelta       = 0.05f; // мир-единицы: меньше = «клик», больше = «drag»
+        private const float PickRadiusScale    = 1.3f;  // зона хватания = круг-опора × это (чуть больше круга, QA #3)
 
         private readonly EncounterLoader  _loader;
         private readonly CombatSimulation _sim;
@@ -198,24 +199,24 @@ namespace Guildmaster.Game
             if (!_input.GameplaySuppressed && ReadyPressed()) { StartCombat(); return; }
 
             // Меню loadout открыто (ввод заглушён) или курсор над непрозрачной UITK-панелью (инвентарь) вне
-            // активного драга — не интеракчим (ховер/ghost гасим), но круги-размеры оставляем видимыми (QA #20:
+            // активного драга — не интеракчим (ховер/ghost гасим), но круги-опоры оставляем видимыми (QA #20:
             // читаемость поля не зависит от того, где курсор).
             if (_input.GameplaySuppressed || (_input.PointerOverUI && _dragged == null))
             {
                 HideGhostSprite();
-                _view.SetShadow(false, default, 0f);
-                UpdateUnitRings(-1);
+                UpdateUnitRings(-1, default, false, false);
                 return;
             }
 
             Vector2 world = ScreenToWorld(_input.PointerScreenPosition);
             int hoverId = -1;
+            bool dragValid = false;
 
             if (_dragged != null)
             {
                 if ((world - _dragStartWorld).sqrMagnitude > DragMinDelta * DragMinDelta) _dragMoved = true;
-                bool valid = _deploy.CanPlace(world, DeploymentSide.Player, CanUseExtended(_dragged)) && !Overlaps(world, _dragged);
-                ShowDragGhost(world, valid); // призрак-силуэт + тень у целевых ног (QA #9)
+                dragValid = _deploy.CanPlace(world, DeploymentSide.Player, CanUseExtended(_dragged)) && !Overlaps(world, _dragged);
+                ShowDragGhost(world, dragValid); // призрак-силуэт у целевых ног (QA #9)
             }
             else
             {
@@ -223,16 +224,16 @@ namespace Guildmaster.Game
                 hoverId = hover != null ? hover.Id : -1;
                 _hoverUnitId = hoverId;
                 HideGhostSprite();
-                _view.SetShadow(false, default, 0f); // ховер теперь показывает круг-размер (QA #20), не тень
             }
 
-            UpdateUnitRings(hoverId);
+            UpdateUnitRings(hoverId, world, dragValid, _dragged != null);
         }
 
-        // Круги-размеры под всеми живыми team-0 юнитами (QA #20): всегда видны (читаемость), наведённый — ярче.
-        // Перетаскиваемый пропускаем — он «в руке» (ghost-силуэт следует за курсором).
+        // Круги-опоры под ногами живых team-0 юнитов (QA #20/#3): всегда видны (читаемость), наведённый — ярче.
+        // Перетаскиваемый (QA #4) НЕ пропускается — его круг рисуется у ног ПРИЗРАКА (целевая точка dragFeet),
+        // ярко + по валидности drop, чтобы было видно кого тащишь и можно ли поставить.
         private readonly List<(Vector2 center, float radius, DeploymentView.RingState state)> _ringBuffer = new();
-        private void UpdateUnitRings(int hoverId)
+        private void UpdateUnitRings(int hoverId, Vector2 dragFeet, bool dragValid, bool dragging)
         {
             _ringBuffer.Clear();
             IReadOnlyList<RuntimeUnit> units = _sim.Units;
@@ -240,19 +241,24 @@ namespace Guildmaster.Game
             {
                 RuntimeUnit u = units[i];
                 if (u.Team != 0 || u.IsDead) continue;
-                if (_dragged != null && u.Id == _dragged.Id) continue;
-                DeploymentView.RingState state = u.Id == hoverId ? DeploymentView.RingState.Hover : DeploymentView.RingState.Normal;
-                _ringBuffer.Add((u.Position, BodyRadius(u), state));
+                if (dragging && _dragged != null && u.Id == _dragged.Id)
+                {
+                    DeploymentView.RingState st = dragValid ? DeploymentView.RingState.DragValid : DeploymentView.RingState.DragInvalid;
+                    _ringBuffer.Add((dragFeet, BodyRadius(u), st)); // круг у ног призрака (следует за курсором)
+                }
+                else
+                {
+                    DeploymentView.RingState st = u.Id == hoverId ? DeploymentView.RingState.Hover : DeploymentView.RingState.Normal;
+                    _ringBuffer.Add((FeetOf(u), BodyRadius(u), st)); // у ног (визуальных, не центр — QA #3)
+                }
             }
             _view.SetUnitRings(_ringBuffer);
         }
 
-        // Призрак-силуэт перетаскиваемого юнита (копия текущего кадра) + тень у целевых ног. Нет вида
-        // (headless / спрайт не готов) → только тень, без призрака.
+        // Призрак-силуэт перетаскиваемого юнита (копия текущего кадра) в целевой точке ног. Нет вида
+        // (headless / спрайт не готов) → без призрака (круг DragValid/Invalid всё равно ведёт цель).
         private void ShowDragGhost(Vector2 targetFeet, bool valid)
         {
-            _view.SetShadow(true, targetFeet, BodyRadius(_dragged));
-
             if (_presenter != null && _presenter.TryGetView(_dragged.Id, out UnitView dv)
                 && dv != null && dv.BodySprite != null)
             {
@@ -266,13 +272,21 @@ namespace Guildmaster.Game
             }
         }
 
+        // Мировая точка ног юнита (визуальный FeetPoint из вида, а не сим-центр) — круг/pick садятся под ноги
+        // спрайта, а не в центр фигуры (QA #3). Фолбэк — сим-позиция (headless / вид не готов).
+        private Vector2 FeetOf(RuntimeUnit u)
+        {
+            if (_presenter != null && _presenter.TryGetView(u.Id, out UnitView view) && view != null)
+            {
+                Vector3 f = view.FeetPoint;
+                return new Vector2(f.x, f.y);
+            }
+            return u.Position;
+        }
+
         private void HideGhostSprite() => _view.SetGhost(false, default, default, null, false, Vector3.one, false);
 
-        private void HideDragVisuals()
-        {
-            HideGhostSprite();
-            _view.SetShadow(false, default, 0f);
-        }
+        private void HideDragVisuals() => HideGhostSprite();
 
         private void OnPointerPressed()
         {
@@ -385,14 +399,12 @@ namespace Guildmaster.Game
             return kb != null && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame);
         }
 
-        // Захват по ВСЕЙ фигуре (границы спрайта через presenter), а не по кругу тела у ног (тот — метрика
-        // сепарации/коллизии; целиться в ступни неудобно). При наложении фигур берём фронтального (макс.
-        // sortingOrder = ниже по Y). Фолбэк на круг тела, если вью недоступен (headless / спрайт не готов).
+        // Захват по кругу-опоре у НОГ (QA #3): раньше пикали по всему AABB спрайта → зона хватания была
+        // значительно больше видимого круга и «в центре». Теперь зона = круг у ног радиусом BodyRadius,
+        // чуть увеличенным (PickRadiusScale), — совпадает с рисуемым кругом. Ближайший под курсором.
         private RuntimeUnit PickUnit(Vector2 world)
         {
-            RuntimeUnit bySprite = null;
-            int         bestOrder = int.MinValue;
-            RuntimeUnit byBody = null;
+            RuntimeUnit best = null;
             float       bestSq = float.MaxValue;
 
             IReadOnlyList<RuntimeUnit> units = _sim.Units;
@@ -401,18 +413,11 @@ namespace Guildmaster.Game
                 RuntimeUnit u = units[i];
                 if (u.Team != 0 || u.IsDead) continue;
 
-                if (_presenter != null && _presenter.TryGetView(u.Id, out UnitView view)
-                    && view != null && view.SpriteContainsWorldPoint(world) && view.BodySortingOrder > bestOrder)
-                {
-                    bestOrder = view.BodySortingOrder;
-                    bySprite  = u;
-                }
-
-                float r  = BodyRadius(u);
-                float sq = (world - u.Position).sqrMagnitude;
-                if (sq <= r * r && sq < bestSq) { byBody = u; bestSq = sq; }
+                float r  = BodyRadius(u) * PickRadiusScale;
+                float sq = (world - FeetOf(u)).sqrMagnitude;
+                if (sq <= r * r && sq < bestSq) { best = u; bestSq = sq; }
             }
-            return bySprite ?? byBody;
+            return best;
         }
 
         private bool Overlaps(Vector2 pos, RuntimeUnit exclude)

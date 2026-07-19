@@ -7,41 +7,41 @@ namespace Guildmaster.Presentation
 {
     /// <summary>
     /// Рантайм-оверлей фазы расстановки (шаг 4) на Shapes + спрайт-призрак: рамки зон (свои зелёные,
-    /// вражьи красные — QA #10), тень-эллипс под ногами наведённого/перетаскиваемого юнита (QA #8/#9,
-    /// вместо кольца по всей фигуре) и ghost-призрак — полупрозрачная копия силуэта юнита, следующая за
-    /// курсором при drag (QA #9, вместо диска). Компонентный режим Shapes (как <see cref="CombatAreaFlash"/>):
-    /// по одному <c>ShapeRenderer</c> на GameObject, слой сортировки <c>DevOverlay</c>, z=-1 (над спрайтами).
-    /// Создаётся и управляется из <c>DeploymentController</c> (Guildmaster.Game) — в сцене заранее не нужен.
+    /// вражьи красные — QA #10), круги-опоры («footprint») под ногами КАЖДОГО юнита (QA #20/#3, всегда видны,
+    /// ярче на наведении, ярко+валидность у ног призрака при drag — QA #4) и ghost-призрак — полупрозрачная
+    /// копия силуэта юнита, следующая за курсором при drag (QA #9). Компонентный режим Shapes (как
+    /// <see cref="CombatAreaFlash"/>): по одному <c>ShapeRenderer</c> на GameObject, слой сортировки
+    /// <c>DevOverlay</c>, z=-1 (над спрайтами). Управляется из <c>DeploymentController</c> (Guildmaster.Game).
     /// </summary>
     public sealed class DeploymentView : MonoBehaviour
     {
         private const float OverlayZ      = -1f;
         private const float ZoneThickness = 0.06f;
-        private const float ShadowFlatten = 0.42f; // сплющивание тени по Y (эллипс у ног, не круг)
+        private const float RingFlatten   = 0.42f; // сплющивание круга по Y (эллипс «на полу», не круг анфас)
 
-        private static readonly Color ZonePlayerCol    = new Color(0.40f, 0.90f, 0.50f, 0.55f);
-        private static readonly Color ZoneExtendedCol  = new Color(0.50f, 0.72f, 1.00f, 0.65f);
-        private static readonly Color ZoneEnemyCol     = new Color(0.95f, 0.42f, 0.42f, 0.50f); // QA #10: зона врага
-        private static readonly Color ShadowCol        = new Color(0.02f, 0.02f, 0.04f, 0.45f); // нейтральная тёмная тень
-        private static readonly Color GhostValidTint   = new Color(0.55f, 1.00f, 0.65f, 0.55f); // валидный drop (зеленца)
-        private static readonly Color GhostInvalidTint = new Color(1.00f, 0.45f, 0.45f, 0.55f); // reject (краснота)
-        private static readonly Color RingNormalCol    = new Color(0.75f, 0.85f, 1.00f, 0.28f); // QA #20: круг-размер (покой)
-        private static readonly Color RingHoverCol     = new Color(1.00f, 0.92f, 0.55f, 0.85f); // QA #20: наведён (реакция)
+        private static readonly Color ZonePlayerCol      = new Color(0.40f, 0.90f, 0.50f, 0.55f);
+        private static readonly Color ZoneExtendedCol    = new Color(0.50f, 0.72f, 1.00f, 0.65f);
+        private static readonly Color ZoneEnemyCol       = new Color(0.95f, 0.42f, 0.42f, 0.50f); // QA #10: зона врага
+        private static readonly Color GhostValidTint     = new Color(0.55f, 1.00f, 0.65f, 0.55f); // валидный drop (зеленца)
+        private static readonly Color GhostInvalidTint   = new Color(1.00f, 0.45f, 0.45f, 0.55f); // reject (краснота)
+        private static readonly Color RingNormalCol      = new Color(0.75f, 0.85f, 1.00f, 0.30f); // покой
+        private static readonly Color RingHoverCol       = new Color(1.00f, 0.92f, 0.55f, 0.90f); // наведён
+        private static readonly Color RingDragValidCol   = new Color(0.45f, 1.00f, 0.55f, 0.95f); // тащу, можно ставить
+        private static readonly Color RingDragInvalidCol = new Color(1.00f, 0.40f, 0.40f, 0.95f); // тащу, нельзя
 
         private const float RingNormalThickness = 0.035f;
-        private const float RingHoverThickness  = 0.07f;
+        private const float RingBoldThickness   = 0.075f;
 
-        /// <summary>Состояние круга-размера под юнитом (QA #20): покой / наведён.</summary>
-        public enum RingState { Normal, Hover }
+        /// <summary>Состояние круга-опоры под юнитом: покой / наведён / тащу-можно / тащу-нельзя (QA #20/#4).</summary>
+        public enum RingState { Normal, Hover, DragValid, DragInvalid }
 
         private int _sortingLayerId;
         private readonly List<(Line line, DeploymentZone zone)> _zoneLines = new();
-        private readonly List<Disc> _rings = new(); // пул кругов-размеров под team-0 юнитами (QA #20)
-        private Disc _shadow;              // тень-эллипс под ногами (drop-цель под призраком)
+        private readonly List<Disc> _rings = new(); // пул кругов-опор под юнитами (QA #20)
         private SpriteRenderer _ghost;     // призрак-силуэт при drag (копия кадра спрайта юнита)
         private bool _extendedHighlight;
 
-        /// <summary>Собрать оверлей из данных арены (рамки зон + тень + спрайт-призрак). Зовётся один раз.</summary>
+        /// <summary>Собрать оверлей из данных арены (рамки зон + спрайт-призрак). Зовётся один раз.</summary>
         public void Init(ArenaLayoutData layout)
         {
             _sortingLayerId = ResolveOverlayLayer();
@@ -50,9 +50,7 @@ namespace Guildmaster.Presentation
                 foreach (DeploymentZone zone in layout.Zones)
                     BuildZoneBorder(zone); // QA #10: рисуем обе стороны (свои + вражьи)
 
-            _shadow = MakeShadow();
-            _ghost  = MakeGhost();
-            _shadow.gameObject.SetActive(false);
+            _ghost = MakeGhost();
             _ghost.gameObject.SetActive(false);
 
             gameObject.SetActive(false);
@@ -74,17 +72,6 @@ namespace Guildmaster.Presentation
             }
         }
 
-        /// <summary>Тень-эллипс под ногами (наведённый/выбранный/перетаскиваемый юнит). Нейтральная тёмная (QA #8/#9).</summary>
-        public void SetShadow(bool active, Vector2 feet, float radius)
-        {
-            if (_shadow == null) return;
-            _shadow.gameObject.SetActive(active);
-            if (!active) return;
-            _shadow.transform.position   = new Vector3(feet.x, feet.y, OverlayZ);
-            _shadow.transform.localScale = new Vector3(1f, ShadowFlatten, 1f); // сплющить в эллипс
-            _shadow.Radius = Mathf.Max(0.05f, radius);
-        }
-
         /// <summary>
         /// Ghost-призрак при drag (QA #9): полупрозрачная копия силуэта юнита в целевой точке ног
         /// <paramref name="feet"/> со смещением арта <paramref name="spriteOffset"/> (спрайт рисуется выше ног).
@@ -103,9 +90,10 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Круги-размеры под team-0 юнитами (QA #20): показывают «размер» юнита на поле, видны ВСЕГДА
-        /// (читаемость расстановки), наведённый — ярче/толще (реакция на наведение). Пул переиспользуется
-        /// покадрово, лишние круги гасятся. Перетаскиваемый юнит в список НЕ кладётся (он «в руке» — ghost).
+        /// Круги-опоры под ногами team-0 юнитов (QA #20/#3/#4): показывают «место» юнита на поле, видны ВСЕГДА
+        /// (читаемость). Наведённый — ярче/толще (реакция). Перетаскиваемый передаётся с состоянием DragValid/
+        /// DragInvalid и позицией у ног ПРИЗРАКА (следует за курсором) — так видно, кого тащишь и можно ли
+        /// поставить. Пул переиспользуется покадрово, лишние круги гасятся.
         /// </summary>
         public void SetUnitRings(IReadOnlyList<(Vector2 center, float radius, RingState state)> rings)
         {
@@ -119,11 +107,10 @@ namespace Guildmaster.Presentation
                     Disc d = _rings[i];
                     d.gameObject.SetActive(true);
                     d.transform.position   = new Vector3(center.x, center.y, OverlayZ);
-                    d.transform.localScale = new Vector3(1f, ShadowFlatten, 1f); // эллипс «на полу»
+                    d.transform.localScale = new Vector3(1f, RingFlatten, 1f); // эллипс «на полу»
                     d.Radius    = Mathf.Max(0.05f, radius);
-                    bool hover  = state == RingState.Hover;
-                    d.Color     = hover ? RingHoverCol : RingNormalCol;
-                    d.Thickness = hover ? RingHoverThickness : RingNormalThickness;
+                    d.Color     = RingColor(state);
+                    d.Thickness = state == RingState.Normal ? RingNormalThickness : RingBoldThickness;
                 }
                 else if (_rings[i].gameObject.activeSelf)
                 {
@@ -131,6 +118,14 @@ namespace Guildmaster.Presentation
                 }
             }
         }
+
+        private static Color RingColor(RingState state) => state switch
+        {
+            RingState.Hover       => RingHoverCol,
+            RingState.DragValid   => RingDragValidCol,
+            RingState.DragInvalid => RingDragInvalidCol,
+            _                     => RingNormalCol,
+        };
 
         private void BuildZoneBorder(DeploymentZone zone)
         {
@@ -175,20 +170,6 @@ namespace Guildmaster.Presentation
             _zoneLines.Add((line, zone));
         }
 
-        private Disc MakeShadow()
-        {
-            var go = new GameObject("Shadow");
-            go.transform.SetParent(transform, false);
-            var disc = go.AddComponent<Disc>();
-            disc.Geometry       = DiscGeometry.Flat2D;
-            disc.Type           = DiscType.Disc;
-            disc.Radius         = 0.5f;
-            disc.Color          = ShadowCol;
-            disc.SortingLayerID = _sortingLayerId;
-            disc.SortingOrder   = 0; // под призраком
-            return disc;
-        }
-
         private Disc MakeRing()
         {
             var go = new GameObject("UnitRing");
@@ -210,7 +191,7 @@ namespace Guildmaster.Presentation
             go.transform.SetParent(transform, false);
             var sr = go.AddComponent<SpriteRenderer>();
             sr.sortingLayerID = _sortingLayerId;
-            sr.sortingOrder   = 1; // над тенью
+            sr.sortingOrder   = 1; // над кругами-опорами
             return sr;
         }
 

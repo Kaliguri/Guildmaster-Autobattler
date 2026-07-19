@@ -233,6 +233,18 @@ namespace Guildmaster.UI
             RunState run = _runStates?.Current;
             bool runActive = run != null;
             _topBar.Root.style.display = runActive ? DisplayStyle.Flex : DisplayStyle.None;
+
+            BattlePhase phase = _clock.Phase;
+
+            // «Начать»/таймер (battle-center) репарентнут из топбара в корень (QA #19), поэтому скрытием
+            // топбара он БОЛЬШЕ НЕ гасится — управляем ЯВНО и ВСЕГДА (в т.ч. вне забега). Виден только когда
+            // идёт забег И фаза боя/расстановки (Deployment→«Начать», Fighting→таймер). Иначе (главное меню/
+            // карта/магазин/нет забега) — скрыт. Без этого «Начать» торчал над главным меню (QA #1 раунд-4).
+            if (runActive && phase != BattlePhase.None)
+                _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
+            else
+                _topBar.HideBattleCenter();
+
             if (!runActive) { _runElapsed = 0f; return; }
 
             _runElapsed += UnityEngine.Time.unscaledDeltaTime; // «рабочий» таймер забега
@@ -242,13 +254,8 @@ namespace Guildmaster.UI
             _topBar.SetRestarts(run.RestartsRemaining, _config != null ? _config.RestartsPerAct : run.RestartsRemaining);
             _topBar.SetRunTime(FormatTime(_runElapsed));
 
-            BattlePhase phase = _clock.Phase;
-            // QA #11: подсвечивать активный режим по факту (не только инвентарь). Инвентарь поверх боя →
-            // приоритетнее; иначе идёт бой/расстановка → «Бой»; иначе открыта read-only карта → «Карта».
+            // QA #11/#21: подсветка активного таба из единого источника (стек роутера) — см. ActiveMode.
             if (_topBar is RunModeBarView modeBar) modeBar.SetActiveMode(ActiveMode(phase));
-
-            if (phase == BattlePhase.None) _topBar.HideBattleCenter();       // карта/магазин — центр пуст
-            else _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
         }
 
         // Режим «Инвентарь» — тумблер: открыт → закрыть, закрыт → открыть новый инвентарь-экран (тело под топбаром).
