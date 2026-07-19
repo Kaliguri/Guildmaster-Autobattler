@@ -14,13 +14,13 @@ using UnityEngine.UIElements;
 namespace Guildmaster.UI
 {
     /// <summary>
-    /// Реализация <see cref="IMenuRouter"/>: строит и проводит экраны из UXML-шаблонов, а стек, видимость и
+    /// Строит и проводит экраны забега из UXML-шаблонов, а стек, видимость и
     /// глушение геймплейного ввода делегирует <see cref="UiNavigator"/> (UI-реворк Ф2). Каждый экран получает
     /// честный <see cref="ScreenKind"/> — по нему навигатор ВЫЧИСЛЯЕТ видимость нижних и suppress, вместо
     /// прежней ручной синхронизации (<c>_menuModeActive</c>/<c>_prevContext</c>/CSS-классов-флагов).
     /// Настройки применяются живьём; Cancel/Save — на кнопках, ESC = навигация назад.
     /// </summary>
-    public sealed class MenuRouter : IMenuRouter
+    public sealed class MenuRouter
     {
         private readonly IInputService _input;
         private readonly UiNavigator _nav;
@@ -172,14 +172,6 @@ namespace Guildmaster.UI
             PushScreen(BuildLoadoutScreen, ScreenKind.Page);
         }
 
-        // Настройки поверх текущего экрана (топбар «Опции»): Push, а не ToggleSystemMenu — иначе при одном
-        // экране на стеке (карта забега) сработал бы PopAll и оборвал бы забег. Save/Cancel в настройках — Pop.
-        public void OpenSettings()
-        {
-            if (_root == null || _settingsUxml == null) return;
-            PushScreen(BuildSettingsScreen, ScreenKind.Modal);
-        }
-
         /// <summary>
         /// Лоадаут-хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание собранных реликвий на сосуды.
         /// Открывается кнопкой «Хаб» в топбаре, пушится оверлеем поверх карты. Реликвии переносятся драгом
@@ -328,8 +320,9 @@ namespace Guildmaster.UI
             else PushScreen(BuildPauseScreen, ScreenKind.Modal, screenId: PauseId); // QA #19: меню ПОВЕРХ (Modal со scrim)
         }
 
-        /// <summary>Закрыть все экраны и снять глушение ввода (навигатор пересчитает suppress из фазы).</summary>
-        public void CloseAll() => _nav.PopAll();
+        // Закрыть все экраны и снять глушение (навигатор пересчитает suppress из фазы). Внутренний close-callback
+        // текстового ивента (выбор без результата = снять стек). НЕ для завершения забега (то — единая отмена, K11).
+        private void CloseAll() => _nav.PopAll();
 
         /// <summary>Режим-таб верхнего оверлея (QA #21): "inventory"/"map"/null. Единый источник подсветки топбара.</summary>
         public string ActiveScreenMode => _nav.ActiveModeTag;
