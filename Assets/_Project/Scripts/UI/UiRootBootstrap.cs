@@ -95,8 +95,7 @@ namespace Guildmaster.UI
         private UIDocument _doc;
         private IRunTopBar _topBar;
         private VisualElement _backdrop; // постоянный задний фон под не-боевыми экранами (выкл в бою/инвентаре)
-        private bool _inventoryOpen; // инвентарь открыт → подсветить режим «Инвентарь» + тумблер
-        private bool _mapOpen;       // read-only карта (кнопка «Карта») открыта → подсветить режим «Карта»
+        private bool _inventoryOpen; // инвентарь открыт → тумблер + backdrop-логика (подсветка режима — из router)
         private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
 
         [Inject]
@@ -203,6 +202,19 @@ namespace Guildmaster.UI
 
             _topBar.Root.style.display = DisplayStyle.None; // скрыта, пока нет активного забега
             _doc.rootVisualElement.Add(_topBar.Root);
+
+            // QA #19: «Начать»/таймер боя (battle-center) — в САМЫЙ низ z-order (ЗА оверлеями инвентаря/меню/
+            // карты). Топбар BringToFront'ится поверх оверлеев (навигация всегда доступна), а «Начать» —
+            // часть мира расстановки, оверлеи должны её перекрывать. Выносим слот из топбара в корень и
+            // опускаем под оверлеи, но над backdrop. Ссылки RunModeBarView на btn-start/timer переживают репарент.
+            var battleCenter = _topBar.Root.Q<VisualElement>("battle-center");
+            if (battleCenter != null)
+            {
+                battleCenter.RemoveFromHierarchy();
+                _doc.rootVisualElement.Add(battleCenter);
+                battleCenter.SendToBack(); // под оверлеи
+                _backdrop.SendToBack();    // backdrop ещё ниже
+            }
         }
 
         private void Update()
@@ -256,18 +268,18 @@ namespace Guildmaster.UI
             if (run?.Map == null || run.Map.Nodes == null || run.Map.Nodes.Length == 0) return;
             var ids = new List<string>();
             foreach (var n in Guildmaster.Guild.MapTraversal.AvailableNext(run.Map)) ids.Add(n.Id);
-            _mapOpen = true; // QA #11: подсветить режим «Карта», снять на закрытии (клик узла/ESC)
-            _router.OpenMap(new Guildmaster.Guild.OpenMapRequest(run.Map, ids, _ => { _mapOpen = false; _router.CloseOverlays(); }));
+            _router.OpenMap(new Guildmaster.Guild.OpenMapRequest(run.Map, ids, _ => _router.CloseOverlays()));
         }
 
-        // Активный режим для подсветки таба (QA #11). Инвентарь поверх → приоритет; иначе бой/расстановка;
-        // иначе read-only карта. NB: карта петли акта (обход узлов) идёт через флоу, не через этот бутстрап —
-        // её подсветка потребует отдельного шва флоу→топбар (не покрыто здесь).
+        // Активный режим для подсветки таба (QA #11/#21) — ЕДИНЫЙ источник: верхний оверлей роутера несёт
+        // mode-тег (inventory/map, ставится при Push). Так подсвечивается и read-only карта, И карта петли
+        // акта (обе идут через один MenuRouter.OpenMap) — консистентно, без разрозненных флагов бутстрапа.
+        // Нет оверлея → активен «Бой», если идёт бой/расстановка (Phase != None).
         private string ActiveMode(BattlePhase phase)
         {
-            if (_inventoryOpen)            return "inventory";
+            string overlay = _router?.ActiveScreenMode;
+            if (overlay != null)           return overlay;
             if (phase != BattlePhase.None) return "battle";
-            if (_mapOpen)                  return "map";
             return null;
         }
 

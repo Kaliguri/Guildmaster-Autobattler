@@ -25,10 +25,19 @@ namespace Guildmaster.Presentation
         private static readonly Color ShadowCol        = new Color(0.02f, 0.02f, 0.04f, 0.45f); // нейтральная тёмная тень
         private static readonly Color GhostValidTint   = new Color(0.55f, 1.00f, 0.65f, 0.55f); // валидный drop (зеленца)
         private static readonly Color GhostInvalidTint = new Color(1.00f, 0.45f, 0.45f, 0.55f); // reject (краснота)
+        private static readonly Color RingNormalCol    = new Color(0.75f, 0.85f, 1.00f, 0.28f); // QA #20: круг-размер (покой)
+        private static readonly Color RingHoverCol     = new Color(1.00f, 0.92f, 0.55f, 0.85f); // QA #20: наведён (реакция)
+
+        private const float RingNormalThickness = 0.035f;
+        private const float RingHoverThickness  = 0.07f;
+
+        /// <summary>Состояние круга-размера под юнитом (QA #20): покой / наведён.</summary>
+        public enum RingState { Normal, Hover }
 
         private int _sortingLayerId;
         private readonly List<(Line line, DeploymentZone zone)> _zoneLines = new();
-        private Disc _shadow;              // тень-эллипс под ногами (наведение/выбор/под призраком)
+        private readonly List<Disc> _rings = new(); // пул кругов-размеров под team-0 юнитами (QA #20)
+        private Disc _shadow;              // тень-эллипс под ногами (drop-цель под призраком)
         private SpriteRenderer _ghost;     // призрак-силуэт при drag (копия кадра спрайта юнита)
         private bool _extendedHighlight;
 
@@ -93,6 +102,36 @@ namespace Guildmaster.Presentation
             _ghost.transform.localScale = scale;
         }
 
+        /// <summary>
+        /// Круги-размеры под team-0 юнитами (QA #20): показывают «размер» юнита на поле, видны ВСЕГДА
+        /// (читаемость расстановки), наведённый — ярче/толще (реакция на наведение). Пул переиспользуется
+        /// покадрово, лишние круги гасятся. Перетаскиваемый юнит в список НЕ кладётся (он «в руке» — ghost).
+        /// </summary>
+        public void SetUnitRings(IReadOnlyList<(Vector2 center, float radius, RingState state)> rings)
+        {
+            int n = rings?.Count ?? 0;
+            while (_rings.Count < n) _rings.Add(MakeRing());
+            for (int i = 0; i < _rings.Count; i++)
+            {
+                if (i < n)
+                {
+                    (Vector2 center, float radius, RingState state) = rings[i];
+                    Disc d = _rings[i];
+                    d.gameObject.SetActive(true);
+                    d.transform.position   = new Vector3(center.x, center.y, OverlayZ);
+                    d.transform.localScale = new Vector3(1f, ShadowFlatten, 1f); // эллипс «на полу»
+                    d.Radius    = Mathf.Max(0.05f, radius);
+                    bool hover  = state == RingState.Hover;
+                    d.Color     = hover ? RingHoverCol : RingNormalCol;
+                    d.Thickness = hover ? RingHoverThickness : RingNormalThickness;
+                }
+                else if (_rings[i].gameObject.activeSelf)
+                {
+                    _rings[i].gameObject.SetActive(false);
+                }
+            }
+        }
+
         private void BuildZoneBorder(DeploymentZone zone)
         {
             Vector2 c = zone.Area.Center, h = zone.Area.HalfSize;
@@ -147,6 +186,21 @@ namespace Guildmaster.Presentation
             disc.Color          = ShadowCol;
             disc.SortingLayerID = _sortingLayerId;
             disc.SortingOrder   = 0; // под призраком
+            return disc;
+        }
+
+        private Disc MakeRing()
+        {
+            var go = new GameObject("UnitRing");
+            go.transform.SetParent(transform, false);
+            var disc = go.AddComponent<Disc>();
+            disc.Geometry       = DiscGeometry.Flat2D;
+            disc.Type           = DiscType.Ring;
+            disc.Radius         = 0.5f;
+            disc.Thickness      = RingNormalThickness;
+            disc.Color          = RingNormalCol;
+            disc.SortingLayerID = _sortingLayerId;
+            disc.SortingOrder   = 0;
             return disc;
         }
 

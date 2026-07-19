@@ -197,16 +197,19 @@ namespace Guildmaster.Game
             // «Готово» — стартуем бой (Enter). Работает даже при открытом меню? нет — только в чистой фазе.
             if (!_input.GameplaySuppressed && ReadyPressed()) { StartCombat(); return; }
 
-            // Меню loadout открыто (ввод заглушён) — прячем hover/ghost, не интеракчим.
-            // Плюс курсор над непрозрачной UITK-панелью (инвентарь) вне активного драга — ховер сквозь панель
-            // не пикаем (клики туда уже не проходят через IInputService.PointerOverUI).
+            // Меню loadout открыто (ввод заглушён) или курсор над непрозрачной UITK-панелью (инвентарь) вне
+            // активного драга — не интеракчим (ховер/ghost гасим), но круги-размеры оставляем видимыми (QA #20:
+            // читаемость поля не зависит от того, где курсор).
             if (_input.GameplaySuppressed || (_input.PointerOverUI && _dragged == null))
             {
-                HideDragVisuals();
+                HideGhostSprite();
+                _view.SetShadow(false, default, 0f);
+                UpdateUnitRings(-1);
                 return;
             }
 
             Vector2 world = ScreenToWorld(_input.PointerScreenPosition);
+            int hoverId = -1;
 
             if (_dragged != null)
             {
@@ -217,12 +220,31 @@ namespace Guildmaster.Game
             else
             {
                 RuntimeUnit hover = PickUnit(world);
-                _hoverUnitId = hover != null ? hover.Id : -1;
+                hoverId = hover != null ? hover.Id : -1;
+                _hoverUnitId = hoverId;
                 HideGhostSprite();
-                // Тень-эллипс у ног наведённого юнита (сим-позиция = ноги) — не кольцо по всей фигуре (QA #8).
-                if (hover != null) _view.SetShadow(true, hover.Position, BodyRadius(hover));
-                else _view.SetShadow(false, default, 0f);
+                _view.SetShadow(false, default, 0f); // ховер теперь показывает круг-размер (QA #20), не тень
             }
+
+            UpdateUnitRings(hoverId);
+        }
+
+        // Круги-размеры под всеми живыми team-0 юнитами (QA #20): всегда видны (читаемость), наведённый — ярче.
+        // Перетаскиваемый пропускаем — он «в руке» (ghost-силуэт следует за курсором).
+        private readonly List<(Vector2 center, float radius, DeploymentView.RingState state)> _ringBuffer = new();
+        private void UpdateUnitRings(int hoverId)
+        {
+            _ringBuffer.Clear();
+            IReadOnlyList<RuntimeUnit> units = _sim.Units;
+            for (int i = 0; i < units.Count; i++)
+            {
+                RuntimeUnit u = units[i];
+                if (u.Team != 0 || u.IsDead) continue;
+                if (_dragged != null && u.Id == _dragged.Id) continue;
+                DeploymentView.RingState state = u.Id == hoverId ? DeploymentView.RingState.Hover : DeploymentView.RingState.Normal;
+                _ringBuffer.Add((u.Position, BodyRadius(u), state));
+            }
+            _view.SetUnitRings(_ringBuffer);
         }
 
         // Призрак-силуэт перетаскиваемого юнита (копия текущего кадра) + тень у целевых ног. Нет вида

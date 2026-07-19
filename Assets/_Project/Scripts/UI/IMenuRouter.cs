@@ -9,6 +9,10 @@ namespace Guildmaster.UI
         /// <summary>Открыт ли хоть один экран.</summary>
         bool IsOpen { get; }
 
+        /// <summary>Режим-таб верхнего оверлея для подсветки топбара (QA #21): "inventory"/"map"/null.
+        /// Единый источник активного режима — стек роутера (а не разрозненные флаги в бутстрапе).</summary>
+        string ActiveScreenMode { get; }
+
         /// <summary>ESC: пусто → открыть системное меню; вложенный экран → назад; корневой → закрыть всё.</summary>
         void ToggleSystemMenu();
 

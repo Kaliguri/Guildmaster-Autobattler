@@ -161,7 +161,7 @@ namespace Guildmaster.UI
             screen.AddToClassList(TransparentScreenClass);
             // Закрытие по любому пути (Pop/Esc/CloseAll) → onClose (бутстрап снимет подсветку режима).
             screen.RegisterCallback<DetachFromPanelEvent>(_ => onClose?.Invoke());
-            Push(screen);
+            Push(screen, mode: "inventory"); // QA #21: подсветка таба «Инвентарь» из единого источника (router)
         }
 
         /// <summary>Закрыть все оверлеи (режим «Бой»/выход в игру из глобального топбара). No-op если ничего не открыто
@@ -189,23 +189,37 @@ namespace Guildmaster.UI
             bool inMenu = false;
             foreach (VisualElement s in _stack)
                 if (s.ClassListContains(PauseScreenClass)) { inMenu = true; break; }
-            if (inMenu) Pop();                 // уже в системном меню → назад/закрыть
-            else Push(BuildPauseScreen());     // открыть меню поверх текущего
+            if (inMenu) Pop();                                   // уже в системном меню → назад/закрыть
+            else Push(BuildPauseScreen(), hideBelow: false);     // QA #19: меню ПОВЕРХ, нижний экран виден за scrim
         }
 
+        // Атомарно (QA #22): снимаем СНАПШОТ стека и очищаем его ДО удаления экранов. Иначе реэнтрантность —
+        // `DetachFromPanelEvent`-страховка снимаемого flow-экрана синхронно резолвит забег (выбор узла=null),
+        // что открывает новый экран (главное меню) прямо во время цикла, а старый `while` его же тут и удалял
+        // → detach главного меню слал Quit → выход из play. Снапшот развязывает: новый Push переживает CloseAll.
         public void CloseAll()
         {
-            while (_stack.Count > 0) _root.Remove(_stack.Pop());
+            if (_stack.Count == 0) { SyncSuppress(); return; }
+            var screens = _stack.ToArray();
+            _stack.Clear();
+            foreach (VisualElement s in screens) _root.Remove(s);
             SyncSuppress();
         }
 
-        private void Push(VisualElement screen)
+        // mode — тег режима-таба (QA #21, единый источник подсветки топбара: "inventory"/"map"/null).
+        // hideBelow=false — не прятать экран под этим (QA #19: pause со scrim-фоном виден поверх инвентаря/карты,
+        // те остаются отрисованными за ним, а не «исчезают»).
+        private void Push(VisualElement screen, string mode = null, bool hideBelow = true)
         {
-            if (_stack.Count > 0) _stack.Peek().style.display = DisplayStyle.None;
+            if (hideBelow && _stack.Count > 0) _stack.Peek().style.display = DisplayStyle.None;
+            screen.userData = mode;
             _stack.Push(screen);
             _root.Add(screen);
             SyncSuppress();
         }
+
+        /// <summary>Режим-таб верхнего оверлея (QA #21): "inventory"/"map"/null. Единый источник подсветки топбара.</summary>
+        public string ActiveScreenMode => _stack.Count > 0 ? _stack.Peek().userData as string : null;
 
         private void Pop()
         {
@@ -509,7 +523,7 @@ namespace Guildmaster.UI
         public void OpenMap(OpenMapRequest req)
         {
             if (_root == null || _mapUxml == null) { req.OnChosen?.Invoke(null); return; }
-            Push(BuildMapScreen(req));
+            Push(BuildMapScreen(req), mode: "map"); // QA #21: подсветка таба «Карта» из единого источника (router)
         }
 
         private VisualElement BuildMapScreen(OpenMapRequest req)
