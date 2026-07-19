@@ -391,16 +391,14 @@ namespace Guildmaster.Presentation
                 maxSize: 64);
         }
 
-        /// <summary>Тинт тела по персонажу: у реликвии — стабильный оттенок от имени; у болванчиков — по команде.</summary>
-        private static Color TintFor(RuntimeUnit unit)
-        {
-            if (unit.Unit != null)
-            {
-                float hue = (Mathf.Abs(unit.Unit.name.GetHashCode()) % 360) / 360f;
-                return Color.HSVToRGB(hue, 0.5f, 1f);
-            }
-            return unit.Team == 0 ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f);
-        }
+        /// <summary>
+        /// Тинт тела по персонажу. У юнита с данными — ЕДИНЫЙ резолвер <see cref="UnitData.ResolveBodyTint"/>
+        /// (тот же цвет, что рендерит карточка инвентаря); у болванчиков без данных — по команде.
+        /// </summary>
+        private static Color TintFor(RuntimeUnit unit) =>
+            unit.Unit != null
+                ? unit.Unit.ResolveBodyTint()
+                : (unit.Team == 0 ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
 
         /// <summary>Фолбэк-цвет HP-бара, если палитра дизайн-системы не назначена (совпадает с дефолтами SO).</summary>
         private static Color DefaultHealthColor(bool isAllyOfViewer) => isAllyOfViewer

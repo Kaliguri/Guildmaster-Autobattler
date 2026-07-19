@@ -17,6 +17,7 @@ namespace Guildmaster.UI.Components
     {
         private static readonly int IdleHash   = Animator.StringToHash("Idle");
         private static readonly int AttackHash = Animator.StringToHash("Attack");
+        private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
 
         private const float StageOrigin = 5000f; // далеко от игровой сцены (ничего не попадёт в кадр)
         private const float Spacing     = 6f;    // разнос юнитов, чтобы камера не ловила соседа
@@ -83,6 +84,11 @@ namespace Guildmaster.UI.Components
                     entry.Animator.fireEvents = false;
                     entry.Animator.Play(IdleHash, 0, 0f);
                 }
+
+                // Тинт тела — тот же цвет, что в бою (единый резолвер UnitData.ResolveBodyTint). Кастовый
+                // HitFlash-шейдер подхватывает .color лишь по per-instance пути → сперва праймим MPB (инвариант
+                // UnitView.PrimeFlashBlock), иначе тинт молча не отобразится на статичной карточке.
+                ApplyBodyTint(entry.Unit, data.ResolveBodyTint());
             }
 
             // Камера НА этот юнит: рендерит в свою RT автоматически (URP).
@@ -190,6 +196,41 @@ namespace Guildmaster.UI.Components
             cam.orthographicSize = framed * 0.5f;
             // Центр кадра = ноги + половина рамки: ноги у низа, макушка под верхней кромкой.
             cam.transform.position = new Vector3(feetX, feetY + framed * 0.5f, -10f);
+        }
+
+        // Красит основной спрайт тела тем же цветом, что и бой (UnitData.ResolveBodyTint) — единый источник.
+        // Тело = UnitView._sprite (рефлексией: UI-асмдеф не ссылается на Presentation). Праймит MPB, иначе
+        // кастовый HitFlash-шейдер игнорит .color до первой записи блока (инвариант UnitView.PrimeFlashBlock).
+        private static void ApplyBodyTint(GameObject unit, Color tint)
+        {
+            if (unit == null) return;
+            SpriteRenderer body = FindBodySprite(unit);
+            if (body == null) return;
+
+            var mpb = new MaterialPropertyBlock();
+            body.GetPropertyBlock(mpb);
+            mpb.SetFloat(FlashAmountId, 0f);
+            body.SetPropertyBlock(mpb);
+
+            body.color = tint;
+        }
+
+        // UnitView._sprite рефлексией (как _feetPoint в FrameByRecommendedSize). Нет UnitView/поля →
+        // фолбэк на первый SpriteRenderer в иерархии.
+        private static SpriteRenderer FindBodySprite(GameObject unit)
+        {
+            const System.Reflection.BindingFlags F =
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+            var behaviours = unit.GetComponentsInChildren<MonoBehaviour>(true);
+            for (int i = 0; i < behaviours.Length; i++)
+            {
+                MonoBehaviour mb = behaviours[i];
+                if (mb == null || mb.GetType().Name != "UnitView") continue;
+                var f = mb.GetType().GetField("_sprite", F);
+                if (f != null && f.GetValue(mb) is SpriteRenderer sr && sr != null) return sr;
+                break;
+            }
+            return unit.GetComponentInChildren<SpriteRenderer>(true);
         }
 
         // Грубо гасим world-UI юнита (бары/подпись/контейнер 'UI') — на карточке нужен только персонаж.

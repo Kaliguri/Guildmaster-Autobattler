@@ -34,6 +34,11 @@ namespace Guildmaster.Data.Definitions
                  "Сейчас всем можно прицепить единый placeholder, позже — индивидуальные. Пусто = дефолтный из презентера.")]
         [SerializeField] private GameObject _viewPrefab;
 
+        [Tooltip("Тинт тела (умножается на спрайт). White = «не задан» → дев-фолбэк: стабильный оттенок от " +
+                 "имени, чтобы placeholder-болванки различались. Когда появится свой спрайт — задать акцент " +
+                 "или оставить White. ЕДИНЫЙ источник цвета: и бой, и карточка инвентаря берут ResolveBodyTint().")]
+        [SerializeField] private Color _tint = Color.white;
+
         [Header("Auto-attack shape (Phase 3)")]
         [Tooltip("Форма авто-атаки: None = одиночная цель; Line = линия перед юнитом (несколько целей, «Размашистый выпад»).")]
         [SerializeField] private AreaShape _autoAttackShape = AreaShape.None;
@@ -93,6 +98,7 @@ namespace Guildmaster.Data.Definitions
         public ResourceType ResourceType => _resourceType;
         public UnitVisual Visual => _visual;
         public GameObject ViewPrefab => _viewPrefab;
+        public Color Tint => _tint;
         public AreaShape AutoAttackShape => _autoAttackShape;
         public float AutoAttackWidth => _autoAttackWidth;
         public EffectData[] AutoAttackEffects => _autoAttackEffects;
@@ -112,5 +118,19 @@ namespace Guildmaster.Data.Definitions
         /// назначен (переходный период миграции) — легаси inline-профиль. Комбат читает только это.
         /// </summary>
         public AIProfile Ai => _aiPreset != null ? _aiPreset.Profile : _ai;
+
+        /// <summary>
+        /// Итоговый цвет тела для рендера — ЕДИНЫЙ источник и для боя (<c>UnitView.SetTint</c>), и для
+        /// карточки инвентаря (<c>RelicCardVisualRig</c>). Явно заданный <see cref="Tint"/> (не White) идёт
+        /// как есть; White трактуется как «не задан» → дев-фолбэк: стабильный HSV-оттенок от имени SO
+        /// (различает placeholder-болванки, как раньше делал только <c>CombatPresenter.TintFor</c>). Убирает
+        /// рассинхрон «в бою тинт есть, в карточке — нет».
+        /// </summary>
+        public Color ResolveBodyTint()
+        {
+            if (_tint != Color.white) return _tint;
+            float hue = (Mathf.Abs(name.GetHashCode()) % 360) / 360f;
+            return Color.HSVToRGB(hue, 0.5f, 1f);
+        }
     }
 }
