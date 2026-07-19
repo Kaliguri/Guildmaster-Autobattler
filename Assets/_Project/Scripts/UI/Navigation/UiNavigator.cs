@@ -58,8 +58,12 @@ namespace Guildmaster.UI
         /// <summary>Меняется на каждый Push/Pop/резолв — топбар/backdrop подписываются вместо поллинга структуры.</summary>
         public event Action Changed;
 
-        /// <summary>Добавить экран поверх стека.</summary>
-        public void Push(UiScreen screen)
+        /// <summary>
+        /// Добавить экран поверх стека. <paramref name="ct"/> (напр. токен забега, QA #37) снимает экран через
+        /// навигатор при отмене — единый механизм для ПРОСТЫХ экранов (ивент/loadout). Result-экраны идут через
+        /// <see cref="ShowAsync{TResult}"/> (там свой ct-путь: отмена резолвит <c>DefaultResult</c>).
+        /// </summary>
+        public void Push(UiScreen screen, CancellationToken ct = default)
         {
             if (screen == null) return;
             if (screen.Root == null) screen.Build(_context);
@@ -75,6 +79,9 @@ namespace Guildmaster.UI
             SyncInput();
             FocusTop();
             Changed?.Invoke();
+
+            if (ct.CanBeCanceled)
+                ct.Register(() => RemoveScreen(screen)); // RemoveScreen идемпотентен (уже снят → no-op)
         }
 
         /// <summary>Снять верхний экран. Result-экран без выбора резолвится своим <c>DefaultResult</c>.</summary>

@@ -49,9 +49,21 @@ namespace Guildmaster.Game.Services
                 }
 
                 MapNode node = await _chooser.ChooseAsync(map, available, ctx.Cancellation);
+
+                // QA #37: отмена забега («В меню» из паузы) закрывает экран карты по токену. Это НЕ Aborted, а
+                // кооперативная отмена — бросаем OperationCanceledException, она всплывает сквозь петлю в
+                // GameFlow.RunGameAsync (catch → главное меню). Страховка на случай, если chooser вернул null
+                // по гонке закрытия, а не бросил сам. Различает «отмена» от «реально недоступный узел» (#37b).
+                if (ctx.Cancellation.IsCancellationRequested)
+                {
+                    Debug.Log("[ActRunner] - выбор узла отменён (выход из забега) → OperationCanceled, не Aborted");
+                    ctx.Cancellation.ThrowIfCancellationRequested();
+                }
+
                 if (node == null || !MapTraversal.CanEnter(map, node.Id))
                 {
-                    Debug.LogWarning($"[ActRunner] - выбран недоступный узел '{node?.Id ?? "null"}' → Aborted");
+                    Debug.LogWarning($"[ActRunner] - выбран недоступный узел '{node?.Id ?? "null"}' → Aborted " +
+                                     $"(узел '{map.CurrentNodeId}', доступно {available.Count}; это НЕ отмена — реальный тупик/баг данных)");
                     return EventResult.Aborted;
                 }
 

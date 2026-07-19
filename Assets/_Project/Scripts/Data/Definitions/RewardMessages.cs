@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Guildmaster.Data.Definitions
 {
@@ -22,13 +23,18 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Колбэк результата выбора (ровно один вызов): взятый релик + опц. сброшенный, либо пропуск.</summary>
         public readonly Action<RewardChoiceResult> OnResolved;
 
+        /// <summary>Токен отмены забега (QA #37): отмена закрывает награду через навигатор.</summary>
+        public readonly CancellationToken Cancellation;
+
         public OpenRewardRequest(IReadOnlyList<RelicData> choices, bool inventoryFull,
-                                 IReadOnlyList<string> currentInventory, Action<RewardChoiceResult> onResolved)
+                                 IReadOnlyList<string> currentInventory, Action<RewardChoiceResult> onResolved,
+                                 CancellationToken cancellation = default)
         {
             Choices          = choices;
             InventoryFull    = inventoryFull;
             CurrentInventory = currentInventory;
             OnResolved       = onResolved;
+            Cancellation     = cancellation;
         }
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 
 namespace Guildmaster.Guild
 {
@@ -11,6 +12,13 @@ namespace Guildmaster.Guild
         /// <summary>Колбэк открытия крышки (ровно один вызов) — флоу показывает награду.</summary>
         public readonly Action OnOpen;
 
-        public OpenChestRequest(Action onOpen) => OnOpen = onOpen;
+        /// <summary>Токен отмены забега (QA #37): отмена закрывает сундук через навигатор.</summary>
+        public readonly CancellationToken Cancellation;
+
+        public OpenChestRequest(Action onOpen, CancellationToken cancellation = default)
+        {
+            OnOpen       = onOpen;
+            Cancellation = cancellation;
+        }
     }
 }

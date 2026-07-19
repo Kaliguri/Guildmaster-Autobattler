@@ -27,7 +27,7 @@ namespace Guildmaster.Game.Flow
         public async UniTask WaitForContinueAsync(string labelKey = null, CancellationToken ct = default)
         {
             var tcs = new UniTaskCompletionSource();
-            _pub.Publish(new OpenContinueRequest(labelKey, () => tcs.TrySetResult()));
+            _pub.Publish(new OpenContinueRequest(labelKey, () => tcs.TrySetResult(), ct)); // ct → закрыть экран при отмене (QA #37)
             await tcs.Task.AttachExternalCancellation(ct);
         }
     }

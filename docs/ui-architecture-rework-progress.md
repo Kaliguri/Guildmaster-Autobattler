@@ -31,6 +31,12 @@
 **► СТАРТ СЛЕДУЮЩЕЙ СЕССИИ (согласовано Максом 2026-07-19): сначала #37 (вылет-Aborted «В меню» с
 карты) + #37b (лог) отдельным фиксом, ПОТОМ Ф4 (слои).** Порядок в разделе «Находки пакета П1» ниже.
 
+**► #37/#37b СДЕЛАНЫ (2026-07-19, ждут play-QA, 408/408).** Единая система отмены забега (Макс за неё +
+ресёрч подтвердил cooperative-cancellation паттерн). Токен забега пробрасывается через всю цепочку показа
+(6 запросов +`ct`, 4 флоу +`AttachExternalCancellation`, `UiNavigator.Push` +`ct`-оверлоад, `MenuRouter`
+проброс + `CloseAll`→`Pop` в паузе, `ActRunner` различает отмену/Aborted + лог). Снесены K11+K12. Регресс-тест
+в `ActRunnerTests`. Детали — QA-трекер #37/#37b. **СЛЕДУЮЩЕЕ: Ф4 (слои-контейнеры).**
+
 ---
 
 ## Ключевые решения и отклонения от плана (с обоснованием)
@@ -103,8 +109,8 @@ Backdrop/подсветка табов — по подписке на `navigator
 | K8 | Мультиписатель контекста: `SetContext` мимо навигатора | `DeploymentController` | Ф5 (Ф5.5) |
 | K9 | `Keyboard.current` напрямую (Enter расстановки) | `DeploymentController.ReadyPressed` | Трек Х |
 | K10 | Text event на Push+Detach (выбор ≠ закрытие, не ShowAsync) | `MenuRouter` | отдельно |
-| K11 | `btn-main-menu`: `CloseAll()`+`RequestReturnToMainMenu` = двойной путь → Aborted | `MenuRouter.BuildPauseScreen` | приоритетно (QA #37) |
-| K12 | flow (ShowMapAsync и др.) НЕ пробрасывают актовый `ct` в ShowAsync | `MenuRouter.Show*Async` | приоритетно (QA #37) |
+| ~~K11~~ | ~~`btn-main-menu`: `CloseAll()`+`RequestReturnToMainMenu` = двойной путь → Aborted~~ | `MenuRouter.BuildPauseScreen` | ✅ СНЕСЕНО (QA #37, `Pop`+отмена) |
+| ~~K12~~ | ~~flow (ShowMapAsync и др.) НЕ пробрасывают актовый `ct` в ShowAsync~~ | `MenuRouter.Show*Async` | ✅ СНЕСЕНО (QA #37, единая отмена) |
 | K13 | `gm-screen--transparent`/`gm-pause-root` классы — оставлены как СТИЛЬ | `MenuRouter` | следить: не вернуть в логику |
 
 ## Находки пакета П1 (play-QA Макса 2026-07-19) — предлагаемый порядок фиксов

@@ -23,7 +23,9 @@ namespace Guildmaster.Game.Flow
             foreach (var node in available) ids.Add(node.Id);
 
             var tcs = new UniTaskCompletionSource<string>();
-            _openMapPub.Publish(new OpenMapRequest(map, ids, id => tcs.TrySetResult(id)));
+            // ct несётся в запрос: отмена забега («В меню») закрывает экран карты через навигатор (QA #37),
+            // а AttachExternalCancellation ниже размотает это ожидание в OperationCanceledException.
+            _openMapPub.Publish(new OpenMapRequest(map, ids, id => tcs.TrySetResult(id), ct));
 
             string chosenId = await tcs.Task.AttachExternalCancellation(ct);
             foreach (var node in available)

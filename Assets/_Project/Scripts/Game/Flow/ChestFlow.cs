@@ -23,10 +23,10 @@ namespace Guildmaster.Game.Flow
         public async UniTask<EventResult> Run(RunContext ctx)
         {
             var tcs = new UniTaskCompletionSource();
-            _openChestPub.Publish(new OpenChestRequest(() => tcs.TrySetResult()));
-            await tcs.Task;                       // игрок кликнул крышку
+            _openChestPub.Publish(new OpenChestRequest(() => tcs.TrySetResult(), ctx.Cancellation)); // ct → закрыть при отмене (QA #37)
+            await tcs.Task.AttachExternalCancellation(ctx.Cancellation); // игрок кликнул крышку
 
-            await _reward.PresentAsync(RewardTier.Battle); // 1-из-3 реликвий
+            await _reward.PresentAsync(RewardTier.Battle, ctx.Cancellation); // 1-из-3 реликвий
             return EventResult.Completed;
         }
     }

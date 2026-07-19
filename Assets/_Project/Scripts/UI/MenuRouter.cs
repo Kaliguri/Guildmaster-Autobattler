@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Core.Flow;
 using Guildmaster.Core.Input;
@@ -112,8 +113,9 @@ namespace Guildmaster.UI
             public override void Build(UiScreenContext ctx) => Root = _build();
         }
 
-        private void PushScreen(Func<VisualElement> build, ScreenKind kind, string modeTag = null, string screenId = null)
-            => _nav.Push(new RouterScreen(kind, build, modeTag, screenId));
+        private void PushScreen(Func<VisualElement> build, ScreenKind kind, string modeTag = null, string screenId = null,
+                                CancellationToken ct = default)
+            => _nav.Push(new RouterScreen(kind, build, modeTag, screenId), ct);
 
         // Обёртка flow-экрана с результатом (Ф3): вью-билдер получает делегат Resolve и связывает с ним свои
         // колбэки (выбор/пропуск). Навигатор гарантирует РОВНО ОДИН резолв — явный или DefaultResult при снятии
@@ -292,15 +294,19 @@ namespace Guildmaster.UI
         {
             var screen = FillRoot(_pauseUxml.CloneTree());
             screen.AddToClassList(PauseScreenClass); // стилевой маркер «системное меню»
-            screen.Q<Button>("btn-return").clicked += CloseAll;
+            // «Продолжить» = снять ТОЛЬКО системное меню (Pop), а не весь стек (CloseAll снёс бы карту под паузой
+            // → resolve узла null → Aborted, тот же баг класса #37). Экраны под меню (карта/инвентарь) остаются.
+            screen.Q<Button>("btn-return").clicked += Pop;
             screen.Q<Button>("btn-settings").clicked += () => PushScreen(BuildSettingsScreen, ScreenKind.Modal);
 
-            // QA #18: «В главное меню» прерывает забег (сейв остаётся — можно продолжить); «Выход» закрывает игру.
+            // QA #18/#37: «В главное меню» прерывает забег ЕДИНОЙ отменой (токен) — снять меню (Pop) + отменить
+            // забег; отмена сама закрывает открытый экран забега (карта/награда/…) через навигатор и всплывает
+            // OperationCanceledException в GameFlow → главное меню. Никакого CloseAll-веника (снос K11). Сейв цел.
             var toMenu = screen.Q<Button>("btn-main-menu");
             if (toMenu != null)
             {
                 toMenu.text = Loc("ui.menu.to_main_menu", "В главное меню");
-                toMenu.clicked += () => { CloseAll(); _runControl?.RequestReturnToMainMenu(); };
+                toMenu.clicked += () => { Pop(); _runControl?.RequestReturnToMainMenu(); };
             }
             var quit = screen.Q<Button>("btn-quit");
             if (quit != null)
@@ -491,7 +497,7 @@ namespace Guildmaster.UI
                         : RewardChoiceResult.Take(chosen)),
                     () => resolve(RewardChoiceResult.Skip)));
 
-            RewardChoiceResult result = await _nav.ShowAsync(screen); // экран снят ДО колбэка (навигатор, II.5)
+            RewardChoiceResult result = await _nav.ShowAsync(screen, req.Cancellation); // экран снят ДО колбэка (II.5); ct → закрыть при отмене (QA #37)
             req.OnResolved?.Invoke(result);
         }
 
@@ -501,7 +507,7 @@ namespace Guildmaster.UI
         public void OpenTextEvent(OpenTextEventRequest req)
         {
             if (_root == null || _eventUxml == null || req.Event == null) { req.OnChosen?.Invoke(-1); return; }
-            PushScreen(() => BuildTextEventScreen(req), ScreenKind.Page);
+            PushScreen(() => BuildTextEventScreen(req), ScreenKind.Page, ct: req.Cancellation); // QA #37: отмена закрывает ивент
         }
 
         private VisualElement BuildTextEventScreen(OpenTextEventRequest req)
@@ -550,7 +556,7 @@ namespace Guildmaster.UI
                     resolve),
                 modeTag: "map"); // QA #21: подсветка таба «Карта»
 
-            string nodeId = await _nav.ShowAsync(screen);
+            string nodeId = await _nav.ShowAsync(screen, req.Cancellation); // ct → отмена забега закрывает карту (QA #37, снос K12)
             req.OnChosen?.Invoke(nodeId);
         }
 
@@ -580,7 +586,7 @@ namespace Guildmaster.UI
                 return body;
             });
 
-            await _nav.ShowAsync(screen); // явный «Продолжить» и закрытие без нажатия → OnContinue (петля не виснет)
+            await _nav.ShowAsync(screen, req.Cancellation); // «Продолжить»/закрытие → OnContinue; ct → закрыть при отмене (QA #37)
             req.OnContinue?.Invoke();
         }
 
@@ -602,7 +608,7 @@ namespace Guildmaster.UI
                     key => _loc?.GetString(key),
                     () => resolve(true)));
 
-            await _nav.ShowAsync(screen); // «Уйти» и закрытие → OnLeave (петля продолжается)
+            await _nav.ShowAsync(screen, req.Cancellation); // «Уйти»/закрытие → OnLeave; ct → закрыть при отмене (QA #37)
             req.OnLeave?.Invoke();
         }
 
@@ -619,7 +625,7 @@ namespace Guildmaster.UI
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
                 resolve => ChestScreenView.Build(_chestUxml, key => _loc?.GetString(key), () => resolve(true)));
 
-            await _nav.ShowAsync(screen); // клик по крышке и закрытие → OnOpen (флоу катит награду)
+            await _nav.ShowAsync(screen, req.Cancellation); // клик/закрытие → OnOpen; ct → закрыть при отмене (QA #37)
             req.OnOpen?.Invoke();
         }
 

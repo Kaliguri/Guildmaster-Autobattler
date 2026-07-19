@@ -25,8 +25,8 @@ namespace Guildmaster.Game.Flow
             _shop.Open();
 
             var tcs = new UniTaskCompletionSource();
-            _openShopPub.Publish(new OpenShopRequest(_shop, () => tcs.TrySetResult()));
-            await tcs.Task;
+            _openShopPub.Publish(new OpenShopRequest(_shop, () => tcs.TrySetResult(), ctx.Cancellation)); // ct → закрыть при отмене (QA #37)
+            await tcs.Task.AttachExternalCancellation(ctx.Cancellation);
 
             return EventResult.Completed;
         }

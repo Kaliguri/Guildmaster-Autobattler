@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Guildmaster.Data.Definitions;
 
 namespace Guildmaster.Guild
@@ -65,10 +66,14 @@ namespace Guildmaster.Guild
         public readonly IShopController Shop;
         public readonly Action OnLeave;
 
-        public OpenShopRequest(IShopController shop, Action onLeave)
+        /// <summary>Токен отмены забега (QA #37): отмена закрывает магазин через навигатор.</summary>
+        public readonly CancellationToken Cancellation;
+
+        public OpenShopRequest(IShopController shop, Action onLeave, CancellationToken cancellation = default)
         {
-            Shop    = shop;
-            OnLeave = onLeave;
+            Shop         = shop;
+            OnLeave      = onLeave;
+            Cancellation = cancellation;
         }
     }
 }

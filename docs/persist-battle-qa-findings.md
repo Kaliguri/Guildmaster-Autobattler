@@ -549,7 +549,27 @@ UI-координация переусложнилась: **стек роуте�
 и это должно быть Cancelled, а не Aborted-выбор-null. Затрагивает `MenuRouter.ShowMapAsync`, цепочку ct
 `GameFlow`/`ActRunner`/`MapScreenNodeChooser`, `IRunControl.RequestReturnToMainMenu`. **Приоритетный фикс.**
 
+**Статус:** ИСПРАВЛЕНО В КОДЕ (ждёт play-QA, 408/408). Единая система отмены забега (согласовано с Максом: за
+единую модель + подтверждено ресёрчем — канонический cooperative-cancellation паттерн, снос K11+K12). Токен
+забега (`RunContext.Cancellation`, уже был) пробрасывается через ВСЮ цепочку показа: запросы `OpenMap/Continue/
+Reward/Shop/Chest/TextEvent` несут `CancellationToken`; источники (`MapScreenNodeChooser`/`ContinuePresenter` уже,
++`RewardPresenter`/`ShopFlow`/`ChestFlow`/`TextEventFlow`) вешают `AttachExternalCancellation`; `UiNavigator.Push`
+получил `ct`-оверлоад (снимает простой экран при отмене; `ShowAsync` уже умел). «В меню» теперь = `Pop()` паузы +
+`RequestReturnToMainMenu()` — БЕЗ `CloseAll`-веника; отмена сама закрывает открытый экран забега и всплывает
+`OperationCanceledException` в `GameFlow.RunGameAsync` → главное меню (сейв цел). `ActRunner` различает отмену
+(`IsCancellationRequested` → `ThrowIfCancellationRequested`) от реального недоступного узла. Родственный баг
+«Продолжить» (тоже висел на `CloseAll` → на карте снёс бы её) — тоже на `Pop`. Регресс-тест
+`ActRunnerTests.RunAct_CancelledDuringNodeChoice_ThrowsOperationCanceled_NotAborted`. **PLAY-QA: ESC→меню→«В
+главное меню» с карты И из узла (награда/магазин/сундук/ивент) возвращает в главное меню без вылета; «Продолжить»
+на карте не роняет забег.**
+
 ## 37b. Запрос Макса: детальный лог Aborted-пути — **P2 (диагностика)**
 «Уже который раз вылетает, не хватает детального лога что произошло». Улучшить диагностику пути прерывания:
 логировать ПОЧЕМУ узел null (закрытие/отмена/В меню), кто инициировал (ESC/кнопка/CTS), — чтобы Aborted
 читался из лога без раскопок стектрейса. `ActRunner`/`GameFlow`/`MapScreenNodeChooser`.
+
+**Статус:** ИСПРАВЛЕНО (вместе с #37). `ActRunner` теперь логирует отдельно: отмену выбора узла («выбор узла
+отменён (выход из забега) → OperationCanceled, не Aborted») и реальный тупик (Aborted-лог обогащён: текущий узел,
+кол-во доступных, явная пометка «это НЕ отмена — реальный тупик/баг данных»). Плюс `GameFlow` уже логировал
+«забег прерван из меню → возврат в главное меню» (теперь этот путь реально срабатывает). Aborted vs Cancelled
+читаются из лога без стектрейса.

@@ -90,6 +90,26 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
+        public void RunAct_CancelledDuringNodeChoice_ThrowsOperationCanceled_NotAborted()
+        {
+            // QA #37: «В главное меню» из паузы отменяет забег. Петля должна ВСПЛЫТЬ OperationCanceledException
+            // (→ GameFlow.RunGameAsync ловит → главное меню), а НЕ вернуть Aborted — прежде закрытие карты в
+            // null трактовалось как Aborted и роняло play каскадом (снос K11/K12). Регресс на корень бага.
+            var cts = new System.Threading.CancellationTokenSource();
+            _runStates.NewRun(4242L, Array.Empty<RosterSlot>());
+            _runStates.BeginAct();
+            var ctx = new RunContext(_runStates.Current, new XorShiftRng(1), new SoloReadyGate(),
+                                     new SoloPlayerIntentSource(), cts.Token);
+            var runner = NewRunner(new StubResolver(_ => EventResult.Completed));
+
+            cts.Cancel(); // забег прерван из меню до/во время выбора узла
+
+            Assert.Throws<OperationCanceledException>(
+                () => runner.RunActAsync(ctx).GetAwaiter().GetResult(),
+                "Отмена забега = OperationCanceled, не Aborted.");
+        }
+
+        [Test]
         public void RunAct_Autosaves_DuringTraversal()
         {
             var ctx = NewRunWithMap();
