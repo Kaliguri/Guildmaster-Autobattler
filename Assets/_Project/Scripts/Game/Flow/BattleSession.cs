@@ -185,14 +185,22 @@ namespace Guildmaster.Game.Flow
 
         public float ElapsedSeconds => _clock?.Invoke() ?? 0f;
 
-        public void SetPhase(BattlePhase phase) => Phase = phase;
+        /// <inheritdoc/>
+        public event Action PhaseChanged;
+
+        public void SetPhase(BattlePhase phase)
+        {
+            if (Phase == phase) return;   // реальная смена → ровно одно событие (навигатор пересчитает ввод)
+            Phase = phase;
+            PhaseChanged?.Invoke();
+        }
 
         public void BindClock(Func<float> elapsedSeconds) => _clock = elapsedSeconds;
 
         public void UnbindClock()
         {
             _clock = null;
-            Phase  = BattlePhase.None; // боевого скоупа больше нет — панель скрыта
+            SetPhase(BattlePhase.None); // боевого скоупа больше нет — панель скрыта + событие (снос ручного SetContext, K8)
         }
 
         public void BindStart(Action start) => _start = start;

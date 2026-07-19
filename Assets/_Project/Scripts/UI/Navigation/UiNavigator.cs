@@ -18,7 +18,7 @@ namespace Guildmaster.UI
     /// <para>POCO: зависимости через конструктор, тестируется в EditMode без сцены. Слой экранов и контекст
     /// сборки отдаются в <see cref="Initialize"/> (бутстрапом/роутером).</para>
     /// </summary>
-    public sealed class UiNavigator
+    public sealed class UiNavigator : IDisposable
     {
         private readonly IInputService _input;
         private readonly IBattleClock _clock;
@@ -32,6 +32,15 @@ namespace Guildmaster.UI
         {
             _input = input;
             _clock = clock;
+            // K8 (план II.3): смена фазы боя → пересчёт глушения/контекста. Навигатор — ЕДИНСТВЕННЫЙ писатель
+            // контекста; боевой слой больше не зовёт SetContext руками, только SetPhase → поднимает это событие.
+            if (_clock != null) _clock.PhaseChanged += SyncInput;
+        }
+
+        /// <summary>Отписка от смены фазы (Singleton → зовёт VContainer при разрушении скоупа).</summary>
+        public void Dispose()
+        {
+            if (_clock != null) _clock.PhaseChanged -= SyncInput;
         }
 
         /// <summary>

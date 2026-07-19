@@ -1,3 +1,5 @@
+using System;
+
 namespace Guildmaster.Data.Definitions
 {
     /// <summary>
@@ -21,6 +23,13 @@ namespace Guildmaster.Data.Definitions
     {
         /// <summary>Текущая фаза боя (пусто/расстановка/бой). Панель опрашивает каждый кадр.</summary>
         BattlePhase Phase { get; }
+
+        /// <summary>
+        /// Фаза сменилась (расстановка ↔ бой ↔ нет боя). Навигатор подписывается и пересчитывает глушение/
+        /// контекст ввода из новой фазы — вместо ручного <c>SetContext</c> в боевом слое (снос K8, план II.3).
+        /// Поднимается только на РЕАЛЬНОЙ смене значения (тот же phase дважды = без события).
+        /// </summary>
+        event Action PhaseChanged;
 
         /// <summary>Прошедшее время текущего боя, сек (0, если боя нет).</summary>
         float ElapsedSeconds { get; }

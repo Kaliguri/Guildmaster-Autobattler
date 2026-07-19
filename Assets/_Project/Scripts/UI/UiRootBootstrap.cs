@@ -176,7 +176,8 @@ namespace Guildmaster.UI
             InitTopBar();
 
             // Ф4: подсветка табов и backdrop — по подписке на изменение стека навигатора (снос поллинга
-            // структуры в Update, K3/K4). Смена фазы боя (у IBattleClock нет события) ловится ребром в Update.
+            // структуры в Update, K3/K4). Смену фазы боя ВВОД пересчитывает через IBattleClock.PhaseChanged
+            // (навигатор, K8); визуал shell тут ловит её дешёвым ребром в Update — кадр задержки визуалу не вреден.
             _router.Changed += RefreshShell;
             // Шов II.9.2: смена языка на лету перестраивает персистентный топбар (стек-экраны пересоздаются сами).
             if (_loc != null) _loc.LocaleChanged += RebuildTopBar;
@@ -294,8 +295,9 @@ namespace Guildmaster.UI
             else
                 _topBar.HideBattleCenter();
 
-            // Ф4: структуру shell (backdrop + подсветка таба) пересчитываем по РЕБРУ фазы/инвентаря — у IBattleClock
-            // нет события фазы (реш. 3), а стек ловится подпиской nav.Changed → RefreshShell. Не каждый кадр (K3/K4).
+            // Ф4: структуру shell (backdrop + подсветка таба) пересчитываем по РЕБРУ фазы/инвентаря; стек ловится
+            // подпиской nav.Changed → RefreshShell. Ввод на смену фазы идёт через IBattleClock.PhaseChanged (K8);
+            // визуалу тут дешёвого ребра достаточно — кадр задержки не вреден, а подписка добавила бы lifecycle-риск.
             bool inventoryOpen = _router.IsInventoryOpen;
             if (phase != _lastPhase || inventoryOpen != _lastInventoryOpen)
             {

@@ -155,10 +155,9 @@ namespace Guildmaster.Game
 
             EnsureView();
             _view.SetActive(true);
-            _input.SetContext(InputContext.Deployment);
             _deploying = true;
             _testZone  = false; // боевая расстановка (узел боя), не тест-зона
-            _session.SetPhase(BattlePhase.Deployment); // центр панели = «Начать»
+            _session.SetPhase(BattlePhase.Deployment); // центр панели = «Начать»; фаза → навигатор ставит контекст Deployment (K8)
             _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: боевая расстановка ≠ тест-зона (гарантия сброса)
             FrameCameraForDeployment(); // QA #4: свободная камера со стартовым боевым кадром (не отзум на всю зону)
         }
@@ -208,10 +207,9 @@ namespace Guildmaster.Game
             _sim.SetPaused(true);
             EnsureView();
             _view.SetActive(true);
-            _input.SetContext(InputContext.Deployment);
             _deploying = true;
             _testZone  = true;
-            _session.SetPhase(BattlePhase.Deployment);
+            _session.SetPhase(BattlePhase.Deployment); // фаза → навигатор ставит контекст Deployment (K8)
             _testZoneChangedPub?.Publish(new TestZoneChangedEvent(true)); // Ф5: состояние → скин серой зоны + UI-Sheet
             FrameCameraForDeployment();
         }
@@ -224,9 +222,8 @@ namespace Guildmaster.Game
             _dragged   = null;
             _relicDrag = null;
             _view?.SetActive(false);
-            _input.SetContext(InputContext.None);
             _cameraModes?.ExitToActionView();
-            _session.SetPhase(BattlePhase.None); // вне боя — панель без «Начать»/таймера
+            _session.SetPhase(BattlePhase.None); // вне боя — панель без «Начать»/таймера; фаза → навигатор ставит контекст None (K8)
             _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: вышли → цветная арена + снять Sheet
         }
 
@@ -513,9 +510,8 @@ namespace Guildmaster.Game
             _dragged = null;
             _view?.SetActive(false);
             _sim.SetPaused(false);
-            _input.SetContext(InputContext.Combat);
             _cameraModes?.ExitToActionView(); // QA #4: вернуть боевой вид (слежение) на старте боя
-            _session.SetPhase(BattlePhase.Fighting); // центр панели = таймер боя
+            _session.SetPhase(BattlePhase.Fighting); // центр панели = таймер боя; фаза → навигатор ставит контекст Combat (K8)
             _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: бой начался → не тест-зона (гарантия сброса)
         }
 

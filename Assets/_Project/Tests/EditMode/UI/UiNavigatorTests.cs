@@ -45,9 +45,16 @@ namespace Guildmaster.Tests.EditMode.UI
 
         private sealed class FakeClock : IBattleClock
         {
-            public BattlePhase Phase { get; set; } = BattlePhase.None;
+            private BattlePhase _phase = BattlePhase.None;
+            // Сеттер поднимает PhaseChanged на реальной смене — как боевой BattleSession.SetPhase (K8).
+            public BattlePhase Phase
+            {
+                get => _phase;
+                set { if (_phase == value) return; _phase = value; PhaseChanged?.Invoke(); }
+            }
             public float ElapsedSeconds => 0f;
             public void RequestStart() { }
+            public event Action PhaseChanged;
         }
 
         private sealed class TestScreen : UiScreen
@@ -293,6 +300,35 @@ namespace Guildmaster.Tests.EditMode.UI
 
             Assert.IsFalse(input.GameplaySuppressed);
             Assert.AreEqual(InputContext.Combat, input.Context);
+        }
+
+        [Test]
+        public void PhaseChanged_RecomputesInput_WithoutManualSync()
+        {
+            var nav = NewNav(out FakeInput input, out FakeClock clock);
+            // K8 (план II.3): навигатор подписан на PhaseChanged в конструкторе → смена фазы САМА пересчитывает
+            // ввод. Боевой слой (DeploymentController/BattleInputController) больше не зовёт SetContext руками.
+            clock.Phase = BattlePhase.Deployment;
+            Assert.AreEqual(InputContext.Deployment, input.Context, "расстановка → Deployment без ручного вызова");
+
+            clock.Phase = BattlePhase.Fighting;
+            Assert.AreEqual(InputContext.Combat, input.Context, "старт боя → Combat");
+
+            clock.Phase = BattlePhase.None;
+            Assert.AreEqual(InputContext.None, input.Context, "выгрузка боя → None");
+            Assert.IsFalse(input.GameplaySuppressed, "пустой стек → геймплей не заглушён");
+        }
+
+        [Test]
+        public void PhaseChanged_UnderModal_StaysMenu()
+        {
+            var nav = NewNav(out FakeInput input, out FakeClock clock);
+            nav.Push(new TestScreen(ScreenKind.Modal)); // системное меню поверх
+
+            clock.Phase = BattlePhase.Fighting; // бой «пошёл» под меню — ввод остаётся Menu (модалка сверху)
+
+            Assert.IsTrue(input.GameplaySuppressed, "Modal глушит геймплей независимо от фазы");
+            Assert.AreEqual(InputContext.Menu, input.Context);
         }
 
         // --- ShowAsync: ровно один резолв ---
