@@ -66,13 +66,26 @@ namespace Guildmaster.Tests.EditMode.UI
         }
 
         private static UiNavigator NewNav(out FakeInput input, out FakeClock clock)
+            => NewNav(out input, out clock, out _, out _);
+
+        private static UiNavigator NewNav(out FakeInput input, out FakeClock clock,
+            out VisualElement screensLayer, out VisualElement modalLayer)
         {
             input = new FakeInput();
             clock = new FakeClock();
             var nav = new UiNavigator(input, clock);
-            var layer = new VisualElement();
-            nav.Initialize(layer, new UiScreenContext(layer));
+            screensLayer = new VisualElement();
+            modalLayer = new VisualElement();
+            nav.Initialize(screensLayer, modalLayer, new UiScreenContext(screensLayer));
             return nav;
+        }
+
+        private sealed class TaggedScreen : UiScreen
+        {
+            public override ScreenKind Kind { get; }
+            public override string ModeTag { get; }
+            public TaggedScreen(ScreenKind kind, string modeTag) { Kind = kind; ModeTag = modeTag; }
+            public override void Build(UiScreenContext ctx) => Root = new VisualElement();
         }
 
         private static bool IsVisible(UiScreen s) => s.Root.style.display.value == DisplayStyle.Flex;
@@ -132,6 +145,68 @@ namespace Guildmaster.Tests.EditMode.UI
             nav.Push(sheet);
             Assert.IsTrue(IsVisible(below), "Sheet НЕ прячет нижний");
             Assert.IsTrue(IsVisible(modal));
+        }
+
+        // --- Слои-контейнеры (Ф4): Modal → modalLayer, Page/Sheet → screensLayer ---
+
+        [Test]
+        public void Push_PlacesScreen_InLayerByKind()
+        {
+            var nav = NewNav(out _, out _, out VisualElement screens, out VisualElement modal);
+            var page = new TestScreen(ScreenKind.Page);
+            var sheet = new TestScreen(ScreenKind.Sheet);
+            var pause = new TestScreen(ScreenKind.Modal);
+
+            nav.Push(page);
+            nav.Push(sheet);
+            nav.Push(pause);
+
+            Assert.AreSame(screens, page.Root.parent, "Page → слой экранов (под топбаром)");
+            Assert.AreSame(screens, sheet.Root.parent, "Sheet → слой экранов (под топбаром)");
+            Assert.AreSame(modal, pause.Root.parent, "Modal → слой модалок (над топбаром)");
+        }
+
+        [Test]
+        public void Pop_RemovesScreen_FromItsLayer()
+        {
+            var nav = NewNav(out _, out _, out _, out VisualElement modal);
+            var pause = new TestScreen(ScreenKind.Modal);
+
+            nav.Push(pause);
+            Assert.AreEqual(1, modal.childCount);
+
+            nav.Pop();
+            Assert.AreEqual(0, modal.childCount, "модалка снята со своего слоя");
+            Assert.IsNull(pause.Root.parent);
+        }
+
+        // --- Подсветка таба: ActiveModeTag игнорирует Modal (QA #35, K4) ---
+
+        [Test]
+        public void ActiveModeTag_IgnoresModal_KeepsTopNonModalTag()
+        {
+            var nav = NewNav(out _, out _);
+            nav.Push(new TaggedScreen(ScreenKind.Page, "map"));
+            Assert.AreEqual("map", nav.ActiveModeTag);
+
+            nav.Push(new TaggedScreen(ScreenKind.Modal, null)); // pause поверх карты
+            Assert.AreEqual("map", nav.ActiveModeTag, "Modal НЕ сбрасывает подсветку — активна «Карта»");
+
+            nav.Push(new TaggedScreen(ScreenKind.Modal, null)); // settings поверх pause
+            Assert.AreEqual("map", nav.ActiveModeTag, "цепочка Modal всё ещё держит «Карта»");
+
+            nav.Pop();
+            nav.Pop();
+            Assert.AreEqual("map", nav.ActiveModeTag);
+        }
+
+        [Test]
+        public void ActiveModeTag_TopSheet_Wins()
+        {
+            var nav = NewNav(out _, out _);
+            nav.Push(new TaggedScreen(ScreenKind.Page, "map"));
+            nav.Push(new TaggedScreen(ScreenKind.Sheet, "inventory")); // инвентарь поверх карты
+            Assert.AreEqual("inventory", nav.ActiveModeTag, "верхний НЕ-Modal (Sheet) определяет режим");
         }
 
         // --- Ввод = f(верх, фаза) ---

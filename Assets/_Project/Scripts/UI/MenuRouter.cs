@@ -63,15 +63,25 @@ namespace Guildmaster.UI
 
         public bool IsOpen => _nav.IsOpen;
 
-        /// <summary>Бутстрап отдаёт корень панели и UXML-шаблоны экранов (ссылки из сцены, не DI).</summary>
-        public void Initialize(VisualElement root, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
+        /// <summary>
+        /// Меняется на каждый Push/Pop/резолв навигатора (Ф4): бутстрап подписывается вместо поллинга структуры
+        /// стека в <c>Update</c> — по нему пересчитываются подсветка таба и backdrop (снос части K3/K4).
+        /// </summary>
+        public event Action Changed
+        {
+            add => _nav.Changed += value;
+            remove => _nav.Changed -= value;
+        }
+
+        /// <summary>Бутстрап отдаёт слои-контейнеры (Ф4) и UXML-шаблоны экранов (ссылки из сцены, не DI).</summary>
+        public void Initialize(VisualElement screensLayer, VisualElement modalLayer, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
             VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
             VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
             VisualTreeAsset loadoutHubUxml = null, VisualTreeAsset loadoutInventoryUxml = null,
             VisualTreeAsset arcanaCardUxml = null)
         {
-            _root = root;
+            _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
             _pauseUxml = pauseUxml;
             _settingsUxml = settingsUxml;
             _loadoutUxml = loadoutUxml;
@@ -87,9 +97,10 @@ namespace Guildmaster.UI
             _loadoutInventoryUxml = loadoutInventoryUxml;
             _arcanaCardUxml = arcanaCardUxml;
 
-            // Навигатор Ф2: в Ф2 слой экранов = сам корень панели (слои-контейнеры появятся в Ф4). Экраны
-            // добавляются в корень, топбар держится поверх через BringToFront бутстрапа (как раньше).
-            _nav.Initialize(root, new UiScreenContext(root, key => _loc?.GetString(key)));
+            // Навигатор Ф4: два слоя-контейнера. Page/Sheet → screensLayer (под топбаром); Modal (pause/
+            // settings) → modalLayer (над топбаром, fullscreen-scrim накрывает его — QA #36). Контекст сборки
+            // несёт слой экранов (куда FillRoot-оверлеи растягиваются) и локализатор.
+            _nav.Initialize(screensLayer, modalLayer, new UiScreenContext(screensLayer, key => _loc?.GetString(key)));
         }
 
         // Тонкая обёртка существующего вью-билдера в экран навигатора (Ф2): несёт Kind (видимость/suppress

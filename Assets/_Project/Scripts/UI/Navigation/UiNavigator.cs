@@ -23,6 +23,7 @@ namespace Guildmaster.UI
         private readonly List<UiScreen> _stack = new(); // [0] низ, [last] верх
 
         private VisualElement _screensLayer;
+        private VisualElement _modalLayer;
         private UiScreenContext _context;
 
         public UiNavigator(IInputService input, IBattleClock clock)
@@ -31,12 +32,22 @@ namespace Guildmaster.UI
             _clock = clock;
         }
 
-        /// <summary>Отдать навигатору слой экранов (куда добавляются корни) и общий контекст сборки.</summary>
-        public void Initialize(VisualElement screensLayer, UiScreenContext context)
+        /// <summary>
+        /// Отдать навигатору два слоя-контейнера (Ф4) и общий контекст сборки. Экран кладётся в слой ПО СВОЕМУ
+        /// <see cref="ScreenKind"/>: <c>Modal</c> (pause/settings) → <paramref name="modalLayer"/> (над топбаром,
+        /// fullscreen-scrim накрывает его — QA #36); <c>Page</c>/<c>Sheet</c> → <paramref name="screensLayer"/>
+        /// (под топбаром). Снятие — через <c>RemoveFromHierarchy</c>, поэтому слой хранить у экрана не нужно.
+        /// </summary>
+        public void Initialize(VisualElement screensLayer, VisualElement modalLayer, UiScreenContext context)
         {
             _screensLayer = screensLayer;
+            _modalLayer = modalLayer;
             _context = context;
         }
+
+        // Слой для экрана по его типу: Modal — над топбаром, остальные — под ним (Ф4, план II.4).
+        private VisualElement LayerFor(UiScreen screen)
+            => screen.Kind == ScreenKind.Modal ? _modalLayer : _screensLayer;
 
         /// <summary>Верхний экран стека (null, если пусто).</summary>
         public UiScreen Top => _stack.Count > 0 ? _stack[_stack.Count - 1] : null;
@@ -44,8 +55,20 @@ namespace Guildmaster.UI
         /// <summary>Открыт ли хоть один экран.</summary>
         public bool IsOpen => _stack.Count > 0;
 
-        /// <summary>Тег режима верхнего экрана — единый источник подсветки таба топбара.</summary>
-        public string ActiveModeTag => Top?.ModeTag;
+        /// <summary>
+        /// Тег режима для подсветки таба топбара — из верхнего НЕ-Modal экрана (QA #35, K4). Modal (pause/
+        /// settings) НЕ меняет подсветку: открытое поверх карты системное меню оставляет активным «Карта»,
+        /// а не сбрасывает в null (иначе подсветка «прыгала» на бой/карту при открытии ESC-меню).
+        /// </summary>
+        public string ActiveModeTag
+        {
+            get
+            {
+                for (int i = _stack.Count - 1; i >= 0; i--)
+                    if (_stack[i].Kind != ScreenKind.Modal) return _stack[i].ModeTag;
+                return null;
+            }
+        }
 
         /// <summary>Есть ли в стеке экран, удовлетворяющий предикату (напр. «системное меню где-то открыто»).</summary>
         public bool AnyScreen(Func<UiScreen, bool> predicate)
@@ -70,7 +93,7 @@ namespace Guildmaster.UI
 
             UiScreen prevTop = Top;
             _stack.Add(screen);
-            _screensLayer?.Add(screen.Root);
+            LayerFor(screen)?.Add(screen.Root);
 
             prevTop?.OnBlur();
             screen.OnEnter();
@@ -90,7 +113,7 @@ namespace Guildmaster.UI
             if (_stack.Count == 0) return;
             UiScreen top = _stack[_stack.Count - 1];
             _stack.RemoveAt(_stack.Count - 1);
-            _screensLayer?.Remove(top.Root);
+            top.Root?.RemoveFromHierarchy();
             top.OnExit();
 
             SyncVisibility();
@@ -116,7 +139,7 @@ namespace Guildmaster.UI
             _stack.Clear();
             foreach (UiScreen s in snapshot)
             {
-                _screensLayer?.Remove(s.Root);
+                s.Root?.RemoveFromHierarchy();
                 s.OnExit();
             }
 
@@ -178,7 +201,7 @@ namespace Guildmaster.UI
             int idx = _stack.IndexOf(screen);
             if (idx < 0) return; // уже снят (напр. Pop уже удалил, а мы пришли из ResolveDefaultIfPending)
             _stack.RemoveAt(idx);
-            _screensLayer?.Remove(screen.Root);
+            screen.Root?.RemoveFromHierarchy();
             screen.OnExit();
 
             SyncVisibility();

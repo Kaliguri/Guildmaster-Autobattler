@@ -95,8 +95,19 @@ namespace Guildmaster.UI
         private UIDocument _doc;
         private IRunTopBar _topBar;
         private VisualElement _backdrop; // постоянный задний фон под не-боевыми экранами (выкл в бою/инвентаре)
+
+        // Слои-контейнеры (Ф4, план II.4): фиксированный z-порядок = порядок добавления в корень панели.
+        // Заменяют императивный BringToFront/SendToBack (снос K1/K2). Персистентные (backdrop/battle-center/
+        // топбар) наполняет бутстрап; экраны навигатора кладутся в screens/modal им самим.
+        private VisualElement _layerBackdrop;     // [0] задний фон забега
+        private VisualElement _layerBattleCenter; // [1] «Начать»/таймер боя (ЗА экранами — QA #19/#23)
+        private VisualElement _layerScreens;      // [2] Page/Sheet навигатора (под топбаром)
+        private VisualElement _layerTopbar;       // [3] RunModeBar (над обычными экранами)
+        private VisualElement _layerModal;        // [4] Modal навигатора (над топбаром, scrim накрывает его)
         private bool _inventoryOpen; // инвентарь открыт → тумблер + backdrop-логика (подсветка режима — из router)
         private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
+        private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
+        private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4)
         private IPublisher<RelicDragEvent> _relicDragPub; // QA #5: drag реликвии из грида → фаза расстановки
         private IPublisher<ToggleTestZoneRequest> _testZonePub; // QA #2: «Бой» вне забега = тумблер тест-зоны
 
@@ -140,7 +151,8 @@ namespace Guildmaster.UI
                                  "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
                 return;
             }
-            _router.Initialize(_doc.rootVisualElement, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard);
+            BuildLayers(); // Ф4: скелет слоёв-контейнеров ДО инициализации роутера (навигатор кладёт экраны в них)
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -162,6 +174,40 @@ namespace Guildmaster.UI
             _openMainMenuSubscription = _openMainMenuSub?.Subscribe(req => _router.OpenMainMenu(req));
 
             InitTopBar();
+
+            // Ф4: подсветка табов и backdrop — по подписке на изменение стека навигатора (снос поллинга
+            // структуры в Update, K3/K4). Смена фазы боя (у IBattleClock нет события) ловится ребром в Update.
+            _router.Changed += RefreshShell;
+            // Шов II.9.2: смена языка на лету перестраивает персистентный топбар (стек-экраны пересоздаются сами).
+            if (_loc != null) _loc.LocaleChanged += RebuildTopBar;
+            RefreshShell();
+        }
+
+        // --- Слои-контейнеры (Ф4, план II.4): фиксированный z-порядок вместо BringToFront/SendToBack ---
+        // Порядок Add = порядок отрисовки. cursors/tooltip/system — заделы под будущие треки (курсоры/тултипы/
+        // dev-консоль-тосты): пустые слои поверх, pickingMode Ignore, наполняются позже без ретрофита.
+        private void BuildLayers()
+        {
+            VisualElement root = _doc.rootVisualElement;
+            _layerBackdrop     = AddLayer(root, "layer-backdrop");
+            _layerBattleCenter = AddLayer(root, "layer-battle-center");
+            _layerScreens      = AddLayer(root, "layer-screens");
+            _layerTopbar       = AddLayer(root, "layer-topbar");
+            _layerModal        = AddLayer(root, "layer-modal");
+            AddLayer(root, "layer-cursors");  // задел II.14 (live-курсоры)
+            AddLayer(root, "layer-tooltip");  // задел Трек Т (тултипы)
+            AddLayer(root, "layer-system");   // задел II.13/Трек К (тосты/фид/dev-консоль)
+        }
+
+        // Слой = fullscreen-контейнер, растянутый по корню панели. pickingMode Ignore: сам контейнер не крадёт
+        // клики (интерактивные ДЕТИ пикаются как обычно) — «дырки» между экранами остаются кликабельны в мир.
+        private static VisualElement AddLayer(VisualElement root, string layerName)
+        {
+            var layer = new VisualElement { name = layerName, pickingMode = PickingMode.Ignore };
+            layer.style.position = Position.Absolute;
+            layer.style.left = 0; layer.style.top = 0; layer.style.right = 0; layer.style.bottom = 0;
+            root.Add(layer);
+            return layer;
         }
 
         // Глобальная панель забега (app-shell) — постоянный НЕ-модальный слой сверху (в обход стека
@@ -169,14 +215,21 @@ namespace Guildmaster.UI
         // сдвинуто под неё (padding-top). Видимость и центр (Начать↔таймер) — по фазе боя в Update.
         private void InitTopBar()
         {
-            // Постоянный задний фон забега: лежит ПОД всем UI (SendToBack), виден на не-боевых экранах.
-            // Видимостью управляет Update (выкл в бою и в инвентаре). pickingMode Ignore — ввод не перехватывает.
+            // Постоянный задний фон забега в СВОЁМ слое (Ф4, самый низ z). Виден на не-боевых экранах,
+            // выключается в бою/инвентаре (RefreshShell). pickingMode Ignore — ввод не перехватывает.
             _backdrop = new VisualElement { name = "run-backdrop", pickingMode = PickingMode.Ignore };
             _backdrop.AddToClassList("gm-screen-backdrop");
             _backdrop.style.display = DisplayStyle.None;
-            _doc.rootVisualElement.Add(_backdrop);
-            _backdrop.SendToBack();
+            _layerBackdrop.Add(_backdrop);
 
+            CreateAndPlaceTopBar();
+        }
+
+        // Создать топбар и разместить его в слоях (Ф4). Вынесено из InitTopBar ради hot-swap локали (II.9.2):
+        // при смене языка топбар пересоздаётся из UXML с актуальными строками. «Начать»/таймер (battle-center)
+        // живут в ОТДЕЛЬНОМ слое ПОД экранами (QA #19/#23) — порядок слоёв даёт z без SendToBack (снос K2).
+        private void CreateAndPlaceTopBar()
+        {
             if (_runModeBar != null)
             {
                 _topBar = new RunModeBarView(
@@ -204,34 +257,34 @@ namespace Guildmaster.UI
             else return;
 
             _topBar.Root.style.display = DisplayStyle.None; // скрыта, пока нет активного забега
-            _doc.rootVisualElement.Add(_topBar.Root);
+            _layerTopbar.Add(_topBar.Root);
 
-            // QA #19: «Начать»/таймер боя (battle-center) — в САМЫЙ низ z-order (ЗА оверлеями инвентаря/меню/
-            // карты). Топбар BringToFront'ится поверх оверлеев (навигация всегда доступна), а «Начать» —
-            // часть мира расстановки, оверлеи должны её перекрывать. Выносим слот из топбара в корень и
-            // опускаем под оверлеи, но над backdrop. Ссылки RunModeBarView на btn-start/timer переживают репарент.
+            // battle-center — узел RunModeBar.uxml; переносим в свой слой-контейнер (ссылки RunModeBarView на
+            // btn-start/battle-timer закешированы в конструкторе → переживают перемещение). z даёт порядок слоёв.
             var battleCenter = _topBar.Root.Q<VisualElement>("battle-center");
             if (battleCenter != null)
             {
                 battleCenter.RemoveFromHierarchy();
-                _doc.rootVisualElement.Add(battleCenter);
-                battleCenter.SendToBack(); // под оверлеи
-                _backdrop.SendToBack();    // backdrop ещё ниже
+                _layerBattleCenter.Add(battleCenter);
             }
+        }
+
+        // Шов II.9.2: пересобрать персистентный топбар при смене локали (стек-экраны локаль подхватят сами —
+        // они пересоздаются на каждый показ). Снять старый из слоёв, создать новый, вернуть shell в актуальный вид.
+        private void RebuildTopBar()
+        {
+            if (_topBar == null) return;
+            _topBar.Root.RemoveFromHierarchy();
+            _layerBattleCenter.Clear(); // старый battle-center жил здесь
+            _topBar = null;
+            CreateAndPlaceTopBar();
+            RefreshShell();
         }
 
         private void Update()
         {
             ApplyDeviceProfile(); // II.12.9: переоценка профиля при смене разрешения (дёшево — сравнение int)
             if (_topBar == null || _clock == null) return;
-
-            // Задний фон: виден на не-боевых экранах (меню/карта/ивент/сундук). Выключается в бою
-            // (Phase != None — видна арена с юнитами) и в инвентаре (прозрачный оверлей поверх арены).
-            if (_backdrop != null)
-            {
-                bool showBackdrop = _clock.Phase == BattlePhase.None && !_inventoryOpen;
-                _backdrop.style.display = showBackdrop ? DisplayStyle.Flex : DisplayStyle.None;
-            }
 
             // Глобальный топбар виден ВЕСЬ забег (реш. №65, STS-style); тело экранов под ним (padding-top).
             RunState run = _runStates?.Current;
@@ -240,25 +293,49 @@ namespace Guildmaster.UI
 
             BattlePhase phase = _clock.Phase;
 
-            // «Начать»/таймер (battle-center) репарентнут из топбара в корень (QA #19), поэтому скрытием
-            // топбара он БОЛЬШЕ НЕ гасится — управляем ЯВНО и ВСЕГДА (в т.ч. вне забега). Виден только когда
-            // идёт забег И фаза боя/расстановки (Deployment→«Начать», Fighting→таймер). Иначе (главное меню/
-            // карта/магазин/нет забега) — скрыт. Без этого «Начать» торчал над главным меню (QA #1 раунд-4).
+            // «Начать»/таймер боя (battle-center) в своём слое ПОД экранами (Ф4). Управляем ЯВНО: виден только
+            // когда идёт забег И фаза боя/расстановки (Deployment→«Начать», Fighting→таймер). Иначе (главное
+            // меню/карта/магазин/нет забега) — скрыт. Данные боя (таймер тикает) — законный поллинг каждый кадр.
             if (runActive && phase != BattlePhase.None)
                 _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
             else
                 _topBar.HideBattleCenter();
 
+            // Ф4: структуру shell (backdrop + подсветка таба) пересчитываем по РЕБРУ фазы/инвентаря — у IBattleClock
+            // нет события фазы (реш. 3), а стек ловится подпиской nav.Changed → RefreshShell. Не каждый кадр (K3/K4).
+            if (phase != _lastPhase || _inventoryOpen != _lastInventoryOpen)
+            {
+                _lastPhase = phase;
+                _lastInventoryOpen = _inventoryOpen;
+                RefreshShell();
+            }
+
             if (!runActive) { _runElapsed = 0f; return; }
 
             _runElapsed += UnityEngine.Time.unscaledDeltaTime; // «рабочий» таймер забега
-            _topBar.Root.BringToFront(); // держим топбар поверх оверлеев узлов (карта/магазин/награда/инвентарь)
             _topBar.SetGold(run.Gold);
             _topBar.SetAct(run.CurrentActIndex + 1);
             _topBar.SetRestarts(run.RestartsRemaining, _config != null ? _config.RestartsPerAct : run.RestartsRemaining);
             _topBar.SetRunTime(FormatTime(_runElapsed));
+        }
 
-            // QA #11/#21: подсветка активного таба из единого источника (стек роутера) — см. ActiveMode.
+        // Ф4: структурный вид shell — backdrop и подсветка таба. Дёргается по подписке nav.Changed (изменение
+        // стека) и по ребру фазы/инвентаря из Update. Заменяет поллинг структуры каждый кадр (снос K3/K4).
+        private void RefreshShell()
+        {
+            if (_clock == null) return;
+            BattlePhase phase = _clock.Phase;
+
+            // Задний фон: виден на не-боевых экранах (меню/карта/ивент/сундук). Выкл в бою (видна арена)
+            // и в инвентаре (прозрачный оверлей поверх арены).
+            if (_backdrop != null)
+            {
+                bool showBackdrop = phase == BattlePhase.None && !_inventoryOpen;
+                _backdrop.style.display = showBackdrop ? DisplayStyle.Flex : DisplayStyle.None;
+            }
+
+            // QA #11/#21/#35: подсветка активного таба из единого источника — верхний НЕ-Modal экран навигатора
+            // (ActiveScreenMode = nav.ActiveModeTag, игнорит Modal) либо «Бой» по фазе. Modal-меню не сбивает таб.
             if (_topBar is RunModeBarView modeBar) modeBar.SetActiveMode(ActiveMode(phase));
         }
 
@@ -371,6 +448,8 @@ namespace Guildmaster.UI
         private void OnDestroy()
         {
             if (_input != null) _input.MenuToggleRequested -= OnMenuToggle;
+            if (_router != null) _router.Changed -= RefreshShell;     // Ф4
+            if (_loc != null) _loc.LocaleChanged -= RebuildTopBar;    // шов II.9.2
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();
@@ -382,6 +461,11 @@ namespace Guildmaster.UI
             _openMainMenuSubscription?.Dispose();
         }
 
-        private void OnMenuToggle() => _router.ToggleSystemMenu();
+        // QA #32: ESC открывает системное меню ТОЛЬКО в активном забеге (в главном меню/вне забега — no-op).
+        // Внутри забега ToggleSystemMenu сам решает открыть/шаг-назад (семантика ESC, план II.4).
+        private void OnMenuToggle()
+        {
+            if (_runStates?.Current != null) _router.ToggleSystemMenu();
+        }
     }
 }
