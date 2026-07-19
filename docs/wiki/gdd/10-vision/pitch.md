@@ -230,6 +230,24 @@ flowchart TB
 
 ---
 
+## 13. Store-позиционирование (черновик 2026-07-19)
+
+- **Название (имя):** **Happy Guildmasters** — держим коротким и чистым; жанр несут short
+  description и теги (не подзаголовок в имени).
+- **Short description** (строка под именем; вариант B — ирония фанни→мрак + назван жанр):
+  - EN: *Recruit ordinary people, hand them the relics of dead heroes, and watch it all go
+    horribly right. A co-op autobattler roguelike that starts adorable and doesn't stay that way.*
+  - RU: *Набери обычных людей, вручи им реликвии павших героев и смотри, как всё идёт ужасно
+    хорошо. Кооп-автобатлер-рогалик, который начинается мило — и недолго таким остаётся.*
+- **Теги** (порядок = вес находимости):
+  - **Ядро:** `Auto Battler` · `Roguelike` · `Co-op` · `Strategy` · `Online Co-Op`
+  - **Дескрипторы:** `Party-Based` · `Tactical` · `Management` · `Pixel Graphics` · `Fantasy`
+    · `Multiplayer` · `Singleplayer`
+  - **На потом (когда мрак-слой оформится):** `Story Rich` · `Dark Fantasy` · `Choices Matter`
+- Козырь находимости: пересечение `Auto Battler` + `Co-op` — редкое (ниша полупустая).
+
+---
+
 ## Открытые узлы (кратко)
 
 - **Глубина мрака / мета:** насколько темно уходит и поднимаем ли «мир-как-конструкт» в ядро —
