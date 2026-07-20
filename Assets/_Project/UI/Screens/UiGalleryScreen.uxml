@@ -3,6 +3,20 @@
         <ui:Label text="Guildmaster UI — component gallery" class="gm-panel__title" style="-unity-text-align: upper-left; font-size: 24px; margin-bottom: 4px;" />
         <ui:Label text="dev-каталог: токены и gm-* компоненты в одном месте (визуальная приёмка)" class="gm-text-muted" />
 
+        <ui:Label text="SlantedPanel — подложка со скошенными торцами (лента режимов, капсулы ресурсов)" class="gm-text-muted" style="margin-top: 20px; margin-bottom: 8px;" />
+        <ui:VisualElement style="flex-direction: row; align-items: center;">
+            <gm:SlantedPanel Slant="14" class="gm-runbar__ribbon" style="height: 64px;">
+                <ui:Button class="gm-runbar__tab gm-runbar__tab--map" />
+                <ui:Button class="gm-runbar__tab gm-runbar__tab--battle gm-runbar__tab--active" />
+                <ui:VisualElement class="gm-runbar__sep" />
+                <ui:Button class="gm-runbar__tab gm-runbar__tab--menu" />
+            </gm:SlantedPanel>
+            <gm:SlantedPanel Slant="10" class="gm-runbar__capsule">
+                <ui:VisualElement class="gm-runbar__capsule-icon gm-runbar__capsule-icon--gold" />
+                <ui:Label text="100" class="gm-runbar__capsule-value" />
+            </gm:SlantedPanel>
+        </ui:VisualElement>
+
         <ui:Label text="Tokens" class="gm-text-muted" style="margin-top: 20px; margin-bottom: 8px;" />
         <ui:VisualElement style="flex-direction: row; flex-wrap: wrap;">
             <ui:VisualElement style="align-items: center; margin-right: 10px; margin-bottom: 14px;">

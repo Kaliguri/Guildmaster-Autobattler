@@ -1020,28 +1020,8 @@
     margin-top: var(--gm-space-3);
 }
 
-/* ============================================================================
- * ХП забега в топ-баре (C1, реш. №65): пипсы-сердца (перезапуски на акт).
- * Иконка Honeti HeartRed; потраченный пипс — тот же спрайт тусклым.
- * ========================================================================== */
-.gm-topbar__hp {
-    flex-direction: row;
-    align-items: center;
-    margin-left: var(--gm-space-2);
-    margin-right: var(--gm-space-2);
-}
-
-.gm-topbar__hp-pip {
-    width: 34px;
-    height: 34px;
-    margin-right: var(--gm-space-1);
-    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/HeartRed.png");
-    -unity-background-scale-mode: scale-to-fit;
-}
-
-.gm-topbar__hp-pip--empty {
-    opacity: 0.25;
-}
+/* ХП забега (реш. №65) с 2026-07-20 показывается счётчиком «остаток / максимум» в капсуле
+   .gm-runbar__capsule, а не рядом пипсов-сердец — стили пипсов удалены вместе с разметкой. */
 
 /* ============================================================================
  * ЭКРАН ИСХОДА ЗАБЕГА (C2): Победа / Поражение → «В меню».
@@ -1183,7 +1163,9 @@
     background-color: var(--gm-color-surface-panel);
     border-bottom-width: var(--gm-border-2);
     border-color: var(--gm-color-border-frame);
-    padding: var(--gm-space-2) var(--gm-space-3);
+    /* Вертикального padding нет: бар фиксированной высоты, а лента режимов намеренно свисает ниже кромки. */
+    padding: 0 var(--gm-space-3);
+    overflow: visible; /* иначе кромка бара срезает ленте верх и низ — свисание пропадает */
 }
 
 .gm-loadout__topbar-side {
@@ -1203,12 +1185,12 @@
     flex-shrink: 0;
 }
 
-/* Гильдия + круг возвышения (слева). */
+/* Гильдия + возвышение + акт (слева) — ОДНОЙ строкой: двухстрочная верстка держала высоту бара на 84. */
 .gm-loadout__guild-name {
     color: var(--gm-color-text);
     font-size: var(--gm-font-body);
     -unity-font-style: bold;
-    margin: 0;                 /* QA #15: убрать лишний вертикальный спейс между строками */
+    margin: 0;
 }
 
 .gm-loadout__guild-asc {
@@ -1216,7 +1198,8 @@
     font-size: var(--gm-font-sm);
     letter-spacing: 2px;
     margin: 0;
-    margin-top: -2px;          /* QA #15: подтянуть «Возвышение» под название гильдии */
+    margin-left: var(--gm-space-1);
+    -unity-text-align: middle-left;
 }
 
 /* Центр-слот «Начать»/таймер боя (QA #14): по центру X, ЧУТЬ НИЖЕ панели (absolute под топбаром). */
@@ -1230,58 +1213,110 @@
     padding-top: var(--gm-space-1);
 }
 
-/* Таб-режим (Карта/Бой/Инвентарь/Тактика/Компендиум) — тусклая плашка; активный — латунный контур. */
-.gm-loadout__mode {
-    background-color: var(--gm-color-surface-raised);
-    background-image: url("../../Art/UI/Honeti-gm/Inactive1_gm.png");
-    -unity-slice-left: 5;
-    -unity-slice-right: 5;
-    -unity-slice-top: 5;
-    -unity-slice-bottom: 5;
-    -unity-slice-scale: 2px;
+/* ============================================================================
+ * ЛЕНТА РЕЖИМОВ (2026-07-20): текстовые табы → иконки на скошенной подложке.
+ * Форму ленты и капсул рисует SlantedPanel (Painter2D) — цвета ей отдаём через
+ * custom-свойства --gm-slant-*, поэтому вид остаётся в токенах, а не в C#.
+ * ========================================================================== */
+
+/* Базовая настройка любой скошенной подложки. */
+.gm-slant {
+    --gm-slant-fill: var(--gm-color-surface-sunken);
+    --gm-slant-stroke: var(--gm-color-border-frame);
+    --gm-slant-width: 2;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0); /* фон рисует Painter2D — прямоугольная заливка испортила бы скос */
+}
+
+/* Лента-островок по центру: выступает ниже кромки бара, как накладка (реф TFT). */
+.gm-runbar__ribbon {
+    flex-shrink: 0;
+    height: 64px;
+    /* Прижата к верхней кромке бара: при вертикальной центровке лента вылезала ВВЕРХ за край экрана
+       и там срезалась. Свисать она должна только вниз. */
+    align-self: flex-start;
+    padding: 0 var(--gm-space-3);
+    justify-content: center;
+}
+
+/* Иконка-режим: квадратный слот, состояние — тинтом монохромной иконки, не вторым файлом. */
+.gm-runbar__tab {
+    width: 48px;
+    height: 48px;
+    background-color: rgba(0, 0, 0, 0);
     border-width: 0;
     border-radius: var(--gm-radius-0);
-    color: var(--gm-color-text-muted);
+    margin: 0 var(--gm-space-2);
+    padding: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    -unity-background-image-tint-color: var(--gm-color-text-muted);
+}
+
+.gm-runbar__tab:hover {
+    -unity-background-image-tint-color: var(--gm-color-text);
+}
+
+.gm-runbar__tab--active {
+    -unity-background-image-tint-color: var(--gm-color-accent);
+}
+
+/* ЗАГЛУШКИ иконок (Honeti 16): подменяются набором game-icons.net, когда выберем комплект. */
+.gm-runbar__tab--map        { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Search.png"); }
+.gm-runbar__tab--battle     { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Swords.png"); }
+.gm-runbar__tab--inventory  { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Bag.png"); }
+.gm-runbar__tab--tactics    { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Shield.png"); }
+.gm-runbar__tab--compendium { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Help.png"); }
+.gm-runbar__tab--menu       { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Star.png"); }
+
+/* Разделитель перед бургером: он открывает модалку, а не переключает режим. */
+.gm-runbar__sep {
+    width: 2px;
+    height: 32px;
+    background-color: var(--gm-color-border-subtle);
+    margin: 0 var(--gm-space-2);
+}
+
+/* Капсула ресурса (золото / перезапуски): фикс-ширина, чтобы правый край не прыгал на больших числах. */
+.gm-runbar__capsule {
+    height: 44px;
+    min-width: 156px;
+    /* Горизонтальный padding больше вылета скоса (10), иначе значение наезжает на клин торца. */
+    padding: 0 var(--gm-space-3);
+    margin-left: var(--gm-space-2);
+    justify-content: center;
+}
+
+.gm-runbar__capsule-icon {
+    width: 28px;
+    height: 28px;
+    margin-right: var(--gm-space-1);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-runbar__capsule-icon--gold {
+    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/CoinGold.png");
+}
+
+.gm-runbar__capsule-icon--hp {
+    background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/HeartRed.png");
+}
+
+.gm-runbar__capsule-value {
+    color: var(--gm-color-text);
     font-size: var(--gm-font-body);
-    padding: var(--gm-space-1) var(--gm-space-3);
-    margin: 0 var(--gm-space-1);
-}
-
-.gm-loadout__mode:hover {
-    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
-    color: var(--gm-color-text);
-}
-
-.gm-loadout__mode--active {
-    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
-    color: var(--gm-color-text);
     -unity-font-style: bold;
-}
-
-/* Время забега + бургер-меню (справа). */
-.gm-loadout__time {
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
-    margin-right: var(--gm-space-2);
-}
-
-.gm-loadout__menu-btn {
-    background-color: var(--gm-color-surface-raised);
-    background-image: url("../../Art/UI/Honeti-gm/GoldOutlined_gm.png");
-    -unity-slice-left: 5;
-    -unity-slice-right: 5;
-    -unity-slice-top: 5;
-    -unity-slice-bottom: 5;
-    -unity-slice-scale: 2px;
-    border-width: 0;
-    color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
-    padding: var(--gm-space-1) var(--gm-space-3);
     margin: 0;
 }
 
-.gm-loadout__menu-btn:hover {
-    background-image: url("../../Art/UI/Honeti-gm/GoldOutlinedHover_gm.png");
+/* Время забега выключено (реш. 2026-07-20) — узел жив как шов. */
+.gm-runbar__runtime {
+    display: none;
+}
+
+/* Подсказка режима: под лентой, по центру; позицию по X ставит RunModeBarView от иконки. */
+.gm-runbar__tip {
+    top: 72px;
 }
 
 /* --- Тело: боевая зона | (центр + правый + нижняя панель золота) --- */

@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UIElements;
+using Guildmaster.UI.Components;
 
 namespace Guildmaster.UI
 {
     /// <summary>
-    /// Глобальная панель забега (app-shell, редизайн): всегда сверху во время забега, тело экранов
-    /// сдвинуто под неё. Слева гильдия + возвышение; центр — режимы-навигация; справа — HP-сердечки,
-    /// золото, акт, таймер забега, «Начать»/таймер боя, бургер-меню. Единственная панель забега.
-    /// Инстанс держит ссылки и обновляется live-сеттерами; активный режим подсвечивается
-    /// <see cref="SetActiveMode"/>. Разметка/стиль — только из <c>RunModeBar.uxml</c> + дизайн-система.
+    /// Глобальная панель забега (app-shell, редизайн 2026-07-20): всегда сверху во время забега, тело
+    /// экранов сдвинуто под неё. Слева гильдия + возвышение + акт одной строкой; центр — лента-островок
+    /// с иконками-режимами и отделённым бургером; справа — капсулы золота и перезапусков. Время забега
+    /// выключено (узел жив как шов). Подпись режима показывается подсказкой при наведении: иконка без
+    /// имени — угадайка. Разметка/стиль — только из <c>RunModeBar.uxml</c> + дизайн-система.
     /// </summary>
     public sealed class RunModeBarView
     {
@@ -19,8 +21,9 @@ namespace Guildmaster.UI
         private readonly Label  _act;
         private readonly Label  _runTimer;
         private readonly Label  _battleTimer;
+        private readonly Label  _restarts;
         private readonly Button _start;
-        private readonly VisualElement _hp;
+        private readonly Tooltip _tip;
         private readonly Func<string, string> _loc;
         private readonly Dictionary<string, Button> _modes = new();
 
@@ -39,8 +42,9 @@ namespace Guildmaster.UI
             _act         = Root.Q<Label>("topbar-act");
             _runTimer    = Root.Q<Label>("topbar-timer");
             _battleTimer = Root.Q<Label>("battle-timer");
+            _restarts    = Root.Q<Label>("topbar-hp");
             _start       = Root.Q<Button>("btn-start");
-            _hp          = Root.Q<VisualElement>("topbar-hp");
+            _tip         = Root.Q<Tooltip>("runbar-tooltip");
 
             WireMode("map",        "ui.mode.map",        "Карта",      onMap);
             WireMode("battle",     "ui.mode.battle",     "Бой",        onBattle);
@@ -49,7 +53,11 @@ namespace Guildmaster.UI
             WireMode("compendium", "ui.mode.compendium", "Компендиум", onCompendium);
 
             var menu = Root.Q<Button>("btn-menu");
-            if (menu != null) menu.clicked += () => onMenu?.Invoke();
+            if (menu != null)
+            {
+                menu.clicked += () => onMenu?.Invoke();
+                WireTip(menu, L("ui.run.menu", "Меню"));
+            }
 
             if (_start != null) { _start.text = L("ui.run.start", "Начать"); _start.clicked += () => onStart?.Invoke(); }
         }
@@ -58,35 +66,41 @@ namespace Guildmaster.UI
         {
             var btn = Root.Q<Button>("mode-" + key);
             if (btn == null) return;
-            btn.text = L(locKey, ru);
             btn.clicked += () => action?.Invoke();
+            WireTip(btn, L(locKey, ru));
             _modes[key] = btn;
         }
 
-        /// <summary>Подсветить активный режим (остальные — обычные). null — снять подсветку со всех.</summary>
+        // Подсказка живёт одна на бар и переезжает под наведённую иконку: X — центр иконки в координатах
+        // бара, сам блок центрируется относительно неё через translate (ширину до layout мы не знаем).
+        private void WireTip(VisualElement target, string title)
+        {
+            if (_tip == null) return;
+            target.RegisterCallback<MouseEnterEvent>(_ =>
+            {
+                float x = target.worldBound.center.x - Root.worldBound.x;
+                _tip.Set(title, null, null, null);
+                _tip.style.translate = new Translate(Length.Percent(-50), 0);
+                _tip.ShowAt(new Vector2(x, Root.resolvedStyle.height + 24f));
+            });
+            target.RegisterCallback<MouseLeaveEvent>(_ => _tip.Hide());
+        }
+
+        /// <summary>Подсветить активный режим (остальные — тусклые). null — снять подсветку со всех.</summary>
         public void SetActiveMode(string key)
         {
             foreach (var kv in _modes)
-                kv.Value.EnableInClassList("gm-loadout__mode--active", kv.Key == key);
+                kv.Value.EnableInClassList("gm-runbar__tab--active", kv.Key == key);
         }
 
-        public void SetGold(int gold) => SetText(_gold, L("ui.run.gold", "Золото") + ": " + gold);
-        public void SetAct(int actNumber) => SetText(_act, L("ui.run.act", "Акт") + " " + actNumber);
+        public void SetGold(int gold) => SetText(_gold, gold.ToString());
+        public void SetAct(int actNumber) => SetText(_act, "· " + L("ui.run.act", "Акт") + " " + actNumber);
+
+        /// <summary>Время забега выключено (реш. 2026-07-20): узел скрыт классом, сеттер держит шов живым.</summary>
         public void SetRunTime(string timerText) => SetText(_runTimer, timerText);
 
-        /// <summary>ХП забега = перезапуски-на-акт (реш. №65): max сердец-пипсов, первые remaining — полные.</summary>
-        public void SetRestarts(int remaining, int max)
-        {
-            if (_hp == null) return;
-            _hp.Clear();
-            for (int i = 0; i < max; i++)
-            {
-                var pip = new VisualElement();
-                pip.AddToClassList("gm-topbar__hp-pip");
-                if (i >= remaining) pip.AddToClassList("gm-topbar__hp-pip--empty");
-                _hp.Add(pip);
-            }
-        }
+        /// <summary>ХП забега = перезапуски-на-акт (реш. №65): показываем счётчиком «остаток / максимум».</summary>
+        public void SetRestarts(int remaining, int max) => SetText(_restarts, remaining + " / " + max);
 
         /// <summary>Нет боя (карта/магазин): ни «Начать», ни таймера боя.</summary>
         public void HideBattleCenter()
