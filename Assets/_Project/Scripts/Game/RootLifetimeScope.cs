@@ -137,6 +137,12 @@ namespace Guildmaster.Game
             // выбора узла петлёй — через него одного.
             builder.RegisterEntryPoint<WorldMapController>(Lifetime.Singleton).AsSelf();
 
+            // ЕДИНЫЙ такт визуала: от него пляшут биение узлов, волна по дорожкам и всё ритмичное, что
+            // появится дальше. Пока считается от часов; когда музыка научится задавать темп, сменится
+            // реализация, а потребители — нет.
+            builder.Register<Presentation.Tempo.VisualTempo>(Lifetime.Singleton)
+                   .AsSelf().As<Presentation.Tempo.IVisualTempo>();
+
             // Выбор узла — world-карта (узлы в мире, камера как в бою). UITK-карта снесена после приёмки:
             // держать второй путь к той же карте значило чинить каждый баг дважды.
             // AutoFirstNodeChooser остаётся для headless/тестов.

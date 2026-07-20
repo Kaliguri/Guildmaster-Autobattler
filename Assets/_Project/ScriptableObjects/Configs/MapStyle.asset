@@ -23,15 +23,15 @@ MonoBehaviour:
   _pickRadiusScale: 1.4
   _backdropMaterial: {fileID: 2100000, guid: bf7f4177f3ebe0a438ccd18201673bfd, type: 2}
   _backdropPadding: 1.6
-  _nodeBacking: {r: 0.141, g: 0.102, b: 0.071, a: 1}
-  _nodeRim: {r: 0.627, g: 0.435, b: 0.188, a: 1}
+  _nodeBacking: {r: 0.115, g: 0.093, b: 0.07, a: 1}
+  _nodeRim: {r: 0.72, g: 0.52, b: 0.24, a: 1}
   _currentMarker: {r: 0.902, g: 0.788, b: 0.561, a: 1}
   _iconShadow: {r: 0.11, g: 0.078, b: 0.051, a: 1}
-  _iconLight: {r: 0.937, g: 0.886, b: 0.769, a: 1}
+  _iconLight: {r: 0.97, g: 0.93, b: 0.84, a: 1}
   _available: {r: 1, g: 1, b: 1, a: 1}
   _current: {r: 1, g: 1, b: 1, a: 1}
-  _cleared: {r: 0.62, g: 0.58, b: 0.5, a: 1}
-  _locked: {r: 0.42, g: 0.4, b: 0.36, a: 1}
+  _cleared: {r: 0.78, g: 0.74, b: 0.66, a: 1}
+  _locked: {r: 0.62, g: 0.6, b: 0.56, a: 1}
   _dotRadius: 0.07
   _dotSpacing: 0.32
   _dotClearance: 1.25
@@ -44,7 +44,12 @@ MonoBehaviour:
   _hoverScale: 1.18
   _pressScale: 0.9
   _availableBreath: 0.22
-  _breathSpeed: 2.2
+  _beatDivision: 1
+  _heartbeatAmount: 0.12
+  _flowDivision: 0.5
+  _fogMaterial: {fileID: 2100000, guid: a97aedf5c4220d2469cdb08ac70901b6, type: 2}
+  _fogFalloff: 14
+  _fogTrail: 6
   _pawnRadius: 0.2
   _pawn: {r: 0.973, g: 0.925, b: 0.796, a: 1}
   _pawnTravelSeconds: 1.5

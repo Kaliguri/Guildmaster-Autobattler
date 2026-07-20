@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Input;
+using Guildmaster.Presentation.Tempo;
 using Shapes;
 using UnityEngine;
 using VContainer;
@@ -38,9 +39,11 @@ namespace Guildmaster.Presentation.Map
         private const float BackdropZ = 1f; // позади всего: узлы, дорожки и фишка рисуются поверх полотна
         private const float EdgeZ = 0.2f;
         private const float NodeZ = 0f;
+        private const float FogZ  = -0.15f; // над узлами, но под фишкой: отряд идёт ПОВЕРХ дымки
         private const float PawnZ = -0.3f;
 
         private IInputService _input;
+        private IVisualTempo _tempo; // единый метроном: биение узлов и волна дорожек идут от него
         private CameraModeController _cameraModes; // null в headless
         private WorldMapViewLink _link; // мост к петле забега (она живёт в корневом скоупе, выше мирового)
 
@@ -72,6 +75,8 @@ namespace Guildmaster.Presentation.Map
         private Transform _edgeRoot;
         private Disc _pawn;
         private MeshRenderer _backdrop;
+        private MeshRenderer _fog;
+        private MaterialPropertyBlock _fogBlock;
 
         private bool _shown;
         private int _sortingLayerId;
@@ -98,11 +103,13 @@ namespace Guildmaster.Presentation.Map
         public Rect2D Bounds { get; private set; }
 
         [Inject]
-        public void Construct(IInputService input, CameraModeController cameraModes, WorldMapViewLink link)
+        public void Construct(IInputService input, CameraModeController cameraModes, WorldMapViewLink link,
+                              IVisualTempo tempo)
         {
             _input       = input;
             _cameraModes = cameraModes;
             _link        = link;
+            _tempo       = tempo;
         }
 
         private void Awake()
@@ -200,6 +207,7 @@ namespace Guildmaster.Presentation.Map
             Bounds = new Rect2D(center, size);
 
             PlaceBackdrop(center, size);
+            PlaceFog(center, size);
 
             _shown = true;
             SetLayerActive(true);
@@ -390,6 +398,49 @@ namespace Guildmaster.Presentation.Map
             _backdrop.transform.localScale = new Vector3(size.x * pad, size.y * pad, 1f);
         }
 
+        // Слой тумана — ЧИСТО АТМОСФЕРА. Лежит над картой, но ничего не скрывает и не мешает: узлы под ним
+        // видны и кликаются (пикинг идёт своей математикой, а не рейкастом), коллайдера у полотна нет.
+        // Смысл — впереди акт затянут дымкой, а за отрядом она разошлась.
+        private void PlaceFog(Vector2 center, Vector2 size)
+        {
+            if (_style == null || _style.FogMaterial == null) return;
+
+            if (_fog == null)
+            {
+                var go = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                go.name = "Fog";
+                Destroy(go.GetComponent<Collider>());
+                go.transform.SetParent(transform, false);
+                _fog = go.GetComponent<MeshRenderer>();
+                _fog.sharedMaterial = _style.FogMaterial;
+                _fog.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                _fog.receiveShadows = false;
+            }
+
+            float pad = Mathf.Max(1f, _style.BackdropPadding);
+            _fog.transform.position   = new Vector3(center.x, center.y, FogZ);
+            _fog.transform.localScale = new Vector3(size.x * pad, size.y * pad, 1f);
+            UpdateFogReveal();
+        }
+
+        // Фронт развеивания едет за отрядом. Через MaterialPropertyBlock, а не правкой материала:
+        // материал — общий ассет, писать в него из рантайма значит пачкать файл на диске.
+        private void UpdateFogReveal()
+        {
+            if (_fog == null || _style == null) return;
+
+            _fogBlock ??= new MaterialPropertyBlock();
+            _fog.GetPropertyBlock(_fogBlock);
+            _fogBlock.SetFloat(RevealXId, _pawnAt.x);
+            _fogBlock.SetFloat(FalloffId, Mathf.Max(0.01f, _style.FogFalloff));
+            _fogBlock.SetFloat(TrailId,   _style.FogTrail);
+            _fog.SetPropertyBlock(_fogBlock);
+        }
+
+        private static readonly int RevealXId = Shader.PropertyToID("_RevealX");
+        private static readonly int FalloffId = Shader.PropertyToID("_Falloff");
+        private static readonly int TrailId   = Shader.PropertyToID("_Trail");
+
         // Фишка — точка того же семейства, что дорожка: «кто-то идёт по пунктиру», а не значок поверх узла.
         // Прежний спрайт-шлем закрывал собой иконку узла и требовал подъёма над ним.
         private void EnsurePawn()
@@ -514,19 +565,25 @@ namespace Guildmaster.Presentation.Map
             AnimateDots(now);
 
             if (_travelling) TickTravel();
+            UpdateFogReveal(); // дымка расходится вслед за отрядом
         }
 
         private void AnimateNodes(float now)
         {
-            // Доступность показывается ЦВЕТОМ (дыхание яркости), размер трогает только курсор:
-            // пульсирующие размером узлы читались как «всё шевелится», а не «сюда можно».
-            float breath = 1f + Mathf.Sin(now * _style.BreathSpeed) * _style.AvailableBreath;
+            // Доступные узлы БЬЮТСЯ КАК СЕРДЦЕ — двойной толчок и покой, на общей доле метронома.
+            // Размерный пульс сам по себе читался как «всё шевелится», но ритм сердца читается как «живое»:
+            // разница в том, что у него есть пауза, и глаз ловит именно её.
+            float beat  = _tempo?.Heartbeat(_style.BeatDivision) ?? 0f;
+            float swell = _tempo?.Swell(_style.BeatDivision) ?? 0.5f;
+            float breath = 1f + (swell - 0.5f) * 2f * _style.AvailableBreath;
+            float heart  = 1f + beat * _style.HeartbeatAmount;
 
             for (int i = 0; i < _hits.Count; i++)
             {
                 if (_hits[i].View == null) continue;
 
                 float scale = 1f;
+                if (_hits[i].Selectable) scale *= heart;
                 if (i == _hoverIndex) scale *= _pressed ? _style.PressScale : _style.HoverScale;
 
                 if (i == _nudgeIndex)
@@ -550,15 +607,21 @@ namespace Guildmaster.Presentation.Map
         // «сюда можно» — направление читается само, без стрелок.
         private void AnimateDots(float now)
         {
-            float head = now * _style.DotFlowSpeed;
             float length = Mathf.Max(0.01f, _style.DotFlowLength);
+            float cycle  = length * 2.5f;
+
+            // Волна привязана к ДОЛЕ, а не к секундам: за свою долю она проходит ровно один цикл, поэтому
+            // приход волны к узлу совпадает с его ударом. Смена темпа меняет обе анимации разом.
+            float head = _tempo != null
+                ? _tempo.Phase(_style.FlowDivision) * cycle
+                : now * _style.DotFlowSpeed;
 
             for (int i = 0; i < _dots.Count; i++)
             {
                 PathDot dot = _dots[i];
                 if (!dot.Flowing || dot.Shape == null) continue;
 
-                float phase = Mathf.Repeat(head - dot.Along, length * 2.5f);
+                float phase = Mathf.Repeat(head - dot.Along, cycle);
                 float glow  = Mathf.Clamp01(1f - phase / length);
                 dot.Shape.Color = Color.Lerp(_style.PathIdle, _style.PathAvailable, 0.35f + glow * 0.65f);
             }
@@ -592,6 +655,7 @@ namespace Guildmaster.Presentation.Map
             if (_edgeRoot != null) _edgeRoot.gameObject.SetActive(active);
             if (_pawn != null) _pawn.gameObject.SetActive(active);
             if (_backdrop != null) _backdrop.gameObject.SetActive(active);
+            if (_fog != null) _fog.gameObject.SetActive(active);
         }
 
         // Всё пулится: за акт карта перерисовывается на каждом узле. Узлы — один префаб на все типы,

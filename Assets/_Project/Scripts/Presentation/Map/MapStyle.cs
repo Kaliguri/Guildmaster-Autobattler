@@ -101,10 +101,32 @@ namespace Guildmaster.Presentation.Map
 
         [SerializeField] private float _pressScale = 0.9f;
 
-        [Tooltip("Глубина дыхания доступных узлов по ЯРКОСТИ (не по размеру: размерный пульс суетлив).")]
+        [Tooltip("Глубина дыхания доступных узлов по ЯРКОСТИ.")]
         [SerializeField, Range(0f, 0.6f)] private float _availableBreath = 0.22f;
 
-        [SerializeField] private float _breathSpeed = 2.2f;
+        [Header("Такт (доли ЕДИНОГО метронома, а не секунды)")]
+        [Tooltip("На какой доле бьются доступные узлы. 1 = каждый такт, 2 = через такт.")]
+        [SerializeField] private float _beatDivision = 1f;
+
+        [Tooltip("Насколько узел раздаётся на ударе сердца. Это размер, поверх дыхания яркостью.")]
+        [SerializeField, Range(0f, 0.5f)] private float _heartbeatAmount = 0.12f;
+
+        [Tooltip("На какой доле бежит волна по дорожке к доступному узлу. 0.5 = вдвое чаще биения — " +
+                 "дорожка успевает добежать за половину такта, и удар узла читается как её приход.")]
+        [SerializeField] private float _flowDivision = 0.5f;
+
+        [Header("Туман (атмосфера, НЕ механика)")]
+        [Tooltip("Материал слоя тумана (шейдер Guildmaster/Map/Fog). Пусто — тумана нет. " +
+                 "ВАЖНО: туман ничего не скрывает и ни на что не влияет — узлы видны и кликаются сквозь него. " +
+                 "Это только атмосфера: дымка лежит над непройденной частью акта и развеивается за отрядом.")]
+        [SerializeField] private Material _fogMaterial;
+
+        [Tooltip("За сколько мировых единиц перед отрядом туман успевает разойтись. Больше — мягче граница.")]
+        [SerializeField] private float _fogFalloff = 14f;
+
+        [Tooltip("Насколько туман заходит ЗА отряд (мировые единицы): позади должно остаться немного дымки, " +
+                 "иначе граница читается как ровная линейка.")]
+        [SerializeField] private float _fogTrail = 6f;
 
         [Header("Фишка отряда")]
         [Tooltip("Радиус точки отряда. Фишка — та же точка, что на пути, только крупнее и ярче.")]
@@ -124,6 +146,20 @@ namespace Guildmaster.Presentation.Map
         public float FloorsInView => _floorsInView;
         /// <inheritdoc cref="_pickRadiusScale"/>
         public float PickRadiusScale => _pickRadiusScale;
+
+        /// <inheritdoc cref="_beatDivision"/>
+        public float BeatDivision => _beatDivision;
+        /// <inheritdoc cref="_heartbeatAmount"/>
+        public float HeartbeatAmount => _heartbeatAmount;
+        /// <inheritdoc cref="_flowDivision"/>
+        public float FlowDivision => _flowDivision;
+
+        /// <inheritdoc cref="_fogMaterial"/>
+        public Material FogMaterial => _fogMaterial;
+        /// <inheritdoc cref="_fogFalloff"/>
+        public float FogFalloff => _fogFalloff;
+        /// <inheritdoc cref="_fogTrail"/>
+        public float FogTrail => _fogTrail;
 
         /// <inheritdoc cref="_backdropMaterial"/>
         public Material BackdropMaterial => _backdropMaterial;
@@ -166,8 +202,6 @@ namespace Guildmaster.Presentation.Map
         public float PressScale => _pressScale;
         /// <inheritdoc cref="_availableBreath"/>
         public float AvailableBreath => _availableBreath;
-        /// <inheritdoc cref="_breathSpeed"/>
-        public float BreathSpeed => _breathSpeed;
 
         /// <inheritdoc cref="_pawnRadius"/>
         public float PawnRadius => _pawnRadius;
