@@ -41,8 +41,8 @@ namespace Guildmaster.Presentation.Map
         }
 
         /// <inheritdoc/>
-        public void Show(IReadOnlyList<MapNodeVisual> nodes, IReadOnlyList<(string From, string To)> edges)
-            => _target?.Show(nodes, edges);
+        public void Show(IReadOnlyList<MapNodeVisual> nodes, IReadOnlyList<(string From, string To)> edges, long seed)
+            => _target?.Show(nodes, edges, seed);
 
         /// <inheritdoc/>
         public void Hide() => _target?.Hide();

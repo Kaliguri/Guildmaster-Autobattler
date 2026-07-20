@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca91f5bb4c4754347a260979a631410f, type: 3}
+  m_Name: MapIconSet
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Map.MapIconSet
+  _icons:
+  - Kind: Start
+    Icon: {fileID: 1166121108086111792, guid: 4ece3f27011bc57408afbc45d0fe8b6d, type: 3}
+    Backing: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+  - Kind: Battle
+    Icon: {fileID: 8980098280179792927, guid: b44b4cde2b30f9b4895420f3b8e0c1be, type: 3}
+    Backing: {r: 0.85, g: 0.35, b: 0.3, a: 1}
+  - Kind: Elite
+    Icon: {fileID: 6318059400852439926, guid: b56f18ee401722947aaabda5bd1d8964, type: 3}
+    Backing: {r: 0.7, g: 0.2, b: 0.55, a: 1}
+  - Kind: Boss
+    Icon: {fileID: 7975049506798644243, guid: 713b4d64603d3904f9e08b28f5ba9331, type: 3}
+    Backing: {r: 0.95, g: 0.25, b: 0.15, a: 1}
+  - Kind: Chest
+    Icon: {fileID: 165621155128394983, guid: f6a149a93edc09045a610a40e2816770, type: 3}
+    Backing: {r: 0.45, g: 0.85, b: 0.55, a: 1}
+  - Kind: Shop
+    Icon: {fileID: -8950717295971821370, guid: d2d7adfe7084a2b45a2f79830fc68af6, type: 3}
+    Backing: {r: 0.95, g: 0.8, b: 0.3, a: 1}
+  - Kind: TextEvent
+    Icon: {fileID: 8217224234391656319, guid: 726fb473645d3b44c98c1277a830b6c4, type: 3}
+    Backing: {r: 0.35, g: 0.65, b: 0.9, a: 1}
+  - Kind: Unknown
+    Icon: {fileID: 4606201031661990099, guid: 16fe99767a763094790bafbac739c4bf, type: 3}
+    Backing: {r: 0.55, g: 0.55, b: 0.55, a: 1}
+  _fallbackIcon: {fileID: 4606201031661990099, guid: 16fe99767a763094790bafbac739c4bf, type: 3}
+  _fallbackBacking: {r: 0.55, g: 0.55, b: 0.55, a: 1}
+  _worldHeight: 1.1

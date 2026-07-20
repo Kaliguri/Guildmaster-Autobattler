@@ -18,7 +18,7 @@ namespace Guildmaster.Tests.EditMode.Guild
 
         private static string Fingerprint(MapState map) => string.Join("|",
             map.Nodes.OrderBy(n => n.Id).Select(n =>
-                $"{n.Id}:{n.Type}:{n.UiPosition.x},{n.UiPosition.y}:[{string.Join(",", n.Edges)}]"));
+                $"{n.Id}:{n.Type}:{n.Floor},{n.Row}:[{string.Join(",", n.Edges)}]"));
 
         [Test]
         public void Generate_IsDeterministic_ForSameSeed()
@@ -38,7 +38,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         {
             var cfg = new MapGenConfig { Columns = 9 };
             var map = Generate(7UL, cfg);
-            int columns = map.Nodes.Select(n => n.UiPosition.x).Distinct().Count();
+            int columns = map.Nodes.Select(n => n.Floor).Distinct().Count();
             Assert.AreEqual(9, columns);
         }
 
@@ -53,9 +53,9 @@ namespace Guildmaster.Tests.EditMode.Guild
             Assert.AreEqual(1, bosses.Count, "Ровно один босс.");
             Assert.AreEqual(map.CurrentNodeId, starts[0].Id, "Игрок стартует на старте.");
             Assert.IsTrue(starts[0].Cleared, "Старт помечен пройденным (игрок на нём стоит).");
-            Assert.AreEqual(0f, starts[0].UiPosition.x, "Старт — первая колонка.");
-            float maxX = map.Nodes.Max(n => n.UiPosition.x);
-            Assert.AreEqual(maxX, bosses[0].UiPosition.x, "Босс — последняя колонка.");
+            Assert.AreEqual(0, starts[0].Floor, "Старт — первая колонка.");
+            int maxFloor = map.Nodes.Max(n => n.Floor);
+            Assert.AreEqual(maxFloor, bosses[0].Floor, "Босс — последняя колонка.");
             Assert.IsEmpty(bosses[0].Edges, "У босса нет исходящих рёбер.");
         }
 
@@ -81,7 +81,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         {
             // Дефолт (реш. Макса 2026-07-19): Start + 12 испытаний + Boss.
             var map = Generate(3UL);
-            int columns = map.Nodes.Select(n => n.UiPosition.x).Distinct().Count();
+            int columns = map.Nodes.Select(n => n.Floor).Distinct().Count();
             Assert.AreEqual(14, columns, "Дефолтная глубина = Start + 12 испытаний + Boss.");
         }
 
@@ -94,8 +94,8 @@ namespace Guildmaster.Tests.EditMode.Guild
             {
                 var map = Generate(seed, cfg);
                 foreach (var elite in map.Nodes.Where(n => n.Type == MapNodeType.Elite))
-                    Assert.GreaterOrEqual(elite.UiPosition.x, firstEliteFloor,
-                        $"Элитка на этаже {elite.UiPosition.x} раньше зоны, разрешающей элиту ({firstEliteFloor}) (сид {seed}).");
+                    Assert.GreaterOrEqual(elite.Floor, firstEliteFloor,
+                        $"Элитка на этаже {elite.Floor} раньше зоны, разрешающей элиту ({firstEliteFloor}) (сид {seed}).");
             }
         }
 
@@ -106,9 +106,9 @@ namespace Guildmaster.Tests.EditMode.Guild
             for (ulong seed = 1; seed <= 20; seed++)
             {
                 var map = Generate(seed);
-                foreach (var n in map.Nodes.Where(x => x.UiPosition.x >= 1 && x.UiPosition.x <= 4))
+                foreach (var n in map.Nodes.Where(x => x.Floor >= 1 && x.Floor <= 4))
                     Assert.IsTrue(n.Type == MapNodeType.Battle || n.Type == MapNodeType.TextEvent,
-                        $"Разогрев (этаж {n.UiPosition.x}): только бой/событие, не {n.Type} (сид {seed}).");
+                        $"Разогрев (этаж {n.Floor}): только бой/событие, не {n.Type} (сид {seed}).");
             }
         }
 
@@ -122,7 +122,7 @@ namespace Guildmaster.Tests.EditMode.Guild
                 var map = Generate(seed, cfg);
                 foreach (var anchor in cfg.Anchors)
                 {
-                    var atFloor = map.Nodes.Where(n => (int)n.UiPosition.x == anchor.Floor).ToList();
+                    var atFloor = map.Nodes.Where(n => n.Floor == anchor.Floor).ToList();
                     Assert.IsNotEmpty(atFloor, $"Этаж-якорь {anchor.Floor} существует (сид {seed}).");
                     Assert.IsTrue(atFloor.All(n => n.Type == anchor.Type),
                         $"Этаж {anchor.Floor} — вся колонка типа {anchor.Type} (сид {seed}).");
@@ -138,6 +138,49 @@ namespace Guildmaster.Tests.EditMode.Guild
                 foreach (var w in zone.Weights)
                     if (w.Type == type && w.Weight > 0) { best = System.Math.Min(best, zone.FromFloor); break; }
             return best;
+        }
+
+        [Test]
+        public void Generate_ActNarrowsAtBothEnds()
+        {
+            // Профиль акта (реш. Макса 2026-07-20): начинается узко, раздаётся к середине и снова сужается
+            // к боссу — силуэт пути, а не однородная решётка.
+            var cfg = new MapGenConfig();
+            int lastFloor = cfg.Columns - 2;
+
+            for (ulong seed = 1; seed <= 20; seed++)
+            {
+                var map = Generate(seed, cfg);
+                var widthOf = map.Nodes.GroupBy(n => n.Floor).ToDictionary(g => g.Key, g => g.Count());
+
+                for (int floor = 1; floor <= lastFloor; floor++)
+                {
+                    bool narrow = floor <= cfg.EdgeColumns || floor > lastFloor - cfg.EdgeColumns;
+                    if (narrow)
+                        Assert.AreEqual(cfg.EdgeColumnWidth, widthOf[floor],
+                            $"Горловина: этаж {floor} = {cfg.EdgeColumnWidth} узла (сид {seed}).");
+                    else
+                        Assert.That(widthOf[floor], Is.InRange(cfg.MinColumnWidth, cfg.MaxColumnWidth),
+                            $"Середина: этаж {floor} в диапазоне ширины (сид {seed}).");
+                }
+            }
+        }
+
+        [Test]
+        public void Generate_RowsAreContiguousWithinFloor()
+        {
+            // Ряды нумеруются подряд от нуля: на этом держится и центрирование в презентере, и монотонность
+            // рёбер-лестницы. Дыра в нумерации ломала бы раскладку молча.
+            for (ulong seed = 1; seed <= 20; seed++)
+            {
+                var map = Generate(seed);
+                foreach (var floor in map.Nodes.GroupBy(n => n.Floor))
+                {
+                    var rows = floor.Select(n => n.Row).OrderBy(r => r).ToList();
+                    for (int i = 0; i < rows.Count; i++)
+                        Assert.AreEqual(i, rows[i], $"Этаж {floor.Key}: ряды идут подряд от 0 (сид {seed}).");
+                }
+            }
         }
 
         [Test]

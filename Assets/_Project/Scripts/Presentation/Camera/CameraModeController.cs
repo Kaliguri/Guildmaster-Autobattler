@@ -50,6 +50,10 @@ namespace Guildmaster.Presentation
         [SerializeField] private float _zoomStep = 1.5f;
         [Tooltip("Верхний предел зума для dev-камеры (не привязан к зоне).")]
         [SerializeField] private float _devMaxZoom = 40f;
+        [Tooltip("Свобода панорамирования на карте: насколько можно увести карту за край экрана, в долях " +
+                 "видимой области. 0.5 = полэкрана в каждую сторону — угол карты можно рассмотреть вблизи, " +
+                 "но совсем в пустоту не уедешь.")]
+        [SerializeField] private float _mapFreedom = 0.5f;
 
         [Header("Панорамирование (ед./сек при полном отклонении)")]
         [SerializeField] private float _panSpeed = 12f;
@@ -367,13 +371,16 @@ namespace Guildmaster.Presentation
         }
 
         // Максимальный орто-размер, при котором видимая область не превышает зону (по обеим осям).
+        // Карта — исключение: она широкая и низкая, и ограничение по МЕНЬШЕЙ стороне зажимало бы отдаление
+        // высотой (всю карту разом было не увидеть). Там берём бОльшую сторону — карта влезает целиком.
         private float MaxZoomForZone()
         {
             Vector2 zone = ZoneSize();
             float aspect = ScreenAspect();
             float halfH = zone.y * 0.5f;
             float halfW = (zone.x * 0.5f) / Mathf.Max(aspect, 0.0001f);
-            return Mathf.Max(_minZoom, Mathf.Min(halfH, halfW));
+            float limit = _mode == CameraMode.Map ? Mathf.Max(halfH, halfW) : Mathf.Min(halfH, halfW);
+            return Mathf.Max(_minZoom, limit);
         }
 
         // Кламп центра так, чтобы видимый прямоугольник (полу-высота = size) не вышел за зону.
@@ -385,6 +392,14 @@ namespace Guildmaster.Presentation
 
             float slackX = Mathf.Max(0f, zone.x * 0.5f - size * aspect);
             float slackY = Mathf.Max(0f, zone.y * 0.5f - size);
+
+            // На карте кламп мягкий: разрешаем увести её к краю экрана (доля видимой области во все
+            // стороны), чтобы можно было рассмотреть угол карты вблизи, а не упираться в жёсткую рамку.
+            if (_mode == CameraMode.Map)
+            {
+                slackX += size * aspect * _mapFreedom;
+                slackY += size * _mapFreedom;
+            }
 
             pos.x = Mathf.Clamp(pos.x, c.x - slackX, c.x + slackX);
             pos.y = Mathf.Clamp(pos.y, c.y - slackY, c.y + slackY);

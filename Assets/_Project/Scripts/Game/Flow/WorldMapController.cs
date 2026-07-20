@@ -115,23 +115,22 @@ namespace Guildmaster.Game.Flow
         // Перерисовать карту под текущее состояние. false = рисовать нечего.
         private bool Redraw()
         {
-            MapState map = _runStates?.Current?.Map;
+            RunState run = _runStates?.Current;
+            MapState map = run?.Map;
             if (map?.Nodes == null || map.Nodes.Length == 0) return false;
 
-            _view.Show(BuildVisuals(map), BuildEdges(map));
+            // Сид отдаём слою карты: из него он выводит стабильный разброс узлов. В данных карты разброса
+            // нет — раскладка это дело презентации, домен знает только топологию.
+            _view.Show(BuildVisuals(map), BuildEdges(map), run.Seed);
             return true;
         }
 
-        // Граф → визуальные данные. Позиции ЛОКАЛЬНЫЕ: в мир их переводит слой карты своим трансформом
-        // (то есть «где живёт карта» задаётся положением объекта в сцене, а не числом здесь).
+        // Граф → визуальные данные: только топология и как показать. Координаты считает слой карты.
         private List<MapNodeVisual> BuildVisuals(MapState map)
         {
             var list = new List<MapNodeVisual>(map.Nodes.Length);
             foreach (MapNode node in map.Nodes)
-            {
-                var pos = new Vector2(node.UiPosition.x * StepX, node.UiPosition.y * StepY);
-                list.Add(new MapNodeVisual(node.Id, pos, StateOf(node, map), ColorOf(node.Type)));
-            }
+                list.Add(new MapNodeVisual(node.Id, node.Floor, node.Row, StateOf(node, map), node.Type.ToString()));
             return list;
         }
 
@@ -160,21 +159,5 @@ namespace Guildmaster.Game.Flow
             return node.Cleared ? MapNodeVisualState.Cleared : MapNodeVisualState.Locked;
         }
 
-        // Шаг сетки: MapNode.UiPosition — это (колонка, ряд), а не мир. Разносим в мировые единицы.
-        private const float StepX = 3.2f;
-        private const float StepY = 2.4f;
-
-        // Цвет по типу узла — временная читаемость D1. Иконки по типам придут вместе с артом.
-        private static Color ColorOf(MapNodeType type) => type switch
-        {
-            MapNodeType.Start     => new Color(0.75f, 0.75f, 0.75f),
-            MapNodeType.Battle    => new Color(0.85f, 0.35f, 0.30f),
-            MapNodeType.Elite     => new Color(0.70f, 0.20f, 0.55f),
-            MapNodeType.TextEvent => new Color(0.35f, 0.65f, 0.90f),
-            MapNodeType.Shop      => new Color(0.95f, 0.80f, 0.30f),
-            MapNodeType.Chest     => new Color(0.45f, 0.85f, 0.55f),
-            MapNodeType.Boss      => new Color(0.95f, 0.25f, 0.15f),
-            _                     => new Color(0.55f, 0.55f, 0.55f),
-        };
     }
 }

@@ -17,8 +17,15 @@ namespace Guildmaster.Presentation.Map
     /// </summary>
     public sealed class WorldMapView : MonoBehaviour, IWorldMapView
     {
-        [Header("Раскладка")]
-        [Tooltip("Радиус кружка узла (мировые единицы).")]
+        [Header("Раскладка карты")]
+        [Tooltip("Шаги сетки и разброс узлов. Разброс выводится из сида забега — в данных карты его нет.")]
+        [SerializeField] private MapLayout _layout = MapLayout.Default;
+
+        [Header("Вид узлов")]
+        [Tooltip("Набор иконок по типам узлов. Пусто — узлы рисуются одними подложками.")]
+        [SerializeField] private MapIconSet _icons;
+
+        [Tooltip("Радиус подложки узла (мировые единицы).")]
         [SerializeField] private float _nodeRadius = 0.5f;
         [Tooltip("Множитель зоны хвата относительно видимого радиуса: попасть по узлу должно быть легче, " +
                  "чем выглядит (QA #24 — та же логика, что с хваталкой юнитов).")]
@@ -40,6 +47,8 @@ namespace Guildmaster.Presentation.Map
         private const float AlphaCurrent   = 1f;
         private const float EdgeAlpha      = 0.4f;
         private const float NodeZ          = 0f;
+        // Подложка приглушена относительно иконки: читается силуэт типа, а не цветное пятно.
+        private const float BackingAlpha   = 0.75f;
 
         private IInputService _input;
         private CameraModeController _cameraModes; // null в headless
@@ -47,6 +56,7 @@ namespace Guildmaster.Presentation.Map
 
         private readonly List<Disc> _nodeDiscs = new List<Disc>(24);
         private readonly List<Line> _edgeLines = new List<Line>(48);
+        private readonly List<SpriteRenderer> _nodeIcons = new List<SpriteRenderer>(24);
         // Кликабельные узлы текущего показа: позиция + id. Только Available — их выбор ведёт в узел.
         private readonly List<(string Id, Vector2 Pos)> _pickable = new List<(string, Vector2)>(8);
         // Все прочие узлы: по ним тоже можно попасть мышью, но выбора не происходит — только отказной
@@ -100,10 +110,13 @@ namespace Guildmaster.Presentation.Map
         }
 
         /// <inheritdoc/>
-        public void Show(IReadOnlyList<MapNodeVisual> nodes, IReadOnlyList<(string From, string To)> edges)
+        public void Show(IReadOnlyList<MapNodeVisual> nodes, IReadOnlyList<(string From, string To)> edges, long seed)
         {
             ReleaseAll();
             if (nodes == null || nodes.Count == 0) { Bounds = new Rect2D(Vector2.zero, Vector2.zero); return; }
+
+            // Раскладка — здесь: домен отдаёт только топологию (этаж/ряд), координаты не его забота.
+            Dictionary<string, Vector2> local = _layout.Resolve(nodes, seed);
 
             var byId = new Dictionary<string, Vector2>(nodes.Count);
             float minX = float.MaxValue, maxX = float.MinValue, minY = float.MaxValue, maxY = float.MinValue;
@@ -111,22 +124,37 @@ namespace Guildmaster.Presentation.Map
             for (int i = 0; i < nodes.Count; i++)
             {
                 MapNodeVisual n = nodes[i];
-                // Позиции приходят ЛОКАЛЬНЫЕ (раскладка сетки), в мир переводим трансформом слоя: то есть
-                // «где в мире живёт карта» задаётся положением этого объекта в сцене. Так зона карты
-                // разнесена от боевой арены наглядно — видно прямо в Scene view, без магии в коде.
-                Vector2 pos = transform.TransformPoint(n.Position);
+                // Раскладка локальна, в мир переводим трансформом слоя: «где в мире живёт карта» задаётся
+                // положением этого объекта в сцене — зона карты разнесена от арены наглядно, видно в Scene view.
+                Vector2 pos = transform.TransformPoint(local[n.Id]);
                 byId[n.Id] = pos;
 
-                Disc disc = RentDisc();
-                if (n.State == MapNodeVisualState.Available) _pickable.Add((n.Id, pos));
-                else _rejectable.Add((n.Id, pos, disc.transform));
+                MapNodeIcon look = _icons != null ? _icons.Resolve(n.Kind) : default;
+                float alpha = AlphaFor(n.State);
 
+                // Подложка под иконкой: держит форму узла и даёт зону хвата. Текущий узел — кольцом.
+                Disc disc = RentDisc();
                 disc.transform.position = new Vector3(pos.x, pos.y, NodeZ);
                 disc.Radius = _nodeRadius;
-                // Текущий узел — кольцом (где стоим), прочие — заливкой.
                 disc.Type   = n.State == MapNodeVisualState.Current ? DiscType.Ring : DiscType.Disc;
                 disc.Thickness = _nodeRadius * 0.3f;
-                disc.Color  = WithAlpha(n.Color, AlphaFor(n.State));
+                disc.Color  = WithAlpha(look.Backing, alpha * BackingAlpha);
+
+                // Иконка типа — поверх подложки. Масштаб считаем от нужной мировой высоты: спрайты набора
+                // идут с разным PPU, и доверять импорту нельзя (32-й набор импортирован с PPU 8).
+                if (look.Icon != null)
+                {
+                    SpriteRenderer icon = RentIcon();
+                    icon.transform.position = new Vector3(pos.x, pos.y, NodeZ);
+                    icon.sprite = look.Icon;
+                    icon.color  = new Color(1f, 1f, 1f, alpha);
+                    float h = look.Icon.bounds.size.y;
+                    float scale = h > 0f ? (_icons.WorldHeight / h) : 1f;
+                    icon.transform.localScale = Vector3.one * scale;
+                }
+
+                if (n.State == MapNodeVisualState.Available) _pickable.Add((n.Id, pos));
+                else _rejectable.Add((n.Id, pos, disc.transform));
 
                 if (pos.x < minX) minX = pos.x;
                 if (pos.x > maxX) maxX = pos.x;
@@ -268,8 +296,10 @@ namespace Guildmaster.Presentation.Map
                 _nodeDiscs[i].gameObject.SetActive(false);
             }
             for (int i = 0; i < _edgeLines.Count; i++) _edgeLines[i].gameObject.SetActive(false);
+            for (int i = 0; i < _nodeIcons.Count; i++) _nodeIcons[i].gameObject.SetActive(false);
             _rentedDiscs = 0;
             _rentedLines = 0;
+            _rentedIcons = 0;
         }
 
         private void OnDisable()
@@ -281,6 +311,26 @@ namespace Guildmaster.Presentation.Map
 
         private int _rentedDiscs;
         private int _rentedLines;
+        private int _rentedIcons;
+
+        private SpriteRenderer RentIcon()
+        {
+            if (_rentedIcons < _nodeIcons.Count)
+            {
+                SpriteRenderer reused = _nodeIcons[_rentedIcons++];
+                reused.gameObject.SetActive(true);
+                return reused;
+            }
+
+            var go = new GameObject("MapNodeIcon");
+            go.transform.SetParent(_nodeRoot, false);
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sortingLayerID = SortingLayerId();
+            sr.sortingOrder   = 2; // поверх подложки узла (1) и рёбер (0)
+            _nodeIcons.Add(sr);
+            _rentedIcons++;
+            return sr;
+        }
 
         private Disc RentDisc()
         {

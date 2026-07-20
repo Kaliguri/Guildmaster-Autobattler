@@ -22,7 +22,9 @@ namespace Guildmaster.Guild
 
     /// <summary>
     /// Узел графа акта (сериализуемый DTO). Рёбра — по id соседних узлов. <see cref="Cleared"/> помечает
-    /// пройденные (для оверлея и валидации хода). Нагрузка — строковый id (пресет/ивент/пул).
+    /// пройденные (для валидации хода). Нагрузка — строковый id (пресет/ивент/пул).
+    /// <para>Хранит только ТОПОЛОГИЮ (этаж + ряд). Мировые координаты, шаг, центрирование ряда и разброс —
+    /// забота презентера карты: домен про отрисовку не знает.</para>
     /// </summary>
     [Serializable]
     public sealed class MapNode
@@ -32,7 +34,11 @@ namespace Guildmaster.Guild
         public string      PayloadId;
         public string[]    Edges = Array.Empty<string>();
         public bool        Cleared;
-        public Vector2     UiPosition; // для оверлея карты (раскладка узлов)
+        /// <summary>Этаж (индекс колонки) от старта: 0 = Start, последний = Boss. На него завязаны зоны и якоря.</summary>
+        public int Floor;
+
+        /// <summary>Индекс узла внутри своего этажа, сверху вниз (0..ширина-1).</summary>
+        public int Row;
     }
 
     /// <summary>Состояние карты акта в <see cref="RunState"/>: граф узлов + где игрок сейчас.</summary>

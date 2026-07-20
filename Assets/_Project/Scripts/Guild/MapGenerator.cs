@@ -28,22 +28,22 @@ namespace Guildmaster.Guild
             // 1. Колонки: [Start] · промежуточные (случайной ширины, типы по весам) · [Boss].
             var columns = new List<List<MapNode>>(cfg.Columns);
 
-            columns.Add(new List<MapNode> { NewNode("c0r0", MapNodeType.Start, col: 0, row: 0, width: 1) });
+            columns.Add(new List<MapNode> { NewNode("c0r0", MapNodeType.Start, floor: 0, row: 0) });
 
             for (int col = 1; col < cfg.Columns - 1; col++)
             {
-                int width = rng.NextInt(cfg.MinColumnWidth, cfg.MaxColumnWidth + 1);
+                int width = ColumnWidth(rng, cfg, col);
                 var column = new List<MapNode>(width);
                 for (int row = 0; row < width; row++)
                 {
                     var type = RollNodeType(rng, cfg, col);
-                    column.Add(NewNode($"c{col}r{row}", type, col, row, width));
+                    column.Add(NewNode($"c{col}r{row}", type, col, row));
                 }
                 columns.Add(column);
             }
 
             int last = cfg.Columns - 1;
-            columns.Add(new List<MapNode> { NewNode($"c{last}r0", MapNodeType.Boss, last, row: 0, width: 1) });
+            columns.Add(new List<MapNode> { NewNode($"c{last}r0", MapNodeType.Boss, last, row: 0) });
 
             // 2. Рёбра между соседними колонками (монотонная лестница).
             var edges = new Dictionary<string, List<string>>();
@@ -70,16 +70,31 @@ namespace Guildmaster.Guild
             };
         }
 
-        private static MapNode NewNode(string id, MapNodeType type, int col, int row, int width) => new MapNode
+        private static MapNode NewNode(string id, MapNodeType type, int floor, int row) => new MapNode
         {
-            Id         = id,
-            Type       = type,
-            PayloadId  = string.Empty,
-            Edges      = System.Array.Empty<string>(),
-            Cleared    = false,
-            // Раскладка для оверлея: x = колонка, y = ряд, отцентрованный вокруг нуля.
-            UiPosition = new Vector2(col, row - (width - 1) * 0.5f),
+            Id        = id,
+            Type      = type,
+            PayloadId = string.Empty,
+            Edges     = System.Array.Empty<string>(),
+            Cleared   = false,
+            Floor     = floor,
+            Row       = row,
         };
+
+        /// <summary>
+        /// Ширина колонки по профилю акта: горловины у краёв (узко), середина — рандом в диапазоне.
+        /// Акт читается как путь — начинается узко, раздаётся и снова сужается к боссу.
+        /// </summary>
+        private static int ColumnWidth(IRngService rng, MapGenConfig cfg, int col)
+        {
+            int lastFloor = cfg.Columns - 2;                       // последний этаж-испытание (перед Boss)
+            bool nearStart = col <= cfg.EdgeColumns;
+            bool nearBoss  = col > lastFloor - cfg.EdgeColumns;
+            if (nearStart || nearBoss) return cfg.EdgeColumnWidth;
+
+            return rng.NextInt(cfg.MinColumnWidth, cfg.MaxColumnWidth + 1);
+        }
+
 
         /// <summary>
         /// Тип промежуточного узла на этаже <paramref name="col"/> по ЗОНАМ и ЯКОРЯМ конфига. Якорь этажа

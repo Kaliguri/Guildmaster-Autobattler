@@ -30696,6 +30696,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3374f7b80363cd342b1a91b01134b680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Map.WorldMapView
+  _layout:
+    StepX: 5
+    StepY: 3.6
+    JitterY: 0.4
+    JitterX: 0.12
+  _icons: {fileID: 11400000, guid: 58b63df752faa9749bc1863bf04bc04c, type: 2}
   _nodeRadius: 0.5
   _pickRadiusScale: 1.4
   _edgeThickness: 0.08
@@ -32054,6 +32060,7 @@ MonoBehaviour:
   _minZoom: 3
   _zoomStep: 1.5
   _devMaxZoom: 40
+  _mapFreedom: 0.5
   _panSpeed: 12
   _devPanSpeed: 24
   _actionZoomPadding: 4

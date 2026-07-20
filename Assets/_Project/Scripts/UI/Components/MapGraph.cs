@@ -80,7 +80,7 @@ namespace Guildmaster.UI.Components
             MarkDirtyRepaint();
         }
 
-        // Абсолютная раскладка: X — по колонке (UiPosition.x), Y — равномерным разбросом узлов ВНУТРИ колонки
+        // Абсолютная раскладка: X — по этажу узла, Y — равномерным разбросом узлов ВНУТРИ колонки
         // по их порядку. Это держит рёбра-лестницу визуально непересекающимися (они монотонны по индексу) и даёт
         // ровный вертикальный ритм независимо от ширины колонок.
         private void LayoutNodes()
@@ -89,12 +89,12 @@ namespace Guildmaster.UI.Components
             float w = contentRect.width, h = contentRect.height;
             if (w <= 0f || h <= 0f) return;
 
-            // Группировка по колонкам (ключ = округлённый UiPosition.x).
+            // Группировка по колонкам (ключ = этаж узла).
             var byColumn = new Dictionary<int, List<MapNode>>();
             int minCol = int.MaxValue, maxCol = int.MinValue;
             foreach (MapNode node in _map.Nodes)
             {
-                int col = Mathf.RoundToInt(node.UiPosition.x);
+                int col = node.Floor;
                 if (!byColumn.TryGetValue(col, out var list)) byColumn[col] = list = new List<MapNode>();
                 list.Add(node);
                 minCol = Mathf.Min(minCol, col); maxCol = Mathf.Max(maxCol, col);
@@ -114,7 +114,7 @@ namespace Guildmaster.UI.Components
             foreach (var kv in byColumn)
             {
                 List<MapNode> column = kv.Value;
-                column.Sort((a, b) => a.UiPosition.y.CompareTo(b.UiPosition.y)); // сверху вниз по ряду
+                column.Sort((a, b) => a.Row.CompareTo(b.Row)); // сверху вниз по ряду
                 int count = column.Count;
                 float nx = (kv.Key - minCol) / spanCol;
 

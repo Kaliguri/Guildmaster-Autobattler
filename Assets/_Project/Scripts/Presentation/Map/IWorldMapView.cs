@@ -18,9 +18,10 @@ namespace Guildmaster.Presentation.Map
         Rect2D Bounds { get; }
 
         /// <summary>Показать карту: разложить узлы и рёбра, включить слой.</summary>
-        /// <param name="nodes">Узлы с уже посчитанными мировыми позициями и состояниями.</param>
+        /// <param name="nodes">Узлы: топология (этаж/ряд) и состояние. Раскладку в координаты считает слой сам.</param>
         /// <param name="edges">Рёбра как пары id (from, to) — рисуются линией между узлами.</param>
-        void Show(IReadOnlyList<MapNodeVisual> nodes, IReadOnlyList<(string From, string To)> edges);
+        /// <param name="seed">Сид забега: из него выводится стабильный разброс узлов (в данных он не хранится).</param>
+        void Show(IReadOnlyList<MapNodeVisual> nodes, IReadOnlyList<(string From, string To)> edges, long seed);
 
         /// <summary>Скрыть слой карты. Обязателен при отмене забега (QA #37), иначе карта останется висеть в мире.</summary>
         void Hide();

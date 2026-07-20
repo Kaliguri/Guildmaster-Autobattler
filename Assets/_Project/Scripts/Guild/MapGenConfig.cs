@@ -15,11 +15,21 @@ namespace Guildmaster.Guild
         /// <summary>Глубина акта: всего колонок, включая Start (первая) и Boss (последняя). Дефолт 14 (Start+12+Boss).</summary>
         public int Columns = 14;
 
-        /// <summary>Мин. ширина промежуточной колонки (параллельных узлов). ≥2 гарантирует ветвление/схождение.</summary>
-        public int MinColumnWidth = 2;
+        /// <summary>
+        /// Ширина «горловин» акта: сколько параллельных узлов на первых и последних этажах. Акт начинается
+        /// узко, раздаётся вширь к середине и снова сужается к боссу — силуэт читается как путь, а не как
+        /// однородная решётка (решение Макса 2026-07-20).
+        /// </summary>
+        public int EdgeColumnWidth = 3;
 
-        /// <summary>Макс. ширина промежуточной колонки.</summary>
-        public int MaxColumnWidth = 3;
+        /// <summary>Сколько этажей с КАЖДОГО края держать на <see cref="EdgeColumnWidth"/> (не считая Start/Boss).</summary>
+        public int EdgeColumns = 2;
+
+        /// <summary>Мин. ширина колонки в середине акта (между горловинами).</summary>
+        public int MinColumnWidth = 4;
+
+        /// <summary>Макс. ширина колонки в середине акта.</summary>
+        public int MaxColumnWidth = 6;
 
         /// <summary>
         /// Зонные правила: диапазон этажей (индекс колонки) → разрешённые типы с весами. Первая покрывающая
@@ -36,6 +46,11 @@ namespace Guildmaster.Guild
             if (Columns < 3) Columns = 3;                       // минимум: Start → одна промежуточная → Boss
             if (MinColumnWidth < 1) MinColumnWidth = 1;
             if (MaxColumnWidth < MinColumnWidth) MaxColumnWidth = MinColumnWidth;
+            if (EdgeColumnWidth < 1) EdgeColumnWidth = 1;
+            if (EdgeColumns < 0) EdgeColumns = 0;
+            // Горловины с обоих краёв не должны съесть середину: иначе профиль вырождается в плоскую ширину.
+            int middle = Columns - 2;                            // без Start и Boss
+            if (EdgeColumns * 2 > middle) EdgeColumns = middle / 2;
             Zones   ??= Array.Empty<ZoneRule>();
             Anchors ??= Array.Empty<AnchorRule>();
             return this;
