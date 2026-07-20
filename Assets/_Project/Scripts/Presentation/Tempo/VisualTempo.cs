@@ -12,9 +12,14 @@ namespace Guildmaster.Presentation.Tempo
     /// </remarks>
     public sealed class VisualTempo : IVisualTempo
     {
-        private float _bpm;
+        // Темп по умолчанию. НЕ параметр конструктора: VContainer не понимает значений по умолчанию —
+        // он пойдёт искать регистрацию float, не найдёт и уронит сборку всего, что зависит от такта
+        // (карта переставала резолвиться целиком). Темп задаётся через SetBpm, позже — музыкальным слоем.
+        private const float DefaultBpm = 84f;
 
-        public VisualTempo(float bpm = 84f) => _bpm = Mathf.Max(1f, bpm);
+        private float _bpm = DefaultBpm;
+
+        public VisualTempo() { }
 
         /// <inheritdoc/>
         public float Bpm => _bpm;
