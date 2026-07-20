@@ -133,6 +133,10 @@ namespace Guildmaster.Game
             builder.Register<Presentation.Map.WorldMapViewLink>(Lifetime.Singleton)
                    .AsSelf().As<Presentation.Map.IWorldMapView>();
 
+            // Владелец показа карты в мире: и просмотр по табу «Карта» (в т.ч. посреди боя), и ожидание
+            // выбора узла петлёй — через него одного.
+            builder.RegisterEntryPoint<WorldMapController>(Lifetime.Singleton).AsSelf();
+
             // Выбор узла. Фаза D: world-карта (узлы в мире, камера как в бою). Откат на UITK-карту — заменой
             // одной этой строки на MapScreenNodeChooser (старый путь пока цел, до play-приёмки world-карты).
             // AutoFirstNodeChooser остаётся для headless/тестов.

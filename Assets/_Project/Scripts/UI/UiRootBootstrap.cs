@@ -111,6 +111,7 @@ namespace Guildmaster.UI
         private IDisposable _testZoneChangedSubscription;
         private ISubscriber<WorldMapSpaceChangedEvent> _mapSpaceSub; // фаза D: СОСТОЯНИЕ world-карты → Sheet-экран
         private IDisposable _mapSpaceSubscription;
+        private IPublisher<SetWorldMapRequest> _worldMapPub; // фаза D: радио-табы → показать/скрыть карту в мире
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -121,10 +122,11 @@ namespace Guildmaster.UI
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
             ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
-            ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub)
+            ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub)
         {
             _router = router;
             _mapSpaceSub = mapSpaceSub;
+            _worldMapPub = worldMapPub;
             _relicDragPub = relicDragPub;
             _testZonePub = testZonePub;
             _testZoneChangedSub = testZoneChangedSub;
@@ -338,7 +340,9 @@ namespace Guildmaster.UI
             // и в инвентаре (прозрачный оверлей поверх арены).
             if (_backdrop != null)
             {
-                bool showBackdrop = phase == BattlePhase.None && !_router.IsInventoryOpen;
+                // Фаза D: при world-карте фон ТОЖЕ гасим — карта уехала в мир, и непрозрачный backdrop
+                // закрывал бы её собой (раньше он служил задником именно UITK-карты).
+                bool showBackdrop = phase == BattlePhase.None && !_router.IsInventoryOpen && !_router.IsMapSpaceOpen;
                 _backdrop.style.display = showBackdrop ? DisplayStyle.Flex : DisplayStyle.None;
             }
 
@@ -355,7 +359,8 @@ namespace Guildmaster.UI
         {
             UiTrace.Log($"topbar «Инвентарь» → GoToInventory (invOpen={_router.IsInventoryOpen}, phase={_clock?.Phase}, hasMap={_router.HasMapInStack})");
             if (_loadoutInventoryScreen == null) { _router.OpenHub(); return; } // фолбэк на старый хаб, если ассет не назначен
-            RequestTestZone(true); // сначала бой (скрыть карту петли) — идемпотентно
+            RequestWorldMap(false); // инвентарь смотрит на мир, а не на карту — идемпотентно
+            RequestTestZone(true);  // сначала бой — идемпотентно
             int gold = _runStates?.Current != null ? _runStates.Current.Gold : 0;
             // QA #5: drag карточки реликвии → публикуем RelicDragEvent, фаза расстановки рисует призрак и надевает.
             _router.ShowInventory(gold, PublishRelicDrag); // инвентарь над боем — идемпотентно
@@ -371,7 +376,8 @@ namespace Guildmaster.UI
             if (_clock == null) return;
             UiTrace.Log($"topbar «Бой» → GoToBattle (invOpen={_router.IsInventoryOpen}, phase={_clock.Phase}, hasMap={_router.HasMapInStack})");
             _router.HideInventory(); // идемпотентно
-            RequestTestZone(true);   // войти в бой (скрыть карту) — идемпотентно
+            RequestWorldMap(false);  // убрать карту и вернуть камеру в бой — идемпотентно
+            RequestTestZone(true);   // войти в бой — идемпотентно
         }
 
         // «Карта» = показать карту: закрыть инвентарь + выйти из боя (карта петли под геймплеем вернётся). Если
@@ -380,26 +386,25 @@ namespace Guildmaster.UI
         {
             UiTrace.Log($"topbar «Карта» → GoToMap (invOpen={_router.IsInventoryOpen}, phase={_clock?.Phase}, hasMap={_router.HasMapInStack})");
             _router.HideInventory();  // идемпотентно
-            RequestTestZone(false);   // выйти из тест-зоны → карта петли покажется (SyncVisibility) — идемпотентно
-            if (!_router.HasMapInStack) OpenMapView(); // карты петли нет → read-only просмотр
+            RequestTestZone(false);   // выйти из тест-зоны — идемпотентно
+            // Фаза D: карта живёт в мире. Показываем её ВСЕГДА, в том числе посреди идущего боя — бой
+            // продолжается за кадром, камера просто уезжает в зону карты. Узлы при этом горят, лишь если
+            // петля реально ждёт выбор (после «Продолжить»); иначе это чистый просмотр.
+            RequestWorldMap(true);
         }
 
         // Publish целевого состояния тест-зоны (радио). Владелец (DeploymentController) приводит мир к бою/не-бою
         // идемпотентно; результат — TestZoneChangedEvent → Sheet-экран навигатора.
         private void RequestTestZone(bool active) => _testZonePub?.Publish(new SetTestZoneRequest(active));
 
-        // Режим «Карта» — открыть карту акта read-only (просмотр текущей карты; клик по узлу закрывает просмотр).
-        private void OpenMapView()
-        {
-            UiTrace.Log("  → OpenMapView (read-only просмотр текущей карты)");
-            RunState run = _runStates?.Current;
-            if (run?.Map == null || run.Map.Nodes == null || run.Map.Nodes.Length == 0) return;
-            var ids = new List<string>();
-            foreach (var n in Guildmaster.Guild.MapTraversal.AvailableNext(run.Map)) ids.Add(n.Id);
-            // Read-only просмотр: клик по узлу закрывает просмотр. Карта — result-экран, résolve СНИМАЕТ её сам
-            // (навигатор), поэтому callback = no-op. НЕ CloseOverlays/PopAll — иначе снёс бы геймплей под картой.
-            _router.OpenMap(new Guildmaster.Guild.OpenMapRequest(run.Map, ids, _ => { }));
-        }
+        // Publish целевого состояния world-карты (радио, как тест-зона). Владелец (WorldMapController)
+        // приводит мир к цели идемпотентно; результат — WorldMapSpaceChangedEvent → Sheet-экран.
+        private void RequestWorldMap(bool visible) => _worldMapPub?.Publish(new SetWorldMapRequest(visible));
+
+        // Read-only просмотр карты через UITK-экран (OpenMapView) снят вместе с переездом карты в мир:
+        // просмотр и выбор теперь идут одним путём через WorldMapController, и второй UI-путь к той же
+        // карте только плодил бы расхождения. Подписка на OpenMapRequest ниже жива — по ней UITK-карту
+        // можно вернуть, если world-карта не пройдёт play-приёмку.
 
         // Активный режим для подсветки таба (QA #11/#21) — ЕДИНЫЙ источник: верхний оверлей роутера несёт
         // mode-тег (inventory/map, ставится при Push). Так подсвечивается и read-only карта, И карта петли

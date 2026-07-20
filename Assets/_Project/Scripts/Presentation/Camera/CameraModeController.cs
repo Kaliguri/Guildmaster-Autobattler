@@ -85,6 +85,9 @@ namespace Guildmaster.Presentation
         // Кадрируем карту целиком только при ПЕРВОМ входе. Дальше не трогаем позицию/зум: игрок мог
         // отъехать и приблизиться, и это должно пережить поход в бой и обратно.
         private bool _mapFramed;
+        // Режим, из которого ушли в карту: карту можно открыть посреди боя, и выход обязан вернуть
+        // ровно тот вид, что был (боевые vcam при этом всё время стоят где стояли).
+        private CameraMode _modeBeforeMap = CameraMode.Action;
 
         /// <summary>Разблокирован ли dev-режим камеры (доступ выдаётся отдельно, вики «16» §6).</summary>
         public bool DevAccess => _devAccess;
@@ -216,6 +219,7 @@ namespace Guildmaster.Presentation
         /// </summary>
         public void EnterMap(Rect2D bounds)
         {
+            if (_mode != CameraMode.Map) _modeBeforeMap = _mode; // повторный вход не затирает точку возврата
             _mapZone = bounds;
             _mode    = CameraMode.Map;
             ApplyMode();
@@ -229,6 +233,18 @@ namespace Guildmaster.Presentation
             LensSettings lens = _mapCam.Lens;
             lens.OrthographicSize = size;
             _mapCam.Lens = lens;
+        }
+
+        /// <summary>
+        /// Выйти из вида карты в тот режим, из которого в неё вошли. Карту можно открыть посреди боя —
+        /// закрытие обязано вернуть взгляд ровно туда, где игрок его оставил, а не в дефолтный вид.
+        /// Вне режима карты — no-op.
+        /// </summary>
+        public void ExitMap()
+        {
+            if (_mode != CameraMode.Map) return;
+            _mode = _modeBeforeMap;
+            ApplyMode();
         }
 
         /// <summary>Вернуть боевой вид (экшн-камера, слежение за дракой) — на старте боя из расстановки.</summary>

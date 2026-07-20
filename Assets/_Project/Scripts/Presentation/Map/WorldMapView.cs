@@ -47,8 +47,12 @@ namespace Guildmaster.Presentation.Map
 
         private readonly List<Disc> _nodeDiscs = new List<Disc>(24);
         private readonly List<Line> _edgeLines = new List<Line>(48);
-        // Кликабельные узлы текущего показа: позиция + id. Только Available — по прочим клик игнорируется.
+        // Кликабельные узлы текущего показа: позиция + id. Только Available — их выбор ведёт в узел.
         private readonly List<(string Id, Vector2 Pos)> _pickable = new List<(string, Vector2)>(8);
+        // Все прочие узлы: по ним тоже можно попасть мышью, но выбора не происходит — только отказной
+        // отклик (узел дёргается). Так карта не кажется мёртвой, когда петля выбора ещё не ждёт.
+        private readonly List<(string Id, Vector2 Pos, Transform Tf)> _rejectable = new List<(string, Vector2, Transform)>(32);
+        private readonly Dictionary<Transform, float> _nudgeUntil = new Dictionary<Transform, float>(8);
 
         private Transform _nodeRoot;
         private Transform _edgeRoot;
@@ -112,9 +116,11 @@ namespace Guildmaster.Presentation.Map
                 // разнесена от боевой арены наглядно — видно прямо в Scene view, без магии в коде.
                 Vector2 pos = transform.TransformPoint(n.Position);
                 byId[n.Id] = pos;
-                if (n.State == MapNodeVisualState.Available) _pickable.Add((n.Id, pos));
 
                 Disc disc = RentDisc();
+                if (n.State == MapNodeVisualState.Available) _pickable.Add((n.Id, pos));
+                else _rejectable.Add((n.Id, pos, disc.transform));
+
                 disc.transform.position = new Vector3(pos.x, pos.y, NodeZ);
                 disc.Radius = _nodeRadius;
                 // Текущий узел — кольцом (где стоим), прочие — заливкой.
@@ -163,14 +169,16 @@ namespace Guildmaster.Presentation.Map
         {
             _shown = false;
             _pickable.Clear();
+            _rejectable.Clear();
             SetLayerActive(false);
+            _cameraModes?.ExitMap(); // вернуть взгляд туда, откуда пришли (карту могли открыть посреди боя)
         }
 
         // Клик по узлу: мировой пикинг, а не UITK. Клик, попавший в UI (топбар/кнопки поверх карты),
         // до мира не доходит — иначе нажатие на кнопку заодно выбирало бы узел под ней.
         private void OnPointerPressed()
         {
-            if (!_shown || _pickable.Count == 0) return;
+            if (!_shown) return;
             if (_input == null || _input.PointerOverUI) return;
 
             Camera cam = Camera.main;
@@ -189,8 +197,47 @@ namespace Guildmaster.Presentation.Map
                 if (sqr <= bestSqr) { bestSqr = sqr; bestId = _pickable[i].Id; }
             }
 
-            if (bestId != null) NodeClicked?.Invoke(bestId);
+            if (bestId != null) { NodeClicked?.Invoke(bestId); return; }
+
+            // Промах по доступным — но по узлу попали: отвечаем дрожью «сюда нельзя». Карту открывают и
+            // просто посмотреть (в бою, до нажатия «Продолжить»), и тогда доступных узлов нет вовсе.
+            float rejectSqr = pickRadius * pickRadius;
+            Transform hit = null;
+            for (int i = 0; i < _rejectable.Count; i++)
+            {
+                float sqr = (_rejectable[i].Pos - world).sqrMagnitude;
+                if (sqr <= rejectSqr) { rejectSqr = sqr; hit = _rejectable[i].Tf; }
+            }
+            if (hit != null) _nudgeUntil[hit] = Time.unscaledTime + NudgeDuration;
         }
+
+        // Отказной отклик: короткое затухающее подрагивание узла. Unscaled — карта живёт и на паузе боя.
+        private void Update()
+        {
+            if (_nudgeUntil.Count == 0) return;
+            _nudgeDone.Clear();
+            foreach (var kv in _nudgeUntil)
+            {
+                Transform tf = kv.Key;
+                if (tf == null) { _nudgeDone.Add(tf); continue; }
+
+                float left = kv.Value - Time.unscaledTime;
+                if (left <= 0f)
+                {
+                    tf.localScale = Vector3.one;
+                    _nudgeDone.Add(tf);
+                    continue;
+                }
+
+                float t = left / NudgeDuration;                       // 1 → 0
+                float pulse = Mathf.Sin(t * Mathf.PI * 3f) * t * 0.18f; // затухающие колебания
+                tf.localScale = Vector3.one * (1f + pulse);
+            }
+            for (int i = 0; i < _nudgeDone.Count; i++) _nudgeUntil.Remove(_nudgeDone[i]);
+        }
+
+        private const float NudgeDuration = 0.28f;
+        private readonly List<Transform> _nudgeDone = new List<Transform>(4);
 
         private static float AlphaFor(MapNodeVisualState state) => state switch
         {
@@ -213,10 +260,23 @@ namespace Guildmaster.Presentation.Map
         private void ReleaseAll()
         {
             _pickable.Clear();
-            for (int i = 0; i < _nodeDiscs.Count; i++) _nodeDiscs[i].gameObject.SetActive(false);
+            _rejectable.Clear();
+            _nudgeUntil.Clear(); // иначе недодрожавший узел вернётся из пула с чужим масштабом
+            for (int i = 0; i < _nodeDiscs.Count; i++)
+            {
+                _nodeDiscs[i].transform.localScale = Vector3.one;
+                _nodeDiscs[i].gameObject.SetActive(false);
+            }
             for (int i = 0; i < _edgeLines.Count; i++) _edgeLines[i].gameObject.SetActive(false);
             _rentedDiscs = 0;
             _rentedLines = 0;
+        }
+
+        private void OnDisable()
+        {
+            // Слой гасят вместе с недодрожавшими узлами — вернуть масштаб, чтобы не «залипло».
+            foreach (var kv in _nudgeUntil) if (kv.Key != null) kv.Key.localScale = Vector3.one;
+            _nudgeUntil.Clear();
         }
 
         private int _rentedDiscs;

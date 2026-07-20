@@ -294,6 +294,10 @@ namespace Guildmaster.UI
         // владелец состояния — WorldMapNodeChooser. Идемпотентно, как тест-зона.
         private UiScreen _mapSpaceScreen;
 
+        /// <summary>Показана ли world-карта: её пространство есть в стеке. Фон забега при этом гасится — карта
+        /// теперь рисуется В МИРЕ, и непрозрачный backdrop просто закрыл бы её собой.</summary>
+        public bool IsMapSpaceOpen => _mapSpaceScreen != null;
+
         /// <summary>Войти в пространство world-карты: прозрачный Sheet с тегом режима «карта».</summary>
         public void ShowMapSpace()
         {
