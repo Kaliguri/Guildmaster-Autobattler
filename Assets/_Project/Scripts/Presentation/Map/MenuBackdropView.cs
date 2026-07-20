@@ -31,9 +31,14 @@ namespace Guildmaster.Presentation.Map
         [Tooltip("Порядок камеры меню. Должен быть выше боевой, чтобы она рисовалась поверх.")]
         [SerializeField] private float _cameraDepth = 100f;
 
-        [Tooltip("Половина высоты кадра фона в мировых единицах — задаёт КРУПНОСТЬ рисунка стола: " +
-                 "меньше значение — крупнее ромбы и пятно света.")]
+        [Tooltip("Половина высоты кадра фона в мировых единицах. На крупность рисунка НЕ влияет: квад всегда " +
+                 "покрывает кадр целиком, поэтому масштаб задаётся тайлингом ниже.")]
         [SerializeField] private float _viewHeight = 8f;
+
+        [Tooltip("Тайлинг рисунка = сколько повторов укладывается в ВЫСОТУ кадра. Отдельно от материала " +
+                 "намеренно: на карте тайл растянут на огромный стол, и там те же 10 повторов дают крупные " +
+                 "ромбы, а на экран меню — вдвое мельче. Подбирается по глазу, чтобы совпасть с картой.")]
+        [SerializeField] private float _patternTiling = 5f;
 
         [Tooltip("Сила лампы в меню. Отдельно от материала: под картой стол работает в контрасте со светлым " +
                  "листом и может быть тёмным, а здесь он остаётся один — с настройками карты кадр почти чёрный.")]
@@ -55,6 +60,7 @@ namespace Guildmaster.Presentation.Map
         private static readonly int AspectXId = Shader.PropertyToID("_AspectX");
         private static readonly int LightStrengthId = Shader.PropertyToID("_LightStrength");
         private static readonly int AmbientId = Shader.PropertyToID("_Ambient");
+        private static readonly int PatternTilingId = Shader.PropertyToID("_PatternTiling");
 
         [Inject]
         public void Construct(ISubscriber<MainMenuVisibilityChangedEvent> menuSub, VisualToggles toggles)
@@ -151,6 +157,7 @@ namespace Guildmaster.Presentation.Map
             _block.SetFloat(AspectXId, height > 0.01f ? width / height : 1f);
             _block.SetFloat(LightStrengthId, _lightStrength);
             _block.SetFloat(AmbientId, _ambient);
+            _block.SetFloat(PatternTilingId, _patternTiling);
             _quad.SetPropertyBlock(_block);
         }
     }
