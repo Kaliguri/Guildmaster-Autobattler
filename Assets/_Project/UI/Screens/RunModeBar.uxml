@@ -43,7 +43,7 @@
             <ui:Label name="battle-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer gm-loadout__battle-timer" />
         </ui:VisualElement>
 
-        <!-- Подсказка режима: иконка без подписи — угадайка, поэтому имя режима показывается по наведению. -->
-        <gm:Tooltip name="runbar-tooltip" class="gm-runbar__tip" />
+        <!-- Подписи режимов при наведении будут от общей системы тултипов (проектируется отдельно):
+             свой локальный тултип здесь не заводим, чтобы потом не выпиливать конкурента. -->
     </ui:VisualElement>
 </ui:UXML>

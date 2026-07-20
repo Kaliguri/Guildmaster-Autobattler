@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UIElements;
-using Guildmaster.UI.Components;
 
 namespace Guildmaster.UI
 {
@@ -23,7 +21,6 @@ namespace Guildmaster.UI
         private readonly Label  _battleTimer;
         private readonly Label  _restarts;
         private readonly Button _start;
-        private readonly Tooltip _tip;
         private readonly Func<string, string> _loc;
         private readonly Dictionary<string, Button> _modes = new();
 
@@ -44,7 +41,6 @@ namespace Guildmaster.UI
             _battleTimer = Root.Q<Label>("battle-timer");
             _restarts    = Root.Q<Label>("topbar-hp");
             _start       = Root.Q<Button>("btn-start");
-            _tip         = Root.Q<Tooltip>("runbar-tooltip");
 
             WireMode("map",        "ui.mode.map",        "Карта",      onMap);
             WireMode("battle",     "ui.mode.battle",     "Бой",        onBattle);
@@ -53,11 +49,7 @@ namespace Guildmaster.UI
             WireMode("compendium", "ui.mode.compendium", "Компендиум", onCompendium);
 
             var menu = Root.Q<Button>("btn-menu");
-            if (menu != null)
-            {
-                menu.clicked += () => onMenu?.Invoke();
-                WireTip(menu, L("ui.run.menu", "Меню"));
-            }
+            if (menu != null) menu.clicked += () => onMenu?.Invoke();
 
             if (_start != null) { _start.text = L("ui.run.start", "Начать"); _start.clicked += () => onStart?.Invoke(); }
         }
@@ -67,23 +59,10 @@ namespace Guildmaster.UI
             var btn = Root.Q<Button>("mode-" + key);
             if (btn == null) return;
             btn.clicked += () => action?.Invoke();
-            WireTip(btn, L(locKey, ru));
+            // Ключ имени режима резолвим и без подсказки: он держит loc-ключ живым до прихода общей
+            // системы тултипов, которая и будет показывать подпись при наведении.
+            _ = L(locKey, ru);
             _modes[key] = btn;
-        }
-
-        // Подсказка живёт одна на бар и переезжает под наведённую иконку: X — центр иконки в координатах
-        // бара, сам блок центрируется относительно неё через translate (ширину до layout мы не знаем).
-        private void WireTip(VisualElement target, string title)
-        {
-            if (_tip == null) return;
-            target.RegisterCallback<MouseEnterEvent>(_ =>
-            {
-                float x = target.worldBound.center.x - Root.worldBound.x;
-                _tip.Set(title, null, null, null);
-                _tip.style.translate = new Translate(Length.Percent(-50), 0);
-                _tip.ShowAt(new Vector2(x, Root.resolvedStyle.height + 24f));
-            });
-            target.RegisterCallback<MouseLeaveEvent>(_ => _tip.Hide());
         }
 
         /// <summary>Подсветить активный режим (остальные — тусклые). null — снять подсветку со всех.</summary>
