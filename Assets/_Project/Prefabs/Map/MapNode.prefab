@@ -286,21 +286,21 @@ MonoBehaviour:
   _currentMarker: {fileID: 4140198484312837361}
   _variants:
   - Kind: Start
-    Icon: {fileID: 8315783675960501189}
+    Icon: {fileID: 6891951480823074036}
   - Kind: Battle
-    Icon: {fileID: 1889141128930886284}
+    Icon: {fileID: 7699448145316267581}
   - Kind: Elite
-    Icon: {fileID: 0}
+    Icon: {fileID: 8536006778336642533}
   - Kind: Boss
-    Icon: {fileID: 8419049678016847359}
+    Icon: {fileID: 473552629214991309}
   - Kind: Chest
-    Icon: {fileID: 8594818983882991634}
+    Icon: {fileID: 7176288248360119149}
   - Kind: Shop
-    Icon: {fileID: 4522548882377757892}
+    Icon: {fileID: 9187640254461582997}
   - Kind: TextEvent
-    Icon: {fileID: 4008882124848409465}
+    Icon: {fileID: 6746116069785477031}
   - Kind: Unknown
-    Icon: {fileID: 2800031637929232062}
+    Icon: {fileID: 2608214003702038653}
   _pickRadius: 0.6
   _visualRadius: 0.6
 --- !u!1 &2587863316895495769

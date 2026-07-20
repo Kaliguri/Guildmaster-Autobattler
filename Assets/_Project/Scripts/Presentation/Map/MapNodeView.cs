@@ -74,10 +74,22 @@ namespace Guildmaster.Presentation.Map
             _activeIcon.Clear();
             for (int i = 0; i < _variants.Length; i++)
             {
-                if (_variants[i].Icon == null) continue;
+                GameObject icon = _variants[i].Icon;
+
+                // Оборванная ссылка (переименовали объект в префабе, сменили тип поля) роняла ВЕСЬ забег
+                // прямо в отрисовке карты. Узел без картинки — заметный, но переживаемый дефект, поэтому
+                // здесь предупреждение, а не исключение; молча пропускать тоже нельзя.
+                if (icon == null)
+                {
+                    if (!string.IsNullOrEmpty(_variants[i].Kind))
+                        Debug.LogWarning($"[MapNodeView] - у типа '{_variants[i].Kind}' не назначена иконка " +
+                                         $"(префаб {name}) → узел будет без картинки.", this);
+                    continue;
+                }
+
                 bool match = string.Equals(_variants[i].Kind, kind, StringComparison.OrdinalIgnoreCase);
-                _variants[i].Icon.SetActive(match);
-                if (match) _variants[i].Icon.GetComponentsInChildren(includeInactive: true, _activeIcon);
+                icon.SetActive(match);
+                if (match) icon.GetComponentsInChildren(includeInactive: true, _activeIcon);
             }
         }
 
