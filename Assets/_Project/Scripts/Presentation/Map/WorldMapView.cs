@@ -31,6 +31,7 @@ namespace Guildmaster.Presentation.Map
 
         // Глубина вместо слоёв сортировки: Shapes и SpriteRenderer — разные системы рисования, и порядок
         // между ними слоями надёжно не задаётся (иконки уходили ПОД подложки). По Z порядок однозначен.
+        private const float BackdropZ = 1f; // позади всего: узлы, дорожки и фишка рисуются поверх полотна
         private const float EdgeZ = 0.2f;
         private const float NodeZ = 0f;
         private const float PawnZ = -0.3f;
@@ -66,6 +67,7 @@ namespace Guildmaster.Presentation.Map
         private Transform _nodeRoot;
         private Transform _edgeRoot;
         private Disc _pawn;
+        private MeshRenderer _backdrop;
 
         private bool _shown;
         private int _sortingLayerId;
@@ -192,6 +194,8 @@ namespace Guildmaster.Presentation.Map
             var center = new Vector2((minX + maxX) * 0.5f, (minY + maxY) * 0.5f);
             var size   = new Vector2(maxX - minX + padding * 2f, maxY - minY + padding * 2f);
             Bounds = new Rect2D(center, size);
+
+            PlaceBackdrop(center, size);
 
             _shown = true;
             SetLayerActive(true);
@@ -354,6 +358,30 @@ namespace Guildmaster.Presentation.Map
             EnsurePawn();
             _pawnAt = pos;
             if (_pawn != null) _pawn.transform.position = new Vector3(pos.x, pos.y, PawnZ);
+        }
+
+        // Полотно под картой. Без него позади узлов пустота, которую камера заливает своим цветом очистки —
+        // именно поэтому карта выглядела «синей». Растягивается по фактическому размеру карты с запасом,
+        // чтобы при отъезде камеры за краем не показалась та же пустота.
+        private void PlaceBackdrop(Vector2 center, Vector2 size)
+        {
+            if (_style == null || _style.BackdropMaterial == null) return;
+
+            if (_backdrop == null)
+            {
+                var go = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                go.name = "Backdrop";
+                Destroy(go.GetComponent<Collider>()); // полотно не должно ловить пикинг узлов
+                go.transform.SetParent(transform, false);
+                _backdrop = go.GetComponent<MeshRenderer>();
+                _backdrop.sharedMaterial = _style.BackdropMaterial;
+                _backdrop.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                _backdrop.receiveShadows = false;
+            }
+
+            float pad = Mathf.Max(1f, _style.BackdropPadding);
+            _backdrop.transform.position   = new Vector3(center.x, center.y, BackdropZ);
+            _backdrop.transform.localScale = new Vector3(size.x * pad, size.y * pad, 1f);
         }
 
         // Фишка — точка того же семейства, что дорожка: «кто-то идёт по пунктиру», а не значок поверх узла.
@@ -558,6 +586,7 @@ namespace Guildmaster.Presentation.Map
             if (_nodeRoot != null) _nodeRoot.gameObject.SetActive(active);
             if (_edgeRoot != null) _edgeRoot.gameObject.SetActive(active);
             if (_pawn != null) _pawn.gameObject.SetActive(active);
+            if (_backdrop != null) _backdrop.gameObject.SetActive(active);
         }
 
         // Всё пулится: за акт карта перерисовывается на каждом узле. Узлы — один префаб на все типы,

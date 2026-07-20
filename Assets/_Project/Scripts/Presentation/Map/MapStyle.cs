@@ -27,6 +27,17 @@ namespace Guildmaster.Presentation.Map
                  "чем он выглядит.")]
         [SerializeField] private float _pickRadiusScale = 1.4f;
 
+        [Header("Задник карты")]
+        [Tooltip("Материал полотна под картой (шейдер Guildmaster/Map/Backdrop). Пусто — задника нет, " +
+                 "и позади карты видно пустоту, которую камера заливает своим цветом. Тон и фактуру " +
+                 "крутить В МАТЕРИАЛЕ: это шейдерные параметры, дублировать их здесь значило бы завести " +
+                 "второй источник правды.")]
+        [SerializeField] private Material _backdropMaterial;
+
+        [Tooltip("Насколько полотно больше самой карты (доля от её размера). Запас нужен, чтобы при " +
+                 "отъезде камеры за краем не показалась пустота.")]
+        [SerializeField] private float _backdropPadding = 1.6f;
+
         [Header("Цвета узла")]
         [Tooltip("Подложка узла — одна на все типы (--gm-ink-600). Тип читается ИКОНКОЙ, не цветом.")]
         [SerializeField] private Color _nodeBacking = new Color(0.141f, 0.102f, 0.071f);
@@ -113,6 +124,11 @@ namespace Guildmaster.Presentation.Map
         public float FloorsInView => _floorsInView;
         /// <inheritdoc cref="_pickRadiusScale"/>
         public float PickRadiusScale => _pickRadiusScale;
+
+        /// <inheritdoc cref="_backdropMaterial"/>
+        public Material BackdropMaterial => _backdropMaterial;
+        /// <inheritdoc cref="_backdropPadding"/>
+        public float BackdropPadding => _backdropPadding;
 
         /// <inheritdoc cref="_nodeBacking"/>
         public Color NodeBacking => _nodeBacking;
