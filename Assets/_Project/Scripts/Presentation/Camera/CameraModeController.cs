@@ -221,7 +221,10 @@ namespace Guildmaster.Presentation
         /// в мире, разнесённая от арены). Кадрируем карту целиком только при ПЕРВОМ входе: дальше позиция
         /// и зум карты — то, что игрок оставил, и поход в бой их не сбивает (боевые vcam живут отдельно).
         /// </summary>
-        public void EnterMap(Rect2D bounds)
+        /// <param name="bounds">Область карты в мире — границы клампа.</param>
+        /// <param name="focus">Куда смотреть при первом входе: узел, где игрок стоит сейчас.</param>
+        /// <param name="visibleHeight">Желаемая высота кадра в мировых единицах (крупный вид, не вся карта).</param>
+        public void EnterMap(Rect2D bounds, Vector2 focus, float visibleHeight)
         {
             if (_mode != CameraMode.Map) _modeBeforeMap = _mode; // повторный вход не затирает точку возврата
             _mapZone = bounds;
@@ -229,10 +232,12 @@ namespace Guildmaster.Presentation
             ApplyMode();
             if (_mapCam == null || _mapFramed) return;
 
+            // Стартовый кадр — КРУПНО у текущего узла, а не вся карта разом: игрок должен видеть, где он
+            // и куда шагнуть, а обзор целиком берётся колесом.
             _mapFramed = true;
-            float size = MaxZoomForZone(); // вся карта в кадре — стартовый вид
-            Vector2 c  = bounds.Center;
-            _mapCam.transform.position = new Vector3(c.x, c.y, _cameraZ);
+            float size = Mathf.Clamp(visibleHeight * 0.5f, _minZoom, MaxZoomForZone());
+            Vector3 pos = ClampVisibleCenter(new Vector3(focus.x, focus.y, _cameraZ), size);
+            _mapCam.transform.position = pos;
 
             LensSettings lens = _mapCam.Lens;
             lens.OrthographicSize = size;

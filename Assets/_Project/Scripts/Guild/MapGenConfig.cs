@@ -22,11 +22,14 @@ namespace Guildmaster.Guild
         /// </summary>
         public int EdgeColumnWidth = 3;
 
-        /// <summary>Сколько этажей с КАЖДОГО края держать на <see cref="EdgeColumnWidth"/> (не считая Start/Boss).</summary>
-        public int EdgeColumns = 2;
+        /// <summary>
+        /// Сколько этажей с КАЖДОГО края держать на <see cref="EdgeColumnWidth"/> (не считая Start/Boss).
+        /// Один: горловина — это ровно вход и выход акта, дальше сразу широкая часть (решение Макса).
+        /// </summary>
+        public int EdgeColumns = 1;
 
         /// <summary>Мин. ширина колонки в середине акта (между горловинами).</summary>
-        public int MinColumnWidth = 4;
+        public int MinColumnWidth = 5;
 
         /// <summary>Макс. ширина колонки в середине акта.</summary>
         public int MaxColumnWidth = 6;

@@ -9,31 +9,64 @@ using VContainer;
 namespace Guildmaster.Presentation.Map
 {
     /// <summary>
-    /// World-слой карты акта (фаза D): узлы и рёбра рисуются в мире, клик берётся мировым пикингом.
+    /// World-слой карты акта: узлы и пути рисуются в мире, клик берётся мировым пикингом.
     /// Живёт постоянно в persist-мире и включается/гасится по состоянию — шаблон <c>DeploymentController</c>,
     /// а не спавн-на-время (спавн требовал бы сноса по ct и плодил висячие объекты при отмене забега, QA #37).
-    /// <para>D1 — скелет: узлы кругами, рёбра сплошными линиями. Пунктир, фон, «фишка» и VFX ложатся сверху
-    /// следующими шагами, уже поверх играбельного.</para>
     /// </summary>
     public sealed class WorldMapView : MonoBehaviour, IWorldMapView
     {
         [Header("Раскладка карты")]
-        [Tooltip("Шаги сетки и разброс узлов. Разброс выводится из сида забега — в данных карты его нет.")]
+        [Tooltip("Шаги сетки, разброс и правила дистанции. Разброс выводится из сида забега — в данных карты его нет.")]
         [SerializeField] private MapLayout _layout = MapLayout.Default;
+
+        [Tooltip("Сколько этажей показывать в кадре при входе на карту. Камера встаёт крупно у текущего узла.")]
+        [SerializeField] private float _floorsInView = 4f;
 
         [Header("Вид узлов")]
         [Tooltip("Набор иконок по типам узлов. Пусто — узлы рисуются одними подложками.")]
         [SerializeField] private MapIconSet _icons;
 
         [Tooltip("Радиус подложки узла (мировые единицы).")]
-        [SerializeField] private float _nodeRadius = 0.5f;
+        [SerializeField] private float _nodeRadius = 0.6f;
+
         [Tooltip("Множитель зоны хвата относительно видимого радиуса: попасть по узлу должно быть легче, " +
                  "чем выглядит (QA #24 — та же логика, что с хваталкой юнитов).")]
         [SerializeField] private float _pickRadiusScale = 1.4f;
-        [Tooltip("Толщина линии ребра.")]
-        [SerializeField] private float _edgeThickness = 0.08f;
-        [Tooltip("Поле вокруг узлов при расчёте границ карты (в них камера клампится).")]
-        [SerializeField] private float _boundsPadding = 2f;
+
+        [Header("Пути")]
+        [Tooltip("Толщина линии пути.")]
+        [SerializeField] private float _edgeThickness = 0.09f;
+        [Tooltip("Длина штриха и промежутка пунктира (мировые единицы).")]
+        [SerializeField] private float _dashSize = 0.35f;
+        [SerializeField] private float _dashSpacing = 0.35f;
+        [Tooltip("Изгиб пути в долях его длины: 0 = прямые линии.")]
+        [SerializeField] private float _edgeCurve = 0.12f;
+        [Tooltip("На сколько отрезков дробится кривая. Больше — глаже, но больше объектов.")]
+        [SerializeField] private int _edgeSegments = 6;
+
+        [Header("Отклик")]
+        [Tooltip("Насколько подрастает узел под курсором.")]
+        [SerializeField] private float _hoverScale = 1.18f;
+        [Tooltip("Насколько вдавливается узел при нажатии.")]
+        [SerializeField] private float _pressScale = 0.9f;
+        [Tooltip("Амплитуда пульса доступных узлов.")]
+        [SerializeField] private float _pulseAmount = 0.06f;
+        [Tooltip("Скорость пульса доступных узлов.")]
+        [SerializeField] private float _pulseSpeed = 2.2f;
+
+        [Header("Фишка игрока")]
+        [Tooltip("Спрайт фишки. Пусто — фишка рисуется кружком.")]
+        [SerializeField] private Sprite _pawnSprite;
+        [SerializeField] private Color _pawnColor = new Color(1f, 0.92f, 0.6f);
+        [SerializeField] private float _pawnHeight = 0.9f;
+        [Tooltip("Сколько едет фишка между узлами (секунды).")]
+        [SerializeField] private float _pawnTravelSeconds = 1.5f;
+        [Tooltip("Во сколько раз ускоряется поездка по повторному клику (дабл-клик).")]
+        [SerializeField] private float _pawnSkipSpeed = 6f;
+
+        [Tooltip("Насколько фишка приподнята над узлом. Иначе она садится ровно на иконку и закрывает её — " +
+                 "не видно, что это за узел, на котором стоит отряд.")]
+        [SerializeField] private float _pawnLift = 0.85f;
 
         [Header("Сортировка")]
         [Tooltip("Слой сортировки для фигур карты. Shapes по умолчанию рисуются на Default (самый нижний) — " +
@@ -45,30 +78,54 @@ namespace Guildmaster.Presentation.Map
         private const float AlphaCleared   = 0.5f;
         private const float AlphaAvailable = 1f;
         private const float AlphaCurrent   = 1f;
-        private const float EdgeAlpha      = 0.4f;
-        private const float NodeZ          = 0f;
-        // Подложка приглушена относительно иконки: читается силуэт типа, а не цветное пятно.
         private const float BackingAlpha   = 0.75f;
+
+        // Глубина вместо слоёв сортировки: Shapes и SpriteRenderer — разные системы рисования, и порядок
+        // между ними слоями надёжно не задаётся (иконки уходили ПОД подложки). По Z порядок однозначен.
+        private const float EdgeZ = 0.2f;
+        private const float NodeZ = 0f;
+        private const float IconZ = -0.1f;
+        private const float PawnZ = -0.2f;
 
         private IInputService _input;
         private CameraModeController _cameraModes; // null в headless
         private WorldMapViewLink _link; // мост к петле забега (она живёт в корневом скоупе, выше мирового)
 
         private readonly List<Disc> _nodeDiscs = new List<Disc>(24);
-        private readonly List<Line> _edgeLines = new List<Line>(48);
         private readonly List<SpriteRenderer> _nodeIcons = new List<SpriteRenderer>(24);
-        // Кликабельные узлы текущего показа: позиция + id. Только Available — их выбор ведёт в узел.
-        private readonly List<(string Id, Vector2 Pos)> _pickable = new List<(string, Vector2)>(8);
-        // Все прочие узлы: по ним тоже можно попасть мышью, но выбора не происходит — только отказной
-        // отклик (узел дёргается). Так карта не кажется мёртвой, когда петля выбора ещё не ждёт.
-        private readonly List<(string Id, Vector2 Pos, Transform Tf)> _rejectable = new List<(string, Vector2, Transform)>(32);
-        private readonly Dictionary<Transform, float> _nudgeUntil = new Dictionary<Transform, float>(8);
+        private readonly List<Line> _edgeLines = new List<Line>(96);
+
+        // Узлы текущего показа: всё, по чему можно попасть мышью. Выбор проходит только для Available.
+        private struct NodeHit
+        {
+            public string Id;
+            public Vector2 Pos;
+            public Transform Disc;
+            public Transform Icon;
+            public bool Selectable;
+        }
+        private readonly List<NodeHit> _hits = new List<NodeHit>(48);
 
         private Transform _nodeRoot;
         private Transform _edgeRoot;
+        private SpriteRenderer _pawn;
+        private Disc _pawnDisc;
+
         private bool _shown;
         private int _sortingLayerId;
         private bool _layerResolved;
+
+        private int _hoverIndex = -1;
+        private bool _pressed;
+        private float _nudgeUntil;
+        private int _nudgeIndex = -1;
+
+        // Поездка фишки: пока едет, выбор заблокирован, а событие выбора ждёт приезда.
+        private bool _travelling;
+        private float _travelT;
+        private float _travelSpeedScale = 1f;
+        private Vector2 _travelFrom, _travelCtrl, _travelTo;
+        private string _travelNodeId;
 
         /// <inheritdoc/>
         public event Action<string> NodeClicked;
@@ -76,8 +133,6 @@ namespace Guildmaster.Presentation.Map
         /// <inheritdoc/>
         public Rect2D Bounds { get; private set; }
 
-        // Камеру берём здесь, а не в петле выбора узла: слой карты живёт в том же скоупе, что камера-риг,
-        // и сам отвечает за свой кадр. Петле (Game) тогда хватает одного контракта IWorldMapView.
         [Inject]
         public void Construct(IInputService input, CameraModeController cameraModes, WorldMapViewLink link)
         {
@@ -99,13 +154,21 @@ namespace Guildmaster.Presentation.Map
         // и OnEnable успел бы отработать с _input == null (та же причина, что в CameraModeController).
         private void Start()
         {
-            if (_input != null) _input.PointerPressed += OnPointerPressed;
+            if (_input != null)
+            {
+                _input.PointerPressed  += OnPointerPressed;
+                _input.PointerReleased += OnPointerReleased;
+            }
             _link?.Bind(this);
         }
 
         private void OnDestroy()
         {
-            if (_input != null) _input.PointerPressed -= OnPointerPressed;
+            if (_input != null)
+            {
+                _input.PointerPressed  -= OnPointerPressed;
+                _input.PointerReleased -= OnPointerReleased;
+            }
             _link?.Unbind(this);
         }
 
@@ -120,6 +183,8 @@ namespace Guildmaster.Presentation.Map
 
             var byId = new Dictionary<string, Vector2>(nodes.Count);
             float minX = float.MaxValue, maxX = float.MinValue, minY = float.MaxValue, maxY = float.MinValue;
+            Vector2 focus = Vector2.zero;
+            bool hasFocus = false;
 
             for (int i = 0; i < nodes.Count; i++)
             {
@@ -132,29 +197,35 @@ namespace Guildmaster.Presentation.Map
                 MapNodeIcon look = _icons != null ? _icons.Resolve(n.Kind) : default;
                 float alpha = AlphaFor(n.State);
 
-                // Подложка под иконкой: держит форму узла и даёт зону хвата. Текущий узел — кольцом.
                 Disc disc = RentDisc();
                 disc.transform.position = new Vector3(pos.x, pos.y, NodeZ);
+                disc.transform.localScale = Vector3.one;
                 disc.Radius = _nodeRadius;
                 disc.Type   = n.State == MapNodeVisualState.Current ? DiscType.Ring : DiscType.Disc;
                 disc.Thickness = _nodeRadius * 0.3f;
                 disc.Color  = WithAlpha(look.Backing, alpha * BackingAlpha);
 
-                // Иконка типа — поверх подложки. Масштаб считаем от нужной мировой высоты: спрайты набора
-                // идут с разным PPU, и доверять импорту нельзя (32-й набор импортирован с PPU 8).
+                Transform iconTf = null;
                 if (look.Icon != null)
                 {
                     SpriteRenderer icon = RentIcon();
-                    icon.transform.position = new Vector3(pos.x, pos.y, NodeZ);
+                    icon.transform.position = new Vector3(pos.x, pos.y, IconZ);
                     icon.sprite = look.Icon;
                     icon.color  = new Color(1f, 1f, 1f, alpha);
+                    // Масштаб считаем от нужной мировой высоты: спрайты набора идут с разным PPU,
+                    // и доверять импорту нельзя (32-й набор импортирован с PPU 8).
                     float h = look.Icon.bounds.size.y;
-                    float scale = h > 0f ? (_icons.WorldHeight / h) : 1f;
-                    icon.transform.localScale = Vector3.one * scale;
+                    icon.transform.localScale = Vector3.one * (h > 0f ? _icons.WorldHeight / h : 1f);
+                    iconTf = icon.transform;
                 }
 
-                if (n.State == MapNodeVisualState.Available) _pickable.Add((n.Id, pos));
-                else _rejectable.Add((n.Id, pos, disc.transform));
+                _hits.Add(new NodeHit
+                {
+                    Id = n.Id, Pos = pos, Disc = disc.transform, Icon = iconTf,
+                    Selectable = n.State == MapNodeVisualState.Available,
+                });
+
+                if (n.State == MapNodeVisualState.Current) { focus = pos; hasFocus = true; }
 
                 if (pos.x < minX) minX = pos.x;
                 if (pos.x > maxX) maxX = pos.x;
@@ -162,44 +233,142 @@ namespace Guildmaster.Presentation.Map
                 if (pos.y > maxY) maxY = pos.y;
             }
 
-            if (edges != null)
-            {
-                for (int i = 0; i < edges.Count; i++)
-                {
-                    if (!byId.TryGetValue(edges[i].From, out Vector2 a)) continue;
-                    if (!byId.TryGetValue(edges[i].To,   out Vector2 b)) continue;
+            if (edges != null) BuildEdges(edges, byId, nodes);
+            PlacePawn(hasFocus ? focus : new Vector2(minX, (minY + maxY) * 0.5f));
 
-                    // ГОТЧА Shapes: Start/End у Line — ЛОКАЛЬНЫЕ координаты объекта. Слой карты смещён в свою
-                    // зону мира, поэтому мировые точки сюда класть нельзя (линии уезжают на величину смещения).
-                    // Ставим объект линии в первую точку, а концы задаём относительно неё.
-                    Line line = RentLine();
-                    line.transform.position = new Vector3(a.x, a.y, NodeZ);
-                    line.Start = Vector3.zero;
-                    line.End   = new Vector3(b.x - a.x, b.y - a.y, 0f);
-                    line.Thickness = _edgeThickness;
-                    line.Color = new Color(1f, 1f, 1f, EdgeAlpha);
-                }
-            }
-
+            const float padding = 2f;
             var center = new Vector2((minX + maxX) * 0.5f, (minY + maxY) * 0.5f);
-            var size   = new Vector2(maxX - minX + _boundsPadding * 2f, maxY - minY + _boundsPadding * 2f);
+            var size   = new Vector2(maxX - minX + padding * 2f, maxY - minY + padding * 2f);
             Bounds = new Rect2D(center, size);
 
             _shown = true;
             SetLayerActive(true);
-            // Кадр и границы клампа — по фактическому разбросу узлов: боевая зона арены к карте
-            // отношения не имеет (карта разнесена в мире и в арену не влезает).
-            _cameraModes?.EnterMap(Bounds);
+
+            // Кадр и границы клампа: смотрим КРУПНО на текущий узел, а не на весь акт сразу.
+            _cameraModes?.EnterMap(Bounds, hasFocus ? focus : center, _floorsInView * _layout.StepX);
         }
 
         /// <inheritdoc/>
         public void Hide()
         {
             _shown = false;
-            _pickable.Clear();
-            _rejectable.Clear();
+            _travelling = false;
+            _hits.Clear();
             SetLayerActive(false);
             _cameraModes?.ExitMap(); // вернуть взгляд туда, откуда пришли (карту могли открыть посреди боя)
+        }
+
+        // Пути: кривая вместо прямой (карта, а не схема) + пунктир. Пунктир умеет только Line, поэтому кривая
+        // собирается из отрезков, а фаза пунктира продолжается вдоль всей кривой — иначе на стыках был бы сбой.
+        private void BuildEdges(IReadOnlyList<(string From, string To)> edges,
+                                Dictionary<string, Vector2> byId,
+                                IReadOnlyList<MapNodeVisual> nodes)
+        {
+            var stateOf = new Dictionary<string, MapNodeVisualState>(nodes.Count);
+            for (int i = 0; i < nodes.Count; i++) stateOf[nodes[i].Id] = nodes[i].State;
+
+            int segments = Mathf.Max(1, _edgeSegments);
+            for (int i = 0; i < edges.Count; i++)
+            {
+                if (!byId.TryGetValue(edges[i].From, out Vector2 a)) continue;
+                if (!byId.TryGetValue(edges[i].To,   out Vector2 b)) continue;
+
+                // Путь из текущего узла — яркий (сюда можно шагнуть), пройденный — тусклый, прочие — средние.
+                stateOf.TryGetValue(edges[i].From, out MapNodeVisualState from);
+                stateOf.TryGetValue(edges[i].To,   out MapNodeVisualState to);
+                float alpha = from == MapNodeVisualState.Current && to == MapNodeVisualState.Available ? 0.9f
+                            : from == MapNodeVisualState.Cleared ? 0.22f
+                            : 0.4f;
+
+                // Контрольная точка кривой — перпендикулярно хорде, сторона и величина детерминированы парой id.
+                Vector2 mid = (a + b) * 0.5f;
+                Vector2 dir = b - a;
+                var perp = new Vector2(-dir.y, dir.x).normalized;
+                float bend = _edgeCurve * dir.magnitude * CurveSign(edges[i].From, edges[i].To);
+                Vector2 ctrl = mid + perp * bend;
+
+                float dashOffset = 0f;
+                Vector2 prev = a;
+                for (int s = 1; s <= segments; s++)
+                {
+                    Vector2 next = Bezier(a, ctrl, b, s / (float)segments);
+
+                    Line line = RentLine();
+                    line.transform.position = new Vector3(prev.x, prev.y, EdgeZ);
+                    line.Start = Vector3.zero;
+                    line.End   = new Vector3(next.x - prev.x, next.y - prev.y, 0f);
+                    line.Thickness = _edgeThickness;
+                    line.Color = new Color(1f, 1f, 1f, alpha);
+                    line.Dashed = true;
+                    line.DashSpace = DashSpace.Meters;
+                    line.DashSize = _dashSize;
+                    line.DashSpacing = _dashSpacing;
+                    // ГОТЧА: снаппинг подгоняет пунктир под концы ОТРЕЗКА, а кривая нарезана на короткие
+                    // сегменты — штрих растягивался на весь сегмент, и путь выходил сплошным. Выключаем,
+                    // тогда пунктир идёт по метрам, а накопительный offset держит фазу вдоль всей кривой.
+                    line.DashSnap = DashSnapping.Off;
+                    line.DashOffset = dashOffset;
+
+                    dashOffset += (next - prev).magnitude;
+                    prev = next;
+                }
+            }
+        }
+
+        private static Vector2 Bezier(Vector2 a, Vector2 c, Vector2 b, float t)
+        {
+            float u = 1f - t;
+            return u * u * a + 2f * u * t * c + t * t * b;
+        }
+
+        // Сторона изгиба — от пары id: путь всегда гнётся одинаково, но соседние пути не параллельны.
+        private static float CurveSign(string from, string to)
+        {
+            unchecked
+            {
+                uint h = 2166136261u;
+                for (int i = 0; i < from.Length; i++) { h ^= from[i]; h *= 16777619u; }
+                for (int i = 0; i < to.Length; i++)   { h ^= to[i];   h *= 16777619u; }
+                return ((h & 1u) == 0u ? 1f : -1f) * (0.6f + (h >> 8 & 0xFF) / 255f * 0.8f);
+            }
+        }
+
+        private void PlacePawn(Vector2 pos)
+        {
+            EnsurePawn();
+            _pawnAt = pos;
+            var p = new Vector3(pos.x, pos.y + _pawnLift, PawnZ);
+            if (_pawn != null) _pawn.transform.position = p;
+            if (_pawnDisc != null) _pawnDisc.transform.position = p;
+        }
+
+        private void EnsurePawn()
+        {
+            if (_pawn != null || _pawnDisc != null) return;
+
+            var go = new GameObject("Pawn");
+            go.transform.SetParent(transform, false);
+            if (_pawnSprite != null)
+            {
+                _pawn = go.AddComponent<SpriteRenderer>();
+                _pawn.sprite = _pawnSprite;
+                _pawn.color  = _pawnColor;
+                _pawn.sortingLayerID = SortingLayerId();
+                _pawn.sortingOrder   = 5;
+                float h = _pawnSprite.bounds.size.y;
+                go.transform.localScale = Vector3.one * (h > 0f ? _pawnHeight / h : 1f);
+            }
+            else
+            {
+                // Спрайта фишки нет — рисуем кружком, чтобы «где я» читалось и без арта.
+                _pawnDisc = go.AddComponent<Disc>();
+                _pawnDisc.Geometry = DiscGeometry.Flat2D;
+                _pawnDisc.Type     = DiscType.Disc;
+                _pawnDisc.Radius   = _pawnHeight * 0.35f;
+                _pawnDisc.Color    = _pawnColor;
+                _pawnDisc.SortingLayerID = SortingLayerId();
+                _pawnDisc.SortingOrder   = 5;
+            }
         }
 
         // Клик по узлу: мировой пикинг, а не UITK. Клик, попавший в UI (топбар/кнопки поверх карты),
@@ -207,65 +376,126 @@ namespace Guildmaster.Presentation.Map
         private void OnPointerPressed()
         {
             if (!_shown) return;
+
+            // Пока фишка едет, повторный клик = «пропустить»: ускоряем поездку, а не выбираем заново.
+            if (_travelling) { _travelSpeedScale = _pawnSkipSpeed; return; }
+
             if (_input == null || _input.PointerOverUI) return;
 
+            int hit = HitTest();
+            if (hit < 0) return;
+
+            _pressed = true;
+            if (_hits[hit].Selectable) StartTravel(hit);
+            else { _nudgeIndex = hit; _nudgeUntil = Time.unscaledTime + NudgeDuration; }
+        }
+
+        private void OnPointerReleased() => _pressed = false;
+
+        private void StartTravel(int hit)
+        {
+            _travelFrom = PawnPosition();
+            _travelTo   = _hits[hit].Pos;
+            Vector2 dir = _travelTo - _travelFrom;
+            var perp = new Vector2(-dir.y, dir.x).normalized;
+            _travelCtrl = (_travelFrom + _travelTo) * 0.5f + perp * (_edgeCurve * dir.magnitude);
+
+            _travelNodeId     = _hits[hit].Id;
+            _travelT          = 0f;
+            _travelSpeedScale = 1f;
+            _travelling       = true;
+        }
+
+        // Логическая позиция фишки — узел, на котором она стоит (БЕЗ подъёма): подъём чисто визуальный,
+        // и подмешивать его в маршрут нельзя, иначе поездка стартует на подъём выше цели.
+        private Vector2 _pawnAt;
+
+        private Vector2 PawnPosition() => _pawnAt;
+
+        private int HitTest()
+        {
             Camera cam = Camera.main;
-            if (cam == null) return;
+            if (cam == null || _input == null) return -1;
 
             Vector3 screen = _input.PointerScreenPosition;
             Vector2 world  = cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, -cam.transform.position.z));
 
             float pickRadius = _nodeRadius * _pickRadiusScale;
             float bestSqr = pickRadius * pickRadius;
-            string bestId = null;
-
-            for (int i = 0; i < _pickable.Count; i++)
+            int best = -1;
+            for (int i = 0; i < _hits.Count; i++)
             {
-                float sqr = (_pickable[i].Pos - world).sqrMagnitude;
-                if (sqr <= bestSqr) { bestSqr = sqr; bestId = _pickable[i].Id; }
+                float sqr = (_hits[i].Pos - world).sqrMagnitude;
+                if (sqr <= bestSqr) { bestSqr = sqr; best = i; }
             }
-
-            if (bestId != null) { NodeClicked?.Invoke(bestId); return; }
-
-            // Промах по доступным — но по узлу попали: отвечаем дрожью «сюда нельзя». Карту открывают и
-            // просто посмотреть (в бою, до нажатия «Продолжить»), и тогда доступных узлов нет вовсе.
-            float rejectSqr = pickRadius * pickRadius;
-            Transform hit = null;
-            for (int i = 0; i < _rejectable.Count; i++)
-            {
-                float sqr = (_rejectable[i].Pos - world).sqrMagnitude;
-                if (sqr <= rejectSqr) { rejectSqr = sqr; hit = _rejectable[i].Tf; }
-            }
-            if (hit != null) _nudgeUntil[hit] = Time.unscaledTime + NudgeDuration;
-        }
-
-        // Отказной отклик: короткое затухающее подрагивание узла. Unscaled — карта живёт и на паузе боя.
-        private void Update()
-        {
-            if (_nudgeUntil.Count == 0) return;
-            _nudgeDone.Clear();
-            foreach (var kv in _nudgeUntil)
-            {
-                Transform tf = kv.Key;
-                if (tf == null) { _nudgeDone.Add(tf); continue; }
-
-                float left = kv.Value - Time.unscaledTime;
-                if (left <= 0f)
-                {
-                    tf.localScale = Vector3.one;
-                    _nudgeDone.Add(tf);
-                    continue;
-                }
-
-                float t = left / NudgeDuration;                       // 1 → 0
-                float pulse = Mathf.Sin(t * Mathf.PI * 3f) * t * 0.18f; // затухающие колебания
-                tf.localScale = Vector3.one * (1f + pulse);
-            }
-            for (int i = 0; i < _nudgeDone.Count; i++) _nudgeUntil.Remove(_nudgeDone[i]);
+            return best;
         }
 
         private const float NudgeDuration = 0.28f;
-        private readonly List<Transform> _nudgeDone = new List<Transform>(4);
+
+        // Отклик и поездка фишки. Всё на unscaled — карта живёт и на паузе боя.
+        private void Update()
+        {
+            if (!_shown) return;
+
+            _hoverIndex = (_travelling || _input == null || _input.PointerOverUI) ? -1 : HitTest();
+            float now = Time.unscaledTime;
+
+            for (int i = 0; i < _hits.Count; i++)
+            {
+                float scale = 1f;
+
+                if (_hits[i].Selectable)
+                    scale += Mathf.Sin(now * _pulseSpeed) * _pulseAmount; // доступные тихо дышат
+
+                if (i == _hoverIndex) scale *= _pressed ? _pressScale : _hoverScale;
+
+                if (i == _nudgeIndex)
+                {
+                    float left = _nudgeUntil - now;
+                    if (left > 0f)
+                    {
+                        float t = left / NudgeDuration;
+                        scale *= 1f + Mathf.Sin(t * Mathf.PI * 3f) * t * 0.18f; // отказной отклик
+                    }
+                    else _nudgeIndex = -1;
+                }
+
+                if (_hits[i].Disc != null) _hits[i].Disc.localScale = Vector3.one * scale;
+                if (_hits[i].Icon != null)
+                {
+                    // У иконки свой базовый масштаб (от PPU спрайта) — множим, а не перетираем.
+                    Vector3 baseScale = _hits[i].Icon.localScale;
+                    float baseUniform = _iconBaseScale.TryGetValue(_hits[i].Icon, out float b) ? b : baseScale.x;
+                    _iconBaseScale[_hits[i].Icon] = baseUniform;
+                    _hits[i].Icon.localScale = Vector3.one * (baseUniform * scale);
+                }
+            }
+
+            if (_travelling) TickTravel();
+        }
+
+        private readonly Dictionary<Transform, float> _iconBaseScale = new Dictionary<Transform, float>(48);
+
+        private void TickTravel()
+        {
+            float dur = Mathf.Max(0.01f, _pawnTravelSeconds);
+            _travelT += Time.unscaledDeltaTime / dur * _travelSpeedScale;
+
+            if (_travelT >= 1f)
+            {
+                PlacePawn(_travelTo);
+                _travelling = false;
+                string id = _travelNodeId;
+                _travelNodeId = null;
+                NodeClicked?.Invoke(id); // выбор засчитывается ПОСЛЕ приезда
+                return;
+            }
+
+            // Плавный разгон-торможение: линейный ход читается как рывок.
+            float t = Mathf.SmoothStep(0f, 1f, _travelT);
+            PlacePawn(Bezier(_travelFrom, _travelCtrl, _travelTo, t));
+        }
 
         private static float AlphaFor(MapNodeVisualState state) => state switch
         {
@@ -281,56 +511,34 @@ namespace Guildmaster.Presentation.Map
         {
             if (_nodeRoot != null) _nodeRoot.gameObject.SetActive(active);
             if (_edgeRoot != null) _edgeRoot.gameObject.SetActive(active);
+            if (_pawn != null) _pawn.gameObject.SetActive(active);
+            if (_pawnDisc != null) _pawnDisc.gameObject.SetActive(active);
         }
 
         // Фигуры пулятся: за акт карта перерисовывается на каждом узле, а Shapes допускает лишь ОДИН
         // ShapeRenderer на GameObject — поэтому пулы раздельные по форме (как в CombatAreaFlash).
         private void ReleaseAll()
         {
-            _pickable.Clear();
-            _rejectable.Clear();
-            _nudgeUntil.Clear(); // иначе недодрожавший узел вернётся из пула с чужим масштабом
+            _hits.Clear();
+            _hoverIndex = -1;
+            _nudgeIndex = -1;
+            _iconBaseScale.Clear();
+
             for (int i = 0; i < _nodeDiscs.Count; i++)
             {
                 _nodeDiscs[i].transform.localScale = Vector3.one;
                 _nodeDiscs[i].gameObject.SetActive(false);
             }
-            for (int i = 0; i < _edgeLines.Count; i++) _edgeLines[i].gameObject.SetActive(false);
             for (int i = 0; i < _nodeIcons.Count; i++) _nodeIcons[i].gameObject.SetActive(false);
+            for (int i = 0; i < _edgeLines.Count; i++) _edgeLines[i].gameObject.SetActive(false);
             _rentedDiscs = 0;
-            _rentedLines = 0;
             _rentedIcons = 0;
-        }
-
-        private void OnDisable()
-        {
-            // Слой гасят вместе с недодрожавшими узлами — вернуть масштаб, чтобы не «залипло».
-            foreach (var kv in _nudgeUntil) if (kv.Key != null) kv.Key.localScale = Vector3.one;
-            _nudgeUntil.Clear();
+            _rentedLines = 0;
         }
 
         private int _rentedDiscs;
-        private int _rentedLines;
         private int _rentedIcons;
-
-        private SpriteRenderer RentIcon()
-        {
-            if (_rentedIcons < _nodeIcons.Count)
-            {
-                SpriteRenderer reused = _nodeIcons[_rentedIcons++];
-                reused.gameObject.SetActive(true);
-                return reused;
-            }
-
-            var go = new GameObject("MapNodeIcon");
-            go.transform.SetParent(_nodeRoot, false);
-            var sr = go.AddComponent<SpriteRenderer>();
-            sr.sortingLayerID = SortingLayerId();
-            sr.sortingOrder   = 2; // поверх подложки узла (1) и рёбер (0)
-            _nodeIcons.Add(sr);
-            _rentedIcons++;
-            return sr;
-        }
+        private int _rentedLines;
 
         private Disc RentDisc()
         {
@@ -346,10 +554,29 @@ namespace Guildmaster.Presentation.Map
             var disc = go.AddComponent<Disc>();
             disc.Geometry       = DiscGeometry.Flat2D;
             disc.SortingLayerID = SortingLayerId();
-            disc.SortingOrder   = 1; // узлы поверх рёбер
+            disc.SortingOrder   = 1;
             _nodeDiscs.Add(disc);
             _rentedDiscs++;
             return disc;
+        }
+
+        private SpriteRenderer RentIcon()
+        {
+            if (_rentedIcons < _nodeIcons.Count)
+            {
+                SpriteRenderer reused = _nodeIcons[_rentedIcons++];
+                reused.gameObject.SetActive(true);
+                return reused;
+            }
+
+            var go = new GameObject("MapNodeIcon");
+            go.transform.SetParent(_nodeRoot, false);
+            var sr = go.AddComponent<SpriteRenderer>();
+            sr.sortingLayerID = SortingLayerId();
+            sr.sortingOrder   = 3;
+            _nodeIcons.Add(sr);
+            _rentedIcons++;
+            return sr;
         }
 
         private Line RentLine()

@@ -70,7 +70,6 @@ namespace Guildmaster.Tests.EditMode.Presentation
             var layout = MapLayout.Default;
             layout.JitterX     = 0f;
             layout.JitterY     = 0f;
-            layout.FloorDriftY = 0f;
 
             var nodes = Column(0, 3).Concat(Column(1, 6)).ToList();
             var pos = layout.Resolve(nodes, 7L);
@@ -107,39 +106,65 @@ namespace Guildmaster.Tests.EditMode.Presentation
         }
 
         [Test]
-        public void Resolve_FloorDriftMovesWholeColumnTogether()
+        public void Resolve_KeepsMinDistanceBetweenAllNodes()
         {
-            // Дрейф этажа — общий для всей колонки: он и даёт «живость», не ломая строй внутри этажа.
+            // Главное правило раскладки: НИКАКИЕ два узла не стоят слишком близко — в том числе с РАЗНЫХ
+            // этажей. Именно эта пара и налезала друг на друга (сундуки на скрине play-QA Макса):
+            // разброс сам по себе такого не гарантирует, поэтому раскладка расталкивается после него.
             var layout = MapLayout.Default;
-            layout.JitterY = 0f;
-            layout.JitterX = 0f;
+            var nodes = Grid(14, 6);
 
-            var nodes = Column(3, 5);
-            var pos = layout.Resolve(nodes, 777L);
+            for (long seed = 1; seed <= 50; seed++)
+            {
+                var pos = layout.Resolve(nodes, seed);
+                for (int i = 0; i < nodes.Count; i++)
+                {
+                    for (int j = i + 1; j < nodes.Count; j++)
+                    {
+                        float dist = Vector2.Distance(pos[nodes[i].Id], pos[nodes[j].Id]);
+                        Assert.GreaterOrEqual(dist, layout.MinDistance - 0.01f,
+                            $"Сид {seed}: {nodes[i].Id} и {nodes[j].Id} стоят ближе минимума ({dist:F2}).");
+                    }
+                }
+            }
+        }
 
-            var gaps = nodes.OrderBy(n => n.Row)
-                            .Select(n => pos[n.Id].y)
-                            .Zip(nodes.OrderBy(n => n.Row).Skip(1).Select(n => pos[n.Id].y), (a, b) => b - a)
-                            .ToList();
-            foreach (float gap in gaps)
-                Assert.AreEqual(layout.StepY, gap, 0.001f, "Внутри этажа шаг остаётся ровным.");
+        [Test]
+        public void Resolve_KeepsRowOrderAfterRelaxation()
+        {
+            // Расталкивание не должно переставлять узлы местами: порядок рядов держит непересекаемость рёбер.
+            var layout = MapLayout.Default;
+            var nodes = Grid(14, 6);
+
+            for (long seed = 1; seed <= 50; seed++)
+            {
+                var pos = layout.Resolve(nodes, seed);
+                foreach (var floor in nodes.GroupBy(n => n.Floor))
+                {
+                    var ordered = floor.OrderBy(n => n.Row).ToList();
+                    for (int i = 1; i < ordered.Count; i++)
+                        Assert.Greater(pos[ordered[i].Id].y, pos[ordered[i - 1].Id].y,
+                            $"Сид {seed}, этаж {floor.Key}: ряд {i} должен остаться ниже ряда {i - 1}.");
+                }
+            }
         }
 
         [Test]
         public void Resolve_JitterStaysWithinConfiguredShare()
         {
             // Разброс ограничен долей шага: иначе узлы уезжают в соседние ряды и рёбра начинают пересекаться.
+            // Расталкивание здесь выключено — оно двигает узлы сверх разброса и проверяется отдельно.
             var layout = MapLayout.Default;
+            layout.MinDistance = 0f;
             var nodes = Grid(8, 4);
             var jittered = layout.Resolve(nodes, 4242L);
 
             var clean = layout;
             clean.JitterX     = 0f;
             clean.JitterY     = 0f;
-            clean.FloorDriftY = 0f;
             var exact = clean.Resolve(nodes, 4242L);
 
-            float maxY = (layout.JitterY + layout.FloorDriftY) * layout.StepY + 0.001f;
+            float maxY = layout.JitterY * layout.StepY + 0.001f;
             foreach (var n in nodes)
             {
                 Vector2 delta = jittered[n.Id] - exact[n.Id];

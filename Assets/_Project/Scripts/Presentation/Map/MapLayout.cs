@@ -9,6 +9,9 @@ namespace Guildmaster.Presentation.Map
     /// Unity-объектов — тестируема и не зависит от того, кто и когда рисует.
     /// <para>Разброс узлов НЕ хранится в данных карты: он выводится хешем из id узла и сида забега.
     /// Поэтому он стабилен между открытиями карты и переживает загрузку сейва, но домен о нём не знает.</para>
+    /// <para>После разброса раскладка ПРОВЕРЯЕТСЯ правилами: узлы разводятся, пока каждый не отстоит от
+    /// прочих на <see cref="MinDistance"/>. Без этого узлы соседних этажей налезают друг на друга — разброс
+    /// сам по себе такого не гарантирует.</para>
     /// </summary>
     [Serializable]
     public struct MapLayout
@@ -19,27 +22,29 @@ namespace Guildmaster.Presentation.Map
         [Tooltip("Расстояние между соседними узлами внутри этажа.")]
         public float StepY;
 
-        [Tooltip("Дрейф ЭТАЖА целиком поперёк пути, в долях шага. Основной источник «живости»: этаж уезжает " +
-                 "вверх/вниз вместе со всеми своими узлами, поэтому карта волнится, но узлы не сближаются.")]
-        public float FloorDriftY;
-
-        [Tooltip("Разброс отдельного узла внутри этажа, в долях шага. Держим МАЛЫМ: соседи по этажу могут " +
-                 "поехать навстречу друг другу, и на больших значениях они слипаются, а рёбра начинают " +
-                 "пересекаться (монотонная лестница гарантирует непересекаемость только на ровной сетке).")]
+        [Tooltip("Разброс поперёк пути, в долях шага.")]
         public float JitterY;
 
-        [Tooltip("Разброс вдоль пути, в долях шага. Намеренно слабее вертикального: колонка должна " +
-                 "читаться как вертикальный ряд, чтобы было видно, сколько вариантов на этаже.")]
+        [Tooltip("Разброс вдоль пути, в долях шага. Намеренно слабее вертикального: этаж должен читаться " +
+                 "как вертикальный столбик, чтобы было видно, сколько вариантов на нём.")]
         public float JitterX;
 
-        /// <summary>Дефолты, одобренные Максом 2026-07-20: просторно, сильный разброс по Y, слабый по X.</summary>
+        [Tooltip("Минимальное расстояние между любыми двумя узлами (мировые единицы). Правило проверки " +
+                 "раскладки: то, что ближе — разводится.")]
+        public float MinDistance;
+
+        [Tooltip("Сколько проходов расталкивания делать. Обычно хватает 8-12.")]
+        public int RelaxIterations;
+
+        /// <summary>Дефолты (Макс, 2026-07-20): столбик читается, узлы не налезают, строй живой но не рыхлый.</summary>
         public static MapLayout Default => new MapLayout
         {
-            StepX       = 5.0f,
-            StepY       = 3.6f,
-            FloorDriftY = 0.45f,
-            JitterY     = 0.16f,
-            JitterX     = 0.12f,
+            StepX           = 5.0f,
+            StepY           = 3.6f,
+            JitterY         = 0.22f,
+            JitterX         = 0.14f,
+            MinDistance     = 2.2f,
+            RelaxIterations = 10,
         };
 
         /// <summary>Позиции узлов относительно начала карты. Ряд центрируется по фактической ширине этажа.</summary>
@@ -57,6 +62,7 @@ namespace Guildmaster.Presentation.Map
                 if (nodes[i].Row + 1 > w) widthOf[floor] = nodes[i].Row + 1;
             }
 
+            var pos = new Vector2[nodes.Count];
             for (int i = 0; i < nodes.Count; i++)
             {
                 MapNodeVisual n = nodes[i];
@@ -65,17 +71,59 @@ namespace Guildmaster.Presentation.Map
                 float x = n.Floor * StepX;
                 float y = (n.Row - (width - 1) * 0.5f) * StepY;
 
-                // Дрейф всего этажа: хеш от НОМЕРА ЭТАЖА, а не от узла — вся колонка едет как целое,
-                // поэтому карта волнится, а порядок и зазоры внутри этажа сохраняются.
-                y += Signed(Hash(n.Floor.ToString(), seed, 2)) * FloorDriftY * StepY;
-
                 // Два независимых хеша на узел — иначе смещения по осям коррелируют и узлы встают по диагонали.
                 x += Signed(Hash(n.Id, seed, 0)) * JitterX * StepX;
                 y += Signed(Hash(n.Id, seed, 1)) * JitterY * StepY;
 
-                result[n.Id] = new Vector2(x, y);
+                pos[i] = new Vector2(x, y);
             }
+
+            Relax(nodes, pos);
+
+            for (int i = 0; i < nodes.Count; i++) result[nodes[i].Id] = pos[i];
             return result;
+        }
+
+        /// <summary>
+        /// Расталкивает узлы, оказавшиеся ближе <see cref="MinDistance"/>. Разводим ПРЕИМУЩЕСТВЕННО по Y:
+        /// движение по X смешивало бы этажи между собой, а столбик должен оставаться читаемым.
+        /// </summary>
+        private void Relax(IReadOnlyList<MapNodeVisual> nodes, Vector2[] pos)
+        {
+            if (MinDistance <= 0f || RelaxIterations <= 0) return;
+
+            float minSqr = MinDistance * MinDistance;
+            for (int iter = 0; iter < RelaxIterations; iter++)
+            {
+                bool moved = false;
+                for (int i = 0; i < pos.Length; i++)
+                {
+                    for (int j = i + 1; j < pos.Length; j++)
+                    {
+                        Vector2 delta = pos[j] - pos[i];
+                        float sqr = delta.sqrMagnitude;
+                        if (sqr >= minSqr) continue;
+
+                        // Совпали точь-в-точь — разводим по детерминированному признаку, а не случайно.
+                        if (sqr < 0.0001f)
+                        {
+                            delta = new Vector2(0f, nodes[i].Row <= nodes[j].Row ? -1f : 1f);
+                            sqr = 1f;
+                        }
+
+                        float dist = Mathf.Sqrt(sqr);
+                        float push = (MinDistance - dist) * 0.5f;
+                        Vector2 dir = delta / dist;
+                        // Гасим горизонтальную составляющую: пусть узлы расходятся вверх-вниз.
+                        dir = new Vector2(dir.x * 0.25f, dir.y).normalized;
+
+                        pos[i] -= dir * push;
+                        pos[j] += dir * push;
+                        moved = true;
+                    }
+                }
+                if (!moved) break; // раскладка уже удовлетворяет правилу — дальше гонять незачем
+            }
         }
 
         // FNV-1a: свой хеш, а не string.GetHashCode — тот не гарантирован стабильным между запусками и

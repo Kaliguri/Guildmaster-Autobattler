@@ -30701,11 +30701,26 @@ MonoBehaviour:
     StepY: 3.6
     JitterY: 0.4
     JitterX: 0.12
+    MinDistance: 2.2
+    RelaxIterations: 10
+  _floorsInView: 4
   _icons: {fileID: 11400000, guid: 58b63df752faa9749bc1863bf04bc04c, type: 2}
   _nodeRadius: 0.5
   _pickRadiusScale: 1.4
   _edgeThickness: 0.08
-  _boundsPadding: 2
+  _dashSize: 0.35
+  _dashSpacing: 0.35
+  _edgeCurve: 0.12
+  _edgeSegments: 6
+  _hoverScale: 1.18
+  _pressScale: 0.9
+  _pulseAmount: 0.06
+  _pulseSpeed: 2.2
+  _pawnSprite: {fileID: 3767930127971023101, guid: 25731f5e8104fd74aa1dd65249e0436f, type: 3}
+  _pawnColor: {r: 1, g: 0.92, b: 0.6, a: 1}
+  _pawnHeight: 0.9
+  _pawnTravelSeconds: 1.5
+  _pawnSkipSpeed: 6
   _sortingLayerName: Default
 --- !u!4 &1597628825
 Transform:
