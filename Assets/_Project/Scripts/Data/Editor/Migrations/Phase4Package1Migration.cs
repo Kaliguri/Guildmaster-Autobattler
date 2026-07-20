@@ -15,7 +15,7 @@ namespace Guildmaster.Data.Editor.Migrations
     {
         private const string Root = "Assets/_Project/ScriptableObjects";
 
-        [MenuItem("Tools/Guildmaster/Migrations/Phase 4 - Package 1 (ids + layout)")]
+        [MenuItem("Alebardium/Data/Migrations/Phase 4 - Package 1 (ids + layout)", priority = 420)]
         public static void Run()
         {
             // Без StartAssetEditing-батча: свежесозданные папки (CreateFolder) регистрируются в AssetDatabase

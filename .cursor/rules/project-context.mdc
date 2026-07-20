@@ -76,6 +76,16 @@ public int TakeDamage(int damage, IUnit source) { ... }
 - `UnityEngine.Random` в игровой логике (только `IRngService`)
 - `Physics2D` / `Rigidbody2D` / `Time.deltaTime` в боевой симуляции (ломает детерминизм)
 - Синглтоны (`static instance`) как замена DI
+- `[MenuItem]` вне корня `Alebardium/` (см. ниже)
+
+### Меню редактора
+
+Весь наш редакторный тулинг — под **одним** корнем `Alebardium/`. Не `Tools/`, не `Tools/Guildmaster/`,
+не свой корень: пункты уже расползались по четырём корням, и нужное искали перебором. Новый `[MenuItem]`
+заводить сразу под `Alebardium/<Группа>/…`, приоритеты — сотнями между группами.
+
+Исключение: `[CreateAssetMenu]` остаётся под `Guildmaster/…` — это меню создания игрового контента, а не
+инструменты студии. Раскладка и таблица приоритетов — `docs/wiki/tech/10-reference/editor-tools.md`.
 
 ## Структура проекта
 

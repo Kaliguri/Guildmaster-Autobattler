@@ -15,13 +15,13 @@ namespace Guildmaster.DevTools
         private const string ScenePath = "Assets/_Project/Scenes/UiPreview.unity";
         private const string TargetKey = "gm.uiPreview.target";
 
-        [MenuItem("Tools/UI Preview/Loadout Inventory (redesign)", priority = 0)]
+        [MenuItem("Alebardium/UI Preview/Loadout Inventory (redesign)", priority = 200)]
         private static void LoadoutInventory() => Open("loadout-inventory");
 
-        [MenuItem("Tools/UI Preview/Component Gallery", priority = 20)]
+        [MenuItem("Alebardium/UI Preview/Component Gallery", priority = 220)]
         private static void Gallery() => Open("gallery");
 
-        [MenuItem("Tools/UI Preview/Loadout Hub (legacy)", priority = 21)]
+        [MenuItem("Alebardium/UI Preview/Loadout Hub (legacy)", priority = 221)]
         private static void LoadoutHub() => Open("loadout-hub");
 
         private static void Open(string id)

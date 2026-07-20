@@ -15,7 +15,7 @@ namespace Guildmaster.Data.Editor
         private const string DatabaseDir  = "Assets/_Project/ScriptableObjects/Database";
         private const string DatabasePath = DatabaseDir + "/ContentDatabase.asset";
 
-        [MenuItem("Tools/Guildmaster/Sync Content Database")]
+        [MenuItem("Alebardium/Data/Sync Content Database", priority = 400)]
         public static void SyncMenu() => Sync(verbose: true);
 
         /// <summary>Найти/создать БД, заполнить всеми контент-ассетами (сортировка по id), сохранить.</summary>

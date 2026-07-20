@@ -23,7 +23,7 @@ namespace Guildmaster.Audio.Editor
         [Serializable] private sealed class ManifestDto { public EventDto[] events; }
         [Serializable] private sealed class EventDto { public string key; public string action; public bool isDefault; public string path; }
 
-        [MenuItem("Tools/Guildmaster/Audio/Populate Catalog from Manifest")]
+        [MenuItem("Alebardium/Audio/Populate Catalog from Manifest", priority = 300)]
         public static void Populate()
         {
             string manifestPath = Path.GetFullPath(Path.Combine(Application.dataPath, ManifestRelative));

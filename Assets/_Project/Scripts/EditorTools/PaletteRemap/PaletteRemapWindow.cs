@@ -32,7 +32,7 @@ namespace Guildmaster.PaletteRemap
 
         private Vector2 _scroll;
 
-        [MenuItem("Alebardium/Palette Remapper")]
+        [MenuItem("Alebardium/Palette Remapper", priority = 1)]
         public static void Open()
         {
             var w = GetWindow<PaletteRemapWindow>("Palette Remapper");

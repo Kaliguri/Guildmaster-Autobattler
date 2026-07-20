@@ -16,7 +16,7 @@ namespace Guildmaster.Data.Editor.Migrations
     {
         private const string PresetDir = "Assets/_Project/ScriptableObjects/AiPresets";
 
-        [MenuItem("Tools/Guildmaster/Migrations/Phase 4 - Package 3 (AI presets)")]
+        [MenuItem("Alebardium/Data/Migrations/Phase 4 - Package 3 (AI presets)", priority = 421)]
         public static void Run()
         {
             if (!AssetDatabase.IsValidFolder(PresetDir))

@@ -30,7 +30,7 @@ namespace Guildmaster.Data.Editor.Migrations
 
         private const float Epsilon = 1e-4f;
 
-        [MenuItem("Tools/Guildmaster/Migrations/Phase 4 - Package 3 (StatsConfig base + relic diffs)")]
+        [MenuItem("Alebardium/Data/Migrations/Phase 4 - Package 3 (StatsConfig base + relic diffs)", priority = 422)]
         public static void Run()
         {
             WriteStatsConfigDefaults();
