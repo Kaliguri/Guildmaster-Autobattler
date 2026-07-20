@@ -44,14 +44,38 @@ namespace Guildmaster.Presentation.Map
                  "полоску, а по краям — пустые вёрсты бумаги.")]
         [SerializeField] private float _backdropPaddingY = 1.35f;
 
-        [Header("Стол под картой (то, что видно за краем листа)")]
-        [Tooltip("Материал поверхности под листом (шейдер Guildmaster/Map/Table). Пусто — за листом пустота, " +
-                 "которую камера зальёт своим цветом очистки. Тайл и маску света крутить В МАТЕРИАЛЕ.")]
+        [Header("Стол — общая поверхность под картой И за главным меню")]
+        [Tooltip("Материал стола (шейдер Guildmaster/Map/Table). Пусто — за листом пустота, которую камера " +
+                 "зальёт своим цветом очистки. ЦВЕТ и ТЕКСТУРЫ (тайл, маска света) крутить в материале — " +
+                 "они общие для обоих мест. Числа ниже задают, как эта поверхность подаётся в каждом.")]
         [SerializeField] private Material _tableMaterial;
 
         [Tooltip("Во сколько раз стол больше ЛИСТА. Должен с запасом перекрывать кадр на любом отъезде " +
                  "камеры: край стола в кадре читается как ошибка, а не как край стола.")]
         [SerializeField] private float _tablePadding = 3.5f;
+
+        [Space(4)]
+        [Tooltip("ПОД КАРТОЙ: сила лампы. Здесь стол работает в контрасте со светлым листом и может быть тёмным.")]
+        [SerializeField] private float _tableLight = 1.6f;
+
+        [Tooltip("ПОД КАРТОЙ: подсвет вне пятна света.")]
+        [SerializeField, Range(0f, 1f)] private float _tableAmbient = 0.25f;
+
+        [Tooltip("ПОД КАРТОЙ: тайлинг рисунка. Считает повторы на РАЗМЕР КВАДА, а квад стола много больше " +
+                 "экрана — потому число здесь и в меню разное при одинаковой крупности ромбов на глаз.")]
+        [SerializeField] private float _tableTiling = 10f;
+
+        [Space(4)]
+        [Tooltip("В МЕНЮ: сила лампы. Выше, чем под картой: рядом нет светлого листа, и с карточными " +
+                 "числами кадр читается как чёрный.")]
+        [SerializeField] private float _menuTableLight = 2.2f;
+
+        [Tooltip("В МЕНЮ: подсвет вне пятна — по той же причине выше карточного.")]
+        [SerializeField, Range(0f, 1f)] private float _menuTableAmbient = 0.45f;
+
+        [Tooltip("В МЕНЮ: тайлинг рисунка = повторов на высоту кадра. Подобран так, чтобы ромбы совпали " +
+                 "по крупности с теми, что видны вокруг карты.")]
+        [SerializeField] private float _menuTableTiling = 5f;
 
         [Header("Цвета узла")]
         [Tooltip("Подложка узла — одна на все типы (--gm-ink-600). Тип читается ИКОНКОЙ, не цветом.")]
@@ -194,6 +218,18 @@ namespace Guildmaster.Presentation.Map
         public Material TableMaterial => _tableMaterial;
         /// <inheritdoc cref="_tablePadding"/>
         public float TablePadding => _tablePadding;
+        /// <inheritdoc cref="_tableLight"/>
+        public float TableLight => _tableLight;
+        /// <inheritdoc cref="_tableAmbient"/>
+        public float TableAmbient => _tableAmbient;
+        /// <inheritdoc cref="_tableTiling"/>
+        public float TableTiling => _tableTiling;
+        /// <inheritdoc cref="_menuTableLight"/>
+        public float MenuTableLight => _menuTableLight;
+        /// <inheritdoc cref="_menuTableAmbient"/>
+        public float MenuTableAmbient => _menuTableAmbient;
+        /// <inheritdoc cref="_menuTableTiling"/>
+        public float MenuTableTiling => _menuTableTiling;
 
         /// <inheritdoc cref="_nodeBacking"/>
         public Color NodeBacking => _nodeBacking;

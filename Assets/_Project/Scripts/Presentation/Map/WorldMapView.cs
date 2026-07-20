@@ -439,9 +439,14 @@ namespace Guildmaster.Presentation.Map
             _table.transform.localScale = new Vector3(top.x, top.y, 1f);
 
             // Пропорции — в шейдер, чтобы тайл не растянулся в полосы вдоль длинной стороны стола.
+            // Свет и тайлинг тоже отсюда, а не из материала: тот же стол лежит за главным меню, и подача
+            // у двух мест разная — оба набора чисел живут рядом в MapStyle, чтобы их было видно вместе.
             _tableBlock ??= new MaterialPropertyBlock();
             _table.GetPropertyBlock(_tableBlock);
             _tableBlock.SetFloat(AspectXId, top.y > 0.01f ? top.x / top.y : 1f);
+            _tableBlock.SetFloat(LightStrengthId, _style.TableLight);
+            _tableBlock.SetFloat(AmbientId, _style.TableAmbient);
+            _tableBlock.SetFloat(PatternTilingId, _style.TableTiling);
             _table.SetPropertyBlock(_tableBlock);
         }
 
@@ -482,6 +487,9 @@ namespace Guildmaster.Presentation.Map
 
         private MaterialPropertyBlock _backdropBlock;
         private static readonly int AspectXId = Shader.PropertyToID("_AspectX");
+        private static readonly int LightStrengthId = Shader.PropertyToID("_LightStrength");
+        private static readonly int AmbientId = Shader.PropertyToID("_Ambient");
+        private static readonly int PatternTilingId = Shader.PropertyToID("_PatternTiling");
 
         // Размер листа. Поля по ширине и по высоте РАЗНЫЕ: карта сильно вытянута, и единый множитель дал бы
         // сверху узкую полоску (там нужно место под название акта), а по краям — пустые вёрсты бумаги.

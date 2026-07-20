@@ -26,6 +26,12 @@ MonoBehaviour:
   _backdropPaddingY: 1.35
   _tableMaterial: {fileID: 2100000, guid: 90b10497a5a91c9459dc67c7c78bd6af, type: 2}
   _tablePadding: 3.5
+  _tableLight: 1.6
+  _tableAmbient: 0.25
+  _tableTiling: 10
+  _menuTableLight: 2.2
+  _menuTableAmbient: 0.45
+  _menuTableTiling: 5
   _nodeBacking: {r: 0.115, g: 0.093, b: 0.07, a: 1}
   _nodeRim: {r: 0.72, g: 0.52, b: 0.24, a: 1}
   _currentMarker: {r: 0.902, g: 0.788, b: 0.561, a: 1}

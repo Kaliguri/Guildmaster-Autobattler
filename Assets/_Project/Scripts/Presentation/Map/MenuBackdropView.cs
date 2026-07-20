@@ -32,20 +32,8 @@ namespace Guildmaster.Presentation.Map
         [SerializeField] private float _cameraDepth = 100f;
 
         [Tooltip("Половина высоты кадра фона в мировых единицах. На крупность рисунка НЕ влияет: квад всегда " +
-                 "покрывает кадр целиком, поэтому масштаб задаётся тайлингом ниже.")]
+                 "покрывает кадр целиком, а масштаб рисунка задаётся тайлингом из MapStyle.")]
         [SerializeField] private float _viewHeight = 8f;
-
-        [Tooltip("Тайлинг рисунка = сколько повторов укладывается в ВЫСОТУ кадра. Отдельно от материала " +
-                 "намеренно: на карте тайл растянут на огромный стол, и там те же 10 повторов дают крупные " +
-                 "ромбы, а на экран меню — вдвое мельче. Подбирается по глазу, чтобы совпасть с картой.")]
-        [SerializeField] private float _patternTiling = 5f;
-
-        [Tooltip("Сила лампы в меню. Отдельно от материала: под картой стол работает в контрасте со светлым " +
-                 "листом и может быть тёмным, а здесь он остаётся один — с настройками карты кадр почти чёрный.")]
-        [SerializeField] private float _lightStrength = 2.2f;
-
-        [Tooltip("Подсвет вне пятна в меню — по той же причине выше, чем у стола под картой.")]
-        [SerializeField, Range(0f, 1f)] private float _ambient = 0.45f;
 
         private ISubscriber<MainMenuVisibilityChangedEvent> _menuSub;
         private VisualToggles _toggles;
@@ -154,10 +142,12 @@ namespace Guildmaster.Presentation.Map
             // Пропорции — в шейдер, иначе тайл стола растянется в полосы вдоль широкой стороны экрана.
             _block ??= new MaterialPropertyBlock();
             _quad.GetPropertyBlock(_block);
+            // Подача стола в меню — из MapStyle, рядом с карточной: один ассет держит оба набора чисел,
+            // и разницу между «под картой» и «в меню» видно, не открывая два места.
             _block.SetFloat(AspectXId, height > 0.01f ? width / height : 1f);
-            _block.SetFloat(LightStrengthId, _lightStrength);
-            _block.SetFloat(AmbientId, _ambient);
-            _block.SetFloat(PatternTilingId, _patternTiling);
+            _block.SetFloat(LightStrengthId, _style.MenuTableLight);
+            _block.SetFloat(AmbientId, _style.MenuTableAmbient);
+            _block.SetFloat(PatternTilingId, _style.MenuTableTiling);
             _quad.SetPropertyBlock(_block);
         }
     }
