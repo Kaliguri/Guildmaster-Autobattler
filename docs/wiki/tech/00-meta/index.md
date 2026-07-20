@@ -63,6 +63,7 @@ SORT updated ASC, file.name ASC
 - [[tech/10-reference/input-camera|Input & Camera]] — Input System за `IInputService`, Cinemachine (3 режима). `ready`
 - [[tech/10-reference/ui-navigation|UI Navigation]] — стек-навигатор, типы экранов/слои, ввод = f(стек, фаза), `PointerOverUI`. `ready`
 - [[tech/10-reference/arena|Arena & Deployment]] — геометрия арены как данные, зоны Normal/Extended. `needs_review`
+- [[tech/10-reference/asset-inventory|Asset Inventory]] — какой контент в проекте, откуда, лицензии, что используется. `ready`
 
 ## Explanation (`20-explanation/`) — как устроен код
 
