@@ -68,43 +68,44 @@ namespace Guildmaster.Guild
         }
 
         // Дефолтная раскладка (одобрено 2026-07-20). Этажи-испытания: 1..13; Boss — колонка 14.
-        // Зоны: Разогрев 1–4 (только бой/событие), Развитие 5–8 (+элита/магазин/«?»), Пик 9–13 (+элита/сундук/«?»).
-        // «?»-узел живёт со зоны развития: в разогреве неизвестность читалась бы как «игра не объяснила правила».
-        // Якоря режут середину и хвост: 7 — сундук, 8 — привалы, 12 — магазин, 13 — привал перед боссом.
+        // Зоны: Разогрев 1–4 (бой + «?»), Развитие 5–8 (+элита/магазин), Пик 9–13 (+элита/сундук).
+        // ТЕКСТОВОЕ СОБЫТИЕ СВОЕГО УЗЛА НЕ ИМЕЕТ (решение Макса 2026-07-20): оно приходит только изнутри
+        // «?». Событие и есть неизвестность — объявлять её иконкой заранее значит её же и снимать.
+        // Поэтому «?» стоит и в разогреве: без него первые четыре этажа выродились бы в сплошной бой.
+        // Якоря режут середину и хвост: 7 — сундук, 8 — привалы, 13 — привал перед боссом.
         private static ZoneRule[] DefaultZones() => new[]
         {
             new ZoneRule(1, 4, new[]
             {
-                new NodeTypeWeight(MapNodeType.Battle,    70),
-                new NodeTypeWeight(MapNodeType.TextEvent, 30),
+                new NodeTypeWeight(MapNodeType.Battle,  70),
+                new NodeTypeWeight(MapNodeType.Unknown, 30),
             }),
             new ZoneRule(5, 8, new[]
             {
-                new NodeTypeWeight(MapNodeType.Battle,    40),
-                new NodeTypeWeight(MapNodeType.TextEvent, 18),
-                new NodeTypeWeight(MapNodeType.Elite,     18),
-                new NodeTypeWeight(MapNodeType.Shop,      12),
-                new NodeTypeWeight(MapNodeType.Unknown,   12),
+                new NodeTypeWeight(MapNodeType.Battle,  42),
+                new NodeTypeWeight(MapNodeType.Unknown, 26),
+                new NodeTypeWeight(MapNodeType.Elite,   18),
+                new NodeTypeWeight(MapNodeType.Shop,    14),
             }),
             new ZoneRule(9, 13, new[]
             {
-                new NodeTypeWeight(MapNodeType.Battle,    36),
-                new NodeTypeWeight(MapNodeType.Elite,     27),
-                new NodeTypeWeight(MapNodeType.Chest,     18),
-                new NodeTypeWeight(MapNodeType.TextEvent,  9),
-                new NodeTypeWeight(MapNodeType.Unknown,   10),
+                new NodeTypeWeight(MapNodeType.Battle,  36),
+                new NodeTypeWeight(MapNodeType.Elite,   28),
+                new NodeTypeWeight(MapNodeType.Unknown, 20),
+                new NodeTypeWeight(MapNodeType.Chest,   16),
             }),
         };
 
         // Талия акта (решение Макса 2026-07-20): широкая середина сходится в ОДИН сундук (7), из него веер
         // в ТРИ привала (8), и оттуда акт снова расходится по зонам. Один узел на весь этаж — это ритмическая
         // пауза: карта на секунду перестаёт быть выбором и становится общей точкой, а следующий шаг —
-        // осмысленной развилкой из трёх. Перед боссом — та же пара: магазин (12) и привал (13).
+        // осмысленной развилкой из трёх. Перед боссом — привал (13), и только он: ряд-якорь магазинов на
+        // этаже 12 убран (решение Макса 2026-07-20) — целая колонка лавок перед финалом читалась как
+        // распродажа, а не как последний вдох. Магазин остаётся обычным узлом зоны развития.
         private static AnchorRule[] DefaultAnchors() => new[]
         {
             new AnchorRule(7,  MapNodeType.Chest, width: 1),
             new AnchorRule(8,  MapNodeType.Camp,  width: 3),
-            new AnchorRule(12, MapNodeType.Shop),
             new AnchorRule(13, MapNodeType.Camp,  width: 3),
         };
     }

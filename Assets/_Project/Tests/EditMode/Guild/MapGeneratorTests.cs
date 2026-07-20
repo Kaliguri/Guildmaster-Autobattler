@@ -145,15 +145,45 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
-        public void Generate_WarmupZone_OnlyBattleOrEvent()
+        public void Generate_WarmupZone_OnlyBattleOrUnknown()
         {
-            // Зона разогрева (этажи 1–4): игрока не встречает сундук/элита/магазин в лицо.
+            // Зона разогрева (этажи 1–4): игрока не встречает сундук/элита/магазин в лицо. Событие своего
+            // узла не имеет вовсе — оно приходит изнутри «?», потому «?» здесь и стоит.
             for (ulong seed = 1; seed <= 20; seed++)
             {
                 var map = Generate(seed);
                 foreach (var n in map.Nodes.Where(x => x.Floor >= 1 && x.Floor <= 4))
-                    Assert.IsTrue(n.Type == MapNodeType.Battle || n.Type == MapNodeType.TextEvent,
-                        $"Разогрев (этаж {n.Floor}): только бой/событие, не {n.Type} (сид {seed}).");
+                    Assert.IsTrue(n.Type == MapNodeType.Battle || n.Type == MapNodeType.Unknown,
+                        $"Разогрев (этаж {n.Floor}): только бой/«?», не {n.Type} (сид {seed}).");
+            }
+        }
+
+        [Test]
+        public void Generate_TextEvent_NeverGetsItsOwnNode()
+        {
+            // Решение Макса 2026-07-20: событие живёт только внутри «?». Отдельный узел-свиток объявлял бы
+            // неизвестность заранее и тем самым её снимал.
+            for (ulong seed = 1; seed <= 20; seed++)
+            {
+                var map = Generate(seed);
+                Assert.IsFalse(map.Nodes.Any(n => n.Type == MapNodeType.TextEvent),
+                    $"Текстовое событие не должно стоять на карте своим узлом (сид {seed}).");
+            }
+        }
+
+        [Test]
+        public void Generate_ShopFallback_NeverOverwritesAnchoredFloors()
+        {
+            // Страховка «хотя бы один магазин» не имеет права трогать якорные этажи: они и есть заданный
+            // ритм акта. Пока магазин сам был якорем, это молчало; сняли якорь — привалы стали лавками.
+            var cfg = new MapGenConfig().Validated();
+            for (ulong seed = 1; seed <= 40; seed++)
+            {
+                var map = Generate(seed, cfg);
+                foreach (AnchorRule anchor in cfg.Anchors)
+                    foreach (var n in map.Nodes.Where(x => x.Floor == anchor.Floor))
+                        Assert.AreEqual(anchor.Type, n.Type,
+                            $"Якорный этаж {anchor.Floor} перекрашен в {n.Type} (сид {seed}).");
             }
         }
 

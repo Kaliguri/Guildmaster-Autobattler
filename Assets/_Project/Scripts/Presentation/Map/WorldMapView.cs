@@ -815,9 +815,13 @@ namespace Guildmaster.Presentation.Map
             {
                 if (_hits[i].View == null) continue;
 
+                // Под курсором узел ЗАМИРАЕТ: дыхание зовёт взгляд, но звать уже некуда — игрок и так
+                // здесь. Продолжать моргать под рукой значит спорить с собственным откликом на наведение.
+                bool hovered = i == _hoverIndex;
+
                 float scale = 1f;
-                if (_hits[i].Selectable) scale *= grow;
-                if (i == _hoverIndex) scale *= _pressed ? _style.PressScale : _style.HoverScale;
+                if (_hits[i].Selectable && !hovered) scale *= grow;
+                if (hovered) scale *= _pressed ? _style.PressScale : _style.HoverScale;
 
                 if (i == _nudgeIndex)
                 {
@@ -832,7 +836,9 @@ namespace Guildmaster.Presentation.Map
 
                 _hits[i].View.SetVisualScale(scale);
 
-                if (_hits[i].Selectable) _hits[i].View.SetBrightness(breath);
+                // Яркость замирает вместе с размером — но на ПОЛНОЙ, а не на случайной точке дыхания:
+                // узел под курсором должен быть самым ярким на карте, иначе наведение читается как затухание.
+                if (_hits[i].Selectable) _hits[i].View.SetBrightness(hovered ? 1f + _style.AvailableBreath : breath);
             }
         }
 

@@ -25,34 +25,30 @@ MonoBehaviour:
       Weights:
       - Type: 1
         Weight: 70
-      - Type: 3
+      - Type: 7
         Weight: 30
     - FromFloor: 5
       ToFloor: 8
       Weights:
       - Type: 1
-        Weight: 40
-      - Type: 3
-        Weight: 18
+        Weight: 42
+      - Type: 7
+        Weight: 26
       - Type: 2
         Weight: 18
       - Type: 4
-        Weight: 12
-      - Type: 7
-        Weight: 12
+        Weight: 14
     - FromFloor: 9
       ToFloor: 13
       Weights:
       - Type: 1
         Weight: 36
       - Type: 2
-        Weight: 27
-      - Type: 6
-        Weight: 18
-      - Type: 3
-        Weight: 9
+        Weight: 28
       - Type: 7
-        Weight: 10
+        Weight: 20
+      - Type: 6
+        Weight: 16
     Anchors:
     - Floor: 7
       Type: 6
@@ -60,9 +56,6 @@ MonoBehaviour:
     - Floor: 8
       Type: 8
       Width: 3
-    - Floor: 12
-      Type: 4
-      Width: 0
     - Floor: 13
       Type: 8
       Width: 3

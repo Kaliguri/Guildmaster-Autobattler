@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Shapes;
 using UnityEngine;
 
@@ -12,14 +13,20 @@ namespace Guildmaster.Presentation.Map
     public sealed class MapNodeView : MonoBehaviour
     {
         /// <summary>Иконка одного типа узла внутри общего префаба.</summary>
+        /// <remarks>
+        /// Здесь ГРУППА, а не один спрайт: элитный бой — это два меча, и таких составных значков будет
+        /// больше. Ссылка на объект-корень позволяет собрать иконку из скольких угодно частей и не плодить
+        /// поле на каждую; красятся все спрайты внутри разом.
+        /// </remarks>
         [Serializable]
         public struct IconVariant
         {
             [Tooltip("Имя типа узла (Battle, Elite, Boss, Shop, Chest, Camp, TextEvent, Start, Unknown).")]
             public string Kind;
 
-            [Tooltip("Спрайт этого типа. Держится выключенным, включается по типу узла.")]
-            public SpriteRenderer Icon;
+            [Tooltip("Корень иконки этого типа: сам спрайт ИЛИ объект-группа с несколькими спрайтами внутри " +
+                     "(элита = два меча). Держится выключенным, включается по типу узла.")]
+            public GameObject Icon;
         }
 
         [Header("Части узла")]
@@ -51,7 +58,8 @@ namespace Guildmaster.Presentation.Map
                  "точки не вползали под узел. Не путать с радиусом хвата — тот больше намеренно.")]
         [SerializeField] private float _visualRadius = 0.6f;
 
-        private SpriteRenderer _activeIcon;
+        // Спрайты активной иконки: у составного значка (элита — два меча) их несколько, и красить надо все.
+        private readonly List<SpriteRenderer> _activeIcon = new List<SpriteRenderer>(4);
         private MaterialPropertyBlock _mpb;
 
         /// <inheritdoc cref="_pickRadius"/>
@@ -63,13 +71,13 @@ namespace Guildmaster.Presentation.Map
         /// <summary>Включает иконку нужного типа, гасит остальные. Неизвестный тип — без иконки.</summary>
         public void ShowKind(string kind)
         {
-            _activeIcon = null;
+            _activeIcon.Clear();
             for (int i = 0; i < _variants.Length; i++)
             {
                 if (_variants[i].Icon == null) continue;
                 bool match = string.Equals(_variants[i].Kind, kind, StringComparison.OrdinalIgnoreCase);
-                _variants[i].Icon.gameObject.SetActive(match);
-                if (match) _activeIcon = _variants[i].Icon;
+                _variants[i].Icon.SetActive(match);
+                if (match) _variants[i].Icon.GetComponentsInChildren(includeInactive: true, _activeIcon);
             }
         }
 
@@ -102,16 +110,19 @@ namespace Guildmaster.Presentation.Map
             SetColor(_backingShape, _backingSprite, Mul(palette.NodeBacking, tint));
             if (_rim != null) _rim.Color = Mul(palette.NodeRim, tint);
 
-            if (_activeIcon != null)
+            for (int i = 0; i < _activeIcon.Count; i++)
             {
+                SpriteRenderer icon = _activeIcon[i];
+                if (icon == null) continue;
+
                 // Состояние — через SpriteRenderer.color (vertex color в шейдере), рампа — через MPB.
                 // MPB, а не sharedMaterial: правка материала в рантайме пачкает ассет на диске.
-                _activeIcon.color = tint;
+                icon.color = tint;
                 _mpb ??= new MaterialPropertyBlock();
-                _activeIcon.GetPropertyBlock(_mpb);
+                icon.GetPropertyBlock(_mpb);
                 _mpb.SetColor(ShadowId, palette.IconShadow);
                 _mpb.SetColor(LightId, palette.IconLight);
-                _activeIcon.SetPropertyBlock(_mpb);
+                icon.SetPropertyBlock(_mpb);
             }
 
             if (_currentMarker != null)

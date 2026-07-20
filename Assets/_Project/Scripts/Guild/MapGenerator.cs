@@ -58,7 +58,7 @@ namespace Guildmaster.Guild
             }
 
             // 3. Гарантия: хотя бы один магазин до босса.
-            EnsureShopExists(rng, columns);
+            EnsureShopExists(rng, columns, cfg);
 
             // 4. Сборка состояния: игрок стоит на старте (он «пройден»), карта видна целиком.
             var start = columns[0][0];
@@ -203,15 +203,36 @@ namespace Guildmaster.Guild
             if (!list.Contains(to)) list.Add(to);
         }
 
-        /// <summary>Если на карте нет ни одного магазина — конвертирует один промежуточный узел в Shop.</summary>
-        private static void EnsureShopExists(IRngService rng, List<List<MapNode>> columns)
+        /// <summary>
+        /// Если на карте нет ни одного магазина — конвертирует один промежуточный узел в Shop.
+        /// <para>ЯКОРНЫЕ этажи неприкосновенны: они и есть заданный ритм акта (сундук-талия, ряд привалов
+        /// перед боссом). Пока магазин сам был якорем, это не всплывало; стоило якорь снять — страховка
+        /// принялась перекрашивать привалы в лавки, и целый этаж терял свой смысл (поймано тестом).</para>
+        /// </summary>
+        private static void EnsureShopExists(IRngService rng, List<List<MapNode>> columns, MapGenConfig cfg)
         {
             var middle = columns.Skip(1).Take(columns.Count - 2).SelectMany(c => c).ToList();
             if (middle.Count == 0 || middle.Any(n => n.Type == MapNodeType.Shop)) return;
 
-            // Предпочитаем не затирать элитки (они редки и значимы).
-            var candidates = middle.Where(n => n.Type != MapNodeType.Elite).ToList();
-            if (candidates.Count == 0) candidates = middle;
+            // Ставить магазин можно только туда, где его РАЗРЕШАЕТ зона: страховка чинит невезучий ролл,
+            // а не отменяет правила акта. Иначе лавка вылезала в разогрев, куда её не пускает ни одна зона.
+            bool Allowed(MapNode n)
+            {
+                if (cfg.Anchors.Any(a => a.Floor == n.Floor)) return false; // якорный этаж — заданный ритм
+                foreach (ZoneRule zone in cfg.Zones)
+                {
+                    if (!zone.Covers(n.Floor)) continue;
+                    return zone.Weights != null
+                        && zone.Weights.Any(w => w.Type == MapNodeType.Shop && w.Weight > 0);
+                }
+                return false;
+            }
+
+            var free = middle.Where(Allowed).ToList();
+            if (free.Count == 0) return; // ставить магазин просто некуда — лучше без него, чем ломая ритм
+
+            var candidates = free.Where(n => n.Type != MapNodeType.Elite).ToList();
+            if (candidates.Count == 0) candidates = free;
             candidates[rng.NextInt(0, candidates.Count)].Type = MapNodeType.Shop;
         }
     }
