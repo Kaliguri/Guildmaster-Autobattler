@@ -1,4 +1,5 @@
 using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Stats;
 
 namespace Guildmaster.Combat.Effects
 {
@@ -8,10 +9,17 @@ namespace Guildmaster.Combat.Effects
     /// <see cref="EffectData"/> — те шарятся между всеми носителями эффекта и обязаны быть
     /// stateless (вики «12» §2.2, «6» §5).
     /// </summary>
-    public sealed class RuntimeEffect
+    public sealed class RuntimeEffect : IModifierSource
     {
         /// <summary>Иммутабельное определение.</summary>
         public EffectData Def;
+
+        /// <summary>
+        /// Имя, под которым эффект показывается игроку в разборе стата («+12 (Ярость)»).
+        /// Эффект — основной источник стат-модификаторов в бою, поэтому именно он делает
+        /// разбор читаемым; безымянные источники в тултипе схлопываются в «прочее».
+        /// </summary>
+        public string ModifierSourceLocKey => ContentKeys.NameKey(Def);
 
         /// <summary>Кто наложил — атрибуция урона/исцеления, скейл потенции, триггеры.</summary>
         public RuntimeUnit Source;

@@ -16,14 +16,16 @@ namespace Guildmaster.Data.Editor
     /// </summary>
     public static class ContentLocalization
     {
-        public const string TableName = "Content";
-        public const string NameSuffix = "name";
-        public const string DescSuffix = "desc";
+        // Единственный источник — рантайм-ContentKeys: редактор ключи создаёт, рантайм их читает,
+        // и расходиться этим двум нельзя.
+        public const string TableName = ContentKeys.TableName;
+        public const string NameSuffix = ContentKeys.NameSuffix;
+        public const string DescSuffix = ContentKeys.DescSuffix;
 
         private static readonly string[] NameOnly = { NameSuffix };
         private static readonly string[] NameAndDesc = { NameSuffix, DescSuffix };
 
-        public static string KeyFor(ContentDefinition def, string suffix) => def.Id + "." + suffix;
+        public static string KeyFor(ContentDefinition def, string suffix) => ContentKeys.KeyFor(def, suffix);
 
         public static StringTableCollection Collection =>
             LocalizationEditorSettings.GetStringTableCollection(TableName);

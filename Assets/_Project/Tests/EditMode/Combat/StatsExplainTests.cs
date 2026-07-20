@@ -1,6 +1,9 @@
 using Guildmaster.Combat;
+using Guildmaster.Combat.Effects;
+using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Guildmaster.Tests.EditMode.Combat
 {
@@ -166,6 +169,32 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.IsNull(term.SourceLocKey);
             Assert.AreEqual(12f, term.Contribution, 0.0001f);
+        }
+
+        // --- Боевой источник называет себя ---
+
+        [Test]
+        public void Explain_RuntimeEffectSource_NamesItselfByContentId()
+        {
+            EffectData def = EffectData.CreateRuntime(
+                "effect.rage", EffectPolarity.Buff, EffectTag.None, 5f, false);
+            var effect = new RuntimeEffect { Def = def };
+
+            var stats = NewStats();
+            stats.AddModifiersFrom(effect, new[] { Mod(ZeroStat, ModifierOp.Flat, 12f) });
+
+            Assert.AreEqual("effect.rage.name", stats.Explain(ZeroStat).Terms[0].SourceLocKey);
+
+            Object.DestroyImmediate(def);
+        }
+
+        [Test]
+        public void Explain_RuntimeEffectWithoutDefinition_HasNoName()
+        {
+            var stats = NewStats();
+            stats.AddModifiersFrom(new RuntimeEffect(), new[] { Mod(ZeroStat, ModifierOp.Flat, 12f) });
+
+            Assert.IsNull(stats.Explain(ZeroStat).Terms[0].SourceLocKey);
         }
 
         // --- Размерность ---
