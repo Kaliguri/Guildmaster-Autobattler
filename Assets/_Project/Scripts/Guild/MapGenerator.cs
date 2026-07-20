@@ -49,7 +49,7 @@ namespace Guildmaster.Guild
             var edges = new Dictionary<string, List<string>>();
             for (int col = 0; col < columns.Count - 1; col++)
             {
-                ConnectColumns(rng, columns[col], columns[col + 1], edges);
+                ConnectColumns(rng, columns[col], columns[col + 1], edges, cfg.MaxEdgesPerNode);
             }
             foreach (var node in columns.SelectMany(c => c))
             {
@@ -150,26 +150,48 @@ namespace Guildmaster.Guild
         /// планарность (рёбра не пересекаются), а полный проход указателей — связность (каждый узел покрыт).
         /// </summary>
         private static void ConnectColumns(IRngService rng, List<MapNode> source, List<MapNode> target,
-                                            Dictionary<string, List<string>> edges)
+                                            Dictionary<string, List<string>> edges, int maxEdges)
         {
             int ws = source.Count, wt = target.Count;
             int si = 0, ti = 0;
+            var outgoing = new int[ws];
+            var incoming = new int[wt];
+
             while (true)
             {
                 AddEdge(edges, source[si].Id, target[ti].Id);
+                outgoing[si]++;
+                incoming[ti]++;
 
                 if (si == ws - 1 && ti == wt - 1) break;
                 if (si == ws - 1) { ti++; continue; }   // источники кончились — идём по целям
                 if (ti == wt - 1) { si++; continue; }   // цели кончились — идём по источникам
 
-                switch (rng.NextInt(0, 3))
+                // Указатели ведём вдоль ДИАГОНАЛИ колонок: сравниваем не индексы, а доли пройденного.
+                // Раньше шаг был чистым рандомом, и на скачках ширины (5→7→3) один узел набирал веер
+                // рёбер через полкарты — именно это делало карту нечитаемой (play-QA Макса).
+                // Широкие развилки при этом остаются: они нужны как выбор биома, режется только ДЛИНА.
+                float s = si / (float)(ws - 1);
+                float t = ti / (float)(wt - 1);
+
+                bool canFan   = outgoing[si] < maxEdges;   // сколько путей выходит из узла
+                bool canMerge = incoming[ti] < maxEdges;   // сколько путей в узел входит
+
+                if (s < t - Epsilon || !canFan) si++;            // источник отстаёт — подтянуть его
+                else if (s > t + Epsilon || !canMerge) ti++;     // цель отстаёт — подтянуть её
+                else
                 {
-                    case 0: si++; break;                // схождение: следующий источник → та же цель
-                    case 1: ti++; break;                // развилка: тот же источник → следующая цель
-                    default: si++; ti++; break;         // диагональ
+                    switch (rng.NextInt(0, 3))
+                    {
+                        case 0: si++; break;                // схождение: следующий источник → та же цель
+                        case 1: ti++; break;                // развилка: тот же источник → следующая цель
+                        default: si++; ti++; break;         // диагональ
+                    }
                 }
             }
         }
+
+        private const float Epsilon = 0.0001f;
 
         private static void AddEdge(Dictionary<string, List<string>> edges, string from, string to)
         {

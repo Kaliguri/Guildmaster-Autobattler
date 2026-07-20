@@ -30697,10 +30697,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Map.WorldMapView
   _layout:
-    StepX: 5
-    StepY: 3.6
-    JitterY: 0.4
-    JitterX: 0.12
+    StepX: 6.5
+    StepY: 4.2
+    JitterY: 0
+    JitterX: 0
     MinDistance: 2.2
     RelaxIterations: 10
   _floorsInView: 4
@@ -30710,7 +30710,7 @@ MonoBehaviour:
   _dotRadius: 0.07
   _dotSpacing: 0.32
   _dotMargin: 0.7
-  _edgeCurve: 0.12
+  _edgeCurve: 0
   _hoverScale: 1.18
   _pressScale: 0.9
   _availableBreath: 0.22

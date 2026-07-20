@@ -35,6 +35,13 @@ namespace Guildmaster.Guild
         public int MaxColumnWidth = 7;
 
         /// <summary>
+        /// Потолок путей, выходящих из узла (и входящих в него). Один-четыре исхода — нормальный выбор
+        /// (решение Макса 2026-07-20: развилка это и есть содержание карты, в том числе выбор биома),
+        /// но веер шире четырёх перестаёт читаться и превращает карту в кашу.
+        /// </summary>
+        public int MaxEdgesPerNode = 4;
+
+        /// <summary>
         /// Зонные правила: диапазон этажей (индекс колонки) → разрешённые типы с весами. Первая покрывающая
         /// этаж зона выигрывает. Этаж вне всех зон и якорей → безопасный дефолт (Бой). Перекрываются якорями.
         /// </summary>
@@ -50,6 +57,7 @@ namespace Guildmaster.Guild
             if (MinColumnWidth < 1) MinColumnWidth = 1;
             if (MaxColumnWidth < MinColumnWidth) MaxColumnWidth = MinColumnWidth;
             if (EdgeColumnWidth < 1) EdgeColumnWidth = 1;
+            if (MaxEdgesPerNode < 2) MaxEdgesPerNode = 2;      // < 2 сделало бы карту цепочкой без выбора
             if (EdgeColumns < 0) EdgeColumns = 0;
             // Горловины с обоих краёв не должны съесть середину: иначе профиль вырождается в плоскую ширину.
             int middle = Columns - 2;                            // без Start и Boss

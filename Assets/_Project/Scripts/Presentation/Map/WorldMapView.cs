@@ -44,8 +44,9 @@ namespace Guildmaster.Presentation.Map
         [Tooltip("Отступ точек от центров узлов, чтобы дорожка не влезала под иконку.")]
         [SerializeField] private float _dotMargin = 0.7f;
 
-        [Tooltip("Изгиб пути в долях его длины: 0 = прямые линии.")]
-        [SerializeField] private float _edgeCurve = 0.12f;
+        [Tooltip("Изгиб пути в долях его длины. 0 = прямые линии — так и надо: изгиб случайной стороны " +
+                 "заставлял соседние пути наезжать друг на друга и читался как каша (play-QA Макса).")]
+        [SerializeField] private float _edgeCurve;
 
         [Header("Отклик и анимация")]
         [Tooltip("Насколько подрастает узел под курсором.")]

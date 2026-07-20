@@ -34,15 +34,36 @@ namespace Guildmaster.Tests.EditMode.Presentation
         }
 
         [Test]
-        public void Resolve_DiffersBetweenSeeds()
+        public void Resolve_LaysFloorsAsStraightColumns()
         {
+            // Дефолт — РОВНАЯ сетка: узлы этажа стоят строго друг под другом (требование Макса по play-QA).
+            // Разброс убран: живость рисунка даёт форма графа, а не шум поверх раскладки, и именно шум
+            // мешал этажу читаться столбиком.
             var layout = MapLayout.Default;
+            var nodes = Grid(5, 3);
+            var pos = layout.Resolve(nodes, 777L);
+
+            for (int floor = 0; floor < 5; floor++)
+            {
+                var xs = nodes.Where(n => n.Floor == floor).Select(n => pos[n.Id].x).ToList();
+                Assert.That(xs.Max() - xs.Min(), Is.LessThan(0.0001f),
+                    $"Этаж {floor} обязан стоять ровным столбиком.");
+            }
+        }
+
+        [Test]
+        public void Resolve_AppliesJitterFromSeedWhenConfigured()
+        {
+            // Разброс отключён в дефолте, но сам механизм жив и обязан оставаться завязанным на сид:
+            // если его вернут ради стиля, рисунок должен различаться между забегами и переживать сейв.
+            var layout = MapLayout.Default;
+            layout.JitterY = 0.2f;
             var nodes = Grid(5, 3);
 
             var a = layout.Resolve(nodes, 1L);
             var b = layout.Resolve(nodes, 2L);
 
-            Assert.IsTrue(a.Any(kv => kv.Value != b[kv.Key]), "Разные забеги — разный рисунок карты.");
+            Assert.IsTrue(a.Any(kv => kv.Value != b[kv.Key]), "С разбросом разные забеги дают разный рисунок.");
         }
 
         [Test]

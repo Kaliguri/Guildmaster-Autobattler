@@ -18,6 +18,7 @@ MonoBehaviour:
     EdgeColumns: 1
     MinColumnWidth: 5
     MaxColumnWidth: 7
+    MaxEdgesPerNode: 4
     Zones:
     - FromFloor: 1
       ToFloor: 4
