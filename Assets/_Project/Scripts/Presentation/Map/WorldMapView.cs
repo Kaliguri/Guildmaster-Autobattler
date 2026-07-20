@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Input;
+using Guildmaster.Presentation.Effects;
 using Guildmaster.Presentation.Tempo;
 using Shapes;
 using UnityEngine;
@@ -44,6 +45,14 @@ namespace Guildmaster.Presentation.Map
 
         private IInputService _input;
         private IVisualTempo _tempo; // единый метроном: биение узлов и волна дорожек идут от него
+        private VisualToggles _toggles; // общий реестр «включить/выключить эффект»
+
+        // Состояния тумблеров. Отдельными полями, потому что сами объекты (лист, туман) создаются лениво
+        // при первом показе карты, а переключить эффект могут раньше.
+        private bool _sheetOn = true;
+        private bool _fogOn;      // туман по умолчанию ВЫКЛЮЧЕН (решение Макса: «вообще не то, мб позже»)
+        private bool _heartbeatOn = true;
+        private bool _pathFlowOn = true;
         private CameraModeController _cameraModes; // null в headless
         private WorldMapViewLink _link; // мост к петле забега (она живёт в корневом скоупе, выше мирового)
 
@@ -104,12 +113,13 @@ namespace Guildmaster.Presentation.Map
 
         [Inject]
         public void Construct(IInputService input, CameraModeController cameraModes, WorldMapViewLink link,
-                              IVisualTempo tempo)
+                              IVisualTempo tempo, VisualToggles toggles)
         {
             _input       = input;
             _cameraModes = cameraModes;
             _link        = link;
             _tempo       = tempo;
+            _toggles     = toggles;
         }
 
         private void Awake()
@@ -131,6 +141,26 @@ namespace Guildmaster.Presentation.Map
                 _input.PointerReleased += OnPointerReleased;
             }
             _link?.Bind(this);
+            RegisterToggles();
+        }
+
+        // Регистрируем эффекты карты в общем реестре: гасить и возвращать их можно из консоли (gm_fx),
+        // не пересобирая сцену и не правя ассеты.
+        private void RegisterToggles()
+        {
+            if (_toggles == null) return;
+
+            _toggles.Register("map.sheet", "Лист карты (бумага под графом)",
+                on => { _sheetOn = on; if (_backdrop != null) _backdrop.enabled = on; });
+
+            _toggles.Register("map.fog", "Туман над непройденной частью акта",
+                on => { _fogOn = on; if (_fog != null) _fog.enabled = on; }, defaultEnabled: false);
+
+            _toggles.Register("map.heartbeat", "Биение доступных узлов",
+                on => _heartbeatOn = on);
+
+            _toggles.Register("map.pathflow", "Бегущая волна по дорожкам",
+                on => _pathFlowOn = on);
         }
 
         private void OnDestroy()
@@ -393,10 +423,23 @@ namespace Guildmaster.Presentation.Map
                 _backdrop.receiveShadows = false;
             }
 
+            _backdrop.enabled = _sheetOn;
+
             float pad = Mathf.Max(1f, _style.BackdropPadding);
+            var sheet = new Vector2(size.x * pad, size.y * pad);
             _backdrop.transform.position   = new Vector3(center.x, center.y, BackdropZ);
-            _backdrop.transform.localScale = new Vector3(size.x * pad, size.y * pad, 1f);
+            _backdrop.transform.localScale = new Vector3(sheet.x, sheet.y, 1f);
+
+            // Пропорции листа — в шейдер: рваность края считается по UV, и без поправки на вытянутость
+            // она превратилась бы вдоль длинной стороны в пологую волну, а вдоль короткой осталась частой.
+            _backdropBlock ??= new MaterialPropertyBlock();
+            _backdrop.GetPropertyBlock(_backdropBlock);
+            _backdropBlock.SetFloat(AspectXId, sheet.y > 0.01f ? sheet.x / sheet.y : 1f);
+            _backdrop.SetPropertyBlock(_backdropBlock);
         }
+
+        private MaterialPropertyBlock _backdropBlock;
+        private static readonly int AspectXId = Shader.PropertyToID("_AspectX");
 
         // Слой тумана — ЧИСТО АТМОСФЕРА. Лежит над картой, но ничего не скрывает и не мешает: узлы под ним
         // видны и кликаются (пикинг идёт своей математикой, а не рейкастом), коллайдера у полотна нет.
@@ -416,6 +459,8 @@ namespace Guildmaster.Presentation.Map
                 _fog.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                 _fog.receiveShadows = false;
             }
+
+            _fog.enabled = _fogOn;
 
             float pad = Mathf.Max(1f, _style.BackdropPadding);
             _fog.transform.position   = new Vector3(center.x, center.y, FogZ);
@@ -573,7 +618,7 @@ namespace Guildmaster.Presentation.Map
             // Доступные узлы БЬЮТСЯ КАК СЕРДЦЕ — двойной толчок и покой, на общей доле метронома.
             // Размерный пульс сам по себе читался как «всё шевелится», но ритм сердца читается как «живое»:
             // разница в том, что у него есть пауза, и глаз ловит именно её.
-            float beat  = _tempo?.Heartbeat(_style.BeatDivision) ?? 0f;
+            float beat  = _heartbeatOn ? (_tempo?.Heartbeat(_style.BeatDivision) ?? 0f) : 0f;
             float swell = _tempo?.Swell(_style.BeatDivision) ?? 0.5f;
             float breath = 1f + (swell - 0.5f) * 2f * _style.AvailableBreath;
             float heart  = 1f + beat * _style.HeartbeatAmount;
@@ -620,6 +665,8 @@ namespace Guildmaster.Presentation.Map
             {
                 PathDot dot = _dots[i];
                 if (!dot.Flowing || dot.Shape == null) continue;
+
+                if (!_pathFlowOn) { dot.Shape.Color = _style.PathAvailable; continue; }
 
                 float phase = Mathf.Repeat(head - dot.Along, cycle);
                 float glow  = Mathf.Clamp01(1f - phase / length);

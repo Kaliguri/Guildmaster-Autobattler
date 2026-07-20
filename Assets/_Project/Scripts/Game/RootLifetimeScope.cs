@@ -143,6 +143,10 @@ namespace Guildmaster.Game
             builder.Register<Presentation.Tempo.VisualTempo>(Lifetime.Singleton)
                    .AsSelf().As<Presentation.Tempo.IVisualTempo>();
 
+            // Общий реестр визуальных эффектов: одно место, где их гасят и возвращают (дев-команды gm_fx,
+            // позже — настройки игры, там часть из них станет доступностью).
+            builder.Register<Presentation.Effects.VisualToggles>(Lifetime.Singleton).AsSelf();
+
             // Выбор узла — world-карта (узлы в мире, камера как в бою). UITK-карта снесена после приёмки:
             // держать второй путь к той же карте значило чинить каждый баг дважды.
             // AutoFirstNodeChooser остаётся для headless/тестов.

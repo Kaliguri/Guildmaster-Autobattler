@@ -10,13 +10,18 @@ Shader "Guildmaster/Map/Backdrop"
     Properties
     {
         _MainTex ("Шум (grayscale)", 2D) = "gray" {}
-        _BaseColor ("Основа", Color) = (0.09, 0.08, 0.07, 1)
-        _StainColor ("Разводы", Color) = (0.20, 0.17, 0.13, 1)
+        _BaseColor ("Основа (бумага)", Color) = (0.78, 0.71, 0.55, 1)
+        _StainColor ("Разводы и потёртости", Color) = (0.62, 0.54, 0.39, 1)
+        _EdgeColor ("Затёртый край", Color) = (0.42, 0.34, 0.22, 1)
         _WeaveTiling ("Тайлинг волокна", Float) = 2
         _GrainTiling ("Тайлинг зерна", Float) = 14
         _WeaveStrength ("Сила волокна", Range(0, 1)) = 0.55
         _GrainStrength ("Сила зерна", Range(0, 1)) = 0.12
-        _Vignette ("Виньетка", Range(0, 1)) = 0.45
+        _Vignette ("Виньетка листа", Range(0, 1)) = 0.35
+        _EdgeRagged ("Рваность края", Range(0, 0.2)) = 0.045
+        _EdgeNoiseScale ("Частота рваности", Float) = 9
+        _EdgeBurn ("Затёртость края", Range(0, 1)) = 0.7
+        _AspectX ("Пропорция листа (ширина/высота)", Float) = 1
     }
 
     SubShader

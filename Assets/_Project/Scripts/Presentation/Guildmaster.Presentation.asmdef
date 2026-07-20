@@ -13,7 +13,9 @@
     "Unity.TextMeshPro",
     "UnityEngine.UI",
     "Unity.Cinemachine",
-    "FMODUnity"
+    "FMODUnity",
+    "Unity.RenderPipelines.Core.Runtime",
+    "Unity.RenderPipelines.Universal.Runtime"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],

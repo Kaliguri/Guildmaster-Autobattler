@@ -48,6 +48,9 @@ namespace Guildmaster.Game
             // (положение объекта в сцене и задаёт, где карта в мире). Себя он привязывает к
             // WorldMapViewLink из корневого скоупа — петля забега висит выше и напрямую его не видит.
             builder.RegisterComponentInHierarchy<Presentation.Map.WorldMapView>();
+
+            // Тумблеры постобработки: Volume зоны карты гасится из общего реестра эффектов (gm_fx).
+            builder.RegisterComponentInHierarchy<Presentation.Effects.VolumeVisualToggle>();
         }
 
         private ArenaLayoutData BuildArenaLayout()

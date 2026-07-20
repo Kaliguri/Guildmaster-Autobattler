@@ -29,13 +29,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _GrainStrength: 0.12
-    - _GrainTiling: 16
-    - _Vignette: 0
-    - _WeaveStrength: 0.55
-    - _WeaveTiling: 2.2
+    - _AspectX: 1
+    - _EdgeBurn: 0.75
+    - _EdgeNoiseScale: 9
+    - _EdgeRagged: 0.05
+    - _GrainStrength: 0.18
+    - _GrainTiling: 18
+    - _Vignette: 0.3
+    - _WeaveStrength: 0.62
+    - _WeaveTiling: 2.6
     m_Colors:
-    - _BaseColor: {r: 0.078, g: 0.07, b: 0.059, a: 1}
-    - _StainColor: {r: 0.168, g: 0.145, b: 0.114, a: 1}
+    - _BaseColor: {r: 0.8, g: 0.73, b: 0.56, a: 1}
+    - _EdgeColor: {r: 0.4, g: 0.32, b: 0.2, a: 1}
+    - _StainColor: {r: 0.63, g: 0.55, b: 0.38, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -22,7 +22,7 @@ MonoBehaviour:
   _floorsInView: 4
   _pickRadiusScale: 1.4
   _backdropMaterial: {fileID: 2100000, guid: bf7f4177f3ebe0a438ccd18201673bfd, type: 2}
-  _backdropPadding: 1.6
+  _backdropPadding: 1.08
   _nodeBacking: {r: 0.115, g: 0.093, b: 0.07, a: 1}
   _nodeRim: {r: 0.72, g: 0.52, b: 0.24, a: 1}
   _currentMarker: {r: 0.902, g: 0.788, b: 0.561, a: 1}
