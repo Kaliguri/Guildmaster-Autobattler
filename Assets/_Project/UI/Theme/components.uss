@@ -1249,7 +1249,11 @@
     border-radius: var(--gm-radius-0);
     margin: 0 var(--gm-space-2);
     padding: 0;
-    -unity-background-scale-mode: scale-to-fit;
+    /* background-size, а НЕ -unity-background-scale-mode: последнее не ужимает картинку в Unity 6 —
+       иконка 128x128 рисовалась в натуральную величину и обрезалась слотом. */
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
     -unity-background-image-tint-color: var(--gm-color-text-muted);
 }
 
@@ -1261,13 +1265,14 @@
     -unity-background-image-tint-color: var(--gm-color-accent);
 }
 
-/* ЗАГЛУШКИ иконок (Honeti 16): подменяются набором game-icons.net, когда выберем комплект. */
-.gm-runbar__tab--map        { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Search.png"); }
-.gm-runbar__tab--battle     { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Swords.png"); }
-.gm-runbar__tab--inventory  { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Bag.png"); }
-.gm-runbar__tab--tactics    { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Shield.png"); }
-.gm-runbar__tab--compendium { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Help.png"); }
-.gm-runbar__tab--menu       { background-image: url("../../../Honeti/PixelArtGUI/Textures/Icons/16/Star.png"); }
+/* Иконки режимов — game-icons.net (Lorc, Delapouite), CC BY 3.0, запечены из SVG в белый силуэт
+   на прозрачном: один файл на режим, состояние даёт тинт выше. Атрибуция — docs/third-party-credits.md. */
+.gm-runbar__tab--map        { background-image: url("../../Art/UI/Icons-gm/Modes/treasure-map.png"); }
+.gm-runbar__tab--battle     { background-image: url("../../Art/UI/Icons-gm/Modes/crossed-swords.png"); }
+.gm-runbar__tab--inventory  { background-image: url("../../Art/UI/Icons-gm/Modes/knapsack.png"); }
+.gm-runbar__tab--tactics    { background-image: url("../../Art/UI/Icons-gm/Modes/rally-the-troops.png"); }
+.gm-runbar__tab--compendium { background-image: url("../../Art/UI/Icons-gm/Modes/book-cover.png"); }
+.gm-runbar__tab--menu       { background-image: url("../../Art/UI/Icons-gm/Modes/cog.png"); }
 
 /* Разделитель перед бургером: он открывает модалку, а не переключает режим. */
 .gm-runbar__sep {
@@ -1291,7 +1296,9 @@
     width: 28px;
     height: 28px;
     margin-right: var(--gm-space-1);
-    -unity-background-scale-mode: scale-to-fit;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .gm-runbar__capsule-icon--gold {
