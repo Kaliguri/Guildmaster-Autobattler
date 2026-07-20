@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Guildmaster.Presentation.Map
 {
@@ -36,6 +37,15 @@ namespace Guildmaster.Presentation.Map
         [Tooltip("Поля листа: во сколько раз он больше графа. Лист ОБТЯГИВАЕТ карту, а не заливает экран — " +
                  "за его рваными краями начинается фон. 1.0 = впритык, 1.1 = небольшие поля.")]
         [SerializeField] private float _backdropPadding = 1.08f;
+
+        [Header("Стол под картой (то, что видно за краем листа)")]
+        [Tooltip("Материал поверхности под листом (шейдер Guildmaster/Map/Table). Пусто — за листом пустота, " +
+                 "которую камера зальёт своим цветом очистки. Тайл и маску света крутить В МАТЕРИАЛЕ.")]
+        [SerializeField] private Material _tableMaterial;
+
+        [Tooltip("Во сколько раз стол больше ЛИСТА. Должен с запасом перекрывать кадр на любом отъезде " +
+                 "камеры: край стола в кадре читается как ошибка, а не как край стола.")]
+        [SerializeField] private float _tablePadding = 3.5f;
 
         [Header("Цвета узла")]
         [Tooltip("Подложка узла — одна на все типы (--gm-ink-600). Тип читается ИКОНКОЙ, не цветом.")]
@@ -104,11 +114,17 @@ namespace Guildmaster.Presentation.Map
         [SerializeField, Range(0f, 0.6f)] private float _availableBreath = 0.22f;
 
         [Header("Такт (доли ЕДИНОГО метронома, а не секунды)")]
-        [Tooltip("На какой доле бьются доступные узлы. 1 = каждый такт, 2 = через такт.")]
+        [Tooltip("На какой доле дышат ЯРКОСТЬЮ доступные узлы. 1 = каждый такт, 2 = через такт.")]
         [SerializeField] private float _beatDivision = 1f;
 
-        [Tooltip("Насколько узел раздаётся на ударе сердца. Это размер, поверх дыхания яркостью.")]
-        [SerializeField, Range(0f, 0.5f)] private float _heartbeatAmount = 0.12f;
+        [Tooltip("На какой доле доступные узлы моргают РАЗМЕРОМ. Отдельно от яркости и намеренно медленнее: " +
+                 "2 = полный цикл «больше-меньше» за два такта. Пульс должен быть спокойным, но заметным — " +
+                 "ритм сердца (двойной толчок) здесь пробовали, он читался как суета.")]
+        [SerializeField] private float _pulseDivision = 2f;
+
+        [Tooltip("Насколько узел раздаётся на пульсе. Это размер, поверх дыхания яркостью.")]
+        [FormerlySerializedAs("_heartbeatAmount")]
+        [SerializeField, Range(0f, 0.5f)] private float _pulseAmount = 0.14f;
 
         [Tooltip("На какой доле бежит волна по дорожке к доступному узлу. 0.5 = вдвое чаще биения — " +
                  "дорожка успевает добежать за половину такта, и удар узла читается как её приход.")]
@@ -148,8 +164,10 @@ namespace Guildmaster.Presentation.Map
 
         /// <inheritdoc cref="_beatDivision"/>
         public float BeatDivision => _beatDivision;
-        /// <inheritdoc cref="_heartbeatAmount"/>
-        public float HeartbeatAmount => _heartbeatAmount;
+        /// <inheritdoc cref="_pulseDivision"/>
+        public float PulseDivision => _pulseDivision;
+        /// <inheritdoc cref="_pulseAmount"/>
+        public float PulseAmount => _pulseAmount;
         /// <inheritdoc cref="_flowDivision"/>
         public float FlowDivision => _flowDivision;
 
@@ -164,6 +182,10 @@ namespace Guildmaster.Presentation.Map
         public Material BackdropMaterial => _backdropMaterial;
         /// <inheritdoc cref="_backdropPadding"/>
         public float BackdropPadding => _backdropPadding;
+        /// <inheritdoc cref="_tableMaterial"/>
+        public Material TableMaterial => _tableMaterial;
+        /// <inheritdoc cref="_tablePadding"/>
+        public float TablePadding => _tablePadding;
 
         /// <inheritdoc cref="_nodeBacking"/>
         public Color NodeBacking => _nodeBacking;

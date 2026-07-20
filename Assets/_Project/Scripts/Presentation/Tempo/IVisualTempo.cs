@@ -31,11 +31,5 @@ namespace Guildmaster.Presentation.Tempo
         /// каждый вызывающий не писал свой синус и не разъезжался по фазе с остальными.
         /// </summary>
         float Swell(float division = 1f);
-
-        /// <summary>
-        /// Удар сердца: короткий двойной толчок и пауза — «тук-тук … тук-тук», а не ровный синус.
-        /// Возвращает 0..1, где 1 — вершина толчка.
-        /// </summary>
-        float Heartbeat(float division = 1f);
     }
 }

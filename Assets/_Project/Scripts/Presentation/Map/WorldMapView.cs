@@ -37,6 +37,7 @@ namespace Guildmaster.Presentation.Map
 
         // Глубина вместо слоёв сортировки: Shapes и SpriteRenderer — разные системы рисования, и порядок
         // между ними слоями надёжно не задаётся (иконки уходили ПОД подложки). По Z порядок однозначен.
+        private const float TableZ = 2f;    // ещё дальше листа: поверхность, на которой карта лежит
         private const float BackdropZ = 1f; // позади всего: узлы, дорожки и фишка рисуются поверх полотна
         private const float EdgeZ = 0.2f;
         private const float NodeZ = 0f;
@@ -49,9 +50,10 @@ namespace Guildmaster.Presentation.Map
 
         // Состояния тумблеров. Отдельными полями, потому что сами объекты (лист, туман) создаются лениво
         // при первом показе карты, а переключить эффект могут раньше.
+        private bool _tableOn = true;
         private bool _sheetOn = true;
         private bool _fogOn;      // туман по умолчанию ВЫКЛЮЧЕН (решение Макса: «вообще не то, мб позже»)
-        private bool _heartbeatOn = true;
+        private bool _pulseOn = true;
         private bool _pathFlowOn = true;
         private CameraModeController _cameraModes; // null в headless
         private WorldMapViewLink _link; // мост к петле забега (она живёт в корневом скоупе, выше мирового)
@@ -83,6 +85,7 @@ namespace Guildmaster.Presentation.Map
         private Transform _nodeRoot;
         private Transform _edgeRoot;
         private Disc _pawn;
+        private MeshRenderer _table;
         private MeshRenderer _backdrop;
         private MeshRenderer _fog;
         private MaterialPropertyBlock _fogBlock;
@@ -150,14 +153,17 @@ namespace Guildmaster.Presentation.Map
         {
             if (_toggles == null) return;
 
+            _toggles.Register("map.table", "Стол под картой (поверхность и свет за краем листа)",
+                on => { _tableOn = on; if (_table != null) _table.enabled = on; });
+
             _toggles.Register("map.sheet", "Лист карты (бумага под графом)",
                 on => { _sheetOn = on; if (_backdrop != null) _backdrop.enabled = on; });
 
             _toggles.Register("map.fog", "Туман над непройденной частью акта",
                 on => { _fogOn = on; if (_fog != null) _fog.enabled = on; }, defaultEnabled: false);
 
-            _toggles.Register("map.heartbeat", "Биение доступных узлов",
-                on => _heartbeatOn = on);
+            _toggles.Register("map.pulse", "Пульс доступных узлов (моргание размером в такт)",
+                on => _pulseOn = on);
 
             _toggles.Register("map.pathflow", "Бегущая волна по дорожкам",
                 on => _pathFlowOn = on);
@@ -236,6 +242,7 @@ namespace Guildmaster.Presentation.Map
             var size   = new Vector2(maxX - minX + padding * 2f, maxY - minY + padding * 2f);
             Bounds = new Rect2D(center, size);
 
+            PlaceTable(center, size);
             PlaceBackdrop(center, size);
             PlaceFog(center, size);
 
@@ -403,6 +410,41 @@ namespace Guildmaster.Presentation.Map
             _pawnAt = pos;
             if (_pawn != null) _pawn.transform.position = new Vector3(pos.x, pos.y, PawnZ);
         }
+
+        // Поверхность, на которой лежит лист. Собирается технически, без единого нарисованного пикселя:
+        // тайл из Kenney pattern-pack, пятно света из Kenney light-masks, цвета — в материале. Квад берётся
+        // с большим запасом по краям: увидеть в кадре КРАЙ стола хуже, чем не увидеть стола вовсе.
+        private void PlaceTable(Vector2 center, Vector2 size)
+        {
+            if (_style == null || _style.TableMaterial == null) return;
+
+            if (_table == null)
+            {
+                var go = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                go.name = "Table";
+                Destroy(go.GetComponent<Collider>()); // поверхность не должна ловить пикинг узлов
+                go.transform.SetParent(transform, false);
+                _table = go.GetComponent<MeshRenderer>();
+                _table.sharedMaterial = _style.TableMaterial;
+                _table.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                _table.receiveShadows = false;
+            }
+
+            _table.enabled = _tableOn;
+
+            float pad = Mathf.Max(1f, _style.BackdropPadding) * Mathf.Max(1f, _style.TablePadding);
+            var top = new Vector2(size.x * pad, size.y * pad);
+            _table.transform.position   = new Vector3(center.x, center.y, TableZ);
+            _table.transform.localScale = new Vector3(top.x, top.y, 1f);
+
+            // Пропорции — в шейдер, чтобы тайл не растянулся в полосы вдоль длинной стороны стола.
+            _tableBlock ??= new MaterialPropertyBlock();
+            _table.GetPropertyBlock(_tableBlock);
+            _tableBlock.SetFloat(AspectXId, top.y > 0.01f ? top.x / top.y : 1f);
+            _table.SetPropertyBlock(_tableBlock);
+        }
+
+        private MaterialPropertyBlock _tableBlock;
 
         // Полотно под картой. Без него позади узлов пустота, которую камера заливает своим цветом очистки —
         // именно поэтому карта выглядела «синей». Растягивается по фактическому размеру карты с запасом,
@@ -615,20 +657,20 @@ namespace Guildmaster.Presentation.Map
 
         private void AnimateNodes(float now)
         {
-            // Доступные узлы БЬЮТСЯ КАК СЕРДЦЕ — двойной толчок и покой, на общей доле метронома.
-            // Размерный пульс сам по себе читался как «всё шевелится», но ритм сердца читается как «живое»:
-            // разница в том, что у него есть пауза, и глаз ловит именно её.
-            float beat  = _heartbeatOn ? (_tempo?.Heartbeat(_style.BeatDivision) ?? 0f) : 0f;
-            float swell = _tempo?.Swell(_style.BeatDivision) ?? 0.5f;
+            // Доступные узлы РОВНО МОРГАЮТ размером на своей, медленной доле метронома: то больше, то меньше.
+            // Ритм сердца (двойной толчок и покой) здесь пробовали — он читается как суета, а не как «сюда можно».
+            // Спокойный вдох-выдох заметен ровно настолько, чтобы поймать взгляд, и не дёргает карту.
+            float pulse  = _pulseOn ? (_tempo?.Swell(_style.PulseDivision) ?? 0.5f) : 0.5f;
+            float swell  = _tempo?.Swell(_style.BeatDivision) ?? 0.5f;
             float breath = 1f + (swell - 0.5f) * 2f * _style.AvailableBreath;
-            float heart  = 1f + beat * _style.HeartbeatAmount;
+            float grow   = 1f + (pulse - 0.5f) * 2f * _style.PulseAmount;
 
             for (int i = 0; i < _hits.Count; i++)
             {
                 if (_hits[i].View == null) continue;
 
                 float scale = 1f;
-                if (_hits[i].Selectable) scale *= heart;
+                if (_hits[i].Selectable) scale *= grow;
                 if (i == _hoverIndex) scale *= _pressed ? _style.PressScale : _style.HoverScale;
 
                 if (i == _nudgeIndex)
@@ -701,6 +743,7 @@ namespace Guildmaster.Presentation.Map
             if (_nodeRoot != null) _nodeRoot.gameObject.SetActive(active);
             if (_edgeRoot != null) _edgeRoot.gameObject.SetActive(active);
             if (_pawn != null) _pawn.gameObject.SetActive(active);
+            if (_table != null) _table.gameObject.SetActive(active);
             if (_backdrop != null) _backdrop.gameObject.SetActive(active);
             if (_fog != null) _fog.gameObject.SetActive(active);
         }
