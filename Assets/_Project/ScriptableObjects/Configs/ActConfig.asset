@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Guild::Guildmaster.Guild.ActConfig
   _map:
     Columns: 14
-    MinColumnWidth: 2
-    MaxColumnWidth: 3
+    EdgeColumnWidth: 3
+    EdgeColumns: 1
+    MinColumnWidth: 5
+    MaxColumnWidth: 6
     Zones:
     - FromFloor: 1
       ToFloor: 4
