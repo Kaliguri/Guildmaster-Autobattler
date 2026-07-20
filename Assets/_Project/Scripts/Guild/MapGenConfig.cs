@@ -28,11 +28,11 @@ namespace Guildmaster.Guild
         /// </summary>
         public int EdgeColumns = 1;
 
-        /// <summary>Мин. ширина колонки в середине акта (между горловинами).</summary>
+        /// <summary>Мин. ширина колонки в середине акта (между горловинами). Роллится на КАЖДЫЙ этаж отдельно.</summary>
         public int MinColumnWidth = 5;
 
-        /// <summary>Макс. ширина колонки в середине акта.</summary>
-        public int MaxColumnWidth = 6;
+        /// <summary>Макс. ширина колонки в середине акта. Диапазон Min..Max — и есть разброс ширины акта.</summary>
+        public int MaxColumnWidth = 7;
 
         /// <summary>
         /// Зонные правила: диапазон этажей (индекс колонки) → разрешённые типы с весами. Первая покрывающая
@@ -85,9 +85,11 @@ namespace Guildmaster.Guild
             }),
         };
 
+        // Сундук-ряд (7) сужается до горловины: этаж-передышка должен читаться как узел на пути, а не как
+        // ещё одна широкая колонка (решение Макса 2026-07-20). Магазин перед боссом ширину не задаёт.
         private static AnchorRule[] DefaultAnchors() => new[]
         {
-            new AnchorRule(7,  MapNodeType.Chest),
+            new AnchorRule(7,  MapNodeType.Chest, width: 3),
             new AnchorRule(12, MapNodeType.Shop),
         };
     }
@@ -125,6 +127,18 @@ namespace Guildmaster.Guild
     {
         public int Floor;
         public MapNodeType Type;
-        public AnchorRule(int floor, MapNodeType type) { Floor = floor; Type = type; }
+
+        /// <summary>
+        /// Своя ширина этажа-якоря: 0 = ширина по общему профилю акта. Позволяет сделать якорный этаж
+        /// горловиной (сундук-ряд узкий, чтобы читался как передышка, а не как ещё одна широкая колонка).
+        /// </summary>
+        public int Width;
+
+        public AnchorRule(int floor, MapNodeType type, int width = 0)
+        {
+            Floor = floor;
+            Type  = type;
+            Width = width;
+        }
     }
 }

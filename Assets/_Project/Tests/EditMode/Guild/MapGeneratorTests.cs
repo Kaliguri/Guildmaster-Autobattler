@@ -155,8 +155,15 @@ namespace Guildmaster.Tests.EditMode.Guild
 
                 for (int floor = 1; floor <= lastFloor; floor++)
                 {
+                    // Якорь может задать этажу свою ширину (сундук-ряд — горловина посреди акта), и она
+                    // перекрывает общий профиль.
+                    int anchored = cfg.Anchors?.FirstOrDefault(a => a.Floor == floor && a.Width > 0).Width ?? 0;
                     bool narrow = floor <= cfg.EdgeColumns || floor > lastFloor - cfg.EdgeColumns;
-                    if (narrow)
+
+                    if (anchored > 0)
+                        Assert.AreEqual(anchored, widthOf[floor],
+                            $"Якорный этаж {floor} = {anchored} узла (сид {seed}).");
+                    else if (narrow)
                         Assert.AreEqual(cfg.EdgeColumnWidth, widthOf[floor],
                             $"Горловина: этаж {floor} = {cfg.EdgeColumnWidth} узла (сид {seed}).");
                     else

@@ -46,15 +46,58 @@ namespace Guildmaster.Tests.EditMode.Guild
 
                 for (int floor = 1; floor <= lastFloor; floor++)
                 {
-                    bool narrow = floor <= cfg.EdgeColumns || floor > lastFloor - cfg.EdgeColumns;
-                    if (narrow)
+                    int anchored = AnchorWidth(cfg, floor);
+                    bool edge = floor <= cfg.EdgeColumns || floor > lastFloor - cfg.EdgeColumns;
+
+                    if (anchored > 0)
+                        Assert.AreEqual(anchored, widthOf[floor],
+                            $"Якорный этаж {floor} задаёт свою ширину (сид {seed}).");
+                    else if (edge)
                         Assert.AreEqual(cfg.EdgeColumnWidth, widthOf[floor],
                             $"Горловина: этаж {floor} (сид {seed}).");
                     else
-                        Assert.GreaterOrEqual(widthOf[floor], 5,
-                            $"Середина: этаж {floor} должен быть широким, а не {widthOf[floor]} (сид {seed}).");
+                        Assert.That(widthOf[floor], Is.InRange(cfg.MinColumnWidth, cfg.MaxColumnWidth),
+                            $"Середина: этаж {floor} обязан лежать в диапазоне конфига (сид {seed}).");
                 }
             }
+        }
+
+        /// <summary>
+        /// Ширина середины — именно ДИАПАЗОН, а не одно число: на разных этажах и сидах должны встречаться
+        /// разные значения. Иначе «рандом ширины» тихо выродился бы в константу и никто бы не заметил.
+        /// </summary>
+        [Test]
+        public void PlayedConfig_MiddleWidthActuallyVaries()
+        {
+            MapGenConfig cfg = LoadPlayedConfig();
+            if (cfg.MinColumnWidth == cfg.MaxColumnWidth) Assert.Pass("Диапазон намеренно вырожден в одно число.");
+
+            int lastFloor = cfg.Columns - 2;
+            var seen = new System.Collections.Generic.HashSet<int>();
+
+            for (ulong seed = 1; seed <= 20; seed++)
+            {
+                MapState map = MapGenerator.Generate(new XorShiftRng(seed), cfg);
+                var widthOf = map.Nodes.GroupBy(n => n.Floor).ToDictionary(g => g.Key, g => g.Count());
+
+                for (int floor = 1; floor <= lastFloor; floor++)
+                {
+                    if (AnchorWidth(cfg, floor) > 0) continue;
+                    if (floor <= cfg.EdgeColumns || floor > lastFloor - cfg.EdgeColumns) continue;
+                    seen.Add(widthOf[floor]);
+                }
+            }
+
+            Assert.Greater(seen.Count, 1,
+                $"Ширина середины не роллится — везде {string.Join(",", seen)}.");
+        }
+
+        private static int AnchorWidth(MapGenConfig cfg, int floor)
+        {
+            if (cfg.Anchors == null) return 0;
+            foreach (AnchorRule a in cfg.Anchors)
+                if (a.Floor == floor && a.Width > 0) return a.Width;
+            return 0;
         }
     }
 }

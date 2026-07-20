@@ -87,6 +87,12 @@ namespace Guildmaster.Guild
         /// </summary>
         private static int ColumnWidth(IRngService rng, MapGenConfig cfg, int col)
         {
+            // Якорь может задать свою ширину этажа — так сундук-ряд становится горловиной посреди акта.
+            if (cfg.Anchors != null)
+                for (int i = 0; i < cfg.Anchors.Length; i++)
+                    if (cfg.Anchors[i].Floor == col && cfg.Anchors[i].Width > 0)
+                        return cfg.Anchors[i].Width;
+
             int lastFloor = cfg.Columns - 2;                       // последний этаж-испытание (перед Boss)
             bool nearStart = col <= cfg.EdgeColumns;
             bool nearBoss  = col > lastFloor - cfg.EdgeColumns;
