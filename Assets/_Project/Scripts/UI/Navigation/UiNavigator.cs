@@ -205,7 +205,15 @@ namespace Guildmaster.UI
             UiScreen top = Top;
             bool modal = top != null && top.Kind != ScreenKind.Sheet;
             _input.GameplaySuppressed = modal;
-            _input.SetContext(modal ? InputContext.Menu : WorldContextOf(_clock != null ? _clock.Phase : BattlePhase.None));
+
+            if (modal) { _input.SetContext(InputContext.Menu); return; }
+
+            // Карта акта — тоже «мир», но свой: её world-камера должна жить (пан/зум как в бою), боевых
+            // действий нет. Фаза боя тут ничего не скажет (карта вне боя → BattlePhase.None → камера мертва),
+            // поэтому контекст берём из верха стека по тегу режима. Это и есть заявленное «ввод = f(верх, фаза)».
+            if (top != null && top.ModeTag == UiScreen.MapModeTag) { _input.SetContext(InputContext.Map); return; }
+
+            _input.SetContext(WorldContextOf(_clock != null ? _clock.Phase : BattlePhase.None));
         }
 
         private static InputContext WorldContextOf(BattlePhase phase) => phase switch

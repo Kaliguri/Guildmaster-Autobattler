@@ -43,6 +43,11 @@ namespace Guildmaster.Game
 
             // «Серая зона» тест-арены (QA #2): свапает цветной/grayscale пол по тумблеру тест-зоны.
             builder.RegisterComponentInHierarchy<Presentation.TestZoneArenaSkin>();
+
+            // World-слой карты акта (фаза D): живёт в этой persist-сцене СВОЕЙ зоной, разнесённой от арены
+            // (положение объекта в сцене и задаёт, где карта в мире). Себя он привязывает к
+            // WorldMapViewLink из корневого скоупа — петля забега висит выше и напрямую его не видит.
+            builder.RegisterComponentInHierarchy<Presentation.Map.WorldMapView>();
         }
 
         private ArenaLayoutData BuildArenaLayout()

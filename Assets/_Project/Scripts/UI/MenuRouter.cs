@@ -288,6 +288,39 @@ namespace Guildmaster.UI
             if (_testZoneScreen != null) _nav.Remove(_testZoneScreen); // OnExit обнулит _testZoneScreen
         }
 
+        // World-карта (фаза D): сама карта живёт в мире, а UI держит лишь прозрачное Sheet-пространство —
+        // ради тега режима (подсветка таба «Карта») и контекста ввода (навигатор ставит InputContext.Map,
+        // где world-камера жива). Показ/скрытие — по СОСТОЯНИЮ WorldMapSpaceChangedEvent (бутстрап),
+        // владелец состояния — WorldMapNodeChooser. Идемпотентно, как тест-зона.
+        private UiScreen _mapSpaceScreen;
+
+        /// <summary>Войти в пространство world-карты: прозрачный Sheet с тегом режима «карта».</summary>
+        public void ShowMapSpace()
+        {
+            if (_mapSpaceScreen != null) { UiTrace.Log("router.ShowMapSpace: уже показан → no-op"); return; }
+            UiTrace.Log("router.ShowMapSpace: Push map Sheet");
+            _mapSpaceScreen = new RouterScreen(ScreenKind.Sheet, BuildMapSpace, modeTag: UiScreen.MapModeTag,
+                                               onExit: () => _mapSpaceScreen = null);
+            _nav.Push(_mapSpaceScreen);
+        }
+
+        /// <summary>Выйти из пространства world-карты: снять Sheet из любого места стека.</summary>
+        public void HideMapSpace()
+        {
+            UiTrace.Log($"router.HideMapSpace: {(_mapSpaceScreen != null ? "Remove map space" : "нет экрана → no-op")}");
+            if (_mapSpaceScreen != null) _nav.Remove(_mapSpaceScreen); // OnExit обнулит _mapSpaceScreen
+        }
+
+        // Прозрачное «окно в мир» карты — та же роль, что у пространства тест-зоны: контента не рисует,
+        // ввод не ловит (клики уходят в мир через PointerOverUI), несёт лишь режим.
+        private static VisualElement BuildMapSpace()
+        {
+            var space = new VisualElement { name = "map-space", pickingMode = PickingMode.Ignore };
+            space.style.position = Position.Absolute;
+            space.style.left = 0; space.style.top = 0; space.style.right = 0; space.style.bottom = 0;
+            return space;
+        }
+
         // Прозрачное полноэкранное «окно в мир» тест-зоны: не рисует контента (мир виден сквозь), не ловит ввод
         // (Ignore — клики идут в мир через PointerOverUI). Несёт лишь роль «мы в геймплей-пространстве тест-зоны».
         private static VisualElement BuildTestZoneSpace()

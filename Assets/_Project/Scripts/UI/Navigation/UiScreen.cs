@@ -13,6 +13,12 @@ namespace Guildmaster.UI
         /// <summary>Поведенческий тип экрана (Page/Modal/Sheet).</summary>
         public abstract ScreenKind Kind { get; }
 
+        /// <summary>
+        /// Тег режима карты акта. Помимо подсветки таба топбара определяет контекст ввода: экран с этим
+        /// тегом переводит ввод в <c>InputContext.Map</c> (world-камера карты жива) — см. <c>UiNavigator.SyncInput</c>.
+        /// </summary>
+        public const string MapModeTag = "map";
+
         /// <summary>Тег режима для подсветки таба топбара: "map"/"inventory"/"battle"/null.</summary>
         public virtual string ModeTag => null;
 

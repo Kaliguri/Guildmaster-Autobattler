@@ -126,7 +126,17 @@ namespace Guildmaster.Game
             // Петля акта (план act-map-run-loop §3.2): резолвер узлов + выбор узла через экран карты (A3) + раннер.
             // AutoFirstNodeChooser остаётся для headless/тестов; в игре узел выбирает игрок кликом по MapScreen.
             builder.Register<NodeResolver>(Lifetime.Singleton).As<INodeResolver>();
-            builder.Register<MapScreenNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
+
+            // Линк к world-слою карты: держим ЗДЕСЬ (в корне), потому что петля акта живёт здесь, а сам слой —
+            // компонент persist-мира из дочернего скоупа, которого корень напрямую не видит. Слой привязывает
+            // себя к линку при старте.
+            builder.Register<Presentation.Map.WorldMapViewLink>(Lifetime.Singleton)
+                   .AsSelf().As<Presentation.Map.IWorldMapView>();
+
+            // Выбор узла. Фаза D: world-карта (узлы в мире, камера как в бою). Откат на UITK-карту — заменой
+            // одной этой строки на MapScreenNodeChooser (старый путь пока цел, до play-приёмки world-карты).
+            // AutoFirstNodeChooser остаётся для headless/тестов.
+            builder.Register<WorldMapNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
             builder.Register<ActRunner>(Lifetime.Singleton);
 
             // GameFlow ведёт верхний цикл + реализует IRunControl (QA #18): системное меню прерывает забег.

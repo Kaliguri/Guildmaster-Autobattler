@@ -16,6 +16,8 @@ namespace Guildmaster.Presentation
         Overview,
         /// <summary>Свободная dev-камера: пан/зум без клампа (доступ выдаётся отдельно).</summary>
         Dev,
+        /// <summary>Карта акта: ручной пан/зум в пределах зоны КАРТЫ (не боевой арены).</summary>
+        Map,
     }
 
     /// <summary>
@@ -30,6 +32,11 @@ namespace Guildmaster.Presentation
         [SerializeField] private CinemachineCamera _actionCam;
         [SerializeField] private CinemachineCamera _overviewCam;
         [SerializeField] private CinemachineCamera _devCam;
+        [Tooltip("Камера карты акта. Отдельная vcam — чтобы позиция и зум карты жили НЕЗАВИСИМО от боевых " +
+                 "(Cinemachine хранит transform и Lens на каждой vcam; неактивная стоит где стояла). " +
+                 "ГОТЧА: зона карты разнесена в мире от арены, поэтому переходы бой↔карта в Custom Blends " +
+                 "должны быть Cut — иначе Brain полетит между зонами через пустоту.")]
+        [SerializeField] private CinemachineCamera _mapCam;
 
         [Header("Камера (глубина)")]
         [Tooltip("Z-позиция камеры (2D: отрицательная, чтобы плоскость поля z=0 попадала в кадр). " +
@@ -72,6 +79,13 @@ namespace Guildmaster.Presentation
         // Удерживаемая цель зума экшн-камеры (обновляется через дедзону, см. DriveActionZoom). ≤0 = ещё не задана.
         private float _actionZoomTarget = -1f;
 
+        // Зона карты: границы клампа для CameraMode.Map. Приходит снаружи (EnterMap) — карта живёт в
+        // СВОЁЙ области мира, боевая _layout.CameraZone к ней отношения не имеет.
+        private Rect2D _mapZone;
+        // Кадрируем карту целиком только при ПЕРВОМ входе. Дальше не трогаем позицию/зум: игрок мог
+        // отъехать и приблизиться, и это должно пережить поход в бой и обратно.
+        private bool _mapFramed;
+
         /// <summary>Разблокирован ли dev-режим камеры (доступ выдаётся отдельно, вики «16» §6).</summary>
         public bool DevAccess => _devAccess;
 
@@ -107,6 +121,7 @@ namespace Guildmaster.Presentation
             CollectShaker(_actionCam);
             CollectShaker(_overviewCam);
             CollectShaker(_devCam);
+            CollectShaker(_mapCam);
         }
 
         private void CollectShaker(CinemachineCamera cam)
@@ -141,6 +156,7 @@ namespace Guildmaster.Presentation
         {
             SetZ(_overviewCam);
             SetZ(_devCam);
+            SetZ(_mapCam);
 
             if (_actionCam != null)
             {
@@ -193,6 +209,28 @@ namespace Guildmaster.Presentation
             _overviewCam.Lens = lens;
         }
 
+        /// <summary>
+        /// Войти в вид карты акта: своя vcam, свои границы клампа (<paramref name="bounds"/> — область карты
+        /// в мире, разнесённая от арены). Кадрируем карту целиком только при ПЕРВОМ входе: дальше позиция
+        /// и зум карты — то, что игрок оставил, и поход в бой их не сбивает (боевые vcam живут отдельно).
+        /// </summary>
+        public void EnterMap(Rect2D bounds)
+        {
+            _mapZone = bounds;
+            _mode    = CameraMode.Map;
+            ApplyMode();
+            if (_mapCam == null || _mapFramed) return;
+
+            _mapFramed = true;
+            float size = MaxZoomForZone(); // вся карта в кадре — стартовый вид
+            Vector2 c  = bounds.Center;
+            _mapCam.transform.position = new Vector3(c.x, c.y, _cameraZ);
+
+            LensSettings lens = _mapCam.Lens;
+            lens.OrthographicSize = size;
+            _mapCam.Lens = lens;
+        }
+
         /// <summary>Вернуть боевой вид (экшн-камера, слежение за дракой) — на старте боя из расстановки.</summary>
         public void ExitToActionView()
         {
@@ -202,6 +240,10 @@ namespace Guildmaster.Presentation
 
         private void OnCycleView()
         {
+            // На карте Tab не циклит: боевые виды смотрят в другую область мира — переключение
+            // увело бы камеру с карты в пустую арену. Выход из карты — только через вход в узел.
+            if (_mode == CameraMode.Map) return;
+
             _mode = NextMode(_mode, _devAccess);
             ApplyMode();
         }
@@ -222,6 +264,7 @@ namespace Guildmaster.Presentation
             SetPriority(_actionCam,   _mode == CameraMode.Action);
             SetPriority(_overviewCam, _mode == CameraMode.Overview);
             SetPriority(_devCam,      _mode == CameraMode.Dev);
+            SetPriority(_mapCam,      _mode == CameraMode.Map);
         }
 
         private void SetPriority(CinemachineCamera cam, bool active)
@@ -236,6 +279,7 @@ namespace Guildmaster.Presentation
             {
                 case CameraMode.Overview: DriveManual(_overviewCam, _panSpeed, clampToZone: true);  break;
                 case CameraMode.Dev:      DriveManual(_devCam, _devPanSpeed, clampToZone: false);    break;
+                case CameraMode.Map:      DriveManual(_mapCam, _panSpeed, clampToZone: true);        break;
                 case CameraMode.Action:   DriveActionZoom();                                         break;
             }
         }
@@ -298,6 +342,14 @@ namespace Guildmaster.Presentation
             _actionCam.Lens = lens;
         }
 
+        // Активная зона клампа = зона ТЕКУЩЕГО режима. Боевые режимы клампятся ареной, карта — своей
+        // областью мира (она разнесена от арены и в боевую рамку не влезает: 14 колонок).
+        private Rect2D ActiveZone()
+        {
+            if (_mode == CameraMode.Map) return _mapZone;
+            return _layout != null ? _layout.CameraZone : ArenaLayoutData.Unbounded.CameraZone;
+        }
+
         // Максимальный орто-размер, при котором видимая область не превышает зону (по обеим осям).
         private float MaxZoomForZone()
         {
@@ -311,7 +363,7 @@ namespace Guildmaster.Presentation
         // Кламп центра так, чтобы видимый прямоугольник (полу-высота = size) не вышел за зону.
         private Vector3 ClampVisibleCenter(Vector3 pos, float size)
         {
-            Vector2 c = _layout.CameraZone.Center;
+            Vector2 c = ActiveZone().Center;
             Vector2 zone = ZoneSize();
             float aspect = ScreenAspect();
 
@@ -338,7 +390,7 @@ namespace Guildmaster.Presentation
 
         private Vector2 ZoneSize()
         {
-            Vector2 s = _layout.CameraZone.Size;
+            Vector2 s = ActiveZone().Size;
             return new Vector2(Mathf.Abs(s.x), Mathf.Abs(s.y));
         }
 

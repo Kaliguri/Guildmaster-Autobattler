@@ -18,7 +18,8 @@ namespace Guildmaster.Game.Input
     {
         private readonly InputActionMap _cameraMap;
         private readonly InputActionMap _combatMap;
-        private readonly InputActionMap _deploymentMap; // мышь фазы расстановки (шаг 4)
+        private readonly InputActionMap _deploymentMap; // действия фазы расстановки (шаг 4)
+        private readonly InputActionMap _pointerMap; // указатель (позиция + ЛКМ) — общий для расстановки и карты
         private readonly InputActionMap _uiMap; // seam под меню/навигацию (реализация — будущая фаза)
 
         private readonly InputAction _pan;
@@ -73,10 +74,15 @@ namespace Guildmaster.Game.Input
             _pauseToggle = _combatMap.AddAction("PauseToggle", InputActionType.Button, "<Keyboard>/space");
             _gameSpeedCycle = _combatMap.AddAction("GameSpeedCycle", InputActionType.Button, "<Keyboard>/period");
 
-            // --- Карта «Deployment»: указатель мыши (позиция + ЛКМ) для фазы расстановки (шаг 4) ---
+            // --- Карта «Deployment»: действия фазы расстановки (шаг 4). Указатель вынесен в «Pointer». ---
             _deploymentMap = new InputActionMap("Deployment");
-            _pointerPos   = _deploymentMap.AddAction("PointerPosition", InputActionType.Value, "<Mouse>/position");
-            _pointerPress = _deploymentMap.AddAction("PointerPress", InputActionType.Button, "<Mouse>/leftButton");
+
+            // --- Карта «Pointer»: указатель мыши (позиция + ЛКМ). Общая для расстановки (перетаскивание
+            // юнитов) и карты акта (клик по узлу) — оба контекста тыкают в мир одной и той же мышью,
+            // и включать ради этого чужую карту «Deployment» было бы враньём по смыслу. ---
+            _pointerMap = new InputActionMap("Pointer");
+            _pointerPos   = _pointerMap.AddAction("PointerPosition", InputActionType.Value, "<Mouse>/position");
+            _pointerPress = _pointerMap.AddAction("PointerPress", InputActionType.Button, "<Mouse>/leftButton");
             _pointerPress.performed += OnPointerPressed;
             _pointerPress.canceled  += OnPointerReleased;
 
@@ -102,6 +108,7 @@ namespace Guildmaster.Game.Input
             _cameraMap.Disable();
             _combatMap.Disable();
             _deploymentMap.Disable();
+            _pointerMap.Disable();
             _uiMap.Disable();
 
             switch (context)
@@ -112,6 +119,13 @@ namespace Guildmaster.Game.Input
                 case InputContext.Deployment:
                     _cameraMap.Enable();
                     _deploymentMap.Enable();
+                    _pointerMap.Enable();
+                    break;
+                // Карта акта: своя world-камера (пан/зум как в бою) + указатель для клика по узлу.
+                // Боевых действий (пауза, скорость) здесь нет — боя не идёт.
+                case InputContext.Map:
+                    _cameraMap.Enable();
+                    _pointerMap.Enable();
                     break;
                 case InputContext.Combat:
                     _cameraMap.Enable();
@@ -184,6 +198,7 @@ namespace Guildmaster.Game.Input
             _cameraMap.Dispose();
             _combatMap.Dispose();
             _deploymentMap.Dispose();
+            _pointerMap.Dispose();
             _uiMap.Dispose();
             _menuToggle.Dispose();
         }

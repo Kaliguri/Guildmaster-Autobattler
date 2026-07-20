@@ -109,6 +109,8 @@ namespace Guildmaster.UI
         private IPublisher<SetTestZoneRequest> _testZonePub; // радио-табы: целевое состояние тест-зоны (бой/не-бой)
         private ISubscriber<TestZoneChangedEvent> _testZoneChangedSub; // Ф5: СОСТОЯНИЕ тест-зоны → Sheet-экран
         private IDisposable _testZoneChangedSubscription;
+        private ISubscriber<WorldMapSpaceChangedEvent> _mapSpaceSub; // фаза D: СОСТОЯНИЕ world-карты → Sheet-экран
+        private IDisposable _mapSpaceSubscription;
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -118,9 +120,11 @@ namespace Guildmaster.UI
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
             ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub,
-            IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub)
+            IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
+            ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub)
         {
             _router = router;
+            _mapSpaceSub = mapSpaceSub;
             _relicDragPub = relicDragPub;
             _testZonePub = testZonePub;
             _testZoneChangedSub = testZoneChangedSub;
@@ -187,6 +191,14 @@ namespace Guildmaster.UI
                 UiTrace.Log($"bootstrap: TestZoneChanged(Active={e.Active}) → {(e.Active ? "ShowTestZone" : "HideTestZone")}");
                 if (e.Active) _router.ShowTestZone();
                 else          _router.HideTestZone();
+            });
+            // Фаза D: СОСТОЯНИЕ world-карты (владелец — WorldMapNodeChooser) → прозрачный Sheet «карта».
+            // Сама карта рисуется в мире; Sheet нужен ради тега режима и контекста ввода InputContext.Map.
+            _mapSpaceSubscription = _mapSpaceSub?.Subscribe(e =>
+            {
+                UiTrace.Log($"bootstrap: WorldMapSpaceChanged(Active={e.Active}) → {(e.Active ? "ShowMapSpace" : "HideMapSpace")}");
+                if (e.Active) _router.ShowMapSpace();
+                else          _router.HideMapSpace();
             });
             RefreshShell();
         }
@@ -448,6 +460,7 @@ namespace Guildmaster.UI
             if (_router != null) _router.Changed -= RefreshShell;     // Ф4
             if (_loc != null) _loc.LocaleChanged -= RebuildTopBar;    // шов II.9.2
             _testZoneChangedSubscription?.Dispose();                  // Ф5
+            _mapSpaceSubscription?.Dispose();                         // фаза D
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();
