@@ -154,10 +154,10 @@ MonoBehaviour:
   _loadoutScreen: {fileID: 9197481963319205126, guid: 15c3d6ae3d7b0564e9f3085e3abba396, type: 3}
   _rewardScreen: {fileID: 9197481963319205126, guid: d9f6be55684a5534086ba8b49b9215ab, type: 3}
   _eventScreen: {fileID: 9197481963319205126, guid: 5f2c0deae1e055b4eaaf17257898cf83, type: 3}
-  _mapScreen: {fileID: 9197481963319205126, guid: af9fe6ae599511449b59ad30576aad90, type: 3}
   _continueScreen: {fileID: 9197481963319205126, guid: 4fda0ea06bc1e234e8ceaa9ebc8bb51e, type: 3}
   _shopScreen: {fileID: 9197481963319205126, guid: cfc0777af5f00e44896f6b4a073c626b, type: 3}
   _chestScreen: {fileID: 9197481963319205126, guid: 1ff8b7142418a244dbb702afa6cb314a, type: 3}
+  _campScreen: {fileID: 9197481963319205126, guid: 3dfc93592132fd343b4d7174836192c7, type: 3}
   _outcomeScreen: {fileID: 9197481963319205126, guid: 23b1ecddbec3ffa47bcda35390fcd78b, type: 3}
   _mainMenuScreen: {fileID: 9197481963319205126, guid: 6b74acde43d6f2845a61d543591cccb0, type: 3}
   _runModeBar: {fileID: 9197481963319205126, guid: 919b5073000fd104e8e188b2a2624dd5, type: 3}

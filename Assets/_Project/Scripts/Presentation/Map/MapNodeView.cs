@@ -15,7 +15,7 @@ namespace Guildmaster.Presentation.Map
         [Serializable]
         public struct IconVariant
         {
-            [Tooltip("Имя типа узла (Battle, Elite, Boss, Shop, Chest, TextEvent, Start, Unknown).")]
+            [Tooltip("Имя типа узла (Battle, Elite, Boss, Shop, Chest, Camp, TextEvent, Start, Unknown).")]
             public string Kind;
 
             [Tooltip("Спрайт этого типа. Держится выключенным, включается по типу узла.")]

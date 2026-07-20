@@ -36,13 +36,15 @@ namespace Guildmaster.Game.Flow
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<OpenShopRequest>      _openShopPub;
         private readonly IPublisher<OpenChestRequest>     _openChestPub;
+        private readonly IPublisher<OpenCampRequest>      _openCampPub;
 
         public NodeResolver(IContentDatabase content, ISceneLoader scenes, IBattleSession session,
                             ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
                             IRewardPresenter reward, RunStateService runStates, IContinuePresenter continuePresenter,
                             IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub,
-                            IPublisher<OpenChestRequest> openChestPub)
+                            IPublisher<OpenChestRequest> openChestPub, IPublisher<OpenCampRequest> openCampPub)
         {
+            _openCampPub  = openCampPub;
             _content      = content;
             _scenes       = scenes;
             _session      = session;
@@ -108,6 +110,9 @@ namespace Guildmaster.Game.Flow
 
                 case MapNodeType.Chest:
                     return new ChestFlow(_openChestPub, _reward);
+
+                case MapNodeType.Camp:
+                    return new CampFlow(_openCampPub);
 
                 // «?»: тип роллится на входе, делегируем себе же (B4).
                 case MapNodeType.Unknown:

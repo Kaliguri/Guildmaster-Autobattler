@@ -18,6 +18,7 @@ namespace Guildmaster.Guild
         Boss,       // финалист акта
         Chest,      // сундук: сцена-фасад → награда 1-из-3 (payload = reward-пул; пусто = дефолт)
         Unknown,    // «?»-узел: тип роллится на входе (RandomEventFlow, план §5.4/B4)
+        Camp,       // привал: бюджет действий отряда тратится на несколько трат подряд (CampFlow)
     }
 
     /// <summary>

@@ -45,6 +45,9 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана сундука (фасад с кликабельной крышкой → награда 1-из-3).")]
         [SerializeField] private VisualTreeAsset _chestScreen;
 
+        [Tooltip("UXML экрана привала (бюджет действий отряда + список трат).")]
+        [SerializeField] private VisualTreeAsset _campScreen;
+
         [Tooltip("UXML экрана исхода забега (Победа/Поражение → В меню).")]
         [SerializeField] private VisualTreeAsset _outcomeScreen;
 
@@ -75,6 +78,7 @@ namespace Guildmaster.UI
         private ISubscriber<OpenContinueRequest> _openContinueSub;
         private ISubscriber<OpenShopRequest> _openShopSub;
         private ISubscriber<OpenChestRequest> _openChestSub;
+        private ISubscriber<OpenCampRequest> _openCampSub;
         private ISubscriber<OpenOutcomeRequest> _openOutcomeSub;
         private ISubscriber<OpenMainMenuRequest> _openMainMenuSub;
         private IDisposable _openLoadoutSubscription;
@@ -83,6 +87,7 @@ namespace Guildmaster.UI
         private IDisposable _openContinueSubscription;
         private IDisposable _openShopSubscription;
         private IDisposable _openChestSubscription;
+        private IDisposable _openCampSubscription;
         private IDisposable _openOutcomeSubscription;
         private IDisposable _openMainMenuSubscription;
         private UIDocument _doc;
@@ -121,8 +126,10 @@ namespace Guildmaster.UI
             ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
             ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub,
-            ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub)
+            ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub,
+            ISubscriber<OpenCampRequest> openCampSub)
         {
+            _openCampSub = openCampSub;
             _mainMenuVisSub = mainMenuVisSub;
             _router = router;
             _mapSpaceSub = mapSpaceSub;
@@ -157,7 +164,7 @@ namespace Guildmaster.UI
                 return;
             }
             BuildLayers(); // Ф4: скелет слоёв-контейнеров ДО инициализации роутера (навигатор кладёт экраны в них)
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -171,6 +178,8 @@ namespace Guildmaster.UI
             _openShopSubscription = _openShopSub?.Subscribe(req => _router.OpenShop(req));
             // Сундук — запрос из узла сундука (ChestFlow).
             _openChestSubscription = _openChestSub?.Subscribe(req => _router.OpenChest(req));
+            // Привал — запрос из узла привала (CampFlow).
+            _openCampSubscription = _openCampSub?.Subscribe(req => _router.OpenCamp(req));
             // Исход забега — запрос из GameFlow после акта.
             _openOutcomeSubscription = _openOutcomeSub?.Subscribe(req => _router.ShowOutcome(req));
             // Главное меню — запрос из GameFlow (верхний цикл).
@@ -478,6 +487,7 @@ namespace Guildmaster.UI
             _openContinueSubscription?.Dispose();
             _openShopSubscription?.Dispose();
             _openChestSubscription?.Dispose();
+            _openCampSubscription?.Dispose();
             _openOutcomeSubscription?.Dispose();
             _openMainMenuSubscription?.Dispose();
         }

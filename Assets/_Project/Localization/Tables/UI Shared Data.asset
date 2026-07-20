@@ -14,7 +14,39 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
   m_TableCollectionName: UI
   m_TableCollectionNameGuidString: 3aae2a3df45140c448f14ca531854eae
-  m_Entries: []
+  m_Entries:
+  - m_Id: 3461211247337472
+    m_Key: ui.camp.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474816
+    m_Key: ui.camp.body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474817
+    m_Key: ui.camp.budget
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474818
+    m_Key: ui.camp.action.empower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474819
+    m_Key: ui.camp.action.copy_relic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474820
+    m_Key: ui.camp.action.cleanse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474821
+    m_Key: ui.camp.action.hire_vessel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3461211293474822
+    m_Key: ui.camp.action.move_on
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

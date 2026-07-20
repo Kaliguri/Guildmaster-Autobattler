@@ -77,12 +77,57 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
-        public void Generate_DefaultDepth_Is14Columns()
+        public void Generate_DefaultDepth_Is15Columns()
         {
-            // Дефолт (реш. Макса 2026-07-19): Start + 12 испытаний + Boss.
+            // Дефолт (реш. Макса 2026-07-20): Start + 13 испытаний + Boss.
             var map = Generate(3UL);
             int columns = map.Nodes.Select(n => n.Floor).Distinct().Count();
-            Assert.AreEqual(14, columns, "Дефолтная глубина = Start + 12 испытаний + Boss.");
+            Assert.AreEqual(15, columns, "Дефолтная глубина = Start + 13 испытаний + Boss.");
+        }
+
+        [Test]
+        public void Generate_Waist_FunnelsThroughChest_ThenFansIntoCamps()
+        {
+            // Талия акта (реш. Макса 2026-07-20): широкая середина сходится в ОДИН сундук, и уже из него
+            // веер в ТРИ привала. Это ритмическая пауза — если сундук снова станет колонкой, пропадёт и
+            // общая точка, и осмысленность следующей развилки.
+            var cfg = new MapGenConfig();
+            for (ulong seed = 1; seed <= 20; seed++)
+            {
+                var map = Generate(seed, cfg);
+
+                var chests = map.Nodes.Where(n => n.Floor == 7).ToList();
+                var camps  = map.Nodes.Where(n => n.Floor == 8).ToList();
+
+                Assert.AreEqual(1, chests.Count, $"Этаж 7 — ровно один сундук (сид {seed}).");
+                Assert.AreEqual(MapNodeType.Chest, chests[0].Type, $"Этаж 7 — сундук (сид {seed}).");
+                Assert.AreEqual(3, camps.Count, $"Этаж 8 — ровно три привала (сид {seed}).");
+                Assert.IsTrue(camps.All(n => n.Type == MapNodeType.Camp), $"Этаж 8 — привалы (сид {seed}).");
+
+                CollectionAssert.AreEquivalent(camps.Select(c => c.Id), chests[0].Edges,
+                    $"Из сундука ведут пути ровно во все три привала (сид {seed}).");
+
+                foreach (var before in map.Nodes.Where(n => n.Floor == 6))
+                    CollectionAssert.AreEqual(new[] { chests[0].Id }, before.Edges,
+                        $"Этаж 6 целиком сходится в сундук (сид {seed}).");
+            }
+        }
+
+        [Test]
+        public void Generate_CampStandsBeforeBoss()
+        {
+            // Перед боссом — привал: последняя возможность потратить действия отряда до финала акта.
+            var cfg = new MapGenConfig();
+            int bossFloor = cfg.Columns - 1;
+            for (ulong seed = 1; seed <= 20; seed++)
+            {
+                var map = Generate(seed, cfg);
+                var beforeBoss = map.Nodes.Where(n => n.Floor == bossFloor - 1).ToList();
+
+                Assert.IsNotEmpty(beforeBoss, $"Этаж перед боссом существует (сид {seed}).");
+                Assert.IsTrue(beforeBoss.All(n => n.Type == MapNodeType.Camp),
+                    $"Этаж перед боссом — привалы (сид {seed}).");
+            }
         }
 
         [Test]

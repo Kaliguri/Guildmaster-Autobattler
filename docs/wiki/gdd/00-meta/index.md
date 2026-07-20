@@ -59,6 +59,7 @@ status: living
 
 - [[multiplayer|Modes - Multiplayer]] — кооператив, распределение «Сосудов».
 - [[controls|Modes - Controls]] — раскладка клавиш (техника ввода — в техчасти).
+- [[ui-feedback|Modes - UI Feedback]] — общие правила отклика интерфейса (недоступные действия и т.п.).
 
 ## Research (`../../research/`)
 

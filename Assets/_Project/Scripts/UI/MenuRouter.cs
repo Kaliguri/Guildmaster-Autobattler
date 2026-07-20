@@ -40,6 +40,7 @@ namespace Guildmaster.UI
         private VisualTreeAsset _continueUxml;
         private VisualTreeAsset _shopUxml;
         private VisualTreeAsset _chestUxml;
+        private VisualTreeAsset _campUxml;
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
         private VisualTreeAsset _loadoutHubUxml;
@@ -84,7 +85,7 @@ namespace Guildmaster.UI
             VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
             VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
             VisualTreeAsset loadoutHubUxml = null, VisualTreeAsset loadoutInventoryUxml = null,
-            VisualTreeAsset arcanaCardUxml = null)
+            VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null)
         {
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
             _pauseUxml = pauseUxml;
@@ -100,6 +101,7 @@ namespace Guildmaster.UI
             _loadoutHubUxml = loadoutHubUxml;
             _loadoutInventoryUxml = loadoutInventoryUxml;
             _arcanaCardUxml = arcanaCardUxml;
+            _campUxml = campUxml;
 
             // Навигатор Ф4: два слоя-контейнера. Page/Sheet → screensLayer (под топбаром); Modal (pause/
             // settings) → modalLayer (над топбаром, fullscreen-scrim накрывает его — QA #36). Контекст сборки
@@ -691,6 +693,24 @@ namespace Guildmaster.UI
 
             await _nav.ShowAsync(screen, req.Cancellation); // клик/закрытие → OnOpen; ct → закрыть при отмене (QA #37)
             req.OnOpen?.Invoke();
+        }
+
+        // Экран привала — на UXML (CampScreen.uxml). Живёт, пока отряд тратит бюджет действий; закрывается
+        // по «Пройти мимо» (или ESC/PopAll), и только тогда резолвит OnLeave. Тем и отличается от ивента:
+        // выбор здесь повторяемый, а выход — отдельное решение.
+        public void OpenCamp(OpenCampRequest req)
+        {
+            if (_root == null || _campUxml == null || req.Session == null) { req.OnLeave?.Invoke(); return; }
+            ShowCampAsync(req).Forget();
+        }
+
+        private async UniTaskVoid ShowCampAsync(OpenCampRequest req)
+        {
+            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
+                resolve => CampScreenView.Build(_campUxml, req.Session, key => _loc?.GetString(key), () => resolve(true)));
+
+            await _nav.ShowAsync(screen, req.Cancellation); // уход/закрытие → OnLeave; ct → закрыть при отмене (QA #37)
+            req.OnLeave?.Invoke();
         }
 
         // Экран исхода забега (C2) — на UXML (OutcomeScreen.uxml). «В меню» резолвит OnToMenu; закрытие тоже.
