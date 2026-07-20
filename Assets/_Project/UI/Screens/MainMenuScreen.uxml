@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
-    <ui:VisualElement class="gm-screen">
+    <ui:VisualElement class="gm-screen gm-screen--mainmenu">
         <ui:VisualElement class="gm-panel gm-panel--mainmenu">
             <ui:Label name="menu-title" text="Гильдмастер" class="gm-panel__title gm-mainmenu__title" />
             <ui:VisualElement class="gm-divider" />

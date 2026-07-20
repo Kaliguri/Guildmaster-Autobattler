@@ -34,9 +34,15 @@ namespace Guildmaster.Presentation.Map
                  "их здесь значило бы завести второй источник правды.")]
         [SerializeField] private Material _backdropMaterial;
 
-        [Tooltip("Поля листа: во сколько раз он больше графа. Лист ОБТЯГИВАЕТ карту, а не заливает экран — " +
-                 "за его рваными краями начинается фон. 1.0 = впритык, 1.1 = небольшие поля.")]
+        [Tooltip("Поля листа ПО ШИРИНЕ: во сколько раз он длиннее графа. Лист ОБТЯГИВАЕТ карту, а не " +
+                 "заливает экран — за его рваными краями начинается фон. 1.0 = впритык, 1.1 = небольшие поля.")]
         [SerializeField] private float _backdropPadding = 1.08f;
+
+        [Tooltip("Поля листа ПО ВЫСОТЕ — отдельно от ширины намеренно: сверху и снизу нужно место под " +
+                 "название акта и подписи, а по длине лист и так тянется на весь акт. Разводить эти два " +
+                 "числа приходится потому, что карта сильно вытянута: единый множитель дал бы сверху " +
+                 "полоску, а по краям — пустые вёрсты бумаги.")]
+        [SerializeField] private float _backdropPaddingY = 1.35f;
 
         [Header("Стол под картой (то, что видно за краем листа)")]
         [Tooltip("Материал поверхности под листом (шейдер Guildmaster/Map/Table). Пусто — за листом пустота, " +
@@ -182,6 +188,8 @@ namespace Guildmaster.Presentation.Map
         public Material BackdropMaterial => _backdropMaterial;
         /// <inheritdoc cref="_backdropPadding"/>
         public float BackdropPadding => _backdropPadding;
+        /// <inheritdoc cref="_backdropPaddingY"/>
+        public float BackdropPaddingY => _backdropPaddingY;
         /// <inheritdoc cref="_tableMaterial"/>
         public Material TableMaterial => _tableMaterial;
         /// <inheritdoc cref="_tablePadding"/>

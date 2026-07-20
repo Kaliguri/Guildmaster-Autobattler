@@ -23,6 +23,7 @@ MonoBehaviour:
   _pickRadiusScale: 1.4
   _backdropMaterial: {fileID: 2100000, guid: bf7f4177f3ebe0a438ccd18201673bfd, type: 2}
   _backdropPadding: 1.08
+  _backdropPaddingY: 1.35
   _tableMaterial: {fileID: 2100000, guid: 90b10497a5a91c9459dc67c7c78bd6af, type: 2}
   _tablePadding: 3.5
   _nodeBacking: {r: 0.115, g: 0.093, b: 0.07, a: 1}

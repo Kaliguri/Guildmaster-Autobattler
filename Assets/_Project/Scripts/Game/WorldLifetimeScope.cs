@@ -51,6 +51,10 @@ namespace Guildmaster.Game
 
             // Тумблеры постобработки: Volume зоны карты гасится из общего реестра эффектов (gm_fx).
             builder.RegisterComponentInHierarchy<Presentation.Effects.VolumeVisualToggle>();
+
+            // Стол за главным меню: тот же материал, что под картой акта, — иначе за меню чёрный провал
+            // (камера заливает пустоту цветом очистки).
+            builder.RegisterComponentInHierarchy<Presentation.Map.MenuBackdropView>();
         }
 
         private ArenaLayoutData BuildArenaLayout()

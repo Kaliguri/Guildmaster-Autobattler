@@ -8,6 +8,7 @@ using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Diagnostics;
 using Guildmaster.Guild;
+using MessagePipe;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -50,7 +51,8 @@ namespace Guildmaster.UI
         private const string PauseId = "pause";
 
         public MenuRouter(IInputService input, UiNavigator nav, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
-                          LoadoutHubViewModel hubVm, ILocalizationService loc, IRunControl runControl)
+                          LoadoutHubViewModel hubVm, ILocalizationService loc, IRunControl runControl,
+                          IPublisher<MainMenuVisibilityChangedEvent> mainMenuVisPub)
         {
             _input = input;
             _nav = nav;
@@ -59,7 +61,10 @@ namespace Guildmaster.UI
             _hubVm = hubVm;
             _loc = loc;
             _runControl = runControl;
+            _mainMenuVisPub = mainMenuVisPub;
         }
+
+        private readonly IPublisher<MainMenuVisibilityChangedEvent> _mainMenuVisPub;
 
         public bool IsOpen => _nav.IsOpen;
 
@@ -724,8 +729,19 @@ namespace Guildmaster.UI
                     onSettings: () => PushScreen(BuildSettingsScreen, ScreenKind.Modal), // поверх меню, НЕ резолв
                     onQuit:     () => resolve(MainMenuChoice.Quit)));
 
-            MainMenuChoice choice = await _nav.ShowAsync(screen); // снятие без выбора = Quit (верхний цикл не виснет)
-            req.OnChoice?.Invoke(choice);
+            // Пока меню на экране, презентационный слой подкладывает под него стол (иначе за меню пустота).
+            _mainMenuVisPub?.Publish(new MainMenuVisibilityChangedEvent(true));
+            try
+            {
+                MainMenuChoice choice = await _nav.ShowAsync(screen); // снятие без выбора = Quit (верхний цикл не виснет)
+                req.OnChoice?.Invoke(choice);
+            }
+            finally
+            {
+                // Через finally, а не после await: меню снимают и отменой, и выходом из игры — фон обязан
+                // погаснуть в любом случае, иначе он останется висеть поверх мира.
+                _mainMenuVisPub?.Publish(new MainMenuVisibilityChangedEvent(false));
+            }
         }
 
         private static void Disable(Button b) { if (b != null) b.SetEnabled(false); }

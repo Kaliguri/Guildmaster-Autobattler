@@ -432,8 +432,9 @@ namespace Guildmaster.Presentation.Map
 
             _table.enabled = _tableOn;
 
-            float pad = Mathf.Max(1f, _style.BackdropPadding) * Mathf.Max(1f, _style.TablePadding);
-            var top = new Vector2(size.x * pad, size.y * pad);
+            float over = Mathf.Max(1f, _style.TablePadding);
+            var sheet = SheetSize(size);
+            var top = new Vector2(sheet.x * over, sheet.y * over);
             _table.transform.position   = new Vector3(center.x, center.y, TableZ);
             _table.transform.localScale = new Vector3(top.x, top.y, 1f);
 
@@ -467,8 +468,7 @@ namespace Guildmaster.Presentation.Map
 
             _backdrop.enabled = _sheetOn;
 
-            float pad = Mathf.Max(1f, _style.BackdropPadding);
-            var sheet = new Vector2(size.x * pad, size.y * pad);
+            var sheet = SheetSize(size);
             _backdrop.transform.position   = new Vector3(center.x, center.y, BackdropZ);
             _backdrop.transform.localScale = new Vector3(sheet.x, sheet.y, 1f);
 
@@ -482,6 +482,13 @@ namespace Guildmaster.Presentation.Map
 
         private MaterialPropertyBlock _backdropBlock;
         private static readonly int AspectXId = Shader.PropertyToID("_AspectX");
+
+        // Размер листа. Поля по ширине и по высоте РАЗНЫЕ: карта сильно вытянута, и единый множитель дал бы
+        // сверху узкую полоску (там нужно место под название акта), а по краям — пустые вёрсты бумаги.
+        // Считается в одном месте, потому что от листа пляшут и стол, и туман.
+        private Vector2 SheetSize(Vector2 graph) => new Vector2(
+            graph.x * Mathf.Max(1f, _style.BackdropPadding),
+            graph.y * Mathf.Max(1f, _style.BackdropPaddingY));
 
         // Слой тумана — ЧИСТО АТМОСФЕРА. Лежит над картой, но ничего не скрывает и не мешает: узлы под ним
         // видны и кликаются (пикинг идёт своей математикой, а не рейкастом), коллайдера у полотна нет.
@@ -504,9 +511,9 @@ namespace Guildmaster.Presentation.Map
 
             _fog.enabled = _fogOn;
 
-            float pad = Mathf.Max(1f, _style.BackdropPadding);
+            var sheet = SheetSize(size);
             _fog.transform.position   = new Vector3(center.x, center.y, FogZ);
-            _fog.transform.localScale = new Vector3(size.x * pad, size.y * pad, 1f);
+            _fog.transform.localScale = new Vector3(sheet.x, sheet.y, 1f);
             UpdateFogReveal();
         }
 

@@ -107,6 +107,9 @@ namespace Guildmaster.UI
         private ISubscriber<WorldMapSpaceChangedEvent> _mapSpaceSub; // фаза D: СОСТОЯНИЕ world-карты → Sheet-экран
         private IDisposable _mapSpaceSubscription;
         private IPublisher<SetWorldMapRequest> _worldMapPub; // фаза D: радио-табы → показать/скрыть карту в мире
+        private ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> _mainMenuVisSub; // за меню виден мировой стол
+        private IDisposable _mainMenuVisSubscription;
+        private bool _mainMenuOpen;
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -117,8 +120,10 @@ namespace Guildmaster.UI
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
             ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
-            ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub)
+            ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub,
+            ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub)
         {
+            _mainMenuVisSub = mainMenuVisSub;
             _router = router;
             _mapSpaceSub = mapSpaceSub;
             _worldMapPub = worldMapPub;
@@ -193,6 +198,13 @@ namespace Guildmaster.UI
                 UiTrace.Log($"bootstrap: WorldMapSpaceChanged(Active={e.Active}) → {(e.Active ? "ShowMapSpace" : "HideMapSpace")}");
                 if (e.Active) _router.ShowMapSpace();
                 else          _router.HideMapSpace();
+            });
+            // Главное меню открыто → гасим непрозрачную подложку, иначе она закроет собой мировой стол.
+            _mainMenuVisSubscription = _mainMenuVisSub?.Subscribe(e =>
+            {
+                UiTrace.Log($"bootstrap: MainMenuVisibilityChanged(Visible={e.Visible}) → backdrop {(e.Visible ? "off" : "on")}");
+                _mainMenuOpen = e.Visible;
+                RefreshShell();
             });
             RefreshShell();
         }
@@ -334,7 +346,10 @@ namespace Guildmaster.UI
             {
                 // Фаза D: при world-карте фон ТОЖЕ гасим — карта уехала в мир, и непрозрачный backdrop
                 // закрывал бы её собой (раньше он служил задником именно UITK-карты).
-                bool showBackdrop = phase == BattlePhase.None && !_router.IsInventoryOpen && !_router.IsMapSpaceOpen;
+                // По той же причине гасим его под главным меню: за меню лежит мировой стол, и подложка
+                // закрывала бы его собой — снаружи это выглядело как «фон не работает».
+                bool showBackdrop = phase == BattlePhase.None && !_router.IsInventoryOpen
+                                    && !_router.IsMapSpaceOpen && !_mainMenuOpen;
                 _backdrop.style.display = showBackdrop ? DisplayStyle.Flex : DisplayStyle.None;
             }
 
@@ -456,6 +471,7 @@ namespace Guildmaster.UI
             if (_loc != null) _loc.LocaleChanged -= RebuildTopBar;    // шов II.9.2
             _testZoneChangedSubscription?.Dispose();                  // Ф5
             _mapSpaceSubscription?.Dispose();                         // фаза D
+            _mainMenuVisSubscription?.Dispose();                      // фон за главным меню
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();
