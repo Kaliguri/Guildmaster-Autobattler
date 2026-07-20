@@ -30698,6 +30698,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Map.WorldMapView
   _style: {fileID: 11400000, guid: 992688b3cce9ba144859796f3920a341, type: 2}
   _nodePrefab: {fileID: 4644834337890436486, guid: 3e2ffe97fb5100043950867a74bcbda6, type: 3}
+  _dotPrefab: {fileID: 6223154049191530100, guid: 55125b0935131e94f98bb988c762c3e3, type: 3}
   _sortingLayerName: Default
 --- !u!4 &1597628825
 Transform:
@@ -31864,6 +31865,77 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4552424414636700132, guid: dbeab85cbe3b90b41a444794aab794ef, type: 3}
   m_PrefabInstance: {fileID: 1942291727}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1955251937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1955251940}
+  - component: {fileID: 1955251939}
+  - component: {fileID: 1955251938}
+  m_Layer: 0
+  m_Name: Map Post FX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &1955251938
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955251937}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 400, y: 260, z: 120}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1955251939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955251937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 0
+  priority: 10
+  blendDistance: 8
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: ace3d1cfb4a2f2047b0623c813765423, type: 2}
+--- !u!4 &1955251940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955251937}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -25, y: 45, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1959135023
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32664,3 +32736,4 @@ SceneRoots:
   - {fileID: 309113943}
   - {fileID: 894429832}
   - {fileID: 1597628825}
+  - {fileID: 1955251940}

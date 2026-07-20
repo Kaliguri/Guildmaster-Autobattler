@@ -31,7 +31,7 @@ Material:
     m_Floats:
     - _GrainStrength: 0.12
     - _GrainTiling: 16
-    - _Vignette: 0.45
+    - _Vignette: 0
     - _WeaveStrength: 0.55
     - _WeaveTiling: 2.2
     m_Colors:

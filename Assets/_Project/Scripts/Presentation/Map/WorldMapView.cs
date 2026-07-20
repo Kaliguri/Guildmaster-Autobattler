@@ -25,6 +25,10 @@ namespace Guildmaster.Presentation.Map
         [Tooltip("Префаб узла — ОДИН на все типы, внутри все иконки. Тип включается кодом.")]
         [SerializeField] private MapNodeView _nodePrefab;
 
+        [Tooltip("Префаб точки дорожки. Префаб, а не AddComponent в рантайме: Shapes при добавлении " +
+                 "компонента дёргает SendMessage и сыпет предупреждениями — по одному на каждую точку.")]
+        [SerializeField] private Disc _dotPrefab;
+
         [Tooltip("Слой сортировки для фигур карты. Shapes по умолчанию рисуются на Default (самый нижний) — " +
                  "если под картой появится спрайт-фон, он перекроет узлы; тогда выставить слой выше фона.")]
         [SerializeField] private string _sortingLayerName = "Default";
@@ -297,6 +301,8 @@ namespace Guildmaster.Presentation.Map
                     Vector2 at = Vector2.Lerp(prev, point, t);
 
                     Disc dot = RentDot();
+                    if (dot == null) return; // нет префаба точки — дорожек не будет, но карта живёт
+
                     dot.transform.position = new Vector3(at.x, at.y, EdgeZ);
                     dot.Radius = _style.DotRadius;
                     dot.Color  = color;
@@ -388,15 +394,14 @@ namespace Guildmaster.Presentation.Map
         // Прежний спрайт-шлем закрывал собой иконку узла и требовал подъёма над ним.
         private void EnsurePawn()
         {
-            if (_pawn != null || _style == null) return;
+            if (_pawn != null || _style == null || _dotPrefab == null) return;
 
-            var go = new GameObject("Pawn");
-            go.transform.SetParent(transform, false);
-            _pawn = go.AddComponent<Disc>();
-            _pawn.Geometry = DiscGeometry.Flat2D;
-            _pawn.Type     = DiscType.Disc;
-            _pawn.Radius   = _style.PawnRadius;
-            _pawn.Color    = _style.Pawn;
+            // Фишка собирается из ТОГО ЖЕ префаба, что точки дорожки: она и должна быть той же точкой,
+            // только крупнее и ярче — тогда «кто-то идёт по дорожке» читается само.
+            _pawn = Instantiate(_dotPrefab, transform);
+            _pawn.name   = "Pawn";
+            _pawn.Radius = _style.PawnRadius;
+            _pawn.Color  = _style.Pawn;
             _pawn.SortingLayerID = SortingLayerId();
             _pawn.SortingOrder   = 6;
         }
@@ -637,13 +642,10 @@ namespace Guildmaster.Presentation.Map
                 return reused;
             }
 
-            var go = new GameObject("PathDot");
-            go.transform.SetParent(_edgeRoot, false);
-            var dot = go.AddComponent<Disc>();
-            dot.Geometry       = DiscGeometry.Flat2D;
-            dot.Type           = DiscType.Disc;
+            if (_dotPrefab == null) return null;
+
+            Disc dot = Instantiate(_dotPrefab, _edgeRoot);
             dot.SortingLayerID = SortingLayerId();
-            dot.SortingOrder   = 0;
             _dotPool.Add(dot);
             _rentedDots++;
             return dot;
