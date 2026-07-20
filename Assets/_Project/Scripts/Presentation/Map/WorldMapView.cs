@@ -12,72 +12,19 @@ namespace Guildmaster.Presentation.Map
     /// World-слой карты акта: узлы и пути рисуются в мире, клик берётся мировым пикингом.
     /// Живёт постоянно в persist-мире и включается/гасится по состоянию — шаблон <c>DeploymentController</c>,
     /// а не спавн-на-время (спавн требовал бы сноса по ct и плодил висячие объекты при отмене забега, QA #37).
+    /// <para>НАСТРОЕК ЗДЕСЬ НЕТ: все числа и цвета живут в <see cref="MapStyle"/>, вид узла — в его префабе.
+    /// Поля-настройки на компоненте уходили в сериализацию сцены и переставали слушаться кода — дважды
+    /// стоило раунда play-QA. В сцене остаются только ССЫЛКИ.</para>
     /// </summary>
     public sealed class WorldMapView : MonoBehaviour, IWorldMapView
     {
-        [Header("Раскладка карты")]
-        [Tooltip("Шаги сетки, разброс и правила дистанции. Разброс выводится из сида забега — в данных карты его нет.")]
-        [SerializeField] private MapLayout _layout = MapLayout.Default;
+        [Header("Ссылки")]
+        [Tooltip("Стиль карты: раскладка, цвета, пути, отклик. ЕДИНОЕ место настройки.")]
+        [SerializeField] private MapStyle _style;
 
-        [Tooltip("Сколько этажей показывать в кадре при входе на карту. Камера встаёт крупно у текущего узла.")]
-        [SerializeField] private float _floorsInView = 4f;
-
-        [Header("Вид")]
         [Tooltip("Префаб узла — ОДИН на все типы, внутри все иконки. Тип включается кодом.")]
         [SerializeField] private MapNodeView _nodePrefab;
 
-        [Tooltip("Палитра карты: тон, состояния, пути, фишка. Единственный источник цвета.")]
-        [SerializeField] private MapPalette _palette;
-
-        [Tooltip("Множитель зоны хвата относительно радиуса из префаба: попасть по узлу должно быть легче, " +
-                 "чем выглядит (QA #24 — та же логика, что с хваталкой юнитов).")]
-        [SerializeField] private float _pickRadiusScale = 1.4f;
-
-        [Header("Пути")]
-        [Tooltip("Радиус точки пути.")]
-        [SerializeField] private float _dotRadius = 0.07f;
-
-        [Tooltip("Расстояние между точками пути. Шаг считается по длине дуги, поэтому ритм одинаков " +
-                 "на путях любой длины — ровно то, чего не давал пунктир Shapes.")]
-        [SerializeField] private float _dotSpacing = 0.32f;
-
-        [Tooltip("Отступ точек от центров узлов, чтобы дорожка не влезала под иконку.")]
-        [SerializeField] private float _dotMargin = 0.7f;
-
-        [Tooltip("Изгиб пути в долях его длины. 0 = прямые линии — так и надо: изгиб случайной стороны " +
-                 "заставлял соседние пути наезжать друг на друга и читался как каша (play-QA Макса).")]
-        [SerializeField] private float _edgeCurve;
-
-        [Header("Отклик и анимация")]
-        [Tooltip("Насколько подрастает узел под курсором.")]
-        [SerializeField] private float _hoverScale = 1.18f;
-
-        [Tooltip("Насколько вдавливается узел при нажатии.")]
-        [SerializeField] private float _pressScale = 0.9f;
-
-        [Tooltip("Глубина дыхания доступных узлов по ЯРКОСТИ (не по размеру: размерный пульс суетлив).")]
-        [SerializeField, Range(0f, 0.6f)] private float _availableBreath = 0.22f;
-
-        [Tooltip("Скорость дыхания доступных узлов.")]
-        [SerializeField] private float _breathSpeed = 2.2f;
-
-        [Tooltip("Скорость бега точек по пути к доступному узлу (метров в секунду).")]
-        [SerializeField] private float _dotFlowSpeed = 2.6f;
-
-        [Tooltip("Длина светящегося участка бегущей волны (метры).")]
-        [SerializeField] private float _dotFlowLength = 1.4f;
-
-        [Header("Фишка отряда")]
-        [Tooltip("Радиус точки отряда. Фишка — та же точка, что на пути, только крупнее и ярче.")]
-        [SerializeField] private float _pawnRadius = 0.2f;
-
-        [Tooltip("Сколько едет фишка между узлами (секунды).")]
-        [SerializeField] private float _pawnTravelSeconds = 1.5f;
-
-        [Tooltip("Во сколько раз ускоряется поездка по повторному клику (дабл-клик).")]
-        [SerializeField] private float _pawnSkipSpeed = 6f;
-
-        [Header("Сортировка")]
         [Tooltip("Слой сортировки для фигур карты. Shapes по умолчанию рисуются на Default (самый нижний) — " +
                  "если под картой появится спрайт-фон, он перекроет узлы; тогда выставить слой выше фона.")]
         [SerializeField] private string _sortingLayerName = "Default";
@@ -108,7 +55,6 @@ namespace Guildmaster.Presentation.Map
         private struct PathDot
         {
             public Disc Shape;
-            public Color Base;
             public float Along;   // расстояние от начала пути
             public bool Flowing;  // путь к доступному узлу — по нему бежит волна
         }
@@ -132,6 +78,7 @@ namespace Guildmaster.Presentation.Map
 
         // Поездка фишки: пока едет, выбор заблокирован, а событие выбора ждёт приезда.
         private bool _travelling;
+        private bool _travelSilent;
         private float _travelT;
         private float _travelSpeedScale = 1f;
         private Vector2 _travelFrom, _travelCtrl, _travelTo;
@@ -187,12 +134,19 @@ namespace Guildmaster.Presentation.Map
         public void Show(IReadOnlyList<MapNodeVisual> nodes, IReadOnlyList<(string From, string To)> edges, long seed)
         {
             ReleaseAll();
+            if (_style == null)
+            {
+                Debug.LogError("[WorldMapView] Не назначен MapStyle — рисовать карту нечем.");
+                return;
+            }
             if (nodes == null || nodes.Count == 0) { Bounds = new Rect2D(Vector2.zero, Vector2.zero); return; }
 
             // Раскладка — здесь: домен отдаёт только топологию (этаж/ряд), координаты не его забота.
-            Dictionary<string, Vector2> local = _layout.Resolve(nodes, seed);
+            MapLayout layout = _style.Layout;
+            Dictionary<string, Vector2> local = layout.Resolve(nodes, seed);
 
             var byId = new Dictionary<string, Vector2>(nodes.Count);
+            var radiusOf = new Dictionary<string, float>(nodes.Count);
             float minX = float.MaxValue, maxX = float.MinValue, minY = float.MaxValue, maxY = float.MinValue;
             Vector2 focus = Vector2.zero;
             bool hasFocus = false;
@@ -211,8 +165,10 @@ namespace Guildmaster.Presentation.Map
                     view.transform.position = new Vector3(pos.x, pos.y, NodeZ);
                     view.SetVisualScale(1f);
                     view.ShowKind(n.Kind);
-                    view.Apply(n.State, _palette);
+                    view.Apply(n.State, _style);
                 }
+
+                radiusOf[n.Id] = view != null ? view.VisualRadius : 0f;
 
                 _hits.Add(new NodeHit
                 {
@@ -229,7 +185,7 @@ namespace Guildmaster.Presentation.Map
                 if (pos.y > maxY) maxY = pos.y;
             }
 
-            if (edges != null) BuildPaths(edges, byId, nodes);
+            if (edges != null) BuildPaths(edges, byId, radiusOf, nodes);
             PlacePawn(hasFocus ? focus : new Vector2(minX, (minY + maxY) * 0.5f));
 
             const float padding = 2f;
@@ -241,7 +197,7 @@ namespace Guildmaster.Presentation.Map
             SetLayerActive(true);
 
             // Кадр и границы клампа: смотрим КРУПНО на текущий узел, а не на весь акт сразу.
-            _cameraModes?.EnterMap(Bounds, hasFocus ? focus : center, _floorsInView * _layout.StepX);
+            _cameraModes?.EnterMap(Bounds, hasFocus ? focus : center, _style.FloorsInView * layout.StepX);
         }
 
         /// <inheritdoc/>
@@ -260,6 +216,7 @@ namespace Guildmaster.Presentation.Map
         // что фишка отряда: дорожка и тот, кто по ней идёт, выглядят как одно целое.
         private void BuildPaths(IReadOnlyList<(string From, string To)> edges,
                                 Dictionary<string, Vector2> byId,
+                                Dictionary<string, float> radiusOf,
                                 IReadOnlyList<MapNodeVisual> nodes)
         {
             HashSet<string> travelled = TravelledRoute(nodes);
@@ -278,43 +235,53 @@ namespace Guildmaster.Presentation.Map
                 bool isTravelled = travelled.Contains(EdgeKey(edges[i].From, edges[i].To));
                 bool isOpen      = from == MapNodeVisualState.Current && to == MapNodeVisualState.Available;
 
-                Color color = isTravelled ? _palette.PathTravelled
-                            : isOpen      ? _palette.PathAvailable
-                            : _palette.PathIdle;
+                Color color = isTravelled ? _style.PathTravelled
+                            : isOpen      ? _style.PathAvailable
+                            : _style.PathIdle;
 
                 // Контрольная точка кривой — перпендикулярно хорде, сторона и величина детерминированы парой id.
                 Vector2 mid = (a + b) * 0.5f;
                 Vector2 dir = b - a;
                 var perp = new Vector2(-dir.y, dir.x).normalized;
-                Vector2 ctrl = mid + perp * (_edgeCurve * dir.magnitude * CurveSign(edges[i].From, edges[i].To));
+                Vector2 ctrl = mid + perp * (_style.EdgeCurve * dir.magnitude * CurveSign(edges[i].From, edges[i].To));
 
-                ScatterDots(a, ctrl, b, color, isOpen);
+                radiusOf.TryGetValue(edges[i].From, out float ra);
+                radiusOf.TryGetValue(edges[i].To,   out float rb);
+
+                ScatterDots(a, ctrl, b, MarginFor(ra), MarginFor(rb), color, isOpen);
             }
         }
 
+        // Дорожка начинается от ВНЕШНЕГО края узла, а не от его центра, и с запасом на увеличение под
+        // курсором: иначе на hover узел наезжает на собственную дорожку и съедает первые точки.
+        private float MarginFor(float visualRadius) =>
+            visualRadius * _style.HoverScale * _style.DotClearance;
+
         // Точки ставим по РАВНОЙ длине дуги: идём мелким шагом по параметру, копим пройденное расстояние
-        // и роняем точку каждые _dotSpacing метров. Равномерный шаг по t дал бы сгущение на изгибе.
-        private void ScatterDots(Vector2 a, Vector2 ctrl, Vector2 b, Color color, bool flowing)
+        // и роняем точку каждые DotSpacing метров. Равномерный шаг по t дал бы сгущение на изгибе.
+        private void ScatterDots(Vector2 a, Vector2 ctrl, Vector2 b,
+                                 float marginStart, float marginEnd, Color color, bool flowing)
         {
-            float chord = (b - a).magnitude;
-            if (chord <= _dotMargin * 2f) return;
-
             const int walk = 64;
-            Vector2 prev = a;
-            float travelled = 0f;
-            float nextDrop = _dotMargin;
-            float total = 0f;
 
+            // Полная длина дуги — нужна, чтобы отмерить отступ с ДАЛЬНЕГО конца.
+            float total = 0f;
+            Vector2 prev = a;
             for (int s = 1; s <= walk; s++)
             {
                 Vector2 point = Bezier(a, ctrl, b, s / (float)walk);
-                float step = (point - prev).magnitude;
-                total += step;
+                total += (point - prev).magnitude;
                 prev = point;
             }
-            float stopAt = total - _dotMargin;
 
+            float stopAt = total - marginEnd;
+            if (stopAt <= marginStart) return; // узлы слишком близко — дорожке между ними места нет
+
+            float spacing = Mathf.Max(0.01f, _style.DotSpacing);
+            float travelled = 0f;
+            float nextDrop = marginStart;
             prev = a;
+
             for (int s = 1; s <= walk; s++)
             {
                 Vector2 point = Bezier(a, ctrl, b, s / (float)walk);
@@ -327,11 +294,11 @@ namespace Guildmaster.Presentation.Map
 
                     Disc dot = RentDot();
                     dot.transform.position = new Vector3(at.x, at.y, EdgeZ);
-                    dot.Radius = _dotRadius;
+                    dot.Radius = _style.DotRadius;
                     dot.Color  = color;
-                    _dots.Add(new PathDot { Shape = dot, Base = color, Along = nextDrop, Flowing = flowing });
+                    _dots.Add(new PathDot { Shape = dot, Along = nextDrop, Flowing = flowing });
 
-                    nextDrop += _dotSpacing;
+                    nextDrop += spacing;
                 }
 
                 travelled += step;
@@ -362,7 +329,7 @@ namespace Guildmaster.Presentation.Map
         // Ключ ребра без направления: граф хранит связь с обеих сторон, и маршрут должен опознаваться
         // независимо от того, каким концом ребро пришло.
         private static string EdgeKey(string a, string b) =>
-            string.CompareOrdinal(a, b) <= 0 ? a + " " + b : b + " " + a;
+            string.CompareOrdinal(a, b) <= 0 ? a + " " + b : b + " " + a;
 
         private static Vector2 Bezier(Vector2 a, Vector2 c, Vector2 b, float t)
         {
@@ -393,15 +360,15 @@ namespace Guildmaster.Presentation.Map
         // Прежний спрайт-шлем закрывал собой иконку узла и требовал подъёма над ним.
         private void EnsurePawn()
         {
-            if (_pawn != null) return;
+            if (_pawn != null || _style == null) return;
 
             var go = new GameObject("Pawn");
             go.transform.SetParent(transform, false);
             _pawn = go.AddComponent<Disc>();
             _pawn.Geometry = DiscGeometry.Flat2D;
             _pawn.Type     = DiscType.Disc;
-            _pawn.Radius   = _pawnRadius;
-            _pawn.Color    = _palette != null ? _palette.Pawn : Color.white;
+            _pawn.Radius   = _style.PawnRadius;
+            _pawn.Color    = _style.Pawn;
             _pawn.SortingLayerID = SortingLayerId();
             _pawn.SortingOrder   = 6;
         }
@@ -413,7 +380,7 @@ namespace Guildmaster.Presentation.Map
             if (!_shown) return;
 
             // Пока фишка едет, повторный клик = «пропустить»: ускоряем поездку, а не выбираем заново.
-            if (_travelling) { _travelSpeedScale = _pawnSkipSpeed; return; }
+            if (_travelling) { _travelSpeedScale = _style != null ? _style.PawnSkipSpeed : 6f; return; }
 
             if (_input == null || _input.PointerOverUI) return;
 
@@ -421,7 +388,7 @@ namespace Guildmaster.Presentation.Map
             if (hit < 0) return;
 
             _pressed = true;
-            if (_hits[hit].Selectable) StartTravel(hit);
+            if (_hits[hit].Selectable) StartTravel(hit, silent: false);
             else { _nudgeIndex = hit; _nudgeUntil = Time.unscaledTime + NudgeDuration; }
         }
 
@@ -462,8 +429,6 @@ namespace Guildmaster.Presentation.Map
             if (_hits.Count > 0) PlacePawn(_hits[0].Pos);
         }
 
-        private void StartTravel(int hit) => StartTravel(hit, silent: false);
-
         // silent = проехать и НЕ засчитывать выбор: дев-обход карты не должен уводить петлю забега в узел.
         private void StartTravel(int hit, bool silent)
         {
@@ -471,7 +436,7 @@ namespace Guildmaster.Presentation.Map
             _travelTo   = _hits[hit].Pos;
             Vector2 dir = _travelTo - _travelFrom;
             var perp = new Vector2(-dir.y, dir.x).normalized;
-            _travelCtrl = (_travelFrom + _travelTo) * 0.5f + perp * (_edgeCurve * dir.magnitude);
+            _travelCtrl = (_travelFrom + _travelTo) * 0.5f + perp * (_style.EdgeCurve * dir.magnitude);
 
             _travelNodeId     = _hits[hit].Id;
             _travelSilent     = silent;
@@ -480,12 +445,10 @@ namespace Guildmaster.Presentation.Map
             _travelling       = true;
         }
 
-        private bool _travelSilent;
-
         private int HitTest()
         {
             Camera cam = Camera.main;
-            if (cam == null || _input == null) return -1;
+            if (cam == null || _input == null || _style == null) return -1;
 
             Vector3 screen = _input.PointerScreenPosition;
             Vector2 world  = cam.ScreenToWorldPoint(new Vector3(screen.x, screen.y, -cam.transform.position.z));
@@ -496,7 +459,7 @@ namespace Guildmaster.Presentation.Map
             int best = -1;
             for (int i = 0; i < _hits.Count; i++)
             {
-                float r = _hits[i].PickRadius * _pickRadiusScale;
+                float r = _hits[i].PickRadius * _style.PickRadiusScale;
                 if (r <= 0f) continue;
                 float ratio = (_hits[i].Pos - world).sqrMagnitude / (r * r);
                 if (ratio <= bestRatio) { bestRatio = ratio; best = i; }
@@ -509,7 +472,7 @@ namespace Guildmaster.Presentation.Map
         // Отклик и поездка фишки. Всё на unscaled — карта живёт и на паузе боя.
         private void Update()
         {
-            if (!_shown) return;
+            if (!_shown || _style == null) return;
 
             _hoverIndex = (_travelling || _input == null || _input.PointerOverUI) ? -1 : HitTest();
             float now = Time.unscaledTime;
@@ -524,14 +487,14 @@ namespace Guildmaster.Presentation.Map
         {
             // Доступность показывается ЦВЕТОМ (дыхание яркости), размер трогает только курсор:
             // пульсирующие размером узлы читались как «всё шевелится», а не «сюда можно».
-            float breath = 1f + Mathf.Sin(now * _breathSpeed) * _availableBreath;
+            float breath = 1f + Mathf.Sin(now * _style.BreathSpeed) * _style.AvailableBreath;
 
             for (int i = 0; i < _hits.Count; i++)
             {
                 if (_hits[i].View == null) continue;
 
                 float scale = 1f;
-                if (i == _hoverIndex) scale *= _pressed ? _pressScale : _hoverScale;
+                if (i == _hoverIndex) scale *= _pressed ? _style.PressScale : _style.HoverScale;
 
                 if (i == _nudgeIndex)
                 {
@@ -546,8 +509,7 @@ namespace Guildmaster.Presentation.Map
 
                 _hits[i].View.SetVisualScale(scale);
 
-                if (_hits[i].Selectable && _palette != null)
-                    _hits[i].View.SetBrightness(breath);
+                if (_hits[i].Selectable) _hits[i].View.SetBrightness(breath);
             }
         }
 
@@ -555,23 +517,23 @@ namespace Guildmaster.Presentation.Map
         // «сюда можно» — направление читается само, без стрелок.
         private void AnimateDots(float now)
         {
-            if (_palette == null) return;
+            float head = now * _style.DotFlowSpeed;
+            float length = Mathf.Max(0.01f, _style.DotFlowLength);
 
-            float head = now * _dotFlowSpeed;
             for (int i = 0; i < _dots.Count; i++)
             {
                 PathDot dot = _dots[i];
                 if (!dot.Flowing || dot.Shape == null) continue;
 
-                float phase = Mathf.Repeat(head - dot.Along, _dotFlowLength * 2.5f);
-                float glow  = Mathf.Clamp01(1f - phase / _dotFlowLength);
-                dot.Shape.Color = Color.Lerp(_palette.PathIdle, _palette.PathAvailable, 0.35f + glow * 0.65f);
+                float phase = Mathf.Repeat(head - dot.Along, length * 2.5f);
+                float glow  = Mathf.Clamp01(1f - phase / length);
+                dot.Shape.Color = Color.Lerp(_style.PathIdle, _style.PathAvailable, 0.35f + glow * 0.65f);
             }
         }
 
         private void TickTravel()
         {
-            float dur = Mathf.Max(0.01f, _pawnTravelSeconds);
+            float dur = Mathf.Max(0.01f, _style.PawnTravelSeconds);
             _travelT += Time.unscaledDeltaTime / dur * _travelSpeedScale;
 
             if (_travelT >= 1f)

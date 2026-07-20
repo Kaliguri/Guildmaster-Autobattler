@@ -30696,30 +30696,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3374f7b80363cd342b1a91b01134b680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Map.WorldMapView
-  _layout:
-    StepX: 6.5
-    StepY: 4.2
-    JitterY: 0
-    JitterX: 0
-    MinDistance: 2.2
-    RelaxIterations: 10
-  _floorsInView: 4
+  _style: {fileID: 11400000, guid: 992688b3cce9ba144859796f3920a341, type: 2}
   _nodePrefab: {fileID: 4644834337890436486, guid: 3e2ffe97fb5100043950867a74bcbda6, type: 3}
-  _palette: {fileID: 11400000, guid: 4f691da2aed66ba43b574ac04db19465, type: 2}
-  _pickRadiusScale: 1.4
-  _dotRadius: 0.07
-  _dotSpacing: 0.32
-  _dotMargin: 0.7
-  _edgeCurve: 0
-  _hoverScale: 1.18
-  _pressScale: 0.9
-  _availableBreath: 0.22
-  _breathSpeed: 2.2
-  _dotFlowSpeed: 2.6
-  _dotFlowLength: 1.4
-  _pawnRadius: 0.2
-  _pawnTravelSeconds: 1.5
-  _pawnSkipSpeed: 6
   _sortingLayerName: Default
 --- !u!4 &1597628825
 Transform:

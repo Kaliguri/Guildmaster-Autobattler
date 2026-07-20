@@ -47,11 +47,18 @@ namespace Guildmaster.Presentation.Map
                  "попасть по узлу должно быть легче, чем он выглядит.")]
         [SerializeField] private float _pickRadius = 0.6f;
 
+        [Tooltip("ВИДИМЫЙ радиус узла (внешний край круга с ободом). От него отступает дорожка, чтобы " +
+                 "точки не вползали под узел. Не путать с радиусом хвата — тот больше намеренно.")]
+        [SerializeField] private float _visualRadius = 0.6f;
+
         private SpriteRenderer _activeIcon;
         private MaterialPropertyBlock _mpb;
 
         /// <inheritdoc cref="_pickRadius"/>
         public float PickRadius => _pickRadius;
+
+        /// <inheritdoc cref="_visualRadius"/>
+        public float VisualRadius => _visualRadius;
 
         /// <summary>Включает иконку нужного типа, гасит остальные. Неизвестный тип — без иконки.</summary>
         public void ShowKind(string kind)
@@ -67,7 +74,7 @@ namespace Guildmaster.Presentation.Map
         }
 
         /// <summary>Тон карты и состояние узла. Палитра обязательна — цвета живут только в ней.</summary>
-        public void Apply(MapNodeVisualState state, MapPalette palette)
+        public void Apply(MapNodeVisualState state, MapStyle palette)
         {
             _state   = state;
             _palette = palette;
@@ -81,11 +88,11 @@ namespace Guildmaster.Presentation.Map
         public void SetBrightness(float brightness) => ApplyColors(brightness);
 
         private MapNodeVisualState _state;
-        private MapPalette _palette;
+        private MapStyle _palette;
 
         private void ApplyColors(float brightness)
         {
-            MapPalette palette = _palette;
+            MapStyle palette = _palette;
             if (palette == null) return;
 
             MapNodeVisualState state = _state;

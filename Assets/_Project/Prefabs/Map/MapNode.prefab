@@ -302,6 +302,7 @@ MonoBehaviour:
   - Kind: Unknown
     Icon: {fileID: 2800031637929232062}
   _pickRadius: 0.6
+  _visualRadius: 0.6
 --- !u!1 &2608214003702038653
 GameObject:
   m_ObjectHideFlags: 0
