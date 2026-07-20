@@ -37,7 +37,7 @@ namespace Guildmaster.Presentation.Map
         public readonly MapNodeVisualState State;
 
         /// <summary>
-        /// Вид узла — имя его типа (Battle/Elite/Boss/...). Как он выглядит, решает <see cref="MapIconSet"/>:
+        /// Вид узла — имя его типа (Battle/Elite/Boss/...). Как он выглядит, решает <see cref="MapNodeView"/>:
         /// здесь передаётся только ключ, потому что семантику типов держит Game, а картинки — Presentation.
         /// </summary>
         public readonly string Kind;

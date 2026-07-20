@@ -25,5 +25,17 @@ namespace Guildmaster.Presentation.Map
 
         /// <summary>Скрыть слой карты. Обязателен при отмене забега (QA #37), иначе карта останется висеть в мире.</summary>
         void Hide();
+
+        /// <summary>Id узлов текущего показа, в порядке отрисовки. Для дев-команд обхода карты.</summary>
+        IReadOnlyList<string> NodeIds { get; }
+
+        /// <summary>
+        /// Прогнать фишку к узлу БЕЗ выбора: анимация играет, но <see cref="NodeClicked"/> не поднимается.
+        /// Нужно, чтобы смотреть переходы, не уводя петлю забега в узел (дев-инструмент).
+        /// </summary>
+        void PreviewTravel(string nodeId);
+
+        /// <summary>Вернуть фишку на узел, где стоит отряд (или на первый узел карты). Выбор не засчитывается.</summary>
+        void ResetPawn();
     }
 }

@@ -47,6 +47,15 @@ namespace Guildmaster.Presentation.Map
         /// <inheritdoc/>
         public void Hide() => _target?.Hide();
 
+        /// <inheritdoc/>
+        public IReadOnlyList<string> NodeIds => _target?.NodeIds ?? Array.Empty<string>();
+
+        /// <inheritdoc/>
+        public void PreviewTravel(string nodeId) => _target?.PreviewTravel(nodeId);
+
+        /// <inheritdoc/>
+        public void ResetPawn() => _target?.ResetPawn();
+
         private void Relay(string id) => NodeClicked?.Invoke(id);
     }
 }

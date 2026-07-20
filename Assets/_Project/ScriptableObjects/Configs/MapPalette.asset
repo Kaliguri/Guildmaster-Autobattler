@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14a3b9fc53262dc4db6ec5d4a45b57f7, type: 3}
+  m_Name: MapPalette
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Map.MapPalette
+  _nodeBacking: {r: 0.141, g: 0.102, b: 0.071, a: 1}
+  _nodeRim: {r: 0.627, g: 0.435, b: 0.188, a: 1}
+  _currentMarker: {r: 0.902, g: 0.788, b: 0.561, a: 1}
+  _iconShadow: {r: 0.11, g: 0.078, b: 0.051, a: 1}
+  _iconLight: {r: 0.937, g: 0.886, b: 0.769, a: 1}
+  _available: {r: 1, g: 1, b: 1, a: 1}
+  _current: {r: 1, g: 1, b: 1, a: 1}
+  _cleared: {r: 0.62, g: 0.58, b: 0.5, a: 1}
+  _locked: {r: 0.42, g: 0.4, b: 0.36, a: 1}
+  _pathIdle: {r: 0.42, g: 0.37, b: 0.28, a: 1}
+  _pathTravelled: {r: 0.722, g: 0.525, b: 0.231, a: 1}
+  _pathAvailable: {r: 0.902, g: 0.788, b: 0.561, a: 1}
+  _pawn: {r: 0.973, g: 0.925, b: 0.796, a: 1}

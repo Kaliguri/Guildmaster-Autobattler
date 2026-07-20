@@ -3354,7 +3354,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -25, y: 45, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30704,21 +30704,20 @@ MonoBehaviour:
     MinDistance: 2.2
     RelaxIterations: 10
   _floorsInView: 4
-  _icons: {fileID: 11400000, guid: 58b63df752faa9749bc1863bf04bc04c, type: 2}
-  _nodeRadius: 0.5
+  _nodePrefab: {fileID: 4644834337890436486, guid: 3e2ffe97fb5100043950867a74bcbda6, type: 3}
+  _palette: {fileID: 11400000, guid: 4f691da2aed66ba43b574ac04db19465, type: 2}
   _pickRadiusScale: 1.4
-  _edgeThickness: 0.08
-  _dashSize: 0.35
-  _dashSpacing: 0.35
+  _dotRadius: 0.07
+  _dotSpacing: 0.32
+  _dotMargin: 0.7
   _edgeCurve: 0.12
-  _edgeSegments: 6
   _hoverScale: 1.18
   _pressScale: 0.9
-  _pulseAmount: 0.06
-  _pulseSpeed: 2.2
-  _pawnSprite: {fileID: 3767930127971023101, guid: 25731f5e8104fd74aa1dd65249e0436f, type: 3}
-  _pawnColor: {r: 1, g: 0.92, b: 0.6, a: 1}
-  _pawnHeight: 0.9
+  _availableBreath: 0.22
+  _breathSpeed: 2.2
+  _dotFlowSpeed: 2.6
+  _dotFlowLength: 1.4
+  _pawnRadius: 0.2
   _pawnTravelSeconds: 1.5
   _pawnSkipSpeed: 6
   _sortingLayerName: Default
