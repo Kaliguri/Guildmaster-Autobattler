@@ -137,8 +137,8 @@ namespace Guildmaster.Game
             // выбора узла петлёй — через него одного.
             builder.RegisterEntryPoint<WorldMapController>(Lifetime.Singleton).AsSelf();
 
-            // Выбор узла. Фаза D: world-карта (узлы в мире, камера как в бою). Откат на UITK-карту — заменой
-            // одной этой строки на MapScreenNodeChooser (старый путь пока цел, до play-приёмки world-карты).
+            // Выбор узла — world-карта (узлы в мире, камера как в бою). UITK-карта снесена после приёмки:
+            // держать второй путь к той же карте значило чинить каждый баг дважды.
             // AutoFirstNodeChooser остаётся для headless/тестов.
             builder.Register<WorldMapNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
             builder.Register<ActRunner>(Lifetime.Singleton);

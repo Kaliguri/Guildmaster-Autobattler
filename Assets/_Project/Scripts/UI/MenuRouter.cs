@@ -36,7 +36,6 @@ namespace Guildmaster.UI
         private VisualTreeAsset _loadoutUxml;
         private VisualTreeAsset _rewardUxml;
         private VisualTreeAsset _eventUxml;
-        private VisualTreeAsset _mapUxml;
         private VisualTreeAsset _continueUxml;
         private VisualTreeAsset _shopUxml;
         private VisualTreeAsset _chestUxml;
@@ -77,7 +76,7 @@ namespace Guildmaster.UI
         /// <summary>Бутстрап отдаёт слои-контейнеры (Ф4) и UXML-шаблоны экранов (ссылки из сцены, не DI).</summary>
         public void Initialize(VisualElement screensLayer, VisualElement modalLayer, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
-            VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
+            VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
             VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
             VisualTreeAsset loadoutHubUxml = null, VisualTreeAsset loadoutInventoryUxml = null,
             VisualTreeAsset arcanaCardUxml = null)
@@ -88,7 +87,6 @@ namespace Guildmaster.UI
             _loadoutUxml = loadoutUxml;
             _rewardUxml = rewardUxml;
             _eventUxml = eventUxml;
-            _mapUxml = mapUxml;
             _continueUxml = continueUxml;
             _shopUxml = shopUxml;
             _chestUxml = chestUxml;
@@ -619,29 +617,6 @@ namespace Guildmaster.UI
             });
 
             return screen;
-        }
-
-        // Экран карты акта (A3) — на UXML (MapScreen.uxml) через общий MapScreenView. Клик по доступному узлу
-        // возвращает его id и закрывает экран; закрытие без выбора (ESC/PopAll) шлёт null, чтобы петля не завис.
-        public void OpenMap(OpenMapRequest req)
-        {
-            if (_root == null || _mapUxml == null) { req.OnChosen?.Invoke(null); return; }
-            ShowMapAsync(req).Forget();
-        }
-
-        private async UniTaskVoid ShowMapAsync(OpenMapRequest req)
-        {
-            var screen = new RouterResultScreen<string>(ScreenKind.Page, null,
-                resolve => MapScreenView.Build(
-                    _mapUxml,
-                    req.Map,
-                    new HashSet<string>(req.AvailableNodeIds),
-                    key => _loc?.GetString(key),
-                    resolve),
-                modeTag: "map"); // QA #21: подсветка таба «Карта»
-
-            string nodeId = await _nav.ShowAsync(screen, req.Cancellation); // ct → отмена забега закрывает карту (QA #37, снос K12)
-            req.OnChosen?.Invoke(nodeId);
         }
 
         // Единая кнопка «Продолжить» (A4) — оверлей с кнопкой в правом нижнем углу. Нажатие резолвит и закрывает;

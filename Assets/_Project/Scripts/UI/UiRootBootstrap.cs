@@ -36,9 +36,6 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана текстового ивента (StS-style: заголовок, тело, варианты ответа).")]
         [SerializeField] private VisualTreeAsset _eventScreen;
 
-        [Tooltip("UXML экрана карты акта (граф узлов слева→направо, клик по доступному узлу).")]
-        [SerializeField] private VisualTreeAsset _mapScreen;
-
         [Tooltip("UXML единой кнопки «Продолжить» (правый нижний угол, бит между узлом и картой).")]
         [SerializeField] private VisualTreeAsset _continueScreen;
 
@@ -75,7 +72,6 @@ namespace Guildmaster.UI
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
         private ISubscriber<OpenRewardRequest> _openRewardSub;
         private ISubscriber<OpenTextEventRequest> _openEventSub;
-        private ISubscriber<OpenMapRequest> _openMapSub;
         private ISubscriber<OpenContinueRequest> _openContinueSub;
         private ISubscriber<OpenShopRequest> _openShopSub;
         private ISubscriber<OpenChestRequest> _openChestSub;
@@ -84,7 +80,6 @@ namespace Guildmaster.UI
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
         private IDisposable _openEventSubscription;
-        private IDisposable _openMapSubscription;
         private IDisposable _openContinueSubscription;
         private IDisposable _openShopSubscription;
         private IDisposable _openChestSubscription;
@@ -117,7 +112,7 @@ namespace Guildmaster.UI
         public void Construct(MenuRouter router, IInputService input,
             IBattleClock clock, RunStateService runStates, GameConfig config, ILocalizationService loc,
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
-            ISubscriber<OpenTextEventRequest> openEventSub, ISubscriber<OpenMapRequest> openMapSub,
+            ISubscriber<OpenTextEventRequest> openEventSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
             ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub,
@@ -138,7 +133,6 @@ namespace Guildmaster.UI
             _openLoadoutSub = openLoadoutSub;
             _openRewardSub = openRewardSub;
             _openEventSub = openEventSub;
-            _openMapSub = openMapSub;
             _openContinueSub = openContinueSub;
             _openShopSub = openShopSub;
             _openChestSub = openChestSub;
@@ -158,7 +152,7 @@ namespace Guildmaster.UI
                 return;
             }
             BuildLayers(); // Ф4: скелет слоёв-контейнеров ДО инициализации роутера (навигатор кладёт экраны в них)
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -166,8 +160,6 @@ namespace Guildmaster.UI
             _openRewardSubscription = _openRewardSub?.Subscribe(req => _router.OpenReward(req));
             // Открытие текстового ивента (StS-style) — запрос из GameFlow.
             _openEventSubscription = _openEventSub?.Subscribe(req => _router.OpenTextEvent(req));
-            // Открытие карты акта — запрос из петли акта (MapScreenNodeChooser).
-            _openMapSubscription = _openMapSub?.Subscribe(req => _router.OpenMap(req));
             // Единая кнопка «Продолжить» — запрос из петли акта (ContinuePresenter).
             _openContinueSubscription = _openContinueSub?.Subscribe(req => _router.ShowContinue(req));
             // Магазин — запрос из узла магазина (ShopFlow).
@@ -401,14 +393,12 @@ namespace Guildmaster.UI
         // приводит мир к цели идемпотентно; результат — WorldMapSpaceChangedEvent → Sheet-экран.
         private void RequestWorldMap(bool visible) => _worldMapPub?.Publish(new SetWorldMapRequest(visible));
 
-        // Read-only просмотр карты через UITK-экран (OpenMapView) снят вместе с переездом карты в мир:
-        // просмотр и выбор теперь идут одним путём через WorldMapController, и второй UI-путь к той же
-        // карте только плодил бы расхождения. Подписка на OpenMapRequest ниже жива — по ней UITK-карту
-        // можно вернуть, если world-карта не пройдёт play-приёмку.
+        // UITK-карта снесена целиком: и read-only просмотр, и выбор узла идут одним путём через
+        // WorldMapController в мире. Второй UI-путь к той же карте плодил расхождения, а держать его
+        // «на всякий случай» значило чинить каждый баг дважды.
 
         // Активный режим для подсветки таба (QA #11/#21) — ЕДИНЫЙ источник: верхний оверлей роутера несёт
-        // mode-тег (inventory/map, ставится при Push). Так подсвечивается и read-only карта, И карта петли
-        // акта (обе идут через один MenuRouter.OpenMap) — консистентно, без разрозненных флагов бутстрапа.
+        // mode-тег (inventory/map, ставится при Push). У карты этот тег несёт её прозрачное Sheet-пространство.
         // Нет оверлея → активен «Бой», если идёт бой/расстановка (Phase != None).
         private string ActiveMode(BattlePhase phase)
         {
@@ -469,7 +459,6 @@ namespace Guildmaster.UI
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();
-            _openMapSubscription?.Dispose();
             _openContinueSubscription?.Dispose();
             _openShopSubscription?.Dispose();
             _openChestSubscription?.Dispose();

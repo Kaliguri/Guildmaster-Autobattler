@@ -51,10 +51,7 @@
     --gm-color-rarity-common: var(--gm-brass-700);  /* обычная — тусклая латунь (дефолт) */
     --gm-color-rarity-unique: var(--gm-brass-200);  /* уникальная — сияющее золото */
 
-    /* --- Карта акта (узлы графа + рёбра) --- */
-    --gm-color-map-edge: var(--gm-ink-300);          /* тихое ребро между узлами */
-    --gm-color-map-edge-active: var(--gm-brass-400); /* ребро из текущего узла к доступному */
-    --gm-color-map-node-locked: var(--gm-ink-500);   /* узел вне досягаемости (тускло) */
-    --gm-color-map-node-cleared: var(--gm-ink-600);  /* пройденный узел */
-    --gm-color-map-node-current: var(--gm-brass-300); /* рамка текущей позиции */
+    /* Токенов карты акта здесь больше нет: карта живёт в мире, а не в UITK, и её цвета задаются
+       в MapStyle.asset. Дефолты там сняты с этих же примитивов (ink / brass / parchment), чтобы
+       карта и интерфейс оставались одной эстетикой. */
 }
