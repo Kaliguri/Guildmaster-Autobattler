@@ -1,0 +1,741 @@
+fileFormatVersion: 2
+guid: 3d41472c19e49514ab05c85745840049
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8996336945022153384
+    second: foliage_canopy_b_blur_0
+  - first:
+      213: 7573186033195058478
+    second: foliage_canopy_b_blur_1
+  - first:
+      213: -5199523877930836207
+    second: foliage_canopy_b_blur_2
+  - first:
+      213: 8369077836227132847
+    second: foliage_canopy_b_blur_3
+  - first:
+      213: -9032515465615586600
+    second: foliage_canopy_b_blur_4
+  - first:
+      213: -3498569802081882585
+    second: foliage_canopy_b_blur_5
+  - first:
+      213: -2139091930080834256
+    second: foliage_canopy_b_blur_6
+  - first:
+      213: -7009645708425241218
+    second: foliage_canopy_b_blur_7
+  - first:
+      213: 8721896816696620312
+    second: foliage_canopy_b_blur_8
+  - first:
+      213: 7699714413490057536
+    second: foliage_canopy_b_blur_9
+  - first:
+      213: 8760742844261348717
+    second: foliage_canopy_b_blur_10
+  - first:
+      213: 4864891639727932894
+    second: foliage_canopy_b_blur_11
+  - first:
+      213: -4474814268518801145
+    second: foliage_canopy_b_blur_12
+  - first:
+      213: -5124952562560093385
+    second: foliage_canopy_b_blur_13
+  - first:
+      213: 3582433513909852457
+    second: foliage_canopy_b_blur_14
+  - first:
+      213: -3966157912995280239
+    second: foliage_canopy_b_blur_15
+  - first:
+      213: -898474262805103610
+    second: foliage_canopy_b_blur_16
+  - first:
+      213: -7306154920152120693
+    second: foliage_canopy_b_blur_17
+  - first:
+      213: 3170702564251027800
+    second: foliage_canopy_b_blur_18
+  - first:
+      213: 243496120762165348
+    second: foliage_canopy_b_blur_19
+  - first:
+      213: 1261440154811410164
+    second: foliage_canopy_b_blur_20
+  - first:
+      213: -7236424929787767820
+    second: foliage_canopy_b_blur_21
+  - first:
+      213: -4000849618164763493
+    second: foliage_canopy_b_blur_22
+  - first:
+      213: 8801516924166222585
+    second: foliage_canopy_b_blur_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_0
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 360
+        width: 188
+        height: 152
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a2b4cf69c869dc70800000000000000
+      internalID: 8996336945022153384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_1
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 476
+        width: 65
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e258a8e929c591960800000000000000
+      internalID: 7573186033195058478
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_2
+      rect:
+        serializedVersion: 2
+        x: 234
+        y: 388
+        width: 129
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 11f55cec49497d7b0800000000000000
+      internalID: -5199523877930836207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_3
+      rect:
+        serializedVersion: 2
+        x: 331
+        y: 338
+        width: 175
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fadb9e563ffe42470800000000000000
+      internalID: 8369077836227132847
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 316
+        width: 74
+        height: 103
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8dac2c35a0f06a280800000000000000
+      internalID: -9032515465615586600
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_5
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 266
+        width: 128
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72e200d1d45927fc0800000000000000
+      internalID: -3498569802081882585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_6
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 242
+        width: 91
+        height: 139
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03d80a5193b6052e0800000000000000
+      internalID: -2139091930080834256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_7
+      rect:
+        serializedVersion: 2
+        x: 313
+        y: 175
+        width: 121
+        height: 163
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7dd8fbed5cb8be90800000000000000
+      internalID: -7009645708425241218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_8
+      rect:
+        serializedVersion: 2
+        x: 423
+        y: 251
+        width: 89
+        height: 105
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 815ffc6b1f66a0970800000000000000
+      internalID: 8721896816696620312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_9
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 328
+        width: 18
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 041b708d671eada60800000000000000
+      internalID: 7699714413490057536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 264
+        width: 13
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d653eb05339649970800000000000000
+      internalID: 8760742844261348717
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 176
+        width: 85
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed540c8cb21938340800000000000000
+      internalID: 4864891639727932894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_12
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 22
+        width: 139
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7016611a12446e1c0800000000000000
+      internalID: -4474814268518801145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_13
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 126
+        width: 76
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 733b0e92cc280e8b0800000000000000
+      internalID: -5124952562560093385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_14
+      rect:
+        serializedVersion: 2
+        x: 314
+        y: 135
+        width: 61
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9291d04ec4c57b130800000000000000
+      internalID: 3582433513909852457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_15
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 183
+        width: 45
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19acfc8446065f8c0800000000000000
+      internalID: -3966157912995280239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_16
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 90
+        width: 122
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60cbba51b6af783f0800000000000000
+      internalID: -898474262805103610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_17
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 54
+        width: 82
+        height: 85
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b824c5e4fc25b9a90800000000000000
+      internalID: -7306154920152120693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_18
+      rect:
+        serializedVersion: 2
+        x: 396
+        y: 106
+        width: 83
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8594a9ede29900c20800000000000000
+      internalID: 3170702564251027800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_19
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 26
+        width: 48
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 468e6368e62116300800000000000000
+      internalID: 243496120762165348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_20
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 0
+        width: 76
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f6a2fc2329818110800000000000000
+      internalID: 1261440154811410164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_21
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 0
+        width: 122
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4f31838dddd039b90800000000000000
+      internalID: -7236424929787767820
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_22
+      rect:
+        serializedVersion: 2
+        x: 475
+        y: 26
+        width: 37
+        height: 79
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b94388d38702a78c0800000000000000
+      internalID: -4000849618164763493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_blur_23
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 0
+        width: 60
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9f234859205452a70800000000000000
+      internalID: 8801516924166222585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      foliage_canopy_b_blur_0: 8996336945022153384
+      foliage_canopy_b_blur_1: 7573186033195058478
+      foliage_canopy_b_blur_10: 8760742844261348717
+      foliage_canopy_b_blur_11: 4864891639727932894
+      foliage_canopy_b_blur_12: -4474814268518801145
+      foliage_canopy_b_blur_13: -5124952562560093385
+      foliage_canopy_b_blur_14: 3582433513909852457
+      foliage_canopy_b_blur_15: -3966157912995280239
+      foliage_canopy_b_blur_16: -898474262805103610
+      foliage_canopy_b_blur_17: -7306154920152120693
+      foliage_canopy_b_blur_18: 3170702564251027800
+      foliage_canopy_b_blur_19: 243496120762165348
+      foliage_canopy_b_blur_2: -5199523877930836207
+      foliage_canopy_b_blur_20: 1261440154811410164
+      foliage_canopy_b_blur_21: -7236424929787767820
+      foliage_canopy_b_blur_22: -4000849618164763493
+      foliage_canopy_b_blur_23: 8801516924166222585
+      foliage_canopy_b_blur_3: 8369077836227132847
+      foliage_canopy_b_blur_4: -9032515465615586600
+      foliage_canopy_b_blur_5: -3498569802081882585
+      foliage_canopy_b_blur_6: -2139091930080834256
+      foliage_canopy_b_blur_7: -7009645708425241218
+      foliage_canopy_b_blur_8: 8721896816696620312
+      foliage_canopy_b_blur_9: 7699714413490057536
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

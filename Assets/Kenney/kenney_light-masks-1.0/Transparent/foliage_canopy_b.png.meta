@@ -1,0 +1,975 @@
+fileFormatVersion: 2
+guid: f79ac77175bf7764e8260549e2fd9722
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3654247252844485322
+    second: foliage_canopy_b_0
+  - first:
+      213: -5330729961149170957
+    second: foliage_canopy_b_1
+  - first:
+      213: -932186233208197403
+    second: foliage_canopy_b_2
+  - first:
+      213: -3779104622827053232
+    second: foliage_canopy_b_3
+  - first:
+      213: -3644700352060214767
+    second: foliage_canopy_b_4
+  - first:
+      213: 4045285355303444857
+    second: foliage_canopy_b_5
+  - first:
+      213: -736414455020079528
+    second: foliage_canopy_b_6
+  - first:
+      213: -7586526705882184833
+    second: foliage_canopy_b_7
+  - first:
+      213: -7196602426697151358
+    second: foliage_canopy_b_8
+  - first:
+      213: 7104225880367422150
+    second: foliage_canopy_b_9
+  - first:
+      213: 7710928474531799992
+    second: foliage_canopy_b_10
+  - first:
+      213: -3165787752011966644
+    second: foliage_canopy_b_11
+  - first:
+      213: 2803601447249122281
+    second: foliage_canopy_b_12
+  - first:
+      213: -6210366693412188999
+    second: foliage_canopy_b_13
+  - first:
+      213: 7575321069824351623
+    second: foliage_canopy_b_14
+  - first:
+      213: -3473522509676791860
+    second: foliage_canopy_b_15
+  - first:
+      213: 9142119273374222294
+    second: foliage_canopy_b_16
+  - first:
+      213: 5625096543898610264
+    second: foliage_canopy_b_17
+  - first:
+      213: -6956322667452953429
+    second: foliage_canopy_b_18
+  - first:
+      213: -3747571101078448118
+    second: foliage_canopy_b_19
+  - first:
+      213: -5552954827751108203
+    second: foliage_canopy_b_20
+  - first:
+      213: 8133816481674792437
+    second: foliage_canopy_b_21
+  - first:
+      213: -4131440558516232338
+    second: foliage_canopy_b_22
+  - first:
+      213: 2095888900925426923
+    second: foliage_canopy_b_23
+  - first:
+      213: -7660993664262573703
+    second: foliage_canopy_b_24
+  - first:
+      213: 1479125707607944155
+    second: foliage_canopy_b_25
+  - first:
+      213: 3309850523293053541
+    second: foliage_canopy_b_26
+  - first:
+      213: -2875196127907735619
+    second: foliage_canopy_b_27
+  - first:
+      213: 4110633779268496023
+    second: foliage_canopy_b_28
+  - first:
+      213: 9136564486770501877
+    second: foliage_canopy_b_29
+  - first:
+      213: 8045927203722649593
+    second: foliage_canopy_b_30
+  - first:
+      213: 6430120655427210227
+    second: foliage_canopy_b_31
+  - first:
+      213: -2715394734056033876
+    second: foliage_canopy_b_32
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: foliage_canopy_b_0
+      rect:
+        serializedVersion: 2
+        x: 63
+        y: 469
+        width: 62
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 635e1cc0c71894dc0800000000000000
+      internalID: -3654247252844485322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_1
+      rect:
+        serializedVersion: 2
+        x: 188
+        y: 483
+        width: 57
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fafb2008517506b0800000000000000
+      internalID: -5330729961149170957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_2
+      rect:
+        serializedVersion: 2
+        x: 237
+        y: 396
+        width: 124
+        height: 116
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5eead115f853013f0800000000000000
+      internalID: -932186233208197403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_3
+      rect:
+        serializedVersion: 2
+        x: 395
+        y: 421
+        width: 104
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05f5b5b3e5ced8bc0800000000000000
+      internalID: -3779104622827053232
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 323
+        width: 72
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 112b5ba175c6b6dc0800000000000000
+      internalID: -3644700352060214767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_5
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 367
+        width: 94
+        height: 107
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 971a3f9099db32830800000000000000
+      internalID: 4045285355303444857
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_6
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 370
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 856b01174fab7c5f0800000000000000
+      internalID: -736414455020079528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_7
+      rect:
+        serializedVersion: 2
+        x: 217
+        y: 243
+        width: 85
+        height: 131
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f73c0e8f72e37b690800000000000000
+      internalID: -7586526705882184833
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_8
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 348
+        width: 115
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28c800fd838802c90800000000000000
+      internalID: -7196602426697151358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_9
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 340
+        width: 14
+        height: 53
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6cadf636cc7479260800000000000000
+      internalID: 7104225880367422150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 267
+        width: 9
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8b3a9e4e798b20b60800000000000000
+      internalID: 7710928474531799992
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_11
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 274
+        width: 70
+        height: 77
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c475b0700dcd014d0800000000000000
+      internalID: -3165787752011966644
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_12
+      rect:
+        serializedVersion: 2
+        x: 158
+        y: 295
+        width: 56
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e31e0389a468e620800000000000000
+      internalID: 2803601447249122281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_13
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 263
+        width: 75
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bccf32756850d9a0800000000000000
+      internalID: -6210366693412188999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_14
+      rect:
+        serializedVersion: 2
+        x: 429
+        y: 254
+        width: 83
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 78d99629062f02960800000000000000
+      internalID: 7575321069824351623
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 205
+        width: 11
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc734635ea19bcfc0800000000000000
+      internalID: -3473522509676791860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_16
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 184
+        width: 73
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6d709b7ca055fde70800000000000000
+      internalID: 9142119273374222294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_17
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 148
+        width: 77
+        height: 95
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85aaa5ee08b501e40800000000000000
+      internalID: 5625096543898610264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_18
+      rect:
+        serializedVersion: 2
+        x: 233
+        y: 134
+        width: 66
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bac087fd36d267f90800000000000000
+      internalID: -6956322667452953429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_19
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 206
+        width: 50
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0813b560f3fdfbc0800000000000000
+      internalID: -3747571101078448118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_20
+      rect:
+        serializedVersion: 2
+        x: 373
+        y: 181
+        width: 56
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 591da164101ffe2b0800000000000000
+      internalID: -5552954827751108203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_21
+      rect:
+        serializedVersion: 2
+        x: 473
+        y: 190
+        width: 39
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fd817acefe11e070800000000000000
+      internalID: 8133816481674792437
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_22
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 96
+        width: 113
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6f9ffa83bc2aa6c0800000000000000
+      internalID: -4131440558516232338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_23
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 24
+        width: 105
+        height: 122
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bec0854d9d7161d10800000000000000
+      internalID: 2095888900925426923
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_24
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 142
+        width: 51
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9717c1f1adeaea590800000000000000
+      internalID: -7660993664262573703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_25
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 112
+        width: 75
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdbae1c8ef8e68410800000000000000
+      internalID: 1479125707607944155
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_26
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 34
+        width: 40
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 562f58cb383feed20800000000000000
+      internalID: 3309850523293053541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_27
+      rect:
+        serializedVersion: 2
+        x: 322
+        y: 62
+        width: 72
+        height: 75
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: db71b78ea504918d0800000000000000
+      internalID: -2875196127907735619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_28
+      rect:
+        serializedVersion: 2
+        x: 475
+        y: 34
+        width: 37
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79a2507a4a7eb0930800000000000000
+      internalID: 4110633779268496023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_29
+      rect:
+        serializedVersion: 2
+        x: 60
+        y: 0
+        width: 66
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f8a76d3ef89bce70800000000000000
+      internalID: 9136564486770501877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_30
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 0
+        width: 50
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9ff5a82a920e8af60800000000000000
+      internalID: 8045927203722649593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_31
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 2
+        width: 50
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3fb04a9faa06c3950800000000000000
+      internalID: 6430120655427210227
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: foliage_canopy_b_32
+      rect:
+        serializedVersion: 2
+        x: 287
+        y: 0
+        width: 75
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca1bf9b40eaf05ad0800000000000000
+      internalID: -2715394734056033876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      foliage_canopy_b_0: -3654247252844485322
+      foliage_canopy_b_1: -5330729961149170957
+      foliage_canopy_b_10: 7710928474531799992
+      foliage_canopy_b_11: -3165787752011966644
+      foliage_canopy_b_12: 2803601447249122281
+      foliage_canopy_b_13: -6210366693412188999
+      foliage_canopy_b_14: 7575321069824351623
+      foliage_canopy_b_15: -3473522509676791860
+      foliage_canopy_b_16: 9142119273374222294
+      foliage_canopy_b_17: 5625096543898610264
+      foliage_canopy_b_18: -6956322667452953429
+      foliage_canopy_b_19: -3747571101078448118
+      foliage_canopy_b_2: -932186233208197403
+      foliage_canopy_b_20: -5552954827751108203
+      foliage_canopy_b_21: 8133816481674792437
+      foliage_canopy_b_22: -4131440558516232338
+      foliage_canopy_b_23: 2095888900925426923
+      foliage_canopy_b_24: -7660993664262573703
+      foliage_canopy_b_25: 1479125707607944155
+      foliage_canopy_b_26: 3309850523293053541
+      foliage_canopy_b_27: -2875196127907735619
+      foliage_canopy_b_28: 4110633779268496023
+      foliage_canopy_b_29: 9136564486770501877
+      foliage_canopy_b_3: -3779104622827053232
+      foliage_canopy_b_30: 8045927203722649593
+      foliage_canopy_b_31: 6430120655427210227
+      foliage_canopy_b_32: -2715394734056033876
+      foliage_canopy_b_4: -3644700352060214767
+      foliage_canopy_b_5: 4045285355303444857
+      foliage_canopy_b_6: -736414455020079528
+      foliage_canopy_b_7: -7586526705882184833
+      foliage_canopy_b_8: -7196602426697151358
+      foliage_canopy_b_9: 7104225880367422150
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
