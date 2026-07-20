@@ -43,6 +43,7 @@ namespace Guildmaster.Presentation.Map
         private const float NodeZ = 0f;
         private const float FogZ  = -0.15f; // над узлами, но под фишкой: отряд идёт ПОВЕРХ дымки
         private const float PawnZ = -0.3f;
+        private const float TransitionZ = -1f; // ближе всего к камере: шторка перекрывает всю карту
 
         private IInputService _input;
         private IVisualTempo _tempo; // единый метроном: биение узлов и волна дорожек идут от него
@@ -55,6 +56,7 @@ namespace Guildmaster.Presentation.Map
         private bool _fogOn;      // туман по умолчанию ВЫКЛЮЧЕН (решение Макса: «вообще не то, мб позже»)
         private bool _pulseOn = true;
         private bool _pathFlowOn = true;
+        private bool _travelOn;   // поездка фишки ВЫКЛЮЧЕНА: шаг по карте идёт шторкой (решение Макса)
         private CameraModeController _cameraModes; // null в headless
         private WorldMapViewLink _link; // мост к петле забега (она живёт в корневом скоупе, выше мирового)
 
@@ -98,6 +100,17 @@ namespace Guildmaster.Presentation.Map
         private bool _pressed;
         private float _nudgeUntil;
         private int _nudgeIndex = -1;
+
+        // Шторка перехода: закрыть кадр → засчитать выбор → открыть. Заменяет поездку фишки как основной
+        // способ шагнуть по карте (решение Макса 2026-07-20): поездка отвечала «отряд идёт», но каждый шаг
+        // стоил полутора секунд ожидания, а шагов за акт четырнадцать.
+        private enum FadeStage { None, In, Hold, Out }
+        private FadeStage _fadeStage;
+        private float _fadeTime;
+        private string _fadeNodeId;
+        private Vector2 _fadeTargetPos;
+        private MeshRenderer _transition;
+        private MaterialPropertyBlock _transitionBlock;
 
         // Поездка фишки: пока едет, выбор заблокирован, а событие выбора ждёт приезда.
         private bool _travelling;
@@ -167,6 +180,11 @@ namespace Guildmaster.Presentation.Map
 
             _toggles.Register("map.pathflow", "Бегущая волна по дорожкам",
                 on => _pathFlowOn = on);
+
+            // Выключен по умолчанию: шаг по карте идёт шторкой. Поездка не удалена намеренно — Макс
+            // оставил её про запас, включается одной командой.
+            _toggles.Register("map.travel", "Поездка фишки по дорожке (выкл = переход затемнением)",
+                on => _travelOn = on, defaultEnabled: false);
         }
 
         private void OnDestroy()
@@ -568,14 +586,33 @@ namespace Guildmaster.Presentation.Map
             // Пока фишка едет, повторный клик = «пропустить»: ускоряем поездку, а не выбираем заново.
             if (_travelling) { _travelSpeedScale = _style != null ? _style.PawnSkipSpeed : 6f; return; }
 
+            // Пока идёт шторка, карта клики не принимает: выбор уже сделан и вот-вот засчитается.
+            if (_fadeStage != FadeStage.None) return;
+
             if (_input == null || _input.PointerOverUI) return;
 
             int hit = HitTest();
             if (hit < 0) return;
 
             _pressed = true;
-            if (_hits[hit].Selectable) StartTravel(hit, silent: false);
+            if (_hits[hit].Selectable) BeginStep(hit, silent: false);
             else { _nudgeIndex = hit; _nudgeUntil = Time.unscaledTime + NudgeDuration; }
+        }
+
+        // Шаг по карте: шторкой (по умолчанию) или поездкой фишки (тумблер map.travel). Развилка одна на
+        // все входы — и клик, и дев-обход, — чтобы способ перехода нельзя было забыть в одном из них.
+        private void BeginStep(int hit, bool silent)
+        {
+            if (_travelOn || _style == null || _style.TransitionMaterial == null)
+            {
+                StartTravel(hit, silent);
+                return;
+            }
+
+            _fadeTargetPos = _hits[hit].Pos;
+            _fadeNodeId    = silent ? null : _hits[hit].Id;
+            _fadeStage     = FadeStage.In;
+            _fadeTime      = 0f;
         }
 
         private void OnPointerReleased() => _pressed = false;
@@ -598,7 +635,7 @@ namespace Guildmaster.Presentation.Map
             for (int i = 0; i < _hits.Count; i++)
             {
                 if (!string.Equals(_hits[i].Id, nodeId, StringComparison.Ordinal)) continue;
-                StartTravel(i, silent: true);
+                BeginStep(i, silent: true);
                 return;
             }
         }
@@ -608,6 +645,9 @@ namespace Guildmaster.Presentation.Map
         {
             _travelling = false;
             _travelNodeId = null;
+            _fadeStage  = FadeStage.None;
+            _fadeNodeId = null;
+            SetFadeProgress(0f);
 
             for (int i = 0; i < _hits.Count; i++)
                 if (_hits[i].State == MapNodeVisualState.Current) { PlacePawn(_hits[i].Pos); return; }
@@ -667,18 +707,109 @@ namespace Guildmaster.Presentation.Map
             AnimateDots(now);
 
             if (_travelling) TickTravel();
+            if (_fadeStage != FadeStage.None) TickFade();
             UpdateFogReveal(); // дымка расходится вслед за отрядом
+        }
+
+        // Шторка: закрыть кадр → на закрытом переставить отряд и засчитать выбор → открыть. Выбор
+        // засчитывается ИМЕННО на закрытом кадре — тогда смена карты на бой (или на экран узла) происходит
+        // за чернилами, и подмены не видно.
+        private void TickFade()
+        {
+            _fadeTime += Time.unscaledDeltaTime;
+
+            switch (_fadeStage)
+            {
+                case FadeStage.In:
+                {
+                    float dur = Mathf.Max(0.01f, _style.TransitionInSeconds);
+                    if (_fadeTime < dur) { SetFadeProgress(_fadeTime / dur); break; }
+
+                    SetFadeProgress(1f);
+                    PlacePawn(_fadeTargetPos);
+
+                    string id = _fadeNodeId;
+                    _fadeNodeId = null;
+                    _fadeStage  = FadeStage.Hold;
+                    _fadeTime   = 0f;
+                    if (id != null) NodeClicked?.Invoke(id);
+                    break;
+                }
+
+                case FadeStage.Hold:
+                {
+                    if (_fadeTime < Mathf.Max(0f, _style.TransitionHoldSeconds)) break;
+                    _fadeStage = FadeStage.Out;
+                    _fadeTime  = 0f;
+                    break;
+                }
+
+                case FadeStage.Out:
+                {
+                    float dur = Mathf.Max(0.01f, _style.TransitionOutSeconds);
+                    if (_fadeTime < dur) { SetFadeProgress(1f - _fadeTime / dur); break; }
+
+                    SetFadeProgress(0f);
+                    _fadeStage = FadeStage.None;
+                    break;
+                }
+            }
+        }
+
+        // Шторка натягивается на КАДР, а не на карту: она накрывает то, что видно, независимо от того,
+        // куда уехала камера и какого размера акт.
+        private void SetFadeProgress(float progress)
+        {
+            EnsureTransition();
+            if (_transition == null) return;
+
+            bool visible = progress > 0.001f;
+            _transition.enabled = visible;
+            if (!visible) return;
+
+            Camera cam = Camera.main;
+            if (cam != null)
+            {
+                float h = cam.orthographicSize * 2f;
+                float w = h * cam.aspect;
+                Vector3 c = cam.transform.position;
+                // С запасом: на повороте/дрожании камеры край шторки не должен показаться в кадре.
+                _transition.transform.position   = new Vector3(c.x, c.y, TransitionZ);
+                _transition.transform.localScale = new Vector3(w * 1.2f, h * 1.2f, 1f);
+            }
+
+            _transitionBlock ??= new MaterialPropertyBlock();
+            _transition.GetPropertyBlock(_transitionBlock);
+            _transitionBlock.SetFloat(ProgressId, Mathf.Clamp01(progress));
+            _transition.SetPropertyBlock(_transitionBlock);
+        }
+
+        private static readonly int ProgressId = Shader.PropertyToID("_Progress");
+
+        private void EnsureTransition()
+        {
+            if (_transition != null || _style == null || _style.TransitionMaterial == null) return;
+
+            var go = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            go.name = "Transition";
+            Destroy(go.GetComponent<Collider>());
+            go.transform.SetParent(transform, false);
+            _transition = go.GetComponent<MeshRenderer>();
+            _transition.sharedMaterial = _style.TransitionMaterial;
+            _transition.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            _transition.receiveShadows = false;
+            _transition.enabled = false;
         }
 
         private void AnimateNodes(float now)
         {
-            // Доступные узлы РОВНО МОРГАЮТ размером на своей, медленной доле метронома: то больше, то меньше.
-            // Ритм сердца (двойной толчок и покой) здесь пробовали — он читается как суета, а не как «сюда можно».
-            // Спокойный вдох-выдох заметен ровно настолько, чтобы поймать взгляд, и не дёргает карту.
-            float pulse  = _pulseOn ? (_tempo?.Swell(_style.PulseDivision) ?? 0.5f) : 0.5f;
+            // Доступные узлы дышат ОДНИМ движением: яркость и размер берут одну и ту же огибающую одной
+            // доли. Прежде у размера была своя, вдвое более медленная доля — и два движения сходились в фазе
+            // лишь через такт, отчего узел выглядел не дышащим, а дёргающимся вразнобой (play-QA Макса).
             float swell  = _tempo?.Swell(_style.BeatDivision) ?? 0.5f;
-            float breath = 1f + (swell - 0.5f) * 2f * _style.AvailableBreath;
-            float grow   = 1f + (pulse - 0.5f) * 2f * _style.PulseAmount;
+            float wave   = (swell - 0.5f) * 2f;                      // -1..1, общая фаза дыхания
+            float breath = 1f + wave * _style.AvailableBreath;
+            float grow   = 1f + (_pulseOn ? wave * _style.PulseAmount : 0f);
 
             for (int i = 0; i < _hits.Count; i++)
             {
@@ -761,6 +892,16 @@ namespace Guildmaster.Presentation.Map
             if (_table != null) _table.gameObject.SetActive(active);
             if (_backdrop != null) _backdrop.gameObject.SetActive(active);
             if (_fog != null) _fog.gameObject.SetActive(active);
+
+            // Шторку при скрытии карты сбрасываем, а не просто гасим: карта уходит в бой прямо посреди
+            // перехода, и незакрытое состояние вернулось бы вместе с ней на следующем показе.
+            if (!active && _fadeStage != FadeStage.None)
+            {
+                _fadeStage  = FadeStage.None;
+                _fadeNodeId = null;
+                SetFadeProgress(0f);
+            }
+            if (_transition != null) _transition.gameObject.SetActive(active);
         }
 
         // Всё пулится: за акт карта перерисовывается на каждом узле. Узлы — один префаб на все типы,

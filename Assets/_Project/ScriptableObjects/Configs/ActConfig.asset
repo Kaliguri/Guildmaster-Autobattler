@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ActConfig
   m_EditorClassIdentifier: Guildmaster.Guild::Guildmaster.Guild.ActConfig
   _map:
-    Columns: 14
+    Columns: 15
     EdgeColumnWidth: 3
     EdgeColumns: 1
     MinColumnWidth: 5
@@ -31,28 +31,38 @@ MonoBehaviour:
       ToFloor: 8
       Weights:
       - Type: 1
-        Weight: 45
+        Weight: 40
       - Type: 3
-        Weight: 20
+        Weight: 18
       - Type: 2
-        Weight: 20
+        Weight: 18
       - Type: 4
-        Weight: 15
+        Weight: 12
+      - Type: 7
+        Weight: 12
     - FromFloor: 9
-      ToFloor: 11
+      ToFloor: 13
       Weights:
       - Type: 1
-        Weight: 40
+        Weight: 36
       - Type: 2
-        Weight: 30
+        Weight: 27
       - Type: 6
-        Weight: 20
+        Weight: 18
       - Type: 3
+        Weight: 9
+      - Type: 7
         Weight: 10
     Anchors:
     - Floor: 7
       Type: 6
+      Width: 1
+    - Floor: 8
+      Type: 8
       Width: 3
     - Floor: 12
       Type: 4
       Width: 0
+    - Floor: 13
+      Type: 8
+      Width: 3

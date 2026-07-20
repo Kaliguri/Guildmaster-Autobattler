@@ -68,7 +68,8 @@ namespace Guildmaster.Guild
         }
 
         // Дефолтная раскладка (одобрено 2026-07-20). Этажи-испытания: 1..13; Boss — колонка 14.
-        // Зоны: Разогрев 1–4 (только бой/событие), Развитие 5–8 (+элита/магазин), Пик 9–13 (+элита/сундук).
+        // Зоны: Разогрев 1–4 (только бой/событие), Развитие 5–8 (+элита/магазин/«?»), Пик 9–13 (+элита/сундук/«?»).
+        // «?»-узел живёт со зоны развития: в разогреве неизвестность читалась бы как «игра не объяснила правила».
         // Якоря режут середину и хвост: 7 — сундук, 8 — привалы, 12 — магазин, 13 — привал перед боссом.
         private static ZoneRule[] DefaultZones() => new[]
         {
@@ -79,17 +80,19 @@ namespace Guildmaster.Guild
             }),
             new ZoneRule(5, 8, new[]
             {
-                new NodeTypeWeight(MapNodeType.Battle,    45),
-                new NodeTypeWeight(MapNodeType.TextEvent, 20),
-                new NodeTypeWeight(MapNodeType.Elite,     20),
-                new NodeTypeWeight(MapNodeType.Shop,      15),
+                new NodeTypeWeight(MapNodeType.Battle,    40),
+                new NodeTypeWeight(MapNodeType.TextEvent, 18),
+                new NodeTypeWeight(MapNodeType.Elite,     18),
+                new NodeTypeWeight(MapNodeType.Shop,      12),
+                new NodeTypeWeight(MapNodeType.Unknown,   12),
             }),
             new ZoneRule(9, 13, new[]
             {
-                new NodeTypeWeight(MapNodeType.Battle,    40),
-                new NodeTypeWeight(MapNodeType.Elite,     30),
-                new NodeTypeWeight(MapNodeType.Chest,     20),
-                new NodeTypeWeight(MapNodeType.TextEvent, 10),
+                new NodeTypeWeight(MapNodeType.Battle,    36),
+                new NodeTypeWeight(MapNodeType.Elite,     27),
+                new NodeTypeWeight(MapNodeType.Chest,     18),
+                new NodeTypeWeight(MapNodeType.TextEvent,  9),
+                new NodeTypeWeight(MapNodeType.Unknown,   10),
             }),
         };
 

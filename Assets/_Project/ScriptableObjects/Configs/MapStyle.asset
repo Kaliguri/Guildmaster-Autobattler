@@ -54,9 +54,8 @@ MonoBehaviour:
   _pressScale: 0.9
   _availableBreath: 0.22
   _beatDivision: 1
-  _pulseDivision: 2
   _pulseAmount: 0.14
-  _flowDivision: 0.5
+  _flowDivision: 1
   _fogMaterial: {fileID: 2100000, guid: a97aedf5c4220d2469cdb08ac70901b6, type: 2}
   _fogFalloff: 14
   _fogTrail: 6
@@ -64,3 +63,7 @@ MonoBehaviour:
   _pawn: {r: 0.973, g: 0.925, b: 0.796, a: 1}
   _pawnTravelSeconds: 1.5
   _pawnSkipSpeed: 6
+  _transitionMaterial: {fileID: 2100000, guid: 325cc584ed8653149a991f39ab3ccb43, type: 2}
+  _transitionInSeconds: 0.28
+  _transitionHoldSeconds: 0.08
+  _transitionOutSeconds: 0.36

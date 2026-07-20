@@ -144,21 +144,17 @@ namespace Guildmaster.Presentation.Map
         [SerializeField, Range(0f, 0.6f)] private float _availableBreath = 0.22f;
 
         [Header("Такт (доли ЕДИНОГО метронома, а не секунды)")]
-        [Tooltip("На какой доле дышат ЯРКОСТЬЮ доступные узлы. 1 = каждый такт, 2 = через такт.")]
+        [Tooltip("На какой доле дышат доступные узлы. 1 = каждый такт, 2 = через такт. " +
+                 "ЯРКОСТЬ и РАЗМЕР идут на ЭТОЙ ЖЕ доле — одним движением, не двумя.")]
         [SerializeField] private float _beatDivision = 1f;
 
-        [Tooltip("На какой доле доступные узлы моргают РАЗМЕРОМ. Отдельно от яркости и намеренно медленнее: " +
-                 "2 = полный цикл «больше-меньше» за два такта. Пульс должен быть спокойным, но заметным — " +
-                 "ритм сердца (двойной толчок) здесь пробовали, он читался как суета.")]
-        [SerializeField] private float _pulseDivision = 2f;
-
-        [Tooltip("Насколько узел раздаётся на пульсе. Это размер, поверх дыхания яркостью.")]
+        [Tooltip("Насколько узел раздаётся на вдохе. Это размер, поверх дыхания яркостью — но в одной фазе с ним.")]
         [FormerlySerializedAs("_heartbeatAmount")]
         [SerializeField, Range(0f, 0.5f)] private float _pulseAmount = 0.14f;
 
-        [Tooltip("На какой доле бежит волна по дорожке к доступному узлу. 0.5 = вдвое чаще биения — " +
-                 "дорожка успевает добежать за половину такта, и удар узла читается как её приход.")]
-        [SerializeField] private float _flowDivision = 0.5f;
+        [Tooltip("На какой доле бежит волна по дорожке к доступному узлу. 1 = один проход за такт, " +
+                 "в ритме дыхания узлов; 0.5 было вдвое быстрее и читалось как суета.")]
+        [SerializeField] private float _flowDivision = 1f;
 
         [Header("Туман (атмосфера, НЕ механика)")]
         [Tooltip("Материал слоя тумана (шейдер Guildmaster/Map/Fog). Пусто — тумана нет. " +
@@ -179,11 +175,28 @@ namespace Guildmaster.Presentation.Map
 
         [SerializeField] private Color _pawn = new Color(0.973f, 0.925f, 0.796f);
 
-        [Tooltip("Сколько едет фишка между узлами (секунды).")]
+        [Tooltip("Сколько едет фишка между узлами (секунды). Работает, только если включён тумблер " +
+                 "map.travel — по умолчанию переход идёт затемнением, поездка оставлена про запас.")]
         [SerializeField] private float _pawnTravelSeconds = 1.5f;
 
         [Tooltip("Во сколько раз ускоряется поездка по повторному клику (дабл-клик).")]
         [SerializeField] private float _pawnSkipSpeed = 6f;
+
+        [Header("Переход при выборе узла (шторка вместо поездки)")]
+        [Tooltip("Материал шторки (шейдер Guildmaster/Map/Transition). Пусто — перехода нет, узел берётся " +
+                 "мгновенно. Цвет чернил, шум закрытия и мягкость края крутить В МАТЕРИАЛЕ.")]
+        [SerializeField] private Material _transitionMaterial;
+
+        [Tooltip("Сколько кадр затягивается чернилами (секунды). Это ощущаемая цена шага по карте — " +
+                 "заметно, но без ожидания.")]
+        [SerializeField] private float _transitionInSeconds = 0.28f;
+
+        [Tooltip("Сколько кадр держится закрытым, прежде чем начать открываться.")]
+        [SerializeField] private float _transitionHoldSeconds = 0.08f;
+
+        [Tooltip("Сколько кадр раскрывается обратно (секунды). Чуть дольше закрытия: уходить резко приятно, " +
+                 "а появляться — мягко.")]
+        [SerializeField] private float _transitionOutSeconds = 0.36f;
 
         /// <inheritdoc cref="_layout"/>
         public MapLayout Layout => _layout;
@@ -194,8 +207,6 @@ namespace Guildmaster.Presentation.Map
 
         /// <inheritdoc cref="_beatDivision"/>
         public float BeatDivision => _beatDivision;
-        /// <inheritdoc cref="_pulseDivision"/>
-        public float PulseDivision => _pulseDivision;
         /// <inheritdoc cref="_pulseAmount"/>
         public float PulseAmount => _pulseAmount;
         /// <inheritdoc cref="_flowDivision"/>
@@ -276,6 +287,15 @@ namespace Guildmaster.Presentation.Map
         public float PawnTravelSeconds => _pawnTravelSeconds;
         /// <inheritdoc cref="_pawnSkipSpeed"/>
         public float PawnSkipSpeed => _pawnSkipSpeed;
+
+        /// <inheritdoc cref="_transitionMaterial"/>
+        public Material TransitionMaterial => _transitionMaterial;
+        /// <inheritdoc cref="_transitionInSeconds"/>
+        public float TransitionInSeconds => _transitionInSeconds;
+        /// <inheritdoc cref="_transitionHoldSeconds"/>
+        public float TransitionHoldSeconds => _transitionHoldSeconds;
+        /// <inheritdoc cref="_transitionOutSeconds"/>
+        public float TransitionOutSeconds => _transitionOutSeconds;
 
         /// <summary>Множитель яркости по состоянию узла.</summary>
         public Color StateTint(MapNodeVisualState state) => state switch
