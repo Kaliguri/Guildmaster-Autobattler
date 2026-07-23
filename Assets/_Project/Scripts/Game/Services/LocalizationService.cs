@@ -47,7 +47,12 @@ namespace Guildmaster.Game.Services
 
         public string GetString(string key) => GetString(ContentTable, key);
 
-        public string GetString(string table, string key)
+        public string GetString(string key, IReadOnlyDictionary<string, object> args)
+            => GetString(ContentTable, key, args);
+
+        public string GetString(string table, string key) => GetString(table, key, null);
+
+        public string GetString(string table, string key, IReadOnlyDictionary<string, object> args)
         {
             if (string.IsNullOrEmpty(key)) return key;
             EnsureInitialized();
@@ -59,6 +64,12 @@ namespace Guildmaster.Game.Services
                 // (а не показывал Unity-плейсхолдер «No translation found …» или сам ключ). Это делает
                 // code-фолбэки экранов (L(key, "RU")) реальной страховкой на случай незаведённого ключа.
                 if (res.Entry == null) return string.Empty;
+
+                // Именованные слоты ({dmg}) Smart Format достаёт из ОДНОГО аргумента-словаря
+                // через свой Dictionary-source; передавать пары по отдельности нельзя.
+                if (args != null && args.Count > 0)
+                    return res.Entry.GetLocalizedString(new object[] { args }) ?? string.Empty;
+
                 return res.Entry.GetLocalizedString() ?? string.Empty;
             }
             catch (Exception)

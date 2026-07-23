@@ -9,6 +9,7 @@
             <ui:Label name="guild-name" text="Alebardium" class="gm-loadout__guild-name" />
             <ui:Label name="guild-asc" text="· ASC IV" class="gm-loadout__guild-asc" />
             <ui:Label name="topbar-act" text="· Акт 1" class="gm-loadout__guild-asc" />
+            <ui:Label name="topbar-floor" text="· Веха 1" class="gm-loadout__guild-asc" />
         </ui:VisualElement>
 
         <!-- Лента-островок: форму рисует SlantedPanel вершинами (скос на 9-slice «плывёт» по ширине). -->

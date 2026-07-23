@@ -340,6 +340,27 @@ namespace Guildmaster.UI
             _topBar.SetAct(run.CurrentActIndex + 1);
             _topBar.SetRestarts(run.RestartsRemaining, _config != null ? _config.RestartsPerAct : run.RestartsRemaining);
             _topBar.SetRunTime(FormatTime(_runElapsed));
+            UpdateFloor(run);
+        }
+
+        // «Веха» в топбаре: глубина текущего узла по карте акта + сколько их всего. Считается из графа,
+        // а не из отдельного счётчика — иначе после перегенерации карты счётчик разъедется с реальностью.
+        private void UpdateFloor(RunState run)
+        {
+            Guildmaster.Guild.MapState map = run.Map;
+            if (map == null || map.Nodes == null || map.Nodes.Length == 0) return;
+
+            int current = 0, last = 0;
+            for (int i = 0; i < map.Nodes.Length; i++)
+            {
+                Guildmaster.Guild.MapNode node = map.Nodes[i];
+                if (node == null) continue;
+                if (node.Floor > last) last = node.Floor;
+                if (node.Id == map.CurrentNodeId) current = node.Floor;
+            }
+
+            // Floor нумеруется с нуля (0 = Start), игроку показываем по-человечески с единицы.
+            _topBar.SetFloor(current + 1, last + 1);
         }
 
         // Ф4: структурный вид shell — backdrop и подсветка таба. Дёргается по подписке nav.Changed (изменение

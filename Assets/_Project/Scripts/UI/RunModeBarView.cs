@@ -17,6 +17,7 @@ namespace Guildmaster.UI
 
         private readonly Label  _gold;
         private readonly Label  _act;
+        private readonly Label  _floor;
         private readonly Label  _runTimer;
         private readonly Label  _battleTimer;
         private readonly Label  _restarts;
@@ -37,6 +38,7 @@ namespace Guildmaster.UI
 
             _gold        = Root.Q<Label>("topbar-gold");
             _act         = Root.Q<Label>("topbar-act");
+            _floor       = Root.Q<Label>("topbar-floor");
             _runTimer    = Root.Q<Label>("topbar-timer");
             _battleTimer = Root.Q<Label>("battle-timer");
             _restarts    = Root.Q<Label>("topbar-hp");
@@ -74,6 +76,14 @@ namespace Guildmaster.UI
 
         public void SetGold(int gold) => SetText(_gold, gold.ToString());
         public void SetAct(int actNumber) => SetText(_act, "· " + L("ui.run.act", "Акт") + " " + actNumber);
+
+        /// <summary>
+        /// Как далеко отряд ушёл по карте акта. В домене это <c>MapNode.Floor</c> (индекс колонки),
+        /// в интерфейсе — «Веха»: у нас поход по карте, а не подъём по башне, и «этаж» тут врал бы игроку.
+        /// </summary>
+        public void SetFloor(int floorNumber, int floorCount) =>
+            SetText(_floor, "· " + L("ui.run.floor", "Веха") + " " + floorNumber
+                          + (floorCount > 0 ? "/" + floorCount : string.Empty));
 
         /// <summary>Время забега выключено (реш. 2026-07-20): узел скрыт классом, сеттер держит шов живым.</summary>
         public void SetRunTime(string timerText) => SetText(_runTimer, timerText);

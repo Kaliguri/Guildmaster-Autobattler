@@ -11,7 +11,7 @@ namespace Guildmaster.Combat
     /// где <c>baseTerm = Override (если задан) ИНАЧЕ дефолт StatsConfig</c>,
     /// и кэширует результат с инвалидацией по dirty-флагу (вики «10» §5.2, «11» §1).
     /// </summary>
-    public sealed class Stats : IStatReader
+    public sealed class Stats : IStatExplainer
     {
         private static readonly int StatCount = Enum.GetValues(typeof(StatType)).Length;
 
