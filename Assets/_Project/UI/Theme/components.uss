@@ -1282,10 +1282,10 @@
     margin: 0 var(--gm-space-2);
 }
 
-/* Капсула ресурса (золото / перезапуски): фикс-ширина, чтобы правый край не прыгал на больших числах. */
+/* Капсула ресурса (золото / перезапуски): компактный минимум, большие значения расширяют её сами. */
 .gm-runbar__capsule {
-    height: 44px;
-    min-width: 156px;
+    height: 40px;
+    min-width: 132px;
     /* Горизонтальный padding больше вылета скоса (10), иначе значение наезжает на клин торца. */
     padding: 0 var(--gm-space-3);
     margin-left: var(--gm-space-2);
@@ -1293,8 +1293,9 @@
 }
 
 .gm-runbar__capsule-icon {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
     margin-right: var(--gm-space-1);
     background-size: contain;
     background-position: center;

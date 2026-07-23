@@ -1,15 +1,15 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <!-- Глобальная панель забега (app-shell): всегда сверху во время забега, тело экранов сдвинуто под неё.
-         Слева гильдия + возвышение + акт одной строкой; центр — лента со скошенными торцами, в ней
-         иконки-режимы (Карта/Бой/Инвентарь/Тактика/Компендиум) и отделённый зазором бургер;
-         справа — капсулы золота и перезапусков. Подписи режимов живут в подсказке при наведении.
+         Слева гильдия + возвышение + акт + веха одной строкой; центр — лента со скошенными торцами, в ней
+         иконки-режимы (Карта/Бой/Инвентарь/Тактика/Компендиум) и отделённые настройки;
+         справа — компактные капсулы золота и перезапусков. Подписи режимов позже даст общая tooltip-система.
          Строки-плейсхолдеры RU; локализованные проставляет RunModeBarView (ключи ui.*). -->
     <ui:VisualElement name="runbar-root" class="gm-loadout__topbar gm-runbar">
         <ui:VisualElement class="gm-loadout__topbar-side">
             <ui:Label name="guild-name" text="Alebardium" class="gm-loadout__guild-name" />
             <ui:Label name="guild-asc" text="· ASC IV" class="gm-loadout__guild-asc" />
             <ui:Label name="topbar-act" text="· Акт 1" class="gm-loadout__guild-asc" />
-            <ui:Label name="topbar-floor" text="· Веха 1" class="gm-loadout__guild-asc" />
+            <ui:Label name="topbar-floor" text="· Веха 1/15" class="gm-loadout__guild-asc" />
         </ui:VisualElement>
 
         <!-- Лента-островок: форму рисует SlantedPanel вершинами (скос на 9-slice «плывёт» по ширине). -->
@@ -19,7 +19,7 @@
             <ui:Button name="mode-inventory" class="gm-runbar__tab gm-runbar__tab--inventory" />
             <ui:Button name="mode-tactics" class="gm-runbar__tab gm-runbar__tab--tactics" />
             <ui:Button name="mode-compendium" class="gm-runbar__tab gm-runbar__tab--compendium" />
-            <!-- Бургер за разделителем: открывает модалку, а не переключает режим — не должен читаться шестым табом. -->
+            <!-- Настройки за разделителем: открывают модалку, а не переключают режим — не должны читаться шестым табом. -->
             <ui:VisualElement class="gm-runbar__sep" />
             <ui:Button name="btn-menu" class="gm-runbar__tab gm-runbar__tab--menu" />
         </gm:SlantedPanel>
@@ -31,7 +31,7 @@
             </gm:SlantedPanel>
             <gm:SlantedPanel Slant="10" class="gm-runbar__capsule">
                 <ui:VisualElement class="gm-runbar__capsule-icon gm-runbar__capsule-icon--hp" />
-                <ui:Label name="topbar-hp" text="2 / 2" class="gm-runbar__capsule-value" />
+                <ui:Label name="topbar-hp" text="2/2" class="gm-runbar__capsule-value" />
             </gm:SlantedPanel>
             <!-- Время забега выключено по решению 2026-07-20; узел оставлен как шов (скрыт классом). -->
             <ui:Label name="topbar-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer gm-runbar__runtime" />
