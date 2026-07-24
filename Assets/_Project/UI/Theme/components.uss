@@ -1706,9 +1706,52 @@
     -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
     -unity-font-style: italic;
     color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
+    font-size: var(--gm-font-xs);
     white-space: normal;
+    margin-bottom: var(--gm-space-2);
 }
+
+/* Теги юнита — ряд чипов под именем/описанием (роль/стихия). Иконки тегов и реальные данные придут
+   с их фазой (арт-подтрек); пока текстовые пилюли, роль и стихия разведены цветом (две оси). */
+.gm-loadout__tags {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-chip--noicon .gm-chip__icon { display: none; }
+
+.gm-chip--tag {
+    margin: var(--gm-space-1) var(--gm-space-1) 0 0;
+    padding: 2px var(--gm-space-2);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-inner);
+}
+.gm-chip--role .gm-chip__label { color: var(--gm-brass-300); }
+.gm-chip--element .gm-chip__label { color: var(--gm-color-text-muted); }
+
+/* Распорка: flex-grow отжимает статблок к низу панели. */
+.gm-loadout__spacer { flex-grow: 1; }
+
+/* Статблок — квадраты «значение над подписью», по 3 в ряд, в самом низу панели (реш. Макса). */
+.gm-loadout__stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.gm-stat {
+    width: 31%;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gm-color-surface-sunken);
+    border-radius: var(--gm-radius-0);
+    padding: var(--gm-space-1) 0;
+    margin-bottom: var(--gm-space-1);
+}
+.gm-stat__value { color: var(--gm-color-text); font-size: var(--gm-font-sm); }
+.gm-stat__label { color: var(--gm-color-text-muted); font-size: var(--gm-font-xxs); }
 
 /* --- Нижняя панель золота: только под центром+правым (в __main, не в __body). --- */
 .gm-loadout__footer {

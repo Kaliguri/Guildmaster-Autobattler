@@ -35,9 +35,12 @@
                         <ui:ScrollView name="relic-grid" style="flex-grow: 1;" />
                     </ui:VisualElement>
 
-                    <!-- Правая панель деталей: имя (сверху, мелко) → видео 16:9 → секции (способности / нарратив / улучшения) -->
+                    <!-- Правая панель: имя → теги → описание → видео → способности → улучшения → статы (внизу).
+                         Порядок блоков по решению Макса; секции без своих рамок (единая панель + воздух). -->
                     <ui:VisualElement class="gm-loadout__detail">
                         <ui:Label name="detail-title" text="—" class="gm-loadout__detail-title" />
+                        <ui:VisualElement name="detail-tags" class="gm-loadout__tags" />
+                        <ui:Label name="detail-narrative" text="" class="gm-loadout__narrative-text" />
                         <ui:VisualElement class="gm-loadout__video">
                             <ui:Label name="video-hint" text="видео-вставка 16:9" class="gm-loadout__video-hint" />
                         </ui:VisualElement>
@@ -46,13 +49,17 @@
                             <ui:VisualElement name="detail-abilities" class="gm-loadout__abilities" />
                         </ui:VisualElement>
                         <ui:VisualElement class="gm-loadout__section">
-                            <ui:Label name="detail-narrative" text="" class="gm-loadout__narrative-text" />
-                        </ui:VisualElement>
-                        <ui:VisualElement class="gm-loadout__section gm-loadout__section--grow">
+                            <ui:Label name="upgrades-label" text="улучшения" class="gm-loadout__section-label" />
                             <ui:VisualElement class="gm-loadout__upgrades">
                                 <ui:VisualElement name="upgrade-row-1" class="gm-loadout__upgrade-row" />
                                 <ui:VisualElement name="upgrade-row-2" class="gm-loadout__upgrade-row" />
                             </ui:VisualElement>
+                        </ui:VisualElement>
+                        <!-- Распорка отжимает статблок к низу панели. -->
+                        <ui:VisualElement class="gm-loadout__spacer" />
+                        <ui:VisualElement class="gm-loadout__section">
+                            <ui:Label name="stats-label" text="характеристики" class="gm-loadout__section-label" />
+                            <ui:VisualElement name="detail-stats" class="gm-loadout__stats" />
                         </ui:VisualElement>
                     </ui:VisualElement>
 

@@ -78,6 +78,8 @@ namespace Guildmaster.UI
             SetBtn (root, "sort", L("ui.loadout.sort.name", "Имя") + " ↓");
             SetText(root, "video-hint", L("ui.loadout.video", "видео-вставка 16:9"));
             SetText(root, "skills-label", L("ui.loadout.skills", "способности"));
+            SetText(root, "upgrades-label", L("ui.loadout.upgrades", "улучшения"));
+            SetText(root, "stats-label", L("ui.loadout.stats", "характеристики"));
 
             var search = root.Q<TextField>("search");
             if (search != null) SetPlaceholder(search, L("ui.loadout.search", "Поиск…"));
@@ -89,6 +91,28 @@ namespace Guildmaster.UI
 
             FillUpgradeRow(root.Q<VisualElement>("upgrade-row-1"));
             FillUpgradeRow(root.Q<VisualElement>("upgrade-row-2"));
+
+            // ── Теги (плейсхолдер, п.3): демо роль+стихия текстовыми чипами. Иконки тегов и реальные
+            //    данные (какие теги у юнита) — их фаза; здесь показан вид ряда под именем. ──
+            var tags = root.Q<VisualElement>("detail-tags");
+            if (tags != null)
+            {
+                tags.Add(MakeTag(L("ui.tag.bruiser", "Боец"), "gm-chip--role"));
+                tags.Add(MakeTag(L("ui.tag.frontline", "Фронт"), "gm-chip--role"));
+                tags.Add(MakeTag(L("ui.tag.fire", "Огонь"), "gm-chip--element"));
+            }
+
+            // ── Статблок (внизу): подписи — реальные статы, значения плейсхолдерные (числа придут с данными). ──
+            var stats = root.Q<VisualElement>("detail-stats");
+            if (stats != null)
+            {
+                stats.Add(MakeStat(L("ui.stat.hp", "HP"), "120"));
+                stats.Add(MakeStat(L("ui.stat.dmg", "Урон"), "45"));
+                stats.Add(MakeStat(L("ui.stat.aspd", "Ск.атк"), "1.2"));
+                stats.Add(MakeStat(L("ui.stat.armor", "Броня"), "5"));
+                stats.Add(MakeStat(L("ui.stat.earmor", "Ст.броня"), "0"));
+                stats.Add(MakeStat(L("ui.stat.move", "Скор"), "3.0"));
+            }
 
             // ── Грид таро-карточек ──
             var grid = root.Q<ScrollView>("relic-grid");
@@ -280,6 +304,30 @@ namespace Guildmaster.UI
             // единый слот-компонент одного размера держит правую панель ровной).
             for (int i = 0; row != null && i < UpgradesPerRow; i++)
                 row.Add(new Slot { Size = Slot.SlotSize.Md });
+        }
+
+        // Тег-чип: текстовая пилюля (иконка тега — с его данными). variantClass разводит роль/стихию цветом.
+        private static Chip MakeTag(string text, string variantClass)
+        {
+            var chip = new Chip { Text = text };
+            chip.AddToClassList("gm-chip--tag");
+            chip.AddToClassList("gm-chip--noicon");
+            chip.AddToClassList(variantClass);
+            return chip;
+        }
+
+        // Квадрат статблока: значение над подписью.
+        private static VisualElement MakeStat(string label, string value)
+        {
+            var cell = new VisualElement();
+            cell.AddToClassList("gm-stat");
+            var v = new Label(value);
+            v.AddToClassList("gm-stat__value");
+            var l = new Label(label);
+            l.AddToClassList("gm-stat__label");
+            cell.Add(v);
+            cell.Add(l);
+            return cell;
         }
 
         private static string Title(RelicData r, Func<RelicData, string> titleOf)
