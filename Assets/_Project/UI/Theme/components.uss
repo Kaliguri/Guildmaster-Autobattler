@@ -1393,9 +1393,12 @@
     flex-grow: 1;
 }
 
-/* --- Центр: фильтр-табы (по центру) + поиск/сортировка + грид карточек --- */
+/* --- Центр: фильтр-табы (по центру) + поиск/сортировка + грид карточек ---
+   Ширина ФИКСИРОВАНА ровно под 4 карты (4×132 + зазоры + padding + скроллбар): грид не тянется в пустоту,
+   и весь остаток строки уходит панели деталей (flex-grow), а не пустой полосе между ними (реш. Макса). */
 .gm-loadout__center {
-    flex-grow: 1;
+    width: 642px;
+    flex-shrink: 0;
     padding: var(--gm-space-2);
 }
 
@@ -1415,10 +1418,14 @@
 .gm-filter-tab--items   { background-image: url("../../Art/UI/Icons-gm/Filters/item.png"); }
 .gm-filter-tab--banners { background-image: url("../../Art/UI/Icons-gm/Filters/banner.png"); }
 
+/* Поиск/сортировка: боковой отступ = зазору карт (--gm-space-1), чтобы левый край поиска встал ровно
+   под левый край карточек, а правый край сортировки — под правый край крайней карты. */
 .gm-loadout__toolbar {
     flex-direction: row;
     align-items: center;
     margin-bottom: var(--gm-space-2);
+    margin-left: var(--gm-space-1);
+    margin-right: var(--gm-space-1);
 }
 
 /* Поле поиска: пиксель-рамка Honeti, тянется на всю ширину; компактная высота, текст по центру. */
@@ -1588,9 +1595,11 @@
     overflow: hidden;
 }
 
-/* --- Правая панель деталей: видео 16:9, титул, способности, улучшения, нарратив --- */
+/* --- Правая панель деталей: видео 16:9, титул, способности, улучшения, нарратив ---
+   flex-grow: забирает ВЕСЬ остаток строки после грида (ту самую пустую полосу), min-width — нижний предел. */
 .gm-loadout__detail {
-    width: 340px;
+    flex-grow: 1;
+    min-width: 340px;
     flex-shrink: 0;
     background-color: var(--gm-color-surface-panel);
     border-left-width: var(--gm-border-2);

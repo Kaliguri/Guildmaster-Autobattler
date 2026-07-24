@@ -85,6 +85,9 @@ namespace Guildmaster.UI
             // корректно заворачивает ряд карточек.
             grid.mode = ScrollViewMode.Vertical;
             grid.horizontalScrollerVisibility = ScrollerVisibility.Hidden;
+            // Вертикальный скроллбар ВСЕГДА виден (реш. Макса): его ширина зарезервирована постоянно,
+            // грид не дёргается при появлении/исчезании прокрутки, и место под него всегда учтено.
+            grid.verticalScrollerVisibility = ScrollerVisibility.AlwaysVisible;
             var gridEl = new VisualElement();
             gridEl.AddToClassList("gm-loadout__grid");
             grid.Add(gridEl);
