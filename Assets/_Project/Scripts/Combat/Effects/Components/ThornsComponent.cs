@@ -23,7 +23,7 @@ namespace Guildmaster.Combat.Effects.Components
 
         [Tooltip("Школа отражённого урона.")]
         [FormerlySerializedAs("_damageType")]
-        [SerializeField] private DamageSchool _damageSchool = DamageSchool.Elemental;
+        [SerializeField] private DamageSchool _damageSchool = DamageSchool.Magical;
 
         [Tooltip("Сродство отражённого урона.")]
         [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;

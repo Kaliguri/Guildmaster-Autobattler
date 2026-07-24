@@ -244,7 +244,7 @@ namespace Guildmaster.ContentHub.Editor
                 case StatType.AttackRange: return "Rng";
                 case StatType.AbilityPower: return "AP";
                 case StatType.PhysArmor: return "PArm";
-                case StatType.ElementalArmor: return "EArm";
+                case StatType.MagicArmor: return "MArm";
                 case StatType.MoveSpeed: return "MS";
                 case StatType.MaxResource: return "Res";
                 default: return st.ToString().Length > 6 ? st.ToString().Substring(0, 6) : st.ToString();

@@ -37,9 +37,9 @@ namespace Guildmaster.Combat
                 }
                 else
                 {
-                    armor  = req.Target.Stats.Get(StatType.ElementalArmor);
-                    pen    = req.Source.Stats.Get(StatType.ElementalPen);
-                    penPct = req.Source.Stats.Get(StatType.ElementalPenPct);
+                    armor  = req.Target.Stats.Get(StatType.MagicArmor);
+                    pen    = req.Source.Stats.Get(StatType.MagicPen);
+                    penPct = req.Source.Stats.Get(StatType.MagicPenPct);
                 }
 
                 // Пробивание: сначала %, потом плоское; эффективная броня не уходит в минус

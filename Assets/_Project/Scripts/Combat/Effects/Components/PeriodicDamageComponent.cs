@@ -23,7 +23,7 @@ namespace Guildmaster.Combat.Effects.Components
 
         [Tooltip("Школа урона DoT (гасится соответствующей бронёй).")]
         [FormerlySerializedAs("_damageType")]
-        [SerializeField] private DamageSchool _damageSchool = DamageSchool.Elemental;
+        [SerializeField] private DamageSchool _damageSchool = DamageSchool.Magical;
 
         [Tooltip("Сродство урона DoT: Яд для отравления (иммунна Нежить/Конструкты), Тьма/Свет — по типу существа цели.")]
         [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;

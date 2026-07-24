@@ -90,7 +90,7 @@ namespace Guildmaster.Balance.Editor
             float dmgDealt = stats.Get(StatType.DamageDealtEff);
             float dmgTaken = stats.Get(StatType.DamageTakenEff);
             float physArmor = stats.Get(StatType.PhysArmor);
-            float elemArmor = stats.Get(StatType.ElementalArmor);
+            float elemArmor = stats.Get(StatType.MagicArmor);
 
             float takenEff = dmgTaken <= 0f ? 1f : dmgTaken;
             var row = new Row

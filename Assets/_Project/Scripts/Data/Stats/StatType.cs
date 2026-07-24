@@ -17,7 +17,7 @@ namespace Guildmaster.Data.Stats
         HpRegenFlat = 1,        // [Ф1]
         HpRegenPct = 2,         // [Ф1]
         PhysArmor = 3,          // [Ф1]
-        ElementalArmor = 4,     // [Ф1] одна броня на трио Огонь/Лёд/Молния (бывш. MagicArmor)
+        MagicArmor = 4,         // [Ф1] одна броня на всю магию (Огонь/Лёд/Молния/Аркана)
         DamageTakenEff = 5,     // [Ф1] PercentMult, старт 1.0
         HealShieldTakenEff = 6, // Ф2
 
@@ -28,8 +28,8 @@ namespace Guildmaster.Data.Stats
         AbilityPower = 10,      // Ф2
         PhysPen = 11,           // [Ф1] плоское пробивание
         PhysPenPct = 12,        // [Ф1] % пробивание [0,1]
-        ElementalPen = 13,      // [Ф1] (бывш. MagicPen)
-        ElementalPenPct = 14,   // [Ф1] (бывш. MagicPenPct)
+        MagicPen = 13,          // [Ф1] плоское магическое пробивание
+        MagicPenPct = 14,       // [Ф1] % магическое пробивание [0,1]
         DamageDealtEff = 15,    // [Ф1] PercentMult, старт 1.0
         Lifesteal = 16,         // [Ф1] % от нанесённого урона
 

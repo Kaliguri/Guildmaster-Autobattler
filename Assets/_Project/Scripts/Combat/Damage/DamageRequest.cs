@@ -27,7 +27,7 @@ namespace Guildmaster.Combat
     /// </summary>
     public readonly struct DamageRequest
     {
-        /// <summary>Источник урона (для чтения DamageDealtEff, PhysPen/ElementalPen и lifesteal).</summary>
+        /// <summary>Источник урона (для чтения DamageDealtEff, PhysPen/MagicPen и lifesteal).</summary>
         public readonly RuntimeUnit Source;
 
         /// <summary>Цель урона.</summary>
@@ -36,7 +36,7 @@ namespace Guildmaster.Combat
         /// <summary>Базовый урон до модификаторов пайплайна.</summary>
         public readonly float RawDamage;
 
-        /// <summary>Школа урона — определяет, какая броня используется (Physical/Elemental/True).</summary>
+        /// <summary>Школа урона — определяет, какая броня используется (Physical/Magical/True).</summary>
         public readonly DamageSchool School;
 
         /// <summary>Константа K из StatsConfig (mult = K / (K + effArmor)).</summary>

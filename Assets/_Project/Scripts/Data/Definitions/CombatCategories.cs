@@ -2,15 +2,15 @@ namespace Guildmaster.Data.Definitions
 {
     /// <summary>
     /// Школа урона — числовая ось, которую гасит броня (ГДД «8» §«Школа vs сродство»).
-    /// Школ намеренно мало: <see cref="Physical"/> (гасится физ. бронёй) и <see cref="Elemental"/>
-    /// (Огонь/Лёд/Молния под ОДНОЙ стихийной бронёй; различия элементов живут в механике, не в резистах).
+    /// Школ намеренно мало: <see cref="Physical"/> (гасится физ. бронёй) и <see cref="Magical"/>
+    /// (Огонь/Лёд/Молния/Аркана под ОДНОЙ магической бронёй; различия элементов живут в механике, не в резистах).
     /// <see cref="True"/> идёт мимо брони.
-    /// <para>Int-значения совпадают с легаси <c>DamageType</c> (Magic=1 → Elemental=1) — ассеты не мигрируют.</para>
+    /// <para>Int-значения стабильны (Magical=1) — ассеты со старым <c>_damageSchool: 1</c> не мигрируют.</para>
     /// </summary>
     public enum DamageSchool
     {
         Physical = 0,
-        Elemental = 1,
+        Magical = 1,
         True = 2,
     }
 
@@ -58,7 +58,7 @@ namespace Guildmaster.Data.Definitions
     {
         Inherit = 0,
         Physical = 1,
-        Elemental = 2,
+        Magical = 2,
         True = 3,
     }
 
@@ -80,7 +80,7 @@ namespace Guildmaster.Data.Definitions
             switch (ovr)
             {
                 case DamageSchoolOverride.Physical:  return DamageSchool.Physical;
-                case DamageSchoolOverride.Elemental: return DamageSchool.Elemental;
+                case DamageSchoolOverride.Magical: return DamageSchool.Magical;
                 case DamageSchoolOverride.True:      return DamageSchool.True;
                 default:                             return unitSchool;
             }

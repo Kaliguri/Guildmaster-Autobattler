@@ -25,7 +25,7 @@ namespace Guildmaster.Combat.Effects.Components
         [SerializeField] private EffectTag _detonateTag = EffectTag.Burn;
 
         [Tooltip("Школа урона детонации.")]
-        [SerializeField] private DamageSchool _school = DamageSchool.Elemental;
+        [SerializeField] private DamageSchool _school = DamageSchool.Magical;
 
         [Tooltip("Сродство урона детонации.")]
         [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;

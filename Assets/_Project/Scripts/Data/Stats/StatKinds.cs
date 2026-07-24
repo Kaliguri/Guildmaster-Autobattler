@@ -15,7 +15,7 @@ namespace Guildmaster.Data.Stats
                 // Доли 0..1 — показываются процентом.
                 case StatType.HpRegenPct:
                 case StatType.PhysPenPct:
-                case StatType.ElementalPenPct:
+                case StatType.MagicPenPct:
                 case StatType.Lifesteal:
                     return ValueKind.Percent;
 

@@ -31,14 +31,14 @@ namespace Guildmaster.Tests.EditMode.Combat
             };
         }
 
-        private static RuntimeUnit MakeUnitWithArmor(float physArmor = 0f, float elementalArmor = 0f, float maxHp = 1000f)
+        private static RuntimeUnit MakeUnitWithArmor(float physArmor = 0f, float magicArmor = 0f, float maxHp = 1000f)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("base", new[]
             {
                 new StatModifier(StatType.MaxHP,      ModifierOp.Flat, maxHp),
                 new StatModifier(StatType.PhysArmor,  ModifierOp.Flat, physArmor),
-                new StatModifier(StatType.ElementalArmor, ModifierOp.Flat, elementalArmor),
+                new StatModifier(StatType.MagicArmor, ModifierOp.Flat, magicArmor),
             });
             return new RuntimeUnit { Team = 1, Stats = stats, CurrentHP = maxHp };
         }
@@ -213,24 +213,24 @@ namespace Guildmaster.Tests.EditMode.Combat
         // --- Школа: стихийная броня (ГДД «8»: Огонь/Лёд/Молния под ОДНОЙ бронёй) ---
 
         [Test]
-        public void ElementalDamage_MitigatedByElementalArmor_NotPhysArmor()
+        public void MagicalDamage_MitigatedByMagicArmor_NotPhysArmor()
         {
             var src = MakeUnit();
-            var tgt = MakeUnitWithArmor(physArmor: ArmorFull, elementalArmor: 0f);
+            var tgt = MakeUnitWithArmor(physArmor: ArmorFull, magicArmor: 0f);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Elemental));
+            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Magical));
 
             // Физ. броня не гасит стихию — урон проходит полностью.
             Assert.AreEqual(100f, result.HpDamage, 0.01f);
         }
 
         [Test]
-        public void ElementalDamage_ElementalArmorHalfsMitigation()
+        public void MagicalDamage_MagicArmorHalfsMitigation()
         {
             var src = MakeUnit();
-            var tgt = MakeUnitWithArmor(elementalArmor: ArmorFull);
+            var tgt = MakeUnitWithArmor(magicArmor: ArmorFull);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Elemental));
+            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Magical));
 
             Assert.AreEqual(50f, result.HpDamage, 0.01f);
         }
