@@ -1365,7 +1365,7 @@
    боевой камеры (пока загружена боевая сцена). Рамка справа — визуальный разделитель с телом инвентаря.
    Нижняя панель золота её НЕ перекрывает (сидит в __main). */
 .gm-loadout__battle {
-    width: 31%;
+    width: 48%;
     flex-shrink: 0;
     border-right-width: var(--gm-border-2);
     border-color: var(--gm-color-border-frame);
@@ -1429,16 +1429,12 @@
 
 .gm-loadout__search .unity-text-field__input {
     background-color: var(--gm-color-surface-sunken);
-    background-image: url("../../Art/UI/Honeti-gm/WindowStroke_gm.png");
-    -unity-slice-left: 8;
-    -unity-slice-right: 8;
-    -unity-slice-top: 8;
-    -unity-slice-bottom: 8;
-    -unity-slice-scale: 2px;
-    border-width: 0;
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-subtle);
+    border-radius: var(--gm-radius-0);
     color: var(--gm-color-text);
     font-size: var(--gm-font-sm);
-    height: 44px;
+    height: 36px;
     padding-left: var(--gm-space-2);
     padding-right: var(--gm-space-2);
     -unity-text-align: middle-left;
@@ -1459,7 +1455,7 @@
     border-width: 0;
     color: var(--gm-color-text);
     font-size: var(--gm-font-sm);
-    height: 44px;
+    height: 36px;
     padding-left: var(--gm-space-3);
     padding-right: var(--gm-space-3);
 }
@@ -1505,8 +1501,8 @@
 
 /* --- Таро-карточка релика: кайма-в-кайме, номер аркана в углу, титул на нижней плашке --- */
 .gm-arcana-card {
-    width: 248px;
-    height: 340px;
+    width: 124px;
+    height: 170px;
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-border-1);
     border-color: var(--gm-color-border-frame);
@@ -1566,7 +1562,7 @@
     top: var(--gm-space-1);
     right: var(--gm-space-1);
     color: var(--gm-brass-300);
-    font-size: var(--gm-font-sm);
+    font-size: var(--gm-font-xs);
 }
 
 /* Нижняя плашка титула: отделена латунной линией сверху. */
@@ -1581,7 +1577,7 @@
    («THE FLAME SWORDSMAN») влезали целиком в одну строку; очень длинное — эллипсис-страховка. */
 .gm-arcana-card__title {
     color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
+    font-size: var(--gm-font-xs);
     -unity-text-align: middle-center;
     white-space: nowrap;
     overflow: hidden;
@@ -1590,7 +1586,7 @@
 
 /* --- Правая панель деталей: видео 16:9, титул, способности, улучшения, нарратив --- */
 .gm-loadout__detail {
-    width: 460px;
+    width: 340px;
     flex-shrink: 0;
     background-color: var(--gm-color-surface-panel);
     border-left-width: var(--gm-border-2);
@@ -1602,7 +1598,7 @@
 /* Видео-вставка геймплея 16:9 (пока плейсхолдер; высота под ширину панели ~398px). */
 .gm-loadout__video {
     width: 100%;
-    height: 224px;
+    height: 172px;
     background-color: var(--gm-color-surface-sunken);
     border-width: var(--gm-border-1);
     border-color: var(--gm-color-border-frame);
@@ -1625,13 +1621,10 @@
     margin-bottom: var(--gm-space-1);
 }
 
-/* Секция-подпанель правой колонки (способности / нарратив / улучшения): заметная подложка + рамка. */
+/* Секция правой колонки (способности / нарратив / улучшения): БЕЗ своей подложки/рамки — единая
+   панель, секции разделяются только воздухом (реш. Макса: рамки-в-рамке читались «слишком отдельно»). */
 .gm-loadout__section {
-    background-color: var(--gm-color-surface-raised);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-inner);
-    padding: var(--gm-space-2);
-    margin-top: var(--gm-space-2);
+    margin-top: var(--gm-space-3);
 }
 
 .gm-loadout__section--grow {

@@ -45,6 +45,7 @@
     --gm-border-2: 3px;
 
     /* --- Размеры шрифта (под 1080p) --- */
+    --gm-font-xs: 17px;
     --gm-font-sm: 22px;
     --gm-font-body: 26px;
     --gm-font-title: 34px;

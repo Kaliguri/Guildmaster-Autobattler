@@ -193,6 +193,29 @@ namespace Guildmaster.UI
             // Предвыбор первого релика — сразу заполнить панель деталей.
             if (cards.Count > 0) ShowDetail(cards[0].relic);
 
+            // Рабочая сортировка по имени: клик по «Имя ↓» переключает направление и переставляет карты
+            // (поиск-фильтрация — отдельная фаза; здесь только порядок). Locked-заглушки остаются в конце.
+            var sortBtn = root.Q<Button>("sort");
+            if (sortBtn != null)
+            {
+                string sortName = L("ui.loadout.sort.name", "Имя");
+                bool sortDesc = false;
+
+                void ApplySort()
+                {
+                    cards.Sort((a, b) => string.Compare(
+                        Title(a.relic, titleOf) ?? a.relic?.Id ?? string.Empty,
+                        Title(b.relic, titleOf) ?? b.relic?.Id ?? string.Empty,
+                        StringComparison.OrdinalIgnoreCase));
+                    if (sortDesc) cards.Reverse();
+                    for (int i = 0; i < cards.Count; i++)
+                        gridEl.Insert(i, cards[i].card); // Insert перемещает уже добавленную карту в новый порядок
+                    sortBtn.text = sortName + (sortDesc ? " ↑" : " ↓");
+                }
+
+                sortBtn.clicked += () => { sortDesc = !sortDesc; ApplySort(); };
+            }
+
             return root;
         }
 
@@ -236,8 +259,10 @@ namespace Guildmaster.UI
 
         private static void FillUpgradeRow(VisualElement row)
         {
+            // Md — тот же размер, что у способностей (реш. Макса: улучшения были Lg и читались слишком крупно;
+            // единый слот-компонент одного размера держит правую панель ровной).
             for (int i = 0; row != null && i < UpgradesPerRow; i++)
-                row.Add(new Slot { Size = Slot.SlotSize.Lg });
+                row.Add(new Slot { Size = Slot.SlotSize.Md });
         }
 
         private static string Title(RelicData r, Func<RelicData, string> titleOf)
