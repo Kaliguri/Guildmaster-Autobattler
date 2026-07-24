@@ -35,5 +35,7 @@ MonoBehaviour:
           Base: 0
           Scalings: []
         _damageSchool: 1
+        _physicalSubtype: 0
+        _magicElement: 1
         _affinity: 0
         _damagePctTargetMaxHp: 0.03

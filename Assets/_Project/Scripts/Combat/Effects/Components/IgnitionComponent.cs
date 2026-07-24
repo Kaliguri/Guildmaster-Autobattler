@@ -27,8 +27,17 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Школа урона детонации.")]
         [SerializeField] private DamageSchool _school = DamageSchool.Magical;
 
+        [Tooltip("Физ-подтип урона детонации (при школе Physical). Питает тег; None = не задан.")]
+        [SerializeField] private PhysicalSubtype _physicalSubtype = PhysicalSubtype.None;
+
+        [Tooltip("Магический элемент урона детонации (при школе Magical): Огонь для «Воспламенения». Питает тег; None = не задан.")]
+        [SerializeField] private MagicElement _magicElement = MagicElement.None;
+
         [Tooltip("Сродство урона детонации.")]
         [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
+
+        /// <summary>Тип урона детонации (прямые поля источника) — для агрегации тегов «быстрого чтения».</summary>
+        public DamageType DamageType => new DamageType(_school, _physicalSubtype, _magicElement, _affinity);
 
         [Tooltip("Награда за добивание: баф на самого мечника (+скорость атаки/бега). Пусто = без бафа.")]
         [SerializeField] private EffectData _onKillBuff;

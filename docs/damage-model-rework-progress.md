@@ -37,10 +37,19 @@
   под школу). Поля: `UnitData._magicElement` + `ResolveAutoAttackDamageType()`; override подтипа/элемента
   на `AbilityData` + `ResolveDamageType(caster)`; подтип/элемент на `PeriodicDamageComponent` + `DamageType`.
   8 EditMode-тестов (`DamageTypeResolverTests`). **249/249 зелёные.**
-- [ ] **Ф2 — Чистка данных.** 10 героев + враги: тип урона поисточниково по карточкам.
-  Друид: тычка Pierce физ, `affinity=None`, яд — в DoT спор. Шепард: автоатака = хил, без
-  damage-типа. Pyre: тычка Slash, Burn-DoT = Fire. Копейщик: тычка Pierce / ульта Slash.
-  Пересверить `docs/wiki/gdd/roster/relic-tag-assignments.md` под новую модель.
+- [x] **Ф2a — Чистка типов урона.** Оси добиты в `ArmorThornsComponent`/`IgnitionComponent`.
+  Миграция ассетов (editor-скрипт через execute_code): Druid тычка Pierce физ + `affinity=None`
+  (яд = сродство, не тип урона — poison.md; живёт в спорах-DoT); SporeCloud DoT school True→Physical
+  (яд от физ-тычки гасится физбронёй); Cryomancer тычка +Ice; Burn/Ignition +Fire; IronSpearman
+  «Стальной вихрь» +подтип Slash (автоатака Pierce); Treant шипы +Pierce. 8 автоатак из 10 уже
+  были верны. **249/249 зелёные.**
+- [ ] **Ф2b — Редизайн Шепарда (новая механика).** Автоатака: дальняя, светом = Чистый (True)
+  + сродство Light, урон ~⅓ обычного; при попадании лечит самого раненого союзника (HP%) в
+  радиусе вокруг Шепарда на 100% нанесённого. Убрать `AutoAttackMode.Heal`-режим (был хил-автоатака
+  без урона). Новый on-hit-heal компонент/логика в Combat, переписать `ShepherdSliceTests`,
+  обновить карточку the-shepherd + ГДД. Числа (⅓ урона, радиус) — черновые, тюнинг в Unity.
+- [ ] **Ф2c — Пересверка** `docs/wiki/gdd/roster/relic-tag-assignments.md` под новую модель
+  (Druid Physical·Pierce+Poison-DoT, Shepherd True·Light, Cryomancer Magical·Ice).
 - [ ] **Ф3 — Теги на карточку.** Авто-тег из `DamageType`-агрегата + ручные Playstyle/Mechanic
   героям + вывод чипами «иконка+подпись» в порядке `Role→DamageType→Playstyle→Mechanic`.
 - [ ] **Ф4 — Доки/долг.** glossary (Magical+элементы+Arcane), `stats.md`, `tag-reference`,

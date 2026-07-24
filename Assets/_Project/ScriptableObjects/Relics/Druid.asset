@@ -15,8 +15,9 @@ MonoBehaviour:
   _id: relic.druid
   _combatClass: 4
   _damageSchool: 0
-  _physicalSubtype: 0
-  _affinity: 1
+  _physicalSubtype: 3
+  _magicElement: 0
+  _affinity: 0
   _creatureType: 0
   _attackType: 1
   _resourceType: 0
@@ -56,6 +57,8 @@ MonoBehaviour:
     _targetMode: 4
     _damageMultiplier: 2.5
     _schoolOverride: 3
+    _physicalSubtypeOverride: 0
+    _magicElementOverride: 0
     _affinityOverride: 2
     _areaShape: 0
     _areaRadius: 3.5

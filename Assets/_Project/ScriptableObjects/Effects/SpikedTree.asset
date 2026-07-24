@@ -33,6 +33,8 @@ MonoBehaviour:
         _armorRatio: 1
         _radius: 3
         _school: 0
+        _physicalSubtype: 3
+        _magicElement: 0
         _affinity: 0
         _growthEffect: {fileID: 11400000, guid: df5e074a7146eda41a164fd1673993d7, type: 2}
         _radiusPerGrowthStack: 0.2

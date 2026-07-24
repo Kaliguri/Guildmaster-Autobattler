@@ -16,6 +16,7 @@ MonoBehaviour:
   _combatClass: 3
   _damageSchool: 1
   _physicalSubtype: 0
+  _magicElement: 2
   _affinity: 0
   _creatureType: 0
   _attackType: 1
@@ -60,6 +61,8 @@ MonoBehaviour:
     _targetMode: 4
     _damageMultiplier: 0
     _schoolOverride: 0
+    _physicalSubtypeOverride: 0
+    _magicElementOverride: 0
     _affinityOverride: 0
     _areaShape: 0
     _areaRadius: 0

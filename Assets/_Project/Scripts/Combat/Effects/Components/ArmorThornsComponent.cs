@@ -36,8 +36,17 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Школа урона шипов.")]
         [SerializeField] private DamageSchool _school = DamageSchool.Physical;
 
+        [Tooltip("Физ-подтип урона шипов (при школе Physical): Колющий для «Шипастого древа». Питает тег; None = не задан.")]
+        [SerializeField] private PhysicalSubtype _physicalSubtype = PhysicalSubtype.None;
+
+        [Tooltip("Магический элемент урона шипов (при школе Magical). Питает тег; None = не задан.")]
+        [SerializeField] private MagicElement _magicElement = MagicElement.None;
+
         [Tooltip("Сродство урона шипов (Древень с апгрейдом «Ядовитые шипы» — Яд).")]
         [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
+
+        /// <summary>Тип урона шипов (прямые поля источника) — для агрегации тегов «быстрого чтения».</summary>
+        public DamageType DamageType => new DamageType(_school, _physicalSubtype, _magicElement, _affinity);
 
         [Tooltip("Эффект «Разрастание»: каждый его стак раздувает радиус шипов (карточка ГДД). Пусто = радиус фиксирован.")]
         [SerializeField] private EffectData _growthEffect;
