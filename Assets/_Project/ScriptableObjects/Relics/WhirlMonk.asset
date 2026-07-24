@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: relic.whirl_monk
   _combatClass: 0
   _damageSchool: 0
+  _physicalSubtype: 1
   _affinity: 0
   _creatureType: 0
   _attackType: 0

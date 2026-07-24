@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: relic.ranger
   _combatClass: 3
   _damageSchool: 0
+  _physicalSubtype: 3
   _affinity: 0
   _creatureType: 0
   _attackType: 1

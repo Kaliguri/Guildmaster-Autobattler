@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: relic.defender
   _combatClass: 1
   _damageSchool: 0
+  _physicalSubtype: 2
   _affinity: 0
   _creatureType: 0
   _attackType: 0

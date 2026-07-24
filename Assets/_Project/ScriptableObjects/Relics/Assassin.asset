@@ -15,6 +15,7 @@ MonoBehaviour:
   _id: relic.assassin
   _combatClass: 2
   _damageSchool: 0
+  _physicalSubtype: 3
   _affinity: 0
   _creatureType: 0
   _attackType: 0

@@ -22,6 +22,9 @@ namespace Guildmaster.Data.Definitions
         [FormerlySerializedAs("_damageType")]
         [SerializeField] private DamageSchool _damageSchool = DamageSchool.Physical;
 
+        [Tooltip("Физический подтип автоатаки (Дробящий/Режущий/Колющий) — при школе Physical. Питает тег быстрого чтения; None = не задан.")]
+        [SerializeField] private PhysicalSubtype _physicalSubtype = PhysicalSubtype.None;
+
         [Tooltip("Сродство урона по умолчанию (Яд/Свет/Тьма). Бронёй не гасится — взаимодействует с типом существа цели.")]
         [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
 
@@ -98,6 +101,7 @@ namespace Guildmaster.Data.Definitions
 
         public UnitClass CombatClass => _combatClass;
         public DamageSchool DamageSchool => _damageSchool;
+        public PhysicalSubtype PhysicalSubtype => _physicalSubtype;
         public DamageAffinity Affinity => _affinity;
         public CreatureType CreatureType => _creatureType;
         public AttackType AttackType => _attackType;
