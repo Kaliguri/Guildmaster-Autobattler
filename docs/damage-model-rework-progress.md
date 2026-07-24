@@ -31,9 +31,12 @@
   (int 4/13/14 сохранены), `DamageSchool.Magical` (int=1), `DamageSchoolOverride.Magical` (int=2),
   дефолты `PeriodicDamage/Ignition/Thorns`, refs в `DamagePipeline/StatKinds/ContentAuditor/ContentHub`.
   Тесты (`DamagePipeline/DotBattle/PoisonBurnThorns`) переименованы. **241/241 зелёные.**
-- [ ] **Ф1 — `MagicElement` + оси.** enum `MagicElement {None,Fire,Ice,Lightning,Arcane}`.
-  Поля: `UnitData._magicElement`; override подтипа/элемента на `AbilityData`; подтип/элемент
-  на `PeriodicDamageComponent`. `DamageType`-struct + резолвер. EditMode-тесты.
+- [x] **Ф1 — `MagicElement` + оси.** enum `MagicElement {None,Fire,Ice,Lightning,Arcane}` +
+  override-энумы `PhysicalSubtypeOverride`/`MagicElementOverride` + `DamageCategories.Resolve`.
+  `readonly struct DamageType {School,PhysicalSubtype,MagicElement,Affinity}` (нормализует конкретику
+  под школу). Поля: `UnitData._magicElement` + `ResolveAutoAttackDamageType()`; override подтипа/элемента
+  на `AbilityData` + `ResolveDamageType(caster)`; подтип/элемент на `PeriodicDamageComponent` + `DamageType`.
+  8 EditMode-тестов (`DamageTypeResolverTests`). **249/249 зелёные.**
 - [ ] **Ф2 — Чистка данных.** 10 героев + враги: тип урона поисточниково по карточкам.
   Друид: тычка Pierce физ, `affinity=None`, яд — в DoT спор. Шепард: автоатака = хил, без
   damage-типа. Pyre: тычка Slash, Burn-DoT = Fire. Копейщик: тычка Pierce / ульта Slash.

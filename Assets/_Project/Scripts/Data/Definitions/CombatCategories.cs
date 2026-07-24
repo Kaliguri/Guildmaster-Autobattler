@@ -41,6 +41,22 @@ namespace Guildmaster.Data.Definitions
     }
 
     /// <summary>
+    /// Магический элемент урона — актуален при <see cref="DamageSchool.Magical"/> (аналог
+    /// <see cref="PhysicalSubtype"/> для физики). Все элементы гасятся ОДНОЙ магической бронёй —
+    /// различия живут в механике (поджог/заморозка/цепь), не в резистах. Питает тег «быстрого чтения»;
+    /// может влиять на урон позже. <see cref="Arcane"/> = чистая магия без стихии (механика — задел).
+    /// <see cref="None"/> = не задан (нефиз-урон без конкретной стихии или не указан).
+    /// </summary>
+    public enum MagicElement
+    {
+        None = 0,
+        Fire = 1,      // Огонь
+        Ice = 2,       // Лёд
+        Lightning = 3, // Молния
+        Arcane = 4,    // Аркана — чистая магия без стихии (задел, механики пока нет)
+    }
+
+    /// <summary>
     /// Тип существа — таксономия юнита (у реликвий тоже, не только у врагов). Драйвит сродства.
     /// Отдельно от фракции (фракция — организационная группа, тип существа — что юнит есть).
     /// </summary>
@@ -72,6 +88,27 @@ namespace Guildmaster.Data.Definitions
         Dark = 4,
     }
 
+    /// <summary>Физ-подтип урона способности: <see cref="Inherit"/> = взять подтип юнита-кастера.</summary>
+    public enum PhysicalSubtypeOverride
+    {
+        Inherit = 0,
+        None = 1,
+        Blunt = 2,
+        Slash = 3,
+        Pierce = 4,
+    }
+
+    /// <summary>Магический элемент урона способности: <see cref="Inherit"/> = взять элемент юнита-кастера.</summary>
+    public enum MagicElementOverride
+    {
+        Inherit = 0,
+        None = 1,
+        Fire = 2,
+        Ice = 3,
+        Lightning = 4,
+        Arcane = 5,
+    }
+
     /// <summary>Разрешение override-ов школы/сродства способности в конкретные значения.</summary>
     public static class DamageCategories
     {
@@ -95,6 +132,31 @@ namespace Guildmaster.Data.Definitions
                 case DamageAffinityOverride.Light:  return DamageAffinity.Light;
                 case DamageAffinityOverride.Dark:   return DamageAffinity.Dark;
                 default:                            return unitAffinity;
+            }
+        }
+
+        public static PhysicalSubtype Resolve(PhysicalSubtypeOverride ovr, PhysicalSubtype unitSubtype)
+        {
+            switch (ovr)
+            {
+                case PhysicalSubtypeOverride.None:   return PhysicalSubtype.None;
+                case PhysicalSubtypeOverride.Blunt:  return PhysicalSubtype.Blunt;
+                case PhysicalSubtypeOverride.Slash:  return PhysicalSubtype.Slash;
+                case PhysicalSubtypeOverride.Pierce: return PhysicalSubtype.Pierce;
+                default:                             return unitSubtype;
+            }
+        }
+
+        public static MagicElement Resolve(MagicElementOverride ovr, MagicElement unitElement)
+        {
+            switch (ovr)
+            {
+                case MagicElementOverride.None:      return MagicElement.None;
+                case MagicElementOverride.Fire:      return MagicElement.Fire;
+                case MagicElementOverride.Ice:       return MagicElement.Ice;
+                case MagicElementOverride.Lightning: return MagicElement.Lightning;
+                case MagicElementOverride.Arcane:    return MagicElement.Arcane;
+                default:                             return unitElement;
             }
         }
     }

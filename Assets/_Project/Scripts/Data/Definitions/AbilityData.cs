@@ -55,6 +55,12 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Школа урона способности. Inherit = школа юнита-кастера (ГДД «8»: школа задаётся каждой атаке/способности отдельно).")]
         [SerializeField] private DamageSchoolOverride _schoolOverride = DamageSchoolOverride.Inherit;
 
+        [Tooltip("Физ-подтип урона способности (Дробящий/Режущий/Колющий) — при школе Physical. Inherit = подтип кастера. Копейщик: ульта Slash при автоатаке Pierce.")]
+        [SerializeField] private PhysicalSubtypeOverride _physicalSubtypeOverride = PhysicalSubtypeOverride.Inherit;
+
+        [Tooltip("Магический элемент урона способности (Огонь/Лёд/Молния/Аркана) — при школе Magical. Inherit = элемент кастера.")]
+        [SerializeField] private MagicElementOverride _magicElementOverride = MagicElementOverride.Inherit;
+
         [Tooltip("Сродство урона способности (Яд/Свет/Тьма). Inherit = сродство юнита-кастера.")]
         [SerializeField] private DamageAffinityOverride _affinityOverride = DamageAffinityOverride.Inherit;
 
@@ -127,7 +133,19 @@ namespace Guildmaster.Data.Definitions
 
         public float DamageMultiplier => _damageMultiplier;
         public DamageSchoolOverride SchoolOverride => _schoolOverride;
+        public PhysicalSubtypeOverride PhysicalSubtypeOverride => _physicalSubtypeOverride;
+        public MagicElementOverride MagicElementOverride => _magicElementOverride;
         public DamageAffinityOverride AffinityOverride => _affinityOverride;
+
+        /// <summary>Тип урона способности: override поверх типа урона кастера (Inherit = взять у него).</summary>
+        public DamageType ResolveDamageType(UnitData caster)
+        {
+            DamageSchool school = DamageCategories.Resolve(_schoolOverride, caster.DamageSchool);
+            PhysicalSubtype subtype = DamageCategories.Resolve(_physicalSubtypeOverride, caster.PhysicalSubtype);
+            MagicElement element = DamageCategories.Resolve(_magicElementOverride, caster.MagicElement);
+            DamageAffinity affinity = DamageCategories.Resolve(_affinityOverride, caster.Affinity);
+            return new DamageType(school, subtype, element, affinity);
+        }
         public AreaShape AreaShape => _areaShape;
         public float AreaRadius => _areaRadius;
         public float HealFlat => _healFlat;

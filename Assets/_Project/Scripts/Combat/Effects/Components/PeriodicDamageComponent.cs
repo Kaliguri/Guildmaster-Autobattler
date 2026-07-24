@@ -25,6 +25,12 @@ namespace Guildmaster.Combat.Effects.Components
         [FormerlySerializedAs("_damageType")]
         [SerializeField] private DamageSchool _damageSchool = DamageSchool.Magical;
 
+        [Tooltip("Физ-подтип урона DoT (при школе Physical). Питает тег быстрого чтения; None = не задан.")]
+        [SerializeField] private PhysicalSubtype _physicalSubtype = PhysicalSubtype.None;
+
+        [Tooltip("Магический элемент урона DoT (при школе Magical): Огонь для «Поджога» и т.п. Питает тег; None = не задан.")]
+        [SerializeField] private MagicElement _magicElement = MagicElement.None;
+
         [Tooltip("Сродство урона DoT: Яд для отравления (иммунна Нежить/Конструкты), Тьма/Свет — по типу существа цели.")]
         [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
 
@@ -34,6 +40,9 @@ namespace Guildmaster.Combat.Effects.Components
 
         public float Interval => _interval;
         public ScalableValue Potency => _damagePerSecond;
+
+        /// <summary>Тип урона этого DoT (прямые поля источника) — для агрегации тегов «быстрого чтения».</summary>
+        public DamageType DamageType => new DamageType(_damageSchool, _physicalSubtype, _magicElement, _affinity);
 
         public void OnApply(in EffectContext ctx) { }
         public void OnExpire(in EffectContext ctx) { }
