@@ -54,8 +54,17 @@
   - Долг: лок-ключи `effect.light_mend.name/.desc` (Ф4 с остальным loc).
 - [ ] **Ф2c — Пересверка** `docs/wiki/gdd/roster/relic-tag-assignments.md` под новую модель
   (Druid Physical·Pierce+Poison-DoT, Shepherd True·Light, Cryomancer Magical·Ice).
-- [ ] **Ф3 — Теги на карточку.** Авто-тег из `DamageType`-агрегата + ручные Playstyle/Mechanic
-  героям + вывод чипами «иконка+подпись» в порядке `Role→DamageType→Playstyle→Mechanic`.
+- [x] **Ф3a — Резолвер тегов (Data).** `UnitTagResolver.Resolve(unit, db)` → упорядоченный
+  `List<TagData>`: Role из класса, DamageType из статических источников (автоатака + наносящие
+  урон способности; зонтик→конкретика→сродство), ручные из `InfoTags`; сортировка по оси
+  `Role→DamageType→Playstyle→Mechanic`; отсутствующий ассет тега молча пропускается. id `tag.<snake>`.
+  Стихии из эффектов (Burn→Fire) НЕ собираются — Combat-слой недоступен UI (осознанный задел).
+  4 EditMode-теста. **256/256 зелёные.**
+- [ ] **Ф3b — UI-вывод + ручные теги.** РАЗВИЛКА: два loadout-экрана — старый `LoadoutScreen.uxml`
+  (`MenuRouter.BuildLoadoutScreen`, detail-tags = Label) и новый трёхколоночный
+  `LoadoutInventoryScreen.uxml` (`LoadoutInventoryView`, detail-tags = VisualElement-контейнер).
+  Определить живой перед тем, как вешать чипы. Плюс проставить ручные Playstyle/Mechanic героям
+  в `_infoTags` по `relic-tag-assignments`. UI-инвентарь хрупкий (см. память) — не вслепую.
 - [ ] **Ф4 — Доки/долг.** glossary (Magical+элементы+Arcane), `stats.md`, `tag-reference`,
   тех-модель урона (tech-scribe), ADR. Сюда собраны ВСЕ док-правки (не дробим по фазам —
   модель менялась до Ф3).
