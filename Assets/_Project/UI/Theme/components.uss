@@ -1501,8 +1501,8 @@
 
 /* --- Таро-карточка релика: кайма-в-кайме, номер аркана в углу, титул на нижней плашке --- */
 .gm-arcana-card {
-    width: 108px;
-    height: 185px;
+    width: 132px;
+    height: 227px;
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-border-1);
     border-color: var(--gm-color-border-frame);
@@ -1559,14 +1559,19 @@
 /* Номер аркана (по ID релика) — латунь, верхний-правый угол арта. */
 .gm-arcana-card__num {
     position: absolute;
-    top: var(--gm-space-1);
-    right: var(--gm-space-1);
+    top: 3px;
+    right: 5px;
     color: var(--gm-brass-300);
     font-size: var(--gm-font-xs);
 }
 
-/* Нижняя плашка титула: отделена латунной линией сверху. */
+/* Нижняя плашка титула: отделена латунной линией сверху. Высота ФИКСИРОВАНА под две строки и текст
+   центрирован по вертикали — иначе 1-строчные и 2-строчные имена давали карты разной высоты (ряд скакал).
+   Теперь резерв всегда «как под 2 строки», и одна строка садится по центру того же места. */
 .gm-arcana-card__plaque {
+    height: 44px;
+    flex-shrink: 0;
+    justify-content: center;
     border-top-width: var(--gm-border-1);
     border-top-color: var(--gm-color-border-frame);
     margin-top: var(--gm-space-1);
