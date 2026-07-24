@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Guildmaster.UI.Components;
 using UnityEngine.UIElements;
 
 namespace Guildmaster.UI
@@ -7,9 +8,9 @@ namespace Guildmaster.UI
     /// <summary>
     /// Глобальная панель забега (app-shell, редизайн 2026-07-20): всегда сверху во время забега, тело
     /// экранов сдвинуто под неё. Слева гильдия + возвышение + акт + веха одной строкой; центр — лента-островок
-    /// с иконками-режимами и отделёнными настройками; справа — капсулы золота и перезапусков. Время забега
-    /// выключено (узел жив как шов). Подпись режима показывается подсказкой при наведении: иконка без
-    /// имени — угадайка. Разметка/стиль — только из <c>RunModeBar.uxml</c> + дизайн-система.
+    /// из чипов-режимов (тот же <see cref="Chip"/>, что фильтры/теги, в режиме «скрытый»: иконка всегда,
+    /// подпись — только у активного) и отделённые настройки; справа — капсулы золота и перезапусков.
+    /// Время забега выключено (узел жив как шов). Разметка/стиль — только из <c>RunModeBar.uxml</c> + дизайн-система.
     /// </summary>
     public sealed class RunModeBarView
     {
@@ -23,7 +24,7 @@ namespace Guildmaster.UI
         private readonly Label  _restarts;
         private readonly Button _start;
         private readonly Func<string, string> _loc;
-        private readonly Dictionary<string, Button> _modes = new();
+        private readonly Dictionary<string, Chip> _modes = new();
 
         public RunModeBarView(
             VisualTreeAsset uxml,
@@ -50,28 +51,30 @@ namespace Guildmaster.UI
             WireMode("tactics",    "ui.mode.tactics",    "Тактика",    onTactics);
             WireMode("compendium", "ui.mode.compendium", "Компендиум", onCompendium);
 
-            var menu = Root.Q<Button>("btn-menu");
-            if (menu != null) menu.clicked += () => onMenu?.Invoke();
+            var menu = Root.Q<Chip>("btn-menu");
+            if (menu != null)
+            {
+                menu.Text = L("ui.mode.menu", "Меню");   // виден лишь если станет активным (обычно нет — это модалка)
+                menu.RegisterCallback<ClickEvent>(_ => onMenu?.Invoke());
+            }
 
             if (_start != null) { _start.text = L("ui.run.start", "Начать"); _start.clicked += () => onStart?.Invoke(); }
         }
 
         private void WireMode(string key, string locKey, string ru, Action action)
         {
-            var btn = Root.Q<Button>("mode-" + key);
-            if (btn == null) return;
-            btn.clicked += () => action?.Invoke();
-            // Ключ имени режима резолвим и без подсказки: он держит loc-ключ живым до прихода общей
-            // системы тултипов, которая и будет показывать подпись при наведении.
-            _ = L(locKey, ru);
-            _modes[key] = btn;
+            var chip = Root.Q<Chip>("mode-" + key);
+            if (chip == null) return;
+            chip.Text = L(locKey, ru);   // подпись скрыта режимом --collapsible, всплывает у активного таба
+            chip.RegisterCallback<ClickEvent>(_ => action?.Invoke());
+            _modes[key] = chip;
         }
 
-        /// <summary>Подсветить активный режим (остальные — тусклые). null — снять подсветку со всех.</summary>
+        /// <summary>Подсветить активный режим (у него же появляется подпись). null — снять со всех.</summary>
         public void SetActiveMode(string key)
         {
             foreach (var kv in _modes)
-                kv.Value.EnableInClassList("gm-runbar__tab--active", kv.Key == key);
+                kv.Value.SetActive(kv.Key == key);
         }
 
         public void SetGold(int gold) => SetText(_gold, gold.ToString());

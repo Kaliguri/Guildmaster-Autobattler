@@ -1241,66 +1241,19 @@
 }
 
 /* Иконка-режим: квадратный слот, состояние — тинтом монохромной иконки, не вторым файлом. */
-/* ============ Иконочная кнопка — общий компонент ============
-   Единый вид и поведение ЛЮБОЙ кнопки-иконки (режимы забега, фильтры инвентаря и пр.): иконка =
-   background-image модификатора-типа, состояние = тинт + подложка. Гасит дефолтную белую плашку
-   .unity-button на ВСЕХ состояниях (иначе Unity рисует свой hover/active-фон — тот самый «белый
-   квадрат»). Размер/зазор задаёт потребитель (лента/панель) — здесь только вид и отклик.
-   background-size (не -unity-background-scale-mode): последнее не ужимает картинку в Unity 6. */
-.gm-icon-btn {
-    width: 44px;
-    height: 44px;
-    /* Прозрачная база: подложка проявляется только на наведении/выборе. */
-    background-color: rgba(0, 0, 0, 0);
-    border-width: 0;
-    border-radius: var(--gm-radius-1);
-    padding: var(--gm-space-1);
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    -unity-background-image-tint-color: var(--gm-color-text-muted);
-    /* Плавный отклик: фон, тинт и лёгкий масштаб перетекают, а не щёлкают. */
-    transition-property: background-color, scale, -unity-background-image-tint-color;
-    transition-duration: 0.12s;
-}
-
-/* Наведение: тёплая подложка проявляется, иконка разгорается, кнопка чуть подрастает. */
-.gm-icon-btn:hover {
-    background-color: var(--gm-color-hover-surface);
-    -unity-background-image-tint-color: var(--gm-color-text);
-    scale: 1.06 1.06;
-}
-
-/* Нажатие: вдавливание — подложка глубже, кнопка ужимается (перекрывает hover-масштаб). */
-.gm-icon-btn:active {
-    background-color: var(--gm-color-surface-sunken);
-    scale: 0.94 0.94;
-}
-
-/* Выбрана (текущий режим/фильтр): латунная подложка + акцентная иконка держатся постоянно. */
-.gm-icon-btn--active,
-.gm-runbar__tab--active {
-    background-color: var(--gm-color-surface-raised);
-    -unity-background-image-tint-color: var(--gm-color-accent);
-}
-.gm-icon-btn--active:hover,
-.gm-runbar__tab--active:hover {
-    -unity-background-image-tint-color: var(--gm-color-accent-hover);
-}
-
-/* Лента режимов: общий вид берёт .gm-icon-btn, здесь — только зазор между иконками. */
+/* Лента режимов = чипы в «скрытом» режиме (.gm-chip--collapsible): иконка всегда, подпись — только
+   у активного. Здесь только зазор между табами; весь вид/отклик берёт единый .gm-chip. */
 .gm-runbar__tab {
-    margin: 0 var(--gm-space-2);
+    margin: 0 var(--gm-space-1);
 }
 
-/* Иконки режимов — game-icons.net (Lorc, Delapouite), CC BY 3.0, запечены из SVG в белый силуэт
-   на прозрачном: один файл на режим, состояние даёт тинт выше. Атрибуция — docs/third-party-credits.md. */
-.gm-runbar__tab--map        { background-image: url("../../Art/UI/Icons-gm/Modes/treasure-map.png"); }
-.gm-runbar__tab--battle     { background-image: url("../../Art/UI/Icons-gm/Modes/crossed-swords.png"); }
-.gm-runbar__tab--inventory  { background-image: url("../../Art/UI/Icons-gm/Modes/knapsack.png"); }
-.gm-runbar__tab--tactics    { background-image: url("../../Art/UI/Icons-gm/Modes/rally-the-troops.png"); }
-.gm-runbar__tab--compendium { background-image: url("../../Art/UI/Icons-gm/Modes/book-cover.png"); }
-.gm-runbar__tab--menu       { background-image: url("../../Art/UI/Icons-gm/Modes/cog.png"); }
+/* Иконки режимов — game-icons.net (Lorc, Delapouite), CC BY 3.0, белый силуэт; тинт даёт состояние чипа. */
+.gm-runbar__tab--map        .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/treasure-map.png"); }
+.gm-runbar__tab--battle     .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/crossed-swords.png"); }
+.gm-runbar__tab--inventory  .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/knapsack.png"); }
+.gm-runbar__tab--tactics    .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/rally-the-troops.png"); }
+.gm-runbar__tab--compendium .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/book-cover.png"); }
+.gm-runbar__tab--menu       .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/cog.png"); }
 
 /* Разделитель перед бургером: он открывает модалку, а не переключает режим. */
 .gm-runbar__sep {
@@ -1444,6 +1397,13 @@
 .gm-chip--active { background-color: var(--gm-color-surface-raised); }
 .gm-chip--active .gm-chip__icon { -unity-background-image-tint-color: var(--gm-color-accent); }
 .gm-chip--active .gm-chip__label { color: var(--gm-color-text); -unity-font-style: bold; }
+
+/* Режим «скрытый» (--collapsible, лента режимов): подпись видна ТОЛЬКО у активного чипа. Иконка
+   отдаёт правый отступ, пока подписи нет, и возвращает его, когда подпись появляется. */
+.gm-chip--collapsible .gm-chip__label { display: none; }
+.gm-chip--collapsible .gm-chip__icon { margin-right: 0; }
+.gm-chip--collapsible.gm-chip--active .gm-chip__label { display: flex; }
+.gm-chip--collapsible.gm-chip--active .gm-chip__icon { margin-right: var(--gm-space-1); }
 
 /* Фильтры инвентаря = чипы: зазор между ними + иконка категории (game-icons.net Lorc, CC BY 3.0). */
 .gm-filter-tab { margin: 0 var(--gm-space-1); }

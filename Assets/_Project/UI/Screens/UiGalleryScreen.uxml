@@ -6,10 +6,10 @@
         <ui:Label text="SlantedPanel — подложка со скошенными торцами (лента режимов, капсулы ресурсов)" class="gm-text-muted" style="margin-top: 20px; margin-bottom: 8px;" />
         <ui:VisualElement style="flex-direction: row; align-items: center;">
             <gm:SlantedPanel Slant="14" class="gm-runbar__ribbon" style="height: 64px;">
-                <ui:Button class="gm-icon-btn gm-runbar__tab gm-runbar__tab--map" />
-                <ui:Button class="gm-icon-btn gm-runbar__tab gm-runbar__tab--battle gm-runbar__tab--active" />
+                <gm:Chip class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--map" />
+                <gm:Chip text="Бой" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--battle gm-chip--active" />
                 <ui:VisualElement class="gm-runbar__sep" />
-                <ui:Button class="gm-icon-btn gm-runbar__tab gm-runbar__tab--menu" />
+                <gm:Chip class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--menu" />
             </gm:SlantedPanel>
             <gm:SlantedPanel Slant="10" class="gm-runbar__capsule">
                 <ui:VisualElement class="gm-runbar__capsule-icon gm-runbar__capsule-icon--gold" />
