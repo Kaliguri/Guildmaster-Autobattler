@@ -21,9 +21,10 @@
                     <!-- Центр: фильтр-табы (центр) + поиск/сортировка + грид -->
                     <ui:VisualElement class="gm-loadout__center">
                         <ui:VisualElement class="gm-loadout__filters">
-                            <ui:Button name="filter-relics" text="Реликвии" class="gm-tab gm-tab--active" />
-                            <ui:Button name="filter-items" text="Предметы" class="gm-tab" />
-                            <ui:Button name="filter-banners" text="Знамёна" class="gm-tab" />
+                            <!-- Иконочные фильтры (общий .gm-icon-btn): подпись во всплывающей подсказке (ставит View). -->
+                            <ui:Button name="filter-relics" class="gm-icon-btn gm-filter-tab gm-filter-tab--relics gm-icon-btn--active" />
+                            <ui:Button name="filter-items" class="gm-icon-btn gm-filter-tab gm-filter-tab--items" />
+                            <ui:Button name="filter-banners" class="gm-icon-btn gm-filter-tab gm-filter-tab--banners" />
                         </ui:VisualElement>
 
                         <ui:VisualElement class="gm-loadout__toolbar">

@@ -21,6 +21,14 @@
 | `book-cover.png` | Book cover | Lorc |
 | `hamburger-menu.png` | Hamburger menu | Delapouite |
 
+Иконки фильтров инвентаря (`Assets/_Project/Art/UI/Icons-gm/Filters/`), белый силуэт на прозрачном:
+
+| Файл | Иконка (game-icons.net) | Автор |
+|---|---|---|
+| `relic.png` | Gem pendant | Lorc |
+| `item.png` | Potion ball | Lorc |
+| `banner.png` | Flying flag | Lorc |
+
 Источник: https://game-icons.net (репозиторий https://github.com/game-icons/icons).
 Лицензия: Creative Commons Attribution 3.0 (CC BY 3.0).
 

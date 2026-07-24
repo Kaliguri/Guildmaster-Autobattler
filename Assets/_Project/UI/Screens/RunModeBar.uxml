@@ -14,14 +14,14 @@
 
         <!-- Лента-островок: форму рисует SlantedPanel вершинами (скос на 9-slice «плывёт» по ширине). -->
         <gm:SlantedPanel name="runbar-ribbon" Slant="14" class="gm-runbar__ribbon">
-            <ui:Button name="mode-map" class="gm-runbar__tab gm-runbar__tab--map" />
-            <ui:Button name="mode-battle" class="gm-runbar__tab gm-runbar__tab--battle" />
-            <ui:Button name="mode-inventory" class="gm-runbar__tab gm-runbar__tab--inventory" />
-            <ui:Button name="mode-tactics" class="gm-runbar__tab gm-runbar__tab--tactics" />
-            <ui:Button name="mode-compendium" class="gm-runbar__tab gm-runbar__tab--compendium" />
+            <ui:Button name="mode-map" class="gm-icon-btn gm-runbar__tab gm-runbar__tab--map" />
+            <ui:Button name="mode-battle" class="gm-icon-btn gm-runbar__tab gm-runbar__tab--battle" />
+            <ui:Button name="mode-inventory" class="gm-icon-btn gm-runbar__tab gm-runbar__tab--inventory" />
+            <ui:Button name="mode-tactics" class="gm-icon-btn gm-runbar__tab gm-runbar__tab--tactics" />
+            <ui:Button name="mode-compendium" class="gm-icon-btn gm-runbar__tab gm-runbar__tab--compendium" />
             <!-- Настройки за разделителем: открывают модалку, а не переключают режим — не должны читаться шестым табом. -->
             <ui:VisualElement class="gm-runbar__sep" />
-            <ui:Button name="btn-menu" class="gm-runbar__tab gm-runbar__tab--menu" />
+            <ui:Button name="btn-menu" class="gm-icon-btn gm-runbar__tab gm-runbar__tab--menu" />
         </gm:SlantedPanel>
 
         <ui:VisualElement class="gm-loadout__topbar-side gm-loadout__topbar-side--right">

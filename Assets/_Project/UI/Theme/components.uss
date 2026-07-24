@@ -1241,28 +1241,56 @@
 }
 
 /* Иконка-режим: квадратный слот, состояние — тинтом монохромной иконки, не вторым файлом. */
-.gm-runbar__tab {
-    width: 40px;
-    height: 40px;
+/* ============ Иконочная кнопка — общий компонент ============
+   Единый вид и поведение ЛЮБОЙ кнопки-иконки (режимы забега, фильтры инвентаря и пр.): иконка =
+   background-image модификатора-типа, состояние = тинт + подложка. Гасит дефолтную белую плашку
+   .unity-button на ВСЕХ состояниях (иначе Unity рисует свой hover/active-фон — тот самый «белый
+   квадрат»). Размер/зазор задаёт потребитель (лента/панель) — здесь только вид и отклик.
+   background-size (не -unity-background-scale-mode): последнее не ужимает картинку в Unity 6. */
+.gm-icon-btn {
+    width: 44px;
+    height: 44px;
+    /* Прозрачная база: подложка проявляется только на наведении/выборе. */
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
-    border-radius: var(--gm-radius-0);
-    margin: 0 var(--gm-space-2);
-    padding: 0;
-    /* background-size, а НЕ -unity-background-scale-mode: последнее не ужимает картинку в Unity 6 —
-       иконка 128x128 рисовалась в натуральную величину и обрезалась слотом. */
+    border-radius: var(--gm-radius-1);
+    padding: var(--gm-space-1);
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     -unity-background-image-tint-color: var(--gm-color-text-muted);
+    /* Плавный отклик: фон, тинт и лёгкий масштаб перетекают, а не щёлкают. */
+    transition-property: background-color, scale, -unity-background-image-tint-color;
+    transition-duration: 0.12s;
 }
 
-.gm-runbar__tab:hover {
+/* Наведение: тёплая подложка проявляется, иконка разгорается, кнопка чуть подрастает. */
+.gm-icon-btn:hover {
+    background-color: var(--gm-color-hover-surface);
     -unity-background-image-tint-color: var(--gm-color-text);
+    scale: 1.06 1.06;
 }
 
+/* Нажатие: вдавливание — подложка глубже, кнопка ужимается (перекрывает hover-масштаб). */
+.gm-icon-btn:active {
+    background-color: var(--gm-color-surface-sunken);
+    scale: 0.94 0.94;
+}
+
+/* Выбрана (текущий режим/фильтр): латунная подложка + акцентная иконка держатся постоянно. */
+.gm-icon-btn--active,
 .gm-runbar__tab--active {
+    background-color: var(--gm-color-surface-raised);
     -unity-background-image-tint-color: var(--gm-color-accent);
+}
+.gm-icon-btn--active:hover,
+.gm-runbar__tab--active:hover {
+    -unity-background-image-tint-color: var(--gm-color-accent-hover);
+}
+
+/* Лента режимов: общий вид берёт .gm-icon-btn, здесь — только зазор между иконками. */
+.gm-runbar__tab {
+    margin: 0 var(--gm-space-2);
 }
 
 /* Иконки режимов — game-icons.net (Lorc, Delapouite), CC BY 3.0, запечены из SVG в белый силуэт
@@ -1377,12 +1405,15 @@
     margin-bottom: var(--gm-space-2);
 }
 
-/* Слим фильтр-табов под лоадаут (без правки глобального gm-tab): компактнее под реф. */
-.gm-loadout__filters .gm-tab {
-    font-size: var(--gm-font-sm);
-    padding-top: var(--gm-space-1);
-    padding-bottom: var(--gm-space-1);
+/* Фильтр-табы инвентаря — иконочные кнопки (общий .gm-icon-btn): вид/отклик оттуда, здесь зазор. */
+.gm-filter-tab {
+    margin: 0 var(--gm-space-2);
 }
+
+/* Иконки категорий — game-icons.net (Lorc), CC BY 3.0, белый силуэт на прозрачном (тинт из состояния). */
+.gm-filter-tab--relics  { background-image: url("../../Art/UI/Icons-gm/Filters/relic.png"); }
+.gm-filter-tab--items   { background-image: url("../../Art/UI/Icons-gm/Filters/item.png"); }
+.gm-filter-tab--banners { background-image: url("../../Art/UI/Icons-gm/Filters/banner.png"); }
 
 .gm-loadout__toolbar {
     flex-direction: row;

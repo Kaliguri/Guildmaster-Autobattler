@@ -56,9 +56,11 @@ namespace Guildmaster.UI
             // мир виден через неё (пока загружена боевая сцена). Подсказку прячем — она была для мок-заглушки.
             var battleHint = root.Q<Label>("battle-hint");
             if (battleHint != null) battleHint.style.display = DisplayStyle.None;
-            SetBtn (root, "filter-relics",  L("ui.loadout.filter.relics", "Реликвии"));
-            SetBtn (root, "filter-items",   L("ui.loadout.filter.items", "Предметы"));
-            SetBtn (root, "filter-banners", L("ui.loadout.filter.banners", "Знамёна"));
+            // Фильтры — иконочные кнопки (.gm-icon-btn): подпись уходит в tooltip, чтобы иконка не была
+            // угадайкой (три категории одного рода легко спутать), а сам таб оставался компактным.
+            SetIconTip(root, "filter-relics",  L("ui.loadout.filter.relics", "Реликвии"));
+            SetIconTip(root, "filter-items",   L("ui.loadout.filter.items", "Предметы"));
+            SetIconTip(root, "filter-banners", L("ui.loadout.filter.banners", "Знамёна"));
             SetBtn (root, "sort", L("ui.loadout.sort.name", "Имя") + " ↓");
             SetText(root, "video-hint", L("ui.loadout.video", "видео-вставка 16:9"));
             SetText(root, "skills-label", L("ui.loadout.skills", "способности"));
@@ -270,6 +272,15 @@ namespace Guildmaster.UI
         {
             var btn = root.Q<Button>(name);
             if (btn != null) btn.text = text;
+        }
+
+        /// <summary>Иконочная кнопка: без текста (иконка из USS), подпись — во всплывающем tooltip.</summary>
+        private static void SetIconTip(VisualElement root, string name, string tip)
+        {
+            var btn = root.Q<Button>(name);
+            if (btn == null) return;
+            btn.text = string.Empty;
+            btn.tooltip = tip;
         }
 
         private static void SetPlaceholder(TextField field, string text)
