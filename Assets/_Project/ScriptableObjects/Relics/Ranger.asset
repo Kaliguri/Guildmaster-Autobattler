@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Ranger
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.ranger
+  _combatClass: 3
   _damageSchool: 0
   _affinity: 0
   _creatureType: 0
@@ -20,6 +21,7 @@ MonoBehaviour:
   _resourceType: 1
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
   _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _tint: {r: 1, g: 1, b: 1, a: 1}
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []
@@ -28,9 +30,6 @@ MonoBehaviour:
   _attackRecoverySeconds: 0
   _resourceOnHit: 15
   _stats:
-  - Stat: 0
-    Op: 3
-    Value: 1300
   - Stat: 7
     Op: 3
     Value: 140
@@ -40,9 +39,6 @@ MonoBehaviour:
   - Stat: 9
     Op: 3
     Value: 9
-  - Stat: 20
-    Op: 3
-    Value: 2.9167
   - Stat: 18
     Op: 3
     Value: 12

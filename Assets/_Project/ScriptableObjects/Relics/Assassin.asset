@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Assassin
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.assassin
+  _combatClass: 2
   _damageSchool: 0
   _affinity: 0
   _creatureType: 0
@@ -20,6 +21,7 @@ MonoBehaviour:
   _resourceType: 0
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
   _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _tint: {r: 1, g: 1, b: 1, a: 1}
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []
@@ -28,9 +30,6 @@ MonoBehaviour:
   _attackRecoverySeconds: 0
   _resourceOnHit: 0
   _stats:
-  - Stat: 0
-    Op: 3
-    Value: 1650
   - Stat: 3
     Op: 3
     Value: 3
@@ -40,9 +39,6 @@ MonoBehaviour:
   - Stat: 8
     Op: 3
     Value: 1.3
-  - Stat: 20
-    Op: 3
-    Value: 3.3333
   - Stat: 9
     Op: 3
     Value: 1

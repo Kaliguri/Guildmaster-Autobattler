@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Cryomancer
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.cryomancer
+  _combatClass: 3
   _damageSchool: 1
   _affinity: 0
   _creatureType: 0
@@ -20,6 +21,7 @@ MonoBehaviour:
   _resourceType: 1
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
   _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _tint: {r: 1, g: 1, b: 1, a: 1}
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects:
@@ -38,9 +40,6 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 3
-  - Stat: 20
-    Op: 3
-    Value: 2.3333
   - Stat: 18
     Op: 3
     Value: 8
@@ -100,7 +99,8 @@ MonoBehaviour:
   - cryomancer
   - controller
   - common
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0

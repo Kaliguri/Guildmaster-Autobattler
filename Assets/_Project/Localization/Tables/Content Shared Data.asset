@@ -351,6 +351,14 @@ MonoBehaviour:
     m_Key: ui.reward.continue
     m_Metadata:
       m_Items: []
+  - m_Id: 4953955320979456
+    m_Key: species.goblins.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4953955367116800
+    m_Key: species.goblins.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

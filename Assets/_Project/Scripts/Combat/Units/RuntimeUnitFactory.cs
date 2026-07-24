@@ -10,7 +10,8 @@ namespace Guildmaster.Combat
     /// <summary>
     /// Единственная точка сборки <see cref="RuntimeUnit"/> из SO-данных.
     /// Шаги сборки (вики «10» §5.2, «6» §3): дефолты из <see cref="StatsConfig"/> → классовая база
-    /// (<see cref="ClassBalanceConfig"/>) → моды реликвии → перки сосуда → пассивки
+    /// (<see cref="ClassBalanceConfig"/>) → видовые скейлы врага (<see cref="SpeciesData"/>) → моды
+    /// реликвии → перки сосуда → пассивки
     /// (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
     /// → активки (<see cref="AbilityRuntime"/>) → ресурс (<see cref="StatType.StartResource"/>)
     /// → <c>CurrentHP = Get(MaxHP)</c>.
@@ -66,6 +67,9 @@ namespace Guildmaster.Combat
             // Классовая база (2-й уровень каскада) — ПЕРВОЙ группой, до персоны: «последний Override
             // побеждает» даёт каскад Класс → Персона → Vessel, дельты персоны копятся поверх.
             ClassBaseline.Apply(stats, data, _classBalance);
+
+            // Видовые/подвидовые скейлы врага (уровни 3–4) — после класса, до персоны (перемножаются поверх базы).
+            EnemyScalers.Apply(stats, data);
 
             if (data?.Stats != null && data.Stats.Length > 0)
                 stats.AddModifiersFrom(data, data.Stats);

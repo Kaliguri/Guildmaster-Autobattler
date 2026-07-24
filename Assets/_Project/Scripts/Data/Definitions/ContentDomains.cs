@@ -16,6 +16,7 @@ namespace Guildmaster.Data.Definitions
         {
             { typeof(RelicData),       "relic"       },
             { typeof(EnemyData),       "enemy"       },
+            { typeof(SpeciesData),     "species"     },
             { typeof(VesselData),      "vessel"      },
             { typeof(EffectData),      "effect"      },
             { typeof(TagData),         "tag"         },

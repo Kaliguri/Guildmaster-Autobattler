@@ -139,7 +139,70 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(3600f, unit.Stats.Get(StatType.MaxHP), 0.001f);
         }
 
+        // --- Вид/Подвид: скейл-слои врага (уровни 3–4) ---
+
+        [Test]
+        public void Species_ScalesOverClassBase()
+        {
+            var factory = MakeFactory(MakeConfig(), out _);
+            SpeciesData goblins = MakeSpecies(
+                new StatModifier(StatType.MaxHP,     ModifierOp.PercentMult, -0.6f),  // ×0.4
+                new StatModifier(StatType.MoveSpeed, ModifierOp.PercentMult,  0.1f));  // ×1.1
+            EnemyData enemy = MakeEnemy(UnitClass.Bruiser, goblins, null);
+
+            RuntimeUnit unit = factory.Create(enemy, null, team: 1, spawnPosition: Vector2.zero);
+
+            Assert.AreEqual(800f, unit.Stats.Get(StatType.MaxHP), 0.001f);      // 2000 × 0.4
+            Assert.AreEqual(3.3f, unit.Stats.Get(StatType.MoveSpeed), 0.001f);  // 3 × 1.1
+        }
+
+        [Test]
+        public void Subspecies_MultipliesOverSpecies()
+        {
+            var factory = MakeFactory(MakeConfig(), out _);
+            SpeciesData goblins   = MakeSpecies(new StatModifier(StatType.MaxHP, ModifierOp.PercentMult, -0.6f)); // ×0.4
+            SpeciesData northern  = MakeSpecies(new StatModifier(StatType.MaxHP, ModifierOp.PercentMult,  0.5f)); // ×1.5
+            EnemyData enemy = MakeEnemy(UnitClass.Tank, goblins, northern);
+
+            RuntimeUnit unit = factory.Create(enemy, null, team: 1, spawnPosition: Vector2.zero);
+
+            // 3000 (Tank) × 0.4 (вид) × 1.5 (подвид) = 1800. PercentMult перемножаются.
+            Assert.AreEqual(1800f, unit.Stats.Get(StatType.MaxHP), 0.001f);
+        }
+
+        [Test]
+        public void CascadeOrder_ClassThenSpeciesThenUnitFlat()
+        {
+            var factory = MakeFactory(MakeConfig(), out _);
+            SpeciesData goblins = MakeSpecies(new StatModifier(StatType.MaxHP, ModifierOp.PercentMult, -0.6f)); // ×0.4
+            EnemyData enemy = MakeEnemy(UnitClass.Tank, goblins, null,
+                new StatModifier(StatType.MaxHP, ModifierOp.Flat, 100f));
+
+            RuntimeUnit unit = factory.Create(enemy, null, team: 1, spawnPosition: Vector2.zero);
+
+            // (3000 базы класса + 100 флэт юнита) × 0.4 вид = 1240 (Flat в базовой скобке).
+            Assert.AreEqual(1240f, unit.Stats.Get(StatType.MaxHP), 0.001f);
+        }
+
         // --- helpers ---
+
+        private static SpeciesData MakeSpecies(params StatModifier[] scalers)
+        {
+            var s = ScriptableObject.CreateInstance<SpeciesData>();
+            SetField(s, "_scalers", scalers);
+            return s;
+        }
+
+        private static EnemyData MakeEnemy(UnitClass cls, SpeciesData species, SpeciesData subspecies,
+                                           params StatModifier[] stats)
+        {
+            var e = ScriptableObject.CreateInstance<EnemyData>();
+            SetField(e, "_combatClass", cls);
+            SetField(e, "_species", species);
+            SetField(e, "_subspecies", subspecies);
+            SetField(e, "_stats", stats);
+            return e;
+        }
 
         private static RuntimeUnitFactory MakeFactory(ClassBalanceConfig classConfig, out EffectSystem effects)
         {
@@ -157,8 +220,8 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static void SetField(object target, string field, object value)
         {
-            FieldInfo fi = target.GetType().GetField(field, BindingFlags.Instance | BindingFlags.NonPublic);
-            Assert.NotNull(fi, $"Нет поля {field} в {target.GetType().Name}");
+            FieldInfo fi = Reflect.FindField(target.GetType(), field); // обходит базовые классы (_combatClass в UnitData)
+            Assert.NotNull(fi, $"Нет поля {field} в {target.GetType().Name} (или базах)");
             fi.SetValue(target, value);
         }
     }

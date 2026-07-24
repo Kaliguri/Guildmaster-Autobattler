@@ -19,8 +19,9 @@ namespace Guildmaster.ContentHub.Editor
         public static Stats BuildEffective(UnitData data, StatsConfig config, ClassBalanceConfig classConfig = null)
         {
             var stats = new Stats(config);
-            // Классовая база — ПЕРВОЙ группой, тем же хелпером, что и бой (значения совпадают по построению).
+            // Тот же порядок, что и бой (значения совпадают по построению): класс → вид/подвид → персона.
             ClassBaseline.Apply(stats, data, classConfig);
+            EnemyScalers.Apply(stats, data);
             if (data != null && data.Stats != null && data.Stats.Length > 0)
                 stats.AddModifiersFrom(data, data.Stats);
             return stats;

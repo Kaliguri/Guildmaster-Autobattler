@@ -153,6 +153,7 @@ status: living
 - **Формат id в старых доках** (`relic_flame_sword` → `relic.flame_sword`) — обновить. TECH-13.
 - **Структура `RunState` в деталях** (поля, версионирование сейва). TECH-7.
 - **Контент-теги реликвий vs `EffectTag`** — разграничить при авторинге. GDD-0.3.
+- **Миграция карточек врагов на Вид/Подвид** (решено 2026-07-24, [[journal-adr]] §Оси врага): переименовать YAML `faction`→`species`, `subfaction`→`subspecies` в `enemies/*`; опц. папку `factions/`→`species/`. Держать `[[wikilinks]]` целыми. Отдельный механический проход.
 - **`VfxCatalog`** — по образцу `AudioCatalog`, когда дойдём до VFX. TECH-13.
 
 ### Прочее (AI, UI, скоуп)
