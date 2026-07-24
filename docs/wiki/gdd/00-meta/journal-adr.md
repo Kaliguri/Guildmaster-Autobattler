@@ -83,6 +83,25 @@ status: living
 карточках врагов (`enemies/*`) и, при желании, папку `factions/` — держать `[[wikilinks]]`
 целыми. Занесено в [[roadmap]].
 
+### Доп-теги юнита: 4 оси для «быстрого чтения»
+
+Контекст: система тегов «кто что умеет» на карточке юнита. Собран глоссарий
+[[roster/unit-tag-glossary]] (интервью с Максом, EN-нейминг, порядок осей). Оси ложатся на
+код-`enum TagCategory { Role, DamageType, Playstyle, Mechanic }`.
+
+| # | Решение | Причина | Статус | Канон |
+|---|---------|---------|--------|-------|
+| 13 | **4 оси тегов, порядок показа `Role → DamageType → Playstyle → Mechanic`** («кто → чем бьёт → зачем нужен → чем именно»). Role — авто из класса, DamageType — авто из `DamageSchool`/`Affinity`, Playstyle («на что играет») и Mechanic («что умеет») — ручные | Развести «что умеет» и «против кого» (аналог Dota-ролей) — разные вопросы читателю; авто-оси не дублировать руками (не рассинхронятся) | accepted | [[roster/unit-tag-glossary]] |
+| 14 | **EN — оригинал имени тега, RU в скобках** (HARD EN-канон). id `tag.<en_snake>` | Термины проекта — по-английски; консистентность с id/loc | accepted | [[roster/unit-tag-glossary]] |
+| 15 | **DamageType двухуровневый:** зонтик (`Physical`/`Magical`/`Pure`) + конкретика (Blunt/Slash/Pierce; Fire/Ice/Lightning/Poison/Light/Dark). «Magical» = читаемый зонтик над стихией+сродствами (отдельной школы «магия» нет; броня — Physical + Elemental) | Быстрое чтение зонтиком + точность конкретикой. Не плодить несуществующую «маг-школу»/«маг-броню» | accepted | [[roster/unit-tag-glossary]], [[stats]] |
+| 16 | **Составные оси (Control/AOE) — пока только зонтик**, конкретику (Stun/Slow/…, AOE-damage/…) добавим позже. **Нейминг:** стойкость = `Elemental Ward`/`Physical Ward`; пробитие = `Armor Break: Physical/Elemental/Full`. **Antimagic/Antiphysical как «бьёт магов» отклонены** в пользу Ward | Компактность сейчас, задел на детализацию; ясный EN-нейминг без двусмысленности «анти-» | accepted | [[roster/unit-tag-glossary]] |
+| 17 | **Не берём в теги:** `Line`/`Beam` (это форма атаки `AreaShape`, не ярлык), `Zones` (ждём готовности системы зон). **`Hybrid`/`Copycat`** из старого `roles` → в Playstyle (это стиль, не весовой класс). **Disengage** (контринициатор) — берём сразу как задел | Не выносить в «быстрое чтение» то, что уже в данных или ещё не готово; развести класс и стиль | accepted | [[roster/unit-tag-glossary]] |
+
+**Правит доки:** новый [[roster/unit-tag-glossary]] (полный глоссарий, `needs_review`);
+[[roster/tag-reference]] (ссылка на глоссарий; `roles` → весовой класс из `UnitClass`, функции
+переехали в Playstyle/Mechanic). **Реализация** (следующий шаг): `TagData`-ассеты домена `tag.*`,
+авто-теги Role/DamageType из данных, ручная простановка Playstyle/Mechanic реликвиям.
+
 ---
 
 ## 2026-07-20 — привал на карте акта и правило недоступных кнопок
