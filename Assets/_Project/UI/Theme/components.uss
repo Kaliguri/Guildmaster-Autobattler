@@ -1433,7 +1433,7 @@
     border-color: var(--gm-color-border-subtle);
     border-radius: var(--gm-radius-0);
     color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
+    font-size: var(--gm-font-xs);
     height: 36px;
     padding-left: var(--gm-space-2);
     padding-right: var(--gm-space-2);
@@ -1454,7 +1454,7 @@
     -unity-slice-scale: 2px;
     border-width: 0;
     color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
+    font-size: var(--gm-font-xs);
     height: 36px;
     padding-left: var(--gm-space-3);
     padding-right: var(--gm-space-3);
@@ -1501,8 +1501,8 @@
 
 /* --- Таро-карточка релика: кайма-в-кайме, номер аркана в углу, титул на нижней плашке --- */
 .gm-arcana-card {
-    width: 124px;
-    height: 170px;
+    width: 108px;
+    height: 185px;
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-border-1);
     border-color: var(--gm-color-border-frame);
@@ -1573,15 +1573,14 @@
     padding-top: var(--gm-space-1);
 }
 
-/* Титул таро-карты: одна строка, без переноса. Размер sm — чтобы длинные имена
-   («THE FLAME SWORDSMAN») влезали целиком в одну строку; очень длинное — эллипсис-страховка. */
+/* Титул таро-карты: очень мелкий (--gm-font-xxs) и с переносом в 2 строки — узкая таро-карта не
+   вмещает длинные имена («THE LIGHT SHEPHERD») в одну строку, а обрезать эллипсисом Макс не хочет. */
 .gm-arcana-card__title {
     color: var(--gm-color-text);
-    font-size: var(--gm-font-xs);
+    font-size: var(--gm-font-xxs);
     -unity-text-align: middle-center;
-    white-space: nowrap;
+    white-space: normal;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /* --- Правая панель деталей: видео 16:9, титул, способности, улучшения, нарратив --- */
