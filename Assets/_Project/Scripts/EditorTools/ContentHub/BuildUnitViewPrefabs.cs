@@ -97,7 +97,8 @@ namespace Guildmaster.ContentHub.Editor
                 new Color(1f, 0.95f, 0.75f, 1f));
             Wire("Assets/_Project/ScriptableObjects/Relics/Cryomancer.asset", "WizardPack", "UnitView_Cryomancer",
                 new Color(0.55f, 0.8f, 1f, 1f));
-            Wire("Assets/_Project/ScriptableObjects/Relics/Druid.asset", "ForestMushroom", "UnitView_Druid", Color.white);
+            Wire("Assets/_Project/ScriptableObjects/Relics/Druid.asset", "MedievalWarrior", "UnitView_Druid",
+                new Color(0.43f, 0.72f, 0.42f, 1f));
 
             Wire("Assets/_Project/ScriptableObjects/Enemies/GoblinGrunt.asset", "GoblinFighter", "UnitView_GoblinGrunt",
                 new Color(0.7f, 1f, 0.55f, 1f));
