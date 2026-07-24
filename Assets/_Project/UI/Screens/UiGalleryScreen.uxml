@@ -17,11 +17,11 @@
             </gm:SlantedPanel>
         </ui:VisualElement>
 
-        <ui:Label text="gm-icon-btn — иконочная кнопка (наведение / нажатие интерактивны в Play; активная — латунь)" class="gm-text-muted" style="margin-top: 20px; margin-bottom: 8px;" />
+        <ui:Label text="gm-chip — иконка + подпись (фильтры, теги; наведение интерактивно; активный — латунь)" class="gm-text-muted" style="margin-top: 20px; margin-bottom: 8px;" />
         <ui:VisualElement style="flex-direction: row; align-items: center;">
-            <ui:Button class="gm-icon-btn gm-filter-tab gm-filter-tab--relics gm-icon-btn--active" />
-            <ui:Button class="gm-icon-btn gm-filter-tab gm-filter-tab--items" />
-            <ui:Button class="gm-icon-btn gm-filter-tab gm-filter-tab--banners" />
+            <gm:Chip text="Реликвии" class="gm-filter-tab gm-filter-tab--relics gm-chip--active" />
+            <gm:Chip text="Предметы" class="gm-filter-tab gm-filter-tab--items" />
+            <gm:Chip text="Знамёна" class="gm-filter-tab gm-filter-tab--banners" />
         </ui:VisualElement>
 
         <ui:Label text="Tokens" class="gm-text-muted" style="margin-top: 20px; margin-bottom: 8px;" />

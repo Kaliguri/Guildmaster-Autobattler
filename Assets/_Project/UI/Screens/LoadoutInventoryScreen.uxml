@@ -1,4 +1,4 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <!-- Лоадаут/инвентарь — редизайн (Ф3a): ТОЛЬКО тело (боевая зона | грид таро-карточек | детали).
          Глобальный топбар забега (режимы/HP/золото/акт/таймер) — отдельный RunModeBar сверху (app-shell);
          тело сдвинуто под него через padding-top у .gm-loadout.
@@ -21,10 +21,10 @@
                     <!-- Центр: фильтр-табы (центр) + поиск/сортировка + грид -->
                     <ui:VisualElement class="gm-loadout__center">
                         <ui:VisualElement class="gm-loadout__filters">
-                            <!-- Иконочные фильтры (общий .gm-icon-btn): подпись во всплывающей подсказке (ставит View). -->
-                            <ui:Button name="filter-relics" class="gm-icon-btn gm-filter-tab gm-filter-tab--relics gm-icon-btn--active" />
-                            <ui:Button name="filter-items" class="gm-icon-btn gm-filter-tab gm-filter-tab--items" />
-                            <ui:Button name="filter-banners" class="gm-icon-btn gm-filter-tab gm-filter-tab--banners" />
+                            <!-- Фильтры-чипы (иконка + подпись): текст и активность ставит View. -->
+                            <gm:Chip name="filter-relics" class="gm-filter-tab gm-filter-tab--relics" />
+                            <gm:Chip name="filter-items" class="gm-filter-tab gm-filter-tab--items" />
+                            <gm:Chip name="filter-banners" class="gm-filter-tab gm-filter-tab--banners" />
                         </ui:VisualElement>
 
                         <ui:VisualElement class="gm-loadout__toolbar">

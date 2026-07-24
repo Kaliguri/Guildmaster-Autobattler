@@ -56,11 +56,25 @@ namespace Guildmaster.UI
             // мир виден через неё (пока загружена боевая сцена). Подсказку прячем — она была для мок-заглушки.
             var battleHint = root.Q<Label>("battle-hint");
             if (battleHint != null) battleHint.style.display = DisplayStyle.None;
-            // Фильтры — иконочные кнопки (.gm-icon-btn): подпись уходит в tooltip, чтобы иконка не была
-            // угадайкой (три категории одного рода легко спутать), а сам таб оставался компактным.
-            SetIconTip(root, "filter-relics",  L("ui.loadout.filter.relics", "Реликвии"));
-            SetIconTip(root, "filter-items",   L("ui.loadout.filter.items", "Предметы"));
-            SetIconTip(root, "filter-banners", L("ui.loadout.filter.banners", "Знамёна"));
+            // Фильтры-чипы (иконка + подпись, п.1): Реликвии активны по умолчанию, клик переключает
+            // подсветку. Фильтрация по категории — отдельная фаза; здесь пока только визуальный выбор.
+            var filterChips = new[]
+            {
+                (chip: root.Q<Chip>("filter-relics"),  label: L("ui.loadout.filter.relics", "Реликвии")),
+                (chip: root.Q<Chip>("filter-items"),   label: L("ui.loadout.filter.items", "Предметы")),
+                (chip: root.Q<Chip>("filter-banners"), label: L("ui.loadout.filter.banners", "Знамёна")),
+            };
+            for (int i = 0; i < filterChips.Length; i++)
+            {
+                Chip chip = filterChips[i].chip;
+                if (chip == null) continue;
+                chip.Text = filterChips[i].label;
+                chip.SetActive(i == 0);
+                chip.RegisterCallback<ClickEvent>(_ =>
+                {
+                    foreach (var fc in filterChips) fc.chip?.SetActive(fc.chip == chip);
+                });
+            }
             SetBtn (root, "sort", L("ui.loadout.sort.name", "Имя") + " ↓");
             SetText(root, "video-hint", L("ui.loadout.video", "видео-вставка 16:9"));
             SetText(root, "skills-label", L("ui.loadout.skills", "способности"));
@@ -300,15 +314,6 @@ namespace Guildmaster.UI
         {
             var btn = root.Q<Button>(name);
             if (btn != null) btn.text = text;
-        }
-
-        /// <summary>Иконочная кнопка: без текста (иконка из USS), подпись — во всплывающем tooltip.</summary>
-        private static void SetIconTip(VisualElement root, string name, string tip)
-        {
-            var btn = root.Q<Button>(name);
-            if (btn == null) return;
-            btn.text = string.Empty;
-            btn.tooltip = tip;
         }
 
         private static void SetPlaceholder(TextField field, string text)
