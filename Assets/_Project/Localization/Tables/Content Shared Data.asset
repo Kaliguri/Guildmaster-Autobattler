@@ -359,6 +359,222 @@ MonoBehaviour:
     m_Key: species.goblins.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 5009255512137728
+    m_Key: tag.tank.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009257798033408
+    m_Key: tag.bruiser.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009262353047552
+    m_Key: tag.assassin.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009264521502720
+    m_Key: tag.ranged.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009266958393344
+    m_Key: tag.support.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009269059739648
+    m_Key: tag.summoner.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009271442104320
+    m_Key: tag.physical.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009273627336704
+    m_Key: tag.blunt.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009275812569088
+    m_Key: tag.slash.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009278115241984
+    m_Key: tag.pierce.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009280220782592
+    m_Key: tag.magical.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009282657673216
+    m_Key: tag.fire.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009284935180288
+    m_Key: tag.ice.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009288278040576
+    m_Key: tag.lightning.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009290463272960
+    m_Key: tag.poison.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009292866609152
+    m_Key: tag.light.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009295420940288
+    m_Key: tag.dark.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009297681670144
+    m_Key: tag.pure.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009300005314560
+    m_Key: tag.tank_buster.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009302043746304
+    m_Key: tag.anti_summon.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009304417722368
+    m_Key: tag.anti_heal.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009306682646528
+    m_Key: tag.armor_break_physical.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009308901433344
+    m_Key: tag.armor_break_elemental.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009311438987264
+    m_Key: tag.armor_break_full.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009314433720320
+    m_Key: tag.elemental_ward.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009317126463488
+    m_Key: tag.physical_ward.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009319324278784
+    m_Key: tag.initiator.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009321706643456
+    m_Key: tag.disengage.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009323816378368
+    m_Key: tag.escape.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009326085496832
+    m_Key: tag.distraction.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009328312672256
+    m_Key: tag.peel.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009330434990080
+    m_Key: tag.durable.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009332783800320
+    m_Key: tag.buffer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009334843203584
+    m_Key: tag.debuffer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009337586278400
+    m_Key: tag.hybrid.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009340220301312
+    m_Key: tag.copycat.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009342661386240
+    m_Key: tag.burst.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009345098276864
+    m_Key: tag.damage_over_time.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009347333840896
+    m_Key: tag.ramp.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009349682651136
+    m_Key: tag.execute.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009351800774656
+    m_Key: tag.lifesteal.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009354019561472
+    m_Key: tag.shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009356179628032
+    m_Key: tag.heal.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009358402609152
+    m_Key: tag.regen.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009360906608640
+    m_Key: tag.buff.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009364299800576
+    m_Key: tag.debuff.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009366740885504
+    m_Key: tag.control.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009368745762816
+    m_Key: tag.cleanse.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009371023269888
+    m_Key: tag.dash.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009373166559232
+    m_Key: tag.teleport.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009375548923904
+    m_Key: tag.stealth.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009377960648704
+    m_Key: tag.evasion.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009380003274752
+    m_Key: tag.summon.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5009382259810304
+    m_Key: tag.aoe.name
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -1682,11 +1682,72 @@
     margin-bottom: var(--gm-space-1);
 }
 
-/* Тег юнита = тот же чип, что фильтры сверху (иконка + подпись, единый стиль). Зазор между тегами. */
+/* Тег юнита = тот же чип, что фильтры сверху (иконка + подпись, единый стиль). Зазор между тегами.
+   Иконки — game-icons.net (Lorc/Delapouite/sbed), CC BY 3.0; см. Icons-gm/Tags/ATTRIBUTION.txt */
 .gm-tag { margin: var(--gm-space-1) var(--gm-space-1) 0 0; }
+
+/* Role */
+.gm-tag--tank      .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/tank.png"); }
 .gm-tag--bruiser   .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/bruiser.png"); }
-.gm-tag--frontline .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/frontline.png"); }
+.gm-tag--assassin  .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/assassin.png"); }
+.gm-tag--ranged    .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/ranged.png"); }
+.gm-tag--support   .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/support.png"); }
+.gm-tag--summoner  .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/summoner.png"); }
+.gm-tag--frontline .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/frontline.png"); } /* legacy */
+
+/* DamageType */
+.gm-tag--physical  .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/physical.png"); }
+.gm-tag--blunt     .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/blunt.png"); }
+.gm-tag--slash     .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/slash.png"); }
+.gm-tag--pierce    .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/pierce.png"); }
+.gm-tag--magical   .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/magical.png"); }
 .gm-tag--fire      .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/fire.png"); }
+.gm-tag--ice       .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/ice.png"); }
+.gm-tag--lightning .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/lightning.png"); }
+.gm-tag--poison    .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/poison.png"); }
+.gm-tag--light     .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/light.png"); }
+.gm-tag--dark      .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/dark.png"); }
+.gm-tag--pure      .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/pure.png"); }
+
+/* Playstyle */
+.gm-tag--tank-buster            .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/tank_buster.png"); }
+.gm-tag--anti-summon            .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/anti_summon.png"); }
+.gm-tag--anti-heal              .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/anti_heal.png"); }
+.gm-tag--armor-break-physical   .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/armor_break_physical.png"); }
+.gm-tag--armor-break-elemental  .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/armor_break_elemental.png"); }
+.gm-tag--armor-break-full       .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/armor_break_full.png"); }
+.gm-tag--elemental-ward         .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/elemental_ward.png"); }
+.gm-tag--physical-ward          .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/physical_ward.png"); }
+.gm-tag--initiator              .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/initiator.png"); }
+.gm-tag--disengage              .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/disengage.png"); }
+.gm-tag--escape                 .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/escape.png"); }
+.gm-tag--distraction            .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/distraction.png"); }
+.gm-tag--peel                   .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/peel.png"); }
+.gm-tag--durable                .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/durable.png"); }
+.gm-tag--buffer                 .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/buffer.png"); }
+.gm-tag--debuffer               .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/debuffer.png"); }
+.gm-tag--hybrid                 .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/hybrid.png"); }
+.gm-tag--copycat                .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/copycat.png"); }
+
+/* Mechanic */
+.gm-tag--burst              .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/burst.png"); }
+.gm-tag--damage-over-time   .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/damage_over_time.png"); }
+.gm-tag--ramp               .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/ramp.png"); }
+.gm-tag--execute            .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/execute.png"); }
+.gm-tag--lifesteal          .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/lifesteal.png"); }
+.gm-tag--shield             .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/shield.png"); }
+.gm-tag--heal               .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/heal.png"); }
+.gm-tag--regen              .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/regen.png"); }
+.gm-tag--buff               .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/buff.png"); }
+.gm-tag--debuff             .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/debuff.png"); }
+.gm-tag--control            .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/control.png"); }
+.gm-tag--cleanse            .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/cleanse.png"); }
+.gm-tag--dash               .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/dash.png"); }
+.gm-tag--teleport           .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/teleport.png"); }
+.gm-tag--stealth            .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/stealth.png"); }
+.gm-tag--evasion            .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/evasion.png"); }
+.gm-tag--summon             .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/summon.png"); }
+.gm-tag--aoe                .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/aoe.png"); }
 
 /* Распорка: flex-grow отжимает статблок к низу панели. */
 .gm-loadout__spacer { flex-grow: 1; }
