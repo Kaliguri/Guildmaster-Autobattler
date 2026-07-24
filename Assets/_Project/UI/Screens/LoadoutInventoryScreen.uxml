@@ -40,10 +40,10 @@
                     <ui:VisualElement class="gm-loadout__detail">
                         <ui:Label name="detail-title" text="—" class="gm-loadout__detail-title" />
                         <ui:VisualElement name="detail-tags" class="gm-loadout__tags" />
-                        <ui:Label name="detail-narrative" text="" class="gm-loadout__narrative-text" />
                         <ui:VisualElement class="gm-loadout__video">
                             <ui:Label name="video-hint" text="видео-вставка 16:9" class="gm-loadout__video-hint" />
                         </ui:VisualElement>
+                        <ui:Label name="detail-narrative" text="" class="gm-loadout__narrative-text" />
                         <ui:VisualElement class="gm-loadout__section">
                             <ui:Label name="skills-label" text="способности" class="gm-loadout__section-label" />
                             <ui:VisualElement name="detail-abilities" class="gm-loadout__abilities" />

@@ -97,21 +97,24 @@ namespace Guildmaster.UI
             var tags = root.Q<VisualElement>("detail-tags");
             if (tags != null)
             {
-                tags.Add(MakeTag(L("ui.tag.bruiser", "Боец"), "gm-chip--role"));
-                tags.Add(MakeTag(L("ui.tag.frontline", "Фронт"), "gm-chip--role"));
-                tags.Add(MakeTag(L("ui.tag.fire", "Огонь"), "gm-chip--element"));
+                tags.Add(MakeTag(L("ui.tag.bruiser", "Боец"), "gm-tag--bruiser"));
+                tags.Add(MakeTag(L("ui.tag.frontline", "Фронт"), "gm-tag--frontline"));
+                tags.Add(MakeTag(L("ui.tag.fire", "Огонь"), "gm-tag--fire"));
             }
 
-            // ── Статблок (внизу): подписи — реальные статы, значения плейсхолдерные (числа придут с данными). ──
+            // ── Статблок (внизу): 8 маленьких квадратов, 4 в ряд. Подписи — реальные статы,
+            //    значения плейсхолдерные (числа придут с данными юнита). ──
             var stats = root.Q<VisualElement>("detail-stats");
             if (stats != null)
             {
                 stats.Add(MakeStat(L("ui.stat.hp", "HP"), "120"));
                 stats.Add(MakeStat(L("ui.stat.dmg", "Урон"), "45"));
                 stats.Add(MakeStat(L("ui.stat.aspd", "Ск.атк"), "1.2"));
-                stats.Add(MakeStat(L("ui.stat.armor", "Броня"), "5"));
-                stats.Add(MakeStat(L("ui.stat.earmor", "Ст.броня"), "0"));
                 stats.Add(MakeStat(L("ui.stat.move", "Скор"), "3.0"));
+                stats.Add(MakeStat(L("ui.stat.parmor", "Ф.броня"), "5"));
+                stats.Add(MakeStat(L("ui.stat.earmor", "М.броня"), "0"));
+                stats.Add(MakeStat(L("ui.stat.range", "Дальн"), "1.5"));
+                stats.Add(MakeStat(L("ui.stat.lifesteal", "Вампир"), "0"));
             }
 
             // ── Грид таро-карточек ──
@@ -306,13 +309,12 @@ namespace Guildmaster.UI
                 row.Add(new Slot { Size = Slot.SlotSize.Md });
         }
 
-        // Тег-чип: текстовая пилюля (иконка тега — с его данными). variantClass разводит роль/стихию цветом.
-        private static Chip MakeTag(string text, string variantClass)
+        // Тег-чип: тот же чип, что фильтры (иконка + подпись). iconClass даёт иконку тега.
+        private static Chip MakeTag(string text, string iconClass)
         {
             var chip = new Chip { Text = text };
-            chip.AddToClassList("gm-chip--tag");
-            chip.AddToClassList("gm-chip--noicon");
-            chip.AddToClassList(variantClass);
+            chip.AddToClassList("gm-tag");
+            chip.AddToClassList(iconClass);
             return chip;
         }
 

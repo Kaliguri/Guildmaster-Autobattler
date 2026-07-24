@@ -1365,8 +1365,7 @@
    боевой камеры (пока загружена боевая сцена). Рамка справа — визуальный разделитель с телом инвентаря.
    Нижняя панель золота её НЕ перекрывает (сидит в __main). */
 .gm-loadout__battle {
-    width: 48%;
-    flex-shrink: 0;
+    flex-grow: 1;
     border-right-width: var(--gm-border-2);
     border-color: var(--gm-color-border-frame);
     align-items: center;
@@ -1382,8 +1381,11 @@
 
 /* Правая часть тела: центр+детали в ряд, снизу — панель золота. Несёт непрозрачную подложку тела
    (корень прозрачен ради дырки слева) — центр/детали остаются читаемыми поверх мира/фона. */
+/* Тело инвентаря НЕ тянется (строгий размер): его ширина = грид + панель деталей, фиксированные;
+   боевая зона забирает весь остаток. Иначе панель на flex-grow распирало содержимым за край экрана. */
 .gm-loadout__main {
-    flex-grow: 1;
+    flex-grow: 0;
+    flex-shrink: 0;
     flex-direction: column;
     background-color: var(--gm-color-surface-sunken);
 }
@@ -1627,10 +1629,10 @@
 }
 
 /* --- Правая панель деталей: видео 16:9, титул, способности, улучшения, нарратив ---
-   flex-grow: забирает ВЕСЬ остаток строки после грида (ту самую пустую полосу), min-width — нижний предел. */
+   СТРОГАЯ ширина (реш. Макса): панель не тянется по контенту, поэтому нарратив/видео переносятся
+   и остаются внутри, а не распирают её за экран. */
 .gm-loadout__detail {
-    flex-grow: 1;
-    min-width: 340px;
+    width: 400px;
     flex-shrink: 0;
     background-color: var(--gm-color-surface-panel);
     border-left-width: var(--gm-border-2);
@@ -1720,16 +1722,11 @@
     margin-bottom: var(--gm-space-1);
 }
 
-.gm-chip--noicon .gm-chip__icon { display: none; }
-
-.gm-chip--tag {
-    margin: var(--gm-space-1) var(--gm-space-1) 0 0;
-    padding: 2px var(--gm-space-2);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-inner);
-}
-.gm-chip--role .gm-chip__label { color: var(--gm-brass-300); }
-.gm-chip--element .gm-chip__label { color: var(--gm-color-text-muted); }
+/* Тег юнита = тот же чип, что фильтры сверху (иконка + подпись, единый стиль). Зазор между тегами. */
+.gm-tag { margin: var(--gm-space-1) var(--gm-space-1) 0 0; }
+.gm-tag--bruiser   .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/bruiser.png"); }
+.gm-tag--frontline .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/frontline.png"); }
+.gm-tag--fire      .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Tags/fire.png"); }
 
 /* Распорка: flex-grow отжимает статблок к низу панели. */
 .gm-loadout__spacer { flex-grow: 1; }
@@ -1742,15 +1739,15 @@
 }
 
 .gm-stat {
-    width: 31%;
+    width: 23%;
     align-items: center;
     justify-content: center;
     background-color: var(--gm-color-surface-sunken);
     border-radius: var(--gm-radius-0);
-    padding: var(--gm-space-1) 0;
+    padding: 4px 0;
     margin-bottom: var(--gm-space-1);
 }
-.gm-stat__value { color: var(--gm-color-text); font-size: var(--gm-font-sm); }
+.gm-stat__value { color: var(--gm-color-text); font-size: var(--gm-font-xs); }
 .gm-stat__label { color: var(--gm-color-text-muted); font-size: var(--gm-font-xxs); }
 
 /* --- Нижняя панель золота: только под центром+правым (в __main, не в __body). --- */
