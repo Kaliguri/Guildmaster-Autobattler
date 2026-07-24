@@ -43,11 +43,15 @@
   (яд от физ-тычки гасится физбронёй); Cryomancer тычка +Ice; Burn/Ignition +Fire; IronSpearman
   «Стальной вихрь» +подтип Slash (автоатака Pierce); Treant шипы +Pierce. 8 автоатак из 10 уже
   были верны. **249/249 зелёные.**
-- [ ] **Ф2b — Редизайн Шепарда (новая механика).** Автоатака: дальняя, светом = Чистый (True)
-  + сродство Light, урон ~⅓ обычного; при попадании лечит самого раненого союзника (HP%) в
-  радиусе вокруг Шепарда на 100% нанесённого. Убрать `AutoAttackMode.Heal`-режим (был хил-автоатака
-  без урона). Новый on-hit-heal компонент/логика в Combat, переписать `ShepherdSliceTests`,
-  обновить карточку the-shepherd + ГДД. Числа (⅓ урона, радиус) — черновые, тюнинг в Unity.
+- [x] **Ф2b — Редизайн Шепарда (новая механика).** `AllyMendComponent` (reactive на DamageDealt):
+  автоатака лечит самого раненого союзника (HP%, тай-брейк по Id) в радиусе вокруг носителя на
+  долю нанесённого. Ассет `effect.light_mend` (пассив, permanent). Shepherd relic: школа урона
+  автоатаки Physical→True (+сродство Light, было), AutoAttackDamage 100→33 (черновое), +granted
+  LightMend. AI-preset: `AutoAttackMode` Heal→Damage, targeting AllyLowest→Nearest. 3 EditMode-теста
+  (`AllyMendComponentTests`) + `MockCombatContext.Heals`-трекинг. Карточка the-shepherd обновлена. **252/252.**
+  - `AutoAttackMode.Heal`-механика в коде НЕ удалена (её держат `ShepherdSliceTests`, автономны —
+    строят relic в коде). Шепард на неё больше не завязан. Удаление — отдельный техдолг.
+  - Долг: лок-ключи `effect.light_mend.name/.desc` (Ф4 с остальным loc).
 - [ ] **Ф2c — Пересверка** `docs/wiki/gdd/roster/relic-tag-assignments.md` под новую модель
   (Druid Physical·Pierce+Poison-DoT, Shepherd True·Light, Cryomancer Magical·Ice).
 - [ ] **Ф3 — Теги на карточку.** Авто-тег из `DamageType`-агрегата + ручные Playstyle/Mechanic

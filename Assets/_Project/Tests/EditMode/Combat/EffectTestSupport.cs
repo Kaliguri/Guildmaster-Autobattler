@@ -207,6 +207,9 @@ namespace Guildmaster.Tests.EditMode.Combat
         public float TotalRawDamage;
         public float TotalHealed;
 
+        /// <summary>Каждый вызов <see cref="Heal"/> — кому и сколько (для проверки адресата лечения).</summary>
+        public readonly List<(RuntimeUnit Target, float Amount)> Heals = new List<(RuntimeUnit, float)>();
+
         /// <summary>Юниты, которые вернёт <see cref="QueryUnitsInRadius"/> (фильтр по команде применяется). Пусто = запрос пустой.</summary>
         public readonly List<RuntimeUnit> UnitsInWorld = new List<RuntimeUnit>();
 
@@ -222,7 +225,11 @@ namespace Guildmaster.Tests.EditMode.Combat
             TotalRawDamage += req.RawDamage;
         }
 
-        public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) => TotalHealed += amount;
+        public void Heal(RuntimeUnit target, float amount, RuntimeUnit source)
+        {
+            TotalHealed += amount;
+            Heals.Add((target, amount));
+        }
         public void SpawnProjectile(in ProjectileSpawn spawn) { }
 
         public int QueryUnitsInRadius(

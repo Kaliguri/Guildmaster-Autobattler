@@ -1,0 +1,101 @@
+using System.Collections.Generic;
+using Guildmaster.Combat;
+using Guildmaster.Combat.Effects;
+using Guildmaster.Combat.Effects.Components;
+using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Stats;
+using NUnit.Framework;
+using UnityEngine;
+
+namespace Guildmaster.Tests.EditMode.Combat
+{
+    /// <summary>
+    /// «Целебный свет» Светлого пастыря (<see cref="AllyMendComponent"/>): автоатака светом (True)
+    /// по врагу лечит самого раненого союзника (HP%) в радиусе вокруг носителя на долю нанесённого.
+    /// </summary>
+    public sealed class AllyMendComponentTests
+    {
+        [Test]
+        public void HealsMostWoundedAlly_OnAutoAttackDamage()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+
+            RuntimeUnit shepherd = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 100f, hp: 100f);
+            RuntimeUnit wounded  = MakeUnit(1, team: 0, pos: new Vector2(2f, 0f), maxHp: 100f, hp: 30f); // 30%
+            RuntimeUnit healthy  = MakeUnit(2, team: 0, pos: new Vector2(3f, 0f), maxHp: 100f, hp: 90f); // 90%
+            RuntimeUnit victim   = MakeUnit(3, team: 1, pos: new Vector2(5f, 0f), maxHp: 100f, hp: 100f);
+            ctx.UnitsInWorld.AddRange(new[] { shepherd, wounded, healthy });
+
+            var comp = new AllyMendComponent().With("_fraction", 1f).With("_radius", 5f).With("_autoAttackOnly", true);
+            sys.Apply(shepherd, TestEffect.Make(baseDuration: -1f, components: comp), shepherd, ctx);
+
+            var ev = new CombatEventData(CombatEvent.DamageDealt, shepherd, victim, 40f, EffectTag.None,
+                sourceKind: DamageSourceKind.AutoAttack);
+            sys.Dispatch(shepherd, in ev, ctx);
+
+            Assert.AreEqual(1, ctx.Heals.Count, "Один хил на автоатаку");
+            Assert.AreSame(wounded, ctx.Heals[0].Target, "Лечит самого раненого союзника (30% < 90%)");
+            Assert.AreEqual(40f, ctx.Heals[0].Amount, 1e-4f, "100% от нанесённого (40)");
+        }
+
+        [Test]
+        public void DoesNotHeal_OnNonAutoAttackDamage_WhenAutoAttackOnly()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+
+            RuntimeUnit shepherd = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 100f, hp: 100f);
+            RuntimeUnit wounded  = MakeUnit(1, team: 0, pos: new Vector2(2f, 0f), maxHp: 100f, hp: 30f);
+            RuntimeUnit victim   = MakeUnit(3, team: 1, pos: new Vector2(5f, 0f), maxHp: 100f, hp: 100f);
+            ctx.UnitsInWorld.AddRange(new[] { shepherd, wounded });
+
+            var comp = new AllyMendComponent().With("_fraction", 1f).With("_radius", 5f).With("_autoAttackOnly", true);
+            sys.Apply(shepherd, TestEffect.Make(baseDuration: -1f, components: comp), shepherd, ctx);
+
+            // Урон способности (не автоатака) — не лечит.
+            var ev = new CombatEventData(CombatEvent.DamageDealt, shepherd, victim, 40f);
+            sys.Dispatch(shepherd, in ev, ctx);
+
+            Assert.AreEqual(0, ctx.Heals.Count, "autoAttackOnly: урон способности не лечит");
+        }
+
+        [Test]
+        public void TieBreak_HealsLowerId_OnEqualHpPercent()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+
+            RuntimeUnit shepherd = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 100f, hp: 100f);
+            RuntimeUnit allyA    = MakeUnit(2, team: 0, pos: new Vector2(1f, 0f), maxHp: 100f, hp: 50f); // 50%
+            RuntimeUnit allyB    = MakeUnit(1, team: 0, pos: new Vector2(1f, 0f), maxHp: 100f, hp: 50f); // 50%, меньший Id
+            RuntimeUnit victim   = MakeUnit(3, team: 1, pos: new Vector2(5f, 0f), maxHp: 100f, hp: 100f);
+            ctx.UnitsInWorld.AddRange(new[] { allyA, allyB });
+
+            var comp = new AllyMendComponent().With("_fraction", 1f).With("_radius", 5f);
+            sys.Apply(shepherd, TestEffect.Make(baseDuration: -1f, components: comp), shepherd, ctx);
+
+            var ev = new CombatEventData(CombatEvent.DamageDealt, shepherd, victim, 20f, EffectTag.None,
+                sourceKind: DamageSourceKind.AutoAttack);
+            sys.Dispatch(shepherd, in ev, ctx);
+
+            Assert.AreEqual(1, ctx.Heals.Count);
+            Assert.AreSame(allyB, ctx.Heals[0].Target, "При равном HP% выбирается меньший Id (детерминизм)");
+        }
+
+        private static RuntimeUnit MakeUnit(int id, int team, Vector2 pos, float maxHp, float hp)
+        {
+            var stats = new Stats(null);
+            stats.AddModifiersFrom("base", new[] { new StatModifier(StatType.MaxHP, ModifierOp.Flat, maxHp) });
+            return new RuntimeUnit
+            {
+                Id               = id,
+                Team             = team,
+                Stats            = stats,
+                CurrentHP        = hp,
+                Position         = pos,
+                PreviousPosition = pos,
+            };
+        }
+    }
+}
