@@ -18,6 +18,14 @@ namespace Guildmaster.Balance.Editor
             return AssetDatabase.LoadAssetAtPath<StatsConfig>(AssetDatabase.GUIDToAssetPath(guids[0]));
         }
 
+        public static ClassBalanceConfig LoadClassBalanceConfig()
+        {
+            string[] guids = AssetDatabase.FindAssets("t:ClassBalanceConfig");
+            if (guids.Length == 0) return null;
+            System.Array.Sort(guids);
+            return AssetDatabase.LoadAssetAtPath<ClassBalanceConfig>(AssetDatabase.GUIDToAssetPath(guids[0]));
+        }
+
         public static List<T> LoadAll<T>() where T : UnityEngine.Object
         {
             string[] guids = AssetDatabase.FindAssets("t:" + typeof(T).Name);

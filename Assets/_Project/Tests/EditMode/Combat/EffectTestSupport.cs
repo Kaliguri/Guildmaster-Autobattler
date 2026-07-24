@@ -120,9 +120,11 @@ namespace Guildmaster.Tests.EditMode.Combat
             bool canAttackWhileMoving = false,
             float movingAttackSpeedPenaltyPct = 0.5f,
             DamageAffinity affinity = DamageAffinity.None,
-            CreatureType creatureType = CreatureType.Living)
+            CreatureType creatureType = CreatureType.Living,
+            UnitClass combatClass = UnitClass.Bruiser)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
+            Set(r, "_combatClass", combatClass);
             Set(r, "_affinity", affinity);
             Set(r, "_creatureType", creatureType);
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());

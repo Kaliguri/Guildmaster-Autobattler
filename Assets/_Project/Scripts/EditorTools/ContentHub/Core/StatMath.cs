@@ -15,10 +15,12 @@ namespace Guildmaster.ContentHub.Editor
     /// </summary>
     public static class StatMath
     {
-        /// <summary>Собрать эффективный стат-блок реликвии/врага поверх дефолтов конфига.</summary>
-        public static Stats BuildEffective(UnitData data, StatsConfig config)
+        /// <summary>Собрать эффективный стат-блок реликвии/врага поверх дефолтов конфига и классовой базы.</summary>
+        public static Stats BuildEffective(UnitData data, StatsConfig config, ClassBalanceConfig classConfig = null)
         {
             var stats = new Stats(config);
+            // Классовая база — ПЕРВОЙ группой, тем же хелпером, что и бой (значения совпадают по построению).
+            ClassBaseline.Apply(stats, data, classConfig);
             if (data != null && data.Stats != null && data.Stats.Length > 0)
                 stats.AddModifiersFrom(data, data.Stats);
             return stats;

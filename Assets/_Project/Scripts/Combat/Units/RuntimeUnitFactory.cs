@@ -9,8 +9,9 @@ namespace Guildmaster.Combat
 {
     /// <summary>
     /// Единственная точка сборки <see cref="RuntimeUnit"/> из SO-данных.
-    /// Шаги сборки (вики «10» §5.2, «6» §3): дефолты из <see cref="StatsConfig"/> → моды реликвии
-    /// → перки сосуда → пассивки (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
+    /// Шаги сборки (вики «10» §5.2, «6» §3): дефолты из <see cref="StatsConfig"/> → классовая база
+    /// (<see cref="ClassBalanceConfig"/>) → моды реликвии → перки сосуда → пассивки
+    /// (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
     /// → активки (<see cref="AbilityRuntime"/>) → ресурс (<see cref="StatType.StartResource"/>)
     /// → <c>CurrentHP = Get(MaxHP)</c>.
     /// </summary>
@@ -22,15 +23,18 @@ namespace Guildmaster.Combat
     public sealed class RuntimeUnitFactory
     {
         private readonly StatsConfig   _config;
+        private readonly ClassBalanceConfig _classBalance;
         private readonly EffectSystem  _effects;
         private readonly ICombatContext _combat;
         private int _nextId;
 
-        public RuntimeUnitFactory(StatsConfig config, EffectSystem effects, ICombatContext combat)
+        public RuntimeUnitFactory(StatsConfig config, ClassBalanceConfig classBalance,
+                                  EffectSystem effects, ICombatContext combat)
         {
-            _config  = config;
-            _effects = effects;
-            _combat  = combat;
+            _config       = config;
+            _classBalance = classBalance;
+            _effects      = effects;
+            _combat       = combat;
         }
 
         /// <summary>
@@ -58,6 +62,10 @@ namespace Guildmaster.Combat
                                   IReadOnlyList<ItemData> items = null)
         {
             var stats = new Stats(_config);
+
+            // Классовая база (2-й уровень каскада) — ПЕРВОЙ группой, до персоны: «последний Override
+            // побеждает» даёт каскад Класс → Персона → Vessel, дельты персоны копятся поверх.
+            ClassBaseline.Apply(stats, data, _classBalance);
 
             if (data?.Stats != null && data.Stats.Length > 0)
                 stats.AddModifiersFrom(data, data.Stats);

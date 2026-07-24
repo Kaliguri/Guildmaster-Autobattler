@@ -13,6 +13,11 @@ namespace Guildmaster.Data.Definitions
     public abstract class UnitData : ContentDefinition
     {
         [Header("Combat categories")]
+        [Tooltip("Боевой класс — задаёт базовый баланс HP и скорости (через ClassBalanceConfig, 2-й уровень " +
+                 "стат-каскада). Персональные отличия юнита кладутся ДЕЛЬТОЙ поверх (Flat/Percent в Base stat block). " +
+                 "Bruiser = эталон 100%/100%.")]
+        [SerializeField] private UnitClass _combatClass = UnitClass.Bruiser;
+
         [Tooltip("Школа урона по умолчанию (гасится соответствующей бронёй). Способности могут переопределять её у себя.")]
         [FormerlySerializedAs("_damageType")]
         [SerializeField] private DamageSchool _damageSchool = DamageSchool.Physical;
@@ -91,6 +96,7 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Ручные информационные теги (роль, стиль); авто-теги считаются из DamageType и др. (§3.0).")]
         [SerializeField] private TagData[] _infoTags;
 
+        public UnitClass CombatClass => _combatClass;
         public DamageSchool DamageSchool => _damageSchool;
         public DamageAffinity Affinity => _affinity;
         public CreatureType CreatureType => _creatureType;

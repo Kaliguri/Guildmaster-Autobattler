@@ -23,6 +23,9 @@ namespace Guildmaster.Game
         [Tooltip("Конфиг базовых характеристик (в т.ч. armor-константа K — единственный источник).")]
         [SerializeField] private StatsConfig _statsConfig;
 
+        [Tooltip("Классовый профиль баланса (база HP/скорости от класса, 2-й уровень стат-каскада). Пусто = классы не применяются, статы как раньше.")]
+        [SerializeField] private ClassBalanceConfig _classBalanceConfig;
+
         [Tooltip("Балансный тюнинг симуляции (вики «13» §3.4): печётся в снапшот SimTuning на старте боя.")]
         [SerializeField] private SimTuningConfig _simTuningConfig;
 
@@ -139,8 +142,10 @@ namespace Guildmaster.Game
                    .WithParameter("cameraZone", (Rect2D?)layout.CameraZone);
 
             StatsConfig cfg = _statsConfig;
+            ClassBalanceConfig classCfg = _classBalanceConfig;
             builder.Register<RuntimeUnitFactory>(r => new RuntimeUnitFactory(
                 cfg,
+                classCfg,
                 r.Resolve<EffectSystem>(),
                 r.Resolve<CombatSimulation>()),
                 Lifetime.Scoped);
