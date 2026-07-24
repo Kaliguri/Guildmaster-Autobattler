@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 551ba710b5e1fcc4f9e3f6c56bdfdf45, type: 3}
+  m_Name: Huntress2
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.UnitVisual
+  _idleClip: {fileID: 7400000, guid: 2e354d32908d1df48bffae3483e596b9, type: 2}
+  _runClip: {fileID: 7400000, guid: 971f39e761aa1eb48b10c1b61ed92a82, type: 2}
+  _attackClip: {fileID: 7400000, guid: 4ddebfd56418f9a4eb8d529ee859a4ec, type: 2}
+  _deathClip: {fileID: 7400000, guid: 421bdd5cae380314caf5d37eebc171ac, type: 2}
+  _hitClip: {fileID: 7400000, guid: 580bd2788c6155e40b07aea8f88c76dd, type: 2}
+  _skillClips:
+  - {fileID: 7400000, guid: 4ddebfd56418f9a4eb8d529ee859a4ec, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _portrait: {fileID: 4723107735738678597, guid: 09becdf3c69af1e4781305fcea3fc53b, type: 3}

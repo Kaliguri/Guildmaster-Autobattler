@@ -15,12 +15,13 @@ MonoBehaviour:
   _id: enemy.goblin_archer
   _combatClass: 3
   _damageSchool: 0
+  _physicalSubtype: 0
   _affinity: 0
   _creatureType: 0
   _attackType: 1
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _visual: {fileID: 11400000, guid: 3915bda3962c1304d845007568e37a70, type: 2}
+  _viewPrefab: {fileID: 5941402093529111970, guid: a2b200a01d3a9174fa1c0a689413a030, type: 3}
   _tint: {r: 1, g: 1, b: 1, a: 1}
   _autoAttackShape: 0
   _autoAttackWidth: 1

@@ -20,9 +20,9 @@ MonoBehaviour:
   _creatureType: 0
   _attackType: 0
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
-  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _visual: {fileID: 11400000, guid: d0a79ee49ef5db14183cedd745bc33d1, type: 2}
+  _viewPrefab: {fileID: 6633865311930413954, guid: aad39bd62a48f57439e7c1b59fe2a62b, type: 3}
+  _tint: {r: 0.55, g: 0.85, b: 0.45, a: 1}
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []

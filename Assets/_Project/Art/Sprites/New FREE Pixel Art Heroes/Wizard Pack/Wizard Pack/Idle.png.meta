@@ -52,7 +52,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -90,7 +90,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -118,12 +118,12 @@ TextureImporter:
       name: Idle_0
       rect:
         serializedVersion: 2
-        x: 81
-        y: 48
-        width: 59
-        height: 88
+        x: 0
+        y: 0
+        width: 231
+        height: 190
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -140,12 +140,12 @@ TextureImporter:
       name: Idle_1
       rect:
         serializedVersion: 2
-        x: 312
-        y: 48
-        width: 59
-        height: 88
+        x: 231
+        y: 0
+        width: 231
+        height: 190
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -162,12 +162,12 @@ TextureImporter:
       name: Idle_2
       rect:
         serializedVersion: 2
-        x: 543
-        y: 48
-        width: 59
-        height: 88
+        x: 462
+        y: 0
+        width: 231
+        height: 190
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -184,12 +184,12 @@ TextureImporter:
       name: Idle_3
       rect:
         serializedVersion: 2
-        x: 774
-        y: 48
-        width: 59
-        height: 88
+        x: 693
+        y: 0
+        width: 231
+        height: 190
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -206,12 +206,12 @@ TextureImporter:
       name: Idle_4
       rect:
         serializedVersion: 2
-        x: 1005
-        y: 48
-        width: 59
-        height: 88
+        x: 924
+        y: 0
+        width: 231
+        height: 190
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -228,12 +228,12 @@ TextureImporter:
       name: Idle_5
       rect:
         serializedVersion: 2
-        x: 1236
-        y: 48
-        width: 59
-        height: 88
+        x: 1155
+        y: 0
+        width: 231
+        height: 190
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

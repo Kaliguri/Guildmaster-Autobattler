@@ -15,13 +15,14 @@ MonoBehaviour:
   _id: enemy.goblin_grunt
   _combatClass: 0
   _damageSchool: 0
+  _physicalSubtype: 0
   _affinity: 0
   _creatureType: 0
   _attackType: 0
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
-  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _visual: {fileID: 11400000, guid: 5e18a695936c40a4c94eaefe3364adf9, type: 2}
+  _viewPrefab: {fileID: 9077715029037053228, guid: b490d15271d05f74798b8f2fa92d7735, type: 3}
+  _tint: {r: 0.7, g: 1, b: 0.55, a: 1}
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []

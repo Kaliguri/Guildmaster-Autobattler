@@ -15,13 +15,14 @@ MonoBehaviour:
   _id: enemy.goblin_cutthroat
   _combatClass: 2
   _damageSchool: 0
+  _physicalSubtype: 0
   _affinity: 0
   _creatureType: 0
   _attackType: 0
   _resourceType: 0
-  _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
-  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _visual: {fileID: 11400000, guid: 5e18a695936c40a4c94eaefe3364adf9, type: 2}
+  _viewPrefab: {fileID: 8877763347292836115, guid: 5b0792deec91a774284d9be47be085d9, type: 3}
+  _tint: {r: 0.9, g: 0.75, b: 0.4, a: 1}
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []

@@ -13,13 +13,16 @@ MonoBehaviour:
   m_Name: BaseRelic
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.base
+  _combatClass: 0
   _damageSchool: 0
+  _physicalSubtype: 0
   _affinity: 0
   _creatureType: 0
   _attackType: 0
   _resourceType: 0
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
-  _viewPrefab: {fileID: 3941636350711007259, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
+  _viewPrefab: {fileID: 3560619905337088494, guid: b878aa196bd029646a3f3d292a658691, type: 3}
+  _tint: {r: 1, g: 1, b: 1, a: 1}
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackEffects: []
@@ -54,7 +57,8 @@ MonoBehaviour:
   _icon: {fileID: 0}
   _infoTags: []
   _tags: []
-  _rarity: 0
+  _kitPower: 0
+  _dropRarity: 1
   _runEffects: []
   _altAiPresets: []
   _canUseExtendedDeployment: 0
