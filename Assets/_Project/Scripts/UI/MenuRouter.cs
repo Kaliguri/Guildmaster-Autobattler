@@ -123,16 +123,18 @@ namespace Guildmaster.UI
             private readonly Action _onExit;
             public override ScreenKind Kind { get; }
             public override string ModeTag { get; }
+            public override bool SuppressScrim { get; }
             public string ScreenId { get; }
 
             public RouterScreen(ScreenKind kind, Func<VisualElement> build, string modeTag = null,
-                                string screenId = null, Action onExit = null)
+                                string screenId = null, Action onExit = null, bool suppressScrim = false)
             {
                 Kind = kind;
                 _build = build;
                 ModeTag = modeTag;
                 ScreenId = screenId;
                 _onExit = onExit;
+                SuppressScrim = suppressScrim;
             }
 
             public override void Build(UiScreenContext ctx) => Root = _build();
@@ -146,21 +148,13 @@ namespace Guildmaster.UI
         private bool _mainMenuOpen;
 
         // scrimless: модалка не рисует собственное затемнение (настройки из главного меню — там темнить
-        // нечего, панель просто подменяет панель). Класс тот же, что вешает навигатор на верхние модалки.
+        // нечего, панель просто подменяет панель). Намерение уезжает СВОЙСТВОМ ЭКРАНА: класс
+        // gm-screen--scrimless принадлежит UiNavigator.SyncVisibility, и повешенный здесь руками он
+        // тут же перезаписывался обратно — затемнение возвращалось (наход. Макса).
         private void PushScreen(Func<VisualElement> build, ScreenKind kind, string modeTag = null, string screenId = null,
                                 CancellationToken ct = default, Action onExit = null, bool scrimless = false)
         {
-            Func<VisualElement> build2 = scrimless
-                ? () => { VisualElement v = build(); MarkScrimless(v); return v; }
-                : build;
-            _nav.Push(new RouterScreen(kind, build2, modeTag, screenId, onExit), ct);
-        }
-
-        // Класс вешаем на элемент, который РИСУЕТ скрим (.gm-screen), а не на TemplateContainer из CloneTree.
-        private static void MarkScrimless(VisualElement root)
-        {
-            VisualElement scrim = root.ClassListContains("gm-screen") ? root : root.Q(className: "gm-screen");
-            scrim?.AddToClassList("gm-screen--scrimless");
+            _nav.Push(new RouterScreen(kind, build, modeTag, screenId, onExit, scrimless), ct);
         }
 
         // Обёртка flow-экрана с результатом (Ф3): вью-билдер получает делегат Resolve и связывает с ним свои

@@ -22,6 +22,18 @@ namespace Guildmaster.UI
         /// <summary>Тег режима для подсветки таба топбара: "map"/"inventory"/"battle"/null.</summary>
         public virtual string ModeTag => null;
 
+        /// <summary>
+        /// Экран НЕ рисует собственное затемнение, даже будучи нижним видимым Modal. Нужен там, где
+        /// модалка ЗАМЕНЯЕТ панель, а не ложится поверх мира: настройки из главного меню — панель ушла,
+        /// затемнять нечего.
+        /// <para>
+        /// Это свойство ЭКРАНА, а не класс на элементе: класс <c>gm-screen--scrimless</c> целиком
+        /// принадлежит <c>SyncVisibility</c>, и поставленный руками он тут же перезаписывался обратно —
+        /// затемнение возвращалось (наход. Макса). У одного класса должен быть один владелец.
+        /// </para>
+        /// </summary>
+        public virtual bool SuppressScrim => false;
+
         /// <summary>Корень экрана: строится в <see cref="Build"/> из UXML/кода. Навигатор добавляет/снимает его со слоя.</summary>
         public VisualElement Root { get; protected set; }
 

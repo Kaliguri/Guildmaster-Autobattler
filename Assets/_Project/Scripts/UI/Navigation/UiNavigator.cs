@@ -292,8 +292,13 @@ namespace Guildmaster.UI
                 VisualElement scrim = ScrimOf(s.Root);
                 if (scrim == null) continue;
                 bool visible = s.Root.style.display.value == DisplayStyle.Flex;
-                scrim.EnableInClassList(ScrimlessClass, scrimBelow);
-                if (visible) scrimBelow = true;
+                // SuppressScrim — намерение самого экрана («я подменяю панель, темнить нечего»).
+                // Учитываем его здесь, потому что класс scrimless принадлежит этому методу: раньше
+                // роутер вешал класс сам, и следующий же SyncVisibility его снимал.
+                bool scrimless = scrimBelow || s.SuppressScrim;
+                scrim.EnableInClassList(ScrimlessClass, scrimless);
+                // Экран без своего затемнения не может служить «затемнением снизу» для тех, кто выше.
+                if (visible && !scrimless) scrimBelow = true;
             }
         }
 
