@@ -8,7 +8,7 @@ alwaysApply: true
 ## Commit Format
 
 ```
-<type>(<scope>): <short description> (Cursor)
+<type>(<scope>): <short description>
 
 <body — detailed, required for agent commits>
 ```
@@ -36,27 +36,46 @@ alwaysApply: true
 - Language: **English**
 - Use imperative: "add", "fix", "remove" — not "added", "fixes"
 - No period at the end of the subject
-- Subject max ~72 characters **before** the marker; always end the title with ` (Cursor)` so agent commits are obvious in history
-- **Body is required for Cursor/agent commits** and must be detailed enough that Max (or Claude in a later chat) can audit without re-reading the diff:
+- Max 72 characters in the subject line — **no author markers in the title**
+
+### Authorship (agent commits)
+
+Commits are authored by **Max Gaida only**. Never add `Co-authored-by:` (or any other
+authorship trailer) — Max asked for a clean, single-author history.
+
+An agent still has to say it was an agent, so Max can tell agent commits from his own
+and audit them separately. Put it in the **body**, not the subject:
+
+- first line of the body: `Cursor Auto commit.` (or the agent's own name)
+- then a body detailed enough that Max — or another agent in a later session — can audit
+  the change without re-reading the diff:
   - what changed (files/systems, not every line)
   - why / intent
   - how to verify (Play steps, toggles, edge cases)
   - anything intentionally left out or risky
 
+Rules the agent does **not** get to change on its own: this file, project conventions,
+and anything under `.cursor/rules`. Propose it to Max instead.
+
+Stage **only your own** changes: use explicit paths, never `git add -A`. Max and other
+agents may have unfinished work in the tree — sweeping it into your commit steals
+authorship and hides someone else's work-in-progress in an unrelated change.
+
 ### Examples
 
 ```
-feat(combat): add poison damage over time mechanic (Cursor)
+feat(combat): add poison damage over time mechanic
 
+Cursor Auto commit.
 Adds PeriodicDamage stacking on Ignition. Wired through DamagePipeline.
 VERIFY: ignite dummy, confirm DoT ticks and refresh; no armor on True.
 ```
 
 ```
-fix(units): fix archer not targeting nearest enemy (Cursor)
-data(combat): rebalance warrior base stats (Cursor)
-refactor(ai): extract targeting logic into separate class (Cursor)
-chore: update Unity packages (Cursor)
+fix(units): fix archer not targeting nearest enemy
+data(combat): rebalance warrior base stats
+refactor(ai): extract targeting logic into separate class
+chore: update Unity packages
 ```
 
 ---
