@@ -219,7 +219,9 @@ namespace Guildmaster.UI
         private static InputContext WorldContextOf(BattlePhase phase) => phase switch
         {
             BattlePhase.Deployment => InputContext.Deployment,
-            BattlePhase.Fighting => InputContext.Combat,
+            // Бой и «после боя» — один контекст: арена ещё на экране, камера должна жить (осмотреть поле,
+            // досмотреть добивание). Боевые команды в Aftermath просто некому исполнять — sim уже стоит.
+            BattlePhase.Fighting or BattlePhase.Aftermath => InputContext.Combat,
             _ => InputContext.None,
         };
 

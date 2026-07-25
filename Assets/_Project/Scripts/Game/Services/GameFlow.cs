@@ -114,6 +114,10 @@ namespace Guildmaster.Game.Services
             if (presentReward && result.Outcome == EventOutcome.Completed)
                 await _rewardPresenter.PresentAsync(tier);
 
+            // Арена живёт всё время «после боя» (фаза Aftermath) и чистится на выходе из узла — в петле акта это
+            // делает BattleNodeFlow, здесь (dev-разрез одного боя) чистим сами, иначе фаза залипнет на Aftermath.
+            _session.RequestReset();
+
             return result;
         }
 

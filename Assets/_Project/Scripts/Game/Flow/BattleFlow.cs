@@ -68,10 +68,9 @@ namespace Guildmaster.Game.Flow
                 outcome = await _session.WaitOutcomeAsync(ctx.Cancellation);
             }
 
-            // Persist-мир: бой кончился — вернуть арену во вне-боевое состояние (враги прочь, отряд к строю,
-            // пауза). Скоуп не выгружается, поэтому чистка явная, а не через смерть сцены.
-            _session.RequestReset();
-
+            // Арену здесь НЕ чистим: бой кончился, но игрок ещё на узле (досмотр добивания, награда) и должен
+            // видеть поле. Чистку (враги прочь, отряд к строю, пауза) зовёт владелец узла — BattleNodeFlow, когда
+            // игрок с узла уходит. Фазу Aftermath на исходе выставляет боевой скоуп (BattleBootstrap).
             bool won = Won(outcome);
             Debug.Log($"[BattleFlow] - бой '{_preset.Id}' завершён: {outcome} → {(won ? "Completed" : "Defeated")}");
             return won ? EventResult.Completed : EventResult.Defeated;

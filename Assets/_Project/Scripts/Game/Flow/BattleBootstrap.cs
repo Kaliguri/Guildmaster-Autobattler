@@ -119,6 +119,13 @@ namespace Guildmaster.Game.Flow
             return false;
         }
 
-        private void OnBattleEnded(BattleEndedEvent e) => _session.ReportOutcome(e.Outcome);
+        // Бой кончился — арену НЕ трогаем: поле с трупами живёт до ухода с узла (досмотр добивания, «К наградам»,
+        // выбор награды). Фаза Aftermath держит мир видимым: на None UI-слой кладёт поверх непрозрачный задник,
+        // и раньше он падал прямо на кадр победы. Чистку зовёт узел (BattleNodeFlow → RequestReset).
+        private void OnBattleEnded(BattleEndedEvent e)
+        {
+            _session.SetPhase(BattlePhase.Aftermath);
+            _session.ReportOutcome(e.Outcome);
+        }
     }
 }
