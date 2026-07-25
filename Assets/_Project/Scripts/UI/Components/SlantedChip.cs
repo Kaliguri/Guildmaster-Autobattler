@@ -22,7 +22,15 @@ namespace Guildmaster.UI.Components
 
         private static readonly CustomStyleProperty<Color> FillProp = new("--gm-chip-fill");
 
+        /// <summary>Цвет ОБВОДКИ клина. Без неё скошенный таб в покое не рисовал ничего и не читался
+        /// кнопкой — у прямых соседей контур есть, а у крайних не было (наход. Макса).</summary>
+        private static readonly CustomStyleProperty<Color> StrokeProp = new("--gm-chip-stroke");
+
+        private static readonly CustomStyleProperty<float> StrokeWidthProp = new("--gm-chip-stroke-width");
+
         private Color _fill = new(0f, 0f, 0f, 0f);
+        private Color _stroke = new(0f, 0f, 0f, 0f);
+        private float _strokeWidth = 2f;
         private float _slant = 12f;
         private Side _side = Side.Left;
 
@@ -59,6 +67,8 @@ namespace Guildmaster.UI.Components
         private void OnCustomStyleResolved(CustomStyleResolvedEvent evt)
         {
             if (evt.customStyle.TryGetValue(FillProp, out Color fill)) _fill = fill;
+            if (evt.customStyle.TryGetValue(StrokeProp, out Color stroke)) _stroke = stroke;
+            if (evt.customStyle.TryGetValue(StrokeWidthProp, out float width)) _strokeWidth = width;
             MarkDirtyRepaint();
         }
 
@@ -68,7 +78,9 @@ namespace Guildmaster.UI.Components
         {
             float w = localBound.width;
             float h = localBound.height;
-            if (w <= 0f || h <= 0f || _fill.a <= 0f) return;
+            if (w <= 0f || h <= 0f) return;
+            // Рисуем, если есть ЧТО рисовать: заливка состояния или постоянная обводка кнопки.
+            if (_fill.a <= 0f && _stroke.a <= 0f) return;
 
             float s = Mathf.Min(_slant, w * 0.5f);
             float mid = h * 0.5f;
@@ -96,8 +108,19 @@ namespace Guildmaster.UI.Components
             }
             p.ClosePath();
 
-            p.fillColor = _fill;
-            p.Fill();
+            if (_fill.a > 0f)
+            {
+                p.fillColor = _fill;
+                p.Fill();
+            }
+
+            // Обводка — та же кайма, что border-width у прямых табов, только по форме клина.
+            if (_stroke.a > 0f && _strokeWidth > 0f)
+            {
+                p.strokeColor = _stroke;
+                p.lineWidth = _strokeWidth;
+                p.Stroke();
+            }
         }
     }
 }

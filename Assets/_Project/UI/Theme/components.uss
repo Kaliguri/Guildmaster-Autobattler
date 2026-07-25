@@ -108,16 +108,33 @@
    порядку загрузки её правило бьёт наш одноклассовый селектор — кнопка при наведении становилась
    бледно-серой плашкой (наход. Макса, раунд 3). Два класса в селекторе перевешивают. Тот же корень,
    что у «белого квадрата» на ленте режимов, только там лечилось переездом на VisualElement. */
+/* border-color здесь ОБЯЗАТЕЛЕН. Раньше двухклассовое правило задавало только фон и текст, а рамку
+   на наведении дорисовывала тема Unity — своим холодным серо-синим (наход. Макса: «убери синий
+   аутлайн при наведении»). Одноклассовый .gm-button:hover тему не перебивает, поэтому цвет каймы
+   для КАЖДОГО состояния должен стоять именно в правиле с двумя классами. */
 .unity-button.gm-button:hover {
     background-color: var(--gm-color-hover-surface);
     background-image: none;
+    border-color: var(--gm-color-hover-border);
     color: var(--gm-parchment-100);
 }
 
 .unity-button.gm-button:active {
     background-color: var(--gm-color-surface-sunken);
     background-image: none;
+    border-color: var(--gm-color-border-inner);
     color: var(--gm-brass-300);
+}
+
+/* Наведение на выбранный/наведённый ТАБ и чип — той же ролью, чтобы тема не подсунула свой серый. */
+.unity-button.gm-tab:hover,
+.gm-chip:hover {
+    border-color: var(--gm-color-hover-border);
+}
+
+.unity-button.gm-tab:active,
+.gm-chip:active {
+    border-color: var(--gm-color-border-inner);
 }
 
 /* Primary — та же форма, та же рамка, тот же светлый текст. Разница только в том, что поле
@@ -261,10 +278,12 @@
     min-height: 0;
 }
 
-/* Содержимое тела не растягивается по высоте: пункты идут сверху вниз, а пустота остаётся внизу —
-   иначе три кнопки меню разъезжались бы по всей панели. */
+/* Содержимое тела не растягивается по ВЫСОТЕ (пункты идут сверху вниз, пустота остаётся внизу),
+   но тянется по ШИРИНЕ: иначе кнопки меню сжимались бы по тексту (228px вместо ширины панели) —
+   ScrollView не передаёт align-items своему внутреннему контейнеру. */
 .gm-panel__body > .unity-scroll-view__content-viewport > .unity-scroll-view__content-container {
     flex-grow: 0;
+    align-items: stretch;
 }
 
 /* Скроллбар тела — в нашей гамме: дефолтный светло-серый читался деталью чужого интерфейса
@@ -1256,26 +1275,30 @@
     background-color: var(--gm-color-scrim-soft);
 }
 
+/* Дети НЕ центрируются: кнопки должны тянуться во всю ширину, как в ESC-меню (реш. Макса).
+   Заголовок центрируется своим -unity-text-align, а не выравниванием всей панели. */
 .gm-panel--mainmenu {
-    align-items: center;
+    align-items: stretch;
 }
 
 .gm-mainmenu__title {
     font-size: var(--gm-font-lg);
     color: var(--gm-brass-300);
     margin-bottom: var(--gm-space-2);
+    -unity-text-align: middle-center;   /* панель больше не центрирует детей — заголовок делает это сам */
 }
 
+/* Кнопки главного меню = кнопки ESC-меню (реш. Макса: за основу берётся ESC).
+   Раньше главное меню держало свою колонку в 360px по центру, и две панели, открывающиеся одна из
+   другой, читались как из разных интерфейсов. Теперь кнопки тянутся во всю ширину тела панели,
+   как в ESC, а собственных отступов и ширины у них нет — всё приходит из .gm-button. */
 .gm-mainmenu__buttons {
-    flex-grow: 1;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: stretch;
-    min-width: 360px;
 }
 
 .gm-mainmenu__btn {
-    margin-top: var(--gm-space-2);
-    margin-bottom: var(--gm-space-2);
+    /* модификатор оставлен как точка расширения; вид и отступы — общие с .gm-button */
 }
 
 /* ============================================================================
@@ -1552,14 +1575,33 @@
    При равном весе побеждает то, что ниже, — и прямоугольная заливка возвращалась поверх скоса,
    вылезая за срезанный угол (п.1 раунда 4, тот же класс готчи бил уже трижды).
    Два класса дают больший вес, и порядок секций перестаёт что-либо решать. */
+/* Обводка клина = то же, что border-width у прямых табов, только по скошенной форме. Без неё
+   крайние табы (карта, настройки) в покое не рисовали НИЧЕГО и не читались кнопками, пока соседи
+   уже стали кнопками (наход. Макса). Цвет ходит по тем же ролям, что и у прямых. */
 .gm-chip.gm-chip--slanted {
     background-color: rgba(0, 0, 0, 0);
     --gm-chip-fill: rgba(0, 0, 0, 0);
+    --gm-chip-stroke: var(--gm-color-border-subtle);
+    --gm-chip-stroke-width: 2;
 }
 
-.gm-chip.gm-chip--slanted:hover { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-hover-surface); }
-.gm-chip.gm-chip--slanted:active { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-surface-sunken); }
-.gm-chip.gm-chip--slanted.gm-chip--active { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-surface-raised); }
+.gm-chip.gm-chip--slanted:hover {
+    background-color: rgba(0, 0, 0, 0);
+    --gm-chip-fill: var(--gm-color-hover-surface);
+    --gm-chip-stroke: var(--gm-color-hover-border);
+}
+
+.gm-chip.gm-chip--slanted:active {
+    background-color: rgba(0, 0, 0, 0);
+    --gm-chip-fill: var(--gm-color-surface-sunken);
+    --gm-chip-stroke: var(--gm-color-border-inner);
+}
+
+.gm-chip.gm-chip--slanted.gm-chip--active {
+    background-color: rgba(0, 0, 0, 0);
+    --gm-chip-fill: var(--gm-color-surface-accent);
+    --gm-chip-stroke: var(--gm-color-accent);
+}
 
 /* Выключенный крайний таб: тема Unity вешает класс unity-disabled, одного :disabled мало. */
 .gm-chip.gm-chip--slanted.unity-disabled,
@@ -1593,6 +1635,9 @@
     height: 32px;
     background-color: var(--gm-color-border-subtle);
     margin: 0 var(--gm-space-2);
+    /* Лента растягивает детей по высоте (align-items: stretch), а у палочки высота фиксированная —
+       без этого она прилипала к верхнему краю вместо середины (наход. Макса). */
+    align-self: center;
 }
 
 /* Капсула ресурса (золото / перезапуски): компактный минимум, большие значения расширяют её сами. */
