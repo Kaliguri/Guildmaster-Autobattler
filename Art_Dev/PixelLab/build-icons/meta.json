@@ -1,0 +1,12 @@
+﻿{
+  "title": "Build icons — Happy Guildmasters",
+  "date": "2026-07-25",
+  "productName": "Happy Guildmasters",
+  "chosen": "seal_0 → AppIcon_HappyGuildmasters.png",
+  "jobs": {
+    "seal": { "endpoint": "generate-ui-v2", "job": "40b2e08f-e456-438e-a57b-bbd1fc54b66f", "seed": 42 },
+    "mascot": { "endpoint": "generate-image-v2", "job": "82234131-aa3e-457f-b6eb-f722b26dc744", "seed": 77 },
+    "crest": { "endpoint": "generate-ui-v2", "job": "0784abb9-123d-42fd-8420-a965eb1dc1e0", "seed": 19 }
+  },
+  "palette": "dark wood/ink + antique brass + parchment (UI tokens)"
+}
