@@ -177,6 +177,11 @@ namespace Guildmaster.DevTools
                     if (all[i] != null && all[i].Id != "relic.base") relics.Add(all[i]);
             }
 
+            // Статы для стенда — тот же шов, что в игре (DI тут нет, поэтому собираем руками из
+            // ассетов конфигов). Не найдены → статблок просто спрячется, а не покажет заглушки.
+            var statPreview = new Guildmaster.Combat.UnitStatPreview(
+                LoadFirst<StatsConfig>(), LoadFirst<ClassBalanceConfig>());
+
             // Владеемые релики слева + 3 заблокированных (задел под фильтр по владению, Фаза 5).
             VisualElement screen = Guildmaster.UI.LoadoutInventoryView.Build(
                 screenUxml, cardUxml, relics, gold: 100,
@@ -184,7 +189,8 @@ namespace Guildmaster.DevTools
                 narrativeOf: r => Coalesce(RuValue((r?.Id) + ".desc"), "«Древний завет, что тлеет в глубине веков…»"),
                 localize: RuValue,
                 lockedSlots: 3,
-                tagsOf: r => UnitTagResolver.Resolve(r, content));
+                tagsOf: r => UnitTagResolver.Resolve(r, content),
+                statsOf: r => statPreview.Basic(r));
             root.Add(screen);
 
             // Глобальная панель забега (app-shell): статичная для стенда, режим «Инвентарь» активен.
@@ -468,6 +474,14 @@ namespace Guildmaster.DevTools
         {
             var db = AssetDatabase.LoadAssetAtPath<ContentDatabase>(ContentDbPath);
             return db != null ? new ContentRegistry(db.Entries) : null;
+        }
+
+        /// <summary>Первый ассет типа в проекте (стенд без DI: конфиги-одиночки — StatsConfig и т.п.).</summary>
+        private static T LoadFirst<T>() where T : UnityEngine.ScriptableObject
+        {
+            string[] guids = AssetDatabase.FindAssets("t:" + typeof(T).Name);
+            if (guids == null || guids.Length == 0) return null;
+            return AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guids[0]));
         }
 
         private static void AddError(VisualElement root, string msg)

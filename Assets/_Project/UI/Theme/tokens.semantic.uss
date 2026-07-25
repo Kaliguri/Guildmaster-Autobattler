@@ -16,6 +16,20 @@
     --gm-color-border-inner: var(--gm-brass-700);  /* внутренняя линия рамки */
     --gm-color-border-subtle: var(--gm-ink-300);   /* тихие разделители */
 
+    /* --- АУТЛАЙН: ЕДИНЫЙ источник правды для всех рамок интерфейса (реш. Макса 2026-07-25) ---
+       В проекте ровно ТРИ разновидности контура, других заводить нельзя. Пиксель-рамки Honeti
+       (9-slice WindowStroke/GoldOutlined/Inactive) из рамок выведены: при -unity-slice-scale 2-3px
+       они давали ~16px кайму, слоты и кнопки читались «в толстой оправе». Заливки Honeti (Gold2 —
+       латунная плашка primary) остаются: это ФОН, а не контур.
+         strong — акцентный контур: панели, видео-вставка, таро-карта, primary-кнопка, активный таб;
+         subtle — тихий контур: поля ввода, вторичные кнопки, слоты, утопленные блоки;
+         inner  — вторая кайма ВНУТРИ уже обведённого блока (таро-рамка вокруг арта). */
+    --gm-outline-width: var(--gm-border-1);                    /* 2px — одна толщина на весь UI */
+    --gm-outline-color: var(--gm-color-border-frame);          /* сильный (эталон — видео-вставка) */
+    --gm-outline-color-subtle: var(--gm-color-border-subtle);  /* тихий (эталон — поле поиска) */
+    --gm-outline-color-inner: var(--gm-color-border-inner);    /* внутренняя кайма */
+    --gm-outline-color-hover: var(--gm-color-hover-border);    /* наведение на любой из трёх */
+
     /* --- Текст --- */
     --gm-color-text: var(--gm-parchment-100);
     --gm-color-text-muted: var(--gm-parchment-300);

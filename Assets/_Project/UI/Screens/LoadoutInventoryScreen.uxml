@@ -16,17 +16,21 @@
             </ui:VisualElement>
 
             <ui:VisualElement class="gm-loadout__main">
+
+                <!-- Таб-бар категорий — НАД ОБЕИМИ зонами (грид + детали): таб переключает не только
+                     содержимое грида, но и тип объекта в панели деталей (реликвия/предмет/знамя —
+                     разные сущности с разной вёрсткой деталей). Реш. Макса 2026-07-25. -->
+                <ui:VisualElement class="gm-loadout__filters">
+                    <!-- Фильтры-чипы (иконка + подпись): текст и активность ставит View. -->
+                    <gm:Chip name="filter-relics" class="gm-filter-tab gm-filter-tab--relics" />
+                    <gm:Chip name="filter-items" class="gm-filter-tab gm-filter-tab--items" />
+                    <gm:Chip name="filter-banners" class="gm-filter-tab gm-filter-tab--banners" />
+                </ui:VisualElement>
+
                 <ui:VisualElement class="gm-loadout__cols">
 
-                    <!-- Центр: фильтр-табы (центр) + поиск/сортировка + грид -->
+                    <!-- Центр: поиск/сортировка + грид -->
                     <ui:VisualElement class="gm-loadout__center">
-                        <ui:VisualElement class="gm-loadout__filters">
-                            <!-- Фильтры-чипы (иконка + подпись): текст и активность ставит View. -->
-                            <gm:Chip name="filter-relics" class="gm-filter-tab gm-filter-tab--relics" />
-                            <gm:Chip name="filter-items" class="gm-filter-tab gm-filter-tab--items" />
-                            <gm:Chip name="filter-banners" class="gm-filter-tab gm-filter-tab--banners" />
-                        </ui:VisualElement>
-
                         <ui:VisualElement class="gm-loadout__toolbar">
                             <ui:TextField name="search" class="gm-loadout__search" />
                             <ui:Button name="sort" text="Имя ↓" class="gm-loadout__sort" />

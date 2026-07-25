@@ -5,7 +5,9 @@ using Guildmaster.Core.Persistence;
 using Guildmaster.Core.Players;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Settings;
+using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Stats;
 using Guildmaster.Game.Flow;
 using Guildmaster.Game.Input;
 using Guildmaster.Game.Players;
@@ -41,6 +43,13 @@ namespace Guildmaster.Game
                  "Пусто = фолбэк на дефолтный конфиг (Start+12 испытаний+Boss, зоны разогрев/развитие/пик).")]
         [SerializeField] private ActConfig _actConfig;
 
+        [Tooltip("Стат-конфиг (дефолты статов). ТОТ ЖЕ ассет, что в CombatLifetimeScope — иначе панель " +
+                 "инвентаря покажет числа, не совпадающие с боем. Потребитель здесь — IUnitStatPreview.")]
+        [SerializeField] private StatsConfig _statsConfig;
+
+        [Tooltip("Классовый профиль баланса (2-й уровень стат-каскада). ТОТ ЖЕ ассет, что в CombatLifetimeScope.")]
+        [SerializeField] private ClassBalanceConfig _classBalanceConfig;
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<IRngService>(_ => new XorShiftRng(GenerateRootSeed()), Lifetime.Singleton);
@@ -68,6 +77,11 @@ namespace Guildmaster.Game
 
             // Рантайм-UI (оверлеи меню/настроек): VM + роутер сессионные; бутстрап — UIDocument-компонент
             // в CoreScene (инъекция методом через RegisterComponentInHierarchy). ESC открывает меню.
+            // Стат-превью для UI (панель деталей инвентаря): считает те же числа, что боевая сборка.
+            // Живёт в корне, а не в боевом скоупе: инвентарь открывается и вне боя.
+            builder.Register<IUnitStatPreview>(
+                _ => new UnitStatPreview(_statsConfig, _classBalanceConfig), Lifetime.Singleton);
+
             builder.Register<SettingsViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutHubViewModel>(Lifetime.Singleton);

@@ -262,7 +262,8 @@ namespace Guildmaster.UI
                 cardAnimations: _settingsVm.CardAnimations,
                 cardAttackAnimation: _settingsVm.CardAttackAnimation,
                 onRelicDrag: onRelicDrag, // QA #5: drag карточки реликвии на юнита в мире
-                tagsOf: r => _loadoutVm.ResolveTags(r)); // теги «быстрого чтения» из данных релика
+                tagsOf: r => _loadoutVm.ResolveTags(r),   // теги «быстрого чтения» из данных релика
+                statsOf: r => _loadoutVm.ResolveStats(r)); // базовые статы тем же каскадом, что у боя
 
             // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar). Sheet:
             // навигатор НЕ глушит геймплей — под инвентарём живут юниты/камера (клики разводит PointerOverUI над

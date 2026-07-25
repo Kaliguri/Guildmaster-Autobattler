@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Stats;
 using Guildmaster.UI.Components;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -35,7 +36,8 @@ namespace Guildmaster.UI
             bool cardAnimations = true,
             bool cardAttackAnimation = true,
             Action<RelicData, RelicDragPhase> onRelicDrag = null,
-            Func<RelicData, IReadOnlyList<TagData>> tagsOf = null)
+            Func<RelicData, IReadOnlyList<TagData>> tagsOf = null,
+            Func<RelicData, IReadOnlyList<UnitStatLine>> statsOf = null)
         {
             string L(string key, string ru)
             {
@@ -78,9 +80,9 @@ namespace Guildmaster.UI
             }
             SetBtn (root, "sort", L("ui.loadout.sort.name", "Имя") + " ↓");
             SetText(root, "video-hint", L("ui.loadout.video", "видео-вставка 16:9"));
-            SetText(root, "skills-label", L("ui.loadout.skills", "способности"));
-            SetText(root, "upgrades-label", L("ui.loadout.upgrades", "улучшения"));
-            SetText(root, "stats-label", L("ui.loadout.stats", "характеристики"));
+            SetText(root, "skills-label", L("ui.loadout.skills", "Способности"));
+            SetText(root, "upgrades-label", L("ui.loadout.upgrades", "Улучшения"));
+            SetText(root, "stats-label", L("ui.loadout.stats", "Характеристики"));
 
             var search = root.Q<TextField>("search");
             if (search != null) SetPlaceholder(search, L("ui.loadout.search", "Поиск…"));
@@ -88,30 +90,25 @@ namespace Guildmaster.UI
             // ── Способности (плейсхолдер-ряд) + улучшения (2 ряда × 3, плейсхолдеры) ──
             var abilities = root.Q<VisualElement>("detail-abilities");
             for (int i = 0; abilities != null && i < AbilitySlots; i++)
-                abilities.Add(new Slot { Size = Slot.SlotSize.Md });
+                abilities.Add(new Slot { Size = Slot.SlotSize.Sm });
 
             FillUpgradeRow(root.Q<VisualElement>("upgrade-row-1"));
             FillUpgradeRow(root.Q<VisualElement>("upgrade-row-2"));
 
             // ── Теги «быстрого чтения» (ряд под именем): реальные теги юнита из UnitTagResolver,
             //    иконка + подпись, порядок осей Role→DamageType→Playstyle→Mechanic с «|» между группами.
-            //    Заполняется per-relic в ShowDetail (набор зависит от выбранного релика). ──
+            //    Заполняется per-relic в ShowDetail (набор зависит от выбранного релика).
+            //    Высота ряда фиксирована (3 строки, USS) — лишние теги сворачиваются в чип «+N»
+            //    с подсказкой по наведению; подсказка живёт оверлеем в корне экрана. ──
             var tags = root.Q<VisualElement>("detail-tags");
+            var tagTooltip = new Tooltip();
+            root.Add(tagTooltip);
 
-            // ── Статблок (внизу): 8 маленьких квадратов, 4 в ряд. Подписи — реальные статы,
-            //    значения плейсхолдерные (числа придут с данными юнита). ──
+            // ── Статблок (внизу): 8 квадратов «значение над подписью», 4 в ряд. Числа — РЕАЛЬНЫЕ,
+            //    из IUnitStatPreview (тот же каскад, что собирает бой); заполняется per-relic
+            //    в ShowDetail. Нет шва (dev-стенд без DI) — блок прячется, а не врёт заглушками. ──
             var stats = root.Q<VisualElement>("detail-stats");
-            if (stats != null)
-            {
-                stats.Add(MakeStat(L("ui.stat.hp", "HP"), "120"));
-                stats.Add(MakeStat(L("ui.stat.dmg", "Урон"), "45"));
-                stats.Add(MakeStat(L("ui.stat.aspd", "Ск.атк"), "1.2"));
-                stats.Add(MakeStat(L("ui.stat.move", "Скор"), "3.0"));
-                stats.Add(MakeStat(L("ui.stat.parmor", "Ф.броня"), "5"));
-                stats.Add(MakeStat(L("ui.stat.earmor", "М.броня"), "0"));
-                stats.Add(MakeStat(L("ui.stat.range", "Дальн"), "1.5"));
-                stats.Add(MakeStat(L("ui.stat.lifesteal", "Вампир"), "0"));
-            }
+            var statsSection = stats?.parent;
 
             // ── Грид таро-карточек ──
             var grid = root.Q<ScrollView>("relic-grid");
@@ -144,7 +141,8 @@ namespace Guildmaster.UI
             {
                 SetText(root, "detail-title", (Title(r, titleOf) ?? "—").ToUpperInvariant());
                 SetText(root, "detail-narrative", narrativeOf?.Invoke(r) ?? string.Empty);
-                if (tags != null) FillTags(tags, tagsOf?.Invoke(r), L);
+                if (tags != null) FillTags(tags, tagsOf?.Invoke(r), L, tagTooltip);
+                if (stats != null) FillStats(stats, statsSection, statsOf?.Invoke(r), L);
                 foreach (var (relic, card) in cards)
                     card.EnableInClassList("gm-arcana-card--selected", relic == r);
             }
@@ -300,58 +298,148 @@ namespace Guildmaster.UI
 
         private static void FillUpgradeRow(VisualElement row)
         {
-            // Md — тот же размер, что у способностей (реш. Макса: улучшения были Lg и читались слишком крупно;
-            // единый слот-компонент одного размера держит правую панель ровной).
+            // Sm — тот же размер, что у способностей. Md читался крупно: девять слотов на панели съедали
+            // высоту, которой не хватало статблоку (реш. Макса 2026-07-25, второй заход).
             for (int i = 0; row != null && i < UpgradesPerRow; i++)
-                row.Add(new Slot { Size = Slot.SlotSize.Md });
-        }
-
-        // Тег-чип: тот же чип, что фильтры (иконка + подпись). iconClass даёт иконку тега.
-        private static Chip MakeTag(string text, string iconClass)
-        {
-            var chip = new Chip { Text = text };
-            chip.AddToClassList("gm-tag");
-            chip.AddToClassList(iconClass);
-            return chip;
+                row.Add(new Slot { Size = Slot.SlotSize.Sm });
         }
 
         // Ряд тегов «быстрого чтения»: чипы иконка+подпись в порядке осей, с «|» между группами (осями).
-        private static void FillTags(VisualElement container, IReadOnlyList<TagData> tags, Func<string, string, string> L)
+        // Ряд ограничен тремя строками (высота задана в USS) — что не влезло, уходит в чип «+N».
+        private static void FillTags(VisualElement container, IReadOnlyList<TagData> tags,
+            Func<string, string, string> L, Tooltip tooltip)
         {
             container.Clear();
+            tooltip?.Hide();
             if (tags == null || tags.Count == 0) { container.style.display = DisplayStyle.None; return; }
             container.style.display = DisplayStyle.Flex;
 
+            var names = new List<string>(tags.Count);
             TagCategory? prev = null;
             for (int i = 0; i < tags.Count; i++)
             {
                 TagData t = tags[i];
                 if (t == null) continue;
                 if (prev.HasValue && t.Category != prev.Value) container.Add(TagSeparator());
-                container.Add(TagChip(t, L));
+                string name = L(t.Id + ".name", TagFallback(t.Id));
+                container.Add(TagChip(t, name));
+                names.Add(name);
                 prev = t.Category;
             }
-        }
 
-        private static VisualElement TagChip(TagData tag, Func<string, string, string> L)
-        {
-            var chip = new VisualElement { pickingMode = PickingMode.Ignore };
-            chip.AddToClassList("gm-tag");
-
-            if (tag.Icon != null)
+            // Свёртка считается по РЕАЛЬНОЙ раскладке, поэтому ждём первый прошедший layout
+            // (до него ширины нулевые). Ширина панели фиксирована, так что замер нужен ровно один раз.
+            void OnLaidOut(GeometryChangedEvent _)
             {
-                var icon = new VisualElement { pickingMode = PickingMode.Ignore };
-                icon.AddToClassList("gm-tag__icon");
-                icon.style.backgroundImage = new StyleBackground(tag.Icon);
-                icon.style.width = 18;
-                icon.style.height = 18;
-                icon.style.marginRight = 3;
-                chip.Add(icon);
+                container.UnregisterCallback<GeometryChangedEvent>(OnLaidOut);
+                CollapseOverflowingTags(container, names, tooltip, L);
             }
 
-            var label = new Label(L(tag.Id + ".name", TagFallback(tag.Id))) { pickingMode = PickingMode.Ignore };
-            label.AddToClassList("gm-tag__label");
-            chip.Add(label);
+            container.RegisterCallback<GeometryChangedEvent>(OnLaidOut);
+        }
+
+        private const int TagRows = 3;    // столько строк тегов помещается в ряд (высота — из USS)
+        private const float TagRowHeight = 24f; // иконка 16 + вертикальные margin'ы чипа
+
+        /// <summary>
+        /// Симулирует перенос чипов по ширине контейнера и прячет всё, что не поместилось в
+        /// <see cref="TagRows"/> строк, заменяя хвост чипом «+N» с подсказкой. Считаем сами, а не
+        /// «скрыл — перезамерил»: каждое скрытие роняло бы новый layout-проход и мигание ряда.
+        /// </summary>
+        private static void CollapseOverflowingTags(VisualElement container, List<string> names,
+            Tooltip tooltip, Func<string, string, string> L)
+        {
+            float width = container.resolvedStyle.width;
+            if (width <= 0f || container.childCount == 0) return;
+
+            var children = new List<VisualElement>(container.childCount);
+            var widths = new List<float>(container.childCount);
+            for (int i = 0; i < container.childCount; i++)
+            {
+                VisualElement el = container[i];
+                children.Add(el);
+                widths.Add(el.resolvedStyle.width + el.resolvedStyle.marginLeft + el.resolvedStyle.marginRight);
+            }
+
+            // Симуляция переноса на закэшированных ширинах. Гашение висячего разделителя сдвигает
+            // остальные, поэтому крутим до стабилизации (гасить больше нечего) — но не более трёх
+            // проходов: их и не нужно, каждый проход убирает как минимум один «|».
+            int firstHidden = -1;
+            for (int pass = 0; pass < 3; pass++)
+            {
+                bool changed = false;
+                float x = 0f;
+                int row = 0;
+                firstHidden = -1;
+
+                for (int i = 0; i < children.Count; i++)
+                {
+                    if (children[i].style.display == DisplayStyle.None) continue;
+                    float w = widths[i];
+                    if (x > 0f && x + w > width) { row++; x = 0f; }
+                    if (row >= TagRows) { firstHidden = i; break; }
+
+                    // Разделитель осей, перенесённый в начало строки, висит палкой перед первым тегом
+                    // и читается как обрыв. Такой «|» гасим: границу осей показывает сам перенос.
+                    if (x == 0f && children[i].ClassListContains("gm-tag-sep"))
+                    {
+                        children[i].style.display = DisplayStyle.None;
+                        changed = true;
+                        continue;
+                    }
+
+                    x += w;
+                }
+
+                if (!changed) break;
+            }
+
+            if (firstHidden < 0) return; // всё поместилось — «+N» не нужен
+
+            // Освобождаем место под сам чип «+N»: он встаёт в конец последней видимой строки,
+            // при необходимости вытесняя ещё пару тегов (и висящие разделители — «|» в конце строки
+            // выглядит обрывом фразы).
+            var more = new Chip { Text = string.Empty, pickingMode = PickingMode.Position };
+            more.AddToClassList("gm-chip--sm");
+            more.AddToClassList("gm-tag");
+            more.AddToClassList("gm-tag--more");
+
+            int visible = firstHidden;
+            while (visible > 0 && children[visible - 1].ClassListContains("gm-tag-sep")) visible--;
+
+            int hiddenCount = 0;
+            for (int i = visible; i < children.Count; i++)
+            {
+                bool alreadyHidden = children[i].style.display == DisplayStyle.None;
+                children[i].style.display = DisplayStyle.None;
+                if (!alreadyHidden && !children[i].ClassListContains("gm-tag-sep")) hiddenCount++;
+            }
+            if (hiddenCount == 0) return;
+
+            more.Text = "+" + hiddenCount;
+            container.Add(more);
+
+            // Подсказка со скрытыми именами: список идёт в том же порядке осей, что и сам ряд.
+            string hidden = string.Join(", ", names.GetRange(names.Count - hiddenCount, hiddenCount));
+            more.RegisterCallback<PointerEnterEvent>(_ =>
+            {
+                if (tooltip == null) return;
+                tooltip.Set(L("ui.loadout.tags.more", "Ещё теги"), null, hidden, null);
+                VisualElement root = tooltip.parent;
+                Vector2 pos = root.WorldToLocal(more.worldBound.position);
+                tooltip.ShowAt(new Vector2(pos.x, pos.y + more.worldBound.height + 4f));
+            });
+            more.RegisterCallback<PointerLeaveEvent>(_ => tooltip?.Hide());
+        }
+
+        // Тег — ТОТ ЖЕ компонент Chip, что фильтры инвентаря и лента режимов, в малом размере
+        // (--sm). Единый стиль держит компонент; вид/размер — целиком в USS, инлайн-стилей нет.
+        private static VisualElement TagChip(TagData tag, string name)
+        {
+            var chip = new Chip { Text = name, pickingMode = PickingMode.Ignore };
+            chip.AddToClassList("gm-chip--sm");
+            chip.AddToClassList("gm-tag");
+            chip.SetIcon(tag.Icon);
             return chip;
         }
 
@@ -360,14 +448,26 @@ namespace Guildmaster.UI
         {
             var sep = new Label("|") { pickingMode = PickingMode.Ignore };
             sep.AddToClassList("gm-tag-sep");
-            sep.style.marginLeft = 4;
-            sep.style.marginRight = 4;
-            sep.style.opacity = 0.4f;
             return sep;
         }
 
         private static string TagFallback(string id) =>
             !string.IsNullOrEmpty(id) && id.StartsWith("tag.") ? id.Substring(4) : id;
+
+        // Статблок выбранного кита: реальные числа из шва. Нет данных (dev-стенд без DI, пустой
+        // релик) — прячем всю секцию вместе с подписью: пустая рамка «характеристики» врёт сильнее,
+        // чем её отсутствие.
+        private static void FillStats(VisualElement container, VisualElement section,
+            IReadOnlyList<UnitStatLine> lines, Func<string, string, string> L)
+        {
+            container.Clear();
+            bool has = lines != null && lines.Count > 0;
+            if (section != null) section.style.display = has ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!has) return;
+
+            for (int i = 0; i < lines.Count; i++)
+                container.Add(MakeStat(L(lines[i].LabelKey, lines[i].LabelFallback), lines[i].Value));
+        }
 
         // Квадрат статблока: значение над подписью.
         private static VisualElement MakeStat(string label, string value)

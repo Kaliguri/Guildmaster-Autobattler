@@ -20,6 +20,7 @@ namespace Guildmaster.UI
         private readonly ILocalizationService _loc;
         private readonly IAudioService       _audio;
         private readonly IPublisher<EquipRelicRequest> _equipPub;
+        private readonly IUnitStatPreview    _statPreview;
 
         private int _unitId = -1;
         private VesselData _vessel;
@@ -31,12 +32,14 @@ namespace Guildmaster.UI
             IContentDatabase content,
             ILocalizationService loc,
             IAudioService audio,
-            IPublisher<EquipRelicRequest> equipPub)
+            IPublisher<EquipRelicRequest> equipPub,
+            IUnitStatPreview statPreview)
         {
-            _content  = content;
-            _loc      = loc;
-            _audio    = audio;
-            _equipPub = equipPub;
+            _content     = content;
+            _loc         = loc;
+            _audio       = audio;
+            _equipPub    = equipPub;
+            _statPreview = statPreview;
         }
 
         /// <summary>Все доступные релики для грида (пока — весь контент; фильтр по владению — Фаза 5).</summary>
@@ -79,6 +82,13 @@ namespace Guildmaster.UI
         /// авто Role/DamageType из данных + ручные InfoTags. Резолв — <see cref="UnitTagResolver"/>.
         /// </summary>
         public IReadOnlyList<TagData> ResolveTags(RelicData r) => UnitTagResolver.Resolve(r, _content);
+
+        /// <summary>
+        /// Базовые статы релика для панели деталей — реальный каскад из боевой сборки через шов
+        /// <see cref="IUnitStatPreview"/> (UI боевую сборку по asmdef не видит).
+        /// </summary>
+        public IReadOnlyList<UnitStatLine> ResolveStats(RelicData r) =>
+            r != null && _statPreview != null ? _statPreview.Basic(r) : System.Array.Empty<UnitStatLine>();
 
         /// <summary>Строка тегов релика (локализованные имена <c>InfoTags</c>) — легаси-путь старого LoadoutScreen.</summary>
         public string Tags(RelicData r)
