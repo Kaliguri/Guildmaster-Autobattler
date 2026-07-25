@@ -120,18 +120,18 @@
     color: var(--gm-brass-300);
 }
 
-/* Primary — та же форма и та же рамка, разница только в наполнении: сплошная латунь зовёт,
-   тёмное поле отвечает. Заливка идёт ТОКЕНОМ, а не 9-slice картинкой Honeti (см. ниже). */
+/* Primary — та же форма, та же рамка, тот же светлый текст. Разница только в том, что поле
+   НАГРЕТО: угли вместо холодного дерева. Заливка токеном, без 9-slice картинки. */
 .unity-button.gm-button--primary:hover {
     background-image: none;
-    background-color: var(--gm-color-accent-hover);
-    color: var(--gm-color-text-on-accent);
+    background-color: var(--gm-color-surface-accent-hover);
+    color: var(--gm-color-text);
 }
 
 .unity-button.gm-button--primary:active {
     background-image: none;
-    background-color: var(--gm-color-accent-active);
-    color: var(--gm-color-text-on-accent);
+    background-color: var(--gm-color-surface-accent-active);
+    color: var(--gm-color-text);
 }
 
 /* Тот же перевес нужен и для disabled: тема Unity красит выключенную кнопку светло-серым,
@@ -183,21 +183,21 @@
    латунь зовёт, тёмное поле отвечает. */
 .gm-button--primary {
     background-image: none;
-    background-color: var(--gm-color-accent);
+    background-color: var(--gm-color-surface-accent);
     border-color: var(--gm-color-hover-border);
-    color: var(--gm-color-text-on-accent);
+    color: var(--gm-color-text);
 }
 
 .gm-button--primary:hover {
-    background-color: var(--gm-color-accent-hover);
+    background-color: var(--gm-color-surface-accent-hover);
     border-color: var(--gm-color-focus-ring);
-    color: var(--gm-color-text-on-accent);
+    color: var(--gm-color-text);
 }
 
 .gm-button--primary:active {
-    background-color: var(--gm-color-accent-active);
+    background-color: var(--gm-color-surface-accent-active);
     border-color: var(--gm-color-hover-border);
-    color: var(--gm-color-text-on-accent);
+    color: var(--gm-color-text);
 }
 
 /* Disabled: заливка снята, остаётся тусклая деревянная плашка с тихим контуром.

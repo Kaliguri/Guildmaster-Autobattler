@@ -51,7 +51,14 @@
     --gm-color-text-muted: var(--gm-parchment-300);
     --gm-color-text-on-accent: var(--gm-ink-800);  /* текст на латунной заливке */
 
-    /* --- Акцент (латунь) — первичные действия --- */
+    /* --- Нагретая поверхность: фон главного действия. НЕ латунная плашка с тёмным текстом —
+           инверсия ломала язык интерфейса (тёмное поле + латунная подпись). Здесь поле остаётся
+           тёмным, но с янтарной подмесью: «та же кнопка, только нагретая». --- */
+    --gm-color-surface-accent: var(--gm-ember-600);
+    --gm-color-surface-accent-hover: var(--gm-ember-500);
+    --gm-color-surface-accent-active: var(--gm-ember-700);
+
+    /* --- Акцент (латунь) — контуры и подписи первичных действий --- */
     --gm-color-accent: var(--gm-brass-500);
     --gm-color-accent-hover: var(--gm-brass-400);
     --gm-color-accent-active: var(--gm-brass-600);
