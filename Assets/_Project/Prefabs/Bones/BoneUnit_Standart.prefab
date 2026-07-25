@@ -474,7 +474,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 598117088861636322, guid: 57b5c4c9ce53d124f876512bbae068b5, type: 3}
       propertyPath: m_Name
-      value: Arm
+      value: Arm (Left)
       objectReference: {fileID: 0}
     - target: {fileID: 7093962744111980512, guid: 57b5c4c9ce53d124f876512bbae068b5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -584,7 +584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 598117088861636322, guid: 57b5c4c9ce53d124f876512bbae068b5, type: 3}
       propertyPath: m_Name
-      value: Arm (1)
+      value: Arm (Right)
       objectReference: {fileID: 0}
     - target: {fileID: 1490823924570409100, guid: 57b5c4c9ce53d124f876512bbae068b5, type: 3}
       propertyPath: m_SortingLayer
@@ -686,7 +686,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2771675972893699321, guid: facf6da7b60b7204ca5bd947f2513cf2, type: 3}
       propertyPath: m_Name
-      value: Leg
+      value: Leg (Left)
       objectReference: {fileID: 0}
     - target: {fileID: 3160158730718712855, guid: facf6da7b60b7204ca5bd947f2513cf2, type: 3}
       propertyPath: m_SortingLayer
@@ -844,7 +844,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2771675972893699321, guid: facf6da7b60b7204ca5bd947f2513cf2, type: 3}
       propertyPath: m_Name
-      value: Leg (1)
+      value: Leg (Right)
       objectReference: {fileID: 0}
     - target: {fileID: 3160158730718712855, guid: facf6da7b60b7204ca5bd947f2513cf2, type: 3}
       propertyPath: m_SortingLayer
