@@ -29,6 +29,12 @@
     justify-content: center;
 }
 
+/* Модалка поверх модалки: своё затемнение не рисует — иначе два полупрозрачных слоя складываются
+   и фон темнеет вдвое (настройки поверх паузы). Класс вешает UiNavigator.SyncVisibility. */
+.gm-screen--scrimless {
+    background-color: rgba(0, 0, 0, 0);
+}
+
 /* --- Панель: единый аутлайн (strong). Honeti-9slice выведен — см. --gm-outline-* в семантике. --- */
 .gm-panel {
     background-color: var(--gm-color-surface-panel);
@@ -59,12 +65,16 @@
     margin-bottom: var(--gm-space-3);
 }
 
-/* --- Кнопка (secondary по умолчанию): тихий аутлайн, при наведении разгорается. --- */
-/* background-color ОБЯЗАТЕЛЕН: без него проступает дефолтный светло-серый фон Button из темы Unity. */
+/* --- Кнопка (secondary по умолчанию) ---
+   Плоская тёмная плашка с тихим контуром читалась «выключенной» рядом с латунной primary
+   (реш. Макса, раунд 2). Объём даём БЕЗ второго спрайта: латунная подпись + латунная линия снизу
+   (кнопка «стоит на подставке») + разгорающийся контур. Тот же язык, что у primary, вполсилы. */
 .gm-button {
     background-color: var(--gm-color-surface-raised);
     border-width: var(--gm-outline-width);
     border-color: var(--gm-outline-color-subtle);
+    border-bottom-width: var(--gm-border-2);
+    border-bottom-color: var(--gm-color-border-frame);
     border-radius: var(--gm-radius-0);
     color: var(--gm-color-text);
     font-size: var(--gm-font-body);
@@ -75,11 +85,15 @@
 
 .gm-button:hover {
     border-color: var(--gm-outline-color-hover);
+    border-bottom-color: var(--gm-color-accent);
     background-color: var(--gm-color-hover-surface);
+    color: var(--gm-brass-200);
 }
 
+/* Нажатие «вдавливает»: подставка снизу исчезает, кнопка садится на тёмный фон. */
 .gm-button:active {
     border-color: var(--gm-outline-color);
+    border-bottom-color: var(--gm-color-border-inner);
     background-color: var(--gm-color-surface-sunken);
 }
 
@@ -1115,8 +1129,14 @@
     display: none;
 }
 
-/* Кнопка «Начать» бой — латунная заливка (primary), компактно. */
+/* Кнопка «Начать» бой — латунная заливка (primary) + иконка боя, как у таба «Бой» в ленте.
+   min-width держит ширину постоянной: без него кнопка меняла размер вслед за длиной подписи
+   в другой локали, и «центр» уезжал (реш. Макса, раунд 2). */
 .gm-loadout__start-btn {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-width: 220px;
     background-color: var(--gm-color-surface-raised);
     background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
     -unity-slice-left: 5;
@@ -1128,8 +1148,25 @@
     color: var(--gm-color-text-on-accent);
     font-size: var(--gm-font-sm);
     padding: var(--gm-space-1) var(--gm-space-4);
-    margin-left: var(--gm-space-2);
-    margin-right: var(--gm-space-2);
+    margin: 0;
+}
+
+.gm-loadout__start-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    margin-right: var(--gm-space-1);
+    background-image: url("../../Art/UI/Icons-gm/Modes/crossed-swords.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    -unity-background-image-tint-color: var(--gm-color-text-on-accent);
+}
+
+.gm-loadout__start-label {
+    color: var(--gm-color-text-on-accent);
+    font-size: var(--gm-font-sm);
+    -unity-font-style: bold;
 }
 
 .gm-loadout__start-btn:hover {
@@ -1184,6 +1221,8 @@
 }
 
 /* Центр-слот «Начать»/таймер боя (QA #14): по центру X, ЧУТЬ НИЖЕ панели (absolute под топбаром). */
+/* Центр-слот «Начать»/таймер: лента режимов свисает ниже кромки бара, поэтому отступ считается
+   от НЕЁ, а не от кромки — при space-1 кнопка почти касалась ленты (реш. Макса, раунд 2). */
 .gm-loadout__battle-center {
     position: absolute;
     top: var(--gm-topbar-height);
@@ -1191,7 +1230,8 @@
     translate: -50% 0;
     flex-direction: row;
     align-items: center;
-    padding-top: var(--gm-space-1);
+    justify-content: center;
+    padding-top: var(--gm-space-4);
 }
 
 /* ============================================================================
@@ -1217,16 +1257,35 @@
     /* Прижата к верхней кромке бара: при вертикальной центровке лента вылезала ВВЕРХ за край экрана
        и там срезалась. Свисать она должна только вниз. */
     align-self: flex-start;
-    padding: 0 var(--gm-space-3);
+    /* Собственного padding НЕТ: поля отдают крайние табы (см. .gm-runbar__tab:first-child), чтобы
+       скошенный торец ленты входил в кликабельную и подсвечиваемую область крайней кнопки. */
+    padding: 0;
+    align-items: stretch;
     justify-content: center;
 }
 
 /* Иконка-режим: квадратный слот, состояние — тинтом монохромной иконки, не вторым файлом. */
 /* Лента режимов = чипы в «скрытом» режиме (.gm-chip--collapsible): иконка всегда, подпись — только
    у активного. Здесь только зазор между табами; весь вид/отклик берёт единый .gm-chip. */
+/* Таб ленты занимает ВСЮ высоту ленты и стыкуется с соседом без зазора: подсветка при наведении
+   заливает всю кнопку, а не полоску вокруг иконки (реш. Макса, раунд 2). Границы соседей
+   обозначает тихая вертикальная линия. */
 .gm-runbar__tab {
-    margin: 0 var(--gm-space-1);
+    margin: 0;
+    padding: 0 var(--gm-space-2);
+    justify-content: center;
+    border-right-width: var(--gm-outline-width);
+    border-right-color: var(--gm-outline-color-subtle);
 }
+
+/* Крайние табы забирают под себя поле скошенного торца — угол ленты тоже часть кнопки.
+   Крайность помечена классом (--first/--last), а не :first-child: UITK псевдоклассы позиции
+   не поддерживает и молча роняет такое правило в лог. */
+.gm-runbar__tab--first { padding-left: var(--gm-space-4); }
+.gm-runbar__tab--last  { padding-right: var(--gm-space-4); border-right-width: 0; }
+
+/* Перед разделителем «настроек» своя линия не нужна — там уже стоит .gm-runbar__sep. */
+.gm-runbar__tab--compendium { border-right-width: 0; }
 
 /* Иконки режимов — game-icons.net (Lorc, Delapouite), CC BY 3.0, белый силуэт; тинт даёт состояние чипа. */
 .gm-runbar__tab--map        .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/treasure-map.png"); }
@@ -1339,19 +1398,32 @@
 }
 
 /* Таб-бар категорий: одна полоса на всю ширину тела (грид + детали), табы равными долями.
-   Отделён от содержимого линией — так видно, что полоса главенствует над ОБЕИМИ зонами под ней. */
+   Отделён от содержимого линией — так видно, что полоса главенствует над ОБЕИМИ зонами под ней.
+   БЕЗ padding: таб обязан занимать ВСЮ свою долю полосы — и по ширине, и по высоте, чтобы
+   подсветка заливала всю кликабельную область, а не «кусочек внутри» (реш. Макса, раунд 2). */
 .gm-loadout__filters {
     flex-direction: row;
+    align-items: stretch;
+    height: 52px;
     border-bottom-width: var(--gm-outline-width);
     border-bottom-color: var(--gm-outline-color);
-    padding: var(--gm-space-1) var(--gm-space-2);
+    padding: 0;
 }
 
+/* Табы делят полосу поровну; вертикальные линии между ними обозначают границы кнопок
+   (без них соседние табы читались одним полем). Крайний правый линию не несёт — там край панели. */
+/* Модификатор --last вместо :last-child: UITK псевдоклассы позиции НЕ поддерживает
+   («Unknown pseudo class» в консоли), крайность помечается классом в разметке. */
 .gm-filter-tab {
     flex-grow: 1;
     flex-basis: 0;
     justify-content: center;
+    margin: 0;
+    border-right-width: var(--gm-outline-width);
+    border-right-color: var(--gm-outline-color-subtle);
 }
+
+.gm-filter-tab--last { border-right-width: 0; }
 
 /* ===== Чип: иконка + подпись как один элемент (единый компонент для фильтров, тегов и пр.) ===== */
 .gm-chip {
@@ -1389,11 +1461,12 @@
 .gm-chip--active .gm-chip__label { color: var(--gm-color-text); -unity-font-style: bold; }
 
 /* Малый размер (--sm): теги юнита и прочие «вторичные» чипы. Тот же компонент, тот же вид,
-   просто мельче — иконка 16 вместо 22, подпись xxs вместо xs, отступы вдвое тоньше. */
+   просто компактнее — подпись xxs вместо xs, отступы тоньше. Иконка 24 (была 16 — на 1080p
+   силуэт тега не читался; +50% по решению Макса, раунд 2). */
 .gm-chip--sm { padding: 0 var(--gm-space-0); }
 .gm-chip--sm .gm-chip__icon {
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     margin-right: var(--gm-space-0);
 }
 .gm-chip--sm .gm-chip__label { font-size: var(--gm-font-xxs); }
@@ -1410,14 +1483,16 @@
 .gm-filter-tab--items   .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Filters/item.png"); }
 .gm-filter-tab--banners .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Filters/banner.png"); }
 
-/* Поиск/сортировка: боковой отступ = зазору карт (--gm-space-1), чтобы левый край поиска встал ровно
-   под левый край карточек, а правый край сортировки — под правый край крайней карты. */
+/* Поиск/сортировка встают ВРОВЕНЬ с карточками грида: слева отступ = зазору карты (space-1),
+   справа = зазор + ширина скроллбара. Скроллбар грида всегда видим и ужимает содержимое, поэтому
+   симметричные поля разъезжались ровно на его ширину — правый край сортировки не доходил до края
+   крайней карты (реш. Макса, раунд 2). */
 .gm-loadout__toolbar {
     flex-direction: row;
     align-items: center;
     margin-bottom: var(--gm-space-2);
     margin-left: var(--gm-space-1);
-    margin-right: var(--gm-space-1);
+    margin-right: calc(var(--gm-space-1) + var(--gm-scrollbar-width));
 }
 
 /* Поле поиска: пиксель-рамка Honeti, тянется на всю ширину; компактная высота, текст по центру. */
@@ -1475,7 +1550,7 @@
 
 /* Скроллбар грида: тонкий, тёмный трек + латунная ручка, без стрелок (дефолтный серый клашит с темой). */
 .gm-loadout .unity-scroller--vertical {
-    width: 14px;
+    width: var(--gm-scrollbar-width);
     background-color: var(--gm-color-surface-sunken);
 }
 
@@ -1600,20 +1675,21 @@
 }
 
 /* Видео-вставка геймплея 16:9 (пока плейсхолдер).
-   ВЫСОТА СЧИТАНА, НЕ НА ГЛАЗ: панель 480 − борд 3 − паддинги 2×16 = 445 полезной ширины,
-   вставка на всю ширину → 445 × 9/16 = 250. Раньше стояло 172 при 365 ширины (это 16:7.6) —
-   «16:9» врало. Пропорция держится ровно до тех пор, пока ширина панели/паддинги фиксированы:
-   меняешь width панели — пересчитай и высоту (UITK не умеет aspect-ratio, кодом = костыль). */
+   РАЗМЕР СЧИТАН, НЕ НА ГЛАЗ: 320 × 9/16 = 180. Во всю ширину панели (445 → 250) вставка забирала
+   четверть высоты и давила остальное — уменьшена и посажена по центру (реш. Макса, раунд 2).
+   Меняешь ширину — пересчитай высоту: UITK не умеет aspect-ratio, а подгонять кодом = костыль. */
 .gm-loadout__video {
-    width: 100%;
-    height: 250px;
+    width: 320px;
+    height: 180px;
+    align-self: center;
     background-color: var(--gm-color-surface-sunken);
     border-width: var(--gm-outline-width);
     border-color: var(--gm-outline-color);
     border-radius: var(--gm-radius-0);
     align-items: center;
     justify-content: center;
-    margin-bottom: var(--gm-space-1);
+    margin-top: var(--gm-space-1);
+    margin-bottom: var(--gm-space-2);
 }
 
 .gm-loadout__video-hint {
@@ -1671,14 +1747,17 @@
     justify-content: flex-start;
 }
 
-/* Нарратив — курсив, сериф-голос (подложку/рамку даёт секция-обёртка). */
+/* Нарратив — курсив, сериф-голос; стоит В КОНЦЕ панели (реш. Макса, раунд 2).
+   min-height = резерв под 4 строки (17px × 1.35 ≈ 23 на строку): у разных китов описания разной
+   длины, и без резерва нижний край панели дышал бы вслед за текстом. */
 .gm-loadout__narrative-text {
     -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
     -unity-font-style: italic;
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-xs);
     white-space: normal;
-    margin-top: var(--gm-space-0);
+    min-height: 92px;
+    margin-top: var(--gm-space-2);
     margin-bottom: 0;
 }
 
@@ -1792,7 +1871,10 @@
 /* Распорка: flex-grow отжимает статблок к низу панели. */
 .gm-loadout__spacer { flex-grow: 1; }
 
-/* Статблок — квадраты «значение над подписью», по 4 в ряд, в самом низу панели (реш. Макса). */
+/* Статблок — строки «подпись — значение» в две колонки, как лист персонажа (реш. Макса, раунд 2).
+   Квадраты «значение над подписью» требовали сокращений («М.броня») и плыли на нечётном числе
+   статов: седьмая клетка оставляла дыру. Строка вмещает полное название в один ряд, а нечётность
+   не видна вовсе — последняя строка просто одна. */
 .gm-loadout__stats {
     flex-direction: row;
     flex-wrap: wrap;
@@ -1800,16 +1882,17 @@
 }
 
 .gm-stat {
-    width: 23%;
+    width: 48%;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     background-color: var(--gm-color-surface-sunken);
     border-radius: var(--gm-radius-0);
-    padding: var(--gm-space-0) 0;
+    padding: var(--gm-space-0) var(--gm-space-1);
     margin-bottom: var(--gm-space-0);
 }
-.gm-stat__value { color: var(--gm-color-text); font-size: var(--gm-font-xs); }
 .gm-stat__label { color: var(--gm-color-text-muted); font-size: var(--gm-font-xxs); }
+.gm-stat__value { color: var(--gm-color-text); font-size: var(--gm-font-xs); -unity-font-style: bold; }
 
 /* --- Нижняя панель золота: только под центром+правым (в __main, не в __body). --- */
 .gm-loadout__footer {

@@ -46,14 +46,15 @@ namespace Guildmaster.Combat
 
             Stats stats = Build(data);
 
-            lines.Add(Line("ui.stat.hp",     "HP",      Num(stats.Get(StatType.MaxHP))));
-            lines.Add(Line("ui.stat.parmor", "Ф.броня", Num(stats.Get(StatType.PhysArmor))));
-            lines.Add(Line("ui.stat.marmor", "М.броня", Num(stats.Get(StatType.MagicArmor))));
-            lines.Add(Line("ui.stat.dmg",    "Урон",    Num(stats.Get(StatType.AutoAttackDamage))));
+            // Подписи ПОЛНЫЕ, без сокращений (реш. Макса, раунд 2): «М.броня» читалось как ребус.
+            lines.Add(Line("ui.stat.hp",     "Здоровье",         Num(stats.Get(StatType.MaxHP))));
+            lines.Add(Line("ui.stat.parmor", "Физическая броня", Num(stats.Get(StatType.PhysArmor))));
+            lines.Add(Line("ui.stat.marmor", "Магическая броня", Num(stats.Get(StatType.MagicArmor))));
+            lines.Add(Line("ui.stat.dmg",    "Урон",             Num(stats.Get(StatType.AutoAttackDamage))));
             // Атак/сек — с тиковой квантизацией сима (как считает бой), а не сырой AttackSpeed.
-            lines.Add(Line("ui.stat.aspd",   "Ск.атк",  Num(AttacksPerSecond(stats.Get(StatType.AttackSpeed)))));
-            lines.Add(Line("ui.stat.range",  "Дальн",   Num(stats.Get(StatType.AttackRange))));
-            lines.Add(Line("ui.stat.move",   "Скор",    Num(stats.Get(StatType.MoveSpeed))));
+            lines.Add(Line("ui.stat.aspd",   "Скорость атаки",   Num(AttacksPerSecond(stats.Get(StatType.AttackSpeed)))));
+            lines.Add(Line("ui.stat.range",  "Дальность",        Num(stats.Get(StatType.AttackRange))));
+            lines.Add(Line("ui.stat.move",   "Скорость",         Num(stats.Get(StatType.MoveSpeed))));
             return lines;
         }
 

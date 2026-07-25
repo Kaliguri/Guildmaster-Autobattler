@@ -370,17 +370,30 @@ namespace Guildmaster.UI
                 bool changed = false;
                 float x = 0f;
                 int row = 0;
+                int lastVisible = -1; // последний уложенный элемент — чтобы поймать «|» на конце строки
                 firstHidden = -1;
 
                 for (int i = 0; i < children.Count; i++)
                 {
                     if (children[i].style.display == DisplayStyle.None) continue;
                     float w = widths[i];
-                    if (x > 0f && x + w > width) { row++; x = 0f; }
+
+                    if (x > 0f && x + w > width)
+                    {
+                        // Перенос. Разделитель, оставшийся ПОСЛЕДНИМ в строке, висит палкой на обрыве —
+                        // гасим его: границу осей и так показывает сам перенос.
+                        if (lastVisible >= 0 && children[lastVisible].ClassListContains("gm-tag-sep"))
+                        {
+                            children[lastVisible].style.display = DisplayStyle.None;
+                            changed = true;
+                        }
+                        row++;
+                        x = 0f;
+                    }
+
                     if (row >= TagRows) { firstHidden = i; break; }
 
-                    // Разделитель осей, перенесённый в начало строки, висит палкой перед первым тегом
-                    // и читается как обрыв. Такой «|» гасим: границу осей показывает сам перенос.
+                    // Тот же разделитель, но уехавший в НАЧАЛО строки — читается как обрыв перед первым тегом.
                     if (x == 0f && children[i].ClassListContains("gm-tag-sep"))
                     {
                         children[i].style.display = DisplayStyle.None;
@@ -389,6 +402,7 @@ namespace Guildmaster.UI
                     }
 
                     x += w;
+                    lastVisible = i;
                 }
 
                 if (!changed) break;
@@ -434,9 +448,11 @@ namespace Guildmaster.UI
 
         // Тег — ТОТ ЖЕ компонент Chip, что фильтры инвентаря и лента режимов, в малом размере
         // (--sm). Единый стиль держит компонент; вид/размер — целиком в USS, инлайн-стилей нет.
+        // pickingMode Position (не Ignore): тег — тот же интерактивный чип, что таб, и обязан
+        // отзываться на наведение/нажатие ровно как исходный стиль (реш. Макса, раунд 2).
         private static VisualElement TagChip(TagData tag, string name)
         {
-            var chip = new Chip { Text = name, pickingMode = PickingMode.Ignore };
+            var chip = new Chip { Text = name, pickingMode = PickingMode.Position };
             chip.AddToClassList("gm-chip--sm");
             chip.AddToClassList("gm-tag");
             chip.SetIcon(tag.Icon);
@@ -469,17 +485,17 @@ namespace Guildmaster.UI
                 container.Add(MakeStat(L(lines[i].LabelKey, lines[i].LabelFallback), lines[i].Value));
         }
 
-        // Квадрат статблока: значение над подписью.
+        // Строка статблока: полная подпись слева, значение справа (лист персонажа, а не плитки).
         private static VisualElement MakeStat(string label, string value)
         {
             var cell = new VisualElement();
             cell.AddToClassList("gm-stat");
-            var v = new Label(value);
-            v.AddToClassList("gm-stat__value");
             var l = new Label(label);
             l.AddToClassList("gm-stat__label");
-            cell.Add(v);
+            var v = new Label(value);
+            v.AddToClassList("gm-stat__value");
             cell.Add(l);
+            cell.Add(v);
             return cell;
         }
 

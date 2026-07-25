@@ -308,8 +308,10 @@ namespace Guildmaster.UI
             if (_topBar == null || _clock == null) return;
 
             // Глобальный топбар виден ВЕСЬ забег (реш. №65, STS-style); тело экранов под ним (padding-top).
+            // НО не под главным меню: RunState там ещё жив (сейв не сбрасывается, забег можно продолжить),
+            // и по одному лишь runActive панель с «Начать» оставалась висеть поверх меню (наход. Макса, п.9).
             RunState run = _runStates?.Current;
-            bool runActive = run != null;
+            bool runActive = run != null && !_mainMenuOpen;
             _topBar.Root.style.display = runActive ? DisplayStyle.Flex : DisplayStyle.None;
 
             BattlePhase phase = _clock.Phase;
@@ -386,6 +388,8 @@ namespace Guildmaster.UI
             // QA #11/#21/#35: подсветка активного таба из единого источника — верхний НЕ-Modal экран навигатора
             // (ActiveScreenMode = nav.ActiveModeTag, игнорит Modal) либо «Бой» по фазе. Modal-меню не сбивает таб.
             _topBar.SetActiveMode(ActiveMode(phase));
+            // Настройки — не режим, а модалка: у их таба своё состояние «нажат, пока меню открыто» (раунд 2, п.6).
+            _topBar.SetMenuActive(_router.IsSystemMenuOpen);
         }
 
         // ── Радио-режимы табов (Карта/Бой/Инвентарь — включён РОВНО один; таб = перейти в режим, НЕ тумблер) ──

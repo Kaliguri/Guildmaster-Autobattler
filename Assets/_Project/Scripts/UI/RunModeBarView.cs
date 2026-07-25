@@ -58,7 +58,13 @@ namespace Guildmaster.UI
                 menu.RegisterCallback<ClickEvent>(_ => onMenu?.Invoke());
             }
 
-            if (_start != null) { _start.text = L("ui.run.start", "Начать"); _start.clicked += () => onStart?.Invoke(); }
+            // Подпись — в дочернем Label (см. RunModeBar.uxml): у Button с детьми собственный text
+            // рисуется поверх содержимого и наезжает на иконку боя.
+            if (_start != null)
+            {
+                SetText(_start.Q<Label>("btn-start-label"), L("ui.run.start", "Начать"));
+                _start.clicked += () => onStart?.Invoke();
+            }
         }
 
         private void WireMode(string key, string locKey, string ru, Action action)
@@ -75,6 +81,17 @@ namespace Guildmaster.UI
         {
             foreach (var kv in _modes)
                 kv.Value.SetActive(kv.Key == key);
+        }
+
+        /// <summary>
+        /// Держать таб настроек нажатым, пока открыто системное меню (наход. Макса, раунд 2, п.6).
+        /// Настройки — не режим забега, поэтому в общий радио-набор <see cref="SetActiveMode"/> не входят:
+        /// у них своё состояние, иначе открытое меню сбивало бы подсветку текущего режима.
+        /// </summary>
+        public void SetMenuActive(bool on)
+        {
+            var menu = Root.Q<Chip>("btn-menu");
+            menu?.SetActive(on);
         }
 
         public void SetGold(int gold) => SetText(_gold, gold.ToString());

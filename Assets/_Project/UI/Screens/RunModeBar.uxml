@@ -14,14 +14,14 @@
 
         <!-- Лента-островок: форму рисует SlantedPanel вершинами (скос на 9-slice «плывёт» по ширине). -->
         <gm:SlantedPanel name="runbar-ribbon" Slant="14" class="gm-runbar__ribbon">
-            <gm:Chip name="mode-map" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--map" />
+            <gm:Chip name="mode-map" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--first gm-runbar__tab--map" />
             <gm:Chip name="mode-battle" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--battle" />
             <gm:Chip name="mode-inventory" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--inventory" />
             <gm:Chip name="mode-tactics" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--tactics" />
             <gm:Chip name="mode-compendium" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--compendium" />
             <!-- Настройки за разделителем: открывают модалку, а не переключают режим — не должны читаться шестым табом. -->
             <ui:VisualElement class="gm-runbar__sep" />
-            <gm:Chip name="btn-menu" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--menu" />
+            <gm:Chip name="btn-menu" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--last gm-runbar__tab--menu" />
         </gm:SlantedPanel>
 
         <ui:VisualElement class="gm-loadout__topbar-side gm-loadout__topbar-side--right">
@@ -40,7 +40,13 @@
         <!-- Центр-слот «Начать»/таймер боя (QA #14): по центру, ЧУТЬ НИЖЕ панели (absolute под топбаром),
              единая точка — расстановка показывает «Начать», бой заменяет его таймером в ТОЙ ЖЕ точке. -->
         <ui:VisualElement name="battle-center" class="gm-loadout__battle-center">
-            <ui:Button name="btn-start" text="Начать" class="gm-loadout__start-btn" />
+            <!-- «Начать» = иконка боя + подпись (иконка та же, что у таба «Бой» в ленте — один язык).
+                 Текст живёт в дочернем Label, а не в атрибуте Button: у кнопки с детьми собственный
+                 текст рисуется поверх содержимого и наезжает на иконку. -->
+            <ui:Button name="btn-start" class="gm-loadout__start-btn">
+                <ui:VisualElement class="gm-loadout__start-icon" picking-mode="Ignore" />
+                <ui:Label name="btn-start-label" text="Начать" class="gm-loadout__start-label" picking-mode="Ignore" />
+            </ui:Button>
             <ui:Label name="battle-timer" text="00:00" class="gm-loadout__stat gm-loadout__stat--timer gm-loadout__battle-timer" />
         </ui:VisualElement>
 

@@ -30,6 +30,10 @@
     --gm-outline-color-inner: var(--gm-color-border-inner);    /* внутренняя кайма */
     --gm-outline-color-hover: var(--gm-color-hover-border);    /* наведение на любой из трёх */
 
+    /* Ширина вертикального скроллбара. Живёт токеном, потому что её должны знать ДВОЕ: сам скроллбар
+       и всё, что обязано встать вровень с прокручиваемым содержимым (тулбар над гридом карт). */
+    --gm-scrollbar-width: 14px;
+
     /* --- Текст --- */
     --gm-color-text: var(--gm-parchment-100);
     --gm-color-text-muted: var(--gm-parchment-300);

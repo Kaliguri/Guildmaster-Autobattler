@@ -371,6 +371,12 @@ namespace Guildmaster.UI
         /// <summary>Режим-таб верхнего оверлея (QA #21): "inventory"/"map"/null. Единый источник подсветки топбара.</summary>
         public string ActiveScreenMode => _nav.ActiveModeTag;
 
+        /// <summary>
+        /// Открыто ли системное меню (пауза или что-либо поверх неё). Топбар держит по этому флагу
+        /// таб настроек нажатым, пока меню на экране (наход. Макса, раунд 2, п.6).
+        /// </summary>
+        public bool IsSystemMenuOpen => _nav.AnyScreen(s => s is RouterScreen r && r.ScreenId == PauseId);
+
         // Прозрачные оверлеи (инвентарь) НЕ глушат геймплей — под ними живёт мир (юниты/камера, развязка
         // через IInputService.PointerOverUI). Класс остаётся ТОЛЬКО как стиль (прозрачный фон); поведение
         // suppress теперь определяет ScreenKind.Sheet в навигаторе, а не наличие этого класса.

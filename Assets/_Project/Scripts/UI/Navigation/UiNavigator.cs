@@ -269,6 +269,7 @@ namespace Guildmaster.UI
         {
             bool pageAbove = false;  // выше есть непрозрачный Page → всё под ним скрыто
             bool sheetAbove = false; // выше есть Sheet (геймплей) → Page под ним скрыт (карта уходит)
+            bool scrimBelow = false; // ниже уже есть видимый Modal → его затемнения достаточно
             for (int i = _stack.Count - 1; i >= 0; i--)
             {
                 UiScreen s = _stack[i];
@@ -279,7 +280,23 @@ namespace Guildmaster.UI
                 if (s.Kind == ScreenKind.Page) pageAbove = true;
                 else if (s.Kind == ScreenKind.Sheet) sheetAbove = true;
             }
+
+            // Затемнение — РОВНО ОДНО на стек. Каждый Modal несёт свой scrim в .gm-screen, и настройки
+            // поверх паузы складывали два полупрозрачных слоя: фон темнел вдвое (наход. Макса, раунд 2).
+            // Скрим оставляем самому НИЖНЕМУ видимому Modal — он лежит ближе к геймплею, который и надо
+            // приглушить; всё, что выше, идёт без своего затемнения.
+            for (int i = 0; i < _stack.Count; i++)
+            {
+                UiScreen s = _stack[i];
+                if (s.Kind != ScreenKind.Modal || s.Root == null) continue;
+                bool visible = s.Root.style.display.value == DisplayStyle.Flex;
+                s.Root.EnableInClassList(ScrimlessClass, scrimBelow);
+                if (visible) scrimBelow = true;
+            }
         }
+
+        /// <summary>Модалка без собственного затемнения: скрим уже даёт модалка под ней.</summary>
+        private const string ScrimlessClass = "gm-screen--scrimless";
 
         private void FocusTop()
         {
