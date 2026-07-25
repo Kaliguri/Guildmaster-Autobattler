@@ -66,17 +66,16 @@
 }
 
 /* --- Кнопка (secondary по умолчанию) ---
-   Плоская тёмная плашка с тихим контуром читалась «выключенной» рядом с латунной primary
-   (реш. Макса, раунд 2). Объём даём БЕЗ второго спрайта: латунная подпись + латунная линия снизу
-   (кнопка «стоит на подставке») + разгорающийся контур. Тот же язык, что у primary, вполсилы. */
+   ОДНА СЕМЬЯ С PRIMARY (реш. Макса, раунд 3): та же форма, та же полная латунная рамка, та же
+   латунная гамма — разница только в наполнении. Primary = сплошная латунь (зовёт), secondary =
+   тёмное поле в латунной рамке с латунной подписью (отвечает). Прежний вариант (тихий серый
+   контур + белый текст + «подставка» снизу) читался деталью из другого интерфейса. */
 .gm-button {
-    background-color: var(--gm-color-surface-raised);
+    background-color: var(--gm-color-surface-panel);
     border-width: var(--gm-outline-width);
-    border-color: var(--gm-outline-color-subtle);
-    border-bottom-width: var(--gm-border-2);
-    border-bottom-color: var(--gm-color-border-frame);
+    border-color: var(--gm-color-border-frame);
     border-radius: var(--gm-radius-0);
-    color: var(--gm-color-text);
+    color: var(--gm-brass-200);
     font-size: var(--gm-font-body);
     padding: var(--gm-space-2) var(--gm-space-4);
     margin-top: var(--gm-space-2);
@@ -84,23 +83,90 @@
 }
 
 .gm-button:hover {
-    border-color: var(--gm-outline-color-hover);
-    border-bottom-color: var(--gm-color-accent);
+    border-color: var(--gm-color-hover-border);
     background-color: var(--gm-color-hover-surface);
-    color: var(--gm-brass-200);
+    color: var(--gm-parchment-100);
 }
 
-/* Нажатие «вдавливает»: подставка снизу исчезает, кнопка садится на тёмный фон. */
+/* Нажатие «вдавливает»: поле уходит в самый тёмный тон, рамка тускнеет. */
 .gm-button:active {
-    border-color: var(--gm-outline-color);
-    border-bottom-color: var(--gm-color-border-inner);
+    border-color: var(--gm-color-border-inner);
     background-color: var(--gm-color-surface-sunken);
+    color: var(--gm-brass-300);
 }
 
 .gm-button:disabled {
     border-color: var(--gm-color-border-subtle);
     color: var(--gm-color-disabled-text);
     opacity: 1;
+}
+
+/* СПЕЦИФИЧНОСТЬ ПРОТИВ ДЕФОЛТНОЙ ТЕМЫ. Unity красит .unity-button:hover/:active светло-серым, и по
+   порядку загрузки её правило бьёт наш одноклассовый селектор — кнопка при наведении становилась
+   бледно-серой плашкой (наход. Макса, раунд 3). Два класса в селекторе перевешивают. Тот же корень,
+   что у «белого квадрата» на ленте режимов, только там лечилось переездом на VisualElement. */
+.unity-button.gm-button:hover {
+    background-color: var(--gm-color-hover-surface);
+    background-image: none;
+    color: var(--gm-parchment-100);
+}
+
+.unity-button.gm-button:active {
+    background-color: var(--gm-color-surface-sunken);
+    background-image: none;
+    color: var(--gm-brass-300);
+}
+
+.unity-button.gm-button--primary:hover {
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
+    background-color: var(--gm-color-surface-raised);
+    color: var(--gm-color-text-on-accent);
+}
+
+.unity-button.gm-button--primary:active {
+    background-image: url("../../Art/UI/Honeti-gm/Gold2Down_gm.png");
+    background-color: var(--gm-color-surface-raised);
+    color: var(--gm-color-text-on-accent);
+}
+
+/* Тот же перевес нужен и для disabled: тема Unity красит выключенную кнопку светло-серым,
+   и «Продолжить» без сейва выглядела деталью чужого интерфейса.
+   ВАЖНО: выключенному элементу UITK вешает КЛАСС `unity-disabled`, и тема красит именно по нему —
+   одного псевдокласса `:disabled` в селекторе не хватает, правило проигрывает. Перекрываем оба. */
+.unity-button.gm-button.unity-disabled:disabled,
+.unity-button.gm-tab.unity-disabled:disabled,
+.unity-button.gm-button.unity-disabled,
+.unity-button.gm-tab.unity-disabled,
+.unity-button.gm-button:disabled,
+.unity-button.gm-button--primary:disabled {
+    background-color: var(--gm-color-surface-panel);
+    background-image: none;
+    border-color: var(--gm-color-border-subtle);
+    color: var(--gm-color-disabled-text);
+    opacity: 1;
+}
+
+/* ФОКУС: дефолтная тема Unity рисует контролам ярко-синюю рамку — она не из нашей палитры и,
+   что хуже, ЗАЛИПАЕТ после клика (нажал, увёл курсор — синева осталась). Гасим её везде и даём
+   свой знак фокуса: латунная рамка, тот же язык, что у наведения. Клавиатурная навигация от
+   этого не страдает — фокус по-прежнему виден, просто нашим цветом. */
+.gm-button:focus,
+.gm-chip:focus,
+.gm-tab:focus,
+.gm-slot:focus,
+.unity-button:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-button:focus,
+.gm-chip:focus,
+.gm-tab:focus,
+.gm-slot:focus,
+.unity-base-field:focus,
+.unity-button:focus {
+    --unity-colors-button-border-focus: var(--gm-color-hover-border);
+    --unity-colors-input-border-focus: var(--gm-color-hover-border);
+    --unity-colors-helpbox-border: var(--gm-color-hover-border);
 }
 
 /* --- Кнопка: primary (латунная ЗАЛИВКА Honeti — это фон, не контур) — не более одной на экран --- */
@@ -770,9 +836,11 @@
     -unity-background-scale-mode: scale-to-fit;
 }
 
+/* Sm вырос 40 → 60 (реш. Макса, раунд 3): в правой панели инвентаря на 1080p иконка способности
+   в слоте 40px не читалась. Компактный ряд слотов всё равно остаётся вдвое меньше Md. */
 .gm-slot--sm {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
 }
 
 .gm-slot--md {
@@ -1257,9 +1325,10 @@
     /* Прижата к верхней кромке бара: при вертикальной центровке лента вылезала ВВЕРХ за край экрана
        и там срезалась. Свисать она должна только вниз. */
     align-self: flex-start;
-    /* Собственного padding НЕТ: поля отдают крайние табы (см. .gm-runbar__tab:first-child), чтобы
-       скошенный торец ленты входил в кликабельную и подсвечиваемую область крайней кнопки. */
-    padding: 0;
+    /* Поля ленты = вылет скоса (14) + воздух: кнопки живут ВНУТРИ латунной рамки и никогда её не
+       перекрывают (наход. Макса, раунд 3 — регрессия раунда 2, где padding сняли ради зоны нажатия).
+       Вертикальные поля тоже нужны: иначе подсветка таба ложится прямо на верхнюю и нижнюю кромку. */
+    padding: var(--gm-space-0) var(--gm-space-3);
     align-items: stretch;
     justify-content: center;
 }
@@ -1267,25 +1336,31 @@
 /* Иконка-режим: квадратный слот, состояние — тинтом монохромной иконки, не вторым файлом. */
 /* Лента режимов = чипы в «скрытом» режиме (.gm-chip--collapsible): иконка всегда, подпись — только
    у активного. Здесь только зазор между табами; весь вид/отклик берёт единый .gm-chip. */
-/* Таб ленты занимает ВСЮ высоту ленты и стыкуется с соседом без зазора: подсветка при наведении
-   заливает всю кнопку, а не полоску вокруг иконки (реш. Макса, раунд 2). Границы соседей
-   обозначает тихая вертикальная линия. */
+/* Таб ленты тянется на всю высоту ленты (внутри её полей) — подсветка заливает кнопку целиком,
+   а не полоску вокруг иконки. Границы соседей рисуют отдельные палочки-разделители в разметке
+   (.gm-runbar__divider), а НЕ border-right у таба: рамка-по-краю превращала ленту в решётку
+   и упиралась в кромку (наход. Макса, раунд 3). */
 .gm-runbar__tab {
     margin: 0;
     padding: 0 var(--gm-space-2);
     justify-content: center;
-    border-right-width: var(--gm-outline-width);
-    border-right-color: var(--gm-outline-color-subtle);
+    border-width: 0;
 }
 
-/* Крайние табы забирают под себя поле скошенного торца — угол ленты тоже часть кнопки.
-   Крайность помечена классом (--first/--last), а не :first-child: UITK псевдоклассы позиции
-   не поддерживает и молча роняет такое правило в лог. */
-.gm-runbar__tab--first { padding-left: var(--gm-space-4); }
-.gm-runbar__tab--last  { padding-right: var(--gm-space-4); border-right-width: 0; }
+/* Таб настроек — ТОЛЬКО иконка: подпись не появляется даже в активном состоянии. Настройки не
+   режим забега, их «Меню» подписью читалось шестым табом (наход. Макса, раунд 3, п.10). */
+.gm-runbar__tab--menu .gm-chip__label { display: none; }
+.gm-runbar__tab--menu .gm-chip__icon  { margin-right: 0; }
 
-/* Перед разделителем «настроек» своя линия не нужна — там уже стоит .gm-runbar__sep. */
-.gm-runbar__tab--compendium { border-right-width: 0; }
+/* Разделитель между табами: тонкая палочка в рост иконки — тот же приём, что отделяет настройки. */
+.gm-runbar__divider {
+    width: 2px;
+    height: 26px;
+    flex-shrink: 0;
+    align-self: center;
+    background-color: var(--gm-color-border-subtle);
+    opacity: 0.6;
+}
 
 /* Иконки режимов — game-icons.net (Lorc, Delapouite), CC BY 3.0, белый силуэт; тинт даёт состояние чипа. */
 .gm-runbar__tab--map        .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/treasure-map.png"); }
@@ -1455,6 +1530,12 @@
 .gm-chip:hover { background-color: var(--gm-color-hover-surface); }
 .gm-chip:hover .gm-chip__icon { -unity-background-image-tint-color: var(--gm-color-text); }
 .gm-chip:hover .gm-chip__label { color: var(--gm-color-text); }
+
+/* Нажатие: чип проваливается в тёмное и подсвечивает содержимое латунью — без этого таб отвечал
+   только на наведение, и клик не читался вовсе (наход. Макса, раунд 3, п.9). */
+.gm-chip:active { background-color: var(--gm-color-surface-sunken); }
+.gm-chip:active .gm-chip__icon { -unity-background-image-tint-color: var(--gm-color-accent); }
+.gm-chip:active .gm-chip__label { color: var(--gm-brass-200); }
 
 .gm-chip--active { background-color: var(--gm-color-surface-raised); }
 .gm-chip--active .gm-chip__icon { -unity-background-image-tint-color: var(--gm-color-accent); }
@@ -1681,7 +1762,9 @@
 .gm-loadout__video {
     width: 320px;
     height: 180px;
-    align-self: center;
+    /* По левому краю, как всё остальное в панели: центрированная вставка выбивалась из колонки
+       (наход. Макса, раунд 3). */
+    align-self: flex-start;
     background-color: var(--gm-color-surface-sunken);
     border-width: var(--gm-outline-width);
     border-color: var(--gm-outline-color);
@@ -1747,17 +1830,17 @@
     justify-content: flex-start;
 }
 
-/* Нарратив — курсив, сериф-голос; стоит В КОНЦЕ панели (реш. Макса, раунд 2).
-   min-height = резерв под 4 строки (17px × 1.35 ≈ 23 на строку): у разных китов описания разной
-   длины, и без резерва нижний край панели дышал бы вслед за текстом. */
+/* Нарратив — курсив, сериф-голос; стоит под способностями (реш. Макса, раунд 3).
+   min-height = резерв под 3 строки (17px × 1.35 ≈ 23 на строку): у разных китов описания разной
+   длины, и без резерва блоки под ним ездили бы вслед за текстом. */
 .gm-loadout__narrative-text {
     -unity-font-definition: url("../Fonts/CormorantGaramond-Medium SDF.asset");
     -unity-font-style: italic;
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-xs);
     white-space: normal;
-    min-height: 92px;
-    margin-top: var(--gm-space-2);
+    min-height: 70px;
+    margin-top: 0;
     margin-bottom: 0;
 }
 

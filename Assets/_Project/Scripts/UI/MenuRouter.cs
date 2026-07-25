@@ -137,9 +137,26 @@ namespace Guildmaster.UI
             public override void OnExit() => _onExit?.Invoke();
         }
 
+        /// <summary>Открыто ли главное меню (гейт для ESC и для «настройки без скрима»).</summary>
+        private bool _mainMenuOpen;
+
+        // scrimless: модалка не рисует собственное затемнение (настройки из главного меню — там темнить
+        // нечего, панель просто подменяет панель). Класс тот же, что вешает навигатор на верхние модалки.
         private void PushScreen(Func<VisualElement> build, ScreenKind kind, string modeTag = null, string screenId = null,
-                                CancellationToken ct = default)
-            => _nav.Push(new RouterScreen(kind, build, modeTag, screenId), ct);
+                                CancellationToken ct = default, Action onExit = null, bool scrimless = false)
+        {
+            Func<VisualElement> build2 = scrimless
+                ? () => { VisualElement v = build(); MarkScrimless(v); return v; }
+                : build;
+            _nav.Push(new RouterScreen(kind, build2, modeTag, screenId, onExit), ct);
+        }
+
+        // Класс вешаем на элемент, который РИСУЕТ скрим (.gm-screen), а не на TemplateContainer из CloneTree.
+        private static void MarkScrimless(VisualElement root)
+        {
+            VisualElement scrim = root.ClassListContains("gm-screen") ? root : root.Q(className: "gm-screen");
+            scrim?.AddToClassList("gm-screen--scrimless");
+        }
 
         // Обёртка flow-экрана с результатом (Ф3): вью-билдер получает делегат Resolve и связывает с ним свои
         // колбэки (выбор/пропуск). Навигатор гарантирует РОВНО ОДИН резолв — явный или DefaultResult при снятии
@@ -359,6 +376,9 @@ namespace Guildmaster.UI
         public void ToggleSystemMenu()
         {
             if (_root == null) return;
+            // В главном меню системного меню нет: выходить из игры некуда, а ESC-панель поверх главного
+            // меню — просто баг (наход. Макса, раунд 3, п.3).
+            if (_mainMenuOpen) return;
             bool inMenu = _nav.AnyScreen(s => s is RouterScreen r && r.ScreenId == PauseId);
             if (inMenu) _nav.Pop();                                          // уже в системном меню → назад/закрыть
             else PushScreen(BuildPauseScreen, ScreenKind.Modal, screenId: PauseId); // QA #19: меню ПОВЕРХ (Modal со scrim)
@@ -747,18 +767,32 @@ namespace Guildmaster.UI
 
         private async UniTaskVoid ShowMainMenuAsync(OpenMainMenuRequest req)
         {
-            var screen = new RouterResultScreen<MainMenuChoice>(ScreenKind.Page, MainMenuChoice.Quit,
+            RouterResultScreen<MainMenuChoice> screen = null;
+
+            // Настройки ИЗ ГЛАВНОГО МЕНЮ ведут себя как замена панели, а не как модалка поверх неё
+            // (реш. Макса, раунд 3): панель меню на время прячется, затемнение не накладывается —
+            // мы и так в меню, темнить нечего. В забеге настройки остаются модалкой со скримом.
+            void OpenSettingsFromMainMenu()
+            {
+                VisualElement menuPanel = screen?.Root;
+                if (menuPanel != null) menuPanel.style.display = DisplayStyle.None;
+                PushScreen(BuildSettingsScreen, ScreenKind.Modal, scrimless: true,
+                    onExit: () => { if (menuPanel != null) menuPanel.style.display = DisplayStyle.Flex; });
+            }
+
+            screen = new RouterResultScreen<MainMenuChoice>(ScreenKind.Page, MainMenuChoice.Quit,
                 resolve => MainMenuScreenView.Build(
                     _mainMenuUxml,
                     req.HasSave,
                     key => _loc?.GetString(key),
                     onStart:    () => resolve(MainMenuChoice.StartRun),
                     onContinue: () => resolve(MainMenuChoice.Continue),
-                    onSettings: () => PushScreen(BuildSettingsScreen, ScreenKind.Modal), // поверх меню, НЕ резолв
+                    onSettings: OpenSettingsFromMainMenu,
                     onQuit:     () => resolve(MainMenuChoice.Quit)));
 
             // Пока меню на экране, презентационный слой подкладывает под него стол (иначе за меню пустота).
             _mainMenuVisPub?.Publish(new MainMenuVisibilityChangedEvent(true));
+            _mainMenuOpen = true;
             try
             {
                 MainMenuChoice choice = await _nav.ShowAsync(screen); // снятие без выбора = Quit (верхний цикл не виснет)
@@ -769,6 +803,7 @@ namespace Guildmaster.UI
                 // Через finally, а не после await: меню снимают и отменой, и выходом из игры — фон обязан
                 // погаснуть в любом случае, иначе он останется висеть поверх мира.
                 _mainMenuVisPub?.Publish(new MainMenuVisibilityChangedEvent(false));
+                _mainMenuOpen = false;
             }
         }
 

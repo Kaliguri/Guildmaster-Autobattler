@@ -289,11 +289,23 @@ namespace Guildmaster.UI
             {
                 UiScreen s = _stack[i];
                 if (s.Kind != ScreenKind.Modal || s.Root == null) continue;
+                VisualElement scrim = ScrimOf(s.Root);
+                if (scrim == null) continue;
                 bool visible = s.Root.style.display.value == DisplayStyle.Flex;
-                s.Root.EnableInClassList(ScrimlessClass, scrimBelow);
+                scrim.EnableInClassList(ScrimlessClass, scrimBelow);
                 if (visible) scrimBelow = true;
             }
         }
+
+        /// <summary>
+        /// Элемент, который РИСУЕТ затемнение экрана. Это не всегда сам Root: билдеры роутера отдают
+        /// <c>TemplateContainer</c> от <c>CloneTree()</c>, а класс <c>.gm-screen</c> (и с ним скрим)
+        /// висит на элементе ВНУТРИ. Вешать модификатор на контейнер бесполезно — затемнение остаётся.
+        /// </summary>
+        private static VisualElement ScrimOf(VisualElement root)
+            => root.ClassListContains(ScreenClass) ? root : root.Q(className: ScreenClass);
+
+        private const string ScreenClass = "gm-screen";
 
         /// <summary>Модалка без собственного затемнения: скрим уже даёт модалка под ней.</summary>
         private const string ScrimlessClass = "gm-screen--scrimless";

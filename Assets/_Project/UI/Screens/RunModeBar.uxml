@@ -15,9 +15,13 @@
         <!-- Лента-островок: форму рисует SlantedPanel вершинами (скос на 9-slice «плывёт» по ширине). -->
         <gm:SlantedPanel name="runbar-ribbon" Slant="14" class="gm-runbar__ribbon">
             <gm:Chip name="mode-map" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--first gm-runbar__tab--map" />
+            <ui:VisualElement class="gm-runbar__divider" picking-mode="Ignore" />
             <gm:Chip name="mode-battle" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--battle" />
+            <ui:VisualElement class="gm-runbar__divider" picking-mode="Ignore" />
             <gm:Chip name="mode-inventory" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--inventory" />
+            <ui:VisualElement class="gm-runbar__divider" picking-mode="Ignore" />
             <gm:Chip name="mode-tactics" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--tactics" />
+            <ui:VisualElement class="gm-runbar__divider" picking-mode="Ignore" />
             <gm:Chip name="mode-compendium" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--compendium" />
             <!-- Настройки за разделителем: открывают модалку, а не переключают режим — не должны читаться шестым табом. -->
             <ui:VisualElement class="gm-runbar__sep" />
