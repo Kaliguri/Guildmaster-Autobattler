@@ -225,6 +225,38 @@
             <ui:Button text="Disabled" class="gm-button" enabled="false" />
         </ui:VisualElement>
 
+        <!-- СОСТОЯНИЯ. Показываем то, что видно статически: покой, «выбрано», ВЫКЛЮЧЕНО.
+             Наведение и нажатие псевдоклассовые — их из разметки не изобразить, они проверяются
+             мышью в Play. Выключенные элементы здесь стоят рядом с включёнными намеренно: раньше
+             disabled жил только у кнопок, и у чипа/слота/поля выключенное состояние рисовала тема
+             Unity своим серым (п.9 раунда 4) — на витрине это теперь видно сразу. -->
+        <ui:Label text="Состояния: покой / выбрано / выключено (наведение и нажатие — мышью в Play)" class="gm-text-muted gm-gallery-caption" />
+        <ui:VisualElement class="gm-gallery-row">
+            <ui:Button text="Кнопка" class="gm-button" style="margin-right: 12px;" />
+            <ui:Button text="Главная" class="gm-button gm-button--primary" style="margin-right: 12px;" />
+            <ui:Button text="Выключена" class="gm-button" enabled="false" />
+        </ui:VisualElement>
+
+        <!-- Ряду чипов нужна реальная ширина колонки: табы-фильтры рассчитаны делить её между собой
+             и без контейнера схлопываются друг на друга. -->
+        <ui:VisualElement class="gm-gallery-row gm-gallery-row--wide">
+            <gm:Chip text="Чип" class="gm-filter-tab" />
+            <gm:Chip text="Выбран" class="gm-filter-tab gm-chip--active" />
+            <gm:Chip text="Выключен" class="gm-filter-tab gm-filter-tab--last" enabled="false" />
+        </ui:VisualElement>
+
+        <ui:VisualElement class="gm-gallery-row">
+            <gm:Slot class="gm-slot--sm" style="margin-right: 12px;" />
+            <gm:Slot class="gm-slot--sm" enabled="false" style="margin-right: 24px;" />
+            <ui:TextField class="gm-loadout__search" style="width: 220px; margin-right: 12px;" />
+            <ui:TextField class="gm-loadout__search" enabled="false" style="width: 220px;" />
+        </ui:VisualElement>
+
+        <ui:VisualElement class="gm-gallery-row" style="width: 420px;">
+            <ui:Slider class="gm-slider" low-value="0" high-value="1" value="0.6" style="flex-grow: 1; margin-right: 16px;" />
+            <ui:Slider class="gm-slider" low-value="0" high-value="1" value="0.6" enabled="false" style="flex-grow: 1;" />
+        </ui:VisualElement>
+
         <ui:Label text="gm-panel + gm-slider (settings preview)" class="gm-text-muted gm-gallery-caption" />
         <ui:VisualElement class="gm-panel" style="max-width: 380px;">
             <ui:Label text="Audio" class="gm-panel__title" />
@@ -244,8 +276,8 @@
                 <ui:Slider class="gm-slider" low-value="0" high-value="1" value="1" />
                 <ui:Label text="100%" class="gm-slider-row__value" />
             </ui:VisualElement>
-            <gm:ToggleRow LabelText="Анимация карточек" Value="true" />
-            <gm:ToggleRow LabelText="Анимация атаки карточек" Value="true" />
+            <gm:ToggleRow label-text="Анимация карточек" Value="true" />
+            <gm:ToggleRow label-text="Анимация атаки карточек" Value="true" />
             <ui:VisualElement class="gm-divider" />
             <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
                 <ui:Button text="Save" class="gm-button gm-button--primary" style="flex-grow: 1; margin-right: 8px;" />

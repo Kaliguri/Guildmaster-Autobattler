@@ -20,14 +20,14 @@
                  Палочек-разделителей между режимами больше НЕТ: каждый таб — самостоятельная кнопка
                  со своим контуром (п.2 раунда 4). Разделитель остался ровно один — перед настройками,
                  и он смысловой: там кончаются режимы и начинается модалка. -->
-            <gm:SlantedChip name="mode-map" Slant="12" SlantSide="Left" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--first gm-runbar__tab--map" />
+            <gm:SlantedChip name="mode-map" Slant="12" slant-side="Left" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--first gm-runbar__tab--map" />
             <gm:Chip name="mode-battle" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--battle" />
             <gm:Chip name="mode-inventory" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--inventory" />
             <gm:Chip name="mode-tactics" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--tactics" />
             <gm:Chip name="mode-compendium" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--compendium" />
             <!-- Настройки за разделителем: открывают модалку, а не переключают режим — не должны читаться шестым табом. -->
             <ui:VisualElement class="gm-runbar__sep" />
-            <gm:SlantedChip name="btn-menu" Slant="12" SlantSide="Right" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--last gm-runbar__tab--menu" />
+            <gm:SlantedChip name="btn-menu" Slant="12" slant-side="Right" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--last gm-runbar__tab--menu" />
         </gm:SlantedPanel>
 
         <ui:VisualElement class="gm-loadout__topbar-side gm-loadout__topbar-side--right">
