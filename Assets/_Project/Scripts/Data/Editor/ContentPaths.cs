@@ -20,6 +20,7 @@ namespace Guildmaster.Data.Editor
             { typeof(EnemyData),       "Enemies"      },
             { typeof(VesselData),      "Vessels"      },
             { typeof(EffectData),      "Effects"      },
+            { typeof(VfxData),         "Vfx"          },
             { typeof(TagData),         "Tags"         },
             { typeof(TraitData),       "Traits"       },
             { typeof(ConsequenceData), "Consequences" },

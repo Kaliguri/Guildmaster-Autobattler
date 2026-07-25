@@ -113,7 +113,7 @@ namespace Guildmaster.Presentation
         private float        _contactDustCooldownLeft;
         private int          _lastTargetId = int.MinValue;
         private float        _deathAnticipateLeft;       // remaining unscaled death-anticipation
-        private System.Action<UnitView> _onContactDust;  // презентер спавнит ImpactDust; null = нет VFX
+        private System.Action<UnitView> _onContactDust;  // презентер спавнит VfxContactDust; null = нет VFX
         private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
         private static readonly int FlashColorId  = Shader.PropertyToID("_FlashColor");
 
@@ -185,7 +185,7 @@ namespace Guildmaster.Presentation
         public void ApplyFeelConfig(Design.CombatFeelConfig feel) => _feel = feel;
 
         /// <summary>
-        /// Хук contact-dust: презентер спавнит <c>ImpactDust</c> в <see cref="FeetPoint"/>.
+        /// Хук contact-dust: презентер спавнит <c>VfxContactDust</c> в <see cref="FeetPoint"/>.
         /// Вызывается на старте/стопе бега, если тумблер в feel-конфиге включён.
         /// </summary>
         public void SetContactDustHandler(System.Action<UnitView> handler) => _onContactDust = handler;

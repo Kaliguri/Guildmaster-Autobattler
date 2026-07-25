@@ -58,7 +58,7 @@ namespace Guildmaster.Presentation
         private ObjectPool<FloatingText>    _textPool;
         private System.Action<FloatingText> _releaseText;
         private CombatStatusOverlay         _statusOverlay;
-        private CombatVfx                   _vfx;               // пул пиксельных VFX-брызгов
+        private CombatVfx                   _vfx;               // пул боевых VFX-префабов
         private RuntimeUnit                 _finisherCandidate; // автор последнего добивающего мили-удара
 
         private IPublisher<UnitSpawnedEvent> _unitSpawnedPublisher;
@@ -152,6 +152,9 @@ namespace Guildmaster.Presentation
                 var texts = GetComponentsInChildren<FloatingText>(includeInactive: false);
                 for (int i = 0; i < texts.Length; i++) texts[i].Cancel();
             }
+
+            // Летящие VFX-префабы — погасить и вернуть в пул.
+            if (_vfx != null) _vfx.DespawnAll();
         }
 
         /// <summary>Создать dev-слой статус-колец в рантайме (без правок сцены/префабов) и подать симуляцию.</summary>
@@ -164,14 +167,13 @@ namespace Guildmaster.Presentation
             _statusOverlay.Initialize(_simulation);
         }
 
-        /// <summary>Создать пул пиксельных VFX-брызгов в рантайме (без правок сцены/префабов).</summary>
+        /// <summary>Создать пул боевых VFX-префабов в рантайме (без правок сцены).</summary>
         private void EnsureVfx()
         {
             if (_vfx != null) return;
             var go = new GameObject("CombatVfx");
             go.transform.SetParent(transform, worldPositionStays: false);
             _vfx = go.AddComponent<CombatVfx>();
-            _vfx.Initialize();
         }
 
         private void Update()
@@ -215,7 +217,7 @@ namespace Guildmaster.Presentation
                 {
                     Vector2 vel = projectile.Velocity;
                     float ang = vel.sqrMagnitude > 1e-6f ? Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg : 0f;
-                    _vfx.SpawnBurst(srcView.ShotPoint, ang, _feel.Muzzle, 1f, srcView.BodySortingLayerId, srcView.BodySortingOrder + 5);
+                    _vfx.Spawn(_feel.VfxMuzzle, srcView.ShotPoint, ang);
                 }
             }
 
@@ -324,15 +326,14 @@ namespace Guildmaster.Presentation
             Vector3 anchor  = AnchorFor(target);
             float   hpScale = Mathf.Lerp(1f, _feel.NumberMaxScale, Mathf.Clamp01(frac / Mathf.Max(1e-4f, _feel.NumberFullFrac)));
 
-            // Пиксельные VFX: искры в точку попадания (кол-во по весу удара) + пыль у ног на мили-ударе.
+            // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе.
             if (_vfx != null && _feel != null && view != null)
             {
-                float intensity = 0.35f + 0.65f * Mathf.Clamp01(frac / Mathf.Max(1e-4f, _feel.HeavyHitFrac));
-                _vfx.SpawnBurst(anchor, 0f, _feel.HitSpark, intensity, view.BodySortingLayerId, view.BodySortingOrder + 5);
+                _vfx.Spawn(_feel.VfxHitSpark, anchor, intensity: _feel.EvaluateHitVfxIntensity(frac));
 
                 bool melee = source?.Unit != null && source.Unit.AttackType == AttackType.Melee;
                 if (melee)
-                    _vfx.SpawnBurst(view.FeetPoint, 90f, _feel.ImpactDust, 1f, view.BodySortingLayerId, view.BodySortingOrder - 1);
+                    _vfx.Spawn(_feel.VfxImpactDust, view.FeetPoint);
             }
 
             // Урон по щиту — синим «-N»; по HP — «-N» цветом урона. Если задет и щит, и HP —
@@ -355,9 +356,9 @@ namespace Guildmaster.Presentation
 
             SpawnNumber(AnchorFor(target), "+" + healed, _healColor);
 
-            // Пиксельные хил-искры (восходящие, зелёные) в точку попадания.
+            // VFX лечения в точку попадания.
             if (_vfx != null && _feel != null && _views.TryGetValue(target.Id, out var tView) && tView != null)
-                _vfx.SpawnBurst(tView.HitPoint, 90f, _feel.Heal, 1f, tView.BodySortingLayerId, tView.BodySortingOrder + 5);
+                _vfx.Spawn(_feel.VfxHeal, tView.HitPoint);
         }
 
         private void HandleAttackEvaded(RuntimeUnit target)
@@ -392,13 +393,12 @@ namespace Guildmaster.Presentation
             return (Vector3)(Vector2)target.Position + Vector3.up * 0.4f;
         }
 
-        /// <summary>Contact-dust: пыль у ног при старте/стопе бега (пресет ImpactDust, тумблер в feel-конфиге).</summary>
+        /// <summary>Contact-dust: пыль у ног при старте/стопе бега (VfxData → префаб, тумблер в feel-конфиге).</summary>
         private void OnUnitContactDust(UnitView view)
         {
             if (_vfx == null || _feel == null || view == null) return;
             if (!_feel.EnableContactDust) return;
-            _vfx.SpawnBurst(view.FeetPoint, 90f, _feel.ImpactDust, 0.7f,
-                view.BodySortingLayerId, view.BodySortingOrder - 1);
+            _vfx.Spawn(_feel.VfxContactDust, view.FeetPoint);
         }
 
         /// <summary>Лениво собрать пул всплывающих цифр из префаба (zero-alloc в бою, пункт QA #5).</summary>

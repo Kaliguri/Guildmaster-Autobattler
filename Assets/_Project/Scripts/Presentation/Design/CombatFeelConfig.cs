@@ -16,7 +16,7 @@ namespace Guildmaster.Presentation.Design
     {
         // --- Micro Feel — единая точка выключения ---
         [Header("Micro Feel — toggles (выключи здесь = эффект мёртв везде)")]
-        [Tooltip("Пыль у ног при старте/стопе бега (ImpactDust на FeetPoint).")]
+        [Tooltip("Пыль у ног при старте/стопе бега (Vfx ContactDust на FeetPoint).")]
         [SerializeField] private bool _enableContactDust = true;
         [Tooltip("Цель чуть уезжает от удара на hitstop и возвращается (только презентация).")]
         [SerializeField] private bool _enableHitNudge = true;
@@ -210,19 +210,24 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Форма возврата: нормализованное время (0→1) → доля возврата к норме (0→1).")]
         [SerializeField] private AnimationCurve _finisherReturnCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
-        // --- VFX — пиксельные брызги (CombatVfx / PixelBurst) ---
-        [Header("VFX — hit-spark (попадание, в HitPoint)")]
-        [SerializeField] private PixelBurstPreset _hitSpark = new PixelBurstPreset
-            { Color = new Color(1f, 0.95f, 0.7f), Count = 18, Speed = 1.15f, Size = 0.055f, Life = 0.32f, Gravity = 0.65f, SpreadDeg = 360f };
-        [Header("VFX — muzzle (выстрел, в ShotPoint)")]
-        [SerializeField] private PixelBurstPreset _muzzle = new PixelBurstPreset
-            { Color = new Color(1f, 0.85f, 0.4f), Count = 10, Speed = 0.75f, Size = 0.055f, Life = 0.16f, Gravity = 0f, SpreadDeg = 50f };
-        [Header("VFX — impact dust (мили-удар, у ног цели)")]
-        [SerializeField] private PixelBurstPreset _impactDust = new PixelBurstPreset
-            { Color = new Color(0.75f, 0.68f, 0.55f), Count = 10, Speed = 0.55f, Size = 0.075f, Life = 0.45f, Gravity = 0.45f, SpreadDeg = 140f };
-        [Header("VFX — heal (лечение, в HitPoint)")]
-        [SerializeField] private PixelBurstPreset _heal = new PixelBurstPreset
-            { Color = new Color(0.55f, 1f, 0.6f), Count = 12, Speed = 0.7f, Size = 0.05f, Life = 0.5f, Gravity = -0.45f, SpreadDeg = 50f };
+        // --- VFX — префабы через VfxData (SO → префаб → пул → сокет) ---
+        [Header("VFX — prefab refs (VfxData)")]
+        [Tooltip("Искры попадания в HitPoint.")]
+        [SerializeField] private VfxData _vfxHitSpark;
+        [Tooltip("Вспышка выстрела в ShotPoint.")]
+        [SerializeField] private VfxData _vfxMuzzle;
+        [Tooltip("Пыль у ног цели на мили-ударе.")]
+        [SerializeField] private VfxData _vfxImpactDust;
+        [Tooltip("Пыль у ног при старте/стопе бега.")]
+        [SerializeField] private VfxData _vfxContactDust;
+        [Tooltip("Искры лечения в HitPoint.")]
+        [SerializeField] private VfxData _vfxHeal;
+
+        [Header("VFX — hit-spark intensity by damage weight")]
+        [Tooltip("Множитель scale hit-spark на лёгком ударе (доля урона → 0).")]
+        [SerializeField, Range(0.05f, 1f)] private float _vfxHitIntensityMin = 0.35f;
+        [Tooltip("Множитель scale hit-spark на тяжёлом ударе (доля ≥ HeavyHitFrac).")]
+        [SerializeField, Range(0.05f, 2f)] private float _vfxHitIntensityMax = 1f;
 
         // --- Getters ---
         public bool  EnableContactDust       => _enableContactDust;
@@ -305,10 +310,18 @@ namespace Guildmaster.Presentation.Design
         public float ShatterEmberStart => _shatterEmberStart;
         public float ShatterHold       => _shatterHold;
 
-        public PixelBurstPreset HitSpark   => _hitSpark;
-        public PixelBurstPreset Muzzle     => _muzzle;
-        public PixelBurstPreset ImpactDust => _impactDust;
-        public PixelBurstPreset Heal       => _heal;
+        public VfxData VfxHitSpark    => _vfxHitSpark;
+        public VfxData VfxMuzzle      => _vfxMuzzle;
+        public VfxData VfxImpactDust  => _vfxImpactDust;
+        public VfxData VfxContactDust => _vfxContactDust;
+        public VfxData VfxHeal        => _vfxHeal;
+
+        /// <summary>Множитель scale hit-spark по доле HP-урона от MaxHP (HeavyHitFrac = полная сила).</summary>
+        public float EvaluateHitVfxIntensity(float hpDamageFrac)
+        {
+            float t = Mathf.Clamp01(hpDamageFrac / Mathf.Max(1e-4f, _heavyHitFrac));
+            return Mathf.Lerp(_vfxHitIntensityMin, _vfxHitIntensityMax, t);
+        }
 
         public float KillSlowFactor    => _killSlowFactor;
         public float KillSlowRelease   => _killSlowRelease;
@@ -344,9 +357,9 @@ namespace Guildmaster.Presentation.Design
 
             return school switch
             {
-                DamageSchool.Elemental => _flashElemental,
-                DamageSchool.True      => _flashTrue,
-                _                      => _flashPhysical,
+                DamageSchool.Magical => _flashElemental,
+                DamageSchool.True    => _flashTrue,
+                _                    => _flashPhysical,
             };
         }
     }

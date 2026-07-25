@@ -8,9 +8,9 @@ alwaysApply: true
 ## Commit Format
 
 ```
-<type>(<scope>): <short description>
+<type>(<scope>): <short description> (Cursor)
 
-[optional body]
+<body — detailed, required for agent commits>
 ```
 
 ### Types
@@ -29,23 +29,34 @@ alwaysApply: true
 
 ### Scopes (optional)
 
-`combat`, `units`, `ui`, `inventory`, `guild`, `ai`, `audio`, `scene`
+`combat`, `units`, `ui`, `inventory`, `guild`, `ai`, `audio`, `scene`, `feel`
 
 ### Rules
 
 - Language: **English**
 - Use imperative: "add", "fix", "remove" — not "added", "fixes"
-- No period at the end
-- Max 72 characters in subject line
+- No period at the end of the subject
+- Subject max ~72 characters **before** the marker; always end the title with ` (Cursor)` so agent commits are obvious in history
+- **Body is required for Cursor/agent commits** and must be detailed enough that Max (or Claude in a later chat) can audit without re-reading the diff:
+  - what changed (files/systems, not every line)
+  - why / intent
+  - how to verify (Play steps, toggles, edge cases)
+  - anything intentionally left out or risky
 
 ### Examples
 
 ```
-feat(combat): add poison damage over time mechanic
-fix(units): fix archer not targeting nearest enemy
-data(combat): rebalance warrior base stats
-refactor(ai): extract targeting logic into separate class
-chore: update Unity packages
+feat(combat): add poison damage over time mechanic (Cursor)
+
+Adds PeriodicDamage stacking on Ignition. Wired through DamagePipeline.
+VERIFY: ignite dummy, confirm DoT ticks and refresh; no armor on True.
+```
+
+```
+fix(units): fix archer not targeting nearest enemy (Cursor)
+data(combat): rebalance warrior base stats (Cursor)
+refactor(ai): extract targeting logic into separate class (Cursor)
+chore: update Unity packages (Cursor)
 ```
 
 ---

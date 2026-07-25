@@ -47,6 +47,7 @@ namespace Guildmaster.Data.Editor
                 case "ai_preset":
                 case "encounter":
                 case "battle_preset":
+                case "vfx":
                     return Array.Empty<string>();
                 case "event":
                     return EventSuffixes(def as TextEventData);

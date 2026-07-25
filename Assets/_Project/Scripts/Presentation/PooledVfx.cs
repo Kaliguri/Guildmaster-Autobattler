@@ -1,0 +1,198 @@
+using UnityEngine;
+
+namespace Guildmaster.Presentation
+{
+    /// <summary>
+    /// Корневой компонент VFX-префаба: Play в мировой точке → авто-возврат в пул по окончании.
+    /// Визуал живёт на префабе; sorting layer + base order приходят из <see cref="Data.Definitions.VfxData"/>.
+    /// Относительный order детей (Flash над Sparks) запечён в префабе и сохраняется.
+    /// </summary>
+    public sealed class PooledVfx : MonoBehaviour
+    {
+        [Tooltip("Жёсткий потолок жизни, сек (0 = ждать ParticleSystem.IsAlive или 2с фолбэк).")]
+        [SerializeField] private float _maxLifetime = 0f;
+
+        private ParticleSystem[] _particles;
+        private Renderer[]       _renderers;
+        private int[]            _relativeOrders; // order ребёнка минус min по префабу
+        private float            _elapsed;
+        private float            _life;
+        private bool             _playing;
+        private Vector3          _baseScale = Vector3.one;
+        private bool             _baseScaleCaptured;
+        private System.Action<PooledVfx> _onComplete;
+
+        private void Awake() => Cache();
+
+        private void Cache()
+        {
+            if (_particles == null)
+                _particles = GetComponentsInChildren<ParticleSystem>(includeInactive: true);
+            if (_renderers == null)
+            {
+                _renderers = GetComponentsInChildren<Renderer>(includeInactive: true);
+                BakeRelativeOrders();
+            }
+            if (!_baseScaleCaptured)
+            {
+                _baseScale = transform.localScale;
+                _baseScaleCaptured = true;
+            }
+        }
+
+        /// <summary>
+        /// Относительный order детей: min→0, остальные — дельта. Так SO задаёт base, префаб — стек внутри.
+        /// </summary>
+        private void BakeRelativeOrders()
+        {
+            if (_renderers == null || _renderers.Length == 0)
+            {
+                _relativeOrders = System.Array.Empty<int>();
+                return;
+            }
+
+            int min = int.MaxValue;
+            for (int i = 0; i < _renderers.Length; i++)
+            {
+                if (_renderers[i] == null) continue;
+                if (_renderers[i].sortingOrder < min) min = _renderers[i].sortingOrder;
+            }
+            if (min == int.MaxValue) min = 0;
+
+            _relativeOrders = new int[_renderers.Length];
+            for (int i = 0; i < _renderers.Length; i++)
+            {
+                Renderer r = _renderers[i];
+                _relativeOrders[i] = r != null ? r.sortingOrder - min : 0;
+            }
+        }
+
+        /// <summary>
+        /// Проиграть в мировой точке. Sorting: <paramref name="sortingLayerId"/> +
+        /// <paramref name="baseSortingOrder"/> + относительный order ребёнка из префаба.
+        /// </summary>
+        public void Play(Vector3 worldPos, float scale, float dirDeg,
+            int sortingLayerId, int baseSortingOrder, System.Action<PooledVfx> onComplete)
+        {
+            Cache();
+            _onComplete = onComplete;
+            _elapsed = 0f;
+            _playing = true;
+
+            transform.position = worldPos;
+            transform.rotation = Quaternion.Euler(0f, 0f, dirDeg);
+            transform.localScale = _baseScale * Mathf.Max(0.01f, scale);
+
+            ApplySorting(sortingLayerId, baseSortingOrder);
+
+            if (_particles != null)
+            {
+                for (int i = 0; i < _particles.Length; i++)
+                {
+                    ParticleSystem ps = _particles[i];
+                    if (ps == null) continue;
+                    ps.Clear(true);
+                    ps.Play(true);
+                }
+            }
+
+            _life = ResolveLife();
+        }
+
+        /// <summary>Прервать и вернуть в пул (battle reset).</summary>
+        public void Cancel()
+        {
+            if (!_playing) { Finish(); return; }
+            StopParticles();
+            Finish();
+        }
+
+        private void Update()
+        {
+            if (!_playing) return;
+
+            _elapsed += Time.deltaTime;
+
+            if (_life > 0f)
+            {
+                if (_elapsed >= _life) { StopParticles(); Finish(); }
+                return;
+            }
+
+            if (_elapsed >= 2f || !AnyAlive())
+            {
+                StopParticles();
+                Finish();
+            }
+        }
+
+        private float ResolveLife()
+        {
+            if (_maxLifetime > 0f) return _maxLifetime;
+
+            float max = 0f;
+            if (_particles != null)
+            {
+                for (int i = 0; i < _particles.Length; i++)
+                {
+                    ParticleSystem ps = _particles[i];
+                    if (ps == null) continue;
+                    var main = ps.main;
+                    float d = main.duration;
+                    if (main.startLifetime.mode == ParticleSystemCurveMode.Constant)
+                        d += main.startLifetime.constant;
+                    else if (main.startLifetime.mode == ParticleSystemCurveMode.TwoConstants)
+                        d += main.startLifetime.constantMax;
+                    if (d > max) max = d;
+                }
+            }
+
+            return max > 0f ? max : 0f;
+        }
+
+        private bool AnyAlive()
+        {
+            if (_particles == null || _particles.Length == 0) return false;
+            for (int i = 0; i < _particles.Length; i++)
+            {
+                ParticleSystem ps = _particles[i];
+                if (ps != null && ps.IsAlive(true)) return true;
+            }
+            return false;
+        }
+
+        private void StopParticles()
+        {
+            if (_particles == null) return;
+            for (int i = 0; i < _particles.Length; i++)
+            {
+                ParticleSystem ps = _particles[i];
+                if (ps == null) continue;
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
+        }
+
+        private void ApplySorting(int sortingLayerId, int baseSortingOrder)
+        {
+            if (_renderers == null) return;
+            if (_relativeOrders == null) BakeRelativeOrders();
+
+            for (int i = 0; i < _renderers.Length; i++)
+            {
+                Renderer r = _renderers[i];
+                if (r == null) continue;
+                r.sortingLayerID = sortingLayerId;
+                int rel = _relativeOrders != null && i < _relativeOrders.Length ? _relativeOrders[i] : 0;
+                r.sortingOrder = baseSortingOrder + rel;
+            }
+        }
+
+        private void Finish()
+        {
+            _playing = false;
+            System.Action<PooledVfx> cb = _onComplete;
+            _onComplete = null;
+            cb?.Invoke(this);
+        }
+    }
+}

@@ -19,6 +19,7 @@ namespace Guildmaster.Data.Definitions
             { typeof(SpeciesData),     "species"     },
             { typeof(VesselData),      "vessel"      },
             { typeof(EffectData),      "effect"      },
+            { typeof(VfxData),         "vfx"         },
             { typeof(TagData),         "tag"         },
             { typeof(TraitData),       "trait"       },
             { typeof(ConsequenceData), "consequence" },
