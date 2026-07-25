@@ -94,7 +94,12 @@ MonoBehaviour:
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: f219333c551996c47a3e68dfd6a8655f, type: 2}
+  - {fileID: 11400000, guid: 2e74f4027aac58747add95950ec06969, type: 2}
+  - {fileID: 11400000, guid: 5cec4bc3f06a4e34fa90be427fcf58cc, type: 2}
+  - {fileID: 11400000, guid: 53b2b41325a73594eb47d125fc37e8c5, type: 2}
+  - {fileID: 11400000, guid: afea0a30941b69242b794bb19baee24c, type: 2}
   _tags:
   - druid
   - poison

@@ -60,14 +60,30 @@
   `Role→DamageType→Playstyle→Mechanic`; отсутствующий ассет тега молча пропускается. id `tag.<snake>`.
   Стихии из эффектов (Burn→Fire) НЕ собираются — Combat-слой недоступен UI (осознанный задел).
   4 EditMode-теста. **256/256 зелёные.**
-- [ ] **Ф3b — UI-вывод + ручные теги.** РАЗВИЛКА: два loadout-экрана — старый `LoadoutScreen.uxml`
-  (`MenuRouter.BuildLoadoutScreen`, detail-tags = Label) и новый трёхколоночный
-  `LoadoutInventoryScreen.uxml` (`LoadoutInventoryView`, detail-tags = VisualElement-контейнер).
-  Определить живой перед тем, как вешать чипы. Плюс проставить ручные Playstyle/Mechanic героям
-  в `_infoTags` по `relic-tag-assignments`. UI-инвентарь хрупкий (см. память) — не вслепую.
-- [ ] **Ф4 — Доки/долг.** glossary (Magical+элементы+Arcane), `stats.md`, `tag-reference`,
-  тех-модель урона (tech-scribe), ADR. Сюда собраны ВСЕ док-правки (не дробим по фазам —
-  модель менялась до Ф3).
+- [x] **Ф3b — UI-вывод + ручные теги.** Решение Макса: старый `LoadoutScreen` — легаси, вешаем в
+  новый. `LoadoutInventoryView.Build(tagsOf:)` — плейсхолдер-чипы заменены реальными тегами релика:
+  **иконка (`TagData.Icon`) + подпись**, порядок осей, **разделитель «|» между осями**; ряд прячется,
+  если тегов нет. Заполняется per-relic в `ShowDetail`. Прокинуто из `MenuRouter` (`_loadoutVm.ResolveTags`)
+  и из dev-стенда `UiPreviewCatalog`. Ручные Playstyle/Mechanic проставлены **всем 10 героям**
+  в `_infoTags` (editor-миграция по `relic-tag-assignments`).
+  - Легаси-путь `LoadoutViewModel.Tags(r)` (плоская строка) оставлен для старого экрана.
+  - **НЕ проверено визуально** — Макс был в play-mode, тесты/скрин не гонялись. Нужен play-QA ряда тегов.
+- [x] **Ф2c + Ф4 — Доки.** `unit-tag-glossary` (Magical+Аркана+поисточниковость+v1-охват),
+  `stats.md` (Стихийная→Магическая школа/броня/пробивание, Аркана, «задаётся каждой атаке отдельно»),
+  `relic-tag-assignments` (пересверено с реализацией + 4 сноски + решения рефактора),
+  `the-shepherd` (редизайн), ADR-запись 2026-07-25, тех-доки (`combat-model`, `stat-system`,
+  `phase-1-combat-core`: `Elemental*`→`Magic*` + абзац про поисточниковую конкретику).
+
+## Осталось / долг
+
+- **Play-QA:** ряд тегов на карточке (вид, «|», иконки) + баланс Шепарда (урон 33, радиус 5, хил 100%).
+- **Лок-ключи:** `effect.light_mend.name/.desc`; подписи тегов идут по `tag.<id>.name` (заведены в
+  `b2d84603`) — проверить, что все резолвятся, иначе фолбэк покажет сырой id.
+- **`tag-reference`** — полный переписанный документ (сейчас ссылка+пометка).
+- **Техдолг:** `AutoAttackMode.Heal` больше никем не используется (кроме `ShepherdSliceTests`) — удалить
+  вместе с миграцией теста.
+- **Задел:** стихии/сродства из эффектов в тег DamageType (Burn→Fire, споры→Poison) — нужен шов,
+  т.к. Combat недоступен UI по asmdef.
 
 ## Решения по ходу / готчи
 

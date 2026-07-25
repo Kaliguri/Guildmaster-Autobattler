@@ -34,7 +34,8 @@ namespace Guildmaster.UI
             int lockedSlots = 0,
             bool cardAnimations = true,
             bool cardAttackAnimation = true,
-            Action<RelicData, RelicDragPhase> onRelicDrag = null)
+            Action<RelicData, RelicDragPhase> onRelicDrag = null,
+            Func<RelicData, IReadOnlyList<TagData>> tagsOf = null)
         {
             string L(string key, string ru)
             {
@@ -92,15 +93,10 @@ namespace Guildmaster.UI
             FillUpgradeRow(root.Q<VisualElement>("upgrade-row-1"));
             FillUpgradeRow(root.Q<VisualElement>("upgrade-row-2"));
 
-            // ── Теги (плейсхолдер, п.3): демо роль+стихия текстовыми чипами. Иконки тегов и реальные
-            //    данные (какие теги у юнита) — их фаза; здесь показан вид ряда под именем. ──
+            // ── Теги «быстрого чтения» (ряд под именем): реальные теги юнита из UnitTagResolver,
+            //    иконка + подпись, порядок осей Role→DamageType→Playstyle→Mechanic с «|» между группами.
+            //    Заполняется per-relic в ShowDetail (набор зависит от выбранного релика). ──
             var tags = root.Q<VisualElement>("detail-tags");
-            if (tags != null)
-            {
-                tags.Add(MakeTag(L("ui.tag.bruiser", "Боец"), "gm-tag--bruiser"));
-                tags.Add(MakeTag(L("ui.tag.frontline", "Фронт"), "gm-tag--frontline"));
-                tags.Add(MakeTag(L("ui.tag.fire", "Огонь"), "gm-tag--fire"));
-            }
 
             // ── Статблок (внизу): 8 маленьких квадратов, 4 в ряд. Подписи — реальные статы,
             //    значения плейсхолдерные (числа придут с данными юнита). ──
@@ -148,6 +144,7 @@ namespace Guildmaster.UI
             {
                 SetText(root, "detail-title", (Title(r, titleOf) ?? "—").ToUpperInvariant());
                 SetText(root, "detail-narrative", narrativeOf?.Invoke(r) ?? string.Empty);
+                if (tags != null) FillTags(tags, tagsOf?.Invoke(r), L);
                 foreach (var (relic, card) in cards)
                     card.EnableInClassList("gm-arcana-card--selected", relic == r);
             }
@@ -317,6 +314,60 @@ namespace Guildmaster.UI
             chip.AddToClassList(iconClass);
             return chip;
         }
+
+        // Ряд тегов «быстрого чтения»: чипы иконка+подпись в порядке осей, с «|» между группами (осями).
+        private static void FillTags(VisualElement container, IReadOnlyList<TagData> tags, Func<string, string, string> L)
+        {
+            container.Clear();
+            if (tags == null || tags.Count == 0) { container.style.display = DisplayStyle.None; return; }
+            container.style.display = DisplayStyle.Flex;
+
+            TagCategory? prev = null;
+            for (int i = 0; i < tags.Count; i++)
+            {
+                TagData t = tags[i];
+                if (t == null) continue;
+                if (prev.HasValue && t.Category != prev.Value) container.Add(TagSeparator());
+                container.Add(TagChip(t, L));
+                prev = t.Category;
+            }
+        }
+
+        private static VisualElement TagChip(TagData tag, Func<string, string, string> L)
+        {
+            var chip = new VisualElement { pickingMode = PickingMode.Ignore };
+            chip.AddToClassList("gm-tag");
+
+            if (tag.Icon != null)
+            {
+                var icon = new VisualElement { pickingMode = PickingMode.Ignore };
+                icon.AddToClassList("gm-tag__icon");
+                icon.style.backgroundImage = new StyleBackground(tag.Icon);
+                icon.style.width = 18;
+                icon.style.height = 18;
+                icon.style.marginRight = 3;
+                chip.Add(icon);
+            }
+
+            var label = new Label(L(tag.Id + ".name", TagFallback(tag.Id))) { pickingMode = PickingMode.Ignore };
+            label.AddToClassList("gm-tag__label");
+            chip.Add(label);
+            return chip;
+        }
+
+        // Разделитель между осями тегов (Role | DamageType | Playstyle | Mechanic).
+        private static VisualElement TagSeparator()
+        {
+            var sep = new Label("|") { pickingMode = PickingMode.Ignore };
+            sep.AddToClassList("gm-tag-sep");
+            sep.style.marginLeft = 4;
+            sep.style.marginRight = 4;
+            sep.style.opacity = 0.4f;
+            return sep;
+        }
+
+        private static string TagFallback(string id) =>
+            !string.IsNullOrEmpty(id) && id.StartsWith("tag.") ? id.Substring(4) : id;
 
         // Квадрат статблока: значение над подписью.
         private static VisualElement MakeStat(string label, string value)

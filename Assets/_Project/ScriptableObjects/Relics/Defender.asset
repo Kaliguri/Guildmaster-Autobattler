@@ -16,6 +16,7 @@ MonoBehaviour:
   _combatClass: 1
   _damageSchool: 0
   _physicalSubtype: 2
+  _magicElement: 0
   _affinity: 0
   _creatureType: 0
   _attackType: 0
@@ -64,6 +65,8 @@ MonoBehaviour:
     _targetMode: 1
     _damageMultiplier: 0
     _schoolOverride: 0
+    _physicalSubtypeOverride: 0
+    _magicElementOverride: 0
     _affinityOverride: 0
     _areaShape: 0
     _areaRadius: 0
@@ -99,7 +102,13 @@ MonoBehaviour:
     _passiveTrigger: 1
     _passiveThresholdPct: 0.15
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: 3cd06ae7932fcb54589e98944be7c7cf, type: 2}
+  - {fileID: 11400000, guid: 813ebf8058ff4034da3a0ad6f7c0959c, type: 2}
+  - {fileID: 11400000, guid: c3f10ef4603f424429e93364b1a1f0a2, type: 2}
+  - {fileID: 11400000, guid: a03c4a1e09f8d8744b487b5b280ff911, type: 2}
+  - {fileID: 11400000, guid: 3c857d1003271c941b4b811fd8f6f8c5, type: 2}
+  - {fileID: 11400000, guid: afea0a30941b69242b794bb19baee24c, type: 2}
   _tags:
   - defender
   - tank

@@ -97,7 +97,9 @@ MonoBehaviour:
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: 5cec4bc3f06a4e34fa90be427fcf58cc, type: 2}
+  - {fileID: 11400000, guid: b5a3c2d20a7b3d94c852b807ef4e6d73, type: 2}
   _tags:
   - shepherd
   - healer

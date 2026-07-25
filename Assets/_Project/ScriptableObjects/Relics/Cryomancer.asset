@@ -98,7 +98,11 @@ MonoBehaviour:
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: f219333c551996c47a3e68dfd6a8655f, type: 2}
+  - {fileID: 11400000, guid: 813ebf8058ff4034da3a0ad6f7c0959c, type: 2}
+  - {fileID: 11400000, guid: 3c857d1003271c941b4b811fd8f6f8c5, type: 2}
+  - {fileID: 11400000, guid: 53b2b41325a73594eb47d125fc37e8c5, type: 2}
   _tags:
   - cryomancer
   - controller

@@ -158,7 +158,7 @@ Core
 public enum StatType
 {
     MaxHP, AutoAttackDamage, AttackSpeed, AttackRange, MoveSpeed,
-    PhysArmor, ElementalArmor, PhysPen, ElementalPen,
+    PhysArmor, MagicArmor, PhysPen, MagicPen,
     DamageDealtEff, DamageTakenEff,   // «эффективности» — старт 1.0, PercentMult
     // … всего 30 (полный канон — док 11); остальные — Фаза 2/4
     // Крита НЕТ (решение залочено, док 11 §1): стат крита не вводим.

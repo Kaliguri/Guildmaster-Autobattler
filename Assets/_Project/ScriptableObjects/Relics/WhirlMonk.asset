@@ -16,6 +16,7 @@ MonoBehaviour:
   _combatClass: 0
   _damageSchool: 0
   _physicalSubtype: 1
+  _magicElement: 0
   _affinity: 0
   _creatureType: 0
   _attackType: 0
@@ -55,6 +56,8 @@ MonoBehaviour:
     _targetMode: 1
     _damageMultiplier: 0
     _schoolOverride: 0
+    _physicalSubtypeOverride: 0
+    _magicElementOverride: 0
     _affinityOverride: 0
     _areaShape: 0
     _areaRadius: 0
@@ -90,7 +93,12 @@ MonoBehaviour:
     _passiveTrigger: 3
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: d27b51bb8aebe3040804d09dd6dcc99e, type: 2}
+  - {fileID: 11400000, guid: c552bd623c4fdc64b9f9f87e2777c179, type: 2}
+  - {fileID: 11400000, guid: 646f69f142279704e8a9348c5de336e8, type: 2}
+  - {fileID: 11400000, guid: 3c857d1003271c941b4b811fd8f6f8c5, type: 2}
+  - {fileID: 11400000, guid: 8bf0488bf66556b44b1970f09c629b1b, type: 2}
   _tags:
   - monk
   - controller

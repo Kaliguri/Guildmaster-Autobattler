@@ -16,6 +16,7 @@ MonoBehaviour:
   _combatClass: 1
   _damageSchool: 0
   _physicalSubtype: 1
+  _magicElement: 0
   _affinity: 0
   _creatureType: 0
   _attackType: 0
@@ -60,6 +61,8 @@ MonoBehaviour:
     _targetMode: 0
     _damageMultiplier: 0
     _schoolOverride: 0
+    _physicalSubtypeOverride: 0
+    _magicElementOverride: 0
     _affinityOverride: 0
     _areaShape: 0
     _areaRadius: 0
@@ -95,7 +98,12 @@ MonoBehaviour:
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: 3cd06ae7932fcb54589e98944be7c7cf, type: 2}
+  - {fileID: 11400000, guid: 92e054edc1045b0469670bca96339b6d, type: 2}
+  - {fileID: 11400000, guid: c3f10ef4603f424429e93364b1a1f0a2, type: 2}
+  - {fileID: 11400000, guid: 53b2b41325a73594eb47d125fc37e8c5, type: 2}
+  - {fileID: 11400000, guid: 157f7126f41afe44e88d5fceba8955e1, type: 2}
   _tags:
   - treant
   - thorns

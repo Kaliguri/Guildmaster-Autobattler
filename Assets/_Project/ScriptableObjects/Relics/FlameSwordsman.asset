@@ -16,6 +16,7 @@ MonoBehaviour:
   _combatClass: 0
   _damageSchool: 0
   _physicalSubtype: 2
+  _magicElement: 0
   _affinity: 0
   _creatureType: 0
   _attackType: 0
@@ -55,6 +56,8 @@ MonoBehaviour:
     _targetMode: 1
     _damageMultiplier: 0
     _schoolOverride: 2
+    _physicalSubtypeOverride: 0
+    _magicElementOverride: 0
     _affinityOverride: 0
     _areaShape: 0
     _areaRadius: 0
@@ -90,7 +93,11 @@ MonoBehaviour:
     _passiveTrigger: 0
     _passiveThresholdPct: 0.2
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: 2e74f4027aac58747add95950ec06969, type: 2}
+  - {fileID: 11400000, guid: 157f7126f41afe44e88d5fceba8955e1, type: 2}
+  - {fileID: 11400000, guid: b722fe35fa45bcd4cb4228c4978efdd0, type: 2}
+  - {fileID: 11400000, guid: 8bf0488bf66556b44b1970f09c629b1b, type: 2}
   _tags:
   - flame_swordsman
   - burn

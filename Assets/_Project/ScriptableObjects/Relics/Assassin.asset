@@ -16,6 +16,7 @@ MonoBehaviour:
   _combatClass: 2
   _damageSchool: 0
   _physicalSubtype: 3
+  _magicElement: 0
   _affinity: 0
   _creatureType: 0
   _attackType: 0
@@ -63,7 +64,12 @@ MonoBehaviour:
     _passiveTrigger: 1
     _passiveThresholdPct: 0.25
   _icon: {fileID: 0}
-  _infoTags: []
+  _infoTags:
+  - {fileID: 11400000, guid: 9594869665cde9c438c400720bb20b5a, type: 2}
+  - {fileID: 11400000, guid: 012f8ab7f49916a449e65babec1da328, type: 2}
+  - {fileID: 11400000, guid: 4f21162e570d3ef4c804d0055c113bc3, type: 2}
+  - {fileID: 11400000, guid: b722fe35fa45bcd4cb4228c4978efdd0, type: 2}
+  - {fileID: 11400000, guid: 8bf0488bf66556b44b1970f09c629b1b, type: 2}
   _tags:
   - assassin
   - melee

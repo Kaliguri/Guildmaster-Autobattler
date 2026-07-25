@@ -183,7 +183,8 @@ namespace Guildmaster.DevTools
                 titleOf: r => ArcanaTitle(r?.Id),
                 narrativeOf: r => Coalesce(RuValue((r?.Id) + ".desc"), "«Древний завет, что тлеет в глубине веков…»"),
                 localize: RuValue,
-                lockedSlots: 3);
+                lockedSlots: 3,
+                tagsOf: r => UnitTagResolver.Resolve(r, content));
             root.Add(screen);
 
             // Глобальная панель забега (app-shell): статичная для стенда, режим «Инвентарь» активен.

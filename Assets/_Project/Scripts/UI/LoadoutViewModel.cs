@@ -74,7 +74,13 @@ namespace Guildmaster.UI
         public string Name(RelicData r) => r != null ? _loc.GetString(r.Id + ".name") : string.Empty;
         public string Desc(RelicData r) => r != null ? _loc.GetString(r.Id + ".desc") : string.Empty;
 
-        /// <summary>Строка тегов релика (локализованные имена <c>InfoTags</c>).</summary>
+        /// <summary>
+        /// Теги «быстрого чтения» релика для карточки в порядке осей (Role→DamageType→Playstyle→Mechanic):
+        /// авто Role/DamageType из данных + ручные InfoTags. Резолв — <see cref="UnitTagResolver"/>.
+        /// </summary>
+        public IReadOnlyList<TagData> ResolveTags(RelicData r) => UnitTagResolver.Resolve(r, _content);
+
+        /// <summary>Строка тегов релика (локализованные имена <c>InfoTags</c>) — легаси-путь старого LoadoutScreen.</summary>
         public string Tags(RelicData r)
         {
             if (r?.InfoTags == null || r.InfoTags.Length == 0) return string.Empty;
