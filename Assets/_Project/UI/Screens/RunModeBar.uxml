@@ -14,7 +14,10 @@
 
         <!-- Лента-островок: форму рисует SlantedPanel вершинами (скос на 9-slice «плывёт» по ширине). -->
         <gm:SlantedPanel name="runbar-ribbon" Slant="14" class="gm-runbar__ribbon">
-            <gm:Chip name="mode-map" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--first gm-runbar__tab--map" />
+            <!-- Крайние табы — SlantedChip: их подсветка повторяет скошенный торец ленты, иначе
+                 прямоугольная заливка срезала угол ступенькой. Slant чуть меньше ленты (12 против 14):
+                 таб ниже ленты на её вертикальные поля, и при равном вылете угол клина не совпал бы. -->
+            <gm:SlantedChip name="mode-map" Slant="12" SlantSide="Left" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--first gm-runbar__tab--map" />
             <ui:VisualElement class="gm-runbar__divider" picking-mode="Ignore" />
             <gm:Chip name="mode-battle" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--battle" />
             <ui:VisualElement class="gm-runbar__divider" picking-mode="Ignore" />
@@ -25,7 +28,7 @@
             <gm:Chip name="mode-compendium" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--compendium" />
             <!-- Настройки за разделителем: открывают модалку, а не переключают режим — не должны читаться шестым табом. -->
             <ui:VisualElement class="gm-runbar__sep" />
-            <gm:Chip name="btn-menu" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--last gm-runbar__tab--menu" />
+            <gm:SlantedChip name="btn-menu" Slant="12" SlantSide="Right" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--last gm-runbar__tab--menu" />
         </gm:SlantedPanel>
 
         <ui:VisualElement class="gm-loadout__topbar-side gm-loadout__topbar-side--right">

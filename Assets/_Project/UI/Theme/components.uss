@@ -1325,10 +1325,11 @@
     /* Прижата к верхней кромке бара: при вертикальной центровке лента вылезала ВВЕРХ за край экрана
        и там срезалась. Свисать она должна только вниз. */
     align-self: flex-start;
-    /* Поля ленты = вылет скоса (14) + воздух: кнопки живут ВНУТРИ латунной рамки и никогда её не
-       перекрывают (наход. Макса, раунд 3 — регрессия раунда 2, где padding сняли ради зоны нажатия).
-       Вертикальные поля тоже нужны: иначе подсветка таба ложится прямо на верхнюю и нижнюю кромку. */
-    padding: var(--gm-space-0) var(--gm-space-3);
+    /* Вертикальные поля держат подсветку табов внутри кромки ленты. Боковых полей НЕТ: крайние табы
+       (SlantedChip) сами повторяют скошенный торец и обязаны доходить до него вплотную — иначе клин
+       подсветки не совпадёт с углом ленты. Обводку торца они не перекрывают: вершина клина таба
+       на 3px внутри за счёт вертикального поля. */
+    padding: 3px 0;
     align-items: stretch;
     justify-content: center;
 }
@@ -1348,9 +1349,30 @@
 }
 
 /* Таб настроек — ТОЛЬКО иконка: подпись не появляется даже в активном состоянии. Настройки не
-   режим забега, их «Меню» подписью читалось шестым табом (наход. Макса, раунд 3, п.10). */
-.gm-runbar__tab--menu .gm-chip__label { display: none; }
-.gm-runbar__tab--menu .gm-chip__icon  { margin-right: 0; }
+   режим забега, их «Меню» подписью читалось шестым табом (наход. Макса, раунд 3, п.10).
+   Селектор с ТРЕМЯ классами обязателен: правило .gm-chip--collapsible.gm-chip--active .gm-chip__label
+   объявлено НИЖЕ по файлу (секция чипов идёт после секции ленты) и при равном весе побеждает
+   порядком — подпись «Меню» возвращалась в активном состоянии. */
+.gm-runbar__tab--menu .gm-chip__label,
+.gm-chip--collapsible.gm-runbar__tab--menu.gm-chip--active .gm-chip__label { display: none; }
+.gm-runbar__tab--menu .gm-chip__icon,
+.gm-chip--collapsible.gm-runbar__tab--menu.gm-chip--active .gm-chip__icon { margin-right: 0; }
+
+/* Крайние табы ленты (SlantedChip): подсветку рисует Painter2D клином под торец ленты, поэтому
+   прямоугольный background-color у них ВСЕГДА прозрачный, а цвет состояния приходит через
+   custom-свойство --gm-chip-fill. Состояния по-прежнему живут здесь, в USS, не в C#. */
+.gm-chip--slanted {
+    background-color: rgba(0, 0, 0, 0);
+    --gm-chip-fill: rgba(0, 0, 0, 0);
+}
+
+.gm-chip--slanted:hover { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-hover-surface); }
+.gm-chip--slanted:active { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-surface-sunken); }
+.gm-chip--slanted.gm-chip--active { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-surface-raised); }
+
+/* Крайние табы прижаты к торцам ленты — иначе клин подсветки повис бы в воздухе, не совпав с углом. */
+.gm-runbar__tab--first { padding-left: var(--gm-space-2); margin-left: 0; }
+.gm-runbar__tab--last  { padding-right: var(--gm-space-2); margin-right: 0; }
 
 /* Разделитель между табами: тонкая палочка в рост иконки — тот же приём, что отделяет настройки. */
 .gm-runbar__divider {
