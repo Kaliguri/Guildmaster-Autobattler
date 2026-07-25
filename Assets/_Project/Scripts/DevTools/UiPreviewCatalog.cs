@@ -33,6 +33,7 @@ namespace Guildmaster.DevTools
             ["chest"]        = BuildChest,
             ["outcome"]      = BuildOutcome,
             ["mainmenu"]     = BuildMainMenu,
+            ["titlecard"]    = BuildTitleCard,
             ["gallery"]      = BuildGallery,
         };
 
@@ -316,6 +317,14 @@ namespace Guildmaster.DevTools
             // Стенд: hasSave=true (кнопка «Продолжить» активна).
             root.Add(Guildmaster.UI.MainMenuScreenView.Build(
                 uxml, hasSave: true, RuValue, () => { }, () => { }, () => { }, () => { }));
+        }
+
+        private static void BuildTitleCard(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/TitleCardScreen.uxml");
+            if (uxml == null) { AddError(root, "TitleCardScreen.uxml не найден"); return; }
+            var seal = AssetDatabase.LoadAssetAtPath<UnityEngine.Sprite>("Assets/_Project/Art/Brand/AppIcon_HappyGuildmasters.png");
+            root.Add(Guildmaster.UI.TitleCardScreenView.Build(uxml, seal, RuValue, () => { }));
         }
 
         private static void BuildGallery(VisualElement root)

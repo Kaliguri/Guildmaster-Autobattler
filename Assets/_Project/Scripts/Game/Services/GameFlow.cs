@@ -31,6 +31,7 @@ namespace Guildmaster.Game.Services
         private readonly RunStateService     _runStates;
         private readonly IRewardPresenter    _rewardPresenter;
         private readonly IOutcomePresenter   _outcomePresenter;
+        private readonly ITitleCardPresenter _titleCardPresenter;
         private readonly IMainMenuPresenter  _mainMenuPresenter;
         private readonly ActRunner           _actRunner;
         private readonly ActConfig           _actConfig;
@@ -48,6 +49,7 @@ namespace Guildmaster.Game.Services
             RunStateService     runStates,
             IRewardPresenter    rewardPresenter,
             IOutcomePresenter   outcomePresenter,
+            ITitleCardPresenter titleCardPresenter,
             IMainMenuPresenter  mainMenuPresenter,
             ActRunner           actRunner,
             ActConfig           actConfig,
@@ -64,6 +66,7 @@ namespace Guildmaster.Game.Services
             _runStates        = runStates;
             _rewardPresenter  = rewardPresenter;
             _outcomePresenter = outcomePresenter;
+            _titleCardPresenter = titleCardPresenter;
             _mainMenuPresenter = mainMenuPresenter;
             _actRunner       = actRunner;
             _actConfig       = actConfig;
@@ -115,11 +118,13 @@ namespace Guildmaster.Game.Services
         }
 
         /// <summary>
-        /// Верхний цикл игры (план D1): главное меню → забег → меню. Начать = новый забег, Продолжить = из
-        /// автосейва, Выход = закрыть игру. Точка входа при обычном старте (не dev-разрез).
+        /// Верхний цикл игры (план D1): title card → главное меню → забег → меню. Начать = новый забег,
+        /// Продолжить = из автосейва, Выход = закрыть игру. Точка входа при обычном старте (не dev-разрез).
         /// </summary>
         public async UniTask RunGameAsync()
         {
+            await _titleCardPresenter.ShowAsync(); // один раз за сессию, до первого меню
+
             while (true)
             {
                 MainMenuChoice choice = await _mainMenuPresenter.ShowAsync(_runStates.HasSave);

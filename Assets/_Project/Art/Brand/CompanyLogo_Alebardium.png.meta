@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 01d44d9c508f7af409ba475c15c06460
+guid: 3709d98821a58fb41bcc4cba61a2a23a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 885791119876785558
-    second: AppIcon_HappyGuildmasters_0
+      213: 2596693687266316156
+    second: CompanyLogo_Alebardium_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: AppIcon_HappyGuildmasters_0
+      name: CompanyLogo_Alebardium_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 256
-        height: 256
+        x: 34
+        y: 27
+        width: 188
+        height: 210
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 69583759456fa4c00800000000000000
-      internalID: 885791119876785558
+      spriteID: c7f0204962f490420800000000000000
+      internalID: 2596693687266316156
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      AppIcon_HappyGuildmasters_0: 885791119876785558
+      CompanyLogo_Alebardium_0: 2596693687266316156
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

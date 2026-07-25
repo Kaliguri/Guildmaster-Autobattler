@@ -583,6 +583,22 @@ MonoBehaviour:
     m_Key: effect.light_mend.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 5314278683041792
+    m_Key: ui.titlecard.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5314278750150656
+    m_Key: ui.titlecard.studio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5314278750150657
+    m_Key: ui.titlecard.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5314278750150658
+    m_Key: ui.mainmenu.title
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

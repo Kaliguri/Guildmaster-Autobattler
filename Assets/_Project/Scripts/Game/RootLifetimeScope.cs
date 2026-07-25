@@ -128,6 +128,8 @@ namespace Guildmaster.Game
             builder.Register<ContinuePresenter>(Lifetime.Singleton).As<IContinuePresenter>();
             // Экран исхода забега (C2) — победа/поражение после акта.
             builder.Register<OutcomePresenter>(Lifetime.Singleton).As<IOutcomePresenter>();
+            // Boot title card — один раз до главного меню.
+            builder.Register<TitleCardPresenter>(Lifetime.Singleton).As<ITitleCardPresenter>();
             // Главное меню (D1) — верхний цикл игры.
             builder.Register<MainMenuPresenter>(Lifetime.Singleton).As<IMainMenuPresenter>();
 

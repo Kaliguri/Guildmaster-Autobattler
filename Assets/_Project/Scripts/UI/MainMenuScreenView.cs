@@ -34,7 +34,7 @@ namespace Guildmaster.UI
             var settings = root.Q<Button>("btn-settings");
             var quit     = root.Q<Button>("btn-quit");
 
-            if (title != null) title.text = L("ui.mainmenu.title", "Гильдмастер");
+            if (title != null) title.text = L("ui.mainmenu.title", "Happy Guildmasters");
 
             if (start != null)    { start.text    = L("ui.mainmenu.start", "Начать забег"); start.clicked += () => onStart?.Invoke(); }
             if (cont != null)

@@ -43,6 +43,8 @@ namespace Guildmaster.UI
         private VisualTreeAsset _campUxml;
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
+        private VisualTreeAsset _titleCardUxml;
+        private Sprite _titleCardSeal;
         private VisualTreeAsset _loadoutHubUxml;
         private VisualTreeAsset _loadoutInventoryUxml;
         private VisualTreeAsset _arcanaCardUxml;
@@ -85,7 +87,8 @@ namespace Guildmaster.UI
             VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
             VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
             VisualTreeAsset loadoutHubUxml = null, VisualTreeAsset loadoutInventoryUxml = null,
-            VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null)
+            VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
+            VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null)
         {
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
             _pauseUxml = pauseUxml;
@@ -102,6 +105,8 @@ namespace Guildmaster.UI
             _loadoutInventoryUxml = loadoutInventoryUxml;
             _arcanaCardUxml = arcanaCardUxml;
             _campUxml = campUxml;
+            _titleCardUxml = titleCardUxml;
+            _titleCardSeal = titleCardSeal;
 
             // Навигатор Ф4: два слоя-контейнера. Page/Sheet → screensLayer (под топбаром); Modal (pause/
             // settings) → modalLayer (над топбаром, fullscreen-scrim накрывает его — QA #36). Контекст сборки
@@ -739,6 +744,26 @@ namespace Guildmaster.UI
 
             await _nav.ShowAsync(screen, req.Cancellation); // уход/закрытие → OnLeave; ct → закрыть при отмене (QA #37)
             req.OnLeave?.Invoke();
+        }
+
+        // Boot title card — до главного меню. Клик / авто-таймер → OnDismiss.
+        public void ShowTitleCard(OpenTitleCardRequest req)
+        {
+            if (_root == null || _titleCardUxml == null) { req.OnDismiss?.Invoke(); return; }
+            ShowTitleCardAsync(req).Forget();
+        }
+
+        private async UniTaskVoid ShowTitleCardAsync(OpenTitleCardRequest req)
+        {
+            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
+                resolve => TitleCardScreenView.Build(
+                    _titleCardUxml,
+                    _titleCardSeal,
+                    key => _loc?.GetString(key),
+                    onDismiss: () => resolve(true)));
+
+            await _nav.ShowAsync(screen);
+            req.OnDismiss?.Invoke();
         }
 
         // Экран исхода забега (C2) — на UXML (OutcomeScreen.uxml). «В меню» резолвит OnToMenu; закрытие тоже.

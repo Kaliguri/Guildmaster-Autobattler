@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="titlecard-root" class="gm-screen gm-screen--titlecard">
+        <ui:VisualElement class="gm-titlecard">
+            <ui:VisualElement name="titlecard-seal" class="gm-titlecard__seal" picking-mode="Ignore" />
+            <ui:Label name="titlecard-title" text="Happy Guildmasters" class="gm-panel__title gm-titlecard__title" />
+            <ui:Label name="titlecard-studio" text="Alebardium" class="gm-titlecard__studio" />
+            <ui:Label name="titlecard-hint" text="" class="gm-titlecard__hint gm-text-muted" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

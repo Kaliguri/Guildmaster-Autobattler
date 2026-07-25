@@ -54,6 +54,12 @@ namespace Guildmaster.UI
         [Tooltip("UXML главного меню (Начать/Продолжить/Настройки/Выход).")]
         [SerializeField] private VisualTreeAsset _mainMenuScreen;
 
+        [Tooltip("UXML boot title card (Happy Guildmasters) до главного меню.")]
+        [SerializeField] private VisualTreeAsset _titleCardScreen;
+
+        [Tooltip("Печать/seal для boot title card (PixelLab AppIcon).")]
+        [SerializeField] private Sprite _titleCardSeal;
+
         [Tooltip("UXML глобальной панели забега (app-shell): режимы-навигация + HP/золото/акт/таймер/меню.")]
         [SerializeField] private VisualTreeAsset _runModeBar;
 
@@ -81,6 +87,7 @@ namespace Guildmaster.UI
         private ISubscriber<OpenCampRequest> _openCampSub;
         private ISubscriber<OpenOutcomeRequest> _openOutcomeSub;
         private ISubscriber<OpenMainMenuRequest> _openMainMenuSub;
+        private ISubscriber<OpenTitleCardRequest> _openTitleCardSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
         private IDisposable _openEventSubscription;
@@ -90,6 +97,7 @@ namespace Guildmaster.UI
         private IDisposable _openCampSubscription;
         private IDisposable _openOutcomeSubscription;
         private IDisposable _openMainMenuSubscription;
+        private IDisposable _openTitleCardSubscription;
         private UIDocument _doc;
         private RunModeBarView _topBar;
         private VisualElement _backdrop; // постоянный задний фон под не-боевыми экранами (выкл в бою/инвентаре)
@@ -127,9 +135,11 @@ namespace Guildmaster.UI
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
             ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub,
             ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub,
-            ISubscriber<OpenCampRequest> openCampSub)
+            ISubscriber<OpenCampRequest> openCampSub,
+            ISubscriber<OpenTitleCardRequest> openTitleCardSub)
         {
             _openCampSub = openCampSub;
+            _openTitleCardSub = openTitleCardSub;
             _mainMenuVisSub = mainMenuVisSub;
             _router = router;
             _mapSpaceSub = mapSpaceSub;
@@ -164,7 +174,7 @@ namespace Guildmaster.UI
                 return;
             }
             BuildLayers(); // Ф4: скелет слоёв-контейнеров ДО инициализации роутера (навигатор кладёт экраны в них)
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -184,6 +194,8 @@ namespace Guildmaster.UI
             _openOutcomeSubscription = _openOutcomeSub?.Subscribe(req => _router.ShowOutcome(req));
             // Главное меню — запрос из GameFlow (верхний цикл).
             _openMainMenuSubscription = _openMainMenuSub?.Subscribe(req => _router.OpenMainMenu(req));
+            // Boot title card — один раз до главного меню.
+            _openTitleCardSubscription = _openTitleCardSub?.Subscribe(req => _router.ShowTitleCard(req));
 
             InitTopBar();
 
@@ -515,6 +527,7 @@ namespace Guildmaster.UI
             _openCampSubscription?.Dispose();
             _openOutcomeSubscription?.Dispose();
             _openMainMenuSubscription?.Dispose();
+            _openTitleCardSubscription?.Dispose();
         }
 
         // QA #32: ESC открывает системное меню ТОЛЬКО в активном забеге (в главном меню/вне забега — no-op).

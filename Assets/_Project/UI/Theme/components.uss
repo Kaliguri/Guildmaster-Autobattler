@@ -1164,6 +1164,49 @@
 }
 
 /* ============================================================================
+ * BOOT TITLE CARD: печать + Cormorant «Happy Guildmasters» до главного меню.
+ * Полноэкранный ink; клик или авто-таймер (~2.2 с) закрывают карточку.
+ * ========================================================================== */
+.gm-screen--titlecard {
+    background-color: var(--gm-ink-900);
+    justify-content: center;
+    align-items: center;
+}
+
+.gm-titlecard {
+    align-items: center;
+    justify-content: center;
+}
+
+.gm-titlecard__seal {
+    width: 256px;
+    height: 256px;
+    margin-bottom: var(--gm-space-4);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.gm-titlecard__title {
+    font-size: var(--gm-font-lg);
+    color: var(--gm-brass-300);
+    -unity-text-align: middle-center;
+    margin-bottom: var(--gm-space-1);
+}
+
+.gm-titlecard__studio {
+    font-size: var(--gm-font-body);
+    color: var(--gm-color-text-muted);
+    -unity-text-align: middle-center;
+    margin-bottom: var(--gm-space-4);
+    letter-spacing: 2px;
+}
+
+.gm-titlecard__hint {
+    font-size: var(--gm-font-sm);
+    -unity-text-align: middle-center;
+    opacity: 0.7;
+}
+
+/* ============================================================================
  * ЛОАДАУТ-ЭКРАН — РЕДИЗАЙН (Ф3a): полноэкранный трёхколоночник (реф Bloodlines/Blasphemous).
  * НЕ модалка-оверлей: занимает весь экран. Топбар-режимы сверху; тело = боевая зона
  * (сквозная «дырка» слева, в Ф3b под ней camera.rect) | грид таро-карточек | панель деталей.
