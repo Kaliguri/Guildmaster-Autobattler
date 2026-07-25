@@ -35,7 +35,7 @@ namespace Guildmaster.Presentation
         private Mesh                  _mesh;   // per-instance — уничтожаем вместе с эффектом
         private MaterialPropertyBlock _mpb;
         private System.Action         _onComplete;
-        private float _flashIn, _flashOut, _duration, _elapsed;
+        private float _flashIn, _flashOut, _duration, _hold, _elapsed;
         private bool  _running;
 
         /// <summary>Запустить разлёт из текущего состояния спрайта <paramref name="src"/>.</summary>
@@ -45,6 +45,7 @@ namespace Guildmaster.Presentation
             _flashIn  = cfg != null ? cfg.ShatterFlashIn  : 0.08f;
             _flashOut = cfg != null ? cfg.ShatterFlashOut : 0.12f;
             _duration = cfg != null ? cfg.ShatterDuration : 0.75f;
+            _hold     = cfg != null ? Mathf.Max(0f, cfg.ShatterHold) : 0.05f;
 
             Sprite sprite = src.sprite;
 
@@ -114,23 +115,32 @@ namespace Guildmaster.Presentation
             // Масштабируем по игровому времени → в финальном slowmo осколки летят медленно (в такт моменту).
             _elapsed += Time.deltaTime;
 
-            float shatter = _duration > 0f ? Mathf.Clamp01((_elapsed - _flashIn) / _duration) : 1f;
-            // Вспышка — ИМПУЛЬС: растёт за flashIn, затем спадает за flashOut → осколки ВОЗВРАЩАЮТ исходный цвет,
-            // а к концу выцветают в ember-бирюзу (в шейдере). Три фазы вместо «всегда белые».
+            float postHold = _elapsed - _hold;
+            float shatter;
             float flash;
-            if (_flashIn <= 0f)
-                flash = Mathf.Clamp01(1f - _elapsed / Mathf.Max(0.0001f, _flashOut));
-            else if (_elapsed < _flashIn)
-                flash = _elapsed / _flashIn;
+            if (postHold < 0f)
+            {
+                // Микро-hold: осколки стоят, полная вспышка («кристалл»).
+                shatter = 0f;
+                flash = 1f;
+            }
             else
-                flash = Mathf.Clamp01(1f - (_elapsed - _flashIn) / Mathf.Max(0.0001f, _flashOut));
+            {
+                shatter = _duration > 0f ? Mathf.Clamp01((postHold - _flashIn) / _duration) : 1f;
+                if (_flashIn <= 0f)
+                    flash = Mathf.Clamp01(1f - postHold / Mathf.Max(0.0001f, _flashOut));
+                else if (postHold < _flashIn)
+                    flash = postHold / _flashIn;
+                else
+                    flash = Mathf.Clamp01(1f - (postHold - _flashIn) / Mathf.Max(0.0001f, _flashOut));
+            }
 
             _mr.GetPropertyBlock(_mpb);
             _mpb.SetFloat(FlashAmtId, flash);
             _mpb.SetFloat(ShatterId, shatter);
             _mr.SetPropertyBlock(_mpb);
 
-            if (_elapsed >= _flashIn + _duration)
+            if (_elapsed >= _hold + _flashIn + _duration)
             {
                 _running = false;
                 _onComplete?.Invoke();

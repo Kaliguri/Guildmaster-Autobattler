@@ -66,7 +66,8 @@ namespace Guildmaster.Combat
             // 5. Вычет из HP
             req.Target.CurrentHP -= hpDamage;
 
-            return new DamageResult(hpDamage, shieldAbsorbed, req.Target.CurrentHP <= 0f, req.SourceKind);
+            return new DamageResult(hpDamage, shieldAbsorbed, req.Target.CurrentHP <= 0f,
+                req.SourceKind, req.School, req.Affinity);
         }
     }
 }

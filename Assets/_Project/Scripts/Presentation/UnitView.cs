@@ -87,15 +87,33 @@ namespace Guildmaster.Presentation
         // --- Feel (реакция на удар, LitMotion) — только презентация, сим не трогает ---
         private Design.CombatFeelConfig _feel;          // параметры вспышки/сплющивания (из design-конфига)
         private Color        _baseTint = Color.white;   // цвет-тинт тела (умножается на текстуру в шейдере)
+        private Color        _activeFlashColor = Color.white; // цвет текущей вспышки (school flash или фолбэк)
         private float        _flashAmount;               // 0..1 — сила вспышки (параметр _FlashAmount шейдера)
         private bool         _flashApplied;              // держим ли сейчас MPB на спрайте (чтобы вернуть в 0 один раз)
         private Vector3      _baseSpriteScale = Vector3.one; // масштаб узла сплющивания до эффекта
         private Transform    _squashTarget;              // узел, который сплющиваем (выше Animator, чтобы не затирался)
+        private float        _hitSquashWeight;           // 0..1 — вес hit-squash (твин)
+        private float        _flipSquashWeight;          // 0..1 — вес facing-flip squash
+        private float        _acquireSquashWeight;       // 0..1 — вес target-acquire twitch
         private float        _hitstopRemaining;          // unscaled-окно заморозки анимации участников удара
         private MaterialPropertyBlock _mpb;              // per-instance _FlashAmount без клонирования материала
         private MotionHandle _flashHandle;
         private MotionHandle _squashHandle;
-
+        private MotionHandle _nudgeHandle;
+        private MotionHandle _flipHandle;
+        private MotionHandle _acquireHandle;
+        private MotionHandle _attackMotionHandle;        // anticipation / lunge
+        private Vector2      _nudgeOffset;               // презентационный сдвиг поверх интерполяции
+        private Vector2      _nudgePeak;                 // пик hit-nudge (направление × дистанция)
+        private Vector2      _attackOffset;              // anticipation/lunge поверх интерполяции
+        private Vector2      _attackPeak;
+        private bool         _flipAnimActive;            // идёт разворот-сплющивание — ApplyFacing не дергает flipX
+        private bool         _desiredFlipX;
+        private bool         _wasMoving;                 // предыдущий кадр: юнит бежал (для contact-dust)
+        private float        _contactDustCooldownLeft;
+        private int          _lastTargetId = int.MinValue;
+        private float        _deathAnticipateLeft;       // remaining unscaled death-anticipation
+        private System.Action<UnitView> _onContactDust;  // презентер спавнит ImpactDust; null = нет VFX
         private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
         private static readonly int FlashColorId  = Shader.PropertyToID("_FlashColor");
 
@@ -111,8 +129,8 @@ namespace Guildmaster.Presentation
         private bool  _isDead;
         private float _deathRemaining;
 
-        // Секвенс смерти: ждём конца hit-flash → death-клип → на конце разлёт на осколки (DeathShatter).
-        private enum DeathPhase { None, WaitFlash, Dying, Shattering }
+        // Секвенс смерти: ждём конца hit-flash → death-клип → anticipation → разлёт на осколки.
+        private enum DeathPhase { None, WaitFlash, Dying, Anticipate, Shattering }
         private DeathPhase _deathPhase;
 
         private bool _freeRun;        // бой окончен → доигрываем анимации натурально, не скрабим по замершему симу
@@ -138,6 +156,7 @@ namespace Guildmaster.Presentation
             if (_sprite != null)
             {
                 _sprite.flipX = unit.Team != 0;
+                _desiredFlipX = _sprite.flipX;
 
                 // Сплющиваем узел ВЫШЕ Animator (родитель спрайта), иначе кадровая анимация тела его затирает.
                 _squashTarget    = _sprite.transform.parent != null ? _sprite.transform.parent : _sprite.transform;
@@ -164,6 +183,12 @@ namespace Guildmaster.Presentation
 
         /// <summary>Подать design-конфиг сочности (длительности/сила/цвет вспышки и сплющивания). CombatPresenter — при спавне.</summary>
         public void ApplyFeelConfig(Design.CombatFeelConfig feel) => _feel = feel;
+
+        /// <summary>
+        /// Хук contact-dust: презентер спавнит <c>ImpactDust</c> в <see cref="FeetPoint"/>.
+        /// Вызывается на старте/стопе бега, если тумблер в feel-конфиге включён.
+        /// </summary>
+        public void SetContactDustHandler(System.Action<UnitView> handler) => _onContactDust = handler;
 
         /// <summary>Цвет HP-бара по принадлежности к смотрящему (из <c>CombatColorPalette</c>).</summary>
         public void SetHealthColor(Color color)
@@ -228,7 +253,10 @@ namespace Guildmaster.Presentation
             if (_unit == null) return;
 
             _renderPosition = Vector2.Lerp(_unit.PreviousPosition, _unit.Position, alpha);
-            transform.position = new Vector3(_renderPosition.x, _renderPosition.y, 0f);
+            transform.position = new Vector3(
+                _renderPosition.x + _nudgeOffset.x + _attackOffset.x,
+                _renderPosition.y + _nudgeOffset.y + _attackOffset.y,
+                0f);
 
             // Y-sort: кто ниже по Y (ближе к зрителю) — рисуется поверх. Явный ордер стабильнее, чем
             // transparency-sort по позиции: у перекрытых спрайтов с ОДИНАКОВЫМ ордером иначе дрожит порядок.
@@ -311,6 +339,8 @@ namespace Guildmaster.Presentation
         private void Update()
         {
             ApplyColor(); // вспышка + альфа инвиза видны даже в hitstop/паузе (единый писатель _sprite.color)
+            TickContactDustCooldown();
+            TickIdleBreath();
 
             // Локальный hitstop: удар «весит» — участники замирают на unscaled-окно, толпа вокруг не стынет.
             // Морозим только анимацию: позиция продолжает интерполироваться (≈50 мс дрейфа незаметны, зато
@@ -326,6 +356,8 @@ namespace Guildmaster.Presentation
             if (_deathPhase != DeathPhase.None) { DriveDeath(); return; }
 
             ApplyFacing(); // разворот по цели — до guard'а анимации (нужен и статичным спрайтам)
+            TickTargetAcquireTell();
+            TickLocomotionDust();
 
             if (!_animActive) return;
 
@@ -456,21 +488,33 @@ namespace Guildmaster.Presentation
             }
         }
 
-        /// <summary>Юнит вошёл в замах авто-атаки (событие сима OnAttackStarted) — запускаем свинг.</summary>
-        public void OnAttackStarted()
+        /// <summary>Юнит вошёл в замах авто-атаки — свинг + опц. anticipation-оттяг назад от цели.</summary>
+        /// <param name="awayFromTarget">Нормаль «от цели» (куда оттягиваться); zero = без оттяга.</param>
+        public void OnAttackStarted(Vector2 awayFromTarget)
         {
-            if (!_animActive) return;
+            if (_animActive)
+            {
+                if (_unit != null && _unit.IsWindingUp && _unit.WindupTicks > 0)
+                {
+                    _attackPhase = AttackAnimPhase.Windup;
+                }
+                else
+                {
+                    // Мгновенный удар (windup 0): сразу хвост, окно = весь интервал (кулдаун только что взведён).
+                    _recoveryGapTicks = Mathf.Max(1, _unit != null ? _unit.AttackCooldownTicks : 1);
+                    _attackPhase = AttackAnimPhase.Recovery;
+                }
+            }
 
-            if (_unit != null && _unit.IsWindingUp && _unit.WindupTicks > 0)
-            {
-                _attackPhase = AttackAnimPhase.Windup;
-            }
-            else
-            {
-                // Мгновенный удар (windup 0): сразу хвост, окно = весь интервал (кулдаун только что взведён).
-                _recoveryGapTicks = Mathf.Max(1, _unit != null ? _unit.AttackCooldownTicks : 1);
-                _attackPhase = AttackAnimPhase.Recovery;
-            }
+            PlayAttackAnticipation(awayFromTarget);
+        }
+
+        /// <summary>Микро-рывок атакующего к цели в момент импакта (только презентация).</summary>
+        public void OnAttackLunge(Vector2 towardTarget)
+        {
+            if (_feel == null || !_feel.EnableAttackerLunge) return;
+            if (towardTarget.sqrMagnitude < 1e-8f) return;
+            PlayAttackOffset(towardTarget.normalized * _feel.LungeDistance, _feel.LungeDuration);
         }
 
         /// <summary>Замах прерван (событие сима OnAttackInterrupted) — рвём свинг в idle.</summary>
@@ -545,31 +589,69 @@ namespace Guildmaster.Presentation
         private void ApplyFacing()
         {
             if (_sprite == null || _unit == null) return;
+            if (_flipAnimActive) return; // идёт разворот-сплющивание — не дёргаем flipX снаружи
 
             // Пока идёт цикл атаки — целимся в цель (приоритет над движением): стрелок смотрит на врага,
             // даже отступая. Нет цели — падаем на разворот по движению ниже.
-            if (_attackPhase != AttackAnimPhase.None && FaceTarget(_unit.CurrentTarget)) return;
-
-            float moveDx = _unit.Position.x - _unit.PreviousPosition.x;
-            _facingVelX = Mathf.Lerp(_facingVelX, moveDx, 0.2f);
-
-            if (Mathf.Abs(_facingVelX) > FacingMoveEpsilonX)
+            bool? wantFlip = null;
+            if (_attackPhase != AttackAnimPhase.None && TryDesiredFlipToward(_unit.CurrentTarget, out bool faceFlip))
+                wantFlip = faceFlip;
+            else
             {
-                _sprite.flipX = _facingVelX < 0f; // бежим влево → отражаем
+                float moveDx = _unit.Position.x - _unit.PreviousPosition.x;
+                _facingVelX = Mathf.Lerp(_facingVelX, moveDx, 0.2f);
+
+                if (Mathf.Abs(_facingVelX) > FacingMoveEpsilonX)
+                    wantFlip = _facingVelX < 0f; // бежим влево → отражаем
+                else if (TryDesiredFlipToward(_unit.CurrentTarget, out bool standFlip))
+                    wantFlip = standFlip;
+            }
+
+            if (!wantFlip.HasValue || wantFlip.Value == _sprite.flipX) return;
+            RequestFacingFlip(wantFlip.Value);
+        }
+
+        // Желаемый flipX к цели. false = цели нет/мертва. Почти вертикаль — «уже повёрнут».
+        private bool TryDesiredFlipToward(RuntimeUnit target, out bool flipX)
+        {
+            flipX = _sprite != null && _sprite.flipX;
+            if (target == null || target.IsDead || _unit == null) return false;
+            float dx = target.Position.x - _unit.Position.x;
+            if (Mathf.Abs(dx) < FacingTargetDeadzoneX) return true; // уже ок, не меняем
+            flipX = dx < 0f;
+            return true;
+        }
+
+        private void RequestFacingFlip(bool flipX)
+        {
+            if (_feel == null || !_feel.EnableFacingFlipSquash || _squashTarget == null)
+            {
+                _sprite.flipX = flipX;
                 return;
             }
 
-            FaceTarget(_unit.CurrentTarget); // стоим — смотрим на цель
-        }
-
-        // Развернуть спрайт к цели по X. false = цели нет/мертва (разворот не сделан → фолбэк на движение).
-        // Почти вертикаль (в мёртвой зоне) считаем «уже повёрнут» — не дёргаем и не проваливаемся в движение.
-        private bool FaceTarget(RuntimeUnit target)
-        {
-            if (target == null || target.IsDead) return false;
-            float dx = target.Position.x - _unit.Position.x;
-            if (Mathf.Abs(dx) >= FacingTargetDeadzoneX) _sprite.flipX = dx < 0f;
-            return true;
+            if (_flipHandle.IsActive()) _flipHandle.Cancel();
+            _desiredFlipX = flipX;
+            _flipAnimActive = true;
+            float dur = Mathf.Max(0.01f, _feel.FacingFlipDuration);
+            // 1→0: на середине (v=0.5) меняем flipX, вес squash = triangle (пик в середине).
+            _flipHandle = LMotion.Create(0f, 1f, dur)
+                .WithEase(Ease.Linear)
+                .Bind(this, static (v, self) =>
+                {
+                    if (v >= 0.5f && self._sprite != null && self._sprite.flipX != self._desiredFlipX)
+                        self._sprite.flipX = self._desiredFlipX;
+                    // треугольник 0→1→0
+                    self._flipSquashWeight = v < 0.5f ? v * 2f : (1f - v) * 2f;
+                    if (v >= 0.999f)
+                    {
+                        self._flipSquashWeight = 0f;
+                        self._flipAnimActive = false;
+                        if (self._sprite != null) self._sprite.flipX = self._desiredFlipX;
+                    }
+                    self.ApplyComposedScale();
+                })
+                .AddTo(gameObject);
         }
 
         // Тинт тела (умножается на текстуру в шейдере) + альфа инвиза (dev, §10.5: тег Stealth → полупрозрачность).
@@ -609,17 +691,24 @@ namespace Guildmaster.Presentation
             _mpb ??= new MaterialPropertyBlock();
             _sprite.GetPropertyBlock(_mpb);
             _mpb.SetFloat(FlashAmountId, _flashAmount);
-            _mpb.SetColor(FlashColorId, _feel != null ? _feel.FlashColor : Color.white);
+            _mpb.SetColor(FlashColorId, _activeFlashColor);
             _sprite.SetPropertyBlock(_mpb);
             _flashApplied = active;
         }
 
-        /// <summary>Вызывается при получении урона: локальная реакция цели (вспышка + сплющивание).</summary>
-        public void OnDamageReceived(float damage)
+        /// <summary>
+        /// Реакция цели на урон: вспышка (цвет из feel/школы), сплющивание, опц. hit-nudge от источника.
+        /// </summary>
+        /// <param name="flashColor">Цвет вспышки (резолвит презентер из feel-конфига по школе/сродству).</param>
+        /// <param name="nudgeDir">Мировое направление отъезда (обычно от атакующего); zero = без nudge.</param>
+        public void OnDamageReceived(Color flashColor, Vector2 nudgeDir)
         {
             _onHitFeedback?.Invoke();
-            PlayHitFlash();
+            PlayHitFlash(flashColor);
             PlayHitSquash();
+            PlayHitNudge(nudgeDir);
+            if (_feel != null && _feel.EnableHpBarPunch && _healthBar != null)
+                _healthBar.Punch(_feel.HpBarPunchAmount, _feel.HpBarPunchDuration);
         }
 
         /// <summary>Заморозить анимацию этого вида на unscaled-окно (локальный hitstop участника удара).</summary>
@@ -629,23 +718,39 @@ namespace Guildmaster.Presentation
             _hitstopRemaining = Mathf.Max(_hitstopRemaining, unscaledSeconds);
         }
 
-        // Вспышка белым: подмешиваем _flashAmount 1→0, ApplyColor рисует. Bind со state (this) — zero-alloc.
-        private void PlayHitFlash()
+        // Вспышка: подмешиваем _flashAmount 1→0. Цвет — из аргумента (school flash) или фолбэк feel.
+        // Impact-frame: держим пик hold-секунд, затем линейный спад.
+        private void PlayHitFlash(Color flashColor)
         {
             if (_sprite == null) return;
             if (_flashHandle.IsActive()) _flashHandle.Cancel();
+            _activeFlashColor = flashColor;
             _flashAmount = 1f;
-            float dur = _feel != null ? _feel.FlashDuration : 0.25f;
-            // Линейный спад: вспышка держится и ровно гаснет (OutQuad сваливал её в первые 1-2 кадра → «миг»).
-            _flashHandle = LMotion.Create(1f, 0f, dur)
+            float hold = (_feel != null && _feel.EnableImpactFrame) ? Mathf.Max(0f, _feel.ImpactFrameHold) : 0f;
+            float fade = _feel != null ? _feel.FlashDuration : 0.25f;
+            float total = hold + fade;
+            if (total <= 0.0001f) { _flashAmount = 0f; return; }
+
+            _flashHandle = LMotion.Create(0f, 1f, total)
                 .WithEase(Ease.Linear)
-                .Bind(this, static (v, self) => self._flashAmount = v)
+                .Bind(this, static (v, self) =>
+                {
+                    float holdLocal = (self._feel != null && self._feel.EnableImpactFrame)
+                        ? Mathf.Max(0f, self._feel.ImpactFrameHold) : 0f;
+                    float fadeLocal = self._feel != null ? self._feel.FlashDuration : 0.25f;
+                    float elapsed = v * (holdLocal + fadeLocal);
+                    if (elapsed <= holdLocal) self._flashAmount = 1f;
+                    else
+                    {
+                        float ft = fadeLocal > 0f ? (elapsed - holdLocal) / fadeLocal : 1f;
+                        self._flashAmount = 1f - Mathf.Clamp01(ft);
+                    }
+                })
                 .AddTo(gameObject);
         }
 
-        // Сплющивание: на пике (v=1) X растягивается, Y сжимается на _hitSquashAmount; линейно возвращается
-        // к базе (v→0). Linear, а не Out* — тот сваливал весь эффект в первые 1-2 кадра («слабо/мгновенно»).
-        // Крутим _squashTarget (узел выше Animator), иначе кадровая анимация тела затирает scale.
+        // Сплющивание: на пике (v=1) X растягивается, Y сжимается; линейно возвращается к базе.
+        // Вес компонуется с flip/acquire/breath в ApplyComposedScale.
         private void PlayHitSquash()
         {
             if (_squashTarget == null) return;
@@ -655,12 +760,138 @@ namespace Guildmaster.Presentation
                 .WithEase(Ease.Linear)
                 .Bind(this, static (v, self) =>
                 {
-                    float amount = self._feel != null ? self._feel.SquashAmount : 0.4f;
-                    float a = amount * v;
-                    self._squashTarget.localScale = new Vector3(
-                        self._baseSpriteScale.x * (1f + a),
-                        self._baseSpriteScale.y * (1f - a),
-                        self._baseSpriteScale.z);
+                    self._hitSquashWeight = v;
+                    self.ApplyComposedScale();
+                })
+                .AddTo(gameObject);
+        }
+
+        private void PlayHitNudge(Vector2 dir)
+        {
+            if (_feel == null || !_feel.EnableHitNudge) return;
+            if (dir.sqrMagnitude < 1e-8f) return;
+            if (_nudgeHandle.IsActive()) _nudgeHandle.Cancel();
+
+            _nudgePeak = dir.normalized * _feel.HitNudgeDistance;
+            float dur = Mathf.Max(0.01f, _feel.HitNudgeDuration);
+            _nudgeHandle = LMotion.Create(0f, 1f, dur)
+                .WithEase(Ease.Linear)
+                .Bind(this, static (v, self) =>
+                {
+                    // 0→1→0: отъезд и возврат
+                    float w = v < 0.5f ? v * 2f : (1f - v) * 2f;
+                    self._nudgeOffset = self._nudgePeak * w;
+                    if (v >= 0.999f) self._nudgeOffset = Vector2.zero;
+                })
+                .AddTo(gameObject);
+        }
+
+        private void PlayAttackAnticipation(Vector2 awayFromTarget)
+        {
+            if (_feel == null || !_feel.EnableAttackAnticipation) return;
+            if (awayFromTarget.sqrMagnitude < 1e-8f) return;
+            // Оттяг назад и возврат к нулю к концу duration (пик в середине).
+            PlayAttackOffset(awayFromTarget.normalized * _feel.AnticipationDistance,
+                _feel.AnticipationDuration);
+        }
+
+        // Сдвиг атакующего (anticipation/lunge): triangle 0→1→0.
+        private void PlayAttackOffset(Vector2 peak, float duration)
+        {
+            if (_attackMotionHandle.IsActive()) _attackMotionHandle.Cancel();
+            _attackPeak = peak;
+            float dur = Mathf.Max(0.01f, duration);
+            _attackMotionHandle = LMotion.Create(0f, 1f, dur)
+                .WithEase(Ease.Linear)
+                .Bind(this, static (v, self) =>
+                {
+                    float w = v < 0.5f ? v * 2f : (1f - v) * 2f;
+                    self._attackOffset = self._attackPeak * w;
+                    if (v >= 0.999f) self._attackOffset = Vector2.zero;
+                })
+                .AddTo(gameObject);
+        }
+
+        // Композиция масштаба: base × hit-squash × flip-squash × acquire-twitch × idle-breath.
+        private void ApplyComposedScale()
+        {
+            if (_squashTarget == null) return;
+
+            float hitAmt = (_feel != null ? _feel.SquashAmount : 0.4f) * _hitSquashWeight;
+            float flipAmt = (_feel != null ? _feel.FacingFlipSquashAmount : 0.35f) * _flipSquashWeight;
+            float acqAmt = (_feel != null ? _feel.TargetAcquireTwitch : 0.06f) * _acquireSquashWeight;
+
+            // Hit: X+ Y-; Flip: X- (edge-on); Acquire: оба чуть вниз (вздрог).
+            float sx = 1f + hitAmt - flipAmt - acqAmt * 0.5f;
+            float sy = 1f - hitAmt + flipAmt * 0.25f - acqAmt;
+
+            float breath = 1f;
+            if (_feel != null && _feel.EnableIdleBreath && !_isDead && _state == UnitAnimationState.Idle
+                && _hitstopRemaining <= 0f && _deathPhase == DeathPhase.None)
+            {
+                float period = Mathf.Max(0.1f, _feel.IdleBreathPeriod);
+                float phase = (Time.unscaledTime / period) * Mathf.PI * 2f;
+                breath = 1f + Mathf.Sin(phase) * _feel.IdleBreathAmplitude;
+            }
+
+            _squashTarget.localScale = new Vector3(
+                _baseSpriteScale.x * sx * breath,
+                _baseSpriteScale.y * sy * breath,
+                _baseSpriteScale.z);
+        }
+
+        private void TickIdleBreath()
+        {
+            if (_feel == null || !_feel.EnableIdleBreath) return;
+            // Дыхание крутится в ApplyComposedScale (breath=1 вне Idle); здесь обновляем scale каждый кадр,
+            // когда нет активных твинов squash — иначе при выходе из Idle останется «залипший» breath-масштаб.
+            if (_hitSquashWeight > 0.001f || _flipSquashWeight > 0.001f || _acquireSquashWeight > 0.001f) return;
+            if (_isDead || _deathPhase != DeathPhase.None) return;
+            ApplyComposedScale();
+        }
+
+        private void TickContactDustCooldown()
+        {
+            if (_contactDustCooldownLeft > 0f)
+                _contactDustCooldownLeft -= Time.unscaledDeltaTime;
+        }
+
+        private void TickLocomotionDust()
+        {
+            if (_unit == null || _onContactDust == null) return;
+            if (_feel == null || !_feel.EnableContactDust) { _wasMoving = false; return; }
+
+            bool isMoving = (_unit.Position - _unit.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
+            if (isMoving != _wasMoving && _contactDustCooldownLeft <= 0f)
+            {
+                _onContactDust.Invoke(this);
+                _contactDustCooldownLeft = _feel.ContactDustCooldown;
+            }
+            _wasMoving = isMoving;
+        }
+
+        private void TickTargetAcquireTell()
+        {
+            if (_unit == null || _feel == null || !_feel.EnableTargetAcquireTell) return;
+
+            int id = _unit.CurrentTarget != null && !_unit.CurrentTarget.IsDead
+                ? _unit.CurrentTarget.Id
+                : int.MinValue;
+            if (id == _lastTargetId) return;
+
+            bool hadPrevious = _lastTargetId != int.MinValue;
+            _lastTargetId = id;
+            if (!hadPrevious || id == int.MinValue) return; // первый лок / потеря цели — без вздрога
+
+            if (_squashTarget == null) return;
+            if (_acquireHandle.IsActive()) _acquireHandle.Cancel();
+            float dur = Mathf.Max(0.01f, _feel.TargetAcquireDuration);
+            _acquireHandle = LMotion.Create(1f, 0f, dur)
+                .WithEase(Ease.Linear)
+                .Bind(this, static (v, self) =>
+                {
+                    self._acquireSquashWeight = v;
+                    self.ApplyComposedScale();
                 })
                 .AddTo(gameObject);
         }
@@ -691,9 +922,7 @@ namespace Guildmaster.Presentation
             _deathPhase = DeathPhase.WaitFlash; // дальше — DriveDeath (ждём hit-flash → death → разлёт)
         }
 
-        // Секвенс смерти. WaitFlash: держим кадр, пока не догорит моргание удара. Dying: проигрываем death-клип
-        // натурально. По его концу (или сразу, если нет анимации) — StartShatter. Shattering: ждём, DeathShatter
-        // сам доиграет и по завершении спрячет юнит.
+        // Секвенс смерти. WaitFlash → Dying → Anticipate (опц.) → StartShatter.
         private void DriveDeath()
         {
             switch (_deathPhase)
@@ -714,14 +943,37 @@ namespace Guildmaster.Presentation
                     }
                     else
                     {
-                        StartShatter();
+                        BeginDeathAnticipateOrShatter();
                     }
                     break;
 
                 case DeathPhase.Dying:
                     _animator.speed = 1f;
                     _deathRemaining -= Time.deltaTime;
-                    if (_deathRemaining <= 0f) StartShatter();
+                    if (_deathRemaining <= 0f) BeginDeathAnticipateOrShatter();
+                    break;
+
+                case DeathPhase.Anticipate:
+                    if (_animActive) _animator.speed = 0f;
+                    _deathAnticipateLeft -= Time.unscaledDeltaTime;
+                    // Дрожь масштаба + белый силуэт на всё окно anticipation.
+                    _flashAmount = 1f;
+                    _activeFlashColor = Color.white;
+            float shake = _feel != null ? _feel.DeathAnticipateShake : 0.06f;
+            float wobble = Mathf.Sin(Time.unscaledTime * 60f) * shake;
+            if (_squashTarget != null)
+            {
+                _squashTarget.localScale = new Vector3(
+                    _baseSpriteScale.x * (1f + wobble),
+                    _baseSpriteScale.y * (1f - wobble * 0.5f),
+                    _baseSpriteScale.z);
+            }
+            if (_deathAnticipateLeft <= 0f)
+            {
+                if (_squashTarget != null) _squashTarget.localScale = _baseSpriteScale;
+                _flashAmount = 0f;
+                StartShatter();
+            }
                     break;
 
                 case DeathPhase.Shattering:
@@ -730,7 +982,20 @@ namespace Guildmaster.Presentation
             }
         }
 
-        // Конец death-клипа: прячем исходный спрайт и запускаем разлёт на осколки из его текущего кадра.
+        private void BeginDeathAnticipateOrShatter()
+        {
+            if (_feel != null && _feel.EnableDeathAnticipation && _feel.DeathAnticipateDuration > 0f)
+            {
+                _deathPhase = DeathPhase.Anticipate;
+                _deathAnticipateLeft = _feel.DeathAnticipateDuration;
+                _activeFlashColor = Color.white;
+                _flashAmount = 1f;
+                return;
+            }
+            StartShatter();
+        }
+
+        // Конец death-клипа / anticipation: прячем исходный спрайт и запускаем разлёт на осколки.
         private void StartShatter()
         {
             _deathPhase = DeathPhase.Shattering;

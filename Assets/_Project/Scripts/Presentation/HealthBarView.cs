@@ -59,6 +59,11 @@ namespace Guildmaster.Presentation
         private Material _mat;
         private bool _hasHpColor, _hasShieldColor;
         private Color _hpColor, _shieldColor;
+        private Vector3 _baseLocalScale = Vector3.one;
+        private bool _baseScaleCaptured;
+        private float _punchRemaining;
+        private float _punchDuration;
+        private float _punchAmount;
 
         private static readonly int IdHpFrac       = Shader.PropertyToID("_HpFrac");
         private static readonly int IdCombinedFrac = Shader.PropertyToID("_CombinedFrac");
@@ -137,6 +142,19 @@ namespace Guildmaster.Presentation
             _shield = newSh;
         }
 
+        /// <summary>Микро-punch масштаба бара при уроне (ghost/trail уже в Update).</summary>
+        public void Punch(float amount, float duration)
+        {
+            if (!_baseScaleCaptured)
+            {
+                _baseLocalScale = transform.localScale;
+                _baseScaleCaptured = true;
+            }
+            _punchAmount = Mathf.Max(0f, amount);
+            _punchDuration = Mathf.Max(0.01f, duration);
+            _punchRemaining = _punchDuration;
+        }
+
         // Догон по рендер-времени; доли считаются от текущего scale.
         private void Update()
         {
@@ -150,6 +168,17 @@ namespace Guildmaster.Presentation
                     float scale = CurrentScale();
                     _trailEhp = Mathf.MoveTowards(_trailEhp, target, _trailSpeed * scale * Time.deltaTime);
                 }
+            }
+
+            if (_punchRemaining > 0f)
+            {
+                _punchRemaining -= Time.unscaledDeltaTime;
+                float t = 1f - Mathf.Clamp01(_punchRemaining / _punchDuration);
+                // triangle punch 0→1→0
+                float w = t < 0.5f ? t * 2f : (1f - t) * 2f;
+                float s = 1f + _punchAmount * w;
+                transform.localScale = _baseLocalScale * s;
+                if (_punchRemaining <= 0f) transform.localScale = _baseLocalScale;
             }
 
             PushDynamicProps();

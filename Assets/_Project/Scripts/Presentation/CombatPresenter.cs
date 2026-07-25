@@ -241,6 +241,7 @@ namespace Guildmaster.Presentation
                 {
                     view.Bind(unit);
                     view.ApplyFeelConfig(_feel); // параметры вспышки/сплющивания — из design-конфига
+                    view.SetContactDustHandler(OnUnitContactDust);
 
                     // Тинт тела по персонажу (dev-различение, пока placeholder-спрайт) + подпись над HP-баром.
                     view.SetTint(TintFor(unit));
@@ -280,20 +281,36 @@ namespace Guildmaster.Presentation
         {
             // Урон совпадает с кадром контакта (конец замаха): здесь — импакт-фидбэк цели.
             // Свинг источника запускается раньше, на OnAttackStarted (вики «14»).
-            if (_views.TryGetValue(target.Id, out var view))
-                view.OnDamageReceived(result.TotalDamage);
+            Vector2 nudgeDir = Vector2.zero;
+            if (source != null)
+            {
+                Vector2 delta = target.Position - source.Position;
+                if (delta.sqrMagnitude > 1e-8f) nudgeDir = delta.normalized;
+            }
+
+            if (_views.TryGetValue(target.Id, out var view) && view != null)
+            {
+                Color flash = _feel != null
+                    ? _feel.ResolveHitFlashColor(result.School, result.Affinity)
+                    : Color.white;
+                view.OnDamageReceived(flash, nudgeDir);
+            }
 
             // Доля HP-урона от MaxHP цели — общий «вес удара» для hitstop и размера цифры.
             float maxHp = target.Stats.Get(Data.Stats.StatType.MaxHP);
             float frac  = maxHp > 0f ? result.HpDamage / maxHp : 0f;
 
-            // Локальный hitstop пары «источник + цель» по значимости удара.
-            if (view != null)
+            // Локальный hitstop пары «источник + цель» по значимости удара (кривая в feel-конфиге).
+            if (view != null && _feel != null)
             {
-                float stop = Mathf.Lerp(_feel.HitstopMin, _feel.HitstopMax, Mathf.Clamp01(frac / _feel.HitstopFullFrac));
+                float stop = _feel.EvaluateHitstopSeconds(frac);
                 view.OnHitstop(stop);
-                if (source != null && _views.TryGetValue(source.Id, out var sourceView))
+                if (source != null && _views.TryGetValue(source.Id, out var sourceView) && sourceView != null)
+                {
                     sourceView.OnHitstop(stop);
+                    if (nudgeDir.sqrMagnitude > 1e-8f)
+                        sourceView.OnAttackLunge(nudgeDir);
+                }
             }
 
             // Кандидат в финишеры: автор добивающего удара, если он мили (снаряд/яд позу удара не держат).
@@ -363,7 +380,8 @@ namespace Guildmaster.Presentation
 
             FloatingText ft = _textPool.Get();
             ft.transform.position = worldPosition;
-            ft.Play(text, color, sizeScale, _releaseText);
+            float arcG = _feel != null && _feel.EnableFloatingTextArc ? _feel.NumberArcGravity : 0f;
+            ft.Play(text, color, sizeScale, arcG, _releaseText);
         }
 
         /// <summary>Мировая точка для боевой цифры: HitPoint вида цели (грудь); фолбэк — над позицией сима.</summary>
@@ -372,6 +390,15 @@ namespace Guildmaster.Presentation
             if (_views.TryGetValue(target.Id, out var v) && v != null)
                 return v.HitPoint;
             return (Vector3)(Vector2)target.Position + Vector3.up * 0.4f;
+        }
+
+        /// <summary>Contact-dust: пыль у ног при старте/стопе бега (пресет ImpactDust, тумблер в feel-конфиге).</summary>
+        private void OnUnitContactDust(UnitView view)
+        {
+            if (_vfx == null || _feel == null || view == null) return;
+            if (!_feel.EnableContactDust) return;
+            _vfx.SpawnBurst(view.FeetPoint, 90f, _feel.ImpactDust, 0.7f,
+                view.BodySortingLayerId, view.BodySortingOrder - 1);
         }
 
         /// <summary>Лениво собрать пул всплывающих цифр из префаба (zero-alloc в бою, пункт QA #5).</summary>
@@ -415,8 +442,16 @@ namespace Guildmaster.Presentation
         private void HandleAttackStarted(RuntimeUnit source, RuntimeUnit target)
         {
             // Вход в замах: запускаем анимацию свинга у источника (вики «14»).
-            if (source != null && _views.TryGetValue(source.Id, out var sourceView))
-                sourceView.OnAttackStarted();
+            if (source == null || !_views.TryGetValue(source.Id, out var sourceView) || sourceView == null)
+                return;
+
+            Vector2 away = Vector2.zero;
+            if (target != null)
+            {
+                Vector2 delta = source.Position - target.Position; // от цели = назад
+                if (delta.sqrMagnitude > 1e-8f) away = delta.normalized;
+            }
+            sourceView.OnAttackStarted(away);
         }
 
         private void HandleAttackInterrupted(RuntimeUnit unit)

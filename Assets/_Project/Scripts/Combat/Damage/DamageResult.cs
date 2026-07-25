@@ -1,3 +1,5 @@
+using Guildmaster.Data.Definitions;
+
 namespace Guildmaster.Combat
 {
     /// <summary>
@@ -23,16 +25,26 @@ namespace Guildmaster.Combat
         /// </summary>
         public readonly DamageSourceKind SourceKind;
 
+        /// <summary>Школа урона — эхо <see cref="DamageRequest.School"/> (hit-flash по школе в презентации).</summary>
+        public readonly DamageSchool School;
+
+        /// <summary>Сродство урона — эхо <see cref="DamageRequest.Affinity"/> (тинт вспышки Poison/Light/Dark).</summary>
+        public readonly DamageAffinity Affinity;
+
         /// <summary>Суммарный урон (HP + щит).</summary>
         public float TotalDamage => HpDamage + ShieldDamage;
 
         public DamageResult(float hpDamage, float shieldDamage, bool killedTarget,
-            DamageSourceKind sourceKind = DamageSourceKind.Ability)
+            DamageSourceKind sourceKind = DamageSourceKind.Ability,
+            DamageSchool school = DamageSchool.Physical,
+            DamageAffinity affinity = DamageAffinity.None)
         {
             HpDamage     = hpDamage;
             ShieldDamage = shieldDamage;
             KilledTarget = killedTarget;
             SourceKind   = sourceKind;
+            School       = school;
+            Affinity     = affinity;
         }
     }
 }

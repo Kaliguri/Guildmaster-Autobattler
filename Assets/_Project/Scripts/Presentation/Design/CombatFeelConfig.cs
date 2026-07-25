@@ -1,3 +1,4 @@
+using Guildmaster.Data.Definitions;
 using UnityEngine;
 
 namespace Guildmaster.Presentation.Design
@@ -7,13 +8,106 @@ namespace Guildmaster.Presentation.Design
     /// дизайнер крутил их без кода — включая ФОРМЫ (кривая возврата slowmo). Потребители тянут значения
     /// отсюда, а не хардкодят: <c>UnitView</c> (вспышка/сплющивание), <c>CombatPresenter</c> (hitstop,
     /// финишер), <c>ScreenShake</c> (тряска), <c>CombatFeelDirector</c> (slowmo/шейк по событиям).
-    /// <para>VFX-секция добавится, когда подключим партиклы (пока YAGNI).</para>
+    /// <para>Микро-feel (пыль/nudge/flip/дыхание/тинт вспышки) — тумблеры в секции
+    /// «Micro Feel — toggles»: выключил здесь = эффект мёртв везде, без правок кода.</para>
     /// </summary>
     [CreateAssetMenu(menuName = "Guildmaster/Design/Combat Feel Config", fileName = "CombatFeelConfig")]
     public sealed class CombatFeelConfig : ScriptableObject
     {
+        // --- Micro Feel — единая точка выключения ---
+        [Header("Micro Feel — toggles (выключи здесь = эффект мёртв везде)")]
+        [Tooltip("Пыль у ног при старте/стопе бега (ImpactDust на FeetPoint).")]
+        [SerializeField] private bool _enableContactDust = true;
+        [Tooltip("Цель чуть уезжает от удара на hitstop и возвращается (только презентация).")]
+        [SerializeField] private bool _enableHitNudge = true;
+        [Tooltip("Разворот через сплющивание по X вместо мгновенного flipX.")]
+        [SerializeField] private bool _enableFacingFlipSquash = true;
+        [Tooltip("Микро-вздрог при смене цели авто-атаки.")]
+        [SerializeField] private bool _enableTargetAcquireTell = true;
+        [Tooltip("Idle-дыхание: лёгкий пульс масштаба в стойке.")]
+        [SerializeField] private bool _enableIdleBreath = true;
+        [Tooltip("Цвет hit-flash по школе/сродству урона (иначе — Flash Color ниже).")]
+        [SerializeField] private bool _enableSchoolFlash = true;
+        [Tooltip("Микро-оттяг атакующего назад в начале замаха.")]
+        [SerializeField] private bool _enableAttackAnticipation = true;
+        [Tooltip("Микро-рывок атакующего к цели в момент импакта.")]
+        [SerializeField] private bool _enableAttackerLunge = true;
+        [Tooltip("Короткий белый силуэт/hold вспышки на 1–2 кадра импакта.")]
+        [SerializeField] private bool _enableImpactFrame = true;
+        [Tooltip("Перед shatter: белеет/дрожит ~0.1с (телеграф смерти).")]
+        [SerializeField] private bool _enableDeathAnticipation = true;
+        [Tooltip("Боевые цифры летят по дуге с гравитацией (а не строго вверх).")]
+        [SerializeField] private bool _enableFloatingTextArc = true;
+        [Tooltip("Микро-punch масштаба HP-бара при уроне (trail-ghost уже в HealthBarView).")]
+        [SerializeField] private bool _enableHpBarPunch = true;
+
+        [Header("Micro Feel — contact dust")]
+        [Tooltip("Минимальный интервал между пылью на одном юните, сек.")]
+        [SerializeField] private float _contactDustCooldown = 0.35f;
+
+        [Header("Micro Feel — hit nudge")]
+        [Tooltip("Насколько цель уезжает от удара, мировые ед.")]
+        [SerializeField] private float _hitNudgeDistance = 0.08f;
+        [Tooltip("Длительность отъезда+возврата, сек (unscaled).")]
+        [SerializeField] private float _hitNudgeDuration = 0.12f;
+
+        [Header("Micro Feel — facing flip squash")]
+        [Tooltip("Сила сплющивания по X при развороте (0.35 = сжать до 65%).")]
+        [SerializeField, Range(0.05f, 0.9f)] private float _facingFlipSquashAmount = 0.35f;
+        [Tooltip("Длительность разворота-сплющивания, сек.")]
+        [SerializeField] private float _facingFlipDuration = 0.1f;
+
+        [Header("Micro Feel — target acquire tell")]
+        [Tooltip("Сила микро-вздрога (доля масштаба).")]
+        [SerializeField, Range(0.01f, 0.3f)] private float _targetAcquireTwitch = 0.06f;
+        [SerializeField] private float _targetAcquireDuration = 0.08f;
+
+        [Header("Micro Feel — idle breath")]
+        [Tooltip("Амплитуда пульса масштаба (±доля).")]
+        [SerializeField, Range(0.005f, 0.08f)] private float _idleBreathAmplitude = 0.02f;
+        [Tooltip("Период одного вдоха-выдоха, сек.")]
+        [SerializeField] private float _idleBreathPeriod = 2.2f;
+
+        [Header("Micro Feel — school flash colors")]
+        [SerializeField] private Color _flashPhysical = Color.white;
+        [SerializeField] private Color _flashElemental = new Color(1f, 0.55f, 0.25f, 1f);
+        [SerializeField] private Color _flashTrue = new Color(1f, 0.95f, 0.55f, 1f);
+        [SerializeField] private Color _flashPoison = new Color(0.45f, 1f, 0.4f, 1f);
+        [SerializeField] private Color _flashLight = new Color(1f, 0.95f, 0.75f, 1f);
+        [SerializeField] private Color _flashDark = new Color(0.55f, 0.35f, 0.85f, 1f);
+
+        [Header("Micro Feel — anticipation / lunge")]
+        [Tooltip("Оттяг назад от цели в начале замаха, мировые ед.")]
+        [SerializeField] private float _anticipationDistance = 0.06f;
+        [Tooltip("Длительность оттяга, сек (unscaled).")]
+        [SerializeField] private float _anticipationDuration = 0.1f;
+        [Tooltip("Рывок к цели на импакте, мировые ед.")]
+        [SerializeField] private float _lungeDistance = 0.1f;
+        [Tooltip("Длительность рывка+возврата, сек (unscaled).")]
+        [SerializeField] private float _lungeDuration = 0.1f;
+
+        [Header("Micro Feel — impact frame")]
+        [Tooltip("Сколько держать вспышку на пике перед спадом, сек (≈1–2 кадра).")]
+        [SerializeField] private float _impactFrameHold = 0.04f;
+
+        [Header("Micro Feel — death anticipation")]
+        [Tooltip("Пауза белого силуэта/дрожи перед shatter, сек.")]
+        [SerializeField] private float _deathAnticipateDuration = 0.1f;
+        [Tooltip("Сила дрожи масштаба в anticipation смерти.")]
+        [SerializeField, Range(0.01f, 0.2f)] private float _deathAnticipateShake = 0.06f;
+
+        [Header("Micro Feel — floating text arc")]
+        [Tooltip("Гравитация дуги цифры (мировые ед/с²). 0 = строго вверх.")]
+        [SerializeField] private float _numberArcGravity = 2.2f;
+
+        [Header("Micro Feel — HP bar punch")]
+        [Tooltip("Пик перелёта масштаба бара при уроне.")]
+        [SerializeField, Range(0.02f, 0.25f)] private float _hpBarPunchAmount = 0.08f;
+        [SerializeField] private float _hpBarPunchDuration = 0.12f;
+
         // --- Реакция на попадание (UnitView) ---
         [Header("Hit — вспышка")]
+        [Tooltip("Фолбэк-цвет вспышки, если School Flash выключен.")]
         [SerializeField] private Color _flashColor = Color.white;
         [SerializeField] private float _flashDuration = 0.25f;
 
@@ -28,6 +122,8 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private float _hitstopMax = 0.09f;
         [Tooltip("Доля HP-урона от MaxHP цели, при которой hitstop максимален.")]
         [SerializeField, Range(0.01f, 1f)] private float _hitstopFullFrac = 0.25f;
+        [Tooltip("Кривая веса hitstop по нормализованной доле урона (0..1 → 0..1). Linear = прежнее поведение.")]
+        [SerializeField] private AnimationCurve _hitstopWeightCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
         // --- Screenshake — форма (ScreenShake extension) ---
         [Header("Screenshake — форма")]
@@ -84,6 +180,8 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private float _shatterEmberBoost = 2f;
         [Tooltip("С какого прогресса разлёта (0..1) осколки начинают выцветать в ember-цвет.")]
         [SerializeField, Range(0f, 1f)] private float _shatterEmberStart = 0.4f;
+        [Tooltip("Микро-hold перед разлётом: осколки «кристаллизуются», сек (0 = без hold).")]
+        [SerializeField] private float _shatterHold = 0.05f;
 
         // --- Slowmo — добивающий удар (CombatFeelDirector) ---
         [Header("Slowmo — добивающий удар (kill)")]
@@ -115,18 +213,51 @@ namespace Guildmaster.Presentation.Design
         // --- VFX — пиксельные брызги (CombatVfx / PixelBurst) ---
         [Header("VFX — hit-spark (попадание, в HitPoint)")]
         [SerializeField] private PixelBurstPreset _hitSpark = new PixelBurstPreset
-            { Color = new Color(1f, 0.95f, 0.7f), Count = 14, Speed = 0.9f, Size = 0.06f, Life = 0.35f, Gravity = 0.5f, SpreadDeg = 360f };
+            { Color = new Color(1f, 0.95f, 0.7f), Count = 18, Speed = 1.15f, Size = 0.055f, Life = 0.32f, Gravity = 0.65f, SpreadDeg = 360f };
         [Header("VFX — muzzle (выстрел, в ShotPoint)")]
         [SerializeField] private PixelBurstPreset _muzzle = new PixelBurstPreset
-            { Color = new Color(1f, 0.85f, 0.4f), Count = 8, Speed = 0.6f, Size = 0.06f, Life = 0.18f, Gravity = 0f, SpreadDeg = 55f };
+            { Color = new Color(1f, 0.85f, 0.4f), Count = 10, Speed = 0.75f, Size = 0.055f, Life = 0.16f, Gravity = 0f, SpreadDeg = 50f };
         [Header("VFX — impact dust (мили-удар, у ног цели)")]
         [SerializeField] private PixelBurstPreset _impactDust = new PixelBurstPreset
-            { Color = new Color(0.75f, 0.68f, 0.55f), Count = 8, Speed = 0.5f, Size = 0.07f, Life = 0.5f, Gravity = 0.4f, SpreadDeg = 130f };
+            { Color = new Color(0.75f, 0.68f, 0.55f), Count = 10, Speed = 0.55f, Size = 0.075f, Life = 0.45f, Gravity = 0.45f, SpreadDeg = 140f };
         [Header("VFX — heal (лечение, в HitPoint)")]
         [SerializeField] private PixelBurstPreset _heal = new PixelBurstPreset
-            { Color = new Color(0.55f, 1f, 0.6f), Count = 10, Speed = 0.6f, Size = 0.05f, Life = 0.55f, Gravity = -0.4f, SpreadDeg = 45f };
+            { Color = new Color(0.55f, 1f, 0.6f), Count = 12, Speed = 0.7f, Size = 0.05f, Life = 0.5f, Gravity = -0.45f, SpreadDeg = 50f };
 
         // --- Getters ---
+        public bool  EnableContactDust       => _enableContactDust;
+        public bool  EnableHitNudge          => _enableHitNudge;
+        public bool  EnableFacingFlipSquash  => _enableFacingFlipSquash;
+        public bool  EnableTargetAcquireTell => _enableTargetAcquireTell;
+        public bool  EnableIdleBreath        => _enableIdleBreath;
+        public bool  EnableSchoolFlash       => _enableSchoolFlash;
+        public bool  EnableAttackAnticipation => _enableAttackAnticipation;
+        public bool  EnableAttackerLunge     => _enableAttackerLunge;
+        public bool  EnableImpactFrame       => _enableImpactFrame;
+        public bool  EnableDeathAnticipation => _enableDeathAnticipation;
+        public bool  EnableFloatingTextArc   => _enableFloatingTextArc;
+        public bool  EnableHpBarPunch        => _enableHpBarPunch;
+
+        public float ContactDustCooldown     => _contactDustCooldown;
+        public float HitNudgeDistance        => _hitNudgeDistance;
+        public float HitNudgeDuration        => _hitNudgeDuration;
+        public float FacingFlipSquashAmount  => _facingFlipSquashAmount;
+        public float FacingFlipDuration      => _facingFlipDuration;
+        public float TargetAcquireTwitch     => _targetAcquireTwitch;
+        public float TargetAcquireDuration   => _targetAcquireDuration;
+        public float IdleBreathAmplitude     => _idleBreathAmplitude;
+        public float IdleBreathPeriod        => _idleBreathPeriod;
+        public float AnticipationDistance    => _anticipationDistance;
+        public float AnticipationDuration    => _anticipationDuration;
+        public float LungeDistance           => _lungeDistance;
+        public float LungeDuration           => _lungeDuration;
+        public float ImpactFrameHold         => _impactFrameHold;
+        public float DeathAnticipateDuration => _deathAnticipateDuration;
+        public float DeathAnticipateShake    => _deathAnticipateShake;
+        public float NumberArcGravity        => _numberArcGravity;
+        public float HpBarPunchAmount        => _hpBarPunchAmount;
+        public float HpBarPunchDuration      => _hpBarPunchDuration;
+
         public Color FlashColor       => _flashColor;
         public float FlashDuration    => _flashDuration;
         public float SquashAmount     => _squashAmount;
@@ -135,6 +266,15 @@ namespace Guildmaster.Presentation.Design
         public float HitstopMin       => _hitstopMin;
         public float HitstopMax       => _hitstopMax;
         public float HitstopFullFrac  => _hitstopFullFrac;
+        public AnimationCurve HitstopWeightCurve => _hitstopWeightCurve;
+
+        /// <summary>Hitstop в секундах по доле HP-урона от MaxHP (кривая веса + lerp min..max).</summary>
+        public float EvaluateHitstopSeconds(float hpDamageFrac)
+        {
+            float t = Mathf.Clamp01(hpDamageFrac / Mathf.Max(1e-4f, _hitstopFullFrac));
+            float w = _hitstopWeightCurve != null ? Mathf.Clamp01(_hitstopWeightCurve.Evaluate(t)) : t;
+            return Mathf.Lerp(_hitstopMin, _hitstopMax, w);
+        }
 
         public float ShakePositionFraction => _shakePositionFraction;
         public float ShakeRotationStrength => _shakeRotationStrength;
@@ -163,6 +303,7 @@ namespace Guildmaster.Presentation.Design
         public Color ShatterEmberColor => _shatterEmberColor;
         public float ShatterEmberBoost => _shatterEmberBoost;
         public float ShatterEmberStart => _shatterEmberStart;
+        public float ShatterHold       => _shatterHold;
 
         public PixelBurstPreset HitSpark   => _hitSpark;
         public PixelBurstPreset Muzzle     => _muzzle;
@@ -183,5 +324,30 @@ namespace Guildmaster.Presentation.Design
 
         /// <summary>Полная длительность финишер-таймлайна (пауза + death + shatter + возврат) — финишер держит кадр столько же.</summary>
         public float FinisherHoldSeconds => _finisherPause + _finisherDeathDuration + _finisherShatterDuration + _finisherReturn;
+
+        /// <summary>
+        /// Цвет hit-flash: сродство перекрывает школу; при выключенном School Flash — <see cref="FlashColor"/>.
+        /// </summary>
+        public Color ResolveHitFlashColor(DamageSchool school, DamageAffinity affinity)
+        {
+            if (!_enableSchoolFlash) return _flashColor;
+            if (affinity != DamageAffinity.None)
+            {
+                return affinity switch
+                {
+                    DamageAffinity.Poison => _flashPoison,
+                    DamageAffinity.Light  => _flashLight,
+                    DamageAffinity.Dark   => _flashDark,
+                    _                     => _flashColor,
+                };
+            }
+
+            return school switch
+            {
+                DamageSchool.Elemental => _flashElemental,
+                DamageSchool.True      => _flashTrue,
+                _                      => _flashPhysical,
+            };
+        }
     }
 }
