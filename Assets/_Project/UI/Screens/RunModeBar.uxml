@@ -16,15 +16,14 @@
         <gm:SlantedPanel name="runbar-ribbon" Slant="14" class="gm-runbar__ribbon">
             <!-- Крайние табы — SlantedChip: их подсветка повторяет скошенный торец ленты, иначе
                  прямоугольная заливка срезала угол ступенькой. Slant чуть меньше ленты (12 против 14):
-                 таб ниже ленты на её вертикальные поля, и при равном вылете угол клина не совпал бы. -->
+                 таб ниже ленты на её вертикальные поля, и при равном вылете угол клина не совпал бы.
+                 Палочек-разделителей между режимами больше НЕТ: каждый таб — самостоятельная кнопка
+                 со своим контуром (п.2 раунда 4). Разделитель остался ровно один — перед настройками,
+                 и он смысловой: там кончаются режимы и начинается модалка. -->
             <gm:SlantedChip name="mode-map" Slant="12" SlantSide="Left" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--first gm-runbar__tab--map" />
-            <ui:VisualElement class="gm-runbar__divider" picking-mode="Ignore" />
             <gm:Chip name="mode-battle" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--battle" />
-            <ui:VisualElement class="gm-runbar__divider" picking-mode="Ignore" />
             <gm:Chip name="mode-inventory" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--inventory" />
-            <ui:VisualElement class="gm-runbar__divider" picking-mode="Ignore" />
             <gm:Chip name="mode-tactics" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--tactics" />
-            <ui:VisualElement class="gm-runbar__divider" picking-mode="Ignore" />
             <gm:Chip name="mode-compendium" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--compendium" />
             <!-- Настройки за разделителем: открывают модалку, а не переключают режим — не должны читаться шестым табом. -->
             <ui:VisualElement class="gm-runbar__sep" />

@@ -45,8 +45,14 @@
                          Текущий порядок: имя → теги → видео → способности (без заголовка) →
                          нарратив → улучшения → характеристики. -->
                     <ui:VisualElement class="gm-loadout__detail">
-                        <ui:Label name="detail-title" text="—" class="gm-loadout__detail-title" />
-                        <ui:VisualElement name="detail-tags" class="gm-loadout__tags" />
+                        <!-- Имя и теги — такая же секция с подписью, как «Улучшения» и «Характеристики»
+                             (п.8 раунда 4): раньше шапка панели была единственным блоком без заголовка
+                             и читалась «до» списка, а не первым его разделом. -->
+                        <ui:VisualElement class="gm-loadout__section">
+                            <ui:Label name="basics-label" text="Основное" class="gm-loadout__section-label" />
+                            <ui:Label name="detail-title" text="—" class="gm-loadout__detail-title" />
+                            <ui:VisualElement name="detail-tags" class="gm-loadout__tags" />
+                        </ui:VisualElement>
 
                         <ui:VisualElement class="gm-loadout__section">
                             <gm:AspectBox Aspect="16:9" class="gm-loadout__video">

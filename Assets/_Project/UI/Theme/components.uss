@@ -163,6 +163,17 @@
     border-color: var(--gm-color-hover-border);
 }
 
+/* ТЕ ЖЕ правила, но в ДВА класса. Одноклассовый селектор выше проигрывает теме Unity при равном
+   весе, и синяя рамка фокуса возвращалась — измерено на живой кнопке: у элемента в фокусе
+   resolvedStyle.borderTopColor = RGBA(0, 0.416, 0.651). Прошлый заход правил только .gm-button,
+   поэтому таб настроек (класс .gm-tab) остался синим — п.4 раунда 4, повтор из раунда 3. */
+.unity-button.gm-button:focus,
+.unity-button.gm-tab:focus,
+.unity-button.gm-chip:focus,
+.unity-button.gm-slot:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
 .gm-button:focus,
 .gm-chip:focus,
 .gm-tab:focus,
@@ -229,15 +240,65 @@
 }
 
 /* Меню-панель (ESC / Pause): привычный крупный размер с запасом «на будущее» под новые пункты. */
-.gm-panel--menu {
-    min-width: 460px;
-    min-height: 520px;
+/* ДИАЛОГ — одно окно на все три панели (ESC-меню, настройки, главное меню).
+   Размер задаётся ЗДЕСЬ и не зависит от содержимого: контент живёт в .gm-panel__body, которое
+   забирает остаток высоты и прокручивается при переполнении. Пока размер диктовал контент,
+   «одинаковые панели» держались только подгонкой чисел под самую длинную — и разъезжались
+   от каждой новой опции. */
+.gm-panel--dialog {
+    width: var(--gm-dialog-width);
+    height: var(--gm-dialog-height);
 }
 
-/* Панель настроек: шире и выше под табы (Игра/Графика/Звук) + запас под будущие опции. */
+/* Тело диалога: забирает всё, что осталось между шапкой и подвалом.
+   min-height: 0 обязателен — без него flex-ребёнок не может стать МЕНЬШЕ своего содержимого,
+   и вместо прокрутки тело распирает панель (классическая ловушка flexbox, она же и была
+   настоящей причиной, почему панели не держали заданный размер). */
+.gm-panel__body,
+.unity-scroll-view.gm-panel__body {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-height: 0;
+}
+
+/* Содержимое тела не растягивается по высоте: пункты идут сверху вниз, а пустота остаётся внизу —
+   иначе три кнопки меню разъезжались бы по всей панели. */
+.gm-panel__body > .unity-scroll-view__content-viewport > .unity-scroll-view__content-container {
+    flex-grow: 0;
+}
+
+/* Скроллбар тела — в нашей гамме: дефолтный светло-серый читался деталью чужого интерфейса
+   (та же правка, что уже сделана для грида карт). */
+.gm-panel__body .unity-scroller--vertical {
+    width: var(--gm-scrollbar-width);
+    background-color: var(--gm-color-surface-sunken);
+}
+
+.gm-panel__body .unity-scroller--vertical .unity-base-slider__tracker {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}
+
+.gm-panel__body .unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: var(--gm-color-accent);
+    border-width: 0;
+    border-radius: var(--gm-radius-0);
+    width: 10px;
+    left: 2px;
+}
+
+.gm-panel__body .unity-scroller__low-button,
+.gm-panel__body .unity-scroller__high-button {
+    display: none;
+}
+
+.gm-panel--menu {
+    /* модификатор оставлен под частности меню; габариты приходят из .gm-panel--dialog */
+}
+
+/* Настройки — тот же диалог; собственных габаритов у них больше нет. */
 .gm-panel--settings {
-    min-width: 600px;
-    min-height: 520px;
+    /* модификатор оставлен под частности настроек; габариты приходят из .gm-panel--dialog */
 }
 
 /* Страница таба: занимает свободное место панели; скрытая — не в потоке.
@@ -245,7 +306,7 @@
  * настроек не «прыгает» по высоте при переключении Игра/Графика/Звук. */
 .gm-tab-page {
     flex-grow: 1;
-    min-height: 340px;
+    min-height: 0;   /* высоту даёт тело диалога; прежние 340px распирали панель настроек */
 }
 
 .gm-tab-page--hidden {
@@ -378,10 +439,66 @@
     -unity-font-style: bold;
 }
 
-.gm-tab:disabled {
+.gm-tab:disabled,
+.gm-tab.unity-disabled {
     color: var(--gm-color-disabled-text);
     border-color: var(--gm-color-border-subtle);
     opacity: 1;
+}
+
+/* ===== ВЫКЛЮЧЕННЫЕ СОСТОЯНИЯ — единым местом (п.9 раунда 4) =====
+   До этого disabled жил только у кнопок и табов, а чипы, слоты и поля ввода выключались
+   «никак»: тема Unity гасила их своим светло-серым и полупрозрачностью, и элемент читался
+   деталью чужого интерфейса. Правило одно на всех: тихий контур, выцветший (но ЧИТАЕМЫЙ)
+   текст, гашение иконки — и opacity: 1, потому что тусклость мы задаём цветом сами.
+   Класс unity-disabled обязателен рядом с :disabled — тема красит именно по нему. */
+.gm-chip:disabled,
+.gm-chip.unity-disabled,
+.gm-slot:disabled,
+.gm-slot.unity-disabled {
+    background-color: var(--gm-color-surface-panel);
+    background-image: none;
+    border-color: var(--gm-color-border-subtle);
+    color: var(--gm-color-disabled-text);
+    opacity: 1;
+}
+
+.gm-chip:disabled .gm-chip__label,
+.gm-chip.unity-disabled .gm-chip__label {
+    color: var(--gm-color-disabled-text);
+}
+
+/* Иконка выключенного чипа гаснет тинтом, а не прозрачностью: прозрачная просвечивала фоном
+   и выглядела грязной поверх плашки. */
+.gm-chip:disabled .gm-chip__icon,
+.gm-chip.unity-disabled .gm-chip__icon {
+    -unity-background-image-tint-color: var(--gm-color-disabled-text);
+}
+
+/* Выключенное поле ввода: то же тихое поле, курсор в него не встаёт — состояние должно читаться
+   до попытки клика. */
+.unity-base-field:disabled .unity-base-text-field__input,
+.unity-base-field.unity-disabled .unity-base-text-field__input,
+.gm-loadout__search:disabled .unity-text-field__input,
+.gm-loadout__search.unity-disabled .unity-text-field__input {
+    background-color: var(--gm-color-surface-panel);
+    border-color: var(--gm-color-border-subtle);
+    color: var(--gm-color-disabled-text);
+    opacity: 1;
+}
+
+/* Выключенный слайдер: трек и ручка тускнеют, но остаются различимы — иначе строка настроек
+   выглядит сломанной, а не заблокированной. */
+.gm-slider:disabled .unity-base-slider__tracker,
+.gm-slider.unity-disabled .unity-base-slider__tracker {
+    background-color: var(--gm-color-surface-sunken);
+    border-color: var(--gm-color-border-subtle);
+}
+
+.gm-slider:disabled .unity-base-slider__dragger,
+.gm-slider.unity-disabled .unity-base-slider__dragger {
+    background-color: var(--gm-color-border-subtle);
+    border-color: var(--gm-color-border-subtle);
 }
 
 /* --- Тело loadout: грид слева, детали справа --- */
@@ -1140,8 +1257,6 @@
 }
 
 .gm-panel--mainmenu {
-    min-width: 520px;
-    min-height: 560px;
     align-items: center;
 }
 
@@ -1393,14 +1508,29 @@
 /* Иконка-режим: квадратный слот, состояние — тинтом монохромной иконки, не вторым файлом. */
 /* Лента режимов = чипы в «скрытом» режиме (.gm-chip--collapsible): иконка всегда, подпись — только
    у активного. Здесь только зазор между табами; весь вид/отклик берёт единый .gm-chip. */
-/* Таб ленты тянется на всю высоту ленты (внутри её полей) — подсветка заливает кнопку целиком,
-   а не полоску вокруг иконки. Границы соседей рисуют отдельные палочки-разделители в разметке
-   (.gm-runbar__divider), а НЕ border-right у таба: рамка-по-краю превращала ленту в решётку
-   и упиралась в кромку (наход. Макса, раунд 3). */
+/* Таб ленты — САМОСТОЯТЕЛЬНАЯ КНОПКА (п.2 раунда 4). Раньше границы обозначали палочки-разделители
+   между табами: они рисовали сетку, но кнопкой таб от этого не становился — не было ни своей формы,
+   ни своей рамки. Теперь у каждого таба тихий контур из общего источника (--gm-outline-*) и зазор
+   между соседями; палочки из разметки убраны, остался один смысловой разделитель перед настройками.
+   Почему контур ТИХИЙ, а не strong: пять сильных рамок подряд внутри уже обведённой ленты снова
+   дают решётку — ровно то, за что лента была забракована в раунде 3. */
 .gm-runbar__tab {
-    margin: 0;
+    margin: 0 2px;
     padding: 0 var(--gm-space-2);
     justify-content: center;
+    border-width: var(--gm-outline-width);
+    border-color: var(--gm-color-border-subtle);
+    border-radius: var(--gm-radius-0);
+}
+
+/* Наведение и выбор усиливают именно КОНТУР — так кнопка читается кнопкой, а не подсвеченным полем. */
+.gm-chip.gm-runbar__tab:hover { border-color: var(--gm-color-hover-border); }
+.gm-chip.gm-runbar__tab.gm-chip--active { border-color: var(--gm-color-accent); }
+
+/* Крайние табы контура НЕ несут: их форму рисует Painter2D клином под скос ленты, а прямоугольная
+   рамка срезала бы угол ступенькой — та самая находка, ради которой заведён SlantedChip. */
+.gm-chip.gm-runbar__tab--first,
+.gm-chip.gm-runbar__tab--last {
     border-width: 0;
 }
 
@@ -1896,8 +2026,11 @@
    панель, секции разделяются только воздухом (реш. Макса: рамки-в-рамке читались «слишком отдельно»).
    Зазор между секциями = space-2: при space-3 подпись отрывалась от своего содержимого и
    прилипала к предыдущему блоку, а по высоте панели набегало ~50px пустоты. */
+/* Зазор между секциями правой панели: space-2 → space-1 (п.6 раунда 4). Секции и так разделены
+   подписями и рамками, а двойной воздух рвал панель на отдельные острова — особенно между
+   видео и способностями и между нарративом и улучшениями. */
 .gm-loadout__section {
-    margin-top: var(--gm-space-2);
+    margin-top: var(--gm-space-1);
 }
 
 .gm-loadout__section--grow {

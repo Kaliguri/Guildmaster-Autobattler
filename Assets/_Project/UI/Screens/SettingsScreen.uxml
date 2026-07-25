@@ -1,6 +1,6 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel gm-panel--settings">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--settings">
             <ui:Label text="Настройки" class="gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
@@ -11,6 +11,9 @@
                 <ui:Button name="tab-audio" text="Звук" class="gm-tab gm-tab--active" />
             </ui:VisualElement>
 
+            <!-- Тело диалога: занимает остаток высоты и прокручивается, если опций станет больше,
+                 чем помещается. Габариты панели от содержимого больше не зависят. -->
+            <ui:ScrollView class="gm-panel__body">
             <!-- Страница «Игра»: тумблеры презентации. Подписи + значения проставляет роутер из VM (loc). -->
             <ui:VisualElement name="page-game" class="gm-tab-page gm-tab-page--hidden">
                 <gm:ToggleRow name="toggle-card-anim" />
@@ -28,6 +31,8 @@
                 <gm:SliderRow name="row-music" />
                 <gm:SliderRow name="row-sfx" />
             </ui:VisualElement>
+
+            </ui:ScrollView>
 
             <ui:VisualElement class="gm-divider" />
             <ui:VisualElement class="gm-button-row">

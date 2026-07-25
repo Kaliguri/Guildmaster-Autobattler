@@ -80,6 +80,7 @@ namespace Guildmaster.UI
             }
             SetBtn (root, "sort", L("ui.loadout.sort.name", "Имя") + " ↓");
             SetText(root, "video-hint", L("ui.loadout.video", "видео-вставка 16:9"));
+            SetText(root, "basics-label", L("ui.loadout.basics", "Основное"));
             SetText(root, "skills-label", L("ui.loadout.skills", "Способности"));
             SetText(root, "upgrades-label", L("ui.loadout.upgrades", "Улучшения"));
             SetText(root, "stats-label", L("ui.loadout.stats", "Характеристики"));
