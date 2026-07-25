@@ -49,9 +49,9 @@
                         <ui:VisualElement name="detail-tags" class="gm-loadout__tags" />
 
                         <ui:VisualElement class="gm-loadout__section">
-                            <ui:VisualElement class="gm-loadout__video">
+                            <gm:AspectBox Aspect="16:9" class="gm-loadout__video">
                                 <ui:Label name="video-hint" text="видео-вставка 16:9" class="gm-loadout__video-hint" />
-                            </ui:VisualElement>
+                            </gm:AspectBox>
                         </ui:VisualElement>
 
                         <ui:VisualElement class="gm-loadout__section">
