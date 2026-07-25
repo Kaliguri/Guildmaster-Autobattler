@@ -31,7 +31,7 @@ namespace Guildmaster.Game
     {
         private const float DoubleClickWindow = 0.30f;
         private const float DragMinDelta       = 0.05f; // мир-единицы: меньше = «клик», больше = «drag»
-        private const float PickRadiusScale    = 1.3f;  // зона хватания = круг-опора × это (чуть больше круга, QA #3)
+        private const float PickRadiusScale    = 1.3f;  // круг-опора × это = «ближняя» зона хватания (у ног)
 
         private readonly EncounterLoader  _loader;
         private readonly CombatSimulation _sim;
@@ -47,9 +47,17 @@ namespace Guildmaster.Game
         private readonly IPublisher<TestZoneChangedEvent> _testZoneChangedPub; // Ф5: вещаем СОСТОЯНИЕ (единый источник)
         private readonly IBattleSession   _session;
         private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
+        private readonly Guildmaster.Guild.RunStateService _runStates; // durable-гильдия: сюда уезжают позиции и киты
 
         // Редактируемый ростер игрока в этой фазе (позиции/релики меняются перетаскиванием и loadout'ом).
-        private sealed class Slot { public RelicData Relic; public VesselData Vessel; public Vector2 Pos; public int LiveUnitId = -1; }
+        // GuildIndex — тот же слот в durable-гильдии забега (RunState.Guild): по нему правки уезжают в сейв,
+        // иначе расстановка и надетые релики жили бы только до конца боя (наход. Макса, п.5).
+        private sealed class Slot
+        {
+            public RelicData Relic; public VesselData Vessel; public Vector2 Pos;
+            public int LiveUnitId = -1;
+            public int GuildIndex = -1;
+        }
         private readonly List<Slot> _slots = new List<Slot>();
         private EncounterData _encounter;
 
@@ -64,6 +72,12 @@ namespace Guildmaster.Game
         private bool _testZone; // QA #2: текущая расстановка — тест-зона вне забега (не боевой узел)
         private RuntimeUnit _dragged;
         private Vector2 _dragStartWorld;
+        // Схваченная точка фигурки: сим-позиция юнита минус курсор в момент захвата. Юнит НЕ прыгает центром
+        // под курсор («магнит») — держим его за то место, за которое взяли, как настоящую фигурку на столе.
+        private Vector2 _grabOffset;
+        // Ноги минус сим-позиция на момент захвата: круг-опору рисуем у ног ПРИЗРАКА, а не под курсором.
+        // Замеряем один раз при захвате — иначе дрожание кадра анимации ёрзало бы кругом.
+        private Vector2 _feetOffset;
         private bool _dragMoved;
         private int _hoverUnitId = -1;
         private float _lastClickTime;
@@ -85,8 +99,10 @@ namespace Guildmaster.Game
             ISubscriber<SetTestZoneRequest> testZoneSub,
             IPublisher<TestZoneChangedEvent> testZoneChangedPub,
             IBattleSession session,
-            CameraModeController cameraModes)
+            CameraModeController cameraModes,
+            Guildmaster.Guild.RunStateService runStates)
         {
+            _runStates     = runStates;
             _loader        = loader;
             _sim           = sim;
             _deploy        = deploy;
@@ -148,9 +164,15 @@ namespace Guildmaster.Game
             _encounter = preset.Encounter;
             _slots.Clear();
             if (preset.Roster != null)
-                foreach (PlayerSlot s in preset.Roster)
-                    if (s.Relic != null)
-                        _slots.Add(new Slot { Relic = s.Relic, Vessel = s.Vessel, Pos = s.Position });
+                for (int i = 0; i < preset.Roster.Count; i++)
+                {
+                    PlayerSlot s = preset.Roster[i];
+                    if (s.Relic == null) continue;
+                    // Ростер боя собран из гильдии слот-в-слот (GuildRoster.Resolve), поэтому индекс здесь =
+                    // индекс сосуда в RunState.Guild. Инспекторный dev-пресет гильдии не касается — там запись
+                    // в сейв просто не сработает (нет забега / длина не сойдётся, проверяем в PersistSlot).
+                    _slots.Add(new Slot { Relic = s.Relic, Vessel = s.Vessel, Pos = s.Position, GuildIndex = i });
+                }
             RemapLiveUnits();
 
             EnsureView();
@@ -194,7 +216,9 @@ namespace Guildmaster.Game
             {
                 RuntimeUnit u = units[i];
                 if (u.Team != 0 || u.IsDead) continue;
-                _slots.Add(new Slot { Relic = u.Unit as RelicData, Pos = u.Position, LiveUnitId = u.Id });
+                // Отряд спавнится в порядке гильдии, поэтому порядковый номер живого team-0 = индекс сосуда:
+                // правки в тест-зоне уезжают в тот же сейв, что и правки в боевой расстановке.
+                _slots.Add(new Slot { Relic = u.Unit as RelicData, Pos = u.Position, LiveUnitId = u.Id, GuildIndex = _slots.Count });
             }
             Guildmaster.Diagnostics.UiTrace.Log($"ctrl.EnterTestZone (слотов из стоящих team-0: {_slots.Count})");
             if (_slots.Count == 0)
@@ -217,6 +241,7 @@ namespace Guildmaster.Game
         private void ExitTestZone()
         {
             Guildmaster.Diagnostics.UiTrace.Log("ctrl.ExitTestZone → phase None, TestZoneChanged(false)");
+            FlushRoster(); // что переставили на полигоне — то и останется в гильдии
             _deploying = false;
             _testZone  = false;
             _dragged   = null;
@@ -303,11 +328,14 @@ namespace Guildmaster.Game
             int hoverId = -1;
             bool dragValid = false;
 
+            Vector2 dragTarget = default;
             if (_dragged != null)
             {
                 if ((world - _dragStartWorld).sqrMagnitude > DragMinDelta * DragMinDelta) _dragMoved = true;
-                dragValid = _deploy.CanPlace(world, DeploymentSide.Player, CanUseExtended(_dragged)) && !Overlaps(world, _dragged);
-                ShowDragGhost(world, dragValid); // призрак-силуэт у целевых ног (QA #9)
+                dragTarget = DragTarget(world); // куда встанет юнит, если отпустить здесь (с учётом точки захвата)
+                dragValid = _deploy.CanPlace(dragTarget, DeploymentSide.Player, CanUseExtended(_dragged))
+                            && !Overlaps(dragTarget, _dragged);
+                ShowDragGhost(dragTarget, dragValid); // призрак-силуэт у целевых ног (QA #9)
             }
             else
             {
@@ -317,7 +345,7 @@ namespace Guildmaster.Game
                 HideGhostSprite();
             }
 
-            UpdateUnitRings(hoverId, world, dragValid, _dragged != null);
+            UpdateUnitRings(hoverId, dragTarget + _feetOffset, dragValid, _dragged != null);
         }
 
         // Круги-опоры под ногами живых team-0 юнитов (QA #20/#3): всегда видны (читаемость), наведённый — ярче.
@@ -346,16 +374,21 @@ namespace Guildmaster.Game
             _view.SetUnitRings(_ringBuffer);
         }
 
-        // Призрак-силуэт перетаскиваемого юнита в целевой точке ног — через ЕДИНЫЙ источник UnitSilhouette
+        // Куда встанет перетаскиваемый юнит, если отпустить курсор в точке world. Не «центром под курсор», а
+        // со смещением, снятым в момент захвата: взял за левый край — ведёшь за левый край (наход. Макса, п.4).
+        private Vector2 DragTarget(Vector2 world) => world + _grabOffset;
+
+        // Призрак-силуэт перетаскиваемого юнита в целевой сим-позиции — через ЕДИНЫЙ источник UnitSilhouette
         // (QA #5: тот же вид «в руке», что и при drag реликвии из инвентаря). Нет вида (headless / спрайт не
         // готов) → без призрака (круг DragValid/Invalid всё равно ведёт цель).
-        private void ShowDragGhost(Vector2 targetFeet, bool valid)
+        private void ShowDragGhost(Vector2 target, bool valid)
         {
             UnitSilhouette sil = UnitSilhouette.None;
             if (_presenter != null && _presenter.TryGetView(_dragged.Id, out UnitView dv))
-                sil = UnitSilhouette.FromView(dv, _dragged.Position);
+                sil = UnitSilhouette.FromView(dv, FeetOf(_dragged)); // офсет арта — от ТЕКУЩИХ ног живого вида
 
-            if (sil.Valid) _view.SetGhost(true, targetFeet, sil.Offset, sil.Sprite, sil.FlipX, sil.Scale, valid);
+            // Рисуем тот же силуэт у ЦЕЛЕВЫХ ног: ноги призрака = целевая сим-позиция + замер «ноги-минус-центр».
+            if (sil.Valid) _view.SetGhost(true, target + _feetOffset, sil.Offset, sil.Sprite, sil.FlipX, sil.Scale, valid);
             else HideGhostSprite();
         }
 
@@ -428,6 +461,8 @@ namespace Guildmaster.Game
             // Начинаем протяжку (различаем клик/drag по пройденной дистанции на release).
             _dragged = unit;
             _dragStartWorld = world;
+            _grabOffset = unit.Position - world;      // держим фигурку за схваченное место, а не за центр
+            _feetOffset = FeetOf(unit) - unit.Position; // куда относительно центра садится круг-опора
             _dragMoved = false;
             _view.SetExtendedHighlight(CanUseExtended(unit));
         }
@@ -438,12 +473,13 @@ namespace Guildmaster.Game
 
             if (_dragMoved) // именно перетаскивание (не клик) → пробуем поставить
             {
-                Vector2 world = ScreenToWorld(_input.PointerScreenPosition);
-                if (_deploy.CanPlace(world, DeploymentSide.Player, CanUseExtended(_dragged)) && !Overlaps(world, _dragged))
+                // Та же целевая точка, что вела призрака: иначе юнит на отпускании прыгал бы к курсору.
+                Vector2 target = DragTarget(ScreenToWorld(_input.PointerScreenPosition));
+                if (_deploy.CanPlace(target, DeploymentSide.Player, CanUseExtended(_dragged)) && !Overlaps(target, _dragged))
                 {
-                    _dragged.Position = world;
-                    _dragged.PreviousPosition = world; // снап вида (без слайда интерполяции)
-                    UpdateSlotPos(_dragged.Id, world);
+                    _dragged.Position = target;
+                    _dragged.PreviousPosition = target; // снап вида (без слайда интерполяции)
+                    UpdateSlotPos(_dragged.Id, target);
                 }
                 // невалидно → юнит остаётся на месте (reject)
             }
@@ -483,6 +519,8 @@ namespace Guildmaster.Game
             Slot slot = FindSlot(unitId);
             if (slot == null) return;
             slot.Relic = relic;
+            // Надетый прямо на поле кит — изменение ГИЛЬДИИ, а не превью боя (реш. Макса): переживает бой и сейв.
+            if (_runStates?.SetSlotRelic(slot.GuildIndex, relic.Id) == true) _rosterDirty = true;
             RebuildPreview();
         }
 
@@ -505,6 +543,7 @@ namespace Guildmaster.Game
         // ── Старт боя ────────────────────────────────────────────────────────
         private void StartCombat()
         {
+            FlushRoster(); // расстановка, с которой идём в бой, должна пережить и бой, и вылет игры
             _deploying = false;
             _testZone = false;
             _dragged = null;
@@ -522,13 +561,14 @@ namespace Guildmaster.Game
             return kb != null && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame);
         }
 
-        // Захват по кругу-опоре у НОГ (QA #3): раньше пикали по всему AABB спрайта → зона хватания была
-        // значительно больше видимого круга и «в центре». Теперь зона = круг у ног радиусом BodyRadius,
-        // чуть увеличенным (PickRadiusScale), — совпадает с рисуемым кругом. Ближайший под курсором.
+        // Захват — двухслойный (реш. Макса): круг-опора у ног ИЛИ любое место видимого спрайта тела.
+        // Круг главнее: он нарисован и читается как «место юнита», поэтому попадание в чей-то круг всегда
+        // бьёт попадание в чужой спрайт (иначе высокий сосед перехватывал бы клик по ногам соседа).
+        // Внутри слоя выигрывает ближайший по ногам — «хватаем круг ближайшего».
         private RuntimeUnit PickUnit(Vector2 world)
         {
-            RuntimeUnit best = null;
-            float       bestSq = float.MaxValue;
+            RuntimeUnit bestRing = null; float bestRingSq = float.MaxValue;
+            RuntimeUnit bestBody = null; float bestBodySq = float.MaxValue;
 
             IReadOnlyList<RuntimeUnit> units = _sim.Units;
             for (int i = 0; i < units.Count; i++)
@@ -538,10 +578,24 @@ namespace Guildmaster.Game
 
                 float r  = BodyRadius(u) * PickRadiusScale;
                 float sq = (world - FeetOf(u)).sqrMagnitude;
-                if (sq <= r * r && sq < bestSq) { best = u; bestSq = sq; }
+                if (sq <= r * r)
+                {
+                    if (sq < bestRingSq) { bestRing = u; bestRingSq = sq; }
+                    continue; // в круг попали — по спрайту этого же юнита проверять нечего
+                }
+
+                if (SpriteHit(u, world) && sq < bestBodySq) { bestBody = u; bestBodySq = sq; }
             }
-            return best;
+            return bestRing ?? bestBody;
         }
+
+        // Попал ли курсор в спрайт тела (AABB текущего кадра). Нет вида/спрайта (headless, вид не готов) →
+        // false: тогда работает только круг-опора, как раньше.
+        private bool SpriteHit(RuntimeUnit u, Vector2 world) =>
+            _presenter != null
+            && _presenter.TryGetView(u.Id, out UnitView view)
+            && view != null
+            && view.SpriteContainsWorldPoint(world);
 
         private bool Overlaps(Vector2 pos, RuntimeUnit exclude)
         {
@@ -579,7 +633,21 @@ namespace Guildmaster.Game
         private void UpdateSlotPos(int unitId, Vector2 pos)
         {
             Slot s = FindSlot(unitId);
-            if (s != null) s.Pos = pos;
+            if (s == null) return;
+            s.Pos = pos;
+            if (_runStates?.SetSlotPosition(s.GuildIndex, pos) == true) _rosterDirty = true;
+        }
+
+        // Правки расстановки уезжают в durable-гильдию сразу, а на диск — на выходе из фазы (старт боя, выход
+        // из тест-зоны). Писать сейв на каждый drop незачем: за одну расстановку их десятки, а состояние в
+        // RunState уже актуально — автосейв узла подхватит его и без нас.
+        private bool _rosterDirty;
+
+        private void FlushRoster()
+        {
+            if (!_rosterDirty) return;
+            _rosterDirty = false;
+            _runStates?.Autosave();
         }
     }
 }

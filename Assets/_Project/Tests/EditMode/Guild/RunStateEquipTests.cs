@@ -90,6 +90,34 @@ namespace Guildmaster.Tests.EditMode.Guild
             Assert.IsFalse(_runStates.UnequipRelic(0), "На слоте базовый кит — снимать нечего.");
         }
 
+        // ── Правки прямо с арены (фаза расстановки): позиция и кит сосуда ──
+
+        [Test]
+        public void SetSlotPosition_PersistsIntoGuild()
+        {
+            var pos = new Vector2(-3.5f, 1.25f);
+            Assert.IsTrue(_runStates.SetSlotPosition(1, pos));
+            Assert.AreEqual(pos, _runStates.Current.Guild[1].SavedPosition,
+                "Переставленный на поле сосуд обязан помнить своё место между боями.");
+        }
+
+        [Test]
+        public void SetSlotRelic_PutsKitOnSlot_WithoutTouchingStash()
+        {
+            _runStates.TryAddRelic("relic.a");
+
+            Assert.IsTrue(_runStates.SetSlotRelic(0, "relic.b")); // притащили из грида, минуя запас
+            Assert.AreEqual("relic.b", _runStates.Current.Guild[0].RelicId);
+            Assert.Contains("relic.a", _runStates.Current.RelicInventory, "Запас не трогаем — это другой путь.");
+        }
+
+        [Test]
+        public void SetSlot_Fails_WhenSlotOutOfRange()
+        {
+            Assert.IsFalse(_runStates.SetSlotRelic(99, "relic.a"));
+            Assert.IsFalse(_runStates.SetSlotPosition(-1, Vector2.zero));
+        }
+
         private sealed class MemSave : ISaveService
         {
             private readonly Dictionary<string, object> _s = new();

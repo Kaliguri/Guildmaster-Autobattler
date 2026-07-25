@@ -67,18 +67,21 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
-        public void Resolve_SkipsSlot_WhenRelicMissing()
+        public void Resolve_FallsBackToBaseKit_WhenRelicMissing()
         {
             var content = new FakeContent();
             content.Add(MakeRelic("relic.base"));
 
             RunState run = _runStates.NewDefaultRun(1L);
-            run.Guild[0].RelicId = "relic.ghost"; // нет в БД → слот пропускается (с варнингом)
+            run.Guild[0].RelicId = "relic.ghost"; // нет в БД → сосуд встаёт с базовым китом (с варнингом)
 
             LogAssert.Expect(LogType.Warning, new Regex("relic\\.ghost"));
             PlayerSlot[] roster = GuildRoster.Resolve(run, content);
 
-            Assert.AreEqual(3, roster.Length, "Слот с ненайденным реликом выпал.");
+            // Ростер идёт слот-в-слот с гильдией: по индексу расстановка пишет обратно позиции и киты,
+            // поэтому «плохой» сосуд не выпадает, а откатывается на базовый кит.
+            Assert.AreEqual(4, roster.Length, "Слот не должен выпадать — индексы гильдии обязаны совпадать.");
+            Assert.AreEqual("relic.base", roster[0].Relic.Id);
         }
 
         [Test]

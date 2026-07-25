@@ -213,6 +213,33 @@ namespace Guildmaster.Guild
             return true;
         }
 
+        // ── Расстановка: позиция и кит слота прямо с арены (фаза Deployment) ──
+        // Отдельно от EquipRelic/UnequipRelic: там лоадаут-хаб гоняет реликвии ЧЕРЕЗ запас (свап со списанием),
+        // а здесь игрок правит отряд руками на поле — источник кита не запас, а то, что он притащил из грида.
+        // Когда инвентарь начнёт показывать реальный запас забега (сейчас — весь контент), эти два пути стоит
+        // свести в один, и тогда SetSlotRelic уйдёт.
+
+        /// <summary>Запомнить позицию сосуда на арене (перетаскивание в расстановке). false = слот вне ростера.</summary>
+        public bool SetSlotPosition(int slotIndex, UnityEngine.Vector2 position)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null) return false;
+            slot.SavedPosition = position;
+            return true;
+        }
+
+        /// <summary>
+        /// Поставить кит на сосуд НАПРЯМУЮ, минуя запас (drag реликвии на юнита в расстановке): запас не
+        /// трогается, прежний кит не возвращается. false = слот вне ростера / пустой id.
+        /// </summary>
+        public bool SetSlotRelic(int slotIndex, string relicId)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null || string.IsNullOrEmpty(relicId)) return false;
+            slot.RelicId = relicId;
+            return true;
+        }
+
         // ── Предметы сосуда (Vessel-скоуп, лимит GameConfig.VesselItemSlots) ──
 
         /// <summary>Сколько предметов помещается на одного сосуда.</summary>
