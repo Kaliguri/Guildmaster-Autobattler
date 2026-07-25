@@ -34,6 +34,7 @@ status: living
 - [[guildmaster|Vision - Guildmaster]] — роль игрока: стартовый набор, стиль гильдии (в бою не участвует).
 - [[difficulty-skill|Vision - Difficulty & Skill]] — три оси, модель рандома, правила честности.
 - [[visual-direction|Vision - Visual Direction]] — визуальный опыт и дорожная карта: стиль, пост-процесс, атмосфера, свет, переходы, gamefeel.
+- [[character-animation|Vision - Character Animation]] — скелетка: два слоя движения, три оси переиспользования, инструмент, слои Animator (план, отложено).
 
 ## 20 · Бой (`20-combat/`)
 

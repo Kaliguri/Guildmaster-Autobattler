@@ -1,6 +1,6 @@
 ---
 title: "Vision - Audio Sub-buses"
-order: 22
+order: 23
 status: ready
 updated: 2026-07-18
 ---

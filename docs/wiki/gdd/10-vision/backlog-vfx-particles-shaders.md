@@ -1,6 +1,6 @@
 ---
 title: "Vision - VFX Backlog (Particles & Shaders)"
-order: 17
+order: 18
 status: draft
 updated: 2026-07-18
 ---

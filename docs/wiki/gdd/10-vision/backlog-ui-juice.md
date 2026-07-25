@@ -1,6 +1,6 @@
 ---
 title: "Vision - UI Juice Backlog"
-order: 18
+order: 19
 status: draft
 updated: 2026-07-18
 ---

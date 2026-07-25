@@ -1,6 +1,6 @@
 ---
 title: "Vision - Gamefeel Backlog"
-order: 19
+order: 20
 status: draft
 updated: 2026-07-18
 ---

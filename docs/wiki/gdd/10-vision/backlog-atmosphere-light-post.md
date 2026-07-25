@@ -1,6 +1,6 @@
 ---
 title: "Vision - Light, Post, Atmosphere & Transitions Backlog"
-order: 20
+order: 21
 status: draft
 updated: 2026-07-18
 ---
