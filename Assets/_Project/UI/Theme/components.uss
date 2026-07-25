@@ -70,14 +70,15 @@
    латунная гамма — разница только в наполнении. Primary = сплошная латунь (зовёт), secondary =
    тёмное поле в латунной рамке с латунной подписью (отвечает). Прежний вариант (тихий серый
    контур + белый текст + «подставка» снизу) читался деталью из другого интерфейса. */
-/* ВРЕМЕННО (реш. Макса, п.3 раунда 4): вторичная кнопка выглядит 1:1 с primary. Прежняя пара
-   «латунная заливка против тёмного поля» читалась как две кнопки из разных интерфейсов.
-   Отдельный вид для вторичных спроектируем специально — тогда это правило и разъедется обратно.
-   Каркас (размеры, рамка, шрифт) остаётся здесь, наполнение приходит общим правилом ниже. */
+/* БАЗОВАЯ кнопка — тёмное поле в латунной рамке с латунной подписью. Это ЭТАЛОН вида кнопок
+   в проекте (реш. Макса): именно она читается «нашей». Сведение её с прежней primary отменено —
+   плохой оказалась как раз primary с пиксельной заливкой Honeti, а не эта. */
 .gm-button {
+    background-color: var(--gm-color-surface-panel);
     border-width: var(--gm-outline-width);
     border-color: var(--gm-color-border-frame);
     border-radius: var(--gm-radius-0);
+    color: var(--gm-brass-200);
     font-size: var(--gm-font-body);
     padding: var(--gm-space-2) var(--gm-space-4);
     margin-top: var(--gm-space-2);
@@ -86,11 +87,15 @@
 
 .gm-button:hover {
     border-color: var(--gm-color-hover-border);
+    background-color: var(--gm-color-hover-surface);
+    color: var(--gm-parchment-100);
 }
 
-/* Нажатие «вдавливает»: рамка тускнеет, заливка уходит в нажатый вариант плашки. */
+/* Нажатие «вдавливает»: поле уходит в самый тёмный тон, рамка тускнеет. */
 .gm-button:active {
     border-color: var(--gm-color-border-inner);
+    background-color: var(--gm-color-surface-sunken);
+    color: var(--gm-brass-300);
 }
 
 .gm-button:disabled {
@@ -103,17 +108,29 @@
    порядку загрузки её правило бьёт наш одноклассовый селектор — кнопка при наведении становилась
    бледно-серой плашкой (наход. Макса, раунд 3). Два класса в селекторе перевешивают. Тот же корень,
    что у «белого квадрата» на ленте режимов, только там лечилось переездом на VisualElement. */
-.unity-button.gm-button:hover,
+.unity-button.gm-button:hover {
+    background-color: var(--gm-color-hover-surface);
+    background-image: none;
+    color: var(--gm-parchment-100);
+}
+
+.unity-button.gm-button:active {
+    background-color: var(--gm-color-surface-sunken);
+    background-image: none;
+    color: var(--gm-brass-300);
+}
+
+/* Primary — та же форма и та же рамка, разница только в наполнении: сплошная латунь зовёт,
+   тёмное поле отвечает. Заливка идёт ТОКЕНОМ, а не 9-slice картинкой Honeti (см. ниже). */
 .unity-button.gm-button--primary:hover {
-    background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
-    background-color: var(--gm-color-surface-raised);
+    background-image: none;
+    background-color: var(--gm-color-accent-hover);
     color: var(--gm-color-text-on-accent);
 }
 
-.unity-button.gm-button:active,
 .unity-button.gm-button--primary:active {
-    background-image: url("../../Art/UI/Honeti-gm/Gold2Down_gm.png");
-    background-color: var(--gm-color-surface-raised);
+    background-image: none;
+    background-color: var(--gm-color-accent-active);
     color: var(--gm-color-text-on-accent);
 }
 
@@ -157,31 +174,30 @@
     --unity-colors-helpbox-border: var(--gm-color-hover-border);
 }
 
-/* --- Наполнение кнопки: латунная ЗАЛИВКА Honeti (это фон, а не контур).
-       Пока общее для обычной и primary — см. решение п.3 выше. --- */
-.gm-button,
+/* --- Кнопка: primary — не более одной на экран ---
+   ЗАЛИВКА ТОКЕНОМ, НЕ КАРТИНКОЙ. Прежняя пиксельная плашка Honeti (Gold2_gm 9-slice со
+   -unity-slice-scale) выпадала из интерфейса: чужой градиент и шум растянутого пикселя рядом с
+   нашими плоскими поверхностями. Тот же диагноз, что раньше был у Honeti-РАМОК — теперь выведена
+   и заливка, у Honeti не осталось роли в кнопках.
+   Форма и рамка — общие с базовой кнопкой, разница только в наполнении: сплошная приглушённая
+   латунь зовёт, тёмное поле отвечает. */
 .gm-button--primary {
-    background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
-    -unity-slice-left: 5;
-    -unity-slice-right: 5;
-    -unity-slice-top: 5;
-    -unity-slice-bottom: 5;
-    -unity-slice-scale: 3px;
-    border-color: var(--gm-outline-color);
+    background-image: none;
+    background-color: var(--gm-color-accent);
+    border-color: var(--gm-color-hover-border);
     color: var(--gm-color-text-on-accent);
 }
 
-.gm-button:hover,
 .gm-button--primary:hover {
-    background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
-    background-color: var(--gm-color-surface-raised);
-    border-color: var(--gm-outline-color-hover);
+    background-color: var(--gm-color-accent-hover);
+    border-color: var(--gm-color-focus-ring);
+    color: var(--gm-color-text-on-accent);
 }
 
-.gm-button:active,
 .gm-button--primary:active {
-    background-image: url("../../Art/UI/Honeti-gm/Gold2Down_gm.png");
-    background-color: var(--gm-color-surface-raised);
+    background-color: var(--gm-color-accent-active);
+    border-color: var(--gm-color-hover-border);
+    color: var(--gm-color-text-on-accent);
 }
 
 /* Disabled: заливка снята, остаётся тусклая деревянная плашка с тихим контуром.
@@ -193,7 +209,8 @@
     background-color: var(--gm-color-surface-raised);
     background-image: none;
     border-color: var(--gm-color-border-subtle);
-    color: var(--gm-color-text-muted);
+    color: var(--gm-color-disabled-text);
+    opacity: 1;
 }
 
 /* Кнопка, тянущаяся на равную долю в ряду (футер настроек и т.п.). */
