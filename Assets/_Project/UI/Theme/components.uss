@@ -70,12 +70,14 @@
    латунная гамма — разница только в наполнении. Primary = сплошная латунь (зовёт), secondary =
    тёмное поле в латунной рамке с латунной подписью (отвечает). Прежний вариант (тихий серый
    контур + белый текст + «подставка» снизу) читался деталью из другого интерфейса. */
+/* ВРЕМЕННО (реш. Макса, п.3 раунда 4): вторичная кнопка выглядит 1:1 с primary. Прежняя пара
+   «латунная заливка против тёмного поля» читалась как две кнопки из разных интерфейсов.
+   Отдельный вид для вторичных спроектируем специально — тогда это правило и разъедется обратно.
+   Каркас (размеры, рамка, шрифт) остаётся здесь, наполнение приходит общим правилом ниже. */
 .gm-button {
-    background-color: var(--gm-color-surface-panel);
     border-width: var(--gm-outline-width);
     border-color: var(--gm-color-border-frame);
     border-radius: var(--gm-radius-0);
-    color: var(--gm-brass-200);
     font-size: var(--gm-font-body);
     padding: var(--gm-space-2) var(--gm-space-4);
     margin-top: var(--gm-space-2);
@@ -84,15 +86,11 @@
 
 .gm-button:hover {
     border-color: var(--gm-color-hover-border);
-    background-color: var(--gm-color-hover-surface);
-    color: var(--gm-parchment-100);
 }
 
-/* Нажатие «вдавливает»: поле уходит в самый тёмный тон, рамка тускнеет. */
+/* Нажатие «вдавливает»: рамка тускнеет, заливка уходит в нажатый вариант плашки. */
 .gm-button:active {
     border-color: var(--gm-color-border-inner);
-    background-color: var(--gm-color-surface-sunken);
-    color: var(--gm-brass-300);
 }
 
 .gm-button:disabled {
@@ -105,24 +103,14 @@
    порядку загрузки её правило бьёт наш одноклассовый селектор — кнопка при наведении становилась
    бледно-серой плашкой (наход. Макса, раунд 3). Два класса в селекторе перевешивают. Тот же корень,
    что у «белого квадрата» на ленте режимов, только там лечилось переездом на VisualElement. */
-.unity-button.gm-button:hover {
-    background-color: var(--gm-color-hover-surface);
-    background-image: none;
-    color: var(--gm-parchment-100);
-}
-
-.unity-button.gm-button:active {
-    background-color: var(--gm-color-surface-sunken);
-    background-image: none;
-    color: var(--gm-brass-300);
-}
-
+.unity-button.gm-button:hover,
 .unity-button.gm-button--primary:hover {
     background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
     background-color: var(--gm-color-surface-raised);
     color: var(--gm-color-text-on-accent);
 }
 
+.unity-button.gm-button:active,
 .unity-button.gm-button--primary:active {
     background-image: url("../../Art/UI/Honeti-gm/Gold2Down_gm.png");
     background-color: var(--gm-color-surface-raised);
@@ -169,7 +157,9 @@
     --unity-colors-helpbox-border: var(--gm-color-hover-border);
 }
 
-/* --- Кнопка: primary (латунная ЗАЛИВКА Honeti — это фон, не контур) — не более одной на экран --- */
+/* --- Наполнение кнопки: латунная ЗАЛИВКА Honeti (это фон, а не контур).
+       Пока общее для обычной и primary — см. решение п.3 выше. --- */
+.gm-button,
 .gm-button--primary {
     background-image: url("../../Art/UI/Honeti-gm/Gold2_gm.png");
     -unity-slice-left: 5;
@@ -181,18 +171,24 @@
     color: var(--gm-color-text-on-accent);
 }
 
+.gm-button:hover,
 .gm-button--primary:hover {
     background-image: url("../../Art/UI/Honeti-gm/Gold2Hover_gm.png");
     background-color: var(--gm-color-surface-raised);
     border-color: var(--gm-outline-color-hover);
 }
 
+.gm-button:active,
 .gm-button--primary:active {
     background-image: url("../../Art/UI/Honeti-gm/Gold2Down_gm.png");
     background-color: var(--gm-color-surface-raised);
 }
 
-/* Disabled primary: заливка снята, остаётся тусклая деревянная плашка с тихим контуром. */
+/* Disabled: заливка снята, остаётся тусклая деревянная плашка с тихим контуром.
+   unity-disabled — класс темы Unity; одного псевдокласса :disabled не хватает, чтобы её перебить. */
+.gm-button.unity-disabled,
+.gm-button--primary.unity-disabled,
+.gm-button:disabled,
 .gm-button--primary:disabled {
     background-color: var(--gm-color-surface-raised);
     background-image: none;
@@ -1361,14 +1357,23 @@
 /* Крайние табы ленты (SlantedChip): подсветку рисует Painter2D клином под торец ленты, поэтому
    прямоугольный background-color у них ВСЕГДА прозрачный, а цвет состояния приходит через
    custom-свойство --gm-chip-fill. Состояния по-прежнему живут здесь, в USS, не в C#. */
-.gm-chip--slanted {
+/* ВСЕ селекторы ниже — из ДВУХ классов (.gm-chip.gm-chip--slanted), и это не стилистика.
+   Правила состояний обычного чипа (.gm-chip:hover и т.д.) объявлены НИЖЕ по файлу, в секции чипов.
+   При равном весе побеждает то, что ниже, — и прямоугольная заливка возвращалась поверх скоса,
+   вылезая за срезанный угол (п.1 раунда 4, тот же класс готчи бил уже трижды).
+   Два класса дают больший вес, и порядок секций перестаёт что-либо решать. */
+.gm-chip.gm-chip--slanted {
     background-color: rgba(0, 0, 0, 0);
     --gm-chip-fill: rgba(0, 0, 0, 0);
 }
 
-.gm-chip--slanted:hover { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-hover-surface); }
-.gm-chip--slanted:active { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-surface-sunken); }
-.gm-chip--slanted.gm-chip--active { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-surface-raised); }
+.gm-chip.gm-chip--slanted:hover { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-hover-surface); }
+.gm-chip.gm-chip--slanted:active { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-surface-sunken); }
+.gm-chip.gm-chip--slanted.gm-chip--active { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: var(--gm-color-surface-raised); }
+
+/* Выключенный крайний таб: тема Unity вешает класс unity-disabled, одного :disabled мало. */
+.gm-chip.gm-chip--slanted.unity-disabled,
+.gm-chip.gm-chip--slanted:disabled { background-color: rgba(0, 0, 0, 0); --gm-chip-fill: rgba(0, 0, 0, 0); }
 
 /* Крайние табы прижаты к торцам ленты — иначе клин подсветки повис бы в воздухе, не совпав с углом. */
 .gm-runbar__tab--first { padding-left: var(--gm-space-2); margin-left: 0; }
