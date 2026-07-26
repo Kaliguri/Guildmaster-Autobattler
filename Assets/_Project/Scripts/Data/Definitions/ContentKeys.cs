@@ -13,7 +13,25 @@ namespace Guildmaster.Data.Definitions
     /// </remarks>
     public static class ContentKeys
     {
+        /// <summary>Таблица контента: имена и описания сущностей (<c>{id}.name</c>, <c>{id}.desc</c>).</summary>
         public const string TableName = "Content";
+
+        /// <summary>
+        /// Таблица интерфейса: подписи экранов и кнопок. Ключи домена <see cref="UiKeyPrefix"/> живут здесь.
+        /// </summary>
+        public const string UiTableName = "UI";
+
+        /// <summary>
+        /// Домен ключей интерфейса. По нему <c>ILocalizationService</c> и решает, из какой таблицы читать —
+        /// раньше решения не было вовсе: односоставный <c>GetString(key)</c> всегда шёл в Content, поэтому
+        /// 33 корректно заведённых <c>ui.*</c>-ключа не находились никогда, а экраны молча жили на
+        /// C#-фолбэках (аудит 2026-07-26, T-3/T-28).
+        /// </summary>
+        public const string UiKeyPrefix = "ui.";
+
+        /// <summary>Таблица, которой принадлежит ключ, по его домену.</summary>
+        public static string TableFor(string key) =>
+            !string.IsNullOrEmpty(key) && key.StartsWith(UiKeyPrefix) ? UiTableName : TableName;
         public const string NameSuffix = "name";
         public const string DescSuffix = "desc";
 

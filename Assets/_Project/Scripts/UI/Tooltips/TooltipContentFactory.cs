@@ -18,7 +18,6 @@ namespace Guildmaster.UI.Tooltips
     /// </remarks>
     public sealed class TooltipContentFactory : ITooltipContentFactory
     {
-        private const string UiTable = "UI";
 
         private readonly IContentDatabase _content;
         private readonly IDescriptionService _descriptions;
@@ -215,7 +214,7 @@ namespace Guildmaster.UI.Tooltips
 
         private string UiString(string key, string fallback)
         {
-            string value = string.IsNullOrEmpty(key) ? null : _loc?.GetString(UiTable, key);
+            string value = string.IsNullOrEmpty(key) ? null : _loc?.GetString(ContentKeys.UiTableName, key);
             return string.IsNullOrEmpty(value) ? fallback : value;
         }
     }

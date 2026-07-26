@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Guildmaster.Core.Localization;
+using Guildmaster.Data.Definitions;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -15,7 +16,6 @@ namespace Guildmaster.Game.Services
     /// </summary>
     public sealed class LocalizationService : ILocalizationService, IDisposable
     {
-        private const string ContentTable = "Content";
 
         public event Action LocaleChanged;
 
@@ -45,10 +45,13 @@ namespace Guildmaster.Game.Services
             }
         }
 
-        public string GetString(string key) => GetString(ContentTable, key);
+        // Таблица выбирается ПО ДОМЕНУ КЛЮЧА (ContentKeys.TableFor), а не берётся одна на всё. Пока она была
+        // одна ("Content"), ключи ui.* уходили не туда и не находились никогда — экраны жили на C#-фолбэках,
+        // а незаведённые ключи были неотличимы от заведённых (аудит 2026-07-26, T-3).
+        public string GetString(string key) => GetString(ContentKeys.TableFor(key), key);
 
         public string GetString(string key, IReadOnlyDictionary<string, object> args)
-            => GetString(ContentTable, key, args);
+            => GetString(ContentKeys.TableFor(key), key, args);
 
         public string GetString(string table, string key) => GetString(table, key, null);
 
@@ -60,6 +63,20 @@ namespace Guildmaster.Game.Services
             {
                 var op = LocalizationSettings.StringDatabase.GetTableEntryAsync(table, key);
                 var res = op.WaitForCompletion();
+
+                // Ключ лежит не в своей таблице — прочитаем, но скажем об этом: молчаливый промах здесь
+                // выглядел бы как «перевода нет», хотя строка есть, просто не там.
+                if (res.Entry == null)
+                {
+                    string other = table == ContentKeys.UiTableName ? ContentKeys.TableName : ContentKeys.UiTableName;
+                    var fallback = LocalizationSettings.StringDatabase.GetTableEntryAsync(other, key).WaitForCompletion();
+                    if (fallback.Entry != null)
+                    {
+                        UnityEngine.Debug.LogWarning(
+                            $"[Localization] - ключ '{key}' лежит в таблице '{other}', а по домену принадлежит '{table}'");
+                        res = fallback;
+                    }
+                }
                 // Отсутствующий ключ → пустая строка, чтобы вызывающий применил свой RU-фолбэк
                 // (а не показывал Unity-плейсхолдер «No translation found …» или сам ключ). Это делает
                 // code-фолбэки экранов (L(key, "RU")) реальной страховкой на случай незаведённого ключа.

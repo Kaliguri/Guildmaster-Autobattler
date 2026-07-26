@@ -15,7 +15,6 @@ namespace Guildmaster.Data.Descriptions
     /// </remarks>
     public sealed class DescriptionService : IDescriptionService
     {
-        private const string UiTable = "UI";
         private const string PercentKey = "ui.unit.percent";
         private const string SecondsKey = "ui.unit.seconds";
         private const string PerSecondKey = "ui.unit.per_second";
@@ -118,9 +117,9 @@ namespace Guildmaster.Data.Descriptions
 
                 UnitLabels fallback = UnitLabels.Ru;
                 _units = new UnitLabels(
-                    Or(_loc?.GetString(UiTable, PercentKey), fallback.Percent),
-                    Or(_loc?.GetString(UiTable, SecondsKey), fallback.Seconds),
-                    Or(_loc?.GetString(UiTable, PerSecondKey), fallback.PerSecond));
+                    Or(_loc?.GetString(ContentKeys.UiTableName, PercentKey), fallback.Percent),
+                    Or(_loc?.GetString(ContentKeys.UiTableName, SecondsKey), fallback.Seconds),
+                    Or(_loc?.GetString(ContentKeys.UiTableName, PerSecondKey), fallback.PerSecond));
                 _unitsReady = true;
                 return _units;
             }
