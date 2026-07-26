@@ -33,3 +33,6 @@ MonoBehaviour:
   _startingRelicId: relic.base
   _maxProfiles: 4
   _maxGuildsPerProfile: 8
+  _startingRosterCapacity: 8
+  _maxRosterCapacity: 64
+  _veteranHireUnlockDeaths: 8

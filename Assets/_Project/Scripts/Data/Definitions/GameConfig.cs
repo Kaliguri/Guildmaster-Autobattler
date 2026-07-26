@@ -83,6 +83,19 @@ namespace Guildmaster.Data.Definitions
                  "в ней живёт не более одного активного забега. Реш. Макса 2026-07-26: 8.")]
         [SerializeField] private int _maxGuildsPerProfile;
 
+        [Header("Guild roster (дом между забегами)")]
+        [Tooltip("Сколько людей помещается в новом доме. В забег уходят четверо, остальные ждут дома. " +
+                 "Реш. Макса 2026-07-27: 8.")]
+        [SerializeField] private int _startingRosterCapacity;
+
+        [Tooltip("До скольки мест дом может вырасти за валюту гильдии. Глубокая скамейка — условие " +
+                 "смертности и гейта ветеранов. Реш. Макса 2026-07-27: 64.")]
+        [SerializeField] private int _maxRosterCapacity;
+
+        [Tooltip("Сколько ветеранов дом должен потерять, чтобы открылся платный наём готовых ветеранов " +
+                 "(предохранитель от грайнда после плохой ночи). Ориентир Макса 2026-07-27: 8.")]
+        [SerializeField] private int _veteranHireUnlockDeaths;
+
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
@@ -107,6 +120,10 @@ namespace Guildmaster.Data.Definitions
 
         public int    MaxProfiles         => _maxProfiles;
         public int    MaxGuildsPerProfile => _maxGuildsPerProfile;
+
+        public int    StartingRosterCapacity  => _startingRosterCapacity;
+        public int    MaxRosterCapacity       => _maxRosterCapacity;
+        public int    VeteranHireUnlockDeaths => _veteranHireUnlockDeaths;
 
         /// <summary>
         /// Заготовка значений: инстанс в памяти, заполненный тем, с чего начинают новый ассет. Нужна
@@ -140,6 +157,9 @@ namespace Guildmaster.Data.Definitions
             c._startingRelicId     = ContentIds.BaseRelic;
             c._maxProfiles         = 4;
             c._maxGuildsPerProfile = 8;
+            c._startingRosterCapacity  = 8;
+            c._maxRosterCapacity       = 64;
+            c._veteranHireUnlockDeaths = 8;
             return c;
         }
     }

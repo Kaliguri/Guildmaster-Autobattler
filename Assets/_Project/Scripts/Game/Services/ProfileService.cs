@@ -165,12 +165,16 @@ namespace Guildmaster.Game.Services
 
             var guild = new GuildState
             {
-                Id         = Guid.NewGuid().ToString("N"),
-                Name       = string.IsNullOrWhiteSpace(name) ? "Гильдия" : name,
-                CreatedUtc = DateTime.UtcNow.ToString("o"),
+                Id             = Guid.NewGuid().ToString("N"),
+                Name           = string.IsNullOrWhiteSpace(name) ? "Гильдия" : name,
+                CreatedUtc     = DateTime.UtcNow.ToString("o"),
+                RosterCapacity = Math.Max(1, _config.StartingRosterCapacity),
             };
 
             _save.Save(GuildKey(_activeProfile.Id, guild.Id), guild);
+            // Книга заводится сразу и пустой: дом без памяти невозможен, а отдельный ключ бережёт
+            // экран казарм от чтения всей истории (реш. 2026-07-27/19).
+            _save.Save(BookKey(_activeProfile.Id, guild.Id), new GuildBook());
             RefreshGuilds();
             SetActiveGuild(guild.Id, guild.Name);
 
@@ -251,6 +255,7 @@ namespace Guildmaster.Game.Services
 
         private static string GuildFolder(string profileId, string guildId) => $"{GuildsRoot(profileId)}/{guildId}";
         private static string GuildKey(string profileId, string guildId)    => $"{GuildFolder(profileId, guildId)}/guild";
+        private static string BookKey(string profileId, string guildId)     => $"{GuildFolder(profileId, guildId)}/book";
 
         /// <summary>Указатель на профиль, которым играли в прошлый раз. Отдельно от самих профилей.</summary>
         [Serializable]
