@@ -18,8 +18,15 @@ MonoBehaviour:
   _baseDuration: 4
   _stacking: 2
   _maxStacks: 1
-  _cleanseTier: 0
+  _cleanseTier: 1
   _unremovable: 0
+  _cleansePrice:
+  - Flat: 5
+    Pct: 0.15
+  - Flat: 10
+    Pct: 0.25
+  - Flat: 20
+    Pct: 0.5
   _components:
   - rid: 5615026976500744322
   - rid: 5615026976500744323

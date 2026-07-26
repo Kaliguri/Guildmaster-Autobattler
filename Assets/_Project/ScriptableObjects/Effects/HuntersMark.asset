@@ -18,11 +18,20 @@ MonoBehaviour:
   _baseDuration: 5
   _stacking: 2
   _maxStacks: 1
-  _cleanseTier: 0
+  _cleanseTier: 1
   _unremovable: 0
+  _cleansePrice:
+  - Flat: 5
+    Pct: 0.15
+  - Flat: 10
+    Pct: 0.25
+  - Flat: 20
+    Pct: 0.5
   _components:
   - rid: 5615026876324511846
   - rid: 5615026876324511847
+  _icon: {fileID: 0}
+  _infoTags: []
   references:
     version: 2
     RefIds:

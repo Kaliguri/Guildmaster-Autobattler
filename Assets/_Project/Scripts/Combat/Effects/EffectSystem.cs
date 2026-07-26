@@ -326,7 +326,7 @@ namespace Guildmaster.Combat
                 // Цена очистки в стаках (решение 2026-07-27/5): эффект может отдать лишь часть накопленного,
                 // а не исчезнуть целиком. Иначе одна очистка стирала «Угли» без потолка — ставку «долгий бой
                 // окупается» гасило одно нажатие. Ноль стаков после списания = эффект уходит, как раньше.
-                int toRemove = eff.Def.CleanseStacks(eff.Stacks);
+                int toRemove = eff.Def.CleanseStacks(eff.Stacks, req.DispelPower);
                 if (toRemove < eff.Stacks)
                 {
                     int before = eff.Stacks;

@@ -39,8 +39,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(data, "_maxStacks", maxStacks);
             Set(data, "_cleanseTier", cleanseTier);
             Set(data, "_unremovable", unremovable);
-            Set(data, "_cleanseStacksFlat", cleanseStacksFlat);
-            Set(data, "_cleanseStacksPct", cleanseStacksPct);
+            // Цена очистки лестницей: одна и та же пара на все три ступени, если тест не задаёт иного.
+            var price = new EffectData.CleansePrice { Flat = cleanseStacksFlat, Pct = cleanseStacksPct };
+            Set(data, "_cleansePrice", new[] { price, price, price });
             Set(data, "_components", components ?? Array.Empty<IEffectComponent>());
             return data;
         }
