@@ -24,6 +24,7 @@ namespace Guildmaster.Game.Services
         private readonly TimeScaleService _time;
         private readonly IScreenShake     _shake;
         private readonly CombatFeelConfig _cfg;
+        private readonly Core.Audio.IAudioService _audio;
 
         private IDisposable _subscriptions;
         private float _lastKillSlowmo = float.NegativeInfinity;
@@ -34,7 +35,8 @@ namespace Guildmaster.Game.Services
             CombatSimulation sim,
             TimeScaleService time,
             IScreenShake shake,
-            CombatFeelConfig cfg)
+            CombatFeelConfig cfg,
+            Core.Audio.IAudioService audio)
         {
             _damageSub = damageSub;
             _endedSub  = endedSub;
@@ -42,6 +44,7 @@ namespace Guildmaster.Game.Services
             _time      = time;
             _shake     = shake;
             _cfg       = cfg;
+            _audio     = audio;
         }
 
         public void Start()
@@ -79,6 +82,9 @@ namespace Guildmaster.Game.Services
                 {
                     _lastKillSlowmo = now;
                     _time.CinematicPulse(_cfg.KillSlowFactor, 0f, _cfg.KillSlowRelease);
+                    // Стингер идёт под тем же кулдауном, что и слоумо: на пачке добиваний он иначе
+                    // наложится сам на себя и превратится в кашу.
+                    _audio?.Play("feel.kill.stinger");
                 }
                 _shake.Shake(_cfg.KillShake);
                 return;
@@ -92,6 +98,8 @@ namespace Guildmaster.Game.Services
             if (frac < _cfg.HeavyHitFrac) return;
             float k = Mathf.Clamp01((frac - _cfg.HeavyHitFrac) / (1f - _cfg.HeavyHitFrac));
             _shake.Shake(Mathf.Lerp(_cfg.HeavyShakeMin, _cfg.HeavyShakeMax, k));
+            // Басовый слой поверх обычного удара: тряска без звука читается как «экран дёрнулся сам».
+            _audio?.Play("feel.heavy_hit.hit");
         }
 
         // Конец боя → финишер-таймлайн ступенями (совпадает с секвенсом смерти на scaled-времени):
@@ -107,6 +115,7 @@ namespace Guildmaster.Game.Services
             };
             _time.PlayCinematicSequence(segments);
             _shake.Shake(_cfg.BattleEndShake);
+            _audio?.Play("feel.finisher.stinger"); // звук входа в финишер-слоумо, поверх победы/поражения
         }
     }
 }

@@ -36,6 +36,7 @@ namespace Guildmaster.UI.Tooltips
         private readonly ISubscriber<RelicDragEvent> _relicDrag;
         private readonly IInputService _input;
         private readonly ISettingsService _settings;
+        private readonly UiSoundSystem _sound;   // шелест подсказки; null в EditMode-тестах
         private IDisposable _dragSubscription;
 
         private VisualElement _root;
@@ -53,12 +54,13 @@ namespace Guildmaster.UI.Tooltips
         private bool _detailed;
 
         public TooltipSystem(ITooltipContentFactory factory, ISubscriber<RelicDragEvent> relicDrag,
-            IInputService input, ISettingsService settings)
+            IInputService input, ISettingsService settings, UiSoundSystem sound = null)
         {
             _factory   = factory;
             _relicDrag = relicDrag;
             _input     = input;
             _settings  = settings;
+            _sound     = sound;
 
             if (_input != null) _input.DetailsHeldChanged += OnDetailsHeldChanged;
             if (_settings != null) _settings.Changed += SyncDetailed;
@@ -86,7 +88,7 @@ namespace Guildmaster.UI.Tooltips
             bool value  = always ^ held;
             if (_detailed == value) return;
             _detailed = value;
-            if (_visible) Rebuild();
+            if (_visible) { Rebuild(); _sound?.PlayUi("tooltip_detail"); }
         }
 
         /// <summary>
@@ -211,6 +213,7 @@ namespace Guildmaster.UI.Tooltips
             if (!Rebuild()) return;
 
             _visible = true;
+            _sound?.PlayUi("tooltip_show");
             _window.style.display = DisplayStyle.Flex;
             // Размер окна известен только после раскладки, а ставить его «примерно» нельзя — именно у
             // краёв экрана ошибка и вылезает. Поэтому первый кадр окно прозрачно: считаем позицию по

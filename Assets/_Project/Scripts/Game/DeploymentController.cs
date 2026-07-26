@@ -50,6 +50,7 @@ namespace Guildmaster.Game
         private readonly IBattleSession   _session;
         private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
         private readonly Guildmaster.Guild.RunStateService _runStates; // durable-гильдия: сюда уезжают позиции и киты
+        private readonly Core.Audio.IAudioService _audio;              // взял/поставил/отказ — звук расстановки
 
         // Редактируемый ростер игрока в этой фазе (позиции/релики меняются перетаскиванием и loadout'ом).
         // GuildIndex — тот же слот в durable-гильдии забега (RunState.Guild): по нему правки уезжают в сейв,
@@ -105,8 +106,10 @@ namespace Guildmaster.Game
             IPublisher<TestZoneChangedEvent> testZoneChangedPub,
             IBattleSession session,
             CameraModeController cameraModes,
-            Guildmaster.Guild.RunStateService runStates)
+            Guildmaster.Guild.RunStateService runStates,
+            Core.Audio.IAudioService audio)
         {
+            _audio         = audio;
             _runStates     = runStates;
             _loader        = loader;
             _sim           = sim;
@@ -458,7 +461,15 @@ namespace Guildmaster.Game
                     break;
                 case RelicDragPhase.Drop:
                     RuntimeUnit target = e.Relic != null ? PickUnit(ScreenToWorld(_input.PointerScreenPosition)) : null;
-                    if (target != null && e.Relic != null) EquipOn(target.Id, e.Relic);
+                    if (target != null && e.Relic != null)
+                    {
+                        EquipOn(target.Id, e.Relic);
+                        _audio?.Play("ui.relic_equip.ui");
+                    }
+                    else if (e.Relic != null)
+                    {
+                        _audio?.Play("ui.drag_reject.ui"); // карточку отпустили мимо юнита
+                    }
                     _relicDrag = null;
                     HideGhostSprite();
                     break;
@@ -501,6 +512,7 @@ namespace Guildmaster.Game
             _feetOffset = FeetOf(unit) - unit.Position; // куда относительно центра садится круг-опора
             _dragMoved = false;
             _view.SetExtendedHighlight(CanUseExtended(unit));
+            _audio?.Play("ui.deploy_grab.ui");
         }
 
         private void OnPointerReleased()
@@ -516,8 +528,13 @@ namespace Guildmaster.Game
                     _dragged.Position = target;
                     _dragged.PreviousPosition = target; // снап вида (без слайда интерполяции)
                     UpdateSlotPos(_dragged.Id, target);
+                    _audio?.Play("ui.deploy_place.ui");
                 }
-                // невалидно → юнит остаётся на месте (reject)
+                else
+                {
+                    // невалидно → юнит остаётся на месте (reject). Молчаливый откат читается как «не нажалось».
+                    _audio?.Play("ui.deploy_reject.ui");
+                }
             }
 
             _dragged = null;

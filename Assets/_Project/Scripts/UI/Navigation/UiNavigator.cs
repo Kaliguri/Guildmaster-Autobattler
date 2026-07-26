@@ -22,16 +22,20 @@ namespace Guildmaster.UI
     {
         private readonly IInputService _input;
         private readonly IBattleClock _clock;
+        // Звук открытия/закрытия экранов: одно место на всю игру. Может быть null (EditMode-тесты
+        // конструируют навигатор без звука) — все вызовы через ?.
+        private readonly UiSoundSystem _sound;
         private readonly List<UiScreen> _stack = new(); // [0] низ, [last] верх
 
         private VisualElement _screensLayer;
         private VisualElement _modalLayer;
         private UiScreenContext _context;
 
-        public UiNavigator(IInputService input, IBattleClock clock)
+        public UiNavigator(IInputService input, IBattleClock clock, UiSoundSystem sound = null)
         {
             _input = input;
             _clock = clock;
+            _sound = sound;
             // K8 (план II.3): смена фазы боя → пересчёт глушения/контекста. Навигатор — ЕДИНСТВЕННЫЙ писатель
             // контекста; боевой слой больше не зовёт SetContext руками, только SetPhase → поднимает это событие.
             if (_clock != null) _clock.PhaseChanged += SyncInput;
@@ -128,6 +132,7 @@ namespace Guildmaster.UI
 
             prevTop?.OnBlur();
             screen.OnEnter();
+            _sound?.PlayUi(screen.Kind == ScreenKind.Modal ? "modal_open" : "screen_open");
 
             SyncVisibility();
             SyncInput();
@@ -147,6 +152,7 @@ namespace Guildmaster.UI
             _stack.RemoveAt(_stack.Count - 1);
             top.Root?.RemoveFromHierarchy();
             top.OnExit();
+            _sound?.PlayUi("screen_close");
 
             SyncVisibility();
             SyncInput();

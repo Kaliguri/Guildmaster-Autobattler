@@ -86,6 +86,7 @@ namespace Guildmaster.Presentation
 
         // --- Feel (реакция на удар, LitMotion) — только презентация, сим не трогает ---
         private Design.CombatFeelConfig _feel;          // параметры вспышки/сплющивания (из design-конфига)
+        private Core.Audio.IAudioService _audio;        // голос вида: хруст разлёта на осколки
         private Color        _baseTint = Color.white;   // цвет-тинт тела (умножается на текстуру в шейдере)
         private Color        _activeFlashColor = Color.white; // цвет текущей вспышки (school flash или фолбэк)
         private float        _flashAmount;               // 0..1 — сила вспышки (параметр _FlashAmount шейдера)
@@ -183,6 +184,12 @@ namespace Guildmaster.Presentation
 
         /// <summary>Подать design-конфиг сочности (длительности/сила/цвет вспышки и сплющивания). CombatPresenter — при спавне.</summary>
         public void ApplyFeelConfig(Design.CombatFeelConfig feel) => _feel = feel;
+
+        /// <summary>
+        /// Дать виду голос. Нужен ровно для одного момента — разлёта на осколки: он случается сильно позже
+        /// сим-смерти (после вспышки и anticipation), и звук смерти его уже не покрывает.
+        /// </summary>
+        public void ApplyAudio(Core.Audio.IAudioService audio) => _audio = audio;
 
         /// <summary>
         /// Хук contact-dust: презентер спавнит <c>VfxContactDust</c> в <see cref="FeetPoint"/>.
@@ -1016,6 +1023,7 @@ namespace Guildmaster.Presentation
         private void StartShatter()
         {
             _deathPhase = DeathPhase.Shattering;
+            _audio?.Play("feel.death_shatter.death");
 
             if (_sprite == null || _sprite.sprite == null)
             {

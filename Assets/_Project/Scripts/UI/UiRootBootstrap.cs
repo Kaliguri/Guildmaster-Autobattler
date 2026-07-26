@@ -117,6 +117,7 @@ namespace Guildmaster.UI
         private VisualElement _layerModal;        // [4] Modal навигатора (над топбаром, scrim накрывает его)
         private VisualElement _layerTooltip;      // [6] окно тултипа (Трек Т) — над топбаром и модалками
         private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
+        private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
         private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
         private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
@@ -161,8 +162,10 @@ namespace Guildmaster.UI
             ISubscriber<OpenCampRequest> openCampSub,
             ISubscriber<OpenNodeFarewellRequest> openFarewellSub,
             ISubscriber<OpenTitleCardRequest> openTitleCardSub,
-            Tooltips.TooltipSystem tooltips)
+            Tooltips.TooltipSystem tooltips,
+            UiSoundSystem uiSound)
         {
+            _uiSound = uiSound;
             _tooltips = tooltips;
             _screenBackdropPub = screenBackdropPub;
             _screenFadeSub     = screenFadeSub;
@@ -206,6 +209,9 @@ namespace Guildmaster.UI
             // Трек Т: система тултипов слушает всплывающие запросы на КОРНЕ панели, а окно держит в своём
             // слое — поэтому привязка идёт сразу после слоёв и до построения экранов.
             _tooltips?.Attach(_doc.rootVisualElement, _layerTooltip);
+            // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
+            // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
+            _uiSound?.Attach(_doc.rootVisualElement);
             _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).

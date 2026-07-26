@@ -63,8 +63,10 @@ namespace Guildmaster.UI
         {
             if (relic == null) return;
             Selected = relic;
-            // Хук звука выбора: точный ключ «<relicId>.select»; FMOD-событие Макс заводит позже (тишина безопасна).
-            _audio?.Play(relic.Id + ".select");
+            // Ключ канона {contentId}.{action}: «select» действием НЕ является, поэтому старый
+            // «<relicId>.select» не имел фолбэка и всегда молчал. Общий звук выбора реликвии + при
+            // желании точечный «<relicId>.ui» перекроет его в каталоге.
+            _audio?.Play("ui.relic_select.ui");
         }
 
         /// <summary>Применить выбор: публикуем экип (фаза расстановки пересоберёт превью).</summary>

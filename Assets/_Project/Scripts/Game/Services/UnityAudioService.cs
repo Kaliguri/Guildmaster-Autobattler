@@ -19,6 +19,11 @@ namespace Guildmaster.Game.Services
             Debug.Log($"[UnityAudioService] - Stop: {soundKey}");
         }
 
+        public void StopAll()
+        {
+            Debug.Log("[UnityAudioService] - StopAll");
+        }
+
         public void SetMasterVolume(float volume) { }
 
         public void SetMusicVolume(float volume) { }

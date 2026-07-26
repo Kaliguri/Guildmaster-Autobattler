@@ -55,8 +55,10 @@ namespace Guildmaster.UI
 
         public MenuRouter(IInputService input, UiNavigator nav, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
                           LoadoutHubViewModel hubVm, ILocalizationService loc, IRunControl runControl,
-                          IPublisher<MainMenuVisibilityChangedEvent> mainMenuVisPub)
+                          IPublisher<MainMenuVisibilityChangedEvent> mainMenuVisPub,
+                          Core.Audio.IAudioService audio)
         {
+            _audio = audio;
             _input = input;
             _nav = nav;
             _settingsVm = settingsVm;
@@ -68,6 +70,9 @@ namespace Guildmaster.UI
         }
 
         private readonly IPublisher<MainMenuVisibilityChangedEvent> _mainMenuVisPub;
+        // Звук экранов, у которых он СВОЙ (награда, лавка, привал, сундук): общий клик даёт корневой
+        // UiSoundSystem, а эти моменты игрок должен отличать на слух.
+        private readonly Core.Audio.IAudioService _audio;
 
         public bool IsOpen => _nav.IsOpen;
 
@@ -617,10 +622,15 @@ namespace Guildmaster.UI
                     req.CurrentInventory,
                     relic => _loadoutVm.Name(relic),
                     key => _loc?.GetString(key),
-                    (chosen, dropId) => resolve(dropId != null
-                        ? RewardChoiceResult.Swap(chosen, dropId)
-                        : RewardChoiceResult.Take(chosen)),
-                    () => resolve(RewardChoiceResult.Skip)));
+                    (chosen, dropId) =>
+                    {
+                        _audio?.Play("reward.take.stinger");
+                        resolve(dropId != null ? RewardChoiceResult.Swap(chosen, dropId) : RewardChoiceResult.Take(chosen));
+                    },
+                    () => { _audio?.Play("reward.skip.ui"); resolve(RewardChoiceResult.Skip); },
+                    // Хук выбора карточки был заведён в экране, но никогда не прокидывался — карточка
+                    // анимировалась молча.
+                    _ => _audio?.Play("reward.card_select.ui")));
 
             RewardChoiceResult result = await _nav.ShowAsync(screen, req.Cancellation); // экран снят ДО колбэка (II.5); ct → закрыть при отмене (QA #37)
             req.OnResolved?.Invoke(result);
@@ -643,6 +653,7 @@ namespace Guildmaster.UI
             {
                 if (resolved) return;
                 resolved = true;
+                if (index >= 0) _audio?.Play("event.choice.ui"); // -1 = закрытие без выбора, ему звучать нечем
                 req.OnChosen?.Invoke(index);
             }
 
@@ -781,7 +792,8 @@ namespace Guildmaster.UI
         private async UniTaskVoid ShowChestAsync(OpenChestRequest req)
         {
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
-                resolve => ChestScreenView.Build(_chestUxml, key => _loc?.GetString(key), () => resolve(true)));
+                resolve => ChestScreenView.Build(_chestUxml, key => _loc?.GetString(key),
+                    () => { _audio?.Play("chest.open.stinger"); resolve(true); }));
 
             await _nav.ShowAsync(screen, req.Cancellation); // клик/закрытие → OnOpen; ct → закрыть при отмене (QA #37)
             req.OnOpen?.Invoke();
@@ -799,7 +811,8 @@ namespace Guildmaster.UI
         private async UniTaskVoid ShowCampAsync(OpenCampRequest req)
         {
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
-                resolve => CampScreenView.Build(_campUxml, req.Session, key => _loc?.GetString(key), () => resolve(true)));
+                resolve => CampScreenView.Build(_campUxml, req.Session, key => _loc?.GetString(key), () => resolve(true),
+                    ok => _audio?.Play(ok ? "camp.action.ui" : "camp.denied.ui")));
 
             await _nav.ShowAsync(screen, req.Cancellation); // уход/закрытие → OnLeave; ct → закрыть при отмене (QA #37)
             req.OnLeave?.Invoke();

@@ -33,6 +33,21 @@ namespace Guildmaster.Combat
         public event System.Action<RuntimeUnit, RuntimeUnit, Data.Definitions.EffectTag> OnEffectExpired;
 
         /// <summary>
+        /// Эффект наложен на юнита: (цель, определение, источник). В отличие от <see cref="OnEffectExpired"/>
+        /// несёт САМО определение — по нему презентация строит ключ вида <c>effect.frozen.apply</c>.
+        /// Стрельнёт и на первом наложении, и на стаке/рефреше, и на мгновенном эффекте: игроку одинаково
+        /// важно услышать, что статус лёг. Sim на это событие не завязана — только наблюдатели.
+        /// </summary>
+        public event System.Action<RuntimeUnit, EffectData, RuntimeUnit> OnEffectApplied;
+
+        /// <summary>
+        /// Эффект закончился: (цель, определение, источник). Пара к <see cref="OnEffectApplied"/> — то же
+        /// событие, что <see cref="OnEffectExpired"/>, но с определением вместо одних тегов. Заведено
+        /// отдельным швом, чтобы не менять сигнатуру, на которой висят боевые реактивы.
+        /// </summary>
+        public event System.Action<RuntimeUnit, EffectData, RuntimeUnit> OnEffectEnded;
+
+        /// <summary>
         /// Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение.
         /// Вставляется в тик-цикл перед DeathSystem (DoT может добить).
         /// </summary>
@@ -106,6 +121,7 @@ namespace Guildmaster.Combat
             if (existing != null)
             {
                 ApplyStacking(existing, def, source, target, combat);
+                OnEffectApplied?.Invoke(target, def, source);
                 return;
             }
 
@@ -161,6 +177,8 @@ namespace Guildmaster.Combat
                     }
                 }
             }
+
+            OnEffectApplied?.Invoke(target, def, source);
         }
 
         /// <summary>
@@ -329,6 +347,7 @@ namespace Guildmaster.Combat
             // CombatSimulation). Реактивы фильтруют по тегам эффекта + команде юнита. Смещение (KnockUp)
             // именно так и разводит «конец отбрасывания врага → телепорт» vs «конец рывка себя → толчок».
             OnEffectExpired?.Invoke(unit, eff.Source, eff.Def.Tags);
+            OnEffectEnded?.Invoke(unit, eff.Def, eff.Source);
         }
 
         /// <summary>

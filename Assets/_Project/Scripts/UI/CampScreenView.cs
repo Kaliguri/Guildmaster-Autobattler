@@ -21,7 +21,8 @@ namespace Guildmaster.UI
             VisualTreeAsset uxml,
             CampSession session,
             Func<string, string> localize,
-            Action onLeave)
+            Action onLeave,
+            Action<bool> onActionSound = null)
         {
             string L(string key, string fallback)
             {
@@ -57,7 +58,14 @@ namespace Guildmaster.UI
 
             void OnAction(CampAction action)
             {
-                if (!session.TryPerform(action)) return; // не по карману — кнопка отзывается, но ничего не делает
+                if (!session.TryPerform(action))
+                {
+                    // Не по карману: кнопка сознательно остаётся живой (см. Refresh), поэтому отказ должен
+                    // хотя бы звучать — иначе нажатие выглядит как проглоченное.
+                    onActionSound?.Invoke(false);
+                    return;
+                }
+                onActionSound?.Invoke(true);
                 if (action == CampAction.MoveOn) onLeave?.Invoke();
             }
 

@@ -108,6 +108,8 @@ namespace Guildmaster.Presentation.Map
         // и вести переход дальше стало бы некому — карта скрывается в его середине. Она только заказывает
         // моргание и получает управление на закрытом кадре.
         private Core.Flow.IScreenTransition _transition;
+        private Core.Audio.IAudioService _audio;   // карта немая по природе: свои звуки зовёт сама
+        private int _lastHoverSounded = -1;        // ребро наведения: звук на вход в узел, не каждый кадр
         private bool _stepping;        // мы заказали переход и ждём закрытого кадра
         private Vector2 _stepTargetPos; // узел, в который «ныряем» — к нему же наезжает камера
 
@@ -129,8 +131,10 @@ namespace Guildmaster.Presentation.Map
         [Inject]
         public void Construct(IInputService input, CameraModeController cameraModes, WorldMapViewLink link,
                               IVisualTempo tempo, VisualToggles toggles,
-                              Core.Flow.IScreenTransition transition)
+                              Core.Flow.IScreenTransition transition,
+                              Core.Audio.IAudioService audio)
         {
+            _audio       = audio;
             _input       = input;
             _cameraModes = cameraModes;
             _link        = link;
@@ -596,14 +600,24 @@ namespace Guildmaster.Presentation.Map
             if (hit < 0) return;
 
             _pressed = true;
-            if (_hits[hit].Selectable) BeginStep(hit, silent: false);
-            else { _nudgeIndex = hit; _nudgeUntil = Time.unscaledTime + NudgeDuration; }
+            if (_hits[hit].Selectable)
+            {
+                _audio?.Play("map.node_select.ui");
+                BeginStep(hit, silent: false);
+            }
+            else
+            {
+                // Отказной «nudge» без звука читается как подвисание, а не как «сюда нельзя».
+                _audio?.Play("map.node_locked.ui");
+                _nudgeIndex = hit; _nudgeUntil = Time.unscaledTime + NudgeDuration;
+            }
         }
 
         // Шаг по карте: шторкой (по умолчанию) или поездкой фишки (тумблер map.travel). Развилка одна на
         // все входы — и клик, и дев-обход, — чтобы способ перехода нельзя было забыть в одном из них.
         private void BeginStep(int hit, bool silent)
         {
+            if (!silent) _audio?.Play("map.travel_start.ui");
             if (_travelOn || _transition == null || _transition.Busy)
             {
                 StartTravel(hit, silent);
@@ -728,6 +742,11 @@ namespace Guildmaster.Presentation.Map
             if (!_shown || _style == null) return;
 
             _hoverIndex = (_travelling || _input == null || _input.PointerOverUI) ? -1 : HitTest();
+            if (_hoverIndex != _lastHoverSounded)
+            {
+                _lastHoverSounded = _hoverIndex;
+                if (_hoverIndex >= 0) _audio?.Play("map.node_hover.ui");
+            }
             float now = Time.unscaledTime;
 
             AnimateNodes(now);
@@ -824,6 +843,7 @@ namespace Guildmaster.Presentation.Map
             {
                 PlacePawn(_travelTo);
                 _travelling = false;
+                _audio?.Play("map.travel_arrive.ui");
                 string id = _travelNodeId;
                 _travelNodeId = null;
                 bool silent = _travelSilent;

@@ -21,14 +21,17 @@ namespace Guildmaster.Game.Input
         private readonly IInputService    _input;
         private readonly CombatSimulation _simulation;
         private readonly TimeScaleService _time;
+        private readonly Core.Audio.IAudioService _audio;
 
         private int _speedIndex;
 
-        public BattleInputController(IInputService input, CombatSimulation simulation, TimeScaleService time)
+        public BattleInputController(IInputService input, CombatSimulation simulation, TimeScaleService time,
+            Core.Audio.IAudioService audio)
         {
             _input      = input;
             _simulation = simulation;
             _time       = time;
+            _audio      = audio;
         }
 
         public void Start()
@@ -54,6 +57,9 @@ namespace Guildmaster.Game.Input
             bool paused = !_simulation.IsPaused;
             _simulation.SetPaused(paused);
             _time.SetPaused(paused);
+            // Пауза глушит боевую шину питчем (TimeScale→0.05), поэтому щелчок нужен UI-шине: иначе
+            // нажатие Space не подтверждается ничем.
+            _audio?.Play(paused ? "ui.pause.ui" : "ui.resume.ui");
         }
 
         // «.»: циклическая смена скорости боя (1x → 2x → 3x → 1x). Только темп — детерминизм не трогает.
@@ -61,6 +67,7 @@ namespace Guildmaster.Game.Input
         {
             _speedIndex = (_speedIndex + 1) % SpeedSteps.Length;
             _time.SetGameSpeed(SpeedSteps[_speedIndex]);
+            _audio?.Play("ui.speed.ui");
         }
     }
 }

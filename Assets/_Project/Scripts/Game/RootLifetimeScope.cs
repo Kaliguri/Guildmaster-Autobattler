@@ -94,6 +94,12 @@ namespace Guildmaster.Game
             builder.Register<TooltipContentFactory>(Lifetime.Singleton).As<ITooltipContentFactory>();
             builder.Register<TooltipSystem>(Lifetime.Singleton);
 
+            // Звук интерфейса: один слушатель на корне панели вместо вызова в каждом экране (привязывает
+            // бутстрап UI — он владелец панели). Звук забега вне боя (экраны, карта, переходы, музыка):
+            // живёт в корне, а не в боевом скоупе, иначе всё за пределами боя остаётся немым.
+            builder.Register<UiSoundSystem>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<RunAudioPresenter>(Lifetime.Singleton);
+
             builder.Register<SettingsViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutHubViewModel>(Lifetime.Singleton);

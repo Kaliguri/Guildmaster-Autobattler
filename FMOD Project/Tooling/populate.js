@@ -400,17 +400,6 @@
       ]
     },
     {
-      "key": "battle.reset.stinger",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/Stingers/battle_reset",
-      "category": "ui",
-      "files": [
-        "ui/battle_reset_01.wav",
-        "ui/battle_reset_02.wav"
-      ]
-    },
-    {
       "key": "combat.unit_spawn.ui",
       "action": null,
       "isDefault": false,
@@ -419,55 +408,6 @@
       "files": [
         "ui_soft/unit_spawn_01.wav",
         "ui_soft/unit_spawn_02.wav"
-      ]
-    },
-    {
-      "key": "combat.step.ui",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/SFX/Combat/step",
-      "category": "ui_soft",
-      "files": [
-        "ui_soft/step_01.wav",
-        "ui_soft/step_02.wav",
-        "ui_soft/step_03.wav",
-        "ui_soft/step_04.wav",
-        "ui_soft/step_05.wav"
-      ]
-    },
-    {
-      "key": "combat.knockback_start.attack",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/SFX/Combat/knockback_start",
-      "category": "whoosh",
-      "files": [
-        "whoosh/knockback_start_01.wav",
-        "whoosh/knockback_start_02.wav",
-        "whoosh/knockback_start_03.wav"
-      ]
-    },
-    {
-      "key": "combat.knockback_land.hit",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/SFX/Combat/knockback_land",
-      "category": "impact",
-      "files": [
-        "impact/knockback_land_01.wav",
-        "impact/knockback_land_02.wav",
-        "impact/knockback_land_03.wav"
-      ]
-    },
-    {
-      "key": "combat.projectile_miss.evade",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/SFX/Combat/projectile_miss",
-      "category": "whoosh",
-      "files": [
-        "whoosh/projectile_miss_01.wav",
-        "whoosh/projectile_miss_02.wav"
       ]
     },
     {
@@ -1060,26 +1000,6 @@
       ]
     },
     {
-      "key": "ui.camera.ui",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/SFX/UI/camera",
-      "category": "ui_soft",
-      "files": [
-        "ui_soft/camera_01.wav"
-      ]
-    },
-    {
-      "key": "ui.quit.ui",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/SFX/UI/quit",
-      "category": "ui",
-      "files": [
-        "ui/quit_01.wav"
-      ]
-    },
-    {
       "key": "ui.deploy_grab.ui",
       "action": null,
       "isDefault": false,
@@ -1109,16 +1029,6 @@
       "category": "ui",
       "files": [
         "ui/deploy_reject_01.wav"
-      ]
-    },
-    {
-      "key": "ui.deploy_ready.stinger",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/Stingers/deploy_ready",
-      "category": "stinger",
-      "files": [
-        "stinger/deploy_ready_01.wav"
       ]
     },
     {
@@ -1208,17 +1118,6 @@
       ]
     },
     {
-      "key": "map.reveal.ui",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/SFX/Map/reveal",
-      "category": "ui_soft",
-      "files": [
-        "ui_soft/reveal_01.wav",
-        "ui_soft/reveal_02.wav"
-      ]
-    },
-    {
       "key": "map.open.ui",
       "action": null,
       "isDefault": false,
@@ -1258,16 +1157,6 @@
       "category": "ui_soft",
       "files": [
         "ui_soft/fade_out_01.wav"
-      ]
-    },
-    {
-      "key": "flow.node_enter.stinger",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/Stingers/node_enter",
-      "category": "stinger",
-      "files": [
-        "stinger/node_enter_01.wav"
       ]
     },
     {
@@ -1402,17 +1291,6 @@
       "files": [
         "ui/event_choice_01.wav",
         "ui/event_choice_02.wav"
-      ]
-    },
-    {
-      "key": "event.result.ui",
-      "action": null,
-      "isDefault": false,
-      "path": "event:/SFX/Flow/event_result",
-      "category": "ui_soft",
-      "files": [
-        "ui_soft/event_result_01.wav",
-        "ui_soft/event_result_02.wav"
       ]
     },
     {

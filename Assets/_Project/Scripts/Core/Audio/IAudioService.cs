@@ -10,8 +10,14 @@ namespace Guildmaster.Core.Audio
         /// <summary>Воспроизвести звук по ключу.</summary>
         void Play(string soundKey);
 
-        /// <summary>Остановить звук по ключу.</summary>
+        /// <summary>
+        /// Остановить звук по ключу. Работает для длящихся звуков (музыка/амбиент) — у них хранится
+        /// инстанс; one-shot останавливать нечего и не нужно.
+        /// </summary>
         void Stop(string soundKey);
+
+        /// <summary>Погасить все длящиеся звуки разом: смена сцены, выход в меню, конец забега.</summary>
+        void StopAll();
 
         /// <summary>Установить громкость мастер-шины [0, 1] (общая громкость, bus:/).</summary>
         void SetMasterVolume(float volume);

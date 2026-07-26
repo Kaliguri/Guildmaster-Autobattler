@@ -120,17 +120,8 @@ COMBAT = [
     E("battle.start.stinger",   "stinger", [f"{RPGE}/10_Battle_SFX/55_Encounter_02.wav"], path="event:/Stingers/battle_start"),
     E("battle.victory.stinger", "stinger", [f"{KMJ}/Steel jingles/jingles_STEEL00.ogg"],  path="event:/Stingers/victory"),
     E("battle.defeat.stinger",  "stinger", [f"{KMJ}/Steel jingles/jingles_STEEL16.ogg"],  path="event:/Stingers/defeat"),
-    E("battle.reset.stinger",   "ui",      [f"{KI}/glitch_001.ogg", f"{KI}/glitch_002.ogg"], path="event:/Stingers/battle_reset"),
 
     E("combat.unit_spawn.ui",   "ui_soft", [f"{KI}/pluck_001.ogg", f"{KI}/pluck_002.ogg"], path="event:/SFX/Combat/unit_spawn"),
-    E("combat.step.ui",         "ui_soft", [f"{KRPG}/footstep00.ogg", f"{KRPG}/footstep02.ogg", f"{KRPG}/footstep04.ogg",
-                                            f"{KRPG}/footstep06.ogg", f"{KRPG}/footstep08.ogg"], path="event:/SFX/Combat/step"),
-    E("combat.knockback_start.attack", "whoosh", [f"{KRPG}/cloth1.ogg", f"{KRPG}/cloth2.ogg", f"{KRPG}/cloth3.ogg"],
-      path="event:/SFX/Combat/knockback_start"),
-    E("combat.knockback_land.hit", "impact", [f"{KIMP}/impactWood_heavy_000.ogg", f"{KIMP}/impactWood_heavy_001.ogg",
-                                              f"{KIMP}/impactWood_heavy_002.ogg"], path="event:/SFX/Combat/knockback_land"),
-    E("combat.projectile_miss.evade", "whoosh", [f"{KIMP}/impactGeneric_light_000.ogg", f"{KIMP}/impactGeneric_light_001.ogg"],
-      path="event:/SFX/Combat/projectile_miss"),
     E("combat.attack_interrupted.evade", "ui_soft", [f"{KI}/scratch_001.ogg", f"{KI}/scratch_002.ogg"],
       path="event:/SFX/Combat/attack_interrupted"),
     E("enemy.training_dummy.hit", "impact", [f"{KIMP}/impactWood_medium_000.ogg", f"{KIMP}/impactWood_medium_001.ogg",
@@ -228,8 +219,6 @@ UI = [
     E("ui.pause.ui",        "ui",   [f"{RPGE}/10_UI_Menu_SFX/092_Pause_04.wav"], path="event:/SFX/UI/pause"),
     E("ui.resume.ui",       "ui",   [f"{RPGE}/10_UI_Menu_SFX/098_Unpause_04.wav"], path="event:/SFX/UI/resume"),
     E("ui.speed.ui",        "ui_soft", [f"{KI}/tick_002.ogg"], path="event:/SFX/UI/speed"),
-    E("ui.camera.ui",       "ui_soft", [f"{KRPG}/cloth3.ogg"], path="event:/SFX/UI/camera"),
-    E("ui.quit.ui",         "ui",   [f"{KI}/close_004.ogg"], path="event:/SFX/UI/quit"),
 ]
 
 # =============================================================================
@@ -239,7 +228,6 @@ DEPLOY = [
     E("ui.deploy_grab.ui",    "ui", [f"{KRPG}/handleSmallLeather.ogg", f"{KRPG}/handleSmallLeather2.ogg"], path="event:/SFX/UI/deploy_grab"),
     E("ui.deploy_place.ui",   "ui", [f"{RPGE}/10_UI_Menu_SFX/070_Equip_10.wav", f"{KRPG}/dropLeather.ogg"], path="event:/SFX/UI/deploy_place"),
     E("ui.deploy_reject.ui",  "ui", [f"{RPGE}/10_UI_Menu_SFX/033_Denied_03.wav"], path="event:/SFX/UI/deploy_reject"),
-    E("ui.deploy_ready.stinger", "stinger", [f"{RPGE}/10_UI_Menu_SFX/013_Confirm_03.wav"], path="event:/Stingers/deploy_ready"),
     E("ui.relic_equip.ui",    "ui", [f"{KRPG}/metalClick.ogg", f"{KRPG}/metalLatch.ogg"], path="event:/SFX/UI/relic_equip"),
     E("ui.relic_unequip.ui",  "ui", [f"{RPGE}/10_UI_Menu_SFX/071_Unequip_01.wav"], path="event:/SFX/UI/relic_unequip"),
     E("ui.relic_select.ui",   "ui", [f"{KI}/select_001.ogg", f"{KI}/select_003.ogg", f"{KI}/select_005.ogg"], path="event:/SFX/UI/relic_select"),
@@ -254,7 +242,6 @@ MAP = [
     E("map.node_locked.ui",   "ui",      [f"{RPGE}/10_UI_Menu_SFX/029_Decline_09.wav", f"{KI}/error_005.ogg"], path="event:/SFX/Map/node_locked"),
     E("map.travel_start.ui",  "ui_soft", [f"{KRPG}/cloth1.ogg"], path="event:/SFX/Map/travel_start"),
     E("map.travel_arrive.ui", "ui",      [f"{KI}/bong_001.ogg"], path="event:/SFX/Map/travel_arrive"),
-    E("map.reveal.ui",        "ui_soft", [f"{KI}/question_001.ogg", f"{KI}/question_003.ogg"], path="event:/SFX/Map/reveal"),
     E("map.open.ui",          "ui",      [f"{KI}/open_001.ogg", f"{KI}/open_003.ogg"], path="event:/SFX/Map/open"),
     E("map.close.ui",         "ui",      [f"{KI}/close_001.ogg", f"{KI}/close_003.ogg"], path="event:/SFX/Map/close"),
 ]
@@ -265,7 +252,6 @@ MAP = [
 FLOW = [
     E("flow.fade_in.ui",     "ui_soft", [f"{KI}/minimize_003.ogg"], path="event:/SFX/Flow/fade_in"),
     E("flow.fade_out.ui",    "ui_soft", [f"{KI}/maximize_003.ogg"], path="event:/SFX/Flow/fade_out"),
-    E("flow.node_enter.stinger", "stinger", [f"{KRPG}/doorOpen_1.ogg"], path="event:/Stingers/node_enter"),
 
     E("reward.open.stinger", "stinger", [f"{KMJ}/Steel jingles/jingles_STEEL07.ogg"], path="event:/Stingers/reward_open"),
     E("reward.card_select.ui", "ui",    [f"{KI}/select_007.ogg", f"{KI}/select_008.ogg"], path="event:/SFX/Flow/reward_card_select"),
@@ -282,7 +268,6 @@ FLOW = [
     E("camp.action.ui",      "ui",      [f"{RPGE}/10_UI_Menu_SFX/051_use_item_01.wav"], path="event:/SFX/Flow/camp_action"),
     E("camp.denied.ui",      "ui",      [f"{KI}/error_007.ogg"], path="event:/SFX/Flow/camp_denied"),
     E("event.choice.ui",     "ui",      [f"{KI}/confirmation_001.ogg", f"{KI}/confirmation_003.ogg"], path="event:/SFX/Flow/event_choice"),
-    E("event.result.ui",     "ui_soft", [f"{KRPG}/bookPlace1.ogg", f"{KRPG}/bookPlace2.ogg"], path="event:/SFX/Flow/event_result"),
 
     E("run.start.stinger",   "stinger", [f"{KMJ}/Steel jingles/jingles_STEEL04.ogg"], path="event:/Stingers/run_start"),
     E("run.outcome_victory.stinger", "stinger", [f"{KMJ}/Steel jingles/jingles_STEEL10.ogg"], path="event:/Stingers/run_victory"),

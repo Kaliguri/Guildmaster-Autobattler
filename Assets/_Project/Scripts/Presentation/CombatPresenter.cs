@@ -68,6 +68,7 @@ namespace Guildmaster.Presentation
 
         // Все feel-параметры (hitstop, финишер, вспышка/сплющивание вью) — из design-конфига (единый источник).
         private Design.CombatFeelConfig _feel;
+        private Core.Audio.IAudioService _audio;   // раздаётся видам: разлёт на осколки звучит из UnitView
 
         [Inject]
         public void Construct(
@@ -76,8 +77,10 @@ namespace Guildmaster.Presentation
             IPublisher<UnitDiedEvent>    unitDiedPublisher,
             IPublisher<DamageDealtEvent> damageDealtPublisher,
             IPublisher<BattleEndedEvent> battleEndedPublisher,
-            Design.CombatFeelConfig feel)
+            Design.CombatFeelConfig feel,
+            Core.Audio.IAudioService audio)
         {
+            _audio                = audio;
             _simulation           = simulation;
             _unitSpawnedPublisher = unitSpawnedPublisher;
             _unitDiedPublisher    = unitDiedPublisher;
@@ -243,6 +246,7 @@ namespace Guildmaster.Presentation
                 {
                     view.Bind(unit);
                     view.ApplyFeelConfig(_feel); // параметры вспышки/сплющивания — из design-конфига
+                    view.ApplyAudio(_audio);     // хруст разлёта: вид сам знает, когда начинается shatter
                     view.SetContactDustHandler(OnUnitContactDust);
 
                     // Тинт тела по персонажу (dev-различение, пока placeholder-спрайт) + подпись над HP-баром.

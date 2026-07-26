@@ -17,13 +17,16 @@ namespace Guildmaster.Guild
 
         private readonly ISaveService _save;
         private readonly GameConfig   _config;
+        // Звук награды за бой. Опционален: сервис создают и в тестах, где звука нет вовсе.
+        private readonly Core.Audio.IAudioService _audio;
 
         public RunState Current { get; private set; }
 
-        public RunStateService(ISaveService save, GameConfig config)
+        public RunStateService(ISaveService save, GameConfig config, Core.Audio.IAudioService audio = null)
         {
             _save   = save;
             _config = config;
+            _audio  = audio;
         }
 
         /// <summary>Есть ли автосейв забега на диске (для «Продолжить» в меню).</summary>
@@ -112,7 +115,11 @@ namespace Guildmaster.Guild
         }
 
         /// <summary>Начислить награду золотом за победу в бою (из <see cref="GameConfig"/>).</summary>
-        public void AwardBattleReward() => AddGold(_config.BattleGoldReward);
+        public void AwardBattleReward()
+        {
+            AddGold(_config.BattleGoldReward);
+            _audio?.Play("run.gold_gain.ui"); // звенят только НАГРАДНЫЕ монеты: у продажи в лавке свой звук
+        }
 
         // ── Перезапуски боя на акт (реш. №65) ────────────────────────────────
 

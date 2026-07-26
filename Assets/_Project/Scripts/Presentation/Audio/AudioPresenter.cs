@@ -2,19 +2,22 @@ using System;
 using Guildmaster.Combat;
 using Guildmaster.Core.Audio;
 using Guildmaster.Core.Players;
+using Guildmaster.Data.Definitions;
 using VContainer.Unity;
 
 namespace Guildmaster.Presentation.Audio
 {
     /// <summary>
     /// Аудио-презентер (вики impl «09» §П4): POCO-entry-point, подписан НАПРЯМУЮ на C#-события боевой
-    /// симуляции и системы способностей (тот же приём, что <c>CombatFeelDirector</c> — он тоже держит
-    /// <see cref="CombatSimulation"/>). Резолвит ключ <c>{contentId}.{action}</c> через
-    /// <see cref="AudioResolver"/> и отдаёт в <see cref="IAudioService"/>. Точечные звуки реликвий/эффектов
-    /// (<c>relic.cryomancer.attack</c>, <c>relic.*.cast</c>) подхватываются резолвером автоматически —
-    /// достаточно выстрелить нужным действием на нужном юните.
-    /// Пока НЕ озвучены (нужны хуки/id — отдельный заход): эффекты apply/expire с конкретным id, DoT/HoT-тик,
-    /// UI (пауза/скорость/расстановка), стингер старта боя, feel-слои (heavy_hit/death_shatter).
+    /// симуляции, системы способностей и системы эффектов (тот же приём, что <c>CombatFeelDirector</c>).
+    /// Резолвит ключ <c>{contentId}.{action}</c> через <see cref="AudioResolver"/> и отдаёт в
+    /// <see cref="IAudioService"/>. Точечные звуки реликвий/эффектов (<c>relic.cryomancer.attack</c>,
+    /// <c>effect.frozen.apply</c>) подхватываются резолвером автоматически — достаточно выстрелить нужным
+    /// действием с нужным id.
+    ///
+    /// Чего тут НЕТ намеренно: feel-слой (килл-стингер, тяжёлый удар, финишер) живёт в
+    /// <c>CombatFeelDirector</c> — там уже посчитаны пороги и кулдауны, и звук обязан идти под теми же
+    /// воротами, что slowmo/тряска. Экраны и карта — в <c>RunAudioPresenter</c> (root-скоуп, переживает бой).
     /// </summary>
     public sealed class AudioPresenter : IStartable, IDisposable
     {
@@ -22,6 +25,7 @@ namespace Guildmaster.Presentation.Audio
         private readonly AudioResolver _resolver;
         private readonly CombatSimulation _sim;
         private readonly AbilitySystem _abilities;
+        private readonly EffectSystem _effects;
         private readonly ILocalPlayer _localPlayer;
 
         public AudioPresenter(
@@ -29,12 +33,14 @@ namespace Guildmaster.Presentation.Audio
             AudioCatalog catalog,
             CombatSimulation sim,
             AbilitySystem abilities,
+            EffectSystem effects,
             ILocalPlayer localPlayer)
         {
             _audio = audio;
             _resolver = new AudioResolver(catalog);
             _sim = sim;
             _abilities = abilities;
+            _effects = effects;
             _localPlayer = localPlayer;
         }
 
@@ -47,7 +53,15 @@ namespace Guildmaster.Presentation.Audio
             _sim.OnAttackStarted    += OnAttackStarted;
             _sim.OnProjectileSpawned += OnProjectileSpawned;
             _sim.OnBattleEnded      += OnBattleEnded;
+            _sim.OnUnitSpawned      += OnUnitSpawned;
+            _sim.OnAttackInterrupted += OnAttackInterrupted;
+            _sim.OnBattleReset      += OnBattleReset;
             if (_abilities != null) _abilities.OnAbilityCast += OnAbilityCast;
+            if (_effects != null)
+            {
+                _effects.OnEffectApplied += OnEffectApplied;
+                _effects.OnEffectEnded   += OnEffectEnded;
+            }
         }
 
         public void Dispose()
@@ -59,15 +73,22 @@ namespace Guildmaster.Presentation.Audio
             _sim.OnAttackStarted    -= OnAttackStarted;
             _sim.OnProjectileSpawned -= OnProjectileSpawned;
             _sim.OnBattleEnded      -= OnBattleEnded;
+            _sim.OnUnitSpawned      -= OnUnitSpawned;
+            _sim.OnAttackInterrupted -= OnAttackInterrupted;
+            _sim.OnBattleReset      -= OnBattleReset;
             if (_abilities != null) _abilities.OnAbilityCast -= OnAbilityCast;
+            if (_effects != null)
+            {
+                _effects.OnEffectApplied -= OnEffectApplied;
+                _effects.OnEffectEnded   -= OnEffectEnded;
+            }
         }
 
-        // Импакт по цели: щит-поглощение (если было) + удар, добивание → килл-стингер поверх.
+        // Импакт по цели: щит-поглощение (если было) + удар. Килл-стингер — забота CombatFeelDirector.
         private void OnDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result)
         {
             if (result.ShieldDamage > 0f) PlayFor(target, AudioAction.Shield);
             PlayFor(target, AudioAction.Hit);
-            if (result.KilledTarget) PlayKey("feel.kill", AudioAction.Stinger);
         }
 
         private void OnUnitDied(RuntimeUnit unit) => PlayFor(unit, AudioAction.Death);
@@ -81,6 +102,21 @@ namespace Guildmaster.Presentation.Audio
         private void OnProjectileSpawned(Projectile projectile) => PlayFor(projectile?.Source, AudioAction.Fire);
 
         private void OnAbilityCast(RuntimeUnit caster) => PlayFor(caster, AudioAction.Cast);
+
+        private void OnUnitSpawned(RuntimeUnit unit) => PlayKey("combat.unit_spawn", AudioAction.Ui);
+
+        // Замах сорван станом/смертью — короткий «сбой», иначе оборванная анимация выглядит багом.
+        private void OnAttackInterrupted(RuntimeUnit unit) => PlayKey("combat.attack_interrupted", AudioAction.Evade);
+
+        // Перезапуск боя (dev-R): глушим петли, иначе хвосты старого боя переезжают в новый.
+        private void OnBattleReset() => _audio?.StopAll();
+
+        // Статус лёг / спал: ключи effect.{id}.apply и effect.{id}.expire, с фолбэком на общий дефолт.
+        private void OnEffectApplied(RuntimeUnit target, EffectData def, RuntimeUnit source)
+            => PlayKey(def != null ? def.Id : null, AudioAction.Apply);
+
+        private void OnEffectEnded(RuntimeUnit target, EffectData def, RuntimeUnit source)
+            => PlayKey(def != null ? def.Id : null, AudioAction.Expire);
 
         // Конец боя → стингер победы/поражения ГЛАЗАМИ ЭТОГО клиента: победила моя команда или нет.
         // В PvP один и тот же исход даст одному победу, другому поражение. Ничья — поражение (никто не выиграл).
