@@ -17,9 +17,18 @@
 Результат падает в `FMOD Project/Candidates/generated-local/` — это КАНДИДАТЫ: послушать,
 выбрать, положить в пак и прописать в audio_map.py.
 
-Запуск (venv аудио-инструментов, не системный python):
-    scripts/audio/.venv/Scripts/python scripts/audio/sfx_generate_local.py --prompt "poison bubbling acid" --count 3
-    scripts/audio/.venv/Scripts/python scripts/audio/sfx_generate_local.py --prompt "holy light chime" --seconds 3 --model 1.0
+ОКРУЖЕНИЕ: генерация живёт в ОТДЕЛЬНОМ venv `scripts/audio/.venv-gen`, не вместе с CLAP.
+Причина не вкусовая: `stable-audio-tools` пинит `laion-clap==1.1.4`, чей чекпоинт не сходится с
+весами, которые качает CLAP, — в общем окружении они ломали друг друга по очереди (плюс numpy 2.x
+против pandas и torch.load против весов CLAP). Разные задачи — разные окружения.
+
+    python -m venv scripts/audio/.venv-gen
+    scripts/audio/.venv-gen/Scripts/python -m pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu129
+    scripts/audio/.venv-gen/Scripts/python -m pip install stable-audio-tools soundfile
+
+Запуск:
+    scripts/audio/.venv-gen/Scripts/python scripts/audio/sfx_generate_local.py --prompt "poison bubbling acid" --count 3
+    scripts/audio/.venv-gen/Scripts/python scripts/audio/sfx_generate_local.py --prompt "holy light chime" --seconds 3 --model 1.0
 """
 import argparse
 import os

@@ -146,3 +146,6 @@ scripts/audio/.venv/
 
 # Кандидаты звука (превью с Freesound, генерация) — рабочий мусор, в игру идёт только отобранное
 FMOD Project/Candidates/
+
+# venv локальной генерации (Stable Audio Open, ~5 ГБ)
+scripts/audio/.venv-gen/

@@ -23,10 +23,12 @@ Freesound, где записи длиннее.
 Чего модель не умеет вовсе: оценить красоту. «Сочный удар против дохлого» она не различит —
 отсев кандидатов её работа, финальный выбор всё равно на слух.
 
-Установка (одноразово, ~3 ГБ, отдельный venv, в .gitignore):
+Установка (одноразово, ~3 ГБ, свой venv, в .gitignore). Генерация звука живёт в ДРУГОМ окружении
+(`.venv-gen`): `stable-audio-tools` пинит несовместимую версию laion-clap и ломает загрузку весов.
+
     python -m venv scripts/audio/.venv
-    scripts/audio/.venv/Scripts/python -m pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
-    scripts/audio/.venv/Scripts/python -m pip install laion-clap
+    scripts/audio/.venv/Scripts/python -m pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu129
+    scripts/audio/.venv/Scripts/python -m pip install laion-clap "numpy<2"
 
 Запуск (через venv, не системным python):
     scripts/audio/.venv/Scripts/python scripts/audio/clap_pick.py --index

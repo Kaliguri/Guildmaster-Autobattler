@@ -174,9 +174,13 @@ python scripts/audio/gen_audio_reference.py     # обновить reference-д�
 | `clap_pick.py --verify` | сверка «сэмпл ↔ смысл ключа» (описания в `DESCRIPTIONS` карты) | то же |
 | `freesound_fetch.py` | CC0-кандидаты с Freesound (ключ в `.env`) | превью, не финальные файлы |
 | `sfx_generate.py` | генерация через ElevenLabs (ключ в `.env`) | платно |
-| `sfx_generate_local.py` | Stable Audio Open локально (`HF_TOKEN` в `.env`) | на CPU минуты на семпл |
+| `sfx_generate_local.py` | Stable Audio Open локально (`HF_TOKEN` в `.env`, venv `.venv-gen`) | на CPU минуты на семпл, на CUDA — секунда |
 
-Venv инструментов — `scripts/audio/.venv` (в `.gitignore`, ставится по шапке `clap_pick.py`).
+**Два venv, и это не вкусовщина.** `scripts/audio/.venv` — CLAP и поиск; `scripts/audio/.venv-gen` —
+локальная генерация. `stable-audio-tools` пинит `laion-clap==1.1.4`, чей чекпоинт не сходится с
+весами, которые качает CLAP: в общем окружении они ломали друг друга по очереди (плюс numpy 2.x
+против pandas и `torch.load` 2.6+ против весов CLAP). Оба в `.gitignore`, команды установки — в
+шапках `clap_pick.py` и `sfx_generate_local.py`.
 
 ## Стыки со смежными скиллами
 
