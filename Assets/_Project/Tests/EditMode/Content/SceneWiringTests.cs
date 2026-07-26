@@ -36,6 +36,12 @@ namespace Guildmaster.Tests.EditMode.Content
                 "_statsConfig",
                 "_classBalanceConfig",
             },
+            ["CombatPresenter"] = new[]
+            {
+                // Единственный владелец цветов HP и щита (T-12/T-13). Пусто = бар и боевые цифры
+                // рисуются цветом материала, и это молча, поэтому ловим здесь.
+                "_colorPalette",
+            },
         };
 
         /// <summary>Ассеты, которые обязаны совпадать во всех сценах, где вообще объявлены.</summary>
@@ -113,17 +119,16 @@ namespace Guildmaster.Tests.EditMode.Content
         }
 
         /// <summary>
-        /// Проходит по сценам билда, отдавая каждый компонент со скоупом. Сцены, открытые до теста,
-        /// остаются открытыми: тест не должен менять состояние редактора под руками разработчика.
+        /// Проходит по сценам билда, отдавая каждый компонент со скоупом.
+        /// <para>Сцены открываются как PREVIEW — в изолированном состоянии, невидимом для иерархии редактора.
+        /// Обычный <c>OpenScene</c>+<c>CloseScene</c> здесь не годится: тест трогал бы сцены, открытые у
+        /// разработчика, а закрытие активной сцены способно подвесить прогон.</para>
         /// </summary>
         private static void ForEachBuildScene(System.Action<Scene, Component, SerializedObject> visit)
         {
             foreach (EditorBuildSettingsScene entry in EditorBuildSettings.scenes.Where(s => s.enabled))
             {
-                Scene scene = SceneManager.GetSceneByPath(entry.path);
-                bool openedHere = !scene.isLoaded;
-                if (openedHere) scene = EditorSceneManager.OpenScene(entry.path, OpenSceneMode.Additive);
-
+                Scene scene = EditorSceneManager.OpenPreviewScene(entry.path);
                 try
                 {
                     foreach (GameObject root in scene.GetRootGameObjects())
@@ -138,7 +143,7 @@ namespace Guildmaster.Tests.EditMode.Content
                 }
                 finally
                 {
-                    if (openedHere) EditorSceneManager.CloseScene(scene, removeScene: true);
+                    EditorSceneManager.ClosePreviewScene(scene);
                 }
             }
         }
