@@ -1,100 +1,48 @@
-# Локализация: что осталось завести
+# Локализация: рецепт заведения ключей и текущий остаток
 
-Рабочий список к корню RC-4. Собран из кода: русский текст для этих ключей уже написан — он лежит
-прямо в C#-фолбэках вида `L("ui.chest.title", "Сундук")`, поэтому заведение сводится к переносу,
-а не к сочинению текстов.
+Заведение 35 ключей и перенос 15 выполнены (`3fae1637`). Здесь остаётся то, ради чего документ нужен дальше: **как это делать** и **что ещё висит**.
 
-Почему не сделано скриптом: `LocalizationEditorSettings` инициализирует систему синхронно и не
-укладывается в таймаут моста Unity MCP — две попытки оборвались, ничего не записав. Обрыв на
-середине записи испортил бы таблицы, поэтому заводить вручную в редакторе либо отдельным
-Editor-скриптом с прогрессом.
+## Рецепт: завести ключи скриптом через Unity MCP
 
-Правило заполнения: **RU заполняем, прочие локали — прочерк** (`—`).
+Работает, занимает ~1.5 секунды на 35 ключей. Две готчи, каждая стоила попытки:
 
----
+**1. `using`-директив в `execute_code` быть не может.** Код исполняется как ТЕЛО метода, поэтому `using UnityEditor.Localization;` наверху — синтаксическая ошибка, а не удобство. Нужны полные имена: `UnityEditor.Localization.LocalizationEditorSettings`. Коварство в том, что при падении компиляции ответ иногда теряется по таймауту или обрывом соединения, и выглядит это как «Unity подвис» — хотя редактор в полном порядке и просто вернул ошибку. Прежде чем винить Unity, замерьте: `GetStringTableCollection` открывает коллекцию за 3 мс.
 
-## Завести в таблицу UI (35)
+**2. `AssetDatabase.SaveAssets()` не использовать.** Он пишет ВСЕ грязные ассеты проекта — при параллельных сессиях это чужая незакоммиченная работа заодно с вашей. Только точечно: `AssetDatabase.SaveAssetIfDirty(asset)` по каждой затронутой таблице.
 
-| Ключ | RU | Где используется |
-|---|---|---|
-| `ui.chest.hint` | Нажми, чтобы открыть | ChestScreenView.cs |
-| `ui.chest.title` | Сундук | ChestScreenView.cs |
-| `ui.loadout.basics` | Основное | LoadoutInventoryView.cs |
-| `ui.loadout.filter.banners` | Знамёна | LoadoutInventoryView.cs |
-| `ui.loadout.filter.items` | Предметы | LoadoutInventoryView.cs |
-| `ui.loadout.filter.relics` | Реликвии | LoadoutInventoryView.cs |
-| `ui.loadout.search` | Поиск… | LoadoutInventoryView.cs |
-| `ui.loadout.skills` | Способности | LoadoutInventoryView.cs |
-| `ui.loadout.sort.name` | Имя | LoadoutInventoryView.cs |
-| `ui.loadout.stats` | Характеристики | LoadoutInventoryView.cs |
-| `ui.loadout.upgrades` | Улучшения | LoadoutInventoryView.cs |
-| `ui.loadout.video` | видео-вставка 16:9 | LoadoutInventoryView.cs |
-| `ui.mainmenu.continue` | Продолжить | MainMenuScreenView.cs |
-| `ui.mainmenu.quit` | Выход | MainMenuScreenView.cs |
-| `ui.mainmenu.settings` | Настройки | MainMenuScreenView.cs |
-| `ui.mainmenu.start` | Начать забег | MainMenuScreenView.cs |
-| `ui.menu.quit` | Выйти из игры | MenuRouter.cs |
-| `ui.menu.to_main_menu` | В главное меню | MenuRouter.cs |
-| `ui.mode.menu` | Меню | RunModeBarView.cs |
-| `ui.outcome.defeat` | Поражение | OutcomeScreenView.cs |
-| `ui.outcome.defeat_sub` | Забег окончен. | OutcomeScreenView.cs |
-| `ui.outcome.to_menu` | В меню | OutcomeScreenView.cs |
-| `ui.outcome.victory` | Победа | OutcomeScreenView.cs |
-| `ui.outcome.victory_sub` | Акт пройден. | OutcomeScreenView.cs |
-| `ui.run.floor` | Веха | RunModeBarView.cs |
-| `ui.settings.card_anim` | Анимация карточек | MenuRouter.cs |
-| `ui.settings.card_attack` | Анимация атаки карточек | MenuRouter.cs |
-| `ui.shop.buy` | Купить | ShopScreenView.cs |
-| `ui.shop.gold` | Золото | ShopScreenView.cs |
-| `ui.shop.leave` | Уйти | ShopScreenView.cs |
-| `ui.shop.no_space` | Нет места — продай реликвию! | ShopScreenView.cs |
-| `ui.shop.reroll` | Обновить | ShopScreenView.cs |
-| `ui.shop.sell` | Продать | ShopScreenView.cs |
-| `ui.shop.sold` | Куплено | ShopScreenView.cs |
-| `ui.shop.title` | Лавка | ShopScreenView.cs |
+Рабочая форма:
 
-## Не заводить — мёртвая ветка (1)
+```csharp
+var col = UnityEditor.Localization.LocalizationEditorSettings.GetStringTableCollection("UI");
+UnityEngine.Localization.Tables.StringTable ru = null, en = null;
+foreach (var t in col.StringTables)
+{
+    string code = t.LocaleIdentifier.Code;
+    if (code.StartsWith("ru")) ru = t; else if (code.StartsWith("en")) en = t;
+}
 
-Экран хаба лоадаута идёт под снос волной 2 (R1-21). Ключи ему не нужны.
+if (!col.SharedData.Contains(key)) col.SharedData.AddKey(key);
+ru.AddEntry(key, russianText);
+en.AddEntry(key, "—");                     // прочие локали — прочерк
 
-- `ui.hub.hint` — Перетащи реликвию из запаса на сосуд — наденешь; с сосуда в запас — снимешь.
+UnityEditor.EditorUtility.SetDirty(col.SharedData);
+UnityEditor.EditorUtility.SetDirty(ru);
+UnityEditor.AssetDatabase.SaveAssetIfDirty(col.SharedData);
+UnityEditor.AssetDatabase.SaveAssetIfDirty(ru);
+```
 
-## Перенести из Content в UI (16)
+Перенос строки между таблицами — то же самое плюс `srcTable.RemoveEntry(key)` по каждой локали и `content.SharedData.RemoveKey(key)` в конце. Значения копировать **по локалям**, сопоставляя `LocaleIdentifier.Code`, а не по индексу.
 
-Эти строки существуют и работают, но лежат не в своей таблице: сейчас их подхватывает фолбэк
-`LocalizationService`, каждый раз выписывая предупреждение с обеими таблицами.
+Откуда брать русский текст: он, как правило, уже написан — в C#-фолбэках вида `L("ui.chest.title", "Сундук")`. Собрать пары регуляркой `\b(?:L|Loc)\(\s*"(ui\.[a-z0-9_.]+)"\s*,\s*"([^"]+)"\s*\)` и завести. Это перенос, а не сочинение.
 
-- `ui.hub.banners`
-- `ui.hub.close`
-- `ui.hub.gold`
-- `ui.hub.stash`
-- `ui.hub.team`
-- `ui.hub.title`
-- `ui.mainmenu.title`
-- `ui.reward.drop_hint`
-- `ui.reward.skip`
-- `ui.reward.take`
-- `ui.reward.title`
-- `ui.run.act`
-- `ui.run.start`
-- `ui.titlecard.hint`
-- `ui.titlecard.studio`
-- `ui.titlecard.title`
+## Что осталось
 
-## Сироты в таблице UI (8)
+**Восемь строк-сирот в таблице UI** — заведены, но их никто не спрашивает:
 
-Строки заведены, но их никто не спрашивает — либо потребитель удалён, либо ключ переименован:
+`ui.dev.stat_probe`, `ui.stat.aspd.desc`, `ui.stat.dmg.desc`, `ui.stat.hp.desc`, `ui.stat.marmor.desc`, `ui.stat.move.desc`, `ui.stat.parmor.desc`, `ui.stat.range.desc`
 
-- `ui.dev.stat_probe`
-- `ui.stat.aspd.desc`
-- `ui.stat.dmg.desc`
-- `ui.stat.hp.desc`
-- `ui.stat.marmor.desc`
-- `ui.stat.move.desc`
-- `ui.stat.parmor.desc`
-- `ui.stat.range.desc`
+Семь из них — описания статов, похожие на заготовку под тултипы характеристик. Не удалено: текст написан, а потребитель может появиться. Решение за Максом — либо подключить их к панели статов, либо снести как незавершённый задел.
 
-## Ещё замечено
+**Шесть ключей `ui.hub.*` в таблице Content** — принадлежат экрану хаба лоадаута, который стоит в волне 2 на снос (R1-21). Уйдут вместе с ним, отдельной работы не требуют.
 
-`UI_en` содержит 9 записей на 41 ключ — прочерки проставлены не для всех. Заводя новые ключи,
-проставить `—` и заодно закрыть остальные, иначе английская сборка показывает пустоту.
+**`UI_en` — 44 прочерка на 76 ключей.** Новые заведены с `—`, но у части старых английской строки нет вовсе. Английская сборка на них показывает пустоту (см. также BE-4: локаль выбирается из ОС, переключателя в игре нет).
