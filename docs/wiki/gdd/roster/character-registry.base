@@ -16,8 +16,8 @@ properties:
     displayName: Тип атаки
   physical_damage:
     displayName: Физический урон
-  elemental_damage:
-    displayName: Стихийный урон
+  magical_damage:
+    displayName: Магический урон
   affinity:
     displayName: Сродство
   roles:
@@ -41,7 +41,7 @@ views:
       - combat_range
       - attack_delivery
       - physical_damage
-      - elemental_damage
+      - magical_damage
       - affinity
       - roles
       - mechanics
@@ -57,7 +57,7 @@ views:
       - title
       - roles
       - physical_damage
-      - elemental_damage
+      - magical_damage
       - affinity
       - mechanics
   - type: table

@@ -8,7 +8,7 @@ combat_range: Дальний
 attack_delivery:
   - Снаряд
 physical_damage: []
-elemental_damage:
+magical_damage:
   - Лёд
 affinity: []
 roles:

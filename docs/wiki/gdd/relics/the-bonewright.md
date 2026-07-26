@@ -11,7 +11,7 @@ attack_delivery:
 physical_damage:
   - Режущий
   - Дробящий
-elemental_damage: []
+magical_damage: []
 affinity:
   - Тьма
 roles:

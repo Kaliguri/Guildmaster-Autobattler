@@ -7,7 +7,7 @@ position: Фронт
 combat_range: Ближний
 attack_delivery: []
 physical_damage: []
-elemental_damage: []
+magical_damage: []
 affinity: []
 roles: []
 mechanics: []

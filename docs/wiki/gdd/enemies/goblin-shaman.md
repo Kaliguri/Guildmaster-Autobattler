@@ -10,7 +10,7 @@ combat_range: Дальний
 attack_delivery:
   - Снаряд
 physical_damage: []
-elemental_damage:
+magical_damage:
   - Огонь
 affinity: []
 encounter_role: Кастуемый AOE

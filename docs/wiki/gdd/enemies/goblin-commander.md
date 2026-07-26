@@ -11,7 +11,7 @@ attack_delivery:
   - Ближний бой
 physical_damage:
   - Режущий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Усилитель отряда
 mechanics:

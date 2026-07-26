@@ -63,13 +63,13 @@ GROUP BY damage
 SORT length(rows) DESC
 ```
 
-### Стихийный
+### Магическая школа
 
 ```dataview
 TABLE length(rows) AS "Персонажей"
 FROM "docs/wiki/gdd/relics"
 WHERE kind = "character"
-FLATTEN elemental_damage AS damage
+FLATTEN magical_damage AS damage
 GROUP BY damage
 SORT length(rows) DESC
 ```

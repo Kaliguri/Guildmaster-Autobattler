@@ -10,7 +10,7 @@ attack_delivery:
 physical_damage:
   - Дробящий
   - Колющий
-elemental_damage: []
+magical_damage: []
 affinity: []
 roles:
   - Танк

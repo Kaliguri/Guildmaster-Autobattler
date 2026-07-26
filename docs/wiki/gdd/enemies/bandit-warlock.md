@@ -10,7 +10,7 @@ combat_range: Дальний
 attack_delivery:
   - Снаряд
 physical_damage: []
-elemental_damage: []
+magical_damage: []
 affinity:
   - Тьма
 encounter_role: Контроль, усиление добивания и спасение отряда

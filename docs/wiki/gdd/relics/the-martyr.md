@@ -7,7 +7,7 @@ position:
 combat_range:
 attack_delivery: []
 physical_damage: []
-elemental_damage: []
+magical_damage: []
 affinity: []
 roles:
   - Баффер

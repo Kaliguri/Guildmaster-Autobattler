@@ -11,7 +11,7 @@ attack_delivery:
   - Ближний бой
 physical_damage:
   - Колющий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Прорыв второй линии
 mechanics:

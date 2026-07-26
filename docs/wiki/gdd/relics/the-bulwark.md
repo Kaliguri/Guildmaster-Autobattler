@@ -9,7 +9,7 @@ attack_delivery:
   - Ближний бой
 physical_damage:
   - Режущий
-elemental_damage: []
+magical_damage: []
 affinity: []
 roles:
   - Танк

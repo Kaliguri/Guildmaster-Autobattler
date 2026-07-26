@@ -7,7 +7,7 @@ position: Вторая линия
 combat_range: Без автоатаки
 attack_delivery: []
 physical_damage: []
-elemental_damage: []
+magical_damage: []
 affinity: []
 roles:
   - Хил

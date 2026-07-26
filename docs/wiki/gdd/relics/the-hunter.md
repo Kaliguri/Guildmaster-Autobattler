@@ -9,7 +9,7 @@ attack_delivery:
   - Снаряд
 physical_damage:
   - Колющий
-elemental_damage: []
+magical_damage: []
 affinity: []
 roles:
   - РДД

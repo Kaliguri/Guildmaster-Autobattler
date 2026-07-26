@@ -8,7 +8,7 @@ combat_range: Наследует
 attack_delivery:
   - Наследует
 physical_damage: []
-elemental_damage: []
+magical_damage: []
 affinity: []
 roles:
   - Копировщик

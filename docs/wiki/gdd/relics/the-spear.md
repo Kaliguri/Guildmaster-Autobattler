@@ -10,7 +10,7 @@ attack_delivery:
 physical_damage:
   - Колющий
   - Режущий
-elemental_damage: []
+magical_damage: []
 affinity: []
 roles:
   - Брузер
