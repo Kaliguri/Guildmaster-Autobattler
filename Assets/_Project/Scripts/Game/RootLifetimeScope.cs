@@ -31,7 +31,7 @@ namespace Guildmaster.Game
     /// </summary>
     public class RootLifetimeScope : LifetimeScope
     {
-        [Tooltip("Реестр всего контента (вики «13» §3.6). Наполняется Tools/Guildmaster/Sync Content Database.")]
+        [Tooltip("Реестр всего контента (вики «13» §3.6). Наполняется Alebardium/Data/Sync Content Database.")]
         [SerializeField] private ContentDatabase _contentDatabase;
 
         [Tooltip("Общие дефолты игры (громкости, локаль, слоты предметов; вики «13» §3.4). Потребители — Фаза 6/7.")]

@@ -5,7 +5,7 @@ kind: character
 status: draft
 updated: 2026-07-26
 rarity: Уникальная
-combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: Наследует
 position: Наследует
 combat_range: Наследует
 attack_delivery:

@@ -5,7 +5,7 @@ kind: character
 status: draft
 updated: 2026-07-26
 rarity: Обычная
-combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: Поддержка  # спорно: луч наносит урон, но лечение, щит и контроль перевешивают
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:

@@ -28,5 +28,5 @@ MonoBehaviour:
     - rid: 5615026876324511852
       type: {class: DodgeComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _maxCharges: 1
+        _maxCharges: 2
         _rechargeSeconds: 5

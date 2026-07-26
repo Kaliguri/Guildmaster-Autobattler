@@ -13,7 +13,7 @@ namespace Guildmaster.Audio.Editor
     /// <c>FMOD Project/Scripts/manifest.json</c>, резолвит каждый event-путь через FMOD
     /// <see cref="EventManager"/> в GUID и пишет точные записи + дефолты действий в ассет.
     /// Пропущенное событие (нет в собранных банках) остаётся пустой ссылкой → тишина, не ошибка.
-    /// Требует собранных банков в проекте (Tools/Guildmaster/Audio после FMOD build + Refresh Banks).
+    /// Требует собранных банков в проекте (Alebardium/Audio после FMOD build + Refresh Banks).
     /// </summary>
     public static class AudioCatalogPopulator
     {

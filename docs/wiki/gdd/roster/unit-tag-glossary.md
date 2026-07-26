@@ -159,10 +159,12 @@ Dark (Тьма). Свет и Тьма сами — **Чистый** (мимо б
 - **id тегов:** `tag.<en_snake>` (`tag.tank_buster`, `tag.armor_break_physical`,
   `tag.magical_ward`, `tag.damage_over_time`). Loc-ключи `tag.*.name` (+ `.desc` по нужде).
 
-> [!warning] Расхождение с ассетами (флаг, не долг ГДД)
-> Ренейм 2026-07-25 (Elemental → Magical) в ГДД проведён, а **ассеты тегов ещё носят старые
-> имена**: `ElementalWard.asset` (`tag.elemental_ward`) и `ArmorBreakElemental.asset`
-> (`tag.armor_break_elemental`). Код при этом уже перешёл — `DamageSchool.Magical`,
-> `MagicElement.Arcane`. Также **нет `TagData` для Арканы**, хотя резолвер тегов её запрашивает.
-> ГДД — источник правды; переименование ассетов и заведение Арканы идут отдельной задачей
-> в Unity. Реестр расхождений — `docs/gdd-audit-progress.md` §Дрейф.
+- **Осей ровно четыре.** Пятой «прочее» в `TagCategory` нет (снята 2026-07-26): тег, которому не
+  нашлось оси, — это тег, которому не нашлось смысла.
+
+> [!done] Ассеты приведены к ГДД (2026-07-26)
+> Ренейм Elemental → Magical доведён до конца: `MagicalWard.asset` (`tag.magical_ward`) и
+> `ArmorBreakMagical.asset` (`tag.armor_break_magical`) — вместе с id, loc-ключами, RU-текстами
+> («Магический оберег», «Пробитие магической брони») и файлами иконок. Заведён `Arcane.asset`
+> (`tag.arcane`, ось `DamageType`) — резолвер запрашивал его с ренейма модели урона.
+> **Осталось от арта:** у Арканы нет иконки (`Tags/arcane.png`); чип покажет её текстом.

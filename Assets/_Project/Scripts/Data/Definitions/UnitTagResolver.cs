@@ -73,7 +73,7 @@ namespace Guildmaster.Data.Definitions
                     if (t != null && seen.Add(t.Id)) result.Add(t);
                 }
 
-            // Стабильная сортировка по оси: Role(0) → DamageType(1) → Playstyle(2) → Mechanic(3) → Other(4).
+            // Стабильная сортировка по оси: Role(0) → DamageType(1) → Playstyle(2) → Mechanic(3).
             // Внутри оси порядок вставки сохраняется (умбрелла раньше конкретики и т.д.).
             StableSortByCategory(result);
             return result;

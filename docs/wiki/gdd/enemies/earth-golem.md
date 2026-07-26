@@ -6,7 +6,7 @@ status: draft
 updated: 2026-07-26
 enemy_group: Элита
 species: Големы
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: Танк
 subspecies: Земляные
 position: Фронт
 combat_range: Ближний

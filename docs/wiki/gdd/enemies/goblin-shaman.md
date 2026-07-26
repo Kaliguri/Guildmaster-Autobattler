@@ -6,7 +6,7 @@ status: draft
 updated: 2026-07-26
 enemy_group: Элита
 species: Гоблины
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: РДД  # спорно: щит и барьер тянут в Поддержку, но роль энкаунтера — урон
 subspecies: Основные
 position: Вторая линия
 combat_range: Дальний

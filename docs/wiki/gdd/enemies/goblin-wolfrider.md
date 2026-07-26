@@ -6,7 +6,7 @@ status: draft
 updated: 2026-07-26
 enemy_group: Элита
 species: Гоблины
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: Убийца
 subspecies: Основные
 position: Фланг
 combat_range: Ближний

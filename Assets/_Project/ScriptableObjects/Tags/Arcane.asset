@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf35fa5223d3a3c44bec877161795dac, type: 3}
-  m_Name: ArmorBreakElemental
+  m_Name: Arcane
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.TagData
-  _id: tag.armor_break_elemental
-  _category: 2
-  _icon: {fileID: 21300000, guid: 2808ac197df21814899be3dce81d0a28, type: 3}
+  _id: tag.arcane
+  _category: 1
+  _icon: {fileID: 0}

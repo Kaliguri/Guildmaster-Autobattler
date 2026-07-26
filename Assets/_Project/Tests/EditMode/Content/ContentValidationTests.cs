@@ -56,7 +56,7 @@ namespace Guildmaster.Tests.EditMode.Content
         {
             string[] guids = AssetDatabase.FindAssets($"t:{nameof(ContentDatabase)}");
             Assert.AreEqual(1, guids.Length,
-                "Ровно один ContentDatabase.asset ожидается (Tools/Guildmaster/Sync Content Database).");
+                "Ровно один ContentDatabase.asset ожидается (Alebardium/Data/Sync Content Database).");
 
             var db = AssetDatabase.LoadAssetAtPath<ContentDatabase>(AssetDatabase.GUIDToAssetPath(guids[0]));
             Assert.IsNotNull(db);
@@ -66,7 +66,7 @@ namespace Guildmaster.Tests.EditMode.Content
             var dbIds = db.Entries.Select(e => e.Id).OrderBy(x => x).ToArray();
             var projectIds = AllContent().Select(d => d.Id).OrderBy(x => x).ToArray();
             CollectionAssert.AreEqual(projectIds, dbIds,
-                "ContentDatabase не актуален: запусти Tools/Guildmaster/Sync Content Database.");
+                "ContentDatabase не актуален: запусти Alebardium/Data/Sync Content Database.");
         }
 
         // --- §8 правило 3: [SerializeReference]-списки без null (следы missing types) ---

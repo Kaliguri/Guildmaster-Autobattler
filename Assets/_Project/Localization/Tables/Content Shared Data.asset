@@ -448,7 +448,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5009308901433344
-    m_Key: tag.armor_break_elemental.name
+    m_Key: tag.armor_break_magical.name
     m_Metadata:
       m_Items: []
   - m_Id: 5009311438987264
@@ -456,7 +456,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5009314433720320
-    m_Key: tag.elemental_ward.name
+    m_Key: tag.magical_ward.name
     m_Metadata:
       m_Items: []
   - m_Id: 5009317126463488
@@ -861,6 +861,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5619108681080896
     m_Key: kw.threat.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5655066608656384
+    m_Key: tag.arcane.name
     m_Metadata:
       m_Items: []
   m_Metadata:

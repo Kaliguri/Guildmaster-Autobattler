@@ -6,7 +6,7 @@ status: draft
 updated: 2026-07-26
 enemy_group: Элита
 species: Гоблины
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: Брузер  # спорно: баффер, но дерётся во фронте — бэклайновые 65% HP его убьют
 subspecies: Основные
 position: Фронт
 combat_range: Ближний

@@ -10,8 +10,8 @@ namespace Guildmaster.Data.Definitions
     [CreateAssetMenu(menuName = "Guildmaster/Content/Tag", fileName = "Tag")]
     public sealed class TagData : ContentDefinition
     {
-        [Tooltip("Категория для группировки в UI.")]
-        [SerializeField] private TagCategory _category = TagCategory.Other;
+        [Tooltip("Ось тега — она же порядок чтения карточки.")]
+        [SerializeField] private TagCategory _category = TagCategory.Role;
 
         [Tooltip("Иконка тега (опционально).")]
         [SerializeField] private Sprite _icon;

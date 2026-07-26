@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf35fa5223d3a3c44bec877161795dac, type: 3}
-  m_Name: ElementalWard
+  m_Name: MagicalWard
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.TagData
-  _id: tag.elemental_ward
+  _id: tag.magical_ward
   _category: 2
   _icon: {fileID: 21300000, guid: fd2a89e9d2d17644ea9eb7aa79141dc0, type: 3}

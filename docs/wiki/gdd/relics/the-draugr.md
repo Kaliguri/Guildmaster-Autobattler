@@ -5,7 +5,7 @@ kind: character
 status: needs_review
 updated: 2026-07-26
 rarity: Обычная
-combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: Брузер  # карточка-заготовка: механики не расписаны, класс — из архетипа берсерка
 position: Фронт
 combat_range: Ближний
 attack_delivery: []
