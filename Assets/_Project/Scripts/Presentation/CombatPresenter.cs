@@ -59,6 +59,7 @@ namespace Guildmaster.Presentation
         private readonly List<UnitView>                  _corpses   = new List<UnitView>();
 
         private ObjectPool<FloatingText>    _textPool;
+        private ObjectPool<ProjectileView>  _projPool;
         private System.Action<FloatingText> _releaseText;
         private CombatStatusOverlay         _statusOverlay;
         private CombatVfx                   _vfx;               // пул боевых VFX-префабов
@@ -106,6 +107,7 @@ namespace Guildmaster.Presentation
             _simulation.OnAttackStarted     += HandleAttackStarted;
             _simulation.OnAttackInterrupted += HandleAttackInterrupted;
             _simulation.OnProjectileSpawned += HandleProjectileSpawned;
+            _simulation.OnAreaHit           += HandleAreaHit;
             _simulation.OnBattleReset       += HandleBattleReset;
 
             EnsureStatusOverlay();
@@ -124,6 +126,7 @@ namespace Guildmaster.Presentation
             _simulation.OnAttackStarted     -= HandleAttackStarted;
             _simulation.OnAttackInterrupted -= HandleAttackInterrupted;
             _simulation.OnProjectileSpawned -= HandleProjectileSpawned;
+            _simulation.OnAreaHit           -= HandleAreaHit;
             _simulation.OnBattleReset       -= HandleBattleReset;
         }
 
@@ -138,7 +141,7 @@ namespace Guildmaster.Presentation
             _views.Clear();
 
             foreach (var kvp in _projViews)
-                if (kvp.Value != null) Destroy(kvp.Value.gameObject);
+                if (kvp.Value != null) ReleaseProjectile(kvp.Value);   // в пул, а не в мусор: бой ещё будет
             _projViews.Clear();
 
             // Трупы прошлого боя (виды в секвенсе смерти, снятые из _views) — иначе висят в новом бою.
@@ -198,7 +201,7 @@ namespace Guildmaster.Presentation
 
                 for (int i = 0; i < _deadProj.Count; i++)
                 {
-                    if (_projViews.TryGetValue(_deadProj[i], out var pv) && pv != null) Destroy(pv.gameObject);
+                    if (_projViews.TryGetValue(_deadProj[i], out var pv) && pv != null) ReleaseProjectile(pv);
                     _projViews.Remove(_deadProj[i]);
                 }
             }
@@ -223,11 +226,61 @@ namespace Guildmaster.Presentation
                 }
             }
 
-            var view = Instantiate(_bulletPrefab, origin, Quaternion.identity, transform);
+            ProjectileView view = RentProjectile(origin);
             // Тинт снаряда = цвет юнита-источника (тот же метод, что и тело юнита).
             Color tint = projectile.Source != null ? TintFor(projectile.Source) : Color.white;
             view.Bind(projectile, tint, origin);
             _projViews[projectile.Id] = view;
+        }
+
+        /// <summary>
+        /// Взять вид снаряда из пула. Снаряды — единственное, что мы создавали и уничтожали на каждое
+        /// событие: цифры и VFX пулятся с самого начала, а перестрелка в упор молотила по куче.
+        /// </summary>
+        private ProjectileView RentProjectile(Vector3 origin)
+        {
+            EnsureProjectilePool();
+            ProjectileView view = _projPool.Get();
+            view.transform.SetPositionAndRotation(origin, Quaternion.identity);
+            return view;
+        }
+
+        private void ReleaseProjectile(ProjectileView view)
+        {
+            if (view == null) return;
+            if (_projPool == null) { Destroy(view.gameObject); return; }
+            _projPool.Release(view);
+        }
+
+        private void EnsureProjectilePool()
+        {
+            if (_projPool != null || _bulletPrefab == null) return;
+
+            _projPool = new ObjectPool<ProjectileView>(
+                createFunc: () => Instantiate(_bulletPrefab, transform),
+                actionOnGet: v => v.gameObject.SetActive(true),
+                actionOnRelease: v => { if (v != null) v.gameObject.SetActive(false); },
+                actionOnDestroy: v => { if (v != null) Destroy(v.gameObject); },
+                collectionCheck: false,
+                defaultCapacity: 16,
+                maxSize: 64);
+        }
+
+        /// <summary>
+        /// Радиальный всплеск в центре AoE-удара: то, что бьёт по площади, обязано эту площадь показать.
+        /// Масштаб — от размера самой зоны, направление — от её оси (линия смотрит туда, куда бьёт).
+        /// Пусто в конфиге = эффекта нет; кольца <see cref="CombatAreaFlash"/> остаются dev-подсказкой.
+        /// </summary>
+        private void HandleAreaHit(AreaHit hit)
+        {
+            if (_vfx == null || _feel == null || _feel.VfxAreaBurst == null) return;
+
+            float reach = hit.Shape == AreaShape.Line ? hit.Length : hit.Radius;
+            float dirDeg = hit.Direction.sqrMagnitude > 1e-6f
+                ? Mathf.Atan2(hit.Direction.y, hit.Direction.x) * Mathf.Rad2Deg
+                : 0f;
+
+            _vfx.Spawn(_feel.VfxAreaBurst, hit.Origin, dirDeg, Mathf.Max(0.25f, reach));
         }
 
         private void HandleUnitSpawned(RuntimeUnit unit)
@@ -330,7 +383,14 @@ namespace Guildmaster.Presentation
             // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе.
             if (_vfx != null && _feel != null && view != null)
             {
-                _vfx.Spawn(_feel.VfxHitSpark, anchor, intensity: _feel.EvaluateHitVfxIntensity(frac));
+                // Искры летят ПО направлению удара (от бьющего), и чем тяжелее удар — тем их больше.
+                // Направление берём то же, что и отброс тела: один удар — один вектор, спорить им не о чем.
+                float? sparkDir = nudgeDir.sqrMagnitude > 1e-8f
+                    ? Mathf.Atan2(nudgeDir.y, nudgeDir.x) * Mathf.Rad2Deg
+                    : (float?)null;
+
+                _vfx.Spawn(_feel.VfxHitSpark, anchor, sparkDir,
+                           _feel.EvaluateHitVfxIntensity(frac), _feel.EvaluateHitVfxCount(frac));
 
                 bool melee = source?.Unit != null && source.Unit.AttackType == AttackType.Melee;
                 if (melee)
@@ -366,11 +426,11 @@ namespace Guildmaster.Presentation
 
         private void HandleAttackEvaded(RuntimeUnit target)
         {
-            // Полный негейт удара («Изворотливость») — урона нет, показываем «evade» и уводим тело.
+            // Полный негейт удара («Изворотливость») — урона нет, показываем «evade».
+            // Движение тела сюда НЕ добавляем: по дизайну трата заряда — это кувырок с уходом с места,
+            // то есть настоящее перемещение в симуляции (gdd/20-combat/positioning). Появится оно — вид
+            // поедет за ним сам.
             SpawnNumber(AnchorFor(target), "evade", _evadeColor);
-
-            if (_views.TryGetValue(target.Id, out var view) && view != null)
-                view.OnEvaded();
         }
 
         // Задержка на UNSCALED-времени: в паузе и в финишер-slowmo вторая цифра иначе не приходила вовсе —

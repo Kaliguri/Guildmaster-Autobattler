@@ -15,6 +15,12 @@ namespace Guildmaster.Presentation
     {
         [SerializeField] private SpriteRenderer _sprite;
 
+        [Tooltip("След за снарядом. Пусто — снаряд летит без следа.")]
+        [SerializeField] private TrailRenderer _trail;
+
+        [Tooltip("Яркость следа относительно тинта снаряда: след — свечение позади, а не второй снаряд.")]
+        [SerializeField, Range(0.2f, 2f)] private float _trailBrightness = 1.15f;
+
         // Как быстро визуальный офсет «старта из дула» сходит на симовую траекторию (1/сек). Больше = резче.
         private const float OriginConvergeRate = 12f;
 
@@ -37,6 +43,8 @@ namespace Guildmaster.Presentation
             _originOffset = visualOrigin - simPos;
             transform.position = simPos + _originOffset;
             FaceVelocity(projectile.Velocity);
+
+            ApplyTrail(tint);
         }
 
         /// <summary>
@@ -62,6 +70,36 @@ namespace Guildmaster.Presentation
             transform.position = new Vector3(p.x, p.y, 0f) + _originOffset;
             FaceVelocity(_projectile.Velocity);
             return true;
+        }
+
+        /// <summary>
+        /// След под цвет источника — тот же тинт, что у тела снаряда, только ярче: хвост читается как
+        /// свечение позади, а не как второй снаряд.
+        /// <para>Clear ОБЯЗАТЕЛЕН: вид приходит из пула, и без сброса точек хвост тянется через весь экран
+        /// от места, где кончился прошлый выстрел.</para>
+        /// </summary>
+        private void ApplyTrail(Color tint)
+        {
+            if (_trail == null) return;
+
+            _trail.Clear();
+
+            Color head = tint * _trailBrightness;
+            head.a = tint.a;
+            Color tail = head;
+            tail.a = 0f;
+
+            _trail.startColor = head;
+            _trail.endColor   = tail;
+            _trail.emitting   = true;
+        }
+
+        /// <summary>Погасить след перед возвратом в пул — точки хвоста не должны пережить снаряд.</summary>
+        private void OnDisable()
+        {
+            if (_trail == null) return;
+            _trail.emitting = false;
+            _trail.Clear();
         }
 
         // Спрайт нарисован «вправо»: поворачиваем по направлению полёта (в сторону цели).

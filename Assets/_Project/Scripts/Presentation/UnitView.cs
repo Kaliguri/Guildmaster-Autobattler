@@ -789,20 +789,11 @@ namespace Guildmaster.Presentation
             PlayHitFlash(_feel.HealFlashColor, _feel.HealFlashPeak);
         }
 
-        /// <summary>
-        /// Реакция на уклонение: юнит отшатывается НАЗАД от того, куда смотрит. Промах — это событие,
-        /// а выглядел он как надпись поверх неподвижного тела.
-        /// </summary>
-        public void OnEvaded()
-        {
-            if (_feel == null || !_feel.EnableEvadeDodge) return;
-            if (_nudgeHandle.IsActive()) _nudgeHandle.Cancel();
-
-            // Смотрит юнит туда, куда развёрнут спрайт; отшатывается в противоположную сторону.
-            float back = (_sprite != null && _sprite.flipX) ? 1f : -1f;
-            PlayOffsetPulse(new Vector2(back, 0.12f).normalized * _feel.EvadeDodgeDistance,
-                            _feel.EvadeDodgeDuration);
-        }
+        // Уклонения-как-косметики здесь НЕТ и быть не должно. Общего evade в игре нет вовсе («ноль выходного
+        // рандома» — pitch, difficulty-skill), а единственное уклонение — «Изворотливость» Убийцы — принято
+        // как ПОЗИЦИОННОЕ событие: кувырок с уходом с места плюс ускорение, направление по намерению юнита
+        // (gdd/20-combat/positioning). Это перемещение в симуляции; вид просто поедет за ним, как за любым
+        // движением. Презентационный отскок занял бы этот язык собой и разошёлся бы с ним направлением.
 
         /// <summary>Заморозить анимацию этого вида на unscaled-окно (локальный hitstop участника удара).</summary>
         public void OnHitstop(float unscaledSeconds)

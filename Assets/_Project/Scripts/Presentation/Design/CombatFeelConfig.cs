@@ -42,8 +42,6 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private bool _enableHpBarPunch = true;
         [Tooltip("Мягкая вспышка на теле при лечении: хил читался только цифрой, тело на него не отвечало.")]
         [SerializeField] private bool _enableHealFlash = true;
-        [Tooltip("Уклонение: юнит отшатывается назад. Раньше промах был виден только надписью «evade».")]
-        [SerializeField] private bool _enableEvadeDodge = true;
 
         [Header("Micro Feel — contact dust")]
         [Tooltip("Минимальный интервал между пылью на одном юните, сек.")]
@@ -109,12 +107,6 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private Color _healFlashColor = new Color(0.55f, 1f, 0.65f, 1f);
         [Tooltip("Сила вспышки лечения: заметно слабее удара — лечение греет, а не бьёт.")]
         [SerializeField, Range(0.1f, 1f)] private float _healFlashPeak = 0.5f;
-
-        [Header("Micro Feel — evade dodge")]
-        [Tooltip("Насколько уклоняющийся отшатывается назад, мировые ед.")]
-        [SerializeField] private float _evadeDodgeDistance = 0.22f;
-        [Tooltip("Длительность отшатывания+возврата, сек (unscaled).")]
-        [SerializeField] private float _evadeDodgeDuration = 0.16f;
 
         [Header("Micro Feel — HP bar punch")]
         [Tooltip("Пик перелёта масштаба бара при уроне.")]
@@ -286,6 +278,13 @@ namespace Guildmaster.Presentation.Design
         [SerializeField, Range(0.05f, 1f)] private float _vfxHitIntensityMin = 0.35f;
         [Tooltip("Множитель scale hit-spark на тяжёлом ударе (доля ≥ HeavyHitFrac).")]
         [SerializeField, Range(0.05f, 2f)] private float _vfxHitIntensityMax = 1f;
+        [Tooltip("Множитель КОЛИЧЕСТВА искр на лёгком ударе. Сила удара читается частотой, а не размером.")]
+        [SerializeField, Range(0.05f, 1f)] private float _vfxHitCountMin = 0.4f;
+        [Tooltip("Множитель количества искр на тяжёлом ударе (доля ≥ HeavyHitFrac).")]
+        [SerializeField, Range(0.5f, 4f)] private float _vfxHitCountMax = 2.2f;
+
+        [Tooltip("Радиальный всплеск в центре AoE-удара (кольцо ударной волны).")]
+        [SerializeField] private VfxData _vfxAreaBurst;
 
         // --- Getters ---
         public bool  EnableContactDust       => _enableContactDust;
@@ -300,12 +299,9 @@ namespace Guildmaster.Presentation.Design
         public bool  EnableFloatingTextArc   => _enableFloatingTextArc;
         public bool  EnableHpBarPunch        => _enableHpBarPunch;
         public bool  EnableHealFlash         => _enableHealFlash;
-        public bool  EnableEvadeDodge        => _enableEvadeDodge;
 
         public Color HealFlashColor      => _healFlashColor;
         public float HealFlashPeak       => _healFlashPeak;
-        public float EvadeDodgeDistance  => _evadeDodgeDistance;
-        public float EvadeDodgeDuration  => _evadeDodgeDuration;
 
         public float ContactDustCooldown     => _contactDustCooldown;
         public float HitNudgeDistance        => _hitNudgeDistance;
@@ -396,11 +392,20 @@ namespace Guildmaster.Presentation.Design
         public VfxData VfxContactDust => _vfxContactDust;
         public VfxData VfxHeal        => _vfxHeal;
 
+        public VfxData VfxAreaBurst   => _vfxAreaBurst;
+
         /// <summary>Множитель scale hit-spark по доле HP-урона от MaxHP (HeavyHitFrac = полная сила).</summary>
         public float EvaluateHitVfxIntensity(float hpDamageFrac)
         {
             float t = Mathf.Clamp01(hpDamageFrac / Mathf.Max(1e-4f, _heavyHitFrac));
             return Mathf.Lerp(_vfxHitIntensityMin, _vfxHitIntensityMax, t);
+        }
+
+        /// <summary>Множитель КОЛИЧЕСТВА искр по доле HP-урона: чем тяжелее удар, тем гуще осколки.</summary>
+        public float EvaluateHitVfxCount(float hpDamageFrac)
+        {
+            float t = Mathf.Clamp01(hpDamageFrac / Mathf.Max(1e-4f, _heavyHitFrac));
+            return Mathf.Lerp(_vfxHitCountMin, _vfxHitCountMax, t);
         }
 
         public float KillSlowFactor    => _killSlowFactor;

@@ -13,6 +13,7 @@ namespace Guildmaster.Presentation
         [SerializeField] private float _maxLifetime = 0f;
 
         private ParticleSystem[] _particles;
+        private ParticleSystem.Burst[][] _baseBursts;   // эталонные бёрсты префаба (см. CacheBaseBursts)
         private Renderer[]       _renderers;
         private int[]            _relativeOrders; // order ребёнка минус min по префабу
         private float            _elapsed;
@@ -72,7 +73,8 @@ namespace Guildmaster.Presentation
         /// <paramref name="baseSortingOrder"/> + относительный order ребёнка из префаба.
         /// </summary>
         public void Play(Vector3 worldPos, float scale, float dirDeg,
-            int sortingLayerId, int baseSortingOrder, System.Action<PooledVfx> onComplete)
+            int sortingLayerId, int baseSortingOrder, System.Action<PooledVfx> onComplete,
+            float countScale = 1f)
         {
             Cache();
             _onComplete = onComplete;
@@ -84,6 +86,7 @@ namespace Guildmaster.Presentation
             transform.localScale = _baseScale * Mathf.Max(0.01f, scale);
 
             ApplySorting(sortingLayerId, baseSortingOrder);
+            ApplyEmissionCount(countScale);
 
             if (_particles != null)
             {
@@ -97,6 +100,61 @@ namespace Guildmaster.Presentation
             }
 
             _life = ResolveLife();
+        }
+
+        /// <summary>
+        /// Множит КОЛИЧЕСТВО частиц в бёрстах, не трогая префабные значения (они запоминаются при первом
+        /// проигрыше и остаются эталоном). Сила удара должна читаться частотой искр, а не их размером:
+        /// крупная искра говорит «большой эффект», а частая — «сильный удар».
+        /// </summary>
+        private void ApplyEmissionCount(float countScale)
+        {
+            if (_particles == null || _particles.Length == 0) return;
+            CacheBaseBursts();
+            if (_baseBursts == null) return;
+
+            float k = Mathf.Max(0.05f, countScale);
+            for (int i = 0; i < _particles.Length; i++)
+            {
+                ParticleSystem ps = _particles[i];
+                if (ps == null || _baseBursts[i] == null) continue;
+
+                ParticleSystem.Burst[] bursts = _baseBursts[i];
+                if (bursts.Length == 0) continue;
+
+                var scaled = new ParticleSystem.Burst[bursts.Length];
+                for (int b = 0; b < bursts.Length; b++)
+                {
+                    ParticleSystem.Burst burst = bursts[b];
+                    ParticleSystem.MinMaxCurve count = burst.count;
+                    count.constantMin = Mathf.Max(1f, count.constantMin * k);
+                    count.constantMax = Mathf.Max(1f, count.constantMax * k);
+                    burst.count = count;
+                    scaled[b] = burst;
+                }
+
+                ParticleSystem.EmissionModule emission = ps.emission;
+                emission.SetBursts(scaled);
+            }
+        }
+
+        // Эталонные бёрсты префаба: множитель всегда считается от них, иначе за десяток слабых ударов
+        // подряд количество частиц сползло бы к нулю (каждый следующий множил уже уменьшенное).
+        private void CacheBaseBursts()
+        {
+            if (_baseBursts != null || _particles == null) return;
+
+            _baseBursts = new ParticleSystem.Burst[_particles.Length][];
+            for (int i = 0; i < _particles.Length; i++)
+            {
+                ParticleSystem ps = _particles[i];
+                if (ps == null) { _baseBursts[i] = System.Array.Empty<ParticleSystem.Burst>(); continue; }
+
+                ParticleSystem.EmissionModule emission = ps.emission;
+                var copy = new ParticleSystem.Burst[emission.burstCount];
+                emission.GetBursts(copy);
+                _baseBursts[i] = copy;
+            }
         }
 
         /// <summary>Прервать и вернуть в пул (battle reset).</summary>

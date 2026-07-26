@@ -18,7 +18,9 @@ namespace Guildmaster.Presentation
         /// Заспавнить VFX. <paramref name="dirDegOverride"/> = null → <see cref="VfxData.DefaultDirDeg"/>.
         /// <paramref name="intensity"/> множит <see cref="VfxData.Scale"/>.
         /// </summary>
-        public void Spawn(VfxData data, Vector3 worldPos, float? dirDegOverride = null, float intensity = 1f)
+        /// <param name="countScale">Множитель КОЛИЧЕСТВА частиц в бёрстах: вес удара читается частотой искр.</param>
+        public void Spawn(VfxData data, Vector3 worldPos, float? dirDegOverride = null, float intensity = 1f,
+                          float countScale = 1f)
         {
             if (data == null || data.Prefab == null) return;
             if (!data.Prefab.TryGetComponent(out PooledVfx _))
@@ -38,7 +40,7 @@ namespace Guildmaster.Presentation
             {
                 _active.Remove(released);
                 pool.Release(released);
-            });
+            }, countScale);
         }
 
         /// <summary>Погасить всё летящее (battle reset) и вернуть в пулы.</summary>
