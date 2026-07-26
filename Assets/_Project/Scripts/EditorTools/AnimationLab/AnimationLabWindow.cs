@@ -26,6 +26,12 @@ namespace Guildmaster.AnimationLab.Editor
         Texture2D _preview;
         string _status;
 
+        float _lagFramesPerLevel = 1f;
+        float _impactTime = -1f;
+        bool _applyOverlap = true;
+        bool _applyTangents = true;
+        bool _cleanDeadCurves = true;
+
         [MenuItem("Alebardium/Animation/Animation Lab", priority = 600)]
         public static void Open()
         {
@@ -85,6 +91,34 @@ namespace Guildmaster.AnimationLab.Editor
                 }
             }
 
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Process (writes a new clip beside the source)", EditorStyles.boldLabel);
+            _cleanDeadCurves = EditorGUILayout.Toggle(new GUIContent("Clean dead curves", "Constant curves that agree with the prefab pose. Disagreeing ones are load-bearing and are reported, not removed."), _cleanDeadCurves);
+            _applyOverlap = EditorGUILayout.Toggle(new GUIContent("Overlap", "Children start a frame later than their parent, so the weapon chases the arm."), _applyOverlap);
+            if (_applyOverlap)
+                _lagFramesPerLevel = EditorGUILayout.Slider("Lag per level (frames)", _lagFramesPerLevel, 0f, 3f);
+            _applyTangents = EditorGUILayout.Toggle(new GUIContent("Tangents by phase", "Smooth everything, then accelerate into the impact instead of braking."), _applyTangents);
+            if (_applyTangents)
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    _impactTime = EditorGUILayout.FloatField(new GUIContent("Impact time (s)", "-1 = read from an AnimationEvent"), _impactTime);
+                    using (new EditorGUI.DisabledScope(_clip == null))
+                    {
+                        if (GUILayout.Button("Suggest", GUILayout.Width(70f)))
+                        {
+                            _impactTime = AnimationLabProcessor.SuggestImpactTime(_clip);
+                            _status = $"Fastest movement sits at {_impactTime:F3}s — a guess, not a verdict. Yours to confirm.";
+                        }
+                    }
+                }
+            }
+
+            using (new EditorGUI.DisabledScope(_clip == null))
+            {
+                if (GUILayout.Button("Process clip", GUILayout.Height(24f))) RunProcess();
+            }
+
             if (!string.IsNullOrEmpty(_status))
             {
                 EditorGUILayout.Space();
@@ -126,6 +160,44 @@ namespace Guildmaster.AnimationLab.Editor
                 _status = result.ToString();
                 LoadPreview(result.Path);
                 UnityEngine.Debug.Log("[AnimationLab] " + result);
+            }
+            catch (System.Exception e)
+            {
+                _status = "Failed: " + e.Message;
+                UnityEngine.Debug.LogException(e);
+            }
+        }
+
+        void RunProcess()
+        {
+            var options = new AnimationLabProcessor.Options
+            {
+                LagFramesPerLevel = _lagFramesPerLevel,
+                ImpactTime = _impactTime,
+                ApplyOverlap = _applyOverlap,
+                ApplyTangents = _applyTangents,
+                CleanDeadCurves = _cleanDeadCurves
+            };
+
+            try
+            {
+                var report = AnimationLabProcessor.Process(_rig, _clip, options);
+                _status = report.ToString();
+                UnityEngine.Debug.Log("[AnimationLab] " + report);
+
+                var processed = AssetDatabase.LoadAssetAtPath<AnimationClip>(report.ClipPath);
+                if (processed != null && _rig != null)
+                {
+                    // Show the result straight away — a curve pass is only worth what it looks like.
+                    var sheet = AnimationLabRenderer.RenderContactSheet(_rig, processed, new AnimationLabRenderer.Options
+                    {
+                        Frames = _frames,
+                        Columns = _columns,
+                        CellSize = _cellSize,
+                        Padding = _padding
+                    });
+                    LoadPreview(sheet.Path);
+                }
             }
             catch (System.Exception e)
             {
