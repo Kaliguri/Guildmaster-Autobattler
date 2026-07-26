@@ -124,7 +124,7 @@ namespace Guildmaster.Game
             builder.Register<RelicPricer>(Lifetime.Singleton);
             // Показ награды (вынесен из GameFlow — переиспользуют петля акта и legacy-вход одного боя).
             builder.Register<RewardPresenter>(Lifetime.Singleton).As<IRewardPresenter>();
-            // Единая кнопка «Продолжить» (A4) — бит между разрешённым узлом и возвратом на карту.
+            // Кнопки бита (A4): гейт «бой добит → к награде» и передышка между узлами.
             builder.Register<ContinuePresenter>(Lifetime.Singleton).As<IContinuePresenter>();
             // Экран исхода забега (C2) — победа/поражение после акта.
             builder.Register<OutcomePresenter>(Lifetime.Singleton).As<IOutcomePresenter>();
@@ -167,6 +167,9 @@ namespace Guildmaster.Game
             // держать второй путь к той же карте значило чинить каждый баг дважды.
             // AutoFirstNodeChooser остаётся для headless/тестов.
             builder.Register<WorldMapNodeChooser>(Lifetime.Singleton).As<IMapNodeChooser>();
+
+            // Стыки узлов: возврат мира после узла + передышка с кнопками «Продолжить»/«К построению».
+            builder.Register<RunBeatStage>(Lifetime.Singleton).As<IRunBeatStage>();
             builder.Register<ActRunner>(Lifetime.Singleton);
 
             // GameFlow ведёт верхний цикл + реализует IRunControl (QA #18): системное меню прерывает забег.

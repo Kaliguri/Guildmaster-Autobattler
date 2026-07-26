@@ -114,9 +114,10 @@ namespace Guildmaster.Game.Services
             if (presentReward && result.Outcome == EventOutcome.Completed)
                 await _rewardPresenter.PresentAsync(tier);
 
-            // Арена живёт всё время «после боя» (фаза Aftermath) и чистится на выходе из узла — в петле акта это
-            // делает BattleNodeFlow, здесь (dev-разрез одного боя) чистим сами, иначе фаза залипнет на Aftermath.
+            // Арена живёт всё время после боя (фаза Interlude) и возвращается в мир на стыке узлов — в петле акта
+            // это делает RunBeatStage; здесь (dev-разрез одного боя) петли нет, поэтому возвращаем сами.
             _session.RequestReset();
+            _session.SetPhase(BattlePhase.None);
 
             return result;
         }
@@ -202,6 +203,10 @@ namespace Guildmaster.Game.Services
             }
             finally
             {
+                // Забег кончился ЛЮБЫМ путём (босс, поражение, «В главное меню»): мир перестаёт быть первым
+                // планом. Без этого фаза Interlude пережила бы забег, и задник UI не вернулся бы под меню.
+                _session.RequestReset();
+                _session.SetPhase(BattlePhase.None);
                 _runCts.Dispose();
                 _runCts = null;
             }

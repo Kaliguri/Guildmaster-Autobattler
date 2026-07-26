@@ -78,13 +78,24 @@ namespace Guildmaster.Game.Flow
         }
 
         /// <summary>
-        /// Петля забега начала ждать выбор: карта показывается, перечисленные узлы становятся доступными.
+        /// Петля забега начала ждать выбор: перечисленные узлы становятся доступными.
         /// </summary>
-        public void BeginChoose(IReadOnlyList<MapNode> available, Action<string> onChosen)
+        /// <param name="show">
+        /// Открыть карту сразу. true — на входе в акт (игрок должен увидеть, куда идёт). Дальше по ходу забега
+        /// false: узел пройден, игрок остаётся в живом мире и открывает карту сам — табом или кнопкой передышки
+        /// (реш. Макса 2026-07-26). Узлы горят в обоих случаях: ждём ВЫБОР, а не показ.
+        /// </param>
+        public void BeginChoose(IReadOnlyList<MapNode> available, Action<string> onChosen, bool show = true)
         {
             _choosable = new HashSet<string>();
             foreach (MapNode node in available) _choosable.Add(node.Id);
             _onChosen = onChosen;
+
+            if (!show)
+            {
+                if (_visible) Redraw(); // карта уже открыта (игрок сам её позвал) — просто зажечь доступные узлы
+                return;
+            }
 
             _visible = true;
             if (!Redraw()) { _visible = false; return; }

@@ -23,4 +23,16 @@ namespace Guildmaster.Data.Definitions
         public readonly bool Active;
         public TestZoneChangedEvent(bool active) => Active = active;
     }
+
+    /// <summary>
+    /// ИНТЕНТ «к построению» — кнопка передышки между узлами: встать в расстановку прямо на боевой арене
+    /// (враги и трупы уже убраны возвратом мира). От <see cref="SetTestZoneRequest"/> отличается ровно одним:
+    /// это НЕ полигон вне забега, поэтому арена остаётся цветной, а не серой. Решение принимает тот же
+    /// владелец — <c>DeploymentController</c>; отказ (нет отряда, идёт бой) — молча, интент не приказ.
+    /// </summary>
+    public readonly struct SetFormationRequest
+    {
+        public readonly bool Active;
+        public SetFormationRequest(bool active) => Active = active;
+    }
 }

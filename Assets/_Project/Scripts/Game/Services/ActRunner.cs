@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Game.Flow;
 using Guildmaster.Guild;
@@ -17,17 +18,21 @@ namespace Guildmaster.Game.Services
     public sealed class ActRunner
     {
         private readonly INodeResolver      _resolver;
-        private readonly IContinuePresenter _continue;
         private readonly IMapNodeChooser    _chooser;
         private readonly RunStateService    _runStates;
+        private readonly IRunBeatStage      _beat;
 
-        public ActRunner(INodeResolver resolver, IContinuePresenter continuePresenter,
-                         IMapNodeChooser chooser, RunStateService runStates)
+        /// <param name="beat">
+        /// Что делать с миром на стыках узлов (вернуть арену, встать в передышку, показать её кнопки).
+        /// null = петля без мира (headless/тесты) — стыки просто не оформляются.
+        /// </param>
+        public ActRunner(INodeResolver resolver, IMapNodeChooser chooser, RunStateService runStates,
+                         IRunBeatStage beat = null)
         {
             _resolver  = resolver;
-            _continue  = continuePresenter;
             _chooser   = chooser;
             _runStates = runStates;
+            _beat      = beat;
         }
 
         public async UniTask<EventResult> RunActAsync(RunContext ctx)
@@ -39,6 +44,8 @@ namespace Guildmaster.Game.Services
                 return EventResult.Aborted;
             }
 
+            bool actEntry = true; // самый первый выбор акта — только он открывает карту сам
+
             while (!MapTraversal.IsActComplete(map))
             {
                 IReadOnlyList<MapNode> available = MapTraversal.AvailableNext(map);
@@ -48,7 +55,17 @@ namespace Guildmaster.Game.Services
                     return EventResult.Aborted;
                 }
 
-                MapNode node = await _chooser.ChooseAsync(map, available, ctx.Cancellation);
+                // Пока игрок выбирает следующий узел, он стоит в живом мире: арена, свой отряд, кнопки-шорткаты
+                // «Продолжить» (открыть карту) и «К построению» в углу. Кнопки снимаются, как только узел выбран.
+                // На входе в акт передышки нет — там сразу карта (игрок должен увидеть, куда идёт).
+                using var beatCts = CancellationTokenSource.CreateLinkedTokenSource(ctx.Cancellation);
+                if (!actEntry) _beat?.EnterRestBeat(beatCts.Token);
+
+                MapNode node;
+                try     { node = await _chooser.ChooseAsync(map, available, ctx.Cancellation, openMap: actEntry); }
+                finally { beatCts.Cancel(); } // узел выбран (или забег брошен) — кнопки бита уходят
+
+                actEntry = false;
 
                 // QA #37: отмена забега («В меню» из паузы) закрывает экран карты по токену. Это НЕ Aborted, а
                 // кооперативная отмена — бросаем OperationCanceledException, она всплывает сквозь петлю в
@@ -68,6 +85,7 @@ namespace Guildmaster.Game.Services
                 }
 
                 IEventFlow flow = _resolver.Resolve(node, ctx);
+                _beat?.EnterNode(); // мир уходит на второй план: у узла свой экран (у боя — своя фаза)
                 EventResult result = await flow.Run(ctx);
 
                 if (result.Outcome == EventOutcome.Aborted)
@@ -84,9 +102,9 @@ namespace Guildmaster.Game.Services
                     return EventResult.Defeated;
                 }
 
-                // Узел пройден (награда/золото — внутри самого flow) → «Продолжить» → продвижение, автосейв.
-                await _continue.WaitForContinueAsync(ct: ctx.Cancellation);
-
+                // Узел пройден (награда/золото — внутри самого flow) → продвижение и автосейв СРАЗУ, без
+                // ожидания кнопки (реш. Макса 2026-07-26): последняя награда выдана — значит игрок уже готов
+                // к следующему этапу. Дальше он стоит в передышке столько, сколько захочет (см. верх петли).
                 MapTraversal.Advance(map, node.Id);
                 _runStates.Autosave();
             }

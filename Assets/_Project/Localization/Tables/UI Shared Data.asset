@@ -47,6 +47,14 @@ MonoBehaviour:
     m_Key: ui.camp.action.move_on
     m_Metadata:
       m_Items: []
+  - m_Id: 5532690453618688
+    m_Key: ui.beat.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5532690512338944
+    m_Key: ui.beat.formation
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

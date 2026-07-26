@@ -19,10 +19,11 @@ namespace Guildmaster.Game.Flow
 
         public WorldMapNodeChooser(WorldMapController map) => _map = map;
 
-        public async UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available, CancellationToken ct = default)
+        public async UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available, CancellationToken ct = default,
+                                                  bool openMap = true)
         {
             var tcs = new UniTaskCompletionSource<string>();
-            _map.BeginChoose(available, id => tcs.TrySetResult(id));
+            _map.BeginChoose(available, id => tcs.TrySetResult(id), openMap);
 
             try
             {

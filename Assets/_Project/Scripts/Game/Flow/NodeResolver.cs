@@ -91,9 +91,7 @@ namespace Guildmaster.Game.Flow
                     var battle = new BattleFlow(effective, _scenes, _session, _localPlayer,
                                                 () => _runStates.TrySpendRestart()); // пул перезапусков акта (C1)
                     int rewardCount = wantElite ? 2 : 1;   // элитка — два выбора реликвии подряд (B5)
-                    // session узлу нужен не ради боя (его ведёт BattleFlow), а ради чистки арены на выходе с узла.
-                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, _continue,
-                                              _session, rewardCount);
+                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, _continue, rewardCount);
                 }
 
                 case MapNodeType.TextEvent:

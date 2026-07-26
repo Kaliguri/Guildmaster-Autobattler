@@ -653,8 +653,9 @@ namespace Guildmaster.UI
             return screen;
         }
 
-        // Единая кнопка «Продолжить» (A4) — оверлей с кнопкой в правом нижнем углу. Нажатие резолвит и закрывает;
-        // закрытие без нажатия (ESC/PopAll) тоже резолвит, чтобы петля акта не зависла.
+        // Кнопки бита (A4) — прозрачный оверлей с кнопками в правом нижнем углу. Нажатие любой снимает экран.
+        // Гейт (одна кнопка): закрытие без нажатия (ESC/PopAll) всё равно резолвит, чтобы петля не зависла.
+        // Передышка (две кнопки): петля НЕ ждёт этот экран — он снимается по ct, когда узел выбран.
         public void ShowContinue(OpenContinueRequest req)
         {
             if (_root == null || _continueUxml == null) { req.OnContinue?.Invoke(); return; }
@@ -663,24 +664,49 @@ namespace Guildmaster.UI
 
         private async UniTaskVoid ShowContinueAsync(OpenContinueRequest req)
         {
+            bool formation = false; // какую кнопку нажали — «К построению» не должна дёргать OnContinue
+
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, false, resolve =>
             {
                 var body = FillRoot(_continueUxml.CloneTree());
+
                 var btn = body.Q<Button>("btn-continue");
                 if (btn != null)
                 {
-                    if (!string.IsNullOrEmpty(req.LabelKey))
-                    {
-                        string label = _loc?.GetString(req.LabelKey);
-                        if (!string.IsNullOrEmpty(label)) btn.text = label;
-                    }
+                    Label(btn, req.LabelKey);
                     btn.clicked += () => resolve(true);
+                }
+
+                // Вторая кнопка есть только у передышки: без колбэка её вовсе не показываем.
+                var formationBtn = body.Q<Button>("btn-formation");
+                if (formationBtn != null)
+                {
+                    if (req.OnFormation == null) formationBtn.style.display = DisplayStyle.None;
+                    else
+                    {
+                        Label(formationBtn, req.FormationLabelKey);
+                        formationBtn.clicked += () => { formation = true; resolve(true); };
+                    }
                 }
                 return body;
             });
 
-            await _nav.ShowAsync(screen, req.Cancellation); // «Продолжить»/закрытие → OnContinue; ct → закрыть при отмене (QA #37)
-            req.OnContinue?.Invoke();
+            bool pressed = await _nav.ShowAsync(screen, req.Cancellation); // ct → снять при отмене забега/выборе узла
+
+            if (formation) { req.OnFormation?.Invoke(); return; }
+
+            // Гейт обязан резолвить даже когда экран сняли без нажатия (ESC/PopAll) — иначе петля акта повиснет.
+            // Передышка — наоборот: её снимают штатно (узел выбран), и «открыть карту» тогда не при чём.
+            bool isRestBeat = req.OnFormation != null;
+            if (pressed || !isRestBeat) req.OnContinue?.Invoke();
+        }
+
+        // Подпись кнопки из лок-ключа; пустой ключ или отсутствующий перевод — оставляем дефолт из UXML.
+        private void Label(Button button, string key)
+        {
+            if (string.IsNullOrEmpty(key)) return;
+            string text = _loc?.GetString(key);
+            if (!string.IsNullOrEmpty(text)) button.text = text;
         }
 
         // Экран магазина (B2) — на UXML (ShopScreen.uxml) через общий ShopScreenView, биндится к IShopController.

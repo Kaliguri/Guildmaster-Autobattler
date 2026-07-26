@@ -38,8 +38,13 @@ namespace Guildmaster.Tests.EditMode.Guild
                                   new SoloPlayerIntentSource());
         }
 
-        private ActRunner NewRunner(INodeResolver resolver) =>
-            new ActRunner(resolver, new ImmediateContinue(), new AutoFirstNodeChooser(), _runStates);
+        private SpyBeat _beat;
+
+        private ActRunner NewRunner(INodeResolver resolver)
+        {
+            _beat = new SpyBeat();
+            return new ActRunner(resolver, new AutoFirstNodeChooser(), _runStates, _beat);
+        }
 
         [Test]
         public void RunAct_EmptyMap_ReturnsAborted()
@@ -110,6 +115,20 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
+        public void RunAct_RestBeat_BetweenNodes_NotOnActEntry()
+        {
+            var ctx = NewRunWithMap();
+            var runner = NewRunner(new StubResolver(_ => EventResult.Completed));
+
+            runner.RunActAsync(ctx).GetAwaiter().GetResult();
+
+            // Вход в акт открывает карту сразу — передышки там нет; дальше она между каждой парой узлов.
+            Assert.AreEqual(_beat.NodeEntries - 1, _beat.RestBeats,
+                "Передышка положена на каждом стыке узлов, кроме входа в акт.");
+            Assert.Greater(_beat.RestBeats, 0, "Между узлами игрок обязан оказаться в живом мире.");
+        }
+
+        [Test]
         public void RunAct_Autosaves_DuringTraversal()
         {
             var ctx = NewRunWithMap();
@@ -136,10 +155,13 @@ namespace Guildmaster.Tests.EditMode.Guild
             public UniTask<EventResult> Run(RunContext ctx) => UniTask.FromResult(_result);
         }
 
-        private sealed class ImmediateContinue : IContinuePresenter
+        // Стыки узлов: считаем возвраты мира и входы в узел, чтобы петля не «забыла» вернуть арену.
+        private sealed class SpyBeat : IRunBeatStage
         {
-            public UniTask WaitForContinueAsync(string labelKey = null, System.Threading.CancellationToken ct = default)
-                => UniTask.CompletedTask;
+            public int RestBeats;
+            public int NodeEntries;
+            public void EnterRestBeat(System.Threading.CancellationToken ct) => RestBeats++;
+            public void EnterNode() => NodeEntries++;
         }
 
         private sealed class InMemorySave : ISaveService

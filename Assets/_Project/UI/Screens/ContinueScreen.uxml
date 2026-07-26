@@ -1,6 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
-    <!-- Лёгкий полноэкранный слой-гейт: контент прозрачен, кнопка — в правом нижнем углу (единое место). -->
+    <!-- Лёгкий полноэкранный слой-гейт: контент прозрачен, кнопки — в правом нижнем углу (единое место).
+         Вторая кнопка («К построению») живёт в передышке между узлами и скрывается в режиме гейта. -->
     <ui:VisualElement class="gm-continue-screen">
-        <ui:Button name="btn-continue" text="Продолжить" class="gm-button gm-button--primary gm-continue" />
+        <ui:VisualElement name="continue-actions" class="gm-button-row gm-continue">
+            <ui:Button name="btn-formation" text="К построению" class="gm-button" />
+            <ui:Button name="btn-continue" text="Продолжить" class="gm-button gm-button--primary" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

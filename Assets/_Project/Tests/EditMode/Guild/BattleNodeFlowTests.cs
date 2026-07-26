@@ -76,34 +76,6 @@ namespace Guildmaster.Tests.EditMode.Guild
             Assert.AreEqual(0, reward.Calls);
         }
 
-        [Test]
-        public void Win_ResetsArena_OnlyAfterReward()
-        {
-            var ctx = Ctx();
-            var session = new CountingSession();
-            var reward = new ResetSpyReward(session);
-            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Battle, reward, _runStates,
-                                          new ImmediateContinue(), session, postWinDelaySeconds: 0f);
-
-            flow.Run(ctx).GetAwaiter().GetResult();
-
-            Assert.AreEqual(0, reward.ResetsSeenAtReward, "Пока игрок выбирает награду, поле боя ещё живое.");
-            Assert.AreEqual(1, session.ResetCount, "Уход с узла возвращает арену во вне-боевое состояние.");
-        }
-
-        [Test]
-        public void Defeat_ResetsArena_Too()
-        {
-            var ctx = Ctx();
-            var session = new CountingSession();
-            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Defeated), RewardTier.Battle, new CountingReward(),
-                                          _runStates, new ImmediateContinue(), session, postWinDelaySeconds: 0f);
-
-            flow.Run(ctx).GetAwaiter().GetResult();
-
-            Assert.AreEqual(1, session.ResetCount, "Поражение тоже уводит с узла — арена не должна залипнуть.");
-        }
-
         private sealed class FixedFlow : IEventFlow
         {
             private readonly EventResult _r;
@@ -118,53 +90,11 @@ namespace Guildmaster.Tests.EditMode.Guild
             public UniTask PresentAsync(RewardTier tier, CancellationToken ct = default) { Calls++; LastTier = tier; return UniTask.CompletedTask; }
         }
 
-        // Headless-мост «К наградам»: резолвит мгновенно (в бою эту кнопку показывает UI).
+        // Headless-мост к награде: резолвит мгновенно (в игре эту кнопку показывает UI).
         private sealed class ImmediateContinue : IContinuePresenter
         {
             public UniTask WaitForContinueAsync(string labelKey = null, CancellationToken ct = default) => UniTask.CompletedTask;
-        }
-
-        // Награда, которая подсматривает, успела ли арена очиститься до её показа (не должна).
-        private sealed class ResetSpyReward : IRewardPresenter
-        {
-            private readonly CountingSession _session;
-            public ResetSpyReward(CountingSession session) => _session = session;
-            public int ResetsSeenAtReward { get; private set; }
-            public UniTask PresentAsync(RewardTier tier, CancellationToken ct = default)
-            {
-                ResetsSeenAtReward = _session.ResetCount;
-                return UniTask.CompletedTask;
-            }
-        }
-
-        // Мост в боевой скоуп: узлу от него нужна только чистка арены, остальное — пустые тела.
-        private sealed class CountingSession : IBattleSession
-        {
-            public int ResetCount { get; private set; }
-            public bool RequestReset() { ResetCount++; return true; }
-
-            public void SetPending(BattlePresetData preset) { }
-            public bool TryConsumePending(out BattlePresetData preset) { preset = null; return false; }
-            public void BindLaunch(Action<BattlePresetData> launch) { }
-            public void UnbindLaunch() { }
-            public bool RequestLaunch(BattlePresetData preset) => false;
-            public void BindReset(Action reset) { }
-            public void UnbindReset() { }
-            public UniTask<BattleOutcome> WaitOutcomeAsync(CancellationToken ct) => UniTask.FromResult(BattleOutcome.Draw);
-            public void ReportOutcome(BattleOutcome outcome) { }
-            public void BindRestart(Action restart) { }
-            public void UnbindRestart() { }
-            public bool RequestRestart() => false;
-            public bool RestartInPlace() => false;
-            public void SetPhase(BattlePhase phase) => Phase = phase;
-            public void BindClock(Func<float> elapsedSeconds) { }
-            public void UnbindClock() { }
-            public void BindStart(Action start) { }
-            public void UnbindStart() { }
-            public BattlePhase Phase { get; private set; } = BattlePhase.None;
-            public event Action PhaseChanged { add { } remove { } }
-            public float ElapsedSeconds => 0f;
-            public void RequestStart() { }
+            public void ShowRestBeat(Action onContinue, Action onFormation, CancellationToken ct) { }
         }
 
         private sealed class MemSave : ISaveService

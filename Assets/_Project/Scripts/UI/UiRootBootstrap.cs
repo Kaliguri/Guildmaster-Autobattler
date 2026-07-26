@@ -331,11 +331,10 @@ namespace Guildmaster.UI
             // «Начать»/таймер боя (battle-center) в своём слое ПОД экранами (Ф4). Управляем ЯВНО: виден только
             // когда идёт забег И фаза боя/расстановки (Deployment→«Начать», Fighting→таймер). Иначе (главное
             // меню/карта/магазин/нет забега) — скрыт. Данные боя (таймер тикает) — законный поллинг каждый кадр.
-            // Aftermath (бой кончился, игрок ещё на узле) держит замерший таймер, а не «Начать»: начинать нечего,
-            // а время последнего боя игрок как раз дочитывает.
-            if (runActive && phase != BattlePhase.None)
-                _topBar.SetFighting(phase == BattlePhase.Fighting || phase == BattlePhase.Aftermath,
-                                    FormatTime(_clock.ElapsedSeconds));
+            // Центр панели живёт только у боя: расстановка → «Начать», бой → таймер. В передышке (Interlude)
+            // начинать нечего и считать нечего — центр пуст, чтобы «Начать» не звало в несуществующий бой.
+            if (runActive && (phase == BattlePhase.Deployment || phase == BattlePhase.Fighting))
+                _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
             else
                 _topBar.HideBattleCenter();
 
@@ -395,8 +394,9 @@ namespace Guildmaster.UI
                 // закрывал бы её собой (раньше он служил задником именно UITK-карты).
                 // По той же причине гасим его под главным меню: за меню лежит мировой стол, и подложка
                 // закрывала бы его собой — снаружи это выглядело как «фон не работает».
-                // Aftermath (бой кончился, игрок ещё на узле: досмотр, «К наградам», выбор награды) — это
-                // ЖИВАЯ арена, а не «боя нет»: подложка тут накрывала собой кадр победы (наход. Макса).
+                // Interlude (узел пройден, игрок стоит в живом мире: досмотр добивания, награда, передышка
+                // с кнопками) — это ЖИВАЯ арена, а не «мира нет»: подложка накрывала собой кадр победы
+                // и всё, что игрок делает между узлами (наход. Макса).
                 bool showBackdrop = phase == BattlePhase.None && !_router.IsInventoryOpen
                                     && !_router.IsMapSpaceOpen && !_mainMenuOpen;
                 _backdrop.style.display = showBackdrop ? DisplayStyle.Flex : DisplayStyle.None;

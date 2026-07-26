@@ -14,8 +14,11 @@ namespace Guildmaster.Game.Flow
     public interface IMapNodeChooser
     {
         /// <summary>Выбрать один узел из доступных. Возвращает выбранный (или null при отмене/ошибке).
-        /// <paramref name="ct"/> прерывает ожидание выбора при выходе из забега (QA #18).</summary>
-        UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available, CancellationToken ct = default);
+        /// <paramref name="ct"/> прерывает ожидание выбора при выходе из забега (QA #18).
+        /// <paramref name="openMap"/> — показать карту сразу (вход в акт) или ждать, пока игрок позовёт её сам
+        /// из передышки между узлами.</summary>
+        UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available, CancellationToken ct = default,
+                                     bool openMap = true);
     }
 
     /// <summary>
@@ -24,7 +27,8 @@ namespace Guildmaster.Game.Flow
     /// </summary>
     public sealed class AutoFirstNodeChooser : IMapNodeChooser
     {
-        public UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available, CancellationToken ct = default)
+        public UniTask<MapNode> ChooseAsync(MapState map, IReadOnlyList<MapNode> available, CancellationToken ct = default,
+                                            bool openMap = true)
         {
             MapNode pick = available != null && available.Count > 0 ? available[0] : null;
             if (pick != null) Debug.Log($"[AutoFirstNodeChooser] - авто-выбор узла '{pick.Id}' ({pick.Type})");
