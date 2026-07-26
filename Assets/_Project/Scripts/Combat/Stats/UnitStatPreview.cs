@@ -52,28 +52,13 @@ namespace Guildmaster.Combat
             lines.Add(Line("ui.stat.marmor", "Магическая броня", Num(stats.Get(StatType.MagicArmor))));
             lines.Add(Line("ui.stat.dmg",    "Урон",             Num(stats.Get(StatType.AutoAttackDamage))));
             // Атак/сек — с тиковой квантизацией сима (как считает бой), а не сырой AttackSpeed.
-            lines.Add(Line("ui.stat.aspd",   "Скорость атаки",   Num(AttacksPerSecond(stats.Get(StatType.AttackSpeed)))));
+            lines.Add(Line("ui.stat.aspd",   "Скорость атаки",   Num(AttackTiming.AttacksPerSecond(stats.Get(StatType.AttackSpeed)))));
             lines.Add(Line("ui.stat.range",  "Дальность",        Num(stats.Get(StatType.AttackRange))));
             lines.Add(Line("ui.stat.move",   "Скорость",         Num(stats.Get(StatType.MoveSpeed))));
             return lines;
         }
 
-        private Stats Build(UnitData data)
-        {
-            var stats = new Stats(_config);
-            ClassBaseline.Apply(stats, data, _classBalance);
-            EnemyScalers.Apply(stats, data);
-            if (data.Stats != null && data.Stats.Length > 0)
-                stats.AddModifiersFrom(data, data.Stats);
-            return stats;
-        }
-
-        private static float AttacksPerSecond(float attackSpeed)
-        {
-            int interval = AttackTiming.IntervalTicks(attackSpeed);
-            if (interval <= 0 || interval == int.MaxValue) return 0f;
-            return (float)Core.Simulation.SimConstants.TickRate / interval;
-        }
+        private Stats Build(UnitData data) => EffectiveStats.Build(data, _config, _classBalance);
 
         private static UnitStatLine Line(string key, string ru, string value) => new UnitStatLine(key, ru, value);
 

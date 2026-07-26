@@ -37,7 +37,7 @@ namespace Guildmaster.ContentHub.Editor
             {
                 new BalCol { Title = "Юнит", Width = 180, IsName = true },
                 new BalCol { Title = "DPS",  Width = 64, Num = e => StatMath.AutoAttackDps(e.EffectiveStats) },
-                new BalCol { Title = "Атк/с", Width = 56, Num = e => StatMath.AttacksPerSecond(e.Effective(StatType.AttackSpeed)) },
+                new BalCol { Title = "Атк/с", Width = 56, Num = e => Guildmaster.Combat.AttackTiming.AttacksPerSecond(e.Effective(StatType.AttackSpeed)) },
             };
             foreach (StatType st in Enum.GetValues(typeof(StatType)))
             {

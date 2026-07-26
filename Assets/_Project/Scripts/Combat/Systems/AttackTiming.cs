@@ -33,6 +33,20 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
+        /// Атак в секунду — то, что игра ДЕЙСТВИТЕЛЬНО производит: <c>TickRate / IntervalTicks</c>, то есть
+        /// с тиковой квантизацией. Сырой <c>AttackSpeed</c> в инструментах показывать нельзя — при 30 Гц он
+        /// даёт число, которого в бою не бывает (1.4 и 1.5 обе живут в интервале 20 тиков = 1.5 атак/сек).
+        /// <para>Единственный владелец этой формулы: панель инвентаря, Content Hub и балансный аудитор
+        /// держали три копии, и аудиторская считала по сырому стату (аудит 2026-07-26, T-10/R1-74).</para>
+        /// </summary>
+        public static float AttacksPerSecond(float attackSpeed)
+        {
+            int interval = IntervalTicks(attackSpeed);
+            if (interval <= 0 || interval == int.MaxValue) return 0f;
+            return (float)SimConstants.TickRate / interval;
+        }
+
+        /// <summary>
         /// Длительность свинга в тиках = <c>min(MaxAttackAnimTicks, intervalTicks)</c>.
         /// </summary>
         public static int AttackDurationTicks(int intervalTicks)
