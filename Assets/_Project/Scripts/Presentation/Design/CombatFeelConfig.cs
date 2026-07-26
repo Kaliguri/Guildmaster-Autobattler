@@ -174,14 +174,47 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private float _shatterUpBias = 0.6f;
         [Tooltip("За сколько секунд impact-вспышка спадает обратно (осколки возвращают исходный цвет юнита перед выцветанием).")]
         [SerializeField] private float _shatterFlashOut = 0.12f;
-        [Tooltip("Цвет выцветания осколков к концу (SAO-бирюза). HDR — яркость >1 ловит bloom.")]
+        [Tooltip("Цвет выцветания осколков — СЕРЕДИНА рампы (SAO-бирюза). HDR — яркость >1 ловит bloom.")]
         [ColorUsage(true, true)] [SerializeField] private Color _shatterEmberColor = new Color(0.25f, 0.9f, 1f, 1f);
+        [Tooltip("Начало рампы уголька: белое ядро сразу после вспышки.")]
+        [ColorUsage(true, true)] [SerializeField] private Color _shatterEmberCore = new Color(0.85f, 1f, 1f, 1f);
+        [Tooltip("Конец рампы уголька: глубокий синий, в котором осколок догорает.")]
+        [ColorUsage(true, true)] [SerializeField] private Color _shatterEmberTail = new Color(0.1f, 0.3f, 0.95f, 1f);
+        [Tooltip("Форма гашения: <1 — осколок держит яркость почти весь путь и тухнет в конце; 1 = линейно.")]
+        [SerializeField, Range(0.15f, 3f)] private float _shatterFadePower = 0.35f;
+        [Tooltip("Доля осколков, чья середина рампы уходит в тёплое (жёлто-зелёные искры в ядре вспышки).")]
+        [SerializeField, Range(0f, 1f)] private float _shatterHueJitter = 0.35f;
+        [Tooltip("Разброс скорости угасания между осколками (0 = все гаснут разом, ровно и неживо).")]
+        [SerializeField, Range(0f, 0.8f)] private float _shatterLifeVariance = 0.35f;
+        [Tooltip("Аддитивность уголька: 1 = догорающий осколок светит ПОВЕРХ фона, 0 = обычная прозрачность.")]
+        [SerializeField, Range(0f, 1f)] private float _shatterGlow = 1f;
         [Tooltip("Множитель яркости цвета выцветания (emissive под bloom). 1 = как есть, больше = сильнее светятся.")]
         [SerializeField] private float _shatterEmberBoost = 2f;
         [Tooltip("С какого прогресса разлёта (0..1) осколки начинают выцветать в ember-цвет.")]
         [SerializeField, Range(0f, 1f)] private float _shatterEmberStart = 0.4f;
         [Tooltip("Микро-hold перед разлётом: осколки «кристаллизуются», сек (0 = без hold).")]
         [SerializeField] private float _shatterHold = 0.05f;
+
+        // --- Смерть — стадия голограммы (UnitView + SH_Sprite_HitFlash) ---
+        // Тело сначала теряет плотность и становится «данными», и только потом вспыхивает и рассыпается.
+        // Без этой стадии юнит белел мгновенно, и раскол читался как поломка спрайта, а не как развоплощение.
+        [Tooltip("Цвет пересвета перед расколом. Отдельно от Flash Color: hit-flash обязан оставаться в " +
+                 "пределах экрана, а смерть должна ПРОБИВАТЬ порог bloom — иначе «яркий белый» просто белый.")]
+        [ColorUsage(true, true)] [SerializeField] private Color _deathFlashColor = new Color(2.5f, 2.5f, 2.6f, 1f);
+
+        [Header("Death — стадия голограммы (перед вспышкой)")]
+        [Tooltip("Длительность голограммы, сек. 0 = стадия выключена (сразу белая вспышка).")]
+        [SerializeField] private float _deathHologramDuration = 0.3f;
+        [Tooltip("Цвет тела в голограмме. HDR — яркость >1 ловит bloom.")]
+        [ColorUsage(true, true)] [SerializeField] private Color _hologramColor = new Color(0.3f, 0.95f, 1f, 1f);
+        [Tooltip("Цвет светящегося контура силуэта.")]
+        [ColorUsage(true, true)] [SerializeField] private Color _hologramRimColor = new Color(0.7f, 1f, 1f, 1f);
+        [Tooltip("Прозрачность тела в голограмме (контур остаётся плотным).")]
+        [SerializeField, Range(0.05f, 1f)] private float _hologramBodyAlpha = 0.45f;
+        [Tooltip("Шаг скан-линий в ПИКСЕЛЯХ спрайта.")]
+        [SerializeField, Range(1f, 12f)] private float _hologramScanScale = 3f;
+        [Tooltip("Глубина скан-линий (0 = ровная заливка без полос).")]
+        [SerializeField, Range(0f, 1f)] private float _hologramScanAmount = 0.35f;
 
         // --- Slowmo — добивающий удар (CombatFeelDirector) ---
         [Header("Slowmo — добивающий удар (kill)")]
@@ -306,9 +339,23 @@ namespace Guildmaster.Presentation.Design
         public float ShatterUpBias     => _shatterUpBias;
         public float ShatterFlashOut   => _shatterFlashOut;
         public Color ShatterEmberColor => _shatterEmberColor;
+        public Color ShatterEmberCore  => _shatterEmberCore;
+        public Color ShatterEmberTail  => _shatterEmberTail;
+        public float ShatterFadePower  => _shatterFadePower;
+        public float ShatterHueJitter  => _shatterHueJitter;
+        public float ShatterLifeVariance => _shatterLifeVariance;
+        public float ShatterGlow       => _shatterGlow;
         public float ShatterEmberBoost => _shatterEmberBoost;
         public float ShatterEmberStart => _shatterEmberStart;
         public float ShatterHold       => _shatterHold;
+
+        public Color DeathFlashColor       => _deathFlashColor;
+        public float DeathHologramDuration => _deathHologramDuration;
+        public Color HologramColor         => _hologramColor;
+        public Color HologramRimColor      => _hologramRimColor;
+        public float HologramBodyAlpha     => _hologramBodyAlpha;
+        public float HologramScanScale     => _hologramScanScale;
+        public float HologramScanAmount    => _hologramScanAmount;
 
         public VfxData VfxHitSpark    => _vfxHitSpark;
         public VfxData VfxMuzzle      => _vfxMuzzle;

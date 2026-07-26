@@ -117,6 +117,12 @@ namespace Guildmaster.Presentation
         private System.Action<UnitView> _onContactDust;  // презентер спавнит VfxContactDust; null = нет VFX
         private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
         private static readonly int FlashColorId  = Shader.PropertyToID("_FlashColor");
+        private static readonly int HoloId        = Shader.PropertyToID("_Holo");
+        private static readonly int HoloColorId   = Shader.PropertyToID("_HoloColor");
+        private static readonly int HoloRimId     = Shader.PropertyToID("_HoloRimColor");
+        private static readonly int HoloAlphaId   = Shader.PropertyToID("_HoloAlpha");
+        private static readonly int HoloScanScaleId  = Shader.PropertyToID("_HoloScanScale");
+        private static readonly int HoloScanAmountId = Shader.PropertyToID("_HoloScanAmount");
 
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
         // Своя фаза анимации атаки (НЕ путать с сим-AttackPhase на RuntimeUnit): охватывает ВЕСЬ цикл
@@ -131,8 +137,11 @@ namespace Guildmaster.Presentation
         private float _deathRemaining;
 
         // Секвенс смерти: ждём конца hit-flash → death-клип → anticipation → разлёт на осколки.
-        private enum DeathPhase { None, WaitFlash, Dying, Anticipate, Shattering }
+        private enum DeathPhase { None, WaitFlash, Dying, Hologram, Anticipate, Shattering }
         private DeathPhase _deathPhase;
+
+        private float _holoAmount;   // 0..1 — сила голограммы (параметр _Holo шейдера тела)
+        private float _holoLeft;     // остаток стадии голограммы, сек
 
         private bool _freeRun;        // бой окончен → доигрываем анимации натурально, не скрабим по замершему симу
         private bool _freeRunSettled; // уже осели в Idle после доигрыша
@@ -700,22 +709,33 @@ namespace Guildmaster.Presentation
             _sprite.GetPropertyBlock(_mpb);
             _mpb.SetFloat(FlashAmountId, 0f);
             _mpb.SetColor(FlashColorId, _feel != null ? _feel.FlashColor : Color.white);
+            _mpb.SetFloat(HoloId, 0f);   // юнита могли переиспользовать после смерти — голограмма не должна дожить
             _sprite.SetPropertyBlock(_mpb);
             _flashApplied = false;
+            _holoAmount   = 0f;
         }
 
-        // Вспышка через MaterialPropertyBlock (per-instance _FlashAmount, без клонирования материала).
-        // Пишем блок, только пока вспышка активна, + один раз чтобы вернуть в 0 (не ломаем SRP-батчинг зря).
+        // Вспышка и голограмма через MaterialPropertyBlock (per-instance, без клонирования материала).
+        // Пишем блок, только пока что-то активно, + один раз чтобы вернуть в 0 (не ломаем SRP-батчинг зря).
         private void ApplyFlash()
         {
             if (_sprite == null) return;
-            bool active = _flashAmount > 0.0001f;
+            bool active = _flashAmount > 0.0001f || _holoAmount > 0.0001f;
             if (!active && !_flashApplied) return;
 
             _mpb ??= new MaterialPropertyBlock();
             _sprite.GetPropertyBlock(_mpb);
             _mpb.SetFloat(FlashAmountId, _flashAmount);
             _mpb.SetColor(FlashColorId, _activeFlashColor);
+            _mpb.SetFloat(HoloId, _holoAmount);
+            if (_holoAmount > 0.0001f && _feel != null)
+            {
+                _mpb.SetColor(HoloColorId, _feel.HologramColor);
+                _mpb.SetColor(HoloRimId,   _feel.HologramRimColor);
+                _mpb.SetFloat(HoloAlphaId, _feel.HologramBodyAlpha);
+                _mpb.SetFloat(HoloScanScaleId,  _feel.HologramScanScale);
+                _mpb.SetFloat(HoloScanAmountId, _feel.HologramScanAmount);
+            }
             _sprite.SetPropertyBlock(_mpb);
             _flashApplied = active;
         }
@@ -946,7 +966,7 @@ namespace Guildmaster.Presentation
             _deathPhase = DeathPhase.WaitFlash; // дальше — DriveDeath (ждём hit-flash → death → разлёт)
         }
 
-        // Секвенс смерти. WaitFlash → Dying → Anticipate (опц.) → StartShatter.
+        // Секвенс смерти. WaitFlash → Dying → Hologram (опц.) → Anticipate (опц.) → StartShatter.
         private void DriveDeath()
         {
             switch (_deathPhase)
@@ -967,14 +987,27 @@ namespace Guildmaster.Presentation
                     }
                     else
                     {
-                        BeginDeathAnticipateOrShatter();
+                        BeginHologramOrAnticipate();
                     }
                     break;
 
                 case DeathPhase.Dying:
                     _animator.speed = 1f;
                     _deathRemaining -= Time.deltaTime;
-                    if (_deathRemaining <= 0f) BeginDeathAnticipateOrShatter();
+                    if (_deathRemaining <= 0f) BeginHologramOrAnticipate();
+                    break;
+
+                case DeathPhase.Hologram:
+                    // Тело держит последний кадр и «расплотняется»: плоть уходит, остаются данные.
+                    if (_animActive) _animator.speed = 0f;
+                    _holoLeft -= Time.unscaledDeltaTime;
+                    float holoTotal = _feel != null ? Mathf.Max(0.0001f, _feel.DeathHologramDuration) : 0.0001f;
+                    _holoAmount = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(1f - _holoLeft / holoTotal));
+                    if (_holoLeft <= 0f)
+                    {
+                        _holoAmount = 1f;
+                        BeginDeathAnticipateOrShatter();
+                    }
                     break;
 
                 case DeathPhase.Anticipate:
@@ -982,7 +1015,7 @@ namespace Guildmaster.Presentation
                     _deathAnticipateLeft -= Time.unscaledDeltaTime;
                     // Дрожь масштаба + белый силуэт на всё окно anticipation.
                     _flashAmount = 1f;
-                    _activeFlashColor = Color.white;
+                    _activeFlashColor = _feel != null ? _feel.DeathFlashColor : Color.white;
             float shake = _feel != null ? _feel.DeathAnticipateShake : 0f;
             float wobble = Mathf.Sin(Time.unscaledTime * 60f) * shake;
             if (_squashTarget != null)
@@ -1006,13 +1039,31 @@ namespace Guildmaster.Presentation
             }
         }
 
+        // Стадия между анимацией смерти и белой вспышкой. Выключается нулевой длительностью в feel-конфиге —
+        // тогда секвенс тот же, что был до неё.
+        private void BeginHologramOrAnticipate()
+        {
+            if (_feel != null && _feel.DeathHologramDuration > 0f)
+            {
+                _deathPhase = DeathPhase.Hologram;
+                _holoLeft   = _feel.DeathHologramDuration;
+                _holoAmount = 0f;
+                return;
+            }
+            BeginDeathAnticipateOrShatter();
+        }
+
         private void BeginDeathAnticipateOrShatter()
         {
+            // Голограмму снимаем: следующая стадия — плотный белый пересвет, а полупрозрачное тело
+            // дало бы блёклую вспышку сквозь фон.
+            _holoAmount = 0f;
+
             if (_feel != null && _feel.EnableDeathAnticipation && _feel.DeathAnticipateDuration > 0f)
             {
                 _deathPhase = DeathPhase.Anticipate;
                 _deathAnticipateLeft = _feel.DeathAnticipateDuration;
-                _activeFlashColor = Color.white;
+                _activeFlashColor = _feel.DeathFlashColor;
                 _flashAmount = 1f;
                 return;
             }
