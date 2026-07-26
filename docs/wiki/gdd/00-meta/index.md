@@ -90,8 +90,9 @@ SORT file.name ASC
 - [[injuries-mettle|Run - Injuries & Mettle]] — ось истощения «Сосуда».
 - [[procedural-lore|Run - Procedural Lore]] — сид-генерируемая личность.
 - [[meta-progression|Run - Meta Progression]] — экономика забега, реворд-ramp, левел реликвий.
+- [[vessel-progression|Run - Vessel Progression]] — уровни «Сосуда» в забеге: статы, Судьбы-квесты, Обеты.
 - [[events-minigames|Run - Events & Minigames]] — карта, события, мини-игры.
-- [[guild-development|Run - Guild Development]] — Слой 3: дом между забегами, что переносится и что нет.
+- [[guild-development|Run - Guild Development]] — Слой 3: дом, ветераны, смертность, книга гильдии.
 
 ## 40 · Контент (`40-content/`)
 
