@@ -9,7 +9,6 @@ using Guildmaster.Game.Flow;
 using Guildmaster.Presentation;
 using MessagePipe;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using VContainer.Unity;
 
 namespace Guildmaster.Game
@@ -17,7 +16,7 @@ namespace Guildmaster.Game
     /// <summary>
     /// Оркестратор интерактивной фазы расстановки (план шаг 4). На загрузку Free-пресета
     /// (<see cref="EncounterLoader.FreeDeploymentRequested"/>) ставит бой на паузу, флашит спавны и даёт
-    /// игроку таскать своих юнитов (team 0) в пределах player-зон; «Готово» (Enter) стартует бой.
+    /// игроку таскать своих юнитов (team 0) в пределах player-зон; бой начинает кнопка «Начать».
     /// <list type="bullet">
     /// <item>Пикинг — математикой по радиусу тела (без коллайдеров), ближайший team-0 юнит под курсором.</item>
     /// <item>Drag с валидацией <see cref="DeploymentService.CanPlace"/> + анти-оверлап при drop (reject).</item>
@@ -186,7 +185,7 @@ namespace Guildmaster.Game
         }
 
         /// <summary>
-        /// Кнопка «Начать» (и Enter): пустить бой из текущей расстановки. Отказ громкий — молчаливое
+        /// Кнопка «Начать» — ЕДИНСТВЕННЫЙ способ пустить бой. Отказ громкий: молчаливое
         /// нажатие читается игроком как «не нажалось», а причина у отказа ровно одна и внятная.
         /// </summary>
         private void TryStartFromButton()
@@ -518,8 +517,10 @@ namespace Guildmaster.Game
         {
             if (!_deploying) return;
 
-            // «Готово» — стартуем бой (Enter). Работает даже при открытом меню? нет — только в чистой фазе.
-            if (!_input.GameplaySuppressed && ReadyPressed()) { StartCombat(); return; }
+            // Клавиши старта здесь НЕТ (реш. Макса 2026-07-27): бой начинает только кнопка «Начать».
+            // Прежний Enter читался с клавиатуры напрямую, мимо IInputService, и потому не подчинялся
+            // ни контексту ввода, ни чужому захвату клавиатуры: Enter, которым отправляли команду в
+            // dev-консоли, приходил сюда и начинал бой. Хоткей вернём — но через карту действий.
 
             // Реликвия-drag из инвентаря (QA #5): призрак силуэта реликвии виден ВЕЗДЕ, пока тащим (в т.ч. над
             // панелью грида — ghost рисуется поверх мира), цель эквипа под курсором подсвечиваем кругом. Юнит-
@@ -797,12 +798,6 @@ namespace Guildmaster.Game
         }
 
         // ── Хелперы ──────────────────────────────────────────────────────────
-        private static bool ReadyPressed()
-        {
-            Keyboard kb = Keyboard.current;
-            return kb != null && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame);
-        }
-
         // Захват — двухслойный (реш. Макса): круг-опора у ног ИЛИ сама фигура юнита.
         // Круг главнее: он нарисован и читается как «место юнита», поэтому попадание в чей-то круг всегда
         // бьёт попадание в чужую фигуру (иначе высокий сосед перехватывал бы клик по ногам соседа).
