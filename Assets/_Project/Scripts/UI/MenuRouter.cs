@@ -656,6 +656,33 @@ namespace Guildmaster.UI
             return screen;
         }
 
+        // Прощание узла — последний кадр магазина/сундука/привала: та же панель, что у ивента, но без вариантов.
+        // Живёт по токену узла (гаснет на входе в следующий), уводят с него кнопки бита поверх (QA #48/#49).
+        public void ShowNodeFarewell(OpenNodeFarewellRequest req)
+        {
+            if (_root == null || _eventUxml == null) return;
+            PushScreen(() => BuildNodeFarewellScreen(req), ScreenKind.Page, ct: req.Cancellation);
+        }
+
+        private VisualElement BuildNodeFarewellScreen(OpenNodeFarewellRequest req)
+        {
+            VisualElement screen = _eventUxml.CloneTree();
+            VisualElement root = screen.childCount > 0 ? screen[0] : screen;
+            root.pickingMode = PickingMode.Position;
+
+            var title = root.Q<Label>("event-title");
+            var body  = root.Q<Label>("event-body");
+            if (title != null) title.text = _loc?.GetString(req.TitleKey) ?? string.Empty;
+            if (body  != null) body.text  = _loc?.GetString(req.BodyKey)  ?? string.Empty;
+
+            // Иллюстрации и вариантов у прощания нет: кадр держит текст, а выбор уже сделан.
+            var image = root.Q<VisualElement>("event-image");
+            if (image != null) image.style.display = DisplayStyle.None;
+            root.Q<VisualElement>("event-choices")?.Clear();
+
+            return screen;
+        }
+
         // Кнопки бита (A4) — прозрачный оверлей с кнопками в правом нижнем углу. Нажатие любой снимает экран.
         // Гейт (одна кнопка): закрытие без нажатия (ESC/PopAll) всё равно резолвит, чтобы петля не зависла.
         // Передышка (две кнопки): петля НЕ ждёт этот экран — он снимается по ct, когда узел выбран.

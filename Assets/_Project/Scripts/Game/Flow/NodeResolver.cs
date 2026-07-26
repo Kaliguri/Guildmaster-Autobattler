@@ -37,14 +37,17 @@ namespace Guildmaster.Game.Flow
         private readonly IPublisher<OpenShopRequest>      _openShopPub;
         private readonly IPublisher<OpenChestRequest>     _openChestPub;
         private readonly IPublisher<OpenCampRequest>      _openCampPub;
+        private readonly IPublisher<OpenNodeFarewellRequest> _farewellPub; // кадр-прощание узла (QA #48/#49)
 
         public NodeResolver(IContentDatabase content, ISceneLoader scenes, IBattleSession session,
                             ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
                             IRewardPresenter reward, RunStateService runStates, IContinuePresenter continuePresenter,
                             IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub,
-                            IPublisher<OpenChestRequest> openChestPub, IPublisher<OpenCampRequest> openCampPub)
+                            IPublisher<OpenChestRequest> openChestPub, IPublisher<OpenCampRequest> openCampPub,
+                            IPublisher<OpenNodeFarewellRequest> farewellPub)
         {
             _openCampPub  = openCampPub;
+            _farewellPub  = farewellPub;
             _content      = content;
             _scenes       = scenes;
             _session      = session;
@@ -106,13 +109,13 @@ namespace Guildmaster.Game.Flow
                 }
 
                 case MapNodeType.Shop:
-                    return new ShopFlow(_shop, _openShopPub);
+                    return new ShopFlow(_shop, _openShopPub, _farewellPub);
 
                 case MapNodeType.Chest:
-                    return new ChestFlow(_openChestPub, _reward);
+                    return new ChestFlow(_openChestPub, _reward, _farewellPub);
 
                 case MapNodeType.Camp:
-                    return new CampFlow(_openCampPub);
+                    return new CampFlow(_openCampPub, _farewellPub);
 
                 // «?»: тип роллится на входе, делегируем себе же (B4).
                 case MapNodeType.Unknown:

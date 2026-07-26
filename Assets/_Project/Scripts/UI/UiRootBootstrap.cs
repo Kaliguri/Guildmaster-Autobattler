@@ -85,6 +85,8 @@ namespace Guildmaster.UI
         private ISubscriber<OpenShopRequest> _openShopSub;
         private ISubscriber<OpenChestRequest> _openChestSub;
         private ISubscriber<OpenCampRequest> _openCampSub;
+        private ISubscriber<OpenNodeFarewellRequest> _openFarewellSub; // единый ритм конца узла (QA #48/#49)
+        private IDisposable _openFarewellSubscription;
         private ISubscriber<OpenOutcomeRequest> _openOutcomeSub;
         private ISubscriber<OpenMainMenuRequest> _openMainMenuSub;
         private ISubscriber<OpenTitleCardRequest> _openTitleCardSub;
@@ -142,11 +144,13 @@ namespace Guildmaster.UI
             IPublisher<Core.Flow.ScreenBackdropChangedEvent> screenBackdropPub,
             ISubscriber<Core.Flow.ScreenFadeChangedEvent> screenFadeSub,
             ISubscriber<OpenCampRequest> openCampSub,
+            ISubscriber<OpenNodeFarewellRequest> openFarewellSub,
             ISubscriber<OpenTitleCardRequest> openTitleCardSub)
         {
             _screenBackdropPub = screenBackdropPub;
             _screenFadeSub     = screenFadeSub;
             _openCampSub = openCampSub;
+            _openFarewellSub = openFarewellSub;
             _openTitleCardSub = openTitleCardSub;
             _mainMenuVisSub = mainMenuVisSub;
             _router = router;
@@ -198,6 +202,7 @@ namespace Guildmaster.UI
             _openChestSubscription = _openChestSub?.Subscribe(req => _router.OpenChest(req));
             // Привал — запрос из узла привала (CampFlow).
             _openCampSubscription = _openCampSub?.Subscribe(req => _router.OpenCamp(req));
+            _openFarewellSubscription = _openFarewellSub?.Subscribe(req => _router.ShowNodeFarewell(req));
             // Исход забега — запрос из GameFlow после акта.
             _openOutcomeSubscription = _openOutcomeSub?.Subscribe(req => _router.ShowOutcome(req));
             // Главное меню — запрос из GameFlow (верхний цикл).
@@ -554,6 +559,7 @@ namespace Guildmaster.UI
             _mapSpaceSubscription?.Dispose();                         // фаза D
             _mainMenuVisSubscription?.Dispose();                      // фон за главным меню
             _screenFadeSubscription?.Dispose();                       // QA #47: шторка перехода
+            _openFarewellSubscription?.Dispose();                     // QA #48/#49: прощание узла
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();

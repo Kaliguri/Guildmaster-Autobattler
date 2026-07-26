@@ -59,6 +59,30 @@ MonoBehaviour:
     m_Key: ui.event.result.fallback
     m_Metadata:
       m_Items: []
+  - m_Id: 5594274752356352
+    m_Key: ui.node.shop.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274802688000
+    m_Key: ui.node.shop.farewell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274802688001
+    m_Key: ui.node.chest.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274802688002
+    m_Key: ui.node.chest.farewell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274802688003
+    m_Key: ui.node.camp.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5594274802688004
+    m_Key: ui.node.camp.farewell
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
