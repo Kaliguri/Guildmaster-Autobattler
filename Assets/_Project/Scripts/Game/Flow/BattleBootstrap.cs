@@ -31,6 +31,7 @@ namespace Guildmaster.Game.Flow
 
         private IDisposable      _endedSubscription;
         private BattlePresetData _lastPreset;
+        private bool             _arenaStaged;   // на арене стоял бой (враги/трупы) → возврат мира имеет смысл
 
         public BattleBootstrap(IBattleSession session, EncounterLoader loader, CombatSimulation sim,
                                RunStateService runStates, IContentDatabase content,
@@ -80,7 +81,8 @@ namespace Guildmaster.Game.Flow
                 return;
             }
 
-            _lastPreset = preset;
+            _lastPreset  = preset;
+            _arenaStaged = true;                   // с этого момента на арене есть что убирать
             if (!HasLivingParty()) DeployParty();  // отряд не стоял → поставить из RunState.Guild
 
             _loader.SpawnEnemies(preset.Encounter);
@@ -93,10 +95,16 @@ namespace Guildmaster.Game.Flow
         // пауза. PlaceParty внутри DeployParty делает ResetBattle — это чистит и врагов, и старый отряд.
         // ФАЗУ НЕ ТРОГАЕТ: возврат случается и в передышке между узлами (там фаза Interlude — мир на экране),
         // и при выходе из забега (там None). Кто зовёт — тот и знает, где игрок оказался.
+        // Боя не было (ивент, магазин, сундук, привал) — убирать нечего, и трогать арену НЕЛЬЗЯ: пере-расстановка
+        // отряда на ровном месте читается игроком как «открылся бой» (QA #43a, реш. Макса 2026-07-26). Признак
+        // ведём здесь, а не по типу узла: «?»-узел роллится в бой уже на входе, петля об этом не знает.
         // TODO (замысел Макса 2026-07-26): это должна быть АНИМАЦИЯ — трупы тают, отряд возвращается на места;
         // «К построению» проигрывает её ×3. Сейчас возврат мгновенный, шов под скорость появится вместе с ней.
         private void ResetToWorld()
         {
+            if (!_arenaStaged) return;
+            _arenaStaged = false;
+
             DeployParty();
             _sim.FlushSpawns();
             _sim.SetPaused(true);
@@ -105,6 +113,7 @@ namespace Guildmaster.Game.Flow
         // Ретрай боя (пул перезапусков акта + dev-R): пере-поставить отряд и врагов, снова в фазу расстановки.
         private void RestartBattle()
         {
+            _arenaStaged = true;
             DeployParty();
             if (_lastPreset?.Encounter != null) _loader.SpawnEnemies(_lastPreset.Encounter);
             _sim.FlushSpawns();
