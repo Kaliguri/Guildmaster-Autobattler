@@ -150,7 +150,7 @@ Guildmaster - Autobattler/
 ├── .claude/skills/                   # проектные скиллы-контуры + BACKLOG.md
 ├── .cursor/rules/                    # 6 файлов правил (см. таблицу выше)
 ├── .github/workflows/
-│   ├── ci.yml                        # GameCI: тесты (editmode + playmode) + гейт
+│   ├── ci.yml                        # GameCI: тесты (editmode + playmode) + сборка плеера + гейт
 │   ├── docs-lint.yml                 # блокирующий гейт битых вики-ссылок
 │   └── docs.yml                      # публикация сайта документации
 ├── Assets/                           # игровые ассеты и скрипты Unity
@@ -169,7 +169,9 @@ Guildmaster - Autobattler/
 
 ## CI/CD
 
-`ci.yml` — **только тесты**, сборок не делает: `changes` (paths-filter) → `test` (`game-ci/unity-test-runner@v4`, editmode + playmode) → `ci-gate`.
+`ci.yml`: `changes` (paths-filter) → `test` (`game-ci/unity-test-runner@v4`, editmode + playmode) + `build` (`game-ci/unity-builder@v4`, StandaloneWindows64) → `ci-gate`.
+
+Сборка гоняется **только на pull request и на master** — она дороже тестов, а push в dev ими и так закрыт. Артефакт билда не публикуется: job отвечает на вопрос «собирается ли», а не «дай поиграть». Плеер собирается на Linux-раннере, потому что Standalone у нас на **Mono** (IL2CPP в `ProjectSettings` задан только для Android); переезд Standalone на IL2CPP потребует windows-раннера.
 
 ```powershell
 ./scripts/run-tests.ps1
