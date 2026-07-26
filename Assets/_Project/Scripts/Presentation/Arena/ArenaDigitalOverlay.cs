@@ -56,8 +56,41 @@ namespace Guildmaster.Presentation.Arena
             {
                 _calm = value;
                 if (_material != null) _material.SetFloat(CalmId, _calm ? 1f : 0f);
-                if (_quad != null) _quad.enabled = _calm || (_swapper != null && _swapper.Busy);
+                if (_quad != null) _quad.enabled = _calm || _solo != SoloStage.None || (_swapper != null && _swapper.Busy);
             }
+        }
+
+        /// <summary>Сама по себе цифра, без смены облика: вход — первый акт, выход — третий.</summary>
+        private enum SoloStage { None, Entering, Held, Exiting }
+
+        private SoloStage _solo;
+        private float     _soloT;
+
+        /// <summary>
+        /// Увести арену в цифру или вернуть обратно, НЕ меняя облик. Тест-зона — это то же место, только
+        /// показанное моделью, поэтому играются лишь крайние акты: уход в каркас и возврат из него.
+        /// </summary>
+        public void SetDigital(bool on)
+        {
+            if (_material == null) return;
+
+            if (on)
+            {
+                if (_solo == SoloStage.Entering || _solo == SoloStage.Held) return;
+
+                Bake(_swapper.CurrentSkinId, _swapper.CurrentSkinId); // облик тот же — меняется только подача
+                Calm      = false;                                    // дыхание включится, когда доедем
+                _soloT    = 0f;
+                _solo     = SoloStage.Entering;
+                if (_quad != null) _quad.enabled = true;
+                return;
+            }
+
+            if (_solo == SoloStage.None || _solo == SoloStage.Exiting) return;
+
+            Calm   = false;                                           // иначе цифра держалась бы поверх выхода
+            _soloT = _swapper.Shape.RestoreStart;
+            _solo  = SoloStage.Exiting;
         }
 
         private void Awake()
@@ -101,11 +134,58 @@ namespace Guildmaster.Presentation.Arena
         {
             if (_material == null) return;
 
+            // Полный переход (со сменой облика) главнее одиночной цифры: если он пошёл, время ведёт свопер.
             bool busy = _swapper != null && _swapper.Busy;
-            if (_quad != null) _quad.enabled = busy || _calm;
-            if (!busy) return;
+            if (busy)
+            {
+                _solo = SoloStage.None;
+                if (_quad != null) _quad.enabled = true;
+                _material.SetFloat(ProgressId, _swapper.Progress);
+                return;
+            }
 
-            _material.SetFloat(ProgressId, _swapper.Progress);
+            if (_solo != SoloStage.None) TickSolo();
+
+            if (_quad != null) _quad.enabled = _calm || _solo != SoloStage.None;
+        }
+
+        private void TickSolo()
+        {
+            ArenaSwapShape shape = _swapper.Shape;
+
+            if (_solo == SoloStage.Entering)
+            {
+                float span = Mathf.Max(0.0001f, shape.DigitizeShare * shape.DurationSeconds);
+                _soloT += Time.unscaledDeltaTime * shape.DigitizeEnd / span;
+
+                if (_soloT >= shape.DigitizeEnd)
+                {
+                    _soloT = shape.DigitizeEnd;
+                    _solo  = SoloStage.Held;
+                    Calm   = true;    // дальше держим цифру дыханием, без вспышек: тут игрок расставляет отряд
+                }
+                _material.SetFloat(ProgressId, _soloT);
+                return;
+            }
+
+            if (_solo == SoloStage.Held)
+            {
+                _material.SetFloat(ProgressId, shape.DigitizeEnd);
+                return;
+            }
+
+            float outSpan = Mathf.Max(0.0001f, shape.RestoreShare * shape.DurationSeconds);
+            _soloT += Time.unscaledDeltaTime * shape.RestoreShare / outSpan;
+
+            if (_soloT < 1f)
+            {
+                _material.SetFloat(ProgressId, _soloT);
+                return;
+            }
+
+            _soloT = 1f;
+            _solo  = SoloStage.None;
+            _material.SetFloat(ProgressId, 1f);
         }
 
         private void OnSwapStarted(string from, string to) => Bake(from, to);

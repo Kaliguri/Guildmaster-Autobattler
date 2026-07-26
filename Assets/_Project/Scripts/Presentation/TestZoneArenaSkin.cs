@@ -1,5 +1,6 @@
 using System;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Presentation.Arena;
 using MessagePipe;
 using UnityEngine;
 using VContainer;
@@ -7,20 +8,18 @@ using VContainer;
 namespace Guildmaster.Presentation
 {
     /// <summary>
-    /// «Серая зона» тест-арены (QA #2): держит два корня пола — цветной (боевая арена) и grayscale-дубль
-    /// (те же тайлы Cainos в серых версиях) — и свапает их по СОСТОЯНИЮ тест-зоны (<see cref="TestZoneChangedEvent"/>).
-    /// Вне тест-зоны — цветной; в тест-зоне — серый (визуальный маркер «полигон, не настоящий бой»). Живёт в
-    /// WorldScene (persist); подписку инъектит <c>WorldLifetimeScope</c>.
-    /// <para>Ф5: слушает СОСТОЯНИЕ (Active), а не тумблер — прежний самотог (<c>SetGray(!_gray)</c>) на каждый
-    /// бродкаст расходился с владельцем, если тот бродкаст игнорировал (QA #28/#31). Теперь источник один.</para>
+    /// Облик тест-зоны: полигон — это ТО ЖЕ место, показанное моделью, поэтому арена уходит в цифровой
+    /// каркас (<see cref="ArenaDigitalOverlay"/>), а не подменяется серым дублем пола.
+    /// <para>Почему не серый: серый — язык интерфейса, «выключено, недоступно», а полигон не сломан. Цифра
+    /// говорит верное — «это модель места». Вдобавок она бесплатна: тест-зона оказывается застывшим вторым
+    /// актом того же перехода, что играет при входе в боевой узел (вход = акт 1, выход = акт 3).</para>
+    /// <para>Слушает СОСТОЯНИЕ (<see cref="TestZoneChangedEvent.Active"/>), а не тумблер: самотог на каждый
+    /// бродкаст расходился с владельцем, если тот бродкаст игнорировал (QA #28/#31).</para>
     /// </summary>
     public sealed class TestZoneArenaSkin : MonoBehaviour
     {
-        [Tooltip("Корень цветной боевой арены (тайлмапы Cainos). Виден вне тест-зоны.")]
-        [SerializeField] private GameObject _colorRoot;
-
-        [Tooltip("Корень grayscale-дубля (те же тайлмапы с серыми тайлами). Виден в тест-зоне.")]
-        [SerializeField] private GameObject _grayRoot;
+        [Tooltip("Цифровой слой арены. Пусто — найдём в сцене сами.")]
+        [SerializeField] private ArenaDigitalOverlay _digital;
 
         private ISubscriber<TestZoneChangedEvent> _sub;
         private IDisposable _subscription;
@@ -30,16 +29,17 @@ namespace Guildmaster.Presentation
 
         private void Start()
         {
-            _subscription = _sub?.Subscribe(e => SetGray(e.Active)); // состояние, не тумблер
-            SetGray(false); // старт — цветная арена
+            if (_digital == null) _digital = FindFirstObjectByType<ArenaDigitalOverlay>();
+            if (_digital == null)
+            {
+                Debug.LogWarning("[TestZoneArenaSkin] - цифровой слой не найден → тест-зона будет неотличима от арены.");
+                return;
+            }
+
+            _subscription = _sub?.Subscribe(e => _digital.SetDigital(e.Active));
+            _digital.SetDigital(false); // старт — настоящая арена
         }
 
         private void OnDestroy() => _subscription?.Dispose();
-
-        private void SetGray(bool gray)
-        {
-            if (_colorRoot != null) _colorRoot.SetActive(!gray);
-            if (_grayRoot  != null) _grayRoot.SetActive(gray);
-        }
     }
 }
