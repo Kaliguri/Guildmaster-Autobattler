@@ -14,6 +14,7 @@ namespace Guildmaster.Presentation
 
         private ParticleSystem[] _particles;
         private ParticleSystem.Burst[][] _baseBursts;   // эталонные бёрсты префаба (см. CacheBaseBursts)
+        private ParticleSystem.MinMaxGradient[] _baseColors; // эталонные цвета префаба (см. CacheBaseColors)
         private Renderer[]       _renderers;
         private int[]            _relativeOrders; // order ребёнка минус min по префабу
         private float            _elapsed;
@@ -74,7 +75,7 @@ namespace Guildmaster.Presentation
         /// </summary>
         public void Play(Vector3 worldPos, float scale, float dirDeg,
             int sortingLayerId, int baseSortingOrder, System.Action<PooledVfx> onComplete,
-            float countScale = 1f)
+            float countScale = 1f, Gradient tint = null)
         {
             Cache();
             _onComplete = onComplete;
@@ -87,6 +88,7 @@ namespace Guildmaster.Presentation
 
             ApplySorting(sortingLayerId, baseSortingOrder);
             ApplyEmissionCount(countScale);
+            ApplyTint(tint);
 
             if (_particles != null)
             {
@@ -135,6 +137,44 @@ namespace Guildmaster.Presentation
 
                 ParticleSystem.EmissionModule emission = ps.emission;
                 emission.SetBursts(scaled);
+            }
+        }
+
+        /// <summary>
+        /// Красит эффект палитрой ВЛАДЕЛЬЦА. Палитра — ДИАПАЗОН: каждая частица получает случайный оттенок
+        /// между концами градиента, и рой искр выходит живым (жёлто-белым вразнобой), а не одноцветным.
+        /// Так один префаб служит всем: криомант вспыхивает своим холодом, пастырь — своим светом.
+        /// null = как в префабе.
+        /// </summary>
+        private void ApplyTint(Gradient palette)
+        {
+            if (_particles == null || _particles.Length == 0) return;
+            CacheBaseColors();
+            if (_baseColors == null) return;
+
+            for (int i = 0; i < _particles.Length; i++)
+            {
+                ParticleSystem ps = _particles[i];
+                if (ps == null) continue;
+
+                ParticleSystem.MainModule main = ps.main;
+                if (palette == null) { main.startColor = _baseColors[i]; continue; }
+
+                // Два конца палитры как границы рандома — Unity сама разбрасывает частицы между ними.
+                main.startColor = new ParticleSystem.MinMaxGradient(palette.Evaluate(0f), palette.Evaluate(1f));
+            }
+        }
+
+        // Эталонные цвета префаба — по той же причине, что и бёрсты: множить уже помноженное нельзя.
+        private void CacheBaseColors()
+        {
+            if (_baseColors != null || _particles == null) return;
+
+            _baseColors = new ParticleSystem.MinMaxGradient[_particles.Length];
+            for (int i = 0; i < _particles.Length; i++)
+            {
+                ParticleSystem ps = _particles[i];
+                _baseColors[i] = ps != null ? ps.main.startColor : new ParticleSystem.MinMaxGradient(Color.white);
             }
         }
 

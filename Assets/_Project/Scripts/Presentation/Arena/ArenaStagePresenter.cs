@@ -34,12 +34,19 @@ namespace Guildmaster.Presentation.Arena
         private ISubscriber<ArenaRevealRequest> _revealSub;
         private ISubscriber<ScreenFadeChangedEvent> _fadeSub;
         private ISubscriber<TestZoneChangedEvent> _testZoneSub;
+        private ISubscriber<BattleEndedEvent> _battleEndedSub;
+        private IDisposable _battleEndedSubscription;
         private Guildmaster.Core.Input.IInputService _input;
         private IDisposable _revealSubscription;
         private IDisposable _fadeSubscription;
         private IDisposable _testZoneSubscription;
 
         private bool _spawned;   // первый показ полигона играется сборкой из пустоты, дальше — обычным всполохом
+
+        // Место успело смениться с прошлого показа полигона? Переход — это рассказ о СМЕНЕ, и играть его
+        // надо там, где сменять есть что: начало забега, заход на узел, конец боя. А щёлканье табами
+        // «карта ↔ полигон» ничего не меняет, и мир, каждый раз пересобирающийся заново, читался как сбой.
+        private bool _placeChanged;
 
         private bool   _pending;          // проявление заказано, ждём открытого кадра
         private string _pendingSkin;
@@ -50,12 +57,14 @@ namespace Guildmaster.Presentation.Arena
         public void Construct(ISubscriber<ArenaRevealRequest> revealSub,
                               ISubscriber<ScreenFadeChangedEvent> fadeSub,
                               ISubscriber<TestZoneChangedEvent> testZoneSub,
+                              ISubscriber<BattleEndedEvent> battleEndedSub,
                               Guildmaster.Core.Input.IInputService input)
         {
-            _revealSub   = revealSub;
-            _fadeSub     = fadeSub;
-            _testZoneSub = testZoneSub;
-            _input       = input;
+            _revealSub       = revealSub;
+            _fadeSub         = fadeSub;
+            _testZoneSub     = testZoneSub;
+            _battleEndedSub  = battleEndedSub;
+            _input           = input;
         }
 
         private void Start()
@@ -67,6 +76,9 @@ namespace Guildmaster.Presentation.Arena
             _revealSubscription   = _revealSub?.Subscribe(OnReveal);
             _fadeSubscription     = _fadeSub?.Subscribe(e => _curtain = e.Progress);
             _testZoneSubscription = _testZoneSub?.Subscribe(e => OnTestZone(e.Active));
+            // Бой кончился — полигон, в который вернётся игрок, уже другое место (та самая арена, где всё
+            // произошло). Возврат туда достоин перехода, в отличие от простого щелчка табом.
+            _battleEndedSubscription = _battleEndedSub?.Subscribe(_ => _placeChanged = true);
 
             if (_input != null) _input.SkipRequested += OnSkip;
 
@@ -78,6 +90,7 @@ namespace Guildmaster.Presentation.Arena
             _revealSubscription?.Dispose();
             _fadeSubscription?.Dispose();
             _testZoneSubscription?.Dispose();
+            _battleEndedSubscription?.Dispose();
             if (_input != null) _input.SkipRequested -= OnSkip;
         }
 
@@ -104,11 +117,22 @@ namespace Guildmaster.Presentation.Arena
             if (active && !_spawned)
             {
                 _spawned = true;
+                _placeChanged = false;
                 SpawnFromNothing();
                 return;
             }
 
-            SweepColour(active);
+            // Полный переход — только если с прошлого раза место действительно сменилось (был бой, был узел).
+            // Иначе просто ставим нужный цвет: игрок вернулся туда же, откуда уходил, и пересказывать ему
+            // это заново незачем.
+            if (active && _placeChanged)
+            {
+                _placeChanged = false;
+                SweepColour(true);
+                return;
+            }
+
+            _desaturation.SetGrey(active);
         }
 
         /// <summary>

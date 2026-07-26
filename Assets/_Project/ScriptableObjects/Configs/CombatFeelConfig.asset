@@ -50,6 +50,8 @@ MonoBehaviour:
   _numberArcGravity: 2.2
   _healFlashColor: {r: 0.55, g: 1, b: 0.65, a: 1}
   _healFlashPeak: 0.5
+  _castOutlineDuration: 0.45
+  _castOutlineStrength: 0.9
   _lowHpThreshold: 0.25
   _lowHpPulsePeriod: 0.85
   _lowHpPulseAmount: 0.5
@@ -123,7 +125,6 @@ MonoBehaviour:
   _playDeathClip: 0
   _deathHologramDuration: 0.45
   _hologramColor: {r: 0.3, g: 0.95, b: 1, a: 1}
-  _hologramRimColor: {r: 1.1, g: 1.6, b: 1.6, a: 1}
   _hologramBodyAlpha: 0.45
   _hologramScanScale: 3
   _hologramScanAmount: 0.35
@@ -169,4 +170,4 @@ MonoBehaviour:
   _vfxHitIntensityMax: 1
   _vfxHitCountMin: 0.4
   _vfxHitCountMax: 2.2
-  _vfxAreaBurst: {fileID: 11400000, guid: 0278f93e6a96dfa4ba9a886e862e9baa, type: 2}
+  _vfxCastBurst: {fileID: 11400000, guid: 0278f93e6a96dfa4ba9a886e862e9baa, type: 2}

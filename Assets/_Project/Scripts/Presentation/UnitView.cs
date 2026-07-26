@@ -120,11 +120,12 @@ namespace Guildmaster.Presentation
         private static readonly int FlashColorId  = Shader.PropertyToID("_FlashColor");
         private static readonly int HoloId        = Shader.PropertyToID("_Holo");
         private static readonly int HoloColorId   = Shader.PropertyToID("_HoloColor");
-        private static readonly int HoloRimId     = Shader.PropertyToID("_HoloRimColor");
         private static readonly int HoloAlphaId   = Shader.PropertyToID("_HoloAlpha");
         private static readonly int HoloScanScaleId  = Shader.PropertyToID("_HoloScanScale");
         private static readonly int HoloScanAmountId = Shader.PropertyToID("_HoloScanAmount");
         private static readonly int HoloTexelId      = Shader.PropertyToID("_HoloTexel");
+        private static readonly int OutlineId        = Shader.PropertyToID("_Outline");
+        private static readonly int OutlineColorId   = Shader.PropertyToID("_OutlineColor");
 
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
         // Своя фаза анимации атаки (НЕ путать с сим-AttackPhase на RuntimeUnit): охватывает ВЕСЬ цикл
@@ -144,6 +145,11 @@ namespace Guildmaster.Presentation
 
         private float _holoAmount;   // 0..1 — сила голограммы (параметр _Holo шейдера тела)
         private float _holoLeft;     // остаток стадии голограммы, сек
+
+        private float _outlineAmount;      // 0..1 — контур каста (параметр _Outline шейдера тела)
+        private float _outlineLeft;        // остаток окна контура, сек
+        private float _outlineTotal;
+        private Gradient _outlinePalette;  // палитра кастера: контур перетекает от её начала к концу
 
         private CanvasGroup _uiFadeGroup;  // контейнер world-UI: гаснет вместе с телом, а не щелчком
         private float _uiFadeLeft;
@@ -395,6 +401,7 @@ namespace Guildmaster.Presentation
         private void Update()
         {
             ApplyColor(); // вспышка + альфа инвиза видны даже в hitstop/паузе (единый писатель _sprite.color)
+            TickCastOutline();
             TickWorldUiFade();
             TickContactDustCooldown();
             TickIdleBreath();
@@ -760,7 +767,7 @@ namespace Guildmaster.Presentation
         private void ApplyFlash()
         {
             if (_sprite == null) return;
-            bool active = _flashAmount > 0.0001f || _holoAmount > 0.0001f;
+            bool active = _flashAmount > 0.0001f || _holoAmount > 0.0001f || _outlineAmount > 0.0001f;
             if (!active && !_flashApplied) return;
 
             _mpb ??= new MaterialPropertyBlock();
@@ -768,21 +775,35 @@ namespace Guildmaster.Presentation
             _mpb.SetFloat(FlashAmountId, _flashAmount);
             _mpb.SetColor(FlashColorId, _activeFlashColor);
             _mpb.SetFloat(HoloId, _holoAmount);
+
+            _mpb.SetFloat(OutlineId, _outlineAmount);
+            if (_outlineAmount > 0.0001f)
+            {
+                // Контуру нужен и шаг текселя (край силуэта), и цвет — перетекание по палитре кастера.
+                SetHoloTexel();
+                float t = _outlineTotal > 0f ? 1f - Mathf.Clamp01(_outlineLeft / _outlineTotal) : 0f;
+                Color rim = _outlinePalette != null ? _outlinePalette.Evaluate(t) : Color.white;
+                _mpb.SetColor(OutlineColorId, rim);
+            }
+
             if (_holoAmount > 0.0001f && _feel != null)
             {
-                // Размер текселя текущего кадра — по нему голограмма находит край силуэта.
-                Texture tex = _sprite.sprite != null ? _sprite.sprite.texture : null;
-                Vector2 texel = tex != null ? new Vector2(1f / tex.width, 1f / tex.height) : new Vector2(0.01f, 0.01f);
-                _mpb.SetVector(HoloTexelId, texel);
-
+                SetHoloTexel();
                 _mpb.SetColor(HoloColorId, _feel.HologramColor);
-                _mpb.SetColor(HoloRimId,   _feel.HologramRimColor);
                 _mpb.SetFloat(HoloAlphaId, _feel.HologramBodyAlpha);
                 _mpb.SetFloat(HoloScanScaleId,  _feel.HologramScanScale);
                 _mpb.SetFloat(HoloScanAmountId, _feel.HologramScanAmount);
             }
             _sprite.SetPropertyBlock(_mpb);
             _flashApplied = active;
+        }
+
+        // Размер текселя текущего кадра: по нему и голограмма, и контур находят край силуэта.
+        private void SetHoloTexel()
+        {
+            Texture tex = _sprite.sprite != null ? _sprite.sprite.texture : null;
+            Vector2 texel = tex != null ? new Vector2(1f / tex.width, 1f / tex.height) : new Vector2(0.01f, 0.01f);
+            _mpb.SetVector(HoloTexelId, texel);
         }
 
         /// <summary>
@@ -832,6 +853,35 @@ namespace Guildmaster.Presentation
             _uiFadeLeft = 0f;
             _uiFadeGroup.alpha = 0f;
             if (_worldUi != null) _worldUi.SetActive(false);   // догорело — снимаем совсем
+        }
+
+        /// <summary>
+        /// Каст способности: контур по силуэту вспыхивает и гаснет — «смотри, я сейчас выдам». Цвет берётся
+        /// из палитры юнита и перетекает от её начала к концу, так что заданный градиент виден и здесь.
+        /// </summary>
+        public void PlayCastOutline(Gradient palette)
+        {
+            if (_feel == null || _feel.CastOutlineDuration <= 0f) return;
+
+            _outlinePalette = palette;
+            _outlineTotal   = _feel.CastOutlineDuration;
+            _outlineLeft    = _outlineTotal;
+        }
+
+        // Окно контура: быстрый подъём, затем спад (пик в первой четверти — телеграф должен успеть прочитаться
+        // до самого действия). Unscaled — как и остальной фидбэк: каст часто совпадает с hitstop.
+        private void TickCastOutline()
+        {
+            if (_outlineLeft <= 0f) return;
+
+            _outlineLeft -= Time.unscaledDeltaTime;
+            float t = 1f - Mathf.Clamp01(_outlineLeft / Mathf.Max(0.0001f, _outlineTotal));
+
+            const float rise = 0.25f;
+            _outlineAmount = t < rise ? t / rise : 1f - (t - rise) / (1f - rise);
+            _outlineAmount = Mathf.Clamp01(_outlineAmount) * _feel.CastOutlineStrength;
+
+            if (_outlineLeft <= 0f) _outlineAmount = 0f;
         }
 
         /// <summary>Заморозить анимацию этого вида на unscaled-окно (локальный hitstop участника удара).</summary>

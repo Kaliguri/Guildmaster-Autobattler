@@ -19,8 +19,9 @@ namespace Guildmaster.Presentation
         /// <paramref name="intensity"/> множит <see cref="VfxData.Scale"/>.
         /// </summary>
         /// <param name="countScale">Множитель КОЛИЧЕСТВА частиц в бёрстах: вес удара читается частотой искр.</param>
+        /// <param name="tint">Палитра владельца (<c>UnitData.ResolveVfxGradient</c>) — ДИАПАЗОН для разброса; null = как в префабе.</param>
         public void Spawn(VfxData data, Vector3 worldPos, float? dirDegOverride = null, float intensity = 1f,
-                          float countScale = 1f)
+                          float countScale = 1f, Gradient tint = null)
         {
             if (data == null || data.Prefab == null) return;
             if (!data.Prefab.TryGetComponent(out PooledVfx _))
@@ -40,7 +41,7 @@ namespace Guildmaster.Presentation
             {
                 _active.Remove(released);
                 pool.Release(released);
-            }, countScale);
+            }, countScale, tint);
         }
 
         /// <summary>Погасить всё летящее (battle reset) и вернуть в пулы.</summary>

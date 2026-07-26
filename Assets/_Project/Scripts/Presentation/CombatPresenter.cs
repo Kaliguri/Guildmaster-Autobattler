@@ -43,6 +43,7 @@ namespace Guildmaster.Presentation
 
 
         private CombatSimulation            _simulation;
+        private AbilitySystem               _abilities;   // сигнал каста — оттуда же, откуда его берёт аудио
 
         // Команда «смотрящего» приходит от ILocalPlayer — единственного владельца этого факта
         // (GameConfig.LocalPlayerTeam → SoloLocalPlayer). Своего поля презентер не держит: пока оно
@@ -75,6 +76,7 @@ namespace Guildmaster.Presentation
         [Inject]
         public void Construct(
             CombatSimulation simulation,
+            AbilitySystem abilities,
             IPublisher<DamageDealtEvent> damageDealtPublisher,
             IPublisher<BattleEndedEvent> battleEndedPublisher,
             Design.CombatFeelConfig feel,
@@ -84,6 +86,7 @@ namespace Guildmaster.Presentation
             _localPlayer          = localPlayer;
             _audio                = audio;
             _simulation           = simulation;
+            _abilities            = abilities;
             _damageDealtPublisher = damageDealtPublisher;
             _battleEndedPublisher = battleEndedPublisher;
             _feel                 = feel;
@@ -107,8 +110,8 @@ namespace Guildmaster.Presentation
             _simulation.OnAttackStarted     += HandleAttackStarted;
             _simulation.OnAttackInterrupted += HandleAttackInterrupted;
             _simulation.OnProjectileSpawned += HandleProjectileSpawned;
-            _simulation.OnAreaHit           += HandleAreaHit;
             _simulation.OnBattleReset       += HandleBattleReset;
+            if (_abilities != null) _abilities.OnAbilityCast += HandleAbilityCast;
 
             EnsureStatusOverlay();
             EnsureVfx();
@@ -126,8 +129,8 @@ namespace Guildmaster.Presentation
             _simulation.OnAttackStarted     -= HandleAttackStarted;
             _simulation.OnAttackInterrupted -= HandleAttackInterrupted;
             _simulation.OnProjectileSpawned -= HandleProjectileSpawned;
-            _simulation.OnAreaHit           -= HandleAreaHit;
             _simulation.OnBattleReset       -= HandleBattleReset;
+            if (_abilities != null) _abilities.OnAbilityCast -= HandleAbilityCast;
         }
 
         // Перезапуск боя на месте (dev-R): снимаем все виды юнитов и снарядов и чистим летящие цифры.
@@ -222,14 +225,14 @@ namespace Guildmaster.Presentation
                 {
                     Vector2 vel = projectile.Velocity;
                     float ang = vel.sqrMagnitude > 1e-6f ? Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg : 0f;
-                    _vfx.Spawn(_feel.VfxMuzzle, srcView.ShotPoint, ang);
+                    _vfx.Spawn(_feel.VfxMuzzle, srcView.ShotPoint, ang, tint: VfxPaletteFor(projectile.Source));
                 }
             }
 
             ProjectileView view = RentProjectile(origin);
-            // Тинт снаряда = цвет юнита-источника (тот же метод, что и тело юнита).
-            Color tint = projectile.Source != null ? TintFor(projectile.Source) : Color.white;
-            view.Bind(projectile, tint, origin);
+            // Снаряд и его след — ЭФФЕКТ стрелка, значит его VFX-цвет, а не тинт тела.
+            Gradient palette = VfxPaletteFor(projectile.Source);
+            view.Bind(projectile, palette, origin);
             _projViews[projectile.Id] = view;
         }
 
@@ -267,20 +270,20 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Радиальный всплеск в центре AoE-удара: то, что бьёт по площади, обязано эту площадь показать.
-        /// Масштаб — от размера самой зоны, направление — от её оси (линия смотрит туда, куда бьёт).
-        /// Пусто в конфиге = эффекта нет; кольца <see cref="CombatAreaFlash"/> остаются dev-подсказкой.
+        /// Каст способности за ману: всплеск у самого юнита плюс контур на теле — «смотри, я сейчас
+        /// выдам». Висит на КАСТЕ, а не на попадании: каст — это намерение, и объявлять его надо до того,
+        /// как что-то прилетело, иначе эффект пересказывает уже случившееся.
+        /// <para>Цвет — из <c>UnitData.ResolveVfxColor</c>: форма всплеска общая, а светит каждый своим.</para>
         /// </summary>
-        private void HandleAreaHit(AreaHit hit)
+        private void HandleAbilityCast(RuntimeUnit caster)
         {
-            if (_vfx == null || _feel == null || _feel.VfxAreaBurst == null) return;
+            if (caster == null || !_views.TryGetValue(caster.Id, out var view) || view == null) return;
 
-            float reach = hit.Shape == AreaShape.Line ? hit.Length : hit.Radius;
-            float dirDeg = hit.Direction.sqrMagnitude > 1e-6f
-                ? Mathf.Atan2(hit.Direction.y, hit.Direction.x) * Mathf.Rad2Deg
-                : 0f;
+            Gradient palette = VfxPaletteFor(caster);
+            view.PlayCastOutline(palette);
 
-            _vfx.Spawn(_feel.VfxAreaBurst, hit.Origin, dirDeg, Mathf.Max(0.25f, reach));
+            if (_vfx != null && _feel != null && _feel.VfxCastBurst != null)
+                _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: palette);
         }
 
         private void HandleUnitSpawned(RuntimeUnit unit)
@@ -390,7 +393,8 @@ namespace Guildmaster.Presentation
                     : (float?)null;
 
                 _vfx.Spawn(_feel.VfxHitSpark, anchor, sparkDir,
-                           _feel.EvaluateHitVfxIntensity(frac), _feel.EvaluateHitVfxCount(frac));
+                           _feel.EvaluateHitVfxIntensity(frac), _feel.EvaluateHitVfxCount(frac),
+                           VfxPaletteFor(source));   // искры — палитры бьющего
 
                 bool melee = source?.Unit != null && source.Unit.AttackType == AttackType.Melee;
                 if (melee)
@@ -420,7 +424,8 @@ namespace Guildmaster.Presentation
             if (_views.TryGetValue(target.Id, out var tView) && tView != null)
             {
                 tView.OnHealed();                                    // тело отвечает на лечение, а не только цифра
-                if (_vfx != null && _feel != null) _vfx.Spawn(_feel.VfxHeal, tView.HitPoint);
+                if (_vfx != null && _feel != null)
+                    _vfx.Spawn(_feel.VfxHeal, tView.HitPoint, tint: VfxPaletteFor(source));  // палитра лечащего
             }
         }
 
@@ -498,6 +503,15 @@ namespace Guildmaster.Presentation
             unit.Unit != null
                 ? unit.Unit.ResolveBodyTint()
                 : (IsAllyOfViewer(unit) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
+
+        /// <summary>
+        /// Палитра ЭФФЕКТОВ юнита: его снаряд и след, вспышка выстрела, искры его удара, его лечение и
+        /// всплеск каста. Диапазон, а не цвет — частицы разбрасываются между его концами. Держится на
+        /// <c>UnitData</c>, а не в префабах: иначе холод криоманта и свет пастыря выглядели бы одинаково
+        /// просто потому, что летят из одного префаба.
+        /// <para>Пыль под ногами сюда НЕ входит: она принадлежит земле, а не бойцу.</para>
+        /// </summary>
+        private Gradient VfxPaletteFor(RuntimeUnit unit) => unit?.Unit?.ResolveVfxGradient();
 
         /// <summary>
         /// Юнит на стороне смотрящего? Единственное место, где в презентере решается «свой/чужой».

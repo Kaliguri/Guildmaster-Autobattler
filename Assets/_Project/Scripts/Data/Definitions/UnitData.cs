@@ -50,6 +50,12 @@ namespace Guildmaster.Data.Definitions
                  "или оставить White. ЕДИНЫЙ источник цвета: и бой, и карточка инвентаря берут ResolveBodyTint().")]
         [SerializeField] private Color _tint = Color.white;
 
+        [Tooltip("Палитра ЭФФЕКТОВ этого юнита: искры, всплеск каста, контур, снаряд и его след. " +
+                 "Это ДИАПАЗОН, а не один цвет — каждая частица берёт случайный оттенок между концами " +
+                 "градиента (жёлто-белые искры вразнобой, а не одинаково белые). Ровно один цвет = обе " +
+                 "точки одинаковые. HDR: яркость >1 ловит bloom. Пусто = тинт тела.")]
+        [GradientUsage(true)] [SerializeField] private Gradient _vfxGradient;
+
         [Header("Auto-attack shape (Phase 3)")]
         [Tooltip("Форма авто-атаки: None = одиночная цель; Line = линия перед юнитом (несколько целей, «Размашистый выпад»).")]
         [SerializeField] private AreaShape _autoAttackShape = AreaShape.None;
@@ -155,5 +161,32 @@ namespace Guildmaster.Data.Definitions
             float hue = (Mathf.Abs(name.GetHashCode()) % 360) / 360f;
             return Color.HSVToRGB(hue, 0.5f, 1f);
         }
+
+        /// <summary>
+        /// Градиент эффектов юнита — единый ответ на «каким светит ЭТОТ боец». Не задан → одноцветный из
+        /// тинта тела, чтобы у любого юнита цвет эффектов был осмысленным без ручной настройки.
+        /// <para>Возвращается КЭШИРОВАННЫЙ объект: <see cref="Gradient"/> — класс, и собирать его на каждом
+        /// касте значило бы мусорить в бою.</para>
+        /// </summary>
+        public Gradient ResolveVfxGradient()
+        {
+            if (_vfxGradient != null && _vfxGradient.colorKeys != null && _vfxGradient.colorKeys.Length > 0)
+                return _vfxGradient;
+
+            if (_fallbackGradient == null)
+            {
+                Color tint = ResolveBodyTint();
+                _fallbackGradient = new Gradient();
+                _fallbackGradient.SetKeys(
+                    new[] { new GradientColorKey(tint, 0f), new GradientColorKey(tint, 1f) },
+                    new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) });
+            }
+            return _fallbackGradient;
+        }
+
+        /// <summary>Один цвет эффектов — начало градиента. Там, где градиенту негде развернуться (тело снаряда).</summary>
+        public Color ResolveVfxColor() => ResolveVfxGradient().Evaluate(0f);
+
+        private Gradient _fallbackGradient;   // не сериализуется: выводится из тинта при первом спросе
     }
 }

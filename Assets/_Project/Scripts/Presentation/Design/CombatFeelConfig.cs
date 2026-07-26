@@ -108,6 +108,12 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Сила вспышки лечения: заметно слабее удара — лечение греет, а не бьёт.")]
         [SerializeField, Range(0.1f, 1f)] private float _healFlashPeak = 0.5f;
 
+        [Header("Micro Feel — cast outline")]
+        [Tooltip("Длительность контура на теле при касте, сек. 0 = контура нет.")]
+        [SerializeField, Range(0f, 1.5f)] private float _castOutlineDuration = 0.45f;
+        [Tooltip("Плотность контура на пике.")]
+        [SerializeField, Range(0f, 1f)] private float _castOutlineStrength = 0.9f;
+
         [Header("Micro Feel — low HP pulse")]
         [Tooltip("Доля HP, ниже которой полоса тревожно дышит светом. 0 = пульса нет.")]
         [SerializeField, Range(0f, 0.6f)] private float _lowHpThreshold = 0.25f;
@@ -232,8 +238,6 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private float _deathHologramDuration = 0.3f;
         [Tooltip("Цвет тела в голограмме. HDR — яркость >1 ловит bloom.")]
         [ColorUsage(true, true)] [SerializeField] private Color _hologramColor = new Color(0.3f, 0.95f, 1f, 1f);
-        [Tooltip("Цвет светящегося контура силуэта.")]
-        [ColorUsage(true, true)] [SerializeField] private Color _hologramRimColor = new Color(0.7f, 1f, 1f, 1f);
         [Tooltip("Прозрачность тела в голограмме (контур остаётся плотным).")]
         [SerializeField, Range(0.05f, 1f)] private float _hologramBodyAlpha = 0.45f;
         [Tooltip("Шаг скан-линий в ПИКСЕЛЯХ спрайта.")]
@@ -291,8 +295,9 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Множитель количества искр на тяжёлом ударе (доля ≥ HeavyHitFrac).")]
         [SerializeField, Range(0.5f, 4f)] private float _vfxHitCountMax = 2.2f;
 
-        [Tooltip("Радиальный всплеск в центре AoE-удара (кольцо ударной волны).")]
-        [SerializeField] private VfxData _vfxAreaBurst;
+        [Tooltip("Всплеск при касте способности за ману — «смотри, я сейчас выдам». Цвет берётся из палитры " +
+                 "самого юнита (UnitData), поэтому один префаб служит всем.")]
+        [SerializeField] private VfxData _vfxCastBurst;
 
         // --- Getters ---
         public bool  EnableContactDust       => _enableContactDust;
@@ -310,6 +315,8 @@ namespace Guildmaster.Presentation.Design
 
         public Color HealFlashColor      => _healFlashColor;
         public float HealFlashPeak       => _healFlashPeak;
+        public float CastOutlineDuration => _castOutlineDuration;
+        public float CastOutlineStrength => _castOutlineStrength;
         public float LowHpThreshold      => _lowHpThreshold;
         public float LowHpPulsePeriod    => _lowHpPulsePeriod;
         public float LowHpPulseAmount    => _lowHpPulseAmount;
@@ -392,7 +399,6 @@ namespace Guildmaster.Presentation.Design
         public bool  PlayDeathClip         => _playDeathClip;
         public float DeathHologramDuration => _deathHologramDuration;
         public Color HologramColor         => _hologramColor;
-        public Color HologramRimColor      => _hologramRimColor;
         public float HologramBodyAlpha     => _hologramBodyAlpha;
         public float HologramScanScale     => _hologramScanScale;
         public float HologramScanAmount    => _hologramScanAmount;
@@ -403,7 +409,7 @@ namespace Guildmaster.Presentation.Design
         public VfxData VfxContactDust => _vfxContactDust;
         public VfxData VfxHeal        => _vfxHeal;
 
-        public VfxData VfxAreaBurst   => _vfxAreaBurst;
+        public VfxData VfxCastBurst   => _vfxCastBurst;
 
         /// <summary>Множитель scale hit-spark по доле HP-урона от MaxHP (HeavyHitFrac = полная сила).</summary>
         public float EvaluateHitVfxIntensity(float hpDamageFrac)
