@@ -36,6 +36,12 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Неснимаемо никаким диспелом.")]
         [SerializeField] private bool _unremovable;
 
+        [Tooltip("Сколько СТАКОВ уносит одно очищение, плоско. 0 = эффект снимается целиком (обычное поведение).")]
+        [SerializeField] private int _cleanseStacksFlat;
+        [Tooltip("То же в долях от текущих стаков (0.25 = четверть). Берётся БОЛЬШЕЕ из двух.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _cleanseStacksPct;
+
         [Header("Behaviour")]
         [Tooltip("Полиморфные компоненты поведения (Combat-типы через SerializeReference). Шарятся между носителями — должны быть stateless.")]
         [SerializeReference] private IEffectComponent[] _components;
@@ -53,6 +59,21 @@ namespace Guildmaster.Data.Definitions
         public int MaxStacks => _maxStacks;
         public int CleanseTier => _cleanseTier;
         public bool Unremovable => _unremovable;
+
+        /// <summary>
+        /// Сколько стаков уносит ОДНО очищение (ГДД «Свойства эффекта» §Цена очистки, решение 2026-07-27/5).
+        /// Ноль — эффект снимается целиком, как было; иначе `max(плоское, доля)`, остаток продолжает жить.
+        /// </summary>
+        /// <remarks>
+        /// Нужно там, где стаки копятся без потолка («Угли»): иначе одна очистка стирала накопленное
+        /// целиком и обесценивала ставку «долгий бой окупается» одним нажатием.
+        /// </remarks>
+        public int CleanseStacks(int currentStacks)
+        {
+            if (_cleanseStacksFlat <= 0 && _cleanseStacksPct <= 0f) return currentStacks; // снимаем целиком
+            int byPct = Mathf.CeilToInt(currentStacks * _cleanseStacksPct);
+            return Mathf.Clamp(Mathf.Max(_cleanseStacksFlat, byPct), 1, currentStacks);
+        }
         public IEffectComponent[] Components => _components;
         public Sprite Icon => _icon;
         public TagData[] InfoTags => _infoTags;

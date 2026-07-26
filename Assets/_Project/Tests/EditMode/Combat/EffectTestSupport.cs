@@ -26,6 +26,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             int maxStacks = 1,
             int cleanseTier = 0,
             bool unremovable = false,
+            int cleanseStacksFlat = 0,
+            float cleanseStacksPct = 0f,
             params IEffectComponent[] components)
         {
             var data = ScriptableObject.CreateInstance<EffectData>();
@@ -37,6 +39,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(data, "_maxStacks", maxStacks);
             Set(data, "_cleanseTier", cleanseTier);
             Set(data, "_unremovable", unremovable);
+            Set(data, "_cleanseStacksFlat", cleanseStacksFlat);
+            Set(data, "_cleanseStacksPct", cleanseStacksPct);
             Set(data, "_components", components ?? Array.Empty<IEffectComponent>());
             return data;
         }

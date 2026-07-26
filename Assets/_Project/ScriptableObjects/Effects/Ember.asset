@@ -20,6 +20,8 @@ MonoBehaviour:
   _maxStacks: 999
   _cleanseTier: 1
   _unremovable: 0
+  _cleanseStacksFlat: 10
+  _cleanseStacksPct: 0.25
   _components:
   - rid: 5615027269181898856
   _icon: {fileID: 0}

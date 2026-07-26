@@ -8,6 +8,11 @@ namespace Guildmaster.Combat.Effects.Components
     /// (<c>CanAct/CanMove/CanCast</c>) пересчитывает <see cref="EffectSystem"/> из активных
     /// контрол-эффектов каждый тик — так перекрывающиеся контроли и независимое истечение
     /// разрешаются без счётчиков. Без diminishing returns (вики «6» §5.3).
+    /// <para><b>Числа:</b> здесь их нет — только три выключателя, и из их сочетания собирается вид
+    /// контроля: <c>_preventAct</c> (оглушение — нельзя ничего), <c>_preventMove</c> (обездвиживание —
+    /// бьёт стоя), <c>_preventCast</c> (немота — бьёт и ходит, но без способностей). Силу и время
+    /// задаёт сам эффект: длительность в <c>EffectData</c>, стойкость к снятию — тир очистки.</para>
+    /// <para><b>Когда срабатывает:</b> пока эффект висит; флаги пересчитываются каждый тик.</para>
     /// </summary>
     [Serializable]
     public sealed class ControlComponent : IRuntimeEffectComponent

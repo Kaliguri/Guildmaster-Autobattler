@@ -11,6 +11,14 @@ namespace Guildmaster.Combat.Effects.Components
     /// масштабируется статами источника через <see cref="ScalableValue"/>; за один тик применяется
     /// <c>Potency × Interval × Stacks</c>. Total масштабируется числом тиков (длительностью), а не
     /// запекается — вики «11» §5.1.
+    /// <para><b>Числа:</b> <c>_damagePerSecond</c> — урон В СЕКУНДУ (не за тик!), масштабируется
+    /// статами источника; <c>_interval</c> — как часто капает, секунды (за раз применяется
+    /// «в секунду × интервал», поэтому частота не меняет суммарный урон, только его дробность);
+    /// <c>_damagePctTargetMaxHp</c> — добавка в долях от МАКСИМАЛЬНОГО HP цели, тоже в секунду
+    /// (анти-танк; у поджога Мечника снята — процент переехал в «Угли», решение 2026-07-26/4);
+    /// <c>_damageSchool</c>/<c>_physicalSubtype</c>/<c>_magicElement</c>/<c>_affinity</c> — тип урона.</para>
+    /// <para><b>Когда срабатывает:</b> каждые <c>_interval</c> секунд, пока эффект висит. Тик DoT —
+    /// не прямой удар: он не будит шипы и щиты.</para>
     /// </summary>
     [Serializable]
     public sealed class PeriodicDamageComponent : IPeriodicComponent, IScalablePotency

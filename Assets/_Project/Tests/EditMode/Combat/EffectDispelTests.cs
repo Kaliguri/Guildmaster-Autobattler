@@ -12,6 +12,35 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class EffectDispelTests
     {
+        // Цена очистки в стаках (решение 2026-07-27/5). Эффект без цены снимается целиком, как раньше;
+        // эффект с ценой отдаёт max(плоское, доля) и продолжает жить остатком. Заведено под «Угли»,
+        // которые копятся без потолка: одна очистка стирала любую накопленную ставку.
+        [Test]
+        public void Dispel_TakesOnlyItsPriceInStacks_WhenEffectSetsOne()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+            var unit = TestUnit.Make();
+
+            EffectData embers = TestEffect.Make(
+                baseDuration: -1f, polarity: EffectPolarity.Debuff,
+                stacking: StackRule.Stack, maxStacks: 999,
+                cleanseStacksFlat: 10, cleanseStacksPct: 0.25f);
+
+            for (int i = 0; i < 60; i++) sys.Apply(unit, embers, unit, ctx);
+            Assert.AreEqual(60, unit.ActiveEffects[0].Stacks, "Шестьдесят угольков");
+
+            sys.Dispel(new DispelRequest(unit, DispelTargetPolarity.Debuff, EffectTag.None, dispelPower: 1, maxCount: 0), ctx);
+
+            Assert.AreEqual(1, unit.ActiveEffects.Count, "Эффект остался — унесли только часть");
+            Assert.AreEqual(45, unit.ActiveEffects[0].Stacks, "25% от 60 больше десяти → ушло 15");
+
+            // На малом счёте выигрывает плоская часть и сметает остаток целиком.
+            unit.ActiveEffects[0].Stacks = 8;
+            sys.Dispel(new DispelRequest(unit, DispelTargetPolarity.Debuff, EffectTag.None, dispelPower: 1, maxCount: 0), ctx);
+            Assert.AreEqual(0, unit.ActiveEffects.Count, "Восемь стаков меньше плоских десяти → эффект снят");
+        }
+
         [Test]
         public void Dispel_RemovesMatchingPolarity_KeepsOthers()
         {

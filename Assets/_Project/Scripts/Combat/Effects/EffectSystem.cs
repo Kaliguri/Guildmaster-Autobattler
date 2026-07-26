@@ -319,8 +319,25 @@ namespace Guildmaster.Combat
             for (int i = 0; i < _dispelBuffer.Count; i++)
             {
                 if (req.MaxCount > 0 && removed >= req.MaxCount) break;
-                Expire(target, _dispelBuffer[i], combat);
+
+                RuntimeEffect eff = _dispelBuffer[i];
                 removed++;
+
+                // Цена очистки в стаках (решение 2026-07-27/5): эффект может отдать лишь часть накопленного,
+                // а не исчезнуть целиком. Иначе одна очистка стирала «Угли» без потолка — ставку «долгий бой
+                // окупается» гасило одно нажатие. Ноль стаков после списания = эффект уходит, как раньше.
+                int toRemove = eff.Def.CleanseStacks(eff.Stacks);
+                if (toRemove < eff.Stacks)
+                {
+                    int before = eff.Stacks;
+                    eff.Stacks -= toRemove;
+                    // Тем же путём, что и при наборе стака: компоненты со своим состоянием (щиты, заряды)
+                    // правят вклад дельтой сами, остальным хватает переприменения.
+                    Reapply(eff, before, target, combat);
+                    continue;
+                }
+
+                Expire(target, eff, combat);
             }
 
             // Среди снятого мог быть контроль-эффект. Пересчитать флаги (см. Remove): без этого

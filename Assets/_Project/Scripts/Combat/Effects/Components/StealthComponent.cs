@@ -10,6 +10,11 @@ namespace Guildmaster.Combat.Effects.Components
     /// стелса (<see cref="_stealthBuff"/>: DamageTakenEff−, MoveSpeed+, тег Stealth) и взводит
     /// усиление следующей авто-атаки (<see cref="RuntimeUnit.EmpowerDamageMult"/>). Первая авто-атака
     /// применяет множитель и снимает стелс (AutoAttackSystem, §9.6).
+    /// <para><b>Числа:</b> <c>_empowerMult</c> — во сколько раз сильнее удар из скрытности
+    /// (2 = вдвое, разовый); <c>_stealthBuff</c> — сам баф скрытности (меньше получаемого урона,
+    /// больше скорости, тег Stealth) — его величины живут в том эффекте.</para>
+    /// <para><b>Когда срабатывает:</b> в начале боя и после КАЖДОГО своего убийства — то есть кит
+    /// вознаграждается за добивание, а не за отсиживание.</para>
     /// </summary>
     [Serializable]
     public sealed class StealthComponent : IReactiveComponent

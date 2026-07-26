@@ -12,6 +12,11 @@ namespace Guildmaster.Combat.Effects.Components
     /// не гасит. Дополнительно фильтруется триггером блока F (из <c>self.Unit.Ai.PassiveTrigger</c>) и тратит
     /// один заряд; заряды восстанавливаются независимо. Состояние зарядов — per-effect в
     /// <see cref="RuntimeEffect.ChargeReadyTicks"/>.
+    /// <para><b>Числа:</b> <c>_maxCharges</c> — сколько автоатак подряд можно отменить;
+    /// <c>_rechargeSeconds</c> — за сколько восстанавливается ОДИН заряд. Величины урона здесь нет
+    /// намеренно: уклонение не смягчает удар, а отменяет его целиком.</para>
+    /// <para><b>Когда срабатывает:</b> в pre-damage, до расчёта урона — отменённый удар не наносит
+    /// ничего и не будит реактивы «на удар» (шипы об уклонившегося не колются).</para>
     /// </summary>
     [Serializable]
     public sealed class DodgeComponent : IPreDamageComponent, IStackableComponent
