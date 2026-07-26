@@ -207,6 +207,10 @@ namespace Guildmaster.Presentation.Design
                  "пределах экрана, а смерть должна ПРОБИВАТЬ порог bloom — иначе «яркий белый» просто белый.")]
         [ColorUsage(true, true)] [SerializeField] private Color _deathFlashColor = new Color(2.5f, 2.5f, 2.6f, 1f);
 
+        [Tooltip("Играть клип смерти (падение тела) перед голограммой. Выкл = юнит развоплощается стоя, " +
+                 "на том кадре, где его достали.")]
+        [SerializeField] private bool _playDeathClip;
+
         [Header("Death — стадия голограммы (перед вспышкой)")]
         [Tooltip("Длительность голограммы, сек. 0 = стадия выключена (сразу белая вспышка).")]
         [SerializeField] private float _deathHologramDuration = 0.3f;
@@ -357,6 +361,7 @@ namespace Guildmaster.Presentation.Design
         public float ShatterMinTimeScale => _shatterMinTimeScale;
 
         public Color DeathFlashColor       => _deathFlashColor;
+        public bool  PlayDeathClip         => _playDeathClip;
         public float DeathHologramDuration => _deathHologramDuration;
         public Color HologramColor         => _hologramColor;
         public Color HologramRimColor      => _hologramRimColor;

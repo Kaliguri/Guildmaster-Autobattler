@@ -86,6 +86,26 @@ namespace Guildmaster.Presentation.Arena
             if (_quad != null) _quad.enabled = true;
         }
 
+        /// <summary>
+        /// Домотать свой прогон до конца (скип подачи). Колбэк пика, если он ещё не сыгран, вызываем
+        /// обязательно: под ним меняется то, ради чего цифра и поднималась, — пропустить его значит
+        /// оставить арену в прежнем виде.
+        /// </summary>
+        public void Rush()
+        {
+            if (_solo == SoloStage.None) return;
+
+            Action peak = _atPeak;
+            _atPeak = null;
+            peak?.Invoke();
+
+            _soloT = 1f;
+            _solo  = SoloStage.None;
+            CurrentProgress = 1f;
+            if (_material != null) _material.SetFloat(ProgressId, 1f);
+            if (_quad != null) _quad.enabled = false;
+        }
+
         private SoloStage _solo;
         private float     _soloT;
         private Action    _atPeak;

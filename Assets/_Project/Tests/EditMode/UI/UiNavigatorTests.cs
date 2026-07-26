@@ -39,6 +39,7 @@ namespace Guildmaster.Tests.EditMode.UI
             public event Action PointerPressed;
             public event Action PointerReleased;
             public event Action PauseToggleRequested;
+            public event Action SkipRequested;
             public event Action GameSpeedCycleRequested;
             public event Action MenuToggleRequested;
             public event Action<bool> DetailsHeldChanged;

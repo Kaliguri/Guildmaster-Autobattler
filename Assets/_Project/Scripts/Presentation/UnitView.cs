@@ -997,7 +997,9 @@ namespace Guildmaster.Presentation
                     // Ждём конца hit-flash: и активного твина, и остаточной величины (моргание должно догореть).
                     if (_flashHandle.IsActive() || _flashAmount > 0.02f) return;
 
-                    if (_animActive)
+                    // Падение тела — отдельный разговор от развоплощения. По умолчанию его нет: юнит
+                    // застывает на кадре, где его достали, и уходит прямо в голограмму (как в референсе).
+                    if (_animActive && _feel != null && _feel.PlayDeathClip)
                     {
                         _state = UnitAnimationState.Death;
                         _animator.Play(DeathHash, 0, 0f);

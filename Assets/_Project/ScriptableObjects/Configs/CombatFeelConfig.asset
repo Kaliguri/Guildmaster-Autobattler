@@ -114,6 +114,7 @@ MonoBehaviour:
   _shatterHold: 0.05
   _shatterMinTimeScale: 0.4
   _deathFlashColor: {r: 1.7, g: 1.7, b: 1.8, a: 1}
+  _playDeathClip: 0
   _deathHologramDuration: 0.45
   _hologramColor: {r: 0.3, g: 0.95, b: 1, a: 1}
   _hologramRimColor: {r: 1.1, g: 1.6, b: 1.6, a: 1}

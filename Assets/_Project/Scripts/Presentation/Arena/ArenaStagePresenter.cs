@@ -34,6 +34,7 @@ namespace Guildmaster.Presentation.Arena
         private ISubscriber<ArenaRevealRequest> _revealSub;
         private ISubscriber<ScreenFadeChangedEvent> _fadeSub;
         private ISubscriber<TestZoneChangedEvent> _testZoneSub;
+        private Guildmaster.Core.Input.IInputService _input;
         private IDisposable _revealSubscription;
         private IDisposable _fadeSubscription;
         private IDisposable _testZoneSubscription;
@@ -48,11 +49,13 @@ namespace Guildmaster.Presentation.Arena
         [Inject]
         public void Construct(ISubscriber<ArenaRevealRequest> revealSub,
                               ISubscriber<ScreenFadeChangedEvent> fadeSub,
-                              ISubscriber<TestZoneChangedEvent> testZoneSub)
+                              ISubscriber<TestZoneChangedEvent> testZoneSub,
+                              Guildmaster.Core.Input.IInputService input)
         {
             _revealSub   = revealSub;
             _fadeSub     = fadeSub;
             _testZoneSub = testZoneSub;
+            _input       = input;
         }
 
         private void Start()
@@ -65,6 +68,8 @@ namespace Guildmaster.Presentation.Arena
             _fadeSubscription     = _fadeSub?.Subscribe(e => _curtain = e.Progress);
             _testZoneSubscription = _testZoneSub?.Subscribe(e => OnTestZone(e.Active));
 
+            if (_input != null) _input.SkipRequested += OnSkip;
+
             _desaturation?.SetGrey(false); // старт — настоящая арена в своём цвете
         }
 
@@ -73,6 +78,18 @@ namespace Guildmaster.Presentation.Arena
             _revealSubscription?.Dispose();
             _fadeSubscription?.Dispose();
             _testZoneSubscription?.Dispose();
+            if (_input != null) _input.SkipRequested -= OnSkip;
+        }
+
+        /// <summary>
+        /// Скип подачи. Слушаем ЗДЕСЬ, а не в свопере: подача — это два слоя сразу (подмена тайлов и цифра),
+        /// и половина прогонов вообще не меняет облик. Со скипом внутри свопера пропускалась только та
+        /// половина, где менялись текстуры, — цветовые прогоны докручивались до конца сами по себе.
+        /// </summary>
+        private void OnSkip()
+        {
+            _swapper?.Rush();
+            _digital?.Rush();
         }
 
         /// <summary>

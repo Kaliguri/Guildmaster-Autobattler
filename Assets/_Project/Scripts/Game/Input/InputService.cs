@@ -33,6 +33,7 @@ namespace Guildmaster.Game.Input
         private readonly InputAction _pointerPress;  // <Mouse>/leftButton — начало/конец протяжки
         private readonly InputAction _menuToggle; // Escape — оверлей системного меню, живёт вне контекст-карт (always-on)
         private readonly InputAction _detailsHold; // Shift — подробности в подсказках, тоже always-on
+        private readonly InputAction _skipTransition; // Space — пропустить подачу; always-on, см. комментарий у создания
 
         private InputContext _context = InputContext.None;
 
@@ -43,6 +44,7 @@ namespace Guildmaster.Game.Input
 
         public event Action CycleViewRequested;
         public event Action PauseToggleRequested;
+        public event Action SkipRequested;
         public event Action GameSpeedCycleRequested;
         public event Action MenuToggleRequested;
         public event Action PointerPressed;
@@ -103,6 +105,13 @@ namespace Guildmaster.Game.Input
 
             // Подробности в подсказках (Shift): как и меню — вне контекст-карт и без глушения. Тултип
             // может висеть над модальным экраном, и там Shift обязан работать так же, как в бою.
+            // Скип подачи (Space): как меню и Shift — вне контекст-карт. Переход арены играет в расстановке
+            // и на полигоне, где карта «Combat» выключена, а пауза живёт именно в ней — на общей клавише
+            // скип просто не доходил до слушателя. В бою Space по-прежнему пауза: подача там не идёт.
+            _skipTransition = new InputAction("SkipTransition", InputActionType.Button, "<Keyboard>/space");
+            _skipTransition.performed += OnSkipRequested;
+            _skipTransition.Enable();
+
             _detailsHold = new InputAction("DetailsHold", InputActionType.Button, "<Keyboard>/shift");
             _detailsHold.performed += OnDetailsHeld;
             _detailsHold.canceled  += OnDetailsReleased;
@@ -190,6 +199,7 @@ namespace Guildmaster.Game.Input
 
         private void OnCycleView(InputAction.CallbackContext _)      { if (!GameplaySuppressed) CycleViewRequested?.Invoke(); }
         private void OnPauseToggle(InputAction.CallbackContext _)    { if (!GameplaySuppressed) PauseToggleRequested?.Invoke(); }
+        private void OnSkipRequested(InputAction.CallbackContext _)  { if (!GameplaySuppressed) SkipRequested?.Invoke(); }
         private void OnGameSpeedCycle(InputAction.CallbackContext _) { if (!GameplaySuppressed) GameSpeedCycleRequested?.Invoke(); }
         // Клик над непрозрачной UITK-панелью не начинает деплой-пик (уходит в UI). Drag, начатый над миром,
         // продолжается и над панелью (PointerHeld этот флаг не гейтит — иначе протяжка рвалась бы у края панели).
@@ -219,6 +229,7 @@ namespace Guildmaster.Game.Input
             _menuToggle.performed    -= OnMenuToggle;
             _detailsHold.performed   -= OnDetailsHeld;
             _detailsHold.canceled    -= OnDetailsReleased;
+            _skipTransition.performed -= OnSkipRequested;
 
             _cameraMap.Dispose();
             _combatMap.Dispose();
@@ -227,6 +238,7 @@ namespace Guildmaster.Game.Input
             _uiMap.Dispose();
             _menuToggle.Dispose();
             _detailsHold.Dispose();
+            _skipTransition.Dispose();
         }
     }
 }

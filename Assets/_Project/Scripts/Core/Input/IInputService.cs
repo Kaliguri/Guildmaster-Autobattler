@@ -72,6 +72,12 @@ namespace Guildmaster.Core.Input
         /// <summary>Переключить паузу боя (Space): пауза ↔ продолжить.</summary>
         event Action PauseToggleRequested;
 
+        /// <summary>
+        /// Пропустить/ускорить идущую подачу (переход арены и т.п.). Отдельно от паузы: пауза живёт в карте
+        /// боя, а подача играет как раз ВНЕ боя — на общей клавише скип туда просто не доходил.
+        /// </summary>
+        event Action SkipRequested;
+
         /// <summary>Циклически сменить скорость боя (.): 1x → 2x → 3x → 1x.</summary>
         event Action GameSpeedCycleRequested;
 

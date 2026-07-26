@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Arena;
-using Guildmaster.Core.Input;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using VContainer;
 
 namespace Guildmaster.Presentation.Arena
 {
@@ -66,7 +64,6 @@ namespace Guildmaster.Presentation.Arena
         private int _planHead;
 
         private ArenaSwapSchedule _schedule;
-        private IInputService _input;
         private Action _onFinished;
         private string _targetSkin;
         private float _t;
@@ -112,13 +109,6 @@ namespace Guildmaster.Presentation.Arena
         /// <summary>Форма текущего перехода — тот же источник правды, что у расписания.</summary>
         public ArenaSwapShape Shape => BuildShape();
 
-        [Inject]
-        public void Construct(IInputService input)
-        {
-            _input = input;
-            if (_input != null) _input.PauseToggleRequested += OnRushRequested;
-        }
-
         private void Awake()
         {
             if (_live == null)
@@ -138,11 +128,6 @@ namespace Guildmaster.Presentation.Arena
             }
 
             CurrentSkinId = _live.SkinId;
-        }
-
-        private void OnDestroy()
-        {
-            if (_input != null) _input.PauseToggleRequested -= OnRushRequested;
         }
 
         private void Update()
@@ -217,11 +202,6 @@ namespace Guildmaster.Presentation.Arena
 
         // Space во время перехода означает «быстрее», а не «пауза»: переход играет вне боя, паузе там
         // нечего останавливать. Развязка — по состоянию: пока не Busy, событие нас не касается.
-        private void OnRushRequested()
-        {
-            if (_playing) Rush();
-        }
-
         private ArenaSwapShape BuildShape() =>
             new ArenaSwapShape(_durationSeconds, _digitizeShare, _restoreShare,
                                _cellSpread, _cellDurationMin, _cellDurationMax, _tailAcceleration);
