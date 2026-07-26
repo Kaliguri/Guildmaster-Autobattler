@@ -791,6 +791,18 @@ MonoBehaviour:
     m_Key: effect.ember.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 5732390519693312
+    m_Key: kw.shield.name.ins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5732390574219264
+    m_Key: kw.physical.name.ins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5732390574219265
+    m_Key: kw.true.name.ins
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
