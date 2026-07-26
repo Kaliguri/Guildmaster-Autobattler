@@ -12,10 +12,9 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class DamagePipelineTests
     {
-        private const float ArmorK    = 100f;
         private const float ArmorFull = 100f; // броня 100 → −50% урона
 
-        private static RuntimeUnit MakeUnit(int team = 0, float maxHp = 1000f, float armorK = ArmorK)
+        private static RuntimeUnit MakeUnit(int team = 0, float maxHp = 1000f, float armorK = CombatTestValues.ArmorK)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("base", new[]
@@ -48,7 +47,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             RuntimeUnit target,
             float raw,
             DamageSchool type = DamageSchool.Physical,
-            float armorK = ArmorK)
+            float armorK = CombatTestValues.ArmorK)
             => new DamageRequest(source, target, raw, type, armorK);
 
         // --- True damage ---
@@ -113,7 +112,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Physical));
 
-            float expectedMult = ArmorK / (ArmorK + 50f);
+            float expectedMult = CombatTestValues.ArmorK / (CombatTestValues.ArmorK + 50f);
             Assert.AreEqual(100f * expectedMult, result.TotalDamage, 0.01f);
         }
 
@@ -246,7 +245,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static DamageRequest AffinityReq(RuntimeUnit src, RuntimeUnit tgt, float raw,
             DamageAffinity affinity, DamageSchool school = DamageSchool.Physical)
-            => new DamageRequest(src, tgt, raw, school, ArmorK, sourceKind: DamageSourceKind.Ability, affinity: affinity);
+            => new DamageRequest(src, tgt, raw, school, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.Ability, affinity: affinity);
 
         [Test]
         public void Affinity_NeverScalesDamage_ByCreatureType()

@@ -16,16 +16,14 @@ namespace Guildmaster.Tests.EditMode.Combat
     {
         private const ulong Seed    = 42UL;
         private const int   Ticks   = 120;
-        private const float ArmorK  = 100f;
-        private const float CellSize = 3f;
 
         private static CombatSimulation BuildSim(ulong seed)
         {
             var rng = new XorShiftRng(seed);
             return new CombatSimulation(
                 rng,
-                ArmorK,
-                new SpatialHash(CellSize),
+                CombatTestValues.ArmorK,
+                new SpatialHash(CombatTestValues.CellSize),
                 new BrainSystem(),
                 new AbilitySystem(),
                 new MovementSystem(),
