@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
 using MessagePipe;
@@ -300,6 +300,12 @@ namespace Guildmaster.Presentation
                 Color flash = _feel != null
                     ? _feel.ResolveHitFlashColor(result.School, result.Affinity)
                     : Color.white;
+
+                // Удар, целиком съеденный щитом, вспыхивает ЦВЕТОМ ЩИТА: иначе «пробил» и «не пробил»
+                // выглядят одинаково, а разница между ними — самое интересное, что есть в этом ударе.
+                if (result.HpDamage <= 0f && result.ShieldDamage > 0f && _colorPalette != null)
+                    flash = _colorPalette.Shield;
+
                 view.OnDamageReceived(flash, nudgeDir);
             }
 
@@ -346,7 +352,7 @@ namespace Guildmaster.Presentation
             if (shield > 0) SpawnNumber(anchor, "-" + shield, _colorPalette.Shield);
             if (hp > 0)
             {
-                if (shield > 0) StartCoroutine(DelayedNumber(anchor, "-" + hp, _damageColor, _splitDelay, hpScale));
+                if (shield > 0) DelayedNumber(anchor, "-" + hp, _damageColor, _splitDelay, hpScale).Forget();
                 else            SpawnNumber(anchor, "-" + hp, _damageColor, hpScale);
             }
 
@@ -361,20 +367,31 @@ namespace Guildmaster.Presentation
 
             SpawnNumber(AnchorFor(target), "+" + healed, _healColor);
 
-            // VFX лечения в точку попадания.
-            if (_vfx != null && _feel != null && _views.TryGetValue(target.Id, out var tView) && tView != null)
-                _vfx.Spawn(_feel.VfxHeal, tView.HitPoint);
+            if (_views.TryGetValue(target.Id, out var tView) && tView != null)
+            {
+                tView.OnHealed();                                    // тело отвечает на лечение, а не только цифра
+                if (_vfx != null && _feel != null) _vfx.Spawn(_feel.VfxHeal, tView.HitPoint);
+            }
         }
 
         private void HandleAttackEvaded(RuntimeUnit target)
         {
-            // Полный негейт удара («Изворотливость») — урона нет, показываем «evade».
+            // Полный негейт удара («Изворотливость») — урона нет, показываем «evade» и уводим тело.
             SpawnNumber(AnchorFor(target), "evade", _evadeColor);
+
+            if (_views.TryGetValue(target.Id, out var view) && view != null)
+                view.OnEvaded();
         }
 
-        private IEnumerator DelayedNumber(Vector3 worldPosition, string text, Color color, float delay, float sizeScale = 1f)
+        // Задержка на UNSCALED-времени: в паузе и в финишер-slowmo вторая цифра иначе не приходила вовсе —
+        // игрок видел урон по щиту и ждал у моря погоды. Через UniTask, а не корутину: корутина здесь
+        // ещё и аллоцировала WaitForSeconds на каждый расщеплённый удар.
+        private async UniTaskVoid DelayedNumber(Vector3 worldPosition, string text, Color color, float delay, float sizeScale)
         {
-            yield return new WaitForSeconds(delay);
+            bool canceled = await UniTask.Delay(System.TimeSpan.FromSeconds(delay), DelayType.UnscaledDeltaTime,
+                                                cancellationToken: this.GetCancellationTokenOnDestroy())
+                                         .SuppressCancellationThrow();
+            if (canceled) return;   // презентер умер за время задержки — спавнить цифру некуда
             SpawnNumber(worldPosition, text, color, sizeScale);
         }
 

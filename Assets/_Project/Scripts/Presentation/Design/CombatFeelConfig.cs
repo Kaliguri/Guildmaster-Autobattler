@@ -40,6 +40,10 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private bool _enableFloatingTextArc = true;
         [Tooltip("Микро-punch масштаба HP-бара при уроне (trail-ghost уже в HealthBarView).")]
         [SerializeField] private bool _enableHpBarPunch = true;
+        [Tooltip("Мягкая вспышка на теле при лечении: хил читался только цифрой, тело на него не отвечало.")]
+        [SerializeField] private bool _enableHealFlash = true;
+        [Tooltip("Уклонение: юнит отшатывается назад. Раньше промах был виден только надписью «evade».")]
+        [SerializeField] private bool _enableEvadeDodge = true;
 
         [Header("Micro Feel — contact dust")]
         [Tooltip("Минимальный интервал между пылью на одном юните, сек.")]
@@ -99,6 +103,18 @@ namespace Guildmaster.Presentation.Design
         [Header("Micro Feel — floating text arc")]
         [Tooltip("Гравитация дуги цифры (мировые ед/с²). 0 = строго вверх.")]
         [SerializeField] private float _numberArcGravity = 2.2f;
+
+        [Header("Micro Feel — heal flash")]
+        [Tooltip("Цвет вспышки при лечении.")]
+        [SerializeField] private Color _healFlashColor = new Color(0.55f, 1f, 0.65f, 1f);
+        [Tooltip("Сила вспышки лечения: заметно слабее удара — лечение греет, а не бьёт.")]
+        [SerializeField, Range(0.1f, 1f)] private float _healFlashPeak = 0.5f;
+
+        [Header("Micro Feel — evade dodge")]
+        [Tooltip("Насколько уклоняющийся отшатывается назад, мировые ед.")]
+        [SerializeField] private float _evadeDodgeDistance = 0.22f;
+        [Tooltip("Длительность отшатывания+возврата, сек (unscaled).")]
+        [SerializeField] private float _evadeDodgeDuration = 0.16f;
 
         [Header("Micro Feel — HP bar punch")]
         [Tooltip("Пик перелёта масштаба бара при уроне.")]
@@ -284,6 +300,13 @@ namespace Guildmaster.Presentation.Design
         public bool  EnableDeathAnticipation => _enableDeathAnticipation;
         public bool  EnableFloatingTextArc   => _enableFloatingTextArc;
         public bool  EnableHpBarPunch        => _enableHpBarPunch;
+        public bool  EnableHealFlash         => _enableHealFlash;
+        public bool  EnableEvadeDodge        => _enableEvadeDodge;
+
+        public Color HealFlashColor      => _healFlashColor;
+        public float HealFlashPeak       => _healFlashPeak;
+        public float EvadeDodgeDistance  => _evadeDodgeDistance;
+        public float EvadeDodgeDuration  => _evadeDodgeDuration;
 
         public float ContactDustCooldown     => _contactDustCooldown;
         public float HitNudgeDistance        => _hitNudgeDistance;

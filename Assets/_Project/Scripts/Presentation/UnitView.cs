@@ -90,6 +90,7 @@ namespace Guildmaster.Presentation
         private Color        _baseTint = Color.white;   // цвет-тинт тела (умножается на текстуру в шейдере)
         private Color        _activeFlashColor = Color.white; // цвет текущей вспышки (school flash или фолбэк)
         private float        _flashAmount;               // 0..1 — сила вспышки (параметр _FlashAmount шейдера)
+        private float        _flashPeak = 1f;            // пик текущей вспышки: удар бьёт в полную, лечение мягче
         private bool         _flashApplied;              // держим ли сейчас MPB на спрайте (чтобы вернуть в 0 один раз)
         private Vector3      _baseSpriteScale = Vector3.one; // масштаб узла сплющивания до эффекта
         private Transform    _squashTarget;              // узел, который сплющиваем (выше Animator, чтобы не затирался)
@@ -772,6 +773,31 @@ namespace Guildmaster.Presentation
                 _healthBar.Punch(_feel.HpBarPunchAmount, _feel.HpBarPunchDuration);
         }
 
+        /// <summary>
+        /// Реакция на лечение: мягкая вспышка тела. Без неё хил читался только цифрой — цель, которую
+        /// подлатали посреди свалки, ничем не отличалась от цели, по которой промахнулись.
+        /// </summary>
+        public void OnHealed()
+        {
+            if (_feel == null || !_feel.EnableHealFlash) return;
+            PlayHitFlash(_feel.HealFlashColor, _feel.HealFlashPeak);
+        }
+
+        /// <summary>
+        /// Реакция на уклонение: юнит отшатывается НАЗАД от того, куда смотрит. Промах — это событие,
+        /// а выглядел он как надпись поверх неподвижного тела.
+        /// </summary>
+        public void OnEvaded()
+        {
+            if (_feel == null || !_feel.EnableEvadeDodge) return;
+            if (_nudgeHandle.IsActive()) _nudgeHandle.Cancel();
+
+            // Смотрит юнит туда, куда развёрнут спрайт; отшатывается в противоположную сторону.
+            float back = (_sprite != null && _sprite.flipX) ? 1f : -1f;
+            PlayOffsetPulse(new Vector2(back, 0.12f).normalized * _feel.EvadeDodgeDistance,
+                            _feel.EvadeDodgeDuration);
+        }
+
         /// <summary>Заморозить анимацию этого вида на unscaled-окно (локальный hitstop участника удара).</summary>
         public void OnHitstop(float unscaledSeconds)
         {
@@ -784,12 +810,13 @@ namespace Guildmaster.Presentation
         // Время UNSCALED: финишер начинается с полной паузы и продолжается сильным slowmo, а на scaled-времени
         // вспышка в этот момент просто ЗАМИРАЕТ — юнит белеет и остаётся белым на несколько секунд, и весь
         // секвенс смерти стоит следом (он ждёт её догорания). Вспышка — презентация, ей незачем стынуть.
-        private void PlayHitFlash(Color flashColor)
+        private void PlayHitFlash(Color flashColor, float peak = 1f)
         {
             if (_sprite == null || _feel == null) return;
             if (_flashHandle.IsActive()) _flashHandle.Cancel();
             _activeFlashColor = flashColor;
-            _flashAmount = 1f;
+            _flashPeak   = Mathf.Clamp01(peak);
+            _flashAmount = _flashPeak;
             float hold = _feel.EnableImpactFrame ? Mathf.Max(0f, _feel.ImpactFrameHold) : 0f;
             float fade = _feel.FlashDuration;
             float total = hold + fade;
@@ -804,11 +831,11 @@ namespace Guildmaster.Presentation
                         ? Mathf.Max(0f, self._feel.ImpactFrameHold) : 0f;
                     float fadeLocal = self._feel.FlashDuration;
                     float elapsed = v * (holdLocal + fadeLocal);
-                    if (elapsed <= holdLocal) self._flashAmount = 1f;
+                    if (elapsed <= holdLocal) self._flashAmount = self._flashPeak;
                     else
                     {
                         float ft = fadeLocal > 0f ? (elapsed - holdLocal) / fadeLocal : 1f;
-                        self._flashAmount = 1f - Mathf.Clamp01(ft);
+                        self._flashAmount = self._flashPeak * (1f - Mathf.Clamp01(ft));
                     }
                 })
                 .AddTo(gameObject);
@@ -835,12 +862,20 @@ namespace Guildmaster.Presentation
         {
             if (_feel == null || !_feel.EnableHitNudge) return;
             if (dir.sqrMagnitude < 1e-8f) return;
+            PlayOffsetPulse(dir.normalized * _feel.HitNudgeDistance, _feel.HitNudgeDuration);
+        }
+
+        // Отъезд тела и возврат (0→1→0): удар отбрасывает, уклонение отшатывает. Время UNSCALED — так и
+        // заявлено в конфиге, и так правильно: сдвиг обязан доиграть под hitstop, который сам unscaled.
+        private void PlayOffsetPulse(Vector2 peak, float duration)
+        {
             if (_nudgeHandle.IsActive()) _nudgeHandle.Cancel();
 
-            _nudgePeak = dir.normalized * _feel.HitNudgeDistance;
-            float dur = Mathf.Max(0.01f, _feel.HitNudgeDuration);
+            _nudgePeak = peak;
+            float dur = Mathf.Max(0.01f, duration);
             _nudgeHandle = LMotion.Create(0f, 1f, dur)
                 .WithEase(Ease.Linear)
+                .WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)
                 .Bind(this, static (v, self) =>
                 {
                     // 0→1→0: отъезд и возврат
@@ -866,8 +901,11 @@ namespace Guildmaster.Presentation
             if (_attackMotionHandle.IsActive()) _attackMotionHandle.Cancel();
             _attackPeak = peak;
             float dur = Mathf.Max(0.01f, duration);
+            // Тоже unscaled: замах и рывок живут вокруг hitstop, а он идёт по нескалированному времени —
+            // на игровом они растягивались бы вместе со slowmo и разъезжались с ударом (конфиг обещает unscaled).
             _attackMotionHandle = LMotion.Create(0f, 1f, dur)
                 .WithEase(Ease.Linear)
+                .WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)
                 .Bind(this, static (v, self) =>
                 {
                     float w = v < 0.5f ? v * 2f : (1f - v) * 2f;
