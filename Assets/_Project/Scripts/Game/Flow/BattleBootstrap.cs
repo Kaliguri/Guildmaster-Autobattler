@@ -1,5 +1,6 @@
 using System;
 using Guildmaster.Combat;
+using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
 using Guildmaster.Presentation;
@@ -29,6 +30,7 @@ namespace Guildmaster.Game.Flow
         private readonly IContentDatabase              _content;
         private readonly ISubscriber<BattleEndedEvent> _endedSub;
         private readonly Services.TimeScaleService      _time;
+        private readonly IRngService                    _rng;
 
         private IDisposable      _endedSubscription;
         private BattlePresetData _lastPreset;
@@ -36,9 +38,11 @@ namespace Guildmaster.Game.Flow
 
         public BattleBootstrap(IBattleSession session, EncounterLoader loader, CombatSimulation sim,
                                RunStateService runStates, IContentDatabase content,
-                               ISubscriber<BattleEndedEvent> endedSub, Services.TimeScaleService time)
+                               ISubscriber<BattleEndedEvent> endedSub, Services.TimeScaleService time,
+                               IRngService rng)
         {
             _time = time;
+            _rng  = rng;
             _session   = session;
             _loader    = loader;
             _sim       = sim;
@@ -81,6 +85,7 @@ namespace Guildmaster.Game.Flow
 
             _lastPreset  = preset;
             _arenaStaged = true;                   // с этого момента на арене есть что убирать
+            ReseedForBattle(preset);
             if (!HasLivingParty()) DeployParty();  // отряд не стоял → поставить из RunState.Guild
 
             _loader.SpawnEnemies(preset.Encounter);
@@ -119,12 +124,35 @@ namespace Guildmaster.Game.Flow
         private void RestartBattle()
         {
             _arenaStaged = true;
+            ReseedForBattle(_lastPreset);   // ретрай узла — ТОТ ЖЕ бой: сид не зависит от номера попытки
             DeployParty();
             if (_lastPreset?.Encounter != null) _loader.SpawnEnemies(_lastPreset.Encounter);
             _sim.FlushSpawns();
             _sim.SetPaused(true);
             _time.SetPaused(false);      // рестарт снимает паузу игрока: иначе новый бой стартует замороженным
             if (_lastPreset != null) _loader.RequestDeployment(_lastPreset);
+        }
+
+        /// <summary>
+        /// Пересеять боевой RNG суб-сидом узла. В persist-мире боевой скоуп не пересоздаётся между боями,
+        /// поэтому генератор, посеянный один раз при подъёме сцены, тянул бы одну последовательность через
+        /// весь забег: бой невоспроизводим, ретрай идёт с «уехавшего» состояния, а в коопе хост и клиент
+        /// расходятся. Механизм пересева завели ещё в persist-groundwork, но звать его было некому
+        /// (аудит 2026-07-26, RC-8/T-19).
+        /// <para>Сид выводится из <c>RunState.Seed</c> — сохраняемого сида забега — плюс акт, узел и пресет
+        /// боя. Значит один и тот же узел одного и того же забега всегда играется одинаково, а соседний —
+        /// иначе. Номер попытки в сид НЕ входит: ретрай — это тот же бой, а не новый.</para>
+        /// </summary>
+        private void ReseedForBattle(BattlePresetData preset)
+        {
+            RunState run = _runStates?.Current;
+
+            ulong seed = DeterministicHash.Of(preset != null ? preset.Id : string.Empty);
+            seed = DeterministicHash.Mix(seed, run != null ? (ulong)run.Seed : 0UL);
+            seed = DeterministicHash.Mix(seed, (ulong)(uint)(run?.CurrentActIndex ?? 0));
+            seed = DeterministicHash.Mix(seed, DeterministicHash.Of(run?.Map?.CurrentNodeId));
+
+            _rng.Reseed(seed);
         }
 
         private void DeployParty() => RosterDeployer.Deploy(_loader, _runStates.Current, _content);

@@ -420,9 +420,7 @@ namespace Guildmaster.Presentation.Map
         {
             unchecked
             {
-                uint h = 2166136261u;
-                for (int i = 0; i < from.Length; i++) { h ^= from[i]; h *= 16777619u; }
-                for (int i = 0; i < to.Length; i++)   { h ^= to[i];   h *= 16777619u; }
+                uint h = Guildmaster.Core.Random.DeterministicHash.Of32(from, to);
                 return ((h & 1u) == 0u ? 1f : -1f) * (0.6f + (h >> 8 & 0xFF) / 255f * 0.8f);
             }
         }

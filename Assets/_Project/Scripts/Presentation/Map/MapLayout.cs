@@ -131,20 +131,10 @@ namespace Guildmaster.Presentation.Map
             }
         }
 
-        // FNV-1a: свой хеш, а не string.GetHashCode — тот не гарантирован стабильным между запусками и
-        // рантаймами, и карта разъезжалась бы после перезапуска игры.
+        // Хеш — общий (Core.Random.DeterministicHash): своя копия формулы разъехалась бы с лавкой и
+        // дорожками на первой же правке, а раскладка обязана совпадать у всех и после перезапуска.
         private static uint Hash(string id, long seed, int salt)
-        {
-            unchecked
-            {
-                uint h = 2166136261u;
-                for (int i = 0; i < id.Length; i++) { h ^= id[i]; h *= 16777619u; }
-                h ^= (uint)seed;         h *= 16777619u;
-                h ^= (uint)(seed >> 32); h *= 16777619u;
-                h ^= (uint)salt;         h *= 16777619u;
-                return h;
-            }
-        }
+            => Guildmaster.Core.Random.DeterministicHash.Of32(id, seed, salt);
 
         // uint → [-1, 1)
         private static float Signed(uint h) => (h / (float)uint.MaxValue) * 2f - 1f;

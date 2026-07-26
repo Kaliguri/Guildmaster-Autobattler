@@ -553,9 +553,17 @@ namespace Guildmaster.Combat
         // --- Расчёт checksum для SimSyncProbe ---
 
         /// <summary>
-        /// Детерминированный слепок состояния симуляции: хэш позиций, HP и текущего тика.
+        /// Детерминированный слепок состояния симуляции: тик, состояние RNG, юниты (позиция, HP, щит,
+        /// ресурс, фаза атаки), их активные эффекты и снаряды в полёте.
         /// Используется <see cref="Net.SimSyncProbe"/> для проверки рассинхрона.
         /// </summary>
+        /// <remarks>
+        /// Эффекты, щит, ресурс и снаряды добавлены по аудиту 2026-07-26 (RC-8). Прежний слепок брал
+        /// позицию, HP и тайминги атаки — то есть расхождение, начавшееся в эффектах (яд тикнул у хоста
+        /// и не тикнул у клиента, стак обновился по-разному, снаряд разошёлся траекторией), становилось
+        /// видно только когда оно доедет до HP, а к тому моменту причина уже далеко позади. Дёшево:
+        /// перебор без аллокаций, зовётся по требованию пробы, а не каждый тик.
+        /// </remarks>
         public ulong ComputeChecksum()
         {
             ulong hash = (ulong)_currentTick * 2654435761UL;
@@ -570,11 +578,48 @@ namespace Guildmaster.Combat
                 hash ^= (ulong)(long)(u.Position.x * 1000f) * 2246822519UL;
                 hash ^= (ulong)(long)(u.Position.y * 1000f) * 3266489917UL;
                 hash ^= (ulong)(long)(u.CurrentHP  * 100f)  * 668265263UL;
+                hash ^= (ulong)(long)(u.CurrentShield * 100f) * 2166136261UL;
+                hash ^= (ulong)(long)(u.CurrentResource * 100f) * 1099511628211UL;
+                hash ^= u.IsDead ? 0x9E3779B97F4A7C15UL : 0UL;
                 // Состояние авто-атаки — детерминированное, входит в чек-сумму (вики «14»).
                 hash ^= (ulong)(uint)u.AttackCooldownTicks * 374761393UL;
                 hash ^= (ulong)(uint)u.WindupRemaining     * 3266489917UL;
                 hash ^= (ulong)(uint)u.RecoveryRemaining   * 2654435761UL;
-                hash  = (hash << 13) | (hash >> 51);
+
+                // Эффекты — главный источник расхождений: длительность, стаки и периодика тикают
+                // каждый тик у каждого носителя. Порядок в списке сам детерминирован (наложение идёт
+                // из детерминированных систем), поэтому индекс входит в хэш как есть.
+                List<Effects.RuntimeEffect> effects = u.ActiveEffects;
+                for (int e = 0; e < effects.Count; e++)
+                {
+                    Effects.RuntimeEffect eff = effects[e];
+                    hash ^= (ulong)(uint)(e + 1) * 2654435761UL;
+                    hash ^= Core.Random.DeterministicHash.Of(eff.Def != null ? eff.Def.Id : null);
+                    hash ^= (ulong)(uint)eff.RemainingTicks * 2246822519UL;
+                    hash ^= (ulong)(uint)eff.Stacks         * 668265263UL;
+                    hash ^= (ulong)(uint)(eff.Source != null ? eff.Source.Id : 0) * 374761393UL;
+
+                    int[] periodic = eff.PeriodicTicks;
+                    if (periodic != null)
+                        for (int p = 0; p < periodic.Length; p++)
+                            hash ^= (ulong)(uint)periodic[p] * (ulong)(uint)(p + 1) * 3266489917UL;
+
+                    hash = (hash << 7) | (hash >> 57);
+                }
+
+                hash = (hash << 13) | (hash >> 51);
+            }
+
+            // Снаряды: до попадания они не влияют ни на чьё HP, поэтому разошедшийся полёт был невидим
+            // ровно до момента, когда исправить рассинхрон уже поздно.
+            for (int i = 0; i < _projectiles.Count; i++)
+            {
+                Projectile p = _projectiles[i];
+                hash ^= (ulong)(uint)p.Id * 1000003UL;
+                hash ^= (ulong)(long)(p.Position.x * 1000f) * 2246822519UL;
+                hash ^= (ulong)(long)(p.Position.y * 1000f) * 3266489917UL;
+                hash ^= (ulong)(uint)p.PiercesRemaining * 668265263UL;
+                hash  = (hash << 11) | (hash >> 53);
             }
 
             return hash;

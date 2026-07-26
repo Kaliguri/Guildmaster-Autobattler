@@ -38,9 +38,6 @@ namespace Guildmaster.Game
         [Tooltip("Размер ячейки пространственного хэша.")]
         [SerializeField] private float _spatialHashCellSize = 3f;
 
-        [Tooltip("Фиксированный сид боя для воспроизводимости (баг/баланс/реплей). 0 = случайный каждый бой.")]
-        [SerializeField] private long _fixedSeed;
-
         [Tooltip("Design-конфиг «сочности» боя (вспышка/сплющивание/hitstop/slowmo/тряска). ОБЯЗАТЕЛЕН. " +
                  "Пусто = красная ошибка и НЕТ джуса вовсе (не «дефолты» — своих чисел потребители не держат).")]
         [SerializeField] private Presentation.Design.CombatFeelConfig _feelConfig;
@@ -108,18 +105,12 @@ namespace Guildmaster.Game
             builder.Register<DeploymentService>(Lifetime.Scoped);
         }
 
+        // Сид здесь больше не разыгрывается. Скоуп в persist-мире поднимается ОДИН раз на сессию, поэтому
+        // всё, что он посеет, — это состояние на весь забег сразу; настоящий сид боя приносит BattleBootstrap
+        // перед каждым запуском узла, выводя его из RunState.Seed (единственный сохраняемый сид, T-19).
+        // Стартовое значение — нейтральный ноль: до первого боя из этого генератора никто не тянет.
         private void RegisterRng(IContainerBuilder builder)
-        {
-            bool fixedSeed = _fixedSeed != 0L;
-            ulong seed = fixedSeed ? (ulong)_fixedSeed : GenerateBattleSeed();
-
-            Debug.Log($"[CombatLifetimeScope] - Battle seed = {seed}{(fixedSeed ? " (fixed)" : "")}");
-
-            // Тип-обёртки BattleSeed в контейнере больше нет: её никто не резолвил, то есть «сид доступен
-            // из DI» было обещанием без адресата (аудит 2026-07-26, T-20). Сид виден в логе выше, а когда
-            // он понадобится реплею или сети — придёт из RunState, а не из отдельного значения в скоупе.
-            builder.RegisterInstance<IRngService>(new XorShiftRng(seed));
-        }
+            => builder.RegisterInstance<IRngService>(new XorShiftRng(0UL));
 
         private void RegisterCombatSystems(IContainerBuilder builder)
         {
@@ -176,13 +167,8 @@ namespace Guildmaster.Game
             builder.RegisterEntryPoint<Presentation.BattleFocusBinder>(Lifetime.Scoped);
         }
 
-        // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя), а не генерироваться
-        // локально — иначе RNG хоста и клиента разойдутся. Сейчас ок:
-        // модель хост-авторитетная, тикает только хост (см. CombatLoopService).
-        private static ulong GenerateBattleSeed()
-        {
-            return (ulong)System.DateTime.UtcNow.Ticks ^
-                   ((ulong)(uint)UnityEngine.Random.Range(0, int.MaxValue) << 32);
-        }
+        // TODO Фаза MP: сид боя выводится из RunState.Seed, а сам RunState хост реплицирует клиентам —
+        // значит суб-сид узла совпадёт у всех сам собой. Отдельная команда «вот сид боя» не понадобится,
+        // пока RunState доезжает до клиента раньше запуска узла.
     }
 }
