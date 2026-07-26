@@ -54,6 +54,9 @@ namespace Guildmaster.Presentation
                  "видимой области. 0.5 = полэкрана в каждую сторону — угол карты можно рассмотреть вблизи, " +
                  "но совсем в пустоту не уедешь.")]
         [SerializeField] private float _mapFreedom = 0.5f;
+        [Tooltip("Насколько камера приближается к узлу за время закрытия кадра (доля исходного орто-размера). " +
+                 "0.7 = подъехали на треть; меньше — резче нырок.")]
+        [SerializeField] private float _mapDiveZoom = 0.7f;
 
         [Header("Панорамирование (ед./сек при полном отклонении)")]
         [SerializeField] private float _panSpeed = 12f;
@@ -92,6 +95,12 @@ namespace Guildmaster.Presentation
         // Режим, из которого ушли в карту: карту можно открыть посреди боя, и выход обязан вернуть
         // ровно тот вид, что был (боевые vcam при этом всё время стоят где стояли).
         private CameraMode _modeBeforeMap = CameraMode.Action;
+
+        // Нырок в узел: кадр, из которого нырнули, чтобы вернуть его целиком. Пока ныряем, ручной пан/зум
+        // молчит — иначе колесо посреди перехода спорит с наездом.
+        private bool _mapDiving;
+        private Vector3 _mapFrameBeforeDive;
+        private float _mapSizeBeforeDive;
 
         /// <summary>Разблокирован ли dev-режим камеры (доступ выдаётся отдельно, вики «16» §6).</summary>
         public bool DevAccess => _devAccess;
@@ -245,6 +254,55 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
+        /// Нырок в узел на время закрытия кадра: камера подъезжает к выбранной точке и приближается к ней.
+        /// Кадр, из которого нырнули, запоминается — вернёт его <see cref="SurfaceMap"/>.
+        /// </summary>
+        /// <param name="focus">Узел, в который входим.</param>
+        /// <param name="progress">Ход закрытия шторки, 0..1. Нырок идёт с ней в ногу, а не своим темпом.</param>
+        public void DiveMapTo(Vector2 focus, float progress)
+        {
+            if (_mapCam == null || _mode != CameraMode.Map) return;
+
+            if (!_mapDiving)
+            {
+                _mapDiving          = true;
+                _mapFrameBeforeDive = _mapCam.transform.position;
+                _mapSizeBeforeDive  = _mapCam.Lens.OrthographicSize;
+            }
+
+            float t = Mathf.Clamp01(progress);
+
+            // Целимся НЕ в сам узел, а чуть-чуть не доезжая: полный доезд к концу закрытия выглядит как
+            // рывок в упор, а нам нужно ощущение начатого движения, которое кадр обрывает на середине.
+            float size = Mathf.Max(_minZoom, Mathf.Lerp(_mapSizeBeforeDive, _mapSizeBeforeDive * _mapDiveZoom, t));
+            var target = new Vector3(focus.x, focus.y, _cameraZ);
+            Vector3 pos = Vector3.Lerp(_mapFrameBeforeDive, target, t);
+
+            _mapCam.transform.position = ClampVisibleCenter(pos, size);
+
+            LensSettings lens = _mapCam.Lens;
+            lens.OrthographicSize = size;
+            _mapCam.Lens = lens;
+        }
+
+        /// <summary>
+        /// Вернуть кадр карты, из которого ныряли. Зовётся на ЗАКРЫТОМ кадре: возврат не виден, а следующий
+        /// показ карты начинается с того вида, который игрок оставил, а не изнутри узла.
+        /// </summary>
+        public void SurfaceMap()
+        {
+            if (!_mapDiving) return;
+            _mapDiving = false;
+
+            if (_mapCam == null) return;
+            _mapCam.transform.position = _mapFrameBeforeDive;
+
+            LensSettings lens = _mapCam.Lens;
+            lens.OrthographicSize = _mapSizeBeforeDive;
+            _mapCam.Lens = lens;
+        }
+
+        /// <summary>
         /// Выйти из вида карты в тот режим, из которого в неё вошли. Карту можно открыть посреди боя —
         /// закрытие обязано вернуть взгляд ровно туда, где игрок его оставил, а не в дефолтный вид.
         /// Вне режима карты — no-op.
@@ -252,6 +310,7 @@ namespace Guildmaster.Presentation
         public void ExitMap()
         {
             if (_mode != CameraMode.Map) return;
+            SurfaceMap(); // карту могли закрыть посреди нырка — кадр обязан вернуться, а не остаться в узле
             _mode = _modeBeforeMap;
             ApplyMode();
         }
@@ -304,7 +363,10 @@ namespace Guildmaster.Presentation
             {
                 case CameraMode.Overview: DriveManual(_overviewCam, _panSpeed, clampToZone: true);  break;
                 case CameraMode.Dev:      DriveManual(_devCam, _devPanSpeed, clampToZone: false);    break;
-                case CameraMode.Map:      DriveManual(_mapCam, _panSpeed, clampToZone: true);        break;
+                // Пока ныряем в узел, ручной пан/зум молчит: колесо посреди перехода спорило бы с наездом.
+                case CameraMode.Map:
+                    if (!_mapDiving) DriveManual(_mapCam, _panSpeed, clampToZone: true);
+                    break;
                 case CameraMode.Action:   DriveActionZoom();                                         break;
             }
         }

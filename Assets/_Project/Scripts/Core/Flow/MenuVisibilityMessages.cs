@@ -49,6 +49,16 @@ namespace Guildmaster.Core.Flow
         /// <summary>Плотность шторки, 0..1.</summary>
         public readonly float Progress;
 
-        public ScreenFadeChangedEvent(float progress) => Progress = progress;
+        /// <summary>
+        /// Точка, К КОТОРОЙ схлопывается кадр, в долях экрана (0..1, начало отсчёта — левый нижний угол).
+        /// Центр экрана (0.5, 0.5) = обычное затемнение; точка узла = «ныряем именно туда».
+        /// </summary>
+        public readonly UnityEngine.Vector2 Center;
+
+        public ScreenFadeChangedEvent(float progress, UnityEngine.Vector2 center)
+        {
+            Progress = progress;
+            Center   = center;
+        }
     }
 }

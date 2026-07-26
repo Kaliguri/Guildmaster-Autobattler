@@ -7,6 +7,7 @@ using Guildmaster.Core.Random;
 using Guildmaster.Core.Settings;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Descriptions;
 using Guildmaster.Data.Stats;
 using Guildmaster.Game.Flow;
 using Guildmaster.Game.Input;
@@ -14,6 +15,7 @@ using Guildmaster.Game.Players;
 using Guildmaster.Game.Services;
 using Guildmaster.Guild;
 using Guildmaster.UI;
+using Guildmaster.UI.Tooltips;
 using Guildmaster.Presentation.Audio;
 using MessagePipe;
 using UnityEngine;
@@ -81,6 +83,16 @@ namespace Guildmaster.Game
             // Живёт в корне, а не в боевом скоупе: инвентарь открывается и вне боя.
             builder.Register<IUnitStatPreview>(
                 _ => new UnitStatPreview(_statsConfig, _classBalanceConfig), Lifetime.Singleton);
+
+            // Слой описаний (Трек Д-о, план §II.10.1): единственная дорога, по которой число попадает
+            // игроку на глаза. Тултипы, карточки и (позже) панель юнита берут текст и величины отсюда,
+            // а не считают у себя — иначе на первом же ребалансе экраны разойдутся с боем.
+            builder.Register<DescriptionService>(Lifetime.Singleton).As<IDescriptionService>();
+
+            // Тултипы (Трек Т, план §II.10.5): одна система на панель + сборка содержимого по запросу.
+            // Систему привязывает к слою layer-tooltip бутстрап UI — он владелец панели и слоёв.
+            builder.Register<TooltipContentFactory>(Lifetime.Singleton).As<ITooltipContentFactory>();
+            builder.Register<TooltipSystem>(Lifetime.Singleton);
 
             builder.Register<SettingsViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutViewModel>(Lifetime.Singleton);
@@ -152,6 +164,12 @@ namespace Guildmaster.Game
             // Владелец показа карты в мире: и просмотр по табу «Карта» (в т.ч. посреди боя), и ожидание
             // выбора узла петлёй — через него одного.
             builder.RegisterEntryPoint<WorldMapController>(Lifetime.Singleton).AsSelf();
+
+            // Владелец «моргания» между кадрами (QA #53). Держим в КОРНЕ, а не рядом с картой: переход
+            // переживает и уход заказчика, и смену сцены под шторкой — карта, заказав его, тут же уходит
+            // в узел и довести его до конца не может.
+            builder.RegisterEntryPoint<Presentation.Transition.ScreenTransitionRunner>(Lifetime.Singleton)
+                   .As<Core.Flow.IScreenTransition>();
 
             // ЕДИНЫЙ такт визуала: от него пляшут биение узлов, волна по дорожкам и всё ритмичное, что
             // появится дальше. Пока считается от часов; когда музыка научится задавать темп, сменится

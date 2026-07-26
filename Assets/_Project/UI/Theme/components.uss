@@ -9,15 +9,17 @@
  *     Плотность ставит код (opacity), а мягкость — переход ниже: карта обрывает шторку, уходя в узел на
  *     закрытом кадре, и без него это был бы скачок в свет. Задник экранов сюда не относится: его рисует
  *     презентация одним материалом стола (ЕДИНЫЙ источник, QA #50) — своей заливки у UI больше нет. --- */
+/* Шторка перехода. Собственного цвета у неё НЕТ: плотность и узор чернил приходят картинкой, которую
+   рисует материал перехода (QA #53). Заливка осталась бы поверх узора сплошным полем и съела бы его.
+   Сглаживания по opacity тоже нет: ход перехода ведёт его владелец кадр за кадром, и USS-переход
+   только добавлял бы отставание. */
 .gm-screen-fade {
     position: absolute;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--gm-ink-900);
-    transition-property: opacity;
-    transition-duration: 0.12s;
+    -unity-background-scale-mode: stretch-to-fill;
 }
 
 /* --- Экран-оверлей: затемняющий scrim, контент по центру --- */
@@ -1045,6 +1047,40 @@
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-sm);
     margin-top: var(--gm-space-1);
+}
+
+/* Содержимое окна (Трек Т). Рамку/фон/паддинг держит .gm-tooltip, карточка — только раскладка,
+   поэтому одно окно обслуживает и короткое пояснение, и разбор со стат-строками. */
+.gm-tooltip__card {
+    flex-direction: column;
+}
+
+/* Ширина базового окна рассчитана на текст (220px) и мала для разбора — размер даётся
+   МОДИФИКАТОРОМ, а не правкой базового класса: иначе разъедутся все текстовые подсказки. */
+.gm-tooltip--wide {
+    max-width: 320px;
+}
+
+.gm-tooltip__lines {
+    flex-direction: column;
+    margin-top: var(--gm-space-1);
+}
+
+.gm-tooltip__line {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.gm-tooltip__line-label {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-sm);
+}
+
+.gm-tooltip__line-value {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-sm);
+    -unity-font-style: bold;
+    margin-left: var(--gm-space-3);
 }
 
 /* ============================================================================

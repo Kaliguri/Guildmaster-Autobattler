@@ -14,6 +14,7 @@
     "Guildmaster.UI",
     "Guildmaster.ContentHub.Editor",
     "UniTask",
+    "MessagePipe",
     "Unity.UI.TestFramework.Runtime",
     "Unity.UI.TestFramework.Editor"
   ],

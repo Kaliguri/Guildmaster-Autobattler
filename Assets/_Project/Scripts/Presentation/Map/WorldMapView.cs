@@ -103,12 +103,13 @@ namespace Guildmaster.Presentation.Map
         // Шторка перехода: закрыть кадр → засчитать выбор → открыть. Заменяет поездку фишки как основной
         // способ шагнуть по карте (решение Макса 2026-07-20): поездка отвечала «отряд идёт», но каждый шаг
         // стоил полутора секунд ожидания, а шагов за акт четырнадцать.
-        private enum FadeStage { None, In, Hold, Out }
-        private FadeStage _fadeStage;
-        private float _fadeTime;
-        private string _fadeNodeId;
-        private Vector2 _fadeTargetPos;
-        private MessagePipe.IPublisher<Core.Flow.ScreenFadeChangedEvent> _fadePub; // шторку рисует UI (QA #47)
+        //
+        // Сами фазы карта НЕ ведёт (QA #53): выбор, засчитанный на закрытом кадре, уводит игрока с карты,
+        // и вести переход дальше стало бы некому — карта скрывается в его середине. Она только заказывает
+        // моргание и получает управление на закрытом кадре.
+        private Core.Flow.IScreenTransition _transition;
+        private bool _stepping;        // мы заказали переход и ждём закрытого кадра
+        private Vector2 _stepTargetPos; // узел, в который «ныряем» — к нему же наезжает камера
 
         // Поездка фишки: пока едет, выбор заблокирован, а событие выбора ждёт приезда.
         private bool _travelling;
@@ -128,14 +129,14 @@ namespace Guildmaster.Presentation.Map
         [Inject]
         public void Construct(IInputService input, CameraModeController cameraModes, WorldMapViewLink link,
                               IVisualTempo tempo, VisualToggles toggles,
-                              MessagePipe.IPublisher<Core.Flow.ScreenFadeChangedEvent> fadePub)
+                              Core.Flow.IScreenTransition transition)
         {
             _input       = input;
             _cameraModes = cameraModes;
             _link        = link;
             _tempo       = tempo;
             _toggles     = toggles;
-            _fadePub     = fadePub;
+            _transition  = transition;
         }
 
         private void Awake()
@@ -587,7 +588,7 @@ namespace Guildmaster.Presentation.Map
             if (_travelling) { _travelSpeedScale = _style != null ? _style.PawnSkipSpeed : 6f; return; }
 
             // Пока идёт шторка, карта клики не принимает: выбор уже сделан и вот-вот засчитается.
-            if (_fadeStage != FadeStage.None) return;
+            if (_stepping) return;
 
             if (_input == null || _input.PointerOverUI) return;
 
@@ -603,16 +604,40 @@ namespace Guildmaster.Presentation.Map
         // все входы — и клик, и дев-обход, — чтобы способ перехода нельзя было забыть в одном из них.
         private void BeginStep(int hit, bool silent)
         {
-            if (_travelOn || _fadePub == null)
+            if (_travelOn || _transition == null || _transition.Busy)
             {
                 StartTravel(hit, silent);
                 return;
             }
 
-            _fadeTargetPos = _hits[hit].Pos;
-            _fadeNodeId    = silent ? null : _hits[hit].Id;
-            _fadeStage     = FadeStage.In;
-            _fadeTime      = 0f;
+            _stepTargetPos = _hits[hit].Pos;
+            string id      = silent ? null : _hits[hit].Id;
+            _stepping      = true;
+
+            var shape = new Core.Flow.ScreenTransitionShape(
+                _style.TransitionInSeconds, _style.TransitionHoldSeconds, _style.TransitionOutSeconds,
+                ScreenUvOf(_stepTargetPos));
+
+            _transition.Play(shape, OnStepClosing, () => OnStepCovered(id));
+        }
+
+        // Пока кадр закрывается, камера ныряет к выбранному узлу: чернила схлопываются к нему, а он сам
+        // едет навстречу — вместе это читается как вход в точку, а не как затемнение рядом с ней.
+        private void OnStepClosing(float progress)
+        {
+            if (!_shown) return;
+            _cameraModes?.DiveMapTo(_stepTargetPos, progress);
+        }
+
+        // Кадр закрыт: переставляем отряд и засчитываем выбор. Всё, что видно за чернилами, меняется здесь —
+        // подмены игрок не увидит. Кадр карты возвращаем сразу же: следующий её показ должен начаться с того
+        // вида, который игрок оставил, а не изнутри узла, куда мы только что нырнули.
+        private void OnStepCovered(string id)
+        {
+            _stepping = false;
+            PlacePawn(_stepTargetPos);
+            _cameraModes?.SurfaceMap();
+            if (id != null) NodeClicked?.Invoke(id);
         }
 
         private void OnPointerReleased() => _pressed = false;
@@ -645,9 +670,7 @@ namespace Guildmaster.Presentation.Map
         {
             _travelling = false;
             _travelNodeId = null;
-            _fadeStage  = FadeStage.None;
-            _fadeNodeId = null;
-            SetFadeProgress(0f);
+            _stepping = false;
 
             for (int i = 0; i < _hits.Count; i++)
                 if (_hits[i].State == MapNodeVisualState.Current) { PlacePawn(_hits[i].Pos); return; }
@@ -707,62 +730,18 @@ namespace Guildmaster.Presentation.Map
             AnimateDots(now);
 
             if (_travelling) TickTravel();
-            if (_fadeStage != FadeStage.None) TickFade();
             UpdateFogReveal(); // дымка расходится вслед за отрядом
         }
 
-        // Шторка: закрыть кадр → на закрытом переставить отряд и засчитать выбор → открыть. Выбор
-        // засчитывается ИМЕННО на закрытом кадре — тогда смена карты на бой (или на экран узла) происходит
-        // за чернилами, и подмены не видно.
-        private void TickFade()
+        // Где узел на экране, в долях кадра. Это точка, К КОТОРОЙ схлопываются чернила: переход должен
+        // начаться там, куда игрок ткнул, а не в геометрическом центре экрана.
+        private Vector2 ScreenUvOf(Vector2 world)
         {
-            _fadeTime += Time.unscaledDeltaTime;
+            Camera cam = Camera.main;
+            if (cam == null || Screen.width <= 0 || Screen.height <= 0) return new Vector2(0.5f, 0.5f);
 
-            switch (_fadeStage)
-            {
-                case FadeStage.In:
-                {
-                    float dur = Mathf.Max(0.01f, _style.TransitionInSeconds);
-                    if (_fadeTime < dur) { SetFadeProgress(_fadeTime / dur); break; }
-
-                    SetFadeProgress(1f);
-                    PlacePawn(_fadeTargetPos);
-
-                    string id = _fadeNodeId;
-                    _fadeNodeId = null;
-                    _fadeStage  = FadeStage.Hold;
-                    _fadeTime   = 0f;
-                    if (id != null) NodeClicked?.Invoke(id);
-                    break;
-                }
-
-                case FadeStage.Hold:
-                {
-                    if (_fadeTime < Mathf.Max(0f, _style.TransitionHoldSeconds)) break;
-                    _fadeStage = FadeStage.Out;
-                    _fadeTime  = 0f;
-                    break;
-                }
-
-                case FadeStage.Out:
-                {
-                    float dur = Mathf.Max(0.01f, _style.TransitionOutSeconds);
-                    if (_fadeTime < dur) { SetFadeProgress(1f - _fadeTime / dur); break; }
-
-                    SetFadeProgress(0f);
-                    _fadeStage = FadeStage.None;
-                    break;
-                }
-            }
-        }
-
-        // Шторку рисует UI-слой поверх ВСЕГО (QA #47): раньше это был мировой квад перед камерой карты, и он
-        // честно гасил карту — но не топбар и не панели поверх неё. Переход обязан накрывать весь экран,
-        // иначе он читается не сменой сцены, а «потемневшим окошком». Карта по-прежнему ведёт стадии
-        // (закрыть → засчитать выбор за чернилами → открыть) — она одна знает нужный момент.
-        private void SetFadeProgress(float progress)
-        {
-            _fadePub?.Publish(new Core.Flow.ScreenFadeChangedEvent(Mathf.Clamp01(progress)));
+            Vector3 screen = cam.WorldToScreenPoint(new Vector3(world.x, world.y, 0f));
+            return new Vector2(Mathf.Clamp01(screen.x / Screen.width), Mathf.Clamp01(screen.y / Screen.height));
         }
 
         private void AnimateNodes(float now)
@@ -863,14 +842,10 @@ namespace Guildmaster.Presentation.Map
             if (_backdrop != null) _backdrop.gameObject.SetActive(active);
             if (_fog != null) _fog.gameObject.SetActive(active);
 
-            // Шторку при скрытии карты сбрасываем, а не просто гасим: карта уходит в бой прямо посреди
-            // перехода, и незакрытое состояние вернулось бы вместе с ней на следующем показе.
-            if (!active && _fadeStage != FadeStage.None)
-            {
-                _fadeStage  = FadeStage.None;
-                _fadeNodeId = null;
-                SetFadeProgress(0f);
-            }
+            // Шторку при скрытии карты НЕ трогаем (QA #53). Раньше здесь стоял её сброс — и он же убивал
+            // переход: карта уходит в узел ровно на закрытом кадре, сброс срабатывал на пике, и от моргания
+            // игрок видел одно закрытие. Шторка не наша: её ведёт владелец, переживающий уход карты.
+            if (!active) _stepping = false;
         }
 
         // Всё пулится: за акт карта перерисовывается на каждом узле. Узлы — один префаб на все типы,

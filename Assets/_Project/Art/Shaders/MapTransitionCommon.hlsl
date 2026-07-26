@@ -15,17 +15,22 @@ struct Varyings
     UNITY_VERTEX_OUTPUT_STEREO
 };
 
-TEXTURE2D(_MainTex);
-SAMPLER(sampler_MainTex);
+// Шум НЕ зовётся _MainTex намеренно: шторку рисует UI-слой, а туда она попадает через Graphics.Blit,
+// и Blit подменяет своим источником именно _MainTex — узор чернил тогда затирался бы белым квадратом.
+TEXTURE2D(_NoiseTex);
+SAMPLER(sampler_NoiseTex);
 
 CBUFFER_START(UnityPerMaterial)
-    float4 _MainTex_ST;
+    float4 _NoiseTex_ST;
     half4  _InkColor;
     half   _Progress;
     half   _Softness;
     half   _Scale;
     half   _Vignette;
     half   _Dither;
+    float4 _Center;
+    half   _Aspect;
+    half   _Dive;
 CBUFFER_END
 
 Varyings Vert(Attributes v)
@@ -56,14 +61,24 @@ float BayerThreshold(float2 screenPos)
 
 half4 Frag(Varyings i) : SV_Target
 {
+    // Узор ПОДЪЕЗЖАЕТ к точке схлопывания по ходу закрытия: вместе с наездом камеры на узел это читается
+    // как движение внутрь кадра, а не как затемнение поверх неподвижной картинки.
+    float2 center = _Center.xy;
+    float2 uv = center + (i.uv - center) * (1.0 - _Dive * _Progress);
+
     // Порядок закрытия задаёт ТЕКСТУРА, а не время: там, где шум темнее, чернила приходят раньше.
     // Отсюда и рваный, «расползающийся» край вместо ровной заливки кадра.
-    half noise = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv * _Scale).r;
+    half noise = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, uv * _Scale).r;
 
-    // Виньетка подмешивается к порогу, а не к цвету: углы закрываются первыми, центр — последним,
-    // и кадр схлопывается внутрь, вместо того чтобы просто гаснуть целиком.
-    float2 c = i.uv - 0.5;
-    half corner = saturate(dot(c, c) * 4.0h);
+    // Виньетка подмешивается к порогу, а не к цвету: дальнее от точки входа закрывается первым, сама точка —
+    // последней, и кадр схлопывается ИМЕННО в неё, а не в геометрический центр экрана.
+    // По ширине расстояние правим на аспект — иначе «воронка» вытягивается в овал.
+    float2 c = (uv - center) * float2(_Aspect, 1.0);
+
+    // Нормируем на расстояние до САМОГО ДАЛЬНЕГО угла от точки входа. Без этого сдвинутый от центра узел
+    // сразу давал бы «единицу» на половине кадра, и закрытие схлопывалось бы рывком за первую треть хода.
+    float2 far = max(center, 1.0 - center) * float2(_Aspect, 1.0);
+    half corner = saturate(dot(c, c) / max(dot(far, far), 1e-4));
     half threshold = lerp(noise, saturate(noise - corner), _Vignette);
 
     half soft = max(0.001h, _Softness);

@@ -182,13 +182,9 @@ namespace Guildmaster.Presentation.Map
         [Tooltip("Во сколько раз ускоряется поездка по повторному клику (дабл-клик).")]
         [SerializeField] private float _pawnSkipSpeed = 6f;
 
+        // Материала перехода здесь БОЛЬШЕ НЕТ (QA #53): шторку рисует UI-слой, и материал живёт у него —
+        // у одной вещи один владелец. Карта задаёт только ритм: она инициатор шага, но не рисовальщик.
         [Header("Переход при выборе узла (шторка вместо поездки)")]
-        [Tooltip("НЕ УЧАСТВУЕТ с QA #47. Шторку теперь рисует UI-слой поверх ВСЕГО экрана (мировой квад с " +
-                 "этим материалом гасил только карту, но не топбар и панели), а UI Toolkit чужие шейдеры не " +
-                 "умеет — переход стал ровным затемнением чернилами. Поле оставлено под будущий узорный " +
-                 "переход; тайминги ниже работают как прежде.")]
-        [SerializeField] private Material _transitionMaterial;
-
         [Tooltip("Сколько кадр затягивается чернилами (секунды). Это ощущаемая цена шага по карте — " +
                  "заметно, но без ожидания.")]
         [SerializeField] private float _transitionInSeconds = 0.28f;
@@ -290,8 +286,6 @@ namespace Guildmaster.Presentation.Map
         /// <inheritdoc cref="_pawnSkipSpeed"/>
         public float PawnSkipSpeed => _pawnSkipSpeed;
 
-        /// <inheritdoc cref="_transitionMaterial"/>
-        public Material TransitionMaterial => _transitionMaterial;
         /// <inheritdoc cref="_transitionInSeconds"/>
         public float TransitionInSeconds => _transitionInSeconds;
         /// <inheritdoc cref="_transitionHoldSeconds"/>

@@ -166,6 +166,7 @@ MonoBehaviour:
   _loadoutHubScreen: {fileID: 9197481963319205126, guid: b101555f184c6db48b81893633a005ee, type: 3}
   _loadoutInventoryScreen: {fileID: 9197481963319205126, guid: 57e9cea668276b146bb6ddbf4646c5ae, type: 3}
   _arcanaCard: {fileID: 9197481963319205126, guid: f3c82685632320143bae2eb20e6d7db1, type: 3}
+  _transitionMaterial: {fileID: 2100000, guid: 325cc584ed8653149a991f39ab3ccb43, type: 2}
 --- !u!114 &101249935
 MonoBehaviour:
   m_ObjectHideFlags: 0

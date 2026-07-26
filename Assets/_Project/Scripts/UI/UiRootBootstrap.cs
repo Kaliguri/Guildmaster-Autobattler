@@ -72,6 +72,10 @@ namespace Guildmaster.UI
         [Tooltip("UXML таро-карточки реликвии (клонируется в грид нового инвентаря).")]
         [SerializeField] private VisualTreeAsset _arcanaCard;
 
+        [Tooltip("Материал чернильной шторки перехода (SH_Map_Transition). Рисуется в текстуру и кладётся " +
+                 "фоном верхнего слоя. Пусто = ровное затемнение без узора.")]
+        [SerializeField] private Material _transitionMaterial;
+
         private MenuRouter _router;
         private IInputService _input;
         private IBattleClock _clock;
@@ -111,6 +115,8 @@ namespace Guildmaster.UI
         private VisualElement _layerScreens;      // [2] Page/Sheet навигатора (под топбаром)
         private VisualElement _layerTopbar;       // [3] RunModeBar (над обычными экранами)
         private VisualElement _layerModal;        // [4] Modal навигатора (над топбаром, scrim накрывает его)
+        private VisualElement _layerTooltip;      // [6] окно тултипа (Трек Т) — над топбаром и модалками
+        private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
         private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
         private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
@@ -129,6 +135,12 @@ namespace Guildmaster.UI
         private ISubscriber<Core.Flow.ScreenFadeChangedEvent> _screenFadeSub; // QA #47: шторка перехода поверх всего
         private IDisposable _screenFadeSubscription;
         private VisualElement _screenFade;
+        private RenderTexture _fadeRt;
+
+        private const int FadeTextureHeight = 360; // высота картинки шторки; ширина считается по аспекту экрана
+        private static readonly int FadeProgressId = Shader.PropertyToID("_Progress");
+        private static readonly int FadeCenterId   = Shader.PropertyToID("_Center");
+        private static readonly int FadeAspectId   = Shader.PropertyToID("_Aspect");
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -145,8 +157,10 @@ namespace Guildmaster.UI
             ISubscriber<Core.Flow.ScreenFadeChangedEvent> screenFadeSub,
             ISubscriber<OpenCampRequest> openCampSub,
             ISubscriber<OpenNodeFarewellRequest> openFarewellSub,
-            ISubscriber<OpenTitleCardRequest> openTitleCardSub)
+            ISubscriber<OpenTitleCardRequest> openTitleCardSub,
+            Tooltips.TooltipSystem tooltips)
         {
+            _tooltips = tooltips;
             _screenBackdropPub = screenBackdropPub;
             _screenFadeSub     = screenFadeSub;
             _openCampSub = openCampSub;
@@ -186,6 +200,9 @@ namespace Guildmaster.UI
                 return;
             }
             BuildLayers(); // Ф4: скелет слоёв-контейнеров ДО инициализации роутера (навигатор кладёт экраны в них)
+            // Трек Т: система тултипов слушает всплывающие запросы на КОРНЕ панели, а окно держит в своём
+            // слое — поэтому привязка идёт сразу после слоёв и до построения экранов.
+            _tooltips?.Attach(_doc.rootVisualElement, _layerTooltip);
             _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
@@ -234,7 +251,7 @@ namespace Guildmaster.UI
                 else          _router.HideMapSpace();
             });
             // Шторка перехода (QA #47): плотность считает тот, кто ведёт переход (карта акта), UI её рисует.
-            _screenFadeSubscription = _screenFadeSub?.Subscribe(e => ApplyScreenFade(e.Progress));
+            _screenFadeSubscription = _screenFadeSub?.Subscribe(e => ApplyScreenFade(e.Progress, e.Center));
 
             // Главное меню открыто → гасим непрозрачную подложку, иначе она закроет собой мировой стол.
             _mainMenuVisSubscription = _mainMenuVisSub?.Subscribe(e =>
@@ -258,7 +275,7 @@ namespace Guildmaster.UI
             _layerTopbar       = AddLayer(root, "layer-topbar");
             _layerModal        = AddLayer(root, "layer-modal");
             AddLayer(root, "layer-cursors");  // задел II.14 (live-курсоры)
-            AddLayer(root, "layer-tooltip");  // задел Трек Т (тултипы)
+            _layerTooltip = AddLayer(root, "layer-tooltip"); // Трек Т: окно тултипа над топбаром и модалками
             AddLayer(root, "layer-system");   // задел II.13/Трек К (тосты/фид/dev-консоль)
 
             // Шторка перехода — САМЫЙ верх (QA #47): она обязана накрывать и топбар, и модалки. Всё, что
@@ -434,14 +451,65 @@ namespace Guildmaster.UI
 
         // Шторка перехода (QA #47). Живёт в самом верхнем слое и накрывает ВСЁ, включая топбар и модалки.
         // Полностью прозрачную снимаем из отрисовки (display:None), чтобы не держать лишний слой в лэйауте.
-        // Мягкость даёт USS-переход по opacity: карта шлёт плотность кадр за кадром, но переход обрывается,
-        // когда она уходит в узел на закрытом кадре — без сглаживания это был бы резкий скачок в свет.
-        private void ApplyScreenFade(float progress)
+        //
+        // Рисует её НАСТОЯЩИЙ шейдер чернил (QA #53): UI Toolkit чужих шейдеров не знает, но картинку
+        // показать умеет — поэтому материал рисуем в небольшую текстуру и отдаём её элементу фоном. Так
+        // вернулся узор растекающихся чернил, потерянный, когда шторка переехала из мира в UI. Ровная
+        // заливка остаётся фолбэком на случай, если материал не назначен.
+        private void ApplyScreenFade(float progress, Vector2 center)
         {
             if (_screenFade == null) return;
+
             float p = Mathf.Clamp01(progress);
-            _screenFade.style.display = p > 0.001f ? DisplayStyle.Flex : DisplayStyle.None;
-            _screenFade.style.opacity = p;
+            bool visible = p > 0.001f;
+            _screenFade.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!visible) return;
+
+            if (_transitionMaterial == null)
+            {
+                // Фолбэк без узора: плотность держим в альфе заливки, а не в opacity элемента — цвета
+                // у класса нет, его источник тут же, рядом с материалом.
+                _screenFade.style.opacity = 1f;
+                _screenFade.style.backgroundColor = new Color(0.055f, 0.043f, 0.031f, p);
+                return;
+            }
+
+            RenderTexture rt = EnsureFadeTexture();
+            _transitionMaterial.SetFloat(FadeProgressId, p);
+            _transitionMaterial.SetVector(FadeCenterId, center);
+            _transitionMaterial.SetFloat(FadeAspectId, (float)rt.width / Mathf.Max(1, rt.height));
+
+            // Чистим цель перед отрисовкой: у шейдера прозрачный блендинг, и без очистки кадры копились бы
+            // друг на друге, а шторка чернела бы сама по себе.
+            RenderTexture prev = RenderTexture.active;
+            RenderTexture.active = rt;
+            GL.Clear(true, true, Color.clear);
+            RenderTexture.active = prev;
+
+            Graphics.Blit(Texture2D.whiteTexture, rt, _transitionMaterial);
+
+            _screenFade.style.opacity = 1f; // плотность внутри картинки, а не в прозрачности элемента
+            _screenFade.style.backgroundImage = Background.FromRenderTexture(rt);
+        }
+
+        // Текстура шторки НАМЕРЕННО мельче экрана: дизеринг чернил рисуется её пикселями, и на полном
+        // разрешении растр стал бы невидимой рябью вместо крупного зерна, к которому привязан наш пиксель-арт.
+        private RenderTexture EnsureFadeTexture()
+        {
+            int height = FadeTextureHeight;
+            int width  = Mathf.Max(1, Mathf.RoundToInt(height * Screen.width / (float)Mathf.Max(1, Screen.height)));
+
+            if (_fadeRt != null && _fadeRt.width == width && _fadeRt.height == height) return _fadeRt;
+
+            if (_fadeRt != null) _fadeRt.Release();
+            _fadeRt = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32)
+            {
+                name       = "gm-screen-fade",
+                filterMode = FilterMode.Point, // растягиваем без сглаживания — зерно остаётся зерном
+                wrapMode   = TextureWrapMode.Clamp,
+            };
+            _fadeRt.Create();
+            return _fadeRt;
         }
 
         // ── Радио-режимы табов (Карта/Бой/Инвентарь — включён РОВНО один; таб = перейти в режим, НЕ тумблер) ──
@@ -570,12 +638,18 @@ namespace Guildmaster.UI
             _openOutcomeSubscription?.Dispose();
             _openMainMenuSubscription?.Dispose();
             _openTitleCardSubscription?.Dispose();
+
+            _tooltips?.Detach();                                      // Трек Т: снять окно и подписки с панели
+
+            if (_fadeRt != null) { _fadeRt.Release(); _fadeRt = null; } // цель шторки живёт вне GC — освобождаем руками
         }
 
-        // QA #32: ESC открывает системное меню ТОЛЬКО в активном забеге (в главном меню/вне забега — no-op).
-        // Внутри забега ToggleSystemMenu сам решает открыть/шаг-назад (семантика ESC, план II.4).
+        // Семантика ESC (план II.4, КОНСТИТУЦИЯ): показан тултип → ESC гасит ЕГО и меню не трогает.
+        // QA #32: сам ESC-вызов меню работает ТОЛЬКО в активном забеге (в главном меню/вне забега — no-op).
+        // Внутри забега ToggleSystemMenu сам решает открыть/шаг-назад.
         private void OnMenuToggle()
         {
+            if (_tooltips != null && _tooltips.HideAll()) return;
             if (_runStates?.Current != null) _router.ToggleSystemMenu();
         }
     }

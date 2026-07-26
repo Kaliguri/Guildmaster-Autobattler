@@ -63,7 +63,6 @@ MonoBehaviour:
   _pawn: {r: 0.973, g: 0.925, b: 0.796, a: 1}
   _pawnTravelSeconds: 1.5
   _pawnSkipSpeed: 6
-  _transitionMaterial: {fileID: 2100000, guid: 325cc584ed8653149a991f39ab3ccb43, type: 2}
-  _transitionInSeconds: 0.28
-  _transitionHoldSeconds: 0.08
-  _transitionOutSeconds: 0.36
+  _transitionInSeconds: 0.3
+  _transitionHoldSeconds: 0.18
+  _transitionOutSeconds: 0.26

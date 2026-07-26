@@ -8,13 +8,16 @@ Shader "Guildmaster/Map/Transition"
     // пиксель-арта читается как чужой фильтр.
     Properties
     {
-        _MainTex ("Шум закрытия (grayscale)", 2D) = "gray" {}
+        _NoiseTex ("Шум закрытия (grayscale)", 2D) = "gray" {}
         _InkColor ("Цвет чернил", Color) = (0.055, 0.043, 0.031, 1)
         _Progress ("Закрытость", Range(0, 1)) = 0
         _Softness ("Мягкость края", Range(0.01, 1)) = 0.35
         _Scale ("Масштаб шума", Float) = 2
         _Vignette ("Схлопывание от углов", Range(0, 1)) = 0.6
         _Dither ("Сила дизеринга", Range(0, 1)) = 1
+        _Center ("Точка схлопывания (uv)", Vector) = (0.5, 0.5, 0, 0)
+        _Aspect ("Аспект кадра (ширина/высота)", Float) = 1.777
+        _Dive ("Наезд узора к точке", Range(0, 0.6)) = 0.25
     }
 
     SubShader
