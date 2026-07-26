@@ -51,11 +51,11 @@ MonoBehaviour:
         Weight: 16
     Anchors:
     - Floor: 7
-      Type: 6
+      Type: 8
       Width: 1
     - Floor: 8
-      Type: 8
+      Type: 6
       Width: 3
     - Floor: 13
       Type: 8
-      Width: 3
+      Width: 1
