@@ -10,8 +10,9 @@
   3. создать read-токен: https://huggingface.co/settings/tokens
   4. положить его в .env репозитория:  HF_TOKEN=hf_...
 
-Модели: `small` (341M, до 11 с звука — годится для our one-shot и терпима на CPU) и `1.0`
-(1.2B, до 47 с, качество выше, но на CPU считает минутами). По умолчанию — small.
+Модели: `small` (341M, окно 11 с, 8 шагов семплера pingpong — терпима на CPU) и `1.0`
+(1.2B, окно 47 с, 50 шагов обычной диффузии, качество выше, но на CPU считает минутами).
+По умолчанию — small.
 
 Результат падает в `FMOD Project/Candidates/generated-local/` — это КАНДИДАТЫ: послушать,
 выбрать, положить в пак и прописать в audio_map.py.
@@ -51,10 +52,13 @@ def main():
     parser.add_argument("--prompt", required=True, help="описание звука (по-английски работает лучше)")
     parser.add_argument("--count", type=int, default=3)
     parser.add_argument("--seconds", type=float, default=2.0, help="длительность результата")
-    parser.add_argument("--steps", type=int, default=50, help="шагов диффузии: меньше — быстрее и грязнее")
+    parser.add_argument("--steps", type=int, default=0,
+                        help="шагов вывода; 0 = по умолчанию для модели (small: 8, 1.0: 50)")
     parser.add_argument("--model", choices=list(MODELS), default="small")
     parser.add_argument("--negative", default="low quality, noise, music, speech",
                         help="чего в звуке быть не должно")
+    parser.add_argument("--seed", type=int, default=1234,
+                        help="база случайности: тот же seed + промпт дают тот же звук")
     args = parser.parse_args()
 
     token = hf_token()
@@ -80,18 +84,38 @@ def main():
         started = time.time()
         conditioning = [{"prompt": args.prompt, "seconds_start": 0, "seconds_total": args.seconds}]
         negative = [{"prompt": args.negative, "seconds_start": 0, "seconds_total": args.seconds}]
-        output = generate_diffusion_cond(
-            model,
-            steps=args.steps,
-            cfg_scale=7,
-            conditioning=conditioning,
-            negative_conditioning=negative,
-            sample_size=sample_size,
-            sigma_min=0.3,
-            sigma_max=500,
-            sampler_type="dpmpp-3m-sde",
-            device=device,
-        )
+        # Seed задаём сами, и не только ради воспроизводимости: без него библиотека зовёт
+        # np.random.randint(0, 2**32-1), а на Windows это выходит за int32 и падает.
+        seed = (args.seed + i * 7919) % (2 ** 31 - 1)
+        # У двух моделей РАЗНЫЕ режимы вывода, и перепутать их нельзя: small прошла
+        # adversarial post-training и работает только с семплером pingpong на 8 шагах при
+        # cfg_scale=1 (иначе стек падает на пустом результате), а полная 1.0 — обычная
+        # диффузия с dpmpp-3m-sde и cfg_scale=7.
+        if args.model == "small":
+            output = generate_diffusion_cond(
+                model,
+                steps=args.steps or 8,
+                cfg_scale=1.0,
+                conditioning=conditioning,
+                sample_size=sample_size,
+                sampler_type="pingpong",
+                device=device,
+                seed=seed,
+            )
+        else:
+            output = generate_diffusion_cond(
+                model,
+                steps=args.steps or 50,
+                cfg_scale=7,
+                conditioning=conditioning,
+                negative_conditioning=negative,
+                sample_size=sample_size,
+                sigma_min=0.3,
+                sigma_max=500,
+                sampler_type="dpmpp-3m-sde",
+                device=device,
+                seed=seed,
+            )
         output = rearrange(output, "b d n -> d (b n)")
         # Пик-нормализация в int16: дальше файл всё равно пройдёт нашу нормализацию к -23 dB,
         # здесь достаточно не отдать клиппованный кандидат.
