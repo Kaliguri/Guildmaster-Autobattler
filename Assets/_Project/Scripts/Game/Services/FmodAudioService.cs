@@ -92,8 +92,14 @@ namespace Guildmaster.Game.Services
                 var bus = RuntimeManager.GetBus(busPath);
                 if (bus.isValid()) bus.setVolume(Mathf.Clamp01(volume));
             }
+            // Банк ещё не загружен — ожидаемо и молчаливо: шины появляются вместе с банками.
             catch (BankLoadException) { }
-            catch (System.Exception) { }
+            // Всё остальное ожидаемым не является. Прежний голый catch превращал любой отказ FMOD в тишину
+            // без единой записи в логе — искать причину было негде (аудит фолбэков 2026-07-26, п.10).
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[FmodAudioService] - не удалось выставить громкость шины '{busPath}': {e.Message}");
+            }
         }
 
         public void SetGlobalParameter(string name, float value)
@@ -111,8 +117,20 @@ namespace Guildmaster.Game.Services
                 description = RuntimeManager.GetEventDescription(evt);
                 return description.isValid();
             }
-            catch (System.Exception) { return false; }
+            catch (System.Exception e)
+            {
+                // Событие или его банк недоступны. Сообщаем ОДИН раз на ссылку: метод зовётся на каждый
+                // звук, и лог на каждый вызов утонул бы в спаме — но полное молчание прятало бы пустой
+                // каталог целиком (аудит фолбэков 2026-07-26, п.10).
+                string id = evt.IsNull ? "(пустая ссылка)" : evt.Guid.ToString();
+                if (_reportedBrokenEvents.Add(id))
+                    Debug.LogWarning($"[FmodAudioService] - событие {id} недоступно, звук пропущен: {e.Message}");
+                return false;
+            }
         }
+
+        // Ссылки, о которых уже сказали. Только для дедупа лога — на звук не влияет.
+        private static readonly HashSet<string> _reportedBrokenEvents = new HashSet<string>();
 
         private static bool IsAlive(EventInstance instance)
         {

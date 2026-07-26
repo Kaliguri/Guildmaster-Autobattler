@@ -24,10 +24,13 @@ namespace Guildmaster.Game.Services
 
         /// <param name="beat">
         /// Что делать с миром на стыках узлов (вернуть арену, встать в передышку, показать её кнопки).
-        /// null = петля без мира (headless/тесты) — стыки просто не оформляются.
+        /// ОБЯЗАТЕЛЕН. Прежний дефолт <c>= null</c> обещал «петлю без мира» для headless/тестов, но такой
+        /// режим не существовал: тип регистрируется в DI, VContainer всегда подаёт реализацию, а тесты
+        /// передают свою. Дефолтный аргумент на DI-типе — запрещённый в проекте паттерн: он не спасает от
+        /// снятой регистрации, а прячет её (аудит фолбэков 2026-07-26, п.5).
         /// </param>
         public ActRunner(INodeResolver resolver, IMapNodeChooser chooser, RunStateService runStates,
-                         IRunBeatStage beat = null)
+                         IRunBeatStage beat)
         {
             _resolver  = resolver;
             _chooser   = chooser;
@@ -66,7 +69,7 @@ namespace Guildmaster.Game.Services
                     // «К построению». Кнопки снимаются, как только узел выбран. На входе в акт передышки нет —
                     // там сразу карта (игрок должен увидеть, куда идёт).
                     using var beatCts = CancellationTokenSource.CreateLinkedTokenSource(ctx.Cancellation);
-                    if (!actEntry) _beat?.EnterRestBeat(beatCts.Token);
+                    if (!actEntry) _beat.EnterRestBeat(beatCts.Token);
 
                     MapNode node;
                     try     { node = await _chooser.ChooseAsync(map, available, ctx.Cancellation, openMap: actEntry); }
@@ -98,7 +101,7 @@ namespace Guildmaster.Game.Services
                     nodeCts?.Dispose();
                     nodeCts = CancellationTokenSource.CreateLinkedTokenSource(ctx.Cancellation);
 
-                    _beat?.EnterNode(); // мир уходит на второй план: у узла свой экран (у боя — своя фаза)
+                    _beat.EnterNode(); // мир уходит на второй план: у узла свой экран (у боя — своя фаза)
                     EventResult result = await flow.Run(ctx.ForNode(nodeCts.Token));
 
                     if (result.Outcome == EventOutcome.Aborted)

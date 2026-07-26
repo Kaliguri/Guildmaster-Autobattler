@@ -21,15 +21,12 @@ namespace Guildmaster.Presentation
     /// </summary>
     public sealed class HealthBarView : MonoBehaviour
     {
-        private const string ShaderName = "Guildmaster/UI/SegmentedHealthBar";
-
         [Header("Рендер")]
         [Tooltip("Единственный Image бара (тип Simple, на всю ширину, белый vertex-цвет). На него ставится инстанс материала.")]
         [SerializeField] private Image _fillImage;
 
         [Tooltip("Шаблон материала (шейдер SegmentedHealthBar) — задаёт статичный вид (цвета пустоты/урона/" +
-                 "хила/насечек, толщину). В рантайме клонируется per-instance. Пусто → Shader.Find (для билда " +
-                 "шейдер должен быть Always Included).")]
+                 "хила/насечек, толщину). В рантайме клонируется per-instance. ОБЯЗАТЕЛЕН.")]
         [SerializeField] private Material _barMaterial;
 
         [Header("Насечки (плотность — код; вид — материал)")]
@@ -80,15 +77,17 @@ namespace Guildmaster.Presentation
         {
             if (_mat != null) return;
 
-            if (_barMaterial != null)
-                _mat = new Material(_barMaterial);      // клон шаблона — статичный вид берётся из него
-            else
+            // Материал ОБЯЗАТЕЛЕН. Прежний фолбэк через Shader.Find был страховкой, которая ни разу не
+            // срабатывала (префабы всегда подают материал) и не сработала бы в билде: шейдера нет в Always
+            // Included Shaders, поэтому пустой слот дал бы белую полосу только у игрока, а в редакторе всё
+            // выглядело бы целым (аудит фолбэков 2026-07-26, п.6).
+            if (_barMaterial == null)
             {
-                Shader sh = Shader.Find(ShaderName);
-                if (sh != null) _mat = new Material(sh);
+                Debug.LogError($"[HealthBarView] - {name}: не назначен _barMaterial → полоса здоровья не будет отрисована");
+                return;
             }
 
-            if (_mat == null) return;
+            _mat = new Material(_barMaterial);          // клон шаблона — статичный вид берётся из него
             if (_fillImage != null) _fillImage.material = _mat;
 
             // Плотность насечек: жирная каждые majorTickValue/tickValue минорных.

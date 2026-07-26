@@ -80,7 +80,16 @@ namespace Guildmaster.Game.Services
                 // Отсутствующий ключ → пустая строка, чтобы вызывающий применил свой RU-фолбэк
                 // (а не показывал Unity-плейсхолдер «No translation found …» или сам ключ). Это делает
                 // code-фолбэки экранов (L(key, "RU")) реальной страховкой на случай незаведённого ключа.
-                if (res.Entry == null) return string.Empty;
+                // Но страховка обязана быть ВИДНА: RU-литерал всегда правильный, и именно поэтому никто не
+                // замечал, что половина ключей не заведена (аудит фолбэков 2026-07-26, п.7). Говорим один раз
+                // на ключ — вызов идёт на каждую перерисовку экрана.
+                if (res.Entry == null)
+                {
+                    if (_reportedMissingKeys.Add(key))
+                        UnityEngine.Debug.LogWarning(
+                            $"[Localization] - ключ '{key}' не заведён ни в '{table}', ни в парной таблице → экран покажет свой RU-литерал");
+                    return string.Empty;
+                }
 
                 // Именованные слоты ({dmg}) Smart Format достаёт из ОДНОГО аргумента-словаря
                 // через свой Dictionary-source; передавать пары по отдельности нельзя.
@@ -89,11 +98,18 @@ namespace Guildmaster.Game.Services
 
                 return res.Entry.GetLocalizedString() ?? string.Empty;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                // Сама подсистема локализации отказала (таблицы не загружены, битый Smart-формат). Это не
+                // «перевода нет», и молча отдавать пустоту здесь — значит потерять причину.
+                if (_reportedMissingKeys.Add("!" + key))
+                    UnityEngine.Debug.LogError($"[Localization] - отказ при чтении ключа '{key}' из '{table}': {e.Message}");
                 return string.Empty;
             }
         }
+
+        // Ключи, о которых уже сказали (промах и отказ — раздельно, префикс «!»). Только для дедупа лога.
+        private readonly HashSet<string> _reportedMissingKeys = new HashSet<string>();
 
         public void SetLocale(string localeCode)
         {
