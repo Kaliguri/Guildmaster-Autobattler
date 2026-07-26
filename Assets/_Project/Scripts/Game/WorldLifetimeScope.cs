@@ -44,6 +44,11 @@ namespace Guildmaster.Game
             // «Серая зона» тест-арены (QA #2): свапает цветной/grayscale пол по тумблеру тест-зоны.
             builder.RegisterComponentInHierarchy<Presentation.TestZoneArenaSkin>();
 
+            // Смена облика арены поклеточной подменой тайлов. Держим здесь, а не в боевом скоупе:
+            // переход обязан доигрывать, даже когда бой уже кончился и его скоуп ушёл.
+            builder.RegisterComponentInHierarchy<Presentation.Arena.ArenaSkinSwapper>()
+                   .AsSelf().As<IArenaSwap>();
+
             // World-слой карты акта (фаза D): живёт в этой persist-сцене СВОЕЙ зоной, разнесённой от арены
             // (положение объекта в сцене и задаёт, где карта в мире). Себя он привязывает к
             // WorldMapViewLink из корневого скоупа — петля забега висит выше и напрямую его не видит.

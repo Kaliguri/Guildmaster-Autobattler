@@ -15477,6 +15477,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 696136177}
+  - component: {fileID: 696136178}
   m_Layer: 0
   m_Name: === ARENA ===
   m_TagString: Untagged
@@ -15502,6 +15503,30 @@ Transform:
   - {fileID: 1161769343}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &696136178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696136176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa7ddc085c2d1aa409a128c60dfaed3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Arena.ArenaSkinSwapper
+  _live: {fileID: 2118912155}
+  _sources:
+  - {fileID: 2118912155}
+  - {fileID: 1907336535}
+  _durationSeconds: 4.5
+  _digitizeShare: 0.12
+  _restoreShare: 0.12
+  _cellSpread: 0.62
+  _cellDurationMin: 0.1
+  _cellDurationMax: 0.34
+  _tailAcceleration: 0.55
+  _rushFactor: 3.5
 --- !u!1001 &731377214
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31679,6 +31704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1907336534}
   - component: {fileID: 1907336533}
+  - component: {fileID: 1907336535}
   m_Layer: 20
   m_Name: Tilemap (Grayscale)
   m_TagString: Untagged
@@ -31715,6 +31741,20 @@ Transform:
   - {fileID: 774929482}
   m_Father: {fileID: 178133251}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1907336535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907336532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc3ba88b65cec347a43c50229cded9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Arena.ArenaSkinSource
+  _skinId: testzone
+  _isLive: 0
 --- !u!1001 &1922527514
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32612,6 +32652,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2118912153}
   - component: {fileID: 2118912154}
+  - component: {fileID: 2118912155}
   m_Layer: 20
   m_Name: Tilemap
   m_TagString: Untagged
@@ -32648,6 +32689,20 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
+--- !u!114 &2118912155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118912152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc3ba88b65cec347a43c50229cded9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Arena.ArenaSkinSource
+  _skinId: arena
+  _isLive: 1
 --- !u!1 &2124019627
 GameObject:
   m_ObjectHideFlags: 0
