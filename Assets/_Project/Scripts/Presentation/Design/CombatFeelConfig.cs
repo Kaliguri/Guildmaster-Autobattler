@@ -293,7 +293,6 @@ namespace Guildmaster.Presentation.Design
         public bool  EnableFacingFlipSquash  => _enableFacingFlipSquash;
         public bool  EnableTargetAcquireTell => _enableTargetAcquireTell;
         public bool  EnableIdleBreath        => _enableIdleBreath;
-        public bool  EnableSchoolFlash       => _enableSchoolFlash;
         public bool  EnableAttackAnticipation => _enableAttackAnticipation;
         public bool  EnableAttackerLunge     => _enableAttackerLunge;
         public bool  EnableImpactFrame       => _enableImpactFrame;
@@ -333,10 +332,9 @@ namespace Guildmaster.Presentation.Design
         public float SquashAmount     => _squashAmount;
         public float SquashDuration   => _squashDuration;
 
-        public float HitstopMin       => _hitstopMin;
-        public float HitstopMax       => _hitstopMax;
-        public float HitstopFullFrac  => _hitstopFullFrac;
-        public AnimationCurve HitstopWeightCurve => _hitstopWeightCurve;
+        // Сырых чисел hitstop наружу нет: их складывает EvaluateHitstopSeconds, и он единственный,
+        // кто знает формулу. Геттеры-дубли не звал никто (аудит 2026-07-26, волна 2). Флаг вспышки
+        // по школе тоже читается только здесь — снаружи её выбирает EvaluateFlashColor.
 
         /// <summary>Hitstop в секундах по доле HP-урона от MaxHP (кривая веса + lerp min..max).</summary>
         public float EvaluateHitstopSeconds(float hpDamageFrac)

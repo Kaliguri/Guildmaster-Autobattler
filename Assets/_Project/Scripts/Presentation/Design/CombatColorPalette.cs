@@ -31,9 +31,10 @@ namespace Guildmaster.Presentation.Design
                  "всех, вне зависимости от принадлежности юнита.")]
         [SerializeField] private Color _shield = new Color(0.62f, 0.86f, 1.0f);
 
-        public Color AllyHp => _allyHp;
-        public Color EnemyHp => _enemyHp;
         public Color Shield => _shield;
+
+        // Сырых AllyHp/EnemyHp здесь нет: цвет по принадлежности отдаёт HealthBarColor, и он
+        // единственный способ его получить — иначе у одного факта снова два входа (T-12/T-13).
 
         /// <summary>Цвет HP-бара по признаку «союзник ли юнит для смотрящего».</summary>
         public Color HealthBarColor(bool isAllyOfViewer) => isAllyOfViewer ? _allyHp : _enemyHp;

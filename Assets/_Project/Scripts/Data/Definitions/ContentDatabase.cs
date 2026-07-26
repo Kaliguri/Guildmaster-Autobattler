@@ -25,7 +25,6 @@ namespace Guildmaster.Data.Definitions
         [SerializeField, ReadOnly, ListDrawerSettings(ShowFoldout = true, IsReadOnly = true)]
         private List<ContentDefinition> _entries = new List<ContentDefinition>();
 
-        public int SchemaVersion => _schemaVersion;
 
         /// <summary>Все зарегистрированные определения (Sync-managed; порядок — по id для стабильного диффа).</summary>
         public IReadOnlyList<ContentDefinition> Entries => _entries;

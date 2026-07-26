@@ -18,26 +18,9 @@ namespace Guildmaster.DevTools
     /// </summary>
     public sealed class GuildmasterCommands : MonoBehaviour
     {
-        [Tooltip("SO реликвии «Железный копейщик» для gm_spawn_spearman (вики «13» шаг 4).")]
-        [SerializeField] private RelicData _spearmanRelic;
-
-        [Tooltip("SO реликвии «Светлый пастырь» для gm_spawn_shepherd (вики «13» §10.1).")]
-        [SerializeField] private RelicData _shepherdRelic;
-
-        [Tooltip("SO реликвии «Криомант» для gm_spawn_cryomancer (вики «13» §10.2).")]
-        [SerializeField] private RelicData _cryomancerRelic;
-
-        [Tooltip("SO реликвии «Надёжный защитник» для gm_spawn_defender (вики «13» §10.3).")]
-        [SerializeField] private RelicData _defenderRelic;
-
-        [Tooltip("SO реликвии «Лесной следопыт» для gm_spawn_ranger (вики «13» §10.4).")]
-        [SerializeField] private RelicData _rangerRelic;
-
-        [Tooltip("SO реликвии «Скрытный убийца» для gm_spawn_assassin (вики «13» §10.5).")]
-        [SerializeField] private RelicData _assassinRelic;
-
-        [Tooltip("SO реликвии «Монах вихря» для gm_spawn_monk (вики «13» §10.6).")]
-        [SerializeField] private RelicData _monkRelic;
+        // Ссылок на семь конкретных реликвий в инспекторе больше нет: релик дев-среза резолвится по id
+        // из контент-БД — тем же способом, что и болванчик строкой ниже. Семь serialized-полей означали,
+        // что переименование или замена ассета ломает команду молча, а сцена помнит контент (2026-07-26).
 
         [Tooltip("Тот же SimTuningConfig, что и на CombatLifetimeScope — для gm_tuning_rebake (QC).")]
         [SerializeField] private SimTuningConfig _simTuningConfig;
@@ -52,6 +35,9 @@ namespace Guildmaster.DevTools
         // Дамми-болванчики оформлены как полноценный юнит (EnemyData «enemy.training_dummy»): свой SO,
         // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
         private UnitData _dummyEnemy;
+
+        // Контент-БД для дев-срезов: релик берётся по id (relic.*) в момент вызова команды.
+        private IContentDatabase _content;
 
         // Открыта ли консоль сейчас: пока да — глушим наш игровой ввод (кроме F5), чтобы набор
         // команд в консоли не протекал в геймплей (пауза/смена вида/пан-зум/перезапуск боя).
@@ -76,6 +62,7 @@ namespace Guildmaster.DevTools
             _debugDraw  = debugDraw;
             _factory    = factory;
             _input      = input;
+            _content = contentDatabase;
             contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
             // Сессия боя живёт в RootScope: в реальном забеге резолвится, в standalone dev-арене (без Root) — null.
             resolver.TryResolve(out _session);
@@ -245,12 +232,13 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            if (_spearmanRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _spearmanRelic в инспекторе"); return; }
+            RelicData relic = DevRelic("relic.iron_spearman");
+            if (relic == null) return;
 
             ResetForNewBattle();
 
             // Копейщик слева — через фабрику (реальный путь сборки: статы/линейная АА/активка/AI-профиль/мана).
-            _simulation.EnqueueUnitSpawn(_factory.Create(_spearmanRelic, null, team: 0, new Vector2(-5f, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-5f, 0f)));
 
             // Кластер болванчиков справа — чтобы линейная АА задевала нескольких и сработало условие «≥2 в радиусе».
             for (int i = 0; i < enemies; i++)
@@ -269,12 +257,13 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            if (_shepherdRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _shepherdRelic в инспекторе"); return; }
+            RelicData relic = DevRelic("relic.light_shepherd");
+            if (relic == null) return;
 
             ResetForNewBattle();
 
             // Пастырь в тылу слева — через фабрику (реальный путь: AI-профиль Heal, хил-снаряд, активка «Длань жизни»).
-            _simulation.EnqueueUnitSpawn(_factory.Create(_shepherdRelic, null, team: 0, new Vector2(-6f, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
 
             // Раненые союзники-болванчики (team 0) на фронте: старт на 40% HP — видно выбор раненого и хил-снаряды.
             for (int i = 0; i < allies; i++)
@@ -302,12 +291,13 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            if (_cryomancerRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _cryomancerRelic в инспекторе"); return; }
+            RelicData relic = DevRelic("relic.cryomancer");
+            if (relic == null) return;
 
             ResetForNewBattle();
 
             // Криомант в тылу слева — через фабрику (реальный путь: on-hit «Заморозка», масс-стан «Ледяные оковы», AI PreferUntagged).
-            _simulation.EnqueueUnitSpawn(_factory.Create(_cryomancerRelic, null, team: 0, new Vector2(-6f, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
 
             // Кластер болванчиков справа: пока Криомант раздаёт «Заморозку», их накапливается ≥2 → срабатывают «Ледяные оковы».
             for (int i = 0; i < enemies; i++)
@@ -326,12 +316,13 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            if (_defenderRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _defenderRelic в инспекторе"); return; }
+            RelicData relic = DevRelic("relic.defender");
+            if (relic == null) return;
 
             ResetForNewBattle();
 
             // Защитник по центру-слева — через фабрику (реальный путь: пассив «Оплот» pre-damage, HighestThreat, ульта).
-            _simulation.EnqueueUnitSpawn(_factory.Create(_defenderRelic, null, team: 0, new Vector2(-4f, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-4f, 0f)));
 
             // Болванчики справа бьют защитника. «Оплот» поднимает щит на ЛЮБОЙ удар (PassiveTrigger.AnyHit, внутр. КД 4с).
             for (int i = 0; i < enemies; i++)
@@ -350,12 +341,13 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            if (_rangerRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _rangerRelic в инспекторе"); return; }
+            RelicData relic = DevRelic("relic.ranger");
+            if (relic == null) return;
 
             ResetForNewBattle();
 
             // Следопыт слева — через фабрику (реальный путь: кайт, стрельба на ходу, «Метка охотника» с переносом).
-            _simulation.EnqueueUnitSpawn(_factory.Create(_rangerRelic, null, team: 0, new Vector2(-6f, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
 
             // Кластер болванчиков справа лезет в ближний бой — видно кайт (отход) и стрельбу на ходу.
             for (int i = 0; i < enemies; i++)
@@ -374,13 +366,14 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            if (_assassinRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _assassinRelic в инспекторе"); return; }
+            RelicData relic = DevRelic("relic.assassin");
+            if (relic == null) return;
 
             ResetForNewBattle();
 
             // Убийца слева — через фабрику (реальный путь: пассивы «Скрытность» + «Изворотливость» из GrantedEffects,
             // усиленный первый удар, негейт крупных ударов, рестелс после убийства).
-            _simulation.EnqueueUnitSpawn(_factory.Create(_assassinRelic, null, team: 0, new Vector2(-5f, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-5f, 0f)));
 
             // Болванчики справа. «Изворотливость» гейтит ЛЮБУЮ автоатаку независимо от размера урона (PassiveTrigger.AnyHit).
             for (int i = 0; i < enemies; i++)
@@ -399,12 +392,13 @@ namespace Guildmaster.DevTools
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-            if (_monkRelic == null) { Debug.LogWarning("[GuildmasterCommands] - Не задан _monkRelic в инспекторе"); return; }
+            RelicData relic = DevRelic("relic.whirl_monk");
+            if (relic == null) return;
 
             ResetForNewBattle();
 
             // Монах слева — через фабрику (реальный путь: рывок → фиксация → отбрасывание → телепорт, §10.6).
-            _simulation.EnqueueUnitSpawn(_factory.Create(_monkRelic, null, team: 0, new Vector2(-6f, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, team: 0, new Vector2(-6f, 0f)));
 
             // Болванчики справа — раскиданы ХАОТИЧНО (детерминированный хэш по индексу, чтобы R повторял ту же
             // расстановку), далеко друг от друга: видно заход к конкретной цели и УГЛОВОЙ цепной толчок «ядра»,
@@ -529,6 +523,15 @@ namespace Guildmaster.DevTools
         // Единый dev-болванчик: собирается фабрикой из SO «enemy.training_dummy» (реальный путь — статы,
         // Brain из _ai, стартовый HP=MaxHP). Статы дамми правятся ТОЛЬКО в самом SO (1000 HP / 100 урона),
         // без хардкода в харнессе — один дамми на все сценарии gm_spawn_*.
+        // Релик дев-среза по id. Нет в БД — говорим вслух и не спавним: молчаливый пропуск читался бы
+        // как «команда не сработала», а причина (контент переименован/не в базе) осталась бы невидимой.
+        private RelicData DevRelic(string id)
+        {
+            if (_content != null && _content.TryGet(id, out RelicData relic) && relic != null) return relic;
+            Debug.LogError($"[GuildmasterCommands] - реликвии '{id}' нет в контент-БД → срез не запущен");
+            return null;
+        }
+
         private RuntimeUnit MakeDummy(int team, Vector2 pos) => _factory.Create(_dummyEnemy, null, team, pos);
     }
 }
