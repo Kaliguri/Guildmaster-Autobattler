@@ -124,7 +124,8 @@ namespace Guildmaster.Game
             // Локализация: сервис поверх String Tables (вики «13» §5). Потребители (UI) — Фаза 7.
             builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();
 
-            // Персистентность: соло-бэкенд JSON-файл за швом ISaveService (ES3/Steam Cloud — потом).
+            // Персистентность: JSON-файл за швом ISaveService — наш собственный и единственный бэкенд
+            // (реш. 2026-07-26; ES3 остаётся в проекте референсом, а не реализацией).
             builder.Register<JsonFileSaveService>(Lifetime.Singleton).As<ISaveService>();
             // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4).
             builder.Register<RunStateService>(Lifetime.Singleton);
