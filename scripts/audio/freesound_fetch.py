@@ -35,6 +35,9 @@ API = "https://freesound.org/apiv2"
 # Свободный лимит API: 60 запросов в минуту. Пауза между скачиваниями держит нас далеко под ним.
 REQUEST_PAUSE = 1.1
 
+# Превью длиннее этого не качаем — см. комментарий у скачивания.
+DOWNLOAD_LIMIT_SEC = 30.0
+
 
 def api_key():
     if os.environ.get("FREESOUND_API_KEY"):
@@ -148,6 +151,12 @@ def main():
 
         if not args.no_download:
             preview = item.get("previews", {}).get("preview-hq-ogg")
+            # Откат по фильтрам мог снять ограничение длительности — и тогда в выдачу попадает
+            # часовая полевая запись. Ссылку показываем, но качать такое не станем: превью
+            # тянется минутами, а на one-shot оно всё равно не годится.
+            if preview and item["duration"] > DOWNLOAD_LIMIT_SEC:
+                print(f"      (не качаю: {item['duration'] / 60:.0f} мин — слушать по ссылке)")
+                preview = None
             if preview:
                 dst = os.path.join(folder, f"{item['id']}_{slug}.ogg")
                 try:

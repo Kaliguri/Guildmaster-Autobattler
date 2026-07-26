@@ -64,8 +64,8 @@ def main():
     token = hf_token()
     os.environ["HF_TOKEN"] = token
 
+    import soundfile
     import torch
-    import torchaudio
     from einops import rearrange
     from stable_audio_tools import get_pretrained_model
     from stable_audio_tools.inference.generation import generate_diffusion_cond
@@ -129,7 +129,10 @@ def main():
             output = output[..., :wanted]
 
         dst = os.path.join(OUT_DIR, f"{slug}_{i:02d}.wav")
-        torchaudio.save(dst, output, sample_rate)
+        # Пишем через soundfile, а не torchaudio.save: в свежих версиях torchaudio сохранение
+        # переехало на TorchCodec, которого в окружении нет, и падает уже ПОСЛЕ генерации —
+        # то есть впустую сжигает минуты счёта.
+        soundfile.write(dst, output.numpy().T, sample_rate, subtype="PCM_16")
         print(f"  {os.path.relpath(dst, REPO)}  ({time.time() - started:.0f} с)")
 
     print("\nЭто кандидаты: послушать, выбрать, положить в пак и прописать в audio_map.py.")
