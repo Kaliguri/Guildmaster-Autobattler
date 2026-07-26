@@ -25,8 +25,16 @@ Shader "Guildmaster/Arena/Digital"
 
         [HDR] _WireColor ("Цвет каркаса", Color) = (0.79, 0.64, 0.29, 1)
         [HDR] _SparkColor ("Цвет вспышки", Color) = (0.95, 0.84, 0.61, 1)
-        _InkColor ("Цвет затемнения", Color) = (0.055, 0.043, 0.031, 1)
-        _InkAmount ("Сила затемнения", Range(0, 1)) = 0.6
+        // Графит с тёплым подмесом, а не чернила: цифра должна ГАСИТЬ цвет пола, иначе трава остаётся живой
+        // и «модель места» не читается. Настоящей десатурации альфа-блендингом не сделать — тянем к серому.
+        _InkColor ("Цвет затемнения", Color) = (0.075, 0.078, 0.086, 1)
+        _InkAmount ("Сила затемнения", Range(0, 1)) = 0.78
+
+        [Header(Scan)]
+        _ScanAmount ("Сила скан-линий", Range(0, 0.4)) = 0.12
+        _ScanFreq ("Частота скан-линий (на юнит мира)", Range(0.1, 4)) = 0.7
+        _ScanSpeed ("Скорость скан-линий", Range(0, 3)) = 0.35
+        _CellFlicker ("Разброс яркости по клеткам", Range(0, 0.3)) = 0.12
 
         _WireWidth ("Толщина линии (доля клетки)", Range(0.01, 0.3)) = 0.06
         _FloorWire ("Яркость каркаса пола", Range(0, 1)) = 0.34
@@ -99,6 +107,10 @@ Shader "Guildmaster/Arena/Digital"
                 half   _Calm;
                 half   _BreathAmount;
                 half   _BreathSpeed;
+                half   _ScanAmount;
+                half   _ScanFreq;
+                half   _ScanSpeed;
+                half   _CellFlicker;
             CBUFFER_END
 
             Varyings DigitalVertex(Attributes IN)
@@ -174,7 +186,15 @@ Shader "Guildmaster/Arena/Digital"
                 half flash = saturate(1.0h - abs(_Progress - tSwitch) / _SwitchBand);
                 flash *= digital * (1.0h - _Calm);
 
-                half ink = _InkAmount * digital * breath + _WallFill * isWall * digital;
+                // Скан-линии ползут по миру, а не по экрану: иначе при движении камеры они «прилипают»
+                // к стеклу и мир перестаёт выглядеть тем, что оцифровано.
+                half scan = 0.5h + 0.5h * sin((IN.positionWS.y * _ScanFreq - _Time.y * _ScanSpeed) * 6.2831853);
+
+                // Клетки светятся чуть по-разному — поле читается как данные, а не как ровная заливка.
+                half flicker = 1.0h - _CellFlicker * frac(tSwitch * 7.3h);
+
+                half ink = (_InkAmount + _ScanAmount * scan) * digital * breath * flicker
+                           + _WallFill * isWall * digital;
 
                 half3 col = _InkColor.rgb;
                 half  a   = saturate(ink);

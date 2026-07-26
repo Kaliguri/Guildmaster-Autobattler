@@ -85,6 +85,20 @@ namespace Guildmaster.Presentation.Arena
         /// <summary>Имена слоёв живого корня — по ним оверлей отличает пол от стен.</summary>
         public IEnumerable<string> LayerNames => _liveLayers.Keys;
 
+        /// <summary>
+        /// Положить облик, собранный на лету, а не снятый с корня в сцене: дев-инструменты сейчас,
+        /// процедурные арены потом. Существующий облик с тем же id заменяется.
+        /// </summary>
+        public void RegisterSkin(string skinId, Dictionary<string, Dictionary<Vector3Int, TileBase>> layers)
+        {
+            if (string.IsNullOrEmpty(skinId) || layers == null) return;
+            _skins[skinId] = layers;
+        }
+
+        /// <summary>Снимок облика — чтобы собрать на его основе вариант. Отдаётся как есть, не копией.</summary>
+        public bool TryGetSkin(string skinId, out Dictionary<string, Dictionary<Vector3Int, TileBase>> layers) =>
+            _skins.TryGetValue(skinId ?? string.Empty, out layers);
+
         /// <summary>Есть ли в облике тайл в этой клетке этого слоя. Для оверлея: пол там или стена.</summary>
         public bool HasTile(string skinId, string layerName, Vector3Int cell)
         {

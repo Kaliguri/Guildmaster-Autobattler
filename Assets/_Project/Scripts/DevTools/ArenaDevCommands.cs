@@ -40,6 +40,47 @@ namespace Guildmaster.DevTools
                 : $"Не выйдет: облика '{skinId}' нет либо он уже надет.";
         }
 
+#if UNITY_EDITOR
+        [Command("gm_arena_demo", "Собрать демо-облик 'stone' из каменного тайлсета — чтобы было что показывать")]
+        public static string BuildDemoSkin()
+        {
+            ArenaSkinSwapper swapper = Swapper();
+            if (swapper == null) return "Свопер облика не найден (мир не поднят?).";
+            if (!swapper.TryGetSkin("arena", out var source)) return "Нет исходного облика 'arena'.";
+
+            // Палитра каменного пола из пака: в рантайме её не достать, но дев-команды и живут только
+            // в редакторе. Настоящая вторая арена придёт тайлмапой в сцене, это лишь стенд.
+            var palette = new System.Collections.Generic.List<UnityEngine.Tilemaps.TileBase>();
+            foreach (string guid in UnityEditor.AssetDatabase.FindAssets("t:TileBase \"Stone Ground\""))
+            {
+                var tile = UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.Tilemaps.TileBase>(
+                    UnityEditor.AssetDatabase.GUIDToAssetPath(guid));
+                if (tile != null) palette.Add(tile);
+            }
+            if (palette.Count == 0) return "Каменных тайлов не нашлось — палитра пуста.";
+
+            var variant = new System.Collections.Generic.Dictionary<string,
+                System.Collections.Generic.Dictionary<Vector3Int, UnityEngine.Tilemaps.TileBase>>();
+
+            foreach (var layer in source)
+            {
+                var cells = new System.Collections.Generic.Dictionary<Vector3Int, UnityEngine.Tilemaps.TileBase>();
+                bool isWall = layer.Key.Contains("Wall");
+                foreach (var cell in layer.Value)
+                {
+                    // Стены оставляем — меняется «начинка» арены, а её контур должен остаться узнаваемым.
+                    cells[cell.Key] = isWall
+                        ? cell.Value
+                        : palette[Mathf.Abs(cell.Key.x * 73856093 ^ cell.Key.y * 19349663) % palette.Count];
+                }
+                variant[layer.Key] = cells;
+            }
+
+            swapper.RegisterSkin("stone", variant);
+            return $"Облик 'stone' собран ({palette.Count} тайлов в палитре). Дальше: gm_arena_swap stone";
+        }
+#endif
+
         [Command("gm_arena_rush", "Резко ускорить идущий переход (то же, что Space)")]
         public static string Rush()
         {
