@@ -32,11 +32,11 @@ MonoBehaviour:
   _menuTableLight: 2.2
   _menuTableAmbient: 0.45
   _menuTableTiling: 5
-  _nodeBacking: {r: 0.115, g: 0.093, b: 0.07, a: 1}
-  _nodeRim: {r: 0.72, g: 0.52, b: 0.24, a: 1}
+  _nodeBacking: {r: 0.14117648, g: 0.101960786, b: 0.07058824, a: 1}
+  _nodeRim: {r: 0.72156864, g: 0.5254902, b: 0.23137255, a: 1}
   _currentMarker: {r: 0.902, g: 0.788, b: 0.561, a: 1}
   _iconShadow: {r: 0.11, g: 0.078, b: 0.051, a: 1}
-  _iconLight: {r: 0.97, g: 0.93, b: 0.84, a: 1}
+  _iconLight: {r: 0.9372549, g: 0.8862745, b: 0.76862746, a: 1}
   _available: {r: 1, g: 1, b: 1, a: 1}
   _current: {r: 1, g: 1, b: 1, a: 1}
   _cleared: {r: 0.78, g: 0.74, b: 0.66, a: 1}
