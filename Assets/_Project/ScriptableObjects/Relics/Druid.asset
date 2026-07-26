@@ -48,7 +48,7 @@ MonoBehaviour:
     Value: 8
   - Stat: 18
     Op: 3
-    Value: 8
+    Value: 10
   - Stat: 4
     Op: 3
     Value: 12

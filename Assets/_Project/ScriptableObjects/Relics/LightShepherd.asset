@@ -41,10 +41,10 @@ MonoBehaviour:
     Value: 0.7
   - Stat: 9
     Op: 3
-    Value: 7
+    Value: 8
   - Stat: 18
     Op: 3
-    Value: 8
+    Value: 10
   - Stat: 27
     Op: 3
     Value: 80
