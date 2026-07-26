@@ -19,7 +19,19 @@ namespace Guildmaster.UI
         /// </summary>
         public const string MapModeTag = "map";
 
-        /// <summary>Тег режима для подсветки таба топбара: "map"/"inventory"/"battle"/null.</summary>
+        /// <summary>Тег режима инвентаря: Sheet-экран грида реликвий поверх мира.</summary>
+        public const string InventoryModeTag = "inventory";
+
+        /// <summary>Тег боевого режима: пространство арены (бой или полигон) под всеми оверлеями.</summary>
+        public const string BattleModeTag = "battle";
+
+        /// <summary>
+        /// Тег режима для подсветки таба топбара: <see cref="MapModeTag"/> / <see cref="InventoryModeTag"/> /
+        /// <see cref="BattleModeTag"/> / null.
+        /// <para>Владелец словаря — эти константы. Строка живёт сразу в трёх ролях (тег экрана, имя чипа
+        /// <c>mode-*</c> в разметке, ключ подсветки), и раньше каждая роль писала свой литерал: шесть мест,
+        /// расходящихся молча — переименуй режим, и таб просто перестанет загораться (аудит 2026-07-26, T-14).</para>
+        /// </summary>
         public virtual string ModeTag => null;
 
         /// <summary>

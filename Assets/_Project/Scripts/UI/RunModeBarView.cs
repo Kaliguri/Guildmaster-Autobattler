@@ -43,9 +43,11 @@ namespace Guildmaster.UI
             _restarts    = Root.Q<Label>("topbar-hp");
             _start       = Root.Q<Button>("btn-start");
 
-            WireMode("map",        "ui.mode.map",        "Карта",      onMap);
-            WireMode("battle",     "ui.mode.battle",     "Бой",        onBattle);
-            WireMode("inventory",  "ui.mode.inventory",  "Инвентарь",  onInventory);
+            // Ключ = тег режима (UiScreen.*): он же имя чипа mode-<key> в разметке, он же то,
+            // что придёт в SetActiveMode. Одна строка на все три роли — иначе таб гаснет молча.
+            WireMode(UiScreen.MapModeTag,       "ui.mode.map",       "Карта",     onMap);
+            WireMode(UiScreen.BattleModeTag,    "ui.mode.battle",    "Бой",       onBattle);
+            WireMode(UiScreen.InventoryModeTag, "ui.mode.inventory", "Инвентарь", onInventory);
             // Табов «Тактика» и «Компендиум» здесь больше нет: чипы висели с пустыми обработчиками,
             // то есть выглядели как рабочие режимы и молча ничего не делали (аудит 2026-07-26, волна 2).
             // Вернуть — вместе с экраном, который они открывают.

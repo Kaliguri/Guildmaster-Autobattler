@@ -603,7 +603,7 @@ namespace Guildmaster.UI
         {
             string overlay = _router?.ActiveScreenMode;
             if (overlay != null)           return overlay;
-            if (phase != BattlePhase.None) return "battle";
+            if (phase != BattlePhase.None) return UiScreen.BattleModeTag;
             return null;
         }
 

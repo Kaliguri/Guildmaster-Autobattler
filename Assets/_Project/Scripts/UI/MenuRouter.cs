@@ -241,7 +241,7 @@ namespace Guildmaster.UI
 
         /// <summary>Есть ли карта петли акта в стеке (result-экран выбора узла) — скрытая под геймплеем или видимая.
         /// Отличает «вернуться на карту петли» (выйти из боя) от read-only просмотра (нет карты петли).</summary>
-        public bool HasMapInStack => _nav.AnyScreen(s => s.ModeTag == "map");
+        public bool HasMapInStack => _nav.AnyScreen(s => s.ModeTag == UiScreen.MapModeTag);
 
         /// <summary>Показать инвентарь (радио-режим): Sheet-тело поверх геймплея. Идемпотентно (уже открыт → no-op).</summary>
         public void ShowInventory(int gold, Action<RelicData, RelicDragPhase> onRelicDrag = null)
@@ -251,8 +251,8 @@ namespace Guildmaster.UI
             if (CannotShow("Карточка аркана (_arcanaCard)", _arcanaCardUxml)) return;
             UiTrace.Log("router.ShowInventory: Push inventory Sheet");
             _inventoryScreen = new RouterScreen(ScreenKind.Sheet, () => BuildInventory(gold, onRelicDrag),
-                                                modeTag: "inventory", onExit: () => _inventoryScreen = null);
-            _nav.Push(_inventoryScreen); // QA #21: ModeTag "inventory" подсвечивает таб
+                                                modeTag: UiScreen.InventoryModeTag, onExit: () => _inventoryScreen = null);
+            _nav.Push(_inventoryScreen); // QA #21: тег режима подсвечивает таб
         }
 
         /// <summary>Снять инвентарь (радио-режим). Идемпотентно (не открыт → no-op). Remove из любого места стека.</summary>
@@ -295,7 +295,7 @@ namespace Guildmaster.UI
         {
             if (_testZoneScreen != null) { UiTrace.Log("router.ShowTestZone: уже показан → no-op"); return; }
             UiTrace.Log("router.ShowTestZone: Push test-zone Sheet");
-            _testZoneScreen = new RouterScreen(ScreenKind.Sheet, BuildTestZoneSpace, modeTag: "battle",
+            _testZoneScreen = new RouterScreen(ScreenKind.Sheet, BuildTestZoneSpace, modeTag: UiScreen.BattleModeTag,
                                                onExit: () => _testZoneScreen = null);
             _nav.Push(_testZoneScreen);
         }
@@ -380,7 +380,7 @@ namespace Guildmaster.UI
         // текстового ивента (выбор без результата = снять стек). НЕ для завершения забега (то — единая отмена, K11).
         private void CloseAll() => _nav.PopAll();
 
-        /// <summary>Режим-таб верхнего оверлея (QA #21): "inventory"/"map"/null. Единый источник подсветки топбара.</summary>
+        /// <summary>Режим-таб верхнего оверлея (QA #21), из констант <see cref="UiScreen"/>. Единый источник подсветки топбара.</summary>
         public string ActiveScreenMode => _nav.ActiveModeTag;
 
         /// <summary>

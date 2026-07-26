@@ -165,7 +165,7 @@ namespace Guildmaster.DevTools
                 bar.SetAct(4);
                 bar.SetFloor(3, 12);
                 bar.SetRestarts(2, 2);
-                bar.SetActiveMode("inventory");
+                bar.SetActiveMode(Guildmaster.UI.UiScreen.InventoryModeTag);
                 bar.HideBattleCenter();
                 root.Add(bar.Root);
             }
