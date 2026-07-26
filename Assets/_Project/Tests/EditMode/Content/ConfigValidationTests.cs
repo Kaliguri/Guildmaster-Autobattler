@@ -146,7 +146,22 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.That(g.DefaultMusicVolume,  Is.InRange(0f, 1f));
             Assert.That(g.DefaultSfxVolume,    Is.InRange(0f, 1f));
             Assert.GreaterOrEqual(g.VesselItemSlots, 1);
-            Assert.IsFalse(string.IsNullOrEmpty(g.DefaultLocale), "GameConfig.DefaultLocale пуст.");
+            Assert.GreaterOrEqual(g.PartyBannerSlots, 1, "Знамён на отряд — минимум одно (ГДД: два).");
+            Assert.GreaterOrEqual(g.GuildSize, 1, "Гильдия не может быть пустой (ГДД: четверо).");
+            Assert.IsFalse(string.IsNullOrEmpty(g.StartingRelicId), "Стартовая реликвия не задана.");
+
+            // Экономика: инициализаторов у полей больше нет, значения живут только в ассете. Незаполненный
+            // ассет иначе прошёл бы молча — и забег стартовал бы с нулём золота и бесплатной лавкой.
+            Assert.Greater(g.StartGold, 0, "Стартовое золото забега — ноль.");
+            Assert.Greater(g.BattleGoldReward, 0, "Награда за бой — ноль.");
+            Assert.Greater(g.PriceCommon, 0, "Цена Common — ноль.");
+            Assert.Greater(g.PriceCursed, 0, "Цена Cursed — ноль.");
+            Assert.Greater(g.PriceDivine, 0, "Цена Divine — ноль.");
+            Assert.Greater(g.ShopRerollCost, 0, "Реролл витрины бесплатен — это не задумано.");
+            Assert.Greater(g.SellPercent, 0f, "Продажа реликвии не приносит ничего.");
+            Assert.GreaterOrEqual(g.RelicCapacityBase, 1, "Вместимость коллекции — ноль.");
+            Assert.GreaterOrEqual(g.RelicCapacityMax, g.RelicCapacityBase,
+                "Потолок вместимости ниже стартовой — апгрейд невозможен.");
         }
 
         private static T LoadSingle<T>() where T : UnityEngine.Object

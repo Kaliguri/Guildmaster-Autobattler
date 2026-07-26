@@ -20,7 +20,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         [SetUp]
         public void SetUp()
         {
-            _config = ScriptableObject.CreateInstance<GameConfig>(); // RestartsPerAct код-дефолт = 2
+            _config = GameConfig.CreateDefault(); // заготовка: RestartsPerAct = 2
             _runStates = new RunStateService(new InMemorySaveService(), _config);
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
         }

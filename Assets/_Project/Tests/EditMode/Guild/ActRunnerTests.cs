@@ -26,7 +26,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         public void SetUp()
         {
             _save = new InMemorySaveService();
-            var config = ScriptableObject.CreateInstance<GameConfig>();
+            var config = GameConfig.CreateDefault();
             _runStates = new RunStateService(_save, config);
         }
 

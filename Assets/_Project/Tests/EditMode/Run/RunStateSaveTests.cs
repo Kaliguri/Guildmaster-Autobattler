@@ -92,7 +92,7 @@ namespace Guildmaster.Tests.EditMode.Run
         [Test]
         public void RelicCapacity_EnforcedAndUpgradable()
         {
-            var config = ScriptableObject.CreateInstance<GameConfig>(); // дефолты: base=8, max=16
+            var config = GameConfig.CreateDefault(); // заготовка: вместимость 12, потолок 16
             try
             {
                 var svc = new RunStateService(new JsonFileSaveService(), config);
@@ -122,7 +122,7 @@ namespace Guildmaster.Tests.EditMode.Run
         [Test]
         public void VesselItems_RespectPerVesselLimit()
         {
-            var config = ScriptableObject.CreateInstance<GameConfig>(); // VesselItemSlots = 4
+            var config = GameConfig.CreateDefault(); // заготовка: VesselItemSlots = 3
             try
             {
                 var svc = new RunStateService(new JsonFileSaveService(), config);
@@ -152,7 +152,7 @@ namespace Guildmaster.Tests.EditMode.Run
         [Test]
         public void PartyBanners_RespectPartyLimit()
         {
-            var config = ScriptableObject.CreateInstance<GameConfig>(); // PartyBannerSlots = 2
+            var config = GameConfig.CreateDefault(); // заготовка: PartyBannerSlots = 2
             try
             {
                 var svc = new RunStateService(new JsonFileSaveService(), config);

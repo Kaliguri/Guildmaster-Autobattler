@@ -21,7 +21,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         [SetUp]
         public void SetUp()
         {
-            _config    = ScriptableObject.CreateInstance<GameConfig>();
+            _config    = GameConfig.CreateDefault();
             _runStates = new RunStateService(new InMemorySaveService(), _config);
             _runStates.NewDefaultRun(1L); // 4 сосуда с relic.base
         }

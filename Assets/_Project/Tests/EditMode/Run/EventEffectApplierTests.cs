@@ -21,7 +21,7 @@ namespace Guildmaster.Tests.EditMode.Run
         [SetUp]
         public void SetUp()
         {
-            var config = ScriptableObject.CreateInstance<GameConfig>(); // Base=8, Max=16
+            var config = GameConfig.CreateDefault(); // заготовка: вместимость 12, потолок 16
             _run = new RunStateService(new InMemorySaveService(), config);
             _run.NewRun(1, Array.Empty<RosterSlot>());
             _run.Current.Gold = 0; // старт-золото забега — не предмет этих тестов (проверяем дельту эффекта)
