@@ -18,6 +18,9 @@ namespace Guildmaster.Game.Services
     /// редакторе, не кодом).
     /// </para>
     /// </remarks>
+    // Список Formatters в LocalizationSettings хранится через [SerializeReference] — без атрибута
+    // Unity не может записать наш форматтер в ассет и ругается на каждом импорте.
+    [System.Serializable]
     [DisplayName("Guildmaster Stat")]
     public class StatValueFormatter : FormatterBase
     {

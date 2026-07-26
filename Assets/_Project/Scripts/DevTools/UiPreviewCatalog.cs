@@ -160,11 +160,11 @@ namespace Guildmaster.DevTools
             {
                 var bar = new Guildmaster.UI.RunModeBarView(
                     barUxml, RuValue,
-                    () => { }, () => { }, () => { }, () => { }, () => { }, () => { }, () => { });
+                    () => { }, () => { }, () => { }, () => { }, () => { });
                 bar.SetGold(100);
                 bar.SetAct(4);
+                bar.SetFloor(3, 12);
                 bar.SetRestarts(2, 2);
-                bar.SetRunTime("12:34");
                 bar.SetActiveMode("inventory");
                 bar.HideBattleCenter();
                 root.Add(bar.Root);
