@@ -81,8 +81,8 @@ namespace Guildmaster.Presentation.Map
         [Tooltip("Подложка узла — одна на все типы (--gm-ink-600). Тип читается ИКОНКОЙ, не цветом.")]
         [SerializeField] private Color _nodeBacking = new Color(0.141f, 0.102f, 0.071f);
 
-        [Tooltip("Обод узла (--gm-brass-500).")]
-        [SerializeField] private Color _nodeRim = new Color(0.722f, 0.525f, 0.231f);
+        [Tooltip("Обод узла (--gm-brass-600).")]
+        [SerializeField] private Color _nodeRim = new Color(0.627f, 0.435f, 0.188f);
 
         [Tooltip("Метка узла, на котором стоит отряд (--gm-brass-200).")]
         [SerializeField] private Color _currentMarker = new Color(0.902f, 0.788f, 0.561f);
