@@ -1,21 +1,33 @@
 using System;
+using System.Collections.Generic;
 using Guildmaster.Core.Settings;
+using UnityEngine;
 
 namespace Guildmaster.UI
 {
     /// <summary>
-    /// ViewModel экрана настроек — посредник между <see cref="ISettingsService"/> (модель) и View (UXML).
+    /// ViewModel экрана настроек — посредник между моделью и View (UXML). Моделей две:
+    /// <see cref="ISettingsService"/> (звук и геймплей, едут в облако) и <see cref="IDisplayService"/>
+    /// (дисплей, машинно-локальный). Экран один, поэтому VM одна — но хранилища за ней разные.
     /// POCO (создаётся DI, НЕ MonoBehaviour) — тестируется без сцены. Держит baseline-снапшот для Cancel:
-    /// <see cref="BeginEdit"/> запоминает текущее, сеттеры применяют живьём (слышно при драге),
-    /// <see cref="Cancel"/> откатывает, <see cref="Save"/> фиксирует. Значения — [0..1].
+    /// <see cref="BeginEdit"/> запоминает текущее, сеттеры применяют живьём (слышно при драге и видно
+    /// при смене режима окна), <see cref="Cancel"/> откатывает, <see cref="Save"/> фиксирует.
+    /// <para>Подписи здесь не собираются: VM отдаёт данные (режимы, разрешения, частоты), а текст к ним
+    /// подставляет роутер через локализацию.</para>
     /// </summary>
     public sealed class SettingsViewModel
     {
         private readonly ISettingsService _settings;
+        private readonly IDisplayService  _display;
         private AudioVolumeSettings _baseline;
         private GameplaySettings _baselineGameplay;
+        private (int Width, int Height, WindowMode Mode, RefreshRate Rate) _baselineDisplay;
 
-        public SettingsViewModel(ISettingsService settings) => _settings = settings;
+        public SettingsViewModel(ISettingsService settings, IDisplayService display)
+        {
+            _settings = settings;
+            _display  = display;
+        }
 
         public float Master => _settings.Audio.Master;
         public float Music => _settings.Audio.Music;
@@ -32,11 +44,99 @@ namespace Guildmaster.UI
             remove => _settings.Changed -= value;
         }
 
+        // ── Дисплей (машинно-локальный, мимо Steam Cloud) ────────────────────
+
+        /// <summary>Режимы окна в порядке показа. Подписи — за роутером (loc).</summary>
+        public static readonly WindowMode[] WindowModes =
+        {
+            WindowMode.BorderlessWindow,
+            WindowMode.ExclusiveFullscreen,
+            WindowMode.Windowed,
+        };
+
+        public WindowMode WindowMode => _display.Mode;
+
+        public int WindowModeIndex => Array.IndexOf(WindowModes, _display.Mode);
+
+        /// <summary>
+        /// Разрешения без дублей. <c>Screen.resolutions</c> отдаёт по строке на КАЖДУЮ пару
+        /// «разрешение + частота», поэтому 1920x1080 приходит столько раз, сколько монитор знает частот.
+        /// </summary>
+        public IReadOnlyList<(int Width, int Height)> Resolutions
+        {
+            get
+            {
+                var list = new List<(int Width, int Height)>();
+                foreach (Resolution r in _display.AvailableResolutions)
+                    if (!list.Contains((r.width, r.height))) list.Add((r.width, r.height));
+                return list;
+            }
+        }
+
+        public int ResolutionIndex
+        {
+            get
+            {
+                IReadOnlyList<(int Width, int Height)> list = Resolutions;
+                for (int i = 0; i < list.Count; i++)
+                    if (list[i].Width == _display.Width && list[i].Height == _display.Height) return i;
+                return -1;
+            }
+        }
+
+        /// <summary>Частоты, доступные для текущего разрешения.</summary>
+        public IReadOnlyList<RefreshRate> RefreshRates => _display.RefreshRatesFor(_display.Width, _display.Height);
+
+        public int RefreshRateIndex
+        {
+            get
+            {
+                IReadOnlyList<RefreshRate> list = RefreshRates;
+                for (int i = 0; i < list.Count; i++)
+                    if (Math.Abs(list[i].value - _display.RefreshRate.value) < 0.01) return i;
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Можно ли выбирать частоту обновления. Вне эксклюзивного полноэкранного — нельзя: её держит
+        /// композитор рабочего стола, и список надо гасить, а не показывать неработающим.
+        /// </summary>
+        public bool RefreshRateSelectable => _display.RefreshRateSelectable;
+
+        public void SetWindowMode(int index)
+        {
+            if (index < 0 || index >= WindowModes.Length) return;
+            _display.SetMode(WindowModes[index]);
+        }
+
+        public void SetResolution(int index)
+        {
+            IReadOnlyList<(int Width, int Height)> list = Resolutions;
+            if (index < 0 || index >= list.Count) return;
+            _display.SetResolution(list[index].Width, list[index].Height);
+        }
+
+        public void SetRefreshRate(int index)
+        {
+            IReadOnlyList<RefreshRate> list = RefreshRates;
+            if (index < 0 || index >= list.Count) return;
+            _display.SetRefreshRate(list[index]);
+        }
+
+        /// <summary>Поднимается при изменении настроек дисплея (список частот зависит от разрешения).</summary>
+        public event Action DisplayChanged
+        {
+            add => _display.Changed += value;
+            remove => _display.Changed -= value;
+        }
+
         /// <summary>Запомнить текущее состояние как точку отката (при открытии экрана).</summary>
         public void BeginEdit()
         {
             _baseline = _settings.Audio;
             _baselineGameplay = _settings.Gameplay;
+            _baselineDisplay = (_display.Width, _display.Height, _display.Mode, _display.RefreshRate);
         }
 
         public void SetMaster(float v) => _settings.SetMasterVolume(v);
@@ -47,12 +147,14 @@ namespace Guildmaster.UI
         public void SetCardAttackAnimation(bool v) => _settings.SetCardAttackAnimation(v);
         public void SetAlwaysDetailedTooltips(bool v) => _settings.SetAlwaysDetailedTooltips(v);
 
-        /// <summary>Сохранить на диск и обновить точку отката.</summary>
+        /// <summary>Сохранить на диск и обновить точку отката. Два хранилища — два вызова.</summary>
         public void Save()
         {
             _settings.Save();
+            _display.Save();
             _baseline = _settings.Audio;
             _baselineGameplay = _settings.Gameplay;
+            _baselineDisplay = (_display.Width, _display.Height, _display.Mode, _display.RefreshRate);
         }
 
         /// <summary>Откатить к состоянию на момент <see cref="BeginEdit"/> (и переприменить в аудио).</summary>
@@ -64,9 +166,19 @@ namespace Guildmaster.UI
             _settings.SetCardAnimations(_baselineGameplay.CardAnimations);
             _settings.SetCardAttackAnimation(_baselineGameplay.CardAttackAnimation);
             _settings.SetAlwaysDetailedTooltips(_baselineGameplay.AlwaysDetailedTooltips);
+
+            // Дисплей откатываем тоже — и это здесь не формальность: игрок мог выбрать режим, в котором
+            // изображение пропало, и «Отмена» остаётся единственным способом вернуться.
+            _display.SetMode(_baselineDisplay.Mode);
+            _display.SetResolution(_baselineDisplay.Width, _baselineDisplay.Height);
+            _display.SetRefreshRate(_baselineDisplay.Rate);
         }
 
-        /// <summary>Вернуть к начальным (дефолты GameConfig), применить, но не сохранять.</summary>
-        public void ResetToDefaults() => _settings.ResetToDefaults();
+        /// <summary>Вернуть к начальным, применить, но не сохранять. Для дисплея начальное = «как у монитора».</summary>
+        public void ResetToDefaults()
+        {
+            _settings.ResetToDefaults();
+            _display.ResetToNative();
+        }
     }
 }

@@ -455,6 +455,23 @@ namespace Guildmaster.UI
             // §II.10.4: галка «всегда подробно». Shift при ней работает наоборот — временно даёт краткий вид.
             if (tipDetails != null) tipDetails.LabelText = L("ui.settings.tooltip_details", "Всегда подробные подсказки");
 
+            // Таб «Графика»: дисплей. Списки живые — их наполняет Sync, потому что набор частот зависит
+            // от выбранного разрешения и меняется прямо во время правки.
+            var windowMode = screen.Q<Guildmaster.UI.Components.SelectRow>("row-window-mode");
+            var resolution = screen.Q<Guildmaster.UI.Components.SelectRow>("row-resolution");
+            var refreshRow = screen.Q<Guildmaster.UI.Components.SelectRow>("row-refresh-rate");
+            var videoHint  = screen.Q<Label>("video-hint");
+            if (windowMode != null) windowMode.LabelText = L("ui.settings.window_mode", "Режим окна");
+            if (resolution != null) resolution.LabelText = L("ui.settings.resolution", "Разрешение");
+            if (refreshRow != null) refreshRow.LabelText = L("ui.settings.refresh_rate", "Частота обновления");
+
+            string ModeLabel(Core.Settings.WindowMode m) => m switch
+            {
+                Core.Settings.WindowMode.ExclusiveFullscreen => L("ui.settings.window_mode.exclusive", "Полноэкранный"),
+                Core.Settings.WindowMode.Windowed            => L("ui.settings.window_mode.windowed", "Оконный"),
+                _                                            => L("ui.settings.window_mode.borderless", "Окно без рамок"),
+            };
+
             _settingsVm.BeginEdit();
 
             // SliderRow/ToggleRow сами обновляют свой вид (в т.ч. в SetValueWithoutNotify).
@@ -468,6 +485,46 @@ namespace Guildmaster.UI
                 tipDetails?.SetValueWithoutNotify(_settingsVm.AlwaysDetailedTooltips);
                 // «Атака» осмысленна только при включённой анимации карточек.
                 cardAttack?.SetEnabled(_settingsVm.CardAnimations);
+
+                SyncDisplay();
+            }
+
+            void SyncDisplay()
+            {
+                if (windowMode != null)
+                {
+                    var modes = new List<string>();
+                    foreach (Core.Settings.WindowMode m in SettingsViewModel.WindowModes) modes.Add(ModeLabel(m));
+                    windowMode.SetChoices(modes, _settingsVm.WindowModeIndex);
+                }
+
+                if (resolution != null)
+                {
+                    var items = new List<string>();
+                    foreach ((int w, int h) in _settingsVm.Resolutions) items.Add($"{w} x {h}");
+                    resolution.SetChoices(items, _settingsVm.ResolutionIndex);
+                }
+
+                if (refreshRow != null)
+                {
+                    var rates = new List<string>();
+                    foreach (RefreshRate r in _settingsVm.RefreshRates) rates.Add($"{r.value:0.##} Гц");
+                    refreshRow.SetChoices(rates, _settingsVm.RefreshRateIndex);
+
+                    // Вне эксклюзивного полноэкранного частоту держит композитор рабочего стола —
+                    // гасим строку вместо того, чтобы предлагать выбор без эффекта.
+                    refreshRow.SetRowEnabled(_settingsVm.RefreshRateSelectable);
+                }
+
+                if (videoHint != null)
+                {
+                    bool locked = !_settingsVm.RefreshRateSelectable;
+                    videoHint.text = locked
+                        ? L("ui.settings.refresh_rate.locked",
+                            "Частоту обновления можно менять только в полноэкранном режиме.")
+                        : string.Empty;
+                    videoHint.EnableInClassList("gm-tab-page--hidden", !locked);
+                }
             }
 
             Sync();
@@ -479,10 +536,20 @@ namespace Guildmaster.UI
             cardAttack?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAttackAnimation(e.newValue));
             tipDetails?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetAlwaysDetailedTooltips(e.newValue));
 
-            // VM → слайдеры (Defaults/Cancel меняют значения «снаружи»). Отписка при снятии с панели.
+            windowMode?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetWindowMode(windowMode.Index));
+            resolution?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetResolution(resolution.Index));
+            refreshRow?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetRefreshRate(refreshRow.Index));
+
+            // VM → контролы (Defaults/Cancel меняют значения «снаружи»). Отписка при снятии с панели.
             Action onChanged = Sync;
             _settingsVm.Changed += onChanged;
-            screen.RegisterCallback<DetachFromPanelEvent>(_ => _settingsVm.Changed -= onChanged);
+            Action onDisplayChanged = SyncDisplay;
+            _settingsVm.DisplayChanged += onDisplayChanged;
+            screen.RegisterCallback<DetachFromPanelEvent>(_ =>
+            {
+                _settingsVm.Changed -= onChanged;
+                _settingsVm.DisplayChanged -= onDisplayChanged;
+            });
 
             screen.Q<Button>("btn-save").clicked += () => { _settingsVm.Save(); Pop(); };
             screen.Q<Button>("btn-cancel").clicked += () => { _settingsVm.Cancel(); Pop(); };
@@ -492,9 +559,10 @@ namespace Guildmaster.UI
             return screen;
         }
 
-        // Табы настроек (Игра/Графика/Звук) — визуал-каркас: клик показывает свою страницу и прячет прочие.
-        // Игра/Графика пока плейсхолдеры; Звук несёт живые слайдеры. Раскладка/стиль — из UXML/USS.
-        private static void WireSettingsTabs(VisualElement screen)
+        // Табы настроек (Игра/Графика/Звук): клик показывает свою страницу и прячет прочие. Раскладка и
+        // стиль — из UXML/USS. Публичный, потому что тем же переключением пользуется UI-стенд превью:
+        // иначе страницу «Графика» нельзя посмотреть, не поднимая весь бут игры.
+        public static void WireSettingsTabs(VisualElement screen)
         {
             var tabGame  = screen.Q<Button>("tab-game");
             var tabVideo = screen.Q<Button>("tab-video");

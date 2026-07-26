@@ -142,6 +142,21 @@
     border-color: var(--gm-color-border-inner);
 }
 
+/* ФОН таба при наведении/фокусе/нажатии. Прежние правила задавали только рамку, и этого не хватало:
+   тема Unity продолжала заливать кнопку своим светло-серым, поэтому таб, по которому кликнули,
+   оставался серой плашкой (видно на превью настроек 2026-07-27). Тот же корень, что у кнопки в
+   раунде 3, просто для таба фон тогда не прописали. */
+.unity-button.gm-tab:hover,
+.unity-button.gm-tab:focus {
+    background-color: var(--gm-color-hover-surface);
+    background-image: none;
+}
+
+.unity-button.gm-tab:active {
+    background-color: var(--gm-color-surface-sunken);
+    background-image: none;
+}
+
 /* Primary — та же форма, та же рамка, тот же светлый текст. Разница только в том, что поле
    НАГРЕТО: угли вместо холодного дерева. Заливка токеном, без 9-slice картинки. */
 .unity-button.gm-button--primary:hover {
@@ -381,6 +396,53 @@
     -unity-background-image-tint-color: var(--gm-color-text);
 }
 
+/* Пояснение под страницей таба: почему опция недоступна. Мельче тела, приглушённое. */
+.gm-tab-hint {
+    margin-top: var(--gm-space-1);
+    white-space: normal;
+}
+
+/* --- Строка выбора: подпись слева, выпадающий список справа (разрешение, режим окна, частота) --- */
+.gm-select-row {
+    flex-direction: row;
+    align-items: center;
+    margin-top: var(--gm-space-2);
+    margin-bottom: var(--gm-space-2);
+}
+
+.gm-select-row__label {
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+    flex-grow: 1;
+}
+
+/* Приглушить подпись недоступной строки — так же, как это делает строка тумблера. Случай не
+   гипотетический: частоту обновления Unity меняет только в эксклюзивном полноэкранном. */
+.gm-select-row--disabled .gm-select-row__label,
+.gm-select-row:disabled .gm-select-row__label {
+    color: var(--gm-color-disabled-text);
+}
+
+/* Ширина — долей строки, а не числом. Первая версия несла width: 260px, и на узкой панели длинный
+   вариант («Окно без рамок») обрезался, а строка частоты вылезала за край со скроллбаром. Доля
+   переживает и смену размера диалога, и длинные подписи локализации. */
+.gm-select-row__dropdown {
+    flex-basis: 45%;
+    flex-shrink: 1;
+    margin-left: var(--gm-space-3);
+}
+
+/* Поле списка под тему-гроссбух: утопленный фон и латунная рамка вместо серого дефолта Unity.
+   Селектор с двумя классами — иначе тема Unity перебивает одноклассовое правило. */
+.gm-select-row__dropdown .unity-base-popup-field__input {
+    background-color: var(--gm-color-surface-sunken);
+    border-width: var(--gm-border-1);
+    border-color: var(--gm-color-border-frame);
+    border-radius: var(--gm-radius-0);
+    color: var(--gm-color-text);
+    font-size: var(--gm-font-body);
+}
+
 /* --- Строка слайдера: подпись слева, слайдер по центру, значение справа --- */
 .gm-slider-row {
     flex-direction: row;
@@ -443,6 +505,30 @@
 .gm-tabbar {
     flex-direction: row;
     margin-bottom: var(--gm-space-2);
+}
+
+/* Разделы колонкой слева, содержимое справа (настройки, реш. Макса 2026-07-27). Горизонтальный ряд
+   табов отнимал ширину у самих опций — из-за этого строка «Частота обновления» и уезжала за панель. */
+.gm-settings-layout {
+    flex-direction: row;
+    flex-grow: 1;
+    min-height: 0;
+}
+
+.gm-tabbar--side {
+    flex-direction: column;
+    width: var(--gm-sidebar-width);
+    flex-shrink: 0;
+    margin-right: var(--gm-space-4);
+    margin-bottom: 0;
+}
+
+/* В колонке отступ переезжает вправо→вниз, подпись прижимается к левому краю: список разделов
+   читается сверху вниз, а не как ряд кнопок. */
+.gm-tabbar--side .gm-tab {
+    margin-right: 0;
+    margin-bottom: var(--gm-space-1);
+    -unity-text-align: middle-left;
 }
 
 .gm-tab {
@@ -1270,6 +1356,15 @@
 
 .gm-mainmenu__btn {
     /* модификатор оставлен как точка расширения; вид и отступы — общие с .gm-button */
+}
+
+/* Пункты меню (главное и ESC) — колонка по центру, а не полосы во всю ширину. После укрупнения
+   диалога до 1280 растянутая кнопка держала подпись в центре пустоты и читалась как разделитель.
+   Правило одно на оба меню: они намеренно выглядят одинаково (реш. Макса, раунд 4). */
+.gm-mainmenu__buttons .gm-button,
+.gm-panel--menu .gm-panel__body .gm-button {
+    width: var(--gm-menu-column-width);
+    align-self: center;
 }
 
 /* Штамп версии билда: правый нижний угол ЭКРАНА (родитель .gm-screen позиционирует по центру, поэтому

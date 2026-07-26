@@ -186,7 +186,47 @@ namespace Guildmaster.DevTools
             SetSliderRow(r, "row-master", "Общий", 0.8f);
             SetSliderRow(r, "row-music",  "Музыка", 0.65f);
             SetSliderRow(r, "row-sfx",    "Звук",  1.0f);
+
+            // Страница «Графика»: реальные режимы монитора, чтобы видеть настоящую длину списков.
+            // Значения статичны — стенд не поднимает IDisplayService, он показывает вид, а не поведение.
+            SetSelectRow(r, "row-window-mode", "Режим окна",
+                new List<string> { "Окно без рамок", "Полноэкранный", "Оконный" }, 0);
+
+            var resolutions = new List<string>();
+            foreach (UnityEngine.Resolution res in UnityEngine.Screen.resolutions)
+            {
+                string item = $"{res.width} x {res.height}";
+                if (!resolutions.Contains(item)) resolutions.Add(item);
+            }
+            SetSelectRow(r, "row-resolution", "Разрешение", resolutions, resolutions.Count - 1);
+
+            var rates = new List<string>();
+            foreach (UnityEngine.Resolution res in UnityEngine.Screen.resolutions)
+            {
+                string item = $"{res.refreshRateRatio.value:0.##} Гц";
+                if (!rates.Contains(item)) rates.Add(item);
+            }
+            SetSelectRow(r, "row-refresh-rate", "Частота обновления", rates, rates.Count - 1);
+
+            // Частота гаснет вне эксклюзивного полноэкранного — показываем именно это состояние,
+            // потому что оно и есть по умолчанию (окно без рамок).
+            var refreshRow = r.Q<Guildmaster.UI.Components.SelectRow>("row-refresh-rate");
+            refreshRow?.SetRowEnabled(false);
+            var hint = r.Q<Label>("video-hint");
+            if (hint != null) hint.text = "Частоту обновления можно менять только в полноэкранном режиме.";
+
+            // Табы кликабельны — иначе страницу «Графика» в стенде не открыть.
+            Guildmaster.UI.MenuRouter.WireSettingsTabs(r);
             root.Add(r);
+        }
+
+        private static void SetSelectRow(VisualElement root, string name, string label,
+                                         List<string> choices, int selected)
+        {
+            var row = root.Q<Guildmaster.UI.Components.SelectRow>(name);
+            if (row == null) return;
+            row.LabelText = label;
+            row.SetChoices(choices, selected);
         }
 
         private static void SetSliderRow(VisualElement root, string name, string label, float value)
