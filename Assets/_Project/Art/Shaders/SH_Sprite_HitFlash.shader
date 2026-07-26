@@ -26,6 +26,7 @@ Shader "Guildmaster/Sprite/HitFlash"
         _HoloAlpha ("Hologram Body Alpha", Range(0, 1)) = 0.45
         _HoloScanScale ("Hologram Scanline Scale (px)", Float) = 3
         _HoloScanAmount ("Hologram Scanline Strength", Range(0, 1)) = 0.35
+        [HideInInspector] _HoloTexel ("Hologram Texel Size", Vector) = (0.01, 0.01, 0, 0)
 
         // Спрайтовая обвязка — SpriteRenderer прокидывает per-renderer, руками не трогать.
         [HideInInspector] _RendererColor ("RendererColor", Color) = (1, 1, 1, 1)
@@ -84,13 +85,13 @@ Shader "Guildmaster/Sprite/HitFlash"
             // SRP-batcher: единый layout, все per-material поля в одном CBUFFER, без #ifdef.
             CBUFFER_START(UnityPerMaterial)
                 half4  _MainTex_ST;
-                float4 _MainTex_TexelSize;   // нужен голограмме: шаг в один тексель для контура
                 half4  _Color;
                 half4  _Flip;
                 half4  _FlashColor;
                 half4  _HoloColor;
                 half4  _HoloRimColor;
                 half   _FlashAmount;
+                half4  _HoloTexel;   // xy = размер текселя спрайта; подаёт UnitView
                 half   _Holo;
                 half   _HoloAlpha;
                 half   _HoloScanScale;
@@ -104,7 +105,10 @@ Shader "Guildmaster/Sprite/HitFlash"
                 half grey = dot(col.rgb, half3(0.299h, 0.587h, 0.114h));
                 half3 body = _HoloColor.rgb * (0.35h + grey * 0.75h);
 
-                float2 px = _MainTex_TexelSize.xy;
+                // Шаг в один тексель приходит СНАРУЖИ, а не из _MainTex_TexelSize: авто-переменная Unity
+                // внутри UnityPerMaterial ломает 2D SRP Batcher для всего материала (он ругается на
+                // _TexelSize/_ST в буфере), а материал этот стоит на каждом юните.
+                float2 px = _HoloTexel.xy;
                 half neighbours = min(
                     min(SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv + float2( px.x, 0)).a,
                         SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv + float2(-px.x, 0)).a),
@@ -188,13 +192,13 @@ Shader "Guildmaster/Sprite/HitFlash"
 
             CBUFFER_START(UnityPerMaterial)
                 half4  _MainTex_ST;
-                float4 _MainTex_TexelSize;   // нужен голограмме: шаг в один тексель для контура
                 half4  _Color;
                 half4  _Flip;
                 half4  _FlashColor;
                 half4  _HoloColor;
                 half4  _HoloRimColor;
                 half   _FlashAmount;
+                half4  _HoloTexel;   // xy = размер текселя спрайта; подаёт UnitView
                 half   _Holo;
                 half   _HoloAlpha;
                 half   _HoloScanScale;
@@ -208,7 +212,10 @@ Shader "Guildmaster/Sprite/HitFlash"
                 half grey = dot(col.rgb, half3(0.299h, 0.587h, 0.114h));
                 half3 body = _HoloColor.rgb * (0.35h + grey * 0.75h);
 
-                float2 px = _MainTex_TexelSize.xy;
+                // Шаг в один тексель приходит СНАРУЖИ, а не из _MainTex_TexelSize: авто-переменная Unity
+                // внутри UnityPerMaterial ломает 2D SRP Batcher для всего материала (он ругается на
+                // _TexelSize/_ST в буфере), а материал этот стоит на каждом юните.
+                float2 px = _HoloTexel.xy;
                 half neighbours = min(
                     min(SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv + float2( px.x, 0)).a,
                         SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv + float2(-px.x, 0)).a),

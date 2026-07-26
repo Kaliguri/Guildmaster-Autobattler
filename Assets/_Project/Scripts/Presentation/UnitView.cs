@@ -124,6 +124,7 @@ namespace Guildmaster.Presentation
         private static readonly int HoloAlphaId   = Shader.PropertyToID("_HoloAlpha");
         private static readonly int HoloScanScaleId  = Shader.PropertyToID("_HoloScanScale");
         private static readonly int HoloScanAmountId = Shader.PropertyToID("_HoloScanAmount");
+        private static readonly int HoloTexelId      = Shader.PropertyToID("_HoloTexel");
 
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
         // Своя фаза анимации атаки (НЕ путать с сим-AttackPhase на RuntimeUnit): охватывает ВЕСЬ цикл
@@ -748,6 +749,11 @@ namespace Guildmaster.Presentation
             _mpb.SetFloat(HoloId, _holoAmount);
             if (_holoAmount > 0.0001f && _feel != null)
             {
+                // Размер текселя текущего кадра — по нему голограмма находит край силуэта.
+                Texture tex = _sprite.sprite != null ? _sprite.sprite.texture : null;
+                Vector2 texel = tex != null ? new Vector2(1f / tex.width, 1f / tex.height) : new Vector2(0.01f, 0.01f);
+                _mpb.SetVector(HoloTexelId, texel);
+
                 _mpb.SetColor(HoloColorId, _feel.HologramColor);
                 _mpb.SetColor(HoloRimId,   _feel.HologramRimColor);
                 _mpb.SetFloat(HoloAlphaId, _feel.HologramBodyAlpha);
