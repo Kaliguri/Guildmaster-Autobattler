@@ -47,7 +47,7 @@ $validStatus = @('draft', 'needs_review', 'ready', 'living', 'archive', 'planned
 # тех-вики (Diátaxis).
 $validClusters = @(
     'Meta', 'Vision', 'Combat', 'Run', 'Content', 'Modes', 'Roster',
-    'Effect', 'Item', 'Relic', 'Faction', 'Factions', 'Enemies',
+    'Effect', 'Item', 'Relic', 'Species', 'Faction', 'Enemies',
     'Bandits', 'Goblins', 'Golems', 'Beasts',
     'Reference', 'Explanation', 'How-to', 'Planning'
 )

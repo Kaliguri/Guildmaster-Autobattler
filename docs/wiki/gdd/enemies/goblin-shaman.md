@@ -3,8 +3,8 @@ title: "Goblins - Elite - Goblin Shaman"
 kind: enemy
 status: draft
 enemy_group: Элита
-faction: Гоблины
-subfaction: Основные
+species: Гоблины
+subspecies: Основные
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:
@@ -27,7 +27,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** элита.
-- **Фракция:** гоблины.
+- **Вид:** гоблины.
 - **Позиция:** вторая линия.
 - **Ближний / дальний:** дальний.
 

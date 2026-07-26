@@ -3,8 +3,8 @@ title: "Goblins - Common - Goblin Grunt"
 kind: enemy
 status: draft
 enemy_group: Обычный
-faction: Гоблины
-subfaction: Основные
+species: Гоблины
+subspecies: Основные
 position: Фронт
 combat_range: Ближний
 attack_delivery:
@@ -22,7 +22,7 @@ mechanics: []
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный.
-- **Фракция:** гоблины.
+- **Вид:** гоблины.
 - **Позиция:** фронт.
 - **Ближний / дальний:** ближний.
 

@@ -89,7 +89,7 @@ SORT file.name ASC
 - [[relics-overview|Content - Relics]] — редкость, типы; Судьбы и перки. Карточки — [[relics/index|Content - Relics · каталог]].
 - [[items-banners|Content - Items & Banners]] — предметы (Vessel) и Знамёна (Party): слоты, авто-триггеры.
 - Ростер — [[roster/index|Roster - Overview]].
-- Враги — [[enemies/index|Enemies - Catalog]] · [[enemies/factions/index|Factions - Index]].
+- Враги — [[enemies/index|Enemies - Catalog]] · [[enemies/species/index|Factions - Index]].
 
 ## 50 · Со-режим и UX (`50-modes-ux/`)
 

@@ -3,8 +3,8 @@ title: "Goblins - Common - Goblin Cutthroat"
 kind: enemy
 status: draft
 enemy_group: Обычный
-faction: Гоблины
-subfaction: Основные
+species: Гоблины
+subspecies: Основные
 position: Фланг
 combat_range: Ближний
 attack_delivery:
@@ -23,7 +23,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный.
-- **Фракция:** гоблины.
+- **Вид:** гоблины.
 - **Позиция:** фланг.
 - **Ближний / дальний:** ближний.
 

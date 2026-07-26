@@ -3,8 +3,8 @@ title: "Bandits - Elite - Bandit Warlock"
 kind: enemy
 status: draft
 enemy_group: Элита
-faction: Разбойники
-subfaction: Основные
+species: Разбойники
+subspecies: Основные
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:
@@ -28,7 +28,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** элита.
-- **Фракция:** разбойники, основные.
+- **Вид:** разбойники. **Подвид:** основные.
 - **Позиция:** вторая линия.
 - **Ближний / дальний:** дальний.
 

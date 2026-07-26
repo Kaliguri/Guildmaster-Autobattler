@@ -3,8 +3,8 @@ title: "Golems - Elite - Earth Golem"
 kind: enemy
 status: draft
 enemy_group: Элита
-faction: Големы
-subfaction: Земляные
+species: Големы
+subspecies: Земляные
 position: Фронт
 combat_range: Ближний
 attack_delivery:
@@ -27,7 +27,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** элита.
-- **Фракция:** големы, земляные.
+- **Вид:** големы. **Подвид:** земляные.
 - **Позиция:** фронт.
 - **Ближний / дальний:** ближний.
 
