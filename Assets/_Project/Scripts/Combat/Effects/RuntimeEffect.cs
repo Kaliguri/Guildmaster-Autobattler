@@ -21,8 +21,43 @@ namespace Guildmaster.Combat.Effects
         /// </summary>
         public string ModifierSourceLocKey => ContentKeys.NameKey(Def);
 
-        /// <summary>Кто наложил — атрибуция урона/исцеления, скейл потенции, триггеры.</summary>
+        /// <summary>Кто наложил ПЕРВЫМ — скейл потенции (снимок заморожен, вики «11» §5.1) и триггеры.</summary>
         public RuntimeUnit Source;
+
+        /// <summary>
+        /// Кто и сколько раз подкрепил этот эффект — по нему делится атрибуция периодики (реш. Макса
+        /// 2026-07-26: «делить пропорционально вкладу в стаки»). Экземпляр эффекта живёт ОДИН на цели,
+        /// поэтому вопрос «чей это урон» решается здесь, а не разведением экземпляров: горение, которое
+        /// вдвоём поддерживают двое, приносит каждому свою половину тика.
+        /// <para>Два параллельных списка вместо словаря: вкладчиков единицы, порядок = порядок наложения,
+        /// а значит обход детерминирован — на нём стоит чек-сумма.</para>
+        /// </summary>
+        public readonly System.Collections.Generic.List<RuntimeUnit> ContributorSources = new();
+
+        /// <summary>Вес вкладчика: сколько раз он наложил или подкрепил эффект. Параллелен <see cref="ContributorSources"/>.</summary>
+        public readonly System.Collections.Generic.List<int> ContributorWeights = new();
+
+        /// <summary>Сумма весов — знаменатель доли. 0 = вкладчиков нет (эффект собран вручную в тесте).</summary>
+        public int TotalContribution
+        {
+            get
+            {
+                int sum = 0;
+                for (int i = 0; i < ContributorWeights.Count; i++) sum += ContributorWeights[i];
+                return sum;
+            }
+        }
+
+        /// <summary>Засчитать наложение/подкрепление источнику: первое — заводит вкладчика, повторное — растит вес.</summary>
+        public void AddContribution(RuntimeUnit source)
+        {
+            for (int i = 0; i < ContributorSources.Count; i++)
+            {
+                if (ReferenceEquals(ContributorSources[i], source)) { ContributorWeights[i]++; return; }
+            }
+            ContributorSources.Add(source);
+            ContributorWeights.Add(1);
+        }
 
         /// <summary>Остаток длительности в тиках. <c>-1</c> = постоянный (пассивка), <c>0</c> = мгновенный.</summary>
         public int RemainingTicks;

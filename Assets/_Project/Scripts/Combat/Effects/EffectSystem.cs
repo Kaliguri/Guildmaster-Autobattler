@@ -135,6 +135,8 @@ namespace Guildmaster.Combat
                 PeriodicTicks = new int[componentCount],
             };
 
+            effect.AddContribution(source);   // первый вкладчик — тот, кто наложил
+
             int ticks = ResolveDurationTicks(def, source, target);
             effect.RemainingTicks    = ticks;
             effect.FullDurationTicks = ticks;
@@ -355,8 +357,29 @@ namespace Guildmaster.Combat
                         eff.PeriodicTicks[i] = 0;
                         // Dt = Interval: компонент считает применяемое как Potency × Dt × Stacks
                         // (per-second rate → за период; total масштабируется числом тиков, вики «11» §5.1).
-                        periodic.OnTick(MakeContext(unit, eff.Source, combat, eff, i, periodic.Interval));
-                        if (unit.IsDead) return;
+                        // Проходов столько, сколько вкладчиков: сумма долей = 1, поэтому суммарный урон
+                        // тот же, но каждый кусок засчитывается ТОМУ, кто его поддерживает (реш. Макса).
+                        // Делим тик по вкладчикам ТОЛЬКО у компонентов, чья величина за тик скейлится
+                        // потенцией источника (урон/хил): именно её и надо засчитать тому, кто держит
+                        // эффект. Компоненты состояния (например «Угли», снимающие стак по таймеру)
+                        // обязаны отработать РОВНО ОДИН раз — иначе несколько вкладчиков ускорили бы
+                        // сход стаков (реш. Макса 2026-07-26: делить пропорционально вкладу).
+                        int total = periodic is IScalablePotency ? eff.TotalContribution : 0;
+                        if (total <= 1)
+                        {
+                            periodic.OnTick(MakeContext(unit, eff.Source, combat, eff, i, periodic.Interval));
+                            if (unit.IsDead) return;
+                        }
+                        else
+                        {
+                            for (int c = 0; c < eff.ContributorSources.Count; c++)
+                            {
+                                float share = eff.ContributorWeights[c] / (float)total;
+                                periodic.OnTick(MakeContext(unit, eff.ContributorSources[c], combat, eff, i,
+                                                            periodic.Interval, share));
+                                if (unit.IsDead) return;
+                            }
+                        }
                     }
                 }
             }
@@ -414,12 +437,13 @@ namespace Guildmaster.Combat
         }
 
         private static EffectContext MakeContext(
-            RuntimeUnit target, RuntimeUnit source, ICombatContext combat, RuntimeEffect effect, int componentIndex, float dt)
+            RuntimeUnit target, RuntimeUnit source, ICombatContext combat, RuntimeEffect effect, int componentIndex,
+            float dt, float share = 1f)
         {
             float potency = effect.ScaledPotency != null && componentIndex < effect.ScaledPotency.Length
                 ? effect.ScaledPotency[componentIndex]
                 : 0f;
-            return new EffectContext(target, source, combat, effect, potency, dt);
+            return new EffectContext(target, source, combat, effect, potency, dt, share);
         }
 
         /// <summary>
@@ -451,7 +475,7 @@ namespace Guildmaster.Combat
             switch (def.Stacking)
             {
                 case StackRule.None:
-                    return;
+                    return;   // повтор игнорируется целиком — вклад тоже не растёт
 
                 case StackRule.Stack:
                     stacksChanged = TryAddStack(existing, def);
@@ -466,6 +490,11 @@ namespace Guildmaster.Combat
                     RefreshDuration(existing, def, source, target);
                     break;
             }
+
+            // Подкрепление засчитано вкладчику: по этим весам делится атрибуция периодики (реш. Макса).
+            // Для Stack-правил вес == вклад в стаки; для Refresh стаков нет, и весом становится само
+            // подкрепление — иначе горение, которое двое держат по очереди, целиком висело бы на первом.
+            existing.AddContribution(source);
 
             // Стак изменил число — переоценить stateful-вклад компонентов под новый Stacks.
             if (stacksChanged) Reapply(existing, previousStacks, target, combat);

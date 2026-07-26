@@ -49,7 +49,10 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnTick(in EffectContext ctx)
         {
-            float damage = DamagePerSecond(ctx.Potency, ctx.Target) * ctx.Dt * ctx.Stacks;
+            // Share: доля вкладчика, за которого идёт этот проход. Эффект на цели один, но держать
+            // его могут несколько — тогда тик прогоняется по вкладчикам, и урон каждого куска
+            // засчитывается своему источнику (реш. Макса 2026-07-26). Один вкладчик → Share = 1.
+            float damage = DamagePerSecond(ctx.Potency, ctx.Target) * ctx.Dt * ctx.Stacks * ctx.Share;
             if (damage <= 0f) return;
 
             // Periodic: тик DoT не будит реактивы «на удар» — горение и яд не должны запускать шипы и щиты.

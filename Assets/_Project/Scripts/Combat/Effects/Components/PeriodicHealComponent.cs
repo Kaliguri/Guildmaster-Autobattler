@@ -26,7 +26,9 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnTick(in EffectContext ctx)
         {
-            float heal = ctx.Potency * ctx.Dt * ctx.Stacks;
+            // Share — доля вкладчика (см. PeriodicDamageComponent): хил тоже засчитывается тому,
+            // кто держит эффект, а суммарная величина за тик не меняется.
+            float heal = ctx.Potency * ctx.Dt * ctx.Stacks * ctx.Share;
             if (heal <= 0f) return;
 
             ctx.Combat.Heal(ctx.Target, heal, ctx.Source);

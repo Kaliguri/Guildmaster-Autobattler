@@ -42,6 +42,33 @@ namespace Guildmaster.Tests.EditMode.Combat
                 "MaxStacks — потолок НА ЦЕЛИ, общий для всех источников");
         }
 
+        // Атрибуция периодики делится по вкладу в стаки (реш. Макса 2026-07-26): экземпляр один,
+        // но урон тика уходит тем, кто его держит, в их долях. Проверяем сами доли — источники и веса.
+        [Test]
+        public void Contributions_SplitByStacksAcrossSources()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+            var target = TestUnit.Make();
+            var casterA = TestUnit.Make();
+            var casterB = TestUnit.Make();
+            EffectData poison = TestEffect.Make(baseDuration: 6f, tags: EffectTag.DoT,
+                                                stacking: StackRule.StackAndRefresh, maxStacks: 4);
+
+            sys.Apply(target, poison, casterA, ctx);   // A: 1
+            sys.Apply(target, poison, casterA, ctx);   // A: 2
+            sys.Apply(target, poison, casterB, ctx);   // B: 1
+
+            RuntimeEffect eff = target.ActiveEffects[0];
+            Assert.AreEqual(3, eff.Stacks, "Три наложения — три стака на цели");
+            Assert.AreEqual(3, eff.TotalContribution);
+            Assert.AreEqual(2, eff.ContributorSources.Count, "Вкладчиков двое");
+            Assert.AreSame(casterA, eff.ContributorSources[0]);
+            Assert.AreEqual(2, eff.ContributorWeights[0], "Две трети тика — тому, кто наложил дважды");
+            Assert.AreSame(casterB, eff.ContributorSources[1]);
+            Assert.AreEqual(1, eff.ContributorWeights[1]);
+        }
+
         // --- Наложение / маска ---
 
         [Test]
