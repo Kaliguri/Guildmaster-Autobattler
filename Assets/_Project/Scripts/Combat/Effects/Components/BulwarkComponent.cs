@@ -52,6 +52,11 @@ namespace Guildmaster.Combat.Effects.Components
             RuntimeUnit self = ctx.Target;
             if (self == null || self.IsDead || _shieldEffect == null) return;
 
+            // Щит встаёт под ПРЯМОЙ удар — автоатаку или способность. Тики DoT и ответка шипов его
+            // не будят: иначе горение съедало бы все заряды тиками по капле, мимо того удара, ради
+            // которого «Оплот» существует.
+            if (!incoming.IsDirectHit) return;
+
             if (!TriggerMet(self, in incoming)) return;
 
             int[] charges = ctx.Effect.ChargeReadyTicks;

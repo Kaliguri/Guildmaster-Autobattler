@@ -98,6 +98,31 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
+        public void Bulwark_IgnoresDotTicks_AndThornsBackfire()
+        {
+            var es  = new EffectSystem();
+            var ctx = new TickContext(es);
+            var defender = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f, hp: 100f,
+                relic: DefenderRelic(PassiveTrigger.AnyHit));
+
+            ctx.ApplyEffect(defender, BulwarkPassive(), defender);
+            RuntimeEffect bulwark = defender.ActiveEffects[0];
+
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageSchool.True, ArmorK,
+                sourceKind: DamageSourceKind.Periodic), ctx);
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageSchool.True, ArmorK,
+                sourceKind: DamageSourceKind.Reactive), ctx);
+
+            Assert.AreEqual(0, bulwark.ChargeReadyTicks[0], "Тик DoT заряд не тратит");
+            Assert.AreEqual(0, bulwark.ChargeReadyTicks[1], "Ответка шипов заряд не тратит");
+
+            // Способность — прямой удар: щит встаёт.
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageSchool.True, ArmorK,
+                sourceKind: DamageSourceKind.Ability), ctx);
+            Assert.AreNotEqual(0, bulwark.ChargeReadyTicks[0], "Урон способности поднимает щит");
+        }
+
+        [Test]
         public void Bulwark_None_DoesNotTrigger()
         {
             var es  = new EffectSystem();
