@@ -5,7 +5,7 @@ kind: character
 status: needs_review
 updated: 2026-07-26
 rarity: Обычная
-combat_class: Призыватель  # карточка-заготовка: позиции нет; щит и контроль тянут в Танка
+combat_class: Призыватель
 position: []
 combat_range: []
 attack_delivery: []

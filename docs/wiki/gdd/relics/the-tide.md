@@ -5,7 +5,7 @@ kind: character
 status: draft
 updated: 2026-07-26
 rarity: Обычная
-combat_class: Поддержка  # спорно: луч наносит урон, но лечение, щит и контроль перевешивают
+combat_class: Поддержка
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:

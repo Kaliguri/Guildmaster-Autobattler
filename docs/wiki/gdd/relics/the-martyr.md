@@ -5,7 +5,7 @@ kind: character
 status: needs_review
 updated: 2026-07-26
 rarity: Обычная
-combat_class: Поддержка  # карточка-заготовка: позиции нет; класс — из «жертвует собой ради усиления»
+combat_class: Поддержка
 position: []
 combat_range: []
 attack_delivery: []
