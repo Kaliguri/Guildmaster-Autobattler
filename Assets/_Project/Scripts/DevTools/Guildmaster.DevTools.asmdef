@@ -11,6 +11,7 @@
     "Guildmaster.UI",
     "QFSW.QC",
     "VContainer",
+    "MessagePipe",
     "Unity.InputSystem"
   ],
   "includePlatforms": [],

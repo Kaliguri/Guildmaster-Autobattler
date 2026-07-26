@@ -35,6 +35,9 @@ namespace Guildmaster.Core.Settings
         /// <summary>Включить/выключить анимацию атаки выбранной карточки (при включённой анимации). Поднимает <see cref="Changed"/>.</summary>
         void SetCardAttackAnimation(bool enabled);
 
+        /// <summary>Всегда показывать подробности в подсказках (Shift тогда временно даёт краткий вид, §II.10.4).</summary>
+        void SetAlwaysDetailedTooltips(bool enabled);
+
         /// <summary>Загрузить с диска (ES3) или взять дефолты GameConfig, затем применить в аудио.</summary>
         void Load();
 

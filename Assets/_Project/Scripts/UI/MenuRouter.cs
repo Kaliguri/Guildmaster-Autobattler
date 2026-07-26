@@ -460,8 +460,11 @@ namespace Guildmaster.UI
             string L(string key, string ru) { string v = _loc?.GetString(key); return string.IsNullOrEmpty(v) ? ru : v; }
             var cardAnim   = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-card-anim");
             var cardAttack = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-card-attack");
+            var tipDetails = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-tooltip-details");
             if (cardAnim   != null) cardAnim.LabelText   = L("ui.settings.card_anim", "Анимация карточек");
             if (cardAttack != null) cardAttack.LabelText = L("ui.settings.card_attack", "Анимация атаки карточек");
+            // §II.10.4: галка «всегда подробно». Shift при ней работает наоборот — временно даёт краткий вид.
+            if (tipDetails != null) tipDetails.LabelText = L("ui.settings.tooltip_details", "Всегда подробные подсказки");
 
             _settingsVm.BeginEdit();
 
@@ -473,6 +476,7 @@ namespace Guildmaster.UI
                 sfx.SetValueWithoutNotify(_settingsVm.Sfx);
                 cardAnim?.SetValueWithoutNotify(_settingsVm.CardAnimations);
                 cardAttack?.SetValueWithoutNotify(_settingsVm.CardAttackAnimation);
+                tipDetails?.SetValueWithoutNotify(_settingsVm.AlwaysDetailedTooltips);
                 // «Атака» осмысленна только при включённой анимации карточек.
                 cardAttack?.SetEnabled(_settingsVm.CardAnimations);
             }
@@ -484,6 +488,7 @@ namespace Guildmaster.UI
             sfx.Slider.RegisterValueChangedCallback(e => _settingsVm.SetSfx(e.newValue));
             cardAnim?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAnimations(e.newValue));
             cardAttack?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAttackAnimation(e.newValue));
+            tipDetails?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetAlwaysDetailedTooltips(e.newValue));
 
             // VM → слайдеры (Defaults/Cancel меняют значения «снаружи»). Отписка при снятии с панели.
             Action onChanged = Sync;

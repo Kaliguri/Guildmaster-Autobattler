@@ -25,6 +25,17 @@ namespace Guildmaster.Data.Descriptions
         string Describe(ContentDefinition def, IReadOnlyDictionary<string, object> args);
 
         /// <summary>
+        /// Полное описание (<c>{id}.desc.full</c>) — статья справочника; нет полного текста → краткое.
+        /// </summary>
+        string DescribeFull(ContentDefinition def, IReadOnlyDictionary<string, object> args);
+
+        /// <summary>
+        /// Форма имени ключевого слова в падеже (<c>gen</c>/<c>acc</c>/<c>plural</c>; <c>null</c> —
+        /// именительный). Нужна не только разметке: её же берут списки эффектов и будущий справочник.
+        /// </summary>
+        string KeywordForm(string keywordId, string caseTag);
+
+        /// <summary>
         /// Готовая к показу строка одного стата живого юнита: «47» либо, в подробном режиме,
         /// «30 + 12 (Пылающий клинок) = 47». Имена источников уже локализованы.
         /// </summary>

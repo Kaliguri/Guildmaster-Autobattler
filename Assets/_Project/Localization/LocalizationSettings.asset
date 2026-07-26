@@ -98,6 +98,7 @@ MonoBehaviour:
         - rid: 5615026876324512141
         - rid: 5615026876324512142
         - rid: 5615026876324512143
+        - rid: 5615027249621500062
         - rid: 5615026876324512144
     - rid: 5615026876324512128
       type: {class: SmartSettings, ns: UnityEngine.Localization.SmartFormat.Core.Settings, asm: Unity.Localization}
@@ -204,4 +205,10 @@ MonoBehaviour:
         m_Names:
         - default
         - d
+        - 
+    - rid: 5615027249621500062
+      type: {class: StatValueFormatter, ns: Guildmaster.Game.Services, asm: Guildmaster.Game}
+      data:
+        m_Names:
+        - stat
         - 

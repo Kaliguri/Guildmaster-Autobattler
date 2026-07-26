@@ -42,7 +42,28 @@ namespace Guildmaster.Data.Descriptions
         public string Describe(ContentDefinition def, IReadOnlyDictionary<string, object> args)
         {
             string key = ContentKeys.DescKey(def);
-            return key == null ? string.Empty : Localized(key, args);
+            return key == null ? string.Empty : KeywordMarkup.Render(Localized(key, args), KeywordForm);
+        }
+
+        public string DescribeFull(ContentDefinition def, IReadOnlyDictionary<string, object> args)
+        {
+            string key = ContentKeys.FullDescKey(def);
+            if (key == null) return string.Empty;
+            string full = Localized(key, args);
+            // Полного текста может не быть (термин объяснён одной строкой) — тогда честнее показать
+            // краткий, чем пустую статью.
+            return string.IsNullOrEmpty(full) ? Describe(def, args) : KeywordMarkup.Render(full, KeywordForm);
+        }
+
+        public string KeywordForm(string keywordId, string caseTag)
+        {
+            if (_loc == null || string.IsNullOrEmpty(keywordId)) return null;
+            string form = _loc.GetString(ContentKeys.FormKey(keywordId, caseTag));
+            // Падеж может быть не заведён — откатываемся на именительный: фраза звучит хуже,
+            // но остаётся читаемой, а дырка чинится одной строкой в таблице.
+            if (string.IsNullOrEmpty(form) && !string.IsNullOrEmpty(caseTag))
+                form = _loc.GetString(ContentKeys.FormKey(keywordId, null));
+            return form;
         }
 
         public string DescribeStat(IStatExplainer stats, StatType stat, bool detailed)

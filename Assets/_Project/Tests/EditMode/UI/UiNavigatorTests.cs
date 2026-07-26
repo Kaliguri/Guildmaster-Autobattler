@@ -32,6 +32,7 @@ namespace Guildmaster.Tests.EditMode.UI
             public bool PointerOverUI => false;
             public Vector2 PointerScreenPosition => default;
             public bool PointerHeld => false;
+            public bool DetailsHeld => false;
 
 #pragma warning disable 67 // события интерфейса не поднимаются в тесте — реализуем как заглушки
             public event Action CycleViewRequested;
@@ -40,6 +41,7 @@ namespace Guildmaster.Tests.EditMode.UI
             public event Action PauseToggleRequested;
             public event Action GameSpeedCycleRequested;
             public event Action MenuToggleRequested;
+            public event Action<bool> DetailsHeldChanged;
 #pragma warning restore 67
         }
 

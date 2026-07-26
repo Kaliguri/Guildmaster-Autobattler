@@ -83,5 +83,17 @@ namespace Guildmaster.Core.Input
         /// контекста и НЕ глушится <see cref="GameplaySuppressed"/> — иначе открытое меню нельзя закрыть.
         /// </summary>
         event Action MenuToggleRequested;
+
+        // --- Подробности в подсказках: удержание (план §II.10.4) ---
+
+        /// <summary>
+        /// Клавиша подробностей (Shift) зажата. Живёт здесь, а не читается клавиатурой по месту:
+        /// подсказки существуют во всех контекстах, а после ребиндов (Трек Х) источник истины о том,
+        /// какая это клавиша, должен остаться ровно один.
+        /// </summary>
+        bool DetailsHeld { get; }
+
+        /// <summary>Изменилось состояние удержания подробностей: <c>true</c> — зажали, <c>false</c> — отпустили.</summary>
+        event Action<bool> DetailsHeldChanged;
     }
 }

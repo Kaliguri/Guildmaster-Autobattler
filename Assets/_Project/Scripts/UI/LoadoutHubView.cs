@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.UI.Components;
+using Guildmaster.UI.Tooltips;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -87,6 +88,11 @@ namespace Guildmaster.UI
                     RelicName  = e.Relic != null ? Name(e.Relic.Id) : "—",
                 };
                 card.SetRelicIcon(RelicSprite(e.Relic));
+                // Карточка носителя показывает пару «сосуд + реликвия»; подсказка рассказывает про того,
+                // кто в этой паре несёт данные — сосуд, если он есть, иначе саму реликвию.
+                card.WithTooltip(e.Vessel != null
+                    ? TooltipRequest.Vessel(e.Vessel.Id)
+                    : TooltipRequest.Relic(e.Relic?.Id));
 
                 drag.AddTarget(card, p => p is StashRelic, p => onEquip?.Invoke(idx, ((StashRelic)p).Index));
 
@@ -115,6 +121,7 @@ namespace Guildmaster.UI
                 var slot = new Slot { Size = Slot.SlotSize.Sm };
                 Sprite icon = RelicSprite(stash[i]);
                 slot.SetIcon(icon);
+                slot.WithTooltip(TooltipRequest.Relic(stash[i]?.Id)); // в запасе видна только иконка — что это, скажет тултип
                 drag.AddSource(slot, new StashRelic(i), icon);
                 stashBox.Add(slot);
             }

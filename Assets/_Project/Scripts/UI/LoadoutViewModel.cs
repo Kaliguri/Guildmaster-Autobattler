@@ -3,6 +3,7 @@ using System.Text;
 using Guildmaster.Core.Audio;
 using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Descriptions;
 using Guildmaster.Data.Stats;
 using MessagePipe;
 
@@ -21,6 +22,7 @@ namespace Guildmaster.UI
         private readonly IAudioService       _audio;
         private readonly IPublisher<EquipRelicRequest> _equipPub;
         private readonly IUnitStatPreview    _statPreview;
+        private readonly IDescriptionService _descriptions;
 
         private int _unitId = -1;
         private VesselData _vessel;
@@ -33,13 +35,15 @@ namespace Guildmaster.UI
             ILocalizationService loc,
             IAudioService audio,
             IPublisher<EquipRelicRequest> equipPub,
-            IUnitStatPreview statPreview)
+            IUnitStatPreview statPreview,
+            IDescriptionService descriptions)
         {
-            _content     = content;
-            _loc         = loc;
-            _audio       = audio;
-            _equipPub    = equipPub;
-            _statPreview = statPreview;
+            _content      = content;
+            _loc          = loc;
+            _audio        = audio;
+            _equipPub     = equipPub;
+            _statPreview  = statPreview;
+            _descriptions = descriptions;
         }
 
         /// <summary>Все доступные релики для грида (пока — весь контент; фильтр по владению — Фаза 5).</summary>
@@ -75,7 +79,13 @@ namespace Guildmaster.UI
         public bool IsCurrent(RelicData r)  => r != null && r == Current;
 
         public string Name(RelicData r) => r != null ? _loc.GetString(r.Id + ".name") : string.Empty;
-        public string Desc(RelicData r) => r != null ? _loc.GetString(r.Id + ".desc") : string.Empty;
+
+        /// <summary>
+        /// Описание релика через слой описаний, а не напрямую из таблицы: только он разворачивает
+        /// разметку ключевых слов и подставляет числа (§II.10.1) — иначе игрок увидит сырой <c>[kw:…]</c>.
+        /// </summary>
+        public string Desc(RelicData r)
+            => r != null ? (_descriptions?.Describe(r, null) ?? _loc.GetString(r.Id + ".desc")) : string.Empty;
 
         /// <summary>
         /// Теги «быстрого чтения» релика для карточки в порядке осей (Role→DamageType→Playstyle→Mechanic):

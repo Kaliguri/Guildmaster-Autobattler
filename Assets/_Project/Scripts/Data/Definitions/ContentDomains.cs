@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Guildmaster.Data.Descriptions;
 
 namespace Guildmaster.Data.Definitions
 {
@@ -21,6 +22,7 @@ namespace Guildmaster.Data.Definitions
             { typeof(EffectData),      "effect"      },
             { typeof(VfxData),         "vfx"         },
             { typeof(TagData),         "tag"         },
+            { typeof(KeywordDefinition), KeywordMarkup.Domain },
             { typeof(TraitData),       "trait"       },
             { typeof(ConsequenceData), "consequence" },
             { typeof(AIPresetData),    "ai_preset"   },

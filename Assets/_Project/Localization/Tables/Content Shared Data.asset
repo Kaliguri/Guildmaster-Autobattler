@@ -599,6 +599,270 @@ MonoBehaviour:
     m_Key: ui.mainmenu.title
     m_Metadata:
       m_Items: []
+  - m_Id: 5619108630749184
+    m_Key: kw.burn.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080832
+    m_Key: kw.burn.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080833
+    m_Key: kw.burn.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080834
+    m_Key: kw.burn.name.plural
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080835
+    m_Key: kw.burn.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080836
+    m_Key: kw.burn.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080837
+    m_Key: kw.frozen.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080838
+    m_Key: kw.frozen.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080839
+    m_Key: kw.frozen.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080840
+    m_Key: kw.frozen.name.plural
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080841
+    m_Key: kw.frozen.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080842
+    m_Key: kw.frozen.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080843
+    m_Key: kw.poison.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080844
+    m_Key: kw.poison.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080845
+    m_Key: kw.poison.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080846
+    m_Key: kw.poison.name.plural
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080847
+    m_Key: kw.poison.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080848
+    m_Key: kw.poison.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080849
+    m_Key: kw.stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080850
+    m_Key: kw.stun.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080851
+    m_Key: kw.stun.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080852
+    m_Key: kw.stun.name.plural
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080853
+    m_Key: kw.stun.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080854
+    m_Key: kw.stun.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080855
+    m_Key: kw.stealth.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080856
+    m_Key: kw.stealth.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080857
+    m_Key: kw.stealth.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080858
+    m_Key: kw.stealth.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080859
+    m_Key: kw.stealth.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080860
+    m_Key: kw.mark.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080861
+    m_Key: kw.mark.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080862
+    m_Key: kw.mark.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080863
+    m_Key: kw.mark.name.plural
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080864
+    m_Key: kw.mark.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080865
+    m_Key: kw.mark.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080866
+    m_Key: kw.shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080867
+    m_Key: kw.shield.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080868
+    m_Key: kw.shield.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080869
+    m_Key: kw.shield.name.plural
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080870
+    m_Key: kw.shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080871
+    m_Key: kw.shield.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080872
+    m_Key: kw.armor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080873
+    m_Key: kw.armor.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080874
+    m_Key: kw.armor.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080875
+    m_Key: kw.armor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080876
+    m_Key: kw.armor.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080877
+    m_Key: kw.physical.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080878
+    m_Key: kw.physical.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080879
+    m_Key: kw.physical.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080880
+    m_Key: kw.physical.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080881
+    m_Key: kw.physical.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080882
+    m_Key: kw.magical.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080883
+    m_Key: kw.magical.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080884
+    m_Key: kw.magical.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080885
+    m_Key: kw.magical.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080886
+    m_Key: kw.magical.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080887
+    m_Key: kw.true.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080888
+    m_Key: kw.true.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080889
+    m_Key: kw.true.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080890
+    m_Key: kw.true.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080891
+    m_Key: kw.true.desc.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080892
+    m_Key: kw.threat.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080893
+    m_Key: kw.threat.name.gen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080894
+    m_Key: kw.threat.name.acc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080895
+    m_Key: kw.threat.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619108681080896
+    m_Key: kw.threat.desc.full
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

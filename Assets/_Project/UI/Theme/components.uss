@@ -1017,36 +1017,42 @@
  * Подсказка (компонент Tooltip): всплывает при наведении на карточку.
  * ========================================================================== */
 
+/* Тултип — ВТОРИЧНЫЙ слой над плотным экраном, поэтому он на ступень мельче того, что объясняет:
+   заголовок sm против body у панели, текст xs против body, подписи xxs. Раньше окно было набрано
+   КРУПНЕЕ панели деталей (body/sm против её xxs/xs) и читалось как отдельный экран, а не как сноска.
+   Ширина при этом ВЫРОСЛА (220 → 320): узкая колонка при крупном кегле рвала фразу на обрывки —
+   высокое окно из шести строк выглядит массивнее широкого из двух.
+   Шкала и ярусы — docs/wiki/tech/10-reference/ui-typography.md (единый источник правды). */
 .gm-tooltip {
     background-color: var(--gm-color-surface-panel);
     border-width: var(--gm-outline-width);
     border-color: var(--gm-outline-color);
     border-radius: var(--gm-radius-0);
-    padding: var(--gm-space-2) var(--gm-space-3);
-    max-width: 220px;
+    padding: var(--gm-space-1) var(--gm-space-2);
+    max-width: 320px;
 }
 
 .gm-tooltip__title {
     color: var(--gm-color-text);
-    font-size: var(--gm-font-body);
+    font-size: var(--gm-font-sm);
     -unity-font-style: bold;
 }
 
 .gm-tooltip__meta {
     color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
-    margin-bottom: var(--gm-space-1);
+    font-size: var(--gm-font-xxs);
+    margin-bottom: var(--gm-space-0);
 }
 
 .gm-tooltip__tags {
     color: var(--gm-color-accent);
-    font-size: var(--gm-font-sm);
+    font-size: var(--gm-font-xxs);
 }
 
 .gm-tooltip__desc {
     color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
-    margin-top: var(--gm-space-1);
+    font-size: var(--gm-font-xs);
+    margin-top: var(--gm-space-0);
 }
 
 /* Содержимое окна (Трек Т). Рамку/фон/паддинг держит .gm-tooltip, карточка — только раскладка,
@@ -1055,15 +1061,15 @@
     flex-direction: column;
 }
 
-/* Ширина базового окна рассчитана на текст (220px) и мала для разбора — размер даётся
-   МОДИФИКАТОРОМ, а не правкой базового класса: иначе разъедутся все текстовые подсказки. */
+/* Разбор со стат-строками шире текстовой подсказки — размер даётся МОДИФИКАТОРОМ, а не правкой
+   базового класса: иначе вслед за ним разъедутся все короткие текстовые подсказки. */
 .gm-tooltip--wide {
-    max-width: 320px;
+    max-width: 380px;
 }
 
 .gm-tooltip__lines {
     flex-direction: column;
-    margin-top: var(--gm-space-1);
+    margin-top: var(--gm-space-0);
 }
 
 .gm-tooltip__line {
@@ -1071,16 +1077,18 @@
     justify-content: space-between;
 }
 
+/* Те же кегли, что у статблока панели (.gm-stat__label / __value) — подсказка и панель говорят
+   об одном и том же одинаковым голосом. */
 .gm-tooltip__line-label {
     color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
+    font-size: var(--gm-font-xxs);
 }
 
 .gm-tooltip__line-value {
     color: var(--gm-color-text);
-    font-size: var(--gm-font-sm);
+    font-size: var(--gm-font-xs);
     -unity-font-style: bold;
-    margin-left: var(--gm-space-3);
+    margin-left: var(--gm-space-2);
 }
 
 /* ============================================================================
@@ -2312,6 +2320,48 @@
 }
 .gm-stat__label { color: var(--gm-color-text-muted); font-size: var(--gm-font-xxs); }
 .gm-stat__value { color: var(--gm-color-text); font-size: var(--gm-font-xs); -unity-font-style: bold; }
+
+/* СОСТОЯНИЯ СТРОКИ ХАРАКТЕРИСТИКИ. Строка не кнопка, но она отзывается на курсор и фокус —
+   иначе игрок не понимает, что у неё есть объяснение. Рамка появляется ИЗ ПРОЗРАЧНОЙ (ширина
+   задана всегда): дорисовка рамки на наведении дёргала бы раскладку соседей на 2px. */
+.gm-stat {
+    border-width: var(--gm-border-1);
+    border-color: rgba(0, 0, 0, 0);
+}
+
+.gm-stat:hover {
+    background-color: var(--gm-color-surface-raised);
+    border-color: var(--gm-color-hover-border);
+}
+
+/* Тот же знак фокуса, что у кнопок и чипов (см. блок «ФОКУС» выше): латунная рамка вместо
+   синевы темы Unity — фокус приходит с клавиатуры и геймпада, и подсказка открывается по нему. */
+.gm-stat:focus {
+    border-color: var(--gm-color-hover-border);
+}
+
+.gm-stat:disabled,
+.gm-stat.unity-disabled {
+    opacity: 1;                                   /* гасим цветом, а не прозрачностью: сквозь неё виден фон */
+}
+
+.gm-stat:disabled .gm-stat__label,
+.gm-stat:disabled .gm-stat__value,
+.gm-stat.unity-disabled .gm-stat__label,
+.gm-stat.unity-disabled .gm-stat__value {
+    color: var(--gm-color-disabled-text);
+}
+
+/* Значение отличается от базы кита (надет предмет, работает эффект). Класс-задел: его вешает
+   панель юнита, когда научится показывать РАЗБОР, — здесь он живёт, чтобы вид «изменённого»
+   стата был описан в одном месте, а не изобретался заново на следующем экране. */
+.gm-stat--modified .gm-stat__value {
+    color: var(--gm-color-positive);
+}
+
+.gm-stat--penalty .gm-stat__value {
+    color: var(--gm-color-negative);
+}
 
 /* --- Нижняя панель золота: только под центром+правым (в __main, не в __body). --- */
 .gm-loadout__footer {

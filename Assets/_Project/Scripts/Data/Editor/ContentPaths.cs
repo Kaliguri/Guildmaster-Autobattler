@@ -22,6 +22,7 @@ namespace Guildmaster.Data.Editor
             { typeof(EffectData),      "Effects"      },
             { typeof(VfxData),         "Vfx"          },
             { typeof(TagData),         "Tags"         },
+            { typeof(KeywordDefinition), "Keywords"   },
             { typeof(TraitData),       "Traits"       },
             { typeof(ConsequenceData), "Consequences" },
             { typeof(AIPresetData),    "AiPresets"    },

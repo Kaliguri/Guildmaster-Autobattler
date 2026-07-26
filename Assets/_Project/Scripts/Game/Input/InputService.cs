@@ -32,6 +32,7 @@ namespace Guildmaster.Game.Input
         private readonly InputAction _pointerPos;    // <Mouse>/position — screen→world при пикинге/drag
         private readonly InputAction _pointerPress;  // <Mouse>/leftButton — начало/конец протяжки
         private readonly InputAction _menuToggle; // Escape — оверлей системного меню, живёт вне контекст-карт (always-on)
+        private readonly InputAction _detailsHold; // Shift — подробности в подсказках, тоже always-on
 
         private InputContext _context = InputContext.None;
 
@@ -46,6 +47,11 @@ namespace Guildmaster.Game.Input
         public event Action MenuToggleRequested;
         public event Action PointerPressed;
         public event Action PointerReleased;
+
+        /// <inheritdoc/>
+        public bool DetailsHeld { get; private set; }
+
+        public event Action<bool> DetailsHeldChanged;
 
         public InputService()
         {
@@ -94,6 +100,13 @@ namespace Guildmaster.Game.Input
             _menuToggle = new InputAction("MenuToggle", InputActionType.Button, "<Keyboard>/escape");
             _menuToggle.performed += OnMenuToggle;
             _menuToggle.Enable();
+
+            // Подробности в подсказках (Shift): как и меню — вне контекст-карт и без глушения. Тултип
+            // может висеть над модальным экраном, и там Shift обязан работать так же, как в бою.
+            _detailsHold = new InputAction("DetailsHold", InputActionType.Button, "<Keyboard>/shift");
+            _detailsHold.performed += OnDetailsHeld;
+            _detailsHold.canceled  += OnDetailsReleased;
+            _detailsHold.Enable();
 
             _cycleView.performed     += OnCycleView;
             _pauseToggle.performed   += OnPauseToggle;
@@ -186,6 +199,16 @@ namespace Guildmaster.Game.Input
         // Escape НЕ гейтится GameplaySuppressed: меню должно закрываться, даже когда геймплейный ввод заглушён.
         private void OnMenuToggle(InputAction.CallbackContext _) => MenuToggleRequested?.Invoke();
 
+        private void OnDetailsHeld(InputAction.CallbackContext _)     => SetDetailsHeld(true);
+        private void OnDetailsReleased(InputAction.CallbackContext _) => SetDetailsHeld(false);
+
+        private void SetDetailsHeld(bool held)
+        {
+            if (DetailsHeld == held) return;
+            DetailsHeld = held;
+            DetailsHeldChanged?.Invoke(held);
+        }
+
         public void Dispose()
         {
             _cycleView.performed     -= OnCycleView;
@@ -194,6 +217,8 @@ namespace Guildmaster.Game.Input
             _pointerPress.performed  -= OnPointerPressed;
             _pointerPress.canceled   -= OnPointerReleased;
             _menuToggle.performed    -= OnMenuToggle;
+            _detailsHold.performed   -= OnDetailsHeld;
+            _detailsHold.canceled    -= OnDetailsReleased;
 
             _cameraMap.Dispose();
             _combatMap.Dispose();
@@ -201,6 +226,7 @@ namespace Guildmaster.Game.Input
             _pointerMap.Dispose();
             _uiMap.Dispose();
             _menuToggle.Dispose();
+            _detailsHold.Dispose();
         }
     }
 }

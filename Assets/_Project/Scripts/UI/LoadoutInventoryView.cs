@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using Guildmaster.UI.Components;
+using Guildmaster.UI.Tooltips;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -89,12 +90,18 @@ namespace Guildmaster.UI
             if (search != null) SetPlaceholder(search, L("ui.loadout.search", "Поиск…"));
 
             // ── Способности (плейсхолдер-ряд) + улучшения (2 ряда × 3, плейсхолдеры) ──
+            // Слоты пока пусты, и это надо СКАЗАТЬ: пустая рамка без подсказки читается как «сломалось»,
+            // а не как «сюда встанет способность». Текст временный — уедет, когда слоты начнут наполняться.
+            string emptyAbility = L("ui.loadout.slot.ability.empty", "Слот способности — пока пуст");
+            string emptyUpgrade = L("ui.loadout.slot.upgrade.empty", "Слот улучшения — пока пуст");
+
             var abilities = root.Q<VisualElement>("detail-abilities");
             for (int i = 0; abilities != null && i < AbilitySlots; i++)
-                abilities.Add(new Slot { Size = Slot.SlotSize.Sm });
+                abilities.Add(new Slot { Size = Slot.SlotSize.Sm }
+                    .WithTooltip(TooltipRequest.Plain(emptyAbility, L("ui.loadout.skills", "Способности"))));
 
-            FillUpgradeRow(root.Q<VisualElement>("upgrade-row-1"));
-            FillUpgradeRow(root.Q<VisualElement>("upgrade-row-2"));
+            FillUpgradeRow(root.Q<VisualElement>("upgrade-row-1"), emptyUpgrade, L("ui.loadout.upgrades", "Улучшения"));
+            FillUpgradeRow(root.Q<VisualElement>("upgrade-row-2"), emptyUpgrade, L("ui.loadout.upgrades", "Улучшения"));
 
             // ── Теги «быстрого чтения» (ряд под именем): реальные теги юнита из UnitTagResolver,
             //    иконка + подпись, порядок осей Role→DamageType→Playstyle→Mechanic с «|» между группами.
@@ -102,8 +109,10 @@ namespace Guildmaster.UI
             //    Высота ряда фиксирована (3 строки, USS) — лишние теги сворачиваются в чип «+N»
             //    с подсказкой по наведению; подсказка живёт оверлеем в корне экрана. ──
             var tags = root.Q<VisualElement>("detail-tags");
-            var tagTooltip = new Tooltip();
-            root.Add(tagTooltip);
+
+            // Описание релика приходит из слоя описаний с развёрнутой разметкой ключевых слов —
+            // включаем rich text и подсказки по ссылкам один раз, на сам Label (Трек Т).
+            root.Q<Label>("detail-narrative")?.WithKeywordTooltips();
 
             // ── Статблок (внизу): 8 квадратов «значение над подписью», 4 в ряд. Числа — РЕАЛЬНЫЕ,
             //    из IUnitStatPreview (тот же каскад, что собирает бой); заполняется per-relic
@@ -142,8 +151,8 @@ namespace Guildmaster.UI
             {
                 SetText(root, "detail-title", (Title(r, titleOf) ?? "—").ToUpperInvariant());
                 SetText(root, "detail-narrative", narrativeOf?.Invoke(r) ?? string.Empty);
-                if (tags != null) FillTags(tags, tagsOf?.Invoke(r), L, tagTooltip);
-                if (stats != null) FillStats(stats, statsSection, statsOf?.Invoke(r), L);
+                if (tags != null) FillTags(tags, tagsOf?.Invoke(r), L);
+                if (stats != null) FillStats(stats, statsSection, statsOf?.Invoke(r), L, r?.Id);
                 foreach (var (relic, card) in cards)
                     card.EnableInClassList("gm-arcana-card--selected", relic == r);
             }
@@ -214,6 +223,9 @@ namespace Guildmaster.UI
                     if (cardAnimations) Animate(relic);
                 });
                 WireRelicDrag(cardRoot, relic, onRelicDrag); // QA #5: тащить реликвию на юнита в мире
+                // Карточка показывает имя и арт; кит, теги и описание — тултипом (при активном драге
+                // система глушит подсказки сама, так что жест перетаскивания не мигает окном).
+                cardRoot.WithTooltip(TooltipRequest.Relic(relic?.Id));
                 gridEl.Add(cardRoot);
                 cards.Add((relic, cardRoot));
             }
@@ -297,21 +309,21 @@ namespace Guildmaster.UI
             });
         }
 
-        private static void FillUpgradeRow(VisualElement row)
+        private static void FillUpgradeRow(VisualElement row, string emptyHint, string title)
         {
             // Sm — тот же размер, что у способностей. Md читался крупно: девять слотов на панели съедали
             // высоту, которой не хватало статблоку (реш. Макса 2026-07-25, второй заход).
             for (int i = 0; row != null && i < UpgradesPerRow; i++)
-                row.Add(new Slot { Size = Slot.SlotSize.Sm });
+                row.Add(new Slot { Size = Slot.SlotSize.Sm }
+                    .WithTooltip(TooltipRequest.Plain(emptyHint, title)));
         }
 
         // Ряд тегов «быстрого чтения»: чипы иконка+подпись в порядке осей, с «|» между группами (осями).
         // Ряд ограничен тремя строками (высота задана в USS) — что не влезло, уходит в чип «+N».
         private static void FillTags(VisualElement container, IReadOnlyList<TagData> tags,
-            Func<string, string, string> L, Tooltip tooltip)
+            Func<string, string, string> L)
         {
             container.Clear();
-            tooltip?.Hide();
             if (tags == null || tags.Count == 0) { container.style.display = DisplayStyle.None; return; }
             container.style.display = DisplayStyle.Flex;
 
@@ -333,7 +345,7 @@ namespace Guildmaster.UI
             void OnLaidOut(GeometryChangedEvent _)
             {
                 container.UnregisterCallback<GeometryChangedEvent>(OnLaidOut);
-                CollapseOverflowingTags(container, names, tooltip, L);
+                CollapseOverflowingTags(container, names, L);
             }
 
             container.RegisterCallback<GeometryChangedEvent>(OnLaidOut);
@@ -348,7 +360,7 @@ namespace Guildmaster.UI
         /// «скрыл — перезамерил»: каждое скрытие роняло бы новый layout-проход и мигание ряда.
         /// </summary>
         private static void CollapseOverflowingTags(VisualElement container, List<string> names,
-            Tooltip tooltip, Func<string, string, string> L)
+            Func<string, string, string> L)
         {
             float width = container.resolvedStyle.width;
             if (width <= 0f || container.childCount == 0) return;
@@ -436,15 +448,7 @@ namespace Guildmaster.UI
 
             // Подсказка со скрытыми именами: список идёт в том же порядке осей, что и сам ряд.
             string hidden = string.Join(", ", names.GetRange(names.Count - hiddenCount, hiddenCount));
-            more.RegisterCallback<PointerEnterEvent>(_ =>
-            {
-                if (tooltip == null) return;
-                tooltip.Set(L("ui.loadout.tags.more", "Ещё теги"), null, hidden, null);
-                VisualElement root = tooltip.parent;
-                Vector2 pos = root.WorldToLocal(more.worldBound.position);
-                tooltip.ShowAt(new Vector2(pos.x, pos.y + more.worldBound.height + 4f));
-            });
-            more.RegisterCallback<PointerLeaveEvent>(_ => tooltip?.Hide());
+            more.WithTooltip(TooltipRequest.Plain(hidden, L("ui.loadout.tags.more", "Ещё теги")));
         }
 
         // Тег — ТОТ ЖЕ компонент Chip, что фильтры инвентаря и лента режимов, в малом размере
@@ -457,6 +461,9 @@ namespace Guildmaster.UI
             chip.AddToClassList("gm-chip--sm");
             chip.AddToClassList("gm-tag");
             chip.SetIcon(tag.Icon);
+            // Чип называет тег, но не объясняет его — объяснение живёт в описании тега и приезжает
+            // тултипом по id (Трек Т), а не вторым текстом на самом чипе.
+            chip.WithTooltip(TooltipRequest.Tag(tag.Id));
             return chip;
         }
 
@@ -475,7 +482,7 @@ namespace Guildmaster.UI
         // релик) — прячем всю секцию вместе с подписью: пустая рамка «характеристики» врёт сильнее,
         // чем её отсутствие.
         private static void FillStats(VisualElement container, VisualElement section,
-            IReadOnlyList<UnitStatLine> lines, Func<string, string, string> L)
+            IReadOnlyList<UnitStatLine> lines, Func<string, string, string> L, string ownerId)
         {
             container.Clear();
             bool has = lines != null && lines.Count > 0;
@@ -483,20 +490,24 @@ namespace Guildmaster.UI
             if (!has) return;
 
             for (int i = 0; i < lines.Count; i++)
-                container.Add(MakeStat(L(lines[i].LabelKey, lines[i].LabelFallback), lines[i].Value));
+                container.Add(MakeStat(L(lines[i].LabelKey, lines[i].LabelFallback), lines[i].Value,
+                    lines[i].LabelKey, ownerId));
         }
 
         // Строка статблока: полная подпись слева, значение справа (лист персонажа, а не плитки).
-        private static VisualElement MakeStat(string label, string value)
+        // Число говорит «сколько», но не «чего» — что именно делает характеристика, объясняет тултип
+        // по ключу подписи. Строка ФОКУСИРУЕМА: без этого подсказка существовала бы только для мыши.
+        private static VisualElement MakeStat(string label, string value, string statKey, string ownerId)
         {
-            var cell = new VisualElement();
+            var cell = new VisualElement { focusable = true };
             cell.AddToClassList("gm-stat");
-            var l = new Label(label);
+            var l = new Label(label) { pickingMode = PickingMode.Ignore };
             l.AddToClassList("gm-stat__label");
-            var v = new Label(value);
+            var v = new Label(value) { pickingMode = PickingMode.Ignore };
             v.AddToClassList("gm-stat__value");
             cell.Add(l);
             cell.Add(v);
+            cell.WithTooltip(TooltipRequest.Stat(statKey, ownerId));
             return cell;
         }
 

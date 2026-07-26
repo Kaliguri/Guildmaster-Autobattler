@@ -83,6 +83,102 @@ MonoBehaviour:
     m_Key: ui.node.camp.farewell
     m_Metadata:
       m_Items: []
+  - m_Id: 5619220287315968
+    m_Key: ui.kit.common
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230528
+    m_Key: ui.kit.cursed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230529
+    m_Key: ui.kit.divine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230530
+    m_Key: ui.tag.category.role
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230531
+    m_Key: ui.tag.category.damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230532
+    m_Key: ui.tag.category.playstyle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230533
+    m_Key: ui.tag.category.mechanic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230534
+    m_Key: ui.kw.category.status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230535
+    m_Key: ui.kw.category.damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230536
+    m_Key: ui.kw.category.defense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230537
+    m_Key: ui.kw.category.behaviour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230538
+    m_Key: ui.kw.category.run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230539
+    m_Key: ui.settings.tooltip_details
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230540
+    m_Key: ui.loadout.slot.ability.empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230541
+    m_Key: ui.loadout.slot.upgrade.empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619220350230542
+    m_Key: ui.loadout.tags.more
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5619882303676416
+    m_Key: ui.dev.stat_probe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458929741824
+    m_Key: ui.stat.hp.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879168
+    m_Key: ui.stat.parmor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879169
+    m_Key: ui.stat.marmor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879170
+    m_Key: ui.stat.dmg.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879171
+    m_Key: ui.stat.aspd.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879172
+    m_Key: ui.stat.range.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5628458975879173
+    m_Key: ui.stat.move.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

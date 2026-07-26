@@ -23,6 +23,7 @@ namespace Guildmaster.UI
 
         public bool CardAnimations => _settings.Gameplay.CardAnimations;
         public bool CardAttackAnimation => _settings.Gameplay.CardAttackAnimation;
+        public bool AlwaysDetailedTooltips => _settings.Gameplay.AlwaysDetailedTooltips;
 
         /// <summary>Поднимается при изменении значений (для обновления слайдеров/подписей).</summary>
         public event Action Changed
@@ -44,6 +45,7 @@ namespace Guildmaster.UI
 
         public void SetCardAnimations(bool v) => _settings.SetCardAnimations(v);
         public void SetCardAttackAnimation(bool v) => _settings.SetCardAttackAnimation(v);
+        public void SetAlwaysDetailedTooltips(bool v) => _settings.SetAlwaysDetailedTooltips(v);
 
         /// <summary>Сохранить на диск и обновить точку отката.</summary>
         public void Save()
@@ -61,6 +63,7 @@ namespace Guildmaster.UI
             _settings.SetSfxVolume(_baseline.Sfx);
             _settings.SetCardAnimations(_baselineGameplay.CardAnimations);
             _settings.SetCardAttackAnimation(_baselineGameplay.CardAttackAnimation);
+            _settings.SetAlwaysDetailedTooltips(_baselineGameplay.AlwaysDetailedTooltips);
         }
 
         /// <summary>Вернуть к начальным (дефолты GameConfig), применить, но не сохранять.</summary>

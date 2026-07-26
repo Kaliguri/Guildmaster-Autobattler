@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Game.Flow;
+using Guildmaster.UI.Tooltips;
 using UnityEditor;
 using UnityEngine.UIElements;
 
@@ -474,6 +475,68 @@ namespace Guildmaster.DevTools
             srWrap.Add(new Guildmaster.UI.Components.SliderRow { LabelText = "Музыка", Value = 0.65f });
             srWrap.Add(new Guildmaster.UI.Components.SliderRow { LabelText = "Звук", Value = 1f });
             root.Add(srWrap);
+
+            BuildTooltipShowcase(root, relics, Header, Row, Cell);
+        }
+
+        // Витрина тултипов (Трек Т, план шаг 9). Стенд без DI, поэтому система собирается вручную:
+        // сама она зависит только от фабрики содержимого, а ввод/настройки/драг переживают null —
+        // ровно ради таких случаев они и опциональны. Наводить курсор — задержка, флип у краёв, grace.
+        private static void BuildTooltipShowcase(VisualElement root, List<RelicData> relics,
+            Func<string, Label> header, Func<VisualElement> row, Func<VisualElement, string, VisualElement> cell)
+        {
+            header("Tooltip — подсказки (Трек Т): наведи курсор");
+
+            var layer = new VisualElement { name = "layer-tooltip", pickingMode = PickingMode.Ignore };
+            layer.style.position = Position.Absolute;
+            layer.style.left = 0; layer.style.top = 0; layer.style.right = 0; layer.style.bottom = 0;
+            root.Add(layer);
+
+            _gallerySystem?.Dispose();
+            _gallerySystem = new Guildmaster.UI.Tooltips.TooltipSystem(
+                new PreviewTooltipContent(LoadContent()), null, null, null);
+            _gallerySystem.Attach(root, layer);
+
+            VisualElement tipRow = row();
+
+            var textTarget = new Button { text = "текст" };
+            textTarget.AddToClassList("gm-button");
+            textTarget.WithTooltip(Guildmaster.UI.Tooltips.TooltipRequest.Plain(
+                "Готовая строка: свёрнутые теги, короткое пояснение.", "Подсказка"));
+            tipRow.Add(cell(textTarget, "Text"));
+
+            string relicId = relics.Count > 0 ? relics[0].Id : null;
+            var relicTarget = new Button { text = relicId != null ? Short(relicId) : "реликвия" };
+            relicTarget.AddToClassList("gm-button");
+            relicTarget.WithTooltip(Guildmaster.UI.Tooltips.TooltipRequest.Relic(relicId));
+            tipRow.Add(cell(relicTarget, "Relic (Shift — статы)"));
+
+            var edgeTarget = new Button { text = "у правого края" };
+            edgeTarget.AddToClassList("gm-button");
+            edgeTarget.style.alignSelf = Align.FlexEnd;
+            edgeTarget.WithTooltip(Guildmaster.UI.Tooltips.TooltipRequest.Plain(
+                "Окно у края панели зеркалится влево и не вылезает за границу.", "Флип"));
+            var edgeWrap = new VisualElement();
+            edgeWrap.style.width = 320;
+            edgeWrap.Add(edgeTarget);
+            tipRow.Add(cell(edgeWrap, "кламп/флип"));
+
+            // Ключевое слово в тексте: разметку разворачивает тот же код, что и в игре, формы слов
+            // берутся из таблицы Content — стенд показывает ровно то, что увидит игрок.
+            string sample = Guildmaster.Data.Descriptions.KeywordMarkup.Render(
+                "Накладывает [kw:burn:acc] и снимает стак [kw:shield:gen].",
+                (id, caseTag) =>
+                {
+                    string key = id + "." + Guildmaster.Data.Definitions.ContentKeys.FormSuffix(caseTag);
+                    string form = RuValue(key);
+                    return string.IsNullOrEmpty(form) ? RuValue(id + ".name") : form;
+                });
+
+            var kwLabel = new Label(sample);
+            kwLabel.style.maxWidth = 320;
+            kwLabel.style.whiteSpace = WhiteSpace.Normal;
+            kwLabel.WithKeywordTooltips();
+            tipRow.Add(cell(kwLabel, "Keyword в тексте"));
         }
 
         // ── Стендовые данные ─────────────────────────────────────────────────
@@ -509,6 +572,67 @@ namespace Guildmaster.DevTools
 
         // Живой риг для галереи: держим статикой (камеры URP рендерят каждый кадр), пересоздаём при ребилде.
         private static Guildmaster.UI.Components.RelicCardVisualRig _galleryRig;
+
+        // Система тултипов витрины: живёт между ребилдами стенда, пересоздаётся вместе с галереей.
+        private static Guildmaster.UI.Tooltips.TooltipSystem _gallerySystem;
+
+        /// <summary>
+        /// Содержимое подсказок для стенда: имя и описание берутся прямо из таблицы <c>Content</c>
+        /// (в стенде нет DI и сервиса описаний), поэтому витрина показывает ПОВЕДЕНИЕ окна —
+        /// задержку, флип, grace — а не сборку текста. Сборку проверяет живой экран.
+        /// </summary>
+        private sealed class PreviewTooltipContent : Guildmaster.UI.Tooltips.ITooltipContentFactory
+        {
+            private readonly IContentDatabase _content;
+            private readonly Guildmaster.Combat.UnitStatPreview _stats;
+
+            public PreviewTooltipContent(IContentDatabase content)
+            {
+                _content = content;
+                _stats = new Guildmaster.Combat.UnitStatPreview(
+                    LoadFirst<StatsConfig>(), LoadFirst<ClassBalanceConfig>());
+            }
+
+            public bool IsLive(Guildmaster.UI.Tooltips.TooltipRequest request) => false;
+
+            public VisualElement Build(Guildmaster.UI.Tooltips.TooltipRequest request, bool detailed)
+            {
+                var card = new Guildmaster.UI.Components.TooltipCard();
+                switch (request.Kind)
+                {
+                    case Guildmaster.UI.Tooltips.TooltipKind.Text:
+                        card.SetTitle(request.Title);
+                        card.SetDesc(request.Text);
+                        return card;
+
+                    case Guildmaster.UI.Tooltips.TooltipKind.Relic:
+                        if (_content == null || !_content.TryGet(request.Id, out RelicData relic) || relic == null)
+                            return null;
+                        card.SetTitle(RuValue(relic.Id + ".name") ?? Short(relic.Id));
+                        card.SetDesc(RuValue(relic.Id + ".desc"));
+                        if (detailed)
+                        {
+                            // Те же числа, что рисует панель деталей инвентаря — из общего каскада,
+                            // а не из полей ассета: подсказка не имеет права считать по-своему (§II.10.1).
+                            var lines = _stats.Basic(relic);
+                            for (int i = 0; lines != null && i < lines.Count; i++)
+                                card.AddLine(lines[i].LabelFallback, lines[i].Value);
+                        }
+                        return card;
+
+                    case Guildmaster.UI.Tooltips.TooltipKind.Keyword:
+                        string kwId = Guildmaster.Data.Descriptions.KeywordMarkup.FullId(request.Id);
+                        string kwName = RuValue(kwId + ".name");
+                        if (string.IsNullOrEmpty(kwName)) return null;
+                        card.SetTitle(kwName);
+                        card.SetDesc(RuValue(kwId + (detailed ? ".desc.full" : ".desc")));
+                        return card;
+
+                    default:
+                        return null;
+                }
+            }
+        }
 
         // RU-строка из таблицы Content через ContentLocalization (Data.Editor). DevTools — рантайм-асмдеф,
         // editor-асмдеф не сослать напрямую → рефлексия. Только для достоверного превью (реальный UI берёт _loc).

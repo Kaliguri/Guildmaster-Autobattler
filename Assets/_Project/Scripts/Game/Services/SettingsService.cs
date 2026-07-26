@@ -73,6 +73,12 @@ namespace Guildmaster.Game.Services
             Changed?.Invoke();
         }
 
+        public void SetAlwaysDetailedTooltips(bool enabled)
+        {
+            _gameplay.AlwaysDetailedTooltips = enabled;
+            Changed?.Invoke();
+        }
+
         public void Load()
         {
             ReadFromDisk();
@@ -91,6 +97,7 @@ namespace Guildmaster.Game.Services
                     Sfx                 = _audio01.Sfx,
                     CardAnimations      = _gameplay.CardAnimations,
                     CardAttackAnimation = _gameplay.CardAttackAnimation,
+                    AlwaysDetailedTooltips = _gameplay.AlwaysDetailedTooltips,
                 };
                 File.WriteAllText(FilePath, JsonUtility.ToJson(model));
             }
@@ -124,6 +131,7 @@ namespace Guildmaster.Game.Services
                 Sfx                 = audioDefaults.Sfx,
                 CardAnimations      = true,
                 CardAttackAnimation = true,
+                AlwaysDetailedTooltips = false, // подсказки по умолчанию краткие; подробности — по Shift
             };
 
             try
@@ -137,7 +145,8 @@ namespace Guildmaster.Game.Services
             }
 
             _audio01  = new AudioVolumeSettings(Clamp01(model.Master), Clamp01(model.Music), Clamp01(model.Sfx));
-            _gameplay = new GameplaySettings(model.CardAnimations, model.CardAttackAnimation);
+            _gameplay = new GameplaySettings(model.CardAnimations, model.CardAttackAnimation,
+                model.AlwaysDetailedTooltips);
         }
 
         // Плоская форма персиста (совместима со старым файлом, где были только Master/Music/Sfx).
@@ -149,6 +158,7 @@ namespace Guildmaster.Game.Services
             public float Sfx;
             public bool  CardAnimations;
             public bool  CardAttackAnimation;
+            public bool  AlwaysDetailedTooltips;
         }
 
         private void ApplyAll()

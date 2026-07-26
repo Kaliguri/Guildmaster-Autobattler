@@ -21,7 +21,12 @@ namespace Guildmaster.Game.Services
     [DisplayName("Guildmaster Stat")]
     public class StatValueFormatter : FormatterBase
     {
-        public override string[] DefaultNames => new[] { "stat" };
+        /// <summary>
+        /// «stat» — явный вызов (<c>{dmg:stat}</c>); пустое имя — согласие обслуживать БЕЗЫМЯННЫЙ
+        /// плейсхолдер <c>{dmg}</c>. Без пустого имени описания пришлось бы писать с суффиксом на каждом
+        /// числе, а забытый суффикс молча печатал бы <c>ToString()</c> структуры.
+        /// </summary>
+        public override string[] DefaultNames => new[] { "stat", "" };
 
         public override bool TryEvaluateFormat(IFormattingInfo formattingInfo)
         {
