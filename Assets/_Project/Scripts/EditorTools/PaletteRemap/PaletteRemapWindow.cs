@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
+using Guildmaster.Data.Definitions;
 using UnityEditor;
 using UnityEngine;
 
@@ -46,70 +46,56 @@ namespace Guildmaster.PaletteRemap
                 _ramp = BuildGuildmasterRamp();
         }
 
-        /// <summary>Путь к владельцу палитры: цвета «тёплого света» живут здесь и только здесь.</summary>
-        private const string TokensPath = "Assets/_Project/UI/Theme/tokens.primitives.uss";
+        /// <summary>Снимок палитры проекта — тот же, что читают карта и боевой UI.</summary>
+        private const string PalettePath = "Assets/_Project/ScriptableObjects/Configs/GuildmasterPalette.asset";
 
-        // Ступени рампы: токен палитры → позиция по яркости. Сами ЦВЕТА не дублируем — читаем из USS.
-        // Раньше здесь лежала их копия с комментарием «держим в синхроне вручную», то есть дубль,
-        // признанный дублем (аудит 2026-07-26, UA-21). Правка палитры теперь доезжает до тула сама.
+        // Ступени рампы: токен палитры → позиция по яркости. Ни цветов, ни разбора USS здесь нет.
+        // Копия цветов ушла раньше (UA-21), собственный парсер токенов — сейчас: читать палитру
+        // умеет PaletteSnapshotBuilder, и второй такой же разбор рядом — тот же дубль, только логики.
         private static readonly (string Token, float Position)[] RampStops =
         {
-            ("ink-900",       0.00f),
-            ("ink-600",       0.30f),
-            ("ink-300",       0.50f),
-            ("brass-700",     0.65f),
-            ("brass-500",     0.80f),
-            ("brass-300",     0.92f),
-            ("parchment-100", 1.00f),
+            ("--gm-ink-900",       0.00f),
+            ("--gm-ink-600",       0.30f),
+            ("--gm-ink-300",       0.50f),
+            ("--gm-brass-700",     0.65f),
+            ("--gm-brass-500",     0.80f),
+            ("--gm-brass-300",     0.92f),
+            ("--gm-parchment-100", 1.00f),
         };
 
         /// <summary>
-        /// Дефолтная рампа Guildmaster из примитив-токенов. Токен не прочитался — ступень пропускается,
+        /// Дефолтная рампа Guildmaster из палитры проекта. Роли нет в снимке — ступень пропускается,
         /// и об этом говорится вслух: молча подставить «похожий» цвет значило бы перекрасить арт мимо
         /// палитры, а это ровно то, ради чего тул и существует.
         /// </summary>
         private static Gradient BuildGuildmasterRamp()
         {
-            Dictionary<string, Color> tokens = ReadPrimitiveTokens();
-
+            var palette = AssetDatabase.LoadAssetAtPath<GuildmasterPalette>(PalettePath);
             var keys = new List<GradientColorKey>(RampStops.Length);
             var missing = new List<string>();
-            foreach ((string token, float position) in RampStops)
-            {
-                if (tokens.TryGetValue(token, out Color c)) keys.Add(new GradientColorKey(c, position));
-                else missing.Add(token);
-            }
 
-            if (missing.Count > 0)
-                Debug.LogError($"[PaletteRemap] - в {TokensPath} не найдены токены: {string.Join(", ", missing)}. " +
-                               "Рампа собрана без них — проверь имена в файле палитры.");
+            if (palette == null)
+            {
+                Debug.LogError($"[PaletteRemap] - нет снимка палитры {PalettePath}. Собери его: " +
+                               "Alebardium → Дизайн-система → Пересобрать палитру.");
+            }
+            else
+            {
+                foreach ((string token, float position) in RampStops)
+                {
+                    if (palette.TryGet(token, out Color c)) keys.Add(new GradientColorKey(c, position));
+                    else missing.Add(token);
+                }
+
+                if (missing.Count > 0)
+                    Debug.LogError($"[PaletteRemap] - в палитре нет токенов: {string.Join(", ", missing)}. " +
+                                   "Рампа собрана без них — пересобери снимок или проверь имена.");
+            }
 
             var g = new Gradient();
             if (keys.Count > 0) g.colorKeys = keys.ToArray();
             g.alphaKeys = new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) };
             return g;
-        }
-
-        /// <summary>Разобрать <c>--gm-&lt;имя&gt;: rgb(r, g, b);</c> из файла примитив-токенов.</summary>
-        private static Dictionary<string, Color> ReadPrimitiveTokens()
-        {
-            var result = new Dictionary<string, Color>();
-            if (!File.Exists(TokensPath))
-            {
-                Debug.LogError($"[PaletteRemap] - не найден файл палитры {TokensPath}");
-                return result;
-            }
-
-            foreach (Match m in Regex.Matches(File.ReadAllText(TokensPath),
-                         @"--gm-([a-z0-9\-]+)\s*:\s*rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)"))
-            {
-                result[m.Groups[1].Value] = new Color(
-                    int.Parse(m.Groups[2].Value) / 255f,
-                    int.Parse(m.Groups[3].Value) / 255f,
-                    int.Parse(m.Groups[4].Value) / 255f);
-            }
-
-            return result;
         }
 
         private void OnGUI()
