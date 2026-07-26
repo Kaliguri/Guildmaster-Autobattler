@@ -28,15 +28,6 @@ namespace Guildmaster.UI.Tooltips
     /// </remarks>
     public sealed class TooltipSystem : IDisposable
     {
-        /// <summary>Задержка перед показом, мс. Меньше — окна мельтешат при проводке курсора через грид.</summary>
-        public const long DelayMs = 400;
-
-        /// <summary>
-        /// Окно уже было открыто и закрылось меньше этого времени назад — следующее показываем сразу.
-        /// Без grace переход между соседними карточками грида выглядит как «подсказка отключилась».
-        /// </summary>
-        public const float GraceSeconds = 0.35f;
-
         /// <summary>Сколько держать курсор, чтобы окно залипло (Baymard: рабочий диапазон 300–500 мс).</summary>
         public const float DwellSeconds = 0.5f;
 
@@ -61,7 +52,6 @@ namespace Guildmaster.UI.Tooltips
         private VisualElement _root;
         private VisualElement _layer;
 
-        private IVisualElementScheduledItem _delay;
         private IVisualElementScheduledItem _refresh;
         private IVisualElementScheduledItem _dwell;
         private IVisualElementScheduledItem _chainGrace;
@@ -69,9 +59,6 @@ namespace Guildmaster.UI.Tooltips
         // Окна на экране. Первое — то, что открылось по наведению; остальные — переходы по терминам.
         private readonly TooltipChain<Window> _chain = new();
 
-        private TooltipRequest _pending;      // что показываем по таймеру задержки
-        private VisualElement _pendingAnchor;
-        private float _hiddenAt = float.NegativeInfinity;
         private float _dwellStartedAt;
         private int _pointersInside;          // сколько окон цепочки сейчас под курсором
         private bool _detailed;
@@ -144,8 +131,6 @@ namespace Guildmaster.UI.Tooltips
             _root = null;
             _layer = null;
             _pointersInside = 0;
-            _pending = default;
-            _pendingAnchor = null;
         }
 
         /// <summary>
@@ -154,11 +139,7 @@ namespace Guildmaster.UI.Tooltips
         /// </summary>
         public bool HideAll()
         {
-            if (_chain.Count == 0)
-            {
-                CancelPending();
-                return false;
-            }
+            if (_chain.Count == 0) return false;
             CloseChain();
             return true;
         }
@@ -221,49 +202,26 @@ namespace Guildmaster.UI.Tooltips
                 return;
             }
 
-            CancelPending();
             if (_chain.Count > 0) CloseChain();
         }
 
+        // Показ БЕЗ задержки (решение Макса 2026-07-26): навёлся — окно уже здесь. Классическая
+        // hover-задержка защищает от мельтешения при проводке курсора через грид, но у нас окно и так
+        // сменяется целиком на новое наведение, а ожидание перед каждым чтением дороже, чем мигание.
         private void Request(TooltipRequest request, VisualElement anchor)
         {
+            if (_layer == null || Suppressed || request.IsEmpty) return;
+
             Window first = _chain.Count > 0 ? _chain.Items[0] : null;
             if (first != null && first.Anchor == anchor && first.Request.SameAs(request)) return;
 
-            _pending = request;
-            _pendingAnchor = anchor;
-
-            // Grace: подряд идущие наведения (проводка по гриду) не заставляют ждать задержку каждый раз.
-            bool instant = _chain.Count > 0 || Time.unscaledTime - _hiddenAt <= GraceSeconds;
-            CancelPending();
-            if (instant) ShowPending();
-            else _delay = _layer.schedule.Execute(ShowPending).StartingIn(DelayMs);
-        }
-
-        private void CancelPending()
-        {
-            _delay?.Pause();
-            _delay = null;
-        }
-
-        // --- Показ ---
-
-        private void ShowPending()
-        {
-            CancelPending();
-            if (_layer == null || Suppressed || _pending.IsEmpty) return;
-
             if (_chain.Count > 0) CloseChain(); // одна подсказка за раз, пока цепочка не залипла
 
-            var window = new Window
-            {
-                Request = _pending,
-                Anchor  = _pendingAnchor,
-            };
+            var window = new Window { Request = request, Anchor = anchor };
             if (!CreateWindow(window)) return;
 
             _chain.Add(window, out _);
-            PlaceByAnchor(window, _pendingAnchor);
+            PlaceByAnchor(window, anchor);
             StartDwell(window);
             _sound?.PlayUi("tooltip_show");
 
@@ -336,10 +294,9 @@ namespace Guildmaster.UI.Tooltips
             window.Content = content;
             window.Root.EnableInClassList("gm-tooltip--wide", content.ClassListContains(TooltipCard.WideHintClass));
 
-            // Полоса нужна, только если внутри есть куда переходить: резервировать высоту под обещание,
-            // которое некуда исполнить, — тратить место зря.
-            bool navigable = HasLinks(content);
-            EnsureDwellBar(window, navigable && !window.Sticky);
+            // Полоса есть у ЛЮБОГО окна (реш. Макса: консистентность). Залипание нужно не только ради
+            // переходов: длинный текст тоже хочется перечитать, не боясь, что окно исчезнет.
+            EnsureDwellBar(window, !window.Sticky);
             if (window.Sticky) ApplySticky(window);
             return true;
         }
@@ -354,9 +311,6 @@ namespace Guildmaster.UI.Tooltips
             StopTimers();
             foreach (Window w in _chain.DrainAll()) DestroyWindow(w);
             _pointersInside = 0;
-            _hiddenAt = Time.unscaledTime;
-            _pending = default;
-            _pendingAnchor = null;
         }
 
         // --- Sticky: полоса ожидания и залипание ---
@@ -364,7 +318,7 @@ namespace Guildmaster.UI.Tooltips
         private void StartDwell(Window window)
         {
             _dwell?.Pause();
-            if (window.DwellFill == null) return; // переходить некуда — залипать незачем
+            if (window.DwellFill == null) return;
 
             _dwellStartedAt = Time.unscaledTime;
             _dwell = _layer.schedule.Execute(() =>
@@ -491,22 +445,11 @@ namespace Guildmaster.UI.Tooltips
             return null;
         }
 
-        // Есть ли в содержимом ссылки на термины: по ним и пойдёт цепочка.
-        private static bool HasLinks(VisualElement content)
-        {
-            if (content is TooltipCard card)
-                return !string.IsNullOrEmpty(card.Description.text)
-                    && card.Description.text.IndexOf("<link=", StringComparison.Ordinal) >= 0;
-            return false;
-        }
-
         private void StopTimers()
         {
-            _delay?.Pause();
             _refresh?.Pause();
             _dwell?.Pause();
             _chainGrace?.Pause();
-            _delay = null;
             _refresh = null;
             _dwell = null;
             _chainGrace = null;
@@ -516,7 +459,6 @@ namespace Guildmaster.UI.Tooltips
         {
             Suppressed = value;
             if (!value) return;
-            CancelPending();
             if (_chain.Count > 0) CloseChain();
         }
 
