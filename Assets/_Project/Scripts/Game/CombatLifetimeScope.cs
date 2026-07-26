@@ -28,7 +28,8 @@ namespace Guildmaster.Game
         [Tooltip("Конфиг базовых характеристик (в т.ч. armor-константа K — единственный источник).")]
         [SerializeField] private StatsConfig _statsConfig;
 
-        [Tooltip("Классовый профиль баланса (база HP/скорости от класса, 2-й уровень стат-каскада). Пусто = классы не применяются, статы как раньше.")]
+        [Tooltip("Классовый профиль баланса (база HP/скорости от класса, 2-й уровень стат-каскада). ОБЯЗАТЕЛЕН: " +
+                 "пусто = скоуп не соберётся (раньше классы молча не применялись, и юниты уезжали на MaxHP 0).")]
         [SerializeField] private ClassBalanceConfig _classBalanceConfig;
 
         [Tooltip("Балансный тюнинг симуляции (вики «13» §3.4): печётся в снапшот SimTuning на старте боя.")]
@@ -114,8 +115,9 @@ namespace Guildmaster.Game
 
             Debug.Log($"[CombatLifetimeScope] - Battle seed = {seed}{(fixedSeed ? " (fixed)" : "")}");
 
-            // Сид доступен из DI (лог/реплей/MP), а не только «внутри» RNG.
-            builder.RegisterInstance(new BattleSeed(seed));
+            // Тип-обёртки BattleSeed в контейнере больше нет: её никто не резолвил, то есть «сид доступен
+            // из DI» было обещанием без адресата (аудит 2026-07-26, T-20). Сид виден в логе выше, а когда
+            // он понадобится реплею или сети — придёт из RunState, а не из отдельного значения в скоупе.
             builder.RegisterInstance<IRngService>(new XorShiftRng(seed));
         }
 
@@ -159,7 +161,7 @@ namespace Guildmaster.Game
             // IContentDatabase — из RootScope (родитель); фабрика/симуляция — из этого скоупа.
             builder.Register<EncounterLoader>(Lifetime.Scoped);
 
-            builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped).AsSelf();
+            builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped);
         }
 
         private void RegisterPresentation(IContainerBuilder builder)
@@ -174,8 +176,8 @@ namespace Guildmaster.Game
             builder.RegisterEntryPoint<Presentation.BattleFocusBinder>(Lifetime.Scoped);
         }
 
-        // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя) и лечь в BattleSeed,
-        // а не генерироваться локально — иначе RNG хоста и клиента разойдутся. Сейчас ок:
+        // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя), а не генерироваться
+        // локально — иначе RNG хоста и клиента разойдутся. Сейчас ок:
         // модель хост-авторитетная, тикает только хост (см. CombatLoopService).
         private static ulong GenerateBattleSeed()
         {
