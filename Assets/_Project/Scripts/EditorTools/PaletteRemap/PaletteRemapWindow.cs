@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -45,24 +46,70 @@ namespace Guildmaster.PaletteRemap
                 _ramp = BuildGuildmasterRamp();
         }
 
-        // Дефолтная рампа Guildmaster: значения = наши примитив-токены (ink/brass/parchment).
-        // Держим в синхроне с tokens.primitives.uss вручную (там — источник правды по палитре).
+        /// <summary>Путь к владельцу палитры: цвета «тёплого света» живут здесь и только здесь.</summary>
+        private const string TokensPath = "Assets/_Project/UI/Theme/tokens.primitives.uss";
+
+        // Ступени рампы: токен палитры → позиция по яркости. Сами ЦВЕТА не дублируем — читаем из USS.
+        // Раньше здесь лежала их копия с комментарием «держим в синхроне вручную», то есть дубль,
+        // признанный дублем (аудит 2026-07-26, UA-21). Правка палитры теперь доезжает до тула сама.
+        private static readonly (string Token, float Position)[] RampStops =
+        {
+            ("ink-900",       0.00f),
+            ("ink-600",       0.30f),
+            ("ink-300",       0.50f),
+            ("brass-700",     0.65f),
+            ("brass-500",     0.80f),
+            ("brass-300",     0.92f),
+            ("parchment-100", 1.00f),
+        };
+
+        /// <summary>
+        /// Дефолтная рампа Guildmaster из примитив-токенов. Токен не прочитался — ступень пропускается,
+        /// и об этом говорится вслух: молча подставить «похожий» цвет значило бы перекрасить арт мимо
+        /// палитры, а это ровно то, ради чего тул и существует.
+        /// </summary>
         private static Gradient BuildGuildmasterRamp()
         {
-            Color RGB(int r, int g, int b) => new Color(r / 255f, g / 255f, b / 255f);
-            var g = new Gradient();
-            g.colorKeys = new[]
+            Dictionary<string, Color> tokens = ReadPrimitiveTokens();
+
+            var keys = new List<GradientColorKey>(RampStops.Length);
+            var missing = new List<string>();
+            foreach ((string token, float position) in RampStops)
             {
-                new GradientColorKey(RGB(18, 16, 13),   0.00f), // ink-900
-                new GradientColorKey(RGB(36, 26, 18),   0.30f), // ink-600
-                new GradientColorKey(RGB(74, 58, 38),   0.50f), // ink-300
-                new GradientColorKey(RGB(138, 95, 40),  0.65f), // brass-700
-                new GradientColorKey(RGB(184, 134, 59), 0.80f), // brass-500
-                new GradientColorKey(RGB(217, 178, 106),0.92f), // brass-300
-                new GradientColorKey(RGB(239, 226, 196),1.00f), // parchment-100
-            };
+                if (tokens.TryGetValue(token, out Color c)) keys.Add(new GradientColorKey(c, position));
+                else missing.Add(token);
+            }
+
+            if (missing.Count > 0)
+                Debug.LogError($"[PaletteRemap] - в {TokensPath} не найдены токены: {string.Join(", ", missing)}. " +
+                               "Рампа собрана без них — проверь имена в файле палитры.");
+
+            var g = new Gradient();
+            if (keys.Count > 0) g.colorKeys = keys.ToArray();
             g.alphaKeys = new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) };
             return g;
+        }
+
+        /// <summary>Разобрать <c>--gm-&lt;имя&gt;: rgb(r, g, b);</c> из файла примитив-токенов.</summary>
+        private static Dictionary<string, Color> ReadPrimitiveTokens()
+        {
+            var result = new Dictionary<string, Color>();
+            if (!File.Exists(TokensPath))
+            {
+                Debug.LogError($"[PaletteRemap] - не найден файл палитры {TokensPath}");
+                return result;
+            }
+
+            foreach (Match m in Regex.Matches(File.ReadAllText(TokensPath),
+                         @"--gm-([a-z0-9\-]+)\s*:\s*rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)"))
+            {
+                result[m.Groups[1].Value] = new Color(
+                    int.Parse(m.Groups[2].Value) / 255f,
+                    int.Parse(m.Groups[3].Value) / 255f,
+                    int.Parse(m.Groups[4].Value) / 255f);
+            }
+
+            return result;
         }
 
         private void OnGUI()
