@@ -179,7 +179,7 @@ namespace Guildmaster.Game.Input
         {
             get
             {
-                if (_uiDoc == null) _uiDoc = UnityEngine.Object.FindFirstObjectByType<UIDocument>();
+                if (_uiDoc == null) _uiDoc = UnityEngine.Object.FindAnyObjectByType<UIDocument>();
                 return _uiDoc != null ? _uiDoc.rootVisualElement?.panel : null;
             }
         }

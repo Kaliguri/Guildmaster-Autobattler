@@ -85,7 +85,7 @@ namespace Guildmaster.DevTools
         // чтобы DevTools не тянул ссылку на конкретный скоуп ради одной команды.
         private static LifetimeScope Root()
         {
-            foreach (LifetimeScope scope in Object.FindObjectsByType<LifetimeScope>(FindObjectsSortMode.None))
+            foreach (LifetimeScope scope in Object.FindObjectsByType<LifetimeScope>())
                 if (scope.GetType().Name == "RootLifetimeScope") return scope;
             return null;
         }

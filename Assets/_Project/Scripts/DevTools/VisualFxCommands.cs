@@ -62,7 +62,7 @@ namespace Guildmaster.DevTools
 
         private static VisualToggles Toggles()
         {
-            foreach (LifetimeScope scope in Object.FindObjectsByType<LifetimeScope>(FindObjectsSortMode.None))
+            foreach (LifetimeScope scope in Object.FindObjectsByType<LifetimeScope>())
             {
                 if (scope.GetType().Name != "RootLifetimeScope" || scope.Container == null) continue;
                 try { return scope.Container.Resolve(typeof(VisualToggles)) as VisualToggles; }

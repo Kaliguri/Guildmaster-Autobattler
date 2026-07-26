@@ -11,7 +11,8 @@ namespace Guildmaster.Presentation
     /// </summary>
     public sealed class CombatVfx : MonoBehaviour
     {
-        private readonly Dictionary<int, ObjectPool<PooledVfx>> _pools = new Dictionary<int, ObjectPool<PooledVfx>>();
+        // Ключ пула — EntityId префаба, а не int: приведение EntityId к int Unity объявила уходящим.
+        private readonly Dictionary<EntityId, ObjectPool<PooledVfx>> _pools = new Dictionary<EntityId, ObjectPool<PooledVfx>>();
         private readonly List<PooledVfx> _active = new List<PooledVfx>(32);
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace Guildmaster.Presentation
 
         private ObjectPool<PooledVfx> GetOrCreatePool(GameObject prefab)
         {
-            int key = prefab.GetInstanceID();
+            EntityId key = prefab.GetEntityId();
             if (_pools.TryGetValue(key, out ObjectPool<PooledVfx> existing))
                 return existing;
 

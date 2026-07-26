@@ -65,7 +65,7 @@ namespace Guildmaster.Data.Definitions
 
         [Header("Arena (seam)")]
         [Tooltip("Ключ арены боя (prefab-per-arena Addressables, вики «10» §4-5). ЗАДЕЛ: пока не читается — " +
-                 "арена берётся из сцены через FindFirstObjectByType. Свап на загрузку по ключу — будущий шаг.")]
+                 "арена берётся из сцены поиском по типу. Свап на загрузку по ключу — будущий шаг.")]
         [SerializeField] private string _arenaId;
 
         public EncounterTier Tier => _tier;

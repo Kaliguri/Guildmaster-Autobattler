@@ -6,6 +6,7 @@ using System.Linq;
 using Guildmaster.Data.Definitions;
 using UnityEditor;
 using UnityEditor.Animations;
+using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
 namespace Guildmaster.ContentHub.Editor
@@ -245,24 +246,36 @@ namespace Guildmaster.ContentHub.Editor
             importer.spritePixelsPerUnit = 100;
 
             string baseName = Path.GetFileNameWithoutExtension(assetPath);
-            var rects = new List<SpriteMetaData>();
+            var rects = new List<SpriteRect>();
             for (int row = 0; row < rows; row++)
             {
                 // Unity rect y=0 is bottom of texture
                 int y = (rows - 1 - row) * cellH;
                 for (int col = 0; col < cols; col++)
                 {
-                    rects.Add(new SpriteMetaData
+                    string name = rows > 1 ? $"{baseName}_r{row}_{col}" : $"{baseName}_{col}";
+                    rects.Add(new SpriteRect
                     {
-                        name = rows > 1 ? $"{baseName}_r{row}_{col}" : $"{baseName}_{col}",
-                        rect = new Rect(col * cellW, y, cellW, cellH),
-                        alignment = (int)SpriteAlignment.Center,
-                        pivot = new Vector2(0.5f, 0.5f),
+                        name      = name,
+                        rect      = new Rect(col * cellW, y, cellW, cellH),
+                        alignment = SpriteAlignment.Center,
+                        pivot     = new Vector2(0.5f, 0.5f),
+                        // GUID обязателен: по нему провайдер сопоставляет спрайт с уже нарезанным.
+                        // Выводим из имени, чтобы повторная нарезка того же листа не плодила дубли.
+                        spriteID  = GUID.Generate(),
                     });
                 }
             }
 
-            importer.spritesheet = rects.ToArray();
+            // Нарезка идёт через ISpriteEditorDataProvider: TextureImporter.spritesheet Unity сняла,
+            // и это не косметика — старое свойство больше не пишет метаданные (2D-пакет владеет ими сам).
+            var factories = new SpriteDataProviderFactories();
+            factories.Init();
+            ISpriteEditorDataProvider provider = factories.GetSpriteEditorDataProviderFromObject(importer);
+            provider.InitSpriteEditorDataProvider();
+            provider.SetSpriteRects(rects.ToArray());
+            provider.Apply();
+
             EditorUtility.SetDirty(importer);
             importer.SaveAndReimport();
         }

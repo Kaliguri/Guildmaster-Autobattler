@@ -89,7 +89,7 @@ namespace Guildmaster.DevTools
         // на виду (без этого бой проигрывается за полноэкранной консолью и заканчивается невидимым).
         private void Start()
         {
-            _console = FindObjectOfType<QuantumConsole>(true);
+            _console = FindAnyObjectByType<QuantumConsole>(FindObjectsInactive.Include);
             if (_console != null)
             {
                 _console.OnActivate   += PauseForConsole;
@@ -520,7 +520,7 @@ namespace Guildmaster.DevTools
         [Command("gm_toggle_status", "Вкл/выкл dev-подсветку статусов юнитов (кольца)")]
         public void ToggleStatusOverlay()
         {
-            var overlay = FindObjectOfType<CombatStatusOverlay>(true);
+            var overlay = FindAnyObjectByType<CombatStatusOverlay>(FindObjectsInactive.Include);
             if (overlay == null) { Debug.LogWarning("[GuildmasterCommands] - CombatStatusOverlay не найден (создаётся в бою)"); return; }
             overlay.IsEnabled = !overlay.IsEnabled;
             Debug.Log($"[GuildmasterCommands] - gm_toggle_status: {(overlay.IsEnabled ? "ON" : "OFF")}");

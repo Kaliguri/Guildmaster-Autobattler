@@ -69,9 +69,9 @@ namespace Guildmaster.Presentation.Arena
 
         private void Start()
         {
-            if (_swapper == null)      _swapper = FindFirstObjectByType<ArenaSkinSwapper>();
-            if (_digital == null)      _digital = FindFirstObjectByType<ArenaDigitalOverlay>();
-            if (_desaturation == null) _desaturation = FindFirstObjectByType<ArenaDesaturation>();
+            if (_swapper == null)      _swapper = FindAnyObjectByType<ArenaSkinSwapper>();
+            if (_digital == null)      _digital = FindAnyObjectByType<ArenaDigitalOverlay>();
+            if (_desaturation == null) _desaturation = FindAnyObjectByType<ArenaDesaturation>();
 
             _revealSubscription   = _revealSub?.Subscribe(OnReveal);
             _fadeSubscription     = _fadeSub?.Subscribe(e => _curtain = e.Progress);

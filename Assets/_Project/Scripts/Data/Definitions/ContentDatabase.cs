@@ -21,6 +21,14 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Версия контент-схемы (общая с DTO/Workshop-контрактом, вики «8»).")]
         [SerializeField] private int _schemaVersion = 1;
 
+        /// <summary>
+        /// Версия контент-схемы. Читателей в игре пока нет, и аудит 2026-07-26 снял геттер как мёртвый —
+        /// но это задел под заявленное: тех-док требует её в контракте Workshop-UGC и в заголовке реплея
+        /// (<c>10-reference/data-layer</c>). Возвращён вместе с объяснением, чтобы поле не висело
+        /// «присвоено и не используется» и чтобы следующая метла не сносила его снова.
+        /// </summary>
+        public int SchemaVersion => _schemaVersion;
+
         [Tooltip("Все контент-ассеты проекта. Наполняется Alebardium/Data/Sync Content Database — не тащить руками.")]
         [SerializeField, ReadOnly, ListDrawerSettings(ShowFoldout = true, IsReadOnly = true)]
         private List<ContentDefinition> _entries = new List<ContentDefinition>();

@@ -22,7 +22,7 @@ namespace Guildmaster.Game
         protected override void Configure(IContainerBuilder builder)
         {
             // Снапшот арены из авторинга в ЭТОЙ (persist) сцене. Бой берёт тот же layout из предка —
-            // единый мир, никакого per-battle FindFirstObjectByType в боевом скоупе.
+            // единый мир, никакого per-battle поиска по сцене в боевом скоупе.
             ArenaLayoutData layout = BuildArenaLayout();
             builder.RegisterInstance(layout);
 
@@ -69,7 +69,7 @@ namespace Guildmaster.Game
         {
             // Авторинг ищем ТОЛЬКО в загруженных сценах; в единой-мировой раскладке он живёт в
             // WorldScene (из BattleScene удалён). Нет авторинга → бесконечное поле без зон.
-            var authoring = FindFirstObjectByType<ArenaLayoutAuthoring>();
+            var authoring = FindAnyObjectByType<ArenaLayoutAuthoring>();
             if (authoring == null)
             {
                 Debug.LogWarning("[WorldLifetimeScope] - ArenaLayoutAuthoring не найден в загруженных сценах → " +

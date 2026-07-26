@@ -23,7 +23,7 @@ namespace Guildmaster.DevTools
             var sb = new StringBuilder();
             sb.AppendLine($"Сейчас: {swapper.CurrentSkinId}");
             foreach (ArenaSkinSource src in Object.FindObjectsByType<ArenaSkinSource>(
-                         FindObjectsInactive.Include, FindObjectsSortMode.None))
+                         FindObjectsInactive.Include))
                 sb.AppendLine($"  {src.SkinId}{(src.IsLive ? "  (живой корень)" : "")}");
             return sb.ToString();
         }
@@ -105,13 +105,13 @@ namespace Guildmaster.DevTools
         // Свопер живёт в мировом (persist) скоупе — переход обязан доигрывать и когда бой уже кончился.
         private static ArenaSkinSwapper Swapper()
         {
-            foreach (LifetimeScope scope in Object.FindObjectsByType<LifetimeScope>(FindObjectsSortMode.None))
+            foreach (LifetimeScope scope in Object.FindObjectsByType<LifetimeScope>())
             {
                 if (scope.GetType().Name != "WorldLifetimeScope" || scope.Container == null) continue;
                 try { return scope.Container.Resolve(typeof(IArenaSwap)) as ArenaSkinSwapper; }
                 catch { /* не зарегистрирован — упадём на поиск в сцене ниже */ }
             }
-            return Object.FindFirstObjectByType<ArenaSkinSwapper>();
+            return Object.FindAnyObjectByType<ArenaSkinSwapper>();
         }
     }
 }

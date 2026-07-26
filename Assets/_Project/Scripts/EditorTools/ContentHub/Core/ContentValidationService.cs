@@ -55,7 +55,7 @@ namespace Guildmaster.ContentHub.Editor
                 while (p.NextVisible(true))
                     if (p.propertyType == SerializedPropertyType.ObjectReference
                         && p.objectReferenceValue == null
-                        && p.objectReferenceInstanceIDValue != 0)
+                        && p.objectReferenceEntityIdValue != default)
                         result.Add(new ValidationIssue(entry, IssueSeverity.Error,
                             $"битая ссылка (missing) в поле '{p.displayName}'"));
             }

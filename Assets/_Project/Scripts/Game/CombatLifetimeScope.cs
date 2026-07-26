@@ -50,7 +50,7 @@ namespace Guildmaster.Game
         {
             // Арену печём из авторинга в сцене (если он есть); иначе — бесконечное поле.
             // prefab-per-arena через Addressables — будущий свап (вики «15» §4-5): тогда снапшот
-            // придёт из загруженного префаба, а не из FindFirstObjectByType.
+            // придёт из загруженного префаба, а не из поиска по сцене.
             ArenaLayoutData layout = BuildArenaLayout();
 
             RegisterArena(builder, layout);
@@ -96,7 +96,7 @@ namespace Guildmaster.Game
 
         private ArenaLayoutData BuildArenaLayout()
         {
-            var authoring = FindFirstObjectByType<ArenaLayoutAuthoring>();
+            var authoring = FindAnyObjectByType<ArenaLayoutAuthoring>();
             if (authoring == null)
             {
                 Debug.LogWarning("[CombatLifetimeScope] - ArenaLayoutAuthoring не найден в сцене → " +
