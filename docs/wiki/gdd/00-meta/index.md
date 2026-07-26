@@ -109,6 +109,7 @@ SORT file.name ASC
 ## 50 · Со-режим и UX (`50-modes-ux/`)
 
 - [[multiplayer|Modes - Multiplayer]] — кооператив, распределение «Сосудов».
+- [[proving-grounds|Modes - Proving Grounds]] — Ристалище: площадка вне забега, где смотрят бой.
 - [[controls|Modes - Controls]] — раскладка клавиш (техника ввода — в техчасти).
 - [[ui-feedback|Modes - UI Feedback]] — общие правила отклика интерфейса (недоступные действия и т.п.).
 
