@@ -9,8 +9,19 @@ CLAP (Contrastive Language-Audio Pretraining) кладёт текст и зву�
   --verify                            проверить, что уже назначенные сэмплы похожи на то, чем их
                                       объявили в карте (криомант — лёд, щит — металл, а не наоборот)
 
-Что модель НЕ умеет: оценить красоту. «Сочный удар против дохлого» она не различит — отсев
-кандидатов её работа, финальный выбор всё равно на слух.
+ГРАНИЦА ПРИМЕНИМОСТИ (проверена замером, не на глаз). CLAP обучен на полевых записях, где звук
+идёт с контекстом и хвостом, поэтому на КОРОТКИХ сухих one-shot из игровых паков он ненадёжен:
+корреляция длительности со скором на нашем материале +0.47, средняя длина топ-20 выдачи 2.2 с
+против 0.45 с у дна. Пример: «glass shattering» ставит 2.7-секундный Ice_explosion на первое
+место, а честный 0.24-секундный impactGlass_heavy — на 122-е из 380. Тайлинг короткого сэмпла
+до трёх секунд не помогает (проверено: скор скорее падает).
+
+Отсюда правило: скорам файлов короче SHORT_SAMPLE_SEC не верить, они помечаются в выводе.
+Модель полезна на фактурных сэмплах (магия, слэши, амбиент) и на внешних библиотеках вроде
+Freesound, где записи длиннее.
+
+Чего модель не умеет вовсе: оценить красоту. «Сочный удар против дохлого» она не различит —
+отсев кандидатов её работа, финальный выбор всё равно на слух.
 
 Установка (одноразово, ~3 ГБ, отдельный venv, в .gitignore):
     python -m venv scripts/audio/.venv
@@ -40,6 +51,9 @@ AUDIO_EXT = (".ogg", ".wav", ".mp3", ".flac")
 # Сколько слабых соответствий показывать в --verify.
 WEAK_LIMIT = 15
 
+# Короче этого порога скор CLAP — шум (см. «граница применимости» в шапке).
+SHORT_SAMPLE_SEC = 0.6
+
 
 def collect_pool():
     files = []
@@ -52,6 +66,16 @@ def collect_pool():
                 if name.lower().endswith(AUDIO_EXT):
                     files.append(os.path.join(dirpath, name))
     return sorted(files)
+
+
+def duration_of(path):
+    import subprocess
+    r = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", path],
+                       capture_output=True, text=True)
+    try:
+        return float((r.stdout or "0").strip())
+    except ValueError:
+        return 0.0
 
 
 def load_model():
@@ -85,7 +109,10 @@ def build_index():
 
     os.makedirs(CACHE, exist_ok=True)
     rel = [os.path.relpath(f, REPO).replace("\\", "/") for f in files]
-    np.savez_compressed(INDEX, files=np.array(rel), embeds=matrix)
+    # Длительность кешируем вместе с векторами: она нужна, чтобы пометить сэмплы, чьему скору
+    # верить нельзя, а звать ffprobe на каждый поиск заново — расточительно.
+    durations = np.array([duration_of(f) for f in files], dtype=float)
+    np.savez_compressed(INDEX, files=np.array(rel), embeds=matrix, durations=durations)
     print(f"индекс: {INDEX} ({matrix.shape[0]} векторов)")
     return 0
 
@@ -96,7 +123,8 @@ def load_index():
         print("Индекса нет — сначала прогони --index")
         raise SystemExit(1)
     data = np.load(INDEX, allow_pickle=False)
-    return list(data["files"]), data["embeds"]
+    durations = data["durations"] if "durations" in data.files else np.zeros(len(data["files"]))
+    return list(data["files"]), data["embeds"], durations
 
 
 def similarity(text_embed, audio_embeds):
@@ -107,15 +135,16 @@ def similarity(text_embed, audio_embeds):
 
 
 def cmd_find(query, top):
-    files, embeds = load_index()
+    files, embeds, durations = load_index()
     model = load_model()
     text = model.get_text_embedding([query, ""], use_tensor=False)[0]
     scores = similarity(text, embeds)
     order = scores.argsort()[::-1][:top]
     print(f"\nкандидаты под «{query}»:\n")
     for rank, idx in enumerate(order, start=1):
-        print(f"  {rank:2}. {scores[idx]:.3f}  {files[idx]}")
-    print("\nСкор — это похожесть на ОПИСАНИЕ, а не качество. Слушать всё равно придётся.")
+        mark = "  (короткий — скору не верить)" if durations[idx] < SHORT_SAMPLE_SEC else ""
+        print(f"  {rank:2}. {scores[idx]:+.3f}  {durations[idx]:.2f}с  {files[idx]}{mark}")
+    print("\nСкор — похожесть на ОПИСАНИЕ, а не качество, и на коротких сэмплах он шумит.")
     return 0
 
 
@@ -129,7 +158,7 @@ def describe(entry):
 
 def cmd_verify():
     import numpy as np
-    files, embeds = load_index()
+    files, embeds, durations = load_index()
     by_path = {f: i for i, f in enumerate(files)}
     model = load_model()
 
@@ -141,16 +170,24 @@ def cmd_verify():
             continue
         text = model.get_text_embedding([describe(e), ""], use_tensor=False)[0]
         scores = similarity(text, embeds[idx])
-        rows.append((float(np.mean(scores)), e["key"], describe(e),
+        mean_len = float(np.mean([durations[i] for i in idx]))
+        rows.append((float(np.mean(scores)), e["key"], describe(e), mean_len,
                      [(round(float(s), 3), os.path.basename(sources[j])) for j, s in enumerate(scores)]))
 
-    rows.sort(key=lambda r: r[0])
-    print(f"\nсверка {len(rows)} ключей с их описанием — слабейшие сверху:\n")
-    for score, key, desc, per_file in rows[:WEAK_LIMIT]:
+    # Два списка, а не один: у коротких сэмплов низкий скор — свойство модели, а не сигнал о звуке.
+    trusted = sorted([r for r in rows if r[3] >= SHORT_SAMPLE_SEC], key=lambda r: r[0])
+    short = [r for r in rows if r[3] < SHORT_SAMPLE_SEC]
+
+    print(f"\nсверка {len(rows)} ключей ({len(trusted)} со скором, которому можно верить):\n")
+    for score, key, desc, mean_len, per_file in trusted[:WEAK_LIMIT]:
         worst = min(per_file, key=lambda p: p[0])
-        print(f"  {score:.3f}  {key}   «{desc}»")
-        print(f"          худший сэмпл: {worst[1]} ({worst[0]})")
-    print(f"\nсредний скор по всем ключам: {np.mean([r[0] for r in rows]):.3f}")
+        print(f"  {score:+.3f}  {key}   «{desc}»")
+        print(f"          худший сэмпл: {worst[1]} ({worst[0]:+.3f}), средняя длина {mean_len:.2f}с")
+
+    if trusted:
+        print(f"\nсредний скор по проверяемым: {np.mean([r[0] for r in trusted]):+.3f}")
+    print(f"пропущено как слишком короткие: {len(short)} ключей "
+          f"(CLAP на one-shot < {SHORT_SAMPLE_SEC} с шумит, см. шапку файла)")
     print("Низкий скор ≠ плохой звук: описание может быть кривым. Читать как «сюда стоит заглянуть».")
     return 0
 
