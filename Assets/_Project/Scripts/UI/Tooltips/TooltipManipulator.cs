@@ -26,9 +26,6 @@ namespace Guildmaster.UI.Tooltips
             // этой пары подсказки существовали бы только для мыши.
             target.RegisterCallback<FocusInEvent>(OnFocusIn);
             target.RegisterCallback<FocusOutEvent>(OnFocusOut);
-            // Alt-клик закрепляет подсказку (§II.10.5, слой 3). Alt, а не обычный клик: у карточек и
-            // слотов клик уже занят выбором и драгом, и отнимать его у геймплея ради справки нельзя.
-            target.RegisterCallback<PointerDownEvent>(OnPointerDown);
             // Снятый с панели элемент курсор не покинет — событие Leave до него уже не дойдёт, и окно
             // осталось бы висеть после закрытия экрана.
             target.RegisterCallback<DetachFromPanelEvent>(OnDetach);
@@ -40,21 +37,7 @@ namespace Guildmaster.UI.Tooltips
             target.UnregisterCallback<PointerLeaveEvent>(OnLeave);
             target.UnregisterCallback<FocusInEvent>(OnFocusIn);
             target.UnregisterCallback<FocusOutEvent>(OnFocusOut);
-            target.UnregisterCallback<PointerDownEvent>(OnPointerDown);
             target.UnregisterCallback<DetachFromPanelEvent>(OnDetach);
-        }
-
-        private void OnPointerDown(PointerDownEvent e)
-        {
-            if (!e.altKey) return;
-            TooltipRequest request = _request != null ? _request() : default;
-            if (request.IsEmpty) return;
-            using (TooltipPinEvent pin = TooltipPinEvent.GetPooled(request, target))
-            {
-                pin.target = target;
-                target.SendEvent(pin);
-            }
-            e.StopPropagation(); // Alt-клик — жест справки, он не должен ещё и выбирать карточку
         }
 
         private void OnFocusIn(FocusInEvent _) => Show();

@@ -40,38 +40,6 @@ namespace Guildmaster.UI.Tooltips
         }
     }
 
-    /// <summary>
-    /// «Закрепи подсказку на этом содержимом» — Alt-клик по якорю или клик по термину внутри уже
-    /// закреплённого окна (план §II.10.5, слой 3).
-    /// </summary>
-    /// <remarks>
-    /// Отдельное событие, а не флаг в <see cref="TooltipShowEvent"/>: показ и закрепление — разные
-    /// намерения с разной судьбой. Показ живёт, пока курсор на месте; закрепление переживает уход
-    /// курсора и закрывается только явно.
-    /// </remarks>
-    public sealed class TooltipPinEvent : EventBase<TooltipPinEvent>
-    {
-        public TooltipRequest Request { get; private set; }
-        public VisualElement Anchor { get; private set; }
-
-        public static TooltipPinEvent GetPooled(TooltipRequest request, VisualElement anchor)
-        {
-            TooltipPinEvent e = EventBase<TooltipPinEvent>.GetPooled();
-            e.Request = request;
-            e.Anchor  = anchor;
-            return e;
-        }
-
-        protected override void Init()
-        {
-            base.Init();
-            bubbles = true;
-            tricklesDown = false;
-            Request = default;
-            Anchor  = null;
-        }
-    }
-
     /// <summary>«Курсор ушёл с элемента с тултипом» — просьба убрать окно (если оно про этот якорь).</summary>
     public sealed class TooltipHideEvent : EventBase<TooltipHideEvent>
     {

@@ -1109,38 +1109,28 @@
     max-width: 380px;
 }
 
-/* ЗАКРЕПЛЁННОЕ окно (Alt-клик): живёт после ухода курсора, принимает клики, по терминам внутри
-   ходит навигация. Отличается сильной рамкой — игрок должен видеть, что это окно теперь его,
-   а не подсказка, которая исчезнет сама. */
-.gm-tooltip--pinned {
+/* ЗАЛИПШЕЕ окно (курсор подержали, полоса заполнилась): принимает курсор, живёт после ухода с
+   якоря, по терминам внутри идёт цепочка. Сильная рамка — знак того, что окно теперь «твоё»,
+   а не подсказка, которая исчезнет сама. Требование «hoverable» из WCAG 1.4.13 выполняется
+   именно этим состоянием. */
+.gm-tooltip--sticky {
     border-color: var(--gm-outline-color-hover);
-    max-width: 380px;
 }
 
-.gm-tooltip__chrome {
-    flex-direction: row;
-    justify-content: flex-end;
-    margin-bottom: var(--gm-space-0);
+/* Полоса ожидания живёт ВНИЗУ окна и занимает своё место в раскладке: поверх текста она сделала бы
+   последнюю строку нечитаемой. Появляется только там, где есть куда переходить. */
+.gm-tooltip__dwell {
+    height: 3px;
+    margin-top: var(--gm-space-0);
+    background-color: var(--gm-color-surface-sunken);
 }
 
-.gm-tooltip__nav-btn {
-    background-color: rgba(0, 0, 0, 0);
-    border-width: 0;
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-xs);
-    padding: 0 var(--gm-space-1);
-    margin: 0;
-    min-width: 24px;
+.gm-tooltip__dwell-fill {
+    height: 3px;
+    width: 0;
+    background-color: var(--gm-color-hover-border);
 }
 
-.gm-tooltip__nav-btn:hover {
-    color: var(--gm-color-text);
-}
-
-.gm-tooltip__nav-btn:disabled,
-.gm-tooltip__nav-btn.unity-disabled {
-    color: var(--gm-color-disabled-text);
-}
 
 .gm-tooltip__lines {
     flex-direction: column;

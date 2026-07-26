@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Guildmaster.Core.Input;
 using Guildmaster.Core.Settings;
 using Guildmaster.Data.Definitions;
@@ -10,13 +11,20 @@ using UnityEngine.UIElements;
 namespace Guildmaster.UI.Tooltips
 {
     /// <summary>
-    /// Единственный показыватель тултипов (план §II.10.5 п.1): слой <c>layer-tooltip</c>, задержка
-    /// наведения, grace между соседними целями, кламп и флип у краёв, живой рефреш и глушение при драге.
+    /// Показыватель подсказок (план §II.10.5): слой <c>layer-tooltip</c>, задержка наведения, grace
+    /// между соседними целями, кламп и флип у краёв, глушение при драге — и sticky-режим, в котором
+    /// подсказка становится читаемой: по ней можно водить курсором и переходить по терминам.
     /// </summary>
     /// <remarks>
-    /// Система одна на панель, а не «окно на каждый элемент»: два одновременно видимых тултипа —
-    /// это всегда баг, и дешевле сделать его невозможным, чем ловить. Содержимое собирает
-    /// <see cref="ITooltipContentFactory"/>; система про контент не знает ничего, кроме размера.
+    /// <b>Sticky (решение Макса 2026-07-26, образец — Total War: Warhammer 3).</b> Подержал курсор —
+    /// внизу окна заполняется полоса; заполнилась — окно «залипло»: принимает курсор, живёт после
+    /// ухода с якоря, а наведение на термин внутри открывает СЛЕДУЮЩЕЕ окно. Одновременно живут
+    /// не больше <see cref="TooltipChain{T}.Limit"/> окон.
+    /// <para>Это не украшение: WCAG 1.4.13 требует от hover-контента быть <i>hoverable</i>
+    /// (курсор может войти, содержимое не исчезает) и <i>dismissible</i> (ESC убирает без движения
+    /// мыши). Окно, которое нельзя тронуть курсором, этому не удовлетворяет.</para>
+    /// <para>Задержки НЕ складываются: полоса заполняется с момента появления окна, а не после него —
+    /// иначе до интерактива проходила бы почти секунда, и жест ощущался бы как «не отзывается».</para>
     /// </remarks>
     public sealed class TooltipSystem : IDisposable
     {
@@ -29,8 +37,19 @@ namespace Guildmaster.UI.Tooltips
         /// </summary>
         public const float GraceSeconds = 0.35f;
 
+        /// <summary>Сколько держать курсор, чтобы окно залипло (Baymard: рабочий диапазон 300–500 мс).</summary>
+        public const float DwellSeconds = 0.5f;
+
+        /// <summary>
+        /// Сколько цепочка живёт после ухода курсора. Без этого окна гибли бы на перелёте между
+        /// соседними — расстояние между ними курсор проходит не мгновенно.
+        /// </summary>
+        public const float ChainGraceSeconds = 0.4f;
+
         /// <summary>Период живого рефреша (§II.10.5 п.5).</summary>
         public const long RefreshMs = 500;
+
+        private const long DwellTickMs = 16; // шаг заполнения полосы: кадр при 60 Гц
 
         private readonly ITooltipContentFactory _factory;
         private readonly ISubscriber<RelicDragEvent> _relicDrag;
@@ -41,21 +60,20 @@ namespace Guildmaster.UI.Tooltips
 
         private VisualElement _root;
         private VisualElement _layer;
-        private VisualElement _window;
 
         private IVisualElementScheduledItem _delay;
         private IVisualElementScheduledItem _refresh;
+        private IVisualElementScheduledItem _dwell;
+        private IVisualElementScheduledItem _chainGrace;
 
-        private TooltipRequest _current;      // что показано (или показывается по таймеру)
-        private VisualElement _anchor;        // относительно чего стоит окно
-        private bool _visible;
-        private bool _pinned;
+        // Окна на экране. Первое — то, что открылось по наведению; остальные — переходы по терминам.
+        private readonly TooltipChain<Window> _chain = new();
 
-        // История закреплённого окна (слой 3): переходы по терминам — это ОДНО окно с навигацией,
-        // а не стопка окон. Логика вынесена в TooltipHistory — её можно проверить без панели.
-        private readonly TooltipHistory _history = new();
-        private VisualElement _chrome;        // шапка закреплённого окна: назад / вперёд / закрыть
+        private TooltipRequest _pending;      // что показываем по таймеру задержки
+        private VisualElement _pendingAnchor;
         private float _hiddenAt = float.NegativeInfinity;
+        private float _dwellStartedAt;
+        private int _pointersInside;          // сколько окон цепочки сейчас под курсором
         private bool _detailed;
 
         public TooltipSystem(ITooltipContentFactory factory, ISubscriber<RelicDragEvent> relicDrag,
@@ -72,15 +90,87 @@ namespace Guildmaster.UI.Tooltips
             SyncDetailed();
         }
 
-        /// <summary>Тултип открыт (в т.ч. закреплён) — ESC гасит его раньше, чем откроет меню (§II.4).</summary>
-        public bool IsVisible => _visible;
+        /// <summary>Есть хоть одно открытое окно — ESC гасит его раньше, чем откроет меню (§II.4).</summary>
+        public bool IsVisible => _chain.Count > 0;
+
+        /// <summary>Первое окно залипло: цепочка в режиме чтения, курсор может ходить по окнам.</summary>
+        public bool IsPinned => _chain.Count > 0 && _chain.Items[0].Sticky;
+
+        /// <summary>Сколько окон открыто сейчас (для тестов и диагностики).</summary>
+        public int OpenWindows => _chain.Count;
 
         /// <summary>
         /// Подробный режим: то же окно, больше разбора (§II.10.4). Считается из удержания Shift и галки
-        /// «всегда подробно», открытое окно пересобирается на месте — иначе игрок жмёт Shift и не понимает,
-        /// почему ничего не изменилось.
+        /// «всегда подробно», открытые окна пересобираются на месте — иначе игрок жмёт Shift и не
+        /// понимает, почему ничего не изменилось.
         /// </summary>
         public bool Detailed => _detailed;
+
+        /// <summary>
+        /// Подсказки заглушены (активный drag, §II.12.7). Цепочка снимается: окно над рукой,
+        /// которая тащит юнита, только мешает.
+        /// </summary>
+        public bool Suppressed { get; private set; }
+
+        /// <summary>Привязать систему к панели: корень ловит всплывающие запросы, слой держит окна.</summary>
+        public void Attach(VisualElement root, VisualElement layer)
+        {
+            Detach();
+            _root  = root;
+            _layer = layer;
+            if (_root == null || _layer == null) return;
+
+            _root.RegisterCallback<TooltipShowEvent>(OnShowRequested);
+            _root.RegisterCallback<TooltipHideEvent>(OnHideRequested);
+
+            // Драг реликвии — жест, который перекрывает чтение: карточку тащат из грида в мир.
+            _dragSubscription = _relicDrag?.Subscribe(e => SetSuppressed(e.Phase != RelicDragPhase.Drop));
+        }
+
+        /// <summary>Отвязать от панели (смена UIDocument, выключение системы).</summary>
+        public void Detach()
+        {
+            _dragSubscription?.Dispose();
+            _dragSubscription = null;
+            StopTimers();
+
+            if (_root != null)
+            {
+                _root.UnregisterCallback<TooltipShowEvent>(OnShowRequested);
+                _root.UnregisterCallback<TooltipHideEvent>(OnHideRequested);
+            }
+
+            foreach (Window w in _chain.DrainAll()) w.Root.RemoveFromHierarchy();
+            _root = null;
+            _layer = null;
+            _pointersInside = 0;
+            _pending = default;
+            _pendingAnchor = null;
+        }
+
+        /// <summary>
+        /// Убрать всё, чем бы оно ни держалось. <c>true</c> — было что убирать (приоритет ESC, §II.4;
+        /// заодно это <i>dismissible</i> из WCAG 1.4.13: закрытие без движения мыши).
+        /// </summary>
+        public bool HideAll()
+        {
+            if (_chain.Count == 0)
+            {
+                CancelPending();
+                return false;
+            }
+            CloseChain();
+            return true;
+        }
+
+        public void Dispose()
+        {
+            if (_input != null) _input.DetailsHeldChanged -= OnDetailsHeldChanged;
+            if (_settings != null) _settings.Changed -= SyncDetailed;
+            Detach();
+        }
+
+        // --- Режим детализации ---
 
         private void OnDetailsHeldChanged(bool _) => SyncDetailed();
 
@@ -93,203 +183,61 @@ namespace Guildmaster.UI.Tooltips
             bool value  = always ^ held;
             if (_detailed == value) return;
             _detailed = value;
-            if (_visible) { Rebuild(); _sound?.PlayUi("tooltip_detail"); }
-        }
+            if (_chain.Count == 0) return;
 
-        /// <summary>
-        /// Тултипы заглушены (активный drag, §II.12.7). Текущее окно снимается: подсказка над рукой,
-        /// которая тащит юнита, только мешает.
-        /// </summary>
-        public bool Suppressed { get; private set; }
-
-        /// <summary>Привязать систему к панели: корень ловит всплывающие запросы, слой держит окно.</summary>
-        public void Attach(VisualElement root, VisualElement layer)
-        {
-            Detach();
-            _root  = root;
-            _layer = layer;
-            if (_root == null || _layer == null) return;
-
-            _window = new VisualElement { name = "tooltip-window", pickingMode = PickingMode.Ignore };
-            _window.AddToClassList("gm-tooltip");
-            _window.style.position = Position.Absolute;
-            _window.style.display = DisplayStyle.None;
-            _layer.Add(_window);
-
-            _root.RegisterCallback<TooltipShowEvent>(OnShowRequested);
-            _root.RegisterCallback<TooltipHideEvent>(OnHideRequested);
-            _root.RegisterCallback<TooltipPinEvent>(OnPinRequested);
-
-            // Драг реликвии — единственный жест, который сейчас перекрывает hover (карточку тащат из грида
-            // в мир). Драг юнита живёт в мире и над панелью не проходит, но глушитель общий: событий
-            // станет больше, а правило «пока тащим — подсказок нет» останется одно.
-            _dragSubscription = _relicDrag?.Subscribe(e => SetSuppressed(e.Phase != RelicDragPhase.Drop));
-        }
-
-        /// <summary>Отвязать от панели (смена UIDocument, выключение системы).</summary>
-        public void Detach()
-        {
-            _dragSubscription?.Dispose();
-            _dragSubscription = null;
-            _delay?.Pause();
-            _refresh?.Pause();
-            _delay = null;
-            _refresh = null;
-
-            if (_root != null)
-            {
-                _root.UnregisterCallback<TooltipShowEvent>(OnShowRequested);
-                _root.UnregisterCallback<TooltipHideEvent>(OnHideRequested);
-                _root.UnregisterCallback<TooltipPinEvent>(OnPinRequested);
-            }
-
-            _history.Clear();
-
-            _window?.RemoveFromHierarchy();
-            _window = null;
-            _root = null;
-            _layer = null;
-            _visible = false;
-            _pinned = false;
-            _anchor = null;
-            _current = default;
-        }
-
-        /// <summary>Окно закреплено: живёт после ухода курсора, ссылки внутри него работают.</summary>
-        public bool IsPinned => _pinned;
-
-        /// <summary>
-        /// Закрепить открытое окно на текущем содержимом (Alt-клик по якорю). Закреплённое окно
-        /// переживает уход курсора, становится кликабельным и снимается только явно — крестиком или ESC.
-        /// </summary>
-        public void Pin()
-        {
-            if (!_visible || _pinned) return;
-            _pinned = true;
-            _history.Reset(_current);
-            ApplyPinnedChrome();
-            // Своего звука у закрепления пока нет: в FMOD заведены только tooltip_show/tooltip_detail,
-            // и заводить пустую запись в каталоге ради ключа — обман (аудио-сторож её и ловит).
-            // Переиспользуем «показ»; отдельные tooltip_pin/tooltip_nav — задача аудио-контура.
-            _sound?.PlayUi("tooltip_show");
-        }
-
-        /// <summary>Снять закрепление; окно остаётся видимым до ухода курсора или явного скрытия.</summary>
-        public void Unpin()
-        {
-            if (!_pinned) return;
-            _pinned = false;
-            _history.Clear();
-            ApplyPinnedChrome();
-        }
-
-        /// <summary>
-        /// Перейти к другому содержимому ВНУТРИ закреплённого окна (клик по термину в тексте).
-        /// Переход пишется в историю, а не открывает второе окно (план §II.10.5, слой 3).
-        /// </summary>
-        public void Navigate(TooltipRequest request)
-        {
-            if (!_pinned || !_history.Push(request)) return;
-            _current = _history.Current;
-            Rebuild();
-            _sound?.PlayUi("tooltip_show"); // см. Pin(): своего звука у перехода пока нет
-        }
-
-        /// <summary>Шаг назад по истории закреплённого окна.</summary>
-        public bool GoBack()
-        {
-            if (!_pinned || !_history.GoBack()) return false;
-            _current = _history.Current;
-            Rebuild();
-            return true;
-        }
-
-        /// <summary>Шаг вперёд по истории закреплённого окна.</summary>
-        public bool GoForward()
-        {
-            if (!_pinned || !_history.GoForward()) return false;
-            _current = _history.Current;
-            Rebuild();
-            return true;
-        }
-
-        /// <summary>Убрать окно чем бы оно ни держалось. <c>true</c> — было что убирать (для приоритета ESC).</summary>
-        public bool HideAll()
-        {
-            if (!_visible) return false;
-            _pinned = false;
-            HideNow();
-            return true;
-        }
-
-        public void Dispose()
-        {
-            if (_input != null) _input.DetailsHeldChanged -= OnDetailsHeldChanged;
-            if (_settings != null) _settings.Changed -= SyncDetailed;
-            Detach();
+            foreach (Window w in _chain.Items) FillWindow(w);
+            _sound?.PlayUi("tooltip_detail");
         }
 
         // --- Запросы от элементов ---
 
         private void OnShowRequested(TooltipShowEvent e)
         {
-            // Пока окно закреплено, наведение на другие цели его НЕ подменяет: закрепление — это
-            // «я читаю вот это», и увести содержимое случайным движением мыши было бы предательством.
-            if (_pinned) return;
+            if (_layer == null || e.Request.IsEmpty || Suppressed) return;
+
+            Window source = WindowOf(e.Anchor);
+            if (source != null)
+            {
+                // Наведение ВНУТРИ залипшего окна — это переход по термину, а не новая подсказка.
+                if (source.Sticky) OpenNext(e.Request, source);
+                return;
+            }
+
+            // Пока цепочка в режиме чтения, наведение снаружи её не подменяет: увести то, что человек
+            // читает, случайным движением мыши — худшее, что может сделать подсказка.
+            if (IsPinned) return;
+
             Request(e.Request, e.Anchor);
         }
 
         private void OnHideRequested(TooltipHideEvent e)
         {
-            if (_pinned) return;                                   // закреплённое окно уход курсора не гасит
-            if (e.Anchor != null && e.Anchor != _anchor && _visible) return; // ушли не с той цели — не наше дело
-            CancelPending();
-            if (_visible) HideNow();
-        }
+            if (WindowOf(e.Anchor) != null) return; // уход внутри окна — не повод закрываться
 
-        // Alt-клик по якорю закрепляет подсказку; клик по термину ВНУТРИ закреплённого окна — переход.
-        // Различаем по источнику: пришло изнутри окна — навигация, снаружи — новое закрепление.
-        private void OnPinRequested(TooltipPinEvent e)
-        {
-            if (_window == null || e.Request.IsEmpty) return;
-
-            bool fromInsideWindow = e.Anchor != null && IsInsideWindow(e.Anchor);
-            if (_pinned && fromInsideWindow)
+            if (IsPinned)
             {
-                Navigate(e.Request);
+                // Курсор ушёл с якоря, но цепочка залипла — она держится, пока курсор не покинет ВСЁ.
+                if (_pointersInside == 0) StartChainGrace();
                 return;
             }
 
-            if (_pinned) return; // клик по постороннему якорю закреплённое окно не трогает
-
             CancelPending();
-            _current = e.Request;
-            _anchor  = e.Anchor;
-            if (!_visible) ShowNow();
-            else Rebuild();
-            Pin();
-        }
-
-        private bool IsInsideWindow(VisualElement element)
-        {
-            for (VisualElement cur = element; cur != null; cur = cur.parent)
-                if (cur == _window) return true;
-            return false;
+            if (_chain.Count > 0) CloseChain();
         }
 
         private void Request(TooltipRequest request, VisualElement anchor)
         {
-            if (_window == null || request.IsEmpty || Suppressed) return;
-            if (_visible && _anchor == anchor && _current.SameAs(request)) return; // уже показано это же
+            Window first = _chain.Count > 0 ? _chain.Items[0] : null;
+            if (first != null && first.Anchor == anchor && first.Request.SameAs(request)) return;
 
-            _current = request;
-            _anchor  = anchor;
+            _pending = request;
+            _pendingAnchor = anchor;
 
             // Grace: подряд идущие наведения (проводка по гриду) не заставляют ждать задержку каждый раз.
-            bool instant = _visible || Time.unscaledTime - _hiddenAt <= GraceSeconds;
+            bool instant = _chain.Count > 0 || Time.unscaledTime - _hiddenAt <= GraceSeconds;
             CancelPending();
-            if (instant) ShowNow();
-            else _delay = _layer.schedule.Execute(ShowNow).StartingIn(DelayMs);
+            if (instant) ShowPending();
+            else _delay = _layer.schedule.Execute(ShowPending).StartingIn(DelayMs);
         }
 
         private void CancelPending()
@@ -300,131 +248,268 @@ namespace Guildmaster.UI.Tooltips
 
         // --- Показ ---
 
-        private void ShowNow()
+        private void ShowPending()
         {
             CancelPending();
-            if (_window == null || Suppressed) return;
-            if (!Rebuild()) return;
+            if (_layer == null || Suppressed || _pending.IsEmpty) return;
 
-            _visible = true;
+            if (_chain.Count > 0) CloseChain(); // одна подсказка за раз, пока цепочка не залипла
+
+            var window = new Window
+            {
+                Request = _pending,
+                Anchor  = _pendingAnchor,
+            };
+            if (!CreateWindow(window)) return;
+
+            _chain.Add(window, out _);
+            PlaceByAnchor(window, _pendingAnchor);
+            StartDwell(window);
             _sound?.PlayUi("tooltip_show");
-            _window.style.display = DisplayStyle.Flex;
-            // Размер окна известен только после раскладки, а ставить его «примерно» нельзя — именно у
-            // краёв экрана ошибка и вылезает. Поэтому первый кадр окно прозрачно: считаем позицию по
-            // фактическому размеру и лишь потом показываем (мигания на месте старой позиции нет).
-            _window.style.opacity = 0f;
-            _window.RegisterCallback<GeometryChangedEvent>(OnWindowLaidOut);
 
-            if (_factory != null && _factory.IsLive(_current))
-                _refresh = _layer.schedule.Execute(() => Rebuild()).Every(RefreshMs);
+            if (_factory != null && _factory.IsLive(window.Request))
+                _refresh = _layer.schedule.Execute(() => FillWindow(window)).Every(RefreshMs);
         }
 
-        private void OnWindowLaidOut(GeometryChangedEvent _)
+        /// <summary>
+        /// Открыть следующее окно цепочки — переход по термину внутри залипшего окна.
+        /// Позиционируется относительно окна-источника, а не курсора: цепочка должна читаться лесенкой.
+        /// </summary>
+        private void OpenNext(TooltipRequest request, Window source)
         {
-            _window.UnregisterCallback<GeometryChangedEvent>(OnWindowLaidOut);
-            Place();
-            _window.style.opacity = 1f;
+            foreach (Window w in _chain.Items)
+                if (w.Request.SameAs(request)) return; // это окно уже открыто — не плодим дубль
+
+            var window = new Window { Request = request, Anchor = source.Root, Sticky = true };
+            if (!CreateWindow(window)) return;
+
+            Window evicted = _chain.Add(window, out bool wasEvicted);
+            if (wasEvicted && evicted != null) DestroyWindow(evicted);
+
+            ApplySticky(window);
+            PlaceByAnchor(window, source.Root);
+            _sound?.PlayUi("tooltip_show");
         }
 
-        // Пересобрать содержимое под текущий запрос и режим детализации. false = показывать нечего.
-        private bool Rebuild()
+        // --- Жизнь окна ---
+
+        private bool CreateWindow(Window window)
         {
-            VisualElement content = _factory?.Build(_current, _detailed);
+            var root = new VisualElement { name = "tooltip-window", pickingMode = PickingMode.Ignore };
+            root.AddToClassList("gm-tooltip");
+            root.style.position = Position.Absolute;
+            root.style.opacity = 0f; // до первой раскладки позиция неизвестна — не показываем «прыжок»
+
+            var body = new VisualElement { pickingMode = PickingMode.Ignore };
+            body.AddToClassList("gm-tooltip__body");
+            root.Add(body);
+
+            window.Root = root;
+            window.Body = body;
+
+            if (!FillWindow(window)) return false;
+
+            _layer.Add(root);
+            root.RegisterCallback<GeometryChangedEvent>(window.OnLaidOut = _ =>
+            {
+                root.UnregisterCallback<GeometryChangedEvent>(window.OnLaidOut);
+                PlaceByAnchor(window, window.Anchor);
+                root.style.opacity = 1f;
+            });
+            root.RegisterCallback<PointerEnterEvent>(_ => OnWindowEnter());
+            root.RegisterCallback<PointerLeaveEvent>(_ => OnWindowLeave());
+            return true;
+        }
+
+        // Наполнить окно содержимым под текущий режим. false = показывать нечего.
+        private bool FillWindow(Window window)
+        {
+            VisualElement content = _factory?.Build(window.Request, _detailed);
             if (content == null)
             {
-                if (_visible) HideNow();
+                if (_chain.Contains(window)) { _chain.Remove(window); DestroyWindow(window); }
                 return false;
             }
 
-            _window.Clear();
-            _chrome = null;
-            if (_pinned) _window.Add(BuildChrome());
-            _window.Add(content);
+            window.Body.Clear();
+            window.Body.Add(content);
+            window.Content = content;
+            window.Root.EnableInClassList("gm-tooltip--wide", content.ClassListContains(TooltipCard.WideHintClass));
 
-            // В закреплённом окне термины в тексте становятся живыми: по ним и ходит навигация.
-            // В обычном окне этого не нужно — оно вообще не принимает курсор (pickingMode Ignore).
-            if (_pinned && content is TooltipCard card)
+            // Полоса нужна, только если внутри есть куда переходить: резервировать высоту под обещание,
+            // которое некуда исполнить, — тратить место зря.
+            bool navigable = HasLinks(content);
+            EnsureDwellBar(window, navigable && !window.Sticky);
+            if (window.Sticky) ApplySticky(window);
+            return true;
+        }
+
+        private void DestroyWindow(Window window)
+        {
+            window.Root?.RemoveFromHierarchy();
+        }
+
+        private void CloseChain()
+        {
+            StopTimers();
+            foreach (Window w in _chain.DrainAll()) DestroyWindow(w);
+            _pointersInside = 0;
+            _hiddenAt = Time.unscaledTime;
+            _pending = default;
+            _pendingAnchor = null;
+        }
+
+        // --- Sticky: полоса ожидания и залипание ---
+
+        private void StartDwell(Window window)
+        {
+            _dwell?.Pause();
+            if (window.DwellFill == null) return; // переходить некуда — залипать незачем
+
+            _dwellStartedAt = Time.unscaledTime;
+            _dwell = _layer.schedule.Execute(() =>
+            {
+                float t = (Time.unscaledTime - _dwellStartedAt) / DwellSeconds;
+                if (t >= 1f)
+                {
+                    _dwell?.Pause();
+                    _dwell = null;
+                    MakeSticky(window);
+                    return;
+                }
+                window.DwellFill.style.width = new StyleLength(Length.Percent(Mathf.Clamp01(t) * 100f));
+            }).Every(DwellTickMs);
+        }
+
+        private void MakeSticky(Window window)
+        {
+            if (window.Sticky) return;
+            window.Sticky = true;
+            EnsureDwellBar(window, false); // полоса своё отработала, место возвращаем содержимому
+            ApplySticky(window);
+            _sound?.PlayUi("tooltip_show");
+        }
+
+        // Залипшее окно ЛОВИТ курсор (без этого по ссылкам внутри не навестись — и не выполняется
+        // требование «hoverable» из WCAG 1.4.13) и помечено классом, чтобы отличаться от подсказки,
+        // которая уйдёт сама.
+        private void ApplySticky(Window window)
+        {
+            window.Root.pickingMode = PickingMode.Position;
+            window.Root.AddToClassList("gm-tooltip--sticky");
+            if (window.Content is TooltipCard card)
             {
                 card.pickingMode = PickingMode.Position;
                 card.Description.pickingMode = PickingMode.Position;
                 card.Description.WithKeywordTooltips();
             }
-
-            // Ширину просит содержимое (стат-строки в узкой колонке нечитаемы), решает окно.
-            _window.EnableInClassList("gm-tooltip--wide", content.ClassListContains(TooltipCard.WideHintClass));
-            if (_visible) Place(); // живой рефреш мог сменить высоту — окно не должно свисать за край
-            return true;
         }
 
-        /// <summary>
-        /// Шапка закреплённого окна: назад / вперёд / закрыть. Строит система, а не фабрика содержимого:
-        /// это орган окна, и он обязан выглядеть одинаково, что бы внутри ни показывали.
-        /// </summary>
-        private VisualElement BuildChrome()
+        // Полоса ожидания живёт ВНИЗУ окна и занимает своё место в раскладке: появись она поверх
+        // текста, последняя строка читалась бы сквозь неё.
+        private void EnsureDwellBar(Window window, bool needed)
         {
-            _chrome = new VisualElement { name = "tooltip-chrome" };
-            _chrome.AddToClassList("gm-tooltip__chrome");
+            if (!needed)
+            {
+                window.DwellBar?.RemoveFromHierarchy();
+                window.DwellBar = null;
+                window.DwellFill = null;
+                return;
+            }
+            if (window.DwellBar != null)
+            {
+                window.DwellBar.BringToFront();
+                return;
+            }
 
-            var back = new Button(() => GoBack()) { text = "‹" };
-            back.AddToClassList("gm-tooltip__nav-btn");
-            back.SetEnabled(_history.CanGoBack);
+            var bar = new VisualElement { pickingMode = PickingMode.Ignore };
+            bar.AddToClassList("gm-tooltip__dwell");
+            var fill = new VisualElement { pickingMode = PickingMode.Ignore };
+            fill.AddToClassList("gm-tooltip__dwell-fill");
+            fill.style.width = new StyleLength(Length.Percent(0f));
+            bar.Add(fill);
+            window.Root.Add(bar);
 
-            var forward = new Button(() => GoForward()) { text = "›" };
-            forward.AddToClassList("gm-tooltip__nav-btn");
-            forward.SetEnabled(_history.CanGoForward);
-
-            var close = new Button(() => HideAll()) { text = "×" };
-            close.AddToClassList("gm-tooltip__nav-btn");
-            close.AddToClassList("gm-tooltip__nav-btn--close");
-
-            _chrome.Add(back);
-            _chrome.Add(forward);
-            _chrome.Add(close);
-            return _chrome;
+            window.DwellBar = bar;
+            window.DwellFill = fill;
         }
 
-        // Закреплённое окно ЛОВИТ курсор (иначе по ссылкам внутри не кликнуть) и помечено классом,
-        // чтобы отличаться от подсказки, которая уйдёт сама.
-        private void ApplyPinnedChrome()
+        // --- Курсор в цепочке ---
+
+        private void OnWindowEnter()
         {
-            if (_window == null) return;
-            _window.pickingMode = _pinned ? PickingMode.Position : PickingMode.Ignore;
-            _window.EnableInClassList("gm-tooltip--pinned", _pinned);
-            Rebuild();
+            _pointersInside++;
+            _chainGrace?.Pause();
+            _chainGrace = null;
         }
 
-        private void Place()
+        private void OnWindowLeave()
         {
-            if (_anchor == null || _window == null || _layer == null) return;
+            if (_pointersInside > 0) _pointersInside--;
+            if (_pointersInside == 0 && IsPinned) StartChainGrace();
+        }
 
-            Rect anchor = _anchor.worldBound;
-            Rect panel  = _root.worldBound;
-            var size = new Vector2(_window.resolvedStyle.width, _window.resolvedStyle.height);
-            Vector2 pos = TooltipPlacement.Place(anchor, size, panel);
+        private void StartChainGrace()
+        {
+            _chainGrace?.Pause();
+            _chainGrace = _layer.schedule.Execute(() =>
+            {
+                _chainGrace?.Pause();
+                _chainGrace = null;
+                if (_pointersInside == 0) CloseChain();
+            }).StartingIn((long)(ChainGraceSeconds * 1000f));
+        }
+
+        // --- Позиция ---
+
+        private void PlaceByAnchor(Window window, VisualElement anchor)
+        {
+            if (anchor == null || _layer == null || window.Root == null) return;
+
+            Rect anchorBound = anchor.worldBound;
+            Rect panel = _root.worldBound;
+            var size = new Vector2(window.Root.resolvedStyle.width, window.Root.resolvedStyle.height);
+            Vector2 pos = TooltipPlacement.Place(anchorBound, size, panel);
 
             // Считаем в координатах панели (там же живут worldBound якоря и границы экрана), а ставим
             // относительно слоя: слой сейчас лежит в нуле корня, но закладываться на это не нужно.
             Rect layerBound = _layer.worldBound;
-            _window.style.left = pos.x - layerBound.x;
-            _window.style.top  = pos.y - layerBound.y;
+            window.Root.style.left = pos.x - layerBound.x;
+            window.Root.style.top  = pos.y - layerBound.y;
         }
 
-        private void HideNow()
+        // --- Служебное ---
+
+        private Window WindowOf(VisualElement element)
         {
+            if (element == null) return null;
+            foreach (Window w in _chain.Items)
+            {
+                for (VisualElement cur = element; cur != null; cur = cur.parent)
+                    if (cur == w.Root) return w;
+            }
+            return null;
+        }
+
+        // Есть ли в содержимом ссылки на термины: по ним и пойдёт цепочка.
+        private static bool HasLinks(VisualElement content)
+        {
+            if (content is TooltipCard card)
+                return !string.IsNullOrEmpty(card.Description.text)
+                    && card.Description.text.IndexOf("<link=", StringComparison.Ordinal) >= 0;
+            return false;
+        }
+
+        private void StopTimers()
+        {
+            _delay?.Pause();
             _refresh?.Pause();
+            _dwell?.Pause();
+            _chainGrace?.Pause();
+            _delay = null;
             _refresh = null;
-            _visible = false;
-            _pinned = false;
-            _history.Clear();
-            _chrome = null;
-            _hiddenAt = Time.unscaledTime;
-            _anchor = null;
-            _current = default;
-            if (_window == null) return;
-            _window.pickingMode = PickingMode.Ignore; // снятое окно снова прозрачно для курсора
-            _window.RemoveFromClassList("gm-tooltip--pinned");
-            _window.style.display = DisplayStyle.None;
-            _window.Clear();
+            _dwell = null;
+            _chainGrace = null;
         }
 
         private void SetSuppressed(bool value)
@@ -432,8 +517,21 @@ namespace Guildmaster.UI.Tooltips
             Suppressed = value;
             if (!value) return;
             CancelPending();
-            _pinned = false;
-            if (_visible) HideNow();
+            if (_chain.Count > 0) CloseChain();
+        }
+
+        /// <summary>Одно окно цепочки: корень, тело, полоса ожидания и состояние залипания.</summary>
+        private sealed class Window
+        {
+            public VisualElement Root;
+            public VisualElement Body;
+            public VisualElement Content;
+            public VisualElement DwellBar;
+            public VisualElement DwellFill;
+            public TooltipRequest Request;
+            public VisualElement Anchor;
+            public bool Sticky;
+            public EventCallback<GeometryChangedEvent> OnLaidOut;
         }
     }
 }
