@@ -15,8 +15,8 @@ namespace Guildmaster.Tests.EditMode.Run
     {
         private const string Key = "__test_machine";
 
-        private static string SavesRoot => Path.Combine(Application.persistentDataPath, JsonFileSaveService.SavesFolder);
-        private static string LocalRoot => Path.Combine(Application.persistentDataPath, LocalJsonFileSaveService.LocalFolder);
+        private static string SavesRoot => Path.Combine(GameDataPath.Root, JsonFileSaveService.SavesFolder);
+        private static string LocalRoot => Path.Combine(GameDataPath.Root, LocalJsonFileSaveService.LocalFolder);
         private static string LocalPath => Path.Combine(LocalRoot, Key + ".json");
 
         private LocalJsonFileSaveService _local;

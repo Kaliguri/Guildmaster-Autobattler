@@ -46,7 +46,9 @@ namespace Guildmaster.Game.Services
             _serializer = JsonSerializer.Create(settings);
         }
 
-        private string Root => Path.Combine(Application.persistentDataPath, _rootFolder);
+        // Корень — GameDataPath, а НЕ persistentDataPath: путь к данным игрока не должен зависеть от
+        // маркетингового имени игры, иначе переименование после релиза уводит игру на пустой каталог.
+        private string Root => Path.Combine(GameDataPath.Root, _rootFolder);
 
         private string PathFor(string key) =>
             Path.Combine(Root, key.Replace('/', Path.DirectorySeparatorChar) + ".json");

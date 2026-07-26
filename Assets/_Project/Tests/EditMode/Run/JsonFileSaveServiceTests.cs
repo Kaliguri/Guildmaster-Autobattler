@@ -35,7 +35,7 @@ namespace Guildmaster.Tests.EditMode.Run
         private const string Key       = "__test_run_save";
         private const string NestedKey = "profiles/__test_profile/guilds/__test_guild/run";
 
-        private static string Root      => System.IO.Path.Combine(Application.persistentDataPath, JsonFileSaveService.SavesFolder);
+        private static string Root      => System.IO.Path.Combine(GameDataPath.Root, JsonFileSaveService.SavesFolder);
         private static string Path0     => System.IO.Path.Combine(Root, Key + ".json");
         private static string Backup    => Path0 + ".bak";
         private static string Temp      => Path0 + ".tmp";
