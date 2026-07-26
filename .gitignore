@@ -126,3 +126,9 @@ Assets/UI/RT_MCP_*.renderTexture.meta
 
 # Local test builds (Alebardium/Test/Build & Run) — not shared
 /Builds/
+
+# Personal scratch scenes (per-developer sandboxes, never shared).
+# Имя вида «<Кто> Scene For Tests.unity» — личная песочница: содержимое меняется под сиюминутный
+# опыт и мержится хуже всего. Общие сцены (Core/World/CombatSystems/UiPreview) остаются в git.
+Assets/_Project/Scenes/*Scene For Tests.unity
+Assets/_Project/Scenes/*Scene For Tests.unity.meta
