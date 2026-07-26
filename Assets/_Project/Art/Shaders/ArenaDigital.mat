@@ -36,25 +36,25 @@ Material:
     - _BreathAmount: 0.15
     - _BreathSpeed: 1.1
     - _Calm: 0
-    - _CellFlicker: 0.12
+    - _CellFlicker: 0.05
     - _CellSize: 1
     - _DigitizeBand: 0.05
     - _FloorWire: 0.34
-    - _InkAmount: 0.78
+    - _InkAmount: 0.82
     - _Progress: 0
     - _RestoreBand: 0.05
-    - _ScanAmount: 0.12
+    - _ScanAmount: 0.1
     - _ScanFreq: 0.7
     - _ScanSpeed: 0.35
-    - _SwitchBand: 0.035
+    - _SwitchBand: 0.018
     - _WallFill: 0.12
-    - _WireWidth: 0.06
+    - _WireWidth: 0.09
     m_Colors:
     - _Cells: {r: 1, g: 1, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _InkColor: {r: 0.075, g: 0.078, b: 0.086, a: 1}
+    - _InkColor: {r: 0.06, g: 0.32, b: 0.38, a: 1}
     - _MapRect: {r: 0, g: 0, b: 1, a: 1}
-    - _SparkColor: {r: 0.95, g: 0.84, b: 0.61, a: 1}
-    - _WireColor: {r: 0.79, g: 0.64, b: 0.29, a: 1}
+    - _SparkColor: {r: 0.78, g: 0.99, b: 1, a: 1}
+    - _WireColor: {r: 0.3, g: 0.86, b: 0.92, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

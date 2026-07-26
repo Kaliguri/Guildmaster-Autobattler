@@ -20,25 +20,25 @@ Shader "Guildmaster/Arena/Digital"
 
         _Progress ("Ход перехода", Range(0, 1)) = 0
         _DigitizeBand ("Мягкость ухода в цифру", Range(0.005, 0.3)) = 0.05
-        _SwitchBand ("Длина вспышки смены", Range(0.005, 0.3)) = 0.035
+        _SwitchBand ("Длина вспышки смены", Range(0.005, 0.3)) = 0.018
         _RestoreBand ("Мягкость возврата", Range(0.005, 0.3)) = 0.05
 
-        [HDR] _WireColor ("Цвет каркаса", Color) = (0.79, 0.64, 0.29, 1)
-        [HDR] _SparkColor ("Цвет вспышки", Color) = (0.95, 0.84, 0.61, 1)
-        // Графит с тёплым подмесом, а не чернила: цифра должна ГАСИТЬ цвет пола, иначе трава остаётся живой
-        // и «модель места» не читается. Настоящей десатурации альфа-блендингом не сделать — тянем к серому.
-        _InkColor ("Цвет затемнения", Color) = (0.075, 0.078, 0.086, 1)
-        _InkAmount ("Сила затемнения", Range(0, 1)) = 0.78
+        // Бирюза (реш. Макса): мир уходит в холодный цифровой сумрак, контуры светятся. Графит до этого
+        // давал не «цифру», а болото — зелень пола смешивалась с серым в грязь.
+        [HDR] _WireColor ("Цвет контура", Color) = (0.30, 0.86, 0.92, 1)
+        [HDR] _SparkColor ("Цвет вспышки", Color) = (0.78, 0.99, 1.0, 1)
+        // Цвет заметно светлее, чем кажется правильным на глаз: в линейном пространстве тёмная бирюза
+        // уезжает почти в чёрный, и от «цифры» остаётся просто потемневший мир.
+        _InkColor ("Цвет затемнения", Color) = (0.06, 0.32, 0.38, 1)
+        _InkAmount ("Сила затемнения", Range(0, 1)) = 0.82
 
         [Header(Scan)]
-        _ScanAmount ("Сила скан-линий", Range(0, 0.4)) = 0.12
+        _ScanAmount ("Сила скан-линий", Range(0, 0.4)) = 0.10
         _ScanFreq ("Частота скан-линий (на юнит мира)", Range(0.1, 4)) = 0.7
         _ScanSpeed ("Скорость скан-линий", Range(0, 3)) = 0.35
-        _CellFlicker ("Разброс яркости по клеткам", Range(0, 0.3)) = 0.12
+        _CellFlicker ("Разброс яркости по клеткам", Range(0, 0.3)) = 0.05
 
-        _WireWidth ("Толщина линии (доля клетки)", Range(0.01, 0.3)) = 0.06
-        _FloorWire ("Яркость каркаса пола", Range(0, 1)) = 0.34
-        _WallFill ("Заливка стен", Range(0, 0.6)) = 0.12
+        _WireWidth ("Толщина контура (доля клетки)", Range(0.01, 0.3)) = 0.09
 
         // Тест-зона живёт в цифре постоянно: вспышки гасим, дыхание включаем, контраст мягче.
         _Calm ("Спокойный режим", Range(0, 1)) = 0
@@ -102,8 +102,6 @@ Shader "Guildmaster/Arena/Digital"
                 half4  _InkColor;
                 half   _InkAmount;
                 half   _WireWidth;
-                half   _FloorWire;
-                half   _WallFill;
                 half   _Calm;
                 half   _BreathAmount;
                 half   _BreathSpeed;
@@ -112,6 +110,21 @@ Shader "Guildmaster/Arena/Digital"
                 half   _ScanSpeed;
                 half   _CellFlicker;
             CBUFFER_END
+
+            // Что в клетке ПРЯМО СЕЙЧАС: 0 — пусто, 1 — пол, 2 — стена. До подмены тайла отвечает исходный
+            // облик, после — целевой, поэтому контур переезжает вместе с содержимым. За краем карты — пусто,
+            // иначе крайняя клетка размазалась бы наружу и арена получила бы фальшивую кайму.
+            half StateAt(float2 cell)
+            {
+                float2 uv = (cell + 0.5) / max(_Cells.xy, 1.0);
+                if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) return 0.0h;
+
+                half4 i = SAMPLE_TEXTURE2D(_CellMap, sampler_CellMap, uv);
+                half code = round(i.r * 8.0h);
+                half from = floor(code / 3.0h);
+                half to   = code - from * 3.0h;
+                return lerp(from, to, step(i.b, _Progress));
+            }
 
             Varyings DigitalVertex(Attributes IN)
             {
@@ -153,34 +166,28 @@ Shader "Guildmaster/Arena/Digital"
                 half breath = 1.0h - _Calm * _BreathAmount *
                               (0.5h - 0.5h * sin(_Time.y * _BreathSpeed + tSwitch * 12.0h));
 
-                // Каркас: расстояние до края клетки. Стена берёт полную яркость и перечёркивается —
-                // именно по этому контуры исходной арены и читаются, ровная сетка их теряет.
-                float2 edge = min(local, 1.0 - local);
-                float  dist = min(edge.x, edge.y);
-                half   frame = 1.0h - smoothstep(_WireWidth * 0.5, _WireWidth, dist);
+                half state = StateAt(cell);
+                clip(state - 0.5h);              // за ареной пустота — там рисовать нечего
 
-                // Состояние клетки упаковано парой (что было / что станет), по три значения на каждое:
-                // пусто, пол, стена. До подмены тайла каркас очерчивает арену, ИЗ которой уходим —
-                // её контуры и должны узнаваться, — а после переворота уже новую.
-                half code      = round(info.r * 8.0h);
-                half fromState = floor(code / 3.0h);
-                half toState   = code - fromState * 3.0h;
-                half state     = lerp(fromState, toState, step(tSwitch, _Progress));
+                // Обводка идёт по ГРАНИЦАМ содержимого, а не по клеткам: линия загорается там, где стена
+                // встречает пол, а пол — пустоту. Это и есть узнаваемый контур места. Сетка по каждой клетке
+                // была ошибкой: клетка — внутренняя мера перещёлка, игроку её видеть незачем, и на ровном
+                // поле она превращает мир в миллиметровку.
+                half sL = StateAt(cell + float2(-1.0,  0.0));
+                half sR = StateAt(cell + float2( 1.0,  0.0));
+                half sD = StateAt(cell + float2( 0.0, -1.0));
+                half sU = StateAt(cell + float2( 0.0,  1.0));
 
-                clip(state - 0.5h);              // пустой клетке рисовать нечего: за ареной пустота, не чертёж
-                half isWall = step(1.5h, state);
+                half nearL = 1.0h - smoothstep(0.0, _WireWidth, local.x);
+                half nearR = 1.0h - smoothstep(0.0, _WireWidth, 1.0 - local.x);
+                half nearD = 1.0h - smoothstep(0.0, _WireWidth, local.y);
+                half nearU = 1.0h - smoothstep(0.0, _WireWidth, 1.0 - local.y);
 
-                half diag   = abs(local.x - (1.0 - local.y));
-                half cross  = isWall * (1.0h - smoothstep(_WireWidth, _WireWidth * 2.2, diag));
+                // Светится сторона той клетки, которая «выше» соседа: обводится объект, а не дырка рядом с ним.
+                half outline = max(max(nearL * step(0.5h, state - sL), nearR * step(0.5h, state - sR)),
+                                   max(nearD * step(0.5h, state - sD), nearU * step(0.5h, state - sU)));
 
-                // Пол держит только угловые засечки, стена — сплошную рамку с перечёркиванием. Ровная сетка
-                // по всему полю читается как миллиметровка и съедает контуры, ради которых всё затевалось.
-                float  cornerDist = max(edge.x, edge.y);
-                half   corners    = 1.0h - smoothstep(0.16, 0.28, cornerDist);
-                half   floorWire  = frame * corners * _FloorWire;
-
-                half wire = saturate(lerp(floorWire, frame, isWall) + cross * 0.8h);
-                wire *= digital * breath;
+                half wire = outline * digital * breath;
 
                 // Вспышка ровно в момент подмены тайла — она и «продаёт» смену текстуры.
                 half flash = saturate(1.0h - abs(_Progress - tSwitch) / _SwitchBand);
@@ -193,8 +200,7 @@ Shader "Guildmaster/Arena/Digital"
                 // Клетки светятся чуть по-разному — поле читается как данные, а не как ровная заливка.
                 half flicker = 1.0h - _CellFlicker * frac(tSwitch * 7.3h);
 
-                half ink = (_InkAmount + _ScanAmount * scan) * digital * breath * flicker
-                           + _WallFill * isWall * digital;
+                half ink = (_InkAmount + _ScanAmount * scan) * digital * breath * flicker;
 
                 half3 col = _InkColor.rgb;
                 half  a   = saturate(ink);
