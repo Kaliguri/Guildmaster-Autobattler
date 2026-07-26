@@ -22,6 +22,8 @@ MonoBehaviour:
   _unremovable: 0
   _components:
   - rid: 5615026876324511840
+  _icon: {fileID: 0}
+  _infoTags: []
   references:
     version: 2
     RefIds:
@@ -29,4 +31,4 @@ MonoBehaviour:
       type: {class: MissingHpShieldComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _flat: 200
-        _pctMissingHp: 0.15
+        _pctMissingHp: 0.075
