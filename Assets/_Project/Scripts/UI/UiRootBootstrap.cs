@@ -118,6 +118,8 @@ namespace Guildmaster.UI
         private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
         private Tooltips.KeywordStyle _keywordStyle; // Трек Т: цвет терминов, читается с USS-доноров
         private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
+        private bool _testZoneActive;        // серая зона включена (в забеге — полигон, вне забега — Ристалище)
+        private bool _lastProvingGrounds;    // ребро вида панели: забег ↔ площадка
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
         private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
         private IPublisher<RelicDragEvent> _relicDragPub; // QA #5: drag реликвии из грида → фаза расстановки
@@ -266,6 +268,7 @@ namespace Guildmaster.UI
             _testZoneChangedSubscription = _testZoneChangedSub?.Subscribe(e =>
             {
                 UiTrace.Log($"bootstrap: TestZoneChanged(Active={e.Active}) → {(e.Active ? "ShowTestZone" : "HideTestZone")}");
+                _testZoneActive = e.Active; // вне забега это же и есть «игрок на Ристалище» (см. Update)
                 if (e.Active) _router.ShowTestZone();
                 else          _router.HideTestZone();
             });
@@ -385,8 +388,21 @@ namespace Guildmaster.UI
             // НО не под главным меню: RunState там ещё жив (сейв не сбрасывается, забег можно продолжить),
             // и по одному лишь runActive панель с «Начать» оставалась висеть поверх меню (наход. Макса, п.9).
             RunState run = _runStates?.Current;
-            bool runActive = run != null && !_mainMenuOpen;
-            _topBar.Root.style.display = runActive ? DisplayStyle.Flex : DisplayStyle.None;
+
+            // Ристалище — это площадка ВНЕ забега, и панель ей тоже нужна: там живут те же табы и та же
+            // кнопка «Начать» (ГДД [[proving-grounds]], требование 2026-07-27). Признак площадки выводим,
+            // а не храним вторым флагом: серая зона активна, а забега нет — значит мы пришли из меню.
+            bool onProvingGrounds = run == null && _testZoneActive;
+            bool shellVisible = (run != null || onProvingGrounds) && !_mainMenuOpen;
+            _topBar.Root.style.display = shellVisible ? DisplayStyle.Flex : DisplayStyle.None;
+
+            // Панель площадки переписана: слева «Ристалище», без акта и вехи, справа без золота и
+            // перезапусков, «Карта» погашена. Дёргаем по ребру — SetProvingGroundsMode трогает стили.
+            if (onProvingGrounds != _lastProvingGrounds)
+            {
+                _lastProvingGrounds = onProvingGrounds;
+                _topBar.SetProvingGroundsMode(onProvingGrounds);
+            }
 
             BattlePhase phase = _clock.Phase;
 
@@ -395,7 +411,7 @@ namespace Guildmaster.UI
             // меню/карта/магазин/нет забега) — скрыт. Данные боя (таймер тикает) — законный поллинг каждый кадр.
             // Центр панели живёт только у боя: расстановка → «Начать», бой → таймер. В передышке (Interlude)
             // начинать нечего и считать нечего — центр пуст, чтобы «Начать» не звало в несуществующий бой.
-            if (runActive && (phase == BattlePhase.Deployment || phase == BattlePhase.Fighting))
+            if (shellVisible && (phase == BattlePhase.Deployment || phase == BattlePhase.Fighting))
                 _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
             else
                 _topBar.HideBattleCenter();
@@ -411,7 +427,7 @@ namespace Guildmaster.UI
                 RefreshShell();
             }
 
-            if (!runActive) return;
+            if (run == null || _mainMenuOpen) return; // на площадке ни золота, ни акта, ни вехи не существует
 
             _topBar.SetGold(run.Gold);
             _topBar.SetAct(run.CurrentActIndex + 1);

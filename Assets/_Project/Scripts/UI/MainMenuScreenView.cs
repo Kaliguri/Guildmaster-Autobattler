@@ -16,7 +16,8 @@ namespace Guildmaster.UI
             Action onStart,
             Action onContinue,
             Action onSettings,
-            Action onQuit)
+            Action onQuit,
+            Action onProvingGrounds = null)
         {
             string L(string key, string fallback)
             {
@@ -48,6 +49,18 @@ namespace Guildmaster.UI
                 cont.text = L("ui.mainmenu.continue", "Продолжить");
                 cont.SetEnabled(hasSave);
                 cont.clicked += () => onContinue?.Invoke();
+            }
+            // Ристалище (ГДД [[proving-grounds]]) — в меню стоит, но ВЫКЛЮЧЕНО: площадка ещё не готова к
+            // игроку (состав фиксирован ассетом, экрана сборки нет), а вход у нас пока через dev-команду
+            // gm_proving_grounds. Держим её выключенной, а не спрятанной, по HARD-правилу ui-feedback:
+            // «скоро будет» игроку честнее, чем пункт, появившийся из ниоткуда. Действие подключено —
+            // открыть площадку игроку будет ровно одной снятой строкой SetEnabled.
+            var proving = root.Q<Button>("btn-proving-grounds");
+            if (proving != null)
+            {
+                proving.text = L("ui.mainmenu.proving_grounds", "Ристалище");
+                proving.SetEnabled(false);
+                proving.clicked += () => onProvingGrounds?.Invoke();
             }
             if (settings != null) { settings.text = L("ui.mainmenu.settings", "Настройки"); settings.clicked += () => onSettings?.Invoke(); }
             if (quit != null)     { quit.text     = L("ui.mainmenu.quit", "Выход"); quit.clicked += () => onQuit?.Invoke(); }

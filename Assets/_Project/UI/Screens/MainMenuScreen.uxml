@@ -7,6 +7,10 @@
             <ui:ScrollView class="gm-panel__body gm-mainmenu__buttons">
                 <ui:Button name="btn-start" text="Начать забег" class="gm-button gm-button--primary gm-mainmenu__btn" />
                 <ui:Button name="btn-continue" text="Продолжить" class="gm-button gm-mainmenu__btn" />
+                <!-- Ристалище: площадка вне забега (ГДД «Modes - Proving Grounds»). Пока ВЫКЛЮЧЕНА —
+                     состав на ней фиксирован ассетом, экрана сборки отряда нет, и пускать туда игрока
+                     рано. Вход для нас — dev-команда gm_proving_grounds. -->
+                <ui:Button name="btn-proving-grounds" text="Ристалище" class="gm-button gm-mainmenu__btn" />
                 <ui:Button name="btn-settings" text="Настройки" class="gm-button gm-mainmenu__btn" />
                 <ui:Button name="btn-quit" text="Выход" class="gm-button gm-mainmenu__btn" />
             </ui:ScrollView>

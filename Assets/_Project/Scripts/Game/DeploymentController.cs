@@ -69,6 +69,25 @@ namespace Guildmaster.Game
         // Держим, чтобы перетаскивание своего бойца пересобирало обе стороны, а не сметало вражескую.
         private readonly List<PlayerSpawn> _opponents = new List<PlayerSpawn>();
 
+        /// <summary>
+        /// ГДЕ игрок расставляет бойцов. Единственный источник правды о месте: из него выводятся и состав
+        /// сторон, и цвет арены, и то, куда вернуть фазу на выходе. Место переживает бой — «Начать» меняет
+        /// не место, а фазу.
+        /// </summary>
+        private enum Venue
+        {
+            /// <summary>Нигде: расстановки не было и мир нам не принадлежит.</summary>
+            None,
+            /// <summary>Узел боя в забеге: отряд гильдии против врагов энкаунтера, арена боевая.</summary>
+            BattleNode,
+            /// <summary>Построение между узлами: свой отряд без врагов, арена боевая (мы всё ещё в забеге).</summary>
+            Formation,
+            /// <summary>Ристалище: серая арена вне забега, обе стороны — киты (ГДД [[proving-grounds]]).</summary>
+            ProvingGrounds,
+        }
+
+        private Venue _venue = Venue.None;
+
         private DeploymentView _view;
         private Camera _camera;
         private IDisposable _equipSubscription;
@@ -78,8 +97,11 @@ namespace Guildmaster.Game
 
         private bool _deploying;
         private bool _foldingUp; // сворачиваемся по внешнему сбросу фазы — защита от захода на второй круг
-        private bool _testZone;// QA #2: текущая расстановка — СЕРЫЙ полигон вне забега (не боевой узел, не построение)
-        private BattlePhase _sandboxReturnPhase = BattlePhase.None; // куда вернуть фазу, выйдя из расстановки-без-боя
+        private BattlePhase _returnPhase = BattlePhase.None; // фаза, в которой застали место — туда и вернём
+
+        // Расклад площадки: с чем игрок ушёл в последний бой Ристалища. Держит расстановку внутри захода —
+        // после боя бойцы встают туда же, куда их поставил игрок, но целыми.
+        private readonly List<PlayerSpawn> _provingSquad = new List<PlayerSpawn>();
         private RuntimeUnit _dragged;
         private Vector2 _dragStartWorld;
         // Схваченная точка фигурки: сим-позиция юнита минус курсор в момент захвата. Юнит НЕ прыгает центром
@@ -151,9 +173,11 @@ namespace Guildmaster.Game
             // Фаза выставляется по факту: Deployment на входе в бой (OnFreeDeployment), Fighting на «Начать»,
             // None — вне боя (сброс через BattleBootstrap.ResetToWorld).
             _session.BindClock(() => _sim.ElapsedSeconds);
-            // «Начать» стартует бой только из БОЕВОЙ расстановки. В тест-зоне бой пока не запускается (полигон
-            // только для расстановки/реликвий — решение Макса); кнопка там — no-op до появления боя в тест-зоне.
-            _session.BindStart(() => { if (_deploying && !_testZone) StartCombat(); });
+            // «Начать» стартует бой из ЛЮБОЙ расстановки, где есть с кем драться (требование 2026-07-27:
+            // на Ристалище бой начинается той же кнопкой, что в узле забега — второй кнопки старта у нас
+            // быть не должно). Критерий — не «где мы», а наличие противника на арене: построение между
+            // узлами врагов не имеет, и там кнопка по-прежнему ни во что не ведёт.
+            _session.BindStart(TryStartFromButton);
 
             // Мир могут сбросить и мимо нас: «В меню» из системного меню рвёт забег через IRunControl, и
             // до нас доходит только смена фазы. Без этой подписки расстановка (и тест-зона вместе с ней)
@@ -161,14 +185,66 @@ namespace Guildmaster.Game
             _session.PhaseChanged += OnPhaseChanged;
         }
 
-        // Фаза упала в None, а мы всё ещё в расстановке → мир сброшен снаружи, сворачиваемся.
+        /// <summary>
+        /// Кнопка «Начать» (и Enter): пустить бой из текущей расстановки. Отказ громкий — молчаливое
+        /// нажатие читается игроком как «не нажалось», а причина у отказа ровно одна и внятная.
+        /// </summary>
+        private void TryStartFromButton()
+        {
+            if (!_deploying)
+            {
+                Guildmaster.Diagnostics.UiTrace.Log("ctrl «Начать»: расстановки нет — стартовать нечего");
+                return;
+            }
+            if (!HasOpponents())
+            {
+                Guildmaster.Diagnostics.UiTrace.Log("ctrl «Начать»: на арене нет противника (построение между узлами) — бой не начинается");
+                return;
+            }
+            StartCombat();
+        }
+
+        // Есть ли на арене живой противник. Дешевле и честнее флага «это боевой узел»: полигон построения
+        // и площадка отличаются друг от друга ровно этим, а не тем, кто их открыл.
+        private bool HasOpponents()
+        {
+            IReadOnlyList<RuntimeUnit> units = _sim.Units;
+            for (int i = 0; i < units.Count; i++)
+                if (units[i].Team != 0 && !units[i].IsDead) return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Фаза сменилась мимо нас. Два случая, и оба про место, которым владеем мы:
+        /// <list type="bullet">
+        /// <item><b>None</b> — мир сброшен снаружи («В меню» рвёт забег через <c>IRunControl</c>): сворачиваем место,
+        /// иначе оно осталось бы взведённым и в главном меню, и в следующей сессии.</item>
+        /// <item><b>Interlude на Ристалище</b> — бой на площадке кончился. Возвращаем расстановку тем же входом,
+        /// каким на площадку пришли: у площадки нет узла забега, который вернул бы мир за нас.</item>
+        /// </list>
+        /// </summary>
         private void OnPhaseChanged()
         {
-            if (_foldingUp || !_deploying || _session.Phase != BattlePhase.None) return;
+            if (_foldingUp) return;
 
-            _foldingUp = true;                 // ExitTestZone сам трогает фазу — не даём себя же перезвать
-            try { ExitTestZone(); }
-            finally { _foldingUp = false; }
+            if (_session.Phase == BattlePhase.None)
+            {
+                _foldingUp = true;             // LeaveVenue сам трогает фазу — не даём себя же перезвать
+                try
+                {
+                    if (_deploying) LeaveVenue();
+                    SetVenue(Venue.None);      // мир ничей — место кончается вместе с фазой (в том числе после узла боя)
+                }
+                finally { _foldingUp = false; }
+                return;
+            }
+
+            if (_session.Phase == BattlePhase.Interlude && !_deploying && _venue == Venue.ProvingGrounds)
+            {
+                _foldingUp = true;             // EnterVenue ставит Deployment — тот же приём против рекурсии
+                try { EnterVenue(Venue.ProvingGrounds); }
+                finally { _foldingUp = false; }
+            }
         }
 
         public void Dispose()
@@ -210,9 +286,8 @@ namespace Guildmaster.Game
             EnsureView();
             _view.SetActive(true);
             _deploying = true;
-            _testZone  = false; // боевая расстановка (узел боя), не тест-зона
+            SetVenue(Venue.BattleNode); // узел боя — не площадка: серая арена гаснет здесь же, по ребру места
             _session.SetPhase(BattlePhase.Deployment); // центр панели = «Начать»; фаза → навигатор ставит контекст Deployment (K8)
-            _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: боевая расстановка ≠ тест-зона (гарантия сброса)
 
             // Вход в узел — момент, когда место боя должно ЯВИТЬСЯ. Что показать говорим здесь, как именно
             // (сколько актов, дожидаться ли шторки) решает презентер арены: подача не дело боевого потока.
@@ -222,120 +297,141 @@ namespace Guildmaster.Game
             FrameCameraForDeployment(); // QA #4: свободная камера со стартовым боевым кадром (не отзум на всю зону)
         }
 
-        // ── Тест-зона (QA #2): «Бой» вне забега → расстановка стоящего отряда БЕЗ врагов ────────
-        // Отряд уже стоит на арене вне боя (WorldStageController по RunPartyReadyEvent). Тумблер: вошли в
-        // тест-расстановку → «Бой» ещё раз выходит. Боевую расстановку (узел боя) тумблер не трогает.
+        // ── Расстановка без узла боя: Ристалище и построение ─────────────────
+        // Оба входа ведут в ОДИН механизм и различаются ровно двумя вещами — откуда берётся состав и какого
+        // цвета арена. Обе выводятся из места (<see cref="Venue"/>), поэтому отдельных флагов «мы в тест-зоне»,
+        // «мы на площадке» больше нет: место одно, и оно единственный источник правды.
+        //
         // Радио-режимы: топбар просит целевое СОСТОЯНИЕ (Active=бой, !Active=не-бой). Идемпотентно — повтор
-        // того же = no-op (табы переключают режим, не тоглят). Вход только вне боя из стоящего отряда;
-        // выход — только из ТЕСТ-расстановки (боевую, !testZone, «Карта» не трогает).
+        // того же = no-op (табы переключают режим, не тоглят).
         private void OnSetTestZone(SetTestZoneRequest req)
         {
-            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.OnSetTestZone(Active={req.Active}) (deploying={_deploying}, testZone={_testZone}, phase={_session.Phase})");
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.OnSetTestZone(Active={req.Active}) (deploying={_deploying}, venue={_venue}, phase={_session.Phase})");
             if (req.Active)
             {
-                if (_deploying) { Guildmaster.Diagnostics.UiTrace.Log("ctrl: уже в расстановке — no-op"); return; } // тест или боевая — уже в бою
-                if (!CanEnterSandbox()) { Guildmaster.Diagnostics.UiTrace.Log($"ctrl: фаза {_session.Phase} — вход в тест-зону запрещён"); return; }
-                EnterSandbox(grayZone: true);
+                // Куда именно ведёт «Бой» вне узла — решает наличие забега, а не отдельный интент: идти
+                // в забеге на серую площадку с чужим составом было бы враньём, а вне забега своего
+                // отряда попросту нет.
+                EnterVenue(_runStates?.Current == null ? Venue.ProvingGrounds : Venue.Formation);
             }
             else
             {
-                if (_deploying && _testZone) ExitTestZone(); // выйти из ТЕСТ-расстановки; боевую не трогаем
-                else Guildmaster.Diagnostics.UiTrace.Log("ctrl: не в тест-зоне — выходить нечего (no-op)");
+                LeaveVenue(); // выйти можно только из расстановки без узла — узел боя себя не сворачивает
             }
         }
 
         // ── «К построению» (передышка между узлами) ──────────────────────────
-        // Та же расстановка без врагов, что и полигон, но арена остаётся БОЕВОЙ (цветной): игрок правит строй
-        // между узлами забега, а не тестирует вне его. Выход — та же кнопка/таб (см. ExitTestZone).
+        // Тот же механизм, что таб «Бой» в забеге, — другой интент к тому же месту (кнопка передышки).
         private void OnSetFormation(SetFormationRequest req)
         {
-            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.OnSetFormation(Active={req.Active}) (deploying={_deploying}, phase={_session.Phase})");
-            if (req.Active)
-            {
-                if (_deploying) return;                 // уже расставляем — просить нечего
-                if (!CanEnterSandbox()) { Guildmaster.Diagnostics.UiTrace.Log($"ctrl: фаза {_session.Phase} — построение запрещено"); return; }
-                EnterSandbox(grayZone: false);
-            }
-            else if (_deploying && _testZone == false && _encounter == null)
-            {
-                ExitTestZone(); // вышли из построения тем же путём (арена и так боевая)
-            }
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.OnSetFormation(Active={req.Active}) (deploying={_deploying}, venue={_venue}, phase={_session.Phase})");
+            if (req.Active) EnterVenue(Venue.Formation);
+            else if (_venue == Venue.Formation) LeaveVenue();
         }
 
-        // Вставать в расстановку без врагов можно только когда мира на экране нет чужого хозяина: вне забега
+        // Вставать в расстановку без боя можно только когда у мира на экране нет чужого хозяина: вне забега
         // (None) или в передышке между узлами (Interlude). Во время боя/боевой расстановки — нельзя.
-        private bool CanEnterSandbox() =>
+        private bool CanEnterVenue() =>
             _session.Phase == BattlePhase.None || _session.Phase == BattlePhase.Interlude;
 
-        private void EnterSandbox(bool grayZone)
+        /// <summary>
+        /// Войти в расстановку без узла боя. Состав ставит вариация места: <see cref="Venue.Formation"/>
+        /// поднимает уже стоящий отряд, <see cref="Venue.ProvingGrounds"/> — обе стороны из ассета.
+        /// </summary>
+        private void EnterVenue(Venue venue)
         {
-            // Строим редактируемые слоты из УЖЕ стоящих team-0 юнитов (не пере-спавниваем).
+            if (_deploying) { Guildmaster.Diagnostics.UiTrace.Log("ctrl: уже в расстановке — no-op"); return; }
+            if (!CanEnterVenue()) { Guildmaster.Diagnostics.UiTrace.Log($"ctrl: фаза {_session.Phase} — вход в «{venue}» запрещён"); return; }
+
             _slots.Clear();
-            _opponents.Clear(); // сторона противника принадлежит одному заходу на полигон, не следующему
+            bool staged = venue == Venue.ProvingGrounds ? StageProvingGrounds() : StageStandingParty();
+            if (!staged) return;
+
+            _encounter = null;     // без узла боя врагов задаёт место, а не энкаунтер
+            _sim.SetPaused(true);
+            EnsureView();
+            _view.SetActive(true);
+            _deploying = true;
+            SetVenue(venue);
+            _session.SetPhase(BattlePhase.Deployment); // фаза → навигатор ставит контекст Deployment (K8)
+            FrameCameraForDeployment();
+        }
+
+        /// <summary>
+        /// Сменить МЕСТО. Единственная точка, где вещается серая арена: серой её делает ровно Ристалище,
+        /// и знать об этом больше некому. Смена места запоминает и фазу, в которую место надо вернуть, —
+        /// поэтому бой на площадке (место не меняет) не сбивает возврат.
+        /// </summary>
+        private void SetVenue(Venue venue)
+        {
+            if (_venue == venue) return;
+
+            bool wasGray = _venue == Venue.ProvingGrounds;
+            bool isGray  = venue == Venue.ProvingGrounds;
+            if (_venue == Venue.None) _returnPhase = _session.Phase; // куда вернуть панель, когда место закончится
+            if (wasGray) _provingSquad.Clear(); // расклад принадлежит одному заходу на площадку, не следующему
+            _venue = venue;
+
+            // Гашение серой зоны читается верхним циклом игры как «игрок ушёл с площадки» (GameFlow), поэтому
+            // публикуем ТОЛЬКО по ребру и только из смены места. Бой на площадке места не меняет — и она не гаснет.
+            if (wasGray != isGray) _testZoneChangedPub?.Publish(new TestZoneChangedEvent(isGray));
+        }
+
+        /// <summary>Свой отряд, уже стоящий на арене (построение между узлами). false — стоять некому.</summary>
+        private bool StageStandingParty()
+        {
+            _opponents.Clear(); // построение врагов не знает
             IReadOnlyList<RuntimeUnit> units = _sim.Units;
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit u = units[i];
                 if (u.Team != 0 || u.IsDead) continue;
                 // Отряд спавнится в порядке гильдии, поэтому порядковый номер живого team-0 = индекс сосуда:
-                // правки в тест-зоне уезжают в тот же сейв, что и правки в боевой расстановке.
+                // правки построения уезжают в тот же сейв, что и правки в боевой расстановке.
                 _slots.Add(new Slot { Relic = u.Unit as RelicData, Pos = u.Position, LiveUnitId = u.Id, GuildIndex = _slots.Count });
             }
-            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.EnterSandbox(gray={grayZone}) (слотов из стоящих team-0: {_slots.Count})");
-            // Отряда нет — это вход на Ристалище из главного меню: ставим состав по умолчанию из ассета.
-            // Только на полигоне: построение между узлами забега обязано брать живой отряд, а не подменять его.
-            if (_slots.Count == 0 && grayZone) SeedProvingGroundsSquad();
 
             if (_slots.Count == 0)
             {
-                Debug.LogWarning("[DeploymentController] - расстановка без боя: отряд не стоит и состав Ристалища пуст → пропуск");
-                return;
+                Debug.LogWarning("[DeploymentController] - построение: отряд на арене не стоит → пропуск");
+                return false;
             }
-
-            _sandboxReturnPhase = _session.Phase; // куда вернуть панель на выходе (None вне забега / Interlude в передышке)
-            _encounter = null;     // без врагов — полигон
-            _sim.SetPaused(true);
-            EnsureView();
-            _view.SetActive(true);
-            _deploying = true;
-            _testZone  = grayZone;
-            _session.SetPhase(BattlePhase.Deployment); // фаза → навигатор ставит контекст Deployment (K8)
-            // Серой арена становится ТОЛЬКО на полигоне вне забега. Построение между узлами идёт по боевой.
-            if (grayZone) _testZoneChangedPub?.Publish(new TestZoneChangedEvent(true));
-            FrameCameraForDeployment();
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl: построение из стоящих team-0 ({_slots.Count})");
+            return true;
         }
 
         /// <summary>
-        /// Наполнить слоты составом Ристалища по умолчанию и материализовать его на арене. Вызывается
-        /// только когда своего отряда нет — то есть при входе из главного меню (ГДД «Modes - Proving Grounds»).
+        /// Обе стороны Ристалища заново: свои — последним раскладом захода (а при первом входе из ассета),
+        /// противник — из ассета. Ставим ВСЕГДА заново, а не поднимаем стоящих: площадка обязана встречать
+        /// бойцов целыми, иначе второй бой подряд играется не тем составом, что первый, и мерить на ней нечего.
         /// </summary>
         /// <remarks>
-        /// Спавн идёт штатным путём (<see cref="EncounterLoader.Load"/> без энкаунтера), тем же, которым
-        /// пересобирается превью при перетаскивании: иначе у площадки появился бы второй способ ставить
-        /// юнитов, и виды с сейвом разошлись бы. GuildIndex = −1: этот отряд ничей, в гильдию забега его
-        /// правки уезжать не должны.
+        /// Спавн идёт штатным путём (<see cref="EncounterLoader.LoadSides"/>), тем же, которым пересобирается
+        /// превью при перетаскивании: иначе у площадки появился бы второй способ ставить юнитов, и виды с
+        /// сейвом разошлись бы. GuildIndex = −1: этот отряд ничей, в гильдию забега его правки уезжать не должны.
         /// </remarks>
-        private void SeedProvingGroundsSquad()
+        private bool StageProvingGrounds()
         {
             if (_provingGrounds == null || _provingGrounds.SquadCount == 0)
             {
                 Debug.LogWarning("[DeploymentController] - Ристалище: расклад по умолчанию не задан " +
                                  "(ProvingGroundsConfig пуст или не разведён) → входить не с кем");
-                return;
+                return false;
             }
 
-            var side = new List<PlayerSpawn>(_provingGrounds.SquadCount);
+            // Свои: расклад захода, если он уже есть (игрок переставлял бойцов и дрался), иначе из ассета.
+            // Между заходами расклад не сохраняется — ГДД [[proving-grounds]], «Отложено».
+            var side = new List<PlayerSpawn>();
             for (int i = 0; i < _provingGrounds.SquadCount; i++)
             {
                 RelicData relic = _provingGrounds.SquadAt(i);
-                if (relic == null) continue;
-
-                Vector2 pos = _provingGrounds.SquadPositionAt(i);
-                _slots.Add(new Slot { Relic = relic, Pos = pos, LiveUnitId = -1, GuildIndex = -1 });
-                side.Add(new PlayerSpawn(relic, null, pos));
+                if (relic != null) side.Add(new PlayerSpawn(relic, null, _provingGrounds.SquadPositionAt(i)));
             }
+            if (_provingSquad.Count > 0) { side.Clear(); side.AddRange(_provingSquad); }
 
-            if (side.Count == 0) return;
+            if (side.Count == 0) return false;
+            for (int i = 0; i < side.Count; i++)
+                _slots.Add(new Slot { Relic = side[i].Unit as RelicData, Vessel = side[i].Vessel, Pos = side[i].Position, LiveUnitId = -1, GuildIndex = -1 });
 
             // Противник — такие же киты, поэтому обе стороны задаются списком, а не энкаунтером.
             _opponents.Clear();
@@ -359,24 +455,34 @@ namespace Guildmaster.Game
                 slotIndex++;
             }
 
-            Guildmaster.Diagnostics.UiTrace.Log($"ctrl: Ристалище — поставлен состав по умолчанию ({side.Count})");
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl: Ристалище — поставлены обе стороны (своих {side.Count}, противник {_opponents.Count})");
+            return true;
         }
 
-        private void ExitTestZone()
+        /// <summary>
+        /// Покинуть место (таб «Карта», кнопка передышки, сброс мира снаружи). Узел боя не сворачивает
+        /// себя сам — у него свой владелец, петля акта.
+        /// </summary>
+        private void LeaveVenue()
         {
-            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.ExitTestZone → phase {_sandboxReturnPhase}, TestZoneChanged(false)");
+            if (_venue != Venue.Formation && _venue != Venue.ProvingGrounds)
+            {
+                Guildmaster.Diagnostics.UiTrace.Log($"ctrl.LeaveVenue: место «{_venue}» не наше — выходить нечего (no-op)");
+                return;
+            }
+
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.LeaveVenue({_venue}) → фаза {_returnPhase}");
             FlushRoster(); // что переставили — то и останется в гильдии
-            bool wasGray = _testZone;
             _deploying = false;
-            _testZone  = false;
             _dragged   = null;
             _relicDrag = null;
             _view?.SetActive(false);
             _cameraModes?.ExitToActionView();
-            // Возвращаем ТУ фазу, из которой вставали: вне забега — None (панель без «Начать»), в передышке —
-            // Interlude (мир на экране, задник UI по-прежнему запрещён).
-            _session.SetPhase(_sandboxReturnPhase);
-            if (wasGray) _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // цветная арена + снять Sheet
+            // Возвращаем ТУ фазу, в которой место застали: вне забега — None (панель без «Начать»),
+            // в передышке — Interlude (мир на экране, задник UI по-прежнему запрещён).
+            BattlePhase back = _returnPhase;
+            SetVenue(Venue.None); // цветная арена + снятие Sheet — по ребру внутри
+            _session.SetPhase(back);
         }
 
         // Стартовый кадр расстановки: центр и разброс ВСЕХ живых юнитов (свои + враги — видно противника).
@@ -656,19 +762,38 @@ namespace Guildmaster.Game
         // ── Старт боя ────────────────────────────────────────────────────────
         private void StartCombat()
         {
-            FlushRoster(); // расстановка, с которой идём в бой, должна пережить и бой, и вылет игры
+            FlushRoster();          // расстановка, с которой идём в бой, должна пережить и бой, и вылет игры
+            RememberProvingSquad(); // на площадке: с чем ушли в бой — с тем и вернёмся в расстановку
             _deploying = false;
-            _testZone = false;
             _dragged = null;
             _view?.SetActive(false);
             _sim.SetPaused(false);
             _cameraModes?.ExitToActionView(); // QA #4: вернуть боевой вид (слежение) на старте боя
             _session.SetPhase(BattlePhase.Fighting); // центр панели = таймер боя; фаза → навигатор ставит контекст Combat (K8)
-            _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: бой начался → не тест-зона (гарантия сброса)
+
+            // Места бой не меняет — поэтому серую арену тут никто не трогает. Гашение серой зоны читается
+            // верхним циклом как «игрок ушёл с площадки»: сделай это здесь, и Ристалище закрывалось бы
+            // главным меню на первом же ударе.
 
             // Переход арены здесь НЕ играем. Он говорит «место сменилось», а на «Начать» место то же самое:
             // оно уже явилось при входе в узел, и повтор читался как сбой, а не как язык. Смена облика
             // остаётся за входом в узел и за возвратом на полигон после боя.
+        }
+
+        /// <summary>
+        /// Запомнить расклад Ристалища перед боем: после боя площадка встаёт заново ровно им. Вне площадки
+        /// не нужен — там расстановку хранит гильдия забега (<c>RunState.Guild</c>), а не мы.
+        /// </summary>
+        private void RememberProvingSquad()
+        {
+            if (_venue != Venue.ProvingGrounds) return;
+
+            _provingSquad.Clear();
+            for (int i = 0; i < _slots.Count; i++)
+            {
+                Slot s = _slots[i];
+                if (s.Relic != null) _provingSquad.Add(new PlayerSpawn(s.Relic, s.Vessel, s.Pos));
+            }
         }
 
         // ── Хелперы ──────────────────────────────────────────────────────────

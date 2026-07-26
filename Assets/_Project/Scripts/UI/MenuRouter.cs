@@ -964,7 +964,8 @@ namespace Guildmaster.UI
                         onStart:    () => resolve(MainMenuChoice.StartRun),
                         onContinue: () => resolve(MainMenuChoice.Continue),
                         onSettings: OpenSettingsFromMainMenu,
-                        onQuit:     () => resolve(MainMenuChoice.Quit));
+                        onQuit:     () => resolve(MainMenuChoice.Quit),
+                        onProvingGrounds: () => resolve(MainMenuChoice.ProvingGrounds));
                 });
 
             // Забег кончился — UI прошлого забега кончается вместе с ним (QA #51). Инвентарь, карта и тест-зона

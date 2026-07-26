@@ -26,11 +26,15 @@ namespace Guildmaster.UI
         private readonly Label  _gold;
         private readonly Label  _act;
         private readonly Label  _floor;
+        private readonly Label  _guildName;
+        private readonly Label  _guildAsc;
         private readonly Label  _battleTimer;
         private readonly Label  _restarts;
         private readonly Button _start;
         private readonly Func<string, string> _loc;
         private readonly Dictionary<string, Chip> _modes = new();
+        private readonly HashSet<string> _disabledModes = new();
+        private readonly string _guildNameBeforeProving; // что стояло в лейбле гильдии до подмены на «Ристалище»
 
         public RunModeBarView(
             VisualTreeAsset uxml,
@@ -46,6 +50,9 @@ namespace Guildmaster.UI
             _gold        = Root.Q<Label>("topbar-gold");
             _act         = Root.Q<Label>("topbar-act");
             _floor       = Root.Q<Label>("topbar-floor");
+            _guildName   = Root.Q<Label>("guild-name");
+            _guildAsc    = Root.Q<Label>("guild-asc");
+            _guildNameBeforeProving = _guildName != null ? _guildName.text : string.Empty;
             _battleTimer = Root.Q<Label>("battle-timer");
             _restarts    = Root.Q<Label>("topbar-hp");
             _start       = Root.Q<Button>("btn-start");
@@ -98,8 +105,54 @@ namespace Guildmaster.UI
                 return;
             }
 
-            chip.RegisterCallback<ClickEvent>(_ => action.Invoke());
+            // Проверка «выключен ли режим» — ВНУТРИ обработчика, а не при разводке: набор доступных
+            // режимов зависит от того, где игрок (на Ристалище карты нет), и меняется на лету.
+            chip.RegisterCallback<ClickEvent>(_ => { if (!_disabledModes.Contains(key)) action.Invoke(); });
             _modes[key] = chip;
+        }
+
+        /// <summary>
+        /// Включить/выключить режим на лету (Ристалище гасит «Карту» — идти по акту оттуда некуда).
+        /// Гашение — по HARD-правилу ui-feedback: таб остаётся в ленте и живым на вид, но тускнеет и
+        /// никуда не ведёт. Убрать его совсем нельзя: лента режимов одна на всю игру, и «пропавший»
+        /// таб читался бы как сбой, а не как «здесь недоступно».
+        /// </summary>
+        public void SetModeEnabled(string key, bool enabled)
+        {
+            if (!_modes.TryGetValue(key, out Chip chip)) return;
+
+            if (enabled) _disabledModes.Remove(key);
+            else         _disabledModes.Add(key);
+
+            chip.EnableInClassList(MutedClass, !enabled);
+        }
+
+        /// <summary>
+        /// Переписать панель под Ристалище: слева имя площадки вместо гильдии, акта и вехи, справа —
+        /// без золота и перезапусков. Всё это — величины ЗАБЕГА, а на площадке их не существует;
+        /// показывать нули или последние значения значило бы врать игроку о том, где он находится.
+        /// </summary>
+        /// <param name="on">true — вид площадки; false — обычный вид забега.</param>
+        public void SetProvingGroundsMode(bool on)
+        {
+            // Имя гильдии — ДАННЫЕ забега, а не строка интерфейса: локализовать его нечем, поэтому
+            // возвращаем ровно то, что стояло в лейбле до подмены (сейчас — из разметки, позже — из RunState).
+            SetText(_guildName, on ? L("ui.mode.proving_grounds", "Ристалище") : _guildNameBeforeProving);
+            Show(_guildAsc, !on);
+            Show(_act, !on);
+            Show(_floor, !on);
+
+            // Капсулы прячем через их контейнер: у золота и перезапусков он общий, и скрытие по одному
+            // оставило бы пустую рамку-островок в углу.
+            VisualElement right = Root.Q<VisualElement>(className: "gm-loadout__topbar-side--right");
+            Show(right, !on);
+
+            SetModeEnabled(UiScreen.MapModeTag, !on);
+        }
+
+        private static void Show(VisualElement element, bool visible)
+        {
+            if (element != null) element.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         /// <summary>Подсветить активный режим (у него же появляется подпись). null — снять со всех.</summary>

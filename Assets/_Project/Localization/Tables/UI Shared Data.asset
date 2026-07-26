@@ -427,6 +427,14 @@ MonoBehaviour:
     m_Key: ui.mode.compendium
     m_Metadata:
       m_Items: []
+  - m_Id: 5794616999927808
+    m_Key: ui.mode.proving_grounds
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5795803220402176
+    m_Key: ui.mainmenu.proving_grounds
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
