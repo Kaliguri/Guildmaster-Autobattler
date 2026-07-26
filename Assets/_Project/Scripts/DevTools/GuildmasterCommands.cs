@@ -118,11 +118,18 @@ namespace Guildmaster.DevTools
             }
         }
 
+        // Пауза сима, которая была ДО открытия консоли. Консоль паузой не владеет — она её одалживает:
+        // владелец (расстановка, тумблер Space) мог поставить паузу задолго до нас, и снимать её за него
+        // нельзя. Ровно это и стреляло: команда вводила игрока в расстановку Ристалища (пауза), а
+        // закрытие консоли её снимало — бой начинался сам, без нажатия «Начать».
+        private bool _pausedBeforeConsole;
+
         // Консоль открыта: пауза сима (настраиваешь бой за консолью, закрываешь — он идёт с начала на
         // виду) + глушим игровой ввод, чтобы буквы команд не текли в геймплей.
         private void PauseForConsole()
         {
             _consoleOpen = true;
+            _pausedBeforeConsole = _simulation != null && _simulation.IsPaused;
             _simulation?.SetPaused(true);
             if (_input != null) _input.SetSuppressed(Core.Input.InputSuppressSource.DevConsole, true);
         }
@@ -130,7 +137,12 @@ namespace Guildmaster.DevTools
         private void ResumeAfterConsole()
         {
             _consoleOpen = false;
-            _simulation?.SetPaused(false);
+            // Паузу возвращаем ВЛАДЕЛЬЦУ, а не «снимаем». В расстановке владелец — она сама: мир там стоит
+            // по определению, и бой начинает кнопка «Начать», а не закрытая консоль. Фазу спрашиваем, а не
+            // помним: команда могла увести игрока в расстановку уже ПОСЛЕ открытия консоли — ровно так и
+            // делает gm_proving_grounds.
+            bool deploying = _session != null && _session.Phase == Data.Definitions.BattlePhase.Deployment;
+            _simulation?.SetPaused(deploying || _pausedBeforeConsole);
             if (_input != null) _input.SetSuppressed(Core.Input.InputSuppressSource.DevConsole, false);
         }
 

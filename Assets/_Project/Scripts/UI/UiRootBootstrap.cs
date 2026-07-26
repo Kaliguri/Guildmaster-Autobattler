@@ -710,7 +710,10 @@ namespace Guildmaster.UI
         private void OnMenuToggle()
         {
             if (_tooltips != null && _tooltips.HideAll()) return;
-            if (_runStates?.Current != null) _router.ToggleSystemMenu();
+            // Ристалище — тоже «внутри игры», хотя забега там нет: с площадки надо чем-то уходить, и
+            // уходят тем же системным меню. По одному лишь RunState ESC на ней был мёртв, и выйти
+            // было нельзя вовсе (наход. Макса 2026-07-27).
+            if (_runStates?.Current != null || _testZoneActive) _router.ToggleSystemMenu();
         }
     }
 }

@@ -142,10 +142,12 @@ namespace Guildmaster.UI
             Show(_act, !on);
             Show(_floor, !on);
 
-            // Капсулы прячем через их контейнер: у золота и перезапусков он общий, и скрытие по одному
-            // оставило бы пустую рамку-островок в углу.
+            // Капсулы гасим ПОШТУЧНО, а сам правый контейнер оставляем на месте. Он не украшение: у
+            // сторон панели flex-grow: 1 и flex-basis: 0, то есть лента режимов центрируется ИМИ.
+            // Убери контейнер — и вся лента уезжает вбок (наход. Макса 2026-07-27).
             VisualElement right = Root.Q<VisualElement>(className: "gm-loadout__topbar-side--right");
-            Show(right, !on);
+            if (right != null)
+                for (int i = 0; i < right.childCount; i++) Show(right[i], !on);
 
             SetModeEnabled(UiScreen.MapModeTag, !on);
         }
