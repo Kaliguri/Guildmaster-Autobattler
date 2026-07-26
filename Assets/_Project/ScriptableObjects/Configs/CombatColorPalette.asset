@@ -12,6 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f0848a290efac4d8962f1e4b70c7cc, type: 3}
   m_Name: CombatColorPalette
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Design.CombatColorPalette
-  _allyHp: {r: 0.3, g: 0.85, b: 0.35, a: 1}
-  _enemyHp: {r: 1, g: 0.4, b: 0.13, a: 1}
-  _shield: {r: 0.62, g: 0.86, b: 1, a: 1}
+  _palette: {fileID: 11400000, guid: f42219bf529da2c4d909a76d914ab971, type: 2}

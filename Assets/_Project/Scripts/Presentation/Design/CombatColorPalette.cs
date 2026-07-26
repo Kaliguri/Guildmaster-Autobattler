@@ -3,40 +3,50 @@ using UnityEngine;
 namespace Guildmaster.Presentation.Design
 {
     /// <summary>
-    /// Первый SO дизайн-системы боя: палитра цветов боевого UI. Пока — только цвета HP-бара по
-    /// принадлежности юнита к СМОТРЯЩЕМУ (союзник / враг): классическая читаемость «свои — одним
-    /// цветом, чужие — другим». Единый источник правды для цвета HP-бара; презентация тянет цвет
-    /// отсюда, а не хардкодит его на префабе.
-    /// <para>
-    /// English: first combat-UI design-system ScriptableObject. For now holds only the HP-bar colors
-    /// by the unit's relation to the local viewer (ally / enemy). Single source of truth for HP-bar
-    /// color — presentation reads it from here instead of hardcoding on the prefab.
-    /// </para>
-    /// <para>Расширяется позже (цвета ресурс-бара, статус-иконок, дельты урона/хила и т.п.) — не сейчас (YAGNI).</para>
+    /// Цвета боевого UI: полосы HP по принадлежности юнита к СМОТРЯЩЕМУ (свои — одним цветом, чужие —
+    /// другим) и полоса щита. Единственный вход презентации за этими цветами; хардкодить их на префабе
+    /// нельзя (T-12/T-13 — тема, которая возвращалась дважды).
+    /// <para><b>Своих значений здесь больше нет.</b> Цвет живёт в палитре проекта
+    /// (<c>UI/Theme/tokens.*.uss</c> → <see cref="Guildmaster.Data.Definitions.GuildmasterPalette"/>),
+    /// а этот ассет только называет роли. Иначе бой и интерфейс расходятся молча — ровно так уже
+    /// случилось с картой акта, где три цвета уехали от токенов, которые сами же называли.</para>
     /// </summary>
     [CreateAssetMenu(menuName = "Guildmaster/Design/Combat Color Palette", fileName = "CombatColorPalette")]
     public sealed class CombatColorPalette : ScriptableObject
     {
-        [Header("HP-бар: цвет по принадлежности к смотрящему")]
-        [Tooltip("HP-бар союзника смотрящего (его команда).")]
-        [SerializeField] private Color _allyHp = new Color(0.30f, 0.85f, 0.35f);
+        [Tooltip("Снимок токенов дизайн-системы: отсюда берутся цвета полос HP и щита " +
+                 "(--gm-color-combat-*). Пересобрать — Alebardium → Дизайн-система → Пересобрать палитру.")]
+        [SerializeField] private Guildmaster.Data.Definitions.GuildmasterPalette _palette;
 
-        [Tooltip("HP-бар врага смотрящего (чужая команда). Алый/оранжево-красный (vermilion): контрастит и с " +
-                 "зелёным полем, и с красными телами юнитов, отстроен от маны-синего и хил-зелёного.")]
-        [SerializeField] private Color _enemyHp = new Color(1.0f, 0.40f, 0.13f);
+        /// <summary>Полоса щита (absorb-пул над HP). Одна на всех, принадлежность не меняет её.</summary>
+        public Color Shield => Role("--gm-color-combat-shield");
 
-        [Header("Щит (absorb-пул над HP)")]
-        [Tooltip("Цвет полоски щита. Пастельно-циан/бело-голубой — отстроен от HP (зелёный/красный) и " +
-                 "маны (синий) по яркости и оттенку; читается без опоры на hue (дальтоник-safe). Один для " +
-                 "всех, вне зависимости от принадлежности юнита.")]
-        [SerializeField] private Color _shield = new Color(0.62f, 0.86f, 1.0f);
-
-        public Color Shield => _shield;
-
-        // Сырых AllyHp/EnemyHp здесь нет: цвет по принадлежности отдаёт HealthBarColor, и он
+        // Сырых AllyHp/EnemyHp наружу нет: цвет по принадлежности отдаёт HealthBarColor, и он
         // единственный способ его получить — иначе у одного факта снова два входа (T-12/T-13).
 
         /// <summary>Цвет HP-бара по признаку «союзник ли юнит для смотрящего».</summary>
-        public Color HealthBarColor(bool isAllyOfViewer) => isAllyOfViewer ? _allyHp : _enemyHp;
+        public Color HealthBarColor(bool isAllyOfViewer) =>
+            Role(isAllyOfViewer ? "--gm-color-combat-hp-ally" : "--gm-color-combat-hp-enemy");
+
+        /// <summary>
+        /// Цвет роли из палитры. Пустая ссылка или неизвестное имя — баг разводки: говорим вслух и
+        /// отдаём пурпур. Тихо подставлять «похожий» цвет нельзя: полосы HP — то, по чему игрок читает
+        /// бой, и неверный цвет здесь врёт про принадлежность юнита.
+        /// </summary>
+        private Color Role(string token)
+        {
+            if (_palette == null)
+            {
+                Debug.LogError($"[CombatColorPalette] - палитра не назначена, цвет '{token}' взять неоткуда " +
+                               $"(ассет {name}).");
+                return Color.magenta;
+            }
+
+            if (_palette.TryGet(token, out Color color)) return color;
+
+            Debug.LogError($"[CombatColorPalette] - в палитре нет роли '{token}'. Пересобери снимок: " +
+                           "Alebardium → Дизайн-система → Пересобрать палитру.");
+            return Color.magenta;
+        }
     }
 }

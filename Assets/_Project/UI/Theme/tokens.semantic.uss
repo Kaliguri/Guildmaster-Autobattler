@@ -114,6 +114,24 @@
        которого никто не звал (аудит 2026-07-26, волна 2). Вернуть — когда редкость начнёт что-то
        значить на экране; примитивы (ink / brass) для этого никуда не делись. */
 
+    /* --- Бой ---
+       Свет боя: вспышки по школе урона, исцеление, полосы HP и щита. Читает их не стиль, а тот же
+       снимок палитры, что и карта. Оттенки взяты из боевых конфигов без правки — палитра здесь
+       становится владельцем УЖЕ выбранного цвета, а не переназначает его.
+       HDR-цвета (осколки, вспышка смерти, голограмма) сюда НЕ переезжают: у них компоненты больше
+       единицы, и это не оттенок, а яркость свечения — она живёт в CombatFeelConfig рядом с прочими
+       числами джуса. */
+    --gm-color-combat-flash-physical: var(--gm-flare-white);
+    --gm-color-combat-flash-magical: var(--gm-flare-amber);
+    --gm-color-combat-flash-true: var(--gm-flare-gold);
+    --gm-color-combat-flash-poison: var(--gm-flare-venom);
+    --gm-color-combat-flash-light: var(--gm-flare-halo);
+    --gm-color-combat-flash-dark: var(--gm-flare-violet);
+    --gm-color-combat-heal: var(--gm-flare-mint);
+    --gm-color-combat-hp-ally: var(--gm-flare-leaf);
+    --gm-color-combat-hp-enemy: var(--gm-flare-rust);
+    --gm-color-combat-shield: var(--gm-flare-ice);
+
     /* --- Карта акта ---
        Карта живёт в мире, а не в UITK, поэтому эти роли читает не стиль, а ассет палитры
        (GuildmasterPalette.asset, собирается из этого файла). Смысл тот же, что у прочей семантики:
