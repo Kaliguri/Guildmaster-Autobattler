@@ -41,8 +41,8 @@ namespace Guildmaster.Game
             builder.RegisterComponentInHierarchy<Presentation.CameraModeController>()
                    .AsSelf().As<Presentation.IScreenShake>();
 
-            // «Серая зона» тест-арены (QA #2): свапает цветной/grayscale пол по тумблеру тест-зоны.
-            builder.RegisterComponentInHierarchy<Presentation.TestZoneArenaSkin>();
+            // Обесцвечивание арены: полигон — серая версия той же локации (материал, а не серый дубль тайлов).
+            builder.RegisterComponentInHierarchy<Presentation.Arena.ArenaDesaturation>();
 
             // Смена облика арены поклеточной подменой тайлов. Держим здесь, а не в боевом скоупе:
             // переход обязан доигрывать, даже когда бой уже кончился и его скоуп ушёл.

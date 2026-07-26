@@ -200,6 +200,11 @@ namespace Guildmaster.Presentation.Arena
             _plan.Clear();
             _planHead = 0;
 
+            // Сначала чистим, потом кладём. Иначе облик, где клетки НЕТ, оставлял бы на её месте старый
+            // тайл — и пустой облик (сборка мира с нуля) вообще ничего бы не делал.
+            foreach (KeyValuePair<string, Tilemap> live in _liveLayers)
+                live.Value.ClearAllTiles();
+
             foreach (KeyValuePair<string, Dictionary<Vector3Int, TileBase>> layer in _skins[skinId])
             {
                 if (!_liveLayers.TryGetValue(layer.Key, out Tilemap map)) continue;
