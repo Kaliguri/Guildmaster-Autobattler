@@ -48,6 +48,26 @@ namespace Guildmaster.Balance.Editor
             => Build(team, pos, (StatType.MaxHP, hp));
 
         /// <summary>
+        /// Эталонный СОЮЗНИК для командных форматов: обычный смертный боец ровно по классовой норме Брузера
+        /// (HP 2000, 120 DPS как 160 × 0.75 атаки/сек, броня 30/30 из бюджета 60, скорость 3, мили).
+        /// Нарочно никакой: одинаковый у обеих сторон, поэтому разницу в исходе даёт только испытуемый кит.
+        /// </summary>
+        /// <remarks>
+        /// Числа продублированы здесь константами, а не прочитаны из <c>ClassBalanceConfig</c>: манекен —
+        /// это ЛИНЕЙКА, и она должна лежать неподвижно, пока мы двигаем ростер. Если норма Брузера
+        /// поменяется осознанно, эти значения правятся вслед за ней вручную.
+        /// </remarks>
+        public static RuntimeUnit ReferenceAlly(int team, Vector2 pos)
+            => Build(team, pos,
+                (StatType.MaxHP, 2000f),
+                (StatType.MoveSpeed, 3f),
+                (StatType.AutoAttackDamage, 160f),
+                (StatType.AttackSpeed, 0.75f),
+                (StatType.AttackRange, 1f),
+                (StatType.PhysArmor, 30f),
+                (StatType.MagicArmor, 30f));
+
+        /// <summary>
         /// Бессмертный эталонный источник урона: фикс-DPS (физика, мили), высокая скорость хода (держится на цели).
         /// Не умирает — чтобы бенч мерил чисто стойкость жертвы, а не «кто кого перебил».
         /// </summary>

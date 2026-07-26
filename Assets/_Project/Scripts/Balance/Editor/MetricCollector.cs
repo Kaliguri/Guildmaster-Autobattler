@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Core.Simulation;
+using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Stats;
+using UnityEngine;
 
 namespace Guildmaster.Balance.Editor
 {
@@ -24,8 +27,34 @@ namespace Guildmaster.Balance.Editor
         public double DamagePeriodic;
         public double DamageReactive;
 
+        // Авто-атака отдельно по школам: расщеплённый кит (The Pyre) бьёт одной атакой в две школы,
+        // и без этого разреза «клинок» и «огонь» слипаются в одно число.
+        public double DamageAutoPhysical;
+        public double DamageAutoMagical;
+
+        /// <summary>
+        /// Сколько урона добавили уязвимости цели («Угли»). Справочная величина: она НЕ отдельное
+        /// слагаемое, а часть, уже сидящая внутри строк выше.
+        /// </summary>
+        public double DamageFromVulnerability;
+
+        /// <summary>
+        /// Урон, нанесённый САМОМУ СЕБЕ (плата за разгон у «Пылающих клинков»). Считается отдельно и в
+        /// <see cref="DamageDealt"/> НЕ входит: собственная кровь — цена кита, а не его вклад в бой.
+        /// </summary>
+        public double SelfDamage;
+
         public bool Died;
         public int DeathTick = -1;
+
+        /// <summary>Остаток HP на конец боя (абсолютный). У погибшего — 0.</summary>
+        public double HpLeft;
+
+        /// <summary>Максимальное HP на конец боя — знаменатель для доли и для сумм по команде.</summary>
+        public double MaxHp;
+
+        /// <summary>Остаток HP на конец боя, доля [0,1]. У погибшего — 0.</summary>
+        public double HpPctLeft => MaxHp > 0.0 ? HpLeft / MaxHp : 0.0;
     }
 
     /// <summary>Итог одного боя: исход, длительность, timeout и метрики отслеживаемых юнитов.</summary>
@@ -55,6 +84,7 @@ namespace Guildmaster.Balance.Editor
     {
         private readonly CombatSimulation _sim;
         private readonly Dictionary<int, UnitMetric> _byId = new Dictionary<int, UnitMetric>();
+        private readonly Dictionary<int, RuntimeUnit> _unitById = new Dictionary<int, RuntimeUnit>();
 
         public MetricCollector(CombatSimulation sim, IReadOnlyList<TrackedUnit> tracked)
         {
@@ -62,6 +92,7 @@ namespace Guildmaster.Balance.Editor
             for (int i = 0; i < tracked.Count; i++)
             {
                 RuntimeUnit u = tracked[i].Unit;
+                _unitById[u.Id] = u;
                 _byId[u.Id] = new UnitMetric
                 {
                     Id = u.Id,
@@ -78,12 +109,23 @@ namespace Guildmaster.Balance.Editor
 
         private void HandleDamage(RuntimeUnit source, RuntimeUnit target, DamageResult result)
         {
-            if (source != null && _byId.TryGetValue(source.Id, out UnitMetric sm))
+            // Самоурон уходит в свою графу и не разбивается по источникам: иначе плата за разгон
+            // («Пылающие клинки» жгут своего носителя) читалась бы стендом как нанесённый по врагу урон.
+            if (source != null && ReferenceEquals(source, target))
+            {
+                if (_byId.TryGetValue(source.Id, out UnitMetric self)) self.SelfDamage += result.TotalDamage;
+            }
+            else if (source != null && _byId.TryGetValue(source.Id, out UnitMetric sm))
             {
                 sm.DamageDealt += result.TotalDamage;
+                sm.DamageFromVulnerability += result.VulnerabilityBonus;
                 switch (result.SourceKind)
                 {
-                    case DamageSourceKind.AutoAttack: sm.DamageAuto += result.TotalDamage; break;
+                    case DamageSourceKind.AutoAttack:
+                        sm.DamageAuto += result.TotalDamage;
+                        if (result.School == DamageSchool.Magical) sm.DamageAutoMagical += result.TotalDamage;
+                        else sm.DamageAutoPhysical += result.TotalDamage;
+                        break;
                     case DamageSourceKind.Ability:    sm.DamageAbility += result.TotalDamage; break;
                     case DamageSourceKind.Periodic:   sm.DamagePeriodic += result.TotalDamage; break;
                     case DamageSourceKind.Reactive:   sm.DamageReactive += result.TotalDamage; break;
@@ -123,7 +165,18 @@ namespace Guildmaster.Balance.Editor
                 DurationTicks = durationTicks,
                 TimedOut = timedOut,
             };
-            foreach (UnitMetric m in _byId.Values) report.Units.Add(m);
+            foreach (UnitMetric m in _byId.Values)
+            {
+                // Остаток HP снимается ЗДЕСЬ, в конце боя: событий «HP изменилось» сим не шлёт, а
+                // держать зеркало HP по урону и хилу — второй источник правды на ровном месте.
+                if (_unitById.TryGetValue(m.Id, out RuntimeUnit u))
+                {
+                    m.MaxHp = u.Stats.Get(StatType.MaxHP);
+                    m.HpLeft = m.Died ? 0.0 : Mathf.Max(0f, u.CurrentHP);
+                }
+
+                report.Units.Add(m);
+            }
             report.Units.Sort((a, b) => a.Id.CompareTo(b.Id));
             return report;
         }

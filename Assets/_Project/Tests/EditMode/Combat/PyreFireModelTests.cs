@@ -124,6 +124,32 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(3, eff.Stacks, "Второй ушёл быстрее первого (интервал ×0.75)");
         }
 
+        [Test]
+        public void FireDamage_OnEmberedTarget_ReportsHowMuchEmbersAdded()
+        {
+            var sim = BuildSim();
+            var pyre   = MakeUnit(0, team: 0, pos: Vector2.zero);
+            var victim = MakeUnit(1, team: 1, pos: new Vector2(1f, 0f));
+            sim.EnqueueUnitSpawn(pyre);
+            sim.EnqueueUnitSpawn(victim);
+            sim.Tick(SimConstants.TickDelta);
+
+            EffectData ember = EmberEffect();
+            for (int i = 0; i < 10; i++) sim.ApplyEffect(victim, ember, pyre);
+
+            DamageResult captured = default;
+            sim.OnDamageDealt += (src, tgt, res) => captured = res;
+
+            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageSchool.Magical, ArmorK,
+                element: MagicElement.Fire));
+
+            // Десять угольков по 1% → удар сильнее на 10%, и результат обязан уметь это назвать:
+            // без разбивки стенд не отличит «кит разогнался» от «кит и так столько бьёт».
+            Assert.AreEqual(1.1f, captured.Vulnerability, 1e-3f, "Множитель уязвимости — 10 угольков по 1%");
+            Assert.AreEqual(110f, captured.TotalDamage, 1e-2f, "Брони нет: 100 сырого × 1.1");
+            Assert.AreEqual(10f, captured.VulnerabilityBonus, 1e-2f, "Из 110 ровно 10 добавили угольки");
+        }
+
         // ===================== Фабрики =====================
 
         private static void AdvanceSeconds(EffectSystem sys, System.Collections.Generic.List<RuntimeUnit> units,

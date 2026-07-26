@@ -307,7 +307,7 @@ namespace Guildmaster.Combat
             DamageRequest effective = vulnerability == 1f
                 ? req
                 : new DamageRequest(req.Source, req.Target, req.RawDamage * vulnerability, req.School,
-                                    req.ArmorK, req.SourceKind, req.Affinity, req.Element);
+                                    req.ArmorK, req.SourceKind, req.Affinity, req.Element, vulnerability);
 
             var result = DamagePipeline.Execute(effective);
             OnDamageDealt?.Invoke(req.Source, req.Target, result);

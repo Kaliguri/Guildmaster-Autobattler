@@ -37,22 +37,36 @@ namespace Guildmaster.Combat
         /// </summary>
         public readonly MagicElement Element;
 
+        /// <summary>
+        /// Множитель уязвимости цели, вложенный в этот удар — эхо <see cref="DamageRequest.Vulnerability"/>.
+        /// 1 = уязвимостей не было.
+        /// </summary>
+        public readonly float Vulnerability;
+
         /// <summary>Суммарный урон (HP + щит).</summary>
         public float TotalDamage => HpDamage + ShieldDamage;
+
+        /// <summary>
+        /// Сколько из <see cref="TotalDamage"/> добавили уязвимости цели («Угли»). Не отдельное слагаемое,
+        /// а доля внутри уже посчитанного числа: удар без уязвимостей был бы на столько слабее.
+        /// </summary>
+        public float VulnerabilityBonus => Vulnerability > 1f ? TotalDamage * (1f - 1f / Vulnerability) : 0f;
 
         public DamageResult(float hpDamage, float shieldDamage, bool killedTarget,
             DamageSourceKind sourceKind = DamageSourceKind.Ability,
             DamageSchool school = DamageSchool.Physical,
             DamageAffinity affinity = DamageAffinity.None,
-            MagicElement element = MagicElement.None)
+            MagicElement element = MagicElement.None,
+            float vulnerability = 1f)
         {
-            Element      = element;
-            HpDamage     = hpDamage;
-            ShieldDamage = shieldDamage;
-            KilledTarget = killedTarget;
-            SourceKind   = sourceKind;
-            School       = school;
-            Affinity     = affinity;
+            Element       = element;
+            HpDamage      = hpDamage;
+            ShieldDamage  = shieldDamage;
+            KilledTarget  = killedTarget;
+            SourceKind    = sourceKind;
+            School        = school;
+            Affinity      = affinity;
+            Vulnerability = vulnerability;
         }
     }
 }

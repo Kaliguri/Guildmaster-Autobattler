@@ -21,8 +21,14 @@ namespace Guildmaster.Balance.Editor
         [MenuItem("Alebardium/Balance/1. Survivability Bench (all relics)", priority = 121)]
         private static void Survivability() => RunReport("Бенч выживаемости", SurvivabilityBench.Run);
 
-        [MenuItem("Alebardium/Balance/2. Duel Matrix + Rating (all relics)", priority = 140)]
-        private static void Duel() => RunReport("Дуэльная матрица + рейтинг", DuelMatrixBench.Run);
+        [MenuItem("Alebardium/Balance/2. Duel Matrix + Rating — 1v1", priority = 140)]
+        private static void Duel() => RunReport("Дуэли 1v1", DuelMatrixBench.Run);
+
+        [MenuItem("Alebardium/Balance/2. Duel Matrix + Rating — 3v3 (team)", priority = 141)]
+        private static void TeamDuel() => RunReport("Командные дуэли 3v3", DuelMatrixBench.RunTeam);
+
+        [MenuItem("Alebardium/Balance/2. Duel Matrix + Rating — 5v5 (super team)", priority = 142)]
+        private static void SuperTeamDuel() => RunReport("Командные дуэли 5v5", DuelMatrixBench.RunSuperTeam);
 
         [MenuItem("Alebardium/Balance/Run Selected Scenario", priority = 160)]
         private static void RunScenario()

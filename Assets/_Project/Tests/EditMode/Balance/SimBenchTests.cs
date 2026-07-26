@@ -71,6 +71,41 @@ namespace Guildmaster.Balance.Tests
         }
 
         [Test]
+        public void HpLeft_IsZeroForDead_AndMatchesRemainingForSurvivor()
+        {
+            var env = new SimEnvironment(1UL, null);
+            var tracked = new List<TrackedUnit>
+            {
+                new TrackedUnit(SyntheticUnits.ImmortalAttacker(0, new Vector2(-1f, 0f), 100f), "atk", "atk"),
+                new TrackedUnit(WeakTarget(1, new Vector2(1f, 0f), hp: 50f), "victim", "victim"),
+            };
+
+            BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, 3600);
+
+            UnitMetric victim = report.Find(1);
+            Assert.IsTrue(victim.Died);
+            Assert.AreEqual(0.0, victim.HpPctLeft, 1e-9, "У погибшего остаток HP — ноль, а не отрицательный оверкилл");
+
+            UnitMetric attacker = report.Find(0);
+            Assert.IsFalse(attacker.Died);
+            Assert.AreEqual(1.0, attacker.HpPctLeft, 1e-6, "Нетронутый боец доживает с полным запасом");
+            Assert.AreEqual(attacker.MaxHp, attacker.HpLeft, 1e-3, "Абсолютный остаток совпадает с максимумом");
+        }
+
+        [Test]
+        public void ReferenceAlly_MatchesBruiserNorm()
+        {
+            RuntimeUnit ally = SyntheticUnits.ReferenceAlly(0, Vector2.zero);
+
+            // Манекен-союзник — линейка командных форматов. Уедут его числа — уедет и вся шкала,
+            // поэтому норма Брузера прибита тестом: HP 2000, 120 DPS, броня 30/30.
+            Assert.AreEqual(2000f, ally.Stats.Get(StatType.MaxHP), 1e-3f);
+            Assert.AreEqual(120f, ally.Stats.Get(StatType.AutoAttackDamage) * ally.Stats.Get(StatType.AttackSpeed), 1e-3f);
+            Assert.AreEqual(30f, ally.Stats.Get(StatType.PhysArmor), 1e-3f);
+            Assert.AreEqual(30f, ally.Stats.Get(StatType.MagicArmor), 1e-3f);
+        }
+
+        [Test]
         public void UntilOutcome_KillableTargetDiesAndOutcomeResolves()
         {
             var env = new SimEnvironment(1UL, null);

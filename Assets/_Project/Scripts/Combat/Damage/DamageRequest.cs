@@ -56,6 +56,13 @@ namespace Guildmaster.Combat
         /// </summary>
         public readonly MagicElement Element;
 
+        /// <summary>
+        /// Множитель уязвимости ЦЕЛИ, уже вложенный в <see cref="RawDamage"/> («Угли» усиливают огонь по
+        /// подожжённому). Пайплайн его не применяет — он приходит домноженным; поле нужно, чтобы результат
+        /// смог сказать, сколько из нанесённого числа дали уязвимости. 1 = чистый урон.
+        /// </summary>
+        public readonly float Vulnerability;
+
         /// <summary>Урон стихии огня — то, что копит «Угли» и усиливается ими.</summary>
         public bool IsFire => School == DamageSchool.Magical && Element == MagicElement.Fire;
 
@@ -76,16 +83,18 @@ namespace Guildmaster.Combat
             float armorK,
             DamageSourceKind sourceKind = DamageSourceKind.Ability,
             DamageAffinity affinity = DamageAffinity.None,
-            MagicElement element = MagicElement.None)
+            MagicElement element = MagicElement.None,
+            float vulnerability = 1f)
         {
-            Source     = source;
-            Target     = target;
-            RawDamage  = rawDamage;
-            School     = school;
-            ArmorK     = armorK;
-            SourceKind = sourceKind;
-            Affinity   = affinity;
-            Element    = school == DamageSchool.Magical ? element : MagicElement.None;
+            Source        = source;
+            Target        = target;
+            RawDamage     = rawDamage;
+            School        = school;
+            ArmorK        = armorK;
+            SourceKind    = sourceKind;
+            Affinity      = affinity;
+            Element       = school == DamageSchool.Magical ? element : MagicElement.None;
+            Vulnerability = vulnerability;
         }
     }
 }
