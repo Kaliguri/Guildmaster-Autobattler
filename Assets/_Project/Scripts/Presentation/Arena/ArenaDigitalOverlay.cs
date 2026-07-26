@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Arena;
 using UnityEngine;
@@ -21,7 +22,6 @@ namespace Guildmaster.Presentation.Arena
         private static readonly int CellsId      = Shader.PropertyToID("_Cells");
         private static readonly int CellSizeId   = Shader.PropertyToID("_CellSize");
         private static readonly int ProgressId   = Shader.PropertyToID("_Progress");
-        private static readonly int CalmId       = Shader.PropertyToID("_Calm");
 
         [Tooltip("Материал на шейдере Guildmaster/Arena/Digital. Рисуем КОПИЕЙ — ассет не грязним.")]
         [SerializeField] private Material _digitalMaterial;
@@ -34,10 +34,6 @@ namespace Guildmaster.Presentation.Arena
         [Tooltip("Выше пола и стен, но ниже юнитов: цифра ложится на мир, а не поверх бойцов.")]
         [SerializeField] private int _sortingOrder = 5;
 
-        [Header("Спокойный режим")]
-        [Tooltip("Держать цифру постоянно (тест-зона как модель места): без вспышек, с медленным дыханием.")]
-        [SerializeField] private bool _calm;
-
         private ArenaSkinSwapper _swapper;
         private ArenaSkinSource  _live;
         private SpriteRenderer   _quad;
@@ -48,49 +44,29 @@ namespace Guildmaster.Presentation.Arena
         private float     _cellSize = 1f;
         private Vector2   _worldOrigin;   // мировая точка клетки _bounds.min — сетка живёт в мире, не в клетках
 
-        /// <summary>Держать арену в цифре постоянно — облик тест-зоны как «модели места», а не серого пола.</summary>
-        public bool Calm
-        {
-            get => _calm;
-            set
-            {
-                _calm = value;
-                if (_material != null) _material.SetFloat(CalmId, _calm ? 1f : 0f);
-                if (_quad != null) _quad.enabled = _calm || _solo != SoloStage.None || (_swapper != null && _swapper.Busy);
-            }
-        }
-
-        /// <summary>Сама по себе цифра, без смены облика: вход — первый акт, выход — третий.</summary>
-        private enum SoloStage { None, Entering, Held, Exiting }
+        /// <summary>Короткий цифровой всполох без смены облика: ушли в цифру — дело в пике — вышли обратно.</summary>
+        private enum SoloStage { None, Entering, Exiting }
 
         private SoloStage _solo;
         private float     _soloT;
+        private Action    _atPeak;
 
         /// <summary>
-        /// Увести арену в цифру или вернуть обратно, НЕ меняя облик. Тест-зона — это то же место, только
-        /// показанное моделью, поэтому играются лишь крайние акты: уход в каркас и возврат из него.
+        /// Мигнуть цифрой поверх арены: первый акт, затем <paramref name="atPeak"/> в самой глубокой точке,
+        /// затем третий. Облик не меняется — это чистая подача.
+        /// <para>Цифра НЕ залипает: держать её постоянно (как было у тест-зоны) значит вечная анимация на
+        /// экране, где игрок стоит минутами. Голубой шейдер — язык ПЕРЕХОДА; состояние показывают цветом
+        /// самой арены (<see cref="ArenaDesaturation"/>).</para>
         /// </summary>
-        public void SetDigital(bool on)
+        public void Blink(Action atPeak = null)
         {
-            if (_material == null) return;
+            if (_material == null || _solo == SoloStage.Entering) return;
 
-            if (on)
-            {
-                if (_solo == SoloStage.Entering || _solo == SoloStage.Held) return;
-
-                Bake(_swapper.CurrentSkinId, _swapper.CurrentSkinId); // облик тот же — меняется только подача
-                Calm      = false;                                    // дыхание включится, когда доедем
-                _soloT    = 0f;
-                _solo     = SoloStage.Entering;
-                if (_quad != null) _quad.enabled = true;
-                return;
-            }
-
-            if (_solo == SoloStage.None || _solo == SoloStage.Exiting) return;
-
-            Calm   = false;                                           // иначе цифра держалась бы поверх выхода
-            _soloT = _swapper.Shape.RestoreStart;
-            _solo  = SoloStage.Exiting;
+            Bake(_swapper.CurrentSkinId, _swapper.CurrentSkinId);
+            _atPeak = atPeak;
+            _soloT  = 0f;
+            _solo   = SoloStage.Entering;
+            if (_quad != null) _quad.enabled = true;
         }
 
         private void Awake()
@@ -109,7 +85,6 @@ namespace Guildmaster.Presentation.Arena
 
             MeasureArena();
             BuildQuad();
-            Calm = _calm;
         }
 
         private void OnEnable()
@@ -146,7 +121,7 @@ namespace Guildmaster.Presentation.Arena
 
             if (_solo != SoloStage.None) TickSolo();
 
-            if (_quad != null) _quad.enabled = _calm || _solo != SoloStage.None;
+            if (_quad != null) _quad.enabled = _solo != SoloStage.None;
         }
 
         private void TickSolo()
@@ -160,17 +135,14 @@ namespace Guildmaster.Presentation.Arena
 
                 if (_soloT >= shape.DigitizeEnd)
                 {
-                    _soloT = shape.DigitizeEnd;
-                    _solo  = SoloStage.Held;
-                    Calm   = true;    // дальше держим цифру дыханием, без вспышек: тут игрок расставляет отряд
-                }
-                _material.SetFloat(ProgressId, _soloT);
-                return;
-            }
+                    _soloT = shape.RestoreStart;   // самая глубокая точка: под цифрой и меняем, что должны
+                    _solo  = SoloStage.Exiting;
 
-            if (_solo == SoloStage.Held)
-            {
-                _material.SetFloat(ProgressId, shape.DigitizeEnd);
+                    Action peak = _atPeak;
+                    _atPeak = null;
+                    peak?.Invoke();
+                }
+                _material.SetFloat(ProgressId, Mathf.Min(_soloT, shape.DigitizeEnd));
                 return;
             }
 

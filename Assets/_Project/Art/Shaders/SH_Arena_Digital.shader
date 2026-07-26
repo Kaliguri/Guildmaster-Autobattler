@@ -40,10 +40,6 @@ Shader "Guildmaster/Arena/Digital"
 
         _WireWidth ("Толщина контура (доля клетки)", Range(0.01, 0.3)) = 0.09
 
-        // Тест-зона живёт в цифре постоянно: вспышки гасим, дыхание включаем, контраст мягче.
-        _Calm ("Спокойный режим", Range(0, 1)) = 0
-        _BreathAmount ("Глубина дыхания", Range(0, 0.5)) = 0.15
-        _BreathSpeed ("Скорость дыхания", Range(0, 4)) = 1.1
     }
 
     SubShader
@@ -102,9 +98,6 @@ Shader "Guildmaster/Arena/Digital"
                 half4  _InkColor;
                 half   _InkAmount;
                 half   _WireWidth;
-                half   _Calm;
-                half   _BreathAmount;
-                half   _BreathSpeed;
                 half   _ScanAmount;
                 half   _ScanFreq;
                 half   _ScanSpeed;
@@ -159,12 +152,7 @@ Shader "Guildmaster/Arena/Digital"
                 half up   = smoothstep(tDigitize - _DigitizeBand, tDigitize + _DigitizeBand, _Progress);
                 half down = smoothstep(tRestore  - _RestoreBand,  tRestore  + _RestoreBand,  _Progress);
                 half digital = saturate(up - down);
-                digital = max(digital, _Calm);   // в спокойном режиме цифра держится всегда
                 clip(digital - 0.002);
-
-                // Дыхание — только для спокойного режима: статичная сетка на минуты просмотра мертвеет.
-                half breath = 1.0h - _Calm * _BreathAmount *
-                              (0.5h - 0.5h * sin(_Time.y * _BreathSpeed + tSwitch * 12.0h));
 
                 half state = StateAt(cell);
                 clip(state - 0.5h);              // за ареной пустота — там рисовать нечего
@@ -187,11 +175,11 @@ Shader "Guildmaster/Arena/Digital"
                 half outline = max(max(nearL * step(0.5h, state - sL), nearR * step(0.5h, state - sR)),
                                    max(nearD * step(0.5h, state - sD), nearU * step(0.5h, state - sU)));
 
-                half wire = outline * digital * breath;
+                half wire = outline * digital;
 
                 // Вспышка ровно в момент подмены тайла — она и «продаёт» смену текстуры.
                 half flash = saturate(1.0h - abs(_Progress - tSwitch) / _SwitchBand);
-                flash *= digital * (1.0h - _Calm);
+                flash *= digital;
 
                 // Скан-линии ползут по миру, а не по экрану: иначе при движении камеры они «прилипают»
                 // к стеклу и мир перестаёт выглядеть тем, что оцифровано.
@@ -200,7 +188,7 @@ Shader "Guildmaster/Arena/Digital"
                 // Клетки светятся чуть по-разному — поле читается как данные, а не как ровная заливка.
                 half flicker = 1.0h - _CellFlicker * frac(tSwitch * 7.3h);
 
-                half ink = (_InkAmount + _ScanAmount * scan) * digital * breath * flicker;
+                half ink = (_InkAmount + _ScanAmount * scan) * digital * flicker;
 
                 half3 col = _InkColor.rgb;
                 half  a   = saturate(ink);
