@@ -28,11 +28,11 @@ TRUE_PEAK_DB  = -1.0    # потолок пика; гейн никогда не 
 # stealing: 0=Oldest 1=Furthest 2=Quietest 3=Virtualize 4=None
 # priority: 0=Lowest 1=Low 2=Medium 3=High 4=Highest
 CATEGORIES = {
-    "impact":  dict(bus="SFX/Combat",  volumeDb= 0.0, pitchSt=2.5, volRandDb=3.0, maxVoices=4, cooldownMs=50, stealing=2, priority=1),
-    "whoosh":  dict(bus="SFX/Combat",  volumeDb=-2.0, pitchSt=1.5, volRandDb=3.0, maxVoices=4, cooldownMs=60, stealing=2, priority=1),
-    "tonal":   dict(bus="SFX/Combat",  volumeDb=-3.0, pitchSt=0.5, volRandDb=2.0, maxVoices=3, cooldownMs=60, stealing=3, priority=2),
-    "cast":    dict(bus="SFX/Combat",  volumeDb=-1.0, pitchSt=1.0, volRandDb=2.0, maxVoices=2, cooldownMs=50, stealing=3, priority=2),
-    "death":   dict(bus="SFX/Combat",  volumeDb= 0.0, pitchSt=2.0, volRandDb=3.0, maxVoices=3, cooldownMs=80, stealing=0, priority=3),
+    "impact":  dict(bus="SFX/Combat",  volumeDb= 0.0, pitchSt=2.5, volRandDb=3.0, maxVoices=4, cooldownMs=50, stealing=2, priority=1, spatial=True),
+    "whoosh":  dict(bus="SFX/Combat",  volumeDb=-2.0, pitchSt=1.5, volRandDb=3.0, maxVoices=4, cooldownMs=60, stealing=2, priority=1, spatial=True),
+    "tonal":   dict(bus="SFX/Combat",  volumeDb=-3.0, pitchSt=0.5, volRandDb=2.0, maxVoices=3, cooldownMs=60, stealing=3, priority=2, spatial=True),
+    "cast":    dict(bus="SFX/Combat",  volumeDb=-1.0, pitchSt=1.0, volRandDb=2.0, maxVoices=2, cooldownMs=50, stealing=3, priority=2, spatial=True),
+    "death":   dict(bus="SFX/Combat",  volumeDb= 0.0, pitchSt=2.0, volRandDb=3.0, maxVoices=3, cooldownMs=80, stealing=0, priority=3, spatial=True),
     "stinger": dict(bus="SFX/Stingers",volumeDb= 0.0, pitchSt=0.0, volRandDb=0.0, maxVoices=1, cooldownMs=250, stealing=4, priority=4),
     "ui":      dict(bus="SFX/UI",      volumeDb=-2.0, pitchSt=1.0, volRandDb=2.0, maxVoices=2, cooldownMs=30, stealing=0, priority=3),
     "ui_soft": dict(bus="SFX/UI",      volumeDb=-9.0, pitchSt=1.0, volRandDb=2.0, maxVoices=2, cooldownMs=40, stealing=0, priority=2),
@@ -49,6 +49,31 @@ BUS_TREE = {
     "SFX/Ambient":  dict(parent="SFX", volumeDb=-9.0),
     "SFX/Stingers": dict(parent="SFX", volumeDb=1.0),
 }
+
+# --- пространственность боевых звуков ---
+# Арена ~20x12 мировых единиц, слушатель в центре, поэтому расстояние до дальнего края ~15.
+# minimumDistance берём ЗАВЕДОМО больше арены: внутри неё громкость падать не должна — иначе бой
+# у края поля станет тише боя в центре, а это читается как «звук сломался», а не как глубина.
+# Панорама при этом работает на любом расстоянии: она считается по углу, а не по дистанции.
+SPATIAL = dict(
+    minimumDistance=25.0,     # внутри арены затухания практически нет
+    maximumDistance=120.0,    # запас, чтобы улетевший снаряд не обрывался ступенькой
+    panBlend=1.0,             # полный стерео-пан по позиции
+    stereoSeparation=45.0,    # уже дефолтных 60: арена узкая, крайние звуки не должны улетать в один канал
+    dopplerMultiplier=0.0,    # доплера в 2D-автобаттлере быть не должно
+)
+
+# --- дакинг: стингер поджимает боевую шину, чтобы его было слышно поверх мясорубки ---
+# Компрессор вешается на ЦЕЛЬ, а sidechain-источник — на шину-триггер (решение [[audio-subbuses]]).
+DUCKING = dict(
+    target="SFX/Combat",      # что поджимаем
+    source="SFX/Stingers",    # чем триггерим
+    threshold=-22.0,          # dB: боевая шина обычно ходит около -20, так что дак срабатывает по стингеру
+    ratio=4.0,
+    attackMs=10.0,            # быстро, иначе стингер потонет в первых миллисекундах
+    releaseMs=350.0,          # медленно, иначе бой «выныривает» рывком
+    makeupDb=0.0,
+)
 
 # --- глобальный параметр микса (контракт с AudioParameters.TimeScale) ---
 TIME_SCALE_PARAM = dict(

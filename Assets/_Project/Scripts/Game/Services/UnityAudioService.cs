@@ -14,6 +14,11 @@ namespace Guildmaster.Game.Services
             Debug.Log($"[UnityAudioService] - Play: {soundKey}");
         }
 
+        public void PlayAt(string soundKey, UnityEngine.Vector3 position)
+        {
+            Debug.Log($"[UnityAudioService] - PlayAt: {soundKey} @ {position}");
+        }
+
         public void Stop(string soundKey)
         {
             Debug.Log($"[UnityAudioService] - Stop: {soundKey}");

@@ -64,7 +64,8 @@
       "maxVoices": 4,
       "cooldownMs": 50,
       "stealing": 2,
-      "priority": 1
+      "priority": 1,
+      "spatial": true
     },
     "whoosh": {
       "bus": "SFX/Combat",
@@ -74,7 +75,8 @@
       "maxVoices": 4,
       "cooldownMs": 60,
       "stealing": 2,
-      "priority": 1
+      "priority": 1,
+      "spatial": true
     },
     "tonal": {
       "bus": "SFX/Combat",
@@ -84,7 +86,8 @@
       "maxVoices": 3,
       "cooldownMs": 60,
       "stealing": 3,
-      "priority": 2
+      "priority": 2,
+      "spatial": true
     },
     "cast": {
       "bus": "SFX/Combat",
@@ -94,7 +97,8 @@
       "maxVoices": 2,
       "cooldownMs": 50,
       "stealing": 3,
-      "priority": 2
+      "priority": 2,
+      "spatial": true
     },
     "death": {
       "bus": "SFX/Combat",
@@ -104,7 +108,8 @@
       "maxVoices": 3,
       "cooldownMs": 80,
       "stealing": 0,
-      "priority": 3
+      "priority": 3,
+      "spatial": true
     },
     "stinger": {
       "bus": "SFX/Stingers",
@@ -1393,7 +1398,23 @@
         "ambient/arena_01.ogg"
       ]
     }
-  ]
+  ],
+  "spatial": {
+    "minimumDistance": 25.0,
+    "maximumDistance": 120.0,
+    "panBlend": 1.0,
+    "stereoSeparation": 45.0,
+    "dopplerMultiplier": 0.0
+  },
+  "ducking": {
+    "target": "SFX/Combat",
+    "source": "SFX/Stingers",
+    "threshold": -22.0,
+    "ratio": 4.0,
+    "attackMs": 10.0,
+    "releaseMs": 350.0,
+    "makeupDb": 0.0
+  }
 };
 
     var logLines = [];
@@ -1657,6 +1678,26 @@
                 catch (ve) { log("WARN", entry.path, "volume modulator failed: " + ve); }
             }
 
+            // Пространственность: боевые звуки панорамируются по позиции юнита на арене. Дистанции
+            // намеренно больше самой арены — внутри неё громкость падать не должна, иначе бой у края
+            // поля звучит тише боя в центре (см. SPATIAL в карте).
+            if (cat.spatial && MANIFEST.spatial) {
+                try {
+                    var sp = MANIFEST.spatial;
+                    var chain = event.masterTrack.mixerGroup.effectChain;
+                    var spatialiser = null;
+                    var fxList = chain.effects || [];
+                    for (var fx = 0; fx < fxList.length; fx++) if (fxList[fx].entity === "SpatialiserEffect") spatialiser = fxList[fx];
+                    if (!spatialiser) spatialiser = chain.addEffect("SpatialiserEffect");
+                    spatialiser.overrideRange       = true;
+                    spatialiser.minimumDistance     = sp.minimumDistance;
+                    spatialiser.maximumDistance     = sp.maximumDistance;
+                    spatialiser.panBlend            = sp.panBlend;
+                    spatialiser.userStereoSeparation = sp.stereoSeparation;
+                    spatialiser.dopplerMultiplier   = sp.dopplerMultiplier;
+                } catch (spe) { log("WARN", entry.path, "spatialiser failed: " + spe); }
+            }
+
             // Банк + роутинг в под-шину + категорийная громкость.
             try { event.relationships.banks.add(cat.looping ? musicBank : sfxBank); }
             catch (be) { log("WARN", entry.path, "bank assign failed: " + be); }
@@ -1683,6 +1724,36 @@
             built++;
             log("OK", entry.path, assets.length + " file(s), cat=" + entry.category + ", bus=" + cat.bus);
             if (built % 20 === 0) flush();
+        }
+
+        // --- 5. Дакинг: стингер поджимает боевую шину -------------------------
+        // Компрессор вешается на ЦЕЛЬ, а источником служит Sidechain на шине-триггере. Если связать
+        // их не удалось — компрессор остаётся обычным, и об этом честно пишем в лог, а не молчим.
+        var duck = MANIFEST.ducking;
+        if (duck && busByPath[duck.target] && busByPath[duck.source]) {
+            try {
+                var target = busByPath[duck.target], source = busByPath[duck.source];
+                var comp = null;
+                var existing = target.effectChain.effects || [];
+                for (var ce = 0; ce < existing.length; ce++) if (existing[ce].entity === "CompressorEffect") comp = existing[ce];
+                if (!comp) comp = target.effectChain.addEffect("CompressorEffect");
+
+                comp.threshold   = duck.threshold;
+                comp.ratio       = duck.ratio;
+                comp.attackTime  = duck.attackMs;
+                comp.releaseTime = duck.releaseMs;
+                comp.gain        = duck.makeupDb;
+
+                var side = null;
+                var srcFx = source.effectChain.effects || [];
+                for (var se = 0; se < srcFx.length; se++) if (srcFx[se].entity === "Sidechain") side = srcFx[se];
+                if (!side) side = source.effectChain.addEffect("Sidechain");
+
+                var linked = false;
+                try { comp.relationships.sidechains.add(side); linked = true; } catch (le) {}
+                log("DUCKING", duck.source + " -> " + duck.target,
+                    linked ? "compressor+sidechain связаны" : "компрессор стоит, sidechain НЕ связался: " + duck.threshold + " dB");
+            } catch (de) { log("WARN", "ducking", "" + de); }
         }
 
         var purged = destroyUnusedAssets();

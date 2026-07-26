@@ -103,20 +103,20 @@ namespace Guildmaster.Presentation.Audio
 
         private void OnAbilityCast(RuntimeUnit caster) => PlayFor(caster, AudioAction.Cast);
 
-        private void OnUnitSpawned(RuntimeUnit unit) => PlayKey("combat.unit_spawn", AudioAction.Ui);
+        private void OnUnitSpawned(RuntimeUnit unit) => PlayKeyAt("combat.unit_spawn", AudioAction.Ui, unit);
 
         // Замах сорван станом/смертью — короткий «сбой», иначе оборванная анимация выглядит багом.
-        private void OnAttackInterrupted(RuntimeUnit unit) => PlayKey("combat.attack_interrupted", AudioAction.Evade);
+        private void OnAttackInterrupted(RuntimeUnit unit) => PlayKeyAt("combat.attack_interrupted", AudioAction.Evade, unit);
 
         // Перезапуск боя (dev-R): глушим петли, иначе хвосты старого боя переезжают в новый.
         private void OnBattleReset() => _audio?.StopAll();
 
         // Статус лёг / спал: ключи effect.{id}.apply и effect.{id}.expire, с фолбэком на общий дефолт.
         private void OnEffectApplied(RuntimeUnit target, EffectData def, RuntimeUnit source)
-            => PlayKey(def != null ? def.Id : null, AudioAction.Apply);
+            => PlayKeyAt(def != null ? def.Id : null, AudioAction.Apply, target);
 
         private void OnEffectEnded(RuntimeUnit target, EffectData def, RuntimeUnit source)
-            => PlayKey(def != null ? def.Id : null, AudioAction.Expire);
+            => PlayKeyAt(def != null ? def.Id : null, AudioAction.Expire, target);
 
         // Конец боя → стингер победы/поражения ГЛАЗАМИ ЭТОГО клиента: победила моя команда или нет.
         // В PvP один и тот же исход даст одному победу, другому поражение. Ничья — поражение (никто не выиграл).
@@ -126,13 +126,29 @@ namespace Guildmaster.Presentation.Audio
             PlayKey(outcome.IsWinFor(_localPlayer.Team) ? "battle.victory" : "battle.defeat", AudioAction.Stinger);
         }
 
+        // Звук боевого события идёт ИЗ ТОЧКИ, где оно случилось: удар слева слышно слева.
+        // Позицию берём из сима (она же ведёт вид), а не из вью — вью может отставать на кадр
+        // интерполяции, и на быстрых смещениях звук уезжал бы за картинкой.
         private void PlayFor(RuntimeUnit unit, AudioAction action)
-            => PlayKey(unit?.Unit != null ? unit.Unit.Id : null, action);
+        {
+            string key = _resolver.Resolve(unit?.Unit != null ? unit.Unit.Id : null, action);
+            if (key == null) return;
+            if (unit != null) _audio.PlayAt(key, unit.Position);
+            else _audio.Play(key);
+        }
 
         private void PlayKey(string contentId, AudioAction action)
         {
             string key = _resolver.Resolve(contentId, action);
             if (key != null) _audio.Play(key);
+        }
+
+        private void PlayKeyAt(string contentId, AudioAction action, RuntimeUnit at)
+        {
+            string key = _resolver.Resolve(contentId, action);
+            if (key == null) return;
+            if (at != null) _audio.PlayAt(key, at.Position);
+            else _audio.Play(key);
         }
     }
 }

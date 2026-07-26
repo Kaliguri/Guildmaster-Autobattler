@@ -118,6 +118,7 @@ OK: event:/Music/menu (1 file(s), cat=music, bus=Music)
 OK: event:/Music/map (1 file(s), cat=music, bus=Music)
 OK: event:/Music/battle (1 file(s), cat=music, bus=Music)
 OK: event:/SFX/Ambient/arena (1 file(s), cat=ambient, bus=SFX/Ambient)
+DUCKING: SFX/Stingers -> SFX/Combat (compressor+sidechain связаны)
 CLEANUP: unused assets (0 removed)
 SAVING: project
 DONE: populate (built 109, failed 0 — теперь fmodstudiocl -build -ignore-warnings -export-guids)

@@ -310,6 +310,26 @@ BODY = r"""
                 catch (ve) { log("WARN", entry.path, "volume modulator failed: " + ve); }
             }
 
+            // Пространственность: боевые звуки панорамируются по позиции юнита на арене. Дистанции
+            // намеренно больше самой арены — внутри неё громкость падать не должна, иначе бой у края
+            // поля звучит тише боя в центре (см. SPATIAL в карте).
+            if (cat.spatial && MANIFEST.spatial) {
+                try {
+                    var sp = MANIFEST.spatial;
+                    var chain = event.masterTrack.mixerGroup.effectChain;
+                    var spatialiser = null;
+                    var fxList = chain.effects || [];
+                    for (var fx = 0; fx < fxList.length; fx++) if (fxList[fx].entity === "SpatialiserEffect") spatialiser = fxList[fx];
+                    if (!spatialiser) spatialiser = chain.addEffect("SpatialiserEffect");
+                    spatialiser.overrideRange       = true;
+                    spatialiser.minimumDistance     = sp.minimumDistance;
+                    spatialiser.maximumDistance     = sp.maximumDistance;
+                    spatialiser.panBlend            = sp.panBlend;
+                    spatialiser.userStereoSeparation = sp.stereoSeparation;
+                    spatialiser.dopplerMultiplier   = sp.dopplerMultiplier;
+                } catch (spe) { log("WARN", entry.path, "spatialiser failed: " + spe); }
+            }
+
             // Банк + роутинг в под-шину + категорийная громкость.
             try { event.relationships.banks.add(cat.looping ? musicBank : sfxBank); }
             catch (be) { log("WARN", entry.path, "bank assign failed: " + be); }
@@ -338,6 +358,36 @@ BODY = r"""
             if (built % 20 === 0) flush();
         }
 
+        // --- 5. Дакинг: стингер поджимает боевую шину -------------------------
+        // Компрессор вешается на ЦЕЛЬ, а источником служит Sidechain на шине-триггере. Если связать
+        // их не удалось — компрессор остаётся обычным, и об этом честно пишем в лог, а не молчим.
+        var duck = MANIFEST.ducking;
+        if (duck && busByPath[duck.target] && busByPath[duck.source]) {
+            try {
+                var target = busByPath[duck.target], source = busByPath[duck.source];
+                var comp = null;
+                var existing = target.effectChain.effects || [];
+                for (var ce = 0; ce < existing.length; ce++) if (existing[ce].entity === "CompressorEffect") comp = existing[ce];
+                if (!comp) comp = target.effectChain.addEffect("CompressorEffect");
+
+                comp.threshold   = duck.threshold;
+                comp.ratio       = duck.ratio;
+                comp.attackTime  = duck.attackMs;
+                comp.releaseTime = duck.releaseMs;
+                comp.gain        = duck.makeupDb;
+
+                var side = null;
+                var srcFx = source.effectChain.effects || [];
+                for (var se = 0; se < srcFx.length; se++) if (srcFx[se].entity === "Sidechain") side = srcFx[se];
+                if (!side) side = source.effectChain.addEffect("Sidechain");
+
+                var linked = false;
+                try { comp.relationships.sidechains.add(side); linked = true; } catch (le) {}
+                log("DUCKING", duck.source + " -> " + duck.target,
+                    linked ? "compressor+sidechain связаны" : "компрессор стоит, sidechain НЕ связался: " + duck.threshold + " dB");
+            } catch (de) { log("WARN", "ducking", "" + de); }
+        }
+
         var purged = destroyUnusedAssets();
         log("CLEANUP", "unused assets", purged + " removed");
 
@@ -357,6 +407,18 @@ BODY = r"""
 def main():
     with open(MANIFEST, encoding="utf-8") as fh:
         manifest = json.load(fh)
+
+    # Числа микса берём ИЗ КАРТЫ, а не из манифеста. Манифест хранит связку «событие → файлы»
+    # и пишется при нормализации, поэтому после правки одних лишь категорий он остаётся старым —
+    # ровно так первый прогон пространственности молча не сделал ничего. Карта — источник правды.
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import audio_map as M
+    manifest["categories"] = M.CATEGORIES
+    manifest["buses"] = M.BUS_TREE
+    manifest["timeScaleParam"] = M.TIME_SCALE_PARAM
+    manifest["spatial"] = M.SPATIAL
+    manifest["ducking"] = M.DUCKING
+
     js = HEADER.replace("%LOG%", LOG).replace("%REPO%", REPO.replace("\\", "/")) \
                .replace("%MANIFEST%", json.dumps(manifest, ensure_ascii=False, indent=2)) + BODY
     os.makedirs(os.path.dirname(OUT), exist_ok=True)

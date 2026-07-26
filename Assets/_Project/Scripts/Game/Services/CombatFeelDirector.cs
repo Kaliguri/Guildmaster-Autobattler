@@ -84,7 +84,7 @@ namespace Guildmaster.Game.Services
                     _time.CinematicPulse(_cfg.KillSlowFactor, 0f, _cfg.KillSlowRelease);
                     // Стингер идёт под тем же кулдауном, что и слоумо: на пачке добиваний он иначе
                     // наложится сам на себя и превратится в кашу.
-                    _audio?.Play("feel.kill.stinger");
+                    _audio?.Play("feel.kill.stinger");   // стингер — событие всего боя, не точки на поле
                 }
                 _shake.Shake(_cfg.KillShake);
                 return;
@@ -98,8 +98,10 @@ namespace Guildmaster.Game.Services
             if (frac < _cfg.HeavyHitFrac) return;
             float k = Mathf.Clamp01((frac - _cfg.HeavyHitFrac) / (1f - _cfg.HeavyHitFrac));
             _shake.Shake(Mathf.Lerp(_cfg.HeavyShakeMin, _cfg.HeavyShakeMax, k));
-            // Басовый слой поверх обычного удара: тряска без звука читается как «экран дёрнулся сам».
-            _audio?.Play("feel.heavy_hit.hit");
+            // Басовый слой поверх обычного удара — из точки удара, как и сам удар: иначе бас
+            // приходит из центра, а хруст сбоку, и они разъезжаются.
+            if (target != null) _audio?.PlayAt("feel.heavy_hit.hit", target.Position);
+            else _audio?.Play("feel.heavy_hit.hit");
         }
 
         // Конец боя → финишер-таймлайн ступенями (совпадает с секвенсом смерти на scaled-времени):

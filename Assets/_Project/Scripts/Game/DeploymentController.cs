@@ -538,7 +538,7 @@ namespace Guildmaster.Game
             _feetOffset = FeetOf(unit) - unit.Position; // куда относительно центра садится круг-опора
             _dragMoved = false;
             _view.SetExtendedHighlight(CanUseExtended(unit));
-            _audio?.Play("ui.deploy_grab.ui");
+            _audio?.PlayAt("ui.deploy_grab.ui", unit.Position);
         }
 
         private void OnPointerReleased()
@@ -554,7 +554,7 @@ namespace Guildmaster.Game
                     _dragged.Position = target;
                     _dragged.PreviousPosition = target; // снап вида (без слайда интерполяции)
                     UpdateSlotPos(_dragged.Id, target);
-                    _audio?.Play("ui.deploy_place.ui");
+                    _audio?.PlayAt("ui.deploy_place.ui", target);
                 }
                 else
                 {
@@ -631,6 +631,11 @@ namespace Guildmaster.Game
             _cameraModes?.ExitToActionView(); // QA #4: вернуть боевой вид (слежение) на старте боя
             _session.SetPhase(BattlePhase.Fighting); // центр панели = таймер боя; фаза → навигатор ставит контекст Combat (K8)
             _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: бой начался → не тест-зона (гарантия сброса)
+
+            // Мир переключается в боевой режим: место перестаёт быть подготовительным. Всполох идёт ПОВЕРХ
+            // уже пущенной симуляции — ждать его окончания значило бы держать бой на паузе ради красоты,
+            // а первые полсекунды бойцы всё равно только сходятся.
+            _arenaRevealPub?.Publish(new ArenaRevealRequest(null));
         }
 
         // ── Хелперы ──────────────────────────────────────────────────────────

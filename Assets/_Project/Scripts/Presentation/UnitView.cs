@@ -1023,7 +1023,7 @@ namespace Guildmaster.Presentation
         private void StartShatter()
         {
             _deathPhase = DeathPhase.Shattering;
-            _audio?.Play("feel.death_shatter.death");
+            _audio?.PlayAt("feel.death_shatter.death", transform.position);
 
             if (_sprite == null || _sprite.sprite == null)
             {

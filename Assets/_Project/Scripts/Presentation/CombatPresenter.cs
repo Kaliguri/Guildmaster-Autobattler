@@ -30,16 +30,15 @@ namespace Guildmaster.Presentation
         [SerializeField] private Color _damageColor = new Color(1f, 0.75f, 0.2f);
         [Tooltip("Цвет цифры лечения (+N).")]
         [SerializeField] private Color _healColor = new Color(0.5f, 1f, 0.6f);
-        [Tooltip("Цвет цифры урона по щиту (-N).")]
-        [SerializeField] private Color _shieldColor = new Color(0.4f, 0.7f, 1f);
         [Tooltip("Цвет надписи «evade» при полном негейте удара.")]
         [SerializeField] private Color _evadeColor = new Color(0.85f, 0.9f, 0.95f);
         [Tooltip("Задержка между цифрой щита и цифрой HP при сплите (сек).")]
         [SerializeField] private float _splitDelay = 0.06f;
 
         [Header("Дизайн-система (цвета боевого UI)")]
-        [Tooltip("Палитра цветов боя (первый SO дизайн-системы). Задаёт цвет HP-бара по принадлежности к " +
-                 "смотрящему. Пусто = фолбэк-цвета по умолчанию (см. DefaultHealthColor).")]
+        [Tooltip("Палитра цветов боя (первый SO дизайн-системы) — ЕДИНСТВЕННЫЙ владелец цветов HP и щита: " +
+                 "и полосы, и боевых цифр. Обязательна: пусто = баг разводки сцены, а не повод рисовать " +
+                 "чем попало (охраняется SceneWiringTests).")]
         [SerializeField] private Design.CombatColorPalette _colorPalette;
 
 
@@ -260,14 +259,10 @@ namespace Guildmaster.Presentation
                     view.SetLabel(NameFor(unit));
 
                     // Цвет HP-бара по принадлежности к смотрящему (дизайн-система).
-                    bool isAllyOfViewer = IsAllyOfViewer(unit);
-                    view.SetHealthColor(_colorPalette != null
-                        ? _colorPalette.HealthBarColor(isAllyOfViewer)
-                        : DefaultHealthColor(isAllyOfViewer));
+                    view.SetHealthColor(_colorPalette.HealthBarColor(IsAllyOfViewer(unit)));
 
                     // Цвет щита — общий из палитры (не зависит от принадлежности).
-                    if (_colorPalette != null)
-                        view.SetShieldColor(_colorPalette.Shield);
+                    view.SetShieldColor(_colorPalette.Shield);
 
                     _views[unit.Id] = view;
                 }
@@ -348,7 +343,7 @@ namespace Guildmaster.Presentation
 
             // Урон по щиту — синим «-N»; по HP — «-N» цветом урона. Если задет и щит, и HP —
             // цифра щита сразу, цифра HP через очень маленькую задержку (обе читаемы).
-            if (shield > 0) SpawnNumber(anchor, "-" + shield, _shieldColor);
+            if (shield > 0) SpawnNumber(anchor, "-" + shield, _colorPalette.Shield);
             if (hp > 0)
             {
                 if (shield > 0) StartCoroutine(DelayedNumber(anchor, "-" + hp, _damageColor, _splitDelay, hpScale));
@@ -443,11 +438,6 @@ namespace Guildmaster.Presentation
         /// </summary>
         private bool IsAllyOfViewer(RuntimeUnit unit) =>
             unit.Team == (_localPlayer != null ? _localPlayer.Team : 0);
-
-        /// <summary>Фолбэк-цвет HP-бара, если палитра дизайн-системы не назначена (совпадает с дефолтами SO).</summary>
-        private static Color DefaultHealthColor(bool isAllyOfViewer) => isAllyOfViewer
-            ? new Color(0.30f, 0.85f, 0.35f)
-            : new Color(0.90f, 0.25f, 0.25f);
 
         /// <summary>Подпись персонажа: имя реликвии (SO) либо «Ally/Enemy N» для болванчиков.</summary>
         private string NameFor(RuntimeUnit unit)

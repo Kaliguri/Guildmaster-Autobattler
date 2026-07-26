@@ -39,9 +39,10 @@ namespace Guildmaster.Presentation
         [Tooltip("Через сколько EHP идёт ЖИРНАЯ насечка (якорь абсолюта, напр. каждые 1000). Кратно tickValue.")]
         [SerializeField] private float _majorTickValue = 1000f;
 
-        [Header("Цвета HP/щита (фолбэк; в бою — из CombatColorPalette)")]
-        [SerializeField] private Color _fallbackHpColor = new Color(0.30f, 0.85f, 0.35f);
-        [SerializeField] private Color _fallbackShieldColor = new Color(0.62f, 0.86f, 1.0f);
+        // Цвета HP и щита сюда ПОДАЮТСЯ (SetMainColor/SetShieldColor) из CombatColorPalette — единственного
+        // владельца. Своих копий бар не держит: прежние поля-фолбэки повторяли те же значения третьим
+        // местом (после SO и префаба) и разъехались бы на первой же правке палитры. Цвет не подан — значит
+        // разводка сцены сломана, и бар честно покажет цвет материала (аудит 2026-07-26, T-12/T-13).
 
         [Header("Анимация chip-дельты")]
         [Tooltip("Пауза перед стартом догона, сек.")]
@@ -92,9 +93,9 @@ namespace Guildmaster.Presentation
 
             // Плотность насечек: жирная каждые majorTickValue/tickValue минорных.
             _mat.SetFloat(IdMajorEvery, Mathf.Max(1f, _majorTickValue / Mathf.Max(0.0001f, _tickValue)));
-            // Цвета HP/щита — палитра, если подана; иначе фолбэк.
-            _mat.SetColor(IdHpColor,     _hasHpColor ? _hpColor : _fallbackHpColor);
-            _mat.SetColor(IdShieldColor, _hasShieldColor ? _shieldColor : _fallbackShieldColor);
+            // Цвета — только те, что подали из палитры. Не подали — оставляем материалу его собственные.
+            if (_hasHpColor)     _mat.SetColor(IdHpColor,     _hpColor);
+            if (_hasShieldColor) _mat.SetColor(IdShieldColor, _shieldColor);
         }
 
         /// <summary>Цвет HP по принадлежности к смотрящему (из <c>CombatColorPalette</c>).</summary>

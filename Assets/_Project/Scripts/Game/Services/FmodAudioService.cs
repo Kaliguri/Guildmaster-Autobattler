@@ -26,20 +26,25 @@ namespace Guildmaster.Game.Services
 
         public FmodAudioService(Guildmaster.Presentation.Audio.AudioCatalog catalog) => _catalog = catalog;
 
-        public void Play(string soundKey)
+        public void Play(string soundKey) => PlayInternal(soundKey, Vector3.zero);
+
+        public void PlayAt(string soundKey, Vector3 position) => PlayInternal(soundKey, position);
+
+        private void PlayInternal(string soundKey, Vector3 position)
         {
             if (_catalog == null || string.IsNullOrEmpty(soundKey)) return;
             if (!_catalog.TryGetEvent(soundKey, out EventReference evt)) return; // нет события → тишина
 
             if (!TryGetDescription(evt, out EventDescription description))
             {
-                RuntimeManager.PlayOneShot(evt); // банк ещё грузится — считаем one-shot'ом, хуже не будет
+                RuntimeManager.PlayOneShot(evt, position); // банк ещё грузится — считаем one-shot'ом
                 return;
             }
 
             if (description.isOneshot(out bool oneShot) != FMOD.RESULT.OK || oneShot)
             {
-                RuntimeManager.PlayOneShot(evt);
+                // Позиция важна только для событий со спатиалайзером (боевые); остальные её игнорируют.
+                RuntimeManager.PlayOneShot(evt, position);
                 return;
             }
 
