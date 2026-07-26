@@ -188,12 +188,42 @@ namespace Guildmaster.UI
         private void Pop() => _nav.Pop();
 
         /// <summary>
+        /// Можно ли показать экран. <b>Не фолбэк, а громкий отказ</b>: неназначенный UXML — это баг разводки
+        /// <see cref="UiRootBootstrap"/>, а не режим работы, и раньше каждый такой случай молча выполнял
+        /// колбэк УСПЕХА — узел засчитывался, награда пропускалась, игра закрывалась (аудит фолбэков
+        /// 2026-07-26, п.1). Шаг петли по-прежнему завершается: зависшая петля забега хуже пропущенного
+        /// экрана, — но теперь он завершается с красной ошибкой, а до билда его ловит SceneWiringTests.
+        /// </summary>
+        /// <param name="screen">Имя экрана и поля в бутстрапе — чтобы ошибку можно было грепнуть.</param>
+        /// <param name="uxml">Шаблон экрана.</param>
+        /// <param name="payloadOk">Данные запроса на месте (сессия привала, магазин, событие).</param>
+        private bool CannotShow(string screen, VisualTreeAsset uxml, bool payloadOk = true)
+        {
+            if (_root == null)
+            {
+                Debug.LogError($"[MenuRouter] - экран '{screen}': нет корня UI (UiRootBootstrap не инициализировал роутер) → шаг пропущен");
+                return true;
+            }
+            if (uxml == null)
+            {
+                Debug.LogError($"[MenuRouter] - экран '{screen}': UXML не назначен в UiRootBootstrap → шаг пропущен");
+                return true;
+            }
+            if (!payloadOk)
+            {
+                Debug.LogError($"[MenuRouter] - экран '{screen}': пустые данные запроса → шаг пропущен");
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Открыть loadout-экран для юнита (по дабл-клику в фазе расстановки; публикуется как
         /// <see cref="OpenLoadoutRequest"/>, бутстрап зовёт сюда). Пушится как полноэкранный оверлей.
         /// </summary>
         public void OpenLoadout(OpenLoadoutRequest req)
         {
-            if (_root == null || _loadoutUxml == null) return;
+            if (CannotShow("Лоадаут (_loadoutScreen)", _loadoutUxml)) return;
             _loadoutVm.Open(req);
             PushScreen(BuildLoadoutScreen, ScreenKind.Page);
         }
@@ -206,7 +236,7 @@ namespace Guildmaster.UI
         /// </summary>
         public void OpenHub()
         {
-            if (_root == null || _loadoutHubUxml == null) return;
+            if (CannotShow("Лоадаут-хаб (_loadoutHubScreen)", _loadoutHubUxml)) return;
 
             var container = new VisualElement { name = "hub-container" };
             container.style.position = Position.Absolute;
@@ -253,11 +283,8 @@ namespace Guildmaster.UI
         public void ShowInventory(int gold, Action<RelicData, RelicDragPhase> onRelicDrag = null)
         {
             if (_inventoryScreen != null) { UiTrace.Log("router.ShowInventory: уже открыт → no-op"); return; }
-            if (_root == null || _loadoutInventoryUxml == null || _arcanaCardUxml == null)
-            {
-                UiTrace.Log("router.ShowInventory: ассеты не готовы → no-op");
-                return;
-            }
+            if (CannotShow("Инвентарь (_loadoutInventoryScreen)", _loadoutInventoryUxml)) return;
+            if (CannotShow("Карточка аркана (_arcanaCard)", _arcanaCardUxml)) return;
             UiTrace.Log("router.ShowInventory: Push inventory Sheet");
             _inventoryScreen = new RouterScreen(ScreenKind.Sheet, () => BuildInventory(gold, onRelicDrag),
                                                 modeTag: "inventory", onExit: () => _inventoryScreen = null);
@@ -372,7 +399,11 @@ namespace Guildmaster.UI
         // его. Если мы уже в меню (pause в стеке — даже под настройками) — шаг назад (settings→pause→закрыть).
         public void ToggleSystemMenu()
         {
-            if (_root == null) return;
+            if (_root == null)
+            {
+                Debug.LogError("[MenuRouter] - системное меню: нет корня UI (UiRootBootstrap не инициализировал роутер) → ESC не работает");
+                return;
+            }
             // В главном меню системного меню нет: выходить из игры некуда, а ESC-панель поверх главного
             // меню — просто баг (наход. Макса, раунд 3, п.3).
             if (_mainMenuOpen) return;
@@ -597,7 +628,7 @@ namespace Guildmaster.UI
         // ровно один OnResolved, включая закрытие без выбора (= пропуск), чтобы флоу забега не завис (Ф3).
         public void OpenReward(OpenRewardRequest req)
         {
-            if (_root == null || _rewardUxml == null) { req.OnResolved?.Invoke(RewardChoiceResult.Skip); return; }
+            if (CannotShow("Награда (_rewardScreen)", _rewardUxml)) { req.OnResolved?.Invoke(RewardChoiceResult.Skip); return; }
             ShowRewardAsync(req).Forget();
         }
 
@@ -630,7 +661,7 @@ namespace Guildmaster.UI
         // Закрытие без выбора (ESC/PopAll) = -1, чтобы флоу не завис.
         public void OpenTextEvent(OpenTextEventRequest req)
         {
-            if (_root == null || _eventUxml == null || req.Event == null) { req.OnChosen?.Invoke(-1); return; }
+            if (CannotShow("Текстовое событие (_eventScreen)", _eventUxml, req.Event != null)) { req.OnChosen?.Invoke(-1); return; }
             PushScreen(() => BuildTextEventScreen(req), ScreenKind.Page, ct: req.Cancellation); // QA #37: отмена закрывает ивент
         }
 
@@ -665,7 +696,7 @@ namespace Guildmaster.UI
         // Живёт по токену узла (гаснет на входе в следующий), уводят с него кнопки бита поверх (QA #48/#49).
         public void ShowNodeFarewell(OpenNodeFarewellRequest req)
         {
-            if (_root == null || _eventUxml == null) return;
+            if (CannotShow("Прощание узла (_eventScreen)", _eventUxml)) return;
             PushScreen(() => BuildNodeFarewellScreen(req), ScreenKind.Page, ct: req.Cancellation);
         }
 
@@ -693,7 +724,7 @@ namespace Guildmaster.UI
         // Передышка (две кнопки): петля НЕ ждёт этот экран — он снимается по ct, когда узел выбран.
         public void ShowContinue(OpenContinueRequest req)
         {
-            if (_root == null || _continueUxml == null) { req.OnContinue?.Invoke(); return; }
+            if (CannotShow("Кнопки бита (_continueScreen)", _continueUxml)) { req.OnContinue?.Invoke(); return; }
             ShowContinueAsync(req).Forget();
         }
 
@@ -752,7 +783,7 @@ namespace Guildmaster.UI
         // «Уйти»/закрытие резолвит OnLeave (петля продолжается). Ровно один вызов.
         public void OpenShop(OpenShopRequest req)
         {
-            if (_root == null || _shopUxml == null || req.Shop == null) { req.OnLeave?.Invoke(); return; }
+            if (CannotShow("Лавка (_shopScreen)", _shopUxml, req.Shop != null)) { req.OnLeave?.Invoke(); return; }
             ShowShopAsync(req).Forget();
         }
 
@@ -774,7 +805,7 @@ namespace Guildmaster.UI
         // затем сундук закрывается. Закрытие без клика тоже резолвит, чтобы флоу не завис.
         public void OpenChest(OpenChestRequest req)
         {
-            if (_root == null || _chestUxml == null) { req.OnOpen?.Invoke(); return; }
+            if (CannotShow("Сундук (_chestScreen)", _chestUxml)) { req.OnOpen?.Invoke(); return; }
             ShowChestAsync(req).Forget();
         }
 
@@ -793,7 +824,7 @@ namespace Guildmaster.UI
         // выбор здесь повторяемый, а выход — отдельное решение.
         public void OpenCamp(OpenCampRequest req)
         {
-            if (_root == null || _campUxml == null || req.Session == null) { req.OnLeave?.Invoke(); return; }
+            if (CannotShow("Привал (_campScreen)", _campUxml, req.Session != null)) { req.OnLeave?.Invoke(); return; }
             ShowCampAsync(req).Forget();
         }
 
@@ -810,7 +841,7 @@ namespace Guildmaster.UI
         // Boot title card — до главного меню. Клик / авто-таймер → OnDismiss.
         public void ShowTitleCard(OpenTitleCardRequest req)
         {
-            if (_root == null || _titleCardUxml == null) { req.OnDismiss?.Invoke(); return; }
+            if (CannotShow("Заставка (_titleCardScreen)", _titleCardUxml)) { req.OnDismiss?.Invoke(); return; }
             ShowTitleCardAsync(req).Forget();
         }
 
@@ -830,7 +861,7 @@ namespace Guildmaster.UI
         // Экран исхода забега (C2) — на UXML (OutcomeScreen.uxml). «В меню» резолвит OnToMenu; закрытие тоже.
         public void ShowOutcome(OpenOutcomeRequest req)
         {
-            if (_root == null || _outcomeUxml == null) { req.OnToMenu?.Invoke(); return; }
+            if (CannotShow("Исход забега (_outcomeScreen)", _outcomeUxml)) { req.OnToMenu?.Invoke(); return; }
             ShowOutcomeAsync(req).Forget();
         }
 
@@ -847,7 +878,9 @@ namespace Guildmaster.UI
         // меню; «Настройки» открываются поверх (Push) и меню не закрывают.
         public void OpenMainMenu(OpenMainMenuRequest req)
         {
-            if (_root == null || _mainMenuUxml == null) { req.OnChoice?.Invoke(MainMenuChoice.Quit); return; }
+            // Единственный гард, чей отказ ЗАКРЫВАЕТ игру: без главного меню игроку некуда деться, а висеть
+            // на чёрном экране хуже. Поэтому Quit остаётся — но громко, а не молча, как было.
+            if (CannotShow("Главное меню (_mainMenuScreen)", _mainMenuUxml)) { req.OnChoice?.Invoke(MainMenuChoice.Quit); return; }
             ShowMainMenuAsync(req).Forget();
         }
 

@@ -36,6 +36,28 @@ namespace Guildmaster.Tests.EditMode.Content
                 "_statsConfig",
                 "_classBalanceConfig",
             },
+            ["UiRootBootstrap"] = new[]
+            {
+                // Экраны забега. Пусто = MenuRouter отказывается показать шаг (теперь громко, аудит фолбэков
+                // 2026-07-26, п.1), а раньше молча выполнял колбэк УСПЕХА: узел засчитывался сам, награда
+                // пропускалась, главное меню закрывало игру. Ловим здесь, до билда.
+                "_pauseScreen",
+                "_settingsScreen",
+                "_loadoutScreen",
+                "_rewardScreen",
+                "_eventScreen",            // он же кадр прощания узла
+                "_continueScreen",
+                "_shopScreen",
+                "_chestScreen",
+                "_campScreen",             // стоит якорем на этажах 8 и 13 КАЖДОГО акта — мимо не пройти
+                "_outcomeScreen",
+                "_mainMenuScreen",
+                "_titleCardScreen",
+                "_runModeBar",
+                "_loadoutInventoryScreen",
+                "_arcanaCard",
+                // _loadoutHubScreen СЮДА НЕ ВНОСИМ: старый хаб помечен к удалению (волна 2 аудита кода).
+            },
             ["CombatPresenter"] = new[]
             {
                 // Единственный владелец цветов HP и щита (T-12/T-13). Пусто = бар и боевые цифры
