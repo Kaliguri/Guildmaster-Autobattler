@@ -195,7 +195,14 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>Подать design-конфиг сочности (длительности/сила/цвет вспышки и сплющивания). CombatPresenter — при спавне.</summary>
-        public void ApplyFeelConfig(Design.CombatFeelConfig feel) => _feel = feel;
+        public void ApplyFeelConfig(Design.CombatFeelConfig feel)
+        {
+            _feel = feel;
+
+            // Полоса не должна знать чисел — она их получает, как и цвета (её единственный источник — конфиг).
+            if (_healthBar != null && feel != null)
+                _healthBar.SetLowHpPulse(feel.LowHpThreshold, feel.LowHpPulsePeriod, feel.LowHpPulseAmount);
+        }
 
         /// <summary>
         /// Дать виду голос. Нужен ровно для одного момента — разлёта на осколки: он случается сильно позже

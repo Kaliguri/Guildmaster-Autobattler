@@ -63,6 +63,10 @@ namespace Guildmaster.Presentation
         private float _punchDuration;
         private float _punchAmount;
 
+        private float _lowHpThreshold;   // доля HP, ниже которой полоса начинает тревожно дышать
+        private float _lowHpPeriod = 0.9f;
+        private float _lowHpAmount;
+
         private static readonly int IdHpFrac       = Shader.PropertyToID("_HpFrac");
         private static readonly int IdCombinedFrac = Shader.PropertyToID("_CombinedFrac");
         private static readonly int IdTrailFrac    = Shader.PropertyToID("_TrailFrac");
@@ -186,6 +190,17 @@ namespace Guildmaster.Presentation
 
         private float CurrentScale() => Mathf.Max(_maxHp, _hp + _shield, _trailEhp, 1f);
 
+        /// <summary>
+        /// Порог и форма тревожного пульса на низком HP. Подаёт <c>UnitView</c> из feel-конфига —
+        /// своих чисел бар не держит (см. заметку про цвета выше). Порог ≤ 0 = пульса нет.
+        /// </summary>
+        public void SetLowHpPulse(float threshold, float period, float amount)
+        {
+            _lowHpThreshold = Mathf.Clamp01(threshold);
+            _lowHpPeriod    = Mathf.Max(0.05f, period);
+            _lowHpAmount    = Mathf.Max(0f, amount);
+        }
+
         private void PushDynamicProps()
         {
             if (_mat == null) return;
@@ -195,6 +210,35 @@ namespace Guildmaster.Presentation
             _mat.SetFloat(IdCombinedFrac, (_hp + _shield) / scale);
             _mat.SetFloat(IdTrailFrac,    _trailEhp / scale);
             _mat.SetFloat(IdSegments,     Mathf.Max(1f, scale / Mathf.Max(0.0001f, _tickValue)));
+
+            PushHpColor();
+        }
+
+        /// <summary>
+        /// Полоса на исходе дышит светом. Это не украшение, а сведения: в свалке из восьми бойцов
+        /// «кто вот-вот умрёт» иначе читается только сравнением длин полосок.
+        /// <para>Пульсируем ЯРКОСТЬЮ, а не масштабом: масштаб уже занят punch'ем от урона, и два эффекта
+        /// на одном канале дрались бы. Время unscaled — тревога не должна застывать в slowmo.</para>
+        /// </summary>
+        private void PushHpColor()
+        {
+            if (!_hasHpColor) return;
+
+            float frac = _maxHp > 0f ? _hp / _maxHp : 1f;
+            if (_lowHpThreshold <= 0f || _lowHpAmount <= 0f || frac > _lowHpThreshold || _hp <= 0f)
+            {
+                _mat.SetColor(IdHpColor, _hpColor);
+                return;
+            }
+
+            // Ближе к нулю — тревожнее: у самой смерти пульс на полную, у порога едва заметен.
+            float urgency = 1f - Mathf.Clamp01(frac / _lowHpThreshold);
+            float wave = 0.5f + 0.5f * Mathf.Sin(Time.unscaledTime * (Mathf.PI * 2f / _lowHpPeriod));
+            float boost = 1f + _lowHpAmount * urgency * wave;
+
+            Color pulsed = _hpColor * boost;
+            pulsed.a = _hpColor.a;
+            _mat.SetColor(IdHpColor, pulsed);
         }
 
         private void OnDestroy()

@@ -21,11 +21,19 @@ namespace Guildmaster.Presentation
         [Tooltip("Яркость следа относительно тинта снаряда: след — свечение позади, а не второй снаряд.")]
         [SerializeField, Range(0.2f, 2f)] private float _trailBrightness = 1.15f;
 
+        [Header("Растяжение по скорости")]
+        [Tooltip("Насколько снаряд вытягивается вдоль полёта за каждую единицу скорости. 0 = не тянется.")]
+        [SerializeField, Range(0f, 0.2f)] private float _stretchPerSpeed = 0.03f;
+        [Tooltip("Потолок растяжения (во сколько раз длиннее исходного). 1 = растяжения нет.")]
+        [SerializeField, Range(1f, 3f)] private float _maxStretch = 1.7f;
+
         // Как быстро визуальный офсет «старта из дула» сходит на симовую траекторию (1/сек). Больше = резче.
         private const float OriginConvergeRate = 12f;
 
         private Projectile _projectile;
         private Vector3    _originOffset; // визуальный старт из ShotPoint: разница (дуло − центр сима), затухает к 0
+        private Vector3    _baseScale = Vector3.one;   // масштаб префаба; снимается один раз (вид приходит из пула)
+        private bool       _baseScaleCaptured;
 
         /// <summary>Привязать к симовому снаряду и затинтовать под источник (старт из центра сима).</summary>
         public void Bind(Projectile projectile, Color tint)
@@ -102,12 +110,28 @@ namespace Guildmaster.Presentation
             _trail.Clear();
         }
 
-        // Спрайт нарисован «вправо»: поворачиваем по направлению полёта (в сторону цели).
+        // Спрайт нарисован «вправо»: поворачиваем по направлению полёта (в сторону цели) и вытягиваем вдоль него.
         private void FaceVelocity(Vector2 v)
         {
             if (v.sqrMagnitude < 1e-6f) return;
             float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.Euler(0f, 0f, angle);
+            ApplyStretch(v.magnitude);
+        }
+
+        /// <summary>
+        /// Вытягивание вдоль полёта: быстрый снаряд читается как быстрый, а не как медленный кружок.
+        /// Объём сохраняем (поперёк сжимаем на корень) — иначе быстрый выстрел просто раздувается.
+        /// </summary>
+        private void ApplyStretch(float speed)
+        {
+            if (_stretchPerSpeed <= 0f || _maxStretch <= 1f) return;
+
+            if (!_baseScaleCaptured) { _baseScale = transform.localScale; _baseScaleCaptured = true; }
+
+            float stretch = Mathf.Clamp(1f + speed * _stretchPerSpeed, 1f, _maxStretch);
+            float squash  = 1f / Mathf.Sqrt(stretch);
+            transform.localScale = new Vector3(_baseScale.x * stretch, _baseScale.y * squash, _baseScale.z);
         }
     }
 }

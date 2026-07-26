@@ -108,6 +108,14 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Сила вспышки лечения: заметно слабее удара — лечение греет, а не бьёт.")]
         [SerializeField, Range(0.1f, 1f)] private float _healFlashPeak = 0.5f;
 
+        [Header("Micro Feel — low HP pulse")]
+        [Tooltip("Доля HP, ниже которой полоса тревожно дышит светом. 0 = пульса нет.")]
+        [SerializeField, Range(0f, 0.6f)] private float _lowHpThreshold = 0.25f;
+        [Tooltip("Период дыхания, сек.")]
+        [SerializeField, Range(0.2f, 3f)] private float _lowHpPulsePeriod = 0.85f;
+        [Tooltip("Сила подсветки на пике у самой смерти (доля яркости).")]
+        [SerializeField, Range(0f, 1.5f)] private float _lowHpPulseAmount = 0.5f;
+
         [Header("Micro Feel — HP bar punch")]
         [Tooltip("Пик перелёта масштаба бара при уроне.")]
         [SerializeField, Range(0.02f, 0.25f)] private float _hpBarPunchAmount = 0.08f;
@@ -302,6 +310,9 @@ namespace Guildmaster.Presentation.Design
 
         public Color HealFlashColor      => _healFlashColor;
         public float HealFlashPeak       => _healFlashPeak;
+        public float LowHpThreshold      => _lowHpThreshold;
+        public float LowHpPulsePeriod    => _lowHpPulsePeriod;
+        public float LowHpPulseAmount    => _lowHpPulseAmount;
 
         public float ContactDustCooldown     => _contactDustCooldown;
         public float HitNudgeDistance        => _hitNudgeDistance;

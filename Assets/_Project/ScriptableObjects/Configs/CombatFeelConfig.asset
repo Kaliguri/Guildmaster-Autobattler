@@ -24,6 +24,7 @@ MonoBehaviour:
   _enableDeathAnticipation: 1
   _enableFloatingTextArc: 1
   _enableHpBarPunch: 1
+  _enableHealFlash: 1
   _contactDustCooldown: 0.35
   _hitNudgeDistance: 0.08
   _hitNudgeDuration: 0.12
@@ -47,6 +48,11 @@ MonoBehaviour:
   _deathAnticipateDuration: 0.1
   _deathAnticipateShake: 0.06
   _numberArcGravity: 2.2
+  _healFlashColor: {r: 0.55, g: 1, b: 0.65, a: 1}
+  _healFlashPeak: 0.5
+  _lowHpThreshold: 0.25
+  _lowHpPulsePeriod: 0.85
+  _lowHpPulseAmount: 0.5
   _hpBarPunchAmount: 0.08
   _hpBarPunchDuration: 0.12
   _flashColor: {r: 1, g: 1, b: 1, a: 1}
@@ -159,3 +165,8 @@ MonoBehaviour:
   _vfxImpactDust: {fileID: 11400000, guid: 9bb4d1bd7125aab44bda287808c647e8, type: 2}
   _vfxContactDust: {fileID: 11400000, guid: e38186879a79fef4b979ef4a9b28d040, type: 2}
   _vfxHeal: {fileID: 11400000, guid: 23b5496c9c572b249b5ac985ab2cc1b6, type: 2}
+  _vfxHitIntensityMin: 0.35
+  _vfxHitIntensityMax: 1
+  _vfxHitCountMin: 0.4
+  _vfxHitCountMax: 2.2
+  _vfxAreaBurst: {fileID: 11400000, guid: 0278f93e6a96dfa4ba9a886e862e9baa, type: 2}
