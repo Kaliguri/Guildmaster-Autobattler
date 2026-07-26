@@ -61,7 +61,7 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
-  _resourceOnHit: 15
+  _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
   - Stat: 7
@@ -78,7 +78,7 @@ MonoBehaviour:
     Value: 45
   - Stat: 27
     Op: 3
-    Value: 80
+    Value: 100
   - Stat: 28
     Op: 3
     Value: 0
@@ -89,8 +89,8 @@ MonoBehaviour:
   _abilities:
   - _id: steel_whirl
     _effects: []
-    _baseCooldown: 5
-    _resourceCost: 80
+    _baseCooldown: 9
+    _resourceCost: 45
     _targetMode: 0
     _damageMultiplier: 3
     _schoolOverride: 0

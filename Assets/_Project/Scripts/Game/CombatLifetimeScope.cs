@@ -130,7 +130,13 @@ namespace Guildmaster.Game
             builder.Register<ProjectileSystem>(Lifetime.Scoped);
             builder.Register<DeathSystem>(Lifetime.Scoped);
             builder.Register<EffectSystem>(Lifetime.Scoped);
-            builder.Register<RegenSystem>(Lifetime.Scoped);
+            // Скорость капания ресурса — из StatsConfig (единственный источник числа); без конфига
+            // остаётся код-дефолт системы, а не тихий ноль.
+            float resourcePerSecond = _statsConfig != null
+                ? _statsConfig.ResourceRegenPerSecond
+                : new RegenSystem().ResourcePerSecond;
+            builder.Register<RegenSystem>(_ => new RegenSystem { ResourcePerSecond = resourcePerSecond },
+                                          Lifetime.Scoped);
             builder.Register<DisplacementSystem>(Lifetime.Scoped);
         }
 

@@ -6,24 +6,37 @@ using UnityEngine;
 namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
-    /// «Целебный свет» (Светлый пастырь): при нанесении урона автоатакой носитель лечит самого
-    /// раненого союзника (по HP%) в радиусе вокруг СЕБЯ на долю нанесённого урона. Себя носитель
-    /// НЕ лечит — свет уходит другим (решение Макса 2026-07-26; вампиризм на себя — это отдельный
-    /// <see cref="LifestealComponent"/>). Реактивный —
-    /// слушает <see cref="CombatEvent.DamageDealt"/> своего носителя. Воплощает идентичность «Света»
-    /// (ГДД «8»): чистый (True) урон + лечение союзнику. Аналог <see cref="LifestealComponent"/>, но
-    /// исцеляет не себя, а раненого союзника.
+    /// <b>«Целебный свет»</b> — пассивка Светлого пастыря (карточка [[the-shepherd]]).
+    /// <para><b>Что делает:</b> каждая его автоатака не только бьёт врага, но и лечит самого раненого
+    /// союзника рядом. Некого лечить — свет достаётся самому носителю, но меньше: отдавать выгоднее,
+    /// чем лечиться самому.</para>
+    /// <para><b>Числа:</b>
+    /// <list type="bullet">
+    /// <item><c>_fraction</c> — доля нанесённого урона, уходящая в лечение СЕБЯ (1 = 100% удара).</item>
+    /// <item><c>_allyBonus</c> — насколько лечение союзника выгоднее (0.5 = +50%, итого 150% удара).</item>
+    /// <item><c>_radius</c> — радиус поиска раненого союзника вокруг носителя, мировые единицы.</item>
+    /// <item><c>_autoAttackOnly</c> — реагировать только на автоатаку (иначе лечил бы и с ульты).</item>
+    /// </list>
+    /// При ударе на 100 это 150 союзнику или 100 себе.</para>
+    /// <para><b>Когда срабатывает:</b> реактив на <see cref="CombatEvent.DamageDealt"/> носителя —
+    /// то есть в момент попадания, а не по таймеру.</para>
     /// </summary>
     /// <remarks>
-    /// Stateless: буфер запроса переиспользуется (как в системах и <see cref="ArmorThornsComponent"/>).
-    /// Тай-брейк выбора цели — по <c>Id</c>, чтобы выбор был детерминированным при равном HP%.
+    /// Готчи: цель — самый раненый по ДОЛЕ HP, а не по абсолюту (иначе свет всегда уходил бы танку);
+    /// тай-брейк по <c>Id</c> — для детерминизма при равном проценте. Stateless: буфер переиспользуется.
+    /// Воплощает идентичность «Света» (ГДД «8»): чистый урон + лечение. Аналог
+    /// <see cref="LifestealComponent"/>, но приоритет отдан не себе.
     /// </remarks>
     [Serializable]
     public sealed class AllyMendComponent : IReactiveComponent
     {
-        [Tooltip("Доля нанесённого урона, уходящая в лечение союзника (1 = 100%).")]
+        [Tooltip("Доля нанесённого урона, уходящая в лечение СЕБЯ (1 = 100%). База: свет всегда что-то даёт носителю.")]
         [Range(0f, 4f)]
         [SerializeField] private float _fraction = 1f;
+
+        [Tooltip("Насколько лечение СОЮЗНИКА выгоднее само-лечения (0.5 = +50%, итого 150% нанесённого).")]
+        [Range(0f, 3f)]
+        [SerializeField] private float _allyBonus = 0.5f;
 
         [Tooltip("Радиус поиска раненого союзника вокруг носителя (мировые единицы).")]
         [SerializeField] private float _radius = 5f;
@@ -56,7 +69,7 @@ namespace Guildmaster.Combat.Effects.Components
             for (int i = 0; i < _allies.Count; i++)
             {
                 RuntimeUnit u = _allies[i];
-                if (u.IsDead || ReferenceEquals(u, self)) continue; // себя не лечим
+                if (u.IsDead || ReferenceEquals(u, self)) continue;
 
                 float maxHp = u.Stats.Get(StatType.MaxHP);
                 if (maxHp <= 0f) continue;
@@ -70,8 +83,11 @@ namespace Guildmaster.Combat.Effects.Components
                 }
             }
 
-            if (best == null) return;
-            ctx.Combat.Heal(best, heal, self);
+            // Нет раненого рядом — свет достаётся носителю, но по базовой доле: отдавать выгоднее,
+            // чем лечиться самому (решение 2026-07-27/3). Прежний полный запрет само-лечения снят —
+            // неубиваемым Пастыря делала ульта с процентом от недостающего HP, а не этот свет.
+            if (best == null) ctx.Combat.Heal(self, heal, self);
+            else ctx.Combat.Heal(best, heal * (1f + _allyBonus), self);
         }
     }
 }

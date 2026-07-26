@@ -62,8 +62,8 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
-  _resourceOnHit: 8
-  _maxResourceGainPerSecond: 10
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
   - Stat: 7
     Op: 3
@@ -92,8 +92,8 @@ MonoBehaviour:
   - _id: ignition
     _effects:
     - {fileID: 11400000, guid: fccdc612aba97e346a333a0c7c06de33, type: 2}
-    _baseCooldown: 0
-    _resourceCost: 60
+    _baseCooldown: 10
+    _resourceCost: 50
     _targetMode: 1
     _damageMultiplier: 0
     _schoolOverride: 2

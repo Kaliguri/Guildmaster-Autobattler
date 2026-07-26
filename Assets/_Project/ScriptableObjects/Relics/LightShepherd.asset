@@ -61,15 +61,15 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
-  _resourceOnHit: 15
+  _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
   - Stat: 7
     Op: 3
-    Value: 86
+    Value: 100
   - Stat: 8
     Op: 3
-    Value: 0.7
+    Value: 0.5
   - Stat: 9
     Op: 3
     Value: 8
@@ -78,7 +78,7 @@ MonoBehaviour:
     Value: 10
   - Stat: 27
     Op: 3
-    Value: 80
+    Value: 100
   - Stat: 28
     Op: 3
     Value: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
   - _id: hand_of_life
     _effects: []
     _baseCooldown: 6
-    _resourceCost: 80
+    _resourceCost: 30
     _targetMode: 3
     _damageMultiplier: 0
     _schoolOverride: 0
@@ -103,8 +103,8 @@ MonoBehaviour:
     _affinityOverride: 0
     _areaShape: 0
     _areaRadius: 0
-    _healFlat: 300
-    _healPctTargetMissingHp: 1
+    _healFlat: 100
+    _healPctTargetMissingHp: 0.08
     _castCondition: 2
     _castConditionCount: 1
     _castConditionRadius: 0

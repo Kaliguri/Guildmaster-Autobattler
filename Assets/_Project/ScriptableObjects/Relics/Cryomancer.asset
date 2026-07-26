@@ -62,7 +62,7 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
-  _resourceOnHit: 15
+  _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
   - Stat: 8
@@ -79,7 +79,7 @@ MonoBehaviour:
     Value: 7
   - Stat: 27
     Op: 3
-    Value: 80
+    Value: 100
   - Stat: 28
     Op: 3
     Value: 0
@@ -95,7 +95,7 @@ MonoBehaviour:
     _effects:
     - {fileID: 11400000, guid: 273ce8d37d74a884f82d3fcb0cf0560f, type: 2}
     _baseCooldown: 8
-    _resourceCost: 80
+    _resourceCost: 40
     _targetMode: 4
     _damageMultiplier: 0
     _schoolOverride: 0

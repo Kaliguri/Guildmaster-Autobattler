@@ -31,5 +31,6 @@ MonoBehaviour:
       type: {class: AllyMendComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _fraction: 1
+        _allyBonus: 0.5
         _radius: 5
         _autoAttackOnly: 1

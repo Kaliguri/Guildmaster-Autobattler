@@ -36,11 +36,14 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.AreEqual(1, ctx.Heals.Count, "Один хил на автоатаку");
             Assert.AreSame(wounded, ctx.Heals[0].Target, "Лечит самого раненого союзника (30% < 90%)");
-            Assert.AreEqual(40f, ctx.Heals[0].Amount, 1e-4f, "100% от нанесённого (40)");
+            // Союзнику достаётся больше, чем досталось бы себе: 40 × (1 + 0.5) — решение 2026-07-27/3.
+            Assert.AreEqual(60f, ctx.Heals[0].Amount, 1e-4f, "150% от нанесённого (40 → 60)");
         }
 
+        // Приоритет союзника не зависит от того, кому хуже: даже самый раненый носитель отдаёт свет
+        // другому, пока рядом есть кого лечить. Себе достаётся только когда рядом никого.
         [Test]
-        public void NeverHealsSelf_EvenWhenBearerIsTheMostWounded()
+        public void PrefersAlly_EvenWhenBearerIsTheMostWounded()
         {
             var sys = new EffectSystem();
             var ctx = new MockCombatContext();
@@ -58,11 +61,14 @@ namespace Guildmaster.Tests.EditMode.Combat
             sys.Dispatch(shepherd, in ev, ctx);
 
             Assert.AreEqual(1, ctx.Heals.Count, "Хил ушёл союзнику, а не пропал");
-            Assert.AreSame(ally, ctx.Heals[0].Target, "Себя носитель не лечит, даже будучи самым раненым");
+            Assert.AreSame(ally, ctx.Heals[0].Target, "Свет уходит другому, даже если носителю хуже");
         }
 
+        // Решение 2026-07-27/3 заместило прежний полный запрет само-лечения: свет всегда что-то даёт
+        // носителю, просто отдавать выгоднее. Неубиваемым Пастыря делала ульта с процентом от
+        // НЕДОСТАЮЩЕГО HP, а не этот хил, — процент срезан, запрет больше не нужен.
         [Test]
-        public void DoesNotHeal_WhenBearerIsAlone()
+        public void HealsSelf_ByBaseFraction_WhenBearerIsAlone()
         {
             var sys = new EffectSystem();
             var ctx = new MockCombatContext();
@@ -71,14 +77,17 @@ namespace Guildmaster.Tests.EditMode.Combat
             RuntimeUnit victim   = MakeUnit(3, team: 1, pos: new Vector2(5f, 0f), maxHp: 100f, hp: 100f);
             ctx.UnitsInWorld.Add(shepherd);
 
-            var comp = new AllyMendComponent().With("_fraction", 1f).With("_radius", 5f).With("_autoAttackOnly", true);
+            var comp = new AllyMendComponent().With("_fraction", 1f).With("_allyBonus", 0.5f)
+                                              .With("_radius", 5f).With("_autoAttackOnly", true);
             sys.Apply(shepherd, TestEffect.Make(baseDuration: -1f, components: comp), shepherd, ctx);
 
             var ev = new CombatEventData(CombatEvent.DamageDealt, shepherd, victim, 40f, EffectTag.None,
                 sourceKind: DamageSourceKind.AutoAttack);
             sys.Dispatch(shepherd, in ev, ctx);
 
-            Assert.AreEqual(0, ctx.Heals.Count, "Рядом никого — свет уходит в пустоту, а не в самолечение");
+            Assert.AreEqual(1, ctx.Heals.Count, "Рядом никого — свет достаётся носителю");
+            Assert.AreSame(shepherd, ctx.Heals[0].Target);
+            Assert.AreEqual(40f, ctx.Heals[0].Amount, 1e-4f, "Себе — по базовой доле (100%), без бонуса союзника");
         }
 
         [Test]
