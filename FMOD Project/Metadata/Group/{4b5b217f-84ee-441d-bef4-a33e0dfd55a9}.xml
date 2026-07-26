@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="MixerGroup" id="{4b5b217f-84ee-441d-bef4-a33e0dfd55a9}">
+		<property name="name">
+			<value>Combat</value>
+		</property>
+		<relationship name="automators">
+			<destination>{783ba43a-2221-4727-b457-3a1002808ef4}</destination>
+		</relationship>
+		<relationship name="effectChain">
+			<destination>{1bd6434b-88b3-400d-a157-c50fe9253eef}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{abd12ec9-01f8-4dcf-9fec-541b9ed80e61}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{d01cd6ef-70f7-4dc1-957b-4e82203e44b7}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{783ba43a-2221-4727-b457-3a1002808ef4}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>pitch</value>
+		</property>
+		<relationship name="automationCurves">
+			<destination>{344297ae-97b0-4711-adc0-5e1fc2efbea0}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{1bd6434b-88b3-400d-a157-c50fe9253eef}">
+		<relationship name="effects">
+			<destination>{c2605d36-d1db-4df5-8e4f-d8f91453c2dc}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{abd12ec9-01f8-4dcf-9fec-541b9ed80e61}" />
+	<object class="AutomationCurve" id="{344297ae-97b0-4711-adc0-5e1fc2efbea0}">
+		<relationship name="parameter">
+			<destination>{0aeafdc9-a8a5-4871-8480-e921fce19c48}</destination>
+		</relationship>
+		<relationship name="automationPoints">
+			<destination>{2b4e6544-1cbd-4d2c-a1c1-5fbef51d04d1}</destination>
+			<destination>{4b1f4642-9eda-4f55-9f0b-ecd3abaf8bec}</destination>
+			<destination>{2fef7ce3-43ad-40cd-bc0e-a9a82203bb85}</destination>
+			<destination>{e8583128-8a1a-41b6-9958-acb70611613d}</destination>
+			<destination>{fd9eff0c-3eba-4c2d-9fb0-0e02c00f9d25}</destination>
+			<destination>{9a289513-572d-4c67-8a8e-95e161b124b1}</destination>
+			<destination>{a8f97142-e434-46a1-9408-e791c741126f}</destination>
+			<destination>{ae170d64-1c4f-4769-a72b-cc1f591b6c9b}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusFader" id="{c2605d36-d1db-4df5-8e4f-d8f91453c2dc}" />
+	<object class="AutomationPoint" id="{2b4e6544-1cbd-4d2c-a1c1-5fbef51d04d1}">
+		<property name="position">
+			<value>0.050000000000000003</value>
+		</property>
+		<property name="value">
+			<value>-24</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{4b1f4642-9eda-4f55-9f0b-ecd3abaf8bec}">
+		<property name="position">
+			<value>0.25</value>
+		</property>
+		<property name="value">
+			<value>-24</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{2fef7ce3-43ad-40cd-bc0e-a9a82203bb85}">
+		<property name="position">
+			<value>0.5</value>
+		</property>
+		<property name="value">
+			<value>-12</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{e8583128-8a1a-41b6-9958-acb70611613d}">
+		<property name="position">
+			<value>0.75</value>
+		</property>
+		<property name="value">
+			<value>-4.98000002</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{fd9eff0c-3eba-4c2d-9fb0-0e02c00f9d25}">
+		<property name="position">
+			<value>1</value>
+		</property>
+		<property name="value">
+			<value>0</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{9a289513-572d-4c67-8a8e-95e161b124b1}">
+		<property name="position">
+			<value>1.5</value>
+		</property>
+		<property name="value">
+			<value>7.01999998</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{a8f97142-e434-46a1-9408-e791c741126f}">
+		<property name="position">
+			<value>2</value>
+		</property>
+		<property name="value">
+			<value>12</value>
+		</property>
+	</object>
+	<object class="AutomationPoint" id="{ae170d64-1c4f-4769-a72b-cc1f591b6c9b}">
+		<property name="position">
+			<value>3</value>
+		</property>
+		<property name="value">
+			<value>19.0200005</value>
+		</property>
+	</object>
+</objects>

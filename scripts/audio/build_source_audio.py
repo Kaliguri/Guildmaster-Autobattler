@@ -36,6 +36,14 @@ def run(cmd):
     return subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="ignore")
 
 
+def ffprobe_duration(path):
+    r = run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", path])
+    try:
+        return float((r.stdout or "0").strip())
+    except ValueError:
+        return 0.0
+
+
 def measure(path):
     """Возвращает (rms_active_db, peak_db) — RMS активной части и пик."""
     r = run(["ffmpeg", "-hide_banner", "-nostats", "-i", path, "-af",
@@ -55,10 +63,23 @@ def normalize(src, dst, extra_gain_db=0.0):
     if rms is None:
         print(f"  !! не измерить: {src}")
         return None
-    gain = min(M.TARGET_RMS_DB - rms, M.TRUE_PEAK_DB - peak) + extra_gain_db
+    # -0.5 dB запаса: истинный пик после ресемплинга/квантования выше сэмплового, и цель -1 dBTP
+    # без запаса переставала держаться (аудит ловил пики -0.4).
+    gain = min(M.TARGET_RMS_DB - rms, M.TRUE_PEAK_DB - 0.5 - peak) + extra_gain_db
     os.makedirs(os.path.dirname(dst), exist_ok=True)
+    # Три вещи разом (аудит показал их на 40+ файлах):
+    #   silenceremove — срезает ведущую тишину: сэмплы паков начинаются с 30-80 мс пустоты, и звук
+    #                   ощутимо опаздывал за ударом/кликом. Режется ТОЛЬКО начало (без stop_periods),
+    #                   внутренние паузы остаются как есть.
+    #   volume        — выравнивание к цели.
+    #   afade         — микрофейд 8 мс в конце: часть сэмплов обрывается на громком месте и щёлкает.
+    duration = ffprobe_duration(src)
+    fade_start = max(0.0, duration - 0.008)
+    chain = (f"silenceremove=start_periods=1:start_threshold={SILENCE_DB}dB,"
+             f"volume={gain:.2f}dB,"
+             f"afade=t=out:st={fade_start:.3f}:d=0.008")
     r = run(["ffmpeg", "-hide_banner", "-nostats", "-y", "-i", src,
-             "-af", f"volume={gain:.2f}dB", "-ar", "44100", "-c:a", "pcm_s16le", dst])
+             "-af", chain, "-ar", "44100", "-c:a", "pcm_s16le", dst])
     if r.returncode != 0:
         print(f"  !! ffmpeg упал на {src}: {r.stderr[-200:]}")
         return None
