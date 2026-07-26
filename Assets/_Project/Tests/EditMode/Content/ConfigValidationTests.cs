@@ -79,6 +79,43 @@ namespace Guildmaster.Tests.EditMode.Content
             }
         }
 
+        /// <summary>
+        /// Конфиг-ассет несёт ВСЕ поля своего класса, а не часть.
+        /// <para>Поле, добавленное в C# после того, как ассет был сохранён, в файл не попадает — Unity молча
+        /// подставляет код-дефолт при загрузке. Снаружи это выглядит как работающий конфиг, но владельцев у
+        /// значения становится двое: часть полей играет из ассета, часть из кода, и дизайнер, который правит
+        /// ассет, вторую часть не видит вовсе. У <c>GameConfig</c> так разъехалось 13 полей из 20, причём
+        /// единственное, что ассет всё-таки держал против кода (вместимость реликвий 12 против 8), кодовые
+        /// тесты продолжали проверять по коду (аудит 2026-07-26, T-8/CD-10/AC-17).</para>
+        /// </summary>
+        [TestCase(typeof(GameConfig))]
+        [TestCase(typeof(SimTuningConfig))]
+        [TestCase(typeof(StatsConfig))]
+        [TestCase(typeof(ClassBalanceConfig))]
+        public void ConfigAsset_CarriesEveryFieldOfItsClass(System.Type type)
+        {
+            string[] guids = AssetDatabase.FindAssets($"t:{type.Name}");
+            Assert.AreEqual(1, guids.Length, $"Ожидается ровно один ассет {type.Name}.");
+
+            string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+            var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
+            string yaml = System.IO.File.ReadAllText(path);
+
+            var missing = new System.Collections.Generic.List<string>();
+            SerializedProperty p = new SerializedObject(asset).GetIterator();
+            bool enterChildren = true;
+            while (p.NextVisible(enterChildren))
+            {
+                enterChildren = false;                       // только верхний уровень
+                if (p.name == "m_Script" || p.name.StartsWith("m_")) continue;
+                if (!yaml.Contains($"\n  {p.name}:")) missing.Add(p.name);
+            }
+
+            Assert.IsEmpty(missing,
+                $"{type.Name}: этих полей нет в ассете, значит они приезжают из кода — " +
+                $"пересохрани ассет: {string.Join(", ", missing)}");
+        }
+
         // --- §8 правило 5: диапазоны ---
 
         [Test]
