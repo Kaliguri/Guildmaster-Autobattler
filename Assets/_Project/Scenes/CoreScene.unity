@@ -163,7 +163,6 @@ MonoBehaviour:
   _titleCardScreen: {fileID: 9197481963319205126, guid: 42ddcfc3ca1fe3f46927e1220ca2a335, type: 3}
   _titleCardSeal: {fileID: 21300000, guid: 01d44d9c508f7af409ba475c15c06460, type: 3}
   _runModeBar: {fileID: 9197481963319205126, guid: 919b5073000fd104e8e188b2a2624dd5, type: 3}
-  _loadoutHubScreen: {fileID: 9197481963319205126, guid: b101555f184c6db48b81893633a005ee, type: 3}
   _loadoutInventoryScreen: {fileID: 9197481963319205126, guid: 57e9cea668276b146bb6ddbf4646c5ae, type: 3}
   _arcanaCard: {fileID: 9197481963319205126, guid: f3c82685632320143bae2eb20e6d7db1, type: 3}
   _transitionMaterial: {fileID: 2100000, guid: 325cc584ed8653149a991f39ab3ccb43, type: 2}

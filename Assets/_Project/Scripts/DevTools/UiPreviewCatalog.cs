@@ -25,7 +25,6 @@ namespace Guildmaster.DevTools
             ["dev-picker"]   = BuildDevPicker,
             ["reward"]       = BuildReward,
             ["event"]        = BuildEvent,
-            ["loadout-hub"]  = BuildLoadoutHub,
             ["loadout-inventory"] = BuildLoadoutInventory,
             ["settings"]     = BuildSettings,
             // "map" снят: карта больше не UITK-экран, она живёт в мире (см. WorldMapView) и в UI-стенде
@@ -121,45 +120,6 @@ namespace Guildmaster.DevTools
                 uxml, ev,
                 localize: RuValue,
                 onChosen: _ => { });
-            root.Add(screen);
-        }
-
-        private static void BuildLoadoutHub(VisualElement root)
-        {
-            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/LoadoutHubScreen.uxml");
-            if (uxml == null) { AddError(root, "LoadoutHubScreen.uxml не найден"); return; }
-
-            IContentDatabase content = LoadContent();
-            var roster  = new List<Guildmaster.UI.LoadoutHubView.RosterEntry>();
-            var stash   = new List<RelicData>();
-            var banners = new List<ItemData>();
-            if (content != null)
-            {
-                IReadOnlyList<RelicData>  relics  = content.All<RelicData>();
-                IReadOnlyList<VesselData> vessels = content.All<VesselData>();
-                IReadOnlyList<ItemData>   items   = content.All<ItemData>();
-
-                // 4 сосуда команды + надетый релик (для превью — по индексу из пула).
-                for (int i = 0; vessels != null && i < vessels.Count && roster.Count < 4; i++)
-                {
-                    RelicData r = (relics != null && relics.Count > i) ? relics[i] : null;
-                    roster.Add(new Guildmaster.UI.LoadoutHubView.RosterEntry(vessels[i], r));
-                }
-                // Фолбэк: VesselData ассетов ещё нет (скелет Фазы 2/4) — набиваем 4 слота реликами,
-                // чтобы в превью была видна раскладка команды (Vessel=null → карточка берёт имя релика).
-                for (int i = 0; relics != null && roster.Count < 4 && i < relics.Count; i++)
-                    if (relics[i] != null && relics[i].Id != ContentIds.BaseRelic)
-                        roster.Add(new Guildmaster.UI.LoadoutHubView.RosterEntry(null, relics[i]));
-                for (int i = 0; relics != null && i < relics.Count && stash.Count < 6; i++)
-                    if (relics[i] != null && relics[i].Id != ContentIds.BaseRelic) stash.Add(relics[i]);
-                for (int i = 0; items != null && i < items.Count && banners.Count < 2; i++)
-                    if (items[i] != null && items[i].Scope == ItemScope.Party) banners.Add(items[i]);
-            }
-
-            VisualElement screen = Guildmaster.UI.LoadoutHubView.Build(
-                uxml, roster, banners, stash, gold: 120,
-                nameOf: id => RuName(id), localize: RuValue,
-                onClose: () => { });
             root.Add(screen);
         }
 
@@ -484,9 +444,12 @@ namespace Guildmaster.DevTools
 
             _gallerySystem?.Dispose();
             _galleryInput?.Dispose();
+            _galleryStyle?.Detach();
             _galleryInput = new Guildmaster.Game.Input.InputService();
+            _galleryStyle = new Guildmaster.UI.Tooltips.KeywordStyle(LoadContent());
+            _galleryStyle.Attach(layer); // доноры цвета: те же классы .gm-kw--*, что в игре
             _gallerySystem = new Guildmaster.UI.Tooltips.TooltipSystem(
-                new PreviewTooltipContent(LoadContent()), null, _galleryInput, null);
+                new PreviewTooltipContent(LoadContent(), _galleryStyle), null, _galleryInput, null);
             _gallerySystem.Attach(root, layer);
 
             var hint = new Label("Shift — подробности · Alt+клик — закрепить окно (внутри работают ссылки, «‹ › ×»)");
@@ -527,7 +490,8 @@ namespace Guildmaster.DevTools
                     string key = id + "." + Guildmaster.Data.Definitions.ContentKeys.FormSuffix(caseTag);
                     string form = RuValue(key);
                     return string.IsNullOrEmpty(form) ? RuValue(id + ".name") : form;
-                });
+                },
+                _galleryStyle);
 
             var kwLabel = new Label(sample);
             kwLabel.style.maxWidth = 320;
@@ -570,6 +534,9 @@ namespace Guildmaster.DevTools
         // Ввод для витрины: настоящий сервис, чтобы Shift на стенде вёл себя как в игре.
         private static Guildmaster.Game.Input.InputService _galleryInput;
 
+        // Цвет терминов витрины: те же USS-доноры, что в игре.
+        private static Guildmaster.UI.Tooltips.KeywordStyle _galleryStyle;
+
         /// <summary>
         /// Содержимое подсказок для стенда: имя и описание берутся прямо из таблицы <c>Content</c>
         /// (в стенде нет DI и сервиса описаний), поэтому витрина показывает ПОВЕДЕНИЕ окна —
@@ -579,13 +546,26 @@ namespace Guildmaster.DevTools
         {
             private readonly IContentDatabase _content;
             private readonly Guildmaster.Combat.UnitStatPreview _stats;
+            private readonly Guildmaster.UI.Tooltips.KeywordStyle _style;
 
-            public PreviewTooltipContent(IContentDatabase content)
+            public PreviewTooltipContent(IContentDatabase content, Guildmaster.UI.Tooltips.KeywordStyle style)
             {
                 _content = content;
+                _style = style;
                 _stats = new Guildmaster.Combat.UnitStatPreview(
                     LoadFirst<StatsConfig>(), LoadFirst<ClassBalanceConfig>());
             }
+
+            // Формы слов берём прямо из таблицы Content: стенд без DI, но текст обязан выглядеть так же,
+            // как в игре — иначе витрина показывает сырую разметку и врёт о результате.
+            private string Rendered(string raw) => Guildmaster.Data.Descriptions.KeywordMarkup.Render(
+                raw,
+                (id, caseTag) =>
+                {
+                    string form = RuValue(id + "." + Guildmaster.Data.Definitions.ContentKeys.FormSuffix(caseTag));
+                    return string.IsNullOrEmpty(form) ? RuValue(id + ".name") : form;
+                },
+                _style);
 
             public bool IsLive(Guildmaster.UI.Tooltips.TooltipRequest request) => false;
 
@@ -619,7 +599,7 @@ namespace Guildmaster.DevTools
                         string kwName = RuValue(kwId + ".name");
                         if (string.IsNullOrEmpty(kwName)) return null;
                         card.SetTitle(kwName);
-                        card.SetDesc(RuValue(kwId + (detailed ? ".desc.full" : ".desc")));
+                        card.SetDesc(Rendered(RuValue(kwId + (detailed ? ".desc.full" : ".desc"))));
                         return card;
 
                     default:

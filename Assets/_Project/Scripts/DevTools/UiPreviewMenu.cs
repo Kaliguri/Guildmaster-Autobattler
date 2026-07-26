@@ -21,9 +21,6 @@ namespace Guildmaster.DevTools
         [MenuItem("Alebardium/UI Preview/Component Gallery", priority = 220)]
         private static void Gallery() => Open("gallery");
 
-        [MenuItem("Alebardium/UI Preview/Loadout Hub (legacy)", priority = 221)]
-        private static void LoadoutHub() => Open("loadout-hub");
-
         private static void Open(string id)
         {
             if (EditorApplication.isPlaying) EditorApplication.isPlaying = false;

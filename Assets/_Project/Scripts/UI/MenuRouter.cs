@@ -27,7 +27,6 @@ namespace Guildmaster.UI
         private readonly UiNavigator _nav;
         private readonly SettingsViewModel _settingsVm;
         private readonly LoadoutViewModel _loadoutVm;
-        private readonly LoadoutHubViewModel _hubVm;
         private readonly ILocalizationService _loc;
         private readonly IRunControl _runControl; // QA #18: «В главное меню»/«Выход» из системного меню
 
@@ -45,7 +44,6 @@ namespace Guildmaster.UI
         private VisualTreeAsset _mainMenuUxml;
         private VisualTreeAsset _titleCardUxml;
         private Sprite _titleCardSeal;
-        private VisualTreeAsset _loadoutHubUxml;
         private VisualTreeAsset _loadoutInventoryUxml;
         private VisualTreeAsset _arcanaCardUxml;
 
@@ -54,7 +52,7 @@ namespace Guildmaster.UI
         private const string PauseId = "pause";
 
         public MenuRouter(IInputService input, UiNavigator nav, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
-                          LoadoutHubViewModel hubVm, ILocalizationService loc, IRunControl runControl,
+                          ILocalizationService loc, IRunControl runControl,
                           IPublisher<MainMenuVisibilityChangedEvent> mainMenuVisPub,
                           Core.Audio.IAudioService audio)
         {
@@ -63,7 +61,6 @@ namespace Guildmaster.UI
             _nav = nav;
             _settingsVm = settingsVm;
             _loadoutVm = loadoutVm;
-            _hubVm = hubVm;
             _loc = loc;
             _runControl = runControl;
             _mainMenuVisPub = mainMenuVisPub;
@@ -91,7 +88,7 @@ namespace Guildmaster.UI
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
             VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
             VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
-            VisualTreeAsset loadoutHubUxml = null, VisualTreeAsset loadoutInventoryUxml = null,
+            VisualTreeAsset loadoutInventoryUxml = null,
             VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
             VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null)
         {
@@ -106,7 +103,6 @@ namespace Guildmaster.UI
             _chestUxml = chestUxml;
             _outcomeUxml = outcomeUxml;
             _mainMenuUxml = mainMenuUxml;
-            _loadoutHubUxml = loadoutHubUxml;
             _loadoutInventoryUxml = loadoutInventoryUxml;
             _arcanaCardUxml = arcanaCardUxml;
             _campUxml = campUxml;
@@ -229,40 +225,8 @@ namespace Guildmaster.UI
         }
 
         /// <summary>
-        /// Лоадаут-хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание собранных реликвий на сосуды.
-        /// Открывается кнопкой «Хаб» в топбаре, пушится оверлеем поверх карты. Реликвии переносятся драгом
-        /// (тащишь из запаса на сосуд → надеть; с сосуда в запас → снять). Правки durable (RunState) — контент
-        /// ребилдится на каждое действие (хаб дёшев).
-        /// </summary>
-        public void OpenHub()
-        {
-            if (CannotShow("Лоадаут-хаб (_loadoutHubScreen)", _loadoutHubUxml)) return;
-
-            var container = new VisualElement { name = "hub-container" };
-            container.style.position = Position.Absolute;
-            container.style.left = 0; container.style.top = 0; container.style.right = 0; container.style.bottom = 0;
-
-            void Rebuild()
-            {
-                container.Clear();
-                VisualElement hub = LoadoutHubView.Build(
-                    _loadoutHubUxml,
-                    _hubVm.Roster(), _hubVm.Banners(), _hubVm.Stash(), _hubVm.Gold,
-                    nameOf: id => _hubVm.NameOf(id),
-                    localize: key => _loc?.GetString(key),
-                    onClose: Pop,
-                    onEquip: (vessel, stash) => { _hubVm.Equip(vessel, stash); Rebuild(); },
-                    onUnequip: vessel => { _hubVm.Unequip(vessel); Rebuild(); });
-                container.Add(hub);
-            }
-
-            Rebuild();
-            PushScreen(() => container, ScreenKind.Page);
-        }
-
-        /// <summary>
-        /// Новый полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро-карточек реликвий + детали.
-        /// Открывается кнопкой «Хаб» в топбаре (заменил старый хаб-оверлей). <paramref name="onClose"/>
+        /// Полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро-карточек реликвий + детали.
+        /// Открывается табом «Инвентарь» в топбаре. <paramref name="onClose"/>
         /// зовётся на ЛЮБОМ закрытии (Pop/Esc/PopAll) через DetachFromPanelEvent — бутстрап по нему
         /// возвращает ран-топбар. Реликвии — весь контент (фильтр по владению — Фаза 5); gold из RunState.
         /// </summary>

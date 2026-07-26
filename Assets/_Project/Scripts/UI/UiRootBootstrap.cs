@@ -63,10 +63,7 @@ namespace Guildmaster.UI
         [Tooltip("UXML глобальной панели забега (app-shell): режимы-навигация + HP/золото/акт/таймер/меню.")]
         [SerializeField] private VisualTreeAsset _runModeBar;
 
-        [Tooltip("UXML лоадаут-хаба (гильдия: 4 сосуда + навешивание реликвий из запаса). Открывается кнопкой «Хаб».")]
-        [SerializeField] private VisualTreeAsset _loadoutHubScreen;
-
-        [Tooltip("UXML нового лоадаут/инвентарь-экрана (редизайн, Ф3a: трёхколоночник с таро-карточками). Открывается кнопкой «Хаб».")]
+        [Tooltip("UXML лоадаут/инвентарь-экрана (редизайн, Ф3a: трёхколоночник с таро-карточками). Открывается табом «Инвентарь».")]
         [SerializeField] private VisualTreeAsset _loadoutInventoryScreen;
 
         [Tooltip("UXML таро-карточки реликвии (клонируется в грид нового инвентаря).")]
@@ -213,7 +210,7 @@ namespace Guildmaster.UI
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -545,7 +542,9 @@ namespace Guildmaster.UI
         private void GoToInventory()
         {
             UiTrace.Log($"topbar «Инвентарь» → GoToInventory (invOpen={_router.IsInventoryOpen}, phase={_clock?.Phase}, hasMap={_router.HasMapInStack})");
-            if (_loadoutInventoryScreen == null) { _router.OpenHub(); return; } // фолбэк на старый хаб, если ассет не назначен
+            // Неназначенный UXML — баг разводки, а не режим работы: роутер скажет об этом громко
+            // (CannotShow), а до билда его ловит SceneWiringTests. Прежний фолбэк открывал вместо
+            // инвентаря старый хаб — и этим держал живой целую мёртвую ветку (аудит 2026-07-26, R1-21).
             RequestWorldMap(false); // инвентарь смотрит на мир, а не на карту — идемпотентно
             RequestTestZone(true);  // сначала бой — идемпотентно
             int gold = _runStates?.Current != null ? _runStates.Current.Gold : 0;

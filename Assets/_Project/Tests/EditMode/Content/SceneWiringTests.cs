@@ -56,7 +56,6 @@ namespace Guildmaster.Tests.EditMode.Content
                 "_runModeBar",
                 "_loadoutInventoryScreen",
                 "_arcanaCard",
-                // _loadoutHubScreen СЮДА НЕ ВНОСИМ: старый хаб помечен к удалению (волна 2 аудита кода).
             },
             ["CombatPresenter"] = new[]
             {

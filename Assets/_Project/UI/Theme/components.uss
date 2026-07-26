@@ -766,27 +766,10 @@
 }
 
 /* ============================================================================
- * Хаб лоадаута: обзор команды (4 сосуда) + общая секция (баннеры, запас).
+ * Карточка сосуда (VesselCard). Экран хаба лоадаута, ради которого писались эти классы,
+ * удалён (аудит 2026-07-26, R1-21) — его заменил трёхколоночный инвентарь. Осталось ровно
+ * то, что читает живой контрол; остальная секция .gm-hub-* ушла вместе с экраном.
  * ========================================================================== */
-
-.gm-panel--hub {
-    min-width: 480px;
-    max-width: 640px;
-}
-
-.gm-hub-section {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
-    -unity-font-style: bold;
-    margin-top: var(--gm-space-1);
-    margin-bottom: var(--gm-space-2);
-}
-
-/* Ряд сосудов команды. */
-.gm-hub-roster {
-    flex-direction: row;
-    justify-content: space-between;
-}
 
 /* Карточка сосуда: имя сверху, надетый релик (иконка+имя) снизу. */
 .gm-hub-vessel {
@@ -836,40 +819,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     flex-shrink: 1;
-}
-
-/* Общая секция: две колонки — баннеры и запас. */
-.gm-hub-common {
-    flex-direction: row;
-}
-
-/* flex-basis НЕ 0: при 0 грид слотов считает перенос против нулевой ширины и раздувает высоту
-   колонки (готча flexbox) → мёртвая пустота в панели. 45% + grow даёт корректный перенос. */
-.gm-hub-common__col {
-    flex-grow: 1;
-    flex-basis: 45%;
-    margin-right: var(--gm-space-4);
-}
-
-.gm-hub-banners {
-    flex-direction: row;
-}
-
-/* Слот-плейсхолдер (баннер/предмет): пустой квадрат. */
-.gm-hub-slot {
-    width: 40px;
-    height: 40px;
-    background-color: var(--gm-color-surface-sunken);
-    border-width: var(--gm-border-1);
-    border-color: var(--gm-color-border-subtle);
-    -unity-background-scale-mode: scale-to-fit;
-    margin-right: var(--gm-space-2);
-}
-
-.gm-hub-footer {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
 }
 
 /* ============================================================================

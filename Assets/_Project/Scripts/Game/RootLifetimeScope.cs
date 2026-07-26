@@ -102,7 +102,6 @@ namespace Guildmaster.Game
 
             builder.Register<SettingsViewModel>(Lifetime.Singleton);
             builder.Register<LoadoutViewModel>(Lifetime.Singleton);
-            builder.Register<LoadoutHubViewModel>(Lifetime.Singleton);
             builder.Register<MenuRouter>(Lifetime.Singleton).AsSelf();
             // Навигатор экранов (UI-реворк Ф1): единый владелец видимости/ввода. Пока СОЗДАётся, но не
             // подключён к роутеру — переезд MenuRouter на него в Ф2. Зависимости (IInputService, IBattleClock)
