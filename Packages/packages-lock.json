@@ -107,17 +107,6 @@
       "source": "builtin",
       "dependencies": {}
     },
-    "com.unity.2d.spriteshape": {
-      "version": "14.0.1",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.2d.common": "13.0.1",
-        "com.unity.mathematics": "1.1.0",
-        "com.unity.modules.physics2d": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.2d.tilemap": {
       "version": "1.0.0",
       "depth": 0,
@@ -182,13 +171,6 @@
         "com.unity.splines": "2.0.0",
         "com.unity.modules.imgui": "1.0.0"
       },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.collab-proxy": {
-      "version": "2.12.4",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.collections": {
@@ -458,16 +440,6 @@
         "com.unity.shadergraph": "17.4.0",
         "com.unity.render-pipelines.core": "17.4.0"
       }
-    },
-    "com.unity.visualscripting": {
-      "version": "1.9.11",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "jp.hadashikick.vcontainer": {
       "version": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.18.0",
