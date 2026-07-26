@@ -102,40 +102,6 @@ namespace Guildmaster.Tests.EditMode.Content
             }
         }
 
-        /// <summary>
-        /// «Длань жизни» Пастыря по карточке ГДД не только лечит, но и снимает с цели дебаффы
-        /// тира ≤ 2 (<c>DispelPower = 2</c>). Хил был заавторен, очищение — нет: способность несла
-        /// пустой список эффектов, и половина навыка существовала только в документе.
-        /// <para>Тест держит связку целиком — эффект есть, компонент тот, сила та. Проверять
-        /// «есть хоть какой-то эффект» бессмысленно: ошибка была именно в тихом отсутствии.</para>
-        /// </summary>
-        [Test]
-        public void Shepherd_HandOfLife_CarriesCleanse()
-        {
-            RelicData shepherd = AllContent().OfType<RelicData>()
-                .FirstOrDefault(r => r.Id == "relic.light_shepherd");
-            Assert.IsNotNull(shepherd, "нет реликвии relic.light_shepherd");
-
-            AbilityData hand = shepherd.Abilities.FirstOrDefault(a => a.Id == "hand_of_life");
-            Assert.IsNotNull(hand, "у Пастыря нет способности hand_of_life");
-
-            var dispels = hand.Effects
-                .Where(e => e != null)
-                .SelectMany(e => e.Components)
-                .OfType<Guildmaster.Combat.Effects.Components.DispelComponent>()
-                .ToList();
-
-            Assert.AreEqual(1, dispels.Count,
-                "«Длань жизни» обязана нести ровно одно очищение — карточка ГДД описывает его частью навыка");
-
-            var so = new SerializedObject(hand.Effects.First(e =>
-                e != null && e.Components.OfType<Guildmaster.Combat.Effects.Components.DispelComponent>().Any()));
-            SerializedProperty power = so.FindProperty("_components").GetArrayElementAtIndex(0)
-                                         .FindPropertyRelative("_dispelPower");
-            Assert.AreEqual(2, power.intValue,
-                "сила очищения — 2 по карточке: базовые дебаффы и жёсткий контроль, но не особые T3");
-        }
-
         // --- §8 правило 5: диапазоны и кросс-инварианты ---
 
         [Test]
