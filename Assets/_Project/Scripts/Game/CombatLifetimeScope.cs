@@ -14,10 +14,15 @@ using VContainer.Unity;
 namespace Guildmaster.Game
 {
     /// <summary>
-    /// Дочерний DI-скоуп BattleScene. Живёт один бой.
-    /// Регистрирует все боевые сервисы: RNG боя, системы, симуляцию, презентацию.
-    /// Является дочерним от <see cref="RootLifetimeScope"/> (вики «10» §8.2).
+    /// DI-скоуп боевых систем: RNG боя, системы, симуляция, презентация. Живёт в
+    /// <c>CombatSystemsScene</c> и дочерний к <see cref="WorldLifetimeScope"/> — камера и арена
+    /// резолвятся из предка, без дублей Main Camera/Brain (вики «Scenes», «16» §5).
     /// </summary>
+    /// <remarks>
+    /// Вопреки имени, по одному бою НЕ пересоздаётся: сцена грузится один раз на буте и не выгружается,
+    /// а бой начинается командой в живую симуляцию. Значит боевое состояние между узлами не чистится
+    /// сносом скоупа — за возврат отвечает <c>BattleBootstrap.ResetToWorld</c>.
+    /// </remarks>
     public class CombatLifetimeScope : LifetimeScope
     {
         [Tooltip("Конфиг базовых характеристик (в т.ч. armor-константа K — единственный источник).")]

@@ -2,7 +2,7 @@
 title: "Explanation - DI & Events"
 order: 10
 status: needs_review
-updated: 2026-07-16
+updated: 2026-07-26
 ---
 
 **Статус:** needs_review — отражает код на 2026-06-19; пример DI-регистрации актуализирован 2026-07-16
@@ -43,7 +43,7 @@ updated: 2026-07-16
 
 ## 1.3 Наши два скоупа
 
-Проект использует **два уровня жизни**, и это сознательное решение, завязанное на структуру сцен (persistent `CoreScene` + аддитивная `BattleScene`):
+Проект использует **три уровня жизни**, и это решение завязано на структуру сцен: стартовая `CoreScene` + две аддитивные persist-сцены, `WorldScene` и `CombatSystemsScene` (карта сцен — [[tech/10-reference/scenes|Scenes]]). Цепочка родителей: `RootLifetimeScope` → `WorldLifetimeScope` → `CombatLifetimeScope`.
 
 ### `RootLifetimeScope` — живёт всю сессию
 
@@ -66,9 +66,15 @@ protected override void Configure(IContainerBuilder builder)
 
 Обрати внимание на `.As<IAudioService>()`: класс регистрируется, но **выдаётся по интерфейсу**. Игровая логика просит `IAudioService`, не зная, что внутри `UnityAudioService` (а завтра — `FmodAudioService`). Это прямое следствие правила «FMOD всегда за интерфейсом» из CLAUDE.md.
 
-### `CombatLifetimeScope` — живёт один бой
+### `WorldLifetimeScope` — живёт всю сессию (персистентный мир)
 
-`Assets/_Project/Scripts/Game/CombatLifetimeScope.cs` — **дочерний** от Root. Создаётся при входе в `BattleScene`, умирает при выходе. Поэтому всё боевое (RNG боя, системы, симуляция) автоматически уничтожается в конце боя — не надо вручную чистить состояние.
+`Assets/_Project/Scripts/Game/WorldLifetimeScope.cs` — **дочерний** от Root, живёт в `WorldScene`. Держит то, что переживает бои и переиспользуется между ними: единую камеру-риг (`CameraModeController`, `CombatFocusTarget`), снапшот арены (`ArenaLayoutData`), world-слой карты акта и стол за меню.
+
+### `CombatLifetimeScope` — боевые системы
+
+`Assets/_Project/Scripts/Game/CombatLifetimeScope.cs` — **дочерний от World** (`parentReference` в сцене), живёт в `CombatSystemsScene`. Держит RNG боя, боевые системы, симуляцию и презентацию.
+
+> **Осторожно, ловушка чтения.** Скоуп называется «боевым», но по одному бою он НЕ пересоздаётся: сцена грузится один раз на буте и не выгружается, а бой начинается командой в живую симуляцию (`IBattleSession.RequestLaunch`). Значит боевое состояние между узлами **не** очищается само собой сносом скоупа — за сброс отвечает `BattleBootstrap.ResetToWorld`. Прежняя модель «скоуп рождается и умирает вместе с боем» снята вместе с legacy-загрузкой сцены (2026-07-26).
 
 ```csharp
 protected override void Configure(IContainerBuilder builder)
@@ -114,7 +120,7 @@ builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped).AsSelf();
 
 ## 1.6 Инъекция в объекты сцены
 
-Презентеры — это `MonoBehaviour` на объектах `BattleScene`, их нельзя «создать» контейнером, они уже в сцене. Для них:
+Презентеры — это `MonoBehaviour` на объектах `CombatSystemsScene`, их нельзя «создать» контейнером, они уже в сцене. Для них:
 ```csharp
 builder.RegisterComponentInHierarchy<CombatPresenter>();
 ```

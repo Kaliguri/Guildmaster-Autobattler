@@ -2,7 +2,7 @@
 title: "Meta - Tech Changelog & Decisions"
 order: 20
 status: living
-updated: 2026-07-19
+updated: 2026-07-26
 ---
 
 **Статус:** Ready — живой документ, обновлять при изменениях
@@ -34,6 +34,7 @@ updated: 2026-07-19
 | 2026-07-17 | **`ContentEditService`** (`Guildmaster.Data.Editor`) — write-сторона баланса: правка ЗНАЧЕНИЙ контент-SO через SerializedObject+Undo, change-log в `BalanceReports/`. Сосед `ContentCrudService` (тот — жизненный цикл ассета/id, этот — значения). Причина: у БД-тулинга не было безопасной правки значений; SimBench(read)+ContentEditService(write) = петля баланса | `.claude/skills/xgaida-x-nixi-balance/DRAFT.md` |
 | 2026-07-18 | **2D-свет — направление зафиксировано (`planned`)**: динамический `Light2D` на URP 2D Renderer (уже в проекте), иногда тёмные сцены для читаемости, объём через normal-карты как secondary textures. Тулинг normal-карт — **Laigter** (opensource, CLI-батч + пресеты; принято Максом), чтобы НЕ рисовать normal руками на каждый кадр; Aseprite — запасной точечный путь, 3D→bake отложен. Причина: инфра под свет (`Light2D`) уже даром стоит, ручная отрисовка normal на анимацию нежизнеспособна. Детали (палитра, тёмные арены, нужны ли normal на всех) — обговариваются | [[tech/40-planning/lighting-2d|Planning - 2D Lighting]] |
 | 2026-07-19 | **UI-реворк — стек-навигатор + ввод = f(верх стека, фаза)**: `UiNavigator` (типы экранов Page/Modal/Sheet + 8 слоёв-контейнеров) стал единственным владельцем видимости и ввода. `GameplaySuppressed`/`Context` не мутируются, а вычисляются; смену фазы навигатор ловит событием `IBattleClock.PhaseChanged` (**K8 закрыт**: `DeploymentController`/`BattleInputController` больше не зовут `SetContext`, только `SetPhase`). Растворены мёртвые слои `IRunTopBar`/`RunTopBarView` (легаси-панель) и `IMenuRouter` (никем не потреблялся как абстракция). Причина: у UI не было единого владельца состояния — «что показано/что глушится/что поверх» складывалось из ~17 переменных в 5 подсистемах, каждая точечная правка ломала соседнюю (регрессии раунда 5). EditMode 418/418 | [[tech/10-reference/ui-navigation|Reference - UI Navigation]] |
+| 2026-07-26 | **Сцены: три persist вместо «сцена на бой»**. Состав сцен зафиксирован — `CoreScene` (вход + сессионный DI + рантайм-UI), `WorldScene` (камера-риг, арена, карта, фон меню), `CombatSystemsScene` (бывшая `BattleScene`: боевой скоуп, презентер, дев-инструменты). Обе аддитивные грузятся ОДИН раз на буте и не выгружаются; цепочка скоупов `Root → World → Combat`. Снят legacy-путь «загрузить сцену на бой → выгрузить после» (`GameFlow.BootAsync`/`OnBattleEndedAsync`, флаг `_legacyBattleScene`, `ISceneLoader.UnloadBattleAsync`), вместе с ним из `BattleFlow`/`NodeResolver` ушла мёртвая зависимость от загрузчика. Снесены `BootScene` (пустышка вне билда) и `UiGallery` с её UXML (вторая витрина компонентов, разошедшаяся с кодовой). **Причина:** имя сцены обещало то, чего нет — бой это команда в живую симуляцию, а не загрузка; два сосуществующих способа жизни одной сцены плодили путаницу, а выгрузка сцены на узел прямо противоречит persist-миру (отряд, камера и арена обязаны пережить узел). EditMode 534/534 | [[tech/10-reference/scenes|Reference - Scenes]] |
 
 ---
 
@@ -255,7 +256,7 @@ updated: 2026-07-19
 | ID | Находка | Статус | Приоритет |
 |---|---|---|---|
 | I1 | `run-tests.ps1` хардкодит Unity `6000.0.23f1`, проект на `6000.4.8f1` → локальный прогон падает `Unity not found`. Читать версию из `ProjectVersion.txt` | ✅ исправлен §2.5 | P0 (5 мин) |
-| I2 | Билд первой сценой ставит `CoreScene` (`EditorBuildSettings`), GPT утверждает что она пустая, а root — в `BattleScene` → boot-flow не замкнут. Запуск из `BattleScene` — осознанный dev-harness | 🔍 (проверить в редакторе) | P3 |
+| I2 | Билд первой сценой ставит `CoreScene` (`EditorBuildSettings`), GPT утверждает что она пустая, а root — в `BattleScene` → boot-flow не замкнут. Запуск из `BattleScene` — осознанный dev-harness | ✅ снят 2026-07-26: `CoreScene` держит `[Root]` и `[Bootstrap]`, обе игровые сцены грузятся с бута — flow замкнут ([[tech/10-reference/scenes|Reference - Scenes]]) | P3 |
 
 **Устаревшее в аудитах / неверное на текущем дереве:**
 
