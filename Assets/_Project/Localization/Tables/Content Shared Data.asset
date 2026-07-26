@@ -283,30 +283,6 @@ MonoBehaviour:
     m_Key: effect.pyre_rush.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1700108452487168
-    m_Key: ui.hub.banners
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1700108452487169
-    m_Key: ui.hub.close
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1700108452487170
-    m_Key: ui.hub.gold
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1700108452487171
-    m_Key: ui.hub.stash
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1700108452487172
-    m_Key: ui.hub.team
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1700108452487173
-    m_Key: ui.hub.title
-    m_Metadata:
-      m_Items: []
   - m_Id: 4953955320979456
     m_Key: species.goblins.name
     m_Metadata:
