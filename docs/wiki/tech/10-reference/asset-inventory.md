@@ -28,7 +28,7 @@ updated: 2026-07-20
 | Honeti — PixelArtGUI | `Assets/Honeti/` | 68 МБ | Asset Store EULA (файла в паке нет) | Пиксельный GUI: 627 текстур под 9-slice, 532 иконки, 122 uGUI-префаба | Опосредованно — 9 перекрашенных спрайтов |
 | Feel / MMTools | `Assets/Feel/` | 85 МБ | Asset Store EULA | Склад сырья: 13 шумов, 8 рамп, 6 кистей, 16 частиц, bloom-dirt, шейдеры | 1 текстура (шум бумаги карты) |
 | Shapes | `Assets/Shapes/` | 11 МБ | Asset Store EULA | Векторный рендер примитивов + 341 сгенерённый материал | Да — весь слой Presentation |
-| Наша `Art` | `Assets/_Project/Art/` | 30 МБ | наше | 8 шейдеров, 4 материала, иконки карты, grayscale-арена, спрайт-пул | Частично, см. ниже |
+| Наша `Art` | `Assets/_Project/Art/` | 30 МБ | наше | 9 шейдеров, 5 материалов, иконки карты, спрайт-пул | Частично, см. ниже |
 | Шрифты | `Assets/_Project/UI/Fonts/` | — | OFL / свободные | 14 ttf, запечено 3 SDF-атласа | 2 из 14 |
 
 **Про `Assets/Kenney/RPG_Essentials_Free`** (25 МБ, 48 wav): это не Kenney, лежит в папке по

@@ -62,7 +62,7 @@ Vfx_HitSpark ×2     пул-заготовки VFX
     CombatFocusTarget   цель слежения боевой камеры
 === ARENA ===
     Arena Layout        ArenaLayoutAuthoring — данные арены (зоны, кламп)
-    LAYER 1             тайлсет пола (+ grayscale-дубль под тест-зону)
+    LAYER 1             тайлсет пола (облик арены; тест-зона показывает его же в цифровом каркасе)
     Arena Ground (Temp) временная подложка пола
 Test Zone Arena Skin    свап цветного/серого пола по тумблеру тест-зоны
 === MAP ===             world-слой карты акта (WorldMapView) + Map Post FX
