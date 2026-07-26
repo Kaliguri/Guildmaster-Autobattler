@@ -131,6 +131,55 @@ namespace Guildmaster.Tests.EditMode.Guild
                 $"Ширина середины не роллится — везде {string.Join(",", seen)}.");
         }
 
+        /// <summary>
+        /// Чтение конфига не имеет права его править. <c>Validated()</c> клампит поля, а носитель этого POCO —
+        /// сериализованное поле ассета: мутируя себя, он переписывал бы авторский конфиг на диске, причём на
+        /// каждой генерации карты (аудит 2026-07-26, R1-49/T-5).
+        /// </summary>
+        [Test]
+        public void Validated_DoesNotMutateTheConfigItWasCalledOn()
+        {
+            var source = new MapGenConfig
+            {
+                Columns         = 2,   // ниже минимума — кламп поднимет до 3
+                MinColumnWidth  = 0,   // ниже минимума — кламп поднимет до 1
+                MaxEdgesPerNode = 1,   // ниже минимума — кламп поднимет до 2
+                Zones           = null,
+                Anchors         = null,
+            };
+
+            MapGenConfig validated = source.Validated();
+
+            Assert.AreEqual(2, source.Columns, "Validated переписал исходный конфиг — на ассете это правка файла");
+            Assert.AreEqual(0, source.MinColumnWidth);
+            Assert.AreEqual(1, source.MaxEdgesPerNode);
+            Assert.IsNull(source.Zones, "даже пустые массивы не должны просачиваться обратно в источник");
+            Assert.IsNull(source.Anchors);
+
+            Assert.AreEqual(3, validated.Columns, "а вот копия обязана быть клампнутой");
+            Assert.AreEqual(1, validated.MinColumnWidth);
+            Assert.AreEqual(2, validated.MaxEdgesPerNode);
+            Assert.IsNotNull(validated.Zones);
+            Assert.IsNotNull(validated.Anchors);
+        }
+
+        /// <summary>Ассет переживает чтение: два вызова подряд дают одно и то же, и сам ассет не меняется.</summary>
+        [Test]
+        public void ReadingTheAssetTwice_LeavesItUnchanged()
+        {
+            var asset = AssetDatabase.LoadAssetAtPath<ActConfig>(AssetPath);
+            Assert.IsNotNull(asset);
+
+            MapGenConfig first  = asset.ToGenConfig();
+            MapGenConfig second = asset.ToGenConfig();
+
+            Assert.AreNotSame(first, second, "ToGenConfig обязан отдавать копию, а не общий экземпляр из ассета");
+            Assert.AreEqual(first.Columns, second.Columns);
+            Assert.AreEqual(first.MinColumnWidth, second.MinColumnWidth);
+            Assert.AreEqual(first.MaxColumnWidth, second.MaxColumnWidth);
+            Assert.AreEqual(first.EdgeColumns, second.EdgeColumns);
+        }
+
         private static int AnchorWidth(MapGenConfig cfg, int floor)
         {
             if (cfg.Anchors == null) return 0;

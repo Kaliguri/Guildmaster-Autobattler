@@ -50,21 +50,40 @@ namespace Guildmaster.Guild
         /// <summary>Якоря: фиксированный этаж → тип для ВСЕЙ колонки (гарант. сундук-ряд / привал перед боссом).</summary>
         public AnchorRule[] Anchors = DefaultAnchors();
 
-        /// <summary>Валидирует и клампит поля к разумным границам (защита от кривого SO/ручного конфига).</summary>
+        /// <summary>
+        /// Валидированная КОПИЯ: клампит поля к разумным границам (защита от кривого SO/ручного конфига).
+        /// <para>Именно копия, а не <c>this</c>. Носитель этого POCO — сериализованное поле <c>ActConfig</c>,
+        /// то есть ассет на диске: клампя себя на месте, метод переписывал бы авторский конфиг тихо и
+        /// необратимо, а генератор зовёт его на каждую генерацию карты. Пока ассет не был подключён к сцене,
+        /// порча была недостижима — и стала бы живой ровно в момент подключения (аудит 2026-07-26,
+        /// R1-49/AC-3/T-5).</para>
+        /// </summary>
         public MapGenConfig Validated()
         {
-            if (Columns < 3) Columns = 3;                       // минимум: Start → одна промежуточная → Boss
-            if (MinColumnWidth < 1) MinColumnWidth = 1;
-            if (MaxColumnWidth < MinColumnWidth) MaxColumnWidth = MinColumnWidth;
-            if (EdgeColumnWidth < 1) EdgeColumnWidth = 1;
-            if (MaxEdgesPerNode < 2) MaxEdgesPerNode = 2;      // < 2 сделало бы карту цепочкой без выбора
-            if (EdgeColumns < 0) EdgeColumns = 0;
+            var c = new MapGenConfig
+            {
+                Columns         = Columns,
+                EdgeColumnWidth = EdgeColumnWidth,
+                EdgeColumns     = EdgeColumns,
+                MinColumnWidth  = MinColumnWidth,
+                MaxColumnWidth  = MaxColumnWidth,
+                MaxEdgesPerNode = MaxEdgesPerNode,
+                // ZoneRule/AnchorRule — структуры, поэтому клон массива отвязывает копию полностью.
+                Zones   = Zones   != null ? (ZoneRule[])Zones.Clone()     : Array.Empty<ZoneRule>(),
+                Anchors = Anchors != null ? (AnchorRule[])Anchors.Clone() : Array.Empty<AnchorRule>(),
+            };
+
+            if (c.Columns < 3) c.Columns = 3;                       // минимум: Start → одна промежуточная → Boss
+            if (c.MinColumnWidth < 1) c.MinColumnWidth = 1;
+            if (c.MaxColumnWidth < c.MinColumnWidth) c.MaxColumnWidth = c.MinColumnWidth;
+            if (c.EdgeColumnWidth < 1) c.EdgeColumnWidth = 1;
+            if (c.MaxEdgesPerNode < 2) c.MaxEdgesPerNode = 2;      // < 2 сделало бы карту цепочкой без выбора
+            if (c.EdgeColumns < 0) c.EdgeColumns = 0;
             // Горловины с обоих краёв не должны съесть середину: иначе профиль вырождается в плоскую ширину.
-            int middle = Columns - 2;                            // без Start и Boss
-            if (EdgeColumns * 2 > middle) EdgeColumns = middle / 2;
-            Zones   ??= Array.Empty<ZoneRule>();
-            Anchors ??= Array.Empty<AnchorRule>();
-            return this;
+            int middle = c.Columns - 2;                              // без Start и Boss
+            if (c.EdgeColumns * 2 > middle) c.EdgeColumns = middle / 2;
+
+            return c;
         }
 
         // Дефолтная раскладка (решение Макса 2026-07-26). Этажи-испытания: 1..13; Boss — колонка 14.
