@@ -71,6 +71,7 @@ SORT file.name ASC
 - [[difficulty-skill|Vision - Difficulty & Skill]] — три оси, модель рандома, правила честности.
 - [[visual-direction|Vision - Visual Direction]] — визуальный опыт и дорожная карта: стиль, пост-процесс, атмосфера, свет, переходы, gamefeel.
 - [[character-animation|Vision - Character Animation]] — скелетка: два слоя движения, три оси переиспользования, инструмент, слои Animator (план, отложено).
+- [[gdd/10-vision/vfx-color|Vision - VFX Color]] — цвет боевых эффектов: яркость щедро, насыщенность как валюта; главный цвет и палитра разброса; семьи цветов героев и врагов.
 - [[audio-subbuses|Vision - Audio Sub-buses]] — под-шины FMOD как ранний шов микса.
 
 **Бэклоги подачи** (сырые каталоги идей, питают `visual-direction`):
