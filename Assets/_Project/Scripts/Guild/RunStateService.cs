@@ -13,24 +13,38 @@ namespace Guildmaster.Guild
     /// </summary>
     public sealed class RunStateService
     {
-        private const string SaveKey = "run";
-
-        private readonly ISaveService _save;
-        private readonly GameConfig   _config;
+        private readonly ISaveService    _save;
+        private readonly GameConfig      _config;
+        private readonly IProfileService _profiles;
         // Звук награды за бой. Опционален: сервис создают и в тестах, где звука нет вовсе.
         private readonly Core.Audio.IAudioService _audio;
 
         public RunState Current { get; private set; }
 
-        public RunStateService(ISaveService save, GameConfig config, Core.Audio.IAudioService audio = null)
+        public RunStateService(ISaveService save, GameConfig config, IProfileService profiles,
+            Core.Audio.IAudioService audio = null)
         {
-            _save   = save;
-            _config = config;
-            _audio  = audio;
+            _save     = save;
+            _config   = config;
+            _profiles = profiles;
+            _audio    = audio;
         }
 
+        /// <summary>
+        /// Куда пишется забег: у каждой гильдии свой файл, потому что гильдия и есть слот сохранения
+        /// (ТЗ [[save-system]] §3). Пустая строка = активной гильдии нет, писать некуда.
+        /// </summary>
+        private string SaveKey => _profiles.RunKey;
+
         /// <summary>Есть ли автосейв забега на диске (для «Продолжить» в меню).</summary>
-        public bool HasSave => _save.Exists(SaveKey);
+        public bool HasSave
+        {
+            get
+            {
+                string key = SaveKey;
+                return !string.IsNullOrEmpty(key) && _save.Exists(key);
+            }
+        }
 
         /// <summary>Начать новый забег: свежий <see cref="RunState"/> с базовой вместимостью реликов из конфига.</summary>
         public RunState NewRun(long seed, RosterSlot[] guild)
@@ -95,7 +109,10 @@ namespace Guildmaster.Guild
         /// </summary>
         public SaveLoadResult<RunState> TryLoad()
         {
-            SaveLoadResult<RunState> result = _save.TryLoad<RunState>(SaveKey);
+            string key = SaveKey;
+            if (string.IsNullOrEmpty(key)) return SaveLoadResult<RunState>.Missing();
+
+            SaveLoadResult<RunState> result = _save.TryLoad<RunState>(key);
             if (result.IsOk) Current = result.Value;
             return result;
         }
@@ -157,11 +174,26 @@ namespace Guildmaster.Guild
         /// <summary>Снапшот текущего забега на диск (точка автосейва). No-op без активного забега.</summary>
         public void Autosave()
         {
-            if (Current != null) _save.Save(SaveKey, Current);
+            if (Current == null) return;
+
+            string key = SaveKey;
+            if (string.IsNullOrEmpty(key))
+            {
+                // Активной гильдии нет — забег писать некуда. Молчать нельзя: игрок продолжал бы играть,
+                // веря, что прогресс сохраняется, и потерял бы его целиком на выходе.
+                UnityEngine.Debug.LogError("[RunStateService] - нет активной гильдии: забег НЕ сохранён");
+                return;
+            }
+
+            _save.Save(key, Current);
         }
 
         /// <summary>Удалить автосейв (конец/сброс забега).</summary>
-        public void DeleteSave() => _save.Delete(SaveKey);
+        public void DeleteSave()
+        {
+            string key = SaveKey;
+            if (!string.IsNullOrEmpty(key)) _save.Delete(key);
+        }
 
         // ── Вместимость коллекции реликов (план 11 §5.4) ─────────────────────
 

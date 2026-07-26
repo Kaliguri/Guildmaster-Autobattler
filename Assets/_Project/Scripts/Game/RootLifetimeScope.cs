@@ -135,6 +135,9 @@ namespace Guildmaster.Game
             // Saves/, поэтому Steam Cloud его не трогает: чужое разрешение на втором ПК в лучшем случае
             // неудобно, в худшем — чёрный экран на неподдерживаемом режиме.
             builder.Register<LocalJsonFileSaveService>(Lifetime.Singleton).As<ILocalSaveService>();
+            // Иерархия сохранений: профиль → гильдии → забег. Entry point поднимает прошлый выбор, а на
+            // чистой установке заводит первый профиль с гильдией — иначе забегу некуда писаться.
+            builder.RegisterEntryPoint<ProfileService>(Lifetime.Singleton).As<IProfileService>();
             // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4).
             builder.Register<RunStateService>(Lifetime.Singleton);
 

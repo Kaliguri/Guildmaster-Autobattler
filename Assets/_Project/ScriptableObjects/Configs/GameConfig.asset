@@ -31,3 +31,5 @@ MonoBehaviour:
   _restartsPerAct: 2
   _guildSize: 4
   _startingRelicId: relic.base
+  _maxProfiles: 4
+  _maxGuildsPerProfile: 8

@@ -121,6 +121,21 @@ namespace Guildmaster.Game.Services
             TryDelete(BackupFor(key));
         }
 
+        public void DeleteTree(string prefix)
+        {
+            if (string.IsNullOrEmpty(prefix)) return; // защита от сноса всего корня опечаткой
+
+            string directory = Path.Combine(Root, prefix.Replace('/', Path.DirectorySeparatorChar));
+            try
+            {
+                if (Directory.Exists(directory)) Directory.Delete(directory, recursive: true);
+            }
+            catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
+            {
+                Debug.LogError($"[{GetType().Name}] - не удалось удалить поддерево '{prefix}': {e.Message}");
+            }
+        }
+
         public IReadOnlyList<string> List(string prefix)
         {
             string directory = string.IsNullOrEmpty(prefix)

@@ -27,7 +27,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         {
             _config = GameConfig.CreateDefault();
             var save = new InMemorySaveService();
-            _runStates = new RunStateService(save, _config);
+            _runStates = new RunStateService(save, _config, new FixedProfileService());
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
 
             var relics = new List<RelicData>

@@ -22,7 +22,7 @@ namespace Guildmaster.Tests.EditMode.Run
         public void SetUp()
         {
             var config = GameConfig.CreateDefault(); // заготовка: вместимость 12, потолок 16
-            _run = new RunStateService(new InMemorySaveService(), config);
+            _run = new RunStateService(new InMemorySaveService(), config, new FixedProfileService());
             _run.NewRun(1, Array.Empty<RosterSlot>());
             _run.Current.Gold = 0; // старт-золото забега — не предмет этих тестов (проверяем дельту эффекта)
             _applier = new EventEffectApplier(_run);

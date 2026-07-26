@@ -21,13 +21,15 @@ namespace Guildmaster.Tests.EditMode.Guild
     {
         private RunStateService _runStates;
         private InMemorySaveService    _save;
+        private FixedProfileService    _profiles;
 
         [SetUp]
         public void SetUp()
         {
             _save = new InMemorySaveService();
+            _profiles = new FixedProfileService();
             var config = GameConfig.CreateDefault();
-            _runStates = new RunStateService(_save, config);
+            _runStates = new RunStateService(_save, config, _profiles);
         }
 
         private RunContext NewRunWithMap(long seed = 4242L)
@@ -172,7 +174,8 @@ namespace Guildmaster.Tests.EditMode.Guild
             var runner = NewRunner(new StubResolver(_ => EventResult.Completed));
 
             runner.RunActAsync(ctx).GetAwaiter().GetResult();
-            Assert.IsTrue(_save.Exists("run"), "Петля автосохраняет забег на переходах.");
+            // Ключ забега теперь ведёт в активную гильдию (она же слот сохранения), а не в плоский "run".
+            Assert.IsTrue(_save.Exists(_profiles.RunKey), "Петля автосохраняет забег на переходах.");
         }
 
         // ── Фейковые швы ──────────────────────────────────────────────

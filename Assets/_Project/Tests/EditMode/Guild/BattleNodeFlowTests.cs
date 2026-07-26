@@ -24,7 +24,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         private RunContext Ctx()
         {
             var config = GameConfig.CreateDefault();
-            _runStates = new RunStateService(new InMemorySaveService(), config);
+            _runStates = new RunStateService(new InMemorySaveService(), config, new FixedProfileService());
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
             return new RunContext(_runStates.Current, new XorShiftRng(1), new SoloReadyGate(),
                                   new SoloPlayerIntentSource());
