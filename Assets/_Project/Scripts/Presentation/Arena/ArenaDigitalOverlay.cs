@@ -44,8 +44,37 @@ namespace Guildmaster.Presentation.Arena
         private float     _cellSize = 1f;
         private Vector2   _worldOrigin;   // мировая точка клетки _bounds.min — сетка живёт в мире, не в клетках
 
-        /// <summary>Короткий цифровой всполох без смены облика: ушли в цифру — дело в пике — вышли обратно.</summary>
-        private enum SoloStage { None, Entering, Exiting }
+        /// <summary>Цифра без смены облика: короткий всполох (вход-пик-выход) или полный прогон всех трёх актов.</summary>
+        private enum SoloStage { None, Entering, Exiting, Sweeping }
+
+        /// <summary>Ход текущей анимации 0..1 — по нему идут те, кто меняется вместе с ареной (цвет пола).</summary>
+        public float CurrentProgress { get; private set; }
+
+        /// <summary>Идёт ли своя анимация (не смена облика).</summary>
+        public bool Sweeping => _solo == SoloStage.Sweeping;
+
+        /// <summary>Карта клеток и её привязка к миру — чтобы соседние эффекты шли ПО ТЕМ ЖЕ клеткам.</summary>
+        public Texture2D CellMap => _cellMap;
+        public Vector4 MapRect { get; private set; }
+        public Vector4 Cells { get; private set; }
+        public float CellSizeWorld => _cellSize;
+
+        /// <summary>
+        /// Полный прогон всех трёх актов без смены облика: уход в цифру, длинная середина, возврат.
+        /// Нужен, когда меняются не текстуры, а что-то другое (цвет полигона) — акту подгрузки тоже надо
+        /// чем-то себя занять, иначе переход схлопывается до пары мгновений.
+        /// </summary>
+        public void Sweep()
+        {
+            if (_material == null) return;
+
+            Bake(_swapper.CurrentSkinId, _swapper.CurrentSkinId);
+            _atPeak = null;
+            _soloT  = 0f;
+            _solo   = SoloStage.Sweeping;
+            CurrentProgress = 0f;
+            if (_quad != null) _quad.enabled = true;
+        }
 
         private SoloStage _solo;
         private float     _soloT;
@@ -127,6 +156,19 @@ namespace Guildmaster.Presentation.Arena
         private void TickSolo()
         {
             ArenaSwapShape shape = _swapper.Shape;
+
+            if (_solo == SoloStage.Sweeping)
+            {
+                _soloT += Time.unscaledDeltaTime / Mathf.Max(0.0001f, shape.DurationSeconds);
+                if (_soloT >= 1f)
+                {
+                    _soloT = 1f;
+                    _solo  = SoloStage.None;
+                }
+                CurrentProgress = _soloT;
+                _material.SetFloat(ProgressId, _soloT);
+                return;
+            }
 
             if (_solo == SoloStage.Entering)
             {
@@ -221,8 +263,11 @@ namespace Guildmaster.Presentation.Arena
             go.transform.position   = new Vector3(origin.x + w * 0.5f, origin.y + h * 0.5f, 0f);
             go.transform.localScale = new Vector3(w, h, 1f);
 
-            _material.SetVector(MapRectId, new Vector4(origin.x, origin.y, w, h));
-            _material.SetVector(CellsId,   new Vector4(_bounds.size.x, _bounds.size.y, 0f, 0f));
+            MapRect = new Vector4(origin.x, origin.y, w, h);
+            Cells   = new Vector4(_bounds.size.x, _bounds.size.y, 0f, 0f);
+
+            _material.SetVector(MapRectId, MapRect);
+            _material.SetVector(CellsId,   Cells);
             _material.SetFloat(CellSizeId, _cellSize);
             _material.SetFloat(ProgressId, 0f);
 

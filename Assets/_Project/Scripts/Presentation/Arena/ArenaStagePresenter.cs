@@ -91,8 +91,20 @@ namespace Guildmaster.Presentation.Arena
                 return;
             }
 
-            if (_digital != null) _digital.Blink(() => _desaturation.SetGrey(active));
-            else                  _desaturation.SetGrey(active);
+            SweepColour(active);
+        }
+
+        /// <summary>
+        /// Смена цвета арены полным переходом: все три акта, цвет возвращается ПОКЛЕТОЧНО вслед за цифрой.
+        /// Короткий всполох с мгновенной перекраской в середине был ошибкой ритма — договаривались, что
+        /// дорога из полигона в настоящее место занимает время, а не мгновение.
+        /// </summary>
+        private void SweepColour(bool grey)
+        {
+            if (_digital == null) { _desaturation.SetGrey(grey); return; }
+
+            _digital.Sweep();
+            _desaturation.SweepGrey(grey, _digital);
         }
 
         /// <summary>
@@ -161,9 +173,9 @@ namespace Guildmaster.Presentation.Arena
                 return;
             }
 
-            // Облик тот же — играть подгрузку текстур нечего. Остаётся всполох, под которым полигон
-            // возвращает себе цвет: место «оживает» из серой модели в настоящее.
-            if (_desaturation != null && _desaturation.IsGrey) _digital?.Blink(() => _desaturation.SetGrey(false));
+            // Облик тот же — текстурам меняться не на что. Но полигон возвращает себе цвет, и это тоже
+            // смена, которую есть чем растянуть: гоним полный переход, цвет приходит клетка за клеткой.
+            if (_desaturation != null && _desaturation.IsGrey) SweepColour(false);
             else                                               _digital?.Blink();
         }
     }

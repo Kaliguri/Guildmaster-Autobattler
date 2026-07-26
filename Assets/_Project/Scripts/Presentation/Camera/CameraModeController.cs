@@ -210,6 +210,32 @@ namespace Guildmaster.Presentation
         /// но СТАРТОВЫЙ кадр — как у экшн-камеры (центр боя + зум под разброс), а НЕ отзум на всю зону.
         /// Кадр приходит явно из <c>DeploymentController</c> (позиции живых юнитов) — без гонки с focus-таймингом.
         /// </summary>
+        /// <summary>
+        /// Кадр расстановки: вся боевая зона целиком, управляемый обзор. Единственный источник этого кадра —
+        /// зона арены, а не то, кто где стоит: иначе полигон (только свой отряд) и боевой узел (отряд плюс
+        /// враги) встречают игрока разными кадрами, хотя место одно и то же.
+        /// <para>Здесь берётся БОЛЬШАЯ сторона зоны, как у карты: вписать арену целиком важнее, чем не
+        /// показать пустоту за её краем. Обычный боевой кламп режет по меньшей стороне и всю арену увидеть
+        /// не даёт.</para>
+        /// </summary>
+        public void FrameArena()
+        {
+            _mode = CameraMode.Overview;
+            ApplyMode();
+            if (_overviewCam == null) return;
+
+            Rect2D zone = ActiveZone();
+            float aspect = ScreenAspect();
+            float size = Mathf.Max(zone.Size.y * 0.5f, (zone.Size.x * 0.5f) / Mathf.Max(aspect, 0.0001f));
+            size = Mathf.Max(size, _minZoom);
+
+            _overviewCam.transform.position = new Vector3(zone.Center.x, zone.Center.y, _cameraZ);
+
+            LensSettings lens = _overviewCam.Lens;
+            lens.OrthographicSize = size;
+            _overviewCam.Lens = lens;
+        }
+
         public void EnterDeployment(Vector2 center, float spread)
         {
             _mode = CameraMode.Overview;

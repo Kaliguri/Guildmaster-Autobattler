@@ -319,31 +319,10 @@ namespace Guildmaster.Game
 
         // Стартовый кадр расстановки: центр и разброс ВСЕХ живых юнитов (свои + враги — видно противника).
         // Считаем сами (не через focus-таймер) — детерминированно на входе, без гонки с LateUpdate камеры.
-        private void FrameCameraForDeployment()
-        {
-            if (_cameraModes == null) return;
-
-            IReadOnlyList<RuntimeUnit> units = _sim.Units;
-            Vector2 sum = Vector2.zero;
-            int n = 0;
-            for (int i = 0; i < units.Count; i++)
-            {
-                if (units[i].IsDead) continue;
-                sum += units[i].Position;
-                n++;
-            }
-            if (n == 0) return; // нет юнитов — камера остаётся как есть
-
-            Vector2 center = sum / n;
-            float maxSq = 0f;
-            for (int i = 0; i < units.Count; i++)
-            {
-                if (units[i].IsDead) continue;
-                float d = (units[i].Position - center).sqrMagnitude;
-                if (d > maxSq) maxSq = d;
-            }
-            _cameraModes.EnterDeployment(center, Mathf.Sqrt(maxSq));
-        }
+        // Кадр расстановки — по АРЕНЕ, а не по юнитам. Прежний кадр считался от того, кто где стоит, и
+        // полигон (только свой отряд) встречал игрока не тем видом, что боевой узел (отряд плюс враги),
+        // хотя место одно. Источник правды теперь один — зона арены, и вход везде одинаковый.
+        private void FrameCameraForDeployment() => _cameraModes?.FrameArena();
 
         private void EnsureView()
         {
