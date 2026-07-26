@@ -1,4 +1,5 @@
 using Guildmaster.Combat;
+using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
 
@@ -47,25 +48,60 @@ namespace Guildmaster.Balance.Editor
         public static RuntimeUnit ReferenceDummy(int team, Vector2 pos, float hp)
             => Build(team, pos, (StatType.MaxHP, hp));
 
+        /// <summary>Общий темп атаки стенда: атак в секунду (решение «медленнее, но импактнее»).</summary>
+        private const float ReferenceAttackSpeed = 0.75f;
+
         /// <summary>
-        /// Эталонный СОЮЗНИК для командных форматов: обычный смертный боец ровно по классовой норме Брузера
-        /// (HP 2000, 120 DPS как 160 × 0.75 атаки/сек, броня 30/30 из бюджета 60, скорость 3, мили).
-        /// Нарочно никакой: одинаковый у обеих сторон, поэтому разницу в исходе даёт только испытуемый кит.
+        /// Целевой DPS класса — коридор из ГДД «Статы» §Урон автоатаки. В <c>ClassBalanceConfig</c> его нет
+        /// (конфиг знает только HP, скорость и бюджет брони), поэтому таблица живёт здесь и правится вслед
+        /// за каноном.
+        /// </summary>
+        private static float TargetDps(UnitClass unitClass) => unitClass switch
+        {
+            UnitClass.Bruiser  => 120f,
+            UnitClass.Tank     => 60f,
+            UnitClass.Assassin => 144f,
+            UnitClass.Ranged   => 120f,
+            _                  => 60f, // Поддержка и Призыватель: сила не в автоатаке
+        };
+
+        /// <summary>Дальность манекена: мили держат фронт вплотную, бэклайн бьёт с восьмёрки (норма доставки).</summary>
+        private static float ReferenceRange(UnitClass unitClass)
+            => unitClass is UnitClass.Tank or UnitClass.Bruiser or UnitClass.Assassin ? 1f : 8f;
+
+        /// <summary>
+        /// Эталонный СОЮЗНИК заданного класса — рядовой представитель своей роли, собранный ровно по норме:
+        /// HP, скорость и бюджет брони берутся из живого <see cref="ClassBalanceConfig"/> (то же, что видит
+        /// бой), урон — из классового коридора, темп — общий для стенда.
         /// </summary>
         /// <remarks>
-        /// Числа продублированы здесь константами, а не прочитаны из <c>ClassBalanceConfig</c>: манекен —
-        /// это ЛИНЕЙКА, и она должна лежать неподвижно, пока мы двигаем ростер. Если норма Брузера
-        /// поменяется осознанно, эти значения правятся вслед за ней вручную.
+        /// Числа НЕ прибиты константами специально: манекен изображает «обычного бойца этого класса», и когда
+        /// норма класса осознанно поедет, вся линейка обязана поехать вместе с ней — иначе она перестанет
+        /// измерять то, ради чего заведена. Ограничение общее для синтетиков: без <c>UnitData</c> манекен
+        /// всегда физический single-target и не умеет ни лечить, ни бить по площади, поэтому «манекен-саппорт»
+        /// — это просто слабый стрелок, а не настоящая поддержка.
         /// </remarks>
-        public static RuntimeUnit ReferenceAlly(int team, Vector2 pos)
-            => Build(team, pos,
-                (StatType.MaxHP, 2000f),
-                (StatType.MoveSpeed, 3f),
-                (StatType.AutoAttackDamage, 160f),
-                (StatType.AttackSpeed, 0.75f),
-                (StatType.AttackRange, 1f),
-                (StatType.PhysArmor, 30f),
-                (StatType.MagicArmor, 30f));
+        public static RuntimeUnit ReferenceAlly(UnitClass unitClass, ClassBalanceConfig classes, int team, Vector2 pos)
+        {
+            float hp = 2000f, moveSpeed = 3f, armorBudget = 0f;
+            if (classes != null)
+            {
+                (float hpMult, float moveMult) = classes.GetMultipliers(unitClass);
+                hp = classes.BaseHp * hpMult;
+                moveSpeed = classes.BaseMoveSpeed * moveMult;
+                armorBudget = classes.GetArmorBudget(unitClass);
+            }
+
+            float halfArmor = armorBudget * 0.5f;
+            return Build(team, pos,
+                (StatType.MaxHP, hp),
+                (StatType.MoveSpeed, moveSpeed),
+                (StatType.AutoAttackDamage, TargetDps(unitClass) / ReferenceAttackSpeed),
+                (StatType.AttackSpeed, ReferenceAttackSpeed),
+                (StatType.AttackRange, ReferenceRange(unitClass)),
+                (StatType.PhysArmor, halfArmor),
+                (StatType.MagicArmor, halfArmor));
+        }
 
         /// <summary>
         /// Бессмертный эталонный источник урона: фикс-DPS (физика, мили), высокая скорость хода (держится на цели).

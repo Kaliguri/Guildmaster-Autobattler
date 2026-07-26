@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Guildmaster.Balance.Editor;
 using Guildmaster.Combat;
+using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using NUnit.Framework;
 using UnityEngine;
@@ -93,16 +94,30 @@ namespace Guildmaster.Balance.Tests
         }
 
         [Test]
-        public void ReferenceAlly_MatchesBruiserNorm()
+        public void ReferenceAlly_FollowsClassCorridor()
         {
-            RuntimeUnit ally = SyntheticUnits.ReferenceAlly(0, Vector2.zero);
+            // Манекены — линейка командных форматов, и мерить ею можно только пока каждый честно
+            // изображает рядового бойца своего класса: коридор урона задан явно, остальное берётся из
+            // живого ClassBalanceConfig (здесь его нет, поэтому проверяем ту часть, что не от конфига).
+            AssertDps(UnitClass.Bruiser, 120f);
+            AssertDps(UnitClass.Tank, 60f);
+            AssertDps(UnitClass.Assassin, 144f);
+            AssertDps(UnitClass.Ranged, 120f);
+            AssertDps(UnitClass.Support, 60f);
+            AssertDps(UnitClass.Summoner, 60f);
 
-            // Манекен-союзник — линейка командных форматов. Уедут его числа — уедет и вся шкала,
-            // поэтому норма Брузера прибита тестом: HP 2000, 120 DPS, броня 30/30.
-            Assert.AreEqual(2000f, ally.Stats.Get(StatType.MaxHP), 1e-3f);
-            Assert.AreEqual(120f, ally.Stats.Get(StatType.AutoAttackDamage) * ally.Stats.Get(StatType.AttackSpeed), 1e-3f);
-            Assert.AreEqual(30f, ally.Stats.Get(StatType.PhysArmor), 1e-3f);
-            Assert.AreEqual(30f, ally.Stats.Get(StatType.MagicArmor), 1e-3f);
+            // Фронт бьёт вплотную, тыл — с восьмёрки: строй формата держится на этой разнице.
+            Assert.AreEqual(1f, SyntheticUnits.ReferenceAlly(UnitClass.Tank, null, 0, Vector2.zero)
+                .Stats.Get(StatType.AttackRange), 1e-3f);
+            Assert.AreEqual(8f, SyntheticUnits.ReferenceAlly(UnitClass.Ranged, null, 0, Vector2.zero)
+                .Stats.Get(StatType.AttackRange), 1e-3f);
+        }
+
+        private static void AssertDps(UnitClass unitClass, float expected)
+        {
+            RuntimeUnit ally = SyntheticUnits.ReferenceAlly(unitClass, null, 0, Vector2.zero);
+            float dps = ally.Stats.Get(StatType.AutoAttackDamage) * ally.Stats.Get(StatType.AttackSpeed);
+            Assert.AreEqual(expected, dps, 1e-3f, $"Манекен класса {unitClass} должен бить по классовому коридору");
         }
 
         [Test]
