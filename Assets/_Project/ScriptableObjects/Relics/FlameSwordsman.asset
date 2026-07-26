@@ -45,13 +45,16 @@ MonoBehaviour:
     Value: 1
   - Stat: 3
     Op: 3
-    Value: 4
+    Value: 40
   - Stat: 27
     Op: 3
     Value: 100
   - Stat: 28
     Op: 3
     Value: 0
+  - Stat: 4
+    Op: 3
+    Value: 20
   _grantedEffects:
   - {fileID: 11400000, guid: 93590598bcde3dc4bb880b0f881266af, type: 2}
   _abilities:

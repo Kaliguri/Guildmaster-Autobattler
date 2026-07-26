@@ -45,10 +45,13 @@ MonoBehaviour:
     Value: 8
   - Stat: 3
     Op: 3
-    Value: 2
+    Value: 8
   - Stat: 18
     Op: 3
     Value: 8
+  - Stat: 4
+    Op: 3
+    Value: 12
   _grantedEffects: []
   _abilities:
   - _id: spore_burst

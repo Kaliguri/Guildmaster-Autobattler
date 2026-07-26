@@ -32,6 +32,7 @@ MonoBehaviour:
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _resourceOnHit: 15
+  _maxResourceGainPerSecond: 0
   _stats:
   - Stat: 8
     Op: 3
@@ -41,7 +42,7 @@ MonoBehaviour:
     Value: 8
   - Stat: 3
     Op: 3
-    Value: 3
+    Value: 6
   - Stat: 18
     Op: 3
     Value: 8
@@ -54,6 +55,9 @@ MonoBehaviour:
   - Stat: 7
     Op: 3
     Value: 176
+  - Stat: 4
+    Op: 3
+    Value: 14
   _grantedEffects: []
   _abilities:
   - _id: ice_chains

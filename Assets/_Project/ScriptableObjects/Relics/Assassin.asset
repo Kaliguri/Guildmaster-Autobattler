@@ -31,10 +31,11 @@ MonoBehaviour:
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
   _stats:
   - Stat: 3
     Op: 3
-    Value: 3
+    Value: 20
   - Stat: 7
     Op: 3
     Value: 144
@@ -44,6 +45,9 @@ MonoBehaviour:
   - Stat: 9
     Op: 3
     Value: 1
+  - Stat: 4
+    Op: 3
+    Value: 10
   _grantedEffects:
   - {fileID: 11400000, guid: e3be461416627c240b9d261a7f4b4b29, type: 2}
   - {fileID: 11400000, guid: 3404fe6e06b59da4ab445d73bd764994, type: 2}

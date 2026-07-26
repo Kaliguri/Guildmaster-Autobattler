@@ -18,18 +18,24 @@ MonoBehaviour:
   - Class: 0
     HpMult: 1
     MoveSpeedMult: 1
+    ArmorBudget: 0
   - Class: 1
     HpMult: 1.5
     MoveSpeedMult: 0.85
+    ArmorBudget: 0
   - Class: 2
     HpMult: 0.75
     MoveSpeedMult: 1.1
+    ArmorBudget: 0
   - Class: 3
     HpMult: 0.65
     MoveSpeedMult: 0.75
+    ArmorBudget: 0
   - Class: 4
     HpMult: 0.65
     MoveSpeedMult: 0.75
+    ArmorBudget: 0
   - Class: 5
     HpMult: 0.65
     MoveSpeedMult: 0.75
+    ArmorBudget: 0

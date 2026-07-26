@@ -44,13 +44,16 @@ MonoBehaviour:
     Value: 3
   - Stat: 3
     Op: 3
-    Value: 8
+    Value: 45
   - Stat: 27
     Op: 3
     Value: 80
   - Stat: 28
     Op: 3
     Value: 0
+  - Stat: 4
+    Op: 3
+    Value: 15
   _grantedEffects: []
   _abilities:
   - _id: steel_whirl

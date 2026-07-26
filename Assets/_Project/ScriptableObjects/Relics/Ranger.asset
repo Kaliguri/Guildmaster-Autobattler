@@ -51,6 +51,12 @@ MonoBehaviour:
   - Stat: 28
     Op: 3
     Value: 0
+  - Stat: 3
+    Op: 3
+    Value: 12
+  - Stat: 4
+    Op: 3
+    Value: 8
   _grantedEffects: []
   _abilities:
   - _id: hunters_mark
