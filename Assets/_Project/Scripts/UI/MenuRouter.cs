@@ -321,6 +321,10 @@ namespace Guildmaster.UI
         /// теперь рисуется В МИРЕ, и непрозрачный backdrop просто закрыл бы её собой.</summary>
         public bool IsMapSpaceOpen => _mapSpaceScreen != null;
 
+        /// <summary>Лежит ли на экране непрозрачная страница (ивент/магазин/сундук/награда/исход) — ей нужен
+        /// задник-стол вместо просвечивающего мира (QA #50).</summary>
+        public bool HasVisiblePage => _nav.HasVisiblePage;
+
         /// <summary>Войти в пространство world-карты: прозрачный Sheet с тегом режима «карта».</summary>
         public void ShowMapSpace()
         {
@@ -641,8 +645,7 @@ namespace Guildmaster.UI
                 _eventUxml,
                 req.Event,
                 key => _loc?.GetString(key),
-                Resolve,
-                CloseAll);
+                Resolve);
 
             // Страховка: закрытие без выбора (ESC/PopAll) = пропуск (-1), чтобы флоу не завис.
             screen.RegisterCallback<DetachFromPanelEvent>(_ =>
@@ -666,7 +669,11 @@ namespace Guildmaster.UI
         {
             bool formation = false; // какую кнопку нажали — «К построению» не должна дёргать OnContinue
 
-            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false, resolve =>
+            // Kind = Modal, а НЕ Page: Page прячет всё под собой, и кнопки бита стирали бы экран пройденного
+            // узла с текстом-прощанием (QA #48/#49). Modal структурно ничего не прячет, а собственного
+            // затемнения у этого экрана нет (корень — .gm-continue-screen, не .gm-screen), так что фон под
+            // ним остаётся как есть. Глушение ввода не меняется: Page глушил его ровно так же.
+            var screen = new RouterResultScreen<bool>(ScreenKind.Modal, false, resolve =>
             {
                 var body = FillRoot(_continueUxml.CloneTree());
 
@@ -834,6 +841,12 @@ namespace Guildmaster.UI
                     onContinue: () => resolve(MainMenuChoice.Continue),
                     onSettings: OpenSettingsFromMainMenu,
                     onQuit:     () => resolve(MainMenuChoice.Quit)));
+
+            // Забег кончился — UI прошлого забега кончается вместе с ним (QA #51). Инвентарь, карта и тест-зона
+            // живут в стеке как СОСТОЯНИЯ и своих владельцев переживают: без этой уборки новый забег открывался
+            // с распахнутым инвентарём поверх карты и подсвеченным табом прошлого режима. PopAll резолвит
+            // висящие экраны их дефолтом и через OnExit обнуляет ссылки роутера (_inventoryScreen и соседи).
+            _nav.PopAll();
 
             // Пока меню на экране, презентационный слой подкладывает под него стол (иначе за меню пустота).
             _mainMenuVisPub?.Publish(new MainMenuVisibilityChangedEvent(true));

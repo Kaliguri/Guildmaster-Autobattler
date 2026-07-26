@@ -129,6 +129,42 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
+        public void RunAct_NodeScreenLives_UntilPlayerEntersNextNode()
+        {
+            // QA #49: экран узла (текст-прощание ивента) обязан пережить свой флоу и всю передышку — гаснет
+            // он, только когда игрок вошёл в СЛЕДУЮЩИЙ узел. Живёт это на токене узла: пока идёт свой узел,
+            // токен цел; отменяется он на входе в следующий.
+            var ctx = NewRunWithMap();
+            var tokens = new List<System.Threading.CancellationToken>();
+            var runner = NewRunner(new StubResolver(_ => EventResult.Completed, tokens));
+
+            runner.RunActAsync(ctx).GetAwaiter().GetResult();
+
+            Assert.Greater(tokens.Count, 1, "Для проверки нужно хотя бы два пройденных узла.");
+            for (int i = 0; i < tokens.Count - 1; i++)
+                Assert.IsTrue(tokens[i].IsCancellationRequested,
+                    $"Экран узла [{i}] обязан сняться, когда игрок вошёл в следующий.");
+            Assert.IsTrue(tokens[tokens.Count - 1].IsCancellationRequested,
+                "Последний экран снимается вместе с концом акта.");
+        }
+
+        [Test]
+        public void RunAct_NodeToken_StillAlive_WhileItsOwnNodeRuns()
+        {
+            // Обратная половина того же контракта: во время СВОЕГО узла токен не должен быть отменён —
+            // иначе экран гас бы прямо под руками игрока, ещё до выбора варианта.
+            var ctx = NewRunWithMap();
+            bool aliveDuringOwnNode = true;
+            var runner = NewRunner(new StubResolver(_ => EventResult.Completed, onRun: nodeCtx =>
+            {
+                if (nodeCtx.NodeCancellation.IsCancellationRequested) aliveDuringOwnNode = false;
+            }));
+
+            runner.RunActAsync(ctx).GetAwaiter().GetResult();
+            Assert.IsTrue(aliveDuringOwnNode, "Пока идёт свой узел, его экран снимать нельзя.");
+        }
+
+        [Test]
         public void RunAct_Autosaves_DuringTraversal()
         {
             var ctx = NewRunWithMap();
@@ -144,15 +180,41 @@ namespace Guildmaster.Tests.EditMode.Guild
         private sealed class StubResolver : INodeResolver
         {
             private readonly Func<MapNode, EventResult> _result;
-            public StubResolver(Func<MapNode, EventResult> result) => _result = result;
-            public IEventFlow Resolve(MapNode node, RunContext ctx) => new StubFlow(_result(node));
+            private readonly List<System.Threading.CancellationToken> _tokens; // токены узлов (QA #49)
+            private readonly Action<RunContext> _onRun;
+
+            public StubResolver(Func<MapNode, EventResult> result,
+                                List<System.Threading.CancellationToken> tokens = null,
+                                Action<RunContext> onRun = null)
+            {
+                _result = result;
+                _tokens = tokens;
+                _onRun  = onRun;
+            }
+
+            public IEventFlow Resolve(MapNode node, RunContext ctx) => new StubFlow(_result(node), _tokens, _onRun);
         }
 
         private sealed class StubFlow : IEventFlow
         {
             private readonly EventResult _result;
-            public StubFlow(EventResult result) => _result = result;
-            public UniTask<EventResult> Run(RunContext ctx) => UniTask.FromResult(_result);
+            private readonly List<System.Threading.CancellationToken> _tokens;
+            private readonly Action<RunContext> _onRun;
+
+            public StubFlow(EventResult result, List<System.Threading.CancellationToken> tokens = null,
+                            Action<RunContext> onRun = null)
+            {
+                _result = result;
+                _tokens = tokens;
+                _onRun  = onRun;
+            }
+
+            public UniTask<EventResult> Run(RunContext ctx)
+            {
+                _tokens?.Add(ctx.NodeCancellation);
+                _onRun?.Invoke(ctx);
+                return UniTask.FromResult(_result);
+            }
         }
 
         // Стыки узлов: считаем возвраты мира и входы в узел, чтобы петля не «забыла» вернуть арену.

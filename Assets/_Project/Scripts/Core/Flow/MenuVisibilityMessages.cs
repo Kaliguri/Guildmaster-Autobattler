@@ -17,4 +17,38 @@ namespace Guildmaster.Core.Flow
 
         public MainMenuVisibilityChangedEvent(bool visible) => Visible = visible;
     }
+
+    /// <summary>
+    /// СОСТОЯНИЕ заднего фона экранов: нужен ли под текущим экраном стол. Вещает UI-слой (он один знает,
+    /// что сейчас на экране), слушает презентация (она одна умеет его нарисовать).
+    /// </summary>
+    /// <remarks>
+    /// Заведено по QA #50: фон под ивентом был отдельной непрозрачной заливкой UI-цветом, и рядом с меню,
+    /// где лежит настоящий стол, это читалось как «чёрный экран». Источник правды у фона теперь ОДИН —
+    /// материал стола из <c>MapStyle</c>; UI лишь говорит, когда он нужен.
+    /// </remarks>
+    public readonly struct ScreenBackdropChangedEvent
+    {
+        /// <summary>true — под экраном нужен стол, false — за экраном живой мир (бой, карта, передышка).</summary>
+        public readonly bool Visible;
+
+        public ScreenBackdropChangedEvent(bool visible) => Visible = visible;
+    }
+
+    /// <summary>
+    /// Шторка перехода: насколько кадр закрыт (0 — открыт, 1 — закрыт наглухо). Вещает тот, кто ведёт
+    /// переход (карта акта при выборе узла), рисует UI-слой поверх ВСЕГО.
+    /// </summary>
+    /// <remarks>
+    /// Заведено по QA #47: шторка была мировым квадом и гасила только карту — топбар и панели оставались
+    /// светлыми, и переход читался как «потемнело окошко», а не как смена сцены. Затемнить весь экран может
+    /// только UI Toolkit: его панель рисуется поверх любых камер.
+    /// </remarks>
+    public readonly struct ScreenFadeChangedEvent
+    {
+        /// <summary>Плотность шторки, 0..1.</summary>
+        public readonly float Progress;
+
+        public ScreenFadeChangedEvent(float progress) => Progress = progress;
+    }
 }

@@ -10,21 +10,21 @@ namespace Guildmaster.UI
     /// Сборка экрана текстового ивента (StS-style) из UXML-шаблона — общий код для живого роутера
     /// (<see cref="MenuRouter"/>) и превью-стенда (<c>UiPreviewCatalog</c>). Разметка/стиль — только из
     /// <c>EventScreen.uxml</c> + классы дизайн-системы; здесь наполнение вариантами и переход
-    /// «выбор → текст-результат → Продолжить». Выбор фиксирует последствие через <paramref name="onChosen"/>
-    /// (флоу применяет эффекты), закрытие — через <paramref name="onContinue"/>.
+    /// «выбор → текст-прощание». Выбор фиксирует последствие через <paramref name="onChosen"/>
+    /// (флоу применяет эффекты); экран после этого ОСТАЁТСЯ — уводят с него кнопки бита, которые петля
+    /// акта кладёт поверх, а снимает его вход в следующий узел (QA #49).
     /// </summary>
     public static class EventScreenView
     {
         /// <summary>
         /// Построить экран-оверлей ивента. <paramref name="localize"/> — строка по ключу (null/пусто →
-        /// RU-фолбэк). Пустой текст-результат варианта = закрыть сразу (последствие уже зафиксировано).
+        /// RU-фолбэк). У варианта без написанного исхода показывается общий текст-прощание.
         /// </summary>
         public static VisualElement Build(
             VisualTreeAsset uxml,
             TextEventData ev,
             Func<string, string> localize,
-            Action<int> onChosen,
-            Action onContinue)
+            Action<int> onChosen)
         {
             string L(string key, string fallback)
             {
@@ -49,15 +49,17 @@ namespace Guildmaster.UI
                 image.style.backgroundImage = new StyleBackground(ev.Image);
             }
 
+            // Выбор сделан → варианты уходят, на их месте остаётся текст-прощание. Экран НЕ закрывается: он
+            // держит фон и текст всю передышку, а увести с него могут только кнопки бита («Продолжить» /
+            // «К построению»), которые петля кладёт поверх (QA #49). Своей кнопки «Продолжить» здесь больше
+            // нет — она давала второй, конкурирующий выход с того же экрана.
             void ShowResult(string resultText)
             {
                 choicesBox?.Clear();
-                if (string.IsNullOrEmpty(resultText)) { onContinue?.Invoke(); return; }
-                if (body != null) body.text = resultText;
-                var cont = new Button(() => onContinue?.Invoke()) { text = L("ui.event.continue", "Продолжить") };
-                cont.AddToClassList("gm-button");
-                cont.AddToClassList("gm-event-choice");
-                choicesBox?.Add(cont);
+                if (body != null)
+                    body.text = string.IsNullOrEmpty(resultText)
+                        ? L("ui.event.result.fallback", "Вы двинулись дальше.") // у варианта не написан исход
+                        : resultText;
             }
 
             IReadOnlyList<EventChoice> choices = ev.Choices;

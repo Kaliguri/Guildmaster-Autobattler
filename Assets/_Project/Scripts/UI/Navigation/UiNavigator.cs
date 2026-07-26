@@ -81,6 +81,26 @@ namespace Guildmaster.UI
             }
         }
 
+        /// <summary>
+        /// Лежит ли на экране НЕПРОЗРАЧНАЯ страница (ивент, магазин, сундук, награда, исход, главное меню) —
+        /// та, что закрывает собой мир и потому требует под собой задник (QA #50). Sheet (карта/инвентарь/
+        /// тест-зона) и Modal (пауза/настройки) не считаются: сквозь них игрок смотрит на живой мир.
+        /// Скрытые страницы (под другой страницей) не в счёт — важно, что видно СЕЙЧАС.
+        /// </summary>
+        public bool HasVisiblePage
+        {
+            get
+            {
+                for (int i = 0; i < _stack.Count; i++)
+                {
+                    UiScreen s = _stack[i];
+                    if (s.Kind != ScreenKind.Page) continue;
+                    if (s.Root == null || s.Root.style.display.value == DisplayStyle.Flex) return true;
+                }
+                return false;
+            }
+        }
+
         /// <summary>Есть ли в стеке экран, удовлетворяющий предикату (напр. «системное меню где-то открыто»).</summary>
         public bool AnyScreen(Func<UiScreen, bool> predicate)
         {

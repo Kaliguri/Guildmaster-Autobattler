@@ -55,6 +55,10 @@ MonoBehaviour:
     m_Key: ui.beat.formation
     m_Metadata:
       m_Items: []
+  - m_Id: 5589400031584256
+    m_Key: ui.event.result.fallback
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

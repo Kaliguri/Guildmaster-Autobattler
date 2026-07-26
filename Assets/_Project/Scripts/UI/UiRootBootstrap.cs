@@ -100,7 +100,6 @@ namespace Guildmaster.UI
         private IDisposable _openTitleCardSubscription;
         private UIDocument _doc;
         private RunModeBarView _topBar;
-        private VisualElement _backdrop; // постоянный задний фон под не-боевыми экранами (выкл в бою/инвентаре)
 
         // Слои-контейнеры (Ф4, план II.4): фиксированный z-порядок = порядок добавления в корень панели.
         // Заменяют императивный BringToFront/SendToBack (снос K1/K2). Персистентные (backdrop/battle-center/
@@ -123,6 +122,11 @@ namespace Guildmaster.UI
         private ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> _mainMenuVisSub; // за меню виден мировой стол
         private IDisposable _mainMenuVisSubscription;
         private bool _mainMenuOpen;
+        private IPublisher<Core.Flow.ScreenBackdropChangedEvent> _screenBackdropPub; // QA #50: единый задник экранов
+        private bool _backdropShown; // последнее сказанное презентации — публикуем только по ребру
+        private ISubscriber<Core.Flow.ScreenFadeChangedEvent> _screenFadeSub; // QA #47: шторка перехода поверх всего
+        private IDisposable _screenFadeSubscription;
+        private VisualElement _screenFade;
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -135,9 +139,13 @@ namespace Guildmaster.UI
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
             ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub,
             ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub,
+            IPublisher<Core.Flow.ScreenBackdropChangedEvent> screenBackdropPub,
+            ISubscriber<Core.Flow.ScreenFadeChangedEvent> screenFadeSub,
             ISubscriber<OpenCampRequest> openCampSub,
             ISubscriber<OpenTitleCardRequest> openTitleCardSub)
         {
+            _screenBackdropPub = screenBackdropPub;
+            _screenFadeSub     = screenFadeSub;
             _openCampSub = openCampSub;
             _openTitleCardSub = openTitleCardSub;
             _mainMenuVisSub = mainMenuVisSub;
@@ -220,6 +228,9 @@ namespace Guildmaster.UI
                 if (e.Active) _router.ShowMapSpace();
                 else          _router.HideMapSpace();
             });
+            // Шторка перехода (QA #47): плотность считает тот, кто ведёт переход (карта акта), UI её рисует.
+            _screenFadeSubscription = _screenFadeSub?.Subscribe(e => ApplyScreenFade(e.Progress));
+
             // Главное меню открыто → гасим непрозрачную подложку, иначе она закроет собой мировой стол.
             _mainMenuVisSubscription = _mainMenuVisSub?.Subscribe(e =>
             {
@@ -244,6 +255,14 @@ namespace Guildmaster.UI
             AddLayer(root, "layer-cursors");  // задел II.14 (live-курсоры)
             AddLayer(root, "layer-tooltip");  // задел Трек Т (тултипы)
             AddLayer(root, "layer-system");   // задел II.13/Трек К (тосты/фид/dev-консоль)
+
+            // Шторка перехода — САМЫЙ верх (QA #47): она обязана накрывать и топбар, и модалки. Всё, что
+            // ниже, гасится ею целиком; никаких исключений у перехода между сценами узла быть не должно.
+            VisualElement fadeLayer = AddLayer(root, "layer-transition");
+            _screenFade = new VisualElement { name = "screen-fade", pickingMode = PickingMode.Ignore };
+            _screenFade.AddToClassList("gm-screen-fade");
+            _screenFade.style.display = DisplayStyle.None;
+            fadeLayer.Add(_screenFade);
         }
 
         // Слой = fullscreen-контейнер, растянутый по корню панели. pickingMode Ignore: сам контейнер не крадёт
@@ -260,15 +279,11 @@ namespace Guildmaster.UI
         // Глобальная панель забега (app-shell) — постоянный НЕ-модальный слой сверху (в обход стека
         // MenuRouter, чтобы не глушить ввод). Режимы-навигация + HP/золото/акт/таймер/меню. Тело экранов
         // сдвинуто под неё (padding-top). Видимость и центр (Начать↔таймер) — по фазе боя в Update.
+        // Слой backdrop остаётся пустым: задник экранов рисует презентация (стол из MapStyle), а UI лишь
+        // говорит, когда он нужен — ScreenBackdropChangedEvent из RefreshShell (QA #50). Слой держим, чтобы
+        // z-порядок остальных не поехал и было куда положить будущие фоновые элементы UI.
         private void InitTopBar()
         {
-            // Постоянный задний фон забега в СВОЁМ слое (Ф4, самый низ z). Виден на не-боевых экранах,
-            // выключается в бою/инвентаре (RefreshShell). pickingMode Ignore — ввод не перехватывает.
-            _backdrop = new VisualElement { name = "run-backdrop", pickingMode = PickingMode.Ignore };
-            _backdrop.AddToClassList("gm-screen-backdrop");
-            _backdrop.style.display = DisplayStyle.None;
-            _layerBackdrop.Add(_backdrop);
-
             CreateAndPlaceTopBar();
         }
 
@@ -386,20 +401,23 @@ namespace Guildmaster.UI
             if (_clock == null) return;
             BattlePhase phase = _clock.Phase;
 
-            // Задний фон: виден на не-боевых экранах (меню/карта/ивент/сундук). Выкл в бою (видна арена)
-            // и в инвентаре (прозрачный оверлей поверх арены).
-            if (_backdrop != null)
+            // Задний фон экранов — ОДИН на всю игру: стол, который презентация рисует под главным меню
+            // (MenuBackdropView, материал из MapStyle). Своей непрозрачной заливки у UI больше нет: рядом
+            // с настоящим столом она читалась как чёрный экран (QA #50, «единый источник правды»).
+            //
+            // Нужен он ровно там, где мир закрыт непрозрачной страницей — главное меню, ивент, магазин,
+            // сундук, награда, исход. Гасим, когда за UI живой мир: карта (уехала в мир, фон закрыл бы её),
+            // инвентарь (прозрачный оверлей поверх арены), бой и передышка (Interlude — ЖИВАЯ арена: досмотр
+            // добивания и всё, что игрок делает между узлами, подложка накрывала бы собой).
+            //
+            // Фазу тут больше не спрашиваем: правду про «что сейчас на экране» знает стек, а не бой. Экран
+            // пройденного ивента живёт и в Interlude (QA #49) — по фазе фон под ним мигал бы на арену.
+            bool needBackdrop = (_mainMenuOpen || _router.HasVisiblePage)
+                                && !_router.IsInventoryOpen && !_router.IsMapSpaceOpen;
+            if (needBackdrop != _backdropShown)
             {
-                // Фаза D: при world-карте фон ТОЖЕ гасим — карта уехала в мир, и непрозрачный backdrop
-                // закрывал бы её собой (раньше он служил задником именно UITK-карты).
-                // По той же причине гасим его под главным меню: за меню лежит мировой стол, и подложка
-                // закрывала бы его собой — снаружи это выглядело как «фон не работает».
-                // Interlude (узел пройден, игрок стоит в живом мире: досмотр добивания, награда, передышка
-                // с кнопками) — это ЖИВАЯ арена, а не «мира нет»: подложка накрывала собой кадр победы
-                // и всё, что игрок делает между узлами (наход. Макса).
-                bool showBackdrop = phase == BattlePhase.None && !_router.IsInventoryOpen
-                                    && !_router.IsMapSpaceOpen && !_mainMenuOpen;
-                _backdrop.style.display = showBackdrop ? DisplayStyle.Flex : DisplayStyle.None;
+                _backdropShown = needBackdrop;
+                _screenBackdropPub?.Publish(new Core.Flow.ScreenBackdropChangedEvent(needBackdrop));
             }
 
             // QA #11/#21/#35: подсветка активного таба из единого источника — верхний НЕ-Modal экран навигатора
@@ -407,6 +425,18 @@ namespace Guildmaster.UI
             _topBar.SetActiveMode(ActiveMode(phase));
             // Настройки — не режим, а модалка: у их таба своё состояние «нажат, пока меню открыто» (раунд 2, п.6).
             _topBar.SetMenuActive(_router.IsSystemMenuOpen);
+        }
+
+        // Шторка перехода (QA #47). Живёт в самом верхнем слое и накрывает ВСЁ, включая топбар и модалки.
+        // Полностью прозрачную снимаем из отрисовки (display:None), чтобы не держать лишний слой в лэйауте.
+        // Мягкость даёт USS-переход по opacity: карта шлёт плотность кадр за кадром, но переход обрывается,
+        // когда она уходит в узел на закрытом кадре — без сглаживания это был бы резкий скачок в свет.
+        private void ApplyScreenFade(float progress)
+        {
+            if (_screenFade == null) return;
+            float p = Mathf.Clamp01(progress);
+            _screenFade.style.display = p > 0.001f ? DisplayStyle.Flex : DisplayStyle.None;
+            _screenFade.style.opacity = p;
         }
 
         // ── Радио-режимы табов (Карта/Бой/Инвентарь — включён РОВНО один; таб = перейти в режим, НЕ тумблер) ──
@@ -523,6 +553,7 @@ namespace Guildmaster.UI
             _testZoneChangedSubscription?.Dispose();                  // Ф5
             _mapSpaceSubscription?.Dispose();                         // фаза D
             _mainMenuVisSubscription?.Dispose();                      // фон за главным меню
+            _screenFadeSubscription?.Dispose();                       // QA #47: шторка перехода
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();

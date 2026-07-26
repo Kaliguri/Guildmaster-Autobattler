@@ -8,9 +8,16 @@ using VContainer;
 namespace Guildmaster.Presentation.Map
 {
     /// <summary>
-    /// Фон главного меню: тот же стол, что под картой акта. Живёт на СВОЕЙ камере со своим слоем —
+    /// Задний фон ЭКРАНОВ: тот же стол, что под картой акта. Живёт на СВОЕЙ камере со своим слоем —
     /// поэтому ни с чем в мире не спорит и ничего собой не заслоняет.
     /// </summary>
+    /// <remarks>
+    /// Начинал жизнь как фон одного лишь главного меню, но с QA #50 это ЕДИНСТВЕННЫЙ задник в игре: под
+    /// ивентом, магазином, сундуком и наградой раньше лежала своя непрозрачная заливка UI-цветом, и рядом
+    /// с настоящим столом она читалась как чёрный экран. Теперь UI только говорит, нужен ли фон
+    /// (<see cref="ScreenBackdropChangedEvent"/>), а как он выглядит — знает одно это место.
+    /// Имя класса осталось прежним намеренно: его держит ссылка компонента в сцене.
+    /// </remarks>
     /// <remarks>
     /// Почему отдельная камера, а не квад перед основной: меню показывают, стоя посреди живой арены, и
     /// подложить под него мировой объект не выходит — 2D-рендерер рисует спрайты после непрозрачной
@@ -35,7 +42,7 @@ namespace Guildmaster.Presentation.Map
                  "покрывает кадр целиком, а масштаб рисунка задаётся тайлингом из MapStyle.")]
         [SerializeField] private float _viewHeight = 8f;
 
-        private ISubscriber<MainMenuVisibilityChangedEvent> _menuSub;
+        private ISubscriber<ScreenBackdropChangedEvent> _menuSub;
         private VisualToggles _toggles;
         private IDisposable _sub;
 
@@ -51,7 +58,7 @@ namespace Guildmaster.Presentation.Map
         private static readonly int PatternTilingId = Shader.PropertyToID("_PatternTiling");
 
         [Inject]
-        public void Construct(ISubscriber<MainMenuVisibilityChangedEvent> menuSub, VisualToggles toggles)
+        public void Construct(ISubscriber<ScreenBackdropChangedEvent> menuSub, VisualToggles toggles)
         {
             _menuSub = menuSub;
             _toggles = toggles;
@@ -61,7 +68,7 @@ namespace Guildmaster.Presentation.Map
         {
             _sub = _menuSub?.Subscribe(e => SetOpen(e.Visible));
 
-            _toggles?.Register("menu.table", "Стол за главным меню",
+            _toggles?.Register("menu.table", "Стол за экранами",
                 on => { _enabledByToggle = on; ApplyVisibility(); });
 
             ApplyVisibility();

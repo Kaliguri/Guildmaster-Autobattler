@@ -119,8 +119,7 @@ namespace Guildmaster.DevTools
             VisualElement screen = Guildmaster.UI.EventScreenView.Build(
                 uxml, ev,
                 localize: RuValue,
-                onChosen: _ => { },
-                onContinue: () => { });
+                onChosen: _ => { });
             root.Add(screen);
         }
 

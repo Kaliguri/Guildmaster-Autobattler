@@ -43,7 +43,6 @@ namespace Guildmaster.Presentation.Map
         private const float NodeZ = 0f;
         private const float FogZ  = -0.15f; // над узлами, но под фишкой: отряд идёт ПОВЕРХ дымки
         private const float PawnZ = -0.3f;
-        private const float TransitionZ = -1f; // ближе всего к камере: шторка перекрывает всю карту
 
         private IInputService _input;
         private IVisualTempo _tempo; // единый метроном: биение узлов и волна дорожек идут от него
@@ -109,8 +108,7 @@ namespace Guildmaster.Presentation.Map
         private float _fadeTime;
         private string _fadeNodeId;
         private Vector2 _fadeTargetPos;
-        private MeshRenderer _transition;
-        private MaterialPropertyBlock _transitionBlock;
+        private MessagePipe.IPublisher<Core.Flow.ScreenFadeChangedEvent> _fadePub; // шторку рисует UI (QA #47)
 
         // Поездка фишки: пока едет, выбор заблокирован, а событие выбора ждёт приезда.
         private bool _travelling;
@@ -129,13 +127,15 @@ namespace Guildmaster.Presentation.Map
 
         [Inject]
         public void Construct(IInputService input, CameraModeController cameraModes, WorldMapViewLink link,
-                              IVisualTempo tempo, VisualToggles toggles)
+                              IVisualTempo tempo, VisualToggles toggles,
+                              MessagePipe.IPublisher<Core.Flow.ScreenFadeChangedEvent> fadePub)
         {
             _input       = input;
             _cameraModes = cameraModes;
             _link        = link;
             _tempo       = tempo;
             _toggles     = toggles;
+            _fadePub     = fadePub;
         }
 
         private void Awake()
@@ -603,7 +603,7 @@ namespace Guildmaster.Presentation.Map
         // все входы — и клик, и дев-обход, — чтобы способ перехода нельзя было забыть в одном из них.
         private void BeginStep(int hit, bool silent)
         {
-            if (_travelOn || _style == null || _style.TransitionMaterial == null)
+            if (_travelOn || _fadePub == null)
             {
                 StartTravel(hit, silent);
                 return;
@@ -756,49 +756,13 @@ namespace Guildmaster.Presentation.Map
             }
         }
 
-        // Шторка натягивается на КАДР, а не на карту: она накрывает то, что видно, независимо от того,
-        // куда уехала камера и какого размера акт.
+        // Шторку рисует UI-слой поверх ВСЕГО (QA #47): раньше это был мировой квад перед камерой карты, и он
+        // честно гасил карту — но не топбар и не панели поверх неё. Переход обязан накрывать весь экран,
+        // иначе он читается не сменой сцены, а «потемневшим окошком». Карта по-прежнему ведёт стадии
+        // (закрыть → засчитать выбор за чернилами → открыть) — она одна знает нужный момент.
         private void SetFadeProgress(float progress)
         {
-            EnsureTransition();
-            if (_transition == null) return;
-
-            bool visible = progress > 0.001f;
-            _transition.enabled = visible;
-            if (!visible) return;
-
-            Camera cam = Camera.main;
-            if (cam != null)
-            {
-                float h = cam.orthographicSize * 2f;
-                float w = h * cam.aspect;
-                Vector3 c = cam.transform.position;
-                // С запасом: на повороте/дрожании камеры край шторки не должен показаться в кадре.
-                _transition.transform.position   = new Vector3(c.x, c.y, TransitionZ);
-                _transition.transform.localScale = new Vector3(w * 1.2f, h * 1.2f, 1f);
-            }
-
-            _transitionBlock ??= new MaterialPropertyBlock();
-            _transition.GetPropertyBlock(_transitionBlock);
-            _transitionBlock.SetFloat(ProgressId, Mathf.Clamp01(progress));
-            _transition.SetPropertyBlock(_transitionBlock);
-        }
-
-        private static readonly int ProgressId = Shader.PropertyToID("_Progress");
-
-        private void EnsureTransition()
-        {
-            if (_transition != null || _style == null || _style.TransitionMaterial == null) return;
-
-            var go = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            go.name = "Transition";
-            Destroy(go.GetComponent<Collider>());
-            go.transform.SetParent(transform, false);
-            _transition = go.GetComponent<MeshRenderer>();
-            _transition.sharedMaterial = _style.TransitionMaterial;
-            _transition.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            _transition.receiveShadows = false;
-            _transition.enabled = false;
+            _fadePub?.Publish(new Core.Flow.ScreenFadeChangedEvent(Mathf.Clamp01(progress)));
         }
 
         private void AnimateNodes(float now)
@@ -907,7 +871,6 @@ namespace Guildmaster.Presentation.Map
                 _fadeNodeId = null;
                 SetFadeProgress(0f);
             }
-            if (_transition != null) _transition.gameObject.SetActive(active);
         }
 
         // Всё пулится: за акт карта перерисовывается на каждом узле. Узлы — один префаб на все типы,
