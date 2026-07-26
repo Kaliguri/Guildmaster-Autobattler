@@ -72,6 +72,7 @@ namespace Guildmaster.Presentation
         // Все feel-параметры (hitstop, финишер, вспышка/сплющивание вью) — из design-конфига (единый источник).
         private Design.CombatFeelConfig _feel;
         private Core.Audio.IAudioService _audio;   // раздаётся видам: разлёт на осколки звучит из UnitView
+        private Core.Simulation.ISimInterpolation _interpolation;   // доля шага между тиками — считает петля
 
         [Inject]
         public void Construct(
@@ -81,8 +82,10 @@ namespace Guildmaster.Presentation
             IPublisher<BattleEndedEvent> battleEndedPublisher,
             Design.CombatFeelConfig feel,
             Core.Audio.IAudioService audio,
-            Core.Players.ILocalPlayer localPlayer)
+            Core.Players.ILocalPlayer localPlayer,
+            Core.Simulation.ISimInterpolation interpolation)
         {
+            _interpolation        = interpolation;
             _localPlayer          = localPlayer;
             _audio                = audio;
             _simulation           = simulation;
@@ -186,8 +189,10 @@ namespace Guildmaster.Presentation
 
         private void Update()
         {
-            float alpha = Time.deltaTime / Guildmaster.Core.Simulation.SimConstants.TickDelta;
-            alpha = UnityEngine.Mathf.Clamp01(alpha);
+            // Доля берётся у петли: она копит остаток тика. Прежний подсчёт (Time.deltaTime / TickDelta)
+            // считал не долю шага, а отношение кадра к тику — при стабильном fps это константа, и тела
+            // вечно стояли на одной и той же промежуточной точке вместо того, чтобы двигаться между тиками.
+            float alpha = _interpolation.Alpha;
 
             foreach (var kvp in _views)
             {

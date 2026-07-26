@@ -152,7 +152,9 @@ namespace Guildmaster.Game
             // IContentDatabase — из RootScope (родитель); фабрика/симуляция — из этого скоупа.
             builder.Register<EncounterLoader>(Lifetime.Scoped);
 
-            builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped);
+            // Петля — ещё и владелец доли интерполяции: она копит остаток тика, презентация его читает.
+            builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped)
+                   .As<Core.Simulation.ISimInterpolation>();
         }
 
         private void RegisterPresentation(IContainerBuilder builder)
