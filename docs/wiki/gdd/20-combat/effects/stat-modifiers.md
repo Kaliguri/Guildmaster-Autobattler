@@ -2,6 +2,7 @@
 title: "Effect - Stat Modifiers"
 order: 33
 status: draft
+updated: 2026-07-26
 ---
 
 # Сборник: стат-модификаторы

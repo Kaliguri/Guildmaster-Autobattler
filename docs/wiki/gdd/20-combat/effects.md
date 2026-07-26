@@ -2,6 +2,7 @@
 title: "Combat - Effects"
 order: 23
 status: living
+updated: 2026-07-26
 ---
 
 > Дизайн-каталог **всех эффектов** игры + идентичность стихий и сродств. Технический движок (контейнер `IEffectComponent[]`, `ScalableValue`, теги, диспел) — [[tech/10-reference/combat-model|Тех: 6. Боевая модель]] §5.

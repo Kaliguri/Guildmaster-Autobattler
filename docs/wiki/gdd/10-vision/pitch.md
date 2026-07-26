@@ -1,7 +1,7 @@
 ---
 title: "Vision - Pitch"
 order: 9
-status: draft
+status: living
 updated: 2026-07-19
 pillars: [Честность, Глубина, Нарратив, Гильдия-дом, Ощущение]
 ---

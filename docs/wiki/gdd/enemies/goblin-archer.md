@@ -1,7 +1,9 @@
 ---
 title: "Goblins - Common - Goblin Archer"
+order: 60
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Обычный
 species: Гоблины
 combat_class: РДД

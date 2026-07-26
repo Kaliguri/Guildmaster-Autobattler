@@ -1,5 +1,5 @@
 ---
-title: "Planning - SFX раунд 2 (покрытие, микс, громкость)"
+title: "Planning - SFX Round 2 (coverage, mix, loudness)"
 order: 81
 status: needs_review
 updated: 2026-07-26

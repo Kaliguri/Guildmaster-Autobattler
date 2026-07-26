@@ -2,6 +2,7 @@
 title: "Effect - Heal"
 order: 17
 status: draft
+updated: 2026-07-18
 ---
 
 # Исцеление / HoT (Heal)

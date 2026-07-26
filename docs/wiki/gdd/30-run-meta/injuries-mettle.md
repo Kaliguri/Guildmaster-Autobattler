@@ -2,6 +2,7 @@
 title: "Run - Injuries & Mettle"
 order: 30
 status: draft
+updated: 2026-07-16
 ---
 
 > Что бой делает с «Сосудом» по ходу забега: две полярности одной оси.

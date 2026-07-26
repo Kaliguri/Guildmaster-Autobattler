@@ -1,7 +1,9 @@
 ---
 title: "Goblins - Common - Goblin Warrior"
+order: 110
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Обычный
 species: Гоблины
 combat_class: Танк

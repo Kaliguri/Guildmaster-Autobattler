@@ -2,6 +2,7 @@
 title: "Effect - Triggers"
 order: 35
 status: draft
+updated: 2026-07-18
 ---
 
 # Сборник: триггеры и мета-эффекты

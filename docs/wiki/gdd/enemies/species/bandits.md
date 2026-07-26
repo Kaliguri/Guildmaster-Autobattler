@@ -1,7 +1,9 @@
 ---
 title: "Species - Bandits"
+order: 10
 kind: enemy_faction
 status: draft
+updated: 2026-07-26
 species: Разбойники
 ---
 

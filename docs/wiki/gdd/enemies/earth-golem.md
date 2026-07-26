@@ -1,7 +1,9 @@
 ---
 title: "Golems - Elite - Earth Golem"
+order: 50
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Элита
 species: Големы
 combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение

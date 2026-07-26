@@ -1,7 +1,9 @@
 ---
 title: "Beasts - Common - Pack Wolf"
+order: 130
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Обычный
 species: Звери
 combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение

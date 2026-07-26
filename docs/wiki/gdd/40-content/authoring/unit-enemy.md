@@ -2,6 +2,7 @@
 title: "Content - Authoring - Unit (Enemy)"
 order: 4
 status: living
+updated: 2026-07-26
 ---
 
 # Методичка: создание противника

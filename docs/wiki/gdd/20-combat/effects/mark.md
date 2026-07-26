@@ -2,6 +2,7 @@
 title: "Effect - Mark"
 order: 18
 status: draft
+updated: 2026-07-18
 ---
 
 # Метка (Mark)

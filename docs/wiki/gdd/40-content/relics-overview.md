@@ -2,6 +2,7 @@
 title: "Content - Relics"
 order: 40
 status: draft
+updated: 2026-07-26
 ---
 
 ## Что такое Реликвия

@@ -1,7 +1,9 @@
 ---
 title: "Relic - Common - The Shepherd (Priest)"
+order: 160
 kind: character
 status: draft
+updated: 2026-07-26
 rarity: Обычная
 combat_class: Поддержка
 position: Вторая линия

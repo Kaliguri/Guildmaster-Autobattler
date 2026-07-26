@@ -2,6 +2,7 @@
 title: "Meta - Index"
 order: 0
 status: living
+updated: 2026-07-26
 ---
 
 Карта геймдизайн-документации (MOC). Порядок глав задаётся полем `order` во frontmatter;
@@ -70,6 +71,11 @@ SORT file.name ASC
 - [[difficulty-skill|Vision - Difficulty & Skill]] — три оси, модель рандома, правила честности.
 - [[visual-direction|Vision - Visual Direction]] — визуальный опыт и дорожная карта: стиль, пост-процесс, атмосфера, свет, переходы, gamefeel.
 - [[character-animation|Vision - Character Animation]] — скелетка: два слоя движения, три оси переиспользования, инструмент, слои Animator (план, отложено).
+- [[audio-subbuses|Vision - Audio Sub-buses]] — под-шины FMOD как ранний шов микса.
+
+**Бэклоги подачи** (сырые каталоги идей, питают `visual-direction`):
+[[backlog-gamefeel|Gamefeel]] · [[backlog-vfx-particles-shaders|VFX]] · [[backlog-ui-juice|UI Juice]] ·
+[[backlog-atmosphere-light-post|Свет, пост, атмосфера]] · [[backlog-audio-sfx|Audio & SFX]].
 
 ## 20 · Бой (`20-combat/`)
 
@@ -87,10 +93,16 @@ SORT file.name ASC
 
 ## 40 · Контент (`40-content/`)
 
-- [[relics-overview|Content - Relics]] — редкость, типы; Судьбы и перки. Карточки — [[relics/index|Content - Relics · каталог]].
+- [[relics-overview|Content - Relics]] — редкость, типы, боевой класс; Судьбы и перки. Карточки — [[relics/index|Relic - Catalog]].
 - [[items-banners|Content - Items & Banners]] — предметы (Vessel) и Знамёна (Party): слоты, авто-триггеры.
-- Ростер — [[roster/index|Roster - Overview]].
-- Враги — [[enemies/index|Enemies - Catalog]] · [[enemies/species/index|Factions - Index]].
+  Карточки — [[gdd/40-content/items/fey-cloak|Fey Cloak]] · [[gdd/40-content/items/common-items|Common Items]] · [[banners|Content - Banners]].
+- **Методички авторинга** — [[gdd/40-content/authoring/index|Content - Authoring]]: как заводить
+  [[gdd/40-content/authoring/unit|юнита]], [[gdd/40-content/authoring/unit-relic|реликвию]],
+  [[gdd/40-content/authoring/unit-enemy|врага]], [[gdd/40-content/authoring/effect|эффект]],
+  [[gdd/40-content/authoring/item|предмет]], [[gdd/40-content/authoring/relic-upgrades|улучшения]].
+- Ростер — [[roster/index|Roster - Overview]] · [[gdd/roster/tag-reference|Справочник тегов]] ·
+  [[gdd/roster/unit-tag-glossary|Глоссарий доп-тегов]] · [[gdd/roster/relic-tag-assignments|Раскладка тегов]].
+- Враги — [[enemies/index|Enemies - Catalog]] · [[enemies/species/index|Species - Index]].
 
 ## 50 · Со-режим и UX (`50-modes-ux/`)
 

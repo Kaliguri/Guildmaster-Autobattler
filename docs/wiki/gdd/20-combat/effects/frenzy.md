@@ -2,6 +2,7 @@
 title: "Effect - Frenzy"
 order: 16
 status: draft
+updated: 2026-07-18
 ---
 
 # Ярость (Frenzy)

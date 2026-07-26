@@ -1,7 +1,9 @@
 ---
 title: "Relic - Common - The Gale (Monk)"
+order: 90
 kind: character
 status: draft
+updated: 2026-07-26
 rarity: Обычная
 combat_class: Брузер
 position: Фланг

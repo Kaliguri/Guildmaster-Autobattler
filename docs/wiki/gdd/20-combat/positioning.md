@@ -1,7 +1,7 @@
 ---
 title: "Combat - Positioning"
 order: 22
-status: draft
+status: ready
 updated: 2026-07-26
 ---
 

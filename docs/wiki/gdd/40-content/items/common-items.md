@@ -2,6 +2,7 @@
 title: "Item - Common Items"
 order: 20
 status: draft
+updated: 2026-07-26
 ---
 
 # Сборник: обычные предметы

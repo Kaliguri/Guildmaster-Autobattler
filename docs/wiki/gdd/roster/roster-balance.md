@@ -1,6 +1,8 @@
 ---
 title: "Roster - Balance"
+order: 20
 status: draft
+updated: 2026-07-26
 ---
 
 # Баланс ростера

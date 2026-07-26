@@ -1,6 +1,8 @@
 ---
-title: Черновые идеи реликвий
+title: "Relic - Draft Ideas"
+order: 20
 status: draft
+updated: 2026-07-16
 ---
 
 Хил

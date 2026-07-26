@@ -1,3 +1,10 @@
+---
+title: "Enemies - Card Template"
+order: 1
+status: living
+updated: 2026-07-26
+---
+
 # Шаблон карточки противника
 
 Имя файла — **латинский слаг** (`goblin-archer.md`); человекочитаемое имя живёт во frontmatter

@@ -1,6 +1,8 @@
 ---
-title: Каталог реликвий
+title: "Relic - Catalog"
+order: 0
 status: draft
+updated: 2026-07-18
 ---
 
 Краткий вход в контентные заметки по реликвиям героев.

@@ -1,5 +1,5 @@
 ---
-title: Дизайн-столпы
+title: "Vision - Pillars"
 order: 11
 status: needs_review
 updated: 2026-07-19

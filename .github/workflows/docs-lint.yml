@@ -33,9 +33,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # ВРЕМЕННО -ReportOnly: 142 нарушения ждут зачистки в фазе Ф6
-      # (docs/gdd-audit-progress.md). Снять флаг последним шагом Ф6 —
-      # без этого линт не держит фронт и шапки разъедутся снова.
-      - name: Check frontmatter (report only until phase F6 lands)
+      # Флаг -ReportOnly снят 2026-07-26 вместе с закрытием фазы Ф6: все 142
+      # нарушения вычищены, и с этого момента линт держит фронт, а не отчитывается.
+      - name: Check frontmatter (fail on violations)
         shell: pwsh
-        run: ./scripts/check-wiki-frontmatter.ps1 -VaultPath docs/wiki -ReportOnly
+        run: ./scripts/check-wiki-frontmatter.ps1 -VaultPath docs/wiki

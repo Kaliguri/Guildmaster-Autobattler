@@ -1,7 +1,9 @@
 ---
 title: "Relic - Common - The Hunter (Ranger)"
+order: 100
 kind: character
 status: draft
+updated: 2026-07-26
 rarity: Обычная
 combat_class: РДД
 position: Вторая линия

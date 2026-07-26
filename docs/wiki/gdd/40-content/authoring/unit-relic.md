@@ -2,6 +2,7 @@
 title: "Content - Authoring - Unit (Relic)"
 order: 3
 status: living
+updated: 2026-07-18
 ---
 
 # Методичка: создание реликвии-юнита

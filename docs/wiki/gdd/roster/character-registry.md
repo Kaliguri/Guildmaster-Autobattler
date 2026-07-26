@@ -1,6 +1,8 @@
 ---
 title: "Roster - Character Registry"
+order: 10
 status: living
+updated: 2026-07-16
 ---
 
 # Реестр персонажей

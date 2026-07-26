@@ -1,7 +1,9 @@
 ---
 title: "Relic - Common - The Thorn (Treant)"
+order: 190
 kind: character
 status: draft
+updated: 2026-07-26
 rarity: Обычная
 combat_class: Танк
 position: Фронт

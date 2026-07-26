@@ -1,6 +1,8 @@
 ---
 title: "Roster - Tag Reference"
+order: 30
 status: living
+updated: 2026-07-26
 ---
 
 # Справочник тегов персонажей

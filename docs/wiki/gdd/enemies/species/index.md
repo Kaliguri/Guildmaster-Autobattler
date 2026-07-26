@@ -1,6 +1,8 @@
 ---
 title: "Species - Index"
+order: 0
 status: draft
+updated: 2026-07-26
 ---
 
 # Виды противников

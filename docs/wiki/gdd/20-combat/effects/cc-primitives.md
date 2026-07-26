@@ -2,6 +2,7 @@
 title: "Effect - CC Primitives"
 order: 31
 status: draft
+updated: 2026-07-18
 ---
 
 # Сборник: CC-примитивы

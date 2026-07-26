@@ -1,7 +1,9 @@
 ---
 title: "Goblins - Elite - Goblin Wolfrider"
+order: 120
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Элита
 species: Гоблины
 combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение

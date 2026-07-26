@@ -2,6 +2,7 @@
 title: "Content - Authoring - Relic Upgrades"
 order: 1
 status: living
+updated: 2026-07-26
 ---
 
 # Методичка: улучшения реликвий (Шаг 6)

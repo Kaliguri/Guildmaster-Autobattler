@@ -2,6 +2,7 @@
 title: "Content - Authoring - Item"
 order: 6
 status: living
+updated: 2026-07-18
 ---
 
 # Методичка: создание предмета

@@ -2,6 +2,7 @@
 title: "Content - Items & Banners"
 order: 41
 status: living
+updated: 2026-07-18
 ---
 
 > Обзор двух типов навесного контента: **предметы** (Vessel-скоуп, на «Сосуд») и **Знамёна**

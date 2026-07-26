@@ -2,6 +2,7 @@
 title: "Content - Authoring - Unit"
 order: 2
 status: living
+updated: 2026-07-26
 ---
 
 # Методичка: создание юнита

@@ -1,7 +1,9 @@
 ---
 title: "Relic - Common - The Verdict (Assassin)"
+order: 210
 kind: character
 status: draft
+updated: 2026-07-26
 rarity: Обычная
 combat_class: Убийца
 position: Фланг

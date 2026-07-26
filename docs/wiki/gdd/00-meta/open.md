@@ -2,6 +2,7 @@
 title: "Meta - Open Questions"
 order: 3
 status: draft
+updated: 2026-07-26
 ---
 
 фраки 

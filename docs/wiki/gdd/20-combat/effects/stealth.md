@@ -2,6 +2,7 @@
 title: "Effect - Stealth"
 order: 22
 status: draft
+updated: 2026-07-18
 ---
 
 # Скрытность: Инвиз и Маскировка (Stealth)

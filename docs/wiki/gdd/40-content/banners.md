@@ -2,6 +2,7 @@
 title: "Content - Banners"
 order: 42
 status: draft
+updated: 2026-07-18
 ---
 
 # Знамёна (Party-скоуп)
