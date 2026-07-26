@@ -28,6 +28,7 @@ namespace Guildmaster.Game.Flow
         private readonly RunStateService               _runStates;
         private readonly IContentDatabase              _content;
         private readonly ISubscriber<BattleEndedEvent> _endedSub;
+        private readonly Services.TimeScaleService      _time;
 
         private IDisposable      _endedSubscription;
         private BattlePresetData _lastPreset;
@@ -35,8 +36,9 @@ namespace Guildmaster.Game.Flow
 
         public BattleBootstrap(IBattleSession session, EncounterLoader loader, CombatSimulation sim,
                                RunStateService runStates, IContentDatabase content,
-                               ISubscriber<BattleEndedEvent> endedSub)
+                               ISubscriber<BattleEndedEvent> endedSub, Services.TimeScaleService time)
         {
+            _time = time;
             _session   = session;
             _loader    = loader;
             _sim       = sim;
@@ -88,6 +90,7 @@ namespace Guildmaster.Game.Flow
             _loader.SpawnEnemies(preset.Encounter);
             _sim.FlushSpawns();
             _sim.SetPaused(true);               // пауза — фаза расстановки, а не сразу бой
+            _time.SetPaused(false);             // а пауза игрока в новый узел не переезжает (см. ResetToWorld)
             _loader.RequestDeployment(preset);  // DeploymentController: показать врагов, drag, кнопка «Начать»
         }
 
@@ -107,7 +110,13 @@ namespace Guildmaster.Game.Flow
 
             DeployParty();
             _sim.FlushSpawns();
-            _sim.SetPaused(true);
+            _sim.SetPaused(true);        // «сим заморожен сценарием»: отряд стоит в построении
+
+            // А вот пауза ИГРОКА (Time.timeScale) узел не переживает. Боевой скоуп в persist-мире не
+            // разрушается между узлами, поэтому её некому было снять: Dispose() возвращает timeScale к 1
+            // только при выгрузке боя, которой больше нет. Игрок, поставивший паузу перед последним ударом,
+            // оставался с замершим миром на всю передышку (аудит 2026-07-26, T-4/RL-1).
+            _time.SetPaused(false);
         }
 
         // Ретрай боя (пул перезапусков акта + dev-R): пере-поставить отряд и врагов, снова в фазу расстановки.
@@ -118,6 +127,7 @@ namespace Guildmaster.Game.Flow
             if (_lastPreset?.Encounter != null) _loader.SpawnEnemies(_lastPreset.Encounter);
             _sim.FlushSpawns();
             _sim.SetPaused(true);
+            _time.SetPaused(false);      // рестарт снимает паузу игрока: иначе новый бой стартует замороженным
             if (_lastPreset != null) _loader.RequestDeployment(_lastPreset);
         }
 
