@@ -42,11 +42,15 @@ namespace Guildmaster.Presentation
                  "смотрящему. Пусто = фолбэк-цвета по умолчанию (см. DefaultHealthColor).")]
         [SerializeField] private Design.CombatColorPalette _colorPalette;
 
-        [Tooltip("Команда «смотрящего» (локального игрока): его юниты — союзные (ally-цвет), прочие — enemy. " +
-                 "Шов под кооп (там смотрящий может быть в любой команде); пока 0 = команда игрока.")]
-        [SerializeField] private int _localViewerTeam;
 
         private CombatSimulation            _simulation;
+
+        // Команда «смотрящего» приходит от ILocalPlayer — единственного владельца этого факта
+        // (GameConfig.LocalPlayerTeam → SoloLocalPlayer). Своего поля презентер не держит: пока оно
+        // было, за одну и ту же команду отвечали двое, и цвет полосок мог разойтись со стингером
+        // победы, который всегда спрашивал ILocalPlayer.
+        private Core.Players.ILocalPlayer   _localPlayer;
+
         private readonly Dictionary<int, UnitView>       _views     = new Dictionary<int, UnitView>();
         private readonly Dictionary<int, ProjectileView> _projViews = new Dictionary<int, ProjectileView>();
         private readonly List<int>                       _deadProj  = new List<int>();
@@ -78,8 +82,10 @@ namespace Guildmaster.Presentation
             IPublisher<DamageDealtEvent> damageDealtPublisher,
             IPublisher<BattleEndedEvent> battleEndedPublisher,
             Design.CombatFeelConfig feel,
-            Core.Audio.IAudioService audio)
+            Core.Audio.IAudioService audio,
+            Core.Players.ILocalPlayer localPlayer)
         {
+            _localPlayer          = localPlayer;
             _audio                = audio;
             _simulation           = simulation;
             _unitSpawnedPublisher = unitSpawnedPublisher;
@@ -254,7 +260,7 @@ namespace Guildmaster.Presentation
                     view.SetLabel(NameFor(unit));
 
                     // Цвет HP-бара по принадлежности к смотрящему (дизайн-система).
-                    bool isAllyOfViewer = unit.Team == _localViewerTeam;
+                    bool isAllyOfViewer = IsAllyOfViewer(unit);
                     view.SetHealthColor(_colorPalette != null
                         ? _colorPalette.HealthBarColor(isAllyOfViewer)
                         : DefaultHealthColor(isAllyOfViewer));
@@ -424,12 +430,19 @@ namespace Guildmaster.Presentation
 
         /// <summary>
         /// Тинт тела по персонажу. У юнита с данными — ЕДИНЫЙ резолвер <see cref="UnitData.ResolveBodyTint"/>
-        /// (тот же цвет, что рендерит карточка инвентаря); у болванчиков без данных — по команде.
+        /// (тот же цвет, что рендерит карточка инвентаря); у болванчиков без данных — по стороне смотрящего.
         /// </summary>
-        private static Color TintFor(RuntimeUnit unit) =>
+        private Color TintFor(RuntimeUnit unit) =>
             unit.Unit != null
                 ? unit.Unit.ResolveBodyTint()
-                : (unit.Team == 0 ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
+                : (IsAllyOfViewer(unit) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
+
+        /// <summary>
+        /// Юнит на стороне смотрящего? Единственное место, где в презентере решается «свой/чужой».
+        /// Без <see cref="Core.Players.ILocalPlayer"/> (сцена без DI, дев-запуск) считаем команду 0 своей.
+        /// </summary>
+        private bool IsAllyOfViewer(RuntimeUnit unit) =>
+            unit.Team == (_localPlayer != null ? _localPlayer.Team : 0);
 
         /// <summary>Фолбэк-цвет HP-бара, если палитра дизайн-системы не назначена (совпадает с дефолтами SO).</summary>
         private static Color DefaultHealthColor(bool isAllyOfViewer) => isAllyOfViewer
@@ -437,10 +450,10 @@ namespace Guildmaster.Presentation
             : new Color(0.90f, 0.25f, 0.25f);
 
         /// <summary>Подпись персонажа: имя реликвии (SO) либо «Ally/Enemy N» для болванчиков.</summary>
-        private static string NameFor(RuntimeUnit unit)
+        private string NameFor(RuntimeUnit unit)
         {
             if (unit.Unit != null) return unit.Unit.name;
-            return (unit.Team == 0 ? "Ally " : "Enemy ") + unit.Id;
+            return (IsAllyOfViewer(unit) ? "Ally " : "Enemy ") + unit.Id;
         }
 
         private void HandleAttackStarted(RuntimeUnit source, RuntimeUnit target)
