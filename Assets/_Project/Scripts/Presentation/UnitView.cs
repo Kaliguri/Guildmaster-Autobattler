@@ -145,6 +145,10 @@ namespace Guildmaster.Presentation
         private float _holoAmount;   // 0..1 — сила голограммы (параметр _Holo шейдера тела)
         private float _holoLeft;     // остаток стадии голограммы, сек
 
+        private CanvasGroup _uiFadeGroup;  // контейнер world-UI: гаснет вместе с телом, а не щелчком
+        private float _uiFadeLeft;
+        private float _uiFadeTotal;
+
         private bool _freeRun;        // бой окончен → доигрываем анимации натурально, не скрабим по замершему симу
         private bool _freeRunSettled; // уже осели в Idle после доигрыша
         private bool  _holdHitFrame;  // финишер: держим кадр весь финальный slowmo
@@ -162,6 +166,15 @@ namespace Guildmaster.Presentation
             _unit           = unit;
             _renderPosition = unit.Position;
             transform.position = (Vector3)_renderPosition;
+
+            // Вид могли переиспользовать после чьей-то смерти — возвращаем полосу из погашенного состояния.
+            _uiFadeLeft = 0f;
+            if (_worldUi != null)
+            {
+                _worldUi.SetActive(true);
+                CanvasGroup group = _worldUi.GetComponent<CanvasGroup>();
+                if (group != null) group.alpha = 1f;
+            }
 
             // Спрайты нарисованы лицом вправо: команда 0 (слева) так и смотрит, враги (справа) — влево.
             // Дальше разворот динамический (ApplyFacing по цели/движению), но стартовый — по стороне, иначе
@@ -382,6 +395,7 @@ namespace Guildmaster.Presentation
         private void Update()
         {
             ApplyColor(); // вспышка + альфа инвиза видны даже в hitstop/паузе (единый писатель _sprite.color)
+            TickWorldUiFade();
             TickContactDustCooldown();
             TickIdleBreath();
 
@@ -802,6 +816,24 @@ namespace Guildmaster.Presentation
         // (gdd/20-combat/positioning). Это перемещение в симуляции; вид просто поедет за ним, как за любым
         // движением. Презентационный отскок занял бы этот язык собой и разошёлся бы с ним направлением.
 
+        // Угасание world-UI после смерти. Unscaled — как и весь секвенс смерти: финишер начинается с полной
+        // паузы, и на игровом времени полоса зависла бы полупрозрачной на несколько секунд.
+        private void TickWorldUiFade()
+        {
+            if (_uiFadeLeft <= 0f || _uiFadeGroup == null) return;
+
+            _uiFadeLeft -= Time.unscaledDeltaTime;
+            if (_uiFadeLeft > 0f)
+            {
+                _uiFadeGroup.alpha = Mathf.Clamp01(_uiFadeLeft / Mathf.Max(0.0001f, _uiFadeTotal));
+                return;
+            }
+
+            _uiFadeLeft = 0f;
+            _uiFadeGroup.alpha = 0f;
+            if (_worldUi != null) _worldUi.SetActive(false);   // догорело — снимаем совсем
+        }
+
         /// <summary>Заморозить анимацию этого вида на unscaled-окно (локальный hitstop участника удара).</summary>
         public void OnHitstop(float unscaledSeconds)
         {
@@ -1012,10 +1044,23 @@ namespace Guildmaster.Presentation
         {
             _onDeathFeedback?.Invoke();
 
-            // Прячем весь world-UI одним контейнером (бары + подпись) — над трупом он не нужен.
+            // Убираем world-UI (бары + подпись) — над трупом он не нужен. Но НЕ щелчком: тело после этого
+            // ещё три стадии развоплощается, и полоса, выпрыгнувшая из кадра в первый же момент, читалась
+            // как сбой. Гасим её ровно за ту стадию, пока тело истончается в голограмму.
             if (_worldUi != null)
             {
-                _worldUi.SetActive(false);
+                _uiFadeGroup = _worldUi.GetComponent<CanvasGroup>();
+                if (_uiFadeGroup != null)
+                {
+                    _uiFadeTotal = _feel != null && _feel.DeathHologramDuration > 0.01f
+                        ? _feel.DeathHologramDuration
+                        : 0.12f;
+                    _uiFadeLeft = _uiFadeTotal;
+                }
+                else
+                {
+                    _worldUi.SetActive(false);   // нет группы на контейнере — старое поведение
+                }
             }
             else
             {
