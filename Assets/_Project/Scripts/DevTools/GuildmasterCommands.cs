@@ -4,6 +4,7 @@ using Guildmaster.Core.Input;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using Guildmaster.Presentation;
+using MessagePipe;
 using QFSW.QC;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -32,10 +33,17 @@ namespace Guildmaster.DevTools
         private QuantumConsole     _console;
         private Guildmaster.Game.Flow.IBattleSession _session; // опц.: перезапуск боя забега на R (null в standalone-арене)
 
-        // Ристалище: выход из забега и вход на площадку. Оба живут ВЫШЕ боевого скоупа (Root), поэтому
+        // Ристалище: интент входа и состояние площадки. Живут ВЫШЕ боевого скоупа (Root), поэтому
         // резолвятся опционально — в standalone-арене без Root их нет, и команда честно об этом скажет.
         private Core.Flow.IRunControl _runControl;
-        private MessagePipe.IPublisher<Data.Definitions.SetTestZoneRequest> _provingGroundsPub;
+        private MessagePipe.IPublisher<Core.Flow.OpenProvingGroundsRequest> _provingGroundsPub;
+        private MessagePipe.ISubscriber<Data.Definitions.TestZoneChangedEvent> _provingGroundsChangedSub;
+
+        // Бой, который надо поставить, КАК ТОЛЬКО площадка откроется: вход асинхронный (меню закрывается,
+        // отряд материализуется), поэтому спавнить сразу после запроса — значит спавнить в пустоту.
+        private System.Action<GuildmasterCommands> _pendingOnProvingGrounds;
+        private System.IDisposable _provingGroundsSubscription;
+        private bool _onProvingGrounds; // площадка открыта прямо сейчас — повторный запрос не нужен
 
         // Дамми-болванчики оформлены как полноценный юнит (EnemyData «enemy.training_dummy»): свой SO,
         // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
@@ -73,6 +81,8 @@ namespace Guildmaster.DevTools
             resolver.TryResolve(out _session);
             resolver.TryResolve(out _runControl);
             resolver.TryResolve(out _provingGroundsPub);
+            resolver.TryResolve(out _provingGroundsChangedSub);
+            _provingGroundsSubscription = _provingGroundsChangedSub?.Subscribe(e => OnProvingGroundsChanged(e));
         }
 
         // Пауза сима, пока консоль открыта: настраиваешь бой за консолью, закрываешь — он идёт с начала
@@ -87,8 +97,20 @@ namespace Guildmaster.DevTools
             }
         }
 
+        // Площадка открылась — ставим бой, который её и заказывал. Одноразово: следующий вход чистый.
+        private void OnProvingGroundsChanged(Data.Definitions.TestZoneChangedEvent e)
+        {
+            _onProvingGrounds = e.Active;
+            if (!e.Active || _pendingOnProvingGrounds == null) return;
+
+            System.Action<GuildmasterCommands> setup = _pendingOnProvingGrounds;
+            _pendingOnProvingGrounds = null;
+            setup(this);
+        }
+
         private void OnDestroy()
         {
+            _provingGroundsSubscription?.Dispose();
             if (_console != null)
             {
                 _console.OnActivate   -= PauseForConsole;
@@ -543,19 +565,26 @@ namespace Guildmaster.DevTools
         /// <c>ProvingGroundsConfig</c>.
         /// </remarks>
         [Command("gm_proving_grounds", "Уйти на Ристалище: свернуть забег и открыть площадку вне забега")]
-        public void ProvingGrounds()
+        public void ProvingGrounds() => RequestProvingGrounds();
+
+        /// <summary>
+        /// Запросить Ристалище. Возвращает false, если запрашивать некому (dev-арена без Root-скоупа).
+        /// </summary>
+        private bool RequestProvingGrounds()
         {
             if (_provingGroundsPub == null)
             {
                 Debug.LogWarning("[GuildmasterCommands] - Ристалище недоступно: нет Root-скоупа " +
                                  "(запущена standalone dev-арена, а не игра)");
-                return;
+                return false;
             }
 
-            // Сначала выход: пока идёт забег, площадка вне забега открыться не имеет права.
+            // Сначала выход: пока идёт забег, площадка вне забега открыться не имеет права. Отмена
+            // всплывает до верхнего цикла, тот возвращается в меню — и там запрос его и встречает.
             _runControl?.RequestReturnToMainMenu();
-            _provingGroundsPub.Publish(new Data.Definitions.SetTestZoneRequest(true));
+            _provingGroundsPub.Publish(new Core.Flow.OpenProvingGroundsRequest());
             Debug.Log("[GuildmasterCommands] - gm_proving_grounds: запрошено Ристалище");
+            return true;
         }
 
         /// <summary>
@@ -569,6 +598,20 @@ namespace Guildmaster.DevTools
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
             if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
 
+            // Смотреть бой из-под главного меню нельзя — сначала уводим на площадку, а спавним, когда она
+            // откроется (вход асинхронный: меню закрывается, отряд материализуется). Если мы уже на
+            // Ристалище или в dev-арене без Root — ставим бой прямо сейчас.
+            if (!_onProvingGrounds && _provingGroundsPub != null && RequestProvingGrounds())
+            {
+                _pendingOnProvingGrounds = self => self.SpawnMirrorNow();
+                return;
+            }
+
+            SpawnMirrorNow();
+        }
+
+        private void SpawnMirrorNow()
+        {
             // Тот же строй, что у командного бенча: фронт вплотную, тыл за спинами.
             (string id, float x, float y)[] squad =
             {

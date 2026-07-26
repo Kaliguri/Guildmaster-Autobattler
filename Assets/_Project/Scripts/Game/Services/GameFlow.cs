@@ -47,6 +47,10 @@ namespace Guildmaster.Game.Services
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<RunPartyReadyEvent>   _partyReadyPub;
 
+        // Ристалище: интент входа и состояние площадки — цикл открывает её и ждёт, пока игрок не выйдет.
+        private readonly IPublisher<Data.Definitions.SetTestZoneRequest>    _provingGroundsPub;
+        private readonly ISubscriber<Data.Definitions.TestZoneChangedEvent> _provingGroundsChangedSub;
+
         public GameFlow(
             IBattleSession      session,
             RunStateService     runStates,
@@ -63,8 +67,12 @@ namespace Guildmaster.Game.Services
             ILocalPlayer        localPlayer,
             IScreenTransition   transition,
             IPublisher<OpenTextEventRequest> openEventPub,
-            IPublisher<RunPartyReadyEvent>   partyReadyPub)
+            IPublisher<RunPartyReadyEvent>   partyReadyPub,
+            IPublisher<Data.Definitions.SetTestZoneRequest>    provingGroundsPub,
+            ISubscriber<Data.Definitions.TestZoneChangedEvent> provingGroundsChangedSub)
         {
+            _provingGroundsPub = provingGroundsPub;
+            _provingGroundsChangedSub = provingGroundsChangedSub;
             _session         = session;
             _runStates        = runStates;
             _rewardPresenter  = rewardPresenter;
@@ -127,6 +135,14 @@ namespace Guildmaster.Game.Services
 
                 if (choice == MainMenuChoice.Quit) { QuitGame(); return; }
 
+                // Ристалище — не забег: ни сейва, ни акта, ни карты. Открываем площадку, ждём выхода
+                // и возвращаемся к меню тем же витком.
+                if (choice == MainMenuChoice.ProvingGrounds)
+                {
+                    await ShowProvingGroundsAsync();
+                    continue;
+                }
+
                 if (choice == MainMenuChoice.Continue)
                 {
                     Core.Persistence.SaveLoadResult<Guild.RunState> loaded = _runStates.TryLoad();
@@ -154,6 +170,34 @@ namespace Guildmaster.Game.Services
                     Debug.Log("[GameFlow] - забег прерван из меню → возврат в главное меню");
                 }
             }
+        }
+
+        /// <summary>
+        /// Открыть Ристалище и держать цикл здесь, пока игрок не выйдет с площадки
+        /// (ГДД «Modes - Proving Grounds»).
+        /// </summary>
+        /// <remarks>
+        /// Цикл обязан ждать: без ожидания он тут же показал бы главное меню поверх площадки, и вышло бы
+        /// ровно то, на что нельзя смотреть — бой под меню. Решение о входе принимает не этот метод, а
+        /// владелец расстановки (интент может быть и отклонён), поэтому выход ловим по СОСТОЯНИЮ площадки,
+        /// а не по своему предположению о нём.
+        /// </remarks>
+        private async UniTask ShowProvingGroundsAsync()
+        {
+            if (_provingGroundsPub == null || _provingGroundsChangedSub == null)
+            {
+                Debug.LogWarning("[GameFlow] - Ристалище не разведено (нет интента или состояния) → назад в меню");
+                return;
+            }
+
+            var closed = new UniTaskCompletionSource();
+            using (_provingGroundsChangedSub.Subscribe(e => { if (!e.Active) closed.TrySetResult(); }))
+            {
+                _provingGroundsPub.Publish(new Data.Definitions.SetTestZoneRequest(true));
+                await closed.Task;
+            }
+
+            Debug.Log("[GameFlow] - Ристалище закрыто → главное меню");
         }
 
         private static void QuitGame()
