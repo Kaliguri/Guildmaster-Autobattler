@@ -53,10 +53,17 @@ def get(url):
         return json.loads(response.read().decode("utf-8"))
 
 
-def search(query, count, max_duration, any_license, token):
-    filters = [f"duration:[0.05 TO {max_duration}]"]
-    if not any_license:
-        filters.append('license:"Creative Commons 0"')
+def short_license(url):
+    """Человекочитаемая метка лицензии: в игру без оговорок идёт только CC0."""
+    u = (url or "").lower()
+    if "publicdomain/zero" in u: return "CC0"
+    if "by-nc" in u:             return "CC-BY-NC (в игру НЕЛЬЗЯ: некоммерческая)"
+    if "/by/" in u:              return "CC-BY (нужен автор в титрах)"
+    if "sampling" in u:          return "Sampling+ (нужен автор в титрах)"
+    return url or "?"
+
+
+def query_api(query, count, filters, token):
     params = {
         "query": query,
         "filter": " ".join(filters),
@@ -65,7 +72,44 @@ def search(query, count, max_duration, any_license, token):
         "fields": "id,name,license,duration,username,previews,url,avg_rating,num_ratings",
         "token": token,
     }
-    return get(f"{API}/search/text/?{urllib.parse.urlencode(params)}").get("results", [])
+    data = get(f"{API}/search/text/?{urllib.parse.urlencode(params)}")
+    return data.get("results", []), data.get("count", 0)
+
+
+def search(query, count, max_duration, any_license, token):
+    """
+    Ищет с фильтрами, а на пустой выдаче отступает по одному условию за раз и говорит об этом.
+    Freesound складывает условия по И, поэтому узкое описание плюс жёсткая длительность легко
+    дают ноль — и без объяснения это читается как «API не работает».
+    """
+    license_filter = [] if any_license else ['license:"Creative Commons 0"']
+    duration_filter = [f"duration:[0.05 TO {max_duration}]"]
+
+    results, total = query_api(query, count, license_filter + duration_filter, token)
+    if results:
+        return results, total, None
+
+    results, total = query_api(query, count, license_filter, token)
+    if results:
+        return results, total, f"по длительности до {max_duration} с ничего не нашлось — показываю без неё"
+
+    # Слова складываются по И, а OR движок не понимает (проверено: «holy OR magic OR chime» даёт 2
+    # результата против 4001 у одного «chime»). Поэтому сокращаем запрос с хвоста: три слова → два
+    # → одно. Выдача шире и грязнее, но её потом ранжирует CLAP.
+    words = query.split()
+    while len(words) > 1:
+        words = words[:-1]
+        shorter = " ".join(words)
+        results, total = query_api(shorter, count, license_filter, token)
+        if results:
+            return results, total, f"по всему запросу пусто — ищу по «{shorter}»"
+
+    if not any_license:
+        results, total = query_api(query, count, duration_filter, token)
+        if results:
+            return results, total, "среди CC0 пусто — это НЕ CC0, в титры придётся вписать автора"
+
+    return [], 0, None
 
 
 def main():
@@ -79,10 +123,13 @@ def main():
     args = parser.parse_args()
 
     token = api_key()
-    results = search(args.query, args.count, args.max_duration, args.any_license, token)
+    results, total, note = search(args.query, args.count, args.max_duration, args.any_license, token)
     if not results:
-        print("Ничего не нашлось — попробуй другое описание.")
+        print("Ничего не нашлось. Freesound складывает слова запроса по И — попробуй короче")
+        print("(«poison bubbling» вместо «poison bubbling toxic acid hiss»).")
         return 0
+    if note:
+        print(f"\n! {note}")
 
     slug = "".join(c if c.isalnum() else "_" for c in args.query)[:40]
     folder = os.path.join(OUT_DIR, slug)
@@ -90,10 +137,10 @@ def main():
         os.makedirs(folder, exist_ok=True)
 
     manifest = []
-    print(f"\nнайдено {len(results)} по «{args.query}»:\n")
+    print(f"\nпоказываю {len(results)} из {total} по «{args.query}»:\n")
     for i, item in enumerate(results, start=1):
         rating = f"{item.get('avg_rating', 0):.1f}/{item.get('num_ratings', 0)}"
-        print(f"  {i:2}. [{item['license'].split('/')[-2] if '/' in item['license'] else item['license']}] "
+        print(f"  {i:2}. [{short_license(item['license'])}] "
               f"{item['name']}  ({item['duration']:.2f} с, рейтинг {rating})")
         print(f"      {item['url']}")
         entry = dict(id=item["id"], name=item["name"], license=item["license"],
