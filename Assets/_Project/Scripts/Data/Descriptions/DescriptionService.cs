@@ -20,15 +20,17 @@ namespace Guildmaster.Data.Descriptions
         private const string PerSecondKey = "ui.unit.per_second";
 
         private readonly ILocalizationService _loc;
+        private readonly IKeywordStyle _style;   // оформление терминов; null = чистый текст со скобками
 
         // Подписи единиц дёргаются на каждое число — кешируем на локаль, а не ходим в таблицу
         // по разу на стат: панель юнита рисует их десятками, тултип обновляется дважды в секунду.
         private UnitLabels _units;
         private bool _unitsReady;
 
-        public DescriptionService(ILocalizationService loc)
+        public DescriptionService(ILocalizationService loc, IKeywordStyle style = null)
         {
             _loc = loc;
+            _style = style;
             if (_loc != null) _loc.LocaleChanged += OnLocaleChanged;
         }
 
@@ -41,7 +43,7 @@ namespace Guildmaster.Data.Descriptions
         public string Describe(ContentDefinition def, IReadOnlyDictionary<string, object> args)
         {
             string key = ContentKeys.DescKey(def);
-            return key == null ? string.Empty : KeywordMarkup.Render(Localized(key, args), KeywordForm);
+            return key == null ? string.Empty : KeywordMarkup.Render(Localized(key, args), KeywordForm, _style);
         }
 
         public string DescribeFull(ContentDefinition def, IReadOnlyDictionary<string, object> args)
@@ -51,7 +53,7 @@ namespace Guildmaster.Data.Descriptions
             string full = Localized(key, args);
             // Полного текста может не быть (термин объяснён одной строкой) — тогда честнее показать
             // краткий, чем пустую статью.
-            return string.IsNullOrEmpty(full) ? Describe(def, args) : KeywordMarkup.Render(full, KeywordForm);
+            return string.IsNullOrEmpty(full) ? Describe(def, args) : KeywordMarkup.Render(full, KeywordForm, _style);
         }
 
         public string DescribePlain(ContentDefinition def, IReadOnlyDictionary<string, object> args)
@@ -90,12 +92,12 @@ namespace Guildmaster.Data.Descriptions
         public string DescribeStat(IStatExplainer stats, StatType stat, bool detailed)
             => StatFormat.Describe(Explain(stats, stat, detailed));
 
-        public FormattedStat Explain(IStatExplainer stats, StatType stat, bool detailed)
+        public FormattedStat Explain(IStatExplainer stats, StatType stat, bool detailed, bool rich = false)
         {
             if (stats == null) return default;
 
             StatValue value = stats.Explain(stat);
-            if (!detailed || !value.IsModified) return new FormattedStat(value, null, detailed, Units);
+            if (!detailed || !value.IsModified) return new FormattedStat(value, null, detailed, Units, rich);
 
             var names = new string[value.Terms.Length];
             for (int i = 0; i < names.Length; i++)
@@ -106,7 +108,7 @@ namespace Guildmaster.Data.Descriptions
                 names[i] = string.IsNullOrEmpty(key) ? null : _loc?.GetString(key);
             }
 
-            return new FormattedStat(value, names, true, Units);
+            return new FormattedStat(value, names, true, Units, rich);
         }
 
         private UnitLabels Units

@@ -59,6 +59,10 @@ namespace Guildmaster.Data.Descriptions
         /// Разобранный стат с локализованными именами источников — для UI, который рисует
         /// разбор сам (панель юнита строит из него строки с иконками, а не одну строку).
         /// </summary>
-        FormattedStat Explain(IStatExplainer stats, StatType stat, bool detailed);
+        /// <param name="rich">
+        /// Строку прочитает элемент с rich text — итог выделяется полужирным. По умолчанию ВЫКЛЮЧЕНО:
+        /// в поле без rich text теги вылезли бы в текст, поэтому выделение просят явно.
+        /// </param>
+        FormattedStat Explain(IStatExplainer stats, StatType stat, bool detailed, bool rich = false);
     }
 }

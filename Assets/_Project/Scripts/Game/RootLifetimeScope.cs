@@ -38,11 +38,11 @@ namespace Guildmaster.Game
         [SerializeField] private GameConfig _gameConfig;
 
         [Tooltip("Каталог звуков (ключ→FMOD-событие; вики impl «09»). Потребители — FmodAudioService и AudioPresenter. " +
-                 "Пусто = игра не падает, но звука нет: назначить ассет Assets/_Project/ScriptableObjects/Audio/AudioCatalog.")]
+                 "ОБЯЗАТЕЛЕН. Пусто = красная ошибка и полная тишина: назначить Assets/_Project/ScriptableObjects/Audio/AudioCatalog.")]
         [SerializeField] private AudioCatalog _audioCatalog;
 
         [Tooltip("Параметры генерации карты акта (глубина/зоны/якоря; оверхол карты 2026-07). Потребитель — GameFlow.BeginAct. " +
-                 "Пусто = фолбэк на дефолтный конфиг (Start+12 испытаний+Boss, зоны разогрев/развитие/пик).")]
+                 "ОБЯЗАТЕЛЕН. Пусто = красная ошибка, и карта пойдёт по дефолтам КОДА, а не по этому ассету.")]
         [SerializeField] private ActConfig _actConfig;
 
         [Tooltip("Стат-конфиг (дефолты статов). ТОТ ЖЕ ассет, что в CombatLifetimeScope — иначе панель " +
@@ -57,19 +57,20 @@ namespace Guildmaster.Game
             builder.Register<IRngService>(_ => new XorShiftRng(GenerateRootSeed()), Lifetime.Singleton);
 
             // Контент: SO — чистые данные, рантайм-индекс (id → def) строится один раз здесь (вики «13» §3.6).
-            builder.RegisterInstance<IContentDatabase>(new ContentRegistry(_contentDatabase.Entries));
+            builder.RegisterInstance<IContentDatabase>(
+                new ContentRegistry(ScopeWiring.Require(_contentDatabase, nameof(RootLifetimeScope), nameof(_contentDatabase)).Entries));
 
-            // Общие дефолты игры (потребителей пока нет — тип/ассет/DI под Фазу 6/7).
-            builder.RegisterInstance(_gameConfig);
+            // Общие дефолты игры (экономика забега — владелец ассет, HARD-правило проекта).
+            builder.RegisterInstance(ScopeWiring.Require(_gameConfig, nameof(RootLifetimeScope), nameof(_gameConfig)));
 
-            // Конфиг генерации карты акта (оверхол 2026-07). Ассет не назначен → дефолтный инстанс (POCO-дефолты
-            // с зонами/якорями), игра не падает — тот же приём, что у AudioCatalog. Потребитель — GameFlow.
-            builder.RegisterInstance(_actConfig != null ? _actConfig : ScriptableObject.CreateInstance<ActConfig>());
+            // Конфиг генерации карты акта (оверхол 2026-07). Потребитель — GameFlow.
+            builder.RegisterInstance(ScopeWiring.Optional(_actConfig, nameof(RootLifetimeScope), nameof(_actConfig),
+                "карта акта пойдёт по дефолтам кода, а не по ассету — правки дизайнера не применятся"));
 
             // Каталог доступен обоим потребителям (FmodAudioService резолвит ключ→событие, AudioPresenter
-            // строит поверх него резолвер). Ассет не назначен → пустой рантайм-инстанс (всё в тишину, бой
-            // не падает) — тот же приём, что у CombatFeelConfig.
-            var audioCatalog = _audioCatalog != null ? _audioCatalog : ScriptableObject.CreateInstance<AudioCatalog>();
+            // строит поверх него резолвер).
+            var audioCatalog = ScopeWiring.Optional(_audioCatalog, nameof(RootLifetimeScope), nameof(_audioCatalog),
+                "звука не будет вообще");
             builder.RegisterInstance(audioCatalog);
             builder.Register<FmodAudioService>(Lifetime.Singleton).As<IAudioService>();
 
@@ -82,11 +83,18 @@ namespace Guildmaster.Game
             // Стат-превью для UI (панель деталей инвентаря): считает те же числа, что боевая сборка.
             // Живёт в корне, а не в боевом скоупе: инвентарь открывается и вне боя.
             builder.Register<IUnitStatPreview>(
-                _ => new UnitStatPreview(_statsConfig, _classBalanceConfig), Lifetime.Singleton);
+                _ => new UnitStatPreview(
+                    ScopeWiring.Require(_statsConfig, nameof(RootLifetimeScope), nameof(_statsConfig)),
+                    ScopeWiring.Require(_classBalanceConfig, nameof(RootLifetimeScope), nameof(_classBalanceConfig))),
+                Lifetime.Singleton);
 
             // Слой описаний (Трек Д-о, план §II.10.1): единственная дорога, по которой число попадает
             // игроку на глаза. Тултипы, карточки и (позже) панель юнита берут текст и величины отсюда,
             // а не считают у себя — иначе на первом же ребалансе экраны разойдутся с боем.
+            // Оформление терминов (цвет по разделу глоссария + полужирный). Регистрируется ДО слоя
+            // описаний: тот принимает его через конструктор и больше ничего о цветах не знает —
+            // палитра остаётся в USS, откуда её и читают доноры (см. KeywordStyle).
+            builder.Register<KeywordStyle>(Lifetime.Singleton).As<IKeywordStyle>().AsSelf();
             builder.Register<DescriptionService>(Lifetime.Singleton).As<IDescriptionService>();
 
             // Тултипы (Трек Т, план §II.10.5): одна система на панель + сборка содержимого по запросу.

@@ -33,7 +33,7 @@ namespace Guildmaster.Data.Descriptions
         /// Развернуть разметку в rich text. <paramref name="form"/> отдаёт форму слова по (id, падеж);
         /// вернул пусто — на месте термина останется его id, и дырка в локализации будет видна сразу.
         /// </summary>
-        public static string Render(string text, Func<string, string, string> form)
+        public static string Render(string text, Func<string, string, string> form, IKeywordStyle style = null)
         {
             if (string.IsNullOrEmpty(text) || text.IndexOf("[kw:", StringComparison.Ordinal) < 0) return text;
 
@@ -42,11 +42,14 @@ namespace Guildmaster.Data.Descriptions
                 string id = FullId(m.Groups[1].Value);
                 string caseTag = m.Groups[2].Success ? m.Groups[2].Value : null;
                 string word = Word(form, id, caseTag);
+                string open  = style?.Open(id) ?? string.Empty;
+                string close = string.IsNullOrEmpty(open) ? string.Empty : (style?.Close(id) ?? string.Empty);
                 // <link> даёт событие с нашим id; вид термина — КВАДРАТНЫЕ СКОБКИ и заглавная буква
                 // (решение Макса 2026-07-26): «[Скрытность]» читается как термин даже в сыром тексте —
                 // в логе, в поиске, в редакторе таблиц. Подчёркивание работало только на экране и
-                // терялось всюду, где rich text не рисуется.
-                return "<link=" + id + ">[" + word + "]</link>";
+                // терялось всюду, где rich text не рисуется. Цвет и полужирность приходят снаружи:
+                // палитра живёт в USS, и знать её этому коду нечем и незачем.
+                return "<link=" + id + ">" + open + "[" + word + "]" + close + "</link>";
             });
         }
 

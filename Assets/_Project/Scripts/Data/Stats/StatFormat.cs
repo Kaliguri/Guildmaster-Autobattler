@@ -44,18 +44,26 @@ namespace Guildmaster.Data.Stats
         public readonly bool Detailed;
 
         /// <summary>
+        /// Строку увидит элемент с rich text — число можно выделить полужирным. Флагом, а не всегда:
+        /// в поле без rich text теги вылезли бы в текст как «&lt;b&gt;47&lt;/b&gt;».
+        /// </summary>
+        public readonly bool Rich;
+
+        /// <summary>
         /// Подписи единиц. Едут внутри значения, а не берутся форматтером снаружи: Smart Format
         /// создаёт свои форматтеры сам (сериализует их в настройках локализации), и дотянуться
         /// оттуда до сервиса нечем — значит всё нужное должно приехать в аргументе.
         /// </summary>
         public readonly UnitLabels Units;
 
-        public FormattedStat(StatValue value, string[] sourceNames, bool detailed, UnitLabels units)
+        public FormattedStat(StatValue value, string[] sourceNames, bool detailed, UnitLabels units,
+            bool rich = false)
         {
             Value = value;
             SourceNames = sourceNames ?? System.Array.Empty<string>();
             Detailed = detailed;
             Units = units;
+            Rich = rich;
         }
     }
 
@@ -88,7 +96,9 @@ namespace Guildmaster.Data.Stats
         {
             UnitLabels units = stat.Units;
             StatValue v = stat.Value;
-            if (!stat.Detailed || !v.IsModified) return Scalar(v.Final, v.Kind, units);
+            // Итог — то, ради чего фразу читают: в rich text он выделяется полужирным, чтобы глаз
+            // цеплялся за число, а не за слова вокруг него.
+            if (!stat.Detailed || !v.IsModified) return Emphasize(Scalar(v.Final, v.Kind, units), stat.Rich);
 
             var sb = new StringBuilder();
             sb.Append(Scalar(v.Base, v.Kind, units));
@@ -109,9 +119,11 @@ namespace Guildmaster.Data.Stats
                 }
             }
 
-            sb.Append(" = ").Append(Scalar(v.Final, v.Kind, units));
+            sb.Append(" = ").Append(Emphasize(Scalar(v.Final, v.Kind, units), stat.Rich));
             return sb.ToString();
         }
+
+        private static string Emphasize(string value, bool rich) => rich ? "<b>" + value + "</b>" : value;
 
         private static void AppendSigned(StringBuilder sb, float delta, ValueKind kind, UnitLabels units)
         {

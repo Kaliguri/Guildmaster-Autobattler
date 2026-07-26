@@ -114,6 +114,7 @@ namespace Guildmaster.UI
         private VisualElement _layerModal;        // [4] Modal навигатора (над топбаром, scrim накрывает его)
         private VisualElement _layerTooltip;      // [6] окно тултипа (Трек Т) — над топбаром и модалками
         private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
+        private Tooltips.KeywordStyle _keywordStyle; // Трек Т: цвет терминов, читается с USS-доноров
         private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
         private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
@@ -161,10 +162,12 @@ namespace Guildmaster.UI
             ISubscriber<OpenNodeFarewellRequest> openFarewellSub,
             ISubscriber<OpenTitleCardRequest> openTitleCardSub,
             Tooltips.TooltipSystem tooltips,
+            Tooltips.KeywordStyle keywordStyle,
             UiSoundSystem uiSound)
         {
             _uiSound = uiSound;
             _tooltips = tooltips;
+            _keywordStyle = keywordStyle;
             _screenBackdropPub = screenBackdropPub;
             _screenFadeSub     = screenFadeSub;
             _openCampSub = openCampSub;
@@ -199,14 +202,21 @@ namespace Guildmaster.UI
             ApplyDeviceProfile(); // II.12.9: device-профиль на корне панели до прочей инициализации
             if (_router == null || _input == null)
             {
-                Debug.LogWarning("[UiRootBootstrap] Нет инъекции (MenuRouter/IInputService) — в этой сцене отсутствует " +
-                                 "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
+                // Ошибка, а не предупреждение: отсюда не регистрируется НИ ОДНА подписка на запросы экранов,
+                // а презентеры потока (заставка, главное меню, исход) ждут ответа UI без таймаута и без
+                // токена. То есть этот ранний выход — единственный способ повесить игру навсегда, и раньше
+                // он сообщал о себе жёлтой строчкой (аудит фолбэков 2026-07-26, п.3).
+                Debug.LogError("[UiRootBootstrap] Нет инъекции (MenuRouter/IInputService) — в этой сцене отсутствует " +
+                               "RootLifetimeScope? Рантайм-меню отключено, и петля игры встанет на первом же экране.");
                 return;
             }
             BuildLayers(); // Ф4: скелет слоёв-контейнеров ДО инициализации роутера (навигатор кладёт экраны в них)
             // Трек Т: система тултипов слушает всплывающие запросы на КОРНЕ панели, а окно держит в своём
             // слое — поэтому привязка идёт сразу после слоёв и до построения экранов.
             _tooltips?.Attach(_doc.rootVisualElement, _layerTooltip);
+            // Доноры цвета терминов: невидимые элементы с классами .gm-kw--* в слое подсказок. Так
+            // палитра остаётся в USS, а rich text получает готовый hex (rich text переменные не читает).
+            _keywordStyle?.Attach(_layerTooltip);
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
@@ -665,6 +675,7 @@ namespace Guildmaster.UI
             _openTitleCardSubscription?.Dispose();
 
             _tooltips?.Detach();                                      // Трек Т: снять окно и подписки с панели
+            _keywordStyle?.Detach();                                  // Трек Т: снять доноров цвета
 
             if (_fadeRt != null) { _fadeRt.Release(); _fadeRt = null; } // цель шторки живёт вне GC — освобождаем руками
             if (_fadeMat != null) { Destroy(_fadeMat); _fadeMat = null; }

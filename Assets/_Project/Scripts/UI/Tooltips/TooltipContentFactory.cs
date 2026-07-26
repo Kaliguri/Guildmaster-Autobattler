@@ -23,14 +23,16 @@ namespace Guildmaster.UI.Tooltips
         private readonly IDescriptionService _descriptions;
         private readonly ILocalizationService _loc;
         private readonly IUnitStatPreview _statPreview;
+        private readonly IKeywordStyle _style;
 
         public TooltipContentFactory(IContentDatabase content, IDescriptionService descriptions,
-            ILocalizationService loc, IUnitStatPreview statPreview)
+            ILocalizationService loc, IUnitStatPreview statPreview, IKeywordStyle style = null)
         {
             _content      = content;
             _descriptions = descriptions;
             _loc          = loc;
             _statPreview  = statPreview;
+            _style        = style;
         }
 
         public VisualElement Build(TooltipRequest request, bool detailed)
@@ -111,7 +113,10 @@ namespace Guildmaster.UI.Tooltips
             card.SetTitle(title);
             // Объяснение стата ссылается на термины («снижает [kw:physical]») — разворачиваем той же
             // разметкой, что и описания контента, иначе в подсказке торчал бы сырой [kw:…].
-            card.SetDesc(KeywordMarkup.Render(desc, _descriptions != null ? _descriptions.KeywordForm : (System.Func<string, string, string>)null));
+            card.SetDesc(KeywordMarkup.Render(
+                desc,
+                _descriptions != null ? _descriptions.KeywordForm : (System.Func<string, string, string>)null,
+                _style));
             return card;
         }
 
