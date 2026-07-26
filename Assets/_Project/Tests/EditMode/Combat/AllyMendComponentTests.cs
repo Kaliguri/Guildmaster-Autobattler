@@ -40,6 +40,48 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
+        public void NeverHealsSelf_EvenWhenBearerIsTheMostWounded()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+
+            RuntimeUnit shepherd = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 100f, hp: 10f);          // 10% — самый раненый
+            RuntimeUnit ally     = MakeUnit(1, team: 0, pos: new Vector2(2f, 0f), maxHp: 100f, hp: 30f);   // 30%
+            RuntimeUnit victim   = MakeUnit(3, team: 1, pos: new Vector2(5f, 0f), maxHp: 100f, hp: 100f);
+            ctx.UnitsInWorld.AddRange(new[] { shepherd, ally });
+
+            var comp = new AllyMendComponent().With("_fraction", 1f).With("_radius", 5f).With("_autoAttackOnly", true);
+            sys.Apply(shepherd, TestEffect.Make(baseDuration: -1f, components: comp), shepherd, ctx);
+
+            var ev = new CombatEventData(CombatEvent.DamageDealt, shepherd, victim, 40f, EffectTag.None,
+                sourceKind: DamageSourceKind.AutoAttack);
+            sys.Dispatch(shepherd, in ev, ctx);
+
+            Assert.AreEqual(1, ctx.Heals.Count, "Хил ушёл союзнику, а не пропал");
+            Assert.AreSame(ally, ctx.Heals[0].Target, "Себя носитель не лечит, даже будучи самым раненым");
+        }
+
+        [Test]
+        public void DoesNotHeal_WhenBearerIsAlone()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+
+            RuntimeUnit shepherd = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 100f, hp: 20f);
+            RuntimeUnit victim   = MakeUnit(3, team: 1, pos: new Vector2(5f, 0f), maxHp: 100f, hp: 100f);
+            ctx.UnitsInWorld.Add(shepherd);
+
+            var comp = new AllyMendComponent().With("_fraction", 1f).With("_radius", 5f).With("_autoAttackOnly", true);
+            sys.Apply(shepherd, TestEffect.Make(baseDuration: -1f, components: comp), shepherd, ctx);
+
+            var ev = new CombatEventData(CombatEvent.DamageDealt, shepherd, victim, 40f, EffectTag.None,
+                sourceKind: DamageSourceKind.AutoAttack);
+            sys.Dispatch(shepherd, in ev, ctx);
+
+            Assert.AreEqual(0, ctx.Heals.Count, "Рядом никого — свет уходит в пустоту, а не в самолечение");
+        }
+
+        [Test]
         public void DoesNotHeal_OnNonAutoAttackDamage_WhenAutoAttackOnly()
         {
             var sys = new EffectSystem();

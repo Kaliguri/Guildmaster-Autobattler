@@ -60,10 +60,10 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
-        public void Bulwark_RespectsInternalCooldown()
+        public void Bulwark_SpendsTwoChargesThenWaitsForRecharge()
         {
-            // Внутренний КД проверяем напрямую по ReactiveReadyTick: срабатывание перевзводит его,
-            // блокировка — нет. (Не по щиту: в headless-контексте 2-сек щит-эффект не истекает без
+            // Заряды проверяем напрямую по ChargeReadyTicks: срабатывание тратит ОДИН заряд, каждый
+            // перезаряжается независимо. (Не по щиту: в headless-контексте щит-эффект не истекает без
             // EffectSystem.Tick, и повторный Apply ушёл бы в Refresh — это артефакт теста, не бага.)
             var es  = new EffectSystem();
             var ctx = new TickContext(es);
@@ -76,17 +76,25 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             int cd = Mathf.RoundToInt(7f * SimConstants.TickRate);
 
+            Assert.AreEqual(2, bulwark.ChargeReadyTicks.Length, "Два заряда взведены при наложении пассивки");
+
             ctx.Tick = 0;
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd, bulwark.ReactiveReadyTick, "Первое срабатывание взвело внутренний КД");
+            Assert.AreEqual(cd, bulwark.ChargeReadyTicks[0], "Первый удар потратил первый заряд");
+            Assert.AreEqual(0,  bulwark.ChargeReadyTicks[1], "Второй заряд ещё цел");
 
-            ctx.Tick = 1; // в пределах КД
+            ctx.Tick = 1; // сразу следом — второй удар гасится вторым зарядом
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd, bulwark.ReactiveReadyTick, "В КД повторного срабатывания нет — КД не перевзведён");
+            Assert.AreEqual(1 + cd, bulwark.ChargeReadyTicks[1], "Второй удар подряд потратил второй заряд");
 
-            ctx.Tick = cd; // КД истёк
+            ctx.Tick = 2; // зарядов не осталось — удар проходит, таймеры не сдвигаются
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd + cd, bulwark.ReactiveReadyTick, "После КД сработало снова — КД перевзведён");
+            Assert.AreEqual(cd,     bulwark.ChargeReadyTicks[0], "Без готовых зарядов первый таймер не перевзведён");
+            Assert.AreEqual(1 + cd, bulwark.ChargeReadyTicks[1], "Без готовых зарядов второй таймер не перевзведён");
+
+            ctx.Tick = cd; // первый заряд восстановился
+            es.RunPreDamage(defender, in incoming, ctx);
+            Assert.AreEqual(cd + cd, bulwark.ChargeReadyTicks[0], "Восстановившийся заряд снова потрачен");
         }
 
         [Test]
@@ -193,6 +201,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         private static EffectData BulwarkPassive()
         {
             var bulwark = new BulwarkComponent()
+                .With("_maxCharges", 2)
                 .With("_internalCooldownSeconds", 7f)
                 .With("_shieldEffect", BulwarkShield());
             return TestEffect.Make(

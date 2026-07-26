@@ -71,7 +71,7 @@ MonoBehaviour:
     _castConditionCount: 1
     _castConditionRadius: 0
     _castConditionHpPct: 0.5
-    _castOverrideSelfHpPct: 0.3
+    _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
     _displaces: 0

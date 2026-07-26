@@ -7,39 +7,68 @@ using UnityEngine;
 namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
-    /// «Оплот» (§9.3, §10.3): pre-damage реактив. Перед входящим уроном — если выполнен триггер
-    /// блока F (читается из <c>self.Unit.Ai.PassiveTrigger</c>) и истёк внутренний кулдаун —
+    /// «Оплот» (§9.3, §10.3): pre-damage реактив с зарядами. Перед входящим уроном — если выполнен
+    /// триггер блока F (читается из <c>self.Unit.Ai.PassiveTrigger</c>) и есть готовый заряд —
     /// накладывает на носителя таймированный щит (<see cref="_shieldEffect"/>), который тут же
-    /// поглощает триггер-удар. Внутренний КД хранится per-effect в
-    /// <see cref="RuntimeEffect.ReactiveReadyTick"/> (сверка с текущим тиком, без декрементов).
+    /// поглощает триггер-удар. Состояние зарядов — per-effect в
+    /// <see cref="RuntimeEffect.ChargeReadyTicks"/> (сверка с текущим тиком, без декрементов),
+    /// как у <see cref="DodgeComponent"/>.
     /// </summary>
+    /// <remarks>
+    /// Щит намеренно короткий (0.4 с в ассете), а зарядов несколько: тогда «Оплот» гасит ровно те
+    /// удары, ради которых поднялся, и его сила снова определяется величиной щита, а не тем, сколько
+    /// ударов успело прилететь за время его жизни (замер 2026-07-26: при 2-секундном щите правка
+    /// величины не меняла размен один-на-один вовсе).
+    /// </remarks>
     [Serializable]
-    public sealed class BulwarkComponent : IPreDamageComponent
+    public sealed class BulwarkComponent : IPreDamageComponent, IStackableComponent
     {
-        [Tooltip("Внутренний кулдаун между поднятиями щита, сек (стартует ПОСЛЕ срабатывания). Защитник = 4.")]
+        [Tooltip("Число зарядов щита. Защитник = 2 (заряды восстанавливаются независимо).")]
+        [SerializeField] private int _maxCharges = 1;
+
+        [Tooltip("Независимая перезарядка ОДНОГО заряда, сек (стартует ПОСЛЕ срабатывания). Защитник = 5.")]
         [SerializeField] private float _internalCooldownSeconds = 4f;
 
         [Tooltip("Таймированный щит-эффект, накладываемый на носителя при срабатывании (величина — в его MissingHpShieldComponent).")]
         [SerializeField] private EffectData _shieldEffect;
 
-        // Pre-damage реактив: рабочих OnApply/OnExpire нет (щит живёт отдельным эффектом).
-        public void OnApply(in EffectContext ctx) { }
+        public void OnApply(in EffectContext ctx)
+        {
+            // Заряды стартуют готовыми (readyTick = 0 ≤ любого CurrentTick).
+            ctx.Effect.ChargeReadyTicks = new int[Mathf.Max(1, _maxCharges)];
+        }
+
         public void OnExpire(in EffectContext ctx) { }
+
+        public void OnStacksChanged(int previousStacks, in EffectContext ctx)
+        {
+            // Рестак НЕ трогает заряды: их число фиксировано, а per-charge таймеры уже живут в
+            // ctx.Effect.ChargeReadyTicks. Дефолтный OnExpire→OnApply дал бы бесплатный рефилл
+            // всех зарядов на каждый стак (та же гоча, что у «Изворотливости»).
+        }
 
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             RuntimeUnit self = ctx.Target;
             if (self == null || self.IsDead || _shieldEffect == null) return;
 
-            // Внутренний кулдаун (§9.3): абсолютный «готов с тика».
-            if (ctx.Combat.CurrentTick < ctx.Effect.ReactiveReadyTick) return;
-
             if (!TriggerMet(self, in incoming)) return;
 
-            ctx.Combat.ApplyEffect(self, _shieldEffect, self);
+            int[] charges = ctx.Effect.ChargeReadyTicks;
+            if (charges == null) return;
 
-            int cdTicks = Mathf.Max(1, Mathf.RoundToInt(_internalCooldownSeconds * SimConstants.TickRate));
-            ctx.Effect.ReactiveReadyTick = ctx.Combat.CurrentTick + cdTicks;
+            int now = ctx.Combat.CurrentTick;
+            int rechargeTicks = Mathf.Max(1, Mathf.RoundToInt(_internalCooldownSeconds * SimConstants.TickRate));
+
+            for (int i = 0; i < charges.Length; i++)
+            {
+                if (charges[i] > now) continue; // заряд ещё перезаряжается
+
+                charges[i] = now + rechargeTicks;
+                ctx.Combat.ApplyEffect(self, _shieldEffect, self);
+                return;
+            }
+            // нет готовых зарядов — удар проходит как есть
         }
 
         /// <summary>

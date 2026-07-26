@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: effect.bulwark_shield
   _polarity: 0
   _tags: 65
-  _baseDuration: 2
+  _baseDuration: 0.4
   _stacking: 2
   _maxStacks: 1
   _cleanseTier: 0

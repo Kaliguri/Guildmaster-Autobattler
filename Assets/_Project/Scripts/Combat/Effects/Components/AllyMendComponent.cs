@@ -7,7 +7,9 @@ namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
     /// «Целебный свет» (Светлый пастырь): при нанесении урона автоатакой носитель лечит самого
-    /// раненого союзника (по HP%) в радиусе вокруг СЕБЯ на долю нанесённого урона. Реактивный —
+    /// раненого союзника (по HP%) в радиусе вокруг СЕБЯ на долю нанесённого урона. Себя носитель
+    /// НЕ лечит — свет уходит другим (решение Макса 2026-07-26; вампиризм на себя — это отдельный
+    /// <see cref="LifestealComponent"/>). Реактивный —
     /// слушает <see cref="CombatEvent.DamageDealt"/> своего носителя. Воплощает идентичность «Света»
     /// (ГДД «8»): чистый (True) урон + лечение союзнику. Аналог <see cref="LifestealComponent"/>, но
     /// исцеляет не себя, а раненого союзника.
@@ -54,7 +56,7 @@ namespace Guildmaster.Combat.Effects.Components
             for (int i = 0; i < _allies.Count; i++)
             {
                 RuntimeUnit u = _allies[i];
-                if (u.IsDead) continue;
+                if (u.IsDead || ReferenceEquals(u, self)) continue; // себя не лечим
 
                 float maxHp = u.Stats.Get(StatType.MaxHP);
                 if (maxHp <= 0f) continue;
