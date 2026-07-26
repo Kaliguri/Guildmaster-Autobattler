@@ -17,16 +17,19 @@ namespace Guildmaster.Game.Services
     /// Оркестратор макро-флоу игры (план 11 §2, §4). A2: умеет прогнать узел боя через <see cref="BattleFlow"/>
     /// (Prep→Combat→Outcome) поверх <see cref="RunState"/>. Полный флоу забега (MainMenu → карта → узлы →
     /// награды) достраивается шагами A3/B/C; швы (<see cref="IReadyGate"/>, <see cref="IPlayerIntentSource"/>)
-    /// заведены сейчас, соло-тела. Legacy-вход <see cref="BootAsync"/> оставлен для прямого запуска боевой
-    /// сцены (dev-панель F2) — не ломает итерацию.
+    /// заведены сейчас, соло-тела.
     /// </summary>
+    /// <remarks>
+    /// Сцен этот класс не грузит вовсе: и мир, и боевые системы поднимаются один раз на буте
+    /// (<c>GameBootstrap</c>) и живут всю сессию. Legacy-вход «загрузить боевую сцену → выгрузить после боя»
+    /// снят: он спорил с persist-моделью, где бой — команда в живой симуляции.
+    /// </remarks>
     public sealed class GameFlow : IRunControl
     {
         // Токен отмены текущего забега (QA #18): взводится на время RunActAsync, Cancel() из системного меню
         // прерывает висящие await'ы петли (выбор узла/«Продолжить»/исход боя) → возврат в главное меню.
         private CancellationTokenSource _runCts;
 
-        private readonly ISceneLoader        _scenes;
         private readonly IBattleSession      _session;
         private readonly RunStateService     _runStates;
         private readonly IRewardPresenter    _rewardPresenter;
@@ -44,7 +47,6 @@ namespace Guildmaster.Game.Services
         private readonly IPublisher<RunPartyReadyEvent>   _partyReadyPub;
 
         public GameFlow(
-            ISceneLoader        scenes,
             IBattleSession      session,
             RunStateService     runStates,
             IRewardPresenter    rewardPresenter,
@@ -61,7 +63,6 @@ namespace Guildmaster.Game.Services
             IPublisher<OpenTextEventRequest> openEventPub,
             IPublisher<RunPartyReadyEvent>   partyReadyPub)
         {
-            _scenes          = scenes;
             _session         = session;
             _runStates        = runStates;
             _rewardPresenter  = rewardPresenter;
@@ -79,22 +80,9 @@ namespace Guildmaster.Game.Services
             _partyReadyPub   = partyReadyPub;
         }
 
-        /// <summary>Legacy (Фаза 1): просто загрузить боевую сцену. Прямой dev-вход, бой запускает F2-панель.</summary>
-        public async UniTask BootAsync()
-        {
-            Debug.Log("[GameFlow] - Boot (legacy): загружаю BattleScene");
-            await _scenes.LoadBattleAsync();
-        }
-
-        /// <summary>Legacy: выгрузить боевую сцену после боя (парный к <see cref="BootAsync"/>).</summary>
-        public async UniTask OnBattleEndedAsync(BattleOutcome outcome)
-        {
-            Debug.Log($"[GameFlow] - Бой завершён (legacy): {outcome}");
-            await _scenes.UnloadBattleAsync();
-        }
-
         /// <summary>
-        /// A2-разрез: прогнать один бой как узел забега — грузит сцену, ждёт исход (с ретраями), выгружает.
+        /// A2-разрез: прогнать один бой как узел забега — запустить его в живой симуляции, дождаться исхода
+        /// (с ретраями), вернуть арену в мир. Сцен не грузит: боевые системы подняты на буте и живут всегда.
         /// Заводит забег (<see cref="RunState"/>), если его ещё нет. Возвращает исход узла для будущей
         /// награды/перехода (A3). Полноценная петля «узел за узлом» — на карте (B1).
         /// </summary>
@@ -105,7 +93,7 @@ namespace Guildmaster.Game.Services
                            ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
             var ctx  = new RunContext(run, _rng, _readyGate, _intents);
-            var flow = new BattleFlow(preset, _scenes, _session, _localPlayer);
+            var flow = new BattleFlow(preset, _session, _localPlayer);
 
             EventResult result = await flow.Run(ctx);
             _runStates.Autosave(); // точка автосейва после узла (вики «7» §5)

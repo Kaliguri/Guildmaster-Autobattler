@@ -3,10 +3,14 @@ using Cysharp.Threading.Tasks;
 namespace Guildmaster.Game.Services
 {
     /// <summary>
-    /// Шов загрузки/выгрузки боевой сцены (план 11 §2, вики «10» §8). Соло-тело — простая аддитивная
-    /// загрузка (<see cref="SceneLoader"/>); NGO Scene Management встанет за этим же интерфейсом в Фазе 6.
-    /// Введён, чтобы <c>BattleFlow</c> оркестрировал бой поверх абстракции и тестировался без реальной сцены.
+    /// Шов загрузки сцен сессии (план 11 §2, вики «10» §8). Соло-тело — простая аддитивная загрузка
+    /// (<see cref="SceneLoader"/>); NGO Scene Management встанет за этим же интерфейсом в Фазе 6.
     /// </summary>
+    /// <remarks>
+    /// Выгрузки здесь БОЛЬШЕ НЕТ, и это принципиально: обе сцены грузятся один раз на буте и живут всю
+    /// сессию. Бой — команда в живой симуляции, а не загрузка сцены на каждый узел (persist-решение,
+    /// план 12 Ф2); старый путь «загрузить на бой → выгрузить после» снят вместе с legacy-входом.
+    /// </remarks>
     public interface ISceneLoader
     {
         /// <summary>
@@ -15,10 +19,10 @@ namespace Guildmaster.Game.Services
         /// </summary>
         UniTask LoadWorldAsync();
 
-        /// <summary>Аддитивно загрузить BattleScene (no-op, если уже загружена).</summary>
-        UniTask LoadBattleAsync();
-
-        /// <summary>Выгрузить BattleScene (no-op, если не загружена).</summary>
-        UniTask UnloadBattleAsync();
+        /// <summary>
+        /// Аддитивно загрузить персистентную сцену боевых систем (боевой скоуп, презентер, отладка).
+        /// Один раз на буте; no-op, если уже загружена.
+        /// </summary>
+        UniTask LoadCombatSystemsAsync();
     }
 }

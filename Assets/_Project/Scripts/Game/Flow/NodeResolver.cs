@@ -25,7 +25,6 @@ namespace Guildmaster.Game.Flow
     public sealed class NodeResolver : INodeResolver
     {
         private readonly IContentDatabase   _content;
-        private readonly ISceneLoader       _scenes;
         private readonly IBattleSession     _session;
         private readonly ILocalPlayer       _localPlayer;
         private readonly EventEffectApplier _eventEffects;
@@ -39,7 +38,7 @@ namespace Guildmaster.Game.Flow
         private readonly IPublisher<OpenCampRequest>      _openCampPub;
         private readonly IPublisher<OpenNodeFarewellRequest> _farewellPub; // кадр-прощание узла (QA #48/#49)
 
-        public NodeResolver(IContentDatabase content, ISceneLoader scenes, IBattleSession session,
+        public NodeResolver(IContentDatabase content, IBattleSession session,
                             ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
                             IRewardPresenter reward, RunStateService runStates, IContinuePresenter continuePresenter,
                             IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub,
@@ -49,7 +48,6 @@ namespace Guildmaster.Game.Flow
             _openCampPub  = openCampPub;
             _farewellPub  = farewellPub;
             _content      = content;
-            _scenes       = scenes;
             _session      = session;
             _localPlayer  = localPlayer;
             _eventEffects = eventEffects;
@@ -91,7 +89,7 @@ namespace Guildmaster.Game.Flow
                             $"battle.run.{node.Id}");
                     }
 
-                    var battle = new BattleFlow(effective, _scenes, _session, _localPlayer,
+                    var battle = new BattleFlow(effective, _session, _localPlayer,
                                                 () => _runStates.TrySpendRestart()); // пул перезапусков акта (C1)
                     int rewardCount = wantElite ? 2 : 1;   // элитка — два выбора реликвии подряд (B5)
                     return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, _continue, rewardCount);

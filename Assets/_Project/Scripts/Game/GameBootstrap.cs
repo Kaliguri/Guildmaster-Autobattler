@@ -20,7 +20,7 @@ namespace Guildmaster.Game
         [SerializeField] private bool _runActOnBoot;
 
         [Tooltip("ON: на старте прогнать один бой через полный BattleFlow (нужен пресет ниже). " +
-                 "OFF (по умолчанию): legacy — грузить BattleScene, бой запускать dev-панелью F2.")]
+                 "OFF (по умолчанию): обычный вход — главное меню → забег.")]
         [SerializeField] private bool _runBattleFlowOnBoot;
 
         [Tooltip("Стартовый бой для A2-разреза (враги + ростер + режим расстановки). Нужен при включённом флаге.")]
@@ -31,10 +31,6 @@ namespace Guildmaster.Game
 
         [Tooltip("Стартовый текстовый ивент для дебага (StS-style). Нужен при включённом флаге ивента.")]
         [SerializeField] private TextEventData _devStartEvent;
-
-        [Tooltip("ON: legacy-вход — грузить BattleScene, бой запускать F2-панелью (без главного меню). " +
-                 "OFF (по умолчанию): главное меню → забег (D1).")]
-        [SerializeField] private bool _legacyBattleScene;
 
         [Inject] private GameFlow _gameFlow;
         [Inject] private ISceneLoader _sceneLoader;
@@ -52,9 +48,9 @@ namespace Guildmaster.Game
             // даёт вид арены (карта/инвентарь), в бою переиспользуется. Бой (BattleScene) ложится поверх.
             await _sceneLoader.LoadWorldAsync();
 
-            // BattleScene тоже persist (план 12 Ф2): боевой скоуп живёт всю сессию, бой запускается командой
-            // в живой sim (RequestLaunch), а не загрузкой/выгрузкой сцены на каждый узел. Грузим один раз здесь.
-            await _sceneLoader.LoadBattleAsync();
+            // Боевые системы тоже persist (план 12 Ф2): боевой скоуп живёт всю сессию, бой запускается
+            // командой в живой sim (RequestLaunch), а не загрузкой сцены на каждый узел. Грузим один раз здесь.
+            await _sceneLoader.LoadCombatSystemsAsync();
 
             if (_runActOnBoot)
             {
@@ -79,12 +75,6 @@ namespace Guildmaster.Game
 
             if (_runBattleFlowOnBoot)
                 Debug.LogWarning("[GameBootstrap] - флаг BattleFlow включён, но пресет не назначен → legacy-вход");
-
-            if (_legacyBattleScene)
-            {
-                await _gameFlow.BootAsync(); // legacy: грузить BattleScene, бой запускать F2-панелью
-                return;
-            }
 
             await _gameFlow.RunGameAsync(); // D1: главное меню → забег → меню
         }

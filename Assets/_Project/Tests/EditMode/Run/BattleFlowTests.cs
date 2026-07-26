@@ -29,7 +29,7 @@ namespace Guildmaster.Tests.EditMode.Run
         public void Win_FirstTry_Completed_NoRetries()
         {
             var session = new FakeSession(BattleOutcome.Win(MyTeam));
-            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), Restarts(2));
+            var flow    = new BattleFlow(NewPreset(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -42,7 +42,7 @@ namespace Guildmaster.Tests.EditMode.Run
         public void Loss_ThenWin_RetriesOnce_Completed()
         {
             var session = new FakeSession(BattleOutcome.Win(EnemyTeam), BattleOutcome.Win(MyTeam));
-            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), Restarts(2));
+            var flow    = new BattleFlow(NewPreset(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -56,7 +56,7 @@ namespace Guildmaster.Tests.EditMode.Run
             // 1 бой + 2 ретрая = 3 поражения подряд.
             var session = new FakeSession(BattleOutcome.Win(EnemyTeam), BattleOutcome.Win(EnemyTeam),
                                           BattleOutcome.Win(EnemyTeam));
-            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), Restarts(2));
+            var flow    = new BattleFlow(NewPreset(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -69,7 +69,7 @@ namespace Guildmaster.Tests.EditMode.Run
         {
             // Ничья победой не считается ни для кого → для игрока это поражение.
             var session = new FakeSession(BattleOutcome.Draw, BattleOutcome.Win(MyTeam));
-            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), Restarts(2));
+            var flow    = new BattleFlow(NewPreset(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -83,9 +83,9 @@ namespace Guildmaster.Tests.EditMode.Run
             // Один и тот же исход: победила команда 1. Для клиента из команды 1 — победа, из команды 0 — поражение.
             BattleOutcome outcome = BattleOutcome.Win(EnemyTeam);
 
-            var winner = new BattleFlow(NewPreset(), new FakeScenes(), new FakeSession(outcome),
+            var winner = new BattleFlow(NewPreset(), new FakeSession(outcome),
                                         Player(EnemyTeam), Restarts(0));
-            var loser  = new BattleFlow(NewPreset(), new FakeScenes(), new FakeSession(outcome),
+            var loser  = new BattleFlow(NewPreset(), new FakeSession(outcome),
                                         Player(MyTeam), Restarts(0));
 
             Assert.AreEqual(EventOutcome.Completed,     Run(winner).Outcome, "для команды-победителя это победа");
@@ -96,7 +96,7 @@ namespace Guildmaster.Tests.EditMode.Run
         public void Loss_NoRestartBinding_DefeatedImmediately()
         {
             var session = new FakeSession(BattleOutcome.Win(EnemyTeam)) { CanRestart = false };
-            var flow    = new BattleFlow(NewPreset(), new FakeScenes(), session, Player(MyTeam), Restarts(2));
+            var flow    = new BattleFlow(NewPreset(), session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -108,7 +108,7 @@ namespace Guildmaster.Tests.EditMode.Run
         public void NullPreset_Aborted_NoLaunch()
         {
             var session = new FakeSession();
-            var flow    = new BattleFlow(null, new FakeScenes(), session, Player(MyTeam), Restarts(2));
+            var flow    = new BattleFlow(null, session, Player(MyTeam), Restarts(2));
 
             EventResult result = Run(flow);
 
@@ -146,16 +146,6 @@ namespace Guildmaster.Tests.EditMode.Run
             public int Team { get; }
         }
 
-        private sealed class FakeScenes : ISceneLoader
-        {
-            public int Loaded;
-            public int Unloaded;
-            public int WorldLoaded;
-            public UniTask LoadWorldAsync()    { WorldLoaded++; return UniTask.CompletedTask; }
-            public UniTask LoadBattleAsync()   { Loaded++;   return UniTask.CompletedTask; }
-            public UniTask UnloadBattleAsync() { Unloaded++; return UniTask.CompletedTask; }
-        }
-
         private sealed class FakeSession : IBattleSession
         {
             private readonly Queue<BattleOutcome> _outcomes;
@@ -170,7 +160,7 @@ namespace Guildmaster.Tests.EditMode.Run
             public void SetPending(BattlePresetData preset) { }
             public bool TryConsumePending(out BattlePresetData preset) { preset = null; return false; }
 
-            // Persist-мир: launch боя в живом скоупе (заменил SetPending+LoadBattleAsync).
+            // Persist-мир: launch боя в живом скоупе (заменил связку SetPending + загрузка боевой сцены).
             public int  LaunchCount;
             public bool CanLaunch = true;
             public void BindLaunch(Action<BattlePresetData> launch) { }
