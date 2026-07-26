@@ -69,10 +69,14 @@ namespace Guildmaster.Combat.Effects.Components
                 return;
             }
 
+            // Сначала ЖДЁМ текущий интервал, и только потом укорачиваем следующий. Иначе первый
+            // сход после окна назначает срок уже с множителем, и _firstDecaySeconds не отрабатывает
+            // ни разу — заявленная секунда молча превращается в 0.75.
+            eff.TimerTick = now + eff.TimerIntervalTicks;
+
             int minTicks = Mathf.Max(1, Mathf.RoundToInt(_minDecaySeconds * SimConstants.TickRate));
             int nextInterval = Mathf.RoundToInt(eff.TimerIntervalTicks * _decayFalloff);
             eff.TimerIntervalTicks = Mathf.Max(minTicks, nextInterval);
-            eff.TimerTick = now + eff.TimerIntervalTicks;
         }
 
         private void ResetDecay(in EffectContext ctx)
