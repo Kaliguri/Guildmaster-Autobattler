@@ -92,7 +92,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 498aa7d8439661d458d4f2d989f7af0e, type: 2}
   _abilities:
   - _id: hand_of_life
-    _effects: []
+    _effects:
+    - {fileID: 11400000, guid: 67d555f61263dad49b46f92fe514abb4, type: 2}
     _baseCooldown: 6
     _resourceCost: 80
     _targetMode: 3

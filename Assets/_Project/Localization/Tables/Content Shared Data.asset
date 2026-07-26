@@ -803,6 +803,14 @@ MonoBehaviour:
     m_Key: kw.true.name.ins
     m_Metadata:
       m_Items: []
+  - m_Id: 5778316886007808
+    m_Key: effect.life_hand_cleanse.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5778316936339456
+    m_Key: effect.life_hand_cleanse.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
