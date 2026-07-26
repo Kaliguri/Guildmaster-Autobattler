@@ -2,7 +2,7 @@
 title: "Meta - Index"
 order: 0
 status: living
-updated: 2026-07-19
+updated: 2026-07-26
 ---
 
 Карта технической документации (MOC). Здесь — **реализация**, не геймдизайн (дизайн — в `gdd/`). Порядок внутри кластеров задаётся полем `order`, отображаемое имя — `title`, имена файлов — латинские слаги. Ведение — контур скилла `tech-scribe` (в разработке).
@@ -51,6 +51,7 @@ SORT updated ASC, file.name ASC
 - [[tech/40-planning/lighting-2d|2D Lighting]] — динамический 2D-свет, тёмные сцены, normal-карты через Laigter. `planned`
 - [[tech/40-planning/seed|Seed & RNG]] — сиды, генерация забега, воспроизводимость. `planned`
 - [[tech/40-planning/steam-workshop|Steam Workshop]] — Workshop-процессы, версионирование схемы (post-festival). `planned`
+- [[tech/40-planning/save-system|Save System]] — профили и гильдии, версионирование, миграции, Steam Cloud, кооп-швы. `planned`
 
 ## Reference (`10-reference/`) — сухие факты
 
