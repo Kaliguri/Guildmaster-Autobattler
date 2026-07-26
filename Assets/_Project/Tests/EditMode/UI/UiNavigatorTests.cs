@@ -24,7 +24,14 @@ namespace Guildmaster.Tests.EditMode.UI
         {
             public InputContext Context { get; private set; } = InputContext.None;
             public void SetContext(InputContext context) => Context = context;
-            public bool GameplaySuppressed { get; set; }
+            // Копия боевой логики: заглушено, пока держит хотя бы один источник.
+            private InputSuppressSource _suppressors = InputSuppressSource.None;
+            public bool GameplaySuppressed => _suppressors != InputSuppressSource.None;
+            public void SetSuppressed(InputSuppressSource source, bool suppressed)
+            {
+                if (suppressed) _suppressors |=  source;
+                else            _suppressors &= ~source;
+            }
 
             public Vector2 CameraPan => default;
             public float CameraZoomDelta => 0f;
@@ -275,6 +282,28 @@ namespace Guildmaster.Tests.EditMode.UI
 
             Assert.IsTrue(input.GameplaySuppressed, "Modal глушит геймплей");
             Assert.AreEqual(InputContext.Menu, input.Context);
+        }
+
+        /// <summary>
+        /// Навигатор снимает ТОЛЬКО своё глушение. Живой баг: dev-консоль открыта (клавиатура её),
+        /// команда меняет экран, навигатор пересчитывает глушение — и снимает чужое. Enter, которым
+        /// команду отправили, доходил до расстановки и начинал бой.
+        /// </summary>
+        [Test]
+        public void DevConsoleSuppression_SurvivesScreenChange()
+        {
+            var nav = NewNav(out FakeInput input, out FakeClock clock);
+            clock.Phase = BattlePhase.Deployment;
+            input.SetSuppressed(InputSuppressSource.DevConsole, true); // консоль открыта
+
+            nav.Push(new TestScreen(ScreenKind.Sheet)); // команда сменила экран → SyncInput
+            Assert.IsTrue(input.GameplaySuppressed, "консоль открыта — ввод обязан оставаться заглушённым");
+
+            nav.Pop();
+            Assert.IsTrue(input.GameplaySuppressed, "и после снятия экрана тоже: консоль всё ещё держит");
+
+            input.SetSuppressed(InputSuppressSource.DevConsole, false); // консоль закрыли
+            Assert.IsFalse(input.GameplaySuppressed, "отпустили все источники — ввод ожил");
         }
 
         [Test]

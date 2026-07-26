@@ -266,7 +266,9 @@ namespace Guildmaster.UI
             if (_input == null) return;
             UiScreen top = Top;
             bool modal = top != null && top.Kind != ScreenKind.Sheet;
-            _input.GameplaySuppressed = modal;
+            // Только СВОЁ глушение: чужие источники (dev-консоль) держат его сами, и снимать его за
+            // них навигатор не вправе — иначе набор команд протекал бы в геймплей.
+            _input.SetSuppressed(Core.Input.InputSuppressSource.Ui, modal);
 
             if (modal) { _input.SetContext(InputContext.Menu); return; }
 

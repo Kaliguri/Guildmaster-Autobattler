@@ -39,8 +39,20 @@ namespace Guildmaster.Game.Input
 
         public InputContext Context => _context;
 
+        // Кто сейчас держит клавиатуру. Единственный владелец факта «геймплей заглушён»: источники
+        // заявляют свою причину, итог считается здесь. Прежде каждый писал в общее булево напрямую и
+        // снимал чужое глушение — см. InputSuppressSource.
+        private InputSuppressSource _suppressors = InputSuppressSource.None;
+
         /// <inheritdoc/>
-        public bool GameplaySuppressed { get; set; }
+        public bool GameplaySuppressed => _suppressors != InputSuppressSource.None;
+
+        /// <inheritdoc/>
+        public void SetSuppressed(InputSuppressSource source, bool suppressed)
+        {
+            if (suppressed) _suppressors |=  source;
+            else            _suppressors &= ~source;
+        }
 
         public event Action CycleViewRequested;
         public event Action PauseToggleRequested;

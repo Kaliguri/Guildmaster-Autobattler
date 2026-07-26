@@ -124,14 +124,14 @@ namespace Guildmaster.DevTools
         {
             _consoleOpen = true;
             _simulation?.SetPaused(true);
-            if (_input != null) _input.GameplaySuppressed = true;
+            if (_input != null) _input.SetSuppressed(Core.Input.InputSuppressSource.DevConsole, true);
         }
 
         private void ResumeAfterConsole()
         {
             _consoleOpen = false;
             _simulation?.SetPaused(false);
-            if (_input != null) _input.GameplaySuppressed = false;
+            if (_input != null) _input.SetSuppressed(Core.Input.InputSuppressSource.DevConsole, false);
         }
 
         // Dev-хоткеи (new Input System): F5 — полный релоад сцены (пустая арена), R — рестарт боя НА МЕСТЕ.
