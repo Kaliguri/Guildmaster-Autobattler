@@ -35,10 +35,10 @@ MonoBehaviour:
   _stats:
   - Stat: 7
     Op: 3
-    Value: 70
+    Value: 71
   - Stat: 8
     Op: 3
-    Value: 1.1
+    Value: 0.85
   - Stat: 9
     Op: 3
     Value: 8

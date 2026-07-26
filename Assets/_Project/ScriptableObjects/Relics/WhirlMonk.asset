@@ -44,6 +44,12 @@ MonoBehaviour:
   - Stat: 9
     Op: 3
     Value: 1
+  - Stat: 7
+    Op: 3
+    Value: 160
+  - Stat: 8
+    Op: 3
+    Value: 0.75
   _grantedEffects:
   - {fileID: 11400000, guid: 5bbca1847e2a5854fabf515858d38903, type: 2}
   - {fileID: 11400000, guid: 9e50eef356131b4409c788dd915e3a81, type: 2}
