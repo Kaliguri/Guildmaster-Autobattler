@@ -502,7 +502,7 @@ namespace Guildmaster.DevTools
             var textTarget = new Button { text = "текст" };
             textTarget.AddToClassList("gm-button");
             textTarget.WithTooltip(Guildmaster.UI.Tooltips.TooltipRequest.Plain(
-                "Готовая строка: свёрнутые теги, короткое пояснение.", "Подсказка"));
+                "Подсказка", "Готовая строка: свёрнутые теги, короткое пояснение."));
             tipRow.Add(cell(textTarget, "Text"));
 
             string relicId = relics.Count > 0 ? relics[0].Id : null;
@@ -515,7 +515,7 @@ namespace Guildmaster.DevTools
             edgeTarget.AddToClassList("gm-button");
             edgeTarget.style.alignSelf = Align.FlexEnd;
             edgeTarget.WithTooltip(Guildmaster.UI.Tooltips.TooltipRequest.Plain(
-                "Окно у края панели зеркалится влево и не вылезает за границу.", "Флип"));
+                "Флип", "Окно у края панели зеркалится влево и не вылезает за границу."));
             var edgeWrap = new VisualElement();
             edgeWrap.style.width = 320;
             edgeWrap.Add(edgeTarget);

@@ -50,6 +50,11 @@ namespace Guildmaster.UI.Tooltips
         private VisualElement _anchor;        // относительно чего стоит окно
         private bool _visible;
         private bool _pinned;
+
+        // История закреплённого окна (слой 3): переходы по терминам — это ОДНО окно с навигацией,
+        // а не стопка окон. Логика вынесена в TooltipHistory — её можно проверить без панели.
+        private readonly TooltipHistory _history = new();
+        private VisualElement _chrome;        // шапка закреплённого окна: назад / вперёд / закрыть
         private float _hiddenAt = float.NegativeInfinity;
         private bool _detailed;
 
@@ -113,6 +118,7 @@ namespace Guildmaster.UI.Tooltips
 
             _root.RegisterCallback<TooltipShowEvent>(OnShowRequested);
             _root.RegisterCallback<TooltipHideEvent>(OnHideRequested);
+            _root.RegisterCallback<TooltipPinEvent>(OnPinRequested);
 
             // Драг реликвии — единственный жест, который сейчас перекрывает hover (карточку тащат из грида
             // в мир). Драг юнита живёт в мире и над панелью не проходит, но глушитель общий: событий
@@ -134,7 +140,10 @@ namespace Guildmaster.UI.Tooltips
             {
                 _root.UnregisterCallback<TooltipShowEvent>(OnShowRequested);
                 _root.UnregisterCallback<TooltipHideEvent>(OnHideRequested);
+                _root.UnregisterCallback<TooltipPinEvent>(OnPinRequested);
             }
+
+            _history.Clear();
 
             _window?.RemoveFromHierarchy();
             _window = null;
@@ -146,14 +155,63 @@ namespace Guildmaster.UI.Tooltips
             _current = default;
         }
 
+        /// <summary>Окно закреплено: живёт после ухода курсора, ссылки внутри него работают.</summary>
+        public bool IsPinned => _pinned;
+
         /// <summary>
-        /// Закрепить открытое окно: оно переживает уход курсора и снимается только явно (ESC, свой крестик).
-        /// Шов под кооп-пинги (§II.10.5 п.6) — жеста закрепления в UI пока нет, но жизненный цикл его держит.
+        /// Закрепить открытое окно на текущем содержимом (Alt-клик по якорю). Закреплённое окно
+        /// переживает уход курсора, становится кликабельным и снимается только явно — крестиком или ESC.
         /// </summary>
-        public void Pin() => _pinned = _visible;
+        public void Pin()
+        {
+            if (!_visible || _pinned) return;
+            _pinned = true;
+            _history.Reset(_current);
+            ApplyPinnedChrome();
+            // Своего звука у закрепления пока нет: в FMOD заведены только tooltip_show/tooltip_detail,
+            // и заводить пустую запись в каталоге ради ключа — обман (аудио-сторож её и ловит).
+            // Переиспользуем «показ»; отдельные tooltip_pin/tooltip_nav — задача аудио-контура.
+            _sound?.PlayUi("tooltip_show");
+        }
 
         /// <summary>Снять закрепление; окно остаётся видимым до ухода курсора или явного скрытия.</summary>
-        public void Unpin() => _pinned = false;
+        public void Unpin()
+        {
+            if (!_pinned) return;
+            _pinned = false;
+            _history.Clear();
+            ApplyPinnedChrome();
+        }
+
+        /// <summary>
+        /// Перейти к другому содержимому ВНУТРИ закреплённого окна (клик по термину в тексте).
+        /// Переход пишется в историю, а не открывает второе окно (план §II.10.5, слой 3).
+        /// </summary>
+        public void Navigate(TooltipRequest request)
+        {
+            if (!_pinned || !_history.Push(request)) return;
+            _current = _history.Current;
+            Rebuild();
+            _sound?.PlayUi("tooltip_show"); // см. Pin(): своего звука у перехода пока нет
+        }
+
+        /// <summary>Шаг назад по истории закреплённого окна.</summary>
+        public bool GoBack()
+        {
+            if (!_pinned || !_history.GoBack()) return false;
+            _current = _history.Current;
+            Rebuild();
+            return true;
+        }
+
+        /// <summary>Шаг вперёд по истории закреплённого окна.</summary>
+        public bool GoForward()
+        {
+            if (!_pinned || !_history.GoForward()) return false;
+            _current = _history.Current;
+            Rebuild();
+            return true;
+        }
 
         /// <summary>Убрать окно чем бы оно ни держалось. <c>true</c> — было что убирать (для приоритета ESC).</summary>
         public bool HideAll()
@@ -173,7 +231,13 @@ namespace Guildmaster.UI.Tooltips
 
         // --- Запросы от элементов ---
 
-        private void OnShowRequested(TooltipShowEvent e) => Request(e.Request, e.Anchor);
+        private void OnShowRequested(TooltipShowEvent e)
+        {
+            // Пока окно закреплено, наведение на другие цели его НЕ подменяет: закрепление — это
+            // «я читаю вот это», и увести содержимое случайным движением мыши было бы предательством.
+            if (_pinned) return;
+            Request(e.Request, e.Anchor);
+        }
 
         private void OnHideRequested(TooltipHideEvent e)
         {
@@ -181,6 +245,36 @@ namespace Guildmaster.UI.Tooltips
             if (e.Anchor != null && e.Anchor != _anchor && _visible) return; // ушли не с той цели — не наше дело
             CancelPending();
             if (_visible) HideNow();
+        }
+
+        // Alt-клик по якорю закрепляет подсказку; клик по термину ВНУТРИ закреплённого окна — переход.
+        // Различаем по источнику: пришло изнутри окна — навигация, снаружи — новое закрепление.
+        private void OnPinRequested(TooltipPinEvent e)
+        {
+            if (_window == null || e.Request.IsEmpty) return;
+
+            bool fromInsideWindow = e.Anchor != null && IsInsideWindow(e.Anchor);
+            if (_pinned && fromInsideWindow)
+            {
+                Navigate(e.Request);
+                return;
+            }
+
+            if (_pinned) return; // клик по постороннему якорю закреплённое окно не трогает
+
+            CancelPending();
+            _current = e.Request;
+            _anchor  = e.Anchor;
+            if (!_visible) ShowNow();
+            else Rebuild();
+            Pin();
+        }
+
+        private bool IsInsideWindow(VisualElement element)
+        {
+            for (VisualElement cur = element; cur != null; cur = cur.parent)
+                if (cur == _window) return true;
+            return false;
         }
 
         private void Request(TooltipRequest request, VisualElement anchor)
@@ -243,11 +337,60 @@ namespace Guildmaster.UI.Tooltips
             }
 
             _window.Clear();
+            _chrome = null;
+            if (_pinned) _window.Add(BuildChrome());
             _window.Add(content);
+
+            // В закреплённом окне термины в тексте становятся живыми: по ним и ходит навигация.
+            // В обычном окне этого не нужно — оно вообще не принимает курсор (pickingMode Ignore).
+            if (_pinned && content is TooltipCard card)
+            {
+                card.pickingMode = PickingMode.Position;
+                card.Description.pickingMode = PickingMode.Position;
+                card.Description.WithKeywordTooltips();
+            }
+
             // Ширину просит содержимое (стат-строки в узкой колонке нечитаемы), решает окно.
             _window.EnableInClassList("gm-tooltip--wide", content.ClassListContains(TooltipCard.WideHintClass));
             if (_visible) Place(); // живой рефреш мог сменить высоту — окно не должно свисать за край
             return true;
+        }
+
+        /// <summary>
+        /// Шапка закреплённого окна: назад / вперёд / закрыть. Строит система, а не фабрика содержимого:
+        /// это орган окна, и он обязан выглядеть одинаково, что бы внутри ни показывали.
+        /// </summary>
+        private VisualElement BuildChrome()
+        {
+            _chrome = new VisualElement { name = "tooltip-chrome" };
+            _chrome.AddToClassList("gm-tooltip__chrome");
+
+            var back = new Button(() => GoBack()) { text = "‹" };
+            back.AddToClassList("gm-tooltip__nav-btn");
+            back.SetEnabled(_history.CanGoBack);
+
+            var forward = new Button(() => GoForward()) { text = "›" };
+            forward.AddToClassList("gm-tooltip__nav-btn");
+            forward.SetEnabled(_history.CanGoForward);
+
+            var close = new Button(() => HideAll()) { text = "×" };
+            close.AddToClassList("gm-tooltip__nav-btn");
+            close.AddToClassList("gm-tooltip__nav-btn--close");
+
+            _chrome.Add(back);
+            _chrome.Add(forward);
+            _chrome.Add(close);
+            return _chrome;
+        }
+
+        // Закреплённое окно ЛОВИТ курсор (иначе по ссылкам внутри не кликнуть) и помечено классом,
+        // чтобы отличаться от подсказки, которая уйдёт сама.
+        private void ApplyPinnedChrome()
+        {
+            if (_window == null) return;
+            _window.pickingMode = _pinned ? PickingMode.Position : PickingMode.Ignore;
+            _window.EnableInClassList("gm-tooltip--pinned", _pinned);
+            Rebuild();
         }
 
         private void Place()
@@ -271,10 +414,15 @@ namespace Guildmaster.UI.Tooltips
             _refresh?.Pause();
             _refresh = null;
             _visible = false;
+            _pinned = false;
+            _history.Clear();
+            _chrome = null;
             _hiddenAt = Time.unscaledTime;
             _anchor = null;
             _current = default;
             if (_window == null) return;
+            _window.pickingMode = PickingMode.Ignore; // снятое окно снова прозрачно для курсора
+            _window.RemoveFromClassList("gm-tooltip--pinned");
             _window.style.display = DisplayStyle.None;
             _window.Clear();
         }

@@ -1061,10 +1061,85 @@
     flex-direction: column;
 }
 
+/* ЕДИНЫЙ КАРКАС: шапка есть у ЛЮБОЙ подсказки — у реликвии, у характеристики, у пояснения к слоту
+   (реш. Макса 2026-07-26). Заголовок слева, мета справа: так они делят одну строку, а не занимают
+   две, и окно не растёт ради двух слов. */
+.gm-tooltip__header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.gm-tooltip__divider {
+    height: var(--gm-border-1);
+    background-color: var(--gm-outline-color-subtle);
+    margin-top: var(--gm-space-0);
+    margin-bottom: var(--gm-space-0);
+}
+
+/* Определения терминов, дописанные ВНУТРЬ карточки в подробном режиме (слой 2 вложенности).
+   Отделены сверху, набраны мельче тела: это сноска к тексту, а не второй текст. */
+.gm-tooltip__glossary {
+    flex-direction: column;
+    margin-top: var(--gm-space-1);
+    border-top-width: var(--gm-border-1);
+    border-color: var(--gm-outline-color-subtle);
+    padding-top: var(--gm-space-0);
+}
+
+.gm-tooltip__glossary-row {
+    flex-direction: column;
+    margin-bottom: var(--gm-space-0);
+}
+
+.gm-tooltip__glossary-term {
+    color: var(--gm-color-accent);
+    font-size: var(--gm-font-xxs);
+    -unity-font-style: bold;
+}
+
+.gm-tooltip__glossary-text {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-xxs);
+}
+
 /* Разбор со стат-строками шире текстовой подсказки — размер даётся МОДИФИКАТОРОМ, а не правкой
    базового класса: иначе вслед за ним разъедутся все короткие текстовые подсказки. */
 .gm-tooltip--wide {
     max-width: 380px;
+}
+
+/* ЗАКРЕПЛЁННОЕ окно (Alt-клик): живёт после ухода курсора, принимает клики, по терминам внутри
+   ходит навигация. Отличается сильной рамкой — игрок должен видеть, что это окно теперь его,
+   а не подсказка, которая исчезнет сама. */
+.gm-tooltip--pinned {
+    border-color: var(--gm-outline-color-hover);
+    max-width: 380px;
+}
+
+.gm-tooltip__chrome {
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: var(--gm-space-0);
+}
+
+.gm-tooltip__nav-btn {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-xs);
+    padding: 0 var(--gm-space-1);
+    margin: 0;
+    min-width: 24px;
+}
+
+.gm-tooltip__nav-btn:hover {
+    color: var(--gm-color-text);
+}
+
+.gm-tooltip__nav-btn:disabled,
+.gm-tooltip__nav-btn.unity-disabled {
+    color: var(--gm-color-disabled-text);
 }
 
 .gm-tooltip__lines {

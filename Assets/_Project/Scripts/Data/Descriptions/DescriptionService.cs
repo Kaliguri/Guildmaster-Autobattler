@@ -55,6 +55,28 @@ namespace Guildmaster.Data.Descriptions
             return string.IsNullOrEmpty(full) ? Describe(def, args) : KeywordMarkup.Render(full, KeywordForm);
         }
 
+        public string DescribePlain(ContentDefinition def, IReadOnlyDictionary<string, object> args)
+        {
+            string key = ContentKeys.DescKey(def);
+            return key == null ? string.Empty : KeywordMarkup.Strip(Localized(key, args), KeywordForm);
+        }
+
+        public IReadOnlyList<string> MentionedKeywords(ContentDefinition def)
+        {
+            string key = ContentKeys.DescKey(def);
+            if (key == null || _loc == null) return System.Array.Empty<string>();
+
+            // Берём СЫРУЮ строку: в отрендеренной разметки уже нет, и вытаскивать id обратно из
+            // <link=…> значило бы парсить собственный вывод.
+            string[] ids = KeywordMarkup.Mentioned(_loc.GetString(key));
+            if (ids.Length <= 1) return ids;
+
+            var unique = new List<string>(ids.Length);
+            foreach (string id in ids)
+                if (!unique.Contains(id)) unique.Add(id); // порядок появления важнее скорости: их единицы
+            return unique;
+        }
+
         public string KeywordForm(string keywordId, string caseTag)
         {
             if (_loc == null || string.IsNullOrEmpty(keywordId)) return null;

@@ -81,6 +81,7 @@ namespace Guildmaster.UI.Tooltips
                     card.AddLine(UiString(lines[i].LabelKey, lines[i].LabelFallback), lines[i].Value);
             }
 
+            AppendGlossary(card, relic, detailed);
             return card;
         }
 
@@ -138,6 +139,33 @@ namespace Guildmaster.UI.Tooltips
             card.SetDesc(_descriptions?.Describe(vessel, null));
             return card;
         }
+
+        /// <summary>
+        /// Слой 2 вложенности (план §II.10.5): в подробном режиме карточка ДОПИСЫВАЕТ определения
+        /// терминов, упомянутых в её тексте — вместо второго окна поверх первого.
+        /// </summary>
+        /// <remarks>
+        /// Определения берутся с <c>Strip</c>, то есть БЕЗ ссылок. Это не экономия, а конструкция:
+        /// глоссарий ссылается сам на себя (Броня → Урон → Броня), и рекурсию проще сделать
+        /// невозможной, чем ловить лимитом глубины, который игрок читает как «дальше не открывается».
+        /// </remarks>
+        private void AppendGlossary(TooltipCard card, ContentDefinition def, bool detailed)
+        {
+            if (!detailed || _descriptions == null || _content == null) return;
+
+            IReadOnlyList<string> ids = _descriptions.MentionedKeywords(def);
+            for (int i = 0; ids != null && i < ids.Count; i++)
+            {
+                if (!_content.TryGet(ids[i], out KeywordDefinition kw) || kw == null) continue;
+                string term = _descriptions.KeywordForm(kw.Id, null);
+                card.AddGlossaryEntry(
+                    Bracketed(string.IsNullOrEmpty(term) ? Name(kw, kw.Id) : term),
+                    _descriptions.DescribePlain(kw, null));
+            }
+        }
+
+        // Термин всюду выглядит одинаково — в тексте описания и в списке определений (реш. Макса).
+        private static string Bracketed(string term) => string.IsNullOrEmpty(term) ? null : "[" + term + "]";
 
         // Имя контента; если ключ не заведён — показываем id, а не пустоту: молчащий тултип
         // выглядит как поломка системы, а видимый id сразу говорит, какой строки не хватает.

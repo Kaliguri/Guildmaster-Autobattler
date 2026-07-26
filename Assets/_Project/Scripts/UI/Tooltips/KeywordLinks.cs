@@ -44,6 +44,21 @@ namespace Guildmaster.UI.Tooltips
                 }
             });
 
+            // Клик по термину закрепляет подсказку (§II.10.5, слой 3). Внутри уже закреплённого окна
+            // тот же клик — это переход к другому термину: система разберётся по тому, откуда пришло
+            // событие. Навигация именно по КЛИКУ, а не по наведению: иначе окно листалось бы само,
+            // стоит провести курсором по строке с тремя терминами.
+            text.RegisterCallback<PointerDownLinkTagEvent>(e =>
+            {
+                TooltipRequest request = TooltipRequest.Keyword(e.linkID);
+                if (request.IsEmpty) return;
+                using (TooltipPinEvent pin = TooltipPinEvent.GetPooled(request, text))
+                {
+                    pin.target = text;
+                    text.SendEvent(pin);
+                }
+            });
+
             return text;
         }
     }

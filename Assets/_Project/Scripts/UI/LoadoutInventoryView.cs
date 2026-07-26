@@ -98,7 +98,7 @@ namespace Guildmaster.UI
             var abilities = root.Q<VisualElement>("detail-abilities");
             for (int i = 0; abilities != null && i < AbilitySlots; i++)
                 abilities.Add(new Slot { Size = Slot.SlotSize.Sm }
-                    .WithTooltip(TooltipRequest.Plain(emptyAbility, L("ui.loadout.skills", "Способности"))));
+                    .WithTooltip(TooltipRequest.Plain(L("ui.loadout.skills", "Способности"), emptyAbility)));
 
             FillUpgradeRow(root.Q<VisualElement>("upgrade-row-1"), emptyUpgrade, L("ui.loadout.upgrades", "Улучшения"));
             FillUpgradeRow(root.Q<VisualElement>("upgrade-row-2"), emptyUpgrade, L("ui.loadout.upgrades", "Улучшения"));
@@ -315,7 +315,7 @@ namespace Guildmaster.UI
             // высоту, которой не хватало статблоку (реш. Макса 2026-07-25, второй заход).
             for (int i = 0; row != null && i < UpgradesPerRow; i++)
                 row.Add(new Slot { Size = Slot.SlotSize.Sm }
-                    .WithTooltip(TooltipRequest.Plain(emptyHint, title)));
+                    .WithTooltip(TooltipRequest.Plain(title, emptyHint)));
         }
 
         // Ряд тегов «быстрого чтения»: чипы иконка+подпись в порядке осей, с «|» между группами (осями).
@@ -448,7 +448,7 @@ namespace Guildmaster.UI
 
             // Подсказка со скрытыми именами: список идёт в том же порядке осей, что и сам ряд.
             string hidden = string.Join(", ", names.GetRange(names.Count - hiddenCount, hiddenCount));
-            more.WithTooltip(TooltipRequest.Plain(hidden, L("ui.loadout.tags.more", "Ещё теги")));
+            more.WithTooltip(TooltipRequest.Plain(L("ui.loadout.tags.more", "Ещё теги"), hidden));
         }
 
         // Тег — ТОТ ЖЕ компонент Chip, что фильтры инвентаря и лента режимов, в малом размере

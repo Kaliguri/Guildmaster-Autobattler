@@ -69,9 +69,15 @@ namespace Guildmaster.UI.Tooltips
 
         public bool IsEmpty => Kind == TooltipKind.None;
 
-        /// <summary>Готовая строка (свёрнутые теги, короткое пояснение) с необязательным заголовком.</summary>
-        public static TooltipRequest Plain(string text, string title = null)
-            => string.IsNullOrEmpty(text) ? default : new TooltipRequest(TooltipKind.Text, null, text, null, title);
+        /// <summary>
+        /// Готовая строка (свёрнутые теги, пояснение к слоту). <b>Заголовок обязателен</b>: единый
+        /// каркас требует шапку у любой подсказки, поэтому запрос без заголовка просто не создаётся —
+        /// правило держится API, а не бдительностью автора экрана.
+        /// </summary>
+        public static TooltipRequest Plain(string title, string text)
+            => string.IsNullOrEmpty(text) || string.IsNullOrEmpty(title)
+                ? default
+                : new TooltipRequest(TooltipKind.Text, null, text, null, title);
 
         public static TooltipRequest Relic(string relicId)
             => string.IsNullOrEmpty(relicId) ? default : new TooltipRequest(TooltipKind.Relic, relicId, null, null);
