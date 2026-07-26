@@ -189,6 +189,10 @@ namespace Guildmaster.Presentation.Map
                  "заметно, но без ожидания.")]
         [SerializeField] private float _transitionInSeconds = 0.28f;
 
+        [Tooltip("Насколько поздно вступают чернила, в долях закрытия. 0 = вместе с наездом камеры, " +
+                 "0.4 = кадр темнеет только на последних 60% нырка. Больше — дольше видно, куда ныряем.")]
+        [SerializeField] private float _transitionInkDelay = 0.4f;
+
         [Tooltip("Сколько кадр держится закрытым, прежде чем начать открываться.")]
         [SerializeField] private float _transitionHoldSeconds = 0.08f;
 
@@ -288,6 +292,8 @@ namespace Guildmaster.Presentation.Map
 
         /// <inheritdoc cref="_transitionInSeconds"/>
         public float TransitionInSeconds => _transitionInSeconds;
+        /// <inheritdoc cref="_transitionInkDelay"/>
+        public float TransitionInkDelay => _transitionInkDelay;
         /// <inheritdoc cref="_transitionHoldSeconds"/>
         public float TransitionHoldSeconds => _transitionHoldSeconds;
         /// <inheritdoc cref="_transitionOutSeconds"/>

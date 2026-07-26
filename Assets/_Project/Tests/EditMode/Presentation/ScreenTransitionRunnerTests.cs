@@ -108,6 +108,28 @@ namespace Guildmaster.Tests.EditMode.Presentation
         }
 
         [Test]
+        public void InkDelay_LetsTheDiveStartBeforeTheFrameDarkens()
+        {
+            var spy = new FadeSpy();
+            var runner = new ScreenTransitionRunner(spy);
+
+            var seen = new List<float>();
+            // Чернила вступают на половине закрытия: первые два шага из четырёх кадр остаётся чистым.
+            runner.Play(new ScreenTransitionShape(0.2f, 0.2f, 0.2f, new Vector2(0.5f, 0.5f), 0.5f),
+                        seen.Add, null);
+
+            Tick(runner, 2);
+            Assert.That(spy.Events[spy.Events.Count - 1].Progress, Is.EqualTo(0f).Within(0.001f),
+                        "пока идёт задержка, кадр не темнеет вовсе");
+            Assert.That(seen[seen.Count - 1], Is.GreaterThan(0f),
+                        "а наезд камеры к этому моменту уже идёт");
+
+            Tick(runner, 2);
+            Assert.That(spy.Events[spy.Events.Count - 1].Progress, Is.EqualTo(1f).Within(0.001f),
+                        "и всё равно закрывается ровно к концу фазы, а не позже");
+        }
+
+        [Test]
         public void Play_WhileBusy_IsIgnored()
         {
             var spy = new FadeSpy();

@@ -83,9 +83,11 @@ namespace Guildmaster.Presentation.Transition
                 {
                     if (_time < _shape.InSeconds)
                     {
-                        float t = Closing(_time / _shape.InSeconds);
-                        Publish(t);
-                        _onClosing?.Invoke(t);
+                        // Ход фазы отдаём заказчику СЫРЫМ: его движение (наезд камеры) начинается сразу и
+                        // идёт своим темпом. Чернила же вступают позже — им отведён хвост фазы.
+                        float raw = _time / _shape.InSeconds;
+                        Publish(Closing(Ink(raw)));
+                        _onClosing?.Invoke(raw);
                         break;
                     }
 
@@ -125,6 +127,15 @@ namespace Guildmaster.Presentation.Transition
                     break;
                 }
             }
+        }
+
+        // Доля закрытия, приходящаяся на чернила: до задержки шторки нет вовсе, после — она отрабатывает
+        // остаток фазы целиком и всё равно приходит к единице ровно к её концу.
+        private float Ink(float raw)
+        {
+            float delay = _shape.InkDelay01;
+            if (raw <= delay) return 0f;
+            return (raw - delay) / (1f - delay);
         }
 
         // Закрытие идёт С УСКОРЕНИЕМ: начало мягкое, конец резкий — так это читается как рывок внутрь,

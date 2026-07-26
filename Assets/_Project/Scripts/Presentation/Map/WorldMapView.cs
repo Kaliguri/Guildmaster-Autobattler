@@ -616,17 +616,21 @@ namespace Guildmaster.Presentation.Map
 
             var shape = new Core.Flow.ScreenTransitionShape(
                 _style.TransitionInSeconds, _style.TransitionHoldSeconds, _style.TransitionOutSeconds,
-                ScreenUvOf(_stepTargetPos));
+                ScreenUvOf(_stepTargetPos), _style.TransitionInkDelay);
 
             _transition.Play(shape, OnStepClosing, () => OnStepCovered(id));
         }
 
         // Пока кадр закрывается, камера ныряет к выбранному узлу: чернила схлопываются к нему, а он сам
         // едет навстречу — вместе это читается как вход в точку, а не как затемнение рядом с ней.
+        //
+        // Наезд ТОРМОЗИТ к концу (чернила, наоборот, ускоряются): бросок вперёд случается в первые кадры,
+        // пока экран ещё чистый, и игрок успевает увидеть, куда его несёт, прежде чем кадр затянет.
         private void OnStepClosing(float progress)
         {
             if (!_shown) return;
-            _cameraModes?.DiveMapTo(_stepTargetPos, progress);
+            float p = Mathf.Clamp01(progress);
+            _cameraModes?.DiveMapTo(_stepTargetPos, 1f - (1f - p) * (1f - p));
         }
 
         // Кадр закрыт: переставляем отряд и засчитываем выбор. Всё, что видно за чернилами, меняется здесь —

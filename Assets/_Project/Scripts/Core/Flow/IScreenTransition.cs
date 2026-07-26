@@ -25,12 +25,21 @@ namespace Guildmaster.Core.Flow
         /// </summary>
         public readonly Vector2 FocusUv;
 
-        public ScreenTransitionShape(float inSeconds, float holdSeconds, float outSeconds, Vector2 focusUv)
+        /// <summary>
+        /// Насколько поздно вступают чернила, в долях фазы закрытия (0 — вместе с движением, 0.5 — на его
+        /// середине). Движение заказчика идёт с самого начала, а шторка догоняет: сперва видно, КУДА
+        /// ныряем, и лишь потом кадр затягивает. Совпадающие старты съедали весь нырок под чернилами.
+        /// </summary>
+        public readonly float InkDelay01;
+
+        public ScreenTransitionShape(float inSeconds, float holdSeconds, float outSeconds, Vector2 focusUv,
+                                     float inkDelay01 = 0f)
         {
             InSeconds   = Mathf.Max(0.01f, inSeconds);
             HoldSeconds = Mathf.Max(0f,    holdSeconds);
             OutSeconds  = Mathf.Max(0.01f, outSeconds);
             FocusUv     = focusUv;
+            InkDelay01  = Mathf.Clamp(inkDelay01, 0f, 0.9f);
         }
 
         /// <summary>Обычное моргание в центр экрана — когда «входить» некуда.</summary>

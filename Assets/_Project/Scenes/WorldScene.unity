@@ -2563,8 +2563,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Map.MenuBackdropView
   _style: {fileID: 11400000, guid: 992688b3cce9ba144859796f3920a341, type: 2}
-  _distance: 50
-  _overscan: 1.2
+  _layerName: MenuBackdrop
+  _cameraDepth: 100
+  _viewHeight: 8
 --- !u!4 &264353447
 Transform:
   m_ObjectHideFlags: 0
@@ -32189,6 +32190,7 @@ MonoBehaviour:
   _zoomStep: 1.5
   _devMaxZoom: 40
   _mapFreedom: 0.5
+  _mapDiveZoom: 0.45
   _panSpeed: 12
   _devPanSpeed: 24
   _actionZoomPadding: 4

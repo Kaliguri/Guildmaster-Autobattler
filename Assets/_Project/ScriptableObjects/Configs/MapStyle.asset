@@ -64,5 +64,6 @@ MonoBehaviour:
   _pawnTravelSeconds: 1.5
   _pawnSkipSpeed: 6
   _transitionInSeconds: 0.45
+  _transitionInkDelay: 0.4
   _transitionHoldSeconds: 0.25
   _transitionOutSeconds: 0.4

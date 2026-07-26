@@ -55,8 +55,8 @@ namespace Guildmaster.Presentation
                  "но совсем в пустоту не уедешь.")]
         [SerializeField] private float _mapFreedom = 0.5f;
         [Tooltip("Насколько камера приближается к узлу за время закрытия кадра (доля исходного орто-размера). " +
-                 "0.7 = подъехали на треть; меньше — резче нырок.")]
-        [SerializeField] private float _mapDiveZoom = 0.7f;
+                 "0.45 = кадр вдвое с лишним крупнее к концу нырка; меньше — резче.")]
+        [SerializeField] private float _mapDiveZoom = 0.45f;
 
         [Header("Панорамирование (ед./сек при полном отклонении)")]
         [SerializeField] private float _panSpeed = 12f;
