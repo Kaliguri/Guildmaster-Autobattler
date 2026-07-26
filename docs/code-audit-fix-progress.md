@@ -267,7 +267,18 @@
 
 **Канона нет — вопрос Максу:** `DeploymentTier.Extended` (расширенной зоны расстановки в ГДД нет; roadmap TECH-10 говорит только о форме зон).
 
-**Ещё не проверено по ГДД:** `EncounterData._arenaId`, пять эффект-компонентов (CD-7/AC-21), цепочка слотов cast-анимации (CD-9/R1-73), `ISimCommand`.
+**Хвост проверен (2026-07-27) — все четыре имени живые:**
+
+| Имя | Вердикт |
+|---|---|
+| `ISimCommand` | **Живой.** `ICombatCommand : ISimCommand`, реализации — `PauseCommand`, `ResumeCommand`, плюс `NetworkCommandRelay`. Находка неверна |
+| Пять эффект-компонентов (`Shield`, `Thorns`, `Lifesteal`, `PeriodicHeal`, `Dispel`) | **Все пять — канон:** у щита, HoT и очистки свои доки в `20-combat/effects/`, вампиризм — «ядро идентичности Тьмы» (`effects/stat-modifiers`), шипы — `effects/triggers` и реликвия Трент. Не заавторены на ассетах — это контентный долг, не мёртвый код. Пары `Thorns`/`ArmorThorns` и `Shield`/`MissingHpShield` не дубли: базовая механика и частный случай героя |
+| Цепочка cast-анимации (`AbilityData.VisualSlot` → `UnitVisual.SkillClip`) | **Дыра реализации, не мусор:** данные авторятся и показываются в Content Hub, но презентация клип не играет. Убирать надо не поле, а разрыв |
+| `EncounterData._arenaId` | **Задел под заявленное:** roadmap обещает «арена через Addressables». Дёшево держать, дорого возвращать |
+
+**`tag.elemental_ward` / `armor_break_elemental` — уже вычищены до меня.** Ассетов нет (`MagicalWard`, `ArmorBreakMagical`), ссылок нет, ГДД подтверждает: «Ренейм Elemental → Magical доведён до конца» (`roster/unit-tag-glossary:172`).
+
+**Итог волны 0: удалять нечего.** Единственный кандидат, переживший проверку по ГДД, оказался закрытым чужими руками. Список из реестра аудита состоял из заделов, которые код показать не мог.
 
 ---
 
