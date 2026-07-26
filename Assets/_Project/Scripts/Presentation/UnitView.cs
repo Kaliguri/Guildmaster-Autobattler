@@ -149,7 +149,7 @@ namespace Guildmaster.Presentation
         private float _outlineAmount;      // 0..1 — контур каста (параметр _Outline шейдера тела)
         private float _outlineLeft;        // остаток окна контура, сек
         private float _outlineTotal;
-        private Gradient _outlinePalette;  // палитра кастера: контур перетекает от её начала к концу
+        private Color _outlineColor = Color.white;  // главный цвет кастера
 
         private CanvasGroup _uiFadeGroup;  // контейнер world-UI: гаснет вместе с телом, а не щелчком
         private float _uiFadeLeft;
@@ -779,11 +779,8 @@ namespace Guildmaster.Presentation
             _mpb.SetFloat(OutlineId, _outlineAmount);
             if (_outlineAmount > 0.0001f)
             {
-                // Контуру нужен и шаг текселя (край силуэта), и цвет — перетекание по палитре кастера.
-                SetHoloTexel();
-                float t = _outlineTotal > 0f ? 1f - Mathf.Clamp01(_outlineLeft / _outlineTotal) : 0f;
-                Color rim = _outlinePalette != null ? _outlinePalette.Evaluate(t) : Color.white;
-                _mpb.SetColor(OutlineColorId, rim);
+                SetHoloTexel();   // контуру нужен шаг текселя, чтобы найти край силуэта
+                _mpb.SetColor(OutlineColorId, _outlineColor);
             }
 
             if (_holoAmount > 0.0001f && _feel != null)
@@ -856,16 +853,16 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Каст способности: контур по силуэту вспыхивает и гаснет — «смотри, я сейчас выдам». Цвет берётся
-        /// из палитры юнита и перетекает от её начала к концу, так что заданный градиент виден и здесь.
+        /// Каст способности: контур по силуэту вспыхивает и гаснет — «смотри, я сейчас выдам». Цвет один,
+        /// главный цвет эффектов юнита: контуру нечего разбрасывать и некуда протягивать градиент.
         /// </summary>
-        public void PlayCastOutline(Gradient palette)
+        public void PlayCastOutline(Color color)
         {
             if (_feel == null || _feel.CastOutlineDuration <= 0f) return;
 
-            _outlinePalette = palette;
-            _outlineTotal   = _feel.CastOutlineDuration;
-            _outlineLeft    = _outlineTotal;
+            _outlineColor = color;
+            _outlineTotal = _feel.CastOutlineDuration;
+            _outlineLeft  = _outlineTotal;
         }
 
         // Окно контура: быстрый подъём, затем спад (пик в первой четверти — телеграф должен успеть прочитаться

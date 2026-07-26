@@ -50,11 +50,15 @@ namespace Guildmaster.Data.Definitions
                  "или оставить White. ЕДИНЫЙ источник цвета: и бой, и карточка инвентаря берут ResolveBodyTint().")]
         [SerializeField] private Color _tint = Color.white;
 
-        [Tooltip("Палитра ЭФФЕКТОВ этого юнита: искры, всплеск каста, контур, снаряд и его след. " +
-                 "Это ДИАПАЗОН, а не один цвет — каждая частица берёт случайный оттенок между концами " +
-                 "градиента (жёлто-белые искры вразнобой, а не одинаково белые). Ровно один цвет = обе " +
-                 "точки одинаковые. HDR: яркость >1 ловит bloom. Пусто = тинт тела.")]
-        [GradientUsage(true)] [SerializeField] private Gradient _vfxGradient;
+        [Tooltip("ГЛАВНЫЙ цвет эффектов юнита — там, где разброс не нужен и нужен ровно один цвет: тело " +
+                 "снаряда, его след (он же, теряющий прозрачность к хвосту), контур каста. " +
+                 "HDR: яркость >1 ловит bloom. White = «не задан» → тинт тела.")]
+        [ColorUsage(true, true)] [SerializeField] private Color _vfxColor = Color.white;
+
+        [Tooltip("ДИАПАЗОН для разброса частиц: каждая искра берёт случайный оттенок между концами " +
+                 "градиента (жёлто-белые вразнобой, а не одинаково белые). Пусто = разброса нет, всё " +
+                 "красится главным цветом.")]
+        [GradientUsage(true)] [SerializeField] private Gradient _vfxPalette;
 
         [Header("Auto-attack shape (Phase 3)")]
         [Tooltip("Форма авто-атаки: None = одиночная цель; Line = линия перед юнитом (несколько целей, «Размашистый выпад»).")]
@@ -163,30 +167,33 @@ namespace Guildmaster.Data.Definitions
         }
 
         /// <summary>
-        /// Градиент эффектов юнита — единый ответ на «каким светит ЭТОТ боец». Не задан → одноцветный из
-        /// тинта тела, чтобы у любого юнита цвет эффектов был осмысленным без ручной настройки.
-        /// <para>Возвращается КЭШИРОВАННЫЙ объект: <see cref="Gradient"/> — класс, и собирать его на каждом
-        /// касте значило бы мусорить в бою.</para>
+        /// Главный цвет эффектов юнита: тело снаряда, его след, контур каста — всё, где цвет один. Не задан
+        /// (White) → тинт тела, чтобы у любого юнита эффекты были осмысленного цвета без ручной настройки.
         /// </summary>
-        public Gradient ResolveVfxGradient()
-        {
-            if (_vfxGradient != null && _vfxGradient.colorKeys != null && _vfxGradient.colorKeys.Length > 0)
-                return _vfxGradient;
+        public Color ResolveVfxColor() => _vfxColor != Color.white ? _vfxColor : ResolveBodyTint();
 
-            if (_fallbackGradient == null)
+        /// <summary>
+        /// Диапазон для РАЗБРОСА частиц: искры берут случайный оттенок между концами. Палитра не задана →
+        /// одноцветный градиент из главного цвета, то есть разброса просто нет.
+        /// <para>Возвращается КЭШИРОВАННЫЙ объект: <see cref="Gradient"/> — класс, и собирать его на каждом
+        /// ударе значило бы мусорить в бою.</para>
+        /// </summary>
+        public Gradient ResolveVfxPalette()
+        {
+            if (_vfxPalette != null && _vfxPalette.colorKeys != null && _vfxPalette.colorKeys.Length > 0)
+                return _vfxPalette;
+
+            if (_flatPalette == null)
             {
-                Color tint = ResolveBodyTint();
-                _fallbackGradient = new Gradient();
-                _fallbackGradient.SetKeys(
-                    new[] { new GradientColorKey(tint, 0f), new GradientColorKey(tint, 1f) },
+                Color main = ResolveVfxColor();
+                _flatPalette = new Gradient();
+                _flatPalette.SetKeys(
+                    new[] { new GradientColorKey(main, 0f), new GradientColorKey(main, 1f) },
                     new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) });
             }
-            return _fallbackGradient;
+            return _flatPalette;
         }
 
-        /// <summary>Один цвет эффектов — начало градиента. Там, где градиенту негде развернуться (тело снаряда).</summary>
-        public Color ResolveVfxColor() => ResolveVfxGradient().Evaluate(0f);
-
-        private Gradient _fallbackGradient;   // не сериализуется: выводится из тинта при первом спросе
+        private Gradient _flatPalette;   // не сериализуется: выводится из главного цвета при первом спросе
     }
 }

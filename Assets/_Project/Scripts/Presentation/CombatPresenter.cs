@@ -231,8 +231,9 @@ namespace Guildmaster.Presentation
 
             ProjectileView view = RentProjectile(origin);
             // Снаряд и его след — ЭФФЕКТ стрелка, значит его VFX-цвет, а не тинт тела.
-            Gradient palette = VfxPaletteFor(projectile.Source);
-            view.Bind(projectile, palette, origin);
+            // Снаряд и его след — один цвет с затуханием, разбросу тут места нет.
+            Color tint = projectile.Source != null ? VfxColorFor(projectile.Source) : Color.white;
+            view.Bind(projectile, tint, origin);
             _projViews[projectile.Id] = view;
         }
 
@@ -279,11 +280,10 @@ namespace Guildmaster.Presentation
         {
             if (caster == null || !_views.TryGetValue(caster.Id, out var view) || view == null) return;
 
-            Gradient palette = VfxPaletteFor(caster);
-            view.PlayCastOutline(palette);
+            view.PlayCastOutline(VfxColorFor(caster));   // контур — один цвет, без разброса
 
             if (_vfx != null && _feel != null && _feel.VfxCastBurst != null)
-                _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: palette);
+                _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(caster));
         }
 
         private void HandleUnitSpawned(RuntimeUnit unit)
@@ -505,13 +505,17 @@ namespace Guildmaster.Presentation
                 : (IsAllyOfViewer(unit) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
 
         /// <summary>
-        /// Палитра ЭФФЕКТОВ юнита: его снаряд и след, вспышка выстрела, искры его удара, его лечение и
-        /// всплеск каста. Диапазон, а не цвет — частицы разбрасываются между его концами. Держится на
-        /// <c>UnitData</c>, а не в префабах: иначе холод криоманта и свет пастыря выглядели бы одинаково
-        /// просто потому, что летят из одного префаба.
+        /// Цвета ЭФФЕКТОВ юнита. Их два, и они про разное: ГЛАВНЫЙ цвет — там, где цвет один (тело снаряда,
+        /// его след, контур каста), ПАЛИТРА — диапазон разброса для частиц. Держатся на <c>UnitData</c>, а не
+        /// в префабах: иначе холод криоманта и свет пастыря выглядели бы одинаково просто потому, что летят
+        /// из одного префаба.
         /// <para>Пыль под ногами сюда НЕ входит: она принадлежит земле, а не бойцу.</para>
         /// </summary>
-        private Gradient VfxPaletteFor(RuntimeUnit unit) => unit?.Unit?.ResolveVfxGradient();
+        private Gradient VfxPaletteFor(RuntimeUnit unit) => unit?.Unit?.ResolveVfxPalette();
+
+        /// <summary>Главный цвет эффектов юнита — для того, у чего нет ни длины, ни россыпи.</summary>
+        private Color VfxColorFor(RuntimeUnit unit) =>
+            unit?.Unit != null ? unit.Unit.ResolveVfxColor() : TintFor(unit);
 
         /// <summary>
         /// Юнит на стороне смотрящего? Единственное место, где в презентере решается «свой/чужой».

@@ -35,26 +35,24 @@ namespace Guildmaster.Presentation
         private Vector3    _baseScale = Vector3.one;   // масштаб префаба; снимается один раз (вид приходит из пула)
         private bool       _baseScaleCaptured;
 
-        /// <summary>Привязать к симовому снаряду и покрасить палитрой источника (старт из центра сима).</summary>
-        public void Bind(Projectile projectile, Gradient palette)
-            => Bind(projectile, palette, new Vector3(projectile.Position.x, projectile.Position.y, 0f));
+        /// <summary>Привязать к симовому снаряду и покрасить цветом источника (старт из центра сима).</summary>
+        public void Bind(Projectile projectile, Color tint)
+            => Bind(projectile, tint, new Vector3(projectile.Position.x, projectile.Position.y, 0f));
 
         /// <summary>
         /// Привязать со стартом из мировой точки <paramref name="visualOrigin"/> (дуло/ShotPoint источника):
         /// снаряд визуально вылетает оттуда и плавно сходит на симовую траекторию — сим стреляет из центра юнита.
         /// </summary>
-        public void Bind(Projectile projectile, Gradient palette, Vector3 visualOrigin)
+        public void Bind(Projectile projectile, Color tint, Vector3 visualOrigin)
         {
             _projectile = projectile;
-            // Телу снаряда — начало палитры (одна точка, растягивать нечего), хвосту — вся палитра целиком.
-            Color head = palette != null ? palette.Evaluate(0f) : Color.white;
-            if (_sprite != null) _sprite.color = head;
+            if (_sprite != null) _sprite.color = tint;
             Vector3 simPos = new Vector3(projectile.Position.x, projectile.Position.y, 0f);
             _originOffset = visualOrigin - simPos;
             transform.position = simPos + _originOffset;
             FaceVelocity(projectile.Velocity);
 
-            ApplyTrail(palette);
+            ApplyTrail(tint);
         }
 
         /// <summary>
@@ -83,21 +81,21 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// След палитрой источника: у хвоста есть длина, значит градиенту есть где развернуться — от начала
-        /// палитры у самого снаряда к её концу в остывающем шлейфе, с уходом в прозрачность. Ярче тела:
-        /// хвост читается как свечение позади, а не как второй снаряд.
+        /// След — ГЛАВНЫЙ цвет источника, теряющий прозрачность к хвосту. Именно так, а не переходом в
+        /// другой цвет: шлейф — это тот же свет, что и снаряд, просто затухающий. Ярче тела, чтобы хвост
+        /// читался как свечение позади, а не как второй снаряд.
         /// <para>Clear ОБЯЗАТЕЛЕН: вид приходит из пула, и без сброса точек хвост тянется через весь экран
         /// от места, где кончился прошлый выстрел.</para>
         /// </summary>
-        private void ApplyTrail(Gradient palette)
+        private void ApplyTrail(Color tint)
         {
             if (_trail == null) return;
 
             _trail.Clear();
 
-            Color head = (palette != null ? palette.Evaluate(0f) : Color.white) * _trailBrightness;
-            Color tail = (palette != null ? palette.Evaluate(1f) : Color.white) * _trailBrightness;
+            Color head = tint * _trailBrightness;
             head.a = 1f;
+            Color tail = head;
             tail.a = 0f;
 
             _trail.startColor = head;
