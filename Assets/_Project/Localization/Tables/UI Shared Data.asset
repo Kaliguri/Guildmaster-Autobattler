@@ -179,6 +179,206 @@ MonoBehaviour:
     m_Key: ui.stat.move.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 5717075719086080
+    m_Key: ui.chest.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417728
+    m_Key: ui.chest.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417729
+    m_Key: ui.loadout.filter.relics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417730
+    m_Key: ui.loadout.filter.items
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417731
+    m_Key: ui.loadout.filter.banners
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417732
+    m_Key: ui.loadout.sort.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417733
+    m_Key: ui.loadout.video
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417734
+    m_Key: ui.loadout.basics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417735
+    m_Key: ui.loadout.skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417736
+    m_Key: ui.loadout.upgrades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417737
+    m_Key: ui.loadout.stats
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417738
+    m_Key: ui.loadout.search
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417739
+    m_Key: ui.mainmenu.start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417740
+    m_Key: ui.mainmenu.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417741
+    m_Key: ui.mainmenu.settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417742
+    m_Key: ui.mainmenu.quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417743
+    m_Key: ui.menu.to_main_menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417744
+    m_Key: ui.menu.quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417745
+    m_Key: ui.settings.card_anim
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417746
+    m_Key: ui.settings.card_attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417747
+    m_Key: ui.outcome.victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417748
+    m_Key: ui.outcome.defeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417749
+    m_Key: ui.outcome.victory_sub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417750
+    m_Key: ui.outcome.defeat_sub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417751
+    m_Key: ui.outcome.to_menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417752
+    m_Key: ui.mode.menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417753
+    m_Key: ui.run.floor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417754
+    m_Key: ui.shop.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417755
+    m_Key: ui.shop.leave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417756
+    m_Key: ui.shop.no_space
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417757
+    m_Key: ui.shop.sold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417758
+    m_Key: ui.shop.buy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417759
+    m_Key: ui.shop.sell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417760
+    m_Key: ui.shop.gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717075769417761
+    m_Key: ui.shop.reroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227003437056
+    m_Key: ui.event.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227087323136
+    m_Key: ui.reward.drop_hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227087323137
+    m_Key: ui.reward.skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227087323138
+    m_Key: ui.reward.take
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227087323139
+    m_Key: ui.reward.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517440
+    m_Key: ui.run.act
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517441
+    m_Key: ui.run.gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517442
+    m_Key: ui.run.hub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517443
+    m_Key: ui.run.settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517444
+    m_Key: ui.run.start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517445
+    m_Key: ui.reward.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517446
+    m_Key: ui.titlecard.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517447
+    m_Key: ui.titlecard.studio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517448
+    m_Key: ui.titlecard.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5717227091517449
+    m_Key: ui.mainmenu.title
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
