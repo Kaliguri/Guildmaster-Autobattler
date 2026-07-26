@@ -293,3 +293,80 @@ MUSIC_LUFS = -18.0        # музыка сидит ниже боевого як
 AMBIENT_LUFS = -24.0      # амбиент — фон, не претендует на внимание
 
 ALL = DEFAULTS + COMBAT + FEEL + RELICS + EFFECTS + UI + DEPLOY + MAP + FLOW + MUSIC
+
+# =============================================================================
+# 11. Описания для CLAP-сверки (scripts/audio/clap_pick.py --verify)
+#     Текст на английском намеренно: модель обучена на англоязычных описаниях звука.
+#     Ключи без описания сверяются по расшифровке самого ключа — этого хватает для UI и флоу,
+#     а вот боевой смысл («лёд», «металл», «плоть») нужно проговаривать явно.
+# =============================================================================
+DESCRIPTIONS = {
+    "attack":  "sword swing, weapon whoosh through air",
+    "fire":    "arrow shot, projectile launch whoosh",
+    "hit":     "punch impact on flesh, heavy body hit",
+    "evade":   "quick dodge whoosh, cloth swish, missed swing",
+    "shield":  "metal shield block, armour clang",
+    "heal":    "magical healing chime, soft warm bell",
+    "cast":    "magic spell charge up, arcane energy",
+    "death":   "body falls, soft heavy thud, death groan",
+    "apply":   "magical buff applied, short shimmer",
+    "expire":  "magic effect fades away, debuff wears off",
+    "tick":    "soft poison bubble, small periodic damage tick",
+    "stinger": "short dramatic musical accent",
+
+    "relic.cryomancer.attack":  "ice shard impact, frost crackle, freezing magic",
+    "relic.cryomancer.cast":    "ice explosion, freezing blast spell",
+    "relic.light_shepherd.cast": "holy light magic, healing radiance",
+    "relic.light_shepherd.fire": "gentle magical light projectile",
+    "relic.whirl_monk.cast":    "fast air dash whoosh, teleport",
+    "relic.assassin.cast":      "stealth vanish, sudden wind whoosh",
+    "relic.ranger.fire":        "bow shot, arrow release",
+    "relic.iron_spearman.attack": "spear thrust, metal blade draw",
+    "relic.defender.shield":    "heavy metal plate block",
+    "relic.flame_swordsman.attack": "sword chop, blade slice",
+    "relic.treant.attack":      "wooden branch hit, heavy timber impact",
+    "relic.druid.cast":         "nature magic, growing plants buff",
+
+    "effect.frozen.apply":  "ice crystallising, freezing over",
+    "effect.frozen.expire": "glass shatter, ice breaking apart",
+    "effect.burn.apply":    "fire ignites, flame whoosh",
+    "effect.burn.tick":     "small fire crackle",
+    "effect.ignition.apply": "flame charge up, fire building",
+    "effect.spore_cloud.apply": "poison cloud, toxic bubbling",
+    "effect.ice_chains_stun.apply": "heavy metal chains, iron clamp",
+    "effect.resolute_strike_stun.apply": "metallic stun clang",
+    "effect.stealth.apply": "cloth rustle, sneaking into shadow",
+    "effect.hunters_mark.apply": "small targeting tick, marker beep",
+    "effect.bulwark_shield.apply": "metal plate shield raised",
+    "effect.vortex_entry.apply": "teleport whoosh, air vortex",
+    "effect.overgrowth.apply": "nature growth buff, plants rising",
+    "effect.light_mend.tick": "gentle healing pluck",
+
+    "feel.kill.stinger":        "heavy bell impact, dramatic kill accent",
+    "feel.heavy_hit.hit":       "very heavy punch, bass impact",
+    "feel.death_shatter.death": "glass shattering into pieces",
+    "feel.finisher.stinger":    "dramatic low bell, final blow accent",
+
+    "combat.unit_spawn.ui":  "soft magical pluck, unit appears",
+    "enemy.training_dummy.hit": "wooden dummy hit, hollow wood impact",
+
+    "map.node_hover.ui":   "soft interface hover blip",
+    "map.node_select.ui":  "interface select confirm click",
+    "map.node_locked.ui":  "interface error buzz, denied",
+    "map.travel_arrive.ui": "soft bell arrival chime",
+
+    "run.gold_gain.ui":    "coins handled, money jingle",
+    "shop.buy.ui":         "purchase confirm, coins",
+    "chest.open.stinger":  "wooden chest creaking open",
+    "ui.drag_grab.ui":     "leather belt handled, picking item up",
+    "ui.drag_drop.ui":     "item dropped on surface",
+    "ui.screen_open.ui":   "book opening, page turn",
+    "ui.screen_close.ui":  "book closing",
+    "ui.hover.ui":         "very soft interface rollover",
+    "ui.click.ui":         "interface button click",
+    "ui.disabled.ui":      "error buzz, action not allowed",
+}
+
+for _entry in ALL:
+    if _entry["key"] in DESCRIPTIONS:
+        _entry["desc"] = DESCRIPTIONS[_entry["key"]]

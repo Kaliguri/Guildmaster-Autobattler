@@ -140,3 +140,6 @@ Assets/_Project/Scenes/*Scene For Tests.unity.meta
 # Python-кэш скриптов пайплайна
 __pycache__/
 *.pyc
+
+# venv аудио-инструментов (torch/CLAP, ~3 ГБ) — ставится локально скриптом
+scripts/audio/.venv/
