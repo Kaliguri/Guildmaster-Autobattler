@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -77,22 +78,11 @@ namespace Guildmaster.Presentation.Map
                  "по крупности с теми, что видны вокруг карты.")]
         [SerializeField] private float _menuTableTiling = 5f;
 
-        [Header("Цвета узла")]
-        [Tooltip("Подложка узла — одна на все типы (--gm-ink-600). Тип читается ИКОНКОЙ, не цветом.")]
-        [SerializeField] private Color _nodeBacking = new Color(0.141f, 0.102f, 0.071f);
-
-        [Tooltip("Обод узла (--gm-brass-600).")]
-        [SerializeField] private Color _nodeRim = new Color(0.627f, 0.435f, 0.188f);
-
-        [Tooltip("Метка узла, на котором стоит отряд (--gm-brass-200).")]
-        [SerializeField] private Color _currentMarker = new Color(0.902f, 0.788f, 0.561f);
-
-        [Header("Рампа иконок")]
-        [Tooltip("Тёмный конец рампы перекраски иконки (--gm-ink-700).")]
-        [SerializeField] private Color _iconShadow = new Color(0.110f, 0.078f, 0.051f);
-
-        [Tooltip("Светлый конец рампы (--gm-parchment-100).")]
-        [SerializeField] private Color _iconLight = new Color(0.937f, 0.886f, 0.769f);
+        [Header("Цвета — из палитры проекта")]
+        [Tooltip("Снимок токенов дизайн-системы. Все цвета карты берутся ОТСЮДА по имени роли " +
+                 "(--gm-color-map-*), своих у карты больше нет: раньше они трижды разошлись с токенами, " +
+                 "которые сами же называли в подсказках. Пересобрать снимок — Alebardium → Дизайн-система.")]
+        [SerializeField] private Guildmaster.Data.Definitions.GuildmasterPalette _palette;
 
         [Header("Состояния (множители яркости)")]
         [SerializeField] private Color _available = Color.white;
@@ -119,14 +109,6 @@ namespace Guildmaster.Presentation.Map
         [Tooltip("Изгиб пути в долях его длины. 0 = прямые линии — изгиб случайной стороны читался кашей.")]
         [SerializeField] private float _edgeCurve;
 
-        [Tooltip("Обычный путь — бледные точки (--gm-parchment-300, приглушённый).")]
-        [SerializeField] private Color _pathIdle = new Color(0.42f, 0.37f, 0.28f);
-
-        [Tooltip("Пройденный маршрут — прочерченный чернилами по карте (--gm-brass-500).")]
-        [SerializeField] private Color _pathTravelled = new Color(0.722f, 0.525f, 0.231f);
-
-        [Tooltip("Путь к доступному узлу — самый яркий (--gm-brass-200).")]
-        [SerializeField] private Color _pathAvailable = new Color(0.902f, 0.788f, 0.561f);
 
         [Tooltip("Скорость бега волны по пути к доступному узлу (метров в секунду).")]
         [SerializeField] private float _dotFlowSpeed = 2.6f;
@@ -173,7 +155,6 @@ namespace Guildmaster.Presentation.Map
         [Tooltip("Радиус точки отряда. Фишка — та же точка, что на пути, только крупнее и ярче.")]
         [SerializeField] private float _pawnRadius = 0.2f;
 
-        [SerializeField] private Color _pawn = new Color(0.973f, 0.925f, 0.796f);
 
         [Tooltip("Сколько едет фишка между узлами (секунды). Работает, только если включён тумблер " +
                  "map.travel — по умолчанию переход идёт затемнением, поездка оставлена про запас.")]
@@ -244,16 +225,18 @@ namespace Guildmaster.Presentation.Map
         /// <inheritdoc cref="_menuTableTiling"/>
         public float MenuTableTiling => _menuTableTiling;
 
-        /// <inheritdoc cref="_nodeBacking"/>
-        public Color NodeBacking => _nodeBacking;
-        /// <inheritdoc cref="_nodeRim"/>
-        public Color NodeRim => _nodeRim;
-        /// <inheritdoc cref="_currentMarker"/>
-        public Color CurrentMarker => _currentMarker;
-        /// <inheritdoc cref="_iconShadow"/>
-        public Color IconShadow => _iconShadow;
-        /// <inheritdoc cref="_iconLight"/>
-        public Color IconLight => _iconLight;
+        // ── Цвета: единственный владелец — палитра (UI/Theme/tokens.*.uss → GuildmasterPalette) ──
+
+        /// <summary>Подложка узла — одна на все типы. Тип читается ИКОНКОЙ, не цветом.</summary>
+        public Color NodeBacking   => Role("--gm-color-map-node-backing");
+        /// <summary>Обод узла.</summary>
+        public Color NodeRim       => Role("--gm-color-map-node-rim");
+        /// <summary>Метка узла, на котором стоит отряд.</summary>
+        public Color CurrentMarker => Role("--gm-color-map-current-marker");
+        /// <summary>Тёмный конец рампы перекраски иконки.</summary>
+        public Color IconShadow    => Role("--gm-color-map-icon-shadow");
+        /// <summary>Светлый конец рампы.</summary>
+        public Color IconLight     => Role("--gm-color-map-icon-light");
 
         /// <inheritdoc cref="_dotRadius"/>
         public float DotRadius => _dotRadius;
@@ -263,12 +246,12 @@ namespace Guildmaster.Presentation.Map
         public float DotClearance => _dotClearance;
         /// <inheritdoc cref="_edgeCurve"/>
         public float EdgeCurve => _edgeCurve;
-        /// <inheritdoc cref="_pathIdle"/>
-        public Color PathIdle => _pathIdle;
-        /// <inheritdoc cref="_pathTravelled"/>
-        public Color PathTravelled => _pathTravelled;
-        /// <inheritdoc cref="_pathAvailable"/>
-        public Color PathAvailable => _pathAvailable;
+        /// <summary>Обычный путь — самые бледные точки.</summary>
+        public Color PathIdle      => Role("--gm-color-map-path-idle");
+        /// <summary>Пройденный маршрут — прочерченный по карте.</summary>
+        public Color PathTravelled => Role("--gm-color-map-path-travelled");
+        /// <summary>Путь к доступному узлу — самый яркий.</summary>
+        public Color PathAvailable => Role("--gm-color-map-path-available");
         /// <inheritdoc cref="_dotFlowSpeed"/>
         public float DotFlowSpeed => _dotFlowSpeed;
         /// <inheritdoc cref="_dotFlowLength"/>
@@ -283,8 +266,8 @@ namespace Guildmaster.Presentation.Map
 
         /// <inheritdoc cref="_pawnRadius"/>
         public float PawnRadius => _pawnRadius;
-        /// <inheritdoc cref="_pawn"/>
-        public Color Pawn => _pawn;
+        /// <summary>Цвет фишки отряда.</summary>
+        public Color Pawn => Role("--gm-color-map-pawn");
         /// <inheritdoc cref="_pawnTravelSeconds"/>
         public float PawnTravelSeconds => _pawnTravelSeconds;
         /// <inheritdoc cref="_pawnSkipSpeed"/>
@@ -307,5 +290,35 @@ namespace Guildmaster.Presentation.Map
             MapNodeVisualState.Cleared   => _cleared,
             _                            => _locked,
         };
+
+        // ── Резолв цвета из палитры ─────────────────────────────────────────
+
+        // Кэш: карта спрашивает цвет на каждую точку каждой дорожки, а поиск в снимке — линейный.
+        // Живёт до перезагрузки домена; пересборка палитры её и вызывает, так что устареть не успевает.
+        private readonly Dictionary<string, Color> _resolved = new Dictionary<string, Color>(12);
+
+        /// <summary>
+        /// Цвет роли из палитры. Пустая ссылка или неизвестное имя — это баг разводки, а не повод
+        /// рисовать чем попало: говорим вслух один раз на роль и отдаём пурпур, который нельзя не
+        /// заметить. Молчаливый фолбэк здесь стоил бы ровно того расхождения, ради которого карта
+        /// и переехала на палитру.
+        /// </summary>
+        private Color Role(string token)
+        {
+            if (_resolved.TryGetValue(token, out Color cached)) return cached;
+
+            Color color = Color.magenta;
+            if (_palette == null)
+                Debug.LogError($"[MapStyle] - палитра не назначена, цвет '{token}' взять неоткуда " +
+                               $"(ассет {name}).");
+            else if (!_palette.TryGet(token, out color))
+                Debug.LogError($"[MapStyle] - в палитре нет роли '{token}'. Пересобери снимок: " +
+                               "Alebardium → Дизайн-система → Пересобрать палитру.");
+
+            _resolved[token] = color;
+            return color;
+        }
+
+        private void OnValidate() => _resolved.Clear();   // правка ассета в инспекторе не должна залипать в кэше
     }
 }

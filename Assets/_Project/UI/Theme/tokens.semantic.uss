@@ -114,7 +114,18 @@
        которого никто не звал (аудит 2026-07-26, волна 2). Вернуть — когда редкость начнёт что-то
        значить на экране; примитивы (ink / brass) для этого никуда не делись. */
 
-    /* Токенов карты акта здесь больше нет: карта живёт в мире, а не в UITK, и её цвета задаются
-       в MapStyle.asset. Дефолты там сняты с этих же примитивов (ink / brass / parchment), чтобы
-       карта и интерфейс оставались одной эстетикой. */
+    /* --- Карта акта ---
+       Карта живёт в мире, а не в UITK, поэтому эти роли читает не стиль, а ассет палитры
+       (GuildmasterPalette.asset, собирается из этого файла). Смысл тот же, что у прочей семантики:
+       цвет принадлежит палитре, а MapStyle только называет роль. Раньше он держал собственные
+       Color-поля и трижды разошёлся с токенами, которые сам же называл в подсказках (аудит T-7). */
+    --gm-color-map-node-backing: var(--gm-ink-650);
+    --gm-color-map-node-rim: var(--gm-brass-500);
+    --gm-color-map-current-marker: var(--gm-brass-200);
+    --gm-color-map-icon-shadow: var(--gm-ink-700);
+    --gm-color-map-icon-light: var(--gm-parchment-50);
+    --gm-color-map-path-idle: var(--gm-parchment-500);
+    --gm-color-map-path-travelled: var(--gm-brass-500);
+    --gm-color-map-path-available: var(--gm-brass-200);
+    --gm-color-map-pawn: var(--gm-parchment-60);
 }
