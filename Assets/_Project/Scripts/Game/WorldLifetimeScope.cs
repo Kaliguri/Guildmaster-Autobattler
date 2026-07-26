@@ -49,6 +49,9 @@ namespace Guildmaster.Game
             builder.RegisterComponentInHierarchy<Presentation.Arena.ArenaSkinSwapper>()
                    .AsSelf().As<IArenaSwap>();
 
+            // Являет место боя на входе в узел: ждёт, пока откроется шторка перехода, и играет проявление.
+            builder.RegisterComponentInHierarchy<Presentation.Arena.ArenaStagePresenter>();
+
             // World-слой карты акта (фаза D): живёт в этой persist-сцене СВОЕЙ зоной, разнесённой от арены
             // (положение объекта в сцене и задаёт, где карта в мире). Себя он привязывает к
             // WorldMapViewLink из корневого скоупа — петля забега висит выше и напрямую его не видит.

@@ -47,6 +47,7 @@ namespace Guildmaster.Game
         private readonly ISubscriber<SetTestZoneRequest> _testZoneSub; // радио-табы: целевое состояние тест-зоны (интент)
         private readonly ISubscriber<SetFormationRequest> _formationSub; // кнопка передышки «К построению» (интент)
         private readonly IPublisher<TestZoneChangedEvent> _testZoneChangedPub; // Ф5: вещаем СОСТОЯНИЕ (единый источник)
+        private readonly IPublisher<ArenaRevealRequest>   _arenaRevealPub;    // «яви место боя» — подача за презентером
         private readonly IBattleSession   _session;
         private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
         private readonly Guildmaster.Guild.RunStateService _runStates; // durable-гильдия: сюда уезжают позиции и киты
@@ -105,11 +106,13 @@ namespace Guildmaster.Game
             ISubscriber<SetTestZoneRequest> testZoneSub,
             ISubscriber<SetFormationRequest> formationSub,
             IPublisher<TestZoneChangedEvent> testZoneChangedPub,
+            IPublisher<ArenaRevealRequest> arenaRevealPub,
             IBattleSession session,
             CameraModeController cameraModes,
             Guildmaster.Guild.RunStateService runStates,
             Core.Audio.IAudioService audio)
         {
+            _arenaRevealPub = arenaRevealPub;
             _audio         = audio;
             _runStates     = runStates;
             _loader        = loader;
@@ -209,6 +212,12 @@ namespace Guildmaster.Game
             _testZone  = false; // боевая расстановка (узел боя), не тест-зона
             _session.SetPhase(BattlePhase.Deployment); // центр панели = «Начать»; фаза → навигатор ставит контекст Deployment (K8)
             _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: боевая расстановка ≠ тест-зона (гарантия сброса)
+
+            // Вход в узел — момент, когда место боя должно ЯВИТЬСЯ. Что показать говорим здесь, как именно
+            // (сколько актов, дожидаться ли шторки) решает презентер арены: подача не дело боевого потока.
+            // Облик пока один на все узлы; когда у узлов появятся свои — сюда придёт id из пресета.
+            _arenaRevealPub?.Publish(new ArenaRevealRequest(null));
+
             FrameCameraForDeployment(); // QA #4: свободная камера со стартовым боевым кадром (не отзум на всю зону)
         }
 

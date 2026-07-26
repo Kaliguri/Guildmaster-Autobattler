@@ -13418,6 +13418,7 @@ GameObject:
   - component: {fileID: 696136178}
   - component: {fileID: 696136179}
   - component: {fileID: 696136180}
+  - component: {fileID: 696136181}
   m_Layer: 0
   m_Name: === ARENA ===
   m_TagString: Untagged
@@ -13495,6 +13496,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Arena.ArenaDesaturation
   _greyMaterial: {fileID: 2100000, guid: 4140b01b7ea5e8446ab10fe0b519cec5, type: 2}
+--- !u!114 &696136181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696136176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e6cd606b2600254db8bb285e89e887d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Arena.ArenaStagePresenter
+  _swapper: {fileID: 0}
+  _digital: {fileID: 0}
+  _desaturation: {fileID: 0}
+  _delayAfterCurtain: 0.12
 --- !u!1001 &731377214
 PrefabInstance:
   m_ObjectHideFlags: 0
