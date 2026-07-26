@@ -74,9 +74,13 @@ namespace Guildmaster.Game
             builder.RegisterInstance(audioCatalog);
             builder.Register<FmodAudioService>(Lifetime.Singleton).As<IAudioService>();
 
-            // Настройки игрока: единый источник + JSON-персист + живое применение в аудио (клиент-локально).
+            // Настройки игрока: единый источник + персист за ISaveService + живое применение в аудио.
             // Entry point — Start() зовёт Load() и применяет сохранённые громкости на старте сессии.
             builder.RegisterEntryPoint<SettingsService>(Lifetime.Singleton).As<ISettingsService>();
+
+            // Настройки дисплея — отдельно: они про КОМПЬЮТЕР, а не про игрока, поэтому едут в
+            // машинно-локальное хранилище мимо Steam Cloud. Entry point применяет режим на старте сессии.
+            builder.RegisterEntryPoint<DisplayService>(Lifetime.Singleton).As<IDisplayService>();
 
             // Рантайм-UI (оверлеи меню/настроек): VM + роутер сессионные; бутстрап — UIDocument-компонент
             // в CoreScene (инъекция методом через RegisterComponentInHierarchy). ESC открывает меню.
@@ -127,6 +131,10 @@ namespace Guildmaster.Game
             // Персистентность: JSON-файл за швом ISaveService — наш собственный и единственный бэкенд
             // (реш. 2026-07-26; ES3 остаётся в проекте референсом, а не реализацией).
             builder.Register<JsonFileSaveService>(Lifetime.Singleton).As<ISaveService>();
+            // Второе хранилище — для данных компьютера (разрешение, режим окна, частота). Лежит вне
+            // Saves/, поэтому Steam Cloud его не трогает: чужое разрешение на втором ПК в лучшем случае
+            // неудобно, в худшем — чёрный экран на неподдерживаемом режиме.
+            builder.Register<LocalJsonFileSaveService>(Lifetime.Singleton).As<ILocalSaveService>();
             // Durable-состояние забега + правила вместимости реликов (план 11 §3.1, §5.4).
             builder.Register<RunStateService>(Lifetime.Singleton);
 

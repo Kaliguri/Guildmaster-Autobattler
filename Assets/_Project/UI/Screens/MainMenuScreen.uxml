@@ -11,5 +11,9 @@
                 <ui:Button name="btn-quit" text="Выход" class="gm-button gm-mainmenu__btn" />
             </ui:ScrollView>
         </ui:VisualElement>
+
+        <!-- Версия билда: угол экрана, а не панели — не спорит с меню и одинаково стоит при любом
+             размере панели. Текст проставляется кодом из Application.version. -->
+        <ui:Label name="menu-version" class="gm-text-muted gm-version-stamp" />
     </ui:VisualElement>
 </ui:UXML>
