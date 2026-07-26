@@ -214,10 +214,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             return new RuntimeUnitFactory(null, classConfig, effects, ctx);
         }
 
-        private static VesselData MakeVessel(params StatModifier[] perks)
+        private static VesselData MakeVessel(params StatModifier[] fate)
         {
             var v = ScriptableObject.CreateInstance<VesselData>();
-            SetField(v, "_perkModifiers", perks);
+            SetField(v, "_fateModifiers", fate);
             return v;
         }
 

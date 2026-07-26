@@ -84,10 +84,11 @@ namespace Guildmaster.Combat
             if (data?.Stats != null && data.Stats.Length > 0)
                 stats.AddModifiersFrom(data, data.Stats);
 
-            if (vessel?.PerkModifiers != null && vessel.PerkModifiers.Length > 0)
-                stats.AddModifiersFrom(vessel, vessel.PerkModifiers);
+            // Судьба авторского «Сосуда» (у процедурных её нет — они приходят без ассета).
+            if (vessel?.FateModifiers != null && vessel.FateModifiers.Length > 0)
+                stats.AddModifiersFrom(vessel, vessel.FateModifiers);
 
-            // Предметы/баннеры: статовые моды (источник — сам предмет) до HP-init, наравне с перками сосуда.
+            // Предметы/баннеры: статовые моды (источник — сам предмет) до HP-init, наравне с Судьбой сосуда.
             if (items != null)
                 for (int i = 0; i < items.Count; i++)
                 {
