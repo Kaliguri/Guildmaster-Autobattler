@@ -279,7 +279,7 @@ status: living
 [[roster/tag-reference]] (поля `species`/`subspecies`). **Долг миграции карточек** (отдельный
 проход, не в этот заход): переименовать YAML `faction`→`species`, `subfaction`→`subspecies` в
 карточках врагов (`enemies/*`) и, при желании, папку `factions/` — держать `[[wikilinks]]`
-целыми. Занесено в [[roadmap]].
+целыми. Занесено в [[gdd/00-meta/roadmap|Meta - Roadmap]].
 
 ### Доп-теги юнита: 4 оси для «быстрого чтения»
 

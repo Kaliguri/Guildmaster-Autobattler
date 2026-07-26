@@ -27,7 +27,7 @@ updated: 2026-07-20
 
 ## Sprites
 
-Верхнеуровневая карта. Детальный разбор боевой пригодности — в [sprite-packs-audit](../../../docs/wiki/research/sprite-packs-audit.md) и [sprite-recommendations](../../../docs/wiki/research/sprite-recommendations.md), здесь не дублируется.
+Верхнеуровневая карта. Детальный разбор боевой пригодности — в [sprite-packs-audit](../sprite-packs-audit.md) и [sprite-recommendations](../sprite-recommendations.md), здесь не дублируется.
 
 Две корневые папки — `Pixel Art Heroes` (114 файлов) и `New FREE Pixel Art Heroes` (2334). Деление историческое: это два разных «залива» с itch, а не осмысленная классификация. Часть паков лежит в обеих (см. дубликаты ниже).
 

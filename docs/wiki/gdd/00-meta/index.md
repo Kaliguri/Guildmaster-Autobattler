@@ -7,6 +7,40 @@ status: living
 Карта геймдизайн-документации (MOC). Порядок глав задаётся полем `order` во frontmatter;
 имена файлов — латинские слаги, отображаемое имя — `title`. Ведение — контур скилла `gdd-scribe`.
 
+## Дашборд готовности (авто)
+
+> [!info] Требует плагина Dataview
+> Сводки считаются автоматически по `status`/`updated` из frontmatter. Легенда статусов — в конце страницы.
+> Механическую проверку шапок гоняет `scripts/check-wiki-frontmatter.ps1` (CI: workflow «Docs Lint»).
+
+### Сводка по статусам
+
+```dataview
+TABLE length(rows) AS "Доков"
+FROM "gdd"
+WHERE file.name != "index"
+GROUP BY status AS "Статус"
+SORT key ASC
+```
+
+### Требует внимания (needs_review / draft)
+
+```dataview
+TABLE status AS "Статус", updated AS "Обновлён"
+FROM "gdd"
+WHERE (status = "needs_review" OR status = "draft") AND file.name != "index"
+SORT updated ASC, file.name ASC
+```
+
+### Без даты обновления (свежесть неизвестна)
+
+```dataview
+TABLE status AS "Статус"
+FROM "gdd"
+WHERE !updated AND file.name != "index"
+SORT file.name ASC
+```
+
 ## Сокращения
 
 | Сокращение | Полное название |

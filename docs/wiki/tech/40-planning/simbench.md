@@ -27,7 +27,7 @@ updated: 2026-07-17
 
 Ядро **уже спроектировано под headless-прогон** — это ключевой факт, делающий стенд дешёвым:
 
-- `CombatSimulation` (`Assets/_Project/Scripts/Combat/CombatSimulation.cs`) конструируется вручную (rng + armorK + `SpatialHash` + системы), тикается голым циклом `Tick(SimConstants.TickDelta)` до `Outcome != Ongoing`. Ровно так делают существующие тесты — [`CombatSimulationTests.BuildSim`](../../../Assets/_Project/Tests/EditMode/Combat/CombatSimulationTests.cs) и `BattleIntegrationTest`.
+- `CombatSimulation` (`Assets/_Project/Scripts/Combat/CombatSimulation.cs`) конструируется вручную (rng + armorK + `SpatialHash` + системы), тикается голым циклом `Tick(SimConstants.TickDelta)` до `Outcome != Ongoing`. Ровно так делают существующие тесты — [`CombatSimulationTests.BuildSim`](../../../../Assets/_Project/Tests/EditMode/Combat/CombatSimulationTests.cs) и `BattleIntegrationTest`.
 - Ядро — POCO: **нет** зависимостей на MonoBehaviour, рендер, VFX, аудио. Презентация развязана через outward C#-events (`OnDamageDealt`, `OnHealed`, `OnUnitDied`, `OnBattleEnded`, `OnAttackEvaded`) — нет подписчиков, ничего не происходит. Это и есть **шов для метрик**: стенд подписывается на них и агрегирует.
 - **Ограничение:** конструктор создаёт `ScriptableObject`-маркер (`EffectData.CreateRuntime`), поэтому стенд обязан исполняться **внутри Unity** (Test Runner / `-batchmode`), а не как автономный .NET-процесс. Для «гонять бои без презентации» это несущественно.
 - **Синтетические юниты — тривиальны:** `RuntimeUnit` строится напрямую (`new Stats(null)` + `StatModifier[]`), без SO и фабрики (образец — `MakeMeleeUnit`). Манекены (бессмертная цель, фикс-DPS пушка, AoE-кластер) собираются кодом.

@@ -4,13 +4,13 @@ on:
   pull_request:
     paths:
       - "docs/wiki/**"
-      - "scripts/check-wiki-links.ps1"
+      - "scripts/check-wiki-*.ps1"
       - ".github/workflows/docs-lint.yml"
   push:
     branches: [dev, master]
     paths:
       - "docs/wiki/**"
-      - "scripts/check-wiki-links.ps1"
+      - "scripts/check-wiki-*.ps1"
       - ".github/workflows/docs-lint.yml"
 
 jobs:
@@ -20,6 +20,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # -StrictAmbiguous: короткая [[ссылка]], совпадающая с несколькими файлами,
+      # тоже роняет сборку — Obsidian выбирает цель непредсказуемо. Vault от таких
+      # вычищен, флаг держит фронт.
       - name: Check wiki links (fail on broken)
         shell: pwsh
-        run: ./scripts/check-wiki-links.ps1 -VaultPath docs/wiki
+        run: ./scripts/check-wiki-links.ps1 -VaultPath docs/wiki -StrictAmbiguous
+
+  frontmatter:
+    name: Check frontmatter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # ВРЕМЕННО -ReportOnly: 142 нарушения ждут зачистки в фазе Ф6
+      # (docs/gdd-audit-progress.md). Снять флаг последним шагом Ф6 —
+      # без этого линт не держит фронт и шапки разъедутся снова.
+      - name: Check frontmatter (report only until phase F6 lands)
+        shell: pwsh
+        run: ./scripts/check-wiki-frontmatter.ps1 -VaultPath docs/wiki -ReportOnly

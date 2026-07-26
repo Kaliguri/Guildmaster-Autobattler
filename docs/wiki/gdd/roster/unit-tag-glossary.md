@@ -14,7 +14,7 @@ updated: 2026-07-24
 **4 оси** (ложатся на код-`enum TagCategory`). **Порядок показа на карточке:**
 `Role → DamageType → Playstyle → Mechanic` («кто → чем бьёт → зачем нужен → чем именно»).
 
-Поля карточки — [[tag-reference]]. Модель урона — [[gdd/20-combat/stats]]. Классы — [[stats#Классы]].
+Поля карточки — [[tag-reference]]. Модель урона — [[gdd/20-combat/stats]]. Классы — [[stats#Классы и базовый баланс]].
 
 ---
 

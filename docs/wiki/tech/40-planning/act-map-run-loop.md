@@ -18,7 +18,7 @@ updated: 2026-07-19
 ## 1. Отправная точка (факт на 2026-07-17)
 
 **Есть (готовые швы под петлю):**
-- `IEventFlow.Run(RunContext) → EventResult` — полиморфный узел ([`RunFlow.cs`](../../../Assets/_Project/Scripts/Game/Flow/RunFlow.cs)). Реализации: `BattleFlow`, `TextEventFlow`.
+- `IEventFlow.Run(RunContext) → EventResult` — полиморфный узел ([`RunFlow.cs`](../../../../Assets/_Project/Scripts/Game/Flow/RunFlow.cs)). Реализации: `BattleFlow`, `TextEventFlow`.
 - `GameFlow` (singleton, VContainer) — оркестратор, умеет прогнать **один** узел за вызов (`RunSingleBattleAsync`, `RunTextEventAsync`, `PresentRewardAsync`). Петли обхода карты **нет**.
 - `RewardService` + `RewardScreenView` — витрина 1-из-3 реликвий, наклон по `RewardTier {Battle/Elite/Boss}` (uniqueChance 10/20/100%).
 - `RunStateService` — владелец `RunState`, вместимость реликвий (`RelicCapacityBase=8..Max=16`), `TryAddRelic`/`RemoveRelic`, `AddGold` (кламп в ноль), `Autosave`, **`HasSave`** (готово под кнопку «Продолжить»).
@@ -26,7 +26,7 @@ updated: 2026-07-19
 - Золото: `RunState.Gold`, показ в `RunTopBarView`. `ItemData` уже имеет поля `Cost`/`ShopWeight`.
 
 **Есть в данных, но мёртвое (никто не читает/не пишет):**
-- DTO карты: `MapNodeType {Start, Battle, Elite, TextEvent, Shop, Boss}`, `MapNode {Id, Type, PayloadId, Edges[], Cleared, UiPosition}`, `MapState {CurrentNodeId, Nodes[]}`, `RunState.Map`, `RunState.CurrentActIndex` ([`RunState.cs`](../../../Assets/_Project/Scripts/Guild/RunState.cs)). Ни генератора, ни траверса, ни экрана.
+- DTO карты: `MapNodeType {Start, Battle, Elite, TextEvent, Shop, Boss}`, `MapNode {Id, Type, PayloadId, Edges[], Cleared, UiPosition}`, `MapState {CurrentNodeId, Nodes[]}`, `RunState.Map`, `RunState.CurrentActIndex` ([`RunState.cs`](../../../../Assets/_Project/Scripts/Guild/RunState.cs)). Ни генератора, ни траверса, ни экрана.
 
 **Нет вообще:**
 - Генератор карты, петля обхода узлов (главное), экран карты.
