@@ -356,7 +356,7 @@ Steam Cloud от шифрования только страдает.
 | Фаза | Состав | Зависит от |
 |---|---|---|
 | **A. Фундамент** ✅ | Подкаталог `Saves/`, конверт, чтение `schemaVersion` + три исхода, настройки за `ISaveService`, разделение `prefs`/`machine` + настройки дисплея | ничего — можно делать сразу |
-| **B. Иерархия** | `ProfileState`, `GuildState`, пути-ключи, `List`, `IProfileService`, лимиты в `GameConfig` | A |
+| **B. Иерархия** ✅ | `ProfileState`, `GuildState`, пути-ключи, `List`, `DeleteTree`, `IProfileService`, лимиты в `GameConfig` | A |
 | **C. Миграции** | `SaveMigrator` на Newtonsoft, санация по `IContentDatabase` | A |
 | **D. Cloud** | ~~фиксация `productName`~~ (закрыто развязкой пути 2026-07-27); осталось: включить маску Auto-Cloud в партнёрке и проверить на двух машинах | A |
 | **E. UI** | Экраны выбора профиля и гильдии, удаление с подтверждением, «Продолжить» на главном | B |
