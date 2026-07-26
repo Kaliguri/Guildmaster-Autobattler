@@ -150,6 +150,41 @@ namespace Guildmaster.Tests.EditMode.Core
         }
 
         [Test]
+        public void CrossTime_MatchesTheMomentThePhaseActuallyTurns()
+        {
+            var s = Default();
+
+            for (int y = 0; y < Rows; y += 3)
+            for (int x = 0; x < Cols; x += 3)
+            {
+                float t = s.CrossTime(ArenaSwapAct.Load, x, y);
+
+                Assert.IsFalse(s.Sample(t - 0.01f, x, y).ShowsTarget,
+                               $"клетка ({x},{y}) не должна показывать новый тайл до своего момента");
+                Assert.IsTrue(s.Sample(t + 0.01f, x, y).ShowsTarget,
+                              $"клетка ({x},{y}) обязана перевернуться сразу после своего момента");
+            }
+        }
+
+        [Test]
+        public void CrossTime_StaysInsideItsOwnAct()
+        {
+            var s = Default();
+            ArenaSwapShape shape = s.Shape;
+
+            for (int y = 0; y < Rows; y += 4)
+            for (int x = 0; x < Cols; x += 4)
+            {
+                Assert.That(s.CrossTime(ArenaSwapAct.Digitize, x, y),
+                            Is.InRange(0f, shape.DigitizeEnd), "уход в каркас — только в первом акте");
+                Assert.That(s.CrossTime(ArenaSwapAct.Load, x, y),
+                            Is.InRange(shape.DigitizeEnd, shape.RestoreStart), "подмена тайла — только во втором");
+                Assert.That(s.CrossTime(ArenaSwapAct.Restore, x, y),
+                            Is.InRange(shape.RestoreStart, 1f), "возврат в реальность — только в третьем");
+            }
+        }
+
+        [Test]
         public void Hash_IsStableAndSpreadAcrossCells()
         {
             Assert.AreEqual(ArenaSwapSchedule.Hash01(4, 9, 2), ArenaSwapSchedule.Hash01(4, 9, 2),

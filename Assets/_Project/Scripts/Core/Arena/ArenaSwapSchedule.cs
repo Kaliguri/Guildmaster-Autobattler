@@ -50,6 +50,19 @@ namespace Guildmaster.Core.Arena
         }
     }
 
+    /// <summary>Акт перехода — для запроса «когда эта клетка его проходит» (<see cref="ArenaSwapSchedule.CrossTime"/>).</summary>
+    public enum ArenaSwapAct
+    {
+        /// <summary>Уход в каркас.</summary>
+        Digitize = 0,
+
+        /// <summary>Смена текстуры на новую.</summary>
+        Load = 1,
+
+        /// <summary>Возврат в реальный вид.</summary>
+        Restore = 2,
+    }
+
     /// <summary>
     /// Расписание перехода: по общему прогрессу и координате клетки выдаёт фазы трёх актов.
     /// Чистая математика без Unity — гоняется тестами и, что важнее, ОДИН раз считается на клетку,
@@ -91,6 +104,43 @@ namespace Guildmaster.Core.Arena
                            Hash01(x, y, salt + 31) * (_shape.CellDurationMax - _shape.CellDurationMin);
             float start  = Hash01(x, y, salt) * _shape.CellSpread * (1f - dur);
             return Clamp01((g - start) / dur);
+        }
+
+        /// <summary>
+        /// Момент (в общем прогрессе 0..1), когда клетка проходит середину указанного акта: переворачивается
+        /// на новый тайл, уходит в каркас или возвращается в реальность.
+        /// <para>Единственный источник этих моментов: по ним и подменяются тайлы, и рисуется каркас. Считай
+        /// их порознь — оверлей однажды поедет мимо клеток, которые меняются, и никто не поймёт почему.</para>
+        /// <para>Ход акта монотонен, поэтому момент ищется делением пополам — точнее и дешевле, чем гнать
+        /// расписание мелкими шагами по времени.</para>
+        /// </summary>
+        public float CrossTime(ArenaSwapAct act, int cellX, int cellY)
+        {
+            float lo, hi;
+            switch (act)
+            {
+                case ArenaSwapAct.Digitize: lo = 0f;                   hi = _shape.DigitizeEnd;  break;
+                case ArenaSwapAct.Restore:  lo = _shape.RestoreStart;  hi = 1f;                  break;
+                default:                    lo = _shape.DigitizeEnd;   hi = _shape.RestoreStart; break;
+            }
+
+            for (int i = 0; i < 18; i++)
+            {
+                float mid = (lo + hi) * 0.5f;
+                if (Passed(act, Sample(mid, cellX, cellY))) hi = mid;
+                else lo = mid;
+            }
+            return hi;
+        }
+
+        private static bool Passed(ArenaSwapAct act, in ArenaCellPhase phase)
+        {
+            switch (act)
+            {
+                case ArenaSwapAct.Digitize: return phase.Digitize >= 0.5f;
+                case ArenaSwapAct.Restore:  return phase.Restore  >= 0.5f;
+                default:                    return phase.ShowsTarget;
+            }
         }
 
         /// <summary>

@@ -76,6 +76,22 @@ namespace Guildmaster.Presentation.Arena
         public bool Busy => _playing;
         public string CurrentSkinId { get; private set; }
 
+        /// <summary>
+        /// Переход начался: (откуда, куда). Оверлей печёт по этому событию карту клеток — именно в этот
+        /// момент известны оба облика, а на следующем кадре исходный уже начнёт стираться.
+        /// </summary>
+        public event Action<string, string> SwapStarted;
+
+        /// <summary>Имена слоёв живого корня — по ним оверлей отличает пол от стен.</summary>
+        public IEnumerable<string> LayerNames => _liveLayers.Keys;
+
+        /// <summary>Есть ли в облике тайл в этой клетке этого слоя. Для оверлея: пол там или стена.</summary>
+        public bool HasTile(string skinId, string layerName, Vector3Int cell)
+        {
+            if (skinId == null || !_skins.TryGetValue(skinId, out var layers)) return false;
+            return layers.TryGetValue(layerName, out var cells) && cells.ContainsKey(cell);
+        }
+
         /// <summary>Ход перехода 0..1 — читает оверлей, чтобы рисовать каркас теми же фазами.</summary>
         public float Progress => _t;
 
@@ -145,6 +161,8 @@ namespace Guildmaster.Presentation.Arena
 
             _schedule = new ArenaSwapSchedule(BuildShape());
             BuildPlan(skinId);
+
+            SwapStarted?.Invoke(CurrentSkinId, skinId); // оверлею — пока оба облика ещё известны
 
             _targetSkin = skinId;
             _onFinished = onFinished;
@@ -250,23 +268,10 @@ namespace Guildmaster.Presentation.Arena
             _plan.Sort(static (a, b) => a.T.CompareTo(b.T));
         }
 
-        /// <summary>
-        /// Когда именно эта клетка перевернётся на новый тайл. Ход подгрузки монотонен, поэтому момент
-        /// ищется делением пополам — точнее и дешевле, чем гнать расписание шагами по времени.
-        /// </summary>
-        private float SwitchTime(Vector3Int cell)
-        {
-            float lo = _schedule.Shape.DigitizeEnd;
-            float hi = _schedule.Shape.RestoreStart;
-
-            for (int i = 0; i < 18; i++)
-            {
-                float mid = (lo + hi) * 0.5f;
-                if (_schedule.Sample(mid, cell.x, cell.y).ShowsTarget) hi = mid;
-                else lo = mid;
-            }
-            return hi;
-        }
+        // Когда клетка перевернётся на новый тайл — спрашиваем у расписания, а не считаем здесь: этот же
+        // момент нужен оверлею для вспышки, и две копии формулы однажды разъехались бы.
+        private float SwitchTime(Vector3Int cell) =>
+            _schedule.CrossTime(ArenaSwapAct.Load, cell.x, cell.y);
 
         private void Finish()
         {

@@ -15478,6 +15478,7 @@ GameObject:
   m_Component:
   - component: {fileID: 696136177}
   - component: {fileID: 696136178}
+  - component: {fileID: 696136179}
   m_Layer: 0
   m_Name: === ARENA ===
   m_TagString: Untagged
@@ -15527,6 +15528,23 @@ MonoBehaviour:
   _cellDurationMax: 0.34
   _tailAcceleration: 0.55
   _rushFactor: 3.5
+--- !u!114 &696136179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696136176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9050137d11fa1f42b944ca6eb983ad0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Arena.ArenaDigitalOverlay
+  _digitalMaterial: {fileID: 2100000, guid: bda6ed651241ec8408a8d9f502bee4f5, type: 2}
+  _wallLayerMarker: Wall
+  _sortingLayer: Default
+  _sortingOrder: 5
+  _calm: 0
 --- !u!1001 &731377214
 PrefabInstance:
   m_ObjectHideFlags: 0
