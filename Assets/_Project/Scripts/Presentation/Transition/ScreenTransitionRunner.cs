@@ -27,6 +27,7 @@ namespace Guildmaster.Presentation.Transition
         private Stage _stage;
         private float _time;
         private ScreenTransitionShape _shape;
+        private Vector4 _seed;
         private Action<float> _onClosing;
         private Action _onCovered;
 
@@ -47,6 +48,7 @@ namespace Guildmaster.Presentation.Transition
             _onCovered = onCovered;
             _stage     = Stage.In;
             _time      = 0f;
+            _seed      = NextSeed();
 
             Publish(0f);
         }
@@ -132,12 +134,21 @@ namespace Guildmaster.Presentation.Transition
         // Открытие, наоборот, тормозит к концу: новый кадр не выпрыгивает, а проявляется.
         private static float Opening(float t) => 1f - (1f - t) * (1f - t);
 
+        // Жребий узора на одно моргание: свой сдвиг, свой поворот и лёгкий разброс масштаба. Текстура чернил
+        // одна, но выбирается из неё каждый раз другое место — повторяющегося рисунка игрок не увидит.
+        // Случайность тут БЕЗОПАСНА: переход — чистая презентация, забег на неё не опирается.
+        private static Vector4 NextSeed()
+            => new Vector4(UnityEngine.Random.value * 32f,
+                           UnityEngine.Random.value * 32f,
+                           UnityEngine.Random.value * Mathf.PI * 2f,
+                           Mathf.Lerp(0.85f, 1.25f, UnityEngine.Random.value));
+
         private void Publish(float progress)
         {
             // Точка схлопывания едет к центру экрана вместе с закрытием: узел в это же время приближается
             // камерой, и вдвоём это читается как вход в узел, а не как затемнение около него.
             Vector2 center = Vector2.Lerp(_shape.FocusUv, ScreenCenter, Mathf.Clamp01(progress));
-            _fadePub?.Publish(new ScreenFadeChangedEvent(Mathf.Clamp01(progress), center));
+            _fadePub?.Publish(new ScreenFadeChangedEvent(Mathf.Clamp01(progress), center, _seed));
         }
     }
 }

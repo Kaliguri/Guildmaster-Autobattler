@@ -63,6 +63,6 @@ MonoBehaviour:
   _pawn: {r: 0.973, g: 0.925, b: 0.796, a: 1}
   _pawnTravelSeconds: 1.5
   _pawnSkipSpeed: 6
-  _transitionInSeconds: 0.3
-  _transitionHoldSeconds: 0.18
-  _transitionOutSeconds: 0.26
+  _transitionInSeconds: 0.45
+  _transitionHoldSeconds: 0.25
+  _transitionOutSeconds: 0.4

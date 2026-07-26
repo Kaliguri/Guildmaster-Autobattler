@@ -141,6 +141,9 @@ namespace Guildmaster.UI
         private static readonly int FadeProgressId = Shader.PropertyToID("_Progress");
         private static readonly int FadeCenterId   = Shader.PropertyToID("_Center");
         private static readonly int FadeAspectId   = Shader.PropertyToID("_Aspect");
+        private static readonly int FadeSeedId     = Shader.PropertyToID("_Seed");
+        private static readonly int FadeShapeTexId = Shader.PropertyToID("_ShapeTex");
+        private static readonly int FadeUseShapeId = Shader.PropertyToID("_UseShape");
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
@@ -251,7 +254,7 @@ namespace Guildmaster.UI
                 else          _router.HideMapSpace();
             });
             // Шторка перехода (QA #47): плотность считает тот, кто ведёт переход (карта акта), UI её рисует.
-            _screenFadeSubscription = _screenFadeSub?.Subscribe(e => ApplyScreenFade(e.Progress, e.Center));
+            _screenFadeSubscription = _screenFadeSub?.Subscribe(e => ApplyScreenFade(e.Progress, e.Center, e.Seed));
 
             // Главное меню открыто → гасим непрозрачную подложку, иначе она закроет собой мировой стол.
             _mainMenuVisSubscription = _mainMenuVisSub?.Subscribe(e =>
@@ -456,7 +459,7 @@ namespace Guildmaster.UI
         // показать умеет — поэтому материал рисуем в небольшую текстуру и отдаём её элементу фоном. Так
         // вернулся узор растекающихся чернил, потерянный, когда шторка переехала из мира в UI. Ровная
         // заливка остаётся фолбэком на случай, если материал не назначен.
-        private void ApplyScreenFade(float progress, Vector2 center)
+        private void ApplyScreenFade(float progress, Vector2 center, Vector4 seed)
         {
             if (_screenFade == null) return;
 
@@ -477,7 +480,12 @@ namespace Guildmaster.UI
             RenderTexture rt = EnsureFadeTexture();
             _transitionMaterial.SetFloat(FadeProgressId, p);
             _transitionMaterial.SetVector(FadeCenterId, center);
+            _transitionMaterial.SetVector(FadeSeedId, seed);
             _transitionMaterial.SetFloat(FadeAspectId, (float)rt.width / Mathf.Max(1, rt.height));
+
+            // Форму смыкания берём из рисунка ТОЛЬКО когда он есть: пустой слот в шейдере читается как
+            // чёрная текстура, и без этой проверки кадр закрывался бы разом, а не сходился к точке.
+            _transitionMaterial.SetFloat(FadeUseShapeId, _transitionMaterial.GetTexture(FadeShapeTexId) != null ? 1f : 0f);
 
             // Чистим цель перед отрисовкой: у шейдера прозрачный блендинг, и без очистки кадры копились бы
             // друг на друге, а шторка чернела бы сама по себе.

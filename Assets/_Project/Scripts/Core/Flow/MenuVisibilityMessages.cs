@@ -55,10 +55,18 @@ namespace Guildmaster.Core.Flow
         /// </summary>
         public readonly UnityEngine.Vector2 Center;
 
-        public ScreenFadeChangedEvent(float progress, UnityEngine.Vector2 center)
+        /// <summary>
+        /// Жребий ОДНОГО моргания: сдвиг выборки узора (xy), поворот в радианах (z) и множитель масштаба (w).
+        /// Держится постоянным весь переход и меняется от перехода к переходу — одна текстура чернил даёт
+        /// каждый раз новый рисунок, и повтора не видно.
+        /// </summary>
+        public readonly UnityEngine.Vector4 Seed;
+
+        public ScreenFadeChangedEvent(float progress, UnityEngine.Vector2 center, UnityEngine.Vector4 seed)
         {
             Progress = progress;
             Center   = center;
+            Seed     = seed;
         }
     }
 }

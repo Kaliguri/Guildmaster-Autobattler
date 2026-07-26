@@ -20,8 +20,15 @@ struct Varyings
 TEXTURE2D(_NoiseTex);
 SAMPLER(sampler_NoiseTex);
 
+// Форма смыкания кадра. Пустой слот = процедурный круг (см. ниже): он ездит за точкой входа и остаётся
+// кругом на любом аспекте, чего от растянутой картинки не добьёшься. Текстура нужна, когда форма должна
+// быть НАРИСОВАННОЙ — клякса, спираль, рваный контур. Белое в ней закрывается последним.
+TEXTURE2D(_ShapeTex);
+SAMPLER(sampler_ShapeTex);
+
 CBUFFER_START(UnityPerMaterial)
     float4 _NoiseTex_ST;
+    float4 _ShapeTex_ST;
     half4  _InkColor;
     half   _Progress;
     half   _Softness;
@@ -31,6 +38,9 @@ CBUFFER_START(UnityPerMaterial)
     float4 _Center;
     half   _Aspect;
     half   _Dive;
+    float4 _Seed;
+    half   _UseShape;
+    half   _Warp;
 CBUFFER_END
 
 Varyings Vert(Attributes v)
@@ -68,7 +78,18 @@ half4 Frag(Varyings i) : SV_Target
 
     // Порядок закрытия задаёт ТЕКСТУРА, а не время: там, где шум темнее, чернила приходят раньше.
     // Отсюда и рваный, «расползающийся» край вместо ровной заливки кадра.
-    half noise = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, uv * _Scale).r;
+    //
+    // Выборку катаем по жребию перехода — сдвиг, поворот, разброс масштаба, — и вдобавок искажаем её
+    // вторым слоем того же шума покрупнее. Текстура одна, а рисунок каждое моргание другой: повтора,
+    // который выдавал бы одну и ту же картинку четырнадцать раз за акт, не остаётся.
+    float2 nuv = uv * _Scale * _Seed.w;
+    float rs = sin(_Seed.z), rc = cos(_Seed.z);
+    nuv = float2(nuv.x * rc - nuv.y * rs, nuv.x * rs + nuv.y * rc) + _Seed.xy;
+
+    half warp = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, nuv * 0.37h + _Seed.yx).r;
+    nuv += (warp - 0.5h) * _Warp;
+
+    half noise = SAMPLE_TEXTURE2D(_NoiseTex, sampler_NoiseTex, nuv).r;
 
     // Виньетка подмешивается к порогу, а не к цвету: дальнее от точки входа закрывается первым, сама точка —
     // последней, и кадр схлопывается ИМЕННО в неё, а не в геометрический центр экрана.
@@ -77,8 +98,16 @@ half4 Frag(Varyings i) : SV_Target
 
     // Нормируем на расстояние до САМОГО ДАЛЬНЕГО угла от точки входа. Без этого сдвинутый от центра узел
     // сразу давал бы «единицу» на половине кадра, и закрытие схлопывалось бы рывком за первую треть хода.
-    float2 far = max(center, 1.0 - center) * float2(_Aspect, 1.0);
+    float2 span = max(center, 1.0 - center);
+    float2 far = span * float2(_Aspect, 1.0);
     half corner = saturate(dot(c, c) / max(dot(far, far), 1e-4));
+
+    // Нарисованная форма, если она есть: кладём её так, чтобы СЕРЕДИНА картинки села на точку входа, а её
+    // края пришлись на самые дальние от точки места кадра. Белое = закрывается последним, поэтому берём
+    // обратное — у процедурного круга «единица» тоже означает «уходит первым».
+    float2 shapeUv = (uv - center) / max(2.0 * span, 1e-4) + 0.5;
+    half shape = 1.0h - SAMPLE_TEXTURE2D(_ShapeTex, sampler_ShapeTex, shapeUv).r;
+    corner = lerp(corner, shape, _UseShape);
     half threshold = lerp(noise, saturate(noise - corner), _Vignette);
 
     half soft = max(0.001h, _Softness);
