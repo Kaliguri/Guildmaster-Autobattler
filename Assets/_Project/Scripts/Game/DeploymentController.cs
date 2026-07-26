@@ -73,7 +73,8 @@ namespace Guildmaster.Game
         private IDisposable _formationSubscription;
 
         private bool _deploying;
-        private bool _testZone; // QA #2: текущая расстановка — СЕРЫЙ полигон вне забега (не боевой узел, не построение)
+        private bool _foldingUp; // сворачиваемся по внешнему сбросу фазы — защита от захода на второй круг
+        private bool _testZone;// QA #2: текущая расстановка — СЕРЫЙ полигон вне забега (не боевой узел, не построение)
         private BattlePhase _sandboxReturnPhase = BattlePhase.None; // куда вернуть фазу, выйдя из расстановки-без-боя
         private RuntimeUnit _dragged;
         private Vector2 _dragStartWorld;
@@ -148,10 +149,26 @@ namespace Guildmaster.Game
             // «Начать» стартует бой только из БОЕВОЙ расстановки. В тест-зоне бой пока не запускается (полигон
             // только для расстановки/реликвий — решение Макса); кнопка там — no-op до появления боя в тест-зоне.
             _session.BindStart(() => { if (_deploying && !_testZone) StartCombat(); });
+
+            // Мир могут сбросить и мимо нас: «В меню» из системного меню рвёт забег через IRunControl, и
+            // до нас доходит только смена фазы. Без этой подписки расстановка (и тест-зона вместе с ней)
+            // оставалась взведённой — в главном меню и в следующей сессии полигон продолжал висеть.
+            _session.PhaseChanged += OnPhaseChanged;
+        }
+
+        // Фаза упала в None, а мы всё ещё в расстановке → мир сброшен снаружи, сворачиваемся.
+        private void OnPhaseChanged()
+        {
+            if (_foldingUp || !_deploying || _session.Phase != BattlePhase.None) return;
+
+            _foldingUp = true;                 // ExitTestZone сам трогает фазу — не даём себя же перезвать
+            try { ExitTestZone(); }
+            finally { _foldingUp = false; }
         }
 
         public void Dispose()
         {
+            _session.PhaseChanged -= OnPhaseChanged;
             _loader.FreeDeploymentRequested -= OnFreeDeployment;
             _input.PointerPressed  -= OnPointerPressed;
             _input.PointerReleased -= OnPointerReleased;
