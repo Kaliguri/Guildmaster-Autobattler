@@ -65,6 +65,16 @@ namespace Guildmaster.Combat.Effects
         /// </summary>
         public int[] ChargeReadyTicks;
 
+        /// <summary>
+        /// Служебный таймер компонента: абсолютный тик, на котором ему пора сработать. Нужен там, где
+        /// собственный ритм эффекта не совпадает ни с длительностью, ни с периодом тика — например
+        /// сход «Углей» по ускоряющейся кривой. Сверяется с <c>ctx.Combat.CurrentTick</c>.
+        /// </summary>
+        public int TimerTick;
+
+        /// <summary>Текущий шаг служебного таймера в тиках (для кривых, где интервал меняется по ходу).</summary>
+        public int TimerIntervalTicks;
+
         /// <summary>Постоянный эффект (пассивка) — не истекает по таймеру.</summary>
         public bool IsPermanent => RemainingTicks < 0;
     }

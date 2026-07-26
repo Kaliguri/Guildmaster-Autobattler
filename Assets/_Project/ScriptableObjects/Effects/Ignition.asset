@@ -30,7 +30,8 @@ MonoBehaviour:
     - rid: 5615026976500744343
       type: {class: IgnitionComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _detonateTag: 4096
+        _detonateTag: 8192
+        _damagePerStack: 15
         _school: 1
         _physicalSubtype: 0
         _magicElement: 1

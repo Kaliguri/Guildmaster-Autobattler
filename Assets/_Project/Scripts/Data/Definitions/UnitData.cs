@@ -76,6 +76,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Ресурс (мана) за авто-атаку, × ResourceGainEff, клампится к MaxResource. 0 = не копит от ударов. Копейщик = 5.")]
         [SerializeField] private float _resourceOnHit;
 
+        [Tooltip("Потолок набора ресурса, единиц В СЕКУНДУ. 0 = без потолка. Держит связку «разгон темпа → " +
+                 "вдвое больше маны»: темп каста должен ускоряться решениями игрока, но не улетать. Мечник = 10.")]
+        [SerializeField] private float _maxResourceGainPerSecond;
+
         [Header("Base stat block")]
         [Tooltip("Модификаторы юнита. Накладываются поверх дефолтов StatsConfig при сборке (отличия от базы).")]
         [SerializeField] private StatModifier[] _stats;
@@ -124,6 +128,7 @@ namespace Guildmaster.Data.Definitions
         public float MovingAttackSpeedPenaltyPct => _movingAttackSpeedPenaltyPct;
         public float AttackRecoverySeconds => _attackRecoverySeconds;
         public float ResourceOnHit => _resourceOnHit;
+        public float MaxResourceGainPerSecond => _maxResourceGainPerSecond;
         public StatModifier[] Stats => _stats;
         public EffectData[] GrantedEffects => _grantedEffects;
         public AbilityData[] Abilities => _abilities;

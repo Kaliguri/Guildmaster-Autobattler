@@ -51,13 +51,35 @@ namespace Guildmaster.Combat.Effects
         void OnEvent(in EffectContext ctx, in CombatEventData e);
     }
 
-    /// <summary>Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар.</summary>
+    /// <summary>
+    /// Мутируемый исход pre-damage прохода (§9.3): компонент может полностью негейтить удар или
+    /// изменить его величину.
+    /// </summary>
     public sealed class PreDamageResult
     {
         /// <summary>Удар отменён (урон не наносится) — «Изворотливость» ассасина.</summary>
         public bool Negated;
 
-        public void Reset() => Negated = false;
+        /// <summary>
+        /// Множитель входящего урона, накопленный компонентами цели (1 = без изменений). Компоненты
+        /// НЕ присваивают его, а домножают через <see cref="AddMultiplier"/> — иначе два уязвимости
+        /// на одной цели затирали бы друг друга. Применяется в <see cref="DamagePipeline.Execute"/>
+        /// ДО брони: это уязвимость самой цели, а не пробивание источника.
+        /// Носители: «Угли» (+1% урона огнём за стак), будущее «+25% урона молнии по Мокрому».
+        /// </summary>
+        public float DamageMultiplier = 1f;
+
+        /// <summary>Домножить множитель входящего урона (уязвимости копятся, а не перетирают друг друга).</summary>
+        public void AddMultiplier(float factor)
+        {
+            if (factor > 0f) DamageMultiplier *= factor;
+        }
+
+        public void Reset()
+        {
+            Negated = false;
+            DamageMultiplier = 1f;
+        }
     }
 
     /// <summary>
@@ -70,6 +92,36 @@ namespace Guildmaster.Combat.Effects
     public interface IPreDamageComponent : IRuntimeEffectComponent
     {
         void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx);
+    }
+
+    /// <summary>
+    /// Часть удара, уходящая другой школой урона (карточка The Pyre: по горящей цели половина клинка
+    /// бьёт Огнём). Доля берётся ОТ того же сырого урона, суммарная величина удара не меняется —
+    /// меняется то, какой бронёй она гасится и какие реакции будит.
+    /// </summary>
+    public readonly struct AttackSplit
+    {
+        /// <summary>Доля урона [0..1], уходящая школой <see cref="School"/>.</summary>
+        public readonly float Share;
+        public readonly Data.Definitions.DamageSchool School;
+        public readonly Data.Definitions.MagicElement Element;
+
+        public AttackSplit(float share, Data.Definitions.DamageSchool school, Data.Definitions.MagicElement element)
+        {
+            Share   = share < 0f ? 0f : share > 1f ? 1f : share;
+            School  = school;
+            Element = element;
+        }
+    }
+
+    /// <summary>
+    /// Компонент на эффекте АТАКУЮЩЕГО, расщепляющий его авто-атаку по школам (условие смотрит на
+    /// цель). Опрашивается <see cref="EffectSystem.TryResolveAttackSplit"/> в момент удара; первый
+    /// сработавший выигрывает — порядок опроса по индексу активных эффектов, как и у pre-damage.
+    /// </summary>
+    public interface IAttackSplitComponent : IRuntimeEffectComponent
+    {
+        bool TrySplit(RuntimeUnit attacker, RuntimeUnit target, in EffectContext ctx, out AttackSplit split);
     }
 
     /// <summary>

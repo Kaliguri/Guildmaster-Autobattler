@@ -54,7 +54,7 @@ namespace Guildmaster.Combat.Effects.Components
 
             // Periodic: тик DoT не будит реактивы «на удар» — горение и яд не должны запускать шипы и щиты.
             ctx.Combat.DealDamage(new DamageRequest(ctx.Source, ctx.Target, damage, _damageSchool, ctx.Combat.ArmorK,
-                sourceKind: DamageSourceKind.Periodic, affinity: _affinity));
+                sourceKind: DamageSourceKind.Periodic, affinity: _affinity, element: _magicElement));
         }
 
         /// <summary>

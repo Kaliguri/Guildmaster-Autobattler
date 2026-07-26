@@ -28,6 +28,12 @@ namespace Guildmaster.Combat
         /// <summary>Текущий ресурс (мана/ярость). Фаза 2.</summary>
         public float CurrentResource;
 
+        /// <summary>Тик, с которого считается текущее секундное окно набора ресурса (потолок «единиц в секунду»).</summary>
+        public int ResourceWindowStartTick;
+
+        /// <summary>Сколько ресурса уже набрано в текущем секундном окне — сверяется с потолком юнита.</summary>
+        public float ResourceGainedInWindow;
+
         /// <summary>Текущий щит: поглощает урон до вычета из HP.</summary>
         public float CurrentShield;
 

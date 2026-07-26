@@ -31,14 +31,22 @@ namespace Guildmaster.Combat
         /// <summary>Сродство урона — эхо <see cref="DamageRequest.Affinity"/> (тинт вспышки Poison/Light/Dark).</summary>
         public readonly DamageAffinity Affinity;
 
+        /// <summary>
+        /// Стихия урона — эхо <see cref="DamageRequest.Element"/>. Броню не делит (она одна на всю
+        /// магию), но нужна потребителям: искры по стихии в презентации, разбор огня в метриках.
+        /// </summary>
+        public readonly MagicElement Element;
+
         /// <summary>Суммарный урон (HP + щит).</summary>
         public float TotalDamage => HpDamage + ShieldDamage;
 
         public DamageResult(float hpDamage, float shieldDamage, bool killedTarget,
             DamageSourceKind sourceKind = DamageSourceKind.Ability,
             DamageSchool school = DamageSchool.Physical,
-            DamageAffinity affinity = DamageAffinity.None)
+            DamageAffinity affinity = DamageAffinity.None,
+            MagicElement element = MagicElement.None)
         {
+            Element      = element;
             HpDamage     = hpDamage;
             ShieldDamage = shieldDamage;
             KilledTarget = killedTarget;

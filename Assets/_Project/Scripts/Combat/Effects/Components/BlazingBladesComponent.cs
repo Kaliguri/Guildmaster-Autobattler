@@ -32,6 +32,11 @@ namespace Guildmaster.Combat.Effects.Components
         {
             if (!e.IsAutoAttack) return;
 
+            // Удар по горящей цели расщепляется на клинок и огонь — это ДВА урон-события на один
+            // взмах. Разгон и самоурон вешаем только на клинковую половину, иначе темп копится вдвое
+            // быстрее заявленного, а мечник платит здоровьем дважды за один удар.
+            if (e.IsFire) return;
+
             RuntimeUnit self = ctx.Target; // DamageDealt доставляется НАНЁСШЕМУ урон
             if (self == null || self.IsDead) return;
             if (e.Target == self) return;  // само-урон не разгоняет

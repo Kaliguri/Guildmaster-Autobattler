@@ -140,7 +140,7 @@ namespace Guildmaster.Combat
             if ((target.Position - unit.Position).sqrMagnitude > landReach * landReach) return;
 
             // Прирост ресурса — на момент реального удара (мана-реликвии).
-            GainResourceOnHit(unit);
+            GainResourceOnHit(unit, ctx);
 
             AttackType attackType = unit.Unit != null ? unit.Unit.AttackType : AttackType.Melee;
             float raw = unit.Stats.Get(StatType.AutoAttackDamage);
@@ -262,13 +262,39 @@ namespace Guildmaster.Combat
             }
         }
 
-        /// <summary>Начислить ресурс за удар (× ResourceGainEff), клампить к MaxResource.</summary>
-        private static void GainResourceOnHit(RuntimeUnit unit)
+        /// <summary>
+        /// Начислить ресурс за удар (× ResourceGainEff), клампить к MaxResource и к потолку набора
+        /// «единиц в секунду», если он задан у юнита.
+        /// </summary>
+        /// <remarks>
+        /// Потолок нужен там, где кит разгоняет собственный темп: удвоенная скорость атаки иначе
+        /// удваивает и приток ресурса, и «рекомендованный» темп ульты обваливается вдвое сам собой.
+        /// Окно — ровно секунда от первого начисления, скользящее по тикам (никаких таймеров).
+        /// </remarks>
+        private static void GainResourceOnHit(RuntimeUnit unit, ICombatContext ctx)
         {
             float onHit = unit.Unit != null ? unit.Unit.ResourceOnHit : 0f;
             if (onHit <= 0f) return;
 
             float gain = onHit * unit.Stats.Get(StatType.ResourceGainEff);
+
+            float perSecondCap = unit.Unit.MaxResourceGainPerSecond;
+            if (perSecondCap > 0f)
+            {
+                int now = ctx.CurrentTick;
+                if (now - unit.ResourceWindowStartTick >= SimConstants.TickRate)
+                {
+                    unit.ResourceWindowStartTick = now;
+                    unit.ResourceGainedInWindow  = 0f;
+                }
+
+                float room = perSecondCap - unit.ResourceGainedInWindow;
+                if (room <= 0f) return;
+
+                if (gain > room) gain = room;
+                unit.ResourceGainedInWindow += gain;
+            }
+
             unit.CurrentResource += gain;
 
             float maxRes = unit.Stats.Get(StatType.MaxResource);

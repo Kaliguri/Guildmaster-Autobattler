@@ -230,6 +230,42 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
+        /// Множитель входящего урона, накопленный компонентами цели в последнем
+        /// <see cref="RunPreDamage"/> (1 = без изменений). Читается сразу после вызова — состояние
+        /// живёт до следующего прохода, как и <c>Negated</c>.
+        /// </summary>
+        public float PreDamageMultiplier => _preDamageResult.DamageMultiplier;
+
+        /// <summary>
+        /// Расщепляет ли какой-нибудь эффект АТАКУЮЩЕГО его авто-атаку по школам (The Pyre: по
+        /// горящей цели половина клинка уходит Огнём). Побеждает первый сработавший — порядок по
+        /// индексу активных эффектов, как и в pre-damage проходе.
+        /// </summary>
+        public bool TryResolveAttackSplit(RuntimeUnit attacker, RuntimeUnit target, ICombatContext combat,
+                                          out AttackSplit split)
+        {
+            split = default;
+            if (attacker == null || target == null || attacker.ActiveEffects.Count == 0) return false;
+
+            List<RuntimeEffect> effects = attacker.ActiveEffects;
+            for (int e = 0; e < effects.Count; e++)
+            {
+                RuntimeEffect eff = effects[e];
+                IEffectComponent[] comps = eff.Def.Components;
+                if (comps == null) continue;
+
+                for (int i = 0; i < comps.Length; i++)
+                {
+                    if (comps[i] is not IAttackSplitComponent splitter) continue;
+
+                    EffectContext ctx = MakeContext(attacker, eff.Source, combat, eff, i, 0f);
+                    if (splitter.TrySplit(attacker, target, in ctx, out split)) return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Доставить боевое событие реактивным компонентам носителя (вампиризм/шипы). Вызывается
         /// из <see cref="CombatSimulation"/> при дренаже event-queue. Итерация по копии — реакция
         /// может добавить/снять эффекты (вики «12» §3.4).

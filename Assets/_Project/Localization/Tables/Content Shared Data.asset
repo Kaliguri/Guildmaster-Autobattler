@@ -783,6 +783,14 @@ MonoBehaviour:
     m_Key: tag.arcane.name
     m_Metadata:
       m_Items: []
+  - m_Id: 5725596468633600
+    m_Key: effect.ember.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5725597529792512
+    m_Key: effect.ember.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

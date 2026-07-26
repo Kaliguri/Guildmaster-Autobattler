@@ -55,12 +55,6 @@ namespace Guildmaster.Combat
             _content    = content;
         }
 
-        /// <summary>Есть ли что перезапустить по <see cref="Reload"/>.</summary>
-        public bool HasLast => _lastEncounter != null;
-
-        /// <summary>Content id последнего загруженного энкаунтера (для UI-подсветки), или null.</summary>
-        public string LastEncounterId => _lastEncounter != null ? _lastEncounter.Id : null;
-
         /// <summary>
         /// Поднимается, когда загружен пресет с <see cref="DeploymentMode.Free"/> (после того как ростер+враги
         /// уже поставлены в очередь спавна). Слушатель — <c>DeploymentController</c> (шаг 4): ставит бой на

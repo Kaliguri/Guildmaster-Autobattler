@@ -20,7 +20,7 @@ MonoBehaviour:
   _affinity: 0
   _creatureType: 0
   _attackType: 0
-  _resourceType: 0
+  _resourceType: 1
   _visual: {fileID: 11400000, guid: d0a79ee49ef5db14183cedd745bc33d1, type: 2}
   _viewPrefab: {fileID: 7266864954335852998, guid: 5e13b8e199f576c4f867d534daabf9cb, type: 3}
   _tint: {r: 1, g: 1, b: 1, a: 1}
@@ -31,7 +31,8 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
-  _resourceOnHit: 0
+  _resourceOnHit: 8
+  _maxResourceGainPerSecond: 10
   _stats:
   - Stat: 7
     Op: 3
@@ -45,14 +46,20 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 4
+  - Stat: 27
+    Op: 3
+    Value: 100
+  - Stat: 28
+    Op: 3
+    Value: 0
   _grantedEffects:
   - {fileID: 11400000, guid: 93590598bcde3dc4bb880b0f881266af, type: 2}
   _abilities:
   - _id: ignition
     _effects:
     - {fileID: 11400000, guid: fccdc612aba97e346a333a0c7c06de33, type: 2}
-    _baseCooldown: 10
-    _resourceCost: 0
+    _baseCooldown: 0
+    _resourceCost: 60
     _targetMode: 1
     _damageMultiplier: 0
     _schoolOverride: 2

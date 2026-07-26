@@ -288,10 +288,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(1, ctx.DamageCalls.Count, "Взрыв всё ещё наносит урон отравленному врагу");
         }
 
-        // --- Огненный мечник: «Воспламенение» досчитывает недонесённый урон поджогов ---
+        // --- Огненный мечник: «Воспламенение» сжигает накопленные «Угли» (модель 2026-07-26/4) ---
 
         [Test]
-        public void Ignition_DetonatesBurn_ForRemainingDamage_AndConsumesIt()
+        public void Ignition_BurnsEmberStacks_AndConsumesThem()
         {
             var sys = new EffectSystem();
             var ctx = new MockCombatContext(effects: sys);
@@ -299,30 +299,29 @@ namespace Guildmaster.Tests.EditMode.Combat
             var pyre   = TestUnit.Make(team: 0);
             var victim = TestUnit.Make(team: 1);
 
-            // «Поджог»: 10 урона/сек, 4 сек, флэтом (без доли от макс. HP — для детерминизма теста).
-            EffectData burn = TestEffect.Make(
-                baseDuration: 4f, polarity: EffectPolarity.Debuff,
-                tags: EffectTag.Debuff | EffectTag.DoT | EffectTag.Burn,
-                stacking: StackRule.Stack, maxStacks: 99,
-                components: new PeriodicDamageComponent()
-                    .With("_interval", 1f)
-                    .With("_damagePerSecond", new ScalableValue { Base = 10f })
-                    .With("_damageSchool", DamageSchool.Magical));
-            sys.Apply(victim, burn, pyre, ctx);
+            // Три уголька на цели: каждый стак стоит 15 урона взрыва.
+            EffectData ember = EmberEffect();
+            sys.Apply(victim, ember, pyre, ctx);
+            sys.Apply(victim, ember, pyre, ctx);
+            sys.Apply(victim, ember, pyre, ctx);
 
-            // Детонация сразу после наложения: не натикано ничего → весь урон = 10 × 4 сек × 1 стак = 40.
             EffectData ignition = TestEffect.Make(baseDuration: 0f, components:
-                new IgnitionComponent().With("_detonateTag", EffectTag.Burn).With("_school", DamageSchool.Magical));
+                new IgnitionComponent()
+                    .With("_detonateTag", EffectTag.Ember)
+                    .With("_damagePerStack", 15f)
+                    .With("_school", DamageSchool.Magical)
+                    .With("_magicElement", MagicElement.Fire));
             sys.Apply(victim, ignition, pyre, ctx);
 
-            Assert.AreEqual(1, ctx.DamageCalls.Count, "Детонация наносит один удар — сумму остатка поджогов");
-            Assert.AreEqual(40f, ctx.DamageCalls[0].RawDamage, 1e-3f, "Недонесённый урон DoT: 10/сек × 4 сек");
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "Детонация наносит один удар — сумму по стакам");
+            Assert.AreEqual(45f, ctx.DamageCalls[0].RawDamage, 1e-3f, "15 за стак × 3 стака");
             Assert.AreEqual(DamageSchool.Magical, ctx.DamageCalls[0].School);
-            Assert.AreEqual(EffectTag.None, victim.EffectTagMask & EffectTag.Burn, "«Поджог» израсходован взрывом");
+            Assert.AreEqual(MagicElement.Fire, ctx.DamageCalls[0].Element, "Взрыв — огонь: его же усиливают «Угли»");
+            Assert.AreEqual(EffectTag.None, victim.EffectTagMask & EffectTag.Ember, "«Угли» израсходованы взрывом");
         }
 
         [Test]
-        public void Ignition_NoBurn_DoesNothing()
+        public void Ignition_NoEmbers_DoesNothing()
         {
             var sys = new EffectSystem();
             var ctx = new MockCombatContext(effects: sys);
@@ -331,10 +330,39 @@ namespace Guildmaster.Tests.EditMode.Combat
             var victim = TestUnit.Make(team: 1);
 
             EffectData ignition = TestEffect.Make(baseDuration: 0f, components:
-                new IgnitionComponent().With("_detonateTag", EffectTag.Burn));
+                new IgnitionComponent().With("_detonateTag", EffectTag.Ember).With("_damagePerStack", 15f));
             sys.Apply(victim, ignition, pyre, ctx);
 
-            Assert.AreEqual(0, ctx.DamageCalls.Count, "Нечего детонировать — урона нет");
+            Assert.AreEqual(0, ctx.DamageCalls.Count, "Нечего сжигать — урона нет");
         }
+
+        // --- «Угли»: усиливают огонь по цели и осыпаются без подпитки ---
+
+        [Test]
+        public void Embers_AmplifyIncomingFire_ByOnePercentPerStack()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext(effects: sys);
+            var victim = TestUnit.Make(team: 1);
+
+            EffectData ember = EmberEffect();
+            for (int i = 0; i < 10; i++) sys.Apply(victim, ember, null, ctx);
+
+            var fire = new DamageRequest(null, victim, 100f, DamageSchool.Magical, 100f,
+                sourceKind: DamageSourceKind.Periodic, element: MagicElement.Fire);
+            sys.RunPreDamage(victim, in fire, ctx);
+            Assert.AreEqual(1.10f, sys.PreDamageMultiplier, 1e-4f, "10 стаков = +10% урона огнём");
+
+            var slash = new DamageRequest(null, victim, 100f, DamageSchool.Physical, 100f,
+                sourceKind: DamageSourceKind.AutoAttack);
+            sys.RunPreDamage(victim, in slash, ctx);
+            Assert.AreEqual(1f, sys.PreDamageMultiplier, 1e-4f, "Не-огонь «Угли» не усиливают");
+        }
+
+        private static EffectData EmberEffect() => TestEffect.Make(
+            baseDuration: -1f, polarity: EffectPolarity.Debuff,
+            tags: EffectTag.Debuff | EffectTag.Ember,
+            stacking: StackRule.Stack, maxStacks: 999,
+            components: new EmberComponent().With("_fireDamagePerStack", 0.01f));
     }
 }

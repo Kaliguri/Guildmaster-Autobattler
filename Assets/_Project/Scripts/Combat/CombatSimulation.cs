@@ -270,6 +270,29 @@ namespace Guildmaster.Combat
         {
             if (req.Target.IsDead) return;
 
+            // Расщепление авто-атаки по школам (The Pyre: по горящей цели половина клинка бьёт Огнём).
+            // Живёт здесь, а не в AutoAttackSystem, чтобы одинаково работать для мили, линии и снаряда.
+            // Половинки уходят в Core напрямую — иначе огненная половина расщепилась бы снова.
+            if (req.SourceKind == DamageSourceKind.AutoAttack && req.Source != null
+                && _effectSystem.TryResolveAttackSplit(req.Source, req.Target, this, out AttackSplit split)
+                && split.Share > 0f)
+            {
+                float splitDamage = req.RawDamage * split.Share;
+                DealDamageCore(new DamageRequest(req.Source, req.Target, req.RawDamage - splitDamage,
+                    req.School, req.ArmorK, req.SourceKind, req.Affinity, req.Element));
+                if (!req.Target.IsDead)
+                    DealDamageCore(new DamageRequest(req.Source, req.Target, splitDamage,
+                        split.School, req.ArmorK, req.SourceKind, req.Affinity, split.Element));
+                return;
+            }
+
+            DealDamageCore(in req);
+        }
+
+        private void DealDamageCore(in DamageRequest req)
+        {
+            if (req.Target.IsDead) return;
+
             // Синхронный pre-damage перехват (§9.3): «Оплот» поднимает щит (поглотит этот же удар),
             // «Изворотливость» может полностью отменить удар. Порядок детерминирован.
             if (_effectSystem.RunPreDamage(req.Target, in req, this))
@@ -278,14 +301,22 @@ namespace Guildmaster.Combat
                 return; // удар негейтнут — ни урона, ни урон-событий
             }
 
-            var result = DamagePipeline.Execute(req);
+            // Уязвимости цели, накопленные тем же проходом («Угли» усиливают огонь по подожжённому).
+            // Домножаем сырой урон ДО пайплайна: это свойство ЦЕЛИ, а не пробивание источника.
+            float vulnerability = _effectSystem.PreDamageMultiplier;
+            DamageRequest effective = vulnerability == 1f
+                ? req
+                : new DamageRequest(req.Source, req.Target, req.RawDamage * vulnerability, req.School,
+                                    req.ArmorK, req.SourceKind, req.Affinity, req.Element);
+
+            var result = DamagePipeline.Execute(effective);
             OnDamageDealt?.Invoke(req.Source, req.Target, result);
 
             // Внутренние события для реактивных компонентов (vampiric/thorns). Два события на удар:
             // DamageDealt доставляется источнику, DamageTaken — цели (вики «12» §3.4).
             if (req.Source != null)
-                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind));
-            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind));
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind, req.School, req.Element));
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind, req.School, req.Element));
 
             // Убийство атрибутируется нанёсшему смертельный удар → доставляется УБИЙЦЕ (§10.5, «Скрытность»).
             if (result.KilledTarget && req.Source != null)

@@ -8,21 +8,24 @@ using UnityEngine;
 namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
-    /// «Воспламенение» (Огненный мечник): снимает с цели все «Поджоги» и заставляет каждый немедленно
-    /// нанести свой НЕДОНЕСЁННЫЙ урон — то есть DoT не пропадает, а сгорает разом. Если это добивает цель,
-    /// мечник получает награду: баф темпа и лечение от недостающего HP (карточка ГДД).
+    /// «Воспламенение» (Огненный мечник): сжигает накопленные на цели «Угли» — наносит
+    /// <see cref="_damagePerStack"/> за каждый стак и сбрасывает их. Если это добивает цель, мечник
+    /// получает награду: баф темпа и лечение от недостающего HP (карточка ГДД).
     /// </summary>
     /// <remarks>
-    /// Считаем ровно то, что DoT не успел натикать: <c>урон/сек × оставшиеся секунды × стаки</c>, причём
-    /// «урон/сек» берётся у самого <see cref="PeriodicDamageComponent"/> — тем же методом, что и в тике,
-    /// поэтому доля от макс. HP цели учитывается автоматически и формула не разъезжается с DoT.
+    /// Урон считается ДО сброса стаков намеренно: взрыв — огненный урон, значит сами «Угли» его и
+    /// усиливают (+1% за стак), а снимать их раньше расчёта значило бы обокрасть собственную петлю
+    /// «копи → трать». Модель принята 2026-07-26/4: детонация читает число стаков, а не остаток DoT.
     /// <para>Вешается мгновенным эффектом (длительность 0): вся работа в <see cref="OnApply"/>.</para>
     /// </remarks>
     [Serializable]
     public sealed class IgnitionComponent : IRuntimeEffectComponent
     {
-        [Tooltip("Категория детонируемых эффектов («Поджог» = Burn).")]
-        [SerializeField] private EffectTag _detonateTag = EffectTag.Burn;
+        [Tooltip("Тег детонируемых стаков («Угли» = Ember).")]
+        [SerializeField] private EffectTag _detonateTag = EffectTag.Ember;
+
+        [Tooltip("Урон за каждый сожжённый стак «Углей». Мечник = 15.")]
+        [SerializeField] private float _damagePerStack = 15f;
 
         [Tooltip("Школа урона детонации.")]
         [SerializeField] private DamageSchool _school = DamageSchool.Magical;
@@ -45,9 +48,6 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Награда за добивание: лечение мечника, доля от его НЕДОСТАЮЩЕГО HP (0.25 = 25%).")]
         [SerializeField] private float _onKillHealPctMissingHp = 0.25f;
 
-        // Снимаем эффекты после подсчёта — не мутируем список, пока по нему идём.
-        [NonSerialized] private readonly List<RuntimeEffect> _detonated = new List<RuntimeEffect>();
-
         public void OnExpire(in EffectContext ctx) { }
 
         public void OnApply(in EffectContext ctx)
@@ -56,54 +56,29 @@ namespace Guildmaster.Combat.Effects.Components
             RuntimeUnit caster = ctx.Source;
             if (target == null || target.IsDead) return;
 
-            _detonated.Clear();
-            float damage = 0f;
-
+            int stacks = 0;
             for (int i = 0; i < target.ActiveEffects.Count; i++)
             {
                 RuntimeEffect eff = target.ActiveEffects[i];
                 if (eff.Def == null || (eff.Def.Tags & _detonateTag) == 0) continue;
-
-                damage += RemainingDamage(eff, target);
-                _detonated.Add(eff);
+                stacks += eff.Stacks;
             }
 
-            if (_detonated.Count == 0) return;
+            if (stacks <= 0) return;
 
+            float damage = _damagePerStack * stacks;
             if (damage > 0f)
             {
+                // Урон летит ДО сброса: «Угли» усиливают и сам взрыв (+1% за стак), как любой огонь.
                 ctx.Combat.DealDamage(new DamageRequest(caster, target, damage, _school, ctx.Combat.ArmorK,
-                    sourceKind: DamageSourceKind.Ability, affinity: _affinity));
+                    sourceKind: DamageSourceKind.Ability, affinity: _affinity, element: _magicElement));
             }
 
-            // Поджоги израсходованы взрывом — снимаем их (в т.ч. если урон почему-то вышел нулевым).
+            // Угли израсходованы взрывом — снимаем их целиком.
             ctx.Combat.Dispel(new DispelRequest(target, DispelTargetPolarity.Any, _detonateTag,
                 dispelPower: int.MaxValue, maxCount: 0));
 
             if (target.IsDead) RewardKill(caster, ctx);
-        }
-
-        /// <summary>Недонесённый урон одного DoT: то, что он натикал бы за оставшуюся длительность.</summary>
-        private static float RemainingDamage(RuntimeEffect eff, RuntimeUnit target)
-        {
-            IEffectComponent[] comps = eff.Def.Components;
-            if (comps == null || eff.IsPermanent) return 0f;
-
-            float remainingSeconds = eff.RemainingTicks * SimConstants.TickDelta;
-            if (remainingSeconds <= 0f) return 0f;
-
-            float total = 0f;
-            for (int i = 0; i < comps.Length; i++)
-            {
-                if (comps[i] is not PeriodicDamageComponent dot) continue;
-
-                float scaledPotency = eff.ScaledPotency != null && i < eff.ScaledPotency.Length
-                    ? eff.ScaledPotency[i]
-                    : 0f;
-
-                total += dot.DamagePerSecond(scaledPotency, target) * remainingSeconds * eff.Stacks;
-            }
-            return total;
         }
 
         /// <summary>Добивание взрывом: мечник разгоняется и лечится — карточка ГДД, награда за риск само-урона.</summary>

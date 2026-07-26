@@ -48,6 +48,17 @@ namespace Guildmaster.Combat
         /// <summary>Сродство урона (Яд/Свет/Тьма) — метка идентичности источника, на число урона НЕ влияет.</summary>
         public readonly DamageAffinity Affinity;
 
+        /// <summary>
+        /// Магический элемент (Огонь/Лёд/Молния/Аркана) при школе <see cref="DamageSchool.Magical"/>.
+        /// Броню не делит — она одна на всю магию (ГДД «Статы» §Школа vs сродство), но несёт
+        /// идентичность стихии дальше по цепочке: в боевое событие и оттуда в реактивы, которым
+        /// важно отличить огонь от прочей магии («Угли» копятся только с огня).
+        /// </summary>
+        public readonly MagicElement Element;
+
+        /// <summary>Урон стихии огня — то, что копит «Угли» и усиливается ими.</summary>
+        public bool IsFire => School == DamageSchool.Magical && Element == MagicElement.Fire;
+
         /// <summary>Урон авто-атаки. «Изворотливость» убийцы уклоняется только от таких.</summary>
         public bool IsAutoAttack => SourceKind == DamageSourceKind.AutoAttack;
 
@@ -64,7 +75,8 @@ namespace Guildmaster.Combat
             DamageSchool school,
             float armorK,
             DamageSourceKind sourceKind = DamageSourceKind.Ability,
-            DamageAffinity affinity = DamageAffinity.None)
+            DamageAffinity affinity = DamageAffinity.None,
+            MagicElement element = MagicElement.None)
         {
             Source     = source;
             Target     = target;
@@ -73,6 +85,7 @@ namespace Guildmaster.Combat
             ArmorK     = armorK;
             SourceKind = sourceKind;
             Affinity   = affinity;
+            Element    = school == DamageSchool.Magical ? element : MagicElement.None;
         }
     }
 }

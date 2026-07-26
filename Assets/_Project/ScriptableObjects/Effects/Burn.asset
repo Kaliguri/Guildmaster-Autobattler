@@ -15,9 +15,9 @@ MonoBehaviour:
   _id: effect.burn
   _polarity: 1
   _tags: 4106
-  _baseDuration: 4
-  _stacking: 1
-  _maxStacks: 99
+  _baseDuration: 5
+  _stacking: 2
+  _maxStacks: 1
   _cleanseTier: 0
   _unremovable: 0
   _components:
@@ -32,10 +32,10 @@ MonoBehaviour:
       data:
         _interval: 1
         _damagePerSecond:
-          Base: 0
+          Base: 30
           Scalings: []
         _damageSchool: 1
         _physicalSubtype: 0
         _magicElement: 1
         _affinity: 0
-        _damagePctTargetMaxHp: 0.03
+        _damagePctTargetMaxHp: 0
