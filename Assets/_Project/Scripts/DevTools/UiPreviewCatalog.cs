@@ -186,7 +186,7 @@ namespace Guildmaster.DevTools
             // Владеемые релики слева + 3 заблокированных (задел под фильтр по владению, Фаза 5).
             VisualElement screen = Guildmaster.UI.LoadoutInventoryView.Build(
                 screenUxml, cardUxml, relics, gold: 100,
-                titleOf: r => ArcanaTitle(r?.Id),
+                titleOf: r => Guildmaster.UI.ContentTitle.Arcana(r?.Id),
                 narrativeOf: r => Coalesce(RuValue((r?.Id) + ".desc"), "«Древний завет, что тлеет в глубине веков…»"),
                 localize: RuValue,
                 lockedSlots: 3,
@@ -212,17 +212,7 @@ namespace Guildmaster.DevTools
         }
 
         // «flame_swordsman» → «Flame Swordsman» (англ. титул таро-карты из id, когда loc RU не нужен).
-        private static string TitleCase(string s)
-        {
-            if (string.IsNullOrEmpty(s)) return s;
-            var parts = s.Replace('_', ' ').Split(' ');
-            for (int i = 0; i < parts.Length; i++)
-                if (parts[i].Length > 0) parts[i] = char.ToUpper(parts[i][0]) + parts[i].Substring(1);
-            return string.Join(" ", parts);
-        }
 
-        // Титул таро-карты в стиле ГДД (аркан «The X»): «relic.flame_swordsman» → «The Flame Swordsman».
-        private static string ArcanaTitle(string id) => "The " + TitleCase(Short(id));
 
         private static void BuildSettings(VisualElement root)
         {
@@ -338,7 +328,7 @@ namespace Guildmaster.DevTools
                     if (all[i] != null && all[i].Id != ContentIds.BaseRelic) relics.Add(all[i]);
             }
             UnityEngine.Sprite Ico(int i) => i < relics.Count ? relics[i].Icon : null;
-            string Nm(int i) => i < relics.Count ? Short(relics[i].Id) : "—";
+            string Nm(int i) => i < relics.Count ? Guildmaster.UI.ContentTitle.WithoutDomain(relics[i].Id) : "—";
 
             // Пересоздаём риг галереи (прошлые камеры/RT освобождаем).
             _galleryRig?.Dispose();
@@ -513,7 +503,7 @@ namespace Guildmaster.DevTools
             tipRow.Add(cell(textTarget, "Text"));
 
             string relicId = relics.Count > 0 ? relics[0].Id : null;
-            var relicTarget = new Button { text = relicId != null ? Short(relicId) : "реликвия" };
+            var relicTarget = new Button { text = relicId != null ? Guildmaster.UI.ContentTitle.WithoutDomain(relicId) : "реликвия" };
             relicTarget.AddToClassList("gm-button");
             relicTarget.WithTooltip(Guildmaster.UI.Tooltips.TooltipRequest.Relic(relicId));
             tipRow.Add(cell(relicTarget, "Relic (Shift — статы, Alt+клик — закрепить)"));
@@ -570,12 +560,6 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>Короткий id без домена (<c>relic.assassin</c> → <c>assassin</c>) — фолбэк без loc.</summary>
-        private static string Short(string id)
-        {
-            if (string.IsNullOrEmpty(id)) return id;
-            int dot = id.IndexOf('.');
-            return dot >= 0 ? id.Substring(dot + 1) : id;
-        }
 
         // Живой риг для галереи: держим статикой (камеры URP рендерят каждый кадр), пересоздаём при ребилде.
         private static Guildmaster.UI.Components.RelicCardVisualRig _galleryRig;
@@ -618,7 +602,7 @@ namespace Guildmaster.DevTools
                     case Guildmaster.UI.Tooltips.TooltipKind.Relic:
                         if (_content == null || !_content.TryGet(request.Id, out RelicData relic) || relic == null)
                             return null;
-                        card.SetTitle(RuValue(relic.Id + ".name") ?? Short(relic.Id));
+                        card.SetTitle(RuValue(relic.Id + ".name") ?? Guildmaster.UI.ContentTitle.WithoutDomain(relic.Id));
                         card.SetDesc(RuValue(relic.Id + ".desc"));
                         if (detailed)
                         {
@@ -658,7 +642,7 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>RU-имя контента по id (<c>{id}.name</c>), фолбэк — короткий id.</summary>
-        private static string RuName(string id) => Coalesce(RuValue(id + ".name"), Short(id));
+        private static string RuName(string id) => Coalesce(RuValue(id + ".name"), Guildmaster.UI.ContentTitle.WithoutDomain(id));
 
         private static string Coalesce(string a, string b) => string.IsNullOrEmpty(a) ? b : a;
     }

@@ -276,7 +276,7 @@ namespace Guildmaster.UI
             VisualElement screen = LoadoutInventoryView.Build(
                 _loadoutInventoryUxml, _arcanaCardUxml,
                 _loadoutVm.Relics, gold,
-                titleOf: r => ArcanaTitle(r != null ? r.Id : null),
+                titleOf: r => ContentTitle.Arcana(r != null ? r.Id : null),
                 narrativeOf: r => _loadoutVm.Desc(r),
                 localize: key => _loc?.GetString(key),
                 lockedSlots: 0,
@@ -368,17 +368,6 @@ namespace Guildmaster.UI
         }
 
         // Титул таро-карты в стиле ГДД (аркан «The X»): «relic.flame_swordsman» → «The Flame Swordsman».
-        private static string ArcanaTitle(string id)
-        {
-            if (string.IsNullOrEmpty(id)) return "—";
-            int dot = id.LastIndexOf('.');
-            string s = (dot >= 0 ? id.Substring(dot + 1) : id).Replace('_', ' ');
-            var parts = s.Split(' ');
-            for (int i = 0; i < parts.Length; i++)
-                if (parts[i].Length > 0) parts[i] = char.ToUpper(parts[i][0]) + parts[i].Substring(1);
-            return "The " + string.Join(" ", parts);
-        }
-
         // QA #12: ☰/ESC ОТКРЫВАЮТ системное меню ПОВЕРХ текущего экрана (инвентарь/карта/бой), не закрывая
         // его. Если мы уже в меню (pause в стеке — даже под настройками) — шаг назад (settings→pause→закрыть).
         public void ToggleSystemMenu()
