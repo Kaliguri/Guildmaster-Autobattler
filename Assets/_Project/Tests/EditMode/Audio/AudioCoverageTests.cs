@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using FMODUnity;
 using Guildmaster.Presentation.Audio;
 using NUnit.Framework;
 using UnityEditor;
@@ -57,7 +56,7 @@ namespace Guildmaster.Tests.EditMode.Audio
             var broken = new List<string>();
             foreach ((string key, string file) in CalledKeys())
             {
-                if (!catalog.TryGetEvent(key, out EventReference _)) broken.Add($"{key} ({file})");
+                if (!catalog.HasSound(key)) broken.Add($"{key} ({file})");
             }
 
             Assert.IsEmpty(broken,
@@ -73,7 +72,7 @@ namespace Guildmaster.Tests.EditMode.Audio
             Assert.IsNotNull(manifest?.events, "Манифест FMOD не найден или пуст.");
 
             var manifestKeys = new HashSet<string>(manifest.events.Where(e => !e.isDefault).Select(e => e.key));
-            var catalogKeys = new HashSet<string>(catalog.Entries.Select(e => e.Key));
+            var catalogKeys = new HashSet<string>(catalog.EntryKeys());
 
             var missingInCatalog = manifestKeys.Except(catalogKeys).OrderBy(k => k).ToArray();
             var missingInManifest = catalogKeys.Except(manifestKeys).OrderBy(k => k).ToArray();
@@ -92,7 +91,7 @@ namespace Guildmaster.Tests.EditMode.Audio
             AudioCatalog catalog = LoadCatalog();
             Assert.IsNotNull(catalog, $"Каталог не найден: {CatalogPath}");
 
-            var empty = catalog.Entries.Where(e => e.Event.IsNull).Select(e => e.Key).OrderBy(k => k).ToArray();
+            var empty = catalog.KeysWithoutEvent().OrderBy(k => k).ToArray();
             Assert.IsEmpty(empty,
                 "Записи каталога без FMOD-события (тишина в игре):\n  " + string.Join("\n  ", empty));
         }

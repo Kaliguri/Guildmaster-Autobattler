@@ -29,7 +29,7 @@ namespace Guildmaster.Game.Flow
 
         public ShopController(RewardService rewards, RelicPricer pricer, RunStateService runStates,
                               IContentDatabase content, IRngService rng, GameConfig config,
-                              Core.Audio.IAudioService audio)
+                              Core.Audio.IAudioService audio = null)
         {
             _audio     = audio;
             _rewards   = rewards;
