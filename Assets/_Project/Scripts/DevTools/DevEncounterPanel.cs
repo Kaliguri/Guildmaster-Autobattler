@@ -140,8 +140,6 @@ namespace Guildmaster.DevTools
         {
             "reward"      => "Награда",
             "event"       => "Ивент",
-            "loadout-hub" => "Лоадаут-хаб",
-            "run-topbar"  => "Верх. панель",
             "settings"    => "Настройки",
             "gallery"     => "Галерея",
             _              => id,

@@ -27,8 +27,8 @@ namespace Guildmaster.Presentation.Tempo
         /// <inheritdoc/>
         public float BeatDuration => 60f / _bpm;
 
-        /// <summary>Сменить темп (позже это будет делать музыкальный слой).</summary>
-        public void SetBpm(float bpm) => _bpm = Mathf.Max(1f, bpm);
+        // Сеттера темпа нет: пока его никто не звал, а когда темп начнёт задавать музыкальный слой,
+        // менять будем реализацию за IVisualTempo, а не дописывать ручку в эту (аудит 2026-07-26).
 
         /// <inheritdoc/>
         public float Phase(float division = 1f)

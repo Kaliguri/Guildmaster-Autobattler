@@ -75,9 +75,6 @@ namespace Guildmaster.UI
         /// <summary>Значение при снятии без явного выбора (ESC/PopAll/отмена забега): Skip / -1 / null / … .</summary>
         public abstract TResult DefaultResult { get; }
 
-        /// <summary>Резолвнут ли экран (первый вызов победил).</summary>
-        internal bool IsResolved => _resolved;
-
         /// <summary>Навигатор привязывает обработчик резолва (снять экран → отдать результат). Внутренний контракт.</summary>
         internal void BindResolver(Action<TResult> resolver) => _resolver = resolver;
 

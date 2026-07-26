@@ -116,7 +116,6 @@ namespace Guildmaster.UI
         private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
         private Tooltips.KeywordStyle _keywordStyle; // Трек Т: цвет терминов, читается с USS-доноров
         private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
-        private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
         private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
         private IPublisher<RelicDragEvent> _relicDragPub; // QA #5: drag реликвии из грида → фаза расстановки
@@ -338,8 +337,6 @@ namespace Guildmaster.UI
                 onMap: GoToMap,             // радио-режимы: таб = перейти в режим (не тумблер)
                 onBattle: GoToBattle,
                 onInventory: GoToInventory,
-                onTactics: () => { },       // задел под будущий экран AI-тактики
-                onCompendium: () => { },    // задел под компендиум
                 onMenu: () => _router.ToggleSystemMenu(),
                 onStart: () => _clock?.RequestStart());
 
@@ -403,13 +400,11 @@ namespace Guildmaster.UI
                 RefreshShell();
             }
 
-            if (!runActive) { _runElapsed = 0f; return; }
+            if (!runActive) return;
 
-            _runElapsed += UnityEngine.Time.unscaledDeltaTime; // «рабочий» таймер забега
             _topBar.SetGold(run.Gold);
             _topBar.SetAct(run.CurrentActIndex + 1);
             _topBar.SetRestarts(run.RestartsRemaining, _config != null ? _config.RestartsPerAct : run.RestartsRemaining);
-            _topBar.SetRunTime(FormatTime(_runElapsed));
             UpdateFloor(run);
         }
 

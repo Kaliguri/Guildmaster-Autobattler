@@ -42,9 +42,6 @@ namespace Guildmaster.Game.Flow
             _spacePub  = spacePub;
         }
 
-        /// <summary>Ждёт ли петля выбор узла прямо сейчас (узлы горят и кликаются).</summary>
-        public bool IsChoosing => _choosable != null;
-
         public void Start()
         {
             _view.NodeClicked += OnNodeClicked;

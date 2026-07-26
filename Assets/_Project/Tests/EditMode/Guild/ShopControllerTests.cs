@@ -137,7 +137,6 @@ namespace Guildmaster.Tests.EditMode.Guild
                 _relics = relics;
                 foreach (var r in relics) _byId[r.Id] = r;
             }
-            public T Get<T>(string id) where T : ContentDefinition => (T)(object)_byId[id];
             public bool TryGet<T>(string id, out T def) where T : ContentDefinition
             {
                 if (_byId.TryGetValue(id, out var r) && r is T t) { def = t; return true; }

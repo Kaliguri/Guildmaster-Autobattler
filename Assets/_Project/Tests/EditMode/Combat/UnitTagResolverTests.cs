@@ -118,9 +118,6 @@ namespace Guildmaster.Tests.EditMode.Combat
                 return false;
             }
 
-            public T Get<T>(string id) where T : ContentDefinition =>
-                TryGet(id, out T def) ? def : null;
-
             public IReadOnlyList<T> All<T>() where T : ContentDefinition => new List<T>();
         }
     }

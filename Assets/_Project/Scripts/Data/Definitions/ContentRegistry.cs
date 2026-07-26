@@ -26,13 +26,6 @@ namespace Guildmaster.Data.Definitions
             }
         }
 
-        public T Get<T>(string id) where T : ContentDefinition
-        {
-            if (TryGet(id, out T def)) return def;
-            throw new KeyNotFoundException(
-                $"Content id '{id}' of type {typeof(T).Name} not found in ContentDatabase (configuration error).");
-        }
-
         public bool TryGet<T>(string id, out T def) where T : ContentDefinition
         {
             if (id != null && _byId.TryGetValue(id, out ContentDefinition d) && d is T typed)

@@ -118,7 +118,6 @@ namespace Guildmaster.Tests.EditMode.Guild
         {
             private readonly Dictionary<string, ContentDefinition> _byId = new();
             public void Add(ContentDefinition d) => _byId[d.Id] = d;
-            public T Get<T>(string id) where T : ContentDefinition => (T)_byId[id];
             public bool TryGet<T>(string id, out T def) where T : ContentDefinition
             {
                 if (_byId.TryGetValue(id, out var d) && d is T t) { def = t; return true; }

@@ -70,7 +70,7 @@ namespace Guildmaster.Combat.Effects.Components
                 victim, monk, dir, _displaceDistance, _displaceTicks,
                 cannonball: true, damage: dmg, school: school, width: _displaceWidth,
                 affinity: monk.Affinity,
-                kind: DisplaceKind.Knockback, chainDistance: _chainDistance, chainTicks: _chainTicks));
+                chainDistance: _chainDistance, chainTicks: _chainTicks));
         }
 
         // Ближайший к точке <paramref name="from"/> живой враг монаха (тай-брейк по Id — детерминизм), кроме

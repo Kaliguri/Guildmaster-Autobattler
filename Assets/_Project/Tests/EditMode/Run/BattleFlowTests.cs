@@ -157,8 +157,6 @@ namespace Guildmaster.Tests.EditMode.Run
                 _outcomes = new Queue<BattleOutcome>(outcomes);
             }
 
-            public void SetPending(BattlePresetData preset) { }
-            public bool TryConsumePending(out BattlePresetData preset) { preset = null; return false; }
 
             // Persist-мир: launch боя в живом скоупе (заменил связку SetPending + загрузка боевой сцены).
             public int  LaunchCount;

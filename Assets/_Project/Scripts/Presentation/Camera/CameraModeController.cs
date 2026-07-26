@@ -102,12 +102,6 @@ namespace Guildmaster.Presentation
         private Vector3 _mapFrameBeforeDive;
         private float _mapSizeBeforeDive;
 
-        /// <summary>Разблокирован ли dev-режим камеры (доступ выдаётся отдельно, вики «16» §6).</summary>
-        public bool DevAccess => _devAccess;
-
-        /// <summary>Текущий режим камеры.</summary>
-        public CameraMode Mode => _mode;
-
         [Inject]
         public void Construct(IInputService input, ArenaLayoutData layout, CombatFocusTarget focus, Design.CombatFeelConfig feel)
         {
@@ -125,8 +119,9 @@ namespace Guildmaster.Presentation
         {
             if (_input != null) _input.CycleViewRequested += OnCycleView;
 
-            // В редакторе dev-камера доступна сразу (удобно тестить); в билде — гейтед, выдаётся
-            // через gm_cam_dev (вики «16» §6). Обычный игрок в релизе циклит только Action↔Overview.
+            // В редакторе dev-камера доступна сразу (удобно тестить), в билде — нет: обычный игрок
+            // циклит только Action↔Overview. Прежде доступ можно было выдать и в рантайме
+            // (SetDevAccess), но команды, ради которой ручка существовала, в проекте нет — снята.
             _devAccess = Application.isEditor;
 
             ApplyCameraDepth();
@@ -194,22 +189,6 @@ namespace Guildmaster.Presentation
             cam.transform.position = p;
         }
 
-        /// <summary>Выдать/забрать доступ к dev-камере (QFSW: gm_cam_dev). Забирая — уводим из Dev.</summary>
-        public void SetDevAccess(bool granted)
-        {
-            _devAccess = granted;
-            if (!granted && _mode == CameraMode.Dev)
-            {
-                _mode = CameraMode.Overview;
-                ApplyMode();
-            }
-        }
-
-        /// <summary>
-        /// Войти в свободную камеру фазы расстановки (QA #4): режим Overview (ручной пан/зум в пределах зоны),
-        /// но СТАРТОВЫЙ кадр — как у экшн-камеры (центр боя + зум под разброс), а НЕ отзум на всю зону.
-        /// Кадр приходит явно из <c>DeploymentController</c> (позиции живых юнитов) — без гонки с focus-таймингом.
-        /// </summary>
         /// <summary>
         /// Кадр расстановки: вся боевая зона целиком, управляемый обзор. Единственный источник этого кадра —
         /// зона арены, а не то, кто где стоит: иначе полигон (только свой отряд) и боевой узел (отряд плюс
@@ -230,21 +209,6 @@ namespace Guildmaster.Presentation
             size = Mathf.Max(size, _minZoom);
 
             _overviewCam.transform.position = new Vector3(zone.Center.x, zone.Center.y, _cameraZ);
-
-            LensSettings lens = _overviewCam.Lens;
-            lens.OrthographicSize = size;
-            _overviewCam.Lens = lens;
-        }
-
-        public void EnterDeployment(Vector2 center, float spread)
-        {
-            _mode = CameraMode.Overview;
-            ApplyMode();
-            if (_overviewCam == null) return;
-
-            float size = Mathf.Clamp(spread + _actionZoomPadding, _minZoom, MaxZoomForZone());
-            Vector3 pos = ClampVisibleCenter(new Vector3(center.x, center.y, _cameraZ), size);
-            _overviewCam.transform.position = pos;
 
             LensSettings lens = _overviewCam.Lens;
             lens.OrthographicSize = size;

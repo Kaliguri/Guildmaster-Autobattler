@@ -133,7 +133,7 @@ namespace Guildmaster.Game
             // в бою есть команды, а не «сторона игрока» (шов под PvP).
             builder.Register<SoloLocalPlayer>(Lifetime.Singleton).As<ILocalPlayer>();
 
-            builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>().AsSelf();
+            builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>();
 
             // Флоу забега (план 11): рукопожатие в боевой скоуп + сетевые швы (соло-тела). BattleFlow создаётся
             // per-node внутри GameFlow, потому в DI не регистрируется.
@@ -188,7 +188,7 @@ namespace Guildmaster.Game
             // появится дальше. Пока считается от часов; когда музыка научится задавать темп, сменится
             // реализация, а потребители — нет.
             builder.Register<Presentation.Tempo.VisualTempo>(Lifetime.Singleton)
-                   .AsSelf().As<Presentation.Tempo.IVisualTempo>();
+                   .As<Presentation.Tempo.IVisualTempo>();
 
             // Общий реестр визуальных эффектов: одно место, где их гасят и возвращают (дев-команды gm_fx,
             // позже — настройки игры, там часть из них станет доступностью).
@@ -209,8 +209,9 @@ namespace Guildmaster.Game
             // Ввод глобален и переживает перезагрузку боевой сцены (вики «16» §3).
             builder.Register<InputService>(Lifetime.Singleton).As<IInputService>();
 
-            var options = builder.RegisterMessagePipe();
-            builder.RegisterBuildCallback(c => GlobalMessagePipe.SetProvider(c.AsServiceProvider()));
+            // Провайдера GlobalMessagePipe здесь больше нет: статический доступ к шине не звал никто,
+            // все потребители получают IPublisher/ISubscriber инъекцией — как и задумано (аудит 2026-07-26).
+            builder.RegisterMessagePipe();
         }
 
         private static ulong GenerateRootSeed()

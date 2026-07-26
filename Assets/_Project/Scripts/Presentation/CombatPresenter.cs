@@ -64,8 +64,6 @@ namespace Guildmaster.Presentation
         private CombatVfx                   _vfx;               // пул боевых VFX-префабов
         private RuntimeUnit                 _finisherCandidate; // автор последнего добивающего мили-удара
 
-        private IPublisher<UnitSpawnedEvent> _unitSpawnedPublisher;
-        private IPublisher<UnitDiedEvent>    _unitDiedPublisher;
         private IPublisher<DamageDealtEvent> _damageDealtPublisher;
         private IPublisher<BattleEndedEvent> _battleEndedPublisher;
 
@@ -76,8 +74,6 @@ namespace Guildmaster.Presentation
         [Inject]
         public void Construct(
             CombatSimulation simulation,
-            IPublisher<UnitSpawnedEvent> unitSpawnedPublisher,
-            IPublisher<UnitDiedEvent>    unitDiedPublisher,
             IPublisher<DamageDealtEvent> damageDealtPublisher,
             IPublisher<BattleEndedEvent> battleEndedPublisher,
             Design.CombatFeelConfig feel,
@@ -87,8 +83,6 @@ namespace Guildmaster.Presentation
             _localPlayer          = localPlayer;
             _audio                = audio;
             _simulation           = simulation;
-            _unitSpawnedPublisher = unitSpawnedPublisher;
-            _unitDiedPublisher    = unitDiedPublisher;
             _damageDealtPublisher = damageDealtPublisher;
             _battleEndedPublisher = battleEndedPublisher;
             _feel                 = feel;
@@ -268,8 +262,6 @@ namespace Guildmaster.Presentation
                 }
                 else Destroy(go);
             }
-
-            _unitSpawnedPublisher.Publish(new UnitSpawnedEvent(unit));
         }
 
         private void HandleUnitDied(RuntimeUnit unit)
@@ -280,8 +272,6 @@ namespace Guildmaster.Presentation
                 _views.Remove(unit.Id);
                 _corpses.Add(view); // труп доигрывает секвенс смерти сам; сносим гарантированно при рестарте
             }
-
-            _unitDiedPublisher.Publish(new UnitDiedEvent(unit));
         }
 
         private void HandleDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result)

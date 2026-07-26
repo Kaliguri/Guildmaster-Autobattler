@@ -19,7 +19,6 @@ namespace Guildmaster.UI
         private readonly Label  _gold;
         private readonly Label  _act;
         private readonly Label  _floor;
-        private readonly Label  _runTimer;
         private readonly Label  _battleTimer;
         private readonly Label  _restarts;
         private readonly Button _start;
@@ -29,7 +28,7 @@ namespace Guildmaster.UI
         public RunModeBarView(
             VisualTreeAsset uxml,
             Func<string, string> localize,
-            Action onMap, Action onBattle, Action onInventory, Action onTactics, Action onCompendium,
+            Action onMap, Action onBattle, Action onInventory,
             Action onMenu, Action onStart)
         {
             _loc = localize;
@@ -40,7 +39,6 @@ namespace Guildmaster.UI
             _gold        = Root.Q<Label>("topbar-gold");
             _act         = Root.Q<Label>("topbar-act");
             _floor       = Root.Q<Label>("topbar-floor");
-            _runTimer    = Root.Q<Label>("topbar-timer");
             _battleTimer = Root.Q<Label>("battle-timer");
             _restarts    = Root.Q<Label>("topbar-hp");
             _start       = Root.Q<Button>("btn-start");
@@ -48,8 +46,9 @@ namespace Guildmaster.UI
             WireMode("map",        "ui.mode.map",        "Карта",      onMap);
             WireMode("battle",     "ui.mode.battle",     "Бой",        onBattle);
             WireMode("inventory",  "ui.mode.inventory",  "Инвентарь",  onInventory);
-            WireMode("tactics",    "ui.mode.tactics",    "Тактика",    onTactics);
-            WireMode("compendium", "ui.mode.compendium", "Компендиум", onCompendium);
+            // Табов «Тактика» и «Компендиум» здесь больше нет: чипы висели с пустыми обработчиками,
+            // то есть выглядели как рабочие режимы и молча ничего не делали (аудит 2026-07-26, волна 2).
+            // Вернуть — вместе с экраном, который они открывают.
 
             var menu = Root.Q<Chip>("btn-menu");
             if (menu != null)
@@ -105,8 +104,9 @@ namespace Guildmaster.UI
             SetText(_floor, "· " + L("ui.run.floor", "Веха") + " " + floorNumber
                           + (floorCount > 0 ? "/" + floorCount : string.Empty));
 
-        /// <summary>Время забега выключено (реш. 2026-07-20): узел скрыт классом, сеттер держит шов живым.</summary>
-        public void SetRunTime(string timerText) => SetText(_runTimer, timerText);
+        // Времени забега здесь нет (реш. 2026-07-20 — не показываем). Прежде лейбл был скрыт классом,
+        // а бутстрап всё равно копил секунды каждый кадр и писал их в невидимый узел; вернуть счётчик
+        // дешевле, чем держать его работающим вхолостую (аудит 2026-07-26, волна 2).
 
         /// <summary>ХП забега = перезапуски-на-акт (реш. №65): показываем компактным счётчиком «остаток/максимум».</summary>
         public void SetRestarts(int remaining, int max) => SetText(_restarts, remaining + "/" + max);

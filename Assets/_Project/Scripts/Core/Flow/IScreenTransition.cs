@@ -42,9 +42,6 @@ namespace Guildmaster.Core.Flow
             InkDelay01  = Mathf.Clamp(inkDelay01, 0f, 0.9f);
         }
 
-        /// <summary>Обычное моргание в центр экрана — когда «входить» некуда.</summary>
-        public static ScreenTransitionShape Centered(float inSeconds, float holdSeconds, float outSeconds)
-            => new ScreenTransitionShape(inSeconds, holdSeconds, outSeconds, new Vector2(0.5f, 0.5f));
     }
 
     /// <summary>

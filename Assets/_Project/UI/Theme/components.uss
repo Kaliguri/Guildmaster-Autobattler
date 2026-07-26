@@ -553,11 +553,6 @@
     padding: var(--gm-space-1);
 }
 
-/* Редкость: цвет аутлайна (интерактив ниже — hover/current/selected — переопределяет по порядку). */
-.gm-card--rarity-trash  { border-color: var(--gm-color-rarity-trash); }
-.gm-card--rarity-common { border-color: var(--gm-color-rarity-common); }
-.gm-card--rarity-unique { border-color: var(--gm-color-rarity-unique); }
-
 .gm-card:hover {
     border-color: var(--gm-outline-color-hover);
 }
@@ -583,37 +578,6 @@
     font-size: var(--gm-font-sm);
     -unity-text-align: middle-center;
     white-space: normal;
-}
-
-/* Ряд info-тегов под именем: чипы переносятся, если не влезают в ширину карточки. */
-.gm-card__tags {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: var(--gm-space-1);
-}
-
-/* Чип тега: иконка (опц.) + подпись. Тускло-акцентный, чтобы не спорить с именем. */
-.gm-card__tag {
-    flex-direction: row;
-    align-items: center;
-    margin: 2px;
-}
-
-.gm-card__tag-icon {
-    width: 18px;
-    height: 18px;
-    -unity-background-scale-mode: scale-to-fit;
-}
-
-.gm-card__tag-label {
-    color: var(--gm-color-text-muted);
-    font-size: var(--gm-font-sm);
-}
-
-/* Только иконки (нет подписей) — контейнер плотнее. */
-.gm-card__tag--icon-only .gm-card__tag-label {
-    display: none;
 }
 
 /* --- Панель деталей выбранного релика --- */
@@ -1706,8 +1670,6 @@
 .gm-runbar__tab--map        .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/treasure-map.png"); }
 .gm-runbar__tab--battle     .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/crossed-swords.png"); }
 .gm-runbar__tab--inventory  .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/knapsack.png"); }
-.gm-runbar__tab--tactics    .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/rally-the-troops.png"); }
-.gm-runbar__tab--compendium .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/book-cover.png"); }
 .gm-runbar__tab--menu       .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/cog.png"); }
 
 /* Разделитель перед бургером: он открывает модалку, а не переключает режим. */
@@ -1758,11 +1720,6 @@
     font-size: var(--gm-font-body);
     -unity-font-style: bold;
     margin: 0;
-}
-
-/* Время забега выключено (реш. 2026-07-20) — узел жив как шов. */
-.gm-runbar__runtime {
-    display: none;
 }
 
 

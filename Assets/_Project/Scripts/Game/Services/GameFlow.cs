@@ -43,6 +43,7 @@ namespace Guildmaster.Game.Services
         private readonly IReadyGate          _readyGate;
         private readonly IPlayerIntentSource _intents;
         private readonly ILocalPlayer        _localPlayer;
+        private readonly IScreenTransition   _transition;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<RunPartyReadyEvent>   _partyReadyPub;
 
@@ -60,6 +61,7 @@ namespace Guildmaster.Game.Services
             IReadyGate          readyGate,
             IPlayerIntentSource intents,
             ILocalPlayer        localPlayer,
+            IScreenTransition   transition,
             IPublisher<OpenTextEventRequest> openEventPub,
             IPublisher<RunPartyReadyEvent>   partyReadyPub)
         {
@@ -76,6 +78,7 @@ namespace Guildmaster.Game.Services
             _readyGate       = readyGate;
             _intents         = intents;
             _localPlayer     = localPlayer;
+            _transition      = transition;
             _openEventPub    = openEventPub;
             _partyReadyPub   = partyReadyPub;
         }
@@ -193,6 +196,10 @@ namespace Guildmaster.Game.Services
             {
                 // Забег кончился ЛЮБЫМ путём (босс, поражение, «В главное меню»): мир перестаёт быть первым
                 // планом. Без этого фаза Interlude пережила бы забег, и задник UI не вернулся бы под меню.
+                // Шторка перехода — туда же: «В меню», нажатое посреди нырка в узел, обрывало забег, но
+                // оставляло чернила на экране, потому что вести их было уже некому (аудит 2026-07-26,
+                // волна 2 — ровно тот вызов, который Cancel() описывает в своём докстринге).
+                _transition?.Cancel();
                 _session.RequestReset();
                 _session.SetPhase(BattlePhase.None);
                 _runCts.Dispose();

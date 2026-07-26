@@ -18,6 +18,7 @@
             <ui:VisualElement name="page-game" class="gm-tab-page gm-tab-page--hidden">
                 <gm:ToggleRow name="toggle-card-anim" />
                 <gm:ToggleRow name="toggle-card-attack" />
+                <gm:ToggleRow name="toggle-tooltip-details" />
             </ui:VisualElement>
 
             <!-- Страница «Графика» — заглушка под будущие опции. -->

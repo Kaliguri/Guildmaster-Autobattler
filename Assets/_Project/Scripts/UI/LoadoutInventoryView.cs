@@ -352,7 +352,6 @@ namespace Guildmaster.UI
         }
 
         private const int TagRows = 3;    // столько строк тегов помещается в ряд (высота — из USS)
-        private const float TagRowHeight = 24f; // иконка 16 + вертикальные margin'ы чипа
 
         /// <summary>
         /// Симулирует перенос чипов по ширине контейнера и прячет всё, что не поместилось в

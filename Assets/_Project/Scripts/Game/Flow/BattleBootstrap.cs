@@ -56,10 +56,6 @@ namespace Guildmaster.Game.Flow
             _session.BindLaunch(LaunchBattle);
             _session.BindReset(ResetToWorld);
             _session.BindRestart(RestartBattle);
-
-            // Legacy-совместимость: бой, положенный через SetPending (старый путь до persist), запустить.
-            if (_session.TryConsumePending(out BattlePresetData pending) && pending != null)
-                LaunchBattle(pending);
         }
 
         public void Dispose()

@@ -42,7 +42,6 @@ namespace Guildmaster.Game
         private readonly ArenaLayoutData  _layout;
         private readonly IPublisher<OpenLoadoutRequest> _openLoadoutPub;
         private readonly ISubscriber<EquipRelicRequest> _equipSub;
-        private readonly ISubscriber<EquipRelicAtCursorRequest> _equipAtCursorSub;
         private readonly ISubscriber<RelicDragEvent> _relicDragSub; // QA #5: drag реликвии из инвентаря на юнита
         private readonly ISubscriber<SetTestZoneRequest> _testZoneSub; // радио-табы: целевое состояние тест-зоны (интент)
         private readonly ISubscriber<SetFormationRequest> _formationSub; // кнопка передышки «К построению» (интент)
@@ -68,7 +67,6 @@ namespace Guildmaster.Game
         private DeploymentView _view;
         private Camera _camera;
         private IDisposable _equipSubscription;
-        private IDisposable _equipAtCursorSubscription;
         private IDisposable _relicDragSubscription;
         private IDisposable _testZoneSubscription;
         private IDisposable _formationSubscription;
@@ -101,7 +99,6 @@ namespace Guildmaster.Game
             ArenaLayoutData layout,
             IPublisher<OpenLoadoutRequest> openLoadoutPub,
             ISubscriber<EquipRelicRequest> equipSub,
-            ISubscriber<EquipRelicAtCursorRequest> equipAtCursorSub,
             ISubscriber<RelicDragEvent> relicDragSub,
             ISubscriber<SetTestZoneRequest> testZoneSub,
             ISubscriber<SetFormationRequest> formationSub,
@@ -123,7 +120,6 @@ namespace Guildmaster.Game
             _layout        = layout;
             _openLoadoutPub = openLoadoutPub;
             _equipSub      = equipSub;
-            _equipAtCursorSub = equipAtCursorSub;
             _relicDragSub  = relicDragSub;
             _testZoneSub   = testZoneSub;
             _formationSub  = formationSub;
@@ -138,7 +134,6 @@ namespace Guildmaster.Game
             _input.PointerPressed  += OnPointerPressed;
             _input.PointerReleased += OnPointerReleased;
             _equipSubscription = _equipSub.Subscribe(OnEquip);
-            _equipAtCursorSubscription = _equipAtCursorSub.Subscribe(OnEquipAtCursor);
             _relicDragSubscription = _relicDragSub?.Subscribe(OnRelicDrag);
             _testZoneSubscription = _testZoneSub?.Subscribe(OnSetTestZone);
             _formationSubscription = _formationSub?.Subscribe(OnSetFormation);
@@ -176,7 +171,6 @@ namespace Guildmaster.Game
             _input.PointerPressed  -= OnPointerPressed;
             _input.PointerReleased -= OnPointerReleased;
             _equipSubscription?.Dispose();
-            _equipAtCursorSubscription?.Dispose();
             _relicDragSubscription?.Dispose();
             _testZoneSubscription?.Dispose();
             _formationSubscription?.Dispose();
@@ -559,16 +553,6 @@ namespace Guildmaster.Game
         {
             if (req.Relic == null) return;
             EquipOn(req.UnitId, req.Relic);
-        }
-
-        // Дроп карточки релика в поле: сосуд под курсором резолвим сами — тем же экраном→миром и пикингом, что
-        // и деплой-драг, поэтому попадание совпадает с ховер-кольцом. Мимо сосуда (пустое поле) → no-op.
-        private void OnEquipAtCursor(EquipRelicAtCursorRequest req)
-        {
-            if (!_deploying || req.Relic == null) return;
-            RuntimeUnit unit = PickUnit(ScreenToWorld(req.ScreenPosition));
-            if (unit == null) return;
-            EquipOn(unit.Id, req.Relic);
         }
 
         private void EquipOn(int unitId, RelicData relic)

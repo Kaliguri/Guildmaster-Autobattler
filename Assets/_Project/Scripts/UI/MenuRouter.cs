@@ -908,7 +908,5 @@ namespace Guildmaster.UI
             tree.style.bottom = 0;
             return tree;
         }
-
-        private static string Percent(float v01) => Mathf.RoundToInt(Mathf.Clamp01(v01) * 100f) + "%";
     }
 }

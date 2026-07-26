@@ -16,15 +16,10 @@ namespace Guildmaster.Game.Flow
     /// </summary>
     public interface IBattleSession : IBattleClock
     {
-        /// <summary>root → child: поставить бой в очередь (перед загрузкой боевой сцены). Взводит ожидание исхода.</summary>
-        void SetPending(BattlePresetData preset);
-
-        /// <summary>child → session: забрать запрос (single-shot). false = запуск не из флоу (dev-панель вручную).</summary>
-        bool TryConsumePending(out BattlePresetData preset);
-
         // ── Persist-мир: launch боя в ЖИВОМ боевом скоупе (сцена не перезагружается) ──
-        // Заменяет связку SetPending+LoadBattleAsync: боевой скоуп живёт всю сессию, поэтому «запуск боя»
-        // — это доспавн врагов + снятие паузы в уже готовом sim, а не создание нового скоупа/сцены.
+        // Единственное рукопожатие запуска. Дореформенной пары SetPending/TryConsumePending здесь больше
+        // нет: она клала бой «в очередь» перед загрузкой боевой сцены, а сцена не грузится с тех пор, как
+        // мир стал persist — очередь заполнял только тот, кого удалили (аудит 2026-07-26, T-15).
 
         /// <summary>child → session: как запустить бой на месте (доспавн врагов + снять паузу). Привязывает боевой скоуп на старте.</summary>
         void BindLaunch(Action<BattlePresetData> launch);
@@ -103,8 +98,6 @@ namespace Guildmaster.Game.Flow
     /// </summary>
     public sealed class BattleSession : IBattleSession
     {
-        private BattlePresetData _pending;
-        private bool             _hasPending;
         private Action           _restart;
         private Action<BattlePresetData> _launch;
         private Action           _reset;
@@ -113,22 +106,6 @@ namespace Guildmaster.Game.Flow
 
         private Func<float> _clock;
         private Action      _start;
-
-        public void SetPending(BattlePresetData preset)
-        {
-            _pending    = preset;
-            _hasPending  = preset != null;
-            ArmOutcome();
-        }
-
-        public bool TryConsumePending(out BattlePresetData preset)
-        {
-            preset      = _pending;
-            bool had    = _hasPending;
-            _pending    = null;
-            _hasPending = false;
-            return had;
-        }
 
         public UniTask<BattleOutcome> WaitOutcomeAsync(CancellationToken ct)
         {

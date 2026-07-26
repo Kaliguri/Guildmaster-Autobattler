@@ -63,22 +63,4 @@ namespace Guildmaster.Data.Definitions
             Phase = phase;
         }
     }
-
-    /// <summary>
-    /// Запрос надеть релик на сосуд ПОД КУРСОРОМ (публикует UITK-панель расстановки на дропе карточки релика
-    /// в поле). Юнита панель не знает — несёт лишь экранную позицию дропа; фаза расстановки резолвит сосуд
-    /// сама (<c>ScreenToWorld</c> + <c>PickUnit</c>, тот же путь и источник экрана, что и деплой-пикинг, — потому
-    /// попадание совпадает до пикселя). Так UI-слой не тащит камеру/пикинг, а Game-слой не знает про UITK.
-    /// </summary>
-    public readonly struct EquipRelicAtCursorRequest
-    {
-        public readonly RelicData Relic;
-        public readonly Vector2   ScreenPosition;
-
-        public EquipRelicAtCursorRequest(RelicData relic, Vector2 screenPosition)
-        {
-            Relic          = relic;
-            ScreenPosition = screenPosition;
-        }
-    }
 }
