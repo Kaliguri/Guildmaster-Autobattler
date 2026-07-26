@@ -3,7 +3,7 @@ title: "Relic - Common - The Bonewright (Necromancer)"
 kind: character
 status: draft
 rarity: Обычная
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Вторая линия
 combat_range: Дальний
 creature_type: Живое
@@ -15,8 +15,7 @@ physical_damage:
 magical_damage: []
 affinity:
   - Тьма
-roles:
-  - Саммонер
+playstyle:
   - Баффер
 mechanics:
   - Призыв
@@ -29,6 +28,7 @@ themes:
   - Мистика
 needs_review:
   - "creature_type Некроманта = Живое (дефолт: человек-маг). Если задумывался лич-Нежить — пересмотреть: влияет на само-учёт в «Марше мёртвых». Призванные скелеты — Нежить."
+  - "Класс не задан. В прежнем поле roles значилось: Саммонер — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
 ---
 
 # The Bonewright (Necromancer)

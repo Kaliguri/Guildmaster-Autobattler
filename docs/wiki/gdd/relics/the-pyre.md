@@ -13,8 +13,7 @@ physical_damage:
 magical_damage:
   - Огонь
 affinity: []
-roles:
-  - Мили ДД
+playstyle: []
 mechanics:
   - Поджог
   - DOT

@@ -13,9 +13,7 @@ physical_damage:
   - Режущий
 magical_damage: []
 affinity: []
-roles:
-  - Брузер
-  - Мили ДД
+playstyle: []
 mechanics:
   - Линия
   - AOE

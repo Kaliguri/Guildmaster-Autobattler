@@ -12,15 +12,15 @@ physical_damage: []
 magical_damage: []
 affinity:
   - Яд
-roles:
-  - Контроль
-  - Хил
+playstyle: []
 mechanics:
   - Яд
   - DOT
   - Замедление атаки
   - Взрыв
   - Лечение
+  - Контроль
+  - Хил
 gender: Не определено
 themes:
   - Природа

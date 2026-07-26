@@ -12,15 +12,14 @@ physical_damage:
   - Дробящий
 magical_damage: []
 affinity: []
-roles:
-  - Контроль
-  - Мили ДД
+playstyle: []
 mechanics:
   - Рывок
   - Отбрасывание
   - Оглушение
   - Телепорт
   - Линия
+  - Контроль
 gender: Не определено
 themes:
   - Восточная

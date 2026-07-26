@@ -12,8 +12,7 @@ physical_damage:
   - Колющий
 magical_damage: []
 affinity: []
-roles:
-  - РДД
+playstyle:
   - Дебаффер
 mechanics:
   - Атака в движении

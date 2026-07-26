@@ -20,8 +20,10 @@ properties:
     displayName: Магический урон
   affinity:
     displayName: Сродство
-  roles:
-    displayName: Роли
+  combat_class:
+    displayName: Класс
+  playstyle:
+    displayName: Профиль
   mechanics:
     displayName: Механики
   gender:
@@ -43,7 +45,8 @@ views:
       - physical_damage
       - magical_damage
       - affinity
-      - roles
+      - combat_class
+      - playstyle
       - mechanics
       - gender
       - themes
@@ -55,7 +58,8 @@ views:
         - position == "Фронт"
     order:
       - title
-      - roles
+      - combat_class
+      - playstyle
       - physical_damage
       - magical_damage
       - affinity
@@ -67,6 +71,7 @@ views:
         - position == "Фланг"
     order:
       - title
-      - roles
+      - combat_class
+      - playstyle
       - attack_delivery
       - mechanics

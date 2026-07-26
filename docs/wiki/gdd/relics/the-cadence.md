@@ -3,15 +3,14 @@ title: "Relic - Common - The Cadence (Bard)"
 kind: character
 status: draft
 rarity: Обычная
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Вторая линия
 combat_range: Без автоатаки
 attack_delivery: []
 physical_damage: []
 magical_damage: []
 affinity: []
-roles:
-  - Хил
+playstyle:
   - Баффер
 mechanics:
   - Канал
@@ -19,6 +18,7 @@ mechanics:
   - Лечение
   - Скорость атаки
   - Скорость передвижения
+  - Хил
 gender: Не определено
 themes: []
 needs_review: []

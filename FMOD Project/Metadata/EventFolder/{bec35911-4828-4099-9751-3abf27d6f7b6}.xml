@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EventFolder" id="{bec35911-4828-4099-9751-3abf27d6f7b6}">
+		<property name="name">
+			<value>ice_chains_stun</value>
+		</property>
+		<relationship name="folder">
+			<destination>{56dabe35-7212-4c2b-bfae-f32cd56ad75b}</destination>
+		</relationship>
+	</object>
+</objects>

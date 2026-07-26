@@ -83,6 +83,10 @@ fmod_editor.log
 # FMOD Studio project build cache (regenerated)
 FMOD Project/.cache/
 
+# Промежуточная нормализация звука: пересобирается scripts/audio/build_source_audio.py,
+# а канонные копии всё равно живут в FMOD Project/Assets (FMOD копирует импорт к себе).
+FMOD Project/SourceAudio/
+
 # dotenv
 .env
 .env.*

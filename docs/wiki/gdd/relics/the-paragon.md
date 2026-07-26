@@ -3,7 +3,7 @@ title: "Relic - Unique - The Paragon (Juggernaut)"
 kind: character
 status: draft
 rarity: Уникальная
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Фронт
 combat_range: Ближний
 attack_delivery:
@@ -11,10 +11,7 @@ attack_delivery:
 physical_damage: []
 magical_damage: []
 affinity: []
-roles:
-  - Дилер
-  - Танк-дилер
-  - Обналичиватель саппорта
+playstyle: []
 mechanics:
   - Резист ко всему урону
   - Само-клинз
@@ -26,6 +23,8 @@ themes:
 needs_review:
   - "Школа урона автоатаки Максом не задан — TBD (физический, тег уточнить)."
   - "Имя-аркана рабочее (The Paragon) — финал за Максом, кандидаты в конце."
+  - Ярлык «Обналичиватель саппорта» вне словаря осей — подобрать канонный тег Playstyle
+  - "Класс не задан. В прежнем поле roles значилось: Дилер, Танк-дилер — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
 ---
 
 # The Paragon (Juggernaut)

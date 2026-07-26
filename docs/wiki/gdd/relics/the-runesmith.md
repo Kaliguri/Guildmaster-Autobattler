@@ -3,7 +3,7 @@ title: "Relic - Common - The Runesmith (Smith)"
 kind: character
 status: draft
 rarity: Обычная
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Фронт
 combat_range: Ближний
 attack_delivery:
@@ -12,10 +12,9 @@ physical_damage:
   - Дробящий
 magical_damage: []
 affinity: []
-roles:
-  - Дебаффер (броня)
+playstyle:
+  - Дебаффер
   - Баффер
-  - Танк
 mechanics:
   - Разлом брони
   - Кража брони (в долг)
@@ -27,6 +26,7 @@ themes:
 needs_review:
   - "Имя-аркана рабочее (The Runesmith в лоб = класс, нарушает закон нейминга). Финальную аркану задаёт Макс — кандидаты в конце."
   - "Улучшения (Шаг 6) не заданы — TBD."
+  - "Класс не задан. В прежнем поле roles значилось: Танк — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
 ---
 
 # The Runesmith (Smith)

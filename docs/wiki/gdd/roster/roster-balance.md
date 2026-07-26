@@ -21,14 +21,26 @@ GROUP BY rarity
 SORT key ASC
 ```
 
-## Роли
+## Роли (боевой класс)
+
+Role — ось, выводимая из `combat_class`; заполняется один раз и не дублируется руками.
 
 ```dataview
 TABLE length(rows) AS "Персонажей"
 FROM "docs/wiki/gdd/relics"
 WHERE kind = "character"
-FLATTEN roles AS role
-GROUP BY role
+GROUP BY combat_class
+SORT length(rows) DESC
+```
+
+## Профиль (Playstyle)
+
+```dataview
+TABLE length(rows) AS "Персонажей"
+FROM "docs/wiki/gdd/relics"
+WHERE kind = "character"
+FLATTEN playstyle AS style
+GROUP BY style
 SORT length(rows) DESC
 ```
 

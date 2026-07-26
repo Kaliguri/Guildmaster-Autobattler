@@ -12,14 +12,13 @@ physical_damage: []
 magical_damage:
   - Лёд
 affinity: []
-roles:
-  - Контроль
-  - РДД
+playstyle: []
 mechanics:
   - Замедление
   - Заморозка
   - Стан
   - Массовый контроль
+  - Контроль
 gender: Не определено
 themes:
   - Мистика

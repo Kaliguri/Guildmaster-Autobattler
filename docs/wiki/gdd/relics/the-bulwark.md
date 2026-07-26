@@ -12,13 +12,12 @@ physical_damage:
   - Режущий
 magical_damage: []
 affinity: []
-roles:
-  - Танк
-  - Контроль
+playstyle: []
 mechanics:
   - Щит
   - Стан
   - Снижение урона
+  - Контроль
 gender: Не определено
 themes: []
 needs_review: []

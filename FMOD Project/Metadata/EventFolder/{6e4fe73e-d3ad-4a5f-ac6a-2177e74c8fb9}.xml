@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EventFolder" id="{6e4fe73e-d3ad-4a5f-ac6a-2177e74c8fb9}">
+		<property name="name">
+			<value>stealth_buff</value>
+		</property>
+		<relationship name="folder">
+			<destination>{56dabe35-7212-4c2b-bfae-f32cd56ad75b}</destination>
+		</relationship>
+	</object>
+</objects>

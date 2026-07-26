@@ -3,7 +3,7 @@ title: "Relic - Common - The Tide (Tidecaller)"
 kind: character
 status: draft
 rarity: Обычная
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:
@@ -12,9 +12,7 @@ physical_damage: []
 magical_damage:
   - Лёд
 affinity: []
-roles:
-  - Контроль
-  - Хил
+playstyle:
   - Баффер
   - Гибрид
 mechanics:
@@ -24,6 +22,8 @@ mechanics:
   - Взрыв
   - Отбрасывание
   - Замедление
+  - Контроль
+  - Хил
 gender: Не определено
 themes:
   - Мистика

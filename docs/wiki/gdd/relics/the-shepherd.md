@@ -12,14 +12,13 @@ physical_damage: []
 magical_damage: []
 affinity:
   - Свет
-roles:
-  - Хил
-  - Поддержка
+playstyle: []
 mechanics:
   - Свет (чистый урон)
   - Лечение от нанесённого
   - Приоритизация цели
   - Снятие эффектов
+  - Хил
 gender: Не определено
 themes:
   - Свет

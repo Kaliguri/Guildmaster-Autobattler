@@ -3,7 +3,7 @@ title: "Relic - Unique - The Mirror (Doppelganger)"
 kind: character
 status: draft
 rarity: Уникальная
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Наследует
 combat_range: Наследует
 attack_delivery:
@@ -11,7 +11,7 @@ attack_delivery:
 physical_damage: []
 magical_damage: []
 affinity: []
-roles:
+playstyle:
   - Копировщик
 mechanics:
   - Копирование реликвии

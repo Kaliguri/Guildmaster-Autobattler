@@ -12,9 +12,7 @@ physical_damage:
   - Колющий
 magical_damage: []
 affinity: []
-roles:
-  - Убийца
-  - Мили ДД
+playstyle: []
 mechanics:
   - Скрытность
   - Снижение урона

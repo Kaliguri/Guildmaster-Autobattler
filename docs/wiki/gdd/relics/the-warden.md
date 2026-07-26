@@ -3,26 +3,26 @@ title: "Relic - Common - The Warden"
 kind: character
 status: needs_review
 rarity: Обычная
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
-position:
-combat_range:
+combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+position: []
+combat_range: []
 attack_delivery: []
 physical_damage: []
 magical_damage: []
 affinity: []
-roles:
-  - Саммонер
-  - Контроль
+playstyle: []
 mechanics:
   - Призыв
   - Отбрасывание
   - Щит
+  - Контроль
 gender: Не определено
 themes: []
 needs_review:
   - Ранний черновик-идея, не по шаблону Шаг1-7
   - Яд - только в улучшениях, не в базовом наборе
   - Позиция, дальность, доставка атаки, школа урона - не заданы
+  - "Класс не задан. В прежнем поле roles значилось: Саммонер — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
 ---
 
 # The Warden

@@ -3,7 +3,7 @@ title: "Relic - Common - The Bond (Shaman)"
 kind: character
 status: draft
 rarity: Обычная
-combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
+combat_class: # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Фронт
 combat_range: Ближний
 attack_delivery:
@@ -12,18 +12,18 @@ physical_damage:
   - Дробящий
 magical_damage: []
 affinity: []
-roles:
-  - Хил
+playstyle:
   - Баффер
-  - Саммонер
 mechanics:
   - Разделение урона
   - Призыв
   - Лечение
+  - Хил
 gender: Не определено
 themes:
   - Мистика
-needs_review: []
+needs_review:
+  - "Класс не задан. В прежнем поле roles значилось: Саммонер — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
 ---
 
 # The Bond (Shaman)

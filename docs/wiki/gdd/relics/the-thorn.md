@@ -13,9 +13,7 @@ physical_damage:
   - Колющий
 magical_damage: []
 affinity: []
-roles:
-  - Танк
-  - Брузер
+playstyle: []
 mechanics:
   - Ответный урон
   - AOE
