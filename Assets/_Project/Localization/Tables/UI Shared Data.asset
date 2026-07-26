@@ -379,6 +379,34 @@ MonoBehaviour:
     m_Key: ui.mainmenu.title
     m_Metadata:
       m_Items: []
+  - m_Id: 5737909707857920
+    m_Key: ui.stat.hp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606656
+    m_Key: ui.stat.parmor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606657
+    m_Key: ui.stat.marmor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606658
+    m_Key: ui.stat.dmg
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606659
+    m_Key: ui.stat.aspd
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606660
+    m_Key: ui.stat.range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5737909745606661
+    m_Key: ui.stat.move
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

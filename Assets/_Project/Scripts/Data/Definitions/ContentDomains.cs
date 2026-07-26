@@ -61,6 +61,30 @@ namespace Guildmaster.Data.Definitions
                     $"No content domain registered for type '{type.Name}'. Add it to {nameof(ContentDomains)}.");
 
         /// <summary>
+        /// Проверить, что строка — корректный content id: <c>domain.lower_snake</c>, только <c>[a-z0-9_]</c>,
+        /// ровно одна точка. Владелец правила — этот класс: он же его и применяет в <see cref="MakeId"/>,
+        /// поэтому валидация контента обязана спрашивать здесь, а не держать вторую регулярку у себя
+        /// (аудит 2026-07-26, волна 3 — она уже жила копией в тестах контента).
+        /// </summary>
+        public static bool IsValidId(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return false;
+
+            int dot = id.IndexOf('.');
+            if (dot <= 0 || dot == id.Length - 1) return false;
+            if (id.IndexOf('.', dot + 1) >= 0) return false;
+
+            for (int i = 0; i < id.Length; i++)
+            {
+                char c = id[i];
+                if (i == dot) continue;
+                bool ok = (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9') || c == '_';
+                if (!ok) return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Собрать id <c>domain.lower_snake</c> из имени ассета: <c>("IceChainsStun")</c> → <c>effect.ice_chains_stun</c>.
         /// </summary>
         public static string MakeId(Type type, string assetName) =>

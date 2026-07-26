@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Editor;
 using NUnit.Framework;
@@ -15,7 +14,8 @@ namespace Guildmaster.Tests.EditMode.Content
     /// </summary>
     public sealed class ContentValidationTests
     {
-        private static readonly Regex IdFormat = new Regex(@"^[a-z0-9_]+\.[a-z0-9_]+$", RegexOptions.Compiled);
+        // Своей регулярки формата id здесь нет: правило принадлежит ContentDomains — он же его
+        // применяет, когда id генерирует. Копия разъехалась бы на первой правке формата.
 
         private static List<ContentDefinition> AllContent() => ContentIdUtility.FindAll();
 
@@ -28,7 +28,7 @@ namespace Guildmaster.Tests.EditMode.Content
             {
                 string assetPath = AssetDatabase.GetAssetPath(def);
                 Assert.IsFalse(string.IsNullOrEmpty(def.Id), $"Empty id: {assetPath}");
-                Assert.IsTrue(IdFormat.IsMatch(def.Id), $"Id '{def.Id}' not in domain.name format: {assetPath}");
+                Assert.IsTrue(ContentDomains.IsValidId(def.Id), $"Id '{def.Id}' not in domain.name format: {assetPath}");
 
                 string expectedDomain = ContentDomains.GetDomain(def.GetType());
                 Assert.IsTrue(def.Id.StartsWith(expectedDomain + "."),
