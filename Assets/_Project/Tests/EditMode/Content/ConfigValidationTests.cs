@@ -2,6 +2,7 @@ using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using NUnit.Framework;
 using UnityEditor;
+using UnityEngine;
 
 namespace Guildmaster.Tests.EditMode.Content
 {
@@ -39,6 +40,43 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.AreEqual(d.FleeWallMargin,            s.FleeWallMargin,            1e-6f);
             Assert.AreEqual(d.FleeThreatRadius,          s.FleeThreatRadius,          1e-6f);
             Assert.AreEqual(d.KiteStrafeWeight,          s.KiteStrafeWeight,          1e-6f);
+        }
+
+        /// <summary>
+        /// Дефолты полей SO — тоже <see cref="SimTuning.Default"/>, а не своя копия чисел.
+        /// <para>Прежняя страховка сравнивала ассет с кодом, и они совпадали; расходился ТРЕТИЙ владелец —
+        /// C#-инициализаторы <c>SimTuningConfig</c> (радиус тела 0.575 против играемых 0.3). Он невидим,
+        /// пока ассет уже существует, и выстреливает у того, кто создаст новый через Create Asset Menu
+        /// (аудит 2026-07-26, UA-3/AC-18/T-2).</para>
+        /// </summary>
+        [Test]
+        public void FreshSimTuningConfig_StartsFromCodeDefaults()
+        {
+            var fresh = ScriptableObject.CreateInstance<SimTuningConfig>();
+            try
+            {
+                SimTuning s = fresh.ToSnapshot();
+                SimTuning d = SimTuning.Default;
+
+                Assert.AreEqual(d.BodyRadiusPerSize,         s.BodyRadiusPerSize,         1e-6f);
+                Assert.AreEqual(d.SeparationStrength,        s.SeparationStrength,        1e-6f);
+                Assert.AreEqual(d.SeparationIterations,      s.SeparationIterations);
+                Assert.AreEqual(d.SeparationSameTeamScale,   s.SeparationSameTeamScale,   1e-6f);
+                Assert.AreEqual(d.ProjectileHitRadiusFactor, s.ProjectileHitRadiusFactor, 1e-6f);
+                Assert.AreEqual(d.ProjectileDespawnMargin,   s.ProjectileDespawnMargin,   1e-6f);
+                Assert.AreEqual(d.KiteFleeFactor,            s.KiteFleeFactor,            1e-6f);
+                Assert.AreEqual(d.GlobalSearchRadius,        s.GlobalSearchRadius,        1e-6f);
+                Assert.AreEqual(d.FleeThreatWeight,          s.FleeThreatWeight,          1e-6f);
+                Assert.AreEqual(d.FleeHomeWeight,            s.FleeHomeWeight,            1e-6f);
+                Assert.AreEqual(d.FleeWallWeight,            s.FleeWallWeight,            1e-6f);
+                Assert.AreEqual(d.FleeWallMargin,            s.FleeWallMargin,            1e-6f);
+                Assert.AreEqual(d.FleeThreatRadius,          s.FleeThreatRadius,          1e-6f);
+                Assert.AreEqual(d.KiteStrafeWeight,          s.KiteStrafeWeight,          1e-6f);
+            }
+            finally
+            {
+                Object.DestroyImmediate(fresh);
+            }
         }
 
         // --- §8 правило 5: диапазоны ---
