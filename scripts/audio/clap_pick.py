@@ -84,6 +84,32 @@ def load_model():
     except ImportError:
         print("Нет laion_clap. Поставь в venv аудио-инструментов (см. шапку файла).")
         raise SystemExit(1)
+    # torch 2.6+ грузит чекпоинты с weights_only=True, а веса CLAP содержат numpy-скаляр и
+    # отвергаются. Источник доверенный (официальный чекпоинт LAION), поэтому разрешаем ровно
+    # этот тип, а не выключаем проверку целиком.
+    try:
+        import functools
+        import numpy as _np
+        import torch as _torch
+
+        allow = [_np.core.multiarray.scalar, _np.dtype]
+        # Чекпоинт тянет за собой конкретные подтипы dtype (Float64DType и соседи) — перечислять
+        # их поимённо бессмысленно, берём все, что есть в numpy.dtypes.
+        allow += [t for t in vars(_np.dtypes).values() if isinstance(t, type)]
+        _torch.serialization.add_safe_globals(allow)
+
+        # Разрешённых глобалов всё равно не хватает: laion-clap зовёт torch.load без
+        # weights_only, а дефолт с 2.6 сменился. Подменяем дефолт ТОЛЬКО на время загрузки
+        # весов CLAP — источник официальный, а альтернатива — держать torch < 2.6 ради одной
+        # библиотеки.
+        if not getattr(_torch.load, "_clap_patched", False):
+            original = _torch.load
+            patched = functools.partial(original, weights_only=False)
+            patched._clap_patched = True
+            _torch.load = patched
+    except Exception:
+        pass   # на старом torch этого API нет и оно не нужно
+
     model = laion_clap.CLAP_Module(enable_fusion=False)
     model.load_ckpt()   # первый запуск скачивает веса (~2 ГБ) в кеш пользователя
     return model
