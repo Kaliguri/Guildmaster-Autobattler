@@ -26,7 +26,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         [SetUp]
         public void SetUp()
         {
-            _config    = ScriptableObject.CreateInstance<GameConfig>();
+            _config    = GameConfig.CreateDefault();
             _runStates = new RunStateService(new InMemorySaveService(), _config);
         }
 
@@ -95,14 +95,15 @@ namespace Guildmaster.Tests.EditMode.Guild
         public void CreateRuntime_BuildsFreePreset_FromRoster()
         {
             var roster = new[] { new PlayerSlot(MakeRelic("relic.base"), null, new Vector2(-6f, 0f)) };
+            var encounter = ScriptableObject.CreateInstance<EncounterData>();
             BattlePresetData preset = BattlePresetData.CreateRuntime(
-                encounter: null, roster: roster, mode: DeploymentMode.Free, partyItems: null,
-                isElite: true, id: "battle.run.x");
+                encounter: encounter, roster: roster, mode: DeploymentMode.Free, partyItems: null,
+                id: "battle.run.x");
 
             Assert.AreEqual(DeploymentMode.Free, preset.DeploymentMode, "Забег форсит расстановку.");
             Assert.AreEqual(1, preset.Roster.Count);
             Assert.AreEqual("relic.base", preset.Roster[0].Relic.Id);
-            Assert.IsTrue(preset.IsElite, "Элитность прокидывается из авторского пресета.");
+            Assert.AreEqual(encounter.Tier, preset.Tier, "Сложность боя приезжает вместе с энкаунтером.");
             Assert.AreEqual("battle.run.x", preset.Id);
         }
 
