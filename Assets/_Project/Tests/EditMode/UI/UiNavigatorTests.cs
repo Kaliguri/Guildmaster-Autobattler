@@ -408,5 +408,84 @@ namespace Guildmaster.Tests.EditMode.UI
             Assert.AreSame(next, nav.Top, "экран, открытый из резолва, пережил PopAll");
             Assert.IsTrue(nav.IsOpen);
         }
+
+        // --- Подписки на отмену не переживают свои экраны (аудит 2026-07-26, R1-19/R1-61) ---
+        // Токен здесь — токен ЗАБЕГА: он живёт весь акт, поэтому неснятая подписка держит закрытый экран
+        // до конца забега, а число подписок растёт на каждый показанный экран.
+
+        [Test]
+        public void Pop_ReleasesTheCancelHookOfTheClosedScreen()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            nav.Push(new TestScreen(ScreenKind.Page), run.Token);
+            Assert.AreEqual(1, nav.ActiveCancelHooks);
+
+            nav.Pop();
+
+            Assert.AreEqual(0, nav.ActiveCancelHooks, "подписка пережила экран и держит его до конца забега");
+        }
+
+        [Test]
+        public void PopAll_ReleasesEveryCancelHook()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            nav.Push(new TestScreen(ScreenKind.Page), run.Token);
+            nav.Push(new TestScreen(ScreenKind.Sheet), run.Token);
+            nav.Push(new TestScreen(ScreenKind.Modal), run.Token);
+            Assert.AreEqual(3, nav.ActiveCancelHooks);
+
+            nav.PopAll();
+
+            Assert.AreEqual(0, nav.ActiveCancelHooks);
+        }
+
+        [Test]
+        public void CancelHooks_DoNotAccumulateAcrossAWholeRun()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            // Забег открывает и закрывает десятки экранов на одном токене.
+            for (int i = 0; i < 20; i++)
+            {
+                nav.Push(new TestScreen(ScreenKind.Page), run.Token);
+                nav.Pop();
+            }
+
+            Assert.AreEqual(0, nav.ActiveCancelHooks,
+                "число подписок растёт вместе с числом показанных экранов, а не со стеком");
+        }
+
+        [Test]
+        public void ShowAsync_ReleasesItsHookOnResolve()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+            var screen = new TestResultScreen();
+
+            UniTask<int> task = nav.ShowAsync(screen, run.Token);
+            Assert.AreEqual(1, nav.ActiveCancelHooks);
+
+            screen.Choose(3);
+
+            Assert.AreEqual(3, task.GetAwaiter().GetResult());
+            Assert.AreEqual(0, nav.ActiveCancelHooks);
+        }
+
+        [Test]
+        public void Dispose_ReleasesHooksOfScreensLeftOpen()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            nav.Push(new TestScreen(ScreenKind.Page), run.Token);
+            nav.Dispose();
+
+            Assert.AreEqual(0, nav.ActiveCancelHooks);
+        }
     }
 }

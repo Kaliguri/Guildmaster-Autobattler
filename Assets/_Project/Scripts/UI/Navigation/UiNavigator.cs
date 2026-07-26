@@ -27,6 +27,11 @@ namespace Guildmaster.UI
         private readonly UiSoundSystem _sound;
         private readonly List<UiScreen> _stack = new(); // [0] низ, [last] верх
 
+        // Подписки на отмену живут ровно столько, сколько экран. Токен здесь — обычно токен ЗАБЕГА, то есть
+        // он переживает десятки экранов: пока регистрацию не снять, отменённый callback держит и её, и сам
+        // экран до конца акта (аудит 2026-07-26, R1-19/R1-61).
+        private readonly Dictionary<UiScreen, CancellationTokenRegistration> _cancelHooks = new();
+
         private VisualElement _screensLayer;
         private VisualElement _modalLayer;
         private UiScreenContext _context;
@@ -45,6 +50,10 @@ namespace Guildmaster.UI
         public void Dispose()
         {
             if (_clock != null) _clock.PhaseChanged -= SyncInput;
+
+            foreach (CancellationTokenRegistration registration in _cancelHooks.Values)
+                registration.Dispose();
+            _cancelHooks.Clear();
         }
 
         /// <summary>
@@ -66,6 +75,12 @@ namespace Guildmaster.UI
 
         /// <summary>Верхний экран стека (null, если пусто).</summary>
         public UiScreen Top => _stack.Count > 0 ? _stack[_stack.Count - 1] : null;
+
+        /// <summary>
+        /// Сколько подписок на отмену сейчас держит навигатор. Диагностика: число обязано ходить за стеком,
+        /// а не расти на каждый показанный за забег экран. Смотрит тест и трейс.
+        /// </summary>
+        public int ActiveCancelHooks => _cancelHooks.Count;
 
         /// <summary>Открыт ли хоть один экран.</summary>
         public bool IsOpen => _stack.Count > 0;
@@ -141,7 +156,7 @@ namespace Guildmaster.UI
             UiTrace.Log($"nav.Push {Desc(screen)} → [{StackDesc()}] suppress={_input?.GameplaySuppressed}");
 
             if (ct.CanBeCanceled)
-                ct.Register(() => RemoveScreen(screen)); // RemoveScreen идемпотентен (уже снят → no-op)
+                Hook(screen, ct.Register(() => RemoveScreen(screen))); // RemoveScreen идемпотентен (уже снят → no-op)
         }
 
         /// <summary>Снять верхний экран. Result-экран без выбора резолвится своим <c>DefaultResult</c>.</summary>
@@ -150,6 +165,7 @@ namespace Guildmaster.UI
             if (_stack.Count == 0) return;
             UiScreen top = _stack[_stack.Count - 1];
             _stack.RemoveAt(_stack.Count - 1);
+            Unhook(top);
             top.Root?.RemoveFromHierarchy();
             top.OnExit();
             _sound?.PlayUi("screen_close");
@@ -185,6 +201,7 @@ namespace Guildmaster.UI
             _stack.Clear();
             foreach (UiScreen s in snapshot)
             {
+                Unhook(s);
                 s.Root?.RemoveFromHierarchy();
                 s.OnExit();
             }
@@ -215,9 +232,28 @@ namespace Guildmaster.UI
             Push(screen);
 
             if (ct.CanBeCanceled)
-                ct.Register(() => screen.ResolveDefaultIfPending());
+                Hook(screen, ct.Register(() => screen.ResolveDefaultIfPending()));
 
             return tcs.Task;
+        }
+
+        /// <summary>Запомнить подписку на отмену за экраном, сняв прежнюю, если она была.</summary>
+        private void Hook(UiScreen screen, CancellationTokenRegistration registration)
+        {
+            if (_cancelHooks.TryGetValue(screen, out CancellationTokenRegistration previous))
+                previous.Dispose();
+
+            _cancelHooks[screen] = registration;
+        }
+
+        /// <summary>Снять подписку экрана: он больше не существует, и токен не должен его удерживать.</summary>
+        private void Unhook(UiScreen screen)
+        {
+            if (screen == null) return;
+            if (!_cancelHooks.TryGetValue(screen, out CancellationTokenRegistration registration)) return;
+
+            registration.Dispose();
+            _cancelHooks.Remove(screen);
         }
 
         /// <summary>
@@ -255,6 +291,8 @@ namespace Guildmaster.UI
         // снимает его вне зависимости от того, был он верхним или дорезолвлен из Pop/PopAll.
         private void RemoveScreen(UiScreen screen)
         {
+            Unhook(screen);
+
             int idx = _stack.IndexOf(screen);
             if (idx < 0) { UiTrace.Log($"nav.Remove {Desc(screen)} — УЖЕ СНЯТ (no-op)"); return; }
             _stack.RemoveAt(idx);
