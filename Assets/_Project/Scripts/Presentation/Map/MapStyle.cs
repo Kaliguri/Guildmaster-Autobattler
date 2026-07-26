@@ -187,18 +187,18 @@ namespace Guildmaster.Presentation.Map
         [Header("Переход при выборе узла (шторка вместо поездки)")]
         [Tooltip("Сколько кадр затягивается чернилами (секунды). Это ощущаемая цена шага по карте — " +
                  "заметно, но без ожидания.")]
-        [SerializeField] private float _transitionInSeconds = 0.28f;
+        [SerializeField] private float _transitionInSeconds = 0.85f;
 
         [Tooltip("Насколько поздно вступают чернила, в долях закрытия. 0 = вместе с наездом камеры, " +
                  "0.4 = кадр темнеет только на последних 60% нырка. Больше — дольше видно, куда ныряем.")]
-        [SerializeField] private float _transitionInkDelay = 0.4f;
+        [SerializeField] private float _transitionInkDelay = 0.35f;
 
         [Tooltip("Сколько кадр держится закрытым, прежде чем начать открываться.")]
-        [SerializeField] private float _transitionHoldSeconds = 0.08f;
+        [SerializeField] private float _transitionHoldSeconds = 0.3f;
 
         [Tooltip("Сколько кадр раскрывается обратно (секунды). Чуть дольше закрытия: уходить резко приятно, " +
                  "а появляться — мягко.")]
-        [SerializeField] private float _transitionOutSeconds = 0.36f;
+        [SerializeField] private float _transitionOutSeconds = 0.55f;
 
         /// <inheritdoc cref="_layout"/>
         public MapLayout Layout => _layout;
