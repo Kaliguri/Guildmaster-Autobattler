@@ -21,14 +21,23 @@ MonoBehaviour:
     MaxEdgesPerNode: 4
     Zones:
     - FromFloor: 1
-      ToFloor: 4
+      ToFloor: 1
       Weights:
       - Type: 1
         Weight: 70
       - Type: 7
         Weight: 30
+    - FromFloor: 2
+      ToFloor: 4
+      Weights:
+      - Type: 1
+        Weight: 62
+      - Type: 7
+        Weight: 26
+      - Type: 4
+        Weight: 12
     - FromFloor: 5
-      ToFloor: 8
+      ToFloor: 6
       Weights:
       - Type: 1
         Weight: 42
@@ -39,16 +48,16 @@ MonoBehaviour:
       - Type: 4
         Weight: 14
     - FromFloor: 9
-      ToFloor: 13
+      ToFloor: 12
       Weights:
       - Type: 1
-        Weight: 36
+        Weight: 38
       - Type: 2
-        Weight: 28
+        Weight: 30
       - Type: 7
         Weight: 20
-      - Type: 6
-        Weight: 16
+      - Type: 4
+        Weight: 12
     Anchors:
     - Floor: 7
       Type: 8

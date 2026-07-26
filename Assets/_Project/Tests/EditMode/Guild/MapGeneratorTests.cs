@@ -9,7 +9,7 @@ namespace Guildmaster.Tests.EditMode.Guild
     /// <summary>
     /// Генератор карты акта (план [[act-map-run-loop]] §3.1, шаг A1). Закрепляет контракт топологии:
     /// детерминизм по сиду, связность старт↔босс в обе стороны (нет недостижимых узлов и тупиков),
-    /// и правила размещения (элитки не в ранних колонках, гарантированный магазин).
+    /// и правила размещения (форма талии, зоны магазина, сундук только на своём якоре).
     /// </summary>
     public sealed class MapGeneratorTests
     {
@@ -86,37 +86,38 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
-        public void Generate_Waist_FunnelsThroughChest_ThenFansIntoCamps()
+        public void Generate_Waist_FunnelsThroughCamp_ThenFansIntoChests()
         {
-            // Талия акта (реш. Макса 2026-07-20): широкая середина сходится в ОДИН сундук, и уже из него
-            // веер в ТРИ привала. Это ритмическая пауза — если сундук снова станет колонкой, пропадёт и
-            // общая точка, и осмысленность следующей развилки.
+            // Талия акта (реш. Макса 2026-07-26): широкая середина сходится в ОДИН привал, и уже из него
+            // веер в ТРИ сундука. Порядок принципиален: развилка обязана быть выбором, а три одинаковых
+            // привала — это один узел трижды. Три сундука дают разную добычу.
             var cfg = new MapGenConfig();
             for (ulong seed = 1; seed <= 20; seed++)
             {
                 var map = Generate(seed, cfg);
 
-                var chests = map.Nodes.Where(n => n.Floor == 7).ToList();
-                var camps  = map.Nodes.Where(n => n.Floor == 8).ToList();
+                var camps  = map.Nodes.Where(n => n.Floor == 7).ToList();
+                var chests = map.Nodes.Where(n => n.Floor == 8).ToList();
 
-                Assert.AreEqual(1, chests.Count, $"Этаж 7 — ровно один сундук (сид {seed}).");
-                Assert.AreEqual(MapNodeType.Chest, chests[0].Type, $"Этаж 7 — сундук (сид {seed}).");
-                Assert.AreEqual(3, camps.Count, $"Этаж 8 — ровно три привала (сид {seed}).");
-                Assert.IsTrue(camps.All(n => n.Type == MapNodeType.Camp), $"Этаж 8 — привалы (сид {seed}).");
+                Assert.AreEqual(1, camps.Count, $"Этаж 7 — ровно один привал (сид {seed}).");
+                Assert.AreEqual(MapNodeType.Camp, camps[0].Type, $"Этаж 7 — привал (сид {seed}).");
+                Assert.AreEqual(3, chests.Count, $"Этаж 8 — ровно три сундука (сид {seed}).");
+                Assert.IsTrue(chests.All(n => n.Type == MapNodeType.Chest), $"Этаж 8 — сундуки (сид {seed}).");
 
-                CollectionAssert.AreEquivalent(camps.Select(c => c.Id), chests[0].Edges,
-                    $"Из сундука ведут пути ровно во все три привала (сид {seed}).");
+                CollectionAssert.AreEquivalent(chests.Select(c => c.Id), camps[0].Edges,
+                    $"Из привала ведут пути ровно во все три сундука (сид {seed}).");
 
                 foreach (var before in map.Nodes.Where(n => n.Floor == 6))
-                    CollectionAssert.AreEqual(new[] { chests[0].Id }, before.Edges,
-                        $"Этаж 6 целиком сходится в сундук (сид {seed}).");
+                    CollectionAssert.AreEqual(new[] { camps[0].Id }, before.Edges,
+                        $"Этаж 6 целиком сходится в привал (сид {seed}).");
             }
         }
 
         [Test]
-        public void Generate_CampStandsBeforeBoss()
+        public void Generate_SingleCampStandsBeforeBoss()
         {
-            // Перед боссом — привал: последняя возможность потратить действия отряда до финала акта.
+            // Перед боссом — привал, и он ОДИН: последняя возможность потратить действия не может быть
+            // лотереей, а веер здесь повторял бы форму талии второй раз подряд (реш. Макса 2026-07-26).
             var cfg = new MapGenConfig();
             int bossFloor = cfg.Columns - 1;
             for (ulong seed = 1; seed <= 20; seed++)
@@ -124,9 +125,44 @@ namespace Guildmaster.Tests.EditMode.Guild
                 var map = Generate(seed, cfg);
                 var beforeBoss = map.Nodes.Where(n => n.Floor == bossFloor - 1).ToList();
 
-                Assert.IsNotEmpty(beforeBoss, $"Этаж перед боссом существует (сид {seed}).");
-                Assert.IsTrue(beforeBoss.All(n => n.Type == MapNodeType.Camp),
-                    $"Этаж перед боссом — привалы (сид {seed}).");
+                Assert.AreEqual(1, beforeBoss.Count, $"Перед боссом ровно один узел (сид {seed}).");
+                Assert.AreEqual(MapNodeType.Camp, beforeBoss[0].Type,
+                    $"Этаж перед боссом — привал (сид {seed}).");
+            }
+        }
+
+        [Test]
+        public void Generate_Chest_LivesOnlyOnItsAnchorFloor()
+        {
+            // Сундук гарантирован ровно на своём якорном этаже и НИГДЕ больше не имеет зонного веса
+            // (реш. Макса 2026-07-26): в прочих местах он может прийти только изнутри «?», то есть уже
+            // после входа в узел. Дай сундуку вес в зоне — и якорь перестанет быть событием.
+            var cfg = new MapGenConfig();
+            int anchorFloor = cfg.Anchors.First(a => a.Type == MapNodeType.Chest).Floor;
+
+            for (ulong seed = 1; seed <= 20; seed++)
+            {
+                var map = Generate(seed, cfg);
+                foreach (var chest in map.Nodes.Where(n => n.Type == MapNodeType.Chest))
+                    Assert.AreEqual(anchorFloor, chest.Floor,
+                        $"Сундук вне якорного этажа {anchorFloor} (сид {seed}).");
+            }
+        }
+
+        [Test]
+        public void Generate_Shop_StaysInsideItsZones()
+        {
+            // Магазин живёт на этажах 2–6 и 9–12 (реш. Макса 2026-07-26). Первый этаж от него свободен:
+            // акт открывается боем, а не прилавком; якорные этажи — заданный ритм и лавке не отдаются.
+            var cfg = new MapGenConfig();
+            for (ulong seed = 1; seed <= 20; seed++)
+            {
+                var map = Generate(seed, cfg);
+                foreach (var shop in map.Nodes.Where(n => n.Type == MapNodeType.Shop))
+                {
+                    bool allowed = (shop.Floor >= 2 && shop.Floor <= 6) || (shop.Floor >= 9 && shop.Floor <= 12);
+                    Assert.IsTrue(allowed, $"Магазин на этаже {shop.Floor}, вне зон 2–6 / 9–12 (сид {seed}).");
+                }
             }
         }
 
@@ -145,16 +181,16 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
-        public void Generate_WarmupZone_OnlyBattleOrUnknown()
+        public void Generate_FirstFloor_OnlyBattleOrUnknown()
         {
-            // Зона разогрева (этажи 1–4): игрока не встречает сундук/элита/магазин в лицо. Событие своего
-            // узла не имеет вовсе — оно приходит изнутри «?», потому «?» здесь и стоит.
+            // Вход в акт (этаж 1): игрока не встречает лавка/сундук/элита в лицо — акт открывается боем.
+            // Событие своего узла не имеет вовсе — оно приходит изнутри «?», потому «?» здесь и стоит.
             for (ulong seed = 1; seed <= 20; seed++)
             {
                 var map = Generate(seed);
-                foreach (var n in map.Nodes.Where(x => x.Floor >= 1 && x.Floor <= 4))
+                foreach (var n in map.Nodes.Where(x => x.Floor == 1))
                     Assert.IsTrue(n.Type == MapNodeType.Battle || n.Type == MapNodeType.Unknown,
-                        $"Разогрев (этаж {n.Floor}): только бой/«?», не {n.Type} (сид {seed}).");
+                        $"Вход в акт (этаж {n.Floor}): только бой/«?», не {n.Type} (сид {seed}).");
             }
         }
 
@@ -168,22 +204,6 @@ namespace Guildmaster.Tests.EditMode.Guild
                 var map = Generate(seed);
                 Assert.IsFalse(map.Nodes.Any(n => n.Type == MapNodeType.TextEvent),
                     $"Текстовое событие не должно стоять на карте своим узлом (сид {seed}).");
-            }
-        }
-
-        [Test]
-        public void Generate_ShopFallback_NeverOverwritesAnchoredFloors()
-        {
-            // Страховка «хотя бы один магазин» не имеет права трогать якорные этажи: они и есть заданный
-            // ритм акта. Пока магазин сам был якорем, это молчало; сняли якорь — привалы стали лавками.
-            var cfg = new MapGenConfig().Validated();
-            for (ulong seed = 1; seed <= 40; seed++)
-            {
-                var map = Generate(seed, cfg);
-                foreach (AnchorRule anchor in cfg.Anchors)
-                    foreach (var n in map.Nodes.Where(x => x.Floor == anchor.Floor))
-                        Assert.AreEqual(anchor.Type, n.Type,
-                            $"Якорный этаж {anchor.Floor} перекрашен в {n.Type} (сид {seed}).");
             }
         }
 
@@ -262,17 +282,6 @@ namespace Guildmaster.Tests.EditMode.Guild
                     for (int i = 0; i < rows.Count; i++)
                         Assert.AreEqual(i, rows[i], $"Этаж {floor.Key}: ряды идут подряд от 0 (сид {seed}).");
                 }
-            }
-        }
-
-        [Test]
-        public void Generate_HasAtLeastOneShop()
-        {
-            for (ulong seed = 1; seed <= 20; seed++)
-            {
-                var map = Generate(seed);
-                Assert.IsTrue(map.Nodes.Any(n => n.Type == MapNodeType.Shop),
-                    $"На карте должен быть хотя бы один магазин (сид {seed}).");
             }
         }
 

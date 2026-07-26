@@ -14,7 +14,9 @@ namespace Guildmaster.Guild
     /// Связь соседних колонок — алгоритмом «монотонной лестницы» (см. <see cref="ConnectColumns"/>): он
     /// гарантирует связность (у каждого узла есть входящее и исходящее ребро), планарность (рёбра не
     /// пересекаются крест-накрест) и естественные развилки/схождения. Типы узлов — по ЗОНАМ этажей и
-    /// ЯКОРЯМ (<see cref="MapGenConfig.Zones"/>/<see cref="MapGenConfig.Anchors"/>); гарантированно ≥1 магазин до босса.
+    /// ЯКОРЯМ (<see cref="MapGenConfig.Zones"/>/<see cref="MapGenConfig.Anchors"/>) и БОЛЬШЕ НИКАК: карта —
+    /// честный результат весов, без пост-правок «а вот тут ещё дорисуем нужный узел» (решение Макса
+    /// 2026-07-26). Единственная гарантия акта — якорь: он задан данными и виден в конфиге.
     /// <para><b>Payload узлов не назначается здесь</b> — генератор строит только топологию и типы; конкретный
     /// контент (энкаунтер/ивент/пул) выбирает <c>NodeResolver</c> на входе в узел (фаза A2).</para>
     /// </remarks>
@@ -57,10 +59,7 @@ namespace Guildmaster.Guild
                                                                        : System.Array.Empty<string>();
             }
 
-            // 3. Гарантия: хотя бы один магазин до босса.
-            EnsureShopExists(rng, columns, cfg);
-
-            // 4. Сборка состояния: игрок стоит на старте (он «пройден»), карта видна целиком.
+            // 3. Сборка состояния: игрок стоит на старте (он «пройден»), карта видна целиком.
             var start = columns[0][0];
             start.Cleared = true;
             return new MapState
@@ -203,37 +202,5 @@ namespace Guildmaster.Guild
             if (!list.Contains(to)) list.Add(to);
         }
 
-        /// <summary>
-        /// Если на карте нет ни одного магазина — конвертирует один промежуточный узел в Shop.
-        /// <para>ЯКОРНЫЕ этажи неприкосновенны: они и есть заданный ритм акта (сундук-талия, ряд привалов
-        /// перед боссом). Пока магазин сам был якорем, это не всплывало; стоило якорь снять — страховка
-        /// принялась перекрашивать привалы в лавки, и целый этаж терял свой смысл (поймано тестом).</para>
-        /// </summary>
-        private static void EnsureShopExists(IRngService rng, List<List<MapNode>> columns, MapGenConfig cfg)
-        {
-            var middle = columns.Skip(1).Take(columns.Count - 2).SelectMany(c => c).ToList();
-            if (middle.Count == 0 || middle.Any(n => n.Type == MapNodeType.Shop)) return;
-
-            // Ставить магазин можно только туда, где его РАЗРЕШАЕТ зона: страховка чинит невезучий ролл,
-            // а не отменяет правила акта. Иначе лавка вылезала в разогрев, куда её не пускает ни одна зона.
-            bool Allowed(MapNode n)
-            {
-                if (cfg.Anchors.Any(a => a.Floor == n.Floor)) return false; // якорный этаж — заданный ритм
-                foreach (ZoneRule zone in cfg.Zones)
-                {
-                    if (!zone.Covers(n.Floor)) continue;
-                    return zone.Weights != null
-                        && zone.Weights.Any(w => w.Type == MapNodeType.Shop && w.Weight > 0);
-                }
-                return false;
-            }
-
-            var free = middle.Where(Allowed).ToList();
-            if (free.Count == 0) return; // ставить магазин просто некуда — лучше без него, чем ломая ритм
-
-            var candidates = free.Where(n => n.Type != MapNodeType.Elite).ToList();
-            if (candidates.Count == 0) candidates = free;
-            candidates[rng.NextInt(0, candidates.Count)].Type = MapNodeType.Shop;
-        }
     }
 }
