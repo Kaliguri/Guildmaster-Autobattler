@@ -48,6 +48,10 @@ namespace Guildmaster.Combat
         private EncounterData     _lastEncounter;
         private List<PlayerSpawn> _lastPlayerSide;
 
+        // Сторона противника, заданная списком (полигон). Взаимоисключима с _lastEncounter: бой знает
+        // своего врага либо составом, либо энкаунтером — перезапуск должен повторить ровно тот способ.
+        private List<PlayerSpawn> _lastOpponentSide;
+
         public EncounterLoader(RuntimeUnitFactory factory, CombatSimulation simulation, IContentDatabase content)
         {
             _factory    = factory;
@@ -79,6 +83,7 @@ namespace Guildmaster.Combat
 
             _lastEncounter  = encounter;
             _lastPlayerSide = CopyPlayerSide(playerSide);
+            _lastOpponentSide = null; // враг задан энкаунтером — списочная сторона больше не в силе
 
             Build(encounter, _lastPlayerSide);
         }
@@ -135,6 +140,14 @@ namespace Guildmaster.Combat
         /// <summary>Перезапустить последний загруженный бой на месте (dev-R). No-op, если ничего не грузили.</summary>
         public void Reload()
         {
+            // Бой с полигона знает врага списком, а не энкаунтером — перезапускаем тем же способом,
+            // которым он был поставлен, иначе R на Ристалище тихо ничего не делал бы.
+            if (_lastOpponentSide != null)
+            {
+                LoadSides(_lastPlayerSide, _lastOpponentSide);
+                return;
+            }
+
             if (_lastEncounter == null)
             {
                 Debug.LogWarning("[EncounterLoader] - Reload: последний бой не задан (сначала загрузи энкаунтер)");
@@ -169,19 +182,44 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
+        /// Загрузить бой из ЯВНО заданных сторон, без энкаунтера: обе команды описаны списками спавнов.
+        /// Для Ристалища и любой другой площадки, где противник — такие же киты, а не авторенный состав
+        /// врагов (ГДД «Modes - Proving Grounds»).
+        /// </summary>
+        /// <remarks>
+        /// Отдельный вход, а не <c>Load(null, side)</c>: у <see cref="Load"/> энкаунтер обязателен по
+        /// смыслу — он и есть «кто противник». Полигон отвечает на этот вопрос иначе, списком, и должен
+        /// говорить об этом прямо, а не передавать пустоту и надеяться на снисхождение.
+        /// </remarks>
+        public void LoadSides(IReadOnlyList<PlayerSpawn> playerSide, IReadOnlyList<PlayerSpawn> opponentSide)
+        {
+            _lastEncounter  = null;
+            _lastPlayerSide = CopyPlayerSide(playerSide);
+            _lastOpponentSide = CopyPlayerSide(opponentSide);
+
+            _simulation.ResetBattle();
+            _factory.ResetIds();
+            SpawnSide(playerSide, team: 0);
+            SpawnSide(opponentSide, team: 1);
+        }
+
+        /// <summary>
         /// Заспавнить player-сторону (team 0) в очередь спавна — БЕЗ сброса боя. Для persist-мира: отряд
         /// можно поставить на тест-арену ВНЕ боя, а врагов доспавнить позже (<see cref="SpawnEnemies"/>) на
         /// входе в бой. Звать после фазы сброса (<see cref="CombatSimulation.ResetBattle"/> +
         /// <see cref="RuntimeUnitFactory.ResetIds"/>), не посреди активного боя.
         /// </summary>
-        public void SpawnPlayerSide(IReadOnlyList<PlayerSpawn> playerSide)
+        public void SpawnPlayerSide(IReadOnlyList<PlayerSpawn> playerSide) => SpawnSide(playerSide, team: 0);
+
+        /// <summary>Заспавнить сторону в очередь спавна — БЕЗ сброса боя. Фабрике всё равно, чей это кит.</summary>
+        public void SpawnSide(IReadOnlyList<PlayerSpawn> side, int team)
         {
-            if (playerSide == null) return;
-            for (int i = 0; i < playerSide.Count; i++)
+            if (side == null) return;
+            for (int i = 0; i < side.Count; i++)
             {
-                PlayerSpawn p = playerSide[i];
+                PlayerSpawn p = side[i];
                 if (p.Unit == null) continue;
-                _simulation.EnqueueUnitSpawn(_factory.Create(p.Unit, p.Vessel, team: 0, p.Position, p.Items));
+                _simulation.EnqueueUnitSpawn(_factory.Create(p.Unit, p.Vessel, team, p.Position, p.Items));
             }
         }
 

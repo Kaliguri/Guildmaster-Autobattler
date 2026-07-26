@@ -62,8 +62,10 @@ namespace Guildmaster.Game.Flow
 
         private void OnProvingGroundsRequested()
         {
-            // Меню на экране — завершаем его тем же исходом, что дала бы кнопка. Нет — запоминаем.
-            if (_pending != null && _pending.TrySetResult(MainMenuChoice.ProvingGrounds)) return;
+            // Меню на экране — его закроет UI-слой, резолвя экран через навигатор (иначе панель и стол под
+            // ней останутся висеть). Здесь важен только случай «меню ещё не показано»: запрос из боя обязан
+            // дожить до ближайшего показа, потому что публикация без слушателя — пустая операция.
+            if (_pending != null) return;
             _provingGroundsPending = true;
         }
     }

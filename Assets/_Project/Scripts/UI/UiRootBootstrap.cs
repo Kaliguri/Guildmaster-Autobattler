@@ -100,6 +100,8 @@ namespace Guildmaster.UI
         private IDisposable _openCampSubscription;
         private IDisposable _openOutcomeSubscription;
         private IDisposable _openMainMenuSubscription;
+        private ISubscriber<Core.Flow.OpenProvingGroundsRequest> _openProvingGroundsSub;
+        private IDisposable _openProvingGroundsSubscription;
         private IDisposable _openTitleCardSubscription;
         private UIDocument _doc;
         private RunModeBarView _topBar;
@@ -151,7 +153,9 @@ namespace Guildmaster.UI
             ISubscriber<OpenTextEventRequest> openEventSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
-            ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub,
+            ISubscriber<OpenMainMenuRequest> openMainMenuSub,
+            ISubscriber<Core.Flow.OpenProvingGroundsRequest> openProvingGroundsSub,
+            IPublisher<RelicDragEvent> relicDragPub,
             IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
             ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub,
             ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub,
@@ -192,6 +196,7 @@ namespace Guildmaster.UI
             _openChestSub = openChestSub;
             _openOutcomeSub = openOutcomeSub;
             _openMainMenuSub = openMainMenuSub;
+            _openProvingGroundsSub = openProvingGroundsSub;
         }
 
         private void Awake() => _doc = GetComponent<UIDocument>();
@@ -240,6 +245,12 @@ namespace Guildmaster.UI
             _openOutcomeSubscription = _openOutcomeSub?.Subscribe(req => _router.ShowOutcome(req));
             // Главное меню — запрос из GameFlow (верхний цикл).
             _openMainMenuSubscription = _openMainMenuSub?.Subscribe(req => _router.OpenMainMenu(req));
+
+            // Запрос Ристалища закрывает главное меню тем же путём, что кнопка: резолв экрана через
+            // навигатор гасит и панель, и стол под ней. Если меню не показано — здесь no-op, решение
+            // принимает верхний цикл игры.
+            _openProvingGroundsSubscription = _openProvingGroundsSub?.Subscribe(
+                _ => _router.TryLeaveMainMenuForProvingGrounds());
             // Boot title card — один раз до главного меню.
             _openTitleCardSubscription = _openTitleCardSub?.Subscribe(req => _router.ShowTitleCard(req));
 
@@ -667,6 +678,7 @@ namespace Guildmaster.UI
             _openCampSubscription?.Dispose();
             _openOutcomeSubscription?.Dispose();
             _openMainMenuSubscription?.Dispose();
+            _openProvingGroundsSubscription?.Dispose();
             _openTitleCardSubscription?.Dispose();
 
             _tooltips?.Detach();                                      // Трек Т: снять окно и подписки с панели

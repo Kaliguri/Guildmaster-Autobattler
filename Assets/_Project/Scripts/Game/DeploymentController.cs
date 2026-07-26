@@ -65,6 +65,10 @@ namespace Guildmaster.Game
         private readonly List<Slot> _slots = new List<Slot>();
         private EncounterData _encounter;
 
+        // Противник полигона: на Ристалище враги — такие же киты, заданные списком, а не энкаунтером.
+        // Держим, чтобы перетаскивание своего бойца пересобирало обе стороны, а не сметало вражескую.
+        private readonly List<PlayerSpawn> _opponents = new List<PlayerSpawn>();
+
         private DeploymentView _view;
         private Camera _camera;
         private IDisposable _equipSubscription;
@@ -267,6 +271,7 @@ namespace Guildmaster.Game
         {
             // Строим редактируемые слоты из УЖЕ стоящих team-0 юнитов (не пере-спавниваем).
             _slots.Clear();
+            _opponents.Clear(); // сторона противника принадлежит одному заходу на полигон, не следующему
             IReadOnlyList<RuntimeUnit> units = _sim.Units;
             for (int i = 0; i < units.Count; i++)
             {
@@ -312,27 +317,35 @@ namespace Guildmaster.Game
         /// </remarks>
         private void SeedProvingGroundsSquad()
         {
-            if (_provingGrounds == null || _provingGrounds.Count == 0)
+            if (_provingGrounds == null || _provingGrounds.SquadCount == 0)
             {
-                Debug.LogWarning("[DeploymentController] - Ристалище: состав по умолчанию не задан " +
+                Debug.LogWarning("[DeploymentController] - Ристалище: расклад по умолчанию не задан " +
                                  "(ProvingGroundsConfig пуст или не разведён) → входить не с кем");
                 return;
             }
 
-            var side = new List<PlayerSpawn>(_provingGrounds.Count);
-            for (int i = 0; i < _provingGrounds.Count; i++)
+            var side = new List<PlayerSpawn>(_provingGrounds.SquadCount);
+            for (int i = 0; i < _provingGrounds.SquadCount; i++)
             {
-                RelicData relic = _provingGrounds.At(i);
+                RelicData relic = _provingGrounds.SquadAt(i);
                 if (relic == null) continue;
 
-                Vector2 pos = _provingGrounds.PositionAt(i);
+                Vector2 pos = _provingGrounds.SquadPositionAt(i);
                 _slots.Add(new Slot { Relic = relic, Pos = pos, LiveUnitId = -1, GuildIndex = -1 });
                 side.Add(new PlayerSpawn(relic, null, pos));
             }
 
             if (side.Count == 0) return;
 
-            _loader.Load(null, side);
+            // Противник — такие же киты, поэтому обе стороны задаются списком, а не энкаунтером.
+            _opponents.Clear();
+            for (int i = 0; i < _provingGrounds.OpponentCount; i++)
+            {
+                RelicData relic = _provingGrounds.OpponentAt(i);
+                if (relic != null) _opponents.Add(new PlayerSpawn(relic, null, _provingGrounds.OpponentPositionAt(i)));
+            }
+
+            _loader.LoadSides(side, _opponents);
             _sim.FlushSpawns();
 
             // Слоты знают о живых юнитах по Id — раздаём их после материализации, иначе перетаскивание
@@ -627,7 +640,10 @@ namespace Guildmaster.Game
             var side = new List<PlayerSpawn>(_slots.Count);
             foreach (Slot s in _slots) side.Add(new PlayerSpawn(s.Relic, s.Vessel, s.Pos));
 
-            _loader.Load(_encounter, side); // ResetBattle + enqueue (сбрасывает паузу)
+            // ResetBattle + enqueue (сбрасывает паузу). На полигоне энкаунтера нет — противник задан
+            // списком, и пересобирать надо ОБЕ стороны: иначе перетаскивание своего бойца стирало бы врага.
+            if (_encounter != null) _loader.Load(_encounter, side);
+            else _loader.LoadSides(side, _opponents);
             _sim.SetPaused(true);
             _sim.FlushSpawns();
             RemapLiveUnits();

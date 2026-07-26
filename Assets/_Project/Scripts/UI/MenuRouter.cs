@@ -67,11 +67,33 @@ namespace Guildmaster.UI
         }
 
         private readonly IPublisher<MainMenuVisibilityChangedEvent> _mainMenuVisPub;
+
+        /// <summary>
+        /// Пока главное меню на экране — как его закрыть выбором «Ристалище». Ставится показом меню,
+        /// снимается при уходе. Нужен, чтобы запрос площадки снимал экран ТЕМ ЖЕ путём, что кнопка:
+        /// резолв через навигатор гасит и панель, и стол под ней. Обход мимо навигатора оставлял фон меню
+        /// висеть поверх мира, а площадку — невидимой.
+        /// </summary>
+        private System.Action _resolveMainMenuAsProvingGrounds;
         // Звук экранов, у которых он СВОЙ (награда, лавка, привал, сундук): общий клик даёт корневой
         // UiSoundSystem, а эти моменты игрок должен отличать на слух.
         private readonly Core.Audio.IAudioService _audio;
 
         public bool IsOpen => _nav.IsOpen;
+
+        /// <summary>
+        /// Закрыть главное меню выбором «Ристалище», если оно сейчас на экране. Возвращает false, если
+        /// меню не показано — тогда решение принимает верхний цикл игры, а не UI.
+        /// </summary>
+        public bool TryLeaveMainMenuForProvingGrounds()
+        {
+            if (_resolveMainMenuAsProvingGrounds == null) return false;
+
+            System.Action resolve = _resolveMainMenuAsProvingGrounds;
+            _resolveMainMenuAsProvingGrounds = null;
+            resolve();
+            return true;
+        }
 
         /// <summary>
         /// Меняется на каждый Push/Pop/резолв навигатора (Ф4): бутстрап подписывается вместо поллинга структуры
@@ -932,14 +954,18 @@ namespace Guildmaster.UI
             }
 
             screen = new RouterResultScreen<MainMenuChoice>(ScreenKind.Page, MainMenuChoice.Quit,
-                resolve => MainMenuScreenView.Build(
-                    _mainMenuUxml,
-                    req.HasSave,
-                    key => _loc?.GetString(key),
-                    onStart:    () => resolve(MainMenuChoice.StartRun),
-                    onContinue: () => resolve(MainMenuChoice.Continue),
-                    onSettings: OpenSettingsFromMainMenu,
-                    onQuit:     () => resolve(MainMenuChoice.Quit)));
+                resolve =>
+                {
+                    _resolveMainMenuAsProvingGrounds = () => resolve(MainMenuChoice.ProvingGrounds);
+                    return MainMenuScreenView.Build(
+                        _mainMenuUxml,
+                        req.HasSave,
+                        key => _loc?.GetString(key),
+                        onStart:    () => resolve(MainMenuChoice.StartRun),
+                        onContinue: () => resolve(MainMenuChoice.Continue),
+                        onSettings: OpenSettingsFromMainMenu,
+                        onQuit:     () => resolve(MainMenuChoice.Quit));
+                });
 
             // Забег кончился — UI прошлого забега кончается вместе с ним (QA #51). Инвентарь, карта и тест-зона
             // живут в стеке как СОСТОЯНИЯ и своих владельцев переживают: без этой уборки новый забег открывался
@@ -961,6 +987,7 @@ namespace Guildmaster.UI
                 // погаснуть в любом случае, иначе он останется висеть поверх мира.
                 _mainMenuVisPub?.Publish(new MainMenuVisibilityChangedEvent(false));
                 _mainMenuOpen = false;
+                _resolveMainMenuAsProvingGrounds = null;
             }
         }
 
