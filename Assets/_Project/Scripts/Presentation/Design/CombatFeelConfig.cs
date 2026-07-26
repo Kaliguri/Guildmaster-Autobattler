@@ -194,6 +194,9 @@ namespace Guildmaster.Presentation.Design
         [SerializeField, Range(0f, 1f)] private float _shatterEmberStart = 0.4f;
         [Tooltip("Микро-hold перед разлётом: осколки «кристаллизуются», сек (0 = без hold).")]
         [SerializeField] private float _shatterHold = 0.05f;
+        [Tooltip("Пол шкалы времени для разлёта: насколько сильно финишер-slowmo вправе его замедлять. " +
+                 "1 = разлёт вообще не замедляется, 0.1 = тянется вслед за самым сильным slowmo.")]
+        [SerializeField, Range(0.05f, 1f)] private float _shatterMinTimeScale = 0.4f;
 
         // --- Смерть — стадия голограммы (UnitView + SH_Sprite_HitFlash) ---
         // Тело сначала теряет плотность и становится «данными», и только потом вспыхивает и рассыпается.
@@ -348,6 +351,7 @@ namespace Guildmaster.Presentation.Design
         public float ShatterEmberBoost => _shatterEmberBoost;
         public float ShatterEmberStart => _shatterEmberStart;
         public float ShatterHold       => _shatterHold;
+        public float ShatterMinTimeScale => _shatterMinTimeScale;
 
         public Color DeathFlashColor       => _deathFlashColor;
         public float DeathHologramDuration => _deathHologramDuration;

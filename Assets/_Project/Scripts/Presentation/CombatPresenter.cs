@@ -470,12 +470,21 @@ namespace Guildmaster.Presentation
         private void HandleBattleEnded(BattleOutcome outcome)
         {
             // Финишер-мили держит кадр контакта весь финальный slowmo (перекрывает free-run у него).
-            if (_finisherCandidate != null && _views.TryGetValue(_finisherCandidate.Id, out var finisher) && finisher != null)
+            UnitView finisher = null;
+            if (_finisherCandidate != null && _views.TryGetValue(_finisherCandidate.Id, out finisher) && finisher != null)
                 finisher.HoldHitFrame(_feel.FinisherHoldSeconds);
 
-            // Живые (в _views мёртвые уже удалены) доигрывают анимации натурально, а не виснут на замершем симе.
             foreach (var kvp in _views)
-                if (kvp.Value != null) kvp.Value.OnBattleEnded();
+            {
+                if (kvp.Value == null) continue;
+
+                // Весь бой замирает вместе с моментом, а не только добивающий: остальные выжившие держат
+                // ту позу, в которой их застало. По окончании окна каждый доигрывает своё движение до
+                // конца и оседает в стойку — это и делает free-run ниже.
+                if (!ReferenceEquals(kvp.Value, finisher)) kvp.Value.HoldFrame(_feel.FinisherHoldSeconds);
+
+                kvp.Value.OnBattleEnded();
+            }
 
             Debug.Log($"[CombatPresenter] - Бой завершён: {outcome}");
 

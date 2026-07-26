@@ -73,6 +73,17 @@ namespace Guildmaster.Game.Flow
             return won ? EventResult.Completed : EventResult.Defeated;
         }
 
+        /// <summary>
+        /// Дождаться исхода боя, переигранного НА МЕСТЕ (dev-R после конца боя), и смапить как <see cref="Run"/>.
+        /// Запуск здесь не наш: поле уже пере-поставила сессия, нам остаётся дождаться нового приговора.
+        /// Пул перезапусков акта не тратится — это отладочный откат, а не проигрыш.
+        /// </summary>
+        public async UniTask<EventResult> AwaitReplayOutcome(RunContext ctx)
+        {
+            BattleOutcome outcome = await _session.WaitOutcomeAsync(ctx.Cancellation);
+            return Won(outcome) ? EventResult.Completed : EventResult.Defeated;
+        }
+
         // Победа = победила МОЯ команда. Ничья победой не считается → для игрока это поражение (ретрай).
         private bool Won(BattleOutcome outcome) => outcome.IsWinFor(_localPlayer.Team);
     }

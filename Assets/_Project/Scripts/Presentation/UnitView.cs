@@ -145,7 +145,8 @@ namespace Guildmaster.Presentation
 
         private bool _freeRun;        // бой окончен → доигрываем анимации натурально, не скрабим по замершему симу
         private bool _freeRunSettled; // уже осели в Idle после доигрыша
-        private bool  _holdHitFrame;  // финишер: держим кадр контакта весь финальный slowmo
+        private bool  _holdHitFrame;  // финишер: держим кадр весь финальный slowmo
+        private bool  _holdKeepsAttackFrame; // добивающему — именно кадр контакта; остальным — где застало
         private float _holdRemaining; // unscaled-остаток удержания
 
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
@@ -571,15 +572,31 @@ namespace Guildmaster.Presentation
         {
             if (!_animActive || _state != UnitAnimationState.Attack) return;
             _holdHitFrame  = true;
+            _holdKeepsAttackFrame = true;
             _holdRemaining = seconds;
         }
 
-        // Застываем на кадре контакта (маркер атаки), пока идёт финальный slowmo; на unscaled-времени —
-        // держим ровно столько же, сколько slowmo. По истечении «момента» — доигрываем и оседаем в Idle.
+        /// <summary>
+        /// Финишер для ОСТАЛЬНЫХ выживших: застыть там, где застало, на то же окно. Без этого поле вокруг
+        /// добивающего удара доигрывало и оседало в стойку, пока сам момент ещё держится, — кадр распадался
+        /// на «замерший герой посреди спокойных зрителей». Поза остаётся честной: кто бил — стоит в ударе,
+        /// кто шёл — в шаге.
+        /// </summary>
+        public void HoldFrame(float seconds)
+        {
+            if (!_animActive) return;
+            _holdHitFrame  = true;
+            _holdKeepsAttackFrame = false;
+            _holdRemaining = seconds;
+        }
+
+        // Застываем на кадре, пока идёт финальный slowmo; на unscaled-времени — держим ровно столько же,
+        // сколько slowmo. По истечении «момента» — доигрываем и оседаем в Idle.
         private void DriveHoldHitFrame()
         {
             _animator.speed = 0f;
-            _animator.Play(AttackHash, 0, _attackMarkerNormalized);
+            // Добивающему кадр контакта возвращаем принудительно: скраб мог уже уползти с маркера.
+            if (_holdKeepsAttackFrame) _animator.Play(AttackHash, 0, _attackMarkerNormalized);
             _holdRemaining -= Time.unscaledDeltaTime;
             if (_holdRemaining <= 0f)
             {
@@ -764,6 +781,9 @@ namespace Guildmaster.Presentation
 
         // Вспышка: подмешиваем _flashAmount 1→0. Цвет — из аргумента (school flash) или фолбэк feel.
         // Impact-frame: держим пик hold-секунд, затем линейный спад.
+        // Время UNSCALED: финишер начинается с полной паузы и продолжается сильным slowmo, а на scaled-времени
+        // вспышка в этот момент просто ЗАМИРАЕТ — юнит белеет и остаётся белым на несколько секунд, и весь
+        // секвенс смерти стоит следом (он ждёт её догорания). Вспышка — презентация, ей незачем стынуть.
         private void PlayHitFlash(Color flashColor)
         {
             if (_sprite == null || _feel == null) return;
@@ -777,6 +797,7 @@ namespace Guildmaster.Presentation
 
             _flashHandle = LMotion.Create(0f, 1f, total)
                 .WithEase(Ease.Linear)
+                .WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)
                 .Bind(this, static (v, self) =>
                 {
                     float holdLocal = (self._feel != null && self._feel.EnableImpactFrame)

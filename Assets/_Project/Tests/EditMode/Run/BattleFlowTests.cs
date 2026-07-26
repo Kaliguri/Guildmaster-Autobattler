@@ -197,6 +197,7 @@ namespace Guildmaster.Tests.EditMode.Run
             }
 
             public bool RestartInPlace() => false; // dev-хоткей R, во флоу-тестах не задействован
+            public event Action ReplayRequested { add { } remove { } } // откат узла: только по dev-R
 
             // Часы/фаза/старт панели (план 12 Фаза 2) — не задействованы в этих тестах.
             public BattlePhase Phase => BattlePhase.None;

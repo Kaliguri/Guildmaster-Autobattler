@@ -22,6 +22,10 @@ Shader "Guildmaster/Sprite/Desaturate"
         _CellSize ("Размер клетки в мире", Float) = 1
         _Progress ("Ход перехода", Range(0, 1)) = 0
         _ToGrey ("Направление: 1 — в серое, 0 — в цвет", Range(0, 1)) = 1
+
+        // Проявление: пиксель не рисуется, пока его клетка не перещёлкнулась. Нужно декору (трава, камни) —
+        // он живёт отдельными спрайтами вне тайлмапа, и без этого стоял готовым, пока пол ещё собирается.
+        [Toggle] _Reveal ("Проявляться по клеткам", Float) = 0
     }
 
     SubShader
@@ -80,6 +84,7 @@ Shader "Guildmaster/Sprite/Desaturate"
                 float  _CellSize;
                 float  _Progress;
                 half   _ToGrey;
+                half   _Reveal;
             CBUFFER_END
 
             Varyings DesatVertex(Attributes IN)
@@ -110,6 +115,9 @@ Shader "Guildmaster/Sprite/Desaturate"
                     half tSwitch = SAMPLE_TEXTURE2D(_CellMap, sampler_CellMap, saturate(mapUv)).b;
                     half passed = step(tSwitch, _Progress);
                     amount = lerp(1.0h - passed, passed, _ToGrey);
+
+                    // Пока клетка под пикселем не перещёлкнулась — его тут ещё нет.
+                    if (_Reveal > 0.5h) clip(passed - 0.5h);
                 }
 
                 half lum = dot(c.rgb, half3(0.299h, 0.587h, 0.114h));

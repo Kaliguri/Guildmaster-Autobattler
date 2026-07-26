@@ -28,10 +28,18 @@ namespace Guildmaster.Game.Flow
         private readonly IContinuePresenter _continue;
         private readonly int                _rewardCount;
         private readonly float              _postWinDelaySeconds;
+        private readonly IBattleSession     _session;
+        private readonly Func<RunContext, UniTask<EventResult>> _awaitReplayOutcome;
 
+        /// <param name="session">
+        /// Источник сигнала «узел переигран» (dev-R после конца боя). null = откат недоступен (тесты, dev-бой).
+        /// </param>
+        /// <param name="awaitReplayOutcome">Чем дождаться исхода переигранного боя; парой к <paramref name="session"/>.</param>
         public BattleNodeFlow(IEventFlow battle, RewardTier tier, IRewardPresenter reward, RunStateService runStates,
                               IContinuePresenter continuePresenter,
-                              int rewardCount = 1, float postWinDelaySeconds = 2f)
+                              int rewardCount = 1, float postWinDelaySeconds = 2f,
+                              IBattleSession session = null,
+                              Func<RunContext, UniTask<EventResult>> awaitReplayOutcome = null)
         {
             _battle              = battle;
             _tier                = tier;
@@ -40,27 +48,66 @@ namespace Guildmaster.Game.Flow
             _continue            = continuePresenter;
             _rewardCount         = rewardCount < 1 ? 1 : rewardCount;
             _postWinDelaySeconds = postWinDelaySeconds < 0f ? 0f : postWinDelaySeconds;
+            _session             = session;
+            _awaitReplayOutcome  = awaitReplayOutcome;
         }
 
         public async UniTask<EventResult> Run(RunContext ctx)
         {
             EventResult result = await _battle.Run(ctx);
-            if (result.Outcome != EventOutcome.Completed) return result;
 
-            _runStates.AwardBattleReward();               // +золото за победу (B1)
+            // Досмотр и мост к награде можно отмотать назад: dev-R откатывает узел к бою, и тогда всё,
+            // что мы успели показать поверх победы, снимается, а мы снова ждём приговор.
+            while (true)
+            {
+                if (result.Outcome != EventOutcome.Completed) return result;
+                if (!await WaitBeatOrReplay(ctx)) break;
+                if (_awaitReplayOutcome == null) break;
 
-            // Досмотр добивания (п.4): пауза перед мостом к награде. DeltaType по умолчанию — пауза забега
-            // (timeScale=0) замораживает таймер, а ct («В меню» из паузы) размотает ожидание (QA #37).
-            if (_postWinDelaySeconds > 0f)
-                await UniTask.Delay(TimeSpan.FromSeconds(_postWinDelaySeconds), cancellationToken: ctx.Cancellation);
+                result = await _awaitReplayOutcome(ctx);
+            }
 
-            // Мост к награде: не переносим в неё автоматом — игрок жмёт сам (п.4). Подпись — общая «Продолжить»
-            // (реш. Макса 2026-07-26): игрок и так видит, что дальше, а лишнее слово только дробит ритм.
-            await _continue.WaitForContinueAsync(ct: ctx.Cancellation);
+            // +золото за победу (B1). Считаем узел взятым, когда игрок ушёл с досмотра: до этого его ещё
+            // можно откатить, и начисленное пришлось бы отбирать назад.
+            _runStates.AwardBattleReward();
 
             for (int i = 0; i < _rewardCount; i++)        // элитка = 2 выбора подряд (B5)
                 await _reward.PresentAsync(_tier, ctx.Cancellation); // ct → отмена забега размотает награду (QA #37)
             return result;
+        }
+
+        /// <summary>
+        /// Досмотр добивания и мост «Продолжить» — но в гонке с откатом узла. true = игрок отмотал бой назад.
+        /// </summary>
+        private async UniTask<bool> WaitBeatOrReplay(RunContext ctx)
+        {
+            var replay = new UniTaskCompletionSource();
+            Action onReplay = () => replay.TrySetResult();
+            if (_session != null) _session.ReplayRequested += onReplay;
+
+            try
+            {
+                // Досмотр добивания (п.4): пауза перед мостом к награде. DeltaType по умолчанию — пауза забега
+                // (timeScale=0) замораживает таймер, а ct («В меню» из паузы) размотает ожидание (QA #37).
+                if (_postWinDelaySeconds > 0f)
+                {
+                    int first = await UniTask.WhenAny(
+                        UniTask.Delay(TimeSpan.FromSeconds(_postWinDelaySeconds), cancellationToken: ctx.Cancellation),
+                        replay.Task);
+                    if (first == 1) return true;
+                }
+
+                // Мост к награде: не переносим в неё автоматом — игрок жмёт сам (п.4). Подпись — общая «Продолжить»
+                // (реш. Макса 2026-07-26): игрок и так видит, что дальше, а лишнее слово только дробит ритм.
+                int winner = await UniTask.WhenAny(
+                    _continue.WaitForContinueAsync(ct: ctx.Cancellation),
+                    replay.Task);
+                return winner == 1;
+            }
+            finally
+            {
+                if (_session != null) _session.ReplayRequested -= onReplay;
+            }
         }
     }
 }

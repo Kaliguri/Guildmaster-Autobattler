@@ -72,6 +72,12 @@ namespace Guildmaster.Game.Flow
         /// </summary>
         bool RestartInPlace();
 
+        /// <summary>
+        /// Владельцу узла: «отмотай себя к бою». Поднимается, когда <see cref="RestartInPlace"/> пришёл уже
+        /// ПОСЛЕ исхода — тогда мало пере-поставить бойцов, надо снять с узла награду и мост к ней.
+        /// </summary>
+        event Action ReplayRequested;
+
         // ── Верхняя панель забега: часы + фаза + старт (план 12 Фаза 2) ──────────────
         // Read-side (Phase / ElapsedSeconds / RequestStart) — в IBattleClock (Data). Здесь только write-side,
         // которым боевой скоуп (DeploymentController) публикует состояние.
@@ -103,6 +109,7 @@ namespace Guildmaster.Game.Flow
         private Action<BattlePresetData> _launch;
         private Action           _reset;
         private UniTaskCompletionSource<BattleOutcome> _outcome;
+        private bool _outcomeDelivered;   // исход текущего боя уже рассужен → узел ушёл к награде
 
         private Func<float> _clock;
         private Action      _start;
@@ -131,7 +138,11 @@ namespace Guildmaster.Game.Flow
             return tcs.Task;
         }
 
-        public void ReportOutcome(BattleOutcome outcome) => _outcome?.TrySetResult(outcome);
+        public void ReportOutcome(BattleOutcome outcome)
+        {
+            _outcomeDelivered = true;
+            _outcome?.TrySetResult(outcome);
+        }
 
         public void BindRestart(Action restart) => _restart = restart;
 
@@ -168,16 +179,35 @@ namespace Guildmaster.Game.Flow
             return true;
         }
 
+        public event Action ReplayRequested;
+
         public bool RestartInPlace()
         {
             if (_restart == null) return false;
-            _restart.Invoke();  // БЕЗ ArmOutcome: текущее ожидание флоу цело, разрешится концом нового боя
+
+            // Бой ещё идёт: ожидание флоу цело, его разрешит конец нового боя — просто пере-ставим поле.
+            if (!_outcomeDelivered)
+            {
+                _restart.Invoke();
+                return true;
+            }
+
+            // Бой УЖЕ рассужен, и узел ушёл дальше: висит награда или мост к ней. По смыслу R — это откат
+            // узла за миг до решения, поэтому мало пере-поставить бойцов: надо вернуть и сам узел в точку
+            // перед боем. Взводим новое ожидание исхода и зовём владельца узла отмотать себя назад.
+            ArmOutcome();
+            _restart.Invoke();
+            ReplayRequested?.Invoke();
             return true;
         }
 
         // Взвести свежее ожидание исхода: гарантирует, что ReportOutcome, пришедший даже мгновенно
         // после запуска боя, будет пойман (TCS переживает до await).
-        private void ArmOutcome() => _outcome = new UniTaskCompletionSource<BattleOutcome>();
+        private void ArmOutcome()
+        {
+            _outcome = new UniTaskCompletionSource<BattleOutcome>();
+            _outcomeDelivered = false;
+        }
 
         // ── Панель: часы + фаза + старт ──────────────────────────────────────────
 

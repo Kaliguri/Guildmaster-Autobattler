@@ -24,6 +24,7 @@ namespace Guildmaster.Presentation.Arena
         private static readonly int CellsId      = Shader.PropertyToID("_Cells");
         private static readonly int CellSizeId   = Shader.PropertyToID("_CellSize");
         private static readonly int ProgressId   = Shader.PropertyToID("_Progress");
+        private static readonly int RevealId     = Shader.PropertyToID("_Reveal");
 
         private readonly List<Renderer> _targets = new List<Renderer>();
         private readonly List<Material> _original = new List<Material>();
@@ -85,6 +86,7 @@ namespace Guildmaster.Presentation.Arena
 
             _sweeping = false;
             _runtime.SetFloat(UseCellMapId, 0f);
+            _runtime.SetFloat(RevealId, 0f);
             _runtime.SetFloat(DesaturateId, 1f);
 
             if (_grey == grey) return;
@@ -102,7 +104,12 @@ namespace Guildmaster.Presentation.Arena
         /// карте, что и подмена текстур. Мгновенная перекраска щёлкала бы всем полем сразу, и длинному
         /// акту перехода нечем было бы себя занять.
         /// </summary>
-        public void SweepGrey(bool grey, ArenaDigitalOverlay source)
+        /// <param name="reveal">
+        /// Проявлять ли содержимое по клеткам: до своего момента пиксель не рисуется вовсе. Нужно при сборке
+        /// мира из ничего — декор (трава, камни) живёт отдельными спрайтами вне тайлмапа, и без этого стоял
+        /// готовым, пока пол под ним ещё собирается.
+        /// </param>
+        public void SweepGrey(bool grey, ArenaDigitalOverlay source, bool reveal = false)
         {
             if (_runtime == null || source == null || source.CellMap == null) { SetGrey(grey); return; }
             if (_targets.Count == 0) CollectTargets();
@@ -114,6 +121,7 @@ namespace Guildmaster.Presentation.Arena
                     _targets[i].sharedMaterial = _runtime;
 
             _runtime.SetFloat(UseCellMapId, 1f);
+            _runtime.SetFloat(RevealId, reveal ? 1f : 0f);
             _runtime.SetFloat(ToGreyId, grey ? 1f : 0f);
             _runtime.SetTexture(CellMapId, source.CellMap);
             _runtime.SetVector(MapRectId, source.MapRect);
@@ -138,6 +146,7 @@ namespace Guildmaster.Presentation.Arena
             // Переход доиграл: снимаем поклеточный режим и оставляем ровно то состояние, к которому шли.
             _sweeping = false;
             _runtime.SetFloat(UseCellMapId, 0f);
+            _runtime.SetFloat(RevealId, 0f);
             _runtime.SetFloat(DesaturateId, 1f);
 
             if (_sweepToGrey) return;

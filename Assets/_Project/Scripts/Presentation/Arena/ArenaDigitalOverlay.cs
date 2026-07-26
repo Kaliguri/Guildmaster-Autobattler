@@ -50,8 +50,18 @@ namespace Guildmaster.Presentation.Arena
         /// <summary>Ход текущей анимации 0..1 — по нему идут те, кто меняется вместе с ареной (цвет пола).</summary>
         public float CurrentProgress { get; private set; }
 
-        /// <summary>Идёт ли своя анимация (не смена облика).</summary>
-        public bool Sweeping => _solo == SoloStage.Sweeping;
+        /// <summary>
+        /// Идёт ли переход, за которым можно следовать. И свой прогон, и настоящая смена облика: тем, кто
+        /// меняется ВМЕСТЕ с ареной (цвет пола, проявление декора), безразлично, кто ведёт время.
+        /// </summary>
+        public bool Sweeping => _solo == SoloStage.Sweeping || (_swapper != null && _swapper.Busy);
+
+        /// <summary>
+        /// Одноразовый режим сборки: каркас с первого кадра чертит ЦЕЛЕВОЕ место, хотя тайлов ещё нет.
+        /// Мир тогда не возникает из пустоты, а достраивается в уже стоящий чертёж — пустой экран перед
+        /// спавном читался как сбой загрузки, а не как замысел. Снимается сам по окончании перехода.
+        /// </summary>
+        public bool OutlineFromTarget { get; set; }
 
         /// <summary>Карта клеток и её привязка к миру — чтобы соседние эффекты шли ПО ТЕМ ЖЕ клеткам.</summary>
         public Texture2D CellMap => _cellMap;
@@ -144,9 +154,14 @@ namespace Guildmaster.Presentation.Arena
             {
                 _solo = SoloStage.None;
                 if (_quad != null) _quad.enabled = true;
+                // Ход публикуем и здесь: спутники перехода (цвет арены, проявление декора) идут по нему же,
+                // иначе при настоящей смене облика они получали бы застывшее значение от прошлого прогона.
+                CurrentProgress = _swapper.Progress;
                 _material.SetFloat(ProgressId, _swapper.Progress);
                 return;
             }
+
+            OutlineFromTarget = false;   // переход закончился — режим сборки одноразовый
 
             if (_solo != SoloStage.None) TickSolo();
 
@@ -317,9 +332,11 @@ namespace Guildmaster.Presentation.Arena
             {
                 var cell = new Vector3Int(_bounds.min.x + x, _bounds.min.y + y, 0);
 
+                int stateTo   = CellState(to, cell, allLayers, wallLayers);
+                int stateFrom = OutlineFromTarget ? stateTo : CellState(from, cell, allLayers, wallLayers);
+
                 pixels[y * cols + x] = new Color(
-                    PackState(CellState(from, cell, allLayers, wallLayers),
-                              CellState(to,   cell, allLayers, wallLayers)),
+                    PackState(stateFrom, stateTo),
                     schedule.CrossTime(ArenaSwapAct.Digitize, cell.x, cell.y),
                     schedule.CrossTime(ArenaSwapAct.Load,     cell.x, cell.y),
                     schedule.CrossTime(ArenaSwapAct.Restore,  cell.x, cell.y));

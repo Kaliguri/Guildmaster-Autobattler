@@ -41,7 +41,7 @@ namespace Guildmaster.Presentation
         private Mesh                  _mesh;   // per-instance — уничтожаем вместе с эффектом
         private MaterialPropertyBlock _mpb;
         private System.Action         _onComplete;
-        private float _flashIn, _flashOut, _duration, _hold, _elapsed;
+        private float _flashIn, _flashOut, _duration, _hold, _elapsed, _minTimeScale;
         private bool  _running;
 
         /// <summary>Запустить разлёт из текущего состояния спрайта <paramref name="src"/>.</summary>
@@ -52,6 +52,7 @@ namespace Guildmaster.Presentation
             _flashOut = cfg != null ? cfg.ShatterFlashOut : 0.12f;
             _duration = cfg != null ? cfg.ShatterDuration : 0.75f;
             _hold     = cfg != null ? Mathf.Max(0f, cfg.ShatterHold) : 0.05f;
+            _minTimeScale = cfg != null ? Mathf.Clamp01(cfg.ShatterMinTimeScale) : 0.4f;
 
             Sprite sprite = src.sprite;
 
@@ -126,8 +127,10 @@ namespace Guildmaster.Presentation
         {
             if (!_running) return;
 
-            // Масштабируем по игровому времени → в финальном slowmo осколки летят медленно (в такт моменту).
-            _elapsed += Time.deltaTime;
+            // Идём по игровому времени — в slowmo осколки летят медленно, в такт моменту, — но с ПОЛОМ:
+            // финишер начинается с полной паузы и держит timeScale 0.1 несколько секунд, а на чистом
+            // Time.deltaTime разлёт растянулся бы вдесятеро и завис на экране светящимся пятном.
+            _elapsed += Time.unscaledDeltaTime * Mathf.Max(Time.timeScale, _minTimeScale);
 
             float postHold = _elapsed - _hold;
             float shatter;
