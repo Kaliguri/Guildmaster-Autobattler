@@ -40,6 +40,7 @@ status: living
 
 - [[combat-system|Combat - System]] — автобой, типы боёв, подготовка и итог.
 - [[stats|Combat - Stats]] — словарь и смысл боевых статов.
+- [[positioning|Combat - Positioning]] — слоты вокруг цели, бонус за тыл, поведение классов в свободное окно (в обсуждении).
 - [[effects|Combat - Effects]] — каталог эффектов + идентичность стихий и сродств.
 
 ## 30 · Забег и мета (`30-run-meta/`)
