@@ -32,6 +32,11 @@ namespace Guildmaster.DevTools
         private QuantumConsole     _console;
         private Guildmaster.Game.Flow.IBattleSession _session; // опц.: перезапуск боя забега на R (null в standalone-арене)
 
+        // Ристалище: выход из забега и вход на площадку. Оба живут ВЫШЕ боевого скоупа (Root), поэтому
+        // резолвятся опционально — в standalone-арене без Root их нет, и команда честно об этом скажет.
+        private Core.Flow.IRunControl _runControl;
+        private MessagePipe.IPublisher<Data.Definitions.SetTestZoneRequest> _provingGroundsPub;
+
         // Дамми-болванчики оформлены как полноценный юнит (EnemyData «enemy.training_dummy»): свой SO,
         // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
         private UnitData _dummyEnemy;
@@ -66,6 +71,8 @@ namespace Guildmaster.DevTools
             contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
             // Сессия боя живёт в RootScope: в реальном забеге резолвится, в standalone dev-арене (без Root) — null.
             resolver.TryResolve(out _session);
+            resolver.TryResolve(out _runControl);
+            resolver.TryResolve(out _provingGroundsPub);
         }
 
         // Пауза сима, пока консоль открыта: настраиваешь бой за консолью, закрываешь — он идёт с начала
@@ -525,6 +532,72 @@ namespace Guildmaster.DevTools
         // без хардкода в харнессе — один дамми на все сценарии gm_spawn_*.
         // Релик дев-среза по id. Нет в БД — говорим вслух и не спавним: молчаливый пропуск читался бы
         // как «команда не сработала», а причина (контент переименован/не в базе) осталась бы невидимой.
+        /// <summary>
+        /// Уйти на Ристалище из любого состояния игры (ГДД «Modes - Proving Grounds»): свернуть забег
+        /// штатным возвратом в меню, затем послать тот же интент, что кнопка площадки.
+        /// </summary>
+        /// <remarks>
+        /// Команда НЕ делает ничего своими руками: и выход, и вход идут теми же швами, что живой UI, — иначе
+        /// у площадки появился бы второй способ открыться, и он бы разошёлся с первым. Решение по интенту
+        /// принимает <c>DeploymentController</c>: если отряда нет (мы в меню), он ставит состав из
+        /// <c>ProvingGroundsConfig</c>.
+        /// </remarks>
+        [Command("gm_proving_grounds", "Уйти на Ристалище: свернуть забег и открыть площадку вне забега")]
+        public void ProvingGrounds()
+        {
+            if (_provingGroundsPub == null)
+            {
+                Debug.LogWarning("[GuildmasterCommands] - Ристалище недоступно: нет Root-скоупа " +
+                                 "(запущена standalone dev-арена, а не игра)");
+                return;
+            }
+
+            // Сначала выход: пока идёт забег, площадка вне забега открыться не имеет права.
+            _runControl?.RequestReturnToMainMenu();
+            _provingGroundsPub.Publish(new Data.Definitions.SetTestZoneRequest(true));
+            Debug.Log("[GuildmasterCommands] - gm_proving_grounds: запрошено Ристалище");
+        }
+
+        /// <summary>
+        /// Зеркальный отряд 4v4 из реальных китов — ровно тот бой, на котором стенд поймал преимущество
+        /// стороны. Составы, роли и позиции обеих команд отражены по оси X, поэтому честный исход —
+        /// ничья: любой перевес означает, что порядок обработки решает бой за бойцов.
+        /// </summary>
+        [Command("gm_spawn_mirror", "Зеркальный отряд 4v4 из реальных китов (проверка преимущества стороны)")]
+        public void SpawnMirror()
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+
+            // Тот же строй, что у командного бенча: фронт вплотную, тыл за спинами.
+            (string id, float x, float y)[] squad =
+            {
+                ("relic.defender",        2.2f, -0.6f),
+                ("relic.flame_swordsman", 2.2f,  0.6f),
+                ("relic.cryomancer",      4.4f, -0.6f),
+                ("relic.light_shepherd",  4.4f,  0.6f),
+            };
+
+            var relics = new RelicData[squad.Length];
+            for (int i = 0; i < squad.Length; i++)
+            {
+                relics[i] = DevRelic(squad[i].id);
+                if (relics[i] == null) return;
+            }
+
+            ResetForNewBattle();
+
+            // Порядок спавна — вся левая команда, затем вся правая: так же, как в бою и на стенде.
+            for (int i = 0; i < squad.Length; i++)
+                _simulation.EnqueueUnitSpawn(_factory.Create(relics[i], null, 0, new Vector2(-squad[i].x, squad[i].y)));
+            for (int i = 0; i < squad.Length; i++)
+                _simulation.EnqueueUnitSpawn(_factory.Create(relics[i], null, 1, new Vector2(squad[i].x, squad[i].y)));
+
+            _lastBattleSetup = self => self.SpawnMirror();
+            Debug.Log("[GuildmasterCommands] - gm_spawn_mirror: зеркальный отряд 4v4 " +
+                      "(Защитник, Огненный мечник, Криомант, Пастырь). Честный исход — ничья.");
+        }
+
         private RelicData DevRelic(string id)
         {
             if (_content != null && _content.TryGet(id, out RelicData relic) && relic != null) return relic;

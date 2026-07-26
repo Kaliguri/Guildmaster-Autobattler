@@ -35,6 +35,10 @@ namespace Guildmaster.Game
         [Tooltip("Балансный тюнинг симуляции (вики «13» §3.4): печётся в снапшот SimTuning на старте боя.")]
         [SerializeField] private SimTuningConfig _simTuningConfig;
 
+        [Tooltip("Состав Ристалища по умолчанию — кто встаёт на площадку вне забега (ГДД «Modes - Proving Grounds»). " +
+                 "Пусто = вход на площадку из главного меню недоступен (скажет вслух), бой забега не затронут.")]
+        [SerializeField] private ProvingGroundsConfig _provingGroundsConfig;
+
         [Tooltip("Размер ячейки пространственного хэша.")]
         [SerializeField] private float _spatialHashCellSize = 3f;
 
@@ -76,7 +80,10 @@ namespace Guildmaster.Game
             builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
 
             // Интерактивная фаза расстановки (шаг 4): активна на Free-пресетах; иначе спит.
-            builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
+            // Состав Ристалища идёт параметром: он может быть не разведён (тогда площадка вне забега
+            // просто не открывается), поэтому Require здесь не к месту — бой от этого не зависит.
+            builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped)
+                   .WithParameter("provingGrounds", _provingGroundsConfig);
 
             // Persist-мир (план 12 Ф2): ставит отряд забега на тест-арену вне боя по RunPartyReadyEvent.
             builder.RegisterEntryPoint<Flow.WorldStageController>(Lifetime.Scoped);

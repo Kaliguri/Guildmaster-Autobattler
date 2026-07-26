@@ -453,6 +453,7 @@ MonoBehaviour:
   _statsConfig: {fileID: 11400000, guid: ad16ddf55214b4f4f9fc8305dadd705e, type: 2}
   _classBalanceConfig: {fileID: 11400000, guid: c346355e64f53d444b5cc7a9fe184c84, type: 2}
   _simTuningConfig: {fileID: 11400000, guid: 84596659d7f25a649833a4fe7640a14f, type: 2}
+  _provingGroundsConfig: {fileID: 11400000, guid: 557cd34fa730c0c4c8acfa210f1d7d75, type: 2}
   _spatialHashCellSize: 3
   _feelConfig: {fileID: 11400000, guid: b4321495354e86142b6e7f18dfd5b94d, type: 2}
 --- !u!4 &1496836686
@@ -1064,13 +1065,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c50035039f997b429c7366b4ac870cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.DevTools::Guildmaster.DevTools.GuildmasterCommands
-  _spearmanRelic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
-  _shepherdRelic: {fileID: 11400000, guid: 2405b745f0480e2428fdaf24ac1b5d93, type: 2}
-  _cryomancerRelic: {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
-  _defenderRelic: {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
-  _rangerRelic: {fileID: 11400000, guid: cbdaabcbd4ebc7d42b6f4cbb08c301c9, type: 2}
-  _assassinRelic: {fileID: 11400000, guid: b94a788eb332911478cd8f88880f03ea, type: 2}
-  _monkRelic: {fileID: 11400000, guid: 996f2fad803a29546b30c3849034e749, type: 2}
   _simTuningConfig: {fileID: 11400000, guid: 84596659d7f25a649833a4fe7640a14f, type: 2}
 --- !u!4 &1713771495
 Transform:
@@ -1152,11 +1146,9 @@ MonoBehaviour:
   _floatingTextPrefab: {fileID: 8198921651497659202, guid: 9094d05663a9485458f1f69e97749669, type: 3}
   _damageColor: {r: 1, g: 0.75, b: 0.2, a: 1}
   _healColor: {r: 0.5, g: 1, b: 0.6, a: 1}
-  _shieldColor: {r: 0.4, g: 0.7, b: 1, a: 1}
   _evadeColor: {r: 0.85, g: 0.9, b: 0.95, a: 1}
   _splitDelay: 0.06
   _colorPalette: {fileID: 11400000, guid: 422d364d4b20d314e91116d7591f294b, type: 2}
-  _localViewerTeam: 0
 --- !u!4 &2012697186
 Transform:
   m_ObjectHideFlags: 0

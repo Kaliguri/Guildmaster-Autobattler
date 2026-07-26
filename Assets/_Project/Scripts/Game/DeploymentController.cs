@@ -50,6 +50,7 @@ namespace Guildmaster.Game
         private readonly IBattleSession   _session;
         private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
         private readonly Guildmaster.Guild.RunStateService _runStates; // durable-гильдия: сюда уезжают позиции и киты
+        private readonly ProvingGroundsConfig _provingGrounds;         // состав Ристалища, когда своего отряда нет
         private readonly Core.Audio.IAudioService _audio;              // взял/поставил/отказ — звук расстановки
 
         // Редактируемый ростер игрока в этой фазе (позиции/релики меняются перетаскиванием и loadout'ом).
@@ -107,8 +108,10 @@ namespace Guildmaster.Game
             IBattleSession session,
             CameraModeController cameraModes,
             Guildmaster.Guild.RunStateService runStates,
-            Core.Audio.IAudioService audio)
+            Core.Audio.IAudioService audio,
+            ProvingGroundsConfig provingGrounds)
         {
+            _provingGrounds = provingGrounds;
             _arenaRevealPub = arenaRevealPub;
             _audio         = audio;
             _runStates     = runStates;
@@ -262,8 +265,7 @@ namespace Guildmaster.Game
 
         private void EnterSandbox(bool grayZone)
         {
-            // Строим редактируемые слоты из УЖЕ стоящих team-0 юнитов (не пере-спавниваем). Нет отряда
-            // (забег не начат) → нечего расставлять; демо-отряд для теста из главного меню — отдельная итерация.
+            // Строим редактируемые слоты из УЖЕ стоящих team-0 юнитов (не пере-спавниваем).
             _slots.Clear();
             IReadOnlyList<RuntimeUnit> units = _sim.Units;
             for (int i = 0; i < units.Count; i++)
@@ -275,9 +277,13 @@ namespace Guildmaster.Game
                 _slots.Add(new Slot { Relic = u.Unit as RelicData, Pos = u.Position, LiveUnitId = u.Id, GuildIndex = _slots.Count });
             }
             Guildmaster.Diagnostics.UiTrace.Log($"ctrl.EnterSandbox(gray={grayZone}) (слотов из стоящих team-0: {_slots.Count})");
+            // Отряда нет — это вход на Ристалище из главного меню: ставим состав по умолчанию из ассета.
+            // Только на полигоне: построение между узлами забега обязано брать живой отряд, а не подменять его.
+            if (_slots.Count == 0 && grayZone) SeedProvingGroundsSquad();
+
             if (_slots.Count == 0)
             {
-                Debug.LogWarning("[DeploymentController] - расстановка без боя: отряд не стоит (нет активного забега) → пропуск");
+                Debug.LogWarning("[DeploymentController] - расстановка без боя: отряд не стоит и состав Ристалища пуст → пропуск");
                 return;
             }
 
@@ -292,6 +298,55 @@ namespace Guildmaster.Game
             // Серой арена становится ТОЛЬКО на полигоне вне забега. Построение между узлами идёт по боевой.
             if (grayZone) _testZoneChangedPub?.Publish(new TestZoneChangedEvent(true));
             FrameCameraForDeployment();
+        }
+
+        /// <summary>
+        /// Наполнить слоты составом Ристалища по умолчанию и материализовать его на арене. Вызывается
+        /// только когда своего отряда нет — то есть при входе из главного меню (ГДД «Modes - Proving Grounds»).
+        /// </summary>
+        /// <remarks>
+        /// Спавн идёт штатным путём (<see cref="EncounterLoader.Load"/> без энкаунтера), тем же, которым
+        /// пересобирается превью при перетаскивании: иначе у площадки появился бы второй способ ставить
+        /// юнитов, и виды с сейвом разошлись бы. GuildIndex = −1: этот отряд ничей, в гильдию забега его
+        /// правки уезжать не должны.
+        /// </remarks>
+        private void SeedProvingGroundsSquad()
+        {
+            if (_provingGrounds == null || _provingGrounds.Count == 0)
+            {
+                Debug.LogWarning("[DeploymentController] - Ристалище: состав по умолчанию не задан " +
+                                 "(ProvingGroundsConfig пуст или не разведён) → входить не с кем");
+                return;
+            }
+
+            var side = new List<PlayerSpawn>(_provingGrounds.Count);
+            for (int i = 0; i < _provingGrounds.Count; i++)
+            {
+                RelicData relic = _provingGrounds.At(i);
+                if (relic == null) continue;
+
+                Vector2 pos = _provingGrounds.PositionAt(i);
+                _slots.Add(new Slot { Relic = relic, Pos = pos, LiveUnitId = -1, GuildIndex = -1 });
+                side.Add(new PlayerSpawn(relic, null, pos));
+            }
+
+            if (side.Count == 0) return;
+
+            _loader.Load(null, side);
+            _sim.FlushSpawns();
+
+            // Слоты знают о живых юнитах по Id — раздаём их после материализации, иначе перетаскивание
+            // на площадке не найдёт, кого двигать.
+            IReadOnlyList<RuntimeUnit> spawned = _sim.Units;
+            int slotIndex = _slots.Count - side.Count;
+            for (int i = 0; i < spawned.Count && slotIndex < _slots.Count; i++)
+            {
+                if (spawned[i].Team != 0) continue;
+                _slots[slotIndex].LiveUnitId = spawned[i].Id;
+                slotIndex++;
+            }
+
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl: Ристалище — поставлен состав по умолчанию ({side.Count})");
         }
 
         private void ExitTestZone()
