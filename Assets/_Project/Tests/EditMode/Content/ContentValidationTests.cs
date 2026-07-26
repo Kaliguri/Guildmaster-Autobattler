@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Editor;
+using Guildmaster.Data.Stats;
 using NUnit.Framework;
 using UnityEditor;
 
@@ -122,6 +123,44 @@ namespace Guildmaster.Tests.EditMode.Content
                 Assert.That(ai.PassiveThresholdPct, Is.InRange(0f, 1f),
                     $"Relic '{relic.Id}': PassiveThresholdPct вне [0..1].");
             }
+        }
+
+        /// <summary>
+        /// База HP и скорости передвижения принадлежит боевому классу (ГДД «Боевая система»: «Базу HP и
+        /// скорости передвижения задаёт класс»), а <c>ClassBalanceConfig</c> кладёт её первой Override-группой.
+        /// Значение из <c>StatsConfig._defaults</c> при этом до юнита не доживало никогда — но выглядело
+        /// правдой при чтении конфига, и уже разошлось с классовым якорем (1200 против 2000×множитель).
+        /// Дефолты сняты; тест держит их снятыми, чтобы второй владелец не отрос заново.
+        /// </summary>
+        [Test]
+        public void StatsConfig_DoesNotOwnBaseHpOrMoveSpeed()
+        {
+            foreach (string guid in AssetDatabase.FindAssets($"t:{nameof(StatsConfig)}"))
+            {
+                var cfg = AssetDatabase.LoadAssetAtPath<StatsConfig>(AssetDatabase.GUIDToAssetPath(guid));
+                var so  = new SerializedObject(cfg);
+                SerializedProperty defaults = so.FindProperty("_defaults");
+
+                for (int i = 0; i < defaults.arraySize; i++)
+                {
+                    var stat = (StatType)defaults.GetArrayElementAtIndex(i).FindPropertyRelative("Stat").enumValueIndex;
+                    Assert.That(stat, Is.Not.EqualTo(StatType.MaxHP).And.Not.EqualTo(StatType.MoveSpeed),
+                        $"StatsConfig ({AssetDatabase.GetAssetPath(cfg)}) задаёт дефолт '{stat}'. " +
+                        "Базу HP и скорости держит боевой класс — здесь она была бы вторым владельцем.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Раз базы в <c>StatsConfig</c> больше нет, единственный её источник — класс. Юнит без класса
+        /// собрался бы с нулевым HP и умер на спавне, поэтому проверяем: класс задан у каждого.
+        /// </summary>
+        [Test]
+        public void EveryUnit_DeclaresCombatClass()
+        {
+            foreach (UnitData unit in AllContent().OfType<UnitData>())
+                Assert.That(System.Enum.IsDefined(typeof(UnitClass), unit.CombatClass), Is.True,
+                    $"'{unit.Id}': боевой класс не задан, а базу HP и скорости даёт именно он.");
         }
 
         [Test]

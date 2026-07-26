@@ -21,7 +21,10 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private float _attackSpeedMax = 2.5f;
 
         [Header("Stat defaults (override; пусто = натуральный дефолт)")]
-        [Tooltip("Явные дефолты статов. Если стата нет в списке — берётся натуральный дефолт (1.0 для эффективностей и Size, иначе 0).")]
+        [Tooltip("Явные дефолты статов. Если стата нет в списке — берётся натуральный дефолт (1.0 для эффективностей и Size, иначе 0).\n\n" +
+                 "MaxHP и MoveSpeed здесь ЗАПРЕЩЕНЫ: их базу задаёт боевой класс (ГДД «Боевая система»), " +
+                 "и ClassBalanceConfig кладёт её первой Override-группой — то есть значение отсюда всё равно " +
+                 "не доживало до юнита, но при чтении конфига выглядело правдой. Охраняется ContentValidationTests.")]
         [SerializeField] private StatDefault[] _defaults = Array.Empty<StatDefault>();
 
         public float ArmorConstantK => _armorConstantK;
