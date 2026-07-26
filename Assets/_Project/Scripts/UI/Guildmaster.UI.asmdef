@@ -7,9 +7,7 @@
     "Guildmaster.Guild",
     "VContainer",
     "UniTask",
-    "MessagePipe",
-    "MessagePipe.VContainer",
-    "Unity.Localization"
+    "MessagePipe"
   ],
   "includePlatforms": [],
   "excludePlatforms": [],
