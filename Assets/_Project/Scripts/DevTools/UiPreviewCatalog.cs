@@ -479,9 +479,9 @@ namespace Guildmaster.DevTools
             BuildTooltipShowcase(root, relics, Header, Row, Cell);
         }
 
-        // Витрина тултипов (Трек Т, план шаг 9). Стенд без DI, поэтому система собирается вручную:
-        // сама она зависит только от фабрики содержимого, а ввод/настройки/драг переживают null —
-        // ровно ради таких случаев они и опциональны. Наводить курсор — задержка, флип у краёв, grace.
+        // Витрина тултипов (Трек Т, план шаг 9). Стенд без DI, поэтому система собирается вручную.
+        // Ввод даём НАСТОЯЩИЙ (InputService самодостаточен): без него Shift на стенде не работал бы,
+        // и витрина показывала бы половину поведения, молча расходясь с игрой.
         private static void BuildTooltipShowcase(VisualElement root, List<RelicData> relics,
             Func<string, Label> header, Func<VisualElement> row, Func<VisualElement, string, VisualElement> cell)
         {
@@ -493,9 +493,16 @@ namespace Guildmaster.DevTools
             root.Add(layer);
 
             _gallerySystem?.Dispose();
+            _galleryInput?.Dispose();
+            _galleryInput = new Guildmaster.Game.Input.InputService();
             _gallerySystem = new Guildmaster.UI.Tooltips.TooltipSystem(
-                new PreviewTooltipContent(LoadContent()), null, null, null);
+                new PreviewTooltipContent(LoadContent()), null, _galleryInput, null);
             _gallerySystem.Attach(root, layer);
+
+            var hint = new Label("Shift — подробности · Alt+клик — закрепить окно (внутри работают ссылки, «‹ › ×»)");
+            hint.AddToClassList("gm-text-muted");
+            hint.style.marginBottom = 8;
+            root.Add(hint);
 
             VisualElement tipRow = row();
 
@@ -509,7 +516,7 @@ namespace Guildmaster.DevTools
             var relicTarget = new Button { text = relicId != null ? Short(relicId) : "реликвия" };
             relicTarget.AddToClassList("gm-button");
             relicTarget.WithTooltip(Guildmaster.UI.Tooltips.TooltipRequest.Relic(relicId));
-            tipRow.Add(cell(relicTarget, "Relic (Shift — статы)"));
+            tipRow.Add(cell(relicTarget, "Relic (Shift — статы, Alt+клик — закрепить)"));
 
             var edgeTarget = new Button { text = "у правого края" };
             edgeTarget.AddToClassList("gm-button");
@@ -575,6 +582,9 @@ namespace Guildmaster.DevTools
 
         // Система тултипов витрины: живёт между ребилдами стенда, пересоздаётся вместе с галереей.
         private static Guildmaster.UI.Tooltips.TooltipSystem _gallerySystem;
+
+        // Ввод для витрины: настоящий сервис, чтобы Shift на стенде вёл себя как в игре.
+        private static Guildmaster.Game.Input.InputService _galleryInput;
 
         /// <summary>
         /// Содержимое подсказок для стенда: имя и описание берутся прямо из таблицы <c>Content</c>
