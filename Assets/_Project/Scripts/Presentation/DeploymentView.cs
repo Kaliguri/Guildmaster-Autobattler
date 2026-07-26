@@ -31,6 +31,9 @@ namespace Guildmaster.Presentation
 
         private const float RingNormalThickness = 0.035f;
         private const float RingBoldThickness   = 0.075f;
+        // Круг рисуется КРУПНЕЕ сим-радиуса тела (реш. Макса 2026-07-26: «в размер тела» смотрелось странно —
+        // фигурка будто не стоит на подставке, а зажата ею). Радиус коллизии от этого не меняется — это визуал.
+        private const float RingRadiusScale     = 1.45f;
 
         /// <summary>Состояние круга-опоры под юнитом: покой / наведён / тащу-можно / тащу-нельзя (QA #20/#4).</summary>
         public enum RingState { Normal, Hover, DragValid, DragInvalid }
@@ -108,7 +111,7 @@ namespace Guildmaster.Presentation
                     d.gameObject.SetActive(true);
                     d.transform.position   = new Vector3(center.x, center.y, OverlayZ);
                     d.transform.localScale = new Vector3(1f, RingFlatten, 1f); // эллипс «на полу»
-                    d.Radius    = Mathf.Max(0.05f, radius);
+                    d.Radius    = Mathf.Max(0.05f, radius * RingRadiusScale);
                     d.Color     = RingColor(state);
                     d.Thickness = state == RingState.Normal ? RingNormalThickness : RingBoldThickness;
                 }

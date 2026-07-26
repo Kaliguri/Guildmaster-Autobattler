@@ -293,14 +293,31 @@ namespace Guildmaster.Presentation
         public int BodySortingOrder => _sprite != null ? _sprite.sortingOrder : 0;
 
         /// <summary>
-        /// Попадает ли мировая точка в спрайт тела (AABB). Используется захватом в расстановке — «схватить за
-        /// всю фигуру», а не за круг тела у ног (тот — метрика коллизии/сепарации, целиться в ступни неудобно).
+        /// Попадает ли мировая точка в спрайт тела (AABB). Сырой габарит кадра — для захвата в расстановке НЕ
+        /// годится (AABB скелетного кадра шире фигуры: замах оружия, плащ, пустые поля спрайта — зона хватания
+        /// выходила гигантской, наход. Макса). Захват берёт <see cref="FigureContainsWorldPoint"/>.
         /// </summary>
         public bool SpriteContainsWorldPoint(Vector2 world)
         {
             if (_sprite == null || _sprite.sprite == null) return false;
             Bounds b = _sprite.bounds;
             return world.x >= b.min.x && world.x <= b.max.x && world.y >= b.min.y && world.y <= b.max.y;
+        }
+
+        /// <summary>
+        /// Попадает ли мировая точка в ЭТАЛОННЫЙ габарит фигуры — ту самую зелёную рамку гизмо
+        /// (<c>_recommendedWidth</c> × <c>_recommendedHeight</c> от ног). Это «тело юнита» в понимании дизайна:
+        /// не зависит от кадра анимации и от прозрачных полей спрайта, поэтому зона хватания в расстановке
+        /// одинакова у всех и совпадает с тем, что игрок видит фигурой.
+        /// </summary>
+        /// <param name="padding">Мировой запас во все стороны (0 = ровно по рамке).</param>
+        public bool FigureContainsWorldPoint(Vector2 world, float padding = 0f)
+        {
+            Vector3 feet = FeetPoint;
+            float halfW = Mathf.Max(0.01f, _recommendedWidth) * 0.5f + padding;
+            float height = Mathf.Max(0.01f, _recommendedHeight) + padding;
+            return world.x >= feet.x - halfW && world.x <= feet.x + halfW
+                && world.y >= feet.y - padding && world.y <= feet.y + height;
         }
 
         /// <summary>Мировые границы спрайта тела (AABB). false = нет спрайта (ховер-подсветка возьмёт фолбэк).</summary>

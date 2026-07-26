@@ -32,6 +32,7 @@ namespace Guildmaster.Game
         private const float DoubleClickWindow = 0.30f;
         private const float DragMinDelta       = 0.05f; // мир-единицы: меньше = «клик», больше = «drag»
         private const float PickRadiusScale    = 1.3f;  // круг-опора × это = «ближняя» зона хватания (у ног)
+        private const float FigurePickPadding  = 0.08f; // мировой запас вокруг фигуры: чуть-чуть, не «гигантский»
 
         private readonly EncounterLoader  _loader;
         private readonly CombatSimulation _sim;
@@ -44,6 +45,7 @@ namespace Guildmaster.Game
         private readonly ISubscriber<EquipRelicAtCursorRequest> _equipAtCursorSub;
         private readonly ISubscriber<RelicDragEvent> _relicDragSub; // QA #5: drag реликвии из инвентаря на юнита
         private readonly ISubscriber<SetTestZoneRequest> _testZoneSub; // радио-табы: целевое состояние тест-зоны (интент)
+        private readonly ISubscriber<SetFormationRequest> _formationSub; // кнопка передышки «К построению» (интент)
         private readonly IPublisher<TestZoneChangedEvent> _testZoneChangedPub; // Ф5: вещаем СОСТОЯНИЕ (единый источник)
         private readonly IBattleSession   _session;
         private readonly CameraModeController _cameraModes; // свободная камера расстановки (QA #4); null в headless
@@ -67,9 +69,11 @@ namespace Guildmaster.Game
         private IDisposable _equipAtCursorSubscription;
         private IDisposable _relicDragSubscription;
         private IDisposable _testZoneSubscription;
+        private IDisposable _formationSubscription;
 
         private bool _deploying;
-        private bool _testZone; // QA #2: текущая расстановка — тест-зона вне забега (не боевой узел)
+        private bool _testZone; // QA #2: текущая расстановка — СЕРЫЙ полигон вне забега (не боевой узел, не построение)
+        private BattlePhase _sandboxReturnPhase = BattlePhase.None; // куда вернуть фазу, выйдя из расстановки-без-боя
         private RuntimeUnit _dragged;
         private Vector2 _dragStartWorld;
         // Схваченная точка фигурки: сим-позиция юнита минус курсор в момент захвата. Юнит НЕ прыгает центром
@@ -97,6 +101,7 @@ namespace Guildmaster.Game
             ISubscriber<EquipRelicAtCursorRequest> equipAtCursorSub,
             ISubscriber<RelicDragEvent> relicDragSub,
             ISubscriber<SetTestZoneRequest> testZoneSub,
+            ISubscriber<SetFormationRequest> formationSub,
             IPublisher<TestZoneChangedEvent> testZoneChangedPub,
             IBattleSession session,
             CameraModeController cameraModes,
@@ -114,6 +119,7 @@ namespace Guildmaster.Game
             _equipAtCursorSub = equipAtCursorSub;
             _relicDragSub  = relicDragSub;
             _testZoneSub   = testZoneSub;
+            _formationSub  = formationSub;
             _testZoneChangedPub = testZoneChangedPub;
             _session       = session;
             _cameraModes   = cameraModes;
@@ -128,6 +134,7 @@ namespace Guildmaster.Game
             _equipAtCursorSubscription = _equipAtCursorSub.Subscribe(OnEquipAtCursor);
             _relicDragSubscription = _relicDragSub?.Subscribe(OnRelicDrag);
             _testZoneSubscription = _testZoneSub?.Subscribe(OnSetTestZone);
+            _formationSubscription = _formationSub?.Subscribe(OnSetFormation);
 
             // Верхняя панель забега (план 12): часы боя + кнопка «Начать».
             // Persist-мир: скоуп живёт всю сессию, поэтому фазу НЕ выставляем на Start (иначе вне боя
@@ -149,6 +156,7 @@ namespace Guildmaster.Game
             _equipAtCursorSubscription?.Dispose();
             _relicDragSubscription?.Dispose();
             _testZoneSubscription?.Dispose();
+            _formationSubscription?.Dispose();
             _session.UnbindStart();
             _session.UnbindClock(); // сбрасывает фазу в None → панель скрывается между боями
             if (_view != null) UnityEngine.Object.Destroy(_view.gameObject);
@@ -196,8 +204,8 @@ namespace Guildmaster.Game
             if (req.Active)
             {
                 if (_deploying) { Guildmaster.Diagnostics.UiTrace.Log("ctrl: уже в расстановке — no-op"); return; } // тест или боевая — уже в бою
-                if (_session.Phase != BattlePhase.None) { Guildmaster.Diagnostics.UiTrace.Log("ctrl: идёт бой (phase!=None) — вход в тест-зону запрещён"); return; }
-                EnterTestZone();
+                if (!CanEnterSandbox()) { Guildmaster.Diagnostics.UiTrace.Log($"ctrl: фаза {_session.Phase} — вход в тест-зону запрещён"); return; }
+                EnterSandbox(grayZone: true);
             }
             else
             {
@@ -206,7 +214,30 @@ namespace Guildmaster.Game
             }
         }
 
-        private void EnterTestZone()
+        // ── «К построению» (передышка между узлами) ──────────────────────────
+        // Та же расстановка без врагов, что и полигон, но арена остаётся БОЕВОЙ (цветной): игрок правит строй
+        // между узлами забега, а не тестирует вне его. Выход — та же кнопка/таб (см. ExitTestZone).
+        private void OnSetFormation(SetFormationRequest req)
+        {
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.OnSetFormation(Active={req.Active}) (deploying={_deploying}, phase={_session.Phase})");
+            if (req.Active)
+            {
+                if (_deploying) return;                 // уже расставляем — просить нечего
+                if (!CanEnterSandbox()) { Guildmaster.Diagnostics.UiTrace.Log($"ctrl: фаза {_session.Phase} — построение запрещено"); return; }
+                EnterSandbox(grayZone: false);
+            }
+            else if (_deploying && _testZone == false && _encounter == null)
+            {
+                ExitTestZone(); // вышли из построения тем же путём (арена и так боевая)
+            }
+        }
+
+        // Вставать в расстановку без врагов можно только когда мира на экране нет чужого хозяина: вне забега
+        // (None) или в передышке между узлами (Interlude). Во время боя/боевой расстановки — нельзя.
+        private bool CanEnterSandbox() =>
+            _session.Phase == BattlePhase.None || _session.Phase == BattlePhase.Interlude;
+
+        private void EnterSandbox(bool grayZone)
         {
             // Строим редактируемые слоты из УЖЕ стоящих team-0 юнитов (не пере-спавниваем). Нет отряда
             // (забег не начат) → нечего расставлять; демо-отряд для теста из главного меню — отдельная итерация.
@@ -220,36 +251,41 @@ namespace Guildmaster.Game
                 // правки в тест-зоне уезжают в тот же сейв, что и правки в боевой расстановке.
                 _slots.Add(new Slot { Relic = u.Unit as RelicData, Pos = u.Position, LiveUnitId = u.Id, GuildIndex = _slots.Count });
             }
-            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.EnterTestZone (слотов из стоящих team-0: {_slots.Count})");
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.EnterSandbox(gray={grayZone}) (слотов из стоящих team-0: {_slots.Count})");
             if (_slots.Count == 0)
             {
-                Debug.LogWarning("[DeploymentController] - тест-зона: отряд не стоит (нет активного забега) → пропуск");
+                Debug.LogWarning("[DeploymentController] - расстановка без боя: отряд не стоит (нет активного забега) → пропуск");
                 return;
             }
 
+            _sandboxReturnPhase = _session.Phase; // куда вернуть панель на выходе (None вне забега / Interlude в передышке)
             _encounter = null;     // без врагов — полигон
             _sim.SetPaused(true);
             EnsureView();
             _view.SetActive(true);
             _deploying = true;
-            _testZone  = true;
+            _testZone  = grayZone;
             _session.SetPhase(BattlePhase.Deployment); // фаза → навигатор ставит контекст Deployment (K8)
-            _testZoneChangedPub?.Publish(new TestZoneChangedEvent(true)); // Ф5: состояние → скин серой зоны + UI-Sheet
+            // Серой арена становится ТОЛЬКО на полигоне вне забега. Построение между узлами идёт по боевой.
+            if (grayZone) _testZoneChangedPub?.Publish(new TestZoneChangedEvent(true));
             FrameCameraForDeployment();
         }
 
         private void ExitTestZone()
         {
-            Guildmaster.Diagnostics.UiTrace.Log("ctrl.ExitTestZone → phase None, TestZoneChanged(false)");
-            FlushRoster(); // что переставили на полигоне — то и останется в гильдии
+            Guildmaster.Diagnostics.UiTrace.Log($"ctrl.ExitTestZone → phase {_sandboxReturnPhase}, TestZoneChanged(false)");
+            FlushRoster(); // что переставили — то и останется в гильдии
+            bool wasGray = _testZone;
             _deploying = false;
             _testZone  = false;
             _dragged   = null;
             _relicDrag = null;
             _view?.SetActive(false);
             _cameraModes?.ExitToActionView();
-            _session.SetPhase(BattlePhase.None); // вне боя — панель без «Начать»/таймера; фаза → навигатор ставит контекст None (K8)
-            _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // Ф5: вышли → цветная арена + снять Sheet
+            // Возвращаем ТУ фазу, из которой вставали: вне забега — None (панель без «Начать»), в передышке —
+            // Interlude (мир на экране, задник UI по-прежнему запрещён).
+            _session.SetPhase(_sandboxReturnPhase);
+            if (wasGray) _testZoneChangedPub?.Publish(new TestZoneChangedEvent(false)); // цветная арена + снять Sheet
         }
 
         // Стартовый кадр расстановки: центр и разброс ВСЕХ живых юнитов (свои + враги — видно противника).
@@ -349,8 +385,8 @@ namespace Guildmaster.Game
         }
 
         // Круги-опоры под ногами живых team-0 юнитов (QA #20/#3): всегда видны (читаемость), наведённый — ярче.
-        // Перетаскиваемый (QA #4) НЕ пропускается — его круг рисуется у ног ПРИЗРАКА (целевая точка dragFeet),
-        // ярко + по валидности drop, чтобы было видно кого тащишь и можно ли поставить.
+        // У перетаскиваемого кругов ДВА (реш. Макса): на его месте — ярко горящий («тащишь именно меня»), и у ног
+        // призрака — по валидности drop. Так видно и кого взял, и куда он встанет.
         private readonly List<(Vector2 center, float radius, DeploymentView.RingState state)> _ringBuffer = new();
         private void UpdateUnitRings(int hoverId, Vector2 dragFeet, bool dragValid, bool dragging)
         {
@@ -360,16 +396,16 @@ namespace Guildmaster.Game
             {
                 RuntimeUnit u = units[i];
                 if (u.Team != 0 || u.IsDead) continue;
-                if (dragging && _dragged != null && u.Id == _dragged.Id)
-                {
-                    DeploymentView.RingState st = dragValid ? DeploymentView.RingState.DragValid : DeploymentView.RingState.DragInvalid;
-                    _ringBuffer.Add((dragFeet, BodyRadius(u), st)); // круг у ног призрака (следует за курсором)
-                }
-                else
-                {
-                    DeploymentView.RingState st = u.Id == hoverId ? DeploymentView.RingState.Hover : DeploymentView.RingState.Normal;
-                    _ringBuffer.Add((FeetOf(u), BodyRadius(u), st)); // у ног (визуальных, не центр — QA #3)
-                }
+
+                bool isDragged = dragging && _dragged != null && u.Id == _dragged.Id;
+                DeploymentView.RingState st = isDragged || u.Id == hoverId
+                    ? DeploymentView.RingState.Hover
+                    : DeploymentView.RingState.Normal;
+                _ringBuffer.Add((FeetOf(u), BodyRadius(u), st)); // у ног (визуальных, не центр — QA #3)
+
+                if (isDragged) // + целевой круг у ног призрака (следует за курсором)
+                    _ringBuffer.Add((dragFeet, BodyRadius(u),
+                                     dragValid ? DeploymentView.RingState.DragValid : DeploymentView.RingState.DragInvalid));
             }
             _view.SetUnitRings(_ringBuffer);
         }
@@ -561,9 +597,9 @@ namespace Guildmaster.Game
             return kb != null && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame);
         }
 
-        // Захват — двухслойный (реш. Макса): круг-опора у ног ИЛИ любое место видимого спрайта тела.
+        // Захват — двухслойный (реш. Макса): круг-опора у ног ИЛИ сама фигура юнита.
         // Круг главнее: он нарисован и читается как «место юнита», поэтому попадание в чей-то круг всегда
-        // бьёт попадание в чужой спрайт (иначе высокий сосед перехватывал бы клик по ногам соседа).
+        // бьёт попадание в чужую фигуру (иначе высокий сосед перехватывал бы клик по ногам соседа).
         // Внутри слоя выигрывает ближайший по ногам — «хватаем круг ближайшего».
         private RuntimeUnit PickUnit(Vector2 world)
         {
@@ -581,21 +617,22 @@ namespace Guildmaster.Game
                 if (sq <= r * r)
                 {
                     if (sq < bestRingSq) { bestRing = u; bestRingSq = sq; }
-                    continue; // в круг попали — по спрайту этого же юнита проверять нечего
+                    continue; // в круг попали — по фигуре этого же юнита проверять нечего
                 }
 
-                if (SpriteHit(u, world) && sq < bestBodySq) { bestBody = u; bestBodySq = sq; }
+                if (FigureHit(u, world) && sq < bestBodySq) { bestBody = u; bestBodySq = sq; }
             }
             return bestRing ?? bestBody;
         }
 
-        // Попал ли курсор в спрайт тела (AABB текущего кадра). Нет вида/спрайта (headless, вид не готов) →
-        // false: тогда работает только круг-опора, как раньше.
-        private bool SpriteHit(RuntimeUnit u, Vector2 world) =>
+        // Попал ли курсор в фигуру юнита — по ЭТАЛОННОМУ габариту (зелёная рамка гизмо UnitView), а не по AABB
+        // кадра: AABB скелетной анимации шире фигуры (замах, плащ, прозрачные поля), и зона хватания выходила
+        // гигантской (наход. Макса). Нет вида (headless) → false: работает только круг-опора.
+        private bool FigureHit(RuntimeUnit u, Vector2 world) =>
             _presenter != null
             && _presenter.TryGetView(u.Id, out UnitView view)
             && view != null
-            && view.SpriteContainsWorldPoint(world);
+            && view.FigureContainsWorldPoint(world, FigurePickPadding);
 
         private bool Overlaps(Vector2 pos, RuntimeUnit exclude)
         {
