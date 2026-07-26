@@ -16,6 +16,63 @@ namespace Guildmaster.Tests.EditMode.Combat
     {
         private static RuntimeUnit[] One(RuntimeUnit u) => new[] { u };
 
+        // --- Идентичность эффекта: определение + ИСТОЧНИК (реш. Макса 2026-07-26, RC-8) ---
+
+        [Test]
+        public void Apply_SameDefFromTwoSources_KeepsTwoIndependentInstances()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+            var target = TestUnit.Make();
+            var casterA = TestUnit.Make();
+            var casterB = TestUnit.Make();
+            EffectData poison = TestEffect.Make(baseDuration: 4f, tags: EffectTag.DoT,
+                                                stacking: StackRule.StackAndRefresh, maxStacks: 3);
+
+            sys.Apply(target, poison, casterA, ctx);
+            sys.Apply(target, poison, casterB, ctx);
+
+            Assert.AreEqual(2, target.ActiveEffects.Count,
+                "Яд второго кастера обязан жить своим экземпляром, а не продлевать чужой");
+            Assert.AreSame(casterA, target.ActiveEffects[0].Source);
+            Assert.AreSame(casterB, target.ActiveEffects[1].Source);
+            Assert.AreEqual(1, target.ActiveEffects[0].Stacks, "Стаки чужого источника не должны прирастать");
+        }
+
+        [Test]
+        public void Apply_SameDefFromOneSource_StacksAsBefore()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+            var target = TestUnit.Make();
+            var caster = TestUnit.Make();
+            EffectData poison = TestEffect.Make(baseDuration: 4f, tags: EffectTag.DoT,
+                                                stacking: StackRule.StackAndRefresh, maxStacks: 3);
+
+            sys.Apply(target, poison, caster, ctx);
+            sys.Apply(target, poison, caster, ctx);
+
+            Assert.AreEqual(1, target.ActiveEffects.Count, "Свой же эффект остаётся одним экземпляром");
+            Assert.AreEqual(2, target.ActiveEffects[0].Stacks);
+        }
+
+        // StackRule.None читается как «не складывается ни с чем» — то есть один на ЦЕЛЬ, а не на источник.
+        // По нему живут системные маркеры (sys.airborne): два толчка от разных юнитов дают ОДИН полёт.
+        [Test]
+        public void Apply_NoneStacking_StaysOnePerTarget_EvenFromTwoSources()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+            var target = TestUnit.Make();
+            EffectData marker = TestEffect.Make(baseDuration: 2f, stacking: StackRule.None);
+
+            sys.Apply(target, marker, TestUnit.Make(), ctx);
+            sys.Apply(target, marker, TestUnit.Make(), ctx);
+
+            Assert.AreEqual(1, target.ActiveEffects.Count,
+                "Эффект со StackRule.None обязан оставаться одним на цели независимо от источника");
+        }
+
         // --- Наложение / маска ---
 
         [Test]

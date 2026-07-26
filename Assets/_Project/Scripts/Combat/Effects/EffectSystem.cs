@@ -117,7 +117,7 @@ namespace Guildmaster.Combat
         {
             if (def == null || target == null || target.IsDead) return;
 
-            RuntimeEffect existing = FindEffect(target, def);
+            RuntimeEffect existing = FindEffect(target, def, source);
             if (existing != null)
             {
                 ApplyStacking(existing, def, source, target, combat);
@@ -422,12 +422,27 @@ namespace Guildmaster.Combat
             return new EffectContext(target, source, combat, effect, potency, dt);
         }
 
-        private static RuntimeEffect FindEffect(RuntimeUnit target, EffectData def)
+        /// <summary>
+        /// Найти на цели эффект, с которым сливается новое наложение. Ключ идентичности —
+        /// <b>определение + источник</b>: яд, наложенный вторым кастером, не продлевает чужой, а живёт своим
+        /// экземпляром — со своим таймером, своими стаками и своей потенцией, снятой с ЕГО статов.
+        /// <para>Раньше ключом было одно определение, и следствия были тихие: весь тик-урон засчитывался тому,
+        /// кто наложил первым (в коопе — чужие цифры на чужом счёте), а сила эффекта навсегда оставалась
+        /// той, что была у первого кастера, даже если второй сильнее вдвое (аудит 2026-07-26, RC-8;
+        /// решение Макса — ключ по источнику).</para>
+        /// <para>Исключение — <see cref="StackRule.None"/>: он читается как «эффект не складывается ни с чем»,
+        /// то есть один на ЦЕЛЬ. По нему живут системные маркеры вроде <c>sys.airborne</c>: два толчка от разных
+        /// юнитов должны дать один полёт, а не два перекрывающихся маркера контроля.</para>
+        /// </summary>
+        private static RuntimeEffect FindEffect(RuntimeUnit target, EffectData def, RuntimeUnit source)
         {
+            bool oneTarget = def.Stacking == StackRule.None;
+
             List<RuntimeEffect> effects = target.ActiveEffects;
             for (int i = 0; i < effects.Count; i++)
             {
-                if (effects[i].Def == def) return effects[i];
+                if (effects[i].Def != def) continue;
+                if (oneTarget || ReferenceEquals(effects[i].Source, source)) return effects[i];
             }
             return null;
         }
