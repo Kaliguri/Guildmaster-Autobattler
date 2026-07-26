@@ -23,6 +23,11 @@
             <gm:SlantedChip name="mode-map" Slant="12" slant-side="Left" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--first gm-runbar__tab--map" />
             <gm:Chip name="mode-battle" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--battle" />
             <gm:Chip name="mode-inventory" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--inventory" />
+            <!-- Тактика и Компендиум стоят в ленте погашенными: экранов за ними пока нет, но место в
+                 ряду режимов у них своё, и игрок должен видеть, что оно есть. Гасим по HARD-правилу
+                 [[ui-feedback]] — текстом, не выключением: чип остаётся живым на наведение и нажатие. -->
+            <gm:Chip name="mode-tactics" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--tactics" />
+            <gm:Chip name="mode-compendium" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--compendium" />
             <!-- Настройки за разделителем: открывают модалку, а не переключают режим — не должны читаться шестым табом. -->
             <ui:VisualElement class="gm-runbar__sep" />
             <gm:SlantedChip name="btn-menu" Slant="12" slant-side="Right" class="gm-chip--collapsible gm-runbar__tab gm-runbar__tab--last gm-runbar__tab--menu" />

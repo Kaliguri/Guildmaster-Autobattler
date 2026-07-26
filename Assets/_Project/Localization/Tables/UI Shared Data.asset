@@ -407,6 +407,26 @@ MonoBehaviour:
     m_Key: ui.stat.move
     m_Metadata:
       m_Items: []
+  - m_Id: 5768072357208064
+    m_Key: ui.mode.map
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5768072411734016
+    m_Key: ui.mode.battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5768072411734017
+    m_Key: ui.mode.inventory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5768072411734018
+    m_Key: ui.mode.tactics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5768072411734019
+    m_Key: ui.mode.compendium
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

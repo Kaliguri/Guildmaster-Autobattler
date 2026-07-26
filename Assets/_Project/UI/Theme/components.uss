@@ -1687,6 +1687,19 @@
 .gm-runbar__tab--battle     .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/crossed-swords.png"); }
 .gm-runbar__tab--inventory  .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/knapsack.png"); }
 .gm-runbar__tab--menu       .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/cog.png"); }
+.gm-runbar__tab--tactics    .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/rally-the-troops.png"); }
+.gm-runbar__tab--compendium .gm-chip__icon { background-image: url("../../Art/UI/Icons-gm/Modes/book-cover.png"); }
+
+/* Режим, которого ещё нет: гаснет подписью и тинтом иконки — ровно как выключенный чип, но БЕЗ
+   SetEnabled(false). HARD-правило [[ui-feedback]] (реш. 2026-07-20): недоступная кнопка остаётся
+   живой на наведение и нажатие, иначе интерфейс читается как сломанный. Тот же приём, что у
+   .gm-button--unaffordable на привале. */
+.gm-chip--muted .gm-chip__label {
+    color: var(--gm-color-disabled-text);
+}
+.gm-chip--muted .gm-chip__icon {
+    -unity-background-image-tint-color: var(--gm-color-disabled-text);
+}
 
 /* Разделитель перед бургером: он открывает модалку, а не переключает режим. */
 .gm-runbar__sep {

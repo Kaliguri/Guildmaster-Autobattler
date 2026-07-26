@@ -16,6 +16,13 @@ namespace Guildmaster.UI
     {
         public VisualElement Root { get; }
 
+        /// <summary>Теги режимов, объявленных, но ещё не построенных: экранов за ними нет, чипы погашены.</summary>
+        private const string TacticsModeTag    = "tactics";
+        private const string CompendiumModeTag = "compendium";
+
+        /// <summary>Класс «недоступно, но живо» (см. <c>components.uss</c>, правило ui-feedback).</summary>
+        private const string MutedClass = "gm-chip--muted";
+
         private readonly Label  _gold;
         private readonly Label  _act;
         private readonly Label  _floor;
@@ -48,9 +55,14 @@ namespace Guildmaster.UI
             WireMode(UiScreen.MapModeTag,       "ui.mode.map",       "Карта",     onMap);
             WireMode(UiScreen.BattleModeTag,    "ui.mode.battle",    "Бой",       onBattle);
             WireMode(UiScreen.InventoryModeTag, "ui.mode.inventory", "Инвентарь", onInventory);
-            // Табов «Тактика» и «Компендиум» здесь больше нет: чипы висели с пустыми обработчиками,
-            // то есть выглядели как рабочие режимы и молча ничего не делали (аудит 2026-07-26, волна 2).
-            // Вернуть — вместе с экраном, который они открывают.
+
+            // Тактика и Компендиум — заявленные режимы (роадмап, слой AI-профилей), экранов за ними пока
+            // нет. Держим их в ленте ПОГАШЕННЫМИ, а не убираем: место в ряду режимов у них своё, и игроку
+            // честнее видеть «будет здесь», чем не подозревать об этом вовсе. Гашение — по HARD-правилу
+            // ui-feedback: подпись и иконка тускнеют, но чип живой, наведение и нажатие он принимает.
+            // Прежде они висели рабочими на вид с пустым обработчиком — вот это и было враньём.
+            WireMode(TacticsModeTag,    "ui.mode.tactics",    "Тактика",    null);
+            WireMode(CompendiumModeTag, "ui.mode.compendium", "Компендиум", null);
 
             var menu = Root.Q<Chip>("btn-menu");
             if (menu != null)
@@ -68,12 +80,25 @@ namespace Guildmaster.UI
             }
         }
 
+        /// <summary>
+        /// Завести таб режима. <paramref name="action"/> = null означает «режим объявлен, экрана ещё нет»:
+        /// чип встаёт в ленту погашенным (<c>gm-chip--muted</c>), но остаётся живым — по HARD-правилу
+        /// ui-feedback недоступное гаснет видом, а не выключением. В радио-набор активных режимов такой
+        /// чип не входит: подсвечивать нечего, пока он никуда не ведёт.
+        /// </summary>
         private void WireMode(string key, string locKey, string ru, Action action)
         {
             var chip = Root.Q<Chip>("mode-" + key);
             if (chip == null) return;
             chip.Text = L(locKey, ru);   // подпись скрыта режимом --collapsible, всплывает у активного таба
-            chip.RegisterCallback<ClickEvent>(_ => action?.Invoke());
+
+            if (action == null)
+            {
+                chip.AddToClassList(MutedClass);
+                return;
+            }
+
+            chip.RegisterCallback<ClickEvent>(_ => action.Invoke());
             _modes[key] = chip;
         }
 
