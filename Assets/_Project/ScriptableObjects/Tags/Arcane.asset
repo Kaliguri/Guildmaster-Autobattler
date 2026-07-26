@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.TagData
   _id: tag.arcane
   _category: 1
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: 7de6e8557bf837b4ba1b75fb804c9f82, type: 3}

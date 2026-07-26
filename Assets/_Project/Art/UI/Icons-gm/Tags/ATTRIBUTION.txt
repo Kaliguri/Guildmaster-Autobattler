@@ -7,4 +7,8 @@ https://creativecommons.org/licenses/by/3.0/
 Attribution required when redistributing the game. Icons may be modified.
 Do not resell or redistribute the icon pack itself separately.
 
-Existing kept as-is: bruiser.png, fire.png, frontline.png
+Existing kept as-is: bruiser.png, fire.png
+
+arcane.png — "Moebius star" by Lorc (added 2026-07-26, for the Arcane magic element).
+frontline.png — removed 2026-07-26: it had no tag and no references; "frontline" would
+have duplicated what the card already states via position and combat_class.
