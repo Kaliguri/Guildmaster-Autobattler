@@ -45,7 +45,7 @@ namespace Guildmaster.Combat
         /// <summary>Откуда пришёл урон — гейт для реактивов «на удар».</summary>
         public readonly DamageSourceKind SourceKind;
 
-        /// <summary>Сродство урона (Яд/Свет/Тьма). Бронёй не гасится — множитель по типу существа цели (<see cref="AffinityTable"/>).</summary>
+        /// <summary>Сродство урона (Яд/Свет/Тьма) — метка идентичности источника, на число урона НЕ влияет.</summary>
         public readonly DamageAffinity Affinity;
 
         /// <summary>Урон авто-атаки. «Изворотливость» убийцы уклоняется только от таких.</summary>

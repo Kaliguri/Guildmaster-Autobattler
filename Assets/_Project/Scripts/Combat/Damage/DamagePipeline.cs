@@ -47,11 +47,10 @@ namespace Guildmaster.Combat
                 damage *= req.ArmorK / (req.ArmorK + effArmor);
             }
 
-            // 2.5. Сродство: бронёй НЕ гасится, зависит от типа существа цели. Действует и на True-урон.
-            if (req.Affinity != DamageAffinity.None)
-            {
-                damage *= AffinityTable.Multiplier(req.Affinity, req.Target.CreatureType);
-            }
+            // Сродство урона (Яд/Свет/Тьма) НЕ участвует в расчёте: оно несёт идентичность механикой —
+            // глаголом (яд травит, свет очищает и лечит, тьма бьёт голой мощью), а не коэффициентом по
+            // типу цели (решение 2026-07-15/35, подтверждено 2026-07-26). Матрица «сродство × существо»
+            // здесь стояла и снята: см. guard-тест Affinity_NeverScalesDamage_ByCreatureType.
 
             // 3. Множитель эффективности получаемого урона
             damage *= req.Target.Stats.Get(StatType.DamageTakenEff);

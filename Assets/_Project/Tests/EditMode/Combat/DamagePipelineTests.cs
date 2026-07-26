@@ -235,7 +235,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(50f, result.HpDamage, 0.01f);
         }
 
-        // --- Сродство × тип существа (ГДД «8» §«Школа vs сродство») ---
+        // --- Сродство: идентичность, а не множитель ---
 
         private static RuntimeUnit MakeCreature(CreatureType type, float maxHp = 1000f)
         {
@@ -249,80 +249,32 @@ namespace Guildmaster.Tests.EditMode.Combat
             => new DamageRequest(src, tgt, raw, school, ArmorK, sourceKind: DamageSourceKind.Ability, affinity: affinity);
 
         [Test]
-        public void Poison_ImmuneAgainstUndeadAndConstruct()
+        public void Affinity_NeverScalesDamage_ByCreatureType()
         {
+            // Guard против возврата матрицы «сродство × тип существа» (снята 2026-07-26, решение
+            // 2026-07-15/35). Сродство несёт идентичность ГЛАГОЛОМ — яд травит, свет лечит частью
+            // урона, тьма бьёт мощью, — и обязано работать против любого врага одинаково. Прежняя
+            // таблица тихо давала Тьме +30% почти всегда, потому что весь ростер Living.
             var src = MakeUnit();
+            var affinities = new[]
+            {
+                DamageAffinity.None, DamageAffinity.Poison, DamageAffinity.Light, DamageAffinity.Dark,
+            };
+            var types = new[]
+            {
+                CreatureType.Living, CreatureType.Undead, CreatureType.Construct,
+                CreatureType.Demon, CreatureType.Beast,
+            };
 
-            var undead = MakeCreature(CreatureType.Undead);
-            var construct = MakeCreature(CreatureType.Construct);
+            foreach (DamageAffinity affinity in affinities)
+            foreach (CreatureType type in types)
+            {
+                var target = MakeCreature(type);
+                var result = DamagePipeline.Execute(AffinityReq(src, target, 100f, affinity, DamageSchool.True));
 
-            Assert.AreEqual(0f, DamagePipeline.Execute(AffinityReq(src, undead, 100f, DamageAffinity.Poison)).HpDamage, 0.01f);
-            Assert.AreEqual(0f, DamagePipeline.Execute(AffinityReq(src, construct, 100f, DamageAffinity.Poison)).HpDamage, 0.01f);
-        }
-
-        [Test]
-        public void Poison_NeutralAgainstLivingAndBeast()
-        {
-            var src = MakeUnit();
-
-            var living = MakeCreature(CreatureType.Living);
-            var beast = MakeCreature(CreatureType.Beast);
-
-            Assert.AreEqual(100f, DamagePipeline.Execute(AffinityReq(src, living, 100f, DamageAffinity.Poison)).HpDamage, 0.01f);
-            Assert.AreEqual(100f, DamagePipeline.Execute(AffinityReq(src, beast, 100f, DamageAffinity.Poison)).HpDamage, 0.01f);
-        }
-
-        [Test]
-        public void Light_VulnerableAgainstUndeadAndDemon()
-        {
-            var src = MakeUnit();
-
-            var undead = MakeCreature(CreatureType.Undead);
-            var demon = MakeCreature(CreatureType.Demon);
-            var living = MakeCreature(CreatureType.Living);
-
-            float expected = 100f * AffinityTable.VulnerableMult;
-            Assert.AreEqual(expected, DamagePipeline.Execute(AffinityReq(src, undead, 100f, DamageAffinity.Light)).HpDamage, 0.01f);
-            Assert.AreEqual(expected, DamagePipeline.Execute(AffinityReq(src, demon, 100f, DamageAffinity.Light)).HpDamage, 0.01f);
-            Assert.AreEqual(100f, DamagePipeline.Execute(AffinityReq(src, living, 100f, DamageAffinity.Light)).HpDamage, 0.01f);
-        }
-
-        [Test]
-        public void Dark_VulnerableAgainstLiving()
-        {
-            var src = MakeUnit();
-
-            var living = MakeCreature(CreatureType.Living);
-            var undead = MakeCreature(CreatureType.Undead);
-
-            Assert.AreEqual(100f * AffinityTable.VulnerableMult,
-                DamagePipeline.Execute(AffinityReq(src, living, 100f, DamageAffinity.Dark)).HpDamage, 0.01f);
-            Assert.AreEqual(100f, DamagePipeline.Execute(AffinityReq(src, undead, 100f, DamageAffinity.Dark)).HpDamage, 0.01f);
-        }
-
-        [Test]
-        public void Affinity_AppliesOnTopOfTrueDamage_AndIsNotMitigatedByArmor()
-        {
-            var src = MakeUnit();
-
-            // Цель с полной физ. бронёй: True идёт мимо брони, сродство Тьмы всё равно множит.
-            var living = MakeCreature(CreatureType.Living);
-            living.Stats.AddModifiersFrom("armor", new[] { new StatModifier(StatType.PhysArmor, ModifierOp.Flat, ArmorFull) });
-
-            var result = DamagePipeline.Execute(AffinityReq(src, living, 100f, DamageAffinity.Dark, DamageSchool.True));
-
-            Assert.AreEqual(100f * AffinityTable.VulnerableMult, result.HpDamage, 0.01f);
-        }
-
-        [Test]
-        public void Affinity_None_LeavesDamageUnchanged()
-        {
-            var src = MakeUnit();
-            var undead = MakeCreature(CreatureType.Undead);
-
-            var result = DamagePipeline.Execute(AffinityReq(src, undead, 100f, DamageAffinity.None, DamageSchool.True));
-
-            Assert.AreEqual(100f, result.HpDamage, 0.01f);
+                Assert.AreEqual(100f, result.HpDamage, 0.01f,
+                    $"Сродство {affinity} изменило урон по цели {type} — матрица вернулась.");
+            }
         }
     }
 }
