@@ -24,13 +24,19 @@ namespace Guildmaster.Balance.Editor
         [MenuItem("Alebardium/Balance/2. Duel Matrix + Rating — 1v1", priority = 140)]
         private static void Duel() => RunReport("Дуэли 1v1", DuelMatrixBench.Run);
 
-        [MenuItem("Alebardium/Balance/2. Duel Matrix + Rating — 3v3 (team)", priority = 141)]
-        private static void TeamDuel() => RunReport("Командные дуэли 3v3", DuelMatrixBench.RunTeam);
+        [MenuItem("Alebardium/Balance/2. Duel Matrix + Rating — 3v3 (trio)", priority = 141)]
+        private static void TrioDuel() => RunReport("Тройки 3v3", DuelMatrixBench.RunTrio);
 
-        [MenuItem("Alebardium/Balance/2. Duel Matrix + Rating — 5v5 (super team)", priority = 142)]
-        private static void SuperTeamDuel() => RunReport("Командные дуэли 5v5", DuelMatrixBench.RunSuperTeam);
+        [MenuItem("Alebardium/Balance/2. Duel Matrix + Rating — 4v4 (squad)", priority = 142)]
+        private static void SquadDuel() => RunReport("Отряды 4v4", DuelMatrixBench.RunSquad);
 
-        [MenuItem("Alebardium/Balance/Run Selected Scenario", priority = 160)]
+        [MenuItem("Alebardium/Balance/3. Squad Swap — who to field (4v4)", priority = 160)]
+        private static void SquadSwap() => RunReport("Замена в живом отряде", SquadSwapBench.Run);
+
+        [MenuItem("Alebardium/Balance/3. Pair Synergy (2v2 / 4v4 / 6v6)", priority = 161)]
+        private static void PairSynergy() => RunReport("Синергия пар", PairSynergyBench.Run);
+
+        [MenuItem("Alebardium/Balance/Run Selected Scenario", priority = 180)]
         private static void RunScenario()
         {
             var scenario = Selection.activeObject as BalanceScenarioData;
