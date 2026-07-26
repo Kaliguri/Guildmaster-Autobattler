@@ -54,6 +54,13 @@ namespace Guildmaster.Presentation
         private readonly Dictionary<int, UnitView>       _views     = new Dictionary<int, UnitView>();
         private readonly Dictionary<int, ProjectileView> _projViews = new Dictionary<int, ProjectileView>();
         private readonly List<int>                       _deadProj  = new List<int>();
+
+        // Живые снаряды и направление последнего снаряда, летевшего в конкретную цель (по её id).
+        // Импакт-фидбэк дальнобойного удара должен идти ОТКУДА ПРИЛЕТЕЛО, а вектор «стрелок → цель»
+        // это не то: пока снаряд летел, стрелок мог сместиться (Следопыт стреляет на ходу), а цель —
+        // уйти в сторону. Направление переживает сам снаряд: урон приходит уже после его смерти.
+        private readonly Dictionary<int, Projectile> _projById    = new Dictionary<int, Projectile>();
+        private readonly Dictionary<int, Vector2>    _lastShotDir = new Dictionary<int, Vector2>();
         // Виды погибших юнитов: сняты из _views (перестают следовать за симом), но GameObject живёт, пока идёт
         // секвенс смерти (death-клип → разлёт). Держим отдельно, чтобы гарантированно снести их при рестарте —
         // иначе трупы прошлого боя остаются висеть в новом («телепортируются»).
@@ -149,6 +156,8 @@ namespace Guildmaster.Presentation
             foreach (var kvp in _projViews)
                 if (kvp.Value != null) ReleaseProjectile(kvp.Value);   // в пул, а не в мусор: бой ещё будет
             _projViews.Clear();
+            _projById.Clear();
+            _lastShotDir.Clear();   // id юнитов в новом бою свои — старое направление не про них
 
             // Трупы прошлого боя (виды в секвенсе смерти, снятые из _views) — иначе висят в новом бою.
             for (int i = 0; i < _corpses.Count; i++)
@@ -212,10 +221,13 @@ namespace Guildmaster.Presentation
                 foreach (var kvp in _projViews)
                     if (!kvp.Value.Tick(alpha)) _deadProj.Add(kvp.Key);
 
+                TrackShotDirections();
+
                 for (int i = 0; i < _deadProj.Count; i++)
                 {
                     if (_projViews.TryGetValue(_deadProj[i], out var pv) && pv != null) ReleaseProjectile(pv);
                     _projViews.Remove(_deadProj[i]);
+                    _projById.Remove(_deadProj[i]);
                 }
             }
         }
@@ -245,6 +257,25 @@ namespace Guildmaster.Presentation
             Color tint = projectile.Source != null ? VfxColorFor(projectile.Source) : Color.white;
             view.Bind(projectile, tint, origin);
             _projViews[projectile.Id] = view;
+            _projById[projectile.Id]  = projectile;
+            RememberShotDirection(projectile);
+        }
+
+        /// <summary>
+        /// Запомнить, куда летит каждый живой снаряд. Направление держится ПО ЦЕЛИ и переживает сам
+        /// снаряд: урон приходит уже после того, как снаряд отмечен мёртвым, и спросить его тогда не у кого.
+        /// </summary>
+        private void TrackShotDirections()
+        {
+            foreach (var kvp in _projById)
+                RememberShotDirection(kvp.Value);
+        }
+
+        private void RememberShotDirection(Projectile projectile)
+        {
+            if (projectile?.TargetUnit == null) return;
+            Vector2 v = projectile.Velocity;
+            if (v.sqrMagnitude > 1e-8f) _lastShotDir[projectile.TargetUnit.Id] = v.normalized;
         }
 
         /// <summary>
@@ -344,11 +375,26 @@ namespace Guildmaster.Presentation
         {
             // Урон совпадает с кадром контакта (конец замаха): здесь — импакт-фидбэк цели.
             // Свинг источника запускается раньше, на OnAttackStarted (вики «14»).
+            //
+            // Направленный фидбэк (искры, отброс тела, выпад бьющего) полагается ТОЛЬКО прямому
+            // попаданию: у тика яда и у ответки шипов нет ни момента, ни стороны, а рисуются они
+            // так же часто, как удары — то есть дают шум там, где показывать нечего.
             Vector2 nudgeDir = Vector2.zero;
-            if (source != null)
+            if (source != null && result.IsDirectHit)
             {
-                Vector2 delta = target.Position - source.Position;
-                if (delta.sqrMagnitude > 1e-8f) nudgeDir = delta.normalized;
+                // Мили: от бьющего к цели. Дальний: ОТКУДА ПРИЛЕТЕЛ СНАРЯД — вектор «стрелок → цель»
+                // врёт ровно в тех случаях, ради которых это и делается (стрелок сместился за время
+                // полёта, цель шагнула вбок). Снаряда в этот момент уже нет — берём запомненное.
+                bool ranged = source.Unit != null && source.Unit.AttackType == AttackType.Ranged;
+                if (ranged && _lastShotDir.TryGetValue(target.Id, out var shotDir) && shotDir.sqrMagnitude > 1e-8f)
+                {
+                    nudgeDir = shotDir;
+                }
+                else
+                {
+                    Vector2 delta = target.Position - source.Position;
+                    if (delta.sqrMagnitude > 1e-8f) nudgeDir = delta.normalized;
+                }
             }
 
             if (_views.TryGetValue(target.Id, out var view) && view != null)
@@ -393,10 +439,11 @@ namespace Guildmaster.Presentation
             Vector3 anchor  = AnchorFor(target);
             float   hpScale = Mathf.Lerp(1f, _feel.NumberMaxScale, Mathf.Clamp01(frac / Mathf.Max(1e-4f, _feel.NumberFullFrac)));
 
-            // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе.
-            if (_vfx != null && _feel != null && view != null)
+            // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе. Только прямое попадание:
+            // яд, горение и шипы брони бьют тиками и без стороны — искры на них читались бы как удары.
+            if (_vfx != null && _feel != null && view != null && result.IsDirectHit)
             {
-                // Искры летят ПО направлению удара (от бьющего), и чем тяжелее удар — тем их больше.
+                // Искры летят ПРОЧЬ ОТ УДАРА: у мили — от бьющего, у стрелка — по траектории снаряда.
                 // Направление берём то же, что и отброс тела: один удар — один вектор, спорить им не о чем.
                 float? sparkDir = nudgeDir.sqrMagnitude > 1e-8f
                     ? Mathf.Atan2(nudgeDir.y, nudgeDir.x) * Mathf.Rad2Deg

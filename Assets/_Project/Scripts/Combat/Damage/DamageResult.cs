@@ -47,6 +47,13 @@ namespace Guildmaster.Combat
         public float TotalDamage => HpDamage + ShieldDamage;
 
         /// <summary>
+        /// Урон нанесён ПРЯМЫМ попаданием — ударом или заклинанием (а не тиком DoT и не ответкой).
+        /// Зеркало <see cref="DamageRequest.IsDirectHit"/>: у прямого попадания есть автор, момент и
+        /// сторона, поэтому только он имеет право на направленный фидбэк (искры, отброс, выпад).
+        /// </summary>
+        public bool IsDirectHit => SourceKind is DamageSourceKind.AutoAttack or DamageSourceKind.Ability;
+
+        /// <summary>
         /// Сколько из <see cref="TotalDamage"/> добавили уязвимости цели («Угли»). Не отдельное слагаемое,
         /// а доля внутри уже посчитанного числа: удар без уязвимостей был бы на столько слабее.
         /// </summary>
