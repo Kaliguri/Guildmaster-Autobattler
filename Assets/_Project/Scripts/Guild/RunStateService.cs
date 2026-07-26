@@ -57,7 +57,7 @@ namespace Guildmaster.Guild
         public RunState NewDefaultRun(long seed)
         {
             int    size    = _config.GuildSize > 0 ? _config.GuildSize : 4;
-            string relicId = string.IsNullOrEmpty(_config.StartingRelicId) ? "relic.base" : _config.StartingRelicId;
+            string relicId = string.IsNullOrEmpty(_config.StartingRelicId) ? ContentIds.BaseRelic : _config.StartingRelicId;
 
             var guild = new RosterSlot[size];
             float top = (size - 1) * 0.5f; // центрируем колонку по вертикали
@@ -177,7 +177,7 @@ namespace Guildmaster.Guild
         // ── Лоадаут: надеть/снять релик на сосуд гильдии (кольцо реликвий, Фаза 2) ──
 
         /// <summary>Id «пустого» кита (базовый релик). Из конфига, дефолт <c>relic.base</c>.</summary>
-        private string BaseRelicId => string.IsNullOrEmpty(_config.StartingRelicId) ? "relic.base" : _config.StartingRelicId;
+        private string BaseRelicId => string.IsNullOrEmpty(_config.StartingRelicId) ? ContentIds.BaseRelic : _config.StartingRelicId;
 
         /// <summary>
         /// Надеть релик из запаса на сосуд слота (лоадаут-хаб): релик снимается с запаса и встаёт на слот, а

@@ -124,14 +124,18 @@ namespace Guildmaster.Game.Services
         private void ReadFromDisk()
         {
             AudioVolumeSettings audioDefaults = Defaults();
+            // Геймплейная половина — из своего владельца, ровно как аудио двумя строками выше. Раньше она
+            // была набрана здесь литералами: те же значения вторым местом, которое разъехалось бы с
+            // GameplaySettings.Defaults() на первой же правке дефолта (аудит 2026-07-26, T-27).
+            GameplaySettings gameplayDefaults = GameplaySettings.Defaults();
             var model = new PersistModel
             {
-                Master              = audioDefaults.Master,
-                Music               = audioDefaults.Music,
-                Sfx                 = audioDefaults.Sfx,
-                CardAnimations      = true,
-                CardAttackAnimation = true,
-                AlwaysDetailedTooltips = false, // подсказки по умолчанию краткие; подробности — по Shift
+                Master                 = audioDefaults.Master,
+                Music                  = audioDefaults.Music,
+                Sfx                    = audioDefaults.Sfx,
+                CardAnimations         = gameplayDefaults.CardAnimations,
+                CardAttackAnimation    = gameplayDefaults.CardAttackAnimation,
+                AlwaysDetailedTooltips = gameplayDefaults.AlwaysDetailedTooltips,
             };
 
             try

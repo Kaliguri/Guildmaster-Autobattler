@@ -33,7 +33,6 @@ namespace Guildmaster.UI
         private sealed class StashRelic  { public readonly int Index; public StashRelic(int i)  => Index = i; }
         private sealed class VesselRelic { public readonly int Index; public VesselRelic(int i) => Index = i; }
 
-        private const string BaseRelicId = "relic.base";
 
         public static VisualElement Build(
             VisualTreeAsset uxml,
@@ -96,7 +95,7 @@ namespace Guildmaster.UI
 
                 drag.AddTarget(card, p => p is StashRelic, p => onEquip?.Invoke(idx, ((StashRelic)p).Index));
 
-                bool hasRealRelic = e.Relic != null && e.Relic.Id != BaseRelicId;
+                bool hasRealRelic = e.Relic != null && e.Relic.Id != Data.Definitions.ContentIds.BaseRelic;
                 if (hasRealRelic)
                     drag.AddSource(card, new VesselRelic(idx), RelicSprite(e.Relic));
 

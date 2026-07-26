@@ -89,7 +89,7 @@ namespace Guildmaster.DevTools
             {
                 IReadOnlyList<RelicData> all = content.All<RelicData>();
                 for (int i = 0; i < all.Count && choices.Count < RewardService.DefaultChoiceCount; i++)
-                    if (all[i] != null && all[i].Id != "relic.base") choices.Add(all[i]);
+                    if (all[i] != null && all[i].Id != ContentIds.BaseRelic) choices.Add(all[i]);
             }
 
             // Без loc-сервиса в стенде: имя = короткий id, статичные подписи берут RU-фолбэк из View.
@@ -148,10 +148,10 @@ namespace Guildmaster.DevTools
                 // Фолбэк: VesselData ассетов ещё нет (скелет Фазы 2/4) — набиваем 4 слота реликами,
                 // чтобы в превью была видна раскладка команды (Vessel=null → карточка берёт имя релика).
                 for (int i = 0; relics != null && roster.Count < 4 && i < relics.Count; i++)
-                    if (relics[i] != null && relics[i].Id != "relic.base")
+                    if (relics[i] != null && relics[i].Id != ContentIds.BaseRelic)
                         roster.Add(new Guildmaster.UI.LoadoutHubView.RosterEntry(null, relics[i]));
                 for (int i = 0; relics != null && i < relics.Count && stash.Count < 6; i++)
-                    if (relics[i] != null && relics[i].Id != "relic.base") stash.Add(relics[i]);
+                    if (relics[i] != null && relics[i].Id != ContentIds.BaseRelic) stash.Add(relics[i]);
                 for (int i = 0; items != null && i < items.Count && banners.Count < 2; i++)
                     if (items[i] != null && items[i].Scope == ItemScope.Party) banners.Add(items[i]);
             }
@@ -175,7 +175,7 @@ namespace Guildmaster.DevTools
             {
                 IReadOnlyList<RelicData> all = content.All<RelicData>();
                 for (int i = 0; all != null && i < all.Count; i++)
-                    if (all[i] != null && all[i].Id != "relic.base") relics.Add(all[i]);
+                    if (all[i] != null && all[i].Id != ContentIds.BaseRelic) relics.Add(all[i]);
             }
 
             // Статы для стенда — тот же шов, что в игре (DI тут нет, поэтому собираем руками из
@@ -258,7 +258,7 @@ namespace Guildmaster.DevTools
             {
                 IReadOnlyList<RelicData> all = content.All<RelicData>();
                 for (int i = 0; all != null && i < all.Count && relics.Count < 6; i++)
-                    if (all[i] != null && all[i].Id != "relic.base") relics.Add(all[i]);
+                    if (all[i] != null && all[i].Id != ContentIds.BaseRelic) relics.Add(all[i]);
             }
 
             var shelf = new List<Guildmaster.Guild.ShopItem>();
@@ -335,7 +335,7 @@ namespace Guildmaster.DevTools
             {
                 IReadOnlyList<RelicData> all = content.All<RelicData>();
                 for (int i = 0; all != null && i < all.Count && relics.Count < 6; i++)
-                    if (all[i] != null && all[i].Id != "relic.base") relics.Add(all[i]);
+                    if (all[i] != null && all[i].Id != ContentIds.BaseRelic) relics.Add(all[i]);
             }
             UnityEngine.Sprite Ico(int i) => i < relics.Count ? relics[i].Icon : null;
             string Nm(int i) => i < relics.Count ? Short(relics[i].Id) : "—";

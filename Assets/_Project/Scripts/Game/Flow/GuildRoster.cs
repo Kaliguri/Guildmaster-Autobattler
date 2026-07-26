@@ -13,8 +13,6 @@ namespace Guildmaster.Game.Flow
     /// </summary>
     public static class GuildRoster
     {
-        private const string BaseRelicId = "relic.base";
-
         /// <summary>Гильдия забега → слоты player-ростера. Пустая/отсутствующая гильдия → пустой массив.</summary>
         public static PlayerSlot[] Resolve(RunState run, IContentDatabase content)
         {
@@ -29,12 +27,12 @@ namespace Guildmaster.Game.Flow
             {
                 if (rs == null) continue;
 
-                string relicId = string.IsNullOrEmpty(rs.RelicId) ? BaseRelicId : rs.RelicId;
+                string relicId = string.IsNullOrEmpty(rs.RelicId) ? ContentIds.BaseRelic : rs.RelicId;
                 if (!content.TryGet(relicId, out RelicData relic)
-                    && !content.TryGet(BaseRelicId, out relic))
+                    && !content.TryGet(ContentIds.BaseRelic, out relic))
                 {
                     Debug.LogWarning($"[GuildRoster] - релик '{relicId}' не найден в контент-БД, и базового кита " +
-                                     $"'{BaseRelicId}' тоже нет → слот пропущен (индексы гильдии разъедутся)");
+                                     $"'{ContentIds.BaseRelic}' тоже нет → слот пропущен (индексы гильдии разъедутся)");
                     continue;
                 }
                 if (relic.Id != relicId)

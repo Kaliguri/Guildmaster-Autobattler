@@ -24,7 +24,6 @@ namespace Guildmaster.Game.Flow
     public sealed class RewardService
     {
         public const int DefaultChoiceCount = 3;
-        private const string BaseRelicId = "relic.base";
 
         private readonly IContentDatabase _content;
         private readonly IRngService      _rng;
@@ -56,7 +55,7 @@ namespace Guildmaster.Game.Flow
             for (int i = 0; i < all.Count; i++)
             {
                 RelicData r = all[i];
-                if (r == null || r.Id == BaseRelicId) continue;
+                if (r == null || r.Id == ContentIds.BaseRelic) continue;
 
                 if (r.DropRarity == DropRarity.Unique) uniques.Add(r);
                 else                                   regular.Add(r);

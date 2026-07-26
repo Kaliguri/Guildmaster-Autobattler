@@ -59,7 +59,7 @@ namespace Guildmaster.Guild
     public sealed class RosterSlot
     {
         public string   VesselId = string.Empty;
-        public string   RelicId = "relic.base";
+        public string   RelicId = Data.Definitions.ContentIds.BaseRelic;
         public string   AiPresetId = string.Empty;
         public string[] VesselItemIds = Array.Empty<string>();
         public Vector2  SavedPosition;

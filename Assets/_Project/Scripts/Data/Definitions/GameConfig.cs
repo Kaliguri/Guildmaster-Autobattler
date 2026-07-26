@@ -69,7 +69,7 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private int _guildSize = 4;
 
         [Tooltip("Релик на стартовом сосуде (пустой кит) — игрок навешивает собранное в лоадауте. Пусто = relic.base.")]
-        [SerializeField] private string _startingRelicId = "relic.base";
+        [SerializeField] private string _startingRelicId = ContentIds.BaseRelic;
 
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
