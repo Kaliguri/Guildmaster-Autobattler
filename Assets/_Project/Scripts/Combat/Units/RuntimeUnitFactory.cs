@@ -29,6 +29,12 @@ namespace Guildmaster.Combat
         private readonly ICombatContext _combat;
         private int _nextId;
 
+        /// <summary>Сколько юнитов уже создано на каждую команду — источник фазы стаггера AI.</summary>
+        private readonly int[] _perTeamCount = new int[MaxTeams];
+
+        /// <summary>Потолок команд боя: кооп до 4 игроков + сторона врага.</summary>
+        private const int MaxTeams = 8;
+
         public RuntimeUnitFactory(StatsConfig config, ClassBalanceConfig classBalance,
                                   EffectSystem effects, ICombatContext combat)
         {
@@ -44,7 +50,11 @@ namespace Guildmaster.Combat
         /// на один ключ, вид одного осиротевает (стоит на месте, HP-бар не реагирует). Раньше это лечил
         /// релоад сцены (новый скоуп → новая фабрика); теперь чистим явно.
         /// </summary>
-        public void ResetIds() => _nextId = 0;
+        public void ResetIds()
+        {
+            _nextId = 0;
+            System.Array.Clear(_perTeamCount, 0, _perTeamCount.Length);
+        }
 
         /// <summary>
         /// Создать <see cref="RuntimeUnit"/> из SO-данных. Принимает базовый <see cref="UnitData"/> —
@@ -87,6 +97,13 @@ namespace Guildmaster.Combat
                 }
 
             int id = _nextId++;
+
+            // Фаза стаггера считается от порядкового номера ВНУТРИ КОМАНДЫ, а не от сквозного Id.
+            // Сквозной давал командам разные фазы (первая заспавненная думала раньше), и в равном бою
+            // это решало исход за бойцов: зеркальный отряд заканчивал со счётом 59.7% против нуля.
+            // Внутри команды фазы по-прежнему разные — нагрузка размазана, как и задумано.
+            int teamIndex = team >= 0 && team < _perTeamCount.Length ? _perTeamCount[team]++ : id;
+
             var unit = new RuntimeUnit
             {
                 Id               = id,
@@ -98,9 +115,9 @@ namespace Guildmaster.Combat
                 PreviousPosition = spawnPosition,
                 Unit             = data,
                 Vessel           = vessel,
-                // AI (Фаза 3): мозг из профиля кита + фаза стаггера по Id (вики «13» §2.7, §4.1).
+                // AI (Фаза 3): мозг из профиля кита + фаза стаггера по месту в команде (вики «13» §2.7, §4.1).
                 Brain            = new ProfileBrain(data?.Ai),
-                BrainPhase       = id % SimConstants.AiTickInterval,
+                BrainPhase       = teamIndex % SimConstants.AiTickInterval,
             };
 
             RegisterPassives(unit, data);

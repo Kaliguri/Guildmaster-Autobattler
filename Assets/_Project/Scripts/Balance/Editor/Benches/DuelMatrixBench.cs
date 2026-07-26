@@ -17,85 +17,45 @@ namespace Guildmaster.Balance.Editor
     /// </summary>
     public static class DuelMatrixBench
     {
-        private const float CapSeconds = 120f;
+        // 240 с: на строе из пяти ролей бои упирались в прежний потолок 120 и копили ничьи, которые
+        // ничего не сообщают — «не добил» и «равны» выглядели одинаково.
+        private const float CapSeconds = 240f;
         private const ulong Seed = 1UL;
-
-        /// <summary>
-        /// Слот боевого строя: какую роль он занимает и где стоит (координаты для команды 0, для команды 1
-        /// зеркалятся по X). Кит встаёт в слот СВОЕГО класса, вытесняя оттуда манекен, — так формат
-        /// отвечает на вопрос «этот кит лучше или хуже рядового представителя своей роли».
-        /// </summary>
-        private readonly struct Slot
-        {
-            public readonly UnitClass Role;
-            public readonly Vector2 Pos;
-
-            public Slot(UnitClass role, float x, float y)
-            {
-                Role = role;
-                Pos = new Vector2(x, y);
-            }
-        }
 
         /// <summary>Строй стороны и подписи отчёта.</summary>
         private readonly struct Format
         {
             public readonly Slot[] Lineup;
-
-            /// <summary>
-            /// true — кит занимает место манекена своей роли (размер команды = длине строя);
-            /// false — кит добавляется к строю сверху (размер команды на единицу больше).
-            /// </summary>
-            public readonly bool HeroTakesSlot;
-
             public readonly string BaseName;
             public readonly string Title;
             public readonly string Blurb;
 
-            public Format(Slot[] lineup, bool heroTakesSlot, string baseName, string title, string blurb)
+            public Format(Slot[] lineup, string baseName, string title, string blurb)
             {
                 Lineup = lineup;
-                HeroTakesSlot = heroTakesSlot;
                 BaseName = baseName;
                 Title = title;
                 Blurb = blurb;
             }
         }
 
-        // Глубина строя: фронт стоит вплотную к противнику, тыл — за спинами.
-        private const float FrontX = 2.2f;
-        private const float BackX = 4.4f;
-
-        private static readonly Format Solo = new Format(
-            new[] { new Slot(UnitClass.Bruiser, FrontX, 0f) }, heroTakesSlot: true,
+        private static readonly Format Solo = new Format(Lineups.Solo,
             "duel", "дуэли 1v1",
             "Кит против кита без поддержки. Ранг в вакууме: китов, чья работа не в убийстве, занижает по построению.");
 
-        private static readonly Format Team = new Format(
-            new[]
-            {
-                new Slot(UnitClass.Bruiser, FrontX, 0f),
-                new Slot(UnitClass.Ranged, BackX, 0f),
-            }, heroTakesSlot: false,
-            "team_duel", "командные дуэли 3v3",
-            "Тройка: манекен-Брузер держит фронт, манекен-дальник бьёт из-за спины, третьим встаёт испытуемый кит.");
+        private static readonly Format Trio = new Format(Lineups.Trio,
+            "trio_duel", "тройки 3v3",
+            "Неполный отряд: кит и двое рядовых. Промежуточная линза между дуэлью и настоящим боем.");
 
-        private static readonly Format SuperTeam = new Format(
-            new[]
-            {
-                new Slot(UnitClass.Tank, FrontX, -1.2f),
-                new Slot(UnitClass.Bruiser, FrontX, 0f),
-                new Slot(UnitClass.Assassin, FrontX, 1.2f),
-                new Slot(UnitClass.Ranged, BackX, -0.6f),
-                new Slot(UnitClass.Support, BackX, 0.6f),
-            }, heroTakesSlot: true,
-            "super_team_duel", "командные дуэли 5v5",
-            "Полный отряд из пяти ролей: Танк, Брузер, Убийца, дальник и поддержка. Кит ЗАМЕЩАЕТ манекен своего " +
-            "класса, поэтому вопрос звучит прямо: он лучше или хуже рядового представителя своей роли?");
+        private static readonly Format Squad = new Format(Lineups.Squad,
+            "squad_duel", "отряды 4v4",
+            "ОТРЯД ИГРЫ: Танк, Брузер, дальник и поддержка — тот состав, который игрок реально выставляет. " +
+            "Кит ЗАМЕЩАЕТ рядового своей роли, поэтому вопрос звучит прямо: он лучше или хуже обычного " +
+            "представителя этой роли? Это главный формат оценки, остальные — вспомогательные.");
 
         public static (string csv, string md) Run() => RunFormat(Solo);
-        public static (string csv, string md) RunTeam() => RunFormat(Team);
-        public static (string csv, string md) RunSuperTeam() => RunFormat(SuperTeam);
+        public static (string csv, string md) RunTrio() => RunFormat(Trio);
+        public static (string csv, string md) RunSquad() => RunFormat(Squad);
 
         private static (string csv, string md) RunFormat(Format format)
         {
@@ -125,6 +85,11 @@ namespace Guildmaster.Balance.Editor
             var survived = new int[n];
             var fights = new int[n];
 
+            // Что кит делал в бою: бил, держал удар, или урон приходил ответкой сам собой.
+            var dealt = new double[n];
+            var taken = new double[n];
+            var reactive = new double[n];
+
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
@@ -149,6 +114,9 @@ namespace Guildmaster.Balance.Editor
                     fights[i]++; fights[j]++;
                     if (left.HeroAlive) survived[i]++;
                     if (right.HeroAlive) survived[j]++;
+
+                    dealt[i] += left.HeroDealt; taken[i] += left.HeroTaken; reactive[i] += left.HeroReactive;
+                    dealt[j] += right.HeroDealt; taken[j] += right.HeroTaken; reactive[j] += right.HeroReactive;
                 }
             }
 
@@ -161,7 +129,8 @@ namespace Guildmaster.Balance.Editor
 
             var sumHeaders = new List<string>
             {
-                "Rank", "Relic", "Wins", "Losses", "Draws", "WinRate", "TeamHpOnWin%", "HeroSurvival%", "BTStrength",
+                "Rank", "Relic", "Wins", "Losses", "Draws", "WinRate", "TeamHpOnWin%", "HeroSurvival%",
+                "AvgDmgDealt", "AvgDmgTaken", "React%", "BTStrength",
             };
             var sumTable = new List<IReadOnlyList<object>>();
             int rank = 1;
@@ -171,9 +140,13 @@ namespace Guildmaster.Balance.Editor
                 double winRate = total > 0 ? (wCount[i] + 0.5 * dCount[i]) / total : 0.0;
                 double avgHp = hpWinCount[i] > 0 ? 100.0 * hpWin[i] / hpWinCount[i] : 0.0;
                 double surv = fights[i] > 0 ? 100.0 * survived[i] / fights[i] : 0.0;
+                double avgDealt = fights[i] > 0 ? dealt[i] / fights[i] : 0.0;
+                double avgTaken = fights[i] > 0 ? taken[i] / fights[i] : 0.0;
+                double reactShare = dealt[i] > 1e-6 ? 100.0 * reactive[i] / dealt[i] : 0.0;
                 sumTable.Add(new object[]
                 {
-                    rank++, relics[i].name, wCount[i], lCount[i], dCount[i], winRate, avgHp, surv, strength[i],
+                    rank++, relics[i].name, wCount[i], lCount[i], dCount[i], winRate, avgHp, surv,
+                    avgDealt, avgTaken, reactShare, strength[i],
                 });
             }
 
@@ -183,6 +156,9 @@ namespace Guildmaster.Balance.Editor
                 "WinRate учитывает ничьи как 0.5. **TeamHpOnWin%** — средний остаток HP команды в ВЫИГРАННЫХ боях: " +
                 "запас победы (80% = размазал не заметив, 10% = вытянул на последних каплях). " +
                 "**HeroSurvival%** — как часто сам испытуемый доживал до конца, независимо от исхода. " +
+                "**AvgDmgDealt / AvgDmgTaken** — сколько кит в среднем за бой наносил и поглощал: отвечает на " +
+                "вопрос «он много бьёт или долго живёт». **React%** — какая доля его урона пришла ответкой " +
+                "(шипы), то есть не выбиралась им вовсе. " +
                 "BTStrength (Bradley-Terry) — относительная сила, норм. к 1. " +
                 "Бой RNG-free → исходы детерминированы; рейтинг ближе к топологическому порядку. " +
                 (format.Lineup.Length > 1
@@ -216,16 +192,26 @@ namespace Guildmaster.Balance.Editor
             return (sumCsv, sumMd);
         }
 
-        /// <summary>Итог одной стороны боя: запас команды и судьба самого испытуемого.</summary>
+        /// <summary>Итог одной стороны боя: запас команды и что сделал сам испытуемый.</summary>
         private readonly struct SideResult
         {
             public readonly double TeamHpPct;
             public readonly bool HeroAlive;
 
-            public SideResult(double teamHpPct, bool heroAlive)
+            /// <summary>Урон, нанесённый китом, и поглощённый им — «он много бьёт или долго живёт».</summary>
+            public readonly double HeroDealt;
+            public readonly double HeroTaken;
+
+            /// <summary>Сколько из нанесённого пришло ответкой (шипы) — урон, который кит не выбирает.</summary>
+            public readonly double HeroReactive;
+
+            public SideResult(double teamHpPct, bool heroAlive, double heroDealt, double heroTaken, double heroReactive)
             {
                 TeamHpPct = teamHpPct;
                 HeroAlive = heroAlive;
+                HeroDealt = heroDealt;
+                HeroTaken = heroTaken;
+                HeroReactive = heroReactive;
             }
         }
 
@@ -240,8 +226,8 @@ namespace Guildmaster.Balance.Editor
             var env = new SimEnvironment(Seed, config);
             var tracked = new List<TrackedUnit>();
 
-            int heroLeft = SpawnSide(env, classes, tracked, relicLeft, team: 0, format);
-            int heroRight = SpawnSide(env, classes, tracked, relicRight, team: 1, format);
+            int heroLeft = Lineups.SpawnTeam(env, classes, tracked, new[] { relicLeft }, 0, format.Lineup)[0];
+            int heroRight = Lineups.SpawnTeam(env, classes, tracked, new[] { relicRight }, 1, format.Lineup)[0];
 
             BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, cap);
 
@@ -262,71 +248,23 @@ namespace Guildmaster.Balance.Editor
         {
             double hpLeft = 0.0, maxHp = 0.0;
             bool heroAlive = false;
+            double dealt = 0.0, taken = 0.0, reactive = 0.0;
             for (int i = 0; i < report.Units.Count; i++)
             {
                 UnitMetric m = report.Units[i];
                 if (m.Team != team) continue;
                 hpLeft += m.HpLeft;
                 maxHp += m.MaxHp;
-                if (m.Id == heroId) heroAlive = !m.Died;
+                if (m.Id != heroId) continue;
+
+                heroAlive = !m.Died;
+                dealt = m.DamageDealt;
+                taken = m.DamageTaken;
+                reactive = m.DamageReactive;
             }
 
-            return new SideResult(maxHp > 0.0 ? hpLeft / maxHp : 0.0, heroAlive);
+            return new SideResult(maxHp > 0.0 ? hpLeft / maxHp : 0.0, heroAlive, dealt, taken, reactive);
         }
-
-        /// <summary>
-        /// Развернуть сторону по строю формата: манекены занимают свои роли, кит встаёт на место своего
-        /// класса (или добавляется рядом, если формат не предполагает замещения). Возвращает индекс кита
-        /// в <paramref name="tracked"/>, он же его Id — SimBench раздаёт Id по порядку списка.
-        /// </summary>
-        private static int SpawnSide(SimEnvironment env, ClassBalanceConfig classes, List<TrackedUnit> tracked,
-            RelicData relic, int team, Format format)
-        {
-            float side = team == 0 ? -1f : 1f;   // сторона арены: команда 0 слева, команда 1 справа
-            Slot[] lineup = format.Lineup;
-
-            // Какой слот уступает место киту. Призыватель делит слот с поддержкой: обе роли стоят в тылу
-            // и в бою участвуют не автоатакой, а тем, что вокруг них происходит.
-            UnitClass heroRole = relic.CombatClass == UnitClass.Summoner ? UnitClass.Support : relic.CombatClass;
-            int takenSlot = -1;
-            if (format.HeroTakesSlot)
-            {
-                for (int s = 0; s < lineup.Length; s++)
-                    if (lineup[s].Role == heroRole) { takenSlot = s; break; }
-
-                // Роли кита в строю нет (строй короче списка классов) — тогда он вытесняет ближайшего
-                // по линии боя: фронтовой кит меняет Брузера, тыловой — дальника.
-                if (takenSlot < 0)
-                {
-                    UnitClass fallback = IsFrontline(heroRole) ? UnitClass.Bruiser : UnitClass.Ranged;
-                    for (int s = 0; s < lineup.Length; s++)
-                        if (lineup[s].Role == fallback) { takenSlot = s; break; }
-                    if (takenSlot < 0) takenSlot = 0;
-                }
-            }
-
-            for (int s = 0; s < lineup.Length; s++)
-            {
-                if (s == takenSlot) continue;
-                Slot slot = lineup[s];
-                tracked.Add(new TrackedUnit(
-                    SyntheticUnits.ReferenceAlly(slot.Role, classes, team, new Vector2(side * slot.Pos.x, slot.Pos.y)),
-                    slot.Role.ToString().ToLowerInvariant(), "ally"));
-            }
-
-            // Место кита: занятый слот либо, если формат его не двигает, свободная линия своего эшелона.
-            Vector2 heroPos = takenSlot >= 0
-                ? lineup[takenSlot].Pos
-                : new Vector2(IsFrontline(heroRole) ? FrontX : BackX, 1.2f);
-
-            int heroIndex = tracked.Count;
-            tracked.Add(new TrackedUnit(env.Real(relic, null, team, new Vector2(side * heroPos.x, heroPos.y)),
-                relic.name, relic.name));
-            return heroIndex;
-        }
-
-        private static bool IsFrontline(UnitClass unitClass)
-            => unitClass is UnitClass.Tank or UnitClass.Bruiser or UnitClass.Assassin;
 
         private static double[][] New(int n)
         {

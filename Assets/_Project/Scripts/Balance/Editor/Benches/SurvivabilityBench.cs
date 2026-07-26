@@ -15,7 +15,7 @@ namespace Guildmaster.Balance.Editor
     public static class SurvivabilityBench
     {
         private const float RefDps = 60f;
-        private const float CapSeconds = 120f;
+        private const float CapSeconds = 240f;
         private const ulong Seed = 1UL;
 
         public static (string csv, string md) Run()

@@ -27,7 +27,10 @@ namespace Guildmaster.Combat.Effects.Components
     {
         private const string CooldownMarkerId = "sys.thorns_cooldown";
 
-        [Tooltip("Доля брони носителя, уходящая в урон шипов (1 = 100% статы брони).")]
+        [Tooltip("Плоский урон залпа — основная величина. Задаётся автором и не растёт от прокачки статов.")]
+        [SerializeField] private float _flatDamage;
+
+        [Tooltip("Доля брони носителя, добавляемая к плоской базе (0.1 = 10% статы брони).")]
         [SerializeField] private float _armorRatio = 1f;
 
         [Tooltip("Радиус ответного удара вокруг носителя (мировые единицы).")]
@@ -77,7 +80,10 @@ namespace Guildmaster.Combat.Effects.Components
 
             if (_cooldownSeconds > 0f && HasEffect(self, CooldownMarker())) return;
 
-            float damage = self.Stats.Get(StatType.PhysArmor) * _armorRatio * ctx.Stacks;
+            // База + слабая доля брони (решение 2026-07-26): пока урон был чистой бронёй, каждая купленная
+            // единица защиты становилась единицей урона, и танк, вкладывающийся в живучесть, автоматически
+            // выходил в главные дамагеры игры — 554 урона в секунду по свалке против 226 у самого бьющего кита.
+            float damage = (_flatDamage + self.Stats.Get(StatType.PhysArmor) * _armorRatio) * ctx.Stacks;
             if (damage <= 0f) return;
 
             float radius = EffectiveRadius(self);

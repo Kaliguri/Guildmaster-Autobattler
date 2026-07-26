@@ -35,6 +35,13 @@ namespace Guildmaster.Combat
         // Переиспользуемый буфер соседей — без аллокаций на горячем пути.
         private readonly List<RuntimeUnit> _neighbors = new List<RuntimeUnit>();
 
+        // Накопленные за проход смещения (по индексу юнита в списке) — применяются ПОСЛЕ обхода всех пар.
+        private Vector2[] _push = new Vector2[64];
+
+        // Индекс юнита в списке: соседи приходят из хэша ссылками, а копить смещение нужно по позиции
+        // в массиве. Переиспользуется, чтобы не искать линейно на горячем пути.
+        private readonly Dictionary<RuntimeUnit, int> _indexOf = new Dictionary<RuntimeUnit, int>();
+
         /// <summary>Раздвинуть перекрывающиеся тела живых юнитов на один тик.</summary>
         public void Tick(List<RuntimeUnit> units, SpatialHash hash, in ArenaBounds bounds)
         {
@@ -52,8 +59,15 @@ namespace Guildmaster.Combat
             }
             if (maxRadius <= 0f) return;
 
+            if (_push.Length < units.Count) _push = new Vector2[units.Count];
+
+            _indexOf.Clear();
+            for (int i = 0; i < units.Count; i++) _indexOf[units[i]] = i;
+
             for (int iter = 0; iter < Iterations; iter++)
             {
+                for (int i = 0; i < units.Count; i++) _push[i] = Vector2.zero;
+
                 for (int i = 0; i < units.Count; i++)
                 {
                     RuntimeUnit a = units[i];
@@ -80,9 +94,20 @@ namespace Guildmaster.Combat
                         float pairStrength = a.Team == b.Team ? Strength * SameTeamScale : Strength;
                         Vector2 halfPush = dir * ((minDist - dist) * pairStrength * 0.5f); // по половине каждому
 
-                        a.Position = bounds.Clamp(a.Position + halfPush);
-                        b.Position = bounds.Clamp(b.Position - halfPush);
+                        _push[i] += halfPush;
+                        if (_indexOf.TryGetValue(b, out int bi)) _push[bi] -= halfPush;
                     }
+                }
+
+                // Применяем ПОСЛЕ обхода: пока сдвиг ложился прямо в позицию, каждая следующая пара
+                // считалась от уже подвинутого тела, и результат зависел от порядка соседей в хэше.
+                // У зеркальных сторон этот порядок обратный, поэтому равные команды расходились
+                // на первых же тиках и дальше разъезжались до разгромного счёта.
+                for (int i = 0; i < units.Count; i++)
+                {
+                    if (_push[i] == Vector2.zero) continue;
+                    RuntimeUnit u = units[i];
+                    u.Position = bounds.Clamp(u.Position + _push[i]);
                 }
             }
         }
