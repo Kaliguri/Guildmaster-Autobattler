@@ -40,7 +40,8 @@ namespace Guildmaster.Game
         [Tooltip("Фиксированный сид боя для воспроизводимости (баг/баланс/реплей). 0 = случайный каждый бой.")]
         [SerializeField] private long _fixedSeed;
 
-        [Tooltip("Design-конфиг «сочности» боя (вспышка/сплющивание/hitstop/slowmo/тряска). Пусто = дефолты в рантайме.")]
+        [Tooltip("Design-конфиг «сочности» боя (вспышка/сплющивание/hitstop/slowmo/тряска). ОБЯЗАТЕЛЕН. " +
+                 "Пусто = красная ошибка и НЕТ джуса вовсе (не «дефолты» — своих чисел потребители не держат).")]
         [SerializeField] private Presentation.Design.CombatFeelConfig _feelConfig;
 
         protected override void Configure(IContainerBuilder builder)
@@ -56,10 +57,10 @@ namespace Guildmaster.Game
             RegisterSimulation(builder, layout);
             RegisterPresentation(builder);
 
-            // Конфиг «сочности»: если ассет не назначен — рантайм-инстанс с дефолтами (бой не падает).
-            var feel = _feelConfig != null
-                ? _feelConfig
-                : ScriptableObject.CreateInstance<Presentation.Design.CombatFeelConfig>();
+            // Конфиг «сочности»: без ассета джус выключен целиком, а не «примерно такой» — потребители
+            // читают только конфиг и своих чисел не держат (аудит 2026-07-26, R1-34/T-9).
+            var feel = ScopeWiring.Optional(_feelConfig, nameof(CombatLifetimeScope), nameof(_feelConfig),
+                "боевого джуса не будет: ни вспышек, ни сплющивания, ни тряски");
             builder.RegisterInstance(feel);
 
             // Единый арбитр Time.timeScale (пауза/скорость/cinematic slowmo). EntryPoint — чтобы Tick()
@@ -141,13 +142,13 @@ namespace Guildmaster.Game
             // вики «13» §4.2 п.1) и границы поля arena (ArenaBounds? — значение, не сервис). Добавил
             // систему в ctor — ничего тут править не надо, лишь бы она была зарегистрирована.
             builder.Register<CombatSimulation>(Lifetime.Scoped)
-                   .WithParameter("armorK", _statsConfig.ArmorConstantK)
+                   .WithParameter("armorK", ScopeWiring.Require(_statsConfig, nameof(CombatLifetimeScope), nameof(_statsConfig)).ArmorConstantK)
                    .WithParameter("arena", (ArenaBounds?)layout.Bounds)
-                   .WithParameter("tuning", (SimTuning?)_simTuningConfig.ToSnapshot())
+                   .WithParameter("tuning", (SimTuning?)ScopeWiring.Require(_simTuningConfig, nameof(CombatLifetimeScope), nameof(_simTuningConfig)).ToSnapshot())
                    .WithParameter("cameraZone", (Rect2D?)layout.CameraZone);
 
-            StatsConfig cfg = _statsConfig;
-            ClassBalanceConfig classCfg = _classBalanceConfig;
+            StatsConfig cfg = ScopeWiring.Require(_statsConfig, nameof(CombatLifetimeScope), nameof(_statsConfig));
+            ClassBalanceConfig classCfg = ScopeWiring.Require(_classBalanceConfig, nameof(CombatLifetimeScope), nameof(_classBalanceConfig));
             builder.Register<RuntimeUnitFactory>(r => new RuntimeUnitFactory(
                 cfg,
                 classCfg,

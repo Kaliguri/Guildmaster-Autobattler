@@ -99,11 +99,14 @@ namespace Guildmaster.Tests.EditMode.Combat
         // --- Отсутствие конфига ---
 
         [Test]
-        public void NullConfig_NoOp_FallsBackToDefaults()
+        public void NullConfig_SaysSoOutLoud_AndLeavesNaturalDefaults()
         {
             var stats = new Stats(null);
+            // Отсутствие класс-конфига — авария разводки, а не режим: юнит остаётся на натуральном
+            // дефолте (MaxHP 0), и об этом ОБЯЗАН быть след в логе. Раньше здесь было тихое no-op,
+            // и именно оно давало «Здоровье 0» в панели инвентаря без единого сообщения.
+            UnityEngine.TestTools.LogAssert.Expect(UnityEngine.LogType.Warning, new System.Text.RegularExpressions.Regex("ClassBaseline"));
             ClassBaseline.Apply(stats, TestRelic.Make(combatClass: UnitClass.Tank), null);
-            // Без класс-конфига база не задаётся — натуральный дефолт MaxHP = 0.
             Assert.AreEqual(0f, stats.Get(StatType.MaxHP), 0.001f);
         }
 

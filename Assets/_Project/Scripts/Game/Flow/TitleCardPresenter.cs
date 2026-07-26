@@ -12,7 +12,8 @@ namespace Guildmaster.Game.Flow
 
     /// <summary>
     /// Презентер boot title card: публикует <see cref="OpenTitleCardRequest"/> и ждёт dismiss.
-    /// Без слушателя UI завершается сразу (headless/тесты) — тот же publish/await-паттерн, что Outcome.
+    /// <para><b>Слушатель UI обязателен</b> — см. разбор у <see cref="MainMenuPresenter"/>. Это ПЕРВЫЙ await
+    /// петли игры, поэтому без подписчика игра встаёт на чёрном экране ещё до главного меню.</para>
     /// </summary>
     public sealed class TitleCardPresenter : ITitleCardPresenter
     {

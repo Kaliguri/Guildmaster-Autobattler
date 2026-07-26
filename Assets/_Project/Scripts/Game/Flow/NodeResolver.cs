@@ -163,8 +163,12 @@ namespace Guildmaster.Game.Flow
 
             if (pool.Count == 0)
             {
-                if (wantElite) Debug.LogWarning("[NodeResolver] - нет элит-пресетов → беру обычный бой (награда ×2 остаётся)");
-                return all[ctx.Rng.NextInt(0, all.Count)]; // фолбэк на любой
+                // Говорим В ЛЮБОМ случае, а не только для Elite: у Boss `wantElite` = false, поэтому финал
+                // акта откатывался на случайный обычный бой совершенно молча (аудит фолбэков 2026-07-26, п.2).
+                // Сам откат — контентная дыра (нет ни одного _isElite-пресета), её закрывает авторинг.
+                Debug.LogWarning($"[NodeResolver] - узел '{node.Type}': нет пресетов вида " +
+                                 $"{(wantElite ? "элитный" : "обычный")} → беру случайный из всех");
+                return all[ctx.Rng.NextInt(0, all.Count)];
             }
             return pool[ctx.Rng.NextInt(0, pool.Count)];
         }

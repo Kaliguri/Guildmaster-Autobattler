@@ -15,7 +15,8 @@ namespace Guildmaster.Game
     /// </summary>
     public class WorldLifetimeScope : LifetimeScope
     {
-        [Tooltip("Design-конфиг тряски камеры (раздаётся ScreenShake-ам всех vcam). Пусто = дефолты в рантайме.")]
+        [Tooltip("Design-конфиг тряски камеры (раздаётся ScreenShake-ам всех vcam). ОБЯЗАТЕЛЕН. " +
+                 "Пусто = красная ошибка и тряски нет вовсе (ScreenShake своих чисел не держит).")]
         [SerializeField] private Presentation.Design.CombatFeelConfig _feelConfig;
 
         protected override void Configure(IContainerBuilder builder)
@@ -25,10 +26,9 @@ namespace Guildmaster.Game
             ArenaLayoutData layout = BuildArenaLayout();
             builder.RegisterInstance(layout);
 
-            // Конфиг тряски: если ассет не назначен — рантайм-инстанс с дефолтами (камера не падает).
-            var feel = _feelConfig != null
-                ? _feelConfig
-                : ScriptableObject.CreateInstance<Presentation.Design.CombatFeelConfig>();
+            // Конфиг тряски: без ассета тряски просто нет (см. ScreenShake) — не «примерно такая».
+            var feel = ScopeWiring.Optional(_feelConfig, nameof(WorldLifetimeScope), nameof(_feelConfig),
+                "тряски камеры не будет");
             builder.RegisterInstance(feel);
 
             // Вне боя камера ни за кем не следует (пустой источник точек фокуса). На входе в бой

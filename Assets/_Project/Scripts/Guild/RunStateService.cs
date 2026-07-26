@@ -52,12 +52,27 @@ namespace Guildmaster.Guild
         /// <see cref="GameConfig.GuildSize"/> одинаковых сосудов, у каждого базовый релик (пустой кит);
         /// прогрессия — реликвии, которые игрок навешивает на них в лоадауте. Сосуд-контента пока нет →
         /// <c>VesselId</c> пуст. Стартовые позиции — колонка на стороне team 0 (Free-расстановка перед боем
-        /// позволяет переставить). Дефолты-фолбэки, если конфиг не проставлен (старый ассет).
+        /// позволяет переставить). Незаполненные поля конфига подставляются, но с красной ошибкой: владелец
+        /// экономики — ассет, и тихая подстановка прятала бы то, что ассет не заполнен.
         /// </summary>
         public RunState NewDefaultRun(long seed)
         {
-            int    size    = _config.GuildSize > 0 ? _config.GuildSize : 4;
-            string relicId = string.IsNullOrEmpty(_config.StartingRelicId) ? ContentIds.BaseRelic : _config.StartingRelicId;
+            // Владелец обоих значений — ассет GameConfig (HARD-правило проекта). Пустое поле здесь не
+            // «дефолт», а незаполненный ассет: подставляем, чтобы забег вообще стартовал, но говорим об
+            // этом — тихая подстановка делала бы правку ассета невидимой (аудит фолбэков 2026-07-26).
+            int size = _config.GuildSize;
+            if (size <= 0)
+            {
+                UnityEngine.Debug.LogError($"[RunStateService] - GameConfig.GuildSize = {size}: беру 4, но это незаполненный ассет");
+                size = 4;
+            }
+
+            string relicId = _config.StartingRelicId;
+            if (string.IsNullOrEmpty(relicId))
+            {
+                UnityEngine.Debug.LogError($"[RunStateService] - GameConfig.StartingRelicId пуст: беру '{ContentIds.BaseRelic}', но это незаполненный ассет");
+                relicId = ContentIds.BaseRelic;
+            }
 
             var guild = new RosterSlot[size];
             float top = (size - 1) * 0.5f; // центрируем колонку по вертикали

@@ -18,13 +18,23 @@ namespace Guildmaster.Combat
     public static class ClassBaseline
     {
         /// <summary>
-        /// Добавить классовую базу юнита первой группой. No-op, если конфиг или данные не заданы
-        /// (враг-болванка без <see cref="UnitData"/> → падает на дефолты <c>StatsConfig</c>, как раньше).
-        /// Обязан вызываться ДО добавления стат-блока персоны.
+        /// Добавить классовую базу юнита первой группой. Обязан вызываться ДО стат-блока персоны.
+        /// <para>Нет <see cref="UnitData"/> — законный случай: враг-болванка класса не имеет, база не
+        /// добавляется. Нет <paramref name="config"/> — юнит уезжает на натуральные дефолты (<c>MaxHP</c> 0);
+        /// ровно так шипящаяся сцена показывала «Здоровье 0 / Скорость 0» во всей панели инвентаря, ничего
+        /// не сообщая. Теперь говорим вслух — но предупреждением, а не ошибкой: в ИГРЕ этот случай стал
+        /// невозможен (<c>ScopeWiring.Require</c> в обоих скоупах + <c>SceneWiringTests</c>), а в тестах
+        /// конфиг не подают намеренно, проверяя другое (аудит фолбэков 2026-07-26, п.9).</para>
         /// </summary>
         public static void Apply(Stats stats, UnitData data, ClassBalanceConfig config)
         {
-            if (stats == null || data == null || config == null) return;
+            if (stats == null || data == null) return;
+            if (config == null)
+            {
+                UnityEngine.Debug.LogWarning(
+                    $"[ClassBaseline] - нет ClassBalanceConfig: '{data.name}' останется на натуральных дефолтах (MaxHP 0)");
+                return;
+            }
             stats.AddModifiersFrom(config, config.GetBaseModifiers(data.CombatClass));
         }
     }
