@@ -746,12 +746,12 @@ namespace Guildmaster.Presentation
         // Impact-frame: держим пик hold-секунд, затем линейный спад.
         private void PlayHitFlash(Color flashColor)
         {
-            if (_sprite == null) return;
+            if (_sprite == null || _feel == null) return;
             if (_flashHandle.IsActive()) _flashHandle.Cancel();
             _activeFlashColor = flashColor;
             _flashAmount = 1f;
-            float hold = (_feel != null && _feel.EnableImpactFrame) ? Mathf.Max(0f, _feel.ImpactFrameHold) : 0f;
-            float fade = _feel != null ? _feel.FlashDuration : 0.25f;
+            float hold = _feel.EnableImpactFrame ? Mathf.Max(0f, _feel.ImpactFrameHold) : 0f;
+            float fade = _feel.FlashDuration;
             float total = hold + fade;
             if (total <= 0.0001f) { _flashAmount = 0f; return; }
 
@@ -761,7 +761,7 @@ namespace Guildmaster.Presentation
                 {
                     float holdLocal = (self._feel != null && self._feel.EnableImpactFrame)
                         ? Mathf.Max(0f, self._feel.ImpactFrameHold) : 0f;
-                    float fadeLocal = self._feel != null ? self._feel.FlashDuration : 0.25f;
+                    float fadeLocal = self._feel.FlashDuration;
                     float elapsed = v * (holdLocal + fadeLocal);
                     if (elapsed <= holdLocal) self._flashAmount = 1f;
                     else
@@ -777,9 +777,9 @@ namespace Guildmaster.Presentation
         // Вес компонуется с flip/acquire/breath в ApplyComposedScale.
         private void PlayHitSquash()
         {
-            if (_squashTarget == null) return;
+            if (_squashTarget == null || _feel == null) return;
             if (_squashHandle.IsActive()) _squashHandle.Cancel();
-            float dur = _feel != null ? _feel.SquashDuration : 0.25f;
+            float dur = _feel.SquashDuration;
             _squashHandle = LMotion.Create(1f, 0f, dur)
                 .WithEase(Ease.Linear)
                 .Bind(this, static (v, self) =>
@@ -841,9 +841,9 @@ namespace Guildmaster.Presentation
         {
             if (_squashTarget == null) return;
 
-            float hitAmt = (_feel != null ? _feel.SquashAmount : 0.4f) * _hitSquashWeight;
-            float flipAmt = (_feel != null ? _feel.FacingFlipSquashAmount : 0.35f) * _flipSquashWeight;
-            float acqAmt = (_feel != null ? _feel.TargetAcquireTwitch : 0.06f) * _acquireSquashWeight;
+            float hitAmt  = _feel != null ? _feel.SquashAmount           * _hitSquashWeight     : 0f;
+            float flipAmt = _feel != null ? _feel.FacingFlipSquashAmount * _flipSquashWeight    : 0f;
+            float acqAmt  = _feel != null ? _feel.TargetAcquireTwitch    * _acquireSquashWeight : 0f;
 
             // Hit: X+ Y-; Flip: X- (edge-on); Acquire: оба чуть вниз (вздрог).
             float sx = 1f + hitAmt - flipAmt - acqAmt * 0.5f;
@@ -983,7 +983,7 @@ namespace Guildmaster.Presentation
                     // Дрожь масштаба + белый силуэт на всё окно anticipation.
                     _flashAmount = 1f;
                     _activeFlashColor = Color.white;
-            float shake = _feel != null ? _feel.DeathAnticipateShake : 0.06f;
+            float shake = _feel != null ? _feel.DeathAnticipateShake : 0f;
             float wobble = Mathf.Sin(Time.unscaledTime * 60f) * shake;
             if (_squashTarget != null)
             {

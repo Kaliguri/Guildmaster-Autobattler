@@ -12,7 +12,10 @@ namespace Guildmaster.Presentation
     /// </summary>
     public sealed class ScreenShake : CinemachineExtension
     {
-        // Форма тряски — из CombatFeelConfig (ApplyConfig от CameraModeController). Фолбэки — если конфига нет.
+        // Форма тряски — из CombatFeelConfig (ApplyConfig от CameraModeController), и только оттуда.
+        // Своих чисел здесь нет: конфиг регистрируется в боевом скоупе с фолбэком на пустой инстанс, то есть
+        // никогда не приходит null, а вторая копия значений просто разъезжалась бы с ассетом молча
+        // (аудит 2026-07-26, R1-34/T-9). Нет конфига — нет и тряски, а не тряска «примерно такая».
         private Design.CombatFeelConfig _feel;
         private float _amplitude;
         private float _seed;
@@ -36,12 +39,12 @@ namespace Guildmaster.Presentation
             CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage,
             ref CameraState state, float deltaTime)
         {
-            if (stage != CinemachineCore.Stage.Finalize || _amplitude <= 0.0001f) return;
+            if (stage != CinemachineCore.Stage.Finalize || _amplitude <= 0.0001f || _feel == null) return;
 
-            float positionFraction = _feel != null ? _feel.ShakePositionFraction : 0.08f;
-            float rotationStrength = _feel != null ? _feel.ShakeRotationStrength : 4f;
-            float frequency        = _feel != null ? _feel.ShakeFrequency        : 26f;
-            float decayPerSec      = _feel != null ? _feel.ShakeDecayPerSec       : 2f;
+            float positionFraction = _feel.ShakePositionFraction;
+            float rotationStrength = _feel.ShakeRotationStrength;
+            float frequency        = _feel.ShakeFrequency;
+            float decayPerSec      = _feel.ShakeDecayPerSec;
 
             // Линейная амплитуда (без квадрата — тот втрое резал силу). Сдвиг привязан к обзору камеры
             // (orthoSize), иначе на широком зуме абсолютные ед. незаметны.
