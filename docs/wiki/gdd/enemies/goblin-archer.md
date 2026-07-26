@@ -4,6 +4,7 @@ kind: enemy
 status: draft
 enemy_group: Обычный
 species: Гоблины
+combat_class: РДД
 subspecies: Основные
 position: Вторая линия
 combat_range: Дальний

@@ -4,6 +4,7 @@ kind: enemy
 status: draft
 enemy_group: Элита
 species: Големы
+combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 subspecies: Земляные
 position: Фронт
 combat_range: Ближний

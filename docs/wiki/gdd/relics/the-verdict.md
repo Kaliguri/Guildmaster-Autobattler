@@ -3,6 +3,7 @@ title: "Relic - Common - The Verdict (Assassin)"
 kind: character
 status: draft
 rarity: Обычная
+combat_class: Убийца
 position: Фланг
 combat_range: Ближний
 attack_delivery:

@@ -3,6 +3,7 @@ title: "Relic - Common - The Martyr"
 kind: character
 status: needs_review
 rarity: Обычная
+combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position:
 combat_range:
 attack_delivery: []

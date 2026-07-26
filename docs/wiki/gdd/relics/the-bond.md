@@ -3,6 +3,7 @@ title: "Relic - Common - The Bond (Shaman)"
 kind: character
 status: draft
 rarity: Обычная
+combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Фронт
 combat_range: Ближний
 attack_delivery:

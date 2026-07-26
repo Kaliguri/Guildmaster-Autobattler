@@ -4,6 +4,7 @@ kind: enemy
 status: draft
 enemy_group: Обычный
 species: Гоблины
+combat_class: Брузер
 subspecies: Основные
 position: Фронт
 combat_range: Ближний

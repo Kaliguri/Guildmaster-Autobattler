@@ -62,10 +62,11 @@ SORT file.name ASC
 ## 10 · Видение (`10-vision/`)
 
 - [[vision|Vision - Overview]] — чем игра является: pitch, столпы, core loop.
-- [[pillars|Vision - Pillars]] — 4 столпа как фильтр всех решений.
+- [[pitch|Vision - Pitch]] — **сводный срез концепции 2026-07-19**; при расхождении с vision/concept главнее он.
+- [[pillars|Vision - Pillars]] — **5 столпов** как фильтр всех решений.
 - [[concept|Vision - Concept]] — жанр, ключевая идея, игровой цикл.
 - [[lore|Vision - Lore]] — сеттинг и предыстория мира.
-- [[guildmaster|Vision - Guildmaster]] — роль игрока: стартовый набор, стиль гильдии (в бою не участвует).
+- [[guildmaster|Vision - Guildmaster & Captain]] — две разведённые сущности: **Гильдмастер** — роль игрока (руководит гильдией, в бою не участвует); **Капитан** — боевая сущность забега (стартовый набор Реликвий, гильдие-широкие бонусы, стиль).
 - [[difficulty-skill|Vision - Difficulty & Skill]] — три оси, модель рандома, правила честности.
 - [[visual-direction|Vision - Visual Direction]] — визуальный опыт и дорожная карта: стиль, пост-процесс, атмосфера, свет, переходы, gamefeel.
 - [[character-animation|Vision - Character Animation]] — скелетка: два слоя движения, три оси переиспользования, инструмент, слои Animator (план, отложено).
@@ -74,7 +75,7 @@ SORT file.name ASC
 
 - [[combat-system|Combat - System]] — автобой, типы боёв, подготовка и итог.
 - [[stats|Combat - Stats]] — словарь и смысл боевых статов.
-- [[positioning|Combat - Positioning]] — слоты вокруг цели, бонус за тыл, поведение классов в свободное окно (в обсуждении).
+- [[positioning|Combat - Positioning]] — слоты вокруг цели, бонус за тыл, удержание линии танком, поведение классов (круг вердиктов закрыт 2026-07-26).
 - [[effects|Combat - Effects]] — каталог эффектов + идентичность стихий и сродств.
 
 ## 30 · Забег и мета (`30-run-meta/`)

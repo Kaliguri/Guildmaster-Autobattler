@@ -4,6 +4,7 @@ kind: enemy
 status: draft
 enemy_group: Обычный
 species: Звери
+combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 subspecies: Волчья стая
 position: Фланг
 combat_range: Ближний

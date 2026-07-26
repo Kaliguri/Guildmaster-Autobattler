@@ -3,6 +3,7 @@ title: "Relic - Common - The Bloom (Druid)"
 kind: character
 status: draft
 rarity: Обычная
+combat_class: Поддержка
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:

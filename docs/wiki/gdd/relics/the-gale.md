@@ -3,6 +3,7 @@ title: "Relic - Common - The Gale (Monk)"
 kind: character
 status: draft
 rarity: Обычная
+combat_class: Брузер
 position: Фланг
 combat_range: Ближний
 attack_delivery:

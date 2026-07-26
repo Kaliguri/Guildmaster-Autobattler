@@ -3,6 +3,7 @@ title: "Relic - Common - The Thorn (Treant)"
 kind: character
 status: draft
 rarity: Обычная
+combat_class: Танк
 position: Фронт
 combat_range: Ближний
 attack_delivery:

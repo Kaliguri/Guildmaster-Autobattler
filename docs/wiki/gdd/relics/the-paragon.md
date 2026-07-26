@@ -3,6 +3,7 @@ title: "Relic - Unique - The Paragon (Juggernaut)"
 kind: character
 status: draft
 rarity: Уникальная
+combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Фронт
 combat_range: Ближний
 attack_delivery:

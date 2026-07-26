@@ -3,6 +3,7 @@ title: "Relic - Common - The Tide (Tidecaller)"
 kind: character
 status: draft
 rarity: Обычная
+combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:

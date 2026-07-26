@@ -3,6 +3,7 @@ title: "Relic - Common - The Cadence (Bard)"
 kind: character
 status: draft
 rarity: Обычная
+combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Вторая линия
 combat_range: Без автоатаки
 attack_delivery: []

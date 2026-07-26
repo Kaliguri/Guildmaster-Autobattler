@@ -4,6 +4,7 @@ kind: enemy
 status: draft
 enemy_group: Обычный
 species: Гоблины
+combat_class: Убийца
 subspecies: Основные
 position: Фланг
 combat_range: Ближний

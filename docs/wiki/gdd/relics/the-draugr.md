@@ -3,6 +3,7 @@ title: "Relic - Common - The Draugr (Berserker)"
 kind: character
 status: needs_review
 rarity: Обычная
+combat_class:   # НЕ ОПРЕДЕЛЁН — задаёт базу HP/скорости, нужно решение
 position: Фронт
 combat_range: Ближний
 attack_delivery: []

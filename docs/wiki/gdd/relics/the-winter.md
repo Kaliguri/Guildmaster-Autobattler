@@ -3,6 +3,7 @@ title: "Relic - Common - The Winter (Cryomancer)"
 kind: character
 status: draft
 rarity: Обычная
+combat_class: РДД
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:

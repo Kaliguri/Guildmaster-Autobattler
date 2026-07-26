@@ -3,6 +3,7 @@ title: "Relic - Common - The Pyre (Swordsman)"
 kind: character
 status: draft
 rarity: Обычная
+combat_class: Брузер
 position: Фронт
 combat_range: Ближний
 attack_delivery:
