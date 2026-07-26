@@ -137,6 +137,7 @@ namespace Guildmaster.UI
         private IDisposable _screenFadeSubscription;
         private VisualElement _screenFade;
         private RenderTexture _fadeRt;
+        private Material _fadeMat; // рабочая КОПИЯ материала перехода (ассет не трогаем — см. EnsureFadeMaterial)
 
         private const int FadeTextureHeight = 360; // высота картинки шторки; ширина считается по аспекту экрана
         private static readonly int FadeProgressId = Shader.PropertyToID("_Progress");
@@ -484,14 +485,15 @@ namespace Guildmaster.UI
             }
 
             RenderTexture rt = EnsureFadeTexture();
-            _transitionMaterial.SetFloat(FadeProgressId, p);
-            _transitionMaterial.SetVector(FadeCenterId, center);
-            _transitionMaterial.SetVector(FadeSeedId, seed);
-            _transitionMaterial.SetFloat(FadeAspectId, (float)rt.width / Mathf.Max(1, rt.height));
+            Material mat = EnsureFadeMaterial();
+            mat.SetFloat(FadeProgressId, p);
+            mat.SetVector(FadeCenterId, center);
+            mat.SetVector(FadeSeedId, seed);
+            mat.SetFloat(FadeAspectId, (float)rt.width / Mathf.Max(1, rt.height));
 
             // Форму смыкания берём из рисунка ТОЛЬКО когда он есть: пустой слот в шейдере читается как
             // чёрная текстура, и без этой проверки кадр закрывался бы разом, а не сходился к точке.
-            _transitionMaterial.SetFloat(FadeUseShapeId, _transitionMaterial.GetTexture(FadeShapeTexId) != null ? 1f : 0f);
+            mat.SetFloat(FadeUseShapeId, mat.GetTexture(FadeShapeTexId) != null ? 1f : 0f);
 
             // Чистим цель перед отрисовкой: у шейдера прозрачный блендинг, и без очистки кадры копились бы
             // друг на друге, а шторка чернела бы сама по себе.
@@ -500,10 +502,20 @@ namespace Guildmaster.UI
             GL.Clear(true, true, Color.clear);
             RenderTexture.active = prev;
 
-            Graphics.Blit(Texture2D.whiteTexture, rt, _transitionMaterial);
+            Graphics.Blit(Texture2D.whiteTexture, rt, mat);
 
             _screenFade.style.opacity = 1f; // плотность внутри картинки, а не в прозрачности элемента
             _screenFade.style.backgroundImage = Background.FromRenderTexture(rt);
+        }
+
+        // Рисуем КОПИЕЙ материала, а не самим ассетом. Ход перехода пишется в параметры каждый кадр, и на
+        // общем ассете это грязнило бы проект: после каждого play-теста в .mat оседали чужие прогресс,
+        // центр и жребий, и они уезжали в git как «изменение».
+        private Material EnsureFadeMaterial()
+        {
+            if (_fadeMat == null)
+                _fadeMat = new Material(_transitionMaterial) { name = _transitionMaterial.name + " (runtime)" };
+            return _fadeMat;
         }
 
         // Текстура шторки НАМЕРЕННО мельче экрана: дизеринг чернил рисуется её пикселями, и на полном
@@ -656,6 +668,7 @@ namespace Guildmaster.UI
             _tooltips?.Detach();                                      // Трек Т: снять окно и подписки с панели
 
             if (_fadeRt != null) { _fadeRt.Release(); _fadeRt = null; } // цель шторки живёт вне GC — освобождаем руками
+            if (_fadeMat != null) { Destroy(_fadeMat); _fadeMat = null; }
         }
 
         // Семантика ESC (план II.4, КОНСТИТУЦИЯ): показан тултип → ESC гасит ЕГО и меню не трогает.
