@@ -25,14 +25,13 @@ namespace Guildmaster.Presentation
         private static readonly int SpreadId     = Shader.PropertyToID("_Spread");
         private static readonly int TumbleId     = Shader.PropertyToID("_Tumble");
         private static readonly int UpBiasId     = Shader.PropertyToID("_UpBias");
-        private static readonly int EmberColorId = Shader.PropertyToID("_EmberColor");
-        private static readonly int EmberCoreId  = Shader.PropertyToID("_EmberCore");
-        private static readonly int EmberTailId  = Shader.PropertyToID("_EmberTail");
+        private static readonly int ShardWhiteId = Shader.PropertyToID("_ShardWhite");
+        private static readonly int ShardUnitAId = Shader.PropertyToID("_ShardUnitA");
+        private static readonly int ShardUnitBId = Shader.PropertyToID("_ShardUnitB");
+        private static readonly int WhiteShareId = Shader.PropertyToID("_WhiteShare");
         private static readonly int EmberBoostId = Shader.PropertyToID("_EmberBoost");
-        private static readonly int EmberStartId = Shader.PropertyToID("_EmberStart");
         private static readonly int ShardLumaId  = Shader.PropertyToID("_ShardLuma");
         private static readonly int FadePowerId  = Shader.PropertyToID("_FadePower");
-        private static readonly int HueJitterId  = Shader.PropertyToID("_HueJitter");
         private static readonly int LifeVarId    = Shader.PropertyToID("_LifeVariance");
         private static readonly int GlowId       = Shader.PropertyToID("_Glow");
 
@@ -47,7 +46,11 @@ namespace Guildmaster.Presentation
         private bool  _running;
 
         /// <summary>Запустить разлёт из текущего состояния спрайта <paramref name="src"/>.</summary>
-        public void Play(SpriteRenderer src, Design.CombatFeelConfig cfg, System.Action onComplete)
+        /// <param name="palette">
+        /// Палитра ПАВШЕГО юнита: часть осколков красится ею, остальные — белым пересветом. Так разлёт
+        /// говорит, кто именно погиб, а не «здесь кто-то умер».
+        /// </param>
+        public void Play(SpriteRenderer src, Design.CombatFeelConfig cfg, Gradient palette, System.Action onComplete)
         {
             _onComplete = onComplete;
             _flashIn  = cfg != null ? cfg.ShatterFlashIn  : 0.08f;
@@ -110,14 +113,15 @@ namespace Guildmaster.Presentation
             _mpb.SetFloat(SpreadId,  cfg != null ? cfg.ShatterSpread : 1.2f);
             _mpb.SetFloat(TumbleId,  cfg != null ? cfg.ShatterTumble : 9f);
             _mpb.SetFloat(UpBiasId,  cfg != null ? cfg.ShatterUpBias : 0.6f);
-            _mpb.SetColor(EmberColorId, cfg != null ? cfg.ShatterEmberColor : new Color(0.25f, 0.9f, 1f, 1f));
-            _mpb.SetColor(EmberCoreId,  cfg != null ? cfg.ShatterEmberCore  : new Color(0.85f, 1f, 1f, 1f));
-            _mpb.SetColor(EmberTailId,  cfg != null ? cfg.ShatterEmberTail  : new Color(0.1f, 0.3f, 0.95f, 1f));
+            Color unitA = palette != null ? palette.Evaluate(0f) : new Color(0.25f, 0.9f, 1f, 1f);
+            Color unitB = palette != null ? palette.Evaluate(1f) : unitA;
+            _mpb.SetColor(ShardWhiteId, cfg != null ? cfg.ShardWhiteColor : new Color(1.6f, 1.62f, 1.7f, 1f));
+            _mpb.SetColor(ShardUnitAId, unitA);
+            _mpb.SetColor(ShardUnitBId, unitB);
+            _mpb.SetFloat(WhiteShareId, cfg != null ? cfg.ShardWhiteShare : 0.5f);
             _mpb.SetFloat(EmberBoostId, cfg != null ? cfg.ShatterEmberBoost : 2f);
-            _mpb.SetFloat(EmberStartId, cfg != null ? cfg.ShatterEmberStart : 0f);
             _mpb.SetFloat(ShardLumaId,  cfg != null ? cfg.ShatterLuma       : 0.35f);
             _mpb.SetFloat(FadePowerId,  cfg != null ? cfg.ShatterFadePower  : 0.35f);
-            _mpb.SetFloat(HueJitterId,  cfg != null ? cfg.ShatterHueJitter  : 0.35f);
             _mpb.SetFloat(LifeVarId,    cfg != null ? cfg.ShatterLifeVariance : 0.35f);
             _mpb.SetFloat(GlowId,       cfg != null ? cfg.ShatterGlow       : 1f);
             _mpb.SetFloat(FlashAmtId, 0f);

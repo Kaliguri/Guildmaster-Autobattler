@@ -1245,7 +1245,9 @@ namespace Guildmaster.Presentation
             Transform visualParent = _sprite.transform.parent != null ? _sprite.transform.parent : transform;
             go.transform.SetParent(visualParent, worldPositionStays: false);
             var shatter = go.AddComponent<DeathShatter>();
-            shatter.Play(_sprite, _feel, () => gameObject.SetActive(false));
+            // Палитра павшего — из его же данных: осколки должны быть «его» цвета.
+            Gradient palette = _unit?.Unit != null ? _unit.Unit.ResolveVfxPalette() : null;
+            shatter.Play(_sprite, _feel, palette, () => gameObject.SetActive(false));
 
             _sprite.enabled = false; // дальше показывают осколки, исходный спрайт прячем
         }

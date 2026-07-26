@@ -5,8 +5,8 @@ Shader "Guildmaster/Sprite/Shatter"
     // (COLOR: r=speed, g=spin, b=dirJitter, a=tumbleAxis/phase). Vertex-шейдер двигает три вершины
     // треугольника как жёсткое целое: ПСЕВДО-3D кувыркание вокруг случайной оси (сжатие поперёк оси по
     // |cos| — ортопроекция переворота квада) + 2D-спин вокруг центроида + дрейф вверх-и-наружу + гравитация,
-    // по прогрессу _Shatter (0..1). Цвет осколка — НЕ цвет юнита: тело кончилось стадией раньше, здесь уже
-    // светящийся уголёк по рампе core→mid→tail (bloom подхватит яркость) + гашение к концу. Текстура даёт
+    // по прогрессу _Shatter (0..1). Цвет: около половины осколков — белый пересвет, остальные — из палитры
+    // ПАВШЕГО юнита (так разлёт говорит, кто погиб), всё в HDR под bloom + гашение к концу. Текстура даёт
     // только форму: альфа режет силуэт, яркость — фактуру. Пасс Universal2D обязателен для Renderer2D.
     //
     // Разброс между осколками берётся хешем от центроида блока — он у каждого свой, и отдельный
@@ -29,14 +29,13 @@ Shader "Guildmaster/Sprite/Shatter"
         _Spread ("Dir Spread", Float) = 0.8
         _Tumble ("Tumble (pseudo-3D)", Float) = 9
         _UpBias ("Up-and-out drift bias", Float) = 0.6
-        [HDR] _EmberColor ("Ember Color (mid)", Color) = (0.25, 0.9, 1, 1)
-        [HDR] _EmberCore ("Ember Core (белое ядро)", Color) = (0.85, 1, 1, 1)
-        [HDR] _EmberTail ("Ember Tail (глубокий синий)", Color) = (0.1, 0.3, 0.95, 1)
+        [HDR] _ShardWhite ("Shard White (около-белый)", Color) = (1.6, 1.62, 1.7, 1)
+        [HDR] _ShardUnitA ("Shard Unit A (палитра павшего)", Color) = (0.25, 0.9, 1, 1)
+        [HDR] _ShardUnitB ("Shard Unit B (палитра павшего)", Color) = (0.25, 0.9, 1, 1)
+        _WhiteShare ("Доля около-белых осколков", Range(0, 1)) = 0.5
         _EmberBoost ("Ember Emissive Boost", Float) = 2
-        _EmberStart ("Ember Ramp Start (age)", Range(0, 1)) = 0
         _ShardLuma ("Фактура спрайта в яркости осколка", Range(0, 1)) = 0.35
         _FadePower ("Fade Power (меньше = дольше держится)", Range(0.15, 3)) = 0.35
-        _HueJitter ("Hue Jitter (доля осколков в тёплое)", Range(0, 1)) = 0.35
         _LifeVariance ("Life Variance (разброс скорости угасания)", Range(0, 0.8)) = 0.35
         _Glow ("Glow (аддитивность уголька)", Range(0, 1)) = 1
         [HideInInspector] _Flip ("Flip", Vector) = (1, 1, 1, 1)
@@ -91,9 +90,10 @@ Shader "Guildmaster/Sprite/Shatter"
                 half4 _Color;
                 half4 _Flip;
                 half4 _FlashColor;
-                half4 _EmberColor;
-                half4 _EmberCore;
-                half4 _EmberTail;
+                half4 _ShardWhite;
+                half4 _ShardUnitA;
+                half4 _ShardUnitB;
+                half  _WhiteShare;
                 half  _FlashAmount;
                 half  _Shatter;
                 half  _Explode;
@@ -103,10 +103,8 @@ Shader "Guildmaster/Sprite/Shatter"
                 half  _Tumble;
                 half  _UpBias;
                 half  _EmberBoost;
-                half  _EmberStart;
                 half  _ShardLuma;
                 half  _FadePower;
-                half  _HueJitter;
                 half  _LifeVariance;
                 half  _Glow;
             CBUFFER_END
@@ -178,15 +176,11 @@ Shader "Guildmaster/Sprite/Shatter"
                 // Текстура остаётся только формой: её альфа режет силуэт, её яркость даёт фактуру.
                 half lum = dot(tex.rgb, half3(0.299h, 0.587h, 0.114h));
 
-                // Рампа уголька по возрасту: белое ядро → тело → глубокий хвост.
-                half rampT = saturate((age - _EmberStart) / max(1.0h - _EmberStart, 0.0001h));
-                half3 mid = _EmberColor.rgb;
-                // Часть осколков уходит в тёплое (жёлто-зелёные искры в ядре вспышки). Оттенок берём поворотом
-                // каналов самого mid-цвета: циан → салат, и он остаётся согласован с палитрой без лишнего поля.
-                mid = lerp(mid, mid.gbr, step(i.shardRnd, _HueJitter));
-                half3 ember = rampT < 0.5h
-                    ? lerp(_EmberCore.rgb, mid, rampT * 2.0h)
-                    : lerp(mid, _EmberTail.rgb, (rampT - 0.5h) * 2.0h);
+                // Цвет осколка: примерно половина — около-белые (цифровой пересвет), остальные — из палитры
+                // ПАВШЕГО юнита, чтобы разлёт говорил, кто именно погиб. Выбор по хешу осколка, оттенок
+                // внутри палитры — по нему же: рой выходит смешанным, а не полосатым.
+                half3 unitCol = lerp(_ShardUnitA.rgb, _ShardUnitB.rgb, frac(i.shardRnd * 7.13h));
+                half3 ember = lerp(unitCol, _ShardWhite.rgb, step(i.shardRnd, _WhiteShare));
 
                 ember *= _EmberBoost * lerp(1.0h, 0.6h + lum * 0.8h, _ShardLuma);
 

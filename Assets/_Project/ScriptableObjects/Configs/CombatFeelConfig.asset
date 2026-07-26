@@ -100,25 +100,22 @@ MonoBehaviour:
   _numberMaxScale: 1.7
   _numberFullFrac: 0.25
   _shatterFlashIn: 0.08
-  _shatterDuration: 1.4
-  _shatterExplode: 1.2
+  _shatterDuration: 2
+  _shatterExplode: 0.5
   _shatterGravity: 0
-  _shatterSpin: 3
-  _shatterSpread: 1.2
+  _shatterSpin: 1.4
+  _shatterSpread: 0.7
   _shatterBlockPixels: 3
-  _shatterTumble: 9
-  _shatterUpBias: 0.6
+  _shatterTumble: 22
+  _shatterUpBias: 0.35
   _shatterFlashOut: 0.12
-  _shatterEmberColor: {r: 0.25, g: 0.9, b: 1, a: 1}
-  _shatterEmberCore: {r: 0.85, g: 1, b: 1, a: 1}
-  _shatterEmberTail: {r: 0.1, g: 0.3, b: 0.95, a: 1}
-  _shatterFadePower: 0.9
-  _shatterHueJitter: 0.35
+  _shardWhiteColor: {r: 2.6, g: 2.62, b: 2.75, a: 1}
+  _shardWhiteShare: 0.5
+  _shatterFadePower: 0.55
   _shatterLifeVariance: 0.35
   _shatterGlow: 1
-  _shatterEmberBoost: 1.7
-  _shatterEmberStart: 0
-  _shatterLuma: 0.35
+  _shatterEmberBoost: 2.8
+  _shatterLuma: 0.25
   _shatterHold: 0.05
   _shatterMinTimeScale: 0.4
   _deathFlashColor: {r: 1.7, g: 1.7, b: 1.8, a: 1}
