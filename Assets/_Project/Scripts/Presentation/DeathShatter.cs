@@ -29,6 +29,7 @@ namespace Guildmaster.Presentation
         private static readonly int EmberTailId  = Shader.PropertyToID("_EmberTail");
         private static readonly int EmberBoostId = Shader.PropertyToID("_EmberBoost");
         private static readonly int EmberStartId = Shader.PropertyToID("_EmberStart");
+        private static readonly int ShardLumaId  = Shader.PropertyToID("_ShardLuma");
         private static readonly int FadePowerId  = Shader.PropertyToID("_FadePower");
         private static readonly int HueJitterId  = Shader.PropertyToID("_HueJitter");
         private static readonly int LifeVarId    = Shader.PropertyToID("_LifeVariance");
@@ -110,7 +111,8 @@ namespace Guildmaster.Presentation
             _mpb.SetColor(EmberCoreId,  cfg != null ? cfg.ShatterEmberCore  : new Color(0.85f, 1f, 1f, 1f));
             _mpb.SetColor(EmberTailId,  cfg != null ? cfg.ShatterEmberTail  : new Color(0.1f, 0.3f, 0.95f, 1f));
             _mpb.SetFloat(EmberBoostId, cfg != null ? cfg.ShatterEmberBoost : 2f);
-            _mpb.SetFloat(EmberStartId, cfg != null ? cfg.ShatterEmberStart : 0.4f);
+            _mpb.SetFloat(EmberStartId, cfg != null ? cfg.ShatterEmberStart : 0f);
+            _mpb.SetFloat(ShardLumaId,  cfg != null ? cfg.ShatterLuma       : 0.35f);
             _mpb.SetFloat(FadePowerId,  cfg != null ? cfg.ShatterFadePower  : 0.35f);
             _mpb.SetFloat(HueJitterId,  cfg != null ? cfg.ShatterHueJitter  : 0.35f);
             _mpb.SetFloat(LifeVarId,    cfg != null ? cfg.ShatterLifeVariance : 0.35f);

@@ -172,7 +172,7 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private float _shatterTumble = 9f;
         [Tooltip("Восходящий дрейф: смещает разлёт вверх-и-наружу (0 = строго радиально, больше = осколки уходят вверх).")]
         [SerializeField] private float _shatterUpBias = 0.6f;
-        [Tooltip("За сколько секунд impact-вспышка спадает обратно (осколки возвращают исходный цвет юнита перед выцветанием).")]
+        [Tooltip("За сколько секунд пересвет спадает и осколки становятся видны как угольки.")]
         [SerializeField] private float _shatterFlashOut = 0.12f;
         [Tooltip("Цвет выцветания осколков — СЕРЕДИНА рампы (SAO-бирюза). HDR — яркость >1 ловит bloom.")]
         [ColorUsage(true, true)] [SerializeField] private Color _shatterEmberColor = new Color(0.25f, 0.9f, 1f, 1f);
@@ -190,8 +190,10 @@ namespace Guildmaster.Presentation.Design
         [SerializeField, Range(0f, 1f)] private float _shatterGlow = 1f;
         [Tooltip("Множитель яркости цвета выцветания (emissive под bloom). 1 = как есть, больше = сильнее светятся.")]
         [SerializeField] private float _shatterEmberBoost = 2f;
-        [Tooltip("С какого прогресса разлёта (0..1) осколки начинают выцветать в ember-цвет.")]
-        [SerializeField, Range(0f, 1f)] private float _shatterEmberStart = 0.4f;
+        [Tooltip("С какого возраста осколка (0..1) стартует рампа core→mid→tail. 0 = уголёк с первого кадра.")]
+        [SerializeField, Range(0f, 1f)] private float _shatterEmberStart;
+        [Tooltip("Сколько фактуры спрайта остаётся в ЯРКОСТИ осколка (цвет всегда наш). 0 = ровное свечение.")]
+        [SerializeField, Range(0f, 1f)] private float _shatterLuma = 0.35f;
         [Tooltip("Микро-hold перед разлётом: осколки «кристаллизуются», сек (0 = без hold).")]
         [SerializeField] private float _shatterHold = 0.05f;
         [Tooltip("Пол шкалы времени для разлёта: насколько сильно финишер-slowmo вправе его замедлять. " +
@@ -350,6 +352,7 @@ namespace Guildmaster.Presentation.Design
         public float ShatterGlow       => _shatterGlow;
         public float ShatterEmberBoost => _shatterEmberBoost;
         public float ShatterEmberStart => _shatterEmberStart;
+        public float ShatterLuma       => _shatterLuma;
         public float ShatterHold       => _shatterHold;
         public float ShatterMinTimeScale => _shatterMinTimeScale;
 

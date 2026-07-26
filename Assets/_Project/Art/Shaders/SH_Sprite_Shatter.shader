@@ -5,9 +5,9 @@ Shader "Guildmaster/Sprite/Shatter"
     // (COLOR: r=speed, g=spin, b=dirJitter, a=tumbleAxis/phase). Vertex-шейдер двигает три вершины
     // треугольника как жёсткое целое: ПСЕВДО-3D кувыркание вокруг случайной оси (сжатие поперёк оси по
     // |cos| — ортопроекция переворота квада) + 2D-спин вокруг центроида + дрейф вверх-и-наружу + гравитация,
-    // по прогрессу _Shatter (0..1). Цвет — три фазы: impact-вспышка (импульс _FlashAmount) → возврат исходного
-    // цвета → выцветание в тлеющий уголёк по РАМПЕ core→mid→tail (bloom подхватит яркость) + гашение к концу.
-    // Пасс Universal2D — обязателен для Renderer2D (иначе невидим).
+    // по прогрессу _Shatter (0..1). Цвет осколка — НЕ цвет юнита: тело кончилось стадией раньше, здесь уже
+    // светящийся уголёк по рампе core→mid→tail (bloom подхватит яркость) + гашение к концу. Текстура даёт
+    // только форму: альфа режет силуэт, яркость — фактуру. Пасс Universal2D обязателен для Renderer2D.
     //
     // Разброс между осколками берётся хешем от центроида блока — он у каждого свой, и отдельный
     // вершинный канал под это не нужен. Хеш чисто визуальный: сходиться с C# ему не с чем, поэтому
@@ -33,7 +33,8 @@ Shader "Guildmaster/Sprite/Shatter"
         [HDR] _EmberCore ("Ember Core (белое ядро)", Color) = (0.85, 1, 1, 1)
         [HDR] _EmberTail ("Ember Tail (глубокий синий)", Color) = (0.1, 0.3, 0.95, 1)
         _EmberBoost ("Ember Emissive Boost", Float) = 2
-        _EmberStart ("Ember Fade Start (age)", Range(0, 1)) = 0.4
+        _EmberStart ("Ember Ramp Start (age)", Range(0, 1)) = 0
+        _ShardLuma ("Фактура спрайта в яркости осколка", Range(0, 1)) = 0.35
         _FadePower ("Fade Power (меньше = дольше держится)", Range(0.15, 3)) = 0.35
         _HueJitter ("Hue Jitter (доля осколков в тёплое)", Range(0, 1)) = 0.35
         _LifeVariance ("Life Variance (разброс скорости угасания)", Range(0, 0.8)) = 0.35
@@ -103,6 +104,7 @@ Shader "Guildmaster/Sprite/Shatter"
                 half  _UpBias;
                 half  _EmberBoost;
                 half  _EmberStart;
+                half  _ShardLuma;
                 half  _FadePower;
                 half  _HueJitter;
                 half  _LifeVariance;
@@ -167,31 +169,36 @@ Shader "Guildmaster/Sprite/Shatter"
 
             half4 ShatterFragment(Varyings i) : SV_Target
             {
-                half4 tex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv) * _Color; // фаза 2: исходный цвет юнита
-                half age    = saturate(i.age);
-                half emberT = smoothstep(_EmberStart, 1.0, age);
+                half4 tex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+                half age  = saturate(i.age);
 
-                // Фаза 3 — выцветание в уголёк по РАМПЕ: белое ядро → тело → глубокий хвост. Один цвет на всё
-                // выцветание давал плоскую заливку; в референсе осколок ближе к ядру белый, дальше — синеет.
+                // Осколок — это УЖЕ не тело. Стадии заданы так: обычный вид → голограмма → белый пересвет →
+                // светящиеся осколки; цвета спрайта в последней нет. Раньше здесь возвращался родной цвет
+                // юнита, и на нём же гасло свечение — грязный тёмный тон не переступал порог bloom.
+                // Текстура остаётся только формой: её альфа режет силуэт, её яркость даёт фактуру.
+                half lum = dot(tex.rgb, half3(0.299h, 0.587h, 0.114h));
+
+                // Рампа уголька по возрасту: белое ядро → тело → глубокий хвост.
+                half rampT = saturate((age - _EmberStart) / max(1.0h - _EmberStart, 0.0001h));
                 half3 mid = _EmberColor.rgb;
                 // Часть осколков уходит в тёплое (жёлто-зелёные искры в ядре вспышки). Оттенок берём поворотом
                 // каналов самого mid-цвета: циан → салат, и он остаётся согласован с палитрой без лишнего поля.
                 mid = lerp(mid, mid.gbr, step(i.shardRnd, _HueJitter));
-                half3 ember = emberT < 0.5h
-                    ? lerp(_EmberCore.rgb, mid, emberT * 2.0h)
-                    : lerp(mid, _EmberTail.rgb, (emberT - 0.5h) * 2.0h);
-                tex.rgb = lerp(tex.rgb, ember * _EmberBoost, emberT);
+                half3 ember = rampT < 0.5h
+                    ? lerp(_EmberCore.rgb, mid, rampT * 2.0h)
+                    : lerp(mid, _EmberTail.rgb, (rampT - 0.5h) * 2.0h);
 
-                // Фаза 1 — impact-вспышка в белый (импульс _FlashAmount из DeathShatter: растёт, затем спадает).
-                tex.rgb = lerp(tex.rgb, _FlashColor.rgb, saturate(_FlashAmount));
+                ember *= _EmberBoost * lerp(1.0h, 0.6h + lum * 0.8h, _ShardLuma);
+
+                // Пересвет предыдущей стадии догорает поверх (импульс _FlashAmount из DeathShatter).
+                half3 rgb = lerp(ember, _FlashColor.rgb, saturate(_FlashAmount));
 
                 // Гашение с зажимом: при _FadePower < 1 осколок держит яркость почти весь путь и тухнет в конце.
-                half a = tex.a * pow(saturate(1.0 - age), _FadePower);
+                half a = tex.a * pow(saturate(1.0 - age), _FadePower) * _Color.a;
 
-                // Premultiplied. Пока это кусок тела — обычный альфа-блендинг; по мере превращения в уголёк
-                // выходная альфа уводится в 0 при сохранённом rgb, и осколок начинает светить поверх фона.
-                half glow = emberT * _Glow;
-                return half4(tex.rgb * a, a * (1.0h - glow));
+                // Premultiplied: выходная альфа уводится в 0 при сохранённом rgb — осколок светит ПОВЕРХ фона,
+                // а не заслоняет его. При _Glow = 0 остаётся обычная прозрачность.
+                return half4(rgb * a, a * (1.0h - _Glow));
             }
             ENDHLSL
         }
