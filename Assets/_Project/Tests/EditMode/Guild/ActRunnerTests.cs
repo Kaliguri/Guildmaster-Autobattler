@@ -20,12 +20,12 @@ namespace Guildmaster.Tests.EditMode.Guild
     public sealed class ActRunnerTests
     {
         private RunStateService _runStates;
-        private InMemorySave    _save;
+        private InMemorySaveService    _save;
 
         [SetUp]
         public void SetUp()
         {
-            _save = new InMemorySave();
+            _save = new InMemorySaveService();
             var config = ScriptableObject.CreateInstance<GameConfig>();
             _runStates = new RunStateService(_save, config);
         }
@@ -224,16 +224,6 @@ namespace Guildmaster.Tests.EditMode.Guild
             public int NodeEntries;
             public void EnterRestBeat(System.Threading.CancellationToken ct) => RestBeats++;
             public void EnterNode() => NodeEntries++;
-        }
-
-        private sealed class InMemorySave : ISaveService
-        {
-            private readonly Dictionary<string, object> _store = new Dictionary<string, object>();
-            public void Save<T>(string key, T value) => _store[key] = value;
-            public T Load<T>(string key) => _store.TryGetValue(key, out var v) ? (T)v : default;
-            public bool Exists(string key) => _store.ContainsKey(key);
-            public void Delete(string key) => _store.Remove(key);
-            public void Clear() => _store.Clear();
         }
     }
 }

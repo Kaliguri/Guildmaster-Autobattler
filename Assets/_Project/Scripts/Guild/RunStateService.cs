@@ -88,11 +88,16 @@ namespace Guildmaster.Guild
             return NewRun(seed, guild);
         }
 
-        /// <summary>Загрузить забег из автосейва (или null, если нет). Устанавливает <see cref="Current"/>.</summary>
-        public RunState Load()
+        /// <summary>
+        /// Загрузить забег из автосейва. Возвращает <b>исход</b>, а не голое значение: «сейва нет» и
+        /// «сейв из более новой версии игры» требуют разного ответа игроку, а <see cref="Current"/>
+        /// подменяется только при успехе — иначе первый же автосейв затёр бы чужой прогресс.
+        /// </summary>
+        public SaveLoadResult<RunState> TryLoad()
         {
-            Current = _save.Load<RunState>(SaveKey);
-            return Current;
+            SaveLoadResult<RunState> result = _save.TryLoad<RunState>(SaveKey);
+            if (result.IsOk) Current = result.Value;
+            return result;
         }
 
         /// <summary>

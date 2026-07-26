@@ -27,7 +27,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         public void SetUp()
         {
             _config    = ScriptableObject.CreateInstance<GameConfig>();
-            _runStates = new RunStateService(new MemSave(), _config);
+            _runStates = new RunStateService(new InMemorySaveService(), _config);
         }
 
         [Test]
@@ -124,15 +124,6 @@ namespace Guildmaster.Tests.EditMode.Guild
                 def = null; return false;
             }
             public IReadOnlyList<T> All<T>() where T : ContentDefinition => Array.Empty<T>();
-        }
-
-        private sealed class MemSave : ISaveService
-        {
-            private readonly Dictionary<string, object> _s = new();
-            public void Save<T>(string key, T value) => _s[key] = value;
-            public T Load<T>(string key) => _s.TryGetValue(key, out var v) ? (T)v : default;
-            public bool Exists(string key) => _s.ContainsKey(key);
-            public void Delete(string key) => _s.Remove(key);
         }
     }
 }

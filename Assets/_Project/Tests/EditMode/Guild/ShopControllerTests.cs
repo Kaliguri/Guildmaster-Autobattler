@@ -26,7 +26,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         public void SetUp()
         {
             _config = ScriptableObject.CreateInstance<GameConfig>();
-            var save = new MemSave();
+            var save = new InMemorySaveService();
             _runStates = new RunStateService(save, _config);
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
 
@@ -144,15 +144,6 @@ namespace Guildmaster.Tests.EditMode.Guild
             }
             public IReadOnlyList<T> All<T>() where T : ContentDefinition =>
                 typeof(T) == typeof(RelicData) ? (IReadOnlyList<T>)_relics : Array.Empty<T>();
-        }
-
-        private sealed class MemSave : ISaveService
-        {
-            private readonly Dictionary<string, object> _s = new();
-            public void Save<T>(string key, T value) => _s[key] = value;
-            public T Load<T>(string key) => _s.TryGetValue(key, out var v) ? (T)v : default;
-            public bool Exists(string key) => _s.ContainsKey(key);
-            public void Delete(string key) => _s.Remove(key);
         }
     }
 }

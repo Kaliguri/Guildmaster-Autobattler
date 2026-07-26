@@ -22,7 +22,7 @@ namespace Guildmaster.Tests.EditMode.Run
         public void SetUp()
         {
             var config = ScriptableObject.CreateInstance<GameConfig>(); // Base=8, Max=16
-            _run = new RunStateService(new FakeSave(), config);
+            _run = new RunStateService(new InMemorySaveService(), config);
             _run.NewRun(1, Array.Empty<RosterSlot>());
             _run.Current.Gold = 0; // старт-золото забега — не предмет этих тестов (проверяем дельту эффекта)
             _applier = new EventEffectApplier(_run);
@@ -108,12 +108,5 @@ namespace Guildmaster.Tests.EditMode.Run
         private static void SetField(object target, string field, object value) =>
             typeof(EventEffect).GetField(field, BindingFlags.NonPublic | BindingFlags.Instance).SetValue(target, value);
 
-        private sealed class FakeSave : ISaveService
-        {
-            public bool Exists(string key) => false;
-            public T Load<T>(string key) => default;
-            public void Save<T>(string key, T value) { }
-            public void Delete(string key) { }
-        }
     }
 }

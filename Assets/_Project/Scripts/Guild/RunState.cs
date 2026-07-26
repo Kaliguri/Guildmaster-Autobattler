@@ -71,12 +71,14 @@ namespace Guildmaster.Guild
     /// в боевые <c>RuntimeUnit</c> штатной фабрикой на каждый бой, изменения пишутся обратно. Плоский
     /// <c>[Serializable]</c> = сам себе save-DTO (нет SO-ссылок и рантайм-состояния — сплит на отдельный DTO
     /// не нужен; появится рантайм-поле — тогда и разделим). Сетевой-ready: реплицируется хостом как есть.
+    /// <para>Версия схемы — в атрибуте <c>[SaveSchema]</c>, а не полем: она свойство ФАЙЛА и живёт в его
+    /// конверте (ТЗ [[save-system]] §5). Прежнее поле <c>SchemaVersion</c> убрано — оно писалось, никем не
+    /// читалось и было вторым владельцем того же факта.</para>
     /// </summary>
     [Serializable]
+    [Core.Persistence.SaveSchema(1)]
     public sealed class RunState
     {
-        public int    SchemaVersion = 1;
-
         public long   Seed;
         public int    CurrentActIndex;
         public int    Difficulty;

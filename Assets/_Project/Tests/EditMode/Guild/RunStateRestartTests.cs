@@ -21,7 +21,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         public void SetUp()
         {
             _config = ScriptableObject.CreateInstance<GameConfig>(); // RestartsPerAct код-дефолт = 2
-            _runStates = new RunStateService(new MemSave(), _config);
+            _runStates = new RunStateService(new InMemorySaveService(), _config);
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
         }
 
@@ -50,15 +50,6 @@ namespace Guildmaster.Tests.EditMode.Guild
             _runStates.TrySpendRestart();   // 1
             _runStates.BeginAct();          // карта уже есть → НЕ сбрасывает пул
             Assert.AreEqual(1, _runStates.RestartsRemaining);
-        }
-
-        private sealed class MemSave : ISaveService
-        {
-            private readonly Dictionary<string, object> _s = new();
-            public void Save<T>(string key, T value) => _s[key] = value;
-            public T Load<T>(string key) => _s.TryGetValue(key, out var v) ? (T)v : default;
-            public bool Exists(string key) => _s.ContainsKey(key);
-            public void Delete(string key) => _s.Remove(key);
         }
     }
 }

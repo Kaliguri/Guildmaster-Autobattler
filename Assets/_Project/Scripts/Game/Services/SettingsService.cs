@@ -1,6 +1,6 @@
 using System;
-using System.IO;
 using Guildmaster.Core.Audio;
+using Guildmaster.Core.Persistence;
 using Guildmaster.Core.Settings;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
@@ -9,25 +9,34 @@ using VContainer.Unity;
 namespace Guildmaster.Game.Services
 {
     /// <summary>
-    /// Реализация <see cref="ISettingsService"/>. Персист — JSON-файл в <c>Application.persistentDataPath</c>
-    /// (без зависимостей, доступно из asmdef; ES3 сейчас в предопределённой сборке и из Game недоступен —
-    /// свап на ES3 тривиален, весь персист скрыт за интерфейсом). Дефолты первого запуска — из
-    /// <see cref="GameConfig"/>. Значения применяются в аудио сразу (живой драг слайдера).
+    /// Реализация <see cref="ISettingsService"/>. Персист — <b>за швом <see cref="ISaveService"/></b>, ключ
+    /// <c>prefs</c>: атомарная запись, бэкап и версия схемы достаются даром, а второго владельца записи на
+    /// диск не появляется. Прежде сервис писал файл сам (<c>File.WriteAllText</c>) — без всего этого.
+    /// Дефолты первого запуска — из <see cref="GameConfig"/>. Значения применяются в аудио сразу (живой
+    /// драг слайдера).
+    /// <para><b>Что здесь НЕ хранится:</b> настройки дисплея (разрешение, режим окна, качество). По ТЗ
+    /// [[save-system]] §3 они машинно-локальные и в Steam Cloud не едут, иначе второй компьютер получает
+    /// чужое разрешение. Отдельного файла под них пока нет — в игре нет ни одной такой настройки; появится
+    /// первая, тогда и заводить (пустой файл был бы мёртвым кодом).</para>
     /// <para>Entry point: <see cref="Start"/> зовёт <see cref="Load"/> на старте сессии. Аудио-шина может быть
-    /// ещё невалидна до загрузки банков — применение тихоно-опнется (как и <see cref="IAudioService.SetMusicVolume"/>);
+    /// ещё невалидна до загрузки банков — применение тихо не пройдёт (как и <see cref="IAudioService.SetMusicVolume"/>);
     /// живые правки в игре применяются уже корректно.</para>
     /// </summary>
     public sealed class SettingsService : ISettingsService, IStartable
     {
+        private const string SaveKey = "prefs";
+
         private readonly IAudioService _audio;
         private readonly GameConfig _config;
+        private readonly ISaveService _save;
         private AudioVolumeSettings _audio01;
         private GameplaySettings _gameplay;
 
-        public SettingsService(IAudioService audio, GameConfig config)
+        public SettingsService(IAudioService audio, GameConfig config, ISaveService save)
         {
             _audio = audio;
             _config = config;
+            _save = save;
             _audio01 = Defaults();
             _gameplay = GameplaySettings.Defaults();
         }
@@ -88,23 +97,15 @@ namespace Guildmaster.Game.Services
 
         public void Save()
         {
-            try
+            _save.Save(SaveKey, new PersistModel
             {
-                var model = new PersistModel
-                {
-                    Master              = _audio01.Master,
-                    Music               = _audio01.Music,
-                    Sfx                 = _audio01.Sfx,
-                    CardAnimations      = _gameplay.CardAnimations,
-                    CardAttackAnimation = _gameplay.CardAttackAnimation,
-                    AlwaysDetailedTooltips = _gameplay.AlwaysDetailedTooltips,
-                };
-                File.WriteAllText(FilePath, JsonUtility.ToJson(model));
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning($"[Settings] Не удалось сохранить настройки: {e.Message}");
-            }
+                Master                 = _audio01.Master,
+                Music                  = _audio01.Music,
+                Sfx                    = _audio01.Sfx,
+                CardAnimations         = _gameplay.CardAnimations,
+                CardAttackAnimation    = _gameplay.CardAttackAnimation,
+                AlwaysDetailedTooltips = _gameplay.AlwaysDetailedTooltips,
+            });
         }
 
         public void ResetToDefaults()
@@ -118,51 +119,50 @@ namespace Guildmaster.Game.Services
         private AudioVolumeSettings Defaults() =>
             new AudioVolumeSettings(_config.DefaultMasterVolume, _config.DefaultMusicVolume, _config.DefaultSfxVolume);
 
-        // Читает файл в _audio01 + _gameplay. Дефолты берутся из модели ДО чтения (FromJsonOverwrite
-        // трогает только присутствующие в JSON поля) — поэтому старый файл (лишь громкости) корректно
-        // подхватит новые тумблеры как ВКЛ, а не как default(bool)=false. Нет файла/ошибка → дефолты.
+        // Читает сейв в _audio01 + _gameplay. Отсутствующее в файле поле подхватывает дефолт своего
+        // владельца — поэтому старый файл (лишь громкости) даёт новые тумблеры ВКЛ, а не default(bool)=false.
+        // Нет файла/ошибка/чужая версия → дефолты целиком.
         private void ReadFromDisk()
         {
             AudioVolumeSettings audioDefaults = Defaults();
-            // Геймплейная половина — из своего владельца, ровно как аудио двумя строками выше. Раньше она
+            // Геймплейная половина — из своего владельца, ровно как аудио строкой выше. Раньше она
             // была набрана здесь литералами: те же значения вторым местом, которое разъехалось бы с
             // GameplaySettings.Defaults() на первой же правке дефолта (аудит 2026-07-26, T-27).
             GameplaySettings gameplayDefaults = GameplaySettings.Defaults();
-            var model = new PersistModel
-            {
-                Master                 = audioDefaults.Master,
-                Music                  = audioDefaults.Music,
-                Sfx                    = audioDefaults.Sfx,
-                CardAnimations         = gameplayDefaults.CardAnimations,
-                CardAttackAnimation    = gameplayDefaults.CardAttackAnimation,
-                AlwaysDetailedTooltips = gameplayDefaults.AlwaysDetailedTooltips,
-            };
 
-            try
-            {
-                if (File.Exists(FilePath))
-                    JsonUtility.FromJsonOverwrite(File.ReadAllText(FilePath), model);
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning($"[Settings] Не удалось прочитать настройки, беру дефолты: {e.Message}");
-            }
+            SaveLoadResult<PersistModel> loaded = _save.TryLoad<PersistModel>(SaveKey);
+            PersistModel model = loaded.IsOk ? loaded.Value : new PersistModel();
 
-            _audio01  = new AudioVolumeSettings(Clamp01(model.Master), Clamp01(model.Music), Clamp01(model.Sfx));
-            _gameplay = new GameplaySettings(model.CardAnimations, model.CardAttackAnimation,
-                model.AlwaysDetailedTooltips);
+            if (loaded.IsBlocked)
+                Debug.LogWarning($"[Settings] Настройки записаны версией {loaded.SavedGameVersion} " +
+                                 $"({loaded.Status}) — беру дефолты, файл не трогаю");
+
+            _audio01 = new AudioVolumeSettings(
+                Clamp01(model.Master ?? audioDefaults.Master),
+                Clamp01(model.Music  ?? audioDefaults.Music),
+                Clamp01(model.Sfx    ?? audioDefaults.Sfx));
+
+            _gameplay = new GameplaySettings(
+                model.CardAnimations         ?? gameplayDefaults.CardAnimations,
+                model.CardAttackAnimation    ?? gameplayDefaults.CardAttackAnimation,
+                model.AlwaysDetailedTooltips ?? gameplayDefaults.AlwaysDetailedTooltips);
         }
 
-        // Плоская форма персиста (совместима со старым файлом, где были только Master/Music/Sfx).
+        /// <summary>
+        /// Плоская форма персиста. Поля <b>nullable намеренно</b>: «в файле поля нет» обязано отличаться от
+        /// «в файле лежит false/0». Иначе сейв, записанный до появления тумблера, читался бы как «тумблер
+        /// выключён», и настройка молча переключалась бы у игрока сама.
+        /// </summary>
         [Serializable]
+        [SaveSchema(1)]
         private sealed class PersistModel
         {
-            public float Master;
-            public float Music;
-            public float Sfx;
-            public bool  CardAnimations;
-            public bool  CardAttackAnimation;
-            public bool  AlwaysDetailedTooltips;
+            public float? Master;
+            public float? Music;
+            public float? Sfx;
+            public bool?  CardAnimations;
+            public bool?  CardAttackAnimation;
+            public bool?  AlwaysDetailedTooltips;
         }
 
         private void ApplyAll()
@@ -171,8 +171,6 @@ namespace Guildmaster.Game.Services
             _audio.SetMusicVolume(_audio01.Music);
             _audio.SetSfxVolume(_audio01.Sfx);
         }
-
-        private static string FilePath => Path.Combine(Application.persistentDataPath, "settings.json");
 
         private static float Clamp01(float v) => v < 0f ? 0f : (v > 1f ? 1f : v);
     }

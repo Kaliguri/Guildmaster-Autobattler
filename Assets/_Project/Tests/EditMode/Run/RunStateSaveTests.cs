@@ -34,8 +34,22 @@ namespace Guildmaster.Tests.EditMode.Run
                 },
             };
 
-            var back = JsonUtility.FromJson<RunState>(JsonUtility.ToJson(rs));
+            // Гоняем через НАСТОЯЩИЙ бэкенд, а не через JsonUtility: сериализатор в игре — Newtonsoft,
+            // и проверять надо тот путь, которым забег реально ложится на диск.
+            var svc = new JsonFileSaveService();
+            const string key = "__test_runstate_roundtrip";
+            RunState back;
+            try
+            {
+                svc.Save(key, rs);
+                back = svc.TryLoad<RunState>(key).Value;
+            }
+            finally
+            {
+                svc.Delete(key);
+            }
 
+            Assert.IsNotNull(back);
             Assert.AreEqual(rs.Seed, back.Seed);
             Assert.AreEqual(rs.Gold, back.Gold);
             Assert.AreEqual(rs.RelicCapacity, back.RelicCapacity);
@@ -63,10 +77,10 @@ namespace Guildmaster.Tests.EditMode.Run
                 svc.Save(key, new RunState { Gold = 99, Seed = 7 });
                 Assert.IsTrue(svc.Exists(key));
 
-                var back = svc.Load<RunState>(key);
-                Assert.IsNotNull(back);
-                Assert.AreEqual(99, back.Gold);
-                Assert.AreEqual(7, back.Seed);
+                var loaded = svc.TryLoad<RunState>(key);
+                Assert.IsTrue(loaded.IsOk);
+                Assert.AreEqual(99, loaded.Value.Gold);
+                Assert.AreEqual(7, loaded.Value.Seed);
             }
             finally
             {

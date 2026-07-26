@@ -129,7 +129,16 @@ namespace Guildmaster.Game.Services
 
                 if (choice == MainMenuChoice.Continue)
                 {
-                    if (_runStates.Load() == null) { Debug.LogWarning("[GameFlow] - нет автосейва → назад в меню"); continue; }
+                    Core.Persistence.SaveLoadResult<Guild.RunState> loaded = _runStates.TryLoad();
+                    if (!loaded.IsOk)
+                    {
+                        // Показать это игроку экраном — фаза E ТЗ [[save-system]]; пока внятный лог, но
+                        // молча в меню не возвращаемся: «сейв есть, но заблокирован» ≠ «сейва нет».
+                        Debug.LogWarning($"[GameFlow] - продолжить не вышло ({loaded.Status}" +
+                                         (loaded.IsBlocked ? $", записан версией {loaded.SavedGameVersion}" : "") +
+                                         ") → назад в меню");
+                        continue;
+                    }
                 }
                 else
                 {

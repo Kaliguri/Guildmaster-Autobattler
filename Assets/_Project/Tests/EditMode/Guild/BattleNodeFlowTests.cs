@@ -24,7 +24,7 @@ namespace Guildmaster.Tests.EditMode.Guild
         private RunContext Ctx()
         {
             var config = ScriptableObject.CreateInstance<GameConfig>();
-            _runStates = new RunStateService(new MemSave(), config);
+            _runStates = new RunStateService(new InMemorySaveService(), config);
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
             return new RunContext(_runStates.Current, new XorShiftRng(1), new SoloReadyGate(),
                                   new SoloPlayerIntentSource());
@@ -97,13 +97,5 @@ namespace Guildmaster.Tests.EditMode.Guild
             public void ShowRestBeat(Action onContinue, Action onFormation, CancellationToken ct) { }
         }
 
-        private sealed class MemSave : ISaveService
-        {
-            private readonly Dictionary<string, object> _s = new();
-            public void Save<T>(string key, T value) => _s[key] = value;
-            public T Load<T>(string key) => _s.TryGetValue(key, out var v) ? (T)v : default;
-            public bool Exists(string key) => _s.ContainsKey(key);
-            public void Delete(string key) => _s.Remove(key);
-        }
     }
 }
