@@ -28,12 +28,24 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Базовая скорость передвижения Брузера. Классы — множители от неё.")]
         [SerializeField] private float _baseMoveSpeed = 3f;
 
+        [Tooltip("Ожидаемый одиночный DPS Брузера — норма для стенда баланса. Классы — множители от неё.")]
+        [SerializeField] private float _baseDps = 110f;
+
         [Header("Профили классов (множители от эталона)")]
         [Tooltip("Множители HP/скорости и бюджет брони на каждый класс. Класс без записи → эталон (1.0 / 1.0), броня 0.")]
         [SerializeField] private ClassProfile[] _profiles = Array.Empty<ClassProfile>();
 
+        [Header("Коридор нормы")]
+        [Tooltip("Полуширина коридора вокруг нормы, доля: 0.3 = ±30%. Выход за него стенд помечает как отклонение роли.")]
+        [Range(0.05f, 1f)]
+        [SerializeField] private float _bandWidth = 0.3f;
+
         public float BaseHp => _baseHp;
         public float BaseMoveSpeed => _baseMoveSpeed;
+        public float BaseDps => _baseDps;
+
+        /// <summary>Полуширина коридора нормы (0.3 = ±30%). Не игровой стат — линейка стенда баланса.</summary>
+        public float BandWidth => _bandWidth;
 
         /// <summary>
         /// Бюджет брони класса — СУММА физической и магической (ГДД «Статы» §Броня, решение
@@ -69,6 +81,40 @@ namespace Guildmaster.Data.Definitions
             };
         }
 
+        /// <summary>
+        /// Ожидаемый одиночный DPS класса — норма стенда баланса: <c>BaseDps × DpsMult</c>.
+        /// </summary>
+        /// <remarks>
+        /// В отличие от HP и скорости, урон класс НЕ задаёт: он собирается из оружия, способностей и
+        /// стат-блока персоны. Норма здесь — не источник числа, а линейка, по которой стенд говорит
+        /// «Танк бьёт как Убийца». Поэтому она живёт рядом с прочими классовыми множителями, но ни во
+        /// что не подставляется — её читают только бенчи.
+        /// </remarks>
+        public float GetDpsNorm(UnitClass unitClass)
+        {
+            for (int i = 0; i < _profiles.Length; i++)
+                if (_profiles[i].Class == unitClass) return _baseDps * _profiles[i].DpsMult;
+            return _baseDps;
+        }
+
+        /// <summary>
+        /// Ожидаемый запас прочности класса против ФИЗИЧЕСКОГО урона: <c>HP × (1 + физброня / K)</c>,
+        /// где физброня — половина классового бюджета. <paramref name="armorK"/> берётся из
+        /// <c>StatsConfig.ArmorConstantK</c>.
+        /// </summary>
+        /// <remarks>
+        /// Считается по физике, потому что эталонный источник урона в бенче выживаемости — физический.
+        /// Норма голая: без лечения, щитов и уклонений. Разрыв между ней и замеренным EHP — ровно вклад
+        /// механик кита, и читать его надо именно так, а не как «ошибку нормы».
+        /// </remarks>
+        public float GetEhpNorm(UnitClass unitClass, float armorK)
+        {
+            (float hpMult, float _) = GetMultipliers(unitClass);
+            float physArmor = GetArmorBudget(unitClass) * 0.5f;
+            float mitigation = armorK > 0f ? 1f + physArmor / armorK : 1f;
+            return _baseHp * hpMult * mitigation;
+        }
+
         /// <summary>Множители (HP, скорость) класса: из таблицы, иначе эталон (1.0 / 1.0).</summary>
         public (float hp, float move) GetMultipliers(UnitClass unitClass)
         {
@@ -93,12 +139,17 @@ namespace Guildmaster.Data.Definitions
             [Tooltip("Сумма физической и магической брони класса. Танк 120, Брузер 60, Убийца 30, бэклайн 20.")]
             public float ArmorBudget;
 
-            public ClassProfile(UnitClass unitClass, float hpMult, float moveSpeedMult, float armorBudget = 0f)
+            [Tooltip("Множитель ожидаемого DPS от эталона. Только норма для стенда — в бой не подставляется.")]
+            public float DpsMult;
+
+            public ClassProfile(UnitClass unitClass, float hpMult, float moveSpeedMult,
+                float armorBudget = 0f, float dpsMult = 1f)
             {
                 Class = unitClass;
                 HpMult = hpMult;
                 MoveSpeedMult = moveSpeedMult;
                 ArmorBudget = armorBudget;
+                DpsMult = dpsMult;
             }
         }
     }

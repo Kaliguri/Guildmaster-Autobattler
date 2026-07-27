@@ -14,28 +14,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.ClassBalanceConfig
   _baseHp: 2000
   _baseMoveSpeed: 3
+  _baseDps: 110
   _profiles:
   - Class: 0
     HpMult: 1
     MoveSpeedMult: 1
     ArmorBudget: 0
+    DpsMult: 1
   - Class: 1
     HpMult: 1.5
     MoveSpeedMult: 0.85
     ArmorBudget: 0
+    DpsMult: 0.55
   - Class: 2
     HpMult: 0.75
     MoveSpeedMult: 1.1
     ArmorBudget: 0
+    DpsMult: 1.4
   - Class: 3
     HpMult: 0.65
     MoveSpeedMult: 0.75
     ArmorBudget: 0
+    DpsMult: 1.1
   - Class: 4
     HpMult: 0.65
     MoveSpeedMult: 0.75
     ArmorBudget: 0
+    DpsMult: 0.45
   - Class: 5
     HpMult: 0.65
     MoveSpeedMult: 0.75
     ArmorBudget: 0
+    DpsMult: 0.8
+  _bandWidth: 0.3

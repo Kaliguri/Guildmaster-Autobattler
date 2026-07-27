@@ -85,10 +85,10 @@ namespace Guildmaster.Balance.Editor
             var survived = new int[n];
             var fights = new int[n];
 
-            // Что кит делал в бою: бил, держал удар, или урон приходил ответкой сам собой.
-            var dealt = new double[n];
-            var taken = new double[n];
-            var reactive = new double[n];
+            // Что кит делал в бою — все пять корзин метрик, накопленные по боям. Отдельных массивов
+            // на каждое число не заводим: копим в тот же UnitMetric, из которого читаем.
+            var acc = new UnitMetric[n];
+            for (int i = 0; i < n; i++) acc[i] = new UnitMetric();
 
             for (int i = 0; i < n; i++)
             {
@@ -115,8 +115,8 @@ namespace Guildmaster.Balance.Editor
                     if (left.HeroAlive) survived[i]++;
                     if (right.HeroAlive) survived[j]++;
 
-                    dealt[i] += left.HeroDealt; taken[i] += left.HeroTaken; reactive[i] += left.HeroReactive;
-                    dealt[j] += right.HeroDealt; taken[j] += right.HeroTaken; reactive[j] += right.HeroReactive;
+                    Accumulate(acc[i], left.Hero);
+                    Accumulate(acc[j], right.Hero);
                 }
             }
 
@@ -131,6 +131,10 @@ namespace Guildmaster.Balance.Editor
             {
                 "Rank", "Relic", "Wins", "Losses", "Draws", "WinRate", "TeamHpOnWin%", "HeroSurvival%",
                 "AvgDmgDealt", "AvgDmgTaken", "React%", "BTStrength",
+                "HealTaken", "Mitigated", "Evaded",
+                "ControlSec", "ControlCount", "ControlTakenSec",
+                "Debuffs", "DebuffSec", "Dots",
+                "HealDone", "Buffs", "BuffSec", "Cleanses",
             };
             var sumTable = new List<IReadOnlyList<object>>();
             int rank = 1;
@@ -140,13 +144,21 @@ namespace Guildmaster.Balance.Editor
                 double winRate = total > 0 ? (wCount[i] + 0.5 * dCount[i]) / total : 0.0;
                 double avgHp = hpWinCount[i] > 0 ? 100.0 * hpWin[i] / hpWinCount[i] : 0.0;
                 double surv = fights[i] > 0 ? 100.0 * survived[i] / fights[i] : 0.0;
-                double avgDealt = fights[i] > 0 ? dealt[i] / fights[i] : 0.0;
-                double avgTaken = fights[i] > 0 ? taken[i] / fights[i] : 0.0;
-                double reactShare = dealt[i] > 1e-6 ? 100.0 * reactive[i] / dealt[i] : 0.0;
+                UnitMetric a = acc[i];
+                double reactShare = a.DamageDealt > 1e-6 ? 100.0 * a.DamageReactive / a.DamageDealt : 0.0;
+
+                // Всё «за бой» — средние: боёв у китов поровну, но делить всё равно надо, иначе число
+                // растёт от размера ростера и отчёты разных прогонов перестают сравниваться.
+                double Avg(double v) => fights[i] > 0 ? v / fights[i] : 0.0;
+
                 sumTable.Add(new object[]
                 {
                     rank++, relics[i].name, wCount[i], lCount[i], dCount[i], winRate, avgHp, surv,
-                    avgDealt, avgTaken, reactShare, strength[i],
+                    Avg(a.DamageDealt), Avg(a.DamageTaken), reactShare, strength[i],
+                    Avg(a.HealingReceived), Avg(a.DamageMitigated), Avg(a.HitsEvaded),
+                    Avg(a.ControlSecondsDealt), Avg(a.ControlAppliedCount), Avg(a.ControlSecondsTaken),
+                    Avg(a.DebuffsApplied), Avg(a.DebuffSecondsDealt), Avg(a.DotsApplied),
+                    Avg(a.HealingDone), Avg(a.BuffsGranted), Avg(a.BuffSecondsGranted), Avg(a.CleansesDone),
                 });
             }
 
@@ -160,6 +172,13 @@ namespace Guildmaster.Balance.Editor
                 "вопрос «он много бьёт или долго живёт». **React%** — какая доля его урона пришла ответкой " +
                 "(шипы), то есть не выбиралась им вовсе. " +
                 "BTStrength (Bradley-Terry) — относительная сила, норм. к 1. " +
+                "Дальше — что кит делает помимо урона, всё в среднем ЗА БОЙ. " +
+                "**Чем не умер:** HealTaken (полученное лечение), Mitigated (срезано бронёй), Evaded (уклонений). " +
+                "**Контроль:** ControlSec/ControlCount — секунды и число наложенных контролей, " +
+                "ControlTakenSec — сколько контроля съел сам. " +
+                "**Проклятия:** Debuffs/DebuffSec — наложенные дебаффы и их секунды, Dots — отдельно яд и горение. " +
+                "**Утилита:** HealDone (вылечено), Buffs/BuffSec (бафы союзникам), Cleanses (снято чужих дебаффов со своих). " +
+                "Нули у всей корзины значат, что кит этим не занимается, — это факт о ките, а не пробел в замере. " +
                 "Бой RNG-free → исходы детерминированы; рейтинг ближе к топологическому порядку. " +
                 (format.Lineup.Length > 1
                     ? "Союзники — эталонные манекены своих классов (HP, скорость и броня из ClassBalanceConfig, " +
@@ -203,21 +222,43 @@ namespace Guildmaster.Balance.Editor
             public readonly double TeamHpPct;
             public readonly bool HeroAlive;
 
-            /// <summary>Урон, нанесённый китом, и поглощённый им — «он много бьёт или долго живёт».</summary>
-            public readonly double HeroDealt;
-            public readonly double HeroTaken;
+            /// <summary>Метрика самого испытуемого за этот бой — целиком, все пять корзин.</summary>
+            public readonly UnitMetric Hero;
 
-            /// <summary>Сколько из нанесённого пришло ответкой (шипы) — урон, который кит не выбирает.</summary>
-            public readonly double HeroReactive;
-
-            public SideResult(double teamHpPct, bool heroAlive, double heroDealt, double heroTaken, double heroReactive)
+            public SideResult(double teamHpPct, bool heroAlive, UnitMetric hero)
             {
                 TeamHpPct = teamHpPct;
                 HeroAlive = heroAlive;
-                HeroDealt = heroDealt;
-                HeroTaken = heroTaken;
-                HeroReactive = heroReactive;
+                Hero = hero;
             }
+        }
+
+        /// <summary>Сложить метрику одного боя в накопитель кита. Только суммируемые величины: HP и
+        /// флаги смерти живут отдельно, складывать их бессмысленно.</summary>
+        private static void Accumulate(UnitMetric total, UnitMetric one)
+        {
+            if (one == null) return;
+
+            total.DamageDealt += one.DamageDealt;
+            total.DamageTaken += one.DamageTaken;
+            total.DamageReactive += one.DamageReactive;
+
+            total.HealingReceived += one.HealingReceived;
+            total.DamageMitigated += one.DamageMitigated;
+            total.HitsEvaded += one.HitsEvaded;
+
+            total.ControlSecondsDealt += one.ControlSecondsDealt;
+            total.ControlAppliedCount += one.ControlAppliedCount;
+            total.ControlSecondsTaken += one.ControlSecondsTaken;
+
+            total.DebuffsApplied += one.DebuffsApplied;
+            total.DebuffSecondsDealt += one.DebuffSecondsDealt;
+            total.DotsApplied += one.DotsApplied;
+
+            total.HealingDone += one.HealingDone;
+            total.BuffsGranted += one.BuffsGranted;
+            total.BuffSecondsGranted += one.BuffSecondsGranted;
+            total.CleansesDone += one.CleansesDone;
         }
 
         /// <summary>
@@ -252,23 +293,17 @@ namespace Guildmaster.Balance.Editor
         private static SideResult SideOf(BattleReport report, int team, int heroId)
         {
             double hpLeft = 0.0, maxHp = 0.0;
-            bool heroAlive = false;
-            double dealt = 0.0, taken = 0.0, reactive = 0.0;
+            UnitMetric hero = null;
             for (int i = 0; i < report.Units.Count; i++)
             {
                 UnitMetric m = report.Units[i];
                 if (m.Team != team) continue;
                 hpLeft += m.HpLeft;
                 maxHp += m.MaxHp;
-                if (m.Id != heroId) continue;
-
-                heroAlive = !m.Died;
-                dealt = m.DamageDealt;
-                taken = m.DamageTaken;
-                reactive = m.DamageReactive;
+                if (m.Id == heroId) hero = m;
             }
 
-            return new SideResult(maxHp > 0.0 ? hpLeft / maxHp : 0.0, heroAlive, dealt, taken, reactive);
+            return new SideResult(maxHp > 0.0 ? hpLeft / maxHp : 0.0, hero != null && !hero.Died, hero);
         }
 
         private static double[][] New(int n)

@@ -14,7 +14,8 @@ namespace Guildmaster.Balance.Editor
     /// </summary>
     public static class SurvivabilityBench
     {
-        private const float RefDps = 60f;
+        /// <summary>Урон эталонного атакующего. Internal — по нему <see cref="BalanceNorms"/> считает норму TTD.</summary>
+        internal const float RefDps = 60f;
         private const float CapSeconds = 240f;
         private const ulong Seed = 1UL;
 

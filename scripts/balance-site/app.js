@@ -18,21 +18,34 @@ const state = {
 
 // Больше — лучше? Для дельты важен знак «хорошо/плохо», а не просто рост.
 const HIGHER_IS_BETTER = {
-  WinRate: true, Wins: true, TeamHpOnWin: true, HeroSurvival: true,
+  WinRate: true, Wins: true, 'TeamHpOnWin%': true, 'HeroSurvival%': true,
   AvgDmgDealt: true, BTStrength: true, Delta: true,
   DPS_solo: true, DPS_aoe: true, TTD_solo: true, EHP_solo: true,
   TTD_focus3: true, EHP_focus3: true,
-  Losses: false, AvgDmgTaken: false,
+  HealTaken: true, Mitigated: true, Evaded: true,
+  ControlSec: true, ControlCount: true, Debuffs: true, DebuffSec: true, Dots: true,
+  HealDone: true, Buffs: true, BuffSec: true, Cleanses: true,
+  Losses: false, AvgDmgTaken: false, ControlTakenSec: false, Rank: false,
+};
+
+// Метрика → колонка классовой нормы в снимке balance_norms. Только то, что честно
+// сравнивается с ролью: AoE-урон, доли и производные от них норм не имеют.
+const NORM_OF = {
+  DPS_solo: 'DPS_norm',
+  EHP_solo: 'EHP_norm',
+  EHP_focus3: 'EHP_norm',
+  TTD_solo: 'TTD_solo_norm',
+  TTD_focus3: 'TTD_focus3_norm',
 };
 
 // Корзины страницы кита: по каким колонкам собирается каждый раздел.
 const BUCKETS = [
   { name: 'Урон', keys: ['DPS_solo', 'DPS_aoe', 'AoE_ratio', 'AutoPhys%', 'AutoMagic%', 'Ability%', 'DoT%', 'React%', 'Vuln%', 'SelfDmg%', 'AvgDmgDealt'] },
-  { name: 'Выживаемость', keys: ['TTD_solo', 'EHP_solo', 'HpLeft_solo%', 'TTD_focus3', 'EHP_focus3', 'HpLeft_focus3%', 'AvgDmgTaken', 'HeroSurvival'] },
+  { name: 'Выживаемость', keys: ['TTD_solo', 'EHP_solo', 'HpLeft_solo%', 'TTD_focus3', 'EHP_focus3', 'HpLeft_focus3%', 'AvgDmgTaken', 'HeroSurvival%', 'HealTaken', 'Mitigated', 'Evaded'] },
   { name: 'Контроль', keys: ['ControlSec', 'ControlCount', 'ControlTakenSec'] },
   { name: 'Проклятия', keys: ['Debuffs', 'DebuffSec', 'Dots'] },
   { name: 'Утилита', keys: ['HealDone', 'Buffs', 'BuffSec', 'Cleanses'] },
-  { name: 'Итог боя', keys: ['WinRate', 'Wins', 'Losses', 'Draws', 'TeamHpOnWin', 'BTStrength'] },
+  { name: 'Итог боя', keys: ['WinRate', 'Wins', 'Losses', 'Draws', 'TeamHpOnWin%', 'BTStrength', 'Rank'] },
 ];
 
 // --- Помощники ---
@@ -56,7 +69,7 @@ function modeTitle(key) { return DATA.modeTitles[key] || key; }
 /** Все режимы прогона, в стабильном порядке: сначала бои, потом стендовые линзы. */
 function modesOf(run) {
   if (!run) return [];
-  const order = ['solo_duel', 'trio_duel', 'squad_duel', 'super_team_duel', 'team_duel', 'squad_swap', 'pair_synergy', 'bench_dps', 'bench_survivability', 'audit_content'];
+  const order = ['duel', 'solo_duel', 'trio_duel', 'squad_duel', 'super_team_duel', 'team_duel', 'squad_swap', 'pair_synergy', 'bench_dps', 'bench_survivability', 'audit_content'];
   const keys = Object.keys(run.modes);
   keys.sort((a, b) => {
     const ia = order.indexOf(a), ib = order.indexOf(b);
@@ -84,6 +97,39 @@ function deltaNode(mode, unit, key) {
   const better = HIGHER_IS_BETTER[key];
   const cls = better === undefined ? 'same' : (d > 0) === better ? 'up' : 'down';
   return el('span', `delta ${cls}`, `${d > 0 ? '▲' : '▼'}${fmt(Math.abs(d))}`);
+}
+
+// --- Классовые коридоры: чего ждём от кита по его роли ---
+
+/** Нормы кита в прогоне A. Прогон, снятый до появления линейки, норм не имеет — это не ошибка. */
+function normsOf(unit) {
+  const run = runA();
+  return (run && run.norms && run.norms[unit]) || null;
+}
+
+/** Отклонение метрики от классовой нормы: {norm, dev, out} или null, если нормы для неё нет. */
+function deviation(unit, key, value) {
+  const n = normsOf(unit);
+  if (!n || !isNum(value)) return null;
+
+  const norm = n[NORM_OF[key]];
+  if (!isNum(norm) || norm <= 0) return null;
+
+  const band = isNum(n.Band) ? n.Band : 0.3;
+  const dev = (value - norm) / norm;
+  return { norm, dev, out: Math.abs(dev) > band, band };
+}
+
+/** Подпись «норма N · ±X%» рядом с числом. Выход за коридор подсвечен. */
+function normNode(unit, key, value) {
+  const d = deviation(unit, key, value);
+  if (!d) return null;
+
+  const sign = d.dev >= 0 ? '+' : '−';
+  const node = el('span', d.out ? 'norm out-of-band' : 'norm',
+    `норма ${fmt(d.norm)} · ${sign}${fmt(Math.abs(d.dev) * 100)}%`);
+  node.title = `Коридор роли ±${fmt(d.band * 100)}%`;
+  return node;
 }
 
 // --- Автофлаги: то, что раньше приходилось замечать глазами ---
@@ -122,14 +168,44 @@ function flagsFor(unit) {
   if (isNum(avgWin) && avgWin <= 0.25) {
     out.push(['bad', 'провал по результату']);
   }
+
+  // Выход за классовый коридор — отдельным флагом на каждую метрику: «Танк бьёт как Убийца»
+  // и «Убийца держит как Танк» — разные диагнозы, слипаться в один они не должны.
+  modesOf(run).forEach((mode) => {
+    Object.keys(NORM_OF).forEach((key) => {
+      const d = deviation(unit, key, valueOf(run, mode, unit, key));
+      if (d && d.out) {
+        out.push(['warn', `${key} ${d.dev > 0 ? 'выше' : 'ниже'} роли на ${fmt(Math.abs(d.dev) * 100)}%`]);
+      }
+    });
+  });
   return out;
 }
 
-function flagsNode(unit) {
+/**
+ * Флаги кита. В таблице режима показываем первые `limit` и счётчик остальных: строка таблицы —
+ * не место для простыни, полный список ждёт на странице кита.
+ */
+function flagsNode(unit, limit) {
   const list = flagsFor(unit);
   const box = el('div', 'flags');
-  list.forEach(([kind, text]) => box.appendChild(el('span', `flag ${kind}`, text)));
+  const shown = limit ? list.slice(0, limit) : list;
+  shown.forEach(([kind, text]) => box.appendChild(el('span', `flag ${kind}`, text)));
+  if (limit && list.length > shown.length) {
+    box.appendChild(el('span', 'flag info', `+${list.length - shown.length}`));
+  }
   return box;
+}
+
+/** Минимальный markdown из заметок бенча: **жирный** и переносы. Полноценный парсер тут ни к чему. */
+function notesNode(text) {
+  const p = el('p', 'hint');
+  const parts = String(text).split(/\*\*(.+?)\*\*/g);
+  parts.forEach((part, i) => {
+    if (i % 2 === 1) p.appendChild(el('strong', null, part));
+    else p.appendChild(document.createTextNode(part));
+  });
+  return p;
 }
 
 // --- Обзор режима ---
@@ -147,7 +223,15 @@ function renderMode(mode) {
 
   const card = el('div', 'card');
   card.appendChild(el('h2', null, m.title));
-  if (run.notes[mode]) card.appendChild(el('p', 'hint', run.notes[mode]));
+  if (run.notes[mode]) card.appendChild(notesNode(run.notes[mode]));
+
+  // Отчёт без колонки кита (синергия пар) сшивать по китам нечем — показываем строки как есть.
+  const byUnit = Object.keys(m.units).length > 0;
+  if (!byUnit) {
+    card.appendChild(renderRawTable(m));
+    view.appendChild(card);
+    return;
+  }
 
   const scroll = el('div', 'scroll');
   const table = el('table');
@@ -186,14 +270,17 @@ function renderMode(mode) {
         a.onclick = (e) => { e.preventDefault(); openUnit(name); };
         td.appendChild(a);
       } else {
-        td.appendChild(document.createTextNode(fmt(m.units[name][h])));
+        const value = m.units[name][h];
+        td.appendChild(document.createTextNode(fmt(value)));
         const d = deltaNode(mode, name, h);
         if (d) td.appendChild(d);
+        const n = normNode(name, h, value);
+        if (n) td.appendChild(n);
       }
       tr.appendChild(td);
     });
     const ftd = el('td');
-    ftd.appendChild(flagsNode(name));
+    ftd.appendChild(flagsNode(name, 2));
     tr.appendChild(ftd);
     tbody.appendChild(tr);
   });
@@ -205,6 +292,27 @@ function renderMode(mode) {
 
   const matrix = run.matrices[mode];
   if (matrix) view.appendChild(renderHeatmap(matrix));
+}
+
+/** Таблица «как есть»: заголовки и строки снимка, без сшивки по китам, дельт и норм. */
+function renderRawTable(m) {
+  const scroll = el('div', 'scroll');
+  const table = el('table');
+  const thead = el('thead');
+  const htr = el('tr');
+  m.headers.forEach((h) => htr.appendChild(el('th', null, h)));
+  thead.appendChild(htr);
+  table.appendChild(thead);
+
+  const tbody = el('tbody');
+  (m.rows || []).forEach((row) => {
+    const tr = el('tr');
+    row.forEach((cell) => tr.appendChild(el('td', null, fmt(cell))));
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  scroll.appendChild(table);
+  return scroll;
 }
 
 function sortBy(mode, key) {
@@ -269,6 +377,24 @@ function renderUnit(name) {
 
   const head = el('div', 'card');
   head.appendChild(el('h2', null, name));
+
+  const n = normsOf(name);
+  if (n) {
+    const role = el('p', 'hint');
+    role.appendChild(document.createTextNode(`Роль: ${n.Class ?? '—'}. Коридор ±${fmt((n.Band ?? 0.3) * 100)}%. `));
+    role.appendChild(document.createTextNode(
+      `Ожидаем: DPS ${fmt(n.DPS_norm)}, запас прочности ${fmt(n.EHP_norm)} (голый, без лечения и щитов).`));
+    head.appendChild(role);
+
+    // MaxHP против классовой нормы: расхождение здесь значит, что стат-блок персоны
+    // перекрывает классовую базу — до всяких боевых механик.
+    if (isNum(n.MaxHP) && isNum(n.HP_norm) && Math.abs(n.MaxHP - n.HP_norm) > 1) {
+      const dev = (n.MaxHP - n.HP_norm) / n.HP_norm;
+      head.appendChild(el('p', 'hint out-of-band',
+        `HP персоны ${fmt(n.MaxHP)} против классовых ${fmt(n.HP_norm)} — ${dev > 0 ? '+' : '−'}${fmt(Math.abs(dev) * 100)}% ещё до боя.`));
+    }
+  }
+
   head.appendChild(flagsNode(name));
   view.appendChild(head);
 
@@ -302,6 +428,8 @@ function renderUnit(name) {
       v.appendChild(document.createTextNode(fmt(value)));
       const d = deltaNode(mode, name, key);
       if (d) v.appendChild(d);
+      const n = normNode(name, key, value);
+      if (n) v.appendChild(n);
       line.appendChild(v);
       card.appendChild(line);
     });

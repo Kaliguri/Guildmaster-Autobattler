@@ -15,6 +15,9 @@ namespace Guildmaster.Balance.Editor
         [MenuItem("Alebardium/Balance/0. Audit Content", priority = 100)]
         private static void Audit() => RunReport("Аудит контента", ContentAuditor.Run);
 
+        [MenuItem("Alebardium/Balance/0. Class Norms (линейка коридоров)", priority = 101)]
+        private static void Norms() => RunReport("Классовые нормы", BalanceNorms.Run);
+
         [MenuItem("Alebardium/Balance/1. DPS Bench (all relics)", priority = 120)]
         private static void Dps() => RunReport("DPS-бенч", DpsBench.Run);
 
@@ -33,7 +36,9 @@ namespace Guildmaster.Balance.Editor
         [MenuItem("Alebardium/Balance/3. Squad Swap — who to field (4v4)", priority = 160)]
         private static void SquadSwap() => RunReport("Замена в живом отряде", SquadSwapBench.Run);
 
-        [MenuItem("Alebardium/Balance/3. Pair Synergy (2v2 / 4v4 / 6v6)", priority = 161)]
+        // Слэши в имени пункта Unity считает разделителями подменю — здесь они рвали пункт на три
+        // вложенных уровня («2v2 » → « 4v4 » → « 6v6)»). Разделяем форматы точкой.
+        [MenuItem("Alebardium/Balance/3. Pair Synergy (2v2 · 4v4 · 6v6)", priority = 161)]
         private static void PairSynergy() => RunReport("Синергия пар", PairSynergyBench.Run);
 
         [MenuItem("Alebardium/Balance/Run Selected Scenario", priority = 180)]
@@ -59,6 +64,10 @@ namespace Guildmaster.Balance.Editor
                 (string csv, string md) = action();
                 double secs = EditorApplication.timeSinceStartup - t0;
                 Debug.Log($"[SimBench] {title}: готово за {secs:0.0} с.\nCSV: {csv}\nMD:  {md}");
+
+                // Нормы кладутся в каждый прогон — линейка обязана быть той же версии, что и замеры.
+                // Иначе сайт сравнит сегодняшние числа с коридором, снятым до правки классового профиля.
+                if (action != BalanceNorms.Run) BalanceNorms.Run();
 
                 // Сайт отчётов пересобирается сам после каждого прогона — иначе он молча показывал бы
                 // вчерашние числа. Отказ сборщика громкий, но прогон из-за него не считается неудачным.

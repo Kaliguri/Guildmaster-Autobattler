@@ -96,13 +96,16 @@ td.unit a { font-weight: 600; }
 .delta.down { color: var(--bad); }
 .delta.same { color: var(--muted); opacity: 0.6; }
 
-/* Отклонение от классовой нормы. */
-.norm { font-size: 11.5px; color: var(--muted); }
+/* Отклонение от классовой нормы — строкой ниже числа: коридор поясняет, а не спорит с ним. */
+.norm { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
 .out-of-band { color: var(--warn); font-weight: 600; }
+.stat .v { text-align: right; }
+p.hint.out-of-band { font-weight: 500; }
 
 /* --- Флаги проблем --- */
 
 .flags { display: flex; flex-wrap: wrap; gap: 6px; }
+td .flags { flex-wrap: nowrap; }
 .flag {
   display: inline-block; padding: 2px 9px; border-radius: 999px;
   font-size: 11.5px; font-weight: 600;

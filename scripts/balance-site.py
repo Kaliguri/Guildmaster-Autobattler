@@ -36,6 +36,7 @@ RUN_WINDOW_MINUTES = 30
 
 # Как называются режимы в интерфейсе. Ключ — префикс kind из имени файла отчёта.
 MODE_TITLES = {
+    "duel": "Дуэль 1v1",
     "solo_duel": "Дуэль 1v1",
     "trio_duel": "Тройки 3v3",
     "squad_duel": "Отряды 4v4",
@@ -51,6 +52,10 @@ MODE_TITLES = {
 
 # Колонка с именем кита в каждом виде отчёта — по ней данные сшиваются между режимами.
 UNIT_COLUMNS = ("Relic", "Unit", "Kit", "Name")
+
+# Снимок классовых норм — не режим, а линейка: он не получает вкладку, а раскладывается
+# в run.norms и подмешивается к числам всех прочих таблиц.
+NORMS_KIND = "balance_norms"
 
 
 @dataclass
@@ -171,8 +176,15 @@ def build_payload(runs: list[Run]) -> dict:
     payload = {"runs": [], "modeTitles": MODE_TITLES}
 
     for run in runs:
-        entry = {"key": run.key, "modes": {}, "matrices": {}, "notes": {}}
+        entry = {"key": run.key, "modes": {}, "matrices": {}, "notes": {}, "norms": {}, "normsNote": ""}
         for s in run.snapshots:
+            if s.kind == NORMS_KIND:
+                # Норм у прогона может не быть (снят до появления линейки) — тогда коридоров не
+                # будет вовсе. Подставлять нормы из соседнего прогона нельзя: линейка меняется
+                # вместе с классовым профилем, и чужая солгала бы про отклонение.
+                entry["norms"] = s.by_unit()
+                entry["normsNote"] = s.notes
+                continue
             if s.is_matrix:
                 entry["matrices"][s.mode_key] = {"headers": s.headers, "rows": s.rows}
                 continue
@@ -180,6 +192,9 @@ def build_payload(runs: list[Run]) -> dict:
                 "title": s.title,
                 "headers": s.headers,
                 "units": s.by_unit(),
+                # Сырые строки — для отчётов, у которых нет колонки кита (синергия пар: строка про
+                # ПАРУ, а не про одного). Без них такая вкладка молча оказалась бы пустой.
+                "rows": s.rows,
             }
             entry["notes"][s.mode_key] = s.notes
         payload["runs"].append(entry)
