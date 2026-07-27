@@ -59,7 +59,10 @@ namespace Guildmaster.Balance.Editor
                 (string csv, string md) = action();
                 double secs = EditorApplication.timeSinceStartup - t0;
                 Debug.Log($"[SimBench] {title}: готово за {secs:0.0} с.\nCSV: {csv}\nMD:  {md}");
-                EditorUtility.RevealInFinder(md);
+
+                // Сайт отчётов пересобирается сам после каждого прогона — иначе он молча показывал бы
+                // вчерашние числа. Отказ сборщика громкий, но прогон из-за него не считается неудачным.
+                BalanceSite.Rebuild();
             }
             catch (Exception e)
             {

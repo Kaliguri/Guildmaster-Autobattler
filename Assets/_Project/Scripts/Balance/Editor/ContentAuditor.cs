@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Guildmaster.Combat;
@@ -75,6 +75,7 @@ namespace Guildmaster.Balance.Editor
 
             string csv = ReportWriter.WriteCsv("audit_content", headers, table);
             string md = ReportWriter.WriteMarkdown("audit_content", "SimBench — аудит контента (Фаза 0)", headers, table, notes);
+            ReportWriter.WriteJson("audit_content", "SimBench — аудит контента (Фаза 0)", headers, table, notes);
             return (csv, md);
         }
 

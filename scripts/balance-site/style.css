@@ -1,0 +1,134 @@
+/* Токены — из портфолио Max Gaida (src/app/globals.css): тёплый янтарь на угольном.
+   Один источник цвета, как и в игре: правится здесь, а не по месту использования. */
+:root {
+  --background: #0c0a09;
+  --surface: #1c1917;
+  --surface-2: #292524;
+  --foreground: #f5f4f2;
+  --muted: #a8a29e;
+  --border: #2a2522;
+  --accent: #f5a524;
+  --accent-hover: #fbbf24;
+  --accent-foreground: #1c1207;
+
+  --good: #4ade80;
+  --bad: #f87171;
+  --warn: #fbbf24;
+
+  --radius-card: 0.75rem;
+  --radius-media: 0.5rem;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font: 15px/1.55 "Onest", "Segoe UI", system-ui, sans-serif;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+.wrap { max-width: 1600px; margin: 0 auto; padding: 24px 28px 80px; }
+
+/* --- Шапка: выбор прогонов для сравнения --- */
+
+header.bar {
+  position: sticky; top: 0; z-index: 10;
+  background: color-mix(in srgb, var(--background) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 28px;
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+}
+
+header.bar h1 { font-size: 17px; margin: 0 12px 0 0; font-weight: 600; letter-spacing: -0.01em; }
+header.bar .spacer { flex: 1; }
+
+.field { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--muted); }
+select, button.ghost {
+  background: var(--surface); color: var(--foreground);
+  border: 1px solid var(--border); border-radius: var(--radius-media);
+  padding: 6px 10px; font: inherit; font-size: 13px; cursor: pointer;
+}
+select:hover, button.ghost:hover { border-color: var(--accent); }
+
+/* --- Вкладки режимов --- */
+
+nav.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 22px 0 18px; }
+nav.tabs button {
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 999px;
+  padding: 6px 14px; font: inherit; font-size: 13px; cursor: pointer;
+}
+nav.tabs button:hover { color: var(--foreground); border-color: var(--accent); }
+nav.tabs button.on { background: var(--accent); color: var(--accent-foreground); border-color: var(--accent); font-weight: 600; }
+
+/* --- Карточки и таблицы --- */
+
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-card); padding: 18px 20px; margin-bottom: 18px;
+}
+.card h2 { margin: 0 0 4px; font-size: 15px; font-weight: 600; }
+.card .hint { color: var(--muted); font-size: 12.5px; margin: 0 0 14px; line-height: 1.5; }
+
+.scroll { overflow-x: auto; }
+
+table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+th, td { padding: 7px 10px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--border); }
+th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); }
+thead th {
+  position: sticky; top: 0; background: var(--surface-2); color: var(--muted);
+  font-weight: 600; font-size: 12px; cursor: pointer; user-select: none;
+}
+thead th:hover { color: var(--foreground); }
+tbody tr:hover td { background: var(--surface-2); }
+tbody tr:hover td:first-child { background: var(--surface-2); }
+
+td.unit a { font-weight: 600; }
+
+/* Дельта с прошлым прогоном — рядом с числом, а не вместо него. */
+.delta { font-size: 11.5px; margin-left: 6px; }
+.delta.up { color: var(--good); }
+.delta.down { color: var(--bad); }
+.delta.same { color: var(--muted); opacity: 0.6; }
+
+/* Отклонение от классовой нормы. */
+.norm { font-size: 11.5px; color: var(--muted); }
+.out-of-band { color: var(--warn); font-weight: 600; }
+
+/* --- Флаги проблем --- */
+
+.flags { display: flex; flex-wrap: wrap; gap: 6px; }
+.flag {
+  display: inline-block; padding: 2px 9px; border-radius: 999px;
+  font-size: 11.5px; font-weight: 600;
+  border: 1px solid currentColor;
+}
+.flag.warn { color: var(--warn); }
+.flag.bad { color: var(--bad); }
+.flag.info { color: var(--muted); }
+
+/* --- Теплокарта матчапов --- */
+
+.heat td { text-align: center; font-size: 12px; padding: 6px 8px; }
+.heat td.w { background: color-mix(in srgb, var(--good) 22%, transparent); }
+.heat td.l { background: color-mix(in srgb, var(--bad) 22%, transparent); }
+.heat td.d { background: color-mix(in srgb, var(--muted) 14%, transparent); }
+.heat td.self { background: var(--surface-2); color: var(--muted); }
+
+/* --- Страница кита --- */
+
+.unit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.bucket h3 { margin: 0 0 10px; font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; }
+.stat { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px solid var(--border); }
+.stat:last-child { border-bottom: 0; }
+.stat .k { color: var(--muted); font-size: 12.5px; }
+.stat .v { font-variant-numeric: tabular-nums; }
+
+.empty { color: var(--muted); font-size: 13px; font-style: italic; }
+
+footer { color: var(--muted); font-size: 12px; margin-top: 30px; }

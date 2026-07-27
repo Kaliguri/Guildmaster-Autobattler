@@ -98,6 +98,7 @@ namespace Guildmaster.Balance.Editor
             string csv = ReportWriter.WriteCsv("squad_swap", headers, rows);
             string md = ReportWriter.WriteMarkdown("squad_swap", "SimBench — замена в живом отряде (4v4)",
                 headers, rows, notes);
+            ReportWriter.WriteJson("squad_swap", "SimBench — замена в живом отряде (4v4)", headers, rows, notes);
             return (csv, md);
         }
 

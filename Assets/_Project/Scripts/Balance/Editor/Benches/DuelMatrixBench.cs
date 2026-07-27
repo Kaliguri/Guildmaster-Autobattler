@@ -171,6 +171,8 @@ namespace Guildmaster.Balance.Editor
             string sumCsv = ReportWriter.WriteCsv(format.BaseName + "_ranking", sumHeaders, sumTable);
             string sumMd = ReportWriter.WriteMarkdown(format.BaseName + "_ranking",
                 "SimBench — рейтинг, " + format.Title, sumHeaders, sumTable, sumNotes);
+            ReportWriter.WriteJson(format.BaseName + "_ranking",
+                "SimBench — рейтинг, " + format.Title, sumHeaders, sumTable, sumNotes);
 
             // --- Матрица матчапов (строка = левый, столбец = правый) ---
             var matrixHeaders = new List<string> { "Left \\ Right" };
@@ -183,11 +185,14 @@ namespace Guildmaster.Balance.Editor
                 matrixTable.Add(cells);
             }
             ReportWriter.WriteCsv(format.BaseName + "_matrix", matrixHeaders, matrixTable);
-            ReportWriter.WriteMarkdown(format.BaseName + "_matrix",
-                "SimBench — матрица матчапов, " + format.Title, matrixHeaders, matrixTable,
+            const string matrixNotes =
                 "Ячейка [строка i, столбец j] — исход для i (левого) против j (правого): W/L/D. " +
                 "Число рядом с W/D — остаток HP команды левого на конец боя, %: цена победы. " +
-                "У L он всегда 0 и не пишется.");
+                "У L он всегда 0 и не пишется.";
+            ReportWriter.WriteMarkdown(format.BaseName + "_matrix",
+                "SimBench — матрица матчапов, " + format.Title, matrixHeaders, matrixTable, matrixNotes);
+            ReportWriter.WriteJson(format.BaseName + "_matrix",
+                "SimBench — матрица матчапов, " + format.Title, matrixHeaders, matrixTable, matrixNotes);
 
             return (sumCsv, sumMd);
         }

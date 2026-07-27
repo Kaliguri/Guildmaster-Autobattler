@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
@@ -54,6 +54,7 @@ namespace Guildmaster.Balance.Editor
 
             string csv = ReportWriter.WriteCsv("bench_survivability", headers, table);
             string md = ReportWriter.WriteMarkdown("bench_survivability", "SimBench — выживаемость (Фаза 1)", headers, table, notes);
+            ReportWriter.WriteJson("bench_survivability", "SimBench — выживаемость (Фаза 1)", headers, table, notes);
             return (csv, md);
         }
 

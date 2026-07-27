@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -104,6 +104,7 @@ namespace Guildmaster.Balance.Editor
 
             string csv = ReportWriter.WriteCsv("pair_synergy", headers, rows);
             string md = ReportWriter.WriteMarkdown("pair_synergy", "SimBench — синергия пар", headers, rows, notes);
+            ReportWriter.WriteJson("pair_synergy", "SimBench — синергия пар", headers, rows, notes);
             return (csv, md);
         }
 

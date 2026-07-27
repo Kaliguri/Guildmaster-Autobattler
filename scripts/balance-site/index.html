@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SimBench — баланс Guildmaster</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="bar">
+    <h1>SimBench</h1>
+
+    <div class="field">
+      <label for="runA">Прогон A</label>
+      <select id="runA"></select>
+    </div>
+    <div class="field">
+      <label for="runB">сравнить с</label>
+      <select id="runB"></select>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="field">
+      <label for="unitFilter">Кит</label>
+      <select id="unitFilter"><option value="">все</option></select>
+    </div>
+    <button class="ghost" id="backBtn" hidden>← ко всем</button>
+  </header>
+
+  <div class="wrap">
+    <nav class="tabs" id="tabs"></nav>
+    <main id="view"></main>
+    <footer id="foot"></footer>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

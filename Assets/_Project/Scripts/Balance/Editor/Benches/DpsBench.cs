@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
@@ -71,6 +71,7 @@ namespace Guildmaster.Balance.Editor
 
             string csv = ReportWriter.WriteCsv("bench_dps", headers, table);
             string md = ReportWriter.WriteMarkdown("bench_dps", "SimBench — DPS-бенч (Фаза 1)", headers, table, notes);
+            ReportWriter.WriteJson("bench_dps", "SimBench — DPS-бенч (Фаза 1)", headers, table, notes);
             return (csv, md);
         }
 
