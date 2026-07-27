@@ -1,31 +1,13 @@
 ---
 name: xgaida-x-nixi-gamefeel-vfx
 description: >-
-  Рабочий контур джуса и визуального фидбэка (gamefeel / VFX) Guildmaster — слой
-  «сочности» поверх боя: политика значимости (CombatFeelDirector — что достойно
-  slowmo/shake), per-hit фидбэк презентера (hitstop, вспышка, сплющивание,
-  боевые цифры), пиксельные VFX (CombatVfx/PixelBurst), death-shatter, screen
-  shake за IScreenShake, LitMotion-твины, feel-конфиги (CombatFeelConfig,
-  CombatColorPalette, PixelBurstPreset) и ЦЕЛЕВОЙ шов префаб-VFX (SO→префаб→пул→
-  точка-сокет). Используй ВСЕГДА, когда задача касается фидбэка/джуса: gamefeel,
-  juice, сочность, VFX, партиклы, VFX Graph, ShaderGraph-эффект, screen shake,
-  тряска, hitstop, hit-stop, slowmo, замедление на добивание, финишер, вспышка,
-  сплющивание/squash, damage numbers/боевые цифры, FloatingText, PixelBurst,
-  DeathShatter, muzzle/искры/пыль, CombatFeelDirector, CombatFeelConfig,
-  PixelBurstPreset, IScreenShake, точки-сокеты (ShotPoint/HitPoint/FeetPoint),
-  пул VFX, спавн эффекта по боевому событию, или когда правишь что-либо под
-  Assets/_Project/Scripts/Presentation (визуал-компоненты и Design/*Feel*/*Palette*)
-  и Game/Services/CombatFeelDirector. Срабатывай, даже если слова «gamefeel» нет,
-  но по сути правится визуальный/тактильный фидбэк боя. НЕ применять к: боевому
-  времени и его контракту (TimeScaleService, GameSpeed/пауза/хрономант — это
-  combat-sim; здесь только ПОТРЕБИТЕЛЬ через Cinematic-API), звуку (IAudioService,
-  FMOD, стингеры, микс — это скилл audio), поведению эффектов и sim-логике
-  (combat-sim), ОПРЕДЕЛЕНИЮ VfxData/пресетов как контента-SO (id, баланс — это
-  data-authoring; здесь спавн-механика и пул), боевому uGUI-HUD (Image.Filled) и
-  рантайм-UITK-экранам (uitk). Инженерную тех-доку о джус/VFX-слое
-  (docs/wiki/tech) ведёт tech-scribe.
+  Джус и визуальный фидбэк Guildmaster: политика значимости (что достойно slowmo и тряски),
+  per-hit фидбэк (hitstop, вспышка, сплющивание, боевые цифры), пиксельные VFX, death-shatter,
+  screen shake за IScreenShake, feel-конфиги и шов префаб-VFX (SO→префаб→пул→сокет). Зови на
+  любую задачу про сочность, VFX, тряску, замедление, партиклы и всё под Presentation-визуалом.
+  НЕ применять к: боевому времени и его контракту (combat-sim — здесь только потребитель),
+  звуку (audio), определениям VfxData как контента (data-authoring).
 ---
-
 # Gamefeel & VFX — рабочий контур Guildmaster
 
 Этот скилл — процедура, а не справка. Он превращает разрозненные правила «сочности»

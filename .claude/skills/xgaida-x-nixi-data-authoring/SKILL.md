@@ -1,28 +1,13 @@
 ---
 name: xgaida-x-nixi-data-authoring
 description: >-
-  Рабочий контур дата-слоя (data authoring) Guildmaster — авторинг игрового
-  контента и конфигов: три слоя SO→POCO→DTO, строковые id `domain.name`,
-  ScriptableObject-определения (UnitData/RelicData/EnemyData/EffectData/ItemData/
-  VesselData/EncounterData/TextEventData и пр.), стат-блоки и StatsConfig, реестр
-  контента (ContentDatabase/IContentDatabase/ContentRegistry), лок-ключи контента,
-  валидация данных и запреты сериализации. Используй ВСЕГДА, когда задача касается
-  ДАННЫХ/КОНТЕНТА: новый контент-тип или SO, ContentDefinition, id/домен, реестр,
-  StatModifier/StatType/StatsConfig/Override, EffectData как ОПРЕДЕЛЕНИЕ (SO,
-  баланс, состав [SerializeReference], id, loc), DTO/контракт сейва, лок-ключи
-  {id}.name/{id}.desc, EditMode-валидация контента, конфиг-бейк, Addressables под
-  Localization, или когда правишь что-либо под Assets/_Project/Scripts/Data и
-  Assets/_Project/ScriptableObjects. Срабатывай, даже если слова «данные» нет, но
-  по сути авторится/правится контент или его контракт.
-  НЕ применять к: ПОВЕДЕНИЮ эффектов и боевой логике (IRuntimeEffectComponent,
-  тик, стакинг — это combat-sim; здесь только ОПРЕДЕЛЕНИЕ); редакторному окну
-  Content Hub (ContentHubWindow — будущий скилл content-hub; здесь только
-  контракты данных, которые окно правит); плумбингу сейв/загрузки (Easy Save 3,
-  Steam Cloud — будущий save-system; здесь только форма DTO); дизайн-тексту ГДД
-  (gdd-scribe); рантайм-UI (uitk). Инженерную тех-доку о дата-слое
-  (docs/wiki/tech) ведёт tech-scribe.
+  Дата-слой Guildmaster: авторинг контента и конфигов — три слоя SO→POCO→DTO, строковые id
+  domain.name, ScriptableObject-определения (UnitData, RelicData, EffectData и родня),
+  стат-блоки и StatsConfig, реестр контента, лок-ключи, валидация и контракты сериализации.
+  Зови на любую работу с данными и всё под Assets/_Project/Scripts/Data и ScriptableObjects. НЕ
+  применять к: ПОВЕДЕНИЮ эффектов и боевой логике (combat-sim — здесь только определение), окну
+  Content Hub, дизайн-тексту ГДД (gdd-scribe), рантайм-UI (uitk).
 ---
-
 # Data Authoring — рабочий контур Guildmaster
 
 Этот скилл — процедура, а не справка. Он превращает правила дата-слоя в чеклист,

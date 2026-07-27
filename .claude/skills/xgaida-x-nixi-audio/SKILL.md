@@ -1,39 +1,14 @@
 ---
 name: xgaida-x-nixi-audio
 description: >-
-  Рабочий контур звука (audio / SFX / музыка) Guildmaster — весь аудио-слой за
-  фасадом IAudioService плюс генеративный пайплайн scripts/audio: карта звука
-  (audio_map.py — ключ→категория→сэмплы), нормализация громкости, генерация
-  populate.js, сборка FMOD-банков, наполнение AudioCatalog. Core-фасад и две
-  реализации (FmodAudioService на FMOD с хранимыми EventInstance для лупов,
-  UnityAudioService-заглушка), боевой аудио-презентер (AudioPresenter),
-  звук забега вне боя (RunAudioPresenter в root-скоупе), звук интерфейса одним
-  слушателем на корне панели (UiSoundSystem), резолвер ключей {contentId}.{action}
-  (AudioResolver), каталог ключ→FMOD-событие (AudioCatalog + EventReference),
-  канон действий (AudioAction), глобальные параметры микса (AudioParameters,
-  TimeScale-питч), шины bus:/SFX/{Combat,UI,Ambient,Stingers} и bus:/Music,
-  громкости через SettingsService, банки в StreamingAssets, музыка и амбиент.
-  Используй ВСЕГДА, когда задача касается звука: audio, звук, sound, SFX, музыка,
-  амбиент, луп, стингер, микс, шина/bus, громкость/volume, LUFS, нормализация,
-  FMOD, FMOD Studio, банк/bank, populate, EventReference, IAudioService,
-  AudioPresenter, RunAudioPresenter, UiSoundSystem, AudioCatalog, AudioResolver,
-  AudioAction, AudioParameters, ключ звука, {id}.{action}, озвучка удара/каста/
-  смерти/клика/узла карты, анти-каша голосов, voice stealing, подбор сэмплов,
-  CLAP, Freesound, ElevenLabs, Stable Audio, или когда правишь что-либо под
-  scripts/audio, FMOD Project, Assets/_Project/Scripts/Core/Audio,
-  Assets/_Project/Scripts/Presentation/Audio, Assets/_Project/Scripts/UI/UiSoundSystem.cs,
-  аудио-сервисы в Game/Services (FmodAudioService, RunAudioPresenter,
-  UnityAudioService, аудио-часть SettingsService) и банки в Assets/StreamingAssets.
-  Срабатывай, даже если слова «audio» нет, но по сути правится озвучка/звуковой
-  мост/микс/подбор сэмплов. НЕ применять к: боевому времени (TimeScaleService —
-  combat-sim; звук лишь принимает от него параметр TimeScale), джусу/VFX/тряске
-  (gamefeel-vfx — но feel-ЗВУКИ живут здесь), поведению эффектов и sim-логике
-  (combat-sim), ОПРЕДЕЛЕНИЮ игрового контента и id (UnitData/EffectData,
-  ContentDomains — data-authoring; звук лишь резолвит по чужому id), самому
-  звучанию и финальному сведению на слух (Макс).
-  Инженерную тех-доку об аудио-слое (docs/wiki/tech) ведёт tech-scribe.
+  Звук Guildmaster: весь аудио-слой за фасадом IAudioService (FMOD-реализация, банки, шины и
+  микс), ключи {contentId}.{action} и AudioCatalog, боевой и забеговый презентеры, звук
+  интерфейса, плюс генеративный пайплайн scripts/audio — карта звука, нормализация, сборка
+  банков. Зови на любую задачу про звук, музыку, амбиент, стингеры, громкость и подбор сэмплов,
+  а также на правки под scripts/audio, FMOD Project, Core/Audio. НЕ применять к: боевому
+  времени и симуляции (combat-sim), визуальному джусу (gamefeel-vfx), тех-доке об аудио
+  (tech-scribe).
 ---
-
 # Audio — рабочий контур Guildmaster
 
 Этот скилл — процедура, а не справка. Он превращает правила звукового слоя в чеклист,
