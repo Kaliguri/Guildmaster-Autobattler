@@ -349,7 +349,8 @@ namespace Guildmaster.Combat
 
             // Урон считается сразу (расчёт чист и от порядка не зависит — статы заморожены на тик),
             // а применяется реестром, когда сложатся все удары раунда. См. TickLedger.
-            _ledger.AddDamage(req.Target, DamagePipeline.Resolve(effective), in effective);
+            float dealt = DamagePipeline.Resolve(effective, out float mitigated);
+            _ledger.AddDamage(req.Target, dealt, mitigated, in effective);
         }
 
         /// <summary>

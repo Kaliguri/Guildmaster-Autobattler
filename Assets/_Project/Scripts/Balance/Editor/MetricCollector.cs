@@ -44,6 +44,55 @@ namespace Guildmaster.Balance.Editor
         /// </summary>
         public double SelfDamage;
 
+        // --- ВЫЖИВАЕМОСТЬ: чем именно юнит не умер ---
+        // Стенд мерил только «сколько прожил», и любой танк выглядел одинаково — а держатся они разным:
+        // один бронёй, другой щитом, третий тем, что его лечат. Без разреза не видно, что чинить.
+
+        /// <summary>Полученное лечение (от союзников и от себя).</summary>
+        public double HealingReceived;
+
+        /// <summary>Урон, срезанный бронёй и эффективностями до того, как коснулся щита или HP.</summary>
+        public double DamageMitigated;
+
+        /// <summary>Сколько раз входящий удар был отменён целиком («Изворотливость»).</summary>
+        public int HitsEvaded;
+
+        // --- КОНТРОЛЬ: сколько времени юнит отнял у врагов ---
+
+        /// <summary>Суммарные секунды контроля, наложенного на ВРАГОВ (стан/корень/немота/подкидывание).</summary>
+        public double ControlSecondsDealt;
+
+        /// <summary>Сколько раз наложил контроль на врагов.</summary>
+        public int ControlAppliedCount;
+
+        /// <summary>Секунды контроля, полученные самим юнитом.</summary>
+        public double ControlSecondsTaken;
+
+        // --- ПРОКЛЯТИЯ: порча, наложенная на врагов ---
+
+        /// <summary>Сколько дебаффов наложил на врагов (каждое наложение, включая рефреши и стаки).</summary>
+        public int DebuffsApplied;
+
+        /// <summary>Суммарная длительность наложенных на врагов дебаффов, секунд.</summary>
+        public double DebuffSecondsDealt;
+
+        /// <summary>Наложено дебаффов с тегом яда/горения — «химия» отдельно от прочей порчи.</summary>
+        public int DotsApplied;
+
+        // --- УТИЛИТА: что юнит дал своим ---
+
+        /// <summary>Сколько бафов выдал СОЮЗНИКАМ (себя не считаем — свои пассивки это не помощь команде).</summary>
+        public int BuffsGranted;
+
+        /// <summary>Суммарная длительность выданных союзникам бафов, секунд.</summary>
+        public double BuffSecondsGranted;
+
+        /// <summary>
+        /// Снято ЧУЖИХ дебаффов со СВОИХ (очистка). Потребление собственного дебаффа — например, крио
+        /// съедает свою же «Заморозку» ульткой — сюда НЕ идёт: это конверсия его механики, не помощь команде.
+        /// </summary>
+        public int CleansesDone;
+
         public bool Died;
         public int DeathTick = -1;
 
@@ -86,7 +135,13 @@ namespace Guildmaster.Balance.Editor
         private readonly Dictionary<int, UnitMetric> _byId = new Dictionary<int, UnitMetric>();
         private readonly Dictionary<int, RuntimeUnit> _unitById = new Dictionary<int, RuntimeUnit>();
 
-        public MetricCollector(CombatSimulation sim, IReadOnlyList<TrackedUnit> tracked)
+        /// <summary>Теги, по которым эффект считается контролем (отнимает у цели действия).</summary>
+        private const EffectTag ControlTags = EffectTag.Control | EffectTag.Frozen | EffectTag.KnockUp;
+
+        /// <summary>Теги «химии» — яд и горение: их считаем отдельно от прочей порчи.</summary>
+        private const EffectTag DotTags = EffectTag.DoT | EffectTag.Poison | EffectTag.Burn;
+
+        public MetricCollector(CombatSimulation sim, IReadOnlyList<TrackedUnit> tracked, EffectSystem effects = null)
         {
             _sim = sim;
             for (int i = 0; i < tracked.Count; i++)
@@ -105,6 +160,81 @@ namespace Guildmaster.Balance.Editor
             sim.OnDamageDealt += HandleDamage;
             sim.OnHealed += HandleHeal;
             sim.OnUnitDied += HandleDeath;
+            sim.OnAttackEvaded += HandleEvaded;
+
+            // Контроль, проклятия и выданные бафы видны только на шве наложения эффекта. Он необязателен:
+            // часть бенчей строит окружение без общего EffectSystem, и тогда эти корзины просто пусты.
+            if (effects != null)
+            {
+                effects.OnEffectApplied += HandleEffectApplied;
+                effects.OnEffectDispelled += HandleDispelled;
+            }
+        }
+
+        /// <summary>
+        /// Эффект сорван диспелом. В утилиту идёт только настоящая очистка: снятый со СВОЕГО ЧУЖОЙ дебафф.
+        /// Съеденный собственной ульткой свой же эффект (крио конвертирует «Заморозку» в стан) — механика
+        /// кита, а не помощь команде, и в счёт не попадает.
+        /// </summary>
+        private void HandleDispelled(RuntimeUnit target, EffectData def, RuntimeUnit dispeller, RuntimeUnit caster)
+        {
+            if (def == null || target == null || dispeller == null) return;
+            if (!_byId.TryGetValue(dispeller.Id, out UnitMetric dm)) return;
+
+            bool onAlly = target.Team == dispeller.Team;
+            bool foreignEffect = caster == null || caster.Team != dispeller.Team;
+
+            if (onAlly && foreignEffect && def.Polarity == EffectPolarity.Debuff) dm.CleansesDone++;
+        }
+
+        /// <summary>
+        /// Эффект лёг на цель: раскладываем по корзинам «контроль», «проклятия» и «утилита».
+        /// </summary>
+        /// <remarks>
+        /// Длительность берём через <see cref="EffectSystem.ResolveDurationTicks"/> — ту же функцию, что
+        /// считает её в бою, а не по <c>BaseDuration</c> из ассета: сопротивление контролю и эффективности
+        /// сокращают реальную длительность, и без них стенд рапортовал бы задуманное, а не случившееся.
+        /// Постоянные эффекты (−1) в секунды не идут: у пассивки нет длительности, которую можно сложить.
+        /// </remarks>
+        private void HandleEffectApplied(RuntimeUnit target, EffectData def, RuntimeUnit source)
+        {
+            if (def == null || target == null || source == null) return;
+            if (!_byId.TryGetValue(source.Id, out UnitMetric sm)) return;
+
+            int ticks = EffectSystem.ResolveDurationTicks(def, source, target);
+            double seconds = ticks > 0 ? ticks / (double)SimConstants.TickRate : 0.0;
+            bool onEnemy = target.Team != source.Team;
+            bool onSelf = ReferenceEquals(target, source);
+
+            if ((def.Tags & ControlTags) != 0)
+            {
+                if (onEnemy)
+                {
+                    sm.ControlSecondsDealt += seconds;
+                    sm.ControlAppliedCount++;
+                }
+
+                if (_byId.TryGetValue(target.Id, out UnitMetric tmc)) tmc.ControlSecondsTaken += seconds;
+            }
+
+            if (onEnemy && def.Polarity == EffectPolarity.Debuff)
+            {
+                sm.DebuffsApplied++;
+                sm.DebuffSecondsDealt += seconds;
+                if ((def.Tags & DotTags) != 0) sm.DotsApplied++;
+            }
+
+            // Баф себе — это своя пассивка, а не помощь команде: в утилиту идёт только выданное ДРУГИМ.
+            if (!onEnemy && !onSelf && def.Polarity == EffectPolarity.Buff)
+            {
+                sm.BuffsGranted++;
+                sm.BuffSecondsGranted += seconds;
+            }
+        }
+
+        private void HandleEvaded(RuntimeUnit target)
+        {
+            if (target != null && _byId.TryGetValue(target.Id, out UnitMetric m)) m.HitsEvaded++;
         }
 
         private void HandleDamage(RuntimeUnit source, RuntimeUnit target, DamageResult result)
@@ -136,6 +266,7 @@ namespace Guildmaster.Balance.Editor
             {
                 tm.DamageTaken += result.TotalDamage;
                 tm.ShieldAbsorbed += result.ShieldDamage;
+                tm.DamageMitigated += result.Mitigated;   // сколько не пустила защита — часть ответа «чем не умер»
                 // Оверкилл — урон сверх остатка HP: после смертельного удара CurrentHP уходит в минус.
                 if (result.KilledTarget && target.CurrentHP < 0f)
                     tm.Overkill += -target.CurrentHP;
@@ -146,6 +277,11 @@ namespace Guildmaster.Balance.Editor
         {
             if (source != null && _byId.TryGetValue(source.Id, out UnitMetric sm))
                 sm.HealingDone += amount;
+
+            // Полученное лечение — часть ответа «чем он не умер»: танк на броне и танк под хилером
+            // живут одинаково долго, но чинить их надо разное.
+            if (target != null && _byId.TryGetValue(target.Id, out UnitMetric tm))
+                tm.HealingReceived += amount;
         }
 
         private void HandleDeath(RuntimeUnit unit)

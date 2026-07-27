@@ -34,7 +34,10 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnApply(in EffectContext ctx)
         {
-            ctx.Combat.Dispel(new DispelRequest(ctx.Target, _targetPolarity, _targetTags, _dispelPower, _maxCount));
+            // Источник передаём: очистка — это заслуга того, кто её наложил, и стенд считает её
+            // утилитой именно ему (а не цели, с которой сняли порчу).
+            ctx.Combat.Dispel(new DispelRequest(ctx.Target, _targetPolarity, _targetTags, _dispelPower,
+                _maxCount, ctx.Source));
         }
 
         public void OnExpire(in EffectContext ctx) { }

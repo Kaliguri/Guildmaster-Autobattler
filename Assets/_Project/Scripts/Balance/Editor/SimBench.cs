@@ -41,7 +41,8 @@ namespace Guildmaster.Balance.Editor
             for (int i = 0; i < tracked.Count; i++)
                 tracked[i].Unit.Id = i;
 
-            var collector = new MetricCollector(env.Sim, tracked);
+            // EffectSystem передаём: контроль, проклятия и выданные бафы видны только на шве наложения.
+            var collector = new MetricCollector(env.Sim, tracked, env.Effects);
 
             for (int i = 0; i < tracked.Count; i++)
                 env.Sim.EnqueueUnitSpawn(tracked[i].Unit);

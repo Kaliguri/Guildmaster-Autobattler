@@ -58,7 +58,8 @@ namespace Guildmaster.Tests.EditMode.Combat
         private static DamageResult Execute(in DamageRequest req)
         {
             var ledger = new TickLedger();
-            ledger.AddDamage(req.Target, DamagePipeline.Resolve(in req), in req);
+            float dealt = DamagePipeline.Resolve(in req, out float mitigated);
+            ledger.AddDamage(req.Target, dealt, mitigated, in req);
 
             var sink = new CapturingSink();
             ledger.Commit(sink);

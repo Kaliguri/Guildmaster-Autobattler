@@ -23,14 +23,23 @@ namespace Guildmaster.Combat.Effects
         /// <summary>Сколько максимум снять (0 = все подходящие).</summary>
         public readonly int MaxCount;
 
+        /// <summary>
+        /// Кто снимает. Нужен, чтобы отличить помощь команде от собственной механики: снятая с союзника
+        /// чужая порча — это утилита снявшего, а съеденный своей же ульткой собственный дебафф (крио
+        /// конвертирует «Заморозку» в стан) — не очистка вовсе. null = системное снятие без автора.
+        /// </summary>
+        public readonly RuntimeUnit Source;
+
         public DispelRequest(
-            RuntimeUnit target, DispelTargetPolarity polarity, EffectTag tags, int dispelPower, int maxCount)
+            RuntimeUnit target, DispelTargetPolarity polarity, EffectTag tags, int dispelPower, int maxCount,
+            RuntimeUnit source = null)
         {
             Target      = target;
             Polarity    = polarity;
             Tags        = tags;
             DispelPower = dispelPower;
             MaxCount    = maxCount;
+            Source      = source;
         }
     }
 }

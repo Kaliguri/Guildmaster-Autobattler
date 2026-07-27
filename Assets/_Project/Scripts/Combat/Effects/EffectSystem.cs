@@ -48,6 +48,17 @@ namespace Guildmaster.Combat
         public event System.Action<RuntimeUnit, EffectData, RuntimeUnit> OnEffectEnded;
 
         /// <summary>
+        /// Эффект СНЯТ диспелом: (цель, определение, кто снял, кто накладывал). Отдельно от
+        /// <see cref="OnEffectEnded"/>, потому что по нему нельзя отличить «истёк сам» от «сорвали», а
+        /// разница смысловая: сорванная с союзника чужая порча — заслуга снявшего.
+        /// </summary>
+        /// <remarks>
+        /// Четвёртый аргумент (автор снятого эффекта) нужен, чтобы не записать в очистку собственную
+        /// механику: криомант съедает ульткой свою же «Заморозку», и снявший там совпадает с наложившим.
+        /// </remarks>
+        public event System.Action<RuntimeUnit, EffectData, RuntimeUnit, RuntimeUnit> OnEffectDispelled;
+
+        /// <summary>
         /// Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение.
         /// Вставляется в тик-цикл перед DeathSystem (DoT может добить).
         /// </summary>
@@ -364,7 +375,10 @@ namespace Guildmaster.Combat
                     continue;
                 }
 
+                EffectData def = eff.Def;
+                RuntimeUnit caster = eff.Source;
                 Expire(target, eff, combat);
+                OnEffectDispelled?.Invoke(target, def, req.Source, caster);
             }
 
             // Среди снятого мог быть контроль-эффект. Пересчитать флаги (см. Remove): без этого

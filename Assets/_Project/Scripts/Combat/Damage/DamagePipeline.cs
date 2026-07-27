@@ -21,8 +21,9 @@ namespace Guildmaster.Combat
         /// Посчитать урон, который дойдёт до цели, ДО поглощения щитом. Ничего не мутирует.
         /// </summary>
         /// <param name="req">Запрос урона с источником, целью и параметрами.</param>
+        /// <param name="mitigated">Сколько срезали броня и эффективности — то, чего не случилось.</param>
         /// <returns>Эффективный урон (≥ 0) после эффективностей, брони и пробивания.</returns>
-        public static float Resolve(in DamageRequest req)
+        public static float Resolve(in DamageRequest req, out float mitigated)
         {
             float damage = req.RawDamage;
 
@@ -60,8 +61,14 @@ namespace Guildmaster.Combat
             // 3. Множитель эффективности получаемого урона
             damage *= req.Target.Stats.Get(StatType.DamageTakenEff);
 
+            damage = Mathf.Max(0f, damage);
+
+            // Срезанное = замах минус дошедшее. Считается от СЫРОГО урона запроса (уязвимости в него
+            // уже вложены вызывающим), поэтому число отвечает ровно на «сколько защита не пустила».
+            mitigated = Mathf.Max(0f, req.RawDamage - damage);
+
             // Щит и HP здесь НЕ трогаются: их правит TickLedger, когда сложит все удары тика.
-            return Mathf.Max(0f, damage);
+            return damage;
         }
     }
 }

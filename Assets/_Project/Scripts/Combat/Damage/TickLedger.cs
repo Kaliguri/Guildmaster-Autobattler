@@ -36,16 +36,18 @@ namespace Guildmaster.Combat
         {
             public readonly RuntimeUnit Source;
             public readonly float Amount;
+            public readonly float Mitigated;
             public readonly DamageSourceKind SourceKind;
             public readonly DamageSchool School;
             public readonly DamageAffinity Affinity;
             public readonly MagicElement Element;
             public readonly float Vulnerability;
 
-            public DamageEntry(RuntimeUnit source, float amount, in DamageRequest req)
+            public DamageEntry(RuntimeUnit source, float amount, float mitigated, in DamageRequest req)
             {
                 Source        = source;
                 Amount        = amount;
+                Mitigated     = mitigated;
                 SourceKind    = req.SourceKind;
                 School        = req.School;
                 Affinity      = req.Affinity;
@@ -93,8 +95,9 @@ namespace Guildmaster.Combat
         /// <summary>Есть ли что применять.</summary>
         public bool HasPending => _order.Count > 0;
 
-        /// <summary>Заявить урон по цели: <paramref name="amount"/> — уже посчитанный эффективный урон.</summary>
-        public void AddDamage(RuntimeUnit target, float amount, in DamageRequest req)
+        /// <summary>Заявить урон по цели: <paramref name="amount"/> — уже посчитанный эффективный урон,
+        /// <paramref name="mitigated"/> — сколько срезала защита (для разбора «чем боец не умер»).</summary>
+        public void AddDamage(RuntimeUnit target, float amount, float mitigated, in DamageRequest req)
         {
             if (target == null || target.IsDead || amount < MinSignificantAmount) return;
 
@@ -105,7 +108,7 @@ namespace Guildmaster.Combat
                 Track(target);
             }
 
-            list.Add(new DamageEntry(req.Source, amount, in req));
+            list.Add(new DamageEntry(req.Source, amount, mitigated, in req));
         }
 
         /// <summary>Заявить лечение цели: <paramref name="amount"/> — уже с учётом HealShield-эффективностей.</summary>
@@ -190,7 +193,8 @@ namespace Guildmaster.Combat
                     var result = new DamageResult(
                         hpDamage * share, shieldAbsorbed * share,
                         killed && ReferenceEquals(e.Source, killer),
-                        e.SourceKind, e.School, e.Affinity, e.Element, e.Vulnerability);
+                        e.SourceKind, e.School, e.Affinity, e.Element, e.Vulnerability,
+                        e.Mitigated);   // срезанное принадлежит своему удару целиком, делить его не надо
 
                     sink.OnDamageResolved(e.Source, target, in result);
                 }

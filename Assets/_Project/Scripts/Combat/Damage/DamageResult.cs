@@ -15,6 +15,17 @@ namespace Guildmaster.Combat
         /// <summary>Урон, поглощённый щитом.</summary>
         public readonly float ShieldDamage;
 
+        /// <summary>
+        /// Урон, срезанный до тела: броня, пробивание и обе эффективности. Разница между тем, что
+        /// замахнулись нанести, и тем, что дошло.
+        /// </summary>
+        /// <remarks>
+        /// Нужен, чтобы стенд отвечал на вопрос «чем боец не умер»: танк на броне и танк под хилером
+        /// живут одинаково долго, а чинить их надо разное. В <see cref="TotalDamage"/> НЕ входит —
+        /// это то, чего не случилось.
+        /// </remarks>
+        public readonly float Mitigated;
+
         /// <summary>Цель погибла в результате этого удара.</summary>
         public readonly bool KilledTarget;
 
@@ -64,11 +75,13 @@ namespace Guildmaster.Combat
             DamageSchool school = DamageSchool.Physical,
             DamageAffinity affinity = DamageAffinity.None,
             MagicElement element = MagicElement.None,
-            float vulnerability = 1f)
+            float vulnerability = 1f,
+            float mitigated = 0f)
         {
             Element       = element;
             HpDamage      = hpDamage;
             ShieldDamage  = shieldDamage;
+            Mitigated     = mitigated;
             KilledTarget  = killedTarget;
             SourceKind    = sourceKind;
             School        = school;
