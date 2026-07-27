@@ -6,52 +6,73 @@
 
 1. В Aseprite: **File → Scripts → Open Scripts Folder**
    (обычно `%AppData%\Aseprite\scripts\`).
-2. Скопируй сюда `export_bone_parts.lua` **или** сделай directory junction / symlink на эту папку:
+2. Скопируй сюда содержимое этой папки **или** сделай directory junction:
 
 ```powershell
-# из корня репо (PowerShell от админа не нужен для junction в AppData)
+# из корня репо
 $src = (Resolve-Path ".\Aseprite\scripts").Path
 $dst = Join-Path $env:APPDATA "Aseprite\scripts\Guildmaster"
 cmd /c mklink /J "$dst" "$src"
 ```
 
 3. **File → Scripts → Rescan Scripts Folder**
-4. Запуск: **File → Scripts → Guildmaster → export_bone_parts**
-   (или просто `export_bone_parts`, если файл лежит в корне scripts).
+4. Запуск из **File → Scripts → Guildmaster → …**
 
-`.aseprite` должен быть **сохранён** внутри репозитория (например `Aseprite/Bone Animations/…`), чтобы скрипт нашёл `Assets/_Project`.
+`.aseprite` для PNG-экспорта в Unity должен быть **сохранён** внутри репозитория (чтобы найти `Assets/_Project`).
 
-## Export Bone Parts
+---
 
-Экспорт частей для Unity 2D bone / Skinning:
-
-1. Trim по непрозрачным пикселям слоя (не по размеру canvas).
-2. Nearest-neighbor upscale (по умолчанию ×10).
-3. PNG с заменой в:
-
-`Assets/_Project/Art/Sprites/Bone Animations/<имя-файла-без-расширения>/`
-
-Unity импортирует их через preset `BonePartSprite` (Point, Uncompressed, PPU = 100×scale → 1000 при ×10).
-Автоприменение на первом импорте — `BonePartSpritePostprocessor` + запись в Preset Manager.
-Повторный экспорт PNG сохраняет `.meta` (GUID, пивоты, ручные правки).
-
-### Конвенция слоёв / групп
+## Конвенция слоёв (оба скрипта)
 
 | Имя | Поведение |
 |---|---|
-| Обычный image-слой | Один PNG с тем же именем (`Head.png`, `Leg (Top).png`) |
-| Группа без префикса (`Arm`, `Leg`) | Рекурсия: экспортируются дочерние слои |
-| Группа `@Sword` | Все **видимые** дочерние слои сливаются в один `Sword.png` |
-| `#Guide`, `_ref` | Пропуск (гайды / референсы) |
+| Обычный image-слой | Экспортируется как есть |
+| Группа без префикса (`Arm`, `Leg`) | Дети / группа сохраняются |
+| Группы **`Arm` / `Leg`** (только PSD) | Дублируются → `Arm (left)` + `Arm (right)` (и то же для Leg). Копии одинаковые — раскладку/зеркала в Photoshop |
+| Группа `@Sword` | Видимые дети → один слой `Sword` |
+| `#Guide`, `_ref` | Пропуск / удаление |
 
-Новый обвес без правки скрипта: заведи группу `@Bow` / `@Axe` / `@Cloak`.
+---
 
-### CLI (smoke / batch)
+## Export Bone PSD → Photoshop → Unity rig
+
+**Скрипт:** `export_bone_psd.lua`
+
+Для костяной анимации (Character Rig). Пишет **`.psd`** (не `.psb` — Aseprite PSB не умеет).
+
+1. Клон спрайта: дропает `#`/`_`, flatten `@Group`.
+2. Полный canvas (без trim).
+3. Nearest scale **×10 по умолчанию** (как у PNG-экспорта; в диалоге можно сменить).
+4. PSD через vendored [Tsukina Export as PSD](https://github.com/Tsukina-7mochi/aseprite-scripts/tree/master/psd) (`vendor/export_as_psd.lua`).
+
+**Дальше руками:**
+
+1. Открыть `.psd` в Photoshop.
+2. При необходимости поправить раскладку / Image Size.
+3. **Save As → Large Document Format (.psb)**, Maximize Compatibility.
+4. В Unity: Multiple + Mosaic + **Character Rig** + **Use Layer Grouping** → Skinning Editor.
+
+```powershell
+& "C:\Program Files (x86)\Steam\steamapps\common\Aseprite\Aseprite.exe" -b `
+  "Aseprite\Bone Animations\Bone Animation Sprites - Standart.aseprite" `
+  --script "Aseprite\scripts\export_bone_psd.lua" `
+  --script-param "out=Aseprite\Bone Animations\Bone Animation Sprites - Standart.psd"
+```
+
+---
+
+## Export Bone Parts → Unity PNG parts
+
+**Скрипт:** `export_bone_parts.lua`
+
+Отдельный путь: trim → nearest ×10 → PNG в  
+`Assets/_Project/Art/Sprites/Bone Animations/<имя>/`  
+(для каталога частей / свопа, **не** для Character Rig).
+
+Unity: preset `BonePartSprite` (PPU 1000, Point) + `BonePartSpritePostprocessor`.
 
 ```powershell
 & "C:\Program Files (x86)\Steam\steamapps\common\Aseprite\Aseprite.exe" -b `
   "Aseprite\Bone Animations\Bone Animation Sprites - Standart.aseprite" `
   --script "Aseprite\scripts\export_bone_parts.lua"
 ```
-
-В batch-режиме диалог не показывается — scale = 10.
