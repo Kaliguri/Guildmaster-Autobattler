@@ -2,7 +2,7 @@
 title: "Reference - UI Typography"
 order: 76
 status: ready
-updated: 2026-07-26
+updated: 2026-07-27
 ---
 
 > **Единый источник правды о размерах и стиле текста в интерфейсе.** Кегль в UI не выбирается
@@ -71,6 +71,44 @@ updated: 2026-07-26
 
 Гарнитура прибивается в `components.uss` (секция «ЯРУС ШРИФТОВ»), а не в UXML: тема Unity вешает
 шрифт прямо на `.unity-text-element`, и прямое правило обязано бить унаследованное.
+
+### 4.1 Шрифтовые ассеты — только Static-атлас
+
+Шрифты в `Assets/_Project/UI/Fonts/*SDF*.asset` — **всегда Static atlas population с заранее
+запечённым набором EN+RU**. Dynamic запрещён.
+
+**Почему.** Dynamic дорисовывает глифы прямо в редакторе — при наборе текста, при входе в Play —
+и пересохраняет весь `.asset`. Файл это гигантский бинароподобный блоб (FiraSans-Regular раздувался
+до 26 МБ), и git складывает новую копию при каждой регенерации: сотни тысяч строк diff и
+мерж-конфликты на общей ветке. Static замораживает атлас — ноль регенераций, фиксированный размер,
+детерминизм между машинами, быстрее рантайм.
+
+**Набор символов (213 глифов):** ASCII `0x20–0x7E` + кириллица `0x0400–0x045F` + экстра
+`0x00A0 00AB 00BB 00A9 00AE 00B0 00B7 00D7 2013 2014 2018 2019 201C 201D 2022 2026 2116 20BD 20AC 2212 2192 2190`.
+Появилась локаль с новыми глифами (укр. `ҐґІі`, дополнительная пунктуация) — расширяем набор и
+делаем ре-бейк: один осознанный коммит вместо пассивного churn.
+
+**Рецепт бейка** (через `execute_code`, на каждый шрифт):
+
+1. `SerializedObject` → `m_AtlasWidth`/`m_AtlasHeight` = 2048, `m_IsMultiAtlasTexturesEnabled` = false, `Apply()`.
+2. `atlasPopulationMode = Dynamic`, затем `ClearFontAssetData(false)`.
+3. `TryAddCharacters(charset, out missing)` — проверить, что `missing.Length == 0`.
+4. `atlasPopulationMode = Static`.
+5. `SetDirty` на сам ассет и на текстуры атласа, `SaveAssets()`.
+
+Point size / padding / render mode (90 / 9 / SDFAA) не трогать — это визуал, его принимает Макс.
+
+**Готчи.**
+
+- Это `UnityEngine.TextCore.Text.FontAsset` (UI Toolkit / TextCore), **не** `TMPro.TMP_FontAsset`:
+  грузить `LoadAssetAtPath<UnityEngine.TextCore.Text.FontAsset>(...)`, TMP-тип вернёт `null`.
+  Enum тоже свой — `UnityEngine.TextCore.Text.AtlasPopulationMode`.
+- В `.gitattributes` стоит `*SDF*.asset -diff -merge` — но это страховочная сеть, а не решение.
+  Решение — Static.
+- Старые блобы в истории убираются только её переписыванием (BFG / filter-repo). Не затеваем:
+  цена координации выше выгоды, цель — остановить рост, а не отыграть прошлое.
+- Настоящий динамический текст (будущие имена игроков из Steam, чат) — отдельный контейнерный
+  fallback-шрифт. Решать, когда дойдёт; в churn-путь не пускать.
 
 ## 5. Цвет текста — тоже часть стиля
 
