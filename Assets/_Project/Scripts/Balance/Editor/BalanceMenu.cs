@@ -18,6 +18,9 @@ namespace Guildmaster.Balance.Editor
         [MenuItem("Alebardium/Balance/0. Class Norms (линейка коридоров)", priority = 101)]
         private static void Norms() => RunReport("Классовые нормы", BalanceNorms.Run);
 
+        [MenuItem("Alebardium/Balance/0. Content Cards (имена, описания, способности)", priority = 102)]
+        private static void Cards() => RunReport("Карточки контента", ContentCards.Run);
+
         [MenuItem("Alebardium/Balance/1. DPS Bench (all relics)", priority = 120)]
         private static void Dps() => RunReport("DPS-бенч", DpsBench.Run);
 
@@ -65,9 +68,12 @@ namespace Guildmaster.Balance.Editor
                 double secs = EditorApplication.timeSinceStartup - t0;
                 Debug.Log($"[SimBench] {title}: готово за {secs:0.0} с.\nCSV: {csv}\nMD:  {md}");
 
-                // Нормы кладутся в каждый прогон — линейка обязана быть той же версии, что и замеры.
-                // Иначе сайт сравнит сегодняшние числа с коридором, снятым до правки классового профиля.
+                // Спутники кладутся в КАЖДЫЙ прогон: линейка коридоров обязана быть той же версии, что и
+                // замеры (иначе сайт сравнит сегодняшние числа с нормой, снятой до правки классового
+                // профиля), а карточки — той же версии, что и контент (иначе кит переименован, а сайт
+                // зовёт его по-старому). Оба дешёвые, поэтому проще писать всегда, чем угадывать когда.
                 if (action != BalanceNorms.Run) BalanceNorms.Run();
+                if (action != ContentCards.Run) ContentCards.Run();
 
                 // Сайт отчётов пересобирается сам после каждого прогона — иначе он молча показывал бы
                 // вчерашние числа. Отказ сборщика громкий, но прогон из-за него не считается неудачным.

@@ -57,6 +57,13 @@ UNIT_COLUMNS = ("Relic", "Unit", "Kit", "Name")
 # в run.norms и подмешивается к числам всех прочих таблиц.
 NORMS_KIND = "balance_norms"
 
+# Справочные снимки: кто этот кит и что он умеет. Тоже не режимы — они не меряют, а называют.
+CARDS_KIND = "content_cards"
+ABILITIES_KIND = "content_abilities"
+
+# Реестр проблем — единственный источник правды о том, что решено и что ждёт вердикта.
+ISSUES_DOC = ROOT / "docs" / "balance-issues.md"
+
 # Маркеры прогонов (см. scripts/balance-run.py) лежат рядом с отчётами, но отчётом не являются.
 MARKERS_FILE = "runs.json"
 
@@ -233,16 +240,94 @@ def group_runs(snaps: list[Snapshot], markers: list[dict] | None = None) -> list
     return runs
 
 
+def read_issues() -> list[dict]:
+    """
+    Разобрать реестр проблем в структуру для страницы.
+
+    Парсер знает ровно тот формат, которым реестр и пишется (### BAL-001 · заголовок, затем
+    размеченные блоки). Держать проблемы вторым файлом «специально для сайта» нельзя: у факта
+    один владелец, и это markdown, который правит Макс.
+    """
+    if not ISSUES_DOC.exists():
+        return []
+
+    text = ISSUES_DOC.read_text(encoding="utf-8")
+    issues: list[dict] = []
+    section = ""
+
+    # Режем по заголовкам записей, попутно запоминая раздел (## Доминаторы и т.п.).
+    for chunk in re.split(r"^### ", text, flags=re.M)[1:]:
+        head, _, body = chunk.partition("\n")
+        code, _, title = head.partition("·")
+
+        # Раздел, в котором лежит запись: последний ## перед ней.
+        before = text.split("### " + head)[0]
+        sections = re.findall(r"^## (.+)$", before, flags=re.M)
+        if sections:
+            section = sections[-1].strip()
+
+        # Хвост записи после последнего блока — следующий раздел, он не наш.
+        body = re.split(r"^## ", body, flags=re.M)[0]
+
+        issues.append({
+            "code": code.strip(),
+            "title": title.strip(),
+            "section": section,
+            "status": _field(body, "Статус"),
+            "symptom": _block(body, "Симптом"),
+            "diagnosis": _block(body, "Диагноз"),
+            "options": _options(body),
+            "verdict": _field(body, "Вердикт Макса"),
+        })
+    return issues
+
+
+def _field(body: str, name: str) -> str:
+    """Однострочное поле вида **Статус:** открыта."""
+    m = re.search(r"\*\*" + re.escape(name) + r":\*\*\s*(.+)", body)
+    return m.group(1).strip() if m else ""
+
+
+def _block(body: str, name: str) -> str:
+    """Абзац вида **Симптом.** текст до следующего жирного заголовка."""
+    m = re.search(r"\*\*" + re.escape(name) + r"\.\*\*\s*(.+?)(?=\n\*\*|\n---|\Z)", body, flags=re.S)
+    return _clean(m.group(1)) if m else ""
+
+
+def _options(body: str) -> list[str]:
+    """Нумерованный список вариантов правки из блока **Варианты.**"""
+    m = re.search(r"\*\*Варианты\.\*\*\s*(.+?)(?=\n\*\*Вердикт|\n---|\Z)", body, flags=re.S)
+    if not m:
+        return []
+    items = re.split(r"^\d+\.\s+", m.group(1), flags=re.M)[1:]
+    return [_clean(i) for i in items if i.strip()]
+
+
+def _clean(text: str) -> str:
+    """Схлопнуть переносы строк markdown — на странице абзац рисуется целиком."""
+    return re.sub(r"\s*\n\s*", " ", text).strip()
+
+
 def build_payload(runs: list[Run]) -> dict:
     """Данные для страницы: прогоны, режимы, киты и все их числа."""
-    payload = {"runs": [], "modeTitles": MODE_TITLES}
+    payload = {"runs": [], "modeTitles": MODE_TITLES, "issues": read_issues()}
 
     for run in runs:
         entry = {
             "key": run.key, "title": run.title, "summary": run.summary,
             "modes": {}, "matrices": {}, "notes": {}, "norms": {}, "normsNote": "",
+            "cards": {}, "abilities": {},
         }
         for s in run.snapshots:
+            if s.kind == CARDS_KIND:
+                entry["cards"] = s.by_unit()
+                continue
+            if s.kind == ABILITIES_KIND:
+                # Строк на кита несколько (по одной на способность) — by_unit() схлопнул бы их в одну.
+                for row in s.rows:
+                    row_map = {h: row[i] for i, h in enumerate(s.headers) if i < len(row)}
+                    entry["abilities"].setdefault(str(row_map.get("Relic", "")), []).append(row_map)
+                continue
             if s.kind == NORMS_KIND:
                 # Норм у прогона может не быть (снят до появления линейки) — тогда коридоров не
                 # будет вовсе. Подставлять нормы из соседнего прогона нельзя: линейка меняется

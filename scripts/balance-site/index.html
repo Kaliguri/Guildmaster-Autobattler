@@ -3,36 +3,48 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SimBench — баланс Guildmaster</title>
+  <title>The Balance Desk — Guildmaster</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="bar">
-    <h1>SimBench</h1>
+   <div class="bar-inner">
+    <a class="brand" href="#/" id="brand">
+      <span class="brand-name">The Balance Desk</span>
+      <span class="brand-sub">balance workbench for Guildmaster</span>
+    </a>
+
+    <div class="spacer"></div>
 
     <div class="field">
-      <label for="runA">Прогон A</label>
+      <label for="runA">Прогон</label>
       <select id="runA"></select>
     </div>
     <div class="field">
       <label for="runB">сравнить с</label>
       <select id="runB"></select>
     </div>
-
-    <div class="spacer"></div>
-
-    <div class="field">
-      <label for="unitFilter">Кит</label>
-      <select id="unitFilter"><option value="">все</option></select>
-    </div>
-    <button class="ghost" id="backBtn" hidden>← ко всем</button>
+    <button class="ghost" id="settingsBtn">Настройки</button>
+   </div>
   </header>
 
+  <nav class="mainnav" id="mainnav"></nav>
+
   <div class="wrap">
-    <div id="runInfo"></div>
-    <nav class="tabs" id="tabs"></nav>
+    <nav class="crumbs" id="crumbs"></nav>
     <main id="view"></main>
     <footer id="foot"></footer>
+  </div>
+
+  <div class="modal" id="settingsModal" hidden>
+    <div class="modal-card">
+      <h2>Настройки</h2>
+      <p class="hint" id="settingsStorage"></p>
+      <div id="settingsList"></div>
+      <div class="modal-actions">
+        <button class="ghost" id="settingsClose">Готово</button>
+      </div>
+    </div>
   </div>
 
   <script src="data.js"></script>
