@@ -78,10 +78,16 @@
 
 ## Правила и конвенции
 
-Детальные правила — в `.cursor/rules/`: `project-context` (стандарты кода и рабочий процесс),
-`git-conventions` (коммиты и ветки), `agent-workflows` (`refresh_unity` / `.meta`, нарезка спрайтов,
-Unity MCP), `phase-design-pipeline` (design-first), `obsidian-conventions` (vault), `unity-csharp`
-(по `**/*.cs`). Все, кроме последнего, помечены `alwaysApply`.
+**Как писать код — [`10-reference/code-standards`](docs/wiki/tech/10-reference/code-standards.md).**
+Там инварианты («чего никогда»), именование, документирование, детерминизм, политика фолбэков и
+корень редакторного меню. Читать перед первой правкой `.cs` в сессии; здесь эти правила намеренно
+не продублированы.
+
+Процедуры работы — в `.cursor/rules/`: `git-conventions` (коммиты и ветки),
+`agent-workflows` (пайплайн `refresh_unity` / `.meta`, нарезка спрайтов, готчи Quartz),
+`phase-design-pipeline` (design-first), `obsidian-conventions` (vault),
+`project-context` (тонкий указатель для Cursor). Cursor читает `.cursor/rules` и `AGENTS.md`,
+но не этот файл — поэтому владельцем правил кода назначен документ вики, общий для обоих.
 
 Чеклист настройки проекта — [`30-how-to/project-setup`](docs/wiki/tech/30-how-to/project-setup.md).
 

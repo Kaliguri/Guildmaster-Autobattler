@@ -56,6 +56,7 @@ SORT updated ASC, file.name ASC
 ## Reference (`10-reference/`) — сухие факты
 
 - [[tech/10-reference/tech-stack|Reference - Tech Stack]] — утверждённый стек, паттерны, уроки прошлого проекта. `needs_review`
+- [[tech/10-reference/code-standards|Reference - Code Standards]] — инварианты кода, документирование, детерминизм, фолбэки, меню редактора. `ready`
 - [[tech/10-reference/assemblies|Assemblies]] — карта asmdef, граф зависимостей, правила. `ready`
 - [[tech/10-reference/combat-model|Combat Model]] — «Сосуд + Реликвия», стат-система, модель эффектов/диспела. `ready`
 - [[tech/10-reference/data-layer|Data Layer]] — три слоя данных, каталог SO, id/лок-конвенции, реестр, валидация. `ready`
