@@ -9,8 +9,12 @@
 [Mm]emoryCaptures/
 [Rr]ecordings/
 
-# SimBench balance reports (generated tool output)
-BalanceReports/
+# SimBench balance reports (generated tool output).
+# Exception: runs.json holds the run markers — the titles and intent of each balance pass.
+# Numbers can always be re-measured; "what we tried and why" cannot.
+BalanceReports/*
+!BalanceReports/runs.json
+!BalanceReports/presets/
 
 # Unity3D generated meta files
 *.pidb.meta

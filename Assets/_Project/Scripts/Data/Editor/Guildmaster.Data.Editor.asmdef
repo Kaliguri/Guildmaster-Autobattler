@@ -17,7 +17,8 @@
     "Sirenix.OdinInspector.Attributes.dll",
     "Sirenix.OdinInspector.Editor.dll",
     "Sirenix.Utilities.dll",
-    "Sirenix.Utilities.Editor.dll"
+    "Sirenix.Utilities.Editor.dll",
+    "Newtonsoft.Json.dll"
   ],
   "autoReferenced": true,
   "defineConstraints": [],

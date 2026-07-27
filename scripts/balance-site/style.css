@@ -102,6 +102,13 @@ td.unit a { font-weight: 600; }
 .stat .v { text-align: right; }
 p.hint.out-of-band { font-weight: 500; }
 
+/* --- Шапка прогона: мини-коммит --- */
+
+.run-info { margin: 18px 0 6px; padding-left: 14px; border-left: 3px solid var(--accent); }
+.run-info h2 { margin: 0; font-size: 17px; }
+.run-info p { margin: 5px 0 0; color: var(--muted); font-size: 13px; max-width: 80ch; }
+.run-info p.against { font-size: 12px; opacity: 0.75; }
+
 /* --- Флаги проблем --- */
 
 .flags { display: flex; flex-wrap: wrap; gap: 6px; }

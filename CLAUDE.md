@@ -33,7 +33,9 @@
   ES3 нет asmdef. **Тянет за собой `com.unity.visualscripting` — пакет удалять нельзя**, компиляция
   падает. Потребителей пакета искать по всему `Assets/`, не по `_Project`.
 - **Newtonsoft.Json** авто-ссылается на все сборки (`isExplicitlyReferenced: 0`), правка asmdef не
-  нужна. Готча: `Vector2` требует конвертера, иначе сериализатор уходит в рекурсию по `normalized`.
+  нужна — **кроме сборок с `overrideReferences: true`** (их у нас включает Odin): там авто-ссылка
+  отключена целиком и `Newtonsoft.Json.dll` надо дописать в `precompiledReferences` руками.
+  Готча: `Vector2` требует конвертера, иначе сериализатор уходит в рекурсию по `normalized`.
 - **Addressables** прямой загрузки по адресу в коде не имеют — живут только как основа Localization.
 - **Visual Effect Graph** установлен, но не используется: ни одного `.vfx`. Боевые VFX — свой слой
   (`VfxData` → префаб → пул). **ProBuilder** нужен как зависимость группы `probuilder` в Unity MCP.

@@ -498,8 +498,27 @@ function renderSelectors() {
   f.value = state.unit;
 }
 
+/** Шапка прогона: что это был за заход и что в нём меняли. Прогон без названия — снят до маркеров. */
+function renderRunInfo() {
+  const box = $('#runInfo');
+  box.innerHTML = '';
+  const a = runA();
+  if (!a) return;
+
+  const card = el('div', 'run-info');
+  card.appendChild(el('h2', null, a.title || 'Прогон без названия'));
+  if (a.summary) card.appendChild(el('p', null, a.summary));
+
+  const b = runB();
+  if (b && b !== a) {
+    card.appendChild(el('p', 'against', `сравнение с: ${b.title || b.key}`));
+  }
+  box.appendChild(card);
+}
+
 function render() {
   $('#backBtn').hidden = !state.unit;
+  renderRunInfo();
   renderTabs();
 
   if (state.unit) renderUnit(state.unit);

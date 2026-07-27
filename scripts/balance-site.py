@@ -57,6 +57,9 @@ UNIT_COLUMNS = ("Relic", "Unit", "Kit", "Name")
 # в run.norms и подмешивается к числам всех прочих таблиц.
 NORMS_KIND = "balance_norms"
 
+# Маркеры прогонов (см. scripts/balance-run.py) лежат рядом с отчётами, но отчётом не являются.
+MARKERS_FILE = "runs.json"
+
 
 @dataclass
 class Snapshot:
@@ -104,14 +107,17 @@ class Snapshot:
 
 @dataclass
 class Run:
-    """Прогон — все снимки, снятые примерно в одно время."""
+    """Прогон — мини-коммит: снимки одного захода плюс название и что в нём меняли."""
 
     started: datetime
     snapshots: list[Snapshot] = field(default_factory=list)
+    title: str = ""
+    summary: str = ""
 
     @property
     def key(self) -> str:
-        return self.started.strftime("%Y-%m-%d %H:%M")
+        stamp = self.started.strftime("%Y-%m-%d %H:%M")
+        return f"{stamp} · {self.title}" if self.title else stamp
 
     def units(self) -> set[str]:
         names: set[str] = set()
@@ -124,6 +130,8 @@ class Run:
 def read_snapshots() -> list[Snapshot]:
     snaps: list[Snapshot] = []
     for path in sorted(REPORTS.glob("*.json")):
+        if path.name == MARKERS_FILE:
+            continue   # это маркеры прогонов, а не отчёт бенча
         try:
             data = json.loads(path.read_text(encoding="utf-8-sig"))
         except (json.JSONDecodeError, OSError) as e:
@@ -151,14 +159,68 @@ def read_snapshots() -> list[Snapshot]:
     return snaps
 
 
-def group_runs(snaps: list[Snapshot]) -> list[Run]:
-    """Склеить снимки в прогоны по временному окну. Новые прогоны — первыми."""
+def read_markers() -> list[dict]:
+    """Маркеры прогонов из runs.json (их ставит scripts/balance-run.py). Отсортированы по времени."""
+    path = REPORTS / MARKERS_FILE
+    if not path.exists():
+        return []
+    try:
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"  маркеры прогонов не прочитались ({e}) — группирую по времени")
+        return []
+
+    out = []
+    for m in data if isinstance(data, list) else []:
+        try:
+            out.append({
+                "started": datetime.fromisoformat(m["started"]),
+                "title": m.get("title", ""),
+                "summary": m.get("summary", ""),
+            })
+        except (KeyError, TypeError, ValueError):
+            continue
+    out.sort(key=lambda m: m["started"])
+    return out
+
+
+def group_runs(snaps: list[Snapshot], markers: list[dict] | None = None) -> list[Run]:
+    """
+    Склеить снимки в прогоны. Новые прогоны — первыми.
+
+    Границу задаёт МАРКЕР: снимок принадлежит последнему маркеру, поставленному до него. Временное
+    окно осталось запасным путём для снимков, снятых до того, как маркеры появились, — задним числом
+    приписывать им чужое название нельзя, они честно остаются безымянными.
+    """
+    markers = markers or []
     runs: list[Run] = []
+    current_marker: dict | None = None
+
     for s in sorted(snaps, key=lambda x: x.generated_at):
-        if runs and (s.generated_at - runs[-1].snapshots[-1].generated_at).total_seconds() <= RUN_WINDOW_MINUTES * 60:
+        marker = None
+        for m in markers:
+            if m["started"] <= s.generated_at:
+                marker = m
+            else:
+                break
+
+        same_run = (
+            runs
+            and marker is current_marker
+            and (marker is not None
+                 or (s.generated_at - runs[-1].snapshots[-1].generated_at).total_seconds()
+                 <= RUN_WINDOW_MINUTES * 60)
+        )
+        if same_run:
             runs[-1].snapshots.append(s)
         else:
-            runs.append(Run(started=s.generated_at, snapshots=[s]))
+            runs.append(Run(
+                started=marker["started"] if marker else s.generated_at,
+                snapshots=[s],
+                title=marker["title"] if marker else "",
+                summary=marker["summary"] if marker else "",
+            ))
+        current_marker = marker
 
     # Внутри прогона снимки одного вида могли сняться дважды — оставляем последний.
     for run in runs:
@@ -176,7 +238,10 @@ def build_payload(runs: list[Run]) -> dict:
     payload = {"runs": [], "modeTitles": MODE_TITLES}
 
     for run in runs:
-        entry = {"key": run.key, "modes": {}, "matrices": {}, "notes": {}, "norms": {}, "normsNote": ""}
+        entry = {
+            "key": run.key, "title": run.title, "summary": run.summary,
+            "modes": {}, "matrices": {}, "notes": {}, "norms": {}, "normsNote": "",
+        }
         for s in run.snapshots:
             if s.kind == NORMS_KIND:
                 # Норм у прогона может не быть (снят до появления линейки) — тогда коридоров не
@@ -230,7 +295,7 @@ def main() -> int:
         print("JSON-снимков не найдено. Прогоните бенчи после обновления ReportWriter.")
         return 1
 
-    runs = group_runs(snaps)
+    runs = group_runs(snaps, read_markers())
     index = write_site(build_payload(runs))
 
     units = len(runs[0].units()) if runs else 0
