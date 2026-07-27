@@ -81,6 +81,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             WithAbility(caster, TestAbility.Make(effects: new[] { buff }, mode: AbilityTargetMode.Self));
 
             sys.TryCast(caster, 0, new List<RuntimeUnit> { caster }, ctx);
+            EffectSystem.CommitPending(caster);   // закон видимости: стат проявляется в конце тика
 
             Assert.AreEqual(5f, caster.Stats.Get(StatType.MoveSpeed), 1e-4f, "Эффект способности наложен на цель");
         }
@@ -99,6 +100,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             WithAbility(caster, TestAbility.Make(effects: new[] { buff }, cooldown: 5f, mode: AbilityTargetMode.Self));
 
             sys.Tick(new List<RuntimeUnit> { caster }, ctx, SimConstants.TickDelta);
+            EffectSystem.CommitPending(caster);   // закон видимости: стат проявляется в конце тика
 
             Assert.AreEqual(5f, caster.Stats.Get(StatType.MoveSpeed), 1e-4f);
             Assert.Greater(caster.Abilities[0].CooldownRemaining, 0f, "После автокаста способность на кулдауне");

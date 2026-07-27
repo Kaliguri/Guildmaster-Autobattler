@@ -14,7 +14,15 @@ namespace Guildmaster.Combat
     /// — единственная точка мутации состояния боя из систем и (Фаза 2) компонентов эффектов.
     /// <para>
     /// Порядок систем за тик: ApplyCommands → Brain (AI) → Ability → Movement → Displacement → Separation
-    /// → SpatialHashRebuild → AutoAttack → Projectiles → Regen → Effects → DrainEvents → Death → CheckOutcome → currentTick++.
+    /// → SpatialHashRebuild → AutoAttack → Projectiles → Regen → Effects → DrainEvents → <b>CommitEffects</b>
+    /// → Death → CheckOutcome → currentTick++.
+    /// </para>
+    /// <para>
+    /// <b>Закон видимости эффектов:</b> наложенный эффект меняет статы и маску тегов носителя не раньше
+    /// шага CommitEffects, то есть со следующего тика — как это давно сделано для флагов контроля.
+    /// Исключение — pre-damage реактивы («Оплот» ловит тот же удар, что его разбудил). Без этого закона
+    /// эффект, наложенный ранним по списку юнитом, менял расчёты тех, кто идёт позже, и порядок обхода
+    /// становился игровым преимуществом (см. <c>EffectSystem.CommitTickChanges</c>).
     /// </para>
     /// (вики «10» §5.1).
     /// </summary>
@@ -258,6 +266,11 @@ namespace Guildmaster.Combat
             _regenSystem.Tick(_units, dt);
             _effectSystem.Tick(_units, this, dt);
             DrainEventQueue();
+            // Закон видимости эффектов: всё, что наложено и снято за этот тик, проявляется здесь — одним
+            // проходом на всех. До этой точки статы и маска тегов отдают состояние, с которым тик начался,
+            // поэтому исход не зависит от того, чей ход в обходе списка раньше. Место — после дренажа
+            // (реактивы успевают наложить своё) и до смерти (пересчёт на трупах не нужен).
+            _effectSystem.CommitTickChanges(_units);
             _deathSystem.Tick(_units, _spatialHash);
 
             CheckOutcome();

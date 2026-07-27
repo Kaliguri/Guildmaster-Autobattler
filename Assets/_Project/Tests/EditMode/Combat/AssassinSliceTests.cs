@@ -52,6 +52,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var assassin = MakeUnit(0, team: 0, pos: Vector2.zero, relic: AssassinRelic(PassiveTrigger.AnyHit));
 
             es.Apply(assassin, StealthPassive(), assassin, ctx); // как выдаёт фабрика при спавне
+            EffectSystem.CommitPending(assassin);                // фабрика тем же и заканчивает — иначе пассивка не видна
 
             Assert.AreEqual(2f, assassin.EmpowerDamageMult, 1e-4f, "Стелс в начале боя взвёл усиление");
             Assert.AreNotEqual(EffectTag.None, assassin.EffectTagMask & EffectTag.Stealth, "Наложен баф Stealth");

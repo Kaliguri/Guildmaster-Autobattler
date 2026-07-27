@@ -125,6 +125,11 @@ namespace Guildmaster.Combat
             RegisterItemPassives(unit, items);
             RegisterAbilities(unit, data);
 
+            // Пассивки правят статы по закону видимости — отложенно, до конца боевого тика. Здесь тика нет
+            // и ждать нечего: юнит должен родиться с уже действующими пассивками, поэтому проявляем их сразу.
+            // Без этого он выходит на арену с недобранным MaxHP (и, значит, с неполным стартовым HP).
+            EffectSystem.CommitPending(unit);
+
             // CurrentHP — после пассивок: они могли поднять MaxHP, юнит должен стартовать с полным.
             unit.CurrentHP = stats.Get(StatType.MaxHP);
 

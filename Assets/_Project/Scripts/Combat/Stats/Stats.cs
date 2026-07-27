@@ -20,6 +20,10 @@ namespace Guildmaster.Combat
         private readonly float[] _cache;
         private bool _dirty = true;
 
+        // Отложенные изменения от эффектов — ждут конца тика (см. Commit). ОДНА очередь, а не два списка:
+        // порядок операций внутри тика значим (стак снимает свою же группу и вешает новую).
+        private List<PendingOp> _pending;
+
         /// <param name="config">Источник базовых значений статов; null — натуральные дефолты.</param>
         public Stats(StatsConfig config)
         {
@@ -38,9 +42,23 @@ namespace Guildmaster.Combat
         /// Добавить группу модификаторов от <paramref name="source"/>.
         /// Все модификаторы снимаются разом через <see cref="RemoveModifiersFrom"/>.
         /// </summary>
-        public void AddModifiersFrom(object source, StatModifier[] modifiers)
+        /// <param name="deferred">
+        /// true — изменение ждёт <see cref="Commit"/> (конец боевого тика). Так вешают эффекты: наложенный
+        /// баф или ослабление не должны менять стат посреди тика, иначе исход зависит от того, чей ход в
+        /// обходе списка раньше. false (умолчание) — стат меняется сразу; так собирают юнита фабрика,
+        /// инвентарь и тесты, где никакого тика нет.
+        /// </param>
+        public void AddModifiersFrom(object source, StatModifier[] modifiers, bool deferred = false)
         {
             if (modifiers == null || modifiers.Length == 0) return;
+
+            if (deferred)
+            {
+                _pending ??= new List<PendingOp>();
+                _pending.Add(new PendingOp(source, modifiers));
+                return;
+            }
+
             _groups.Add(new ModifierGroup(source, modifiers));
             _dirty = true;
         }
@@ -128,8 +146,17 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>Удалить все модификаторы, добавленные от <paramref name="source"/>.</summary>
-        public void RemoveModifiersFrom(object source)
+        /// <param name="deferred">См. <see cref="AddModifiersFrom"/>: снятие эффекта живёт по тому же
+        /// закону, что и наложение — иначе истечение баффа посреди тика снова решало бы бой порядком обхода.</param>
+        public void RemoveModifiersFrom(object source, bool deferred = false)
         {
+            if (deferred)
+            {
+                _pending ??= new List<PendingOp>();
+                _pending.Add(new PendingOp(source, modifiers: null));
+                return;
+            }
+
             for (int i = _groups.Count - 1; i >= 0; i--)
             {
                 if (ReferenceEquals(_groups[i].Source, source))
@@ -137,6 +164,44 @@ namespace Guildmaster.Combat
                     _groups.RemoveAt(i);
                     _dirty = true;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Проявить отложенные изменения: снятия, затем наложения. Зовётся раз в конце боевого тика
+        /// (<c>CombatSimulation.Tick</c>) — до этого <see cref="Get"/> отдаёт значения, с которыми тик начался.
+        /// </summary>
+        /// <remarks>
+        /// Операции проигрываются В ПОРЯДКЕ ПОСТУПЛЕНИЯ, и это не косметика. Стакающийся эффект при каждом
+        /// новом наложении снимает свою прежнюю группу и вешает пересчитанную под новое число стаков; если
+        /// разложить очередь на «сначала все снятия, потом все наложения», снятия уйдут вхолостую (снимать
+        /// ещё нечего), а сложатся ВСЕ группы разом — три стака по 5 дают не 15, а 30. Ровно это и поймал
+        /// StatModifier_ScalesByStacks.
+        /// </remarks>
+        public void Commit()
+        {
+            if (_pending == null || _pending.Count == 0) return;
+
+            for (int i = 0; i < _pending.Count; i++)
+            {
+                PendingOp op = _pending[i];
+                if (op.Modifiers == null) RemoveModifiersFrom(op.Source);
+                else                      AddModifiersFrom(op.Source, op.Modifiers);
+            }
+
+            _pending.Clear();
+        }
+
+        /// <summary>Отложенная операция: <see cref="Modifiers"/> = null означает снятие группы источника.</summary>
+        private readonly struct PendingOp
+        {
+            public readonly object Source;
+            public readonly StatModifier[] Modifiers;
+
+            public PendingOp(object source, StatModifier[] modifiers)
+            {
+                Source    = source;
+                Modifiers = modifiers;
             }
         }
 

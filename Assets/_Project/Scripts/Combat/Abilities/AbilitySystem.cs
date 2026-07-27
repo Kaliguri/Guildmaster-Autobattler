@@ -18,11 +18,43 @@ namespace Guildmaster.Combat
         // Переиспользуемый буфер для радиус-запросов (условие каста / AOE-цели) — без аллокаций.
         private readonly List<RuntimeUnit> _targets = new List<RuntimeUnit>();
 
+        // Касты, решённые за этот тик — применяются ПОСЛЕ того, как решения приняты всеми (см. Tick).
+        private readonly List<PlannedCast> _planned = new List<PlannedCast>();
+
+        /// <summary>Решённый, но ещё не применённый каст: кто, чем и по кому бьёт. Цель выбрана по состоянию
+        /// начала тика — в том числе и разворот лечения на себя по панике (блок E).</summary>
+        private readonly struct PlannedCast
+        {
+            public readonly RuntimeUnit Caster;
+            public readonly AbilityRuntime Ability;
+            public readonly RuntimeUnit Target;
+
+            public PlannedCast(RuntimeUnit caster, AbilityRuntime ability, RuntimeUnit target)
+            {
+                Caster  = caster;
+                Ability = ability;
+                Target  = target;
+            }
+        }
+
         /// <summary>Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).</summary>
         public event System.Action<RuntimeUnit> OnAbilityCast;
 
+        /// <summary>Тик способностей: кулдауны, решения о кастах, затем сами касты.</summary>
+        /// <remarks>
+        /// РЕШЕНИЯ ОТДЕЛЕНЫ ОТ ПРИМЕНЕНИЯ, и это принципиально. Пока каст применялся сразу по ходу обхода,
+        /// наложенный им контроль тут же лишал права каста всех, кто стоит в списке позже, — а список у
+        /// зеркальных сторон обратный. Два готовых в один тик криоманта решали исход тем, кто заспавнен
+        /// первым: левый вешал «Оковы», правый ловил стан и терял свой каст навсегда (пойман зондом на
+        /// тике 240 — у левых «Заморозка», у правых уже стан от чужого криоманта). Теперь оба решают по
+        /// состоянию НАЧАЛА тика и оба кастуют: одновременная готовность разрешается одновременно,
+        /// а не по месту в списке. Тот же приём, что в <c>MovementSystem</c> и <c>SeparationSystem</c>.
+        /// </remarks>
         public void Tick(IReadOnlyList<RuntimeUnit> units, ICombatContext ctx, float dt)
         {
+            _planned.Clear();
+
+            // --- Проход 1: кулдауны и решения. Мир не меняется. ---
             for (int u = 0; u < units.Count; u++)
             {
                 RuntimeUnit unit = units[u];
@@ -39,18 +71,38 @@ namespace Guildmaster.Combat
                 {
                     for (int a = 0; a < unit.Abilities.Count; a++)
                     {
-                        if (TryCast(unit, a, units, ctx)) break; // одна способность за тик
+                        if (!TryPlan(unit, a, units, ctx, out PlannedCast plan)) continue;
+                        _planned.Add(plan);
+                        break;  // одна способность за тик
                     }
                 }
             }
+
+            // --- Проход 2: применение. Только здесь мир меняется. ---
+            for (int i = 0; i < _planned.Count; i++) Execute(_planned[i], units, ctx);
         }
 
         /// <summary>
-        /// Попытаться скастовать способность <paramref name="abilityIndex"/>. Возвращает false, если
-        /// не готова / не хватает ресурса / нет валидной цели.
+        /// Попытаться скастовать способность <paramref name="abilityIndex"/> НЕМЕДЛЕННО (решение + применение
+        /// одним вызовом). Возвращает false, если не готова / не хватает ресурса / нет валидной цели.
+        /// Внутри тика так не кастуют — там решения собираются со всех и применяются после (см. <see cref="Tick"/>);
+        /// этот вход остаётся для прямого каста из тестов и dev-команд.
         /// </summary>
         public bool TryCast(RuntimeUnit caster, int abilityIndex, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
         {
+            if (!TryPlan(caster, abilityIndex, units, ctx, out PlannedCast plan)) return false;
+            Execute(plan, units, ctx);
+            return true;
+        }
+
+        /// <summary>
+        /// Решить, кастуется ли способность, и по кому — БЕЗ единой мутации мира. Всё, что меняет состояние
+        /// (расход ресурса, кулдаун, эффекты, урон), делает <see cref="Execute"/>.
+        /// </summary>
+        private bool TryPlan(RuntimeUnit caster, int abilityIndex, IReadOnlyList<RuntimeUnit> units,
+            ICombatContext ctx, out PlannedCast plan)
+        {
+            plan = default;
             if (caster == null || abilityIndex < 0 || abilityIndex >= caster.Abilities.Count) return false;
 
             AbilityRuntime ability = caster.Abilities[abilityIndex];
@@ -89,6 +141,24 @@ namespace Guildmaster.Combat
             // Паника (блок E) кастует независимо от условия.
             if (!panicSelf && !CastConditionMet(caster, target, data, ctx, units)) return false;
 
+            plan = new PlannedCast(caster, ability, target);
+            return true;
+        }
+
+        /// <summary>Применить решённый каст: списать ресурс, взвести кулдаун, разложить эффект по форме способности.</summary>
+        private void Execute(in PlannedCast plan, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
+        {
+            RuntimeUnit caster = plan.Caster;
+            // Между решением и применением кастующего могли добить (урон в этом же тике).
+            if (caster.IsDead) return;
+
+            AbilityRuntime ability = plan.Ability;
+            AbilityData data       = ability.Data;
+            RuntimeUnit target     = plan.Target;
+
+            bool isMassTag  = data.TargetMode == AbilityTargetMode.AllEnemiesWithTag;
+            bool isAllyAura = data.TargetMode == AbilityTargetMode.AlliesInRadius;
+
             caster.CurrentResource -= data.ResourceCost;
             ability.CooldownRemaining = data.BaseCooldown * caster.Stats.Get(StatType.CooldownEff);
 
@@ -104,7 +174,6 @@ namespace Guildmaster.Combat
                 ApplyToTarget(caster, target, data, ctx);
 
             OnAbilityCast?.Invoke(caster); // презентация-сигнал «каст состоялся»
-            return true;
         }
 
         /// <summary>

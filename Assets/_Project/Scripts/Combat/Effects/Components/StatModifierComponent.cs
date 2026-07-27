@@ -20,17 +20,20 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Модификаторы, накладываемые на время эффекта. На каждый стак — линейно ×Stacks.")]
         [SerializeField] private StatModifier[] _modifiers;
 
+        /// <para><b>Готча:</b> правка стата ОТЛОЖЕНА до конца тика (<c>Stats.Commit</c>) — так велит закон
+        /// видимости эффектов. Наложенный этим тиком баф или ослабление вступает в силу со следующего, и
+        /// потому одинаково для всех: иначе исход решало бы то, чей ход в обходе списка раньше.</para>
         public void OnApply(in EffectContext ctx)
         {
             if (_modifiers == null || _modifiers.Length == 0 || ctx.Target?.Stats == null) return;
 
             StatModifier[] mods = ctx.Stacks == 1 ? _modifiers : ScaleByStacks(_modifiers, ctx.Stacks);
-            ctx.Target.Stats.AddModifiersFrom(ctx.Effect, mods);
+            ctx.Target.Stats.AddModifiersFrom(ctx.Effect, mods, deferred: true);
         }
 
         public void OnExpire(in EffectContext ctx)
         {
-            ctx.Target?.Stats?.RemoveModifiersFrom(ctx.Effect);
+            ctx.Target?.Stats?.RemoveModifiersFrom(ctx.Effect, deferred: true);
         }
 
         private static StatModifier[] ScaleByStacks(StatModifier[] source, int stacks)

@@ -82,7 +82,13 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sys.Apply(unit, def, unit, ctx);
 
+            // Эффект встаёт в список сразу, а в маску — на коммите: по закону видимости он становится
+            // виден со следующего тика (см. EffectSystem.CommitTickChanges).
             Assert.AreEqual(1, unit.ActiveEffects.Count);
+            Assert.AreEqual(EffectTag.None, unit.EffectTagMask, "До коммита маска ещё держит состояние начала тика");
+
+            EffectSystem.CommitPending(unit);
+
             Assert.IsTrue((unit.EffectTagMask & EffectTag.DoT) != 0);
             Assert.IsTrue((unit.EffectTagMask & EffectTag.Debuff) != 0);
         }
@@ -97,10 +103,13 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData def = TestEffect.Make(baseDuration: 1f, tags: EffectTag.Buff, components: comp);
 
             sys.Apply(unit, def, unit, ctx);
+            EffectSystem.CommitPending(unit);   // конец тика наложения: эффект стал виден
             Assert.AreEqual(1, comp.Applied);
+            Assert.AreEqual(EffectTag.Buff, unit.EffectTagMask, "Предусловие: тег виден");
 
             // 1 сек = 30 тиков → истекает ровно на 30-м.
             for (int i = 0; i < SimConstants.TickRate; i++) sys.Tick(One(unit), ctx, SimConstants.TickDelta);
+            EffectSystem.CommitPending(unit);   // снятие живёт по тому же закону, что и наложение
 
             Assert.AreEqual(0, unit.ActiveEffects.Count);
             Assert.AreEqual(EffectTag.None, unit.EffectTagMask);

@@ -32,6 +32,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(pyre, SplitPassive(), pyre);
             sim.ApplyEffect(victim, BurningMarker(), pyre); // цель уже горит
+            sim.Tick(SimConstants.TickDelta);               // «уже горит» = с прошлого тика (закон видимости)
 
             var hits = new System.Collections.Generic.List<(DamageSchool school, MagicElement element, float dmg)>();
             sim.OnDamageDealt += (src, tgt, res) => hits.Add((res.School, res.Element, res.TotalDamage));

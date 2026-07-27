@@ -171,6 +171,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             var hit = new CombatEventData(CombatEvent.DamageDealt, pyre, victim, 100f, EffectTag.None, sourceKind: DamageSourceKind.AutoAttack);
             sys.Dispatch(pyre, in hit, ctx);
+            EffectSystem.CommitPending(pyre);   // разгон — стат-мод, он проявляется в конце тика
 
             Assert.Greater(pyre.Stats.Get(StatType.AttackSpeed), baseAttackSpeed, "Удар клинком разгоняет скорость атаки");
 
@@ -219,6 +220,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             var ctx = new MockCombatContext(effects: effects);
             effects.Apply(poisoned1, spores, druid, ctx);
             effects.Apply(poisoned2, spores, druid, ctx);
+            // Яд лёг тиком раньше взрыва: условие каста читает маску тегов на начало тика.
+            foreach (RuntimeUnit u in units) EffectSystem.CommitPending(u);
 
             AbilityData burst = TestAbility.Make(
                 mode: AbilityTargetMode.AllEnemiesWithTag,
@@ -234,6 +237,8 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             var abilities = new AbilitySystem();
             Assert.IsTrue(abilities.TryCast(druid, 0, units, ctx), "Двое отравленных — условие каста выполнено");
+            // Расход тега — снятие эффекта, а оно проявляется на коммите, как и наложение.
+            foreach (RuntimeUnit u in units) EffectSystem.CommitPending(u);
 
             Assert.AreEqual(2, ctx.DamageCalls.Count, "Детонируют только отравленные");
             Assert.AreEqual(250f, ctx.DamageCalls[0].RawDamage, 1e-4f, "2.5 × AutoAttackDamage");
@@ -269,6 +274,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             effects.Apply(enemy, poisonA, druid, ctx);
             effects.Apply(enemy, poisonA, druid, ctx); // второй стак того же яда — уник не добавляет
             effects.Apply(enemy, poisonB, druid, ctx);
+            EffectSystem.CommitPending(enemy);         // яды легли тиком раньше взрыва (закон видимости)
 
             AbilityData burst = TestAbility.Make(
                 mode: AbilityTargetMode.AllEnemiesWithTag,

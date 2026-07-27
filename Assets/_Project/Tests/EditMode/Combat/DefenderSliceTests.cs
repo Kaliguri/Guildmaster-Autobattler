@@ -175,6 +175,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             var units = new List<RuntimeUnit> { caster, mainThreat, bystander };
 
             bool cast = new AbilitySystem().TryCast(caster, 0, units, ctx);
+            // Закон видимости: наложенные удар-эффекты проявляются в конце тика.
+            foreach (RuntimeUnit u in units) EffectSystem.CommitPending(u);
 
             Assert.IsTrue(cast);
             Assert.AreNotEqual(EffectTag.None, mainThreat.EffectTagMask & EffectTag.Control, "Цель оглушена");

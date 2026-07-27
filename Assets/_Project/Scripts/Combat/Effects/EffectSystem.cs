@@ -151,11 +151,9 @@ namespace Guildmaster.Combat
             }
 
             bool instant = ticks == 0;
-            if (!instant)
-            {
-                target.ActiveEffects.Add(effect);
-                target.EffectTagMask |= def.Tags;
-            }
+            // Эффект встаёт в список сразу (иначе второе наложение этим же тиком завело бы дубль вместо
+            // стака), но ВИДИМЫМ — в маске тегов — становится на коммите в конце тика. Закон видимости.
+            if (!instant) target.ActiveEffects.Add(effect);
 
             for (int i = 0; i < componentCount; i++)
             {
@@ -417,7 +415,6 @@ namespace Guildmaster.Combat
             }
 
             unit.ActiveEffects.Remove(eff);
-            RebuildTagMask(unit);
 
             // Единый сигнал «эффект закончился» (носитель-получатель = источник эффекта, ретрансляция в
             // CombatSimulation). Реактивы фильтруют по тегам эффекта + команде юнита. Смещение (KnockUp)
@@ -443,6 +440,42 @@ namespace Guildmaster.Combat
             if (_removeByTagBuffer.Count == 0) return;
             for (int i = 0; i < _removeByTagBuffer.Count; i++) Expire(unit, _removeByTagBuffer[i], combat);
             RecomputeControl(unit);
+        }
+
+        /// <summary>
+        /// ЗАКОН ВИДИМОСТИ ЭФФЕКТОВ: проявить всё, что эффекты наложили или сняли за этот тик — статы и
+        /// маску тегов. Зовётся ровно раз, в конце <c>CombatSimulation.Tick</c>.
+        /// </summary>
+        /// <remarks>
+        /// Смысл закона: наложенный эффект меняет статы и маску носителя не раньше конца тика — так же, как
+        /// это давно сделано для флагов контроля (<c>CanAct</c>, вики «14»). Пока правка стата ложилась
+        /// мгновенно, ослабление, наложенное ранним ударом, успевало срезать удар того, кто в обходе списка
+        /// позже; у зеркальных сторон порядок обратный, и «место в списке» становилось игровым
+        /// преимуществом. Единственное исключение — pre-damage реактивы (<see cref="RunPreDamage"/>): они по
+        /// определению отвечают на конкретный удар («Оплот» поднимает щит на тот же удар, §9.3) и остаются
+        /// синхронными. Это исключение сознательное — не «доисправлять» его до единообразия.
+        /// </remarks>
+        public void CommitTickChanges(IReadOnlyList<RuntimeUnit> units)
+        {
+            for (int u = 0; u < units.Count; u++)
+            {
+                RuntimeUnit unit = units[u];
+                if (unit.IsDead) continue;
+                CommitPending(unit);
+            }
+        }
+
+        /// <summary>
+        /// Проявить отложенное на одном юните. Отдельный вход нужен ВНЕ боевого тика: юнит, которого
+        /// только что собрала фабрика, обязан родиться с уже действующими пассивками — иначе он выйдет
+        /// на арену с недобранным запасом HP и погашенными метками (стелс, ауры), а ждать первого тика
+        /// тут некому.
+        /// </summary>
+        public static void CommitPending(RuntimeUnit unit)
+        {
+            if (unit == null) return;
+            unit.Stats?.Commit();
+            RebuildTagMask(unit);
         }
 
         private static void RebuildTagMask(RuntimeUnit unit)
