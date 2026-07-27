@@ -26,6 +26,7 @@ description: >-
 |---|---|
 | Бенчи стенда | `Assets/_Project/Scripts/Balance/Editor/Benches/*.cs` |
 | Классовые нормы (линейка коридоров) | `Assets/_Project/Scripts/Balance/Editor/BalanceNorms.cs` |
+| Карточки контента (имена, описания, способности) | `Assets/_Project/Scripts/Balance/Editor/ContentCards.cs` |
 | Числа норм | `Assets/_Project/ScriptableObjects/Configs/ClassBalanceConfig.asset` |
 | Сбор метрик из боя | `Assets/_Project/Scripts/Balance/Editor/MetricCollector.cs` |
 | Запись отчётов (CSV + MD + JSON) | `Assets/_Project/Scripts/Balance/Editor/ReportWriter.cs` |
