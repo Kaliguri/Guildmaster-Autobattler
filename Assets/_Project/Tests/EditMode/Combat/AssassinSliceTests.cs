@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
@@ -110,9 +110,11 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 8f), assassin);
 
             sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
+            sim.Tick(SimConstants.TickDelta);   // удары применяются реестром в конце тика
             Assert.AreEqual(200f, assassin.CurrentHP, 1e-4f, "Первый удар негейтнут — HP не тронуто");
 
             sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
+            sim.Tick(SimConstants.TickDelta);
             Assert.AreEqual(150f, assassin.CurrentHP, 1e-4f, "Заряд израсходован — второй удар проходит");
         }
 
@@ -253,6 +255,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
             public void Displace(in DisplaceRequest req) { }
+
+            // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+            public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+                => CombatPositioning.TeleportBehind(unit, target);
 
             public void DealDamage(in DamageRequest req) { }
             public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) { }

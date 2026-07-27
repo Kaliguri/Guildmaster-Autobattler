@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -33,8 +33,10 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(defender, BulwarkPassive(), defender);
 
-            // True-урон 30: брони нет, эффективности 1.0. «Оплот» до Execute поднимает щит 20 + 15%×100 = 35.
+            // True-урон 30: брони нет, эффективности 1.0. «Оплот» СИНХРОННО (pre-damage — исключение из
+            // закона видимости) поднимает щит 20 + 15%×100 = 35, и он успевает к тому самому удару.
             sim.DealDamage(new DamageRequest(attacker, defender, 30f, DamageSchool.True, sim.ArmorK));
+            sim.Tick(SimConstants.TickDelta);   // сам удар применяется реестром в конце тика
 
             Assert.AreEqual(100f, defender.CurrentHP, 1e-4f, "Триггер-удар поглощён щитом — HP не просело");
             Assert.AreEqual(5f, defender.CurrentShield, 1e-4f, "Остаток щита = 35 − 30");
@@ -308,6 +310,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
             public void Displace(in DisplaceRequest req) { }
+
+            // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+            public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+                => CombatPositioning.TeleportBehind(unit, target);
 
             public void DealDamage(in DamageRequest req) { }
             public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) { }

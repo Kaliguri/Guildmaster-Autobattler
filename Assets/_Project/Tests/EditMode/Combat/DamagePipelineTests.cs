@@ -50,6 +50,34 @@ namespace Guildmaster.Tests.EditMode.Combat
             float armorK = CombatTestValues.ArmorK)
             => new DamageRequest(source, target, raw, type, armorK);
 
+        /// <summary>
+        /// Весь путь урона: расчёт пайплайном + применение реестром. Пайплайн сам щит и HP больше не
+        /// трогает (он чист и считается заранее), поэтому тест проходит обе половины — иначе он проверял
+        /// бы формулу, но не то, что она доходит до бойца.
+        /// </summary>
+        private static DamageResult Execute(in DamageRequest req)
+        {
+            var ledger = new TickLedger();
+            ledger.AddDamage(req.Target, DamagePipeline.Resolve(in req), in req);
+
+            var sink = new CapturingSink();
+            ledger.Commit(sink);
+            return sink.Damage;
+        }
+
+        /// <summary>Ловушка исходов реестра: тесту нужен результат, а не события наружу.</summary>
+        private sealed class CapturingSink : ITickLedgerSink
+        {
+            public DamageResult Damage;
+            public float Healed;
+
+            public void OnDamageResolved(RuntimeUnit source, RuntimeUnit target, in DamageResult result)
+                => Damage = result;
+
+            public void OnHealResolved(RuntimeUnit source, RuntimeUnit target, float applied)
+                => Healed += applied;
+        }
+
         // --- True damage ---
 
         [Test]
@@ -59,7 +87,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull);
             float hpBefore = tgt.CurrentHP;
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
 
             Assert.AreEqual(100f, result.TotalDamage, 0.01f, "True damage не уменьшается броней");
             Assert.AreEqual(hpBefore - 100f, tgt.CurrentHP, 0.01f);
@@ -74,7 +102,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = MakeUnit();
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Physical));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Physical));
 
             Assert.AreEqual(50f, result.TotalDamage, 0.01f);
         }
@@ -92,7 +120,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f };
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Physical));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Physical));
 
             Assert.AreEqual(100f, result.TotalDamage, 0.01f, "Полное пробивание → 0 брони");
         }
@@ -110,7 +138,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f };
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Physical));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Physical));
 
             float expectedMult = CombatTestValues.ArmorK / (CombatTestValues.ArmorK + 50f);
             Assert.AreEqual(100f * expectedMult, result.TotalDamage, 0.01f);
@@ -129,7 +157,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f };
             var tgt = MakeUnitWithArmor(physArmor: 10f);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Physical));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Physical));
             Assert.AreEqual(100f, result.TotalDamage, 0.01f);
         }
 
@@ -148,7 +176,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             // base=1, PercentMult 0.5 → 1*(1+0.5)=1.5
             var tgt = new RuntimeUnit { Team = 1, Stats = stats, CurrentHP = 1000f };
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
             Assert.AreEqual(150f, result.TotalDamage, 0.01f);
         }
 
@@ -161,7 +189,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var tgt = MakeUnitWithArmor(maxHp: 1000f);
             tgt.CurrentShield = 40f;
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
 
             Assert.AreEqual(40f,  result.ShieldDamage, 0.01f);
             Assert.AreEqual(60f,  result.HpDamage,     0.01f);
@@ -176,7 +204,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var tgt = MakeUnitWithArmor(maxHp: 1000f);
             tgt.CurrentShield = 200f;
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
 
             Assert.AreEqual(100f,  result.ShieldDamage, 0.01f);
             Assert.AreEqual(0f,    result.HpDamage,     0.01f);
@@ -191,7 +219,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = MakeUnit();
             var tgt = MakeUnitWithArmor(maxHp: 100f);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
 
             Assert.IsTrue(result.KilledTarget);
             Assert.LessOrEqual(tgt.CurrentHP, 0f);
@@ -203,7 +231,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = MakeUnit();
             var tgt = MakeUnitWithArmor(maxHp: 200f);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
 
             Assert.IsFalse(result.KilledTarget);
             Assert.Greater(tgt.CurrentHP, 0f);
@@ -217,7 +245,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = MakeUnit();
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull, magicArmor: 0f);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Magical));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Magical));
 
             // Физ. броня не гасит стихию — урон проходит полностью.
             Assert.AreEqual(100f, result.HpDamage, 0.01f);
@@ -229,7 +257,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = MakeUnit();
             var tgt = MakeUnitWithArmor(magicArmor: ArmorFull);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Magical));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Magical));
 
             Assert.AreEqual(50f, result.HpDamage, 0.01f);
         }
@@ -269,7 +297,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             foreach (CreatureType type in types)
             {
                 var target = MakeCreature(type);
-                var result = DamagePipeline.Execute(AffinityReq(src, target, 100f, affinity, DamageSchool.True));
+                var result = Execute(AffinityReq(src, target, 100f, affinity, DamageSchool.True));
 
                 Assert.AreEqual(100f, result.HpDamage, 0.01f,
                     $"Сродство {affinity} изменило урон по цели {type} — матрица вернулась.");

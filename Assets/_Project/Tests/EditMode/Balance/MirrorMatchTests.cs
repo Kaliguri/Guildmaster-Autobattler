@@ -1,143 +1,154 @@
 using System.Collections.Generic;
 using Guildmaster.Balance.Editor;
-using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using NUnit.Framework;
-using UnityEngine;
 
 namespace Guildmaster.Balance.Tests
 {
     /// <summary>
-    /// Зеркальные бои: две ОДИНАКОВЫЕ команды, отражённые по оси. Ни один такой бой не должен
-    /// заканчиваться уверенной победой одной из сторон — иначе у симуляции есть встроенное преимущество
-    /// стороны, и тогда врут все замеры стенда, а в игре одна из команд системно сильнее другой.
+    /// Зеркальные бои: две ОДИНАКОВЫЕ команды, отражённые по оси. Ни один такой бой не должен разойтись —
+    /// иначе у симуляции есть встроенное преимущество стороны, и тогда врут все замеры стенда, а в игре
+    /// одна из команд системно сильнее другой.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Сторож заведён после того, как замена в отряде показала зеркальный бой со счётом 59.7% против нуля.
-    /// Тест намеренно живёт на синтетиках: если перекос ловится уже на них, причина в ядре боя, а не в ките.
+    /// Причин оказалось три, и все — один дефект: система читала мир и писала в него внутри одного обхода,
+    /// поэтому место юнита в списке решало исход, а у отражённых сторон этот порядок обратный.
+    /// </para>
+    /// <para>
+    /// <b>Критерий строгий и это принципиально: сверяется каждый тик, а не итог боя.</b> Прежняя редакция
+    /// сравнивала остатки HP в конце с допуском в 10 процентных пунктов — так сторож молчал, пока
+    /// расхождение не разрасталось до разгрома, а причина к тому времени лежала за сотни тиков позади.
+    /// Зеркало обязано давать ровный ноль на КАЖДОМ тике КАЖДОГО боя; усреднять здесь нечего — усреднение
+    /// маскирует перекос вместо того, чтобы его показать.
+    /// </para>
+    /// <para>
+    /// <b>Серия, а не один бой:</b> третья причина вылезала только на четвёрке из РАЗНЫХ китов и только на
+    /// десятой секунде — один показательный бой её не ловил. Поэтому гоняется скользящее окно по всему
+    /// ростеру и несколько строёв: разные составы включают разные способности, а разные строи — разные
+    /// дистанции, кайтинг и расталкивание.
+    /// </para>
     /// </remarks>
     public sealed class MirrorMatchTests
     {
-        private const int Cap = 240 * 30;   // 240 с при 30 Гц — тот же потолок, что у бенчей
+        /// <summary>Потолок боя в серии, тиков (120 с при 30 Гц).</summary>
+        /// <remarks>
+        /// Короче полного боя намеренно: расхождение — дефект детерминизма, оно проявляется рано (все три
+        /// пойманные причины били на тиках 1, 240 и 300), а серия должна оставаться дешёвой, чтобы её
+        /// гонял каждый прогон. Полную дистанцию держит зонд <see cref="MirrorDivergenceProbe"/>.
+        /// </remarks>
+        private const int SeriesTicks = 120 * 30;
 
-        /// <summary>Допуск: команды могут разойтись на считанные проценты HP, но не на исход боя.</summary>
-        private const double AllowedHpGap = 0.10;
+        // --- Синтетики: чистое ядро без китов ---
 
         [Test]
-        public void Mirror_OneOnOne_EndsEven()
+        public void Mirror_DummiesOneOnOne_NeverDiverges()
         {
-            AssertMirrorIsEven(new[]
-            {
-                new Slot(UnitClass.Bruiser, 1f, 0f),
-            });
+            AssertMirrorHolds(new RelicData[0], new[] { new Slot(UnitClass.Bruiser, 1f, 0f) }, "дуэль манекенов");
         }
 
         [Test]
-        public void Mirror_Squad_EndsEven()
+        public void Mirror_DummiesSquad_NeverDiverges()
         {
-            AssertMirrorIsEven(Lineups.Squad);
+            AssertMirrorHolds(new RelicData[0], Lineups.Squad, "отряд манекенов");
         }
+
+        // --- Один кит против самого себя ---
 
         /// <summary>
         /// Зеркало КАЖДОГО реального кита против самого себя. Манекены симметричны по построению, а кит
         /// несёт способности, ресурс и мозги — если сторона решает исход, ломается именно здесь.
         /// </summary>
         [Test]
-        public void Mirror_EachRelicAgainstItself_EndsEven([ValueSource(nameof(RelicNames))] string relicName)
+        public void Mirror_EachRelicAgainstItself_NeverDiverges([ValueSource(nameof(RelicNames))] string relicName)
         {
-            List<RelicData> relics = BalanceAssets.LoadRelics();
-            RelicData relic = relics.Find(r => r.name == relicName);
-            Assert.IsNotNull(relic, $"Реликвия {relicName} не найдена");
-
-            var env = new SimEnvironment(1UL, BalanceAssets.LoadStatsConfig());
-            var tracked = new List<TrackedUnit>();
-            ClassBalanceConfig classes = BalanceAssets.LoadClassBalanceConfig();
-            var lineup = new[] { new Slot(relic.CombatClass, 2.2f, 0f) };
-
-            Lineups.SpawnTeam(env, classes, tracked, new[] { relic }, 0, lineup);
-            Lineups.SpawnTeam(env, classes, tracked, new[] { relic }, 1, lineup);
-
-            BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, Cap);
-            double left = TeamHp(report, 0);
-            double right = TeamHp(report, 1);
-
-            Assert.AreEqual(left, right, AllowedHpGap,
-                $"{relicName} против самого себя: слева осталось {left:P1} HP, справа {right:P1}");
+            RelicData relic = Relic(relicName);
+            AssertMirrorHolds(new[] { relic },
+                new[] { new Slot(relic.CombatClass, 2.2f, 0f) }, $"дуэль «{relicName}»");
         }
 
+        // --- Серия отрядов: скользящее окно по всему ростеру ---
+
         /// <summary>
-        /// Зеркало из ЧЕТЫРЁХ РАЗНЫХ реальных китов — ровно тот бой, на котором замена в отряде показала
-        /// 59.7% против нуля. Отдельно от предыдущих: там симметричны и бойцы, и роли, а здесь роли разные,
-        /// и сломаться может именно их взаимодействие.
+        /// Четвёрки из РАЗНЫХ китов, окно за окном по всему ростеру. Именно такой бой вскрыл третью причину
+        /// перекоса: два готовых в один тик криоманта, и каст доставался тому, кто заспавнен раньше.
         /// </summary>
         [Test]
-        public void Mirror_RealSquad_EndsEven()
+        public void Mirror_SquadSeries_NeverDiverges([ValueSource(nameof(SquadWindows))] int start)
+        {
+            List<RelicData> relics = BalanceAssets.LoadRelics();
+            var squad = new List<RelicData>();
+            for (int i = 0; i < 4 && start + i < relics.Count; i++) squad.Add(relics[start + i]);
+
+            var names = new List<string>();
+            foreach (RelicData r in squad) names.Add(r.name);
+
+            AssertMirrorHolds(squad, Lineups.Squad, $"отряд [{string.Join(", ", names)}]");
+        }
+
+        // --- Строи: те же киты в разной геометрии ---
+
+        /// <summary>
+        /// Один и тот же состав в разных строях. Строй меняет дистанции, а с ними — кайтинг, расталкивание
+        /// и то, кто до кого дотягивается: расхождение, невидимое в плотной четвёрке, вылезает в растянутой
+        /// шестёрке (и наоборот).
+        /// </summary>
+        [Test]
+        public void Mirror_Lineups_NeverDiverge([Values("Trio", "Squad", "Large")] string lineupName)
         {
             List<RelicData> relics = BalanceAssets.LoadRelics();
             var squad = new List<RelicData>();
             foreach (string name in new[] { "Defender", "FlameSwordsman", "Cryomancer", "LightShepherd" })
             {
                 RelicData relic = relics.Find(r => r.name == name);
-                Assert.IsNotNull(relic, $"Реликвия {name} не найдена");
-                squad.Add(relic);
+                if (relic != null) squad.Add(relic);
             }
 
-            var env = new SimEnvironment(1UL, BalanceAssets.LoadStatsConfig());
-            var tracked = new List<TrackedUnit>();
-            ClassBalanceConfig classes = BalanceAssets.LoadClassBalanceConfig();
+            Slot[] lineup = lineupName switch
+            {
+                "Trio"  => Lineups.Trio,
+                "Large" => Lineups.Large,
+                _       => Lineups.Squad,
+            };
 
-            Lineups.SpawnTeam(env, classes, tracked, squad, 0, Lineups.Squad);
-            Lineups.SpawnTeam(env, classes, tracked, squad, 1, Lineups.Squad);
+            AssertMirrorHolds(squad, lineup, $"строй «{lineupName}»");
+        }
 
-            BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, Cap);
-            double left = TeamHp(report, 0);
-            double right = TeamHp(report, 1);
+        // --- Общий сторож ---
 
-            Assert.AreEqual(left, right, AllowedHpGap,
-                $"Зеркальный отряд из четырёх разных китов: слева осталось {left:P1} HP, справа {right:P1}");
+        private static void AssertMirrorHolds(IReadOnlyList<RelicData> squad, Slot[] lineup, string what)
+        {
+            int tick = MirrorFixture.FirstDivergingTick(squad, lineup, SeriesTicks, out string report);
+
+            if (tick >= 0)
+                Assert.Fail($"Зеркало разошлось ({what}). Стороны обязаны идти тик в тик: расхождение " +
+                            $"означает, что исход решает порядок обработки, а не бойцы.\n{report}");
+        }
+
+        private static RelicData Relic(string name)
+        {
+            RelicData relic = BalanceAssets.LoadRelics().Find(r => r.name == name);
+            Assert.IsNotNull(relic, $"Реликвия {name} не найдена");
+            return relic;
         }
 
         private static IEnumerable<string> RelicNames()
         {
-            List<RelicData> relics = BalanceAssets.LoadRelics();
             var names = new List<string>();
-            foreach (RelicData r in relics) names.Add(r.name);
+            foreach (RelicData r in BalanceAssets.LoadRelics()) names.Add(r.name);
             return names;
         }
 
-        private static void AssertMirrorIsEven(Slot[] lineup)
+        /// <summary>Стартовые индексы скользящего окна по ростеру: каждый кит попадает в четвёрку не раз.</summary>
+        private static IEnumerable<int> SquadWindows()
         {
-            var env = new SimEnvironment(1UL, null);
-            var tracked = new List<TrackedUnit>();
-            var noHeroes = new RelicData[0];
-
-            Lineups.SpawnTeam(env, null, tracked, noHeroes, 0, lineup);
-            Lineups.SpawnTeam(env, null, tracked, noHeroes, 1, lineup);
-
-            BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, Cap);
-
-            double left = TeamHp(report, 0);
-            double right = TeamHp(report, 1);
-
-            Assert.AreEqual(left, right, AllowedHpGap,
-                $"Зеркальный бой не должен давать преимущество стороне: слева осталось {left:P1} HP, " +
-                $"справа {right:P1}. Разрыв означает, что порядок обработки (или что-то ещё, зависящее от " +
-                "того, кто заспавнен первым) решает исход за бойцов.");
-        }
-
-        private static double TeamHp(BattleReport report, int team)
-        {
-            double hpLeft = 0.0, maxHp = 0.0;
-            for (int i = 0; i < report.Units.Count; i++)
-            {
-                UnitMetric m = report.Units[i];
-                if (m.Team != team) continue;
-                hpLeft += m.HpLeft;
-                maxHp += m.MaxHp;
-            }
-
-            return maxHp > 0.0 ? hpLeft / maxHp : 0.0;
+            int count = BalanceAssets.LoadRelics().Count;
+            var starts = new List<int>();
+            for (int i = 0; i + 4 <= count; i++) starts.Add(i);
+            if (starts.Count == 0) starts.Add(0);   // ростер короче четвёрки — гоняем что есть
+            return starts;
         }
     }
 }

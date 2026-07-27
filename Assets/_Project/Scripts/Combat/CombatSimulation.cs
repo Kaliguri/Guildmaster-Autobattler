@@ -14,8 +14,16 @@ namespace Guildmaster.Combat
     /// — единственная точка мутации состояния боя из систем и (Фаза 2) компонентов эффектов.
     /// <para>
     /// Порядок систем за тик: ApplyCommands → Brain (AI) → Ability → Movement → Displacement → Separation
-    /// → SpatialHashRebuild → AutoAttack → Projectiles → Regen → Effects → DrainEvents → <b>CommitEffects</b>
-    /// → Death → CheckOutcome → currentTick++.
+    /// → SpatialHashRebuild → AutoAttack → Projectiles → Regen → Effects → <b>ResolveCombatRounds</b>
+    /// (применение урона/лечения + доставка событий, раундами) → <b>CommitEffects</b> → Death →
+    /// CheckOutcome → currentTick++.
+    /// </para>
+    /// <para>
+    /// <b>Урон и лечение применяются разом.</b> Системы за тик только ЗАЯВЛЯЮТ их (расчёт чист: статы
+    /// заморожены законом видимости), а <see cref="TickLedger"/> складывает заявки по каждой цели и
+    /// применяет одним коммитом: щит поглощает сумму, дельты HP складываются, доли делятся между
+    /// источниками пропорционально. Пока удары ложились в HP по одному, лечение упиралось в потолок
+    /// раньше, чем приходил предназначенный цели урон, и одинаковые стороны расходились на пустом месте.
     /// </para>
     /// <para>
     /// <b>Закон видимости эффектов:</b> наложенный эффект меняет статы и маску тегов носителя не раньше
@@ -26,7 +34,7 @@ namespace Guildmaster.Combat
     /// </para>
     /// (вики «10» §5.1).
     /// </summary>
-    public sealed class CombatSimulation : ICombatContext, IBattleView
+    public sealed class CombatSimulation : ICombatContext, IBattleView, ITickLedgerSink
     {
         private readonly IRngService         _rng;
         private readonly float               _armorK;
@@ -75,6 +83,20 @@ namespace Guildmaster.Combat
         // Защита от бесконечной реентрантности реактивных компонентов (шипы↔шипы): дренаж
         // капается детерминированно — остаток отбрасывается (вики «12» §3.4, спайк S2).
         private const int MaxEventsPerDrain = 512;
+
+        // Сколько раз за тик урон может «отскочить» реактивом. Шипы бьют в ответ шипам, вампиризм
+        // лечит от ответки — каждый круг это новая заявка в реестр. Хвост таких цепочек обрезает порог
+        // значимости (TickLedger.MinSignificantAmount): при 25% отражения ряд гаснет за семь кругов,
+        // при 50% — за одиннадцать. Кап — страховка от контента с отражением под 90%, где ряд затухает
+        // слишком медленно, чтобы досчитывать его в одном тике.
+        private const int MaxCombatRounds = 16;
+
+        // Реестр урона и лечения за раунд: заявки копятся и применяются одним коммитом (tick-resolution).
+        private readonly TickLedger _ledger = new TickLedger();
+
+        // Заявленные переходы «за спину» и посчитанные для них точки — применяются в конце раунда.
+        private readonly List<(RuntimeUnit unit, RuntimeUnit target)> _pendingTeleports = new();
+        private readonly List<Vector2> _teleportDestinations = new();
 
         private int           _currentTick;
         private bool          _isPaused;
@@ -261,11 +283,14 @@ namespace Guildmaster.Combat
             _displacementSystem.Tick(this, dt, in _arena);
             _separationSystem.Tick(_units, _spatialHash, in _arena);
             _spatialHash.Rebuild(_units);
-            _autoAttackSystem.Tick(_units, this, dt);
+            // Блинк убийцы двигает тело уже ПОСЛЕ перестройки хэша — тогда сетка врёт до конца тика,
+            // и соседи находят блинкнувшего по-разному с двух сторон. Перестраиваем повторно, но только
+            // если сдвиг реально был: в обычном тике это лишняя работа.
+            if (_autoAttackSystem.Tick(_units, this, dt)) _spatialHash.Rebuild(_units);
             _projectileSystem.Tick(_projectiles, _units, this, dt, in _projectileDespawnBounds);
             _regenSystem.Tick(_units, dt);
             _effectSystem.Tick(_units, this, dt);
-            DrainEventQueue();
+            ResolveCombatRounds();
             // Закон видимости эффектов: всё, что наложено и снято за этот тик, проявляется здесь — одним
             // проходом на всех. До этой точки статы и маска тегов отдают состояние, с которым тик начался,
             // поэтому исход не зависит от того, чей ход в обходе списка раньше. Место — после дренажа
@@ -322,25 +347,36 @@ namespace Guildmaster.Combat
                 : new DamageRequest(req.Source, req.Target, req.RawDamage * vulnerability, req.School,
                                     req.ArmorK, req.SourceKind, req.Affinity, req.Element, vulnerability);
 
-            var result = DamagePipeline.Execute(effective);
-            OnDamageDealt?.Invoke(req.Source, req.Target, result);
+            // Урон считается сразу (расчёт чист и от порядка не зависит — статы заморожены на тик),
+            // а применяется реестром, когда сложатся все удары раунда. См. TickLedger.
+            _ledger.AddDamage(req.Target, DamagePipeline.Resolve(effective), in effective);
+        }
+
+        /// <summary>
+        /// Урон дошёл до цели — доля этого источника в общем ударе раунда. Здесь и только здесь урон
+        /// превращается в события: наружу для презентации и метрик, внутрь для реактивов.
+        /// </summary>
+        void ITickLedgerSink.OnDamageResolved(RuntimeUnit source, RuntimeUnit target, in DamageResult result)
+        {
+            OnDamageDealt?.Invoke(source, target, result);
 
             // Внутренние события для реактивных компонентов (vampiric/thorns). Два события на удар:
             // DamageDealt доставляется источнику, DamageTaken — цели (вики «12» §3.4).
-            if (req.Source != null)
-                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind, req.School, req.Element));
-            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, req.Source, req.Target, result.TotalDamage, Data.Definitions.EffectTag.None, req.SourceKind, req.School, req.Element));
+            if (source != null)
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, source, target, result.TotalDamage, Data.Definitions.EffectTag.None, result.SourceKind, result.School, result.Element));
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, source, target, result.TotalDamage, Data.Definitions.EffectTag.None, result.SourceKind, result.School, result.Element));
 
-            // Убийство атрибутируется нанёсшему смертельный удар → доставляется УБИЙЦЕ (§10.5, «Скрытность»).
-            if (result.KilledTarget && req.Source != null)
-                _eventQueue.Enqueue(new CombatEventData(CombatEvent.UnitKilled, req.Source, req.Target, 0f));
+            // Убийство атрибутируется наибольшей доле урона (решение 2026-07-27) → доставляется УБИЙЦЕ
+            // (§10.5, «Скрытность»). Реестр уже выбрал владельца — здесь только разносим.
+            if (result.KilledTarget && source != null)
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.UnitKilled, source, target, 0f));
 
-            // Вампиризм: источник лечится на долю нанесённого по HP урона. Фаза 1 — применяется
-            // ко всему урону (без тегов источника); сузить до авто-атак/способностей — Фаза 2.
-            if (req.Source != null && !req.Source.IsDead && result.HpDamage > 0f)
+            // Вампиризм: источник лечится на долю нанесённого по HP урона. Заявка ложится в реестр и
+            // применится следующим раундом этого же тика — как и ответка шипов.
+            if (source != null && !source.IsDead && result.HpDamage > 0f)
             {
-                float lifesteal = req.Source.Stats.Get(Data.Stats.StatType.Lifesteal);
-                if (lifesteal > 0f) Heal(req.Source, result.HpDamage * lifesteal, req.Source);
+                float lifesteal = source.Stats.Get(Data.Stats.StatType.Lifesteal);
+                if (lifesteal > 0f) Heal(source, result.HpDamage * lifesteal, source);
             }
         }
 
@@ -349,21 +385,23 @@ namespace Guildmaster.Combat
             if (target.IsDead) return;
 
             // Потенция исцеления масштабируется парой HealShield-эффективностей (вики «11» §5).
+            // Кламп по MaxHP делает реестр — он один знает, сколько урона придёт по цели этим раундом.
             float mult = (source != null ? source.Stats.Get(Data.Stats.StatType.HealShieldDealtEff) : 1f)
                        * target.Stats.Get(Data.Stats.StatType.HealShieldTakenEff);
 
-            float maxHp = target.Stats.Get(Data.Stats.StatType.MaxHP);
-            float before = target.CurrentHP;
-            target.CurrentHP = Mathf.Min(before + amount * mult, maxHp);
+            _ledger.AddHeal(target, amount * mult, source);
+        }
+
+        /// <summary>
+        /// Лечение дошло до цели — доля этого источника в фактически вылеченном (overheal не входит).
+        /// </summary>
+        void ITickLedgerSink.OnHealResolved(RuntimeUnit source, RuntimeUnit target, float applied)
+        {
+            if (applied <= 0f) return;
 
             // Событие для on-heal реактивных компонентов (носитель — source, как и DamageDealt).
-            // Кладём по ФАКТИЧЕСКИ вылеченному (overheal не считается), дренаж — в этом же тике.
-            float applied = target.CurrentHP - before;
-            if (applied > 0f)
-            {
-                _eventQueue.Enqueue(new CombatEventData(CombatEvent.Healed, source, target, applied));
-                OnHealed?.Invoke(source, target, applied);
-            }
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.Healed, source, target, applied));
+            OnHealed?.Invoke(source, target, applied);
         }
 
         public void SpawnProjectile(in ProjectileSpawn spawn)
@@ -484,6 +522,43 @@ namespace Guildmaster.Combat
             _effectSystem.Dispel(in req, this);
         }
 
+        /// <summary>Заявка на переход за спину — применяется в конце раунда, см. <see cref="ApplyPendingTeleports"/>.</summary>
+        public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+        {
+            if (unit == null || target == null || unit.IsDead || target.IsDead) return;
+            _pendingTeleports.Add((unit, target));
+        }
+
+        /// <summary>
+        /// Применить заявленные переходы: сначала считаем ВСЕ новые позиции от снимка мира, затем
+        /// записываем. Иначе второй телепорт целился бы за спину тела, которое только что уехало.
+        /// </summary>
+        /// <returns>true, если хоть кто-то переместился (вызывающий обязан перестроить хэш).</returns>
+        private bool ApplyPendingTeleports()
+        {
+            if (_pendingTeleports.Count == 0) return false;
+
+            _teleportDestinations.Clear();
+            for (int i = 0; i < _pendingTeleports.Count; i++)
+            {
+                (RuntimeUnit unit, RuntimeUnit target) = _pendingTeleports[i];
+                _teleportDestinations.Add(CombatPositioning.BehindPosition(unit, target));
+            }
+
+            for (int i = 0; i < _pendingTeleports.Count; i++)
+            {
+                RuntimeUnit unit = _pendingTeleports[i].unit;
+                if (unit.IsDead) continue;
+
+                // Снап без интерполяции: вид не должен «ехать» через экран за один тик.
+                unit.Position = _teleportDestinations[i];
+                unit.PreviousPosition = unit.Position;
+            }
+
+            _pendingTeleports.Clear();
+            return true;
+        }
+
         public void Displace(in DisplaceRequest req)
         {
             // Смещение — это ЭФФЕКТ: вешаем маркер «в полёте» (жёсткий контроль + тег KnockUp, длительность
@@ -533,6 +608,8 @@ namespace Guildmaster.Combat
             _projectiles.Clear();
             _eventQueue.Clear();
             _commandQueue.Clear();
+            _ledger.Clear();              // незакрытые заявки урона/лечения не должны пережить бой
+            _pendingTeleports.Clear();    // как и незакрытые заявки на переход
             _displacementSystem.Clear();  // незавершённые полёты не должны держать ссылки на удалённых юнитов
             _spatialHash.Rebuild(_units); // пустой список → хэш очищен
 
@@ -658,6 +735,48 @@ namespace Guildmaster.Combat
                 OnUnitSpawned?.Invoke(_pendingAdd[i]);
             }
             _pendingAdd.Clear();
+        }
+
+        /// <summary>
+        /// Разрешить весь урон и лечение тика — раундами, пока реактивы порождают новые заявки.
+        /// </summary>
+        /// <remarks>
+        /// Один раунд = «применить всё накопленное разом → доставить события». Ответка шипов и лечение
+        /// вампиризмом попадают в реестр во время доставки событий, поэтому уезжают в СЛЕДУЮЩИЙ раунд —
+        /// и там снова складываются со всем, что пришло вместе с ними. Так ответка остаётся мгновенной
+        /// (тот же тик), но ни один круг не зависит от порядка обхода: внутри круга всё одновременно.
+        /// <para>
+        /// Смерть при этом наступает только в конце тика (<c>DeathSystem</c>), поэтому древень, погибший
+        /// в первом раунде, успевает уколоть в ответ во втором — взаимный размен возможен (решение
+        /// 2026-07-27).
+        /// </para>
+        /// </remarks>
+        private void ResolveCombatRounds()
+        {
+            for (int round = 0; round < MaxCombatRounds; round++)
+            {
+                if (_ledger.HasPending) _ledger.Commit(this);
+                else if (_eventQueue.Count == 0) return;
+
+                DrainEventQueue();
+
+                // Переходы «за спину», заявленные реактивами этого круга, применяются здесь — все разом,
+                // до того как следующий круг начнёт мерить дистанции.
+                if (ApplyPendingTeleports()) _spatialHash.Rebuild(_units);
+
+                if (!_ledger.HasPending) return;
+            }
+
+            // Упёрлись в кап: заявки остались. Не обязательно баг — так выглядит контент с очень высокой
+            // долей отражения, у которого ряд затухает медленнее, чем мы готовы считать в одном тике.
+            // Предупреждаем (число видно в логе) и обрываем хвост: он заведомо мельче порога значимости.
+            if (_ledger.HasPending)
+            {
+                Debug.LogWarning(
+                    $"[CombatSimulation] Combat-round cap hit at tick {_currentTick}: заявки урона/лечения " +
+                    $"продолжают порождаться после {MaxCombatRounds} кругов. Хвост отражения обрезан.");
+                _ledger.Clear();
+            }
         }
 
         // FIFO-дренаж внутренних событий: реактивные компоненты могут породить новый урон → новые

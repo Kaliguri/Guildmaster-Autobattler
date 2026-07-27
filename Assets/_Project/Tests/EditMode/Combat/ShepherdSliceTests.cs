@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -95,6 +95,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var target = MakeUnit(1, team: 0, pos: new Vector2(1f, 0f), maxHp: 1000f, hp: 100f);
 
             sim.Heal(target, amount: 20f, source: source); // 20 (AutoAttackDamage) × 1.5 dealtEff × 1.0 takenEff
+            sim.Tick(SimConstants.TickDelta);              // лечение применяется реестром в конце тика
 
             Assert.AreEqual(130f, target.CurrentHP, 1e-4f, "Вылечено 20 × 1.5 = 30 → 100 + 30");
         }
@@ -108,6 +109,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var target = MakeUnit(1, team: 0, pos: new Vector2(1f, 0f), maxHp: 100f, hp: 90f);
 
             sim.Heal(target, amount: 999f, source: source);
+            sim.Tick(SimConstants.TickDelta);   // лечение применяется реестром в конце тика
 
             Assert.AreEqual(100f, target.CurrentHP, 1e-4f, "Лечение не превышает MaxHP");
         }
@@ -309,6 +311,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ReportAreaHit(in AreaHit hit) { }
             public void Dispel(in DispelRequest req) { }
             public void Displace(in DisplaceRequest req) { }
+
+            // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+            public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+                => CombatPositioning.TeleportBehind(unit, target);
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
             public void NotifyAttackInterrupted(RuntimeUnit unit) { }
 

@@ -1,4 +1,4 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Random;
@@ -39,6 +39,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageSchool.Physical, ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
+            sim.Tick(SimConstants.TickDelta);   // удар применяется реестром в конце тика
 
             Assert.AreEqual(2, hits.Count, "Удар по горящей цели приходит двумя половинами");
             Assert.AreEqual(DamageSchool.Physical, hits[0].school, "Первая половина — клинок");
@@ -64,6 +65,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageSchool.Physical, ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
+            sim.Tick(SimConstants.TickDelta);   // удар применяется реестром в конце тика
 
             Assert.AreEqual(1, hits, "Первый удар по негорящей цели идёт целиком клинком");
         }
@@ -143,6 +145,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageSchool.Magical, ArmorK,
                 element: MagicElement.Fire));
+            sim.Tick(SimConstants.TickDelta);   // удар применяется реестром в конце тика
 
             // Десять угольков по 1% → удар сильнее на 10%, и результат обязан уметь это назвать:
             // без разбивки стенд не отличит «кит разогнался» от «кит и так столько бьёт».
@@ -233,6 +236,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
             public void Displace(in DisplaceRequest req) { }
+
+            // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+            public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+                => CombatPositioning.TeleportBehind(unit, target);
             public void DealDamage(in DamageRequest req) { }
             public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) { }
             public void SpawnProjectile(in ProjectileSpawn spawn) { }

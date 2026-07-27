@@ -59,7 +59,14 @@ namespace Guildmaster.Combat
         /// независимо от места в списке. Эффекты, наложенные этими ударами, работают со следующего тика,
         /// как это и заведено для контроля (<c>CanAct</c>, вики «14»).
         /// </remarks>
-        public void Tick(List<RuntimeUnit> units, ICombatContext ctx, float dt)
+        /// <returns>
+        /// true, если хоть один удар отыграл блинк и сдвинул тело. Такой сдвиг случается ПОСЛЕ перестройки
+        /// пространственного хэша, поэтому сетка перестаёт соответствовать позициям, и звать перестройку
+        /// заново обязан вызывающий. Пойман зеркалом: ассасин, блинкнувший за спину, оставался в хэше на
+        /// старой клетке, соседи находили его по-разному с двух сторон — и одинаковые отряды разъезжались
+        /// на тике 29.
+        /// </returns>
+        public bool Tick(List<RuntimeUnit> units, ICombatContext ctx, float dt)
         {
             _hits.Clear();
 
@@ -124,8 +131,22 @@ namespace Guildmaster.Combat
                 EnterWindup(unit, target, ctx, windupTicks);
             }
 
-            // --- Проход 2: удары прилетают. Только здесь мир меняется. ---
+            // --- Проход 2a: блинки. Телепорт двигает тело, а из тел считается геометрия ударов, поэтому
+            // все перемещения происходят ДО того, как хоть один удар начнёт мерить дистанции и линии.
+            bool moved = false;
+            for (int i = 0; i < _hits.Count; i++)
+            {
+                ResolvedHit hit = _hits[i];
+                if (!hit.Blink || hit.Unit.IsDead || hit.Target.IsDead) continue;
+
+                CombatPositioning.TeleportBehind(hit.Unit, hit.Target);
+                moved = true;
+            }
+
+            // --- Проход 2b: удары прилетают. ---
             for (int i = 0; i < _hits.Count; i++) Land(_hits[i], ctx);
+
+            return moved;
         }
 
         /// <summary>Вход в замах: рестарт кулдауна (якорь), снапшот цели, событие старта.
@@ -207,7 +228,7 @@ namespace Guildmaster.Combat
             _hits.Add(new ResolvedHit(unit, target, raw, reach, school, affinity, blink));
         }
 
-        /// <summary>Прилёт снятого удара: телепорт-блинк, затем урон/снаряд/хил и on-hit эффекты.</summary>
+        /// <summary>Прилёт снятого удара: урон/снаряд/хил и on-hit эффекты. Блинк уже отыгран (проход 2a).</summary>
         private void Land(in ResolvedHit hit, ICombatContext ctx)
         {
             RuntimeUnit unit = hit.Unit, target = hit.Target;
@@ -231,8 +252,6 @@ namespace Guildmaster.Combat
                     healSpeed, healRadius, raw, school, ctx.ArmorK, maxPierces: 0, isHeal: true));
                 return;
             }
-
-            if (hit.Blink) CombatPositioning.TeleportBehind(unit, target);
 
             if (attackType == AttackType.Melee)
             {

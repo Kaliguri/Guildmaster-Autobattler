@@ -81,6 +81,35 @@ namespace Guildmaster.Combat
             }
         }
 
+        /// <summary>
+        /// Вставить эффект так, чтобы список оставался упорядоченным по <see cref="EffectData.Id"/>.
+        /// </summary>
+        /// <remarks>
+        /// Порядок в <see cref="RuntimeUnit.ActiveEffects"/> — не косметика: по нему идут pre-damage
+        /// реакции, тик периодики и чек-сумма. Пока он был порядком НАЛОЖЕНИЯ, он хранил историю, а не
+        /// состояние: каждый боец вешал своё раньше чужого, поэтому у зеркальных монахов набор эффектов
+        /// совпадал, а очередь была разной («sys.airborne» против «effect.vortex_hold» на втором месте).
+        /// Идентификатор годится в ключ, потому что на цели эффект живёт в ОДНОМ экземпляре на определение
+        /// (см. <see cref="FindEffect"/>), — значит порядок получается полным и одинаковым с обеих сторон.
+        /// Вставка, а не сортировка на коммите: наложение случается несравнимо реже, чем тик.
+        /// </remarks>
+        private static void Insert(List<RuntimeEffect> effects, RuntimeEffect effect)
+        {
+            string id = effect.Def != null ? effect.Def.Id : string.Empty;
+
+            for (int i = 0; i < effects.Count; i++)
+            {
+                string other = effects[i].Def != null ? effects[i].Def.Id : string.Empty;
+                if (string.CompareOrdinal(id, other) < 0)
+                {
+                    effects.Insert(i, effect);
+                    return;
+                }
+            }
+
+            effects.Add(effect);
+        }
+
         /// <summary>Пересобрать флаги контроля из активных <see cref="ControlComponent"/> (перекрытие без счётчиков).</summary>
         private static void RecomputeControl(RuntimeUnit unit)
         {
@@ -153,7 +182,7 @@ namespace Guildmaster.Combat
             bool instant = ticks == 0;
             // Эффект встаёт в список сразу (иначе второе наложение этим же тиком завело бы дубль вместо
             // стака), но ВИДИМЫМ — в маске тегов — становится на коммите в конце тика. Закон видимости.
-            if (!instant) target.ActiveEffects.Add(effect);
+            if (!instant) Insert(target.ActiveEffects, effect);
 
             for (int i = 0; i < componentCount; i++)
             {

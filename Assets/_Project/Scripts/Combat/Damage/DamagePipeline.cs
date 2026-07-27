@@ -5,19 +5,24 @@ using UnityEngine;
 namespace Guildmaster.Combat
 {
     /// <summary>
-    /// Детерминированный конвейер урона. Все методы статические и чистые
-    /// (in-параметры, мутация только HP/Shield цели через <see cref="DamageRequest"/>).
+    /// Детерминированный конвейер урона. Все методы статические и чистые.
     /// Порядок: raw → DamageDealtEff → броня/пробивание (школа) → сродство × тип существа →
-    /// DamageTakenEff → щит → HP (вики «10» §5.4, «6» §6; ГДД «8» §«Школа vs сродство»).
+    /// DamageTakenEff (вики «10» §5.4, «6» §6; ГДД «8» §«Школа vs сродство»).
     /// </summary>
+    /// <remarks>
+    /// Пайплайн ТОЛЬКО СЧИТАЕТ и ничего не применяет: щит и HP правит <c>TickLedger</c> на коммите
+    /// тика. Разделение держится на законе видимости эффектов — статы источника и цели заморожены
+    /// на весь тик, поэтому расчёт не зависит от того, в каком порядке удары дошли до пайплайна,
+    /// и его можно выполнить сразу, а применение отложить (см. <c>tick-resolution</c>).
+    /// </remarks>
     public static class DamagePipeline
     {
         /// <summary>
-        /// Выполнить пайплайн: вычислить финальный урон и применить его к <see cref="DamageRequest.Target"/>.
+        /// Посчитать урон, который дойдёт до цели, ДО поглощения щитом. Ничего не мутирует.
         /// </summary>
         /// <param name="req">Запрос урона с источником, целью и параметрами.</param>
-        /// <returns>Детализированный результат для триггеров (lifesteal, шипы — Фаза 2).</returns>
-        public static DamageResult Execute(in DamageRequest req)
+        /// <returns>Эффективный урон (≥ 0) после эффективностей, брони и пробивания.</returns>
+        public static float Resolve(in DamageRequest req)
         {
             float damage = req.RawDamage;
 
@@ -55,18 +60,8 @@ namespace Guildmaster.Combat
             // 3. Множитель эффективности получаемого урона
             damage *= req.Target.Stats.Get(StatType.DamageTakenEff);
 
-            damage = Mathf.Max(0f, damage);
-
-            // 4. Поглощение щитом
-            float shieldAbsorbed = Mathf.Min(req.Target.CurrentShield, damage);
-            req.Target.CurrentShield -= shieldAbsorbed;
-            float hpDamage = damage - shieldAbsorbed;
-
-            // 5. Вычет из HP
-            req.Target.CurrentHP -= hpDamage;
-
-            return new DamageResult(hpDamage, shieldAbsorbed, req.Target.CurrentHP <= 0f,
-                req.SourceKind, req.School, req.Affinity, req.Element, req.Vulnerability);
+            // Щит и HP здесь НЕ трогаются: их правит TickLedger, когда сложит все удары тика.
+            return Mathf.Max(0f, damage);
         }
     }
 }
