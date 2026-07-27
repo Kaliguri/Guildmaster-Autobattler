@@ -12,13 +12,15 @@ namespace Guildmaster.Combat.Effects.Components
     /// (0.15 = 15%); <c>_damageSchool</c> и <c>_affinity</c> — тип ответки. Отличие от
     /// <see cref="ArmorThornsComponent"/>: там урон считается от БРОНИ носителя и бьёт всех вокруг,
     /// здесь — доля конкретного удара и только тому, кто ударил.</para>
-    /// <para><b>Когда срабатывает:</b> на каждом полученном уроне. Ответка помечена как реактивная,
-    /// поэтому чужие шипы на неё не отвечают — бесконечного пинг-понга нет.</para>
+    /// <para><b>Когда срабатывает:</b> ТОЛЬКО на прямом попадании — авто-атака или способность.
+    /// Тик яда, горение и чужая ответка шипов проходят мимо: шипы отвечают удару, а не тлеющему
+    /// урону, и шипы не отвечают шипам (решение Макса 2026-07-27).</para>
     /// </summary>
     /// <remarks>
-    /// Отражённый урон идёт обычным <see cref="ICombatContext.DealDamage"/> и сам порождает
-    /// события — взаимные шипы пинг-понгуют, но дренаж очереди капается в
-    /// <c>CombatSimulation</c> (детерминированно завершается, без рекурсии).
+    /// Гейт по <see cref="CombatEventData.IsDirectHit"/> — он же закрывает пинг-понг взаимных шипов
+    /// в корне: ответка помечена <see cref="DamageSourceKind.Reactive"/> и второго круга не порождает.
+    /// Раньше это утверждала только докстринга, а гейта в коде не было — цепочка реально ходила по
+    /// кругу и гасла лишь капом. Порог значимости и кап раундов остались страховкой на будущий контент.
     /// </remarks>
     [Serializable]
     public sealed class ThornsComponent : IReactiveComponent
@@ -41,6 +43,9 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnEvent(in EffectContext ctx, in CombatEventData e)
         {
+            // Шипы отвечают только удару: ни DoT, ни чужая ответка их не будят.
+            if (!e.IsDirectHit) return;
+
             // Носитель (ctx.Target) получил урон; источник e.Source — атакующий.
             RuntimeUnit attacker = e.Source;
             if (attacker == null || attacker.IsDead) return;
