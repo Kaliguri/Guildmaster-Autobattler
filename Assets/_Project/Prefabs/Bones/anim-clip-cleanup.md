@@ -86,3 +86,13 @@
 **Готча:** Empty на слое Arms с `writeDefaults=true` затирает руки Base. Сейчас Empty = `writeDefaults=false`.
 
 Проверка в Play: `Speed=1` → Run, ноги качаются; `Attack` на ходу → руки бьют, ноги продолжают цикл.
+
+---
+
+## Боевой просмотр (WIP)
+
+`UnitView_BoneStandart.prefab` — боевой UnitView с nested `BoneVisual` + `BoneUnit_Combat.controller` (Idle/Run/Attack под `UnitView.Play`).
+
+`BaseRelic.asset` снова на `UnitView_BaseRelic` (guid `b878aa196bd029646a3f3d292a658691`). Для smoke временно можно переключить `_viewPrefab` на `UnitView_BoneStandart` (guid `cd42c7a258093ac4691913f833656755`).
+
+R&D `BoneUnit_Standart.controller` с масками не трогали.

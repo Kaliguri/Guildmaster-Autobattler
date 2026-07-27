@@ -26,6 +26,9 @@ namespace Guildmaster.Presentation
         [SerializeField] private SpriteRenderer _sprite;
         [Tooltip("Animator на теле (той же GO, что SpriteRenderer). Пусто/без визуала = статичный спрайт.")]
         [SerializeField] private Animator _animator;
+        [Tooltip("Корень скелетного/составного визуала: разворот через scale.x (±1) вместо SpriteRenderer.flipX. " +
+                 "Пусто = классический flipX на _sprite (sprite-sheet юниты).")]
+        [SerializeField] private Transform _facingRoot;
         [SerializeField] private HealthBarView  _healthBar;
         [Tooltip("Бар ресурса (мана/ярость). Пусто = без бара; скрывается сам для безресурсных юнитов.")]
         [SerializeField] private ManaBarView    _manaBar;
@@ -182,22 +185,27 @@ namespace Guildmaster.Presentation
                 if (group != null) group.alpha = 1f;
             }
 
-            // Спрайты нарисованы лицом вправо: команда 0 (слева) так и смотрит, враги (справа) — влево.
+            // Спрайты/кости нарисованы лицом вправо: команда 0 (слева) так и смотрит, враги (справа) — влево.
             // Дальше разворот динамический (ApplyFacing по цели/движению), но стартовый — по стороне, иначе
             // стоящий без цели (напр. ассасин в инвизе) смотрит «от противника».
-            if (_sprite != null)
+            if (_sprite != null || _facingRoot != null)
             {
-                _sprite.flipX = unit.Team != 0;
-                _desiredFlipX = _sprite.flipX;
+                bool startFlip = unit.Team != 0;
+                _desiredFlipX = startFlip;
+                ApplyFacingVisual(startFlip);
 
-                // Сплющиваем узел ВЫШЕ Animator (родитель спрайта), иначе кадровая анимация тела его затирает.
-                _squashTarget    = _sprite.transform.parent != null ? _sprite.transform.parent : _sprite.transform;
+                // Сплющиваем узел ВЫШЕ Animator (facing root или родитель спрайта), иначе клип затирает scale.
+                _squashTarget = _facingRoot != null
+                    ? _facingRoot
+                    : (_sprite != null && _sprite.transform.parent != null
+                        ? _sprite.transform.parent
+                        : _sprite != null ? _sprite.transform : transform);
                 _baseSpriteScale = _squashTarget.localScale;
 
                 // Праймим property block (flash=0) с первого кадра: спрайт с кастомным SRP-batcher-шейдером
                 // включает per-instance путь именно выставленным MPB — иначе тинт/флип не подхватывались до
                 // первого удара (наблюдалось как «юнит без своего цвета/прозрачности, пока не получит урон»).
-                PrimeFlashBlock();
+                if (_sprite != null) PrimeFlashBlock();
             }
 
             if (_healthBar != null) _healthBar.Bind(unit);
@@ -378,7 +386,7 @@ namespace Guildmaster.Presentation
         public Sprite BodySprite => _sprite != null ? _sprite.sprite : null;
 
         /// <summary>Отражён ли спрайт тела по X (сторона/фейсинг).</summary>
-        public bool BodyFlipX => _sprite != null && _sprite.flipX;
+        public bool BodyFlipX => IsFacingFlipped();
 
         /// <summary>Мировой масштаб спрайта тела (учитывает узел сплющивания/масштаб арта).</summary>
         public Vector3 BodyLossyScale => _sprite != null ? _sprite.transform.lossyScale : Vector3.one;
@@ -386,16 +394,37 @@ namespace Guildmaster.Presentation
         /// <summary>Мировая позиция спрайта тела (со смещением арта от ног). Фолбэк — позиция юнита.</summary>
         public Vector3 BodyWorldPosition => _sprite != null ? _sprite.transform.position : transform.position;
 
-        // Сокет с учётом разворота: спрайт зеркалим через SpriteRenderer.flipX, а он НЕ зеркалит дочерние GO
-        // (сокеты живут в мировой иерархии). Поэтому для смотрящего влево отражаем локальную X сокета вручную —
-        // иначе дуло/грудь оказываются с «нарисованной» стороны, а не с той, куда юнит фактически повёрнут.
+        // Сокет с учётом разворота: flipX/facing-root НЕ зеркалят Points (они сиблинги визуала).
+        // Для смотрящего влево отражаем локальную X сокета вручную.
         private Vector3 ResolveSocketFacing(Transform socket)
         {
             if (socket == null) return transform.position;
-            if (_sprite == null || !_sprite.flipX) return socket.position;
+            if (!IsFacingFlipped()) return socket.position;
             Vector3 local = transform.InverseTransformPoint(socket.position);
             local.x = -local.x;
             return transform.TransformPoint(local);
+        }
+
+        private bool IsFacingFlipped()
+        {
+            if (_facingRoot != null) return _facingRoot.localScale.x < 0f;
+            return _sprite != null && _sprite.flipX;
+        }
+
+        /// <summary>Применить разворот: scale.x на _facingRoot или SpriteRenderer.flipX.</summary>
+        private void ApplyFacingVisual(bool flipX)
+        {
+            if (_facingRoot != null)
+            {
+                Vector3 s = _facingRoot.localScale;
+                float mag = Mathf.Abs(s.x) > 1e-5f ? Mathf.Abs(s.x) : 1f;
+                s.x = flipX ? -mag : mag;
+                _facingRoot.localScale = s;
+                if (_squashTarget == _facingRoot) _baseSpriteScale = s;
+                return;
+            }
+
+            if (_sprite != null) _sprite.flipX = flipX;
         }
 
         private void Update()
@@ -668,8 +697,9 @@ namespace Guildmaster.Presentation
 
         private void ApplyFacing()
         {
-            if (_sprite == null || _unit == null) return;
-            if (_flipAnimActive) return; // идёт разворот-сплющивание — не дёргаем flipX снаружи
+            if (_unit == null) return;
+            if (_sprite == null && _facingRoot == null) return;
+            if (_flipAnimActive) return; // идёт разворот-сплющивание — не дёргаем flip снаружи
 
             // Пока идёт цикл атаки — целимся в цель (приоритет над движением): стрелок смотрит на врага,
             // даже отступая. Нет цели — падаем на разворот по движению ниже.
@@ -687,14 +717,14 @@ namespace Guildmaster.Presentation
                     wantFlip = standFlip;
             }
 
-            if (!wantFlip.HasValue || wantFlip.Value == _sprite.flipX) return;
+            if (!wantFlip.HasValue || wantFlip.Value == IsFacingFlipped()) return;
             RequestFacingFlip(wantFlip.Value);
         }
 
-        // Желаемый flipX к цели. false = цели нет/мертва. Почти вертикаль — «уже повёрнут».
+        // Желаемый flip к цели. false = цели нет/мертва. Почти вертикаль — «уже повёрнут».
         private bool TryDesiredFlipToward(RuntimeUnit target, out bool flipX)
         {
-            flipX = _sprite != null && _sprite.flipX;
+            flipX = IsFacingFlipped();
             if (target == null || target.IsDead || _unit == null) return false;
             float dx = target.Position.x - _unit.Position.x;
             if (Mathf.Abs(dx) < FacingTargetDeadzoneX) return true; // уже ок, не меняем
@@ -706,7 +736,7 @@ namespace Guildmaster.Presentation
         {
             if (_feel == null || !_feel.EnableFacingFlipSquash || _squashTarget == null)
             {
-                _sprite.flipX = flipX;
+                ApplyFacingVisual(flipX);
                 return;
             }
 
@@ -714,20 +744,20 @@ namespace Guildmaster.Presentation
             _desiredFlipX = flipX;
             _flipAnimActive = true;
             float dur = Mathf.Max(0.01f, _feel.FacingFlipDuration);
-            // 1→0: на середине (v=0.5) меняем flipX, вес squash = triangle (пик в середине).
+            // 1→0: на середине (v=0.5) меняем facing, вес squash = triangle (пик в середине).
             _flipHandle = LMotion.Create(0f, 1f, dur)
                 .WithEase(Ease.Linear)
                 .Bind(this, static (v, self) =>
                 {
-                    if (v >= 0.5f && self._sprite != null && self._sprite.flipX != self._desiredFlipX)
-                        self._sprite.flipX = self._desiredFlipX;
+                    if (v >= 0.5f && self.IsFacingFlipped() != self._desiredFlipX)
+                        self.ApplyFacingVisual(self._desiredFlipX);
                     // треугольник 0→1→0
                     self._flipSquashWeight = v < 0.5f ? v * 2f : (1f - v) * 2f;
                     if (v >= 0.999f)
                     {
                         self._flipSquashWeight = 0f;
                         self._flipAnimActive = false;
-                        if (self._sprite != null) self._sprite.flipX = self._desiredFlipX;
+                        self.ApplyFacingVisual(self._desiredFlipX);
                     }
                     self.ApplyComposedScale();
                 })

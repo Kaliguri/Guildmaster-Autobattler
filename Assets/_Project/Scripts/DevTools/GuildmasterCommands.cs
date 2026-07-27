@@ -653,6 +653,41 @@ namespace Guildmaster.DevTools
                       "(Защитник, Огненный мечник, Криомант, Пастырь). Честный исход — ничья.");
         }
 
+        /// <summary>
+        /// 1×1 BaseRelic зеркально — смотреть bone-визуал в бою (временно на relic.base → UnitView_BoneStandart).
+        /// Тот же вход на Ристалище, что у <see cref="SpawnMirror"/>.
+        /// </summary>
+        [Command("gm_spawn_bone_duel", "1×1 BaseRelic vs BaseRelic (bone UnitView smoke)")]
+        public void SpawnBoneDuel()
+        {
+            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+
+            if (!_onProvingGrounds && _provingGroundsPub != null && RequestProvingGrounds())
+            {
+                _pendingOnProvingGrounds = self => self.SpawnBoneDuelNow();
+                return;
+            }
+
+            SpawnBoneDuelNow();
+        }
+
+        private void SpawnBoneDuelNow()
+        {
+            RelicData relic = DevRelic("relic.base");
+            if (relic == null) return;
+
+            ResetForNewBattle();
+
+            const float x = 2.2f;
+            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, 0, new Vector2(-x, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, 1, new Vector2(x, 0f)));
+
+            _lastBattleSetup = self => self.SpawnBoneDuel();
+            string view = relic.ViewPrefab != null ? relic.ViewPrefab.name : "null";
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: BaseRelic 1×1 (ViewPrefab={view})");
+        }
+
         private RelicData DevRelic(string id)
         {
             if (_content != null && _content.TryGet(id, out RelicData relic) && relic != null) return relic;
