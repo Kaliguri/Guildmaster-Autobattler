@@ -70,7 +70,7 @@ MonoBehaviour:
     Value: 45
   - Stat: 8
     Op: 3
-    Value: 0.85
+    Value: 0.425
   - Stat: 9
     Op: 3
     Value: 8
@@ -90,22 +90,22 @@ MonoBehaviour:
     _baseCooldown: 9
     _resourceCost: 0
     _targetMode: 4
-    _damageMultiplier: 2.5
+    _damageMultiplier: 0
     _schoolOverride: 3
     _physicalSubtypeOverride: 0
     _magicElementOverride: 0
     _affinityOverride: 2
     _areaShape: 0
-    _areaRadius: 3.5
+    _areaRadius: 1.5
     _healFlat: 80
     _healPctTargetMissingHp: 0
     _castCondition: 3
-    _castConditionCount: 2
+    _castConditionCount: 1
     _castConditionRadius: 0
     _castConditionHpPct: 0.5
     _castOverrideSelfHpPct: 0
     _triggerTag: 2048
-    _consumesTriggerTag: 1
+    _consumesTriggerTag: 0
     _displaces: 0
     _displaceDistance: 4
     _displaceTicks: 12
@@ -115,9 +115,9 @@ MonoBehaviour:
     _infoTags: []
   _aiPreset: {fileID: 11400000, guid: 23dcec69dda38814e99c0d882a05b246, type: 2}
   _ai:
-    _autoAttackTargeting: 0
+    _autoAttackTargeting: 8
     _autoAttackMode: 0
-    _targetTag: 0
+    _targetTag: 2048
     _retreat:
       Enabled: 0
       FleeAtHpPct: 0.25

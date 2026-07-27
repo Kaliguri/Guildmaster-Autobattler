@@ -66,10 +66,10 @@ MonoBehaviour:
   _stats:
   - Stat: 0
     Op: 3
-    Value: 1200
+    Value: 2000
   - Stat: 7
     Op: 3
-    Value: 100
+    Value: 110
   _grantedEffects: []
   _abilities: []
   _aiPreset: {fileID: 0}

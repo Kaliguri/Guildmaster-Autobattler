@@ -92,8 +92,8 @@ namespace Guildmaster.Data.Editor
                 {
                     case "scaleStat": ScaleStat(edit, target, changes, undo); break;
                     case "setStat":   SetStat(edit, target, changes, undo);   break;
-                    case "setFloat":  SetFloat(edit, target, changes, undo);  break;
-                    case "addFloat":  AddFloat(edit, target, changes, undo);  break;
+                    case "setValue":  SetValue(edit, target, changes, undo);  break;
+                    case "addValue":  AddValue(edit, target, changes, undo);  break;
                     case "addCooldown": AddCooldown(edit, target, changes, undo); break;
                     case "setEffectField": SetEffectField(edit, target, changes, undo); break;
                     default:
@@ -132,30 +132,30 @@ namespace Guildmaster.Data.Editor
             }
         }
 
-        private static void SetFloat(JObject edit, ScriptableObject target,
+        private static void SetValue(JObject edit, ScriptableObject target,
             List<ContentEditService.Change> changes, JArray undo)
         {
             string path = (string)edit["path"];
             if (string.IsNullOrEmpty(path)) return;
 
-            ContentEditService.Change change = ContentEditService.SetFloat(target, path, Float(edit["value"], 0f));
+            ContentEditService.Change change = ContentEditService.SetValue(target, path, Float(edit["value"], 0f));
             changes.Add(change);
             if (change.Applied)
             {
-                undo.Add(Edit("setFloat", target.name, new JProperty("path", path),
+                undo.Add(Edit("setValue", target.name, new JProperty("path", path),
                     new JProperty("value", change.Before)));
             }
         }
 
-        private static void AddFloat(JObject edit, ScriptableObject target,
+        private static void AddValue(JObject edit, ScriptableObject target,
             List<ContentEditService.Change> changes, JArray undo)
         {
             string path = (string)edit["path"];
             if (string.IsNullOrEmpty(path)) return;
 
             float delta = Float(edit["delta"], 0f);
-            changes.Add(ContentEditService.AddFloat(target, path, delta));
-            undo.Add(Edit("addFloat", target.name, new JProperty("path", path), new JProperty("delta", -delta)));
+            changes.Add(ContentEditService.AddValue(target, path, delta));
+            undo.Add(Edit("addValue", target.name, new JProperty("path", path), new JProperty("delta", -delta)));
         }
 
         private static void AddCooldown(JObject edit, ScriptableObject target,
@@ -204,8 +204,12 @@ namespace Guildmaster.Data.Editor
             var name = (string)edit["asset"];
             if (!string.IsNullOrEmpty(name))
             {
+                // Порядок фолбэков — от узкого к широкому: сперва контент (у него есть id, по нему и
+                // ищем), последним — любой ScriptableObject по имени, чтобы правились и конфиги без id
+                // (ClassBalanceConfig: классовые коридоры — такой же предмет вердикта, как сила кита).
                 ScriptableObject asset = ContentEditService.Resolve<UnitData>(name)
-                                         ?? (ScriptableObject)ContentEditService.Resolve<EffectData>(name);
+                                         ?? (ScriptableObject)ContentEditService.Resolve<EffectData>(name)
+                                         ?? ContentEditService.ResolveAnyAsset(name);
                 if (asset == null) Debug.LogWarning($"[ContentEditBatch] Ассет «{name}» не найден — правка пропущена.");
                 else targets.Add(asset);
                 return targets;
@@ -250,9 +254,21 @@ namespace Guildmaster.Data.Editor
         private static T ParseEnum<T>(string raw, T fallback) where T : struct
             => Enum.TryParse(raw, out T parsed) ? parsed : fallback;
 
+        /// <summary>
+        /// Число из пресета. Числовой токен читается ТИПИЗИРОВАННО, минуя строку: у Newtonsoft
+        /// <c>JToken.ToString()</c> форматирует по ТЕКУЩЕЙ культуре, и под русской локалью 0.5
+        /// превращается в «0,5» — разбор с <see cref="CultureInfo.InvariantCulture"/> его не принимает
+        /// и молча отдаёт <paramref name="fallback"/>. Целые правки при этом проходили, а дробные
+        /// обнулялись (прогон 2026-07-28: DpsMult 0.55 → 0). Строковый разбор оставлен запасным путём —
+        /// для значений, записанных в пресете строкой.
+        /// </summary>
         private static float Float(JToken token, float fallback)
-            => token != null && float.TryParse(token.ToString(), NumberStyles.Float,
+        {
+            if (token == null) return fallback;
+            if (token.Type is JTokenType.Float or JTokenType.Integer) return token.Value<float>();
+            return float.TryParse(token.ToString(), NumberStyles.Float,
                 CultureInfo.InvariantCulture, out float v) ? v : fallback;
+        }
 
         private static JObject Edit(string op, string asset, params JProperty[] rest)
         {
