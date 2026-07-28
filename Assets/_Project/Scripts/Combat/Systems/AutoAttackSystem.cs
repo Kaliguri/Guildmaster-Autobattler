@@ -35,9 +35,11 @@ namespace Guildmaster.Combat
             public readonly DamageSchool School;
             public readonly DamageAffinity Affinity;
             public readonly bool Blink;
+            /// <summary>Разовое пробивание этого удара (взведено «Скрытностью») — снято вместе с цифрами.</summary>
+            public readonly float FlatPen;
 
             public ResolvedHit(RuntimeUnit unit, RuntimeUnit target, float raw, float reach,
-                DamageSchool school, DamageAffinity affinity, bool blink)
+                DamageSchool school, DamageAffinity affinity, bool blink, float flatPen)
             {
                 Unit     = unit;
                 Target   = target;
@@ -46,6 +48,7 @@ namespace Guildmaster.Combat
                 School   = school;
                 Affinity = affinity;
                 Blink    = blink;
+                FlatPen  = flatPen;
             }
         }
 
@@ -212,11 +215,15 @@ namespace Guildmaster.Combat
             DamageSchool school = unit.DamageSchool;
             DamageAffinity affinity = unit.Affinity;
 
-            // §9.6 усиление следующей атаки («Скрытность»): множим урон разово и снимаем баф стелса.
+            // §9.6 усиление следующей атаки («Скрытность»): множим урон разово, забираем разовое
+            // пробивание и снимаем баф стелса. Пробивание тратится тем же ударом, что и множитель.
+            float flatPen = 0f;
             if (unit.EmpowerDamageMult > 0f)
             {
                 raw *= unit.EmpowerDamageMult;
                 unit.EmpowerDamageMult = 0f;
+                flatPen = unit.EmpowerFlatPen;
+                unit.EmpowerFlatPen = 0f;
                 ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, EffectTag.Stealth, int.MaxValue, 0));
             }
 
@@ -225,7 +232,7 @@ namespace Guildmaster.Combat
             bool blink = unit.BlinkBehindOnNextAttack;
             unit.BlinkBehindOnNextAttack = false;
 
-            _hits.Add(new ResolvedHit(unit, target, raw, reach, school, affinity, blink));
+            _hits.Add(new ResolvedHit(unit, target, raw, reach, school, affinity, blink, flatPen));
         }
 
         /// <summary>Прилёт снятого удара: урон/снаряд/хил и on-hit эффекты. Блинк уже отыгран (проход 2a).</summary>
@@ -265,7 +272,7 @@ namespace Guildmaster.Combat
                 }
                 else
                 {
-                    ctx.DealDamage(new DamageRequest(unit, target, raw, school, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, affinity: affinity));
+                    ctx.DealDamage(new DamageRequest(unit, target, raw, school, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, affinity: affinity, bonusFlatPen: hit.FlatPen));
                     ApplyAutoAttackOnHit(unit, target, ctx); // §9.1 (мили single)
                 }
             }

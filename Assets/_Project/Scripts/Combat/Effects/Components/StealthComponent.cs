@@ -25,6 +25,9 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Множитель урона усиленной первой авто-атаки.")]
         [SerializeField] private float _empowerMult = 2f;
 
+        [Tooltip("Сколько ед. брони игнорирует удар из скрытности (20 у Убийцы). 0 = бьёт по обычной броне.")]
+        [SerializeField] private float _empowerFlatPen = 20f;
+
         public CombatEvent Events => CombatEvent.UnitKilled;
 
         public void OnApply(in EffectContext ctx)  => Cloak(in ctx); // начало боя (выдача пассива)
@@ -44,6 +47,7 @@ namespace Guildmaster.Combat.Effects.Components
 
             if (_stealthBuff != null) ctx.Combat.ApplyEffect(self, _stealthBuff, self);
             self.EmpowerDamageMult = _empowerMult;
+            self.EmpowerFlatPen    = _empowerFlatPen;
             self.BlinkBehindOnNextAttack = true; // удар из скрытности блинкует убийцу за спину цели (§10.5)
         }
     }

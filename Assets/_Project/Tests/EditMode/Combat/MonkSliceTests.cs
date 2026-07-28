@@ -80,7 +80,11 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.Less(enemyB.CurrentHP, 200f, "«Ядро» бьёт врага источника на линии");
             Assert.AreEqual(200f, allyC.CurrentHP, 1e-4f, "Союзника источника «ядро» не задевает");
-            Assert.AreEqual(flying.Stats.Get(StatType.MaxHP), flying.CurrentHP, 1e-4f, "Сам летящий не бьёт себя");
+            // Отброшенный получает урон толчка ОДИН раз, при старте полёта (решение 2026-07-28): раньше
+            // заданный урон уходил только задетым на линии, то есть толчок бил мимо того, кого толкнули.
+            // Через себя «ядром» он при этом не проходит — иначе урон удваивался бы на каждом тике.
+            float flyingLost = flying.Stats.Get(StatType.MaxHP) - flying.CurrentHP;
+            Assert.AreEqual(50f, flyingLost, 1e-4f, "Летящий получил урон толчка ровно один раз");
         }
 
         [Test]
@@ -134,9 +138,9 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             for (int t = 0; t < 5; t++) sim.Tick(SimConstants.TickDelta);
 
+            // 40 за сам толчок (на старте полёта) + 40 за удар о край арены = ровно 80.
             float lost = hpBefore - victim.CurrentHP;
-            Assert.Greater(lost, 0f, "Впечатало в край арены — цель получила урон толчка ещё раз");
-            Assert.LessOrEqual(lost, 40f + 1e-3f, "Урон о стену добивается ОДИН раз за полёт, а не каждый прижатый тик");
+            Assert.AreEqual(80f, lost, 1e-3f, "Толчок + удар о стену: по одному разу каждый, а не урон на каждый прижатый тик");
 
             // Полёт СТОИТ у стены, но цель продолжает лежать оглушённой ~1 секунду (30 тиков).
             Vector2 restingPos = victim.Position;
@@ -146,7 +150,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             for (int t = 0; t < 20; t++) sim.Tick(SimConstants.TickDelta);
             Assert.AreEqual(0, victim.DisplacedTicksRemaining, "Лежание кончилось — только теперь поднимается конец смещения (телепорт Монаха)");
-            Assert.AreEqual(40f, hpBefore - victim.CurrentHP, 1e-3f, "Лежание урона не добавляет");
+            Assert.AreEqual(80f, hpBefore - victim.CurrentHP, 1e-3f, "Лежание урона не добавляет");
         }
 
         // ===================== §10.6 «Вихревой заход» =====================

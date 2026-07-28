@@ -580,6 +580,17 @@ namespace Guildmaster.Combat
             // в конце полёта (OnDisplacementEnded → RemoveByTag) и поднимает единый EffectExpired.
             if (req.Target != null && !req.Target.IsDead)
                 _effectSystem.Apply(req.Target, _airborneEffect, req.Source, this);
+
+            // Урон толчка по САМОЙ отброшенной цели (решение 2026-07-28): раньше заданный урон уходил
+            // только тем, кого задело «ядром» на линии, — то есть толчок бил мимо того, кого толкнули.
+            // Самосмещение (рывок кастующего) не бьёт себя, цепь идёт с нулевым уроном и тоже молчит.
+            if (req.Damage > 0f && req.Source != null && req.Target != null && !req.Target.IsDead
+                && !ReferenceEquals(req.Source, req.Target))
+            {
+                DealDamage(new DamageRequest(req.Source, req.Target, req.Damage, req.School, ArmorK,
+                    affinity: req.Affinity));
+            }
+
             _displacementSystem.Add(in req, in _tuning);
         }
 

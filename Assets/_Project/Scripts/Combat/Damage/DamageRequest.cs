@@ -63,6 +63,13 @@ namespace Guildmaster.Combat
         /// </summary>
         public readonly float Vulnerability;
 
+        /// <summary>
+        /// Разовое плоское пробивание брони поверх статов источника — для ударов, которые игнорируют
+        /// часть защиты один раз («Атака из скрытности» Убийцы игнорирует 20 ед. брони). Стат
+        /// <c>PhysPen</c>/<c>MagicPen</c> так не выразить: он постоянный, а это свойство удара.
+        /// </summary>
+        public readonly float BonusFlatPen;
+
         /// <summary>Урон стихии огня — то, что копит «Угли» и усиливается ими.</summary>
         public bool IsFire => School == DamageSchool.Magical && Element == MagicElement.Fire;
 
@@ -84,7 +91,8 @@ namespace Guildmaster.Combat
             DamageSourceKind sourceKind = DamageSourceKind.Ability,
             DamageAffinity affinity = DamageAffinity.None,
             MagicElement element = MagicElement.None,
-            float vulnerability = 1f)
+            float vulnerability = 1f,
+            float bonusFlatPen = 0f)
         {
             Source        = source;
             Target        = target;
@@ -95,6 +103,7 @@ namespace Guildmaster.Combat
             Affinity      = affinity;
             Element       = school == DamageSchool.Magical ? element : MagicElement.None;
             Vulnerability = vulnerability;
+            BonusFlatPen  = bonusFlatPen;
         }
     }
 }

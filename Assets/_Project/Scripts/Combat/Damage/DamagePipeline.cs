@@ -48,8 +48,9 @@ namespace Guildmaster.Combat
                     penPct = req.Source.Stats.Get(StatType.MagicPenPct);
                 }
 
-                // Пробивание: сначала %, потом плоское; эффективная броня не уходит в минус
-                float effArmor = Mathf.Max(0f, armor * (1f - penPct) - pen);
+                // Пробивание: сначала %, потом плоское (стат источника + разовое пробивание этого удара);
+                // эффективная броня не уходит в минус
+                float effArmor = Mathf.Max(0f, armor * (1f - penPct) - pen - req.BonusFlatPen);
                 damage *= req.ArmorK / (req.ArmorK + effArmor);
             }
 
