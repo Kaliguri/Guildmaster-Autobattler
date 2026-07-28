@@ -1,0 +1,12 @@
+﻿Rank;Relic;Wins;Losses;Draws;WinRate;BTStrength
+1;Assassin;17;2;1;0.875;13.243
+2;FlameSwordsman;14;3;3;0.775;6.767
+3;Ranger;12;3;5;0.725;5.07
+4;Treant;12;6;2;0.65;3.379
+5;WhirlMonk;8;4;8;0.6;2.6
+6;Defender;10;8;2;0.55;2.002
+7;Cryomancer;9;8;3;0.525;1.754
+8;IronSpearman;8;12;0;0.4;0.868
+9;Druid;6;14;0;0.3;0.442
+10;BaseRelic;2;18;0;0.1;0.041
+11;LightShepherd;0;20;0;0;0.005

@@ -1,0 +1,9 @@
+﻿Side;Unit;DmgDealt;DmgAutoPhys;DmgAutoMagic;DmgAbility;DmgDoT;DmgVuln;DmgSelf;DmgTaken;Healing;Died;DeathSec;HpLeft%
+A;A:Defender#0;795.7;795.7;0;0;0;0;0;1129.412;0;no;-;73.74
+A;A:WhirlMonk#0;3035.496;2310.319;0;725.176;0;0;0;2125.644;0;yes;40.033;0
+A;A:Assassin#0;966.857;966.857;0;0;0;0;0;1461.451;0;no;-;23.426
+A;A:LightShepherd#0;500;500;0;0;0;0;0;1377.778;312.838;yes;10.633;0
+B;B:Defender#0;704.867;704.867;0;0;0;0;0;1082.353;0;no;-;74.788
+B;B:WhirlMonk#0;3203.189;2619.189;0;584;0;0;0;1619.2;0;no;-;19.04
+B;B:Assassin#0;933.333;933.333;0;0;0;0;0;1072.5;0;no;-;28.5
+B;B:FlameSwordsman#0;1252.895;369.417;373.65;30.222;479.606;53.807;73.026;1597.026;0;yes;13.833;0

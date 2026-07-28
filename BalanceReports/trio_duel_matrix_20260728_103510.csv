@@ -1,0 +1,12 @@
+﻿Left \ Right;Assassin;BaseRelic;Cryomancer;Defender;Druid;FlameSwordsman;IronSpearman;LightShepherd;Ranger;Treant;WhirlMonk
+Assassin;-;W 31%;D 3%;W 42%;L;W 19%;W 20%;W 32%;W 33%;W 4%;W 18%
+BaseRelic;L;-;L;L;D 8%;L;L;L;D 5%;L;L
+Cryomancer;D 4%;W 5%;-;L;W 11%;D 5%;L;L;W 3%;L;L
+Defender;L;W 61%;W 20%;-;W 38%;W 33%;W 42%;W 38%;W 35%;W 26%;D 4%
+Druid;W 14%;D 5%;L;L;-;L;L;L;L;L;L
+FlameSwordsman;L;W 0%;D 10%;L;W 19%;-;D 1%;D 13%;W 12%;L;L
+IronSpearman;L;W 33%;W 15%;L;W 32%;D 31%;-;W 31%;W 28%;L;W 15%
+LightShepherd;L;W 31%;W 25%;L;W 23%;D 8%;L;-;W 28%;L;L
+Ranger;L;D 3%;L;L;W 19%;L;L;L;-;L;L
+Treant;L;W 38%;W 19%;L;W 40%;W 18%;W 21%;W 26%;W 35%;-;W 18%
+WhirlMonk;L;W 36%;W 17%;D 7%;W 38%;W 18%;L;W 33%;W 30%;L;-

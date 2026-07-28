@@ -1,0 +1,12 @@
+﻿Rank;Relic;Wins;Losses;Draws;WinRate;TeamHpOnWin%;HeroSurvival%;BTStrength
+1;Treant;18;0;2;0.95;47.919;100;37.302
+2;Assassin;15;4;1;0.775;55.086;80;7.794
+3;FlameSwordsman;14;4;2;0.75;43.029;80;6.585
+4;WhirlMonk;8;2;10;0.65;61.463;90;3.522
+5;Cryomancer;12;6;2;0.65;28.383;70;3.522
+6;Defender;10;8;2;0.55;59.002;60;1.944
+7;Ranger;6;9;5;0.425;47.645;55;0.903
+8;IronSpearman;6;12;2;0.35;39.737;40;0.543
+9;Druid;4;12;4;0.3;41.487;40;0.371
+10;BaseRelic;2;18;0;0.1;14;10;0.033
+11;LightShepherd;0;20;0;0;0;0;0.004

@@ -9,13 +9,6 @@
 [Mm]emoryCaptures/
 [Rr]ecordings/
 
-# SimBench balance reports (generated tool output).
-# Exception: runs.json holds the run markers — the titles and intent of each balance pass.
-# Numbers can always be re-measured; "what we tried and why" cannot.
-BalanceReports/*
-!BalanceReports/runs.json
-!BalanceReports/presets/
-
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
@@ -27,8 +20,10 @@ sysinfo.txt
 # Builds
 *.apk
 *.aab
-*.unitypackage
 *.app
+# Только наши экспорты из корня. Патчи и сэмплы, приехавшие внутри вендорных
+# паков под Assets/, — часть этих паков и остаются в git.
+/*.unitypackage
 
 # Crashlytics generated file
 crashlytics-build.properties
@@ -87,10 +82,6 @@ fmod_editor.log
 # FMOD Studio project build cache (regenerated)
 FMOD Project/.cache/
 
-# Промежуточная нормализация звука: пересобирается scripts/audio/build_source_audio.py,
-# а канонные копии всё равно живут в FMOD Project/Assets (FMOD копирует импорт к себе).
-FMOD Project/SourceAudio/
-
 # dotenv
 .env
 .env.*
@@ -117,9 +108,10 @@ docs/wiki/.obsidian/plugins/*/main.js
 docs/wiki/.obsidian/plugins/*/main.js.bak
 docs/wiki/.obsidian/plugins/*/styles.css
 
-# Docs site build artifacts
-quartz-build/
-site/
+# Docs site build artifacts — только сборка Quartz в корне.
+# Без ведущего слеша правило ловило и BalanceReports/site.
+/quartz-build/
+/site/
 
 # Claude Code local settings (per-user, not shared)
 .claude/settings.local.json
