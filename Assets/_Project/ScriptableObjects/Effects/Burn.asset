@@ -15,11 +15,18 @@ MonoBehaviour:
   _id: effect.burn
   _polarity: 1
   _tags: 4106
-  _baseDuration: 4
-  _stacking: 1
-  _maxStacks: 99
-  _cleanseTier: 0
+  _baseDuration: 5
+  _stacking: 2
+  _maxStacks: 1
+  _cleanseTier: 1
   _unremovable: 0
+  _cleansePrice:
+  - Flat: 5
+    Pct: 0.15
+  - Flat: 10
+    Pct: 0.25
+  - Flat: 20
+    Pct: 0.5
   _components:
   - rid: 5615026976500744324
   _icon: {fileID: 0}
@@ -32,8 +39,10 @@ MonoBehaviour:
       data:
         _interval: 1
         _damagePerSecond:
-          Base: 0
+          Base: 30
           Scalings: []
         _damageSchool: 1
+        _physicalSubtype: 0
+        _magicElement: 1
         _affinity: 0
-        _damagePctTargetMaxHp: 0.03
+        _damagePctTargetMaxHp: 0

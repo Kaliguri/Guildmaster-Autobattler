@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
@@ -18,8 +18,6 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class AssassinSliceTests
     {
-        private const float ArmorK   = 100f;
-        private const float CellSize = 3f;
 
         // ===================== «Скрытность» (§9.6) =====================
 
@@ -54,6 +52,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var assassin = MakeUnit(0, team: 0, pos: Vector2.zero, relic: AssassinRelic(PassiveTrigger.AnyHit));
 
             es.Apply(assassin, StealthPassive(), assassin, ctx); // как выдаёт фабрика при спавне
+            EffectSystem.CommitPending(assassin);                // фабрика тем же и заканчивает — иначе пассивка не видна
 
             Assert.AreEqual(2f, assassin.EmpowerDamageMult, 1e-4f, "Стелс в начале боя взвёл усиление");
             Assert.AreNotEqual(EffectTag.None, assassin.EffectTagMask & EffectTag.Stealth, "Наложен баф Stealth");
@@ -88,7 +87,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 relic: AssassinRelic(PassiveTrigger.AnyHit));
 
             ctx.ApplyEffect(assassin, DodgePassive(maxCharges: 2, rechargeSeconds: 8f), assassin);
-            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK, sourceKind: DamageSourceKind.AutoAttack);
+            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.AutoAttack);
 
             ctx.Tick = 0;
             Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx),  "1-й удар негейтнут (заряд 1)");
@@ -111,9 +110,11 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 8f), assassin);
 
             sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
+            sim.Tick(SimConstants.TickDelta);   // удары применяются реестром в конце тика
             Assert.AreEqual(200f, assassin.CurrentHP, 1e-4f, "Первый удар негейтнут — HP не тронуто");
 
             sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
+            sim.Tick(SimConstants.TickDelta);
             Assert.AreEqual(150f, assassin.CurrentHP, 1e-4f, "Заряд израсходован — второй удар проходит");
         }
 
@@ -130,7 +131,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             ctx.Tick = 0;
             es.Apply(assassin, dodge, assassin, ctx);
 
-            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK, sourceKind: DamageSourceKind.AutoAttack);
+            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.AutoAttack);
             Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx),  "Заряд израсходован на 1-м ударе");
             Assert.IsFalse(es.RunPreDamage(assassin, in hit, ctx), "Зарядов больше нет");
 
@@ -151,10 +152,10 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             ctx.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 5f), assassin);
 
-            var ability = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK); // isAutoAttack=false
+            var ability = new DamageRequest(null, assassin, 30f, DamageSchool.True, CombatTestValues.ArmorK); // isAutoAttack=false
             Assert.IsFalse(es.RunPreDamage(assassin, in ability, ctx), "Урон способности не уклоняется");
 
-            var auto = new DamageRequest(null, assassin, 30f, DamageSchool.True, ArmorK, sourceKind: DamageSourceKind.AutoAttack);
+            var auto = new DamageRequest(null, assassin, 30f, DamageSchool.True, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.AutoAttack);
             Assert.IsTrue(es.RunPreDamage(assassin, in auto, ctx), "Заряд был цел — автоатака уклоняется");
         }
 
@@ -208,7 +209,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static CombatSimulation BuildSim(ulong seed) =>
             new CombatSimulation(
-                new XorShiftRng(seed), ArmorK, new SpatialHash(CellSize),
+                new XorShiftRng(seed), CombatTestValues.ArmorK, new SpatialHash(CombatTestValues.CellSize),
                 new BrainSystem(), new AbilitySystem(), new MovementSystem(),
                 new AutoAttackSystem(), new ProjectileSystem(), new DeathSystem(),
                 new EffectSystem(), new RegenSystem());
@@ -254,6 +255,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
             public void Displace(in DisplaceRequest req) { }
+
+            // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+            public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+                => CombatPositioning.TeleportBehind(unit, target);
 
             public void DealDamage(in DamageRequest req) { }
             public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) { }

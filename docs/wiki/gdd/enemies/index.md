@@ -1,6 +1,8 @@
 ---
 title: "Enemies - Catalog"
+order: 0
 status: draft
+updated: 2026-07-26
 ---
 
 # Противники
@@ -31,6 +33,6 @@ status: draft
 | [[gdd/enemies/bandit-bruiser|Bandit Bruiser]] | Обычный | добивает в ближнем бою и кратко оглушает |
 | [[gdd/enemies/bandit-warlock|Bandit Warlock]] | Элита | фиксирует цель, усиливает урон по ней и спасает своих |
 
-Шаблон новой карточки: [0.1. Шаблон карточки противника.md](template-enemy-card.md).
+Шаблон новой карточки: [[gdd/enemies/template-enemy-card|шаблон карточки противника]].
 
-Фракции и их дочерние варианты: [factions/0.0. README.md](factions/index.md).
+Виды и их подвиды: [[gdd/enemies/species/index|Species - Index]].

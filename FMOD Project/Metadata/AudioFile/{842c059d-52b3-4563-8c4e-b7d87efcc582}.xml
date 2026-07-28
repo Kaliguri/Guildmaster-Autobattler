@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{842c059d-52b3-4563-8c4e-b7d87efcc582}">
+		<property name="assetPath">
+			<value>death_shatter_04.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.16863945578231293</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{780146db-d415-4c07-a500-d9f5da0d997f}</destination>
+		</relationship>
+	</object>
+</objects>

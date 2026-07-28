@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.AIPresetData
   _id: ai_preset.light_shepherd
   _profile:
-    _autoAttackTargeting: 7
-    _autoAttackMode: 1
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
     _targetTag: 0
     _retreat:
       Enabled: 1

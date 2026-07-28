@@ -1,146 +1,149 @@
 # Guildmaster — Autobattler: AI Agent Guide
 
-Кооперативный автобатлер-рогалик в реальном времени (с паузой) на Unity 6. Этот файл читается Claude Code и Cursor AI автоматически.
+Кооперативный автобатлер-рогалик в реальном времени (с паузой) на Unity 6000.4.8f1, C#, Windows/PC.
+Этот файл читается Claude Code и Cursor AI автоматически. `AGENTS.md` в корне — указатель сюда же
+(для Codex); содержимое живёт только здесь.
 
-## Проект
-
-| Параметр | Значение |
-|---|---|
-| Движок | Unity 6000.4.8f1 |
-| Язык | C# |
-| Платформа | Windows / PC |
-| Репозиторий | GitHub |
+**Что здесь есть и чего нет.** Здесь — правила и ловушки, которых не видно из файлов. Инвентарь
+пакетов сюда не переписывается: он в `Packages/manifest.json` и `Assets/Plugins/`, обоснование
+выбора — [`10-reference/tech-stack`](docs/wiki/tech/10-reference/tech-stack.md).
 
 ---
 
-## Технологический стек
+## Правила слоёв
 
-Все пакеты установлены. Полное обоснование — `docs/wiki/tech/5. Технологический стек и архитектура.md`.
+Всё, что ниже, — про то, как к подсистеме обращаться. Обход шва считается дефектом, а не срезкой.
 
-### Архитектура / DI
-
-| Пакет | Где лежит | Назначение |
-|---|---|---|
-| **VContainer** 1.18.0 | `Packages/manifest.json` | DI-контейнер. Никаких синглтонов. Зависимости — только через инъекцию. |
-| **MessagePipe** | `Packages/manifest.json` | Pub/sub EventBus через VContainer. Развязка Combat → UI/Audio/VFX. |
-
-### Async / Анимации
-
-| Пакет | Назначение |
+| Слой | Правило |
 |---|---|
-| **UniTask** | Zero-alloc async/await. Использовать вместо корутин для всего time-based. |
-| **LitMotion** | Zero-alloc твины. UI-анимации, HP-бары, damage numbers, фидбэк. |
+| DI | **VContainer**, никаких синглтонов: зависимости только инъекцией. |
+| События | **MessagePipe** pub/sub через VContainer — развязка Combat → UI / Audio / VFX. |
+| Асинхронность | **UniTask** вместо корутин для всего time-based. |
+| Звук | Только за `IAudioService`. FMOD API из игровой логики не дёргать. |
+| Ввод | Только за `IInputService` (`Guildmaster.Core.Input`): карты действий строятся в коде, контексты по фазе игры. См. [`10-reference/input-camera`](docs/wiki/tech/10-reference/input-camera.md). |
+| Камера | **Cinemachine**, 4 режима (`Action` / `Overview` / `Dev` / `Map`), `CameraModeController`. Боевые режимы клампятся зоной арены, `Map` — своей. |
+| Текст | Локализация EN + RU: ключи закладываются в SO сразу, не «потом». |
+| Твины | **LitMotion**, но пока живёт точечно (`Presentation/UnitView.cs`) — UI-анимации и боевые цифры на него ещё не переведены. |
 
-### Сохранения / Данные
+## Ловушки стека
 
-| Пакет | Назначение |
-|---|---|
-| **Easy Save 3** | Плумбинг сейвов (диск + Steam Cloud). Сами пишем DTO-слой. |
-| **Newtonsoft.Json** 3.2.2 | JSON-сериализация DTO. |
-| **Addressables** 2.3.1 | Загрузка контента по адресу. Основа для Localization. |
-| **Unity Localization** 1.5.3 | Локализация EN + RU. Ключи закладывать в SO сразу. |
+То, на чём агенты уже спотыкались и споткнутся снова.
 
-### Мультиплеер / Steam
+- **Easy Save 3 — референс, а не бэкенд** (решение 2026-07-26). Из `Guildmaster.*` не вызывается: у
+  ES3 нет asmdef. **Тянет за собой `com.unity.visualscripting` — пакет удалять нельзя**, компиляция
+  падает. Потребителей пакета искать по всему `Assets/`, не по `_Project`.
+- **Newtonsoft.Json** авто-ссылается на все сборки (`isExplicitlyReferenced: 0`), правка asmdef не
+  нужна — **кроме сборок с `overrideReferences: true`** (их у нас включает Odin): там авто-ссылка
+  отключена целиком и `Newtonsoft.Json.dll` надо дописать в `precompiledReferences` руками.
+  Готча: `Vector2` требует конвертера, иначе сериализатор уходит в рекурсию по `normalized`.
+- **Addressables** прямой загрузки по адресу в коде не имеют — живут только как основа Localization.
+- **Visual Effect Graph** установлен, но не используется: ни одного `.vfx`. Боевые VFX — свой слой
+  (`VfxData` → префаб → пул). **ProBuilder** нужен как зависимость группы `probuilder` в Unity MCP.
+- **Shapes** лежит в `Assets/Shapes/`, а не в `Plugins/`. **Odin** подключается в Editor-сборках через
+  `overrideReferences` + `precompiledReferences`. **Roslyn** даёт дефайн `USE_ROSLYN` для
+  `validate_script`.
+- **Steam:** `steam_api64.dll` в `Facepunch.Steamworks/redistributable_bin/win64/`, инициализация —
+  `Net/FacepunchTransportBootstrap.cs`. **MPPM** гоняет кооп в редакторе (до 4 виртуальных игроков).
 
-| Пакет | Где лежит | Назначение |
-|---|---|---|
-| **NGO** 2.11.2 | `Packages/manifest.json` | Netcode for GameObjects — host-authoritative сетевой слой. |
-| **Facepunch.Steamworks** 2.5.2 | `Assets/Plugins/Facepunch.Steamworks/` | Steam-интеграция. `steam_api64.dll` в `redistributable_bin/win64/`. |
-| **MPPM** 1.3.2 | `Packages/manifest.json` | Тест кооп в редакторе (до 4 виртуальных игроков). |
+## Сохранения
 
-### Редактор / Инспектор
+> Раздел держит правду в одиночку: `10-reference/tech-stack` и `10-reference/saves` в этой части
+> отстали (числят бэкендом Easy Save и `persistentDataPath`). Их правка отложена до рефактора кода —
+> реестр расхождений в `docs/tech-docs-sync-plan.md`.
 
-| Пакет | Где лежит | Назначение |
-|---|---|---|
-| **Odin Inspector** 3.x | `Assets/Plugins/Sirenix/` | Расширенный Inspector. `[SerializeReference]`-дропдауны для полиморфных данных. |
+Живой и единственный сейв — **`JsonFileSaveService`** за интерфейсом `ISaveService`: Newtonsoft,
+каталог `Saves/` под корнем `GameDataPath`, атомарная запись через временный файл + `.bak`, битый
+файл уезжает в `.corrupt`.
 
-### Аудио
+- **Корень — `LocalLow/Alebardium/Guildmaster/`, а НЕ `persistentDataPath`.** Последний растёт из
+  `productName`, и переименование игры унесло бы сейвы игроков вместе с маской Steam Cloud. Кодовые
+  имена в `GameDataPath` не менять никогда — инвариант держит `GameDataPathTests`.
+- **Сохраняем данные, а не объекты:** durable-состояние забега — плоский DTO по строковым id, боевые
+  сущности собираются из него фабрикой. Поэтому сильные стороны ES3 (графы объектов, ссылки на
+  `UnityEngine.Object`, полиморфизм) решают проблему, которой у нас нет.
+- **Ключ сейва — это путь** в дереве: `prefs`, `profiles/{id}/profile`,
+  `profiles/{id}/guilds/{gid}/run`. Каждый файл — конверт (`schemaVersion` + `gameVersion` +
+  `payload`); версия схемы объявляется атрибутом `[SaveSchema]` на DTO, не полем внутри состояния.
+  Загрузка возвращает `SaveLoadResult<T>`: `Ok` / `Missing` / `Corrupted` / `TooNew` (сейв из более
+  новой версии игры — **не грузим и не затираем**) / `Unsupported`.
+- **Steam Auto-Cloud** синхронизирует по маске пути и не знает, кто писал файл. Маска —
+  `Saves/**/*.json`, поэтому служебные суффиксы идут ПОСЛЕ расширения (`run.json.bak`).
+- **Данные компьютера — отдельное хранилище:** `ILocalSaveService` → `Local/` (вне облачной маски),
+  там `machine.json` за `IDisplayService`. Синхронизировать нельзя: чужое разрешение на втором ПК в
+  худшем случае даёт чёрный экран. Частоту обновления Unity меняет только в эксклюзивном
+  полноэкранном; разрешение Unity сам пишет в реестр Windows до первой сцены — владельцем остаётся
+  наш файл, потому что мы применяем поверх.
 
-| Пакет | Где лежит | Назначение |
-|---|---|---|
-| **FMOD** | `Assets/Plugins/FMOD/` | Адаптивная музыка и звук. **Всегда за интерфейсом `IAudioService`** — не дёргать FMOD API напрямую из игровой логики. |
-
-### Ввод и камера
-
-| Пакет | Где лежит | Назначение |
-|---|---|---|
-| **Input System** 1.19.0 | `Packages/manifest.json` | Весь игровой ввод — за интерфейсом `IInputService` (`Guildmaster.Core.Input`), карты действий строятся в коде, контексты по фазе игры. Не дёргать Input System напрямую из геймплея. См. вики «16». |
-| **Cinemachine** 3.1.7 | `Packages/manifest.json` | Боевая камера: 3 режима (Action/Overview/Dev), `CameraModeController` в `Guildmaster.Presentation`, кламп из данных арены. См. вики «16». |
-
-### Графика / прочее (установлено, пока не используется в коде)
-
-| Пакет | Назначение |
-|---|---|
-| **ProBuilder**, **Visual Effect Graph** | Добавлены (`f2ec551`), но ещё не подключены в геймплей-код. Джус/VFX — отложены (см. план 13, «Явно отложено»). |
-| **Shapes** (Freya Holmer) | Векторная отрисовка; используется в `Guildmaster.Presentation`. |
+Полное ТЗ и фазы — [`40-planning/save-system`](docs/wiki/tech/40-planning/save-system.md).
 
 ---
 
 ## Правила и конвенции
 
-Детальные правила вынесены в отдельные файлы:
+**Как писать код — [`10-reference/code-standards`](docs/wiki/tech/10-reference/code-standards.md).**
+Там инварианты («чего никогда»), именование, документирование, детерминизм, политика фолбэков и
+корень редакторного меню. Читать перед первой правкой `.cs` в сессии; здесь эти правила намеренно
+не продублированы.
 
-| Файл | Содержание |
-|---|---|
-| `.cursor/rules/git-conventions.mdc` | Формат коммитов, стратегия веток |
-| `.cursor/rules/project-context.mdc` | Стандарты кода C#/Unity, рабочий процесс агента |
-| `docs/wiki/tech/0.3. Подготовка проекта (Unity).md` | Чеклист настройки проекта, структура документации |
+Процедуры работы — в `.cursor/rules/`: `git-conventions` (коммиты и ветки),
+`agent-workflows` (пайплайн `refresh_unity` / `.meta`, нарезка спрайтов, готчи Quartz),
+`phase-design-pipeline` (design-first), `obsidian-conventions` (vault),
+`project-context` (тонкий указатель для Cursor). Cursor читает `.cursor/rules` и `AGENTS.md`,
+но не этот файл — поэтому владельцем правил кода назначен документ вики, общий для обоих.
 
----
+Чеклист настройки проекта — [`30-how-to/project-setup`](docs/wiki/tech/30-how-to/project-setup.md).
 
-## Доступные MCP-инструменты
+## Скиллы-контуры
 
-Все серверы настроены в `.cursor/mcp.json` и активны автоматически.
+Под `.claude/skills/` живут проектные скиллы `xgaida-x-nixi-*` — по одному на подсистему:
+`combat-sim`, `data-authoring`, `gamefeel-vfx`, `audio`, `uitk`, `balance`, `content-design`, плюс два
+писаря — `gdd-scribe` (`docs/wiki/gdd`) и `tech-scribe` (`docs/wiki/tech`).
 
-| Задача | MCP-сервер | Server ID | Инструменты |
-|---|---|---|---|
-| Работа со сценами Unity, объектами, компонентами, play mode, тесты | **unityMCP** | `unityMCP` (в `.mcp.json`) | `manage_scene`, `manage_gameobject`, `read_console`, `run_tests`, `refresh_unity` и др. |
-| Создание PR, issues, просмотр workflows, releases | **github** | `project-0-Guildmaster_-_Autobattler-github` | `create_pull_request`, `create_issue`, `list_workflows` и др. |
-| Локальные git-операции: коммиты, ветки, diff, лог | **git** | `project-0-Guildmaster_-_Autobattler-git` | `git_commit`, `git_diff`, `git_log`, `git_create_branch` и др. |
-| Актуальная документация библиотек (Unity, C#, пакеты) | **context7** | `project-0-Guildmaster_-_Autobattler-context7` | `resolve-library-id`, `get-library-docs` |
-| Чтение и запись файлов проекта | **filesystem** | `project-0-Guildmaster_-_Autobattler-filesystem` | `read_file`, `write_file`, `list_directory` и др. |
+Правило разделения: реализационные скиллы владеют **кодом**, писари — **документацией о коде**.
+Правишь систему — обновление её тех-доки делегируется `tech-scribe`.
 
-> Unity MCP — это [CoplayDev/unity-mcp](https://github.com/CoplayDev/unity-mcp). Server ID `unityMCP` прописан в корневом `.mcp.json` (остальные серверы — в `.cursor/mcp.json`).
-> - **Сервер:** `mcpforunityserver==10.0.0` через `uvx`, команда `mcp-for-unity`, транспорт **`stdio`** (не HTTP).
-> - **Редакторный пакет:** `com.coplaydev.unity-mcp`, ставится по git URL `https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#v10.0.0` (Package Manager → Add from git URL).
-> - **Мост:** StdioBridgeHost внутри Unity, порт `6400`. `Window → MCP for Unity` показывает статус подключения; окно должно быть открыто.
-> - Проверка коннекта: ресурс `mcpforunity://instances` (`instance_count ≥ 1` = редактор подключён).
+## MCP-инструменты
 
-### Приоритет использования MCP
+**Канон — версионируемый корневой `.mcp.json`, в нём ровно один сервер: `unityMCP`**
+([CoplayDev/unity-mcp](https://github.com/CoplayDev/unity-mcp), `mcpforunityserver==10.0.0` через
+`uvx`, транспорт `stdio`). Редакторный пакет — `com.coplaydev.unity-mcp`, мост StdioBridgeHost внутри
+Unity на порту `6400`; окно `Window → MCP for Unity` должно быть открыто. Проверка коннекта — ресурс
+`mcpforunity://instances` (`instance_count ≥ 1`).
 
-1. **Unity MCP** — для любых операций с Editor (сцены, объекты, тесты через редактор)
-2. **Git/GitHub MCP** — для всех git-операций вместо Shell-команд, когда возможно
-3. **Context7** — перед ответами о Unity API, C# или зависимостях из `Packages/manifest.json`
-4. **Filesystem MCP** — как альтернатива Shell для файловых операций
+**Прочие серверы приходят из личного окружения агента, а не из проекта** (`.cursor/mcp.json` в
+`.gitignore`). Не рассчитывай, что сервер будет — проверь свой список инструментов. Без него:
+git и `gh` CLI через шелл, файлы — родными Read / Write / Edit / Grep / Glob, документация библиотек
+— `context7` или веб-поиск.
 
----
-
-## Структура проекта
-
-```
-Guildmaster - Autobattler/
-├── .cursor/
-│   ├── mcp.json                      # MCP-серверы
-│   └── rules/
-│       ├── project-context.mdc       # Стандарты кода, рабочий процесс
-│       └── git-conventions.mdc       # Коммиты и ветки
-├── .github/
-│   └── workflows/ci.yml              # GameCI pipeline (тесты + сборка)
-├── Assets/                           # Игровые ассеты и скрипты Unity
-├── Packages/                         # Unity Package Manager
-├── ProjectSettings/                  # Настройки Unity
-└── scripts/
-    └── run-tests.ps1                 # Локальный запуск тестов
-```
+**Осторожно с git:** `git commit` забирает весь индекс. При параллельных сессиях коммитить точечно —
+`git commit -F - -- <пути>`.
 
 ---
+
+## Где что лежит
+
+Дерево смотри сам; неочевидно только это:
+
+- `Assets/_Project/` — наш код и контент; всё остальное под `Assets/` — вендор.
+- `docs/` — вся документация, из неё `docs/wiki` — единственный Obsidian-vault (`gdd` + `tech`).
+- `Aseprite/` — скрипты экспорта арта; `quartz-config/`, `doxygen/` — конфиги сайта документации.
+- `scripts/` — `run-tests.ps1` (локальный прогон), `check-wiki-links.ps1` (тот же гейт, что в CI),
+  `statdb.ps1` (правка статов в YAML-ассетах мимо Unity).
 
 ## CI/CD
 
-Сборки и тесты через GameCI (GitHub Actions).
+`ci.yml`: `changes` (paths-filter) → `test` (`unity-test-runner`, editmode + playmode) + `build`
+(`unity-builder`, StandaloneWindows64) → `ci-gate`. Секреты: `UNITY_LICENSE`, `UNITY_EMAIL`,
+`UNITY_PASSWORD`.
+
+Сборка гоняется **только на pull request и на master** — она дороже тестов, а push в dev ими и так
+закрыт. Артефакт не публикуется: job отвечает на вопрос «собирается ли». Плеер собирается на
+**Linux**-раннере, потому что Standalone у нас на Mono (IL2CPP в `ProjectSettings` задан только для
+Android) — переезд Standalone на IL2CPP потребует windows-раннера.
+
+Документацию обслуживают `docs-lint.yml` (блокирует PR при битых ссылках в vault) и `docs.yml`
+(публикация сайта).
 
 ```powershell
 ./scripts/run-tests.ps1
 ```
-
-Для GameCI нужны секреты в GitHub: `UNITY_LICENSE`, `UNITY_EMAIL`, `UNITY_PASSWORD`.

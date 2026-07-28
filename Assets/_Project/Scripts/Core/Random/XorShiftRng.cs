@@ -84,15 +84,13 @@ namespace Guildmaster.Core.Random
         /// <inheritdoc/>
         public ulong Snapshot()
         {
-            // FNV-1a поверх четырёх слов состояния — отпечаток для checksum.
-            const ulong offset = 14695981039346656037UL;
-            const ulong prime = 1099511628211UL;
-
-            ulong h = offset;
-            h = (h ^ _x) * prime;
-            h = (h ^ _y) * prime;
-            h = (h ^ _z) * prime;
-            h = (h ^ _w) * prime;
+            // FNV-1a поверх четырёх слов состояния — отпечаток для checksum. Шаг тот же, что у
+            // DeterministicHash: одна формула на весь детерминизм проекта.
+            ulong h = DeterministicHash.Of(null);
+            h = DeterministicHash.Mix(h, _x);
+            h = DeterministicHash.Mix(h, _y);
+            h = DeterministicHash.Mix(h, _z);
+            h = DeterministicHash.Mix(h, _w);
             return h;
         }
 

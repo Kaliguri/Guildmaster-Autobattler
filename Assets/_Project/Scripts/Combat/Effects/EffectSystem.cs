@@ -33,6 +33,32 @@ namespace Guildmaster.Combat
         public event System.Action<RuntimeUnit, RuntimeUnit, Data.Definitions.EffectTag> OnEffectExpired;
 
         /// <summary>
+        /// Эффект наложен на юнита: (цель, определение, источник). В отличие от <see cref="OnEffectExpired"/>
+        /// несёт САМО определение — по нему презентация строит ключ вида <c>effect.frozen.apply</c>.
+        /// Стрельнёт и на первом наложении, и на стаке/рефреше, и на мгновенном эффекте: игроку одинаково
+        /// важно услышать, что статус лёг. Sim на это событие не завязана — только наблюдатели.
+        /// </summary>
+        public event System.Action<RuntimeUnit, EffectData, RuntimeUnit> OnEffectApplied;
+
+        /// <summary>
+        /// Эффект закончился: (цель, определение, источник). Пара к <see cref="OnEffectApplied"/> — то же
+        /// событие, что <see cref="OnEffectExpired"/>, но с определением вместо одних тегов. Заведено
+        /// отдельным швом, чтобы не менять сигнатуру, на которой висят боевые реактивы.
+        /// </summary>
+        public event System.Action<RuntimeUnit, EffectData, RuntimeUnit> OnEffectEnded;
+
+        /// <summary>
+        /// Эффект СНЯТ диспелом: (цель, определение, кто снял, кто накладывал). Отдельно от
+        /// <see cref="OnEffectEnded"/>, потому что по нему нельзя отличить «истёк сам» от «сорвали», а
+        /// разница смысловая: сорванная с союзника чужая порча — заслуга снявшего.
+        /// </summary>
+        /// <remarks>
+        /// Четвёртый аргумент (автор снятого эффекта) нужен, чтобы не записать в очистку собственную
+        /// механику: криомант съедает ульткой свою же «Заморозку», и снявший там совпадает с наложившим.
+        /// </remarks>
+        public event System.Action<RuntimeUnit, EffectData, RuntimeUnit, RuntimeUnit> OnEffectDispelled;
+
+        /// <summary>
         /// Шаг всех эффектов на всех юнитах: периодика → countdown длительности → истечение.
         /// Вставляется в тик-цикл перед DeathSystem (DoT может добить).
         /// </summary>
@@ -64,6 +90,35 @@ namespace Guildmaster.Combat
 
                 if (!unit.IsDead) RecomputeControl(unit);
             }
+        }
+
+        /// <summary>
+        /// Вставить эффект так, чтобы список оставался упорядоченным по <see cref="EffectData.Id"/>.
+        /// </summary>
+        /// <remarks>
+        /// Порядок в <see cref="RuntimeUnit.ActiveEffects"/> — не косметика: по нему идут pre-damage
+        /// реакции, тик периодики и чек-сумма. Пока он был порядком НАЛОЖЕНИЯ, он хранил историю, а не
+        /// состояние: каждый боец вешал своё раньше чужого, поэтому у зеркальных монахов набор эффектов
+        /// совпадал, а очередь была разной («sys.airborne» против «effect.vortex_hold» на втором месте).
+        /// Идентификатор годится в ключ, потому что на цели эффект живёт в ОДНОМ экземпляре на определение
+        /// (см. <see cref="FindEffect"/>), — значит порядок получается полным и одинаковым с обеих сторон.
+        /// Вставка, а не сортировка на коммите: наложение случается несравнимо реже, чем тик.
+        /// </remarks>
+        private static void Insert(List<RuntimeEffect> effects, RuntimeEffect effect)
+        {
+            string id = effect.Def != null ? effect.Def.Id : string.Empty;
+
+            for (int i = 0; i < effects.Count; i++)
+            {
+                string other = effects[i].Def != null ? effects[i].Def.Id : string.Empty;
+                if (string.CompareOrdinal(id, other) < 0)
+                {
+                    effects.Insert(i, effect);
+                    return;
+                }
+            }
+
+            effects.Add(effect);
         }
 
         /// <summary>Пересобрать флаги контроля из активных <see cref="ControlComponent"/> (перекрытие без счётчиков).</summary>
@@ -106,6 +161,7 @@ namespace Guildmaster.Combat
             if (existing != null)
             {
                 ApplyStacking(existing, def, source, target, combat);
+                OnEffectApplied?.Invoke(target, def, source);
                 return;
             }
 
@@ -118,6 +174,8 @@ namespace Guildmaster.Combat
                 ScaledPotency = new float[componentCount],
                 PeriodicTicks = new int[componentCount],
             };
+
+            effect.AddContribution(source);   // первый вкладчик — тот, кто наложил
 
             int ticks = ResolveDurationTicks(def, source, target);
             effect.RemainingTicks    = ticks;
@@ -133,11 +191,9 @@ namespace Guildmaster.Combat
             }
 
             bool instant = ticks == 0;
-            if (!instant)
-            {
-                target.ActiveEffects.Add(effect);
-                target.EffectTagMask |= def.Tags;
-            }
+            // Эффект встаёт в список сразу (иначе второе наложение этим же тиком завело бы дубль вместо
+            // стака), но ВИДИМЫМ — в маске тегов — становится на коммите в конце тика. Закон видимости.
+            if (!instant) Insert(target.ActiveEffects, effect);
 
             for (int i = 0; i < componentCount; i++)
             {
@@ -161,6 +217,8 @@ namespace Guildmaster.Combat
                     }
                 }
             }
+
+            OnEffectApplied?.Invoke(target, def, source);
         }
 
         /// <summary>
@@ -209,6 +267,42 @@ namespace Guildmaster.Combat
             }
 
             return _preDamageResult.Negated;
+        }
+
+        /// <summary>
+        /// Множитель входящего урона, накопленный компонентами цели в последнем
+        /// <see cref="RunPreDamage"/> (1 = без изменений). Читается сразу после вызова — состояние
+        /// живёт до следующего прохода, как и <c>Negated</c>.
+        /// </summary>
+        public float PreDamageMultiplier => _preDamageResult.DamageMultiplier;
+
+        /// <summary>
+        /// Расщепляет ли какой-нибудь эффект АТАКУЮЩЕГО его авто-атаку по школам (The Pyre: по
+        /// горящей цели половина клинка уходит Огнём). Побеждает первый сработавший — порядок по
+        /// индексу активных эффектов, как и в pre-damage проходе.
+        /// </summary>
+        public bool TryResolveAttackSplit(RuntimeUnit attacker, RuntimeUnit target, ICombatContext combat,
+                                          out AttackSplit split)
+        {
+            split = default;
+            if (attacker == null || target == null || attacker.ActiveEffects.Count == 0) return false;
+
+            List<RuntimeEffect> effects = attacker.ActiveEffects;
+            for (int e = 0; e < effects.Count; e++)
+            {
+                RuntimeEffect eff = effects[e];
+                IEffectComponent[] comps = eff.Def.Components;
+                if (comps == null) continue;
+
+                for (int i = 0; i < comps.Length; i++)
+                {
+                    if (comps[i] is not IAttackSplitComponent splitter) continue;
+
+                    EffectContext ctx = MakeContext(attacker, eff.Source, combat, eff, i, 0f);
+                    if (splitter.TrySplit(attacker, target, in ctx, out split)) return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
@@ -263,8 +357,28 @@ namespace Guildmaster.Combat
             for (int i = 0; i < _dispelBuffer.Count; i++)
             {
                 if (req.MaxCount > 0 && removed >= req.MaxCount) break;
-                Expire(target, _dispelBuffer[i], combat);
+
+                RuntimeEffect eff = _dispelBuffer[i];
                 removed++;
+
+                // Цена очистки в стаках (решение 2026-07-27/5): эффект может отдать лишь часть накопленного,
+                // а не исчезнуть целиком. Иначе одна очистка стирала «Угли» без потолка — ставку «долгий бой
+                // окупается» гасило одно нажатие. Ноль стаков после списания = эффект уходит, как раньше.
+                int toRemove = eff.Def.CleanseStacks(eff.Stacks, req.DispelPower);
+                if (toRemove < eff.Stacks)
+                {
+                    int before = eff.Stacks;
+                    eff.Stacks -= toRemove;
+                    // Тем же путём, что и при наборе стака: компоненты со своим состоянием (щиты, заряды)
+                    // правят вклад дельтой сами, остальным хватает переприменения.
+                    Reapply(eff, before, target, combat);
+                    continue;
+                }
+
+                EffectData def = eff.Def;
+                RuntimeUnit caster = eff.Source;
+                Expire(target, eff, combat);
+                OnEffectDispelled?.Invoke(target, def, req.Source, caster);
             }
 
             // Среди снятого мог быть контроль-эффект. Пересчитать флаги (см. Remove): без этого
@@ -301,8 +415,29 @@ namespace Guildmaster.Combat
                         eff.PeriodicTicks[i] = 0;
                         // Dt = Interval: компонент считает применяемое как Potency × Dt × Stacks
                         // (per-second rate → за период; total масштабируется числом тиков, вики «11» §5.1).
-                        periodic.OnTick(MakeContext(unit, eff.Source, combat, eff, i, periodic.Interval));
-                        if (unit.IsDead) return;
+                        // Проходов столько, сколько вкладчиков: сумма долей = 1, поэтому суммарный урон
+                        // тот же, но каждый кусок засчитывается ТОМУ, кто его поддерживает (реш. Макса).
+                        // Делим тик по вкладчикам ТОЛЬКО у компонентов, чья величина за тик скейлится
+                        // потенцией источника (урон/хил): именно её и надо засчитать тому, кто держит
+                        // эффект. Компоненты состояния (например «Угли», снимающие стак по таймеру)
+                        // обязаны отработать РОВНО ОДИН раз — иначе несколько вкладчиков ускорили бы
+                        // сход стаков (реш. Макса 2026-07-26: делить пропорционально вкладу).
+                        int total = periodic is IScalablePotency ? eff.TotalContribution : 0;
+                        if (total <= 1)
+                        {
+                            periodic.OnTick(MakeContext(unit, eff.Source, combat, eff, i, periodic.Interval));
+                            if (unit.IsDead) return;
+                        }
+                        else
+                        {
+                            for (int c = 0; c < eff.ContributorSources.Count; c++)
+                            {
+                                float share = eff.ContributorWeights[c] / (float)total;
+                                periodic.OnTick(MakeContext(unit, eff.ContributorSources[c], combat, eff, i,
+                                                            periodic.Interval, share));
+                                if (unit.IsDead) return;
+                            }
+                        }
                     }
                 }
             }
@@ -323,12 +458,12 @@ namespace Guildmaster.Combat
             }
 
             unit.ActiveEffects.Remove(eff);
-            RebuildTagMask(unit);
 
             // Единый сигнал «эффект закончился» (носитель-получатель = источник эффекта, ретрансляция в
             // CombatSimulation). Реактивы фильтруют по тегам эффекта + команде юнита. Смещение (KnockUp)
             // именно так и разводит «конец отбрасывания врага → телепорт» vs «конец рывка себя → толчок».
             OnEffectExpired?.Invoke(unit, eff.Source, eff.Def.Tags);
+            OnEffectEnded?.Invoke(unit, eff.Def, eff.Source);
         }
 
         /// <summary>
@@ -350,6 +485,42 @@ namespace Guildmaster.Combat
             RecomputeControl(unit);
         }
 
+        /// <summary>
+        /// ЗАКОН ВИДИМОСТИ ЭФФЕКТОВ: проявить всё, что эффекты наложили или сняли за этот тик — статы и
+        /// маску тегов. Зовётся ровно раз, в конце <c>CombatSimulation.Tick</c>.
+        /// </summary>
+        /// <remarks>
+        /// Смысл закона: наложенный эффект меняет статы и маску носителя не раньше конца тика — так же, как
+        /// это давно сделано для флагов контроля (<c>CanAct</c>, вики «14»). Пока правка стата ложилась
+        /// мгновенно, ослабление, наложенное ранним ударом, успевало срезать удар того, кто в обходе списка
+        /// позже; у зеркальных сторон порядок обратный, и «место в списке» становилось игровым
+        /// преимуществом. Единственное исключение — pre-damage реактивы (<see cref="RunPreDamage"/>): они по
+        /// определению отвечают на конкретный удар («Оплот» поднимает щит на тот же удар, §9.3) и остаются
+        /// синхронными. Это исключение сознательное — не «доисправлять» его до единообразия.
+        /// </remarks>
+        public void CommitTickChanges(IReadOnlyList<RuntimeUnit> units)
+        {
+            for (int u = 0; u < units.Count; u++)
+            {
+                RuntimeUnit unit = units[u];
+                if (unit.IsDead) continue;
+                CommitPending(unit);
+            }
+        }
+
+        /// <summary>
+        /// Проявить отложенное на одном юните. Отдельный вход нужен ВНЕ боевого тика: юнит, которого
+        /// только что собрала фабрика, обязан родиться с уже действующими пассивками — иначе он выйдет
+        /// на арену с недобранным запасом HP и погашенными метками (стелс, ауры), а ждать первого тика
+        /// тут некому.
+        /// </summary>
+        public static void CommitPending(RuntimeUnit unit)
+        {
+            if (unit == null) return;
+            unit.Stats?.Commit();
+            RebuildTagMask(unit);
+        }
+
         private static void RebuildTagMask(RuntimeUnit unit)
         {
             EffectTag mask = EffectTag.None;
@@ -359,14 +530,25 @@ namespace Guildmaster.Combat
         }
 
         private static EffectContext MakeContext(
-            RuntimeUnit target, RuntimeUnit source, ICombatContext combat, RuntimeEffect effect, int componentIndex, float dt)
+            RuntimeUnit target, RuntimeUnit source, ICombatContext combat, RuntimeEffect effect, int componentIndex,
+            float dt, float share = 1f)
         {
             float potency = effect.ScaledPotency != null && componentIndex < effect.ScaledPotency.Length
                 ? effect.ScaledPotency[componentIndex]
                 : 0f;
-            return new EffectContext(target, source, combat, effect, potency, dt);
+            return new EffectContext(target, source, combat, effect, potency, dt, share);
         }
 
+        /// <summary>
+        /// Найти на цели эффект, с которым сливается новое наложение. Ключ — <b>определение</b>:
+        /// эффект живёт НА ЦЕЛИ в одном экземпляре, а <see cref="EffectData.MaxStacks"/> — потолок стаков
+        /// на цели, общий для всех наложивших (правило Макса 2026-07-26). Два поджигателя догоняют один
+        /// и тот же костёр до общего потолка, а не заводят по своему.
+        /// <para>Ненадолго ключ был «определение + источник» — так расщеплялись стаки, и потолок
+        /// становился персональным у каждого кастера. Это противоречит правилу и откачено; исходная
+        /// находка (атрибуция урона DoT достаётся первому наложившему) лечится внутри экземпляра,
+        /// а не разведением экземпляров — см. журнал аудита.</para>
+        /// </summary>
         private static RuntimeEffect FindEffect(RuntimeUnit target, EffectData def)
         {
             List<RuntimeEffect> effects = target.ActiveEffects;
@@ -386,7 +568,7 @@ namespace Guildmaster.Combat
             switch (def.Stacking)
             {
                 case StackRule.None:
-                    return;
+                    return;   // повтор игнорируется целиком — вклад тоже не растёт
 
                 case StackRule.Stack:
                     stacksChanged = TryAddStack(existing, def);
@@ -401,6 +583,11 @@ namespace Guildmaster.Combat
                     RefreshDuration(existing, def, source, target);
                     break;
             }
+
+            // Подкрепление засчитано вкладчику: по этим весам делится атрибуция периодики (реш. Макса).
+            // Для Stack-правил вес == вклад в стаки; для Refresh стаков нет, и весом становится само
+            // подкрепление — иначе горение, которое двое держат по очереди, целиком висело бы на первом.
+            existing.AddContribution(source);
 
             // Стак изменил число — переоценить stateful-вклад компонентов под новый Stacks.
             if (stacksChanged) Reapply(existing, previousStacks, target, combat);

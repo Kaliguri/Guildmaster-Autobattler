@@ -13,8 +13,38 @@ namespace Guildmaster.UI
         /// <summary>Поведенческий тип экрана (Page/Modal/Sheet).</summary>
         public abstract ScreenKind Kind { get; }
 
-        /// <summary>Тег режима для подсветки таба топбара: "map"/"inventory"/"battle"/null.</summary>
+        /// <summary>
+        /// Тег режима карты акта. Помимо подсветки таба топбара определяет контекст ввода: экран с этим
+        /// тегом переводит ввод в <c>InputContext.Map</c> (world-камера карты жива) — см. <c>UiNavigator.SyncInput</c>.
+        /// </summary>
+        public const string MapModeTag = "map";
+
+        /// <summary>Тег режима инвентаря: Sheet-экран грида реликвий поверх мира.</summary>
+        public const string InventoryModeTag = "inventory";
+
+        /// <summary>Тег боевого режима: пространство арены (бой или полигон) под всеми оверлеями.</summary>
+        public const string BattleModeTag = "battle";
+
+        /// <summary>
+        /// Тег режима для подсветки таба топбара: <see cref="MapModeTag"/> / <see cref="InventoryModeTag"/> /
+        /// <see cref="BattleModeTag"/> / null.
+        /// <para>Владелец словаря — эти константы. Строка живёт сразу в трёх ролях (тег экрана, имя чипа
+        /// <c>mode-*</c> в разметке, ключ подсветки), и раньше каждая роль писала свой литерал: шесть мест,
+        /// расходящихся молча — переименуй режим, и таб просто перестанет загораться (аудит 2026-07-26, T-14).</para>
+        /// </summary>
         public virtual string ModeTag => null;
+
+        /// <summary>
+        /// Экран НЕ рисует собственное затемнение, даже будучи нижним видимым Modal. Нужен там, где
+        /// модалка ЗАМЕНЯЕТ панель, а не ложится поверх мира: настройки из главного меню — панель ушла,
+        /// затемнять нечего.
+        /// <para>
+        /// Это свойство ЭКРАНА, а не класс на элементе: класс <c>gm-screen--scrimless</c> целиком
+        /// принадлежит <c>SyncVisibility</c>, и поставленный руками он тут же перезаписывался обратно —
+        /// затемнение возвращалось (наход. Макса). У одного класса должен быть один владелец.
+        /// </para>
+        /// </summary>
+        public virtual bool SuppressScrim => false;
 
         /// <summary>Корень экрана: строится в <see cref="Build"/> из UXML/кода. Навигатор добавляет/снимает его со слоя.</summary>
         public VisualElement Root { get; protected set; }
@@ -56,9 +86,6 @@ namespace Guildmaster.UI
 
         /// <summary>Значение при снятии без явного выбора (ESC/PopAll/отмена забега): Skip / -1 / null / … .</summary>
         public abstract TResult DefaultResult { get; }
-
-        /// <summary>Резолвнут ли экран (первый вызов победил).</summary>
-        internal bool IsResolved => _resolved;
 
         /// <summary>Навигатор привязывает обработчик резолва (снять экран → отдать результат). Внутренний контракт.</summary>
         internal void BindResolver(Action<TResult> resolver) => _resolver = resolver;

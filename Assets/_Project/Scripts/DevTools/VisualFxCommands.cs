@@ -1,0 +1,74 @@
+using System.Linq;
+using System.Text;
+using Guildmaster.Presentation.Effects;
+using QFSW.QC;
+using UnityEngine;
+using VContainer.Unity;
+
+namespace Guildmaster.DevTools
+{
+    /// <summary>
+    /// Дев-команды к общему реестру визуальных эффектов: посмотреть список, погасить, вернуть, сравнить
+    /// «с эффектом и без» прямо в игре, не пересобирая сцену и не правя ассеты.
+    /// </summary>
+    public static class VisualFxCommands
+    {
+        [Command("gm_fx", "Список визуальных эффектов и их состояние")]
+        public static string List()
+        {
+            VisualToggles toggles = Toggles();
+            if (toggles == null) return "Реестр эффектов недоступен (нет RootLifetimeScope?).";
+            if (toggles.All.Count == 0) return "Пока ни один эффект не зарегистрирован — покажи экран, который их регистрирует.";
+
+            var sb = new StringBuilder();
+            foreach (VisualToggles.Entry e in toggles.All.OrderBy(e => e.Id))
+                sb.AppendLine($"[{(e.Enabled ? "вкл" : "ВЫКЛ")}] {e.Id} — {e.Description}");
+            return sb.ToString();
+        }
+
+        [Command("gm_fx_on", "Включить эффект по имени")]
+        public static string On(string id) => Apply(id, true);
+
+        [Command("gm_fx_off", "Выключить эффект по имени")]
+        public static string Off(string id) => Apply(id, false);
+
+        [Command("gm_fx_toggle", "Переключить эффект по имени")]
+        public static string Toggle(string id)
+        {
+            VisualToggles toggles = Toggles();
+            if (toggles == null) return "Реестр эффектов недоступен.";
+
+            bool? now = toggles.Toggle(id);
+            if (now == null) return $"Нет эффекта «{id}». Список — gm_fx.";
+            return $"{id}: {(now.Value ? "включён" : "выключен")}";
+        }
+
+        [Command("gm_fx_all", "Вернуть все эффекты (как по умолчанию)")]
+        public static string All()
+        {
+            VisualToggles toggles = Toggles();
+            if (toggles == null) return "Реестр эффектов недоступен.";
+            toggles.EnableAll();
+            return "Все эффекты включены.";
+        }
+
+        private static string Apply(string id, bool enabled)
+        {
+            VisualToggles toggles = Toggles();
+            if (toggles == null) return "Реестр эффектов недоступен.";
+            if (!toggles.Set(id, enabled)) return $"Нет эффекта «{id}». Список — gm_fx.";
+            return $"{id}: {(enabled ? "включён" : "выключен")}";
+        }
+
+        private static VisualToggles Toggles()
+        {
+            foreach (LifetimeScope scope in Object.FindObjectsByType<LifetimeScope>())
+            {
+                if (scope.GetType().Name != "RootLifetimeScope" || scope.Container == null) continue;
+                try { return scope.Container.Resolve(typeof(VisualToggles)) as VisualToggles; }
+                catch { return null; }
+            }
+            return null;
+        }
+    }
+}

@@ -174,9 +174,6 @@ namespace Guildmaster.Tests.EditMode.Run
             public IReadOnlyList<T> All<T>() where T : ContentDefinition
                 => _relics as IReadOnlyList<T> ?? new List<T>();
 
-            public T Get<T>(string id) where T : ContentDefinition
-                => TryGet(id, out T def) ? def : null;
-
             public bool TryGet<T>(string id, out T def) where T : ContentDefinition
             {
                 foreach (RelicData r in _relics)

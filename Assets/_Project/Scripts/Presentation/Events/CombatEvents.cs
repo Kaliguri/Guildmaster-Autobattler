@@ -4,17 +4,8 @@ namespace Guildmaster.Presentation
 {
     /// <summary>MessagePipe-сообщения от симуляции к слою презентации.</summary>
 
-    public readonly struct UnitSpawnedEvent
-    {
-        public readonly RuntimeUnit Unit;
-        public UnitSpawnedEvent(RuntimeUnit unit) => Unit = unit;
-    }
-
-    public readonly struct UnitDiedEvent
-    {
-        public readonly RuntimeUnit Unit;
-        public UnitDiedEvent(RuntimeUnit unit) => Unit = unit;
-    }
+    // Событий «юнит появился» и «юнит погиб» здесь больше нет: их публиковал презентер, а не слушал
+    // никто — вид спавна и смерти он же и играет сам, напрямую (аудит 2026-07-26, волна 2).
 
     public readonly struct DamageDealtEvent
     {

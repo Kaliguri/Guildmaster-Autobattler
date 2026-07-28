@@ -18,11 +18,43 @@ namespace Guildmaster.Combat
         // Переиспользуемый буфер для радиус-запросов (условие каста / AOE-цели) — без аллокаций.
         private readonly List<RuntimeUnit> _targets = new List<RuntimeUnit>();
 
+        // Касты, решённые за этот тик — применяются ПОСЛЕ того, как решения приняты всеми (см. Tick).
+        private readonly List<PlannedCast> _planned = new List<PlannedCast>();
+
+        /// <summary>Решённый, но ещё не применённый каст: кто, чем и по кому бьёт. Цель выбрана по состоянию
+        /// начала тика — в том числе и разворот лечения на себя по панике (блок E).</summary>
+        private readonly struct PlannedCast
+        {
+            public readonly RuntimeUnit Caster;
+            public readonly AbilityRuntime Ability;
+            public readonly RuntimeUnit Target;
+
+            public PlannedCast(RuntimeUnit caster, AbilityRuntime ability, RuntimeUnit target)
+            {
+                Caster  = caster;
+                Ability = ability;
+                Target  = target;
+            }
+        }
+
         /// <summary>Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).</summary>
         public event System.Action<RuntimeUnit> OnAbilityCast;
 
+        /// <summary>Тик способностей: кулдауны, решения о кастах, затем сами касты.</summary>
+        /// <remarks>
+        /// РЕШЕНИЯ ОТДЕЛЕНЫ ОТ ПРИМЕНЕНИЯ, и это принципиально. Пока каст применялся сразу по ходу обхода,
+        /// наложенный им контроль тут же лишал права каста всех, кто стоит в списке позже, — а список у
+        /// зеркальных сторон обратный. Два готовых в один тик криоманта решали исход тем, кто заспавнен
+        /// первым: левый вешал «Оковы», правый ловил стан и терял свой каст навсегда (пойман зондом на
+        /// тике 240 — у левых «Заморозка», у правых уже стан от чужого криоманта). Теперь оба решают по
+        /// состоянию НАЧАЛА тика и оба кастуют: одновременная готовность разрешается одновременно,
+        /// а не по месту в списке. Тот же приём, что в <c>MovementSystem</c> и <c>SeparationSystem</c>.
+        /// </remarks>
         public void Tick(IReadOnlyList<RuntimeUnit> units, ICombatContext ctx, float dt)
         {
+            _planned.Clear();
+
+            // --- Проход 1: кулдауны и решения. Мир не меняется. ---
             for (int u = 0; u < units.Count; u++)
             {
                 RuntimeUnit unit = units[u];
@@ -39,18 +71,38 @@ namespace Guildmaster.Combat
                 {
                     for (int a = 0; a < unit.Abilities.Count; a++)
                     {
-                        if (TryCast(unit, a, units, ctx)) break; // одна способность за тик
+                        if (!TryPlan(unit, a, units, ctx, out PlannedCast plan)) continue;
+                        _planned.Add(plan);
+                        break;  // одна способность за тик
                     }
                 }
             }
+
+            // --- Проход 2: применение. Только здесь мир меняется. ---
+            for (int i = 0; i < _planned.Count; i++) Execute(_planned[i], units, ctx);
         }
 
         /// <summary>
-        /// Попытаться скастовать способность <paramref name="abilityIndex"/>. Возвращает false, если
-        /// не готова / не хватает ресурса / нет валидной цели.
+        /// Попытаться скастовать способность <paramref name="abilityIndex"/> НЕМЕДЛЕННО (решение + применение
+        /// одним вызовом). Возвращает false, если не готова / не хватает ресурса / нет валидной цели.
+        /// Внутри тика так не кастуют — там решения собираются со всех и применяются после (см. <see cref="Tick"/>);
+        /// этот вход остаётся для прямого каста из тестов и dev-команд.
         /// </summary>
         public bool TryCast(RuntimeUnit caster, int abilityIndex, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
         {
+            if (!TryPlan(caster, abilityIndex, units, ctx, out PlannedCast plan)) return false;
+            Execute(plan, units, ctx);
+            return true;
+        }
+
+        /// <summary>
+        /// Решить, кастуется ли способность, и по кому — БЕЗ единой мутации мира. Всё, что меняет состояние
+        /// (расход ресурса, кулдаун, эффекты, урон), делает <see cref="Execute"/>.
+        /// </summary>
+        private bool TryPlan(RuntimeUnit caster, int abilityIndex, IReadOnlyList<RuntimeUnit> units,
+            ICombatContext ctx, out PlannedCast plan)
+        {
+            plan = default;
             if (caster == null || abilityIndex < 0 || abilityIndex >= caster.Abilities.Count) return false;
 
             AbilityRuntime ability = caster.Abilities[abilityIndex];
@@ -89,6 +141,24 @@ namespace Guildmaster.Combat
             // Паника (блок E) кастует независимо от условия.
             if (!panicSelf && !CastConditionMet(caster, target, data, ctx, units)) return false;
 
+            plan = new PlannedCast(caster, ability, target);
+            return true;
+        }
+
+        /// <summary>Применить решённый каст: списать ресурс, взвести кулдаун, разложить эффект по форме способности.</summary>
+        private void Execute(in PlannedCast plan, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
+        {
+            RuntimeUnit caster = plan.Caster;
+            // Между решением и применением кастующего могли добить (урон в этом же тике).
+            if (caster.IsDead) return;
+
+            AbilityRuntime ability = plan.Ability;
+            AbilityData data       = ability.Data;
+            RuntimeUnit target     = plan.Target;
+
+            bool isMassTag  = data.TargetMode == AbilityTargetMode.AllEnemiesWithTag;
+            bool isAllyAura = data.TargetMode == AbilityTargetMode.AlliesInRadius;
+
             caster.CurrentResource -= data.ResourceCost;
             ability.CooldownRemaining = data.BaseCooldown * caster.Stats.Get(StatType.CooldownEff);
 
@@ -104,7 +174,6 @@ namespace Guildmaster.Combat
                 ApplyToTarget(caster, target, data, ctx);
 
             OnAbilityCast?.Invoke(caster); // презентация-сигнал «каст состоялся»
-            return true;
         }
 
         /// <summary>
@@ -274,6 +343,12 @@ namespace Guildmaster.Combat
         /// умножая лечение на число уникальных ядов на нём — «Взрыв спор» лечит тем сильнее, чем разнообразнее
         /// отравлена цель. Хил каждому союзнику стакается от каждой взорванной рядом цели (внешний цикл).
         /// </summary>
+        /// <remarks>
+        /// Нагрузка бывает двух видов, и они не исключают друг друга: мгновенное восстановление HP и
+        /// <see cref="AbilityData.HealEffect"/> — эффект-HoT, где множитель превращается в СТАКИ. Стаки
+        /// набиваются повторным наложением, а не отдельным API: <c>StackRule.Stack</c> для этого и есть,
+        /// и так же ведёт себя любой другой источник стаков в бою (решение по Друиду 2026-07-28).
+        /// </remarks>
         private void HealAlliesAround(RuntimeUnit caster, RuntimeUnit epicenter, AbilityData data, int multiplier, ICombatContext ctx)
         {
             ctx.QueryUnitsInRadius(epicenter.Position, data.AreaRadius, _targets, TargetFilter.Allies, caster.Team);
@@ -282,8 +357,12 @@ namespace Guildmaster.Combat
                 RuntimeUnit ally = _targets[i];
                 if (ally.IsDead) continue;
 
-                float heal = HealAmount(ally, data) * multiplier;
+                float heal = HealAmount(ally, data, caster) * multiplier;
                 if (heal > 0f) ctx.Heal(ally, heal, caster);
+
+                if (data.HealEffect == null) continue;
+                for (int stack = 0; stack < multiplier; stack++)
+                    ctx.ApplyEffect(ally, data.HealEffect, caster);
             }
         }
 
@@ -310,7 +389,7 @@ namespace Guildmaster.Combat
         private static void ApplyAura(RuntimeUnit t, AbilityData data, RuntimeUnit caster, ICombatContext ctx)
         {
             if (t.IsDead) return;
-            if (data.IsHeal) ctx.Heal(t, HealAmount(t, data), caster);
+            if (data.IsHeal) ctx.Heal(t, HealAmount(t, data, caster), caster);
             ApplyEffects(t, data, caster, ctx);
         }
 
@@ -341,7 +420,7 @@ namespace Guildmaster.Combat
             if (data.IsHeal)
             {
                 // Сырое лечение (dealt/taken eff и кламп к MaxHP применяет ctx.Heal). «Длань жизни» = X + недостающее HP.
-                ctx.Heal(target, HealAmount(target, data), caster);
+                ctx.Heal(target, HealAmount(target, data, caster), caster);
             }
             else
             {
@@ -356,12 +435,17 @@ namespace Guildmaster.Combat
             ApplyEffects(target, data, caster, ctx);
         }
 
-        /// <summary>Сырое лечение способности = HealFlat + HealPctTargetMissingHp × недостающее HP цели.</summary>
-        private static float HealAmount(RuntimeUnit target, AbilityData data)
+        /// <summary>
+        /// Сырое лечение способности = <c>HealFlat + HealPctTargetMissingHp × недостающее HP цели</c>,
+        /// а на самого кастующего — ещё и × <see cref="AbilityData.SelfHealFraction"/>.
+        /// </summary>
+        private static float HealAmount(RuntimeUnit target, AbilityData data, RuntimeUnit caster = null)
         {
             float missing = target.Stats.Get(StatType.MaxHP) - target.CurrentHP;
             if (missing < 0f) missing = 0f;
-            return data.HealFlat + data.HealPctTargetMissingHp * missing;
+
+            float amount = data.HealFlat + data.HealPctTargetMissingHp * missing;
+            return ReferenceEquals(target, caster) ? amount * data.SelfHealFraction : amount;
         }
 
         /// <summary>Прямой урон способности = DamageMultiplier × AutoAttackDamage кастующего (0 = только эффекты).</summary>
@@ -430,8 +514,16 @@ namespace Guildmaster.Combat
 
         /// <summary>
         /// Союзник с наименьшим HP% — глобально, без ограничения дальности (хилер-ульта «Длань жизни»).
-        /// Себя исключаем: свой критический HP покрывает блок E. Тай-брейк — дистанция, затем Id (детерминизм).
+        /// Кастующий входит в перебор наравне со всеми: лечит того, кому хуже, будь то он сам.
+        /// Тай-брейк — дистанция, затем Id (детерминизм).
         /// </summary>
+        /// <remarks>
+        /// Себя раньше исключали (решение 2026-07-26/7: «свет — это то, что он отдаёт другим»), но это
+        /// оставляло хилера без единственного инструмента, когда фокус переводили на него самого.
+        /// Решение 2026-07-28: адресную ульту разрешили и на себя, а цена перенесена в ПАССИВКУ —
+        /// само-лечение светом вчетверо слабее союзного (25% против 100%). Отдавать по-прежнему
+        /// выгоднее, но выбор «спасти себя» перестал быть невозможным.
+        /// </remarks>
         private static RuntimeUnit LowestHpAlly(RuntimeUnit caster, IReadOnlyList<RuntimeUnit> units)
         {
             RuntimeUnit best      = null;
@@ -441,7 +533,7 @@ namespace Guildmaster.Combat
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit other = units[i];
-                if (other == caster || other.IsDead || other.Team != caster.Team) continue;
+                if (other.IsDead || other.Team != caster.Team) continue;
 
                 float pct    = HpPct(other);
                 float distSq = (other.Position - caster.Position).sqrMagnitude;

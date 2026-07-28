@@ -14,32 +14,43 @@ using VContainer.Unity;
 namespace Guildmaster.Game
 {
     /// <summary>
-    /// Дочерний DI-скоуп BattleScene. Живёт один бой.
-    /// Регистрирует все боевые сервисы: RNG боя, системы, симуляцию, презентацию.
-    /// Является дочерним от <see cref="RootLifetimeScope"/> (вики «10» §8.2).
+    /// DI-скоуп боевых систем: RNG боя, системы, симуляция, презентация. Живёт в
+    /// <c>CombatSystemsScene</c> и дочерний к <see cref="WorldLifetimeScope"/> — камера и арена
+    /// резолвятся из предка, без дублей Main Camera/Brain (вики «Scenes», «16» §5).
     /// </summary>
+    /// <remarks>
+    /// Вопреки имени, по одному бою НЕ пересоздаётся: сцена грузится один раз на буте и не выгружается,
+    /// а бой начинается командой в живую симуляцию. Значит боевое состояние между узлами не чистится
+    /// сносом скоупа — за возврат отвечает <c>BattleBootstrap.ResetToWorld</c>.
+    /// </remarks>
     public class CombatLifetimeScope : LifetimeScope
     {
         [Tooltip("Конфиг базовых характеристик (в т.ч. armor-константа K — единственный источник).")]
         [SerializeField] private StatsConfig _statsConfig;
 
+        [Tooltip("Классовый профиль баланса (база HP/скорости от класса, 2-й уровень стат-каскада). ОБЯЗАТЕЛЕН: " +
+                 "пусто = скоуп не соберётся (раньше классы молча не применялись, и юниты уезжали на MaxHP 0).")]
+        [SerializeField] private ClassBalanceConfig _classBalanceConfig;
+
         [Tooltip("Балансный тюнинг симуляции (вики «13» §3.4): печётся в снапшот SimTuning на старте боя.")]
         [SerializeField] private SimTuningConfig _simTuningConfig;
+
+        [Tooltip("Состав Ристалища по умолчанию — кто встаёт на площадку вне забега (ГДД «Modes - Proving Grounds»). " +
+                 "Пусто = вход на площадку из главного меню недоступен (скажет вслух), бой забега не затронут.")]
+        [SerializeField] private ProvingGroundsConfig _provingGroundsConfig;
 
         [Tooltip("Размер ячейки пространственного хэша.")]
         [SerializeField] private float _spatialHashCellSize = 3f;
 
-        [Tooltip("Фиксированный сид боя для воспроизводимости (баг/баланс/реплей). 0 = случайный каждый бой.")]
-        [SerializeField] private long _fixedSeed;
-
-        [Tooltip("Design-конфиг «сочности» боя (вспышка/сплющивание/hitstop/slowmo/тряска). Пусто = дефолты в рантайме.")]
+        [Tooltip("Design-конфиг «сочности» боя (вспышка/сплющивание/hitstop/slowmo/тряска). ОБЯЗАТЕЛЕН. " +
+                 "Пусто = красная ошибка и НЕТ джуса вовсе (не «дефолты» — своих чисел потребители не держат).")]
         [SerializeField] private Presentation.Design.CombatFeelConfig _feelConfig;
 
         protected override void Configure(IContainerBuilder builder)
         {
             // Арену печём из авторинга в сцене (если он есть); иначе — бесконечное поле.
             // prefab-per-arena через Addressables — будущий свап (вики «15» §4-5): тогда снапшот
-            // придёт из загруженного префаба, а не из FindFirstObjectByType.
+            // придёт из загруженного префаба, а не из поиска по сцене.
             ArenaLayoutData layout = BuildArenaLayout();
 
             RegisterArena(builder, layout);
@@ -48,10 +59,10 @@ namespace Guildmaster.Game
             RegisterSimulation(builder, layout);
             RegisterPresentation(builder);
 
-            // Конфиг «сочности»: если ассет не назначен — рантайм-инстанс с дефолтами (бой не падает).
-            var feel = _feelConfig != null
-                ? _feelConfig
-                : ScriptableObject.CreateInstance<Presentation.Design.CombatFeelConfig>();
+            // Конфиг «сочности»: без ассета джус выключен целиком, а не «примерно такой» — потребители
+            // читают только конфиг и своих чисел не держат (аудит 2026-07-26, R1-34/T-9).
+            var feel = ScopeWiring.Optional(_feelConfig, nameof(CombatLifetimeScope), nameof(_feelConfig),
+                "боевого джуса не будет: ни вспышек, ни сплющивания, ни тряски");
             builder.RegisterInstance(feel);
 
             // Единый арбитр Time.timeScale (пауза/скорость/cinematic slowmo). EntryPoint — чтобы Tick()
@@ -69,7 +80,10 @@ namespace Guildmaster.Game
             builder.RegisterEntryPoint<BattleInputController>(Lifetime.Scoped);
 
             // Интерактивная фаза расстановки (шаг 4): активна на Free-пресетах; иначе спит.
-            builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped);
+            // Состав Ристалища идёт параметром: он может быть не разведён (тогда площадка вне забега
+            // просто не открывается), поэтому Require здесь не к месту — бой от этого не зависит.
+            builder.RegisterEntryPoint<DeploymentController>(Lifetime.Scoped)
+                   .WithParameter("provingGrounds", _provingGroundsConfig);
 
             // Persist-мир (план 12 Ф2): ставит отряд забега на тест-арену вне боя по RunPartyReadyEvent.
             builder.RegisterEntryPoint<Flow.WorldStageController>(Lifetime.Scoped);
@@ -82,7 +96,7 @@ namespace Guildmaster.Game
 
         private ArenaLayoutData BuildArenaLayout()
         {
-            var authoring = FindFirstObjectByType<ArenaLayoutAuthoring>();
+            var authoring = FindAnyObjectByType<ArenaLayoutAuthoring>();
             if (authoring == null)
             {
                 Debug.LogWarning("[CombatLifetimeScope] - ArenaLayoutAuthoring не найден в сцене → " +
@@ -98,17 +112,12 @@ namespace Guildmaster.Game
             builder.Register<DeploymentService>(Lifetime.Scoped);
         }
 
+        // Сид здесь больше не разыгрывается. Скоуп в persist-мире поднимается ОДИН раз на сессию, поэтому
+        // всё, что он посеет, — это состояние на весь забег сразу; настоящий сид боя приносит BattleBootstrap
+        // перед каждым запуском узла, выводя его из RunState.Seed (единственный сохраняемый сид, T-19).
+        // Стартовое значение — нейтральный ноль: до первого боя из этого генератора никто не тянет.
         private void RegisterRng(IContainerBuilder builder)
-        {
-            bool fixedSeed = _fixedSeed != 0L;
-            ulong seed = fixedSeed ? (ulong)_fixedSeed : GenerateBattleSeed();
-
-            Debug.Log($"[CombatLifetimeScope] - Battle seed = {seed}{(fixedSeed ? " (fixed)" : "")}");
-
-            // Сид доступен из DI (лог/реплей/MP), а не только «внутри» RNG.
-            builder.RegisterInstance(new BattleSeed(seed));
-            builder.RegisterInstance<IRngService>(new XorShiftRng(seed));
-        }
+            => builder.RegisterInstance<IRngService>(new XorShiftRng(0UL));
 
         private void RegisterCombatSystems(IContainerBuilder builder)
         {
@@ -121,7 +130,13 @@ namespace Guildmaster.Game
             builder.Register<ProjectileSystem>(Lifetime.Scoped);
             builder.Register<DeathSystem>(Lifetime.Scoped);
             builder.Register<EffectSystem>(Lifetime.Scoped);
-            builder.Register<RegenSystem>(Lifetime.Scoped);
+            // Скорость капания ресурса — из StatsConfig (единственный источник числа); без конфига
+            // остаётся код-дефолт системы, а не тихий ноль.
+            float resourcePerSecond = _statsConfig != null
+                ? _statsConfig.ResourceRegenPerSecond
+                : new RegenSystem().ResourcePerSecond;
+            builder.Register<RegenSystem>(_ => new RegenSystem { ResourcePerSecond = resourcePerSecond },
+                                          Lifetime.Scoped);
             builder.Register<DisplacementSystem>(Lifetime.Scoped);
         }
 
@@ -133,14 +148,16 @@ namespace Guildmaster.Game
             // вики «13» §4.2 п.1) и границы поля arena (ArenaBounds? — значение, не сервис). Добавил
             // систему в ctor — ничего тут править не надо, лишь бы она была зарегистрирована.
             builder.Register<CombatSimulation>(Lifetime.Scoped)
-                   .WithParameter("armorK", _statsConfig.ArmorConstantK)
+                   .WithParameter("armorK", ScopeWiring.Require(_statsConfig, nameof(CombatLifetimeScope), nameof(_statsConfig)).ArmorConstantK)
                    .WithParameter("arena", (ArenaBounds?)layout.Bounds)
-                   .WithParameter("tuning", (SimTuning?)_simTuningConfig.ToSnapshot())
+                   .WithParameter("tuning", (SimTuning?)ScopeWiring.Require(_simTuningConfig, nameof(CombatLifetimeScope), nameof(_simTuningConfig)).ToSnapshot())
                    .WithParameter("cameraZone", (Rect2D?)layout.CameraZone);
 
-            StatsConfig cfg = _statsConfig;
+            StatsConfig cfg = ScopeWiring.Require(_statsConfig, nameof(CombatLifetimeScope), nameof(_statsConfig));
+            ClassBalanceConfig classCfg = ScopeWiring.Require(_classBalanceConfig, nameof(CombatLifetimeScope), nameof(_classBalanceConfig));
             builder.Register<RuntimeUnitFactory>(r => new RuntimeUnitFactory(
                 cfg,
+                classCfg,
                 r.Resolve<EffectSystem>(),
                 r.Resolve<CombatSimulation>()),
                 Lifetime.Scoped);
@@ -148,7 +165,9 @@ namespace Guildmaster.Game
             // IContentDatabase — из RootScope (родитель); фабрика/симуляция — из этого скоупа.
             builder.Register<EncounterLoader>(Lifetime.Scoped);
 
-            builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped).AsSelf();
+            // Петля — ещё и владелец доли интерполяции: она копит остаток тика, презентация его читает.
+            builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped)
+                   .As<Core.Simulation.ISimInterpolation>();
         }
 
         private void RegisterPresentation(IContainerBuilder builder)
@@ -163,13 +182,8 @@ namespace Guildmaster.Game
             builder.RegisterEntryPoint<Presentation.BattleFocusBinder>(Lifetime.Scoped);
         }
 
-        // TODO Фаза MP: сид боя должен прийти от хоста (в команде старта боя) и лечь в BattleSeed,
-        // а не генерироваться локально — иначе RNG хоста и клиента разойдутся. Сейчас ок:
-        // модель хост-авторитетная, тикает только хост (см. CombatLoopService).
-        private static ulong GenerateBattleSeed()
-        {
-            return (ulong)System.DateTime.UtcNow.Ticks ^
-                   ((ulong)(uint)UnityEngine.Random.Range(0, int.MaxValue) << 32);
-        }
+        // TODO Фаза MP: сид боя выводится из RunState.Seed, а сам RunState хост реплицирует клиентам —
+        // значит суб-сид узла совпадёт у всех сам собой. Отдельная команда «вот сид боя» не понадобится,
+        // пока RunState доезжает до клиента раньше запуска узла.
     }
 }

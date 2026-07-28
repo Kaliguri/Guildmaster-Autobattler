@@ -16,16 +16,14 @@ namespace Guildmaster.Tests.EditMode.Combat
     {
         private const ulong Seed    = 42UL;
         private const int   Ticks   = 120;
-        private const float ArmorK  = 100f;
-        private const float CellSize = 3f;
 
         private static CombatSimulation BuildSim(ulong seed)
         {
             var rng = new XorShiftRng(seed);
             return new CombatSimulation(
                 rng,
-                ArmorK,
-                new SpatialHash(CellSize),
+                CombatTestValues.ArmorK,
+                new SpatialHash(CombatTestValues.CellSize),
                 new BrainSystem(),
                 new AbilitySystem(),
                 new MovementSystem(),
@@ -140,6 +138,45 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.AreNotEqual(BattleOutcome.Ongoing, sim.Outcome,
                 $"Бой не завершился за {maxTicks} тиков");
+        }
+
+        // Чек-сумма обязана видеть эффекты (аудит 2026-07-26, RC-8): раньше в неё входили только позиция,
+        // HP и тайминги атаки, поэтому расхождение, начавшееся в эффектах, всплывало лишь когда доедет до
+        // урона — с задержкой в секунды и уже без следа причины. Юниты здесь идентичны во всём, кроме
+        // навешенного яда: если сумма их не различит, значит слепок снова слеп к эффектам.
+        [Test]
+        public void Checksum_SeesEffects_NotOnlyPositionAndHp()
+        {
+            var withEffect    = BuildSim(Seed);
+            var withoutEffect = BuildSim(Seed);
+
+            RuntimeUnit carrier = MakeMeleeUnit(team: 0, x: -5f);
+            RuntimeUnit plain   = MakeMeleeUnit(team: 0, x: -5f);
+            carrier.Id = plain.Id = 7;
+
+            var poison = Guildmaster.Data.Definitions.EffectData.CreateRuntime(
+                "test.poison",
+                Guildmaster.Data.Definitions.EffectPolarity.Debuff,
+                Guildmaster.Data.Definitions.EffectTag.None,
+                baseDuration: 5f,
+                unremovable: false);
+            carrier.ActiveEffects.Add(new Guildmaster.Combat.Effects.RuntimeEffect
+            {
+                Def               = poison,
+                Stacks            = 1,
+                RemainingTicks    = 60,
+                FullDurationTicks = 60,
+                ScaledPotency     = new float[0],
+                PeriodicTicks     = new int[0],
+            });
+
+            withEffect.EnqueueUnitSpawn(carrier);
+            withoutEffect.EnqueueUnitSpawn(plain);
+            withEffect.FlushSpawns();
+            withoutEffect.FlushSpawns();
+
+            Assert.AreNotEqual(withoutEffect.ComputeChecksum(), withEffect.ComputeChecksum(),
+                "Чек-сумма не различает юнита с эффектом и без — значит рассинхрон по эффектам она не поймает");
         }
 
         private static void PopulateSim(CombatSimulation sim)

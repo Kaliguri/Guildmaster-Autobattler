@@ -2,7 +2,7 @@
 title: "Explanation - Code Map"
 order: 0
 status: needs_review
-updated: 2026-07-16
+updated: 2026-07-26
 ---
 
 **Статус:** актуализирован 2026-07-16 (тик-ордер, имена классов); отдельные разделы — needs_review
@@ -65,12 +65,12 @@ Core                      — фундамент: RNG, константы сим
 
 ```
 [Bootstrap]  GameBootstrap (MonoBehaviour в CoreScene)
-     │  Start() → GameFlow.BootAsync()
+     │  Start() → SceneLoader: мир, затем боевые системы → GameFlow.RunGameAsync()
      ▼
-[Сцены]      SceneLoader грузит BattleScene аддитивно к persistent CoreScene
-     │
+[Сцены]      WorldScene и CombatSystemsScene грузятся аддитивно к CoreScene — ОДИН раз
+     │        за сессию и не выгружаются ([[tech/10-reference/scenes|Scenes]])
      ▼
-[DI]         RootLifetimeScope (сессия)  ──родитель──►  CombatLifetimeScope (бой)
+[DI]         RootLifetimeScope (сессия) ─► WorldLifetimeScope (мир) ─► CombatLifetimeScope
      │         RNG, Audio, SceneLoader,                  battle-RNG, все системы,
      │         GameFlow, MessagePipe                     CombatSimulation, презентеры
      ▼
@@ -129,9 +129,9 @@ Core                      — фундамент: RNG, константы сим
 ### Game (composition root)
 | Класс | Ответственность |
 |---|---|
-| `GameBootstrap` | Точка входа: поднимает DI, зовёт `GameFlow.BootAsync` |
-| `RootLifetimeScope` / `CombatLifetimeScope` | DI-скоупы сессии и боя |
-| `GameFlow` | Макро-флоу: Boot → BattleScene → результат |
+| `GameBootstrap` | Точка входа: поднимает DI, грузит обе persist-сцены, зовёт `GameFlow.RunGameAsync` |
+| `RootLifetimeScope` / `WorldLifetimeScope` / `CombatLifetimeScope` | DI-скоупы сессии, мира и боевых систем |
+| `GameFlow` | Макро-флоу: главное меню → забег → исход (сцен не грузит) |
 | `CombatLoopService` | Реалтайм-пульс: `Time.deltaTime` → фиксированные тики |
 
 ### Presentation (тело)

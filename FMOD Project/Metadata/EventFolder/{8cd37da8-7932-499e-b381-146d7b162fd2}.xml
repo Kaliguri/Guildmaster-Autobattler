@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EventFolder" id="{8cd37da8-7932-499e-b381-146d7b162fd2}">
+		<property name="name">
+			<value>light_mend</value>
+		</property>
+		<relationship name="folder">
+			<destination>{56dabe35-7212-4c2b-bfae-f32cd56ad75b}</destination>
+		</relationship>
+	</object>
+</objects>

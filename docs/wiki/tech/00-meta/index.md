@@ -2,7 +2,7 @@
 title: "Meta - Index"
 order: 0
 status: living
-updated: 2026-07-19
+updated: 2026-07-26
 ---
 
 Карта технической документации (MOC). Здесь — **реализация**, не геймдизайн (дизайн — в `gdd/`). Порядок внутри кластеров задаётся полем `order`, отображаемое имя — `title`, имена файлов — латинские слаги. Ведение — контур скилла `tech-scribe` (в разработке).
@@ -51,18 +51,24 @@ SORT updated ASC, file.name ASC
 - [[tech/40-planning/lighting-2d|2D Lighting]] — динамический 2D-свет, тёмные сцены, normal-карты через Laigter. `planned`
 - [[tech/40-planning/seed|Seed & RNG]] — сиды, генерация забега, воспроизводимость. `planned`
 - [[tech/40-planning/steam-workshop|Steam Workshop]] — Workshop-процессы, версионирование схемы (post-festival). `planned`
+- [[tech/40-planning/save-system|Save System]] — профили и гильдии, версионирование, миграции, Steam Cloud, кооп-швы. `planned`
 
 ## Reference (`10-reference/`) — сухие факты
 
 - [[tech/10-reference/tech-stack|Reference - Tech Stack]] — утверждённый стек, паттерны, уроки прошлого проекта. `needs_review`
+- [[tech/10-reference/code-standards|Reference - Code Standards]] — инварианты кода, документирование, детерминизм, фолбэки, меню редактора. `ready`
 - [[tech/10-reference/assemblies|Assemblies]] — карта asmdef, граф зависимостей, правила. `ready`
 - [[tech/10-reference/combat-model|Combat Model]] — «Сосуд + Реликвия», стат-система, модель эффектов/диспела. `ready`
 - [[tech/10-reference/data-layer|Data Layer]] — три слоя данных, каталог SO, id/лок-конвенции, реестр, валидация. `ready`
 - [[tech/10-reference/saves|Saves]] — автосейв, хост, мультиплеер. `needs_review`
-- [[tech/10-reference/scene-sorting|Scene & Sorting]] — иерархия BattleScene, сортировочные слои 2D, Y-sort. `needs_review`
-- [[tech/10-reference/input-camera|Input & Camera]] — Input System за `IInputService`, Cinemachine (3 режима). `ready`
+- [[tech/10-reference/scenes|Scenes]] — какие сцены есть, что каждая держит, когда грузится. `ready`
+- [[tech/10-reference/scene-sorting|Scene & Sorting]] — конвенции именования в сцене, сортировочные слои 2D, Y-sort. `needs_review`
+- [[tech/10-reference/input-camera|Input & Camera]] — Input System за `IInputService`, Cinemachine (4 режима, риг в `WorldScene`). `ready`
 - [[tech/10-reference/ui-navigation|UI Navigation]] — стек-навигатор, типы экранов/слои, ввод = f(стек, фаза), `PointerOverUI`. `ready`
 - [[tech/10-reference/arena|Arena & Deployment]] — геометрия арены как данные, зоны Normal/Extended. `needs_review`
+- [[tech/10-reference/asset-inventory|Asset Inventory]] — какой контент в проекте, откуда, лицензии, что используется. `ready`
+- [[tech/10-reference/editor-tools|Editor Tools]] — наш тулинг под одним корнем `Alebardium`, раскладка и приоритеты меню. `ready`
+- [[tech/10-reference/vfx-color|Reference - VFX Color]] — цвет боевых эффектов: два поля на юните, потребители, множители, порог bloom. `ready`
 
 ## Explanation (`20-explanation/`) — как устроен код
 

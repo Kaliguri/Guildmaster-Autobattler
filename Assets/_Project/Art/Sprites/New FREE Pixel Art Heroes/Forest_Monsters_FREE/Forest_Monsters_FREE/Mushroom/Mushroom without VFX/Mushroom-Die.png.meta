@@ -79,7 +79,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -117,7 +117,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -145,12 +145,12 @@ TextureImporter:
       name: Mushroom-Die_0
       rect:
         serializedVersion: 2
-        x: 24
+        x: 0
         y: 0
-        width: 32
-        height: 33
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -167,12 +167,12 @@ TextureImporter:
       name: Mushroom-Die_1
       rect:
         serializedVersion: 2
-        x: 106
+        x: 80
         y: 0
-        width: 32
-        height: 35
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -189,12 +189,12 @@ TextureImporter:
       name: Mushroom-Die_2
       rect:
         serializedVersion: 2
-        x: 192
+        x: 160
         y: 0
-        width: 30
-        height: 38
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -211,12 +211,12 @@ TextureImporter:
       name: Mushroom-Die_3
       rect:
         serializedVersion: 2
-        x: 281
+        x: 240
         y: 0
-        width: 31
-        height: 33
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -233,12 +233,12 @@ TextureImporter:
       name: Mushroom-Die_4
       rect:
         serializedVersion: 2
-        x: 350
+        x: 320
         y: 0
-        width: 32
-        height: 35
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -255,12 +255,12 @@ TextureImporter:
       name: Mushroom-Die_5
       rect:
         serializedVersion: 2
-        x: 426
+        x: 400
         y: 0
-        width: 32
-        height: 31
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -277,12 +277,12 @@ TextureImporter:
       name: Mushroom-Die_6
       rect:
         serializedVersion: 2
-        x: 499
+        x: 480
         y: 0
-        width: 30
-        height: 28
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -299,12 +299,12 @@ TextureImporter:
       name: Mushroom-Die_7
       rect:
         serializedVersion: 2
-        x: 569
+        x: 560
         y: 0
-        width: 38
-        height: 16
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -321,12 +321,12 @@ TextureImporter:
       name: Mushroom-Die_8
       rect:
         serializedVersion: 2
-        x: 647
+        x: 640
         y: 0
-        width: 38
-        height: 14
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -343,12 +343,12 @@ TextureImporter:
       name: Mushroom-Die_9
       rect:
         serializedVersion: 2
-        x: 726
+        x: 720
         y: 0
-        width: 36
-        height: 17
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -365,12 +365,12 @@ TextureImporter:
       name: Mushroom-Die_10
       rect:
         serializedVersion: 2
-        x: 805
+        x: 800
         y: 0
-        width: 36
-        height: 17
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -387,12 +387,12 @@ TextureImporter:
       name: Mushroom-Die_11
       rect:
         serializedVersion: 2
-        x: 885
+        x: 880
         y: 0
-        width: 36
-        height: 17
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -409,12 +409,12 @@ TextureImporter:
       name: Mushroom-Die_12
       rect:
         serializedVersion: 2
-        x: 965
+        x: 960
         y: 0
-        width: 36
-        height: 17
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -431,12 +431,12 @@ TextureImporter:
       name: Mushroom-Die_13
       rect:
         serializedVersion: 2
-        x: 1045
+        x: 1040
         y: 0
-        width: 36
-        height: 17
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -453,12 +453,12 @@ TextureImporter:
       name: Mushroom-Die_14
       rect:
         serializedVersion: 2
-        x: 1125
+        x: 1120
         y: 0
-        width: 36
-        height: 17
+        width: 80
+        height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

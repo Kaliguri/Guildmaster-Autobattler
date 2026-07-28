@@ -7,11 +7,24 @@ namespace Guildmaster.Core.Audio
     /// </summary>
     public interface IAudioService
     {
-        /// <summary>Воспроизвести звук по ключу.</summary>
+        /// <summary>Воспроизвести звук по ключу (без позиции — по центру, как UI и стингеры).</summary>
         void Play(string soundKey);
 
-        /// <summary>Остановить звук по ключу.</summary>
+        /// <summary>
+        /// Воспроизвести звук В ТОЧКЕ мира: боевые события панорамируются по позиции юнита, и в
+        /// мясорубке слышно, с какой стороны прилетело. Событие без спатиалайзера позицию просто
+        /// игнорирует, поэтому звать этот метод безопасно для любого ключа.
+        /// </summary>
+        void PlayAt(string soundKey, UnityEngine.Vector3 position);
+
+        /// <summary>
+        /// Остановить звук по ключу. Работает для длящихся звуков (музыка/амбиент) — у них хранится
+        /// инстанс; one-shot останавливать нечего и не нужно.
+        /// </summary>
         void Stop(string soundKey);
+
+        /// <summary>Погасить все длящиеся звуки разом: смена сцены, выход в меню, конец забега.</summary>
+        void StopAll();
 
         /// <summary>Установить громкость мастер-шины [0, 1] (общая громкость, bus:/).</summary>
         void SetMasterVolume(float volume);

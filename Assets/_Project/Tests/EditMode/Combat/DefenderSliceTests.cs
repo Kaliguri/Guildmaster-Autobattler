@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -20,8 +20,6 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class DefenderSliceTests
     {
-        private const float ArmorK   = 100f;
-        private const float CellSize = 3f;
 
         // ===================== §9.3 «Оплот» (pre-damage щит) =====================
 
@@ -35,8 +33,10 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(defender, BulwarkPassive(), defender);
 
-            // True-урон 30: брони нет, эффективности 1.0. «Оплот» до Execute поднимает щит 20 + 15%×100 = 35.
+            // True-урон 30: брони нет, эффективности 1.0. «Оплот» СИНХРОННО (pre-damage — исключение из
+            // закона видимости) поднимает щит 20 + 15%×100 = 35, и он успевает к тому самому удару.
             sim.DealDamage(new DamageRequest(attacker, defender, 30f, DamageSchool.True, sim.ArmorK));
+            sim.Tick(SimConstants.TickDelta);   // сам удар применяется реестром в конце тика
 
             Assert.AreEqual(100f, defender.CurrentHP, 1e-4f, "Триггер-удар поглощён щитом — HP не просело");
             Assert.AreEqual(5f, defender.CurrentShield, 1e-4f, "Остаток щита = 35 − 30");
@@ -60,10 +60,10 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
-        public void Bulwark_RespectsInternalCooldown()
+        public void Bulwark_SpendsTwoChargesThenWaitsForRecharge()
         {
-            // Внутренний КД проверяем напрямую по ReactiveReadyTick: срабатывание перевзводит его,
-            // блокировка — нет. (Не по щиту: в headless-контексте 2-сек щит-эффект не истекает без
+            // Заряды проверяем напрямую по ChargeReadyTicks: срабатывание тратит ОДИН заряд, каждый
+            // перезаряжается независимо. (Не по щиту: в headless-контексте щит-эффект не истекает без
             // EffectSystem.Tick, и повторный Apply ушёл бы в Refresh — это артефакт теста, не бага.)
             var es  = new EffectSystem();
             var ctx = new TickContext(es);
@@ -72,21 +72,54 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             ctx.ApplyEffect(defender, BulwarkPassive(), defender);
             RuntimeEffect bulwark = defender.ActiveEffects[0];
-            var incoming = new DamageRequest(null, defender, 10f, DamageSchool.True, ArmorK);
+            var incoming = new DamageRequest(null, defender, 10f, DamageSchool.True, CombatTestValues.ArmorK);
 
             int cd = Mathf.RoundToInt(7f * SimConstants.TickRate);
 
+            Assert.AreEqual(2, bulwark.ChargeReadyTicks.Length, "Два заряда взведены при наложении пассивки");
+
             ctx.Tick = 0;
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd, bulwark.ReactiveReadyTick, "Первое срабатывание взвело внутренний КД");
+            Assert.AreEqual(cd, bulwark.ChargeReadyTicks[0], "Первый удар потратил первый заряд");
+            Assert.AreEqual(0,  bulwark.ChargeReadyTicks[1], "Второй заряд ещё цел");
 
-            ctx.Tick = 1; // в пределах КД
+            ctx.Tick = 1; // сразу следом — второй удар гасится вторым зарядом
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd, bulwark.ReactiveReadyTick, "В КД повторного срабатывания нет — КД не перевзведён");
+            Assert.AreEqual(1 + cd, bulwark.ChargeReadyTicks[1], "Второй удар подряд потратил второй заряд");
 
-            ctx.Tick = cd; // КД истёк
+            ctx.Tick = 2; // зарядов не осталось — удар проходит, таймеры не сдвигаются
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd + cd, bulwark.ReactiveReadyTick, "После КД сработало снова — КД перевзведён");
+            Assert.AreEqual(cd,     bulwark.ChargeReadyTicks[0], "Без готовых зарядов первый таймер не перевзведён");
+            Assert.AreEqual(1 + cd, bulwark.ChargeReadyTicks[1], "Без готовых зарядов второй таймер не перевзведён");
+
+            ctx.Tick = cd; // первый заряд восстановился
+            es.RunPreDamage(defender, in incoming, ctx);
+            Assert.AreEqual(cd + cd, bulwark.ChargeReadyTicks[0], "Восстановившийся заряд снова потрачен");
+        }
+
+        [Test]
+        public void Bulwark_IgnoresDotTicks_AndThornsBackfire()
+        {
+            var es  = new EffectSystem();
+            var ctx = new TickContext(es);
+            var defender = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f, hp: 100f,
+                relic: DefenderRelic(PassiveTrigger.AnyHit));
+
+            ctx.ApplyEffect(defender, BulwarkPassive(), defender);
+            RuntimeEffect bulwark = defender.ActiveEffects[0];
+
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageSchool.True, CombatTestValues.ArmorK,
+                sourceKind: DamageSourceKind.Periodic), ctx);
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageSchool.True, CombatTestValues.ArmorK,
+                sourceKind: DamageSourceKind.Reactive), ctx);
+
+            Assert.AreEqual(0, bulwark.ChargeReadyTicks[0], "Тик DoT заряд не тратит");
+            Assert.AreEqual(0, bulwark.ChargeReadyTicks[1], "Ответка шипов заряд не тратит");
+
+            // Способность — прямой удар: щит встаёт.
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageSchool.True, CombatTestValues.ArmorK,
+                sourceKind: DamageSourceKind.Ability), ctx);
+            Assert.AreNotEqual(0, bulwark.ChargeReadyTicks[0], "Урон способности поднимает щит");
         }
 
         [Test]
@@ -98,7 +131,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 relic: DefenderRelic(PassiveTrigger.None));
 
             ctx.ApplyEffect(defender, BulwarkPassive(), defender);
-            es.RunPreDamage(defender, new DamageRequest(null, defender, 50f, DamageSchool.True, ArmorK), ctx);
+            es.RunPreDamage(defender, new DamageRequest(null, defender, 50f, DamageSchool.True, CombatTestValues.ArmorK), ctx);
 
             Assert.AreEqual(0f, defender.CurrentShield, 1e-4f, "Триггер None — щит не поднимается");
         }
@@ -114,7 +147,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var d = MakeUnit(0, 0, Vector2.zero, maxHp: 200f, hp: 200f,
                     relic: DefenderRelic(PassiveTrigger.OnHitAbovePctMaxHp, thresholdPct: 0.2f));
                 ctx.ApplyEffect(d, passive, d);
-                es.RunPreDamage(d, new DamageRequest(null, d, 30f, DamageSchool.True, ArmorK), ctx);
+                es.RunPreDamage(d, new DamageRequest(null, d, 30f, DamageSchool.True, CombatTestValues.ArmorK), ctx);
                 Assert.AreEqual(0f, d.CurrentShield, 1e-4f, "Удар ниже порога — нет щита");
             }
             {
@@ -122,7 +155,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var d = MakeUnit(0, 0, Vector2.zero, maxHp: 200f, hp: 200f,
                     relic: DefenderRelic(PassiveTrigger.OnHitAbovePctMaxHp, thresholdPct: 0.2f));
                 ctx.ApplyEffect(d, passive, d);
-                es.RunPreDamage(d, new DamageRequest(null, d, 50f, DamageSchool.True, ArmorK), ctx);
+                es.RunPreDamage(d, new DamageRequest(null, d, 50f, DamageSchool.True, CombatTestValues.ArmorK), ctx);
                 Assert.AreEqual(20f, d.CurrentShield, 1e-4f, "Удар выше порога — щит поднят (целый → плоские 20)");
             }
         }
@@ -144,6 +177,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             var units = new List<RuntimeUnit> { caster, mainThreat, bystander };
 
             bool cast = new AbilitySystem().TryCast(caster, 0, units, ctx);
+            // Закон видимости: наложенные удар-эффекты проявляются в конце тика.
+            foreach (RuntimeUnit u in units) EffectSystem.CommitPending(u);
 
             Assert.IsTrue(cast);
             Assert.AreNotEqual(EffectTag.None, mainThreat.EffectTagMask & EffectTag.Control, "Цель оглушена");
@@ -193,6 +228,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         private static EffectData BulwarkPassive()
         {
             var bulwark = new BulwarkComponent()
+                .With("_maxCharges", 2)
                 .With("_internalCooldownSeconds", 7f)
                 .With("_shieldEffect", BulwarkShield());
             return TestEffect.Make(
@@ -228,7 +264,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static CombatSimulation BuildSim(ulong seed) =>
             new CombatSimulation(
-                new XorShiftRng(seed), ArmorK, new SpatialHash(CellSize),
+                new XorShiftRng(seed), CombatTestValues.ArmorK, new SpatialHash(CombatTestValues.CellSize),
                 new BrainSystem(), new AbilitySystem(), new MovementSystem(),
                 new AutoAttackSystem(), new ProjectileSystem(), new DeathSystem(),
                 new EffectSystem(), new RegenSystem());
@@ -274,6 +310,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
             public void Displace(in DisplaceRequest req) { }
+
+            // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+            public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+                => CombatPositioning.TeleportBehind(unit, target);
 
             public void DealDamage(in DamageRequest req) { }
             public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) { }

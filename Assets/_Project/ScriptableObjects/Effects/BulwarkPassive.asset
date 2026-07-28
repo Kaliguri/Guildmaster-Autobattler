@@ -30,5 +30,6 @@ MonoBehaviour:
     - rid: 5615026876324511841
       type: {class: BulwarkComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
+        _maxCharges: 2
         _internalCooldownSeconds: 5
         _shieldEffect: {fileID: 11400000, guid: 5e2ea10d9cc93654f81a3295b779ed87, type: 2}

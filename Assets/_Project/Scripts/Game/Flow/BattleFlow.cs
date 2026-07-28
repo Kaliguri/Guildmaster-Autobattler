@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
 using Guildmaster.Core.Players;
 using Guildmaster.Data.Definitions;
-using Guildmaster.Game.Services;
 using UnityEngine;
 
 namespace Guildmaster.Game.Flow
@@ -18,7 +17,6 @@ namespace Guildmaster.Game.Flow
     public sealed class BattleFlow : IEventFlow
     {
         private readonly BattlePresetData _preset;
-        private readonly ISceneLoader     _scenes;
         private readonly IBattleSession   _session;
         private readonly ILocalPlayer     _localPlayer;
         private readonly Func<bool>       _tryConsumeRestart;
@@ -27,11 +25,10 @@ namespace Guildmaster.Game.Flow
         /// Спросить пул перезапусков акта (реш. №65): вернуть true и списать одну попытку, если можно переиграть.
         /// null = без перезапусков (legacy dev-бой). Заменяет прежний фикс-счётчик на бой (техдолг).
         /// </param>
-        public BattleFlow(BattlePresetData preset, ISceneLoader scenes, IBattleSession session,
+        public BattleFlow(BattlePresetData preset, IBattleSession session,
                           ILocalPlayer localPlayer, Func<bool> tryConsumeRestart = null)
         {
             _preset            = preset;
-            _scenes            = scenes;
             _session           = session;
             _localPlayer       = localPlayer;
             _tryConsumeRestart = tryConsumeRestart;
@@ -45,7 +42,7 @@ namespace Guildmaster.Game.Flow
                 return EventResult.Aborted;
             }
 
-            // Persist-мир: боевой скоуп уже жив (BattleScene загружена на буте и не выгружается). «Запуск боя»
+            // Persist-мир: боевой скоуп уже жив (сцена боевых систем загружена на буте и не выгружается). «Запуск боя»
             // = команда в живой sim (доспавн врагов + снятие паузы), а не загрузка сцены. RequestLaunch взводит
             // ожидание исхода сам. false = скоуп ещё не поднят (сбой бута) → Aborted.
             if (!_session.RequestLaunch(_preset))
@@ -68,13 +65,23 @@ namespace Guildmaster.Game.Flow
                 outcome = await _session.WaitOutcomeAsync(ctx.Cancellation);
             }
 
-            // Persist-мир: бой кончился — вернуть арену во вне-боевое состояние (враги прочь, отряд к строю,
-            // пауза). Скоуп не выгружается, поэтому чистка явная, а не через смерть сцены.
-            _session.RequestReset();
-
+            // Арену здесь НЕ чистим: бой кончился, но игрок ещё на узле (досмотр добивания, награда) и должен
+            // видеть поле. Чистку (враги прочь, отряд к строю, пауза) зовёт владелец узла — BattleNodeFlow, когда
+            // игрок с узла уходит. Фазу Aftermath на исходе выставляет боевой скоуп (BattleBootstrap).
             bool won = Won(outcome);
             Debug.Log($"[BattleFlow] - бой '{_preset.Id}' завершён: {outcome} → {(won ? "Completed" : "Defeated")}");
             return won ? EventResult.Completed : EventResult.Defeated;
+        }
+
+        /// <summary>
+        /// Дождаться исхода боя, переигранного НА МЕСТЕ (dev-R после конца боя), и смапить как <see cref="Run"/>.
+        /// Запуск здесь не наш: поле уже пере-поставила сессия, нам остаётся дождаться нового приговора.
+        /// Пул перезапусков акта не тратится — это отладочный откат, а не проигрыш.
+        /// </summary>
+        public async UniTask<EventResult> AwaitReplayOutcome(RunContext ctx)
+        {
+            BattleOutcome outcome = await _session.WaitOutcomeAsync(ctx.Cancellation);
+            return Won(outcome) ? EventResult.Completed : EventResult.Defeated;
         }
 
         // Победа = победила МОЯ команда. Ничья победой не считается → для игрока это поражение (ретрай).

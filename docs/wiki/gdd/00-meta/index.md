@@ -2,16 +2,51 @@
 title: "Meta - Index"
 order: 0
 status: living
+updated: 2026-07-26
 ---
 
 Карта геймдизайн-документации (MOC). Порядок глав задаётся полем `order` во frontmatter;
 имена файлов — латинские слаги, отображаемое имя — `title`. Ведение — контур скилла `gdd-scribe`.
 
+## Дашборд готовности (авто)
+
+> [!info] Требует плагина Dataview
+> Сводки считаются автоматически по `status`/`updated` из frontmatter. Легенда статусов — в конце страницы.
+> Механическую проверку шапок гоняет `scripts/check-wiki-frontmatter.ps1` (CI: workflow «Docs Lint»).
+
+### Сводка по статусам
+
+```dataview
+TABLE length(rows) AS "Доков"
+FROM "gdd"
+WHERE file.name != "index"
+GROUP BY status AS "Статус"
+SORT key ASC
+```
+
+### Требует внимания (needs_review / draft)
+
+```dataview
+TABLE status AS "Статус", updated AS "Обновлён"
+FROM "gdd"
+WHERE (status = "needs_review" OR status = "draft") AND file.name != "index"
+SORT updated ASC, file.name ASC
+```
+
+### Без даты обновления (свежесть неизвестна)
+
+```dataview
+TABLE status AS "Статус"
+FROM "gdd"
+WHERE !updated AND file.name != "index"
+SORT file.name ASC
+```
+
 ## Сокращения
 
 | Сокращение | Полное название |
 |---|---|
-| **ГД** | Гильдмастер |
+| **ГД** | Геймдизайн (ГД-решение, ГД-документация). **Роль игрока пишется словом — «Гильдмастер»**, сокращение за ней не закреплено |
 | **«Сосуд»** | Участник гильдии, носитель Реликвий (Vessel). Термин всегда в кавычках «». |
 | **Реликвия** | Реликвия героя — памятная вещь, хранящая силу героя |
 
@@ -28,17 +63,26 @@ status: living
 ## 10 · Видение (`10-vision/`)
 
 - [[vision|Vision - Overview]] — чем игра является: pitch, столпы, core loop.
-- [[pillars|Vision - Pillars]] — 4 столпа как фильтр всех решений.
+- [[pitch|Vision - Pitch]] — **сводный срез концепции 2026-07-19**; при расхождении с vision/concept главнее он.
+- [[pillars|Vision - Pillars]] — **5 столпов** как фильтр всех решений.
 - [[concept|Vision - Concept]] — жанр, ключевая идея, игровой цикл.
 - [[lore|Vision - Lore]] — сеттинг и предыстория мира.
-- [[guildmaster|Vision - Guildmaster]] — роль игрока: стартовый набор, стиль гильдии (в бою не участвует).
+- [[guildmaster|Vision - Guildmaster & Captain]] — две разведённые сущности: **Гильдмастер** — роль игрока (руководит гильдией, в бою не участвует); **Капитан** — боевая сущность забега (стартовый набор Реликвий, гильдие-широкие бонусы, стиль).
 - [[difficulty-skill|Vision - Difficulty & Skill]] — три оси, модель рандома, правила честности.
 - [[visual-direction|Vision - Visual Direction]] — визуальный опыт и дорожная карта: стиль, пост-процесс, атмосфера, свет, переходы, gamefeel.
+- [[character-animation|Vision - Character Animation]] — скелетка: два слоя движения, три оси переиспользования, инструмент, слои Animator (план, отложено).
+- [[gdd/10-vision/vfx-color|Vision - VFX Color]] — цвет боевых эффектов: яркость щедро, насыщенность как валюта; главный цвет и палитра разброса; семьи цветов героев и врагов.
+- [[audio-subbuses|Vision - Audio Sub-buses]] — под-шины FMOD как ранний шов микса.
+
+**Бэклоги подачи** (сырые каталоги идей, питают `visual-direction`):
+[[backlog-gamefeel|Gamefeel]] · [[backlog-vfx-particles-shaders|VFX]] · [[backlog-ui-juice|UI Juice]] ·
+[[backlog-atmosphere-light-post|Свет, пост, атмосфера]] · [[backlog-audio-sfx|Audio & SFX]].
 
 ## 20 · Бой (`20-combat/`)
 
 - [[combat-system|Combat - System]] — автобой, типы боёв, подготовка и итог.
 - [[stats|Combat - Stats]] — словарь и смысл боевых статов.
+- [[positioning|Combat - Positioning]] — слоты вокруг цели, бонус за тыл, удержание линии танком, поведение классов (круг вердиктов закрыт 2026-07-26).
 - [[effects|Combat - Effects]] — каталог эффектов + идентичность стихий и сродств.
 
 ## 30 · Забег и мета (`30-run-meta/`)
@@ -46,19 +90,29 @@ status: living
 - [[injuries-mettle|Run - Injuries & Mettle]] — ось истощения «Сосуда».
 - [[procedural-lore|Run - Procedural Lore]] — сид-генерируемая личность.
 - [[meta-progression|Run - Meta Progression]] — экономика забега, реворд-ramp, левел реликвий.
+- [[vessel-progression|Run - Vessel Progression]] — уровни «Сосуда» в забеге: статы, Судьбы-квесты, Обеты.
 - [[events-minigames|Run - Events & Minigames]] — карта, события, мини-игры.
+- [[guild-development|Run - Guild Development]] — Слой 3: дом, ветераны, смертность, книга гильдии.
 
 ## 40 · Контент (`40-content/`)
 
-- [[relics-overview|Content - Relics]] — редкость, типы; Судьбы и перки. Карточки — [[relics/index|Content - Relics · каталог]].
+- [[relics-overview|Content - Relics]] — редкость, типы, боевой класс; Судьбы и перки. Карточки — [[relics/index|Relic - Catalog]].
 - [[items-banners|Content - Items & Banners]] — предметы (Vessel) и Знамёна (Party): слоты, авто-триггеры.
-- Ростер — [[roster/index|Roster - Overview]].
-- Враги — [[enemies/index|Enemies - Catalog]] · [[enemies/factions/index|Factions - Index]].
+  Карточки — [[gdd/40-content/items/fey-cloak|Fey Cloak]] · [[gdd/40-content/items/common-items|Common Items]] · [[banners|Content - Banners]].
+- **Методички авторинга** — [[gdd/40-content/authoring/index|Content - Authoring]]: как заводить
+  [[gdd/40-content/authoring/unit|юнита]], [[gdd/40-content/authoring/unit-relic|реликвию]],
+  [[gdd/40-content/authoring/unit-enemy|врага]], [[gdd/40-content/authoring/effect|эффект]],
+  [[gdd/40-content/authoring/item|предмет]], [[gdd/40-content/authoring/relic-upgrades|улучшения]].
+- Ростер — [[roster/index|Roster - Overview]] · [[gdd/roster/tag-reference|Справочник тегов]] ·
+  [[gdd/roster/unit-tag-glossary|Глоссарий доп-тегов]] · [[gdd/roster/relic-tag-assignments|Раскладка тегов]].
+- Враги — [[enemies/index|Enemies - Catalog]] · [[enemies/species/index|Species - Index]].
 
 ## 50 · Со-режим и UX (`50-modes-ux/`)
 
 - [[multiplayer|Modes - Multiplayer]] — кооператив, распределение «Сосудов».
+- [[proving-grounds|Modes - Proving Grounds]] — Ристалище: площадка вне забега, где смотрят бой.
 - [[controls|Modes - Controls]] — раскладка клавиш (техника ввода — в техчасти).
+- [[ui-feedback|Modes - UI Feedback]] — общие правила отклика интерфейса (недоступные действия и т.п.).
 
 ## Research (`../../research/`)
 

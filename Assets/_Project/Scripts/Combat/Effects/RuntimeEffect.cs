@@ -1,4 +1,5 @@
 using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Stats;
 
 namespace Guildmaster.Combat.Effects
 {
@@ -8,13 +9,55 @@ namespace Guildmaster.Combat.Effects
     /// <see cref="EffectData"/> — те шарятся между всеми носителями эффекта и обязаны быть
     /// stateless (вики «12» §2.2, «6» §5).
     /// </summary>
-    public sealed class RuntimeEffect
+    public sealed class RuntimeEffect : IModifierSource
     {
         /// <summary>Иммутабельное определение.</summary>
         public EffectData Def;
 
-        /// <summary>Кто наложил — атрибуция урона/исцеления, скейл потенции, триггеры.</summary>
+        /// <summary>
+        /// Имя, под которым эффект показывается игроку в разборе стата («+12 (Ярость)»).
+        /// Эффект — основной источник стат-модификаторов в бою, поэтому именно он делает
+        /// разбор читаемым; безымянные источники в тултипе схлопываются в «прочее».
+        /// </summary>
+        public string ModifierSourceLocKey => ContentKeys.NameKey(Def);
+
+        /// <summary>Кто наложил ПЕРВЫМ — скейл потенции (снимок заморожен, вики «11» §5.1) и триггеры.</summary>
         public RuntimeUnit Source;
+
+        /// <summary>
+        /// Кто и сколько раз подкрепил этот эффект — по нему делится атрибуция периодики (реш. Макса
+        /// 2026-07-26: «делить пропорционально вкладу в стаки»). Экземпляр эффекта живёт ОДИН на цели,
+        /// поэтому вопрос «чей это урон» решается здесь, а не разведением экземпляров: горение, которое
+        /// вдвоём поддерживают двое, приносит каждому свою половину тика.
+        /// <para>Два параллельных списка вместо словаря: вкладчиков единицы, порядок = порядок наложения,
+        /// а значит обход детерминирован — на нём стоит чек-сумма.</para>
+        /// </summary>
+        public readonly System.Collections.Generic.List<RuntimeUnit> ContributorSources = new();
+
+        /// <summary>Вес вкладчика: сколько раз он наложил или подкрепил эффект. Параллелен <see cref="ContributorSources"/>.</summary>
+        public readonly System.Collections.Generic.List<int> ContributorWeights = new();
+
+        /// <summary>Сумма весов — знаменатель доли. 0 = вкладчиков нет (эффект собран вручную в тесте).</summary>
+        public int TotalContribution
+        {
+            get
+            {
+                int sum = 0;
+                for (int i = 0; i < ContributorWeights.Count; i++) sum += ContributorWeights[i];
+                return sum;
+            }
+        }
+
+        /// <summary>Засчитать наложение/подкрепление источнику: первое — заводит вкладчика, повторное — растит вес.</summary>
+        public void AddContribution(RuntimeUnit source)
+        {
+            for (int i = 0; i < ContributorSources.Count; i++)
+            {
+                if (ReferenceEquals(ContributorSources[i], source)) { ContributorWeights[i]++; return; }
+            }
+            ContributorSources.Add(source);
+            ContributorWeights.Add(1);
+        }
 
         /// <summary>Остаток длительности в тиках. <c>-1</c> = постоянный (пассивка), <c>0</c> = мгновенный.</summary>
         public int RemainingTicks;
@@ -56,6 +99,16 @@ namespace Guildmaster.Combat.Effects
         /// (≤ CurrentTick = готов). Независимая перезарядка. null у эффектов без зарядов.
         /// </summary>
         public int[] ChargeReadyTicks;
+
+        /// <summary>
+        /// Служебный таймер компонента: абсолютный тик, на котором ему пора сработать. Нужен там, где
+        /// собственный ритм эффекта не совпадает ни с длительностью, ни с периодом тика — например
+        /// сход «Углей» по ускоряющейся кривой. Сверяется с <c>ctx.Combat.CurrentTick</c>.
+        /// </summary>
+        public int TimerTick;
+
+        /// <summary>Текущий шаг служебного таймера в тиках (для кривых, где интервал меняется по ходу).</summary>
+        public int TimerIntervalTicks;
 
         /// <summary>Постоянный эффект (пассивка) — не истекает по таймеру.</summary>
         public bool IsPermanent => RemainingTicks < 0;

@@ -13,6 +13,13 @@ namespace Guildmaster.Combat.Effects.Components
     /// <see cref="EffectTag.KnockUp"/>), где смещённый — САМ носитель (конец собственного рывка, по команде).
     /// В этот момент монах уже вплотную к цели → отталкивает ближайшего врага «от себя вперёд» + «ядро» по
     /// линии. Конец этого отбрасывания (смещённый = враг) поймает <see cref="VortexEntryComponent"/> → телепорт.
+    /// <para><b>Числа:</b> <c>_displaceDistance</c> — насколько далеко летит отброшенный, мировые
+    /// единицы; <c>_displaceTicks</c> — за сколько тиков (12 при 30 Гц ≈ 0.4 с полёта: чем дольше,
+    /// тем «тяжелее» смотрится); <c>_displaceDamageMult</c> — множитель урона от удара телом;
+    /// <c>_displaceWidth</c> — ширина полосы, которую сносит летящее тело; <c>_chainDistance</c> и
+    /// <c>_chainTicks</c> — то же для цепного отбрасывания тех, кого задело по пути.</para>
+    /// <para><b>Когда срабатывает:</b> в конце СОБСТВЕННОГО рывка носителя — это третья фаза комбо
+    /// (рывок → фиксация → отбрасывание → телепорт), и следующую фазу поднимет уже другой компонент.</para>
     /// </summary>
     [Serializable]
     public sealed class WhirlDashLandingComponent : IReactiveComponent
@@ -70,7 +77,7 @@ namespace Guildmaster.Combat.Effects.Components
                 victim, monk, dir, _displaceDistance, _displaceTicks,
                 cannonball: true, damage: dmg, school: school, width: _displaceWidth,
                 affinity: monk.Affinity,
-                kind: DisplaceKind.Knockback, chainDistance: _chainDistance, chainTicks: _chainTicks));
+                chainDistance: _chainDistance, chainTicks: _chainTicks));
         }
 
         // Ближайший к точке <paramref name="from"/> живой враг монаха (тай-брейк по Id — детерминизм), кроме

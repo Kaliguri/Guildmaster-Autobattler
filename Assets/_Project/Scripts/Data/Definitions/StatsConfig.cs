@@ -20,13 +20,22 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private float _attackSpeedMin = 0.1f;
         [SerializeField] private float _attackSpeedMax = 2.5f;
 
+        [Header("Ресурс")]
+        [Tooltip("Сколько ресурса капает в секунду — одинаково у всех (решение 2026-07-27). При запасе 100 " +
+                 "полная шкала = 20 секунд, а темп способности читается как «стоимость ÷ это число».")]
+        [SerializeField] private float _resourceRegenPerSecond = 5f;
+
         [Header("Stat defaults (override; пусто = натуральный дефолт)")]
-        [Tooltip("Явные дефолты статов. Если стата нет в списке — берётся натуральный дефолт (1.0 для эффективностей и Size, иначе 0).")]
+        [Tooltip("Явные дефолты статов. Если стата нет в списке — берётся натуральный дефолт (1.0 для эффективностей и Size, иначе 0).\n\n" +
+                 "MaxHP и MoveSpeed здесь ЗАПРЕЩЕНЫ: их базу задаёт боевой класс (ГДД «Боевая система»), " +
+                 "и ClassBalanceConfig кладёт её первой Override-группой — то есть значение отсюда всё равно " +
+                 "не доживало до юнита, но при чтении конфига выглядело правдой. Охраняется ContentValidationTests.")]
         [SerializeField] private StatDefault[] _defaults = Array.Empty<StatDefault>();
 
         public float ArmorConstantK => _armorConstantK;
         public float AttackSpeedMin => _attackSpeedMin;
         public float AttackSpeedMax => _attackSpeedMax;
+        public float ResourceRegenPerSecond => _resourceRegenPerSecond;
 
         /// <summary>Базовое (доmodifier) значение стата: явный override из ассета или натуральный дефолт.</summary>
         public float GetDefault(StatType stat)

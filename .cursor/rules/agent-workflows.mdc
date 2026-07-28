@@ -45,30 +45,14 @@ git add Assets/_Project/Scripts/Core/IUnit.cs
 git add Assets/_Project/Scripts/Core/IUnit.cs.meta
 ```
 
-## Unity MCP — текущая версия
+## Unity MCP — группы инструментов
 
-Используется [CoplayDev/unity-mcp](https://github.com/CoplayDev/unity-mcp): сервер `mcpforunityserver==9.7.1` (`uvx` → `mcp-for-unity`, транспорт **`stdio`**), server ID `unityMCP` в корневом `.mcp.json`. Редакторный пакет `com.coplaydev.unity-mcp`, мост StdioBridgeHost на порту `6400`. Коннект проверяется ресурсом `mcpforunity://instances`.
+Установка, версии и проверка коннекта описаны в `CLAUDE.md` (раздел «MCP-инструменты») — здесь
+только то, что нужно делать по ходу задачи.
 
-Основные инструменты (отличаются от старого `com.gamelovers.mcp-unity`):
-
-| Старый инструмент | Новый инструмент |
-|---|---|
-| `recompile_scripts` | `refresh_unity` (compile: "request") |
-| `get_console_logs` | `read_console` |
-| `run_tests_in_editor` | `run_tests` + `get_test_job` (async) |
-| `get_scene_hierarchy` | `manage_scene` (action: "get_hierarchy") |
-
-### Установленные рекомендуемые зависимости
-
-MCP for Unity поддерживает группы инструментов (`tool groups`). По умолчанию включена только группа `core`. Остальные активируются через `manage_tools(action="activate", group="<name>")` на время сессии.
-
-В проекте установлены все рекомендуемые зависимости:
-
-| Зависимость | Версия | Что разблокирует |
-|---|---|---|
-| `com.unity.cinemachine` | 3.1.6 | Tier 2 camera tools: brain, body/aim/noise pipeline, extensions, blending, 7 пресетов камер |
-| `com.unity.probuilder` | 6.0.9 | Группа `probuilder`: 3D-моделирование, 12 типов фигур, редактирование face/edge/vertex |
-| Roslyn DLLs | Microsoft.CodeAnalysis v5.0 | Полная семантическая валидация C# в `validate_script` (определяет `USE_ROSLYN` в Scripting Define Symbols; DLL лежат в `Assets/Plugins/Roslyn/`) |
+MCP for Unity держит инструменты группами (`tool groups`), и по умолчанию включена только `core`.
+Остальные активируются на время сессии. Зависимости под них в проекте уже стоят: Cinemachine даёт
+камерные инструменты, ProBuilder — свою группу, Roslyn — семантическую валидацию в `validate_script`.
 
 **Как активировать нужную группу в начале задачи:**
 ```

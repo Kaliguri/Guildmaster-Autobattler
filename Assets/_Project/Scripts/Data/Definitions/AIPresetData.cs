@@ -13,10 +13,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Параметризованный профиль поведения (Filter/Score/Override/Retreat/Kite).")]
         [SerializeField] private AIProfile _profile = new AIProfile();
 
-        [Tooltip("Каким реликвиям подходит (для пикеров/валидации).")]
-        [SerializeField] private TagData[] _archetypeTags;
-
         public AIProfile Profile => _profile;
-        public TagData[] ArchetypeTags => _archetypeTags;
+
+        // Списка «каким реликвиям подходит» здесь больше нет: он был пуст во ВСЕХ пресетах и не читался
+        // ни пикером, ни валидацией. Теги юнита живут в UnitData.InfoTags и резолвятся UnitTagResolver —
+        // второй список тегов рядом с ним только разъехался бы (аудит 2026-07-26, волна 2).
     }
 }

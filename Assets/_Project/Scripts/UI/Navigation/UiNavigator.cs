@@ -22,16 +22,25 @@ namespace Guildmaster.UI
     {
         private readonly IInputService _input;
         private readonly IBattleClock _clock;
+        // Звук открытия/закрытия экранов: одно место на всю игру. Может быть null (EditMode-тесты
+        // конструируют навигатор без звука) — все вызовы через ?.
+        private readonly UiSoundSystem _sound;
         private readonly List<UiScreen> _stack = new(); // [0] низ, [last] верх
+
+        // Подписки на отмену живут ровно столько, сколько экран. Токен здесь — обычно токен ЗАБЕГА, то есть
+        // он переживает десятки экранов: пока регистрацию не снять, отменённый callback держит и её, и сам
+        // экран до конца акта (аудит 2026-07-26, R1-19/R1-61).
+        private readonly Dictionary<UiScreen, CancellationTokenRegistration> _cancelHooks = new();
 
         private VisualElement _screensLayer;
         private VisualElement _modalLayer;
         private UiScreenContext _context;
 
-        public UiNavigator(IInputService input, IBattleClock clock)
+        public UiNavigator(IInputService input, IBattleClock clock, UiSoundSystem sound = null)
         {
             _input = input;
             _clock = clock;
+            _sound = sound;
             // K8 (план II.3): смена фазы боя → пересчёт глушения/контекста. Навигатор — ЕДИНСТВЕННЫЙ писатель
             // контекста; боевой слой больше не зовёт SetContext руками, только SetPhase → поднимает это событие.
             if (_clock != null) _clock.PhaseChanged += SyncInput;
@@ -41,6 +50,10 @@ namespace Guildmaster.UI
         public void Dispose()
         {
             if (_clock != null) _clock.PhaseChanged -= SyncInput;
+
+            foreach (CancellationTokenRegistration registration in _cancelHooks.Values)
+                registration.Dispose();
+            _cancelHooks.Clear();
         }
 
         /// <summary>
@@ -63,6 +76,12 @@ namespace Guildmaster.UI
         /// <summary>Верхний экран стека (null, если пусто).</summary>
         public UiScreen Top => _stack.Count > 0 ? _stack[_stack.Count - 1] : null;
 
+        /// <summary>
+        /// Сколько подписок на отмену сейчас держит навигатор. Диагностика: число обязано ходить за стеком,
+        /// а не расти на каждый показанный за забег экран. Смотрит тест и трейс.
+        /// </summary>
+        public int ActiveCancelHooks => _cancelHooks.Count;
+
         /// <summary>Открыт ли хоть один экран.</summary>
         public bool IsOpen => _stack.Count > 0;
 
@@ -78,6 +97,26 @@ namespace Guildmaster.UI
                 for (int i = _stack.Count - 1; i >= 0; i--)
                     if (_stack[i].Kind != ScreenKind.Modal) return _stack[i].ModeTag;
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Лежит ли на экране НЕПРОЗРАЧНАЯ страница (ивент, магазин, сундук, награда, исход, главное меню) —
+        /// та, что закрывает собой мир и потому требует под собой задник (QA #50). Sheet (карта/инвентарь/
+        /// тест-зона) и Modal (пауза/настройки) не считаются: сквозь них игрок смотрит на живой мир.
+        /// Скрытые страницы (под другой страницей) не в счёт — важно, что видно СЕЙЧАС.
+        /// </summary>
+        public bool HasVisiblePage
+        {
+            get
+            {
+                for (int i = 0; i < _stack.Count; i++)
+                {
+                    UiScreen s = _stack[i];
+                    if (s.Kind != ScreenKind.Page) continue;
+                    if (s.Root == null || s.Root.style.display.value == DisplayStyle.Flex) return true;
+                }
+                return false;
             }
         }
 
@@ -108,6 +147,7 @@ namespace Guildmaster.UI
 
             prevTop?.OnBlur();
             screen.OnEnter();
+            _sound?.PlayUi(screen.Kind == ScreenKind.Modal ? "modal_open" : "screen_open");
 
             SyncVisibility();
             SyncInput();
@@ -116,7 +156,7 @@ namespace Guildmaster.UI
             UiTrace.Log($"nav.Push {Desc(screen)} → [{StackDesc()}] suppress={_input?.GameplaySuppressed}");
 
             if (ct.CanBeCanceled)
-                ct.Register(() => RemoveScreen(screen)); // RemoveScreen идемпотентен (уже снят → no-op)
+                Hook(screen, ct.Register(() => RemoveScreen(screen))); // RemoveScreen идемпотентен (уже снят → no-op)
         }
 
         /// <summary>Снять верхний экран. Result-экран без выбора резолвится своим <c>DefaultResult</c>.</summary>
@@ -125,8 +165,10 @@ namespace Guildmaster.UI
             if (_stack.Count == 0) return;
             UiScreen top = _stack[_stack.Count - 1];
             _stack.RemoveAt(_stack.Count - 1);
+            Unhook(top);
             top.Root?.RemoveFromHierarchy();
             top.OnExit();
+            _sound?.PlayUi("screen_close");
 
             SyncVisibility();
             SyncInput();
@@ -159,6 +201,7 @@ namespace Guildmaster.UI
             _stack.Clear();
             foreach (UiScreen s in snapshot)
             {
+                Unhook(s);
                 s.Root?.RemoveFromHierarchy();
                 s.OnExit();
             }
@@ -189,9 +232,28 @@ namespace Guildmaster.UI
             Push(screen);
 
             if (ct.CanBeCanceled)
-                ct.Register(() => screen.ResolveDefaultIfPending());
+                Hook(screen, ct.Register(() => screen.ResolveDefaultIfPending()));
 
             return tcs.Task;
+        }
+
+        /// <summary>Запомнить подписку на отмену за экраном, сняв прежнюю, если она была.</summary>
+        private void Hook(UiScreen screen, CancellationTokenRegistration registration)
+        {
+            if (_cancelHooks.TryGetValue(screen, out CancellationTokenRegistration previous))
+                previous.Dispose();
+
+            _cancelHooks[screen] = registration;
+        }
+
+        /// <summary>Снять подписку экрана: он больше не существует, и токен не должен его удерживать.</summary>
+        private void Unhook(UiScreen screen)
+        {
+            if (screen == null) return;
+            if (!_cancelHooks.TryGetValue(screen, out CancellationTokenRegistration registration)) return;
+
+            registration.Dispose();
+            _cancelHooks.Remove(screen);
         }
 
         /// <summary>
@@ -204,14 +266,26 @@ namespace Guildmaster.UI
             if (_input == null) return;
             UiScreen top = Top;
             bool modal = top != null && top.Kind != ScreenKind.Sheet;
-            _input.GameplaySuppressed = modal;
-            _input.SetContext(modal ? InputContext.Menu : WorldContextOf(_clock != null ? _clock.Phase : BattlePhase.None));
+            // Только СВОЁ глушение: чужие источники (dev-консоль) держат его сами, и снимать его за
+            // них навигатор не вправе — иначе набор команд протекал бы в геймплей.
+            _input.SetSuppressed(Core.Input.InputSuppressSource.Ui, modal);
+
+            if (modal) { _input.SetContext(InputContext.Menu); return; }
+
+            // Карта акта — тоже «мир», но свой: её world-камера должна жить (пан/зум как в бою), боевых
+            // действий нет. Фаза боя тут ничего не скажет (карта вне боя → BattlePhase.None → камера мертва),
+            // поэтому контекст берём из верха стека по тегу режима. Это и есть заявленное «ввод = f(верх, фаза)».
+            if (top != null && top.ModeTag == UiScreen.MapModeTag) { _input.SetContext(InputContext.Map); return; }
+
+            _input.SetContext(WorldContextOf(_clock != null ? _clock.Phase : BattlePhase.None));
         }
 
         private static InputContext WorldContextOf(BattlePhase phase) => phase switch
         {
             BattlePhase.Deployment => InputContext.Deployment,
-            BattlePhase.Fighting => InputContext.Combat,
+            // Бой и передышка между узлами — один контекст: мир на экране, камера должна жить (осмотреть поле,
+            // досмотреть добивание, походить по арене). Боевые команды в Interlude исполнять некому — sim стоит.
+            BattlePhase.Fighting or BattlePhase.Interlude => InputContext.Combat,
             _ => InputContext.None,
         };
 
@@ -219,6 +293,8 @@ namespace Guildmaster.UI
         // снимает его вне зависимости от того, был он верхним или дорезолвлен из Pop/PopAll.
         private void RemoveScreen(UiScreen screen)
         {
+            Unhook(screen);
+
             int idx = _stack.IndexOf(screen);
             if (idx < 0) { UiTrace.Log($"nav.Remove {Desc(screen)} — УЖЕ СНЯТ (no-op)"); return; }
             _stack.RemoveAt(idx);
@@ -261,6 +337,7 @@ namespace Guildmaster.UI
         {
             bool pageAbove = false;  // выше есть непрозрачный Page → всё под ним скрыто
             bool sheetAbove = false; // выше есть Sheet (геймплей) → Page под ним скрыт (карта уходит)
+            bool scrimBelow = false; // ниже уже есть видимый Modal → его затемнения достаточно
             for (int i = _stack.Count - 1; i >= 0; i--)
             {
                 UiScreen s = _stack[i];
@@ -271,7 +348,40 @@ namespace Guildmaster.UI
                 if (s.Kind == ScreenKind.Page) pageAbove = true;
                 else if (s.Kind == ScreenKind.Sheet) sheetAbove = true;
             }
+
+            // Затемнение — РОВНО ОДНО на стек. Каждый Modal несёт свой scrim в .gm-screen, и настройки
+            // поверх паузы складывали два полупрозрачных слоя: фон темнел вдвое (наход. Макса, раунд 2).
+            // Скрим оставляем самому НИЖНЕМУ видимому Modal — он лежит ближе к геймплею, который и надо
+            // приглушить; всё, что выше, идёт без своего затемнения.
+            for (int i = 0; i < _stack.Count; i++)
+            {
+                UiScreen s = _stack[i];
+                if (s.Kind != ScreenKind.Modal || s.Root == null) continue;
+                VisualElement scrim = ScrimOf(s.Root);
+                if (scrim == null) continue;
+                bool visible = s.Root.style.display.value == DisplayStyle.Flex;
+                // SuppressScrim — намерение самого экрана («я подменяю панель, темнить нечего»).
+                // Учитываем его здесь, потому что класс scrimless принадлежит этому методу: раньше
+                // роутер вешал класс сам, и следующий же SyncVisibility его снимал.
+                bool scrimless = scrimBelow || s.SuppressScrim;
+                scrim.EnableInClassList(ScrimlessClass, scrimless);
+                // Экран без своего затемнения не может служить «затемнением снизу» для тех, кто выше.
+                if (visible && !scrimless) scrimBelow = true;
+            }
         }
+
+        /// <summary>
+        /// Элемент, который РИСУЕТ затемнение экрана. Это не всегда сам Root: билдеры роутера отдают
+        /// <c>TemplateContainer</c> от <c>CloneTree()</c>, а класс <c>.gm-screen</c> (и с ним скрим)
+        /// висит на элементе ВНУТРИ. Вешать модификатор на контейнер бесполезно — затемнение остаётся.
+        /// </summary>
+        private static VisualElement ScrimOf(VisualElement root)
+            => root.ClassListContains(ScreenClass) ? root : root.Q(className: ScreenClass);
+
+        private const string ScreenClass = "gm-screen";
+
+        /// <summary>Модалка без собственного затемнения: скрим уже даёт модалка под ней.</summary>
+        private const string ScrimlessClass = "gm-screen--scrimless";
 
         private void FocusTop()
         {

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{aad6684a-acdd-42ee-8942-fc53ecdbfc33}">
+		<property name="assetPath">
+			<value>evade_03.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.3533560090702948</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{780146db-d415-4c07-a500-d9f5da0d997f}</destination>
+		</relationship>
+	</object>
+</objects>

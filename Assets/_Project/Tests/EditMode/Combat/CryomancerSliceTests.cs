@@ -51,8 +51,12 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             var system      = new ProjectileSystem();
             var projectiles = new List<Projectile> { proj };
+            // Конец тика доигрываем руками: система гоняется в изоляции, а тег виден только после коммита.
             for (int t = 0; t < 32 && (enemy.EffectTagMask & EffectTag.Frozen) == 0; t++)
+            {
                 system.Tick(projectiles, units, ctx, SimConstants.TickDelta, ArenaBounds.Unbounded);
+                EffectSystem.CommitPending(enemy);
+            }
 
             Assert.AreNotEqual(EffectTag.None, enemy.EffectTagMask & EffectTag.Frozen, "Снаряд при попадании вешает «Заморозку»");
             Assert.AreEqual(1, ctx.DamageCalls.Count, "Урон снаряда тоже применён (on-hit не заменяет урон)");
@@ -74,7 +78,10 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             var system = new AutoAttackSystem();
             for (int t = 0; t < 64 && (enemy.EffectTagMask & EffectTag.Frozen) == 0; t++)
+            {
                 system.Tick(units, ctx, SimConstants.TickDelta);
+                EffectSystem.CommitPending(enemy);   // конец тика: наложенный удар-эффект становится виден
+            }
 
             Assert.AreNotEqual(EffectTag.None, enemy.EffectTagMask & EffectTag.Frozen, "Мили-АА с AutoAttackEffects вешает эффект на цель");
         }
@@ -96,9 +103,13 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData frozen = MakeFrozen();
             ctx.ApplyEffect(frozenNear, frozen, caster);
             ctx.ApplyEffect(frozenFar,  frozen, caster);
+            // Заморозка ставится тиком РАНЬШЕ ульты: по закону видимости условие каста читает
+            // маску тегов на начало тика, поэтому предусловие надо проявить.
+            foreach (RuntimeUnit u in units) EffectSystem.CommitPending(u);
 
             caster.Abilities.Add(new AbilityRuntime(MakeIceChains()));
             bool cast = new AbilitySystem().TryCast(caster, 0, units, ctx);
+            foreach (RuntimeUnit u in units) EffectSystem.CommitPending(u);
 
             Assert.IsTrue(cast);
             Assert.AreNotEqual(EffectTag.None, frozenNear.EffectTagMask & EffectTag.Control, "Ближний замороженный оглушён");
@@ -118,10 +129,12 @@ namespace Guildmaster.Tests.EditMode.Combat
             var units = new List<RuntimeUnit> { caster, enemy };
 
             ctx.ApplyEffect(enemy, MakeFrozen(), caster);
+            EffectSystem.CommitPending(enemy);   // заморозка легла тиком раньше ульты
             Assert.AreNotEqual(EffectTag.None, enemy.EffectTagMask & EffectTag.Frozen, "Предусловие: цель заморожена");
 
             caster.Abilities.Add(new AbilityRuntime(MakeIceChains()));
             new AbilitySystem().TryCast(caster, 0, units, ctx);
+            EffectSystem.CommitPending(enemy);
 
             Assert.AreEqual(EffectTag.None, enemy.EffectTagMask & EffectTag.Frozen, "«Заморозка» снята (конверсия)");
             Assert.AreNotEqual(EffectTag.None, enemy.EffectTagMask & EffectTag.Control, "На месте «Заморозки» — стан");

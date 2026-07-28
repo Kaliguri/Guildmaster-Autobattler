@@ -25,7 +25,11 @@ namespace Guildmaster.Balance.Editor
             int cap = SimBench.TicksFromSeconds(scenario.MaxSeconds);
             BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, cap);
 
-            var headers = new List<string> { "Side", "Unit", "DmgDealt", "DmgAuto", "DmgAbility", "DmgDoT", "DmgTaken", "Healing", "Died", "DeathSec" };
+            var headers = new List<string>
+            {
+                "Side", "Unit", "DmgDealt", "DmgAutoPhys", "DmgAutoMagic", "DmgAbility", "DmgDoT", "DmgVuln",
+                "DmgSelf", "DmgTaken", "Healing", "Died", "DeathSec", "HpLeft%",
+            };
             var table = new List<IReadOnlyList<object>>();
             foreach (UnitMetric m in report.Units)
             {
@@ -34,19 +38,25 @@ namespace Guildmaster.Balance.Editor
                     m.Team == 0 ? "A" : "B",
                     m.Label,
                     m.DamageDealt,
-                    m.DamageAuto,
+                    m.DamageAutoPhysical,
+                    m.DamageAutoMagical,
                     m.DamageAbility,
                     m.DamagePeriodic,
+                    m.DamageFromVulnerability,
+                    m.SelfDamage,
                     m.DamageTaken,
                     m.HealingDone,
                     m.Died ? "yes" : "no",
                     m.Died ? (object)(m.DeathTick / (double)SimConstants.TickRate) : "-",
+                    100.0 * m.HpPctLeft,
                 });
             }
 
             string result = report.TimedOut ? "TIMEOUT" : report.Outcome.ToString();
             string notes = $"**Сценарий:** {scenario.name}. **Исход:** {result} за {report.Seconds:0.0} с. " +
-                           "Per-unit метрики боя A (team 0) vs B (team 1).";
+                           "Per-unit метрики боя A (team 0) vs B (team 1). DmgVuln — сколько урона добавили " +
+                           "уязвимости цели («Угли»); это часть DmgDealt, а не добавка к нему. " +
+                           "HpLeft% — остаток HP на конец боя.";
 
             string csv = ReportWriter.WriteCsv("scenario_" + Safe(scenario.name), headers, table);
             string md = ReportWriter.WriteMarkdown("scenario_" + Safe(scenario.name),

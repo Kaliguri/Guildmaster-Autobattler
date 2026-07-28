@@ -20,6 +20,13 @@ MonoBehaviour:
   _maxStacks: 1
   _cleanseTier: 0
   _unremovable: 0
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
   _components:
   - rid: 5615026976500744343
   _icon: {fileID: 0}
@@ -30,8 +37,11 @@ MonoBehaviour:
     - rid: 5615026976500744343
       type: {class: IgnitionComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _detonateTag: 4096
+        _detonateTag: 8192
+        _damagePerStack: 20
         _school: 1
+        _physicalSubtype: 0
+        _magicElement: 1
         _affinity: 0
         _onKillBuff: {fileID: 11400000, guid: c042764a4fd2cf348b303be4387734ff, type: 2}
         _onKillHealPctMissingHp: 0.25

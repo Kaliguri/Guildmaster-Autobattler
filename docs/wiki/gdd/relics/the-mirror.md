@@ -1,16 +1,19 @@
 ---
 title: "Relic - Unique - The Mirror (Doppelganger)"
+order: 120
 kind: character
 status: draft
+updated: 2026-07-26
 rarity: Уникальная
+combat_class: Наследует
 position: Наследует
 combat_range: Наследует
 attack_delivery:
   - Наследует
 physical_damage: []
-elemental_damage: []
+magical_damage: []
 affinity: []
-roles:
+playstyle:
   - Копировщик
 mechanics:
   - Копирование реликвии
@@ -30,7 +33,7 @@ needs_review: []
 ## Шаг 1. Общая инфа
 
 1. **Редкость:** Уникальная
-2. **Тип:** Уникальная
+2. **Тип:** Проклятая *(редкость — Уникальная, см. поле `rarity`; тип и редкость — разные оси)*
 3. Ресурс: нет
 4. Ближний/дальний/смешанный: наследует профиль скопированной реликвии
 

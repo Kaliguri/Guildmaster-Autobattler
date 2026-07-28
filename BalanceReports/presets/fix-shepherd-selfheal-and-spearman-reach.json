@@ -1,0 +1,11 @@
+{
+  "title": "Откат самовольного баффа ульты Пастыря + копьё бьёт на 2, а полоса до 4",
+  "edits": [
+    { "op": "setValue", "asset": "LightShepherd", "path": "_abilities.Array.data[0]._healFlat", "value": 100 },
+    { "op": "setValue", "asset": "LightShepherd", "path": "_abilities.Array.data[0]._healPctTargetMissingHp", "value": 0.08 },
+    { "op": "setValue", "asset": "LightShepherd", "path": "_abilities.Array.data[0]._selfHealFraction", "value": 0.25 },
+
+    { "op": "setStat", "asset": "IronSpearman", "stat": "AttackRange", "modOp": "Override", "value": 2 },
+    { "op": "setValue", "asset": "IronSpearman", "path": "_autoAttackLengthMult", "value": 2 }
+  ]
+}

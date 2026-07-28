@@ -1,17 +1,20 @@
 ---
 title: "Goblins - Elite - Goblin Wolfrider"
+order: 120
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Элита
-faction: Гоблины
-subfaction: Основные
+species: Гоблины
+combat_class: Убийца
+subspecies: Основные
 position: Фланг
 combat_range: Ближний
 attack_delivery:
   - Ближний бой
 physical_damage:
   - Колющий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Прорыв второй линии
 mechanics:
@@ -26,7 +29,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** элита.
-- **Фракция:** гоблины, основные.
+- **Вид:** гоблины. **Подвид:** основные.
 - **Позиция:** фланг.
 - **Ближний / дальний:** ближний.
 

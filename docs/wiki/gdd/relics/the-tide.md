@@ -1,19 +1,20 @@
 ---
 title: "Relic - Common - The Tide (Tidecaller)"
+order: 200
 kind: character
 status: draft
+updated: 2026-07-26
 rarity: Обычная
+combat_class: Поддержка
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:
   - Луч
 physical_damage: []
-elemental_damage:
+magical_damage:
   - Лёд
 affinity: []
-roles:
-  - Контроль
-  - Хил
+playstyle:
   - Баффер
   - Гибрид
 mechanics:
@@ -23,6 +24,8 @@ mechanics:
   - Взрыв
   - Отбрасывание
   - Замедление
+  - Контроль
+  - Хил
 gender: Не определено
 themes:
   - Мистика

@@ -2,6 +2,7 @@ using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using NUnit.Framework;
 using UnityEditor;
+using UnityEngine;
 
 namespace Guildmaster.Tests.EditMode.Content
 {
@@ -41,6 +42,80 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.AreEqual(d.KiteStrafeWeight,          s.KiteStrafeWeight,          1e-6f);
         }
 
+        /// <summary>
+        /// Дефолты полей SO — тоже <see cref="SimTuning.Default"/>, а не своя копия чисел.
+        /// <para>Прежняя страховка сравнивала ассет с кодом, и они совпадали; расходился ТРЕТИЙ владелец —
+        /// C#-инициализаторы <c>SimTuningConfig</c> (радиус тела 0.575 против играемых 0.3). Он невидим,
+        /// пока ассет уже существует, и выстреливает у того, кто создаст новый через Create Asset Menu
+        /// (аудит 2026-07-26, UA-3/AC-18/T-2).</para>
+        /// </summary>
+        [Test]
+        public void FreshSimTuningConfig_StartsFromCodeDefaults()
+        {
+            var fresh = ScriptableObject.CreateInstance<SimTuningConfig>();
+            try
+            {
+                SimTuning s = fresh.ToSnapshot();
+                SimTuning d = SimTuning.Default;
+
+                Assert.AreEqual(d.BodyRadiusPerSize,         s.BodyRadiusPerSize,         1e-6f);
+                Assert.AreEqual(d.SeparationStrength,        s.SeparationStrength,        1e-6f);
+                Assert.AreEqual(d.SeparationIterations,      s.SeparationIterations);
+                Assert.AreEqual(d.SeparationSameTeamScale,   s.SeparationSameTeamScale,   1e-6f);
+                Assert.AreEqual(d.ProjectileHitRadiusFactor, s.ProjectileHitRadiusFactor, 1e-6f);
+                Assert.AreEqual(d.ProjectileDespawnMargin,   s.ProjectileDespawnMargin,   1e-6f);
+                Assert.AreEqual(d.KiteFleeFactor,            s.KiteFleeFactor,            1e-6f);
+                Assert.AreEqual(d.GlobalSearchRadius,        s.GlobalSearchRadius,        1e-6f);
+                Assert.AreEqual(d.FleeThreatWeight,          s.FleeThreatWeight,          1e-6f);
+                Assert.AreEqual(d.FleeHomeWeight,            s.FleeHomeWeight,            1e-6f);
+                Assert.AreEqual(d.FleeWallWeight,            s.FleeWallWeight,            1e-6f);
+                Assert.AreEqual(d.FleeWallMargin,            s.FleeWallMargin,            1e-6f);
+                Assert.AreEqual(d.FleeThreatRadius,          s.FleeThreatRadius,          1e-6f);
+                Assert.AreEqual(d.KiteStrafeWeight,          s.KiteStrafeWeight,          1e-6f);
+            }
+            finally
+            {
+                Object.DestroyImmediate(fresh);
+            }
+        }
+
+        /// <summary>
+        /// Конфиг-ассет несёт ВСЕ поля своего класса, а не часть.
+        /// <para>Поле, добавленное в C# после того, как ассет был сохранён, в файл не попадает — Unity молча
+        /// подставляет код-дефолт при загрузке. Снаружи это выглядит как работающий конфиг, но владельцев у
+        /// значения становится двое: часть полей играет из ассета, часть из кода, и дизайнер, который правит
+        /// ассет, вторую часть не видит вовсе. У <c>GameConfig</c> так разъехалось 13 полей из 20, причём
+        /// единственное, что ассет всё-таки держал против кода (вместимость реликвий 12 против 8), кодовые
+        /// тесты продолжали проверять по коду (аудит 2026-07-26, T-8/CD-10/AC-17).</para>
+        /// </summary>
+        [TestCase(typeof(GameConfig))]
+        [TestCase(typeof(SimTuningConfig))]
+        [TestCase(typeof(StatsConfig))]
+        [TestCase(typeof(ClassBalanceConfig))]
+        public void ConfigAsset_CarriesEveryFieldOfItsClass(System.Type type)
+        {
+            string[] guids = AssetDatabase.FindAssets($"t:{type.Name}");
+            Assert.AreEqual(1, guids.Length, $"Ожидается ровно один ассет {type.Name}.");
+
+            string path = AssetDatabase.GUIDToAssetPath(guids[0]);
+            var asset = AssetDatabase.LoadAssetAtPath<Object>(path);
+            string yaml = System.IO.File.ReadAllText(path);
+
+            var missing = new System.Collections.Generic.List<string>();
+            SerializedProperty p = new SerializedObject(asset).GetIterator();
+            bool enterChildren = true;
+            while (p.NextVisible(enterChildren))
+            {
+                enterChildren = false;                       // только верхний уровень
+                if (p.name == "m_Script" || p.name.StartsWith("m_")) continue;
+                if (!yaml.Contains($"\n  {p.name}:")) missing.Add(p.name);
+            }
+
+            Assert.IsEmpty(missing,
+                $"{type.Name}: этих полей нет в ассете, значит они приезжают из кода — " +
+                $"пересохрани ассет: {string.Join(", ", missing)}");
+        }
+
         // --- §8 правило 5: диапазоны ---
 
         [Test]
@@ -71,7 +146,22 @@ namespace Guildmaster.Tests.EditMode.Content
             Assert.That(g.DefaultMusicVolume,  Is.InRange(0f, 1f));
             Assert.That(g.DefaultSfxVolume,    Is.InRange(0f, 1f));
             Assert.GreaterOrEqual(g.VesselItemSlots, 1);
-            Assert.IsFalse(string.IsNullOrEmpty(g.DefaultLocale), "GameConfig.DefaultLocale пуст.");
+            Assert.GreaterOrEqual(g.PartyBannerSlots, 1, "Знамён на отряд — минимум одно (ГДД: два).");
+            Assert.GreaterOrEqual(g.GuildSize, 1, "Гильдия не может быть пустой (ГДД: четверо).");
+            Assert.IsFalse(string.IsNullOrEmpty(g.StartingRelicId), "Стартовая реликвия не задана.");
+
+            // Экономика: инициализаторов у полей больше нет, значения живут только в ассете. Незаполненный
+            // ассет иначе прошёл бы молча — и забег стартовал бы с нулём золота и бесплатной лавкой.
+            Assert.Greater(g.StartGold, 0, "Стартовое золото забега — ноль.");
+            Assert.Greater(g.BattleGoldReward, 0, "Награда за бой — ноль.");
+            Assert.Greater(g.PriceCommon, 0, "Цена Common — ноль.");
+            Assert.Greater(g.PriceCursed, 0, "Цена Cursed — ноль.");
+            Assert.Greater(g.PriceDivine, 0, "Цена Divine — ноль.");
+            Assert.Greater(g.ShopRerollCost, 0, "Реролл витрины бесплатен — это не задумано.");
+            Assert.Greater(g.SellPercent, 0f, "Продажа реликвии не приносит ничего.");
+            Assert.GreaterOrEqual(g.RelicCapacityBase, 1, "Вместимость коллекции — ноль.");
+            Assert.GreaterOrEqual(g.RelicCapacityMax, g.RelicCapacityBase,
+                "Потолок вместимости ниже стартовой — апгрейд невозможен.");
         }
 
         private static T LoadSingle<T>() where T : UnityEngine.Object

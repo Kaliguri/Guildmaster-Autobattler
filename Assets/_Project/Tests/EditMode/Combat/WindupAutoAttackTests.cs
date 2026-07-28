@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Random;
@@ -335,6 +335,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void ReportAreaHit(in AreaHit hit) { }
             public void Dispel(in DispelRequest req) { }
             public void Displace(in DisplaceRequest req) { }
+
+            // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+            public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+                => CombatPositioning.TeleportBehind(unit, target);
             public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => AttackStarted++;
             public void NotifyAttackInterrupted(RuntimeUnit unit) => AttackInterrupted++;
 

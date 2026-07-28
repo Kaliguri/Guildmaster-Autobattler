@@ -2,6 +2,7 @@
 title: "Effect - Combo Rules"
 order: 32
 status: draft
+updated: 2026-07-18
 ---
 
 # Сборник: комбо-правила

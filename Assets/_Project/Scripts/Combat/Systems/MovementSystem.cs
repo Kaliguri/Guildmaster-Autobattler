@@ -13,9 +13,16 @@ namespace Guildmaster.Combat
     /// <see cref="RuntimeUnit.Positioning"/> (§9.7): Approach (Ф1), Kite (полоса дистанции),
     /// Retreat (побег через <see cref="FleeSteering"/>: от центроида врагов к своему тылу, с избеганием стен).
     /// Стрельба на ходу (§9.8) снимает рут замаха.
+    /// <para>
+    /// Шаг считается в ДВА прохода: сначала все намерения — от общего состояния мира на начало тика,
+    /// затем применение. См. <see cref="Tick"/>: одного прохода тут быть не может.
+    /// </para>
     /// </summary>
     public sealed class MovementSystem
     {
+        // Намеченные за проход позиции (по индексу юнита в списке) — применяются ПОСЛЕ обхода всех.
+        private Vector2[] _next = new Vector2[64];
+
         // Двухрадиусный гистерезис подхода (против троттлинга «бьёт/бежит»):
         //  • ВНЕШНИЙ радиус = reach (полная досягаемость). Пока юнит внутри него — он «в бою»: держит
         //    позицию и бьёт, НЕ пере-подбегает. Это гасит дёрганье, когда расталкивание чуть сдвигает
@@ -31,17 +38,34 @@ namespace Guildmaster.Combat
         /// <param name="units">Список всех юнитов в бою.</param>
         /// <param name="dt">Длительность тика (всегда <see cref="SimConstants.TickDelta"/>).</param>
         /// <param name="bounds">Границы поля: итоговая позиция клампится внутрь (<see cref="ArenaBounds.Unbounded"/> = без стен).</param>
+        /// <remarks>
+        /// ДВА ПРОХОДА, и это принципиально. Пока шаг ложился прямо в <c>Position</c> по ходу обхода, юнит
+        /// видел уже сдвинутыми тех, кто стоит в списке раньше него, и нетронутыми — тех, кто позже. Курс
+        /// на цель считался от разного состояния мира в зависимости от места в списке, а у зеркальных
+        /// сторон это место обратное: левая команда целилась в ещё не сдвинувшегося врага, правая — в уже
+        /// сдвинувшегося, вектор выходил чуть круче, и равные команды расходились с первого же тика
+        /// (пойман зондом: Y −0.5566 против −0.5543). Считаем намерения от ОДНОГО снимка мира, применяем
+        /// после обхода — та же правка, что уже сделана в <c>SeparationSystem</c>, и по той же причине.
+        /// <para>
+        /// <c>PreviousPosition</c> при расчёте ещё держит позицию начала ПРОШЛОГО тика — на этом стоит
+        /// оценка убегания цели (<c>TargetRecedeSpeedPerTick</c>): в первом проходе она читает шаг
+        /// прошлого тика, одинаковый для всех, а не «успел ли сосед сходить». Обновляется во втором.
+        /// </para>
+        /// </remarks>
         public void Tick(List<RuntimeUnit> units, float dt, in ArenaBounds bounds, in SimTuning tuning)
         {
+            if (_next.Length < units.Count) _next = new Vector2[units.Count];
+
+            // --- Проход 1: намерения. Мир не меняется, все читают одно и то же состояние. ---
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit unit = units[i];
+                _next[i] = unit.Position;   // по умолчанию остаёмся на месте
+
                 if (unit.IsDead) continue;
 
                 // В полёте (§9.9) юнита двигает DisplacementSystem — сам он не перемещается.
                 if (unit.DisplacedTicksRemaining > 0) continue;
-
-                unit.PreviousPosition = unit.Position;
 
                 // Контроль (корень/обездвиживание) — стоим на месте (вики «6» §5.3).
                 if (!unit.CanMove) continue;
@@ -66,15 +90,26 @@ namespace Guildmaster.Combat
                 float maxMove = moveSpeed * dt;
                 if (maxMove <= 0f) continue;
 
-                switch (unit.Positioning)
+                Vector2 moved = unit.Positioning switch
                 {
-                    case PositioningIntent.Kite:    MoveKite(unit, target, maxMove, bounds, in tuning); break;
-                    case PositioningIntent.Retreat: MoveRetreat(unit, units, maxMove, in bounds, in tuning); break;
-                    default:                        MoveApproach(unit, target, maxMove, in tuning); break;
-                }
+                    PositioningIntent.Kite    => MoveKite(unit, target, maxMove, bounds, in tuning),
+                    PositioningIntent.Retreat => MoveRetreat(unit, units, maxMove, in bounds, in tuning),
+                    _                         => MoveApproach(unit, target, maxMove, in tuning),
+                };
 
                 // Стены арены: не даём кайту/отступлению уйти за поле (вики «15» §7).
-                unit.Position = bounds.Clamp(unit.Position);
+                _next[i] = bounds.Clamp(moved);
+            }
+
+            // --- Проход 2: применение. Только здесь мир сдвигается. ---
+            for (int i = 0; i < units.Count; i++)
+            {
+                RuntimeUnit unit = units[i];
+                // Мёртвыми и летящими владеют другие системы — их интерполяцию не трогаем.
+                if (unit.IsDead || unit.DisplacedTicksRemaining > 0) continue;
+
+                unit.PreviousPosition = unit.Position;
+                unit.Position         = _next[i];
             }
         }
 
@@ -83,7 +118,7 @@ namespace Guildmaster.Combat
         /// (та же body-aware метрика, что у гейта автоатаки): движение подводит юнита ровно туда, откуда
         /// автоатака засчитает попадание, поэтому расталкивание не выбивает его из радиуса «вхолостую».
         /// </summary>
-        private static void MoveApproach(RuntimeUnit unit, RuntimeUnit target, float maxMove, in SimTuning tuning)
+        private static Vector2 MoveApproach(RuntimeUnit unit, RuntimeUnit target, float maxMove, in SimTuning tuning)
         {
             float reach       = CombatPositioning.AttackReachCenter(unit, target, in tuning); // внешний радиус
             Vector2 toTarget  = target.Position - unit.Position;
@@ -98,18 +133,17 @@ namespace Guildmaster.Combat
             if (distSq <= reach * reach)
             {
                 int windup = AttackTiming.WindupTicksFor(unit);
-                if (CombatPositioning.CanLandWindup(unit, target, windup, in tuning)) return;
+                if (CombatPositioning.CanLandWindup(unit, target, windup, in tuning)) return unit.Position;
             }
 
             // Сближение к ВНУТРЕННЕМУ радиусу (с запасом внутрь, чтобы не выскочить обратно тут же —
             // и, при догоне убегающего, чтобы рутовый замах докрутил из положения внутри reach).
             float stop = reach * ApproachStopFactor;
             float dist = Mathf.Sqrt(distSq);
-            if (dist <= stop) return;                        // уже ближе внутреннего радиуса — не наезжаем в тело
-            if (dist - stop <= maxMove)
-                unit.Position = target.Position - toTarget / dist * stop;
-            else
-                unit.Position += toTarget / dist * maxMove;
+            if (dist <= stop) return unit.Position;           // уже ближе внутреннего радиуса — не наезжаем в тело
+            return dist - stop <= maxMove
+                ? target.Position - toTarget / dist * stop
+                : unit.Position + toTarget / dist * maxMove;
         }
 
         /// <summary>
@@ -117,7 +151,7 @@ namespace Guildmaster.Combat
         /// отходим (до FallbackDist), если ближе FleeDist; подходим, если дальше FallbackDist; иначе стоим
         /// и стреляем. Провал/пустой контент → деградируем на [AttackRange×0.6, AttackRange] (07 §3.8 B4).
         /// </summary>
-        private static void MoveKite(RuntimeUnit unit, RuntimeUnit target, float maxMove, in ArenaBounds bounds, in SimTuning tuning)
+        private static Vector2 MoveKite(RuntimeUnit unit, RuntimeUnit target, float maxMove, in ArenaBounds bounds, in SimTuning tuning)
         {
             Kite kite = unit.Unit?.Ai != null ? unit.Unit.Ai.Kite : default;
             float flee     = kite.FleeDist;
@@ -135,17 +169,18 @@ namespace Guildmaster.Combat
 
             Vector2 toTarget = target.Position - unit.Position;
             float dist = toTarget.magnitude;
-            if (dist < 1e-4f) return;
+            if (dist < 1e-4f) return unit.Position;
 
             Vector2 dir = toTarget / dist;
             if (dist < flee)
                 // Ближе FleeDist — отходим до FallbackDist. Направление и обработку стены/дуги ведёт
                 // FleeSteering (радиальный уход от цели + боковой уход + скольжение у стены), полосу
                 // держит кап шага: не убегаем дальше FallbackDist.
-                unit.Position = FleeSteering.KiteFlee(unit.Position, -dir, dir, Mathf.Min(maxMove, fallback - dist), in bounds, in tuning);
-            else if (dist > fallback)
-                unit.Position += dir * Mathf.Min(maxMove, dist - fallback);  // дальше FallbackDist — подходим
-            // иначе — в полосе [FleeDist, FallbackDist], стоим (атакуем на ходу)
+                return FleeSteering.KiteFlee(unit.Position, -dir, dir, Mathf.Min(maxMove, fallback - dist), in bounds, in tuning);
+            if (dist > fallback)
+                return unit.Position + dir * Mathf.Min(maxMove, dist - fallback);  // дальше FallbackDist — подходим
+
+            return unit.Position;   // в полосе [FleeDist, FallbackDist] — стоим (атакуем на ходу)
         }
 
         /// <summary>
@@ -153,9 +188,7 @@ namespace Guildmaster.Combat
         /// притяжение к своему тылу (по <see cref="RuntimeUnit.Team"/>) + превентивное избегание стен, со
         /// скольжением вдоль стены при заклинивании. Детерминизм — вся математика в FleeSteering, без RNG.
         /// </summary>
-        private static void MoveRetreat(RuntimeUnit unit, List<RuntimeUnit> units, float maxMove, in ArenaBounds bounds, in SimTuning tuning)
-        {
-            unit.Position = FleeSteering.Retreat(unit, units, maxMove, in bounds, in tuning);
-        }
+        private static Vector2 MoveRetreat(RuntimeUnit unit, List<RuntimeUnit> units, float maxMove, in ArenaBounds bounds, in SimTuning tuning)
+            => FleeSteering.Retreat(unit, units, maxMove, in bounds, in tuning);
     }
 }

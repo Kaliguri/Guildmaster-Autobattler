@@ -1,0 +1,18 @@
+﻿{
+  "title": "Build icons / splash — Happy Guildmasters",
+  "date": "2026-07-25",
+  "productName": "Happy Guildmasters",
+  "icons": {
+    "256": "Assets/_Project/Art/Brand/AppIcon_HappyGuildmasters.png (PixelLab seal)",
+    "512": "AppIcon_HappyGuildmasters_512.png (NN upscale)",
+    "1024": "AppIcon_HappyGuildmasters_1024.png (NN upscale)"
+  },
+  "logos": {
+    "company": "CompanyLogo_Alebardium.png (PixelLab generate-ui-v2, seed 101)",
+    "splash": "SplashLogo_HappyGuildmasters.png (PixelLab generate-ui-v2, seed 42)"
+  },
+  "jobs": {
+    "company": "c5f8bce4-bde7-4d25-b3a7-dcb31e80d58a",
+    "splash": "fde211ac-1c0a-4aa3-9f95-a6672114a39c"
+  }
+}

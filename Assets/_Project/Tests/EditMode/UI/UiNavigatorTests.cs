@@ -24,7 +24,14 @@ namespace Guildmaster.Tests.EditMode.UI
         {
             public InputContext Context { get; private set; } = InputContext.None;
             public void SetContext(InputContext context) => Context = context;
-            public bool GameplaySuppressed { get; set; }
+            // Копия боевой логики: заглушено, пока держит хотя бы один источник.
+            private InputSuppressSource _suppressors = InputSuppressSource.None;
+            public bool GameplaySuppressed => _suppressors != InputSuppressSource.None;
+            public void SetSuppressed(InputSuppressSource source, bool suppressed)
+            {
+                if (suppressed) _suppressors |=  source;
+                else            _suppressors &= ~source;
+            }
 
             public Vector2 CameraPan => default;
             public float CameraZoomDelta => 0f;
@@ -32,14 +39,17 @@ namespace Guildmaster.Tests.EditMode.UI
             public bool PointerOverUI => false;
             public Vector2 PointerScreenPosition => default;
             public bool PointerHeld => false;
+            public bool DetailsHeld => false;
 
 #pragma warning disable 67 // события интерфейса не поднимаются в тесте — реализуем как заглушки
             public event Action CycleViewRequested;
             public event Action PointerPressed;
             public event Action PointerReleased;
             public event Action PauseToggleRequested;
+            public event Action SkipRequested;
             public event Action GameSpeedCycleRequested;
             public event Action MenuToggleRequested;
+            public event Action<bool> DetailsHeldChanged;
 #pragma warning restore 67
         }
 
@@ -274,6 +284,28 @@ namespace Guildmaster.Tests.EditMode.UI
             Assert.AreEqual(InputContext.Menu, input.Context);
         }
 
+        /// <summary>
+        /// Навигатор снимает ТОЛЬКО своё глушение. Живой баг: dev-консоль открыта (клавиатура её),
+        /// команда меняет экран, навигатор пересчитывает глушение — и снимает чужое. Enter, которым
+        /// команду отправили, доходил до расстановки и начинал бой.
+        /// </summary>
+        [Test]
+        public void DevConsoleSuppression_SurvivesScreenChange()
+        {
+            var nav = NewNav(out FakeInput input, out FakeClock clock);
+            clock.Phase = BattlePhase.Deployment;
+            input.SetSuppressed(InputSuppressSource.DevConsole, true); // консоль открыта
+
+            nav.Push(new TestScreen(ScreenKind.Sheet)); // команда сменила экран → SyncInput
+            Assert.IsTrue(input.GameplaySuppressed, "консоль открыта — ввод обязан оставаться заглушённым");
+
+            nav.Pop();
+            Assert.IsTrue(input.GameplaySuppressed, "и после снятия экрана тоже: консоль всё ещё держит");
+
+            input.SetSuppressed(InputSuppressSource.DevConsole, false); // консоль закрыли
+            Assert.IsFalse(input.GameplaySuppressed, "отпустили все источники — ввод ожил");
+        }
+
         [Test]
         public void PopModal_WhilePhaseChangedToFighting_RecomputesFromPhase_NotSnapshot()
         {
@@ -405,6 +437,85 @@ namespace Guildmaster.Tests.EditMode.UI
 
             Assert.AreSame(next, nav.Top, "экран, открытый из резолва, пережил PopAll");
             Assert.IsTrue(nav.IsOpen);
+        }
+
+        // --- Подписки на отмену не переживают свои экраны (аудит 2026-07-26, R1-19/R1-61) ---
+        // Токен здесь — токен ЗАБЕГА: он живёт весь акт, поэтому неснятая подписка держит закрытый экран
+        // до конца забега, а число подписок растёт на каждый показанный экран.
+
+        [Test]
+        public void Pop_ReleasesTheCancelHookOfTheClosedScreen()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            nav.Push(new TestScreen(ScreenKind.Page), run.Token);
+            Assert.AreEqual(1, nav.ActiveCancelHooks);
+
+            nav.Pop();
+
+            Assert.AreEqual(0, nav.ActiveCancelHooks, "подписка пережила экран и держит его до конца забега");
+        }
+
+        [Test]
+        public void PopAll_ReleasesEveryCancelHook()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            nav.Push(new TestScreen(ScreenKind.Page), run.Token);
+            nav.Push(new TestScreen(ScreenKind.Sheet), run.Token);
+            nav.Push(new TestScreen(ScreenKind.Modal), run.Token);
+            Assert.AreEqual(3, nav.ActiveCancelHooks);
+
+            nav.PopAll();
+
+            Assert.AreEqual(0, nav.ActiveCancelHooks);
+        }
+
+        [Test]
+        public void CancelHooks_DoNotAccumulateAcrossAWholeRun()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            // Забег открывает и закрывает десятки экранов на одном токене.
+            for (int i = 0; i < 20; i++)
+            {
+                nav.Push(new TestScreen(ScreenKind.Page), run.Token);
+                nav.Pop();
+            }
+
+            Assert.AreEqual(0, nav.ActiveCancelHooks,
+                "число подписок растёт вместе с числом показанных экранов, а не со стеком");
+        }
+
+        [Test]
+        public void ShowAsync_ReleasesItsHookOnResolve()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+            var screen = new TestResultScreen();
+
+            UniTask<int> task = nav.ShowAsync(screen, run.Token);
+            Assert.AreEqual(1, nav.ActiveCancelHooks);
+
+            screen.Choose(3);
+
+            Assert.AreEqual(3, task.GetAwaiter().GetResult());
+            Assert.AreEqual(0, nav.ActiveCancelHooks);
+        }
+
+        [Test]
+        public void Dispose_ReleasesHooksOfScreensLeftOpen()
+        {
+            var nav = NewNav(out _, out _);
+            using var run = new CancellationTokenSource();
+
+            nav.Push(new TestScreen(ScreenKind.Page), run.Token);
+            nav.Dispose();
+
+            Assert.AreEqual(0, nav.ActiveCancelHooks);
         }
     }
 }

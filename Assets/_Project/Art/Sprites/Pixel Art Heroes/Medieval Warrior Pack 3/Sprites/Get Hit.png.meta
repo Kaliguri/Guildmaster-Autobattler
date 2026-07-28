@@ -1,4 +1,4 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: 9aa6ee79a19adaa41955bea6b404786f
 TextureImporter:
   internalIDToNameTable:
@@ -109,12 +109,12 @@ TextureImporter:
       name: Get Hit_0
       rect:
         serializedVersion: 2
-        x: 47
-        y: 48
-        width: 32
-        height: 34
+        x: 0
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -131,12 +131,12 @@ TextureImporter:
       name: Get Hit_1
       rect:
         serializedVersion: 2
-        x: 185
-        y: 48
-        width: 29
-        height: 36
+        x: 135
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -153,12 +153,12 @@ TextureImporter:
       name: Get Hit_2
       rect:
         serializedVersion: 2
-        x: 322
-        y: 48
-        width: 29
-        height: 38
+        x: 270
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

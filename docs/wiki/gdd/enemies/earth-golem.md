@@ -1,17 +1,20 @@
 ---
 title: "Golems - Elite - Earth Golem"
+order: 50
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Элита
-faction: Големы
-subfaction: Земляные
+species: Големы
+combat_class: Танк
+subspecies: Земляные
 position: Фронт
 combat_range: Ближний
 attack_delivery:
   - Ближний бой
 physical_damage:
   - Дробящий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Бронированная приоритетная цель
 mechanics:
@@ -27,7 +30,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** элита.
-- **Фракция:** големы, земляные.
+- **Вид:** големы. **Подвид:** земляные.
 - **Позиция:** фронт.
 - **Ближний / дальний:** ближний.
 

@@ -55,7 +55,6 @@ namespace Guildmaster.Data.Definitions
             _skillClips != null && slot >= 0 && slot < _skillClips.Length ? _skillClips[slot] : null;
 
         /// <summary>Есть ли Attack-клип — признак, что визуал готов к проигрыванию через Animator.</summary>
-        public bool HasClips => _attackClip != null;
 
         /// <summary>Число кадров Attack-клипа (знаменатель windup, вики «14»). 0 если клипа нет.</summary>
         public int AttackFrameCount => ClipMarkers.FrameCount(_attackClip);

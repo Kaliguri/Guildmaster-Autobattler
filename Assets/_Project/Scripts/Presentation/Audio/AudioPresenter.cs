@@ -2,19 +2,22 @@ using System;
 using Guildmaster.Combat;
 using Guildmaster.Core.Audio;
 using Guildmaster.Core.Players;
+using Guildmaster.Data.Definitions;
 using VContainer.Unity;
 
 namespace Guildmaster.Presentation.Audio
 {
     /// <summary>
     /// Аудио-презентер (вики impl «09» §П4): POCO-entry-point, подписан НАПРЯМУЮ на C#-события боевой
-    /// симуляции и системы способностей (тот же приём, что <c>CombatFeelDirector</c> — он тоже держит
-    /// <see cref="CombatSimulation"/>). Резолвит ключ <c>{contentId}.{action}</c> через
-    /// <see cref="AudioResolver"/> и отдаёт в <see cref="IAudioService"/>. Точечные звуки реликвий/эффектов
-    /// (<c>relic.cryomancer.attack</c>, <c>relic.*.cast</c>) подхватываются резолвером автоматически —
-    /// достаточно выстрелить нужным действием на нужном юните.
-    /// Пока НЕ озвучены (нужны хуки/id — отдельный заход): эффекты apply/expire с конкретным id, DoT/HoT-тик,
-    /// UI (пауза/скорость/расстановка), стингер старта боя, feel-слои (heavy_hit/death_shatter).
+    /// симуляции, системы способностей и системы эффектов (тот же приём, что <c>CombatFeelDirector</c>).
+    /// Резолвит ключ <c>{contentId}.{action}</c> через <see cref="AudioResolver"/> и отдаёт в
+    /// <see cref="IAudioService"/>. Точечные звуки реликвий/эффектов (<c>relic.cryomancer.attack</c>,
+    /// <c>effect.frozen.apply</c>) подхватываются резолвером автоматически — достаточно выстрелить нужным
+    /// действием с нужным id.
+    ///
+    /// Чего тут НЕТ намеренно: feel-слой (килл-стингер, тяжёлый удар, финишер) живёт в
+    /// <c>CombatFeelDirector</c> — там уже посчитаны пороги и кулдауны, и звук обязан идти под теми же
+    /// воротами, что slowmo/тряска. Экраны и карта — в <c>RunAudioPresenter</c> (root-скоуп, переживает бой).
     /// </summary>
     public sealed class AudioPresenter : IStartable, IDisposable
     {
@@ -22,6 +25,7 @@ namespace Guildmaster.Presentation.Audio
         private readonly AudioResolver _resolver;
         private readonly CombatSimulation _sim;
         private readonly AbilitySystem _abilities;
+        private readonly EffectSystem _effects;
         private readonly ILocalPlayer _localPlayer;
 
         public AudioPresenter(
@@ -29,12 +33,14 @@ namespace Guildmaster.Presentation.Audio
             AudioCatalog catalog,
             CombatSimulation sim,
             AbilitySystem abilities,
+            EffectSystem effects,
             ILocalPlayer localPlayer)
         {
             _audio = audio;
             _resolver = new AudioResolver(catalog);
             _sim = sim;
             _abilities = abilities;
+            _effects = effects;
             _localPlayer = localPlayer;
         }
 
@@ -47,7 +53,15 @@ namespace Guildmaster.Presentation.Audio
             _sim.OnAttackStarted    += OnAttackStarted;
             _sim.OnProjectileSpawned += OnProjectileSpawned;
             _sim.OnBattleEnded      += OnBattleEnded;
+            _sim.OnUnitSpawned      += OnUnitSpawned;
+            _sim.OnAttackInterrupted += OnAttackInterrupted;
+            _sim.OnBattleReset      += OnBattleReset;
             if (_abilities != null) _abilities.OnAbilityCast += OnAbilityCast;
+            if (_effects != null)
+            {
+                _effects.OnEffectApplied += OnEffectApplied;
+                _effects.OnEffectEnded   += OnEffectEnded;
+            }
         }
 
         public void Dispose()
@@ -59,15 +73,22 @@ namespace Guildmaster.Presentation.Audio
             _sim.OnAttackStarted    -= OnAttackStarted;
             _sim.OnProjectileSpawned -= OnProjectileSpawned;
             _sim.OnBattleEnded      -= OnBattleEnded;
+            _sim.OnUnitSpawned      -= OnUnitSpawned;
+            _sim.OnAttackInterrupted -= OnAttackInterrupted;
+            _sim.OnBattleReset      -= OnBattleReset;
             if (_abilities != null) _abilities.OnAbilityCast -= OnAbilityCast;
+            if (_effects != null)
+            {
+                _effects.OnEffectApplied -= OnEffectApplied;
+                _effects.OnEffectEnded   -= OnEffectEnded;
+            }
         }
 
-        // Импакт по цели: щит-поглощение (если было) + удар, добивание → килл-стингер поверх.
+        // Импакт по цели: щит-поглощение (если было) + удар. Килл-стингер — забота CombatFeelDirector.
         private void OnDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result)
         {
             if (result.ShieldDamage > 0f) PlayFor(target, AudioAction.Shield);
             PlayFor(target, AudioAction.Hit);
-            if (result.KilledTarget) PlayKey("feel.kill", AudioAction.Stinger);
         }
 
         private void OnUnitDied(RuntimeUnit unit) => PlayFor(unit, AudioAction.Death);
@@ -82,6 +103,21 @@ namespace Guildmaster.Presentation.Audio
 
         private void OnAbilityCast(RuntimeUnit caster) => PlayFor(caster, AudioAction.Cast);
 
+        private void OnUnitSpawned(RuntimeUnit unit) => PlayKeyAt("combat.unit_spawn", AudioAction.Ui, unit);
+
+        // Замах сорван станом/смертью — короткий «сбой», иначе оборванная анимация выглядит багом.
+        private void OnAttackInterrupted(RuntimeUnit unit) => PlayKeyAt("combat.attack_interrupted", AudioAction.Evade, unit);
+
+        // Перезапуск боя (dev-R): глушим петли, иначе хвосты старого боя переезжают в новый.
+        private void OnBattleReset() => _audio?.StopAll();
+
+        // Статус лёг / спал: ключи effect.{id}.apply и effect.{id}.expire, с фолбэком на общий дефолт.
+        private void OnEffectApplied(RuntimeUnit target, EffectData def, RuntimeUnit source)
+            => PlayKeyAt(def != null ? def.Id : null, AudioAction.Apply, target);
+
+        private void OnEffectEnded(RuntimeUnit target, EffectData def, RuntimeUnit source)
+            => PlayKeyAt(def != null ? def.Id : null, AudioAction.Expire, target);
+
         // Конец боя → стингер победы/поражения ГЛАЗАМИ ЭТОГО клиента: победила моя команда или нет.
         // В PvP один и тот же исход даст одному победу, другому поражение. Ничья — поражение (никто не выиграл).
         private void OnBattleEnded(BattleOutcome outcome)
@@ -90,13 +126,29 @@ namespace Guildmaster.Presentation.Audio
             PlayKey(outcome.IsWinFor(_localPlayer.Team) ? "battle.victory" : "battle.defeat", AudioAction.Stinger);
         }
 
+        // Звук боевого события идёт ИЗ ТОЧКИ, где оно случилось: удар слева слышно слева.
+        // Позицию берём из сима (она же ведёт вид), а не из вью — вью может отставать на кадр
+        // интерполяции, и на быстрых смещениях звук уезжал бы за картинкой.
         private void PlayFor(RuntimeUnit unit, AudioAction action)
-            => PlayKey(unit?.Unit != null ? unit.Unit.Id : null, action);
+        {
+            string key = _resolver.Resolve(unit?.Unit != null ? unit.Unit.Id : null, action);
+            if (key == null) return;
+            if (unit != null) _audio.PlayAt(key, unit.Position);
+            else _audio.Play(key);
+        }
 
         private void PlayKey(string contentId, AudioAction action)
         {
             string key = _resolver.Resolve(contentId, action);
             if (key != null) _audio.Play(key);
+        }
+
+        private void PlayKeyAt(string contentId, AudioAction action, RuntimeUnit at)
+        {
+            string key = _resolver.Resolve(contentId, action);
+            if (key == null) return;
+            if (at != null) _audio.PlayAt(key, at.Position);
+            else _audio.Play(key);
         }
     }
 }

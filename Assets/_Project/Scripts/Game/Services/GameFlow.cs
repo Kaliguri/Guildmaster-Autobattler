@@ -17,78 +17,83 @@ namespace Guildmaster.Game.Services
     /// Оркестратор макро-флоу игры (план 11 §2, §4). A2: умеет прогнать узел боя через <see cref="BattleFlow"/>
     /// (Prep→Combat→Outcome) поверх <see cref="RunState"/>. Полный флоу забега (MainMenu → карта → узлы →
     /// награды) достраивается шагами A3/B/C; швы (<see cref="IReadyGate"/>, <see cref="IPlayerIntentSource"/>)
-    /// заведены сейчас, соло-тела. Legacy-вход <see cref="BootAsync"/> оставлен для прямого запуска боевой
-    /// сцены (dev-панель F2) — не ломает итерацию.
+    /// заведены сейчас, соло-тела.
     /// </summary>
+    /// <remarks>
+    /// Сцен этот класс не грузит вовсе: и мир, и боевые системы поднимаются один раз на буте
+    /// (<c>GameBootstrap</c>) и живут всю сессию. Legacy-вход «загрузить боевую сцену → выгрузить после боя»
+    /// снят: он спорил с persist-моделью, где бой — команда в живой симуляции.
+    /// </remarks>
     public sealed class GameFlow : IRunControl
     {
         // Токен отмены текущего забега (QA #18): взводится на время RunActAsync, Cancel() из системного меню
         // прерывает висящие await'ы петли (выбор узла/«Продолжить»/исход боя) → возврат в главное меню.
         private CancellationTokenSource _runCts;
 
-        private readonly ISceneLoader        _scenes;
         private readonly IBattleSession      _session;
         private readonly RunStateService     _runStates;
         private readonly IRewardPresenter    _rewardPresenter;
         private readonly IOutcomePresenter   _outcomePresenter;
+        private readonly ITitleCardPresenter _titleCardPresenter;
         private readonly IMainMenuPresenter  _mainMenuPresenter;
         private readonly ActRunner           _actRunner;
+        private readonly ActConfig           _actConfig;
         private readonly EventEffectApplier  _eventEffects;
         private readonly IRngService         _rng;
         private readonly IReadyGate          _readyGate;
         private readonly IPlayerIntentSource _intents;
         private readonly ILocalPlayer        _localPlayer;
+        private readonly IScreenTransition   _transition;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<RunPartyReadyEvent>   _partyReadyPub;
 
+        // Ристалище: интент входа и состояние площадки — цикл открывает её и ждёт, пока игрок не выйдет.
+        private readonly IPublisher<Data.Definitions.SetTestZoneRequest>    _provingGroundsPub;
+        private readonly ISubscriber<Data.Definitions.TestZoneChangedEvent> _provingGroundsChangedSub;
+
         public GameFlow(
-            ISceneLoader        scenes,
             IBattleSession      session,
             RunStateService     runStates,
             IRewardPresenter    rewardPresenter,
             IOutcomePresenter   outcomePresenter,
+            ITitleCardPresenter titleCardPresenter,
             IMainMenuPresenter  mainMenuPresenter,
             ActRunner           actRunner,
+            ActConfig           actConfig,
             EventEffectApplier  eventEffects,
             IRngService         rng,
             IReadyGate          readyGate,
             IPlayerIntentSource intents,
             ILocalPlayer        localPlayer,
+            IScreenTransition   transition,
             IPublisher<OpenTextEventRequest> openEventPub,
-            IPublisher<RunPartyReadyEvent>   partyReadyPub)
+            IPublisher<RunPartyReadyEvent>   partyReadyPub,
+            IPublisher<Data.Definitions.SetTestZoneRequest>    provingGroundsPub,
+            ISubscriber<Data.Definitions.TestZoneChangedEvent> provingGroundsChangedSub)
         {
-            _scenes          = scenes;
+            _provingGroundsPub = provingGroundsPub;
+            _provingGroundsChangedSub = provingGroundsChangedSub;
             _session         = session;
             _runStates        = runStates;
             _rewardPresenter  = rewardPresenter;
             _outcomePresenter = outcomePresenter;
+            _titleCardPresenter = titleCardPresenter;
             _mainMenuPresenter = mainMenuPresenter;
             _actRunner       = actRunner;
+            _actConfig       = actConfig;
             _eventEffects    = eventEffects;
             _rng             = rng;
             _readyGate       = readyGate;
             _intents         = intents;
             _localPlayer     = localPlayer;
+            _transition      = transition;
             _openEventPub    = openEventPub;
             _partyReadyPub   = partyReadyPub;
         }
 
-        /// <summary>Legacy (Фаза 1): просто загрузить боевую сцену. Прямой dev-вход, бой запускает F2-панель.</summary>
-        public async UniTask BootAsync()
-        {
-            Debug.Log("[GameFlow] - Boot (legacy): загружаю BattleScene");
-            await _scenes.LoadBattleAsync();
-        }
-
-        /// <summary>Legacy: выгрузить боевую сцену после боя (парный к <see cref="BootAsync"/>).</summary>
-        public async UniTask OnBattleEndedAsync(BattleOutcome outcome)
-        {
-            Debug.Log($"[GameFlow] - Бой завершён (legacy): {outcome}");
-            await _scenes.UnloadBattleAsync();
-        }
-
         /// <summary>
-        /// A2-разрез: прогнать один бой как узел забега — грузит сцену, ждёт исход (с ретраями), выгружает.
+        /// A2-разрез: прогнать один бой как узел забега — запустить его в живой симуляции, дождаться исхода
+        /// (с ретраями), вернуть арену в мир. Сцен не грузит: боевые системы подняты на буте и живут всегда.
         /// Заводит забег (<see cref="RunState"/>), если его ещё нет. Возвращает исход узла для будущей
         /// награды/перехода (A3). Полноценная петля «узел за узлом» — на карте (B1).
         /// </summary>
@@ -99,7 +104,7 @@ namespace Guildmaster.Game.Services
                            ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
             var ctx  = new RunContext(run, _rng, _readyGate, _intents);
-            var flow = new BattleFlow(preset, _scenes, _session, _localPlayer);
+            var flow = new BattleFlow(preset, _session, _localPlayer);
 
             EventResult result = await flow.Run(ctx);
             _runStates.Autosave(); // точка автосейва после узла (вики «7» §5)
@@ -108,24 +113,48 @@ namespace Guildmaster.Game.Services
             if (presentReward && result.Outcome == EventOutcome.Completed)
                 await _rewardPresenter.PresentAsync(tier);
 
+            // Арена живёт всё время после боя (фаза Interlude) и возвращается в мир на стыке узлов — в петле акта
+            // это делает RunBeatStage; здесь (dev-разрез одного боя) петли нет, поэтому возвращаем сами.
+            _session.RequestReset();
+            _session.SetPhase(BattlePhase.None);
+
             return result;
         }
 
         /// <summary>
-        /// Верхний цикл игры (план D1): главное меню → забег → меню. Начать = новый забег, Продолжить = из
-        /// автосейва, Выход = закрыть игру. Точка входа при обычном старте (не dev-разрез).
+        /// Верхний цикл игры (план D1): title card → главное меню → забег → меню. Начать = новый забег,
+        /// Продолжить = из автосейва, Выход = закрыть игру. Точка входа при обычном старте (не dev-разрез).
         /// </summary>
         public async UniTask RunGameAsync()
         {
+            await _titleCardPresenter.ShowAsync(); // один раз за сессию, до первого меню
+
             while (true)
             {
                 MainMenuChoice choice = await _mainMenuPresenter.ShowAsync(_runStates.HasSave);
 
                 if (choice == MainMenuChoice.Quit) { QuitGame(); return; }
 
+                // Ристалище — не забег: ни сейва, ни акта, ни карты. Открываем площадку, ждём выхода
+                // и возвращаемся к меню тем же витком.
+                if (choice == MainMenuChoice.ProvingGrounds)
+                {
+                    await ShowProvingGroundsAsync();
+                    continue;
+                }
+
                 if (choice == MainMenuChoice.Continue)
                 {
-                    if (_runStates.Load() == null) { Debug.LogWarning("[GameFlow] - нет автосейва → назад в меню"); continue; }
+                    Core.Persistence.SaveLoadResult<Guild.RunState> loaded = _runStates.TryLoad();
+                    if (!loaded.IsOk)
+                    {
+                        // Показать это игроку экраном — фаза E ТЗ [[save-system]]; пока внятный лог, но
+                        // молча в меню не возвращаемся: «сейв есть, но заблокирован» ≠ «сейва нет».
+                        Debug.LogWarning($"[GameFlow] - продолжить не вышло ({loaded.Status}" +
+                                         (loaded.IsBlocked ? $", записан версией {loaded.SavedGameVersion}" : "") +
+                                         ") → назад в меню");
+                        continue;
+                    }
                 }
                 else
                 {
@@ -141,6 +170,34 @@ namespace Guildmaster.Game.Services
                     Debug.Log("[GameFlow] - забег прерван из меню → возврат в главное меню");
                 }
             }
+        }
+
+        /// <summary>
+        /// Открыть Ристалище и держать цикл здесь, пока игрок не выйдет с площадки
+        /// (ГДД «Modes - Proving Grounds»).
+        /// </summary>
+        /// <remarks>
+        /// Цикл обязан ждать: без ожидания он тут же показал бы главное меню поверх площадки, и вышло бы
+        /// ровно то, на что нельзя смотреть — бой под меню. Решение о входе принимает не этот метод, а
+        /// владелец расстановки (интент может быть и отклонён), поэтому выход ловим по СОСТОЯНИЮ площадки,
+        /// а не по своему предположению о нём.
+        /// </remarks>
+        private async UniTask ShowProvingGroundsAsync()
+        {
+            if (_provingGroundsPub == null || _provingGroundsChangedSub == null)
+            {
+                Debug.LogWarning("[GameFlow] - Ристалище не разведено (нет интента или состояния) → назад в меню");
+                return;
+            }
+
+            var closed = new UniTaskCompletionSource();
+            using (_provingGroundsChangedSub.Subscribe(e => { if (!e.Active) closed.TrySetResult(); }))
+            {
+                _provingGroundsPub.Publish(new Data.Definitions.SetTestZoneRequest(true));
+                await closed.Task;
+            }
+
+            Debug.Log("[GameFlow] - Ристалище закрыто → главное меню");
         }
 
         private static void QuitGame()
@@ -163,7 +220,7 @@ namespace Guildmaster.Game.Services
             RunState run = _runStates.Current
                            ?? _runStates.NewDefaultRun(DateTime.UtcNow.Ticks);
 
-            _runStates.BeginAct();       // генерация карты из под-сида (no-op, если уже есть)
+            _runStates.BeginAct(_actConfig != null ? _actConfig.ToGenConfig() : null); // карта из под-сида по ActConfig (no-op, если уже есть)
             _runStates.Autosave();       // зафиксировать свежую карту
 
             // Persist-мир (план 12 Ф2): отряд забега готов → боевой скоуп ставит его на тест-арену вне боя.
@@ -190,6 +247,14 @@ namespace Guildmaster.Game.Services
             }
             finally
             {
+                // Забег кончился ЛЮБЫМ путём (босс, поражение, «В главное меню»): мир перестаёт быть первым
+                // планом. Без этого фаза Interlude пережила бы забег, и задник UI не вернулся бы под меню.
+                // Шторка перехода — туда же: «В меню», нажатое посреди нырка в узел, обрывало забег, но
+                // оставляло чернила на экране, потому что вести их было уже некому (аудит 2026-07-26,
+                // волна 2 — ровно тот вызов, который Cancel() описывает в своём докстринге).
+                _transition?.Cancel();
+                _session.RequestReset();
+                _session.SetPhase(BattlePhase.None);
                 _runCts.Dispose();
                 _runCts = null;
             }

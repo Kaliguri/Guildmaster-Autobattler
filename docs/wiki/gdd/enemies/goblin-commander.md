@@ -1,17 +1,20 @@
 ---
 title: "Goblins - Elite - Goblin Commander"
+order: 70
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Элита
-faction: Гоблины
-subfaction: Основные
+species: Гоблины
+combat_class: Брузер
+subspecies: Основные
 position: Фронт
 combat_range: Ближний
 attack_delivery:
   - Ближний бой
 physical_damage:
   - Режущий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Усилитель отряда
 mechanics:
@@ -26,7 +29,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** элита.
-- **Фракция:** гоблины.
+- **Вид:** гоблины.
 - **Позиция:** фронт.
 - **Ближний / дальний:** ближний.
 

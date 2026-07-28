@@ -1,17 +1,20 @@
 ---
 title: "Goblins - Common - Goblin Warrior"
+order: 110
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Обычный
-faction: Гоблины
-subfaction: Основные
+species: Гоблины
+combat_class: Танк
+subspecies: Основные
 position: Фронт
 combat_range: Ближний
 attack_delivery:
   - Ближний бой
 physical_damage:
   - Режущий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Фронтовая преграда
 mechanics: []
@@ -22,7 +25,7 @@ mechanics: []
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный.
-- **Фракция:** гоблины.
+- **Вид:** гоблины.
 - **Позиция:** фронт.
 - **Ближний / дальний:** ближний.
 

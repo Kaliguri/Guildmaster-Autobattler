@@ -2,6 +2,7 @@
 title: "Content - Authoring - Effect"
 order: 5
 status: living
+updated: 2026-07-18
 ---
 
 # Методичка: создание эффекта

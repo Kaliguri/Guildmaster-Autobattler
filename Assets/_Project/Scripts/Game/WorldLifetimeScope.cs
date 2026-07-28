@@ -15,20 +15,20 @@ namespace Guildmaster.Game
     /// </summary>
     public class WorldLifetimeScope : LifetimeScope
     {
-        [Tooltip("Design-конфиг тряски камеры (раздаётся ScreenShake-ам всех vcam). Пусто = дефолты в рантайме.")]
+        [Tooltip("Design-конфиг тряски камеры (раздаётся ScreenShake-ам всех vcam). ОБЯЗАТЕЛЕН. " +
+                 "Пусто = красная ошибка и тряски нет вовсе (ScreenShake своих чисел не держит).")]
         [SerializeField] private Presentation.Design.CombatFeelConfig _feelConfig;
 
         protected override void Configure(IContainerBuilder builder)
         {
             // Снапшот арены из авторинга в ЭТОЙ (persist) сцене. Бой берёт тот же layout из предка —
-            // единый мир, никакого per-battle FindFirstObjectByType в боевом скоупе.
+            // единый мир, никакого per-battle поиска по сцене в боевом скоупе.
             ArenaLayoutData layout = BuildArenaLayout();
             builder.RegisterInstance(layout);
 
-            // Конфиг тряски: если ассет не назначен — рантайм-инстанс с дефолтами (камера не падает).
-            var feel = _feelConfig != null
-                ? _feelConfig
-                : ScriptableObject.CreateInstance<Presentation.Design.CombatFeelConfig>();
+            // Конфиг тряски: без ассета тряски просто нет (см. ScreenShake) — не «примерно такая».
+            var feel = ScopeWiring.Optional(_feelConfig, nameof(WorldLifetimeScope), nameof(_feelConfig),
+                "тряски камеры не будет");
             builder.RegisterInstance(feel);
 
             // Вне боя камера ни за кем не следует (пустой источник точек фокуса). На входе в бой
@@ -41,15 +41,35 @@ namespace Guildmaster.Game
             builder.RegisterComponentInHierarchy<Presentation.CameraModeController>()
                    .AsSelf().As<Presentation.IScreenShake>();
 
-            // «Серая зона» тест-арены (QA #2): свапает цветной/grayscale пол по тумблеру тест-зоны.
-            builder.RegisterComponentInHierarchy<Presentation.TestZoneArenaSkin>();
+            // Обесцвечивание арены: полигон — серая версия той же локации (материал, а не серый дубль тайлов).
+            builder.RegisterComponentInHierarchy<Presentation.Arena.ArenaDesaturation>();
+
+            // Смена облика арены поклеточной подменой тайлов. Держим здесь, а не в боевом скоупе:
+            // переход обязан доигрывать, даже когда бой уже кончился и его скоуп ушёл.
+            builder.RegisterComponentInHierarchy<Presentation.Arena.ArenaSkinSwapper>()
+                   .AsSelf().As<IArenaSwap>();
+
+            // Являет место боя на входе в узел: ждёт, пока откроется шторка перехода, и играет проявление.
+            builder.RegisterComponentInHierarchy<Presentation.Arena.ArenaStagePresenter>();
+
+            // World-слой карты акта (фаза D): живёт в этой persist-сцене СВОЕЙ зоной, разнесённой от арены
+            // (положение объекта в сцене и задаёт, где карта в мире). Себя он привязывает к
+            // WorldMapViewLink из корневого скоупа — петля забега висит выше и напрямую его не видит.
+            builder.RegisterComponentInHierarchy<Presentation.Map.WorldMapView>();
+
+            // Тумблеры постобработки: Volume зоны карты гасится из общего реестра эффектов (gm_fx).
+            builder.RegisterComponentInHierarchy<Presentation.Effects.VolumeVisualToggle>();
+
+            // Стол за главным меню: тот же материал, что под картой акта, — иначе за меню чёрный провал
+            // (камера заливает пустоту цветом очистки).
+            builder.RegisterComponentInHierarchy<Presentation.Map.MenuBackdropView>();
         }
 
         private ArenaLayoutData BuildArenaLayout()
         {
             // Авторинг ищем ТОЛЬКО в загруженных сценах; в единой-мировой раскладке он живёт в
             // WorldScene (из BattleScene удалён). Нет авторинга → бесконечное поле без зон.
-            var authoring = FindFirstObjectByType<ArenaLayoutAuthoring>();
+            var authoring = FindAnyObjectByType<ArenaLayoutAuthoring>();
             if (authoring == null)
             {
                 Debug.LogWarning("[WorldLifetimeScope] - ArenaLayoutAuthoring не найден в загруженных сценах → " +

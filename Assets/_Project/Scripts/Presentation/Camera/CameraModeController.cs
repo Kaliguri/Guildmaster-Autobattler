@@ -16,6 +16,8 @@ namespace Guildmaster.Presentation
         Overview,
         /// <summary>Свободная dev-камера: пан/зум без клампа (доступ выдаётся отдельно).</summary>
         Dev,
+        /// <summary>Карта акта: ручной пан/зум в пределах зоны КАРТЫ (не боевой арены).</summary>
+        Map,
     }
 
     /// <summary>
@@ -30,6 +32,11 @@ namespace Guildmaster.Presentation
         [SerializeField] private CinemachineCamera _actionCam;
         [SerializeField] private CinemachineCamera _overviewCam;
         [SerializeField] private CinemachineCamera _devCam;
+        [Tooltip("Камера карты акта. Отдельная vcam — чтобы позиция и зум карты жили НЕЗАВИСИМО от боевых " +
+                 "(Cinemachine хранит transform и Lens на каждой vcam; неактивная стоит где стояла). " +
+                 "ГОТЧА: зона карты разнесена в мире от арены, поэтому переходы бой↔карта в Custom Blends " +
+                 "должны быть Cut — иначе Brain полетит между зонами через пустоту.")]
+        [SerializeField] private CinemachineCamera _mapCam;
 
         [Header("Камера (глубина)")]
         [Tooltip("Z-позиция камеры (2D: отрицательная, чтобы плоскость поля z=0 попадала в кадр). " +
@@ -43,6 +50,13 @@ namespace Guildmaster.Presentation
         [SerializeField] private float _zoomStep = 1.5f;
         [Tooltip("Верхний предел зума для dev-камеры (не привязан к зоне).")]
         [SerializeField] private float _devMaxZoom = 40f;
+        [Tooltip("Свобода панорамирования на карте: насколько можно увести карту за край экрана, в долях " +
+                 "видимой области. 0.5 = полэкрана в каждую сторону — угол карты можно рассмотреть вблизи, " +
+                 "но совсем в пустоту не уедешь.")]
+        [SerializeField] private float _mapFreedom = 0.5f;
+        [Tooltip("Насколько камера приближается к узлу за время закрытия кадра (доля исходного орто-размера). " +
+                 "0.45 = кадр вдвое с лишним крупнее к концу нырка; меньше — резче.")]
+        [SerializeField] private float _mapDiveZoom = 0.45f;
 
         [Header("Панорамирование (ед./сек при полном отклонении)")]
         [SerializeField] private float _panSpeed = 12f;
@@ -72,11 +86,21 @@ namespace Guildmaster.Presentation
         // Удерживаемая цель зума экшн-камеры (обновляется через дедзону, см. DriveActionZoom). ≤0 = ещё не задана.
         private float _actionZoomTarget = -1f;
 
-        /// <summary>Разблокирован ли dev-режим камеры (доступ выдаётся отдельно, вики «16» §6).</summary>
-        public bool DevAccess => _devAccess;
+        // Зона карты: границы клампа для CameraMode.Map. Приходит снаружи (EnterMap) — карта живёт в
+        // СВОЁЙ области мира, боевая _layout.CameraZone к ней отношения не имеет.
+        private Rect2D _mapZone;
+        // Кадрируем карту целиком только при ПЕРВОМ входе. Дальше не трогаем позицию/зум: игрок мог
+        // отъехать и приблизиться, и это должно пережить поход в бой и обратно.
+        private bool _mapFramed;
+        // Режим, из которого ушли в карту: карту можно открыть посреди боя, и выход обязан вернуть
+        // ровно тот вид, что был (боевые vcam при этом всё время стоят где стояли).
+        private CameraMode _modeBeforeMap = CameraMode.Action;
 
-        /// <summary>Текущий режим камеры.</summary>
-        public CameraMode Mode => _mode;
+        // Нырок в узел: кадр, из которого нырнули, чтобы вернуть его целиком. Пока ныряем, ручной пан/зум
+        // молчит — иначе колесо посреди перехода спорит с наездом.
+        private bool _mapDiving;
+        private Vector3 _mapFrameBeforeDive;
+        private float _mapSizeBeforeDive;
 
         [Inject]
         public void Construct(IInputService input, ArenaLayoutData layout, CombatFocusTarget focus, Design.CombatFeelConfig feel)
@@ -95,8 +119,9 @@ namespace Guildmaster.Presentation
         {
             if (_input != null) _input.CycleViewRequested += OnCycleView;
 
-            // В редакторе dev-камера доступна сразу (удобно тестить); в билде — гейтед, выдаётся
-            // через gm_cam_dev (вики «16» §6). Обычный игрок в релизе циклит только Action↔Overview.
+            // В редакторе dev-камера доступна сразу (удобно тестить), в билде — нет: обычный игрок
+            // циклит только Action↔Overview. Прежде доступ можно было выдать и в рантайме
+            // (SetDevAccess), но команды, ради которой ручка существовала, в проекте нет — снята.
             _devAccess = Application.isEditor;
 
             ApplyCameraDepth();
@@ -107,6 +132,7 @@ namespace Guildmaster.Presentation
             CollectShaker(_actionCam);
             CollectShaker(_overviewCam);
             CollectShaker(_devCam);
+            CollectShaker(_mapCam);
         }
 
         private void CollectShaker(CinemachineCamera cam)
@@ -141,6 +167,7 @@ namespace Guildmaster.Presentation
         {
             SetZ(_overviewCam);
             SetZ(_devCam);
+            SetZ(_mapCam);
 
             if (_actionCam != null)
             {
@@ -162,35 +189,120 @@ namespace Guildmaster.Presentation
             cam.transform.position = p;
         }
 
-        /// <summary>Выдать/забрать доступ к dev-камере (QFSW: gm_cam_dev). Забирая — уводим из Dev.</summary>
-        public void SetDevAccess(bool granted)
-        {
-            _devAccess = granted;
-            if (!granted && _mode == CameraMode.Dev)
-            {
-                _mode = CameraMode.Overview;
-                ApplyMode();
-            }
-        }
-
         /// <summary>
-        /// Войти в свободную камеру фазы расстановки (QA #4): режим Overview (ручной пан/зум в пределах зоны),
-        /// но СТАРТОВЫЙ кадр — как у экшн-камеры (центр боя + зум под разброс), а НЕ отзум на всю зону.
-        /// Кадр приходит явно из <c>DeploymentController</c> (позиции живых юнитов) — без гонки с focus-таймингом.
+        /// Кадр расстановки: вся боевая зона целиком, управляемый обзор. Единственный источник этого кадра —
+        /// зона арены, а не то, кто где стоит: иначе полигон (только свой отряд) и боевой узел (отряд плюс
+        /// враги) встречают игрока разными кадрами, хотя место одно и то же.
+        /// <para>Здесь берётся БОЛЬШАЯ сторона зоны, как у карты: вписать арену целиком важнее, чем не
+        /// показать пустоту за её краем. Обычный боевой кламп режет по меньшей стороне и всю арену увидеть
+        /// не даёт.</para>
         /// </summary>
-        public void EnterDeployment(Vector2 center, float spread)
+        public void FrameArena()
         {
             _mode = CameraMode.Overview;
             ApplyMode();
             if (_overviewCam == null) return;
 
-            float size = Mathf.Clamp(spread + _actionZoomPadding, _minZoom, MaxZoomForZone());
-            Vector3 pos = ClampVisibleCenter(new Vector3(center.x, center.y, _cameraZ), size);
-            _overviewCam.transform.position = pos;
+            Rect2D zone = ActiveZone();
+            float aspect = ScreenAspect();
+            float size = Mathf.Max(zone.Size.y * 0.5f, (zone.Size.x * 0.5f) / Mathf.Max(aspect, 0.0001f));
+            size = Mathf.Max(size, _minZoom);
+
+            _overviewCam.transform.position = new Vector3(zone.Center.x, zone.Center.y, _cameraZ);
 
             LensSettings lens = _overviewCam.Lens;
             lens.OrthographicSize = size;
             _overviewCam.Lens = lens;
+        }
+
+        /// <summary>
+        /// Войти в вид карты акта: своя vcam, свои границы клампа (<paramref name="bounds"/> — область карты
+        /// в мире, разнесённая от арены). Кадрируем карту целиком только при ПЕРВОМ входе: дальше позиция
+        /// и зум карты — то, что игрок оставил, и поход в бой их не сбивает (боевые vcam живут отдельно).
+        /// </summary>
+        /// <param name="bounds">Область карты в мире — границы клампа.</param>
+        /// <param name="focus">Куда смотреть при первом входе: узел, где игрок стоит сейчас.</param>
+        /// <param name="visibleHeight">Желаемая высота кадра в мировых единицах (крупный вид, не вся карта).</param>
+        public void EnterMap(Rect2D bounds, Vector2 focus, float visibleHeight)
+        {
+            if (_mode != CameraMode.Map) _modeBeforeMap = _mode; // повторный вход не затирает точку возврата
+            _mapZone = bounds;
+            _mode    = CameraMode.Map;
+            ApplyMode();
+            if (_mapCam == null || _mapFramed) return;
+
+            // Стартовый кадр — КРУПНО у текущего узла, а не вся карта разом: игрок должен видеть, где он
+            // и куда шагнуть, а обзор целиком берётся колесом.
+            _mapFramed = true;
+            float size = Mathf.Clamp(visibleHeight * 0.5f, _minZoom, MaxZoomForZone());
+            Vector3 pos = ClampVisibleCenter(new Vector3(focus.x, focus.y, _cameraZ), size);
+            _mapCam.transform.position = pos;
+
+            LensSettings lens = _mapCam.Lens;
+            lens.OrthographicSize = size;
+            _mapCam.Lens = lens;
+        }
+
+        /// <summary>
+        /// Нырок в узел на время закрытия кадра: камера подъезжает к выбранной точке и приближается к ней.
+        /// Кадр, из которого нырнули, запоминается — вернёт его <see cref="SurfaceMap"/>.
+        /// </summary>
+        /// <param name="focus">Узел, в который входим.</param>
+        /// <param name="progress">Ход закрытия шторки, 0..1. Нырок идёт с ней в ногу, а не своим темпом.</param>
+        public void DiveMapTo(Vector2 focus, float progress)
+        {
+            if (_mapCam == null || _mode != CameraMode.Map) return;
+
+            if (!_mapDiving)
+            {
+                _mapDiving          = true;
+                _mapFrameBeforeDive = _mapCam.transform.position;
+                _mapSizeBeforeDive  = _mapCam.Lens.OrthographicSize;
+            }
+
+            float t = Mathf.Clamp01(progress);
+
+            // Целимся НЕ в сам узел, а чуть-чуть не доезжая: полный доезд к концу закрытия выглядит как
+            // рывок в упор, а нам нужно ощущение начатого движения, которое кадр обрывает на середине.
+            float size = Mathf.Max(_minZoom, Mathf.Lerp(_mapSizeBeforeDive, _mapSizeBeforeDive * _mapDiveZoom, t));
+            var target = new Vector3(focus.x, focus.y, _cameraZ);
+            Vector3 pos = Vector3.Lerp(_mapFrameBeforeDive, target, t);
+
+            _mapCam.transform.position = ClampVisibleCenter(pos, size);
+
+            LensSettings lens = _mapCam.Lens;
+            lens.OrthographicSize = size;
+            _mapCam.Lens = lens;
+        }
+
+        /// <summary>
+        /// Вернуть кадр карты, из которого ныряли. Зовётся на ЗАКРЫТОМ кадре: возврат не виден, а следующий
+        /// показ карты начинается с того вида, который игрок оставил, а не изнутри узла.
+        /// </summary>
+        public void SurfaceMap()
+        {
+            if (!_mapDiving) return;
+            _mapDiving = false;
+
+            if (_mapCam == null) return;
+            _mapCam.transform.position = _mapFrameBeforeDive;
+
+            LensSettings lens = _mapCam.Lens;
+            lens.OrthographicSize = _mapSizeBeforeDive;
+            _mapCam.Lens = lens;
+        }
+
+        /// <summary>
+        /// Выйти из вида карты в тот режим, из которого в неё вошли. Карту можно открыть посреди боя —
+        /// закрытие обязано вернуть взгляд ровно туда, где игрок его оставил, а не в дефолтный вид.
+        /// Вне режима карты — no-op.
+        /// </summary>
+        public void ExitMap()
+        {
+            if (_mode != CameraMode.Map) return;
+            SurfaceMap(); // карту могли закрыть посреди нырка — кадр обязан вернуться, а не остаться в узле
+            _mode = _modeBeforeMap;
+            ApplyMode();
         }
 
         /// <summary>Вернуть боевой вид (экшн-камера, слежение за дракой) — на старте боя из расстановки.</summary>
@@ -202,6 +314,10 @@ namespace Guildmaster.Presentation
 
         private void OnCycleView()
         {
+            // На карте Tab не циклит: боевые виды смотрят в другую область мира — переключение
+            // увело бы камеру с карты в пустую арену. Выход из карты — только через вход в узел.
+            if (_mode == CameraMode.Map) return;
+
             _mode = NextMode(_mode, _devAccess);
             ApplyMode();
         }
@@ -222,6 +338,7 @@ namespace Guildmaster.Presentation
             SetPriority(_actionCam,   _mode == CameraMode.Action);
             SetPriority(_overviewCam, _mode == CameraMode.Overview);
             SetPriority(_devCam,      _mode == CameraMode.Dev);
+            SetPriority(_mapCam,      _mode == CameraMode.Map);
         }
 
         private void SetPriority(CinemachineCamera cam, bool active)
@@ -236,6 +353,10 @@ namespace Guildmaster.Presentation
             {
                 case CameraMode.Overview: DriveManual(_overviewCam, _panSpeed, clampToZone: true);  break;
                 case CameraMode.Dev:      DriveManual(_devCam, _devPanSpeed, clampToZone: false);    break;
+                // Пока ныряем в узел, ручной пан/зум молчит: колесо посреди перехода спорило бы с наездом.
+                case CameraMode.Map:
+                    if (!_mapDiving) DriveManual(_mapCam, _panSpeed, clampToZone: true);
+                    break;
                 case CameraMode.Action:   DriveActionZoom();                                         break;
             }
         }
@@ -298,25 +419,44 @@ namespace Guildmaster.Presentation
             _actionCam.Lens = lens;
         }
 
+        // Активная зона клампа = зона ТЕКУЩЕГО режима. Боевые режимы клампятся ареной, карта — своей
+        // областью мира (она разнесена от арены и в боевую рамку не влезает: 14 колонок).
+        private Rect2D ActiveZone()
+        {
+            if (_mode == CameraMode.Map) return _mapZone;
+            return _layout != null ? _layout.CameraZone : ArenaLayoutData.Unbounded.CameraZone;
+        }
+
         // Максимальный орто-размер, при котором видимая область не превышает зону (по обеим осям).
+        // Карта — исключение: она широкая и низкая, и ограничение по МЕНЬШЕЙ стороне зажимало бы отдаление
+        // высотой (всю карту разом было не увидеть). Там берём бОльшую сторону — карта влезает целиком.
         private float MaxZoomForZone()
         {
             Vector2 zone = ZoneSize();
             float aspect = ScreenAspect();
             float halfH = zone.y * 0.5f;
             float halfW = (zone.x * 0.5f) / Mathf.Max(aspect, 0.0001f);
-            return Mathf.Max(_minZoom, Mathf.Min(halfH, halfW));
+            float limit = _mode == CameraMode.Map ? Mathf.Max(halfH, halfW) : Mathf.Min(halfH, halfW);
+            return Mathf.Max(_minZoom, limit);
         }
 
         // Кламп центра так, чтобы видимый прямоугольник (полу-высота = size) не вышел за зону.
         private Vector3 ClampVisibleCenter(Vector3 pos, float size)
         {
-            Vector2 c = _layout.CameraZone.Center;
+            Vector2 c = ActiveZone().Center;
             Vector2 zone = ZoneSize();
             float aspect = ScreenAspect();
 
             float slackX = Mathf.Max(0f, zone.x * 0.5f - size * aspect);
             float slackY = Mathf.Max(0f, zone.y * 0.5f - size);
+
+            // На карте кламп мягкий: разрешаем увести её к краю экрана (доля видимой области во все
+            // стороны), чтобы можно было рассмотреть угол карты вблизи, а не упираться в жёсткую рамку.
+            if (_mode == CameraMode.Map)
+            {
+                slackX += size * aspect * _mapFreedom;
+                slackY += size * _mapFreedom;
+            }
 
             pos.x = Mathf.Clamp(pos.x, c.x - slackX, c.x + slackX);
             pos.y = Mathf.Clamp(pos.y, c.y - slackY, c.y + slackY);
@@ -338,7 +478,7 @@ namespace Guildmaster.Presentation
 
         private Vector2 ZoneSize()
         {
-            Vector2 s = _layout.CameraZone.Size;
+            Vector2 s = ActiveZone().Size;
             return new Vector2(Mathf.Abs(s.x), Mathf.Abs(s.y));
         }
 

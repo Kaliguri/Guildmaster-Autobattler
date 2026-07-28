@@ -67,14 +67,20 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Баннеры боя (Party-скоуп предметы): действуют на всю команду team 0 (D1). Опц.")]
         [SerializeField] private ItemData[] _partyItems;
 
-        [Tooltip("Элитный бой (план act-map-run-loop B5): резолвится на узлы Elite (больше врагов, награда ×2).")]
-        [SerializeField] private bool _isElite;
-
         public EncounterData            Encounter      => _encounter;
         public IReadOnlyList<PlayerSlot> Roster        => _roster;
         public DeploymentMode           DeploymentMode => _deploymentMode;
         public IReadOnlyList<ItemData>  PartyItems     => _partyItems;
-        public bool                     IsElite        => _isElite;
+
+        /// <summary>
+        /// Сложность боя. Владелец один — энкаунтер: сложность есть свойство вражеского состава, а не
+        /// обёртки вокруг него. Прежде рядом жил свой <c>bool _isElite</c>, и владельцев было два —
+        /// причём проигравший оказался тем, кого читали: флаг не проставлен НИ В ОДНОМ пресете, поэтому
+        /// элитные узлы не находили ни одного элитного боя и откатывались на обычный. Тир энкаунтеров
+        /// при этом заполнен по-настоящему. Плюс тир умеет то, чего булев не умеет в принципе, —
+        /// отличать финал акта (ГДД: обычный / элитный / босс).
+        /// </summary>
+        public EncounterTier            Tier           => _encounter != null ? _encounter.Tier : EncounterTier.Common;
 
         /// <summary>
         /// Собрать ТРАНЗИЕНТНЫЙ пресет боя в рантайме (узел забега): враги — из авторского пресета, а player-ростер —
@@ -84,15 +90,14 @@ namespace Guildmaster.Data.Definitions
         /// </summary>
         public static BattlePresetData CreateRuntime(
             EncounterData encounter, PlayerSlot[] roster, DeploymentMode mode,
-            ItemData[] partyItems = null, bool isElite = false, string id = "battle.runtime")
+            ItemData[] partyItems = null, string id = "battle.runtime")
         {
             var preset = CreateInstance<BattlePresetData>();
             preset._encounter      = encounter;
             preset._roster         = roster ?? System.Array.Empty<PlayerSlot>();
             preset._deploymentMode = mode;
             preset._partyItems     = partyItems;
-            preset._isElite        = isElite;
-            preset.SetId(id);
+            preset.SetId(id);   // сложность не копируем: она приезжает вместе с энкаунтером
             return preset;
         }
     }

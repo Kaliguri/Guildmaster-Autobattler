@@ -2,6 +2,7 @@
 title: "Effect - Cleanse"
 order: 14
 status: draft
+updated: 2026-07-18
 ---
 
 # Очистка / Диспел (Cleanse)

@@ -13,7 +13,10 @@
     "Guildmaster.Guild",
     "Guildmaster.UI",
     "Guildmaster.ContentHub.Editor",
-    "UniTask"
+    "UniTask",
+    "MessagePipe",
+    "Unity.UI.TestFramework.Runtime",
+    "Unity.UI.TestFramework.Editor"
   ],
   "includePlatforms": [
     "Editor"

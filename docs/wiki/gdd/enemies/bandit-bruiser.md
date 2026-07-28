@@ -1,17 +1,20 @@
 ---
 title: "Bandits - Common - Bandit Bruiser"
+order: 10
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Обычный
-faction: Разбойники
-subfaction: Основные
+species: Разбойники
+combat_class: Брузер
+subspecies: Основные
 position: Фронт
 combat_range: Ближний
 attack_delivery:
   - Ближний бой
 physical_damage:
   - Дробящий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Контролирующий добиватель
 mechanics:
@@ -27,7 +30,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный.
-- **Фракция:** разбойники, основные.
+- **Вид:** разбойники. **Подвид:** основные.
 - **Позиция:** фронт.
 - **Ближний / дальний:** ближний.
 
@@ -63,7 +66,7 @@ mechanics:
 
 ## Шаг 5. Навыки
 
-Нет. Использует общую тактику фракции Разбойников.
+Нет. Использует общую тактику вида Разбойников.
 
 ---
 

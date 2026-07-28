@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
@@ -23,7 +23,12 @@ namespace Guildmaster.Balance.Editor
             int cap = SimBench.TicksFromSeconds(CapSeconds);
             List<RelicData> relics = BalanceAssets.LoadRelics();
 
-            var headers = new List<string> { "Relic", "DPS_solo", "DPS_aoe", "AoE_ratio", "Auto%", "Ability%", "DoT%" };
+            var headers = new List<string>
+            {
+                "Relic", "DPS_solo", "DPS_aoe", "AoE_ratio",
+                "AutoPhys%", "AutoMagic%", "Ability%", "DoT%", "React%", "Vuln%", "SelfDmg%",
+                "aoe_AutoPhys%", "aoe_AutoMagic%", "aoe_Ability%", "aoe_DoT%", "aoe_React%",
+            };
             var table = new List<IReadOnlyList<object>>();
 
             foreach (RelicData relic in relics)
@@ -38,22 +43,51 @@ namespace Guildmaster.Balance.Editor
 
                 double ratio = solo > 1e-6 ? aoe / solo : 0.0;
                 double total = a != null ? a.DamageDealt : 0.0;
-                double autoP = total > 1e-6 ? 100.0 * a.DamageAuto / total : 0.0;
-                double abilP = total > 1e-6 ? 100.0 * a.DamageAbility / total : 0.0;
-                double dotP = total > 1e-6 ? 100.0 * a.DamagePeriodic / total : 0.0;
+                double Share(double part) => total > 1e-6 ? 100.0 * part / total : 0.0;
 
-                table.Add(new object[] { relic.name, solo, aoe, ratio, autoP, abilP, dotP });
+                // Разбивка AoE-прогона считается отдельно от solo: у кита, чья способность требует
+                // нескольких целей, в solo она вообще не кастуется — и её доля там ноль не потому, что
+                // способность слаба, а потому, что её не было. Без этих колонок вопрос «сколько в AoE от
+                // взрыва, а сколько от яда» упирался в итоговое число (Друид, разбор 2026-07-28).
+                double aoeTotal = aa != null ? aa.DamageDealt : 0.0;
+                double AoeShare(double part) => aoeTotal > 1e-6 ? 100.0 * part / aoeTotal : 0.0;
+
+                table.Add(new object[]
+                {
+                    relic.name, solo, aoe, ratio,
+                    Share(a?.DamageAutoPhysical ?? 0.0),
+                    Share(a?.DamageAutoMagical ?? 0.0),
+                    Share(a?.DamageAbility ?? 0.0),
+                    Share(a?.DamagePeriodic ?? 0.0),
+                    Share(a?.DamageReactive ?? 0.0),
+                    Share(a?.DamageFromVulnerability ?? 0.0),
+                    Share(a?.SelfDamage ?? 0.0),
+                    AoeShare(aa?.DamageAutoPhysical ?? 0.0),
+                    AoeShare(aa?.DamageAutoMagical ?? 0.0),
+                    AoeShare(aa?.DamageAbility ?? 0.0),
+                    AoeShare(aa?.DamagePeriodic ?? 0.0),
+                    AoeShare(aa?.DamageReactive ?? 0.0),
+                });
             }
 
             string notes =
                 $"**DPS-бенч**: урон/сек до убийства эталонной цели HP={DummyHp:0} (или до потолка {CapSeconds:0} с). " +
                 $"DPS_solo — одна цель; DPS_aoe — кластер {ClusterSize} целей (для AoE-китов выше, ratio>1). " +
-                "Auto/Ability/DoT% — разбивка нанесённого урона по источнику (solo-прогон; ответка-шипы сюда не входят, у атакующего их нет). " +
+                "Первые пять «%» — разбивка нанесённого урона (solo-прогон), в сумме 100: авто-атака физикой, " +
+                "авто-атака магией (расщеплённый кит бьёт одной атакой в две школы), способность, DoT, ответка. " +
+                "**Vuln%** стоит особняком и в сумму НЕ входит: это доля общего урона, добавленная уязвимостями цели " +
+                "(«Угли»), она уже сидит внутри строк выше — показывает, сколько кит выигрывает от собственного разгона. " +
+                "**SelfDmg%** — плата кита собственным HP, в долях от нанесённого по врагу: в сумму тоже не входит, " +
+                "потому что это цена, а не вклад. " +
+                "Колонки **aoe_\\*** — та же разбивка, но по AoE-прогону: у кита, чья способность требует нескольких " +
+                "целей, в solo она не кастуется вовсе, и её доля там ноль по отсутствию, а не по слабости. " +
+                "Сравнивать solo- и aoe-доли имеет смысл только с оглядкой на AoE_ratio — знаменатели разные. " +
                 "Фикс-HP цели (не 1e9) — чтобы механики «% от HP» не взрывали цифру. Чувствительно к расстановке; " +
                 "wind-up первых кадров занижает DPS. Способности/on-hit учтены (полный сим). DPS=0 — кит не бьёт цель (напр. хилер).";
 
             string csv = ReportWriter.WriteCsv("bench_dps", headers, table);
             string md = ReportWriter.WriteMarkdown("bench_dps", "SimBench — DPS-бенч (Фаза 1)", headers, table, notes);
+            ReportWriter.WriteJson("bench_dps", "SimBench — DPS-бенч (Фаза 1)", headers, table, notes);
             return (csv, md);
         }
 

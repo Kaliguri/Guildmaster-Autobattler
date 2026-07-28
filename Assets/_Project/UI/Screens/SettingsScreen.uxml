@@ -1,25 +1,36 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:gm="Guildmaster.UI.Components" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel gm-panel--settings">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--settings">
             <ui:Label text="Настройки" class="gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
 
-            <!-- Табы (визуал-каркас на будущее): Игра / Графика / Звук. Переключение — в MenuRouter. -->
-            <ui:VisualElement class="gm-tabbar">
+            <!-- Разделы слева, содержимое справа: список разделов не отнимает ширину у самих опций.
+                 Переключение — в MenuRouter. -->
+            <ui:VisualElement class="gm-settings-layout">
+            <ui:VisualElement class="gm-tabbar gm-tabbar--side">
                 <ui:Button name="tab-game" text="Игра" class="gm-tab" />
                 <ui:Button name="tab-video" text="Графика" class="gm-tab" />
                 <ui:Button name="tab-audio" text="Звук" class="gm-tab gm-tab--active" />
             </ui:VisualElement>
 
+            <!-- Тело диалога: занимает остаток высоты и прокручивается, если опций станет больше,
+                 чем помещается. Габариты панели от содержимого больше не зависят. -->
+            <ui:ScrollView class="gm-panel__body">
             <!-- Страница «Игра»: тумблеры презентации. Подписи + значения проставляет роутер из VM (loc). -->
             <ui:VisualElement name="page-game" class="gm-tab-page gm-tab-page--hidden">
                 <gm:ToggleRow name="toggle-card-anim" />
                 <gm:ToggleRow name="toggle-card-attack" />
+                <gm:ToggleRow name="toggle-tooltip-details" />
             </ui:VisualElement>
 
-            <!-- Страница «Графика» — заглушка под будущие опции. -->
+            <!-- Страница «Графика»: дисплей. Подписи и варианты проставляет роутер из VM.
+                 «Частота обновления» гаснет вне эксклюзивного полноэкранного — Unity меняет её
+                 только там, и живой список без эффекта врал бы игроку. -->
             <ui:VisualElement name="page-video" class="gm-tab-page gm-tab-page--hidden">
-                <ui:Label text="Настройки графики — скоро" class="gm-tab-placeholder" />
+                <gm:SelectRow name="row-window-mode" />
+                <gm:SelectRow name="row-resolution" />
+                <gm:SelectRow name="row-refresh-rate" />
+                <ui:Label name="video-hint" class="gm-text-muted gm-tab-hint" />
             </ui:VisualElement>
 
             <!-- Страница «Звук» — активная: три строки-слайдера (подписи/значения проставляет роутер из VM). -->
@@ -27,6 +38,9 @@
                 <gm:SliderRow name="row-master" />
                 <gm:SliderRow name="row-music" />
                 <gm:SliderRow name="row-sfx" />
+            </ui:VisualElement>
+
+            </ui:ScrollView>
             </ui:VisualElement>
 
             <ui:VisualElement class="gm-divider" />

@@ -8,6 +8,7 @@ using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Diagnostics;
 using Guildmaster.Guild;
+using MessagePipe;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -26,7 +27,6 @@ namespace Guildmaster.UI
         private readonly UiNavigator _nav;
         private readonly SettingsViewModel _settingsVm;
         private readonly LoadoutViewModel _loadoutVm;
-        private readonly LoadoutHubViewModel _hubVm;
         private readonly ILocalizationService _loc;
         private readonly IRunControl _runControl; // QA #18: «В главное меню»/«Выход» из системного меню
 
@@ -36,13 +36,14 @@ namespace Guildmaster.UI
         private VisualTreeAsset _loadoutUxml;
         private VisualTreeAsset _rewardUxml;
         private VisualTreeAsset _eventUxml;
-        private VisualTreeAsset _mapUxml;
         private VisualTreeAsset _continueUxml;
         private VisualTreeAsset _shopUxml;
         private VisualTreeAsset _chestUxml;
+        private VisualTreeAsset _campUxml;
         private VisualTreeAsset _outcomeUxml;
         private VisualTreeAsset _mainMenuUxml;
-        private VisualTreeAsset _loadoutHubUxml;
+        private VisualTreeAsset _titleCardUxml;
+        private Sprite _titleCardSeal;
         private VisualTreeAsset _loadoutInventoryUxml;
         private VisualTreeAsset _arcanaCardUxml;
 
@@ -51,18 +52,48 @@ namespace Guildmaster.UI
         private const string PauseId = "pause";
 
         public MenuRouter(IInputService input, UiNavigator nav, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
-                          LoadoutHubViewModel hubVm, ILocalizationService loc, IRunControl runControl)
+                          ILocalizationService loc, IRunControl runControl,
+                          IPublisher<MainMenuVisibilityChangedEvent> mainMenuVisPub,
+                          Core.Audio.IAudioService audio)
         {
+            _audio = audio;
             _input = input;
             _nav = nav;
             _settingsVm = settingsVm;
             _loadoutVm = loadoutVm;
-            _hubVm = hubVm;
             _loc = loc;
             _runControl = runControl;
+            _mainMenuVisPub = mainMenuVisPub;
         }
 
+        private readonly IPublisher<MainMenuVisibilityChangedEvent> _mainMenuVisPub;
+
+        /// <summary>
+        /// Пока главное меню на экране — как его закрыть выбором «Ристалище». Ставится показом меню,
+        /// снимается при уходе. Нужен, чтобы запрос площадки снимал экран ТЕМ ЖЕ путём, что кнопка:
+        /// резолв через навигатор гасит и панель, и стол под ней. Обход мимо навигатора оставлял фон меню
+        /// висеть поверх мира, а площадку — невидимой.
+        /// </summary>
+        private System.Action _resolveMainMenuAsProvingGrounds;
+        // Звук экранов, у которых он СВОЙ (награда, лавка, привал, сундук): общий клик даёт корневой
+        // UiSoundSystem, а эти моменты игрок должен отличать на слух.
+        private readonly Core.Audio.IAudioService _audio;
+
         public bool IsOpen => _nav.IsOpen;
+
+        /// <summary>
+        /// Закрыть главное меню выбором «Ристалище», если оно сейчас на экране. Возвращает false, если
+        /// меню не показано — тогда решение принимает верхний цикл игры, а не UI.
+        /// </summary>
+        public bool TryLeaveMainMenuForProvingGrounds()
+        {
+            if (_resolveMainMenuAsProvingGrounds == null) return false;
+
+            System.Action resolve = _resolveMainMenuAsProvingGrounds;
+            _resolveMainMenuAsProvingGrounds = null;
+            resolve();
+            return true;
+        }
 
         /// <summary>
         /// Меняется на каждый Push/Pop/резолв навигатора (Ф4): бутстрап подписывается вместо поллинга структуры
@@ -77,10 +108,11 @@ namespace Guildmaster.UI
         /// <summary>Бутстрап отдаёт слои-контейнеры (Ф4) и UXML-шаблоны экранов (ссылки из сцены, не DI).</summary>
         public void Initialize(VisualElement screensLayer, VisualElement modalLayer, VisualTreeAsset pauseUxml, VisualTreeAsset settingsUxml,
             VisualTreeAsset loadoutUxml = null, VisualTreeAsset rewardUxml = null, VisualTreeAsset eventUxml = null,
-            VisualTreeAsset mapUxml = null, VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
+            VisualTreeAsset continueUxml = null, VisualTreeAsset shopUxml = null,
             VisualTreeAsset chestUxml = null, VisualTreeAsset outcomeUxml = null, VisualTreeAsset mainMenuUxml = null,
-            VisualTreeAsset loadoutHubUxml = null, VisualTreeAsset loadoutInventoryUxml = null,
-            VisualTreeAsset arcanaCardUxml = null)
+            VisualTreeAsset loadoutInventoryUxml = null,
+            VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
+            VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null)
         {
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
             _pauseUxml = pauseUxml;
@@ -88,15 +120,16 @@ namespace Guildmaster.UI
             _loadoutUxml = loadoutUxml;
             _rewardUxml = rewardUxml;
             _eventUxml = eventUxml;
-            _mapUxml = mapUxml;
             _continueUxml = continueUxml;
             _shopUxml = shopUxml;
             _chestUxml = chestUxml;
             _outcomeUxml = outcomeUxml;
             _mainMenuUxml = mainMenuUxml;
-            _loadoutHubUxml = loadoutHubUxml;
             _loadoutInventoryUxml = loadoutInventoryUxml;
             _arcanaCardUxml = arcanaCardUxml;
+            _campUxml = campUxml;
+            _titleCardUxml = titleCardUxml;
+            _titleCardSeal = titleCardSeal;
 
             // Навигатор Ф4: два слоя-контейнера. Page/Sheet → screensLayer (под топбаром); Modal (pause/
             // settings) → modalLayer (над топбаром, fullscreen-scrim накрывает его — QA #36). Контекст сборки
@@ -113,16 +146,18 @@ namespace Guildmaster.UI
             private readonly Action _onExit;
             public override ScreenKind Kind { get; }
             public override string ModeTag { get; }
+            public override bool SuppressScrim { get; }
             public string ScreenId { get; }
 
             public RouterScreen(ScreenKind kind, Func<VisualElement> build, string modeTag = null,
-                                string screenId = null, Action onExit = null)
+                                string screenId = null, Action onExit = null, bool suppressScrim = false)
             {
                 Kind = kind;
                 _build = build;
                 ModeTag = modeTag;
                 ScreenId = screenId;
                 _onExit = onExit;
+                SuppressScrim = suppressScrim;
             }
 
             public override void Build(UiScreenContext ctx) => Root = _build();
@@ -132,9 +167,18 @@ namespace Guildmaster.UI
             public override void OnExit() => _onExit?.Invoke();
         }
 
+        /// <summary>Открыто ли главное меню (гейт для ESC и для «настройки без скрима»).</summary>
+        private bool _mainMenuOpen;
+
+        // scrimless: модалка не рисует собственное затемнение (настройки из главного меню — там темнить
+        // нечего, панель просто подменяет панель). Намерение уезжает СВОЙСТВОМ ЭКРАНА: класс
+        // gm-screen--scrimless принадлежит UiNavigator.SyncVisibility, и повешенный здесь руками он
+        // тут же перезаписывался обратно — затемнение возвращалось (наход. Макса).
         private void PushScreen(Func<VisualElement> build, ScreenKind kind, string modeTag = null, string screenId = null,
-                                CancellationToken ct = default)
-            => _nav.Push(new RouterScreen(kind, build, modeTag, screenId), ct);
+                                CancellationToken ct = default, Action onExit = null, bool scrimless = false)
+        {
+            _nav.Push(new RouterScreen(kind, build, modeTag, screenId, onExit, scrimless), ct);
+        }
 
         // Обёртка flow-экрана с результатом (Ф3): вью-билдер получает делегат Resolve и связывает с ним свои
         // колбэки (выбор/пропуск). Навигатор гарантирует РОВНО ОДИН резолв — явный или DefaultResult при снятии
@@ -162,51 +206,49 @@ namespace Guildmaster.UI
         private void Pop() => _nav.Pop();
 
         /// <summary>
+        /// Можно ли показать экран. <b>Не фолбэк, а громкий отказ</b>: неназначенный UXML — это баг разводки
+        /// <see cref="UiRootBootstrap"/>, а не режим работы, и раньше каждый такой случай молча выполнял
+        /// колбэк УСПЕХА — узел засчитывался, награда пропускалась, игра закрывалась (аудит фолбэков
+        /// 2026-07-26, п.1). Шаг петли по-прежнему завершается: зависшая петля забега хуже пропущенного
+        /// экрана, — но теперь он завершается с красной ошибкой, а до билда его ловит SceneWiringTests.
+        /// </summary>
+        /// <param name="screen">Имя экрана и поля в бутстрапе — чтобы ошибку можно было грепнуть.</param>
+        /// <param name="uxml">Шаблон экрана.</param>
+        /// <param name="payloadOk">Данные запроса на месте (сессия привала, магазин, событие).</param>
+        private bool CannotShow(string screen, VisualTreeAsset uxml, bool payloadOk = true)
+        {
+            if (_root == null)
+            {
+                Debug.LogError($"[MenuRouter] - экран '{screen}': нет корня UI (UiRootBootstrap не инициализировал роутер) → шаг пропущен");
+                return true;
+            }
+            if (uxml == null)
+            {
+                Debug.LogError($"[MenuRouter] - экран '{screen}': UXML не назначен в UiRootBootstrap → шаг пропущен");
+                return true;
+            }
+            if (!payloadOk)
+            {
+                Debug.LogError($"[MenuRouter] - экран '{screen}': пустые данные запроса → шаг пропущен");
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Открыть loadout-экран для юнита (по дабл-клику в фазе расстановки; публикуется как
         /// <see cref="OpenLoadoutRequest"/>, бутстрап зовёт сюда). Пушится как полноэкранный оверлей.
         /// </summary>
         public void OpenLoadout(OpenLoadoutRequest req)
         {
-            if (_root == null || _loadoutUxml == null) return;
+            if (CannotShow("Лоадаут (_loadoutScreen)", _loadoutUxml)) return;
             _loadoutVm.Open(req);
             PushScreen(BuildLoadoutScreen, ScreenKind.Page);
         }
 
         /// <summary>
-        /// Лоадаут-хаб (кольцо реликвий, Фаза 2): обзор гильдии + навешивание собранных реликвий на сосуды.
-        /// Открывается кнопкой «Хаб» в топбаре, пушится оверлеем поверх карты. Реликвии переносятся драгом
-        /// (тащишь из запаса на сосуд → надеть; с сосуда в запас → снять). Правки durable (RunState) — контент
-        /// ребилдится на каждое действие (хаб дёшев).
-        /// </summary>
-        public void OpenHub()
-        {
-            if (_root == null || _loadoutHubUxml == null) return;
-
-            var container = new VisualElement { name = "hub-container" };
-            container.style.position = Position.Absolute;
-            container.style.left = 0; container.style.top = 0; container.style.right = 0; container.style.bottom = 0;
-
-            void Rebuild()
-            {
-                container.Clear();
-                VisualElement hub = LoadoutHubView.Build(
-                    _loadoutHubUxml,
-                    _hubVm.Roster(), _hubVm.Banners(), _hubVm.Stash(), _hubVm.Gold,
-                    nameOf: id => _hubVm.NameOf(id),
-                    localize: key => _loc?.GetString(key),
-                    onClose: Pop,
-                    onEquip: (vessel, stash) => { _hubVm.Equip(vessel, stash); Rebuild(); },
-                    onUnequip: vessel => { _hubVm.Unequip(vessel); Rebuild(); });
-                container.Add(hub);
-            }
-
-            Rebuild();
-            PushScreen(() => container, ScreenKind.Page);
-        }
-
-        /// <summary>
-        /// Новый полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро-карточек реликвий + детали.
-        /// Открывается кнопкой «Хаб» в топбаре (заменил старый хаб-оверлей). <paramref name="onClose"/>
+        /// Полноэкранный лоадаут/инвентарь (редизайн, Ф3a): грид таро-карточек реликвий + детали.
+        /// Открывается табом «Инвентарь» в топбаре. <paramref name="onClose"/>
         /// зовётся на ЛЮБОМ закрытии (Pop/Esc/PopAll) через DetachFromPanelEvent — бутстрап по нему
         /// возвращает ран-топбар. Реликвии — весь контент (фильтр по владению — Фаза 5); gold из RunState.
         /// </summary>
@@ -221,21 +263,18 @@ namespace Guildmaster.UI
 
         /// <summary>Есть ли карта петли акта в стеке (result-экран выбора узла) — скрытая под геймплеем или видимая.
         /// Отличает «вернуться на карту петли» (выйти из боя) от read-only просмотра (нет карты петли).</summary>
-        public bool HasMapInStack => _nav.AnyScreen(s => s.ModeTag == "map");
+        public bool HasMapInStack => _nav.AnyScreen(s => s.ModeTag == UiScreen.MapModeTag);
 
         /// <summary>Показать инвентарь (радио-режим): Sheet-тело поверх геймплея. Идемпотентно (уже открыт → no-op).</summary>
         public void ShowInventory(int gold, Action<RelicData, RelicDragPhase> onRelicDrag = null)
         {
             if (_inventoryScreen != null) { UiTrace.Log("router.ShowInventory: уже открыт → no-op"); return; }
-            if (_root == null || _loadoutInventoryUxml == null || _arcanaCardUxml == null)
-            {
-                UiTrace.Log("router.ShowInventory: ассеты не готовы → no-op");
-                return;
-            }
+            if (CannotShow("Инвентарь (_loadoutInventoryScreen)", _loadoutInventoryUxml)) return;
+            if (CannotShow("Карточка аркана (_arcanaCard)", _arcanaCardUxml)) return;
             UiTrace.Log("router.ShowInventory: Push inventory Sheet");
             _inventoryScreen = new RouterScreen(ScreenKind.Sheet, () => BuildInventory(gold, onRelicDrag),
-                                                modeTag: "inventory", onExit: () => _inventoryScreen = null);
-            _nav.Push(_inventoryScreen); // QA #21: ModeTag "inventory" подсвечивает таб
+                                                modeTag: UiScreen.InventoryModeTag, onExit: () => _inventoryScreen = null);
+            _nav.Push(_inventoryScreen); // QA #21: тег режима подсвечивает таб
         }
 
         /// <summary>Снять инвентарь (радио-режим). Идемпотентно (не открыт → no-op). Remove из любого места стека.</summary>
@@ -250,13 +289,15 @@ namespace Guildmaster.UI
             VisualElement screen = LoadoutInventoryView.Build(
                 _loadoutInventoryUxml, _arcanaCardUxml,
                 _loadoutVm.Relics, gold,
-                titleOf: r => ArcanaTitle(r != null ? r.Id : null),
+                titleOf: r => ContentTitle.Arcana(r != null ? r.Id : null),
                 narrativeOf: r => _loadoutVm.Desc(r),
                 localize: key => _loc?.GetString(key),
                 lockedSlots: 0,
                 cardAnimations: _settingsVm.CardAnimations,
                 cardAttackAnimation: _settingsVm.CardAttackAnimation,
-                onRelicDrag: onRelicDrag); // QA #5: drag карточки реликвии на юнита в мире
+                onRelicDrag: onRelicDrag, // QA #5: drag карточки реликвии на юнита в мире
+                tagsOf: r => _loadoutVm.ResolveTags(r),   // теги «быстрого чтения» из данных релика
+                statsOf: r => _loadoutVm.ResolveStats(r)); // базовые статы тем же каскадом, что у боя
 
             // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar). Sheet:
             // навигатор НЕ глушит геймплей — под инвентарём живут юниты/камера (клики разводит PointerOverUI над
@@ -276,7 +317,7 @@ namespace Guildmaster.UI
         {
             if (_testZoneScreen != null) { UiTrace.Log("router.ShowTestZone: уже показан → no-op"); return; }
             UiTrace.Log("router.ShowTestZone: Push test-zone Sheet");
-            _testZoneScreen = new RouterScreen(ScreenKind.Sheet, BuildTestZoneSpace, modeTag: "battle",
+            _testZoneScreen = new RouterScreen(ScreenKind.Sheet, BuildTestZoneSpace, modeTag: UiScreen.BattleModeTag,
                                                onExit: () => _testZoneScreen = null);
             _nav.Push(_testZoneScreen);
         }
@@ -286,6 +327,47 @@ namespace Guildmaster.UI
         {
             UiTrace.Log($"router.HideTestZone: {(_testZoneScreen != null ? "Remove test-zone" : "нет экрана → no-op")}");
             if (_testZoneScreen != null) _nav.Remove(_testZoneScreen); // OnExit обнулит _testZoneScreen
+        }
+
+        // World-карта (фаза D): сама карта живёт в мире, а UI держит лишь прозрачное Sheet-пространство —
+        // ради тега режима (подсветка таба «Карта») и контекста ввода (навигатор ставит InputContext.Map,
+        // где world-камера жива). Показ/скрытие — по СОСТОЯНИЮ WorldMapSpaceChangedEvent (бутстрап),
+        // владелец состояния — WorldMapNodeChooser. Идемпотентно, как тест-зона.
+        private UiScreen _mapSpaceScreen;
+
+        /// <summary>Показана ли world-карта: её пространство есть в стеке. Фон забега при этом гасится — карта
+        /// теперь рисуется В МИРЕ, и непрозрачный backdrop просто закрыл бы её собой.</summary>
+        public bool IsMapSpaceOpen => _mapSpaceScreen != null;
+
+        /// <summary>Лежит ли на экране непрозрачная страница (ивент/магазин/сундук/награда/исход) — ей нужен
+        /// задник-стол вместо просвечивающего мира (QA #50).</summary>
+        public bool HasVisiblePage => _nav.HasVisiblePage;
+
+        /// <summary>Войти в пространство world-карты: прозрачный Sheet с тегом режима «карта».</summary>
+        public void ShowMapSpace()
+        {
+            if (_mapSpaceScreen != null) { UiTrace.Log("router.ShowMapSpace: уже показан → no-op"); return; }
+            UiTrace.Log("router.ShowMapSpace: Push map Sheet");
+            _mapSpaceScreen = new RouterScreen(ScreenKind.Sheet, BuildMapSpace, modeTag: UiScreen.MapModeTag,
+                                               onExit: () => _mapSpaceScreen = null);
+            _nav.Push(_mapSpaceScreen);
+        }
+
+        /// <summary>Выйти из пространства world-карты: снять Sheet из любого места стека.</summary>
+        public void HideMapSpace()
+        {
+            UiTrace.Log($"router.HideMapSpace: {(_mapSpaceScreen != null ? "Remove map space" : "нет экрана → no-op")}");
+            if (_mapSpaceScreen != null) _nav.Remove(_mapSpaceScreen); // OnExit обнулит _mapSpaceScreen
+        }
+
+        // Прозрачное «окно в мир» карты — та же роль, что у пространства тест-зоны: контента не рисует,
+        // ввод не ловит (клики уходят в мир через PointerOverUI), несёт лишь режим.
+        private static VisualElement BuildMapSpace()
+        {
+            var space = new VisualElement { name = "map-space", pickingMode = PickingMode.Ignore };
+            space.style.position = Position.Absolute;
+            space.style.left = 0; space.style.top = 0; space.style.right = 0; space.style.bottom = 0;
+            return space;
         }
 
         // Прозрачное полноэкранное «окно в мир» тест-зоны: не рисует контента (мир виден сквозь), не ловит ввод
@@ -299,22 +381,18 @@ namespace Guildmaster.UI
         }
 
         // Титул таро-карты в стиле ГДД (аркан «The X»): «relic.flame_swordsman» → «The Flame Swordsman».
-        private static string ArcanaTitle(string id)
-        {
-            if (string.IsNullOrEmpty(id)) return "—";
-            int dot = id.LastIndexOf('.');
-            string s = (dot >= 0 ? id.Substring(dot + 1) : id).Replace('_', ' ');
-            var parts = s.Split(' ');
-            for (int i = 0; i < parts.Length; i++)
-                if (parts[i].Length > 0) parts[i] = char.ToUpper(parts[i][0]) + parts[i].Substring(1);
-            return "The " + string.Join(" ", parts);
-        }
-
         // QA #12: ☰/ESC ОТКРЫВАЮТ системное меню ПОВЕРХ текущего экрана (инвентарь/карта/бой), не закрывая
         // его. Если мы уже в меню (pause в стеке — даже под настройками) — шаг назад (settings→pause→закрыть).
         public void ToggleSystemMenu()
         {
-            if (_root == null) return;
+            if (_root == null)
+            {
+                Debug.LogError("[MenuRouter] - системное меню: нет корня UI (UiRootBootstrap не инициализировал роутер) → ESC не работает");
+                return;
+            }
+            // В главном меню системного меню нет: выходить из игры некуда, а ESC-панель поверх главного
+            // меню — просто баг (наход. Макса, раунд 3, п.3).
+            if (_mainMenuOpen) return;
             bool inMenu = _nav.AnyScreen(s => s is RouterScreen r && r.ScreenId == PauseId);
             if (inMenu) _nav.Pop();                                          // уже в системном меню → назад/закрыть
             else PushScreen(BuildPauseScreen, ScreenKind.Modal, screenId: PauseId); // QA #19: меню ПОВЕРХ (Modal со scrim)
@@ -324,8 +402,14 @@ namespace Guildmaster.UI
         // текстового ивента (выбор без результата = снять стек). НЕ для завершения забега (то — единая отмена, K11).
         private void CloseAll() => _nav.PopAll();
 
-        /// <summary>Режим-таб верхнего оверлея (QA #21): "inventory"/"map"/null. Единый источник подсветки топбара.</summary>
+        /// <summary>Режим-таб верхнего оверлея (QA #21), из констант <see cref="UiScreen"/>. Единый источник подсветки топбара.</summary>
         public string ActiveScreenMode => _nav.ActiveModeTag;
+
+        /// <summary>
+        /// Открыто ли системное меню (пауза или что-либо поверх неё). Топбар держит по этому флагу
+        /// таб настроек нажатым, пока меню на экране (наход. Макса, раунд 2, п.6).
+        /// </summary>
+        public bool IsSystemMenuOpen => _nav.AnyScreen(s => s is RouterScreen r && r.ScreenId == PauseId);
 
         // Прозрачные оверлеи (инвентарь) НЕ глушат геймплей — под ними живёт мир (юниты/камера, развязка
         // через IInputService.PointerOverUI). Класс остаётся ТОЛЬКО как стиль (прозрачный фон); поведение
@@ -387,8 +471,28 @@ namespace Guildmaster.UI
             string L(string key, string ru) { string v = _loc?.GetString(key); return string.IsNullOrEmpty(v) ? ru : v; }
             var cardAnim   = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-card-anim");
             var cardAttack = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-card-attack");
+            var tipDetails = screen.Q<Guildmaster.UI.Components.ToggleRow>("toggle-tooltip-details");
             if (cardAnim   != null) cardAnim.LabelText   = L("ui.settings.card_anim", "Анимация карточек");
             if (cardAttack != null) cardAttack.LabelText = L("ui.settings.card_attack", "Анимация атаки карточек");
+            // §II.10.4: галка «всегда подробно». Shift при ней работает наоборот — временно даёт краткий вид.
+            if (tipDetails != null) tipDetails.LabelText = L("ui.settings.tooltip_details", "Всегда подробные подсказки");
+
+            // Таб «Графика»: дисплей. Списки живые — их наполняет Sync, потому что набор частот зависит
+            // от выбранного разрешения и меняется прямо во время правки.
+            var windowMode = screen.Q<Guildmaster.UI.Components.SelectRow>("row-window-mode");
+            var resolution = screen.Q<Guildmaster.UI.Components.SelectRow>("row-resolution");
+            var refreshRow = screen.Q<Guildmaster.UI.Components.SelectRow>("row-refresh-rate");
+            var videoHint  = screen.Q<Label>("video-hint");
+            if (windowMode != null) windowMode.LabelText = L("ui.settings.window_mode", "Режим окна");
+            if (resolution != null) resolution.LabelText = L("ui.settings.resolution", "Разрешение");
+            if (refreshRow != null) refreshRow.LabelText = L("ui.settings.refresh_rate", "Частота обновления");
+
+            string ModeLabel(Core.Settings.WindowMode m) => m switch
+            {
+                Core.Settings.WindowMode.ExclusiveFullscreen => L("ui.settings.window_mode.exclusive", "Полноэкранный"),
+                Core.Settings.WindowMode.Windowed            => L("ui.settings.window_mode.windowed", "Оконный"),
+                _                                            => L("ui.settings.window_mode.borderless", "Окно без рамок"),
+            };
 
             _settingsVm.BeginEdit();
 
@@ -400,8 +504,49 @@ namespace Guildmaster.UI
                 sfx.SetValueWithoutNotify(_settingsVm.Sfx);
                 cardAnim?.SetValueWithoutNotify(_settingsVm.CardAnimations);
                 cardAttack?.SetValueWithoutNotify(_settingsVm.CardAttackAnimation);
+                tipDetails?.SetValueWithoutNotify(_settingsVm.AlwaysDetailedTooltips);
                 // «Атака» осмысленна только при включённой анимации карточек.
                 cardAttack?.SetEnabled(_settingsVm.CardAnimations);
+
+                SyncDisplay();
+            }
+
+            void SyncDisplay()
+            {
+                if (windowMode != null)
+                {
+                    var modes = new List<string>();
+                    foreach (Core.Settings.WindowMode m in SettingsViewModel.WindowModes) modes.Add(ModeLabel(m));
+                    windowMode.SetChoices(modes, _settingsVm.WindowModeIndex);
+                }
+
+                if (resolution != null)
+                {
+                    var items = new List<string>();
+                    foreach ((int w, int h) in _settingsVm.Resolutions) items.Add($"{w} x {h}");
+                    resolution.SetChoices(items, _settingsVm.ResolutionIndex);
+                }
+
+                if (refreshRow != null)
+                {
+                    var rates = new List<string>();
+                    foreach (RefreshRate r in _settingsVm.RefreshRates) rates.Add($"{r.value:0.##} Гц");
+                    refreshRow.SetChoices(rates, _settingsVm.RefreshRateIndex);
+
+                    // Вне эксклюзивного полноэкранного частоту держит композитор рабочего стола —
+                    // гасим строку вместо того, чтобы предлагать выбор без эффекта.
+                    refreshRow.SetRowEnabled(_settingsVm.RefreshRateSelectable);
+                }
+
+                if (videoHint != null)
+                {
+                    bool locked = !_settingsVm.RefreshRateSelectable;
+                    videoHint.text = locked
+                        ? L("ui.settings.refresh_rate.locked",
+                            "Частоту обновления можно менять только в полноэкранном режиме.")
+                        : string.Empty;
+                    videoHint.EnableInClassList("gm-tab-page--hidden", !locked);
+                }
             }
 
             Sync();
@@ -411,11 +556,22 @@ namespace Guildmaster.UI
             sfx.Slider.RegisterValueChangedCallback(e => _settingsVm.SetSfx(e.newValue));
             cardAnim?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAnimations(e.newValue));
             cardAttack?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetCardAttackAnimation(e.newValue));
+            tipDetails?.Toggle.RegisterValueChangedCallback(e => _settingsVm.SetAlwaysDetailedTooltips(e.newValue));
 
-            // VM → слайдеры (Defaults/Cancel меняют значения «снаружи»). Отписка при снятии с панели.
+            windowMode?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetWindowMode(windowMode.Index));
+            resolution?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetResolution(resolution.Index));
+            refreshRow?.Dropdown.RegisterValueChangedCallback(_ => _settingsVm.SetRefreshRate(refreshRow.Index));
+
+            // VM → контролы (Defaults/Cancel меняют значения «снаружи»). Отписка при снятии с панели.
             Action onChanged = Sync;
             _settingsVm.Changed += onChanged;
-            screen.RegisterCallback<DetachFromPanelEvent>(_ => _settingsVm.Changed -= onChanged);
+            Action onDisplayChanged = SyncDisplay;
+            _settingsVm.DisplayChanged += onDisplayChanged;
+            screen.RegisterCallback<DetachFromPanelEvent>(_ =>
+            {
+                _settingsVm.Changed -= onChanged;
+                _settingsVm.DisplayChanged -= onDisplayChanged;
+            });
 
             screen.Q<Button>("btn-save").clicked += () => { _settingsVm.Save(); Pop(); };
             screen.Q<Button>("btn-cancel").clicked += () => { _settingsVm.Cancel(); Pop(); };
@@ -425,9 +581,10 @@ namespace Guildmaster.UI
             return screen;
         }
 
-        // Табы настроек (Игра/Графика/Звук) — визуал-каркас: клик показывает свою страницу и прячет прочие.
-        // Игра/Графика пока плейсхолдеры; Звук несёт живые слайдеры. Раскладка/стиль — из UXML/USS.
-        private static void WireSettingsTabs(VisualElement screen)
+        // Табы настроек (Игра/Графика/Звук): клик показывает свою страницу и прячет прочие. Раскладка и
+        // стиль — из UXML/USS. Публичный, потому что тем же переключением пользуется UI-стенд превью:
+        // иначе страницу «Графика» нельзя посмотреть, не поднимая весь бут игры.
+        public static void WireSettingsTabs(VisualElement screen)
         {
             var tabGame  = screen.Q<Button>("tab-game");
             var tabVideo = screen.Q<Button>("tab-video");
@@ -525,7 +682,7 @@ namespace Guildmaster.UI
         // ровно один OnResolved, включая закрытие без выбора (= пропуск), чтобы флоу забега не завис (Ф3).
         public void OpenReward(OpenRewardRequest req)
         {
-            if (_root == null || _rewardUxml == null) { req.OnResolved?.Invoke(RewardChoiceResult.Skip); return; }
+            if (CannotShow("Награда (_rewardScreen)", _rewardUxml)) { req.OnResolved?.Invoke(RewardChoiceResult.Skip); return; }
             ShowRewardAsync(req).Forget();
         }
 
@@ -539,10 +696,15 @@ namespace Guildmaster.UI
                     req.CurrentInventory,
                     relic => _loadoutVm.Name(relic),
                     key => _loc?.GetString(key),
-                    (chosen, dropId) => resolve(dropId != null
-                        ? RewardChoiceResult.Swap(chosen, dropId)
-                        : RewardChoiceResult.Take(chosen)),
-                    () => resolve(RewardChoiceResult.Skip)));
+                    (chosen, dropId) =>
+                    {
+                        _audio?.Play("reward.take.stinger");
+                        resolve(dropId != null ? RewardChoiceResult.Swap(chosen, dropId) : RewardChoiceResult.Take(chosen));
+                    },
+                    () => { _audio?.Play("reward.skip.ui"); resolve(RewardChoiceResult.Skip); },
+                    // Хук выбора карточки был заведён в экране, но никогда не прокидывался — карточка
+                    // анимировалась молча.
+                    _ => _audio?.Play("reward.card_select.ui")));
 
             RewardChoiceResult result = await _nav.ShowAsync(screen, req.Cancellation); // экран снят ДО колбэка (II.5); ct → закрыть при отмене (QA #37)
             req.OnResolved?.Invoke(result);
@@ -553,7 +715,7 @@ namespace Guildmaster.UI
         // Закрытие без выбора (ESC/PopAll) = -1, чтобы флоу не завис.
         public void OpenTextEvent(OpenTextEventRequest req)
         {
-            if (_root == null || _eventUxml == null || req.Event == null) { req.OnChosen?.Invoke(-1); return; }
+            if (CannotShow("Текстовое событие (_eventScreen)", _eventUxml, req.Event != null)) { req.OnChosen?.Invoke(-1); return; }
             PushScreen(() => BuildTextEventScreen(req), ScreenKind.Page, ct: req.Cancellation); // QA #37: отмена закрывает ивент
         }
 
@@ -565,6 +727,7 @@ namespace Guildmaster.UI
             {
                 if (resolved) return;
                 resolved = true;
+                if (index >= 0) _audio?.Play("event.choice.ui"); // -1 = закрытие без выбора, ему звучать нечем
                 req.OnChosen?.Invoke(index);
             }
 
@@ -572,8 +735,7 @@ namespace Guildmaster.UI
                 _eventUxml,
                 req.Event,
                 key => _loc?.GetString(key),
-                Resolve,
-                CloseAll);
+                Resolve);
 
             // Страховка: закрытие без выбора (ESC/PopAll) = пропуск (-1), чтобы флоу не завис.
             screen.RegisterCallback<DetachFromPanelEvent>(_ =>
@@ -584,64 +746,98 @@ namespace Guildmaster.UI
             return screen;
         }
 
-        // Экран карты акта (A3) — на UXML (MapScreen.uxml) через общий MapScreenView. Клик по доступному узлу
-        // возвращает его id и закрывает экран; закрытие без выбора (ESC/PopAll) шлёт null, чтобы петля не завис.
-        public void OpenMap(OpenMapRequest req)
+        // Прощание узла — последний кадр магазина/сундука/привала: та же панель, что у ивента, но без вариантов.
+        // Живёт по токену узла (гаснет на входе в следующий), уводят с него кнопки бита поверх (QA #48/#49).
+        public void ShowNodeFarewell(OpenNodeFarewellRequest req)
         {
-            if (_root == null || _mapUxml == null) { req.OnChosen?.Invoke(null); return; }
-            ShowMapAsync(req).Forget();
+            if (CannotShow("Прощание узла (_eventScreen)", _eventUxml)) return;
+            PushScreen(() => BuildNodeFarewellScreen(req), ScreenKind.Page, ct: req.Cancellation);
         }
 
-        private async UniTaskVoid ShowMapAsync(OpenMapRequest req)
+        private VisualElement BuildNodeFarewellScreen(OpenNodeFarewellRequest req)
         {
-            var screen = new RouterResultScreen<string>(ScreenKind.Page, null,
-                resolve => MapScreenView.Build(
-                    _mapUxml,
-                    req.Map,
-                    new HashSet<string>(req.AvailableNodeIds),
-                    key => _loc?.GetString(key),
-                    resolve),
-                modeTag: "map"); // QA #21: подсветка таба «Карта»
+            VisualElement screen = _eventUxml.CloneTree();
+            VisualElement root = screen.childCount > 0 ? screen[0] : screen;
+            root.pickingMode = PickingMode.Position;
 
-            string nodeId = await _nav.ShowAsync(screen, req.Cancellation); // ct → отмена забега закрывает карту (QA #37, снос K12)
-            req.OnChosen?.Invoke(nodeId);
+            var title = root.Q<Label>("event-title");
+            var body  = root.Q<Label>("event-body");
+            if (title != null) title.text = _loc?.GetString(req.TitleKey) ?? string.Empty;
+            if (body  != null) body.text  = _loc?.GetString(req.BodyKey)  ?? string.Empty;
+
+            // Иллюстрации и вариантов у прощания нет: кадр держит текст, а выбор уже сделан.
+            var image = root.Q<VisualElement>("event-image");
+            if (image != null) image.style.display = DisplayStyle.None;
+            root.Q<VisualElement>("event-choices")?.Clear();
+
+            return screen;
         }
 
-        // Единая кнопка «Продолжить» (A4) — оверлей с кнопкой в правом нижнем углу. Нажатие резолвит и закрывает;
-        // закрытие без нажатия (ESC/PopAll) тоже резолвит, чтобы петля акта не зависла.
+        // Кнопки бита (A4) — прозрачный оверлей с кнопками в правом нижнем углу. Нажатие любой снимает экран.
+        // Гейт (одна кнопка): закрытие без нажатия (ESC/PopAll) всё равно резолвит, чтобы петля не зависла.
+        // Передышка (две кнопки): петля НЕ ждёт этот экран — он снимается по ct, когда узел выбран.
         public void ShowContinue(OpenContinueRequest req)
         {
-            if (_root == null || _continueUxml == null) { req.OnContinue?.Invoke(); return; }
+            if (CannotShow("Кнопки бита (_continueScreen)", _continueUxml)) { req.OnContinue?.Invoke(); return; }
             ShowContinueAsync(req).Forget();
         }
 
         private async UniTaskVoid ShowContinueAsync(OpenContinueRequest req)
         {
-            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false, resolve =>
+            bool formation = false; // какую кнопку нажали — «К построению» не должна дёргать OnContinue
+
+            // Kind = Modal, а НЕ Page: Page прячет всё под собой, и кнопки бита стирали бы экран пройденного
+            // узла с текстом-прощанием (QA #48/#49). Modal структурно ничего не прячет, а собственного
+            // затемнения у этого экрана нет (корень — .gm-continue-screen, не .gm-screen), так что фон под
+            // ним остаётся как есть. Глушение ввода не меняется: Page глушил его ровно так же.
+            var screen = new RouterResultScreen<bool>(ScreenKind.Modal, false, resolve =>
             {
                 var body = FillRoot(_continueUxml.CloneTree());
+
                 var btn = body.Q<Button>("btn-continue");
                 if (btn != null)
                 {
-                    if (!string.IsNullOrEmpty(req.LabelKey))
-                    {
-                        string label = _loc?.GetString(req.LabelKey);
-                        if (!string.IsNullOrEmpty(label)) btn.text = label;
-                    }
+                    Label(btn, req.LabelKey);
                     btn.clicked += () => resolve(true);
+                }
+
+                // Вторая кнопка есть только у передышки: без колбэка её вовсе не показываем.
+                var formationBtn = body.Q<Button>("btn-formation");
+                if (formationBtn != null)
+                {
+                    if (req.OnFormation == null) formationBtn.style.display = DisplayStyle.None;
+                    else
+                    {
+                        Label(formationBtn, req.FormationLabelKey);
+                        formationBtn.clicked += () => { formation = true; resolve(true); };
+                    }
                 }
                 return body;
             });
 
-            await _nav.ShowAsync(screen, req.Cancellation); // «Продолжить»/закрытие → OnContinue; ct → закрыть при отмене (QA #37)
-            req.OnContinue?.Invoke();
+            bool pressed = await _nav.ShowAsync(screen, req.Cancellation); // ct → снять при отмене забега/выборе узла
+
+            if (formation) { req.OnFormation?.Invoke(); return; }
+
+            // Гейт обязан резолвить даже когда экран сняли без нажатия (ESC/PopAll) — иначе петля акта повиснет.
+            // Передышка — наоборот: её снимают штатно (узел выбран), и «открыть карту» тогда не при чём.
+            bool isRestBeat = req.OnFormation != null;
+            if (pressed || !isRestBeat) req.OnContinue?.Invoke();
+        }
+
+        // Подпись кнопки из лок-ключа; пустой ключ или отсутствующий перевод — оставляем дефолт из UXML.
+        private void Label(Button button, string key)
+        {
+            if (string.IsNullOrEmpty(key)) return;
+            string text = _loc?.GetString(key);
+            if (!string.IsNullOrEmpty(text)) button.text = text;
         }
 
         // Экран магазина (B2) — на UXML (ShopScreen.uxml) через общий ShopScreenView, биндится к IShopController.
         // «Уйти»/закрытие резолвит OnLeave (петля продолжается). Ровно один вызов.
         public void OpenShop(OpenShopRequest req)
         {
-            if (_root == null || _shopUxml == null || req.Shop == null) { req.OnLeave?.Invoke(); return; }
+            if (CannotShow("Лавка (_shopScreen)", _shopUxml, req.Shop != null)) { req.OnLeave?.Invoke(); return; }
             ShowShopAsync(req).Forget();
         }
 
@@ -663,23 +859,63 @@ namespace Guildmaster.UI
         // затем сундук закрывается. Закрытие без клика тоже резолвит, чтобы флоу не завис.
         public void OpenChest(OpenChestRequest req)
         {
-            if (_root == null || _chestUxml == null) { req.OnOpen?.Invoke(); return; }
+            if (CannotShow("Сундук (_chestScreen)", _chestUxml)) { req.OnOpen?.Invoke(); return; }
             ShowChestAsync(req).Forget();
         }
 
         private async UniTaskVoid ShowChestAsync(OpenChestRequest req)
         {
             var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
-                resolve => ChestScreenView.Build(_chestUxml, key => _loc?.GetString(key), () => resolve(true)));
+                resolve => ChestScreenView.Build(_chestUxml, key => _loc?.GetString(key),
+                    () => { _audio?.Play("chest.open.stinger"); resolve(true); }));
 
             await _nav.ShowAsync(screen, req.Cancellation); // клик/закрытие → OnOpen; ct → закрыть при отмене (QA #37)
             req.OnOpen?.Invoke();
         }
 
+        // Экран привала — на UXML (CampScreen.uxml). Живёт, пока отряд тратит бюджет действий; закрывается
+        // по «Пройти мимо» (или ESC/PopAll), и только тогда резолвит OnLeave. Тем и отличается от ивента:
+        // выбор здесь повторяемый, а выход — отдельное решение.
+        public void OpenCamp(OpenCampRequest req)
+        {
+            if (CannotShow("Привал (_campScreen)", _campUxml, req.Session != null)) { req.OnLeave?.Invoke(); return; }
+            ShowCampAsync(req).Forget();
+        }
+
+        private async UniTaskVoid ShowCampAsync(OpenCampRequest req)
+        {
+            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
+                resolve => CampScreenView.Build(_campUxml, req.Session, key => _loc?.GetString(key), () => resolve(true),
+                    ok => _audio?.Play(ok ? "camp.action.ui" : "camp.denied.ui")));
+
+            await _nav.ShowAsync(screen, req.Cancellation); // уход/закрытие → OnLeave; ct → закрыть при отмене (QA #37)
+            req.OnLeave?.Invoke();
+        }
+
+        // Boot title card — до главного меню. Клик / авто-таймер → OnDismiss.
+        public void ShowTitleCard(OpenTitleCardRequest req)
+        {
+            if (CannotShow("Заставка (_titleCardScreen)", _titleCardUxml)) { req.OnDismiss?.Invoke(); return; }
+            ShowTitleCardAsync(req).Forget();
+        }
+
+        private async UniTaskVoid ShowTitleCardAsync(OpenTitleCardRequest req)
+        {
+            var screen = new RouterResultScreen<bool>(ScreenKind.Page, false,
+                resolve => TitleCardScreenView.Build(
+                    _titleCardUxml,
+                    _titleCardSeal,
+                    key => _loc?.GetString(key),
+                    onDismiss: () => resolve(true)));
+
+            await _nav.ShowAsync(screen);
+            req.OnDismiss?.Invoke();
+        }
+
         // Экран исхода забега (C2) — на UXML (OutcomeScreen.uxml). «В меню» резолвит OnToMenu; закрытие тоже.
         public void ShowOutcome(OpenOutcomeRequest req)
         {
-            if (_root == null || _outcomeUxml == null) { req.OnToMenu?.Invoke(); return; }
+            if (CannotShow("Исход забега (_outcomeScreen)", _outcomeUxml)) { req.OnToMenu?.Invoke(); return; }
             ShowOutcomeAsync(req).Forget();
         }
 
@@ -696,24 +932,64 @@ namespace Guildmaster.UI
         // меню; «Настройки» открываются поверх (Push) и меню не закрывают.
         public void OpenMainMenu(OpenMainMenuRequest req)
         {
-            if (_root == null || _mainMenuUxml == null) { req.OnChoice?.Invoke(MainMenuChoice.Quit); return; }
+            // Единственный гард, чей отказ ЗАКРЫВАЕТ игру: без главного меню игроку некуда деться, а висеть
+            // на чёрном экране хуже. Поэтому Quit остаётся — но громко, а не молча, как было.
+            if (CannotShow("Главное меню (_mainMenuScreen)", _mainMenuUxml)) { req.OnChoice?.Invoke(MainMenuChoice.Quit); return; }
             ShowMainMenuAsync(req).Forget();
         }
 
         private async UniTaskVoid ShowMainMenuAsync(OpenMainMenuRequest req)
         {
-            var screen = new RouterResultScreen<MainMenuChoice>(ScreenKind.Page, MainMenuChoice.Quit,
-                resolve => MainMenuScreenView.Build(
-                    _mainMenuUxml,
-                    req.HasSave,
-                    key => _loc?.GetString(key),
-                    onStart:    () => resolve(MainMenuChoice.StartRun),
-                    onContinue: () => resolve(MainMenuChoice.Continue),
-                    onSettings: () => PushScreen(BuildSettingsScreen, ScreenKind.Modal), // поверх меню, НЕ резолв
-                    onQuit:     () => resolve(MainMenuChoice.Quit)));
+            RouterResultScreen<MainMenuChoice> screen = null;
 
-            MainMenuChoice choice = await _nav.ShowAsync(screen); // снятие без выбора = Quit (верхний цикл не виснет)
-            req.OnChoice?.Invoke(choice);
+            // Настройки ИЗ ГЛАВНОГО МЕНЮ ведут себя как замена панели, а не как модалка поверх неё
+            // (реш. Макса, раунд 3): панель меню на время прячется, затемнение не накладывается —
+            // мы и так в меню, темнить нечего. В забеге настройки остаются модалкой со скримом.
+            void OpenSettingsFromMainMenu()
+            {
+                VisualElement menuPanel = screen?.Root;
+                if (menuPanel != null) menuPanel.style.display = DisplayStyle.None;
+                PushScreen(BuildSettingsScreen, ScreenKind.Modal, scrimless: true,
+                    onExit: () => { if (menuPanel != null) menuPanel.style.display = DisplayStyle.Flex; });
+            }
+
+            screen = new RouterResultScreen<MainMenuChoice>(ScreenKind.Page, MainMenuChoice.Quit,
+                resolve =>
+                {
+                    _resolveMainMenuAsProvingGrounds = () => resolve(MainMenuChoice.ProvingGrounds);
+                    return MainMenuScreenView.Build(
+                        _mainMenuUxml,
+                        req.HasSave,
+                        key => _loc?.GetString(key),
+                        onStart:    () => resolve(MainMenuChoice.StartRun),
+                        onContinue: () => resolve(MainMenuChoice.Continue),
+                        onSettings: OpenSettingsFromMainMenu,
+                        onQuit:     () => resolve(MainMenuChoice.Quit),
+                        onProvingGrounds: () => resolve(MainMenuChoice.ProvingGrounds));
+                });
+
+            // Забег кончился — UI прошлого забега кончается вместе с ним (QA #51). Инвентарь, карта и тест-зона
+            // живут в стеке как СОСТОЯНИЯ и своих владельцев переживают: без этой уборки новый забег открывался
+            // с распахнутым инвентарём поверх карты и подсвеченным табом прошлого режима. PopAll резолвит
+            // висящие экраны их дефолтом и через OnExit обнуляет ссылки роутера (_inventoryScreen и соседи).
+            _nav.PopAll();
+
+            // Пока меню на экране, презентационный слой подкладывает под него стол (иначе за меню пустота).
+            _mainMenuVisPub?.Publish(new MainMenuVisibilityChangedEvent(true));
+            _mainMenuOpen = true;
+            try
+            {
+                MainMenuChoice choice = await _nav.ShowAsync(screen); // снятие без выбора = Quit (верхний цикл не виснет)
+                req.OnChoice?.Invoke(choice);
+            }
+            finally
+            {
+                // Через finally, а не после await: меню снимают и отменой, и выходом из игры — фон обязан
+                // погаснуть в любом случае, иначе он останется висеть поверх мира.
+                _mainMenuVisPub?.Publish(new MainMenuVisibilityChangedEvent(false));
+                _mainMenuOpen = false;
+                _resolveMainMenuAsProvingGrounds = null;
+            }
         }
 
         private static void Disable(Button b) { if (b != null) b.SetEnabled(false); }
@@ -728,7 +1004,5 @@ namespace Guildmaster.UI
             tree.style.bottom = 0;
             return tree;
         }
-
-        private static string Percent(float v01) => Mathf.RoundToInt(Mathf.Clamp01(v01) * 100f) + "%";
     }
 }

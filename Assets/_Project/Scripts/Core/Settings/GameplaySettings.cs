@@ -17,13 +17,20 @@ namespace Guildmaster.Core.Settings
         /// <see cref="CardAnimations"/> выключена.</summary>
         public bool CardAttackAnimation;
 
-        public GameplaySettings(bool cardAnimations, bool cardAttackAnimation)
+        /// <summary>
+        /// Всегда показывать подробный разбор в подсказках (план §II.10.4). Shift при этом работает
+        /// ПЕРЕКЛЮЧАТЕЛЕМ и временно возвращает краткий вид — иначе владелец галки теряет быстрый режим.
+        /// </summary>
+        public bool AlwaysDetailedTooltips;
+
+        public GameplaySettings(bool cardAnimations, bool cardAttackAnimation, bool alwaysDetailedTooltips = false)
         {
-            CardAnimations      = cardAnimations;
-            CardAttackAnimation = cardAttackAnimation;
+            CardAnimations         = cardAnimations;
+            CardAttackAnimation    = cardAttackAnimation;
+            AlwaysDetailedTooltips = alwaysDetailedTooltips;
         }
 
-        /// <summary>Значения первого запуска: вся анимация карточек включена.</summary>
-        public static GameplaySettings Defaults() => new GameplaySettings(true, true);
+        /// <summary>Значения первого запуска: вся анимация карточек включена, подсказки краткие.</summary>
+        public static GameplaySettings Defaults() => new GameplaySettings(true, true, false);
     }
 }

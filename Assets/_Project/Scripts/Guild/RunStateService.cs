@@ -13,21 +13,38 @@ namespace Guildmaster.Guild
     /// </summary>
     public sealed class RunStateService
     {
-        private const string SaveKey = "run";
-
-        private readonly ISaveService _save;
-        private readonly GameConfig   _config;
+        private readonly ISaveService    _save;
+        private readonly GameConfig      _config;
+        private readonly IProfileService _profiles;
+        // Звук награды за бой. Опционален: сервис создают и в тестах, где звука нет вовсе.
+        private readonly Core.Audio.IAudioService _audio;
 
         public RunState Current { get; private set; }
 
-        public RunStateService(ISaveService save, GameConfig config)
+        public RunStateService(ISaveService save, GameConfig config, IProfileService profiles,
+            Core.Audio.IAudioService audio = null)
         {
-            _save   = save;
-            _config = config;
+            _save     = save;
+            _config   = config;
+            _profiles = profiles;
+            _audio    = audio;
         }
 
+        /// <summary>
+        /// Куда пишется забег: у каждой гильдии свой файл, потому что гильдия и есть слот сохранения
+        /// (ТЗ [[save-system]] §3). Пустая строка = активной гильдии нет, писать некуда.
+        /// </summary>
+        private string SaveKey => _profiles.RunKey;
+
         /// <summary>Есть ли автосейв забега на диске (для «Продолжить» в меню).</summary>
-        public bool HasSave => _save.Exists(SaveKey);
+        public bool HasSave
+        {
+            get
+            {
+                string key = SaveKey;
+                return !string.IsNullOrEmpty(key) && _save.Exists(key);
+            }
+        }
 
         /// <summary>Начать новый забег: свежий <see cref="RunState"/> с базовой вместимостью реликов из конфига.</summary>
         public RunState NewRun(long seed, RosterSlot[] guild)
@@ -49,12 +66,27 @@ namespace Guildmaster.Guild
         /// <see cref="GameConfig.GuildSize"/> одинаковых сосудов, у каждого базовый релик (пустой кит);
         /// прогрессия — реликвии, которые игрок навешивает на них в лоадауте. Сосуд-контента пока нет →
         /// <c>VesselId</c> пуст. Стартовые позиции — колонка на стороне team 0 (Free-расстановка перед боем
-        /// позволяет переставить). Дефолты-фолбэки, если конфиг не проставлен (старый ассет).
+        /// позволяет переставить). Незаполненные поля конфига подставляются, но с красной ошибкой: владелец
+        /// экономики — ассет, и тихая подстановка прятала бы то, что ассет не заполнен.
         /// </summary>
         public RunState NewDefaultRun(long seed)
         {
-            int    size    = _config.GuildSize > 0 ? _config.GuildSize : 4;
-            string relicId = string.IsNullOrEmpty(_config.StartingRelicId) ? "relic.base" : _config.StartingRelicId;
+            // Владелец обоих значений — ассет GameConfig (HARD-правило проекта). Пустое поле здесь не
+            // «дефолт», а незаполненный ассет: подставляем, чтобы забег вообще стартовал, но говорим об
+            // этом — тихая подстановка делала бы правку ассета невидимой (аудит фолбэков 2026-07-26).
+            int size = _config.GuildSize;
+            if (size <= 0)
+            {
+                UnityEngine.Debug.LogError($"[RunStateService] - GameConfig.GuildSize = {size}: беру 4, но это незаполненный ассет");
+                size = 4;
+            }
+
+            string relicId = _config.StartingRelicId;
+            if (string.IsNullOrEmpty(relicId))
+            {
+                UnityEngine.Debug.LogError($"[RunStateService] - GameConfig.StartingRelicId пуст: беру '{ContentIds.BaseRelic}', но это незаполненный ассет");
+                relicId = ContentIds.BaseRelic;
+            }
 
             var guild = new RosterSlot[size];
             float top = (size - 1) * 0.5f; // центрируем колонку по вертикали
@@ -70,11 +102,19 @@ namespace Guildmaster.Guild
             return NewRun(seed, guild);
         }
 
-        /// <summary>Загрузить забег из автосейва (или null, если нет). Устанавливает <see cref="Current"/>.</summary>
-        public RunState Load()
+        /// <summary>
+        /// Загрузить забег из автосейва. Возвращает <b>исход</b>, а не голое значение: «сейва нет» и
+        /// «сейв из более новой версии игры» требуют разного ответа игроку, а <see cref="Current"/>
+        /// подменяется только при успехе — иначе первый же автосейв затёр бы чужой прогресс.
+        /// </summary>
+        public SaveLoadResult<RunState> TryLoad()
         {
-            Current = _save.Load<RunState>(SaveKey);
-            return Current;
+            string key = SaveKey;
+            if (string.IsNullOrEmpty(key)) return SaveLoadResult<RunState>.Missing();
+
+            SaveLoadResult<RunState> result = _save.TryLoad<RunState>(key);
+            if (result.IsOk) Current = result.Value;
+            return result;
         }
 
         /// <summary>
@@ -112,7 +152,11 @@ namespace Guildmaster.Guild
         }
 
         /// <summary>Начислить награду золотом за победу в бою (из <see cref="GameConfig"/>).</summary>
-        public void AwardBattleReward() => AddGold(_config.BattleGoldReward);
+        public void AwardBattleReward()
+        {
+            AddGold(_config.BattleGoldReward);
+            _audio?.Play("run.gold_gain.ui"); // звенят только НАГРАДНЫЕ монеты: у продажи в лавке свой звук
+        }
 
         // ── Перезапуски боя на акт (реш. №65) ────────────────────────────────
 
@@ -130,11 +174,26 @@ namespace Guildmaster.Guild
         /// <summary>Снапшот текущего забега на диск (точка автосейва). No-op без активного забега.</summary>
         public void Autosave()
         {
-            if (Current != null) _save.Save(SaveKey, Current);
+            if (Current == null) return;
+
+            string key = SaveKey;
+            if (string.IsNullOrEmpty(key))
+            {
+                // Активной гильдии нет — забег писать некуда. Молчать нельзя: игрок продолжал бы играть,
+                // веря, что прогресс сохраняется, и потерял бы его целиком на выходе.
+                UnityEngine.Debug.LogError("[RunStateService] - нет активной гильдии: забег НЕ сохранён");
+                return;
+            }
+
+            _save.Save(key, Current);
         }
 
         /// <summary>Удалить автосейв (конец/сброс забега).</summary>
-        public void DeleteSave() => _save.Delete(SaveKey);
+        public void DeleteSave()
+        {
+            string key = SaveKey;
+            if (!string.IsNullOrEmpty(key)) _save.Delete(key);
+        }
 
         // ── Вместимость коллекции реликов (план 11 §5.4) ─────────────────────
 
@@ -170,7 +229,7 @@ namespace Guildmaster.Guild
         // ── Лоадаут: надеть/снять релик на сосуд гильдии (кольцо реликвий, Фаза 2) ──
 
         /// <summary>Id «пустого» кита (базовый релик). Из конфига, дефолт <c>relic.base</c>.</summary>
-        private string BaseRelicId => string.IsNullOrEmpty(_config.StartingRelicId) ? "relic.base" : _config.StartingRelicId;
+        private string BaseRelicId => string.IsNullOrEmpty(_config.StartingRelicId) ? ContentIds.BaseRelic : _config.StartingRelicId;
 
         /// <summary>
         /// Надеть релик из запаса на сосуд слота (лоадаут-хаб): релик снимается с запаса и встаёт на слот, а
@@ -210,6 +269,33 @@ namespace Guildmaster.Guild
             var inv = new List<string>(Current.RelicInventory) { cur };
             Current.RelicInventory = inv.ToArray();
             slot.RelicId = BaseRelicId;
+            return true;
+        }
+
+        // ── Расстановка: позиция и кит слота прямо с арены (фаза Deployment) ──
+        // Отдельно от EquipRelic/UnequipRelic: там лоадаут-хаб гоняет реликвии ЧЕРЕЗ запас (свап со списанием),
+        // а здесь игрок правит отряд руками на поле — источник кита не запас, а то, что он притащил из грида.
+        // Когда инвентарь начнёт показывать реальный запас забега (сейчас — весь контент), эти два пути стоит
+        // свести в один, и тогда SetSlotRelic уйдёт.
+
+        /// <summary>Запомнить позицию сосуда на арене (перетаскивание в расстановке). false = слот вне ростера.</summary>
+        public bool SetSlotPosition(int slotIndex, UnityEngine.Vector2 position)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null) return false;
+            slot.SavedPosition = position;
+            return true;
+        }
+
+        /// <summary>
+        /// Поставить кит на сосуд НАПРЯМУЮ, минуя запас (drag реликвии на юнита в расстановке): запас не
+        /// трогается, прежний кит не возвращается. false = слот вне ростера / пустой id.
+        /// </summary>
+        public bool SetSlotRelic(int slotIndex, string relicId)
+        {
+            RosterSlot slot = SlotAt(slotIndex);
+            if (slot == null || string.IsNullOrEmpty(relicId)) return false;
+            slot.RelicId = relicId;
             return true;
         }
 

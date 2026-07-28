@@ -1,15 +1,18 @@
 ---
 title: "Relic - Common - The Martyr"
+order: 110
 kind: character
 status: needs_review
+updated: 2026-07-26
 rarity: Обычная
-position:
-combat_range:
+combat_class: Поддержка
+position: []
+combat_range: []
 attack_delivery: []
 physical_damage: []
-elemental_damage: []
+magical_damage: []
 affinity: []
-roles:
+playstyle:
   - Баффер
 mechanics:
   - Само-урон

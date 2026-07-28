@@ -12,6 +12,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54a454cf52a3fe4ab1208c27c42d5ac, type: 3}
   m_Name: CombatFeelConfig
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Design.CombatFeelConfig
+  _enableContactDust: 1
+  _enableHitNudge: 1
+  _enableFacingFlipSquash: 1
+  _enableTargetAcquireTell: 1
+  _enableIdleBreath: 1
+  _enableSchoolFlash: 1
+  _enableAttackAnticipation: 1
+  _enableAttackerLunge: 1
+  _enableImpactFrame: 1
+  _enableDeathAnticipation: 1
+  _enableFloatingTextArc: 1
+  _enableHpBarPunch: 1
+  _enableHealFlash: 1
+  _contactDustCooldown: 0.35
+  _hitNudgeDistance: 0.08
+  _hitNudgeDuration: 0.12
+  _facingFlipSquashAmount: 0.35
+  _facingFlipDuration: 0.1
+  _targetAcquireTwitch: 0.06
+  _targetAcquireDuration: 0.08
+  _idleBreathAmplitude: 0.02
+  _idleBreathPeriod: 2.2
+  _flashPhysical: {r: 1, g: 1, b: 1, a: 1}
+  _flashElemental: {r: 1, g: 0.55, b: 0.25, a: 1}
+  _flashTrue: {r: 1, g: 0.95, b: 0.55, a: 1}
+  _flashPoison: {r: 0.45, g: 1, b: 0.4, a: 1}
+  _flashLight: {r: 1, g: 0.95, b: 0.75, a: 1}
+  _flashDark: {r: 0.55, g: 0.35, b: 0.85, a: 1}
+  _anticipationDistance: 0.06
+  _anticipationDuration: 0.1
+  _lungeDistance: 0.1
+  _lungeDuration: 0.1
+  _impactFrameHold: 0.04
+  _deathAnticipateDuration: 0.1
+  _deathAnticipateShake: 0.06
+  _numberArcGravity: 2.2
+  _healFlashColor: {r: 0.55, g: 1, b: 0.65, a: 1}
+  _healFlashPeak: 0.5
+  _castOutlineDuration: 0.45
+  _castOutlineStrength: 0.9
+  _lowHpThreshold: 0.25
+  _lowHpPulsePeriod: 0.85
+  _lowHpPulseAmount: 0.5
+  _hpBarPunchAmount: 0.08
+  _hpBarPunchDuration: 0.12
   _flashColor: {r: 1, g: 1, b: 1, a: 1}
   _flashDuration: 0.25
   _squashAmount: 0.2
@@ -19,22 +64,7 @@ MonoBehaviour:
   _hitstopMin: 0.02
   _hitstopMax: 0.09
   _hitstopFullFrac: 0.25
-  _shakePositionFraction: 0.08
-  _shakeRotationStrength: 4
-  _shakeFrequency: 26
-  _shakeDecayPerSec: 2
-  _killShake: 0.55
-  _battleEndShake: 0.75
-  _heavyHitFrac: 0.15
-  _heavyShakeMin: 0.2
-  _heavyShakeMax: 0.5
-  _killSlowFactor: 0.4
-  _killSlowRelease: 0.5
-  _killSlowCooldown: 2
-  _battleEndFactor: 0.1
-  _battleEndHold: 4
-  _battleEndRelease: 2
-  _battleEndReleaseCurve:
+  _hitstopWeightCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -58,3 +88,83 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _shakePositionFraction: 0.08
+  _shakeRotationStrength: 4
+  _shakeFrequency: 26
+  _shakeDecayPerSec: 2
+  _killShake: 0.55
+  _battleEndShake: 0.75
+  _heavyHitFrac: 0.15
+  _heavyShakeMin: 0.2
+  _heavyShakeMax: 0.5
+  _numberMaxScale: 1.7
+  _numberFullFrac: 0.25
+  _shatterFlashIn: 0.08
+  _shatterDuration: 2
+  _shatterExplode: 0.5
+  _shatterGravity: 0
+  _shatterSpin: 1.4
+  _shatterSpread: 0.7
+  _shatterBlockPixels: 3
+  _shatterTumble: 22
+  _shatterUpBias: 0.35
+  _shatterFlashOut: 0.12
+  _shardWhiteColor: {r: 2.6, g: 2.62, b: 2.75, a: 1}
+  _shardWhiteShare: 0.5
+  _shatterFadePower: 0.55
+  _shatterLifeVariance: 0.35
+  _shatterGlow: 1
+  _shatterEmberBoost: 2.8
+  _shatterLuma: 0.25
+  _shatterHold: 0.05
+  _shatterMinTimeScale: 0.4
+  _deathFlashColor: {r: 1.7, g: 1.7, b: 1.8, a: 1}
+  _playDeathClip: 0
+  _deathHologramDuration: 0.45
+  _hologramColor: {r: 0.3, g: 0.95, b: 1, a: 1}
+  _hologramBodyAlpha: 0.45
+  _hologramScanScale: 3
+  _hologramScanAmount: 0.35
+  _killSlowFactor: 0.4
+  _killSlowRelease: 0.5
+  _killSlowCooldown: 2
+  _finisherPause: 1
+  _finisherDeathFactor: 0.5
+  _finisherDeathDuration: 1.5
+  _finisherShatterFactor: 0.1
+  _finisherShatterDuration: 3
+  _finisherReturn: 2
+  _finisherReturnCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _vfxHitSpark: {fileID: 11400000, guid: 4752202527a5ba846aff371e6e5b860d, type: 2}
+  _vfxMuzzle: {fileID: 11400000, guid: c0ac4500890ae794d9e431a74ebb3d9c, type: 2}
+  _vfxImpactDust: {fileID: 11400000, guid: 9bb4d1bd7125aab44bda287808c647e8, type: 2}
+  _vfxContactDust: {fileID: 11400000, guid: e38186879a79fef4b979ef4a9b28d040, type: 2}
+  _vfxHeal: {fileID: 11400000, guid: 23b5496c9c572b249b5ac985ab2cc1b6, type: 2}
+  _vfxHitIntensityMin: 0.35
+  _vfxHitIntensityMax: 1
+  _vfxHitCountMin: 0.4
+  _vfxHitCountMax: 2.2
+  _vfxCastBurst: {fileID: 11400000, guid: 0278f93e6a96dfa4ba9a886e862e9baa, type: 2}

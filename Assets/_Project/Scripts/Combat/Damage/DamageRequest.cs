@@ -27,7 +27,7 @@ namespace Guildmaster.Combat
     /// </summary>
     public readonly struct DamageRequest
     {
-        /// <summary>Источник урона (для чтения DamageDealtEff, PhysPen/ElementalPen и lifesteal).</summary>
+        /// <summary>Источник урона (для чтения DamageDealtEff, PhysPen/MagicPen и lifesteal).</summary>
         public readonly RuntimeUnit Source;
 
         /// <summary>Цель урона.</summary>
@@ -36,7 +36,7 @@ namespace Guildmaster.Combat
         /// <summary>Базовый урон до модификаторов пайплайна.</summary>
         public readonly float RawDamage;
 
-        /// <summary>Школа урона — определяет, какая броня используется (Physical/Elemental/True).</summary>
+        /// <summary>Школа урона — определяет, какая броня используется (Physical/Magical/True).</summary>
         public readonly DamageSchool School;
 
         /// <summary>Константа K из StatsConfig (mult = K / (K + effArmor)).</summary>
@@ -45,8 +45,26 @@ namespace Guildmaster.Combat
         /// <summary>Откуда пришёл урон — гейт для реактивов «на удар».</summary>
         public readonly DamageSourceKind SourceKind;
 
-        /// <summary>Сродство урона (Яд/Свет/Тьма). Бронёй не гасится — множитель по типу существа цели (<see cref="AffinityTable"/>).</summary>
+        /// <summary>Сродство урона (Яд/Свет/Тьма) — метка идентичности источника, на число урона НЕ влияет.</summary>
         public readonly DamageAffinity Affinity;
+
+        /// <summary>
+        /// Магический элемент (Огонь/Лёд/Молния/Аркана) при школе <see cref="DamageSchool.Magical"/>.
+        /// Броню не делит — она одна на всю магию (ГДД «Статы» §Школа vs сродство), но несёт
+        /// идентичность стихии дальше по цепочке: в боевое событие и оттуда в реактивы, которым
+        /// важно отличить огонь от прочей магии («Угли» копятся только с огня).
+        /// </summary>
+        public readonly MagicElement Element;
+
+        /// <summary>
+        /// Множитель уязвимости ЦЕЛИ, уже вложенный в <see cref="RawDamage"/> («Угли» усиливают огонь по
+        /// подожжённому). Пайплайн его не применяет — он приходит домноженным; поле нужно, чтобы результат
+        /// смог сказать, сколько из нанесённого числа дали уязвимости. 1 = чистый урон.
+        /// </summary>
+        public readonly float Vulnerability;
+
+        /// <summary>Урон стихии огня — то, что копит «Угли» и усиливается ими.</summary>
+        public bool IsFire => School == DamageSchool.Magical && Element == MagicElement.Fire;
 
         /// <summary>Урон авто-атаки. «Изворотливость» убийцы уклоняется только от таких.</summary>
         public bool IsAutoAttack => SourceKind == DamageSourceKind.AutoAttack;
@@ -64,15 +82,19 @@ namespace Guildmaster.Combat
             DamageSchool school,
             float armorK,
             DamageSourceKind sourceKind = DamageSourceKind.Ability,
-            DamageAffinity affinity = DamageAffinity.None)
+            DamageAffinity affinity = DamageAffinity.None,
+            MagicElement element = MagicElement.None,
+            float vulnerability = 1f)
         {
-            Source     = source;
-            Target     = target;
-            RawDamage  = rawDamage;
-            School     = school;
-            ArmorK     = armorK;
-            SourceKind = sourceKind;
-            Affinity   = affinity;
+            Source        = source;
+            Target        = target;
+            RawDamage     = rawDamage;
+            School        = school;
+            ArmorK        = armorK;
+            SourceKind    = sourceKind;
+            Affinity      = affinity;
+            Element       = school == DamageSchool.Magical ? element : MagicElement.None;
+            Vulnerability = vulnerability;
         }
     }
 }

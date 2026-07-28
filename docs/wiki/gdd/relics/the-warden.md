@@ -1,27 +1,30 @@
 ---
 title: "Relic - Common - The Warden"
+order: 220
 kind: character
 status: needs_review
+updated: 2026-07-26
 rarity: Обычная
-position:
-combat_range:
+combat_class: Призыватель
+position: []
+combat_range: []
 attack_delivery: []
 physical_damage: []
-elemental_damage: []
+magical_damage: []
 affinity: []
-roles:
-  - Саммонер
-  - Контроль
+playstyle: []
 mechanics:
   - Призыв
   - Отбрасывание
   - Щит
+  - Контроль
 gender: Не определено
 themes: []
 needs_review:
   - Ранний черновик-идея, не по шаблону Шаг1-7
   - Яд - только в улучшениях, не в базовом наборе
   - Позиция, дальность, доставка атаки, школа урона - не заданы
+  - "Класс не задан. В прежнем поле roles значилось: Саммонер — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
 ---
 
 # The Warden

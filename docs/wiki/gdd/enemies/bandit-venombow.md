@@ -1,17 +1,20 @@
 ---
 title: "Bandits - Common - Bandit Venombow"
+order: 30
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Обычный
-faction: Разбойники
-subfaction: Основные
+species: Разбойники
+combat_class: РДД
+subspecies: Основные
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:
   - Снаряд
 physical_damage:
   - Колющий
-elemental_damage: []
+magical_damage: []
 affinity:
   - Яд
 encounter_role: Дальний добиватель
@@ -27,7 +30,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный.
-- **Фракция:** разбойники, основные.
+- **Вид:** разбойники. **Подвид:** основные.
 - **Позиция:** вторая линия.
 - **Ближний / дальний:** дальний.
 
@@ -63,7 +66,7 @@ mechanics:
 
 ## Шаг 5. Навыки
 
-Нет. Использует общую тактику фракции Разбойников.
+Нет. Использует общую тактику вида Разбойников.
 
 ---
 

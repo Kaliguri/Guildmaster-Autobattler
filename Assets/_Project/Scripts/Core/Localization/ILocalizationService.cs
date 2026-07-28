@@ -27,6 +27,24 @@ namespace Guildmaster.Core.Localization
         /// <summary>Строка из указанной String Table (<c>Content</c> / <c>UI</c>) по ключу.</summary>
         string GetString(string table, string key);
 
+        /// <summary>
+        /// Строка из таблицы <c>Content</c> с подстановкой именованных аргументов
+        /// (Smart String: <c>«Наносит {dmg} урона»</c>).
+        /// </summary>
+        string GetString(string key, IReadOnlyDictionary<string, object> args);
+
+        /// <summary>
+        /// Строка из указанной таблицы с подстановкой именованных аргументов.
+        /// </summary>
+        /// <remarks>
+        /// Именно ИМЕНОВАННЫХ, не позиционных: описание способности содержит несколько
+        /// величин, и позиционные <c>{0}</c>/<c>{1}</c> в переводе неизбежно перепутают
+        /// местами — переводчик не видит, что есть что. Плюс порядок слов в разных языках
+        /// разный, и привязка слота к смыслу (а не к позиции) — единственная переживающая
+        /// перевод форма.
+        /// </remarks>
+        string GetString(string table, string key, IReadOnlyDictionary<string, object> args);
+
         /// <summary>Сменить активную локаль по коду; no-op, если код неизвестен.</summary>
         void SetLocale(string localeCode);
     }

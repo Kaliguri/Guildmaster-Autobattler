@@ -15,18 +15,20 @@ MonoBehaviour:
   _id: effect.bulwark_shield
   _polarity: 0
   _tags: 65
-  _baseDuration: 2
+  _baseDuration: 0.4
   _stacking: 2
   _maxStacks: 1
   _cleanseTier: 0
   _unremovable: 0
   _components:
   - rid: 5615026876324511840
+  _icon: {fileID: 0}
+  _infoTags: []
   references:
     version: 2
     RefIds:
     - rid: 5615026876324511840
       type: {class: MissingHpShieldComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _flat: 200
-        _pctMissingHp: 0.15
+        _flat: 30
+        _pctMissingHp: 0.075

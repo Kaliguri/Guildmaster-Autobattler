@@ -16,7 +16,8 @@ namespace Guildmaster.UI
             Action onStart,
             Action onContinue,
             Action onSettings,
-            Action onQuit)
+            Action onQuit,
+            Action onProvingGrounds = null)
         {
             string L(string key, string fallback)
             {
@@ -29,12 +30,18 @@ namespace Guildmaster.UI
             root.pickingMode = PickingMode.Position;
 
             var title    = root.Q<Label>("menu-title");
+            var version  = root.Q<Label>("menu-version");
             var start    = root.Q<Button>("btn-start");
             var cont     = root.Q<Button>("btn-continue");
             var settings = root.Q<Button>("btn-settings");
             var quit     = root.Q<Button>("btn-quit");
 
-            if (title != null) title.text = L("ui.mainmenu.title", "Гильдмастер");
+            if (title != null) title.text = L("ui.mainmenu.title", "Happy Guildmasters");
+
+            // Версия билда. Лок-ключа намеренно нет: строка не содержит слов — это «v» и номер из
+            // ProjectSettings, одинаковые на всех языках. Нужна, чтобы по скриншоту в багрепорте было
+            // видно, на чём игрок играл.
+            if (version != null) version.text = "v" + UnityEngine.Application.version;
 
             if (start != null)    { start.text    = L("ui.mainmenu.start", "Начать забег"); start.clicked += () => onStart?.Invoke(); }
             if (cont != null)
@@ -42,6 +49,18 @@ namespace Guildmaster.UI
                 cont.text = L("ui.mainmenu.continue", "Продолжить");
                 cont.SetEnabled(hasSave);
                 cont.clicked += () => onContinue?.Invoke();
+            }
+            // Ристалище (ГДД [[proving-grounds]]) — в меню стоит, но ВЫКЛЮЧЕНО: площадка ещё не готова к
+            // игроку (состав фиксирован ассетом, экрана сборки нет), а вход у нас пока через dev-команду
+            // gm_proving_grounds. Держим её выключенной, а не спрятанной, по HARD-правилу ui-feedback:
+            // «скоро будет» игроку честнее, чем пункт, появившийся из ниоткуда. Действие подключено —
+            // открыть площадку игроку будет ровно одной снятой строкой SetEnabled.
+            var proving = root.Q<Button>("btn-proving-grounds");
+            if (proving != null)
+            {
+                proving.text = L("ui.mainmenu.proving_grounds", "Ристалище");
+                proving.SetEnabled(false);
+                proving.clicked += () => onProvingGrounds?.Invoke();
             }
             if (settings != null) { settings.text = L("ui.mainmenu.settings", "Настройки"); settings.clicked += () => onSettings?.Invoke(); }
             if (quit != null)     { quit.text     = L("ui.mainmenu.quit", "Выход"); quit.clicked += () => onQuit?.Invoke(); }

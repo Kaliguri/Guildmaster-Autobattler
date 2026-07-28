@@ -55,6 +55,12 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Школа урона способности. Inherit = школа юнита-кастера (ГДД «8»: школа задаётся каждой атаке/способности отдельно).")]
         [SerializeField] private DamageSchoolOverride _schoolOverride = DamageSchoolOverride.Inherit;
 
+        [Tooltip("Физ-подтип урона способности (Дробящий/Режущий/Колющий) — при школе Physical. Inherit = подтип кастера. Копейщик: ульта Slash при автоатаке Pierce.")]
+        [SerializeField] private PhysicalSubtypeOverride _physicalSubtypeOverride = PhysicalSubtypeOverride.Inherit;
+
+        [Tooltip("Магический элемент урона способности (Огонь/Лёд/Молния/Аркана) — при школе Magical. Inherit = элемент кастера.")]
+        [SerializeField] private MagicElementOverride _magicElementOverride = MagicElementOverride.Inherit;
+
         [Tooltip("Сродство урона способности (Яд/Свет/Тьма). Inherit = сродство юнита-кастера.")]
         [SerializeField] private DamageAffinityOverride _affinityOverride = DamageAffinityOverride.Inherit;
 
@@ -71,6 +77,13 @@ namespace Guildmaster.Data.Definitions
 
         [Tooltip("Доля недостающего HP цели, добавляемая к лечению («Длань жизни» = 1.0 → долечивает до полного). >0 делает способность лечащей.")]
         [SerializeField] private float _healPctTargetMissingHp;
+
+        [Tooltip("Эффект вместо разового лечения: накладывается на каждого лечимого союзника (Друид = HoT «Грибной покров»). Множитель лечения превращается в стаки эффекта. Задан → тоже делает способность лечащей.")]
+        [SerializeField] private EffectData _healEffect;
+
+        [Tooltip("Доля лечения, когда цель — САМ кастующий (Пастырь = 0.25: себе вчетверо хуже, чем союзнику). 1 = без разницы.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _selfHealFraction = 1f;
 
         [Header("Cast condition (blocks D/E, Phase 3)")]
         [Tooltip("Когда кастовать: Immediately = как только готова; EnemiesInRadius = врагов в радиусе ≥ CastConditionCount; AllyTargetHpBelowPct = HP% выбранной цели ≤ CastConditionHpPct.")]
@@ -127,13 +140,44 @@ namespace Guildmaster.Data.Definitions
 
         public float DamageMultiplier => _damageMultiplier;
         public DamageSchoolOverride SchoolOverride => _schoolOverride;
+        public PhysicalSubtypeOverride PhysicalSubtypeOverride => _physicalSubtypeOverride;
+        public MagicElementOverride MagicElementOverride => _magicElementOverride;
         public DamageAffinityOverride AffinityOverride => _affinityOverride;
+
+        /// <summary>Тип урона способности: override поверх типа урона кастера (Inherit = взять у него).</summary>
+        public DamageType ResolveDamageType(UnitData caster)
+        {
+            DamageSchool school = DamageCategories.Resolve(_schoolOverride, caster.DamageSchool);
+            PhysicalSubtype subtype = DamageCategories.Resolve(_physicalSubtypeOverride, caster.PhysicalSubtype);
+            MagicElement element = DamageCategories.Resolve(_magicElementOverride, caster.MagicElement);
+            DamageAffinity affinity = DamageCategories.Resolve(_affinityOverride, caster.Affinity);
+            return new DamageType(school, subtype, element, affinity);
+        }
         public AreaShape AreaShape => _areaShape;
         public float AreaRadius => _areaRadius;
         public float HealFlat => _healFlat;
         public float HealPctTargetMissingHp => _healPctTargetMissingHp;
-        /// <summary>Способность лечит (а не бьёт), если задана любая хил-нагрузка.</summary>
-        public bool IsHeal => _healFlat > 0f || _healPctTargetMissingHp > 0f;
+
+        /// <summary>
+        /// Эффект-нагрузка лечения: если задан, союзник получает ЕГО (со стаками по множителю лечения)
+        /// вместо мгновенного восстановления HP. Плоский хил и процент при этом не отменяются — заданы
+        /// оба, союзник получит и то, и то.
+        /// </summary>
+        public EffectData HealEffect => _healEffect;
+
+        /// <summary>
+        /// Во сколько раз слабее лечение, когда цель — сам кастующий. Отдавать выгоднее, чем брать:
+        /// та же асимметрия, что у пассивки Пастыря (решение 2026-07-28), но для адресной способности.
+        /// </summary>
+        /// <remarks>
+        /// Заведено вместо прежнего запрета «ульта не может целиться в себя»: запрет оставлял хилера
+        /// без единственного инструмента ровно тогда, когда фокус переводили на него. Цена честнее
+        /// невозможности — спасти себя можно, но вчетверо дороже.
+        /// </remarks>
+        public float SelfHealFraction => _selfHealFraction;
+
+        /// <summary>Способность лечит (а не бьёт), если задана любая хил-нагрузка — мгновенная или эффектом.</summary>
+        public bool IsHeal => _healFlat > 0f || _healPctTargetMissingHp > 0f || _healEffect != null;
         public CastCondition CastCondition => _castCondition;
         public int CastConditionCount => _castConditionCount;
         /// <summary>Радиус условия каста; при ≤ 0 откатывается к <see cref="AreaRadius"/>.</summary>

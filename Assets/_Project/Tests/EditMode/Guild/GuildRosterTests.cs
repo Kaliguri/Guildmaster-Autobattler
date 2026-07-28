@@ -26,8 +26,8 @@ namespace Guildmaster.Tests.EditMode.Guild
         [SetUp]
         public void SetUp()
         {
-            _config    = ScriptableObject.CreateInstance<GameConfig>();
-            _runStates = new RunStateService(new MemSave(), _config);
+            _config    = GameConfig.CreateDefault();
+            _runStates = new RunStateService(new InMemorySaveService(), _config, new FixedProfileService());
         }
 
         [Test]
@@ -67,18 +67,21 @@ namespace Guildmaster.Tests.EditMode.Guild
         }
 
         [Test]
-        public void Resolve_SkipsSlot_WhenRelicMissing()
+        public void Resolve_FallsBackToBaseKit_WhenRelicMissing()
         {
             var content = new FakeContent();
             content.Add(MakeRelic("relic.base"));
 
             RunState run = _runStates.NewDefaultRun(1L);
-            run.Guild[0].RelicId = "relic.ghost"; // нет в БД → слот пропускается (с варнингом)
+            run.Guild[0].RelicId = "relic.ghost"; // нет в БД → сосуд встаёт с базовым китом (с варнингом)
 
             LogAssert.Expect(LogType.Warning, new Regex("relic\\.ghost"));
             PlayerSlot[] roster = GuildRoster.Resolve(run, content);
 
-            Assert.AreEqual(3, roster.Length, "Слот с ненайденным реликом выпал.");
+            // Ростер идёт слот-в-слот с гильдией: по индексу расстановка пишет обратно позиции и киты,
+            // поэтому «плохой» сосуд не выпадает, а откатывается на базовый кит.
+            Assert.AreEqual(4, roster.Length, "Слот не должен выпадать — индексы гильдии обязаны совпадать.");
+            Assert.AreEqual("relic.base", roster[0].Relic.Id);
         }
 
         [Test]
@@ -92,14 +95,15 @@ namespace Guildmaster.Tests.EditMode.Guild
         public void CreateRuntime_BuildsFreePreset_FromRoster()
         {
             var roster = new[] { new PlayerSlot(MakeRelic("relic.base"), null, new Vector2(-6f, 0f)) };
+            var encounter = ScriptableObject.CreateInstance<EncounterData>();
             BattlePresetData preset = BattlePresetData.CreateRuntime(
-                encounter: null, roster: roster, mode: DeploymentMode.Free, partyItems: null,
-                isElite: true, id: "battle.run.x");
+                encounter: encounter, roster: roster, mode: DeploymentMode.Free, partyItems: null,
+                id: "battle.run.x");
 
             Assert.AreEqual(DeploymentMode.Free, preset.DeploymentMode, "Забег форсит расстановку.");
             Assert.AreEqual(1, preset.Roster.Count);
             Assert.AreEqual("relic.base", preset.Roster[0].Relic.Id);
-            Assert.IsTrue(preset.IsElite, "Элитность прокидывается из авторского пресета.");
+            Assert.AreEqual(encounter.Tier, preset.Tier, "Сложность боя приезжает вместе с энкаунтером.");
             Assert.AreEqual("battle.run.x", preset.Id);
         }
 
@@ -115,22 +119,12 @@ namespace Guildmaster.Tests.EditMode.Guild
         {
             private readonly Dictionary<string, ContentDefinition> _byId = new();
             public void Add(ContentDefinition d) => _byId[d.Id] = d;
-            public T Get<T>(string id) where T : ContentDefinition => (T)_byId[id];
             public bool TryGet<T>(string id, out T def) where T : ContentDefinition
             {
                 if (_byId.TryGetValue(id, out var d) && d is T t) { def = t; return true; }
                 def = null; return false;
             }
             public IReadOnlyList<T> All<T>() where T : ContentDefinition => Array.Empty<T>();
-        }
-
-        private sealed class MemSave : ISaveService
-        {
-            private readonly Dictionary<string, object> _s = new();
-            public void Save<T>(string key, T value) => _s[key] = value;
-            public T Load<T>(string key) => _s.TryGetValue(key, out var v) ? (T)v : default;
-            public bool Exists(string key) => _s.ContainsKey(key);
-            public void Delete(string key) => _s.Remove(key);
         }
     }
 }

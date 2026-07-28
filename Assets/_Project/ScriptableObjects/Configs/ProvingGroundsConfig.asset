@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4de7945490db7af4c82d5abe5b51f19d, type: 3}
+  m_Name: ProvingGroundsConfig
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.ProvingGroundsConfig
+  _squad:
+  - {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
+  - {fileID: 11400000, guid: ab27903fcfcfda74aa115da3d3cee210, type: 2}
+  - {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
+  - {fileID: 11400000, guid: 2405b745f0480e2428fdaf24ac1b5d93, type: 2}
+  _opponents:
+  - {fileID: 11400000, guid: 3929f651376911d4e8bf8d6d5adb3ef5, type: 2}
+  - {fileID: 11400000, guid: ab27903fcfcfda74aa115da3d3cee210, type: 2}
+  - {fileID: 11400000, guid: 7ef9ed5a7ec3b0d41bdd65e85f35ff88, type: 2}
+  - {fileID: 11400000, guid: 2405b745f0480e2428fdaf24ac1b5d93, type: 2}
+  _lineX: 3
+  _spacing: 1.2

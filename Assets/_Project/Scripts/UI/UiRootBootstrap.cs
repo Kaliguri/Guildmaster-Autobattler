@@ -36,9 +36,6 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана текстового ивента (StS-style: заголовок, тело, варианты ответа).")]
         [SerializeField] private VisualTreeAsset _eventScreen;
 
-        [Tooltip("UXML экрана карты акта (граф узлов слева→направо, клик по доступному узлу).")]
-        [SerializeField] private VisualTreeAsset _mapScreen;
-
         [Tooltip("UXML единой кнопки «Продолжить» (правый нижний угол, бит между узлом и картой).")]
         [SerializeField] private VisualTreeAsset _continueScreen;
 
@@ -48,23 +45,33 @@ namespace Guildmaster.UI
         [Tooltip("UXML экрана сундука (фасад с кликабельной крышкой → награда 1-из-3).")]
         [SerializeField] private VisualTreeAsset _chestScreen;
 
+        [Tooltip("UXML экрана привала (бюджет действий отряда + список трат).")]
+        [SerializeField] private VisualTreeAsset _campScreen;
+
         [Tooltip("UXML экрана исхода забега (Победа/Поражение → В меню).")]
         [SerializeField] private VisualTreeAsset _outcomeScreen;
 
         [Tooltip("UXML главного меню (Начать/Продолжить/Настройки/Выход).")]
         [SerializeField] private VisualTreeAsset _mainMenuScreen;
 
+        [Tooltip("UXML boot title card (Happy Guildmasters) до главного меню.")]
+        [SerializeField] private VisualTreeAsset _titleCardScreen;
+
+        [Tooltip("Печать/seal для boot title card (PixelLab AppIcon).")]
+        [SerializeField] private Sprite _titleCardSeal;
+
         [Tooltip("UXML глобальной панели забега (app-shell): режимы-навигация + HP/золото/акт/таймер/меню.")]
         [SerializeField] private VisualTreeAsset _runModeBar;
 
-        [Tooltip("UXML лоадаут-хаба (гильдия: 4 сосуда + навешивание реликвий из запаса). Открывается кнопкой «Хаб».")]
-        [SerializeField] private VisualTreeAsset _loadoutHubScreen;
-
-        [Tooltip("UXML нового лоадаут/инвентарь-экрана (редизайн, Ф3a: трёхколоночник с таро-карточками). Открывается кнопкой «Хаб».")]
+        [Tooltip("UXML лоадаут/инвентарь-экрана (редизайн, Ф3a: трёхколоночник с таро-карточками). Открывается табом «Инвентарь».")]
         [SerializeField] private VisualTreeAsset _loadoutInventoryScreen;
 
         [Tooltip("UXML таро-карточки реликвии (клонируется в грид нового инвентаря).")]
         [SerializeField] private VisualTreeAsset _arcanaCard;
+
+        [Tooltip("Материал чернильной шторки перехода (SH_Map_Transition). Рисуется в текстуру и кладётся " +
+                 "фоном верхнего слоя. Пусто = ровное затемнение без узора.")]
+        [SerializeField] private Material _transitionMaterial;
 
         private MenuRouter _router;
         private IInputService _input;
@@ -75,24 +82,29 @@ namespace Guildmaster.UI
         private ISubscriber<OpenLoadoutRequest> _openLoadoutSub;
         private ISubscriber<OpenRewardRequest> _openRewardSub;
         private ISubscriber<OpenTextEventRequest> _openEventSub;
-        private ISubscriber<OpenMapRequest> _openMapSub;
         private ISubscriber<OpenContinueRequest> _openContinueSub;
         private ISubscriber<OpenShopRequest> _openShopSub;
         private ISubscriber<OpenChestRequest> _openChestSub;
+        private ISubscriber<OpenCampRequest> _openCampSub;
+        private ISubscriber<OpenNodeFarewellRequest> _openFarewellSub; // единый ритм конца узла (QA #48/#49)
+        private IDisposable _openFarewellSubscription;
         private ISubscriber<OpenOutcomeRequest> _openOutcomeSub;
         private ISubscriber<OpenMainMenuRequest> _openMainMenuSub;
+        private ISubscriber<OpenTitleCardRequest> _openTitleCardSub;
         private IDisposable _openLoadoutSubscription;
         private IDisposable _openRewardSubscription;
         private IDisposable _openEventSubscription;
-        private IDisposable _openMapSubscription;
         private IDisposable _openContinueSubscription;
         private IDisposable _openShopSubscription;
         private IDisposable _openChestSubscription;
+        private IDisposable _openCampSubscription;
         private IDisposable _openOutcomeSubscription;
         private IDisposable _openMainMenuSubscription;
+        private ISubscriber<Core.Flow.OpenProvingGroundsRequest> _openProvingGroundsSub;
+        private IDisposable _openProvingGroundsSubscription;
+        private IDisposable _openTitleCardSubscription;
         private UIDocument _doc;
         private RunModeBarView _topBar;
-        private VisualElement _backdrop; // постоянный задний фон под не-боевыми экранами (выкл в бою/инвентаре)
 
         // Слои-контейнеры (Ф4, план II.4): фиксированный z-порядок = порядок добавления в корень панели.
         // Заменяют императивный BringToFront/SendToBack (снос K1/K2). Персистентные (backdrop/battle-center/
@@ -102,25 +114,74 @@ namespace Guildmaster.UI
         private VisualElement _layerScreens;      // [2] Page/Sheet навигатора (под топбаром)
         private VisualElement _layerTopbar;       // [3] RunModeBar (над обычными экранами)
         private VisualElement _layerModal;        // [4] Modal навигатора (над топбаром, scrim накрывает его)
-        private float _runElapsed;   // «рабочий» таймер забега (аккумулятор, RunState его не хранит)
+        private VisualElement _layerTooltip;      // [6] окно тултипа (Трек Т) — над топбаром и модалками
+        private Tooltips.TooltipSystem _tooltips; // Трек Т: показыватель тултипов, привязан к слою в Start
+        private Tooltips.KeywordStyle _keywordStyle; // Трек Т: цвет терминов, читается с USS-доноров
+        private UiSoundSystem _uiSound;           // звук интерфейса: один слушатель на корне панели
+        private bool _testZoneActive;        // серая зона включена (в забеге — полигон, вне забега — Ристалище)
+        private bool _lastProvingGrounds;    // ребро вида панели: забег ↔ площадка
         private BattlePhase _lastPhase = BattlePhase.None; // ребро смены фазы для RefreshShell (Ф4, K3)
         private bool _lastInventoryOpen; // ребро смены инвентаря для RefreshShell (Ф4; источник — _router.IsInventoryOpen)
         private IPublisher<RelicDragEvent> _relicDragPub; // QA #5: drag реликвии из грида → фаза расстановки
         private IPublisher<SetTestZoneRequest> _testZonePub; // радио-табы: целевое состояние тест-зоны (бой/не-бой)
         private ISubscriber<TestZoneChangedEvent> _testZoneChangedSub; // Ф5: СОСТОЯНИЕ тест-зоны → Sheet-экран
         private IDisposable _testZoneChangedSubscription;
+        private ISubscriber<WorldMapSpaceChangedEvent> _mapSpaceSub; // фаза D: СОСТОЯНИЕ world-карты → Sheet-экран
+        private IDisposable _mapSpaceSubscription;
+        private IPublisher<SetWorldMapRequest> _worldMapPub; // фаза D: радио-табы → показать/скрыть карту в мире
+        private ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> _mainMenuVisSub; // за меню виден мировой стол
+        private IDisposable _mainMenuVisSubscription;
+        private bool _mainMenuOpen;
+        private IPublisher<Core.Flow.ScreenBackdropChangedEvent> _screenBackdropPub; // QA #50: единый задник экранов
+        private bool _backdropShown; // последнее сказанное презентации — публикуем только по ребру
+        private ISubscriber<Core.Flow.ScreenFadeChangedEvent> _screenFadeSub; // QA #47: шторка перехода поверх всего
+        private IDisposable _screenFadeSubscription;
+        private VisualElement _screenFade;
+        private RenderTexture _fadeRt;
+        private Material _fadeMat; // рабочая КОПИЯ материала перехода (ассет не трогаем — см. EnsureFadeMaterial)
+
+        private const int FadeTextureHeight = 360; // высота картинки шторки; ширина считается по аспекту экрана
+        private static readonly int FadeProgressId = Shader.PropertyToID("_Progress");
+        private static readonly int FadeCenterId   = Shader.PropertyToID("_Center");
+        private static readonly int FadeAspectId   = Shader.PropertyToID("_Aspect");
+        private static readonly int FadeSeedId     = Shader.PropertyToID("_Seed");
+        private static readonly int FadeShapeTexId = Shader.PropertyToID("_ShapeTex");
+        private static readonly int FadeUseShapeId = Shader.PropertyToID("_UseShape");
 
         [Inject]
         public void Construct(MenuRouter router, IInputService input,
             IBattleClock clock, RunStateService runStates, GameConfig config, ILocalizationService loc,
             ISubscriber<OpenLoadoutRequest> openLoadoutSub, ISubscriber<OpenRewardRequest> openRewardSub,
-            ISubscriber<OpenTextEventRequest> openEventSub, ISubscriber<OpenMapRequest> openMapSub,
+            ISubscriber<OpenTextEventRequest> openEventSub,
             ISubscriber<OpenContinueRequest> openContinueSub, ISubscriber<OpenShopRequest> openShopSub,
             ISubscriber<OpenChestRequest> openChestSub, ISubscriber<OpenOutcomeRequest> openOutcomeSub,
-            ISubscriber<OpenMainMenuRequest> openMainMenuSub, IPublisher<RelicDragEvent> relicDragPub,
-            IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub)
+            ISubscriber<OpenMainMenuRequest> openMainMenuSub,
+            ISubscriber<Core.Flow.OpenProvingGroundsRequest> openProvingGroundsSub,
+            IPublisher<RelicDragEvent> relicDragPub,
+            IPublisher<SetTestZoneRequest> testZonePub, ISubscriber<TestZoneChangedEvent> testZoneChangedSub,
+            ISubscriber<WorldMapSpaceChangedEvent> mapSpaceSub, IPublisher<SetWorldMapRequest> worldMapPub,
+            ISubscriber<Core.Flow.MainMenuVisibilityChangedEvent> mainMenuVisSub,
+            IPublisher<Core.Flow.ScreenBackdropChangedEvent> screenBackdropPub,
+            ISubscriber<Core.Flow.ScreenFadeChangedEvent> screenFadeSub,
+            ISubscriber<OpenCampRequest> openCampSub,
+            ISubscriber<OpenNodeFarewellRequest> openFarewellSub,
+            ISubscriber<OpenTitleCardRequest> openTitleCardSub,
+            Tooltips.TooltipSystem tooltips,
+            Tooltips.KeywordStyle keywordStyle,
+            UiSoundSystem uiSound)
         {
+            _uiSound = uiSound;
+            _tooltips = tooltips;
+            _keywordStyle = keywordStyle;
+            _screenBackdropPub = screenBackdropPub;
+            _screenFadeSub     = screenFadeSub;
+            _openCampSub = openCampSub;
+            _openFarewellSub = openFarewellSub;
+            _openTitleCardSub = openTitleCardSub;
+            _mainMenuVisSub = mainMenuVisSub;
             _router = router;
+            _mapSpaceSub = mapSpaceSub;
+            _worldMapPub = worldMapPub;
             _relicDragPub = relicDragPub;
             _testZonePub = testZonePub;
             _testZoneChangedSub = testZoneChangedSub;
@@ -132,12 +193,12 @@ namespace Guildmaster.UI
             _openLoadoutSub = openLoadoutSub;
             _openRewardSub = openRewardSub;
             _openEventSub = openEventSub;
-            _openMapSub = openMapSub;
             _openContinueSub = openContinueSub;
             _openShopSub = openShopSub;
             _openChestSub = openChestSub;
             _openOutcomeSub = openOutcomeSub;
             _openMainMenuSub = openMainMenuSub;
+            _openProvingGroundsSub = openProvingGroundsSub;
         }
 
         private void Awake() => _doc = GetComponent<UIDocument>();
@@ -147,12 +208,25 @@ namespace Guildmaster.UI
             ApplyDeviceProfile(); // II.12.9: device-профиль на корне панели до прочей инициализации
             if (_router == null || _input == null)
             {
-                Debug.LogWarning("[UiRootBootstrap] Нет инъекции (MenuRouter/IInputService) — в этой сцене отсутствует " +
-                                 "RootLifetimeScope? Рантайм-меню отключено для этого объекта.");
+                // Ошибка, а не предупреждение: отсюда не регистрируется НИ ОДНА подписка на запросы экранов,
+                // а презентеры потока (заставка, главное меню, исход) ждут ответа UI без таймаута и без
+                // токена. То есть этот ранний выход — единственный способ повесить игру навсегда, и раньше
+                // он сообщал о себе жёлтой строчкой (аудит фолбэков 2026-07-26, п.3).
+                Debug.LogError("[UiRootBootstrap] Нет инъекции (MenuRouter/IInputService) — в этой сцене отсутствует " +
+                               "RootLifetimeScope? Рантайм-меню отключено, и петля игры встанет на первом же экране.");
                 return;
             }
             BuildLayers(); // Ф4: скелет слоёв-контейнеров ДО инициализации роутера (навигатор кладёт экраны в них)
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _mapScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutHubScreen, _loadoutInventoryScreen, _arcanaCard);
+            // Трек Т: система тултипов слушает всплывающие запросы на КОРНЕ панели, а окно держит в своём
+            // слое — поэтому привязка идёт сразу после слоёв и до построения экранов.
+            _tooltips?.Attach(_doc.rootVisualElement, _layerTooltip);
+            // Доноры цвета терминов: невидимые элементы с классами .gm-kw--* в слое подсказок. Так
+            // палитра остаётся в USS, а rich text получает готовый hex (rich text переменные не читает).
+            _keywordStyle?.Attach(_layerTooltip);
+            // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
+            // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
+            _uiSound?.Attach(_doc.rootVisualElement);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal);
             _input.MenuToggleRequested += OnMenuToggle;
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -160,18 +234,27 @@ namespace Guildmaster.UI
             _openRewardSubscription = _openRewardSub?.Subscribe(req => _router.OpenReward(req));
             // Открытие текстового ивента (StS-style) — запрос из GameFlow.
             _openEventSubscription = _openEventSub?.Subscribe(req => _router.OpenTextEvent(req));
-            // Открытие карты акта — запрос из петли акта (MapScreenNodeChooser).
-            _openMapSubscription = _openMapSub?.Subscribe(req => _router.OpenMap(req));
             // Единая кнопка «Продолжить» — запрос из петли акта (ContinuePresenter).
             _openContinueSubscription = _openContinueSub?.Subscribe(req => _router.ShowContinue(req));
             // Магазин — запрос из узла магазина (ShopFlow).
             _openShopSubscription = _openShopSub?.Subscribe(req => _router.OpenShop(req));
             // Сундук — запрос из узла сундука (ChestFlow).
             _openChestSubscription = _openChestSub?.Subscribe(req => _router.OpenChest(req));
+            // Привал — запрос из узла привала (CampFlow).
+            _openCampSubscription = _openCampSub?.Subscribe(req => _router.OpenCamp(req));
+            _openFarewellSubscription = _openFarewellSub?.Subscribe(req => _router.ShowNodeFarewell(req));
             // Исход забега — запрос из GameFlow после акта.
             _openOutcomeSubscription = _openOutcomeSub?.Subscribe(req => _router.ShowOutcome(req));
             // Главное меню — запрос из GameFlow (верхний цикл).
             _openMainMenuSubscription = _openMainMenuSub?.Subscribe(req => _router.OpenMainMenu(req));
+
+            // Запрос Ристалища закрывает главное меню тем же путём, что кнопка: резолв экрана через
+            // навигатор гасит и панель, и стол под ней. Если меню не показано — здесь no-op, решение
+            // принимает верхний цикл игры.
+            _openProvingGroundsSubscription = _openProvingGroundsSub?.Subscribe(
+                _ => _router.TryLeaveMainMenuForProvingGrounds());
+            // Boot title card — один раз до главного меню.
+            _openTitleCardSubscription = _openTitleCardSub?.Subscribe(req => _router.ShowTitleCard(req));
 
             InitTopBar();
 
@@ -185,8 +268,27 @@ namespace Guildmaster.UI
             _testZoneChangedSubscription = _testZoneChangedSub?.Subscribe(e =>
             {
                 UiTrace.Log($"bootstrap: TestZoneChanged(Active={e.Active}) → {(e.Active ? "ShowTestZone" : "HideTestZone")}");
+                _testZoneActive = e.Active; // вне забега это же и есть «игрок на Ристалище» (см. Update)
                 if (e.Active) _router.ShowTestZone();
                 else          _router.HideTestZone();
+            });
+            // Фаза D: СОСТОЯНИЕ world-карты (владелец — WorldMapNodeChooser) → прозрачный Sheet «карта».
+            // Сама карта рисуется в мире; Sheet нужен ради тега режима и контекста ввода InputContext.Map.
+            _mapSpaceSubscription = _mapSpaceSub?.Subscribe(e =>
+            {
+                UiTrace.Log($"bootstrap: WorldMapSpaceChanged(Active={e.Active}) → {(e.Active ? "ShowMapSpace" : "HideMapSpace")}");
+                if (e.Active) _router.ShowMapSpace();
+                else          _router.HideMapSpace();
+            });
+            // Шторка перехода (QA #47): плотность считает тот, кто ведёт переход (карта акта), UI её рисует.
+            _screenFadeSubscription = _screenFadeSub?.Subscribe(e => ApplyScreenFade(e.Progress, e.Center, e.Seed));
+
+            // Главное меню открыто → гасим непрозрачную подложку, иначе она закроет собой мировой стол.
+            _mainMenuVisSubscription = _mainMenuVisSub?.Subscribe(e =>
+            {
+                UiTrace.Log($"bootstrap: MainMenuVisibilityChanged(Visible={e.Visible}) → backdrop {(e.Visible ? "off" : "on")}");
+                _mainMenuOpen = e.Visible;
+                RefreshShell();
             });
             RefreshShell();
         }
@@ -203,8 +305,16 @@ namespace Guildmaster.UI
             _layerTopbar       = AddLayer(root, "layer-topbar");
             _layerModal        = AddLayer(root, "layer-modal");
             AddLayer(root, "layer-cursors");  // задел II.14 (live-курсоры)
-            AddLayer(root, "layer-tooltip");  // задел Трек Т (тултипы)
+            _layerTooltip = AddLayer(root, "layer-tooltip"); // Трек Т: окно тултипа над топбаром и модалками
             AddLayer(root, "layer-system");   // задел II.13/Трек К (тосты/фид/dev-консоль)
+
+            // Шторка перехода — САМЫЙ верх (QA #47): она обязана накрывать и топбар, и модалки. Всё, что
+            // ниже, гасится ею целиком; никаких исключений у перехода между сценами узла быть не должно.
+            VisualElement fadeLayer = AddLayer(root, "layer-transition");
+            _screenFade = new VisualElement { name = "screen-fade", pickingMode = PickingMode.Ignore };
+            _screenFade.AddToClassList("gm-screen-fade");
+            _screenFade.style.display = DisplayStyle.None;
+            fadeLayer.Add(_screenFade);
         }
 
         // Слой = fullscreen-контейнер, растянутый по корню панели. pickingMode Ignore: сам контейнер не крадёт
@@ -221,15 +331,11 @@ namespace Guildmaster.UI
         // Глобальная панель забега (app-shell) — постоянный НЕ-модальный слой сверху (в обход стека
         // MenuRouter, чтобы не глушить ввод). Режимы-навигация + HP/золото/акт/таймер/меню. Тело экранов
         // сдвинуто под неё (padding-top). Видимость и центр (Начать↔таймер) — по фазе боя в Update.
+        // Слой backdrop остаётся пустым: задник экранов рисует презентация (стол из MapStyle), а UI лишь
+        // говорит, когда он нужен — ScreenBackdropChangedEvent из RefreshShell (QA #50). Слой держим, чтобы
+        // z-порядок остальных не поехал и было куда положить будущие фоновые элементы UI.
         private void InitTopBar()
         {
-            // Постоянный задний фон забега в СВОЁМ слое (Ф4, самый низ z). Виден на не-боевых экранах,
-            // выключается в бою/инвентаре (RefreshShell). pickingMode Ignore — ввод не перехватывает.
-            _backdrop = new VisualElement { name = "run-backdrop", pickingMode = PickingMode.Ignore };
-            _backdrop.AddToClassList("gm-screen-backdrop");
-            _backdrop.style.display = DisplayStyle.None;
-            _layerBackdrop.Add(_backdrop);
-
             CreateAndPlaceTopBar();
         }
 
@@ -245,8 +351,6 @@ namespace Guildmaster.UI
                 onMap: GoToMap,             // радио-режимы: таб = перейти в режим (не тумблер)
                 onBattle: GoToBattle,
                 onInventory: GoToInventory,
-                onTactics: () => { },       // задел под будущий экран AI-тактики
-                onCompendium: () => { },    // задел под компендиум
                 onMenu: () => _router.ToggleSystemMenu(),
                 onStart: () => _clock?.RequestStart());
 
@@ -281,16 +385,33 @@ namespace Guildmaster.UI
             if (_topBar == null || _clock == null) return;
 
             // Глобальный топбар виден ВЕСЬ забег (реш. №65, STS-style); тело экранов под ним (padding-top).
+            // НО не под главным меню: RunState там ещё жив (сейв не сбрасывается, забег можно продолжить),
+            // и по одному лишь runActive панель с «Начать» оставалась висеть поверх меню (наход. Макса, п.9).
             RunState run = _runStates?.Current;
-            bool runActive = run != null;
-            _topBar.Root.style.display = runActive ? DisplayStyle.Flex : DisplayStyle.None;
+
+            // Ристалище — это площадка ВНЕ забега, и панель ей тоже нужна: там живут те же табы и та же
+            // кнопка «Начать» (ГДД [[proving-grounds]], требование 2026-07-27). Признак площадки выводим,
+            // а не храним вторым флагом: серая зона активна, а забега нет — значит мы пришли из меню.
+            bool onProvingGrounds = run == null && _testZoneActive;
+            bool shellVisible = (run != null || onProvingGrounds) && !_mainMenuOpen;
+            _topBar.Root.style.display = shellVisible ? DisplayStyle.Flex : DisplayStyle.None;
+
+            // Панель площадки переписана: слева «Ристалище», без акта и вехи, справа без золота и
+            // перезапусков, «Карта» погашена. Дёргаем по ребру — SetProvingGroundsMode трогает стили.
+            if (onProvingGrounds != _lastProvingGrounds)
+            {
+                _lastProvingGrounds = onProvingGrounds;
+                _topBar.SetProvingGroundsMode(onProvingGrounds);
+            }
 
             BattlePhase phase = _clock.Phase;
 
             // «Начать»/таймер боя (battle-center) в своём слое ПОД экранами (Ф4). Управляем ЯВНО: виден только
             // когда идёт забег И фаза боя/расстановки (Deployment→«Начать», Fighting→таймер). Иначе (главное
             // меню/карта/магазин/нет забега) — скрыт. Данные боя (таймер тикает) — законный поллинг каждый кадр.
-            if (runActive && phase != BattlePhase.None)
+            // Центр панели живёт только у боя: расстановка → «Начать», бой → таймер. В передышке (Interlude)
+            // начинать нечего и считать нечего — центр пуст, чтобы «Начать» не звало в несуществующий бой.
+            if (shellVisible && (phase == BattlePhase.Deployment || phase == BattlePhase.Fighting))
                 _topBar.SetFighting(phase == BattlePhase.Fighting, FormatTime(_clock.ElapsedSeconds));
             else
                 _topBar.HideBattleCenter();
@@ -306,13 +427,32 @@ namespace Guildmaster.UI
                 RefreshShell();
             }
 
-            if (!runActive) { _runElapsed = 0f; return; }
+            if (run == null || _mainMenuOpen) return; // на площадке ни золота, ни акта, ни вехи не существует
 
-            _runElapsed += UnityEngine.Time.unscaledDeltaTime; // «рабочий» таймер забега
             _topBar.SetGold(run.Gold);
             _topBar.SetAct(run.CurrentActIndex + 1);
             _topBar.SetRestarts(run.RestartsRemaining, _config != null ? _config.RestartsPerAct : run.RestartsRemaining);
-            _topBar.SetRunTime(FormatTime(_runElapsed));
+            UpdateFloor(run);
+        }
+
+        // «Веха» в топбаре: глубина текущего узла по карте акта + сколько их всего. Считается из графа,
+        // а не из отдельного счётчика — иначе после перегенерации карты счётчик разъедется с реальностью.
+        private void UpdateFloor(RunState run)
+        {
+            Guildmaster.Guild.MapState map = run.Map;
+            if (map == null || map.Nodes == null || map.Nodes.Length == 0) return;
+
+            int current = 0, last = 0;
+            for (int i = 0; i < map.Nodes.Length; i++)
+            {
+                Guildmaster.Guild.MapNode node = map.Nodes[i];
+                if (node == null) continue;
+                if (node.Floor > last) last = node.Floor;
+                if (node.Id == map.CurrentNodeId) current = node.Floor;
+            }
+
+            // Floor нумеруется с нуля (0 = Start), игроку показываем по-человечески с единицы.
+            _topBar.SetFloor(current + 1, last + 1);
         }
 
         // Ф4: структурный вид shell — backdrop и подсветка таба. Дёргается по подписке nav.Changed (изменение
@@ -322,17 +462,109 @@ namespace Guildmaster.UI
             if (_clock == null) return;
             BattlePhase phase = _clock.Phase;
 
-            // Задний фон: виден на не-боевых экранах (меню/карта/ивент/сундук). Выкл в бою (видна арена)
-            // и в инвентаре (прозрачный оверлей поверх арены).
-            if (_backdrop != null)
+            // Задний фон экранов — ОДИН на всю игру: стол, который презентация рисует под главным меню
+            // (MenuBackdropView, материал из MapStyle). Своей непрозрачной заливки у UI больше нет: рядом
+            // с настоящим столом она читалась как чёрный экран (QA #50, «единый источник правды»).
+            //
+            // Нужен он ровно там, где мир закрыт непрозрачной страницей — главное меню, ивент, магазин,
+            // сундук, награда, исход. Гасим, когда за UI живой мир: карта (уехала в мир, фон закрыл бы её),
+            // инвентарь (прозрачный оверлей поверх арены), бой и передышка (Interlude — ЖИВАЯ арена: досмотр
+            // добивания и всё, что игрок делает между узлами, подложка накрывала бы собой).
+            //
+            // Фазу тут больше не спрашиваем: правду про «что сейчас на экране» знает стек, а не бой. Экран
+            // пройденного ивента живёт и в Interlude (QA #49) — по фазе фон под ним мигал бы на арену.
+            bool needBackdrop = (_mainMenuOpen || _router.HasVisiblePage)
+                                && !_router.IsInventoryOpen && !_router.IsMapSpaceOpen;
+            if (needBackdrop != _backdropShown)
             {
-                bool showBackdrop = phase == BattlePhase.None && !_router.IsInventoryOpen;
-                _backdrop.style.display = showBackdrop ? DisplayStyle.Flex : DisplayStyle.None;
+                _backdropShown = needBackdrop;
+                _screenBackdropPub?.Publish(new Core.Flow.ScreenBackdropChangedEvent(needBackdrop));
             }
 
             // QA #11/#21/#35: подсветка активного таба из единого источника — верхний НЕ-Modal экран навигатора
             // (ActiveScreenMode = nav.ActiveModeTag, игнорит Modal) либо «Бой» по фазе. Modal-меню не сбивает таб.
             _topBar.SetActiveMode(ActiveMode(phase));
+            // Настройки — не режим, а модалка: у их таба своё состояние «нажат, пока меню открыто» (раунд 2, п.6).
+            _topBar.SetMenuActive(_router.IsSystemMenuOpen);
+        }
+
+        // Шторка перехода (QA #47). Живёт в самом верхнем слое и накрывает ВСЁ, включая топбар и модалки.
+        // Полностью прозрачную снимаем из отрисовки (display:None), чтобы не держать лишний слой в лэйауте.
+        //
+        // Рисует её НАСТОЯЩИЙ шейдер чернил (QA #53): UI Toolkit чужих шейдеров не знает, но картинку
+        // показать умеет — поэтому материал рисуем в небольшую текстуру и отдаём её элементу фоном. Так
+        // вернулся узор растекающихся чернил, потерянный, когда шторка переехала из мира в UI. Ровная
+        // заливка остаётся фолбэком на случай, если материал не назначен.
+        private void ApplyScreenFade(float progress, Vector2 center, Vector4 seed)
+        {
+            if (_screenFade == null) return;
+
+            float p = Mathf.Clamp01(progress);
+            bool visible = p > 0.001f;
+            _screenFade.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+            if (!visible) return;
+
+            if (_transitionMaterial == null)
+            {
+                // Фолбэк без узора: плотность держим в альфе заливки, а не в opacity элемента — цвета
+                // у класса нет, его источник тут же, рядом с материалом.
+                _screenFade.style.opacity = 1f;
+                _screenFade.style.backgroundColor = new Color(0.055f, 0.043f, 0.031f, p);
+                return;
+            }
+
+            RenderTexture rt = EnsureFadeTexture();
+            Material mat = EnsureFadeMaterial();
+            mat.SetFloat(FadeProgressId, p);
+            mat.SetVector(FadeCenterId, center);
+            mat.SetVector(FadeSeedId, seed);
+            mat.SetFloat(FadeAspectId, (float)rt.width / Mathf.Max(1, rt.height));
+
+            // Форму смыкания берём из рисунка ТОЛЬКО когда он есть: пустой слот в шейдере читается как
+            // чёрная текстура, и без этой проверки кадр закрывался бы разом, а не сходился к точке.
+            mat.SetFloat(FadeUseShapeId, mat.GetTexture(FadeShapeTexId) != null ? 1f : 0f);
+
+            // Чистим цель перед отрисовкой: у шейдера прозрачный блендинг, и без очистки кадры копились бы
+            // друг на друге, а шторка чернела бы сама по себе.
+            RenderTexture prev = RenderTexture.active;
+            RenderTexture.active = rt;
+            GL.Clear(true, true, Color.clear);
+            RenderTexture.active = prev;
+
+            Graphics.Blit(Texture2D.whiteTexture, rt, mat);
+
+            _screenFade.style.opacity = 1f; // плотность внутри картинки, а не в прозрачности элемента
+            _screenFade.style.backgroundImage = Background.FromRenderTexture(rt);
+        }
+
+        // Рисуем КОПИЕЙ материала, а не самим ассетом. Ход перехода пишется в параметры каждый кадр, и на
+        // общем ассете это грязнило бы проект: после каждого play-теста в .mat оседали чужие прогресс,
+        // центр и жребий, и они уезжали в git как «изменение».
+        private Material EnsureFadeMaterial()
+        {
+            if (_fadeMat == null)
+                _fadeMat = new Material(_transitionMaterial) { name = _transitionMaterial.name + " (runtime)" };
+            return _fadeMat;
+        }
+
+        // Текстура шторки НАМЕРЕННО мельче экрана: дизеринг чернил рисуется её пикселями, и на полном
+        // разрешении растр стал бы невидимой рябью вместо крупного зерна, к которому привязан наш пиксель-арт.
+        private RenderTexture EnsureFadeTexture()
+        {
+            int height = FadeTextureHeight;
+            int width  = Mathf.Max(1, Mathf.RoundToInt(height * Screen.width / (float)Mathf.Max(1, Screen.height)));
+
+            if (_fadeRt != null && _fadeRt.width == width && _fadeRt.height == height) return _fadeRt;
+
+            if (_fadeRt != null) _fadeRt.Release();
+            _fadeRt = new RenderTexture(width, height, 0, RenderTextureFormat.ARGB32)
+            {
+                name       = "gm-screen-fade",
+                filterMode = FilterMode.Point, // растягиваем без сглаживания — зерно остаётся зерном
+                wrapMode   = TextureWrapMode.Clamp,
+            };
+            _fadeRt.Create();
+            return _fadeRt;
         }
 
         // ── Радио-режимы табов (Карта/Бой/Инвентарь — включён РОВНО один; таб = перейти в режим, НЕ тумблер) ──
@@ -342,8 +574,11 @@ namespace Guildmaster.UI
         private void GoToInventory()
         {
             UiTrace.Log($"topbar «Инвентарь» → GoToInventory (invOpen={_router.IsInventoryOpen}, phase={_clock?.Phase}, hasMap={_router.HasMapInStack})");
-            if (_loadoutInventoryScreen == null) { _router.OpenHub(); return; } // фолбэк на старый хаб, если ассет не назначен
-            RequestTestZone(true); // сначала бой (скрыть карту петли) — идемпотентно
+            // Неназначенный UXML — баг разводки, а не режим работы: роутер скажет об этом громко
+            // (CannotShow), а до билда его ловит SceneWiringTests. Прежний фолбэк открывал вместо
+            // инвентаря старый хаб — и этим держал живой целую мёртвую ветку (аудит 2026-07-26, R1-21).
+            RequestWorldMap(false); // инвентарь смотрит на мир, а не на карту — идемпотентно
+            RequestTestZone(true);  // сначала бой — идемпотентно
             int gold = _runStates?.Current != null ? _runStates.Current.Gold : 0;
             // QA #5: drag карточки реликвии → публикуем RelicDragEvent, фаза расстановки рисует призрак и надевает.
             _router.ShowInventory(gold, PublishRelicDrag); // инвентарь над боем — идемпотентно
@@ -359,7 +594,8 @@ namespace Guildmaster.UI
             if (_clock == null) return;
             UiTrace.Log($"topbar «Бой» → GoToBattle (invOpen={_router.IsInventoryOpen}, phase={_clock.Phase}, hasMap={_router.HasMapInStack})");
             _router.HideInventory(); // идемпотентно
-            RequestTestZone(true);   // войти в бой (скрыть карту) — идемпотентно
+            RequestWorldMap(false);  // убрать карту и вернуть камеру в бой — идемпотентно
+            RequestTestZone(true);   // войти в бой — идемпотентно
         }
 
         // «Карта» = показать карту: закрыть инвентарь + выйти из боя (карта петли под геймплеем вернётся). Если
@@ -368,36 +604,33 @@ namespace Guildmaster.UI
         {
             UiTrace.Log($"topbar «Карта» → GoToMap (invOpen={_router.IsInventoryOpen}, phase={_clock?.Phase}, hasMap={_router.HasMapInStack})");
             _router.HideInventory();  // идемпотентно
-            RequestTestZone(false);   // выйти из тест-зоны → карта петли покажется (SyncVisibility) — идемпотентно
-            if (!_router.HasMapInStack) OpenMapView(); // карты петли нет → read-only просмотр
+            RequestTestZone(false);   // выйти из тест-зоны — идемпотентно
+            // Фаза D: карта живёт в мире. Показываем её ВСЕГДА, в том числе посреди идущего боя — бой
+            // продолжается за кадром, камера просто уезжает в зону карты. Узлы при этом горят, лишь если
+            // петля реально ждёт выбор (после «Продолжить»); иначе это чистый просмотр.
+            RequestWorldMap(true);
         }
 
         // Publish целевого состояния тест-зоны (радио). Владелец (DeploymentController) приводит мир к бою/не-бою
         // идемпотентно; результат — TestZoneChangedEvent → Sheet-экран навигатора.
         private void RequestTestZone(bool active) => _testZonePub?.Publish(new SetTestZoneRequest(active));
 
-        // Режим «Карта» — открыть карту акта read-only (просмотр текущей карты; клик по узлу закрывает просмотр).
-        private void OpenMapView()
-        {
-            UiTrace.Log("  → OpenMapView (read-only просмотр текущей карты)");
-            RunState run = _runStates?.Current;
-            if (run?.Map == null || run.Map.Nodes == null || run.Map.Nodes.Length == 0) return;
-            var ids = new List<string>();
-            foreach (var n in Guildmaster.Guild.MapTraversal.AvailableNext(run.Map)) ids.Add(n.Id);
-            // Read-only просмотр: клик по узлу закрывает просмотр. Карта — result-экран, résolve СНИМАЕТ её сам
-            // (навигатор), поэтому callback = no-op. НЕ CloseOverlays/PopAll — иначе снёс бы геймплей под картой.
-            _router.OpenMap(new Guildmaster.Guild.OpenMapRequest(run.Map, ids, _ => { }));
-        }
+        // Publish целевого состояния world-карты (радио, как тест-зона). Владелец (WorldMapController)
+        // приводит мир к цели идемпотентно; результат — WorldMapSpaceChangedEvent → Sheet-экран.
+        private void RequestWorldMap(bool visible) => _worldMapPub?.Publish(new SetWorldMapRequest(visible));
+
+        // UITK-карта снесена целиком: и read-only просмотр, и выбор узла идут одним путём через
+        // WorldMapController в мире. Второй UI-путь к той же карте плодил расхождения, а держать его
+        // «на всякий случай» значило чинить каждый баг дважды.
 
         // Активный режим для подсветки таба (QA #11/#21) — ЕДИНЫЙ источник: верхний оверлей роутера несёт
-        // mode-тег (inventory/map, ставится при Push). Так подсвечивается и read-only карта, И карта петли
-        // акта (обе идут через один MenuRouter.OpenMap) — консистентно, без разрозненных флагов бутстрапа.
+        // mode-тег (inventory/map, ставится при Push). У карты этот тег несёт её прозрачное Sheet-пространство.
         // Нет оверлея → активен «Бой», если идёт бой/расстановка (Phase != None).
         private string ActiveMode(BattlePhase phase)
         {
             string overlay = _router?.ActiveScreenMode;
             if (overlay != null)           return overlay;
-            if (phase != BattlePhase.None) return "battle";
+            if (phase != BattlePhase.None) return UiScreen.BattleModeTag;
             return null;
         }
 
@@ -448,22 +681,39 @@ namespace Guildmaster.UI
             if (_router != null) _router.Changed -= RefreshShell;     // Ф4
             if (_loc != null) _loc.LocaleChanged -= RebuildTopBar;    // шов II.9.2
             _testZoneChangedSubscription?.Dispose();                  // Ф5
+            _mapSpaceSubscription?.Dispose();                         // фаза D
+            _mainMenuVisSubscription?.Dispose();                      // фон за главным меню
+            _screenFadeSubscription?.Dispose();                       // QA #47: шторка перехода
+            _openFarewellSubscription?.Dispose();                     // QA #48/#49: прощание узла
             _openLoadoutSubscription?.Dispose();
             _openRewardSubscription?.Dispose();
             _openEventSubscription?.Dispose();
-            _openMapSubscription?.Dispose();
             _openContinueSubscription?.Dispose();
             _openShopSubscription?.Dispose();
             _openChestSubscription?.Dispose();
+            _openCampSubscription?.Dispose();
             _openOutcomeSubscription?.Dispose();
             _openMainMenuSubscription?.Dispose();
+            _openProvingGroundsSubscription?.Dispose();
+            _openTitleCardSubscription?.Dispose();
+
+            _tooltips?.Detach();                                      // Трек Т: снять окно и подписки с панели
+            _keywordStyle?.Detach();                                  // Трек Т: снять доноров цвета
+
+            if (_fadeRt != null) { _fadeRt.Release(); _fadeRt = null; } // цель шторки живёт вне GC — освобождаем руками
+            if (_fadeMat != null) { Destroy(_fadeMat); _fadeMat = null; }
         }
 
-        // QA #32: ESC открывает системное меню ТОЛЬКО в активном забеге (в главном меню/вне забега — no-op).
-        // Внутри забега ToggleSystemMenu сам решает открыть/шаг-назад (семантика ESC, план II.4).
+        // Семантика ESC (план II.4, КОНСТИТУЦИЯ): показан тултип → ESC гасит ЕГО и меню не трогает.
+        // QA #32: сам ESC-вызов меню работает ТОЛЬКО в активном забеге (в главном меню/вне забега — no-op).
+        // Внутри забега ToggleSystemMenu сам решает открыть/шаг-назад.
         private void OnMenuToggle()
         {
-            if (_runStates?.Current != null) _router.ToggleSystemMenu();
+            if (_tooltips != null && _tooltips.HideAll()) return;
+            // Ристалище — тоже «внутри игры», хотя забега там нет: с площадки надо чем-то уходить, и
+            // уходят тем же системным меню. По одному лишь RunState ESC на ней был мёртв, и выйти
+            // было нельзя вовсе (наход. Макса 2026-07-27).
+            if (_runStates?.Current != null || _testZoneActive) _router.ToggleSystemMenu();
         }
     }
 }

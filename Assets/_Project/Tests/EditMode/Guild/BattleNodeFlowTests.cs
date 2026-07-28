@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Guildmaster.Combat;
 using Guildmaster.Core.Persistence;
 using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
@@ -22,8 +23,8 @@ namespace Guildmaster.Tests.EditMode.Guild
 
         private RunContext Ctx()
         {
-            var config = ScriptableObject.CreateInstance<GameConfig>();
-            _runStates = new RunStateService(new MemSave(), config);
+            var config = GameConfig.CreateDefault();
+            _runStates = new RunStateService(new InMemorySaveService(), config, new FixedProfileService());
             _runStates.NewRun(1L, Array.Empty<RosterSlot>());
             return new RunContext(_runStates.Current, new XorShiftRng(1), new SoloReadyGate(),
                                   new SoloPlayerIntentSource());
@@ -35,7 +36,8 @@ namespace Guildmaster.Tests.EditMode.Guild
             var ctx = Ctx();
             int before = _runStates.Gold;
             var reward = new CountingReward();
-            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Battle, reward, _runStates);
+            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Battle, reward, _runStates,
+                                          new ImmediateContinue(), postWinDelaySeconds: 0f);
 
             EventResult result = flow.Run(ctx).GetAwaiter().GetResult();
 
@@ -51,7 +53,7 @@ namespace Guildmaster.Tests.EditMode.Guild
             var ctx = Ctx();
             var reward = new CountingReward();
             var flow = new BattleNodeFlow(new FixedFlow(EventResult.Completed), RewardTier.Elite, reward, _runStates,
-                                          rewardCount: 2);
+                                          new ImmediateContinue(), rewardCount: 2, postWinDelaySeconds: 0f);
 
             flow.Run(ctx).GetAwaiter().GetResult();
 
@@ -64,7 +66,8 @@ namespace Guildmaster.Tests.EditMode.Guild
             var ctx = Ctx();
             int before = _runStates.Gold;
             var reward = new CountingReward();
-            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Defeated), RewardTier.Elite, reward, _runStates);
+            var flow = new BattleNodeFlow(new FixedFlow(EventResult.Defeated), RewardTier.Elite, reward, _runStates,
+                                          new ImmediateContinue(), postWinDelaySeconds: 0f);
 
             EventResult result = flow.Run(ctx).GetAwaiter().GetResult();
 
@@ -87,13 +90,12 @@ namespace Guildmaster.Tests.EditMode.Guild
             public UniTask PresentAsync(RewardTier tier, CancellationToken ct = default) { Calls++; LastTier = tier; return UniTask.CompletedTask; }
         }
 
-        private sealed class MemSave : ISaveService
+        // Headless-мост к награде: резолвит мгновенно (в игре эту кнопку показывает UI).
+        private sealed class ImmediateContinue : IContinuePresenter
         {
-            private readonly Dictionary<string, object> _s = new();
-            public void Save<T>(string key, T value) => _s[key] = value;
-            public T Load<T>(string key) => _s.TryGetValue(key, out var v) ? (T)v : default;
-            public bool Exists(string key) => _s.ContainsKey(key);
-            public void Delete(string key) => _s.Remove(key);
+            public UniTask WaitForContinueAsync(string labelKey = null, CancellationToken ct = default) => UniTask.CompletedTask;
+            public void ShowRestBeat(Action onContinue, Action onFormation, CancellationToken ct) { }
         }
+
     }
 }

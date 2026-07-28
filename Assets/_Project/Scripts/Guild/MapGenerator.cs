@@ -13,8 +13,10 @@ namespace Guildmaster.Guild
     /// <remarks>
     /// Связь соседних колонок — алгоритмом «монотонной лестницы» (см. <see cref="ConnectColumns"/>): он
     /// гарантирует связность (у каждого узла есть входящее и исходящее ребро), планарность (рёбра не
-    /// пересекаются крест-накрест) и естественные развилки/схождения. Правила: элитки не раньше
-    /// <see cref="MapGenConfig.EliteMinColumn"/>, гарантированно ≥1 магазин до босса.
+    /// пересекаются крест-накрест) и естественные развилки/схождения. Типы узлов — по ЗОНАМ этажей и
+    /// ЯКОРЯМ (<see cref="MapGenConfig.Zones"/>/<see cref="MapGenConfig.Anchors"/>) и БОЛЬШЕ НИКАК: карта —
+    /// честный результат весов, без пост-правок «а вот тут ещё дорисуем нужный узел» (решение Макса
+    /// 2026-07-26). Единственная гарантия акта — якорь: он задан данными и виден в конфиге.
     /// <para><b>Payload узлов не назначается здесь</b> — генератор строит только топологию и типы; конкретный
     /// контент (энкаунтер/ивент/пул) выбирает <c>NodeResolver</c> на входе в узел (фаза A2).</para>
     /// </remarks>
@@ -28,28 +30,28 @@ namespace Guildmaster.Guild
             // 1. Колонки: [Start] · промежуточные (случайной ширины, типы по весам) · [Boss].
             var columns = new List<List<MapNode>>(cfg.Columns);
 
-            columns.Add(new List<MapNode> { NewNode("c0r0", MapNodeType.Start, col: 0, row: 0, width: 1) });
+            columns.Add(new List<MapNode> { NewNode("c0r0", MapNodeType.Start, floor: 0, row: 0) });
 
             for (int col = 1; col < cfg.Columns - 1; col++)
             {
-                int width = rng.NextInt(cfg.MinColumnWidth, cfg.MaxColumnWidth + 1);
+                int width = ColumnWidth(rng, cfg, col);
                 var column = new List<MapNode>(width);
                 for (int row = 0; row < width; row++)
                 {
                     var type = RollNodeType(rng, cfg, col);
-                    column.Add(NewNode($"c{col}r{row}", type, col, row, width));
+                    column.Add(NewNode($"c{col}r{row}", type, col, row));
                 }
                 columns.Add(column);
             }
 
             int last = cfg.Columns - 1;
-            columns.Add(new List<MapNode> { NewNode($"c{last}r0", MapNodeType.Boss, last, row: 0, width: 1) });
+            columns.Add(new List<MapNode> { NewNode($"c{last}r0", MapNodeType.Boss, last, row: 0) });
 
             // 2. Рёбра между соседними колонками (монотонная лестница).
             var edges = new Dictionary<string, List<string>>();
             for (int col = 0; col < columns.Count - 1; col++)
             {
-                ConnectColumns(rng, columns[col], columns[col + 1], edges);
+                ConnectColumns(rng, columns[col], columns[col + 1], edges, cfg.MaxEdgesPerNode);
             }
             foreach (var node in columns.SelectMany(c => c))
             {
@@ -57,10 +59,7 @@ namespace Guildmaster.Guild
                                                                        : System.Array.Empty<string>();
             }
 
-            // 3. Гарантия: хотя бы один магазин до босса.
-            EnsureShopExists(rng, columns);
-
-            // 4. Сборка состояния: игрок стоит на старте (он «пройден»), карта видна целиком.
+            // 3. Сборка состояния: игрок стоит на старте (он «пройден»), карта видна целиком.
             var start = columns[0][0];
             start.Cleared = true;
             return new MapState
@@ -70,42 +69,76 @@ namespace Guildmaster.Guild
             };
         }
 
-        private static MapNode NewNode(string id, MapNodeType type, int col, int row, int width) => new MapNode
+        private static MapNode NewNode(string id, MapNodeType type, int floor, int row) => new MapNode
         {
-            Id         = id,
-            Type       = type,
-            PayloadId  = string.Empty,
-            Edges      = System.Array.Empty<string>(),
-            Cleared    = false,
-            // Раскладка для оверлея: x = колонка, y = ряд, отцентрованный вокруг нуля.
-            UiPosition = new Vector2(col, row - (width - 1) * 0.5f),
+            Id        = id,
+            Type      = type,
+            PayloadId = string.Empty,
+            Edges     = System.Array.Empty<string>(),
+            Cleared   = false,
+            Floor     = floor,
+            Row       = row,
         };
 
-        /// <summary>Взвешенный ролл типа промежуточного узла; элитка исключается в ранних колонках.</summary>
+        /// <summary>
+        /// Ширина колонки по профилю акта: горловины у краёв (узко), середина — рандом в диапазоне.
+        /// Акт читается как путь — начинается узко, раздаётся и снова сужается к боссу.
+        /// </summary>
+        private static int ColumnWidth(IRngService rng, MapGenConfig cfg, int col)
+        {
+            // Якорь может задать свою ширину этажа — так сундук-ряд становится горловиной посреди акта.
+            if (cfg.Anchors != null)
+                for (int i = 0; i < cfg.Anchors.Length; i++)
+                    if (cfg.Anchors[i].Floor == col && cfg.Anchors[i].Width > 0)
+                        return cfg.Anchors[i].Width;
+
+            int lastFloor = cfg.Columns - 2;                       // последний этаж-испытание (перед Boss)
+            bool nearStart = col <= cfg.EdgeColumns;
+            bool nearBoss  = col > lastFloor - cfg.EdgeColumns;
+            if (nearStart || nearBoss) return cfg.EdgeColumnWidth;
+
+            return rng.NextInt(cfg.MinColumnWidth, cfg.MaxColumnWidth + 1);
+        }
+
+
+        /// <summary>
+        /// Тип промежуточного узла на этаже <paramref name="col"/> по ЗОНАМ и ЯКОРЯМ конфига. Якорь этажа
+        /// перекрывает зонные веса (сундук-ряд / привал перед боссом); иначе — взвешенный ролл по первой
+        /// покрывающей зоне; этаж вне зон/якорей → безопасный дефолт (Бой).
+        /// </summary>
         private static MapNodeType RollNodeType(IRngService rng, MapGenConfig cfg, int col)
         {
-            bool eliteAllowed = col >= cfg.EliteMinColumn;
+            // Якорь перекрывает всё: вся колонка этого этажа — фиксированного типа.
+            for (int i = 0; i < cfg.Anchors.Length; i++)
+                if (cfg.Anchors[i].Floor == col) return cfg.Anchors[i].Type;
 
-            // Пары (тип, вес) — порядок стабилен для детерминизма.
-            var weighted = new List<(MapNodeType type, int weight)>
+            // Первая зона, покрывающая этаж → взвешенный ролл по её типам.
+            for (int i = 0; i < cfg.Zones.Length; i++)
             {
-                (MapNodeType.Battle,    cfg.WeightBattle),
-                (MapNodeType.Elite,     eliteAllowed ? cfg.WeightElite : 0),
-                (MapNodeType.TextEvent, cfg.WeightTextEvent),
-                (MapNodeType.Shop,      cfg.WeightShop),
-                (MapNodeType.Chest,     cfg.WeightChest),
-                (MapNodeType.Unknown,   cfg.WeightUnknown),
-            };
+                ZoneRule zone = cfg.Zones[i];
+                if (!zone.Covers(col)) continue;
+                return WeightedPick(rng, zone.Weights);
+            }
 
-            int total = weighted.Sum(w => w.weight);
-            if (total <= 0) return MapNodeType.Battle; // защита от нулевых весов
+            return MapNodeType.Battle; // этаж вне зон и якорей — безопасный дефолт
+        }
+
+        /// <summary>Взвешенный выбор типа по весам зоны (порядок стабилен для детерминизма). Пусто/нули → Бой.</summary>
+        private static MapNodeType WeightedPick(IRngService rng, NodeTypeWeight[] weights)
+        {
+            if (weights == null || weights.Length == 0) return MapNodeType.Battle;
+
+            int total = 0;
+            for (int i = 0; i < weights.Length; i++)
+                if (weights[i].Weight > 0) total += weights[i].Weight;
+            if (total <= 0) return MapNodeType.Battle;
 
             int roll = rng.NextInt(0, total);
-            foreach (var (type, weight) in weighted)
+            for (int i = 0; i < weights.Length; i++)
             {
-                if (weight <= 0) continue;
-                roll -= weight;
-                if (roll < 0) return type;
+                if (weights[i].Weight <= 0) continue;
+                roll -= weights[i].Weight;
+                if (roll < 0) return weights[i].Type;
             }
             return MapNodeType.Battle; // недостижимо при total>0
         }
@@ -116,26 +149,48 @@ namespace Guildmaster.Guild
         /// планарность (рёбра не пересекаются), а полный проход указателей — связность (каждый узел покрыт).
         /// </summary>
         private static void ConnectColumns(IRngService rng, List<MapNode> source, List<MapNode> target,
-                                            Dictionary<string, List<string>> edges)
+                                            Dictionary<string, List<string>> edges, int maxEdges)
         {
             int ws = source.Count, wt = target.Count;
             int si = 0, ti = 0;
+            var outgoing = new int[ws];
+            var incoming = new int[wt];
+
             while (true)
             {
                 AddEdge(edges, source[si].Id, target[ti].Id);
+                outgoing[si]++;
+                incoming[ti]++;
 
                 if (si == ws - 1 && ti == wt - 1) break;
                 if (si == ws - 1) { ti++; continue; }   // источники кончились — идём по целям
                 if (ti == wt - 1) { si++; continue; }   // цели кончились — идём по источникам
 
-                switch (rng.NextInt(0, 3))
+                // Указатели ведём вдоль ДИАГОНАЛИ колонок: сравниваем не индексы, а доли пройденного.
+                // Раньше шаг был чистым рандомом, и на скачках ширины (5→7→3) один узел набирал веер
+                // рёбер через полкарты — именно это делало карту нечитаемой (play-QA Макса).
+                // Широкие развилки при этом остаются: они нужны как выбор биома, режется только ДЛИНА.
+                float s = si / (float)(ws - 1);
+                float t = ti / (float)(wt - 1);
+
+                bool canFan   = outgoing[si] < maxEdges;   // сколько путей выходит из узла
+                bool canMerge = incoming[ti] < maxEdges;   // сколько путей в узел входит
+
+                if (s < t - Epsilon || !canFan) si++;            // источник отстаёт — подтянуть его
+                else if (s > t + Epsilon || !canMerge) ti++;     // цель отстаёт — подтянуть её
+                else
                 {
-                    case 0: si++; break;                // схождение: следующий источник → та же цель
-                    case 1: ti++; break;                // развилка: тот же источник → следующая цель
-                    default: si++; ti++; break;         // диагональ
+                    switch (rng.NextInt(0, 3))
+                    {
+                        case 0: si++; break;                // схождение: следующий источник → та же цель
+                        case 1: ti++; break;                // развилка: тот же источник → следующая цель
+                        default: si++; ti++; break;         // диагональ
+                    }
                 }
             }
         }
+
+        private const float Epsilon = 0.0001f;
 
         private static void AddEdge(Dictionary<string, List<string>> edges, string from, string to)
         {
@@ -147,16 +202,5 @@ namespace Guildmaster.Guild
             if (!list.Contains(to)) list.Add(to);
         }
 
-        /// <summary>Если на карте нет ни одного магазина — конвертирует один промежуточный узел в Shop.</summary>
-        private static void EnsureShopExists(IRngService rng, List<List<MapNode>> columns)
-        {
-            var middle = columns.Skip(1).Take(columns.Count - 2).SelectMany(c => c).ToList();
-            if (middle.Count == 0 || middle.Any(n => n.Type == MapNodeType.Shop)) return;
-
-            // Предпочитаем не затирать элитки (они редки и значимы).
-            var candidates = middle.Where(n => n.Type != MapNodeType.Elite).ToList();
-            if (candidates.Count == 0) candidates = middle;
-            candidates[rng.NextInt(0, candidates.Count)].Type = MapNodeType.Shop;
-        }
     }
 }

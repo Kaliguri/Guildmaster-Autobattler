@@ -58,7 +58,7 @@ MonoBehaviour:
         m_CustomTablePostprocessor:
           rid: -2
         m_AsynchronousBehaviour: 0
-        m_UseFallback: 0
+        m_UseFallback: 1
     - rid: 5615026876324512126
       type: {class: LocalizedStringDatabase, ns: UnityEngine.Localization.Settings, asm: Unity.Localization}
       data:
@@ -69,7 +69,7 @@ MonoBehaviour:
         m_CustomTablePostprocessor:
           rid: -2
         m_AsynchronousBehaviour: 0
-        m_UseFallback: 0
+        m_UseFallback: 1
         m_MissingTranslationState: 1
         m_NoTranslationFoundMessage: No translation found for '{key}' in {table.TableCollectionName}
         m_SmartFormat:
@@ -98,6 +98,7 @@ MonoBehaviour:
         - rid: 5615026876324512141
         - rid: 5615026876324512142
         - rid: 5615026876324512143
+        - rid: 5615027249621500062
         - rid: 5615026876324512144
     - rid: 5615026876324512128
       type: {class: SmartSettings, ns: UnityEngine.Localization.SmartFormat.Core.Settings, asm: Unity.Localization}
@@ -204,4 +205,10 @@ MonoBehaviour:
         m_Names:
         - default
         - d
+        - 
+    - rid: 5615027249621500062
+      type: {class: StatValueFormatter, ns: Guildmaster.Game.Services, asm: Guildmaster.Game}
+      data:
+        m_Names:
+        - stat
         - 

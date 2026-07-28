@@ -35,9 +35,14 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData def = TestEffect.Make(baseDuration: 1f, components: comp);
 
             sys.Apply(unit, def, unit, ctx);
+            Assert.AreEqual(0f, unit.Stats.Get(StatType.MoveSpeed), 1e-4f,
+                "Закон видимости: наложенный этим тиком мод ещё не действует");
+
+            EffectSystem.CommitPending(unit);   // конец тика
             Assert.AreEqual(5f, unit.Stats.Get(StatType.MoveSpeed), 1e-4f);
 
             TickN(sys, unit, ctx, SimConstants.TickRate); // истечение
+            EffectSystem.CommitPending(unit);   // снятие проявляется там же, где наложение
             Assert.AreEqual(0f, unit.Stats.Get(StatType.MoveSpeed), 1e-4f);
         }
 
@@ -55,6 +60,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sys.Apply(unit, def, unit, ctx);
             sys.Apply(unit, def, unit, ctx);
             sys.Apply(unit, def, unit, ctx);
+            EffectSystem.CommitPending(unit);   // конец тика: три наложения проявляются разом
 
             Assert.AreEqual(3, unit.ActiveEffects[0].Stacks);
             Assert.AreEqual(15f, unit.Stats.Get(StatType.MoveSpeed), 1e-4f, "3 стака × 5 = 15");

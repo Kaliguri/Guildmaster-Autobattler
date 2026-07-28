@@ -22,13 +22,16 @@ namespace Guildmaster.Game.Flow
         private readonly IContentDatabase _content;
         private readonly IRngService      _rng;
         private readonly GameConfig       _config;
+        private readonly Core.Audio.IAudioService _audio; // покупка/продажа/реролл/отказ — голос лавки
 
         private readonly List<ShopItem> _shelf = new();
         private int _shopSeed;
 
         public ShopController(RewardService rewards, RelicPricer pricer, RunStateService runStates,
-                              IContentDatabase content, IRngService rng, GameConfig config)
+                              IContentDatabase content, IRngService rng, GameConfig config,
+                              Core.Audio.IAudioService audio = null)
         {
+            _audio     = audio;
             _rewards   = rewards;
             _pricer    = pricer;
             _runStates = runStates;
@@ -73,24 +76,27 @@ namespace Guildmaster.Game.Flow
             ShopItem item = _shelf[index];
             if (item.Sold || item.Relic == null) return ShopBuyOutcome.NotEnoughGold;
 
-            if (_runStates.RelicInventoryFull) return ShopBuyOutcome.NoSpace;
-            if (_runStates.Gold < item.Price)  return ShopBuyOutcome.NotEnoughGold;
+            // Отказы звучат отдельно: молчаливая кнопка «Купить» читается как сломанная.
+            if (_runStates.RelicInventoryFull) { _audio?.Play("shop.denied.ui"); return ShopBuyOutcome.NoSpace; }
+            if (_runStates.Gold < item.Price)  { _audio?.Play("shop.denied.ui"); return ShopBuyOutcome.NotEnoughGold; }
 
             _runStates.TrySpendGold(item.Price);
             _runStates.TryAddRelic(item.Relic.Id);
             item.Sold = true;
             _runStates.Autosave();
             Changed?.Invoke();
+            _audio?.Play("shop.buy.ui");
             return ShopBuyOutcome.Bought;
         }
 
         public bool Reroll()
         {
-            if (!_runStates.TrySpendGold(RerollCost)) return false;
+            if (!_runStates.TrySpendGold(RerollCost)) { _audio?.Play("shop.denied.ui"); return false; }
             _shopSeed = _rng.NextInt(0, int.MaxValue);
             RollShelf();
             _runStates.Autosave();
             Changed?.Invoke();
+            _audio?.Play("shop.reroll.ui");
             return true;
         }
 
@@ -103,6 +109,7 @@ namespace Guildmaster.Game.Flow
             _runStates.AddGold(SellValueOf(relic));
             _runStates.Autosave();
             Changed?.Invoke();
+            _audio?.Play("shop.sell.ui");
             return true;
         }
 

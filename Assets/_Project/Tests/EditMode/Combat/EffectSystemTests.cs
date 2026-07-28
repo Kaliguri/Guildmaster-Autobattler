@@ -1,4 +1,5 @@
 using Guildmaster.Combat;
+using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -16,6 +17,59 @@ namespace Guildmaster.Tests.EditMode.Combat
     {
         private static RuntimeUnit[] One(RuntimeUnit u) => new[] { u };
 
+        // --- Стаки живут НА ЦЕЛИ (правило Макса 2026-07-26) ---
+
+        // Потолок MaxStacks — общий для всех наложивших: два поджигателя догоняют ОДИН костёр,
+        // а не заводят по своему. Guard заведён после того, как ключ идентичности ошибочно
+        // расщепили по источнику — тогда потолок стал персональным у каждого кастера.
+        [Test]
+        public void Apply_SameDefFromTwoSources_SharesOneInstanceAndOneStackCap()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+            var target = TestUnit.Make();
+            var casterA = TestUnit.Make();
+            var casterB = TestUnit.Make();
+            EffectData poison = TestEffect.Make(baseDuration: 4f, tags: EffectTag.DoT,
+                                                stacking: StackRule.StackAndRefresh, maxStacks: 2);
+
+            sys.Apply(target, poison, casterA, ctx);
+            sys.Apply(target, poison, casterB, ctx);
+            sys.Apply(target, poison, casterA, ctx);   // третье наложение — уже за потолком
+
+            Assert.AreEqual(1, target.ActiveEffects.Count,
+                "Эффект живёт на ЦЕЛИ одним экземпляром, независимо от числа наложивших");
+            Assert.AreEqual(2, target.ActiveEffects[0].Stacks,
+                "MaxStacks — потолок НА ЦЕЛИ, общий для всех источников");
+        }
+
+        // Атрибуция периодики делится по вкладу в стаки (реш. Макса 2026-07-26): экземпляр один,
+        // но урон тика уходит тем, кто его держит, в их долях. Проверяем сами доли — источники и веса.
+        [Test]
+        public void Contributions_SplitByStacksAcrossSources()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+            var target = TestUnit.Make();
+            var casterA = TestUnit.Make();
+            var casterB = TestUnit.Make();
+            EffectData poison = TestEffect.Make(baseDuration: 6f, tags: EffectTag.DoT,
+                                                stacking: StackRule.StackAndRefresh, maxStacks: 4);
+
+            sys.Apply(target, poison, casterA, ctx);   // A: 1
+            sys.Apply(target, poison, casterA, ctx);   // A: 2
+            sys.Apply(target, poison, casterB, ctx);   // B: 1
+
+            RuntimeEffect eff = target.ActiveEffects[0];
+            Assert.AreEqual(3, eff.Stacks, "Три наложения — три стака на цели");
+            Assert.AreEqual(3, eff.TotalContribution);
+            Assert.AreEqual(2, eff.ContributorSources.Count, "Вкладчиков двое");
+            Assert.AreSame(casterA, eff.ContributorSources[0]);
+            Assert.AreEqual(2, eff.ContributorWeights[0], "Две трети тика — тому, кто наложил дважды");
+            Assert.AreSame(casterB, eff.ContributorSources[1]);
+            Assert.AreEqual(1, eff.ContributorWeights[1]);
+        }
+
         // --- Наложение / маска ---
 
         [Test]
@@ -28,7 +82,13 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sys.Apply(unit, def, unit, ctx);
 
+            // Эффект встаёт в список сразу, а в маску — на коммите: по закону видимости он становится
+            // виден со следующего тика (см. EffectSystem.CommitTickChanges).
             Assert.AreEqual(1, unit.ActiveEffects.Count);
+            Assert.AreEqual(EffectTag.None, unit.EffectTagMask, "До коммита маска ещё держит состояние начала тика");
+
+            EffectSystem.CommitPending(unit);
+
             Assert.IsTrue((unit.EffectTagMask & EffectTag.DoT) != 0);
             Assert.IsTrue((unit.EffectTagMask & EffectTag.Debuff) != 0);
         }
@@ -43,10 +103,13 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData def = TestEffect.Make(baseDuration: 1f, tags: EffectTag.Buff, components: comp);
 
             sys.Apply(unit, def, unit, ctx);
+            EffectSystem.CommitPending(unit);   // конец тика наложения: эффект стал виден
             Assert.AreEqual(1, comp.Applied);
+            Assert.AreEqual(EffectTag.Buff, unit.EffectTagMask, "Предусловие: тег виден");
 
             // 1 сек = 30 тиков → истекает ровно на 30-м.
             for (int i = 0; i < SimConstants.TickRate; i++) sys.Tick(One(unit), ctx, SimConstants.TickDelta);
+            EffectSystem.CommitPending(unit);   // снятие живёт по тому же закону, что и наложение
 
             Assert.AreEqual(0, unit.ActiveEffects.Count);
             Assert.AreEqual(EffectTag.None, unit.EffectTagMask);

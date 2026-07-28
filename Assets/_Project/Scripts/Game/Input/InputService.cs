@@ -18,7 +18,8 @@ namespace Guildmaster.Game.Input
     {
         private readonly InputActionMap _cameraMap;
         private readonly InputActionMap _combatMap;
-        private readonly InputActionMap _deploymentMap; // мышь фазы расстановки (шаг 4)
+        private readonly InputActionMap _deploymentMap; // действия фазы расстановки (шаг 4)
+        private readonly InputActionMap _pointerMap; // указатель (позиция + ЛКМ) — общий для расстановки и карты
         private readonly InputActionMap _uiMap; // seam под меню/навигацию (реализация — будущая фаза)
 
         private readonly InputAction _pan;
@@ -31,20 +32,40 @@ namespace Guildmaster.Game.Input
         private readonly InputAction _pointerPos;    // <Mouse>/position — screen→world при пикинге/drag
         private readonly InputAction _pointerPress;  // <Mouse>/leftButton — начало/конец протяжки
         private readonly InputAction _menuToggle; // Escape — оверлей системного меню, живёт вне контекст-карт (always-on)
+        private readonly InputAction _detailsHold; // Shift — подробности в подсказках, тоже always-on
+        private readonly InputAction _skipTransition; // Space — пропустить подачу; always-on, см. комментарий у создания
 
         private InputContext _context = InputContext.None;
 
         public InputContext Context => _context;
 
+        // Кто сейчас держит клавиатуру. Единственный владелец факта «геймплей заглушён»: источники
+        // заявляют свою причину, итог считается здесь. Прежде каждый писал в общее булево напрямую и
+        // снимал чужое глушение — см. InputSuppressSource.
+        private InputSuppressSource _suppressors = InputSuppressSource.None;
+
         /// <inheritdoc/>
-        public bool GameplaySuppressed { get; set; }
+        public bool GameplaySuppressed => _suppressors != InputSuppressSource.None;
+
+        /// <inheritdoc/>
+        public void SetSuppressed(InputSuppressSource source, bool suppressed)
+        {
+            if (suppressed) _suppressors |=  source;
+            else            _suppressors &= ~source;
+        }
 
         public event Action CycleViewRequested;
         public event Action PauseToggleRequested;
+        public event Action SkipRequested;
         public event Action GameSpeedCycleRequested;
         public event Action MenuToggleRequested;
         public event Action PointerPressed;
         public event Action PointerReleased;
+
+        /// <inheritdoc/>
+        public bool DetailsHeld { get; private set; }
+
+        public event Action<bool> DetailsHeldChanged;
 
         public InputService()
         {
@@ -73,10 +94,15 @@ namespace Guildmaster.Game.Input
             _pauseToggle = _combatMap.AddAction("PauseToggle", InputActionType.Button, "<Keyboard>/space");
             _gameSpeedCycle = _combatMap.AddAction("GameSpeedCycle", InputActionType.Button, "<Keyboard>/period");
 
-            // --- Карта «Deployment»: указатель мыши (позиция + ЛКМ) для фазы расстановки (шаг 4) ---
+            // --- Карта «Deployment»: действия фазы расстановки (шаг 4). Указатель вынесен в «Pointer». ---
             _deploymentMap = new InputActionMap("Deployment");
-            _pointerPos   = _deploymentMap.AddAction("PointerPosition", InputActionType.Value, "<Mouse>/position");
-            _pointerPress = _deploymentMap.AddAction("PointerPress", InputActionType.Button, "<Mouse>/leftButton");
+
+            // --- Карта «Pointer»: указатель мыши (позиция + ЛКМ). Общая для расстановки (перетаскивание
+            // юнитов) и карты акта (клик по узлу) — оба контекста тыкают в мир одной и той же мышью,
+            // и включать ради этого чужую карту «Deployment» было бы враньём по смыслу. ---
+            _pointerMap = new InputActionMap("Pointer");
+            _pointerPos   = _pointerMap.AddAction("PointerPosition", InputActionType.Value, "<Mouse>/position");
+            _pointerPress = _pointerMap.AddAction("PointerPress", InputActionType.Button, "<Mouse>/leftButton");
             _pointerPress.performed += OnPointerPressed;
             _pointerPress.canceled  += OnPointerReleased;
 
@@ -88,6 +114,20 @@ namespace Guildmaster.Game.Input
             _menuToggle = new InputAction("MenuToggle", InputActionType.Button, "<Keyboard>/escape");
             _menuToggle.performed += OnMenuToggle;
             _menuToggle.Enable();
+
+            // Подробности в подсказках (Shift): как и меню — вне контекст-карт и без глушения. Тултип
+            // может висеть над модальным экраном, и там Shift обязан работать так же, как в бою.
+            // Скип подачи (Space): как меню и Shift — вне контекст-карт. Переход арены играет в расстановке
+            // и на полигоне, где карта «Combat» выключена, а пауза живёт именно в ней — на общей клавише
+            // скип просто не доходил до слушателя. В бою Space по-прежнему пауза: подача там не идёт.
+            _skipTransition = new InputAction("SkipTransition", InputActionType.Button, "<Keyboard>/space");
+            _skipTransition.performed += OnSkipRequested;
+            _skipTransition.Enable();
+
+            _detailsHold = new InputAction("DetailsHold", InputActionType.Button, "<Keyboard>/shift");
+            _detailsHold.performed += OnDetailsHeld;
+            _detailsHold.canceled  += OnDetailsReleased;
+            _detailsHold.Enable();
 
             _cycleView.performed     += OnCycleView;
             _pauseToggle.performed   += OnPauseToggle;
@@ -102,6 +142,7 @@ namespace Guildmaster.Game.Input
             _cameraMap.Disable();
             _combatMap.Disable();
             _deploymentMap.Disable();
+            _pointerMap.Disable();
             _uiMap.Disable();
 
             switch (context)
@@ -112,6 +153,13 @@ namespace Guildmaster.Game.Input
                 case InputContext.Deployment:
                     _cameraMap.Enable();
                     _deploymentMap.Enable();
+                    _pointerMap.Enable();
+                    break;
+                // Карта акта: своя world-камера (пан/зум как в бою) + указатель для клика по узлу.
+                // Боевых действий (пауза, скорость) здесь нет — боя не идёт.
+                case InputContext.Map:
+                    _cameraMap.Enable();
+                    _pointerMap.Enable();
                     break;
                 case InputContext.Combat:
                     _cameraMap.Enable();
@@ -143,7 +191,7 @@ namespace Guildmaster.Game.Input
         {
             get
             {
-                if (_uiDoc == null) _uiDoc = UnityEngine.Object.FindFirstObjectByType<UIDocument>();
+                if (_uiDoc == null) _uiDoc = UnityEngine.Object.FindAnyObjectByType<UIDocument>();
                 return _uiDoc != null ? _uiDoc.rootVisualElement?.panel : null;
             }
         }
@@ -163,6 +211,7 @@ namespace Guildmaster.Game.Input
 
         private void OnCycleView(InputAction.CallbackContext _)      { if (!GameplaySuppressed) CycleViewRequested?.Invoke(); }
         private void OnPauseToggle(InputAction.CallbackContext _)    { if (!GameplaySuppressed) PauseToggleRequested?.Invoke(); }
+        private void OnSkipRequested(InputAction.CallbackContext _)  { if (!GameplaySuppressed) SkipRequested?.Invoke(); }
         private void OnGameSpeedCycle(InputAction.CallbackContext _) { if (!GameplaySuppressed) GameSpeedCycleRequested?.Invoke(); }
         // Клик над непрозрачной UITK-панелью не начинает деплой-пик (уходит в UI). Drag, начатый над миром,
         // продолжается и над панелью (PointerHeld этот флаг не гейтит — иначе протяжка рвалась бы у края панели).
@@ -172,6 +221,16 @@ namespace Guildmaster.Game.Input
         // Escape НЕ гейтится GameplaySuppressed: меню должно закрываться, даже когда геймплейный ввод заглушён.
         private void OnMenuToggle(InputAction.CallbackContext _) => MenuToggleRequested?.Invoke();
 
+        private void OnDetailsHeld(InputAction.CallbackContext _)     => SetDetailsHeld(true);
+        private void OnDetailsReleased(InputAction.CallbackContext _) => SetDetailsHeld(false);
+
+        private void SetDetailsHeld(bool held)
+        {
+            if (DetailsHeld == held) return;
+            DetailsHeld = held;
+            DetailsHeldChanged?.Invoke(held);
+        }
+
         public void Dispose()
         {
             _cycleView.performed     -= OnCycleView;
@@ -180,12 +239,18 @@ namespace Guildmaster.Game.Input
             _pointerPress.performed  -= OnPointerPressed;
             _pointerPress.canceled   -= OnPointerReleased;
             _menuToggle.performed    -= OnMenuToggle;
+            _detailsHold.performed   -= OnDetailsHeld;
+            _detailsHold.canceled    -= OnDetailsReleased;
+            _skipTransition.performed -= OnSkipRequested;
 
             _cameraMap.Dispose();
             _combatMap.Dispose();
             _deploymentMap.Dispose();
+            _pointerMap.Dispose();
             _uiMap.Dispose();
             _menuToggle.Dispose();
+            _detailsHold.Dispose();
+            _skipTransition.Dispose();
         }
     }
 }

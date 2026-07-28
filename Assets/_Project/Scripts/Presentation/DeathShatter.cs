@@ -6,7 +6,8 @@ namespace Guildmaster.Presentation
     /// Разлёт спрайта юнита на осколки при смерти. Берёт ТЕКУЩИЙ кадр спрайта и строит меш строго под его
     /// ВИДИМЫЕ границы (из собственного меша спрайта — <c>sprite.vertices</c>/<c>sprite.uv</c>), поэтому осколки
     /// размером с персонажа, а не с прозрачной спрайт-ячейки. Рисует шейдером Guildmaster/Sprite/Shatter:
-    /// вспышка в белый → осколки дрейфуют наружу во все стороны, медленно вращаясь, и плавно тают. Разлёт нормирован
+    /// пересвет догорает → светящиеся угольки дрейфуют наружу во все стороны, медленно кувыркаясь, и гаснут
+    /// вразнобой. Цвет осколка задаёт рампа, а не тело: спрайт остаётся только формой. Разлёт нормирован
     /// на высоту спрайта. Per-instance данные через MaterialPropertyBlock (материал общий, без аллокаций).
     /// По завершении зовёт callback и самоуничтожается. Только презентация; сим не трогает.
     /// </summary>
@@ -24,9 +25,15 @@ namespace Guildmaster.Presentation
         private static readonly int SpreadId     = Shader.PropertyToID("_Spread");
         private static readonly int TumbleId     = Shader.PropertyToID("_Tumble");
         private static readonly int UpBiasId     = Shader.PropertyToID("_UpBias");
-        private static readonly int EmberColorId = Shader.PropertyToID("_EmberColor");
+        private static readonly int ShardWhiteId = Shader.PropertyToID("_ShardWhite");
+        private static readonly int ShardUnitAId = Shader.PropertyToID("_ShardUnitA");
+        private static readonly int ShardUnitBId = Shader.PropertyToID("_ShardUnitB");
+        private static readonly int WhiteShareId = Shader.PropertyToID("_WhiteShare");
         private static readonly int EmberBoostId = Shader.PropertyToID("_EmberBoost");
-        private static readonly int EmberStartId = Shader.PropertyToID("_EmberStart");
+        private static readonly int ShardLumaId  = Shader.PropertyToID("_ShardLuma");
+        private static readonly int FadePowerId  = Shader.PropertyToID("_FadePower");
+        private static readonly int LifeVarId    = Shader.PropertyToID("_LifeVariance");
+        private static readonly int GlowId       = Shader.PropertyToID("_Glow");
 
         private static Material _sharedMat;
 
@@ -35,16 +42,22 @@ namespace Guildmaster.Presentation
         private Mesh                  _mesh;   // per-instance — уничтожаем вместе с эффектом
         private MaterialPropertyBlock _mpb;
         private System.Action         _onComplete;
-        private float _flashIn, _flashOut, _duration, _elapsed;
+        private float _flashIn, _flashOut, _duration, _hold, _elapsed, _minTimeScale;
         private bool  _running;
 
         /// <summary>Запустить разлёт из текущего состояния спрайта <paramref name="src"/>.</summary>
-        public void Play(SpriteRenderer src, Design.CombatFeelConfig cfg, System.Action onComplete)
+        /// <param name="palette">
+        /// Палитра ПАВШЕГО юнита: часть осколков красится ею, остальные — белым пересветом. Так разлёт
+        /// говорит, кто именно погиб, а не «здесь кто-то умер».
+        /// </param>
+        public void Play(SpriteRenderer src, Design.CombatFeelConfig cfg, Gradient palette, System.Action onComplete)
         {
             _onComplete = onComplete;
             _flashIn  = cfg != null ? cfg.ShatterFlashIn  : 0.08f;
             _flashOut = cfg != null ? cfg.ShatterFlashOut : 0.12f;
             _duration = cfg != null ? cfg.ShatterDuration : 0.75f;
+            _hold     = cfg != null ? Mathf.Max(0f, cfg.ShatterHold) : 0.05f;
+            _minTimeScale = cfg != null ? Mathf.Clamp01(cfg.ShatterMinTimeScale) : 0.4f;
 
             Sprite sprite = src.sprite;
 
@@ -84,9 +97,13 @@ namespace Guildmaster.Presentation
             _mr.GetPropertyBlock(_mpb);
             if (sprite != null && sprite.texture != null) _mpb.SetTexture(MainTexId, sprite.texture);
 
-            Color tint = src.color; tint.a = 1f;
-            _mpb.SetColor(ColorId, tint);
-            _mpb.SetColor(FlashColorId, cfg != null ? cfg.FlashColor : Color.white);
+            // От тинта юниту остаётся только ПРОЗРАЧНОСТЬ: цвет осколка задаёт рампа уголька, а не тело.
+            // Раньше сюда уезжал полный цвет с принудительной альфой 1 — и юнит, умерший в невидимости,
+            // рассыпался непрозрачными кусками.
+            _mpb.SetColor(ColorId, new Color(1f, 1f, 1f, src.color.a));
+            // Вспышка раскола берёт ОТДЕЛЬНЫЙ цвет смерти (HDR): обычный hit-flash живёт в пределах экрана,
+            // а этот обязан пробивать порог bloom — иначе «яркий белый» из референса остаётся просто белым.
+            _mpb.SetColor(FlashColorId, cfg != null ? cfg.DeathFlashColor : Color.white);
 
             // Разлёт/гравитация нормированы на ВЫСОТУ спрайта (лок. ед.) — одинаково ощущается на любом размере.
             float h = Mathf.Max(0.0001f, sizeLocal.y);
@@ -96,9 +113,17 @@ namespace Guildmaster.Presentation
             _mpb.SetFloat(SpreadId,  cfg != null ? cfg.ShatterSpread : 1.2f);
             _mpb.SetFloat(TumbleId,  cfg != null ? cfg.ShatterTumble : 9f);
             _mpb.SetFloat(UpBiasId,  cfg != null ? cfg.ShatterUpBias : 0.6f);
-            _mpb.SetColor(EmberColorId, cfg != null ? cfg.ShatterEmberColor : new Color(0.25f, 0.9f, 1f, 1f));
+            Color unitA = palette != null ? palette.Evaluate(0f) : new Color(0.25f, 0.9f, 1f, 1f);
+            Color unitB = palette != null ? palette.Evaluate(1f) : unitA;
+            _mpb.SetColor(ShardWhiteId, cfg != null ? cfg.ShardWhiteColor : new Color(1.6f, 1.62f, 1.7f, 1f));
+            _mpb.SetColor(ShardUnitAId, unitA);
+            _mpb.SetColor(ShardUnitBId, unitB);
+            _mpb.SetFloat(WhiteShareId, cfg != null ? cfg.ShardWhiteShare : 0.5f);
             _mpb.SetFloat(EmberBoostId, cfg != null ? cfg.ShatterEmberBoost : 2f);
-            _mpb.SetFloat(EmberStartId, cfg != null ? cfg.ShatterEmberStart : 0.4f);
+            _mpb.SetFloat(ShardLumaId,  cfg != null ? cfg.ShatterLuma       : 0.35f);
+            _mpb.SetFloat(FadePowerId,  cfg != null ? cfg.ShatterFadePower  : 0.35f);
+            _mpb.SetFloat(LifeVarId,    cfg != null ? cfg.ShatterLifeVariance : 0.35f);
+            _mpb.SetFloat(GlowId,       cfg != null ? cfg.ShatterGlow       : 1f);
             _mpb.SetFloat(FlashAmtId, 0f);
             _mpb.SetFloat(ShatterId,  0f);
             _mr.SetPropertyBlock(_mpb);
@@ -111,26 +136,37 @@ namespace Guildmaster.Presentation
         {
             if (!_running) return;
 
-            // Масштабируем по игровому времени → в финальном slowmo осколки летят медленно (в такт моменту).
-            _elapsed += Time.deltaTime;
+            // Идём по игровому времени — в slowmo осколки летят медленно, в такт моменту, — но с ПОЛОМ:
+            // финишер начинается с полной паузы и держит timeScale 0.1 несколько секунд, а на чистом
+            // Time.deltaTime разлёт растянулся бы вдесятеро и завис на экране светящимся пятном.
+            _elapsed += Time.unscaledDeltaTime * Mathf.Max(Time.timeScale, _minTimeScale);
 
-            float shatter = _duration > 0f ? Mathf.Clamp01((_elapsed - _flashIn) / _duration) : 1f;
-            // Вспышка — ИМПУЛЬС: растёт за flashIn, затем спадает за flashOut → осколки ВОЗВРАЩАЮТ исходный цвет,
-            // а к концу выцветают в ember-бирюзу (в шейдере). Три фазы вместо «всегда белые».
+            float postHold = _elapsed - _hold;
+            float shatter;
             float flash;
-            if (_flashIn <= 0f)
-                flash = Mathf.Clamp01(1f - _elapsed / Mathf.Max(0.0001f, _flashOut));
-            else if (_elapsed < _flashIn)
-                flash = _elapsed / _flashIn;
+            if (postHold < 0f)
+            {
+                // Микро-hold: осколки стоят, полная вспышка («кристалл»).
+                shatter = 0f;
+                flash = 1f;
+            }
             else
-                flash = Mathf.Clamp01(1f - (_elapsed - _flashIn) / Mathf.Max(0.0001f, _flashOut));
+            {
+                shatter = _duration > 0f ? Mathf.Clamp01((postHold - _flashIn) / _duration) : 1f;
+                if (_flashIn <= 0f)
+                    flash = Mathf.Clamp01(1f - postHold / Mathf.Max(0.0001f, _flashOut));
+                else if (postHold < _flashIn)
+                    flash = postHold / _flashIn;
+                else
+                    flash = Mathf.Clamp01(1f - (postHold - _flashIn) / Mathf.Max(0.0001f, _flashOut));
+            }
 
             _mr.GetPropertyBlock(_mpb);
             _mpb.SetFloat(FlashAmtId, flash);
             _mpb.SetFloat(ShatterId, shatter);
             _mr.SetPropertyBlock(_mpb);
 
-            if (_elapsed >= _flashIn + _duration)
+            if (_elapsed >= _hold + _flashIn + _duration)
             {
                 _running = false;
                 _onComplete?.Invoke();

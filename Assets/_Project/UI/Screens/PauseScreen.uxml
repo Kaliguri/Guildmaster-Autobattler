@@ -1,14 +1,18 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <ui:VisualElement class="gm-screen">
-        <ui:VisualElement class="gm-panel gm-panel--menu">
+        <ui:VisualElement class="gm-panel gm-panel--dialog gm-panel--menu">
             <ui:Label text="Меню" class="gm-panel__title" />
             <ui:VisualElement class="gm-divider" />
-            <ui:Button name="btn-return" text="Продолжить" class="gm-button gm-button--primary" />
-            <ui:Button name="btn-settings" text="Настройки" class="gm-button" />
-            <ui:VisualElement class="gm-divider" />
+            <!-- Тело диалога: пунктов немного, но занимает оно ту же область, что и у настроек —
+                 поэтому окно одинаковое, а кнопки не растягиваются по всей высоте. -->
+            <ui:ScrollView class="gm-panel__body">
+                <ui:Button name="btn-return" text="Продолжить" class="gm-button gm-button--primary" />
+                <ui:Button name="btn-settings" text="Настройки" class="gm-button" />
+                <ui:VisualElement class="gm-divider" />
             <!-- QA #18: выход из забега. Текст проставляет MenuRouter через loc (ui.menu.*), тут RU-плейсхолдер. -->
-            <ui:Button name="btn-main-menu" text="В главное меню" class="gm-button" />
-            <ui:Button name="btn-quit" text="Выйти из игры" class="gm-button" />
+                <ui:Button name="btn-main-menu" text="В главное меню" class="gm-button" />
+                <ui:Button name="btn-quit" text="Выйти из игры" class="gm-button" />
+            </ui:ScrollView>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -110,6 +110,126 @@ TextureImporter:
   - first:
       213: 8547198151435662925
     second: Goblin Fighter_35
+  - first:
+      213: 2865314739274428508
+    second: Goblin Fighter_r0_0
+  - first:
+      213: 8351583151467237569
+    second: Goblin Fighter_r0_1
+  - first:
+      213: -4764417851664872995
+    second: Goblin Fighter_r0_2
+  - first:
+      213: 4349107534645785464
+    second: Goblin Fighter_r0_3
+  - first:
+      213: -976933527864663952
+    second: Goblin Fighter_r0_4
+  - first:
+      213: 1342755975740862110
+    second: Goblin Fighter_r0_5
+  - first:
+      213: 7928568805068255617
+    second: Goblin Fighter_r0_6
+  - first:
+      213: 5831846625415031638
+    second: Goblin Fighter_r0_7
+  - first:
+      213: 7983897011358632585
+    second: Goblin Fighter_r1_0
+  - first:
+      213: 4388750611752397476
+    second: Goblin Fighter_r1_1
+  - first:
+      213: 4555526228264211118
+    second: Goblin Fighter_r1_2
+  - first:
+      213: -6207629685188040416
+    second: Goblin Fighter_r1_3
+  - first:
+      213: -1477181655019332057
+    second: Goblin Fighter_r1_4
+  - first:
+      213: -7463652963734660060
+    second: Goblin Fighter_r1_5
+  - first:
+      213: 2031299452054500299
+    second: Goblin Fighter_r1_6
+  - first:
+      213: -4238489681147598577
+    second: Goblin Fighter_r1_7
+  - first:
+      213: -3324097712796712974
+    second: Goblin Fighter_r2_0
+  - first:
+      213: -8849378875070020197
+    second: Goblin Fighter_r2_1
+  - first:
+      213: -4254907844386207362
+    second: Goblin Fighter_r2_2
+  - first:
+      213: -7061048846952820485
+    second: Goblin Fighter_r2_3
+  - first:
+      213: 5265007117854462518
+    second: Goblin Fighter_r2_4
+  - first:
+      213: -195448392576116429
+    second: Goblin Fighter_r2_5
+  - first:
+      213: 8658112078488170858
+    second: Goblin Fighter_r2_6
+  - first:
+      213: 4496907860360118117
+    second: Goblin Fighter_r2_7
+  - first:
+      213: 5534659261504443788
+    second: Goblin Fighter_r3_0
+  - first:
+      213: 6580272639533682629
+    second: Goblin Fighter_r3_1
+  - first:
+      213: -7976036383678229518
+    second: Goblin Fighter_r3_2
+  - first:
+      213: 8454739525613697206
+    second: Goblin Fighter_r3_3
+  - first:
+      213: 323530613150695406
+    second: Goblin Fighter_r3_4
+  - first:
+      213: 3275081206892898608
+    second: Goblin Fighter_r3_5
+  - first:
+      213: -4655913952268730758
+    second: Goblin Fighter_r3_6
+  - first:
+      213: -4804310927109498385
+    second: Goblin Fighter_r3_7
+  - first:
+      213: -36219755181582136
+    second: Goblin Fighter_r4_0
+  - first:
+      213: 3796712860186976556
+    second: Goblin Fighter_r4_1
+  - first:
+      213: 1779025865507588422
+    second: Goblin Fighter_r4_2
+  - first:
+      213: -6073591295846880961
+    second: Goblin Fighter_r4_3
+  - first:
+      213: -6897887273381730153
+    second: Goblin Fighter_r4_4
+  - first:
+      213: 8871689017114447800
+    second: Goblin Fighter_r4_5
+  - first:
+      213: -4994558739679720015
+    second: Goblin Fighter_r4_6
+  - first:
+      213: 5597705551180417625
+    second: Goblin Fighter_r4_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -142,7 +262,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -180,7 +300,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -205,793 +325,881 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Goblin Fighter_0
+      name: Goblin Fighter_r0_0
       rect:
         serializedVersion: 2
-        x: 53
-        y: 559
-        width: 26
-        height: 43
+        x: 0
+        y: 512
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a5a52b6acef2d8820800000000000000
-      internalID: 2922044426688813658
+      spriteID: c50b4240394a3c720800000000000000
+      internalID: 2865314739274428508
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_1
+      name: Goblin Fighter_r0_1
       rect:
         serializedVersion: 2
-        x: 174
-        y: 559
-        width: 36
-        height: 38
+        x: 128
+        y: 512
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1a21f8bffffe61470800000000000000
-      internalID: 8365137240603431585
+      spriteID: 1c0975fa0a8c6e370800000000000000
+      internalID: 8351583151467237569
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_2
+      name: Goblin Fighter_r0_2
       rect:
         serializedVersion: 2
-        x: 302
-        y: 559
-        width: 35
-        height: 37
+        x: 256
+        y: 512
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 558676dd2a7fb8630800000000000000
-      internalID: 3930507378682194005
+      spriteID: dd94cf5f43361edb0800000000000000
+      internalID: -4764417851664872995
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_3
+      name: Goblin Fighter_r0_3
       rect:
         serializedVersion: 2
-        x: 428
-        y: 544
-        width: 67
-        height: 47
+        x: 384
+        y: 512
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8b3e9aaded179e800800000000000000
-      internalID: 642169623842251704
+      spriteID: 873798c92422b5c30800000000000000
+      internalID: 4349107534645785464
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_4
+      name: Goblin Fighter_r0_4
       rect:
         serializedVersion: 2
-        x: 548
-        y: 540
-        width: 75
-        height: 52
+        x: 512
+        y: 512
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5e9e58719c94a1370800000000000000
-      internalID: 8294022791788095973
+      spriteID: 0702576e12c3172f0800000000000000
+      internalID: -976933527864663952
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_5
+      name: Goblin Fighter_r0_5
       rect:
         serializedVersion: 2
-        x: 676
-        y: 543
-        width: 78
-        height: 48
+        x: 640
+        y: 512
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 27890a6850f1945f0800000000000000
-      internalID: -772051752523360142
+      spriteID: e9e211a127d62a210800000000000000
+      internalID: 1342755975740862110
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_6
+      name: Goblin Fighter_r0_6
       rect:
         serializedVersion: 2
-        x: 804
-        y: 543
-        width: 41
-        height: 48
+        x: 768
+        y: 512
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2cc9e413db17f9ea0800000000000000
-      internalID: -5863843132423103294
+      spriteID: 1813653225fe70e60800000000000000
+      internalID: 7928568805068255617
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_7
+      name: Goblin Fighter_r0_7
       rect:
         serializedVersion: 2
-        x: 53
-        y: 431
-        width: 32
-        height: 46
+        x: 896
+        y: 512
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a4cf0bbc84f1f7570800000000000000
-      internalID: 8466520221995301962
+      spriteID: 65b6c6c7b91eee050800000000000000
+      internalID: 5831846625415031638
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_8
+      name: Goblin Fighter_r1_0
       rect:
         serializedVersion: 2
-        x: 173
-        y: 431
-        width: 46
-        height: 53
+        x: 0
+        y: 384
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9ab0cc049a5ef7b60800000000000000
-      internalID: 7746162399199890345
+      spriteID: 98a855508008cce60800000000000000
+      internalID: 7983897011358632585
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_9
+      name: Goblin Fighter_r1_1
       rect:
         serializedVersion: 2
-        x: 290
-        y: 444
-        width: 60
-        height: 42
+        x: 128
+        y: 384
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 34109a421c25b6fc0800000000000000
-      internalID: -3500613295853207229
+      spriteID: 4aaa745cd69f7ec30800000000000000
+      internalID: 4388750611752397476
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_10
+      name: Goblin Fighter_r1_2
       rect:
         serializedVersion: 2
-        x: 421
-        y: 443
-        width: 37
-        height: 37
+        x: 256
+        y: 384
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5663c3f1dbbb6c780800000000000000
-      internalID: -8663030412253317531
+      spriteID: ea2d9a8e7fa783f30800000000000000
+      internalID: 4555526228264211118
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_11
+      name: Goblin Fighter_r1_3
       rect:
         serializedVersion: 2
-        x: 559
-        y: 435
-        width: 16
-        height: 38
+        x: 384
+        y: 384
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9992bd2efafdfbef0800000000000000
-      internalID: -90107521005835879
+      spriteID: 0296235d0b11ad9a0800000000000000
+      internalID: -6207629685188040416
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_12
+      name: Goblin Fighter_r1_4
       rect:
         serializedVersion: 2
-        x: 690
-        y: 435
-        width: 9
-        height: 27
+        x: 512
+        y: 384
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b6854e00eb13e6c40800000000000000
-      internalID: 5507394086449207403
+      spriteID: 72e59d77c1fff7be0800000000000000
+      internalID: -1477181655019332057
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_13
+      name: Goblin Fighter_r1_5
       rect:
         serializedVersion: 2
-        x: 398
-        y: 429
-        width: 37
-        height: 14
+        x: 640
+        y: 384
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 36ad7f52b78cbf520800000000000000
-      internalID: 2737001629801241187
+      spriteID: 42cddc17c27cb6890800000000000000
+      internalID: -7463652963734660060
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_14
+      name: Goblin Fighter_r1_6
       rect:
         serializedVersion: 2
-        x: 526
-        y: 429
-        width: 37
-        height: 14
+        x: 768
+        y: 384
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 33e464c1abc8ae1e0800000000000000
-      internalID: -2167765539659297229
+      spriteID: bc37720e610a03c10800000000000000
+      internalID: 2031299452054500299
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_15
+      name: Goblin Fighter_r1_7
       rect:
         serializedVersion: 2
-        x: 654
-        y: 429
-        width: 37
-        height: 14
+        x: 896
+        y: 384
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 45fcdb39eff769340800000000000000
-      internalID: 4870220778424880980
+      spriteID: f09e90b671cdd25c0800000000000000
+      internalID: -4238489681147598577
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_16
+      name: Goblin Fighter_r2_0
       rect:
         serializedVersion: 2
-        x: 53
-        y: 303
-        width: 32
-        height: 46
+        x: 0
+        y: 256
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1ae461ff97d8a6640800000000000000
-      internalID: 5074023485296496289
+      spriteID: 2ff3016fdbe6ed1d0800000000000000
+      internalID: -3324097712796712974
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_17
+      name: Goblin Fighter_r2_1
       rect:
         serializedVersion: 2
-        x: 173
-        y: 303
-        width: 46
-        height: 53
+        x: 128
+        y: 256
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1158c1c03eb07c170800000000000000
-      internalID: 8198534716439954705
+      spriteID: b950b949cc0b03580800000000000000
+      internalID: -8849378875070020197
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_18
+      name: Goblin Fighter_r2_2
       rect:
         serializedVersion: 2
-        x: 303
-        y: 303
-        width: 47
-        height: 55
+        x: 256
+        y: 256
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5c452bb970c8b1030800000000000000
-      internalID: 3466518302496543941
+      spriteID: e794657ebd783f4c0800000000000000
+      internalID: -4254907844386207362
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_19
+      name: Goblin Fighter_r2_3
       rect:
         serializedVersion: 2
-        x: 437
-        y: 303
-        width: 26
-        height: 43
+        x: 384
+        y: 256
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 093e8ad6fc7f314d0800000000000000
-      internalID: -3164913642841250928
+      spriteID: bf012b71c7d120e90800000000000000
+      internalID: -7061048846952820485
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_20
+      name: Goblin Fighter_r2_4
       rect:
         serializedVersion: 2
-        x: 53
-        y: 175
-        width: 26
-        height: 43
+        x: 512
+        y: 256
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: bd46cb657339bdcb0800000000000000
-      internalID: -4838111508791794469
+      spriteID: 6325e971410111940800000000000000
+      internalID: 5265007117854462518
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_21
+      name: Goblin Fighter_r2_5
       rect:
         serializedVersion: 2
-        x: 181
-        y: 175
-        width: 26
-        height: 43
+        x: 640
+        y: 256
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 54504a37ed80b6ef0800000000000000
-      internalID: -113987614051924667
+      spriteID: 3395494f8b0a94df0800000000000000
+      internalID: -195448392576116429
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_22
+      name: Goblin Fighter_r2_6
       rect:
         serializedVersion: 2
-        x: 309
-        y: 175
-        width: 26
-        height: 42
+        x: 768
+        y: 256
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac84352a5e877db30800000000000000
-      internalID: 4312048095896750282
+      spriteID: a617ecf001bc72870800000000000000
+      internalID: 8658112078488170858
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_23
+      name: Goblin Fighter_r2_7
       rect:
         serializedVersion: 2
-        x: 437
-        y: 175
-        width: 26
-        height: 42
+        x: 896
+        y: 256
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 71559b30ea892cb00800000000000000
-      internalID: 847407553053283607
+      spriteID: 56f3d649fd9386e30800000000000000
+      internalID: 4496907860360118117
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_24
+      name: Goblin Fighter_r3_0
       rect:
         serializedVersion: 2
-        x: 565
-        y: 175
-        width: 26
-        height: 42
+        x: 0
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 78387bc8174f945d0800000000000000
-      internalID: -3077660101801704569
+      spriteID: c855cc2464f0fcc40800000000000000
+      internalID: 5534659261504443788
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_25
+      name: Goblin Fighter_r3_1
       rect:
         serializedVersion: 2
-        x: 693
-        y: 175
-        width: 26
-        height: 42
+        x: 128
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25cfccf0005ba2b00800000000000000
-      internalID: 804654495308774482
+      spriteID: 5cf80a41a13d15b50800000000000000
+      internalID: 6580272639533682629
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_26
+      name: Goblin Fighter_r3_2
       rect:
         serializedVersion: 2
-        x: 821
-        y: 175
-        width: 26
-        height: 43
+        x: 256
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7105062857e122670800000000000000
-      internalID: 8512399735731015703
+      spriteID: 2f3944bfa2d6f4190800000000000000
+      internalID: -7976036383678229518
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_27
+      name: Goblin Fighter_r3_3
       rect:
         serializedVersion: 2
-        x: 949
-        y: 175
-        width: 26
-        height: 43
+        x: 384
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b9a45f6a088844480800000000000000
-      internalID: -8915851276148454757
+      spriteID: 6b8b8acadc4455570800000000000000
+      internalID: 8454739525613697206
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_28
+      name: Goblin Fighter_r3_4
       rect:
         serializedVersion: 2
-        x: 55
-        y: 46
-        width: 22
-        height: 47
+        x: 512
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 364fbb9641a7ac090800000000000000
-      internalID: -8013458358860516253
+      spriteID: eefbfc6e0696d7400800000000000000
+      internalID: 323530613150695406
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_29
+      name: Goblin Fighter_r3_5
       rect:
         serializedVersion: 2
-        x: 183
-        y: 48
-        width: 22
-        height: 43
+        x: 640
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fdc4c3626c7181c60800000000000000
-      internalID: 7789001695349722335
+      spriteID: 039a86b610d637d20800000000000000
+      internalID: 3275081206892898608
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_30
+      name: Goblin Fighter_r3_6
       rect:
         serializedVersion: 2
-        x: 314
-        y: 47
-        width: 16
-        height: 44
+        x: 768
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 6c5e4400514e38ba0800000000000000
-      internalID: -6087771492424817210
+      spriteID: a7ebc32bdeed26fb0800000000000000
+      internalID: -4655913952268730758
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_31
+      name: Goblin Fighter_r3_7
       rect:
         serializedVersion: 2
-        x: 441
-        y: 47
-        width: 20
-        height: 45
+        x: 896
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 59f4d7c0b425fc690800000000000000
-      internalID: -7579749165555691627
+      spriteID: fe95c178aa8a35db0800000000000000
+      internalID: -4804310927109498385
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_32
+      name: Goblin Fighter_r4_0
       rect:
         serializedVersion: 2
-        x: 566
-        y: 47
-        width: 23
-        height: 46
+        x: 0
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ac877b41fc1fcb7d0800000000000000
-      internalID: -2901178188225349430
+      spriteID: 8c8dc8613525f7ff0800000000000000
+      internalID: -36219755181582136
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_33
+      name: Goblin Fighter_r4_1
       rect:
         serializedVersion: 2
-        x: 694
-        y: 47
-        width: 23
-        height: 44
+        x: 128
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7e6d56bd65a4306b0800000000000000
-      internalID: -5331335796968007961
+      spriteID: c212a910b32a0b430800000000000000
+      internalID: 3796712860186976556
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_34
+      name: Goblin Fighter_r4_2
       rect:
         serializedVersion: 2
-        x: 826
-        y: 46
-        width: 16
-        height: 45
+        x: 256
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d553740127aee2bf0800000000000000
-      internalID: -347082345640676003
+      spriteID: 649cfc7599e50b810800000000000000
+      internalID: 1779025865507588422
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Goblin Fighter_35
+      name: Goblin Fighter_r4_3
       rect:
         serializedVersion: 2
-        x: 954
-        y: 46
-        width: 19
-        height: 46
+        x: 384
+        y: 0
+        width: 128
+        height: 128
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d46b2390f6fbd9670800000000000000
-      internalID: 8547198151435662925
+      spriteID: f39642c45e446bba0800000000000000
+      internalID: -6073591295846880961
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_r4_4
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 798e4694218c540a0800000000000000
+      internalID: -6897887273381730153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_r4_5
+      rect:
+        serializedVersion: 2
+        x: 640
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8bf47d628229e1b70800000000000000
+      internalID: 8871689017114447800
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_r4_6
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1bd419fd943cfaab0800000000000000
+      internalID: -4994558739679720015
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Goblin Fighter_r4_7
+      rect:
+        serializedVersion: 2
+        x: 896
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95a47577a8b0fad40800000000000000
+      internalID: 5597705551180417625
       vertices: []
       indices: 
       edges: []
@@ -1046,6 +1254,46 @@ TextureImporter:
       Goblin Fighter_7: 8466520221995301962
       Goblin Fighter_8: 7746162399199890345
       Goblin Fighter_9: -3500613295853207229
+      Goblin Fighter_r0_0: 2865314739274428508
+      Goblin Fighter_r0_1: 8351583151467237569
+      Goblin Fighter_r0_2: -4764417851664872995
+      Goblin Fighter_r0_3: 4349107534645785464
+      Goblin Fighter_r0_4: -976933527864663952
+      Goblin Fighter_r0_5: 1342755975740862110
+      Goblin Fighter_r0_6: 7928568805068255617
+      Goblin Fighter_r0_7: 5831846625415031638
+      Goblin Fighter_r1_0: 7983897011358632585
+      Goblin Fighter_r1_1: 4388750611752397476
+      Goblin Fighter_r1_2: 4555526228264211118
+      Goblin Fighter_r1_3: -6207629685188040416
+      Goblin Fighter_r1_4: -1477181655019332057
+      Goblin Fighter_r1_5: -7463652963734660060
+      Goblin Fighter_r1_6: 2031299452054500299
+      Goblin Fighter_r1_7: -4238489681147598577
+      Goblin Fighter_r2_0: -3324097712796712974
+      Goblin Fighter_r2_1: -8849378875070020197
+      Goblin Fighter_r2_2: -4254907844386207362
+      Goblin Fighter_r2_3: -7061048846952820485
+      Goblin Fighter_r2_4: 5265007117854462518
+      Goblin Fighter_r2_5: -195448392576116429
+      Goblin Fighter_r2_6: 8658112078488170858
+      Goblin Fighter_r2_7: 4496907860360118117
+      Goblin Fighter_r3_0: 5534659261504443788
+      Goblin Fighter_r3_1: 6580272639533682629
+      Goblin Fighter_r3_2: -7976036383678229518
+      Goblin Fighter_r3_3: 8454739525613697206
+      Goblin Fighter_r3_4: 323530613150695406
+      Goblin Fighter_r3_5: 3275081206892898608
+      Goblin Fighter_r3_6: -4655913952268730758
+      Goblin Fighter_r3_7: -4804310927109498385
+      Goblin Fighter_r4_0: -36219755181582136
+      Goblin Fighter_r4_1: 3796712860186976556
+      Goblin Fighter_r4_2: 1779025865507588422
+      Goblin Fighter_r4_3: -6073591295846880961
+      Goblin Fighter_r4_4: -6897887273381730153
+      Goblin Fighter_r4_5: 8871689017114447800
+      Goblin Fighter_r4_6: -4994558739679720015
+      Goblin Fighter_r4_7: 5597705551180417625
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

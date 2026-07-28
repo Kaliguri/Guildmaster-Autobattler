@@ -1,17 +1,12 @@
 ---
 name: xgaida-x-nixi-uitk
 description: >-
-  Рабочий контур для UI Toolkit (UITK) в проекте Guildmaster — рантайм-экраны на
-  UXML/USS, дизайн-система токенов, компоненты, MVVM и UI-тесты. Используй ВСЕГДА,
-  когда задача касается интерфейса: UXML, USS, UI Toolkit, UITK, экраны (Screens),
-  стили, токены, тема, VisualElement, custom control, PanelSettings, слайдеры/кнопки/
-  панели, дизайн-система, или когда правишь что-либо под Assets/_Project/UI и
-  Assets/_Project/Scripts/UI. Срабатывай, даже если слова «UI Toolkit» нет, но по
-  сути строится или правится игровой интерфейс. Не применять к боевому uGUI-HUD
-  (Image.Filled и т.п.) и к inspector-логике вне UITK. Инженерную тех-доку об
-  UI-слое (docs/wiki/tech) ведёт tech-scribe.
+  UI Toolkit в Guildmaster: рантайм-экраны на UXML/USS, дизайн-система токенов, компоненты,
+  MVVM и UI-тесты. Зови на любую работу с интерфейсом — экраны, стили, токены, custom controls,
+  PanelSettings — и на всё под Assets/_Project/UI и Scripts/UI, даже если слова «UI Toolkit» в
+  задаче нет. НЕ применять к: боевому uGUI-HUD (Image.Filled и родня), inspector-логике вне
+  UITK, тех-доке об UI-слое (tech-scribe).
 ---
-
 # UI Toolkit — рабочий контур Guildmaster
 
 Этот скилл — процедура, а не справка. Он превращает разрозненные правила в чеклист,

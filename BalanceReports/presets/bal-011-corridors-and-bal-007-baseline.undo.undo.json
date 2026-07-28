@@ -1,0 +1,92 @@
+{
+  "title": "ОТКАТ: ОТКАТ: Вердикты Макса 28.07: коридоры (BAL-011), эталон (BAL-007), Друид (BAL-001)",
+  "edits": [
+    {
+      "op": "setValue",
+      "asset": "ClassBalanceConfig",
+      "path": "_profiles.Array.data[1].DpsMult",
+      "value": 0.0
+    },
+    {
+      "op": "setValue",
+      "asset": "ClassBalanceConfig",
+      "path": "_profiles.Array.data[3].DpsMult",
+      "value": 0.0
+    },
+    {
+      "op": "setValue",
+      "asset": "ClassBalanceConfig",
+      "path": "_profiles.Array.data[4].DpsMult",
+      "value": 0.0
+    },
+    {
+      "op": "setValue",
+      "asset": "ClassBalanceConfig",
+      "path": "_profiles.Array.data[5].DpsMult",
+      "value": 0.0
+    },
+    {
+      "op": "setStat",
+      "asset": "BaseRelic",
+      "stat": "MaxHP",
+      "modOp": "Override",
+      "value": 2000.0
+    },
+    {
+      "op": "setStat",
+      "asset": "BaseRelic",
+      "stat": "AutoAttackDamage",
+      "modOp": "Override",
+      "value": 110.0
+    },
+    {
+      "op": "setStat",
+      "asset": "Druid",
+      "stat": "AttackSpeed",
+      "modOp": "Override",
+      "value": 0.0
+    },
+    {
+      "op": "setValue",
+      "asset": "SporeCloud",
+      "path": "_components.Array.data[0]._damagePerSecond.Base",
+      "value": 42.0
+    },
+    {
+      "op": "setValue",
+      "asset": "Druid",
+      "path": "_abilities.Array.data[0]._damageMultiplier",
+      "value": 0.0
+    },
+    {
+      "op": "setValue",
+      "asset": "Druid",
+      "path": "_abilities.Array.data[0]._consumesTriggerTag",
+      "value": 0.0
+    },
+    {
+      "op": "setValue",
+      "asset": "Druid",
+      "path": "_abilities.Array.data[0]._castConditionCount",
+      "value": 1.0
+    },
+    {
+      "op": "setValue",
+      "asset": "Druid",
+      "path": "_abilities.Array.data[0]._areaRadius",
+      "value": 0.0
+    },
+    {
+      "op": "setValue",
+      "asset": "Druid",
+      "path": "_ai._autoAttackTargeting",
+      "value": 8.0
+    },
+    {
+      "op": "setValue",
+      "asset": "Druid",
+      "path": "_ai._targetTag",
+      "value": 2048.0
+    }
+  ]
+}

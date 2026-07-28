@@ -49,14 +49,27 @@ namespace Guildmaster.Game.Flow
         /// висящие await'ы петли (выбор узла/«Продолжить»/исход боя). default = без отмены (dev/тесты).</summary>
         public CancellationToken   Cancellation { get; }
 
+        /// <summary>
+        /// Токен ЖИЗНИ УЗЛА: взводится петлей акта на входе в узел и снимается только когда игрок вошёл
+        /// в СЛЕДУЮЩИЙ (QA #49). Нужен экранам, которые обязаны пережить собственный флоу: текст-результат
+        /// ивента остаётся на экране всю передышку, а не гаснет по клику. Всегда «не длиннее» забега
+        /// (linked); default = <see cref="Cancellation"/> для dev-разрезов без петли.
+        /// </summary>
+        public CancellationToken   NodeCancellation { get; }
+
         public RunContext(RunState runState, IRngService rng, IReadyGate readyGate, IPlayerIntentSource intents,
-                          CancellationToken cancellation = default)
+                          CancellationToken cancellation = default, CancellationToken? nodeCancellation = null)
         {
-            RunState     = runState;
-            Rng          = rng;
-            ReadyGate    = readyGate;
-            Intents      = intents;
-            Cancellation = cancellation;
+            RunState         = runState;
+            Rng              = rng;
+            ReadyGate        = readyGate;
+            Intents          = intents;
+            Cancellation     = cancellation;
+            NodeCancellation = nodeCancellation ?? cancellation;
         }
+
+        /// <summary>Тот же контекст с собственным временем жизни узла — то, что петля даёт исполняемому флоу.</summary>
+        public RunContext ForNode(CancellationToken nodeCancellation) =>
+            new RunContext(RunState, Rng, ReadyGate, Intents, Cancellation, nodeCancellation);
     }
 }

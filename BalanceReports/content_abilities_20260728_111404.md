@@ -1,0 +1,16 @@
+﻿# Способности китов
+_Сгенерировано 2026-07-28 11:14 — SimBench_
+
+Разбор способностей: по строке на способность. Cooldown — базовый кулдаун в секундах, Cost — стоимость ресурса, DmgMult — множитель урона от авто-атаки, Radius — радиус области (0 = одиночная цель), Heal — плоское лечение или процент недостающего HP. Effects — что способность накладывает, с описаниями из той же таблицы, что видит игрок.
+
+| Relic | Ability | Cooldown | Cost | DmgMult | Target | Radius | Heal | Effects | EffectDesc |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Cryomancer | ice_chains | 8 | 40 | 0 | AllEnemiesWithTag | 0 | 0 | Ледяные оковы |  |
+| Defender | resolute_strike | 10 | 50 | 0 | NearestEnemy | 0 | 0 | Решительный удар: оглушение · Решительный удар: ослабление |  |
+| Druid | spore_burst | 11 | 0 | 0 | AllEnemiesWithTag | 1.5 | 0 |  |  |
+| FlameSwordsman | ignition | 10 | 50 | 0 | NearestEnemy | 0 | 0 | Воспламенение |  |
+| IronSpearman | steel_whirl | 9 | 45 | 3 | Self | 2.5 | 0 |  |  |
+| LightShepherd | hand_of_life | 6 | 30 | 0 | LowestHpAlly | 0 | 100 |  |  |
+| Ranger | hunters_mark | 6 | 30 | 0 | NearestEnemy | 0 | 0 | Метка охотника |  |
+| Treant | overgrowth | 12 | 0 | 0 | Self | 0 | 0 | Разрастание |  |
+| WhirlMonk | whirl_push | 7 | 35 | 0 | NearestEnemy | 0 | 0 | Захват вихря |  |

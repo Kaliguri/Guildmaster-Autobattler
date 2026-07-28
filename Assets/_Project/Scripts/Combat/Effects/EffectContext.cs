@@ -28,13 +28,22 @@ namespace Guildmaster.Combat.Effects
         /// <summary>Шаг времени, сек. Для периодики применяемое = <see cref="Potency"/> × Interval.</summary>
         public readonly float Dt;
 
+        /// <summary>
+        /// Доля этого прохода в тике периодики (0..1). Эффект живёт одним экземпляром на цели, но
+        /// поддерживать его могут несколько юнитов — тогда тик прогоняется по вкладчикам, и каждый
+        /// получает свою долю урона на СВОЙ счёт (реш. Макса 2026-07-26). Один вкладчик — доля 1,
+        /// то есть поведение ровно прежнее.
+        /// </summary>
+        public readonly float Share;
+
         public EffectContext(
             RuntimeUnit target,
             RuntimeUnit source,
             ICombatContext combat,
             RuntimeEffect effect,
             float potency,
-            float dt)
+            float dt,
+            float share = 1f)
         {
             Target  = target;
             Source  = source;
@@ -42,6 +51,7 @@ namespace Guildmaster.Combat.Effects
             Effect  = effect;
             Potency = potency;
             Dt      = dt;
+            Share   = share;
         }
 
         /// <summary>Детерминированный RNG боя (через шов).</summary>

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Guildmaster.Combat;
@@ -26,6 +26,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             int maxStacks = 1,
             int cleanseTier = 0,
             bool unremovable = false,
+            int cleanseStacksFlat = 0,
+            float cleanseStacksPct = 0f,
             params IEffectComponent[] components)
         {
             var data = ScriptableObject.CreateInstance<EffectData>();
@@ -37,6 +39,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(data, "_maxStacks", maxStacks);
             Set(data, "_cleanseTier", cleanseTier);
             Set(data, "_unremovable", unremovable);
+            // Цена очистки лестницей: одна и та же пара на все три ступени, если тест не задаёт иного.
+            var price = new EffectData.CleansePrice { Flat = cleanseStacksFlat, Pct = cleanseStacksPct };
+            Set(data, "_cleansePrice", new[] { price, price, price });
             Set(data, "_components", components ?? Array.Empty<IEffectComponent>());
             return data;
         }
@@ -120,9 +125,11 @@ namespace Guildmaster.Tests.EditMode.Combat
             bool canAttackWhileMoving = false,
             float movingAttackSpeedPenaltyPct = 0.5f,
             DamageAffinity affinity = DamageAffinity.None,
-            CreatureType creatureType = CreatureType.Living)
+            CreatureType creatureType = CreatureType.Living,
+            UnitClass combatClass = UnitClass.Bruiser)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
+            Set(r, "_combatClass", combatClass);
             Set(r, "_affinity", affinity);
             Set(r, "_creatureType", creatureType);
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
@@ -205,6 +212,9 @@ namespace Guildmaster.Tests.EditMode.Combat
         public float TotalRawDamage;
         public float TotalHealed;
 
+        /// <summary>Каждый вызов <see cref="Heal"/> — кому и сколько (для проверки адресата лечения).</summary>
+        public readonly List<(RuntimeUnit Target, float Amount)> Heals = new List<(RuntimeUnit, float)>();
+
         /// <summary>Юниты, которые вернёт <see cref="QueryUnitsInRadius"/> (фильтр по команде применяется). Пусто = запрос пустой.</summary>
         public readonly List<RuntimeUnit> UnitsInWorld = new List<RuntimeUnit>();
 
@@ -220,7 +230,11 @@ namespace Guildmaster.Tests.EditMode.Combat
             TotalRawDamage += req.RawDamage;
         }
 
-        public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) => TotalHealed += amount;
+        public void Heal(RuntimeUnit target, float amount, RuntimeUnit source)
+        {
+            TotalHealed += amount;
+            Heals.Add((target, amount));
+        }
         public void SpawnProjectile(in ProjectileSpawn spawn) { }
 
         public int QueryUnitsInRadius(
@@ -251,6 +265,10 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         public void Dispel(in DispelRequest req) => _effects?.Dispel(in req, this);
         public void Displace(in DisplaceRequest req) { }
+
+        // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
+        public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
+            => CombatPositioning.TeleportBehind(unit, target);
 
         public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
         public void NotifyAttackInterrupted(RuntimeUnit unit) { }

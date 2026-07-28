@@ -9,8 +9,10 @@ namespace Guildmaster.Combat
 {
     /// <summary>
     /// Единственная точка сборки <see cref="RuntimeUnit"/> из SO-данных.
-    /// Шаги сборки (вики «10» §5.2, «6» §3): дефолты из <see cref="StatsConfig"/> → моды реликвии
-    /// → перки сосуда → пассивки (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
+    /// Шаги сборки (вики «10» §5.2, «6» §3): дефолты из <see cref="StatsConfig"/> → классовая база
+    /// (<see cref="ClassBalanceConfig"/>) → видовые скейлы врага (<see cref="SpeciesData"/>) → моды
+    /// реликвии → перки сосуда → пассивки
+    /// (<see cref="RelicData.GrantedEffects"/> с постоянной длительностью)
     /// → активки (<see cref="AbilityRuntime"/>) → ресурс (<see cref="StatType.StartResource"/>)
     /// → <c>CurrentHP = Get(MaxHP)</c>.
     /// </summary>
@@ -22,15 +24,24 @@ namespace Guildmaster.Combat
     public sealed class RuntimeUnitFactory
     {
         private readonly StatsConfig   _config;
+        private readonly ClassBalanceConfig _classBalance;
         private readonly EffectSystem  _effects;
         private readonly ICombatContext _combat;
         private int _nextId;
 
-        public RuntimeUnitFactory(StatsConfig config, EffectSystem effects, ICombatContext combat)
+        /// <summary>Сколько юнитов уже создано на каждую команду — источник фазы стаггера AI.</summary>
+        private readonly int[] _perTeamCount = new int[MaxTeams];
+
+        /// <summary>Потолок команд боя: кооп до 4 игроков + сторона врага.</summary>
+        private const int MaxTeams = 8;
+
+        public RuntimeUnitFactory(StatsConfig config, ClassBalanceConfig classBalance,
+                                  EffectSystem effects, ICombatContext combat)
         {
-            _config  = config;
-            _effects = effects;
-            _combat  = combat;
+            _config       = config;
+            _classBalance = classBalance;
+            _effects      = effects;
+            _combat       = combat;
         }
 
         /// <summary>
@@ -39,7 +50,11 @@ namespace Guildmaster.Combat
         /// на один ключ, вид одного осиротевает (стоит на месте, HP-бар не реагирует). Раньше это лечил
         /// релоад сцены (новый скоуп → новая фабрика); теперь чистим явно.
         /// </summary>
-        public void ResetIds() => _nextId = 0;
+        public void ResetIds()
+        {
+            _nextId = 0;
+            System.Array.Clear(_perTeamCount, 0, _perTeamCount.Length);
+        }
 
         /// <summary>
         /// Создать <see cref="RuntimeUnit"/> из SO-данных. Принимает базовый <see cref="UnitData"/> —
@@ -59,13 +74,21 @@ namespace Guildmaster.Combat
         {
             var stats = new Stats(_config);
 
+            // Классовая база (2-й уровень каскада) — ПЕРВОЙ группой, до персоны: «последний Override
+            // побеждает» даёт каскад Класс → Персона → Vessel, дельты персоны копятся поверх.
+            ClassBaseline.Apply(stats, data, _classBalance);
+
+            // Видовые/подвидовые скейлы врага (уровни 3–4) — после класса, до персоны (перемножаются поверх базы).
+            EnemyScalers.Apply(stats, data);
+
             if (data?.Stats != null && data.Stats.Length > 0)
                 stats.AddModifiersFrom(data, data.Stats);
 
-            if (vessel?.PerkModifiers != null && vessel.PerkModifiers.Length > 0)
-                stats.AddModifiersFrom(vessel, vessel.PerkModifiers);
+            // Судьба авторского «Сосуда» (у процедурных её нет — они приходят без ассета).
+            if (vessel?.FateModifiers != null && vessel.FateModifiers.Length > 0)
+                stats.AddModifiersFrom(vessel, vessel.FateModifiers);
 
-            // Предметы/баннеры: статовые моды (источник — сам предмет) до HP-init, наравне с перками сосуда.
+            // Предметы/баннеры: статовые моды (источник — сам предмет) до HP-init, наравне с Судьбой сосуда.
             if (items != null)
                 for (int i = 0; i < items.Count; i++)
                 {
@@ -75,6 +98,13 @@ namespace Guildmaster.Combat
                 }
 
             int id = _nextId++;
+
+            // Фаза стаггера считается от порядкового номера ВНУТРИ КОМАНДЫ, а не от сквозного Id.
+            // Сквозной давал командам разные фазы (первая заспавненная думала раньше), и в равном бою
+            // это решало исход за бойцов: зеркальный отряд заканчивал со счётом 59.7% против нуля.
+            // Внутри команды фазы по-прежнему разные — нагрузка размазана, как и задумано.
+            int teamIndex = team >= 0 && team < _perTeamCount.Length ? _perTeamCount[team]++ : id;
+
             var unit = new RuntimeUnit
             {
                 Id               = id,
@@ -86,14 +116,19 @@ namespace Guildmaster.Combat
                 PreviousPosition = spawnPosition,
                 Unit             = data,
                 Vessel           = vessel,
-                // AI (Фаза 3): мозг из профиля кита + фаза стаггера по Id (вики «13» §2.7, §4.1).
+                // AI (Фаза 3): мозг из профиля кита + фаза стаггера по месту в команде (вики «13» §2.7, §4.1).
                 Brain            = new ProfileBrain(data?.Ai),
-                BrainPhase       = id % SimConstants.AiTickInterval,
+                BrainPhase       = teamIndex % SimConstants.AiTickInterval,
             };
 
             RegisterPassives(unit, data);
             RegisterItemPassives(unit, items);
             RegisterAbilities(unit, data);
+
+            // Пассивки правят статы по закону видимости — отложенно, до конца боевого тика. Здесь тика нет
+            // и ждать нечего: юнит должен родиться с уже действующими пассивками, поэтому проявляем их сразу.
+            // Без этого он выходит на арену с недобранным MaxHP (и, значит, с неполным стартовым HP).
+            EffectSystem.CommitPending(unit);
 
             // CurrentHP — после пассивок: они могли поднять MaxHP, юнит должен стартовать с полным.
             unit.CurrentHP = stats.Get(StatType.MaxHP);

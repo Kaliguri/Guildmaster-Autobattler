@@ -12,10 +12,9 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class DamagePipelineTests
     {
-        private const float ArmorK    = 100f;
         private const float ArmorFull = 100f; // броня 100 → −50% урона
 
-        private static RuntimeUnit MakeUnit(int team = 0, float maxHp = 1000f, float armorK = ArmorK)
+        private static RuntimeUnit MakeUnit(int team = 0, float maxHp = 1000f, float armorK = CombatTestValues.ArmorK)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("base", new[]
@@ -31,14 +30,14 @@ namespace Guildmaster.Tests.EditMode.Combat
             };
         }
 
-        private static RuntimeUnit MakeUnitWithArmor(float physArmor = 0f, float elementalArmor = 0f, float maxHp = 1000f)
+        private static RuntimeUnit MakeUnitWithArmor(float physArmor = 0f, float magicArmor = 0f, float maxHp = 1000f)
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("base", new[]
             {
                 new StatModifier(StatType.MaxHP,      ModifierOp.Flat, maxHp),
                 new StatModifier(StatType.PhysArmor,  ModifierOp.Flat, physArmor),
-                new StatModifier(StatType.ElementalArmor, ModifierOp.Flat, elementalArmor),
+                new StatModifier(StatType.MagicArmor, ModifierOp.Flat, magicArmor),
             });
             return new RuntimeUnit { Team = 1, Stats = stats, CurrentHP = maxHp };
         }
@@ -48,8 +47,37 @@ namespace Guildmaster.Tests.EditMode.Combat
             RuntimeUnit target,
             float raw,
             DamageSchool type = DamageSchool.Physical,
-            float armorK = ArmorK)
+            float armorK = CombatTestValues.ArmorK)
             => new DamageRequest(source, target, raw, type, armorK);
+
+        /// <summary>
+        /// Весь путь урона: расчёт пайплайном + применение реестром. Пайплайн сам щит и HP больше не
+        /// трогает (он чист и считается заранее), поэтому тест проходит обе половины — иначе он проверял
+        /// бы формулу, но не то, что она доходит до бойца.
+        /// </summary>
+        private static DamageResult Execute(in DamageRequest req)
+        {
+            var ledger = new TickLedger();
+            float dealt = DamagePipeline.Resolve(in req, out float mitigated);
+            ledger.AddDamage(req.Target, dealt, mitigated, in req);
+
+            var sink = new CapturingSink();
+            ledger.Commit(sink);
+            return sink.Damage;
+        }
+
+        /// <summary>Ловушка исходов реестра: тесту нужен результат, а не события наружу.</summary>
+        private sealed class CapturingSink : ITickLedgerSink
+        {
+            public DamageResult Damage;
+            public float Healed;
+
+            public void OnDamageResolved(RuntimeUnit source, RuntimeUnit target, in DamageResult result)
+                => Damage = result;
+
+            public void OnHealResolved(RuntimeUnit source, RuntimeUnit target, float applied)
+                => Healed += applied;
+        }
 
         // --- True damage ---
 
@@ -60,7 +88,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull);
             float hpBefore = tgt.CurrentHP;
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
 
             Assert.AreEqual(100f, result.TotalDamage, 0.01f, "True damage не уменьшается броней");
             Assert.AreEqual(hpBefore - 100f, tgt.CurrentHP, 0.01f);
@@ -75,7 +103,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = MakeUnit();
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Physical));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Physical));
 
             Assert.AreEqual(50f, result.TotalDamage, 0.01f);
         }
@@ -93,7 +121,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f };
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Physical));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Physical));
 
             Assert.AreEqual(100f, result.TotalDamage, 0.01f, "Полное пробивание → 0 брони");
         }
@@ -111,9 +139,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f };
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Physical));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Physical));
 
-            float expectedMult = ArmorK / (ArmorK + 50f);
+            float expectedMult = CombatTestValues.ArmorK / (CombatTestValues.ArmorK + 50f);
             Assert.AreEqual(100f * expectedMult, result.TotalDamage, 0.01f);
         }
 
@@ -130,7 +158,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f };
             var tgt = MakeUnitWithArmor(physArmor: 10f);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Physical));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Physical));
             Assert.AreEqual(100f, result.TotalDamage, 0.01f);
         }
 
@@ -149,7 +177,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             // base=1, PercentMult 0.5 → 1*(1+0.5)=1.5
             var tgt = new RuntimeUnit { Team = 1, Stats = stats, CurrentHP = 1000f };
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
             Assert.AreEqual(150f, result.TotalDamage, 0.01f);
         }
 
@@ -162,7 +190,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var tgt = MakeUnitWithArmor(maxHp: 1000f);
             tgt.CurrentShield = 40f;
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
 
             Assert.AreEqual(40f,  result.ShieldDamage, 0.01f);
             Assert.AreEqual(60f,  result.HpDamage,     0.01f);
@@ -177,7 +205,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var tgt = MakeUnitWithArmor(maxHp: 1000f);
             tgt.CurrentShield = 200f;
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
 
             Assert.AreEqual(100f,  result.ShieldDamage, 0.01f);
             Assert.AreEqual(0f,    result.HpDamage,     0.01f);
@@ -192,7 +220,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = MakeUnit();
             var tgt = MakeUnitWithArmor(maxHp: 100f);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
 
             Assert.IsTrue(result.KilledTarget);
             Assert.LessOrEqual(tgt.CurrentHP, 0f);
@@ -204,7 +232,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var src = MakeUnit();
             var tgt = MakeUnitWithArmor(maxHp: 200f);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.True));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.True));
 
             Assert.IsFalse(result.KilledTarget);
             Assert.Greater(tgt.CurrentHP, 0f);
@@ -213,29 +241,29 @@ namespace Guildmaster.Tests.EditMode.Combat
         // --- Школа: стихийная броня (ГДД «8»: Огонь/Лёд/Молния под ОДНОЙ бронёй) ---
 
         [Test]
-        public void ElementalDamage_MitigatedByElementalArmor_NotPhysArmor()
+        public void MagicalDamage_MitigatedByMagicArmor_NotPhysArmor()
         {
             var src = MakeUnit();
-            var tgt = MakeUnitWithArmor(physArmor: ArmorFull, elementalArmor: 0f);
+            var tgt = MakeUnitWithArmor(physArmor: ArmorFull, magicArmor: 0f);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Elemental));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Magical));
 
             // Физ. броня не гасит стихию — урон проходит полностью.
             Assert.AreEqual(100f, result.HpDamage, 0.01f);
         }
 
         [Test]
-        public void ElementalDamage_ElementalArmorHalfsMitigation()
+        public void MagicalDamage_MagicArmorHalfsMitigation()
         {
             var src = MakeUnit();
-            var tgt = MakeUnitWithArmor(elementalArmor: ArmorFull);
+            var tgt = MakeUnitWithArmor(magicArmor: ArmorFull);
 
-            var result = DamagePipeline.Execute(Req(src, tgt, 100f, DamageSchool.Elemental));
+            var result = Execute(Req(src, tgt, 100f, DamageSchool.Magical));
 
             Assert.AreEqual(50f, result.HpDamage, 0.01f);
         }
 
-        // --- Сродство × тип существа (ГДД «8» §«Школа vs сродство») ---
+        // --- Сродство: идентичность, а не множитель ---
 
         private static RuntimeUnit MakeCreature(CreatureType type, float maxHp = 1000f)
         {
@@ -246,83 +274,35 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static DamageRequest AffinityReq(RuntimeUnit src, RuntimeUnit tgt, float raw,
             DamageAffinity affinity, DamageSchool school = DamageSchool.Physical)
-            => new DamageRequest(src, tgt, raw, school, ArmorK, sourceKind: DamageSourceKind.Ability, affinity: affinity);
+            => new DamageRequest(src, tgt, raw, school, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.Ability, affinity: affinity);
 
         [Test]
-        public void Poison_ImmuneAgainstUndeadAndConstruct()
+        public void Affinity_NeverScalesDamage_ByCreatureType()
         {
+            // Guard против возврата матрицы «сродство × тип существа» (снята 2026-07-26, решение
+            // 2026-07-15/35). Сродство несёт идентичность ГЛАГОЛОМ — яд травит, свет лечит частью
+            // урона, тьма бьёт мощью, — и обязано работать против любого врага одинаково. Прежняя
+            // таблица тихо давала Тьме +30% почти всегда, потому что весь ростер Living.
             var src = MakeUnit();
+            var affinities = new[]
+            {
+                DamageAffinity.None, DamageAffinity.Poison, DamageAffinity.Light, DamageAffinity.Dark,
+            };
+            var types = new[]
+            {
+                CreatureType.Living, CreatureType.Undead, CreatureType.Construct,
+                CreatureType.Demon, CreatureType.Beast,
+            };
 
-            var undead = MakeCreature(CreatureType.Undead);
-            var construct = MakeCreature(CreatureType.Construct);
+            foreach (DamageAffinity affinity in affinities)
+            foreach (CreatureType type in types)
+            {
+                var target = MakeCreature(type);
+                var result = Execute(AffinityReq(src, target, 100f, affinity, DamageSchool.True));
 
-            Assert.AreEqual(0f, DamagePipeline.Execute(AffinityReq(src, undead, 100f, DamageAffinity.Poison)).HpDamage, 0.01f);
-            Assert.AreEqual(0f, DamagePipeline.Execute(AffinityReq(src, construct, 100f, DamageAffinity.Poison)).HpDamage, 0.01f);
-        }
-
-        [Test]
-        public void Poison_NeutralAgainstLivingAndBeast()
-        {
-            var src = MakeUnit();
-
-            var living = MakeCreature(CreatureType.Living);
-            var beast = MakeCreature(CreatureType.Beast);
-
-            Assert.AreEqual(100f, DamagePipeline.Execute(AffinityReq(src, living, 100f, DamageAffinity.Poison)).HpDamage, 0.01f);
-            Assert.AreEqual(100f, DamagePipeline.Execute(AffinityReq(src, beast, 100f, DamageAffinity.Poison)).HpDamage, 0.01f);
-        }
-
-        [Test]
-        public void Light_VulnerableAgainstUndeadAndDemon()
-        {
-            var src = MakeUnit();
-
-            var undead = MakeCreature(CreatureType.Undead);
-            var demon = MakeCreature(CreatureType.Demon);
-            var living = MakeCreature(CreatureType.Living);
-
-            float expected = 100f * AffinityTable.VulnerableMult;
-            Assert.AreEqual(expected, DamagePipeline.Execute(AffinityReq(src, undead, 100f, DamageAffinity.Light)).HpDamage, 0.01f);
-            Assert.AreEqual(expected, DamagePipeline.Execute(AffinityReq(src, demon, 100f, DamageAffinity.Light)).HpDamage, 0.01f);
-            Assert.AreEqual(100f, DamagePipeline.Execute(AffinityReq(src, living, 100f, DamageAffinity.Light)).HpDamage, 0.01f);
-        }
-
-        [Test]
-        public void Dark_VulnerableAgainstLiving()
-        {
-            var src = MakeUnit();
-
-            var living = MakeCreature(CreatureType.Living);
-            var undead = MakeCreature(CreatureType.Undead);
-
-            Assert.AreEqual(100f * AffinityTable.VulnerableMult,
-                DamagePipeline.Execute(AffinityReq(src, living, 100f, DamageAffinity.Dark)).HpDamage, 0.01f);
-            Assert.AreEqual(100f, DamagePipeline.Execute(AffinityReq(src, undead, 100f, DamageAffinity.Dark)).HpDamage, 0.01f);
-        }
-
-        [Test]
-        public void Affinity_AppliesOnTopOfTrueDamage_AndIsNotMitigatedByArmor()
-        {
-            var src = MakeUnit();
-
-            // Цель с полной физ. бронёй: True идёт мимо брони, сродство Тьмы всё равно множит.
-            var living = MakeCreature(CreatureType.Living);
-            living.Stats.AddModifiersFrom("armor", new[] { new StatModifier(StatType.PhysArmor, ModifierOp.Flat, ArmorFull) });
-
-            var result = DamagePipeline.Execute(AffinityReq(src, living, 100f, DamageAffinity.Dark, DamageSchool.True));
-
-            Assert.AreEqual(100f * AffinityTable.VulnerableMult, result.HpDamage, 0.01f);
-        }
-
-        [Test]
-        public void Affinity_None_LeavesDamageUnchanged()
-        {
-            var src = MakeUnit();
-            var undead = MakeCreature(CreatureType.Undead);
-
-            var result = DamagePipeline.Execute(AffinityReq(src, undead, 100f, DamageAffinity.None, DamageSchool.True));
-
-            Assert.AreEqual(100f, result.HpDamage, 0.01f);
+                Assert.AreEqual(100f, result.HpDamage, 0.01f,
+                    $"Сродство {affinity} изменило урон по цели {type} — матрица вернулась.");
+            }
         }
     }
 }

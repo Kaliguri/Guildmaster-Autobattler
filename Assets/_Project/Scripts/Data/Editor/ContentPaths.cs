@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Descriptions;
 using UnityEditor;
 
 namespace Guildmaster.Data.Editor
@@ -14,29 +15,45 @@ namespace Guildmaster.Data.Editor
     {
         public const string Root = "Assets/_Project/ScriptableObjects";
 
-        private static readonly Dictionary<Type, string> Folders = new Dictionary<Type, string>
+        // ДОМЕН → папка, а не тип → папка. Список самих типов живёт в ContentDomains и только там: пока
+        // здесь был свой реестр, он отстал на четыре типа — Species, Encounter, BattlePreset и TextEvent
+        // уезжали в Misc, а меню создания предлагало ровно те типы, что помечены к удалению, и прятало
+        // живые (аудит 2026-07-26, T-24).
+        private static readonly Dictionary<string, string> FoldersByDomain = new Dictionary<string, string>
         {
-            { typeof(RelicData),       "Relics"       },
-            { typeof(EnemyData),       "Enemies"      },
-            { typeof(VesselData),      "Vessels"      },
-            { typeof(EffectData),      "Effects"      },
-            { typeof(TagData),         "Tags"         },
-            { typeof(TraitData),       "Traits"       },
-            { typeof(ConsequenceData), "Consequences" },
-            { typeof(AIPresetData),    "AiPresets"    },
-            { typeof(GuildmasterData), "Guildmasters" },
-            { typeof(ItemData),        "Items"        },
-            { typeof(RunModifierData), "RunModifiers" },
+            { "relic",         "Relics"        },
+            { "enemy",         "Enemies"       },
+            { "species",       "Species"       },
+            { "vessel",        "Vessels"       },
+            { "effect",        "Effects"       },
+            { "vfx",           "Vfx"           },
+            { "tag",           "Tags"          },
+            { KeywordMarkup.Domain, "Keywords" },
+            { "trait",         "Traits"        },
+            { "consequence",   "Consequences"  },
+            { "ai_preset",     "AiPresets"     },
+            { "guildmaster",   "Guildmasters"  },
+            { "item",          "Items"         },
+            { "run_mod",       "RunModifiers"  },
+            { "encounter",     "Encounters"    },
+            { "battle_preset", "BattlePresets" },
+            { "event",         "Events"        },
         };
 
-        /// <summary>Все типы контента, которые менеджер умеет создавать (в порядке объявления).</summary>
-        public static IEnumerable<Type> CreatableTypes => Folders.Keys;
+        /// <summary>Все типы контента, которые менеджер умеет создавать — из реестра доменов.</summary>
+        public static IEnumerable<Type> CreatableTypes => ContentDomains.RegisteredTypes;
 
-        /// <summary>Полный путь целевой папки для типа (создаётся при необходимости).</summary>
+        /// <summary>
+        /// Полный путь целевой папки для типа (создаётся при необходимости). Тип без домена или домен без
+        /// папки — это незаполненный реестр, а не повод молча создать ассет в стороне, поэтому Misc остаётся
+        /// видимым исходом, но домен для него уже обязан существовать.
+        /// </summary>
         public static string FolderFor(Type type)
         {
-            for (Type t = type; t != null && t != typeof(object); t = t.BaseType)
-                if (Folders.TryGetValue(t, out string folder)) return $"{Root}/{folder}";
+            if (ContentDomains.TryGetDomain(type, out string domain)
+                && FoldersByDomain.TryGetValue(domain, out string folder))
+                return $"{Root}/{folder}";
+
             return $"{Root}/Misc";
         }
 

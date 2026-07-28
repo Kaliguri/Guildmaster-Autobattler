@@ -25,31 +25,36 @@ namespace Guildmaster.Game.Flow
     public sealed class NodeResolver : INodeResolver
     {
         private readonly IContentDatabase   _content;
-        private readonly ISceneLoader       _scenes;
         private readonly IBattleSession     _session;
         private readonly ILocalPlayer       _localPlayer;
         private readonly EventEffectApplier _eventEffects;
         private readonly ShopController     _shop;
         private readonly IRewardPresenter   _reward;
         private readonly RunStateService    _runStates;
+        private readonly IContinuePresenter _continue;
         private readonly IPublisher<OpenTextEventRequest> _openEventPub;
         private readonly IPublisher<OpenShopRequest>      _openShopPub;
         private readonly IPublisher<OpenChestRequest>     _openChestPub;
+        private readonly IPublisher<OpenCampRequest>      _openCampPub;
+        private readonly IPublisher<OpenNodeFarewellRequest> _farewellPub; // кадр-прощание узла (QA #48/#49)
 
-        public NodeResolver(IContentDatabase content, ISceneLoader scenes, IBattleSession session,
+        public NodeResolver(IContentDatabase content, IBattleSession session,
                             ILocalPlayer localPlayer, EventEffectApplier eventEffects, ShopController shop,
-                            IRewardPresenter reward, RunStateService runStates,
+                            IRewardPresenter reward, RunStateService runStates, IContinuePresenter continuePresenter,
                             IPublisher<OpenTextEventRequest> openEventPub, IPublisher<OpenShopRequest> openShopPub,
-                            IPublisher<OpenChestRequest> openChestPub)
+                            IPublisher<OpenChestRequest> openChestPub, IPublisher<OpenCampRequest> openCampPub,
+                            IPublisher<OpenNodeFarewellRequest> farewellPub)
         {
+            _openCampPub  = openCampPub;
+            _farewellPub  = farewellPub;
             _content      = content;
-            _scenes       = scenes;
             _session      = session;
             _localPlayer  = localPlayer;
             _eventEffects = eventEffects;
             _shop         = shop;
             _reward       = reward;
             _runStates    = runStates;
+            _continue     = continuePresenter;
             _openEventPub = openEventPub;
             _openShopPub  = openShopPub;
             _openChestPub = openChestPub;
@@ -63,8 +68,14 @@ namespace Guildmaster.Game.Flow
                 case MapNodeType.Elite:
                 case MapNodeType.Boss:
                 {
-                    bool wantElite = node.Type == MapNodeType.Elite;
-                    BattlePresetData preset = PickBattlePreset(node, ctx, wantElite);
+                    // Узел карты просит бой своей сложности; сложность живёт на энкаунтере (см. BattlePresetData.Tier).
+                    EncounterTier wantTier = node.Type switch
+                    {
+                        MapNodeType.Elite => EncounterTier.Elite,
+                        MapNodeType.Boss  => EncounterTier.Finalist,
+                        _                 => EncounterTier.Common,
+                    };
+                    BattlePresetData preset = PickBattlePreset(node, ctx, wantTier);
                     if (preset == null)
                     {
                         Debug.LogWarning($"[NodeResolver] - нет BattlePresetData в контент-БД для '{node.Id}' → заглушка");
@@ -80,14 +91,17 @@ namespace Guildmaster.Game.Flow
                     {
                         ItemData[] party = GuildRoster.ResolveItems(_runStates.Current.PartyItemIds, _content);
                         effective = BattlePresetData.CreateRuntime(
-                            preset.Encounter, guildRoster, DeploymentMode.Free, party, preset.IsElite,
+                            preset.Encounter, guildRoster, DeploymentMode.Free, party,
                             $"battle.run.{node.Id}");
                     }
 
-                    var battle = new BattleFlow(effective, _scenes, _session, _localPlayer,
+                    var battle = new BattleFlow(effective, _session, _localPlayer,
                                                 () => _runStates.TrySpendRestart()); // пул перезапусков акта (C1)
-                    int rewardCount = wantElite ? 2 : 1;   // элитка — два выбора реликвии подряд (B5)
-                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, rewardCount);
+                    int rewardCount = wantTier == EncounterTier.Elite ? 2 : 1;   // элитка — два выбора реликвии подряд (B5)
+                    // Сессия + способ дождаться нового приговора: dev-R после конца боя откатывает узел
+                    // к бою, снимая с него награду и мост к ней.
+                    return new BattleNodeFlow(battle, TierFor(node.Type), _reward, _runStates, _continue, rewardCount,
+                                              session: _session, awaitReplayOutcome: battle.AwaitReplayOutcome);
                 }
 
                 case MapNodeType.TextEvent:
@@ -102,10 +116,13 @@ namespace Guildmaster.Game.Flow
                 }
 
                 case MapNodeType.Shop:
-                    return new ShopFlow(_shop, _openShopPub);
+                    return new ShopFlow(_shop, _openShopPub, _farewellPub);
 
                 case MapNodeType.Chest:
-                    return new ChestFlow(_openChestPub, _reward);
+                    return new ChestFlow(_openChestPub, _reward, _farewellPub);
+
+                case MapNodeType.Camp:
+                    return new CampFlow(_openCampPub, _farewellPub);
 
                 // «?»: тип роллится на входе, делегируем себе же (B4).
                 case MapNodeType.Unknown:
@@ -135,10 +152,11 @@ namespace Guildmaster.Game.Flow
         }
 
         /// <summary>
-        /// Боевой пресет для узла: по payload-id, иначе случайный из пула нужного вида (элитный/обычный). Если
-        /// элит-пресетов ещё нет (ассеты — контент B5), откатываемся на обычные (элитка = обычный бой + награда ×2).
+        /// Боевой пресет для узла: по payload-id, иначе случайный из пула нужной сложности. Сложность берётся
+        /// у энкаунтера пресета (<see cref="BattlePresetData.Tier"/>). Если пресетов такой сложности нет
+        /// (финал акта пока не авторен), откатываемся на случайный — вслух.
         /// </summary>
-        private BattlePresetData PickBattlePreset(MapNode node, RunContext ctx, bool wantElite)
+        private BattlePresetData PickBattlePreset(MapNode node, RunContext ctx, EncounterTier wantTier)
         {
             if (!string.IsNullOrEmpty(node.PayloadId) && _content.TryGet<BattlePresetData>(node.PayloadId, out var byId))
                 return byId;
@@ -148,12 +166,15 @@ namespace Guildmaster.Game.Flow
 
             var pool = new List<BattlePresetData>(all.Count);
             foreach (var p in all)
-                if (p != null && p.IsElite == wantElite) pool.Add(p);
+                if (p != null && p.Tier == wantTier) pool.Add(p);
 
             if (pool.Count == 0)
             {
-                if (wantElite) Debug.LogWarning("[NodeResolver] - нет элит-пресетов → беру обычный бой (награда ×2 остаётся)");
-                return all[ctx.Rng.NextInt(0, all.Count)]; // фолбэк на любой
+                // Говорим в ЛЮБОМ случае: молчащий откат означал бы, что элитный узел или финал акта
+                // подсовывает рядовой бой, и заметить это можно только по ощущению (аудит фолбэков, п.2).
+                Debug.LogWarning($"[NodeResolver] - узел '{node.Type}': нет пресетов сложности " +
+                                 $"'{wantTier}' → беру случайный из всех");
+                return all[ctx.Rng.NextInt(0, all.Count)];
             }
             return pool[ctx.Rng.NextInt(0, pool.Count)];
         }

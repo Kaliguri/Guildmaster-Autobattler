@@ -2,6 +2,7 @@
 title: "Effect - Charm"
 order: 13
 status: draft
+updated: 2026-07-18
 ---
 
 # Очарование (Charm)

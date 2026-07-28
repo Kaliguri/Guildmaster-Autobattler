@@ -2,6 +2,7 @@
 title: "Effect - Sleep"
 order: 21
 status: draft
+updated: 2026-07-18
 ---
 
 # Сон (Sleep)

@@ -3,6 +3,7 @@ using System.Text;
 using Guildmaster.Core.Audio;
 using Guildmaster.Core.Localization;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Descriptions;
 using Guildmaster.Data.Stats;
 using MessagePipe;
 
@@ -20,6 +21,8 @@ namespace Guildmaster.UI
         private readonly ILocalizationService _loc;
         private readonly IAudioService       _audio;
         private readonly IPublisher<EquipRelicRequest> _equipPub;
+        private readonly IUnitStatPreview    _statPreview;
+        private readonly IDescriptionService _descriptions;
 
         private int _unitId = -1;
         private VesselData _vessel;
@@ -31,12 +34,16 @@ namespace Guildmaster.UI
             IContentDatabase content,
             ILocalizationService loc,
             IAudioService audio,
-            IPublisher<EquipRelicRequest> equipPub)
+            IPublisher<EquipRelicRequest> equipPub,
+            IUnitStatPreview statPreview,
+            IDescriptionService descriptions)
         {
-            _content  = content;
-            _loc      = loc;
-            _audio    = audio;
-            _equipPub = equipPub;
+            _content      = content;
+            _loc          = loc;
+            _audio        = audio;
+            _equipPub     = equipPub;
+            _statPreview  = statPreview;
+            _descriptions = descriptions;
         }
 
         /// <summary>Все доступные релики для грида (пока — весь контент; фильтр по владению — Фаза 5).</summary>
@@ -56,8 +63,10 @@ namespace Guildmaster.UI
         {
             if (relic == null) return;
             Selected = relic;
-            // Хук звука выбора: точный ключ «<relicId>.select»; FMOD-событие Макс заводит позже (тишина безопасна).
-            _audio?.Play(relic.Id + ".select");
+            // Ключ канона {contentId}.{action}: «select» действием НЕ является, поэтому старый
+            // «<relicId>.select» не имел фолбэка и всегда молчал. Общий звук выбора реликвии + при
+            // желании точечный «<relicId>.ui» перекроет его в каталоге.
+            _audio?.Play("ui.relic_select.ui");
         }
 
         /// <summary>Применить выбор: публикуем экип (фаза расстановки пересоберёт превью).</summary>
@@ -72,9 +81,28 @@ namespace Guildmaster.UI
         public bool IsCurrent(RelicData r)  => r != null && r == Current;
 
         public string Name(RelicData r) => r != null ? _loc.GetString(r.Id + ".name") : string.Empty;
-        public string Desc(RelicData r) => r != null ? _loc.GetString(r.Id + ".desc") : string.Empty;
 
-        /// <summary>Строка тегов релика (локализованные имена <c>InfoTags</c>).</summary>
+        /// <summary>
+        /// Описание релика через слой описаний, а не напрямую из таблицы: только он разворачивает
+        /// разметку ключевых слов и подставляет числа (§II.10.1) — иначе игрок увидит сырой <c>[kw:…]</c>.
+        /// </summary>
+        public string Desc(RelicData r)
+            => r != null ? (_descriptions?.Describe(r, null) ?? _loc.GetString(r.Id + ".desc")) : string.Empty;
+
+        /// <summary>
+        /// Теги «быстрого чтения» релика для карточки в порядке осей (Role→DamageType→Playstyle→Mechanic):
+        /// авто Role/DamageType из данных + ручные InfoTags. Резолв — <see cref="UnitTagResolver"/>.
+        /// </summary>
+        public IReadOnlyList<TagData> ResolveTags(RelicData r) => UnitTagResolver.Resolve(r, _content);
+
+        /// <summary>
+        /// Базовые статы релика для панели деталей — реальный каскад из боевой сборки через шов
+        /// <see cref="IUnitStatPreview"/> (UI боевую сборку по asmdef не видит).
+        /// </summary>
+        public IReadOnlyList<UnitStatLine> ResolveStats(RelicData r) =>
+            r != null && _statPreview != null ? _statPreview.Basic(r) : System.Array.Empty<UnitStatLine>();
+
+        /// <summary>Строка тегов релика (локализованные имена <c>InfoTags</c>) — легаси-путь старого LoadoutScreen.</summary>
         public string Tags(RelicData r)
         {
             if (r?.InfoTags == null || r.InfoTags.Length == 0) return string.Empty;

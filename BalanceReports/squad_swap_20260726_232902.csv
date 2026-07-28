@@ -1,0 +1,12 @@
+﻿Relic;Role;Replaces;Outcome;TeamHpLeft%;EnemyHpLeft%;Delta;Seconds
+Assassin;Assassin;—;W;59.741;0;59.741;59.567
+Cryomancer;Ranged;Cryomancer;W;59.741;0;59.741;59.567
+Defender;Tank;Defender;W;59.741;0;59.741;59.567
+FlameSwordsman;Bruiser;FlameSwordsman;W;59.741;0;59.741;59.567
+LightShepherd;Support;LightShepherd;W;59.741;0;59.741;59.567
+Treant;Tank;Defender;timeout;53.666;4.699;48.967;240
+Druid;Support;LightShepherd;timeout;4.395;21.002;-16.607;240
+IronSpearman;Bruiser;FlameSwordsman;L;0;53.642;-53.642;68.833
+Ranger;Ranged;Cryomancer;L;0;57.802;-57.802;118.3
+WhirlMonk;Bruiser;FlameSwordsman;L;0;71.992;-71.992;114.233
+BaseRelic;Bruiser;FlameSwordsman;L;0;74.904;-74.904;43.1

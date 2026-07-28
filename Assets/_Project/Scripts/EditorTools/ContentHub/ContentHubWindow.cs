@@ -36,7 +36,7 @@ namespace Guildmaster.ContentHub.Editor
         private readonly Dictionary<Page, Button> _pills = new Dictionary<Page, Button>();
         private readonly Dictionary<string, Button> _domainPills = new Dictionary<string, Button>();
 
-        [MenuItem("Tools/Guildmaster/Content Hub")]
+        [MenuItem("Alebardium/Content Hub", priority = 0)]
         public static void Open()
         {
             var w = GetWindow<ContentHubWindow>();

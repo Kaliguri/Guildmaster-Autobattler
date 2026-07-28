@@ -1,16 +1,19 @@
 ---
 title: "Goblins - Elite - Goblin Shaman"
+order: 100
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Элита
-faction: Гоблины
-subfaction: Основные
+species: Гоблины
+combat_class: РДД
+subspecies: Основные
 position: Вторая линия
 combat_range: Дальний
 attack_delivery:
   - Снаряд
 physical_damage: []
-elemental_damage:
+magical_damage:
   - Огонь
 affinity: []
 encounter_role: Кастуемый AOE
@@ -27,7 +30,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** элита.
-- **Фракция:** гоблины.
+- **Вид:** гоблины.
 - **Позиция:** вторая линия.
 - **Ближний / дальний:** дальний.
 

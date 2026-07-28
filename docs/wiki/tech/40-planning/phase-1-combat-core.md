@@ -2,10 +2,16 @@
 title: "Planning - Phase 1: Combat Core"
 order: 10
 status: archive
-updated: 2026-07-16
+updated: 2026-07-26
 ---
 
 **Статус:** Реализовано (боевое ядро Фазы 1 в коде). Документ — архив исходного плана Фазы 1.
+
+> **Раскладка сцен с тех пор изменилась (2026-07-26).** План описывает связку «persistent `CoreScene` +
+> аддитивная `BattleScene`, которая грузится на бой и выгружается после», и опциональную `BootScene`.
+> В коде сегодня три сцены — `CoreScene`, `WorldScene`, `CombatSystemsScene`, — обе аддитивные грузятся один
+> раз на буте и не выгружаются, а `BootScene` не заведена вовсе. Имена и схемы ниже **намеренно оставлены
+> как след замысла**; актуальное «как есть» — [[tech/10-reference/scenes|Reference - Scenes]].
 
 ---
 
@@ -158,7 +164,7 @@ Core
 public enum StatType
 {
     MaxHP, AutoAttackDamage, AttackSpeed, AttackRange, MoveSpeed,
-    PhysArmor, ElementalArmor, PhysPen, ElementalPen,
+    PhysArmor, MagicArmor, PhysPen, MagicPen,
     DamageDealtEff, DamageTakenEff,   // «эффективности» — старт 1.0, PercentMult
     // … всего 30 (полный канон — док 11); остальные — Фаза 2/4
     // Крита НЕТ (решение залочено, док 11 §1): стат крита не вводим.

@@ -2,10 +2,10 @@
 title: "Explanation - DI & Events"
 order: 10
 status: needs_review
-updated: 2026-07-16
+updated: 2026-07-26
 ---
 
-**Статус:** needs_review — отражает код на 2026-06-19; пример DI-регистрации актуализирован 2026-07-16
+**Статус:** needs_review — отражает код на 2026-06-19; пример DI-регистрации и контракт ссылок скоупа (`ScopeWiring`) актуализированы 2026-07-26
 
 ---
 
@@ -43,7 +43,7 @@ updated: 2026-07-16
 
 ## 1.3 Наши два скоупа
 
-Проект использует **два уровня жизни**, и это сознательное решение, завязанное на структуру сцен (persistent `CoreScene` + аддитивная `BattleScene`):
+Проект использует **три уровня жизни**, и это решение завязано на структуру сцен: стартовая `CoreScene` + две аддитивные persist-сцены, `WorldScene` и `CombatSystemsScene` (карта сцен — [[tech/10-reference/scenes|Scenes]]). Цепочка родителей: `RootLifetimeScope` → `WorldLifetimeScope` → `CombatLifetimeScope`.
 
 ### `RootLifetimeScope` — живёт всю сессию
 
@@ -53,8 +53,8 @@ updated: 2026-07-16
 protected override void Configure(IContainerBuilder builder)
 {
     builder.Register<IRngService>(_ => new XorShiftRng(GenerateRootSeed()), Lifetime.Singleton);
-    builder.Register<UnityAudioService>(Lifetime.Singleton).As<IAudioService>();
-    builder.Register<SceneLoader>(Lifetime.Singleton);
+    builder.Register<FmodAudioService>(Lifetime.Singleton).As<IAudioService>();
+    builder.Register<SceneLoader>(Lifetime.Singleton).As<ISceneLoader>().AsSelf();
     builder.Register<GameFlow>(Lifetime.Singleton);
 
     var options = builder.RegisterMessagePipe();
@@ -62,13 +62,30 @@ protected override void Configure(IContainerBuilder builder)
 }
 ```
 
-Здесь сервисы, которые живут **всю игровую сессию**: сессионный RNG, аудио, загрузчик сцен, макро-флоу, шина сообщений. Они переживают вход/выход из боёв.
+Здесь сервисы, которые живут **всю игровую сессию**: сессионный RNG, аудио, загрузчик сцен, макро-флоу, шина сообщений. Они переживают вход/выход из боёв. (Фрагмент сокращён — реальный `Configure` регистрирует ещё контент, настройки, UI-слой, персистентность и презентеры потока.)
 
-Обрати внимание на `.As<IAudioService>()`: класс регистрируется, но **выдаётся по интерфейсу**. Игровая логика просит `IAudioService`, не зная, что внутри `UnityAudioService` (а завтра — `FmodAudioService`). Это прямое следствие правила «FMOD всегда за интерфейсом» из CLAUDE.md.
+Обрати внимание на `.As<IAudioService>()`: класс регистрируется, но **выдаётся по интерфейсу**. Игровая логика просит `IAudioService`, не зная, что внутри FMOD. Это прямое следствие правила «FMOD всегда за интерфейсом» из CLAUDE.md. Реализация при этом **одна**: заглушка `UnityAudioService` удалена 2026-07-26 — она никогда не регистрировалась, но читалась как «FMOD в билде, Unity Audio без банков», то есть обещала переключатель, которого нет.
 
-### `CombatLifetimeScope` — живёт один бой
+### Ссылки скоупа на ассеты сцены — `ScopeWiring`
 
-`Assets/_Project/Scripts/Game/CombatLifetimeScope.cs` — **дочерний** от Root. Создаётся при входе в `BattleScene`, умирает при выходе. Поэтому всё боевое (RNG боя, системы, симуляция) автоматически уничтожается в конце боя — не надо вручную чистить состояние.
+`Assets/_Project/Scripts/Game/ScopeWiring.cs`. Каждый скоуп получает конфиги полями из сцены, и на незаполненное поле есть ровно два законных ответа:
+
+| Помощник | Когда | Поведение |
+|---|---|---|
+| `ScopeWiring.Require(asset, scope, field)` | без ассета контейнер бессмыслен (`_contentDatabase`, `_gameConfig`, `_statsConfig`, `_classBalanceConfig`, `_simTuningConfig`) | исключение с именем скоупа и поля |
+| `ScopeWiring.Optional(asset, scope, field, consequence)` | подсистема выключается целиком (`_audioCatalog`, `_actConfig`, `_feelConfig`) | пустой инстанс + `LogError` с последствием («звука не будет вообще») |
+
+До этого половина полей молча падала на пустой инстанс, а половина разыменовывалась в лоб и роняла весь `Configure` голым `NullReferenceException` — одна и та же ошибка автора давала то невидимую деградацию, то падение без диагноза. Настоящий гейт стоит раньше рантайма: `SceneWiringTests` открывает каждую сцену билда и требует эти поля заполненными.
+
+### `WorldLifetimeScope` — живёт всю сессию (персистентный мир)
+
+`Assets/_Project/Scripts/Game/WorldLifetimeScope.cs` — **дочерний** от Root, живёт в `WorldScene`. Держит то, что переживает бои и переиспользуется между ними: единую камеру-риг (`CameraModeController`, `CombatFocusTarget`), снапшот арены (`ArenaLayoutData`), world-слой карты акта и стол за меню.
+
+### `CombatLifetimeScope` — боевые системы
+
+`Assets/_Project/Scripts/Game/CombatLifetimeScope.cs` — **дочерний от World** (`parentReference` в сцене), живёт в `CombatSystemsScene`. Держит RNG боя, боевые системы, симуляцию и презентацию.
+
+> **Осторожно, ловушка чтения.** Скоуп называется «боевым», но по одному бою он НЕ пересоздаётся: сцена грузится один раз на буте и не выгружается, а бой начинается командой в живую симуляцию (`IBattleSession.RequestLaunch`). Значит боевое состояние между узлами **не** очищается само собой сносом скоупа — за сброс отвечает `BattleBootstrap.ResetToWorld`. Прежняя модель «скоуп рождается и умирает вместе с боем» снята вместе с legacy-загрузкой сцены (2026-07-26).
 
 ```csharp
 protected override void Configure(IContainerBuilder builder)
@@ -114,7 +131,7 @@ builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped).AsSelf();
 
 ## 1.6 Инъекция в объекты сцены
 
-Презентеры — это `MonoBehaviour` на объектах `BattleScene`, их нельзя «создать» контейнером, они уже в сцене. Для них:
+Презентеры — это `MonoBehaviour` на объектах `CombatSystemsScene`, их нельзя «создать» контейнером, они уже в сцене. Для них:
 ```csharp
 builder.RegisterComponentInHierarchy<CombatPresenter>();
 ```

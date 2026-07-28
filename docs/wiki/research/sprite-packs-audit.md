@@ -510,4 +510,7 @@ updated: 2026-07-19
 - Стили **не смешивать** в одном отряде без единого outline/палитры: LuizMomo рядом с Tiny RPG будет «ломаться».
 - Jump/Fall/Dash у многих паков — платформерный багаж; в автобаттлере можно не использовать.
 - Per-frame паки (viking/skeleton/axe) проще резать в Unity, spritesheet-паки LuizMomo — через Grid by Cell Count (см. agent-workflows).
-- Спрайт-паки под `Pixel Art Heroes/` по git-конвенции пока **не коммитятся** в репо; этот аудит — про локальный пул ассетов.
+- ~~Спрайт-паки под `Pixel Art Heroes/` по git-конвенции пока **не коммитятся** в репо~~ — **неверно, поправлено 2026-07-20:**
+  `git ls-files Assets/_Project/Art/Sprites` даёт 5219 записей, 29 МБ. Пул отслеживается. Из него в игре
+  задействовано 12 листов из двух паков (Medieval Warrior Pack 2, Fantasy Warrior) — см.
+  [[tech/10-reference/asset-inventory|Reference - Asset Inventory]].

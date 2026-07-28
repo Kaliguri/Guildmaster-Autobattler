@@ -1,17 +1,20 @@
 ---
 title: "Beasts - Common - Pack Wolf"
+order: 130
 kind: enemy
 status: draft
+updated: 2026-07-26
 enemy_group: Обычный
-faction: Звери
-subfaction: Волчья стая
+species: Звери
+combat_class: Убийца
+subspecies: Волчья стая
 position: Фланг
 combat_range: Ближний
 attack_delivery:
   - Ближний бой
 physical_damage:
   - Колющий
-elemental_damage: []
+magical_damage: []
 affinity: []
 encounter_role: Стайное давление
 mechanics:
@@ -23,7 +26,7 @@ mechanics:
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный.
-- **Фракция:** звери, волчья стая.
+- **Вид:** звери. **Подвид:** волчья стая.
 - **Позиция:** фланг.
 - **Ближний / дальний:** ближний.
 

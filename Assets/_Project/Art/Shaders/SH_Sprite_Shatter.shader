@@ -5,9 +5,17 @@ Shader "Guildmaster/Sprite/Shatter"
     // (COLOR: r=speed, g=spin, b=dirJitter, a=tumbleAxis/phase). Vertex-шейдер двигает три вершины
     // треугольника как жёсткое целое: ПСЕВДО-3D кувыркание вокруг случайной оси (сжатие поперёк оси по
     // |cos| — ортопроекция переворота квада) + 2D-спин вокруг центроида + дрейф вверх-и-наружу + гравитация,
-    // по прогрессу _Shatter (0..1). Цвет — три фазы: impact-вспышка (импульс _FlashAmount) → возврат исходного
-    // цвета → выцветание в emissive-бирюзу (_EmberColor*_EmberBoost, bloom подхватит) + гашение к концу.
-    // Пасс Universal2D — обязателен для Renderer2D (иначе невидим).
+    // по прогрессу _Shatter (0..1). Цвет: около половины осколков — белый пересвет, остальные — из палитры
+    // ПАВШЕГО юнита (так разлёт говорит, кто погиб), всё в HDR под bloom + гашение к концу. Текстура даёт
+    // только форму: альфа режет силуэт, яркость — фактуру. Пасс Universal2D обязателен для Renderer2D.
+    //
+    // Разброс между осколками берётся хешем от центроида блока — он у каждого свой, и отдельный
+    // вершинный канал под это не нужен. Хеш чисто визуальный: сходиться с C# ему не с чем, поэтому
+    // sin-хеш здесь безопасен (в отличие от карт арены, где число читают обе стороны).
+    //
+    // Блендинг premultiplied (Blend One OneMinusSrcAlpha): пока осколок — кусок спрайта, rgb домножается
+    // на альфу и результат тождественен обычному SrcAlpha; к концу домножение снимается, и уголёк начинает
+    // светить ПОВЕРХ фона, а не заслонять его. Это и есть разница между «кусок тела» и «искра».
     Properties
     {
         [MainTexture] _MainTex ("Sprite Texture", 2D) = "white" {}
@@ -21,9 +29,15 @@ Shader "Guildmaster/Sprite/Shatter"
         _Spread ("Dir Spread", Float) = 0.8
         _Tumble ("Tumble (pseudo-3D)", Float) = 9
         _UpBias ("Up-and-out drift bias", Float) = 0.6
-        [HDR] _EmberColor ("Ember Color", Color) = (0.25, 0.9, 1, 1)
+        [HDR] _ShardWhite ("Shard White (около-белый)", Color) = (1.6, 1.62, 1.7, 1)
+        [HDR] _ShardUnitA ("Shard Unit A (палитра павшего)", Color) = (0.25, 0.9, 1, 1)
+        [HDR] _ShardUnitB ("Shard Unit B (палитра павшего)", Color) = (0.25, 0.9, 1, 1)
+        _WhiteShare ("Доля около-белых осколков", Range(0, 1)) = 0.5
         _EmberBoost ("Ember Emissive Boost", Float) = 2
-        _EmberStart ("Ember Fade Start (age)", Range(0, 1)) = 0.4
+        _ShardLuma ("Фактура спрайта в яркости осколка", Range(0, 1)) = 0.35
+        _FadePower ("Fade Power (меньше = дольше держится)", Range(0.15, 3)) = 0.35
+        _LifeVariance ("Life Variance (разброс скорости угасания)", Range(0, 0.8)) = 0.35
+        _Glow ("Glow (аддитивность уголька)", Range(0, 1)) = 1
         [HideInInspector] _Flip ("Flip", Vector) = (1, 1, 1, 1)
     }
 
@@ -38,7 +52,7 @@ Shader "Guildmaster/Sprite/Shatter"
             "PreviewType"="Plane"
         }
 
-        Blend SrcAlpha OneMinusSrcAlpha
+        Blend One OneMinusSrcAlpha   // premultiplied: rgb домножается в фрагменте, к концу домножение снимается
         Cull Off
         ZWrite Off
 
@@ -63,7 +77,8 @@ Shader "Guildmaster/Sprite/Shatter"
             {
                 float4 positionCS : SV_POSITION;
                 float2 uv         : TEXCOORD0;
-                float  age        : TEXCOORD1;
+                float  age        : TEXCOORD1;   // возраст ЭТОГО осколка (с разбросом), 0..1+
+                float  shardRnd   : TEXCOORD2;   // хеш осколка: сдвиг оттенка уголька
                 UNITY_VERTEX_OUTPUT_STEREO
             };
 
@@ -75,7 +90,10 @@ Shader "Guildmaster/Sprite/Shatter"
                 half4 _Color;
                 half4 _Flip;
                 half4 _FlashColor;
-                half4 _EmberColor;
+                half4 _ShardWhite;
+                half4 _ShardUnitA;
+                half4 _ShardUnitB;
+                half  _WhiteShare;
                 half  _FlashAmount;
                 half  _Shatter;
                 half  _Explode;
@@ -85,10 +103,16 @@ Shader "Guildmaster/Sprite/Shatter"
                 half  _Tumble;
                 half  _UpBias;
                 half  _EmberBoost;
-                half  _EmberStart;
+                half  _ShardLuma;
+                half  _FadePower;
+                half  _LifeVariance;
+                half  _Glow;
             CBUFFER_END
 
             float3 UnityFlipSprite(in float3 pos, in half2 flip) { return float3(pos.xy * flip, pos.z); }
+
+            // Хеш осколка от его центроида — у каждого блока свой, отдельный вершинный канал не нужен.
+            float ShardHash(float2 c) { return frac(sin(dot(c, float2(12.9898, 78.233))) * 43758.5453); }
 
             Varyings ShatterVertex(Attributes v)
             {
@@ -97,7 +121,9 @@ Shader "Guildmaster/Sprite/Shatter"
                 UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
                 float t   = saturate(_Shatter);
-                float md  = t * t;                              // ease-in дрейфа: медленный старт = микро-«зависание»
+                // Дрейф с ТОРМОЖЕНИЕМ: осколки выстреливают резко и замирают, продолжая тлеть. Прежний
+                // ease-in (t*t) разгонял их к концу — на длинном разлёте это читалось как «сдувает ветром».
+                float md  = 1.0 - pow(1.0 - t, 2.2);
                 float2 c      = v.triCenter;
                 float2 offset = v.positionOS.xy - c;
 
@@ -130,20 +156,43 @@ Shader "Guildmaster/Sprite/Shatter"
                 float3 posOS = UnityFlipSprite(float3(p, v.positionOS.z), _Flip.xy);
                 o.positionCS = TransformObjectToHClip(posOS);
                 o.uv  = TRANSFORM_TEX(v.uv, _MainTex);
-                o.age = t;
+
+                // Разброс времени жизни: часть осколков догорает раньше, часть тлеет дольше положенного.
+                // Ровное угасание всем разом выдаёт «один эффект», разнобой — рой отдельных искр.
+                float rnd = ShardHash(c);
+                o.age      = t * lerp(1.0 - _LifeVariance, 1.0 + _LifeVariance, rnd);
+                o.shardRnd = rnd;
                 return o;
             }
 
             half4 ShatterFragment(Varyings i) : SV_Target
             {
-                half4 tex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv) * _Color; // фаза 2: исходный цвет юнита
-                // Фаза 3 — выцветание в emissive-бирюзу к концу разлёта (bloom подхватит яркость).
-                half emberT = smoothstep(_EmberStart, 1.0, i.age);
-                tex.rgb = lerp(tex.rgb, _EmberColor.rgb * _EmberBoost, emberT);
-                // Фаза 1 — impact-вспышка в белый (импульс _FlashAmount из DeathShatter: растёт, затем спадает).
-                tex.rgb = lerp(tex.rgb, _FlashColor.rgb, saturate(_FlashAmount));
-                tex.a  *= saturate(1.0 - i.age);                                        // осколки гаснут к концу
-                return tex;
+                half4 tex = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
+                half age  = saturate(i.age);
+
+                // Осколок — это УЖЕ не тело. Стадии заданы так: обычный вид → голограмма → белый пересвет →
+                // светящиеся осколки; цвета спрайта в последней нет. Раньше здесь возвращался родной цвет
+                // юнита, и на нём же гасло свечение — грязный тёмный тон не переступал порог bloom.
+                // Текстура остаётся только формой: её альфа режет силуэт, её яркость даёт фактуру.
+                half lum = dot(tex.rgb, half3(0.299h, 0.587h, 0.114h));
+
+                // Цвет осколка: примерно половина — около-белые (цифровой пересвет), остальные — из палитры
+                // ПАВШЕГО юнита, чтобы разлёт говорил, кто именно погиб. Выбор по хешу осколка, оттенок
+                // внутри палитры — по нему же: рой выходит смешанным, а не полосатым.
+                half3 unitCol = lerp(_ShardUnitA.rgb, _ShardUnitB.rgb, frac(i.shardRnd * 7.13h));
+                half3 ember = lerp(unitCol, _ShardWhite.rgb, step(i.shardRnd, _WhiteShare));
+
+                ember *= _EmberBoost * lerp(1.0h, 0.6h + lum * 0.8h, _ShardLuma);
+
+                // Пересвет предыдущей стадии догорает поверх (импульс _FlashAmount из DeathShatter).
+                half3 rgb = lerp(ember, _FlashColor.rgb, saturate(_FlashAmount));
+
+                // Гашение с зажимом: при _FadePower < 1 осколок держит яркость почти весь путь и тухнет в конце.
+                half a = tex.a * pow(saturate(1.0 - age), _FadePower) * _Color.a;
+
+                // Premultiplied: выходная альфа уводится в 0 при сохранённом rgb — осколок светит ПОВЕРХ фона,
+                // а не заслоняет его. При _Glow = 0 остаётся обычная прозрачность.
+                return half4(rgb * a, a * (1.0h - _Glow));
             }
             ENDHLSL
         }

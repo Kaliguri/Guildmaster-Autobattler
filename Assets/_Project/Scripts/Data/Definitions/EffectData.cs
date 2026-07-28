@@ -36,6 +36,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Неснимаемо никаким диспелом.")]
         [SerializeField] private bool _unremovable;
 
+        [Tooltip("Цена очистки в СТАКАХ по силе развеивания: [0] — диспел ровно этого тира, [1] — на уровень " +
+                 "выше, [2] — на два и больше. Всё по нулям = эффект снимается целиком (обычное поведение).")]
+        [SerializeField] private CleansePrice[] _cleansePrice = new CleansePrice[3];
+
         [Header("Behaviour")]
         [Tooltip("Полиморфные компоненты поведения (Combat-типы через SerializeReference). Шарятся между носителями — должны быть stateless.")]
         [SerializeReference] private IEffectComponent[] _components;
@@ -53,6 +57,43 @@ namespace Guildmaster.Data.Definitions
         public int MaxStacks => _maxStacks;
         public int CleanseTier => _cleanseTier;
         public bool Unremovable => _unremovable;
+
+        /// <summary>Цена очистки: сколько стаков уносит одно развеивание данной силы.</summary>
+        [System.Serializable]
+        public struct CleansePrice
+        {
+            [Tooltip("Плоско — столько стаков за раз.")]
+            public int Flat;
+
+            [Tooltip("Доля от текущих стаков (0.25 = четверть). Берётся БОЛЬШЕЕ из двух.")]
+            [Range(0f, 1f)]
+            public float Pct;
+
+            public bool IsEmpty => Flat <= 0 && Pct <= 0f;
+        }
+
+        /// <summary>
+        /// Сколько стаков уносит ОДНО очищение силой <paramref name="dispelPower"/> (ГДД «Свойства эффекта»
+        /// §Цена очистки, решения 2026-07-27/5 и /7). Цена растёт лестницей: диспел своего тира отщипывает,
+        /// на уровень выше — заметно больше, на два — сносит половину и больше.
+        /// </summary>
+        /// <remarks>
+        /// Нужно там, где стаки копятся без потолка («Угли»): иначе одна очистка стирала накопленное
+        /// целиком и обесценивала ставку «долгий бой окупается» одним нажатием. Цена не задана — эффект
+        /// снимается целиком, как было до этого решения (обычное поведение для нестакающихся).
+        /// </remarks>
+        public int CleanseStacks(int currentStacks, int dispelPower)
+        {
+            if (_cleansePrice == null || _cleansePrice.Length == 0) return currentStacks;
+
+            // Насколько развеивание сильнее самого эффекта: 0 — вровень, 1 — на уровень выше, 2+ — с запасом.
+            int overshoot = Mathf.Clamp(dispelPower - _cleanseTier, 0, _cleansePrice.Length - 1);
+            CleansePrice price = _cleansePrice[overshoot];
+            if (price.IsEmpty) return currentStacks; // цены нет — снимаем целиком
+
+            int byPct = Mathf.CeilToInt(currentStacks * price.Pct);
+            return Mathf.Clamp(Mathf.Max(price.Flat, byPct), 1, currentStacks);
+        }
         public IEffectComponent[] Components => _components;
         public Sprite Icon => _icon;
         public TagData[] InfoTags => _infoTags;

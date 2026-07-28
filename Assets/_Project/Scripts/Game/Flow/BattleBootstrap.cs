@@ -1,5 +1,6 @@
 using System;
 using Guildmaster.Combat;
+using Guildmaster.Core.Random;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Guild;
 using Guildmaster.Presentation;
@@ -28,14 +29,20 @@ namespace Guildmaster.Game.Flow
         private readonly RunStateService               _runStates;
         private readonly IContentDatabase              _content;
         private readonly ISubscriber<BattleEndedEvent> _endedSub;
+        private readonly Services.TimeScaleService      _time;
+        private readonly IRngService                    _rng;
 
         private IDisposable      _endedSubscription;
         private BattlePresetData _lastPreset;
+        private bool             _arenaStaged;   // на арене стоял бой (враги/трупы) → возврат мира имеет смысл
 
         public BattleBootstrap(IBattleSession session, EncounterLoader loader, CombatSimulation sim,
                                RunStateService runStates, IContentDatabase content,
-                               ISubscriber<BattleEndedEvent> endedSub)
+                               ISubscriber<BattleEndedEvent> endedSub, Services.TimeScaleService time,
+                               IRngService rng)
         {
+            _time = time;
+            _rng  = rng;
             _session   = session;
             _loader    = loader;
             _sim       = sim;
@@ -53,10 +60,6 @@ namespace Guildmaster.Game.Flow
             _session.BindLaunch(LaunchBattle);
             _session.BindReset(ResetToWorld);
             _session.BindRestart(RestartBattle);
-
-            // Legacy-совместимость: бой, положенный через SetPending (старый путь до persist), запустить.
-            if (_session.TryConsumePending(out BattlePresetData pending) && pending != null)
-                LaunchBattle(pending);
         }
 
         public void Dispose()
@@ -80,33 +83,76 @@ namespace Guildmaster.Game.Flow
                 return;
             }
 
-            _lastPreset = preset;
+            _lastPreset  = preset;
+            _arenaStaged = true;                   // с этого момента на арене есть что убирать
+            ReseedForBattle(preset);
             if (!HasLivingParty()) DeployParty();  // отряд не стоял → поставить из RunState.Guild
 
             _loader.SpawnEnemies(preset.Encounter);
             _sim.FlushSpawns();
             _sim.SetPaused(true);               // пауза — фаза расстановки, а не сразу бой
+            _time.SetPaused(false);             // а пауза игрока в новый узел не переезжает (см. ResetToWorld)
             _loader.RequestDeployment(preset);  // DeploymentController: показать врагов, drag, кнопка «Начать»
         }
 
-        // После боя: вернуть вне-боевое состояние. PlaceParty внутри DeployParty делает ResetBattle —
-        // это убирает и врагов, и старый отряд; отряд встаёт заново из RunState (полный HP), пауза, фаза None.
+        // Возврат мира: убрать врагов и трупы, поставить отряд из RunState (полный HP, сохранённое построение),
+        // пауза. PlaceParty внутри DeployParty делает ResetBattle — это чистит и врагов, и старый отряд.
+        // ФАЗУ НЕ ТРОГАЕТ: возврат случается и в передышке между узлами (там фаза Interlude — мир на экране),
+        // и при выходе из забега (там None). Кто зовёт — тот и знает, где игрок оказался.
+        // Боя не было (ивент, магазин, сундук, привал) — убирать нечего, и трогать арену НЕЛЬЗЯ: пере-расстановка
+        // отряда на ровном месте читается игроком как «открылся бой» (QA #43a, реш. Макса 2026-07-26). Признак
+        // ведём здесь, а не по типу узла: «?»-узел роллится в бой уже на входе, петля об этом не знает.
+        // TODO (замысел Макса 2026-07-26): это должна быть АНИМАЦИЯ — трупы тают, отряд возвращается на места;
+        // «К построению» проигрывает её ×3. Сейчас возврат мгновенный, шов под скорость появится вместе с ней.
         private void ResetToWorld()
         {
+            if (!_arenaStaged) return;
+            _arenaStaged = false;
+
             DeployParty();
             _sim.FlushSpawns();
-            _sim.SetPaused(true);
-            _session.SetPhase(BattlePhase.None); // вне боя — топбар прячет таймер/«Начать», guard'ы защищают
+            _sim.SetPaused(true);        // «сим заморожен сценарием»: отряд стоит в построении
+
+            // А вот пауза ИГРОКА (Time.timeScale) узел не переживает. Боевой скоуп в persist-мире не
+            // разрушается между узлами, поэтому её некому было снять: Dispose() возвращает timeScale к 1
+            // только при выгрузке боя, которой больше нет. Игрок, поставивший паузу перед последним ударом,
+            // оставался с замершим миром на всю передышку (аудит 2026-07-26, T-4/RL-1).
+            _time.SetPaused(false);
         }
 
         // Ретрай боя (пул перезапусков акта + dev-R): пере-поставить отряд и врагов, снова в фазу расстановки.
         private void RestartBattle()
         {
+            _arenaStaged = true;
+            ReseedForBattle(_lastPreset);   // ретрай узла — ТОТ ЖЕ бой: сид не зависит от номера попытки
             DeployParty();
             if (_lastPreset?.Encounter != null) _loader.SpawnEnemies(_lastPreset.Encounter);
             _sim.FlushSpawns();
             _sim.SetPaused(true);
+            _time.SetPaused(false);      // рестарт снимает паузу игрока: иначе новый бой стартует замороженным
             if (_lastPreset != null) _loader.RequestDeployment(_lastPreset);
+        }
+
+        /// <summary>
+        /// Пересеять боевой RNG суб-сидом узла. В persist-мире боевой скоуп не пересоздаётся между боями,
+        /// поэтому генератор, посеянный один раз при подъёме сцены, тянул бы одну последовательность через
+        /// весь забег: бой невоспроизводим, ретрай идёт с «уехавшего» состояния, а в коопе хост и клиент
+        /// расходятся. Механизм пересева завели ещё в persist-groundwork, но звать его было некому
+        /// (аудит 2026-07-26, RC-8/T-19).
+        /// <para>Сид выводится из <c>RunState.Seed</c> — сохраняемого сида забега — плюс акт, узел и пресет
+        /// боя. Значит один и тот же узел одного и того же забега всегда играется одинаково, а соседний —
+        /// иначе. Номер попытки в сид НЕ входит: ретрай — это тот же бой, а не новый.</para>
+        /// </summary>
+        private void ReseedForBattle(BattlePresetData preset)
+        {
+            RunState run = _runStates?.Current;
+
+            ulong seed = DeterministicHash.Of(preset != null ? preset.Id : string.Empty);
+            seed = DeterministicHash.Mix(seed, run != null ? (ulong)run.Seed : 0UL);
+            seed = DeterministicHash.Mix(seed, (ulong)(uint)(run?.CurrentActIndex ?? 0));
+            seed = DeterministicHash.Mix(seed, DeterministicHash.Of(run?.Map?.CurrentNodeId));
+
+            _rng.Reseed(seed);
         }
 
         private void DeployParty() => RosterDeployer.Deploy(_loader, _runStates.Current, _content);
@@ -119,6 +165,13 @@ namespace Guildmaster.Game.Flow
             return false;
         }
 
-        private void OnBattleEnded(BattleEndedEvent e) => _session.ReportOutcome(e.Outcome);
+        // Бой кончился — арену НЕ трогаем: поле с трупами живёт, пока игрок на узле (досмотр добивания, мост к
+        // награде, выбор награды). Фаза Interlude держит мир видимым: на None UI-слой кладёт поверх непрозрачный
+        // задник, и раньше он падал прямо на кадр победы. Чистку зовёт петля акта, когда узел пройден.
+        private void OnBattleEnded(BattleEndedEvent e)
+        {
+            _session.SetPhase(BattlePhase.Interlude);
+            _session.ReportOutcome(e.Outcome);
+        }
     }
 }

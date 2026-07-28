@@ -149,8 +149,9 @@ namespace Guildmaster.ContentHub.Editor
             if (evt.keyCode == KeyCode.K && (evt.ctrlKey || evt.commandKey))
             {
                 OpenCommandPalette();
+                // StopPropagation достаточно: PreventDefault снят из UITK, а гасить
+                // дефолтное поведение у сочетания Ctrl+K всё равно нечего.
                 evt.StopPropagation();
-                evt.PreventDefault();
             }
         }
 

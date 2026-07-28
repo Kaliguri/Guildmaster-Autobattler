@@ -37,7 +37,7 @@ namespace Guildmaster.ContentHub.Editor
             {
                 new BalCol { Title = "Юнит", Width = 180, IsName = true },
                 new BalCol { Title = "DPS",  Width = 64, Num = e => StatMath.AutoAttackDps(e.EffectiveStats) },
-                new BalCol { Title = "Атк/с", Width = 56, Num = e => StatMath.AttacksPerSecond(e.Effective(StatType.AttackSpeed)) },
+                new BalCol { Title = "Атк/с", Width = 56, Num = e => Guildmaster.Combat.AttackTiming.AttacksPerSecond(e.Effective(StatType.AttackSpeed)) },
             };
             foreach (StatType st in Enum.GetValues(typeof(StatType)))
             {
@@ -244,7 +244,7 @@ namespace Guildmaster.ContentHub.Editor
                 case StatType.AttackRange: return "Rng";
                 case StatType.AbilityPower: return "AP";
                 case StatType.PhysArmor: return "PArm";
-                case StatType.ElementalArmor: return "EArm";
+                case StatType.MagicArmor: return "MArm";
                 case StatType.MoveSpeed: return "MS";
                 case StatType.MaxResource: return "Res";
                 default: return st.ToString().Length > 6 ? st.ToString().Substring(0, 6) : st.ToString();

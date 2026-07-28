@@ -18,8 +18,6 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class RangerSliceTests
     {
-        private const float ArmorK   = 100f;
-        private const float CellSize = 3f;
 
         // ===================== «Метка охотника» =====================
 
@@ -31,6 +29,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var enemy = MakeUnit(1, team: 1, pos: Vector2.zero);
 
             es.Apply(enemy, HuntersMark(), MakeUnit(0, team: 0, pos: Vector2.zero), ctx);
+            EffectSystem.CommitPending(enemy);   // закон видимости: метка видна с конца тика
 
             Assert.AreNotEqual(EffectTag.None, enemy.EffectTagMask & EffectTag.Marked, "Метка ставит тег Marked");
             Assert.AreEqual(1.25f, enemy.Stats.Get(StatType.DamageTakenEff), 1e-4f, "Метка = +25% получаемого урона");
@@ -49,6 +48,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.Tick(SimConstants.TickDelta); // флаш спавнов + регистрация в spatial hash
 
             sim.ApplyEffect(enemyA, HuntersMark(), ranger);
+            sim.Tick(SimConstants.TickDelta);   // метка проявляется на коммите в конце тика
             Assert.AreNotEqual(EffectTag.None, enemyA.EffectTagMask & EffectTag.Marked, "Предусловие: A помечен");
 
             enemyA.CurrentHP = 0f;                              // убиваем носителя
@@ -252,7 +252,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         private static CombatSimulation BuildSim(ulong seed) =>
             new CombatSimulation(
-                new XorShiftRng(seed), ArmorK, new SpatialHash(CellSize),
+                new XorShiftRng(seed), CombatTestValues.ArmorK, new SpatialHash(CombatTestValues.CellSize),
                 new BrainSystem(), new AbilitySystem(), new MovementSystem(),
                 new AutoAttackSystem(), new ProjectileSystem(), new DeathSystem(),
                 new EffectSystem(), new RegenSystem());

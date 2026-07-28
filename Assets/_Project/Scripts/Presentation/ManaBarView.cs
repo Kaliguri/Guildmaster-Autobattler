@@ -16,14 +16,12 @@ namespace Guildmaster.Presentation
     /// </summary>
     public sealed class ManaBarView : MonoBehaviour
     {
-        private const string ShaderName = "Guildmaster/UI/SegmentedHealthBar";
-
         [Header("Рендер")]
         [Tooltip("Единственный Image бара (тип Simple, на всю ширину, белый vertex-цвет).")]
         [SerializeField] private Image _fillImage;
 
         [Tooltip("Шаблон материала (шейдер SegmentedHealthBar) — задаёт статичный вид (цвета/толщину насечек). " +
-                 "В рантайме клонируется. Пусто → Shader.Find.")]
+                 "В рантайме клонируется. ОБЯЗАТЕЛЕН.")]
         [SerializeField] private Material _barMaterial;
 
         [Header("Насечки")]
@@ -32,8 +30,9 @@ namespace Guildmaster.Presentation
         [Tooltip("Через сколько ресурса идёт ЖИРНАЯ насечка. По умолчанию 20. Кратно tickValue.")]
         [SerializeField] private float _majorTickValue = 20f;
 
-        [Header("Цвет ресурса (фолбэк)")]
-        [SerializeField] private Color _fallbackFillColor = new Color(0.30f, 0.55f, 1.0f);
+        // Цвет ресурса задаёт материал бара — своей копии вью не держит. Прежнее поле-фолбэк было третьим
+        // владельцем цвета (после материала и префаба) и работало только в паре с мёртвой веткой Shader.Find
+        // (аудит фолбэков 2026-07-26, п.6 — близнец HealthBarView, отставший от его правки).
 
         [Header("Анимация chip-дельты")]
         [SerializeField] private float _trailDelay = 0.15f;
@@ -52,7 +51,6 @@ namespace Guildmaster.Presentation
         private static readonly int IdTrailFrac    = Shader.PropertyToID("_TrailFrac");
         private static readonly int IdSegments     = Shader.PropertyToID("_Segments");
         private static readonly int IdMajorEvery   = Shader.PropertyToID("_MajorEvery");
-        private static readonly int IdHpColor      = Shader.PropertyToID("_HpColor");
 
         private void Awake() => EnsureMaterial();
 
@@ -60,20 +58,17 @@ namespace Guildmaster.Presentation
         {
             if (_mat != null) return;
 
-            if (_barMaterial != null)
-                _mat = new Material(_barMaterial);
-            else
+            // Материал ОБЯЗАТЕЛЕН — см. тот же разбор в HealthBarView.EnsureMaterial.
+            if (_barMaterial == null)
             {
-                Shader sh = Shader.Find(ShaderName);
-                if (sh != null) _mat = new Material(sh);
+                Debug.LogError($"[ManaBarView] - {name}: не назначен _barMaterial → полоса ресурса не будет отрисована");
+                return;
             }
 
-            if (_mat == null) return;
+            _mat = new Material(_barMaterial);
             if (_fillImage != null) _fillImage.material = _mat;
 
             _mat.SetFloat(IdMajorEvery, Mathf.Max(1f, _majorTickValue / Mathf.Max(0.0001f, _tickValue)));
-            // Если материал не задаёт цвет ресурса — ставим фолбэк (обычно материал уже синий).
-            if (_barMaterial == null) _mat.SetColor(IdHpColor, _fallbackFillColor);
         }
 
         /// <summary>Привязать к юниту: скрыть для безресурсных, иначе — на текущую долю мгновенно.</summary>

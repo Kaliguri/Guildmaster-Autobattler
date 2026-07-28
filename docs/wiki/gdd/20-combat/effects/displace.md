@@ -2,6 +2,7 @@
 title: "Effect - Displace"
 order: 15
 status: draft
+updated: 2026-07-18
 ---
 
 # Смещение (Displace)

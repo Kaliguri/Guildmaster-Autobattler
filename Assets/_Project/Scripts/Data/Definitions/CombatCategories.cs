@@ -2,22 +2,38 @@ namespace Guildmaster.Data.Definitions
 {
     /// <summary>
     /// Школа урона — числовая ось, которую гасит броня (ГДД «8» §«Школа vs сродство»).
-    /// Школ намеренно мало: <see cref="Physical"/> (гасится физ. бронёй) и <see cref="Elemental"/>
-    /// (Огонь/Лёд/Молния под ОДНОЙ стихийной бронёй; различия элементов живут в механике, не в резистах).
+    /// Школ намеренно мало: <see cref="Physical"/> (гасится физ. бронёй) и <see cref="Magical"/>
+    /// (Огонь/Лёд/Молния/Аркана под ОДНОЙ магической бронёй; различия элементов живут в механике, не в резистах).
     /// <see cref="True"/> идёт мимо брони.
-    /// <para>Int-значения совпадают с легаси <c>DamageType</c> (Magic=1 → Elemental=1) — ассеты не мигрируют.</para>
+    /// <para>Int-значения стабильны (Magical=1) — ассеты со старым <c>_damageSchool: 1</c> не мигрируют.</para>
     /// </summary>
     public enum DamageSchool
     {
         Physical = 0,
-        Elemental = 1,
+        Magical = 1,
         True = 2,
     }
 
     /// <summary>
-    /// Сродство урона — качественная ось. Бронёй НЕ гасится, взаимодействует с <see cref="CreatureType"/>
-    /// цели (ГДД «8»): Нежить/Конструкты иммунны к Яду, Нежить/Демоны уязвимы к Свету, Живое — к Тьме.
-    /// Накладывается ПОВЕРХ школы (в т.ч. поверх <see cref="DamageSchool.True"/>). Таблица — <c>AffinityTable</c>.
+    /// Физический подтип автоатаки (Дробящий/Режущий/Колющий) — актуален при <see cref="DamageSchool.Physical"/>.
+    /// Сейчас питает тег «быстрого чтения» (ГДД <c>unit-tag-glossary</c>); может влиять на урон/резисты позже.
+    /// <see cref="None"/> = не задан (нефиз-урон или не указан).
+    /// </summary>
+    public enum PhysicalSubtype
+    {
+        None = 0,
+        Blunt = 1,   // Дробящий
+        Slash = 2,   // Режущий
+        Pierce = 3,  // Колющий
+    }
+
+    /// <summary>
+    /// Сродство урона — качественная ось поверх школы (в т.ч. поверх <see cref="DamageSchool.True"/>).
+    /// <para><b>На число урона не влияет и множителей не имеет.</b> Сродство несёт идентичность
+    /// <b>механикой — глаголом</b>: Яд травит (DoT + дебафф), Свет очищает и лечит частью урона, Тьма
+    /// бьёт голой мощью. Универсальная матрица «сродство × <see cref="CreatureType"/>» была отклонена
+    /// решением 2026-07-15/35 и снята из кода 2026-07-26: сродство должно работать против любого врага,
+    /// а не зависеть от того, повезло ли с типом цели.</para>
     /// </summary>
     public enum DamageAffinity
     {
@@ -25,6 +41,22 @@ namespace Guildmaster.Data.Definitions
         Poison = 1,
         Light = 2,
         Dark = 3,
+    }
+
+    /// <summary>
+    /// Магический элемент урона — актуален при <see cref="DamageSchool.Magical"/> (аналог
+    /// <see cref="PhysicalSubtype"/> для физики). Все элементы гасятся ОДНОЙ магической бронёй —
+    /// различия живут в механике (поджог/заморозка/цепь), не в резистах. Питает тег «быстрого чтения»;
+    /// может влиять на урон позже. <see cref="Arcane"/> = чистая магия без стихии (механика — задел).
+    /// <see cref="None"/> = не задан (нефиз-урон без конкретной стихии или не указан).
+    /// </summary>
+    public enum MagicElement
+    {
+        None = 0,
+        Fire = 1,      // Огонь
+        Ice = 2,       // Лёд
+        Lightning = 3, // Молния
+        Arcane = 4,    // Аркана — чистая магия без стихии (задел, механики пока нет)
     }
 
     /// <summary>
@@ -45,7 +77,7 @@ namespace Guildmaster.Data.Definitions
     {
         Inherit = 0,
         Physical = 1,
-        Elemental = 2,
+        Magical = 2,
         True = 3,
     }
 
@@ -59,6 +91,27 @@ namespace Guildmaster.Data.Definitions
         Dark = 4,
     }
 
+    /// <summary>Физ-подтип урона способности: <see cref="Inherit"/> = взять подтип юнита-кастера.</summary>
+    public enum PhysicalSubtypeOverride
+    {
+        Inherit = 0,
+        None = 1,
+        Blunt = 2,
+        Slash = 3,
+        Pierce = 4,
+    }
+
+    /// <summary>Магический элемент урона способности: <see cref="Inherit"/> = взять элемент юнита-кастера.</summary>
+    public enum MagicElementOverride
+    {
+        Inherit = 0,
+        None = 1,
+        Fire = 2,
+        Ice = 3,
+        Lightning = 4,
+        Arcane = 5,
+    }
+
     /// <summary>Разрешение override-ов школы/сродства способности в конкретные значения.</summary>
     public static class DamageCategories
     {
@@ -67,7 +120,7 @@ namespace Guildmaster.Data.Definitions
             switch (ovr)
             {
                 case DamageSchoolOverride.Physical:  return DamageSchool.Physical;
-                case DamageSchoolOverride.Elemental: return DamageSchool.Elemental;
+                case DamageSchoolOverride.Magical: return DamageSchool.Magical;
                 case DamageSchoolOverride.True:      return DamageSchool.True;
                 default:                             return unitSchool;
             }
@@ -82,6 +135,31 @@ namespace Guildmaster.Data.Definitions
                 case DamageAffinityOverride.Light:  return DamageAffinity.Light;
                 case DamageAffinityOverride.Dark:   return DamageAffinity.Dark;
                 default:                            return unitAffinity;
+            }
+        }
+
+        public static PhysicalSubtype Resolve(PhysicalSubtypeOverride ovr, PhysicalSubtype unitSubtype)
+        {
+            switch (ovr)
+            {
+                case PhysicalSubtypeOverride.None:   return PhysicalSubtype.None;
+                case PhysicalSubtypeOverride.Blunt:  return PhysicalSubtype.Blunt;
+                case PhysicalSubtypeOverride.Slash:  return PhysicalSubtype.Slash;
+                case PhysicalSubtypeOverride.Pierce: return PhysicalSubtype.Pierce;
+                default:                             return unitSubtype;
+            }
+        }
+
+        public static MagicElement Resolve(MagicElementOverride ovr, MagicElement unitElement)
+        {
+            switch (ovr)
+            {
+                case MagicElementOverride.None:      return MagicElement.None;
+                case MagicElementOverride.Fire:      return MagicElement.Fire;
+                case MagicElementOverride.Ice:       return MagicElement.Ice;
+                case MagicElementOverride.Lightning: return MagicElement.Lightning;
+                case MagicElementOverride.Arcane:    return MagicElement.Arcane;
+                default:                             return unitElement;
             }
         }
     }

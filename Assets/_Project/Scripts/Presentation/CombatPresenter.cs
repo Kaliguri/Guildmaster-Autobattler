@@ -1,5 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
 using MessagePipe;
@@ -30,57 +30,73 @@ namespace Guildmaster.Presentation
         [SerializeField] private Color _damageColor = new Color(1f, 0.75f, 0.2f);
         [Tooltip("Цвет цифры лечения (+N).")]
         [SerializeField] private Color _healColor = new Color(0.5f, 1f, 0.6f);
-        [Tooltip("Цвет цифры урона по щиту (-N).")]
-        [SerializeField] private Color _shieldColor = new Color(0.4f, 0.7f, 1f);
         [Tooltip("Цвет надписи «evade» при полном негейте удара.")]
         [SerializeField] private Color _evadeColor = new Color(0.85f, 0.9f, 0.95f);
         [Tooltip("Задержка между цифрой щита и цифрой HP при сплите (сек).")]
         [SerializeField] private float _splitDelay = 0.06f;
 
         [Header("Дизайн-система (цвета боевого UI)")]
-        [Tooltip("Палитра цветов боя (первый SO дизайн-системы). Задаёт цвет HP-бара по принадлежности к " +
-                 "смотрящему. Пусто = фолбэк-цвета по умолчанию (см. DefaultHealthColor).")]
+        [Tooltip("Палитра цветов боя (первый SO дизайн-системы) — ЕДИНСТВЕННЫЙ владелец цветов HP и щита: " +
+                 "и полосы, и боевых цифр. Обязательна: пусто = баг разводки сцены, а не повод рисовать " +
+                 "чем попало (охраняется SceneWiringTests).")]
         [SerializeField] private Design.CombatColorPalette _colorPalette;
 
-        [Tooltip("Команда «смотрящего» (локального игрока): его юниты — союзные (ally-цвет), прочие — enemy. " +
-                 "Шов под кооп (там смотрящий может быть в любой команде); пока 0 = команда игрока.")]
-        [SerializeField] private int _localViewerTeam;
 
         private CombatSimulation            _simulation;
+        private AbilitySystem               _abilities;   // сигнал каста — оттуда же, откуда его берёт аудио
+
+        // Команда «смотрящего» приходит от ILocalPlayer — единственного владельца этого факта
+        // (GameConfig.LocalPlayerTeam → SoloLocalPlayer). Своего поля презентер не держит: пока оно
+        // было, за одну и ту же команду отвечали двое, и цвет полосок мог разойтись со стингером
+        // победы, который всегда спрашивал ILocalPlayer.
+        private Core.Players.ILocalPlayer   _localPlayer;
+
         private readonly Dictionary<int, UnitView>       _views     = new Dictionary<int, UnitView>();
         private readonly Dictionary<int, ProjectileView> _projViews = new Dictionary<int, ProjectileView>();
         private readonly List<int>                       _deadProj  = new List<int>();
+
+        // Живые снаряды и направление последнего снаряда, летевшего в конкретную цель (по её id).
+        // Импакт-фидбэк дальнобойного удара должен идти ОТКУДА ПРИЛЕТЕЛО, а вектор «стрелок → цель»
+        // это не то: пока снаряд летел, стрелок мог сместиться (Следопыт стреляет на ходу), а цель —
+        // уйти в сторону. Направление переживает сам снаряд: урон приходит уже после его смерти.
+        private readonly Dictionary<int, Projectile> _projById    = new Dictionary<int, Projectile>();
+        private readonly Dictionary<int, Vector2>    _lastShotDir = new Dictionary<int, Vector2>();
         // Виды погибших юнитов: сняты из _views (перестают следовать за симом), но GameObject живёт, пока идёт
         // секвенс смерти (death-клип → разлёт). Держим отдельно, чтобы гарантированно снести их при рестарте —
         // иначе трупы прошлого боя остаются висеть в новом («телепортируются»).
         private readonly List<UnitView>                  _corpses   = new List<UnitView>();
 
         private ObjectPool<FloatingText>    _textPool;
+        private ObjectPool<ProjectileView>  _projPool;
         private System.Action<FloatingText> _releaseText;
         private CombatStatusOverlay         _statusOverlay;
-        private CombatVfx                   _vfx;               // пул пиксельных VFX-брызгов
+        private CombatVfx                   _vfx;               // пул боевых VFX-префабов
         private RuntimeUnit                 _finisherCandidate; // автор последнего добивающего мили-удара
 
-        private IPublisher<UnitSpawnedEvent> _unitSpawnedPublisher;
-        private IPublisher<UnitDiedEvent>    _unitDiedPublisher;
         private IPublisher<DamageDealtEvent> _damageDealtPublisher;
         private IPublisher<BattleEndedEvent> _battleEndedPublisher;
 
         // Все feel-параметры (hitstop, финишер, вспышка/сплющивание вью) — из design-конфига (единый источник).
         private Design.CombatFeelConfig _feel;
+        private Core.Audio.IAudioService _audio;   // раздаётся видам: разлёт на осколки звучит из UnitView
+        private Core.Simulation.ISimInterpolation _interpolation;   // доля шага между тиками — считает петля
 
         [Inject]
         public void Construct(
             CombatSimulation simulation,
-            IPublisher<UnitSpawnedEvent> unitSpawnedPublisher,
-            IPublisher<UnitDiedEvent>    unitDiedPublisher,
+            AbilitySystem abilities,
             IPublisher<DamageDealtEvent> damageDealtPublisher,
             IPublisher<BattleEndedEvent> battleEndedPublisher,
-            Design.CombatFeelConfig feel)
+            Design.CombatFeelConfig feel,
+            Core.Audio.IAudioService audio,
+            Core.Players.ILocalPlayer localPlayer,
+            Core.Simulation.ISimInterpolation interpolation)
         {
+            _interpolation        = interpolation;
+            _localPlayer          = localPlayer;
+            _audio                = audio;
             _simulation           = simulation;
-            _unitSpawnedPublisher = unitSpawnedPublisher;
-            _unitDiedPublisher    = unitDiedPublisher;
+            _abilities            = abilities;
             _damageDealtPublisher = damageDealtPublisher;
             _battleEndedPublisher = battleEndedPublisher;
             _feel                 = feel;
@@ -105,6 +121,7 @@ namespace Guildmaster.Presentation
             _simulation.OnAttackInterrupted += HandleAttackInterrupted;
             _simulation.OnProjectileSpawned += HandleProjectileSpawned;
             _simulation.OnBattleReset       += HandleBattleReset;
+            if (_abilities != null) _abilities.OnAbilityCast += HandleAbilityCast;
 
             EnsureStatusOverlay();
             EnsureVfx();
@@ -123,6 +140,7 @@ namespace Guildmaster.Presentation
             _simulation.OnAttackInterrupted -= HandleAttackInterrupted;
             _simulation.OnProjectileSpawned -= HandleProjectileSpawned;
             _simulation.OnBattleReset       -= HandleBattleReset;
+            if (_abilities != null) _abilities.OnAbilityCast -= HandleAbilityCast;
         }
 
         // Перезапуск боя на месте (dev-R): снимаем все виды юнитов и снарядов и чистим летящие цифры.
@@ -136,8 +154,10 @@ namespace Guildmaster.Presentation
             _views.Clear();
 
             foreach (var kvp in _projViews)
-                if (kvp.Value != null) Destroy(kvp.Value.gameObject);
+                if (kvp.Value != null) ReleaseProjectile(kvp.Value);   // в пул, а не в мусор: бой ещё будет
             _projViews.Clear();
+            _projById.Clear();
+            _lastShotDir.Clear();   // id юнитов в новом бою свои — старое направление не про них
 
             // Трупы прошлого боя (виды в секвенсе смерти, снятые из _views) — иначе висят в новом бою.
             for (int i = 0; i < _corpses.Count; i++)
@@ -152,6 +172,9 @@ namespace Guildmaster.Presentation
                 var texts = GetComponentsInChildren<FloatingText>(includeInactive: false);
                 for (int i = 0; i < texts.Length; i++) texts[i].Cancel();
             }
+
+            // Летящие VFX-префабы — погасить и вернуть в пул.
+            if (_vfx != null) _vfx.DespawnAll();
         }
 
         /// <summary>Создать dev-слой статус-колец в рантайме (без правок сцены/префабов) и подать симуляцию.</summary>
@@ -164,20 +187,26 @@ namespace Guildmaster.Presentation
             _statusOverlay.Initialize(_simulation);
         }
 
-        /// <summary>Создать пул пиксельных VFX-брызгов в рантайме (без правок сцены/префабов).</summary>
+        /// <summary>Создать пул боевых VFX-префабов в рантайме (без правок сцены).</summary>
         private void EnsureVfx()
         {
             if (_vfx != null) return;
             var go = new GameObject("CombatVfx");
             go.transform.SetParent(transform, worldPositionStays: false);
             _vfx = go.AddComponent<CombatVfx>();
-            _vfx.Initialize();
         }
 
         private void Update()
         {
-            float alpha = Time.deltaTime / Guildmaster.Core.Simulation.SimConstants.TickDelta;
-            alpha = UnityEngine.Mathf.Clamp01(alpha);
+            // Тот же признак готовности, что в OnEnable: пока Construct не позвали, презентеру нечего
+            // рисовать — ни симуляции, ни петли ещё нет. Это не фолбэк на пустую зависимость: с пришедшим
+            // Construct приходят обе разом, поэтому отдельной проверки на _interpolation не нужно.
+            if (_simulation == null) return;
+
+            // Доля берётся у петли: она копит остаток тика. Прежний подсчёт (Time.deltaTime / TickDelta)
+            // считал не долю шага, а отношение кадра к тику — при стабильном fps это константа, и тела
+            // вечно стояли на одной и той же промежуточной точке вместо того, чтобы двигаться между тиками.
+            float alpha = _interpolation.Alpha;
 
             foreach (var kvp in _views)
             {
@@ -192,10 +221,13 @@ namespace Guildmaster.Presentation
                 foreach (var kvp in _projViews)
                     if (!kvp.Value.Tick(alpha)) _deadProj.Add(kvp.Key);
 
+                TrackShotDirections();
+
                 for (int i = 0; i < _deadProj.Count; i++)
                 {
-                    if (_projViews.TryGetValue(_deadProj[i], out var pv) && pv != null) Destroy(pv.gameObject);
+                    if (_projViews.TryGetValue(_deadProj[i], out var pv) && pv != null) ReleaseProjectile(pv);
                     _projViews.Remove(_deadProj[i]);
+                    _projById.Remove(_deadProj[i]);
                 }
             }
         }
@@ -215,15 +247,84 @@ namespace Guildmaster.Presentation
                 {
                     Vector2 vel = projectile.Velocity;
                     float ang = vel.sqrMagnitude > 1e-6f ? Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg : 0f;
-                    _vfx.SpawnBurst(srcView.ShotPoint, ang, _feel.Muzzle, 1f, srcView.BodySortingLayerId, srcView.BodySortingOrder + 5);
+                    _vfx.Spawn(_feel.VfxMuzzle, srcView.ShotPoint, ang, tint: VfxPaletteFor(projectile.Source));
                 }
             }
 
-            var view = Instantiate(_bulletPrefab, origin, Quaternion.identity, transform);
-            // Тинт снаряда = цвет юнита-источника (тот же метод, что и тело юнита).
-            Color tint = projectile.Source != null ? TintFor(projectile.Source) : Color.white;
+            ProjectileView view = RentProjectile(origin);
+            // Снаряд и его след — ЭФФЕКТ стрелка, значит его VFX-цвет, а не тинт тела.
+            // Снаряд и его след — один цвет с затуханием, разбросу тут места нет.
+            Color tint = projectile.Source != null ? VfxColorFor(projectile.Source) : Color.white;
             view.Bind(projectile, tint, origin);
             _projViews[projectile.Id] = view;
+            _projById[projectile.Id]  = projectile;
+            RememberShotDirection(projectile);
+        }
+
+        /// <summary>
+        /// Запомнить, куда летит каждый живой снаряд. Направление держится ПО ЦЕЛИ и переживает сам
+        /// снаряд: урон приходит уже после того, как снаряд отмечен мёртвым, и спросить его тогда не у кого.
+        /// </summary>
+        private void TrackShotDirections()
+        {
+            foreach (var kvp in _projById)
+                RememberShotDirection(kvp.Value);
+        }
+
+        private void RememberShotDirection(Projectile projectile)
+        {
+            if (projectile?.TargetUnit == null) return;
+            Vector2 v = projectile.Velocity;
+            if (v.sqrMagnitude > 1e-8f) _lastShotDir[projectile.TargetUnit.Id] = v.normalized;
+        }
+
+        /// <summary>
+        /// Взять вид снаряда из пула. Снаряды — единственное, что мы создавали и уничтожали на каждое
+        /// событие: цифры и VFX пулятся с самого начала, а перестрелка в упор молотила по куче.
+        /// </summary>
+        private ProjectileView RentProjectile(Vector3 origin)
+        {
+            EnsureProjectilePool();
+            ProjectileView view = _projPool.Get();
+            view.transform.SetPositionAndRotation(origin, Quaternion.identity);
+            return view;
+        }
+
+        private void ReleaseProjectile(ProjectileView view)
+        {
+            if (view == null) return;
+            if (_projPool == null) { Destroy(view.gameObject); return; }
+            _projPool.Release(view);
+        }
+
+        private void EnsureProjectilePool()
+        {
+            if (_projPool != null || _bulletPrefab == null) return;
+
+            _projPool = new ObjectPool<ProjectileView>(
+                createFunc: () => Instantiate(_bulletPrefab, transform),
+                actionOnGet: v => v.gameObject.SetActive(true),
+                actionOnRelease: v => { if (v != null) v.gameObject.SetActive(false); },
+                actionOnDestroy: v => { if (v != null) Destroy(v.gameObject); },
+                collectionCheck: false,
+                defaultCapacity: 16,
+                maxSize: 64);
+        }
+
+        /// <summary>
+        /// Каст способности за ману: всплеск у самого юнита плюс контур на теле — «смотри, я сейчас
+        /// выдам». Висит на КАСТЕ, а не на попадании: каст — это намерение, и объявлять его надо до того,
+        /// как что-то прилетело, иначе эффект пересказывает уже случившееся.
+        /// <para>Цвет — из <c>UnitData.ResolveVfxColor</c>: форма всплеска общая, а светит каждый своим.</para>
+        /// </summary>
+        private void HandleAbilityCast(RuntimeUnit caster)
+        {
+            if (caster == null || !_views.TryGetValue(caster.Id, out var view) || view == null) return;
+
+            view.PlayCastOutline(VfxColorFor(caster));   // контур — один цвет, без разброса
+
+            if (_vfx != null && _feel != null && _feel.VfxCastBurst != null)
+                _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(caster));
         }
 
         private void HandleUnitSpawned(RuntimeUnit unit)
@@ -241,27 +342,23 @@ namespace Guildmaster.Presentation
                 {
                     view.Bind(unit);
                     view.ApplyFeelConfig(_feel); // параметры вспышки/сплющивания — из design-конфига
+                    view.ApplyAudio(_audio);     // хруст разлёта: вид сам знает, когда начинается shatter
+                    view.SetContactDustHandler(OnUnitContactDust);
 
                     // Тинт тела по персонажу (dev-различение, пока placeholder-спрайт) + подпись над HP-баром.
                     view.SetTint(TintFor(unit));
                     view.SetLabel(NameFor(unit));
 
                     // Цвет HP-бара по принадлежности к смотрящему (дизайн-система).
-                    bool isAllyOfViewer = unit.Team == _localViewerTeam;
-                    view.SetHealthColor(_colorPalette != null
-                        ? _colorPalette.HealthBarColor(isAllyOfViewer)
-                        : DefaultHealthColor(isAllyOfViewer));
+                    view.SetHealthColor(_colorPalette.HealthBarColor(IsAllyOfViewer(unit)));
 
                     // Цвет щита — общий из палитры (не зависит от принадлежности).
-                    if (_colorPalette != null)
-                        view.SetShieldColor(_colorPalette.Shield);
+                    view.SetShieldColor(_colorPalette.Shield);
 
                     _views[unit.Id] = view;
                 }
                 else Destroy(go);
             }
-
-            _unitSpawnedPublisher.Publish(new UnitSpawnedEvent(unit));
         }
 
         private void HandleUnitDied(RuntimeUnit unit)
@@ -272,28 +369,63 @@ namespace Guildmaster.Presentation
                 _views.Remove(unit.Id);
                 _corpses.Add(view); // труп доигрывает секвенс смерти сам; сносим гарантированно при рестарте
             }
-
-            _unitDiedPublisher.Publish(new UnitDiedEvent(unit));
         }
 
         private void HandleDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result)
         {
             // Урон совпадает с кадром контакта (конец замаха): здесь — импакт-фидбэк цели.
             // Свинг источника запускается раньше, на OnAttackStarted (вики «14»).
-            if (_views.TryGetValue(target.Id, out var view))
-                view.OnDamageReceived(result.TotalDamage);
+            //
+            // Направленный фидбэк (искры, отброс тела, выпад бьющего) полагается ТОЛЬКО прямому
+            // попаданию: у тика яда и у ответки шипов нет ни момента, ни стороны, а рисуются они
+            // так же часто, как удары — то есть дают шум там, где показывать нечего.
+            Vector2 nudgeDir = Vector2.zero;
+            if (source != null && result.IsDirectHit)
+            {
+                // Мили: от бьющего к цели. Дальний: ОТКУДА ПРИЛЕТЕЛ СНАРЯД — вектор «стрелок → цель»
+                // врёт ровно в тех случаях, ради которых это и делается (стрелок сместился за время
+                // полёта, цель шагнула вбок). Снаряда в этот момент уже нет — берём запомненное.
+                bool ranged = source.Unit != null && source.Unit.AttackType == AttackType.Ranged;
+                if (ranged && _lastShotDir.TryGetValue(target.Id, out var shotDir) && shotDir.sqrMagnitude > 1e-8f)
+                {
+                    nudgeDir = shotDir;
+                }
+                else
+                {
+                    Vector2 delta = target.Position - source.Position;
+                    if (delta.sqrMagnitude > 1e-8f) nudgeDir = delta.normalized;
+                }
+            }
+
+            if (_views.TryGetValue(target.Id, out var view) && view != null)
+            {
+                Color flash = _feel != null
+                    ? _feel.ResolveHitFlashColor(result.School, result.Affinity)
+                    : Color.white;
+
+                // Удар, целиком съеденный щитом, вспыхивает ЦВЕТОМ ЩИТА: иначе «пробил» и «не пробил»
+                // выглядят одинаково, а разница между ними — самое интересное, что есть в этом ударе.
+                if (result.HpDamage <= 0f && result.ShieldDamage > 0f && _colorPalette != null)
+                    flash = _colorPalette.Shield;
+
+                view.OnDamageReceived(flash, nudgeDir);
+            }
 
             // Доля HP-урона от MaxHP цели — общий «вес удара» для hitstop и размера цифры.
             float maxHp = target.Stats.Get(Data.Stats.StatType.MaxHP);
             float frac  = maxHp > 0f ? result.HpDamage / maxHp : 0f;
 
-            // Локальный hitstop пары «источник + цель» по значимости удара.
-            if (view != null)
+            // Локальный hitstop пары «источник + цель» по значимости удара (кривая в feel-конфиге).
+            if (view != null && _feel != null)
             {
-                float stop = Mathf.Lerp(_feel.HitstopMin, _feel.HitstopMax, Mathf.Clamp01(frac / _feel.HitstopFullFrac));
+                float stop = _feel.EvaluateHitstopSeconds(frac);
                 view.OnHitstop(stop);
-                if (source != null && _views.TryGetValue(source.Id, out var sourceView))
+                if (source != null && _views.TryGetValue(source.Id, out var sourceView) && sourceView != null)
+                {
                     sourceView.OnHitstop(stop);
+                    if (nudgeDir.sqrMagnitude > 1e-8f)
+                        sourceView.OnAttackLunge(nudgeDir);
+                }
             }
 
             // Кандидат в финишеры: автор добивающего удара, если он мили (снаряд/яд позу удара не держат).
@@ -307,23 +439,31 @@ namespace Guildmaster.Presentation
             Vector3 anchor  = AnchorFor(target);
             float   hpScale = Mathf.Lerp(1f, _feel.NumberMaxScale, Mathf.Clamp01(frac / Mathf.Max(1e-4f, _feel.NumberFullFrac)));
 
-            // Пиксельные VFX: искры в точку попадания (кол-во по весу удара) + пыль у ног на мили-ударе.
-            if (_vfx != null && _feel != null && view != null)
+            // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе. Только прямое попадание:
+            // яд, горение и шипы брони бьют тиками и без стороны — искры на них читались бы как удары.
+            if (_vfx != null && _feel != null && view != null && result.IsDirectHit)
             {
-                float intensity = 0.35f + 0.65f * Mathf.Clamp01(frac / Mathf.Max(1e-4f, _feel.HeavyHitFrac));
-                _vfx.SpawnBurst(anchor, 0f, _feel.HitSpark, intensity, view.BodySortingLayerId, view.BodySortingOrder + 5);
+                // Искры летят ПРОЧЬ ОТ УДАРА: у мили — от бьющего, у стрелка — по траектории снаряда.
+                // Направление берём то же, что и отброс тела: один удар — один вектор, спорить им не о чем.
+                float? sparkDir = nudgeDir.sqrMagnitude > 1e-8f
+                    ? Mathf.Atan2(nudgeDir.y, nudgeDir.x) * Mathf.Rad2Deg
+                    : (float?)null;
+
+                _vfx.Spawn(_feel.VfxHitSpark, anchor, sparkDir,
+                           _feel.EvaluateHitVfxIntensity(frac), _feel.EvaluateHitVfxCount(frac),
+                           VfxPaletteFor(source));   // искры — палитры бьющего
 
                 bool melee = source?.Unit != null && source.Unit.AttackType == AttackType.Melee;
                 if (melee)
-                    _vfx.SpawnBurst(view.FeetPoint, 90f, _feel.ImpactDust, 1f, view.BodySortingLayerId, view.BodySortingOrder - 1);
+                    _vfx.Spawn(_feel.VfxImpactDust, view.FeetPoint);
             }
 
             // Урон по щиту — синим «-N»; по HP — «-N» цветом урона. Если задет и щит, и HP —
             // цифра щита сразу, цифра HP через очень маленькую задержку (обе читаемы).
-            if (shield > 0) SpawnNumber(anchor, "-" + shield, _shieldColor);
+            if (shield > 0) SpawnNumber(anchor, "-" + shield, _colorPalette.Shield);
             if (hp > 0)
             {
-                if (shield > 0) StartCoroutine(DelayedNumber(anchor, "-" + hp, _damageColor, _splitDelay, hpScale));
+                if (shield > 0) DelayedNumber(anchor, "-" + hp, _damageColor, _splitDelay, hpScale).Forget();
                 else            SpawnNumber(anchor, "-" + hp, _damageColor, hpScale);
             }
 
@@ -338,20 +478,32 @@ namespace Guildmaster.Presentation
 
             SpawnNumber(AnchorFor(target), "+" + healed, _healColor);
 
-            // Пиксельные хил-искры (восходящие, зелёные) в точку попадания.
-            if (_vfx != null && _feel != null && _views.TryGetValue(target.Id, out var tView) && tView != null)
-                _vfx.SpawnBurst(tView.HitPoint, 90f, _feel.Heal, 1f, tView.BodySortingLayerId, tView.BodySortingOrder + 5);
+            if (_views.TryGetValue(target.Id, out var tView) && tView != null)
+            {
+                tView.OnHealed();                                    // тело отвечает на лечение, а не только цифра
+                if (_vfx != null && _feel != null)
+                    _vfx.Spawn(_feel.VfxHeal, tView.HitPoint, tint: VfxPaletteFor(source));  // палитра лечащего
+            }
         }
 
         private void HandleAttackEvaded(RuntimeUnit target)
         {
             // Полный негейт удара («Изворотливость») — урона нет, показываем «evade».
+            // Движение тела сюда НЕ добавляем: по дизайну трата заряда — это кувырок с уходом с места,
+            // то есть настоящее перемещение в симуляции (gdd/20-combat/positioning). Появится оно — вид
+            // поедет за ним сам.
             SpawnNumber(AnchorFor(target), "evade", _evadeColor);
         }
 
-        private IEnumerator DelayedNumber(Vector3 worldPosition, string text, Color color, float delay, float sizeScale = 1f)
+        // Задержка на UNSCALED-времени: в паузе и в финишер-slowmo вторая цифра иначе не приходила вовсе —
+        // игрок видел урон по щиту и ждал у моря погоды. Через UniTask, а не корутину: корутина здесь
+        // ещё и аллоцировала WaitForSeconds на каждый расщеплённый удар.
+        private async UniTaskVoid DelayedNumber(Vector3 worldPosition, string text, Color color, float delay, float sizeScale)
         {
-            yield return new WaitForSeconds(delay);
+            bool canceled = await UniTask.Delay(System.TimeSpan.FromSeconds(delay), DelayType.UnscaledDeltaTime,
+                                                cancellationToken: this.GetCancellationTokenOnDestroy())
+                                         .SuppressCancellationThrow();
+            if (canceled) return;   // презентер умер за время задержки — спавнить цифру некуда
             SpawnNumber(worldPosition, text, color, sizeScale);
         }
 
@@ -363,7 +515,8 @@ namespace Guildmaster.Presentation
 
             FloatingText ft = _textPool.Get();
             ft.transform.position = worldPosition;
-            ft.Play(text, color, sizeScale, _releaseText);
+            float arcG = _feel != null && _feel.EnableFloatingTextArc ? _feel.NumberArcGravity : 0f;
+            ft.Play(text, color, sizeScale, arcG, _releaseText);
         }
 
         /// <summary>Мировая точка для боевой цифры: HitPoint вида цели (грудь); фолбэк — над позицией сима.</summary>
@@ -372,6 +525,14 @@ namespace Guildmaster.Presentation
             if (_views.TryGetValue(target.Id, out var v) && v != null)
                 return v.HitPoint;
             return (Vector3)(Vector2)target.Position + Vector3.up * 0.4f;
+        }
+
+        /// <summary>Contact-dust: пыль у ног при старте/стопе бега (VfxData → префаб, тумблер в feel-конфиге).</summary>
+        private void OnUnitContactDust(UnitView view)
+        {
+            if (_vfx == null || _feel == null || view == null) return;
+            if (!_feel.EnableContactDust) return;
+            _vfx.Spawn(_feel.VfxContactDust, view.FeetPoint);
         }
 
         /// <summary>Лениво собрать пул всплывающих цифр из префаба (zero-alloc в бою, пункт QA #5).</summary>
@@ -391,34 +552,55 @@ namespace Guildmaster.Presentation
                 maxSize: 64);
         }
 
-        /// <summary>Тинт тела по персонажу: у реликвии — стабильный оттенок от имени; у болванчиков — по команде.</summary>
-        private static Color TintFor(RuntimeUnit unit)
-        {
-            if (unit.Unit != null)
-            {
-                float hue = (Mathf.Abs(unit.Unit.name.GetHashCode()) % 360) / 360f;
-                return Color.HSVToRGB(hue, 0.5f, 1f);
-            }
-            return unit.Team == 0 ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f);
-        }
+        /// <summary>
+        /// Тинт тела по персонажу. У юнита с данными — ЕДИНЫЙ резолвер <see cref="UnitData.ResolveBodyTint"/>
+        /// (тот же цвет, что рендерит карточка инвентаря); у болванчиков без данных — по стороне смотрящего.
+        /// </summary>
+        private Color TintFor(RuntimeUnit unit) =>
+            unit.Unit != null
+                ? unit.Unit.ResolveBodyTint()
+                : (IsAllyOfViewer(unit) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
 
-        /// <summary>Фолбэк-цвет HP-бара, если палитра дизайн-системы не назначена (совпадает с дефолтами SO).</summary>
-        private static Color DefaultHealthColor(bool isAllyOfViewer) => isAllyOfViewer
-            ? new Color(0.30f, 0.85f, 0.35f)
-            : new Color(0.90f, 0.25f, 0.25f);
+        /// <summary>
+        /// Цвета ЭФФЕКТОВ юнита. Их два, и они про разное: ГЛАВНЫЙ цвет — там, где цвет один (тело снаряда,
+        /// его след, контур каста), ПАЛИТРА — диапазон разброса для частиц. Держатся на <c>UnitData</c>, а не
+        /// в префабах: иначе холод криоманта и свет пастыря выглядели бы одинаково просто потому, что летят
+        /// из одного префаба.
+        /// <para>Пыль под ногами сюда НЕ входит: она принадлежит земле, а не бойцу.</para>
+        /// </summary>
+        private Gradient VfxPaletteFor(RuntimeUnit unit) => unit?.Unit?.ResolveVfxPalette();
+
+        /// <summary>Главный цвет эффектов юнита — для того, у чего нет ни длины, ни россыпи.</summary>
+        private Color VfxColorFor(RuntimeUnit unit) =>
+            unit?.Unit != null ? unit.Unit.ResolveVfxColor() : TintFor(unit);
+
+        /// <summary>
+        /// Юнит на стороне смотрящего? Единственное место, где в презентере решается «свой/чужой».
+        /// Без <see cref="Core.Players.ILocalPlayer"/> (сцена без DI, дев-запуск) считаем команду 0 своей.
+        /// </summary>
+        private bool IsAllyOfViewer(RuntimeUnit unit) =>
+            unit.Team == (_localPlayer != null ? _localPlayer.Team : 0);
 
         /// <summary>Подпись персонажа: имя реликвии (SO) либо «Ally/Enemy N» для болванчиков.</summary>
-        private static string NameFor(RuntimeUnit unit)
+        private string NameFor(RuntimeUnit unit)
         {
             if (unit.Unit != null) return unit.Unit.name;
-            return (unit.Team == 0 ? "Ally " : "Enemy ") + unit.Id;
+            return (IsAllyOfViewer(unit) ? "Ally " : "Enemy ") + unit.Id;
         }
 
         private void HandleAttackStarted(RuntimeUnit source, RuntimeUnit target)
         {
             // Вход в замах: запускаем анимацию свинга у источника (вики «14»).
-            if (source != null && _views.TryGetValue(source.Id, out var sourceView))
-                sourceView.OnAttackStarted();
+            if (source == null || !_views.TryGetValue(source.Id, out var sourceView) || sourceView == null)
+                return;
+
+            Vector2 away = Vector2.zero;
+            if (target != null)
+            {
+                Vector2 delta = source.Position - target.Position; // от цели = назад
+                if (delta.sqrMagnitude > 1e-8f) away = delta.normalized;
+            }
+            sourceView.OnAttackStarted(away);
         }
 
         private void HandleAttackInterrupted(RuntimeUnit unit)
@@ -430,12 +612,21 @@ namespace Guildmaster.Presentation
         private void HandleBattleEnded(BattleOutcome outcome)
         {
             // Финишер-мили держит кадр контакта весь финальный slowmo (перекрывает free-run у него).
-            if (_finisherCandidate != null && _views.TryGetValue(_finisherCandidate.Id, out var finisher) && finisher != null)
+            UnitView finisher = null;
+            if (_finisherCandidate != null && _views.TryGetValue(_finisherCandidate.Id, out finisher) && finisher != null)
                 finisher.HoldHitFrame(_feel.FinisherHoldSeconds);
 
-            // Живые (в _views мёртвые уже удалены) доигрывают анимации натурально, а не виснут на замершем симе.
             foreach (var kvp in _views)
-                if (kvp.Value != null) kvp.Value.OnBattleEnded();
+            {
+                if (kvp.Value == null) continue;
+
+                // Весь бой замирает вместе с моментом, а не только добивающий: остальные выжившие держат
+                // ту позу, в которой их застало. По окончании окна каждый доигрывает своё движение до
+                // конца и оседает в стойку — это и делает free-run ниже.
+                if (!ReferenceEquals(kvp.Value, finisher)) kvp.Value.HoldFrame(_feel.FinisherHoldSeconds);
+
+                kvp.Value.OnBattleEnded();
+            }
 
             Debug.Log($"[CombatPresenter] - Бой завершён: {outcome}");
 

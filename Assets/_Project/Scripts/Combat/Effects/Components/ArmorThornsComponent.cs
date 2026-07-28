@@ -7,11 +7,28 @@ using UnityEngine;
 namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
-    /// «Шипастое древо» (Древень): получив ПРЯМОЙ удар, носитель бьёт шипами ВСЕХ врагов вокруг себя.
-    /// Урон шипов масштабируется от БРОНИ носителя (а не от доли полученного удара, как
-    /// <see cref="ThornsComponent"/>) — по карточке ГДД «100% статы брони».
+    /// <b>«Шипастое древо»</b> — пассивка Древня (карточка [[the-bloom]]).
+    /// <para><b>Что делает:</b> получив прямой удар, носитель огрызается шипами по ВСЕМ врагам вокруг
+    /// себя. Урон не выбирается им — он случается в ответ, поэтому кит тем сильнее, чем гуще на нём
+    /// висят: один враг почти не наказывается, свалка из четверых разбивается об него.</para>
+    /// <para><b>Числа:</b>
+    /// <list type="bullet">
+    /// <item><c>_flatDamage</c> — плоский урон залпа, ОСНОВНАЯ величина (задаёт автор).</item>
+    /// <item><c>_armorRatio</c> — добавка от физической брони носителя (0.1 = +10% статы брони).</item>
+    /// <item><c>_radius</c> — радиус ответки, мировые единицы; растёт от «Разрастания».</item>
+    /// <item><c>_radiusPerGrowthStack</c> — прибавка радиуса за стак «Разрастания» (0.2 = +20% базы).</item>
+    /// <item><c>_cooldownSeconds</c> — микро-КД между залпами: ритм задаёт Древень, а не темп врагов.</item>
+    /// <item><c>_school</c>/<c>_physicalSubtype</c>/<c>_magicElement</c>/<c>_affinity</c> — тип урона шипов.</item>
+    /// </list>
+    /// Итог залпа: <c>(_flatDamage + броня × _armorRatio) × стаки</c>. При броне 90 и базе 25 это 34.</para>
+    /// <para><b>Когда срабатывает:</b> реактив на <see cref="CombatEvent.DamageTaken"/>, только от
+    /// прямого удара и не чаще микро-КД.</para>
     /// </summary>
     /// <remarks>
+    /// База введена 2026-07-27: пока урон был чистой бронёй (доля 1.0), каждая купленная единица защиты
+    /// становилась единицей урона, и танк, вкладывающийся в живучесть, выходил в главные дамагеры игры —
+    /// 554 урона в секунду по свалке против 226 у самого бьющего кита.
+    /// <para>
     /// Два гейта, оба принципиальные:
     /// <list type="bullet">
     /// <item>Только прямой удар (<see cref="CombatEventData.IsDirectHit"/>) — авто-атака или атакующая
@@ -21,13 +38,17 @@ namespace Guildmaster.Combat.Effects.Components
     /// ЧУЖОЙ скорости атаки. Кулдаун держим эффектом-маркером на носителе — компонент живёт в SO и общий для
     /// всех юнитов, своё состояние в нём хранить нельзя.</item>
     /// </list>
+    /// </para>
     /// </remarks>
     [Serializable]
     public sealed class ArmorThornsComponent : IReactiveComponent
     {
         private const string CooldownMarkerId = "sys.thorns_cooldown";
 
-        [Tooltip("Доля брони носителя, уходящая в урон шипов (1 = 100% статы брони).")]
+        [Tooltip("Плоский урон залпа — основная величина. Задаётся автором и не растёт от прокачки статов.")]
+        [SerializeField] private float _flatDamage;
+
+        [Tooltip("Доля брони носителя, добавляемая к плоской базе (0.1 = 10% статы брони).")]
         [SerializeField] private float _armorRatio = 1f;
 
         [Tooltip("Радиус ответного удара вокруг носителя (мировые единицы).")]
@@ -36,8 +57,17 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Школа урона шипов.")]
         [SerializeField] private DamageSchool _school = DamageSchool.Physical;
 
+        [Tooltip("Физ-подтип урона шипов (при школе Physical): Колющий для «Шипастого древа». Питает тег; None = не задан.")]
+        [SerializeField] private PhysicalSubtype _physicalSubtype = PhysicalSubtype.None;
+
+        [Tooltip("Магический элемент урона шипов (при школе Magical). Питает тег; None = не задан.")]
+        [SerializeField] private MagicElement _magicElement = MagicElement.None;
+
         [Tooltip("Сродство урона шипов (Древень с апгрейдом «Ядовитые шипы» — Яд).")]
         [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
+
+        /// <summary>Тип урона шипов (прямые поля источника) — для агрегации тегов «быстрого чтения».</summary>
+        public DamageType DamageType => new DamageType(_school, _physicalSubtype, _magicElement, _affinity);
 
         [Tooltip("Эффект «Разрастание»: каждый его стак раздувает радиус шипов (карточка ГДД). Пусто = радиус фиксирован.")]
         [SerializeField] private EffectData _growthEffect;
@@ -68,7 +98,10 @@ namespace Guildmaster.Combat.Effects.Components
 
             if (_cooldownSeconds > 0f && HasEffect(self, CooldownMarker())) return;
 
-            float damage = self.Stats.Get(StatType.PhysArmor) * _armorRatio * ctx.Stacks;
+            // База + слабая доля брони (решение 2026-07-26): пока урон был чистой бронёй, каждая купленная
+            // единица защиты становилась единицей урона, и танк, вкладывающийся в живучесть, автоматически
+            // выходил в главные дамагеры игры — 554 урона в секунду по свалке против 226 у самого бьющего кита.
+            float damage = (_flatDamage + self.Stats.Get(StatType.PhysArmor) * _armorRatio) * ctx.Stacks;
             if (damage <= 0f) return;
 
             float radius = EffectiveRadius(self);

@@ -7,7 +7,7 @@ FMOD живёт за ним.
 
 `Core/Audio/IAudioService.cs` — вся звуковая поверхность для игрового кода:
 
-- `Play(soundKey)` / `Stop(soundKey)` — по резолвнутому строковому ключу.
+- `Play(soundKey)` / `Stop(soundKey)` / `StopAll()` — по резолвнутому строковому ключу.
 - `SetMasterVolume` / `SetMusicVolume` / `SetSfxVolume` (0..1) — шины `bus:/`, `bus:/Music`,
   `bus:/SFX`.
 - `SetGlobalParameter(name, value)` — глобальный параметр микса по строковому имени
@@ -19,15 +19,33 @@ FMOD живёт за ним.
 ## Две реализации за фасадом
 
 - **`FmodAudioService`** (`Game/Services`) — боевая. Резолвнутый ключ → `EventReference` через
-  `AudioCatalog` → `RuntimeManager.PlayOneShot`. Громкости → `RuntimeManager.GetBus(path).setVolume`.
+  `AudioCatalog` → `PlayOneShot` для one-shot, `CreateInstance`+`start` для лупов.
+  Громкости → `RuntimeManager.GetBus(path).setVolume`.
   Параметры → `RuntimeManager.StudioSystem.setParameterByName`. Регистрируется как `IAudioService`
   (Singleton) в `RootLifetimeScope`.
 - **`UnityAudioService`** (`Game/Services`) — заглушка (`Debug.Log`, параметры молча глотает).
   Для Фазы 1 / headless / где FMOD не нужен. Смена реализации не трогает зависимости — весь код
   видит только `IAudioService`.
 
-`Stop` для one-shot'ов — no-op (fire-and-forget, хендл не держим). Loop/музыка получат хранимые
-`EventInstance` в отдельной итерации — это точка роста, а не пробел.
+## Лупы: музыка и амбиент
+
+`Stop` для one-shot'ов — no-op (fire-and-forget, хендл не нужен). А вот длящиеся события
+(музыка, амбиент — у них в Studio снят флаг one-shot) получают хранимый `EventInstance`:
+
+- `Play` спрашивает у события `EventDescription.isOneshot()`. One-shot → `PlayOneShot` и забыли;
+  не one-shot → создаём инстанс, стартуем и кладём в словарь по ключу. Повторный `Play` того же
+  ключа — no-op, а не второй слой поверх играющего.
+- `Stop(key)` — `stop(ALLOWFADEOUT)` + `release` (фейд события отрабатывает, обрыв не слышен).
+- `StopAll()` — гасит все петли разом: смена сцены, выход в меню, перезапуск боя (dev-R).
+
+Без этого музыки не могло быть в принципе: `Stop` был заглушкой, и остановить петлю было нечем.
+
+## Шины
+
+`bus:/SFX/{Combat,UI,Ambient,Stingers}` и `bus:/Music` создаёт `populate.js` из `BUS_TREE` карты.
+Слайдеры настроек пишут в `bus:/`, `bus:/Music`, `bus:/SFX` — под-шины обязаны висеть именно под
+ними. Если шины нет, `SetBusVolume` тихо выходит: это спасает пустой проект, но и прячет ошибку —
+ровно так слайдеры «Музыка» и «Звук» полгода не работали, потому что писали в несуществующие шины.
 
 ## Безопасность пустого проекта — намеренный шов
 
@@ -51,18 +69,18 @@ slowmo вниз / 2x-3x вверх). Пишет его **только** `TimeSca
 
 ## Банки и сборка
 
-FMOD-банки — в `Assets/StreamingAssets` (`Master.bank`, `Master.strings.bank`, `SFX.bank` уже
-есть). Собираются из FMOD Studio или CLI. **Готча `fmodstudiocl`:** CLI-сборка банков
-(`fmodstudiocl.exe -build project.fspro`) — способ пересобрать банки без открытия Studio
-(автоматизация/CI). Сам проект и сведение — за Максом/аудио-дизайнером; я работаю с уже
-собранными банками и каталогом-маппингом.
+FMOD-банки — в `Assets/StreamingAssets`: `Master.bank`, `Master.strings.bank`, `SFX.bank` и
+`Music.bank` (музыка отдельным банком, треки идут стримом). Собираются CLI:
+`fmodstudiocl.exe -build -ignore-warnings -export-guids project.fspro`. **Готча:** заливка и
+сборка — ДВЕ отдельные команды, `-script` и `-build` вместе не работают.
 
 ## Границы «фасад vs движок»
 
-- **Моё (за фасадом):** `IAudioService` и обе реализации, шины/громкости/параметры, маппинг
-  ключ→событие в `AudioCatalog`, проводка событий в `AudioPresenter`.
-- **Не моё:** FMOD-Studio-проект, сами события/сэмплы, сведение, разводка шин — Макс/аудио-дизайнер.
-  Я не выдумываю звучание; я даю контракт и код, куда оно встанет.
+- **Моё:** `IAudioService` и обе реализации, шины/громкости/параметры, маппинг ключ→событие,
+  проводка событий во всех трёх презентерах, И САМ FMOD-ПРОЕКТ — он собирается из карты
+  `scripts/audio/audio_map.py` скриптом `populate.js`, а не правится руками.
+- **Не моё:** как это ЗВУЧИТ. Выбор «этот удар лучше того», финальное сведение на слух, вкусовые
+  решения — Макс. Я даю числа, воспроизводимость и список «что послушать».
 
 ## Антипаттерны
 

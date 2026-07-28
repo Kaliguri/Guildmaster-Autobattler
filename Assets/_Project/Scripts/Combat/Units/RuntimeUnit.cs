@@ -28,6 +28,12 @@ namespace Guildmaster.Combat
         /// <summary>Текущий ресурс (мана/ярость). Фаза 2.</summary>
         public float CurrentResource;
 
+        /// <summary>Тик, с которого считается текущее секундное окно набора ресурса (потолок «единиц в секунду»).</summary>
+        public int ResourceWindowStartTick;
+
+        /// <summary>Сколько ресурса уже набрано в текущем секундном окне — сверяется с потолком юнита.</summary>
+        public float ResourceGainedInWindow;
+
         /// <summary>Текущий щит: поглощает урон до вычета из HP.</summary>
         public float CurrentShield;
 
@@ -118,9 +124,6 @@ namespace Guildmaster.Combat
 
         /// <summary>SO «Пилот»: идентичность, перки (Фаза 2/4).</summary>
         public VesselData Vessel;
-
-        /// <summary>Тип существа цели для сродств урона (<see cref="AffinityTable"/>). Без кита — считаем живым.</summary>
-        public CreatureType CreatureType => Unit != null ? Unit.CreatureType : CreatureType.Living;
 
         /// <summary>Школа урона кита. Без кита — физика (дефолт пайплайна).</summary>
         public DamageSchool DamageSchool => Unit != null ? Unit.DamageSchool : DamageSchool.Physical;

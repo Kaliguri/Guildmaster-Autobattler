@@ -1,4 +1,4 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: 7a705889eed5e774cb4616e785779265
 TextureImporter:
   internalIDToNameTable:
@@ -112,12 +112,12 @@ TextureImporter:
       name: Attack1_0
       rect:
         serializedVersion: 2
-        x: 17
-        y: 48
-        width: 63
-        height: 41
+        x: 0
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -134,12 +134,12 @@ TextureImporter:
       name: Attack1_1
       rect:
         serializedVersion: 2
-        x: 151
-        y: 48
-        width: 63
-        height: 41
+        x: 135
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -156,12 +156,12 @@ TextureImporter:
       name: Attack1_2
       rect:
         serializedVersion: 2
-        x: 295
-        y: 48
-        width: 99
-        height: 51
+        x: 270
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -178,12 +178,12 @@ TextureImporter:
       name: Attack1_3
       rect:
         serializedVersion: 2
-        x: 464
-        y: 48
-        width: 38
-        height: 34
+        x: 405
+        y: 0
+        width: 135
+        height: 135
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

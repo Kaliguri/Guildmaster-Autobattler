@@ -15,16 +15,13 @@ MonoBehaviour:
   _armorConstantK: 100
   _attackSpeedMin: 0.1
   _attackSpeedMax: 4
+  _resourceRegenPerSecond: 5
   _defaults:
-  - Stat: 0
-    Value: 1200
   - Stat: 7
     Value: 120
   - Stat: 8
     Value: 1
   - Stat: 9
     Value: 1
-  - Stat: 20
-    Value: 3
   - Stat: 3
     Value: 4

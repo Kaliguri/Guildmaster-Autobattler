@@ -22,9 +22,55 @@ namespace Guildmaster.Combat
         // Переиспользуемый буфер целей линейной авто-атаки — без аллокаций на горячем пути.
         private readonly List<RuntimeUnit> _lineTargets = new List<RuntimeUnit>();
 
-        /// <summary>Обработать автоатаки всех живых юнитов за один тик. <paramref name="dt"/> не используется (тайминг на тиках).</summary>
-        public void Tick(List<RuntimeUnit> units, ICombatContext ctx, float dt)
+        // Удары, дозревшие на этом тике: цифры сняты, но ещё никому не прилетело (см. Tick).
+        private readonly List<ResolvedHit> _hits = new List<ResolvedHit>();
+
+        /// <summary>Удар, у которого замах истёк: кто, по кому и с какими цифрами бьёт.</summary>
+        private readonly struct ResolvedHit
         {
+            public readonly RuntimeUnit Unit;
+            public readonly RuntimeUnit Target;
+            public readonly float Raw;
+            public readonly float Reach;
+            public readonly DamageSchool School;
+            public readonly DamageAffinity Affinity;
+            public readonly bool Blink;
+
+            public ResolvedHit(RuntimeUnit unit, RuntimeUnit target, float raw, float reach,
+                DamageSchool school, DamageAffinity affinity, bool blink)
+            {
+                Unit     = unit;
+                Target   = target;
+                Raw      = raw;
+                Reach    = reach;
+                School   = school;
+                Affinity = affinity;
+                Blink    = blink;
+            }
+        }
+
+        /// <summary>Обработать автоатаки всех живых юнитов за один тик. <paramref name="dt"/> не используется (тайминг на тиках).</summary>
+        /// <remarks>
+        /// ДВА ПРОХОДА: сначала у всех дозревают замахи и снимаются цифры удара, потом удары прилетают.
+        /// Пока урон наносился по ходу обхода, ослабление, наложенное ранним ударом, успевало срезать удар
+        /// того, кто стоит в списке позже. В зеркальном бою это ловилось как разный урон одинаковых бойцов:
+        /// левый огневик бил в полную силу (146.9), правый — уже ослабленным «Решительным ударом» левого
+        /// защитника (102.8 = ровно ×0.7). Сила удара берётся из статов на начало фазы — одинаково для всех,
+        /// независимо от места в списке. Эффекты, наложенные этими ударами, работают со следующего тика,
+        /// как это и заведено для контроля (<c>CanAct</c>, вики «14»).
+        /// </remarks>
+        /// <returns>
+        /// true, если хоть один удар отыграл блинк и сдвинул тело. Такой сдвиг случается ПОСЛЕ перестройки
+        /// пространственного хэша, поэтому сетка перестаёт соответствовать позициям, и звать перестройку
+        /// заново обязан вызывающий. Пойман зеркалом: ассасин, блинкнувший за спину, оставался в хэше на
+        /// старой клетке, соседи находили его по-разному с двух сторон — и одинаковые отряды разъезжались
+        /// на тике 29.
+        /// </returns>
+        public bool Tick(List<RuntimeUnit> units, ICombatContext ctx, float dt)
+        {
+            _hits.Clear();
+
+            // --- Проход 1: таймеры, гейты, снятие цифр. Мир не меняется. ---
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit unit = units[i];
@@ -84,6 +130,23 @@ namespace Guildmaster.Combat
 
                 EnterWindup(unit, target, ctx, windupTicks);
             }
+
+            // --- Проход 2a: блинки. Телепорт двигает тело, а из тел считается геометрия ударов, поэтому
+            // все перемещения происходят ДО того, как хоть один удар начнёт мерить дистанции и линии.
+            bool moved = false;
+            for (int i = 0; i < _hits.Count; i++)
+            {
+                ResolvedHit hit = _hits[i];
+                if (!hit.Blink || hit.Unit.IsDead || hit.Target.IsDead) continue;
+
+                CombatPositioning.TeleportBehind(hit.Unit, hit.Target);
+                moved = true;
+            }
+
+            // --- Проход 2b: удары прилетают. ---
+            for (int i = 0; i < _hits.Count; i++) Land(_hits[i], ctx);
+
+            return moved;
         }
 
         /// <summary>Вход в замах: рестарт кулдауна (якорь), снапшот цели, событие старта.
@@ -117,7 +180,10 @@ namespace Guildmaster.Combat
             if (unit.WindupRemaining <= 0) Resolve(unit, ctx);
         }
 
-        /// <summary>Конец замаха: нанести урон по снапшот-цели, если она жива и в радиусе; иначе вхолостую.</summary>
+        /// <summary>
+        /// Конец замаха: снять цифры удара по снапшот-цели, если она жива и в радиусе; иначе вхолостую.
+        /// Сам удар прилетает в <see cref="Land"/>, когда замахи дозрели у всех (см. <see cref="Tick"/>).
+        /// </summary>
         private void Resolve(RuntimeUnit unit, ICombatContext ctx)
         {
             // Замах кончился → хвост-восстановление (или сразу Idle, если восстановления нет). Переход
@@ -140,12 +206,39 @@ namespace Guildmaster.Combat
             if ((target.Position - unit.Position).sqrMagnitude > landReach * landReach) return;
 
             // Прирост ресурса — на момент реального удара (мана-реликвии).
-            GainResourceOnHit(unit);
+            GainResourceOnHit(unit, ctx);
 
-            AttackType attackType = unit.Unit != null ? unit.Unit.AttackType : AttackType.Melee;
             float raw = unit.Stats.Get(StatType.AutoAttackDamage);
             DamageSchool school = unit.DamageSchool;
             DamageAffinity affinity = unit.Affinity;
+
+            // §9.6 усиление следующей атаки («Скрытность»): множим урон разово и снимаем баф стелса.
+            if (unit.EmpowerDamageMult > 0f)
+            {
+                raw *= unit.EmpowerDamageMult;
+                unit.EmpowerDamageMult = 0f;
+                ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, EffectTag.Stealth, int.MaxValue, 0));
+            }
+
+            // §10.5 блинк убийцы: телепорт за спину едет с ударом — он меняет позиции, а их читают
+            // соседние резолвы этого же тика.
+            bool blink = unit.BlinkBehindOnNextAttack;
+            unit.BlinkBehindOnNextAttack = false;
+
+            _hits.Add(new ResolvedHit(unit, target, raw, reach, school, affinity, blink));
+        }
+
+        /// <summary>Прилёт снятого удара: урон/снаряд/хил и on-hit эффекты. Блинк уже отыгран (проход 2a).</summary>
+        private void Land(in ResolvedHit hit, ICombatContext ctx)
+        {
+            RuntimeUnit unit = hit.Unit, target = hit.Target;
+            // Между снятием цифр и прилётом обоих могли добить ударом того же тика.
+            if (unit.IsDead || target.IsDead) return;
+
+            float raw = hit.Raw;
+            DamageSchool school = hit.School;
+            DamageAffinity affinity = hit.Affinity;
+            AttackType attackType = unit.Unit != null ? unit.Unit.AttackType : AttackType.Melee;
             AreaShape shape = unit.Unit != null ? unit.Unit.AutoAttackShape : AreaShape.None;
 
             // Хил-режим (Светлый пастырь): вместо урона — tracking-хил-снаряд в снапшот-союзника.
@@ -160,26 +253,15 @@ namespace Guildmaster.Combat
                 return;
             }
 
-            // §9.6 усиление следующей атаки («Скрытность»): множим урон разово и снимаем баф стелса.
-            if (unit.EmpowerDamageMult > 0f)
-            {
-                raw *= unit.EmpowerDamageMult;
-                unit.EmpowerDamageMult = 0f;
-                ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, EffectTag.Stealth, int.MaxValue, 0));
-            }
-
-            // §10.5 блинк убийцы: удар из скрытности телепортирует его за спину цели (в момент удара, до урона).
-            if (unit.BlinkBehindOnNextAttack)
-            {
-                unit.BlinkBehindOnNextAttack = false;
-                CombatPositioning.TeleportBehind(unit, target);
-            }
-
             if (attackType == AttackType.Melee)
             {
                 if (shape == AreaShape.Line)
                 {
-                    DealLineDamage(unit, target, reach, raw, school, affinity, ctx);
+                    // Полоса длиннее дальности выбора цели (Копейщик: бьёт на 2, накрывает до 4).
+                    // Зона всегда одна и та же и растёт от ног носителя — цель может стоять в её
+                    // середине, а не только на конце.
+                    DealLineDamage(unit, target, hit.Reach * unit.Unit.AutoAttackLengthMult,
+                        raw, school, affinity, ctx);
                 }
                 else
                 {
@@ -262,13 +344,39 @@ namespace Guildmaster.Combat
             }
         }
 
-        /// <summary>Начислить ресурс за удар (× ResourceGainEff), клампить к MaxResource.</summary>
-        private static void GainResourceOnHit(RuntimeUnit unit)
+        /// <summary>
+        /// Начислить ресурс за удар (× ResourceGainEff), клампить к MaxResource и к потолку набора
+        /// «единиц в секунду», если он задан у юнита.
+        /// </summary>
+        /// <remarks>
+        /// Потолок нужен там, где кит разгоняет собственный темп: удвоенная скорость атаки иначе
+        /// удваивает и приток ресурса, и «рекомендованный» темп ульты обваливается вдвое сам собой.
+        /// Окно — ровно секунда от первого начисления, скользящее по тикам (никаких таймеров).
+        /// </remarks>
+        private static void GainResourceOnHit(RuntimeUnit unit, ICombatContext ctx)
         {
             float onHit = unit.Unit != null ? unit.Unit.ResourceOnHit : 0f;
             if (onHit <= 0f) return;
 
             float gain = onHit * unit.Stats.Get(StatType.ResourceGainEff);
+
+            float perSecondCap = unit.Unit.MaxResourceGainPerSecond;
+            if (perSecondCap > 0f)
+            {
+                int now = ctx.CurrentTick;
+                if (now - unit.ResourceWindowStartTick >= SimConstants.TickRate)
+                {
+                    unit.ResourceWindowStartTick = now;
+                    unit.ResourceGainedInWindow  = 0f;
+                }
+
+                float room = perSecondCap - unit.ResourceGainedInWindow;
+                if (room <= 0f) return;
+
+                if (gain > room) gain = room;
+                unit.ResourceGainedInWindow += gain;
+            }
+
             unit.CurrentResource += gain;
 
             float maxRes = unit.Stats.Get(StatType.MaxResource);

@@ -14,12 +14,19 @@ namespace Guildmaster.Game.Services
     /// Тикует только хост (в мультиплеере); клиент применяет команды и следит за checksum.
     /// (вики «10» §5.1).
     /// </summary>
-    public sealed class CombatLoopService : IAsyncStartable
+    public sealed class CombatLoopService : IAsyncStartable, ISimInterpolation
     {
         private readonly CombatSimulation _simulation;
 
         private float _accumulator;
         private bool  _running;
+
+        /// <summary>
+        /// Доля шага, накопленная сверх последнего тика. Аккумулятор здесь — единственный, кто знает,
+        /// сколько времени прошло с прошлого шага, поэтому и долю отдаёт он. Презентация её только
+        /// читает (см. <see cref="ISimInterpolation"/>).
+        /// </summary>
+        public float Alpha => Mathf.Clamp01(_accumulator / SimConstants.TickDelta);
 
         public CombatLoopService(CombatSimulation simulation)
         {
@@ -85,7 +92,8 @@ namespace Guildmaster.Game.Services
             }
         }
 
-        /// <summary>Остановить цикл принудительно (например, при выгрузке сцены).</summary>
-        public void Stop() => _running = false;
+        // Ручного Stop() здесь нет: цикл живёт ровно столько, сколько боевой скоуп, и завершается
+        // токеном отмены. Прежняя ручка «остановить при выгрузке сцены» осталась от модели, где бой
+        // был отдельной сценой; в persist-мире её не звал никто (аудит 2026-07-26).
     }
 }

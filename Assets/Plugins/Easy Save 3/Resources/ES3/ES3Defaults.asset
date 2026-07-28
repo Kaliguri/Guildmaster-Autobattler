@@ -39,11 +39,6 @@ MonoBehaviour:
     - FMODUnity
     - FMODUnityHaptics
     - FMODUnityResonance
-    - glTFast
-    - glTFast.Documentation.Examples
-    - glTFast.dots
-    - glTFast.Export
-    - glTFast.Newtonsoft
     - Guildmaster.Balance
     - Guildmaster.Combat
     - Guildmaster.Core
@@ -58,7 +53,6 @@ MonoBehaviour:
     - LitMotion
     - LitMotion.Extensions
     - Lofelt.NiceVibrations
-    - Lofelt.NiceVibrations.Demo
     - MCPForUnity.Runtime
     - MessagePipe
     - MessagePipe.VContainer

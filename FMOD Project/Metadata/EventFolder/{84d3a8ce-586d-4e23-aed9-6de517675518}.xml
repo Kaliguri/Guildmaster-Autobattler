@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EventFolder" id="{84d3a8ce-586d-4e23-aed9-6de517675518}">
+		<property name="name">
+			<value>iron_spearman</value>
+		</property>
+		<relationship name="folder">
+			<destination>{ecbabcc5-7176-4e74-8279-56766e9016b1}</destination>
+		</relationship>
+	</object>
+</objects>

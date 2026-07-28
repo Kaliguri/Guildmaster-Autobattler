@@ -26,14 +26,14 @@ namespace Guildmaster.Tests.EditMode.ContentHub
             {
                 int interval = AttackTiming.IntervalTicks(speed);
                 float expected = (float)SimConstants.TickRate / interval;
-                Assert.AreEqual(expected, StatMath.AttacksPerSecond(speed), 1e-4f, $"speed={speed}");
+                Assert.AreEqual(expected, AttackTiming.AttacksPerSecond(speed), 1e-4f, $"speed={speed}");
             }
         }
 
         [Test]
         public void AttacksPerSecond_ZeroSpeed_IsZero()
         {
-            Assert.AreEqual(0f, StatMath.AttacksPerSecond(0f), 1e-6f);
+            Assert.AreEqual(0f, AttackTiming.AttacksPerSecond(0f), 1e-6f);
         }
 
         [Test]
@@ -50,7 +50,7 @@ namespace Guildmaster.Tests.EditMode.ContentHub
                     // DamageDealtEff остаётся натуральным дефолтом 1.0
                 });
 
-                Assert.AreEqual(1f, StatMath.AttacksPerSecond(1f), 1e-4f);
+                Assert.AreEqual(1f, AttackTiming.AttacksPerSecond(1f), 1e-4f);
                 Assert.AreEqual(50f, StatMath.AutoAttackDps(stats), 1e-3f);
             }
             finally { UnityEngine.Object.DestroyImmediate(config); }

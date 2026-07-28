@@ -15,7 +15,24 @@ MonoBehaviour:
   _defaultMasterVolume: 1
   _defaultMusicVolume: 0.8
   _defaultSfxVolume: 1
-  _defaultLocale: en
+  _localPlayerTeam: 0
   _vesselItemSlots: 3
+  _partyBannerSlots: 2
   _relicCapacityBase: 12
   _relicCapacityMax: 16
+  _startGold: 100
+  _battleGoldReward: 20
+  _priceCommon: 50
+  _priceCursed: 100
+  _priceDivine: 150
+  _priceSpread: 0.2
+  _sellPercent: 0.25
+  _shopRerollCost: 50
+  _restartsPerAct: 2
+  _guildSize: 4
+  _startingRelicId: relic.base
+  _maxProfiles: 4
+  _maxGuildsPerProfile: 8
+  _startingRosterCapacity: 8
+  _maxRosterCapacity: 64
+  _veteranHireUnlockDeaths: 8

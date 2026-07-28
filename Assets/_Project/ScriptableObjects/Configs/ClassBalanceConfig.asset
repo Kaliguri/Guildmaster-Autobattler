@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f8aee5d544280c4e9283f0bf01d63c2, type: 3}
+  m_Name: ClassBalanceConfig
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.ClassBalanceConfig
+  _baseHp: 2000
+  _baseMoveSpeed: 3
+  _baseDps: 110
+  _profiles:
+  - Class: 0
+    HpMult: 1
+    MoveSpeedMult: 1
+    ArmorBudget: 0
+    DpsMult: 1
+  - Class: 1
+    HpMult: 1.5
+    MoveSpeedMult: 0.85
+    ArmorBudget: 0
+    DpsMult: 0.5
+  - Class: 2
+    HpMult: 0.75
+    MoveSpeedMult: 1.1
+    ArmorBudget: 0
+    DpsMult: 1.4
+  - Class: 3
+    HpMult: 0.65
+    MoveSpeedMult: 0.75
+    ArmorBudget: 0
+    DpsMult: 1.2
+  - Class: 4
+    HpMult: 0.65
+    MoveSpeedMult: 0.75
+    ArmorBudget: 0
+    DpsMult: 0.5
+  - Class: 5
+    HpMult: 0.65
+    MoveSpeedMult: 0.75
+    ArmorBudget: 0
+    DpsMult: 0.5
+  - Class: 6
+    HpMult: 0.5
+    MoveSpeedMult: 0.75
+    ArmorBudget: 0
+    DpsMult: 0.5
+  _bandWidth: 0.3

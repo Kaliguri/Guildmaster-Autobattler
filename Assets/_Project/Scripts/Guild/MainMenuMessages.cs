@@ -5,9 +5,10 @@ namespace Guildmaster.Guild
     /// <summary>Выбор в главном меню (план [[act-map-run-loop]] §4 D1).</summary>
     public enum MainMenuChoice
     {
-        StartRun,   // начать новый забег
-        Continue,   // продолжить из автосейва
-        Quit,       // выход из игры
+        StartRun,       // начать новый забег
+        Continue,       // продолжить из автосейва
+        ProvingGrounds, // уйти на Ристалище — площадку вне забега (ГДД «Modes - Proving Grounds»)
+        Quit,           // выход из игры
     }
 
     /// <summary>

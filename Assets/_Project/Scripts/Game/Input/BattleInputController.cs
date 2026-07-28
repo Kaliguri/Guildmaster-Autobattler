@@ -1,5 +1,4 @@
 using System;
-using Guildmaster.Combat;
 using Guildmaster.Core.Input;
 using Guildmaster.Game.Services;
 using VContainer.Unity;
@@ -19,16 +18,16 @@ namespace Guildmaster.Game.Input
         private static readonly float[] SpeedSteps = { 1f, 2f, 3f };
 
         private readonly IInputService    _input;
-        private readonly CombatSimulation _simulation;
         private readonly TimeScaleService _time;
+        private readonly Core.Audio.IAudioService _audio;
 
         private int _speedIndex;
 
-        public BattleInputController(IInputService input, CombatSimulation simulation, TimeScaleService time)
+        public BattleInputController(IInputService input, TimeScaleService time, Core.Audio.IAudioService audio)
         {
-            _input      = input;
-            _simulation = simulation;
-            _time       = time;
+            _input = input;
+            _time  = time;
+            _audio = audio;
         }
 
         public void Start()
@@ -45,15 +44,22 @@ namespace Guildmaster.Game.Input
             // Time.timeScale владеет TimeScaleService — он же вернёт его к 1 при разрушении скоупа.
         }
 
-        // Space: пауза боя. SetPaused замораживает СИМУЛЯЦИЮ (её тик-счётчик идёт для будущих команд);
-        // TimeScaleService.SetPaused обнуляет Time.timeScale → встаёт и презентация, и накопление тиков.
-        // Камеры не касается: её пан на Time.unscaledDeltaTime, так что на паузе поле можно осмотреть.
-        // MP-путь пойдёт через PauseCommand/ResumeCommand (NetworkCommandRelay) — здесь хост-локально.
+        // Space: пауза ИГРОКА. Владелец у неё один — TimeScaleService: он обнуляет Time.timeScale, а вместе с
+        // ним и Time.deltaTime, из которого CombatLoopService копит тики, — так что симуляция встаёт сама.
+        // Камеры не касается: её пан на Time.unscaledDeltaTime, поле можно осмотреть на паузе.
+        //
+        // Симуляции здесь НЕ трогаем, хотя раньше трогали. CombatSimulation.SetPaused — другой факт: «сим
+        // заморожен сценарием» (расстановка, передышка), и владеют им BattleBootstrap с DeploymentController.
+        // Пока тумблер дёргал оба и читал состояние у СИМА, они расходились после каждого ResetBattle (сим
+        // сбрасывает свою паузу сам): Space снимал паузу расстановки и оживлял отряд вне боя, а после
+        // рестарта — ставил паузу вместо того, чтобы снять (аудит 2026-07-26, T-4).
         private void OnPauseToggle()
         {
-            bool paused = !_simulation.IsPaused;
-            _simulation.SetPaused(paused);
+            bool paused = !_time.IsPaused;
             _time.SetPaused(paused);
+            // Пауза глушит боевую шину питчем (TimeScale→0.05), поэтому щелчок нужен UI-шине: иначе
+            // нажатие Space не подтверждается ничем.
+            _audio?.Play(paused ? "ui.pause.ui" : "ui.resume.ui");
         }
 
         // «.»: циклическая смена скорости боя (1x → 2x → 3x → 1x). Только темп — детерминизм не трогает.
@@ -61,6 +67,7 @@ namespace Guildmaster.Game.Input
         {
             _speedIndex = (_speedIndex + 1) % SpeedSteps.Length;
             _time.SetGameSpeed(SpeedSteps[_speedIndex]);
+            _audio?.Play("ui.speed.ui");
         }
     }
 }

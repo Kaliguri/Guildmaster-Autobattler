@@ -2,6 +2,7 @@
 title: "Effect - State Tags"
 order: 34
 status: draft
+updated: 2026-07-18
 ---
 
 # Сборник: теги-состояния

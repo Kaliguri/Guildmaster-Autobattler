@@ -1,21 +1,13 @@
 ---
 name: xgaida-x-nixi-gdd-scribe
 description: >-
-  Рабочий контур ведения GDD (геймдизайн-документации) Guildmaster в
-  Obsidian-vault docs/wiki/gdd. Роль — писарь-редактор при Максе: оформляю и
-  РАЗНОШУ его дизайн-решения по канон-документам, держу единый источник правды,
-  термины и консистентность, но дизайн решает Макс. Используй ВСЕГДА, когда
-  задача касается дизайн-документации: «запиши в ГДД», ГД-решение, журнал
-  решений, roadmap дизайна, глоссарий/термины, дизайн-столпы, vision, лор,
-  баланс-дизайн (не цифры в коде), карточки реликвий/врагов/фракций, каталог
-  эффектов, аудит консистентности ГДД, реорганизация/нумерация/статусы доков,
-  или когда правишь что-либо под docs/wiki/gdd (+ docs/wiki/research). Срабатывай,
-  даже если слова «ГДД» нет, но по сути фиксируется/правится дизайн-документация.
-  НЕ применять к: реализации боя (скилл combat-sim), данным SO/POCO/DTO и id
-  (скилл data-authoring — там ДАННЫЕ, здесь ДИЗАЙН-текст), UI-коду (uitk),
-  технической вики docs/wiki/tech (это инженерные доки, не ГДД).
+  Ведение ГДД Guildmaster в Obsidian-vault docs/wiki/gdd. Роль — писарь-редактор при Максе:
+  оформляет и разносит его дизайн-решения по канон-документам, держит единый источник правды,
+  термины и консистентность; дизайн решает Макс. Зови на «запиши в ГДД», журнал решений,
+  глоссарий, vision и лор, карточки контента, аудит консистентности, и на любую правку под
+  docs/wiki/gdd и docs/wiki/research. НЕ применять к: коду (реализационные скиллы), данным и id
+  (data-authoring), технической вики docs/wiki/tech (tech-scribe).
 ---
-
 # GDD Scribe — рабочий контур геймдизайн-документации
 
 Этот скилл — процедура, а не справка. Он держит ГДД как **единый источник правды**:
@@ -41,11 +33,11 @@ Vault: `docs/wiki/` (Obsidian, публикуется Quartz на GitHub Pages).
 | Roadmap ГД (только НЕрешённое) | `docs/wiki/gdd/00-meta/roadmap.md` |
 | Открытые вопросы и черновики | `docs/wiki/gdd/00-meta/open.md` |
 | Глоссарий терминов (RU\|EN) | `docs/wiki/gdd/00-meta/glossary.md` |
-| Нормативный справочник тегов | `docs/wiki/gdd/roster/Справочник тегов.md` |
+| Нормативный справочник тегов | `docs/wiki/gdd/roster/tag-reference.md` |
 | Легаси (снятые механики) | `docs/wiki/gdd/00-meta/legacy.md` |
 | Главы дизайна (кластеры) | `docs/wiki/gdd/{10-vision,20-combat,30-run-meta,40-content,50-modes-ux}/<slug>.md` |
 | Карточки контента | `docs/wiki/gdd/{relics,roster,enemies,enemies/factions}/` |
-| Research-разборы жанра | `docs/wiki/research/` (`depth`, `randomness-appendix`, `autobattlers/`) |
+| Research-разборы жанра | `docs/wiki/research/` — **выведен из-под правила 4** (решено 2026-07-26): архив ресёрча, а не канон; шапки и статусы готовности с него не требуются, линт его не проверяет |
 | Тех-вика (НЕ ГДД) | `docs/wiki/tech/` — инженерные доки, чужая территория |
 
 > **Статус:** миграция выполнена. ВСЕ доки (главы, служебные, roster, И карточки
@@ -115,14 +107,20 @@ docs/wiki/gdd/
   10-vision/     (⊕vision·⊕pillars)·concept·lore·guildmaster·difficulty-skill
   20-combat/     combat-system·stats·effects
   30-run-meta/   injuries-mettle·procedural-lore·meta-progression·events-minigames
-  40-content/    relics-overview·items-banners  (+ relics/·roster/·enemies/ — Фаза 2)
+  40-content/    relics-overview·items-banners·authoring/·items/
+  relics/ roster/ enemies/(+species/)  — карточки контента, ЖИВУТ В КОРНЕ vault (решено 2026-07-26:
+                 переезд в 40-content/ отклонён — ломает сотни ссылок ради стройности)
   50-modes-ux/   multiplayer·controls
   research/      depth·randomness-appendix·autobattlers/
 ```
 
 - Имена файлов — **латинские слаги** (`combat-system.md`), человекочитаемое имя — в
   `title:` кириллицей (Obsidian/Quartz показывают title). `⊕` — ещё не заведено.
-- **Осталось:** карточки `relics/roster/enemies` → слаги (Фаза 2); Quartz Explorer
+- **Сделано 2026-07-26 (большой аудит):** карточки на слагах; `enemies/factions/` → `enemies/species/`;
+  поле `roles` упразднено (оси Role=`combat_class` / `playstyle` / `mechanics`); шапки полные у
+  всех 114 доков, линт `scripts/check-wiki-frontmatter.ps1` в CI **роняет сборку** при нарушении;
+  чекер ссылок видит якори и выходы за vault.
+- **Осталось:** Quartz Explorer
   `sortFn` по `order` (untested TS, нужен билд сайта). Не запускать Фазу 2 без «да».
 - **agent-friendly:** MOC-навигация (живые индекс-страницы) + Templater-шаблоны карточек.
   `docs/AGENTS.md` НЕ заводим (работаем 90% через этот скилл; дубль правил = рассинхрон).

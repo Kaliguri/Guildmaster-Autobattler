@@ -79,14 +79,24 @@ namespace Guildmaster.Combat
         {
             if (attacker == null || target == null) return;
 
+            // Снап без интерполяции: сначала переезд, ЗАТЕМ Prev = Pos (иначе вид едет старая→новая за тик —
+            // юнит «проносится» через экран, что при добивающем блинк-ударе читается как телепорт при смерти).
+            attacker.Position = BehindPosition(attacker, target);
+            attacker.PreviousPosition = attacker.Position;
+        }
+
+        /// <summary>
+        /// Точка «за спиной» цели — та, куда встанет <paramref name="attacker"/>, ничего не двигая.
+        /// Отдельно от перемещения, потому что заявки на переход считаются от ОДНОГО снимка мира и лишь
+        /// потом применяются: иначе второй переход целится за спину тела, которое уже уехало.
+        /// </summary>
+        public static Vector2 BehindPosition(RuntimeUnit attacker, RuntimeUnit target)
+        {
             Vector2 fromAttacker = target.Position - attacker.Position; // атакующий → цель = направление «в спину»
             Vector2 behindDir = fromAttacker.sqrMagnitude > 1e-4f ? fromAttacker.normalized : Vector2.right;
             float offset = attacker.Stats.Get(StatType.AttackRange) * 0.5f;
 
-            // Снап без интерполяции: сначала переезд, ЗАТЕМ Prev = Pos (иначе вид едет старая→новая за тик —
-            // юнит «проносится» через экран, что при добивающем блинк-ударе читается как телепорт при смерти).
-            attacker.Position = target.Position + behindDir * offset;
-            attacker.PreviousPosition = attacker.Position;
+            return target.Position + behindDir * offset;
         }
     }
 }

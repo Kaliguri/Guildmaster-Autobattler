@@ -1,4 +1,4 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: 4f31ad03b3dd4944fb9261f8b6b8dde0
 TextureImporter:
   internalIDToNameTable:
@@ -115,12 +115,12 @@ TextureImporter:
       name: Attack1_0
       rect:
         serializedVersion: 2
-        x: 64
-        y: 52
-        width: 34
-        height: 35
+        x: 0
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -137,12 +137,12 @@ TextureImporter:
       name: Attack1_1
       rect:
         serializedVersion: 2
-        x: 215
-        y: 52
-        width: 34
-        height: 34
+        x: 150
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -159,12 +159,12 @@ TextureImporter:
       name: Attack1_2
       rect:
         serializedVersion: 2
-        x: 363
-        y: 52
-        width: 34
-        height: 36
+        x: 300
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -181,12 +181,12 @@ TextureImporter:
       name: Attack1_3
       rect:
         serializedVersion: 2
-        x: 488
-        y: 52
-        width: 89
-        height: 67
+        x: 450
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -203,12 +203,12 @@ TextureImporter:
       name: Attack1_4
       rect:
         serializedVersion: 2
-        x: 638
-        y: 52
-        width: 44
-        height: 44
+        x: 600
+        y: 0
+        width: 150
+        height: 150
       alignment: 0
-      pivot: {x: 0.5, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

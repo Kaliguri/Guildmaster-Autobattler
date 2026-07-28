@@ -16,15 +16,13 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class DotBattleIntegrationTests
     {
-        private const float CellSize = 3f;
-        private const float ArmorK   = 100f;
 
         private static CombatSimulation BuildSim()
         {
             return new CombatSimulation(
                 new XorShiftRng(7UL),
-                ArmorK,
-                new SpatialHash(CellSize),
+                CombatTestValues.ArmorK,
+                new SpatialHash(CombatTestValues.CellSize),
                 new BrainSystem(),
                 new AbilitySystem(),
                 new MovementSystem(),
@@ -55,7 +53,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var periodic = new PeriodicDamageComponent()
                 .With("_interval", interval)
                 .With("_damagePerSecond", new ScalableValue(dps))
-                .With("_damageSchool", DamageSchool.Elemental);
+                .With("_damageSchool", DamageSchool.Magical);
             return TestEffect.Make(baseDuration: duration, tags: EffectTag.DoT, components: periodic);
         }
 

@@ -1,0 +1,3 @@
+-- Vendored from Tsukina-7mochi/aseprite-scripts (MIT)
+-- https://github.com/Tsukina-7mochi/aseprite-scripts/tree/master/psd
+-- Patched: early-return when _G.GUILDMASTER_PSD_LIB_ONLY (library mode for Guildmaster wrappers).

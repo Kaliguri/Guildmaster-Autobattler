@@ -1,27 +1,13 @@
 ---
 name: xgaida-x-nixi-combat-sim
 description: >-
-  Рабочий контур боевой симуляции (combat sim) Guildmaster — детерминированное
-  ядро боя на 30 Гц, система эффектов (producer→consumer, теги, стакинг),
-  displacement/separation, авто-атаки и способности, юнит-POCO, а также КОНТРАКТ
-  развязки sim→presentation. Используй ВСЕГДА, когда задача касается боя:
-  симуляция, тик/Tick, детерминизм, CombatSimulation, ICombatContext, эффект/
-  RuntimeEffect/EffectSystem, реактивы, CombatEvent, способность/AutoAttack,
-  displacement/knockback/separation, Brain/AI боя, RuntimeUnit, урон/щит/хил в
-  бою, teamId/исход боя, или когда правишь что-либо под
-  Assets/_Project/Scripts/Combat, боевые сервисы в Game/Services
-  (CombatLoopService, TimeScaleService — боевое время) и боевой мост
-  Presentation (CombatPresenter, CombatEvents). Срабатывай, даже если слова
-  «симуляция» нет, но по сути правится боевая логика или её развязка.
-  НЕ применять к: балансу/id/loc определений (EffectData, UnitData, VesselData —
-  это скилл data-authoring; здесь только ПОВЕДЕНИЕ), боевому uGUI-HUD
-  (Image.Filled и т.п.), джусу и визуальному фидбэку (CombatFeelDirector,
-  screen shake, hitstop, slowmo-политика, VFX/PixelBurst/DeathShatter,
-  FloatingText, feel-конфиги — это скилл gamefeel-vfx; здесь только КОНТРАКТ
-  боевого времени TimeScaleService), звуку (IAudioService, FMOD — скилл audio).
-  Инженерную тех-доку об этих системах (docs/wiki/tech) ведёт tech-scribe.
+  Боевая симуляция Guildmaster: детерминированное ядро на 30 Гц, тик-ордер, система эффектов
+  (producer→consumer, теги, стакинг), авто-атаки и способности, displacement и separation,
+  боевой AI, RuntimeUnit, а также контракт развязки sim→presentation. Зови на любую правку
+  боевой логики и всего под Assets/_Project/Scripts/Combat — даже если слово «симуляция» не
+  звучит. НЕ применять к: определениям контента и баланс-числам в SO (data-authoring),
+  визуальному фидбэку и slowmo (gamefeel-vfx), звуку (audio), тех-доке (tech-scribe).
 ---
-
 # Combat Sim — рабочий контур Guildmaster
 
 Этот скилл — процедура, а не справка. Он превращает разрозненные инварианты боя в

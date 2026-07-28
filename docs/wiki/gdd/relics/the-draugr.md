@@ -1,15 +1,18 @@
 ---
 title: "Relic - Common - The Draugr (Berserker)"
+order: 80
 kind: character
 status: needs_review
+updated: 2026-07-26
 rarity: Обычная
+combat_class: Брузер
 position: Фронт
 combat_range: Ближний
 attack_delivery: []
 physical_damage: []
-elemental_damage: []
+magical_damage: []
 affinity: []
-roles: []
+playstyle: []
 mechanics: []
 gender: Не применимо
 themes: []

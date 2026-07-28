@@ -1,53 +1,26 @@
-using System.IO;
 using Guildmaster.Core.Persistence;
-using UnityEngine;
 
 namespace Guildmaster.Game.Services
 {
     /// <summary>
-    /// Соло-бэкенд <see cref="ISaveService"/>: JSON-файл на диск (<see cref="Application.persistentDataPath"/>)
-    /// через <see cref="JsonUtility"/>. Без зависимости от Easy Save 3 (у ES3 нет asmdef → из
-    /// <c>Guildmaster.*</c> не вызвать). ES3 + Steam Cloud — плановая замена бэкенда за тем же интерфейсом
-    /// (вики «2»), тела не трогая. JsonUtility сериализует <c>[Serializable]</c>-DTO с публичными полями.
+    /// Бэкенд <see cref="ISaveService"/> для данных ИГРОКА — наш собственный и единственный: JSON-файлы
+    /// под <c>persistentDataPath/Saves</c> (ТЗ [[save-system]] §4). Сюда ложатся забег, профили, гильдии
+    /// и предпочтения — всё, что должно доехать на второй компьютер.
+    /// <para>Easy Save 3 остаётся в проекте РЕФЕРЕНСОМ, а не плановой заменой (реш. 2026-07-26): мы
+    /// сохраняем данные, а не объекты — durable-состояние это плоский DTO по строковым id, — поэтому
+    /// сильные стороны ES3 (графы объектов, ссылки на UnityEngine.Object, полиморфизм) решают проблему,
+    /// которой у нас нет.</para>
+    /// <para><b>Каталог <c>Saves/</c> — контракт со Steam Cloud:</b> Auto-Cloud синхронизирует его по маске
+    /// <c>*.json</c> рекурсивно. Поэтому суффиксы служебных файлов идут ПОСЛЕ расширения
+    /// (<c>run.json.bak</c>, не <c>run.bak.json</c>) — так они не подпадают под маску и мусор не едет в
+    /// облако. Местами не менять.</para>
+    /// <para>Настройки дисплея сюда НЕ кладутся — им место в <see cref="LocalJsonFileSaveService"/>.</para>
     /// </summary>
-    public sealed class JsonFileSaveService : ISaveService
+    public sealed class JsonFileSaveService : JsonFileSaveServiceBase
     {
-        private static string PathFor(string key) =>
-            Path.Combine(Application.persistentDataPath, key + ".json");
+        /// <summary>Корень синхронизируемых сохранений. По этой маске настроен Auto-Cloud.</summary>
+        public const string SavesFolder = "Saves";
 
-        public void Save<T>(string key, T value)
-        {
-            try
-            {
-                File.WriteAllText(PathFor(key), JsonUtility.ToJson(value, prettyPrint: true));
-            }
-            catch (IOException e)
-            {
-                Debug.LogError($"[JsonFileSaveService] - не удалось сохранить '{key}': {e.Message}");
-            }
-        }
-
-        public T Load<T>(string key)
-        {
-            string path = PathFor(key);
-            if (!File.Exists(path)) return default;
-            try
-            {
-                return JsonUtility.FromJson<T>(File.ReadAllText(path));
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError($"[JsonFileSaveService] - не удалось загрузить '{key}': {e.Message}");
-                return default;
-            }
-        }
-
-        public bool Exists(string key) => File.Exists(PathFor(key));
-
-        public void Delete(string key)
-        {
-            string path = PathFor(key);
-            if (File.Exists(path)) File.Delete(path);
-        }
+        public JsonFileSaveService() : base(SavesFolder) { }
     }
 }

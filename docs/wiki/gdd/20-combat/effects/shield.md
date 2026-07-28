@@ -2,6 +2,7 @@
 title: "Effect - Shield"
 order: 20
 status: draft
+updated: 2026-07-18
 ---
 
 # Щит (Shield)
