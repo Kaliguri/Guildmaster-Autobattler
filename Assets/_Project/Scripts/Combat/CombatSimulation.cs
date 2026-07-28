@@ -315,8 +315,13 @@ namespace Guildmaster.Combat
                 && _effectSystem.TryResolveAttackSplit(req.Source, req.Target, this, out AttackSplit split)
                 && split.Share > 0f)
             {
-                float splitDamage = req.RawDamage * split.Share;
-                DealDamageCore(new DamageRequest(req.Source, req.Target, req.RawDamage - splitDamage,
+                // Отщеплённая часть либо забирает долю удара (суммарный урон сохраняется), либо приходит
+                // со своей величиной — процентом от макс. HP цели у Мечника. Во втором случае клинок всё
+                // равно теряет свою долю: половина стали + процентный огонь, а не полный удар плюс огонь.
+                float removed = req.RawDamage * split.Share;
+                float splitDamage = split.HasOwnDamage ? split.OwnDamage : removed;
+
+                DealDamageCore(new DamageRequest(req.Source, req.Target, req.RawDamage - removed,
                     req.School, req.ArmorK, req.SourceKind, req.Affinity, req.Element));
                 if (!req.Target.IsDead)
                     DealDamageCore(new DamageRequest(req.Source, req.Target, splitDamage,

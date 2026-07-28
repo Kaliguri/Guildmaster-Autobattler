@@ -275,6 +275,10 @@ MonoBehaviour:
     m_Localized: "\u2014"
     m_Metadata:
       m_Items: []
+  - m_Id: 6163944320524288
+    m_Localized: Fungal Mend
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -78,6 +78,9 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Доля недостающего HP цели, добавляемая к лечению («Длань жизни» = 1.0 → долечивает до полного). >0 делает способность лечащей.")]
         [SerializeField] private float _healPctTargetMissingHp;
 
+        [Tooltip("Эффект вместо разового лечения: накладывается на каждого лечимого союзника (Друид = HoT «Грибной покров»). Множитель лечения превращается в стаки эффекта. Задан → тоже делает способность лечащей.")]
+        [SerializeField] private EffectData _healEffect;
+
         [Header("Cast condition (blocks D/E, Phase 3)")]
         [Tooltip("Когда кастовать: Immediately = как только готова; EnemiesInRadius = врагов в радиусе ≥ CastConditionCount; AllyTargetHpBelowPct = HP% выбранной цели ≤ CastConditionHpPct.")]
         [SerializeField] private CastCondition _castCondition = CastCondition.Immediately;
@@ -150,8 +153,16 @@ namespace Guildmaster.Data.Definitions
         public float AreaRadius => _areaRadius;
         public float HealFlat => _healFlat;
         public float HealPctTargetMissingHp => _healPctTargetMissingHp;
-        /// <summary>Способность лечит (а не бьёт), если задана любая хил-нагрузка.</summary>
-        public bool IsHeal => _healFlat > 0f || _healPctTargetMissingHp > 0f;
+
+        /// <summary>
+        /// Эффект-нагрузка лечения: если задан, союзник получает ЕГО (со стаками по множителю лечения)
+        /// вместо мгновенного восстановления HP. Плоский хил и процент при этом не отменяются — заданы
+        /// оба, союзник получит и то, и то.
+        /// </summary>
+        public EffectData HealEffect => _healEffect;
+
+        /// <summary>Способность лечит (а не бьёт), если задана любая хил-нагрузка — мгновенная или эффектом.</summary>
+        public bool IsHeal => _healFlat > 0f || _healPctTargetMissingHp > 0f || _healEffect != null;
         public CastCondition CastCondition => _castCondition;
         public int CastConditionCount => _castConditionCount;
         /// <summary>Радиус условия каста; при ≤ 0 откатывается к <see cref="AreaRadius"/>.</summary>

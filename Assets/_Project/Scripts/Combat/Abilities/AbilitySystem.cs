@@ -343,6 +343,12 @@ namespace Guildmaster.Combat
         /// умножая лечение на число уникальных ядов на нём — «Взрыв спор» лечит тем сильнее, чем разнообразнее
         /// отравлена цель. Хил каждому союзнику стакается от каждой взорванной рядом цели (внешний цикл).
         /// </summary>
+        /// <remarks>
+        /// Нагрузка бывает двух видов, и они не исключают друг друга: мгновенное восстановление HP и
+        /// <see cref="AbilityData.HealEffect"/> — эффект-HoT, где множитель превращается в СТАКИ. Стаки
+        /// набиваются повторным наложением, а не отдельным API: <c>StackRule.Stack</c> для этого и есть,
+        /// и так же ведёт себя любой другой источник стаков в бою (решение по Друиду 2026-07-28).
+        /// </remarks>
         private void HealAlliesAround(RuntimeUnit caster, RuntimeUnit epicenter, AbilityData data, int multiplier, ICombatContext ctx)
         {
             ctx.QueryUnitsInRadius(epicenter.Position, data.AreaRadius, _targets, TargetFilter.Allies, caster.Team);
@@ -353,6 +359,10 @@ namespace Guildmaster.Combat
 
                 float heal = HealAmount(ally, data) * multiplier;
                 if (heal > 0f) ctx.Heal(ally, heal, caster);
+
+                if (data.HealEffect == null) continue;
+                for (int stack = 0; stack < multiplier; stack++)
+                    ctx.ApplyEffect(ally, data.HealEffect, caster);
             }
         }
 

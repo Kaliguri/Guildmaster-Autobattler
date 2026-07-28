@@ -97,8 +97,9 @@ MonoBehaviour:
     _affinityOverride: 2
     _areaShape: 0
     _areaRadius: 1.5
-    _healFlat: 80
+    _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 11400000, guid: dd60a04a362a4b742b77529b3558aa75, type: 2}
     _castCondition: 3
     _castConditionCount: 1
     _castConditionRadius: 0

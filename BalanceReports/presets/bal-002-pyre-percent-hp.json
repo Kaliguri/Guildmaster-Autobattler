@@ -1,0 +1,15 @@
+{
+  "title": "BAL-002: Мечник — процентный огонь, слабая сталь, класс Убийца",
+  "edits": [
+    { "op": "setValue", "asset": "FlameSwordsman", "path": "_combatClass", "value": 2 },
+
+    { "op": "setStat", "asset": "FlameSwordsman", "stat": "AutoAttackDamage", "modOp": "Override", "value": 65 },
+    { "op": "setStat", "asset": "FlameSwordsman", "stat": "AttackSpeed", "modOp": "Override", "value": 1.0 },
+
+    { "op": "setValue", "asset": "BlazingBlades", "path": "_components.Array.data[2]._pctTargetMaxHp", "value": 0.01 },
+    { "op": "setValue", "asset": "BlazingBlades", "path": "_components.Array.data[2]._pctPerStack", "value": 0.0025 },
+    { "op": "setValue", "asset": "BlazingBlades", "path": "_components.Array.data[2]._stackTag", "value": 8192 },
+
+    { "op": "setValue", "asset": "Ignition", "path": "_components.Array.data[0]._damagePerStack", "value": 20 }
+  ]
+}

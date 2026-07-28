@@ -98,19 +98,33 @@ namespace Guildmaster.Combat.Effects
     /// Часть удара, уходящая другой школой урона (карточка The Pyre: по горящей цели половина клинка
     /// бьёт Огнём). Доля берётся ОТ того же сырого урона, суммарная величина удара не меняется —
     /// меняется то, какой бронёй она гасится и какие реакции будит.
+    /// <para>Исключение — <see cref="OwnDamage"/>: отщеплённая часть считается СВОЕЙ величиной (у
+    /// Мечника — процентом от макс. HP цели), и тогда суммарный урон удара уже не сохраняется. Это
+    /// намеренно: процентная половина и есть то, чем он выкашивает толстых.</para>
     /// </summary>
     public readonly struct AttackSplit
     {
-        /// <summary>Доля урона [0..1], уходящая школой <see cref="School"/>.</summary>
+        /// <summary>Доля урона [0..1], уходящая школой <see cref="School"/>. При <see cref="HasOwnDamage"/> задаёт только, сколько СНИМАЕТСЯ с исходной школы.</summary>
         public readonly float Share;
+
+        /// <summary>
+        /// Своя величина отщеплённой части. &gt; 0 — она бьёт этим числом вместо <c>RawDamage × Share</c>;
+        /// исходная школа при этом всё равно теряет свою долю, то есть клинок остаётся ополовиненным.
+        /// </summary>
+        public readonly float OwnDamage;
+
         public readonly Data.Definitions.DamageSchool School;
         public readonly Data.Definitions.MagicElement Element;
 
-        public AttackSplit(float share, Data.Definitions.DamageSchool school, Data.Definitions.MagicElement element)
+        public bool HasOwnDamage => OwnDamage > 0f;
+
+        public AttackSplit(float share, Data.Definitions.DamageSchool school, Data.Definitions.MagicElement element,
+            float ownDamage = 0f)
         {
-            Share   = share < 0f ? 0f : share > 1f ? 1f : share;
-            School  = school;
-            Element = element;
+            Share     = share < 0f ? 0f : share > 1f ? 1f : share;
+            School    = school;
+            Element   = element;
+            OwnDamage = ownDamage < 0f ? 0f : ownDamage;
         }
     }
 

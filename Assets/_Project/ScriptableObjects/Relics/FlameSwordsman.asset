@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FlameSwordsman
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.flame_swordsman
-  _combatClass: 0
+  _combatClass: 2
   _damageSchool: 0
   _physicalSubtype: 2
   _magicElement: 0
@@ -67,10 +67,10 @@ MonoBehaviour:
   _stats:
   - Stat: 7
     Op: 3
-    Value: 160
+    Value: 65
   - Stat: 8
     Op: 3
-    Value: 0.75
+    Value: 1
   - Stat: 9
     Op: 3
     Value: 1
@@ -104,6 +104,7 @@ MonoBehaviour:
     _areaRadius: 0
     _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
     _castCondition: 3
     _castConditionCount: 1
     _castConditionRadius: 0

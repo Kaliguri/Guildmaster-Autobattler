@@ -803,6 +803,10 @@ MonoBehaviour:
     m_Key: kw.true.name.ins
     m_Metadata:
       m_Items: []
+  - m_Id: 6163944320524288
+    m_Key: effect.spore_mend.name
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
-  m_Name: Ignition
+  m_Name: SporeMend
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
-  _id: effect.ignition
-  _polarity: 2
-  _tags: 0
-  _baseDuration: 0
-  _stacking: 0
-  _maxStacks: 1
+  _id: effect.spore_mend
+  _polarity: 0
+  _tags: 17
+  _baseDuration: 3
+  _stacking: 1
+  _maxStacks: 10
   _cleanseTier: 0
   _unremovable: 0
   _cleansePrice:
@@ -28,20 +28,16 @@ MonoBehaviour:
   - Flat: 0
     Pct: 0
   _components:
-  - rid: 5615026976500744343
+  - rid: 5615027293180133485
   _icon: {fileID: 0}
   _infoTags: []
   references:
     version: 2
     RefIds:
-    - rid: 5615026976500744343
-      type: {class: IgnitionComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+    - rid: 5615027293180133485
+      type: {class: PeriodicHealComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _detonateTag: 8192
-        _damagePerStack: 20
-        _school: 1
-        _physicalSubtype: 0
-        _magicElement: 1
-        _affinity: 0
-        _onKillBuff: {fileID: 11400000, guid: c042764a4fd2cf348b303be4387734ff, type: 2}
-        _onKillHealPctMissingHp: 0.25
+        _interval: 1
+        _healPerSecond:
+          Base: 60
+          Scalings: []
