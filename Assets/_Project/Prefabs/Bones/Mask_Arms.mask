@@ -19,61 +19,69 @@ AvatarMask:
     m_Weight: 0
   - m_Path: Hips/Torso/Arm (Left)
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Rotation Point
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Rotation Point/Arm_Shoulder
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Arm_Shoulder
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Rotation Point/Arm_Top
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Arm_Top
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Rotation Point/Elbow
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Rotation Point/Elbow/Arm_Down
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Rotation Point/Elbow/Arm_Down/Hand
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Rotation Point/Elbow/Arm_Down/Hand/Shield
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)/Shield
     m_Weight: 1
   - m_Path: Hips/Torso/Arm (Right)
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Right)/Rotation Point
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Right)/Rotation Point/Arm_Shoulder
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Arm_Shoulder
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Right)/Rotation Point/Arm_Top
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Arm_Top
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Right)/Rotation Point/Elbow
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down/Hand
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down/Hand/Sword
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
+      Point (Grip)/Sword
     m_Weight: 1
   - m_Path: Hips/Leg (Left)
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/Rotation Point
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/Rotation Point/Leg_Top
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)/Leg_Top
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/Rotation Point/Knee
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/Rotation Point/Knee/Ankle
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation Point
+      (Ankle)
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/Rotation Point/Knee/Ankle/Leg_Boots
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation Point
+      (Ankle)/Leg_Boots
     m_Weight: 0
-  - m_Path: Hips/Leg (Left)/Rotation Point/Knee/Leg_Down
+  - m_Path: Hips/Leg (Left)/Rotation Point (Hip)/Rotation Point (Knee)/Leg_Down
     m_Weight: 0
   - m_Path: Hips/Leg (Right)
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/Rotation Point
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/Rotation Point/Leg_Top
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)/Leg_Top
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/Rotation Point/Knee
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/Rotation Point/Knee/Ankle
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation
+      Point (Ankle)
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/Rotation Point/Knee/Ankle/Leg_Boots
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)/Rotation
+      Point (Ankle)/Leg_Boots
     m_Weight: 0
-  - m_Path: Hips/Leg (Right)/Rotation Point/Knee/Leg_Down
+  - m_Path: Hips/Leg (Right)/Rotation Point (Hip)/Rotation Point (Knee)/Leg_Down
     m_Weight: 0

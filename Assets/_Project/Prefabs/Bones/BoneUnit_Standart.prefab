@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 995155820979348708}
   m_Layer: 0
-  m_Name: Elbow
+  m_Name: Rotation Point (Elbow)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42,7 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3427321953522330417}
   m_Layer: 0
-  m_Name: Rotation Point
+  m_Name: Rotation Point (Hip)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -257,7 +257,7 @@ GameObject:
   m_Component:
   - component: {fileID: 530714635732921597}
   m_Layer: 0
-  m_Name: Knee
+  m_Name: Rotation Point (Knee)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -414,7 +414,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3464816196572883649}
   m_Layer: 0
-  m_Name: Rotation Point
+  m_Name: Rotation Point (Hip)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -629,7 +629,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7781523810345048417}
   m_Layer: 0
-  m_Name: Ankle
+  m_Name: Rotation Point (Ankle)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -661,7 +661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 959332909848431557}
   m_Layer: 0
-  m_Name: Rotation Point (Item in Hand)
+  m_Name: Rotation Point (Grip)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -784,7 +784,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2454201697868888205}
   m_Layer: 0
-  m_Name: Hand
+  m_Name: Rotation Point (Grip)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1122,7 +1122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8822080382547108190}
   m_Layer: 0
-  m_Name: Rotation Point
+  m_Name: Rotation Point (Shoulder)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1551,7 +1551,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7363073705593383267}
   m_Layer: 0
-  m_Name: Elbow
+  m_Name: Rotation Point (Elbow)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1890,7 +1890,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6049321912722315089}
   m_Layer: 0
-  m_Name: Rotation Point
+  m_Name: Rotation Point (Shoulder)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2015,7 +2015,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5163506451790135013}
   m_Layer: 0
-  m_Name: Knee
+  m_Name: Rotation Point (Knee)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2080,7 +2080,7 @@ GameObject:
   m_Component:
   - component: {fileID: 51928263616051541}
   m_Layer: 0
-  m_Name: Ankle
+  m_Name: Rotation Point (Ankle)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
