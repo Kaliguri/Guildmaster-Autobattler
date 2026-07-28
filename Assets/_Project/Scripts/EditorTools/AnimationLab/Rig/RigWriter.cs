@@ -231,7 +231,16 @@ namespace Guildmaster.AnimationLab.Editor
                     if (track.Keys[i] > time + 1e-4f) break;
                     last = i;
                 }
-                if (last >= 0 && Mathf.Abs(track.Keys[last] - time) > 1e-4f) track[time] = track.Values[last];
+                if (last < 0) continue;
+
+                // Pin the key the pause STARTS from as well. Left smoothed, its tangent still points at the
+                // next key beyond the pause, so the curve bows over the plateau and comes back — the pelvis
+                // drifted up and down through frames that were flat in every angle.
+                if (!_eases.TryGetValue(pair.Key, out var modes))
+                    _eases[pair.Key] = modes = new Dictionary<float, Ease>();
+                modes[track.Keys[last]] = Ease.Hold;
+
+                if (Mathf.Abs(track.Keys[last] - time) > 1e-4f) track[time] = track.Values[last];
             }
 
             _time = Mathf.Max(_time, time);
