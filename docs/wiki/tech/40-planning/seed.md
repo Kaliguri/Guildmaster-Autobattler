@@ -1,8 +1,8 @@
 ---
 title: "Planning - Seed & RNG"
 order: 130
-status: planned
-updated: 2026-07-16
+status: needs_review
+updated: 2026-07-28
 ---
 
 **Статус:** План. Контракт `IRngService` существует (`Guildmaster.Core`); наполнение генерации (карта/награды/магазин/ивенты) — по мере готовности флоу забега.

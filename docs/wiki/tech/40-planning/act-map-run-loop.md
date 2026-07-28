@@ -1,8 +1,8 @@
 ---
 title: "Planning - Act Map & Run Loop"
 order: 115
-status: draft
-updated: 2026-07-19
+status: archive
+updated: 2026-07-28
 ---
 
 **Статус:** Черновик плана (2026-07-17), согласован с Максом в чате (18 решений + опрос по экономике). **Ждёт финального ревью Макса перед реализацией.** Детализирует шаг B1 из [[tech/40-planning/vertical-slice|Planning - Vertical Slice]] (карта акта) и достраивает всё, что на карте висит: петля забега, магазин, сундук, «?»-узел, элитка, экран исхода, главное меню, модель перезапуска. Опирается на [[tech/20-explanation/run-flow|Explanation - Run Flow]] (§8 карта, §5 автосейв), [[tech/10-reference/saves|Reference - Saves]], [[meta-progression]] (экономика), [[combat-system]] (§Перезапуск, реш. №65).

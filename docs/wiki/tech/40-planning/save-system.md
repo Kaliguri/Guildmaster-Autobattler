@@ -1,8 +1,8 @@
 ---
 title: "Planning - Save System"
 order: 160
-status: planned
-updated: 2026-07-26
+status: needs_review
+updated: 2026-07-28
 ---
 
 **Статус:** planned — ТЗ утверждено 2026-07-26. **Фаза A реализована** в тот же день (см. §12);

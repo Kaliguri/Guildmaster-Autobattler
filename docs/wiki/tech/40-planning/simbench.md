@@ -1,9 +1,15 @@
 ---
 title: "Planning - SimBench Balance Harness"
 order: 135
-status: ready
-updated: 2026-07-17
+status: archive
+updated: 2026-07-28
 ---
+
+> [!info] Статус: реализовано, ниже — архив ТЗ
+> Одна поправка к строке статуса: меню переехало под наш единственный корень — пункты живут как
+> `Alebardium/Balance/*` (`Assets/_Project/Scripts/Balance/Editor/BalanceMenu.cs`), а не `Tools/Balance/*`.
+> Актуальная раскладка меню — [[tech/10-reference/editor-tools|Reference - Editor Tools]].
+> Остальное тело плана — след замысла на 2026-07-17 и не переписывается.
 
 **Статус:** Реализовано (Фазы 0–2, 2026-07-17), ветка `feat/run-loop-and-simbench`. Код — `Assets/_Project/Scripts/Balance` (+ `/Editor`), меню `Tools/Balance/*`, тесты `Guildmaster.Balance.Tests` (3/3 зелёные). Верифицировано на реальном контенте (10 архетипов + 4 гоблина): цифры дискриминирующие. «Регрессия баланса в CI» — вырезана (наблюдательность на Максе).
 

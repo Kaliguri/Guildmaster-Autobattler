@@ -1,8 +1,8 @@
 ---
 title: "Planning - Vertical Slice"
 order: 100
-status: living
-updated: 2026-07-16
+status: archive
+updated: 2026-07-28
 ---
 
 **Статус:** План составлен (2026-07-14). **Часть A реализована (2026-07-14):** A1 `090913e3` (+.meta `f7ebbe0a`), A2 `ce6cfb33`, A3 `699a618d` — ветка `feat/encounter-data-loader`, 281/281 EditMode зелёные. Замкнутый разрез «бой → исход → награда 1-из-3 → рост гильдии». Ждёт play-mode QA + дизайн-полиш экрана награды (собран кодом, без UXML). **Следующее — развилка §7.1 + ресёрч B1 (генерация карты vs пролог-template): решение Макса.** Прогресс/решения — память `vertical-slice-progress`. Развилки — §7. Опирается на [[tech/40-planning/roadmap|Planning - Roadmap]] (Фаза 5 «Флоу забега» + цель Фазы 8), [[tech/20-explanation/run-flow|Explanation - Run Flow]], [[tech/40-planning/deployment-encounters|Planning - Deployment & Encounters]], [[meta-progression]].

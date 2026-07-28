@@ -1,8 +1,8 @@
 ---
 title: "Planning - Phase 2: Effects & Abilities"
 order: 30
-status: ready
-updated: 2026-07-16
+status: archive
+updated: 2026-07-28
 ---
 
 **Статус:** Реализовано (все 10 шагов §8 закрыты, 90 EditMode-тестов зелёные)

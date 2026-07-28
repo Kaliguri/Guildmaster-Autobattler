@@ -1,8 +1,8 @@
 ---
 title: "Planning - Phase 4: Content Framework"
 order: 60
-status: ready
-updated: 2026-07-16
+status: archive
+updated: 2026-07-28
 ---
 
 **Статус:** Реализовано (контент-каркас: `ContentDefinition`, жизненный цикл id, реестр `ContentDatabase`, валидация). Документ — архив исполненного ТЗ.

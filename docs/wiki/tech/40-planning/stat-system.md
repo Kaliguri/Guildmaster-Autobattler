@@ -1,8 +1,8 @@
 ---
 title: "Planning - Stat System"
 order: 20
-status: ready
-updated: 2026-07-16
+status: needs_review
+updated: 2026-07-28
 ---
 
 **Статус:** Ready

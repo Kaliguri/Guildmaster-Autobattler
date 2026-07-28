@@ -1,8 +1,8 @@
 ---
 title: "Planning - Phase 3: AI & Relics"
 order: 40
-status: ready
-updated: 2026-07-16
+status: archive
+updated: 2026-07-28
 ---
 
 # Архитектура реализации — Фаза 3 (AI-движок + играбельные реликвии)

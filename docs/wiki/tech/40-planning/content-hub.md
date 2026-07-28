@@ -1,8 +1,8 @@
 ---
 title: "Planning - Content Hub"
 order: 70
-status: ready
-updated: 2026-07-16
+status: archive
+updated: 2026-07-28
 ---
 
 **Статус:** Реализовано (ядро окна `ContentHubWindow` собрано — браузер, баланс, аудио, конфиги, coverage, doctor; код в `EditorTools/ContentHub`). Документ — архив исполненного ТЗ.
