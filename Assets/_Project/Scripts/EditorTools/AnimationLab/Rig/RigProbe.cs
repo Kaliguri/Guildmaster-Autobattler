@@ -86,7 +86,7 @@ namespace Guildmaster.AnimationLab.Editor
                 cam.Render();
 
                 var tex = ReadBack(rt, size);
-                var canvas = new Canvas(tex, cam, size);
+                var canvas = new RigCanvas(tex, cam, size);
 
                 foreach (var joint in profile.Joints)
                 {
@@ -240,63 +240,6 @@ namespace Guildmaster.AnimationLab.Editor
             foreach (var entry in Palette)
                 if (entry.color == color) return entry.name;
             return "white";
-        }
-
-        /// <summary>Pixel drawing over a rendered frame, in world coordinates.</summary>
-        sealed class Canvas
-        {
-            readonly Texture2D _tex;
-            readonly Camera _cam;
-            readonly int _size;
-
-            public Canvas(Texture2D tex, Camera cam, int size) { _tex = tex; _cam = cam; _size = size; }
-
-            Vector2 ToPixels(Vector3 world)
-            {
-                var viewport = _cam.WorldToViewportPoint(world);
-                return new Vector2(viewport.x * _size, viewport.y * _size);
-            }
-
-            public void Dot(Vector3 world, int radius, Color color)
-            {
-                var p = ToPixels(world);
-                for (int dx = -radius; dx <= radius; dx++)
-                    for (int dy = -radius; dy <= radius; dy++)
-                    {
-                        if (dx * dx + dy * dy > radius * radius) continue;
-                        Plot((int)p.x + dx, (int)p.y + dy, color);
-                    }
-            }
-
-            public void Line(Vector3 worldA, Vector3 worldB, Color color, int thickness)
-            {
-                var a = ToPixels(worldA);
-                var b = ToPixels(worldB);
-                int steps = (int)Vector2.Distance(a, b) * 2 + 2;
-                for (int i = 0; i <= steps; i++)
-                {
-                    var p = Vector2.Lerp(a, b, i / (float)steps);
-                    for (int dx = -thickness; dx <= thickness; dx++)
-                        for (int dy = -thickness; dy <= thickness; dy++)
-                            Plot((int)p.x + dx, (int)p.y + dy, color);
-                }
-            }
-
-            public void Cross(Vector3 world, int radius, Color color)
-            {
-                var p = ToPixels(world);
-                for (int i = -radius; i <= radius; i++)
-                {
-                    Plot((int)p.x + i, (int)p.y + i, color);
-                    Plot((int)p.x + i, (int)p.y - i, color);
-                }
-            }
-
-            void Plot(int x, int y, Color color)
-            {
-                if (x < 0 || y < 0 || x >= _size || y >= _size) return;
-                _tex.SetPixel(x, y, color);
-            }
         }
     }
 }
