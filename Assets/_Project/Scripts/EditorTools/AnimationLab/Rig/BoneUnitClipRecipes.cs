@@ -72,12 +72,15 @@ namespace Guildmaster.AnimationLab.Editor
                 w.At(0.450f).Bend("torso", -10f, Near, Out).Bend("shoulder.R", -36f, Near, Out)
                             .Bend("shoulder.L", 3f, Near, Out).Bend("knee.R", 12f, Near, Out)
                             .Bend("knee.L", 6f, Near, Out).Bend("hip.L", -4f, Near, Out);
-                w.At(0.466f).Bend("head", -18f, Near, Out).Bend("elbow.R", -64f, Near, Out);
+                // Elbow stops just short of straight. It used to land at -64, inherited from the old clip,
+                // and that put the angle between upper arm and forearm at -44 — the joint bent inside out.
+                // A hinge only folds one way; the blade's reach comes from the shoulder and the wrist.
+                w.At(0.466f).Bend("head", -18f, Near, Out).Bend("elbow.R", 2f, Near, Out);
                 w.At(0.483f).Aim("weapon", -70f, Cw, Out).Aim("shield", 50f, Near, Out);
                 HoldUntil(w, 0.583f);   // 6 frames of frozen impact
 
                 // follow-through carries the blade a little further, then a long settle
-                w.At(0.633f).Aim("weapon", -88f, Cw, Soft).Bend("elbow.R", -70f, Near, Soft);
+                w.At(0.633f).Aim("weapon", -88f, Cw, Soft).Bend("elbow.R", 4f, Near, Soft);
                 Stance(w, 1.167f);
                 w.Event("Marker", 0.450f);
                 return w.Write(Folder + "Attack.anim", 60f).ToString();
@@ -98,7 +101,7 @@ namespace Guildmaster.AnimationLab.Editor
                             .Bend("hip.L", -5f, Near, Out).Bend("hip.R", 6f, Near, Out)
                             .Bend("shoulder.R", -27f, Near, Out).Bend("shoulder.L", 8f, Near, Out)
                             .Move("hips", new Vector2(RestHips.x, 0.008f));
-                w.At(0.176f).Bend("head", 6f, Near, Out).Bend("elbow.R", -14f, Near, Out).Bend("elbow.L", -5f, Near, Out);
+                w.At(0.176f).Bend("head", 6f, Near, Out).Bend("elbow.R", 6f, Near, Out).Bend("elbow.L", -5f, Near, Out);
                 w.At(0.193f).Aim("weapon", -150f, Cw, Out).Aim("shield", 82f, Near, Out);
                 HoldUntil(w, 0.300f);
 
@@ -144,7 +147,7 @@ namespace Guildmaster.AnimationLab.Editor
                             .Bend("shoulder.L", -15f, Near, Out).Bend("hip.L", -10f, Near, Out).Bend("hip.R", 15f, Near, Out)
                             .Bend("knee.L", 7f, Near, Out).Bend("knee.R", 16f, Near, Out)
                             .Move("hips", new Vector2(RestHips.x, 0.005f));
-                w.At(0.376f).Bend("head", -6f, Near, Out).Bend("elbow.R", -19f, Near, Out).Bend("elbow.L", 10f, Near, Out);
+                w.At(0.376f).Bend("head", -6f, Near, Out).Bend("elbow.R", 4f, Near, Out).Bend("elbow.L", 10f, Near, Out);
                 w.At(0.393f).Aim("weapon", -50f, Cw, Out).Aim("shield", 73f, Near, Out);
                 HoldUntil(w, 0.513f);
 
@@ -189,7 +192,9 @@ namespace Guildmaster.AnimationLab.Editor
                             .Bend("shoulder.L", -21f, Near, Out).Bend("hip.L", -28f, Near, Out).Bend("hip.R", 36f, Near, Out)
                             .Bend("knee.L", 36f, Near, Out).Bend("knee.R", 12f, Near, Out)
                             .Move("hips", new Vector2(RestHips.x, -0.009f));
-                w.At(0.483f).Bend("head", -9f, Near, Out).Bend("elbow.R", -36f, Near, Out).Bend("elbow.L", 15f, Near, Out);
+                // -36 put this elbow 16 degrees past straight the wrong way; the blow's reach lives in the
+                // shoulder and the torso lean, not in an inverted joint.
+                w.At(0.483f).Bend("head", -9f, Near, Out).Bend("elbow.R", 2f, Near, Out).Bend("elbow.L", 15f, Near, Out);
                 w.At(0.500f).Aim("weapon", -80f, Cw, Out).Aim("shield", 62f, Near, Out);
                 HoldUntil(w, 0.616f);
 
@@ -286,8 +291,8 @@ namespace Guildmaster.AnimationLab.Editor
                 float passing = contact + quarter;
 
                 w.At(contact).Bend("hip.L", hipSwing * sign, Near, Out).Bend("hip.R", -hipSwing * 0.8f * sign, Near, Out)
-                             .Bend("knee.L", step == 0 ? 6f : kneeLift * 0.6f, Near, Out)
-                             .Bend("knee.R", step == 0 ? kneeLift * 0.6f : 6f, Near, Out)
+                             .Bend("knee.L", step == 0 ? 22f : kneeLift * 0.6f, Near, Out)
+                             .Bend("knee.R", step == 0 ? kneeLift * 0.6f : 22f, Near, Out)
                              .Bend("torso", lean, Near, Soft)
                              .Bend("shoulder.L", -armSwing * sign, Near, Soft).Bend("shoulder.R", armSwing * sign, Near, Soft)
                              .Move("hips", new Vector2(RestHips.x, bobLow));
@@ -302,7 +307,7 @@ namespace Guildmaster.AnimationLab.Editor
 
             // close the loop on the first pose so the cycle does not jump
             w.At(start + length).Bend("hip.L", hipSwing, Near, Out).Bend("hip.R", -hipSwing * 0.8f, Near, Out)
-                                .Bend("knee.L", 6f, Near, Out).Bend("knee.R", kneeLift * 0.6f, Near, Out)
+                                .Bend("knee.L", 22f, Near, Out).Bend("knee.R", kneeLift * 0.6f, Near, Out)
                                 .Bend("torso", lean, Near, Soft)
                                 .Bend("shoulder.L", -armSwing, Near, Soft).Bend("shoulder.R", armSwing, Near, Soft)
                                 .Move("hips", new Vector2(RestHips.x, bobLow));

@@ -71,6 +71,7 @@ namespace Guildmaster.AnimationLab.Editor
                     CheckContinuity(clip, report);
                     CheckLimits(profile, clip, unit, report, sampleRate);
                     CheckSwingIsOnePiece(profile, clip, unit, report);
+                    CheckHingesDoNotInvert(profile, clip, unit, report);
                 }
             }
             finally
@@ -243,6 +244,56 @@ namespace Guildmaster.AnimationLab.Editor
                         "a key between the hold and the contact splits the arc in two");
                 }
             }
+        }
+
+        /// <summary>
+        /// An elbow and a knee are hinges: they fold ONE way. The angle between the bone above and the bone
+        /// below may shrink to nearly straight, but if it crosses zero the joint has bent inside out — which
+        /// is exactly what "the elbow rotates the wrong way" looks like from the outside.
+        ///
+        /// Measured on the first rewrite of Attack: the angle ran +30, +6, -7, -41, -44. The value came from
+        /// the old clip, where the blade's path hid it.
+        /// </summary>
+        static void CheckHingesDoNotInvert(RigProfile profile, AnimationClip clip, GameObject unit, Report report)
+        {
+            foreach (var joint in profile.Joints)
+            {
+                string parentId = joint.Id.StartsWith("elbow") ? "shoulder" + joint.Id.Substring(5)
+                                : joint.Id.StartsWith("knee") ? "hip" + joint.Id.Substring(4) : null;
+                if (parentId == null) continue;
+
+                var upperJoint = profile.FindJoint(parentId);
+                if (upperJoint == null) continue;
+                var lower = unit.transform.Find(joint.Path);
+                var upper = unit.transform.Find(upperJoint.Path);
+                if (lower == null || upper == null) continue;
+
+                // Zero is not the reference — the RIG's rest pose is. On this rig the knees already sit a
+                // little past straight when standing, and measuring against zero called every clip broken.
+                float rest = InnerAngle(upper, upperJoint, lower, joint);
+
+                int frames = Mathf.RoundToInt(clip.length * 60f);
+                float worst = 0f, worstTime = 0f;
+                for (int f = 0; f <= frames; f++)
+                {
+                    clip.SampleAnimation(unit, f / 60f);
+                    float past = InnerAngle(upper, upperJoint, lower, joint) - rest;
+                    if (past < worst) { worst = past; worstTime = f / 60f; }
+                }
+
+                if (worst > -8f) continue;
+                Add(report, Severity.Error, clip.name, "hinge-inverted",
+                    $"{joint.Id} bends {Mathf.Abs(worst):F0} deg past straight the wrong way at t={worstTime:F3} — " +
+                    "a hinge folds one way only; take the reach from the shoulder or the wrist instead");
+            }
+        }
+
+        /// <summary>Angle between the bone above a hinge and the bone below it, signed so that + is folding.</summary>
+        static float InnerAngle(Transform upper, RigProfile.Joint upperJoint, Transform lower, RigProfile.Joint lowerJoint)
+        {
+            float upperWorld = upper.eulerAngles.z + upperJoint.BoneAxisLocal;
+            float lowerWorld = lower.eulerAngles.z + lowerJoint.BoneAxisLocal;
+            return Mathf.DeltaAngle(upperWorld, lowerWorld) * lowerJoint.FlexSign;
         }
 
         /// <summary>Joint limits are art limits here: past them, square segments come apart at the seam.</summary>
