@@ -42,9 +42,20 @@ namespace Guildmaster.Presentation
         // ТОЛЬКО для маркера контакта/темпа бега (те же данные, что читает сим для windup).
         private UnitVisual _visual;
 
-        [Tooltip("Бег «прибит к земле»: сколько мировых юнитов проходит юнит на ОДИН кадр бега. " +
-                 "Меньше = ноги быстрее (бодрее), больше = медленнее. Темп бега привязан к скорости — не скользит.")]
-        [SerializeField] private float _runUnitsPerFrame = 0.15f;
+        [Tooltip("Бег «прибит к земле»: сколько мировых юнитов проходит клип бега за СЕКУНДУ на скорости 1. " +
+                 "Меньше = ноги быстрее (бодрее), больше = медленнее. Темп бега привязан к скорости — не скользит.\n" +
+                 "Покадровый юнит: (ед. на кадр) × (кадров в секунду), у нас 0.15 × 10 = 1.5.\n" +
+                 "Скелетный: (ед. за цикл шагов) ÷ (длина клипа), кадров у него нет.")]
+        [SerializeField] private float _runUnitsPerSecond = 1.5f;
+
+        [Tooltip("Клип атаки — ИСТОЧНИК МАРКЕРА контакта для скелетных юнитов, у которых нет UnitVisual. " +
+                 "Покадровым не нужен: у них клип берётся из данных юнита.")]
+        [SerializeField] private AnimationClip _attackClip;
+
+        [Tooltip("Группа сортировки визуала. Задана — Y-sort пишется в неё, и юнит участвует в сортировке " +
+                 "арены ЦЕЛИКОМ, сохраняя внутренний порядок частей. Пусто — Y-sort идёт в _sprite " +
+                 "(покадровый юнит из одного спрайта).")]
+        [SerializeField] private UnityEngine.Rendering.SortingGroup _sortingGroup;
 
         [Header("Feel Hooks (пустой шов под точечный MMF_Player в Inspector)")]
         [SerializeField] private UnityEvent _onHitFeedback;
@@ -167,7 +178,6 @@ namespace Guildmaster.Presentation
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
         private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
         private int   _recoveryGapTicks = 1;    // тиков от кадра контакта до следующего замаха (снап на конце замаха) — темп хвоста
-        private float _runFrameRate = 10f;
 
         /// <summary>Связать вид с рантайм-юнитом.</summary>
         public void Bind(RuntimeUnit unit)
@@ -287,14 +297,40 @@ namespace Guildmaster.Presentation
             _animator.fireEvents = false;
             _animator.enabled = true;
 
-            // Маркер/темп — из UnitVisual (те же данные, что и у сима). Нет данных → удар без скраба (маркер=1).
-            _attackMarkerNormalized = _visual != null && _visual.AttackClip != null
-                ? ClipMarkers.MarkerNormalized(_visual.AttackClip) : 1f;
-            AnimationClip run = _visual != null ? _visual.Clip(UnitAnimationState.Run) : null;
-            _runFrameRate = run != null && run.frameRate > 0f ? run.frameRate : 10f;
+            ResolveAttackMarker();
 
             _animator.Play(IdleHash, 0, 0f);
             _animator.speed = 1f;
+        }
+
+        /// <summary>
+        /// Найти долю клипа атаки до кадра контакта. По ней скрабится замах, поэтому промах здесь двигает
+        /// видимый удар мимо сим-тика урона. Источника два: <see cref="UnitVisual"/> (покадровые юниты, те
+        /// же данные читает сим) и явный <see cref="_attackClip"/> (скелетные — у них UnitVisual нет).
+        /// Клип без маркера — не «настройка по умолчанию», а неразведённые данные: молчать нельзя, иначе
+        /// удар уезжает в конец клипа и это ищется глазами по всему бою.
+        /// </summary>
+        private void ResolveAttackMarker()
+        {
+            AnimationClip attack = _visual != null && _visual.AttackClip != null ? _visual.AttackClip : _attackClip;
+
+            if (attack == null)
+            {
+                Debug.LogError($"[UnitView] {name}: нет клипа атаки ни в UnitVisual, ни в _attackClip — " +
+                               "удар не привязан к тику урона.", this);
+                _attackMarkerNormalized = 1f;
+                return;
+            }
+
+            if (ClipMarkers.FirstMarkerTime(attack) < 0f)
+            {
+                Debug.LogError($"[UnitView] {name}: в клипе '{attack.name}' нет маркера контакта " +
+                               $"(AnimationEvent '{ClipMarkers.MarkerFunction}') — удар не привязан к тику урона.", this);
+                _attackMarkerNormalized = 1f;
+                return;
+            }
+
+            _attackMarkerNormalized = ClipMarkers.MarkerNormalized(attack);
         }
 
         /// <summary>
@@ -313,8 +349,12 @@ namespace Guildmaster.Presentation
 
             // Y-sort: кто ниже по Y (ближе к зрителю) — рисуется поверх. Явный ордер стабильнее, чем
             // transparency-sort по позиции: у перекрытых спрайтов с ОДИНАКОВЫМ ордером иначе дрожит порядок.
-            if (_sprite != null)
-                _sprite.sortingOrder = -Mathf.RoundToInt(_renderPosition.y * YSortPrecision);
+            // У скелетного юнита частей полтора десятка, и писать ордер в одну из них — значит вырывать её
+            // из собственного тела: торс уезжает по своей шкале, руки и ноги остаются на локальной и лезут
+            // поверх чужих юнитов. Поэтому ордер получает ГРУППА, а внутренний порядок частей её переживает.
+            int ySort = -Mathf.RoundToInt(_renderPosition.y * YSortPrecision);
+            if (_sortingGroup != null) _sortingGroup.sortingOrder = ySort;
+            else if (_sprite != null)  _sprite.sortingOrder = ySort;
 
             if (_healthBar != null)
                 _healthBar.UpdateBar(_unit.CurrentHP, _unit.Stats.Get(Data.Stats.StatType.MaxHP), _unit.CurrentShield);
@@ -342,8 +382,13 @@ namespace Guildmaster.Presentation
         /// <summary>Слой сортировки тела — для размещения VFX относительно юнита.</summary>
         public int BodySortingLayerId => _sprite != null ? _sprite.sortingLayerID : 0;
 
-        /// <summary>Текущий ордер сортировки тела (Y-sort) — VFX ставим со смещением от него.</summary>
-        public int BodySortingOrder => _sprite != null ? _sprite.sortingOrder : 0;
+        /// <summary>
+        /// Текущий ордер сортировки тела (Y-sort) — VFX ставим со смещением от него. У сгруппированного
+        /// визуала спрашиваем ГРУППУ: внутри неё ордер спрайта локальный и на арене ничего не значит.
+        /// </summary>
+        public int BodySortingOrder => _sortingGroup != null
+            ? _sortingGroup.sortingOrder
+            : (_sprite != null ? _sprite.sortingOrder : 0);
 
         /// <summary>
         /// Попадает ли мировая точка в спрайт тела (AABB). Сырой габарит кадра — для захвата в расстановке НЕ
@@ -567,12 +612,13 @@ namespace Guildmaster.Presentation
                     break;
 
                 case UnitAnimationState.Run:
-                    // Кадры бега листаются по пройденной дистанции: скорость клипа = (ед/с) / (ед/кадр) / (кадр/с).
+                    // Клип бега листается по пройденной дистанции: во сколько раз юнит быстрее «родной»
+                    // скорости клипа, во столько же крутим клип. Так ноги не скользят ни у покадрового
+                    // юнита (кадры), ни у скелетного (непрерывные кривые) — единица измерения одна.
                     float speed = _unit != null
                         ? (_unit.Position - _unit.PreviousPosition).magnitude / SimConstants.TickDelta
                         : 0f;
-                    float step = Mathf.Max(0.01f, _runUnitsPerFrame);
-                    _animator.speed = speed / (step * _runFrameRate);
+                    _animator.speed = speed / Mathf.Max(0.01f, _runUnitsPerSecond);
                     break;
 
                 default:
