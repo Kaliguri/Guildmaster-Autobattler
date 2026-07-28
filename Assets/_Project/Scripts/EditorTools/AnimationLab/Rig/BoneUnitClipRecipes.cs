@@ -102,35 +102,45 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>
-        /// Rising cut. The anticipation is a CROUCH rather than a pull-back: knees fold, the pelvis drops,
-        /// the blade sinks behind the leg — then the legs extend and drive the blade up through the bottom
-        /// of the arc, 205 degrees. A downward blow ends low, which is exactly where this one starts, so the
-        /// two chain.
+        /// Rising cut, travelling up the FRONT of the unit.
+        ///
+        /// The first version gathered the blade back and down behind the leg (-150) and then rose through
+        /// the bottom of the circle. Every such path crosses "straight down", and with a blade this long
+        /// that put the tip at y=-0.44 while the feet stand at -0.34: the knight ploughed the ground and
+        /// swept his own shins on the way through. Measured, not guessed.
+        ///
+        /// Now the blade starts LOW IN FRONT — which is exactly where a downward blow leaves it, so the two
+        /// attacks chain — and climbs through the horizontal to above the shoulder, 180 degrees of front
+        /// arc that never goes near the floor. The anticipation stays a crouch rather than a pull-back:
+        /// the power of a rising cut comes from the legs extending, so the legs must fold first.
         /// </summary>
         public static string Attack2()
         {
             using (var w = new RigWriter(Profile()))
             {
+                // anticipation: fold the knees, drop the pelvis, blade low and forward
                 w.At(0.160f).Bend("torso", -12f, Near, Out).Bend("knee.L", 25f, Near, Out).Bend("knee.R", 27f, Near, Out)
                             .Bend("hip.L", -5f, Near, Out).Bend("hip.R", 6f, Near, Out)
-                            .Bend("shoulder.R", -27f, Near, Out).Bend("shoulder.L", 8f, Near, Out)
-                            .Bend("head", 6f, Near, Out).Bend("elbow.R", 6f, Near, Out).Bend("elbow.L", -5f, Near, Out)
-                            .Aim("weapon", -150f, Cw, Out).Aim("shield", 82f, Near, Out)
+                            .Bend("shoulder.R", -30f, Near, Out).Bend("shoulder.L", 8f, Near, Out)
+                            .Bend("head", 6f, Near, Out).Bend("elbow.R", 10f, Near, Out).Bend("elbow.L", -5f, Near, Out)
+                            .Aim("weapon", -50f, Cw, Out).Aim("shield", 82f, Near, Out)
                             .Move("hips", new Vector2(RestHips.x, 0.008f));
                 HoldUntil(w, 0.300f);
 
-                w.At(0.300f).Aim("weapon", -150f, Near, In);
-                w.At(0.380f).Bend("torso", 7f, Near, Out).Bend("knee.L", 5f, Near, Out).Bend("knee.R", 6f, Near, Out)
+                // the legs extend and throw the blade up the front — one acceleration, 6 frames
+                w.At(0.300f).Aim("weapon", -50f, Near, In);
+                w.At(0.400f).Bend("torso", 9f, Near, Out).Bend("knee.L", 4f, Near, Out).Bend("knee.R", 5f, Near, Out)
                             .Bend("hip.L", -9f, Near, Out).Bend("hip.R", 12f, Near, Out)
-                            .Bend("shoulder.R", 57f, Near, Out).Bend("shoulder.L", -12f, Near, Out)
-                            .Bend("head", -4f, Near, Out).Bend("elbow.R", 31f, Near, Out).Bend("elbow.L", 9f, Near, Out)
-                            .Aim("weapon", 55f, Ccw, Out).Aim("shield", 94f, Near, Out)
-                            .Move("hips", new Vector2(RestHips.x, 0.035f));
-                HoldUntil(w, 0.513f);
+                            .Bend("shoulder.R", 88f, Near, Out).Bend("shoulder.L", -12f, Near, Out)
+                            .Bend("head", -6f, Near, Out).Bend("elbow.R", 6f, Near, Out).Bend("elbow.L", 9f, Near, Out)
+                            .Aim("weapon", 130f, Ccw, Out).Aim("shield", 94f, Near, Out)
+                            .Move("hips", new Vector2(RestHips.x, 0.038f));
+                HoldUntil(w, 0.533f);
 
                 Stance(w, 1.000f);
-                // Rising cuts pass the torso on the way UP, so contact is mid-arc, not at the top of it.
-                w.Event("Marker", 0.350f);
+                // Rising cuts pass the torso on the way UP, so contact is mid-arc, not at the top of it:
+                // measured, the tip crosses y=0.01 at 0.333 and is already at 0.33 — over the head — by 0.35.
+                w.Event("Marker", 0.333f);
                 return w.Write(Folder + "Attack2.anim", 60f).ToString();
             }
         }
@@ -185,9 +195,18 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>
-        /// The charge attack: a heavy vertical blow that only enters from Sprint, so frame zero is a sprint
-        /// pose — trailing leg still up, body already leaning — rather than the stance. The blade goes high
-        /// while the legs land, then comes down 185 degrees with the whole torso behind it.
+        /// The charge attack: the second overhead's swing, thrown with everything the knight has.
+        ///
+        /// It is deliberately built on <see cref="Attack3"/> rather than invented separately — same gather
+        /// behind the back, same finish forward — because a charge should read as "that blow, but he meant
+        /// it", not as a fourth handwriting nobody recognises. What is bigger: the gather goes 10 degrees
+        /// further, the arc is the widest of the four at ~260 degrees, and the whole body commits — the
+        /// torso leans 26 degrees into it (against 14), the legs land in a lunge, and the pelvis DROPS
+        /// through the blow instead of holding its height.
+        ///
+        /// Frame zero is a sprint pose — trailing leg still up, body already leaning — because entering
+        /// from a stance would read as a stumble. The landing and the wind-up are one beat: the feet plant
+        /// while the blade is still climbing.
         /// </summary>
         public static string AttackCharge()
         {
@@ -198,34 +217,34 @@ namespace Guildmaster.AnimationLab.Editor
                         .Bend("knee.L", 40f, Near, Lin).Bend("knee.R", 10f, Near, Lin).Bend("head", 5f, Near, Lin)
                         .Move("hips", new Vector2(RestHips.x, 0.015f));
 
-                w.At(0.117f).Bend("shoulder.R", -21f, Near, Soft).Bend("elbow.R", 19f, Near, Soft)
+                // the feet plant while the blade is already on its way up
+                w.At(0.117f).Bend("shoulder.R", 84f, Near, Soft).Bend("elbow.R", 16f, Near, Soft)
                             .Bend("hip.L", 30f, Near, Soft).Bend("hip.R", -8f, Near, Soft)
                             .Bend("knee.L", 10f, Near, Soft).Bend("knee.R", 45f, Near, Soft)
-                            .Aim("weapon", 60f, Ccw, Soft)
+                            .Aim("weapon", 105f, Ccw, Soft)
                             .Move("hips", new Vector2(RestHips.x, 0.036f));
 
-                // blade at its highest while the feet plant — the wind-up and the landing are one beat
-                w.At(0.267f).Bend("torso", 7f, Near, Out).Bend("shoulder.R", -63f, Near, Out)
-                            .Bend("shoulder.L", 10f, Near, Out).Bend("hip.L", -19f, Near, Out).Bend("hip.R", 28f, Near, Out)
-                            .Bend("knee.L", 47f, Near, Out).Bend("knee.R", 13f, Near, Out)
-                            .Bend("head", -2f, Near, Out).Bend("elbow.R", 47f, Near, Out).Bend("elbow.L", -7f, Near, Out)
-                            .Aim("weapon", 120f, Ccw, Out).Aim("shield", 100f, Near, Out)
-                            .Move("hips", new Vector2(RestHips.x, 0.028f));
+                // gathered further behind the back than the standing version, weight loaded on the back leg
+                w.At(0.267f).Bend("torso", 12f, Near, Out).Bend("shoulder.R", 182f, Near, Out)
+                            .Bend("shoulder.L", 26f, Near, Out).Bend("hip.L", -14f, Near, Out).Bend("hip.R", 22f, Near, Out)
+                            .Bend("knee.L", 30f, Near, Out).Bend("knee.R", 12f, Near, Out)
+                            .Bend("head", 16f, Near, Out).Bend("elbow.R", 16f, Near, Out).Bend("elbow.L", 12f, Near, Out)
+                            .Aim("weapon", 215f, Ccw, Out).Aim("shield", 78f, Near, Out)
+                            .Move("hips", new Vector2(RestHips.x, 0.040f));
                 HoldUntil(w, 0.383f);
 
-                w.At(0.383f).Aim("weapon", 120f, Near, In);
-                // -36 put this elbow 16 degrees past straight the wrong way; the blow's reach lives in the
-                // shoulder and the torso lean, not in an inverted joint.
-                w.At(0.467f).Bend("torso", -22f, Near, Out).Bend("shoulder.R", 53f, Near, Out)
-                            .Bend("shoulder.L", -21f, Near, Out).Bend("hip.L", -28f, Near, Out).Bend("hip.R", 36f, Near, Out)
-                            .Bend("knee.L", 36f, Near, Out).Bend("knee.R", 12f, Near, Out)
-                            .Bend("head", -9f, Near, Out).Bend("elbow.R", 2f, Near, Out).Bend("elbow.L", 15f, Near, Out)
-                            .Aim("weapon", -80f, Cw, Out).Aim("shield", 62f, Near, Out)
-                            .Move("hips", new Vector2(RestHips.x, -0.009f));
-                HoldUntil(w, 0.616f);
+                // the whole body goes with it: lunge, deep lean, pelvis dropping through the blow
+                w.At(0.383f).Bend("torso", 12f, Near, In).Bend("shoulder.R", 182f, Near, In);
+                w.At(0.500f).Bend("torso", -26f, Near, Out).Bend("shoulder.R", -30f, Cw, Out)
+                            .Bend("shoulder.L", -18f, Near, Out).Bend("hip.L", -32f, Near, Out).Bend("hip.R", 40f, Near, Out)
+                            .Bend("knee.L", 40f, Near, Out).Bend("knee.R", 14f, Near, Out)
+                            .Bend("head", -16f, Near, Out).Bend("elbow.R", 4f, Near, Out).Bend("elbow.L", 15f, Near, Out)
+                            .Aim("weapon", -45f, Cw, Out).Aim("shield", 58f, Near, Out)
+                            .Move("hips", new Vector2(RestHips.x, -0.014f));
+                HoldUntil(w, 0.633f);
 
                 Stance(w, 1.100f);
-                w.Event("Marker", 0.417f);
+                w.Event("Marker", 0.450f);
                 return w.Write(Folder + "AttackCharge.anim", 60f).ToString();
             }
         }
