@@ -20,8 +20,15 @@ namespace Guildmaster.AnimationLab.Editor
 
         public sealed class Options
         {
-            /// <summary>Frames to sample. 0 = auto (every clip frame, capped at 24).</summary>
+            /// <summary>Frames to sample. 0 = auto (every clip frame, capped at 24). Ignored when <see cref="InBetweens"/> is set.</summary>
             public int Frames;
+            /// <summary>
+            /// Sample the clip's own keyframes plus this many in-betweens between each neighbouring pair,
+            /// instead of spacing samples evenly. Even spacing lies exactly where it matters: a strike
+            /// lives in three frames and an even sheet steps straight over it, while the long recovery
+            /// gets most of the cells. 0 = off.
+            /// </summary>
+            public int InBetweens;
             public int Columns = 6;
             public int CellSize = 192;
             /// <summary>Extra room around the widest pose. 1.0 = tight fit.</summary>
@@ -60,6 +67,54 @@ namespace Guildmaster.AnimationLab.Editor
             return Render(prefab, clip, options, onionSkin: true);
         }
 
+        /// <summary>Evenly spaced samples, snapped to real clip frames.</summary>
+        static float[] EvenTimes(AnimationClip clip, float frameRate, int requested)
+        {
+            int clipFrames = Mathf.Max(1, Mathf.RoundToInt(clip.length * frameRate) + 1);
+            int samples = Mathf.Max(1, requested > 0 ? requested : Mathf.Min(clipFrames, 24));
+            var times = new float[samples];
+            for (int i = 0; i < samples; i++)
+            {
+                float t = samples == 1 ? 0f : clip.length * i / (samples - 1);
+                // Snap to a real clip frame: sampling between frames blurs the timing we are judging.
+                times[i] = Mathf.Round(t * frameRate) / frameRate;
+            }
+            return times;
+        }
+
+        /// <summary>
+        /// The clip's own keyframe times, with <paramref name="inBetweens"/> extra samples inside every
+        /// gap. Poses land on the cells that were authored, and the fast stretches finally get shown:
+        /// what reads as a broken swing is usually the movement BETWEEN keys, which an even sheet skips.
+        /// </summary>
+        static float[] KeyframeTimes(AnimationClip clip, float frameRate, int inBetweens)
+        {
+            var keys = new SortedSet<float>();
+            foreach (var binding in AnimationUtility.GetCurveBindings(clip))
+            {
+                var curve = AnimationUtility.GetEditorCurve(clip, binding);
+                if (curve == null) continue;
+                foreach (var key in curve.keys) keys.Add(Mathf.Round(key.time * frameRate) / frameRate);
+            }
+            if (keys.Count == 0) return EvenTimes(clip, frameRate, 0);
+
+            var ordered = new List<float>(keys);
+            var times = new List<float>(ordered.Count * (inBetweens + 1));
+            for (int i = 0; i < ordered.Count; i++)
+            {
+                times.Add(ordered[i]);
+                if (i + 1 >= ordered.Count) break;
+                for (int k = 1; k <= inBetweens; k++)
+                {
+                    float t = Mathf.Lerp(ordered[i], ordered[i + 1], k / (float)(inBetweens + 1));
+                    float snapped = Mathf.Round(t * frameRate) / frameRate;
+                    // Keys closer together than the in-between step would otherwise produce duplicates.
+                    if (snapped > times[times.Count - 1] + 1e-4f) times.Add(snapped);
+                }
+            }
+            return times.ToArray();
+        }
+
         static Result Render(GameObject prefab, AnimationClip clip, Options options, bool onionSkin)
         {
             if (prefab == null) throw new System.ArgumentNullException(nameof(prefab));
@@ -69,17 +124,10 @@ namespace Guildmaster.AnimationLab.Editor
             int cell = Mathf.Max(32, options.CellSize);
 
             float frameRate = clip.frameRate > 0f ? clip.frameRate : 60f;
-            int clipFrames = Mathf.Max(1, Mathf.RoundToInt(clip.length * frameRate) + 1);
-            int samples = options.Frames > 0 ? options.Frames : Mathf.Min(clipFrames, 24);
-            samples = Mathf.Max(1, samples);
-
-            var times = new float[samples];
-            for (int i = 0; i < samples; i++)
-            {
-                float t = samples == 1 ? 0f : clip.length * i / (samples - 1);
-                // Snap to a real clip frame: sampling between frames blurs the timing we are judging.
-                times[i] = Mathf.Round(t * frameRate) / frameRate;
-            }
+            float[] times = options.InBetweens > 0
+                ? KeyframeTimes(clip, frameRate, options.InBetweens)
+                : EvenTimes(clip, frameRate, options.Frames);
+            int samples = times.Length;
 
             var scene = EditorSceneManager.NewPreviewScene();
             GameObject unit = null, camGo = null;
