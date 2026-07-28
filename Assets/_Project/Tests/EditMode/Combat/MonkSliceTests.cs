@@ -132,11 +132,21 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
                 distance: 6f, cannonball: true, damage: 40f, school: DamageSchool.Physical, width: 1f));
 
-            for (int t = 0; t < 20; t++) sim.Tick(SimConstants.TickDelta);
+            for (int t = 0; t < 5; t++) sim.Tick(SimConstants.TickDelta);
 
             float lost = hpBefore - victim.CurrentHP;
             Assert.Greater(lost, 0f, "Впечатало в край арены — цель получила урон толчка ещё раз");
             Assert.LessOrEqual(lost, 40f + 1e-3f, "Урон о стену добивается ОДИН раз за полёт, а не каждый прижатый тик");
+
+            // Полёт СТОИТ у стены, но цель продолжает лежать оглушённой ~1 секунду (30 тиков).
+            Vector2 restingPos = victim.Position;
+            for (int t = 0; t < 15; t++) sim.Tick(SimConstants.TickDelta);
+            Assert.AreEqual(restingPos, victim.Position, "У стены полёт остановлен — цель не скользит вдоль границы");
+            Assert.Greater(victim.DisplacedTicksRemaining, 0, "Через полсекунды после удара цель ещё лежит");
+
+            for (int t = 0; t < 20; t++) sim.Tick(SimConstants.TickDelta);
+            Assert.AreEqual(0, victim.DisplacedTicksRemaining, "Лежание кончилось — только теперь поднимается конец смещения (телепорт Монаха)");
+            Assert.AreEqual(40f, hpBefore - victim.CurrentHP, 1e-3f, "Лежание урона не добавляет");
         }
 
         // ===================== §10.6 «Вихревой заход» =====================

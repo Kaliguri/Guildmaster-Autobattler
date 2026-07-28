@@ -33,6 +33,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             displaceSpeedPerSecond:    SimTuning.Default.DisplaceSpeedPerSecond,
             cannonballWidthMult:       SimTuning.Default.CannonballWidthMult,
             wallImpactDamageMult:      SimTuning.Default.WallImpactDamageMult,
+            wallImpactStunSeconds:     SimTuning.Default.WallImpactStunSeconds,
             overtimeStartSeconds:      start,
             overtimeDamagePerSecond:   perSecond);
 

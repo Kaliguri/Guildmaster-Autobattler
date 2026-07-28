@@ -64,7 +64,7 @@ namespace Guildmaster.Combat
             if (target == null || target.IsDead || req.Distance <= 0f) return;
 
             Vector2 dir = req.Direction.sqrMagnitude > 1e-6f ? req.Direction.normalized : Vector2.right;
-            int ticks = tuning.DisplaceTicks(req.Distance);
+            int ticks = tuning.DisplaceTicks(req.Distance, req.SpeedPerSecond);
 
             _active.Add(new Active
             {
@@ -109,15 +109,24 @@ namespace Guildmaster.Combat
                 if (a.Cannonball && a.Damage > 0f && a.Source != null)
                     Cannonball(a, prev, u.Position, ctx);
 
-                // Впечатало в край арены: кламп съел часть шага → цель получает урон толчка ещё раз,
-                // один раз за полёт (ГДД «Смещение»: развернуть врага в стену выгоднее, чем в пустоту).
-                if (!a.WallHit && a.Damage > 0f && a.Source != null
+                // Впечатало в край арены (кламп съел часть шага) — уникальный случай, три следствия:
+                // урон толчка ещё раз, полёт СТОИТ (скольжение вдоль стены выглядело бы сломанным),
+                // и цель лежит оглушённой ещё WallImpactStunSeconds. Маркер «в полёте» при этом не
+                // снимается, поэтому конец смещения (и телепорт монаха на него) приходит ПОСЛЕ лежания.
+                // Самосмещение (рывок монаха: source == unit) о стену не наказывается — он бьётся не о
+                // стену, а приезжает к цели; стан здесь заморозил бы кастующего на своей же способности.
+                if (!a.WallHit && a.Source != null && !ReferenceEquals(a.Source, u)
                     && (u.Position - wanted).sqrMagnitude > WallHitEpsilonSq)
                 {
                     a.WallHit = true;
+                    a.Step = Vector2.zero;
+
                     float wallDamage = a.Damage * ctx.Tuning.WallImpactDamageMult;
                     if (wallDamage > 0f)
                         ctx.DealDamage(new DamageRequest(a.Source, u, wallDamage, a.School, ctx.ArmorK, affinity: a.Affinity));
+
+                    int stunTicks = (int)(ctx.Tuning.WallImpactStunSeconds * SimConstants.TickRate + 0.5f);
+                    if (stunTicks > a.TicksRemaining) a.TicksRemaining = stunTicks;
                 }
 
                 a.TicksRemaining--;

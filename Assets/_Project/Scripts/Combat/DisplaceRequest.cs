@@ -13,9 +13,8 @@ namespace Guildmaster.Combat
     {
         // Вида смещения (Knockback/Pull/Teleport) здесь нет: система смещения его не читала ни разу,
         // то есть все три «вида» вели себя одинаково — отбрасыванием (аудит 2026-07-26, волна 2).
-        // Длительности полёта здесь нет: она считается из Distance при фиксированной скорости
-        // (SimTuning.DisplaceTicks) — дальний толчок держит цель в оглушении дольше, и у этого
-        // свойства ровно один владелец (решение 2026-07-28).
+        // Длительности полёта здесь нет: она считается как Distance ÷ Speed — дальний толчок держит
+        // цель в оглушении дольше, и у этого свойства ровно один владелец (решение 2026-07-28).
         public readonly RuntimeUnit  Target;
         public readonly RuntimeUnit  Source;
         public readonly Vector2      Direction;
@@ -35,6 +34,13 @@ namespace Guildmaster.Combat
         /// </summary>
         public readonly float        ChainDistance;
 
+        /// <summary>
+        /// Скорость полёта, мировых единиц в секунду: вместе с <see cref="Distance"/> задаёт длительность.
+        /// <c>0</c> = взять общий дефолт из <c>SimTuning.DisplaceSpeedPerSecond</c>. Своё значение нужно
+        /// источникам с другим характером толчка — тяжёлый медленный бросок против быстрого пинка.
+        /// </summary>
+        public readonly float        SpeedPerSecond;
+
         public DisplaceRequest(
             RuntimeUnit target,
             RuntimeUnit source,
@@ -45,7 +51,8 @@ namespace Guildmaster.Combat
             DamageSchool school,
             float       width,
             float       chainDistance = 0f,
-            DamageAffinity affinity = DamageAffinity.None)
+            DamageAffinity affinity = DamageAffinity.None,
+            float       speedPerSecond = 0f)
         {
             Target        = target;
             Source        = source;
@@ -55,8 +62,9 @@ namespace Guildmaster.Combat
             Damage        = damage;
             School        = school;
             Affinity      = affinity;
-            Width         = width;
-            ChainDistance = chainDistance;
+            Width          = width;
+            ChainDistance  = chainDistance;
+            SpeedPerSecond = speedPerSecond;
         }
     }
 }

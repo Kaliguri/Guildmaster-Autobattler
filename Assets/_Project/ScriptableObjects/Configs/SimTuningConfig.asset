@@ -29,5 +29,6 @@ MonoBehaviour:
   _displaceSpeedPerSecond: 10
   _cannonballWidthMult: 1.25
   _wallImpactDamageMult: 1
+  _wallImpactStunSeconds: 1
   _overtimeStartSeconds: 90
   _overtimeDamagePerSecond: 0.05

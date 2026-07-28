@@ -58,8 +58,8 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Боковой (тангенциальный) уход при кайте: дуга вокруг цели вместо пятящегося отхода. 0 = выкл.")]
         [SerializeField] private float _kiteStrafeWeight = SimTuning.Default.KiteStrafeWeight;
 
-        [TabGroup("Tuning", "Смещение"), SuffixLabel("ед/с", overlay: true), LabelText("Скорость полёта")]
-        [Tooltip("Скорость отбрасывания, мировых единиц в секунду. Длительность полёта считается из дистанции: дальний толчок держит цель в оглушении дольше. Отдельной настройки «сколько тиков лететь» нет намеренно.")]
+        [TabGroup("Tuning", "Смещение"), SuffixLabel("ед/с", overlay: true), LabelText("Скорость полёта (дефолт)")]
+        [Tooltip("Скорость отбрасывания по умолчанию, мировых единиц в секунду. Длительность полёта = дистанция ÷ скорость, поэтому дальний толчок держит цель в оглушении дольше. Источник может задать свою скорость в запросе смещения — «сколько тиков лететь» не настраивается нигде намеренно.")]
         [SerializeField] private float _displaceSpeedPerSecond = SimTuning.Default.DisplaceSpeedPerSecond;
         [TabGroup("Tuning", "Смещение"), LabelText("Ширина коридора «ядра»")]
         [Tooltip("Во сколько раз коридор летящего тела шире заданной ширины (1.25 = +25%). Толчок в плотный строй должен цеплять соседей, а не только тех, кто ровно на линии.")]
@@ -67,6 +67,9 @@ namespace Guildmaster.Data.Definitions
         [TabGroup("Tuning", "Смещение"), LabelText("Урон об край арены")]
         [Tooltip("Доля урона толчка, добиваемая цели, впечатанной в край арены (1 = ещё раз столько же). 0 = удар о стену безвреден.")]
         [SerializeField] private float _wallImpactDamageMult = SimTuning.Default.WallImpactDamageMult;
+        [TabGroup("Tuning", "Смещение"), SuffixLabel("с", overlay: true), LabelText("Лежит после удара о стену")]
+        [Tooltip("Сколько цель лежит оглушённой, впечатавшись в край арены. Полёт при этом СТОИТ (скольжение вдоль стены выглядит сломанным), а реактивы «на конец смещения» — например телепорт Монаха — срабатывают уже после лежания.")]
+        [SerializeField] private float _wallImpactStunSeconds = SimTuning.Default.WallImpactStunSeconds;
 
         [TabGroup("Tuning", "Овертайм"), SuffixLabel("с", overlay: true), LabelText("Начало овертайма")]
         [Tooltip("С какой секунды боя урон начинает расти. Медиана боя — 20-29 с, так что до порога доживает только клинч.")]
@@ -94,6 +97,7 @@ namespace Guildmaster.Data.Definitions
             _displaceSpeedPerSecond,
             _cannonballWidthMult,
             _wallImpactDamageMult,
+            _wallImpactStunSeconds,
             _overtimeStartSeconds,
             _overtimeDamagePerSecond);
     }
