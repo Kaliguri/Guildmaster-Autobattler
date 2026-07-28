@@ -90,7 +90,12 @@ namespace Guildmaster.Combat
         // --- Составляющие направления ---
 
         /// <summary>Направление «к своему тылу» по команде: 0 (союзники, левая сторона) → влево, иначе вправо.</summary>
-        private static Vector2 HomeDir(RuntimeUnit unit) => unit.Team == 0 ? Vector2.left : Vector2.right;
+        /// <remarks>
+        /// ЕДИНСТВЕННЫЙ владелец конвенции сторон: где у команды тыл, решается здесь и больше нигде.
+        /// Публично потому, что тот же факт нужен <c>SeparationSystem</c> — разводить слипшиеся точь-в-точь
+        /// тела он обязан зеркально, а зеркальность требует знать сторону, а не только порядок Id.
+        /// </remarks>
+        public static Vector2 HomeDir(RuntimeUnit unit) => unit.Team == 0 ? Vector2.left : Vector2.right;
 
         /// <summary>
         /// Единичное направление «прочь от угрозы»: от центроида врагов в радиусе <see cref="SimTuning.FleeThreatRadius"/>;
