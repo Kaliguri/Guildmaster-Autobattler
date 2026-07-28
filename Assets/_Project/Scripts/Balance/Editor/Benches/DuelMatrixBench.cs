@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Guildmaster.Combat;
+using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -90,13 +91,41 @@ namespace Guildmaster.Balance.Editor
             var acc = new UnitMetric[n];
             for (int i = 0; i < n; i++) acc[i] = new UnitMetric();
 
+            // Время боя. Отвечает на вопрос «какой у нас вообще TTK» — до сих пор стенд его не выводил
+            // вовсе, и разговор о правиле анти-затягивания вёлся без единого замеренного числа.
+            // Таймауты считаем отдельно: включать потолок в среднее нельзя, он занижает и врёт.
+            var secondsSum = new double[n];
+            var secondsCount = new int[n];
+            var timeouts = new int[n];
+            var allSeconds = new List<double>();
+
+            // Сколько боёв доехало до овертайма. Порог читаем из того же снапшота тюнинга, что и бой —
+            // иначе отчёт мерил бы одно, а симуляция жила по другому.
+            var overtimeHits = new int[n];
+            float overtimeStart = SimTuning.Default.OvertimeStartSeconds;
+
             for (int i = 0; i < n; i++)
             {
                 for (int j = 0; j < n; j++)
                 {
                     if (i == j) continue;
                     SideResult left, right;
-                    double leftScore = RunBattle(config, classes, relics[i], relics[j], format, cap, out left, out right);
+                    double leftScore = RunBattle(config, classes, relics[i], relics[j], format, cap,
+                        out left, out right, out double seconds, out bool timedOut);
+
+                    // Время боя копим по обоим участникам: «сколько длится бой С ЭТИМ китом» — свойство
+                    // пары, и кит отвечает за него независимо от того, победил он или проиграл.
+                    if (timedOut) { timeouts[i]++; timeouts[j]++; }
+                    else
+                    {
+                        secondsSum[i] += seconds; secondsCount[i]++;
+                        secondsSum[j] += seconds; secondsCount[j]++;
+                        allSeconds.Add(seconds);
+                    }
+
+                    // Овертайм — предохранитель, и он обязан оставаться редким. Если доля боёв,
+                    // доехавших до порога, начнёт расти — это сигнал о TTK, а не повод крутить рампу.
+                    if (timedOut || seconds >= overtimeStart) { overtimeHits[i]++; overtimeHits[j]++; }
 
                     outcome[i][j] = leftScore > 0.75 ? $"W {100.0 * left.TeamHpPct:0}%"
                                   : leftScore < 0.25 ? "L"
@@ -122,6 +151,15 @@ namespace Guildmaster.Balance.Editor
 
             double[] strength = BradleyTerry.Fit(n, wins, games);
 
+            // Сводка по формату целиком: медиана честнее среднего — пара затянувшихся боёв тянет
+            // среднее вверх и создаёт впечатление, что «бои у нас долгие», хотя долгих ровно две штуки.
+            allSeconds.Sort();
+            double MedianSec(double p) => allSeconds.Count > 0
+                ? allSeconds[Mathf.Min(allSeconds.Count - 1, (int)(allSeconds.Count * p))]
+                : 0.0;
+            int totalFights = n * (n - 1);
+            int totalTimeouts = (totalFights - allSeconds.Count);
+
             // --- Сводка (сортировка по силе) ---
             var order = new List<int>();
             for (int i = 0; i < n; i++) order.Add(i);
@@ -130,6 +168,7 @@ namespace Guildmaster.Balance.Editor
             var sumHeaders = new List<string>
             {
                 "Rank", "Relic", "Wins", "Losses", "Draws", "WinRate", "TeamHpOnWin%", "HeroSurvival%",
+                "AvgFightSec", "Timeout%", "Overtime%",
                 "AvgDmgDealt", "AvgDmgTaken", "React%", "BTStrength",
                 "HealTaken", "Mitigated", "Evaded",
                 "ControlSec", "ControlCount", "ControlTakenSec",
@@ -151,9 +190,13 @@ namespace Guildmaster.Balance.Editor
                 // растёт от размера ростера и отчёты разных прогонов перестают сравниваться.
                 double Avg(double v) => fights[i] > 0 ? v / fights[i] : 0.0;
 
+                double avgSec = secondsCount[i] > 0 ? secondsSum[i] / secondsCount[i] : 0.0;
+                double timeoutPct = fights[i] > 0 ? 100.0 * timeouts[i] / fights[i] : 0.0;
+
                 sumTable.Add(new object[]
                 {
                     rank++, relics[i].name, wCount[i], lCount[i], dCount[i], winRate, avgHp, surv,
+                    avgSec, timeoutPct, fights[i] > 0 ? 100.0 * overtimeHits[i] / fights[i] : 0.0,
                     Avg(a.DamageDealt), Avg(a.DamageTaken), reactShare, strength[i],
                     Avg(a.HealingReceived), Avg(a.DamageMitigated), Avg(a.HitsEvaded),
                     Avg(a.ControlSecondsDealt), Avg(a.ControlAppliedCount), Avg(a.ControlSecondsTaken),
@@ -164,10 +207,22 @@ namespace Guildmaster.Balance.Editor
 
             string sumNotes =
                 $"**Формат: {format.Title}.** {format.Blurb} " +
+                $"**TTK формата:** медиана боя **{MedianSec(0.5):0.0} с** " +
+                $"(четверть боёв короче {MedianSec(0.25):0.0} с, четверть длиннее {MedianSec(0.75):0.0} с, " +
+                $"самый долгий разрешившийся {MedianSec(1.0):0.0} с); " +
+                $"не разрешилось за потолок **{totalTimeouts} из {totalFights}** боёв " +
+                $"({(totalFights > 0 ? 100.0 * totalTimeouts / totalFights : 0):0}%). " +
                 $"Round-robin (потолок {CapSeconds:0} с/бой, каждая пара — обе стороны). " +
                 "WinRate учитывает ничьи как 0.5. **TeamHpOnWin%** — средний остаток HP команды в ВЫИГРАННЫХ боях: " +
                 "запас победы (80% = размазал не заметив, 10% = вытянул на последних каплях). " +
                 "**HeroSurvival%** — как часто сам испытуемый доживал до конца, независимо от исхода. " +
+                "**AvgFightSec** — средняя длительность боёв с этим китом, ТОЛЬКО по разрешившимся: потолок в " +
+                "среднее не входит, иначе затянутые бои выглядели бы короче, чем есть. **Timeout%** — доля боёв, " +
+                $"упёршихся в потолок {CapSeconds:0} с; такой бой не «ничья по силе», а отсутствие исхода. " +
+                "Читать вместе: высокий Timeout% при коротком AvgFightSec значит «либо быстро, либо никогда». " +
+                $"**Overtime%** — доля боёв, доехавших до порога овертайма ({overtimeStart:0} с). Овертайм — " +
+                "предохранитель для клинча сустейна, и обязан оставаться редким: его рост читать как сигнал о " +
+                "TTK, а не как повод крутить рампу урона. " +
                 "**AvgDmgDealt / AvgDmgTaken** — сколько кит в среднем за бой наносил и поглощал: отвечает на " +
                 "вопрос «он много бьёт или долго живёт». **React%** — какая доля его урона пришла ответкой " +
                 "(шипы), то есть не выбиралась им вовсе. " +
@@ -267,7 +322,7 @@ namespace Guildmaster.Balance.Editor
         /// </summary>
         private static double RunBattle(StatsConfig config, ClassBalanceConfig classes,
             RelicData relicLeft, RelicData relicRight, Format format, int cap,
-            out SideResult left, out SideResult right)
+            out SideResult left, out SideResult right, out double seconds, out bool timedOut)
         {
             var env = new SimEnvironment(Seed, config);
             var tracked = new List<TrackedUnit>();
@@ -277,6 +332,8 @@ namespace Guildmaster.Balance.Editor
 
             BattleReport report = SimBench.Drive(env, tracked, RunMode.UntilOutcome, cap);
 
+            seconds = report.Seconds;
+            timedOut = report.TimedOut;
             left = SideOf(report, team: 0, heroLeft);
             right = SideOf(report, team: 1, heroRight);
 

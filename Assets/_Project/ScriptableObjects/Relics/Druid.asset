@@ -87,7 +87,7 @@ MonoBehaviour:
   _abilities:
   - _id: spore_burst
     _effects: []
-    _baseCooldown: 9
+    _baseCooldown: 11
     _resourceCost: 0
     _targetMode: 4
     _damageMultiplier: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
     _magicElementOverride: 0
     _affinityOverride: 2
     _areaShape: 0
-    _areaRadius: 2
+    _areaRadius: 1.5
     _healFlat: 0
     _healPctTargetMissingHp: 0
     _healEffect: {fileID: 11400000, guid: dd60a04a362a4b742b77529b3558aa75, type: 2}

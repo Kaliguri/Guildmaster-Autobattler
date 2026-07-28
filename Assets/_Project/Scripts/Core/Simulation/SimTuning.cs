@@ -42,6 +42,14 @@ namespace Guildmaster.Core.Simulation
         public readonly float FleeThreatRadius;    // радиус (м) сбора врагов в центроид угрозы (иначе — ближайший)
         public readonly float KiteStrafeWeight;    // вес бокового ухода кайтера (дуга вместо пятящегося отхода)
 
+        // --- Овертайм (правило анти-затягивания, ГДД «Боевая система») ---
+        // Растёт ТОЛЬКО наносимый урон. Лечение, щиты и реген не трогаем намеренно: клинч «танк+хил
+        // против танк+хил» ломается ровно тем, что урон уезжает вверх, а сустейн остаётся плоским.
+        // Замер 2026-07-28: медиана боя 20-29 с, так что до порога доживает только настоящий клинч —
+        // это предохранитель для хвоста, а не механика на каждый бой.
+        public readonly float OvertimeStartSeconds;   // с какой секунды боя включается рампа
+        public readonly float OvertimeDamagePerSecond; // прибавка к урону за каждую секунду сверх порога (0.05 = +5%)
+
         public SimTuning(
             float bodyRadiusPerSize,
             float separationStrength,
@@ -56,7 +64,9 @@ namespace Guildmaster.Core.Simulation
             float fleeWallWeight,
             float fleeWallMargin,
             float fleeThreatRadius,
-            float kiteStrafeWeight)
+            float kiteStrafeWeight,
+            float overtimeStartSeconds,
+            float overtimeDamagePerSecond)
         {
             BodyRadiusPerSize         = bodyRadiusPerSize;
             SeparationStrength        = separationStrength;
@@ -72,6 +82,19 @@ namespace Guildmaster.Core.Simulation
             FleeWallMargin            = fleeWallMargin;
             FleeThreatRadius          = fleeThreatRadius;
             KiteStrafeWeight          = kiteStrafeWeight;
+            OvertimeStartSeconds      = overtimeStartSeconds;
+            OvertimeDamagePerSecond   = overtimeDamagePerSecond;
+        }
+
+        /// <summary>
+        /// Множитель наносимого урона на данной секунде боя: 1 до порога, дальше линейный рост.
+        /// Лечения и щитов НЕ касается — в этом весь смысл правила.
+        /// </summary>
+        public float OvertimeDamageMultiplier(float elapsedSeconds)
+        {
+            if (OvertimeDamagePerSecond <= 0f) return 1f;
+            float over = elapsedSeconds - OvertimeStartSeconds;
+            return over <= 0f ? 1f : 1f + over * OvertimeDamagePerSecond;
         }
 
         /// <summary>Код-дефолты (исторические значения фиксированных констант — контракт баланса).</summary>
@@ -89,6 +112,8 @@ namespace Guildmaster.Core.Simulation
             fleeWallWeight:            1.5f,
             fleeWallMargin:            2.5f,
             fleeThreatRadius:          6f,
-            kiteStrafeWeight:          0.35f);
+            kiteStrafeWeight:          0.35f,
+            overtimeStartSeconds:      90f,
+            overtimeDamagePerSecond:   0.05f);
     }
 }

@@ -347,9 +347,17 @@ namespace Guildmaster.Combat
             // Уязвимости цели, накопленные тем же проходом («Угли» усиливают огонь по подожжённому).
             // Домножаем сырой урон ДО пайплайна: это свойство ЦЕЛИ, а не пробивание источника.
             float vulnerability = _effectSystem.PreDamageMultiplier;
-            DamageRequest effective = vulnerability == 1f
+
+            // Овертайм: правило анти-затягивания. Урон растёт со временем боя, лечение и щиты — нет,
+            // поэтому клинч «никто никого не пробивает» разваливается сам. Множитель общий для обеих
+            // сторон: иначе овертайм наказывал бы защищающегося вместо того, чтобы форсировать развязку.
+            // В уязвимость его не складываем — Vuln% в отчётах должен остаться про «Угли», а не про таймер.
+            float overtime = _tuning.OvertimeDamageMultiplier(ElapsedSeconds);
+
+            float scale = vulnerability * overtime;
+            DamageRequest effective = scale == 1f
                 ? req
-                : new DamageRequest(req.Source, req.Target, req.RawDamage * vulnerability, req.School,
+                : new DamageRequest(req.Source, req.Target, req.RawDamage * scale, req.School,
                                     req.ArmorK, req.SourceKind, req.Affinity, req.Element, vulnerability);
 
             // Урон считается сразу (расчёт чист и от порядка не зависит — статы заморожены на тик),

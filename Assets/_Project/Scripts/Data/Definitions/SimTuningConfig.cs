@@ -58,6 +58,13 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Боковой (тангенциальный) уход при кайте: дуга вокруг цели вместо пятящегося отхода. 0 = выкл.")]
         [SerializeField] private float _kiteStrafeWeight = SimTuning.Default.KiteStrafeWeight;
 
+        [TabGroup("Tuning", "Овертайм"), SuffixLabel("с", overlay: true), LabelText("Начало овертайма")]
+        [Tooltip("С какой секунды боя урон начинает расти. Медиана боя — 20-29 с, так что до порога доживает только клинч.")]
+        [SerializeField] private float _overtimeStartSeconds = SimTuning.Default.OvertimeStartSeconds;
+        [TabGroup("Tuning", "Овертайм"), LabelText("Прибавка урона за секунду")]
+        [Tooltip("Насколько растёт НАНОСИМЫЙ урон за каждую секунду сверх порога (0.05 = +5%). Лечение и щиты не растут — этим клинч и ломается. 0 = овертайм выключен.")]
+        [SerializeField] private float _overtimeDamagePerSecond = SimTuning.Default.OvertimeDamagePerSecond;
+
         /// <summary>Снять иммутабельный снапшот для бейка на старте боя.</summary>
         public SimTuning ToSnapshot() => new SimTuning(
             _bodyRadiusPerSize,
@@ -73,6 +80,8 @@ namespace Guildmaster.Data.Definitions
             _fleeWallWeight,
             _fleeWallMargin,
             _fleeThreatRadius,
-            _kiteStrafeWeight);
+            _kiteStrafeWeight,
+            _overtimeStartSeconds,
+            _overtimeDamagePerSecond);
     }
 }

@@ -20,6 +20,13 @@ MonoBehaviour:
   _maxStacks: 1
   _cleanseTier: 0
   _unremovable: 0
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
   _components:
   - rid: 5615027215320744035
   _icon: {fileID: 0}
@@ -30,7 +37,7 @@ MonoBehaviour:
     - rid: 5615027215320744035
       type: {class: AllyMendComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _fraction: 1
-        _allyBonus: 0.5
+        _fraction: 0.375
+        _allyBonus: 3
         _radius: 5
         _autoAttackOnly: 1

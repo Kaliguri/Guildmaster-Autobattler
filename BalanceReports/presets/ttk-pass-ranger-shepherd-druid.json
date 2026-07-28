@@ -1,0 +1,13 @@
+{
+  "title": "Проход по TTK: Следопыт бьёт больнее, Пастырь лечит себя вдвое хуже, Друид кастует реже",
+  "edits": [
+    { "op": "setStat", "asset": "Ranger", "stat": "AutoAttackDamage", "modOp": "Override", "value": 140 },
+    { "op": "setStat", "asset": "Ranger", "stat": "PhysArmor", "modOp": "Override", "value": 6 },
+    { "op": "setStat", "asset": "Ranger", "stat": "MagicArmor", "modOp": "Override", "value": 4 },
+
+    { "op": "setEffectField", "asset": "LightMend", "field": "_fraction", "value": 0.375 },
+    { "op": "setEffectField", "asset": "LightMend", "field": "_allyBonus", "value": 3.0 },
+
+    { "op": "addCooldown", "asset": "Druid", "ability": "spore_burst", "delta": 2.0 }
+  ]
+}
