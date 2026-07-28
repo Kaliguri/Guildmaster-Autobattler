@@ -63,7 +63,7 @@ namespace Guildmaster.AnimationLab.Editor
                             .Bend("shoulder.L", 27f, Near, Out).Bend("knee.R", 8f, Near, Out);
                 w.At(0.183f).Bend("head", 17f, Near, Out).Bend("elbow.R", 10f, Near, Out).Bend("elbow.L", 13f, Near, Out);
                 w.At(0.200f).Aim("weapon", 175f, Ccw, Out).Aim("shield", 75f, Near, Out);
-                HoldAll(w, 0.167f, 0.166f, 0.183f, 0.166f, 0.200f, 0.150f);
+                HoldUntil(w, 0.333f);   // 8 frames of a genuinely frozen wind-up
 
                 // Break from the hold and swing through the FRONT in ONE go. No mid-swing keys: a key
                 // between the hold and the contact splits the arc into two accelerations, and the blade
@@ -74,7 +74,7 @@ namespace Guildmaster.AnimationLab.Editor
                             .Bend("knee.L", 6f, Near, Out).Bend("hip.L", -4f, Near, Out);
                 w.At(0.466f).Bend("head", -18f, Near, Out).Bend("elbow.R", -64f, Near, Out);
                 w.At(0.483f).Aim("weapon", -70f, Cw, Out).Aim("shield", 50f, Near, Out);
-                HoldAll(w, 0.450f, 0.100f, 0.466f, 0.100f, 0.483f, 0.100f);
+                HoldUntil(w, 0.583f);   // 6 frames of frozen impact
 
                 // follow-through carries the blade a little further, then a long settle
                 w.At(0.633f).Aim("weapon", -88f, Cw, Soft).Bend("elbow.R", -70f, Near, Soft);
@@ -100,7 +100,7 @@ namespace Guildmaster.AnimationLab.Editor
                             .Move("hips", new Vector2(RestHips.x, 0.008f));
                 w.At(0.176f).Bend("head", 6f, Near, Out).Bend("elbow.R", -14f, Near, Out).Bend("elbow.L", -5f, Near, Out);
                 w.At(0.193f).Aim("weapon", -150f, Cw, Out).Aim("shield", 82f, Near, Out);
-                HoldAll(w, 0.160f, 0.123f, 0.176f, 0.123f, 0.193f, 0.107f);
+                HoldUntil(w, 0.300f);
 
                 w.At(0.300f).Aim("weapon", -150f, Near, In);
                 // The legs keep their mid-key — the extension IS a separate beat and drives the blow — but
@@ -113,7 +113,7 @@ namespace Guildmaster.AnimationLab.Editor
                             .Move("hips", new Vector2(RestHips.x, 0.035f));
                 w.At(0.396f).Bend("head", -4f, Near, Out).Bend("elbow.R", 31f, Near, Out).Bend("elbow.L", 9f, Near, Out);
                 w.At(0.413f).Aim("weapon", 55f, Ccw, Out).Aim("shield", 94f, Near, Out);
-                HoldAll(w, 0.380f, 0.100f, 0.396f, 0.100f, 0.413f, 0.100f);
+                HoldUntil(w, 0.513f);
 
                 w.At(0.560f).Aim("weapon", 72f, Ccw, Soft);
                 Stance(w, 1.000f);
@@ -137,7 +137,7 @@ namespace Guildmaster.AnimationLab.Editor
                             .Move("hips", new Vector2(RestHips.x, 0.026f));
                 w.At(0.150f).Bend("head", 3f, Near, Out).Bend("elbow.R", 24f, Near, Out).Bend("elbow.L", -6f, Near, Out);
                 w.At(0.167f).Aim("weapon", 130f, Ccw, Out).Aim("shield", 99f, Near, Out);
-                HoldAll(w, 0.133f, 0.134f, 0.150f, 0.134f, 0.167f, 0.117f);
+                HoldUntil(w, 0.284f);
 
                 w.At(0.284f).Aim("weapon", 130f, Near, In);
                 w.At(0.360f).Bend("torso", -13f, Near, Out).Bend("shoulder.R", 51f, Near, Out)
@@ -146,7 +146,7 @@ namespace Guildmaster.AnimationLab.Editor
                             .Move("hips", new Vector2(RestHips.x, 0.005f));
                 w.At(0.376f).Bend("head", -6f, Near, Out).Bend("elbow.R", -19f, Near, Out).Bend("elbow.L", 10f, Near, Out);
                 w.At(0.393f).Aim("weapon", -50f, Cw, Out).Aim("shield", 73f, Near, Out);
-                HoldAll(w, 0.360f, 0.120f, 0.376f, 0.120f, 0.393f, 0.120f);
+                HoldUntil(w, 0.513f);
 
                 w.At(0.560f).Aim("weapon", -66f, Cw, Soft);
                 Stance(w, 1.000f);
@@ -182,7 +182,7 @@ namespace Guildmaster.AnimationLab.Editor
                             .Move("hips", new Vector2(RestHips.x, 0.028f));
                 w.At(0.283f).Bend("head", -2f, Near, Out).Bend("elbow.R", 47f, Near, Out).Bend("elbow.L", -7f, Near, Out);
                 w.At(0.300f).Aim("weapon", 120f, Ccw, Out).Aim("shield", 100f, Near, Out);
-                HoldAll(w, 0.267f, 0.100f, 0.283f, 0.100f, 0.300f, 0.083f);
+                HoldUntil(w, 0.383f);
 
                 w.At(0.383f).Aim("weapon", 120f, Near, In);
                 w.At(0.467f).Bend("torso", -22f, Near, Out).Bend("shoulder.R", 53f, Near, Out)
@@ -191,7 +191,7 @@ namespace Guildmaster.AnimationLab.Editor
                             .Move("hips", new Vector2(RestHips.x, -0.009f));
                 w.At(0.483f).Bend("head", -9f, Near, Out).Bend("elbow.R", -36f, Near, Out).Bend("elbow.L", 15f, Near, Out);
                 w.At(0.500f).Aim("weapon", -80f, Cw, Out).Aim("shield", 62f, Near, Out);
-                HoldAll(w, 0.467f, 0.116f, 0.483f, 0.116f, 0.500f, 0.116f);
+                HoldUntil(w, 0.616f);
 
                 w.At(0.700f).Aim("weapon", -95f, Cw, Soft);
                 Stance(w, 1.100f);
@@ -211,7 +211,7 @@ namespace Guildmaster.AnimationLab.Editor
             {
                 w.At(0.117f).Bend("shoulder.L", 33f, Near, Out).Bend("elbow.L", -27f, Near, Out);
                 w.At(0.134f).Aim("shield", 122f, Ccw, Out);
-                HoldAll(w, 0.117f, 0.200f, 0.134f, 0.200f);
+                HoldUntil(w, 0.334f);
                 w.At(0.450f).Bend("shoulder.L", 31f, Near, Soft).Bend("elbow.L", -25f, Near, Soft);
                 w.At(0.467f).Aim("shield", 118f, Near, Soft);
                 w.At(0.600f).Bend("shoulder.L", 31f, Near, Hold).Bend("elbow.L", -25f, Near, Hold);
@@ -309,15 +309,12 @@ namespace Guildmaster.AnimationLab.Editor
             w.At(start + length + F).Bend("head", -lean * 0.4f, Near, Soft);
         }
 
-        /// <summary>Pins a pose in place for a while: the pause is authored, not a by-product of smoothing.</summary>
-        static void HoldAll(RigWriter w, params float[] timeAndDuration)
-        {
-            for (int i = 0; i + 1 < timeAndDuration.Length; i += 2)
-            {
-                w.At(timeAndDuration[i]);
-                w.Hold(timeAndDuration[i + 1]);
-            }
-        }
+        /// <summary>
+        /// Freezes the whole rig until <paramref name="until"/>. One end for every bone: the overlap
+        /// staggers how they ENTER a pose, but the pause itself has to be shared, or nothing is ever
+        /// actually still.
+        /// </summary>
+        static void HoldUntil(RigWriter w, float until) => w.HoldUntil(until);
 
         /// <summary>Back to the stance every attack starts and ends in.</summary>
         static void Stance(RigWriter w, float time)

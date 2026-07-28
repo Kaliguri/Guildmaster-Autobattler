@@ -106,6 +106,12 @@ namespace Guildmaster.AnimationLab.Editor
             public Arc Arc;
             public int ExtraTurns;
             public Ease Ease;
+            /// <summary>
+            /// This key repeats the previous one EXACTLY — the tail of a pause. It carries no intent of its
+            /// own, because re-solving an aim here would move the pose: the chain has changed since, so the
+            /// same world angle needs a different local one, and the "still" frames drift.
+            /// </summary>
+            public bool IsPlateau;
         }
 
         readonly RigProfile _profile;
@@ -172,27 +178,63 @@ namespace Guildmaster.AnimationLab.Editor
         public RigWriter Hold(float seconds)
         {
             if (seconds <= 0f) return this;
-            float from = _time, to = _time + seconds;
+            HoldUntil(_time + seconds);
+            return this;
+        }
 
-            foreach (var pair in _orders)
+        /// <summary>
+        /// Freezes the WHOLE rig from wherever each bone last was until <paramref name="time"/>, then moves
+        /// the clock there.
+        ///
+        /// This is the honest pause, and it has to end at one moment for every bone. Giving each bone its
+        /// own hold length looks equivalent and is not: the bones enter the pose staggered by the overlap
+        /// (body, then head, then hand), so their plateaus end staggered too, and in every gap something is
+        /// already moving while something else still waits. Measured on the first draft: zero fully static
+        /// frames in a clip that was supposed to hold twice.
+        /// </summary>
+        public RigWriter HoldUntil(float time)
+        {
+            // EVERY joint, not just the ones mentioned so far. A joint whose only key sits later in the clip
+            // is interpolating across the pause from its rest angle, and it drifts right through the frames
+            // that were supposed to be frozen — measured: a joint keyed only at the contact crept through
+            // the entire wind-up hold.
+            foreach (var joint in _profile.Joints)
             {
-                if (!pair.Value.TryGetValue(from, out var order)) continue;
-                var pinned = order;
-                pinned.Ease = Ease.Hold;
-                pair.Value[from] = pinned;
+                var track = Track(joint.Id);
 
-                var copy = order;
-                copy.Ease = Ease.Hold;
-                copy.ExtraTurns = 0;      // the turn already happened on the way in
-                copy.Arc = Arc.Shortest;  // a plateau must not travel anywhere
-                pair.Value[to] = copy;
+                int last = -1;
+                for (int i = 0; i < track.Count; i++)
+                {
+                    if (track.Keys[i] > time + 1e-4f) break;
+                    last = i;
+                }
+
+                if (last >= 0)
+                {
+                    // pin both ends of the plateau at rest so smoothing cannot bow the curve through it
+                    var pinned = track.Values[last];
+                    pinned.Ease = Ease.Hold;
+                    track[track.Keys[last]] = pinned;
+                    if (Mathf.Abs(track.Keys[last] - time) < 1e-4f) continue;
+                }
+
+                track[time] = new Order { IsPlateau = true, Ease = Ease.Hold, Arc = Arc.Shortest };
             }
 
             foreach (var pair in _positions)
-                if (pair.Value.TryGetValue(from, out var position))
-                    pair.Value[to] = position;
+            {
+                var track = pair.Value;
+                if (track.Count == 0) continue;
+                int last = -1;
+                for (int i = 0; i < track.Count; i++)
+                {
+                    if (track.Keys[i] > time + 1e-4f) break;
+                    last = i;
+                }
+                if (last >= 0 && Mathf.Abs(track.Keys[last] - time) > 1e-4f) track[time] = track.Values[last];
+            }
 
-            _time = to;
+            _time = Mathf.Max(_time, time);
             return this;
         }
 
@@ -319,7 +361,12 @@ namespace Guildmaster.AnimationLab.Editor
                     y.AddKey(key.Key, key.Value.y);
                     z.AddKey(key.Key, 0f);
                 }
+                // Position needs the same speed graph as rotation. Smoothing it blindly bows the curve
+                // through a plateau: the pelvis climbed towards the next key during the pause, so a hold
+                // that was flat in every angle still had the whole body drifting upward.
                 SmoothAll(x); SmoothAll(y);
+                ApplyEases(x, pair.Key);
+                ApplyEases(y, pair.Key);
 
                 SetCurve(clip, joint.Path, "m_LocalPosition.x", x);
                 SetCurve(clip, joint.Path, "m_LocalPosition.y", y);
@@ -369,7 +416,7 @@ namespace Guildmaster.AnimationLab.Editor
                     }
                 }
                 foreach (var order in pair.Value)
-                    if (!order.Value.IsAim)
+                    if (!order.Value.IsAim && !order.Value.IsPlateau)
                         track[order.Key] = order.Value.LocalZ;
                 _resolved[pair.Key] = track;
             }
@@ -385,6 +432,16 @@ namespace Guildmaster.AnimationLab.Editor
                     float value;
 
                     float previous = PreviousResolved(pair.Key, time, joint.RestZ, out float previousTime);
+
+                    if (order.IsPlateau)
+                    {
+                        // A pause repeats the pose, full stop. No aim is re-solved and no arc is unwrapped.
+                        _resolved[pair.Key][time] = previous;
+                        if (!_eases.TryGetValue(pair.Key, out var plateauModes))
+                            _eases[pair.Key] = plateauModes = new Dictionary<float, Ease>();
+                        plateauModes[time] = Ease.Hold;
+                        continue;
+                    }
 
                     if (order.IsAim)
                     {
