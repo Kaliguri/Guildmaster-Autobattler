@@ -34,6 +34,13 @@ namespace Guildmaster.AnimationLab.Editor
         // on a rig this simple it read as lag, and it made every note ("that pose is wrong") ambiguous
         // about WHICH of three keys to fix. Overlap may come back later on the settle alone, where the
         // movement is long enough for a trail to read as weight instead of as a stutter.
+        //
+        // A SLASH IS TWO KEYS (Max, 28.07). Where the swing starts and where it ends — nothing between
+        // them and nothing after them. A key inside the arc splits one acceleration into two and the blade
+        // measurably stutters; a follow-through key after the impact re-starts the blade once it has
+        // already stopped, which reads as the animation lagging rather than as weight. Both were in every
+        // attack and both are gone. Weight after the blow lives in the HOLD and in the settle back to
+        // stance, not in another few degrees of blade.
 
         const RigWriter.Ease Hold = RigWriter.Ease.Hold;
         const RigWriter.Ease Out = RigWriter.Ease.EaseOut;      // arrives at speed, stops dead
@@ -86,8 +93,6 @@ namespace Guildmaster.AnimationLab.Editor
                             .Aim("weapon", -70f, Cw, Out).Aim("shield", 50f, Near, Out);
                 HoldUntil(w, 0.583f);   // 6 frames of frozen impact
 
-                // follow-through carries the blade a little further, then a long settle
-                w.At(0.633f).Aim("weapon", -88f, Cw, Soft).Bend("elbow.R", 4f, Near, Soft);
                 Stance(w, 1.167f);
                 // Contact where the blade crosses the torso band, not where the arm finishes: at 0.45 the
                 // swing is already over and the blade is below the target.
@@ -115,10 +120,6 @@ namespace Guildmaster.AnimationLab.Editor
                 HoldUntil(w, 0.300f);
 
                 w.At(0.300f).Aim("weapon", -150f, Near, In);
-                // The legs keep their mid-key — the extension IS a separate beat and drives the blow — but
-                // the blade gets none, so its arc stays one continuous acceleration.
-                w.At(0.320f).Bend("knee.L", 12f, Near, Lin).Bend("knee.R", 14f, Near, Lin)
-                            .Move("hips", new Vector2(RestHips.x, 0.022f));
                 w.At(0.380f).Bend("torso", 7f, Near, Out).Bend("knee.L", 5f, Near, Out).Bend("knee.R", 6f, Near, Out)
                             .Bend("hip.L", -9f, Near, Out).Bend("hip.R", 12f, Near, Out)
                             .Bend("shoulder.R", 57f, Near, Out).Bend("shoulder.L", -12f, Near, Out)
@@ -127,7 +128,6 @@ namespace Guildmaster.AnimationLab.Editor
                             .Move("hips", new Vector2(RestHips.x, 0.035f));
                 HoldUntil(w, 0.513f);
 
-                w.At(0.560f).Aim("weapon", 72f, Ccw, Soft);
                 Stance(w, 1.000f);
                 // Rising cuts pass the torso on the way UP, so contact is mid-arc, not at the top of it.
                 w.Event("Marker", 0.350f);
@@ -175,7 +175,6 @@ namespace Guildmaster.AnimationLab.Editor
                             .Move("hips", new Vector2(RestHips.x, 0.010f));
                 HoldUntil(w, 0.573f);   // 6 frames of frozen impact
 
-                w.At(0.623f).Aim("weapon", -38f, Cw, Soft).Bend("elbow.R", 8f, Near, Soft);
                 Stance(w, 1.000f);
                 // Contact where the blade CROSSES chest height (measured: tip at y=0.05 inside the torso
                 // band -0.07..0.19, still travelling 12.5 u/s), not where the arm finishes. Put it at the
@@ -225,7 +224,6 @@ namespace Guildmaster.AnimationLab.Editor
                             .Move("hips", new Vector2(RestHips.x, -0.009f));
                 HoldUntil(w, 0.616f);
 
-                w.At(0.700f).Aim("weapon", -95f, Cw, Soft);
                 Stance(w, 1.100f);
                 w.Event("Marker", 0.417f);
                 return w.Write(Folder + "AttackCharge.anim", 60f).ToString();
