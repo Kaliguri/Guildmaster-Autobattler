@@ -59,21 +59,21 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>
-        /// Overhead vertical cut — the knight's bread and butter. Max's timing frame for frame; what changed
-        /// is where the blade ENDS: it used to finish pointing back across the body, because the shoulder
-        /// and the wrist cancelled each other, so the cut never crossed the front of the unit. Now it
-        /// travels 245 degrees through the front and finishes low, blade down.
+        /// Overhead vertical cut — the knight's bread and butter. Timing and the wrist are Max's hand pass
+        /// of 29.07: the wind-up takes a full quarter second, the strike is stretched to 0.21s so the blade
+        /// draws its arc instead of snapping through it, and the wrist carries 18 degrees further at the
+        /// end, which is what gives the cut its follow-through without a separate key after the impact.
         /// </summary>
         public static string Attack()
         {
             using (var w = new RigWriter(Profile()))
             {
                 // wind-up: the whole body arrives on one key
-                w.At(0.167f).Bend("torso", -4f, Near, Out).Bend("shoulder.R", 158f, Near, Out)
+                w.At(0.250f).Bend("torso", -4f, Near, Out).Bend("shoulder.R", 158f, Near, Out)
                             .Bend("shoulder.L", 27f, Near, Out).Bend("knee.R", 8f, Near, Out)
                             .Bend("head", 17f, Near, Out).Bend("elbow.R", 10f, Near, Out).Bend("elbow.L", 13f, Near, Out)
                             .Aim("weapon", 175f, Ccw, Out).Aim("shield", 75f, Near, Out);
-                HoldUntil(w, 0.333f);   // 8 frames of a genuinely frozen wind-up
+                HoldUntil(w, 0.333f);   // 5 frames of a genuinely frozen wind-up
 
                 // Break from the hold and swing through the FRONT in ONE go. No mid-swing keys: a key
                 // between the hold and the contact splits the arc into two accelerations, and the blade
@@ -86,17 +86,16 @@ namespace Guildmaster.AnimationLab.Editor
                 // Elbow stops just short of straight. It used to land at -64, inherited from the old clip,
                 // and that put the angle between upper arm and forearm at -44 — the joint bent inside out.
                 // A hinge only folds one way; the blade's reach comes from the shoulder and the wrist.
-                w.At(0.450f).Bend("torso", -10f, Near, Out).Bend("shoulder.R", -36f, Cw, Out)
+                w.At(0.583f).Bend("torso", -10f, Near, Out).Bend("shoulder.R", -36f, Cw, Out)
                             .Bend("shoulder.L", 3f, Near, Out).Bend("knee.R", 12f, Near, Out)
                             .Bend("knee.L", 6f, Near, Out).Bend("hip.L", -4f, Near, Out)
                             .Bend("head", -18f, Near, Out).Bend("elbow.R", 2f, Near, Out)
-                            .Aim("weapon", -70f, Cw, Out).Aim("shield", 50f, Near, Out);
-                HoldUntil(w, 0.583f);   // 6 frames of frozen impact
+                            .Aim("weapon", -85f, Cw, Out).Aim("shield", 50f, Near, Out);
+                HoldUntil(w, 0.667f);   // 5 frames of frozen impact
 
                 Stance(w, 1.167f);
-                // Contact where the blade crosses the torso band, not where the arm finishes: at 0.45 the
-                // swing is already over and the blade is below the target.
-                w.Event("Marker", 0.400f);
+                // Contact where the blade crosses the torso band, not where the arm finishes.
+                w.Event("Marker", 0.467f);
                 return w.Write(Folder + "Attack.anim", 60f).ToString();
             }
         }
@@ -119,28 +118,29 @@ namespace Guildmaster.AnimationLab.Editor
             using (var w = new RigWriter(Profile()))
             {
                 // anticipation: fold the knees, drop the pelvis, blade low and forward
-                w.At(0.160f).Bend("torso", -12f, Near, Out).Bend("knee.L", 25f, Near, Out).Bend("knee.R", 27f, Near, Out)
+                w.At(0.250f).Bend("torso", -12f, Near, Out).Bend("knee.L", 25f, Near, Out).Bend("knee.R", 27f, Near, Out)
                             .Bend("hip.L", -5f, Near, Out).Bend("hip.R", 6f, Near, Out)
                             .Bend("shoulder.R", -30f, Near, Out).Bend("shoulder.L", 8f, Near, Out)
                             .Bend("head", 6f, Near, Out).Bend("elbow.R", 10f, Near, Out).Bend("elbow.L", -5f, Near, Out)
                             .Aim("weapon", -50f, Cw, Out).Aim("shield", 82f, Near, Out)
                             .Move("hips", new Vector2(RestHips.x, 0.008f));
-                HoldUntil(w, 0.300f);
+                HoldUntil(w, 0.333f);
 
-                // the legs extend and throw the blade up the front — one acceleration, 6 frames
-                w.At(0.300f).Aim("weapon", -50f, Near, In);
-                w.At(0.400f).Bend("torso", 9f, Near, Out).Bend("knee.L", 4f, Near, Out).Bend("knee.R", 5f, Near, Out)
+                // The legs extend and throw the blade up the front — one acceleration. Max raised the
+                // shoulder to 137 and turned the wrist right through, so the cut finishes with the blade
+                // upright over the head rather than tipped back behind it.
+                w.At(0.333f).Aim("weapon", -50f, Near, In);
+                w.At(0.583f).Bend("torso", 9f, Near, Out).Bend("knee.L", 4f, Near, Out).Bend("knee.R", 5f, Near, Out)
                             .Bend("hip.L", -9f, Near, Out).Bend("hip.R", 12f, Near, Out)
-                            .Bend("shoulder.R", 88f, Near, Out).Bend("shoulder.L", -12f, Near, Out)
-                            .Bend("head", -6f, Near, Out).Bend("elbow.R", 6f, Near, Out).Bend("elbow.L", 9f, Near, Out)
-                            .Aim("weapon", 130f, Ccw, Out).Aim("shield", 94f, Near, Out)
+                            .Bend("shoulder.R", 137f, Near, Out).Bend("shoulder.L", -12f, Near, Out)
+                            .Bend("head", -6f, Near, Out).Bend("elbow.R", 0f, Near, Out).Bend("elbow.L", 9f, Near, Out)
+                            .Aim("weapon", 99f, Ccw, Out).Aim("shield", 94f, Near, Out)
                             .Move("hips", new Vector2(RestHips.x, 0.038f));
-                HoldUntil(w, 0.533f);
+                HoldUntil(w, 0.667f);
 
                 Stance(w, 1.000f);
-                // Rising cuts pass the torso on the way UP, so contact is mid-arc, not at the top of it:
-                // measured, the tip crosses y=0.01 at 0.333 and is already at 0.33 — over the head — by 0.35.
-                w.Event("Marker", 0.333f);
+                // Rising cuts pass the torso on the way UP, so contact is mid-arc, not at the top of it.
+                w.Event("Marker", 0.450f);
                 return w.Write(Folder + "Attack2.anim", 60f).ToString();
             }
         }
@@ -165,31 +165,29 @@ namespace Guildmaster.AnimationLab.Editor
             {
                 // wind-up: the blade goes further back than in the vertical cut, and the weight loads onto
                 // the back leg — the deeper gather is what tells the two overheads apart at a glance
-                w.At(0.150f).Bend("torso", 7f, Near, Out).Bend("shoulder.R", 172f, Near, Out)
+                w.At(0.250f).Bend("torso", 7f, Near, Out).Bend("shoulder.R", 172f, Near, Out)
                             .Bend("shoulder.L", 24f, Near, Out).Bend("knee.R", 10f, Near, Out)
                             .Bend("knee.L", 6f, Near, Out).Bend("hip.R", 7f, Near, Out)
                             .Bend("head", 14f, Near, Out).Bend("elbow.R", 14f, Near, Out).Bend("elbow.L", 12f, Near, Out)
                             .Aim("weapon", 205f, Ccw, Out).Aim("shield", 80f, Near, Out)
                             .Move("hips", new Vector2(RestHips.x, 0.030f));
-                HoldUntil(w, 0.300f);   // 7 frames frozen at the top
+                HoldUntil(w, 0.333f);   // 5 frames frozen at the top
 
                 // one continuous acceleration through the front, no mid-swing key
-                w.At(0.300f).Bend("torso", 7f, Near, In).Bend("shoulder.R", 172f, Near, In);
+                w.At(0.333f).Bend("torso", 7f, Near, In).Bend("shoulder.R", 172f, Near, In);
                 // Cw for the same reason as the vertical cut: from behind the back the short way home runs
                 // backwards over his own head.
-                w.At(0.440f).Bend("torso", -14f, Near, Out).Bend("shoulder.R", -22f, Cw, Out)
+                w.At(0.583f).Bend("torso", -14f, Near, Out).Bend("shoulder.R", -22f, Cw, Out)
                             .Bend("shoulder.L", 5f, Near, Out).Bend("knee.R", 14f, Near, Out)
                             .Bend("knee.L", 8f, Near, Out).Bend("hip.L", -6f, Near, Out)
                             .Bend("head", -15f, Near, Out).Bend("elbow.R", 6f, Near, Out).Bend("elbow.L", 8f, Near, Out)
-                            .Aim("weapon", -25f, Cw, Out).Aim("shield", 55f, Near, Out)
+                            .Aim("weapon", -60f, Cw, Out).Aim("shield", 55f, Near, Out)
                             .Move("hips", new Vector2(RestHips.x, 0.010f));
-                HoldUntil(w, 0.573f);   // 6 frames of frozen impact
+                HoldUntil(w, 0.667f);   // 5 frames of frozen impact
 
                 Stance(w, 1.000f);
-                // Contact where the blade CROSSES chest height (measured: tip at y=0.05 inside the torso
-                // band -0.07..0.19, still travelling 12.5 u/s), not where the arm finishes. Put it at the
-                // end of the arc and the hit lands on a blade that has already stopped, below the target.
-                w.Event("Marker", 0.400f);
+                // Contact where the blade CROSSES the torso band, not where the arm finishes.
+                w.Event("Marker", 0.483f);
                 return w.Write(Folder + "Attack3.anim", 60f).ToString();
             }
         }
@@ -225,26 +223,29 @@ namespace Guildmaster.AnimationLab.Editor
                             .Move("hips", new Vector2(RestHips.x, 0.036f));
 
                 // gathered further behind the back than the standing version, weight loaded on the back leg
-                w.At(0.267f).Bend("torso", 12f, Near, Out).Bend("shoulder.R", 182f, Near, Out)
-                            .Bend("shoulder.L", 26f, Near, Out).Bend("hip.L", -14f, Near, Out).Bend("hip.R", 22f, Near, Out)
-                            .Bend("knee.L", 30f, Near, Out).Bend("knee.R", 12f, Near, Out)
-                            .Bend("head", 16f, Near, Out).Bend("elbow.R", 16f, Near, Out).Bend("elbow.L", 12f, Near, Out)
-                            .Aim("weapon", 215f, Ccw, Out).Aim("shield", 78f, Near, Out)
-                            .Move("hips", new Vector2(RestHips.x, 0.040f));
-                HoldUntil(w, 0.383f);
+                w.At(0.300f).Bend("torso", 14f, Near, Out).Bend("shoulder.R", 184f, Near, Out)
+                            .Bend("shoulder.L", 26f, Near, Out).Bend("hip.L", -16f, Near, Out).Bend("hip.R", 24f, Near, Out)
+                            .Bend("knee.L", 32f, Near, Out).Bend("knee.R", 12f, Near, Out)
+                            .Bend("head", 18f, Near, Out).Bend("elbow.R", 16f, Near, Out).Bend("elbow.L", 12f, Near, Out)
+                            .Aim("weapon", 218f, Ccw, Out).Aim("shield", 78f, Near, Out)
+                            .Move("hips", new Vector2(RestHips.x, 0.044f));
+                HoldUntil(w, 0.433f);   // 8 frames — the charge hangs at the top longer than a standing cut
 
-                // the whole body goes with it: lunge, deep lean, pelvis dropping through the blow
-                w.At(0.383f).Bend("torso", 12f, Near, In).Bend("shoulder.R", 182f, Near, In);
-                w.At(0.500f).Bend("torso", -26f, Near, Out).Bend("shoulder.R", -30f, Cw, Out)
-                            .Bend("shoulder.L", -18f, Near, Out).Bend("hip.L", -32f, Near, Out).Bend("hip.R", 40f, Near, Out)
-                            .Bend("knee.L", 40f, Near, Out).Bend("knee.R", 14f, Near, Out)
-                            .Bend("head", -16f, Near, Out).Bend("elbow.R", 4f, Near, Out).Bend("elbow.L", 15f, Near, Out)
-                            .Aim("weapon", -45f, Cw, Out).Aim("shield", 58f, Near, Out)
-                            .Move("hips", new Vector2(RestHips.x, -0.014f));
-                HoldUntil(w, 0.633f);
+                // The whole body goes with it: lunge, deep lean, pelvis dropping through the blow. This is
+                // the one attack that does NOT share the common grid: the strike takes 0.30s against 0.21,
+                // and both holds are longer. A charge that moves at the same rate as a normal cut is just a
+                // normal cut with a run-up — the extra weight has to be in the TIME, not only in the pose.
+                w.At(0.433f).Bend("torso", 14f, Near, In).Bend("shoulder.R", 184f, Near, In);
+                w.At(0.733f).Bend("torso", -30f, Near, Out).Bend("shoulder.R", -34f, Cw, Out)
+                            .Bend("shoulder.L", -20f, Near, Out).Bend("hip.L", -36f, Near, Out).Bend("hip.R", 44f, Near, Out)
+                            .Bend("knee.L", 44f, Near, Out).Bend("knee.R", 16f, Near, Out)
+                            .Bend("head", -18f, Near, Out).Bend("elbow.R", 4f, Near, Out).Bend("elbow.L", 15f, Near, Out)
+                            .Aim("weapon", -80f, Cw, Out).Aim("shield", 58f, Near, Out)
+                            .Move("hips", new Vector2(RestHips.x, -0.022f));
+                HoldUntil(w, 0.867f);   // 8 frames of frozen impact: the ground takes the blow with him
 
-                Stance(w, 1.100f);
-                w.Event("Marker", 0.450f);
+                Stance(w, 1.350f);
+                w.Event("Marker", 0.600f);
                 return w.Write(Folder + "AttackCharge.anim", 60f).ToString();
             }
         }
