@@ -130,34 +130,51 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>
-        /// Diagonal cut — the second flavour of "downward". Same 180-degree sweep through the front, but it
-        /// starts higher on the other side and lands at -50 where the vertical one lands at -70, so the two
-        /// read as different blows rather than the same one twice.
+        /// The second overhead — a shoulder cut that carries THROUGH instead of down into the ground.
+        ///
+        /// The diagonal that used to live here was cut on Max's verdict: in our flat 2D view a diagonal
+        /// reads as neither an overhead nor a horizontal, and the gizmo confirmed it — its contact landed as
+        /// an almost horizontal poke while the path had started high on the other side. This is a variation
+        /// of the first attack rather than a third handwriting: the same wide arc through the front, but the
+        /// wind-up goes deeper behind the back (205 instead of 175) and the blade stops FORWARD at chest
+        /// height (-25) instead of pointing at the floor (-70). Same family, different ending — which is
+        /// what a variation is.
+        ///
+        /// The strike is deliberately slower than the first attack's: 8 frames instead of 6 for a comparable
+        /// arc. A 230-degree sweep crossed in three frames leaves a trail no slash effect can sit on.
         /// </summary>
         public static string Attack3()
         {
             using (var w = new RigWriter(Profile()))
             {
-                w.At(0.133f).Bend("torso", 6f, Near, Out).Bend("shoulder.R", -39f, Near, Out)
-                            .Bend("shoulder.L", 9f, Near, Out).Bend("hip.L", 6f, Near, Out).Bend("hip.R", -8f, Near, Out)
-                            .Bend("knee.L", 12f, Near, Out).Bend("knee.R", 10f, Near, Out)
-                            .Move("hips", new Vector2(RestHips.x, 0.026f));
-                w.At(0.150f).Bend("head", 3f, Near, Out).Bend("elbow.R", 24f, Near, Out).Bend("elbow.L", -6f, Near, Out);
-                w.At(0.167f).Aim("weapon", 130f, Ccw, Out).Aim("shield", 99f, Near, Out);
-                HoldUntil(w, 0.284f);
+                // wind-up: the blade goes further back than in the vertical cut, and the weight loads onto
+                // the back leg — the deeper gather is what tells the two overheads apart at a glance
+                w.At(0.150f).Bend("torso", 7f, Near, Out).Bend("shoulder.R", 172f, Near, Out)
+                            .Bend("shoulder.L", 24f, Near, Out).Bend("knee.R", 10f, Near, Out)
+                            .Bend("knee.L", 6f, Near, Out).Bend("hip.R", 7f, Near, Out)
+                            .Move("hips", new Vector2(RestHips.x, 0.030f));
+                w.At(0.167f).Bend("head", 14f, Near, Out).Bend("elbow.R", 14f, Near, Out).Bend("elbow.L", 12f, Near, Out);
+                w.At(0.183f).Aim("weapon", 205f, Ccw, Out).Aim("shield", 80f, Near, Out);
+                HoldUntil(w, 0.300f);   // 7 frames frozen at the top
 
-                w.At(0.284f).Aim("weapon", 130f, Near, In);
-                w.At(0.360f).Bend("torso", -13f, Near, Out).Bend("shoulder.R", 51f, Near, Out)
-                            .Bend("shoulder.L", -15f, Near, Out).Bend("hip.L", -10f, Near, Out).Bend("hip.R", 15f, Near, Out)
-                            .Bend("knee.L", 7f, Near, Out).Bend("knee.R", 16f, Near, Out)
-                            .Move("hips", new Vector2(RestHips.x, 0.005f));
-                w.At(0.376f).Bend("head", -6f, Near, Out).Bend("elbow.R", 4f, Near, Out).Bend("elbow.L", 10f, Near, Out);
-                w.At(0.393f).Aim("weapon", -50f, Cw, Out).Aim("shield", 73f, Near, Out);
-                HoldUntil(w, 0.513f);
+                // one continuous acceleration through the front, no mid-swing key
+                w.At(0.300f).Bend("torso", 7f, Near, In).Bend("shoulder.R", 172f, Near, In);
+                // Cw for the same reason as the vertical cut: from behind the back the short way home runs
+                // backwards over his own head.
+                w.At(0.440f).Bend("torso", -14f, Near, Out).Bend("shoulder.R", -22f, Cw, Out)
+                            .Bend("shoulder.L", 5f, Near, Out).Bend("knee.R", 14f, Near, Out)
+                            .Bend("knee.L", 8f, Near, Out).Bend("hip.L", -6f, Near, Out)
+                            .Move("hips", new Vector2(RestHips.x, 0.010f));
+                w.At(0.456f).Bend("head", -15f, Near, Out).Bend("elbow.R", 6f, Near, Out).Bend("elbow.L", 8f, Near, Out);
+                w.At(0.473f).Aim("weapon", -25f, Cw, Out).Aim("shield", 55f, Near, Out);
+                HoldUntil(w, 0.573f);   // 6 frames of frozen impact
 
-                w.At(0.560f).Aim("weapon", -66f, Cw, Soft);
+                w.At(0.623f).Aim("weapon", -38f, Cw, Soft).Bend("elbow.R", 8f, Near, Soft);
                 Stance(w, 1.000f);
-                w.Event("Marker", 0.360f);
+                // Contact where the blade CROSSES chest height (measured: tip at y=0.05 inside the torso
+                // band -0.07..0.19, still travelling 12.5 u/s), not where the arm finishes. Put it at the
+                // end of the arc and the hit lands on a blade that has already stopped, below the target.
+                w.Event("Marker", 0.400f);
                 return w.Write(Folder + "Attack3.anim", 60f).ToString();
             }
         }
