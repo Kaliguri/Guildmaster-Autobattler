@@ -661,7 +661,7 @@ GameObject:
   m_Component:
   - component: {fileID: 959332909848431557}
   m_Layer: 0
-  m_Name: Hand
+  m_Name: Rotation Point (Item in Hand)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -676,7 +676,7 @@ Transform:
   m_GameObject: {fileID: 3105311412165943602}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.058801703, y: -0.004020205, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1814,13 +1814,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7932199901781242444}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.54756314, w: 0.83676434}
-  m_LocalPosition: {x: 0.108998306, y: 0.0476202, z: 0}
-  m_LocalScale: {x: 0.6508299, y: 1.2645357, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7033327, w: 0.71086085}
+  m_LocalPosition: {x: 0.1856, y: -0.0102, z: 0}
+  m_LocalScale: {x: 0.65083003, y: 1.2645358, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 959332909848431557}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -66.4}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -89.39}
 --- !u!212 &7464877195199332783
 SpriteRenderer:
   serializedVersion: 2
