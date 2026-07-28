@@ -72,7 +72,7 @@ MonoBehaviour:
     Value: 0.6
   - Stat: 9
     Op: 3
-    Value: 3
+    Value: 1.5
   - Stat: 3
     Op: 3
     Value: 45
@@ -101,6 +101,7 @@ MonoBehaviour:
     _areaRadius: 2.5
     _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
     _castCondition: 1
     _castConditionCount: 2
     _castConditionRadius: 0

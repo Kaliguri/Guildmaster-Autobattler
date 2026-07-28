@@ -509,8 +509,16 @@ namespace Guildmaster.Combat
 
         /// <summary>
         /// Союзник с наименьшим HP% — глобально, без ограничения дальности (хилер-ульта «Длань жизни»).
-        /// Себя исключаем: свой критический HP покрывает блок E. Тай-брейк — дистанция, затем Id (детерминизм).
+        /// Кастующий входит в перебор наравне со всеми: лечит того, кому хуже, будь то он сам.
+        /// Тай-брейк — дистанция, затем Id (детерминизм).
         /// </summary>
+        /// <remarks>
+        /// Себя раньше исключали (решение 2026-07-26/7: «свет — это то, что он отдаёт другим»), но это
+        /// оставляло хилера без единственного инструмента, когда фокус переводили на него самого.
+        /// Решение 2026-07-28: адресную ульту разрешили и на себя, а цена перенесена в ПАССИВКУ —
+        /// само-лечение светом вчетверо слабее союзного (25% против 100%). Отдавать по-прежнему
+        /// выгоднее, но выбор «спасти себя» перестал быть невозможным.
+        /// </remarks>
         private static RuntimeUnit LowestHpAlly(RuntimeUnit caster, IReadOnlyList<RuntimeUnit> units)
         {
             RuntimeUnit best      = null;
@@ -520,7 +528,7 @@ namespace Guildmaster.Combat
             for (int i = 0; i < units.Count; i++)
             {
                 RuntimeUnit other = units[i];
-                if (other == caster || other.IsDead || other.Team != caster.Team) continue;
+                if (other.IsDead || other.Team != caster.Team) continue;
 
                 float pct    = HpPct(other);
                 float distSq = (other.Position - caster.Position).sqrMagnitude;

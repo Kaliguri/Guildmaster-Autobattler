@@ -46,4 +46,9 @@ MonoBehaviour:
     MoveSpeedMult: 0.75
     ArmorBudget: 0
     DpsMult: 0.5
+  - Class: 6
+    HpMult: 0.5
+    MoveSpeedMult: 0.75
+    ArmorBudget: 0
+    DpsMult: 0.5
   _bandWidth: 0.3

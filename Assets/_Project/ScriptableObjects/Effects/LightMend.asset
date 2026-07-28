@@ -37,7 +37,7 @@ MonoBehaviour:
     - rid: 5615027215320744035
       type: {class: AllyMendComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _fraction: 0.375
+        _fraction: 0.25
         _allyBonus: 3
         _radius: 5
         _autoAttackOnly: 1

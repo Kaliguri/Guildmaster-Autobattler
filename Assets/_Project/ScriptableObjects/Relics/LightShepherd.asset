@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LightShepherd
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.light_shepherd
-  _combatClass: 4
+  _combatClass: 6
   _damageSchool: 2
   _physicalSubtype: 0
   _magicElement: 0
@@ -93,7 +93,7 @@ MonoBehaviour:
   _abilities:
   - _id: hand_of_life
     _effects: []
-    _baseCooldown: 6
+    _baseCooldown: 5
     _resourceCost: 30
     _targetMode: 3
     _damageMultiplier: 0
@@ -103,8 +103,9 @@ MonoBehaviour:
     _affinityOverride: 0
     _areaShape: 0
     _areaRadius: 0
-    _healFlat: 100
-    _healPctTargetMissingHp: 0.08
+    _healFlat: 250
+    _healPctTargetMissingHp: 0.1
+    _healEffect: {fileID: 0}
     _castCondition: 2
     _castConditionCount: 1
     _castConditionRadius: 0
