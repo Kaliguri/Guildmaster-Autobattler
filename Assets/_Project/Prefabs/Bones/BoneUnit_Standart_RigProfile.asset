@@ -32,8 +32,8 @@ MonoBehaviour:
     Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
       Point (Grip)
     RestZ: 0
-    BoneAxisLocal: 50.000004
-    BoneLength: 0.18699999
+    BoneAxisLocal: 65.24
+    BoneLength: 0.18699996
     FlexSign: 1
     FlexLimit: 0
   - Id: shoulder.R
@@ -108,12 +108,12 @@ MonoBehaviour:
       Point (Grip)
     ItemPath: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
       Point (Grip)/Shield
-    OrientationName: face
+    OrientationName: top
     OrientationLocal: 90
-    CalibrationZ: -40
-    GripToButt: 0.18699998
+    CalibrationZ: -24.76001
+    GripToButt: 0.18699995
     GripToBoneEnd: 0.07316242
-    ItemLength: 0.37399995
+    ItemLength: 0.3739999
   - Id: weapon
     GripPath: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
       Point (Grip)

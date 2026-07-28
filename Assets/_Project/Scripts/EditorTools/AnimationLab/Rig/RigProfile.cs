@@ -60,7 +60,9 @@ namespace Guildmaster.AnimationLab.Editor
             [Tooltip("Путь спрайтового узла предмета. Он несёт калибровочный оффсет и НЕ анимируется.")]
             public string ItemPath;
 
-            [Tooltip("Как называется ориентир предмета: blade — вдоль клинка, face — куда смотрит лицо щита.")]
+            [Tooltip("Как называется ориентир предмета: blade — вдоль клинка, top — верх щита. " +
+                     "У плоского 2D-щита лицо всегда обращено к камере, поэтому целимся его верхом: " +
+                     "именно он задаёт наклон.")]
             public string OrientationName = "blade";
 
             [Tooltip("Направление ориентира в ЛОКАЛЬНЫХ координатах спрайта предмета, в градусах. " +
@@ -258,7 +260,7 @@ namespace Guildmaster.AnimationLab.Editor
                 Id = id,
                 GripPath = gripPath,
                 ItemPath = AnimationUtility.CalculateTransformPath(item, root),
-                OrientationName = id == "shield" ? "face" : "blade",
+                OrientationName = id == "shield" ? "top" : "blade",
                 OrientationLocal = 90f,
                 CalibrationZ = NormalizeAngle(item.localEulerAngles.z),
                 GripToButt = Vector3.Distance(grip.position, butt),
