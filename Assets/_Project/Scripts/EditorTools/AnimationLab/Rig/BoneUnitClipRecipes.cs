@@ -65,10 +65,10 @@ namespace Guildmaster.AnimationLab.Editor
                 w.At(0.200f).Aim("weapon", 175f, Ccw, Out).Aim("shield", 75f, Near, Out);
                 HoldAll(w, 0.167f, 0.166f, 0.183f, 0.166f, 0.200f, 0.150f);
 
-                // break from the hold and swing through the FRONT, not around the back
+                // Break from the hold and swing through the FRONT in ONE go. No mid-swing keys: a key
+                // between the hold and the contact splits the arc into two accelerations, and the blade
+                // measurably stutters — 49 deg/frame, then 25, then 46 again.
                 w.At(0.333f).Bend("torso", -4f, Near, In).Bend("shoulder.R", 158f, Near, In);
-                w.At(0.383f).Bend("shoulder.R", 40f, Near, Lin).Bend("elbow.R", -20f, Near, Lin);
-                w.At(0.400f).Aim("weapon", 60f, Cw, Lin);
                 w.At(0.450f).Bend("torso", -10f, Near, Out).Bend("shoulder.R", -36f, Near, Out)
                             .Bend("shoulder.L", 3f, Near, Out).Bend("knee.R", 12f, Near, Out)
                             .Bend("knee.L", 6f, Near, Out).Bend("hip.L", -4f, Near, Out);
@@ -103,9 +103,10 @@ namespace Guildmaster.AnimationLab.Editor
                 HoldAll(w, 0.160f, 0.123f, 0.176f, 0.123f, 0.193f, 0.107f);
 
                 w.At(0.300f).Aim("weapon", -150f, Near, In);
+                // The legs keep their mid-key — the extension IS a separate beat and drives the blow — but
+                // the blade gets none, so its arc stays one continuous acceleration.
                 w.At(0.320f).Bend("knee.L", 12f, Near, Lin).Bend("knee.R", 14f, Near, Lin)
                             .Move("hips", new Vector2(RestHips.x, 0.022f));
-                w.At(0.340f).Aim("weapon", -40f, Ccw, Lin);
                 w.At(0.380f).Bend("torso", 7f, Near, Out).Bend("knee.L", 5f, Near, Out).Bend("knee.R", 6f, Near, Out)
                             .Bend("hip.L", -9f, Near, Out).Bend("hip.R", 12f, Near, Out)
                             .Bend("shoulder.R", 57f, Near, Out).Bend("shoulder.L", -12f, Near, Out)
@@ -139,8 +140,6 @@ namespace Guildmaster.AnimationLab.Editor
                 HoldAll(w, 0.133f, 0.134f, 0.150f, 0.134f, 0.167f, 0.117f);
 
                 w.At(0.284f).Aim("weapon", 130f, Near, In);
-                w.At(0.320f).Bend("shoulder.R", 10f, Near, Lin).Bend("elbow.R", 5f, Near, Lin);
-                w.At(0.330f).Aim("weapon", 40f, Cw, Lin);
                 w.At(0.360f).Bend("torso", -13f, Near, Out).Bend("shoulder.R", 51f, Near, Out)
                             .Bend("shoulder.L", -15f, Near, Out).Bend("hip.L", -10f, Near, Out).Bend("hip.R", 15f, Near, Out)
                             .Bend("knee.L", 7f, Near, Out).Bend("knee.R", 16f, Near, Out)
@@ -186,8 +185,6 @@ namespace Guildmaster.AnimationLab.Editor
                 HoldAll(w, 0.267f, 0.100f, 0.283f, 0.100f, 0.300f, 0.083f);
 
                 w.At(0.383f).Aim("weapon", 120f, Near, In);
-                w.At(0.420f).Bend("shoulder.R", 0f, Near, Lin).Bend("elbow.R", 10f, Near, Lin);
-                w.At(0.430f).Aim("weapon", 30f, Cw, Lin);
                 w.At(0.467f).Bend("torso", -22f, Near, Out).Bend("shoulder.R", 53f, Near, Out)
                             .Bend("shoulder.L", -21f, Near, Out).Bend("hip.L", -28f, Near, Out).Bend("hip.R", 36f, Near, Out)
                             .Bend("knee.L", 36f, Near, Out).Bend("knee.R", 12f, Near, Out)

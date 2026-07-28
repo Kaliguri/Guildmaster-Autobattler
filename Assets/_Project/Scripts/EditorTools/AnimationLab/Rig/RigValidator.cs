@@ -70,6 +70,7 @@ namespace Guildmaster.AnimationLab.Editor
                     CheckItemsRotateAtTheGrip(profile, clip, report);
                     CheckContinuity(clip, report);
                     CheckLimits(profile, clip, unit, report, sampleRate);
+                    CheckSwingIsOnePiece(profile, clip, unit, report);
                 }
             }
             finally
@@ -192,6 +193,54 @@ namespace Guildmaster.AnimationLab.Editor
                         $"'{binding.path}' {binding.propertyName} jumps {step:F0} deg between t={keys[i - 1].time:F2} " +
                         $"and t={keys[i].time:F2} — if that long way round is intended, say so with Arc; " +
                         "otherwise run RigEulerFilter");
+                }
+            }
+        }
+
+        /// <summary>
+        /// A swing must be ONE acceleration. Sampling the item's angular speed frame by frame exposes what
+        /// the eye calls a stutter: a key placed between the wind-up and the contact splits the arc, and the
+        /// speed dips in the middle and climbs again. Measured on the first draft of Attack — 49 deg/frame,
+        /// then 24, then 46 — which read as the blade lagging halfway through the cut.
+        ///
+        /// A dip at the very end is not reported: that is the blow stopping, which is the point.
+        /// </summary>
+        static void CheckSwingIsOnePiece(RigProfile profile, AnimationClip clip, GameObject unit, Report report)
+        {
+            foreach (var item in profile.Held)
+            {
+                var grip = unit.transform.Find(item.GripPath);
+                if (grip == null) continue;
+
+                int frames = Mathf.RoundToInt(clip.length * 60f);
+                if (frames < 4) continue;
+
+                var speed = new List<float>(frames);
+                float previous = 0f;
+                for (int i = 0; i <= frames; i++)
+                {
+                    clip.SampleAnimation(unit, i / 60f);
+                    float angle = RigProbe.WorldOrientation(grip, item);
+                    if (i > 0) speed.Add(Mathf.Abs(Mathf.DeltaAngle(previous, angle)));
+                    previous = angle;
+                }
+
+                float peak = 0f;
+                foreach (float s in speed) if (s > peak) peak = s;
+                if (peak < 6f) continue;   // nothing here is a swing
+
+                for (int i = 1; i < speed.Count - 1; i++)
+                {
+                    // a real dip: fast before, slow now, fast again — and all of it well inside a swing
+                    if (speed[i - 1] < peak * 0.35f) continue;
+                    if (speed[i + 1] < peak * 0.35f) continue;
+                    if (speed[i] > speed[i - 1] * 0.75f) continue;
+                    if (speed[i + 1] < speed[i] * 1.25f) continue;
+
+                    Add(report, Severity.Warning, clip.name, "swing-stutter",
+                        $"'{item.Id}' loses speed mid-swing at t={i / 60f:F3} " +
+                        $"({speed[i - 1]:F0} -> {speed[i]:F0} -> {speed[i + 1]:F0} deg/frame) — " +
+                        "a key between the hold and the contact splits the arc in two");
                 }
             }
         }
