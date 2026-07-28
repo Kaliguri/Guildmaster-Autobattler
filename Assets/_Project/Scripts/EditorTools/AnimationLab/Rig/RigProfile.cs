@@ -117,6 +117,13 @@ namespace Guildmaster.AnimationLab.Editor
         /// <summary>Nodes named like "Rotation Point (Elbow)" are joints; the word in brackets is the id.</summary>
         public const string JointPrefix = "Rotation Point (";
 
+        /// <summary>
+        /// Bones that carry the body itself rather than a limb, so they never got a "Rotation Point" name:
+        /// the pelvis (vertical bob), the spine (lean, and it drags the head and both arms with it) and the
+        /// head (its own lag). Without them a clip has no weight shift at all — the unit slides.
+        /// </summary>
+        static readonly string[] BodyBones = { "Hips", "Torso", "Head" };
+
         /// <summary>Rebuilds the profile in place and returns a human-readable summary of what it measured.</summary>
         public static string Build(RigProfile profile)
         {
@@ -138,10 +145,11 @@ namespace Guildmaster.AnimationLab.Editor
                 foreach (var node in root.GetComponentsInChildren<Transform>(includeInactive: true))
                 {
                     if (node == root) continue;
-                    if (!node.name.StartsWith(JointPrefix, System.StringComparison.Ordinal)) continue;
+                    bool isBodyBone = System.Array.IndexOf(BodyBones, node.name) >= 0;
+                    if (!node.name.StartsWith(JointPrefix, System.StringComparison.Ordinal) && !isBodyBone) continue;
 
-                    string label = ExtractLabel(node.name);
-                    string id = label.ToLowerInvariant() + SideSuffix(node, root);
+                    string label = isBodyBone ? node.name : ExtractLabel(node.name);
+                    string id = label.ToLowerInvariant() + (isBodyBone ? "" : SideSuffix(node, root));
                     string path = AnimationUtility.CalculateTransformPath(node, root);
 
                     if (label == "Grip")

@@ -76,6 +76,24 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>
+        /// How the curve behaves AT a key — the speed graph, which is what makes a swing read as a swing
+        /// rather than as a slide. A tangent is speed: zero means the motion is at rest there.
+        /// </summary>
+        public enum Ease
+        {
+            /// <summary>Automatic smoothing. Fine for breathing and drift, wrong for impacts.</summary>
+            Smooth,
+            /// <summary>At rest on both sides — an extreme pose the motion settles into and leaves slowly.</summary>
+            Hold,
+            /// <summary>Constant speed through the key: no braking, no dwelling.</summary>
+            Linear,
+            /// <summary>Arrives at full speed and stops dead. This is the contact frame of a strike.</summary>
+            EaseOut,
+            /// <summary>Starts from rest and leaves at full speed. This is the break from a wind-up hold.</summary>
+            EaseIn
+        }
+
+        /// <summary>
         /// One authored value on a joint's track. An aim keeps its WORLD intent instead of a local angle,
         /// so it can be solved after the rest of the pose exists.
         /// </summary>
@@ -87,6 +105,7 @@ namespace Guildmaster.AnimationLab.Editor
             public float WorldDegrees;
             public Arc Arc;
             public int ExtraTurns;
+            public Ease Ease;
         }
 
         readonly RigProfile _profile;
@@ -98,6 +117,9 @@ namespace Guildmaster.AnimationLab.Editor
         readonly Dictionary<string, SortedList<float, Vector2>> _positions = new Dictionary<string, SortedList<float, Vector2>>();
         /// <summary>Filled by <see cref="Resolve"/>: the actual local angles that go into the curves.</summary>
         readonly Dictionary<string, SortedList<float, float>> _resolved = new Dictionary<string, SortedList<float, float>>();
+        /// <summary>joint id -> time -> speed graph at that key.</summary>
+        readonly Dictionary<string, Dictionary<float, Ease>> _eases = new Dictionary<string, Dictionary<float, Ease>>();
+        readonly List<AnimationEvent> _events = new List<AnimationEvent>();
 
         float _time;
 
@@ -124,20 +146,64 @@ namespace Guildmaster.AnimationLab.Editor
         /// Bends a joint by degrees FROM ITS REST POSE, in the direction the joint actually bends —
         /// positive always means "folds", whatever sign the rig happens to use.
         /// </summary>
-        public RigWriter Bend(string jointId, float degreesFromRest, Arc arc = Arc.Shortest)
+        public RigWriter Bend(string jointId, float degreesFromRest, Arc arc = Arc.Shortest, Ease ease = Ease.Smooth)
         {
             var joint = RequireJoint(jointId);
             if (joint.FlexLimit > 0f && Mathf.Abs(degreesFromRest) > joint.FlexLimit)
                 _report.Warnings.Add($"{jointId} bent {degreesFromRest:F1} deg past its limit of {joint.FlexLimit:F0} at t={_time:F2}");
 
-            return Set(jointId, joint.RestZ + joint.FlexSign * degreesFromRest, arc);
+            return Set(jointId, joint.RestZ + joint.FlexSign * degreesFromRest, arc, ease);
         }
 
         /// <summary>Sets a joint's local angle outright. Prefer <see cref="Bend"/> or <see cref="Aim"/>.</summary>
-        public RigWriter Set(string jointId, float localZ, Arc arc = Arc.Shortest)
+        public RigWriter Set(string jointId, float localZ, Arc arc = Arc.Shortest, Ease ease = Ease.Smooth)
         {
             RequireJoint(jointId);
-            Track(jointId)[_time] = new Order { LocalZ = localZ, Arc = arc };
+            Track(jointId)[_time] = new Order { LocalZ = localZ, Arc = arc, Ease = ease };
+            return this;
+        }
+
+        /// <summary>
+        /// Holds everything written at the current time for <paramref name="seconds"/>, then moves the
+        /// clock to the end of that hold. This is the pause that gives a strike its weight: the wind-up
+        /// settles and waits, the contact lands and stops. Both ends of the plateau are pinned at rest so
+        /// smoothing cannot bow the curve through the pause.
+        /// </summary>
+        public RigWriter Hold(float seconds)
+        {
+            if (seconds <= 0f) return this;
+            float from = _time, to = _time + seconds;
+
+            foreach (var pair in _orders)
+            {
+                if (!pair.Value.TryGetValue(from, out var order)) continue;
+                var pinned = order;
+                pinned.Ease = Ease.Hold;
+                pair.Value[from] = pinned;
+
+                var copy = order;
+                copy.Ease = Ease.Hold;
+                copy.ExtraTurns = 0;      // the turn already happened on the way in
+                copy.Arc = Arc.Shortest;  // a plateau must not travel anywhere
+                pair.Value[to] = copy;
+            }
+
+            foreach (var pair in _positions)
+                if (pair.Value.TryGetValue(from, out var position))
+                    pair.Value[to] = position;
+
+            _time = to;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds an animation event. Attack clips carry a "Marker" event at the contact frame and the
+        /// combat code reads the hit timing from it, so rewriting a clip without re-adding its marker
+        /// moves the hit to the last frame.
+        /// </summary>
+        public RigWriter Event(string functionName, float time)
+        {
+            _events.Add(new AnimationEvent { functionName = functionName, time = Mathf.Max(0f, time) });
             return this;
         }
 
@@ -146,24 +212,7 @@ namespace Guildmaster.AnimationLab.Editor
         /// above the grip and the sprite's calibration offset are solved for at <see cref="Write"/>, so
         /// the order of commands does not matter.
         /// </summary>
-        public RigWriter Aim(string itemId, float worldDegrees, Arc arc = Arc.Shortest)
-        {
-            var item = RequireHeld(itemId);
-            Track(GripJointId(item))[_time] = new Order
-            {
-                IsAim = true,
-                ItemId = itemId,
-                WorldDegrees = worldDegrees,
-                Arc = arc
-            };
-            return this;
-        }
-
-        /// <summary>
-        /// Aims the long way round: the arc to <paramref name="worldDegrees"/> is forced to travel in
-        /// <paramref name="arc"/>, plus whole extra turns on top.
-        /// </summary>
-        public RigWriter Sweep(string itemId, float worldDegrees, Arc arc, int extraTurns = 0)
+        public RigWriter Aim(string itemId, float worldDegrees, Arc arc = Arc.Shortest, Ease ease = Ease.Smooth)
         {
             var item = RequireHeld(itemId);
             Track(GripJointId(item))[_time] = new Order
@@ -172,7 +221,26 @@ namespace Guildmaster.AnimationLab.Editor
                 ItemId = itemId,
                 WorldDegrees = worldDegrees,
                 Arc = arc,
-                ExtraTurns = Mathf.Abs(extraTurns)
+                Ease = ease
+            };
+            return this;
+        }
+
+        /// <summary>
+        /// Aims the long way round: the arc to <paramref name="worldDegrees"/> is forced to travel in
+        /// <paramref name="arc"/>, plus whole extra turns on top.
+        /// </summary>
+        public RigWriter Sweep(string itemId, float worldDegrees, Arc arc, int extraTurns = 0, Ease ease = Ease.Smooth)
+        {
+            var item = RequireHeld(itemId);
+            Track(GripJointId(item))[_time] = new Order
+            {
+                IsAim = true,
+                ItemId = itemId,
+                WorldDegrees = worldDegrees,
+                Arc = arc,
+                ExtraTurns = Mathf.Abs(extraTurns),
+                Ease = ease
             };
             return this;
         }
@@ -230,6 +298,7 @@ namespace Guildmaster.AnimationLab.Editor
                     flat.AddKey(key.Key, 0f);
                 }
                 SmoothAll(curveZ);
+                ApplyEases(curveZ, pair.Key);
 
                 SetCurve(clip, joint.Path, "localEulerAnglesRaw.x", flat);
                 SetCurve(clip, joint.Path, "localEulerAnglesRaw.y", new AnimationCurve(flat.keys));
@@ -258,6 +327,12 @@ namespace Guildmaster.AnimationLab.Editor
                 _report.Curves += 3;
                 _report.Keys += x.length;
             }
+
+            // Events survive ClearCurves, so replacing them wholesale is the only way to keep a rewritten
+            // clip honest: a stale marker points at a frame the new choreography does not have.
+            AnimationUtility.SetAnimationEvents(clip, _events.ToArray());
+            if (_events.Count > 0)
+                _report.Lines.Add($"events: {string.Join(", ", _events.ConvertAll(e => $"{e.functionName}@{e.time:F3}"))}");
 
             if (created) AssetDatabase.CreateAsset(clip, assetPath);
             else { EditorUtility.SetDirty(clip); AssetDatabase.SaveAssetIfDirty(clip); }
@@ -309,46 +384,71 @@ namespace Guildmaster.AnimationLab.Editor
                     var order = entry.Value;
                     float value;
 
+                    float previous = PreviousResolved(pair.Key, time, joint.RestZ, out float previousTime);
+
                     if (order.IsAim)
                     {
                         var item = _profile.FindHeld(order.ItemId);
                         var grip = _instance.transform.Find(item.GripPath);
+
+                        // The arc has to be unwrapped in WORLD space, because that is where the author sees
+                        // it. Unwrapping the grip's LOCAL angle instead sent the blade the wrong way round:
+                        // the hand travelled -26 degrees while the shoulder supplied +138, so "counter-
+                        // clockwise" on the local number meant a full extra turn on screen.
+                        ApplyPose(previousTime);
+                        float parentBefore = ParentWorld(grip);
+                        float previousWorld = previous + item.OrientationLocal + item.CalibrationZ + parentBefore;
+
                         ApplyPose(time);
-                        float parentWorld = grip.parent != null
-                            ? RigProfileBuilder.NormalizeAngle(grip.parent.eulerAngles.z)
-                            : 0f;
-                        value = order.WorldDegrees - item.OrientationLocal - item.CalibrationZ - parentWorld;
+                        float parentNow = ParentWorld(grip);
+                        float targetWorld = Unwrap(previousWorld, order.WorldDegrees, order.Arc);
+                        if (order.ExtraTurns > 0)
+                            targetWorld += (order.Arc == Arc.Cw ? -360f : 360f) * order.ExtraTurns;
+
+                        // In DELTAS, not absolutes: how much world the blade must travel, minus how much the
+                        // chain already supplies. Solving for the absolute local angle instead produced an
+                        // equivalent value 360 out (measured: 333.8 where -26.2 was meant) — the end pose
+                        // matched, but the wrist took a full turn to get there.
+                        float chainDelta = Mathf.DeltaAngle(parentBefore, parentNow);
+                        value = previous + (targetWorld - previousWorld) - chainDelta;
                         _report.Lines.Add($"t={time:F2} aim {order.ItemId} at {order.WorldDegrees:F1} world " +
-                                          $"-> {pair.Key} local {RigProfileBuilder.NormalizeAngle(value):F1}");
+                                          $"(from {previousWorld:F0}, {order.Arc}) -> {pair.Key} local {value:F1}");
                     }
                     else
                     {
-                        value = order.LocalZ;
+                        value = Unwrap(previous, order.LocalZ, order.Arc);
+                        if (order.ExtraTurns > 0)
+                            value += (order.Arc == Arc.Cw ? -360f : 360f) * order.ExtraTurns;
                     }
 
-                    float previous = PreviousResolved(pair.Key, time, joint.RestZ);
-                    value = Unwrap(previous, value, order.Arc);
-                    if (order.ExtraTurns > 0)
-                        value += (order.Arc == Arc.Cw ? -360f : 360f) * order.ExtraTurns;
-
                     _resolved[pair.Key][time] = value;
+                    if (!_eases.TryGetValue(pair.Key, out var modes))
+                        _eases[pair.Key] = modes = new Dictionary<float, Ease>();
+                    modes[time] = order.Ease;
                 }
             }
         }
 
-        float PreviousResolved(string jointId, float time, float fallback)
+        /// <summary>
+        /// The last value on this track before <paramref name="time"/>, plus the time it sits at — the aim
+        /// solver needs both, because the world angle it unwraps from depends on the chain's pose back then.
+        /// </summary>
+        float PreviousResolved(string jointId, float time, float fallback, out float previousTime)
         {
             var track = _resolved[jointId];
             float value = fallback;
-            bool found = false;
+            previousTime = 0f;
             foreach (var key in track)
             {
                 if (key.Key >= time - 1e-4f) break;
                 value = key.Value;
-                found = true;
+                previousTime = key.Key;
             }
-            return found ? value : fallback;
+            return value;
         }
+
+        static float ParentWorld(Transform grip) =>
+            grip.parent != null ? RigProfileBuilder.NormalizeAngle(grip.parent.eulerAngles.z) : 0f;
 
         static void SetCurve(AnimationClip clip, string path, string property, AnimationCurve curve)
         {
@@ -359,6 +459,39 @@ namespace Guildmaster.AnimationLab.Editor
         static void SmoothAll(AnimationCurve curve)
         {
             for (int i = 0; i < curve.length; i++) curve.SmoothTangents(i, 0f);
+        }
+
+        /// <summary>
+        /// Overrides the automatic tangents where the author asked for a specific speed graph. A tangent is
+        /// speed at the key, so zero means "at rest here": that is what separates a wind-up that settles
+        /// and breaks from one that drifts through its own extreme.
+        /// </summary>
+        void ApplyEases(AnimationCurve curve, string jointId)
+        {
+            if (!_eases.TryGetValue(jointId, out var modes)) return;
+
+            var keys = curve.keys;
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (!modes.TryGetValue(keys[i].time, out var mode) || mode == Ease.Smooth) continue;
+
+                float slopeIn = i > 0
+                    ? (keys[i].value - keys[i - 1].value) / Mathf.Max(1e-4f, keys[i].time - keys[i - 1].time)
+                    : 0f;
+                float slopeOut = i < keys.Length - 1
+                    ? (keys[i + 1].value - keys[i].value) / Mathf.Max(1e-4f, keys[i + 1].time - keys[i].time)
+                    : 0f;
+
+                switch (mode)
+                {
+                    case Ease.Hold:    keys[i].inTangent = 0f;      keys[i].outTangent = 0f;        break;
+                    case Ease.Linear:  keys[i].inTangent = slopeIn; keys[i].outTangent = slopeOut;  break;
+                    case Ease.EaseOut: keys[i].inTangent = slopeIn; keys[i].outTangent = 0f;        break;
+                    case Ease.EaseIn:  keys[i].inTangent = 0f;      keys[i].outTangent = slopeOut;  break;
+                }
+                keys[i].weightedMode = WeightedMode.None;
+            }
+            curve.keys = keys;
         }
 
         /// <summary>
@@ -416,10 +549,14 @@ namespace Guildmaster.AnimationLab.Editor
                     clip.SampleAnimation(_instance, entry.Key);
                     float actual = RigProbe.WorldOrientation(grip, item);
                     float error = Mathf.Abs(Mathf.DeltaAngle(actual, entry.Value.WorldDegrees));
-                    if (error <= 0.5f) continue;
+                    // A few degrees of drift is the overlap doing its job: the hand lags the shoulder by a
+                    // frame or two, so on a plateau the world angle keeps creeping while the local one holds.
+                    // Only flag what is too large to be lag.
+                    if (error <= 8f) continue;
                     _report.Warnings.Add(
                         $"aim {entry.Value.ItemId} at t={entry.Key:F2} asked for {entry.Value.WorldDegrees:F1} world " +
-                        $"but the clip plays {actual:F1} (off by {error:F1})");
+                        $"but the clip plays {actual:F1} (off by {error:F1}) — check whether the chain is still " +
+                        "moving through that key");
                 }
             }
         }

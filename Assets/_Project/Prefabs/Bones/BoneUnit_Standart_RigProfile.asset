@@ -14,6 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.AnimationLab.Editor::Guildmaster.AnimationLab.Editor.RigProfile
   Rig: {fileID: 6458627264527046750, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
   Joints:
+  - Id: hips
+    Path: Hips
+    RestZ: 0
+    BoneAxisLocal: -2.6837769
+    BoneLength: 0.06407028
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: torso
+    Path: Hips/Torso
+    RestZ: 0
+    BoneAxisLocal: 4.5744815
+    BoneLength: 0.092307776
+    FlexSign: 1
+    FlexLimit: 0
+  - Id: head
+    Path: Hips/Torso/Head
+    RestZ: 0
+    BoneAxisLocal: -90
+    BoneLength: 0.065
+    FlexSign: 1
+    FlexLimit: 0
   - Id: shoulder.L
     Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)
     RestZ: -20.519989
