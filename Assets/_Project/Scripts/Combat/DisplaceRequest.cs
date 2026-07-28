@@ -13,11 +13,13 @@ namespace Guildmaster.Combat
     {
         // Вида смещения (Knockback/Pull/Teleport) здесь нет: система смещения его не читала ни разу,
         // то есть все три «вида» вели себя одинаково — отбрасыванием (аудит 2026-07-26, волна 2).
+        // Длительности полёта здесь нет: она считается из Distance при фиксированной скорости
+        // (SimTuning.DisplaceTicks) — дальний толчок держит цель в оглушении дольше, и у этого
+        // свойства ровно один владелец (решение 2026-07-28).
         public readonly RuntimeUnit  Target;
         public readonly RuntimeUnit  Source;
         public readonly Vector2      Direction;
         public readonly float        Distance;
-        public readonly int          Ticks;
         public readonly bool         Cannonball;
         public readonly float        Damage;
         public readonly DamageSchool School;
@@ -27,38 +29,34 @@ namespace Guildmaster.Combat
         /// <summary>
         /// Слабое «цепное» отбрасывание врагов, задетых «ядром» на линии полёта (§10.6): &gt;0 — каждый задетый
         /// не только получает урон, но и сам чуть отбрасывается (что тоже триггерит «Вихревой заход» монаха).
-        /// Держим слабым, чтобы цепные полёты кончались раньше главного и финальный телепорт сел на исходную цель.
+        /// Держим КОРОЧЕ главного толчка: тогда цепные полёты кончаются раньше и финальный телепорт садится на
+        /// исходную цель. Длительность цепи считается из этой дистанции, поэтому короче = быстрее, автоматически.
         /// 0 = без цепи (обычное «ядро» — только урон).
         /// </summary>
         public readonly float        ChainDistance;
-        public readonly int          ChainTicks;
 
         public DisplaceRequest(
             RuntimeUnit target,
             RuntimeUnit source,
             Vector2     direction,
             float       distance,
-            int         ticks,
             bool        cannonball,
             float       damage,
             DamageSchool school,
             float       width,
             float       chainDistance = 0f,
-            int         chainTicks = 0,
             DamageAffinity affinity = DamageAffinity.None)
         {
             Target        = target;
             Source        = source;
             Direction     = direction;
             Distance      = distance;
-            Ticks         = ticks;
             Cannonball    = cannonball;
             Damage        = damage;
             School        = school;
             Affinity      = affinity;
             Width         = width;
             ChainDistance = chainDistance;
-            ChainTicks    = chainTicks;
         }
     }
 }

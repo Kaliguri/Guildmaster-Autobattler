@@ -109,14 +109,11 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private bool _consumesTriggerTag;
 
         [Header("Displacement (§9.9) — Монах")]
-        [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance за DisplaceTicks; на линии полёта — урон-ядро.")]
+        [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. На линии полёта — урон-ядро.")]
         [SerializeField] private bool _displaces;
 
         [Tooltip("Дистанция отбрасывания (фиксированная, мировые единицы).")]
         [SerializeField] private float _displaceDistance = 4f;
-
-        [Tooltip("Длительность полёта в сим-тиках (30/сек). Цель оглушена в полёте.")]
-        [SerializeField] private int _displaceTicks = 12;
 
         [Tooltip("Множитель урона-ядра от AutoAttackDamage кастующего (0 = без урона на линии).")]
         [SerializeField] private float _displaceDamageMult = 1f;
@@ -188,7 +185,6 @@ namespace Guildmaster.Data.Definitions
         public bool ConsumesTriggerTag => _consumesTriggerTag;
         public bool Displaces => _displaces;
         public float DisplaceDistance => _displaceDistance;
-        public int DisplaceTicks => _displaceTicks;
         public float DisplaceDamageMult => _displaceDamageMult;
         public float DisplaceWidth => _displaceWidth;
         public TagData[] InfoTags => _infoTags;

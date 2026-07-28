@@ -57,6 +57,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
@@ -95,7 +96,7 @@ MonoBehaviour:
     _baseCooldown: 10
     _resourceCost: 50
     _targetMode: 1
-    _damageMultiplier: 0
+    _damageMultiplier: 2
     _schoolOverride: 0
     _physicalSubtypeOverride: 0
     _magicElementOverride: 0
@@ -104,6 +105,8 @@ MonoBehaviour:
     _areaRadius: 0
     _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 0
     _castConditionCount: 1
     _castConditionRadius: 0
@@ -113,7 +116,6 @@ MonoBehaviour:
     _consumesTriggerTag: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0

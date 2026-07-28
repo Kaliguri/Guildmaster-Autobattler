@@ -163,16 +163,8 @@ namespace Guildmaster.Tests.EditMode.Content
                     $"'{unit.Id}': боевой класс не задан, а базу HP и скорости даёт именно он.");
         }
 
-        [Test]
-        public void StatsConfig_AttackSpeedClampOrdered()
-        {
-            foreach (string guid in AssetDatabase.FindAssets($"t:{nameof(StatsConfig)}"))
-            {
-                var cfg = AssetDatabase.LoadAssetAtPath<StatsConfig>(AssetDatabase.GUIDToAssetPath(guid));
-                Assert.Less(cfg.AttackSpeedMin, cfg.AttackSpeedMax,
-                    $"StatsConfig: AttackSpeedMin должен быть < AttackSpeedMax ({AssetDatabase.GetAssetPath(cfg)}).");
-            }
-        }
+        // Тест клампа скорости атаки снят вместе с самим клампом (решение 2026-07-28): симуляция его
+        // не применяла, поля в StatsConfig врали, а потолок темпа бил по киту, чья фантазия — разгон.
 
         // --- §8 правило 7: ссылочная целостность по id — враги энкаунтера существуют ---
 

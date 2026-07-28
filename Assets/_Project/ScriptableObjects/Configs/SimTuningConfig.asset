@@ -26,5 +26,8 @@ MonoBehaviour:
   _fleeWallMargin: 2.5
   _fleeThreatRadius: 6
   _kiteStrafeWeight: 0.35
+  _displaceSpeedPerSecond: 10
+  _cannonballWidthMult: 1.25
+  _wallImpactDamageMult: 1
   _overtimeStartSeconds: 90
   _overtimeDamagePerSecond: 0.05

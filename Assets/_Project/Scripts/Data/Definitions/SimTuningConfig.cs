@@ -58,6 +58,16 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Боковой (тангенциальный) уход при кайте: дуга вокруг цели вместо пятящегося отхода. 0 = выкл.")]
         [SerializeField] private float _kiteStrafeWeight = SimTuning.Default.KiteStrafeWeight;
 
+        [TabGroup("Tuning", "Смещение"), SuffixLabel("ед/с", overlay: true), LabelText("Скорость полёта")]
+        [Tooltip("Скорость отбрасывания, мировых единиц в секунду. Длительность полёта считается из дистанции: дальний толчок держит цель в оглушении дольше. Отдельной настройки «сколько тиков лететь» нет намеренно.")]
+        [SerializeField] private float _displaceSpeedPerSecond = SimTuning.Default.DisplaceSpeedPerSecond;
+        [TabGroup("Tuning", "Смещение"), LabelText("Ширина коридора «ядра»")]
+        [Tooltip("Во сколько раз коридор летящего тела шире заданной ширины (1.25 = +25%). Толчок в плотный строй должен цеплять соседей, а не только тех, кто ровно на линии.")]
+        [SerializeField] private float _cannonballWidthMult = SimTuning.Default.CannonballWidthMult;
+        [TabGroup("Tuning", "Смещение"), LabelText("Урон об край арены")]
+        [Tooltip("Доля урона толчка, добиваемая цели, впечатанной в край арены (1 = ещё раз столько же). 0 = удар о стену безвреден.")]
+        [SerializeField] private float _wallImpactDamageMult = SimTuning.Default.WallImpactDamageMult;
+
         [TabGroup("Tuning", "Овертайм"), SuffixLabel("с", overlay: true), LabelText("Начало овертайма")]
         [Tooltip("С какой секунды боя урон начинает расти. Медиана боя — 20-29 с, так что до порога доживает только клинч.")]
         [SerializeField] private float _overtimeStartSeconds = SimTuning.Default.OvertimeStartSeconds;
@@ -81,6 +91,9 @@ namespace Guildmaster.Data.Definitions
             _fleeWallMargin,
             _fleeThreatRadius,
             _kiteStrafeWeight,
+            _displaceSpeedPerSecond,
+            _cannonballWidthMult,
+            _wallImpactDamageMult,
             _overtimeStartSeconds,
             _overtimeDamagePerSecond);
     }

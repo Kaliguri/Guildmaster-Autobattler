@@ -30,6 +30,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             fleeWallMargin:            SimTuning.Default.FleeWallMargin,
             fleeThreatRadius:          SimTuning.Default.FleeThreatRadius,
             kiteStrafeWeight:          SimTuning.Default.KiteStrafeWeight,
+            displaceSpeedPerSecond:    SimTuning.Default.DisplaceSpeedPerSecond,
+            cannonballWidthMult:       SimTuning.Default.CannonballWidthMult,
+            wallImpactDamageMult:      SimTuning.Default.WallImpactDamageMult,
             overtimeStartSeconds:      start,
             overtimeDamagePerSecond:   perSecond);
 

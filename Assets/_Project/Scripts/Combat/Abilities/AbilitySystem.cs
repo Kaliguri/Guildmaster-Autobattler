@@ -214,7 +214,7 @@ namespace Guildmaster.Combat
 
             // Рывок = смещение самого кастующего, без «ядра». Приземление (EffectExpired на себе) поднимет отбрасывание.
             ctx.Displace(new DisplaceRequest(
-                caster, caster, dashDir, dashDist, data.DisplaceTicks,
+                caster, caster, dashDir, dashDist,
                 cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
         }
 

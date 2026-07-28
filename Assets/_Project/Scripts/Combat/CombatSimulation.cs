@@ -580,7 +580,7 @@ namespace Guildmaster.Combat
             // в конце полёта (OnDisplacementEnded → RemoveByTag) и поднимает единый EffectExpired.
             if (req.Target != null && !req.Target.IsDead)
                 _effectSystem.Apply(req.Target, _airborneEffect, req.Source, this);
-            _displacementSystem.Add(in req);
+            _displacementSystem.Add(in req, in _tuning);
         }
 
         // --- Управление симуляцией (вызывается командами) ---

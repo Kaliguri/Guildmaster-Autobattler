@@ -6,8 +6,11 @@ namespace Guildmaster.Data.Definitions
 {
     /// <summary>
     /// Глобальный шаблон стат-системы: дефолты статов + тюнинг-константы пайплайна
-    /// (armor-константа, клампы скорости атаки). Единственный экземпляр на проект —
+    /// (armor-константа, реген ресурса). Единственный экземпляр на проект —
     /// база сборки любого юнита (вики «10» §4.2, «11» §3–§4).
+    /// <para>Клампа скорости атаки здесь НЕТ намеренно (решение 2026-07-28): симуляция его никогда
+    /// не применяла, то есть поля в конфиге врали, а потолок темпа бил ровно по тому киту, чья
+    /// фантазия — разгон (Огненный мечник).</para>
     /// </summary>
     [CreateAssetMenu(menuName = "Guildmaster/Combat/Stats Config", fileName = "StatsConfig")]
     public sealed class StatsConfig : ScriptableObject
@@ -15,10 +18,6 @@ namespace Guildmaster.Data.Definitions
         [Header("Armor / mitigation")]
         [Tooltip("Armor-константа K из пайплайна урона: mult = K / (K + effArmor). Старт 100 (броня 100 → −50% урона).")]
         [SerializeField] private float _armorConstantK = 100f;
-
-        [Header("Attack speed clamp (атак/сек)")]
-        [SerializeField] private float _attackSpeedMin = 0.1f;
-        [SerializeField] private float _attackSpeedMax = 2.5f;
 
         [Header("Ресурс")]
         [Tooltip("Сколько ресурса капает в секунду — одинаково у всех (решение 2026-07-27). При запасе 100 " +
@@ -33,8 +32,6 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private StatDefault[] _defaults = Array.Empty<StatDefault>();
 
         public float ArmorConstantK => _armorConstantK;
-        public float AttackSpeedMin => _attackSpeedMin;
-        public float AttackSpeedMax => _attackSpeedMax;
         public float ResourceRegenPerSecond => _resourceRegenPerSecond;
 
         /// <summary>Базовое (доmodifier) значение стата: явный override из ассета или натуральный дефолт.</summary>

@@ -42,6 +42,14 @@ namespace Guildmaster.Core.Simulation
         public readonly float FleeThreatRadius;    // радиус (м) сбора врагов в центроид угрозы (иначе — ближайший)
         public readonly float KiteStrafeWeight;    // вес бокового ухода кайтера (дуга вместо пятящегося отхода)
 
+        // --- Смещение (DisplacementSystem, ГДД «Смещение») ---
+        // Скорость полёта фиксирована, поэтому ДЛИТЕЛЬНОСТЬ полёта считается из дистанции: дальний
+        // толчок держит цель в контроль-иммунном оглушении дольше (решение 2026-07-28). Отдельного
+        // параметра «сколько тиков лететь» намеренно нет — иначе у одного свойства два владельца.
+        public readonly float DisplaceSpeedPerSecond;  // мировых единиц в секунду полёта
+        public readonly float CannonballWidthMult;     // во сколько раз коридор «ядра» шире заданной ширины
+        public readonly float WallImpactDamageMult;    // доля урона толчка, добиваемая при удар о край арены
+
         // --- Овертайм (правило анти-затягивания, ГДД «Боевая система») ---
         // Растёт ТОЛЬКО наносимый урон. Лечение, щиты и реген не трогаем намеренно: клинч «танк+хил
         // против танк+хил» ломается ровно тем, что урон уезжает вверх, а сустейн остаётся плоским.
@@ -65,6 +73,9 @@ namespace Guildmaster.Core.Simulation
             float fleeWallMargin,
             float fleeThreatRadius,
             float kiteStrafeWeight,
+            float displaceSpeedPerSecond,
+            float cannonballWidthMult,
+            float wallImpactDamageMult,
             float overtimeStartSeconds,
             float overtimeDamagePerSecond)
         {
@@ -82,8 +93,23 @@ namespace Guildmaster.Core.Simulation
             FleeWallMargin            = fleeWallMargin;
             FleeThreatRadius          = fleeThreatRadius;
             KiteStrafeWeight          = kiteStrafeWeight;
+            DisplaceSpeedPerSecond    = displaceSpeedPerSecond;
+            CannonballWidthMult       = cannonballWidthMult;
+            WallImpactDamageMult      = wallImpactDamageMult;
             OvertimeStartSeconds      = overtimeStartSeconds;
             OvertimeDamagePerSecond   = overtimeDamagePerSecond;
+        }
+
+        /// <summary>
+        /// Сколько тиков длится полёт на дистанцию <paramref name="distance"/> при фиксированной скорости.
+        /// Минимум один тик: нулевой полёт не поднял бы событие конца смещения, на котором висят реактивы.
+        /// </summary>
+        public int DisplaceTicks(float distance)
+        {
+            if (DisplaceSpeedPerSecond <= 0f) return 1;
+            float seconds = distance / DisplaceSpeedPerSecond;
+            int ticks = (int)(seconds * SimConstants.TickRate + 0.5f);
+            return ticks < 1 ? 1 : ticks;
         }
 
         /// <summary>
@@ -113,6 +139,9 @@ namespace Guildmaster.Core.Simulation
             fleeWallMargin:            2.5f,
             fleeThreatRadius:          6f,
             kiteStrafeWeight:          0.35f,
+            displaceSpeedPerSecond:    10f,
+            cannonballWidthMult:       1.25f,
+            wallImpactDamageMult:      1f,
             overtimeStartSeconds:      90f,
             overtimeDamagePerSecond:   0.05f);
     }

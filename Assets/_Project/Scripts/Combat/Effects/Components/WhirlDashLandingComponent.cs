@@ -14,29 +14,25 @@ namespace Guildmaster.Combat.Effects.Components
     /// В этот момент монах уже вплотную к цели → отталкивает ближайшего врага «от себя вперёд» + «ядро» по
     /// линии. Конец этого отбрасывания (смещённый = враг) поймает <see cref="VortexEntryComponent"/> → телепорт.
     /// <para><b>Числа:</b> <c>_displaceDistance</c> — насколько далеко летит отброшенный, мировые
-    /// единицы; <c>_displaceTicks</c> — за сколько тиков (12 при 30 Гц ≈ 0.4 с полёта: чем дольше,
-    /// тем «тяжелее» смотрится); <c>_displaceDamageMult</c> — множитель урона от удара телом;
-    /// <c>_displaceWidth</c> — ширина полосы, которую сносит летящее тело; <c>_chainDistance</c> и
-    /// <c>_chainTicks</c> — то же для цепного отбрасывания тех, кого задело по пути.</para>
+    /// единицы (длительность полёта из неё и считается — чем дальше, тем дольше цель в оглушении);
+    /// <c>_displaceDamageMult</c> — множитель урона от удара телом; <c>_displaceWidth</c> — ширина
+    /// полосы, которую сносит летящее тело (система расширяет её на <c>CannonballWidthMult</c>);
+    /// <c>_chainDistance</c> — то же для цепного отбрасывания тех, кого задело по пути.</para>
     /// <para><b>Когда срабатывает:</b> в конце СОБСТВЕННОГО рывка носителя — это третья фаза комбо
     /// (рывок → фиксация → отбрасывание → телепорт), и следующую фазу поднимет уже другой компонент.</para>
     /// </summary>
     [Serializable]
     public sealed class WhirlDashLandingComponent : IReactiveComponent
     {
-        [Tooltip("Дистанция отбрасывания цели (мировые единицы).")]
+        [Tooltip("Дистанция отбрасывания цели (мировые единицы). Длительность полёта считается из неё: дальше = дольше в оглушении.")]
         [SerializeField] private float _displaceDistance = 4f;
-        [Tooltip("Длительность полёта отбрасывания в тиках (30/сек).")]
-        [SerializeField] private int _displaceTicks = 12;
-        [Tooltip("Множитель урона-«ядра» от AutoAttackDamage монаха (0 = без урона на линии).")]
+        [Tooltip("Множитель урона-«ядра» от AutoAttackDamage монаха (0 = без урона на линии). Он же добивается цели, впечатанной в край арены.")]
         [SerializeField] private float _displaceDamageMult = 1.5f;
-        [Tooltip("Ширина линии «ядра» (мировые единицы).")]
+        [Tooltip("Ширина линии «ядра» (мировые единицы). Система расширяет коридор на CannonballWidthMult из SimTuning.")]
         [SerializeField] private float _displaceWidth = 1.5f;
 
-        [Tooltip("Цепное отбрасывание врагов, задетых «ядром»: дистанция (мировые ед.), обычно доля от основного толчка (_displaceDistance). 0 = только урон по задетым. ВАЖНО: тайминг «цепь кончается раньше главного полёта → финальный телепорт сядет на исходную цель» держится _chainTicks < _displaceTicks, а НЕ малой дистанцией.")]
+        [Tooltip("Цепное отбрасывание врагов, задетых «ядром»: дистанция (мировые ед.), доля от основного толчка. 0 = только урон по задетым. Держать МЕНЬШЕ _displaceDistance: длительность считается из дистанции, поэтому короткая цепь кончается раньше главного полёта и финальный телепорт садится на исходную цель.")]
         [SerializeField] private float _chainDistance = 1.5f;
-        [Tooltip("Длительность цепного полёта в тиках. Строго КОРОЧЕ главного (_displaceTicks) — чтобы цепь кончалась первой и телепорт сел на основную цель.")]
-        [SerializeField] private int _chainTicks = 4;
 
         public CombatEvent Events => CombatEvent.EffectExpired;
 
@@ -74,10 +70,10 @@ namespace Guildmaster.Combat.Effects.Components
                 _displaceDistance, _displaceWidth, monk.Team));
 
             ctx.Combat.Displace(new DisplaceRequest(
-                victim, monk, dir, _displaceDistance, _displaceTicks,
+                victim, monk, dir, _displaceDistance,
                 cannonball: true, damage: dmg, school: school, width: _displaceWidth,
                 affinity: monk.Affinity,
-                chainDistance: _chainDistance, chainTicks: _chainTicks));
+                chainDistance: _chainDistance));
         }
 
         // Ближайший к точке <paramref name="from"/> живой враг монаха (тай-брейк по Id — детерминизм), кроме
