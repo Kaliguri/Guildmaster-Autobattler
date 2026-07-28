@@ -29,7 +29,9 @@ AvatarMask:
     m_Weight: 1
   - m_Path: Hips/Torso/Arm (Left)/Rotation Point/Elbow/Arm_Down
     m_Weight: 1
-  - m_Path: Hips/Torso/Arm (Left)/Rotation Point/Elbow/Arm_Down/Shield
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point/Elbow/Arm_Down/Hand
+    m_Weight: 1
+  - m_Path: Hips/Torso/Arm (Left)/Rotation Point/Elbow/Arm_Down/Hand/Shield
     m_Weight: 1
   - m_Path: Hips/Torso/Arm (Right)
     m_Weight: 0
@@ -43,7 +45,9 @@ AvatarMask:
     m_Weight: 0
   - m_Path: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down
     m_Weight: 0
-  - m_Path: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down/Sword
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down/Hand
+    m_Weight: 0
+  - m_Path: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down/Hand/Sword
     m_Weight: 0
   - m_Path: Hips/Leg (Left)
     m_Weight: 0

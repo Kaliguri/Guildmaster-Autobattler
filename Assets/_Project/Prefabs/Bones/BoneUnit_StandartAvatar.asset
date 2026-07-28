@@ -7,7 +7,7 @@ Avatar:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BoneUnit_StandartAvatar
-  m_AvatarSize: 4084
+  m_AvatarSize: 4300
   m_Avatar:
     serializedVersion: 3
     m_AvatarSkeleton:
@@ -37,49 +37,53 @@ Avatar:
           m_AxesId: -1
         - m_ParentId: 10
           m_AxesId: -1
+        - m_ParentId: 11
+          m_AxesId: -1
         - m_ParentId: 2
           m_AxesId: -1
-        - m_ParentId: 12
-          m_AxesId: -1
         - m_ParentId: 13
           m_AxesId: -1
-        - m_ParentId: 13
+        - m_ParentId: 14
           m_AxesId: -1
-        - m_ParentId: 13
+        - m_ParentId: 14
           m_AxesId: -1
-        - m_ParentId: 16
+        - m_ParentId: 14
           m_AxesId: -1
         - m_ParentId: 17
           m_AxesId: -1
-        - m_ParentId: 1
+        - m_ParentId: 18
           m_AxesId: -1
         - m_ParentId: 19
           m_AxesId: -1
-        - m_ParentId: 20
+        - m_ParentId: 1
           m_AxesId: -1
-        - m_ParentId: 20
+        - m_ParentId: 21
+          m_AxesId: -1
+        - m_ParentId: 22
           m_AxesId: -1
         - m_ParentId: 22
           m_AxesId: -1
-        - m_ParentId: 23
+        - m_ParentId: 24
           m_AxesId: -1
-        - m_ParentId: 22
+        - m_ParentId: 25
+          m_AxesId: -1
+        - m_ParentId: 24
           m_AxesId: -1
         - m_ParentId: 1
           m_AxesId: -1
-        - m_ParentId: 26
-          m_AxesId: -1
-        - m_ParentId: 27
-          m_AxesId: -1
-        - m_ParentId: 27
+        - m_ParentId: 28
           m_AxesId: -1
         - m_ParentId: 29
           m_AxesId: -1
-        - m_ParentId: 30
-          m_AxesId: -1
         - m_ParentId: 29
           m_AxesId: -1
-        m_ID: 000000001106d1de8490b13933da53ec1d27089094352ca9bce8d35b7abeb68867ea84a04d8d28e008e6d4bb8c4690490b9cc2394a5d5fdddec860483c0619bc9c9ef3b93a8bd9c8f59d097d308530b49f1b4283aa15e0d8928e4319a3a46e8d32019d193aab2edd4ae764e8cbbde07f7b03e7f4ff8625defcdbd983107494f2af816c47
+        - m_ParentId: 31
+          m_AxesId: -1
+        - m_ParentId: 32
+          m_AxesId: -1
+        - m_ParentId: 31
+          m_AxesId: -1
+        m_ID: 000000001106d1de8490b13933da53ec1d27089094352ca9bce8d35b7abeb68867ea84a04d8d28e008e6d4bbdfc2726d14b091470b9cc2394a5d5fdddec860483c0619bc9c9ef3b93a8bd9c881bf15734a2035ac308530b49f1b4283aa15e0d8928e4319a3a46e8d32019d193aab2edd4ae764e8cbbde07f7b03e7f4ff8625defcdbd983107494f2af816c47
         m_AxesArray: []
     m_AvatarSkeletonPose:
       data:
@@ -117,9 +121,12 @@ Avatar:
         - t: {x: 0.005701486, y: -0.030087873, z: 0}
           q: {x: -0, y: -0, z: 0.38493973, w: 0.92294174}
           s: {x: 1, y: 1, z: 1}
-        - t: {x: 0.019756736, y: 0.025444381, z: 0}
-          q: {x: 0, y: 0, z: -0.3420201, w: 0.9396927}
-          s: {x: 1.0999999, y: 1.0999999, z: 1.1}
+        - t: {x: 0.019756738, y: 0.025444381, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0.34202012, w: 0.9396927}
+          s: {x: 1.0999998, y: 1.0999998, z: 1.1}
         - t: {x: 0.132, y: -0.011999999, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
@@ -138,9 +145,12 @@ Avatar:
         - t: {x: 0.008470498, y: -0.03341107, z: 0}
           q: {x: -0, y: -0, z: 0.23013468, w: 0.97315884}
           s: {x: 1, y: 1, z: 1}
-        - t: {x: 0.1678, y: 0.0436, z: 0}
-          q: {x: 0, y: 0, z: -0.5475632, w: 0.83676434}
-          s: {x: 0.65082985, y: 1.2645357, z: 1}
+        - t: {x: 0.058801703, y: -0.004020205, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.108998306, y: 0.0476202, z: 0}
+          q: {x: -0, y: -0, z: -0.54756314, w: 0.83676434}
+          s: {x: 0.6508299, y: 1.2645357, z: 1}
         - t: {x: -0.064, y: -0.023, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
@@ -219,9 +229,12 @@ Avatar:
         - t: {x: 0.005701486, y: -0.030087873, z: 0}
           q: {x: -0, y: -0, z: 0.38493973, w: 0.92294174}
           s: {x: 1, y: 1, z: 1}
-        - t: {x: 0.019756736, y: 0.025444381, z: 0}
-          q: {x: 0, y: 0, z: -0.3420201, w: 0.9396927}
-          s: {x: 1.0999999, y: 1.0999999, z: 1.1}
+        - t: {x: 0.019756738, y: 0.025444381, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0, y: 0, z: 0}
+          q: {x: -0, y: -0, z: -0.34202012, w: 0.9396927}
+          s: {x: 1.0999998, y: 1.0999998, z: 1.1}
         - t: {x: 0.132, y: -0.011999999, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
@@ -240,9 +253,12 @@ Avatar:
         - t: {x: 0.008470498, y: -0.03341107, z: 0}
           q: {x: -0, y: -0, z: 0.23013468, w: 0.97315884}
           s: {x: 1, y: 1, z: 1}
-        - t: {x: 0.1678, y: 0.0436, z: 0}
-          q: {x: 0, y: 0, z: -0.5475632, w: 0.83676434}
-          s: {x: 0.65082985, y: 1.2645357, z: 1}
+        - t: {x: 0.058801703, y: -0.004020205, z: 0}
+          q: {x: -0, y: -0, z: -0, w: 1}
+          s: {x: 1, y: 1, z: 1}
+        - t: {x: 0.108998306, y: 0.0476202, z: 0}
+          q: {x: -0, y: -0, z: -0.54756314, w: 0.83676434}
+          s: {x: 0.6508299, y: 1.2645357, z: 1}
         - t: {x: -0.064, y: -0.023, z: 0}
           q: {x: -0, y: -0, z: -0, w: 1}
           s: {x: 1, y: 1, z: 1}
@@ -285,7 +301,7 @@ Avatar:
         - t: {x: 0.0041499957, y: -0.047538713, z: 0}
           q: {x: -0, y: -0, z: -0.090024225, w: 0.9959396}
           s: {x: 1, y: 1, z: 1}
-    m_SkeletonNameIDArray: 000000001106d1de81939ee68ca49a7ba259c10763c54bf7563381e2875760cc4921e31226e496409f784268ded73f19449c451a563381e2875760cc4921e31226e496409f7842680be8245ba37dd45b563381e20b6a57273fec4a0a69935ac83e7ecf7568eca5f04cc18d81563381e20b6a57273fec4a0a69935ac83e7ecf7568eca5f0
+    m_SkeletonNameIDArray: 000000001106d1de81939ee68ca49a7ba259c10763c54bf7563381e2875760cc4921e31226e496409f784268b1ed5087ded73f19449c451a563381e2875760cc4921e31226e496409f784268b1ed50870be8245ba37dd45b563381e20b6a57273fec4a0a69935ac83e7ecf7568eca5f04cc18d81563381e20b6a57273fec4a0a69935ac83e7ecf7568eca5f0
     m_Human:
       data:
         serializedVersion: 2
@@ -369,30 +385,32 @@ Avatar:
     3155756604: Hips/Torso/Arm (Right)/Rotation Point/Arm_Top
     423857810: Hips/Leg (Left)/Rotation Point/Knee
     1214302430: Hips/Torso/Arm (Right)/Rotation Point/Arm_Shoulder
-    3898926922: Hips/Leg (Right)
+    1930805121: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down/Hand
     3727001343: Hips/Leg (Right)/Rotation Point/Knee
-    4069815312: Hips/Leg (Right)/Rotation Point/Knee/Ankle/Leg_Boots
+    3898926922: Hips/Leg (Right)
     1540614332: Hips/Torso/Arm (Left)/Rotation Point
-    1234192012: Hips/Torso/Arm (Left)/Rotation Point/Elbow/Arm_Down/Shield
+    4069815312: Hips/Leg (Right)/Rotation Point/Knee/Ankle/Leg_Boots
+    1200730132: Hips/Torso/Arm (Left)/Rotation Point/Elbow/Arm_Down/Hand/Shield
     3119750812: Hips/Torso/Arm (Right)/Rotation Point/Elbow
     0: 
-    2097782261: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down/Sword
     2693065319: Hips/Torso/Arm (Left)/Rotation Point/Arm_Top
-    3964918323: Hips/Torso/Body
-    3369700154: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down
-    969055243: Hips/Torso/Arm (Right)
-    967938180: Hips/Torso
-    2372838563: Hips/Leg (Left)/Rotation Point/Knee/Ankle
-    3023078704: Hips/Leg (Left)
     3638564266: Hips/Leg (Left)/Rotation Point/Leg_Top
+    3964918323: Hips/Torso/Body
+    969055243: Hips/Torso/Arm (Right)
+    3369700154: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down
+    967938180: Hips/Torso
+    3023078704: Hips/Leg (Left)
+    1836237535: Hips/Torso/Arm (Left)/Rotation Point/Elbow/Arm_Down/Hand
+    2372838563: Hips/Leg (Left)/Rotation Point/Knee/Ankle
     3710823226: Hips/Leg (Left)/Rotation Point/Knee/Leg_Down
-    2145435083: Hips/Leg (Right)/Rotation Point
     3714014538: Hips/Torso/Arm (Right)/Rotation Point
+    2889162826: Hips/Torso/Arm (Right)/Rotation Point/Elbow/Arm_Down/Hand/Sword
     1198293423: Hips/Leg (Right)/Rotation Point/Knee/Leg_Down
     4108780411: Hips/Leg (Right)/Rotation Point/Leg_Top
     2293677690: Hips/Torso/Arm (Left)/Rotation Point/Arm_Shoulder
     2202147743: Hips/Leg (Left)/Rotation Point
     3738240529: Hips
+    2145435083: Hips/Leg (Right)/Rotation Point
     2416453405: Hips/Torso/Head
     429719858: Hips/Leg (Left)/Rotation Point/Knee/Ankle/Leg_Boots
   m_HumanDescription:
