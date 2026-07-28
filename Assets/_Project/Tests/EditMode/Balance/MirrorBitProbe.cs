@@ -73,6 +73,71 @@ namespace Guildmaster.Balance.Tests
             Assert.Pass(sb.ToString());
         }
 
+        /// <summary>
+        /// Держится ли зеркало ТОЧНО весь бой и на всём ростере, а не только в окне диагностики.
+        /// Отвечает на вопрос «починено или отодвинуто»: сторож судит с допуском и потому молчит про
+        /// дрейф в младших битах, а он и есть зерно расхождения. Ползёт по тем же окнам, что
+        /// <c>MirrorMatchTests.Mirror_SquadSeries_NeverDiverges</c>, но на полную дистанцию боя.
+        /// </summary>
+        [Test]
+        public void HoldsExactlyForFullBattle([ValueSource(nameof(SquadWindows))] int start)
+        {
+            List<RelicData> relics = BalanceAssets.LoadRelics();
+            var squad = new List<RelicData>();
+            for (int i = 0; i < 4 && start + i < relics.Count; i++) squad.Add(relics[start + i]);
+
+            var names = new List<string>();
+            foreach (RelicData r in squad) names.Add(r.name);
+
+            int tick = FirstExactDivergence(squad, MirrorFixture.FullBattleTicks, out string what);
+
+            if (tick >= 0)
+                Assert.Fail($"Отряд [{string.Join(", ", names)}] разошёлся ТОЧНО на тике {tick} " +
+                            $"({tick / 30f:0.00} с):\n{what}");
+
+            Assert.Pass($"Отряд [{string.Join(", ", names)}]: зеркало точно весь бой " +
+                        $"({MirrorFixture.FullBattleTicks} тиков).");
+        }
+
+        private static IEnumerable<int> SquadWindows()
+        {
+            int count = BalanceAssets.LoadRelics().Count;
+            var starts = new List<int>();
+            for (int i = 0; i + 4 <= count; i++) starts.Add(i);
+            if (starts.Count == 0) starts.Add(0);
+            return starts;
+        }
+
+        /// <summary>Прогнать зеркальный бой и вернуть первый тик ТОЧНОГО расхождения, либо -1.</summary>
+        private static int FirstExactDivergence(IReadOnlyList<RelicData> squad, int capTicks, out string what)
+        {
+            var env = new SimEnvironment(1UL, BalanceAssets.LoadStatsConfig());
+            var tracked = new List<TrackedUnit>();
+            ClassBalanceConfig classes = BalanceAssets.LoadClassBalanceConfig();
+
+            Lineups.SpawnTeam(env, classes, tracked, squad, 0, Lineups.Squad);
+            Lineups.SpawnTeam(env, classes, tracked, squad, 1, Lineups.Squad);
+            for (int i = 0; i < tracked.Count; i++) tracked[i].Unit.Id = i;
+            for (int i = 0; i < tracked.Count; i++) env.Sim.EnqueueUnitSpawn(tracked[i].Unit);
+            env.Sim.FlushSpawns();
+
+            int half = tracked.Count / 2;
+            for (int tick = 0; tick < capTicks; tick++)
+            {
+                env.Sim.Tick(SimConstants.TickDelta);
+
+                var diffs = new List<string>();
+                for (int i = 0; i < half; i++) Collect(tracked, i, half, diffs);
+                if (diffs.Count == 0) continue;
+
+                what = string.Join("\n", diffs);
+                return tick;
+            }
+
+            what = null;
+            return -1;
+        }
+
         /// <summary>Собрать ВСЕ точные отличия отражённой пары, а не первое по списку.</summary>
         private static void Collect(List<TrackedUnit> tracked, int i, int half, List<string> diffs)
         {

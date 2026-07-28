@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
@@ -42,26 +41,41 @@ namespace Guildmaster.Combat
         // Накопленные за проход смещения (по индексу юнита в списке) — применяются ПОСЛЕ обхода всех пар.
         private Vector2[] _push = new Vector2[64];
 
-        // Юнит, ОТНОСИТЕЛЬНО которого сортируются соседи, и кэшированный компаратор: порядок обхода
-        // должен быть каноническим (см. Tick), а делегат — не аллоцироваться каждый тик.
-        private RuntimeUnit _sortRelativeTo;
-        private readonly Comparison<RuntimeUnit> _canonicalOrder;
-
-        public SeparationSystem() => _canonicalOrder = CompareCanonical;
-
         /// <summary>
-        /// Канонический порядок соседей: СНАЧАЛА свои, ПОТОМ чужие, внутри каждой группы — по возрастанию
-        /// <see cref="RuntimeUnit.Id"/>. Ключ намеренно ОТНОСИТЕЛЬНЫЙ («свой мне / чужой мне»), а не
-        /// абсолютный: только такой порядок одинаков у отражённых сторон. Сортировка по одному Id этим
+        /// Упорядочить буфер соседей КАНОНИЧЕСКИ: сначала свои, потом чужие, внутри каждой группы по
+        /// возрастанию <see cref="RuntimeUnit.Id"/>. Ключ намеренно ОТНОСИТЕЛЬНЫЙ («свой мне / чужой мне»),
+        /// а не абсолютный: только такой порядок одинаков у отражённых сторон. Сортировка по одному Id этим
         /// свойством НЕ обладает — у левой команды свои Id младшие, у правой старшие, поэтому у левой
         /// выходит [свои, чужие], а у правой [чужие, свои]. Именно на это налетела первая попытка
         /// починить BAL-014.
         /// </summary>
-        private int CompareCanonical(RuntimeUnit x, RuntimeUnit y)
+        /// <remarks>
+        /// Вставками, а НЕ <c>List.Sort</c>: тот заводит обёртку-компаратор поверх <c>Comparison</c>, то есть
+        /// мусор на горячем пути (каждый юнит, каждая итерация, 30 Гц). Соседей здесь единицы — на таких
+        /// длинах вставки быстрее любого introsort, не аллоцируют вовсе и устойчивы к порядку. Ключ полный
+        /// (Id уникальны), поэтому итог однозначен.
+        /// </remarks>
+        private void SortCanonical(RuntimeUnit relativeTo)
         {
-            bool xOwn = x.Team == _sortRelativeTo.Team, yOwn = y.Team == _sortRelativeTo.Team;
-            if (xOwn != yOwn) return xOwn ? -1 : 1;
-            return x.Id.CompareTo(y.Id);
+            for (int i = 1; i < _neighbors.Count; i++)
+            {
+                RuntimeUnit key = _neighbors[i];
+                int j = i - 1;
+                while (j >= 0 && Precedes(key, _neighbors[j], relativeTo))
+                {
+                    _neighbors[j + 1] = _neighbors[j];
+                    j--;
+                }
+                _neighbors[j + 1] = key;
+            }
+        }
+
+        /// <summary>Идёт ли <paramref name="x"/> раньше <paramref name="y"/> в каноническом порядке.</summary>
+        private static bool Precedes(RuntimeUnit x, RuntimeUnit y, RuntimeUnit relativeTo)
+        {
+            bool xOwn = x.Team == relativeTo.Team, yOwn = y.Team == relativeTo.Team;
+            if (xOwn != yOwn) return xOwn;
+            return x.Id < y.Id;
         }
 
         /// <summary>Раздвинуть перекрывающиеся тела живых юнитов на один тик.</summary>
@@ -74,6 +88,12 @@ namespace Guildmaster.Combat
         /// Сложение float неассоциативно, поэтому суммы расходились в последнем бите (BAL-014, тик 68);
         /// никакой сортировкой соседей это не лечится, пока часть слагаемых приходит извне.
         /// Своя половина, посчитанная на своём шаге, — то же число, но в предсказуемом порядке.
+        /// <para>
+        /// ОБЕ половины правки необходимы, и это проверено по отдельности, а не выведено: убрать
+        /// <see cref="SortCanonical"/> — расхождение возвращается на тик 68; вернуть взаимный зачёт,
+        /// оставив сортировку, — возвращается туда же, бит в бит. Так что ни удвоение, ни канонический
+        /// порядок не лишние.
+        /// </para>
         /// </remarks>
         public void Tick(List<RuntimeUnit> units, SpatialHash hash, in ArenaBounds bounds)
         {
@@ -109,8 +129,7 @@ namespace Guildmaster.Combat
                     // отражённых сторон он поэтому обратный. Сложение float неассоциативно, так что от
                     // порядка зависят младшие биты суммы: ровно один такой бит разъезжался у зеркальных
                     // команд на 68-м тике и к 116-му дорастал до видимого расхождения (BAL-014).
-                    _sortRelativeTo = a;
-                    _neighbors.Sort(_canonicalOrder);
+                    SortCanonical(a);
 
                     for (int n = 0; n < _neighbors.Count; n++)
                     {
