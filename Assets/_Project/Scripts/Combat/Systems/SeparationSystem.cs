@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
@@ -12,8 +13,11 @@ namespace Guildmaster.Combat
     /// статические препятствия (геометрия арены / зоны способностей) будут отдельным навигационным
     /// слоем позже; персонажи друг для друга решаются здесь, расталкиванием, не перепрокладкой маршрута.
     /// <para>
-    /// Детерминировано: каждая пара обрабатывается один раз (по <see cref="RuntimeUnit.Id"/>), порядок
-    /// итерации фиксирован, без RNG; направление в вырожденном случае (позиции совпали) — по Id.
+    /// Детерминировано и ЗЕРКАЛЬНО: каждый юнит сам набирает все свои вклады, обходя соседей в
+    /// каноническом порядке (<see cref="CompareCanonical"/>), поэтому отражённые команды считают одну и ту
+    /// же сумму. Пара из-за этого считается дважды — по разу с каждой стороны; результат тот же, что у
+    /// прежнего взаимного зачёта половин, но не зависит от порядка обхода. Без RNG; направление в
+    /// вырожденном случае (позиции совпали) — по Id.
     /// Юниты в полёте (§9.9, <see cref="RuntimeUnit.DisplacedTicksRemaining"/>) ИСКЛЮЧЕНЫ из сепарации
     /// целиком — ими владеет <c>DisplacementSystem</c>, а удар летящего тела по цели/толпе делает логика
     /// броска (cannonball, урон + цепное отбрасывание), НЕ расталкивание (иначе оно спихивало бы цель с
@@ -38,11 +42,39 @@ namespace Guildmaster.Combat
         // Накопленные за проход смещения (по индексу юнита в списке) — применяются ПОСЛЕ обхода всех пар.
         private Vector2[] _push = new Vector2[64];
 
-        // Индекс юнита в списке: соседи приходят из хэша ссылками, а копить смещение нужно по позиции
-        // в массиве. Переиспользуется, чтобы не искать линейно на горячем пути.
-        private readonly Dictionary<RuntimeUnit, int> _indexOf = new Dictionary<RuntimeUnit, int>();
+        // Юнит, ОТНОСИТЕЛЬНО которого сортируются соседи, и кэшированный компаратор: порядок обхода
+        // должен быть каноническим (см. Tick), а делегат — не аллоцироваться каждый тик.
+        private RuntimeUnit _sortRelativeTo;
+        private readonly Comparison<RuntimeUnit> _canonicalOrder;
+
+        public SeparationSystem() => _canonicalOrder = CompareCanonical;
+
+        /// <summary>
+        /// Канонический порядок соседей: СНАЧАЛА свои, ПОТОМ чужие, внутри каждой группы — по возрастанию
+        /// <see cref="RuntimeUnit.Id"/>. Ключ намеренно ОТНОСИТЕЛЬНЫЙ («свой мне / чужой мне»), а не
+        /// абсолютный: только такой порядок одинаков у отражённых сторон. Сортировка по одному Id этим
+        /// свойством НЕ обладает — у левой команды свои Id младшие, у правой старшие, поэтому у левой
+        /// выходит [свои, чужие], а у правой [чужие, свои]. Именно на это налетела первая попытка
+        /// починить BAL-014.
+        /// </summary>
+        private int CompareCanonical(RuntimeUnit x, RuntimeUnit y)
+        {
+            bool xOwn = x.Team == _sortRelativeTo.Team, yOwn = y.Team == _sortRelativeTo.Team;
+            if (xOwn != yOwn) return xOwn ? -1 : 1;
+            return x.Id.CompareTo(y.Id);
+        }
 
         /// <summary>Раздвинуть перекрывающиеся тела живых юнитов на один тик.</summary>
+        /// <remarks>
+        /// КАЖДАЯ ПАРА СЧИТАЕТСЯ ДВАЖДЫ, и это не расточительность, а условие зеркальности — не
+        /// «оптимизировать» обратно в один проход по <c>b.Id &gt; a.Id</c>. При взаимном зачёте
+        /// (<c>_push[a] += h; _push[b] -= h</c>) юнит получал часть вкладов из чужих итераций внешнего
+        /// цикла, и порядок слагаемых зависел от того, старшие у соседей Id или младшие. У отражённых
+        /// команд это ровно наоборот: у левого танка враги ложились в сумму ПОСЛЕ своих, у правого — ДО.
+        /// Сложение float неассоциативно, поэтому суммы расходились в последнем бите (BAL-014, тик 68);
+        /// никакой сортировкой соседей это не лечится, пока часть слагаемых приходит извне.
+        /// Своя половина, посчитанная на своём шаге, — то же число, но в предсказуемом порядке.
+        /// </remarks>
         public void Tick(List<RuntimeUnit> units, SpatialHash hash, in ArenaBounds bounds)
         {
             if (units == null || units.Count < 2 || hash == null) return;
@@ -61,9 +93,6 @@ namespace Guildmaster.Combat
 
             if (_push.Length < units.Count) _push = new Vector2[units.Count];
 
-            _indexOf.Clear();
-            for (int i = 0; i < units.Count; i++) _indexOf[units[i]] = i;
-
             for (int iter = 0; iter < Iterations; iter++)
             {
                 for (int i = 0; i < units.Count; i++) _push[i] = Vector2.zero;
@@ -76,12 +105,20 @@ namespace Guildmaster.Combat
                     float ra = BodyRadius(a);
                     hash.QueryRadius(a.Position, ra + maxRadius, _neighbors);
 
+                    // Порядок соседей из хэша идёт по ячейкам сетки, то есть растёт из КООРДИНАТ, а у
+                    // отражённых сторон он поэтому обратный. Сложение float неассоциативно, так что от
+                    // порядка зависят младшие биты суммы: ровно один такой бит разъезжался у зеркальных
+                    // команд на 68-м тике и к 116-му дорастал до видимого расхождения (BAL-014).
+                    _sortRelativeTo = a;
+                    _neighbors.Sort(_canonicalOrder);
+
                     for (int n = 0; n < _neighbors.Count; n++)
                     {
                         RuntimeUnit b = _neighbors[n];
 
-                        // Пару обрабатываем ровно один раз (b.Id > a.Id); себя, мёртвых и летящих пропускаем.
-                        if (b.Id <= a.Id || b.IsDead || b.DisplacedTicksRemaining > 0) continue;
+                        // Себя, мёртвых и летящих пропускаем. Пара сознательно считается ДВАЖДЫ — по разу
+                        // с каждой стороны: см. ремарку к Tick, взаимный зачёт половин ломал зеркальность.
+                        if (ReferenceEquals(b, a) || b.IsDead || b.DisplacedTicksRemaining > 0) continue;
 
                         float minDist = ra + BodyRadius(b);
                         Vector2 delta = a.Position - b.Position;
@@ -92,10 +129,9 @@ namespace Guildmaster.Combat
                         Vector2 dir = dist > 1e-4f ? delta / dist : DegenerateDir(a, b);
                         // Свои — мягче (просачиваются сквозь свои ряды к фронту), враги — на полную (линия держится).
                         float pairStrength = a.Team == b.Team ? Strength * SameTeamScale : Strength;
-                        Vector2 halfPush = dir * ((minDist - dist) * pairStrength * 0.5f); // по половине каждому
 
-                        _push[i] += halfPush;
-                        if (_indexOf.TryGetValue(b, out int bi)) _push[bi] -= halfPush;
+                        // Половина перекрытия — своя доля этого юнита; вторую сосед возьмёт на своём шаге.
+                        _push[i] += dir * ((minDist - dist) * pairStrength * 0.5f);
                     }
                 }
 
