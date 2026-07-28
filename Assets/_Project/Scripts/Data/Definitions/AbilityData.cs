@@ -81,6 +81,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Эффект вместо разового лечения: накладывается на каждого лечимого союзника (Друид = HoT «Грибной покров»). Множитель лечения превращается в стаки эффекта. Задан → тоже делает способность лечащей.")]
         [SerializeField] private EffectData _healEffect;
 
+        [Tooltip("Доля лечения, когда цель — САМ кастующий (Пастырь = 0.25: себе вчетверо хуже, чем союзнику). 1 = без разницы.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _selfHealFraction = 1f;
+
         [Header("Cast condition (blocks D/E, Phase 3)")]
         [Tooltip("Когда кастовать: Immediately = как только готова; EnemiesInRadius = врагов в радиусе ≥ CastConditionCount; AllyTargetHpBelowPct = HP% выбранной цели ≤ CastConditionHpPct.")]
         [SerializeField] private CastCondition _castCondition = CastCondition.Immediately;
@@ -160,6 +164,17 @@ namespace Guildmaster.Data.Definitions
         /// оба, союзник получит и то, и то.
         /// </summary>
         public EffectData HealEffect => _healEffect;
+
+        /// <summary>
+        /// Во сколько раз слабее лечение, когда цель — сам кастующий. Отдавать выгоднее, чем брать:
+        /// та же асимметрия, что у пассивки Пастыря (решение 2026-07-28), но для адресной способности.
+        /// </summary>
+        /// <remarks>
+        /// Заведено вместо прежнего запрета «ульта не может целиться в себя»: запрет оставлял хилера
+        /// без единственного инструмента ровно тогда, когда фокус переводили на него. Цена честнее
+        /// невозможности — спасти себя можно, но вчетверо дороже.
+        /// </remarks>
+        public float SelfHealFraction => _selfHealFraction;
 
         /// <summary>Способность лечит (а не бьёт), если задана любая хил-нагрузка — мгновенная или эффектом.</summary>
         public bool IsHeal => _healFlat > 0f || _healPctTargetMissingHp > 0f || _healEffect != null;

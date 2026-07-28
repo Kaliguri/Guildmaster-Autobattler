@@ -357,7 +357,7 @@ namespace Guildmaster.Combat
                 RuntimeUnit ally = _targets[i];
                 if (ally.IsDead) continue;
 
-                float heal = HealAmount(ally, data) * multiplier;
+                float heal = HealAmount(ally, data, caster) * multiplier;
                 if (heal > 0f) ctx.Heal(ally, heal, caster);
 
                 if (data.HealEffect == null) continue;
@@ -389,7 +389,7 @@ namespace Guildmaster.Combat
         private static void ApplyAura(RuntimeUnit t, AbilityData data, RuntimeUnit caster, ICombatContext ctx)
         {
             if (t.IsDead) return;
-            if (data.IsHeal) ctx.Heal(t, HealAmount(t, data), caster);
+            if (data.IsHeal) ctx.Heal(t, HealAmount(t, data, caster), caster);
             ApplyEffects(t, data, caster, ctx);
         }
 
@@ -420,7 +420,7 @@ namespace Guildmaster.Combat
             if (data.IsHeal)
             {
                 // Сырое лечение (dealt/taken eff и кламп к MaxHP применяет ctx.Heal). «Длань жизни» = X + недостающее HP.
-                ctx.Heal(target, HealAmount(target, data), caster);
+                ctx.Heal(target, HealAmount(target, data, caster), caster);
             }
             else
             {
@@ -435,12 +435,17 @@ namespace Guildmaster.Combat
             ApplyEffects(target, data, caster, ctx);
         }
 
-        /// <summary>Сырое лечение способности = HealFlat + HealPctTargetMissingHp × недостающее HP цели.</summary>
-        private static float HealAmount(RuntimeUnit target, AbilityData data)
+        /// <summary>
+        /// Сырое лечение способности = <c>HealFlat + HealPctTargetMissingHp × недостающее HP цели</c>,
+        /// а на самого кастующего — ещё и × <see cref="AbilityData.SelfHealFraction"/>.
+        /// </summary>
+        private static float HealAmount(RuntimeUnit target, AbilityData data, RuntimeUnit caster = null)
         {
             float missing = target.Stats.Get(StatType.MaxHP) - target.CurrentHP;
             if (missing < 0f) missing = 0f;
-            return data.HealFlat + data.HealPctTargetMissingHp * missing;
+
+            float amount = data.HealFlat + data.HealPctTargetMissingHp * missing;
+            return ReferenceEquals(target, caster) ? amount * data.SelfHealFraction : amount;
         }
 
         /// <summary>Прямой урон способности = DamageMultiplier × AutoAttackDamage кастующего (0 = только эффекты).</summary>

@@ -257,7 +257,11 @@ namespace Guildmaster.Combat
             {
                 if (shape == AreaShape.Line)
                 {
-                    DealLineDamage(unit, target, hit.Reach, raw, school, affinity, ctx);
+                    // Полоса длиннее дальности выбора цели (Копейщик: бьёт на 2, накрывает до 4).
+                    // Зона всегда одна и та же и растёт от ног носителя — цель может стоять в её
+                    // середине, а не только на конце.
+                    DealLineDamage(unit, target, hit.Reach * unit.Unit.AutoAttackLengthMult,
+                        raw, school, affinity, ctx);
                 }
                 else
                 {

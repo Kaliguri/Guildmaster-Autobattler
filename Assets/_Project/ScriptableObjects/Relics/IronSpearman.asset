@@ -57,6 +57,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _autoAttackShape: 1
   _autoAttackWidth: 2.25
+  _autoAttackLengthMult: 2
   _autoAttackEffects: []
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
@@ -72,7 +73,7 @@ MonoBehaviour:
     Value: 0.6
   - Stat: 9
     Op: 3
-    Value: 1.5
+    Value: 2
   - Stat: 3
     Op: 3
     Value: 45
@@ -102,6 +103,7 @@ MonoBehaviour:
     _healFlat: 0
     _healPctTargetMissingHp: 0
     _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 1
     _castConditionCount: 2
     _castConditionRadius: 0

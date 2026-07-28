@@ -64,8 +64,12 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Форма авто-атаки: None = одиночная цель; Line = линия перед юнитом (несколько целей, «Размашистый выпад»).")]
         [SerializeField] private AreaShape _autoAttackShape = AreaShape.None;
 
-        [Tooltip("Ширина линии авто-атаки (мировые единицы), для Line. Длина линии = AttackRange.")]
+        [Tooltip("Ширина линии авто-атаки (мировые единицы), для Line.")]
         [SerializeField] private float _autoAttackWidth = 1f;
+
+        [Tooltip("Длина линии = AttackRange × это. Копейщик = 2: бьёт цель на 2, но полоса накрывает от его ног до 4 — древко достаёт дальше, чем он выбирает цель.")]
+        [Min(0.01f)]
+        [SerializeField] private float _autoAttackLengthMult = 1f;
 
         [Tooltip("On-hit эффекты авто-атаки (§9.1): накладываются на каждую задетую цель в момент удара — мили (single/Line) и при попадании снаряда. Криомант = «Заморозка». Пусто = нет (поведение Ф1/Ф2).")]
         [SerializeField] private EffectData[] _autoAttackEffects;
@@ -133,6 +137,17 @@ namespace Guildmaster.Data.Definitions
         public Color Tint => _tint;
         public AreaShape AutoAttackShape => _autoAttackShape;
         public float AutoAttackWidth => _autoAttackWidth;
+
+        /// <summary>
+        /// Во сколько раз полоса линейной авто-атаки длиннее дальности выбора цели. 1 = полоса ровно
+        /// до цели (прежнее поведение всего контента).
+        /// </summary>
+        /// <remarks>
+        /// Разведено 2026-07-28 под Копейщика: дальность решает, кого он МОЖЕТ бить и где встанет строй,
+        /// а длина полосы — сколько он заденет по пути. Раньше это было одно число, и попытка дать ему
+        /// вторую линию автоматически укорачивала его же зону поражения вдвое.
+        /// </remarks>
+        public float AutoAttackLengthMult => _autoAttackLengthMult;
         public EffectData[] AutoAttackEffects => _autoAttackEffects;
         public bool CanAttackWhileMoving => _canAttackWhileMoving;
         public float MovingAttackSpeedPenaltyPct => _movingAttackSpeedPenaltyPct;
