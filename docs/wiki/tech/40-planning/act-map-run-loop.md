@@ -1,6 +1,6 @@
 ---
 title: "Planning - Act Map & Run Loop"
-order: 110
+order: 115
 status: draft
 updated: 2026-07-19
 ---

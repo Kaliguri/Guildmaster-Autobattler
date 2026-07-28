@@ -1,6 +1,6 @@
 ---
 title: "Planning - SimBench Balance Harness"
-order: 130
+order: 135
 status: ready
 updated: 2026-07-17
 ---
