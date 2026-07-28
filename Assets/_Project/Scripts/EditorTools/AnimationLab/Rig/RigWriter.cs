@@ -384,6 +384,13 @@ namespace Guildmaster.AnimationLab.Editor
                 _report.Keys += x.length;
             }
 
+            int filled = FillFullKeys(clip, frameRate);
+            if (filled > 0)
+            {
+                _report.Keys += filled;
+                _report.Lines.Add($"filled {filled} keys so every keyed moment is a complete pose");
+            }
+
             // Events survive ClearCurves, so replacing them wholesale is the only way to keep a rewritten
             // clip honest: a stale marker points at a frame the new choreography does not have.
             AnimationUtility.SetAnimationEvents(clip, _events.ToArray());
@@ -541,6 +548,60 @@ namespace Guildmaster.AnimationLab.Editor
                 previous = now;
             }
             return travel;
+        }
+
+        /// <summary>
+        /// Makes every keyed moment a complete pose: a curve with no key where another curve has one gets
+        /// its own, carrying the value and the slope the curve already has there.
+        ///
+        /// The rule exists because a partial key is indistinguishable from a mistake. A follow-through that
+        /// moves only the blade and the elbow shows up in the Animation window as two lonely diamonds off
+        /// to the side of a tidy column, and a note like "the pose at 0.63 is wrong" no longer has one
+        /// place to land. Splitting a cubic segment at a point where both the value and the derivative are
+        /// preserved yields the same cubic twice over, so the motion itself is untouched — this is
+        /// bookkeeping, not a re-time.
+        /// </summary>
+        static int FillFullKeys(AnimationClip clip, float frameRate)
+        {
+            var bindings = AnimationUtility.GetCurveBindings(clip);
+            var curves = new AnimationCurve[bindings.Length];
+            var moments = new SortedSet<float>();
+
+            for (int i = 0; i < bindings.Length; i++)
+            {
+                curves[i] = AnimationUtility.GetEditorCurve(clip, bindings[i]);
+                if (curves[i] == null) continue;
+                foreach (var key in curves[i].keys) moments.Add(Mathf.Round(key.time * 10000f) / 10000f);
+            }
+
+            // Small enough to read the local slope, large enough not to drown in float noise.
+            float step = 1f / Mathf.Max(1f, frameRate * 100f);
+            int added = 0;
+
+            for (int i = 0; i < bindings.Length; i++)
+            {
+                var curve = curves[i];
+                if (curve == null || curve.length == 0) continue;
+
+                bool changed = false;
+                foreach (float time in moments)
+                {
+                    if (HasKeyAt(curve, time)) continue;
+                    float slope = (curve.Evaluate(time + step) - curve.Evaluate(time - step)) / (2f * step);
+                    curve.AddKey(new Keyframe(time, curve.Evaluate(time), slope, slope));
+                    changed = true;
+                    added++;
+                }
+                if (changed) AnimationUtility.SetEditorCurve(clip, bindings[i], curve);
+            }
+            return added;
+        }
+
+        static bool HasKeyAt(AnimationCurve curve, float time)
+        {
+            foreach (var key in curve.keys)
+                if (Mathf.Abs(key.time - time) < 1e-4f) return true;
+            return false;
         }
 
         static void SetCurve(AnimationClip clip, string path, string property, AnimationCurve curve)
