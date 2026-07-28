@@ -27,9 +27,11 @@ namespace Guildmaster.Presentation.Arena
         [SerializeField] private List<ArenaSkinSource> _sources = new List<ArenaSkinSource>();
 
         [Header("Форма перехода")]
-        [SerializeField] private float _durationSeconds = 4.5f;
+        [SerializeField] private float _durationSeconds = 2f;
         [SerializeField, Range(0.02f, 0.45f)] private float _digitizeShare = 0.12f;
-        [SerializeField, Range(0.02f, 0.45f)] private float _restoreShare = 0.12f;
+        [Tooltip("Доля возврата в реальность. Держать короткой: поле дособирается раньше конца акта " +
+                 "подгрузки, и длинный возврат вешает над готовой ареной каркас, которому уже нечего делать.")]
+        [SerializeField, Range(0.02f, 0.45f)] private float _restoreShare = 0.08f;
         [Tooltip("Разброс моментов старта клеток. Ноль превращает переход в общий фейд.")]
         [SerializeField, Range(0f, 0.9f)] private float _cellSpread = 0.62f;
         [SerializeField, Range(0.02f, 1f)] private float _cellDurationMin = 0.10f;

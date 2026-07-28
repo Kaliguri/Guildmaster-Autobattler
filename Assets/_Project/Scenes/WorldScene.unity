@@ -13459,9 +13459,9 @@ MonoBehaviour:
   _live: {fileID: 2118912155}
   _sources:
   - {fileID: 2118912155}
-  _durationSeconds: 4.5
+  _durationSeconds: 2
   _digitizeShare: 0.12
-  _restoreShare: 0.12
+  _restoreShare: 0.08
   _cellSpread: 0.62
   _cellDurationMin: 0.1
   _cellDurationMax: 0.34
