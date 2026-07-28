@@ -2,7 +2,7 @@
 title: "Reference - Data Layer"
 order: 30
 status: ready
-updated: 2026-07-16
+updated: 2026-07-28
 ---
 
 **Статус:** Реализовано (2026-07-11, ветка `feat/content-framework`, пакеты 0–7, 221/221 EditMode). Дизайн — ред. 3; отступления реализации — §12, полный changelog — [[tech/00-meta/tech-changelog#2.7 Changelog 2026-07-11 — Фаза 4 «Контент-каркас» (пакеты 0–7)|07 §2.7]].
@@ -344,7 +344,7 @@ public abstract class ContentDefinition : ScriptableObject
 | `AiTickRate` | 10 | Частота переоценки AI, Гц |
 | `MaxAttackAnimTicks` | 30 | Потолок длительности свинга автоатаки («хлёсткость») |
 | `MinWindupTicks` | 3 | Пол замаха (минимальный телеграф) |
-| `BodyRadiusPerSize` | 0.575 | Радиус тела = `Size ×` это (сепарация) |
+| `BodyRadiusPerSize` | 0.3 | Радиус тела = `Size ×` это (сепарация) |
 | `SeparationStrength` | 0.5 | Доля перекрытия, устраняемая за тик |
 | `SeparationIterations` | 1 | Проходов сепарации за тик |
 | `SeparationSameTeamScale` | 0.35 | Множитель расталкивания союзников |
