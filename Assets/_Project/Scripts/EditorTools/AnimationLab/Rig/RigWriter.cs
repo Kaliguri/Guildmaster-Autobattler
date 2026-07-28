@@ -475,7 +475,12 @@ namespace Guildmaster.AnimationLab.Editor
                         // chain already supplies. Solving for the absolute local angle instead produced an
                         // equivalent value 360 out (measured: 333.8 where -26.2 was meant) — the end pose
                         // matched, but the wrist took a full turn to get there.
-                        float chainDelta = Mathf.DeltaAngle(parentBefore, parentNow);
+                        //
+                        // The chain's contribution must be its TRAVELLED path, not the angle between its two
+                        // endpoints: DeltaAngle folds anything past 180 back into range, so a shoulder that
+                        // swings -194 degrees reads as +166 and the wrist is told to make up a phantom 360.
+                        // Measured: the blade covered 555 degrees where 245 were asked for.
+                        float chainDelta = ChainTravel(grip, previousTime, time);
                         value = previous + (targetWorld - previousWorld) - chainDelta;
                         _report.Lines.Add($"t={time:F2} aim {order.ItemId} at {order.WorldDegrees:F1} world " +
                                           $"(from {previousWorld:F0}, {order.Arc}) -> {pair.Key} local {value:F1}");
@@ -515,6 +520,28 @@ namespace Guildmaster.AnimationLab.Editor
 
         static float ParentWorld(Transform grip) =>
             grip.parent != null ? RigProfileBuilder.NormalizeAngle(grip.parent.eulerAngles.z) : 0f;
+
+        /// <summary>
+        /// How far the chain above the grip actually TURNS between two times, accumulated frame by frame so
+        /// a swing past 180 degrees counts in full instead of folding back into range.
+        /// </summary>
+        float ChainTravel(Transform grip, float fromTime, float toTime)
+        {
+            if (toTime <= fromTime + 1e-4f) return 0f;
+
+            int steps = Mathf.Max(2, Mathf.CeilToInt((toTime - fromTime) * 120f));
+            ApplyPose(fromTime);
+            float previous = ParentWorld(grip);
+            float travel = 0f;
+            for (int i = 1; i <= steps; i++)
+            {
+                ApplyPose(Mathf.Lerp(fromTime, toTime, i / (float)steps));
+                float now = ParentWorld(grip);
+                travel += Mathf.DeltaAngle(previous, now);
+                previous = now;
+            }
+            return travel;
+        }
 
         static void SetCurve(AnimationClip clip, string path, string property, AnimationCurve curve)
         {

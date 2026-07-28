@@ -72,6 +72,7 @@ namespace Guildmaster.AnimationLab.Editor
                     CheckLimits(profile, clip, unit, report, sampleRate);
                     CheckSwingIsOnePiece(profile, clip, unit, report);
                     CheckHingesDoNotInvert(profile, clip, unit, report);
+                    CheckJointsDoNotTakeTheLongWay(clip, report);
                 }
             }
             finally
@@ -285,6 +286,33 @@ namespace Guildmaster.AnimationLab.Editor
                 Add(report, Severity.Error, clip.name, "hinge-inverted",
                     $"{joint.Id} bends {Mathf.Abs(worst):F0} deg past straight the wrong way at t={worstTime:F3} — " +
                     "a hinge folds one way only; take the reach from the shoulder or the wrist instead");
+            }
+        }
+
+        /// <summary>
+        /// A joint that travels more than 150 degrees between two neighbouring keys is suspicious: the
+        /// shortest numeric path can be the wrong way round the circle, and then the limb swings around the
+        /// back instead of through the front. Measured case: the shoulder went from 168 to -26 and Unity took
+        /// the +166 route over the character's own head, because +166 is shorter than -194.
+        /// </summary>
+        static void CheckJointsDoNotTakeTheLongWay(AnimationClip clip, Report report)
+        {
+            foreach (var binding in AnimationUtility.GetCurveBindings(clip))
+            {
+                if (!binding.propertyName.EndsWith("Raw.z", System.StringComparison.Ordinal)) continue;
+                var curve = AnimationUtility.GetEditorCurve(clip, binding);
+                if (curve == null || curve.length < 2) continue;
+
+                var keys = curve.keys;
+                for (int i = 1; i < keys.Length; i++)
+                {
+                    float step = keys[i].value - keys[i - 1].value;
+                    if (Mathf.Abs(step) < 150f || Mathf.Abs(step) > 180f) continue;
+                    string node = binding.path.Substring(binding.path.LastIndexOf('/') + 1);
+                    Add(report, Severity.Warning, clip.name, "long-way-round",
+                        $"'{node}' travels {step:F0} deg between t={keys[i - 1].time:F2} and t={keys[i].time:F2} — " +
+                        "check the side: a path this close to 180 is usually the short number and the wrong direction");
+                }
             }
         }
 

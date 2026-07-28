@@ -69,7 +69,11 @@ namespace Guildmaster.AnimationLab.Editor
                 // between the hold and the contact splits the arc into two accelerations, and the blade
                 // measurably stutters — 49 deg/frame, then 25, then 46 again.
                 w.At(0.333f).Bend("torso", -4f, Near, In).Bend("shoulder.R", 158f, Near, In);
-                w.At(0.450f).Bend("torso", -10f, Near, Out).Bend("shoulder.R", -36f, Near, Out)
+                // The shoulder needs its side stated too, and this is the one joint on the rig where the
+                // short way is the WRONG way: from 168 to -26 the short path is +166, i.e. onward through
+                // 180 and around the back. The cut has to come down through 90 and 0, which is -194 — a
+                // long arc, so Cw or the arm swings backwards over his own head.
+                w.At(0.450f).Bend("torso", -10f, Near, Out).Bend("shoulder.R", -36f, Cw, Out)
                             .Bend("shoulder.L", 3f, Near, Out).Bend("knee.R", 12f, Near, Out)
                             .Bend("knee.L", 6f, Near, Out).Bend("hip.L", -4f, Near, Out);
                 // Elbow stops just short of straight. It used to land at -64, inherited from the old clip,
