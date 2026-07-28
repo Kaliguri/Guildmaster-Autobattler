@@ -86,11 +86,16 @@ namespace Guildmaster.AnimationLab.Editor
                 // Elbow stops just short of straight. It used to land at -64, inherited from the old clip,
                 // and that put the angle between upper arm and forearm at -44 — the joint bent inside out.
                 // A hinge only folds one way; the blade's reach comes from the shoulder and the wrist.
-                w.At(0.583f).Bend("torso", -10f, Near, Out).Bend("shoulder.R", -36f, Cw, Out)
+                // ROUND ARC: the blade keeps a constant angle to the forearm through the whole strike, so
+                // arm and sword turn as one rigid lever and the tip is forced onto a circle. The low
+                // finish is bought with the TORSO instead — leaning drops the shoulder, and the whole
+                // circle drops with it. Buying it with the wrist is what bent the arc into a spiral: the
+                // radius grew 30% across the swing.
+                w.At(0.583f).Bend("torso", -26f, Near, Out).Bend("shoulder.R", -36f, Cw, Out)
                             .Bend("shoulder.L", 3f, Near, Out).Bend("knee.R", 12f, Near, Out)
                             .Bend("knee.L", 6f, Near, Out).Bend("hip.L", -4f, Near, Out)
-                            .Bend("head", -18f, Near, Out).Bend("elbow.R", 2f, Near, Out)
-                            .Aim("weapon", -85f, Cw, Out).Aim("shield", 50f, Near, Out);
+                            .Bend("head", -18f, Near, Out).Bend("elbow.R", 10f, Near, Out)
+                            .Aim("weapon", -46f, Cw, Out).Aim("shield", 50f, Near, Out);
                 HoldUntil(w, 0.667f);   // 5 frames of frozen impact
 
                 Stance(w, 1.167f);
