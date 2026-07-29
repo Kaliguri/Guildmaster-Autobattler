@@ -131,6 +131,8 @@ SORT file.name ASC
 - [[interactions|Coop - Interactions & Minigames]] — вмешательство в общее, кооп-мини-игры, занятие
   на время боя, роли и семи-кооп.
 - [[sync-model|Coop - Sync Model]] — что риалтайм, что «кино», что транзакция.
+- [[wagers|Coop - Wagers & Personal Currency]] — личная валюта Гильдмастера, пари на бой, косметика,
+  которую видят остальные.
 
 Остальное в кластере:
 
