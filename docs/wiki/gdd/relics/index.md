@@ -56,7 +56,8 @@ updated: 2026-07-29
 | [[gdd/relics/the-thorn|The Thorn (Treant)]] | танк-брузер с ответным уроном | — |
 | [[gdd/relics/the-cadence|The Cadence (Bard)]] | каналящий хилер-баффер | — |
 | [[gdd/relics/the-bond|The Bond (Shaman)]] | саммонер-хилер с разделением урона | — |
-| [[gdd/relics/the-draugr|The Draugr (Berserker)]] | нежить-викинг — **дизайн не проработан** | — |
+| [[gdd/relics/the-draugr\|The Draugr (Frostbound)]] | ближний брузер-контроллер холода: дробящий двуручник, канал-добивание | «Морозный драугр» (2026-07-29) |
+| [[gdd/relics/the-rift\|The Rift (Arcanist)]] | РДД-энейблер магии: телепорт-уклонение, шред магзащиты | «Аркановый рдд» (2026-07-29) |
 | [[gdd/relics/the-mirror|The Mirror (Doppelganger)]] — **Уникальная** | уникальный копировщик реликвии | — |
 | [[gdd/relics/the-runesmith|The Runesmith (Smith)]] | шредер физброни + крафтер рун (энейблер) | «Рунный Кузнец» (0.1) |
 | [[gdd/relics/the-paragon|The Paragon (Juggernaut)]] — **Уникальная / Божественная** | самоусиливающийся неубивашка-дилер | «Идеал» (0.1) |
