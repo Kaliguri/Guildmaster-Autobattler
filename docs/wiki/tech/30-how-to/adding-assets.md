@@ -11,7 +11,7 @@ updated: 2026-07-16
 
 > Как правильно заводить ассеты (арт, аудио, анимации) в проект **до** того, как начнётся плотная разработка контента.
 > Цель — чтобы не пришлось переразбирать импорт-настройки и историю git на сотне файлов потом.
-> Связано: [[tech/30-how-to/project-setup|How-to - Project Setup]], [[tech/10-reference/tech-stack|Reference - Tech Stack]], [[tech/10-reference/assemblies|Reference - Assemblies]].
+> Связано: [[tech/30-how-to/project-setup|How-to - Project Setup]], [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]], [[tech/10-reference/assemblies|Reference - Assemblies]].
 
 ---
 
@@ -144,7 +144,7 @@ Assets/_Project/
 
 - Файлы: `snake_case`, латиница, без пробелов и кириллицы. `unit_warrior_idle`, `relic_flame_sword`, `icon_attack`.
 - Префиксы по типу: `unit_`, `relic_`, `icon_`, `ui_`, `sfx_`, `bgm_`, `placeholder_`.
-- ID контента в SO и в именах файлов держать **согласованными** — облегчит локализацию и сейвы (сейвы хранят строковые ID, см. [[tech/10-reference/tech-stack|Reference - Tech Stack]]).
+- ID контента в SO и в именах файлов держать **согласованными** — облегчит локализацию и сейвы (сейвы хранят строковые ID, см. [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]]).
 - Никакой кириллицы в путях ассетов (вики — отдельная история, там можно; в `Assets/` — нет).
 
 ---

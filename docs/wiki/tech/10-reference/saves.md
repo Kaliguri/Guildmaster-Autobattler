@@ -48,4 +48,4 @@ updated: 2026-07-26
 - **Сериализатор — Newtonsoft, не `JsonUtility`.** Версию схемы надо прочитать до разбора payload, а миграции — это переливка узлов дерева. Заодно уходит ловушка `JsonUtility`, который молча разбирал чужой файл в наполовину пустой DTO с валидным видом. Готча переезда: `Vector2` требует своего конвертера (`Vector2JsonConverter`) — иначе Newtonsoft рекурсивно раскрывает свойство `normalized`.
 - **Ключ — путь** внутри `Saves/`: `prefs`, `profiles/{id}/profile`, `profiles/{id}/guilds/{gid}/run`. Перечисление уровня — `ISaveService.List(prefix)`.
 
-Подробнее — [[tech/10-reference/tech-stack|5. Технологический стек и архитектура]].
+Подробнее — [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]].

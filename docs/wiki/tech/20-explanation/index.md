@@ -18,7 +18,7 @@ updated: 2026-07-26
 
 > Это **гайд по фактическому коду** проекта (а не план, как доки «10/12»). Цель — чтобы ты понимал каждое архитектурное решение: что за что отвечает, почему выбран один паттерн и не выбран другой. Читается от простого к глубокому.
 >
-> Каждый документ раздела начинается с блока **«Простыми словами»**, потом идёт детально. Связан с [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]], [[tech/40-planning/phase-2-effects|Planning - Phase 2: Effects & Abilities]], [[tech/10-reference/tech-stack|Reference - Tech Stack]].
+> Каждый документ раздела начинается с блока **«Простыми словами»**, потом идёт детально. Связан с [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]], [[tech/40-planning/phase-2-effects|Planning - Phase 2: Effects & Abilities]], [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]].
 
 ## Документы раздела
 

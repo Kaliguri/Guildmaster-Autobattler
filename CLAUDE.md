@@ -6,8 +6,9 @@
 
 **Что здесь есть и чего нет.** Здесь — правила и ловушки, которых не видно из файлов. Инвентарь
 пакетов сюда не переписывается: он в `Packages/manifest.json` и `Assets/Plugins/`, обоснование
-выбора — [`10-reference/tech-stack`](docs/wiki/tech/10-reference/tech-stack.md) (архив: история решений,
-не справка о текущем коде).
+выбора — записи журнала
+[«Library Picks And The Alternatives We Turned Down»](docs/wiki/tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down.md)
+и [«Why The Rules Are This Strict»](docs/wiki/tech/00-meta/journal/2026-07-30-why-the-rules-are-this-strict-lessons-from-fewseconds.md).
 
 ---
 

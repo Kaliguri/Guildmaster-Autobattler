@@ -18,7 +18,7 @@ updated: 2026-07-28
 
 > Архитектура слоя данных: какие ScriptableObject-типы нужны, что в них хранится, как контент идентифицируется, загружается, валидируется и авторится. Покрывает roadmap Фазу 4 «Контент-каркас» ([[tech/40-planning/roadmap|Planning - Roadmap]]) и закладывает швы под Фазы 5–7.
 > Основа: инвентаризация кода + внешний ресёрч (2026-07-10); ред. 2 — по замечаниям Макса (Trait/Consequence/TagData, предметы двух скоупов, текстовые ивенты, GameConfig); ред. 3 — иерархия `UnitData` → `RelicData`/`EnemyData` и Unity Animation с маркерами-событиями уже в Фазе 4.
-> Связано: [[tech/10-reference/saves|2. Сохранения]] · [[tech/10-reference/tech-stack|5. Технологический стек]] · [[tech/10-reference/combat-model|6. Боевая модель]] · [[tech/20-explanation/run-flow|7. Флоу забега]] · [[tech/40-planning/steam-workshop|8. Steam Workshop]]
+> Связано: [[tech/10-reference/saves|2. Сохранения]] · [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]] · [[tech/10-reference/combat-model|6. Боевая модель]] · [[tech/20-explanation/run-flow|7. Флоу забега]] · [[tech/40-planning/steam-workshop|8. Steam Workshop]]
 
 ---
 

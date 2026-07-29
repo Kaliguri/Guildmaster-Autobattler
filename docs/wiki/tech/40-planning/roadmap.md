@@ -30,7 +30,7 @@ updated: 2026-07-28
 
 > План реализации (execution roadmap): фазы, что/зачем/когда, оценки усилий, риски, приоритеты.
 > Единый план разработки проекта (отдельного GDD-роадмапа больше нет — он консолидирован сюда).
-> Опирается на архитектуру [[tech/10-reference/tech-stack|5]] / [[tech/10-reference/combat-model|6]] / [[tech/20-explanation/run-flow|7]] / [[tech/40-planning/steam-workshop|8]].
+> Опирается на архитектуру [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]] / [[tech/10-reference/combat-model|6]] / [[tech/20-explanation/run-flow|7]] / [[tech/40-planning/steam-workshop|8]].
 
 ---
 

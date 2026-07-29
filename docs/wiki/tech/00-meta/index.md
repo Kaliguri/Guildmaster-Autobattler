@@ -66,7 +66,7 @@ SORT updated ASC, file.name ASC
 
 ## Reference (`10-reference/`) — сухие факты
 
-- [[tech/10-reference/tech-stack|Reference - Tech Stack]] — утверждённый стек, паттерны, уроки прошлого проекта.
+- [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]] — утверждённый стек, паттерны, уроки прошлого проекта.
 - [[tech/10-reference/code-standards|Reference - Code Standards]] — инварианты кода, документирование, детерминизм, фолбэки, меню редактора.
 - [[tech/10-reference/assemblies|Assemblies]] — карта asmdef, граф зависимостей, правила.
 - [[tech/10-reference/combat-model|Combat Model]] — «Сосуд + Реликвия», стат-система, модель эффектов/диспела.

@@ -17,7 +17,7 @@ updated: 2026-07-26
 
 > Детальная архитектура **Фазы 1** из роадмапа ([[tech/40-planning/roadmap|9. Roadmap реализации]]): боевое ядро + нетворк-спайк.
 > Кто за что отвечает, как классы взаимодействуют, какие сборки и сцены создаём.
-> Опирается на [[tech/10-reference/tech-stack|5. Стек и архитектура]], [[tech/10-reference/combat-model|6. Боевая модель]], [[tech/20-explanation/run-flow|7. Флоу забега]].
+> Опирается на [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]], [[tech/10-reference/combat-model|6. Боевая модель]], [[tech/20-explanation/run-flow|7. Флоу забега]].
 >
 > **Это план для ревью, а не финальный код.** Сначала Макс читает и даёт мнение → потом реализуем конкретные классы.
 

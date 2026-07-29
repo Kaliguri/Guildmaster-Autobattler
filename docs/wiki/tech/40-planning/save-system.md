@@ -214,7 +214,7 @@ updated: 2026-07-28
 `gameVersion` и `savedAtUtc` — исключительно для диагностики.
 
 **Миграции требуют Newtonsoft.Json.** Пакет `3.2.2` уже стоит в проекте и не используется
-([[tech/10-reference/tech-stack|Tech Stack]]). `JsonUtility` не умеет работать с деревом JSON —
+([[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]]). `JsonUtility` не умеет работать с деревом JSON —
 без Newtonsoft пришлось бы вечно держать классы `RunStateV1`, `V2`, `V3` и цепочку конвертеров
 между ними. С деревом миграция — это «переложить узлы»:
 

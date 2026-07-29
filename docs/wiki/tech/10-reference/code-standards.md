@@ -10,7 +10,7 @@ updated: 2026-07-27
 > содержимое: правило, живущее в двух местах, расходится в третьем.
 >
 > Связано: [[tech/10-reference/assemblies|Reference - Assemblies]],
-> [[tech/10-reference/tech-stack|Reference - Tech Stack]],
+> [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]],
 > [[tech/10-reference/editor-tools|Reference - Editor Tools]].
 
 ## 1. Инварианты — чего не делать никогда
