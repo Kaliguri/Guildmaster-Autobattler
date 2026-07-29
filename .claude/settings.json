@@ -8,5 +8,20 @@
       "Bash(powershell *)",
       "Bash(./scripts/run-tests.ps1)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(git commit*)",
+            "command": "echo fired >> 'C:/Users/kailg/AppData/Local/Temp/claude/C--My-Projects-Guildmaster-Autobattler/b134d8e5-1de9-4335-90b5-2f2b1881f2d3/scratchpad/hook-check.txt'; git show --name-only --format= HEAD | grep -q '^Assets/_Project/' && echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PostToolUse\",\"additionalContext\":\"Журнал решений: коммит тронул Assets/_Project. Была развилка (выбор из двух и более), грабли или новый инвариант? Если да — новый файл docs/wiki/tech/00-meta/journal/ГГГГ-ММ-ДД-slug.md по шаблону из CLAUDE.md, раздел «Где живёт правда». Существующие записи не читать. Если ни одного да — ничего не писать, git и так помнит.\"}}' || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }
