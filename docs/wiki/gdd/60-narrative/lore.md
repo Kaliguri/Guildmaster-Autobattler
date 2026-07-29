@@ -1,9 +1,12 @@
 ---
-title: "Vision - Lore"
-order: 13
+title: "Narrative - Lore"
+order: 61
 status: draft
-updated: 2026-07-19
+updated: 2026-07-29
 ---
+
+> Переехал из `10-vision/` 2026-07-29 при заведении кластера нарратива — карта кластера в
+> [[gdd/60-narrative/index|Narrative - Index]].
 
 ## Сеттинг
 

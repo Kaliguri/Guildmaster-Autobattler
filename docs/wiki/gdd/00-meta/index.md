@@ -67,7 +67,6 @@ SORT file.name ASC
 - [[pitch|Vision - Pitch]] — **сводный срез концепции 2026-07-19**; при расхождении с vision/concept главнее он.
 - [[pillars|Vision - Pillars]] — **5 столпов** как фильтр всех решений.
 - [[concept|Vision - Concept]] — жанр, ключевая идея, игровой цикл.
-- [[lore|Vision - Lore]] — сеттинг и предыстория мира.
 - [[guildmaster|Vision - Guildmaster & Captain]] — две разведённые сущности: **Гильдмастер** — роль игрока (руководит гильдией, в бою не участвует); **Капитан** — боевая сущность забега (стартовый набор Реликвий, гильдие-широкие бонусы, стиль).
 - [[difficulty-skill|Vision - Difficulty & Skill]] — три оси, модель рандома, правила честности.
 - [[visual-direction|Vision - Visual Direction]] — визуальный опыт и дорожная карта: стиль, пост-процесс, атмосфера, свет, переходы, gamefeel.
@@ -127,6 +126,21 @@ SORT file.name ASC
 - [[proving-grounds|Modes - Proving Grounds]] — Ристалище: площадка вне забега, где смотрят бой.
 - [[controls|Modes - Controls]] — раскладка клавиш (техника ввода — в техчасти).
 - [[ui-feedback|Modes - UI Feedback]] — общие правила отклика интерфейса (недоступные действия и т.п.).
+
+## 60 · Нарратив (`60-narrative/`)
+
+Заведён 2026-07-29: **как** мы рассказываем историю и сама история. Карта кластера —
+[[gdd/60-narrative/index|Narrative - Index]].
+
+- [[gdd/60-narrative/lore|Narrative - Lore]] — сеттинг, путь к чемпионату, Реликвии в мире
+  *(переехал из `10-vision/`)*.
+- [[gdd/60-narrative/meta-narrative|Narrative - Meta]] — «игра, которая знает, что она игра»: тональный
+  разворот, ключ «хаос против порядка» *(собран из трёх прежних владельцев)*.
+- [[gdd/60-narrative/seeds|Narrative - Seeds]] — реестр посевов: что и где посеяно ради разворота.
+- [[gdd/60-narrative/devices|Narrative - Devices]] — приёмы: голос разработчика, смена титулов, имена,
+  которые надо заслужить.
+- [[gdd/60-narrative/system-language|Narrative - System Language]] — язык Системы: `gm.`, локаль,
+  уроки ресёрча.
 
 ## Research (`../../research/`)
 
