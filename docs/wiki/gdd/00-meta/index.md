@@ -136,6 +136,8 @@ SORT file.name ASC
 
 Остальное в кластере:
 
+- [[guild-courtyard|Modes - Guild Courtyard]] — Двор гильдии: форма хаба между забегами (люди телами,
+  зоны, стол мастера, аватар игрока). Содержание дома — в [[guild-development]].
 - [[proving-grounds|Modes - Proving Grounds]] — Ристалище: площадка вне забега, где смотрят бой.
 - [[controls|Modes - Controls]] — раскладка клавиш (техника ввода — в техчасти).
 - [[ui-feedback|Modes - UI Feedback]] — общие правила отклика интерфейса (недоступные действия и т.п.).
