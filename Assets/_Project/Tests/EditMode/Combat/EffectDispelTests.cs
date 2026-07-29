@@ -37,8 +37,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(1, unit.ActiveEffects.Count, "Эффект остался — унесли только часть");
             Assert.AreEqual(45, unit.ActiveEffects[0].Stacks, "25% от 60 больше десяти → ушло 15");
 
-            // На малом счёте выигрывает плоская часть и сметает остаток целиком.
-            unit.ActiveEffects[0].Stacks = 8;
+            // На малом счёте выигрывает плоская часть и сметает остаток целиком. Стаки правим тем же
+            // путём, что бой: у поля нет сеттера, чтобы граница тика оставалась у одного владельца.
+            unit.ActiveEffects[0].RemoveStacks(unit.ActiveEffects[0].Stacks - 8);
             // Снятие судит по состоянию НАЧАЛА тика: наложенное в этом же тике неприкосновенно.
             ctx.AdvanceTick();
             sys.Dispel(new DispelRequest(unit, DispelTargetPolarity.Debuff, EffectTag.None, dispelPower: 1, maxCount: 0), ctx);

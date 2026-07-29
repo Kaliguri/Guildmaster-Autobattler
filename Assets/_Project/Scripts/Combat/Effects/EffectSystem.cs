@@ -170,10 +170,6 @@ namespace Guildmaster.Combat
             {
                 Def           = def,
                 Source        = source,
-                Stacks        = 1,
-                // Снимок стаков на начало тика: у эффекта, родившегося внутри тика, он равен настоящему
-                // числу — влиять на мир единственным стаком он имеет право сразу.
-                StacksAtTickStart = 1,
                 ScaledPotency = new float[componentCount],
                 PeriodicTicks = new int[componentCount],
                 // Тик появления: по нему снятие отличает «висело до этого тика» от «легло только что».
@@ -431,7 +427,7 @@ namespace Guildmaster.Combat
                 if (toRemove < eff.Stacks)
                 {
                     int before = eff.Stacks;
-                    eff.Stacks -= toRemove;
+                    eff.RemoveStacks(toRemove);
                     // Тем же путём, что и при наборе стака: компоненты со своим состоянием (щиты, заряды)
                     // правят вклад дельтой сами, остальным хватает переприменения.
                     Reapply(eff, before, target, combat);
@@ -587,7 +583,7 @@ namespace Guildmaster.Combat
             // со следующего. Иначе очищение, срезавшее «Угли» ценой, обкрадывает чужую детонацию тем же
             // тиком, и результат зависит от места юнита в обходе (см. RuntimeEffect.StacksAtTickStart).
             List<RuntimeEffect> effects = unit.ActiveEffects;
-            for (int i = 0; i < effects.Count; i++) effects[i].StacksAtTickStart = effects[i].Stacks;
+            for (int i = 0; i < effects.Count; i++) effects[i].CommitStackSnapshot();
         }
 
         private static void RebuildTagMask(RuntimeUnit unit)
@@ -667,7 +663,7 @@ namespace Guildmaster.Combat
         private static bool TryAddStack(RuntimeEffect effect, EffectData def)
         {
             if (effect.Stacks >= def.MaxStacks) return false;
-            effect.Stacks++;
+            effect.AddStacks(1);
             return true;
         }
 

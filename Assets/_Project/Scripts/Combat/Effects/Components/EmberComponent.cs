@@ -69,7 +69,7 @@ namespace Guildmaster.Combat.Effects.Components
             if (now < eff.TimerTick) return; // ещё держатся
 
             // Сошёл один стак; следующий уйдёт быстрее — вплоть до нижней границы.
-            eff.Stacks--;
+            eff.RemoveStacks(1);
             if (eff.Stacks <= 0)
             {
                 eff.RemainingTicks = 0; // стаков не осталось — эффект снимается штатно

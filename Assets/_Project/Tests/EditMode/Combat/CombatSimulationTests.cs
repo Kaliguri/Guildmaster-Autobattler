@@ -163,7 +163,6 @@ namespace Guildmaster.Tests.EditMode.Combat
             carrier.ActiveEffects.Add(new Guildmaster.Combat.Effects.RuntimeEffect
             {
                 Def               = poison,
-                Stacks            = 1,
                 RemainingTicks    = 60,
                 FullDurationTicks = 60,
                 ScaledPotency     = new float[0],
