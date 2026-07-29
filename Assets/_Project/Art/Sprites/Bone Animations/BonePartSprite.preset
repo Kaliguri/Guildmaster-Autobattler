@@ -77,6 +77,10 @@ Preset:
     value: 1000
     objectReference: {fileID: 0}
   - target: {fileID: 0}
+    propertyPath: m_SpriteGenerateFallbackPhysicsShape
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
     propertyPath: m_AlphaUsage
     value: 1
     objectReference: {fileID: 0}
