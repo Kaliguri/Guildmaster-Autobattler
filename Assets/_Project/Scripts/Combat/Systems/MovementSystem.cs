@@ -144,8 +144,22 @@ namespace Guildmaster.Combat
             float gap   = (target.Position - unit.Position).magnitude - reach;
 
             // Гистерезис: вход по большему порогу, выход по меньшему; между ними держим что было.
-            if (unit.IsSprinting) { if (gap < tuning.SprintExitGap)  unit.IsSprinting = false; }
-            else                  { if (gap > tuning.SprintEnterGap) unit.IsSprinting = true;  }
+            if (unit.IsSprinting)
+            {
+                if (gap >= tuning.SprintExitGap) return;
+                unit.IsSprinting = false;
+                // Разбег кончился ПРИБЫТИЕМ — значит следующий удар идёт с разбега. Заряд взводится
+                // только здесь: разбег, оборванный смертью цели или контролем, не даёт особого удара
+                // (те пути гасят флаг раньше и сюда не заходят).
+                unit.ChargedAttackReady = true;
+            }
+            else if (gap > tuning.SprintEnterGap)
+            {
+                unit.IsSprinting = true;
+                // Снова в пути — заряд прошлого прибытия недействителен: удар с разбега принадлежит
+                // тому сближению, которым он и добыт.
+                unit.ChargedAttackReady = false;
+            }
         }
 
         /// <summary>

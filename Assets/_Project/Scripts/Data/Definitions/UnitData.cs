@@ -86,6 +86,13 @@ namespace Guildmaster.Data.Definitions
                  "доигрыш клипа. Ненулевое — сознательный «оверкоммит» (замедляет эффективную скорость атаки).")]
         [SerializeField] private float _attackRecoverySeconds;
 
+        [Tooltip("Замах ПЕРВОГО удара после разбега, долей от обычного: 1 = такой же (особого удара нет), " +
+                 "1.5 = в полтора раза длиннее (размашистый удар с ходу — дольше телеграф, весомее вход в " +
+                 "бой), 0.6 = короче (выпад на скорости). Тратится одним ударом: добежал разбегом — ударил — " +
+                 "дальше бьёт как обычно. Значение клампится теми же границами, что обычный замах, поэтому " +
+                 "не может ни выйти за интервал атаки, ни опуститься ниже телеграф-пола.")]
+        [SerializeField] private float _chargeAttackWindupMult = 1f;
+
         [Header("Resource gain (Phase 3)")]
         [Tooltip("Ресурс (мана) за авто-атаку, × ResourceGainEff, клампится к MaxResource. 0 = не копит от ударов. Копейщик = 5.")]
         [SerializeField] private float _resourceOnHit;
@@ -152,6 +159,9 @@ namespace Guildmaster.Data.Definitions
         public bool CanAttackWhileMoving => _canAttackWhileMoving;
         public float MovingAttackSpeedPenaltyPct => _movingAttackSpeedPenaltyPct;
         public float AttackRecoverySeconds => _attackRecoverySeconds;
+
+        /// <summary>Замах первого удара после разбега, долей от обычного. 1 = особого удара у юнита нет.</summary>
+        public float ChargeAttackWindupMult => _chargeAttackWindupMult;
         public float ResourceOnHit => _resourceOnHit;
         public float MaxResourceGainPerSecond => _maxResourceGainPerSecond;
         public StatModifier[] Stats => _stats;

@@ -106,10 +106,19 @@ namespace Guildmaster.Combat
             int frameCount = visual != null ? visual.AttackFrameCount : 0;
             int hitFrame   = visual != null ? visual.AttackHitFrame  : 0;
 
-            return WindupTicks(hitFrame, frameCount, intervalTicks);
+            // Удар с разбега считается ЗДЕСЬ, а не при входе в замах: гейт атаки и предсказание
+            // «докрутит ли замах» берут длину отсюда, и своя длина у самого свинга означала бы, что
+            // юнит начинает удар, который по расчёту гейта попадал, а по факту нет.
+            float chargeMult = unit.ChargedAttackReady && unit.Unit != null ? unit.Unit.ChargeAttackWindupMult : 1f;
+
+            return WindupTicks(hitFrame, frameCount, intervalTicks, chargeMult);
         }
 
-        public static int WindupTicks(int hitFrame, int frameCount, int intervalTicks)
+        /// <param name="windupMultiplier">
+        /// Множитель длины замаха для особого удара (разбег). 1 = обычный. Применяется ДО клампа, поэтому
+        /// не может ни увести удар за интервал, ни опустить телеграф ниже пола.
+        /// </param>
+        public static int WindupTicks(int hitFrame, int frameCount, int intervalTicks, float windupMultiplier = 1f)
         {
             int upper = intervalTicks - 1;
             if (upper < 0) upper = 0;
@@ -128,6 +137,9 @@ namespace Guildmaster.Combat
                 int clampedHit = hitFrame < frameCount ? hitFrame : frameCount; // hitFrame не больше числа кадров
                 raw = (clampedHit * durationTicks) / frameCount;
             }
+
+            if (windupMultiplier > 0f && Math.Abs(windupMultiplier - 1f) > 1e-4f)
+                raw = (int)Math.Round(raw * windupMultiplier, MidpointRounding.AwayFromZero);
 
             if (raw < lower) raw = lower;
             if (raw > upper) raw = upper;

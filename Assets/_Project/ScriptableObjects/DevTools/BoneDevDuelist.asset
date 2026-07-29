@@ -62,6 +62,7 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _chargeAttackWindupMult: 1.5
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:

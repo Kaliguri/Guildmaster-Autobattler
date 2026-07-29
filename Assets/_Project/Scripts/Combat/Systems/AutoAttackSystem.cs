@@ -176,6 +176,9 @@ namespace Guildmaster.Combat
 
             unit.Phase = AttackPhase.Windup;
             unit.WindupTarget = target;
+            // Разбег тратится ЭТИМ свингом: длину замаха он уже отдал (WindupTicksFor читает заряд),
+            // и следующий удар обязан быть обычным, иначе разбег стал бы постоянным режимом.
+            unit.ChargedAttackReady = false;
 
             ctx.NotifyAttackStarted(unit, target);
 

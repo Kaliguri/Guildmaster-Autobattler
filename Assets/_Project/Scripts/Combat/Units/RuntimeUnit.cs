@@ -67,6 +67,14 @@ namespace Guildmaster.Combat
         /// </summary>
         public bool IsSprinting;
 
+        /// <summary>
+        /// Юнит добежал разбегом и ещё не ударил: следующий свинг — удар с разбега (свой замах из
+        /// <see cref="Data.Definitions.UnitData.ChargeAttackWindupMult"/>, свой клип у показа). Взводит
+        /// <c>MovementSystem</c> в момент, когда разбег кончился прибытием, тратит первый же замах.
+        /// Разбег, оборванный не прибытием (цель умерла, юнита обездвижили), заряда не оставляет.
+        /// </summary>
+        public bool ChargedAttackReady;
+
         /// <summary>Цель авто-атаки. Для хилера — союзник (≠ CurrentTarget). Пишет мозг, читает AutoAttackSystem.</summary>
         public RuntimeUnit AutoAttackTarget;
 
