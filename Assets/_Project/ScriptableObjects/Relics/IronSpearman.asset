@@ -88,7 +88,10 @@ MonoBehaviour:
   _grantedEffects: []
   _abilities:
   - _id: steel_whirl
-    _effects: []
+    _effects:
+    - {fileID: 11400000, guid: e45ab3ab710483b4cbed64181e23b842, type: 2}
+    _selfEffects:
+    - {fileID: 11400000, guid: 27f6768c5a98b7d49b8c1275cd2e54ae, type: 2}
     _baseCooldown: 0
     _resourceCost: 45
     _targetMode: 0
@@ -114,9 +117,9 @@ MonoBehaviour:
     _channelSeconds: 0
     _channelTickSeconds: 1
     _canMoveWhileCasting: 0
-    _displaces: 0
+    _displaces: 1
     _displaceDistance: 4
-    _displaceDamageMult: 1
+    _displaceDamageMult: 0
     _displaceWidth: 1
     _visualSlot: 0
     _infoTags: []

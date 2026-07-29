@@ -367,16 +367,23 @@ namespace Guildmaster.Combat
                 caster.CastTarget = target;
             }
 
-            if (data.Displaces)
+            // Порядок ветвей разводит два РАЗНЫХ смысла отбрасывания, и путать их нельзя: у круга
+            // (§10.7 «Стальной вихрь») толчок расходится от центра по всем задетым, у одиночной цели
+            // (§10.6 Монах) — это рывок самого кастующего с последующей цепью реактивов.
+            if (data.AreaShape == AreaShape.Circle)
+                ApplyCircle(caster, data, ctx);
+            else if (data.Displaces)
                 ApplyDisplace(caster, target, data, ctx);
             else if (isAllyAura)
                 ApplyAllyAura(caster, data, ctx);
             else if (isMassTag)
                 ApplyAllWithTag(caster, data, units, ctx);
-            else if (data.AreaShape == AreaShape.Circle)
-                ApplyCircle(caster, data, ctx);
             else
                 ApplyToTarget(caster, target, data, ctx);
+
+            // Эффекты на себя — ПОСЛЕ нагрузки: щит «Вихря» растёт от урона, который вихрь только что
+            // нанёс, значит реактив обязан висеть к моменту сведения тика, но не раньше самого удара.
+            ApplySelfEffects(caster, data, ctx);
 
             // Рекаст авто-атаки (M18): умение-УДАР сбрасывает таймер обычной атаки, и она выходит сразу
             // по готовности — в окне получаются два удара почти подряд. Обнуление ПОСЛЕ удара умением
@@ -605,7 +612,16 @@ namespace Guildmaster.Combat
             ApplyEffects(t, data, caster, ctx);
         }
 
-        /// <summary>Круговой AOE-удар вокруг кастующего («Стальной вихрь»): урон + эффекты по всем врагам в радиусе.</summary>
+        /// <summary>
+        /// Круговой AOE-удар вокруг кастующего («Стальной вихрь»): урон + эффекты по всем врагам в
+        /// радиусе, а при <see cref="AbilityData.Displaces"/> — ещё и толчок КАЖДОГО наружу от центра.
+        /// </summary>
+        /// <remarks>
+        /// Толчок здесь без «ядра» (<c>cannonball: false</c>) и без своего урона: вихрь уже нанёс его
+        /// сам, и повторный урон на линии полёта означал бы двойной удар одной способностью. Смещение
+        /// идёт тем же швом, что монашье, поэтому цель, отброшенная вихрем, ведёт себя как любая другая
+        /// отброшенная — включая удар о край арены и реактивы на конец полёта («интеграция с монахом»).
+        /// </remarks>
         private void ApplyCircle(RuntimeUnit caster, AbilityData data, ICombatContext ctx)
         {
             // Dev-оверлей зоны круга.
@@ -623,8 +639,30 @@ namespace Guildmaster.Combat
                 RuntimeUnit t = _targets[i];
                 if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, t, dmg, school, ctx.ArmorK, affinity: affinity));
                 ApplyEffects(t, data, caster, ctx);
+
+                if (data.Displaces) PushOutward(caster, t, data, ctx);
             }
         }
+
+        // Толчок от центра круга. Стоящего ровно в центре толкаем «куда смотрит» кастующий — направление
+        // обязано быть определённым при любой геометрии, иначе на зеркале стороны разойдутся.
+        private static void PushOutward(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
+        {
+            Vector2 away = target.Position - caster.Position;
+            Vector2 dir = away.sqrMagnitude > 1e-6f
+                ? away.normalized
+                : (caster.CurrentTarget != null
+                    ? SafeDirection(caster.CurrentTarget.Position - caster.Position)
+                    : Vector2.right);
+
+            // Порядок аргументов — (кого двигаем, кто двигает): толкаемый здесь ЦЕЛЬ, а не кастующий.
+            ctx.Displace(new DisplaceRequest(
+                target, caster, dir, data.DisplaceDistance,
+                cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
+        }
+
+        private static Vector2 SafeDirection(Vector2 v) =>
+            v.sqrMagnitude > 1e-6f ? v.normalized : Vector2.right;
 
         /// <summary>Одиночный каст: хил-нагрузка (Пастырь) ИЛИ прямой урон ×AutoAttackDamage (поведение Ф2) + эффекты.</summary>
         private static void ApplyToTarget(RuntimeUnit caster, RuntimeUnit target, AbilityData data, ICombatContext ctx)
@@ -674,6 +712,15 @@ namespace Guildmaster.Combat
             if (effects == null) return;
             for (int i = 0; i < effects.Length; i++)
                 ctx.ApplyEffect(target, effects[i], caster);
+        }
+
+        /// <summary>Эффекты на самого кастующего — независимо от формы способности и наличия цели.</summary>
+        private static void ApplySelfEffects(RuntimeUnit caster, AbilityData data, ICombatContext ctx)
+        {
+            EffectData[] effects = data.SelfEffects;
+            if (effects == null) return;
+            for (int i = 0; i < effects.Length; i++)
+                if (effects[i] != null) ctx.ApplyEffect(caster, effects[i], caster);
         }
 
         private static float HpPct(RuntimeUnit u)

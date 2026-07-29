@@ -823,6 +823,22 @@ MonoBehaviour:
     m_Key: effect.chilling_touch.name
     m_Metadata:
       m_Items: []
+  - m_Id: 6784742471229440
+    m_Key: effect.whirl_slow.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309824
+    m_Key: effect.whirl_slow.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309825
+    m_Key: effect.whirl_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309826
+    m_Key: effect.whirl_shield.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

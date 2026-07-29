@@ -296,6 +296,22 @@ MonoBehaviour:
     m_Localized: Chilling Touch
     m_Metadata:
       m_Items: []
+  - m_Id: 6784742471229440
+    m_Localized: Whirl Grip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309824
+    m_Localized: A slow that loosens with every moment.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309825
+    m_Localized: Steel Bark
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6784742559309826
+    m_Localized: A shield earned by your own blow.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -40,6 +40,9 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Эффекты, накладываемые на цель при касте.")]
         [SerializeField] private EffectData[] _effects;
 
+        [Tooltip("Эффекты, накладываемые на САМОГО кастующего при применении («Стальной вихрь»: щит от нанесённого урона). Не зависят от формы способности.")]
+        [SerializeField] private EffectData[] _selfEffects;
+
         [Tooltip("Базовый кулдаун, сек. Фактический = base × CooldownEff кастующего.")]
         [SerializeField] private float _baseCooldown = 5f;
 
@@ -144,6 +147,13 @@ namespace Guildmaster.Data.Definitions
 
         public string Id => _id;
         public EffectData[] Effects => _effects;
+
+        /// <summary>
+        /// Эффекты на самого кастующего. Заведены отдельным списком, потому что <see cref="Effects"/>
+        /// адресован ЦЕЛИ, и у круговых или масс-способностей цели вообще нет — «дай себе щит» иначе
+        /// выразить нечем, кроме второй способности-пустышки.
+        /// </summary>
+        public EffectData[] SelfEffects => _selfEffects;
         public float BaseCooldown => _baseCooldown;
         public float ResourceCost => _resourceCost;
         public AbilityTargetMode TargetMode => _targetMode;

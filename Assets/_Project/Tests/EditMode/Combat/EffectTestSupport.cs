@@ -79,9 +79,15 @@ namespace Guildmaster.Tests.EditMode.Combat
             float castSeconds = 0f,
             float channelSeconds = 0f,
             float channelTickSeconds = 1f,
-            bool canMoveWhileCasting = false)
+            bool canMoveWhileCasting = false,
+            EffectData[] selfEffects = null,
+            bool displaces = false,
+            float displaceDistance = 4f)
         {
             var a = new AbilityData();
+            Set(a, "_selfEffects", selfEffects ?? System.Array.Empty<EffectData>());
+            Set(a, "_displaces", displaces);
+            Set(a, "_displaceDistance", displaceDistance);
             Set(a, "_castSeconds", castSeconds);
             Set(a, "_channelSeconds", channelSeconds);
             Set(a, "_channelTickSeconds", channelTickSeconds);
@@ -272,7 +278,10 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void ReportAreaHit(in AreaHit hit) { }
 
         public void Dispel(in DispelRequest req) => _effects?.Dispel(in req, this);
-        public void Displace(in DisplaceRequest req) { }
+        /// <summary>Заявки на смещение: заглушка их не исполняет, но помнит — по ним и проверяется толчок.</summary>
+        public readonly List<DisplaceRequest> Displaces = new List<DisplaceRequest>();
+
+        public void Displace(in DisplaceRequest req) => Displaces.Add(req);
 
         // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
         public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
