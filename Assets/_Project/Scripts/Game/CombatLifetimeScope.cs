@@ -165,6 +165,13 @@ namespace Guildmaster.Game
             // IContentDatabase — из RootScope (родитель); фабрика/симуляция — из этого скоупа.
             builder.Register<EncounterLoader>(Lifetime.Scoped);
 
+            // Лента боя: сим пишет вперёд, показ читает с лагом. Ф1 — только запись; потребители
+            // приходят фазами (см. docs/lookahead-presentation-lag.md §8).
+            builder.Register<Combat.Tape.BattleTape>(
+                       _ => new Combat.Tape.BattleTape(Combat.Tape.BattleTapeRecorder.DefaultWindowTicks),
+                       Lifetime.Scoped);
+            builder.Register<Combat.Tape.BattleTapeRecorder>(Lifetime.Scoped);
+
             // Петля — ещё и владелец доли интерполяции: она копит остаток тика, презентация его читает.
             builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped)
                    .As<Core.Simulation.ISimInterpolation>();

@@ -17,6 +17,7 @@ namespace Guildmaster.Game.Services
     public sealed class CombatLoopService : IAsyncStartable, ISimInterpolation
     {
         private readonly CombatSimulation _simulation;
+        private readonly Combat.Tape.BattleTapeRecorder _tapeRecorder;
 
         private float _accumulator;
         private bool  _running;
@@ -28,9 +29,10 @@ namespace Guildmaster.Game.Services
         /// </summary>
         public float Alpha => Mathf.Clamp01(_accumulator / SimConstants.TickDelta);
 
-        public CombatLoopService(CombatSimulation simulation)
+        public CombatLoopService(CombatSimulation simulation, Combat.Tape.BattleTapeRecorder tapeRecorder)
         {
-            _simulation = simulation;
+            _simulation   = simulation;
+            _tapeRecorder = tapeRecorder;
         }
 
         /// <summary>
@@ -64,6 +66,9 @@ namespace Guildmaster.Game.Services
                            && ticksThisFrame < SimConstants.MaxCatchUpTicksPerFrame)
                     {
                         _simulation.Tick(SimConstants.TickDelta);
+                        // Кадр ленты снимается сразу за тиком: состояние на юнитах — ровно то, что
+                        // этот тик досчитал. Показ читает ленту, а не живой сим (§7.2 ТЗ).
+                        _tapeRecorder.CaptureTick();
                         _accumulator -= SimConstants.TickDelta;
                         ticksThisFrame++;
 
