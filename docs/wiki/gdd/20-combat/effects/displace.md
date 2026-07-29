@@ -1,8 +1,10 @@
 ---
 title: "Effect - Displace"
-order: 15
+order: 40
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
+impl: engine
+impl_note: "DisplacementSystem + VortexEntry/WhirlDashLanding"
 ---
 
 # Смещение (Displace)

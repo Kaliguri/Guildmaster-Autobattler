@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Winter (Cryomancer)"
-order: 230
+order: 100
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: РДД
 position: Вторая линия
@@ -25,6 +25,8 @@ gender: Не определено
 themes:
   - Мистика
 needs_review: []
+impl: engine
+asset: [relic.cryomancer]
 ---
 
 # The Winter (Cryomancer)

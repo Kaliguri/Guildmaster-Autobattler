@@ -1,9 +1,9 @@
 ---
 title: "Goblins - Elite - Goblin Wolfrider"
-order: 120
+order: 580
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Элита
 species: Гоблины
 combat_class: Убийца
@@ -22,6 +22,7 @@ mechanics:
   - Насквозь
   - Принудительное движение
   - Давление на тыл
+impl: paper
 ---
 
 # Гоблин-наездник на волке

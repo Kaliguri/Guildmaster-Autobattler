@@ -1,10 +1,11 @@
 ---
 title: "Species - Beasts"
-order: 20
+order: 520
 kind: enemy_faction
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 species: Звери
+impl: paper
 ---
 
 # Звери

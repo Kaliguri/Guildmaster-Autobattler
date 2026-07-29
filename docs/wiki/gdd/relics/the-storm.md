@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Storm (Stormcaller)"
-order: 180
+order: 590
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: РДД
 position: Вторая линия
@@ -27,6 +27,7 @@ themes:
   - Мистика
 needs_review:
   - "Класс не задан. В прежнем поле roles значилось: РДД — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
+impl: paper
 ---
 
 # The Storm (Stormcaller)

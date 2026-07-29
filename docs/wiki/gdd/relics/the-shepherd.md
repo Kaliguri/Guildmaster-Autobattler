@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Shepherd (Priest)"
-order: 160
+order: 60
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Поддержка
 position: Вторая линия
@@ -25,6 +25,8 @@ gender: Не определено
 themes:
   - Свет
 needs_review: []
+impl: engine
+asset: [relic.light_shepherd]
 ---
 
 # The Shepherd (Priest)

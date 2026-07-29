@@ -1,8 +1,8 @@
 ---
 title: "Relic - Draft Ideas"
-order: 20
+order: 900
 status: draft
-updated: 2026-07-16
+updated: 2026-07-29
 ---
 
 Хил

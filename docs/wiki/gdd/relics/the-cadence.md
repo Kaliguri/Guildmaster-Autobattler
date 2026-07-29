@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Cadence (Bard)"
-order: 70
+order: 530
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Поддержка
 position: Вторая линия
@@ -24,6 +24,7 @@ mechanics:
 gender: Не определено
 themes: []
 needs_review: []
+impl: paper
 ---
 
 # The Cadence (Bard)

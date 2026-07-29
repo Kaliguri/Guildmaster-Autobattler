@@ -1,9 +1,9 @@
 ---
 title: "Bandits - Common - Bandit Bruiser"
-order: 10
+order: 510
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Обычный
 species: Разбойники
 combat_class: Брузер
@@ -23,6 +23,7 @@ mechanics:
   - Фокус раненых
   - Побег
   - Дополнительное золото
+impl: paper
 ---
 
 # Разбойник с двуручным молотом

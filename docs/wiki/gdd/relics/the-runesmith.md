@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Runesmith (Smith)"
-order: 150
+order: 580
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Брузер
 position: Фронт
@@ -29,6 +29,7 @@ needs_review:
   - "Имя-аркана рабочее (The Runesmith в лоб = класс, нарушает закон нейминга). Финальную аркану задаёт Макс — кандидаты в конце."
   - "Улучшения (Шаг 6) не заданы — TBD."
   - "Класс не задан. В прежнем поле roles значилось: Танк — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
+impl: paper
 ---
 
 # The Runesmith (Smith)

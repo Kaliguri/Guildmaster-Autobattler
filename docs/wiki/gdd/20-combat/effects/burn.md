@@ -1,8 +1,10 @@
 ---
 title: "Effect - Burn"
-order: 12
+order: 10
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
+impl: engine
+asset: [Burn, Ember, Ignition]
 ---
 
 # Поджог (Burn) + «Угли»

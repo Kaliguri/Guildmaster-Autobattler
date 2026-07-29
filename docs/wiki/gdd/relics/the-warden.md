@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Warden"
-order: 220
+order: 610
 kind: character
 status: needs_review
-updated: 2026-07-26
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Призыватель
 position: []
@@ -25,6 +25,7 @@ needs_review:
   - Яд - только в улучшениях, не в базовом наборе
   - Позиция, дальность, доставка атаки, школа урона - не заданы
   - "Класс не задан. В прежнем поле roles значилось: Саммонер — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
+impl: paper
 ---
 
 # The Warden

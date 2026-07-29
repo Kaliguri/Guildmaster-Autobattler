@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Bonewright (Necromancer)"
-order: 50
+order: 520
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Призыватель
 position: Вторая линия
@@ -31,6 +31,7 @@ themes:
 needs_review:
   - "creature_type Некроманта = Живое (дефолт: человек-маг). Если задумывался лич-Нежить — пересмотреть: влияет на само-учёт в «Марше мёртвых». Призванные скелеты — Нежить."
   - "Класс не задан. В прежнем поле roles значилось: Саммонер — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
+impl: paper
 ---
 
 # The Bonewright (Necromancer)

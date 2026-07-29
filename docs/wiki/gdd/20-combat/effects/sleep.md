@@ -1,8 +1,9 @@
 ---
 title: "Effect - Sleep"
-order: 21
+order: 540
 status: draft
-updated: 2026-07-18
+updated: 2026-07-29
+impl: paper
 ---
 
 # Сон (Sleep)

@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Spear (Spearman)"
-order: 170
+order: 70
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Брузер
 position: Фронт
@@ -22,6 +22,8 @@ mechanics:
 gender: Не определено
 themes: []
 needs_review: []
+impl: engine
+asset: [relic.iron_spearman]
 ---
 
 # The Spear (Spearman)

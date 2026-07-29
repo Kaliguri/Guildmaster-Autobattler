@@ -1,9 +1,9 @@
 ---
 title: "Goblins - Common - Goblin Warrior"
-order: 110
+order: 40
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Обычный
 species: Гоблины
 combat_class: Танк
@@ -18,6 +18,8 @@ magical_damage: []
 affinity: []
 encounter_role: Фронтовая преграда
 mechanics: []
+impl: engine
+asset: [enemy.goblin_warrior]
 ---
 
 # Гоблин-воин

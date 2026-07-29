@@ -1,8 +1,10 @@
 ---
 title: "Effect - Stealth"
-order: 22
+order: 100
 status: draft
-updated: 2026-07-18
+updated: 2026-07-29
+impl: engine
+asset: [StealthBuff, StealthPassive]
 ---
 
 # Скрытность: Инвиз и Маскировка (Stealth)

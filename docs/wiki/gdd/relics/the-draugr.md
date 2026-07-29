@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Draugr (Berserker)"
-order: 80
+order: 540
 kind: character
 status: needs_review
-updated: 2026-07-26
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Брузер
 position: Фронт
@@ -19,6 +19,7 @@ themes: []
 needs_review:
   - "ДИЗАЙН НЕ ПРОРАБОТАН: прежнее тело карточки было загрязнено чужим контентом (навык «Скелет» от Некроманта, AI-блок «Изворотливость» от Ассасина, водяная тематика) — вычищено 2026-07-15, см. аудит 2026-07-15 §5.2"
   - "Задать заново под фантазию Berserker/Draugr (нежить-викинг): роль, школа урона, доставка атаки, навыки, статы, AI"
+impl: paper
 ---
 
 # The Draugr (Berserker)

@@ -1,9 +1,9 @@
 ---
 title: "Goblins - Common - Goblin Grunt"
-order: 90
+order: 30
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Обычный
 species: Гоблины
 combat_class: Брузер
@@ -18,6 +18,8 @@ magical_damage: []
 affinity: []
 encounter_role: Ближняя масса
 mechanics: []
+impl: engine
+asset: [enemy.goblin_grunt]
 ---
 
 # Гоблин с палкой

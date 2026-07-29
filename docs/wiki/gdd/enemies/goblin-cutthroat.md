@@ -1,9 +1,9 @@
 ---
 title: "Goblins - Common - Goblin Cutthroat"
-order: 80
+order: 20
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Обычный
 species: Гоблины
 combat_class: Убийца
@@ -19,6 +19,8 @@ affinity: []
 encounter_role: Фланговое давление
 mechanics:
   - Приоритет тыла
+impl: engine
+asset: [enemy.goblin_cutthroat]
 ---
 
 # Гоблин-убийца

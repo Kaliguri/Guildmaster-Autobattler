@@ -1,9 +1,9 @@
 ---
 title: "Relic - Unique - The Mirror (Doppelganger)"
-order: 120
+order: 560
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Уникальная
 combat_class: Наследует
 position: Наследует
@@ -23,6 +23,7 @@ gender: Не применимо
 themes:
   - Мистика
 needs_review: []
+impl: paper
 ---
 
 # The Mirror (Doppelganger)

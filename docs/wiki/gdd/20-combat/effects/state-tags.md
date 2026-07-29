@@ -1,8 +1,10 @@
 ---
 title: "Effect - State Tags"
-order: 34
+order: 90
 status: draft
-updated: 2026-07-18
+updated: 2026-07-29
+impl: engine
+impl_note: "EffectTag в определениях данных"
 ---
 
 # Сборник: теги-состояния

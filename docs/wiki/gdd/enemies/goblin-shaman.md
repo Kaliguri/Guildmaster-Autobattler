@@ -1,9 +1,9 @@
 ---
 title: "Goblins - Elite - Goblin Shaman"
-order: 100
+order: 570
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Элита
 species: Гоблины
 combat_class: РДД
@@ -23,6 +23,7 @@ mechanics:
   - AOE
   - Щит
   - Барьер
+impl: paper
 ---
 
 # Гоблин-маг

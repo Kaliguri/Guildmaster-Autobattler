@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Tide (Tidecaller)"
-order: 200
+order: 600
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Поддержка
 position: Вторая линия
@@ -30,6 +30,7 @@ gender: Не определено
 themes:
   - Мистика
 needs_review: []
+impl: paper
 ---
 
 # The Tide (Tidecaller)

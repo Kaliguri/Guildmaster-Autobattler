@@ -1,8 +1,10 @@
 ---
 title: "Effect - CC Primitives"
-order: 31
+order: 20
 status: draft
-updated: 2026-07-18
+updated: 2026-07-29
+impl: partial
+impl_note: "стан есть (ControlComponent); обездвиживание, сон, немота в коде отсутствуют"
 ---
 
 # Сборник: CC-примитивы

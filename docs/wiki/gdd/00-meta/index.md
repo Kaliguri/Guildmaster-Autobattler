@@ -107,6 +107,19 @@ SORT file.name ASC
   [[gdd/roster/unit-tag-glossary|Глоссарий доп-тегов]] · [[gdd/roster/relic-tag-assignments|Раскладка тегов]].
 - Враги — [[enemies/index|Enemies - Catalog]] · [[enemies/species/index|Species - Index]].
 
+### Что из контента существует в игре
+
+Дизайн-карточка и работающая сущность — разные вещи. Состояние живёт в поле `impl` шапки карточки
+(`engine` · `partial` · `paper`), сводки — по типу контента:
+
+[[gdd/relics/implementation-status|Реликвии]] · [[gdd/enemies/implementation-status|Противники и виды]] ·
+[[gdd/40-content/items/implementation-status|Предметы и Знамёна]] ·
+[[gdd/20-combat/effects/implementation-status|Эффекты]].
+
+В дереве папок контента тот же порядок: заведённое в движке сверху, ниже файл-разделитель
+`BELOW: PAPER ONLY` — только описанное. Правило `order`: служебные 0–9 · в движке 10–499 ·
+разделитель 500 · бумага 510+ · инкубаторы идей 900.
+
 ## 50 · Со-режим и UX (`50-modes-ux/`)
 
 - [[multiplayer|Modes - Multiplayer]] — кооператив, распределение «Сосудов».

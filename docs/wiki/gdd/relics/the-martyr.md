@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Martyr"
-order: 110
+order: 550
 kind: character
 status: needs_review
-updated: 2026-07-26
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Поддержка
 position: []
@@ -22,6 +22,7 @@ themes: []
 needs_review:
   - Ранний черновик-идея, не по шаблону Шаг1-7
   - Тип - Проклятая (ось типа, см. текст); позиция, дальность, доставка атаки, школа урона - не заданы
+impl: paper
 ---
 
 # The Martyr

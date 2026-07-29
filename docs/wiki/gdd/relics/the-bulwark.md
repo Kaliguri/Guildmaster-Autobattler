@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Bulwark (Guardian)"
-order: 60
+order: 20
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Танк
 position: Фронт
@@ -23,6 +23,8 @@ mechanics:
 gender: Не определено
 themes: []
 needs_review: []
+impl: engine
+asset: [relic.defender]
 ---
 
 # The Bulwark (Guardian)

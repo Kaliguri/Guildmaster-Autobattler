@@ -1,9 +1,9 @@
 ---
 title: "Golems - Elite - Earth Golem"
-order: 50
+order: 550
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Элита
 species: Големы
 combat_class: Танк
@@ -23,6 +23,7 @@ mechanics:
   - AOE
   - Отбрасывание
   - Замедление
+impl: paper
 ---
 
 # Земляной голем

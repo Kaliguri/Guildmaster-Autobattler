@@ -1,8 +1,10 @@
 ---
 title: "Effect - Cleanse"
-order: 14
+order: 30
 status: draft
-updated: 2026-07-18
+updated: 2026-07-29
+impl: engine
+impl_note: "DispelComponent"
 ---
 
 # Очистка / Диспел (Cleanse)

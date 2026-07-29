@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Bloom (Druid)"
-order: 30
+order: 10
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Поддержка
 position: Вторая линия
@@ -29,6 +29,9 @@ themes:
   - Природа
   - Мистика
 needs_review: []
+impl: partial
+asset: [relic.druid]
+impl_note: "споры не лечат — расхождение из roadmap (handoff), кодом не пересверено 2026-07-29"
 ---
 
 # The Bloom (Druid)

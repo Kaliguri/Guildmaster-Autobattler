@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Hunter (Ranger)"
-order: 100
+order: 40
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: РДД
 position: Вторая линия
@@ -25,6 +25,8 @@ gender: Не определено
 themes:
   - Природа
 needs_review: []
+impl: engine
+asset: [relic.ranger]
 ---
 
 # The Hunter (Ranger)

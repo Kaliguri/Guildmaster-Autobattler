@@ -1,8 +1,10 @@
 ---
 title: "Effect - Stat Modifiers"
-order: 33
+order: 80
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
+impl: engine
+impl_note: "StatModifierComponent"
 ---
 
 # Сборник: стат-модификаторы

@@ -1,9 +1,9 @@
 ---
 title: "Goblins - Elite - Goblin Commander"
-order: 70
+order: 560
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Элита
 species: Гоблины
 combat_class: Брузер
@@ -22,6 +22,7 @@ mechanics:
   - Активная способность
   - Скорость атаки
   - Скорость передвижения
+impl: paper
 ---
 
 # Гоблин-командир

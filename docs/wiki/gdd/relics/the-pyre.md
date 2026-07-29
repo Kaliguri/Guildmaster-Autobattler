@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Pyre (Swordsman)"
-order: 140
+order: 50
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Убийца
 position: Фронт
@@ -27,6 +27,9 @@ mechanics:
 gender: Не определено
 themes: []
 needs_review: []
+impl: partial
+asset: [relic.flame_swordsman]
+impl_note: "воспламенение без стаков, поджог плоский — расхождение из roadmap (handoff), кодом не пересверено 2026-07-29"
 ---
 
 # The Pyre (Swordsman)

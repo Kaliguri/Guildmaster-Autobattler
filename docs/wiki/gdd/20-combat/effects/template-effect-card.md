@@ -2,7 +2,7 @@
 title: "Effect - Template"
 order: 2
 status: draft
-updated: 2026-07-18
+updated: 2026-07-29
 ---
 
 # Имя RU (EN-канон)

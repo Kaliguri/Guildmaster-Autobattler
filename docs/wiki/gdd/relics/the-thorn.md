@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Thorn (Treant)"
-order: 190
+order: 80
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Танк
 position: Фронт
@@ -24,6 +24,9 @@ gender: Не применимо
 themes:
   - Природа
 needs_review: []
+impl: partial
+asset: [relic.treant]
+impl_note: "шипы без роста радиуса — расхождение из roadmap (handoff), кодом не пересверено 2026-07-29"
 ---
 
 # The Thorn (Treant)

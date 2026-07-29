@@ -2,7 +2,7 @@
 title: "Relic - Card Template"
 order: 1
 status: living
-updated: 2026-07-26
+updated: 2026-07-29
 ---
 
 **Статус:** Черновик

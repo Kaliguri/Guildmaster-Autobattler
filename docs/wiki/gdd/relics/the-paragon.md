@@ -1,9 +1,9 @@
 ---
 title: "Relic - Unique - The Paragon (Juggernaut)"
-order: 130
+order: 570
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Уникальная
 combat_class: Танк
 position: Фронт
@@ -27,6 +27,7 @@ needs_review:
   - "Имя-аркана рабочее (The Paragon) — финал за Максом, кандидаты в конце."
   - Ярлык «Обналичиватель саппорта» вне словаря осей — подобрать канонный тег Playstyle
   - "Класс не задан. В прежнем поле roles значилось: Дилер, Танк-дилер — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
+impl: paper
 ---
 
 # The Paragon (Juggernaut)

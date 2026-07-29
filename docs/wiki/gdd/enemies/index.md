@@ -2,7 +2,7 @@
 title: "Enemies - Catalog"
 order: 0
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 ---
 
 # Противники
@@ -32,6 +32,11 @@ updated: 2026-07-26
 | [[gdd/enemies/bandit-shieldman|Bandit Shieldman]] | Обычный | удерживает цель и прикрывает стрелков |
 | [[gdd/enemies/bandit-bruiser|Bandit Bruiser]] | Обычный | добивает в ближнем бою и кратко оглушает |
 | [[gdd/enemies/bandit-warlock|Bandit Warlock]] | Элита | фиксирует цель, усиливает урон по ней и спасает своих |
+
+> **Что из этого существует в игре** — [[gdd/enemies/implementation-status|Enemies - Implementation Status]].
+> Таблица выше перечисляет **дизайн**, а не реализацию: на 2026-07-29 в движке заведены четыре
+> карточки из тринадцати. В дереве папки враги отсортированы по этому же признаку — заведённые
+> сверху, ниже [[gdd/enemies/divider-theory|разделитель]] и бумажные.
 
 Шаблон новой карточки: [[gdd/enemies/template-enemy-card|шаблон карточки противника]].
 

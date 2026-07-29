@@ -1,9 +1,9 @@
 ---
 title: "Relic - Common - The Bond (Shaman)"
-order: 40
+order: 510
 kind: character
 status: draft
-updated: 2026-07-28
+updated: 2026-07-29
 rarity: Обычная
 combat_class: Брузер
 position: Фронт
@@ -26,6 +26,7 @@ themes:
   - Мистика
 needs_review:
   - "Класс не задан. В прежнем поле roles значилось: Саммонер — подсказка, не решение: у The Pyre «Мили ДД» соответствовал Брузеру, а не Убийце."
+impl: paper
 ---
 
 # The Bond (Shaman)

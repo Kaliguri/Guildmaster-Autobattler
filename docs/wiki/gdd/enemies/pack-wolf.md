@@ -1,9 +1,9 @@
 ---
 title: "Beasts - Common - Pack Wolf"
-order: 130
+order: 590
 kind: enemy
 status: draft
-updated: 2026-07-26
+updated: 2026-07-29
 enemy_group: Обычный
 species: Звери
 combat_class: Убийца
@@ -19,6 +19,7 @@ affinity: []
 encounter_role: Стайное давление
 mechanics:
   - Бонус стаи
+impl: paper
 ---
 
 # Волк стаи

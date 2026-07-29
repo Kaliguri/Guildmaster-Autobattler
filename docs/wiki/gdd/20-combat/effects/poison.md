@@ -1,8 +1,10 @@
 ---
 title: "Effect - Poison"
-order: 19
+order: 120
 status: draft
-updated: 2026-07-18
+updated: 2026-07-29
+impl: partial
+impl_note: "тег и урон есть, идентичность яда (анти-хил) в коде отсутствует"
 ---
 
 # Отравление (Poison)
