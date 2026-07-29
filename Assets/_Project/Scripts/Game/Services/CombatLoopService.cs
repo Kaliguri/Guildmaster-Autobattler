@@ -8,11 +8,15 @@ using VContainer.Unity;
 namespace Guildmaster.Game.Services
 {
     /// <summary>
-    /// Реалтайм-пульс боевой симуляции: accumulator-паттерн на <c>Time.deltaTime</c>.
-    /// <c>Time.deltaTime</c> используется ТОЛЬКО здесь — в <see cref="CombatSimulation"/> его нет.
+    /// Реалтайм-пульс боевой симуляции: accumulator-паттерн на <c>Time.unscaledDeltaTime</c>.
+    /// Время Unity читается ТОЛЬКО здесь — в <see cref="CombatSimulation"/> его нет.
     /// Реализует <see cref="IAsyncStartable"/> для авто-запуска через VContainer EntryPoint.
     /// Тикует только хост (в мультиплеере); клиент применяет команды и следит за checksum.
     /// (вики «10» §5.1).
+    /// <para><b>Почему UNSCALED:</b> пауза и slowmo — свойства ПОКАЗА, а не просчёта («сим впереди,
+    /// показ с лагом»). Масштабированное время тормозило бы и расчёт: в финальном slowmo просчёт полз
+    /// бы вместе с картинкой, хотя именно запас впереди и позволяет режиссуре знать будущее. Показ свою
+    /// долю кадра берёт от <c>Time.deltaTime</c> — там масштаб как раз нужен.</para>
     /// </summary>
     public sealed class CombatLoopService : IAsyncStartable
     {
@@ -73,7 +77,12 @@ namespace Guildmaster.Game.Services
                         continue;
                     }
 
-                    _accumulator += Time.deltaTime;
+                    // Просчёт живёт в НЕмасштабированном времени: пауза и slowmo его не касаются.
+                    _accumulator += Time.unscaledDeltaTime;
+
+                    // Убегать вперёд дальше окна снимков нельзя: вытесним кадр, который сейчас на
+                    // экране. Так пауза (показ стоит, время просчёта идёт) не съедает картинку.
+                    if (_playback.AtWindowLimit) _accumulator = 0f;
 
                     // Анти-лавина: не больше N догоняющих тиков за кадр. Иначе один долгий кадр
                     // (GC/загрузка/alt-tab) копит время → десятки тиков → ещё больший подвис.
@@ -104,6 +113,7 @@ namespace Guildmaster.Game.Services
                     int leadTicks = 0;
                     while (leadTicks < MaxLeadTicksPerFrame
                            && !_playback.HasFullLead
+                           && !_playback.AtWindowLimit
                            && _simulation.Outcome == BattleOutcome.Ongoing)
                     {
                         _simulation.Tick(SimConstants.TickDelta);

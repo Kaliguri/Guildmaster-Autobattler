@@ -81,6 +81,22 @@ namespace Guildmaster.Combat.Tape
         /// </summary>
         public bool HasFullLead => !IsPlaying || Lead >= _targetLead;
 
+        /// <summary>
+        /// Запас прочности у края окна, тиков. Просчёт останавливается НЕ вплотную к границе: между
+        /// проверкой и следующим кадром рендера успевает пройти ещё несколько тиков.
+        /// </summary>
+        private const int WindowSafetyTicks = SimConstants.TickRate;
+
+        /// <summary>
+        /// Показ подошёл к краю окна снимков: считать дальше НЕЛЬЗЯ — следующий кадр вытеснит тот,
+        /// который сейчас на экране, и картинка исчезнет.
+        /// <para>Случается на паузе: показ стоит, а просчёт продолжал бы уходить вперёд. Пауза
+        /// останавливает показ — значит она обязана останавливать и убегание просчёта.</para>
+        /// </summary>
+        public bool AtWindowLimit =>
+            IsPlaying && _tape.FrontTick != BattleTape.NoTick
+            && _tape.FrontTick - _viewTick >= _tape.WindowTicks - WindowSafetyTicks;
+
         /// <summary>Сколько тиков сим держит в запасе перед показом. Меньше нуля не бывает.</summary>
         public int Lead => _tape.FrontTick == BattleTape.NoTick || _viewTick == BattleTape.NoTick
             ? 0

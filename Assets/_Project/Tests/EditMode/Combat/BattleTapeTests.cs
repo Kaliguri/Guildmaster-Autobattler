@@ -373,6 +373,49 @@ namespace Guildmaster.Tests.EditMode.Combat
                 "Продюсеру нечего догонять: разгон впереди несуществующего показа уводит от начала боя");
         }
 
+        // Ф4. Пауза игрока = timeScale 0 → доля кадра нулевая: показ обязан стоять на месте.
+        [Test]
+        public void Playback_OnPause_DoesNotAdvance()
+        {
+            var tape = new BattleTape(windowTicks: BattleTapePlayback.LookaheadTicks + 60);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            playback.SetTargetLead(BattleTapePlayback.LookaheadTicks);
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta);
+            for (int tick = 1; tick <= 60; tick++) tape.CaptureTick(tick, units);
+
+            int before = playback.ViewTick;
+            for (int i = 0; i < 30; i++) playback.Advance(0f);   // масштабированное время стоит
+
+            Assert.AreEqual(before, playback.ViewTick, "На паузе показ не двигается");
+            Assert.AreEqual(60 - before, playback.Lead, "А просчёт остаётся впереди — пауза его не касается");
+        }
+
+        // Ф4. Пауза не должна съедать картинку: просчёт, ушедший на всё окно, вытеснил бы показываемый
+        // кадр — поэтому у края окна продюсер обязан остановиться.
+        [Test]
+        public void Playback_NearTheWindowEdge_TellsTheProducerToStop()
+        {
+            var tape = new BattleTape(windowTicks: 120);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            playback.SetTargetLead(BattleTapePlayback.LookaheadTicks);
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta);
+            Assert.IsFalse(playback.AtWindowLimit, "Пока запас мал, считать можно");
+
+            // Показ стоит (пауза), просчёт уходит вперёд до края окна.
+            for (int tick = 1; tick <= 90; tick++) tape.CaptureTick(tick, units);
+
+            Assert.IsTrue(playback.AtWindowLimit,
+                "У края окна просчёт обязан встать: следующий кадр вытеснил бы показываемый");
+            Assert.IsTrue(tape.TryGetFrame(playback.ViewTick, out _),
+                "И показываемый кадр всё ещё на месте — картинка не исчезла");
+        }
+
         // ===================== Доставка событий по показу (Ф3) =====================
 
         // Главное обещание Ф3: событие отдаётся тогда, когда его тик ПОКАЗАН, а не когда посчитан.
