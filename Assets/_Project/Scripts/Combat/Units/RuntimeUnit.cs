@@ -75,6 +75,17 @@ namespace Guildmaster.Combat
         /// </summary>
         public bool ChargedAttackReady;
 
+        /// <summary>
+        /// ТЕКУЩИЙ свинг идёт с разбега — держится весь замах и хвост, а не мгновение перед ними.
+        /// <para>
+        /// Отдельное поле от <see cref="ChargedAttackReady"/> потому, что заряд тратится в тот же тик, в
+        /// котором взводится: движение ставит его при прибытии, авто-атака тем же тиком входит в замах и
+        /// гасит. Снимок ленты снимается ПОСЛЕ тика, поэтому показ видел бы только <c>false</c> и играл бы
+        /// разбег обычной атакой — «удар в рывке не срабатывает».
+        /// </para>
+        /// </summary>
+        public bool ChargedSwing;
+
         /// <summary>Цель авто-атаки. Для хилера — союзник (≠ CurrentTarget). Пишет мозг, читает AutoAttackSystem.</summary>
         public RuntimeUnit AutoAttackTarget;
 

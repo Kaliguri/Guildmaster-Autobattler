@@ -1,4 +1,4 @@
-using Guildmaster.Data.Definitions;
+﻿using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
 
@@ -78,8 +78,11 @@ namespace Guildmaster.Combat.Tape
         /// </summary>
         public readonly bool IsSprinting;
 
-        /// <summary>Взведён удар с разбега: следующий свинг идёт своим клипом и своим замахом.</summary>
-        public readonly bool ChargedAttackReady;
+        /// <summary>
+        /// Текущий свинг идёт с разбега — показ выбирает по нему клип. Несём именно признак СВИНГА, а не
+        /// взведённый заряд: заряд гаснет в том же тике, в котором взведён, и в снимке был бы всегда false.
+        /// </summary>
+        public readonly bool ChargedSwing;
 
         /// <summary>Юнит в замахе — имя и смысл те же, что у одноимённого свойства живого юнита.</summary>
         public bool IsWindingUp => Phase == AttackPhase.Windup;
@@ -90,7 +93,7 @@ namespace Guildmaster.Combat.Tape
             float size, AttackPhase phase, int windupTicks, int windupRemaining,
             int attackCooldownTicks, int targetId, EffectTag effectTagMask, bool isDead,
             float attackRange = 0f, bool canAct = true, bool isDisplaced = false, bool isEmpowered = false,
-            bool isSprinting = false, bool chargedAttackReady = false)
+            bool isSprinting = false, bool chargedSwing = false)
         {
             Id                  = id;
             Team                = team;
@@ -114,7 +117,7 @@ namespace Guildmaster.Combat.Tape
             IsDisplaced         = isDisplaced;
             IsEmpowered         = isEmpowered;
             IsSprinting         = isSprinting;
-            ChargedAttackReady  = chargedAttackReady;
+            ChargedSwing        = chargedSwing;
         }
 
         /// <summary>Снять состояние с живого юнита. Единственное место, где сим встречается с лентой.</summary>
@@ -144,7 +147,7 @@ namespace Guildmaster.Combat.Tape
                 unit.DisplacedTicksRemaining > 0,
                 unit.EmpowerDamageMult > 0f,
                 unit.IsSprinting,
-                unit.ChargedAttackReady);
+                unit.ChargedSwing);
         }
     }
 }

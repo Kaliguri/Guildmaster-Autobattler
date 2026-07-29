@@ -570,7 +570,7 @@ namespace Guildmaster.Presentation
                 _isDead, attackPlaying, isMoving,
                 canAct: !_hasState || _snapshot.CanAct,
                 isSprinting: _hasState && _snapshot.IsSprinting,
-                chargedAttack: _hasState && _snapshot.ChargedAttackReady);
+                chargedAttack: _hasState && _snapshot.ChargedSwing);
             if (next != _state)
             {
                 _state = next;

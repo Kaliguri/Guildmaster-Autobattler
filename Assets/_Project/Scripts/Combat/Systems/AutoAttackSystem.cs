@@ -181,7 +181,10 @@ namespace Guildmaster.Combat
             unit.Phase = AttackPhase.Windup;
             unit.WindupTarget = target;
             // Разбег тратится ЭТИМ свингом: длину замаха он уже отдал (WindupTicksFor читает заряд),
-            // и следующий удар обязан быть обычным, иначе разбег стал бы постоянным режимом.
+            // и следующий удар обязан быть обычным, иначе разбег стал бы постоянным режимом. Признак
+            // переезжает на сам свинг — он живёт до его конца, иначе показу нечего было бы прочитать:
+            // заряд гаснет в том же тике, в котором взведён, а снимок снимается после тика.
+            unit.ChargedSwing       = unit.ChargedAttackReady;
             unit.ChargedAttackReady = false;
 
             ctx.NotifyAttackStarted(unit, target);

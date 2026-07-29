@@ -147,6 +147,25 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
+        public void ChargedSwing_SurvivesInTheSnapshotForTheWholeSwing()
+        {
+            // Regress: заряд гаснет в ТОМ ЖЕ тике, в котором взводится (движение ставит при прибытии,
+            // авто-атака тем же тиком входит в замах), а снимок ленты снимается ПОСЛЕ тика. Показ читал
+            // погасший заряд и играл разбег обычной атакой — «удар в рывке не срабатывает».
+            var unit = Make(Vector2.zero, moveSpeed: 3f);
+            unit.ChargedAttackReady = true;
+
+            // То, что делает EnterWindup: заряд переезжает на свинг и тратится.
+            unit.ChargedSwing       = unit.ChargedAttackReady;
+            unit.ChargedAttackReady = false;
+            unit.Phase = AttackPhase.Windup;
+
+            var shot = Guildmaster.Combat.Tape.UnitSnapshot.From(unit);
+            Assert.That(shot.ChargedSwing, Is.True,
+                "Снимок обязан нести признак СВИНГА: заряд к моменту съёмки уже потрачен всегда.");
+        }
+
+        [Test]
         public void ChargedAttack_UsesItsOwnWindupLength()
         {
             // Разные множители дают разную длину замаха — и обычный удар остаётся эталоном.
