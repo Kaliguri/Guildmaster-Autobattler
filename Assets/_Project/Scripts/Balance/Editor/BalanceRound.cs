@@ -64,8 +64,10 @@ namespace Guildmaster.Balance.Editor
         {
             if (string.IsNullOrWhiteSpace(keysCsv) || keysCsv.Trim() == "all") return Steps;
 
+            // Пробел — такой же разделитель, как запятая: список из шелла приходит склеенным то так, то
+            // так (PowerShell склеивает массив пробелами), и падать из-за формы разделителя — глупость.
             var selected = new List<Step>();
-            foreach (string raw in keysCsv.Split(','))
+            foreach (string raw in keysCsv.Split(',', ' ', ';'))
             {
                 string key = raw.Trim();
                 if (key.Length == 0) continue;

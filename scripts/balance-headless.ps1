@@ -13,7 +13,9 @@
 # выбирает сам по тому, держит ли кто-то lockfile.
 
 param(
-    [string]$Benches = "all",
+    # Массив, а не строка: `-Benches norms,encounters` PowerShell разбирает как список, и приведение к
+    # строке склеило бы его ПРОБЕЛАМИ — стенд получал бы один несуществующий ключ «norms encounters».
+    [string[]]$Benches = @("all"),
     [string]$Title,
     [string]$Summary = "",
     [ValidateSet("Auto", "Direct", "Shadow")][string]$Mode = "Auto",
@@ -51,9 +53,11 @@ if ($effectiveMode -eq "Shadow") {
     $target = Initialize-UnityShadowProject -ProjectPath $ProjectPath
 }
 
+$benchArg = ($Benches -join ',')
+
 Write-Host "Режим: $effectiveMode" -ForegroundColor Cyan
 Write-Host "Проект: $target"
-Write-Host "Бенчи: $Benches"
+Write-Host "Бенчи: $benchArg"
 Write-Host "Лог: $logFile"
 
 # 3. Круг.
