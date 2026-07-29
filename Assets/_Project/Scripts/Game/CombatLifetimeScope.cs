@@ -175,6 +175,9 @@ namespace Guildmaster.Game
             builder.Register<Combat.Tape.BattleTapeDispatcher>(Lifetime.Scoped);
             builder.Register<Combat.Tape.BattleUnitRegistry>(Lifetime.Scoped);
 
+            // Режим dev-оверлеев: один владелец на бой, иначе оверлеи разъедутся между собой.
+            builder.Register<Presentation.DevOverlayMode>(Lifetime.Scoped);
+
             // Телеграфы: подводки к тому, что показ ещё не дошёл (щит «Оплота» до удара). Первая
             // фича, которая живёт ИМЕННО за счёт лага показа.
             builder.RegisterEntryPoint<Presentation.BattleTelegraphPresenter>(Lifetime.Scoped);

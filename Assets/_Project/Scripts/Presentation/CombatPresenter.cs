@@ -93,6 +93,9 @@ namespace Guildmaster.Presentation
         // События приходят отсюда — то есть тогда, когда их ПОКАЗАЛИ, а не когда посчитал сим.
         private Combat.Tape.BattleTapeDispatcher _dispatcher;
 
+        // Режим dev-оверлеев: презентер только раздаёт его тому, что создаёт сам (статус-кольца).
+        private DevOverlayMode _overlayMode;
+
         // Паспорт юнита: то, что за бой не меняется. Заводится по событию спавна (оно приходит заранее —
         // это регистрация, а не показ), потому что вид создаётся много позже, когда до юнита дойдёт показ,
         // и живого юнита к тому моменту может уже не быть в списке.
@@ -113,10 +116,12 @@ namespace Guildmaster.Presentation
             Core.Audio.IAudioService audio,
             Core.Players.ILocalPlayer localPlayer,
             Combat.Tape.BattleTapePlayback playback,
-            Combat.Tape.BattleTapeDispatcher dispatcher)
+            Combat.Tape.BattleTapeDispatcher dispatcher,
+            DevOverlayMode overlayMode)
         {
             _playback             = playback;
             _dispatcher           = dispatcher;
+            _overlayMode          = overlayMode;
             _localPlayer          = localPlayer;
             _audio                = audio;
             _simulation           = simulation;
@@ -224,7 +229,7 @@ namespace Guildmaster.Presentation
             var go = new GameObject("CombatStatusOverlay");
             go.transform.SetParent(transform, worldPositionStays: false);
             _statusOverlay = go.AddComponent<CombatStatusOverlay>();
-            _statusOverlay.Initialize(_simulation);
+            _statusOverlay.Initialize(_simulation, _playback, _overlayMode);
         }
 
         /// <summary>Создать пул боевых VFX-префабов в рантайме (без правок сцены).</summary>

@@ -541,6 +541,38 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(0, playback.Lead);
         }
 
+        // Ф7: dev-оверлеи рисуют кольца и радиусы в МИРОВЫХ координатах, поэтому им нужен показанный
+        // кадр, а не живой сим — иначе они висят там, где юнитов на экране ещё нет. Значит статусы
+        // обязаны доезжать в снимке.
+        [Test]
+        public void Frame_CarriesDevOverlayState_ForOverlaysToReadTheShownTick()
+        {
+            var tape = new BattleTape(windowTicks: 8);
+            RuntimeUnit unit = MakeUnit(id: 3, hp: 100f);
+            unit.Stats.AddModifiersFrom("range", new[]
+            {
+                new StatModifier(StatType.AttackRange, ModifierOp.Flat, 4.5f),
+            });
+            unit.CanAct                 = false;   // выведен контролем — кольцо стана
+            unit.DisplacedTicksRemaining = 3;      // и летит от отбрасывания
+            unit.EmpowerDamageMult       = 0.5f;   // взведено усиление удара
+
+            tape.CaptureTick(0, new List<RuntimeUnit> { unit });
+
+            // Сим ушёл вперёд и статусы уже сняты — кадр обязан помнить своё состояние.
+            unit.CanAct                  = true;
+            unit.DisplacedTicksRemaining = 0;
+            unit.EmpowerDamageMult       = 0f;
+
+            Assert.IsTrue(tape.TryGetFrame(0, out IReadOnlyList<UnitSnapshot> frame));
+            UnitSnapshot s = frame[0];
+
+            Assert.AreEqual(4.5f, s.AttackRange, 1e-4f, "Радиус — состояние: его меняет бафф");
+            Assert.IsFalse(s.CanAct,      "Стан показанного тика, а не текущего");
+            Assert.IsTrue(s.IsDisplaced,  "Полёт от отбрасывания — вторая половина «стана» оверлея");
+            Assert.IsTrue(s.IsEmpowered,  "Усиление хранится признаком: оверлею нужен факт, не величина");
+        }
+
         // ===================== Знание будущего: телеграфы и предчувствие (Ф5, Ф6) =====================
 
         // Шов Ф5: показ обязан УВИДЕТЬ будущее наложение эффекта раньше, чем до него дойдёт, — иначе

@@ -28,6 +28,7 @@ namespace Guildmaster.DevTools
 
         private CombatSimulation   _simulation;
         private CombatDebugDraw    _debugDraw;
+        private DevOverlayMode     _overlayMode; // общий режим dev-оверлеев: показ или живой сим
         private RuntimeUnitFactory _factory;
         private IInputService      _input;
         private QuantumConsole     _console;
@@ -79,10 +80,11 @@ namespace Guildmaster.DevTools
         [Inject]
         public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory,
             IInputService input, IContentDatabase contentDatabase, Core.Arena.ArenaLayoutData arena,
-            IObjectResolver resolver)
+            DevOverlayMode overlayMode, IObjectResolver resolver)
         {
-            _simulation = simulation;
-            _debugDraw  = debugDraw;
+            _simulation  = simulation;
+            _debugDraw   = debugDraw;
+            _overlayMode = overlayMode;
             _factory    = factory;
             _input      = input;
             _content = contentDatabase;
@@ -542,6 +544,19 @@ namespace Guildmaster.DevTools
             if (overlay == null) { Debug.LogWarning("[GuildmasterCommands] - CombatStatusOverlay не найден (создаётся в бою)"); return; }
             overlay.IsEnabled = !overlay.IsEnabled;
             Debug.Log($"[GuildmasterCommands] - gm_toggle_status: {(overlay.IsEnabled ? "ON" : "OFF")}");
+        }
+
+        /// <summary>
+        /// Переключить источник dev-оверлеев: показанный кадр (по умолчанию) или живой сим. Сим впереди
+        /// картинки на окно опережения, поэтому в его режиме кольца и радиусы разъезжаются с боем —
+        /// это правда модели, а не баг, и подпись на экране про это говорит.
+        /// </summary>
+        [Command("gm_overlay_source", "Источник dev-оверлеев: показанный кадр / живой сим")]
+        public void ToggleOverlaySource()
+        {
+            if (_overlayMode == null) { Debug.LogWarning("[GuildmasterCommands] - DevOverlayMode не найден (нет активного боевого скоупа)"); return; }
+            DevOverlaySource source = _overlayMode.Toggle();
+            Debug.Log($"[GuildmasterCommands] - gm_overlay_source: {source} — {_overlayMode.Describe()}");
         }
 
         /// <summary>Пересобрать SimTuning из SO и применить к идущему бою (QC-тюнинг без рекомпиляции).</summary>

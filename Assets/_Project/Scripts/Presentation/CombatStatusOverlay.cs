@@ -9,10 +9,14 @@ namespace Guildmaster.Presentation
 {
     /// <summary>
     /// Dev-подсветка статусов юнитов кольцами Shapes: метка/стан/щит/заморозка/усиление. Каждый кадр
-    /// читает состояние симуляции и рисует вокруг живых юнитов концентрические кольца (immediate-mode
+    /// читает состояние боя и рисует вокруг живых юнитов концентрические кольца (immediate-mode
     /// с пулом Disc-Ring). Чистая презентация — сим не трогает. Создаётся в рантайме
     /// <see cref="CombatPresenter"/> (никаких правок префабов/сцены); тогглится <see cref="IsEnabled"/>
     /// (команда <c>gm_toggle_status</c>). Не финальный VFX — инструмент наглядности среза.
+    /// <para><b>Источник состояния — по умолчанию ПОКАЗАННЫЙ кадр</b> (<see cref="DevOverlayMode"/>):
+    /// кольца обязаны быть на тех юнитах, которых видит игрок. Живой сим впереди на окно опережения, и
+    /// в его координатах кольца висели бы в пустоте. Режим переключаем (<c>gm_overlay_source</c>) и
+    /// подписан на экране — иначе разъезд читается как баг, а не как выбранный режим.</para>
     /// </summary>
     public sealed class CombatStatusOverlay : MonoBehaviour
     {
@@ -41,7 +45,9 @@ namespace Guildmaster.Presentation
             }
         }
 
-        private CombatSimulation _simulation;
+        private CombatSimulation             _simulation;
+        private Combat.Tape.BattleTapePlayback _playback;
+        private DevOverlayMode               _mode;
         private bool _enabled = true;
 
         private readonly List<Disc> _pool = new List<Disc>();
@@ -49,45 +55,92 @@ namespace Guildmaster.Presentation
 
         public bool IsEnabled { get => _enabled; set => _enabled = value; }
 
-        /// <summary>Инициализация рантайм-создателем (CombatPresenter): подать симуляцию для чтения состояния.</summary>
-        public void Initialize(CombatSimulation simulation) => _simulation = simulation;
+        /// <summary>
+        /// Инициализация рантайм-создателем (<see cref="CombatPresenter"/>): подать оба источника
+        /// состояния и владельца режима. Сим нужен даже в режиме показа — на него переключаются руками.
+        /// </summary>
+        public void Initialize(
+            CombatSimulation simulation, Combat.Tape.BattleTapePlayback playback, DevOverlayMode mode)
+        {
+            _simulation = simulation;
+            _playback   = playback;
+            _mode       = mode;
+        }
 
         private void LateUpdate()
         {
             _used = 0;
 
-            if (_enabled && _simulation != null)
-            {
-                IReadOnlyList<RuntimeUnit> units = _simulation.Units;
-                for (int i = 0; i < units.Count; i++)
-                {
-                    RuntimeUnit u = units[i];
-                    if (u.IsDead) continue;
-                    DrawStatusRings(u);
-                }
-            }
+            if (_enabled) DrawAllUnits();
 
             // Спрятать неиспользованные кольца пула.
             for (int i = _used; i < _pool.Count; i++)
                 if (_pool[i].gameObject.activeSelf) _pool[i].gameObject.SetActive(false);
         }
 
-        private void DrawStatusRings(RuntimeUnit u)
+        // Экранная подпись режима: без неё разъезд «оверлей не там, где бой» читается как баг.
+        // Печатается, только когда оверлей включён — молчаливый инструмент не нуждается в подписи.
+        private void OnGUI()
         {
-            float baseR = u.Stats.Get(StatType.Size) * 0.5f + BaseRadius;
+            if (!_enabled || _mode == null) return;
+
+            GUI.color = Color.white;
+            GUI.Label(new Rect(12f, 12f, 640f, 22f), _mode.Describe());
+        }
+
+        private void DrawAllUnits()
+        {
+            // Режим показа: кадр ленты — ровно то, что на экране. Кадра может не быть (бой не начат) —
+            // тогда рисовать нечего, и это не ошибка.
+            if (_mode == null || !_mode.ReadsSimulation)
+            {
+                if (_playback == null) return;
+                if (!_playback.TryGetFrame(out IReadOnlyList<Combat.Tape.UnitSnapshot> frame)) return;
+
+                for (int i = 0; i < frame.Count; i++)
+                {
+                    Combat.Tape.UnitSnapshot s = frame[i];
+                    if (s.IsDead) continue;
+                    DrawStatusRings(
+                        s.Position, s.Size, s.EffectTagMask,
+                        stunned: !s.CanAct || s.IsDisplaced, shield: s.CurrentShield > 0f,
+                        empower: s.IsEmpowered);
+                }
+                return;
+            }
+
+            // Режим сима: правда модели, на окно опережения впереди картинки. Осознанный выбор — отладка
+            // самой ленты; подпись сверху объясняет, почему кольца разъехались с боем.
+            if (_simulation == null) return;
+
+            IReadOnlyList<RuntimeUnit> units = _simulation.Units;
+            for (int i = 0; i < units.Count; i++)
+            {
+                RuntimeUnit u = units[i];
+                if (u.IsDead) continue;
+                DrawStatusRings(
+                    u.Position, u.Stats.Get(StatType.Size), u.EffectTagMask,
+                    stunned: !u.CanAct || u.DisplacedTicksRemaining > 0, shield: u.CurrentShield > 0f,
+                    empower: u.EmpowerDamageMult > 0f);
+            }
+        }
+
+        // Один рисовальщик на оба источника: набор колец и их порядок не должны зависеть от режима,
+        // иначе переключатель врал бы о состоянии, а не о моменте.
+        private void DrawStatusRings(
+            Vector2 position, float size, EffectTag tags, bool stunned, bool shield, bool empower)
+        {
+            float baseR = size * 0.5f + BaseRadius;
             int ring = 0;
 
-            bool marked  = (u.EffectTagMask & EffectTag.Marked) != 0;
-            bool frozen  = (u.EffectTagMask & EffectTag.Frozen) != 0;
-            bool stunned = !u.CanAct || u.DisplacedTicksRemaining > 0;
-            bool shield  = u.CurrentShield > 0f;
-            bool empower = u.EmpowerDamageMult > 0f;
+            bool marked = (tags & EffectTag.Marked) != 0;
+            bool frozen = (tags & EffectTag.Frozen) != 0;
 
-            if (marked)  DrawRing(u.Position, baseR + RingStep * ring++, MarkColor);
-            if (stunned) DrawRing(u.Position, baseR + RingStep * ring++, StunColor);
-            if (shield)  DrawRing(u.Position, baseR + RingStep * ring++, ShieldColor);
-            if (frozen)  DrawRing(u.Position, baseR + RingStep * ring++, FrozenColor);
-            if (empower) DrawRing(u.Position, baseR + RingStep * ring++, EmpowerColor);
+            if (marked)  DrawRing(position, baseR + RingStep * ring++, MarkColor);
+            if (stunned) DrawRing(position, baseR + RingStep * ring++, StunColor);
+            if (shield)  DrawRing(position, baseR + RingStep * ring++, ShieldColor);
+            if (frozen)  DrawRing(position, baseR + RingStep * ring++, FrozenColor);
+            if (empower) DrawRing(position, baseR + RingStep * ring++, EmpowerColor);
         }
 
         private void DrawRing(Vector2 center, float radius, Color color)

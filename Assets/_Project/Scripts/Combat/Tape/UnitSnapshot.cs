@@ -55,6 +55,22 @@ namespace Guildmaster.Combat.Tape
 
         public readonly bool IsDead;
 
+        // --- Поля dev-оверлеев (Ф7). Живут здесь по той же причине, что и всё остальное: оверлей,
+        // читающий живой сим, рисует кольца там, где на экране юнитов ещё нет. Хранятся признаками, а
+        // не числами — оверлею нужен факт «горит ли статус», а не его величина.
+
+        /// <summary>Радиус авто-атаки — dev-круг досягаемости (бафф его меняет, поэтому это состояние).</summary>
+        public readonly float AttackRange;
+
+        /// <summary>Может ли юнит действовать: <c>false</c> = выведен контролем (кольцо стана).</summary>
+        public readonly bool CanAct;
+
+        /// <summary>Юнит в полёте от отбрасывания — вторая половина «стана» в понимании оверлея.</summary>
+        public readonly bool IsDisplaced;
+
+        /// <summary>Взведено усиление следующего удара (<c>EmpowerDamageMult</c> живого юнита).</summary>
+        public readonly bool IsEmpowered;
+
         /// <summary>Юнит в замахе — имя и смысл те же, что у одноимённого свойства живого юнита.</summary>
         public bool IsWindingUp => Phase == AttackPhase.Windup;
 
@@ -62,7 +78,8 @@ namespace Guildmaster.Combat.Tape
             int id, int team, Vector2 position, Vector2 previousPosition,
             float currentHp, float maxHp, float currentShield, float currentResource, float maxResource,
             float size, AttackPhase phase, int windupTicks, int windupRemaining,
-            int attackCooldownTicks, int targetId, EffectTag effectTagMask, bool isDead)
+            int attackCooldownTicks, int targetId, EffectTag effectTagMask, bool isDead,
+            float attackRange = 0f, bool canAct = true, bool isDisplaced = false, bool isEmpowered = false)
         {
             Id                  = id;
             Team                = team;
@@ -81,6 +98,10 @@ namespace Guildmaster.Combat.Tape
             TargetId            = targetId;
             EffectTagMask       = effectTagMask;
             IsDead              = isDead;
+            AttackRange         = attackRange;
+            CanAct              = canAct;
+            IsDisplaced         = isDisplaced;
+            IsEmpowered         = isEmpowered;
         }
 
         /// <summary>Снять состояние с живого юнита. Единственное место, где сим встречается с лентой.</summary>
@@ -104,7 +125,11 @@ namespace Guildmaster.Combat.Tape
                 unit.AttackCooldownTicks,
                 target != null ? target.Id : -1,
                 unit.EffectTagMask,
-                unit.IsDead);
+                unit.IsDead,
+                unit.Stats.Get(StatType.AttackRange),
+                unit.CanAct,
+                unit.DisplacedTicksRemaining > 0,
+                unit.EmpowerDamageMult > 0f);
         }
     }
 }
