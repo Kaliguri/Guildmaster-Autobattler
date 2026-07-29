@@ -21,11 +21,24 @@ namespace Guildmaster.Presentation
         /// <param name="isDead">Юнит помечен мёртвым симуляцией.</param>
         /// <param name="attackPlaying">Играет клип атаки: идёт замах (windup) или фоллоу-сру после удара (вики «14»).</param>
         /// <param name="isMoving">Позиция изменилась за тик (Position != PreviousPosition сверх эпсилона).</param>
-        public static UnitAnimationState Select(bool isDead, bool attackPlaying, bool isMoving)
+        /// <param name="canAct">Дееспособен. false = выведен контролем → оглушение важнее любой локомоции.</param>
+        /// <param name="isSprinting">Идёт разбегом (признак симуляции, не наблюдаемая скорость).</param>
+        /// <param name="chargedAttack">Свинг идёт с разбега — у него свой клип.</param>
+        /// <remarks>
+        /// Порядок ветвей — это приоритет состояний, и он не произволен. Оглушение стоит выше атаки:
+        /// сим замах при контроле прерывает, но между прерыванием и следующим снимком показ не должен
+        /// успеть показать удар, которого уже нет. Разбег стоит НИЖЕ атаки по той же причине, по которой
+        /// он гаснет в симе на замахе: юнит, начавший бить, больше не бежит.
+        /// </remarks>
+        public static UnitAnimationState Select(bool isDead, bool attackPlaying, bool isMoving,
+            bool canAct = true, bool isSprinting = false, bool chargedAttack = false)
         {
-            if (isDead)        return UnitAnimationState.Death;
-            if (attackPlaying) return UnitAnimationState.Attack;
-            return isMoving ? UnitAnimationState.Run : UnitAnimationState.Idle;
+            if (isDead)  return UnitAnimationState.Death;
+            if (!canAct) return UnitAnimationState.Stun;
+            if (attackPlaying)
+                return chargedAttack ? UnitAnimationState.AttackCharge : UnitAnimationState.Attack;
+            if (!isMoving) return UnitAnimationState.Idle;
+            return isSprinting ? UnitAnimationState.Sprint : UnitAnimationState.Run;
         }
 
         /// <summary>

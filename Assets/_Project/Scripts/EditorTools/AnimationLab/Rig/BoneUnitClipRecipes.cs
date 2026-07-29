@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -405,6 +405,49 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>
+        /// Stunned: the guard is gone. Sword and shield hang, the knees give a little, the torso folds
+        /// forward — a body that has stopped holding itself up. The head rolls a slow circle, which is the
+        /// only part that keeps moving, so the pose reads as dazed rather than as dead.
+        ///
+        /// It loops on 1.2s because control lasts as long as it lasts, and the head must arrive back where
+        /// it started or the loop clicks. Arms hang a touch out of phase with the head (the sword lags by a
+        /// quarter of the cycle) — a body swaying all in one piece looks like a puppet on one string.
+        /// </summary>
+        public static string Stun()
+        {
+            using (var w = new RigWriter(Profile()))
+            {
+                // Collapse into the daze: everything drops in the first fifth of a second, fast, because a
+                // stun that eases in reads as a stumble the unit chose.
+                w.At(0.2f).Bend("torso", 12f, Near, Out).Bend("head", 16f, Near, Out)
+                          .Bend("shoulder.R", -34f, Near, Out).Bend("elbow.R", 10f, Near, Out)
+                          .Bend("shoulder.L", -28f, Near, Out).Bend("elbow.L", 8f, Near, Out)
+                          .Bend("knee.L", 14f, Near, Out).Bend("knee.R", 10f, Near, Out)
+                          .Aim("weapon", -40f, Near, Out).Aim("shield", -28f, Near, Out)
+                          .Move("hips", new Vector2(RestHips.x, 0.004f));
+
+                // The head rolls: right, down-forward, left, back. Four poses, so the circle is a circle
+                // and not a wiper blade.
+                w.At(0.45f).Bend("head", 2f, Near, Soft).Bend("torso", 15f, Near, Soft)
+                           .Aim("weapon", -46f, Near, Soft).Aim("shield", -22f, Near, Soft);
+                w.At(0.70f).Bend("head", -14f, Near, Soft).Bend("torso", 12f, Near, Soft)
+                           .Aim("weapon", -34f, Near, Soft).Aim("shield", -34f, Near, Soft);
+                w.At(0.95f).Bend("head", 2f, Near, Soft).Bend("torso", 9f, Near, Soft)
+                           .Aim("weapon", -40f, Near, Soft).Aim("shield", -26f, Near, Soft);
+
+                // Close on the entry pose so the loop does not click.
+                w.At(1.2f).Bend("torso", 12f, Near, Soft).Bend("head", 16f, Near, Soft)
+                          .Bend("shoulder.R", -34f, Near, Soft).Bend("elbow.R", 10f, Near, Soft)
+                          .Bend("shoulder.L", -28f, Near, Soft).Bend("elbow.L", 8f, Near, Soft)
+                          .Bend("knee.L", 14f, Near, Soft).Bend("knee.R", 10f, Near, Soft)
+                          .Aim("weapon", -40f, Near, Soft).Aim("shield", -28f, Near, Soft)
+                          .Move("hips", new Vector2(RestHips.x, 0.004f));
+
+                return w.Write(Folder + "Stun.anim", 60f, loopTime: true).ToString();
+            }
+        }
+
+        /// <summary>
         /// Freezes the whole rig until <paramref name="until"/>. One end for every bone, because a pause
         /// where bones leave at different times is not a pause.
         /// </summary>
@@ -433,6 +476,7 @@ namespace Guildmaster.AnimationLab.Editor
             log.AppendLine(Idle());
             log.AppendLine(Walk());
             log.AppendLine(Sprint());
+            log.AppendLine(Stun());
             Debug.Log(log.ToString());
         }
     }

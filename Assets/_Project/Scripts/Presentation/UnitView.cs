@@ -1,4 +1,4 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using LitMotion;
@@ -102,6 +102,12 @@ namespace Guildmaster.Presentation
         private static readonly int RunHash     = Animator.StringToHash("Run");
         private static readonly int AttackHash = Animator.StringToHash("Attack");
         private static readonly int DeathHash   = Animator.StringToHash("Death");
+        // Состояния скелетного бестиария. Имена совпадают со стейтами контроллера: у покадровых юнитов
+        // таких стейтов нет, и Animator.Play по несуществующему имени — тихий no-op, поэтому они просто
+        // продолжают играть то, что играли (см. HashFor: разбег у них падает обратно в бег).
+        private static readonly int SprintHash       = Animator.StringToHash("Sprint");
+        private static readonly int AttackChargeHash = Animator.StringToHash("AttackCharge");
+        private static readonly int StunHash         = Animator.StringToHash("Stun");
 
         // Состояние берётся из ленты боя, а НЕ из живого RuntimeUnit: сим уходит вперёд на окно
         // опережения, и живой юнит для показа — «будущее». Определение (UnitData) при этом статично,
@@ -558,7 +564,13 @@ namespace Guildmaster.Presentation
             bool attackPlaying = UnitAnimationSelector.AttackClipPlaying(
                 _attackPhase != AttackAnimPhase.None, simInSwing, attackWhileMoving, isMoving);
 
-            UnitAnimationState next = UnitAnimationSelector.Select(_isDead, attackPlaying, isMoving);
+            // Разбег и удар с разбега — признаки СИМУЛЯЦИИ из снимка, а не догадка показа по скорости:
+            // на дистанции одного тика прибавка в 30% неотличима от шума расталкивания.
+            UnitAnimationState next = UnitAnimationSelector.Select(
+                _isDead, attackPlaying, isMoving,
+                canAct: !_hasState || _snapshot.CanAct,
+                isSprinting: _hasState && _snapshot.IsSprinting,
+                chargedAttack: _hasState && _snapshot.ChargedAttackReady);
             if (next != _state)
             {
                 _state = next;
@@ -571,11 +583,19 @@ namespace Guildmaster.Presentation
 
         private static int HashFor(UnitAnimationState state) => state switch
         {
-            UnitAnimationState.Run    => RunHash,
-            UnitAnimationState.Attack => AttackHash,
-            UnitAnimationState.Death  => DeathHash,
-            _                         => IdleHash,
+            UnitAnimationState.Run          => RunHash,
+            UnitAnimationState.Attack       => AttackHash,
+            UnitAnimationState.Death        => DeathHash,
+            UnitAnimationState.Sprint       => SprintHash,
+            UnitAnimationState.AttackCharge => AttackChargeHash,
+            UnitAnimationState.Stun         => StunHash,
+            _                               => IdleHash,
         };
+
+        // Каким стейтом СКРАБИТСЯ свинг. Удар с разбега живёт своим клипом, но тайминг у него общий с
+        // обычным: замах ведёт к тому же кадру контакта, просто короче. Держать для него отдельный путь
+        // скраба значило бы завести второй владелец одной формулы.
+        private int SwingHash() => _state == UnitAnimationState.AttackCharge ? AttackChargeHash : AttackHash;
 
         // Управление фазой анимации атаки от состояния сима (вики «14»): замах → кадр контакта → хвост.
         // Замах скрабится по windup-тикам (маркер на тик урона); хвост — по остатку интервала до
@@ -613,13 +633,14 @@ namespace Guildmaster.Presentation
             switch (_state)
             {
                 case UnitAnimationState.Attack:
+                case UnitAnimationState.AttackCharge:
                     if (_attackPhase == AttackAnimPhase.Windup && _hasState && _snapshot.WindupTicks > 0)
                     {
                         // Замах: скрабим [0..маркер] по прогрессу windup — контакт (маркер) приходится
                         // ровно на конец замаха = сим-тик урона.
                         float progress = TickScrubProgress(_snapshot.WindupRemaining, _snapshot.WindupTicks);
                         _animator.speed = 0f;
-                        _animator.Play(AttackHash, 0, progress * _attackMarkerNormalized);
+                        _animator.Play(SwingHash(), 0, progress * _attackMarkerNormalized);
                     }
                     else if (_attackPhase == AttackAnimPhase.Recovery && _hasState)
                     {
@@ -628,7 +649,7 @@ namespace Guildmaster.Presentation
                         float gapProgress = TickScrubProgress(_snapshot.AttackCooldownTicks, _recoveryGapTicks);
                         float clipT = _attackMarkerNormalized + gapProgress * (1f - _attackMarkerNormalized);
                         _animator.speed = 0f;
-                        _animator.Play(AttackHash, 0, clipT);
+                        _animator.Play(SwingHash(), 0, clipT);
                     }
                     else
                     {
@@ -638,9 +659,12 @@ namespace Guildmaster.Presentation
                     break;
 
                 case UnitAnimationState.Run:
+                case UnitAnimationState.Sprint:
                     // Клип бега листается по пройденной дистанции: во сколько раз юнит быстрее «родной»
                     // скорости клипа, во столько же крутим клип. Так ноги не скользят ни у покадрового
                     // юнита (кадры), ни у скелетного (непрерывные кривые) — единица измерения одна.
+                    // Разбег идёт по той же формуле и потому не нуждается в своём числе: он и так быстрее
+                    // ровно на столько, на сколько его ускорил сим, а клип листается от пройденного пути.
                     float speed = _hasState
                         ? (_snapshot.Position - _snapshot.PreviousPosition).magnitude / SimConstants.TickDelta
                         : 0f;
@@ -732,7 +756,7 @@ namespace Guildmaster.Presentation
         {
             _animator.speed = 0f;
             // Добивающему кадр контакта возвращаем принудительно: скраб мог уже уползти с маркера.
-            if (_holdKeepsAttackFrame) _animator.Play(AttackHash, 0, _attackMarkerNormalized);
+            if (_holdKeepsAttackFrame) _animator.Play(SwingHash(), 0, _attackMarkerNormalized);
             _holdRemaining -= Time.unscaledDeltaTime;
             if (_holdRemaining <= 0f)
             {
@@ -750,10 +774,11 @@ namespace Guildmaster.Presentation
             if (_freeRunSettled) return;
 
             // Пока текущий attack-клип не доигран — ждём (юнит завершает удар и хвост естественно).
-            if (_state == UnitAnimationState.Attack)
+            // Удар с разбега доигрывается наравне: обрывать его на полпути к стойке — тот же провал кадра.
+            if (_state == UnitAnimationState.Attack || _state == UnitAnimationState.AttackCharge)
             {
                 AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(0);
-                if (info.shortNameHash == AttackHash && info.normalizedTime < 1f) return;
+                if (info.shortNameHash == SwingHash() && info.normalizedTime < 1f) return;
             }
 
             _state = UnitAnimationState.Idle;

@@ -71,6 +71,16 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Взведено усиление следующего удара (<c>EmpowerDamageMult</c> живого юнита).</summary>
         public readonly bool IsEmpowered;
 
+        /// <summary>
+        /// Юнит идёт разбегом — показ переключает клип бега на спринт. Признак живёт в СИМУЛЯЦИИ
+        /// (там же ускорение), сюда приезжает снимком: решать «бежит ли он быстро» по наблюдаемой
+        /// скорости показ не может — на дистанции в один тик разница со шагом неотличима от шума.
+        /// </summary>
+        public readonly bool IsSprinting;
+
+        /// <summary>Взведён удар с разбега: следующий свинг идёт своим клипом и своим замахом.</summary>
+        public readonly bool ChargedAttackReady;
+
         /// <summary>Юнит в замахе — имя и смысл те же, что у одноимённого свойства живого юнита.</summary>
         public bool IsWindingUp => Phase == AttackPhase.Windup;
 
@@ -79,7 +89,8 @@ namespace Guildmaster.Combat.Tape
             float currentHp, float maxHp, float currentShield, float currentResource, float maxResource,
             float size, AttackPhase phase, int windupTicks, int windupRemaining,
             int attackCooldownTicks, int targetId, EffectTag effectTagMask, bool isDead,
-            float attackRange = 0f, bool canAct = true, bool isDisplaced = false, bool isEmpowered = false)
+            float attackRange = 0f, bool canAct = true, bool isDisplaced = false, bool isEmpowered = false,
+            bool isSprinting = false, bool chargedAttackReady = false)
         {
             Id                  = id;
             Team                = team;
@@ -102,6 +113,8 @@ namespace Guildmaster.Combat.Tape
             CanAct              = canAct;
             IsDisplaced         = isDisplaced;
             IsEmpowered         = isEmpowered;
+            IsSprinting         = isSprinting;
+            ChargedAttackReady  = chargedAttackReady;
         }
 
         /// <summary>Снять состояние с живого юнита. Единственное место, где сим встречается с лентой.</summary>
@@ -129,7 +142,9 @@ namespace Guildmaster.Combat.Tape
                 unit.Stats.Get(StatType.AttackRange),
                 unit.CanAct,
                 unit.DisplacedTicksRemaining > 0,
-                unit.EmpowerDamageMult > 0f);
+                unit.EmpowerDamageMult > 0f,
+                unit.IsSprinting,
+                unit.ChargedAttackReady);
         }
     }
 }
