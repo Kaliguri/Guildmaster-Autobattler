@@ -582,10 +582,11 @@ namespace Guildmaster.Presentation
                 // Шаг и разбег — один цикл в разных амплитудах, между ними ПЕРЕХОД, а не подмена: клип,
                 // начатый с нуля, ставит ногу заново посреди шага. Фазу переносим, поэтому нога продолжает
                 // тот же шаг — клипы написаны одним скелетом поз и совпадают по долям цикла.
+                int hash = ResolvedHash(next);
                 if (IsLocomotion(_state) && IsLocomotion(next))
-                    _animator.CrossFade(HashFor(next), LocomotionBlend, 0, LocomotionPhase());
+                    _animator.CrossFade(hash, LocomotionBlend, 0, LocomotionPhase());
                 else
-                    _animator.Play(HashFor(next), 0, 0f);
+                    _animator.Play(hash, 0, 0f);
 
                 _state = next;
                 _animator.speed = 1f;
@@ -621,10 +622,34 @@ namespace Guildmaster.Presentation
             _                               => IdleHash,
         };
 
+        /// <summary>
+        /// Хэш стейта с явным фолбэком на общий, если своего у юнита НЕТ. Состояния бестиария (разбег, удар
+        /// с разбега, стан) объявляет симуляция для всех, а стейты под них есть только у скелетных: у
+        /// покадровых семнадцати клипа разбега не существует, и просить его — не ошибка данных, а честное
+        /// отсутствие контента.
+        /// <para>Фолбэк ЯВНЫЙ, а не молчание Animator: <c>Play</c> по несуществующему стейту действительно
+        /// тихий no-op, но <c>CrossFade</c> на такой полагаться не даёт, и разбег покадрового юнита завис бы
+        /// в том кадре, где его застало.</para>
+        /// </summary>
+        private int ResolvedHash(UnitAnimationState state)
+        {
+            int hash = HashFor(state);
+            if (_animator.HasState(0, hash)) return hash;
+
+            return state switch
+            {
+                UnitAnimationState.Sprint       => RunHash,      // разбег без своего клипа — обычный бег
+                UnitAnimationState.AttackCharge => AttackHash,   // удар с разбега — обычный свинг
+                _                               => IdleHash,     // стан и прочее — стойка
+            };
+        }
+
         // Каким стейтом СКРАБИТСЯ свинг. Удар с разбега живёт своим клипом, но тайминг у него общий с
         // обычным: замах ведёт к тому же кадру контакта, просто короче. Держать для него отдельный путь
         // скраба значило бы завести второй владелец одной формулы.
-        private int SwingHash() => _state == UnitAnimationState.AttackCharge ? AttackChargeHash : AttackHash;
+        private int SwingHash() => ResolvedHash(_state == UnitAnimationState.AttackCharge
+            ? UnitAnimationState.AttackCharge
+            : UnitAnimationState.Attack);
 
         // Управление фазой анимации атаки от состояния сима (вики «14»): замах → кадр контакта → хвост.
         // Замах скрабится по windup-тикам (маркер на тик урона); хвост — по остатку интервала до

@@ -149,10 +149,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.UnitView
   _sprite: {fileID: 5019486704723773761}
   _animator: {fileID: 1355228489009499667}
+  _skeletalBody: {fileID: 0}
   _healthBar: {fileID: 7127319717872641838}
   _manaBar: {fileID: 8000216100949344901}
   _worldUi: {fileID: 8019541566543569921}
-  _runUnitsPerFrame: 0.15
+  _runUnitsPerSecond: 1.5
+  _sprintUnitsPerSecond: 0
+  _attackClip: {fileID: 0}
   _onHitFeedback:
     m_PersistentCalls:
       m_Calls: []
