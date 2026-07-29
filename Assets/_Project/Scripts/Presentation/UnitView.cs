@@ -16,6 +16,12 @@ namespace Guildmaster.Presentation
     /// «прибит к земле». <c>animator.fireEvents=false</c> — маркеры это данные, а не колбэки. Анимация
     /// НИКОГДА не пишет в сим. Базовая реакция на удар (вспышка/сплющивание/локальный hitstop) — кодом
     /// на LitMotion (zero-alloc); <see cref="UnityEvent"/>-хуки оставлены пустым швом под точечный MMF.
+    /// <para>
+    /// Само ТЕЛО вид держит за швом <see cref="Body.IUnitBodyVisual"/> и не знает, один это спрайт или
+    /// полтора десятка частей: тинт, вспышку, голограмму, контур, сортировку, силуэт и осколки он адресует
+    /// телу целиком. До шва всё это писалось в один <see cref="SpriteRenderer"/>, и у составного юнита
+    /// доставалось одной части — вспыхивала грудь, разлетался торс.
+    /// </para>
     /// </summary>
     public sealed class UnitView : MonoBehaviour
     {
@@ -23,12 +29,14 @@ namespace Guildmaster.Presentation
         private const int   YSortPrecision = 100; // ордеров на 1 мировую ед. Y (0.01 Y = 1 ордер) — Y-сортировка тел
 
         [Header("Components")]
+        [Tooltip("Спрайт тела покадрового юнита. Из него собирается тело (SpriteBodyVisual), если не задано " +
+                 "составное — поэтому существующие покадровые префабы под шов не переразводятся.")]
         [SerializeField] private SpriteRenderer _sprite;
         [Tooltip("Animator на теле (той же GO, что SpriteRenderer). Пусто/без визуала = статичный спрайт.")]
         [SerializeField] private Animator _animator;
-        [Tooltip("Корень скелетного/составного визуала: разворот через scale.x (±1) вместо SpriteRenderer.flipX. " +
-                 "Пусто = классический flipX на _sprite (sprite-sheet юниты).")]
-        [SerializeField] private Transform _facingRoot;
+        [Tooltip("Составное (скелетное) тело: компонент на корне визуала, владеющий всеми частями. Задан — " +
+                 "телом становится он, и вспышка/тинт/осколки идут по ВСЕМ частям. Пусто — тело из _sprite.")]
+        [SerializeField] private Body.SkeletalBodyVisual _skeletalBody;
         [SerializeField] private HealthBarView  _healthBar;
         [Tooltip("Бар ресурса (мана/ярость). Пусто = без бара; скрывается сам для безресурсных юнитов.")]
         [SerializeField] private ManaBarView    _manaBar;
@@ -52,19 +60,16 @@ namespace Guildmaster.Presentation
                  "Покадровым не нужен: у них клип берётся из данных юнита.")]
         [SerializeField] private AnimationClip _attackClip;
 
-        [Tooltip("Группа сортировки визуала. Задана — Y-sort пишется в неё, и юнит участвует в сортировке " +
-                 "арены ЦЕЛИКОМ, сохраняя внутренний порядок частей. Пусто — Y-sort идёт в _sprite " +
-                 "(покадровый юнит из одного спрайта).")]
-        [SerializeField] private UnityEngine.Rendering.SortingGroup _sortingGroup;
-
         [Header("Feel Hooks (пустой шов под точечный MMF_Player в Inspector)")]
         [SerializeField] private UnityEvent _onHitFeedback;
         [SerializeField] private UnityEvent _onDeathFeedback;
 
         [Header("Feel — реакция на попадание (LitMotion, код)")]
-        // Материал вспышки (Guildmaster/Sprite/HitFlash с параметром _FlashAmount) стоит ПРЯМО на Body-спрайте
+        // Материал вспышки (Guildmaster/Sprite/HitFlash с параметром _FlashAmount) стоит ПРЯМО на частях тела
         // в префабе — без рантайм-свапа. Свап базового материала ломал per-instance путь спрайта (тинт/флип
-        // не подхватывались до первого MPB). Длительности/сила/цвет вспышки — из CombatFeelConfig (ApplyFeelConfig).
+        // не подхватывались до первого MPB). Часть без этого материала физически не умеет вспыхивать — за
+        // раскладку по всем частям отвечает SkeletalBodyVisual и его валидатор.
+        // Длительности/сила/цвет вспышки — из CombatFeelConfig (ApplyFeelConfig).
 
         [Header("Identity label — подпись персонажа над HP-баром (TMP-ребёнок префаба)")]
         [Tooltip("TMP-текст подписи. Позиция/размер/шрифт настраиваются на нём в префабе.")]
@@ -98,6 +103,10 @@ namespace Guildmaster.Presentation
         private RuntimeUnit _unit;
         private Vector2     _renderPosition;
 
+        // Тело юнита за швом: один спрайт или полтора десятка частей — виду разницы не видно (см. IUnitBodyVisual).
+        private Body.IUnitBodyVisual _body;
+        private bool                 _bodyResolved;
+
         // --- Feel (реакция на удар, LitMotion) — только презентация, сим не трогает ---
         private Design.CombatFeelConfig _feel;          // параметры вспышки/сплющивания (из design-конфига)
         private Core.Audio.IAudioService _audio;        // голос вида: хруст разлёта на осколки
@@ -105,14 +114,12 @@ namespace Guildmaster.Presentation
         private Color        _activeFlashColor = Color.white; // цвет текущей вспышки (school flash или фолбэк)
         private float        _flashAmount;               // 0..1 — сила вспышки (параметр _FlashAmount шейдера)
         private float        _flashPeak = 1f;            // пик текущей вспышки: удар бьёт в полную, лечение мягче
-        private bool         _flashApplied;              // держим ли сейчас MPB на спрайте (чтобы вернуть в 0 один раз)
         private Vector3      _baseSpriteScale = Vector3.one; // масштаб узла сплющивания до эффекта
         private Transform    _squashTarget;              // узел, который сплющиваем (выше Animator, чтобы не затирался)
         private float        _hitSquashWeight;           // 0..1 — вес hit-squash (твин)
         private float        _flipSquashWeight;          // 0..1 — вес facing-flip squash
         private float        _acquireSquashWeight;       // 0..1 — вес target-acquire twitch
         private float        _hitstopRemaining;          // unscaled-окно заморозки анимации участников удара
-        private MaterialPropertyBlock _mpb;              // per-instance _FlashAmount без клонирования материала
         private MotionHandle _flashHandle;
         private MotionHandle _squashHandle;
         private MotionHandle _nudgeHandle;
@@ -130,16 +137,6 @@ namespace Guildmaster.Presentation
         private int          _lastTargetId = int.MinValue;
         private float        _deathAnticipateLeft;       // remaining unscaled death-anticipation
         private System.Action<UnitView> _onContactDust;  // презентер спавнит VfxContactDust; null = нет VFX
-        private static readonly int FlashAmountId = Shader.PropertyToID("_FlashAmount");
-        private static readonly int FlashColorId  = Shader.PropertyToID("_FlashColor");
-        private static readonly int HoloId        = Shader.PropertyToID("_Holo");
-        private static readonly int HoloColorId   = Shader.PropertyToID("_HoloColor");
-        private static readonly int HoloAlphaId   = Shader.PropertyToID("_HoloAlpha");
-        private static readonly int HoloScanScaleId  = Shader.PropertyToID("_HoloScanScale");
-        private static readonly int HoloScanAmountId = Shader.PropertyToID("_HoloScanAmount");
-        private static readonly int HoloTexelId      = Shader.PropertyToID("_HoloTexel");
-        private static readonly int OutlineId        = Shader.PropertyToID("_Outline");
-        private static readonly int OutlineColorId   = Shader.PropertyToID("_OutlineColor");
 
         // --- Состояние анимации (рендер-сторона, не влияет на сим) ---
         // Своя фаза анимации атаки (НЕ путать с сим-AttackPhase на RuntimeUnit): охватывает ВЕСЬ цикл
@@ -179,6 +176,25 @@ namespace Guildmaster.Presentation
         private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
         private int   _recoveryGapTicks = 1;    // тиков от кадра контакта до следующего замаха (снап на конце замаха) — темп хвоста
 
+        /// <summary>
+        /// Тело юнита за швом. Резолвится лениво, а не в <c>Awake</c>, потому что силуэт для drag-призрака
+        /// снимается ПРЯМО С АССЕТА префаба (юнита на поле ещё нет) — там ни один жизненный метод не звучал.
+        /// </summary>
+        private Body.IUnitBodyVisual Body
+        {
+            get
+            {
+                if (_bodyResolved) return _body;
+                _bodyResolved = true;
+                // Составное тело разведено на префабе — оно и есть тело. Иначе собираем из одного спрайта:
+                // так 17 покадровых префабов остаются нетронутыми.
+                _body = _skeletalBody != null
+                    ? _skeletalBody
+                    : (_sprite != null ? new Body.SpriteBodyVisual(_sprite) : null);
+                return _body;
+            }
+        }
+
         /// <summary>Связать вид с рантайм-юнитом.</summary>
         public void Bind(RuntimeUnit unit)
         {
@@ -198,24 +214,26 @@ namespace Guildmaster.Presentation
             // Спрайты/кости нарисованы лицом вправо: команда 0 (слева) так и смотрит, враги (справа) — влево.
             // Дальше разворот динамический (ApplyFacing по цели/движению), но стартовый — по стороне, иначе
             // стоящий без цели (напр. ассасин в инвизе) смотрит «от противника».
-            if (_sprite != null || _facingRoot != null)
+            if (Body != null)
             {
+                // Вид переиспользуется после чьей-то смерти, а на разлёте осколков тело было спрятано —
+                // возвращаем его, иначе второй жилец этого вида выходит на арену невидимым.
+                Body.SetVisible(true);
+
                 bool startFlip = unit.Team != 0;
                 _desiredFlipX = startFlip;
                 ApplyFacingVisual(startFlip);
 
-                // Сплющиваем узел ВЫШЕ Animator (facing root или родитель спрайта), иначе клип затирает scale.
-                _squashTarget = _facingRoot != null
-                    ? _facingRoot
-                    : (_sprite != null && _sprite.transform.parent != null
-                        ? _sprite.transform.parent
-                        : _sprite != null ? _sprite.transform : transform);
+                // Сплющиваем узел ВЫШЕ Animator (корень тела), иначе клип затирает scale каждым кадром.
+                _squashTarget = Body.Root != null ? Body.Root : transform;
                 _baseSpriteScale = _squashTarget.localScale;
 
                 // Праймим property block (flash=0) с первого кадра: спрайт с кастомным SRP-batcher-шейдером
                 // включает per-instance путь именно выставленным MPB — иначе тинт/флип не подхватывались до
                 // первого удара (наблюдалось как «юнит без своего цвета/прозрачности, пока не получит урон»).
-                if (_sprite != null) PrimeFlashBlock();
+                // _feel в Bind ещё может быть null — цвет вспышки тут не важен (сила 0).
+                Body.Prime(_feel != null ? _feel.FlashColor : Color.white);
+                _holoAmount = 0f;
             }
 
             if (_healthBar != null) _healthBar.Bind(unit);
@@ -228,7 +246,7 @@ namespace Guildmaster.Presentation
         public void SetTint(Color color)
         {
             _baseTint = color;
-            ApplyColor(); // итоговый цвет = база + вспышка + альфа инвиза (единый писатель _sprite.color)
+            ApplyColor(); // итоговый цвет = база + вспышка + альфа инвиза (единый писатель цвета тела)
         }
 
         /// <summary>Подать design-конфиг сочности (длительности/сила/цвет вспышки и сплющивания). CombatPresenter — при спавне.</summary>
@@ -353,8 +371,7 @@ namespace Guildmaster.Presentation
             // из собственного тела: торс уезжает по своей шкале, руки и ноги остаются на локальной и лезут
             // поверх чужих юнитов. Поэтому ордер получает ГРУППА, а внутренний порядок частей её переживает.
             int ySort = -Mathf.RoundToInt(_renderPosition.y * YSortPrecision);
-            if (_sortingGroup != null) _sortingGroup.sortingOrder = ySort;
-            else if (_sprite != null)  _sprite.sortingOrder = ySort;
+            Body?.SetSortingOrder(ySort);
 
             if (_healthBar != null)
                 _healthBar.UpdateBar(_unit.CurrentHP, _unit.Stats.Get(Data.Stats.StatType.MaxHP), _unit.CurrentShield);
@@ -380,27 +397,13 @@ namespace Guildmaster.Presentation
         public Vector3 HitPoint => ResolveSocketFacing(_hitPoint);
 
         /// <summary>Слой сортировки тела — для размещения VFX относительно юнита.</summary>
-        public int BodySortingLayerId => _sprite != null ? _sprite.sortingLayerID : 0;
+        public int BodySortingLayerId => Body != null ? Body.SortingLayerId : 0;
 
         /// <summary>
-        /// Текущий ордер сортировки тела (Y-sort) — VFX ставим со смещением от него. У сгруппированного
-        /// визуала спрашиваем ГРУППУ: внутри неё ордер спрайта локальный и на арене ничего не значит.
+        /// Текущий ордер сортировки тела (Y-sort) — VFX ставим со смещением от него. У составного тела это
+        /// ордер ГРУППЫ: внутри неё ордер отдельной части локальный и на арене ничего не значит.
         /// </summary>
-        public int BodySortingOrder => _sortingGroup != null
-            ? _sortingGroup.sortingOrder
-            : (_sprite != null ? _sprite.sortingOrder : 0);
-
-        /// <summary>
-        /// Попадает ли мировая точка в спрайт тела (AABB). Сырой габарит кадра — для захвата в расстановке НЕ
-        /// годится (AABB скелетного кадра шире фигуры: замах оружия, плащ, пустые поля спрайта — зона хватания
-        /// выходила гигантской, наход. Макса). Захват берёт <see cref="FigureContainsWorldPoint"/>.
-        /// </summary>
-        public bool SpriteContainsWorldPoint(Vector2 world)
-        {
-            if (_sprite == null || _sprite.sprite == null) return false;
-            Bounds b = _sprite.bounds;
-            return world.x >= b.min.x && world.x <= b.max.x && world.y >= b.min.y && world.y <= b.max.y;
-        }
+        public int BodySortingOrder => Body != null ? Body.SortingOrder : 0;
 
         /// <summary>
         /// Попадает ли мировая точка в ЭТАЛОННЫЙ габарит фигуры — ту самую зелёную рамку гизмо
@@ -418,26 +421,12 @@ namespace Guildmaster.Presentation
                 && world.y >= feet.y - padding && world.y <= feet.y + height;
         }
 
-        /// <summary>Мировые границы спрайта тела (AABB). false = нет спрайта (ховер-подсветка возьмёт фолбэк).</summary>
-        public bool TryGetSpriteBounds(out Bounds bounds)
-        {
-            if (_sprite != null && _sprite.sprite != null) { bounds = _sprite.bounds; return true; }
-            bounds = default;
-            return false;
-        }
-
-        // --- Силуэт для drag-призрака расстановки (QA #9): копия текущего кадра спрайта тела ---
-        /// <summary>Текущий спрайт тела (кадр); null — нет визуала.</summary>
-        public Sprite BodySprite => _sprite != null ? _sprite.sprite : null;
-
-        /// <summary>Отражён ли спрайт тела по X (сторона/фейсинг).</summary>
-        public bool BodyFlipX => IsFacingFlipped();
-
-        /// <summary>Мировой масштаб спрайта тела (учитывает узел сплющивания/масштаб арта).</summary>
-        public Vector3 BodyLossyScale => _sprite != null ? _sprite.transform.lossyScale : Vector3.one;
-
-        /// <summary>Мировая позиция спрайта тела (со смещением арта от ног). Фолбэк — позиция юнита.</summary>
-        public Vector3 BodyWorldPosition => _sprite != null ? _sprite.transform.position : transform.position;
+        /// <summary>
+        /// Силуэт тела для drag-призрака расстановки (QA #9): части с их позами относительно точки ног
+        /// <paramref name="feet"/>. Работает и на живом виде, и прямо на ассете префаба — см. <see cref="Body"/>.
+        /// </summary>
+        public UnitSilhouette CaptureSilhouette(Vector2 feet)
+            => Body != null ? Body.CaptureSilhouette(feet) : UnitSilhouette.None;
 
         // Сокет с учётом разворота: flipX/facing-root НЕ зеркалят Points (они сиблинги визуала).
         // Для смотрящего влево отражаем локальную X сокета вручную.
@@ -450,31 +439,23 @@ namespace Guildmaster.Presentation
             return transform.TransformPoint(local);
         }
 
-        private bool IsFacingFlipped()
-        {
-            if (_facingRoot != null) return _facingRoot.localScale.x < 0f;
-            return _sprite != null && _sprite.flipX;
-        }
+        private bool IsFacingFlipped() => Body != null && Body.IsFlippedX;
 
-        /// <summary>Применить разворот: scale.x на _facingRoot или SpriteRenderer.flipX.</summary>
+        /// <summary>Применить разворот — как именно, решает тело (flipX спрайта или знак масштаба корня).</summary>
         private void ApplyFacingVisual(bool flipX)
         {
-            if (_facingRoot != null)
-            {
-                Vector3 s = _facingRoot.localScale;
-                float mag = Mathf.Abs(s.x) > 1e-5f ? Mathf.Abs(s.x) : 1f;
-                s.x = flipX ? -mag : mag;
-                _facingRoot.localScale = s;
-                if (_squashTarget == _facingRoot) _baseSpriteScale = s;
-                return;
-            }
+            if (Body == null) return;
+            Body.SetFlipX(flipX);
 
-            if (_sprite != null) _sprite.flipX = flipX;
+            // Составное тело разворачивается ЗНАКОМ МАСШТАБА того же узла, который сплющивает удар. Знак
+            // держим в базовом масштабе, иначе следующая же композиция масштаба вернула бы юнита лицом назад.
+            if (_squashTarget != null && _squashTarget == Body.Root)
+                _baseSpriteScale.x = Mathf.Abs(_baseSpriteScale.x) * (flipX ? -1f : 1f);
         }
 
         private void Update()
         {
-            ApplyColor(); // вспышка + альфа инвиза видны даже в hitstop/паузе (единый писатель _sprite.color)
+            ApplyColor(); // вспышка + альфа инвиза видны даже в hitstop/паузе (единый писатель цвета тела)
             TickCastOutline();
             TickWorldUiFade();
             TickContactDustCooldown();
@@ -744,7 +725,7 @@ namespace Guildmaster.Presentation
         private void ApplyFacing()
         {
             if (_unit == null) return;
-            if (_sprite == null && _facingRoot == null) return;
+            if (Body == null) return;
             if (_flipAnimActive) return; // идёт разворот-сплющивание — не дёргаем flip снаружи
 
             // Пока идёт цикл атаки — целимся в цель (приоритет над движением): стрелок смотрит на врага,
@@ -810,73 +791,29 @@ namespace Guildmaster.Presentation
                 .AddTo(gameObject);
         }
 
-        // Тинт тела (умножается на текстуру в шейдере) + альфа инвиза (dev, §10.5: тег Stealth → полупрозрачность).
-        // Вспышка попадания идёт НЕ здесь, а через _FlashAmount материала (ApplyFlash) — .color осветлить не может.
+        // Материальное состояние тела за кадр — ОДНИМ куском: тинт с альфой инвиза (dev, §10.5: тег Stealth →
+        // полупрозрачность), вспышка попадания, голограмма развоплощения, контур каста. Тело само решает, во
+        // сколько рендереров это разложить и стоит ли вообще писать (повтор того же кадра не пишется).
+        // Вспышка идёт НЕ через цвет, а через _FlashAmount шейдера — .color осветлить не может.
         private void ApplyColor()
         {
-            if (_sprite == null) return;
-            Color c = _baseTint;
+            if (Body == null) return;
+
+            Color tint = _baseTint;
             bool stealthed = _unit != null && (_unit.EffectTagMask & EffectTag.Stealth) != 0;
-            c.a = stealthed ? 0.4f : 1f;
-            _sprite.color = c;
-            ApplyFlash();
-        }
+            tint.a = stealthed ? 0.4f : 1f;
 
-        // Праймит property block один раз в Bind: выставляет _FlashAmount=0, чтобы рендерер спрайта с первого
-        // кадра шёл по per-instance пути (иначе SpriteRenderer.color/flip кастомного SRP-batcher-шейдера не
-        // подхватывались до первой записи MPB). _feel в Bind ещё может быть null — цвет вспышки тут не важен (0).
-        private void PrimeFlashBlock()
-        {
-            if (_sprite == null) return;
-            _mpb ??= new MaterialPropertyBlock();
-            _sprite.GetPropertyBlock(_mpb);
-            _mpb.SetFloat(FlashAmountId, 0f);
-            _mpb.SetColor(FlashColorId, _feel != null ? _feel.FlashColor : Color.white);
-            _mpb.SetFloat(HoloId, 0f);   // юнита могли переиспользовать после смерти — голограмма не должна дожить
-            _sprite.SetPropertyBlock(_mpb);
-            _flashApplied = false;
-            _holoAmount   = 0f;
-        }
+            var state = new Body.BodyVisualState(
+                tint,
+                _flashAmount, _activeFlashColor,
+                _holoAmount,
+                _feel != null ? _feel.HologramColor      : Color.white,
+                _feel != null ? _feel.HologramBodyAlpha  : 1f,
+                _feel != null ? _feel.HologramScanScale  : 1f,
+                _feel != null ? _feel.HologramScanAmount : 0f,
+                _outlineAmount, _outlineColor);
 
-        // Вспышка и голограмма через MaterialPropertyBlock (per-instance, без клонирования материала).
-        // Пишем блок, только пока что-то активно, + один раз чтобы вернуть в 0 (не ломаем SRP-батчинг зря).
-        private void ApplyFlash()
-        {
-            if (_sprite == null) return;
-            bool active = _flashAmount > 0.0001f || _holoAmount > 0.0001f || _outlineAmount > 0.0001f;
-            if (!active && !_flashApplied) return;
-
-            _mpb ??= new MaterialPropertyBlock();
-            _sprite.GetPropertyBlock(_mpb);
-            _mpb.SetFloat(FlashAmountId, _flashAmount);
-            _mpb.SetColor(FlashColorId, _activeFlashColor);
-            _mpb.SetFloat(HoloId, _holoAmount);
-
-            _mpb.SetFloat(OutlineId, _outlineAmount);
-            if (_outlineAmount > 0.0001f)
-            {
-                SetHoloTexel();   // контуру нужен шаг текселя, чтобы найти край силуэта
-                _mpb.SetColor(OutlineColorId, _outlineColor);
-            }
-
-            if (_holoAmount > 0.0001f && _feel != null)
-            {
-                SetHoloTexel();
-                _mpb.SetColor(HoloColorId, _feel.HologramColor);
-                _mpb.SetFloat(HoloAlphaId, _feel.HologramBodyAlpha);
-                _mpb.SetFloat(HoloScanScaleId,  _feel.HologramScanScale);
-                _mpb.SetFloat(HoloScanAmountId, _feel.HologramScanAmount);
-            }
-            _sprite.SetPropertyBlock(_mpb);
-            _flashApplied = active;
-        }
-
-        // Размер текселя текущего кадра: по нему и голограмма, и контур находят край силуэта.
-        private void SetHoloTexel()
-        {
-            Texture tex = _sprite.sprite != null ? _sprite.sprite.texture : null;
-            Vector2 texel = tex != null ? new Vector2(1f / tex.width, 1f / tex.height) : new Vector2(0.01f, 0.01f);
-            _mpb.SetVector(HoloTexelId, texel);
+            Body.Apply(state);
         }
 
         /// <summary>
@@ -971,7 +908,7 @@ namespace Guildmaster.Presentation
         // секвенс смерти стоит следом (он ждёт её догорания). Вспышка — презентация, ей незачем стынуть.
         private void PlayHitFlash(Color flashColor, float peak = 1f)
         {
-            if (_sprite == null || _feel == null) return;
+            if (Body == null || _feel == null) return;
             if (_flashHandle.IsActive()) _flashHandle.Cancel();
             _activeFlashColor = flashColor;
             _flashPeak   = Mathf.Clamp01(peak);
@@ -1303,29 +1240,22 @@ namespace Guildmaster.Presentation
             StartShatter();
         }
 
-        // Конец death-клипа / anticipation: прячем исходный спрайт и запускаем разлёт на осколки.
+        // Конец death-клипа / anticipation: прячем тело и запускаем разлёт на осколки. Сколько кусков тела
+        // колется и куда спавнятся осколки — знает тело; вид только даёт палитру и ждёт «догорело».
         private void StartShatter()
         {
             _deathPhase = DeathPhase.Shattering;
             _audio?.PlayAt("feel.death_shatter.death", transform.position);
 
-            if (_sprite == null || _sprite.sprite == null)
+            if (Body == null || !Body.HasContent)
             {
                 gameObject.SetActive(false); // нечего колоть — просто убираем
                 return;
             }
 
-            var go = new GameObject("DeathShatter");
-            // Сиблинг спрайта (тот же родитель — Visual Sprite), а не корень вида: иначе трансформ-пространство
-            // (масштаб/иерархия) не совпадает со спрайтом и осколки спавнятся со смещением.
-            Transform visualParent = _sprite.transform.parent != null ? _sprite.transform.parent : transform;
-            go.transform.SetParent(visualParent, worldPositionStays: false);
-            var shatter = go.AddComponent<DeathShatter>();
             // Палитра павшего — из его же данных: осколки должны быть «его» цвета.
             Gradient palette = _unit?.Unit != null ? _unit.Unit.ResolveVfxPalette() : null;
-            shatter.Play(_sprite, _feel, palette, () => gameObject.SetActive(false));
-
-            _sprite.enabled = false; // дальше показывают осколки, исходный спрайт прячем
+            Body.PlayShatter(_feel, palette, () => gameObject.SetActive(false));
         }
 
 #if UNITY_EDITOR

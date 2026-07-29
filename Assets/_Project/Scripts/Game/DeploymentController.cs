@@ -601,7 +601,7 @@ namespace Guildmaster.Game
                 sil = UnitSilhouette.FromView(dv, FeetOf(_dragged)); // офсет арта — от ТЕКУЩИХ ног живого вида
 
             // Рисуем тот же силуэт у ЦЕЛЕВЫХ ног: ноги призрака = целевая сим-позиция + замер «ноги-минус-центр».
-            if (sil.Valid) _view.SetGhost(true, target + _feetOffset, sil.Offset, sil.Sprite, sil.FlipX, sil.Scale, valid);
+            if (sil.Valid) _view.SetGhost(true, target + _feetOffset, sil, valid);
             else HideGhostSprite();
         }
 
@@ -617,7 +617,7 @@ namespace Guildmaster.Game
             return u.Position;
         }
 
-        private void HideGhostSprite() => _view.SetGhost(false, default, default, null, false, Vector3.one, false);
+        private void HideGhostSprite() => _view.SetGhost(false, default, UnitSilhouette.None, false);
 
         private void HideDragVisuals() => HideGhostSprite();
 
@@ -658,7 +658,7 @@ namespace Guildmaster.Game
             RuntimeUnit target = PickUnit(world);
 
             UnitSilhouette sil = UnitSilhouette.FromPrefab(_relicDrag != null ? _relicDrag.ViewPrefab : null);
-            if (sil.Valid) _view.SetGhost(true, world, sil.Offset, sil.Sprite, sil.FlipX, sil.Scale, target != null);
+            if (sil.Valid) _view.SetGhost(true, world, sil, target != null);
             else HideGhostSprite();
 
             UpdateUnitRings(target != null ? target.Id : -1, default, false, false);
