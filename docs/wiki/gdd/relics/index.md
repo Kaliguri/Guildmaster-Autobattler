@@ -58,6 +58,10 @@ updated: 2026-07-29
 | [[gdd/relics/the-bond|The Bond (Shaman)]] | саммонер-хилер с разделением урона | — |
 | [[gdd/relics/the-draugr\|The Draugr (Frostbound)]] | ближний брузер-контроллер холода: дробящий двуручник, канал-добивание | «Морозный драугр» (2026-07-29) |
 | [[gdd/relics/the-rift\|The Rift (Arcanist)]] | РДД-энейблер магии: телепорт-уклонение, шред магзащиты | «Аркановый рдд» (2026-07-29) |
+| [[gdd/relics/the-aegis\|The Aegis (Antimage)]] | танк-контрмаг: щит за чужие касты, конверсия в удар | «Антимаг» (2026-07-29) |
+| [[gdd/relics/the-hearth\|The Hearth (Emberkeeper)]] | саппорт-клинз тира 2: угли как стойкость союзников | «Утилити через снятие эффектов» (2026-07-29) |
+| [[gdd/relics/the-fang\|The Fang (Nightblade)]] | убийца-дебаффер: яд с тыла, шред обеих броней | «Ядовитый убийца» (2026-07-29) |
+| [[gdd/relics/the-lull\|The Lull (Dreameater)]] | контроллер тьмы: сон и кошмар, копящийся во сне | «Демон снов» (2026-07-29) |
 | [[gdd/relics/the-mirror|The Mirror (Doppelganger)]] — **Уникальная** | уникальный копировщик реликвии | — |
 | [[gdd/relics/the-runesmith|The Runesmith (Smith)]] | шредер физброни + крафтер рун (энейблер) | «Рунный Кузнец» (0.1) |
 | [[gdd/relics/the-paragon|The Paragon (Juggernaut)]] — **Уникальная / Божественная** | самоусиливающийся неубивашка-дилер | «Идеал» (0.1) |
