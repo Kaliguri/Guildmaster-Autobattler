@@ -6,7 +6,8 @@
 
 **Что здесь есть и чего нет.** Здесь — правила и ловушки, которых не видно из файлов. Инвентарь
 пакетов сюда не переписывается: он в `Packages/manifest.json` и `Assets/Plugins/`, обоснование
-выбора — [`10-reference/tech-stack`](docs/wiki/tech/10-reference/tech-stack.md).
+выбора — [`10-reference/tech-stack`](docs/wiki/tech/10-reference/tech-stack.md) (архив: история решений,
+не справка о текущем коде).
 
 ---
 
@@ -20,7 +21,7 @@
 | События | **MessagePipe** pub/sub через VContainer — развязка Combat → UI / Audio / VFX. |
 | Асинхронность | **UniTask** вместо корутин для всего time-based. |
 | Звук | Только за `IAudioService`. FMOD API из игровой логики не дёргать. |
-| Ввод | Только за `IInputService` (`Guildmaster.Core.Input`): карты действий строятся в коде, контексты по фазе игры. См. [`10-reference/input-camera`](docs/wiki/tech/10-reference/input-camera.md). |
+| Ввод | Только за `IInputService` (`Guildmaster.Core.Input`): карты действий строятся в коде, контексты по фазе игры. Замысел — [`10-reference/input-camera`](docs/wiki/tech/10-reference/input-camera.md) (архив). |
 | Камера | **Cinemachine**, 4 режима (`Action` / `Overview` / `Dev` / `Map`), `CameraModeController`. Боевые режимы клампятся зоной арены, `Map` — своей. |
 | Текст | Локализация EN + RU: ключи закладываются в SO сразу, не «потом». |
 | Твины | **LitMotion**, но пока живёт точечно (`Presentation/UnitView.cs`) — UI-анимации и боевые цифры на него ещё не переведены. |
@@ -47,9 +48,9 @@
 
 ## Сохранения
 
-> Раздел держит правду в одиночку: `10-reference/tech-stack` и `10-reference/saves` в этой части
-> отстали (числят бэкендом Easy Save и `persistentDataPath`). Их правка отложена до рефактора кода —
-> реестр расхождений в `docs/tech-docs-sync-plan.md`.
+> Раздел держит правду в одиночку. `10-reference/tech-stack` и `10-reference/saves` с 30.07.2026
+> заморожены (`status: archive`) — в этой части они и отстали: числят бэкендом Easy Save и
+> `persistentDataPath`. Догонять их не нужно, правда о сейвах — здесь и в коде.
 
 Живой и единственный сейв — **`JsonFileSaveService`** за интерфейсом `ISaveService`: Newtonsoft,
 каталог `Saves/` под корнем `GameDataPath`, атомарная запись через временный файл + `.bak`, битый

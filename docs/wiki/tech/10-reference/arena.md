@@ -1,15 +1,22 @@
 ---
 title: "Reference - Arena & Deployment"
 order: 80
-status: needs_review
+status: archive
 updated: 2026-07-16
 ---
+
+> [!warning] Архив: описание кода на дату сверки, а не правда о коде
+> С 2026-07-30 правда о коде живёт **в коде** (`<summary>`/`<remarks>`) и в тестах: у каждого факта
+> один владелец, выбранный по тому, что ломается при расхождении. Страница не пополняется и с кодом
+> не сверяется — имена классов, сигнатуры и структура могли измениться. Читать как замысел и
+> историю; актуальное искать в коде. Почему так —
+> [[tech/00-meta/journal/2026-07-30-code-owns-truth-journal-owns-why|Journal - Code Owns Truth, Journal Owns Why]].
 
 > Дизайн боевой арены и фазы расстановки: геометрия как данные, prefab-per-arena, зоны расстановки (Normal/Extended), boot-flow загрузки арены.
 >
 > Связано: [[tech/10-reference/combat-model|Reference - Combat Model]], [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]], [[tech/20-explanation/presentation|Explanation - Presentation]], [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]], [[tech/20-explanation/run-flow|Explanation - Run Flow]].
 
-**Статус:** дизайн согласован (2026-07-09). Шаги 1-3 (чистая логика) реализованы и покрыты тестами (2026-07-10, EditMode 184/184). Шаг 4: код авторинга (`ArenaLayoutAuthoring` + гизмо) и проводка в DI готовы; создание арена-префаба, адреса Addressables, drag-drop UI, сетевые команды расстановки и визуальная проверка — за Максом. Отклонения реализации от исходного эскиза помечены ниже (§3, §10).
+**Было при заморозке:** дизайн согласован (2026-07-09). Шаги 1-3 (чистая логика) реализованы и покрыты тестами (2026-07-10, EditMode 184/184). Шаг 4: код авторинга (`ArenaLayoutAuthoring` + гизмо) и проводка в DI готовы; создание арена-префаба, адреса Addressables, drag-drop UI, сетевые команды расстановки и визуальная проверка — за Максом. Отклонения реализации от исходного эскиза помечены ниже (§3, §10).
 
 ---
 

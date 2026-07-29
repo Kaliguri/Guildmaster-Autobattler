@@ -1,15 +1,22 @@
 ---
 title: "Reference - Input & Camera"
 order: 70
-status: ready
+status: archive
 updated: 2026-07-26
 ---
+
+> [!warning] Архив: описание кода на дату сверки, а не правда о коде
+> С 2026-07-30 правда о коде живёт **в коде** (`<summary>`/`<remarks>`) и в тестах: у каждого факта
+> один владелец, выбранный по тому, что ломается при расхождении. Страница не пополняется и с кодом
+> не сверяется — имена классов, сигнатуры и структура могли измениться. Читать как замысел и
+> историю; актуальное искать в коде. Почему так —
+> [[tech/00-meta/journal/2026-07-30-code-owns-truth-journal-owns-why|Journal - Code Owns Truth, Journal Owns Why]].
 
 > Слой пользовательского ввода (Input System) и боевая камера (Cinemachine): единая точка ввода за интерфейсом, контексты по фазе игры, три режима камеры с data-клампом, dev-камера в билде за флагом доступа.
 >
 > Связано: [[tech/10-reference/ui-navigation|Reference - UI Navigation]], [[tech/10-reference/arena|Reference - Arena & Deployment]], [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]], [[tech/20-explanation/presentation|Explanation - Presentation]], [[tech/20-explanation/di-events|Explanation - DI & Events]], [[controls]].
 
-**Статус:** дизайн согласован и реализован в коде (2026-07-10, ветка `feat/input-system-and-camera`, EditMode 187/187). Слой ввода, пауза (Space), dev-хоткеи (R/F5) — готовы и тестируемы. Скрипты камеры и DI-проводка готовы; **сборка рига камеры в сцене (Cinemachine Brain + 3 виртуальные камеры + focus-target) и визуальная настройка (демпинг/зум/зона) — за Максом** (см. §6, §7). Отклонения от исходного плана помечены ниже (§3).
+**Было при заморозке:** дизайн согласован и реализован в коде (2026-07-10, ветка `feat/input-system-and-camera`, EditMode 187/187). Слой ввода, пауза (Space), dev-хоткеи (R/F5) — готовы и тестируемы. Скрипты камеры и DI-проводка готовы; **сборка рига камеры в сцене (Cinemachine Brain + 3 виртуальные камеры + focus-target) и визуальная настройка (демпинг/зум/зона) — за Максом** (см. §6, §7). Отклонения от исходного плана помечены ниже (§3).
 
 ---
 

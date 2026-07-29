@@ -1,9 +1,16 @@
 ---
 title: "Reference - UI Navigation"
 order: 75
-status: ready
+status: archive
 updated: 2026-07-19
 ---
+
+> [!warning] Архив: описание кода на дату сверки, а не правда о коде
+> С 2026-07-30 правда о коде живёт **в коде** (`<summary>`/`<remarks>`) и в тестах: у каждого факта
+> один владелец, выбранный по тому, что ломается при расхождении. Страница не пополняется и с кодом
+> не сверяется — имена классов, сигнатуры и структура могли измениться. Читать как замысел и
+> историю; актуальное искать в коде. Почему так —
+> [[tech/00-meta/journal/2026-07-30-code-owns-truth-journal-owns-why|Journal - Code Owns Truth, Journal Owns Why]].
 
 > UI-слой после реворка архитектуры (2026-07-19): стек типизированных экранов (`UiNavigator`),
 > слои-контейнеры с фиксированным z-порядком, и главное — **ввод и видимость как вычислимая
@@ -11,7 +18,7 @@ updated: 2026-07-19
 >
 > Связано: [[tech/10-reference/input-camera|Reference - Input & Camera]], [[tech/10-reference/scene-sorting|Reference - Scene & Sorting]], [[tech/20-explanation/presentation|Explanation - Presentation]], [[tech/20-explanation/di-events|Explanation - DI & Events]], [[tech/40-planning/act-map-run-loop|Planning - Act Map & Run Loop]].
 
-**Статус:** реализовано и в коде (ветка `feat/persist-battle-flow`, EditMode 418/418). Полный
+**Было при заморозке:** реализовано и в коде (ветка `feat/persist-battle-flow`, EditMode 418/418). Полный
 контекст замысла и пофазный план — `docs/ui-architecture-rework-plan.md`; журнал исполнения —
 `docs/ui-architecture-rework-progress.md`. Здесь — «как есть» по факту кода.
 
