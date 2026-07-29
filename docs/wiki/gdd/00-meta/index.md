@@ -140,7 +140,11 @@ SORT file.name ASC
 - [[gdd/60-narrative/devices|Narrative - Devices]] — приёмы: голос разработчика, смена титулов, имена,
   которые надо заслужить.
 - [[gdd/60-narrative/system-language|Narrative - System Language]] — язык Системы: `gm.`, локаль,
-  уроки ресёрча.
+  адреса сущностей, уроки ресёрча.
+- [[gdd/60-narrative/texts|Narrative - Texts]] — сами тексты: реплики, комментарии автора, лок-ключи.
+
+Владелец кластера — скилл `xgaida-x-nixi-narrative`; тексты пишет он, в ассеты локализации их кладёт
+`data-authoring`.
 
 ## Research (`../../research/`)
 

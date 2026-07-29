@@ -96,8 +96,9 @@
 ## Скиллы-контуры
 
 Под `.claude/skills/` живут проектные скиллы `xgaida-x-nixi-*` — по одному на подсистему:
-`combat-sim`, `data-authoring`, `gamefeel-vfx`, `audio`, `uitk`, `balance`, `content-design`, плюс два
-писаря — `gdd-scribe` (`docs/wiki/gdd`) и `tech-scribe` (`docs/wiki/tech`).
+`combat-sim`, `data-authoring`, `gamefeel-vfx`, `audio`, `uitk`, `balance`, `content-design`,
+`animation`, `narrative` (мир, тон, реплики, язык Системы — владеет `docs/wiki/gdd/60-narrative`),
+плюс два писаря — `gdd-scribe` (`docs/wiki/gdd`) и `tech-scribe` (`docs/wiki/tech`).
 
 Правило разделения: реализационные скиллы владеют **кодом**, писари — **документацией о коде**.
 Правишь систему — обновление её тех-доки делегируется `tech-scribe`.
