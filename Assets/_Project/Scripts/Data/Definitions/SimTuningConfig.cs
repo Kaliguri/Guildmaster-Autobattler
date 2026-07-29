@@ -87,6 +87,12 @@ namespace Guildmaster.Data.Definitions
         [TabGroup("Tuning", "Спринт"), SuffixLabel("ед", overlay: true), LabelText("Зазор выхода из разбега")]
         [Tooltip("Зазор, на котором разбег заканчивается. Должен быть МЕНЬШЕ входа: полоса между ними и есть гистерезис, без него разбег мигал бы на каждой короткой перебежке.")]
         [SerializeField] private float _sprintExitGap = SimTuning.Default.SprintExitGap;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("с", overlay: true), LabelText("Шаг перед разгоном")]
+        [Tooltip("Сколько юнит идёт ОБЫЧНЫМ шагом, прежде чем начать разгоняться. Без этой паузы разбег включается щелчком: и скорость, и клип меняются в один тик, что читается как телепорт. 0 = разгон начинается сразу.")]
+        [SerializeField] private float _sprintWalkSeconds = SimTuning.Default.SprintWalkSeconds;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("с", overlay: true), LabelText("Время разгона")]
+        [Tooltip("За сколько секунд прибавка скорости набирается от нуля до полной. По этой же доле показ подмешивает клип бега к шагу, поэтому число правит и движение, и картинку разом.")]
+        [SerializeField] private float _sprintRampSeconds = SimTuning.Default.SprintRampSeconds;
 
         /// <summary>Снять иммутабельный снапшот для бейка на старте боя.</summary>
         public SimTuning ToSnapshot() => new SimTuning(
@@ -112,6 +118,8 @@ namespace Guildmaster.Data.Definitions
             _overtimeDamagePerSecond,
             _sprintSpeedMult,
             _sprintEnterGap,
-            _sprintExitGap);
+            _sprintExitGap,
+            _sprintWalkSeconds,
+            _sprintRampSeconds);
     }
 }

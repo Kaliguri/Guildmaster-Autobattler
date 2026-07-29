@@ -72,11 +72,14 @@ namespace Guildmaster.Combat.Tape
         public readonly bool IsEmpowered;
 
         /// <summary>
-        /// Юнит идёт разбегом — показ переключает клип бега на спринт. Признак живёт в СИМУЛЯЦИИ
-        /// (там же ускорение), сюда приезжает снимком: решать «бежит ли он быстро» по наблюдаемой
+        /// Насколько юнит разогнался [0..1] — по этой доле показ подмешивает клип бега к шагу. Живёт в
+        /// СИМУЛЯЦИИ (там же ускорение), сюда приезжает снимком: решать «бежит ли он быстро» по наблюдаемой
         /// скорости показ не может — на дистанции в один тик разница со шагом неотличима от шума.
         /// </summary>
-        public readonly bool IsSprinting;
+        public readonly float SprintRamp;
+
+        /// <summary>Разгон начался — тот же факт, что <see cref="SprintRamp"/>, для читаемости условий.</summary>
+        public bool IsSprinting => SprintRamp > 0f;
 
         /// <summary>
         /// Текущий свинг идёт с разбега — показ выбирает по нему клип. Несём именно признак СВИНГА, а не
@@ -93,7 +96,7 @@ namespace Guildmaster.Combat.Tape
             float size, AttackPhase phase, int windupTicks, int windupRemaining,
             int attackCooldownTicks, int targetId, EffectTag effectTagMask, bool isDead,
             float attackRange = 0f, bool canAct = true, bool isDisplaced = false, bool isEmpowered = false,
-            bool isSprinting = false, bool chargedSwing = false)
+            float sprintRamp = 0f, bool chargedSwing = false)
         {
             Id                  = id;
             Team                = team;
@@ -116,7 +119,7 @@ namespace Guildmaster.Combat.Tape
             CanAct              = canAct;
             IsDisplaced         = isDisplaced;
             IsEmpowered         = isEmpowered;
-            IsSprinting         = isSprinting;
+            SprintRamp          = sprintRamp;
             ChargedSwing        = chargedSwing;
         }
 
@@ -146,7 +149,7 @@ namespace Guildmaster.Combat.Tape
                 unit.CanAct,
                 unit.DisplacedTicksRemaining > 0,
                 unit.EmpowerDamageMult > 0f,
-                unit.IsSprinting,
+                unit.SprintRamp,
                 unit.ChargedSwing);
         }
     }

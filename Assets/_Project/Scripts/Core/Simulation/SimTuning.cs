@@ -65,9 +65,13 @@ namespace Guildmaster.Core.Simulation
         // юнит поедет ногами по воздуху. Порог — ЗАЗОР сверх досягаемости, а не сырая дистанция до цели:
         // у стрелка с досягаемостью 8 сырой порог «дальше трёх метров» держал бы спринт включённым всегда,
         // хотя он уже на позиции. Гистерезис (вход шире выхода) — против мигания на коротких перебежках.
+        // Разгон намеренно НЕ мгновенный: юнит сперва идёт обычным шагом и только потом переходит на бег.
+        // Прибавка, включающаяся щелчком, читается как телепорт скорости — и вместе с ней щёлкает клип.
         public readonly float SprintSpeedMult;   // множитель скорости в спринте (1.3 = +30%)
         public readonly float SprintEnterGap;    // зазор сверх досягаемости, с которого начинается разбег
         public readonly float SprintExitGap;     // зазор, на котором разбег заканчивается (< enter)
+        public readonly float SprintWalkSeconds; // сколько идёт обычным шагом, прежде чем начать разгон
+        public readonly float SprintRampSeconds; // за сколько разгон набирает полную прибавку
 
         public SimTuning(
             float bodyRadiusPerSize,
@@ -92,7 +96,9 @@ namespace Guildmaster.Core.Simulation
             float overtimeDamagePerSecond,
             float sprintSpeedMult,
             float sprintEnterGap,
-            float sprintExitGap)
+            float sprintExitGap,
+            float sprintWalkSeconds,
+            float sprintRampSeconds)
         {
             BodyRadiusPerSize         = bodyRadiusPerSize;
             SeparationStrength        = separationStrength;
@@ -117,6 +123,36 @@ namespace Guildmaster.Core.Simulation
             SprintSpeedMult           = sprintSpeedMult;
             SprintEnterGap            = sprintEnterGap;
             SprintExitGap             = sprintExitGap;
+            SprintWalkSeconds         = sprintWalkSeconds;
+            SprintRampSeconds         = sprintRampSeconds;
+        }
+
+        /// <summary>
+        /// Доля разгона [0..1] после <paramref name="wantTicks"/> тиков непрерывного намерения бежать:
+        /// ноль всю «прогулочную» часть, потом линейный набор до единицы. Формула живёт здесь, а не в
+        /// движении, потому что её же читают тесты и dev-инструменты — второй копии быть не должно.
+        /// </summary>
+        public float SprintRampAt(int wantTicks)
+        {
+            // Границы считаются в ТИКАХ, а не в секундах: тик, попавший ровно на конец прогулочной части,
+            // на float-арифметике оказывался то до неё, то после (30 × (1/30) больше единицы), и юнит
+            // получал одну тридцатимиллионную разгона — формально «уже бежит».
+            int walkTicks = Ticks(SprintWalkSeconds);
+            int over = wantTicks - walkTicks;
+            if (over <= 0) return 0f;
+
+            int rampTicks = Ticks(SprintRampSeconds);
+            if (rampTicks <= 0) return 1f;
+
+            float ramp = (float)over / rampTicks;
+            return ramp >= 1f ? 1f : ramp;
+        }
+
+        private static int Ticks(float seconds)
+        {
+            if (seconds <= 0f) return 0;
+            int ticks = (int)System.Math.Round(seconds * SimConstants.TickRate, System.MidpointRounding.AwayFromZero);
+            return ticks < 0 ? 0 : ticks;
         }
 
         /// <summary>
@@ -169,6 +205,8 @@ namespace Guildmaster.Core.Simulation
             overtimeDamagePerSecond:   0.05f,
             sprintSpeedMult:           1.3f,
             sprintEnterGap:            1f,
-            sprintExitGap:             0.3f);
+            sprintExitGap:             0.3f,
+            sprintWalkSeconds:         1f,
+            sprintRampSeconds:         0.5f);
     }
 }

@@ -56,6 +56,12 @@ namespace Guildmaster.Presentation
                  "Скелетный: (ед. за цикл шагов) ÷ (длина клипа), кадров у него нет.")]
         [SerializeField] private float _runUnitsPerSecond = 1.5f;
 
+        [Tooltip("То же самое для клипа РАЗБЕГА: сколько мировых юнитов проходит клип спринта за секунду. " +
+                 "У спринта свой шаг и своя длина цикла, поэтому число у него ОТДЕЛЬНОЕ — общее с бегом " +
+                 "листало клип вдвое быстрее земли, и ноги мельтешили.\n" +
+                 "0 = клипа разбега у юнита нет (покадровый бестиарий), темп берётся от бега.")]
+        [SerializeField] private float _sprintUnitsPerSecond;
+
         [Tooltip("Клип атаки — ИСТОЧНИК МАРКЕРА контакта для скелетных юнитов, у которых нет UnitVisual. " +
                  "Покадровым не нужен: у них клип берётся из данных юнита.")]
         [SerializeField] private AnimationClip _attackClip;
@@ -573,12 +579,35 @@ namespace Guildmaster.Presentation
                 chargedAttack: _hasState && _snapshot.ChargedSwing);
             if (next != _state)
             {
+                // Шаг и разбег — один цикл в разных амплитудах, между ними ПЕРЕХОД, а не подмена: клип,
+                // начатый с нуля, ставит ногу заново посреди шага. Фазу переносим, поэтому нога продолжает
+                // тот же шаг — клипы написаны одним скелетом поз и совпадают по долям цикла.
+                if (IsLocomotion(_state) && IsLocomotion(next))
+                    _animator.CrossFade(HashFor(next), LocomotionBlend, 0, LocomotionPhase());
+                else
+                    _animator.Play(HashFor(next), 0, 0f);
+
                 _state = next;
-                _animator.Play(HashFor(next), 0, 0f);
                 _animator.speed = 1f;
             }
 
             DriveAnimation(dt);
+        }
+
+        // Доля цикла разбега, за которую он вытесняет шаг. Считается от длины ЦЕЛЕВОГО клипа, поэтому
+        // одинаково честна в обе стороны: примерно четверть цикла — быстрее рвётся, дольше плывёт.
+        private const float LocomotionBlend = 0.35f;
+
+        // Шаг и разбег — одно движение с разной амплитудой; всё остальное меняется подменой позы.
+        private static bool IsLocomotion(UnitAnimationState state)
+            => state == UnitAnimationState.Run || state == UnitAnimationState.Sprint;
+
+        // Где нога внутри текущего цикла [0..1). Клипы локомоции написаны в одной фазе, поэтому эту долю
+        // можно перенести в другой из них как есть.
+        private float LocomotionPhase()
+        {
+            float t = _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            return t - Mathf.Floor(t);
         }
 
         private static int HashFor(UnitAnimationState state) => state switch
@@ -660,21 +689,32 @@ namespace Guildmaster.Presentation
 
                 case UnitAnimationState.Run:
                 case UnitAnimationState.Sprint:
-                    // Клип бега листается по пройденной дистанции: во сколько раз юнит быстрее «родной»
+                    // Клип локомоции листается по пройденной дистанции: во сколько раз юнит быстрее «родной»
                     // скорости клипа, во столько же крутим клип. Так ноги не скользят ни у покадрового
                     // юнита (кадры), ни у скелетного (непрерывные кривые) — единица измерения одна.
-                    // Разбег идёт по той же формуле и потому не нуждается в своём числе: он и так быстрее
-                    // ровно на столько, на сколько его ускорил сим, а клип листается от пройденного пути.
                     float speed = _hasState
                         ? (_snapshot.Position - _snapshot.PreviousPosition).magnitude / SimConstants.TickDelta
                         : 0f;
-                    _animator.speed = speed / Mathf.Max(0.01f, _runUnitsPerSecond);
+                    _animator.speed = speed / Mathf.Max(0.01f, LocomotionUnitsPerSecond());
                     break;
 
                 default:
                     _animator.speed = 1f;
                     break;
             }
+        }
+
+        /// <summary>
+        /// «Родная» скорость того, что сейчас на ногах: сколько мировых единиц земли проходит клип за
+        /// секунду. У шага и разбега она РАЗНАЯ — свой шаг, своя длина цикла, — и общее число листало
+        /// разбег вдвое быстрее земли. Пока идёт переход, число смешивается той же долей разгона, что
+        /// смешивает и сами клипы, поэтому ноги не скользят и в середине бленда.
+        /// </summary>
+        private float LocomotionUnitsPerSecond()
+        {
+            if (_sprintUnitsPerSecond <= 0f) return _runUnitsPerSecond;   // клипа разбега у юнита нет
+            float ramp = _hasState ? Mathf.Clamp01(_snapshot.SprintRamp) : 0f;
+            return Mathf.Lerp(_runUnitsPerSecond, _sprintUnitsPerSecond, ramp);
         }
 
         // Прогресс скраба по дробному тику: счётчики снимка целые, но показываемый момент лежит ВНУТРИ

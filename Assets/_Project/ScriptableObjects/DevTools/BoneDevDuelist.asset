@@ -63,7 +63,7 @@ MonoBehaviour:
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _windupShare: 0.45
-  _chargeAttackWindupMult: 0.6
+  _chargeAttackWindupMult: 1.3
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:

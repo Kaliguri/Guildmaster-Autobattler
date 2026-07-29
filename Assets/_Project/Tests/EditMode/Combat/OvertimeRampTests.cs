@@ -38,7 +38,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             overtimeDamagePerSecond:   perSecond,
             sprintSpeedMult:           SimTuning.Default.SprintSpeedMult,
             sprintEnterGap:            SimTuning.Default.SprintEnterGap,
-            sprintExitGap:             SimTuning.Default.SprintExitGap);
+            sprintExitGap:             SimTuning.Default.SprintExitGap,
+            sprintWalkSeconds:         SimTuning.Default.SprintWalkSeconds,
+            sprintRampSeconds:         SimTuning.Default.SprintRampSeconds);
 
         [Test]
         public void BeforeThreshold_NoRamp()

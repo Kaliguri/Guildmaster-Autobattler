@@ -35,3 +35,5 @@ MonoBehaviour:
   _sprintSpeedMult: 1.3
   _sprintEnterGap: 1
   _sprintExitGap: 0.3
+  _sprintWalkSeconds: 1
+  _sprintRampSeconds: 0.5

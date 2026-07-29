@@ -11,11 +11,18 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// <summary>
     /// Разбег на дальнем подходе. Тесты держат ЗАМЫСЕЛ, а не реализацию: ускорение обязано жить в
     /// симуляции (позиция за тик реально больше), порог обязан считаться от зазора сверх досягаемости
-    /// (иначе стрелок бежит вечно), а полоса гистерезиса — гасить мигание на границе.
+    /// (иначе стрелок бежит вечно), полоса гистерезиса — гасить мигание на границе, а сам разгон —
+    /// занимать время: юнит сперва идёт шагом и только потом переходит на бег.
     /// </summary>
     public sealed class SprintTests
     {
         private const float Reach = 2f;   // досягаемость обоих: дальше неё и начинается зазор
+
+        // Сколько тиков нужно, чтобы разгон только начался и чтобы он дошёл до полного.
+        private static int TicksToRampStart(in SimTuning t)
+            => Mathf.CeilToInt(t.SprintWalkSeconds * SimConstants.TickRate) + 1;
+        private static int TicksToFullRamp(in SimTuning t)
+            => Mathf.CeilToInt((t.SprintWalkSeconds + t.SprintRampSeconds) * SimConstants.TickRate) + 1;
 
         private static RuntimeUnit Make(Vector2 pos, float moveSpeed, float attackRange = Reach)
         {
@@ -51,12 +58,81 @@ namespace Guildmaster.Tests.EditMode.Combat
             var target = Make(new Vector2(20f, 0f),  moveSpeed: 0f);
             chaser.CurrentTarget = target;
 
+            // Разгон занимает время — меряем шаг, когда он уже набран полностью.
+            for (int i = 0; i < TicksToFullRamp(in tuning); i++) StepDistance(chaser, target, in tuning);
             float step = StepDistance(chaser, target, in tuning);
 
-            Assert.That(chaser.IsSprinting, Is.True, "Цель далеко — разбег обязан включиться.");
+            Assert.That(chaser.SprintRamp, Is.EqualTo(1f).Within(1e-4f), "Цель далеко — разгон обязан дойти до полного.");
             float walk = 3f * SimConstants.TickDelta;
             Assert.That(step, Is.EqualTo(walk * tuning.SprintSpeedMult).Within(1e-4f),
                 "Ускорение должно двигать ПОЗИЦИЮ: разбег, которого нет в симуляции, анимация обгонит.");
+        }
+
+        [Test]
+        public void FirstSecond_RunsAtPlainWalkingSpeed()
+        {
+            SimTuning tuning = SimTuning.Default;
+            var chaser = Make(new Vector2(-20f, 0f), moveSpeed: 3f);
+            var target = Make(new Vector2(20f, 0f),  moveSpeed: 0f);
+            chaser.CurrentTarget = target;
+
+            float walk = 3f * SimConstants.TickDelta;
+            // Вся «прогулочная» часть: юнит уже хочет бежать, но идёт обычным шагом.
+            for (int i = 0; i < (int)(tuning.SprintWalkSeconds * SimConstants.TickRate); i++)
+            {
+                float step = StepDistance(chaser, target, in tuning);
+                Assert.That(step, Is.EqualTo(walk).Within(1e-4f),
+                    "Первые секунды юнит идёт обычным шагом: прибавка, включённая щелчком, читается как телепорт.");
+                Assert.That(chaser.IsSprinting, Is.False, "И показ всё это время обязан видеть шаг, а не бег.");
+            }
+        }
+
+        [Test]
+        public void Ramp_ClimbsToFullInsteadOfSnapping()
+        {
+            SimTuning tuning = SimTuning.Default;
+            var chaser = Make(new Vector2(-40f, 0f), moveSpeed: 3f);
+            var target = Make(new Vector2(40f, 0f),  moveSpeed: 0f);
+            chaser.CurrentTarget = target;
+
+            for (int i = 0; i < TicksToRampStart(in tuning); i++) StepDistance(chaser, target, in tuning);
+            float began = chaser.SprintRamp;
+
+            Assert.That(began, Is.GreaterThan(0f), "После прогулочной части разгон обязан начаться.");
+            Assert.That(began, Is.LessThan(1f), "И начаться ЧАСТИЧНО — иначе это тот же щелчок, просто позже.");
+
+            float previous = began;
+            for (int i = 0; i < 5; i++)
+            {
+                StepDistance(chaser, target, in tuning);
+                Assert.That(chaser.SprintRamp, Is.GreaterThan(previous), "Разгон обязан расти каждый тик.");
+                previous = chaser.SprintRamp;
+            }
+
+            for (int i = 0; i < TicksToFullRamp(in tuning); i++) StepDistance(chaser, target, in tuning);
+            Assert.That(chaser.SprintRamp, Is.EqualTo(1f).Within(1e-4f), "И дойти до полной прибавки.");
+        }
+
+        [Test]
+        public void InterruptedApproach_RestartsTheRampFromScratch()
+        {
+            SimTuning tuning = SimTuning.Default;
+            var chaser = Make(new Vector2(-40f, 0f), moveSpeed: 3f);
+            var target = Make(new Vector2(40f, 0f),  moveSpeed: 0f);
+            chaser.CurrentTarget = target;
+
+            for (int i = 0; i < TicksToFullRamp(in tuning); i++) StepDistance(chaser, target, in tuning);
+            Assert.That(chaser.SprintRamp, Is.EqualTo(1f).Within(1e-4f));
+
+            // Юнита выбило из подхода (замах, контроль, потеря цели — здесь корень).
+            chaser.CanMove = false;
+            StepDistance(chaser, target, in tuning);
+            Assert.That(chaser.SprintRamp, Is.EqualTo(0f), "Любая причина не бежать обнуляет разгон.");
+
+            chaser.CanMove = true;
+            StepDistance(chaser, target, in tuning);
+            Assert.That(chaser.SprintRamp, Is.EqualTo(0f),
+                "И следующий разбег начинается заново: иначе юнит копил бы разгон, пока стоял в замахе.");
         }
 
         [Test]
@@ -88,13 +164,14 @@ namespace Guildmaster.Tests.EditMode.Combat
             float reach = CombatPositioning.AttackReachCenter(chaser, target, in tuning);
             chaser.Position = chaser.PreviousPosition = new Vector2(-(reach + gap), 0f);
 
-            chaser.IsSprinting = true;
+            // Гистерезис живёт на НАМЕРЕНИИ бежать, а не на набранной скорости: разгон только следствие.
+            chaser.SprintWantTicks = 10;
             StepDistance(chaser, target, in tuning);
-            Assert.That(chaser.IsSprinting, Is.True, "В полосе гистерезиса бежавший продолжает бежать.");
+            Assert.That(chaser.SprintWantTicks, Is.GreaterThan(10), "В полосе гистерезиса бежавший продолжает бежать.");
 
-            chaser.IsSprinting = false;
+            chaser.StopSprint();
             StepDistance(chaser, target, in tuning);
-            Assert.That(chaser.IsSprinting, Is.False, "В той же полосе стоявший не срывается в разбег.");
+            Assert.That(chaser.SprintWantTicks, Is.Zero, "В той же полосе стоявший не срывается в разбег.");
         }
 
         [Test]
@@ -106,9 +183,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             var chaser = Make(new Vector2(-8f, 0f), moveSpeed: 3f, attackRange: 8f);
             chaser.CurrentTarget = target;
 
-            StepDistance(chaser, target, in tuning);
+            for (int i = 0; i < TicksToFullRamp(in tuning); i++) StepDistance(chaser, target, in tuning);
 
-            Assert.That(chaser.IsSprinting, Is.False,
+            Assert.That(chaser.SprintWantTicks, Is.Zero,
                 "Порог считается от зазора сверх досягаемости: по сырой дистанции стрелок бежал бы всегда.");
         }
 
@@ -141,9 +218,28 @@ namespace Guildmaster.Tests.EditMode.Combat
             chaser.Position = chaser.PreviousPosition = new Vector2(-(reach + tuning.SprintEnterGap + 5f), 0f);
             StepDistance(chaser, target, in tuning);
 
-            Assert.That(chaser.IsSprinting, Is.True);
+            Assert.That(chaser.SprintWantTicks, Is.GreaterThan(0));
             Assert.That(chaser.ChargedAttackReady, Is.False,
                 "Удар с разбега принадлежит тому сближению, которым добыт.");
+        }
+
+        [Test]
+        public void ShortDash_DoesNotBuyAChargedAttack()
+        {
+            SimTuning tuning = SimTuning.Default;
+            var target = Make(new Vector2(0f, 0f), moveSpeed: 0f);
+            var chaser = Make(new Vector2(-1f, 0f), moveSpeed: 3f);
+            chaser.CurrentTarget = target;
+
+            // Цель чуть дальше порога: юнит сорвётся с места, но упрётся в неё раньше, чем разгонится.
+            float reach = CombatPositioning.AttackReachCenter(chaser, target, in tuning);
+            chaser.Position = chaser.PreviousPosition = new Vector2(-(reach + tuning.SprintEnterGap + 0.2f), 0f);
+
+            for (int i = 0; i < 60; i++) StepDistance(chaser, target, in tuning);
+
+            Assert.That(chaser.SprintRamp, Is.EqualTo(0f), "Добежал раньше, чем разогнался.");
+            Assert.That(chaser.ChargedAttackReady, Is.False,
+                "Особый удар покупается РАЗГОНОМ, а не тем, что до цели было чуть далеко.");
         }
 
         [Test]
@@ -227,14 +323,14 @@ namespace Guildmaster.Tests.EditMode.Combat
             var chaser = Make(new Vector2(-20f, 0f), moveSpeed: 3f);
             chaser.CurrentTarget = target;
 
-            StepDistance(chaser, target, in tuning);
+            for (int i = 0; i < TicksToFullRamp(in tuning); i++) StepDistance(chaser, target, in tuning);
             Assert.That(chaser.IsSprinting, Is.True);
 
             chaser.CurrentHP = 0f;
             chaser.IsDead    = true;   // умер посреди разбега
             StepDistance(chaser, target, in tuning);
 
-            Assert.That(chaser.IsSprinting, Is.False, "Флаг разбега не должен переживать смерть — показ поверит.");
+            Assert.That(chaser.IsSprinting, Is.False, "Разбег не должен переживать смерть — показ поверит.");
         }
     }
 }
