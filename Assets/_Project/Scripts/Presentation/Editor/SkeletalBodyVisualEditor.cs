@@ -62,6 +62,13 @@ namespace Guildmaster.Presentation.Editor
                 if (GUILayout.Button("Собрать заново"))     Rebuild(body);
             }
 
+            if (GUILayout.Button("Взять порядок из спрайтов"))
+            {
+                Undo.RecordObject(body, "Взять порядок частей из спрайтов");
+                body.SortByCurrentOrder();
+                EditorUtility.SetDirty(body);
+            }
+
             if (GUILayout.Button("Поставить материал вспышки на все части"))
                 AssignFlashMaterial(body);
 

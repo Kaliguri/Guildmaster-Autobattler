@@ -35,6 +35,7 @@ namespace Guildmaster.Presentation.Body
         private BodyVisualState       _lastState;
         private bool                  _effectApplied;
         private Transform[]           _partTransforms;   // кэш: позы частей опрашиваются каждый кадр силуэтом/границами
+        private bool                  _groupWarned;      // про отсутствие группы говорим один раз, а не каждый кадр
 
         /// <summary>Части тела в порядке отрисовки (только чтение — владелец порядка это компонент).</summary>
         public IReadOnlyList<SpriteRenderer> Parts => _parts;
@@ -55,10 +56,6 @@ namespace Guildmaster.Presentation.Body
             }
 
             CachePartTransforms();
-
-            if (_group == null)
-                Debug.LogError($"[SkeletalBodyVisual] {name}: нет SortingGroup ни на объекте, ни в родителях — " +
-                               "Y-сортировка арены не дойдёт до тела, и юнит будет тонуть в чужих частях.", this);
         }
 
         private void CachePartTransforms()
@@ -137,7 +134,15 @@ namespace Guildmaster.Presentation.Body
         /// <summary>Ордер получает ГРУППА: внутри неё порядок частей остаётся нашим.</summary>
         public void SetSortingOrder(int order)
         {
-            if (_group != null) _group.sortingOrder = order;
+            if (_group != null) { _group.sortingOrder = order; return; }
+
+            // Ругаемся здесь, а не в Awake: без группы тело всё равно живёт (стенд анимаций им и пользуется),
+            // но как только КТО-ТО начинает раздавать Y-sort — значит тело вышло на арену, и там его нечем
+            // отсортировать целиком.
+            if (_groupWarned) return;
+            _groupWarned = true;
+            Debug.LogError($"[SkeletalBodyVisual] {name}: нет SortingGroup ни на объекте, ни в родителях — " +
+                           "Y-сортировка арены не дойдёт до тела, и юнит будет тонуть в чужих частях.", this);
         }
 
         public void SetFlipX(bool flip)
@@ -273,6 +278,30 @@ namespace Guildmaster.Presentation.Body
                 CachePartTransforms();
             }
             return changed;
+        }
+
+        /// <summary>
+        /// Переставить список по ТЕКУЩЕМУ <c>sortingOrder</c> частей — большой ордер наверх. Это переезд
+        /// порядка от старого владельца (поле на каждом спрайте) к новому (этот список): разводка, настроенная
+        /// руками до шва, не должна теряться из-за того, что мы сменили место её хранения.
+        /// </summary>
+        public void SortByCurrentOrder()
+        {
+            _parts.RemoveAll(p => p == null);
+
+            // Сортировка СТАБИЛЬНАЯ (тайбрейк — прежний индекс): у парных конечностей ордер одинаковый, и
+            // обычный Sort перетасовал бы левую с правой на ровном месте.
+            var indexed = new List<(SpriteRenderer part, int index)>(_parts.Count);
+            for (int i = 0; i < _parts.Count; i++) indexed.Add((_parts[i], i));
+            indexed.Sort((a, b) =>
+            {
+                int byOrder = b.part.sortingOrder.CompareTo(a.part.sortingOrder);
+                return byOrder != 0 ? byOrder : a.index.CompareTo(b.index);
+            });
+
+            _parts.Clear();
+            for (int i = 0; i < indexed.Count; i++) _parts.Add(indexed[i].part);
+            CachePartTransforms();
         }
 
         /// <summary>

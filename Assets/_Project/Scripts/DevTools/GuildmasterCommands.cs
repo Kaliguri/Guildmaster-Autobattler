@@ -49,6 +49,11 @@ namespace Guildmaster.DevTools
         // визуал MedievalWarrior (→ анимации). Резолвится из контент-БД, поэтому не нужен serialized-ref в сцене.
         private UnitData _dummyEnemy;
 
+        // Дев-дуэлянт на скелетном визуале (EnemyData «enemy.bone_dev»): отдельный ассет ради того, чтобы
+        // смотр анимации не требовал подмены вида у игровой реликвии. Бьёт и умирает — иначе не увидеть ни
+        // удар, ни разлёт на осколки.
+        private UnitData _boneDuelist;
+
         // Контент-БД для дев-срезов: релик берётся по id (relic.*) в момент вызова команды.
         private IContentDatabase _content;
 
@@ -77,6 +82,7 @@ namespace Guildmaster.DevTools
             _input      = input;
             _content = contentDatabase;
             contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
+            contentDatabase.TryGet("enemy.bone_dev", out _boneDuelist);
             // Сессия боя живёт в RootScope: в реальном забеге резолвится, в standalone dev-арене (без Root) — null.
             resolver.TryResolve(out _session);
             resolver.TryResolve(out _runControl);
@@ -654,10 +660,13 @@ namespace Guildmaster.DevTools
         }
 
         /// <summary>
-        /// 1×1 BaseRelic зеркально — смотреть bone-визуал в бою (временно на relic.base → UnitView_BoneStandart).
+        /// 1×1 зеркально на дев-дуэлянте (<c>enemy.bone_dev</c>) — смотреть скелетный визуал в живом бою.
+        /// У него СВОЙ контент-ассет со ссылкой на костяной вид, поэтому команда работает всегда и ничего не
+        /// подменяет в игровом контенте: раньше костяной вид приходилось руками вписывать в <c>relic.base</c>,
+        /// и пока подмена стояла, костяным становился каждый бой базовой реликвии.
         /// Тот же вход на Ристалище, что у <see cref="SpawnMirror"/>.
         /// </summary>
-        [Command("gm_spawn_bone_duel", "1×1 BaseRelic vs BaseRelic (bone UnitView smoke)")]
+        [Command("gm_spawn_bone_duel", "1×1 bone dev duelist mirror (skeletal UnitView smoke)")]
         public void SpawnBoneDuel()
         {
             if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
@@ -674,18 +683,21 @@ namespace Guildmaster.DevTools
 
         private void SpawnBoneDuelNow()
         {
-            RelicData relic = DevRelic("relic.base");
-            if (relic == null) return;
+            if (_boneDuelist == null)
+            {
+                Debug.LogError("[GuildmasterCommands] - юнита 'enemy.bone_dev' нет в контент-БД → дуэль не запущена");
+                return;
+            }
 
             ResetForNewBattle();
 
             const float x = 2.2f;
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, 0, new Vector2(-x, 0f)));
-            _simulation.EnqueueUnitSpawn(_factory.Create(relic, null, 1, new Vector2(x, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 0, new Vector2(-x, 0f)));
+            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 1, new Vector2(x, 0f)));
 
             _lastBattleSetup = self => self.SpawnBoneDuel();
-            string view = relic.ViewPrefab != null ? relic.ViewPrefab.name : "null";
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: BaseRelic 1×1 (ViewPrefab={view})");
+            string view = _boneDuelist.ViewPrefab != null ? _boneDuelist.ViewPrefab.name : "null";
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: enemy.bone_dev 1×1 (ViewPrefab={view})");
         }
 
         private RelicData DevRelic(string id)

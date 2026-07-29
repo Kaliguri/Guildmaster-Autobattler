@@ -807,6 +807,14 @@ MonoBehaviour:
     m_Key: effect.spore_mend.name
     m_Metadata:
       m_Items: []
+  - m_Id: 6661801758679040
+    m_Key: enemy.bone_dev.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6661801850953728
+    m_Key: enemy.bone_dev.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -279,6 +279,14 @@ MonoBehaviour:
     m_Localized: Fungal Mend
     m_Metadata:
       m_Items: []
+  - m_Id: 6661801758679040
+    m_Localized: Bone Duelist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6661801850953728
+    m_Localized: 'Dev dummy: watching skeletal animation in a live fight.'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

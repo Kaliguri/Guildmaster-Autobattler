@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63d49fa19860d104c90671a3fd8bb1e6, type: 3}
+  m_Name: BoneDevDuelist
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
+  _id: enemy.bone_dev
+  _combatClass: 1
+  _damageSchool: 0
+  _physicalSubtype: 0
+  _magicElement: 0
+  _affinity: 0
+  _creatureType: 0
+  _attackType: 0
+  _resourceType: 0
+  _visual: {fileID: 0}
+  _viewPrefab: {fileID: 8715034697537984562, guid: cd42c7a258093ac4691913f833656755, type: 3}
+  _tint: {r: 1, g: 1, b: 1, a: 1}
+  _vfxColor: {r: 2, g: 0.666, b: 0.4, a: 1}
+  _vfxPalette:
+    serializedVersion: 2
+    key0: {r: 2.6, g: 2.167, b: 2.08, a: 1}
+    key1: {r: 2.2, g: 0.733, b: 0.44, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
+  _autoAttackEffects: []
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
+  _stats:
+  - Stat: 7
+    Op: 3
+    Value: 40
+  - Stat: 8
+    Op: 3
+    Value: 0.8
+  _grantedEffects: []
+  _abilities: []
+  _aiPreset: {fileID: 11400000, guid: 262d3cc7dfd31dc4ab9cbce9705ac85d, type: 2}
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 0
+      FleeAtHpPct: 0.25
+      ReturnAtHpPct: 0.5
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags: []
+  _species: {fileID: 0}
+  _subspecies: {fileID: 0}
+  _threatPoints: 0
+  _goldBounty: 0
