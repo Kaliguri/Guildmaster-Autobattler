@@ -62,7 +62,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         [Test]
         public void Bulwark_SpendsTwoChargesThenWaitsForRecharge()
         {
-            // Заряды проверяем напрямую по ChargeReadyTicks: срабатывание тратит ОДИН заряд, каждый
+            // Заряды проверяем напрямую по ChargeReadyTick: срабатывание тратит ОДИН заряд, каждый
             // перезаряжается независимо. (Не по щиту: в headless-контексте щит-эффект не истекает без
             // EffectSystem.Tick, и повторный Apply ушёл бы в Refresh — это артефакт теста, не бага.)
             var es  = new EffectSystem();
@@ -76,25 +76,25 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             int cd = Mathf.RoundToInt(7f * SimConstants.TickRate);
 
-            Assert.AreEqual(2, bulwark.ChargeReadyTicks.Length, "Два заряда взведены при наложении пассивки");
+            Assert.AreEqual(2, bulwark.ChargeCount, "Два заряда взведены при наложении пассивки");
 
             ctx.Tick = 0;
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd, bulwark.ChargeReadyTicks[0], "Первый удар потратил первый заряд");
-            Assert.AreEqual(0,  bulwark.ChargeReadyTicks[1], "Второй заряд ещё цел");
+            Assert.AreEqual(cd, bulwark.ChargeReadyTick(0), "Первый удар потратил первый заряд");
+            Assert.AreEqual(0,  bulwark.ChargeReadyTick(1), "Второй заряд ещё цел");
 
             ctx.Tick = 1; // сразу следом — второй удар гасится вторым зарядом
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(1 + cd, bulwark.ChargeReadyTicks[1], "Второй удар подряд потратил второй заряд");
+            Assert.AreEqual(1 + cd, bulwark.ChargeReadyTick(1), "Второй удар подряд потратил второй заряд");
 
             ctx.Tick = 2; // зарядов не осталось — удар проходит, таймеры не сдвигаются
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd,     bulwark.ChargeReadyTicks[0], "Без готовых зарядов первый таймер не перевзведён");
-            Assert.AreEqual(1 + cd, bulwark.ChargeReadyTicks[1], "Без готовых зарядов второй таймер не перевзведён");
+            Assert.AreEqual(cd,     bulwark.ChargeReadyTick(0), "Без готовых зарядов первый таймер не перевзведён");
+            Assert.AreEqual(1 + cd, bulwark.ChargeReadyTick(1), "Без готовых зарядов второй таймер не перевзведён");
 
             ctx.Tick = cd; // первый заряд восстановился
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(cd + cd, bulwark.ChargeReadyTicks[0], "Восстановившийся заряд снова потрачен");
+            Assert.AreEqual(cd + cd, bulwark.ChargeReadyTick(0), "Восстановившийся заряд снова потрачен");
         }
 
         [Test]
@@ -113,13 +113,13 @@ namespace Guildmaster.Tests.EditMode.Combat
             es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageSchool.True, CombatTestValues.ArmorK,
                 sourceKind: DamageSourceKind.Reactive), ctx);
 
-            Assert.AreEqual(0, bulwark.ChargeReadyTicks[0], "Тик DoT заряд не тратит");
-            Assert.AreEqual(0, bulwark.ChargeReadyTicks[1], "Ответка шипов заряд не тратит");
+            Assert.AreEqual(0, bulwark.ChargeReadyTick(0), "Тик DoT заряд не тратит");
+            Assert.AreEqual(0, bulwark.ChargeReadyTick(1), "Ответка шипов заряд не тратит");
 
             // Способность — прямой удар: щит встаёт.
             es.RunPreDamage(defender, new DamageRequest(null, defender, 10f, DamageSchool.True, CombatTestValues.ArmorK,
                 sourceKind: DamageSourceKind.Ability), ctx);
-            Assert.AreNotEqual(0, bulwark.ChargeReadyTicks[0], "Урон способности поднимает щит");
+            Assert.AreNotEqual(0, bulwark.ChargeReadyTick(0), "Урон способности поднимает щит");
         }
 
         [Test]
@@ -140,14 +140,14 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             defender.CanAct = defender.CanActAtTickStart = false;
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreEqual(0, bulwark.ChargeReadyTicks[0], "Оглушённый щит не поднимает — заряд цел");
+            Assert.AreEqual(0, bulwark.ChargeReadyTick(0), "Оглушённый щит не поднимает — заряд цел");
             Assert.AreEqual(0, defender.CurrentShield, 1e-4f, "И щита на нём не появилось");
 
             // Контроль кончился — та же пассивка работает как обычно (проверка, что гейт именно по CanAct,
             // а не «сломали Оплот»).
             defender.CanAct = defender.CanActAtTickStart = true;
             es.RunPreDamage(defender, in incoming, ctx);
-            Assert.AreNotEqual(0, bulwark.ChargeReadyTicks[0], "Дееспособный поднимает щит");
+            Assert.AreNotEqual(0, bulwark.ChargeReadyTick(0), "Дееспособный поднимает щит");
         }
 
         [Test]

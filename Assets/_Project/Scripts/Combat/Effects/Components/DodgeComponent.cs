@@ -11,7 +11,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// АВТОАТАКУ (<see cref="DamageRequest.IsAutoAttack"/>) — любую, даже слабую; урон способностей/DoT/шипов
     /// не гасит. Дополнительно фильтруется триггером блока F (из <c>self.Unit.Ai.PassiveTrigger</c>) и тратит
     /// один заряд; заряды восстанавливаются независимо. Состояние зарядов — per-effect в
-    /// <see cref="RuntimeEffect.ChargeReadyTicks"/>.
+    /// <see cref="RuntimeEffect.TryConsumeCharge"/>.
     /// <para><b>Трата заряда — это КУВЫРОК</b> (решение 2026-07-26): носитель уходит с места на
     /// <see cref="_rollDistance"/> и получает <see cref="_hasteBuff"/> — ускорение после переката.
     /// Уклонение не просто гасит урон, а даёт занять позицию: оторваться, дойти, зайти в спину.</para>
@@ -54,8 +54,7 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnApply(in EffectContext ctx)
         {
-            // Инициализируем заряды готовыми (readyTick = 0 ≤ любого CurrentTick).
-            ctx.Effect.ChargeReadyTicks = new int[Mathf.Max(1, _maxCharges)];
+            ctx.Effect.ArmCharges(_maxCharges);
         }
 
         public void OnExpire(in EffectContext ctx) { }
@@ -63,7 +62,7 @@ namespace Guildmaster.Combat.Effects.Components
         public void OnStacksChanged(int previousStacks, in EffectContext ctx)
         {
             // Рестак НЕ трогает заряды: их число фиксировано (_maxCharges), а per-charge таймеры
-            // перезарядки уже живут в ctx.Effect.ChargeReadyTicks. Дефолтный OnExpire→OnApply здесь
+            // перезарядки уже живут в самом эффекте. Дефолтный OnExpire→OnApply здесь
             // обнулил бы массив — бесплатный рефилл всех зарядов негейта на каждый стак (07 §3.8 B2).
         }
 
@@ -76,25 +75,15 @@ namespace Guildmaster.Combat.Effects.Components
             if (self == null || self.IsDead) return;
             if (!TriggerMet(self, in incoming)) return;
 
-            int[] charges = ctx.Effect.ChargeReadyTicks;
-            if (charges == null) return;
-
-            int now = ctx.Combat.CurrentTick;
             // Перезарядка — через конвертации (M4): у быстрого носителя заряд возвращается чаще.
             float rechargeSeconds = Data.Stats.StatConversion.ApplyAll(_rechargeScalings, _rechargeSeconds, self.Stats);
             int rechargeTicks = Mathf.Max(1, Mathf.RoundToInt(rechargeSeconds * SimConstants.TickRate));
 
-            for (int i = 0; i < charges.Length; i++)
-            {
-                if (charges[i] <= now) // заряд готов
-                {
-                    charges[i] = now + rechargeTicks;
-                    result.Negated = true;
-                    Roll(self, in incoming, in ctx);
-                    return;
-                }
-            }
-            // нет готовых зарядов — удар проходит
+            // Нет готовых зарядов — удар проходит.
+            if (!ctx.Effect.TryConsumeCharge(ctx.Combat.CurrentTick, rechargeTicks)) return;
+
+            result.Negated = true;
+            Roll(self, in incoming, in ctx);
         }
 
         /// <summary>

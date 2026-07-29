@@ -196,10 +196,53 @@ namespace Guildmaster.Combat.Effects
         }
 
         /// <summary>
-        /// Заряды реактив-компонента (§9.4, «Изворотливость»): на каждый заряд — абсолютный тик готовности
-        /// (≤ CurrentTick = готов). Независимая перезарядка. null у эффектов без зарядов.
+        /// Заряды реактив-компонента (§9.4, «Изворотливость», «Оплот»): на каждый заряд — абсолютный тик
+        /// готовности (≤ CurrentTick = готов). Независимая перезарядка. null у эффектов без зарядов.
+        /// <para>Приватный намеренно: у публичного массива элементы правит кто угодно, а «найти готовый
+        /// заряд и потратить его» — правило, а не строчка. Оно жило копией в двух компонентах.</para>
         /// </summary>
-        public int[] ChargeReadyTicks;
+        private int[] _chargeReadyTicks;
+
+        /// <summary>Сколько зарядов взведено (0 = компонент зарядами не пользуется).</summary>
+        public int ChargeCount => _chargeReadyTicks?.Length ?? 0;
+
+        /// <summary>Абсолютный тик готовности конкретного заряда — для диагностики и тестов.</summary>
+        public int ChargeReadyTick(int index)
+            => _chargeReadyTicks != null && index >= 0 && index < _chargeReadyTicks.Length
+                ? _chargeReadyTicks[index]
+                : 0;
+
+        /// <summary>
+        /// Взвести заряды: все стартуют ГОТОВЫМИ (тик готовности 0 не больше любого текущего). Зовётся
+        /// при наложении и при подкреплении, которое взводит заново.
+        /// </summary>
+        public void ArmCharges(int count)
+        {
+            _chargeReadyTicks = new int[count > 0 ? count : 1];
+        }
+
+        /// <summary>
+        /// Потратить один готовый заряд и отправить его на перезарядку. <c>false</c> = готовых нет,
+        /// реакция не случается.
+        /// </summary>
+        /// <remarks>
+        /// Первый готовый по порядку, а не «самый свежий»: порядок обхода фиксирован, поэтому расход
+        /// зарядов детерминирован и одинаков у зеркальных сторон. Перезарядка у каждого своя — считается
+        /// от текущего тика, без потиковых декрементов.
+        /// </remarks>
+        public bool TryConsumeCharge(int currentTick, int rechargeTicks)
+        {
+            if (_chargeReadyTicks == null) return false;
+
+            for (int i = 0; i < _chargeReadyTicks.Length; i++)
+            {
+                if (_chargeReadyTicks[i] > currentTick) continue;   // ещё перезаряжается
+                _chargeReadyTicks[i] = currentTick + (rechargeTicks > 0 ? rechargeTicks : 1);
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Служебный таймер компонента: абсолютный тик, на котором ему пора сработать. Нужен там, где

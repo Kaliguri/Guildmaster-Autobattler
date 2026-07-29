@@ -11,7 +11,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// триггер блока F (читается из <c>self.Unit.Ai.PassiveTrigger</c>) и есть готовый заряд —
     /// накладывает на носителя таймированный щит (<see cref="_shieldEffect"/>), который тут же
     /// поглощает триггер-удар. Состояние зарядов — per-effect в
-    /// <see cref="RuntimeEffect.ChargeReadyTicks"/> (сверка с текущим тиком, без декрементов),
+    /// <see cref="RuntimeEffect.TryConsumeCharge"/> (сверка с текущим тиком, без декрементов),
     /// как у <see cref="DodgeComponent"/>.
     /// <para><b>Числа:</b> <c>_maxCharges</c> — сколько ударов подряд «Оплот» способен встретить;
     /// <c>_internalCooldownSeconds</c> — за сколько восстанавливается ОДИН заряд (заряды тикают
@@ -44,8 +44,7 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnApply(in EffectContext ctx)
         {
-            // Заряды стартуют готовыми (readyTick = 0 ≤ любого CurrentTick).
-            ctx.Effect.ChargeReadyTicks = new int[Mathf.Max(1, _maxCharges)];
+            ctx.Effect.ArmCharges(_maxCharges);
         }
 
         public void OnExpire(in EffectContext ctx) { }
@@ -53,7 +52,7 @@ namespace Guildmaster.Combat.Effects.Components
         public void OnStacksChanged(int previousStacks, in EffectContext ctx)
         {
             // Рестак НЕ трогает заряды: их число фиксировано, а per-charge таймеры уже живут в
-            // ctx.Effect.ChargeReadyTicks. Дефолтный OnExpire→OnApply дал бы бесплатный рефилл
+            // в самом эффекте. Дефолтный OnExpire→OnApply дал бы бесплатный рефилл
             // всех зарядов на каждый стак (та же гоча, что у «Изворотливости»).
         }
 
@@ -69,21 +68,12 @@ namespace Guildmaster.Combat.Effects.Components
 
             if (!TriggerMet(self, in incoming)) return;
 
-            int[] charges = ctx.Effect.ChargeReadyTicks;
-            if (charges == null) return;
-
-            int now = ctx.Combat.CurrentTick;
             int rechargeTicks = Mathf.Max(1, Mathf.RoundToInt(_internalCooldownSeconds * SimConstants.TickRate));
 
-            for (int i = 0; i < charges.Length; i++)
-            {
-                if (charges[i] > now) continue; // заряд ещё перезаряжается
+            // Нет готовых зарядов — удар проходит как есть.
+            if (!ctx.Effect.TryConsumeCharge(ctx.Combat.CurrentTick, rechargeTicks)) return;
 
-                charges[i] = now + rechargeTicks;
-                ctx.Combat.ApplyEffect(self, _shieldEffect, self);
-                return;
-            }
-            // нет готовых зарядов — удар проходит как есть
+            ctx.Combat.ApplyEffect(self, _shieldEffect, self);
         }
 
         /// <summary>
