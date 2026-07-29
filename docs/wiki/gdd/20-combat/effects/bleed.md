@@ -6,7 +6,10 @@ updated: 2026-07-29
 impl: paper
 ---
 
-# Кровотечение (Bleed)
+# Кровотечение
+
+> **Первый носитель — [[gdd/relics/the-cairn|The Cairn (Geomancer)]]** (заведён 2026-07-29). Эффекта
+> в коде нет вовсе, поэтому кит целиком зависит от его реализации. (Bleed)
 
 > **[[property-reference#Класс|Класс]]:** DoT · **[[property-reference#Полярность|Полярность]]:** Debuff · **[[property-reference#Теги|Теги]]:** `DoT`, `Bleed`
 > **[[property-reference#Стакинг|Стакинг]]:** Stack · **[[property-reference#Снимаемость|Снятие]]:** T1 · **Школа:** физическая
