@@ -198,39 +198,60 @@ namespace Guildmaster.UI.Components
             cam.transform.position = new Vector3(feetX, feetY + framed * 0.5f, -10f);
         }
 
-        // Красит основной спрайт тела тем же цветом, что и бой (UnitData.ResolveBodyTint) — единый источник.
-        // Тело = UnitView._sprite (рефлексией: UI-асмдеф не ссылается на Presentation). Праймит MPB, иначе
-        // кастовый HitFlash-шейдер игнорит .color до первой записи блока (инвариант UnitView.PrimeFlashBlock).
+        // Красит тело тем же цветом, что и бой (UnitData.ResolveBodyTint) — единый источник. Праймит MPB,
+        // иначе кастовый HitFlash-шейдер игнорит .color до первой записи блока (инвариант IUnitBodyVisual.Prime).
         private static void ApplyBodyTint(GameObject unit, Color tint)
         {
             if (unit == null) return;
-            SpriteRenderer body = FindBodySprite(unit);
-            if (body == null) return;
+
+            var body = new List<SpriteRenderer>();
+            CollectBodyParts(unit, body);
 
             var mpb = new MaterialPropertyBlock();
-            body.GetPropertyBlock(mpb);
-            mpb.SetFloat(FlashAmountId, 0f);
-            body.SetPropertyBlock(mpb);
-
-            body.color = tint;
+            for (int i = 0; i < body.Count; i++)
+            {
+                SpriteRenderer part = body[i];
+                if (part == null) continue;
+                part.GetPropertyBlock(mpb);
+                mpb.SetFloat(FlashAmountId, 0f);
+                part.SetPropertyBlock(mpb);
+                part.color = tint;
+            }
         }
 
-        // UnitView._sprite рефлексией (как _feetPoint в FrameByRecommendedSize). Нет UnitView/поля →
-        // фолбэк на первый SpriteRenderer в иерархии.
-        private static SpriteRenderer FindBodySprite(GameObject unit)
+        // Части тела рефлексией: UI-асмдеф не ссылается на Presentation, поэтому ни IUnitBodyVisual, ни
+        // UnitView здесь не типизируются. Составное тело отдаёт ВСЕ свои части — иначе на карточке
+        // скелетного героя покрашен один кусок, а остальные висят исходным цветом арта. Порядок поиска:
+        // список частей составного тела → одиночный спрайт UnitView → первый спрайт в иерархии.
+        private static void CollectBodyParts(GameObject unit, List<SpriteRenderer> into)
         {
             const System.Reflection.BindingFlags F =
                 System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance;
+
             var behaviours = unit.GetComponentsInChildren<MonoBehaviour>(true);
+            for (int i = 0; i < behaviours.Length; i++)
+            {
+                MonoBehaviour mb = behaviours[i];
+                if (mb == null || mb.GetType().Name != "SkeletalBodyVisual") continue;
+                if (mb.GetType().GetProperty("Parts")?.GetValue(mb) is IEnumerable<SpriteRenderer> parts)
+                {
+                    into.AddRange(parts);
+                    if (into.Count > 0) return;
+                }
+                break;
+            }
+
             for (int i = 0; i < behaviours.Length; i++)
             {
                 MonoBehaviour mb = behaviours[i];
                 if (mb == null || mb.GetType().Name != "UnitView") continue;
                 var f = mb.GetType().GetField("_sprite", F);
-                if (f != null && f.GetValue(mb) is SpriteRenderer sr && sr != null) return sr;
+                if (f != null && f.GetValue(mb) is SpriteRenderer sr && sr != null) { into.Add(sr); return; }
                 break;
             }
-            return unit.GetComponentInChildren<SpriteRenderer>(true);
+
+            SpriteRenderer any = unit.GetComponentInChildren<SpriteRenderer>(true);
+            if (any != null) into.Add(any);
         }
 
         // Грубо гасим world-UI юнита (бары/подпись/контейнер 'UI') — на карточке нужен только персонаж.
