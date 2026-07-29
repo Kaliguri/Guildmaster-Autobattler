@@ -20,7 +20,7 @@ MonoBehaviour:
   _affinity: 0
   _creatureType: 0
   _attackType: 0
-  _resourceType: 0
+  _resourceType: 1
   _visual: {fileID: 11400000, guid: 6d5122680e4104e44b5ab581a2fa0291, type: 2}
   _viewPrefab: {fileID: 5174956930701221052, guid: 42fb5ce6fa7b3ab45ae12042c071db11, type: 3}
   _tint: {r: 1, g: 1, b: 1, a: 1}
@@ -57,6 +57,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
@@ -79,10 +80,43 @@ MonoBehaviour:
   - Stat: 4
     Op: 3
     Value: 10
+  - Stat: 27
+    Op: 3
+    Value: 75
   _grantedEffects:
   - {fileID: 11400000, guid: e3be461416627c240b9d261a7f4b4b29, type: 2}
   - {fileID: 11400000, guid: 3404fe6e06b59da4ab445d73bd764994, type: 2}
-  _abilities: []
+  _abilities:
+  - _id: shadow_step
+    _effects:
+    - {fileID: 11400000, guid: 17a717ac87459e246a3f562d9f41091a, type: 2}
+    _baseCooldown: 0
+    _resourceCost: 75
+    _targetMode: 0
+    _damageMultiplier: 0
+    _schoolOverride: 0
+    _physicalSubtypeOverride: 0
+    _magicElementOverride: 0
+    _affinityOverride: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
+    _castCondition: 0
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceDamageMult: 1
+    _displaceWidth: 1
+    _visualSlot: 0
+    _infoTags: []
   _aiPreset: {fileID: 11400000, guid: 6ff0270a8ae2e2b4a9683cec33e5071b, type: 2}
   _ai:
     _autoAttackTargeting: 1

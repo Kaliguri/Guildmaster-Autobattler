@@ -57,6 +57,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects:
   - {fileID: 11400000, guid: c18d4142e7281344fb0e88c7f19ff1ed, type: 2}
   _canAttackWhileMoving: 0
@@ -79,10 +80,7 @@ MonoBehaviour:
     Value: 7
   - Stat: 27
     Op: 3
-    Value: 100
-  - Stat: 28
-    Op: 3
-    Value: 0
+    Value: 40
   - Stat: 7
     Op: 3
     Value: 176
@@ -94,7 +92,7 @@ MonoBehaviour:
   - _id: ice_chains
     _effects:
     - {fileID: 11400000, guid: 273ce8d37d74a884f82d3fcb0cf0560f, type: 2}
-    _baseCooldown: 8
+    _baseCooldown: 0
     _resourceCost: 40
     _targetMode: 4
     _damageMultiplier: 0
@@ -106,6 +104,8 @@ MonoBehaviour:
     _areaRadius: 0
     _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 3
     _castConditionCount: 2
     _castConditionRadius: 0
@@ -115,7 +115,6 @@ MonoBehaviour:
     _consumesTriggerTag: 1
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0

@@ -37,6 +37,20 @@ namespace Guildmaster.Combat.Effects
         void OnStacksChanged(int previousStacks, in EffectContext ctx);
     }
 
+    /// <summary>
+    /// Опциональный шов подкрепления: компонент, выдающий ОДНОРАЗОВЫЙ заряд, взводится заново, когда
+    /// уже висящий эффект накладывают повторно (<see cref="StackRule.Refresh"/> /
+    /// <see cref="StackRule.StackAndRefresh"/>). Обычный Refresh продлевает длительность и компонентов
+    /// не трогает — и правильно: разбудить <c>StatModifierComponent</c> значило бы добавить его моды
+    /// второй раз. Но заряд, который уже потрачен, продлевать нечего: «Скрытность», подкреплённая
+    /// вторым уходом в тень, обязана снова дать усиленный удар, иначе повторный уход не даёт ничего.
+    /// <para>Требование к реализации: <c>OnApply</c> должен быть идемпотентен (присваивать, а не
+    /// накапливать) — его позовут поверх живого состояния.</para>
+    /// </summary>
+    public interface IRearmOnRefreshComponent : IRuntimeEffectComponent
+    {
+    }
+
     /// <summary>Периодический компонент: <c>OnTick</c> каждые <see cref="Interval"/> секунд (DoT/HoT/реген).</summary>
     public interface IPeriodicComponent : IRuntimeEffectComponent
     {

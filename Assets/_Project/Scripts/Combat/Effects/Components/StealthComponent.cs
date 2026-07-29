@@ -6,27 +6,21 @@ namespace Guildmaster.Combat.Effects.Components
 {
     /// <summary>
     /// «Скрытность» (§9.6, §10.5): в начале боя (OnApply при выдаче пассива) и после СВОЕГО убийства
-    /// (<see cref="CombatEvent.UnitKilled"/>, доставляется убийце) — накладывает на носителя баф-эффект
-    /// стелса (<see cref="_stealthBuff"/>: DamageTakenEff−, MoveSpeed+, тег Stealth) и взводит
-    /// усиление следующей авто-атаки (<see cref="RuntimeUnit.EmpowerDamageMult"/>). Первая авто-атака
-    /// применяет множитель и снимает стелс (AutoAttackSystem, §9.6).
-    /// <para><b>Числа:</b> <c>_empowerMult</c> — во сколько раз сильнее удар из скрытности
-    /// (2 = вдвое, разовый); <c>_stealthBuff</c> — сам баф скрытности (меньше получаемого урона,
-    /// больше скорости, тег Stealth) — его величины живут в том эффекте.</para>
+    /// (<see cref="CombatEvent.UnitKilled"/>, доставляется убийце) — накладывает на носителя баф
+    /// скрытности (<see cref="_stealthBuff"/>).
+    /// <para><b>Что даёт баф</b> — задано в самом бафе, не здесь: снижение получаемого урона и
+    /// прибавку скорости держит его <c>StatModifierComponent</c>, а усиление следующей авто-атаки —
+    /// <see cref="EmpowerNextAttackComponent"/>. Этот компонент отвечает только за то, КОГДА кит
+    /// уходит в тень; активка «Уйти в тень» накладывает тот же баф за ману и потому не дублирует
+    /// ни одного числа.</para>
     /// <para><b>Когда срабатывает:</b> в начале боя и после КАЖДОГО своего убийства — то есть кит
     /// вознаграждается за добивание, а не за отсиживание.</para>
     /// </summary>
     [Serializable]
     public sealed class StealthComponent : IReactiveComponent
     {
-        [Tooltip("Баф стелса (DamageTakenEff−, MoveSpeed+, тег Stealth), снимаемый первой авто-атакой.")]
+        [Tooltip("Баф скрытности: снижение получаемого урона, прибавка скорости, усиление следующего удара, тег Stealth.")]
         [SerializeField] private EffectData _stealthBuff;
-
-        [Tooltip("Множитель урона усиленной первой авто-атаки.")]
-        [SerializeField] private float _empowerMult = 2f;
-
-        [Tooltip("Сколько ед. брони игнорирует удар из скрытности (20 у Убийцы). 0 = бьёт по обычной броне.")]
-        [SerializeField] private float _empowerFlatPen = 20f;
 
         public CombatEvent Events => CombatEvent.UnitKilled;
 
@@ -43,12 +37,9 @@ namespace Guildmaster.Combat.Effects.Components
         private void Cloak(in EffectContext ctx)
         {
             RuntimeUnit self = ctx.Target;
-            if (self == null || self.IsDead) return;
+            if (self == null || self.IsDead || _stealthBuff == null) return;
 
-            if (_stealthBuff != null) ctx.Combat.ApplyEffect(self, _stealthBuff, self);
-            self.EmpowerDamageMult = _empowerMult;
-            self.EmpowerFlatPen    = _empowerFlatPen;
-            self.BlinkBehindOnNextAttack = true; // удар из скрытности блинкует убийцу за спину цели (§10.5)
+            ctx.Combat.ApplyEffect(self, _stealthBuff, self);
         }
     }
 }

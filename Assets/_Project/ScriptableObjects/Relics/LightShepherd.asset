@@ -79,10 +79,7 @@ MonoBehaviour:
     Value: 10
   - Stat: 27
     Op: 3
-    Value: 100
-  - Stat: 28
-    Op: 3
-    Value: 0
+    Value: 30
   - Stat: 3
     Op: 3
     Value: 8
@@ -94,7 +91,7 @@ MonoBehaviour:
   _abilities:
   - _id: hand_of_life
     _effects: []
-    _baseCooldown: 5
+    _baseCooldown: 0
     _resourceCost: 30
     _targetMode: 3
     _damageMultiplier: 0
@@ -117,7 +114,6 @@ MonoBehaviour:
     _consumesTriggerTag: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0

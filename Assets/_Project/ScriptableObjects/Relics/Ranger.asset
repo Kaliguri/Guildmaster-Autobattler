@@ -57,6 +57,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
   _canAttackWhileMoving: 1
   _movingAttackSpeedPenaltyPct: 0.6
@@ -78,10 +79,7 @@ MonoBehaviour:
     Value: 14
   - Stat: 27
     Op: 3
-    Value: 100
-  - Stat: 28
-    Op: 3
-    Value: 0
+    Value: 30
   - Stat: 3
     Op: 3
     Value: 6
@@ -93,7 +91,7 @@ MonoBehaviour:
   - _id: hunters_mark
     _effects:
     - {fileID: 11400000, guid: 3298bf235ea63504f9280191cd46a500, type: 2}
-    _baseCooldown: 6
+    _baseCooldown: 0
     _resourceCost: 30
     _targetMode: 1
     _damageMultiplier: 0
@@ -106,6 +104,7 @@ MonoBehaviour:
     _healFlat: 0
     _healPctTargetMissingHp: 0
     _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 0
     _castConditionCount: 1
     _castConditionRadius: 0
@@ -115,7 +114,6 @@ MonoBehaviour:
     _consumesTriggerTag: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0

@@ -20,7 +20,7 @@ MonoBehaviour:
   _affinity: 0
   _creatureType: 0
   _attackType: 0
-  _resourceType: 0
+  _resourceType: 1
   _visual: {fileID: 11400000, guid: d0a79ee49ef5db14183cedd745bc33d1, type: 2}
   _viewPrefab: {fileID: 6633865311930413954, guid: aad39bd62a48f57439e7c1b59fe2a62b, type: 3}
   _tint: {r: 0.55, g: 0.85, b: 0.45, a: 1}
@@ -57,6 +57,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects: []
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
@@ -79,14 +80,17 @@ MonoBehaviour:
   - Stat: 4
     Op: 3
     Value: 30
+  - Stat: 27
+    Op: 3
+    Value: 40
   _grantedEffects:
   - {fileID: 11400000, guid: 9d09a9ee0098ff74f982416aaf3c1e3d, type: 2}
   _abilities:
   - _id: overgrowth
     _effects:
     - {fileID: 11400000, guid: df5e074a7146eda41a164fd1673993d7, type: 2}
-    _baseCooldown: 12
-    _resourceCost: 0
+    _baseCooldown: 0
+    _resourceCost: 40
     _targetMode: 0
     _damageMultiplier: 0
     _schoolOverride: 0
@@ -97,6 +101,8 @@ MonoBehaviour:
     _areaRadius: 0
     _healFlat: 0
     _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 0
     _castConditionCount: 1
     _castConditionRadius: 0
@@ -106,7 +112,6 @@ MonoBehaviour:
     _consumesTriggerTag: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0

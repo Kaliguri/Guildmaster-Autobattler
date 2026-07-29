@@ -1,0 +1,57 @@
+using System;
+using UnityEngine;
+
+namespace Guildmaster.Combat.Effects.Components
+{
+    /// <summary>
+    /// «Усиленный следующий удар»: пока эффект висит, следующая авто-атака носителя бьёт сильнее,
+    /// игнорирует часть брони и (опционально) блинкует носителя в спину цели.
+    /// <para>Компонент живёт на самом СОСТОЯНИИ (у Убийцы — на бафе «Скрытность»), а не на том, кто
+    /// это состояние выдал. Поэтому любой источник скрытности — пассивка «Скрытность», активка
+    /// «Уйти в тень», будущий предмет — даёт ровно одно усиление с одними и теми же числами, и
+    /// править их приходится в одном месте.</para>
+    /// <para><b>Числа:</b> <c>_damageMult</c> — во сколько раз сильнее удар (2 = вдвое);
+    /// <c>_flatPen</c> — сколько ед. брони игнорирует этот удар (20 у Убийцы; 0 = бьёт по обычной
+    /// броне); <c>_blinkBehind</c> — телепортировать ли носителя за спину цели перед ударом.</para>
+    /// <para><b>Когда тратится:</b> первой же авто-атакой — <see cref="Systems.AutoAttackSystem"/>
+    /// применяет множитель, забирает пробивание и снимает состояние по тегу. Если состояние снято
+    /// раньше (скрытность развеяли), усиление уходит вместе с ним: заряженный удар после
+    /// сработавшей контры был бы наградой за проигранный обмен.</para>
+    /// <para><b>Почему <see cref="IRearmOnRefreshComponent"/>:</b> заряд одноразовый, поэтому
+    /// повторный уход в тень поверх ещё висящего бафа обязан взвести его заново — иначе второе
+    /// убийство (или каст активки) не даёт вообще ничего. <c>OnApply</c> присваивает, а не
+    /// накапливает, и потому безопасен поверх живого состояния.</para>
+    /// </summary>
+    [Serializable]
+    public sealed class EmpowerNextAttackComponent : IRearmOnRefreshComponent
+    {
+        [Tooltip("Множитель урона усиленной авто-атаки (2 = вдвое).")]
+        [SerializeField] private float _damageMult = 2f;
+
+        [Tooltip("Сколько ед. брони игнорирует усиленный удар (20 у Убийцы). 0 = бьёт по обычной броне.")]
+        [SerializeField] private float _flatPen;
+
+        [Tooltip("Телепортировать носителя за спину цели перед усиленным ударом.")]
+        [SerializeField] private bool _blinkBehind;
+
+        public void OnApply(in EffectContext ctx)
+        {
+            RuntimeUnit self = ctx.Target;
+            if (self == null || self.IsDead) return;
+
+            self.EmpowerDamageMult = _damageMult;
+            self.EmpowerFlatPen    = _flatPen;
+            if (_blinkBehind) self.BlinkBehindOnNextAttack = true;
+        }
+
+        public void OnExpire(in EffectContext ctx)
+        {
+            RuntimeUnit self = ctx.Target;
+            if (self == null) return;
+
+            self.EmpowerDamageMult = 0f;
+            self.EmpowerFlatPen    = 0f;
+            if (_blinkBehind) self.BlinkBehindOnNextAttack = false;
+        }
+    }
+}

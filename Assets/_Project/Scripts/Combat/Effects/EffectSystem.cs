@@ -576,11 +576,13 @@ namespace Guildmaster.Combat
 
                 case StackRule.Refresh:
                     RefreshDuration(existing, def, source, target);
+                    RearmOneShotComponents(existing, target, source, combat);
                     break;
 
                 case StackRule.StackAndRefresh:
                     stacksChanged = TryAddStack(existing, def);
                     RefreshDuration(existing, def, source, target);
+                    RearmOneShotComponents(existing, target, source, combat);
                     break;
             }
 
@@ -605,6 +607,26 @@ namespace Guildmaster.Combat
             int ticks = ResolveDurationTicks(def, source, target);
             effect.RemainingTicks    = ticks;
             effect.FullDurationTicks = ticks;
+        }
+
+        /// <summary>
+        /// Подкрепление висящего эффекта: взвести заново одноразовые заряды
+        /// (<see cref="IRearmOnRefreshComponent"/>). Прочие компоненты не трогаем — для них Refresh
+        /// значит только «длительность с начала».
+        /// </summary>
+        private void RearmOneShotComponents(
+            RuntimeEffect effect, RuntimeUnit target, RuntimeUnit source, ICombatContext combat)
+        {
+            IEffectComponent[] components = effect.Def.Components;
+            if (components == null) return;
+
+            for (int i = 0; i < components.Length; i++)
+            {
+                if (components[i] is IRearmOnRefreshComponent rearm)
+                {
+                    rearm.OnApply(MakeContext(target, source, combat, effect, i, 0f));
+                }
+            }
         }
 
         private void Reapply(RuntimeEffect effect, int previousStacks, RuntimeUnit target, ICombatContext combat)

@@ -20,7 +20,7 @@ MonoBehaviour:
   _affinity: 0
   _creatureType: 0
   _attackType: 1
-  _resourceType: 0
+  _resourceType: 1
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
   _viewPrefab: {fileID: 4284165950888649411, guid: 596b0e53e267a4643b70c724d56f25d8, type: 3}
   _tint: {r: 0.43, g: 0.72, b: 0.42, a: 1}
@@ -57,6 +57,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects:
   - {fileID: 11400000, guid: 17b0a5bf45cc4f74e88c2127ae84c1bb, type: 2}
   _canAttackWhileMoving: 0
@@ -83,12 +84,15 @@ MonoBehaviour:
   - Stat: 4
     Op: 3
     Value: 12
+  - Stat: 27
+    Op: 3
+    Value: 45
   _grantedEffects: []
   _abilities:
   - _id: spore_burst
     _effects: []
-    _baseCooldown: 11
-    _resourceCost: 0
+    _baseCooldown: 0
+    _resourceCost: 45
     _targetMode: 4
     _damageMultiplier: 0
     _schoolOverride: 3
@@ -100,6 +104,7 @@ MonoBehaviour:
     _healFlat: 0
     _healPctTargetMissingHp: 0
     _healEffect: {fileID: 11400000, guid: dd60a04a362a4b742b77529b3558aa75, type: 2}
+    _selfHealFraction: 1
     _castCondition: 3
     _castConditionCount: 1
     _castConditionRadius: 0
@@ -109,7 +114,6 @@ MonoBehaviour:
     _consumesTriggerTag: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0

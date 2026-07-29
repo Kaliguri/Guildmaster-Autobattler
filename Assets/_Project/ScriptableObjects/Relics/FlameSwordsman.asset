@@ -57,6 +57,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _autoAttackShape: 0
   _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
   _autoAttackEffects:
   - {fileID: 11400000, guid: b7b3d2d89d2434c45a713073ed5b70f6, type: 2}
   _canAttackWhileMoving: 0
@@ -79,10 +80,7 @@ MonoBehaviour:
     Value: 40
   - Stat: 27
     Op: 3
-    Value: 100
-  - Stat: 28
-    Op: 3
-    Value: 0
+    Value: 50
   - Stat: 4
     Op: 3
     Value: 20
@@ -92,7 +90,7 @@ MonoBehaviour:
   - _id: ignition
     _effects:
     - {fileID: 11400000, guid: fccdc612aba97e346a333a0c7c06de33, type: 2}
-    _baseCooldown: 10
+    _baseCooldown: 0
     _resourceCost: 50
     _targetMode: 1
     _damageMultiplier: 0
@@ -105,6 +103,7 @@ MonoBehaviour:
     _healFlat: 0
     _healPctTargetMissingHp: 0
     _healEffect: {fileID: 0}
+    _selfHealFraction: 1
     _castCondition: 3
     _castConditionCount: 1
     _castConditionRadius: 0
@@ -114,7 +113,6 @@ MonoBehaviour:
     _consumesTriggerTag: 0
     _displaces: 0
     _displaceDistance: 4
-    _displaceTicks: 12
     _displaceDamageMult: 1
     _displaceWidth: 1
     _visualSlot: 0

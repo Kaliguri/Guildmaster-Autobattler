@@ -79,10 +79,7 @@ MonoBehaviour:
     Value: 0.55
   - Stat: 27
     Op: 3
-    Value: 100
-  - Stat: 28
-    Op: 3
-    Value: 0
+    Value: 50
   - Stat: 9
     Op: 3
     Value: 1
@@ -93,7 +90,7 @@ MonoBehaviour:
     _effects:
     - {fileID: 11400000, guid: 5f8a731f13f522a4090cc75dfe269d47, type: 2}
     - {fileID: 11400000, guid: 2d42622144fda1d44a4161e7148fc2c5, type: 2}
-    _baseCooldown: 10
+    _baseCooldown: 0
     _resourceCost: 50
     _targetMode: 1
     _damageMultiplier: 2

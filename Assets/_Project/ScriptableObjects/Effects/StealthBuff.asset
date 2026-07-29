@@ -20,8 +20,18 @@ MonoBehaviour:
   _maxStacks: 1
   _cleanseTier: 0
   _unremovable: 0
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
   _components:
   - rid: 5615026876324511850
+  - rid: 5615027308851101872
+  _icon: {fileID: 0}
+  _infoTags: []
   references:
     version: 2
     RefIds:
@@ -35,3 +45,9 @@ MonoBehaviour:
         - Stat: 20
           Op: 2
           Value: 0.3
+    - rid: 5615027308851101872
+      type: {class: EmpowerNextAttackComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _damageMult: 2
+        _flatPen: 20
+        _blinkBehind: 1

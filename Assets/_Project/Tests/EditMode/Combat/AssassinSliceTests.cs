@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Guildmaster.Combat;
+using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Random;
@@ -71,9 +72,76 @@ namespace Guildmaster.Tests.EditMode.Combat
             assassin.EmpowerDamageMult = 0f; // симулируем, что усиление уже израсходовано
 
             sim.DealDamage(new DamageRequest(assassin, victim, 999f, DamageSchool.True, sim.ArmorK)); // смертельный удар
-            sim.Tick(SimConstants.TickDelta); // дренаж UnitKilled → рестелс
+            sim.Tick(SimConstants.TickDelta); // дренаж UnitKilled → рестелс: подкрепление бафа
+            // Юниты этого стенда не зарегистрированы в симуляции, поэтому закон видимости
+            // (CommitTickChanges по списку боя) до них не доходит — проявляем отложенное вручную.
+            EffectSystem.CommitPending(assassin);
 
             Assert.AreEqual(2f, assassin.EmpowerDamageMult, 1e-4f, "После своего убийства «Скрытность» перевзводит усиление");
+            Assert.AreNotEqual(EffectTag.None, assassin.EffectTagMask & EffectTag.Stealth,
+                "Усиление приходит ВМЕСТЕ с бафом скрытности, а не отдельно от него");
+        }
+
+        [Test]
+        public void Stealth_Dispelled_TakesEmpowerWithIt()
+        {
+            var sim = BuildSim(1UL);
+            var assassin = MakeUnit(0, team: 0, pos: Vector2.zero, relic: AssassinRelic(PassiveTrigger.AnyHit));
+
+            sim.ApplyEffect(assassin, StealthBuff(), assassin);
+            sim.Tick(SimConstants.TickDelta);
+            Assert.AreEqual(2f, assassin.EmpowerDamageMult, 1e-4f, "Баф скрытности взвёл усиление");
+            Assert.AreEqual(20f, assassin.EmpowerFlatPen, 1e-4f, "И пробивание брони на один удар");
+
+            sim.Dispel(new DispelRequest(assassin, DispelTargetPolarity.Any, EffectTag.Stealth, int.MaxValue, 0));
+            sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(0f, assassin.EmpowerDamageMult, 1e-4f,
+                "Развеяли скрытность — заряженный удар уходит вместе с ней, а не остаётся наградой за сработавшую контру");
+            Assert.AreEqual(0f, assassin.EmpowerFlatPen, 1e-4f, "Пробивание тоже снято");
+        }
+
+        // ===================== «Уйти в тень» (активка, мана 75) =====================
+
+        [Test]
+        public void ShadowStep_CloaksWithoutKill_AndSpendsResource()
+        {
+            var es  = new EffectSystem();
+            var ctx = new MockCombatContext(effects: es);
+            var assassin = MakeUnit(0, team: 0, pos: Vector2.zero, relic: AssassinRelic(PassiveTrigger.AnyHit));
+            assassin.Stats.AddModifiersFrom("resource", new[]
+            {
+                new StatModifier(StatType.MaxResource, ModifierOp.Flat, 75f),
+            });
+            assassin.CurrentResource = 75f;
+
+            var units = new List<RuntimeUnit> { assassin };
+            assassin.Abilities.Add(new AbilityRuntime(ShadowStep()));
+
+            Assert.IsTrue(new AbilitySystem().TryCast(assassin, 0, units, ctx), "Хватает маны — активка кастуется");
+            EffectSystem.CommitPending(assassin);
+
+            Assert.AreEqual(0f, assassin.CurrentResource, 1e-4f, "Запас равен стоимости: каст обнуляет шкалу");
+            Assert.AreNotEqual(EffectTag.None, assassin.EffectTagMask & EffectTag.Stealth,
+                "Убийца уходит в тень САМ, без убийства");
+            Assert.AreEqual(2f, assassin.EmpowerDamageMult, 1e-4f, "Тот же баф — то же усиление, что от пассивки");
+            Assert.AreEqual(0f, assassin.Abilities[0].CooldownRemaining, 1e-4f,
+                "Гейт один — ресурсный: кулдауна у активки нет");
+        }
+
+        [Test]
+        public void ShadowStep_WithoutResource_DoesNotCast()
+        {
+            var es  = new EffectSystem();
+            var ctx = new MockCombatContext(effects: es);
+            var assassin = MakeUnit(0, team: 0, pos: Vector2.zero, relic: AssassinRelic(PassiveTrigger.AnyHit));
+            assassin.CurrentResource = 74f;
+
+            var units = new List<RuntimeUnit> { assassin };
+            assassin.Abilities.Add(new AbilityRuntime(ShadowStep()));
+
+            Assert.IsFalse(new AbilitySystem().TryCast(assassin, 0, units, ctx), "Одной единицы не хватило — каста нет");
+            Assert.AreEqual(74f, assassin.CurrentResource, 1e-4f, "Ресурс не списан");
         }
 
         // ===================== «Изворотливость» (§9.3/§9.4) =====================
@@ -168,18 +236,31 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.DamageTakenEff, ModifierOp.PercentMult, -0.4f),
                 new StatModifier(StatType.MoveSpeed,      ModifierOp.PercentMult,  0.3f),
             });
+            // Усиление живёт на бафе, а не на том, кто его выдал — так активка «Уйти в тень»
+            // и пассивка «Скрытность» дают одно и то же, не дублируя чисел.
+            var empower = new EmpowerNextAttackComponent()
+                .With("_damageMult", 2f)
+                .With("_flatPen", 20f)
+                .With("_blinkBehind", true);
+            // stacking как в ассете StealthBuff (Refresh): повторный уход в тень поверх висящего бафа
+            // подкрепляет его и заново взводит одноразовое усиление (IRearmOnRefreshComponent).
             return TestEffect.Make(
                 baseDuration: -1f, polarity: EffectPolarity.Buff,
-                tags: EffectTag.Stealth | EffectTag.Buff, components: mod);
+                tags: EffectTag.Stealth | EffectTag.Buff, stacking: StackRule.Refresh,
+                components: new IEffectComponent[] { mod, empower });
         }
 
         private static EffectData StealthPassive()
         {
             var stealth = new StealthComponent()
-                .With("_stealthBuff", StealthBuff())
-                .With("_empowerMult", 2f);
+                .With("_stealthBuff", StealthBuff());
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: stealth);
         }
+
+        /// <summary>«Уйти в тень»: активка на себя за 75 маны, без кулдауна — накладывает тот же баф скрытности.</summary>
+        private static AbilityData ShadowStep() =>
+            TestAbility.Make(effects: new[] { StealthBuff() }, cooldown: 0f, cost: 75f,
+                mode: AbilityTargetMode.Self);
 
         private static EffectData DodgePassive(int maxCharges, float rechargeSeconds)
         {
