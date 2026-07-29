@@ -271,7 +271,7 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>
-        /// Brace behind the shield — the telegraph for Bulwark, and it lives on a masked layer, so it only
+        /// Block behind the shield — the telegraph for Bulwark, and it lives on a masked layer, so it only
         /// writes the shield arm. Snaps up in seven frames (a guard that eases up is a guard that arrives
         /// late), holds, then settles a couple of degrees so the pose is not frozen.
         /// </summary>
@@ -453,6 +453,13 @@ namespace Guildmaster.AnimationLab.Editor
         /// </summary>
         static void HoldUntil(RigWriter w, float until) => w.HoldUntil(until);
 
+        /// <summary>Bring both controllers in line with the clips that now exist. See BoneUnitControllerBuilder.</summary>
+        static string[] RebuildControllers() => new[]
+        {
+            BoneUnitControllerBuilder.Rebuild("BoneUnit_Combat"),
+            BoneUnitControllerBuilder.Rebuild("BoneUnit_Standart"),
+        };
+
         /// <summary>Back to the stance every attack starts and ends in.</summary>
         static void Stance(RigWriter w, float time)
         {
@@ -477,6 +484,11 @@ namespace Guildmaster.AnimationLab.Editor
             log.AppendLine(Walk());
             log.AppendLine(Sprint());
             log.AppendLine(Stun());
+
+            // A clip nobody can reach is the same as a clip that does not exist — that is how the sprint,
+            // the charge and the stun each went missing in turn. Rebuilding the recipes therefore rebuilds
+            // the controllers too, in BOTH of them: the combat one and the stand Max actually looks at.
+            foreach (string line in RebuildControllers()) log.AppendLine(line);
             Debug.Log(log.ToString());
         }
     }
