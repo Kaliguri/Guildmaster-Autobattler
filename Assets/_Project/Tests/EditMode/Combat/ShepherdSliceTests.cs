@@ -2,6 +2,7 @@
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
+using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
@@ -239,6 +240,80 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new BrainSystem(), new AbilitySystem(), new MovementSystem(),
                 new AutoAttackSystem(), new ProjectileSystem(), new DeathSystem(),
                 new EffectSystem(), new RegenSystem());
+
+        // ===================== «Длань жизни» очищает (M7) =====================
+
+        [Test]
+        public void HandOfLife_CleansesBaseDebuffs_ButNotHardControl()
+        {
+            // Вердикт Макса 2026-07-29: сила очистки понижена 2 → 1. Тир 2 (жёсткий контроль) оставлен
+            // специализированному клинсовику, поэтому «Длань» обязана СНЯТЬ базовое и ОСТАВИТЬ стан.
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+
+            var shepherd = TestUnit.Make();
+            var ally     = TestUnit.Make();
+            shepherd.CurrentResource = 30f;
+
+            EffectData basic = TestEffect.Make(
+                baseDuration: 5f, polarity: EffectPolarity.Debuff, tags: EffectTag.Debuff, cleanseTier: 1);
+            EffectData hardControl = TestEffect.Make(
+                baseDuration: 5f, polarity: EffectPolarity.Debuff,
+                tags: EffectTag.Debuff | EffectTag.Control, cleanseTier: 2);
+
+            effects.Apply(ally, basic, shepherd, ctx);
+            effects.Apply(ally, hardControl, shepherd, ctx);
+            EffectSystem.CommitPending(ally);
+            Assert.AreEqual(2, ally.ActiveEffects.Count, "На союзнике оба дебаффа");
+
+            // Нагрузка «Длани»: мгновенный эффект с диспелом силы 1.
+            EffectData cleanse = TestEffect.Make(
+                baseDuration: 0f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
+                components: new DispelComponent()
+                    .With("_targetPolarity", DispelTargetPolarity.Debuff)
+                    .With("_dispelPower", 1)
+                    .With("_maxCount", 0));
+
+            effects.Apply(ally, cleanse, shepherd, ctx);
+            EffectSystem.CommitPending(ally);
+
+            Assert.AreEqual(1, ally.ActiveEffects.Count, "Базовый дебафф снят, жёсткий контроль остался");
+            Assert.AreSame(hardControl, ally.ActiveEffects[0].Def, "Остаться должен именно тир 2");
+        }
+
+        [Test]
+        public void HandOfLife_CleanseTakesStacksInsteadOfRemoving_WhenTheEffectHasAPrice()
+        {
+            // «Снять эффект» ≠ «снять всё накопленное»: у эффекта с ценой очистки диспел забирает стаки,
+            // а сам эффект живёт дальше. Иначе одна «Длань» стирала бы полностью раскачанное горение.
+            var effects = new EffectSystem();
+            var ctx = new MockCombatContext(effects: effects);
+
+            var shepherd = TestUnit.Make();
+            var ally     = TestUnit.Make();
+
+            EffectData stacking = TestEffect.Make(
+                baseDuration: 5f, polarity: EffectPolarity.Debuff, tags: EffectTag.Debuff,
+                stacking: StackRule.Stack, maxStacks: 10, cleanseTier: 1,
+                cleanseStacksFlat: 3, cleanseStacksPct: 0f);
+
+            for (int i = 0; i < 8; i++) effects.Apply(ally, stacking, shepherd, ctx);
+            EffectSystem.CommitPending(ally);
+            Assert.AreEqual(8, ally.ActiveEffects[0].Stacks, "Восемь стаков накоплено");
+
+            EffectData cleanse = TestEffect.Make(
+                baseDuration: 0f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
+                components: new DispelComponent()
+                    .With("_targetPolarity", DispelTargetPolarity.Debuff)
+                    .With("_dispelPower", 1)
+                    .With("_maxCount", 0));
+
+            effects.Apply(ally, cleanse, shepherd, ctx);
+            EffectSystem.CommitPending(ally);
+
+            Assert.AreEqual(1, ally.ActiveEffects.Count, "Эффект с ценой очистки не исчезает целиком");
+            Assert.AreEqual(5, ally.ActiveEffects[0].Stacks, "Цена — три стака: 8 → 5");
+        }
 
         /// <summary>Хилер: relic с AutoAttackMode.Heal + Ranged, статы силы лечения/дальности/снаряда.</summary>
         private static RuntimeUnit MakeShepherd(int id, int team, Vector2 pos, float aad, float range)

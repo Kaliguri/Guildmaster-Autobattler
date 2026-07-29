@@ -839,6 +839,14 @@ MonoBehaviour:
     m_Key: effect.whirl_shield.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 6788415695872000
+    m_Key: effect.hand_of_life_cleanse.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6788415750397952
+    m_Key: effect.hand_of_life_cleanse.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

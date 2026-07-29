@@ -62,6 +62,8 @@ MonoBehaviour:
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
+  _windupShare: 0
+  _chargeAttackWindupMult: 1
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
   _stats:
@@ -91,6 +93,7 @@ MonoBehaviour:
   _abilities:
   - _id: hand_of_life
     _effects: []
+    _selfEffects: []
     _baseCooldown: 0
     _resourceCost: 30
     _targetMode: 3
@@ -112,6 +115,11 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _statScalings: []
     _displaces: 0
     _displaceDistance: 4
     _displaceDamageMult: 1

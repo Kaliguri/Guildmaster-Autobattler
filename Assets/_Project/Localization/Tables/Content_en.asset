@@ -312,6 +312,14 @@ MonoBehaviour:
     m_Localized: A shield earned by your own blow.
     m_Metadata:
       m_Items: []
+  - m_Id: 6788415695872000
+    m_Localized: Cleansing Light
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6788415750397952
+    m_Localized: The light lifts base afflictions along with its healing.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
