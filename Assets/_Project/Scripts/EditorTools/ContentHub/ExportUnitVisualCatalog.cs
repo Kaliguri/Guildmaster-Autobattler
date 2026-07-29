@@ -147,7 +147,8 @@ namespace Guildmaster.ContentHub.Editor
                         Name = unit.name,
                         Kind = path.Contains("/Relics/") ? "RELIC" : "ENEMY",
                         Sprite = sprite,
-                        Tint = unit.Tint == Color.white ? Color.white : unit.Tint,
+                        // Тот же резолвер, что у боя и карточки: каталог обязан показывать РОВНО игровой цвет.
+                        Tint = unit.ResolveBodyTint(),
                         RecH = Mathf.Max(0.01f, recH),
                         RecW = Mathf.Max(0.01f, recW),
                     });

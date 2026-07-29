@@ -23,7 +23,7 @@ MonoBehaviour:
   _resourceType: 0
   _visual: {fileID: 11400000, guid: 5e18a695936c40a4c94eaefe3364adf9, type: 2}
   _viewPrefab: {fileID: 9077715029037053228, guid: b490d15271d05f74798b8f2fa92d7735, type: 3}
-  _tint: {r: 0.7, g: 1, b: 0.55, a: 1}
+  _tint: {r: 1, g: 1, b: 1, a: 1}
   _vfxColor: {r: 2, g: 0.4, b: 0.534, a: 1}
   _vfxPalette:
     serializedVersion: 2

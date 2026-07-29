@@ -45,9 +45,11 @@ namespace Guildmaster.Data.Definitions
                  "Сейчас всем можно прицепить единый placeholder, позже — индивидуальные. Пусто = дефолтный из презентера.")]
         [SerializeField] private GameObject _viewPrefab;
 
-        [Tooltip("Тинт тела (умножается на спрайт). White = «не задан» → дев-фолбэк: стабильный оттенок от " +
-                 "имени, чтобы placeholder-болванки различались. Когда появится свой спрайт — задать акцент " +
-                 "или оставить White. ЕДИНЫЙ источник цвета: и бой, и карточка инвентаря берут ResolveBodyTint().")]
+        [Tooltip("Тинт тела — УМНОЖАЕТСЯ на спрайт, поэтому только затемняет и глушит: перекрасить готовый " +
+                 "цветной арт в другой цвет им нельзя (синий рыцарь от оранжевого тинта станет тёмно-серым, " +
+                 "не огненным — это работа Palette Remapper). Нужен ТОЛЬКО чтобы развести юнитов, делящих один " +
+                 "спрайт: у своего арта тинт остаётся White. White = не красим, как есть. " +
+                 "ЕДИНЫЙ источник цвета: и бой, и карточка инвентаря берут ResolveBodyTint().")]
         [SerializeField] private Color _tint = Color.white;
 
         [Tooltip("ГЛАВНЫЙ цвет эффектов юнита — там, где разброс не нужен и нужен ровно один цвет: тело " +
@@ -149,6 +151,14 @@ namespace Guildmaster.Data.Definitions
         public UnitVisual Visual => _visual;
         public GameObject ViewPrefab => _viewPrefab;
         public Color Tint => _tint;
+
+        /// <summary>
+        /// Сырое поле главного цвета эффектов: White = «не задан». Играющий цвет берётся
+        /// <see cref="ResolveVfxColor"/> — это свойство существует для валидации авторинга
+        /// (<c>UnitTintPolicyTests</c>), которая обязана видеть именно «не задан», а не результат фолбэка.
+        /// </summary>
+        public Color VfxColor => _vfxColor;
+
         public AreaShape AutoAttackShape => _autoAttackShape;
         public float AutoAttackWidth => _autoAttackWidth;
 
@@ -189,17 +199,14 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>
         /// Итоговый цвет тела для рендера — ЕДИНЫЙ источник и для боя (<c>UnitView.SetTint</c>), и для
-        /// карточки инвентаря (<c>RelicCardVisualRig</c>). Явно заданный <see cref="Tint"/> (не White) идёт
-        /// как есть; White трактуется как «не задан» → дев-фолбэк: стабильный HSV-оттенок от имени SO
-        /// (различает placeholder-болванки, как раньше делал только <c>CombatPresenter.TintFor</c>). Убирает
-        /// рассинхрон «в бою тинт есть, в карточке — нет».
+        /// карточки инвентаря (<c>RelicCardVisualRig</c>), и для каталога визуалов.
+        /// <para>Тинт отдаётся КАК ЕСТЬ, White включительно: белый = «не красим». Раньше здесь стоял
+        /// дев-фолбэк «оттенок от хеша имени», и он красил восемь юнитов из семнадцати цветом, который никто
+        /// не выбирал: огненный мечник получал hue 147 (зелёный), «стандартная» болванка — 126 (тоже зелёный).
+        /// Хеш имени не знает ни цвета арта, ни того, делит ли юнит спрайт с кем-то ещё, — то есть отвечал на
+        /// вопрос, которого не задавали.</para>
         /// </summary>
-        public Color ResolveBodyTint()
-        {
-            if (_tint != Color.white) return _tint;
-            float hue = (Mathf.Abs(name.GetHashCode()) % 360) / 360f;
-            return Color.HSVToRGB(hue, 0.5f, 1f);
-        }
+        public Color ResolveBodyTint() => _tint;
 
         /// <summary>
         /// Главный цвет эффектов юнита: тело снаряда, его след, контур каста — всё, где цвет один. Не задан
