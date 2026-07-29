@@ -79,7 +79,19 @@ namespace Guildmaster.Presentation
         // Все feel-параметры (hitstop, финишер, вспышка/сплющивание вью) — из design-конфига (единый источник).
         private Design.CombatFeelConfig _feel;
         private Core.Audio.IAudioService _audio;   // раздаётся видам: разлёт на осколки звучит из UnitView
-        private Core.Simulation.ISimInterpolation _interpolation;   // доля шага между тиками — считает петля
+        // Показ читает ЛЕНТУ, а не живой сим: сим уходит вперёд на окно опережения, поэтому живое
+        // состояние для картинки — будущее. Момент показа и доля кадра — у плеера ленты.
+        private Combat.Tape.BattleTapePlayback _playback;
+
+        // Паспорт юнита: то, что за бой не меняется. Заводится по событию спавна (оно приходит заранее —
+        // это регистрация, а не показ), потому что вид создаётся много позже, когда до юнита дойдёт показ,
+        // и живого юнита к тому моменту может уже не быть в списке.
+        private readonly Dictionary<int, UnitIdentity> _identities = new Dictionary<int, UnitIdentity>();
+
+        // Индекс кадра показа id→снимок: собирается раз в кадр, нужен для поиска снимка ЦЕЛИ.
+        private readonly Dictionary<int, Combat.Tape.UnitSnapshot> _frameIndex =
+            new Dictionary<int, Combat.Tape.UnitSnapshot>();
+        private readonly List<int> _viewsToBury = new List<int>();
 
         [Inject]
         public void Construct(
@@ -90,9 +102,9 @@ namespace Guildmaster.Presentation
             Design.CombatFeelConfig feel,
             Core.Audio.IAudioService audio,
             Core.Players.ILocalPlayer localPlayer,
-            Core.Simulation.ISimInterpolation interpolation)
+            Combat.Tape.BattleTapePlayback playback)
         {
-            _interpolation        = interpolation;
+            _playback             = playback;
             _localPlayer          = localPlayer;
             _audio                = audio;
             _simulation           = simulation;
@@ -149,6 +161,11 @@ namespace Guildmaster.Presentation
         // само-гаснут, когда юнитов нет. Сцена/камера не трогаются; новый сетап заспавнит юнитов через OnUnitSpawned.
         private void HandleBattleReset()
         {
+            // Лента чистится рекордером, а показ надо отмотать: иначе он продолжит с тика прошлого боя.
+            _playback.Reset();
+            _identities.Clear();
+            _frameIndex.Clear();
+
             foreach (var kvp in _views)
                 if (kvp.Value != null) Destroy(kvp.Value.gameObject);
             _views.Clear();
@@ -199,14 +216,21 @@ namespace Guildmaster.Presentation
         private void Update()
         {
             // Тот же признак готовности, что в OnEnable: пока Construct не позвали, презентеру нечего
-            // рисовать — ни симуляции, ни петли ещё нет. Это не фолбэк на пустую зависимость: с пришедшим
-            // Construct приходят обе разом, поэтому отдельной проверки на _interpolation не нужно.
+            // рисовать — ни симуляции, ни ленты ещё нет. Это не фолбэк на пустую зависимость: с пришедшим
+            // Construct приходят обе разом, поэтому отдельной проверки на _playback не нужно.
             if (_simulation == null) return;
 
-            // Доля берётся у петли: она копит остаток тика. Прежний подсчёт (Time.deltaTime / TickDelta)
-            // считал не долю шага, а отношение кадра к тику — при стабильном fps это константа, и тела
-            // вечно стояли на одной и той же промежуточной точке вместо того, чтобы двигаться между тиками.
-            float alpha = _interpolation.Alpha;
+            // Единственный в кадре, кто двигает момент показа: иначе разные потребители увидели бы
+            // разное «сейчас» в одном кадре.
+            _playback.Advance(Time.deltaTime);
+
+            // Состав юнитов на экране — тоже из кадра ленты, а не из событий сима: события спавна и
+            // смерти приходят на окно опережения РАНЬШЕ, и вид появлялся бы за десять секунд до того,
+            // как игрок увидит выход юнита на арену.
+            if (_playback.TryGetFrame(out var frame)) SyncViewsToFrame(frame);
+
+            // Доля берётся у ПОКАЗА, а не у боевого луча: она отсчитывается от показанного тика.
+            float alpha = _playback.Alpha;
 
             foreach (var kvp in _views)
             {
@@ -327,49 +351,106 @@ namespace Guildmaster.Presentation
                 _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(caster));
         }
 
+        /// <summary>
+        /// Спавн в СИМУЛЯЦИИ — это ещё не выход на экран: показ дойдёт до этого тика через окно
+        /// опережения. Поэтому здесь только запоминаем паспорт юнита (определение и команду), а вид
+        /// создаётся из кадра показа в <see cref="SyncViewsToFrame"/>.
+        /// </summary>
         private void HandleUnitSpawned(RuntimeUnit unit)
         {
+            _identities[unit.Id] = new UnitIdentity(unit.Unit, unit.Team, unit.Id);
+        }
+
+        /// <summary>
+        /// Привести состав видов к кадру показа: кто появился — создать, кому пора умереть — похоронить,
+        /// остальным положить состояние их тика.
+        /// </summary>
+        private void SyncViewsToFrame(IReadOnlyList<Combat.Tape.UnitSnapshot> frame)
+        {
+            _frameIndex.Clear();
+            for (int i = 0; i < frame.Count; i++) _frameIndex[frame[i].Id] = frame[i];
+
+            for (int i = 0; i < frame.Count; i++)
+            {
+                Combat.Tape.UnitSnapshot snapshot = frame[i];
+
+                if (!_views.TryGetValue(snapshot.Id, out UnitView view) || view == null)
+                {
+                    if (snapshot.IsDead) continue; // умер до того, как показ до него дошёл — вид не нужен
+                    view = CreateView(in snapshot);
+                    if (view == null) continue;
+                }
+
+                bool hasTarget = snapshot.TargetId >= 0
+                                 && _frameIndex.TryGetValue(snapshot.TargetId, out Combat.Tape.UnitSnapshot target);
+                view.SetState(in snapshot, hasTarget ? _frameIndex[snapshot.TargetId] : default, hasTarget);
+            }
+
+            // Смерть на экране наступает тогда, когда её показали: снимок мёртв либо юнита в кадре нет.
+            _viewsToBury.Clear();
+            foreach (var kvp in _views)
+            {
+                bool alive = _frameIndex.TryGetValue(kvp.Key, out Combat.Tape.UnitSnapshot s) && !s.IsDead;
+                if (!alive) _viewsToBury.Add(kvp.Key);
+            }
+            for (int i = 0; i < _viewsToBury.Count; i++) BuryView(_viewsToBury[i]);
+        }
+
+        private UnitView CreateView(in Combat.Tape.UnitSnapshot snapshot)
+        {
+            if (!_identities.TryGetValue(snapshot.Id, out UnitIdentity identity)) return null;
+
             // Свой префаб персонажа (визуал/анимация/размер настроены ПРЯМО в нём); фолбэк — дефолтный
             // из презентера. Никакой рантайм-подмены визуала — префаб самодостаточен.
-            GameObject prefabGo = unit.Unit != null && unit.Unit.ViewPrefab != null
-                ? unit.Unit.ViewPrefab
+            GameObject prefabGo = identity.Definition != null && identity.Definition.ViewPrefab != null
+                ? identity.Definition.ViewPrefab
                 : (_unitViewPrefab != null ? _unitViewPrefab.gameObject : null);
+            if (prefabGo == null) return null;
 
-            if (prefabGo != null)
+            var go = Instantiate(prefabGo, (Vector3)(Vector2)snapshot.Position, Quaternion.identity, transform);
+            if (!go.TryGetComponent(out UnitView view))
             {
-                var go = Instantiate(prefabGo, (Vector3)(Vector2)unit.Position, Quaternion.identity, transform);
-                if (go.TryGetComponent(out UnitView view))
-                {
-                    view.Bind(unit);
-                    view.ApplyFeelConfig(_feel); // параметры вспышки/сплющивания — из design-конфига
-                    view.ApplyAudio(_audio);     // хруст разлёта: вид сам знает, когда начинается shatter
-                    view.SetContactDustHandler(OnUnitContactDust);
-
-                    // Тинт тела по персонажу (dev-различение, пока placeholder-спрайт) + подпись над HP-баром.
-                    view.SetTint(TintFor(unit));
-                    view.SetLabel(NameFor(unit));
-
-                    // Цвет HP-бара по принадлежности к смотрящему (дизайн-система).
-                    view.SetHealthColor(_colorPalette.HealthBarColor(IsAllyOfViewer(unit)));
-
-                    // Цвет щита — общий из палитры (не зависит от принадлежности).
-                    view.SetShieldColor(_colorPalette.Shield);
-
-                    _views[unit.Id] = view;
-                }
-                else Destroy(go);
+                Destroy(go);
+                return null;
             }
+
+            view.Bind(in snapshot, identity.Definition);
+            view.ApplyFeelConfig(_feel); // параметры вспышки/сплющивания — из design-конфига
+            view.ApplyAudio(_audio);     // хруст разлёта: вид сам знает, когда начинается shatter
+            view.SetContactDustHandler(OnUnitContactDust);
+
+            // Тинт тела по персонажу (dev-различение, пока placeholder-спрайт) + подпись над HP-баром.
+            view.SetTint(TintFor(in identity));
+            view.SetLabel(NameFor(in identity));
+
+            // Цвет HP-бара по принадлежности к смотрящему (дизайн-система).
+            view.SetHealthColor(_colorPalette.HealthBarColor(IsAllyOfViewer(identity.Team)));
+
+            // Цвет щита — общий из палитры (не зависит от принадлежности).
+            view.SetShieldColor(_colorPalette.Shield);
+
+            _views[snapshot.Id] = view;
+            return view;
         }
 
-        private void HandleUnitDied(RuntimeUnit unit)
+        private void BuryView(int unitId)
         {
-            if (_views.TryGetValue(unit.Id, out var view))
+            if (_views.TryGetValue(unitId, out var view))
             {
-                view.OnDeath();
-                _views.Remove(unit.Id);
-                _corpses.Add(view); // труп доигрывает секвенс смерти сам; сносим гарантированно при рестарте
+                if (view != null)
+                {
+                    view.OnDeath();
+                    _corpses.Add(view); // труп доигрывает секвенс смерти сам; сносим при рестарте
+                }
+                _views.Remove(unitId);
             }
         }
+
+        /// <summary>
+        /// Смерть в СИМУЛЯЦИИ — ещё не смерть на экране: показ дойдёт до неё через окно опережения.
+        /// Хоронит вид <see cref="SyncViewsToFrame"/>, когда мёртвый снимок доедет до кадра показа.
+        /// </summary>
+        private void HandleUnitDied(RuntimeUnit unit) { }
 
         private void HandleDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result)
         {
@@ -553,6 +634,25 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
+        /// Паспорт юнита: неизменная за бой часть — определение, команда, id. Вид создаётся из кадра
+        /// показа, когда живого юнита уже может не быть под рукой, поэтому «кто это» запоминается
+        /// отдельно от «что с ним сейчас».
+        /// </summary>
+        private readonly struct UnitIdentity
+        {
+            public readonly Data.Definitions.UnitData Definition;
+            public readonly int Team;
+            public readonly int Id;
+
+            public UnitIdentity(Data.Definitions.UnitData definition, int team, int id)
+            {
+                Definition = definition;
+                Team       = team;
+                Id         = id;
+            }
+        }
+
+        /// <summary>
         /// Тинт тела по персонажу. У юнита с данными — ЕДИНЫЙ резолвер <see cref="UnitData.ResolveBodyTint"/>
         /// (тот же цвет, что рендерит карточка инвентаря); у болванчиков без данных — по стороне смотрящего.
         /// </summary>
@@ -560,6 +660,12 @@ namespace Guildmaster.Presentation
             unit.Unit != null
                 ? unit.Unit.ResolveBodyTint()
                 : (IsAllyOfViewer(unit) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
+
+        /// <summary>То же, но по паспорту: так вид красится, когда создаётся из кадра показа.</summary>
+        private Color TintFor(in UnitIdentity identity) =>
+            identity.Definition != null
+                ? identity.Definition.ResolveBodyTint()
+                : (IsAllyOfViewer(identity.Team) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
 
         /// <summary>
         /// Цвета ЭФФЕКТОВ юнита. Их два, и они про разное: ГЛАВНЫЙ цвет — там, где цвет один (тело снаряда,
@@ -578,14 +684,24 @@ namespace Guildmaster.Presentation
         /// Юнит на стороне смотрящего? Единственное место, где в презентере решается «свой/чужой».
         /// Без <see cref="Core.Players.ILocalPlayer"/> (сцена без DI, дев-запуск) считаем команду 0 своей.
         /// </summary>
-        private bool IsAllyOfViewer(RuntimeUnit unit) =>
-            unit.Team == (_localPlayer != null ? _localPlayer.Team : 0);
+        private bool IsAllyOfViewer(RuntimeUnit unit) => IsAllyOfViewer(unit.Team);
+
+        /// <summary>Та же проверка по номеру команды — для пути, где живого юнита нет.</summary>
+        private bool IsAllyOfViewer(int team) =>
+            team == (_localPlayer != null ? _localPlayer.Team : 0);
 
         /// <summary>Подпись персонажа: имя реликвии (SO) либо «Ally/Enemy N» для болванчиков.</summary>
         private string NameFor(RuntimeUnit unit)
         {
             if (unit.Unit != null) return unit.Unit.name;
             return (IsAllyOfViewer(unit) ? "Ally " : "Enemy ") + unit.Id;
+        }
+
+        /// <summary>Та же подпись по паспорту.</summary>
+        private string NameFor(in UnitIdentity identity)
+        {
+            if (identity.Definition != null) return identity.Definition.name;
+            return (IsAllyOfViewer(identity.Team) ? "Ally " : "Enemy ") + identity.Id;
         }
 
         private void HandleAttackStarted(RuntimeUnit source, RuntimeUnit target)

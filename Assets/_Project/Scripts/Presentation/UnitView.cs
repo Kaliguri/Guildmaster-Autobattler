@@ -100,7 +100,17 @@ namespace Guildmaster.Presentation
         private static readonly int AttackHash = Animator.StringToHash("Attack");
         private static readonly int DeathHash   = Animator.StringToHash("Death");
 
-        private RuntimeUnit _unit;
+        // Состояние берётся из ленты боя, а НЕ из живого RuntimeUnit: сим уходит вперёд на окно
+        // опережения, и живой юнит для показа — «будущее». Определение (UnitData) при этом статично,
+        // поэтому живёт отдельной ссылкой и на тик не копируется.
+        private Combat.Tape.UnitSnapshot _snapshot;
+        private bool                     _hasState;
+        private Data.Definitions.UnitData _definition;
+
+        // Снимок цели того же тика — нужен только развороту и вздрогу при смене цели.
+        private Combat.Tape.UnitSnapshot _targetState;
+        private bool                     _hasTargetState;
+
         private Vector2     _renderPosition;
 
         // Тело юнита за швом: один спрайт или полтора десятка частей — виду разницы не видно (см. IUnitBodyVisual).
@@ -195,11 +205,17 @@ namespace Guildmaster.Presentation
             }
         }
 
-        /// <summary>Связать вид с рантайм-юнитом.</summary>
-        public void Bind(RuntimeUnit unit)
+        /// <summary>
+        /// Связать вид с юнитом ленты: <paramref name="state"/> — его состояние на показываемом тике,
+        /// <paramref name="definition"/> — его определение (арт, палитра, флаги), которое за бой не меняется.
+        /// </summary>
+        public void Bind(in Combat.Tape.UnitSnapshot state, Data.Definitions.UnitData definition)
         {
-            _unit           = unit;
-            _renderPosition = unit.Position;
+            _snapshot       = state;
+            _hasState       = true;
+            _definition     = definition;
+            _hasTargetState = false;
+            _renderPosition = state.Position;
             transform.position = (Vector3)_renderPosition;
 
             // Вид могли переиспользовать после чьей-то смерти — возвращаем полосу из погашенного состояния.
@@ -220,7 +236,7 @@ namespace Guildmaster.Presentation
                 // возвращаем его, иначе второй жилец этого вида выходит на арену невидимым.
                 Body.SetVisible(true);
 
-                bool startFlip = unit.Team != 0;
+                bool startFlip = state.Team != 0;
                 _desiredFlipX = startFlip;
                 ApplyFacingVisual(startFlip);
 
@@ -236,8 +252,8 @@ namespace Guildmaster.Presentation
                 _holoAmount = 0f;
             }
 
-            if (_healthBar != null) _healthBar.Bind(unit);
-            if (_manaBar != null)   _manaBar.Bind(unit);
+            if (_healthBar != null) _healthBar.Bind(in state);
+            if (_manaBar != null)   _manaBar.Bind(in state);
 
             InitVisual(); // визуал/анимация — из самого префаба (см. InitVisual), без рантайм-подмены
         }
@@ -301,7 +317,7 @@ namespace Guildmaster.Presentation
             _attackPhase = AttackAnimPhase.None;
 
             // Данные юнита — только для маркера контакта/темпа бега (скраб по симу). Клипы играет контроллер.
-            _visual = _unit?.Unit != null ? _unit.Unit.Visual : null;
+            _visual = _definition != null ? _definition.Visual : null;
 
             // Анимация активна, если у Animator есть контроллер (клипы — в его стейтах). UnitVisual не обязателен.
             _animActive = _animator != null && _animator.runtimeAnimatorController != null;
@@ -352,14 +368,30 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
+        /// Положить состояние показываемого тика. Зовётся раз за кадр из <see cref="CombatPresenter"/>,
+        /// до <see cref="UpdateInterpolation"/>: сначала «что показываем», потом «где внутри тика».
+        /// </summary>
+        /// <param name="state">Снимок этого юнита на тике показа.</param>
+        /// <param name="target">Снимок его цели на том же тике — для разворота и вздрога при смене цели.</param>
+        /// <param name="hasTarget">Есть ли цель в кадре (её могли уже убить или её id — <c>-1</c>).</param>
+        public void SetState(in Combat.Tape.UnitSnapshot state, in Combat.Tape.UnitSnapshot target, bool hasTarget)
+        {
+            _snapshot       = state;
+            _hasState       = true;
+            _targetState    = target;
+            _hasTargetState = hasTarget;
+        }
+
+        /// <summary>
         /// Обновить интерполированную позицию. Вызывается из <see cref="CombatPresenter.Update"/>.
         /// </summary>
-        /// <param name="alpha">Степень интерполяции [0, 1] между PreviousPosition и Position.</param>
+        /// <param name="alpha">Степень интерполяции [0, 1] между PreviousPosition и Position
+        /// показанного тика — долю даёт момент ПОКАЗА, а не боевой луч.</param>
         public void UpdateInterpolation(float alpha)
         {
-            if (_unit == null) return;
+            if (!_hasState) return;
 
-            _renderPosition = Vector2.Lerp(_unit.PreviousPosition, _unit.Position, alpha);
+            _renderPosition = Vector2.Lerp(_snapshot.PreviousPosition, _snapshot.Position, alpha);
             transform.position = new Vector3(
                 _renderPosition.x + _nudgeOffset.x + _attackOffset.x,
                 _renderPosition.y + _nudgeOffset.y + _attackOffset.y,
@@ -374,10 +406,10 @@ namespace Guildmaster.Presentation
             Body?.SetSortingOrder(ySort);
 
             if (_healthBar != null)
-                _healthBar.UpdateBar(_unit.CurrentHP, _unit.Stats.Get(Data.Stats.StatType.MaxHP), _unit.CurrentShield);
+                _healthBar.UpdateBar(_snapshot.CurrentHP, _snapshot.MaxHP, _snapshot.CurrentShield);
 
             if (_manaBar != null)
-                _manaBar.UpdateBar(_unit.CurrentResource, _unit.Stats.Get(Data.Stats.StatType.MaxResource));
+                _manaBar.UpdateBar(_snapshot.CurrentResource, _snapshot.MaxResource);
         }
 
         // --- Attach points (сокеты) ----------------------------------------------------------------
@@ -497,17 +529,17 @@ namespace Guildmaster.Presentation
             float dt = Time.deltaTime;
             UpdateAttackPhase(dt);
 
-            bool isMoving = _unit != null &&
-                            (_unit.Position - _unit.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
+            bool isMoving = _hasState &&
+                            (_snapshot.Position - _snapshot.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
 
             // Attack показываем поверх Run, ПОКА идёт цикл атаки. Ключ — что «в атаке» решает СИМ-фаза,
             // а не сырое смещение: во время замаха/хвоста мили зарутован (MovementSystem), и толчок
             // сепарации НЕ должен рвать свинг в Run (иначе виден бег вместо замаха и пропадают замах/хвост
             // у преследователя — остаётся будто только удар). isMoving разделяет стойку и погоню лишь в
             // ПАУЗЕ между ударами (сим Idle, рендер ещё тянет хвост-цикл).
-            bool attackWhileMoving = _unit?.Unit != null && _unit.Unit.CanAttackWhileMoving;
-            bool simInSwing = _unit != null &&
-                              (_unit.Phase == AttackPhase.Windup || _unit.Phase == AttackPhase.Recovery);
+            bool attackWhileMoving = _definition != null && _definition.CanAttackWhileMoving;
+            bool simInSwing = _hasState &&
+                              (_snapshot.Phase == AttackPhase.Windup || _snapshot.Phase == AttackPhase.Recovery);
             bool attackPlaying = UnitAnimationSelector.AttackClipPlaying(
                 _attackPhase != AttackAnimPhase.None, simInSwing, attackWhileMoving, isMoving);
 
@@ -536,17 +568,17 @@ namespace Guildmaster.Presentation
         private void UpdateAttackPhase(float dt)
         {
             if (_isDead) { _attackPhase = AttackAnimPhase.None; return; }
-            if (_unit == null) return;
+            if (!_hasState) return;
 
             // Идёт сим-замах → фаза замаха (покрывает и реконструкцию после load/resync без события старта).
-            if (_unit.IsWindingUp) { _attackPhase = AttackAnimPhase.Windup; return; }
+            if (_snapshot.IsWindingUp) { _attackPhase = AttackAnimPhase.Windup; return; }
 
             switch (_attackPhase)
             {
                 case AttackAnimPhase.Windup:
                     // Замах кончился (кадр контакта) → хвост. Окно до следующего удара = текущий кулдаун:
                     // на старте замаха он равнялся интервалу, за замах убыл до «интервал − замах».
-                    _recoveryGapTicks = Mathf.Max(1, _unit.AttackCooldownTicks);
+                    _recoveryGapTicks = Mathf.Max(1, _snapshot.AttackCooldownTicks);
                     _attackPhase = AttackAnimPhase.Recovery;
                     break;
 
@@ -554,7 +586,7 @@ namespace Guildmaster.Presentation
                     // Пока тикает кулдаун — цикл атаки жив, держим хвост (в непрерывной атаке следующий
                     // замах придёт ровно на кулдаун 0 → бесшовный луп, без провала в Run). Кулдаун истёк
                     // без нового замаха (цель ушла/вне радиуса) → атака кончилась, возврат к локомоции.
-                    if (_unit.AttackCooldownTicks <= 0) _attackPhase = AttackAnimPhase.None;
+                    if (_snapshot.AttackCooldownTicks <= 0) _attackPhase = AttackAnimPhase.None;
                     break;
             }
         }
@@ -566,20 +598,20 @@ namespace Guildmaster.Presentation
             switch (_state)
             {
                 case UnitAnimationState.Attack:
-                    if (_attackPhase == AttackAnimPhase.Windup && _unit != null && _unit.WindupTicks > 0)
+                    if (_attackPhase == AttackAnimPhase.Windup && _hasState && _snapshot.WindupTicks > 0)
                     {
                         // Замах: скрабим [0..маркер] по прогрессу windup — контакт (маркер) приходится
                         // ровно на конец замаха = сим-тик урона.
-                        float progress = 1f - (float)_unit.WindupRemaining / _unit.WindupTicks;
+                        float progress = 1f - (float)_snapshot.WindupRemaining / _snapshot.WindupTicks;
                         progress = Mathf.Clamp01(progress);
                         _animator.speed = 0f;
                         _animator.Play(AttackHash, 0, progress * _attackMarkerNormalized);
                     }
-                    else if (_attackPhase == AttackAnimPhase.Recovery && _unit != null)
+                    else if (_attackPhase == AttackAnimPhase.Recovery && _hasState)
                     {
                         // Хвост: скрабим [маркер..1] по прогрессу окна до следующего замаха — клип
                         // доигрывает ровно к старту следующего удара, цикл лупится в темпе скорости атаки.
-                        float gapProgress = 1f - (float)_unit.AttackCooldownTicks / _recoveryGapTicks;
+                        float gapProgress = 1f - (float)_snapshot.AttackCooldownTicks / _recoveryGapTicks;
                         gapProgress = Mathf.Clamp01(gapProgress);
                         float clipT = _attackMarkerNormalized + gapProgress * (1f - _attackMarkerNormalized);
                         _animator.speed = 0f;
@@ -596,8 +628,8 @@ namespace Guildmaster.Presentation
                     // Клип бега листается по пройденной дистанции: во сколько раз юнит быстрее «родной»
                     // скорости клипа, во столько же крутим клип. Так ноги не скользят ни у покадрового
                     // юнита (кадры), ни у скелетного (непрерывные кривые) — единица измерения одна.
-                    float speed = _unit != null
-                        ? (_unit.Position - _unit.PreviousPosition).magnitude / SimConstants.TickDelta
+                    float speed = _hasState
+                        ? (_snapshot.Position - _snapshot.PreviousPosition).magnitude / SimConstants.TickDelta
                         : 0f;
                     _animator.speed = speed / Mathf.Max(0.01f, _runUnitsPerSecond);
                     break;
@@ -614,14 +646,14 @@ namespace Guildmaster.Presentation
         {
             if (_animActive)
             {
-                if (_unit != null && _unit.IsWindingUp && _unit.WindupTicks > 0)
+                if (_hasState && _snapshot.IsWindingUp && _snapshot.WindupTicks > 0)
                 {
                     _attackPhase = AttackAnimPhase.Windup;
                 }
                 else
                 {
                     // Мгновенный удар (windup 0): сразу хвост, окно = весь интервал (кулдаун только что взведён).
-                    _recoveryGapTicks = Mathf.Max(1, _unit != null ? _unit.AttackCooldownTicks : 1);
+                    _recoveryGapTicks = Mathf.Max(1, _hasState ? _snapshot.AttackCooldownTicks : 1);
                     _attackPhase = AttackAnimPhase.Recovery;
                 }
             }
@@ -724,23 +756,23 @@ namespace Guildmaster.Presentation
 
         private void ApplyFacing()
         {
-            if (_unit == null) return;
+            if (!_hasState) return;
             if (Body == null) return;
             if (_flipAnimActive) return; // идёт разворот-сплющивание — не дёргаем flip снаружи
 
             // Пока идёт цикл атаки — целимся в цель (приоритет над движением): стрелок смотрит на врага,
             // даже отступая. Нет цели — падаем на разворот по движению ниже.
             bool? wantFlip = null;
-            if (_attackPhase != AttackAnimPhase.None && TryDesiredFlipToward(_unit.CurrentTarget, out bool faceFlip))
+            if (_attackPhase != AttackAnimPhase.None && TryDesiredFlipToward(out bool faceFlip))
                 wantFlip = faceFlip;
             else
             {
-                float moveDx = _unit.Position.x - _unit.PreviousPosition.x;
+                float moveDx = _snapshot.Position.x - _snapshot.PreviousPosition.x;
                 _facingVelX = Mathf.Lerp(_facingVelX, moveDx, 0.2f);
 
                 if (Mathf.Abs(_facingVelX) > FacingMoveEpsilonX)
                     wantFlip = _facingVelX < 0f; // бежим влево → отражаем
-                else if (TryDesiredFlipToward(_unit.CurrentTarget, out bool standFlip))
+                else if (TryDesiredFlipToward(out bool standFlip))
                     wantFlip = standFlip;
             }
 
@@ -749,11 +781,11 @@ namespace Guildmaster.Presentation
         }
 
         // Желаемый flip к цели. false = цели нет/мертва. Почти вертикаль — «уже повёрнут».
-        private bool TryDesiredFlipToward(RuntimeUnit target, out bool flipX)
+        private bool TryDesiredFlipToward(out bool flipX)
         {
             flipX = IsFacingFlipped();
-            if (target == null || target.IsDead || _unit == null) return false;
-            float dx = target.Position.x - _unit.Position.x;
+            if (!_hasState || !_hasTargetState || _targetState.IsDead) return false;
+            float dx = _targetState.Position.x - _snapshot.Position.x;
             if (Mathf.Abs(dx) < FacingTargetDeadzoneX) return true; // уже ок, не меняем
             flipX = dx < 0f;
             return true;
@@ -800,7 +832,7 @@ namespace Guildmaster.Presentation
             if (Body == null) return;
 
             Color tint = _baseTint;
-            bool stealthed = _unit != null && (_unit.EffectTagMask & EffectTag.Stealth) != 0;
+            bool stealthed = _hasState && (_snapshot.EffectTagMask & EffectTag.Stealth) != 0;
             tint.a = stealthed ? 0.4f : 1f;
 
             var state = new Body.BodyVisualState(
@@ -1057,10 +1089,10 @@ namespace Guildmaster.Presentation
 
         private void TickLocomotionDust()
         {
-            if (_unit == null || _onContactDust == null) return;
+            if (!_hasState || _onContactDust == null) return;
             if (_feel == null || !_feel.EnableContactDust) { _wasMoving = false; return; }
 
-            bool isMoving = (_unit.Position - _unit.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
+            bool isMoving = (_snapshot.Position - _snapshot.PreviousPosition).sqrMagnitude > MoveEpsilonSq;
             if (isMoving != _wasMoving && _contactDustCooldownLeft <= 0f)
             {
                 _onContactDust.Invoke(this);
@@ -1071,10 +1103,10 @@ namespace Guildmaster.Presentation
 
         private void TickTargetAcquireTell()
         {
-            if (_unit == null || _feel == null || !_feel.EnableTargetAcquireTell) return;
+            if (!_hasState || _feel == null || !_feel.EnableTargetAcquireTell) return;
 
-            int id = _unit.CurrentTarget != null && !_unit.CurrentTarget.IsDead
-                ? _unit.CurrentTarget.Id
+            int id = _hasTargetState && !_targetState.IsDead
+                ? _targetState.Id
                 : int.MinValue;
             if (id == _lastTargetId) return;
 
@@ -1254,7 +1286,7 @@ namespace Guildmaster.Presentation
             }
 
             // Палитра павшего — из его же данных: осколки должны быть «его» цвета.
-            Gradient palette = _unit?.Unit != null ? _unit.Unit.ResolveVfxPalette() : null;
+            Gradient palette = _definition != null ? _definition.ResolveVfxPalette() : null;
             Body.PlayShatter(_feel, palette, () => gameObject.SetActive(false));
         }
 
@@ -1294,8 +1326,8 @@ namespace Guildmaster.Presentation
             // попал в неё (офсет спавна — фаза коллизии), поэтому центр здесь = feet.
             if (_showCollisionGizmo)
             {
-                float size = Application.isPlaying && _unit != null
-                    ? Mathf.Max(0.01f, _unit.Stats.Get(Data.Stats.StatType.Size))
+                float size = Application.isPlaying && _hasState
+                    ? Mathf.Max(0.01f, _snapshot.Size)
                     : Mathf.Max(0.01f, _gizmoPreviewSize);
                 float cr = size * SimTuning.Default.BodyRadiusPerSize;
                 var orange = new Color(1f, 0.6f, 0.2f, 0.85f);

@@ -171,10 +171,11 @@ namespace Guildmaster.Game
                        _ => new Combat.Tape.BattleTape(Combat.Tape.BattleTapeRecorder.DefaultWindowTicks),
                        Lifetime.Scoped);
             builder.Register<Combat.Tape.BattleTapeRecorder>(Lifetime.Scoped);
+            builder.Register<Combat.Tape.BattleTapePlayback>(Lifetime.Scoped);
 
-            // Петля — ещё и владелец доли интерполяции: она копит остаток тика, презентация его читает.
-            builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped)
-                   .As<Core.Simulation.ISimInterpolation>();
+            // Петля гонит сим и пишет ленту. Долю интерполяции она больше не отдаёт: её отсчитывает
+            // момент ПОКАЗА (BattleTapePlayback), потому что показ живёт на своём тике, а не на симовом.
+            builder.RegisterEntryPoint<CombatLoopService>(Lifetime.Scoped);
         }
 
         private void RegisterPresentation(IContainerBuilder builder)

@@ -1,5 +1,6 @@
 using System;
 using Guildmaster.Core.Simulation;
+using UnityEngine;
 
 namespace Guildmaster.Combat.Tape
 {
@@ -63,6 +64,16 @@ namespace Guildmaster.Combat.Tape
             if (tick < 0) return;
 
             _tape.CaptureTick(tick, _simulation.Units);
+        }
+
+        /// <summary>
+        /// Снять кадр состояния, когда сим НЕ тикает: мир, расстановка, пауза между боями. Тик при этом
+        /// не двигается, кадр просто перезаписывается — иначе показу нечего показывать и арена пустая,
+        /// хотя юниты на ней стоят.
+        /// </summary>
+        public void CaptureIdleState()
+        {
+            _tape.CaptureTick(Mathf.Max(0, _simulation.CurrentTick - 1), _simulation.Units);
         }
 
         private int Tick => _simulation.CurrentTick;

@@ -171,6 +171,113 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(25f, tape.GetDamage(collected[0].PayloadIndex).HpDamage, 1e-3f);
         }
 
+        // ===================== Момент показа (Ф2) =====================
+
+        // Показ цепляется за самый свежий кадр: до боя (мир, расстановка) лага быть не должно вовсе,
+        // иначе игрок двигал бы юнита и видел его через десять секунд.
+        [Test]
+        public void Playback_StartsAtTheFront_WithoutWaitingForLead()
+        {
+            var tape = new BattleTape(windowTicks: 64);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            playback.Advance(SimConstants.TickDelta);
+            Assert.IsFalse(playback.IsPlaying, "Лента пуста — показывать нечего");
+
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta);
+
+            Assert.IsTrue(playback.IsPlaying, "Появился кадр — показ сразу его берёт");
+            Assert.AreEqual(0, playback.ViewTick);
+            Assert.IsFalse(playback.HasFullLead, "Запаса ещё нет — телеграфам опираться не на что");
+        }
+
+        // Запас перед показом набирает продюсер, разгоняя сим. Здесь это эмулируется руками: сим
+        // уехал вперёд, а показ идёт тик за тиком реального времени.
+        [Test]
+        public void Playback_TrailsTheSim_WhenTheSimRunsAhead()
+        {
+            var tape = new BattleTape(windowTicks: BattleTapePlayback.LookaheadTicks + 60);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta); // показ встал на тик 0
+            for (int tick = 1; tick <= BattleTapePlayback.LookaheadTicks; tick++) tape.CaptureTick(tick, units);
+
+            Assert.IsTrue(playback.HasFullLead, "Сим ушёл на окно вперёд — запас набран");
+
+            for (int i = 0; i < 10; i++) playback.Advance(SimConstants.TickDelta);
+
+            Assert.AreEqual(10, playback.ViewTick, "Показ идёт в реальном времени, тик за тик");
+            Assert.AreEqual(BattleTapePlayback.LookaheadTicks - 10, playback.Lead,
+                "И тратит запас ровно настолько, насколько прошёл");
+        }
+
+        // Обогнать сим показ не может: он упирается во фронт ленты и ждёт там.
+        [Test]
+        public void Playback_NeverOvertakesTheSim()
+        {
+            var tape = new BattleTape(windowTicks: BattleTapePlayback.LookaheadTicks + 60);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta);
+            for (int tick = 1; tick <= BattleTapePlayback.LookaheadTicks; tick++) tape.CaptureTick(tick, units);
+
+            // Сим стоит (например, бой кончился), а время показа течёт дальше.
+            for (int i = 0; i < BattleTapePlayback.LookaheadTicks * 2; i++) playback.Advance(SimConstants.TickDelta);
+
+            Assert.AreEqual(tape.FrontTick, playback.ViewTick, "Показ дошёл до фронта и остановился на нём");
+            Assert.AreEqual(0, playback.Lead, "Запаса больше нет — дальше показывать нечего");
+        }
+
+        // То, за что куплен лаг: показ читает состояние, до которого сам ещё не дошёл.
+        [Test]
+        public void Playback_ReadsTheFuture_ThatItHasNotShownYet()
+        {
+            var tape = new BattleTape(windowTicks: BattleTapePlayback.LookaheadTicks + 60);
+            var playback = new BattleTapePlayback(tape);
+            var unit = MakeUnit(id: 1, hp: 100f);
+            var units = new List<RuntimeUnit> { unit };
+
+            unit.CurrentHP = 100f;
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta); // показ встал на тик 0
+            for (int tick = 1; tick <= BattleTapePlayback.LookaheadTicks; tick++)
+            {
+                unit.CurrentHP = 100f - tick; // тает на единицу в тик
+                tape.CaptureTick(tick, units);
+            }
+
+            Assert.IsTrue(playback.TryGetFrame(out IReadOnlyList<UnitSnapshot> now));
+            Assert.AreEqual(100f, now[0].CurrentHP, 1e-4f, "Показывается ещё целый юнит");
+
+            Assert.IsTrue(playback.TryGetFrameAhead(30, out IReadOnlyList<UnitSnapshot> soon),
+                "Через секунду сим уже посчитан — показ имеет право туда заглянуть");
+            Assert.AreEqual(70f, soon[0].CurrentHP, 1e-4f, "И знает, что HP там будет ниже");
+        }
+
+        [Test]
+        public void Playback_Reset_SendsTheViewBackToWaiting()
+        {
+            var tape = new BattleTape(windowTicks: BattleTapePlayback.LookaheadTicks + 60);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta);
+            Assert.IsTrue(playback.IsPlaying, "Предусловие: показ шёл");
+
+            tape.Clear();
+            playback.Reset();
+
+            Assert.IsFalse(playback.IsPlaying, "После рестарта показу нечего показывать до первого кадра");
+            Assert.AreEqual(BattleTape.NoTick, playback.ViewTick);
+        }
+
         // ===================== Фабрики =====================
 
         private static CombatSimulation BuildSim() =>

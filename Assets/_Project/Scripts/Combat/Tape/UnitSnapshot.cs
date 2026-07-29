@@ -27,7 +27,7 @@ namespace Guildmaster.Combat.Tape
 
         public readonly float CurrentHP;
         public readonly float MaxHP;
-        public readonly float Shield;
+        public readonly float CurrentShield;
         public readonly float CurrentResource;
         public readonly float MaxResource;
 
@@ -51,15 +51,18 @@ namespace Guildmaster.Combat.Tape
         public readonly int TargetId;
 
         /// <summary>Маска тегов эффектов: по ней показ включает стелс-силуэт и прочие метки.</summary>
-        public readonly EffectTag Tags;
+        public readonly EffectTag EffectTagMask;
 
         public readonly bool IsDead;
 
+        /// <summary>Юнит в замахе — имя и смысл те же, что у одноимённого свойства живого юнита.</summary>
+        public bool IsWindingUp => Phase == AttackPhase.Windup;
+
         public UnitSnapshot(
             int id, int team, Vector2 position, Vector2 previousPosition,
-            float currentHp, float maxHp, float shield, float currentResource, float maxResource,
+            float currentHp, float maxHp, float currentShield, float currentResource, float maxResource,
             float size, AttackPhase phase, int windupTicks, int windupRemaining,
-            int attackCooldownTicks, int targetId, EffectTag tags, bool isDead)
+            int attackCooldownTicks, int targetId, EffectTag effectTagMask, bool isDead)
         {
             Id                  = id;
             Team                = team;
@@ -67,7 +70,7 @@ namespace Guildmaster.Combat.Tape
             PreviousPosition    = previousPosition;
             CurrentHP           = currentHp;
             MaxHP               = maxHp;
-            Shield              = shield;
+            CurrentShield       = currentShield;
             CurrentResource     = currentResource;
             MaxResource         = maxResource;
             Size                = size;
@@ -76,7 +79,7 @@ namespace Guildmaster.Combat.Tape
             WindupRemaining     = windupRemaining;
             AttackCooldownTicks = attackCooldownTicks;
             TargetId            = targetId;
-            Tags                = tags;
+            EffectTagMask       = effectTagMask;
             IsDead              = isDead;
         }
 

@@ -14,25 +14,30 @@ namespace Guildmaster.Game.Services
     /// Тикует только хост (в мультиплеере); клиент применяет команды и следит за checksum.
     /// (вики «10» §5.1).
     /// </summary>
-    public sealed class CombatLoopService : IAsyncStartable, ISimInterpolation
+    public sealed class CombatLoopService : IAsyncStartable
     {
         private readonly CombatSimulation _simulation;
         private readonly Combat.Tape.BattleTapeRecorder _tapeRecorder;
+        private readonly Combat.Tape.BattleTapePlayback _playback;
 
         private float _accumulator;
         private bool  _running;
 
         /// <summary>
-        /// Доля шага, накопленная сверх последнего тика. Аккумулятор здесь — единственный, кто знает,
-        /// сколько времени прошло с прошлого шага, поэтому и долю отдаёт он. Презентация её только
-        /// читает (см. <see cref="ISimInterpolation"/>).
+        /// Максимум тиков разгона за кадр. Разгон нужен, чтобы сим ушёл вперёд показа: тикая ровно по
+        /// реальному времени, он никуда бы не уехал и никакого «знания будущего» не появилось.
+        /// Тот же смысл, что у анти-лавины, но с другой стороны: не догнать прошлое, а набрать запас.
         /// </summary>
-        public float Alpha => Mathf.Clamp01(_accumulator / SimConstants.TickDelta);
+        private const int MaxLeadTicksPerFrame = 30;
 
-        public CombatLoopService(CombatSimulation simulation, Combat.Tape.BattleTapeRecorder tapeRecorder)
+        public CombatLoopService(
+            CombatSimulation simulation,
+            Combat.Tape.BattleTapeRecorder tapeRecorder,
+            Combat.Tape.BattleTapePlayback playback)
         {
             _simulation   = simulation;
             _tapeRecorder = tapeRecorder;
+            _playback     = playback;
         }
 
         /// <summary>
@@ -53,6 +58,9 @@ namespace Guildmaster.Game.Services
                     if (_simulation.Outcome != BattleOutcome.Ongoing)
                     {
                         _accumulator = 0f;
+                        // Бой не идёт, но юниты на арене стоят (мир, расстановка) — показ читает ленту,
+                        // поэтому кадр состояния всё равно нужен, иначе арена окажется пустой.
+                        _tapeRecorder.CaptureIdleState();
                         await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
                         continue;
                     }
@@ -80,6 +88,19 @@ namespace Guildmaster.Game.Services
                         && _accumulator > SimConstants.TickDelta)
                     {
                         _accumulator = 0f;
+                    }
+
+                    // Разгон: гоним сим ВПЕРЁД показа, пока не набран запас. Это и есть механизм лага —
+                    // показ идёт в реальном времени, а сим уходит от него на окно опережения и потому
+                    // знает будущее. Бюджет на кадр держит разгон незаметным для кадровой частоты.
+                    int leadTicks = 0;
+                    while (leadTicks < MaxLeadTicksPerFrame
+                           && !_playback.HasFullLead
+                           && _simulation.Outcome == BattleOutcome.Ongoing)
+                    {
+                        _simulation.Tick(SimConstants.TickDelta);
+                        _tapeRecorder.CaptureTick();
+                        leadTicks++;
                     }
 
                     await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
