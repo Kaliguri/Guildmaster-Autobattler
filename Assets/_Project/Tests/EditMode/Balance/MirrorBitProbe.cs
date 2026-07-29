@@ -23,8 +23,8 @@ namespace Guildmaster.Balance.Tests
     public sealed class MirrorBitProbe
     {
         // Окно трассировки эффектов: узкое, чтобы журнал читался глазами, и вокруг известного тика 181.
-        private const int TraceFrom = 175;
-        private const int TraceTo   = 182;
+        private const int TraceFrom = 294;
+        private const int TraceTo   = 300;
 
         /// <summary>
         /// <paramref name="separation"/> = false выключает расталкивание: если при этом точное расхождение
@@ -38,7 +38,7 @@ namespace Guildmaster.Balance.Tests
 
             // Состав берём ТОТ ЖЕ, на котором краснеет сторож (серия 5 MirrorMatchTests): диагностика,
             // гоняющая другой отряд, честно ответит «расхождения нет» и отправит искать не там.
-            string[] wanted = { "FlameSwordsman", "IronSpearman", "LightShepherd", "Ranger" };
+            string[] wanted = { "Defender", "FlameSwordsman", "Cryomancer", "LightShepherd" };
             foreach (string name in wanted)
                 foreach (RelicData r in relics)
                     if (r.name == name) { squad.Add(r); break; }
