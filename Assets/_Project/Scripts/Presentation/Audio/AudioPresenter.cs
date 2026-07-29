@@ -57,7 +57,6 @@ namespace Guildmaster.Presentation.Audio
             _dispatcher.BattleEnded       += OnBattleEnded;
             _dispatcher.UnitSpawned       += OnUnitSpawned;
             _dispatcher.AttackInterrupted += OnAttackInterrupted;
-            _dispatcher.BattleReset       += OnBattleReset;
             _dispatcher.AbilityCast       += OnAbilityCast;
             _dispatcher.EffectApplied     += OnEffectApplied;
             _dispatcher.EffectEnded       += OnEffectEnded;
@@ -73,7 +72,6 @@ namespace Guildmaster.Presentation.Audio
             _dispatcher.BattleEnded       -= OnBattleEnded;
             _dispatcher.UnitSpawned       -= OnUnitSpawned;
             _dispatcher.AttackInterrupted -= OnAttackInterrupted;
-            _dispatcher.BattleReset       -= OnBattleReset;
             _dispatcher.AbilityCast       -= OnAbilityCast;
             _dispatcher.EffectApplied     -= OnEffectApplied;
             _dispatcher.EffectEnded       -= OnEffectEnded;
@@ -101,9 +99,9 @@ namespace Guildmaster.Presentation.Audio
         // Замах сорван станом/смертью — короткий «сбой», иначе оборванная анимация выглядит багом.
         private void OnAttackInterrupted(int unitId) => PlayKeyAt("combat.attack_interrupted", AudioAction.Evade, unitId);
 
-        // Перезапуск боя (dev-R): глушим петли, иначе хвосты старого боя переезжают в новый.
-        private void OnBattleReset() => _audio?.StopAll();
-
+        // На перезапуск боя здесь глушить нечего: боевой звук — только one-shot'ы, их хвосты доигрывают
+        // сами. Петли (музыка, амбиент) принадлежат RunAudioPresenter в root-скоупе, и прежний StopAll
+        // сносил именно их — музыка после dev-R не возвращалась, потому что владелец считал её живой.
         // Статус лёг / спал: ключи effect.{id}.apply и effect.{id}.expire, с фолбэком на общий дефолт.
         private void OnEffectApplied(int targetId, EffectData def)
             => PlayKeyAt(def != null ? def.Id : null, AudioAction.Apply, targetId);
