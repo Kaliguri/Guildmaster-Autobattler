@@ -155,7 +155,7 @@ namespace Guildmaster.Combat.Effects.Components
         private static int StacksOf(RuntimeUnit unit, EffectData def)
         {
             for (int i = 0; i < unit.ActiveEffects.Count; i++)
-                if (unit.ActiveEffects[i].Def == def) return unit.ActiveEffects[i].Stacks;
+                if (unit.ActiveEffects[i].Def == def) return unit.ActiveEffects[i].VisibleStacks;
             return 0;
         }
     }

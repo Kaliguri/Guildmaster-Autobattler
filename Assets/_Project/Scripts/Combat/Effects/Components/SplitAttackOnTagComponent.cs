@@ -87,7 +87,7 @@ namespace Guildmaster.Combat.Effects.Components
             for (int i = 0; i < unit.ActiveEffects.Count; i++)
             {
                 RuntimeEffect e = unit.ActiveEffects[i];
-                if (e.Def != null && (e.Def.Tags & tag) != 0) stacks += e.Stacks;
+                if (e.Def != null && (e.Def.Tags & tag) != 0) stacks += e.VisibleStacks;
             }
             return stacks;
         }

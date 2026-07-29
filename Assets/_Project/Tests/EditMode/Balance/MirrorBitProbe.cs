@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Text;
 using Guildmaster.Balance.Editor;
 using Guildmaster.Combat;
+using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
+using Guildmaster.Data.Stats;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -108,6 +110,125 @@ namespace Guildmaster.Balance.Tests
 
             sb.AppendLine("За 400 тиков точного расхождения нет.");
             Assert.Pass(sb.ToString());
+        }
+
+        /// <summary>
+        /// Разбор УДАРА, а не состояния: печатает каждое попадание в окне вокруг тика рождения вместе со
+        /// всеми слагаемыми, из которых число урона собрано, и слепком статов обеих сторон.
+        /// </summary>
+        /// <remarks>
+        /// Зачем отдельно от <see cref="FindBirthTickOfDivergence"/>: тот отвечает «что разошлось в
+        /// состоянии», и когда состояние совпадает целиком, а урон уже врозь, он молчит. Слагаемые урона
+        /// (сырое число, обе эффективности, броня и срез, уязвимость) в состоянии не лежат — они рождаются
+        /// и умирают внутри тика, поэтому их надо ловить событием, а не сверкой полей.
+        /// </remarks>
+        [Test]
+        public void TraceDamageAroundBirthTick()
+        {
+            List<RelicData> relics = BalanceAssets.LoadRelics();
+            var squad = new List<RelicData>();
+            string[] wanted = { "Defender", "FlameSwordsman", "Cryomancer", "LightShepherd" };
+            foreach (string name in wanted)
+                foreach (RelicData r in relics)
+                    if (r.name == name) { squad.Add(r); break; }
+
+            var env = new SimEnvironment(1UL, BalanceAssets.LoadStatsConfig());
+            var tracked = new List<TrackedUnit>();
+            ClassBalanceConfig classes = BalanceAssets.LoadClassBalanceConfig();
+
+            Lineups.SpawnTeam(env, classes, tracked, squad, 0, Lineups.Squad);
+            Lineups.SpawnTeam(env, classes, tracked, squad, 1, Lineups.Squad);
+            for (int i = 0; i < tracked.Count; i++) tracked[i].Unit.Id = i;
+            for (int i = 0; i < tracked.Count; i++) env.Sim.EnqueueUnitSpawn(tracked[i].Unit);
+            env.Sim.FlushSpawns();
+
+            var sb = new StringBuilder();
+            var hits = new List<string>();
+
+            // Стаки «Углей» у обоих мечников В МОМЕНТ события: расхождение живёт внутри тика, поэтому
+            // слепка на его границах мало — надо видеть, между какими двумя событиями число съехало.
+            string Embers() => $"[угли L={Ember(tracked[1].Unit)} R={Ember(tracked[5].Unit)}]";
+
+            env.Sim.OnDamageDealt += (src, dst, res) => hits.Add(
+                $"    урон {res.TotalDamage,8:0.000} (hp {res.HpDamage:0.0} щит {res.ShieldDamage:0.0} " +
+                $"срез {res.Mitigated:0.000}) {res.SourceKind}/{res.School}/{res.Element} " +
+                $"vuln={res.Vulnerability:0.000}  {Name(tracked, src)} → {Name(tracked, dst)} {Embers()}");
+            env.Sim.OnHealed += (src, dst, amount) => hits.Add(
+                $"    хил  {amount,8:0.000}                                       " +
+                $"{Name(tracked, src)} → {Name(tracked, dst)} {Embers()}");
+            env.Effects.OnEffectApplied += (t, def, src) => hits.Add(
+                $"    НАЛОЖЕН {def.Id} на {Name(tracked, t)} от {Name(tracked, src)} {Embers()}");
+            env.Effects.OnEffectEnded += (t, def, src) => hits.Add(
+                $"    КОНЧИЛСЯ {def.Id} на {Name(tracked, t)} {Embers()}");
+            env.Effects.OnEffectDispelled += (t, def, by, src) => hits.Add(
+                $"    СНЯТ {def.Id} с {Name(tracked, t)} диспелом от {Name(tracked, by)} {Embers()}");
+
+            int half = tracked.Count / 2;
+            for (int tick = 0; tick < 400; tick++)
+            {
+                bool inWindow = tick >= TraceTo - 1 && tick <= TraceTo;
+                if (inWindow)
+                {
+                    sb.AppendLine($"=== t{tick} НАЧАЛО ===");
+                    for (int i = 0; i < half; i++)
+                    {
+                        sb.AppendLine($"  {tracked[i].Label,-16} L {Dump(tracked, tracked[i].Unit)}");
+                        sb.AppendLine($"  {"",-16} R {Dump(tracked, tracked[i + half].Unit)}");
+                    }
+                }
+
+                hits.Clear();
+                env.Sim.Tick(SimConstants.TickDelta);
+
+                if (inWindow)
+                {
+                    sb.AppendLine($"  --- попадания t{tick}: {hits.Count} ---");
+                    for (int h = 0; h < hits.Count; h++) sb.AppendLine(hits[h]);
+                }
+
+                var diffs = new List<string>();
+                for (int i = 0; i < half; i++) Collect(tracked, i, half, diffs);
+                if (diffs.Count == 0) continue;
+
+                sb.AppendLine($"ПЕРВОЕ ТОЧНОЕ РАСХОЖДЕНИЕ на тике {tick}:");
+                foreach (string d in diffs) sb.AppendLine("  " + d);
+                Assert.Fail(sb.ToString());
+            }
+
+            Assert.Pass(sb + "\nЗа 400 тиков точного расхождения нет.");
+        }
+
+        /// <summary>Сколько стаков «Углей» на бойце прямо сейчас (сумма по всем эффектам с тегом).</summary>
+        private static int Ember(RuntimeUnit u)
+        {
+            int stacks = 0;
+            for (int i = 0; i < u.ActiveEffects.Count; i++)
+            {
+                RuntimeEffect eff = u.ActiveEffects[i];
+                if (eff.Def != null && (eff.Def.Tags & EffectTag.Ember) != 0) stacks += eff.Stacks;
+            }
+            return stacks;
+        }
+
+        /// <summary>Слепок бойца со СЛАГАЕМЫМИ урона: сырой удар, обе эффективности, броня, уязвимости.</summary>
+        private static string Dump(List<TrackedUnit> tracked, RuntimeUnit u)
+        {
+            var sb = new StringBuilder();
+            sb.Append($"hp={u.CurrentHP,8:0.000} sh={u.CurrentShield,6:0.0} ");
+            sb.Append($"aad={u.Stats.Get(StatType.AutoAttackDamage),7:0.000} ");
+            sb.Append($"dde={u.Stats.Get(StatType.DamageDealtEff):0.0000} ");
+            sb.Append($"dte={u.Stats.Get(StatType.DamageTakenEff):0.0000} ");
+            sb.Append($"pa={u.Stats.Get(StatType.PhysArmor):0.0} ma={u.Stats.Get(StatType.MagicArmor):0.0} ");
+            sb.Append($"as={u.Stats.Get(StatType.AttackSpeed):0.0000} ");
+            sb.Append($"cd={u.AttackCooldownTicks,3} wind={u.WindupRemaining,3} phase={u.Phase,-9} ");
+            sb.Append($"tgt={Name(tracked, u.CurrentTarget),-20} ");
+            for (int e = 0; e < u.ActiveEffects.Count; e++)
+            {
+                RuntimeEffect eff = u.ActiveEffects[e];
+                sb.Append($"[{(eff.Def != null ? eff.Def.Id : "?")} x{eff.Stacks} t={eff.RemainingTicks} " +
+                          $"src={Name(tracked, eff.Source)}] ");
+            }
+            return sb.ToString();
         }
 
         /// <summary>

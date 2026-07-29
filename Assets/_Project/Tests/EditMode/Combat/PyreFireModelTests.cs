@@ -139,6 +139,9 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             EffectData ember = EmberEffect();
             for (int i = 0; i < 10; i++) sim.ApplyEffect(victim, ember, pyre);
+            // Уязвимость считается по стакам НАЧАЛА тика (закон видимости). Стаки набраны между тиками,
+            // поэтому границу тика надо провести явно — иначе удар увидит один уголёк из десяти.
+            EffectSystem.CommitPending(victim);
 
             DamageResult captured = default;
             sim.OnDamageDealt += (src, tgt, res) => captured = res;

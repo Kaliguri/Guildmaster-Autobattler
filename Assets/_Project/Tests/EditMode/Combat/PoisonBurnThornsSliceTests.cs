@@ -310,6 +310,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             sys.Apply(victim, ember, pyre, ctx);
             sys.Apply(victim, ember, pyre, ctx);
             sys.Apply(victim, ember, pyre, ctx);
+            // Топливо детонация считает по снимку начала тика, а снятие судит по тику появления, — угли
+            // должны успеть «повисеть». Сдвигаем границу тика, как это делает бой.
+            ctx.AdvanceTick(victim);
 
             EffectData ignition = TestEffect.Make(baseDuration: 0f, components:
                 new IgnitionComponent()
@@ -323,6 +326,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(45f, ctx.DamageCalls[0].RawDamage, 1e-3f, "15 за стак × 3 стака");
             Assert.AreEqual(DamageSchool.Magical, ctx.DamageCalls[0].School);
             Assert.AreEqual(MagicElement.Fire, ctx.DamageCalls[0].Element, "Взрыв — огонь: его же усиливают «Угли»");
+            // Маска тегов тоже отложена законом видимости: снятие проявляется в конце тика, а не в
+            // момент взрыва. Проводим границу второй раз — и только теперь спрашиваем про маску.
+            ctx.AdvanceTick(victim);
             Assert.AreEqual(EffectTag.None, victim.EffectTagMask & EffectTag.Ember, "«Угли» израсходованы взрывом");
         }
 
@@ -353,6 +359,9 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             EffectData ember = EmberEffect();
             for (int i = 0; i < 10; i++) sys.Apply(victim, ember, null, ctx);
+            // Стаки под законом видимости: набранное за тик влияет на исход со следующего. В бою эту
+            // границу проводит CommitTickChanges, здесь — сдвиг тика у мока.
+            ctx.AdvanceTick(victim);
 
             var fire = new DamageRequest(null, victim, 100f, DamageSchool.Magical, 100f,
                 sourceKind: DamageSourceKind.Periodic, element: MagicElement.Fire);

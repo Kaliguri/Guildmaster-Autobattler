@@ -329,8 +329,17 @@ namespace Guildmaster.Tests.EditMode.Combat
         /// </summary>
         public int CurrentTick { get; private set; }
 
-        /// <summary>Перейти на следующий тик: всё наложенное до этого становится «висевшим ранее».</summary>
-        public void AdvanceTick() => CurrentTick++;
+        /// <summary>
+        /// Перейти на следующий тик: всё наложенное до этого становится «висевшим ранее». Переданным
+        /// юнитам проявляется отложенное — статы, маска тегов, стаки — ровно как это делает
+        /// <c>CombatSimulation.Tick</c> в конце тика. Без юнитов двигается только счётчик.
+        /// </summary>
+        public void AdvanceTick(params RuntimeUnit[] units)
+        {
+            CurrentTick++;
+            if (units == null) return;
+            for (int i = 0; i < units.Length; i++) EffectSystem.CommitPending(units[i]);
+        }
         public float ArmorK => 100f;
         public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
     }

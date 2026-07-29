@@ -171,6 +171,9 @@ namespace Guildmaster.Combat
                 Def           = def,
                 Source        = source,
                 Stacks        = 1,
+                // Снимок стаков на начало тика: у эффекта, родившегося внутри тика, он равен настоящему
+                // числу — влиять на мир единственным стаком он имеет право сразу.
+                StacksAtTickStart = 1,
                 ScaledPotency = new float[componentCount],
                 PeriodicTicks = new int[componentCount],
                 // Тик появления: по нему снятие отличает «висело до этого тика» от «легло только что».
@@ -579,6 +582,12 @@ namespace Guildmaster.Combat
             if (unit == null) return;
             unit.Stats?.Commit();
             RebuildTagMask(unit);
+
+            // Стаки — часть закона видимости: набранное и срезанное за этот тик начинает влиять на исход
+            // со следующего. Иначе очищение, срезавшее «Угли» ценой, обкрадывает чужую детонацию тем же
+            // тиком, и результат зависит от места юнита в обходе (см. RuntimeEffect.StacksAtTickStart).
+            List<RuntimeEffect> effects = unit.ActiveEffects;
+            for (int i = 0; i < effects.Count; i++) effects[i].StacksAtTickStart = effects[i].Stacks;
         }
 
         private static void RebuildTagMask(RuntimeUnit unit)
@@ -591,12 +600,12 @@ namespace Guildmaster.Combat
 
         private static EffectContext MakeContext(
             RuntimeUnit target, RuntimeUnit source, ICombatContext combat, RuntimeEffect effect, int componentIndex,
-            float dt, float share = 1f)
+            float dt, float share = 1f, bool liveStacks = false)
         {
             float potency = effect.ScaledPotency != null && componentIndex < effect.ScaledPotency.Length
                 ? effect.ScaledPotency[componentIndex]
                 : 0f;
-            return new EffectContext(target, source, combat, effect, potency, dt, share);
+            return new EffectContext(target, source, combat, effect, potency, dt, share, liveStacks);
         }
 
         /// <summary>
@@ -700,7 +709,9 @@ namespace Guildmaster.Combat
 
             for (int i = 0; i < components.Length; i++)
             {
-                EffectContext ctx = MakeContext(target, effect.Source, combat, effect, i, 0f);
+                // Живые стаки: пересчёт вклада обязан видеть ТОЛЬКО ЧТО набранное число, иначе прибавка
+                // не случится вовсе — второго вызова под это изменение не будет (см. EffectContext).
+                EffectContext ctx = MakeContext(target, effect.Source, combat, effect, i, 0f, liveStacks: true);
 
                 // Компонент с накопленным внешним состоянием (щит/заряды) правит вклад дельтой сам.
                 // Слепой OnExpire→OnApply для него неверен (пере-вычет щита / бесплатный рефилл

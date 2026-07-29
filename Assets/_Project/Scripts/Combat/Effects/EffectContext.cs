@@ -36,6 +36,13 @@ namespace Guildmaster.Combat.Effects
         /// </summary>
         public readonly float Share;
 
+        /// <summary>
+        /// Читать ЖИВОЕ число стаков вместо снимка начала тика. Ставится только на пути пересчёта
+        /// stateful-вклада (<c>OnStacksChanged</c>): набранный стак обязан сразу дорастить щит и
+        /// стат-модификатор, иначе прибавка не случится никогда — второго вызова не будет.
+        /// </summary>
+        private readonly bool _liveStacks;
+
         public EffectContext(
             RuntimeUnit target,
             RuntimeUnit source,
@@ -43,21 +50,35 @@ namespace Guildmaster.Combat.Effects
             RuntimeEffect effect,
             float potency,
             float dt,
-            float share = 1f)
+            float share = 1f,
+            bool liveStacks = false)
         {
-            Target  = target;
-            Source  = source;
-            Combat  = combat;
-            Effect  = effect;
-            Potency = potency;
-            Dt      = dt;
-            Share   = share;
+            Target      = target;
+            Source      = source;
+            Combat      = combat;
+            Effect      = effect;
+            Potency     = potency;
+            Dt          = dt;
+            Share       = share;
+            _liveStacks = liveStacks;
         }
 
         /// <summary>Детерминированный RNG боя (через шов).</summary>
         public IRngService Rng => Combat.Rng;
 
-        /// <summary>Число стаков эффекта (≥ 1).</summary>
-        public int Stacks => Effect != null ? Effect.Stacks : 1;
+        /// <summary>
+        /// Число стаков эффекта (≥ 1) — СНИМОК на начало тика, потому что стаками компонент влияет на
+        /// мир, а закон видимости не пускает внутритиковые правки в исход (см.
+        /// <see cref="RuntimeEffect.StacksAtTickStart"/>). Живое значение отдаётся только пути
+        /// пересчёта вклада — там оно и нужно.
+        /// </summary>
+        public int Stacks
+        {
+            get
+            {
+                if (Effect == null) return 1;
+                return _liveStacks ? Effect.Stacks : Effect.VisibleStacks;
+            }
+        }
     }
 }

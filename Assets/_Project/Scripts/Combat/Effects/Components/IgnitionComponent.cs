@@ -67,7 +67,9 @@ namespace Guildmaster.Combat.Effects.Components
             {
                 RuntimeEffect eff = target.ActiveEffects[i];
                 if (eff.Def == null || (eff.Def.Tags & _detonateTag) == 0) continue;
-                stacks += eff.Stacks;
+                // Топливо считаем по снимку начала тика: живое число правят внутри тика (очищение
+                // снимает стаки ценой), и тогда сила взрыва зависела бы от того, чей ход раньше.
+                stacks += eff.VisibleStacks;
             }
 
             if (stacks <= 0) return;
