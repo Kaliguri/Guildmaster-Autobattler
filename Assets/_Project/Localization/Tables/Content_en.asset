@@ -280,11 +280,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6661801758679040
-    m_Localized: Bone Duelist
+    m_Localized: Dev Defender
     m_Metadata:
       m_Items: []
   - m_Id: 6661801850953728
-    m_Localized: 'Dev dummy: watching skeletal animation in a live fight.'
+    m_Localized: 'Dev fighter on the Defender kit: watching skeletal animation in
+      a live fight.'
     m_Metadata:
       m_Items: []
   - m_Id: 6663474874933248
