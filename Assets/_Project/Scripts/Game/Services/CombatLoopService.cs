@@ -68,7 +68,7 @@ namespace Guildmaster.Game.Services
                         _accumulator = 0f;
                         // Бой не идёт, но юниты на арене стоят (мир, расстановка) — показ читает ленту,
                         // поэтому кадр состояния всё равно нужен, иначе арена окажется пустой.
-                        _tapeRecorder.CaptureIdleState();
+                        _tapeRecorder.CaptureCurrentState();
                         await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
                         continue;
                     }
@@ -84,7 +84,7 @@ namespace Guildmaster.Game.Services
                         _simulation.Tick(SimConstants.TickDelta);
                         // Кадр ленты снимается сразу за тиком: состояние на юнитах — ровно то, что
                         // этот тик досчитал. Показ читает ленту, а не живой сим (§7.2 ТЗ).
-                        _tapeRecorder.CaptureTick();
+                        _tapeRecorder.CaptureCurrentState();
                         _accumulator -= SimConstants.TickDelta;
                         ticksThisFrame++;
 
@@ -107,9 +107,14 @@ namespace Guildmaster.Game.Services
                            && _simulation.Outcome == BattleOutcome.Ongoing)
                     {
                         _simulation.Tick(SimConstants.TickDelta);
-                        _tapeRecorder.CaptureTick();
+                        _tapeRecorder.CaptureCurrentState();
                         leadTicks++;
                     }
+
+                    // Кадр состояния — в любом случае, раз в кадр рендера. Тик мог не наступить вовсе
+                    // (пауза в расстановке, нехватка накопленного времени), а состояние при этом
+                    // меняется: игрок двигает юнитов сам. Без этого лента оставалась бы пустой.
+                    _tapeRecorder.CaptureCurrentState();
 
                     await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: cancellation);
                 }

@@ -158,7 +158,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.DealDamage(new DamageRequest(attacker, victim, 25f, DamageSchool.True, sim.ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);
-            recorder.CaptureTick();
+            recorder.CaptureCurrentState();
 
             Assert.AreEqual(0, tape.FrontTick, "Записан тик, который только что досчитали");
             Assert.GreaterOrEqual(tape.EventCount, 1, "Урон попал в ленту событием");
@@ -169,6 +169,41 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(1, collected[0].SourceId, "Событие несёт id, а не ссылку на юнита");
             Assert.AreEqual(2, collected[0].TargetId);
             Assert.AreEqual(25f, tape.GetDamage(collected[0].PayloadIndex).HpDamage, 1e-3f);
+        }
+
+        // Регресс play-mode 2026-07-29: в расстановке сим стоит на паузе, счётчик тиков не двигается —
+        // и лента оставалась ПУСТОЙ, хотя юниты на арене есть. Арена выглядела пустой при семи юнитах.
+        [Test]
+        public void Recorder_WithoutASingleTick_StillProducesAFrame()
+        {
+            var sim  = BuildSim();
+            var tape = new BattleTape(windowTicks: 16);
+            using var recorder = new BattleTapeRecorder(sim, tape, abilities: null, effects: null);
+
+            Assert.AreEqual(BattleTape.NoTick, tape.FrontTick, "Предусловие: лента пуста");
+            Assert.AreEqual(0, sim.CurrentTick, "Предусловие: ни одного тика не прошло");
+
+            recorder.CaptureCurrentState();
+
+            Assert.AreEqual(0, tape.FrontTick, "Кадр состояния есть и без тиков — иначе показу нечего показывать");
+            Assert.IsTrue(tape.TryGetFrame(0, out _), "И он достаётся из окна");
+        }
+
+        // Вне боя состояние меняется БЕЗ тиков (игрок таскает юнита) — кадр обязан обновляться.
+        [Test]
+        public void Recorder_RepeatedCapture_RefreshesTheSameTick()
+        {
+            var tape = new BattleTape(windowTicks: 16);
+            var unit = MakeUnit(id: 1, hp: 100f);
+            var units = new List<RuntimeUnit> { unit };
+
+            tape.CaptureTick(0, units);
+            unit.Position = new Vector2(5f, 2f);   // игрок перетащил юнита в расстановке
+            tape.CaptureTick(0, units);            // тик тот же, состояние новое
+
+            Assert.IsTrue(tape.TryGetFrame(0, out IReadOnlyList<UnitSnapshot> frame));
+            Assert.AreEqual(5f, frame[0].Position.x, 1e-4f, "Кадр покоя перезаписан свежим состоянием");
+            Assert.AreEqual(0, tape.FrontTick, "Номер тика при этом не поехал");
         }
 
         // ===================== Момент показа (Ф2) =====================
