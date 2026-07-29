@@ -82,6 +82,11 @@ namespace Guildmaster.Combat
                 // те продолжают движение со штрафом скорости.
                 if (firing && !attackWhileMoving) { unit.IsSprinting = false; continue; }
 
+                // Каст держит на месте так же, как авто-атака (решение Макса по Q9). Исключение объявляет
+                // сама способность (`_canMoveWhileCasting`), по образцу «Стрельбы на ходу»: «Марш»
+                // Барабанщика — канал, который идёт в движении.
+                if (unit.IsCastBusy && !CastAllowsMovement(unit)) { unit.IsSprinting = false; continue; }
+
                 RuntimeUnit target = unit.CurrentTarget;
                 if (target == null) { unit.IsSprinting = false; continue; }
 
@@ -132,6 +137,17 @@ namespace Guildmaster.Combat
         /// юнит либо стоит, либо идёт со штрафом «стрельбы на ходу», и разбег бы этот штраф съел.
         /// </para>
         /// </remarks>
+        // Разрешает ли ИДУЩИЙ каст движение — спрашиваем у самой способности, а не у юнита: одно и то же
+        // существо может иметь и «стоячую» ульту, и канал на ходу.
+        private static bool CastAllowsMovement(RuntimeUnit unit)
+        {
+            int index = unit.CastingAbilityIndex;
+            if (index < 0 || index >= unit.Abilities.Count) return false;
+
+            AbilityData data = unit.Abilities[index].Data;
+            return data != null && data.CanMoveWhileCasting;
+        }
+
         private static void UpdateSprint(RuntimeUnit unit, RuntimeUnit target, bool firing, in SimTuning tuning)
         {
             if (firing || unit.Positioning != PositioningIntent.Approach || tuning.SprintSpeedMult <= 1f)

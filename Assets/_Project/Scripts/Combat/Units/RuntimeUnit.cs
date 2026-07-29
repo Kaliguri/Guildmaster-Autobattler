@@ -135,6 +135,41 @@ namespace Guildmaster.Combat
         /// <summary>Снапшот цели на старте замаха: удар наносится по ней (если жива и в радиусе к концу замаха).</summary>
         public RuntimeUnit WindupTarget;
 
+        // --- Каст и канал способности: свой FSM на int-тиках (M3) ---
+        // Владелец перехода — AbilitySystem, и только он. Фазы авто-атаки (Phase) сюда НЕ расширены
+        // намеренно: у них другой владелец (AutoAttackSystem), а поле с двумя владельцами — дефект.
+        // Движение, авто-атака и презентация читают производные IsCasting / IsChanneling / IsCastBusy.
+
+        /// <summary>Индекс кастуемой способности в <see cref="Abilities"/>, или <c>-1</c> = каст не идёт.</summary>
+        public int CastingAbilityIndex = -1;
+
+        /// <summary>Тиков подготовки осталось. 0 при идущем касте = подготовка кончилась (канал или применение).</summary>
+        public int CastRemaining;
+
+        /// <summary>Полная длительность подготовки в тиках — знаменатель прогресса для показа.</summary>
+        public int CastTicks;
+
+        /// <summary>Тиков канала осталось (0 = канала нет или он кончился).</summary>
+        public int ChannelRemaining;
+
+        /// <summary>Полная длительность канала в тиках — знаменатель прогресса для показа.</summary>
+        public int ChannelTicks;
+
+        /// <summary>Тиков до следующего срабатывания канала (0 = сработает в этом тике).</summary>
+        public int ChannelTickRemaining;
+
+        /// <summary>Снапшот цели на старте каста. Умерла к завершению — цель перевыбирается (решение Макса).</summary>
+        public RuntimeUnit CastTarget;
+
+        /// <summary>Идёт подготовка: способность заявлена, применение ещё не наступило.</summary>
+        public bool IsCasting => CastingAbilityIndex >= 0 && CastRemaining > 0;
+
+        /// <summary>Держится канал: подготовка позади, нагрузка срабатывает периодически.</summary>
+        public bool IsChanneling => CastingAbilityIndex >= 0 && CastRemaining <= 0 && ChannelRemaining > 0;
+
+        /// <summary>Занят кастом — подготовкой или каналом. То, что читают движение и авто-атака.</summary>
+        public bool IsCastBusy => CastingAbilityIndex >= 0;
+
         /// <summary>Помечен DeathSystem — исключается из всех систем с текущего тика.</summary>
         public bool IsDead;
 

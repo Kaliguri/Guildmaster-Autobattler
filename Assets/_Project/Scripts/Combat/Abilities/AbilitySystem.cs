@@ -21,6 +21,16 @@ namespace Guildmaster.Combat
         // Касты, решённые за этот тик — применяются ПОСЛЕ того, как решения приняты всеми (см. Tick).
         private readonly List<PlannedCast> _planned = new List<PlannedCast>();
 
+        /// <summary>Что именно применяется в фазе применения тика.</summary>
+        private enum PlanKind
+        {
+            /// <summary>Заявка на каст: списать цену и либо применить сразу, либо взвести подготовку/канал.</summary>
+            Begin = 0,
+
+            /// <summary>Нагрузка идущего каста: подготовка дошла до конца или сработал период канала.</summary>
+            Payload = 1,
+        }
+
         /// <summary>Решённый, но ещё не применённый каст: кто, чем и по кому бьёт. Цель выбрана по состоянию
         /// начала тика — в том числе и разворот лечения на себя по панике (блок E).</summary>
         private readonly struct PlannedCast
@@ -28,17 +38,32 @@ namespace Guildmaster.Combat
             public readonly RuntimeUnit Caster;
             public readonly AbilityRuntime Ability;
             public readonly RuntimeUnit Target;
+            public readonly int AbilityIndex;
+            public readonly PlanKind Kind;
 
-            public PlannedCast(RuntimeUnit caster, AbilityRuntime ability, RuntimeUnit target)
+            public PlannedCast(
+                RuntimeUnit caster, AbilityRuntime ability, RuntimeUnit target,
+                int abilityIndex, PlanKind kind)
             {
-                Caster  = caster;
-                Ability = ability;
-                Target  = target;
+                Caster       = caster;
+                Ability      = ability;
+                Target       = target;
+                AbilityIndex = abilityIndex;
+                Kind         = kind;
             }
         }
 
         /// <summary>Успешный каст активки кастующим (презентация-сигнал для звука/VFX; симуляцию не трогает).</summary>
         public event System.Action<RuntimeUnit> OnAbilityCast;
+
+        /// <summary>
+        /// Начата подготовка или канал (<see cref="AbilityData.TakesTime"/>): кастующий и длительность
+        /// подготовки в тиках. Мгновенные способности этого события не дают — у них подводить нечего.
+        /// </summary>
+        public event System.Action<RuntimeUnit, AbilityData, int> OnAbilityCastStarted;
+
+        /// <summary>Каст или канал оборван, не доиграв: контроль, полёт, смерть или потеря цели.</summary>
+        public event System.Action<RuntimeUnit> OnAbilityCastInterrupted;
 
         /// <summary>Тик способностей: кулдауны, решения о кастах, затем сами касты.</summary>
         /// <remarks>
@@ -58,12 +83,28 @@ namespace Guildmaster.Combat
             for (int u = 0; u < units.Count; u++)
             {
                 RuntimeUnit unit = units[u];
-                if (unit.IsDead || unit.Abilities.Count == 0) continue;
+
+                // Смерть обрывает каст молча: показывать прерывание трупу нечего, а состояние обязано
+                // уйти — иначе dev-рестарт поднимет юнита с чужим кастом на счётчике.
+                if (unit.IsDead)
+                {
+                    if (unit.IsCastBusy) ClearCast(unit);
+                    continue;
+                }
+
+                if (unit.Abilities.Count == 0) continue;
 
                 for (int a = 0; a < unit.Abilities.Count; a++)
                 {
                     AbilityRuntime ability = unit.Abilities[a];
                     if (ability.CooldownRemaining > 0f) ability.CooldownRemaining -= dt;
+                }
+
+                // Идёт подготовка или канал — юнит занят: продвигаем его каст, новый начать нельзя.
+                if (unit.IsCastBusy)
+                {
+                    AdvanceCast(unit);
+                    continue;
                 }
 
                 // Плейсхолдер-триггер: кастуем первую готовую активку, если можем (в полёте — нет, §9.9).
@@ -87,12 +128,107 @@ namespace Guildmaster.Combat
         /// одним вызовом). Возвращает false, если не готова / не хватает ресурса / нет валидной цели.
         /// Внутри тика так не кастуют — там решения собираются со всех и применяются после (см. <see cref="Tick"/>);
         /// этот вход остаётся для прямого каста из тестов и dev-команд.
+        /// <para>У способности с подготовкой (<see cref="AbilityData.TakesTime"/>) <c>true</c> означает
+        /// «каст НАЧАТ», а не «нагрузка применена»: цена списана, счётчик взведён, а сама нагрузка придёт
+        /// через свои тики. Проверять результат такого каста нужно после прогона тиков.</para>
         /// </summary>
         public bool TryCast(RuntimeUnit caster, int abilityIndex, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
         {
             if (!TryPlan(caster, abilityIndex, units, ctx, out PlannedCast plan)) return false;
             Execute(plan, units, ctx);
             return true;
+        }
+
+        /// <summary>
+        /// Продвинуть идущий каст на тик: прерывание, подготовка, срабатывания канала. Сюда попадает только
+        /// занятый кастом юнит; сам каст мир не меняет — нагрузка уезжает в фазу применения (<see cref="_planned"/>).
+        /// </summary>
+        /// <remarks>
+        /// Прерывает ровно то, что решил Макс (Q10, 2026-07-29): контроль, полностью выводящий из строя
+        /// (<c>CanAct == false</c> — оглушение, сон). Замедление, корень и урон каст НЕ рвут. Полёт от
+        /// отбрасывания рвёт тоже: он и начать каст не даёт (§9.9), значит не может и дать его завершить.
+        /// Немота (<c>CanCast</c>) запрещает НАЧАТЬ каст, но начатый не обрывает — это прямое следствие
+        /// формулировки Q10, а не отдельное решение.
+        /// </remarks>
+        private void AdvanceCast(RuntimeUnit unit)
+        {
+            AbilityRuntime ability = unit.Abilities[unit.CastingAbilityIndex];
+            AbilityData data = ability.Data;
+
+            if (!unit.CanAct || unit.DisplacedTicksRemaining > 0 || data == null)
+            {
+                InterruptCast(unit);
+                return;
+            }
+
+            // Подготовка: тикает до нуля, на нуле — нагрузка (и, если способность канальная, старт канала).
+            if (unit.CastRemaining > 0)
+            {
+                unit.CastRemaining--;
+                if (unit.CastRemaining > 0) return;
+
+                PlanPayload(unit, ability);
+                StartChannelOrClear(unit, data);
+                return;
+            }
+
+            // Канал: срабатывает периодом. Тик, на котором канал кончается, нагрузки НЕ даёт — иначе канал
+            // в 3 с с периодом в 1 с выдавал бы четыре срабатывания вместо трёх (первое идёт на старте).
+            if (unit.ChannelTickRemaining > 0) unit.ChannelTickRemaining--;
+            if (unit.ChannelRemaining > 0) unit.ChannelRemaining--;
+
+            bool ended = unit.ChannelRemaining <= 0;
+            if (!ended && unit.ChannelTickRemaining <= 0)
+            {
+                PlanPayload(unit, ability);
+                unit.ChannelTickRemaining = AttackTiming.RecoveryTicks(data.ChannelTickSeconds);
+            }
+
+            if (ended) ClearCast(unit);
+        }
+
+        // Нагрузка идущего каста заезжает в фазу применения. Цель берётся ЗАНОВО, если та, на кого
+        // начинали, уже мертва (решение Макса): долгий каст не должен уходить в труп, но и «умного»
+        // перенаведения на лучшую цель здесь нет — только замена выбывшей.
+        private void PlanPayload(RuntimeUnit unit, AbilityRuntime ability)
+        {
+            _planned.Add(new PlannedCast(
+                unit, ability, unit.CastTarget, unit.CastingAbilityIndex, PlanKind.Payload));
+        }
+
+        // Подготовка позади: либо начинается канал, либо каст закончен. Один владелец перехода на оба
+        // входа — старт без подготовки (BeginCast) и конец подготовки (AdvanceCast).
+        private static void StartChannelOrClear(RuntimeUnit unit, AbilityData data)
+        {
+            int channelTicks = AttackTiming.RecoveryTicks(data.ChannelSeconds);
+            if (channelTicks <= 0)
+            {
+                ClearCast(unit);
+                return;
+            }
+
+            unit.ChannelTicks         = channelTicks;
+            unit.ChannelRemaining     = channelTicks;
+            unit.ChannelTickRemaining = AttackTiming.RecoveryTicks(data.ChannelTickSeconds);
+        }
+
+        /// <summary>Оборвать каст, не доиграв: цена уже уплачена и НЕ возвращается (решение Макса по Q10).</summary>
+        private void InterruptCast(RuntimeUnit unit)
+        {
+            ClearCast(unit);
+            OnAbilityCastInterrupted?.Invoke(unit);
+        }
+
+        /// <summary>Снять состояние каста. Единственный писатель этих полей — эта система.</summary>
+        private static void ClearCast(RuntimeUnit unit)
+        {
+            unit.CastingAbilityIndex  = -1;
+            unit.CastRemaining        = 0;
+            unit.CastTicks            = 0;
+            unit.ChannelRemaining     = 0;
+            unit.ChannelTicks         = 0;
+            unit.ChannelTickRemaining = 0;
+            unit.CastTarget           = null;
         }
 
         /// <summary>
@@ -109,6 +245,11 @@ namespace Guildmaster.Combat
             AbilityData data = ability.Data;
             if (data == null || !ability.IsReady) return false;
             if (caster.CurrentResource < data.ResourceCost) return false;
+
+            // Рекаст авто-атаки (M18): умение-удар вклинивается в ритм атак, но занесённый замах
+            // ДОИГРЫВАЕТ (решение Макса по Q8) — удар без замаха читается как пропущенный кадр. Хвост
+            // после удара (Recovery) умение перебивает: в этом и весь выигрыш рекаста.
+            if (data.DamageMultiplier > 0f && caster.Phase == AttackPhase.Windup) return false;
 
             // Блок E (паника): при своём низком HP лечащая способность разворачивается на самого
             // кастующего (лечит себя); урон-способность просто кастуется независимо от условия.
@@ -141,26 +282,90 @@ namespace Guildmaster.Combat
             // Паника (блок E) кастует независимо от условия.
             if (!panicSelf && !CastConditionMet(caster, target, data, ctx, units)) return false;
 
-            plan = new PlannedCast(caster, ability, target);
+            plan = new PlannedCast(caster, ability, target, abilityIndex, PlanKind.Begin);
             return true;
         }
 
-        /// <summary>Применить решённый каст: списать ресурс, взвести кулдаун, разложить эффект по форме способности.</summary>
+        /// <summary>
+        /// Применить решённый план. Заявка (<see cref="PlanKind.Begin"/>) платит цену и либо применяет
+        /// нагрузку в тот же тик (мгновенная способность), либо взводит подготовку/канал. Нагрузка идущего
+        /// каста (<see cref="PlanKind.Payload"/>) цену не платит — она уже уплачена на старте.
+        /// </summary>
         private void Execute(in PlannedCast plan, IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
         {
             RuntimeUnit caster = plan.Caster;
             // Между решением и применением кастующего могли добить (урон в этом же тике).
             if (caster.IsDead) return;
 
+            if (plan.Kind == PlanKind.Payload)
+            {
+                ApplyPayload(caster, plan.Ability, plan.Target, units, ctx);
+                return;
+            }
+
             AbilityRuntime ability = plan.Ability;
             AbilityData data       = ability.Data;
-            RuntimeUnit target     = plan.Target;
+
+            caster.CurrentResource -= data.ResourceCost;
+            ability.CooldownRemaining = data.BaseCooldown * caster.Stats.Get(StatType.CooldownEff);
+
+            if (!data.TakesTime)
+            {
+                ApplyPayload(caster, ability, plan.Target, units, ctx);
+                return;
+            }
+
+            // Способность занимает время: взводим подготовку. Хвост предыдущей авто-атаки при этом
+            // перебивается — умение вклинивается в ритм, а не ждёт его (M18).
+            if (caster.Phase == AttackPhase.Recovery)
+            {
+                caster.Phase = AttackPhase.Idle;
+                caster.RecoveryRemaining = 0;
+            }
+
+            int castTicks = AttackTiming.RecoveryTicks(data.CastSeconds);
+            caster.CastingAbilityIndex = plan.AbilityIndex;
+            caster.CastTarget          = plan.Target;
+            caster.CastTicks           = castTicks;
+            caster.CastRemaining       = castTicks;
+
+            OnAbilityCastStarted?.Invoke(caster, data, castTicks);
+
+            // Подготовки нет, но есть канал: первое срабатывание идёт в этот же тик, дальше — периодом.
+            if (castTicks <= 0)
+            {
+                StartChannelOrClear(caster, data);
+                ApplyPayload(caster, ability, plan.Target, units, ctx);
+            }
+        }
+
+        /// <summary>
+        /// Нагрузка способности: урон, лечение, эффекты — по её форме. Одно место на все три входа
+        /// (мгновенный каст, конец подготовки, срабатывание канала), поэтому канал не может «случайно»
+        /// отличаться от разового применения.
+        /// </summary>
+        private void ApplyPayload(
+            RuntimeUnit caster, AbilityRuntime ability, RuntimeUnit target,
+            IReadOnlyList<RuntimeUnit> units, ICombatContext ctx)
+        {
+            AbilityData data = ability.Data;
 
             bool isMassTag  = data.TargetMode == AbilityTargetMode.AllEnemiesWithTag;
             bool isAllyAura = data.TargetMode == AbilityTargetMode.AlliesInRadius;
 
-            caster.CurrentResource -= data.ResourceCost;
-            ability.CooldownRemaining = data.BaseCooldown * caster.Stats.Get(StatType.CooldownEff);
+            // Цель могла выбыть за время подготовки: берём новую тем же TargetMode (решение Макса).
+            // Не нашли — нагрузка не уходит в пустоту, каст обрывается; цена остаётся уплаченной.
+            bool needsTarget = !isMassTag && !isAllyAura && data.AreaShape != AreaShape.Circle;
+            if (needsTarget && (target == null || target.IsDead))
+            {
+                target = ResolveTarget(caster, data.TargetMode, units);
+                if (target == null)
+                {
+                    if (caster.IsCastBusy) InterruptCast(caster);
+                    return;
+                }
+                caster.CastTarget = target;
+            }
 
             if (data.Displaces)
                 ApplyDisplace(caster, target, data, ctx);
@@ -172,6 +377,13 @@ namespace Guildmaster.Combat
                 ApplyCircle(caster, data, ctx);
             else
                 ApplyToTarget(caster, target, data, ctx);
+
+            // Рекаст авто-атаки (M18): умение-УДАР сбрасывает таймер обычной атаки, и она выходит сразу
+            // по готовности — в окне получаются два удара почти подряд. Обнуление ПОСЛЕ удара умением
+            // (решение Макса по Q8). Канал сюда не попадает намеренно: сброс на каждом его срабатывании
+            // держал бы авто-атаку взведённой всё время канала — это уже другая механика.
+            if (data.DamageMultiplier > 0f && data.ChannelSeconds <= 0f)
+                caster.AttackCooldownTicks = 0;
 
             OnAbilityCast?.Invoke(caster); // презентация-сигнал «каст состоялся»
         }

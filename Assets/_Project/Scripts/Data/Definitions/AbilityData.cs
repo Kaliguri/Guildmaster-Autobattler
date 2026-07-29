@@ -108,6 +108,19 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("После наложения эффектов снять TriggerTag с цели (конверсия: «Ледяные оковы» превращают «Заморозку» в стан).")]
         [SerializeField] private bool _consumesTriggerTag;
 
+        [Header("Cast time and channel (M3) — Копейщик, Маг молний, Барабанщик")]
+        [Tooltip("Подготовка перед применением, сек. 0 = мгновенно (поведение всего текущего контента). Маг молний = 1.5. Ресурс и КД списываются в НАЧАЛЕ подготовки: прерывание контролем жжёт каст.")]
+        [SerializeField] private float _castSeconds;
+
+        [Tooltip("Длительность канала, сек: после подготовки нагрузка применяется периодически, пока канал держится. 0 = разовое применение. Барабанщик «Марш».")]
+        [SerializeField] private float _channelSeconds;
+
+        [Tooltip("Период срабатывания канала, сек (первое — сразу на старте канала). ≤ 0 = взять 1 с. Барабанщик лечит раз в секунду.")]
+        [SerializeField] private float _channelTickSeconds = 1f;
+
+        [Tooltip("Кастовать и держать канал НА ХОДУ (по образцу «Стрельбы на ходу» Рейнджера). Выкл = каст держит на месте, как авто-атака. Барабанщик марширует.")]
+        [SerializeField] private bool _canMoveWhileCasting;
+
         [Header("Displacement (§9.9) — Монах")]
         [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. На линии полёта — урон-ядро.")]
         [SerializeField] private bool _displaces;
@@ -183,6 +196,24 @@ namespace Guildmaster.Data.Definitions
         public float CastOverrideSelfHpPct => _castOverrideSelfHpPct;
         public EffectTag TriggerTag => _triggerTag;
         public bool ConsumesTriggerTag => _consumesTriggerTag;
+        /// <summary>
+        /// Подготовка перед применением, сек (0 = мгновенно). Цена платится на СТАРТЕ подготовки —
+        /// решение Макса 2026-07-29: иначе контроль лишь задерживает каст, и телеграф не стоит ничего.
+        /// </summary>
+        public float CastSeconds => _castSeconds;
+
+        /// <summary>Длительность канала, сек (0 = разовое применение после подготовки).</summary>
+        public float ChannelSeconds => _channelSeconds;
+
+        /// <summary>Период срабатывания канала, сек; при ≤ 0 — одна секунда.</summary>
+        public float ChannelTickSeconds => _channelTickSeconds > 0f ? _channelTickSeconds : 1f;
+
+        /// <summary>Способность кастуется на ходу — исключение из «каст держит на месте» (Q9, форма — поле ассета).</summary>
+        public bool CanMoveWhileCasting => _canMoveWhileCasting;
+
+        /// <summary>Способность занимает время: есть подготовка или канал (иначе применяется в тот же тик).</summary>
+        public bool TakesTime => _castSeconds > 0f || _channelSeconds > 0f;
+
         public bool Displaces => _displaces;
         public float DisplaceDistance => _displaceDistance;
         public float DisplaceDamageMult => _displaceDamageMult;

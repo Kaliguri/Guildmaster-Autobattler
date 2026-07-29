@@ -75,9 +75,17 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectTag triggerTag = EffectTag.None,
             bool consumesTriggerTag = false,
             DamageSchoolOverride schoolOverride = DamageSchoolOverride.Inherit,
-            DamageAffinityOverride affinityOverride = DamageAffinityOverride.Inherit)
+            DamageAffinityOverride affinityOverride = DamageAffinityOverride.Inherit,
+            float castSeconds = 0f,
+            float channelSeconds = 0f,
+            float channelTickSeconds = 1f,
+            bool canMoveWhileCasting = false)
         {
             var a = new AbilityData();
+            Set(a, "_castSeconds", castSeconds);
+            Set(a, "_channelSeconds", channelSeconds);
+            Set(a, "_channelTickSeconds", channelTickSeconds);
+            Set(a, "_canMoveWhileCasting", canMoveWhileCasting);
             Set(a, "_schoolOverride", schoolOverride);
             Set(a, "_affinityOverride", affinityOverride);
             Set(a, "_effects", effects ?? System.Array.Empty<EffectData>());
