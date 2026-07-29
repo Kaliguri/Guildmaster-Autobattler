@@ -236,5 +236,5 @@ public interface IEventFlow
 - **Мини-игры.** `Guildmaster.MiniGames` — пустая сборка (только `.asmdef`), интерфейса `IMiniGame`
   не существует.
 - **Мультиплеер.** Кода нет, есть швы-заглушки (`RunFlowSeams`: `IReadyGate`, `SoloReadyGate`,
-  `SoloPlayerIntentSource`). Замысел и решения — [[tech/20-explanation/netcode|Explanation - Netcode]].
+  `SoloPlayerIntentSource`). Замысел и решения — [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]].
 - **Выбор сложности.** Поле в схеме есть, механики нет.

@@ -142,7 +142,7 @@ CanPlace(unit, pos, side):
     ИЛИ pos внутри Extended-зоны стороны `side`, если у unit есть право на Extended
 ```
 
-**Кооп (host-authoritative):** перетаскивание юнита — это команда хосту. Игрок тащит -> хост валидирует `CanPlace` -> применяет. Клиент себе не доверяет. Ещё один довод, почему правило живёт в логике (`DeploymentService`), а не в UI. См. [[tech/20-explanation/netcode|Explanation - Netcode]].
+**Кооп (host-authoritative):** перетаскивание юнита — это команда хосту. Игрок тащит -> хост валидирует `CanPlace` -> применяет. Клиент себе не доверяет. Ещё один довод, почему правило живёт в логике (`DeploymentService`), а не в UI. См. [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]].
 
 ---
 

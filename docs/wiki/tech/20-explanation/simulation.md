@@ -18,7 +18,7 @@ updated: 2026-07-28
 
 > Сердце игры: как бой считается шаг за шагом, почему он «детерминированный» и зачем это нужно. От азов («что такое фиксированный тик») до тонкостей (очередь команд, пауза, checksum).
 >
-> Связано с [[tech/20-explanation/index|Explanation - Code Map]], [[tech/20-explanation/di-events|Explanation - DI & Events]], [[tech/20-explanation/netcode|Explanation - Netcode]], [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]].
+> Связано с [[tech/20-explanation/index|Explanation - Code Map]], [[tech/20-explanation/di-events|Explanation - DI & Events]], [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]], [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]].
 
 ---
 
@@ -224,7 +224,7 @@ public interface ICombatCommand : ISimCommand {
 
 `EnqueueCommand` вставляет команду в очередь, отсортированную по `TargetTick`. В начале тика `ApplyDueCommands` применяет все команды, чей `TargetTick ≤ currentTick`.
 
-> **Зачем эта церемония вместо прямого вызова `sim.Pause()`?** Это — фундамент сетевого кооператива и реплеев. Команда с тиком означает «применить ровно на этом шаге». Клиент шлёт намерение → хост назначает тик → применяется детерминированно. Командный слой остаётся **keeper** при host-authoritative модели (см. [[tech/20-explanation/netcode|Explanation - Netcode]]); меняется только сетевая обвязка вокруг него.
+> **Зачем эта церемония вместо прямого вызова `sim.Pause()`?** Это — фундамент сетевого кооператива и реплеев. Команда с тиком означает «применить ровно на этом шаге». Клиент шлёт намерение → хост назначает тик → применяется детерминированно. Командный слой остаётся **keeper** при host-authoritative модели (см. [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]]); меняется только сетевая обвязка вокруг него.
 
 ### 3.5 Пауза — тонкое место
 
@@ -246,7 +246,7 @@ public interface ICombatCommand : ISimCommand {
 
 `ComputeChecksum()` сворачивает состояние (тик, снимок RNG, позиции и HP всех юнитов) в один `ulong`. Изначально задумывался для lockstep-сети (сравнивать слепки хоста и клиента).
 
-> ⚠️ **Статус при host-authoritative модели.** Поскольку мы выбрали host-authoritative (считает только хост, см. [[tech/20-explanation/netcode|Explanation - Netcode]]), сетевое сравнение checksum **не используется** — инструмент `SimSyncProbe`, который этим занимался, **запаркован** в `Net/_Parked/`. Но сам `ComputeChecksum` остаётся полезным для **одиночных** целей: тесты детерминизма (`CombatSimulationTests` сравнивает checksum двух прогонов с одним сидом) и отладка реплеев. Поэтому метод — keeper, а сетевая проба — нет.
+> ⚠️ **Статус при host-authoritative модели.** Поскольку мы выбрали host-authoritative (считает только хост, см. [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]]), сетевое сравнение checksum **не используется** — инструмент `SimSyncProbe`, который этим занимался, **запаркован** в `Net/_Parked/`. Но сам `ComputeChecksum` остаётся полезным для **одиночных** целей: тесты детерминизма (`CombatSimulationTests` сравнивает checksum двух прогонов с одним сидом) и отладка реплеев. Поэтому метод — keeper, а сетевая проба — нет.
 
 ---
 
@@ -257,7 +257,7 @@ public interface ICombatCommand : ISimCommand {
 - Никакой зависимости от порядка итерации хэш-структур, влияющего на результат.
 - Периодика эффектов считается **целыми тиками** (`int`-счётчики), а не накоплением `float`-времени — float-аккумулятор дрейфует и ломает детерминизм.
 
-> **Тонкость на будущее (важно для сети).** Текущий детерминизм — это воспроизводимость **на одной машине** (целочисленный RNG, фиксированный тик). Бит-в-бит совпадение **между разными машинами** мы НЕ гарантируем, потому что вся боевая математика на `float`/`Mathf`/`Vector2` (а `sqrt`, `normalize` и т.п. разнятся по платформам). Для host-authoritative это и не нужно (считает только хост). Если бы выбрали lockstep — пришлось бы переписать математику на fixed-point. Разбор этого размена — [[tech/20-explanation/netcode|Explanation - Netcode]].
+> **Тонкость на будущее (важно для сети).** Текущий детерминизм — это воспроизводимость **на одной машине** (целочисленный RNG, фиксированный тик). Бит-в-бит совпадение **между разными машинами** мы НЕ гарантируем, потому что вся боевая математика на `float`/`Mathf`/`Vector2` (а `sqrt`, `normalize` и т.п. разнятся по платформам). Для host-authoritative это и не нужно (считает только хост). Если бы выбрали lockstep — пришлось бы переписать математику на fixed-point. Разбор этого размена — [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]].
 
 ---
 

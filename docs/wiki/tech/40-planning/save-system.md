@@ -18,7 +18,7 @@ updated: 2026-07-28
 > Полное ТЗ слоя сохранений: иерархия профиль → гильдия → забег, раскладка на диске,
 > версионирование игры и схем, миграции, Steam Cloud, мультиплеерные швы и порядок внедрения.
 > Заменяет собой прежний узкий взгляд «один файл забега» из [[tech/10-reference/saves|Reference - Saves]].
-> Смежное: [[tech/20-explanation/run-flow|Explanation - Run Flow]], [[tech/20-explanation/netcode|Explanation - Netcode]],
+> Смежное: [[tech/20-explanation/run-flow|Explanation - Run Flow]], [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]],
 > [[tech/10-reference/data-layer|Reference - Data Layer]], [[tech/40-planning/steam-workshop|Planning - Steam Workshop]].
 
 ---
@@ -273,7 +273,7 @@ interface ISaveMigration
 
 ## 9. Мультиплеер
 
-Опирается на host-authoritative модель ([[tech/20-explanation/netcode|Explanation - Netcode]]).
+Опирается на host-authoritative модель ([[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]]).
 
 ### Кто и что пишет
 

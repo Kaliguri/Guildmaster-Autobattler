@@ -29,8 +29,8 @@ updated: 2026-07-30
 
 | Дата | Решение | Где подробно |
 |---|---|---|
-| 2026-06-19 | Сетевая модель — **host-authoritative** (не lockstep) | [[tech/20-explanation/netcode|Explanation - Netcode]] |
-| 2026-06-19 | `SimSyncProbe` запаркован в `Net/_Parked/` (lockstep-инструмент) | [[tech/20-explanation/netcode|Explanation - Netcode]] |
+| 2026-06-19 | Сетевая модель — **host-authoritative** (не lockstep) | [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]] |
+| 2026-06-19 | `SimSyncProbe` запаркован в `Net/_Parked/` (lockstep-инструмент) | [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]] |
 | 2026-06-19 | **«Эффекты кормят статы»**: Lifesteal/реген — статы-накопители; временные баффы = эффект со `StatModifierComponent`. `LifestealComponent` избыточен | [[tech/20-explanation/data-stats-damage|Explanation - Data, Stats, Damage]] §4, [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]] |
 | 2026-06-19 | Анимация юнитов — **пиксель-кадровая** (sprite sheets), не скелетная | [[tech/20-explanation/presentation|Explanation - Presentation]] |
 | 2026-06-19 | SO-слой — **простой сейчас, моддинг потом** (прямые ссылки, id по мере нужды; UGC — post-festival) | [[tech/40-planning/steam-workshop|Reference - Steam Workshop]] |
@@ -77,7 +77,7 @@ updated: 2026-07-30
 | ⑨ | Ручной DI-бойлерплейт (10 `Resolve` на конструктор) | `WithParameter("armorK", …)` + авторазрешение | `CombatLifetimeScope` |
 | — | `LifestealComponent` дублирует стат-путь под моделью B | Помечен баннером «избыточен, см. 07 §3.7» (удаление — позже) | `LifestealComponent` |
 
-> ⑧ (сетевая модель) — не «фикс», а решение: см. [[tech/20-explanation/netcode|Explanation - Netcode]].
+> ⑧ (сетевая модель) — не «фикс», а решение: см. [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]].
 
 ---
 

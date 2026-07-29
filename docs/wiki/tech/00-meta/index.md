@@ -91,7 +91,7 @@ SORT updated ASC, file.name ASC
 - [[tech/20-explanation/data-stats-damage|Data, Stats, Damage]] — SO-контент, `StatType`, модификаторы, пайплайн урона.
 - [[tech/20-explanation/effects-abilities|Effects & Abilities]] — `[SerializeReference]`, stateless-компоненты, стаки, диспел.
 - [[tech/20-explanation/presentation|Presentation]] — раздел сим/визуал, `CombatPresenter`, сглаживание 30→60.
-- [[tech/20-explanation/netcode|Netcode]] — **host-authoritative** (решение), что запарковано, главная таска MP.
+- [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]] — **host-authoritative** (решение), что запарковано, главная таска MP.
 - [[tech/20-explanation/run-flow|Run Flow]] — стейт-машина забега, события как флоу, автосейв, реконнект.
 
 ## How-to (`30-how-to/`) — решить задачу

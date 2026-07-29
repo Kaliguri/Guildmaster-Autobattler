@@ -30,7 +30,7 @@ updated: 2026-07-26
 | 03 | [[tech/20-explanation/data-stats-damage|Explanation - Data, Stats, Damage]] | SO-контент, `StatType`, слоистые модификаторы, пайплайн урона |
 | 04 | [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]] | `EffectData` + компоненты, стаки, диспел, контроль, реактивность |
 | 05 | [[tech/20-explanation/presentation|Explanation - Presentation]] | Раздел сим/визуал, `UnitView`, сглаживание 30→60 |
-| 06 | [[tech/20-explanation/netcode|Explanation - Netcode]] | Host-authoritative vs lockstep, что запарковано, главная таска MP |
+| 06 | [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]] | Host-authoritative vs lockstep, что запарковано, главная таска MP |
 | 07 | [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]] | Отложенное, исправленное, открытые вопросы |
 
 ---
@@ -45,7 +45,7 @@ updated: 2026-07-26
 
 Между ними — тонкий провод из событий. Мозг говорит «юнит №5 получил 30 урона», тело рисует цифру «30» и трясёт камеру.
 
-Почему так, а не «по-юнитёвому» (каждый юнит — `MonoBehaviour`, двигает себя в `Update`)? Потому что игра **кооперативная по сети** и **с паузой**. Чтобы у двух игроков бой шёл одинаково (или чтобы пауза/реплей работали), нужна предсказуемая, отделённая от рендера симуляция. «По-юнитёвый» подход здесь упирается в стену синхронизации. Подробно — в [[tech/20-explanation/simulation|Explanation - Simulation & Tick]] и [[tech/20-explanation/netcode|Explanation - Netcode]].
+Почему так, а не «по-юнитёвому» (каждый юнит — `MonoBehaviour`, двигает себя в `Update`)? Потому что игра **кооперативная по сети** и **с паузой**. Чтобы у двух игроков бой шёл одинаково (или чтобы пауза/реплей работали), нужна предсказуемая, отделённая от рендера симуляция. «По-юнитёвый» подход здесь упирается в стену синхронизации. Подробно — в [[tech/20-explanation/simulation|Explanation - Simulation & Tick]] и [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]].
 
 ---
 
@@ -152,7 +152,7 @@ Core                      — фундамент: RNG, константы сим
 |---|---|
 | `NetworkCommandRelay` | Реле команд клиент→хост (концепт keeper при host-authoritative) |
 | `FacepunchTransportBootstrap` | Steam-транспорт под NGO |
-| `_Parked/SimSyncProbe` | ⛔ Запаркован (lockstep-инструмент, см. [[tech/20-explanation/netcode|Explanation - Netcode]]) |
+| `_Parked/SimSyncProbe` | ⛔ Запаркован (lockstep-инструмент, см. [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]]) |
 
 ---
 
@@ -163,5 +163,5 @@ Core                      — фундамент: RNG, константы сим
 3. [[tech/20-explanation/simulation|Explanation - Simulation & Tick]] — сердце, без которого остальное не имеет смысла.
 4. [[tech/20-explanation/data-stats-damage|Explanation - Data, Stats, Damage]] → [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]] — содержимое боя.
 5. [[tech/20-explanation/presentation|Explanation - Presentation]] — как это видно.
-6. [[tech/20-explanation/netcode|Explanation - Netcode]] — почему вся эта строгость, и куда идём по кооперативу.
+6. [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]] — почему вся эта строгость, и куда идём по кооперативу.
 7. [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]] — что отложено и почему.
