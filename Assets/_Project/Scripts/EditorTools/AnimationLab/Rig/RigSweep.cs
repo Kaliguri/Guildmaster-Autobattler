@@ -32,6 +32,14 @@ namespace Guildmaster.AnimationLab.Editor
             /// <summary>Item whose silhouette is measured against the body. Null = skip the coverage pass.</summary>
             public string CoverItemId = "shield";
 
+            /// <summary>
+            /// Items drawn ALONGSIDE the traced one, as a plain outline. A picture with one item on it is
+            /// unreadable for the question actually being asked (Max, 29.07): judging a block means seeing
+            /// where the sword is, and judging a swing means seeing where the shield is. Null = the other
+            /// held items of the profile, which is what you want almost always.
+            /// </summary>
+            public string[] AlsoTrace;
+
             /// <summary>Nodes that count as "the body" for coverage. Names, not paths.</summary>
             public string[] CoverBodyNodes = { "Torso", "Head" };
 
@@ -60,6 +68,22 @@ namespace Guildmaster.AnimationLab.Editor
         /// <summary>What the blade is doing at a moment: gathering, cutting, or putting itself back.</summary>
         public enum Phase { Windup, Strike, Recovery }
 
+        /// <summary>
+        /// The other item in the picture. Not a second <see cref="Result"/>: it carries no phases and no
+        /// contact, because it is here to be SEEN, not judged — the eye needs to know where the sword is
+        /// while the shield is being accepted.
+        /// </summary>
+        public sealed class Companion
+        {
+            public string Id;
+            public readonly List<Vector3> Butt = new List<Vector3>();
+            public readonly List<Vector3> Tip = new List<Vector3>();
+            /// <summary>Габарит спрайта по сэмплам — им спутник и рисуется (null, если спрайта нет).</summary>
+            public readonly List<Vector3[]> Quads = new List<Vector3[]>();
+            /// <summary>Travel of the tip, world units — a companion that never moves is worth saying so.</summary>
+            public float TipTravel;
+        }
+
         /// <summary>One moment of the clip, as geometry.</summary>
         public sealed class Sample
         {
@@ -77,6 +101,15 @@ namespace Guildmaster.AnimationLab.Editor
             public float Coverage = float.NaN;
             /// <summary>True when this sample lands on a key the clip actually authored.</summary>
             public bool IsKey;
+
+            /// <summary>
+            /// The four corners of the item's SPRITE at this moment, world space. The zone is built from
+            /// these rather than from the grip-to-tip line, because an item is not a line: a shield is a
+            /// plane, and the whole question asked of it — how much does it cover — is about its area.
+            /// Drawing it as a segment produced a fan that answered nothing (Max, 29.07). Empty = the item
+            /// has no renderer, and then the line is all there is.
+            /// </summary>
+            public Vector3[] Quad;
         }
 
         public sealed class Result
@@ -85,6 +118,9 @@ namespace Guildmaster.AnimationLab.Editor
             public string ClipName;
             public float ClipLength;
             public List<Sample> Samples = new List<Sample>();
+
+            /// <summary>Paths of the items drawn alongside the traced one: grip-to-tip per sample.</summary>
+            public List<Companion> Companions = new List<Companion>();
             /// <summary>Length of the line the tip drew, in world units.</summary>
             public float TipTravel;
             /// <summary>Total turn of the blade along the path, in degrees. Not the difference of endpoints.</summary>
@@ -139,6 +175,10 @@ namespace Guildmaster.AnimationLab.Editor
                                     $"{(float.IsNaN(s.Coverage) ? "    -" : s.Coverage.ToString("P0").PadLeft(5))}" +
                                     $"  {(s.IsKey ? "key" : "")}");
                 }
+                foreach (Companion companion in Companions)
+                    text.AppendLine($"в кадре также {companion.Id}: путь кончика {companion.TipTravel:F3} ед" +
+                                    (companion.TipTravel < 0.01f ? " (неподвижен)" : ""));
+
                 text.AppendLine($"\npicture: {Path}");
                 return text.ToString();
             }
@@ -167,6 +207,9 @@ namespace Guildmaster.AnimationLab.Editor
         static readonly Color StartColor = new Color(0.35f, 1.00f, 0.55f);
         static readonly Color EndColor = new Color(1.00f, 0.85f, 0.25f);
         static readonly Color ContactColor = new Color(1.00f, 0.10f, 0.20f);
+        // Спутник рисуется бледной линией: он в кадре как ориентир, и не должен спорить с ведомым предметом.
+        static readonly Color CompanionPath = new Color(0.55f, 0.85f, 0.70f, 0.55f);
+        static readonly Color CompanionNow  = new Color(0.75f, 1.00f, 0.85f);
 
         public static Result Render(RigProfile profile, AnimationClip clip, Options options = null)
         {
@@ -198,6 +241,28 @@ namespace Guildmaster.AnimationLab.Editor
                 var grip = root.Find(item.GripPath);
                 if (grip == null) throw new System.InvalidOperationException($"Grip path not found: {item.GripPath}");
 
+                // Спрайт предмета: по нему строится ПЛОЩАДЬ зоны. Без него остаётся только линия хвата.
+                Transform itemNode = string.IsNullOrEmpty(item.ItemPath) ? null : root.Find(item.ItemPath);
+                var itemSprite = itemNode != null ? itemNode.GetComponent<SpriteRenderer>() : null;
+
+                // The other held items, so the picture answers the question that was actually asked: the
+                // shield is accepted against where the SWORD is, and vice versa. Default is "everything else
+                // the profile holds" — a rig with one item simply gets no companions.
+                var companions = new List<(RigProfile.HeldItem item, Transform grip, Companion trace, SpriteRenderer sprite)>();
+                foreach (RigProfile.HeldItem held in profile.Held)
+                {
+                    if (held == null || held.Id == item.Id) continue;
+                    if (options.AlsoTrace != null && System.Array.IndexOf(options.AlsoTrace, held.Id) < 0) continue;
+
+                    Transform heldGrip = root.Find(held.GripPath);
+                    if (heldGrip == null) continue;
+
+                    Transform heldNode = string.IsNullOrEmpty(held.ItemPath) ? null : root.Find(held.ItemPath);
+                    var trace = new Companion { Id = held.Id };
+                    result.Companions.Add(trace);
+                    companions.Add((held, heldGrip, trace, heldNode != null ? heldNode.GetComponent<SpriteRenderer>() : null));
+                }
+
                 // Pass 1: geometry only. No camera yet — the framing has to know where the tip went.
                 var renderers = unit.GetComponentsInChildren<Renderer>(includeInactive: false);
                 var bounds = new Bounds(root.position, Vector3.one * 0.05f);
@@ -227,7 +292,8 @@ namespace Guildmaster.AnimationLab.Editor
                         WorldAngle = unwrapped,
                         // Compared with a tolerance, not by equality: a key rounded to 1/60 and a sample
                         // stepped by 1/180 are the same instant and different floats.
-                        IsKey = IsKeyTime(keyTimes, times[i], 0.5f / (frameRate * Mathf.Max(1, options.SamplesPerFrame)))
+                        IsKey = IsKeyTime(keyTimes, times[i], 0.5f / (frameRate * Mathf.Max(1, options.SamplesPerFrame))),
+                        Quad = SpriteQuad(itemSprite)
                     };
                     result.Samples.Add(sample);
 
@@ -239,6 +305,23 @@ namespace Guildmaster.AnimationLab.Editor
                     }
                     bounds.Encapsulate(sample.Tip);
                     bounds.Encapsulate(sample.Butt);
+
+                    // Companions on the same sample, so the two paths are the same moments in the same frame.
+                    foreach (var (held, heldGrip, trace, heldSprite) in companions)
+                    {
+                        float heldWorld = RigProbe.WorldOrientation(heldGrip, held);
+                        var heldDir = new Vector3(Mathf.Cos(heldWorld * Mathf.Deg2Rad), Mathf.Sin(heldWorld * Mathf.Deg2Rad), 0f);
+                        Vector3 heldButt = heldGrip.position - heldDir * held.GripToButt;
+                        Vector3 heldTip = heldButt + heldDir * held.ItemLength;
+
+                        if (trace.Tip.Count > 0) trace.TipTravel += Vector3.Distance(heldTip, trace.Tip[trace.Tip.Count - 1]);
+                        trace.Butt.Add(heldButt);
+                        trace.Tip.Add(heldTip);
+                        trace.Quads.Add(SpriteQuad(heldSprite));
+
+                        bounds.Encapsulate(heldTip);
+                        bounds.Encapsulate(heldButt);
+                    }
                 }
 
                 for (int i = 1; i < result.Samples.Count; i++)
@@ -352,6 +435,28 @@ namespace Guildmaster.AnimationLab.Editor
         /// </summary>
         static void Draw(RigCanvas canvas, Result result, Options options)
         {
+            // Спутники — ПЕРВЫМИ, под зонами: они ориентир, а не предмет разбора. Контуром габарита, а не
+            // линией: увидеть надо, где стоит сам предмет, а не куда смотрит его ось.
+            foreach (Companion companion in result.Companions)
+            {
+                for (int i = 0; i + 1 < companion.Tip.Count; i++)
+                    canvas.Line(companion.Tip[i], companion.Tip[i + 1], CompanionPath, 1);
+
+                int mid = companion.Tip.Count / 2;
+                if (companion.Tip.Count == 0) continue;
+
+                if (companion.Quads.Count > mid && companion.Quads[mid] != null)
+                {
+                    Vector3[] quad = companion.Quads[mid];
+                    for (int c = 0; c < 4; c++) canvas.Line(quad[c], quad[(c + 1) % 4], CompanionNow, 1);
+                }
+                else
+                {
+                    canvas.Line(companion.Butt[mid], companion.Tip[mid], CompanionNow, 2);
+                }
+                canvas.Dot(companion.Tip[mid], 5, CompanionNow);
+            }
+
             // Painted back to front: recovery, then windup, then the strike on top. The zones overlap
             // heavily — a swing sweeps the same air twice — and whichever is painted last is the one the
             // eye reads, so the part that hits has to be last.
@@ -362,6 +467,17 @@ namespace Guildmaster.AnimationLab.Editor
                     var current = result.Samples[i];
                     if (current.Phase != phase) continue;
                     var next = result.Samples[i + 1];
+
+                    // ПЛОЩАДЬ предмета, а не полоса «рукоять-кончик». Для клинка разница невелика, для
+                    // щита принципиальна: он плоскость, и «сколько он закрывает» — вопрос про его площадь.
+                    // Заливается сам габарит спрайта на каждом сэмпле; наложение соседних и даёт зону.
+                    if (current.Quad != null)
+                    {
+                        canvas.FillTriangle(current.Quad[0], current.Quad[1], current.Quad[2], FillOf(phase));
+                        canvas.FillTriangle(current.Quad[0], current.Quad[2], current.Quad[3], FillOf(phase));
+                        continue;
+                    }
+
                     canvas.FillTriangle(current.Butt, current.Tip, next.Tip, FillOf(phase));
                     canvas.FillTriangle(current.Butt, next.Tip, next.Butt, FillOf(phase));
                 }
@@ -389,6 +505,27 @@ namespace Guildmaster.AnimationLab.Editor
                     canvas.Cross(contact.Tip, 18, ContactColor);
                 }
             }
+        }
+
+        /// <summary>
+        /// Четыре угла спрайта в МИРЕ. Берётся локальный габарит спрайта и гоняется через трансформ узла,
+        /// поэтому наклон предмета сохраняется: мировой AABB рендерера дал бы прямоугольник по осям экрана,
+        /// то есть соврал бы ровно в том, ради чего гизмо и рисуется.
+        /// </summary>
+        static Vector3[] SpriteQuad(SpriteRenderer sprite)
+        {
+            if (sprite == null || sprite.sprite == null) return null;
+
+            Bounds local = sprite.sprite.bounds;
+            Vector3 min = local.min, max = local.max;
+            Transform node = sprite.transform;
+            return new[]
+            {
+                node.TransformPoint(new Vector3(min.x, min.y, 0f)),
+                node.TransformPoint(new Vector3(max.x, min.y, 0f)),
+                node.TransformPoint(new Vector3(max.x, max.y, 0f)),
+                node.TransformPoint(new Vector3(min.x, max.y, 0f)),
+            };
         }
 
         static Color FillOf(Phase phase) => phase == Phase.Strike ? StrikeFill

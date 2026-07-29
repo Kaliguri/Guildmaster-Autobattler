@@ -168,6 +168,31 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
+        public void Dodge_DoesNotWorkWhileIncapacitated()
+        {
+            // Решение Макса 29.07: «Изворотливость» — кувырок с уходом с места, то есть ДЕЙСТВИЕ.
+            // Оглушённый ассасин уклоняться не может, и удар по нему проходит.
+            var es  = new EffectSystem();
+            var ctx = new TickContext(es);
+            var assassin = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f,
+                relic: AssassinRelic(PassiveTrigger.AnyHit));
+
+            ctx.ApplyEffect(assassin, DodgePassive(maxCharges: 2, rechargeSeconds: 8f), assassin);
+            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, CombatTestValues.ArmorK,
+                sourceKind: DamageSourceKind.AutoAttack);
+
+            ctx.Tick = 0;
+            assassin.CanAct = assassin.CanActAtTickStart = false;
+            Assert.IsFalse(es.RunPreDamage(assassin, in hit, ctx), "Оглушённый не уклоняется — удар проходит");
+
+            // И заряд при этом не потрачен: контроль отнимает возможность, а не запас.
+            assassin.CanAct = assassin.CanActAtTickStart = true;
+            Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx), "Заряды целы: под контролем они не тратятся");
+            Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx), "Оба заряда на месте");
+            Assert.IsFalse(es.RunPreDamage(assassin, in hit, ctx), "Третий удар проходит — вот теперь зарядов нет");
+        }
+
+        [Test]
         public void Dodge_NegatedHit_DealsNoDamage_ViaSimulation()
         {
             var sim = BuildSim(1UL);

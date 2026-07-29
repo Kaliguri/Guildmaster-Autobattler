@@ -123,6 +123,59 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
+        public void Bulwark_DoesNotRaiseTheShieldWhileIncapacitated()
+        {
+            // Решение Макса 29.07: пассивка, требующая ДЕЙСТВИЯ, не работает у выведенного контролем.
+            // Щит носитель поднимает сам — оглушённый или спящий этого не может, и телеграф не имеет права
+            // показывать поднимающийся щит у юнита, который собой не владеет.
+            var es  = new EffectSystem();
+            var ctx = new TickContext(es);
+            var defender = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f, hp: 100f,
+                relic: DefenderRelic(PassiveTrigger.AnyHit));
+
+            ctx.ApplyEffect(defender, BulwarkPassive(), defender);
+            RuntimeEffect bulwark = defender.ActiveEffects[0];
+            var incoming = new DamageRequest(null, defender, 30f, DamageSchool.True, CombatTestValues.ArmorK,
+                sourceKind: DamageSourceKind.AutoAttack);
+
+            defender.CanAct = defender.CanActAtTickStart = false;
+            es.RunPreDamage(defender, in incoming, ctx);
+            Assert.AreEqual(0, bulwark.ChargeReadyTicks[0], "Оглушённый щит не поднимает — заряд цел");
+            Assert.AreEqual(0, defender.CurrentShield, 1e-4f, "И щита на нём не появилось");
+
+            // Контроль кончился — та же пассивка работает как обычно (проверка, что гейт именно по CanAct,
+            // а не «сломали Оплот»).
+            defender.CanAct = defender.CanActAtTickStart = true;
+            es.RunPreDamage(defender, in incoming, ctx);
+            Assert.AreNotEqual(0, bulwark.ChargeReadyTicks[0], "Дееспособный поднимает щит");
+        }
+
+        [Test]
+        public void Thorns_StillBiteWhileIncapacitated()
+        {
+            // Обратная сторона того же правила: шипы колют БРОНЁЙ, а не действием. Оглушённый носитель
+            // обязан продолжать колоть — иначе «дееспособность» превратилась бы в «под контролем не
+            // работает ничего», а это уже другой дизайн.
+            var es  = new EffectSystem();
+            var ctx = new TickContext(es);
+            var defender = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f, hp: 200f,
+                relic: DefenderRelic(PassiveTrigger.AnyHit));
+            var attacker = MakeUnit(1, team: 1, pos: new Vector2(1f, 0f), maxHp: 200f, hp: 200f);
+
+            var thorns = new ThornsComponent().With("_reflectFraction", 0.5f);
+            ctx.ApplyEffect(defender, TestEffect.Make(
+                baseDuration: -1f, polarity: EffectPolarity.Neutral, components: thorns), defender);
+
+            defender.CanAct = defender.CanActAtTickStart = false;
+            es.Dispatch(defender, new CombatEventData(
+                CombatEvent.DamageTaken, attacker, defender, 30f, EffectTag.None,
+                sourceKind: DamageSourceKind.AutoAttack), ctx);
+
+            Assert.AreEqual(1, ctx.Dealt.Count, "Шипы работают и у оглушённого: это свойство брони, не действие");
+            Assert.AreEqual(attacker, ctx.Dealt[0].Target, "И колют они атакующего");
+        }
+
+        [Test]
         public void Bulwark_None_DoesNotTrigger()
         {
             var es  = new EffectSystem();
@@ -318,7 +371,11 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
                 => CombatPositioning.TeleportBehind(unit, target);
 
-            public void DealDamage(in DamageRequest req) { }
+            /// <summary>Что через контекст просили нанести. Нужно реактивам: их работа — это ВЫЗОВ урона,
+            /// и без записи «сработали ли шипы» проверялось бы по HP, которого пустышка не двигает.</summary>
+            public readonly List<DamageRequest> Dealt = new List<DamageRequest>();
+
+            public void DealDamage(in DamageRequest req) => Dealt.Add(req);
             public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) { }
             public void SpawnProjectile(in ProjectileSpawn spawn) { }
             public void ReportAreaHit(in AreaHit hit) { }

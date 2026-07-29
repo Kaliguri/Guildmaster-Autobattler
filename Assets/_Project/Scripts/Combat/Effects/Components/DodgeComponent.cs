@@ -27,7 +27,11 @@ namespace Guildmaster.Combat.Effects.Components
     /// ничего и не будит реактивы «на удар» (шипы об уклонившегося не колются).</para>
     /// </summary>
     [Serializable]
-    public sealed class DodgeComponent : IPreDamageComponent, IStackableComponent
+    /// <remarks>
+    /// Требует дееспособности (<see cref="IRequiresAgencyComponent"/>): «Изворотливость» — это кувырок с
+    /// уходом с места, то есть ДЕЙСТВИЕ. Оглушённый ассасин уклоняться не может (решение Макса 2026-07-29).
+    /// </remarks>
+    public sealed class DodgeComponent : IPreDamageComponent, IStackableComponent, IRequiresAgencyComponent
     {
         [Tooltip("Число зарядов негейта. Убийца = 1 (гейтит одну следующую атаку).")]
         [SerializeField] private int _maxCharges = 1;

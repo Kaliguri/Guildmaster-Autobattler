@@ -26,7 +26,12 @@ namespace Guildmaster.Combat.Effects.Components
     /// величины не меняла размен один-на-один вовсе).
     /// </remarks>
     [Serializable]
-    public sealed class BulwarkComponent : IPreDamageComponent, IStackableComponent
+    /// <remarks>
+    /// Требует дееспособности (<see cref="IRequiresAgencyComponent"/>): щит носитель ПОДНИМАЕТ, и
+    /// оглушённый сделать этого не может (решение Макса 2026-07-29). До этой правки «Оплот» ловил удары
+    /// сквозь стан и сон, а телеграф показывал поднимающийся щит у юнита, который не владеет собой.
+    /// </remarks>
+    public sealed class BulwarkComponent : IPreDamageComponent, IStackableComponent, IRequiresAgencyComponent
     {
         [Tooltip("Число зарядов щита. Защитник = 2 (заряды восстанавливаются независимо).")]
         [SerializeField] private int _maxCharges = 1;

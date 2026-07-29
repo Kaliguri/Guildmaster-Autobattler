@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -38,6 +38,23 @@ namespace Guildmaster.AnimationLab.Editor
             /// <summary>Frames carrying an AnimationEvent get a brass tick above them.</summary>
             public Color EventMarker = new Color(0.85f, 0.65f, 0.25f, 1f);
             public string OutputPath;
+
+            /// <summary>
+            /// Клип-надстройка, который кладётся ПОВЕРХ через <see cref="OverlayMask"/> — так же, как это
+            /// делает слой Animator в бою. Нужен потому, что игра никогда не играет один клип: щит встаёт
+            /// поверх бега, поверх свинга, поверх удара с разбега, и читаются они вместе или нет — вопрос
+            /// про КОМБИНАЦИЮ (Макс, 30.07). Пусто = обычный лист по одному клипу.
+            /// </summary>
+            public AnimationClip Overlay;
+
+            /// <summary>Маска надстройки. Без неё оверлей накрыл бы всё тело и убил бы ноги посреди шага.</summary>
+            public AvatarMask OverlayMask;
+
+            /// <summary>
+            /// Момент надстройки, сек. Отрицательное = держать поднятую позу (пятая часть клипа): в бою щит
+            /// приходит в финал ДО события и стоит, поэтому судить надо именно стоящую позу, а не проезд.
+            /// </summary>
+            public float OverlayTime = -1f;
         }
 
         public sealed class Result
@@ -65,6 +82,27 @@ namespace Guildmaster.AnimationLab.Editor
         public static Result RenderOnionSkin(GameObject prefab, AnimationClip clip, Options options = null)
         {
             return Render(prefab, clip, options, onionSkin: true);
+        }
+
+        /// <summary>
+        /// Поза кадра: базовый клип, а поверх — надстройка через маску, если её попросили. Один вход для
+        /// обоих проходов рендера, чтобы «что мы показываем» не разъезжалось между листом и onion skin.
+        /// </summary>
+        static void SampleComposed(GameObject unit, AnimationClip clip, float time, Options options)
+        {
+            if (options.Overlay == null || options.OverlayMask == null)
+            {
+                clip.SampleAnimation(unit, time);
+                return;
+            }
+
+            // Отрицательное время — держим поднятую позу: пятая часть клипа гвардии, та же доля, по которой
+            // её скрабит UnitView. Судить надо стоящий щит, а не его проезд.
+            float overlayTime = options.OverlayTime >= 0f
+                ? options.OverlayTime
+                : options.Overlay.length * 0.2f;
+
+            RigLayerBlend.Sample(unit, clip, time, options.Overlay, overlayTime, options.OverlayMask);
         }
 
         /// <summary>Evenly spaced samples, snapped to real clip frames.</summary>
@@ -145,7 +183,7 @@ namespace Guildmaster.AnimationLab.Editor
 
                 // Pass 1: one framing for the whole clip. Per-frame framing would hide the very
                 // travel we are trying to see.
-                var bounds = MeasureClip(unit, clip, times, renderers);
+                var bounds = MeasureClip(unit, clip, times, renderers, options);
 
                 camGo = new GameObject("AnimationLabCamera");
                 SceneManager.MoveGameObjectToScene(camGo, scene);
@@ -169,7 +207,7 @@ namespace Guildmaster.AnimationLab.Editor
                 var frames = new List<Color[]>(samples);
                 for (int i = 0; i < samples; i++)
                 {
-                    clip.SampleAnimation(unit, times[i]);
+                    SampleComposed(unit, clip, times[i], options);
                     cam.Render();
                     frames.Add(ReadBack(rt, cell));
                 }
@@ -202,14 +240,17 @@ namespace Guildmaster.AnimationLab.Editor
             }
         }
 
-        static Bounds MeasureClip(GameObject unit, AnimationClip clip, float[] times, Renderer[] renderers)
+        // options — ради надстройки: кадрирование обязано считаться по ТОЙ ЖЕ позе, которую потом рисуем,
+        // иначе поднятый щит вылезет за границы листа.
+        static Bounds MeasureClip(GameObject unit, AnimationClip clip, float[] times, Renderer[] renderers,
+                                  Options options)
         {
             var bounds = new Bounds(unit.transform.position, Vector3.zero);
             bool seeded = false;
 
             foreach (float t in times)
             {
-                clip.SampleAnimation(unit, t);
+                SampleComposed(unit, clip, t, options);
                 foreach (var r in renderers)
                 {
                     if (!r.enabled) continue;

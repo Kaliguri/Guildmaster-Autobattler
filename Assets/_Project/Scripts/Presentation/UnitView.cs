@@ -122,6 +122,20 @@ namespace Guildmaster.Presentation
         private const float GuardRaiseSeconds  = 0.10f;   // въезд веса: гвардия, которая едет вверх, приезжает поздно
         private const float GuardDropSeconds   = 0.22f;   // уход мягче въезда — рука опускается, а не отщёлкивает
 
+        /// <summary>
+        /// За сколько до события щит обязан УЖЕ СТОЯТЬ (требование Макса 29.07). Телеграф — это не «успеть к
+        /// кадру», а «встать и подождать»: подъём кончается на столько раньше, и остаток подводки поза держится
+        /// стоп-кадром. Без этой паузы щит приезжал в финал одновременно с барьером и читался как реакция на
+        /// него, а не как предупреждение о нём.
+        /// </summary>
+        private const float GuardSettleSeconds = 0.15f;
+
+        /// <summary>
+        /// Доля клипа гвардии, на которой поза уже поднята. Дальше клип только держит и оседает, поэтому
+        /// скрабить его до конца незачем — да и нельзя: держать позу должно ОКНО, а не длина клипа.
+        /// </summary>
+        private const float GuardRiseShare = 0.2f;
+
         // Состояние берётся из ленты боя, а НЕ из живого RuntimeUnit: сим уходит вперёд на окно
         // опережения, и живой юнит для показа — «будущее». Определение (UnitData) при этом статично,
         // поэтому живёт отдельной ссылкой и на тик не копируется.
@@ -217,6 +231,7 @@ namespace Guildmaster.Presentation
         private bool  _guardActive;      // идёт окно гвардии (подводка + жизнь барьера)
         private float _guardElapsed;     // сколько окна прошло
         private float _guardTotal;       // всё окно: подводка + жизнь барьера
+        private float _guardRise = 0.1f; // за сколько щит встаёт; дальше стоп-кадр до конца окна
 
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
         private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
@@ -358,6 +373,12 @@ namespace Guildmaster.Presentation
             // Анимация активна, если у Animator есть контроллер (клипы — в его стейтах). UnitVisual не обязателен.
             _animActive = _animator != null && _animator.runtimeAnimatorController != null;
 
+            // Слой гвардии сбрасывается ДО выхода: вид переиспользуется после чьей-то смерти, и индекс
+            // прошлого жильца достался бы новому — вместе с попыткой писать вес в чужой Animator.
+            _guardLayer  = -1;
+            _guardActive = false;
+            _guardWeight = 0f;
+
             if (!_animActive)
             {
                 if (_animator != null) _animator.enabled = false;
@@ -372,8 +393,6 @@ namespace Guildmaster.Presentation
             // Слой-надстройка щита. Его нет у покадрового бестиария — тогда гвардия просто не играется:
             // это отсутствие контента, а не ошибка разводки (см. ResolvedHash).
             _guardLayer = _animator.GetLayerIndex(GuardLayerName);
-            _guardActive = false;
-            _guardWeight = 0f;
             if (_guardLayer >= 0) _animator.SetLayerWeight(_guardLayer, 0f);
 
             _animator.Play(IdleHash, 0, 0f);
@@ -536,6 +555,9 @@ namespace Guildmaster.Presentation
         private void Update()
         {
             ApplyColor(); // вспышка + альфа инвиза видны даже в hitstop/паузе (единый писатель цвета тела)
+            // Гвардия тикает ДО всех ранних выходов: смерть, финишер и конец боя обходят обычный ход
+            // анимации, и рука со щитом осталась бы поднятой навсегда — щит держал бы тот, кому уже нечем.
+            TickGuardPose(Time.deltaTime);
             TickCastOutline();
             TickWorldUiFade();
             TickContactDustCooldown();
@@ -575,7 +597,6 @@ namespace Guildmaster.Presentation
             }
 
             float dt = Time.deltaTime;
-            TickGuardPose(dt);
             UpdateAttackPhase(dt);
 
             bool isMoving = _hasState &&
@@ -783,7 +804,11 @@ namespace Guildmaster.Presentation
         {
             if (!_animActive || _guardLayer < 0) return;
 
-            _guardTotal   = Mathf.Max(0.05f, Mathf.Max(0f, leadSeconds) + Mathf.Max(0f, holdSeconds));
+            float lead = Mathf.Max(0f, leadSeconds);
+            _guardTotal   = Mathf.Max(0.05f, lead + Mathf.Max(0f, holdSeconds));
+            // Подъём кончается ЗАРАНЕЕ: остаток подводки щит стоит стоп-кадром. Если подводка короче
+            // паузы, поза встаёт мгновенно — лучше резкий щит вовремя, чем плавный, но опоздавший.
+            _guardRise    = Mathf.Max(0.02f, lead - GuardSettleSeconds);
             _guardElapsed = 0f;
             _guardActive  = true;
         }
@@ -795,6 +820,13 @@ namespace Guildmaster.Presentation
         {
             if (_guardLayer < 0) return;
 
+            // Кадр заморожен целиком — щит замирает вместе с ним: hitstop и финишер держат МОМЕНТ, и
+            // рука, продолжающая двигаться в застывшем кадре, читается как чужая.
+            if (_hitstopRemaining > 0f || _holdHitFrame) return;
+
+            // Бой окончен: подводить больше не к чему, рука опускается (спад ниже сделает это плавно).
+            if (_freeRun) _guardActive = false;
+
             if (!_guardActive)
             {
                 if (_guardWeight <= 0f) return;
@@ -804,13 +836,17 @@ namespace Guildmaster.Presentation
             }
 
             _guardElapsed += dt;
-            float t = Mathf.Clamp01(_guardElapsed / _guardTotal);
-            _animator.Play(GuardHash, _guardLayer, t);
+
+            // Две фазы, а не одна: щит ВСТАЁТ за _guardRise, а потом ДЕРЖИТСЯ — и держится он до конца окна,
+            // то есть и последние 0.15 с подводки, и всю жизнь барьера. Линейный скраб по всему окну
+            // приводил позу в финал ровно к событию, и жест читался как реакция, а не как предупреждение.
+            float rise = Mathf.Clamp01(_guardElapsed / _guardRise);
+            _animator.Play(GuardHash, _guardLayer, rise * GuardRiseShare);
 
             _guardWeight = Mathf.Min(1f, _guardWeight + dt / GuardRaiseSeconds);
             _animator.SetLayerWeight(_guardLayer, _guardWeight);
 
-            if (t >= 1f) _guardActive = false;   // барьер отжил — дальше рука опускается сама
+            if (_guardElapsed >= _guardTotal) _guardActive = false;   // барьер отжил — рука опускается сама
         }
 
         /// <summary>Юнит вошёл в замах авто-атаки — свинг + опц. anticipation-оттяг назад от цели.</summary>

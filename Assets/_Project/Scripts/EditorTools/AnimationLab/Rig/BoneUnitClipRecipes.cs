@@ -279,13 +279,24 @@ namespace Guildmaster.AnimationLab.Editor
         {
             using (var w = new RigWriter(Profile()))
             {
-                w.At(0.117f).Bend("shoulder.L", 33f, Near, Out).Bend("elbow.L", -27f, Near, Out)
-                            .Aim("shield", 122f, Ccw, Out);
+                // ЩИТ ДОЛЖЕН ЗАКРЫВАТЬ КОРПУС, и это измеримо: RigSweep мерит долю силуэта тела за щитом.
+                // Первая версия давала 6-10% — щит стоял СБОКУ от торса, потому что локоть РАЗГИБАЛСЯ
+                // (−27°) и выпрямленная рука уводила щит от тела. Локоть теперь гнётся внутрь, предплечье
+                // идёт поперёк корпуса, а плечо выносится вперёд, а не вверх.
+                w.At(0.117f).Bend("shoulder.L", 46f, Near, Out).Bend("elbow.L", 38f, Near, Out)
+                            .Bend("torso", -3f, Near, Out)
+                            .Aim("shield", 96f, Ccw, Out);
                 HoldUntil(w, 0.334f);
-                w.At(0.450f).Bend("shoulder.L", 31f, Near, Soft).Bend("elbow.L", -25f, Near, Soft)
-                            .Aim("shield", 118f, Near, Soft);
-                w.At(0.600f).Bend("shoulder.L", 31f, Near, Hold).Bend("elbow.L", -25f, Near, Hold)
-                            .Aim("shield", 118f, Near, Hold);
+
+                // Оседание, а НЕ возврат в стойку: прошлая версия уводила щит обратно к 90° к концу клипа,
+                // и рука уезжала раньше, чем кончался барьер. Опускает её вес слоя (см. UnitView.RaiseGuard),
+                // клип же обязан держать позу столько, сколько его держат.
+                w.At(0.450f).Bend("shoulder.L", 44f, Near, Soft).Bend("elbow.L", 36f, Near, Soft)
+                            .Bend("torso", -3f, Near, Soft)
+                            .Aim("shield", 94f, Near, Soft);
+                w.At(0.600f).Bend("shoulder.L", 44f, Near, Hold).Bend("elbow.L", 36f, Near, Hold)
+                            .Bend("torso", -3f, Near, Hold)
+                            .Aim("shield", 94f, Near, Hold);
                 return w.Write(Folder + "Block.anim", 60f, loopTime: false).ToString();
             }
         }

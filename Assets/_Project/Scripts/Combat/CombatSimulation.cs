@@ -288,6 +288,12 @@ namespace Guildmaster.Combat
                 return;
             }
 
+            // Снимок дееспособности на начало тика: по нему гейтятся реактивы, которым нужно ДЕЙСТВИЕ
+            // носителя. Живой CanAct для этого не годится — он пересчитывается синхронно при наложении
+            // контроля, то есть меняется посреди тика, и реакция начинала зависеть от порядка юнитов в
+            // списке (зеркальные команды расходились). См. RuntimeUnit.CanActAtTickStart.
+            for (int i = 0; i < _units.Count; i++) _units[i].CanActAtTickStart = _units[i].CanAct;
+
             _brainSystem.Tick(_units, this);
             _abilitySystem.Tick(_units, this, dt);
             _movementSystem.Tick(_units, dt, in _arena, in _tuning);
