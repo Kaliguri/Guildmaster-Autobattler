@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Simulation;
@@ -173,6 +173,8 @@ namespace Guildmaster.Combat
                 Stacks        = 1,
                 ScaledPotency = new float[componentCount],
                 PeriodicTicks = new int[componentCount],
+                // Тик появления: по нему снятие отличает «висело до этого тика» от «легло только что».
+                AppliedTick   = combat?.CurrentTick ?? 0,
             };
 
             effect.AddContribution(source);   // первый вкладчик — тот, кто наложил
@@ -260,6 +262,12 @@ namespace Guildmaster.Combat
                 {
                     if (comps[i] is IPreDamageComponent pre)
                     {
+                        // Выведенный контролем щита не поднимает и в кувырок не уходит: это ДЕЙСТВИЯ, и
+                        // маркер на компоненте говорит, что они таковы (см. IRequiresAgencyComponent).
+                        // Читается СНИМОК на начало тика, а не живой флаг: живой меняется посреди тика, и
+                        // реакция стала бы зависеть от порядка юнитов в списке.
+                        if (!target.CanActAtTickStart && comps[i] is IRequiresAgencyComponent) continue;
+
                         EffectContext ctx = MakeContext(target, eff.Source, combat, eff, i, 0f);
                         pre.OnPreDamage(in req, _preDamageResult, in ctx);
                     }
@@ -358,6 +366,11 @@ namespace Guildmaster.Combat
                 {
                     if (comps[i] is IReactiveComponent reactive && (reactive.Events & ev.Type) != 0)
                     {
+                        // Реакция, требующая ДЕЙСТВИЯ (рывок, кувырок, подъём щита), не проходит у
+                        // выведенного контролем — в отличие от шипов, которые колют бронёй сами. Снимок на
+                        // начало тика, по той же причине, что и в pre-damage.
+                        if (!carrier.CanActAtTickStart && comps[i] is IRequiresAgencyComponent) continue;
+
                         EffectContext ctx = MakeContext(carrier, eff.Source, combat, eff, i, 0f);
                         reactive.OnEvent(in ctx, in ev);
                     }
@@ -375,10 +388,28 @@ namespace Guildmaster.Combat
             RuntimeUnit target = req.Target;
             if (target == null || target.ActiveEffects.Count == 0) return;
 
+            // Снятие судит по состоянию НАЧАЛА ТИКА: эффект, легший в этом же тике, снятию не подлежит.
+            //
+            // Без этого диспел был единственным местом, читавшим список эффектов «как есть». Список
+            // меняется немедленно (отложены только статы и маска тегов), поэтому клинс видел наложения,
+            // случившиеся раньше него В ЭТОМ ЖЕ обходе, — и исход начинал зависеть от места юнита в
+            // списке. Зеркало ловило это на тике 181: метку, только что наложенную левым Рейнджером,
+            // клинс правого Пастыря снимал, а левый Пастырь свою метку снять не успевал — она ложилась
+            // после него. Одна и та же пара бойцов расходилась на один эффект, дальше на урон и HP.
+            //
+            // Лечится не отложенным снятием (оно бы читало тот же свежий список), а тем же приёмом
+            // двухфазности, что уже стоит в MovementSystem и AbilitySystem: решение принимается по
+            // снимку начала тика. Побочно это ещё и правило дизайна — «сорвать то, что только что
+            // наложили» перестало быть гонкой обхода.
+            // Расход собственного триггера — исключение: там порядок задан внутри одного вызова
+            // способности, а не обходом списка (см. DispelRequest.ConsumesOwnTrigger).
+            int currentTick = req.ConsumesOwnTrigger ? int.MinValue : (combat?.CurrentTick ?? 0);
+
             _dispelBuffer.Clear();
             List<RuntimeEffect> effects = target.ActiveEffects;
             for (int i = 0; i < effects.Count; i++)
             {
+                if (effects[i].AppliedTick == currentTick) continue;
                 if (MatchesDispel(effects[i].Def, in req)) _dispelBuffer.Add(effects[i]);
             }
 

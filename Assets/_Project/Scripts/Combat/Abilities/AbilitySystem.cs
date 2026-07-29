@@ -571,7 +571,9 @@ namespace Guildmaster.Combat
 
                 // Конверсия: снять тег-триггер (напр. Frozen) после наложения стана — «Заморозка» превращается в стан.
                 if (data.ConsumesTriggerTag)
-                    ctx.Dispel(new DispelRequest(u, DispelTargetPolarity.Any, tag, dispelPower: int.MaxValue, maxCount: 0));
+                    ctx.Dispel(new DispelRequest(
+                        u, DispelTargetPolarity.Any, tag, dispelPower: int.MaxValue, maxCount: 0,
+                        source: caster, consumesOwnTrigger: true));
             }
         }
 

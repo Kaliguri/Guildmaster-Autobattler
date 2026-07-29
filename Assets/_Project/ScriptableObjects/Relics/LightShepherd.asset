@@ -120,6 +120,11 @@ MonoBehaviour:
     _channelTickSeconds: 1
     _canMoveWhileCasting: 0
     _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
     _displaces: 0
     _displaceDistance: 4
     _displaceDamageMult: 1

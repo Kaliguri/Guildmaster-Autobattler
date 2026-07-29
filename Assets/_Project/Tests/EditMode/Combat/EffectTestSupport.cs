@@ -322,7 +322,15 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void NotifyAttackInterrupted(RuntimeUnit unit) { }
 
         public IRngService Rng => _rng;
-        public int CurrentTick => 0;
+        /// <summary>
+        /// Тик боя. Подвижный, потому что снятие эффектов судит по состоянию НАЧАЛА тика: тест, который
+        /// кладёт эффект и снимает его при том же значении, выражает не игру, а гонку обхода — ровно то,
+        /// что запрещено. Двигать через <see cref="AdvanceTick"/>.
+        /// </summary>
+        public int CurrentTick { get; private set; }
+
+        /// <summary>Перейти на следующий тик: всё наложенное до этого становится «висевшим ранее».</summary>
+        public void AdvanceTick() => CurrentTick++;
         public float ArmorK => 100f;
         public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
     }

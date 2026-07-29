@@ -266,6 +266,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectSystem.CommitPending(ally);
             Assert.AreEqual(2, ally.ActiveEffects.Count, "На союзнике оба дебаффа");
 
+            // Дебаффы должны «повисеть»: клинс судит по состоянию НАЧАЛА тика, поэтому снять только что
+            // наложенное он не может — иначе исход зависел бы от места юнита в обходе.
+            ctx.AdvanceTick();
+
             // Нагрузка «Длани»: мгновенный эффект с диспелом силы 1.
             EffectData cleanse = TestEffect.Make(
                 baseDuration: 0f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
@@ -300,6 +304,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             for (int i = 0; i < 8; i++) effects.Apply(ally, stacking, shepherd, ctx);
             EffectSystem.CommitPending(ally);
             Assert.AreEqual(8, ally.ActiveEffects[0].Stacks, "Восемь стаков накоплено");
+
+            // Тот же закон: снимать можно то, что висело до этого тика.
+            ctx.AdvanceTick();
 
             EffectData cleanse = TestEffect.Make(
                 baseDuration: 0f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
@@ -397,7 +404,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void NotifyAttackInterrupted(RuntimeUnit unit) { }
 
             public IRngService Rng => null;
-            public int CurrentTick => 0;
+            /// <summary>Тик боя — подвижный: снятие судит по состоянию начала тика (см. MockCombatContext).</summary>
+            public int CurrentTick { get; private set; }
+
+            public void AdvanceTick() => CurrentTick++;
             public float ArmorK => 100f;
             public Guildmaster.Core.Simulation.SimTuning Tuning => Guildmaster.Core.Simulation.SimTuning.Default;
 

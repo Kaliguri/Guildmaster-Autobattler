@@ -22,6 +22,10 @@ namespace Guildmaster.Balance.Tests
     [Explicit("Диагностика BAL-014: запускать руками")]
     public sealed class MirrorBitProbe
     {
+        // Окно трассировки эффектов: узкое, чтобы журнал читался глазами, и вокруг известного тика 181.
+        private const int TraceFrom = 175;
+        private const int TraceTo   = 182;
+
         /// <summary>
         /// <paramref name="separation"/> = false выключает расталкивание: если при этом точное расхождение
         /// исчезает, источник именно в нём, и это уже не гипотеза, а замер.
@@ -31,7 +35,16 @@ namespace Guildmaster.Balance.Tests
         {
             List<RelicData> relics = BalanceAssets.LoadRelics();
             var squad = new List<RelicData>();
-            for (int i = 0; i < 4 && i < relics.Count; i++) squad.Add(relics[i]);
+
+            // Состав берём ТОТ ЖЕ, на котором краснеет сторож (серия 5 MirrorMatchTests): диагностика,
+            // гоняющая другой отряд, честно ответит «расхождения нет» и отправит искать не там.
+            string[] wanted = { "FlameSwordsman", "IronSpearman", "LightShepherd", "Ranger" };
+            foreach (string name in wanted)
+                foreach (RelicData r in relics)
+                    if (r.name == name) { squad.Add(r); break; }
+
+            if (squad.Count < wanted.Length)
+                for (int i = 0; i < 4 && i < relics.Count; i++) squad.Add(relics[i]);
 
             var names = new List<string>();
             foreach (RelicData r in squad) names.Add(r.name);
@@ -49,6 +62,27 @@ namespace Guildmaster.Balance.Tests
 
             if (!separation) env.Sim.Separation.Iterations = 0;
 
+            // Трассировка жизни эффектов вокруг тика рождения: расхождение «число эффектов 4 против 3»
+            // говорит ЧТО разошлось, но не КТО это сделал. Печатаем наложения, снятия и диспелы обеих
+            // сторон в узком окне — по этому журналу видно, чей порядок оказался несимметричным.
+            int traceTick = 0;
+            var trace = new StringBuilder();
+            env.Effects.OnEffectApplied += (t, def, src) =>
+            {
+                if (traceTick >= TraceFrom && traceTick <= TraceTo)
+                    trace.AppendLine($"    t{traceTick} НАЛОЖЕН {def.Id} на {Name(tracked, t)} от {Name(tracked, src)}");
+            };
+            env.Effects.OnEffectEnded += (t, def, src) =>
+            {
+                if (traceTick >= TraceFrom && traceTick <= TraceTo)
+                    trace.AppendLine($"    t{traceTick} КОНЧИЛСЯ {def.Id} на {Name(tracked, t)}");
+            };
+            env.Effects.OnEffectDispelled += (t, def, by, src) =>
+            {
+                if (traceTick >= TraceFrom && traceTick <= TraceTo)
+                    trace.AppendLine($"    t{traceTick} СНЯТ {def.Id} с {Name(tracked, t)} диспелом от {Name(tracked, by)}");
+            };
+
             int half = tracked.Count / 2;
             var sb = new StringBuilder();
             sb.AppendLine($"Отряд [{string.Join(", ", names)}], строй Squad, пар: {half}, " +
@@ -56,6 +90,7 @@ namespace Guildmaster.Balance.Tests
 
             for (int tick = 0; tick < 400; tick++)
             {
+                traceTick = tick;
                 env.Sim.Tick(SimConstants.TickDelta);
 
                 var diffs = new List<string>();
@@ -66,6 +101,8 @@ namespace Guildmaster.Balance.Tests
 
                 sb.AppendLine($"ПЕРВОЕ ТОЧНОЕ РАСХОЖДЕНИЕ на тике {tick} ({tick / 30f:0.000} с):");
                 foreach (string d in diffs) sb.AppendLine("  " + d);
+                sb.AppendLine($"  Журнал эффектов, тики {TraceFrom}..{TraceTo}:");
+                sb.Append(trace);
                 Assert.Fail(sb.ToString());
             }
 
