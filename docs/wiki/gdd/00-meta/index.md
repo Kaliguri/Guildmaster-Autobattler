@@ -54,7 +54,8 @@ SORT file.name ASC
 
 - [[journal-adr|Meta - Decision Journal]] — все принятые решения (ADR: дата + причина + статус). Источник, откуда решения расходятся по канону.
 - [[gdd/00-meta/roadmap|Meta - Roadmap]] — только НЕрешённое, что требует обсуждения.
-- [[gdd/00-meta/open|Meta - Open Questions]] — идеи на рассмотрении (свод бывших 0.2/0.3/0.6).
+- [[gdd/00-meta/open|Meta - Open Questions]] — только НЕрешённое: развилки без вердикта, сырьё под разбор, инкубатор требований.
+- [[gdd/00-meta/closed-forks|Meta - Closed Forks]] — приложение к журналу: разборы **закрытых** развилок (почему выбрали именно так).
 - [[glossary|Meta - Glossary]] — единый словарь терминов RU\|EN.
 - [[legacy|Meta - Legacy]] — архив снятого: как было, почему сняли.
 
