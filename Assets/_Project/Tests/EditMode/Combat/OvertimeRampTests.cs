@@ -35,7 +35,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             wallImpactDamageMult:      SimTuning.Default.WallImpactDamageMult,
             wallImpactStunSeconds:     SimTuning.Default.WallImpactStunSeconds,
             overtimeStartSeconds:      start,
-            overtimeDamagePerSecond:   perSecond);
+            overtimeDamagePerSecond:   perSecond,
+            sprintSpeedMult:           SimTuning.Default.SprintSpeedMult,
+            sprintEnterGap:            SimTuning.Default.SprintEnterGap,
+            sprintExitGap:             SimTuning.Default.SprintExitGap);
 
         [Test]
         public void BeforeThreshold_NoRamp()

@@ -60,6 +60,13 @@ namespace Guildmaster.Combat
         /// <summary>Намерение позиционирования (Approach/Kite/Retreat). Пишет мозг (10 Гц), читает MovementSystem (30 Гц).</summary>
         public PositioningIntent Positioning;
 
+        /// <summary>
+        /// Идёт разбег: юнит бежит к далёкой цели с прибавкой скорости. Пишет и гасит <c>MovementSystem</c>
+        /// по гистерезису зазора до цели — это состояние СИМУЛЯЦИИ, а не показа: презентация только читает
+        /// его, чтобы переключить клип бега. Ускорять юнита анимацией нельзя — ноги обгонят позицию.
+        /// </summary>
+        public bool IsSprinting;
+
         /// <summary>Цель авто-атаки. Для хилера — союзник (≠ CurrentTarget). Пишет мозг, читает AutoAttackSystem.</summary>
         public RuntimeUnit AutoAttackTarget;
 

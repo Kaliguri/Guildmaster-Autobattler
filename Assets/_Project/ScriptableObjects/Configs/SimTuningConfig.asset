@@ -32,3 +32,6 @@ MonoBehaviour:
   _wallImpactStunSeconds: 1
   _overtimeStartSeconds: 90
   _overtimeDamagePerSecond: 0.05
+  _sprintSpeedMult: 1.3
+  _sprintEnterGap: 1
+  _sprintExitGap: 0.3

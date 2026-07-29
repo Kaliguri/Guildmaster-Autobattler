@@ -60,6 +60,15 @@ namespace Guildmaster.Core.Simulation
         public readonly float OvertimeStartSeconds;   // с какой секунды боя включается рампа
         public readonly float OvertimeDamagePerSecond; // прибавка к урону за каждую секунду сверх порога (0.05 = +5%)
 
+        // --- Спринт (рывок на дальнем подходе) ---
+        // Ускорение живёт В СИМУЛЯЦИИ, а не в презентации: иначе бегущая анимация обгонит позицию, и
+        // юнит поедет ногами по воздуху. Порог — ЗАЗОР сверх досягаемости, а не сырая дистанция до цели:
+        // у стрелка с досягаемостью 8 сырой порог «дальше трёх метров» держал бы спринт включённым всегда,
+        // хотя он уже на позиции. Гистерезис (вход шире выхода) — против мигания на коротких перебежках.
+        public readonly float SprintSpeedMult;   // множитель скорости в спринте (1.3 = +30%)
+        public readonly float SprintEnterGap;    // зазор сверх досягаемости, с которого начинается разбег
+        public readonly float SprintExitGap;     // зазор, на котором разбег заканчивается (< enter)
+
         public SimTuning(
             float bodyRadiusPerSize,
             float separationStrength,
@@ -80,7 +89,10 @@ namespace Guildmaster.Core.Simulation
             float wallImpactDamageMult,
             float wallImpactStunSeconds,
             float overtimeStartSeconds,
-            float overtimeDamagePerSecond)
+            float overtimeDamagePerSecond,
+            float sprintSpeedMult,
+            float sprintEnterGap,
+            float sprintExitGap)
         {
             BodyRadiusPerSize         = bodyRadiusPerSize;
             SeparationStrength        = separationStrength;
@@ -102,6 +114,9 @@ namespace Guildmaster.Core.Simulation
             WallImpactStunSeconds     = wallImpactStunSeconds;
             OvertimeStartSeconds      = overtimeStartSeconds;
             OvertimeDamagePerSecond   = overtimeDamagePerSecond;
+            SprintSpeedMult           = sprintSpeedMult;
+            SprintEnterGap            = sprintEnterGap;
+            SprintExitGap             = sprintExitGap;
         }
 
         /// <summary>
@@ -151,6 +166,9 @@ namespace Guildmaster.Core.Simulation
             wallImpactDamageMult:      1f,
             wallImpactStunSeconds:     1f,
             overtimeStartSeconds:      90f,
-            overtimeDamagePerSecond:   0.05f);
+            overtimeDamagePerSecond:   0.05f,
+            sprintSpeedMult:           1.3f,
+            sprintEnterGap:            1f,
+            sprintExitGap:             0.3f);
     }
 }

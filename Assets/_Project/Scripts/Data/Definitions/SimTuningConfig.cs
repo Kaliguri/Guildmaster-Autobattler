@@ -78,6 +78,16 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Насколько растёт НАНОСИМЫЙ урон за каждую секунду сверх порога (0.05 = +5%). Лечение и щиты не растут — этим клинч и ломается. 0 = овертайм выключен.")]
         [SerializeField] private float _overtimeDamagePerSecond = SimTuning.Default.OvertimeDamagePerSecond;
 
+        [TabGroup("Tuning", "Спринт"), LabelText("Множитель скорости в разбеге")]
+        [Tooltip("Во сколько раз юнит быстрее на дальнем подходе (1.3 = +30%). Ускорение живёт в СИМУЛЯЦИИ, а не в анимации: иначе бегущие ноги обгонят позицию. Меняет время подхода — после правки нужен прогон бенча. 1 = спринта нет.")]
+        [SerializeField] private float _sprintSpeedMult = SimTuning.Default.SprintSpeedMult;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("ед", overlay: true), LabelText("Зазор входа в разбег")]
+        [Tooltip("На сколько дальше своей досягаемости должна быть цель, чтобы юнит побежал. Считается ЗАЗОР сверх досягаемости, а не сырая дистанция: у стрелка с досягаемостью 8 сырой порог держал бы разбег включённым всегда.")]
+        [SerializeField] private float _sprintEnterGap = SimTuning.Default.SprintEnterGap;
+        [TabGroup("Tuning", "Спринт"), SuffixLabel("ед", overlay: true), LabelText("Зазор выхода из разбега")]
+        [Tooltip("Зазор, на котором разбег заканчивается. Должен быть МЕНЬШЕ входа: полоса между ними и есть гистерезис, без него разбег мигал бы на каждой короткой перебежке.")]
+        [SerializeField] private float _sprintExitGap = SimTuning.Default.SprintExitGap;
+
         /// <summary>Снять иммутабельный снапшот для бейка на старте боя.</summary>
         public SimTuning ToSnapshot() => new SimTuning(
             _bodyRadiusPerSize,
@@ -99,6 +109,9 @@ namespace Guildmaster.Data.Definitions
             _wallImpactDamageMult,
             _wallImpactStunSeconds,
             _overtimeStartSeconds,
-            _overtimeDamagePerSecond);
+            _overtimeDamagePerSecond,
+            _sprintSpeedMult,
+            _sprintEnterGap,
+            _sprintExitGap);
     }
 }

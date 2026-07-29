@@ -1,0 +1,133 @@
+using System.Collections.Generic;
+using Guildmaster.Combat;
+using Guildmaster.Core.Arena;
+using Guildmaster.Core.Simulation;
+using Guildmaster.Data.Stats;
+using NUnit.Framework;
+using UnityEngine;
+
+namespace Guildmaster.Tests.EditMode.Combat
+{
+    /// <summary>
+    /// Разбег на дальнем подходе. Тесты держат ЗАМЫСЕЛ, а не реализацию: ускорение обязано жить в
+    /// симуляции (позиция за тик реально больше), порог обязан считаться от зазора сверх досягаемости
+    /// (иначе стрелок бежит вечно), а полоса гистерезиса — гасить мигание на границе.
+    /// </summary>
+    public sealed class SprintTests
+    {
+        private const float Reach = 2f;   // досягаемость обоих: дальше неё и начинается зазор
+
+        private static RuntimeUnit Make(Vector2 pos, float moveSpeed, float attackRange = Reach)
+        {
+            var stats = new Stats(null);
+            stats.AddModifiersFrom("base", new[]
+            {
+                new StatModifier(StatType.AttackRange, ModifierOp.Flat, attackRange),
+                new StatModifier(StatType.MoveSpeed,   ModifierOp.Flat, moveSpeed),
+                new StatModifier(StatType.Size,        ModifierOp.Flat, 1f),
+                new StatModifier(StatType.MaxHP,       ModifierOp.Flat, 100f),
+            });
+            return new RuntimeUnit
+            {
+                Stats = stats, Position = pos, PreviousPosition = pos,
+                Positioning = PositioningIntent.Approach, CurrentHP = 100f,
+            };
+        }
+
+        // Один тик движения пары «преследователь → цель». Возвращает пройденное преследователем расстояние.
+        private static float StepDistance(RuntimeUnit chaser, RuntimeUnit target, in SimTuning tuning)
+        {
+            var units = new List<RuntimeUnit> { chaser, target };
+            Vector2 before = chaser.Position;
+            new MovementSystem().Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded, in tuning);
+            return (chaser.Position - before).magnitude;
+        }
+
+        [Test]
+        public void FarTarget_SprintRaisesActualStep()
+        {
+            SimTuning tuning = SimTuning.Default;
+            var chaser = Make(new Vector2(-20f, 0f), moveSpeed: 3f);
+            var target = Make(new Vector2(20f, 0f),  moveSpeed: 0f);
+            chaser.CurrentTarget = target;
+
+            float step = StepDistance(chaser, target, in tuning);
+
+            Assert.That(chaser.IsSprinting, Is.True, "Цель далеко — разбег обязан включиться.");
+            float walk = 3f * SimConstants.TickDelta;
+            Assert.That(step, Is.EqualTo(walk * tuning.SprintSpeedMult).Within(1e-4f),
+                "Ускорение должно двигать ПОЗИЦИЮ: разбег, которого нет в симуляции, анимация обгонит.");
+        }
+
+        [Test]
+        public void ArrivedAtReach_SprintOff()
+        {
+            SimTuning tuning = SimTuning.Default;
+            var chaser = Make(new Vector2(-20f, 0f), moveSpeed: 3f);
+            var target = Make(new Vector2(20f, 0f),  moveSpeed: 0f);
+            chaser.CurrentTarget = target;
+
+            // Гоним до упора: в конце подхода юнит обязан выйти из разбега сам.
+            for (int i = 0; i < 600; i++) StepDistance(chaser, target, in tuning);
+
+            Assert.That(chaser.IsSprinting, Is.False, "Добежал — разбег кончился.");
+        }
+
+        [Test]
+        public void InsideHysteresisBand_KeepsPreviousDecision()
+        {
+            SimTuning tuning = SimTuning.Default;
+            // Зазор ровно между порогами выхода и входа: решение не меняется ни в одну сторону.
+            float gap = (tuning.SprintEnterGap + tuning.SprintExitGap) * 0.5f;
+            var target = Make(new Vector2(0f, 0f), moveSpeed: 0f);
+            var chaser = Make(new Vector2(-1f, 0f), moveSpeed: 0f); // скорость 0 — позиция не плывёт
+            chaser.CurrentTarget = target;
+
+            // Досягаемость body-aware (радиус атаки + оба тела), поэтому ставим по ней, а не по AttackRange:
+            // иначе «зазор» теста разошёлся бы с зазором, который считает движение.
+            float reach = CombatPositioning.AttackReachCenter(chaser, target, in tuning);
+            chaser.Position = chaser.PreviousPosition = new Vector2(-(reach + gap), 0f);
+
+            chaser.IsSprinting = true;
+            StepDistance(chaser, target, in tuning);
+            Assert.That(chaser.IsSprinting, Is.True, "В полосе гистерезиса бежавший продолжает бежать.");
+
+            chaser.IsSprinting = false;
+            StepDistance(chaser, target, in tuning);
+            Assert.That(chaser.IsSprinting, Is.False, "В той же полосе стоявший не срывается в разбег.");
+        }
+
+        [Test]
+        public void LongRangeUnit_DoesNotSprintAtItsOwnFiringDistance()
+        {
+            SimTuning tuning = SimTuning.Default;
+            // Стрелок на своей рабочей дистанции: сырое расстояние огромно, а зазор нулевой.
+            var target = Make(new Vector2(0f, 0f), moveSpeed: 0f);
+            var chaser = Make(new Vector2(-8f, 0f), moveSpeed: 3f, attackRange: 8f);
+            chaser.CurrentTarget = target;
+
+            StepDistance(chaser, target, in tuning);
+
+            Assert.That(chaser.IsSprinting, Is.False,
+                "Порог считается от зазора сверх досягаемости: по сырой дистанции стрелок бежал бы всегда.");
+        }
+
+        [Test]
+        public void DeadUnit_ClearsSprint()
+        {
+            SimTuning tuning = SimTuning.Default;
+            var target = Make(new Vector2(20f, 0f), moveSpeed: 0f);
+            var chaser = Make(new Vector2(-20f, 0f), moveSpeed: 3f);
+            chaser.CurrentTarget = target;
+
+            StepDistance(chaser, target, in tuning);
+            Assert.That(chaser.IsSprinting, Is.True);
+
+            chaser.CurrentHP = 0f;
+            chaser.IsDead    = true;   // умер посреди разбега
+            StepDistance(chaser, target, in tuning);
+
+            Assert.That(chaser.IsSprinting, Is.False, "Флаг разбега не должен переживать смерть — показ поверит.");
+        }
+    }
+}

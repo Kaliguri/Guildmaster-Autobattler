@@ -62,13 +62,15 @@ namespace Guildmaster.Combat
                 RuntimeUnit unit = units[i];
                 _next[i] = unit.Position;   // по умолчанию остаёмся на месте
 
-                if (unit.IsDead) continue;
+                // Разбег гаснет вместе с любой причиной не бежать: иначе флаг залипает на убитом или
+                // обездвиженном, и показ считает, что он всё ещё несётся к цели.
+                if (unit.IsDead) { unit.IsSprinting = false; continue; }
 
                 // В полёте (§9.9) юнита двигает DisplacementSystem — сам он не перемещается.
-                if (unit.DisplacedTicksRemaining > 0) continue;
+                if (unit.DisplacedTicksRemaining > 0) { unit.IsSprinting = false; continue; }
 
                 // Контроль (корень/обездвиживание) — стоим на месте (вики «6» §5.3).
-                if (!unit.CanMove) continue;
+                if (!unit.CanMove) { unit.IsSprinting = false; continue; }
 
                 // «Занят» атакой = замах ИЛИ восстановление (весь бэксвинг, вики «14»): в оба хвоста
                 // юнит либо стоит, либо (со «стрельбой на ходу») движется со штрафом. Recovery = 0 у
@@ -78,14 +80,17 @@ namespace Guildmaster.Combat
 
                 // Атака рутит юнита (свинг на месте) — КРОМЕ реликвий со «стрельбой на ходу» (§9.8):
                 // те продолжают движение со штрафом скорости.
-                if (firing && !attackWhileMoving) continue;
+                if (firing && !attackWhileMoving) { unit.IsSprinting = false; continue; }
 
                 RuntimeUnit target = unit.CurrentTarget;
-                if (target == null) continue;
+                if (target == null) { unit.IsSprinting = false; continue; }
+
+                UpdateSprint(unit, target, firing, in tuning);
 
                 float moveSpeed = unit.Stats.Get(StatType.MoveSpeed);
                 if (firing && attackWhileMoving)
                     moveSpeed *= Mathf.Max(0f, 1f - unit.Unit.MovingAttackSpeedPenaltyPct); // §9.8
+                if (unit.IsSprinting) moveSpeed *= tuning.SprintSpeedMult;
 
                 float maxMove = moveSpeed * dt;
                 if (maxMove <= 0f) continue;
@@ -111,6 +116,36 @@ namespace Guildmaster.Combat
                 unit.PreviousPosition = unit.Position;
                 unit.Position         = _next[i];
             }
+        }
+
+        /// <summary>
+        /// Разбег на дальнем подходе: включается, когда до цели ЗАЗОР сверх собственной досягаемости больше
+        /// входного порога, гаснет, когда зазор упал ниже выходного. Полоса между порогами — гистерезис:
+        /// один порог мигал бы на каждой перебежке (и вместе с ним мигал бы клип бега).
+        /// </summary>
+        /// <remarks>
+        /// Меряем зазор, а не сырую дистанцию: «дальше трёх метров» для мили — начало разбега, а для
+        /// стрелка с досягаемостью 8 — уже позиция для стрельбы, и он бежал бы вечно.
+        /// <para>
+        /// Разбег живёт только в честном подходе: кайтер и отступающий двигаются по своей логике, и
+        /// прибавка скорости там означала бы «убегает быстрее, чем должен». В замахе и хвосте — тоже нет:
+        /// юнит либо стоит, либо идёт со штрафом «стрельбы на ходу», и разбег бы этот штраф съел.
+        /// </para>
+        /// </remarks>
+        private static void UpdateSprint(RuntimeUnit unit, RuntimeUnit target, bool firing, in SimTuning tuning)
+        {
+            if (firing || unit.Positioning != PositioningIntent.Approach || tuning.SprintSpeedMult <= 1f)
+            {
+                unit.IsSprinting = false;
+                return;
+            }
+
+            float reach = CombatPositioning.AttackReachCenter(unit, target, in tuning);
+            float gap   = (target.Position - unit.Position).magnitude - reach;
+
+            // Гистерезис: вход по большему порогу, выход по меньшему; между ними держим что было.
+            if (unit.IsSprinting) { if (gap < tuning.SprintExitGap)  unit.IsSprinting = false; }
+            else                  { if (gap > tuning.SprintEnterGap) unit.IsSprinting = true;  }
         }
 
         /// <summary>
