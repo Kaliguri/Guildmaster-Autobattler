@@ -130,6 +130,24 @@ const METRICS = {
   Synergy_6v6:     ['Синергия 6v6', '', 'То же в бою крупнее штатного.', true],
   SynergyAvg:      ['Синергия, среднее', '', 'Среднее по трём размерам боя.', true],
 
+  // Энкаунтеры (PvE): главная линза игры — «прошёл ли бой и какой ценой», а не «кто сильнее в зеркале».
+  Cleared:         ['Пройдено', '', 'Сколько энкаунтеров кит прошёл.', true],
+  Fights:          ['Боёв', '', 'Сколько энкаунтеров прогнано.', null],
+  ClearRate:       ['Проходимость', 'доля→%', 'Доля пройденных боёв. Главная PvE-метрика: винрейт в зеркале отвечает на вопрос, которого в игре нет.', true],
+  'HpCostOnClear%':['Цена победы', '%', 'Сколько HP отряда стоила ПОБЕДА. Считается только по пройденным боям: в проигранном остаток говорит о том, как отряд лёг, а не о цене.', false],
+  'AvgHpCostOnClear%': ['Цена победы', '%', 'Средняя цена прохождения этого боя по всему ростеру.', false],
+  AvgFightSec:     ['Длительность боя', 'с', 'Средняя длина боя по разрешившимся: потолок в среднее не входит.', null],
+  'Timeout%':       ['Не разрешилось', '%', 'Доля боёв, упёршихся в потолок времени. Это не ничья, а отсутствие исхода.', false],
+  'Overtime%':      ['Доехало до овертайма', '%', 'Доля боёв, дотянувших до порога антизатягивания. Овертайм — предохранитель и обязан быть редким.', false],
+  'HeroDeaths%':    ['Смерти кита', '%', 'Как часто погибал сам испытуемый, независимо от исхода боя.', false],
+  FallenOnClear:   ['Потерь за победу', '', 'Сколько бойцов из четырёх легло в среднем в ПРОЙДЕННОМ бою: победа с тремя трупами и победа без потерь стоят разного.', false],
+  Encounter:       ['Энкаунтер', '', 'Авторенный бой.', null],
+  Tier:            ['Тир', '', 'Метка сложности боя: рядовой, элита, финалист акта, служебный.', null],
+  Enemies:         ['Врагов', '', 'Сколько врагов в составе.', null],
+  Threat:          ['Очки опасности', '', 'Сумма ручных оценок автора — ЕДИНСТВЕННАЯ заявленная сложность боя. Расхождение с проходимостью читается как «оценка врёт».', null],
+  EnemyHP:         ['HP врагов', '', 'Суммарный запас вражеской стороны — знаменатель разговора о TTK.', null],
+  FailedBy:        ['Не прошли', '', 'Какие киты не справились. Провал одного-двух на элите — норма, провал всех — вопрос к энкаунтеру.', null],
+
   // Аудит контента
   Type:            ['Сторона', '', 'Реликвия игрока или враг.', null],
   Name:            ['Кит', '', 'Испытуемый.', null],
@@ -160,6 +178,8 @@ const NORM_OF = {
 
 // Корзины страницы кита.
 const BUCKETS = [
+  // PvE идёт первой корзиной: игрок дерётся с энкаунтерами, и «прошёл ли бой» — первый вопрос о ките.
+  { name: 'Бои с энкаунтерами (PvE)', keys: ['ClearRate', 'Cleared', 'Fights', 'HpCostOnClear%', 'FallenOnClear', 'HeroDeaths%', 'AvgFightSec', 'Timeout%', 'Overtime%'] },
   { name: 'Урон', keys: ['DPS_solo', 'DPS_aoe', 'AoE_ratio', 'AvgDmgDealt', 'AutoPhys%', 'AutoMagic%', 'Ability%', 'DoT%', 'React%', 'Vuln%', 'SelfDmg%'] },
   { name: 'Выживаемость', keys: ['TTD_solo', 'EHP_solo', 'HpLeft_solo%', 'TTD_focus3', 'EHP_focus3', 'HpLeft_focus3%', 'AvgDmgTaken', 'HeroSurvival%', 'HealTaken', 'Mitigated', 'Evaded'] },
   { name: 'Контроль', keys: ['ControlSec', 'ControlCount', 'ControlTakenSec'] },
@@ -220,7 +240,9 @@ function modeTitle(key) { return DATA.modeTitles[key] || key; }
 /** Все режимы прогона в стабильном порядке: сначала бои, потом стендовые линзы. */
 function modesOf(run) {
   if (!run) return [];
-  const order = ['duel', 'solo_duel', 'trio_duel', 'squad_duel', 'super_team_duel', 'team_duel',
+  // PvE впереди круговых форматов: игра — PvE, зеркальные бои остаются вспомогательной линзой.
+  const order = ['encounter_kits', 'encounter_difficulty',
+    'duel', 'solo_duel', 'trio_duel', 'squad_duel', 'super_team_duel', 'team_duel',
     'squad_swap', 'pair_synergy', 'bench_dps', 'bench_survivability', 'audit_content'];
   return Object.keys(run.modes).sort((a, b) => {
     const ia = order.indexOf(a), ib = order.indexOf(b);
@@ -259,6 +281,15 @@ function normsOf(unit) {
 function isReference(name) {
   const card = cardOf(name);
   return !!card && card.Kind === 'Эталон';
+}
+
+/**
+ * Служебные строки таблиц — не участники ростера. Пока такая одна: контрольный прогон PvE-бенча
+ * (отряд из эталонных манекенов без испытуемого). Он точка отсчёта цены боя, поэтому в аутсайдеры,
+ * выбросы и «сильнейший/слабейший» не попадает, но в таблицах и на плитке остаётся.
+ */
+function isControlRow(name) {
+  return typeof name === 'string' && name.startsWith('(контроль');
 }
 
 /** Все киты прогона, о которых есть хоть какие-то числа. */
@@ -932,7 +963,7 @@ function renderOverview() {
   const view = $('#view');
   const names = unitsOf(run);
 
-  const judged = names.filter((n) => !isReference(n));
+  const judged = names.filter((n) => !isReference(n) && !isControlRow(n));
   const outs = judged.filter(outOfBand);
   const open = (DATA.issues || []).filter((i) => !['закрыта', 'отклонена'].includes(statusOf(i)));
 
@@ -954,6 +985,37 @@ function renderOverview() {
     tiles.appendChild(tile('Слабейший', displayName(wins[wins.length - 1].name),
       `винрейт ${fmtValue('WinRate', wins[wins.length - 1].wr)}`, 'bad'));
   }
+
+  // PvE-плитки: если энкаунтеры прогнаны, первый вопрос о ростере — кто не проходит бои и кто платит
+  // за них дороже всех. Винрейт в зеркале этого не показывает.
+  if (run.modes.encounter_kits) {
+    const clears = judged
+      .map((n) => ({ name: n, rate: valueOf(run, 'encounter_kits', n, 'ClearRate'),
+        cost: valueOf(run, 'encounter_kits', n, 'HpCostOnClear%') }))
+      .filter((x) => isNum(x.rate));
+
+    if (clears.length) {
+      const worstClear = clears.slice().sort((a, b) => a.rate - b.rate)[0];
+      tiles.appendChild(tile('Хуже всех в PvE', displayName(worstClear.name),
+        `проходимость ${fmtValue('ClearRate', worstClear.rate)}`, worstClear.rate < 0.5 ? 'bad' : ''));
+
+      const priciest = clears.filter((x) => isNum(x.cost)).sort((a, b) => b.cost - a.cost)[0];
+      if (priciest) {
+        tiles.appendChild(tile('Дороже всех бои', displayName(priciest.name),
+          `цена победы ${fmtValue('HpCostOnClear%', priciest.cost)}`));
+      }
+
+      // Планка: тот же отряд без испытуемого. Кит ниже неё отряд ослабляет.
+      const ctrlName = Object.keys(run.modes.encounter_kits.units).find(isControlRow);
+      if (ctrlName) {
+        const ctrlRate = valueOf(run, 'encounter_kits', ctrlName, 'ClearRate');
+        const ctrlCost = valueOf(run, 'encounter_kits', ctrlName, 'HpCostOnClear%');
+        tiles.appendChild(tile('Отряд без кита', fmtValue('ClearRate', ctrlRate),
+          isNum(ctrlCost) ? `цена победы ${fmtValue('HpCostOnClear%', ctrlCost)}` : 'точка отсчёта'));
+      }
+    }
+  }
+
   view.appendChild(tiles);
 
   const cols = el('div', 'cols2');
