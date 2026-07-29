@@ -88,6 +88,9 @@ description: >-
    SO-ссылок из логики и `Resources.Load`.
    *Почему:* реестр — единственный шов код↔контент. Он же — точка, куда позже сядут
    source-namespace под моды и addressable-загрузка (см. `references/localization-and-loading.md`).
+   *Готча:* новый контент-SO не виден геймплею, пока не прогнан
+   `Tools/Guildmaster/Sync Content Database` (в скрипте — `ContentDatabaseSync.Sync`). Симптом
+   выглядит как «id не найден», хотя ассет на диске есть.
    Прямая ссылка в обход реестра убивает этот шов.
 
 5. **Весь player-facing текст — лок-ключами, RU заполняем, прочие локали прочерк.**
