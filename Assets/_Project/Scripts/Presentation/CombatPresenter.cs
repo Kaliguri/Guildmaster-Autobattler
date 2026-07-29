@@ -54,6 +54,7 @@ namespace Guildmaster.Presentation
         private readonly Dictionary<int, UnitView>       _views     = new Dictionary<int, UnitView>();
         private readonly Dictionary<int, ProjectileView> _projViews = new Dictionary<int, ProjectileView>();
         private readonly List<int>                       _deadProj  = new List<int>();
+        private readonly HashSet<int>                    _seenProj  = new HashSet<int>();
 
         // Живые снаряды и направление последнего снаряда, летевшего в конкретную цель (по её id).
         // Импакт-фидбэк дальнобойного удара должен идти ОТКУДА ПРИЛЕТЕЛО, а вектор «стрелок → цель»
@@ -71,7 +72,7 @@ namespace Guildmaster.Presentation
         private System.Action<FloatingText> _releaseText;
         private CombatStatusOverlay         _statusOverlay;
         private CombatVfx                   _vfx;               // пул боевых VFX-префабов
-        private RuntimeUnit                 _finisherCandidate; // автор последнего добивающего мили-удара
+        private int                         _finisherCandidate = -1; // id автора последнего добивающего мили-удара
 
         private IPublisher<DamageDealtEvent> _damageDealtPublisher;
         private IPublisher<BattleEndedEvent> _battleEndedPublisher;
@@ -82,6 +83,9 @@ namespace Guildmaster.Presentation
         // Показ читает ЛЕНТУ, а не живой сим: сим уходит вперёд на окно опережения, поэтому живое
         // состояние для картинки — будущее. Момент показа и доля кадра — у плеера ленты.
         private Combat.Tape.BattleTapePlayback _playback;
+
+        // События приходят отсюда — то есть тогда, когда их ПОКАЗАЛИ, а не когда посчитал сим.
+        private Combat.Tape.BattleTapeDispatcher _dispatcher;
 
         // Паспорт юнита: то, что за бой не меняется. Заводится по событию спавна (оно приходит заранее —
         // это регистрация, а не показ), потому что вид создаётся много позже, когда до юнита дойдёт показ,
@@ -102,9 +106,11 @@ namespace Guildmaster.Presentation
             Design.CombatFeelConfig feel,
             Core.Audio.IAudioService audio,
             Core.Players.ILocalPlayer localPlayer,
-            Combat.Tape.BattleTapePlayback playback)
+            Combat.Tape.BattleTapePlayback playback,
+            Combat.Tape.BattleTapeDispatcher dispatcher)
         {
             _playback             = playback;
+            _dispatcher           = dispatcher;
             _localPlayer          = localPlayer;
             _audio                = audio;
             _simulation           = simulation;
@@ -123,42 +129,35 @@ namespace Guildmaster.Presentation
         private void OnEnable()
         {
             if (_simulation == null) return;
-            _simulation.OnUnitSpawned       += HandleUnitSpawned;
-            _simulation.OnUnitDied          += HandleUnitDied;
-            _simulation.OnDamageDealt       += HandleDamageDealt;
-            _simulation.OnHealed            += HandleHealed;
-            _simulation.OnAttackEvaded      += HandleAttackEvaded;
-            _simulation.OnBattleEnded       += HandleBattleEnded;
-            _simulation.OnAttackStarted     += HandleAttackStarted;
-            _simulation.OnAttackInterrupted += HandleAttackInterrupted;
-            _simulation.OnProjectileSpawned += HandleProjectileSpawned;
-            _simulation.OnBattleReset       += HandleBattleReset;
-            if (_abilities != null) _abilities.OnAbilityCast += HandleAbilityCast;
 
-            EnsureStatusOverlay();
-            EnsureVfx();
+            // Спавн — единственное, что слушаем у СИМА, и не ради показа: нужен паспорт юнита, пока
+            // живой юнит ещё под рукой. Всё остальное приходит с ленты, когда его показали.
+            _simulation.OnUnitSpawned += HandleUnitSpawned;
+
+            _dispatcher.DamageDealt       += HandleDamageDealt;
+            _dispatcher.Healed            += HandleHealed;
+            _dispatcher.AttackEvaded      += HandleAttackEvaded;
+            _dispatcher.AttackStarted     += HandleAttackStarted;
+            _dispatcher.AttackInterrupted += HandleAttackInterrupted;
+            _dispatcher.BattleEnded       += HandleBattleEnded;
+            _dispatcher.BattleReset       += HandleBattleReset;
         }
 
         private void OnDisable()
         {
             if (_simulation == null) return;
-            _simulation.OnUnitSpawned       -= HandleUnitSpawned;
-            _simulation.OnUnitDied          -= HandleUnitDied;
-            _simulation.OnDamageDealt       -= HandleDamageDealt;
-            _simulation.OnHealed            -= HandleHealed;
-            _simulation.OnAttackEvaded      -= HandleAttackEvaded;
-            _simulation.OnBattleEnded       -= HandleBattleEnded;
-            _simulation.OnAttackStarted     -= HandleAttackStarted;
-            _simulation.OnAttackInterrupted -= HandleAttackInterrupted;
-            _simulation.OnProjectileSpawned -= HandleProjectileSpawned;
-            _simulation.OnBattleReset       -= HandleBattleReset;
-            if (_abilities != null) _abilities.OnAbilityCast -= HandleAbilityCast;
+
+            _simulation.OnUnitSpawned -= HandleUnitSpawned;
+
+            _dispatcher.DamageDealt       -= HandleDamageDealt;
+            _dispatcher.Healed            -= HandleHealed;
+            _dispatcher.AttackEvaded      -= HandleAttackEvaded;
+            _dispatcher.AttackStarted     -= HandleAttackStarted;
+            _dispatcher.AttackInterrupted -= HandleAttackInterrupted;
+            _dispatcher.BattleEnded       -= HandleBattleEnded;
+            _dispatcher.BattleReset       -= HandleBattleReset;
         }
 
-        // Перезапуск боя на месте (dev-R): снимаем все виды юнитов и снарядов и чистим летящие цифры.
-        // Slowmo/тряску сбрасывает CombatFeelDirector (тоже по OnBattleReset — у него есть TimeScaleService/шейк;
-        // презентер в другой сборке и до них не дотянется без цикла asmdef). Статус-кольца (CombatStatusOverlay)
-        // само-гаснут, когда юнитов нет. Сцена/камера не трогаются; новый сетап заспавнит юнитов через OnUnitSpawned.
         private void HandleBattleReset()
         {
             // Лента чистится рекордером, а показ надо отмотать: иначе он продолжит с тика прошлого боя.
@@ -181,7 +180,7 @@ namespace Guildmaster.Presentation
                 if (_corpses[i] != null) Destroy(_corpses[i].gameObject);
             _corpses.Clear();
 
-            _finisherCandidate = null;
+            _finisherCandidate = -1;
 
             // Летящие боевые цифры (урон/хил) — прервать и вернуть в пул, иначе висят после рестарта.
             if (_textPool != null)
@@ -227,7 +226,14 @@ namespace Guildmaster.Presentation
             // Состав юнитов на экране — тоже из кадра ленты, а не из событий сима: события спавна и
             // смерти приходят на окно опережения РАНЬШЕ, и вид появлялся бы за десять секунд до того,
             // как игрок увидит выход юнита на арену.
-            if (_playback.TryGetFrame(out var frame)) SyncViewsToFrame(frame);
+            if (_playback.TryGetFrame(out var frame, out var projectileFrame))
+            {
+                SyncViewsToFrame(frame);
+                SyncProjectilesToFrame(projectileFrame);
+            }
+
+            // События отдаются ровно до показанного тика: цифра, звук и вспышка садятся на свой кадр.
+            _dispatcher.PumpTo(_playback.ViewTick);
 
             // Доля берётся у ПОКАЗА, а не у боевого луча: она отсчитывается от показанного тика.
             float alpha = _playback.Alpha;
@@ -237,69 +243,69 @@ namespace Guildmaster.Presentation
                 kvp.Value.UpdateInterpolation(alpha);
             }
 
-            // Снаряды: следуем за ссылкой на симовый Projectile; когда он исчез (попал/вышел за поле) —
-            // вид снапнулся в точку удара и вернул false → уничтожаем (импакт совпал с цифрой урона).
-            if (_projViews.Count > 0)
+        }
+
+        /// <summary>
+        /// Снаряды на экране — из кадра показа. По живому снаряду они улетали бы за окно опережения до
+        /// выстрела и прилетали задолго до цифры урона.
+        /// </summary>
+        private void SyncProjectilesToFrame(IReadOnlyList<Combat.Tape.ProjectileSnapshot> frame)
+        {
+            _seenProj.Clear();
+            for (int i = 0; i < frame.Count; i++)
             {
-                _deadProj.Clear();
-                foreach (var kvp in _projViews)
-                    if (!kvp.Value.Tick(alpha)) _deadProj.Add(kvp.Key);
+                Combat.Tape.ProjectileSnapshot p = frame[i];
+                _seenProj.Add(p.Id);
 
-                TrackShotDirections();
-
-                for (int i = 0; i < _deadProj.Count; i++)
+                if (!_projViews.TryGetValue(p.Id, out ProjectileView view) || view == null)
                 {
-                    if (_projViews.TryGetValue(_deadProj[i], out var pv) && pv != null) ReleaseProjectile(pv);
-                    _projViews.Remove(_deadProj[i]);
-                    _projById.Remove(_deadProj[i]);
+                    view = SpawnProjectileView(in p);
+                    if (view == null) continue;
                 }
+
+                view.Follow(p.Position, p.PreviousPosition, p.Velocity, _playback.Alpha);
+                if (p.TargetId >= 0 && p.Velocity.sqrMagnitude > 1e-8f)
+                    _lastShotDir[p.TargetId] = p.Velocity.normalized;
+            }
+
+            // Исчез из кадра — значит попал или вышел за поле: вид снимается там же, где показан импакт.
+            _deadProj.Clear();
+            foreach (var kvp in _projViews)
+                if (!_seenProj.Contains(kvp.Key)) _deadProj.Add(kvp.Key);
+
+            for (int i = 0; i < _deadProj.Count; i++)
+            {
+                if (_projViews.TryGetValue(_deadProj[i], out var pv) && pv != null) ReleaseProjectile(pv);
+                _projViews.Remove(_deadProj[i]);
             }
         }
 
-        private void HandleProjectileSpawned(Projectile projectile)
+        private ProjectileView SpawnProjectileView(in Combat.Tape.ProjectileSnapshot p)
         {
-            if (_bulletPrefab == null || projectile == null) return;
+            if (_bulletPrefab == null) return null;
 
             // Визуальный старт — из ShotPoint (дула) источника, если его вид есть; иначе из позиции сима.
-            Vector3 origin = (Vector3)(Vector2)projectile.Position;
-            if (projectile.Source != null && _views.TryGetValue(projectile.Source.Id, out var srcView) && srcView != null)
+            Vector3 origin = (Vector3)(Vector2)p.Position;
+            if (p.SourceId >= 0 && _views.TryGetValue(p.SourceId, out var srcView) && srcView != null)
             {
                 origin = srcView.ShotPoint;
 
                 // Muzzle-вспышка из дула по направлению полёта снаряда.
                 if (_vfx != null && _feel != null)
                 {
-                    Vector2 vel = projectile.Velocity;
-                    float ang = vel.sqrMagnitude > 1e-6f ? Mathf.Atan2(vel.y, vel.x) * Mathf.Rad2Deg : 0f;
-                    _vfx.Spawn(_feel.VfxMuzzle, srcView.ShotPoint, ang, tint: VfxPaletteFor(projectile.Source));
+                    float ang = p.Velocity.sqrMagnitude > 1e-6f
+                        ? Mathf.Atan2(p.Velocity.y, p.Velocity.x) * Mathf.Rad2Deg
+                        : 0f;
+                    _vfx.Spawn(_feel.VfxMuzzle, srcView.ShotPoint, ang, tint: VfxPaletteFor(p.SourceId));
                 }
             }
 
             ProjectileView view = RentProjectile(origin);
             // Снаряд и его след — ЭФФЕКТ стрелка, значит его VFX-цвет, а не тинт тела.
-            // Снаряд и его след — один цвет с затуханием, разбросу тут места нет.
-            Color tint = projectile.Source != null ? VfxColorFor(projectile.Source) : Color.white;
-            view.Bind(projectile, tint, origin);
-            _projViews[projectile.Id] = view;
-            _projById[projectile.Id]  = projectile;
-            RememberShotDirection(projectile);
-        }
-
-        /// <summary>
-        /// Запомнить, куда летит каждый живой снаряд. Направление держится ПО ЦЕЛИ и переживает сам
-        /// снаряд: урон приходит уже после того, как снаряд отмечен мёртвым, и спросить его тогда не у кого.
-        /// </summary>
-        private void TrackShotDirections()
-        {
-            foreach (var kvp in _projById)
-                RememberShotDirection(kvp.Value);
-        }
-
-        private void RememberShotDirection(Projectile projectile)
-        {
-            if (projectile?.TargetUnit == null) return;
-            Vector2 v = projectile.Velocity;
-            if (v.sqrMagnitude > 1e-8f) _lastShotDir[projectile.TargetUnit.Id] = v.normalized;
+            Color tint = p.SourceId >= 0 ? VfxColorFor(p.SourceId) : Color.white;
+            view.BindVisual(tint, origin, p.Position, p.Velocity);
+            _projViews[p.Id] = view;
+            return view;
         }
 
         /// <summary>
@@ -452,8 +458,12 @@ namespace Guildmaster.Presentation
         /// </summary>
         private void HandleUnitDied(RuntimeUnit unit) { }
 
-        private void HandleDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result)
+        private void HandleDamageDealt(int sourceId, int targetId, DamageResult result)
         {
+            bool hasSource = TryGetShown(sourceId, out Combat.Tape.UnitSnapshot source);
+            if (!TryGetShown(targetId, out Combat.Tape.UnitSnapshot target)) return;
+            bool sourceIsMelee = IsMelee(sourceId);
+
             // Урон совпадает с кадром контакта (конец замаха): здесь — импакт-фидбэк цели.
             // Свинг источника запускается раньше, на OnAttackStarted (вики «14»).
             //
@@ -461,13 +471,13 @@ namespace Guildmaster.Presentation
             // попаданию: у тика яда и у ответки шипов нет ни момента, ни стороны, а рисуются они
             // так же часто, как удары — то есть дают шум там, где показывать нечего.
             Vector2 nudgeDir = Vector2.zero;
-            if (source != null && result.IsDirectHit)
+            if (hasSource && result.IsDirectHit)
             {
                 // Мили: от бьющего к цели. Дальний: ОТКУДА ПРИЛЕТЕЛ СНАРЯД — вектор «стрелок → цель»
                 // врёт ровно в тех случаях, ради которых это и делается (стрелок сместился за время
                 // полёта, цель шагнула вбок). Снаряда в этот момент уже нет — берём запомненное.
-                bool ranged = source.Unit != null && source.Unit.AttackType == AttackType.Ranged;
-                if (ranged && _lastShotDir.TryGetValue(target.Id, out var shotDir) && shotDir.sqrMagnitude > 1e-8f)
+                bool ranged = IsRanged(sourceId);
+                if (ranged && _lastShotDir.TryGetValue(targetId, out var shotDir) && shotDir.sqrMagnitude > 1e-8f)
                 {
                     nudgeDir = shotDir;
                 }
@@ -478,7 +488,7 @@ namespace Guildmaster.Presentation
                 }
             }
 
-            if (_views.TryGetValue(target.Id, out var view) && view != null)
+            if (_views.TryGetValue(targetId, out var view) && view != null)
             {
                 Color flash = _feel != null
                     ? _feel.ResolveHitFlashColor(result.School, result.Affinity)
@@ -493,7 +503,7 @@ namespace Guildmaster.Presentation
             }
 
             // Доля HP-урона от MaxHP цели — общий «вес удара» для hitstop и размера цифры.
-            float maxHp = target.Stats.Get(Data.Stats.StatType.MaxHP);
+            float maxHp = target.MaxHP;
             float frac  = maxHp > 0f ? result.HpDamage / maxHp : 0f;
 
             // Локальный hitstop пары «источник + цель» по значимости удара (кривая в feel-конфиге).
@@ -501,7 +511,7 @@ namespace Guildmaster.Presentation
             {
                 float stop = _feel.EvaluateHitstopSeconds(frac);
                 view.OnHitstop(stop);
-                if (source != null && _views.TryGetValue(source.Id, out var sourceView) && sourceView != null)
+                if (hasSource && _views.TryGetValue(sourceId, out var sourceView) && sourceView != null)
                 {
                     sourceView.OnHitstop(stop);
                     if (nudgeDir.sqrMagnitude > 1e-8f)
@@ -511,13 +521,13 @@ namespace Guildmaster.Presentation
 
             // Кандидат в финишеры: автор добивающего удара, если он мили (снаряд/яд позу удара не держат).
             if (result.KilledTarget)
-                _finisherCandidate = (source?.Unit != null && source.Unit.AttackType == AttackType.Melee) ? source : null;
+                _finisherCandidate = sourceIsMelee ? sourceId : -1;
 
             int shield = Mathf.RoundToInt(result.ShieldDamage);
             int hp     = Mathf.RoundToInt(result.HpDamage);
 
             // Цифры — в точку попадания (грудь) цели. Размер HP-цифры растёт с весом удара (тяжёлый = крупнее).
-            Vector3 anchor  = AnchorFor(target);
+            Vector3 anchor  = AnchorFor(targetId, target.Position);
             float   hpScale = Mathf.Lerp(1f, _feel.NumberMaxScale, Mathf.Clamp01(frac / Mathf.Max(1e-4f, _feel.NumberFullFrac)));
 
             // VFX-префабы: искры в точку попадания + пыль у ног на мили-ударе. Только прямое попадание:
@@ -532,10 +542,9 @@ namespace Guildmaster.Presentation
 
                 _vfx.Spawn(_feel.VfxHitSpark, anchor, sparkDir,
                            _feel.EvaluateHitVfxIntensity(frac), _feel.EvaluateHitVfxCount(frac),
-                           VfxPaletteFor(source));   // искры — палитры бьющего
+                           VfxPaletteFor(sourceId));   // искры — палитры бьющего
 
-                bool melee = source?.Unit != null && source.Unit.AttackType == AttackType.Melee;
-                if (melee)
+                if (sourceIsMelee)
                     _vfx.Spawn(_feel.VfxImpactDust, view.FeetPoint);
             }
 
@@ -548,32 +557,39 @@ namespace Guildmaster.Presentation
                 else            SpawnNumber(anchor, "-" + hp, _damageColor, hpScale);
             }
 
-            _damageDealtPublisher.Publish(new DamageDealtEvent(source, target, result));
+            // Событие несёт id и данные ПОКАЗАННОГО тика: потребители (джус, тряска, звук) иначе
+            // прочитали бы позицию и HP из будущего.
+            _damageDealtPublisher.Publish(new DamageDealtEvent(
+                sourceId, targetId, target.Position, target.MaxHP, result));
         }
 
-        private void HandleHealed(RuntimeUnit source, RuntimeUnit target, float amount)
+        private void HandleHealed(int sourceId, int targetId, float amount)
         {
+            if (!TryGetShown(targetId, out Combat.Tape.UnitSnapshot target)) return;
+
             // Хил-цифра в точку попадания цели (+N). Мелкие тики регена округляются в 0 и не спамят.
             int healed = Mathf.RoundToInt(amount);
             if (healed <= 0) return;
 
-            SpawnNumber(AnchorFor(target), "+" + healed, _healColor);
+            SpawnNumber(AnchorFor(targetId, target.Position), "+" + healed, _healColor);
 
-            if (_views.TryGetValue(target.Id, out var tView) && tView != null)
+            if (_views.TryGetValue(targetId, out var tView) && tView != null)
             {
                 tView.OnHealed();                                    // тело отвечает на лечение, а не только цифра
                 if (_vfx != null && _feel != null)
-                    _vfx.Spawn(_feel.VfxHeal, tView.HitPoint, tint: VfxPaletteFor(source));  // палитра лечащего
+                    _vfx.Spawn(_feel.VfxHeal, tView.HitPoint, tint: VfxPaletteFor(sourceId));  // палитра лечащего
             }
         }
 
-        private void HandleAttackEvaded(RuntimeUnit target)
+        private void HandleAttackEvaded(int targetId)
         {
+            if (!TryGetShown(targetId, out Combat.Tape.UnitSnapshot target)) return;
+
             // Полный негейт удара («Изворотливость») — урона нет, показываем «evade».
             // Движение тела сюда НЕ добавляем: по дизайну трата заряда — это кувырок с уходом с места,
             // то есть настоящее перемещение в симуляции (gdd/20-combat/positioning). Появится оно — вид
             // поедет за ним сам.
-            SpawnNumber(AnchorFor(target), "evade", _evadeColor);
+            SpawnNumber(AnchorFor(targetId, target.Position), "evade", _evadeColor);
         }
 
         // Задержка на UNSCALED-времени: в паузе и в финишер-slowmo вторая цифра иначе не приходила вовсе —
@@ -601,12 +617,39 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>Мировая точка для боевой цифры: HitPoint вида цели (грудь); фолбэк — над позицией сима.</summary>
-        private Vector3 AnchorFor(RuntimeUnit target)
+        private Vector3 AnchorFor(int unitId, Vector2 shownPosition)
         {
-            if (_views.TryGetValue(target.Id, out var v) && v != null)
+            if (_views.TryGetValue(unitId, out var v) && v != null)
                 return v.HitPoint;
-            return (Vector3)(Vector2)target.Position + Vector3.up * 0.4f;
+            return (Vector3)shownPosition + Vector3.up * 0.4f;
         }
+
+        /// <summary>Снимок юнита на ПОКАЗАННОМ тике. <c>false</c> — его в этом кадре нет.</summary>
+        private bool TryGetShown(int unitId, out Combat.Tape.UnitSnapshot snapshot)
+        {
+            if (unitId >= 0 && _frameIndex.TryGetValue(unitId, out snapshot)) return true;
+            snapshot = default;
+            return false;
+        }
+
+        private bool IsMelee(int unitId) =>
+            _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
+            && id.Definition.AttackType == AttackType.Melee;
+
+        private bool IsRanged(int unitId) =>
+            _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
+            && id.Definition.AttackType == AttackType.Ranged;
+
+        /// <summary>Палитра эффектов по id — из паспорта, потому что живого юнита здесь уже нет.</summary>
+        private Gradient VfxPaletteFor(int unitId) =>
+            _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
+                ? id.Definition.ResolveVfxPalette()
+                : null;
+
+        private Color VfxColorFor(int unitId) =>
+            _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
+                ? id.Definition.ResolveVfxColor()
+                : Color.white;
 
         /// <summary>Contact-dust: пыль у ног при старте/стопе бега (VfxData → префаб, тумблер в feel-конфиге).</summary>
         private void OnUnitContactDust(UnitView view)
@@ -704,14 +747,14 @@ namespace Guildmaster.Presentation
             return (IsAllyOfViewer(identity.Team) ? "Ally " : "Enemy ") + identity.Id;
         }
 
-        private void HandleAttackStarted(RuntimeUnit source, RuntimeUnit target)
+        private void HandleAttackStarted(int sourceId, int targetId)
         {
             // Вход в замах: запускаем анимацию свинга у источника (вики «14»).
-            if (source == null || !_views.TryGetValue(source.Id, out var sourceView) || sourceView == null)
-                return;
+            if (!_views.TryGetValue(sourceId, out var sourceView) || sourceView == null) return;
+            if (!TryGetShown(sourceId, out Combat.Tape.UnitSnapshot source)) return;
 
             Vector2 away = Vector2.zero;
-            if (target != null)
+            if (TryGetShown(targetId, out Combat.Tape.UnitSnapshot target))
             {
                 Vector2 delta = source.Position - target.Position; // от цели = назад
                 if (delta.sqrMagnitude > 1e-8f) away = delta.normalized;
@@ -719,9 +762,9 @@ namespace Guildmaster.Presentation
             sourceView.OnAttackStarted(away);
         }
 
-        private void HandleAttackInterrupted(RuntimeUnit unit)
+        private void HandleAttackInterrupted(int unitId)
         {
-            if (unit != null && _views.TryGetValue(unit.Id, out var view))
+            if (_views.TryGetValue(unitId, out var view) && view != null)
                 view.OnAttackInterrupted();
         }
 
@@ -729,7 +772,7 @@ namespace Guildmaster.Presentation
         {
             // Финишер-мили держит кадр контакта весь финальный slowmo (перекрывает free-run у него).
             UnitView finisher = null;
-            if (_finisherCandidate != null && _views.TryGetValue(_finisherCandidate.Id, out finisher) && finisher != null)
+            if (_finisherCandidate >= 0 && _views.TryGetValue(_finisherCandidate, out finisher) && finisher != null)
                 finisher.HoldHitFrame(_feel.FinisherHoldSeconds);
 
             foreach (var kvp in _views)

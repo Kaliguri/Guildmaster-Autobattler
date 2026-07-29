@@ -91,8 +91,9 @@ namespace Guildmaster.Game.Services
             }
 
             // Тяжёлый (не добивающий) удар → только тряска, по доле урона от MaxHP цели, выше порога.
-            RuntimeUnit target = e.Target;
-            float maxHp = target != null ? target.Stats.Get(StatType.MaxHP) : 0f;
+            // MaxHP и точка берутся из СОБЫТИЯ (снято с показанного тика), а не с живого юнита: тот уже
+            // на окно опережения впереди, и тряска пришла бы от позиции, которой игрок ещё не видел.
+            float maxHp = e.TargetMaxHp;
             if (maxHp <= 0f) return;
             float frac = e.Result.TotalDamage / maxHp;
             if (frac < _cfg.HeavyHitFrac) return;
@@ -100,8 +101,7 @@ namespace Guildmaster.Game.Services
             _shake.Shake(Mathf.Lerp(_cfg.HeavyShakeMin, _cfg.HeavyShakeMax, k));
             // Басовый слой поверх обычного удара — из точки удара, как и сам удар: иначе бас
             // приходит из центра, а хруст сбоку, и они разъезжаются.
-            if (target != null) _audio?.PlayAt("feel.heavy_hit.hit", target.Position);
-            else _audio?.Play("feel.heavy_hit.hit");
+            _audio?.PlayAt("feel.heavy_hit.hit", e.TargetPosition);
         }
 
         // Конец боя → финишер-таймлайн ступенями (совпадает с секвенсом смерти на scaled-времени):

@@ -28,10 +28,37 @@ namespace Guildmaster.Combat.Tape
 
         private float _accumulator;
         private int   _viewTick = BattleTape.NoTick;
+        private int   _targetLead;
 
         public BattleTapePlayback(BattleTape tape)
         {
             _tape = tape;
+        }
+
+        /// <summary>
+        /// Насколько показ ДОЛЖЕН отставать от фронта. <c>0</c> — идти вплотную.
+        /// <para><b>Лаг — свойство БОЯ, а не показа вообще</b> (уточнено Максом 2026-07-29). Мир,
+        /// карта, расстановка — реальное время: там игрок нажимает и обязан видеть результат сразу.
+        /// Отставание включается только на время показа боя.</para>
+        /// </summary>
+        public int TargetLead => _targetLead;
+
+        /// <summary>
+        /// Задать требуемое отставание. Если показ отстал БОЛЬШЕ требуемого (вышли из боя в мир, или
+        /// бой только что начался и лаг ещё не нужен) — показ подтягивается к фронту сразу: держать
+        /// задержку там, где игрок взаимодействует, нельзя.
+        /// </summary>
+        public void SetTargetLead(int ticks)
+        {
+            _targetLead = ticks > 0 ? ticks : 0;
+
+            if (_viewTick == BattleTape.NoTick || _tape.FrontTick == BattleTape.NoTick) return;
+            int maxViewTick = _tape.FrontTick - _targetLead;
+            if (_viewTick < maxViewTick)
+            {
+                _viewTick    = maxViewTick;
+                _accumulator = 0f;
+            }
         }
 
         /// <summary>Тик, который показан сейчас. <see cref="BattleTape.NoTick"/> — показ ещё не начался.</summary>
@@ -46,8 +73,8 @@ namespace Guildmaster.Combat.Tape
         /// </summary>
         public float Alpha => Mathf.Clamp01(_accumulator / SimConstants.TickDelta);
 
-        /// <summary>Набран ли полный запас: пока нет — телеграфам и подводкам не на что опираться.</summary>
-        public bool HasFullLead => Lead >= LookaheadTicks;
+        /// <summary>Набран ли требуемый запас: пока нет — телеграфам и подводкам не на что опираться.</summary>
+        public bool HasFullLead => Lead >= _targetLead;
 
         /// <summary>Сколько тиков сим держит в запасе перед показом. Меньше нуля не бывает.</summary>
         public int Lead => _tape.FrontTick == BattleTape.NoTick || _viewTick == BattleTape.NoTick
@@ -75,8 +102,8 @@ namespace Guildmaster.Combat.Tape
             _accumulator += deltaTime;
             while (_accumulator >= SimConstants.TickDelta)
             {
-                // Обогнать сим нельзя: показ упирается во фронт ленты и ждёт там. В обычном бою этого
-                // не случается — сим уходит вперёд быстрее реального времени.
+                // Обогнать сим нельзя: показ упирается во фронт ленты и ждёт там. В бою этого не
+                // случается — продюсер держит запас разгоном.
                 if (_viewTick >= _tape.FrontTick)
                 {
                     _accumulator = 0f;
@@ -86,17 +113,32 @@ namespace Guildmaster.Combat.Tape
                 _viewTick++;
                 _accumulator -= SimConstants.TickDelta;
             }
+
+            // Вне боя (требуемое отставание 0) показ идёт вплотную за симом, а не «в реальном времени
+            // от старой точки»: иначе один долгий кадр навсегда оставил бы картинку позади мира.
+            int maxViewTick = _tape.FrontTick - _targetLead;
+            if (_viewTick < maxViewTick)
+            {
+                _viewTick    = maxViewTick;
+                _accumulator = 0f;
+            }
         }
 
         /// <summary>Кадр показываемого тика. <c>false</c> — показ ещё не начался или кадр вытеснен.</summary>
         public bool TryGetFrame(out IReadOnlyList<UnitSnapshot> units)
+            => TryGetFrame(out units, out _);
+
+        /// <summary>Кадр целиком: юниты и снаряды показываемого тика.</summary>
+        public bool TryGetFrame(
+            out IReadOnlyList<UnitSnapshot> units, out IReadOnlyList<ProjectileSnapshot> projectiles)
         {
             if (_viewTick == BattleTape.NoTick)
             {
-                units = null;
+                units       = null;
+                projectiles = null;
                 return false;
             }
-            return _tape.TryGetFrame(_viewTick, out units);
+            return _tape.TryGetFrame(_viewTick, out units, out projectiles);
         }
 
         /// <summary>
@@ -113,7 +155,7 @@ namespace Guildmaster.Combat.Tape
             return _tape.TryGetFrame(_viewTick + ticksAhead, out units);
         }
 
-        /// <summary>Сбросить момент показа (dev-рестарт боя): показ снова ждёт набора окна.</summary>
+        /// <summary>Сбросить момент показа (dev-рестарт боя): показ начнёт с первого нового кадра.</summary>
         public void Reset()
         {
             _viewTick    = BattleTape.NoTick;

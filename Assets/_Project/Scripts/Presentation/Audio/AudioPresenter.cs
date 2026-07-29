@@ -23,100 +23,93 @@ namespace Guildmaster.Presentation.Audio
     {
         private readonly IAudioService _audio;
         private readonly AudioResolver _resolver;
-        private readonly CombatSimulation _sim;
-        private readonly AbilitySystem _abilities;
-        private readonly EffectSystem _effects;
         private readonly ILocalPlayer _localPlayer;
+
+        // Звук идёт по ПОКАЗУ: сим ушёл вперёд на окно опережения, и подписка на него давала бы удары,
+        // смерти и стингеры за десять секунд до того, как игрок их увидит.
+        private readonly Combat.Tape.BattleTapeDispatcher _dispatcher;
+        private readonly Combat.Tape.BattleTapePlayback   _playback;
+        private readonly Combat.Tape.BattleUnitRegistry   _registry;
 
         public AudioPresenter(
             IAudioService audio,
             AudioCatalog catalog,
-            CombatSimulation sim,
-            AbilitySystem abilities,
-            EffectSystem effects,
-            ILocalPlayer localPlayer)
+            ILocalPlayer localPlayer,
+            Combat.Tape.BattleTapeDispatcher dispatcher,
+            Combat.Tape.BattleTapePlayback playback,
+            Combat.Tape.BattleUnitRegistry registry)
         {
             _audio = audio;
             _resolver = new AudioResolver(catalog);
-            _sim = sim;
-            _abilities = abilities;
-            _effects = effects;
             _localPlayer = localPlayer;
+            _dispatcher = dispatcher;
+            _playback   = playback;
+            _registry   = registry;
         }
 
         public void Start()
         {
-            _sim.OnDamageDealt      += OnDamageDealt;
-            _sim.OnUnitDied         += OnUnitDied;
-            _sim.OnHealed           += OnHealed;
-            _sim.OnAttackEvaded     += OnAttackEvaded;
-            _sim.OnAttackStarted    += OnAttackStarted;
-            _sim.OnProjectileSpawned += OnProjectileSpawned;
-            _sim.OnBattleEnded      += OnBattleEnded;
-            _sim.OnUnitSpawned      += OnUnitSpawned;
-            _sim.OnAttackInterrupted += OnAttackInterrupted;
-            _sim.OnBattleReset      += OnBattleReset;
-            if (_abilities != null) _abilities.OnAbilityCast += OnAbilityCast;
-            if (_effects != null)
-            {
-                _effects.OnEffectApplied += OnEffectApplied;
-                _effects.OnEffectEnded   += OnEffectEnded;
-            }
+            _dispatcher.DamageDealt       += OnDamageDealt;
+            _dispatcher.UnitDied          += OnUnitDied;
+            _dispatcher.Healed            += OnHealed;
+            _dispatcher.AttackEvaded      += OnAttackEvaded;
+            _dispatcher.AttackStarted     += OnAttackStarted;
+            _dispatcher.BattleEnded       += OnBattleEnded;
+            _dispatcher.UnitSpawned       += OnUnitSpawned;
+            _dispatcher.AttackInterrupted += OnAttackInterrupted;
+            _dispatcher.BattleReset       += OnBattleReset;
+            _dispatcher.AbilityCast       += OnAbilityCast;
+            _dispatcher.EffectApplied     += OnEffectApplied;
+            _dispatcher.EffectEnded       += OnEffectEnded;
         }
 
         public void Dispose()
         {
-            _sim.OnDamageDealt      -= OnDamageDealt;
-            _sim.OnUnitDied         -= OnUnitDied;
-            _sim.OnHealed           -= OnHealed;
-            _sim.OnAttackEvaded     -= OnAttackEvaded;
-            _sim.OnAttackStarted    -= OnAttackStarted;
-            _sim.OnProjectileSpawned -= OnProjectileSpawned;
-            _sim.OnBattleEnded      -= OnBattleEnded;
-            _sim.OnUnitSpawned      -= OnUnitSpawned;
-            _sim.OnAttackInterrupted -= OnAttackInterrupted;
-            _sim.OnBattleReset      -= OnBattleReset;
-            if (_abilities != null) _abilities.OnAbilityCast -= OnAbilityCast;
-            if (_effects != null)
-            {
-                _effects.OnEffectApplied -= OnEffectApplied;
-                _effects.OnEffectEnded   -= OnEffectEnded;
-            }
+            _dispatcher.DamageDealt       -= OnDamageDealt;
+            _dispatcher.UnitDied          -= OnUnitDied;
+            _dispatcher.Healed            -= OnHealed;
+            _dispatcher.AttackEvaded      -= OnAttackEvaded;
+            _dispatcher.AttackStarted     -= OnAttackStarted;
+            _dispatcher.BattleEnded       -= OnBattleEnded;
+            _dispatcher.UnitSpawned       -= OnUnitSpawned;
+            _dispatcher.AttackInterrupted -= OnAttackInterrupted;
+            _dispatcher.BattleReset       -= OnBattleReset;
+            _dispatcher.AbilityCast       -= OnAbilityCast;
+            _dispatcher.EffectApplied     -= OnEffectApplied;
+            _dispatcher.EffectEnded       -= OnEffectEnded;
         }
 
         // Импакт по цели: щит-поглощение (если было) + удар. Килл-стингер — забота CombatFeelDirector.
-        private void OnDamageDealt(RuntimeUnit source, RuntimeUnit target, DamageResult result)
+        private void OnDamageDealt(int sourceId, int targetId, DamageResult result)
         {
-            if (result.ShieldDamage > 0f) PlayFor(target, AudioAction.Shield);
-            PlayFor(target, AudioAction.Hit);
+            if (result.ShieldDamage > 0f) PlayFor(targetId, AudioAction.Shield);
+            PlayFor(targetId, AudioAction.Hit);
         }
 
-        private void OnUnitDied(RuntimeUnit unit) => PlayFor(unit, AudioAction.Death);
+        private void OnUnitDied(int unitId) => PlayFor(unitId, AudioAction.Death);
 
-        private void OnHealed(RuntimeUnit source, RuntimeUnit target, float amount) => PlayFor(target, AudioAction.Heal);
+        private void OnHealed(int sourceId, int targetId, float amount) => PlayFor(targetId, AudioAction.Heal);
 
-        private void OnAttackEvaded(RuntimeUnit target) => PlayFor(target, AudioAction.Evade);
+        private void OnAttackEvaded(int targetId) => PlayFor(targetId, AudioAction.Evade);
 
-        private void OnAttackStarted(RuntimeUnit source, RuntimeUnit target) => PlayFor(source, AudioAction.Attack);
+        private void OnAttackStarted(int sourceId, int targetId) => PlayFor(sourceId, AudioAction.Attack);
 
-        private void OnProjectileSpawned(Projectile projectile) => PlayFor(projectile?.Source, AudioAction.Fire);
+        private void OnAbilityCast(int casterId) => PlayFor(casterId, AudioAction.Cast);
 
-        private void OnAbilityCast(RuntimeUnit caster) => PlayFor(caster, AudioAction.Cast);
-
-        private void OnUnitSpawned(RuntimeUnit unit) => PlayKeyAt("combat.unit_spawn", AudioAction.Ui, unit);
+        private void OnUnitSpawned(int unitId) => PlayKeyAt("combat.unit_spawn", AudioAction.Ui, unitId);
 
         // Замах сорван станом/смертью — короткий «сбой», иначе оборванная анимация выглядит багом.
-        private void OnAttackInterrupted(RuntimeUnit unit) => PlayKeyAt("combat.attack_interrupted", AudioAction.Evade, unit);
+        private void OnAttackInterrupted(int unitId) => PlayKeyAt("combat.attack_interrupted", AudioAction.Evade, unitId);
 
         // Перезапуск боя (dev-R): глушим петли, иначе хвосты старого боя переезжают в новый.
         private void OnBattleReset() => _audio?.StopAll();
 
         // Статус лёг / спал: ключи effect.{id}.apply и effect.{id}.expire, с фолбэком на общий дефолт.
-        private void OnEffectApplied(RuntimeUnit target, EffectData def, RuntimeUnit source)
-            => PlayKeyAt(def != null ? def.Id : null, AudioAction.Apply, target);
+        private void OnEffectApplied(int targetId, EffectData def)
+            => PlayKeyAt(def != null ? def.Id : null, AudioAction.Apply, targetId);
 
-        private void OnEffectEnded(RuntimeUnit target, EffectData def, RuntimeUnit source)
-            => PlayKeyAt(def != null ? def.Id : null, AudioAction.Expire, target);
+        private void OnEffectEnded(int targetId, EffectData def)
+            => PlayKeyAt(def != null ? def.Id : null, AudioAction.Expire, targetId);
 
         // Конец боя → стингер победы/поражения ГЛАЗАМИ ЭТОГО клиента: победила моя команда или нет.
         // В PvP один и тот же исход даст одному победу, другому поражение. Ничья — поражение (никто не выиграл).
@@ -126,15 +119,14 @@ namespace Guildmaster.Presentation.Audio
             PlayKey(outcome.IsWinFor(_localPlayer.Team) ? "battle.victory" : "battle.defeat", AudioAction.Stinger);
         }
 
-        // Звук боевого события идёт ИЗ ТОЧКИ, где оно случилось: удар слева слышно слева.
-        // Позицию берём из сима (она же ведёт вид), а не из вью — вью может отставать на кадр
-        // интерполяции, и на быстрых смещениях звук уезжал бы за картинкой.
-        private void PlayFor(RuntimeUnit unit, AudioAction action)
+        // Звук боевого события идёт ИЗ ТОЧКИ, где оно случилось: удар слева слышно слева. Точка берётся
+        // из ПОКАЗАННОГО кадра — позиция живого юнита к этому моменту уехала на окно опережения вперёд,
+        // и звук приходил бы оттуда, где юнита ещё не видно.
+        private void PlayFor(int unitId, AudioAction action)
         {
-            string key = _resolver.Resolve(unit?.Unit != null ? unit.Unit.Id : null, action);
+            string key = _resolver.Resolve(_registry != null ? _registry.DefinitionOf(unitId)?.Id : null, action);
             if (key == null) return;
-            if (unit != null) _audio.PlayAt(key, unit.Position);
-            else _audio.Play(key);
+            PlayAtShown(key, unitId);
         }
 
         private void PlayKey(string contentId, AudioAction action)
@@ -143,12 +135,26 @@ namespace Guildmaster.Presentation.Audio
             if (key != null) _audio.Play(key);
         }
 
-        private void PlayKeyAt(string contentId, AudioAction action, RuntimeUnit at)
+        private void PlayKeyAt(string contentId, AudioAction action, int unitId)
         {
             string key = _resolver.Resolve(contentId, action);
             if (key == null) return;
-            if (at != null) _audio.PlayAt(key, at.Position);
-            else _audio.Play(key);
+            PlayAtShown(key, unitId);
+        }
+
+        /// <summary>Проиграть из точки, где юнит был в показанном кадре; не нашли — без позиции.</summary>
+        private void PlayAtShown(string key, int unitId)
+        {
+            if (unitId >= 0 && _playback != null && _playback.TryGetFrame(out var frame))
+            {
+                for (int i = 0; i < frame.Count; i++)
+                {
+                    if (frame[i].Id != unitId) continue;
+                    _audio.PlayAt(key, frame[i].Position);
+                    return;
+                }
+            }
+            _audio.Play(key);
         }
     }
 }

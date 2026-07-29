@@ -19,6 +19,7 @@ namespace Guildmaster.Game.Services
         private readonly CombatSimulation _simulation;
         private readonly Combat.Tape.BattleTapeRecorder _tapeRecorder;
         private readonly Combat.Tape.BattleTapePlayback _playback;
+        private readonly Data.Definitions.IBattleClock  _clock;
 
         private float _accumulator;
         private bool  _running;
@@ -33,11 +34,13 @@ namespace Guildmaster.Game.Services
         public CombatLoopService(
             CombatSimulation simulation,
             Combat.Tape.BattleTapeRecorder tapeRecorder,
-            Combat.Tape.BattleTapePlayback playback)
+            Combat.Tape.BattleTapePlayback playback,
+            Data.Definitions.IBattleClock clock)
         {
             _simulation   = simulation;
             _tapeRecorder = tapeRecorder;
             _playback     = playback;
+            _clock        = clock;
         }
 
         /// <summary>
@@ -55,6 +58,11 @@ namespace Guildmaster.Game.Services
                 // сам возобновляет тик — без перезапуска цикла и без перезагрузки сцены.
                 while (_running && !cancellation.IsCancellationRequested)
                 {
+                    // Лаг — только на показ БОЯ. Мир, карта, расстановка идут в реальном времени: там
+                    // игрок нажимает сам и обязан видеть результат немедленно (уточнение Макса 2026-07-29).
+                    bool fighting = _clock != null && _clock.Phase == Data.Definitions.BattlePhase.Fighting;
+                    _playback.SetTargetLead(fighting ? Combat.Tape.BattleTapePlayback.LookaheadTicks : 0);
+
                     if (_simulation.Outcome != BattleOutcome.Ongoing)
                     {
                         _accumulator = 0f;

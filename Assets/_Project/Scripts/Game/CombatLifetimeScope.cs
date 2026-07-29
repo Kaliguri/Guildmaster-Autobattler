@@ -172,6 +172,11 @@ namespace Guildmaster.Game
                        Lifetime.Scoped);
             builder.Register<Combat.Tape.BattleTapeRecorder>(Lifetime.Scoped);
             builder.Register<Combat.Tape.BattleTapePlayback>(Lifetime.Scoped);
+            builder.Register<Combat.Tape.BattleTapeDispatcher>(Lifetime.Scoped);
+            builder.Register<Combat.Tape.BattleUnitRegistry>(Lifetime.Scoped);
+
+            // Dev-диагностика ленты: без неё «сим впереди, показ с лагом» ломается молча.
+            builder.RegisterEntryPoint<BattleTapeDiagnostics>(Lifetime.Scoped);
 
             // Петля гонит сим и пишет ленту. Долю интерполяции она больше не отдаёт: её отсчитывает
             // момент ПОКАЗА (BattleTapePlayback), потому что показ живёт на своём тике, а не на симовом.

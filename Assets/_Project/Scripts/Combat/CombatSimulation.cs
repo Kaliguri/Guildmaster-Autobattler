@@ -162,6 +162,9 @@ namespace Guildmaster.Combat
         public SeparationSystem Separation => _separationSystem;
 
         public IReadOnlyList<RuntimeUnit> Units    => _units;
+
+        /// <summary>Живые снаряды — их снимает лента боя, чтобы показ не летел по будущему.</summary>
+        public IReadOnlyList<Projectile>  Projectiles => _projectiles;
         public BattleOutcome              Outcome  => _outcome;
         public bool                       IsPaused => _isPaused;
 

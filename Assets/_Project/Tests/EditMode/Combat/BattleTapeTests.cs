@@ -150,7 +150,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var sim  = BuildSim();
             var tape = new BattleTape(windowTicks: 32);
-            using var recorder = new BattleTapeRecorder(sim, tape);
+            using var recorder = new BattleTapeRecorder(sim, tape, abilities: null, effects: null);
 
             var attacker = MakeUnit(id: 1, hp: 100f, team: 0);
             var victim   = MakeUnit(id: 2, hp: 100f, team: 1, pos: new Vector2(2f, 0f));
@@ -190,7 +190,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.IsTrue(playback.IsPlaying, "Появился кадр — показ сразу его берёт");
             Assert.AreEqual(0, playback.ViewTick);
-            Assert.IsFalse(playback.HasFullLead, "Запаса ещё нет — телеграфам опираться не на что");
+            Assert.AreEqual(0, playback.Lead, "Отставания ещё нет: сим не успел никуда уйти");
         }
 
         // Запас перед показом набирает продюсер, разгоняя сим. Здесь это эмулируется руками: сим
@@ -202,6 +202,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var playback = new BattleTapePlayback(tape);
             var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
 
+            playback.SetTargetLead(BattleTapePlayback.LookaheadTicks); // идёт бой: лаг включён
             tape.CaptureTick(0, units);
             playback.Advance(SimConstants.TickDelta); // показ встал на тик 0
             for (int tick = 1; tick <= BattleTapePlayback.LookaheadTicks; tick++) tape.CaptureTick(tick, units);
@@ -223,6 +224,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var playback = new BattleTapePlayback(tape);
             var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
 
+            playback.SetTargetLead(BattleTapePlayback.LookaheadTicks);
             tape.CaptureTick(0, units);
             playback.Advance(SimConstants.TickDelta);
             for (int tick = 1; tick <= BattleTapePlayback.LookaheadTicks; tick++) tape.CaptureTick(tick, units);
@@ -243,6 +245,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var unit = MakeUnit(id: 1, hp: 100f);
             var units = new List<RuntimeUnit> { unit };
 
+            playback.SetTargetLead(BattleTapePlayback.LookaheadTicks);
             unit.CurrentHP = 100f;
             tape.CaptureTick(0, units);
             playback.Advance(SimConstants.TickDelta); // показ встал на тик 0
@@ -276,6 +279,131 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.IsFalse(playback.IsPlaying, "После рестарта показу нечего показывать до первого кадра");
             Assert.AreEqual(BattleTape.NoTick, playback.ViewTick);
+        }
+
+        // ===================== Доставка событий по показу (Ф3) =====================
+
+        // Главное обещание Ф3: событие отдаётся тогда, когда его тик ПОКАЗАН, а не когда посчитан.
+        [Test]
+        public void Dispatcher_HoldsEventsUntilTheirTickIsShown()
+        {
+            var tape = new BattleTape(windowTicks: 64);
+            var dispatcher = new BattleTapeDispatcher(tape);
+
+            var shown = new List<int>();
+            dispatcher.UnitDied += id => shown.Add(id);
+
+            tape.Record(new TapeEvent(TapeEventKind.UnitDied, 10, sourceId: 1));
+            tape.Record(new TapeEvent(TapeEventKind.UnitDied, 20, sourceId: 2));
+
+            dispatcher.PumpTo(5);
+            Assert.AreEqual(0, shown.Count, "До тика события ничего не отдаётся — сим посчитал, игрок не видел");
+
+            dispatcher.PumpTo(10);
+            Assert.AreEqual(1, shown.Count, "Показали тик 10 — отдали его событие");
+            Assert.AreEqual(1, shown[0]);
+
+            dispatcher.PumpTo(25);
+            Assert.AreEqual(2, shown.Count, "Догнали тик 20 — отдали и второе");
+            Assert.AreEqual(25, dispatcher.ShownTick, "Показанный тик — тот, до которого качнули");
+
+            dispatcher.PumpTo(30);
+            Assert.AreEqual(2, shown.Count, "Больше событий в ленте нет — повторов не будет");
+        }
+
+        [Test]
+        public void Dispatcher_NeverRepeatsAnEvent()
+        {
+            var tape = new BattleTape(windowTicks: 16);
+            var dispatcher = new BattleTapeDispatcher(tape);
+
+            int calls = 0;
+            dispatcher.AttackEvaded += _ => calls++;
+            tape.Record(new TapeEvent(TapeEventKind.AttackEvaded, 3, targetId: 7));
+
+            dispatcher.PumpTo(3);
+            dispatcher.PumpTo(3);
+            dispatcher.PumpTo(9);
+
+            Assert.AreEqual(1, calls, "Одно событие — один показ, сколько бы раз ни качали");
+        }
+
+        // Конец боя обязан приезжать по показу: иначе экран итогов выскакивает, пока на арене дерутся.
+        [Test]
+        public void Dispatcher_BattleEnd_ArrivesOnTheShownTick_NotWhenSolved()
+        {
+            var tape = new BattleTape(windowTicks: 64);
+            var dispatcher = new BattleTapeDispatcher(tape);
+
+            BattleOutcome? ended = null;
+            dispatcher.BattleEnded += o => ended = o;
+
+            BattleOutcome outcome = BattleOutcome.Win(team: 0);
+            tape.RecordBattleEnded(tick: 40, outcome: in outcome);
+
+            dispatcher.PumpTo(39);
+            Assert.IsFalse(ended.HasValue, "Сим уже знает исход, но игрок его ещё не увидел");
+
+            dispatcher.PumpTo(40);
+            Assert.IsTrue(ended.HasValue, "Показ дошёл до тика исхода — вот теперь бой кончился");
+            Assert.IsTrue(ended.Value.IsWinFor(0));
+        }
+
+        [Test]
+        public void Dispatcher_Reset_ForgetsWhatWasShown()
+        {
+            var tape = new BattleTape(windowTicks: 16);
+            var dispatcher = new BattleTapeDispatcher(tape);
+
+            int calls = 0;
+            dispatcher.UnitSpawned += _ => calls++;
+            tape.Record(new TapeEvent(TapeEventKind.UnitSpawned, 1, sourceId: 1));
+            dispatcher.PumpTo(1);
+            Assert.AreEqual(1, calls, "Предусловие: событие показано");
+
+            tape.Clear();
+            dispatcher.Reset();
+            tape.Record(new TapeEvent(TapeEventKind.UnitSpawned, 0, sourceId: 5));
+            dispatcher.PumpTo(0);
+
+            Assert.AreEqual(2, calls, "После рестарта первое событие нового боя не считается показанным");
+            Assert.AreEqual(0, dispatcher.ShownTick);
+        }
+
+        // Лаг — свойство БОЯ: вне боя показ идёт вплотную, иначе расстановка отвечала бы с задержкой.
+        [Test]
+        public void Playback_WithoutTargetLead_StaysOnTheFront()
+        {
+            var tape = new BattleTape(windowTicks: 64);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            playback.SetTargetLead(0);
+            for (int tick = 0; tick <= 30; tick++) tape.CaptureTick(tick, units);
+            playback.Advance(SimConstants.TickDelta);
+
+            Assert.AreEqual(tape.FrontTick, playback.ViewTick, "Вне боя показ стоит на фронте");
+            Assert.AreEqual(0, playback.Lead, "Задержки нет вовсе");
+        }
+
+        // Выход из боя в мир не должен оставлять картинку в прошлом на десять секунд.
+        [Test]
+        public void Playback_DroppingTheLead_CatchesUpImmediately()
+        {
+            var tape = new BattleTape(windowTicks: BattleTapePlayback.LookaheadTicks + 60);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            playback.SetTargetLead(BattleTapePlayback.LookaheadTicks);
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta);
+            for (int tick = 1; tick <= BattleTapePlayback.LookaheadTicks; tick++) tape.CaptureTick(tick, units);
+            Assert.Greater(playback.Lead, 0, "Предусловие: в бою запас есть");
+
+            playback.SetTargetLead(0); // бой кончился, вернулись в мир
+
+            Assert.AreEqual(tape.FrontTick, playback.ViewTick, "Показ подтянулся к фронту сразу");
+            Assert.AreEqual(0, playback.Lead);
         }
 
         // ===================== Фабрики =====================

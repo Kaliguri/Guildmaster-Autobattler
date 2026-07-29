@@ -21,21 +21,22 @@ namespace Guildmaster.Presentation
         [SerializeField] private Color _teamAColor    = new Color(0.2f, 0.6f, 1f, 0.5f);
         [SerializeField] private Color _teamBColor    = new Color(1f, 0.35f, 0.2f, 0.5f);
 
-        private CombatSimulation _simulation;
+        // Зоны рисуются по ПОКАЗАННОМУ кадру: по симу вспышка полыхала бы за окно опережения до удара.
+        private Combat.Tape.BattleTapeDispatcher _dispatcher;
         private readonly List<Flash>  _active     = new List<Flash>();
         private readonly Stack<Flash> _circlePool = new Stack<Flash>();
         private readonly Stack<Flash> _linePool   = new Stack<Flash>();
 
         [Inject]
-        public void Construct(CombatSimulation simulation)
+        public void Construct(Combat.Tape.BattleTapeDispatcher dispatcher)
         {
-            _simulation = simulation;
-            _simulation.OnAreaHit += OnAreaHit;
+            _dispatcher = dispatcher;
+            _dispatcher.AreaHit += OnAreaHit;
         }
 
         private void OnDestroy()
         {
-            if (_simulation != null) _simulation.OnAreaHit -= OnAreaHit;
+            if (_dispatcher != null) _dispatcher.AreaHit -= OnAreaHit;
         }
 
         public bool IsEnabled

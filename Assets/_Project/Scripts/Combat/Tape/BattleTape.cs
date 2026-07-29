@@ -23,7 +23,8 @@ namespace Guildmaster.Combat.Tape
         private sealed class Frame
         {
             public int Tick = NoTick;
-            public readonly List<UnitSnapshot> Units = new List<UnitSnapshot>(InitialUnitCapacity);
+            public readonly List<UnitSnapshot>       Units       = new List<UnitSnapshot>(InitialUnitCapacity);
+            public readonly List<ProjectileSnapshot> Projectiles = new List<ProjectileSnapshot>(InitialUnitCapacity);
         }
 
         /// <summary>«Тика нет» — для пустого кадра и незаписанной ленты.</summary>
@@ -36,6 +37,9 @@ namespace Guildmaster.Combat.Tape
         private readonly List<TapeDamage>   _damage   = new List<TapeDamage>(256);
         private readonly List<AreaHit>      _areaHits = new List<AreaHit>(64);
         private readonly List<BattleOutcome> _outcomes = new List<BattleOutcome>(2);
+
+        // Определения эффектов — ССЫЛКИ на ассеты, а не состояние: они неизменны, тащить их копией незачем.
+        private readonly List<Data.Definitions.EffectData> _effectDefs = new List<Data.Definitions.EffectData>(64);
 
         private int _frontTick = NoTick;
 
@@ -68,16 +72,25 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Исход боя, на который ссылается <see cref="TapeEventKind.BattleEnded"/>.</summary>
         public BattleOutcome GetOutcome(int payloadIndex) => _outcomes[payloadIndex];
 
+        /// <summary>Определение эффекта для <c>EffectApplied</c> / <c>EffectEnded</c>.</summary>
+        public Data.Definitions.EffectData GetEffect(int payloadIndex) => _effectDefs[payloadIndex];
+
         /// <summary>
         /// Записать состояние тика. Зовётся ровно раз за тик, после того как тик досчитан — иначе в
         /// кадр попадёт полусобранное состояние.
         /// </summary>
-        public void CaptureTick(int tick, IReadOnlyList<RuntimeUnit> units)
+        public void CaptureTick(
+            int tick, IReadOnlyList<RuntimeUnit> units, IReadOnlyList<Projectile> projectiles = null)
         {
             Frame frame = _ring[Slot(tick)];
             frame.Tick = tick;
             frame.Units.Clear();
             for (int i = 0; i < units.Count; i++) frame.Units.Add(UnitSnapshot.From(units[i]));
+
+            frame.Projectiles.Clear();
+            if (projectiles != null)
+                for (int i = 0; i < projectiles.Count; i++)
+                    if (projectiles[i].IsAlive) frame.Projectiles.Add(ProjectileSnapshot.From(projectiles[i]));
 
             if (tick > _frontTick) _frontTick = tick;
         }
@@ -87,18 +100,25 @@ namespace Guildmaster.Combat.Tape
         /// (показ отстал больше, чем на окно: это не потеря кадров, а причина растить окно).
         /// </summary>
         public bool TryGetFrame(int tick, out IReadOnlyList<UnitSnapshot> units)
+            => TryGetFrame(tick, out units, out _);
+
+        /// <summary>Кадр целиком: юниты и снаряды одного и того же тика.</summary>
+        public bool TryGetFrame(
+            int tick, out IReadOnlyList<UnitSnapshot> units, out IReadOnlyList<ProjectileSnapshot> projectiles)
         {
             if (tick >= 0 && tick <= _frontTick)
             {
                 Frame frame = _ring[Slot(tick)];
                 if (frame.Tick == tick)
                 {
-                    units = frame.Units;
+                    units       = frame.Units;
+                    projectiles = frame.Projectiles;
                     return true;
                 }
             }
 
-            units = null;
+            units       = null;
+            projectiles = null;
             return false;
         }
 
@@ -127,6 +147,13 @@ namespace Guildmaster.Combat.Tape
         {
             _outcomes.Add(outcome);
             _events.Add(new TapeEvent(TapeEventKind.BattleEnded, tick, payloadIndex: _outcomes.Count - 1));
+        }
+
+        /// <summary>Записать наложение или спад эффекта: определение едет ссылкой в свой список.</summary>
+        public void RecordEffect(int tick, TapeEventKind kind, int targetId, Data.Definitions.EffectData def)
+        {
+            _effectDefs.Add(def);
+            _events.Add(new TapeEvent(kind, tick, targetId: targetId, payloadIndex: _effectDefs.Count - 1));
         }
 
         /// <summary>
@@ -170,11 +197,13 @@ namespace Guildmaster.Combat.Tape
             {
                 _ring[i].Tick = NoTick;
                 _ring[i].Units.Clear();
+                _ring[i].Projectiles.Clear();
             }
             _events.Clear();
             _damage.Clear();
             _areaHits.Clear();
             _outcomes.Clear();
+            _effectDefs.Clear();
             _frontTick = NoTick;
         }
 

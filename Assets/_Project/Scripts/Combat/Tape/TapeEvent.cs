@@ -26,6 +26,15 @@ namespace Guildmaster.Combat.Tape
 
         /// <summary>Dev-рестарт боя на месте. Лента при этом чистится целиком.</summary>
         BattleReset,
+
+        /// <summary>Способность скастована: <c>SourceId</c> — кастер.</summary>
+        AbilityCast,
+
+        /// <summary>Эффект наложен: <c>TargetId</c> — носитель, определение — в <c>GetEffect(PayloadIndex)</c>.</summary>
+        EffectApplied,
+
+        /// <summary>Эффект спал: <c>TargetId</c> — носитель, определение — в <c>GetEffect(PayloadIndex)</c>.</summary>
+        EffectEnded,
     }
 
     /// <summary>

@@ -22,11 +22,26 @@ namespace Guildmaster.Combat.Tape
 
         private readonly CombatSimulation _simulation;
         private readonly BattleTape       _tape;
+        private readonly AbilitySystem _abilities;
+        private readonly EffectSystem     _effects;
 
-        public BattleTapeRecorder(CombatSimulation simulation, BattleTape tape)
+        public BattleTapeRecorder(
+            CombatSimulation simulation, BattleTape tape,
+            AbilitySystem abilities, EffectSystem effects)
         {
             _simulation = simulation;
             _tape       = tape;
+            _abilities  = abilities;
+            _effects    = effects;
+
+            // Каст и статусы тоже обязаны ехать по показу: их звук иначе приходит за окно опережения
+            // до того, как игрок увидит сам каст.
+            if (_abilities != null) _abilities.OnAbilityCast += HandleAbilityCast;
+            if (_effects != null)
+            {
+                _effects.OnEffectApplied += HandleEffectApplied;
+                _effects.OnEffectEnded   += HandleEffectEnded;
+            }
 
             _simulation.OnUnitSpawned       += HandleUnitSpawned;
             _simulation.OnUnitDied          += HandleUnitDied;
@@ -52,6 +67,13 @@ namespace Guildmaster.Combat.Tape
             _simulation.OnAreaHit           -= HandleAreaHit;
             _simulation.OnBattleEnded       -= HandleBattleEnded;
             _simulation.OnBattleReset       -= HandleBattleReset;
+
+            if (_abilities != null) _abilities.OnAbilityCast -= HandleAbilityCast;
+            if (_effects != null)
+            {
+                _effects.OnEffectApplied -= HandleEffectApplied;
+                _effects.OnEffectEnded   -= HandleEffectEnded;
+            }
         }
 
         /// <summary>
@@ -63,7 +85,7 @@ namespace Guildmaster.Combat.Tape
             int tick = _simulation.CurrentTick - 1;
             if (tick < 0) return;
 
-            _tape.CaptureTick(tick, _simulation.Units);
+            _tape.CaptureTick(tick, _simulation.Units, _simulation.Projectiles);
         }
 
         /// <summary>
@@ -73,7 +95,7 @@ namespace Guildmaster.Combat.Tape
         /// </summary>
         public void CaptureIdleState()
         {
-            _tape.CaptureTick(Mathf.Max(0, _simulation.CurrentTick - 1), _simulation.Units);
+            _tape.CaptureTick(Mathf.Max(0, _simulation.CurrentTick - 1), _simulation.Units, _simulation.Projectiles);
         }
 
         private int Tick => _simulation.CurrentTick;
@@ -103,6 +125,15 @@ namespace Guildmaster.Combat.Tape
             _tape.Record(new TapeEvent(TapeEventKind.AttackInterrupted, Tick, unit.Id));
 
         private void HandleAreaHit(AreaHit hit) => _tape.RecordAreaHit(Tick, in hit);
+
+        private void HandleAbilityCast(RuntimeUnit caster) =>
+            _tape.Record(new TapeEvent(TapeEventKind.AbilityCast, Tick, caster != null ? caster.Id : -1));
+
+        private void HandleEffectApplied(RuntimeUnit target, Data.Definitions.EffectData def, RuntimeUnit source) =>
+            _tape.RecordEffect(Tick, TapeEventKind.EffectApplied, target != null ? target.Id : -1, def);
+
+        private void HandleEffectEnded(RuntimeUnit target, Data.Definitions.EffectData def, RuntimeUnit source) =>
+            _tape.RecordEffect(Tick, TapeEventKind.EffectEnded, target != null ? target.Id : -1, def);
 
         private void HandleBattleEnded(BattleOutcome outcome) => _tape.RecordBattleEnded(Tick, in outcome);
 
