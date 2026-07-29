@@ -39,9 +39,9 @@ namespace Guildmaster.DevTools
         private MessagePipe.IPublisher<Core.Flow.OpenProvingGroundsRequest> _provingGroundsPub;
         private MessagePipe.ISubscriber<Data.Definitions.TestZoneChangedEvent> _provingGroundsChangedSub;
 
-        // Бой, который надо поставить, КАК ТОЛЬКО площадка откроется: вход асинхронный (меню закрывается,
-        // отряд материализуется), поэтому спавнить сразу после запроса — значит спавнить в пустоту.
-        private System.Action<GuildmasterCommands> _pendingOnProvingGrounds;
+        // Заказ состава площадки: на Ристалище бойцов ставит расстановка, а команда только говорит, каких.
+        // Спавнить их самим нельзя — см. StageOnProvingGrounds.
+        private MessagePipe.IPublisher<Data.Definitions.ProvingGroundsSetupRequest> _groundsSetupPub;
         private System.IDisposable _provingGroundsSubscription;
         private bool _onProvingGrounds; // площадка открыта прямо сейчас — повторный запрос не нужен
 
@@ -94,6 +94,7 @@ namespace Guildmaster.DevTools
             resolver.TryResolve(out _runControl);
             resolver.TryResolve(out _provingGroundsPub);
             resolver.TryResolve(out _provingGroundsChangedSub);
+            resolver.TryResolve(out _groundsSetupPub);
             _provingGroundsSubscription = _provingGroundsChangedSub?.Subscribe(e => OnProvingGroundsChanged(e));
         }
 
@@ -109,16 +110,9 @@ namespace Guildmaster.DevTools
             }
         }
 
-        // Площадка открылась — ставим бой, который её и заказывал. Одноразово: следующий вход чистый.
-        private void OnProvingGroundsChanged(Data.Definitions.TestZoneChangedEvent e)
-        {
-            _onProvingGrounds = e.Active;
-            if (!e.Active || _pendingOnProvingGrounds == null) return;
-
-            System.Action<GuildmasterCommands> setup = _pendingOnProvingGrounds;
-            _pendingOnProvingGrounds = null;
-            setup(this);
-        }
+        // Состояние площадки: открыта ли она прямо сейчас. Ставить по этому событию бой больше нечего —
+        // состав площадки заказывается ДО входа и применяется её собственным владельцем (см. StageOnProvingGrounds).
+        private void OnProvingGroundsChanged(Data.Definitions.TestZoneChangedEvent e) => _onProvingGrounds = e.Active;
 
         private void OnDestroy()
         {
@@ -592,6 +586,32 @@ namespace Guildmaster.DevTools
         public void ProvingGrounds() => RequestProvingGrounds();
 
         /// <summary>
+        /// Поставить дев-бой на Ристалище: заказать площадке состав и уйти на неё. Возвращает false, если
+        /// площадки в этой сборке нет (standalone dev-арена без Root) — тогда зовущий ставит бой сам.
+        /// </summary>
+        /// <remarks>
+        /// Почему команда НЕ спавнит бойцов сама. На площадке составом распоряжается расстановка: она держит
+        /// его в слотах, пересобирает превью при каждом перетаскивании и владеет паузой, которую снимает
+        /// кнопка «Начать». Прямой спавн в симуляцию проигрывал ей трижды — юниты стирались первой же
+        /// пересборкой, сброс боя снимал чужую паузу (бой стартовал сам), а слоты оставались от прежнего
+        /// состава. Плюс порядок: событие «площадка открылась» приходит СИНХРОННО внутри запроса входа,
+        /// поэтому отложенный спавн, записанный после запроса, не исполнялся никогда — команда молча не
+        /// делала ничего, и игрок видел штатный расклад площадки. Заказ снимает все четыре разом: он уходит
+        /// ДО входа, а ставит бойцов тот, кто ими и так распоряжается.
+        /// </remarks>
+        private bool StageOnProvingGrounds(System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn> mine,
+            System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn> theirs, string what)
+        {
+            if (_groundsSetupPub == null || _provingGroundsPub == null) return false;
+
+            _groundsSetupPub.Publish(new Data.Definitions.ProvingGroundsSetupRequest(mine, theirs, what));
+
+            // Уже на площадке — заказ применён её владельцем сразу, входить некуда.
+            if (!_onProvingGrounds) RequestProvingGrounds();
+            return true;
+        }
+
+        /// <summary>
         /// Запросить Ристалище. Возвращает false, если запрашивать некому (dev-арена без Root-скоупа).
         /// </summary>
         private bool RequestProvingGrounds()
@@ -619,23 +639,6 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_mirror", "Зеркальный отряд 4v4 из реальных китов (проверка преимущества стороны)")]
         public void SpawnMirror()
         {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-
-            // Смотреть бой из-под главного меню нельзя — сначала уводим на площадку, а спавним, когда она
-            // откроется (вход асинхронный: меню закрывается, отряд материализуется). Если мы уже на
-            // Ристалище или в dev-арене без Root — ставим бой прямо сейчас.
-            if (!_onProvingGrounds && _provingGroundsPub != null && RequestProvingGrounds())
-            {
-                _pendingOnProvingGrounds = self => self.SpawnMirrorNow();
-                return;
-            }
-
-            SpawnMirrorNow();
-        }
-
-        private void SpawnMirrorNow()
-        {
             // Тот же строй, что у командного бенча: фронт вплотную, тыл за спинами.
             (string id, float x, float y)[] squad =
             {
@@ -652,6 +655,33 @@ namespace Guildmaster.DevTools
                 if (relics[i] == null) return;
             }
 
+            var mine   = new System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn>();
+            var theirs = new System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn>();
+            for (int i = 0; i < squad.Length; i++)
+            {
+                mine.Add(new Data.Definitions.ProvingGroundsSpawn(relics[i], new Vector2(-squad[i].x, squad[i].y)));
+                theirs.Add(new Data.Definitions.ProvingGroundsSpawn(relics[i], new Vector2(squad[i].x, squad[i].y)));
+            }
+
+            _lastBattleSetup = self => self.SpawnMirror();
+
+            if (StageOnProvingGrounds(mine, theirs, "gm_spawn_mirror"))
+            {
+                Debug.Log("[GuildmasterCommands] - gm_spawn_mirror: зеркальный отряд 4v4 заказан площадке " +
+                          "(Защитник, Огненный мечник, Криомант, Пастырь). Честный исход — ничья. " +
+                          "Бой начинает кнопка «Начать».");
+                return;
+            }
+
+            SpawnMirrorNow(relics, squad); // площадки нет (standalone dev-арена) — ставим бой прямо здесь
+        }
+
+        // Прямой спавн без площадки: dev-арена, где расстановки-владельца попросту нет.
+        private void SpawnMirrorNow(RelicData[] relics, (string id, float x, float y)[] squad)
+        {
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
+
             ResetForNewBattle();
 
             // Порядок спавна — вся левая команда, затем вся правая: так же, как в бою и на стенде.
@@ -660,9 +690,7 @@ namespace Guildmaster.DevTools
             for (int i = 0; i < squad.Length; i++)
                 _simulation.EnqueueUnitSpawn(_factory.Create(relics[i], null, 1, new Vector2(squad[i].x, squad[i].y)));
 
-            _lastBattleSetup = self => self.SpawnMirror();
-            Debug.Log("[GuildmasterCommands] - gm_spawn_mirror: зеркальный отряд 4v4 " +
-                      "(Защитник, Огненный мечник, Криомант, Пастырь). Честный исход — ничья.");
+            Debug.Log("[GuildmasterCommands] - gm_spawn_mirror: зеркальный отряд 4v4 поставлен на dev-арене.");
         }
 
         /// <summary>
@@ -675,38 +703,38 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_bone_duel", "1×1 bone dev duelist mirror (skeletal UnitView smoke)")]
         public void SpawnBoneDuel()
         {
-            // Сначала площадка, гейты — потом. Вводить команду из главного меню законно: она сама уводит
-            // на Ристалище, а проверять живую симуляцию ДО входа значит отказывать в том, ради чего входим.
-            if (!_onProvingGrounds && _provingGroundsPub != null && RequestProvingGrounds())
-            {
-                _pendingOnProvingGrounds = self => self.SpawnBoneDuelNow();
-                return;
-            }
-
-            SpawnBoneDuelNow();
-        }
-
-        private void SpawnBoneDuelNow()
-        {
-            if (!SimReady()) return;
-            if (!FactoryReady()) return;
-
             if (_boneDuelist == null)
             {
                 Debug.LogError("[GuildmasterCommands] - юнита 'enemy.bone_dev' нет в контент-БД → дуэль не запущена");
                 return;
             }
 
-            ResetForNewBattle();
-
             ResolveDuelEdges(out Vector2 left, out Vector2 right);
-            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 0, left));
-            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 1, right));
+            var mine   = new System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn>
+                { new Data.Definitions.ProvingGroundsSpawn(_boneDuelist, left) };
+            var theirs = new System.Collections.Generic.List<Data.Definitions.ProvingGroundsSpawn>
+                { new Data.Definitions.ProvingGroundsSpawn(_boneDuelist, right) };
 
             _lastBattleSetup = self => self.SpawnBoneDuel();
             string view = _boneDuelist.ViewPrefab != null ? _boneDuelist.ViewPrefab.name : "null";
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: enemy.bone_dev 1×1 " +
-                      $"({left.x:0.##} vs {right.x:0.##}, дистанция {(right.x - left.x):0.##}; ViewPrefab={view})");
+
+            if (StageOnProvingGrounds(mine, theirs, "gm_spawn_bone_duel"))
+            {
+                Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: дуэль заказана площадке " +
+                          $"({left.x:0.##} vs {right.x:0.##}, дистанция {(right.x - left.x):0.##}; ViewPrefab={view}). " +
+                          "Бой начинает кнопка «Начать».");
+                return;
+            }
+
+            // Площадки нет (standalone dev-арена) — владельца состава тоже, ставим бой сами.
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
+
+            ResetForNewBattle();
+            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 0, left));
+            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 1, right));
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: дуэль поставлена на dev-арене " +
+                      $"(дистанция {(right.x - left.x):0.##}; ViewPrefab={view})");
         }
 
         /// <summary>
