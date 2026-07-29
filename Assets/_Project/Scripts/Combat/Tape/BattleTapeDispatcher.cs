@@ -56,6 +56,12 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Каст показан: id кастера.</summary>
         public event Action<int> AbilityCast;
 
+        /// <summary>Началась подготовка (показано): id кастера и её длительность в секундах.</summary>
+        public event Action<int, float> AbilityCastStarted;
+
+        /// <summary>Каст оборван (показано): id кастера. Подводка гаснет здесь.</summary>
+        public event Action<int> AbilityCastInterrupted;
+
         /// <summary>Эффект лёг на носителя (показано): id носителя, определение эффекта.</summary>
         public event Action<int, Data.Definitions.EffectData> EffectApplied;
 
@@ -134,6 +140,14 @@ namespace Guildmaster.Combat.Tape
                     break;
                 case TapeEventKind.AbilityCast:
                     AbilityCast?.Invoke(ev.SourceId);
+                    break;
+
+                case TapeEventKind.AbilityCastStarted:
+                    AbilityCastStarted?.Invoke(ev.SourceId, ev.Amount);
+                    break;
+
+                case TapeEventKind.AbilityCastInterrupted:
+                    AbilityCastInterrupted?.Invoke(ev.SourceId);
                     break;
                 case TapeEventKind.EffectApplied:
                     EffectApplied?.Invoke(ev.TargetId, _tape.GetEffect(ev.PayloadIndex));

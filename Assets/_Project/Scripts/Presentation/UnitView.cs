@@ -180,6 +180,7 @@ namespace Guildmaster.Presentation
         private float _outlineLeft;        // остаток окна контура, сек
         private float _outlineTotal;
         private Color _outlineColor = Color.white;  // главный цвет кастера
+        private bool  _outlineCharge;      // это ПОДВОДКА к касту (растёт к концу), а не вспышка «состоялось»
 
         private CanvasGroup _uiFadeGroup;  // контейнер world-UI: гаснет вместе с телом, а не щелчком
         private float _uiFadeLeft;
@@ -950,19 +951,54 @@ namespace Guildmaster.Presentation
         {
             if (_feel == null || _feel.CastOutlineDuration <= 0f) return;
 
-            _outlineColor = color;
-            _outlineTotal = _feel.CastOutlineDuration;
-            _outlineLeft  = _outlineTotal;
+            _outlineColor  = color;
+            _outlineTotal  = _feel.CastOutlineDuration;
+            _outlineLeft   = _outlineTotal;
+            _outlineCharge = false;
         }
 
-        // Окно контура: быстрый подъём, затем спад (пик в первой четверти — телеграф должен успеть прочитаться
-        // до самого действия). Unscaled — как и остальной фидбэк: каст часто совпадает с hitstop.
+        /// <summary>
+        /// Подводка к касту с подготовкой (M3): контур держится ВСЮ подготовку и наливается к её концу —
+        /// туда, где придёт удар. Отличие от <see cref="PlayCastOutline"/> принципиальное: там вспышка
+        /// сообщает «уже случилось», здесь — «сейчас случится», и потому пик в конце, а не в начале.
+        /// </summary>
+        /// <param name="seconds">Длительность подготовки — её объявляет симуляция, не показ.</param>
+        public void PlayCastCharge(Color color, float seconds)
+        {
+            if (_feel == null || seconds <= 0f) return;
+
+            _outlineColor  = color;
+            _outlineTotal  = seconds;
+            _outlineLeft   = seconds;
+            _outlineCharge = true;
+        }
+
+        /// <summary>Каст оборван: подводка гаснет, потому что обещанного удара не будет.</summary>
+        public void CancelCastCharge()
+        {
+            if (!_outlineCharge) return;
+
+            _outlineCharge = false;
+            _outlineLeft   = 0f;
+            _outlineAmount = 0f;
+        }
+
+        // Окно контура: у вспышки-«состоялось» быстрый подъём и спад (пик в первой четверти), у подводки-
+        // «сейчас будет» — рост до конца подготовки. Unscaled — как и остальной фидбэк: каст часто
+        // совпадает с hitstop.
         private void TickCastOutline()
         {
             if (_outlineLeft <= 0f) return;
 
             _outlineLeft -= Time.unscaledDeltaTime;
             float t = 1f - Mathf.Clamp01(_outlineLeft / Mathf.Max(0.0001f, _outlineTotal));
+
+            if (_outlineCharge)
+            {
+                _outlineAmount = t * _feel.CastOutlineStrength;
+                if (_outlineLeft <= 0f) { _outlineAmount = 0f; _outlineCharge = false; }
+                return;
+            }
 
             const float rise = 0.25f;
             _outlineAmount = t < rise ? t / rise : 1f - (t - rise) / (1f - rise);

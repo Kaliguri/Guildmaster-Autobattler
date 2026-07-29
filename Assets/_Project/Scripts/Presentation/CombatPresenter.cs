@@ -49,7 +49,6 @@ namespace Guildmaster.Presentation
 
 
         private CombatSimulation            _simulation;
-        private AbilitySystem               _abilities;   // сигнал каста — оттуда же, откуда его берёт аудио
 
         // Команда «смотрящего» приходит от ILocalPlayer — единственного владельца этого факта
         // (GameConfig.LocalPlayerTeam → SoloLocalPlayer). Своего поля презентер не держит: пока оно
@@ -109,7 +108,6 @@ namespace Guildmaster.Presentation
         [Inject]
         public void Construct(
             CombatSimulation simulation,
-            AbilitySystem abilities,
             IPublisher<DamageDealtEvent> damageDealtPublisher,
             IPublisher<BattleEndedEvent> battleEndedPublisher,
             Design.CombatFeelConfig feel,
@@ -125,7 +123,6 @@ namespace Guildmaster.Presentation
             _localPlayer          = localPlayer;
             _audio                = audio;
             _simulation           = simulation;
-            _abilities            = abilities;
             _damageDealtPublisher = damageDealtPublisher;
             _battleEndedPublisher = battleEndedPublisher;
             _feel                 = feel;
@@ -167,6 +164,11 @@ namespace Guildmaster.Presentation
             _dispatcher.AttackStarted     += HandleAttackStarted;
             _dispatcher.AttackInterrupted += HandleAttackInterrupted;
             _dispatcher.BattleEnded       += HandleBattleEnded;
+            // Каст показывается по ПОКАЗУ, как и всё остальное. Подписка потерялась при переводе на
+            // ленту (Ф3), и контур с всплеском каста молча не работали — восстановлена вместе с M3.
+            _dispatcher.AbilityCast            += HandleAbilityCast;
+            _dispatcher.AbilityCastStarted     += HandleAbilityCastStarted;
+            _dispatcher.AbilityCastInterrupted += HandleAbilityCastInterrupted;
         }
 
         private void OnDisable()
@@ -182,6 +184,9 @@ namespace Guildmaster.Presentation
             _dispatcher.AttackStarted     -= HandleAttackStarted;
             _dispatcher.AttackInterrupted -= HandleAttackInterrupted;
             _dispatcher.BattleEnded       -= HandleBattleEnded;
+            _dispatcher.AbilityCast            -= HandleAbilityCast;
+            _dispatcher.AbilityCastStarted     -= HandleAbilityCastStarted;
+            _dispatcher.AbilityCastInterrupted -= HandleAbilityCastInterrupted;
         }
 
         private void HandleBattleReset()
@@ -376,14 +381,31 @@ namespace Guildmaster.Presentation
         /// как что-то прилетело, иначе эффект пересказывает уже случившееся.
         /// <para>Цвет — из <c>UnitData.ResolveVfxColor</c>: форма всплеска общая, а светит каждый своим.</para>
         /// </summary>
-        private void HandleAbilityCast(RuntimeUnit caster)
+        private void HandleAbilityCast(int casterId)
         {
-            if (caster == null || !_views.TryGetValue(caster.Id, out var view) || view == null) return;
+            if (!_views.TryGetValue(casterId, out var view) || view == null) return;
 
-            view.PlayCastOutline(VfxColorFor(caster));   // контур — один цвет, без разброса
+            view.PlayCastOutline(VfxColorFor(casterId));   // контур — один цвет, без разброса
 
             if (_vfx != null && _feel != null && _feel.VfxCastBurst != null)
-                _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(caster));
+                _vfx.Spawn(_feel.VfxCastBurst, view.HitPoint, tint: VfxPaletteFor(casterId));
+        }
+
+        /// <summary>
+        /// Началась подготовка (M3): контур наливается ВСЮ подготовку, к моменту удара — на пике. Это
+        /// подводка, а не пересказ: длительность объявляет симуляция, показ её только выдерживает.
+        /// </summary>
+        private void HandleAbilityCastStarted(int casterId, float seconds)
+        {
+            if (!_views.TryGetValue(casterId, out var view) || view == null) return;
+            view.PlayCastCharge(VfxColorFor(casterId), seconds);
+        }
+
+        /// <summary>Каст оборван — подводка гаснет: обещанного удара не будет, и врать об этом нельзя.</summary>
+        private void HandleAbilityCastInterrupted(int casterId)
+        {
+            if (!_views.TryGetValue(casterId, out var view) || view == null) return;
+            view.CancelCastCharge();
         }
 
         /// <summary>

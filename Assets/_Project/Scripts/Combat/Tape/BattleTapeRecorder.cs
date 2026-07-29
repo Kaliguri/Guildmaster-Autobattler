@@ -36,7 +36,12 @@ namespace Guildmaster.Combat.Tape
 
             // Каст и статусы тоже обязаны ехать по показу: их звук иначе приходит за окно опережения
             // до того, как игрок увидит сам каст.
-            if (_abilities != null) _abilities.OnAbilityCast += HandleAbilityCast;
+            if (_abilities != null)
+            {
+                _abilities.OnAbilityCast            += HandleAbilityCast;
+                _abilities.OnAbilityCastStarted     += HandleAbilityCastStarted;
+                _abilities.OnAbilityCastInterrupted += HandleAbilityCastInterrupted;
+            }
             if (_effects != null)
             {
                 _effects.OnEffectApplied += HandleEffectApplied;
@@ -68,7 +73,12 @@ namespace Guildmaster.Combat.Tape
             _simulation.OnBattleEnded       -= HandleBattleEnded;
             _simulation.OnBattleReset       -= HandleBattleReset;
 
-            if (_abilities != null) _abilities.OnAbilityCast -= HandleAbilityCast;
+            if (_abilities != null)
+            {
+                _abilities.OnAbilityCast            -= HandleAbilityCast;
+                _abilities.OnAbilityCastStarted     -= HandleAbilityCastStarted;
+                _abilities.OnAbilityCastInterrupted -= HandleAbilityCastInterrupted;
+            }
             if (_effects != null)
             {
                 _effects.OnEffectApplied -= HandleEffectApplied;
@@ -121,6 +131,16 @@ namespace Guildmaster.Combat.Tape
 
         private void HandleAbilityCast(RuntimeUnit caster) =>
             _tape.Record(new TapeEvent(TapeEventKind.AbilityCast, Tick, caster != null ? caster.Id : -1));
+
+        // Подготовка несёт СВОЮ длительность: показ держит подводку ровно столько, сколько сим будет
+        // готовиться, — иначе контур гаснет раньше удара или висит после него.
+        private void HandleAbilityCastStarted(RuntimeUnit caster, Data.Definitions.AbilityData data, int castTicks) =>
+            _tape.Record(new TapeEvent(
+                TapeEventKind.AbilityCastStarted, Tick, caster != null ? caster.Id : -1,
+                amount: castTicks / (float)Core.Simulation.SimConstants.TickRate));
+
+        private void HandleAbilityCastInterrupted(RuntimeUnit caster) =>
+            _tape.Record(new TapeEvent(TapeEventKind.AbilityCastInterrupted, Tick, caster != null ? caster.Id : -1));
 
         private void HandleEffectApplied(RuntimeUnit target, Data.Definitions.EffectData def, RuntimeUnit source) =>
             _tape.RecordEffect(Tick, TapeEventKind.EffectApplied, target != null ? target.Id : -1, def);

@@ -30,6 +30,14 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Способность скастована: <c>SourceId</c> — кастер.</summary>
         AbilityCast,
 
+        /// <summary>Начата подготовка или канал: <c>SourceId</c> — кастер, <c>Amount</c> — секунды
+        /// подготовки. Показ держит подводку ровно это время, потому что удар придёт в её конце.</summary>
+        AbilityCastStarted,
+
+        /// <summary>Каст оборван, не доиграв (контроль, полёт, потеря цели): <c>SourceId</c> — кастер.
+        /// Подводка обязана погаснуть — иначе на экране остаётся обещание, которого не будет.</summary>
+        AbilityCastInterrupted,
+
         /// <summary>Эффект наложен: <c>TargetId</c> — носитель, определение — в <c>GetEffect(PayloadIndex)</c>.</summary>
         EffectApplied,
 
