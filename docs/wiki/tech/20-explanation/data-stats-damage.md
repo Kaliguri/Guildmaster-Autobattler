@@ -17,7 +17,7 @@ updated: 2026-07-28
 >
 > **Границы.** Модель — какие у урона оси, из чего складывается каскад, какие числа у классов —
 > в [[tech/10-reference/combat-model|Reference - Combat Model]]. Каталог контента и конвенции id —
-> в [[tech/10-reference/data-layer|Reference - Data Layer]]. Здесь не повторяется ни то, ни другое.
+> в дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`). Здесь не повторяется ни то, ни другое.
 
 ---
 

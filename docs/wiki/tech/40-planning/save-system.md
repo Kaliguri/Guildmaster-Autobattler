@@ -19,7 +19,7 @@ updated: 2026-07-28
 > версионирование игры и схем, миграции, Steam Cloud, мультиплеерные швы и порядок внедрения.
 > Заменяет собой прежний узкий взгляд «один файл забега» из [[tech/10-reference/saves|Reference - Saves]].
 > Смежное: [[tech/20-explanation/run-flow|Explanation - Run Flow]], [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]],
-> [[tech/10-reference/data-layer|Reference - Data Layer]], [[tech/40-planning/steam-workshop|Planning - Steam Workshop]].
+> дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`), [[tech/40-planning/steam-workshop|Planning - Steam Workshop]].
 
 ---
 

@@ -94,4 +94,4 @@ SO-ассетов юнитов; они и есть последняя правд
 ---
 
 Связано: [[gdd/10-vision/vfx-color|Vision - VFX Color]],
-[[tech/20-explanation/presentation|Presentation]], [[tech/10-reference/data-layer|Data Layer]].
+[[tech/20-explanation/presentation|Presentation]], дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`).

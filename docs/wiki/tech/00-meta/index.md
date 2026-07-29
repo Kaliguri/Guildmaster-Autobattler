@@ -70,7 +70,7 @@ SORT updated ASC, file.name ASC
 - [[tech/10-reference/code-standards|Reference - Code Standards]] — инварианты кода, документирование, детерминизм, фолбэки, меню редактора.
 - [[tech/10-reference/assemblies|Assemblies]] — карта asmdef, граф зависимостей, правила.
 - [[tech/10-reference/combat-model|Combat Model]] — «Сосуд + Реликвия», стат-система, модель эффектов/диспела.
-- [[tech/10-reference/data-layer|Data Layer]] — три слоя данных, каталог SO, id/лок-конвенции, реестр, валидация.
+- дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`) — три слоя данных, каталог SO, id/лок-конвенции, реестр, валидация.
 - [[tech/10-reference/saves|Saves]] — автосейв, хост, мультиплеер.
 - [[tech/10-reference/asset-inventory|Asset Inventory]] — какой контент в проекте, откуда, лицензии, что используется.
 - [[tech/10-reference/editor-tools|Editor Tools]] — наш тулинг под одним корнем `Alebardium`, раскладка и приоритеты меню.
