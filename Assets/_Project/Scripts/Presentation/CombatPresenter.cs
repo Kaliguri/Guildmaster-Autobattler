@@ -133,6 +133,9 @@ namespace Guildmaster.Presentation
             // Спавн — единственное, что слушаем у СИМА, и не ради показа: нужен паспорт юнита, пока
             // живой юнит ещё под рукой. Всё остальное приходит с ленты, когда его показали.
             _simulation.OnUnitSpawned += HandleUnitSpawned;
+            // Рестарт — служебное событие, а не показ: лента уже очищена, и ждать «показа рестарта»
+            // некому. Отсюда же сбрасываются момент показа и курсор диспетчера.
+            _simulation.OnBattleReset += HandleBattleReset;
 
             _dispatcher.DamageDealt       += HandleDamageDealt;
             _dispatcher.Healed            += HandleHealed;
@@ -140,7 +143,6 @@ namespace Guildmaster.Presentation
             _dispatcher.AttackStarted     += HandleAttackStarted;
             _dispatcher.AttackInterrupted += HandleAttackInterrupted;
             _dispatcher.BattleEnded       += HandleBattleEnded;
-            _dispatcher.BattleReset       += HandleBattleReset;
         }
 
         private void OnDisable()
@@ -148,6 +150,7 @@ namespace Guildmaster.Presentation
             if (_simulation == null) return;
 
             _simulation.OnUnitSpawned -= HandleUnitSpawned;
+            _simulation.OnBattleReset -= HandleBattleReset;
 
             _dispatcher.DamageDealt       -= HandleDamageDealt;
             _dispatcher.Healed            -= HandleHealed;
@@ -155,13 +158,15 @@ namespace Guildmaster.Presentation
             _dispatcher.AttackStarted     -= HandleAttackStarted;
             _dispatcher.AttackInterrupted -= HandleAttackInterrupted;
             _dispatcher.BattleEnded       -= HandleBattleEnded;
-            _dispatcher.BattleReset       -= HandleBattleReset;
         }
 
         private void HandleBattleReset()
         {
-            // Лента чистится рекордером, а показ надо отмотать: иначе он продолжит с тика прошлого боя.
+            // Лента чистится рекордером, а показ и курсор событий надо отмотать: иначе показ продолжит
+            // с тика прошлого боя (и окажется впереди нового фронта), а первые события нового боя
+            // сочтутся уже показанными.
             _playback.Reset();
+            _dispatcher.Reset();
             _identities.Clear();
             _frameIndex.Clear();
 

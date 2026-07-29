@@ -44,8 +44,8 @@ namespace Guildmaster.Game.Services
             _dispatcher = dispatcher;
             _clock      = clock;
 
-            _dispatcher.BattleEnded += OnBattleEndedOnScreen;
-            _dispatcher.BattleReset += OnBattleReset;
+            _dispatcher.BattleEnded  += OnBattleEndedOnScreen;
+            _simulation.OnBattleReset += OnBattleReset;
         }
 
         public void Tick()
@@ -85,9 +85,16 @@ namespace Guildmaster.Game.Services
             if (Time.unscaledTime < _nextHeartbeat) return;
             _nextHeartbeat = Time.unscaledTime + HeartbeatSeconds;
 
-            Debug.Log($"[BattleTape] - фаза {_clock.Phase}: показ {_playback.ViewTick} / фронт {_tape.FrontTick}, " +
-                      $"запас {Lead()} тиков (цель {_playback.TargetLead}), " +
-                      $"событий отдано до тика {_dispatcher.ShownTick} из {_tape.EventCount} записанных");
+            int inFrame = _playback.TryGetFrame(out var frame, out var projectiles)
+                ? frame.Count
+                : -1;
+            int projectilesInFrame = projectiles != null ? projectiles.Count : 0;
+
+            Debug.Log($"[BattleTape] - фаза {_clock.Phase}: показ {_playback.ViewTick} / фронт {_tape.FrontTick} " +
+                      $"(окно {_tape.OldestTick}..{_tape.FrontTick}), запас {Lead()} из {_playback.TargetLead}, " +
+                      $"в кадре юнитов {inFrame}, снарядов {projectilesInFrame}, " +
+                      $"событий отдано до тика {_dispatcher.ShownTick} из {_tape.EventCount}, " +
+                      $"живых в симе {_simulation.Units.Count}");
         }
 
         private int Lead() => _playback.Lead;

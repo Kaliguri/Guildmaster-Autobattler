@@ -281,6 +281,40 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(BattleTape.NoTick, playback.ViewTick);
         }
 
+        // Регресс play-mode 2026-07-29: показ стартовал НА ФРОНТЕ, а сим к тому моменту успевал
+        // разогнаться на сотни тиков — игрок видел последнюю секунду боя вместо боя.
+        [Test]
+        public void Playback_StartingInBattle_BeginsAtTheStart_NotAtTheFront()
+        {
+            var tape = new BattleTape(windowTicks: BattleTapePlayback.LookaheadTicks + 60);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            // Сим уже уехал далеко (разгон), показ ещё ни разу не двигался.
+            for (int tick = 0; tick <= 240; tick++) tape.CaptureTick(tick, units);
+            playback.SetTargetLead(BattleTapePlayback.LookaheadTicks);
+
+            playback.Advance(SimConstants.TickDelta);
+
+            Assert.AreEqual(0, playback.ViewTick,
+                "Показ начинает с начала ленты, а не с фронта: иначе бой пролетает мимо игрока");
+            Assert.AreEqual(240, playback.Lead, "Всё, что сим успел посчитать, стало запасом");
+        }
+
+        // Пока показ не поехал, разгонять сим нельзя — иначе он уедет от начала боя.
+        [Test]
+        public void Playback_BeforeItStarts_ReportsLeadAsSatisfied()
+        {
+            var tape = new BattleTape(windowTicks: 64);
+            var playback = new BattleTapePlayback(tape);
+
+            playback.SetTargetLead(BattleTapePlayback.LookaheadTicks);
+
+            Assert.IsFalse(playback.IsPlaying, "Предусловие: показ ещё не начался");
+            Assert.IsTrue(playback.HasFullLead,
+                "Продюсеру нечего догонять: разгон впереди несуществующего показа уводит от начала боя");
+        }
+
         // ===================== Доставка событий по показу (Ф3) =====================
 
         // Главное обещание Ф3: событие отдаётся тогда, когда его тик ПОКАЗАН, а не когда посчитан.

@@ -53,6 +53,8 @@ namespace Guildmaster.Combat.Tape
             _targetLead = ticks > 0 ? ticks : 0;
 
             if (_viewTick == BattleTape.NoTick || _tape.FrontTick == BattleTape.NoTick) return;
+            // Отставание больше требуемого сокращаем; меньше — не добираем искусственно: запас
+            // накапливается разгоном продюсера, а не прыжком показа назад в уже показанное.
             int maxViewTick = _tape.FrontTick - _targetLead;
             if (_viewTick < maxViewTick)
             {
@@ -73,8 +75,11 @@ namespace Guildmaster.Combat.Tape
         /// </summary>
         public float Alpha => Mathf.Clamp01(_accumulator / SimConstants.TickDelta);
 
-        /// <summary>Набран ли требуемый запас: пока нет — телеграфам и подводкам не на что опираться.</summary>
-        public bool HasFullLead => Lead >= _targetLead;
+        /// <summary>
+        /// Набран ли требуемый запас. Пока показ НЕ ИДЁТ — считается набранным: разгонять сим впереди
+        /// несуществующего показа значит уехать от начала боя, а игрок обязан увидеть бой с начала.
+        /// </summary>
+        public bool HasFullLead => !IsPlaying || Lead >= _targetLead;
 
         /// <summary>Сколько тиков сим держит в запасе перед показом. Меньше нуля не бывает.</summary>
         public int Lead => _tape.FrontTick == BattleTape.NoTick || _viewTick == BattleTape.NoTick
@@ -89,12 +94,16 @@ namespace Guildmaster.Combat.Tape
         {
             if (_viewTick == BattleTape.NoTick)
             {
-                // Первый кадр показа — самый свежий, какой есть. Отставание накопится само, когда
-                // продюсер начнёт разгонять сим; до боя (мир, расстановка) его и не должно быть:
-                // там игрок двигает юнитов сам и обязан видеть их сразу.
                 if (_tape.FrontTick == BattleTape.NoTick) return;
 
-                _viewTick    = _tape.FrontTick;
+                // С какого тика начинать показ.
+                // Вне боя (запас 0) — с самого свежего кадра: там игрок действует сам и обязан видеть
+                // результат сразу. В бою — с САМОГО РАННЕГО, до которого можно отстать: иначе показ
+                // прилипнет к фронту, а сим к этому моменту уже успел разогнаться на сотни тиков, и
+                // игрок увидит последнюю секунду боя вместо боя.
+                _viewTick = _targetLead > 0
+                    ? Mathf.Max(_tape.OldestTick, _tape.FrontTick - _targetLead)
+                    : _tape.FrontTick;
                 _accumulator = 0f;
                 return;
             }
