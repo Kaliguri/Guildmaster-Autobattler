@@ -127,6 +127,67 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(0f, unit.CurrentShield, 1e-4f);
         }
 
+        // --- ShieldBurstComponent (M17) ---
+
+        [Test]
+        public void ShieldBurst_DamagesAroundCarrier_ByFractionOfTheShieldSize()
+        {
+            // M17: своего числа урона у взрыва нет — он функция размера щита. Полного, а не остатка:
+            // платой служит щит, который враг был вынужден пробить.
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+            var carrier = TestUnit.Make();
+            var enemy   = TestUnit.Make(team: 1);
+            ctx.UnitsInWorld.Add(enemy);
+
+            var shield = new ShieldComponent().With("_amount", new ScalableValue(50f));
+            var burst  = new ShieldBurstComponent()
+                .With("_fractionOfShield", 1f)
+                .With("_radius", 2f);
+            EffectData def = TestEffect.Make(
+                baseDuration: 5f, tags: EffectTag.Shield, components: new IEffectComponent[] { shield, burst });
+
+            sys.Apply(carrier, def, carrier, ctx);
+            Assert.AreEqual(50f, carrier.CurrentShield, 1e-4f);
+
+            // Щит пробит: взрыв на весь его размер.
+            carrier.CurrentShield = 0f;
+            sys.Dispatch(carrier, new CombatEventData(CombatEvent.DamageTaken, carrier, carrier, 10f), ctx);
+
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "Взрыв ударил по врагу в радиусе");
+            Assert.AreEqual(50f, ctx.DamageCalls[0].RawDamage, 1e-4f, "Урон = 100% размера щита");
+        }
+
+        [Test]
+        public void ShieldBurst_DoesNotFireWhileTheShieldHolds_AndOnlyOnce()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext();
+            var carrier = TestUnit.Make();
+            var enemy   = TestUnit.Make(team: 1);
+            ctx.UnitsInWorld.Add(enemy);
+
+            var shield = new ShieldComponent().With("_amount", new ScalableValue(40f));
+            var burst  = new ShieldBurstComponent().With("_fractionOfShield", 0.5f).With("_radius", 2f);
+            EffectData def = TestEffect.Make(
+                baseDuration: 5f, tags: EffectTag.Shield, components: new IEffectComponent[] { shield, burst });
+
+            sys.Apply(carrier, def, carrier, ctx);
+
+            // Щит ещё держит — взрыва быть не должно, иначе кит бьёт зоной с каждого удара по себе.
+            carrier.CurrentShield = 10f;
+            sys.Dispatch(carrier, new CombatEventData(CombatEvent.DamageTaken, carrier, carrier, 10f), ctx);
+            Assert.AreEqual(0, ctx.DamageCalls.Count, "Пока щит цел, взрыва нет");
+
+            // Пробит — взрыв. И только один: следующий удар в том же тике второго не даёт.
+            carrier.CurrentShield = 0f;
+            sys.Dispatch(carrier, new CombatEventData(CombatEvent.DamageTaken, carrier, carrier, 10f), ctx);
+            sys.Dispatch(carrier, new CombatEventData(CombatEvent.DamageTaken, carrier, carrier, 10f), ctx);
+
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "Один щит — один взрыв");
+            Assert.AreEqual(20f, ctx.DamageCalls[0].RawDamage, 1e-4f, "Доля 0.5 от щита 40");
+        }
+
         // --- ControlComponent ---
 
         [Test]
