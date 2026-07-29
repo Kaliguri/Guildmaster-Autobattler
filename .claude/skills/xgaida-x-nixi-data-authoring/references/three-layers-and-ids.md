@@ -93,6 +93,6 @@ Unity матчит сериализацию по именам — молчали
   `EffectData`) → `[MovedFrom(...)]`. Без него `[SerializeReference]`-данные молча обнуляются.
 - **Перенос поля в базовый класс** безопасен при сохранении имени (прецедент — поля кита
   перенесены из `RelicData` в `UnitData` без смены имён).
-- **Массовая правка формы существующих ассетов** — editor-миграцией (образец
-  `Data/Editor/Migrations/Phase4Package*Migration.cs`), не hand-YAML: Unity перезапишет ручной YAML
-  при следующем импорте.
+- **Массовая правка формы существующих ассетов** — editor-кодом через `ContentEditService` /
+  `ContentEditBatch` (`Data/Editor/`), не hand-YAML: Unity перезапишет ручной YAML при следующем
+  импорте. Подробности и почему нет папки `Migrations/` — `references/validation-and-authoring.md`.

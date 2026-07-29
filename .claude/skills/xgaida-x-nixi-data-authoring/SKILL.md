@@ -33,7 +33,7 @@ description: >-
 | Реестр контента (шов код↔контент) | `.../Definitions/IContentDatabase.cs`, `ContentRegistry.cs`, `ContentDatabase.cs` |
 | Лок-мост «контент ↔ String Table Content» | `Assets/_Project/Scripts/Data/Editor/ContentLocalization.cs` |
 | id-утилиты / поиск ассетов (editor) | `Assets/_Project/Scripts/Data/Editor/ContentIdUtility.cs` |
-| Editor-миграции ассетов (образец) | `Assets/_Project/Scripts/Data/Editor/Migrations/*.cs` |
+| Массовая правка ассетов (Undo + аудит + обратный пресет) | `Assets/_Project/Scripts/Data/Editor/ContentEditService.cs`, `ContentEditBatch.cs`, `ContentCrudService.cs` |
 | Валидация контента (id/дубли/null-ref) | `Assets/_Project/Scripts/EditorTools/ContentHub/Core/ContentValidationService.cs` |
 | Тесты контента (EditMode) | `Assets/_Project/Tests/EditMode/Content/*.cs`, `.../ContentHub/*.cs` |
 | Сами ассеты контента | `Assets/_Project/ScriptableObjects/**` |

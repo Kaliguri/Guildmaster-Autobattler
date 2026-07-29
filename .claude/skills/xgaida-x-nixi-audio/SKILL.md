@@ -47,7 +47,7 @@ description: >-
 | Фасад звука (Core, без ссылки на движок) | `Assets/_Project/Scripts/Core/Audio/IAudioService.cs` |
 | Имена глобальных FMOD-параметров | `Assets/_Project/Scripts/Core/Audio/AudioParameters.cs` |
 | FMOD-реализация (one-shot + хранимые `EventInstance` для лупов) | `Assets/_Project/Scripts/Game/Services/FmodAudioService.cs` |
-| Заглушка фасада (headless) | `Assets/_Project/Scripts/Game/Services/UnityAudioService.cs` |
+| Регистрация фасада (единственная реализация) | `Assets/_Project/Scripts/Game/RootLifetimeScope.cs` — `FmodAudioService` как `IAudioService`, Singleton. Заглушки нет и не заводим, см. `references/facade-and-fmod.md` |
 | Громкости шин из настроек | `Assets/_Project/Scripts/Game/Services/SettingsService.cs` |
 | Боевой аудио-презентер | `Assets/_Project/Scripts/Presentation/Audio/AudioPresenter.cs` |
 | **Звук забега вне боя + музыка (root-скоуп)** | `Assets/_Project/Scripts/Game/Services/RunAudioPresenter.cs` |
