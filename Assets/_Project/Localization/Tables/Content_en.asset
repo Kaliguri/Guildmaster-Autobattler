@@ -320,6 +320,14 @@ MonoBehaviour:
     m_Localized: The light lifts base afflictions along with its healing.
     m_Metadata:
       m_Items: []
+  - m_Id: 6795754930954240
+    m_Localized: Vortex Daze
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6795754977091584
+    m_Localized: A moment of helplessness right after the fall.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

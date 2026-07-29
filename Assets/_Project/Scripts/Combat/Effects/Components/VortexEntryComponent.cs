@@ -24,6 +24,14 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Множитель урона усиленной атаки после телепорта.")]
         [SerializeField] private float _empowerMult = 2f;
 
+        [Tooltip("Микро-стан на цели, ложащийся ДО удара в спину (M11): полный вывод из строя на ~0.25 с. " +
+                 "Пусто = удар без фиксации, цель может уйти или ответить.")]
+        [SerializeField] private EffectData _microStun;
+
+        [Tooltip("Множитель длины замаха удара в спину (M11): 0.5 = вдвое короче обычного. " +
+                 "0 = замах обычный. Это и есть «ускоренная анимация» удара вне очереди.")]
+        [SerializeField] private float _windupMult = 0.5f;
+
         public CombatEvent Events => CombatEvent.EffectExpired;
 
         public void OnApply(in EffectContext ctx) { }
@@ -50,6 +58,25 @@ namespace Guildmaster.Combat.Effects.Components
             ctx.Combat.TeleportBehind(monk, victim);
             monk.CurrentTarget = victim;
             monk.EmpowerDamageMult = _empowerMult; // усиление след. атаки
+
+            // Контроль-луп (M11, решение Макса 2026-07-28): удар в спину выходит ВНЕ ОЧЕРЕДИ атак,
+            // ускоренным замахом, а цель к этому моменту уже зафиксирована микро-станом.
+            //
+            // Порядок здесь и есть механика. Стан накладывается СЕЙЧАС, поэтому по закону видимости
+            // эффектов он вступит в силу с конца этого тика — то есть раньше, чем дозреет укороченный
+            // замах. Ударить в стан, а не в убегающую спину, — ровно то, ради чего комбо и заведено.
+            if (_microStun != null) ctx.Combat.ApplyEffect(victim, _microStun, monk);
+
+            // Вне очереди: таймер авто-атаки обнуляется, поэтому замах начнётся следующим же тиком, не
+            // дожидаясь интервала. Тот же приём, что у рекаста умений-ударов (M18).
+            monk.AttackCooldownTicks = 0;
+            if (monk.Phase == AttackPhase.Recovery)
+            {
+                monk.Phase = AttackPhase.Idle;
+                monk.RecoveryRemaining = 0;
+            }
+
+            if (_windupMult > 0f) monk.NextWindupMult = _windupMult;
         }
     }
 }

@@ -187,6 +187,10 @@ namespace Guildmaster.Combat
             unit.ChargedSwing       = unit.ChargedAttackReady;
             unit.ChargedAttackReady = false;
 
+            // Взведённый множитель замаха тратится тем же свингом и по той же причине: длину он уже
+            // отдал (её прочитал WindupTicksFor), а постоянно ускоренный замах — это уже другой кит.
+            unit.NextWindupMult = 0f;
+
             ctx.NotifyAttackStarted(unit, target);
 
             // Краевой случай hitFrame=0 / интервал=1 → windup 0 → удар в тот же тик.

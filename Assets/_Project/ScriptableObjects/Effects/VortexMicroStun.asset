@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
-  m_Name: VortexEntry
+  m_Name: VortexMicroStun
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
-  _id: effect.vortex_entry
-  _polarity: 2
-  _tags: 0
-  _baseDuration: -1
-  _stacking: 0
+  _id: effect.vortex_micro_stun
+  _polarity: 1
+  _tags: 6
+  _baseDuration: 0.25
+  _stacking: 2
   _maxStacks: 1
-  _cleanseTier: 0
+  _cleanseTier: 2
   _unremovable: 0
   _cleansePrice:
   - Flat: 0
@@ -28,16 +28,16 @@ MonoBehaviour:
   - Flat: 0
     Pct: 0
   _components:
-  - rid: 5615026876324511856
+  - rid: 5615027308851102054
   _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
     version: 2
     RefIds:
-    - rid: 5615026876324511856
-      type: {class: VortexEntryComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+    - rid: 5615027308851102054
+      type: {class: ControlComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _empowerMult: 2
-        _microStun: {fileID: 11400000, guid: 16c3cb673c8643b4fb26e348e9709d17, type: 2}
-        _windupMult: 0.5
+        _preventAct: 1
+        _preventMove: 1
+        _preventCast: 1

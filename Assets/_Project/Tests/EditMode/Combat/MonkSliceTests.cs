@@ -174,6 +174,69 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.LessOrEqual(distToVictim, monk.Stats.Get(StatType.AttackRange) + 1e-3f, "Телепорт поставил монаха в пределах досягаемости");
         }
 
+        [Test]
+        public void VortexEntry_LoopsControl_StunsBeforeTheBackstab_AndCutsTheQueue()
+        {
+            // M11 (решение Макса 2026-07-28): удар в спину выходит ВНЕ ОЧЕРЕДИ атак, ускоренным замахом,
+            // а цель к моменту удара уже зафиксирована микро-станом. Порядок и есть механика: стан
+            // ложится ДО удара, иначе монах бьёт в убегающую спину и комбо не замыкается.
+            var sim = BuildSim(1UL);
+            var monk   = MakeUnit(0, team: 0, pos: new Vector2(-3f, 0f), range: 2f);
+            var victim = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f));
+
+            // Монах «в хвосте» после предыдущего удара и с полным кулдауном — комбо обязано это перебить.
+            monk.AttackCooldownTicks = 25;
+            monk.Phase = AttackPhase.Recovery;
+            monk.RecoveryRemaining = 10;
+
+            sim.ApplyEffect(monk, VortexPassive(2f, MicroStun(0.25f), windupMult: 0.5f), monk);
+            sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
+                distance: 4f, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 1f));
+
+            for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta);   // конец полёта → заход сработал
+
+            // Ещё пара тиков: заход накладывает стан в фазе доставки событий, которая идёт ПОСЛЕ тика
+            // эффектов, а флаги контроля пересчитываются на своём проходе. Именно этот зазор и делает
+            // стан «ложащимся ДО удара»: укороченный замах дозревает позже.
+            sim.Tick(SimConstants.TickDelta);
+            sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(0, monk.AttackCooldownTicks, "Удар вне очереди: таймер атаки обнулён");
+            Assert.AreEqual(AttackPhase.Idle, monk.Phase, "Хвост предыдущего удара перебит");
+            Assert.AreEqual(0.5f, monk.NextWindupMult, 1e-4f, "Замах удара в спину ускорен вдвое");
+            // Проверяем ФАКТ наложения, а не производный флаг: контракт этого компонента — «повесить
+            // микро-стан на цель», а превращение эффекта в CanAct принадлежит EffectSystem, и у неё
+            // свои тесты. Иначе тест захода начнёт падать от чужих правок порядка в тике.
+            bool stunned = false;
+            for (int i = 0; i < victim.ActiveEffects.Count; i++)
+                if ((victim.ActiveEffects[i].Def.Tags & EffectTag.Control) != 0) stunned = true;
+
+            Assert.IsTrue(stunned, "Микро-стан наложен на цель до того, как дозреет удар в спину");
+        }
+
+        [Test]
+        public void VortexEntry_WithoutStunAsset_StillWorks_ButDoesNotFixTheTarget()
+        {
+            // Честная деградация: микро-стан — поле ассета, и без него комбо остаётся ударом вне очереди,
+            // а не ломается. Так видно, что фиксация цели — решение дизайна, а не побочный эффект кода.
+            var sim = BuildSim(1UL);
+            var monk   = MakeUnit(0, team: 0, pos: new Vector2(-3f, 0f), range: 2f);
+            var victim = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f));
+
+            sim.ApplyEffect(monk, VortexPassive(2f), monk);
+            sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
+                distance: 4f, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 1f));
+
+            for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(2f, monk.EmpowerDamageMult, 1e-4f, "Усиление взведено как раньше");
+            bool anyControl = false;
+            for (int i = 0; i < victim.ActiveEffects.Count; i++)
+                if ((victim.ActiveEffects[i].Def.Tags & EffectTag.Control) != 0) anyControl = true;
+
+            Assert.IsFalse(anyControl, "Без ассета стана цель не фиксируется");
+        }
+
         // ===================== §10.6 полная цепочка: рывок → отбрасывание → телепорт =====================
 
         [Test]
@@ -224,11 +287,21 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         // ===================== Фабрики / хелперы =====================
 
-        private static EffectData VortexPassive(float mult)
+        private static EffectData VortexPassive(float mult, EffectData microStun = null, float windupMult = 0f)
         {
-            var vortex = new VortexEntryComponent().With("_empowerMult", mult);
+            var vortex = new VortexEntryComponent()
+                .With("_empowerMult", mult)
+                .With("_microStun", microStun)
+                .With("_windupMult", windupMult);
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: vortex);
         }
+
+        /// <summary>Микро-стан захода: полный вывод из строя на заданные секунды (как VortexMicroStun в ассетах).</summary>
+        private static EffectData MicroStun(float seconds) =>
+            EffectData.CreateRuntime(
+                "test.vortex_micro_stun", EffectPolarity.Debuff, EffectTag.Debuff | EffectTag.Control,
+                seconds, unremovable: false,
+                new ControlComponent(preventAct: true, preventMove: true, preventCast: true));
 
         private static EffectData DashLandingPassive(float distance, float dmgMult)
         {
