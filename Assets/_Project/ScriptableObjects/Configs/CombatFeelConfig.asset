@@ -25,6 +25,11 @@ MonoBehaviour:
   _enableFloatingTextArc: 1
   _enableHpBarPunch: 1
   _enableHealFlash: 1
+  _enableHitFlash: 1
+  _enableHitSquash: 1
+  _enableTelegraphFlash: 1
+  _enableGuardPose: 1
+  _enableDeathShatter: 1
   _contactDustCooldown: 0.35
   _hitNudgeDistance: 0.08
   _hitNudgeDuration: 0.12

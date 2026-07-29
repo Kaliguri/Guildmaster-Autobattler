@@ -803,6 +803,7 @@ namespace Guildmaster.Presentation
         public void RaiseGuard(float leadSeconds, float holdSeconds)
         {
             if (!_animActive || _guardLayer < 0) return;
+            if (_feel != null && !_feel.EnableGuardPose) return;
 
             float lead = Mathf.Max(0f, leadSeconds);
             _guardTotal   = Mathf.Max(0.05f, lead + Mathf.Max(0f, holdSeconds));
@@ -1082,6 +1083,7 @@ namespace Guildmaster.Presentation
         public void ShowTelegraph(Color color, float seconds)
         {
             if (Body == null || seconds <= 0f) return;
+            if (_feel != null && !_feel.EnableTelegraphFlash) return;
             if (_flashHandle.IsActive()) _flashHandle.Cancel();
 
             _activeFlashColor = color;
@@ -1213,7 +1215,7 @@ namespace Guildmaster.Presentation
         // секвенс смерти стоит следом (он ждёт её догорания). Вспышка — презентация, ей незачем стынуть.
         private void PlayHitFlash(Color flashColor, float peak = 1f)
         {
-            if (Body == null || _feel == null) return;
+            if (Body == null || _feel == null || !_feel.EnableHitFlash) return;
             if (_flashHandle.IsActive()) _flashHandle.Cancel();
             _activeFlashColor = flashColor;
             _flashPeak   = Mathf.Clamp01(peak);
@@ -1246,7 +1248,7 @@ namespace Guildmaster.Presentation
         // Вес компонуется с flip/acquire/breath в ApplyComposedScale.
         private void PlayHitSquash()
         {
-            if (_squashTarget == null || _feel == null) return;
+            if (_squashTarget == null || _feel == null || !_feel.EnableHitSquash) return;
             if (_squashHandle.IsActive()) _squashHandle.Cancel();
             float dur = _feel.SquashDuration;
             _squashHandle = LMotion.Create(1f, 0f, dur)
@@ -1558,9 +1560,11 @@ namespace Guildmaster.Presentation
             _deathPhase = DeathPhase.Shattering;
             _audio?.PlayAt("feel.death_shatter.death", transform.position);
 
-            if (Body == null || !Body.HasContent)
+            // Нечего колоть, или разлёт выключен тумблером — тело просто исчезает. Это законный выбор
+            // дизайна (и способ замерить, сколько джуса даёт сам разлёт), поэтому путь молчит.
+            if (Body == null || !Body.HasContent || (_feel != null && !_feel.EnableDeathShatter))
             {
-                gameObject.SetActive(false); // нечего колоть — просто убираем
+                gameObject.SetActive(false);
                 return;
             }
 

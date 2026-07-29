@@ -43,6 +43,20 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Мягкая вспышка на теле при лечении: хил читался только цифрой, тело на него не отвечало.")]
         [SerializeField] private bool _enableHealFlash = true;
 
+        // Эти пять существовали БЕЗ тумблера: выключить их можно было только правкой кода, а «список
+        // переключателей» без них отвечал на вопрос «всё ли включено» неправдой (заказ Макса 30.07).
+        // Перепись входов держит FeelToggleCoverageTests — новый эффект без тумблера уронит тест.
+        [Tooltip("Вспышка тела при получении урона. Основа читаемости удара — выключать только для замеров.")]
+        [SerializeField] private bool _enableHitFlash = true;
+        [Tooltip("Сплющивание тела в момент попадания (поверх вспышки).")]
+        [SerializeField] private bool _enableHitSquash = true;
+        [Tooltip("Подсветка тела на телеграфе: подводка к тому, что ЕЩЁ не случилось (щит «Оплота»).")]
+        [SerializeField] private bool _enableTelegraphFlash = true;
+        [Tooltip("Поза гвардии: щит поднимается ДО появления барьера, слоем поверх бега или свинга.")]
+        [SerializeField] private bool _enableGuardPose = true;
+        [Tooltip("Разлёт тела на осколки в конце смерти. Выключено — тело просто исчезает.")]
+        [SerializeField] private bool _enableDeathShatter = true;
+
         [Header("Micro Feel — contact dust")]
         [Tooltip("Минимальный интервал между пылью на одном юните, сек.")]
         [SerializeField] private float _contactDustCooldown = 0.35f;
@@ -311,6 +325,11 @@ namespace Guildmaster.Presentation.Design
         public bool  EnableFloatingTextArc   => _enableFloatingTextArc;
         public bool  EnableHpBarPunch        => _enableHpBarPunch;
         public bool  EnableHealFlash         => _enableHealFlash;
+        public bool  EnableHitFlash          => _enableHitFlash;
+        public bool  EnableHitSquash         => _enableHitSquash;
+        public bool  EnableTelegraphFlash    => _enableTelegraphFlash;
+        public bool  EnableGuardPose         => _enableGuardPose;
+        public bool  EnableDeathShatter      => _enableDeathShatter;
 
         public Color HealFlashColor      => _healFlashColor;
         public float HealFlashPeak       => _healFlashPeak;
