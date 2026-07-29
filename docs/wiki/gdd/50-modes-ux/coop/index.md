@@ -124,7 +124,8 @@ updated: 2026-07-30
 | «Шёпот толпы»: разбор поражения, поведение в коопе | [[gdd/00-meta/open\|Meta - Open Questions]] |
 | Воскрешение-ритуал при перезапуске (кооп-QTE) | [[gdd/00-meta/roadmap\|Meta - Roadmap]] · дизайн — [[interactions]] |
 | Кооп = комитет мастеров, термины «Гильдмастер»/«Капитан» | [[pitch\|Vision - Pitch]] · [[guildmaster\|Vision - Guildmaster]] · [[glossary]] |
-| Сетевая модель (host-authoritative), реплики состояния | **тех-вика**: [[tech/20-explanation/netcode\|Explanation - Netcode]] |
+| Сетевая модель (host-authoritative, почему не lockstep) | **тех-вика**: [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep\|Journal - Host-Authoritative, Not Lockstep]] |
+| Дисконнект, реконнект, ready-gate, «3…2…1» при возобновлении | **тех-вика**: [[tech/00-meta/journal/2026-07-16-coop-session-pause-is-the-sync-window\|Journal - Coop Session: Pause Is The Sync Window]] |
 
 ---
 
