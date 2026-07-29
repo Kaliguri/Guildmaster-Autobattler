@@ -86,6 +86,13 @@ namespace Guildmaster.Data.Definitions
                  "доигрыш клипа. Ненулевое — сознательный «оверкоммит» (замедляет эффективную скорость атаки).")]
         [SerializeField] private float _attackRecoverySeconds;
 
+        [Tooltip("Доля свинга до кадра контакта, 0..1: сколько удар «замахивается», прежде чем прилететь. " +
+                 "0.45 = контакт чуть позже середины (размашистый удар с внятным телеграфом), 0.2 = быстрый " +
+                 "тычок. 0 = взять из кадров UnitVisual (покадровые юниты так и делают). ЗАДАВАТЬ ОБЯЗАТЕЛЬНО " +
+                 "юнитам без UnitVisual (скелетный риг): кадров у них нет, расчёт падает на телеграф-пол в " +
+                 "3 тика, и клип атаки скрабится в 0.1 с — удар прилетает почти мгновенно и выглядит рвано.")]
+        [SerializeField, Range(0f, 1f)] private float _windupShare;
+
         [Tooltip("Замах ПЕРВОГО удара после разбега, долей от обычного: 1 = такой же (особого удара нет), " +
                  "1.5 = в полтора раза длиннее (размашистый удар с ходу — дольше телеграф, весомее вход в " +
                  "бой), 0.6 = короче (выпад на скорости). Тратится одним ударом: добежал разбегом — ударил — " +
@@ -159,6 +166,9 @@ namespace Guildmaster.Data.Definitions
         public bool CanAttackWhileMoving => _canAttackWhileMoving;
         public float MovingAttackSpeedPenaltyPct => _movingAttackSpeedPenaltyPct;
         public float AttackRecoverySeconds => _attackRecoverySeconds;
+
+        /// <summary>Доля свинга до кадра контакта (0..1). 0 = считать из кадров <see cref="UnitVisual"/>.</summary>
+        public float WindupShare => _windupShare;
 
         /// <summary>Замах первого удара после разбега, долей от обычного. 1 = особого удара у юнита нет.</summary>
         public float ChargeAttackWindupMult => _chargeAttackWindupMult;

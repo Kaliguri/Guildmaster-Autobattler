@@ -111,7 +111,24 @@ namespace Guildmaster.Combat
             // юнит начинает удар, который по расчёту гейта попадал, а по факту нет.
             float chargeMult = unit.ChargedAttackReady && unit.Unit != null ? unit.Unit.ChargeAttackWindupMult : 1f;
 
+            // Доля замаха из данных важнее покадровой: у юнита без UnitVisual (скелетный риг — кадров у
+            // него нет вовсе) расчёт по кадрам даёт ноль и падает на телеграф-пол, то есть замах в 3 тика
+            // при интервале в полсотни. Клип при этом скрабится в это окно и летит в разы быстрее.
+            float share = unit.Unit != null ? unit.Unit.WindupShare : 0f;
+            if (share > 0f) return WindupTicksFromShare(share, intervalTicks, chargeMult);
+
             return WindupTicks(hitFrame, frameCount, intervalTicks, chargeMult);
+        }
+
+        /// <summary>
+        /// Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа. Кламп и
+        /// множитель разбега те же, что у покадрового пути: границы у замаха одни, кем бы он ни был задан.
+        /// </summary>
+        public static int WindupTicksFromShare(float share, int intervalTicks, float windupMultiplier = 1f)
+        {
+            int durationTicks = AttackDurationTicks(intervalTicks);
+            int raw = (int)Math.Round(Math.Min(1f, Math.Max(0f, share)) * durationTicks, MidpointRounding.AwayFromZero);
+            return ClampWindup(raw, intervalTicks, windupMultiplier);
         }
 
         /// <param name="windupMultiplier">
@@ -120,12 +137,6 @@ namespace Guildmaster.Combat
         /// </param>
         public static int WindupTicks(int hitFrame, int frameCount, int intervalTicks, float windupMultiplier = 1f)
         {
-            int upper = intervalTicks - 1;
-            if (upper < 0) upper = 0;
-
-            int lower = SimConstants.MinWindupTicks;
-            if (lower > upper) lower = upper;   // очень короткий интервал: пол не может превысить потолок
-
             int raw;
             if (frameCount <= 0 || hitFrame <= 0)
             {
@@ -138,8 +149,22 @@ namespace Guildmaster.Combat
                 raw = (clampedHit * durationTicks) / frameCount;
             }
 
+            return ClampWindup(raw, intervalTicks, windupMultiplier);
+        }
+
+        // Границы замаха — один владелец на все способы его задать (кадры клипа, доля из данных):
+        // пол MinWindupTicks (телеграф, ниже которого удар нечитаем) и потолок intervalTicks − 1
+        // (удар не совпадает с тиком старта следующей атаки). Множитель применяется ДО клампа.
+        private static int ClampWindup(int raw, int intervalTicks, float windupMultiplier)
+        {
             if (windupMultiplier > 0f && Math.Abs(windupMultiplier - 1f) > 1e-4f)
                 raw = (int)Math.Round(raw * windupMultiplier, MidpointRounding.AwayFromZero);
+
+            int upper = intervalTicks - 1;
+            if (upper < 0) upper = 0;
+
+            int lower = SimConstants.MinWindupTicks;
+            if (lower > upper) lower = upper;   // очень короткий интервал: пол не может превысить потолок
 
             if (raw < lower) raw = lower;
             if (raw > upper) raw = upper;

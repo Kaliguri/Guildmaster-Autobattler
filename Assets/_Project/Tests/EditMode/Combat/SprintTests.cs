@@ -162,6 +162,32 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
+        public void WindupShare_GivesSkeletalUnitsARealWindup()
+        {
+            const int interval = 55;   // ≈ 0.55 атак/сек: интервал 1.8 с
+
+            // Без кадров и без доли расчёт падает на телеграф-пол: замах 3 тика при интервале 55.
+            int floorOnly = AttackTiming.WindupTicks(0, 0, interval);
+            Assert.That(floorOnly, Is.EqualTo(SimConstants.MinWindupTicks),
+                "Юнит без кадров сейчас получает минимальный замах — это и есть «удар прилетает мгновенно».");
+
+            int fromShare = AttackTiming.WindupTicksFromShare(0.45f, interval);
+            Assert.That(fromShare, Is.GreaterThan(floorOnly * 3),
+                "Доля из данных обязана дать замах, который видно: иначе клип скрабится в десятую долю секунды.");
+        }
+
+        [Test]
+        public void WindupShare_ObeysTheSameClampsAsFrames()
+        {
+            const int interval = 6;
+            Assert.That(AttackTiming.WindupTicksFromShare(1f, interval), Is.LessThanOrEqualTo(interval - 1),
+                "Замах из доли не имеет права налезть на следующий удар.");
+            Assert.That(AttackTiming.WindupTicksFromShare(0.001f, interval),
+                Is.GreaterThanOrEqualTo(Mathf.Min(SimConstants.MinWindupTicks, interval - 1)),
+                "И не имеет права опуститься ниже телеграф-пола.");
+        }
+
+        [Test]
         public void ChargedWindup_StaysWithinItsClamps()
         {
             const int hitFrame = 9, frames = 10, interval = 12;
