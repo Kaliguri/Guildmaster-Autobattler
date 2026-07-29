@@ -102,7 +102,11 @@ SORT updated ASC, file.name ASC
 
 ## Meta (`00-meta/`) — служебное
 
-- [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]] — реестр решений, changelog, открытый техдолг, реестр аудита.
+- **`00-meta/journal/`** — журнал решений: одна запись = один файл `ГГГГ-ММ-ДД-slug.md`, append-only.
+  Владеет вопросом «почему так решили и что отвергли». Пополняется по правилу из `CLAUDE.md`;
+  индекса нет намеренно — листинг папки строит Quartz, имя файла и есть навигация.
+- [[tech/00-meta/tech-debt|Meta - Tech Debt]] — живой реестр сознательно отложенного долга и главной будущей таски.
+- [[tech/00-meta/tech-changelog|Meta - Tech Changelog (Archive)]] — **архив** записей 19.06–28.07.2026. Не пополняется, с кодом не сверяется.
 
 ---
 
