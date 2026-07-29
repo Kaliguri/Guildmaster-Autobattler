@@ -1,4 +1,5 @@
 using Guildmaster.Combat;
+using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;

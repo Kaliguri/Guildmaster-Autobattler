@@ -23,7 +23,12 @@ namespace Guildmaster.Combat.Effects.Components
 
         public void OnApply(in EffectContext ctx)
         {
-            ctx.Target.CurrentShield += ctx.Potency * ctx.Stacks;
+            float amount = ctx.Potency * ctx.Stacks;
+            ctx.Target.CurrentShield += amount;
+
+            // Размер щита записывается в сам эффект, а не остаётся выводимым из контекста: реактивам
+            // (взрыв щита, M17) потенция недоступна — они приходят другим путём, без снимка статов.
+            ctx.Effect.PendingShield = amount;
         }
 
         public void OnExpire(in EffectContext ctx)
@@ -39,6 +44,7 @@ namespace Guildmaster.Combat.Effects.Components
             // и Mathf.Max клампит остаток в ноль, съедая частично израсходованный щит (07 §3.8 B1).
             float delta = ctx.Potency * (ctx.Stacks - previousStacks);
             ctx.Target.CurrentShield = Mathf.Max(0f, ctx.Target.CurrentShield + delta);
+            ctx.Effect.PendingShield = ctx.Potency * ctx.Stacks;   // размер вырос вместе со стаками
         }
     }
 }
