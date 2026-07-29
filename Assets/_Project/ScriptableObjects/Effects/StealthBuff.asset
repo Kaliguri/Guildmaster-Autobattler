@@ -30,6 +30,7 @@ MonoBehaviour:
   _components:
   - rid: 5615026876324511850
   - rid: 5615027308851101872
+  _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
@@ -51,3 +52,8 @@ MonoBehaviour:
         _damageMult: 2
         _flatPen: 20
         _blinkBehind: 1
+        _damageMultScalings:
+        - Source: 8
+          Form: 0
+          Baseline: 1
+          PerUnit: 0.5

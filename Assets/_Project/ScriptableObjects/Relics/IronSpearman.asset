@@ -117,6 +117,13 @@ MonoBehaviour:
     _channelSeconds: 0
     _channelTickSeconds: 1
     _canMoveWhileCasting: 0
+    _statScalings:
+    - Target: 1
+      Conversion:
+        Source: 8
+        Form: 1
+        Baseline: 0.6
+        PerUnit: 0.3
     _displaces: 1
     _displaceDistance: 4
     _displaceDamageMult: 0

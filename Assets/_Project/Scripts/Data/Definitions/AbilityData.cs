@@ -1,4 +1,5 @@
 using System;
+using Guildmaster.Data.Stats;
 using UnityEngine;
 
 namespace Guildmaster.Data.Definitions
@@ -124,6 +125,10 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Кастовать и держать канал НА ХОДУ (по образцу «Стрельбы на ходу» Рейнджера). Выкл = каст держит на месте, как авто-атака. Барабанщик марширует.")]
         [SerializeField] private bool _canMoveWhileCasting;
 
+        [Header("Stat conversions (M4) — Убийца, Маг молний")]
+        [Tooltip("Правила «стат юнита → параметр способности»: ускорение каста и кулдауна от скорости атаки, прибавка к множителю удара. Пусто = параметры берутся ровно из полей выше.")]
+        [SerializeField] private AbilityStatScaling[] _statScalings;
+
         [Header("Displacement (§9.9) — Монах")]
         [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. На линии полёта — урон-ядро.")]
         [SerializeField] private bool _displaces;
@@ -223,6 +228,34 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Способность занимает время: есть подготовка или канал (иначе применяется в тот же тик).</summary>
         public bool TakesTime => _castSeconds > 0f || _channelSeconds > 0f;
+
+        /// <summary>Правила конвертации статов в параметры этой способности (M4).</summary>
+        public AbilityStatScaling[] StatScalings => _statScalings;
+
+        /// <summary>Кулдаун с учётом конвертаций статов носителя (до умножения на <c>CooldownEff</c>).</summary>
+        public float ResolveCooldown(IStatReader stats) => Resolve(AbilityParameter.Cooldown, _baseCooldown, stats);
+
+        /// <summary>Длительность подготовки с учётом конвертаций: скорость атаки укорачивает каст.</summary>
+        public float ResolveCastSeconds(IStatReader stats) => Resolve(AbilityParameter.CastSeconds, _castSeconds, stats);
+
+        /// <summary>Множитель прямого урона с учётом конвертаций («Удар из скрытности» растёт от AS).</summary>
+        public float ResolveDamageMultiplier(IStatReader stats) => Resolve(AbilityParameter.DamageMultiplier, _damageMultiplier, stats);
+
+        /// <summary>
+        /// Свести все правила для одного параметра. Правила ОДНОГО параметра применяются подряд, в
+        /// порядке ассета: порядок значим для обратной формы, поэтому он берётся из данных, а не из
+        /// сортировки — иначе одно и то же содержимое давало бы разные числа между сборками.
+        /// </summary>
+        private float Resolve(AbilityParameter parameter, float baseValue, IStatReader stats)
+        {
+            if (_statScalings == null || _statScalings.Length == 0) return baseValue;
+
+            float value = baseValue;
+            for (int i = 0; i < _statScalings.Length; i++)
+                if (_statScalings[i].Target == parameter) value = _statScalings[i].Apply(value, stats);
+
+            return value;
+        }
 
         public bool Displaces => _displaces;
         public float DisplaceDistance => _displaceDistance;

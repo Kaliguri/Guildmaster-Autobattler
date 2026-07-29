@@ -307,7 +307,7 @@ namespace Guildmaster.Combat
             AbilityData data       = ability.Data;
 
             caster.CurrentResource -= data.ResourceCost;
-            ability.CooldownRemaining = data.BaseCooldown * caster.Stats.Get(StatType.CooldownEff);
+            ability.CooldownRemaining = data.ResolveCooldown(caster.Stats) * caster.Stats.Get(StatType.CooldownEff);
 
             if (!data.TakesTime)
             {
@@ -323,7 +323,7 @@ namespace Guildmaster.Combat
                 caster.RecoveryRemaining = 0;
             }
 
-            int castTicks = AttackTiming.RecoveryTicks(data.CastSeconds);
+            int castTicks = AttackTiming.RecoveryTicks(data.ResolveCastSeconds(caster.Stats));
             caster.CastingAbilityIndex = plan.AbilityIndex;
             caster.CastTarget          = plan.Target;
             caster.CastTicks           = castTicks;
@@ -701,9 +701,12 @@ namespace Guildmaster.Combat
         /// <summary>Прямой урон способности = DamageMultiplier × AutoAttackDamage кастующего (0 = только эффекты).</summary>
         private static float AbilityDamage(RuntimeUnit caster, AbilityData data)
         {
-            return data.DamageMultiplier > 0f
-                ? data.DamageMultiplier * caster.Stats.Get(StatType.AutoAttackDamage)
-                : 0f;
+            // Множитель берётся через конвертации (M4): базовый ×3 может расти от статов носителя.
+            // Гейт по БАЗОВОМУ значению: способность без прямого урона не должна начать бить от того,
+            // что у кита высокая скорость атаки.
+            if (data.DamageMultiplier <= 0f) return 0f;
+
+            return data.ResolveDamageMultiplier(caster.Stats) * caster.Stats.Get(StatType.AutoAttackDamage);
         }
 
         private static void ApplyEffects(RuntimeUnit target, AbilityData data, RuntimeUnit caster, ICombatContext ctx)

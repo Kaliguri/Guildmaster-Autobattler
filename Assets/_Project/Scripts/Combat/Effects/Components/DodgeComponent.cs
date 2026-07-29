@@ -44,6 +44,10 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Баф ускорения после кувырка (скорость передвижения и его длительность живут в нём).")]
         [SerializeField] private EffectData _hasteBuff;
 
+        [Tooltip("Конвертации статов в перезарядку заряда (M4). Убийца: обратная форма от AttackSpeed — " +
+                 "быстрый Убийца уклоняется чаще, но кулдаун никогда не станет нулём.")]
+        [SerializeField] private Data.Stats.StatConversion[] _rechargeScalings;
+
         public void OnApply(in EffectContext ctx)
         {
             // Инициализируем заряды готовыми (readyTick = 0 ≤ любого CurrentTick).
@@ -72,7 +76,9 @@ namespace Guildmaster.Combat.Effects.Components
             if (charges == null) return;
 
             int now = ctx.Combat.CurrentTick;
-            int rechargeTicks = Mathf.Max(1, Mathf.RoundToInt(_rechargeSeconds * SimConstants.TickRate));
+            // Перезарядка — через конвертации (M4): у быстрого носителя заряд возвращается чаще.
+            float rechargeSeconds = Data.Stats.StatConversion.ApplyAll(_rechargeScalings, _rechargeSeconds, self.Stats);
+            int rechargeTicks = Mathf.Max(1, Mathf.RoundToInt(rechargeSeconds * SimConstants.TickRate));
 
             for (int i = 0; i < charges.Length; i++)
             {

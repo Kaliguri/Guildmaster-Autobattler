@@ -29,6 +29,7 @@ MonoBehaviour:
     Pct: 0
   _components:
   - rid: 5615026876324511852
+  _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
@@ -42,3 +43,8 @@ MonoBehaviour:
         _rollDistance: 2
         _rollSpeedPerSecond: 12
         _hasteBuff: {fileID: 11400000, guid: e1fd21c2dd590fe479968e82476b1640, type: 2}
+        _rechargeScalings:
+        - Source: 8
+          Form: 1
+          Baseline: 1
+          PerUnit: 0.25
