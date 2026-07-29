@@ -25,11 +25,11 @@ updated: 2026-07-26
 | # | Документ | О чём |
 |---|---|---|
 | 00 | **Обзор и карта кода** (этот файл) | Слои, поток данных, где что лежит, порядок чтения |
-| 01 | [[tech/20-explanation/di-events|Explanation - DI & Events]] | VContainer, скоупы, инъекция, MessagePipe vs C#-события |
-| 02 | [[tech/20-explanation/simulation|Explanation - Simulation & Tick]] | Тик 30 Гц, аккумулятор, очередь команд, RNG, checksum, пауза |
-| 03 | [[tech/20-explanation/data-stats-damage|Explanation - Data, Stats, Damage]] | SO-контент, `StatType`, слоистые модификаторы, пайплайн урона |
-| 04 | [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]] | `EffectData` + компоненты, стаки, диспел, контроль, реактивность |
-| 05 | [[tech/20-explanation/presentation|Explanation - Presentation]] | Раздел сим/визуал, `UnitView`, сглаживание 30→60 |
+| 01 | [[tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly|Journal - The Bus Stops At The Combat Assembly]] | VContainer, скоупы, инъекция, MessagePipe vs C#-события |
+| 02 | [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]] | Тик 30 Гц, аккумулятор, очередь команд, RNG, checksum, пауза |
+| 03 | [[tech/00-meta/journal/2026-07-30-stats-pipeline-neither-reorders-nor-clamps|Journal - The Stats Pipeline Neither Reorders Nor Clamps]] | SO-контент, `StatType`, слоистые модификаторы, пайплайн урона |
+| 04 | [[tech/00-meta/journal/2026-07-30-effects-are-ordered-by-id-and-attributed-by-weight|Journal - Effects Are Ordered By Id, Attributed By Weight]] | `EffectData` + компоненты, стаки, диспел, контроль, реактивность |
+| 05 | слой презентации (код `Assets/_Project/Scripts/Presentation/`) | Раздел сим/визуал, `UnitView`, сглаживание 30→60 |
 | 06 | [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]] | Host-authoritative vs lockstep, что запарковано, главная таска MP |
 | 07 | [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]] | Отложенное, исправленное, открытые вопросы |
 
@@ -45,7 +45,7 @@ updated: 2026-07-26
 
 Между ними — тонкий провод из событий. Мозг говорит «юнит №5 получил 30 урона», тело рисует цифру «30» и трясёт камеру.
 
-Почему так, а не «по-юнитёвому» (каждый юнит — `MonoBehaviour`, двигает себя в `Update`)? Потому что игра **кооперативная по сети** и **с паузой**. Чтобы у двух игроков бой шёл одинаково (или чтобы пауза/реплей работали), нужна предсказуемая, отделённая от рендера симуляция. «По-юнитёвый» подход здесь упирается в стену синхронизации. Подробно — в [[tech/20-explanation/simulation|Explanation - Simulation & Tick]] и [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]].
+Почему так, а не «по-юнитёвому» (каждый юнит — `MonoBehaviour`, двигает себя в `Update`)? Потому что игра **кооперативная по сети** и **с паузой**. Чтобы у двух игроков бой шёл одинаково (или чтобы пауза/реплей работали), нужна предсказуемая, отделённая от рендера симуляция. «По-юнитёвый» подход здесь упирается в стену синхронизации. Подробно — в [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]] и [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]].
 
 ---
 
@@ -64,7 +64,7 @@ Core                      — фундамент: RNG, константы сим
 
 `Game` — единственный, кто видит все слои сразу: он их **собирает** (composition root). Всё остальное зависит только вниз. Карта сборок целиком — [[tech/10-reference/assemblies|Reference - Assemblies]].
 
-> **Важный приём — кросс-сборочный шов эффектов.** `Data` лежит ниже `Combat`, но `EffectData` (в `Data`) должна хранить поведение эффектов, которое оперирует боевым состоянием (в `Combat`). Прямая ссылка `Data → Combat` запрещена графом. Решение: в `Data` объявлен пустой маркер-интерфейс `IEffectComponent`, а реальные хуки (`OnApply/OnTick/OnExpire`) — в `Combat` через производный `IRuntimeEffectComponent : IEffectComponent`. Поле `[SerializeReference] IEffectComponent[]` в `EffectData` хранит Combat-типы, не создавая зависимости вверх. Детали — [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]].
+> **Важный приём — кросс-сборочный шов эффектов.** `Data` лежит ниже `Combat`, но `EffectData` (в `Data`) должна хранить поведение эффектов, которое оперирует боевым состоянием (в `Combat`). Прямая ссылка `Data → Combat` запрещена графом. Решение: в `Data` объявлен пустой маркер-интерфейс `IEffectComponent`, а реальные хуки (`OnApply/OnTick/OnExpire`) — в `Combat` через производный `IRuntimeEffectComponent : IEffectComponent`. Поле `[SerializeReference] IEffectComponent[]` в `EffectData` хранит Combat-типы, не создавая зависимости вверх. Детали — [[tech/00-meta/journal/2026-07-30-effects-are-ordered-by-id-and-attributed-by-weight|Journal - Effects Are Ordered By Id, Attributed By Weight]].
 
 ---
 
@@ -159,9 +159,9 @@ Core                      — фундамент: RNG, константы сим
 ## В каком порядке читать
 
 1. Этот обзор — общая карта.
-2. [[tech/20-explanation/di-events|Explanation - DI & Events]] — как части находят друг друга (ты просил DI отдельно).
-3. [[tech/20-explanation/simulation|Explanation - Simulation & Tick]] — сердце, без которого остальное не имеет смысла.
-4. [[tech/20-explanation/data-stats-damage|Explanation - Data, Stats, Damage]] → [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]] — содержимое боя.
-5. [[tech/20-explanation/presentation|Explanation - Presentation]] — как это видно.
+2. [[tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly|Journal - The Bus Stops At The Combat Assembly]] — как части находят друг друга (ты просил DI отдельно).
+3. [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]] — сердце, без которого остальное не имеет смысла.
+4. [[tech/00-meta/journal/2026-07-30-stats-pipeline-neither-reorders-nor-clamps|Journal - The Stats Pipeline Neither Reorders Nor Clamps]] → [[tech/00-meta/journal/2026-07-30-effects-are-ordered-by-id-and-attributed-by-weight|Journal - Effects Are Ordered By Id, Attributed By Weight]] — содержимое боя.
+5. слой презентации (код `Assets/_Project/Scripts/Presentation/`) — как это видно.
 6. [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]] — почему вся эта строгость, и куда идём по кооперативу.
 7. [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]] — что отложено и почему.

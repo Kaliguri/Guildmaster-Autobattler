@@ -16,7 +16,7 @@ updated: 2026-07-19
 > слои-контейнеры с фиксированным z-порядком, и главное — **ввод и видимость как вычислимая
 > функция от (верх стека, фаза боя)**, а не мутируемое состояние с несколькими писателями.
 >
-> Связано: [[tech/10-reference/input-camera|Reference - Input & Camera]], [[tech/10-reference/scene-sorting|Reference - Scene & Sorting]], [[tech/20-explanation/presentation|Explanation - Presentation]], [[tech/20-explanation/di-events|Explanation - DI & Events]], [[tech/40-planning/act-map-run-loop|Planning - Act Map & Run Loop]].
+> Связано: [[tech/10-reference/input-camera|Reference - Input & Camera]], [[tech/10-reference/scene-sorting|Reference - Scene & Sorting]], слой презентации (код `Assets/_Project/Scripts/Presentation/`), [[tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly|Journal - The Bus Stops At The Combat Assembly]], [[tech/40-planning/act-map-run-loop|Planning - Act Map & Run Loop]].
 
 **Было при заморозке:** реализовано и в коде (ветка `feat/persist-battle-flow`, EditMode 418/418). Полный
 контекст замысла и пофазный план — `docs/ui-architecture-rework-plan.md`; журнал исполнения —

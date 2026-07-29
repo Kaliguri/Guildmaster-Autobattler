@@ -25,7 +25,7 @@ updated: 2026-07-28
 
 > Набор **инструментов начального баланса**: headless-стенд, который гоняет боевое ядро без презентации и выдаёт цифры (DPS/EHP/TTK/win-rate/рейтинг) в CSV/Markdown для геймдизайнера. Инструмент **не решает** баланс — он даёт доп-информацию ГД. Сочетания/синергии он принципиально не ловит (комбинаторный взрыв), финальный баланс — за Максом и плейтестами.
 >
-> Связано: [[tech/20-explanation/simulation|Explanation - Simulation & Tick]], [[tech/20-explanation/data-stats-damage|Explanation - Data, Stats, Damage]], [[tech/20-explanation/di-events|Explanation - DI & Events]], [[tech/40-planning/content-hub|Planning - Content Hub]] (страница «Баланс» хаба — потребитель этих же цифр).
+> Связано: [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]], [[tech/00-meta/journal/2026-07-30-stats-pipeline-neither-reorders-nor-clamps|Journal - The Stats Pipeline Neither Reorders Nor Clamps]], [[tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly|Journal - The Bus Stops At The Combat Assembly]], [[tech/40-planning/content-hub|Planning - Content Hub]] (страница «Баланс» хаба — потребитель этих же цифр).
 
 ---
 

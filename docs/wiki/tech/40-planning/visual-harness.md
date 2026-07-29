@@ -15,7 +15,7 @@ updated: 2026-07-16
 
 > План возврата боя «на экран»: сначала asmdef-слои (изолированно), потом рабочий спрайтовый визуальный харнесс на SO-данных. Разбито на две сессии, чтобы контекст не пух и каждая давала зелёную верификацию.
 >
-> Связано: [[tech/20-explanation/index|Explanation - Code Map]], [[tech/20-explanation/presentation|Explanation - Presentation]], [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]].
+> Связано: [[tech/20-explanation/index|Explanation - Code Map]], слой презентации (код `Assets/_Project/Scripts/Presentation/`), [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]].
 
 ---
 

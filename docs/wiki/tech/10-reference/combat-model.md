@@ -241,7 +241,7 @@ raw
 Пассивки, баффы и дебаффы, DoT и HoT, контроль, триггеры вроде шипов и вампиризма — **всё это один
 `Effect`**: контейнер с жизненным циклом плюс список полиморфных компонентов
 (`[SerializeReference] IEffectComponent[]`). Компоненты **stateless**, всё состояние — в
-`RuntimeEffect` на цели. Подробности семейства хуков — [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]].
+`RuntimeEffect` на цели. Подробности семейства хуков — [[tech/00-meta/journal/2026-07-30-effects-are-ordered-by-id-and-attributed-by-weight|Journal - Effects Are Ordered By Id, Attributed By Weight]].
 
 **Стаки живут НА ЦЕЛИ.** Ключ поиска — только определение эффекта: экземпляр на цели один, а
 `MaxStacks` — общий потолок цели для всех наложивших. Два поджигателя догоняют один и тот же костёр,
@@ -285,7 +285,7 @@ pre-damage реакции, тик периодики и чек-сумма, а п
 
 **Анимация косметична и развязана с таймингом симуляции.** Урон наносится на сим-тике, а НЕ на
 anim-event — иначе рассинхрон в кооперативе. Конвейер презентации и слой анимации —
-[[tech/20-explanation/presentation|Explanation - Presentation]].
+слой презентации (код `Assets/_Project/Scripts/Presentation/`).
 
 ---
 

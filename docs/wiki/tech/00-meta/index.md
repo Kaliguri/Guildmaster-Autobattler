@@ -86,11 +86,11 @@ SORT updated ASC, file.name ASC
 ## Explanation (`20-explanation/`) — как устроен код
 
 - [[tech/20-explanation/index|Explanation - Code Map]] — слои, поток данных, карта классов, порядок чтения.
-- [[tech/20-explanation/di-events|DI & Events]] — VContainer, скоупы, MessagePipe vs C#-события.
-- [[tech/20-explanation/simulation|Simulation & Tick]] — тик 30 Гц, аккумулятор, команды, RNG, пауза.
-- [[tech/20-explanation/data-stats-damage|Data, Stats, Damage]] — SO-контент, `StatType`, модификаторы, пайплайн урона.
-- [[tech/20-explanation/effects-abilities|Effects & Abilities]] — `[SerializeReference]`, stateless-компоненты, стаки, диспел.
-- [[tech/20-explanation/presentation|Presentation]] — раздел сим/визуал, `CombatPresenter`, сглаживание 30→60.
+- [[tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly|Journal - The Bus Stops At The Combat Assembly]] — VContainer, скоупы, MessagePipe vs C#-события.
+- [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]] — тик 30 Гц, аккумулятор, команды, RNG, пауза.
+- [[tech/00-meta/journal/2026-07-30-stats-pipeline-neither-reorders-nor-clamps|Journal - The Stats Pipeline Neither Reorders Nor Clamps]] — SO-контент, `StatType`, модификаторы, пайплайн урона.
+- [[tech/00-meta/journal/2026-07-30-effects-are-ordered-by-id-and-attributed-by-weight|Journal - Effects Are Ordered By Id, Attributed By Weight]] — `[SerializeReference]`, stateless-компоненты, стаки, диспел.
+- слой презентации (код `Assets/_Project/Scripts/Presentation/`) — раздел сим/визуал, `CombatPresenter`, сглаживание 30→60.
 - [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]] — **host-authoritative** (решение), что запарковано, главная таска MP.
 - [[tech/20-explanation/run-flow|Run Flow]] — стейт-машина забега, события как флоу, автосейв, реконнект.
 

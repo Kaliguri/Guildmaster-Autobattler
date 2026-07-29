@@ -7,13 +7,13 @@ updated: 2026-07-28
 
 **Статус:** ready — модель принята Максом 2026-07-27 и реализована целиком (фазы А–Ж). Зеркальная серия зелёная, EditMode 643/643
 
-**Дополнение 2026-07-28 (BAL-014):** двухфазности для зеркальности оказалось НЕ достаточно — в `SeparationSystem` исход решал ещё и порядок сложения float. Тогдашняя «зелёная серия» держалась на `[Ignore]` у одного окна; атрибут снят, серия зелёная честно, EditMode 679. Правило и разбор — [[tech/20-explanation/simulation|Explanation - Simulation & Tick]] §3.1a.
+**Дополнение 2026-07-28 (BAL-014):** двухфазности для зеркальности оказалось НЕ достаточно — в `SeparationSystem` исход решал ещё и порядок сложения float. Тогдашняя «зелёная серия» держалась на `[Ignore]` у одного окна; атрибут снят, серия зелёная честно, EditMode 679. Правило и разбор — [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]] §3.1a.
 
 ---
 
 > Как боевой тик разрешается **как один момент**, а не как очередь по списку юнитов. Документ отвечает на вопрос «кто что видит внутри одного тика» и фиксирует решения, принятые после того, как зеркальный бой трижды оказался решён порядком обработки.
 >
-> Связано с [[tech/20-explanation/simulation|Explanation - Simulation & Tick]] §3.1a–3.1b, [[tech/20-explanation/effects-abilities|Explanation - Effects & Abilities]], [[tech/10-reference/combat-model|Reference - Combat Model]].
+> Связано с [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]] §3.1a–3.1b, [[tech/00-meta/journal/2026-07-30-effects-are-ordered-by-id-and-attributed-by-weight|Journal - Effects Are Ordered By Id, Attributed By Weight]], [[tech/10-reference/combat-model|Reference - Combat Model]].
 
 ---
 

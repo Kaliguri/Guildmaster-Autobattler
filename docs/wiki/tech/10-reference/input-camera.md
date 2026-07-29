@@ -14,7 +14,7 @@ updated: 2026-07-26
 
 > Слой пользовательского ввода (Input System) и боевая камера (Cinemachine): единая точка ввода за интерфейсом, контексты по фазе игры, три режима камеры с data-клампом, dev-камера в билде за флагом доступа.
 >
-> Связано: [[tech/10-reference/ui-navigation|Reference - UI Navigation]], [[tech/10-reference/arena|Reference - Arena & Deployment]], [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]], [[tech/20-explanation/presentation|Explanation - Presentation]], [[tech/20-explanation/di-events|Explanation - DI & Events]], [[controls]].
+> Связано: [[tech/10-reference/ui-navigation|Reference - UI Navigation]], [[tech/10-reference/arena|Reference - Arena & Deployment]], [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]], слой презентации (код `Assets/_Project/Scripts/Presentation/`), [[tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly|Journal - The Bus Stops At The Combat Assembly]], [[controls]].
 
 **Было при заморозке:** дизайн согласован и реализован в коде (2026-07-10, ветка `feat/input-system-and-camera`, EditMode 187/187). Слой ввода, пауза (Space), dev-хоткеи (R/F5) — готовы и тестируемы. Скрипты камеры и DI-проводка готовы; **сборка рига камеры в сцене (Cinemachine Brain + 3 виртуальные камеры + focus-target) и визуальная настройка (демпинг/зум/зона) — за Максом** (см. §6, §7). Отклонения от исходного плана помечены ниже (§3).
 

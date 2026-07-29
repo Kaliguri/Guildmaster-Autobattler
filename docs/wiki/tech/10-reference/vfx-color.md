@@ -9,7 +9,7 @@ updated: 2026-07-30
 > кто их читает, какие числа считаются нормой и три готчи, каждая из которых стоила захода.
 >
 > Дизайн-правило (почему именно так) — [[gdd/10-vision/vfx-color|Vision - VFX Color]].
-> Слой презентации — [[tech/20-explanation/presentation|Presentation]].
+> Слой презентации — слой презентации (код `Assets/_Project/Scripts/Presentation/`).
 
 **Правило номер один:** насыщенность 70–90%, ни один канал не в нуле, яркость выше порога bloom.
 Не «максимально ярко и насыщенно» — эти два требования конфликтуют в одном пикселе.
@@ -94,4 +94,4 @@ SO-ассетов юнитов; они и есть последняя правд
 ---
 
 Связано: [[gdd/10-vision/vfx-color|Vision - VFX Color]],
-[[tech/20-explanation/presentation|Presentation]], дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`).
+слой презентации (код `Assets/_Project/Scripts/Presentation/`), дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`).

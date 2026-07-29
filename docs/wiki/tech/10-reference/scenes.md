@@ -42,7 +42,7 @@ updated: 2026-07-26
 Первая в `EditorBuildSettings`, живёт до конца сессии.
 
 ```
-[Root]              RootLifetimeScope   — сессионный DI (см. [[tech/20-explanation/di-events|DI & Events]])
+[Root]              RootLifetimeScope   — сессионный DI (см. [[tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly|Journal - The Bus Stops At The Combat Assembly]])
 [Bootstrap]         GameBootstrap       — точка входа: грузит мир, потом боевые системы
 UI Root             UIDocument + UiRootBootstrap — весь рантайм-UI (UI Toolkit)
 Background Camera   заливка кадра цветом ink; culling mask пуст
