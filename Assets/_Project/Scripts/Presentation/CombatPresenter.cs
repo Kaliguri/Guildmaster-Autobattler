@@ -126,6 +126,12 @@ namespace Guildmaster.Presentation
         /// </summary>
         public bool TryGetView(int unitId, out UnitView view) => _views.TryGetValue(unitId, out view);
 
+        /// <summary>Сколько видов юнитов сейчас на экране. Только для dev-диагностики ленты.</summary>
+        public int ViewCount => _views.Count;
+
+        /// <summary>Сколько паспортов юнитов зарегистрировано. Только для dev-диагностики ленты.</summary>
+        public int IdentityCount => _identities.Count;
+
         private void OnEnable()
         {
             if (_simulation == null) return;

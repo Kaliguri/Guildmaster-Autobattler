@@ -20,11 +20,15 @@ namespace Guildmaster.Game.Services
         /// <summary>Как часто печатать строку состояния во время боя, сек.</summary>
         private const float HeartbeatSeconds = 2f;
 
+        /// <summary>И как часто — вне боя: там состояние меняется редко, но знать его тоже надо.</summary>
+        private const float IdleHeartbeatSeconds = 5f;
+
         private readonly CombatSimulation      _simulation;
         private readonly BattleTape            _tape;
         private readonly BattleTapePlayback    _playback;
         private readonly BattleTapeDispatcher  _dispatcher;
         private readonly IBattleClock          _clock;
+        private readonly Presentation.CombatPresenter _presenter;
 
         private bool  _loggedStart;
         private bool  _loggedSimEnd;
@@ -36,13 +40,15 @@ namespace Guildmaster.Game.Services
             BattleTape tape,
             BattleTapePlayback playback,
             BattleTapeDispatcher dispatcher,
-            IBattleClock clock)
+            IBattleClock clock,
+            Presentation.CombatPresenter presenter)
         {
             _simulation = simulation;
             _tape       = tape;
             _playback   = playback;
             _dispatcher = dispatcher;
             _clock      = clock;
+            _presenter  = presenter;
 
             _dispatcher.BattleEnded  += OnBattleEndedOnScreen;
             _simulation.OnBattleReset += OnBattleReset;
@@ -68,10 +74,9 @@ namespace Guildmaster.Game.Services
                           $"игроку осталось смотреть {Lead()} тиков ({Lead() / (float)SimConstants.TickRate:F1} с)");
             }
 
-            if (!fighting) return;
-
             // Показ догнал фронт в бою — значит запас потерян и телеграфы работать не могут.
-            if (_playback.IsPlaying && _playback.TargetLead > 0 && Lead() == 0 && _simulation.Outcome.IsOngoing)
+            if (fighting && _playback.IsPlaying && _playback.TargetLead > 0
+                && Lead() == 0 && _simulation.Outcome.IsOngoing)
             {
                 if (!_warnedNoLead)
                 {
@@ -82,19 +87,26 @@ namespace Guildmaster.Game.Services
             }
             else _warnedNoLead = false;
 
+            // Строку состояния печатаем и ВНЕ боя (реже): «в расстановке никого не видно» тоже надо
+            // уметь разобрать — пуст кадр или не созданы виды.
             if (Time.unscaledTime < _nextHeartbeat) return;
-            _nextHeartbeat = Time.unscaledTime + HeartbeatSeconds;
+            _nextHeartbeat = Time.unscaledTime + (fighting ? HeartbeatSeconds : IdleHeartbeatSeconds);
 
             int inFrame = _playback.TryGetFrame(out var frame, out var projectiles)
                 ? frame.Count
                 : -1;
             int projectilesInFrame = projectiles != null ? projectiles.Count : 0;
 
-            Debug.Log($"[BattleTape] - фаза {_clock.Phase}: показ {_playback.ViewTick} / фронт {_tape.FrontTick} " +
-                      $"(окно {_tape.OldestTick}..{_tape.FrontTick}), запас {Lead()} из {_playback.TargetLead}, " +
-                      $"в кадре юнитов {inFrame}, снарядов {projectilesInFrame}, " +
-                      $"событий отдано до тика {_dispatcher.ShownTick} из {_tape.EventCount}, " +
-                      $"живых в симе {_simulation.Units.Count}");
+            string views = _presenter != null
+                ? $"видов {_presenter.ViewCount}, паспортов {_presenter.IdentityCount}"
+                : "презентера нет";
+
+            Debug.Log($"[BattleTape] - фаза {_clock?.Phase}: показ {_playback.ViewTick} / фронт {_tape.FrontTick} " +
+                      $"(окно {_tape.OldestTick}..{_tape.FrontTick}), запас {Lead()} из {_playback.TargetLead}; " +
+                      $"в кадре юнитов {inFrame}, снарядов {projectilesInFrame}; {views}; " +
+                      $"в симе юнитов {_simulation.Units.Count}; " +
+                      $"событий отдано {_dispatcher.DeliveredCount} из {_tape.EventCount} " +
+                      $"(курсор на тике {_dispatcher.ShownTick})");
         }
 
         private int Lead() => _playback.Lead;

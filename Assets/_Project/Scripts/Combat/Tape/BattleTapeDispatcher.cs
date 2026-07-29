@@ -65,6 +65,9 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Последний тик, события которого уже отданы.</summary>
         public int ShownTick => _shownTick;
 
+        /// <summary>Сколько событий уже отдано показу (курсор). Для диагностики.</summary>
+        public int DeliveredCount => _cursor;
+
         /// <summary>
         /// Отдать всё, что случилось по тик <paramref name="viewTick"/> включительно. Зовётся раз за
         /// кадр после продвижения показа; курсор гарантирует, что событие не отдаётся дважды.
