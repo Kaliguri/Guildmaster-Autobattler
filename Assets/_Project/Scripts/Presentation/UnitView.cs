@@ -115,6 +115,13 @@ namespace Guildmaster.Presentation
         private static readonly int AttackChargeHash = Animator.StringToHash("AttackCharge");
         private static readonly int StunHash         = Animator.StringToHash("Stun");
 
+        // Гвардия живёт СЛОЕМ, а не стейтом базы: щит поднимается поверх того, что юнит делает — бежит,
+        // бьёт, стоит, — и потому не имеет права занимать собой всё тело. Маска слоя — только рука со щитом.
+        private const string GuardLayerName    = "Block";
+        private static readonly int GuardHash  = Animator.StringToHash("Block");
+        private const float GuardRaiseSeconds  = 0.10f;   // въезд веса: гвардия, которая едет вверх, приезжает поздно
+        private const float GuardDropSeconds   = 0.22f;   // уход мягче въезда — рука опускается, а не отщёлкивает
+
         // Состояние берётся из ленты боя, а НЕ из живого RuntimeUnit: сим уходит вперёд на окно
         // опережения, и живой юнит для показа — «будущее». Определение (UnitData) при этом статично,
         // поэтому живёт отдельной ссылкой и на тик не копируется.
@@ -203,6 +210,13 @@ namespace Guildmaster.Presentation
         private bool  _holdHitFrame;  // финишер: держим кадр весь финальный slowmo
         private bool  _holdKeepsAttackFrame; // добивающему — именно кадр контакта; остальным — где застало
         private float _holdRemaining; // unscaled-остаток удержания
+
+        // --- Гвардия (телеграф барьера): поза щита, поднятая ДО того, как барьер появится ---
+        private int   _guardLayer = -1;  // индекс слоя щита; -1 = у юнита его нет
+        private float _guardWeight;      // текущий вес слоя 0..1
+        private bool  _guardActive;      // идёт окно гвардии (подводка + жизнь барьера)
+        private float _guardElapsed;     // сколько окна прошло
+        private float _guardTotal;       // всё окно: подводка + жизнь барьера
 
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
         private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
@@ -354,6 +368,13 @@ namespace Guildmaster.Presentation
             _animator.enabled = true;
 
             ResolveAttackMarker();
+
+            // Слой-надстройка щита. Его нет у покадрового бестиария — тогда гвардия просто не играется:
+            // это отсутствие контента, а не ошибка разводки (см. ResolvedHash).
+            _guardLayer = _animator.GetLayerIndex(GuardLayerName);
+            _guardActive = false;
+            _guardWeight = 0f;
+            if (_guardLayer >= 0) _animator.SetLayerWeight(_guardLayer, 0f);
 
             _animator.Play(IdleHash, 0, 0f);
             _animator.speed = 1f;
@@ -554,6 +575,7 @@ namespace Guildmaster.Presentation
             }
 
             float dt = Time.deltaTime;
+            TickGuardPose(dt);
             UpdateAttackPhase(dt);
 
             bool isMoving = _hasState &&
@@ -746,6 +768,50 @@ namespace Guildmaster.Presentation
         // тика — долю даёт _frameAlpha, та же, что и у позиции.
         private float TickScrubProgress(int ticksLeft, int totalTicks)
             => UnitAnimationSelector.ScrubProgress(ticksLeft, totalTicks, _frameAlpha);
+
+        /// <summary>
+        /// Гвардия: поднять щит ЗАРАНЕЕ — до того, как на юните появится барьер. Зовёт режиссура телеграфов,
+        /// прочитав в ленте будущее наложение эффекта-щита; поза едет вверх за <paramref name="leadSeconds"/>
+        /// и держится, пока барьер живёт (<paramref name="holdSeconds"/>).
+        /// <para>Подводка ведёт к появлению БАРЬЕРА, а не к чужому удару (уточнение Макса 29.07): щит
+        /// поднимает сам носитель, и читаться должно именно его действие. То, что барьер у «Оплота»
+        /// встаёт в тик удара, — совпадение механики, а не смысл жеста.</para>
+        /// <para>Время — ИГРОВОЕ, как у ленты: подводка обязана приехать одновременно с событием, к которому
+        /// ведёт, а показ идёт по игровому времени и в slowmo растягивается вместе с ним.</para>
+        /// </summary>
+        public void RaiseGuard(float leadSeconds, float holdSeconds)
+        {
+            if (!_animActive || _guardLayer < 0) return;
+
+            _guardTotal   = Mathf.Max(0.05f, Mathf.Max(0f, leadSeconds) + Mathf.Max(0f, holdSeconds));
+            _guardElapsed = 0f;
+            _guardActive  = true;
+        }
+
+        // Поза щита за кадр. Клип гвардии скрабится СВОИМ окном, а не проигрывается: глобальный
+        // animator.speed принадлежит свингу и в замахе равен нулю — щит, поднимающийся «сам», в этот момент
+        // просто застыл бы. Вес слоя даёт мягкий вход и уход, скраб — саму позу.
+        private void TickGuardPose(float dt)
+        {
+            if (_guardLayer < 0) return;
+
+            if (!_guardActive)
+            {
+                if (_guardWeight <= 0f) return;
+                _guardWeight = Mathf.Max(0f, _guardWeight - dt / GuardDropSeconds);
+                _animator.SetLayerWeight(_guardLayer, _guardWeight);
+                return;
+            }
+
+            _guardElapsed += dt;
+            float t = Mathf.Clamp01(_guardElapsed / _guardTotal);
+            _animator.Play(GuardHash, _guardLayer, t);
+
+            _guardWeight = Mathf.Min(1f, _guardWeight + dt / GuardRaiseSeconds);
+            _animator.SetLayerWeight(_guardLayer, _guardWeight);
+
+            if (t >= 1f) _guardActive = false;   // барьер отжил — дальше рука опускается сама
+        }
 
         /// <summary>Юнит вошёл в замах авто-атаки — свинг + опц. anticipation-оттяг назад от цели.</summary>
         /// <param name="awayFromTarget">Нормаль «от цели» (куда оттягиваться); zero = без оттяга.</param>
@@ -1335,6 +1401,12 @@ namespace Guildmaster.Presentation
 
             _isDead     = true;
             _deathPhase = DeathPhase.WaitFlash; // дальше — DriveDeath (ждём hit-flash → death → разлёт)
+
+            // Гвардия снимается сразу и целиком: секвенс смерти обходит обычный тик анимации, и рука со
+            // щитом осталась бы поднятой на всём падении — держал бы позу тот, кому уже нечем держать.
+            _guardActive = false;
+            _guardWeight = 0f;
+            if (_guardLayer >= 0 && _animator != null) _animator.SetLayerWeight(_guardLayer, 0f);
         }
 
         // Секвенс смерти. WaitFlash → Dying → Hologram (опц.) → Anticipate (опц.) → StartShatter.

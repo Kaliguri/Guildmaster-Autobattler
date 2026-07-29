@@ -88,6 +88,13 @@ namespace Guildmaster.Presentation
                 // телеграф в игре один; когда появятся другие, здесь встанет выбор цвета по тегу эффекта,
                 // а не новый цвет в коде.
                 view.ShowTelegraph(_presenter.ShieldColor, def.TelegraphSeconds);
+
+                // Барьер анонсируется ещё и ПОЗОЙ: щит уходит вверх до того, как барьер появится, и держится,
+                // пока тот живёт. Условие — тег, а не id: гвардию заслуживает любой барьер, а не один кит.
+                // Тег важен и в обратную сторону — иначе поза щита вставала бы на подводке к чему угодно,
+                // хоть к яду.
+                if ((def.Tags & EffectTag.Shield) != 0)
+                    view.RaiseGuard(def.TelegraphSeconds, def.BaseDuration);
             }
 
             ForgetPast(viewTick);

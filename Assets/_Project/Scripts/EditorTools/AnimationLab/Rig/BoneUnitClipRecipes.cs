@@ -312,16 +312,21 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>
-        /// Walk: two strides in 0.7s, four poses each — contact, passing, contact, passing. The pelvis is
-        /// LOWEST at contact and highest at passing, which is the whole reason a walk reads as weight
-        /// rather than as sliding. Arms stay quiet: this is a knight carrying a sword, not swinging it.
+        /// Walk: two strides in 0.7s, four poses each — contact, down, passing, up.
+        ///
+        /// The hip swing is 34 degrees against the 22 it carried before, and that is a fix rather than a
+        /// taste: the view paces the clip by ground covered, so a short stride forces the clip to spin fast
+        /// to avoid sliding, and the knight ended up taking 5.6 steps a second. 34 degrees puts the stride
+        /// near 0.85 world units, which at the Defender's speed is about three steps a second — a walk.
+        /// The arms swing for the same reason: legs covering that much ground with still arms read as a doll
+        /// being slid along.
         /// </summary>
         public static string Walk()
         {
             using (var w = new RigWriter(Profile()))
             {
-                Stride(w, 0f, 0.7f, hipSwing: 22f, kneeLift: 32f, bobLow: 0.016f, bobHigh: 0.024f,
-                       lean: -3f, armSwing: 3f);
+                Stride(w, 0f, 0.7f, hipSwing: 34f, kneeLift: 34f, bobLow: 0.028f, bobHigh: 0.042f,
+                       lean: -4f, armSwing: 12f);
                 return w.Write(Folder + "Walk.anim", 60f, loopTime: true).ToString();
             }
         }
@@ -342,34 +347,97 @@ namespace Guildmaster.AnimationLab.Editor
         {
             using (var w = new RigWriter(Profile()))
             {
-                Stride(w, 0f, 0.5f, hipSwing: 32f, kneeLift: 50f, bobLow: 0.012f, bobHigh: 0.030f,
-                       lean: -8f, armSwing: 5f, bladeGathered: true);
+                // kneeLift держится под лимитом сгиба колена из профиля (60): 62 давало переразгиб на
+                // пролёте, и валидатор ловил его на обеих ногах.
+                Stride(w, 0f, 0.5f, hipSwing: 39f, kneeLift: 58f, bobLow: 0.024f, bobHigh: 0.052f,
+                       lean: -10f, armSwing: 14f, bladeGathered: true);
                 return w.Write(Folder + "Sprint.anim", 60f, loopTime: true).ToString();
             }
         }
 
         /// <summary>
-        /// Two strides of a locomotion cycle. Poses land at 0, 1/4, 1/2, 3/4 and the loop closes on the
-        /// original pose; the pelvis dips at both contacts and lifts at both passings.
+        /// Two strides of a locomotion cycle, on the canonical FOUR poses per step: contact, down, passing,
+        /// up. The two-pose version this replaces (contact and passing only) is what made the knight mince:
+        /// with no down and no up, the only place a stride could grow was the hip angle, and the pelvis had
+        /// to dip at contact — where a real one is still falling — so every step read as short and busy.
+        ///
+        /// What each pose is FOR, because that is what makes a walk read as weight (Max, 29.07):
+        /// <list type="bullet">
+        /// <item><b>contact</b> — the heel lands. The front leg is nearly straight and the toe is up: a knee
+        /// folded at contact is a leg that has already given way, and it costs the stride its length.</item>
+        /// <item><b>down</b> — the weight arrives. The supporting knee folds to absorb it and the pelvis is
+        /// at its LOWEST here, one beat after contact rather than on it.</item>
+        /// <item><b>passing</b> — the support straightens under the body while the free leg folds through
+        /// its highest knee. This is the pose the stride's height comes from.</item>
+        /// <item><b>up</b> — the push-off. The rear leg extends behind with the toe pointed, the free leg
+        /// reaches forward, and the pelvis is at its HIGHEST — the body is briefly thrown upward.</item>
+        /// </list>
+        /// The ankles carry the roll (toe up at contact, toe down at push-off). Without them the foot is a
+        /// plank hinged at the knee, which is visible at any stride length and unmissable at a long one.
         /// </summary>
         static void Stride(RigWriter w, float start, float length, float hipSwing, float kneeLift,
                            float bobLow, float bobHigh, float lean, float armSwing, bool bladeGathered = false)
         {
-            float quarter = length / 4f;
+            float half = length / 2f;      // one step
+            float bobMid = (bobLow + bobHigh) * 0.5f;
+
+            // How far the trailing leg goes back, as a share of the leading one's reach forward. Close to
+            // one: a rear leg that barely extends is the other half of a short stride.
+            const float RearShare = 0.85f;
+            const float StraightKnee = 5f;   // "almost straight" — a locked leg reads as a stilt
+            // Знаки переката ПРОВЕРЕНЫ гизмо, а не выведены из конвенции: на этом риге сгиб голеностопа
+            // «в плюс» опускает нижнюю кромку сапога, то есть тянет носок ВНИЗ. Подошва при контакте
+            // уходила под пол на 0.016 ровно из-за перевёрнутого знака.
+            const float ToeUp = -10f;        // heel strike: носок вверх
+            const float ToeDown = 20f;       // toe-off: носок вниз, отталкивание
+
             for (int step = 0; step < 2; step++)
             {
                 // step 0 leads with the left leg, step 1 mirrors it
                 float sign = step == 0 ? 1f : -1f;
-                float contact = start + step * quarter * 2f;
-                float passing = contact + quarter;
+                float contact = start + step * half;
+                float down    = contact + half * 0.25f;
+                float passing = contact + half * 0.5f;
+                float up      = contact + half * 0.75f;
 
-                w.At(contact).Bend("hip.L", hipSwing * sign, Near, Out).Bend("hip.R", -hipSwing * 0.8f * sign, Near, Out)
-                             .Bend("knee.L", step == 0 ? 22f : kneeLift * 0.6f, Near, Out)
-                             .Bend("knee.R", step == 0 ? kneeLift * 0.6f : 22f, Near, Out)
+                // Front leg / rear leg for THIS step, by name, so the four poses read as choreography
+                // rather than as a table of ternaries.
+                string front = sign > 0f ? "L" : "R";
+                string rear  = sign > 0f ? "R" : "L";
+
+                w.At(contact).Bend($"hip.{front}", hipSwing, Near, Out).Bend($"hip.{rear}", -hipSwing * RearShare, Near, Out)
+                             .Bend($"knee.{front}", StraightKnee, Near, Out).Bend($"knee.{rear}", kneeLift * 0.35f, Near, Out)
+                             .Bend($"ankle.{front}", ToeUp, Near, Out).Bend($"ankle.{rear}", ToeDown * 0.5f, Near, Out)
                              .Bend("torso", lean, Near, Soft)
-                             .Bend("shoulder.L", -armSwing * sign, Near, Soft)
                              .Bend("head", -lean * 0.4f, Near, Soft)
-                             .Move("hips", new Vector2(RestHips.x, bobLow));
+                             .Move("hips", new Vector2(RestHips.x, bobMid));
+
+                // The dip is PAID FOR by the knee. Lowering the pelvis without folding the supporting leg
+                // pushes the sole through the floor — measured by RigStride at 0.021 rig units under the
+                // ground line, right here at the down pose.
+                w.At(down).Bend($"hip.{front}", hipSwing * 0.65f, Near, Soft).Bend($"hip.{rear}", -hipSwing * RearShare * 0.8f, Near, Soft)
+                          .Bend($"knee.{front}", kneeLift * 0.75f, Near, Soft).Bend($"knee.{rear}", kneeLift * 0.5f, Near, Soft)
+                          .Bend($"ankle.{front}", 0f, Near, Soft).Bend($"ankle.{rear}", ToeDown * 0.7f, Near, Soft)
+                          .Bend("torso", lean * 1.15f, Near, Soft)
+                          .Move("hips", new Vector2(RestHips.x, bobLow));
+
+                w.At(passing).Bend($"hip.{front}", hipSwing * 0.1f, Near, Lin).Bend($"hip.{rear}", -hipSwing * 0.3f, Near, Lin)
+                             .Bend($"knee.{front}", StraightKnee, Near, Lin).Bend($"knee.{rear}", kneeLift, Near, Lin)
+                             .Bend($"ankle.{front}", ToeDown * 0.25f, Near, Lin).Bend($"ankle.{rear}", ToeUp * 0.5f, Near, Lin)
+                             .Bend("torso", lean, Near, Soft)
+                             .Move("hips", new Vector2(RestHips.x, bobMid));
+
+                w.At(up).Bend($"hip.{front}", -hipSwing * RearShare * 0.55f, Near, Soft).Bend($"hip.{rear}", hipSwing * 0.6f, Near, Soft)
+                        .Bend($"knee.{front}", StraightKnee * 1.4f, Near, Soft).Bend($"knee.{rear}", kneeLift * 0.55f, Near, Soft)
+                        .Bend($"ankle.{front}", ToeDown, Near, Soft).Bend($"ankle.{rear}", ToeUp * 0.6f, Near, Soft)
+                        .Bend("torso", lean * 0.9f, Near, Soft)
+                        .Move("hips", new Vector2(RestHips.x, bobHigh));
+
+                // Arms swing AGAINST the legs, and they swing properly: a knight whose arms hang still
+                // while his legs cover a metre reads as a doll being slid along the ground. The shield arm
+                // is free, so it carries the full swing.
+                w.At(contact).Bend("shoulder.L", -armSwing * sign, Near, Soft);
+                w.At(passing).Bend("shoulder.L", 0f, Near, Soft);
 
                 // The weapon arm either pumps with the run or holds the blade gathered. Held, it keeps a
                 // small counter-swing (a third of the other arm, against it) so the pose breathes with the
@@ -380,21 +448,16 @@ namespace Guildmaster.AnimationLab.Editor
                                  .Aim("weapon", BladeGatheredAim, Near, Soft);
                 else
                     w.At(contact).Bend("shoulder.R", armSwing * sign, Near, Soft);
-
-                w.At(passing).Bend("hip.L", hipSwing * 0.15f * sign, Near, Lin)
-                             .Bend("hip.R", hipSwing * 0.1f * -sign, Near, Lin)
-                             .Bend("knee.L", step == 0 ? 14f : kneeLift, Near, Lin)
-                             .Bend("knee.R", step == 0 ? kneeLift : 14f, Near, Lin)
-                             .Move("hips", new Vector2(RestHips.x, bobHigh));
             }
 
-            // close the loop on the first pose so the cycle does not jump
-            w.At(start + length).Bend("hip.L", hipSwing, Near, Out).Bend("hip.R", -hipSwing * 0.8f, Near, Out)
-                                .Bend("knee.L", 22f, Near, Out).Bend("knee.R", kneeLift * 0.6f, Near, Out)
+            // Close the loop on the first pose so the cycle does not jump.
+            w.At(start + length).Bend("hip.L", hipSwing, Near, Out).Bend("hip.R", -hipSwing * RearShare, Near, Out)
+                                .Bend("knee.L", StraightKnee, Near, Out).Bend("knee.R", kneeLift * 0.35f, Near, Out)
+                                .Bend("ankle.L", ToeUp, Near, Out).Bend("ankle.R", ToeDown * 0.5f, Near, Out)
                                 .Bend("torso", lean, Near, Soft)
                                 .Bend("shoulder.L", -armSwing, Near, Soft)
                                 .Bend("head", -lean * 0.4f, Near, Soft)
-                                .Move("hips", new Vector2(RestHips.x, bobLow));
+                                .Move("hips", new Vector2(RestHips.x, bobMid));
 
             if (bladeGathered)
                 w.At(start + length).Bend("shoulder.R", BladeGatheredShoulder - armSwing * 0.35f, Near, Soft)

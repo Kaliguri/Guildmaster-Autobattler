@@ -185,11 +185,11 @@ PrefabInstance:
       objectReference: {fileID: 1421497957693035326}
     - target: {fileID: 4564468086045929909, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
       propertyPath: _runUnitsPerSecond
-      value: 1.2856531
+      value: 2.2746472
       objectReference: {fileID: 0}
     - target: {fileID: 4564468086045929909, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
       propertyPath: _sprintUnitsPerSecond
-      value: 2.6926916
+      value: 3.697674
       objectReference: {fileID: 0}
     - target: {fileID: 5585378942455852698, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
       propertyPath: m_IsActive
