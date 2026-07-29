@@ -16,7 +16,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// <para><b>Когда срабатывает:</b> на каждом ПРЯМОМ уроне носителя (авто-атака или способность).
     /// Тики DoT и ответка шипов щит не растят: иначе один вихрь по толпе с горением кормил бы щит
     /// ещё секунды после самого удара.</para>
-    /// <para><b>Готча:</b> накопленное живёт в <see cref="RuntimeEffect.PendingShield"/>, и по истечении
+    /// <para><b>Готча:</b> накопленное живёт в <see cref="RuntimeEffect.HeldShield"/>, и по истечении
     /// снимается ровно оно. Пул общий с прочими щитами, поэтому поглощённую часть вычитать нельзя —
     /// кламп в ноль обязателен.</para>
     /// </summary>
@@ -35,9 +35,9 @@ namespace Guildmaster.Combat.Effects.Components
         {
             if (ctx.Target == null) return;
 
-            // Снимаем не больше, чем подняли: часть щита уже могли пробить.
-            ctx.Target.CurrentShield = Mathf.Max(0f, ctx.Target.CurrentShield - ctx.Effect.PendingShield);
-            ctx.Effect.PendingShield = 0f;
+            // Снимаем не больше, чем подняли: часть щита уже могли пробить. Отпускаем удерживаемое одним
+            // глаголом — «прочитать и забыть обнулить» здесь невозможно.
+            ctx.Target.CurrentShield = Mathf.Max(0f, ctx.Target.CurrentShield - ctx.Effect.ReleaseHeldShield());
         }
 
         public void OnEvent(in EffectContext ctx, in CombatEventData e)
@@ -47,8 +47,8 @@ namespace Guildmaster.Combat.Effects.Components
             float gained = e.Amount * _fraction * ctx.Stacks;
             if (gained <= 0f) return;
 
-            ctx.Target.CurrentShield  += gained;
-            ctx.Effect.PendingShield  += gained;
+            ctx.Target.CurrentShield += gained;
+            ctx.Effect.AddHeldShield(gained);
         }
     }
 }

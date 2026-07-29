@@ -28,13 +28,17 @@ namespace Guildmaster.Combat.Effects.Components
 
             // Размер щита записывается в сам эффект, а не остаётся выводимым из контекста: реактивам
             // (взрыв щита, M17) потенция недоступна — они приходят другим путём, без снимка статов.
-            ctx.Effect.PendingShield = amount;
+            ctx.Effect.HoldShield(amount);
         }
 
         public void OnExpire(in EffectContext ctx)
         {
-            // Снимаем не больше, чем сейчас есть (часть могла быть поглощена уроном).
-            ctx.Target.CurrentShield = Mathf.Max(0f, ctx.Target.CurrentShield - ctx.Potency * ctx.Stacks);
+            // Снимаем ровно то, что этот эффект держал, а не пересчитываем формулу заново: у величины
+            // один владелец (§HeldShield). Пересчёт врал бы всякий раз, когда стаки менялись в этом же
+            // тике, — ctx.Stacks отдаёт снимок начала тика, а держали мы уже другое число.
+            // Не больше, чем сейчас есть: часть могла быть поглощена уроном.
+            float held = ctx.Effect.ReleaseHeldShield();
+            ctx.Target.CurrentShield = Mathf.Max(0f, ctx.Target.CurrentShield - held);
         }
 
         public void OnStacksChanged(int previousStacks, in EffectContext ctx)
@@ -44,7 +48,9 @@ namespace Guildmaster.Combat.Effects.Components
             // и Mathf.Max клампит остаток в ноль, съедая частично израсходованный щит (07 §3.8 B1).
             float delta = ctx.Potency * (ctx.Stacks - previousStacks);
             ctx.Target.CurrentShield = Mathf.Max(0f, ctx.Target.CurrentShield + delta);
-            ctx.Effect.PendingShield = ctx.Potency * ctx.Stacks;   // размер вырос вместе со стаками
+            // Держим ровно дельту сверх прежнего: щит вырос вместе со стаками, но уже поглощённую
+            // уроном часть пула это не возвращает.
+            ctx.Effect.AddHeldShield(delta);
         }
     }
 }
