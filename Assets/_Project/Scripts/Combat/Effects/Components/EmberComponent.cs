@@ -66,24 +66,21 @@ namespace Guildmaster.Combat.Effects.Components
         {
             RuntimeEffect eff = ctx.Effect;
             int now = ctx.Combat.CurrentTick;
-            if (now < eff.TimerTick) return; // ещё держатся
+            if (!eff.IsTimerDue(now)) return; // ещё держатся
 
             // Сошёл один стак; следующий уйдёт быстрее — вплоть до нижней границы.
             eff.RemoveStacks(1);
             if (eff.Stacks <= 0)
             {
-                eff.RemainingTicks = 0; // стаков не осталось — эффект снимается штатно
+                eff.EndDuration(); // стаков не осталось — эффект снимается штатно
                 return;
             }
 
-            // Сначала ЖДЁМ текущий интервал, и только потом укорачиваем следующий. Иначе первый
-            // сход после окна назначает срок уже с множителем, и _firstDecaySeconds не отрабатывает
-            // ни разу — заявленная секунда молча превращается в 0.75.
-            eff.TimerTick = now + eff.TimerIntervalTicks;
-
-            int minTicks = Mathf.Max(1, Mathf.RoundToInt(_minDecaySeconds * SimConstants.TickRate));
+            // Перевзвод на СВОЙ интервал, а укорачивание — уже для следующего раза: почему именно так,
+            // сказано в RuntimeEffect.RescheduleTimer (иначе первая секунда молча станет 0.75).
+            int minTicks     = Mathf.Max(1, Mathf.RoundToInt(_minDecaySeconds * SimConstants.TickRate));
             int nextInterval = Mathf.RoundToInt(eff.TimerIntervalTicks * _decayFalloff);
-            eff.TimerIntervalTicks = Mathf.Max(minTicks, nextInterval);
+            eff.RescheduleTimer(now, Mathf.Max(minTicks, nextInterval));
         }
 
         private void ResetDecay(in EffectContext ctx)
@@ -91,8 +88,9 @@ namespace Guildmaster.Combat.Effects.Components
             RuntimeEffect eff = ctx.Effect;
             int now = ctx.Combat.CurrentTick;
 
-            eff.TimerIntervalTicks = Mathf.Max(1, Mathf.RoundToInt(_firstDecaySeconds * SimConstants.TickRate));
-            eff.TimerTick = now + Mathf.Max(1, Mathf.RoundToInt(_graceSeconds * SimConstants.TickRate));
+            int graceTicks = Mathf.Max(1, Mathf.RoundToInt(_graceSeconds * SimConstants.TickRate));
+            int firstTicks = Mathf.Max(1, Mathf.RoundToInt(_firstDecaySeconds * SimConstants.TickRate));
+            eff.ScheduleTimer(now + graceTicks, firstTicks);
         }
     }
 }

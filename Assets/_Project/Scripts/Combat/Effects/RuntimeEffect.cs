@@ -59,11 +59,38 @@ namespace Guildmaster.Combat.Effects
             ContributorWeights.Add(1);
         }
 
-        /// <summary>Остаток длительности в тиках. <c>-1</c> = постоянный (пассивка), <c>0</c> = мгновенный.</summary>
-        public int RemainingTicks;
+        /// <summary>
+        /// Остаток длительности в тиках. <c>-1</c> = постоянный (пассивка), <c>0</c> = мгновенный.
+        /// Пишется только глаголами ниже: у длительности и её полной величины один вход, поэтому
+        /// «поставить срок» и «дожить тик» невозможно перепутать местами.
+        /// </summary>
+        public int RemainingTicks { get; private set; }
 
         /// <summary>Полная длительность в тиках на момент наложения (для StackRule.Refresh).</summary>
-        public int FullDurationTicks;
+        public int FullDurationTicks { get; private set; }
+
+        /// <summary>
+        /// Назначить срок: и остаток, и полную длительность. Один глагол на наложение и на подкрепление —
+        /// они всегда ставят оба числа вместе, и разъехаться им нечем.
+        /// </summary>
+        public void SetDuration(int ticks)
+        {
+            RemainingTicks    = ticks;
+            FullDurationTicks = ticks;
+        }
+
+        /// <summary>Прожить тик. Возвращает <c>true</c>, если срок вышел и эффект пора снимать.</summary>
+        public bool TickDownDuration()
+        {
+            RemainingTicks--;
+            return RemainingTicks <= 0;
+        }
+
+        /// <summary>
+        /// Срок вышел досрочно: эффект снимается штатным путём, а не отдельной веткой. Так уходят «Угли»,
+        /// когда осыпался последний стак.
+        /// </summary>
+        public void EndDuration() => RemainingTicks = 0;
 
         /// <summary>
         /// Тик, на котором эффект ПОЯВИЛСЯ на цели. Ставится один раз, при создании; рефреш и набор стака
@@ -139,13 +166,6 @@ namespace Guildmaster.Combat.Effects
         public int[] PeriodicTicks;
 
         /// <summary>
-        /// Внутренний кулдаун реактив/pre-damage компонента (§9.3, «Оплот»): абсолютный тик, с которого
-        /// компонент снова готов сработать. Сверяется с <c>ctx.Combat.CurrentTick</c> — без потиковых
-        /// декрементов (детерминизм). 0 = готов с начала боя.
-        /// </summary>
-        public int ReactiveReadyTick;
-
-        /// <summary>
         /// Сколько щита этот эффект УДЕРЖИВАЕТ прямо сейчас (§9.3, «Оплот»: <c>flat + %·недостающее HP</c>) —
         /// фактическая величина с runtime-расчётом, потому что из статов её не выразить.
         /// <para>Единственный владелец числа: снятие обязано убрать ровно удержанное, а не пересчитать
@@ -186,10 +206,35 @@ namespace Guildmaster.Combat.Effects
         /// собственный ритм эффекта не совпадает ни с длительностью, ни с периодом тика — например
         /// сход «Углей» по ускоряющейся кривой. Сверяется с <c>ctx.Combat.CurrentTick</c>.
         /// </summary>
-        public int TimerTick;
+        public int TimerTick { get; private set; }
 
         /// <summary>Текущий шаг служебного таймера в тиках (для кривых, где интервал меняется по ходу).</summary>
-        public int TimerIntervalTicks;
+        public int TimerIntervalTicks { get; private set; }
+
+        /// <summary>
+        /// Пора сработать? Абсолютный тик против текущего — без потиковых декрементов, иначе таймер
+        /// зависел бы от того, сколько раз его успели опросить.
+        /// </summary>
+        public bool IsTimerDue(int currentTick) => currentTick >= TimerTick;
+
+        /// <summary>
+        /// Взвести таймер: сработать на <paramref name="dueTick"/>, следующий шаг — <paramref name="intervalTicks"/>.
+        /// Оба числа ставятся вместе, потому что порознь они бессмысленны: срок без шага не знает, когда
+        /// прозвонит в следующий раз.
+        /// </summary>
+        public void ScheduleTimer(int dueTick, int intervalTicks)
+        {
+            TimerTick          = dueTick;
+            TimerIntervalTicks = intervalTicks > 0 ? intervalTicks : 1;
+        }
+
+        /// <summary>
+        /// Перевзвести на свой же шаг и назначить шаг для следующего раза: сначала ждём текущий интервал,
+        /// и только потом укорачиваем. Иначе первый звонок после льготного окна уезжает уже с
+        /// множителем, и заявленный первый интервал не отрабатывает ни разу.
+        /// </summary>
+        public void RescheduleTimer(int currentTick, int nextIntervalTicks)
+            => ScheduleTimer(currentTick + TimerIntervalTicks, nextIntervalTicks);
 
         /// <summary>Постоянный эффект (пассивка) — не истекает по таймеру.</summary>
         public bool IsPermanent => RemainingTicks < 0;

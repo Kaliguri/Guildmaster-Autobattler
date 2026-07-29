@@ -163,11 +163,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             carrier.ActiveEffects.Add(new Guildmaster.Combat.Effects.RuntimeEffect
             {
                 Def               = poison,
-                RemainingTicks    = 60,
-                FullDurationTicks = 60,
                 ScaledPotency     = new float[0],
                 PeriodicTicks     = new int[0],
             });
+            carrier.ActiveEffects[0].SetDuration(60);
 
             withEffect.EnqueueUnitSpawn(carrier);
             withoutEffect.EnqueueUnitSpawn(plain);

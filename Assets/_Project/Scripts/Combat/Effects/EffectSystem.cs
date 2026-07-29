@@ -81,11 +81,7 @@ namespace Guildmaster.Combat
                     TickPeriodic(unit, eff, combat);
                     if (unit.IsDead) break;
 
-                    if (!eff.IsPermanent)
-                    {
-                        eff.RemainingTicks--;
-                        if (eff.RemainingTicks <= 0) Expire(unit, eff, combat);
-                    }
+                    if (!eff.IsPermanent && eff.TickDownDuration()) Expire(unit, eff, combat);
                 }
 
                 if (!unit.IsDead) RecomputeControl(unit);
@@ -178,9 +174,7 @@ namespace Guildmaster.Combat
 
             effect.AddContribution(source);   // первый вкладчик — тот, кто наложил
 
-            int ticks = ResolveDurationTicks(def, source, target);
-            effect.RemainingTicks    = ticks;
-            effect.FullDurationTicks = ticks;
+            effect.SetDuration(ResolveDurationTicks(def, source, target));
 
             // Снимок потенции на компонент из статов источника на момент наложения.
             for (int i = 0; i < componentCount; i++)
@@ -191,7 +185,7 @@ namespace Guildmaster.Combat
                 }
             }
 
-            bool instant = ticks == 0;
+            bool instant = effect.RemainingTicks == 0;
             // Эффект встаёт в список сразу (иначе второе наложение этим же тиком завело бы дубль вместо
             // стака), но ВИДИМЫМ — в маске тегов — становится на коммите в конце тика. Закон видимости.
             if (!instant) Insert(target.ActiveEffects, effect);
@@ -669,9 +663,7 @@ namespace Guildmaster.Combat
 
         private static void RefreshDuration(RuntimeEffect effect, EffectData def, RuntimeUnit source, RuntimeUnit target)
         {
-            int ticks = ResolveDurationTicks(def, source, target);
-            effect.RemainingTicks    = ticks;
-            effect.FullDurationTicks = ticks;
+            effect.SetDuration(ResolveDurationTicks(def, source, target));
         }
 
         /// <summary>
