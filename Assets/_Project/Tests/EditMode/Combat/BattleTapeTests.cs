@@ -541,6 +541,82 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(0, playback.Lead);
         }
 
+        // ===================== Знание будущего: телеграфы и предчувствие (Ф5, Ф6) =====================
+
+        // Шов Ф5: показ обязан УВИДЕТЬ будущее наложение эффекта раньше, чем до него дойдёт, — иначе
+        // подводку («щит поднимается до удара») делать нечем.
+        [Test]
+        public void Foresight_SeesAnEffectApplication_BeforeShowingIt()
+        {
+            var tape = new BattleTape(windowTicks: 64);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+            EffectData shield = TelegraphedShield(telegraphSeconds: 0.3f);
+
+            playback.SetTargetLead(BattleTapePlayback.LookaheadTicks);
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta);
+            for (int tick = 1; tick <= 30; tick++) tape.CaptureTick(tick, units);
+
+            // Сим уже посчитал: на тике 20 на юнита ляжет щит. Показ стоит на нуле.
+            tape.RecordEffect(20, TapeEventKind.EffectApplied, targetId: 1, def: shield);
+
+            var upcoming = new List<TapeEvent>();
+            tape.CollectEvents(playback.ViewTick + 1, playback.ViewTick + 30, upcoming);
+
+            Assert.AreEqual(1, upcoming.Count, "Событие ещё не показано, но уже видно вперёд");
+            Assert.AreEqual(TapeEventKind.EffectApplied, upcoming[0].Kind);
+            Assert.AreEqual(0.3f, tape.GetEffect(upcoming[0].PayloadIndex).TelegraphSeconds, 1e-4f,
+                "И эффект сам говорит, за сколько его анонсировать — число живёт в ассете, не в коде");
+            Assert.AreEqual(20 - playback.ViewTick, upcoming[0].Tick - playback.ViewTick,
+                "До события известно точное расстояние в тиках — из него и считается момент подводки");
+        }
+
+        // Шов Ф6: смертельный удар виден заранее — на этом и стоит slowmo, начинающееся ЧУТЬ РАНЬШЕ смерти.
+        [Test]
+        public void Foresight_SeesALethalHit_BeforeShowingIt()
+        {
+            var tape = new BattleTape(windowTicks: 64);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            playback.SetTargetLead(BattleTapePlayback.LookaheadTicks);
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta);
+            for (int tick = 1; tick <= 30; tick++) tape.CaptureTick(tick, units);
+
+            var plain = new DamageResult(hpDamage: 10f, shieldDamage: 0f, killedTarget: false,
+                sourceKind: DamageSourceKind.AutoAttack, school: DamageSchool.Physical);
+            var lethal = new DamageResult(hpDamage: 90f, shieldDamage: 0f, killedTarget: true,
+                sourceKind: DamageSourceKind.AutoAttack, school: DamageSchool.Physical);
+
+            tape.RecordDamage(tick: 5,  sourceId: 2, targetId: 1, result: in plain);
+            tape.RecordDamage(tick: 12, sourceId: 2, targetId: 1, result: in lethal);
+
+            var upcoming = new List<TapeEvent>();
+            tape.CollectEvents(playback.ViewTick + 1, playback.ViewTick + 15, upcoming);
+
+            int lethalTick = -1;
+            for (int i = 0; i < upcoming.Count; i++)
+            {
+                if (upcoming[i].Kind != TapeEventKind.DamageDealt) continue;
+                if (!tape.GetDamage(upcoming[i].PayloadIndex).KilledTarget) continue;
+                lethalTick = upcoming[i].Tick;
+            }
+
+            Assert.AreEqual(12, lethalTick, "Смерть видна заранее — за неё и цепляется slowmo «чуть раньше»");
+            Assert.Greater(lethalTick, playback.ViewTick, "И она ещё не показана");
+        }
+
+        /// <summary>Щит с телеграфом: как `BulwarkShield` в ассетах — короткий, с тегом Shield и подводкой.</summary>
+        private static EffectData TelegraphedShield(float telegraphSeconds)
+        {
+            EffectData shield = TestEffect.Make(
+                baseDuration: 0.4f, polarity: EffectPolarity.Buff,
+                tags: EffectTag.Buff | EffectTag.Shield, stacking: StackRule.Refresh);
+            return shield.With("_telegraphSeconds", telegraphSeconds);
+        }
+
         // ===================== Фабрики =====================
 
         private static CombatSimulation BuildSim() =>

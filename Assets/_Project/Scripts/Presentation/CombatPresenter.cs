@@ -126,6 +126,13 @@ namespace Guildmaster.Presentation
         /// </summary>
         public bool TryGetView(int unitId, out UnitView view) => _views.TryGetValue(unitId, out view);
 
+        /// <summary>
+        /// Цвет щита из палитры дизайн-системы. Отдаётся наружу, потому что палитра — обязательная
+        /// зависимость презентера и единственный владелец цветов боя: другим потребителям (телеграфы)
+        /// незачем заводить вторую ссылку на неё и тем самым второго владельца цвета.
+        /// </summary>
+        public Color ShieldColor => _colorPalette.Shield;
+
         /// <summary>Сколько видов юнитов сейчас на экране. Только для dev-диагностики ленты.</summary>
         public int ViewCount => _views.Count;
 

@@ -95,6 +95,9 @@ namespace Guildmaster.Presentation
         [Tooltip("Показывать оранжевый круг коллизии симуляции (радиус = Size × SimTuning.BodyRadiusPerSize). Выключи, если мешает.")]
         [SerializeField] private bool _showCollisionGizmo = true;
 
+        // Пик подсветки телеграфа: заметно, но слабее удара — подводка не должна читаться как попадание.
+        private const float TelegraphPeak = 0.55f;
+
         private static readonly int IdleHash   = Animator.StringToHash("Idle");
         private static readonly int RunHash     = Animator.StringToHash("Run");
         private static readonly int AttackHash = Animator.StringToHash("Attack");
@@ -861,6 +864,34 @@ namespace Guildmaster.Presentation
             PlayHitNudge(nudgeDir);
             if (_feel != null && _feel.EnableHpBarPunch && _healthBar != null)
                 _healthBar.Punch(_feel.HpBarPunchAmount, _feel.HpBarPunchDuration);
+        }
+
+        /// <summary>
+        /// Телеграф: подводка к тому, что ЕЩЁ НЕ СЛУЧИЛОСЬ. Показ узнаёт о будущем событии из ленты боя и
+        /// зовёт это заранее — щит «Оплота» так поднимается до удара, а не в его кадр.
+        /// <para>Держит подсветку <paramref name="seconds"/> и гасит её к моменту события: к кадру, ради
+        /// которого подводка игралась, тело уже «готово», а не вспыхивает вместе с ним.</para>
+        /// </summary>
+        public void ShowTelegraph(Color color, float seconds)
+        {
+            if (Body == null || seconds <= 0f) return;
+            if (_flashHandle.IsActive()) _flashHandle.Cancel();
+
+            _activeFlashColor = color;
+            _flashPeak   = TelegraphPeak;
+            _flashAmount = 0f;
+
+            // Нарастание к пику и спад к нулю ровно за время телеграфа: время UNSCALED, иначе подводка
+            // застынет в slowmo и разъедется с событием, к которому ведёт.
+            _flashHandle = LMotion.Create(0f, 1f, seconds)
+                .WithEase(Ease.Linear)
+                .WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)
+                .Bind(this, static (v, self) =>
+                {
+                    float shape = v < 0.5f ? v / 0.5f : 1f - (v - 0.5f) / 0.5f;
+                    self._flashAmount = self._flashPeak * shape;
+                })
+                .AddTo(gameObject);
         }
 
         /// <summary>

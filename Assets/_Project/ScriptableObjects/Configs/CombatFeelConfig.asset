@@ -125,6 +125,7 @@ MonoBehaviour:
   _hologramBodyAlpha: 0.45
   _hologramScanScale: 3
   _hologramScanAmount: 0.35
+  _killSlowLeadSeconds: 0.35
   _killSlowFactor: 0.4
   _killSlowRelease: 0.5
   _killSlowCooldown: 2

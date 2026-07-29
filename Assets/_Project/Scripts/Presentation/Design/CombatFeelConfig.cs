@@ -242,6 +242,10 @@ namespace Guildmaster.Presentation.Design
 
         // --- Slowmo — добивающий удар (CombatFeelDirector) ---
         [Header("Slowmo — добивающий удар (kill)")]
+        [Tooltip("За сколько секунд ДО смертельного удара начинать замедление. Работает благодаря лаге " +
+                 "показа (лента боя): «раньше» неоткуда взять, если о смерти узнаёшь в тот же кадр. " +
+                 "0 = замедление щёлкает в момент удара, как было до ленты.")]
+        [SerializeField, Range(0f, 1f)] private float _killSlowLeadSeconds = 0.35f;
         [Tooltip("Во сколько замедлить мир на добивающий удар.")]
         [SerializeField, Range(0.01f, 1f)] private float _killSlowFactor = 0.4f;
         [Tooltip("За сколько секунд вернуться к норме (без удержания).")]
@@ -417,6 +421,7 @@ namespace Guildmaster.Presentation.Design
             return Mathf.Lerp(_vfxHitCountMin, _vfxHitCountMax, t);
         }
 
+        public float KillSlowLeadSeconds => _killSlowLeadSeconds;
         public float KillSlowFactor    => _killSlowFactor;
         public float KillSlowRelease   => _killSlowRelease;
         public float KillSlowCooldown  => _killSlowCooldown;

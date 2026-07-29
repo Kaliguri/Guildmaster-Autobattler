@@ -45,6 +45,11 @@ namespace Guildmaster.Data.Definitions
         [SerializeReference] private IEffectComponent[] _components;
 
         [Header("Presentation / info")]
+        [Tooltip("Телеграф: за сколько секунд ДО наложения этот эффект анонсируется показом (щит «Оплота» " +
+                 "поднимается заранее). Работает благодаря лаге показа: сим уже посчитал наложение, а игрок " +
+                 "его ещё не видел. 0 = без подводки, эффект просто появляется.")]
+        [SerializeField, Range(0f, 1f)] private float _telegraphSeconds;
+
         [Tooltip("Иконка для бафф-бара HUD (опциональна: у скрытых/технических эффектов пустая).")]
         [SerializeField] private Sprite _icon;
         [Tooltip("Информационные теги для тултипов.")]
@@ -95,6 +100,12 @@ namespace Guildmaster.Data.Definitions
             return Mathf.Clamp(Mathf.Max(price.Flat, byPct), 1, currentStacks);
         }
         public IEffectComponent[] Components => _components;
+        /// <summary>
+        /// За сколько секунд до наложения показ анонсирует этот эффект. Владелец числа — ассет: анимация
+        /// и вспышка подстраиваются под него, а не наоборот (решение Макса 2026-07-29).
+        /// </summary>
+        public float TelegraphSeconds => _telegraphSeconds;
+
         public Sprite Icon => _icon;
         public TagData[] InfoTags => _infoTags;
 

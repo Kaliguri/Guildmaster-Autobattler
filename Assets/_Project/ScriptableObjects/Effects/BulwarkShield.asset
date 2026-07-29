@@ -20,8 +20,16 @@ MonoBehaviour:
   _maxStacks: 1
   _cleanseTier: 0
   _unremovable: 0
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
   _components:
   - rid: 5615026876324511840
+  _telegraphSeconds: 0.3
   _icon: {fileID: 0}
   _infoTags: []
   references:

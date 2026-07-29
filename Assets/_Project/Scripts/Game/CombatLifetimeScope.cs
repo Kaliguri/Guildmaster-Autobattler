@@ -175,6 +175,10 @@ namespace Guildmaster.Game
             builder.Register<Combat.Tape.BattleTapeDispatcher>(Lifetime.Scoped);
             builder.Register<Combat.Tape.BattleUnitRegistry>(Lifetime.Scoped);
 
+            // Телеграфы: подводки к тому, что показ ещё не дошёл (щит «Оплота» до удара). Первая
+            // фича, которая живёт ИМЕННО за счёт лага показа.
+            builder.RegisterEntryPoint<Presentation.BattleTelegraphPresenter>(Lifetime.Scoped);
+
             // Dev-диагностика ленты: без неё «сим впереди, показ с лагом» ломается молча.
             builder.RegisterEntryPoint<BattleTapeDiagnostics>(Lifetime.Scoped);
 
