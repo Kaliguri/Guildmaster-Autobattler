@@ -42,6 +42,16 @@ namespace Guildmaster.AnimationLab.Editor
         // attack and both are gone. Weight after the blow lives in the HOLD and in the settle back to
         // stance, not in another few degrees of blade.
 
+        // THE GATHERED BLADE (Max, 29.07). A knight closing distance runs with the sword already up — half
+        // a wind-up carried in the stride — so the charge that follows is one more pull rather than a swing
+        // built from nothing. One pose, one place: Sprint holds it and AttackCharge starts from it, because
+        // the same pose written twice is two owners of one fact and they drift apart on the first edit.
+        // The blade sits just past vertical, angled back over the shoulder — far enough to read as "loaded"
+        // at a glance, not so far that the run looks like a permanent wind-up.
+        const float BladeGatheredShoulder = 84f;   // degrees from rest: upper arm up and slightly back
+        const float BladeGatheredElbow    = 16f;   // a soft bend — a locked elbow reads as a mannequin
+        const float BladeGatheredAim      = 105f;  // world degrees: 90 is straight up, so this leans back 15
+
         const RigWriter.Ease Hold = RigWriter.Ease.Hold;
         const RigWriter.Ease Out = RigWriter.Ease.EaseOut;      // arrives at speed, stops dead
         const RigWriter.Ease In = RigWriter.Ease.EaseIn;        // breaks from rest
@@ -215,16 +225,21 @@ namespace Guildmaster.AnimationLab.Editor
         {
             using (var w = new RigWriter(Profile()))
             {
-                // frame zero IS the sprint pose: entering from a stance would read as a stumble
+                // Frame zero IS the sprint pose, blade included: the run already carries it gathered, so the
+                // charge picks the arm up exactly where the stride left it. Entering from a stance — or from
+                // a lowered blade — would read as a stumble followed by a wind-up.
                 w.At(0f).Bend("torso", -11f, Near, Lin).Bend("hip.R", 30f, Near, Lin).Bend("hip.L", -8f, Near, Lin)
                         .Bend("knee.L", 40f, Near, Lin).Bend("knee.R", 10f, Near, Lin).Bend("head", 5f, Near, Lin)
+                        .Bend("shoulder.R", BladeGatheredShoulder, Near, Lin).Bend("elbow.R", BladeGatheredElbow, Near, Lin)
+                        .Aim("weapon", BladeGatheredAim, Near, Lin)
                         .Move("hips", new Vector2(RestHips.x, 0.015f));
 
-                // the feet plant while the blade is already on its way up
-                w.At(0.117f).Bend("shoulder.R", 84f, Near, Soft).Bend("elbow.R", 16f, Near, Soft)
+                // The feet plant while the blade holds where the run had it — the pull comes next, and it is
+                // one continuous gather from here to the top rather than two.
+                w.At(0.117f).Bend("shoulder.R", BladeGatheredShoulder, Near, Soft).Bend("elbow.R", BladeGatheredElbow, Near, Soft)
                             .Bend("hip.L", 30f, Near, Soft).Bend("hip.R", -8f, Near, Soft)
                             .Bend("knee.L", 10f, Near, Soft).Bend("knee.R", 45f, Near, Soft)
-                            .Aim("weapon", 105f, Ccw, Soft)
+                            .Aim("weapon", BladeGatheredAim, Near, Soft)
                             .Move("hips", new Vector2(RestHips.x, 0.036f));
 
                 // gathered further behind the back than the standing version, weight loaded on the back leg
@@ -315,13 +330,20 @@ namespace Guildmaster.AnimationLab.Editor
         /// Sprint: the same four-pose skeleton in 0.5s, but everything is bigger — longer stride, deeper
         /// knee, more lean, twice the bob. Same number of steps per cycle and the same phase as Walk, so
         /// the two blend without the legs popping.
+        ///
+        /// The blade rides UP through the whole run (decision by Max, 29.07): a knight closing distance
+        /// carries it already half-gathered, so the charge that follows is one more pull rather than a
+        /// wind-up from scratch. The pose is deliberately the one <see cref="AttackCharge"/> holds at
+        /// 0.117s — shoulder 84, elbow 16, blade at 105 degrees — so entering the charge costs nothing and
+        /// cannot pop. This is also why the raised arm keeps its own tiny swing instead of the locomotion
+        /// one: an arm that pumps like the other would throw the blade around and read as flailing.
         /// </summary>
         public static string Sprint()
         {
             using (var w = new RigWriter(Profile()))
             {
                 Stride(w, 0f, 0.5f, hipSwing: 32f, kneeLift: 50f, bobLow: 0.012f, bobHigh: 0.030f,
-                       lean: -8f, armSwing: 5f);
+                       lean: -8f, armSwing: 5f, bladeGathered: true);
                 return w.Write(Folder + "Sprint.anim", 60f, loopTime: true).ToString();
             }
         }
@@ -331,7 +353,7 @@ namespace Guildmaster.AnimationLab.Editor
         /// original pose; the pelvis dips at both contacts and lifts at both passings.
         /// </summary>
         static void Stride(RigWriter w, float start, float length, float hipSwing, float kneeLift,
-                           float bobLow, float bobHigh, float lean, float armSwing)
+                           float bobLow, float bobHigh, float lean, float armSwing, bool bladeGathered = false)
         {
             float quarter = length / 4f;
             for (int step = 0; step < 2; step++)
@@ -345,9 +367,19 @@ namespace Guildmaster.AnimationLab.Editor
                              .Bend("knee.L", step == 0 ? 22f : kneeLift * 0.6f, Near, Out)
                              .Bend("knee.R", step == 0 ? kneeLift * 0.6f : 22f, Near, Out)
                              .Bend("torso", lean, Near, Soft)
-                             .Bend("shoulder.L", -armSwing * sign, Near, Soft).Bend("shoulder.R", armSwing * sign, Near, Soft)
+                             .Bend("shoulder.L", -armSwing * sign, Near, Soft)
                              .Bend("head", -lean * 0.4f, Near, Soft)
                              .Move("hips", new Vector2(RestHips.x, bobLow));
+
+                // The weapon arm either pumps with the run or holds the blade gathered. Held, it keeps a
+                // small counter-swing (a third of the other arm, against it) so the pose breathes with the
+                // stride instead of looking welded to the shoulder.
+                if (bladeGathered)
+                    w.At(contact).Bend("shoulder.R", BladeGatheredShoulder - armSwing * 0.35f * sign, Near, Soft)
+                                 .Bend("elbow.R", BladeGatheredElbow, Near, Soft)
+                                 .Aim("weapon", BladeGatheredAim, Near, Soft);
+                else
+                    w.At(contact).Bend("shoulder.R", armSwing * sign, Near, Soft);
 
                 w.At(passing).Bend("hip.L", hipSwing * 0.15f * sign, Near, Lin)
                              .Bend("hip.R", hipSwing * 0.1f * -sign, Near, Lin)
@@ -360,9 +392,16 @@ namespace Guildmaster.AnimationLab.Editor
             w.At(start + length).Bend("hip.L", hipSwing, Near, Out).Bend("hip.R", -hipSwing * 0.8f, Near, Out)
                                 .Bend("knee.L", 22f, Near, Out).Bend("knee.R", kneeLift * 0.6f, Near, Out)
                                 .Bend("torso", lean, Near, Soft)
-                                .Bend("shoulder.L", -armSwing, Near, Soft).Bend("shoulder.R", armSwing, Near, Soft)
+                                .Bend("shoulder.L", -armSwing, Near, Soft)
                                 .Bend("head", -lean * 0.4f, Near, Soft)
                                 .Move("hips", new Vector2(RestHips.x, bobLow));
+
+            if (bladeGathered)
+                w.At(start + length).Bend("shoulder.R", BladeGatheredShoulder - armSwing * 0.35f, Near, Soft)
+                                    .Bend("elbow.R", BladeGatheredElbow, Near, Soft)
+                                    .Aim("weapon", BladeGatheredAim, Near, Soft);
+            else
+                w.At(start + length).Bend("shoulder.R", armSwing, Near, Soft);
         }
 
         /// <summary>
