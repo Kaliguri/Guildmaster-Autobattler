@@ -271,6 +271,29 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(0, playback.Lead, "Запаса больше нет — дальше показывать нечего");
         }
 
+        // Регресс play-mode 2026-07-29: у фронта ленты доля кадра сбрасывалась в ноль, и позиция
+        // прыгала между началом и концом одного тика — юниты дрожали на месте (видно в финальном slowmo).
+        [Test]
+        public void Playback_AtTheFront_KeepsAlphaSteady()
+        {
+            var tape = new BattleTape(windowTicks: 32);
+            var playback = new BattleTapePlayback(tape);
+            var units = new List<RuntimeUnit> { MakeUnit(id: 1, hp: 100f) };
+
+            tape.CaptureTick(0, units);
+            playback.Advance(SimConstants.TickDelta);
+            Assert.AreEqual(0, playback.ViewTick, "Предусловие: показ на единственном кадре");
+
+            // Сим больше не тикает (бой досчитан), а кадры рендера продолжают идти.
+            for (int i = 0; i < 5; i++)
+            {
+                playback.Advance(SimConstants.TickDelta);
+                Assert.AreEqual(1f, playback.Alpha, 1e-4f,
+                    "У фронта доля держится на конце тика — иначе позиция дёргается каждый кадр");
+                Assert.AreEqual(0, playback.ViewTick, "И сам тик не двигается");
+            }
+        }
+
         // То, за что куплен лаг: показ читает состояние, до которого сам ещё не дошёл.
         [Test]
         public void Playback_ReadsTheFuture_ThatItHasNotShownYet()
