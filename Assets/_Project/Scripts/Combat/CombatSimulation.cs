@@ -63,6 +63,14 @@ namespace Guildmaster.Combat
 
         private readonly List<RuntimeUnit>  _units       = new List<RuntimeUnit>();
         private readonly List<RuntimeUnit>  _pendingAdd  = new List<RuntimeUnit>();
+
+        // Жизнь призванных тел (M10). Создаётся здесь, а не приходит извне: система без зависимостей и без
+        // состояния, а обязательный параметр конструктора заставил бы каждый существующий вызов (десятки
+        // тестов и бенчей) таскать её ради механики, которой в них нет. Осознанный компромисс.
+        private readonly SummonSystem _summonSystem = new SummonSystem();
+
+        // Фабрика призывов: подаётся снаружи (BindSummonFactory). null = в этом бою призывать нечем.
+        private ISummonFactory _summonFactory;
         private readonly List<Projectile>   _projectiles = new List<Projectile>();
         private readonly List<ICombatCommand> _commandQueue = new List<ICombatCommand>();
         private readonly Queue<CombatEventData> _eventQueue = new Queue<CombatEventData>();
@@ -299,6 +307,9 @@ namespace Guildmaster.Combat
             // поэтому исход не зависит от того, чей ход в обходе списка раньше. Место — после дренажа
             // (реактивы успевают наложить своё) и до смерти (пересчёт на трупах не нужен).
             _effectSystem.CommitTickChanges(_units);
+            // Срок жизни призывов и уход вместе с хозяином — ДО смерти: развеянный призыв обязан умереть
+            // тем же проходом, что все остальные, иначе он исчез бы без события смерти.
+            _summonSystem.Tick(_units);
             _deathSystem.Tick(_units, _spatialHash);
 
             CheckOutcome();
@@ -671,6 +682,27 @@ namespace Guildmaster.Combat
 
         /// <summary>Поставить юнита в очередь добавления (не в _units напрямую, чтобы не нарушить итерацию).</summary>
         public void EnqueueUnitSpawn(RuntimeUnit unit) => _pendingAdd.Add(unit);
+
+        /// <summary>
+        /// Подать фабрику призывов (M10). Разводится снаружи — сборка юнитов из SO живёт вне боевого ядра,
+        /// и бою нужен из неё ровно один метод. Отдельный вызов, а не параметр конструктора: бой без
+        /// призывов полностью рабочий (балансные бенчи задают состав заранее), и обязательная зависимость
+        /// заставила бы каждый прогон таскать фабрику ради механики, которой в нём нет.
+        /// </summary>
+        public void BindSummonFactory(ISummonFactory factory) => _summonFactory = factory;
+
+        /// <summary>Призвать тело в бой: собрать по киту и поставить в очередь спавна (см. ICombatContext).</summary>
+        public RuntimeUnit Summon(
+            Data.Definitions.UnitData data, int team, Vector2 position, RuntimeUnit summoner)
+        {
+            if (data == null || _summonFactory == null) return null;
+
+            RuntimeUnit summon = _summonFactory.CreateSummon(data, team, position, summoner);
+            if (summon == null) return null;
+
+            EnqueueUnitSpawn(summon);
+            return summon;
+        }
 
         // --- Очередь команд ---
 

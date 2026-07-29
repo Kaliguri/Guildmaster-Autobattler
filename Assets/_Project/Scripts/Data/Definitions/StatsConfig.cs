@@ -63,6 +63,8 @@ namespace Guildmaster.Data.Definitions
                 case StatType.ReceiveDebuffEff:
                 case StatType.CooldownEff:
                 case StatType.ResourceGainEff:
+                case StatType.SummonHealthEff:
+                case StatType.SummonDamageEff:
                 case StatType.Size:
                     return 1f;
                 default:

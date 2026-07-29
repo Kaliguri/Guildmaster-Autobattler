@@ -82,9 +82,21 @@ namespace Guildmaster.Tests.EditMode.Combat
             bool canMoveWhileCasting = false,
             EffectData[] selfEffects = null,
             bool displaces = false,
-            float displaceDistance = 4f)
+            float displaceDistance = 4f,
+            UnitData summonUnit = null,
+            int summonCount = 1,
+            int summonLimit = 3,
+            float summonLifetimeSeconds = 0f,
+            bool summonDiesWithSummoner = false,
+            string id = "test.ability")
         {
             var a = new AbilityData();
+            Set(a, "_id", id);
+            Set(a, "_summonUnit", summonUnit);
+            Set(a, "_summonCount", summonCount);
+            Set(a, "_summonLimit", summonLimit);
+            Set(a, "_summonLifetimeSeconds", summonLifetimeSeconds);
+            Set(a, "_summonDiesWithSummoner", summonDiesWithSummoner);
             Set(a, "_selfEffects", selfEffects ?? System.Array.Empty<EffectData>());
             Set(a, "_displaces", displaces);
             Set(a, "_displaceDistance", displaceDistance);
@@ -282,6 +294,25 @@ namespace Guildmaster.Tests.EditMode.Combat
         public readonly List<DisplaceRequest> Displaces = new List<DisplaceRequest>();
 
         public void Displace(in DisplaceRequest req) => Displaces.Add(req);
+
+        /// <summary>Призванные тела: мок собирает их сам, чтобы срез призывов не тянул фабрику и SO.</summary>
+        public readonly List<RuntimeUnit> Summons = new List<RuntimeUnit>();
+
+        /// <summary>Кит, который мок выдаёт за призыв. null = «призывать нечем» (проверка деградации).</summary>
+        public System.Func<UnitData, int, Vector2, RuntimeUnit, RuntimeUnit> SummonFactory;
+
+        public RuntimeUnit Summon(UnitData data, int team, Vector2 position, RuntimeUnit summoner)
+        {
+            RuntimeUnit summon = SummonFactory?.Invoke(data, team, position, summoner);
+            if (summon == null) return null;
+
+            summon.Summoner = summoner;
+            summon.Position = position;
+            summon.PreviousPosition = position;
+            Summons.Add(summon);
+            UnitsInWorld.Add(summon);
+            return summon;
+        }
 
         // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
         public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)

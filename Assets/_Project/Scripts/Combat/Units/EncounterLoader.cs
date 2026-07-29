@@ -57,6 +57,10 @@ namespace Guildmaster.Combat
             _factory    = factory;
             _simulation = simulation;
             _content    = content;
+
+            // Разводка призывов (M10): бой умеет ставить тела, но собирать их из SO — работа фабрики.
+            // Точка одна и живёт здесь же, где собирается состав боя.
+            _simulation.BindSummonFactory(factory);
         }
 
         /// <summary>

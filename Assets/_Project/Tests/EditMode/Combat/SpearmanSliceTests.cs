@@ -379,6 +379,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             public readonly List<DisplaceRequest> Displaces = new List<DisplaceRequest>();
             public void Displace(in DisplaceRequest req) => Displaces.Add(req);
 
+            // Призывов в этом срезе нет: стаб честно отвечает «призывать нечем».
+            public RuntimeUnit Summon(UnitData data, int team, Vector2 position, RuntimeUnit summoner) => null;
+
             // Заглушке нечего откладывать: раундов тут нет, поэтому переход отыгрывается сразу.
             public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
                 => CombatPositioning.TeleportBehind(unit, target);

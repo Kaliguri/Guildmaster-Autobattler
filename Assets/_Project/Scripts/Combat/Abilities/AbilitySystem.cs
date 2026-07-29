@@ -367,6 +367,10 @@ namespace Guildmaster.Combat
                 caster.CastTarget = target;
             }
 
+            // Призыв не конкурирует с формой способности: тела появляются вместе с любой нагрузкой, поэтому
+            // он ДО ветвления, а не одной из ветвей.
+            if (data.Summons) ApplySummons(caster, data, ctx);
+
             // Порядок ветвей разводит два РАЗНЫХ смысла отбрасывания, и путать их нельзя: у круга
             // (§10.7 «Стальной вихрь») толчок расходится от центра по всем задетым, у одиночной цели
             // (§10.6 Монах) — это рывок самого кастующего с последующей цепью реактивов.
@@ -435,6 +439,41 @@ namespace Guildmaster.Combat
             ctx.Displace(new DisplaceRequest(
                 caster, caster, dashDir, dashDist,
                 cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
+        }
+
+        /// <summary>
+        /// Призвать тела (M10). Ставим их вокруг призывателя по детерминированной раскладке: смещения
+        /// считаются от индекса, без случайности и без запросов к миру — иначе одинаковые призывы у
+        /// зеркальных сторон встали бы по-разному и разошлись бы с первого же тика.
+        /// </summary>
+        /// <remarks>
+        /// Призыв — единственное место, где тела появляются на арене мимо расстановки, и это сознательно:
+        /// он боевая механика, а не заказ состава. Всё остальное про призыв (срок жизни, уход за хозяином)
+        /// исполняет <see cref="SummonSystem"/>; здесь только рождение.
+        /// </remarks>
+        private static void ApplySummons(RuntimeUnit caster, AbilityData data, ICombatContext ctx)
+        {
+            int lifetimeTicks = AttackTiming.RecoveryTicks(data.SummonLifetimeSeconds);
+
+            // Шаг раскладки — от размера призывателя: крупный хозяин не должен рождать тела внутри себя.
+            float step = Mathf.Max(0.6f, caster.Stats.Get(StatType.Size));
+
+            for (int i = 0; i < data.SummonCount; i++)
+            {
+                // Веером за спиной хозяина: чередуем стороны, отступая на шаг. Формула чистая от
+                // состояния мира, поэтому одинакова у обеих команд.
+                int lane = (i / 2) + 1;
+                float side = (i % 2 == 0) ? -1f : 1f;
+                var offset = new Vector2(side * step * lane, -step * 0.5f);
+
+                RuntimeUnit summon = ctx.Summon(
+                    data.SummonUnit, caster.Team, caster.Position + offset, caster);
+                if (summon == null) return;   // призывать нечем — молчим, это не боевая ошибка
+
+                summon.SummonAbilityId         = data.Id;
+                summon.SummonLifetimeRemaining = lifetimeTicks;
+                summon.DiesWithSummoner        = data.SummonDiesWithSummoner;
+            }
         }
 
         /// <summary>Ближайший к точке живой враг команды <paramref name="selfTeam"/>, кроме <paramref name="exclude"/> (тай-брейк по Id).</summary>

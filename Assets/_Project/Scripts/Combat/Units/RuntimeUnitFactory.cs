@@ -21,7 +21,7 @@ namespace Guildmaster.Combat
     /// и стартовое здоровье. Поэтому фабрике нужны <see cref="EffectSystem"/> и боевой контекст —
     /// наложение пассивки зовёт <c>OnApply</c> компонентов (вики «12» §6, шаг 9).
     /// </remarks>
-    public sealed class RuntimeUnitFactory
+    public sealed class RuntimeUnitFactory : ISummonFactory
     {
         private readonly StatsConfig   _config;
         private readonly ClassBalanceConfig _classBalance;
@@ -134,6 +134,52 @@ namespace Guildmaster.Combat
             unit.CurrentHP = stats.Get(StatType.MaxHP);
 
             return unit;
+        }
+
+        /// <summary>
+        /// Собрать призванного юнита (M10): та же сборка, что у всех, плюс множители силы призывов от
+        /// призывателя. Множители приезжают ОТДЕЛЬНОЙ группой модификаторов, поэтому база ассета остаётся
+        /// читаемой в отладке: видно и «сколько у скелета своего», и «сколько добавил хозяин».
+        /// </summary>
+        /// <remarks>
+        /// Множители применяются ДО инициализации HP — иначе призыв родился бы с полным HP по базе, а
+        /// потолок вырос бы после, и усиленный скелет выходил бы уже раненым.
+        /// </remarks>
+        public RuntimeUnit CreateSummon(UnitData data, int team, Vector2 position, RuntimeUnit summoner)
+        {
+            RuntimeUnit summon = Create(data, vessel: null, team, position);
+
+            if (summoner?.Stats == null) return summon;
+
+            float healthEff = summoner.Stats.Get(StatType.SummonHealthEff);
+            float damageEff = summoner.Stats.Get(StatType.SummonDamageEff);
+
+            bool scalesHealth = !Mathf.Approximately(healthEff, 1f);
+            bool scalesDamage = !Mathf.Approximately(damageEff, 1f);
+
+            if (scalesHealth || scalesDamage)
+            {
+                // PercentMult принимает ПРИБАВКУ (множитель считается как 1 + x), а сам стат силы призывов
+                // живёт вокруг единицы: 1.3 = «+30%». Отсюда −1.
+                StatModifier[] mods =
+                    scalesHealth && scalesDamage
+                        ? new[]
+                        {
+                            new StatModifier(StatType.MaxHP, ModifierOp.PercentMult, healthEff - 1f),
+                            new StatModifier(StatType.AutoAttackDamage, ModifierOp.PercentMult, damageEff - 1f),
+                        }
+                        : scalesHealth
+                            ? new[] { new StatModifier(StatType.MaxHP, ModifierOp.PercentMult, healthEff - 1f) }
+                            : new[] { new StatModifier(StatType.AutoAttackDamage, ModifierOp.PercentMult, damageEff - 1f) };
+
+                summon.Stats.AddModifiersFrom("summoner", mods);
+
+                // HP пересобираем: потолок только что вырос, а призыв обязан выйти целым.
+                summon.CurrentHP = summon.Stats.Get(StatType.MaxHP);
+            }
+
+            summon.Summoner = summoner;
+            return summon;
         }
 
         /// <summary>Наложить пассивные эффекты предметов/баннеров (источник — сам юнит, длительность из Def).</summary>

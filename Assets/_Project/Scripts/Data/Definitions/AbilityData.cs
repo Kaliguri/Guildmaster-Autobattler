@@ -129,6 +129,27 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Правила «стат юнита → параметр способности»: ускорение каста и кулдауна от скорости атаки, прибавка к множителю удара. Пусто = параметры берутся ровно из полей выше.")]
         [SerializeField] private AbilityStatScaling[] _statScalings;
 
+        [Header("Summons (M10) — Некромант, Хранитель")]
+        [Tooltip("Кого призывать. Пусто = способность не призывает. Статы призыва берутся из ЭТОГО ассета " +
+                 "и множатся на SummonHealthEff/SummonDamageEff призывателя.")]
+        [SerializeField] private UnitData _summonUnit;
+
+        [Tooltip("Сколько призывает за один каст.")]
+        [Min(1)]
+        [SerializeField] private int _summonCount = 1;
+
+        [Tooltip("Максимум ЖИВЫХ призывов от этой способности. Лимит достигнут — каст не идёт вовсе " +
+                 "(мана и КД целы, игрок видит предел глазами). 0 = без лимита.")]
+        [Min(0)]
+        [SerializeField] private int _summonLimit = 3;
+
+        [Tooltip("Срок жизни призыва, сек. 0 = бессрочно (обычный случай): живёт до конца боя или своей смерти.")]
+        [Min(0f)]
+        [SerializeField] private float _summonLifetimeSeconds;
+
+        [Tooltip("Призыв умирает вместе с призывателем. Выкл = переживает его (земляной голем Мага бандитов).")]
+        [SerializeField] private bool _summonDiesWithSummoner;
+
         [Header("Displacement (§9.9) — Монах")]
         [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. На линии полёта — урон-ядро.")]
         [SerializeField] private bool _displaces;
@@ -256,6 +277,24 @@ namespace Guildmaster.Data.Definitions
 
             return value;
         }
+
+        /// <summary>Кого призывает способность. null = не призывает.</summary>
+        public UnitData SummonUnit => _summonUnit;
+
+        /// <summary>Сколько тел появляется за каст.</summary>
+        public int SummonCount => _summonCount < 1 ? 1 : _summonCount;
+
+        /// <summary>Максимум живых призывов от этой способности; 0 = без лимита.</summary>
+        public int SummonLimit => _summonLimit;
+
+        /// <summary>Срок жизни призыва в секундах; 0 = бессрочно.</summary>
+        public float SummonLifetimeSeconds => _summonLifetimeSeconds;
+
+        /// <summary>Призыв уходит вместе с призывателем.</summary>
+        public bool SummonDiesWithSummoner => _summonDiesWithSummoner;
+
+        /// <summary>Способность призывает тела на поле.</summary>
+        public bool Summons => _summonUnit != null;
 
         public bool Displaces => _displaces;
         public float DisplaceDistance => _displaceDistance;

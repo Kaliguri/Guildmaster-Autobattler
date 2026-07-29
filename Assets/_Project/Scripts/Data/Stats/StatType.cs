@@ -55,5 +55,11 @@ namespace Guildmaster.Data.Stats
         MaxResource = 27,       // Ф2
         StartResource = 28,     // Ф2 (init-only)
         ResourceGainEff = 29,   // Ф2
+
+        // --- Сила призывов (заявка Макса 2026-07-29, ГДД «Статы» §На будущее) ---
+        // Две ручки, а не одна: предметы и эффекты должны усиливать живучесть призывов отдельно от их
+        // урона. Множители вокруг 1.0, применяются к базе ассета призванного юнита при его сборке.
+        SummonHealthEff = 30,   // PercentMult, старт 1.0 — множитель MaxHP призыва
+        SummonDamageEff = 31,   // PercentMult, старт 1.0 — множитель AutoAttackDamage призыва
     }
 }

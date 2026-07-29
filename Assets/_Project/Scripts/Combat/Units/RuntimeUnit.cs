@@ -211,6 +211,26 @@ namespace Guildmaster.Combat
         /// <summary>Занят кастом — подготовкой или каналом. То, что читают движение и авто-атака.</summary>
         public bool IsCastBusy => CastingAbilityIndex >= 0;
 
+        // --- Призыв (M10). Владелец полей — SummonSystem; AbilitySystem их только заполняет при спавне. ---
+
+        /// <summary>Кто призвал этого юнита. null = юнит пришёл из расстановки, а не из боя.</summary>
+        public RuntimeUnit Summoner;
+
+        /// <summary>Id способности, которая его призвала — по нему считается лимит живых призывов.</summary>
+        public string SummonAbilityId;
+
+        /// <summary>
+        /// Тиков жизни осталось. 0 = призыв бессрочный (живёт до конца боя или своей смерти) — это
+        /// нормальный случай, срок жизни объявляет сама способность.
+        /// </summary>
+        public int SummonLifetimeRemaining;
+
+        /// <summary>Умирает вместе с призывателем (решение по каждому призыву своё, поле ассета).</summary>
+        public bool DiesWithSummoner;
+
+        /// <summary>Юнит призван в бою, а не выставлен расстановкой.</summary>
+        public bool IsSummon => Summoner != null;
+
         /// <summary>Помечен DeathSystem — исключается из всех систем с текущего тика.</summary>
         public bool IsDead;
 
