@@ -37,9 +37,10 @@ description: >-
   tech-debt.md      ЖИВОЕ — отложенный долг и главная будущая таска
   tech-changelog.md АРХИВ — записи 19.06-28.07.2026, не пополняется
   index.md          ЖИВОЕ — MOC, навигация
-10-reference/       смешанно: предписывающие живы (code-standards, палитра, типографика),
-                    описывающие код заморожены
-20-explanation/     почти целиком АРХИВ — пересказ кода
+10-reference/       ЖИВОЕ, но только предписывающее: code-standards, editor-tools, scene-sorting,
+                    ui-typography, vfx-color, asset-inventory + генерируемый audio-inventory.
+                    Описывавшие код доки удалены 30.07.2026
+(20-explanation/)   РАСФОРМИРОВАН 30.07.2026 — описание вернулось в код, «почему» в journal/
 30-how-to/          ЖИВОЕ — про среду и пайплайны, не про код
 40-planning/        АРХИВ замысла по фазам
 ```

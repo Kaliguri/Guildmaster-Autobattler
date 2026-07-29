@@ -11,7 +11,7 @@ updated: 2026-07-16
 
 > Как правильно заводить ассеты (арт, аудио, анимации) в проект **до** того, как начнётся плотная разработка контента.
 > Цель — чтобы не пришлось переразбирать импорт-настройки и историю git на сотне файлов потом.
-> Связано: [[tech/30-how-to/project-setup|How-to - Project Setup]], [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]], [[tech/10-reference/assemblies|Reference - Assemblies]].
+> Связано: [[tech/30-how-to/project-setup|How-to - Project Setup]], [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]], карта сборок (сами `.asmdef`).
 
 ---
 

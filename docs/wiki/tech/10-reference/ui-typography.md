@@ -9,7 +9,7 @@ updated: 2026-07-27
 > «на глаз в каждом экране» — он выбирается по ЯРУСУ, к которому принадлежит элемент. Здесь —
 > шкала, ярусы, правила и примеры.
 >
-> Связано: [[tech/10-reference/ui-navigation|Reference - UI Navigation]], токены —
+> Связано: [[tech/00-meta/journal/2026-07-30-the-world-replicates-the-view-does-not|Journal - The World Replicates, The View Does Not]], токены —
 > `Assets/_Project/UI/Theme/tokens.primitives.uss`, применение — `components.uss`.
 
 **Правило номер один:** `font-size` задаётся ТОЛЬКО токеном `--gm-font-*` и только в USS.

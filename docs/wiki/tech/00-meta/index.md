@@ -13,7 +13,12 @@ updated: 2026-07-28
 > вообще не из закрытого списка статусов). Актуальный статус смотри в дашборде выше, в шапке самого
 > дока или прогоном `scripts/check-wiki-frontmatter.ps1`. **Не возвращать ярлыки в списки.**
 
-> **Кластеры (Diátaxis-раскладка, папки нумерованы для порядка):** `10-reference/` (сухие факты) · `20-explanation/` (как и почему устроен код) · `30-how-to/` (решить задачу) · `40-planning/` (планы и роадмап) · `00-meta/` (служебное).
+> **Кластеры (папки нумерованы для порядка):** `00-meta/` (журнал решений, техдолг, этот индекс) ·
+> `10-reference/` (то, что код предписывает: стандарты, конвенции, генерируемые реестры) ·
+> `30-how-to/` (решить задачу в среде) · `40-planning/` (планы и роадмап, архив замысла).
+> **`20-explanation/` расформирован 30.07.2026** — описание кода вернулось в код, обоснования уехали в
+> `00-meta/journal/`. Почему —
+> [[tech/00-meta/journal/2026-07-30-code-owns-truth-journal-owns-why|Journal - Code Owns Truth, Journal Owns Why]].
 
 ## Дашборд готовности (авто)
 
@@ -64,35 +69,31 @@ SORT updated ASC, file.name ASC
 - [[tech/40-planning/lighting-2d|2D Lighting]] — динамический 2D-свет, тёмные сцены, normal-карты через Laigter.
 - [[tech/40-planning/save-system|Save System]] — профили и гильдии, версионирование, миграции, Steam Cloud, кооп-швы.
 
-## Reference (`10-reference/`) — сухие факты
+## Reference (`10-reference/`) — то, что код ПРЕДПИСЫВАЕТ
 
-- [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]] — утверждённый стек, паттерны, уроки прошлого проекта.
-- [[tech/10-reference/code-standards|Reference - Code Standards]] — инварианты кода, документирование, детерминизм, фолбэки, меню редактора.
-- [[tech/10-reference/assemblies|Assemblies]] — карта asmdef, граф зависимостей, правила.
-- [[tech/10-reference/combat-model|Combat Model]] — «Сосуд + Реликвия», стат-система, модель эффектов/диспела.
-- дата-слой (код `Assets/_Project/Scripts/Data/`, правила — скилл `xgaida-x-nixi-data-authoring`) — три слоя данных, каталог SO, id/лок-конвенции, реестр, валидация.
-- [[tech/10-reference/saves|Saves]] — автосейв, хост, мультиплеер.
-- [[tech/10-reference/asset-inventory|Asset Inventory]] — какой контент в проекте, откуда, лицензии, что используется.
-- [[tech/10-reference/editor-tools|Editor Tools]] — наш тулинг под одним корнем `Alebardium`, раскладка и приоритеты меню.
-- [[tech/10-reference/audio-inventory|Audio Inventory]] — реестр звуков: генерируется из карты звука скриптом, не правится руками.
-- [[tech/10-reference/scenes|Scenes]] — какие сцены есть, что каждая держит, когда грузится.
+Здесь остались доки, которые задают правила, и один генерируемый реестр. Всё, что **описывало** код
+(карта сборок, боевая модель, дата-слой, сцены, арена, сейвы, навигация, ввод), удалено 30.07.2026:
+правда о коде живёт в коде, «почему» — в `journal/`.
+
+- [[tech/10-reference/code-standards|Reference - Code Standards]] — инварианты кода, документирование, детерминизм, фолбэки, меню редактора. **Читать перед первой правкой `.cs`.**
+- [[tech/10-reference/editor-tools|Editor Tools]] — тулинг под одним корнем `Alebardium`, раскладка и приоритеты меню.
 - [[tech/10-reference/scene-sorting|Scene & Sorting]] — конвенции именования в сцене, сортировочные слои 2D, Y-sort.
-- [[tech/10-reference/input-camera|Input & Camera]] — Input System за `IInputService`, Cinemachine (4 режима, риг в `WorldScene`).
-- [[tech/10-reference/ui-navigation|UI Navigation]] — стек-навигатор, типы экранов/слои, ввод = f(стек, фаза), `PointerOverUI`.
-- [[tech/10-reference/ui-typography|UI Typography]] — шкала кегля по ярусам: единый источник размеров и стиля текста в UI.
-- [[tech/10-reference/vfx-color|Reference - VFX Color]] — цвет боевых эффектов: два поля на юните, потребители, множители, порог bloom.
-- [[tech/10-reference/arena|Arena & Deployment]] — геометрия арены как данные, зоны Normal/Extended.
+- [[tech/10-reference/ui-typography|UI Typography]] — шкала кегля по ярусам: единый источник размеров текста.
+- [[tech/10-reference/vfx-color|Reference - VFX Color]] — цвет боевых эффектов: поля на юните, множители, порог bloom.
+- [[tech/10-reference/asset-inventory|Asset Inventory]] — какой контент в проекте, откуда, лицензии.
+- [[tech/10-reference/audio-inventory|Audio Inventory]] — реестр звуков: **генерируется** скриптом из карты звука, руками не правится.
 
-## Explanation (`20-explanation/`) — как устроен код
+## Как устроен код
 
-- [[tech/20-explanation/index|Explanation - Code Map]] — слои, поток данных, карта классов, порядок чтения.
-- [[tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly|Journal - The Bus Stops At The Combat Assembly]] — VContainer, скоупы, MessagePipe vs C#-события.
-- [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]] — тик 30 Гц, аккумулятор, команды, RNG, пауза.
-- [[tech/00-meta/journal/2026-07-30-stats-pipeline-neither-reorders-nor-clamps|Journal - The Stats Pipeline Neither Reorders Nor Clamps]] — SO-контент, `StatType`, модификаторы, пайплайн урона.
-- [[tech/00-meta/journal/2026-07-30-effects-are-ordered-by-id-and-attributed-by-weight|Journal - Effects Are Ordered By Id, Attributed By Weight]] — `[SerializeReference]`, stateless-компоненты, стаки, диспел.
-- слой презентации (код `Assets/_Project/Scripts/Presentation/`) — раздел сим/визуал, `CombatPresenter`, сглаживание 30→60.
-- [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]] — **host-authoritative** (решение), что запарковано, главная таска MP.
-- [[tech/20-explanation/run-flow|Run Flow]] — стейт-машина забега, события как флоу, автосейв, реконнект.
+**Кластера `20-explanation/` больше нет.** «Как работает» отвечает сам код (`<summary>`/`<remarks>`,
+плюс сгенерированный Doxygen API-сайт) и тесты; «почему так решили и что отвергли» — записи журнала.
+Начать чтение стоит с них:
+
+- [[tech/00-meta/journal/2026-07-30-the-sim-is-not-unit-shaped|Journal - The Sim Is Not Unit-Shaped]] — почему бой считают системы над данными, а не юниты сами себя.
+- [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]] — причина у каждого шага тика; там же «спираль смерти».
+- [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep|Journal - Host-Authoritative, Not Lockstep]] — сетевая модель и честный контр-аргумент.
+- [[tech/00-meta/journal/2026-07-30-the-bus-stops-at-the-combat-assembly|Journal - The Bus Stops At The Combat Assembly]] — почему `Combat` не знает MessagePipe.
+- [[tech/00-meta/journal/2026-07-30-why-the-rules-are-this-strict-lessons-from-fewseconds|Journal - Why The Rules Are This Strict]] — числа прошлого проекта, из которых выросли HARD-правила.
 
 ## How-to (`30-how-to/`) — решить задачу
 

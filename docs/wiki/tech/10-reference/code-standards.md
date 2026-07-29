@@ -9,7 +9,7 @@ updated: 2026-07-27
 > не делать и почему. `CLAUDE.md` и `.cursor/rules/project-context.mdc` ссылаются сюда и не повторяют
 > содержимое: правило, живущее в двух местах, расходится в третьем.
 >
-> Связано: [[tech/10-reference/assemblies|Reference - Assemblies]],
+> Связано: карта сборок (сами `.asmdef`),
 > [[tech/00-meta/journal/2026-07-30-library-picks-and-the-alternatives-we-turned-down|Journal - Library Picks And The Alternatives We Turned Down]],
 > [[tech/10-reference/editor-tools|Reference - Editor Tools]].
 
@@ -38,7 +38,7 @@ updated: 2026-07-27
 - Код пишется так, чтобы читаться как соседний: плотность комментариев, именование и идиомы берутся
   из окружающего файла, а не из общих привычек.
 
-Карта сборок — [[tech/10-reference/assemblies|Reference - Assemblies]]. Проверять перед созданием
+Карта сборок — карта сборок (сами `.asmdef`). Проверять перед созданием
 нового скрипта: в какую сборку он попадёт. Новый модуль — обновить и карту.
 
 Игровой код и контент лежат под `Assets/_Project/` (`Scripts/`, `ScriptableObjects/`, `Prefabs/`,

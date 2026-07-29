@@ -184,7 +184,7 @@ SmartFormat и дубль command ID), `ConfigValidationTests` + `ProfileService
 | `Guild/RunState.cs` → `SlotOwner` | `int[]` — индекс игрока. Сломается на реконнекте и смене состава |
 | `Game/Services/SettingsService.cs` | Пишет на диск **мимо `ISaveService`** своим `File.WriteAllText`: без атомарности, без `.bak`, без версии. Два владельца записи |
 | Профиль / мета | **Не существует вовсе** |
-| Реконнект, репликация | Описаны в `docs/wiki/tech/20-explanation/run-flow.md` §10, в коде нет |
+| Реконнект, репликация | Описаны в коде `Assets/_Project/Scripts/Game/Flow/` §10, в коде нет |
 
 ---
 

@@ -13,7 +13,7 @@ updated: 2026-07-28
 
 > Как боевой тик разрешается **как один момент**, а не как очередь по списку юнитов. Документ отвечает на вопрос «кто что видит внутри одного тика» и фиксирует решения, принятые после того, как зеркальный бой трижды оказался решён порядком обработки.
 >
-> Связано с [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]] §3.1a–3.1b, [[tech/00-meta/journal/2026-07-30-effects-are-ordered-by-id-and-attributed-by-weight|Journal - Effects Are Ordered By Id, Attributed By Weight]], [[tech/10-reference/combat-model|Reference - Combat Model]].
+> Связано с [[tech/00-meta/journal/2026-07-30-why-the-tick-order-is-this-order|Journal - Why The Tick Order Is This Order]] §3.1a–3.1b, [[tech/00-meta/journal/2026-07-30-effects-are-ordered-by-id-and-attributed-by-weight|Journal - Effects Are Ordered By Id, Attributed By Weight]], боевая модель (код `Assets/_Project/Scripts/Combat/`).
 
 ---
 

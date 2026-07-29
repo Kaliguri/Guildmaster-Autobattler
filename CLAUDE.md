@@ -22,7 +22,7 @@
 | События | **MessagePipe** pub/sub через VContainer — развязка Combat → UI / Audio / VFX. |
 | Асинхронность | **UniTask** вместо корутин для всего time-based. |
 | Звук | Только за `IAudioService`. FMOD API из игровой логики не дёргать. |
-| Ввод | Только за `IInputService` (`Guildmaster.Core.Input`): карты действий строятся в коде, контексты по фазе игры. Замысел — [`10-reference/input-camera`](docs/wiki/tech/10-reference/input-camera.md) (архив). |
+| Ввод | Только за `IInputService` (`Guildmaster.Core.Input`): карты действий строятся в коде, контексты по фазе игры. Почему в коде, а не ассетом, и какова цена — запись [«Input Maps Are Built In Code»](docs/wiki/tech/00-meta/journal/2026-07-30-input-maps-are-built-in-code.md). |
 | Камера | **Cinemachine**, 4 режима (`Action` / `Overview` / `Dev` / `Map`), `CameraModeController`. Боевые режимы клампятся зоной арены, `Map` — своей. |
 | Текст | Локализация EN + RU: ключи закладываются в SO сразу, не «потом». |
 | Твины | **LitMotion**, но пока живёт точечно (`Presentation/UnitView.cs`) — UI-анимации и боевые цифры на него ещё не переведены. |
@@ -49,9 +49,9 @@
 
 ## Сохранения
 
-> Раздел держит правду в одиночку. `10-reference/tech-stack` и `10-reference/saves` с 30.07.2026
-> заморожены (`status: archive`) — в этой части они и отстали: числят бэкендом Easy Save и
-> `persistentDataPath`. Догонять их не нужно, правда о сейвах — здесь и в коде.
+> Раздел держит правду в одиночку. Доки `10-reference/tech-stack` и `10-reference/saves`, которые
+> числили бэкендом Easy Save и `persistentDataPath`, **удалены 30.07.2026** вместе с остальным
+> описательным справочником. Правда о сейвах — здесь и в коде.
 
 Живой и единственный сейв — **`JsonFileSaveService`** за интерфейсом `ISaveService`: Newtonsoft,
 каталог `Saves/` под корнем `GameDataPath`, атомарная запись через временный файл + `.bak`, битый
@@ -112,9 +112,9 @@
   имена в `GameDataPath`.
 - **Док, который ПЕРЕСКАЗЫВАЕТ код, заморожен** — читать как замысел, не как правду; править не
   нужно. Владелец статуса один: `status` во frontmatter самого дока (`archive` = заморожен). Списка
-  здесь нет намеренно. Заморозка накрыла почти весь `20-explanation` и описательную часть
-  `10-reference`; доки, которые код **предписывают** (`code-standards`, палитра, типографика), и
-  `30-how-to` про среду — живые.
+  здесь нет намеренно. Кластер `20-explanation` расформирован, описательная часть `10-reference`
+  удалена; живы доки, которые код **предписывают** (`code-standards`, `editor-tools`, палитра,
+  типографика, сортировка), генерируемый `audio-inventory` и `30-how-to` про среду.
 - **Doxygen публикует API-сайт прямо из `Assets/_Project/Scripts`** — справочник классов
   генерируется, руками его не пишем.
 

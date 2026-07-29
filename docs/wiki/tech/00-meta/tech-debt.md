@@ -102,7 +102,7 @@ updated: 2026-07-30
 | ID | Находка | Статус | Приоритет |
 |---|---|---|---|
 | I1 | `run-tests.ps1` хардкодит Unity `6000.0.23f1`, проект на `6000.4.8f1` → локальный прогон падает `Unity not found`. Читать версию из `ProjectVersion.txt` | ✅ исправлен §2.5 | P0 (5 мин) |
-| I2 | Билд первой сценой ставит `CoreScene` (`EditorBuildSettings`), GPT утверждает что она пустая, а root — в `BattleScene` → boot-flow не замкнут. Запуск из `BattleScene` — осознанный dev-harness | ✅ снят 2026-07-26: `CoreScene` держит `[Root]` и `[Bootstrap]`, обе игровые сцены грузятся с бута — flow замкнут ([[tech/10-reference/scenes|Reference - Scenes]]) | P3 |
+| I2 | Билд первой сценой ставит `CoreScene` (`EditorBuildSettings`), GPT утверждает что она пустая, а root — в `BattleScene` → boot-flow не замкнут. Запуск из `BattleScene` — осознанный dev-harness | ✅ снят 2026-07-26: `CoreScene` держит `[Root]` и `[Bootstrap]`, обе игровые сцены грузятся с бута — flow замкнут (сцены проекта (`Assets/_Project/Scenes/`)) | P3 |
 
 **Устаревшее в аудитах / неверное на текущем дереве:**
 

@@ -62,7 +62,7 @@ Assets/
 
 - [x] Создать `.asmdef` файлы для каждого модуля в `Scripts/`
 - [x] Создать `.asmdef` для `Tests/EditMode/` и `Tests/PlayMode/`
-- [x] Актуализировать карту сборок в [[tech/10-reference/assemblies|Reference - Assemblies]]
+- [x] Актуализировать карту сборок в карта сборок (сами `.asmdef`)
 
 Зависимости:
 ```
