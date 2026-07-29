@@ -12,6 +12,34 @@ namespace Guildmaster.Balance.Editor
     /// </summary>
     internal static class BalanceMenu
     {
+        // Полный круг — то, что скилл называет «прогони баланс»: сравнение честно только на одних линзах.
+        // Состав и порядок берутся из BalanceRound, того же, что читает командная строка.
+        [MenuItem("Alebardium/Balance/Полный круг — все бенчи по порядку", priority = 90)]
+        private static void FullRound()
+        {
+            var failed = new System.Collections.Generic.List<string>();
+            foreach (BalanceRound.Step step in BalanceRound.Steps)
+            {
+                try
+                {
+                    double t0 = EditorApplication.timeSinceStartup;
+                    (string csv, string md) = step.Run();
+                    Debug.Log($"[SimBench] {step.Title}: готово за {EditorApplication.timeSinceStartup - t0:0.0} с." +
+                              $"\nCSV: {csv}\nMD:  {md}");
+                }
+                catch (Exception e)
+                {
+                    failed.Add(step.Key);
+                    Debug.LogError($"[SimBench] {step.Title} — ошибка: {e}");
+                }
+            }
+
+            // Сайт собирается один раз в конце: одиннадцать пересборок подряд не дают ничего нового.
+            BalanceSite.Rebuild();
+            if (failed.Count > 0) Debug.LogError($"[SimBench] Круг неполный, упали: {string.Join(", ", failed)}.");
+            else Debug.Log("[SimBench] Круг прогнан целиком.");
+        }
+
         [MenuItem("Alebardium/Balance/0. Audit Content", priority = 100)]
         private static void Audit() => RunReport("Аудит контента", ContentAuditor.Run);
 
@@ -20,6 +48,11 @@ namespace Guildmaster.Balance.Editor
 
         [MenuItem("Alebardium/Balance/0. Content Cards (имена, описания, способности)", priority = 102)]
         private static void Cards() => RunReport("Карточки контента", ContentCards.Run);
+
+        // PvE-линза идёт ПЕРЕД круговыми форматами намеренно: игра — PvE, и «прошёл ли бой» это главный
+        // вопрос, а «кто сильнее в зеркале» — вспомогательный.
+        [MenuItem("Alebardium/Balance/1. Encounter Bench — PvE (отряд против энкаунтеров)", priority = 110)]
+        private static void Encounters() => RunReport("Энкаунтеры (PvE)", EncounterBench.Run);
 
         [MenuItem("Alebardium/Balance/1. DPS Bench (all relics)", priority = 120)]
         private static void Dps() => RunReport("DPS-бенч", DpsBench.Run);
@@ -58,6 +91,25 @@ namespace Guildmaster.Balance.Editor
 
         [MenuItem("Alebardium/Balance/Run Selected Scenario", validate = true)]
         private static bool RunScenarioValidate() => Selection.activeObject is BalanceScenarioData;
+
+        // Разбор одного боя событиями: выделение решает, какой это бой (реликвия + энкаунтер, две
+        // реликвии или сценарий). Отвечает на «почему», на который агрегатные таблицы не отвечают.
+        [MenuItem("Alebardium/Balance/Трейс выделенного — лента одного боя", priority = 181)]
+        private static void Trace()
+        {
+            try
+            {
+                string md = TraceBench.RunSelection(Selection.objects);
+                if (md != null) Debug.Log($"[SimBench] Лента боя записана:\n{md}");
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[SimBench] Трейс боя — ошибка: {e}");
+            }
+        }
+
+        [MenuItem("Alebardium/Balance/Трейс выделенного — лента одного боя", validate = true)]
+        private static bool TraceValidate() => TraceBench.CanTrace(Selection.objects);
 
         private static void RunReport(string title, Func<(string csv, string md)> action)
         {
