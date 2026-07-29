@@ -255,9 +255,8 @@ namespace Guildmaster.Combat
                 for (int c = 0; c < count; c++)
                 {
                     // Count>1 → вертикальный кластер вокруг якоря (как компактные ряды в хардкод-боях).
-                    float dy = (c - (count - 1) * 0.5f) * u.Spacing;
-                    var pos = new Vector2(u.Position.x, u.Position.y + dy);
-                    _simulation.EnqueueUnitSpawn(_factory.Create(enemy, null, team: 1, pos));
+                    // Формулу держит сам пакет: её же читает балансный стенд, и разъехаться они не должны.
+                    _simulation.EnqueueUnitSpawn(_factory.Create(enemy, null, team: 1, u.PositionOf(c)));
                 }
             }
         }
