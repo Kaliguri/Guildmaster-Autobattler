@@ -1,4 +1,4 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using Guildmaster.Combat.Commands;
 using Guildmaster.Core.Input;
 using Guildmaster.Data.Definitions;
@@ -57,6 +57,10 @@ namespace Guildmaster.DevTools
         // Контент-БД для дев-срезов: релик берётся по id (relic.*) в момент вызова команды.
         private IContentDatabase _content;
 
+        // Снапшот арены: по зонам расстановки команды считают КРАЯ поля, а не хардкодят координаты —
+        // «максимально далеко друг от друга» на разных аренах означает разные числа.
+        private Core.Arena.ArenaLayoutData _arena;
+
         // Открыта ли консоль сейчас: пока да — глушим наш игровой ввод (кроме F5), чтобы набор
         // команд в консоли не протекал в геймплей (пауза/смена вида/пан-зум/перезапуск боя).
         private bool _consoleOpen;
@@ -74,13 +78,15 @@ namespace Guildmaster.DevTools
 
         [Inject]
         public void Construct(CombatSimulation simulation, CombatDebugDraw debugDraw, RuntimeUnitFactory factory,
-            IInputService input, IContentDatabase contentDatabase, IObjectResolver resolver)
+            IInputService input, IContentDatabase contentDatabase, Core.Arena.ArenaLayoutData arena,
+            IObjectResolver resolver)
         {
             _simulation = simulation;
             _debugDraw  = debugDraw;
             _factory    = factory;
             _input      = input;
             _content = contentDatabase;
+            _arena   = arena;
             contentDatabase.TryGet("enemy.training_dummy", out _dummyEnemy);
             contentDatabase.TryGet("enemy.bone_dev", out _boneDuelist);
             // Сессия боя живёт в RootScope: в реальном забеге резолвится, в standalone dev-арене (без Root) — null.
@@ -182,8 +188,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_battle", "Запустить тест-бой N юнитов за каждую сторону")]
         public void SpawnBattle(int countPerTeam = 2)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
 
             ResetForNewBattle();
 
@@ -207,8 +213,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_crowd", "Плотный клубок обеих команд для теста коллизии/расталкивания")]
         public void SpawnCrowd(int perTeam = 8)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
 
             ResetForNewBattle();
 
@@ -232,7 +238,7 @@ namespace Guildmaster.DevTools
         [Command("gm_sep", "Показать параметры расталкивания (радиус/сила/итерации)")]
         public void SepInfo()
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (!SimReady()) return;
             var s = _simulation.Separation;
             Debug.Log($"[GuildmasterCommands] - gm_sep: BodyRadiusPerSize={s.BodyRadiusPerSize} (⌀ при Size1 = {s.BodyRadiusPerSize * 2f}), Strength={s.Strength}, Iterations={s.Iterations}, SameTeamScale={s.SameTeamScale}");
         }
@@ -241,7 +247,7 @@ namespace Guildmaster.DevTools
         [Command("gm_sep_radius", "Радиус тела на единицу Size (live)")]
         public void SepRadius(float radiusPerSize)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (!SimReady()) return;
             _simulation.Separation.BodyRadiusPerSize = Mathf.Max(0.01f, radiusPerSize);
             SepInfo();
         }
@@ -250,7 +256,7 @@ namespace Guildmaster.DevTools
         [Command("gm_sep_strength", "Сила расталкивания за тик (live)")]
         public void SepStrength(float strength)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (!SimReady()) return;
             _simulation.Separation.Strength = Mathf.Clamp(strength, 0f, 1f);
             SepInfo();
         }
@@ -259,7 +265,7 @@ namespace Guildmaster.DevTools
         [Command("gm_sep_iters", "Проходов расталкивания за тик (live)")]
         public void SepIters(int iterations)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (!SimReady()) return;
             _simulation.Separation.Iterations = Mathf.Max(1, iterations);
             SepInfo();
         }
@@ -268,7 +274,7 @@ namespace Guildmaster.DevTools
         [Command("gm_sep_ally", "Мягкость расталкивания своих (0..1, live)")]
         public void SepAlly(float scale)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
+            if (!SimReady()) return;
             _simulation.Separation.SameTeamScale = Mathf.Clamp01(scale);
             SepInfo();
         }
@@ -277,8 +283,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_spearman", "Заспавнить Железного копейщика против кластера (срез шага 4)")]
         public void SpawnSpearman(int enemies = 3)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
             RelicData relic = DevRelic("relic.iron_spearman");
             if (relic == null) return;
 
@@ -302,8 +308,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_shepherd", "Заспавнить Светлого пастыря + раненых союзников против болванчиков (срез §10.1)")]
         public void SpawnShepherd(int allies = 2)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
             RelicData relic = DevRelic("relic.light_shepherd");
             if (relic == null) return;
 
@@ -336,8 +342,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_cryomancer", "Заспавнить Криоманта против кластера болванчиков (срез §10.2)")]
         public void SpawnCryomancer(int enemies = 3)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
             RelicData relic = DevRelic("relic.cryomancer");
             if (relic == null) return;
 
@@ -361,8 +367,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_defender", "Заспавнить Надёжного защитника против ударных болванчиков (срез §10.3)")]
         public void SpawnDefender(int enemies = 3)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
             RelicData relic = DevRelic("relic.defender");
             if (relic == null) return;
 
@@ -386,8 +392,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_ranger", "Заспавнить Лесного следопыта против кластера болванчиков (срез §10.4)")]
         public void SpawnRanger(int enemies = 3)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
             RelicData relic = DevRelic("relic.ranger");
             if (relic == null) return;
 
@@ -411,8 +417,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_assassin", "Заспавнить Скрытного убийцу против болванчиков (срез §10.5)")]
         public void SpawnAssassin(int enemies = 3)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
             RelicData relic = DevRelic("relic.assassin");
             if (relic == null) return;
 
@@ -437,8 +443,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_monk", "Заспавнить Монаха вихря против болванчиков (срез §10.6)")]
         public void SpawnMonk(int enemies = 4)
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
             RelicData relic = DevRelic("relic.whirl_monk");
             if (relic == null) return;
 
@@ -613,8 +619,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_mirror", "Зеркальный отряд 4v4 из реальных китов (проверка преимущества стороны)")]
         public void SpawnMirror()
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
 
             // Смотреть бой из-под главного меню нельзя — сначала уводим на площадку, а спавним, когда она
             // откроется (вход асинхронный: меню закрывается, отряд материализуется). Если мы уже на
@@ -669,9 +675,8 @@ namespace Guildmaster.DevTools
         [Command("gm_spawn_bone_duel", "1×1 bone dev duelist mirror (skeletal UnitView smoke)")]
         public void SpawnBoneDuel()
         {
-            if (_simulation == null) { Debug.LogWarning("[GuildmasterCommands] - Симуляция не активна"); return; }
-            if (_factory == null)    { Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён"); return; }
-
+            // Сначала площадка, гейты — потом. Вводить команду из главного меню законно: она сама уводит
+            // на Ристалище, а проверять живую симуляцию ДО входа значит отказывать в том, ради чего входим.
             if (!_onProvingGrounds && _provingGroundsPub != null && RequestProvingGrounds())
             {
                 _pendingOnProvingGrounds = self => self.SpawnBoneDuelNow();
@@ -683,6 +688,9 @@ namespace Guildmaster.DevTools
 
         private void SpawnBoneDuelNow()
         {
+            if (!SimReady()) return;
+            if (!FactoryReady()) return;
+
             if (_boneDuelist == null)
             {
                 Debug.LogError("[GuildmasterCommands] - юнита 'enemy.bone_dev' нет в контент-БД → дуэль не запущена");
@@ -691,13 +699,78 @@ namespace Guildmaster.DevTools
 
             ResetForNewBattle();
 
-            const float x = 2.2f;
-            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 0, new Vector2(-x, 0f)));
-            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 1, new Vector2(x, 0f)));
+            ResolveDuelEdges(out Vector2 left, out Vector2 right);
+            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 0, left));
+            _simulation.EnqueueUnitSpawn(_factory.Create(_boneDuelist, null, 1, right));
 
             _lastBattleSetup = self => self.SpawnBoneDuel();
             string view = _boneDuelist.ViewPrefab != null ? _boneDuelist.ViewPrefab.name : "null";
-            Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: enemy.bone_dev 1×1 (ViewPrefab={view})");
+            Debug.Log($"[GuildmasterCommands] - gm_spawn_bone_duel: enemy.bone_dev 1×1 " +
+                      $"({left.x:0.##} vs {right.x:0.##}, дистанция {(right.x - left.x):0.##}; ViewPrefab={view})");
+        }
+
+        /// <summary>
+        /// Крайние точки своих зон расстановки — дуэлянты встают максимально далеко друг от друга. Дистанция
+        /// здесь не украшение: подход, спринт и атака с разбега видны только тогда, когда бойцам есть куда
+        /// разбегаться. Зоны читаются из снапшота арены, а не задаются числом: на другой арене «край» другой.
+        /// </summary>
+        private void ResolveDuelEdges(out Vector2 left, out Vector2 right)
+        {
+            const float margin = 0.6f;   // запас от кромки: юнит не должен влипать в границу зоны
+            const float fallbackX = 6f;  // бесконечное поле (dev-арена без авторинга) — разводим фиксированно
+
+            float y = 0f;
+            float xLeft = float.NaN, xRight = float.NaN;
+
+            if (_arena != null)
+            {
+                y = _arena.Bounds.Center.y;
+                for (int i = 0; i < _arena.Zones.Count; i++)
+                {
+                    Core.Arena.DeploymentZone zone = _arena.Zones[i];
+                    float min = zone.Area.Center.x - zone.Area.HalfSize.x + margin;
+                    float max = zone.Area.Center.x + zone.Area.HalfSize.x - margin;
+
+                    // Команда 0 живёт в зонах игрока (слева), команда 1 — в зонах врага (справа).
+                    if (zone.Side == Core.Arena.DeploymentSide.Player)
+                        xLeft = float.IsNaN(xLeft) ? min : Mathf.Min(xLeft, min);
+                    else
+                        xRight = float.IsNaN(xRight) ? max : Mathf.Max(xRight, max);
+                }
+            }
+
+            // Зон нет — берём кромки поля; поле бесконечное (Unbounded) — фиксированный разнос.
+            if (float.IsNaN(xLeft) || float.IsNaN(xRight))
+            {
+                float halfWidth = _arena != null ? _arena.Bounds.Rect.HalfSize.x : float.PositiveInfinity;
+                float edge = float.IsFinite(halfWidth) ? Mathf.Max(1f, halfWidth - margin) : fallbackX;
+                if (float.IsNaN(xLeft))  xLeft  = -edge;
+                if (float.IsNaN(xRight)) xRight =  edge;
+            }
+
+            left  = new Vector2(xLeft,  y);
+            right = new Vector2(xRight, y);
+        }
+
+        // Гейты боевых команд. Сообщение одно на все команды — раньше эта же строка стояла шестнадцатью
+        // копиями, и «Симуляция не активна» уводило по ложному следу: чаще всего симуляция как раз запущена,
+        // а потеряна ИНЪЕКЦИЯ. Скоуп инжектит этот объект один раз на буте, и перекомпиляция скриптов во
+        // время play-mode (domain reload) обнуляет ссылки, оставляя объект живым и команды видимыми.
+        private bool SimReady()
+        {
+            if (_simulation != null) return true;
+            Debug.LogWarning("[GuildmasterCommands] - симуляция не внедрена. Если игра сейчас запущена — " +
+                             "скрипты перекомпилировались во время play-mode, и domain reload снёс инъекцию " +
+                             "боевого скоупа: перезапусти play-mode.");
+            return false;
+        }
+
+        private bool FactoryReady()
+        {
+            if (_factory != null) return true;
+            Debug.LogWarning("[GuildmasterCommands] - RuntimeUnitFactory не внедрён (см. подсказку про " +
+                             "перезапуск play-mode в сообщении о симуляции).");
+            return false;
         }
 
         private RelicData DevRelic(string id)
