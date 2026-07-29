@@ -19,7 +19,11 @@ param(
     [string]$Title,
     [string]$Summary = "",
     [ValidateSet("Auto", "Direct", "Shadow")][string]$Mode = "Auto",
-    [switch]$OpenSite
+    [switch]$OpenSite,
+
+    # Вместо круга — разбор ОДНОГО боя лентой событий: имена ассетов (реликвия + энкаунтер, две
+    # реликвии или сценарий). Маркер прогона при этом не ставится: трейс не замер, а диагностика.
+    [string[]]$Trace
 )
 
 Set-StrictMode -Version Latest
@@ -54,18 +58,22 @@ if ($effectiveMode -eq "Shadow") {
 }
 
 $benchArg = ($Benches -join ',')
+$traceArg = if ($Trace) { $Trace -join ',' } else { $null }
 
 Write-Host "Режим: $effectiveMode" -ForegroundColor Cyan
 Write-Host "Проект: $target"
-Write-Host "Бенчи: $benchArg"
+Write-Host $(if ($traceArg) { "Трейс боя: $traceArg" } else { "Бенчи: $benchArg" })
 Write-Host "Лог: $logFile"
 
-# 3. Круг.
+# 3. Круг или разбор одного боя. Аргумент передаём СКЛЕЕННОЙ строкой: массив, положенный внутрь
+# списка аргументов, приводится к строке через пробел, и стенд получал бы один ключ вместо списка.
 $started = Get-Date
-$code = Invoke-UnityBatch -ProjectPath $target -LogFile $logFile -ExtraArgs @(
-    "-executeMethod", "Guildmaster.Balance.Editor.BalanceCli.Run",
-    "-benches", $Benches
-)
+$unityArgs = if ($traceArg) {
+    @("-executeMethod", "Guildmaster.Balance.Editor.BalanceCli.Trace", "-assets", $traceArg)
+} else {
+    @("-executeMethod", "Guildmaster.Balance.Editor.BalanceCli.Run", "-benches", $benchArg)
+}
+$code = Invoke-UnityBatch -ProjectPath $target -LogFile $logFile -ExtraArgs $unityArgs
 $elapsed = (Get-Date) - $started
 
 Write-Host ""
@@ -80,15 +88,19 @@ if (Test-Path $logFile) {
     }
 }
 
+$what = if ($traceArg) { "Разбор боя" } else { "Круг" }
+
 if ($code -ne 0) {
-    Write-Host "Круг НЕ прогнан целиком (код $code)." -ForegroundColor Red
+    Write-Host "$what НЕ выполнен (код $code)." -ForegroundColor Red
     Show-UnityLogTail -LogFile $logFile
     exit $code
 }
 
-Write-Host "Круг прогнан целиком." -ForegroundColor Green
-$site = Join-Path $ProjectPath "BalanceReports/site/index.html"
-Write-Host "Сайт отчётов: $site"
-if ($OpenSite -and (Test-Path $site)) { Start-Process $site }
+Write-Host "$what выполнен." -ForegroundColor Green
+if (-not $traceArg) {
+    $site = Join-Path $ProjectPath "BalanceReports/site/index.html"
+    Write-Host "Сайт отчётов: $site"
+    if ($OpenSite -and (Test-Path $site)) { Start-Process $site }
+}
 
 exit 0
