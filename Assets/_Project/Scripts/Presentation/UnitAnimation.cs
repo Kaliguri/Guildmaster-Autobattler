@@ -47,5 +47,29 @@ namespace Guildmaster.Presentation
             if (!attackCycleActive) return false;
             return simInSwing || canAttackWhileMoving || !isMoving;
         }
+
+        /// <summary>
+        /// Прогресс скраба клипа [0..1] по счётчику сим-тиков — с учётом доли ВНУТРИ показываемого тика.
+        /// <para><b>Зачем дробность.</b> Счётчики снимка (<c>WindupRemaining</c>, <c>AttackCooldownTicks</c>)
+        /// целые и меняются <c>TickRate</c> раз в секунду. Скраб по ним даёт клипу ровно столько положений:
+        /// при замахе в 6 тиков — 6 поз на весь замах, сколько бы кадров ни рисовал рендер. Это и читается
+        /// как «визуал в 30 Гц», хотя частота сима тут ни при чём — тем же <c>alpha</c>, которым уже
+        /// интерполируется позиция, поза течёт непрерывно при любом <c>TickRate</c>.</para>
+        /// <para><b>Почему <c>+1</c>.</b> Счётчик в снимке — значение на КОНЕЦ тика, а
+        /// <paramref name="frameAlpha"/> = 0 означает его начало (как и у позиции: <c>alpha</c> = 1 — это
+        /// <c>Position</c>, конец тика). Значит на показанный момент осталось
+        /// <c>ticksLeft + (1 − alpha)</c> тиков.</para>
+        /// </summary>
+        /// <param name="ticksLeft">Сколько тиков осталось на конец показываемого тика.</param>
+        /// <param name="totalTicks">Длина окна в тиках (замах целиком / промежуток до следующего замаха).</param>
+        /// <param name="frameAlpha">Доля внутри показываемого тика [0..1].</param>
+        public static float ScrubProgress(int ticksLeft, int totalTicks, float frameAlpha)
+        {
+            if (totalTicks <= 0) return 0f;
+
+            float remaining = ticksLeft + 1f - frameAlpha;
+            float progress  = 1f - remaining / totalTicks;
+            return progress < 0f ? 0f : (progress > 1f ? 1f : progress);
+        }
     }
 }

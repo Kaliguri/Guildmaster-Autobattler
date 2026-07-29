@@ -116,6 +116,12 @@ namespace Guildmaster.Presentation
 
         private Vector2     _renderPosition;
 
+        // Доля внутри показываемого тика [0..1] — та же, по которой интерполируется позиция. Поза атаки
+        // скрабится ЕЮ, а не целыми счётчиками снимка: иначе клип получал бы ровно TickRate положений в
+        // секунду (при замахе в 6 тиков — 6 поз на весь замах), и рубленность выглядела бы «визуалом в
+        // 30 Гц». С дробной долей поза течёт непрерывно и синхронно с движением при любом TickRate.
+        private float _frameAlpha;
+
         // Тело юнита за швом: один спрайт или полтора десятка частей — виду разницы не видно (см. IUnitBodyVisual).
         private Body.IUnitBodyVisual _body;
         private bool                 _bodyResolved;
@@ -394,6 +400,11 @@ namespace Guildmaster.Presentation
         {
             if (!_hasState) return;
 
+            // Доля нужна не только позиции: по ней же скрабится поза атаки (см. DriveAnimation). Порядок
+            // «презентер раньше видов» держит [DefaultExecutionOrder] на CombatPresenter — иначе поза
+            // отставала бы от позиции на кадр.
+            _frameAlpha = alpha;
+
             _renderPosition = Vector2.Lerp(_snapshot.PreviousPosition, _snapshot.Position, alpha);
             transform.position = new Vector3(
                 _renderPosition.x + _nudgeOffset.x + _attackOffset.x,
@@ -605,8 +616,7 @@ namespace Guildmaster.Presentation
                     {
                         // Замах: скрабим [0..маркер] по прогрессу windup — контакт (маркер) приходится
                         // ровно на конец замаха = сим-тик урона.
-                        float progress = 1f - (float)_snapshot.WindupRemaining / _snapshot.WindupTicks;
-                        progress = Mathf.Clamp01(progress);
+                        float progress = TickScrubProgress(_snapshot.WindupRemaining, _snapshot.WindupTicks);
                         _animator.speed = 0f;
                         _animator.Play(AttackHash, 0, progress * _attackMarkerNormalized);
                     }
@@ -614,8 +624,7 @@ namespace Guildmaster.Presentation
                     {
                         // Хвост: скрабим [маркер..1] по прогрессу окна до следующего замаха — клип
                         // доигрывает ровно к старту следующего удара, цикл лупится в темпе скорости атаки.
-                        float gapProgress = 1f - (float)_snapshot.AttackCooldownTicks / _recoveryGapTicks;
-                        gapProgress = Mathf.Clamp01(gapProgress);
+                        float gapProgress = TickScrubProgress(_snapshot.AttackCooldownTicks, _recoveryGapTicks);
                         float clipT = _attackMarkerNormalized + gapProgress * (1f - _attackMarkerNormalized);
                         _animator.speed = 0f;
                         _animator.Play(AttackHash, 0, clipT);
@@ -642,6 +651,11 @@ namespace Guildmaster.Presentation
                     break;
             }
         }
+
+        // Прогресс скраба по дробному тику: счётчики снимка целые, но показываемый момент лежит ВНУТРИ
+        // тика — долю даёт _frameAlpha, та же, что и у позиции.
+        private float TickScrubProgress(int ticksLeft, int totalTicks)
+            => UnitAnimationSelector.ScrubProgress(ticksLeft, totalTicks, _frameAlpha);
 
         /// <summary>Юнит вошёл в замах авто-атаки — свинг + опц. anticipation-оттяг назад от цели.</summary>
         /// <param name="awayFromTarget">Нормаль «от цели» (куда оттягиваться); zero = без оттяга.</param>
