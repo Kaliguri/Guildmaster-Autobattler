@@ -41,3 +41,6 @@ updated: 2026-07-29
 Шаблон новой карточки: [[gdd/enemies/template-enemy-card|шаблон карточки противника]].
 
 Виды и их подвиды: [[gdd/enemies/species/index|Species - Index]].
+
+Боссы фракций (сценарные, многофазовые): [[gdd/enemies/bosses/index|Enemies - Bosses]] — вся папка
+теория, требуемые от движка швы сведены в [[gdd/00-meta/roadmap|Roadmap]] §Блок 2.55.

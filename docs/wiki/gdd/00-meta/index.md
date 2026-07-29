@@ -106,7 +106,7 @@ SORT file.name ASC
   [[gdd/40-content/authoring/item|предмет]], [[gdd/40-content/authoring/relic-upgrades|улучшения]].
 - Ростер — [[roster/index|Roster - Overview]] · [[gdd/roster/tag-reference|Справочник тегов]] ·
   [[gdd/roster/unit-tag-glossary|Глоссарий доп-тегов]] · [[gdd/roster/relic-tag-assignments|Раскладка тегов]].
-- Враги — [[enemies/index|Enemies - Catalog]] · [[enemies/species/index|Species - Index]].
+- Враги — [[enemies/index|Enemies - Catalog]] · [[enemies/species/index|Species - Index]] · [[gdd/enemies/bosses/index|Enemies - Bosses]].
 
 ### Что из контента существует в игре
 

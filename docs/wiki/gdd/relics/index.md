@@ -51,7 +51,8 @@ updated: 2026-07-29
 | [[gdd/relics/the-storm|The Storm (Stormcaller)]] | цепной молниевый РДД | — |
 | [[gdd/relics/the-bonewright|The Bonewright (Necromancer)]] | саммонер-баффер | «Некромант» |
 | [[gdd/relics/the-pyre|The Pyre (Swordsman)]] | рискованный мили ДД через поджоги | — |
-| [[gdd/relics/the-tide|The Tide (Tidecaller)]] | гибридный хилер-баффер с контролем | — |
+| [[gdd/relics/the-torrent|The Torrent (Water Monk)]] | ближний брузер-утилита: щит + периодическое отбрасывание | «Водяной утилити брузер» (2026-07-29) |
+| ~~[[gdd/relics/the-tide\|The Tide (Tidecaller)]]~~ — **снят 2026-07-29** | реворкнут в The Torrent; старый дизайн в [[legacy\|легаси]] | — |
 | [[gdd/relics/the-thorn|The Thorn (Treant)]] | танк-брузер с ответным уроном | — |
 | [[gdd/relics/the-cadence|The Cadence (Bard)]] | каналящий хилер-баффер | — |
 | [[gdd/relics/the-bond|The Bond (Shaman)]] | саммонер-хилер с разделением урона | — |
