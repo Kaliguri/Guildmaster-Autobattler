@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
-  m_Name: Dodge
+  m_Name: DodgeHaste
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
-  _id: effect.dodge
-  _polarity: 2
-  _tags: 0
-  _baseDuration: -1
-  _stacking: 0
+  _id: effect.dodge_haste
+  _polarity: 0
+  _tags: 1
+  _baseDuration: 1
+  _stacking: 2
   _maxStacks: 1
   _cleanseTier: 0
   _unremovable: 0
@@ -28,17 +28,16 @@ MonoBehaviour:
   - Flat: 0
     Pct: 0
   _components:
-  - rid: 5615026876324511852
+  - rid: 5615027308851101907
   _icon: {fileID: 0}
   _infoTags: []
   references:
     version: 2
     RefIds:
-    - rid: 5615026876324511852
-      type: {class: DodgeComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+    - rid: 5615027308851101907
+      type: {class: StatModifierComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _maxCharges: 2
-        _rechargeSeconds: 5
-        _rollDistance: 2
-        _rollSpeedPerSecond: 12
-        _hasteBuff: {fileID: 11400000, guid: e1fd21c2dd590fe479968e82476b1640, type: 2}
+        _modifiers:
+        - Stat: 20
+          Op: 2
+          Value: 1

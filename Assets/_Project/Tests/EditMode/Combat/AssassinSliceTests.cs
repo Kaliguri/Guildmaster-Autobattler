@@ -227,6 +227,53 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.IsTrue(es.RunPreDamage(assassin, in auto, ctx), "Заряд был цел — автоатака уклоняется");
         }
 
+        // ===================== Кувырок уклонения (решение 2026-07-26) =====================
+
+        // Двигался — катится ПО ходу своего движения: уклонение не сбивает план, а ускоряет его.
+        [Test]
+        public void DodgeRoll_WhileMoving_GoesAlongOwnIntent_AndHastes()
+        {
+            var sim = BuildSim(1UL);
+            var assassin = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f, hp: 200f,
+                relic: AssassinRelic(PassiveTrigger.AnyHit));
+            assassin.PreviousPosition = new Vector2(-1f, 0f); // шёл вперёд по +X
+            var attacker = MakeUnit(1, team: 1, pos: new Vector2(1f, 0f)); // стоит как раз впереди
+
+            sim.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 8f), assassin);
+            float baseSpeed = assassin.Stats.Get(StatType.MoveSpeed);
+
+            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK,
+                sourceKind: DamageSourceKind.AutoAttack));
+            for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta); // перекат: 2 ед. на 12 ед/сек
+
+            Assert.AreEqual(200f, assassin.CurrentHP, 1e-4f, "Предусловие: удар негейтнут");
+            Assert.AreEqual(2f, assassin.Position.x, 0.05f, "Кувырок унёс на дистанцию переката по ходу движения");
+            Assert.AreEqual(0f, assassin.Position.y, 1e-3f, "Вбок кувырок не уводит");
+
+            EffectSystem.CommitPending(assassin); // юниты стенда вне списка боя — проявляем вручную
+            Assert.Greater(assassin.Stats.Get(StatType.MoveSpeed), baseSpeed,
+                "После переката висит ускорение — кувырок нужен, чтобы занять позицию");
+        }
+
+        // Стоял вплотную и бил — катится ОТ атакующего: разрыв дистанции происходит сам.
+        [Test]
+        public void DodgeRoll_StandingStill_GoesAwayFromAttacker()
+        {
+            var sim = BuildSim(1UL);
+            var assassin = MakeUnit(0, team: 0, pos: Vector2.zero, maxHp: 200f, hp: 200f,
+                relic: AssassinRelic(PassiveTrigger.AnyHit));
+            assassin.PreviousPosition = Vector2.zero; // стоит на месте
+            var attacker = MakeUnit(1, team: 1, pos: new Vector2(1f, 0f));
+
+            sim.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 8f), assassin);
+
+            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK,
+                sourceKind: DamageSourceKind.AutoAttack));
+            for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(-2f, assassin.Position.x, 0.05f, "Кувырок ушёл от атакующего, а не сквозь него");
+        }
+
         // ===================== Фабрики / хелперы =====================
 
         private static EffectData StealthBuff()
@@ -262,12 +309,28 @@ namespace Guildmaster.Tests.EditMode.Combat
             TestAbility.Make(effects: new[] { StealthBuff() }, cooldown: 0f, cost: 75f,
                 mode: AbilityTargetMode.Self);
 
+        /// <summary>Числа как в ассете Dodge: перекат 2 ед. на 12 ед/сек + баф ускорения на 1 с.</summary>
         private static EffectData DodgePassive(int maxCharges, float rechargeSeconds)
         {
             var dodge = new DodgeComponent()
                 .With("_maxCharges", maxCharges)
-                .With("_rechargeSeconds", rechargeSeconds);
+                .With("_rechargeSeconds", rechargeSeconds)
+                .With("_rollDistance", 2f)
+                .With("_rollSpeedPerSecond", 12f)
+                .With("_hasteBuff", DodgeHaste());
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: dodge);
+        }
+
+        /// <summary>Ускорение после переката: +100% скорости передвижения на 1 с (ассет DodgeHaste).</summary>
+        private static EffectData DodgeHaste()
+        {
+            var mod = new StatModifierComponent().With("_modifiers", new[]
+            {
+                new StatModifier(StatType.MoveSpeed, ModifierOp.PercentMult, 1f),
+            });
+            return TestEffect.Make(
+                baseDuration: 1f, polarity: EffectPolarity.Buff, tags: EffectTag.Buff,
+                stacking: StackRule.Refresh, components: mod);
         }
 
         private static EffectData DodgePassiveStacking(int maxCharges, float rechargeSeconds)

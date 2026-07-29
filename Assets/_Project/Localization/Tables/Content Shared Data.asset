@@ -815,6 +815,10 @@ MonoBehaviour:
     m_Key: enemy.bone_dev.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 6663474874933248
+    m_Key: effect.dodge_haste.name
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

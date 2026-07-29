@@ -12,9 +12,17 @@ namespace Guildmaster.Combat.Effects.Components
     /// не гасит. Дополнительно фильтруется триггером блока F (из <c>self.Unit.Ai.PassiveTrigger</c>) и тратит
     /// один заряд; заряды восстанавливаются независимо. Состояние зарядов — per-effect в
     /// <see cref="RuntimeEffect.ChargeReadyTicks"/>.
+    /// <para><b>Трата заряда — это КУВЫРОК</b> (решение 2026-07-26): носитель уходит с места на
+    /// <see cref="_rollDistance"/> и получает <see cref="_hasteBuff"/> — ускорение после переката.
+    /// Уклонение не просто гасит урон, а даёт занять позицию: оторваться, дойти, зайти в спину.</para>
+    /// <para><b>Направление = направление собственного намерения.</b> Двигался этим тиком — кувырок
+    /// по ходу движения (к цели, в обход, отступая); стоял и бил — кувырок ОТ атакующего. Уклонение
+    /// никогда не сбивает план юнита, а ускоряет его, поэтому отдельного «отскока назад» нет.</para>
     /// <para><b>Числа:</b> <c>_maxCharges</c> — сколько автоатак подряд можно отменить;
-    /// <c>_rechargeSeconds</c> — за сколько восстанавливается ОДИН заряд. Величины урона здесь нет
-    /// намеренно: уклонение не смягчает удар, а отменяет его целиком.</para>
+    /// <c>_rechargeSeconds</c> — за сколько восстанавливается ОДИН заряд; <c>_rollDistance</c> — на
+    /// сколько единиц уносит перекат; <c>_rollSpeedPerSecond</c> — как быстро (вместе с дистанцией
+    /// задаёт длительность переката); <c>_hasteBuff</c> — баф ускорения, его величины живут в нём.
+    /// Величины урона здесь нет намеренно: уклонение не смягчает удар, а отменяет его целиком.</para>
     /// <para><b>Когда срабатывает:</b> в pre-damage, до расчёта урона — отменённый удар не наносит
     /// ничего и не будит реактивы «на удар» (шипы об уклонившегося не колются).</para>
     /// </summary>
@@ -26,6 +34,15 @@ namespace Guildmaster.Combat.Effects.Components
 
         [Tooltip("Независимая перезарядка одного заряда, сек. Убийца = 5.")]
         [SerializeField] private float _rechargeSeconds = 5f;
+
+        [Tooltip("Дистанция кувырка, мировых единиц. 0 = уклонение без ухода с места.")]
+        [SerializeField] private float _rollDistance = 2f;
+
+        [Tooltip("Скорость кувырка, ед/сек: с дистанцией задаёт его длительность. 0 = общий дефолт смещения.")]
+        [SerializeField] private float _rollSpeedPerSecond = 12f;
+
+        [Tooltip("Баф ускорения после кувырка (скорость передвижения и его длительность живут в нём).")]
+        [SerializeField] private EffectData _hasteBuff;
 
         public void OnApply(in EffectContext ctx)
         {
@@ -63,10 +80,49 @@ namespace Guildmaster.Combat.Effects.Components
                 {
                     charges[i] = now + rechargeTicks;
                     result.Negated = true;
+                    Roll(self, in incoming, in ctx);
                     return;
                 }
             }
             // нет готовых зарядов — удар проходит
+        }
+
+        /// <summary>
+        /// Кувырок: уход с места по направлению собственного намерения + баф ускорения. Смещение идёт
+        /// тем же швом, что рывок Монаха (носитель = и цель, и источник), поэтому о стену не
+        /// наказывается и не приносит урона.
+        /// </summary>
+        private void Roll(RuntimeUnit self, in DamageRequest incoming, in EffectContext ctx)
+        {
+            if (_hasteBuff != null) ctx.Combat.ApplyEffect(self, _hasteBuff, self);
+            if (_rollDistance <= 0f) return;
+
+            ctx.Combat.Displace(new DisplaceRequest(
+                self, self, RollDirection(self, in incoming), _rollDistance,
+                cannonball: false, damage: 0f, school: self.DamageSchool, width: 0f,
+                speedPerSecond: _rollSpeedPerSecond));
+        }
+
+        /// <summary>
+        /// Куда катиться. Движение этого тика — уже готовый вектор намерения: MovementSystem отработал
+        /// до автоатак, значит смещение позиции показывает, куда юнит шёл (к цели, в обход, отступая).
+        /// Стоял на месте (бьёт вплотную) — катимся ОТ атакующего. Совсем без ориентира (атакующего
+        /// нет — DoT, ловушка) — катимся вперёд по последнему известному курсу, иначе вправо: чистый
+        /// фолбэк на невозможный в бою случай, лишь бы не делить на ноль.
+        /// </summary>
+        private static Vector2 RollDirection(RuntimeUnit self, in DamageRequest incoming)
+        {
+            Vector2 intent = self.Position - self.PreviousPosition;
+            if (intent.sqrMagnitude > 1e-6f) return intent;
+
+            RuntimeUnit attacker = incoming.Source;
+            if (attacker != null && !ReferenceEquals(attacker, self))
+            {
+                Vector2 away = self.Position - attacker.Position;
+                if (away.sqrMagnitude > 1e-6f) return away;
+            }
+
+            return Vector2.right;
         }
 
         /// <summary>Триггер блока F: None — никогда; AnyHit/Always — любой удар; OnHitAbovePctMaxHp — выше порога ИЛИ смертельный.</summary>
