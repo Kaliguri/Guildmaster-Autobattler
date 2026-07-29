@@ -306,6 +306,35 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
+        /// Сколько НАКИДЫВАЕТ атакующий за то, каким стало состояние цели (Криомант по замороженным).
+        /// Возвращает долю: 0 = обычный удар, 0.25 = +25%. Вклады разных компонентов складываются —
+        /// это усиление источника, и ведёт себя как плоские прибавки в статах.
+        /// </summary>
+        public float ResolveOutgoingDamageBonus(
+            RuntimeUnit attacker, RuntimeUnit target, bool isAutoAttack, ICombatContext combat)
+        {
+            if (attacker == null || target == null || attacker.ActiveEffects.Count == 0) return 0f;
+
+            float bonus = 0f;
+            List<RuntimeEffect> effects = attacker.ActiveEffects;
+            for (int e = 0; e < effects.Count; e++)
+            {
+                RuntimeEffect eff = effects[e];
+                IEffectComponent[] comps = eff.Def.Components;
+                if (comps == null) continue;
+
+                for (int i = 0; i < comps.Length; i++)
+                {
+                    if (comps[i] is not IOutgoingDamageBonusComponent booster) continue;
+
+                    EffectContext ctx = MakeContext(attacker, eff.Source, combat, eff, i, 0f);
+                    bonus += booster.BonusAgainst(attacker, target, isAutoAttack, in ctx);
+                }
+            }
+            return bonus;
+        }
+
+        /// <summary>
         /// Доставить боевое событие реактивным компонентам носителя (вампиризм/шипы). Вызывается
         /// из <see cref="CombatSimulation"/> при дренаже event-queue. Итерация по копии — реакция
         /// может добавить/снять эффекты (вики «12» §3.4).

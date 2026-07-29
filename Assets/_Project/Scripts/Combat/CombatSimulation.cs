@@ -304,9 +304,15 @@ namespace Guildmaster.Combat
 
         // --- ICombatContext ---
 
-        public void DealDamage(in DamageRequest req)
+        public void DealDamage(in DamageRequest request)
         {
-            if (req.Target.IsDead) return;
+            if (request.Target.IsDead) return;
+
+            // Усиление ИСТОЧНИКА за состояние цели (Криомант больнее бьёт замороженных). Считается до
+            // расщепления, поэтому прибавка достаётся обеим половинам удара: это свойство удара, а не
+            // школы. Уязвимость цели («Угли») живёт отдельно, в pre-damage — путать их нельзя, иначе
+            // один множитель начнёт отвечать за два разных факта.
+            DamageRequest req = ApplyOutgoingBonus(in request);
 
             // Расщепление авто-атаки по школам (The Pyre: по горящей цели половина клинка бьёт Огнём).
             // Живёт здесь, а не в AutoAttackSystem, чтобы одинаково работать для мили, линии и снаряда.
@@ -330,6 +336,21 @@ namespace Guildmaster.Combat
             }
 
             DealDamageCore(in req);
+        }
+
+        /// <summary>
+        /// Домножить удар на прибавки, которые даёт носителю его собственные эффекты за состояние цели.
+        /// Возвращает исходный запрос без копии, когда прибавок нет — это горячий путь каждого удара.
+        /// </summary>
+        private DamageRequest ApplyOutgoingBonus(in DamageRequest req)
+        {
+            float bonus = _effectSystem.ResolveOutgoingDamageBonus(
+                req.Source, req.Target, req.SourceKind == DamageSourceKind.AutoAttack, this);
+            if (bonus <= 0f) return req;
+
+            return new DamageRequest(
+                req.Source, req.Target, req.RawDamage * (1f + bonus), req.School, req.ArmorK,
+                req.SourceKind, req.Affinity, req.Element, req.Vulnerability, req.BonusFlatPen);
         }
 
         private void DealDamageCore(in DamageRequest req)

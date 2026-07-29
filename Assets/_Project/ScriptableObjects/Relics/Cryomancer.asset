@@ -87,7 +87,8 @@ MonoBehaviour:
   - Stat: 4
     Op: 3
     Value: 14
-  _grantedEffects: []
+  _grantedEffects:
+  - {fileID: 11400000, guid: ebaa6dc69213a1448a2e13eb9a4bd773, type: 2}
   _abilities:
   - _id: ice_chains
     _effects:

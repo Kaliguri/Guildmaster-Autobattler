@@ -819,6 +819,10 @@ MonoBehaviour:
     m_Key: effect.dodge_haste.name
     m_Metadata:
       m_Items: []
+  - m_Id: 6665841439662080
+    m_Key: effect.chilling_touch.name
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

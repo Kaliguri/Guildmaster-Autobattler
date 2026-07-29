@@ -153,6 +153,19 @@ namespace Guildmaster.Combat.Effects
     }
 
     /// <summary>
+    /// Опциональный шов: компонент носителя усиливает ЕГО удары по цели, отвечающей условию
+    /// (Криомант больнее бьёт замороженных). Это свойство ИСТОЧНИКА — в отличие от уязвимости, которая
+    /// живёт на цели («Угли» усиливают огонь по подожжённому) и считается в pre-damage.
+    /// <para>Прибавка возвращается долей (0.25 = +25%) и складывается между компонентами, как статы:
+    /// два разных источника усиления обязаны оба сработать. Выбор «что сильнее» внутри одного набора
+    /// правил — забота компонента, а не системы.</para>
+    /// </summary>
+    public interface IOutgoingDamageBonusComponent : IRuntimeEffectComponent
+    {
+        float BonusAgainst(RuntimeUnit attacker, RuntimeUnit target, bool isAutoAttack, in EffectContext ctx);
+    }
+
+    /// <summary>
     /// Опциональный шов: компонент объявляет масштабируемую потенцию. EffectSystem резолвит её
     /// из статов источника один раз при наложении и кладёт снимок в <see cref="RuntimeEffect.ScaledPotency"/>
     /// (per-second rate для DoT/HoT — НЕ запечённый total, вики «11» §5.1).

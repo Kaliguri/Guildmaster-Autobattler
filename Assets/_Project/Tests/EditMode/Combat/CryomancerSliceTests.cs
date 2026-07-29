@@ -209,7 +209,137 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreSame(farPlain, self.CurrentTarget, "PreferUntagged(Frozen) избегает замороженного даже ближнего");
         }
 
+        // ===================== «Леденящее касание»: больнее по замороженным =====================
+
+        [Test]
+        public void ChillingTouch_AutoAttack_AgainstFrozen_HitsHarder()
+        {
+            var sim = BuildSim();
+            var cryo  = MakeUnit(0, team: 0, pos: Vector2.zero);
+            var enemy = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f), maxHp: 1000f);
+
+            sim.ApplyEffect(cryo, ChillingTouch(frozenBonus: 0.25f), cryo);
+            sim.ApplyEffect(enemy, MakeFrozen(), cryo);
+            EffectSystem.CommitPending(enemy); // юниты стенда вне списка боя — маску тегов проявляем сами
+
+            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageSchool.True, sim.ArmorK,
+                sourceKind: DamageSourceKind.AutoAttack));
+            sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(875f, enemy.CurrentHP, 1e-3f, "Авто-атака по замороженному сильнее на 25%");
+        }
+
+        [Test]
+        public void ChillingTouch_AutoAttack_AgainstUnfrozen_IsPlain()
+        {
+            var sim = BuildSim();
+            var cryo  = MakeUnit(0, team: 0, pos: Vector2.zero);
+            var enemy = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f), maxHp: 1000f);
+
+            sim.ApplyEffect(cryo, ChillingTouch(frozenBonus: 0.25f), cryo);
+
+            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageSchool.True, sim.ArmorK,
+                sourceKind: DamageSourceKind.AutoAttack));
+            sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(900f, enemy.CurrentHP, 1e-3f, "Цель не заморожена — прибавки нет");
+        }
+
+        // Прибавка объявлена «только для авто-атак»: урон способности по замороженному не усиливается.
+        [Test]
+        public void ChillingTouch_AbilityDamage_IsNotBoosted()
+        {
+            var sim = BuildSim();
+            var cryo  = MakeUnit(0, team: 0, pos: Vector2.zero);
+            var enemy = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f), maxHp: 1000f);
+
+            sim.ApplyEffect(cryo, ChillingTouch(frozenBonus: 0.25f), cryo);
+            sim.ApplyEffect(enemy, MakeFrozen(), cryo);
+            EffectSystem.CommitPending(enemy);
+
+            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageSchool.True, sim.ArmorK)); // Ability
+            sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(900f, enemy.CurrentHP, 1e-3f, "Урон способности прибавку не получает");
+        }
+
+        // Правила — альтернативы, а не сумма: цель под двумя условиями получает сильнейшее, не оба.
+        [Test]
+        public void ChillingTouch_Rules_TakeStrongestNotSum()
+        {
+            var sim = BuildSim();
+            var cryo  = MakeUnit(0, team: 0, pos: Vector2.zero);
+            var enemy = MakeUnit(1, team: 1, pos: new Vector2(2f, 0f), maxHp: 1000f);
+
+            sim.ApplyEffect(cryo, ChillingTouchTwoRules(), cryo);
+            sim.ApplyEffect(enemy, MakeFrozen(), cryo);
+            sim.ApplyEffect(enemy, MakeStun(), cryo);
+            EffectSystem.CommitPending(enemy);
+
+            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageSchool.True, sim.ArmorK,
+                sourceKind: DamageSourceKind.AutoAttack));
+            sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(850f, enemy.CurrentHP, 1e-3f,
+                "Подошли оба правила — берётся сильнейшее (+50%), а не их сумма (+75%)");
+        }
+
         // ===================== Фабрики контента среза =====================
+
+        private static CombatSimulation BuildSim() =>
+            new CombatSimulation(
+                new Guildmaster.Core.Random.XorShiftRng(1UL), CombatTestValues.ArmorK,
+                new SpatialHash(CombatTestValues.CellSize),
+                new BrainSystem(), new AbilitySystem(), new MovementSystem(),
+                new AutoAttackSystem(), new ProjectileSystem(), new DeathSystem(),
+                new EffectSystem(), new RegenSystem());
+
+        /// <summary>«Леденящее касание»: авто-атаки носителя больнее по замороженным (ассет ChillingTouch).</summary>
+        private static EffectData ChillingTouch(float frozenBonus)
+        {
+            var bonus = new TaggedTargetDamageBonusComponent()
+                .With("_autoAttackOnly", true)
+                .With("_rules", new[]
+                {
+                    new TaggedTargetDamageBonusComponent.Rule
+                    {
+                        RequiredTags = EffectTag.Frozen,
+                        Bonus        = frozenBonus,
+                    },
+                });
+            return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: bonus);
+        }
+
+        /// <summary>Два правила-альтернативы: «заморожен» и «заморожен И обездвижен» (заготовка холодной линии).</summary>
+        private static EffectData ChillingTouchTwoRules()
+        {
+            var bonus = new TaggedTargetDamageBonusComponent()
+                .With("_autoAttackOnly", true)
+                .With("_rules", new[]
+                {
+                    new TaggedTargetDamageBonusComponent.Rule
+                    {
+                        RequiredTags = EffectTag.Frozen,
+                        Bonus        = 0.25f,
+                    },
+                    new TaggedTargetDamageBonusComponent.Rule
+                    {
+                        RequiredTags = EffectTag.Frozen | EffectTag.Control,
+                        Bonus        = 0.5f,
+                    },
+                });
+            return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: bonus);
+        }
+
+        /// <summary>Стан на 2 с — нужен только как носитель тега Control для проверки правил.</summary>
+        private static EffectData MakeStun()
+        {
+            var stun = new ControlComponent().With("_preventAct", true);
+            return TestEffect.Make(
+                baseDuration: 2f, polarity: EffectPolarity.Debuff,
+                tags: EffectTag.Control | EffectTag.Debuff, components: stun);
+        }
+
 
         /// <summary>«Заморозка»: Debuff-эффект 4с, тег Frozen, −60% MoveSpeed, обновляется повторной АА.</summary>
         private static EffectData MakeFrozen()

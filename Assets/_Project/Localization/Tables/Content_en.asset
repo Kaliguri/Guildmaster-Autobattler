@@ -291,6 +291,10 @@ MonoBehaviour:
     m_Localized: Tumble
     m_Metadata:
       m_Items: []
+  - m_Id: 6665841439662080
+    m_Localized: Chilling Touch
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
