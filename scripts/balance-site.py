@@ -36,6 +36,8 @@ RUN_WINDOW_MINUTES = 30
 
 # Как называются режимы в интерфейсе. Ключ — префикс kind из имени файла отчёта.
 MODE_TITLES = {
+    "encounter_kits": "Энкаунтеры — цена боя (PvE)",
+    "encounter_difficulty": "Энкаунтеры — сложность боёв",
     "duel": "Дуэль 1v1",
     "solo_duel": "Дуэль 1v1",
     "trio_duel": "Тройки 3v3",
