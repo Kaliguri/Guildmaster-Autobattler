@@ -18,7 +18,7 @@ updated: 2026-07-16
 
 > Решение по сетевой архитектуре кооператива и его обоснование. Это **главная развилка** проекта по неткоду — здесь зафиксирован выбор, что из текущего кода keeper, что запарковано, и какая работа предстоит в Фазе MP.
 >
-> Связано с [[tech/20-explanation/simulation|Explanation - Simulation & Tick]], [[multiplayer]], [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]], [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]].
+> Связано с [[tech/20-explanation/simulation|Explanation - Simulation & Tick]], [[gdd/50-modes-ux/coop/index|Coop - Overview]], [[tech/40-planning/phase-1-combat-core|Planning - Phase 1: Combat Core]], [[tech/00-meta/tech-changelog|Meta - Tech Changelog & Decisions]].
 
 ---
 
@@ -98,7 +98,7 @@ NGO (Netcode for GameObjects) **сделан** для host-authoritative: `Netwo
 6. **Late-join / реконнект**: полный снапшот состояния присоединившемуся (NGO частично делает).
 7. **Сид боя от хоста** (сейчас `GenerateBattleSeed` локальный — для одиночки ок, для сети сид должен прийти в команде старта).
 
-> Связь с дизайн-доком [[multiplayer]] и общим планом [[tech/20-explanation/run-flow|Explanation - Run Flow]] (реконнект, репликация RunState).
+> Связь с дизайн-доком [[gdd/50-modes-ux/coop/index|Coop - Overview]] и общим планом [[tech/20-explanation/run-flow|Explanation - Run Flow]] (реконнект, репликация RunState).
 
 ---
 

@@ -57,7 +57,7 @@ $validStatus = @('draft', 'needs_review', 'ready', 'living', 'archive', 'planned
 $validImpl = @('engine', 'partial', 'paper')
 
 $validClusters = @(
-    'Meta', 'Vision', 'Combat', 'Run', 'Content', 'Modes', 'Roster', 'Narrative',
+    'Meta', 'Vision', 'Combat', 'Run', 'Content', 'Modes', 'Coop', 'Roster', 'Narrative',
     'Effect', 'Item', 'Relic', 'Species', 'Faction', 'Enemies',
     'Bandits', 'Goblins', 'Golems', 'Beasts',
     'Reference', 'Explanation', 'How-to', 'Planning'
@@ -72,6 +72,9 @@ function Add-Issue {
 
 $files = Get-ChildItem -Path $vaultRoot -Recurse -File -Filter *.md |
     Where-Object { $_.FullName -notmatch '[\\/]\.obsidian[\\/]' } |
+    # Журнал тех-решений живёт по своему шаблону из CLAUDE.md (title + date + tags, append-only):
+    # order/status/updated там смысла не имеют — записи не переставляются и не дозревают.
+    Where-Object { $_.FullName -notmatch '[\\/]tech[\\/]00-meta[\\/]journal[\\/]' } |
     Where-Object {
         $rel = $_.FullName.Substring($vaultRoot.Length).TrimStart('\', '/').Replace('\', '/')
         $top = ($rel -split '/')[0]

@@ -2,7 +2,7 @@
 title: "Meta - Index"
 order: 0
 status: living
-updated: 2026-07-26
+updated: 2026-07-30
 ---
 
 Карта геймдизайн-документации (MOC). Порядок глав задаётся полем `order` во frontmatter;
@@ -122,7 +122,18 @@ SORT file.name ASC
 
 ## 50 · Со-режим и UX (`50-modes-ux/`)
 
-- [[multiplayer|Modes - Multiplayer]] — кооператив, распределение «Сосудов».
+**Кооп (`50-modes-ux/coop/`)** — кластер заведён 2026-07-30 на месте прежнего одиночного
+`multiplayer.md`. Вход — [[gdd/50-modes-ux/coop/index|Coop - Overview]] (модель сессии, дом в коопе,
+карта владения кооп-фактами).
+
+- [[presence|Coop - Presence & Cursors]] — курсоры, наведение, пинги, «кто что держит».
+- [[arbiters|Coop - Arbiters & Disputes]] — голосование, кубик d6, перебросы, альтернативы кубику.
+- [[interactions|Coop - Interactions & Minigames]] — вмешательство в общее, кооп-мини-игры, занятие
+  на время боя, роли и семи-кооп.
+- [[sync-model|Coop - Sync Model]] — что риалтайм, что «кино», что транзакция.
+
+Остальное в кластере:
+
 - [[proving-grounds|Modes - Proving Grounds]] — Ристалище: площадка вне забега, где смотрят бой.
 - [[controls|Modes - Controls]] — раскладка клавиш (техника ввода — в техчасти).
 - [[ui-feedback|Modes - UI Feedback]] — общие правила отклика интерфейса (недоступные действия и т.п.).
