@@ -50,6 +50,28 @@ namespace Guildmaster.Tests.EditMode.Content
             }
         }
 
+        /// <summary>
+        /// Маркер контакта не стоит в НУЛЕ. Ноль формально «внутри клипа», поэтому проверка выше его
+        /// пропускает, а сим считает по нему долю замаха: `windup = hit / frames`, то есть удар без замаха.
+        /// Ровно это случилось 30.07.2026, когда Монах переехал на Fantasy Warrior — у пака маркер лежал в
+        /// нуле, и его авто-атака стала бить мгновенно, молча и без единой ошибки в консоли.
+        /// </summary>
+        [Test]
+        public void Visuals_AttackMarkerIsNotAtFrameZero()
+        {
+            foreach (UnitVisual vis in AllVisuals())
+            {
+                AnimationClip attack = vis.AttackClip;
+                if (attack == null) continue;
+                if (ClipMarkers.FirstMarkerTime(attack) < 0f) continue;   // отсутствие покрыто тестом выше
+
+                Assert.Greater(vis.AttackHitFrame, 0,
+                    $"UnitVisual '{vis.name}': маркер контакта стоит на кадре 0 " +
+                    $"({AssetDatabase.GetAssetPath(vis)}). Сим выведет из него нулевой замах — удар без " +
+                    "подводки. Поставь маркер туда, где оружие реально достаёт цель.");
+            }
+        }
+
         [Test]
         public void Visuals_SkillClipsMarkerWithinClip()
         {
