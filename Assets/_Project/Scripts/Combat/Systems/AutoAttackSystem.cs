@@ -229,7 +229,11 @@ namespace Guildmaster.Combat
             int maxAnimTicks  = unit.Unit != null ? unit.Unit.AttackSwingTicks : 0; // 0 = глобальный потолок
             int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, windupTicks,
                 maxAnimTicks);
-            int extraTail     = unit.Unit != null ? AttackTiming.RecoveryTicks(unit.Unit.AttackRecoverySeconds) : 0;
+            // У канальной формы хвост свой — сворачивание потока, — и берётся из профиля канала: тот же
+            // кит в ближней форме бьёт короткими выпадами, и общий хвост кита навязал бы им чужую цену.
+            int extraTail = HasChannel(unit)
+                ? AttackTiming.RecoveryTicks(unit.AttackChannel.RecoverySeconds)
+                : unit.Unit != null ? AttackTiming.RecoveryTicks(unit.Unit.AttackRecoverySeconds) : 0;
             unit.RecoveryTicks = followThrough + extraTail;
 
             unit.Phase = AttackPhase.Windup;

@@ -248,10 +248,16 @@ namespace Guildmaster.Data.Definitions
                  "по смыслу длиннее одного интервала.")]
         [Min(0f)] public float WindupSeconds;
 
+        [Tooltip("Сворачивание потока, сек: юнит занят и не бьёт. Живёт ЗДЕСЬ, а не в общем " +
+                 "AttackRecoverySeconds кита, потому что длинный хвост — свойство канала: тот же кит в " +
+                 "ближней форме бьёт короткими выпадами и такого хвоста не имеет.")]
+        [Min(0f)] public float RecoverySeconds;
+
         /// <summary>Канал у этого кита есть (длительность задана).</summary>
         public bool Exists => DurationSeconds > 0f;
 
         /// <summary>Кит бьёт обычными одномоментными ударами.</summary>
-        public static AttackChannel None => new AttackChannel { DurationSeconds = 0f, WindupSeconds = 0f };
+        public static AttackChannel None =>
+            new AttackChannel { DurationSeconds = 0f, WindupSeconds = 0f, RecoverySeconds = 0f };
     }
 }

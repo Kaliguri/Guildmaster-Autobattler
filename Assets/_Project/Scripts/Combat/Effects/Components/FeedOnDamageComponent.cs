@@ -39,6 +39,11 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Вид источника, который кормит: Periodic = тики DoT (кровотечение).")]
         [SerializeField] private DamageSourceKind _sourceKind = DamageSourceKind.Periodic;
 
+        [Tooltip("Кормиться любым видом источника, а не только выбранным выше. Нужно там, где школа урона " +
+                 "И ЕСТЬ вся идентичность: кровавый поток Десятины бьёт типом Кровотечение напрямую, то " +
+                 "есть видом источника он авто-атака, а по природе — то же самое кровотечение.")]
+        [SerializeField] private bool _anySourceKind;
+
         [Tooltip("Школа урона, который кормит.")]
         [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
@@ -54,7 +59,7 @@ namespace Guildmaster.Combat.Effects.Components
         public void OnEvent(in EffectContext ctx, in CombatEventData e)
         {
             if (_healShare <= 0f || e.Amount <= 0f) return;
-            if (e.SourceKind != _sourceKind) return;
+            if (!_anySourceKind && e.SourceKind != _sourceKind) return;
             if (!DamageTypes.Matches(_damageType, _wholeSchool, e.DamageType)) return;
 
             RuntimeUnit self = ctx.Target;

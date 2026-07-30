@@ -1199,6 +1199,10 @@ MonoBehaviour:
     m_Key: effect.skeleton_guards.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 7123947646869504
+    m_Key: effect.blood_stance.name
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -42,5 +42,6 @@ MonoBehaviour:
         _healShare: 0.3
         _radius: 6
         _sourceKind: 2
+        _anySourceKind: 1
         _damageType: 4
         _wholeSchool: 0

@@ -156,8 +156,12 @@ namespace Guildmaster.Tests.EditMode.Combat
         private static (RuntimeUnit attacker, RuntimeUnit enemy, List<RuntimeUnit> units, MockCombatContext ctx)
             Scene(bool channelled = true, AttackType attackType = AttackType.Melee, float recoverySeconds = 0f)
         {
+            // Хвост канала живёт в самом профиле канала, а не в общем AttackRecoverySeconds кита.
             AttackChannel channel = channelled
-                ? new AttackChannel { DurationSeconds = Duration, WindupSeconds = Windup }
+                ? new AttackChannel
+                {
+                    DurationSeconds = Duration, WindupSeconds = Windup, RecoverySeconds = recoverySeconds,
+                }
                 : AttackChannel.None;
 
             RelicData relic = TestRelic.Make(
