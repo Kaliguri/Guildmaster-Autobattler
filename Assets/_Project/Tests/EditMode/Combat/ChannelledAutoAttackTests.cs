@@ -182,14 +182,16 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.AttackRange,      ModifierOp.Flat, 8f),
             });
 
-            return new RuntimeUnit
+            var u = new RuntimeUnit
             {
                 Id = id, Team = team, Stats = stats,
-                CurrentHP = 1000f, Position = pos, PreviousPosition = pos, Unit = relic,
+                CurrentHP = 1000f, Position = pos, PreviousPosition = pos,
                 AutoAttackDamageType = DamageType.Bleed,
-                // Снимок канала кладёт фабрика; здесь юнит собран руками, поэтому снимаем сами.
-                AttackChannel = relic != null ? relic.Channel : AttackChannel.None,
             };
+            // Форму (доставку, канал, on-hit) снимаем с кита тем же вызовом, что фабрика.
+            u.AdoptKit(relic);
+            if (relic == null) u.AutoAttackDamageType = DamageType.Bleed;
+            return u;
         }
     }
 }

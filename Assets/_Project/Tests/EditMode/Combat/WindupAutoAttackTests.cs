@@ -343,12 +343,14 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.AttackSpeed,      ModifierOp.Flat, atkSpeed),
                 new StatModifier(StatType.AttackRange,      ModifierOp.Flat, range),
             });
-            return new RuntimeUnit
+            var u = new RuntimeUnit
             {
                 Id = id, Team = team, Stats = stats,
-                CurrentHP = maxHp, Position = pos, PreviousPosition = pos, Unit = relic,
+                CurrentHP = maxHp, Position = pos, PreviousPosition = pos,
                 AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
+            u.AdoptKit(relic);   // доставка и on-hit — из снимка кита, как в фабрике
+            return u;
         }
 
         /// <summary>Минимальный ICombatContext: копит урон + считает события замаха.</summary>

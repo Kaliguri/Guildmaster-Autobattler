@@ -421,7 +421,7 @@ namespace Guildmaster.Combat
             // Тип урона несёт и школу брони, и идентичность удара: верхняя ступень холодной линии
             // добавляет +20% именно Дробящему, и без типа она не отличит молот от кинжала.
             DamageType damageType = hit.DamageType;
-            AttackType attackType = unit.Unit != null ? unit.Unit.AttackType : AttackType.Melee;
+            AttackType attackType = unit.AttackType;   // рантайм-снимок: доставку переписывает стойка
             AreaShape shape = unit.Unit != null ? unit.Unit.AutoAttackShape : AreaShape.None;
 
             // Хил-режим (Светлый пастырь): вместо урона — tracking-хил-снаряд в снапшот-союзника.
@@ -478,7 +478,7 @@ namespace Guildmaster.Combat
                 ctx.SpawnProjectile(new ProjectileSpawn(
                     unit, unit.Position, target,
                     speed, collRadius, raw, damageType, ctx.ArmorK, pierces,
-                    onHitEffects: unit.Unit != null ? unit.Unit.AutoAttackEffects : null,
+                    onHitEffects: unit.AutoAttackOnHit,
                     isAutoAttack: true));
             }
         }
@@ -527,7 +527,7 @@ namespace Guildmaster.Combat
 
         private static void ApplyAutoAttackOnHit(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)
         {
-            EffectData[] effects = unit.Unit != null ? unit.Unit.AutoAttackEffects : null;
+            EffectData[] effects = unit.AutoAttackOnHit;
             if (effects == null) return;
             for (int i = 0; i < effects.Length; i++)
                 if (effects[i] != null) ctx.ApplyEffect(target, effects[i], unit);
@@ -545,7 +545,7 @@ namespace Guildmaster.Combat
         private static bool ChargesIntoReach(RuntimeUnit unit, RuntimeUnit target, int windupTicks, ICombatContext ctx)
         {
             if (!unit.ChargedAttackReady) return false;
-            if (unit.Unit == null || unit.Unit.AttackType != AttackType.Melee) return false;
+            if (unit.Unit == null || unit.AttackType != AttackType.Melee) return false;
 
             return CombatPositioning.CanCloseIntoReach(unit, target, windupTicks, ctx.Tuning);
         }

@@ -290,13 +290,15 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.Size,             ModifierOp.Flat, 1f),
             });
 
-            return new RuntimeUnit
+            var u = new RuntimeUnit
             {
                 Team = team, Stats = stats, CurrentHP = 1000f,
-                Position = pos, PreviousPosition = pos, Unit = relic,
+                Position = pos, PreviousPosition = pos,
                 Positioning = PositioningIntent.Approach,
                 AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
+            u.AdoptKit(relic);   // доставка и on-hit — из снимка кита, как в фабрике
+            return u;
         }
     }
 }

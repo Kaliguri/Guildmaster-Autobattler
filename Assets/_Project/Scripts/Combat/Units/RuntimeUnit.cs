@@ -358,6 +358,52 @@ namespace Guildmaster.Combat
         /// </remarks>
         public DamageType AutoAttackDamageType;
 
+        /// <summary>
+        /// Доставка авто-атаки (ближний бой / снаряд) — снимок кита на бой, рядом с
+        /// <see cref="AutoAttackDamageType"/>. Заполняет <c>RuntimeUnitFactory</c>.
+        /// </summary>
+        public AttackType AttackType = AttackType.Melee;
+
+        /// <summary>
+        /// On-hit эффекты авто-атаки — снимок кита на бой. Заполняет <c>RuntimeUnitFactory</c> из
+        /// <see cref="UnitData.AutoAttackEffects"/>; <c>null</c> = ударом ничего не накладывается.
+        /// </summary>
+        public Data.Definitions.EffectData[] AutoAttackOnHit;
+
+        /// <summary>
+        /// Номер активной боевой СТОЙКИ (<c>AttackStanceComponent</c>) или <c>-1</c> у тех, у кого стоек
+        /// нет вовсе. Стойка целиком переписывает снимок авто-атаки выше: тип урона, доставку, on-hit,
+        /// канал и статы.
+        /// </summary>
+        /// <remarks>
+        /// Поле здесь, а не внутри эффекта, по двум причинам: стойку читает показ (форма выглядит иначе)
+        /// и её видно в отладке боя, а состояние, спрятанное в <c>RuntimeEffect</c>, ни тому, ни другому
+        /// не доступно. Значение — индекс, а не enum: стоек у кита может быть и три, и решать это данным,
+        /// а не типу.
+        /// </remarks>
+        public int AttackStance = -1;
+
+        /// <summary>
+        /// Взять форму авто-атаки из кита: тип урона, доставку, on-hit эффекты и канал одним снимком.
+        /// Зовёт <c>RuntimeUnitFactory</c> при сборке; дальше форму имеет право переписывать только стойка.
+        /// </summary>
+        /// <remarks>
+        /// Один метод, а не четыре присваивания у каждого, кто создаёт бойца. Снимков ровно столько,
+        /// сколько частей у формы, и собрать бойца, забыв одну из них, — молчаливый дефект: он выйдет на
+        /// арену с чужой доставкой или без on-hit эффектов, и ни компилятор, ни бой этого не заметят.
+        /// Ровно так и оказалось: перевод доставки в снимок уронил два теста, собиравших юнита руками.
+        /// </remarks>
+        public void AdoptKit(Data.Definitions.UnitData data)
+        {
+            Unit = data;
+            if (data == null) return;
+
+            AutoAttackDamageType = data.AutoAttackDamageType;
+            AttackType           = data.AttackType;
+            AutoAttackOnHit      = data.AutoAttackEffects;
+            AttackChannel        = data.Channel;
+        }
+
         // --- Эффекты (Фаза 2) ---
 
         /// <summary>Активные эффекты на юните. Мутирует только <c>EffectSystem</c> (через pending, не во время итерации).</summary>

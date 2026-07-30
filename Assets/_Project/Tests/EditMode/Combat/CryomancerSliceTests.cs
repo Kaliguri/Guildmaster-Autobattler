@@ -390,7 +390,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.AttackRange,      ModifierOp.Flat, range),
                 new StatModifier(StatType.MoveSpeed,        ModifierOp.Flat, moveSpeed),
             });
-            return new RuntimeUnit
+            var u = new RuntimeUnit
             {
                 Id               = id,
                 Team             = team,
@@ -398,9 +398,12 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CurrentHP        = maxHp,
                 Position         = pos,
                 PreviousPosition = pos,
-                Unit             = relic,
                 AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
+            // Форму авто-атаки снимаем с кита тем же вызовом, что фабрика: доставка и on-hit живут в
+            // рантайм-снимке, и юнит, собранный руками, обязан снять их так же — иначе он бьёт молча иначе.
+            u.AdoptKit(relic);
+            return u;
         }
     }
 }

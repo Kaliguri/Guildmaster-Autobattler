@@ -114,14 +114,14 @@ namespace Guildmaster.Combat
                 CurrentShield    = 0f,
                 Position         = spawnPosition,
                 PreviousPosition = spawnPosition,
-                Unit             = data,
                 Vessel           = vessel,
-                AutoAttackDamageType = data != null ? data.AutoAttackDamageType : DamageType.Undefined,
-                AttackChannel    = data != null ? data.Channel : AttackChannel.None,
                 // AI (Фаза 3): мозг из профиля кита + фаза стаггера по месту в команде (вики «13» §2.7, §4.1).
                 Brain            = new ProfileBrain(data?.Ai),
                 BrainPhase       = teamIndex % SimConstants.AiTickInterval,
             };
+
+            // Форма авто-атаки — снимком, одним вызовом: тип урона, доставка, on-hit, канал.
+            unit.AdoptKit(data);
 
             RegisterPassives(unit, data);
             RegisterItemPassives(unit, items);
