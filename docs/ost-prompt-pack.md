@@ -38,6 +38,13 @@
 **В «Исключить стили» слово `no` не пишется** — поле само означает исключение. Отрицание идёт в поле
 Стилей (`no vocals` там работает).
 
+**Исключить стили — ОДИН И ТОТ ЖЕ набор во всех блоках, он больше не меняется:**
+```
+solo violin, metal riff, taiko, triumphant fanfare, j-pop
+```
+Состав задаётся точно в позитиве, поэтому латать исключениями больше нечего. Канон состава по ролям —
+`voice-and-music.md` §КАНОН СОСТАВА.
+
 ### 01-A · инструментал: нежная и сильная, сила приходит аркой
 
 Промпт **намеренно короткий** — шесть тегов вместо десяти: слова про энергию складываются, и трек
@@ -46,11 +53,11 @@
 Текст → **Инструментал** (тумблер), арка задаётся **словами в Стилях**.
 
 ```
-cinematic battle score, desperate and determined, melancholic undertone, tender but powerful, lyrical
-melody over restrained percussion, warm strings with electric guitar lift, starts intimate and grows,
-132 BPM, D dorian, no vocals
+cinematic battle score, desperate and determined, melancholic undertone, clean electric guitar lead
+with singing sustain and gentle vibrato, lyrical phrasing, warm string section and delicate piano
+underneath, restrained low drum pulse, spacious reverb, starts intimate and grows, 132 BPM, D dorian,
+no vocals
 ```
-Исключить: `triumphant fanfare, bright major key, j-pop, cheerful, war march`
 
 **Почему не тегами арки.** Теги живут в поле Lyrics, а его занимает тумблер «Инструментал»: включить
 оба нельзя. Отключить тумблер ради тегов — значит остаться без единого запрета голоса, и модель
@@ -63,10 +70,9 @@ melody over restrained percussion, warm strings with electric guitar lift, start
 
 ```
 cinematic battle score, female soprano wordless vocalise in the lead, desperate and determined,
-melancholic undertone, airy but powerful, controlled vibrato, close-mic breath, restrained strings with
-electric guitar lift, 132 BPM, D dorian, no autotune
+melancholic undertone, airy but powerful, controlled vibrato, close-mic breath, clean electric guitar
+answering the voice, warm string section, restrained low drum pulse, 132 BPM, D dorian, no autotune
 ```
-Исключить: `triumphant fanfare, bright major key, j-pop, cheerful, spoken word`
 
 Текст — **на всю длину трека**, секции разделяются переносами строк. **Теги арки стоят прямо в
 заголовках секций** — здесь они проверяются заодно, поле Lyrics всё равно занято:
@@ -116,21 +122,20 @@ a-a-ia... ve-la...
 ### 01-C · тёмная краска, из которой вырастет фаза 2
 
 ```
-dark cinematic battle score, grim and resolute, heavy low-mid strings, church organ underneath,
-electric guitar singing over it, restrained percussion, 138 BPM, D dorian, no intro, no vocals,
-weight without dread
+dark cinematic battle score, grim and resolute, clean electric guitar lead with long sustain, heavy
+low-mid string section, church organ underneath, restrained low drum pulse, 138 BPM, D dorian, no intro,
+no vocals, weight without dread
 ```
-Исключить: `triumphant fanfare, bright major key, bright bells, celesta, war march`
 
 ### 01-F · хор вместо солистки
 
 ```
 cinematic battle score, female choir singing wordless syllables in pairs, desperate and determined,
-melancholic undertone, restrained strings with electric guitar lift, 132 BPM, D dorian, no intro,
-resolute not frightening
+melancholic undertone, clean electric guitar lead, warm string section, restrained low drum pulse,
+132 BPM, D dorian, no intro, resolute not frightening
 ```
 Текст → **Инструментал** (хор просим составом, не текстом).
-Исключить: `solo vocals, triumphant fanfare, bright major key, j-pop, spoken word`
+Исключить — тот же постоянный набор **плюс** `solo vocals` вместо `solo violin`: здесь нужен именно хор.
 
 ### Что слушать при отборе
 
