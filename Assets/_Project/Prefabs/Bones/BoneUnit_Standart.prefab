@@ -2197,22 +2197,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Body.SkeletalBodyVisual
   _parts:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4735357580786269482}
+  - {fileID: 9036915018069023408}
+  - {fileID: 5881991321478550031}
+  - {fileID: 3046715897296595593}
+  - {fileID: 1341766926715142247}
+  - {fileID: 7651781857338260324}
+  - {fileID: 1814654766081872514}
+  - {fileID: 7608351408125153722}
+  - {fileID: 7339482743393888518}
+  - {fileID: 7996778699552048080}
+  - {fileID: 2291789743680614658}
+  - {fileID: 5372441100391359960}
+  - {fileID: 2844374051487197054}
+  - {fileID: 8979342608194339017}
+  - {fileID: 2257877391834094493}
+  - {fileID: 7805557044980484807}
   _group: {fileID: 0}
 --- !u!1 &6550069845121300106
 GameObject:

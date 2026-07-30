@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Guildmaster.AnimationLab.Editor;
+using Guildmaster.Presentation.Body;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -111,6 +112,42 @@ namespace Guildmaster.Tests.EditMode.Presentation
                 .AppendLine("Nodes are renamed through RigMigrate for exactly this reason:");
             foreach (var line in missing) report.AppendLine("  " + line);
             Assert.That(missing, Is.Empty, report.ToString());
+        }
+
+        /// <summary>
+        /// The body seam holds every part by reference, and those references die when the sprite nodes are
+        /// recreated — which is exactly what moving the artwork into containers did on 31.07.2026. All
+        /// sixteen went null at once and nothing said a word: tint, hit flash, silhouette and death shards
+        /// all run through this list, and an empty answer looks the same as "no effect right now".
+        /// <para>Counted against the renderers actually in the rig, so a part added to the hierarchy and
+        /// never wired shows up here too.</para>
+        /// </summary>
+        [Test]
+        public void EveryBodyPartReferenceStillPointsAtArtwork()
+        {
+            var rig = LoadRig();
+            var body = rig.GetComponentInChildren<SkeletalBodyVisual>(includeInactive: true);
+            Assert.That(body, Is.Not.Null, "The rig carries the body seam — SkeletalBodyVisual is missing.");
+
+            int lost = 0, spriteless = 0;
+            foreach (var part in body.Parts)
+            {
+                if (part == null) { lost++; continue; }
+                if (part.sprite == null) spriteless++;
+            }
+
+            int inHierarchy = 0;
+            foreach (var renderer in rig.GetComponentsInChildren<SpriteRenderer>(includeInactive: true))
+                if (renderer.sprite != null) inHierarchy++;
+
+            Assert.That(lost, Is.Zero,
+                $"{lost} of {body.Parts.Count} body parts are lost references. Rebuild the list " +
+                "(SkeletalBodyVisual inspector, «Собрать заново») — until then the unit cannot be tinted, " +
+                "flashed or shattered.");
+            Assert.That(spriteless, Is.Zero, $"{spriteless} wired body parts carry no sprite.");
+            Assert.That(body.Parts.Count, Is.EqualTo(inHierarchy),
+                $"The list holds {body.Parts.Count} parts while the rig draws {inHierarchy}. A part outside " +
+                "the list is a part that stays its own colour when the rest of the body flashes.");
         }
     }
 }
