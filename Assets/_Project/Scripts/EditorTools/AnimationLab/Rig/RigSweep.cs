@@ -117,6 +117,18 @@ namespace Guildmaster.AnimationLab.Editor
             public float TipSpeed;
             /// <summary>Share of the body silhouette hidden behind the cover item, 0..1. NaN = not measured.</summary>
             public float Coverage = float.NaN;
+
+            /// <summary>
+            /// Доля закрытой ПЕРЕДНЕЙ половины силуэта — той, что обращена к врагу. NaN = не мерялось.
+            /// </summary>
+            /// <remarks>
+            /// Общая доля на этот вопрос не отвечает: щит шириной больше корпуса даёт одинаковые 51% и
+            /// когда прикрывает сторону удара, и когда висит с дальней от врага стороны, прикрывая пустоту
+            /// (поймал Макс, 30.07). Половина считается от середины силуэта ТЕЛА, а передняя у
+            /// нефлипнутого рига — правая: развороты идут через <c>scale.x = −1</c>, и авторим мы всегда
+            /// для неотражённой стороны.
+            /// </remarks>
+            public float CoverageFront = float.NaN;
             /// <summary>True when this sample lands on a key the clip actually authored.</summary>
             public bool IsKey;
 
@@ -172,16 +184,28 @@ namespace Guildmaster.AnimationLab.Editor
                 if (hasCoverage)
                 {
                     float min = 1f, max = 0f, atContact = float.NaN;
-                    float minTime = 0f;
+                    float frontMin = 1f, frontMax = 0f, frontAtContact = float.NaN;
+                    float minTime = 0f, frontMinTime = 0f;
                     foreach (var s in Samples)
                     {
                         if (float.IsNaN(s.Coverage)) continue;
                         if (s.Coverage < min) { min = s.Coverage; minTime = s.Time; }
                         if (s.Coverage > max) max = s.Coverage;
                         if (ContactTime >= 0f && Mathf.Abs(s.Time - ContactTime) < 0.02f) atContact = s.Coverage;
+
+                        if (float.IsNaN(s.CoverageFront)) continue;
+                        if (s.CoverageFront < frontMin) { frontMin = s.CoverageFront; frontMinTime = s.Time; }
+                        if (s.CoverageFront > frontMax) frontMax = s.CoverageFront;
+                        if (ContactTime >= 0f && Mathf.Abs(s.Time - ContactTime) < 0.02f) frontAtContact = s.CoverageFront;
                     }
                     text.AppendLine($"body covered: min {min:P0} at {minTime:F2}s, max {max:P0}" +
                                     (float.IsNaN(atContact) ? "" : $", at contact {atContact:P0}"));
+
+                    // Сторона врага отдельной строкой: щит шире корпуса даёт приличную общую долю и
+                    // прикрывая пустоту с дальней стороны — блок судится ИМЕННО этим числом.
+                    if (frontMax > 0f || frontMin <= 1f)
+                        text.AppendLine($"ENEMY SIDE covered: min {frontMin:P0} at {frontMinTime:F2}s, max {frontMax:P0}" +
+                                        (float.IsNaN(frontAtContact) ? "" : $", at contact {frontAtContact:P0}"));
                 }
 
                 text.AppendLine();
@@ -603,14 +627,34 @@ namespace Guildmaster.AnimationLab.Editor
                     var bodyMask = RenderMask(cam, rt, options.CoverageSize, all, body);
                     var coverMask = RenderMask(cam, rt, options.CoverageSize, all, new List<SpriteRenderer> { cover });
 
-                    int bodyPixels = 0, hidden = 0;
+                    int size = options.CoverageSize;
+
+                    // Середина силуэта ТЕЛА, а не кадра: юнит не обязан стоять в центре картинки, и
+                    // делёж по центру кадра назвал бы «передним» то, что просто правее камеры.
+                    int minX = size, maxX = -1;
+                    for (int p = 0; p < bodyMask.Length; p++)
+                    {
+                        if (!bodyMask[p]) continue;
+                        int x = p % size;
+                        if (x < minX) minX = x;
+                        if (x > maxX) maxX = x;
+                    }
+                    int midX = maxX >= minX ? (minX + maxX) / 2 : size / 2;
+
+                    int bodyPixels = 0, hidden = 0, frontPixels = 0, frontHidden = 0;
                     for (int p = 0; p < bodyMask.Length; p++)
                     {
                         if (!bodyMask[p]) continue;
                         bodyPixels++;
-                        if (coverMask[p]) hidden++;
+                        bool covered = coverMask[p];
+                        if (covered) hidden++;
+
+                        if (p % size < midX) continue;   // передняя половина = сторона врага (риг смотрит вправо)
+                        frontPixels++;
+                        if (covered) frontHidden++;
                     }
-                    sample.Coverage = bodyPixels > 0 ? hidden / (float)bodyPixels : 0f;
+                    sample.Coverage      = bodyPixels  > 0 ? hidden      / (float)bodyPixels  : 0f;
+                    sample.CoverageFront = frontPixels > 0 ? frontHidden / (float)frontPixels : 0f;
                 }
             }
             finally
