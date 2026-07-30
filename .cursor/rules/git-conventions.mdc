@@ -61,6 +61,23 @@ Stage **only your own** changes: use explicit paths, never `git add -A`. Max and
 agents may have unfinished work in the tree — sweeping it into your commit steals
 authorship and hides someone else's work-in-progress in an unrelated change.
 
+**This rule is enforced mechanically, not by memory** (2026-07-30). A `PreToolUse` hook in
+`.claude/settings.json` denies `git add -A|--all|-u|.` and `git commit -a|-am` outright.
+The reason it needed a barrier: the rule is **one-sided**. Following it protects other
+sessions from you, but nothing protects *your* uncommitted work from a session that sweeps
+the tree — and that is exactly how a finished test ended up inside an unrelated commit that
+same day. A directory in the pathspec (`git add -- Assets/_Project/Art`) passes the hook but is
+**not** an exemption and not safe: someone else's uncommitted edits may sit inside it, and a
+pathspec commit takes files **from disk**, ignoring the index — so `git restore --staged` cannot
+pull them back out. List files, not folders, and read `git diff --cached --name-only` before
+committing.
+
+The hook only refuses the flags that mean "everything", and it covers Claude Code sessions in this
+project only — a sweep typed in a terminal or clicked in an IDE still gets through.
+
+Corollary worth keeping: **commit as soon as a step is done.** The window between finishing
+work and committing it is exactly the window in which someone else's sweep can claim it.
+
 ### Examples
 
 ```
