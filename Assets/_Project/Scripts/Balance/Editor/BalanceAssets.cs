@@ -10,20 +10,30 @@ namespace Guildmaster.Balance.Editor
     /// </summary>
     internal static class BalanceAssets
     {
-        public static StatsConfig LoadStatsConfig()
-        {
-            string[] guids = AssetDatabase.FindAssets("t:StatsConfig");
-            if (guids.Length == 0) return null;
-            System.Array.Sort(guids);
-            return AssetDatabase.LoadAssetAtPath<StatsConfig>(AssetDatabase.GUIDToAssetPath(guids[0]));
-        }
+        /// <summary>
+        /// Стат-конфиг, которым играет игра, — через <see cref="GameConfig"/>.
+        /// </summary>
+        /// <remarks>
+        /// Раньше здесь брался «первый по алфавиту ассет типа <c>StatsConfig</c>». Это тихая ловушка:
+        /// второй такой ассет (эксперимент, ветка баланса) увёл бы отчёты на конфиг, которым игра не
+        /// играет, и расхождение выглядело бы как цифра в отчёте, а не как ошибка. Играющий экземпляр
+        /// выбран в `GameConfig`, поэтому бенч спрашивает там же, где спрашивают скоупы.
+        /// </remarks>
+        public static StatsConfig LoadStatsConfig() => LoadGameConfig()?.Stats;
 
-        public static ClassBalanceConfig LoadClassBalanceConfig()
+        /// <inheritdoc cref="LoadStatsConfig"/>
+        public static ClassBalanceConfig LoadClassBalanceConfig() => LoadGameConfig()?.ClassBalance;
+
+        private static GameConfig LoadGameConfig()
         {
-            string[] guids = AssetDatabase.FindAssets("t:ClassBalanceConfig");
-            if (guids.Length == 0) return null;
+            string[] guids = AssetDatabase.FindAssets("t:GameConfig");
+            if (guids.Length == 0)
+            {
+                UnityEngine.Debug.LogError("[SimBench] GameConfig не найден — брать балансные конфиги негде.");
+                return null;
+            }
             System.Array.Sort(guids);
-            return AssetDatabase.LoadAssetAtPath<ClassBalanceConfig>(AssetDatabase.GUIDToAssetPath(guids[0]));
+            return AssetDatabase.LoadAssetAtPath<GameConfig>(AssetDatabase.GUIDToAssetPath(guids[0]));
         }
 
         public static List<T> LoadAll<T>() where T : UnityEngine.Object

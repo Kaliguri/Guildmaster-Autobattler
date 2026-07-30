@@ -96,6 +96,14 @@ namespace Guildmaster.Data.Definitions
                  "(предохранитель от грайнда после плохой ночи). Ориентир Макса 2026-07-27: 8.")]
         [SerializeField] private int _veteranHireUnlockDeaths;
 
+        [Header("Балансные конфиги (ссылки, не значения)")]
+        [Tooltip("Статы: константа брони, реген ресурса, дефолты. Ссылка живёт ЗДЕСЬ, а не в скоупах — " +
+                 "иначе каждая автономная сцена держит свою и они расходятся.")]
+        [SerializeField] private StatsConfig _statsConfig;
+
+        [Tooltip("Классовые коридоры баланса. Ссылка живёт здесь по той же причине, что и StatsConfig.")]
+        [SerializeField] private ClassBalanceConfig _classBalanceConfig;
+
         public float  DefaultMasterVolume => _defaultMasterVolume;
         public float  DefaultMusicVolume  => _defaultMusicVolume;
         public float  DefaultSfxVolume    => _defaultSfxVolume;
@@ -124,6 +132,24 @@ namespace Guildmaster.Data.Definitions
         public int    StartingRosterCapacity  => _startingRosterCapacity;
         public int    MaxRosterCapacity       => _maxRosterCapacity;
         public int    VeteranHireUnlockDeaths => _veteranHireUnlockDeaths;
+
+        /// <summary>
+        /// Балансные конфиги, на которые ссылается игра. **Единственное место, где выбран играющий
+        /// экземпляр** — и скоупы, и editor-бенчи берут их отсюда.
+        /// </summary>
+        /// <remarks>
+        /// Ссылки собраны здесь не для удобства, а чтобы у факта «какой `StatsConfig` играет» был один
+        /// владелец. Раньше эти поля сериализовались в <c>RootLifetimeScope</c> И в
+        /// <c>CombatLifetimeScope</c> (боевая сцена обязана подниматься без Root — standalone dev-арена),
+        /// то есть в двух сценах, и совпадали только под присмотром теста. Хуже было у бенчей: они брали
+        /// «первый по алфавиту ассет типа <c>StatsConfig</c>», поэтому второй такой ассет молча увёл бы
+        /// балансные отчёты на конфиг, которым игра не играет.
+        /// <para>Пусто у инстанса из <see cref="CreateDefault"/> — в памяти ассетов нет. Потребителям
+        /// рантайма конфиги обязательны, поэтому они запрашивают их через <c>ScopeWiring.Require</c> и
+        /// падают громко, а не подставляют молча.</para>
+        /// </remarks>
+        public StatsConfig        Stats        => _statsConfig;
+        public ClassBalanceConfig ClassBalance => _classBalanceConfig;
 
         /// <summary>
         /// Заготовка значений: инстанс в памяти, заполненный тем, с чего начинают новый ассет. Нужна

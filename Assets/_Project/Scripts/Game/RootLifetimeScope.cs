@@ -45,13 +45,6 @@ namespace Guildmaster.Game
                  "ОБЯЗАТЕЛЕН. Пусто = красная ошибка, и карта пойдёт по дефолтам КОДА, а не по этому ассету.")]
         [SerializeField] private ActConfig _actConfig;
 
-        [Tooltip("Стат-конфиг (дефолты статов). ТОТ ЖЕ ассет, что в CombatLifetimeScope — иначе панель " +
-                 "инвентаря покажет числа, не совпадающие с боем. Потребитель здесь — IUnitStatPreview.")]
-        [SerializeField] private StatsConfig _statsConfig;
-
-        [Tooltip("Классовый профиль баланса (2-й уровень стат-каскада). ТОТ ЖЕ ассет, что в CombatLifetimeScope.")]
-        [SerializeField] private ClassBalanceConfig _classBalanceConfig;
-
         [Tooltip("Снимок палитры проекта (UI/Theme/tokens.*.uss → Alebardium/Дизайн-система/Пересобрать палитру). " +
                  "Нужен интерфейсу, чтобы карточка реликвии красила тело ТЕМ ЖЕ путём, что бой: юнит хранит " +
                  "ступень приглушения, цвет живёт здесь. Пусто = карточка покажет арт как есть.")]
@@ -66,7 +59,8 @@ namespace Guildmaster.Game
                 new ContentRegistry(ScopeWiring.Require(_contentDatabase, nameof(RootLifetimeScope), nameof(_contentDatabase)).Entries));
 
             // Общие дефолты игры (экономика забега — владелец ассет, HARD-правило проекта).
-            builder.RegisterInstance(ScopeWiring.Require(_gameConfig, nameof(RootLifetimeScope), nameof(_gameConfig)));
+            GameConfig gameConfig = ScopeWiring.Require(_gameConfig, nameof(RootLifetimeScope), nameof(_gameConfig));
+            builder.RegisterInstance(gameConfig);
 
             // Конфиг генерации карты акта (оверхол 2026-07). Потребитель — GameFlow.
             builder.RegisterInstance(ScopeWiring.Optional(_actConfig, nameof(RootLifetimeScope), nameof(_actConfig),
@@ -96,10 +90,12 @@ namespace Guildmaster.Game
             // в CoreScene (инъекция методом через RegisterComponentInHierarchy). ESC открывает меню.
             // Стат-превью для UI (панель деталей инвентаря): считает те же числа, что боевая сборка.
             // Живёт в корне, а не в боевом скоупе: инвентарь открывается и вне боя.
+            // Стат-конфиги приходят ИЗ GameConfig, а не отдельными полями скоупа: играющий экземпляр
+            // выбран в одном месте, поэтому панель инвентаря не может показать числа, которых нет в бою.
             builder.Register<IUnitStatPreview>(
                 _ => new UnitStatPreview(
-                    ScopeWiring.Require(_statsConfig, nameof(RootLifetimeScope), nameof(_statsConfig)),
-                    ScopeWiring.Require(_classBalanceConfig, nameof(RootLifetimeScope), nameof(_classBalanceConfig))),
+                    ScopeWiring.Require(gameConfig.Stats, nameof(GameConfig), nameof(GameConfig.Stats)),
+                    ScopeWiring.Require(gameConfig.ClassBalance, nameof(GameConfig), nameof(GameConfig.ClassBalance))),
                 Lifetime.Singleton);
 
             // Слой описаний (Трек Д-о, план §II.10.1): единственная дорога, по которой число попадает

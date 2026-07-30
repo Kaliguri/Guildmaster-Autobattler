@@ -450,8 +450,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects:
   - {fileID: 1713771493}
-  _statsConfig: {fileID: 11400000, guid: ad16ddf55214b4f4f9fc8305dadd705e, type: 2}
-  _classBalanceConfig: {fileID: 11400000, guid: c346355e64f53d444b5cc7a9fe184c84, type: 2}
+  _gameConfig: {fileID: 11400000, guid: 3f479309a3dcb31429f94c65a88fb275, type: 2}
   _simTuningConfig: {fileID: 11400000, guid: 84596659d7f25a649833a4fe7640a14f, type: 2}
   _provingGroundsConfig: {fileID: 11400000, guid: 557cd34fa730c0c4c8acfa210f1d7d75, type: 2}
   _spatialHashCellSize: 3

@@ -25,12 +25,11 @@ namespace Guildmaster.Game
     /// </remarks>
     public class CombatLifetimeScope : LifetimeScope
     {
-        [Tooltip("Конфиг базовых характеристик (в т.ч. armor-константа K — единственный источник).")]
-        [SerializeField] private StatsConfig _statsConfig;
-
-        [Tooltip("Классовый профиль баланса (база HP/скорости от класса, 2-й уровень стат-каскада). ОБЯЗАТЕЛЕН: " +
-                 "пусто = скоуп не соберётся (раньше классы молча не применялись, и юниты уезжали на MaxHP 0).")]
-        [SerializeField] private ClassBalanceConfig _classBalanceConfig;
+        [Tooltip("Общий конфиг игры — ОТСЮДА берутся стат-конфиги (StatsConfig, ClassBalanceConfig). " +
+                 "ОБЯЗАТЕЛЕН. Держать здесь ссылку на GameConfig, а не на сами конфиги, обязательно: " +
+                 "боевая сцена поднимается и без CoreScene (dev-арена), а играющий экземпляр конфигов " +
+                 "должен быть выбран в одном месте — иначе арена и игра расходятся молча.")]
+        [SerializeField] private GameConfig _gameConfig;
 
         [Tooltip("Балансный тюнинг симуляции (вики «13» §3.4): печётся в снапшот SimTuning на старте боя.")]
         [SerializeField] private SimTuningConfig _simTuningConfig;
@@ -132,13 +131,19 @@ namespace Guildmaster.Game
             builder.Register<EffectSystem>(Lifetime.Scoped);
             // Скорость капания ресурса — из StatsConfig (единственный источник числа); без конфига
             // остаётся код-дефолт системы, а не тихий ноль.
-            float resourcePerSecond = _statsConfig != null
-                ? _statsConfig.ResourceRegenPerSecond
+            StatsConfig statsForRegen = _gameConfig != null ? _gameConfig.Stats : null;
+            float resourcePerSecond = statsForRegen != null
+                ? statsForRegen.ResourceRegenPerSecond
                 : new RegenSystem().ResourcePerSecond;
             builder.Register<RegenSystem>(_ => new RegenSystem { ResourcePerSecond = resourcePerSecond },
                                           Lifetime.Scoped);
             builder.Register<DisplacementSystem>(Lifetime.Scoped);
         }
+
+        /// <summary>Стат-конфиг из <see cref="GameConfig"/>: единственный владелец играющего экземпляра.</summary>
+        private StatsConfig Stats() => ScopeWiring.Require(
+            ScopeWiring.Require(_gameConfig, nameof(CombatLifetimeScope), nameof(_gameConfig)).Stats,
+            nameof(GameConfig), nameof(GameConfig.Stats));
 
         private void RegisterSimulation(IContainerBuilder builder, ArenaLayoutData layout)
         {
@@ -148,13 +153,15 @@ namespace Guildmaster.Game
             // вики «13» §4.2 п.1) и границы поля arena (ArenaBounds? — значение, не сервис). Добавил
             // систему в ctor — ничего тут править не надо, лишь бы она была зарегистрирована.
             builder.Register<CombatSimulation>(Lifetime.Scoped)
-                   .WithParameter("armorK", ScopeWiring.Require(_statsConfig, nameof(CombatLifetimeScope), nameof(_statsConfig)).ArmorConstantK)
+                   .WithParameter("armorK", Stats().ArmorConstantK)
                    .WithParameter("arena", (ArenaBounds?)layout.Bounds)
                    .WithParameter("tuning", (SimTuning?)ScopeWiring.Require(_simTuningConfig, nameof(CombatLifetimeScope), nameof(_simTuningConfig)).ToSnapshot())
                    .WithParameter("cameraZone", (Rect2D?)layout.CameraZone);
 
-            StatsConfig cfg = ScopeWiring.Require(_statsConfig, nameof(CombatLifetimeScope), nameof(_statsConfig));
-            ClassBalanceConfig classCfg = ScopeWiring.Require(_classBalanceConfig, nameof(CombatLifetimeScope), nameof(_classBalanceConfig));
+            StatsConfig cfg = Stats();
+            ClassBalanceConfig classCfg = ScopeWiring.Require(
+                ScopeWiring.Require(_gameConfig, nameof(CombatLifetimeScope), nameof(_gameConfig)).ClassBalance,
+                nameof(GameConfig), nameof(GameConfig.ClassBalance));
             builder.Register<RuntimeUnitFactory>(r => new RuntimeUnitFactory(
                 cfg,
                 classCfg,

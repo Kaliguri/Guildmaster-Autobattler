@@ -164,6 +164,32 @@ namespace Guildmaster.Tests.EditMode.Content
                 "Потолок вместимости ниже стартовой — апгрейд невозможен.");
         }
 
+        /// <summary>
+        /// `GameConfig` — единственное место, где выбран играющий экземпляр стат-конфигов, поэтому его
+        /// ссылки обязаны быть заполнены и указывать на те самые ассеты, что лежат в проекте.
+        /// </summary>
+        /// <remarks>
+        /// До 2026-07-30 эту роль играли поля скоупов, и их пустоту ловил <c>SceneWiringTests</c>, ходя по
+        /// сценам билда. После переноса ссылок внутрь ассета сцены о них больше ничего не знают — без этой
+        /// проверки миграция забрала бы охрану и ничего не поставила взамен: пустой `Stats` уронил бы бой
+        /// уже в `Configure`, но узналось бы это только запуском.
+        /// </remarks>
+        [Test]
+        public void GameConfig_PointsAtTheProjectBalanceConfigs()
+        {
+            GameConfig g = LoadSingle<GameConfig>();
+
+            Assert.IsNotNull(g.Stats,
+                "GameConfig._statsConfig пуст — боевому скоупу негде взять armorK и реген ресурса.");
+            Assert.IsNotNull(g.ClassBalance,
+                "GameConfig._classBalanceConfig пуст — классовый каскад не применится, юниты уедут на MaxHP 0.");
+
+            Assert.AreSame(LoadSingle<StatsConfig>(), g.Stats,
+                "GameConfig ссылается не на тот StatsConfig, что лежит в проекте: бенчи и игра разойдутся.");
+            Assert.AreSame(LoadSingle<ClassBalanceConfig>(), g.ClassBalance,
+                "GameConfig ссылается не на тот ClassBalanceConfig, что лежит в проекте.");
+        }
+
         private static T LoadSingle<T>() where T : UnityEngine.Object
         {
             string[] guids = AssetDatabase.FindAssets($"t:{typeof(T).Name}");

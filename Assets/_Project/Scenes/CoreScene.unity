@@ -290,8 +290,6 @@ MonoBehaviour:
   _gameConfig: {fileID: 11400000, guid: 3f479309a3dcb31429f94c65a88fb275, type: 2}
   _audioCatalog: {fileID: 11400000, guid: fe034423cf8b8c5409a5cf3289ab74cc, type: 2}
   _actConfig: {fileID: 11400000, guid: dbc39cb776c7fd6469e9cd31b97af1ab, type: 2}
-  _statsConfig: {fileID: 11400000, guid: ad16ddf55214b4f4f9fc8305dadd705e, type: 2}
-  _classBalanceConfig: {fileID: 11400000, guid: c346355e64f53d444b5cc7a9fe184c84, type: 2}
   _palette: {fileID: 11400000, guid: f42219bf529da2c4d909a76d914ab971, type: 2}
 --- !u!4 &265839542
 Transform:
