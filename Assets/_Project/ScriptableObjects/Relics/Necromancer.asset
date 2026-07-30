@@ -51,7 +51,7 @@ MonoBehaviour:
     Value: 7
   - Stat: 27
     Op: 3
-    Value: 40
+    Value: 100
   - Stat: 7
     Op: 3
     Value: 114
@@ -63,7 +63,7 @@ MonoBehaviour:
     _effects: []
     _selfEffects: []
     _baseCooldown: 0
-    _resourceCost: 40
+    _resourceCost: 100
     _targetMode: 0
     _damageMultiplier: 0
     _damageType: 0

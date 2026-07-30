@@ -38,5 +38,5 @@ MonoBehaviour:
     - rid: 5615026876324511840
       type: {class: MissingHpShieldComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _flat: 30
+        _flat: 50
         _pctMissingHp: 0.075

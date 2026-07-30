@@ -40,7 +40,7 @@ MonoBehaviour:
       type: {class: ShieldComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _amount:
-          Base: 300
+          Base: 600
           Scalings: []
         _selfBonusPct: 0.5
     - rid: 7815026876324511924

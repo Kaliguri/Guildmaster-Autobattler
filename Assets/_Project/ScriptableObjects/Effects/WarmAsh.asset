@@ -17,7 +17,7 @@ MonoBehaviour:
   _tags: 8193
   _baseDuration: -1
   _stacking: 1
-  _maxStacks: 5
+  _maxStacks: 50
   _cleanseTier: 1
   _unremovable: 0
   _cleansePrice:
@@ -41,4 +41,4 @@ MonoBehaviour:
         _modifiers:
         - Stat: 25
           Op: 1
-          Value: -0.1
+          Value: -0.01

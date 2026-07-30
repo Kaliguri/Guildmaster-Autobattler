@@ -41,10 +41,10 @@ MonoBehaviour:
       type: {class: ShieldComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _amount:
-          Base: 90
+          Base: 40
           Scalings:
           - Stat: 10
-            Ratio: 0.5
+            Ratio: 1
         _selfBonusPct: 0
     - rid: 7815026876324511991
       type: {class: ShieldBurstComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}

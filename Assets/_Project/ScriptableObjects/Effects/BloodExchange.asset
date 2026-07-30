@@ -39,7 +39,7 @@ MonoBehaviour:
     - rid: 7815026876324511983
       type: {class: FeedOnDamageComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _healShare: 0.15
+        _healShare: 0.3
         _radius: 6
         _sourceKind: 2
         _damageType: 4

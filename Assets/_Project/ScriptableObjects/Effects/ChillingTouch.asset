@@ -40,4 +40,4 @@ MonoBehaviour:
         _rules:
         - RequiredTags: 128
           Bonus: 0.25
-        _autoAttackOnly: 1
+        _autoAttackOnly: 0
