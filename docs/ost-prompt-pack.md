@@ -71,8 +71,63 @@ epic fantasy battle, resolute and driving, 138 BPM, D minor, female soprano word
 airy but powerful, controlled vibrato, low string ostinato, taiko and timpani, close-mic breath,
 no autotune
 ```
-Lyrics: `[Verse] a-a-ia so-o-nta ve-la · [Chorus] e-lun do-re-a li-a-ne`
 Exclude: `trailer braams, dubstep drop, metal riff, chiptune, spoken word`
+Переключатель «Текст» → **«Писать»** (не «Промпт»: тот отдаст сочинение модели, и она напишет
+английские слова).
+
+**Текст — на всю длину трека, а не двумя строками.** Иначе Suno зациклит их, начнёт импровизировать
+своими слогами или отведёт вокалу эпизодическую роль, а нам надо услышать, как голос **ведёт**
+мелодию. Секции разделяются переносами строк:
+
+```
+[Intro]
+a-a-i-a... o-o-ve-la...
+
+[Verse]
+mia so-o-nta ve-la
+e-na do-re-a li-a-ne
+so-la mi-re-na va-ia
+o-re-na ta-li-a so
+
+[Chorus]
+e-lun do-re-a li-a-ne
+ai-a so-o-nta ve-la
+e-lun do-re-a mi-o
+la-ia ve-so-o-na
+
+[Verse]
+ne-va so-li-a re-o
+mi-e-na ta-la vo-re-a
+so-o-la ni-a me-na
+e-ra li-o-ne va
+
+[Chorus]
+e-lun do-re-a li-a-ne
+ai-a so-o-nta ve-la
+e-lun do-re-a mi-o
+la-ia ve-so-o-na
+
+[Bridge]
+o-o-o... a-i-a...
+so-la-re-na... ve-o-na...
+
+[Chorus]
+e-lun do-re-a li-a-ne
+ai-a so-o-nta ve-la
+e-lun do-re-a mi-o
+la-ia ve-so-o-na
+
+[Outro]
+a-a-ia... ve-la...
+```
+
+Как это собрано (правила палитры, а не вкусовщина): **открытые слоги CV и сонорные** (`l m n r v`),
+**ни одного кластера** `th wh ck ng` — они провоцируют англицизацию; **дефисы держат слог на
+нескольких нотах** (`so-o-nta` даёт мелизм); закрытые слоги, читаемые как английские слова, убраны
+намеренно (`men` → `me-na`, `en` → `e-na`). Припев повторяется буквально — так узнаётся фраза.
+
+**Это гипотеза, и первый прогон её проверит:** удержит ли модель слоги или подменит похожими
+английскими словами. Подменит — переходим на пение только гласными, там подменять нечего.
 
 **01-C · героически, но мрачно — краска, из которой вырастет фаза 2**
 ```
