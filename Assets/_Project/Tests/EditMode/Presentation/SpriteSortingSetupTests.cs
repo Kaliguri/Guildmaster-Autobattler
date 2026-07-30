@@ -79,5 +79,78 @@ namespace Guildmaster.Tests.EditMode.Presentation
                     "и ось из Graphics Settings до арены не дойдёт. Владелец оси один — настройки проекта.");
             }
         }
+
+        /// <summary>
+        /// САМЫЙ уязвимый уровень: без <see cref="SortingGroup"/> ордера частей перестают быть
+        /// локальными и начинают сравниваться с частями ЧУЖИХ юнитов напрямую. Тогда меч одного
+        /// (ордер 2) уходит поверх торса другого (ордер 0) независимо от того, кто ближе к зрителю, —
+        /// потому что ордер сравнивается РАНЬШЕ глубины, и никакая ось этого не исправит.
+        /// <para>
+        /// Группа нужна на префабе ВИДА, а не на самом риге: у `BoneUnit_Standart` её нет и быть не
+        /// должно — он вкладывается внутрь вида, и группа стоит выше него.
+        /// </para>
+        /// </summary>
+        [Test]
+        public void EverySkeletalUnitPrefab_HasSortingGroup_SoPartsStayLocal()
+        {
+            var guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/_Project/Prefabs" });
+            int checkedPrefabs = 0;
+
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var go = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                if (go == null) continue;
+
+                var body = go.GetComponentInChildren<Guildmaster.Presentation.Body.SkeletalBodyVisual>(true);
+                if (body == null) continue;                      // покадровые юниты: тело — один спрайт
+
+                var group = body.GetComponentInParent<SortingGroup>(true);
+                if (group == null && !ContainedInAnotherPrefab(go))
+                    Assert.Fail($"{path}: составное тело без SortingGroup. Ордера частей станут " +
+                                "глобальными, и части разных юнитов перемешаются между собой.");
+
+                if (group != null) checkedPrefabs++;
+            }
+
+            Assert.Greater(checkedPrefabs, 0,
+                "Ни одного скелетного префаба вида не найдено — тест перестал что-либо проверять");
+        }
+
+        /// <summary>
+        /// Риг живёт и сам по себе — стенд анимаций пользуется им без вида, и группы там нет по замыслу.
+        /// Отличаем такой префаб по отсутствию <c>UnitView</c>: вид на арену выходит только через него.
+        /// </summary>
+        private static bool ContainedInAnotherPrefab(GameObject root)
+            => root.GetComponentInChildren<Guildmaster.Presentation.UnitView>(true) == null;
+
+        /// <summary>
+        /// Части обязаны лежать в ОДНОМ слое с группой. Слой сравнивается раньше ордера даже внутри
+        /// группы, поэтому часть, забытая в чужом слое, всплывает над всем телом — и ордер, который ей
+        /// выставили, ничего не решит.
+        /// </summary>
+        [Test]
+        public void SkeletalParts_ShareOneSortingLayer_WithTheirGroup()
+        {
+            var guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/_Project/Prefabs" });
+
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var go = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+                if (go == null) continue;
+
+                var body = go.GetComponentInChildren<Guildmaster.Presentation.Body.SkeletalBodyVisual>(true);
+                if (body == null) continue;
+
+                var group = body.GetComponentInParent<SortingGroup>(true);
+                if (group == null) continue;                     // это ловит тест выше
+
+                foreach (var part in body.GetComponentsInChildren<SpriteRenderer>(true))
+                    Assert.AreEqual(group.sortingLayerID, part.sortingLayerID,
+                        $"{path}: часть «{part.name}» в слое «{part.sortingLayerName}», а группа — в " +
+                        $"«{group.sortingLayerName}». Слой сильнее ордера, часть всплывёт над телом.");
+            }
+        }
     }
 }
