@@ -38,17 +38,21 @@ namespace Guildmaster.Combat
             /// <summary>Разовое пробивание этого удара (взведено «Скрытностью») — снято вместе с цифрами.</summary>
             public readonly float FlatPen;
 
+            /// <summary>Дистанция толчка этого удара (взведена зарядом усиления); 0 = удар не толкает.</summary>
+            public readonly float Knockback;
+
             public ResolvedHit(RuntimeUnit unit, RuntimeUnit target, float raw, float reach,
-                DamageSchool school, DamageAffinity affinity, bool blink, float flatPen)
+                DamageSchool school, DamageAffinity affinity, bool blink, float flatPen, float knockback)
             {
-                Unit     = unit;
-                Target   = target;
-                Raw      = raw;
-                Reach    = reach;
-                School   = school;
-                Affinity = affinity;
-                Blink    = blink;
-                FlatPen  = flatPen;
+                Unit      = unit;
+                Target    = target;
+                Raw       = raw;
+                Reach     = reach;
+                School    = school;
+                Affinity  = affinity;
+                Blink     = blink;
+                FlatPen   = flatPen;
+                Knockback = knockback;
             }
         }
 
@@ -232,13 +236,19 @@ namespace Guildmaster.Combat
             // §9.6 усиление следующей атаки («Скрытность»): множим урон разово, забираем разовое
             // пробивание и снимаем баф стелса. Пробивание тратится тем же ударом, что и множитель.
             float flatPen = 0f;
+            float knockback = 0f;
             if (unit.EmpowerDamageMult > 0f)
             {
                 raw *= unit.EmpowerDamageMult;
                 unit.EmpowerDamageMult = 0f;
                 flatPen = unit.EmpowerFlatPen;
                 unit.EmpowerFlatPen = 0f;
-                ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, EffectTag.Stealth, int.MaxValue, 0));
+                knockback = unit.EmpowerKnockback;
+                unit.EmpowerKnockback = 0f;
+                // Снимаем ИМЕННО тот эффект, который заряд выдал (у Убийцы — стелс, у периодического
+                // заряда — свой тег): жёсткий Stealth здесь срывал бы скрытность любому, кто просто
+                // взвёл усиленный удар, и наоборот оставлял бы висеть чужой заряд.
+                ctx.Dispel(new DispelRequest(unit, DispelTargetPolarity.Any, unit.EmpowerConsumeTag, int.MaxValue, 0));
             }
 
             // §10.5 блинк убийцы: телепорт за спину едет с ударом — он меняет позиции, а их читают
@@ -246,7 +256,7 @@ namespace Guildmaster.Combat
             bool blink = unit.BlinkBehindOnNextAttack;
             unit.BlinkBehindOnNextAttack = false;
 
-            _hits.Add(new ResolvedHit(unit, target, raw, reach, school, affinity, blink, flatPen));
+            _hits.Add(new ResolvedHit(unit, target, raw, reach, school, affinity, blink, flatPen, knockback));
         }
 
         /// <summary>Прилёт снятого удара: урон/снаряд/хил и on-hit эффекты. Блинк уже отыгран (проход 2a).</summary>
@@ -288,6 +298,7 @@ namespace Guildmaster.Combat
                 {
                     ctx.DealDamage(new DamageRequest(unit, target, raw, school, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, affinity: affinity, bonusFlatPen: hit.FlatPen));
                     ApplyAutoAttackOnHit(unit, target, ctx); // §9.1 (мили single)
+                    PushIfEmpowered(unit, target, in hit, ctx);
                 }
             }
             else
@@ -306,6 +317,29 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>Наложить on-hit эффекты авто-атаки реликвии на задетую цель (§9.1, мили-путь).</summary>
+        /// <summary>
+        /// Толчок заряженного удара («Восходящий удар» Монаха воды): цель уезжает ОТ носителя на
+        /// взведённую зарядом дистанцию. Ядром, а не мягким сдвигом — значит работает общее правило
+        /// «толчок в стену бьёт дважды», и урон повторного удара равен урону самого выпада.
+        /// </summary>
+        /// <remarks>
+        /// Только для ближнего single-удара. Линия и снаряд не толкают намеренно: у линии цель не одна
+        /// (кого из четверых уносить — вопрос без ответа), а у снаряда попадание случается в
+        /// <c>ProjectileSystem</c> позже и уже без снятых цифр этого удара.
+        /// </remarks>
+        private static void PushIfEmpowered(RuntimeUnit unit, RuntimeUnit target, in ResolvedHit hit, ICombatContext ctx)
+        {
+            if (hit.Knockback <= 0f || target.IsDead) return;
+
+            Vector2 away = target.Position - unit.Position;
+            if (away.sqrMagnitude < 1e-6f) return; // стоят в одной точке — направления толчка нет
+
+            ctx.Displace(new DisplaceRequest(
+                target, unit, away.normalized, hit.Knockback,
+                cannonball: true, damage: hit.Raw, school: hit.School, width: 1f,
+                affinity: hit.Affinity));
+        }
+
         private static void ApplyAutoAttackOnHit(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)
         {
             EffectData[] effects = unit.Unit != null ? unit.Unit.AutoAttackEffects : null;

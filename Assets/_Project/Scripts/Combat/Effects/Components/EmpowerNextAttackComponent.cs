@@ -1,4 +1,5 @@
 using System;
+using Guildmaster.Data.Definitions;
 using UnityEngine;
 
 namespace Guildmaster.Combat.Effects.Components
@@ -34,6 +35,13 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Телепортировать носителя за спину цели перед усиленным ударом.")]
         [SerializeField] private bool _blinkBehind;
 
+        [Tooltip("На сколько усиленный удар отбрасывает цель, мировых единиц (Монах воды = 2). 0 = не толкает.")]
+        [SerializeField] private float _knockbackDistance;
+
+        [Tooltip("Тег, по которому удар снимает взведший эффект. Stealth = удар выводит из тени (Убийца); " +
+                 "Empowered = обычный заряд, стелса не касается.")]
+        [SerializeField] private EffectTag _consumeTag = EffectTag.Stealth;
+
         [Tooltip("Конвертации статов в множитель усиления (M4). Убийца: прямая форма от AttackSpeed — " +
                  "«+0.5 к множителю за каждую 1.0 сверх базовой».")]
         [SerializeField] private Data.Stats.StatConversion[] _damageMultScalings;
@@ -44,8 +52,10 @@ namespace Guildmaster.Combat.Effects.Components
             if (self == null || self.IsDead) return;
 
             // Множитель — через конвертации (M4): удар из скрытности растёт со скоростью атаки.
-            self.EmpowerDamageMult = Data.Stats.StatConversion.ApplyAll(_damageMultScalings, _damageMult, self.Stats);
-            self.EmpowerFlatPen    = _flatPen;
+            self.EmpowerDamageMult  = Data.Stats.StatConversion.ApplyAll(_damageMultScalings, _damageMult, self.Stats);
+            self.EmpowerFlatPen     = _flatPen;
+            self.EmpowerKnockback   = _knockbackDistance;
+            self.EmpowerConsumeTag  = _consumeTag;
             if (_blinkBehind) self.BlinkBehindOnNextAttack = true;
         }
 
@@ -56,6 +66,7 @@ namespace Guildmaster.Combat.Effects.Components
 
             self.EmpowerDamageMult = 0f;
             self.EmpowerFlatPen    = 0f;
+            self.EmpowerKnockback  = 0f;
             if (_blinkBehind) self.BlinkBehindOnNextAttack = false;
         }
     }

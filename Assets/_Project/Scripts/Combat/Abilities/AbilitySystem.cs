@@ -309,6 +309,11 @@ namespace Guildmaster.Combat
             caster.CurrentResource -= data.ResourceCost;
             ability.CooldownRemaining = data.ResolveCooldown(caster.Stats) * caster.Stats.Get(StatType.CooldownEff);
 
+            // Счётчик кастов растёт здесь, вместе с ценой: «каст состоялся» — это уплаченная стоимость,
+            // а не применённая нагрузка. У канала нагрузка приходит много раз за один каст, и считать её
+            // срабатывания значило бы разгонять залп периодом канала.
+            ability.CastsThisBattle++;
+
             if (!data.TakesTime)
             {
                 ApplyPayload(caster, ability, plan.Target, units, ctx);
@@ -371,19 +376,30 @@ namespace Guildmaster.Combat
             // он ДО ветвления, а не одной из ветвей.
             if (data.Summons) ApplySummons(caster, data, ctx);
 
-            // Порядок ветвей разводит два РАЗНЫХ смысла отбрасывания, и путать их нельзя: у круга
-            // (§10.7 «Стальной вихрь») толчок расходится от центра по всем задетым, у одиночной цели
-            // (§10.6 Монах) — это рывок самого кастующего с последующей цепью реактивов.
-            if (data.AreaShape == AreaShape.Circle)
-                ApplyCircle(caster, data, ctx);
-            else if (data.Displaces)
-                ApplyDisplace(caster, target, data, ctx);
-            else if (isAllyAura)
-                ApplyAllyAura(caster, data, ctx);
-            else if (isMassTag)
-                ApplyAllWithTag(caster, data, units, ctx);
-            else
-                ApplyToTarget(caster, target, data, ctx);
+            // Залп: одна и та же нагрузка уходит несколько раз за каст, с разгоном от числа прошлых
+            // кастов (Арканист — стрела за каст). Каждое применение — самостоятельный удар: свой урон и
+            // свой стак эффекта, поэтому это цикл вокруг формы, а не множитель урона.
+            int repeats = data.ResolvePayloadRepeats(ability.CastsThisBattle - 1);
+            for (int shot = 0; shot < repeats; shot++)
+            {
+                // Цель добита предыдущей стрелой — остальные не уходят в труп. Перевыбирать цель на
+                // ходу нельзя: залп по одной цели и есть причина, по которой «Разлад» копится фокусом.
+                if (shot > 0 && needsTarget && (target == null || target.IsDead)) break;
+
+                // Порядок ветвей разводит два РАЗНЫХ смысла отбрасывания, и путать их нельзя: у круга
+                // (§10.7 «Стальной вихрь») толчок расходится от центра по всем задетым, у одиночной цели
+                // (§10.6 Монах) — это рывок самого кастующего с последующей цепью реактивов.
+                if (data.AreaShape == AreaShape.Circle)
+                    ApplyCircle(caster, data, ctx);
+                else if (data.Displaces)
+                    ApplyDisplace(caster, target, data, ctx);
+                else if (isAllyAura)
+                    ApplyAllyAura(caster, data, ctx);
+                else if (isMassTag)
+                    ApplyAllWithTag(caster, data, units, ctx);
+                else
+                    ApplyToTarget(caster, target, data, ctx);
+            }
 
             // Эффекты на себя — ПОСЛЕ нагрузки: щит «Вихря» растёт от урона, который вихрь только что
             // нанёс, значит реактив обязан висеть к моменту сведения тика, но не раньше самого удара.

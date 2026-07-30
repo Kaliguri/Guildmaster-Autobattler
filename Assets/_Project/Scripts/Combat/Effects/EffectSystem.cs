@@ -174,6 +174,14 @@ namespace Guildmaster.Combat
 
             effect.AddContribution(source);   // первый вкладчик — тот, кто наложил
 
+            // Порция больше одного стака: эффект рождается уже с ней (клампясь потолком). AddStacks
+            // здесь безопасен — компоненты ещё не применялись, пересчитывать вклад нечему.
+            if (def.StacksPerApplication > 1)
+            {
+                int initial = def.StacksPerApplication < def.MaxStacks ? def.StacksPerApplication : def.MaxStacks;
+                if (initial > 1) effect.AddStacks(initial - 1);
+            }
+
             effect.SetDuration(ResolveDurationTicks(def, source, target));
 
             // Снимок потенции на компонент из статов источника на момент наложения.
@@ -657,7 +665,11 @@ namespace Guildmaster.Combat
         private static bool TryAddStack(RuntimeEffect effect, EffectData def)
         {
             if (effect.Stacks >= def.MaxStacks) return false;
-            effect.AddStacks(1);
+
+            // Порция может быть больше одного стака («Раздуть жар» кладёт сразу пять), но потолок цели
+            // общий и не пробивается: добавляем ровно столько, сколько до него осталось.
+            int room = def.MaxStacks - effect.Stacks;
+            effect.AddStacks(def.StacksPerApplication < room ? def.StacksPerApplication : room);
             return true;
         }
 

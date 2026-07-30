@@ -30,6 +30,11 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Потолок стаков (актуально для Stack/StackAndRefresh).")]
         [SerializeField] private int _maxStacks = 1;
 
+        [Tooltip("Сколько стаков даёт ОДНО наложение («Раздуть жар» кладёт сразу 5 углей). 1 = как обычно. " +
+                 "Потолок MaxStacks всё равно не пробивается.")]
+        [Min(1)]
+        [SerializeField] private int _stacksPerApplication = 1;
+
         [Header("Dispel resistance")]
         [Tooltip("Снимается диспелом с DispelPower ≥ CleanseTier.")]
         [SerializeField] private int _cleanseTier;
@@ -60,6 +65,18 @@ namespace Guildmaster.Data.Definitions
         public float BaseDuration => _baseDuration;
         public StackRule Stacking => _stacking;
         public int MaxStacks => _maxStacks;
+
+        /// <summary>
+        /// Сколько стаков кладёт одно наложение (≥ 1). Позволяет выдать «сразу пять углей» одним
+        /// применением, вместо пятикратного повтора всей нагрузки способности.
+        /// </summary>
+        /// <remarks>
+        /// Живёт у эффекта, а не у способности: «сколько это стаков» — свойство самой порции углей, и
+        /// одинаково для всех, кто её выдаёт. У способности же повтор нагрузки означает пять отдельных
+        /// ударов — а вместе с ними пять диспелов и пять срабатываний всего остального, чего никто
+        /// не заказывал.
+        /// </remarks>
+        public int StacksPerApplication => _stacksPerApplication < 1 ? 1 : _stacksPerApplication;
         public int CleanseTier => _cleanseTier;
         public bool Unremovable => _unremovable;
 

@@ -98,5 +98,31 @@ namespace Guildmaster.Combat
 
             return target.Position + behindDir * offset;
         }
+
+        /// <summary>
+        /// Бьёт ли <paramref name="attacker"/> в ТЫЛ цели: стоит ли он с той стороны, откуда цель пришла
+        /// (со стороны её собственного края арены), в конусе <paramref name="minCos"/> от этого направления.
+        /// Дефолт 0.5 — конус ±60°: «в спину», а не «сбоку».
+        /// </summary>
+        /// <remarks>
+        /// <b>Тыл считается от конвенции сторон, а не от разворота юнита.</b> Своего «лица» у юнита в
+        /// симуляции нет (ни поля, ни угла) — общий слой C позиционики (фланг/тыл для всех, ГДД
+        /// <c>positioning</c> §Слой C) в коде отсутствует. Пока его нет, направление «назад» берётся
+        /// оттуда же, откуда его берёт побег: у команды есть свой край арены, и путь в спину — это обход
+        /// строя. В сшибке двух линий это совпадает с интуицией и не требует ни разворотов, ни истории
+        /// движения, то есть остаётся детерминированным.
+        /// <para>Из этого следует ограничение: удар в спину цели, которая сама зашла за твою линию,
+        /// считаться тыловым не будет. Это цена прокси, и она осознанная — заведение настоящего «лица»
+        /// меняет баланс ВСЕХ юнитов, а не одного кита.</para>
+        /// </remarks>
+        public static bool IsRearAttack(RuntimeUnit attacker, RuntimeUnit target, float minCos = 0.5f)
+        {
+            if (attacker == null || target == null) return false;
+
+            Vector2 toAttacker = attacker.Position - target.Position;
+            if (toAttacker.sqrMagnitude < 1e-6f) return false; // стоят в одной точке — направления нет
+
+            return Vector2.Dot(toAttacker.normalized, FleeSteering.HomeDir(target)) >= minCos;
+        }
     }
 }

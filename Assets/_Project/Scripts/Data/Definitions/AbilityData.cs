@@ -150,6 +150,17 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("Призыв умирает вместе с призывателем. Выкл = переживает его (земляной голем Мага бандитов).")]
         [SerializeField] private bool _summonDiesWithSummoner;
 
+        [Header("Multi-hit payload — Арканист")]
+        [Tooltip("Сколько раз нагрузка применяется за ОДИН каст (стрел в залпе). 1 = обычная способность. " +
+                 "Арканист = 3. Каждое применение — отдельный удар: свой урон и свой стак эффекта.")]
+        [Min(1)]
+        [SerializeField] private int _payloadRepeats = 1;
+
+        [Tooltip("Прибавка к числу применений за каждый предыдущий каст В ЭТОМ БОЮ (Арканист = 1: залп " +
+                 "растёт на стрелу с каждым кастом). 0 = число применений постоянно.")]
+        [Min(0)]
+        [SerializeField] private int _payloadRepeatGrowth;
+
         [Header("Displacement (§9.9) — Монах")]
         [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. На линии полёта — урон-ядро.")]
         [SerializeField] private bool _displaces;
@@ -295,6 +306,24 @@ namespace Guildmaster.Data.Definitions
 
         /// <summary>Способность призывает тела на поле.</summary>
         public bool Summons => _summonUnit != null;
+
+        /// <summary>Базовое число применений нагрузки за каст (1 = обычная способность).</summary>
+        public int PayloadRepeats => _payloadRepeats < 1 ? 1 : _payloadRepeats;
+
+        /// <summary>Прибавка к числу применений за каждый предыдущий каст в бою; 0 = не растёт.</summary>
+        public int PayloadRepeatGrowth => _payloadRepeatGrowth < 0 ? 0 : _payloadRepeatGrowth;
+
+        /// <summary>
+        /// Сколько раз применить нагрузку с учётом разгона: <paramref name="previousCasts"/> — сколько
+        /// раз эта способность уже кастовала В ЭТОМ БОЮ.
+        /// </summary>
+        /// <remarks>
+        /// Счётчик принадлежит способности носителя, а не цели: залп Арканиста не сбрасывается при
+        /// смене цели — он тем сильнее, чем дольше идёт бой. Это намеренная кривая (карточка
+        /// [[the-rift]] §Баланс-флаги), и потолка у неё нет: тормоз — короткая жизнь «Разлада», а не кап.
+        /// </remarks>
+        public int ResolvePayloadRepeats(int previousCasts)
+            => PayloadRepeats + PayloadRepeatGrowth * (previousCasts < 0 ? 0 : previousCasts);
 
         public bool Displaces => _displaces;
         public float DisplaceDistance => _displaceDistance;
