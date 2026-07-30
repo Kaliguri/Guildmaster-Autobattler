@@ -39,11 +39,9 @@
 **В «Исключить стили» слово `no` не пишется** — поле само означает исключение. Отрицание идёт в поле
 Стилей (`no vocals` там работает).
 
-**Исключить стили — ОДИН И ТОТ ЖЕ набор во всех блоках:**
-```
-taiko, war march, triumphant fanfare, j-pop, metal riff
-```
-Состав задаётся точно в позитиве, поэтому латать исключениями больше нечего. Канон состава по ролям —
+**Исключить стили — ОДИН-ДВА пункта на промпт**, свои у каждого блока (перегрузка негативами путает
+модель так же, как перегрузка тегами). Лишнее вытесняется точным позитивом, а не запретами.
+Правила формулировки — `suno-prompting.md` §НЕГАТИВНЫЕ ПРОМПТЫ, канон состава по ролям —
 `tone-and-lineup.md` §КАНОН СОСТАВА.
 
 ### 01-A · ДВЕ ТЕМЫ раздельно, а не один трек
@@ -59,6 +57,7 @@ taiko, war march, triumphant fanfare, j-pop, metal riff
 dark battle score, medieval modal melody against driving rock percussion and heavy synth, open fourths
 and fifths, hard-hitting drums, bass guitar underneath, tense and desperate, 150 BPM, D dorian, no vocals
 ```
+Исключить: `taiko, war march`
 
 **01-A2 · смертельная тема — соло-скрипка**
 ```
@@ -66,6 +65,7 @@ solo violin outlining a modal melancholic melody, beautiful and deadly, high reg
 overdriven electric guitar answering with a rare solo, low cello underneath, sparse hard drums,
 132 BPM, D dorian, no vocals
 ```
+Исключить: `triumphant fanfare, j-pop`
 
 **Что здесь новое и откуда:** `driving rock percussion and heavy synth` — прямая формула SAO из разбора
 (рок и синт **противопоставлены** средневековой мелодии, чтобы обозначить «это внутри видеоигры»).
@@ -83,9 +83,10 @@ overdriven electric guitar answering with a rare solo, low cello underneath, spa
 
 ```
 cinematic battle score, female soprano wordless vocalise in the lead, desperate and determined,
-melancholic undertone, airy but powerful, controlled vibrato, close-mic breath, clean electric guitar
-answering the voice, warm string section, restrained low drum pulse, 132 BPM, D dorian, no autotune
+controlled vibrato, close-mic breath, violin answering the voice, slightly overdriven guitar, low cello
+and bass guitar underneath, hard drums, 140 BPM, D dorian, no autotune
 ```
+Исключить: `spoken word, j-pop`
 
 Текст — **на всю длину трека**, секции разделяются переносами строк. **Теги арки стоят прямо в
 заголовках секций** — здесь они проверяются заодно, поле Lyrics всё равно занято:
@@ -135,20 +136,21 @@ a-a-ia... ve-la...
 ### 01-C · тёмная краска, из которой вырастет фаза 2
 
 ```
-dark cinematic battle score, grim and resolute, clean electric guitar lead with long sustain, heavy
-low-mid string section, church organ underneath, restrained low drum pulse, 138 BPM, D dorian, no intro,
-no vocals, weight without dread
+dark battle score, grim and resolute, violin lead over heavy low-mid strings, church organ underneath,
+slightly overdriven guitar, hard drums and bass guitar, 138 BPM, D dorian, no intro, no vocals,
+weight without dread
 ```
+Исключить: `bright bells, triumphant fanfare`
 
 ### 01-F · хор вместо солистки
 
 ```
-cinematic battle score, female choir singing wordless syllables in pairs, desperate and determined,
-melancholic undertone, clean electric guitar lead, warm string section, restrained low drum pulse,
-132 BPM, D dorian, no intro, resolute not frightening
+dark battle score, female choir singing wordless syllables in pairs, desperate and determined, violin
+over driving rock percussion and heavy synth, bass guitar underneath, 145 BPM, D dorian, no intro,
+resolute not frightening
 ```
 Текст → **Инструментал** (хор просим составом, не текстом).
-Исключить — тот же постоянный набор **плюс** `solo vocals` вместо `solo violin`: здесь нужен именно хор.
+Исключить: `solo vocals, j-pop` — здесь нужен хор, а не солистка.
 
 ### Что слушать при отборе
 
