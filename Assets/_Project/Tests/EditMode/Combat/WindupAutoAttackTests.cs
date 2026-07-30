@@ -251,6 +251,35 @@ namespace Guildmaster.Tests.EditMode.Combat
                 "Быстрый побег: за замах уйдёт за reach+tolerance — замах не докрутит");
         }
 
+        [Test]
+        public void Stun_AfterHit_DoesNotRushNextAttack()
+        {
+            // Guard под будущие серии ударов (техдолг §3.9). Сегодня инвариант держится сам собой:
+            // стан после удара приходит в фазу Recovery, где кулдаун НЕ рефандится, а лишь замирает.
+            // Когда свинг научится нескольким контактам, прерывание после первого из них пойдёт через
+            // Interrupt — а он обнуляет кулдаун. Наивная реализация тем самым позволит спамом микростанов
+            // УСКОРЯТЬ жертву: каждый новый свинг начинается заново с первого контакта. Правило, которое
+            // этот тест охраняет: рефанд положен только свингу, не нанёсшему НИ ОДНОГО контакта.
+            var (attacker, enemy, units, ctx) = Scene();
+            var s = new AutoAttackSystem();
+            int interval = AttackTiming.IntervalTicks(1f);
+
+            int firstHitTick = TickUntilNextDamage(s, units, ctx, 0);
+
+            // Микростан сразу после удара — 8 тиков ≈ 0.25 с (длительность из контроль-лупа Монаха).
+            const int StunTicks = 8;
+            attacker.CanAct = false;
+            for (int i = 0; i < StunTicks; i++) s.Tick(units, ctx, 0f);
+            attacker.CanAct = true;
+
+            int secondHitTick = TickUntilNextDamage(s, units, ctx, firstHitTick + StunTicks);
+
+            Assert.GreaterOrEqual(secondHitTick - firstHitTick, interval,
+                "Стан после удара не может приблизить следующий удар: период damage→damage не меньше интервала");
+            Assert.AreEqual(interval + StunTicks, secondHitTick - firstHitTick,
+                "Стан замораживает кулдаун ровно на свою длительность — не ускоряет и не крадёт лишнего");
+        }
+
         // ===================== Хелперы =====================
 
         private static AutoAttackSystem sys() => new AutoAttackSystem();
@@ -318,6 +347,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             {
                 Id = id, Team = team, Stats = stats,
                 CurrentHP = maxHp, Position = pos, PreviousPosition = pos, Unit = relic,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 

@@ -14,10 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
   _id: enemy.goblin_warrior
   _combatClass: 1
-  _damageSchool: 0
-  _physicalSubtype: 0
-  _magicElement: 0
-  _affinity: 0
+  _autoAttackDamageType: 2
   _creatureType: 0
   _attackType: 0
   _resourceType: 0

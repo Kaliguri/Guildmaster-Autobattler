@@ -14,10 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EnemyData
   _id: enemy.skeleton_swordsman
   _combatClass: 0
-  _damageSchool: 0
-  _physicalSubtype: 2
-  _magicElement: 0
-  _affinity: 0
+  _autoAttackDamageType: 2
   _creatureType: 1
   _attackType: 0
   _resourceType: 0

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Abilities;
@@ -51,6 +51,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 {
                     Id = nextId++, Team = team, Stats = stats,
                     CurrentHP = stats.Get(StatType.MaxHP),
+                    AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
                 };
             };
         }

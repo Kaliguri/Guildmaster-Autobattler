@@ -162,7 +162,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 relic: DefenderRelic(PassiveTrigger.AnyHit));
             var attacker = MakeUnit(1, team: 1, pos: new Vector2(1f, 0f), maxHp: 200f, hp: 200f);
 
-            var thorns = new ThornsComponent().With("_reflectFraction", 0.5f);
+            var thorns = new ThornsComponent().With("_reflectFraction", 0.5f).With("_damageType", DamageType.Pure);
             ctx.ApplyEffect(defender, TestEffect.Make(
                 baseDuration: -1f, polarity: EffectPolarity.Neutral, components: thorns), defender);
 
@@ -344,6 +344,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Position         = pos,
                 PreviousPosition = pos,
                 Unit             = relic,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 

@@ -48,7 +48,7 @@ MonoBehaviour:
       data:
         _fractionOfShield: 1
         _radius: 2.5
-        _school: 1
+        _damageType: 1
         _burstOnExpire: 1
         _useRemainingShield: 1
         _knockbackDistance: 2

@@ -40,8 +40,8 @@ MonoBehaviour:
       type: {class: SelfStackOnDealtComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _selfEffect: {fileID: 11400000, guid: 4be0d1a5f7c4471ab29d5a02c6f3d811, type: 2}
-        _school: 1
-        _element: 1
+        _damageType: 10
+        _wholeSchool: 0
         _directHitsOnly: 1
     - rid: 7815026876324511933
       type: {class: SelfStackDamageBonusComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}

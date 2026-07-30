@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -116,6 +116,7 @@ namespace Guildmaster.Combat
                 PreviousPosition = spawnPosition,
                 Unit             = data,
                 Vessel           = vessel,
+                AutoAttackDamageType = data != null ? data.AutoAttackDamageType : DamageType.Undefined,
                 // AI (Фаза 3): мозг из профиля кита + фаза стаггера по месту в команде (вики «13» §2.7, §4.1).
                 Brain            = new ProfileBrain(data?.Ai),
                 BrainPhase       = teamIndex % SimConstants.AiTickInterval,

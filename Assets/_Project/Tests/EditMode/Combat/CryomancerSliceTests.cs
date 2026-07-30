@@ -399,6 +399,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Position         = pos,
                 PreviousPosition = pos,
                 Unit             = relic,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
     }

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
@@ -295,6 +295,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Team = team, Stats = stats, CurrentHP = 1000f,
                 Position = pos, PreviousPosition = pos, Unit = relic,
                 Positioning = PositioningIntent.Approach,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
     }

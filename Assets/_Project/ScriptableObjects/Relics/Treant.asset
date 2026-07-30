@@ -14,10 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
   _id: relic.treant
   _combatClass: 1
-  _damageSchool: 0
-  _physicalSubtype: 1
-  _magicElement: 0
-  _affinity: 0
+  _autoAttackDamageType: 1
   _creatureType: 0
   _attackType: 0
   _resourceType: 1
@@ -63,10 +60,7 @@ MonoBehaviour:
     _resourceCost: 40
     _targetMode: 0
     _damageMultiplier: 0
-    _schoolOverride: 0
-    _physicalSubtypeOverride: 0
-    _magicElementOverride: 0
-    _affinityOverride: 0
+    _damageType: 0
     _areaShape: 0
     _areaRadius: 0
     _healFlat: 0

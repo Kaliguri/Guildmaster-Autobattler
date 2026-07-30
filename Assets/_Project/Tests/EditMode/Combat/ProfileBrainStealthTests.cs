@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -30,6 +30,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Position         = new Vector2(x, 0f),
                 PreviousPosition = new Vector2(x, 0f),
                 EffectTagMask    = stealthed ? EffectTag.Stealth : EffectTag.None,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 

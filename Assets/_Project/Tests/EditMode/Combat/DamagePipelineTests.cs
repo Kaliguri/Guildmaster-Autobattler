@@ -27,6 +27,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Team      = team,
                 Stats     = stats,
                 CurrentHP = maxHp,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 
@@ -39,7 +40,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.PhysArmor,  ModifierOp.Flat, physArmor),
                 new StatModifier(StatType.MagicArmor, ModifierOp.Flat, magicArmor),
             });
-            return new RuntimeUnit { Team = 1, Stats = stats, CurrentHP = maxHp };
+            return new RuntimeUnit { Team = 1, Stats = stats, CurrentHP = maxHp, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
         }
 
         private static DamageRequest Req(
@@ -118,7 +119,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.MaxHP,   ModifierOp.Flat, 1000f),
                 new StatModifier(StatType.PhysPen, ModifierOp.Flat, 100f),
             });
-            var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f };
+            var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull);
 
             var result = Execute(Req(src, tgt, 100f, DamageType.Slash));
@@ -136,7 +137,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.MaxHP,      ModifierOp.Flat, 1000f),
                 new StatModifier(StatType.PhysPenPct, ModifierOp.Flat, 0.5f),
             });
-            var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f };
+            var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
             var tgt = MakeUnitWithArmor(physArmor: ArmorFull);
 
             var result = Execute(Req(src, tgt, 100f, DamageType.Slash));
@@ -155,7 +156,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.MaxHP,   ModifierOp.Flat, 1000f),
                 new StatModifier(StatType.PhysPen, ModifierOp.Flat, 9999f),
             });
-            var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f };
+            var src = new RuntimeUnit { Team = 0, Stats = stats, CurrentHP = 1000f, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
             var tgt = MakeUnitWithArmor(physArmor: 10f);
 
             var result = Execute(Req(src, tgt, 100f, DamageType.Slash));
@@ -175,7 +176,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new StatModifier(StatType.DamageTakenEff, ModifierOp.PercentMult, 0.5f), // +50%
             });
             // base=1, PercentMult 0.5 → 1*(1+0.5)=1.5
-            var tgt = new RuntimeUnit { Team = 1, Stats = stats, CurrentHP = 1000f };
+            var tgt = new RuntimeUnit { Team = 1, Stats = stats, CurrentHP = 1000f, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
 
             var result = Execute(Req(src, tgt, 100f, DamageType.Pure));
             Assert.AreEqual(150f, result.TotalDamage, 0.01f);

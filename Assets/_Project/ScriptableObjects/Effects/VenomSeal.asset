@@ -38,8 +38,8 @@ MonoBehaviour:
     - rid: 7815026876324511913
       type: {class: DelayedBurstComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
-        _physicalShare: 0.5
-        _magicalShare: 0.5
-        _magicElement: 0
-        _affinity: 1
+        _firstShare: 0.5
+        _firstType: 5
+        _secondShare: 0.5
+        _secondType: 14
         _scalesWithStacks: 0

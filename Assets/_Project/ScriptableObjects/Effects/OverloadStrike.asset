@@ -40,5 +40,4 @@ MonoBehaviour:
       type: {class: OverloadStrikeComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _scale: 0.4
-        _school: 1
-        _element: 4
+        _damageType: 13

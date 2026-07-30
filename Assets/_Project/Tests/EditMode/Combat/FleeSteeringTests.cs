@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
@@ -21,7 +21,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("base", new[] { new StatModifier(StatType.MaxHP, ModifierOp.Flat, 100f) });
-            return new RuntimeUnit { Id = id, Team = team, Stats = stats, CurrentHP = 100f, Position = pos, PreviousPosition = pos };
+            return new RuntimeUnit { Id = id, Team = team, Stats = stats, CurrentHP = 100f, Position = pos, PreviousPosition = pos, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
         }
 
         // ===================== Направление: центроид, а не «ближайший» =====================

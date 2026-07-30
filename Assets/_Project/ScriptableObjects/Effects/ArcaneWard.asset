@@ -42,5 +42,5 @@ MonoBehaviour:
         _amount:
           Base: 120
           Scalings: []
-        _school: 1
-        _element: 0
+        _damageType: 13
+        _wholeSchool: 1

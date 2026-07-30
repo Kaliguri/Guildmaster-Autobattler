@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Data.Definitions;
@@ -298,11 +298,16 @@ namespace Guildmaster.Combat
         public VesselData Vessel;
 
         /// <summary>
-        /// Тип урона АВТОАТАКИ кита. Без кита — <see cref="DamageType.Undefined"/>: подставлять физику
-        /// нельзя, иначе безкитовый юнит молча бил бы «просто физикой» — тем самым дефектом, ради
-        /// которого тип и стал обязательным (реформа 2026-07-30).
+        /// Тип урона АВТОАТАКИ — снимок кита на бой, как и <see cref="Stats"/>. Заполняет
+        /// <c>RuntimeUnitFactory</c> из <see cref="UnitData.AutoAttackDamageType"/>.
         /// </summary>
-        public DamageType AutoAttackDamageType => Unit != null ? Unit.AutoAttackDamageType : DamageType.Undefined;
+        /// <remarks>
+        /// Поле, а не свойство от <see cref="Unit"/>, потому что боец бывает и без кита — синтетическая
+        /// болванка стенда и тестовая заготовка. Читать тип у отсутствующего кита нечего, а подставлять
+        /// физику молча нельзя: это ровно тот тихий дефект, ради которого тип стал обязательным. Поэтому
+        /// тот, кто создаёт бойца, обязан назвать тип сам — и <c>DamageRequest</c> ругнётся, если забыл.
+        /// </remarks>
+        public DamageType AutoAttackDamageType;
 
         // --- Эффекты (Фаза 2) ---
 

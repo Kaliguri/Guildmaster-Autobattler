@@ -675,6 +675,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CurrentHP        = hp,
                 Position         = pos,
                 PreviousPosition = pos,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
     }

@@ -79,7 +79,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var comp = new PeriodicDamageComponent()
                 .With("_interval", 1f)
                 .With("_damagePerSecond", new ScalableValue(10f))
-                .With("_damageSchool", DamageType.Pure);
+                .With("_damageType", DamageType.Pure);
             EffectData def = TestEffect.Make(baseDuration: 3f, tags: EffectTag.DoT, components: comp);
 
             sys.Apply(unit, def, unit, ctx);
@@ -144,7 +144,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             var shield = new ShieldComponent().With("_amount", new ScalableValue(50f));
             var burst  = new ShieldBurstComponent()
                 .With("_fractionOfShield", 1f)
-                .With("_radius", 2f);
+                .With("_radius", 2f)
+                .With("_damageType", DamageType.Blunt);
             EffectData def = TestEffect.Make(
                 baseDuration: 5f, tags: EffectTag.Shield, components: new IEffectComponent[] { shield, burst });
 
@@ -169,7 +170,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             ctx.UnitsInWorld.Add(enemy);
 
             var shield = new ShieldComponent().With("_amount", new ScalableValue(40f));
-            var burst  = new ShieldBurstComponent().With("_fractionOfShield", 0.5f).With("_radius", 2f);
+            var burst  = new ShieldBurstComponent().With("_fractionOfShield", 0.5f).With("_radius", 2f).With("_damageType", DamageType.Blunt);
             EffectData def = TestEffect.Make(
                 baseDuration: 5f, tags: EffectTag.Shield, components: new IEffectComponent[] { shield, burst });
 

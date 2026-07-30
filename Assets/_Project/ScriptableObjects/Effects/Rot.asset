@@ -43,10 +43,7 @@ MonoBehaviour:
         _damagePerSecond:
           Base: 12
           Scalings: []
-        _damageSchool: 0
-        _physicalSubtype: 3
-        _magicElement: 0
-        _affinity: 1
+        _damageType: 5
         _damagePctTargetMaxHp: 0
     - rid: 7815026876324511911
       type: {class: StatModifierComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}

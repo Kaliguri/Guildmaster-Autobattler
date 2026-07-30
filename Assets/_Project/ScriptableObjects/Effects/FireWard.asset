@@ -39,5 +39,5 @@ MonoBehaviour:
       type: {class: SchoolDamageResistComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _resistPct: 0.25
-        _school: 1
-        _element: 1
+        _damageType: 10
+        _wholeSchool: 0

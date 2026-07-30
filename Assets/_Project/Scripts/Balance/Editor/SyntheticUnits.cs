@@ -1,4 +1,4 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -28,6 +28,10 @@ namespace Guildmaster.Balance.Editor
                 Stats = stats,
                 Position = pos,
                 PreviousPosition = pos,
+                // Кита у синтетики нет, поэтому тип называем здесь: болванка бьёт обычной физикой.
+                // Конкретный тип для стенда безразличен — броня одна на всю школу, — но объявить его
+                // обязан тот, кто создаёт бойца.
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
             unit.CurrentHP = stats.Get(StatType.MaxHP);
             return unit;

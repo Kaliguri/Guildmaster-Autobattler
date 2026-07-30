@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Arena;
@@ -291,6 +291,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 PreviousPosition = pos,
                 Unit             = relic,
                 Positioning      = positioning,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
     }

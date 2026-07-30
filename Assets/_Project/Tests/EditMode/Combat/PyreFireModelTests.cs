@@ -217,6 +217,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             {
                 Id = id, Team = team, Stats = stats, CurrentHP = maxHp,
                 Position = pos, PreviousPosition = pos,
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 

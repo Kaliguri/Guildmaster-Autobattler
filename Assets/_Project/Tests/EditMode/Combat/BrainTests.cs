@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
@@ -209,6 +209,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CurrentHP        = hp,
                 Position         = new Vector2(x, 0f),
                 PreviousPosition = new Vector2(x, 0f),
+                AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash,
             };
         }
 

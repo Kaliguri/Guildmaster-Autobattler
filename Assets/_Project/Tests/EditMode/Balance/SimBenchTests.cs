@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Balance.Editor;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
@@ -26,7 +26,7 @@ namespace Guildmaster.Balance.Tests
                 new StatModifier(StatType.MaxHP, ModifierOp.Flat, hp),
                 new StatModifier(StatType.MoveSpeed, ModifierOp.Flat, 1f),
             });
-            var unit = new RuntimeUnit { Team = team, Stats = stats, Position = pos, PreviousPosition = pos };
+            var unit = new RuntimeUnit { Team = team, Stats = stats, Position = pos, PreviousPosition = pos, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
             unit.CurrentHP = hp;
             return unit;
         }

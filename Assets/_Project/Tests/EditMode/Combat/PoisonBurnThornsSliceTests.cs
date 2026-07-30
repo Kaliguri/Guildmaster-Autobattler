@@ -33,7 +33,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             ctx.UnitsInWorld.Add(attacker);
             ctx.UnitsInWorld.Add(bystander);
 
-            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f);
+            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_damageType", DamageType.Pierce);
             sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
 
             var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None, sourceKind: DamageSourceKind.AutoAttack);
@@ -65,7 +65,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var attacker = TestUnit.Make(team: 1);
             ctx.UnitsInWorld.Add(attacker);
 
-            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_cooldownSeconds", 0.5f);
+            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_damageType", DamageType.Pierce).With("_cooldownSeconds", 0.5f).With("_damageType", DamageType.Pierce);
             sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
 
             var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None,
@@ -100,6 +100,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var comp = new ArmorThornsComponent()
                 .With("_armorRatio", 1f)
                 .With("_radius", 3f)
+                .With("_damageType", DamageType.Pierce)
                 .With("_growthEffect", growth)
                 .With("_radiusPerGrowthStack", 0.2f)
                 .With("_cooldownSeconds", 0f); // КД тут не мешаем — проверяем ровно радиус
@@ -131,7 +132,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var attacker = TestUnit.Make(team: 1);
             ctx.UnitsInWorld.Add(attacker);
 
-            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f);
+            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_damageType", DamageType.Pierce);
             sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
 
             var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None, sourceKind: kind);

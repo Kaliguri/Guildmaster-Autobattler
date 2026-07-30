@@ -42,8 +42,7 @@ MonoBehaviour:
       data:
         _requiredTargetTag: 0
         _share: 0.5
-        _school: 1
-        _element: 2
+        _damageType: 11
         _pctTargetMaxHp: 0
         _pctPerStack: 0
         _stackTag: 0

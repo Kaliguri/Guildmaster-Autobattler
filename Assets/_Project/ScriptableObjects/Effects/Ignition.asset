@@ -39,9 +39,6 @@ MonoBehaviour:
       data:
         _detonateTag: 8192
         _damagePerStack: 20
-        _school: 1
-        _physicalSubtype: 0
-        _magicElement: 1
-        _affinity: 0
+        _damageType: 10
         _onKillBuff: {fileID: 11400000, guid: c042764a4fd2cf348b303be4387734ff, type: 2}
         _onKillHealPctMissingHp: 0.25

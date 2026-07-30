@@ -74,7 +74,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             float castOverrideSelfHpPct = 0f,
             EffectTag triggerTag = EffectTag.None,
             bool consumesTriggerTag = false,
-            DamageType damageType = DamageType.Undefined,
+            // Дефолт задан намеренно: тестовая способность — ВАЛИДНАЯ способность, а Undefined в игре
+            // означает «автор забыл» и роняет запрос урона в консоль. Тест, которому важен другой тип,
+            // передаёт его явно.
+            DamageType damageType = DamageType.Slash,
             float castSeconds = 0f,
             float channelSeconds = 0f,
             float channelTickSeconds = 1f,
@@ -220,7 +223,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             var stats = new Stats(null);
             stats.AddModifiersFrom("base", new[] { new StatModifier(StatType.MaxHP, ModifierOp.Flat, maxHp) });
-            return new RuntimeUnit { Team = team, Stats = stats, CurrentHP = maxHp };
+            return new RuntimeUnit { Team = team, Stats = stats, CurrentHP = maxHp, AutoAttackDamageType = Guildmaster.Data.Definitions.DamageType.Slash };
         }
     }
 
