@@ -29,7 +29,7 @@ MonoBehaviour:
     Pct: 0
   _components:
   - rid: 5615026876324511840
-  _telegraphSeconds: 0.3
+  _telegraphSeconds: 0.6
   _icon: {fileID: 0}
   _infoTags: []
   references:
