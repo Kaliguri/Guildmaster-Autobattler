@@ -40,21 +40,23 @@ namespace Guildmaster.AnimationLab.Editor
             public string OutputPath;
 
             /// <summary>
-            /// Клип-надстройка, который кладётся ПОВЕРХ через <see cref="OverlayMask"/> — так же, как это
-            /// делает слой Animator в бою. Нужен потому, что игра никогда не играет один клип: щит встаёт
-            /// поверх бега, поверх свинга, поверх удара с разбега, и читаются они вместе или нет — вопрос
-            /// про КОМБИНАЦИЮ (Макс, 30.07). Пусто = обычный лист по одному клипу.
+            /// Надстройки, которые кладутся ПОВЕРХ базового клипа — так же, как это делают слои Animator в
+            /// бою. Нужны потому, что игра никогда не играет один клип: щит встаёт поверх бега, удар идёт
+            /// поверх шага, таз получает просадку удара аддитивом. Читаются они вместе или нет — вопрос про
+            /// КОМБИНАЦИЮ (Макс, 30.07). Пусто = обычный лист по одному клипу.
             /// </summary>
-            public AnimationClip Overlay;
-
-            /// <summary>Маска надстройки. Без неё оверлей накрыл бы всё тело и убил бы ноги посреди шага.</summary>
-            public AvatarMask OverlayMask;
+            /// <remarks>
+            /// Стек, а не одна надстройка: с 30.07 удар живёт сразу на двух слоях (Override на верх тела и
+            /// Additive на таз), и лист, умеющий только один оверлей, показывал бы позу, которой в игре нет.
+            /// </remarks>
+            public RigLayerBlend.Layer[] Layers;
 
             /// <summary>
-            /// Момент надстройки, сек. Отрицательное = держать поднятую позу (пятая часть клипа): в бою щит
-            /// приходит в финал ДО события и стоит, поэтому судить надо именно стоящую позу, а не проезд.
+            /// Обратный случай: САМ клип листа идёт слоем поверх другого тела — так живёт удар с 30.07,
+            /// когда ноги бегут, а свинг едет надстройкой. <see cref="Layers"/> отвечает на «что лежит
+            /// поверх этого клипа», а это поле — на «подо что этот клип подложен». Null = нет подложки.
             /// </summary>
-            public float OverlayTime = -1f;
+            public RigLayerBlend.Composition Composition;
         }
 
         public sealed class Result
@@ -90,19 +92,22 @@ namespace Guildmaster.AnimationLab.Editor
         /// </summary>
         static void SampleComposed(GameObject unit, AnimationClip clip, float time, Options options)
         {
-            if (options.Overlay == null || options.OverlayMask == null)
+            // Сначала подложка (клип листа сам едет слоем), потом надстройки поверх — порядок тот же, что
+            // у Animator, и обратный порядок дал бы позу, которой в игре не бывает.
+            if (options.Composition != null && options.Composition.Active)
+            {
+                RigLayerBlend.SampleTraced(unit, clip, time, options.Composition);
+                RigLayerBlend.Fold(unit, options.Layers);   // поверх готовой композиции, БЕЗ пересэмпла базы
+                return;
+            }
+
+            if (options.Layers == null || options.Layers.Length == 0)
             {
                 clip.SampleAnimation(unit, time);
                 return;
             }
 
-            // Отрицательное время — держим поднятую позу: пятая часть клипа гвардии, та же доля, по которой
-            // её скрабит UnitView. Судить надо стоящий щит, а не его проезд.
-            float overlayTime = options.OverlayTime >= 0f
-                ? options.OverlayTime
-                : options.Overlay.length * 0.2f;
-
-            RigLayerBlend.Sample(unit, clip, time, options.Overlay, overlayTime, options.OverlayMask);
+            RigLayerBlend.Sample(unit, clip, time, options.Layers);
         }
 
         /// <summary>Evenly spaced samples, snapped to real clip frames.</summary>

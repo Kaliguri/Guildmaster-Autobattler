@@ -58,6 +58,17 @@ namespace Guildmaster.AnimationLab.Editor
             /// </summary>
             public float StrikeSpeedShare = 0.25f;
 
+            /// <summary>
+            /// Как трассируемый клип лежит на теле, занятом другим: база плюс слои. Null = старое поведение,
+            /// «клип один на всё тело».
+            /// </summary>
+            /// <remarks>
+            /// Нужна с тех пор, как удар переехал на слой (30.07): плечо теперь едет от локомоции, а дуга
+            /// растёт из плеча. Картинка, нарисованная по одному клипу удара, показывала бы траекторию,
+            /// которой в игре нет — и ошибалась бы тем сильнее, чем размашистее бег.
+            /// </remarks>
+            public RigLayerBlend.Composition Composition;
+
             public int Size = 900;
             public float Padding = 1.15f;
             public int CoverageSize = 256;
@@ -211,6 +222,11 @@ namespace Guildmaster.AnimationLab.Editor
         static readonly Color CompanionPath = new Color(0.55f, 0.85f, 0.70f, 0.55f);
         static readonly Color CompanionNow  = new Color(0.75f, 1.00f, 0.85f);
 
+        // Один вход для всех трёх проходов рендера: геометрия, кадрирование и подложка обязаны смотреть на
+        // одну и ту же позу, иначе дуга будет посчитана по одной, а нарисована поверх другой.
+        static void SamplePose(GameObject unit, AnimationClip clip, float time, Options options)
+            => RigLayerBlend.SampleTraced(unit, clip, time, options.Composition);
+
         public static Result Render(RigProfile profile, AnimationClip clip, Options options = null)
         {
             if (profile == null) throw new System.ArgumentNullException(nameof(profile));
@@ -271,7 +287,7 @@ namespace Guildmaster.AnimationLab.Editor
 
                 for (int i = 0; i < times.Length; i++)
                 {
-                    clip.SampleAnimation(unit, times[i]);
+                    SamplePose(unit, clip, times[i], options);
 
                     float world = RigProbe.WorldOrientation(grip, item);
                     var dir = new Vector3(Mathf.Cos(world * Mathf.Deg2Rad), Mathf.Sin(world * Mathf.Deg2Rad), 0f);
@@ -369,7 +385,7 @@ namespace Guildmaster.AnimationLab.Editor
                 float backdrop = options.BackdropTime >= 0f
                     ? options.BackdropTime
                     : (result.ContactTime >= 0f ? result.ContactTime : clip.length * 0.5f);
-                clip.SampleAnimation(unit, backdrop);
+                SamplePose(unit, clip, backdrop, options);
 
                 int size = Mathf.Max(256, options.Size);
                 rt = new RenderTexture(size, size, 24, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
@@ -572,7 +588,7 @@ namespace Guildmaster.AnimationLab.Editor
                 for (int i = 0; i < result.Samples.Count; i += stride)
                 {
                     var sample = result.Samples[i];
-                    clip.SampleAnimation(unit, sample.Time);
+                    SamplePose(unit, clip, sample.Time, options);
 
                     var bodyMask = RenderMask(cam, rt, options.CoverageSize, all, body);
                     var coverMask = RenderMask(cam, rt, options.CoverageSize, all, new List<SpriteRenderer> { cover });
