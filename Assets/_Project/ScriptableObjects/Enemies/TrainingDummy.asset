@@ -23,7 +23,7 @@ MonoBehaviour:
   _resourceType: 0
   _visual: {fileID: 11400000, guid: 5dd8088d40927484fa5fcc2ea362c773, type: 2}
   _viewPrefab: {fileID: 7656420421442111193, guid: fb286c11f6a4fba46bccc671b18655df, type: 3}
-  _bodyShade: 3
+  _bodyShade: 1
   _vfxTone: 15
   _autoAttackShape: 0
   _autoAttackWidth: 1

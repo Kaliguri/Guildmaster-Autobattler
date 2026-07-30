@@ -54,16 +54,19 @@ namespace Guildmaster.Data.Definitions
     /// <para>Тинт УМНОЖАЕТСЯ на готовый цветной арт, поэтому умеет только затемнять и уводить оттенок —
     /// перекрасить им персонажа нельзя (это работа Palette Remapper). Ступеней три: больше на цветном
     /// арте всё равно не различить. Правило сторожит <c>UnitTintPolicyTests</c>.</para>
+    /// <para><b>Ступень выбирается по цвету арта, а не по вкусу:</b> умножение гасит только те каналы,
+    /// которые в арте есть. На красном воине <see cref="Tan"/> не виден вовсе — его зелёный и синий и так
+    /// низкие, а красный ступень почти не трогает; там работает <see cref="Ash"/>.</para>
     /// </summary>
     public enum BodyShade
     {
         /// <summary>Не красим: арт как его нарисовали.</summary>
         None = 0,
-        /// <summary>Теплее и мягче исходного.</summary>
-        Warm = 1,
-        /// <summary>Зеленца.</summary>
+        /// <summary>Холодное затемнение — единственная ступень, заметная на ЛЮБОМ арте.</summary>
+        Ash = 1,
+        /// <summary>Зеленца: гасит красный и синий, зелёный оставляет.</summary>
         Verdant = 2,
-        /// <summary>Жёлто-бурый, самый тёмный из трёх.</summary>
+        /// <summary>Жёлто-бурый: работает на зелёных и жёлтых артах, на красном — нет.</summary>
         Tan = 3,
     }
 
@@ -99,7 +102,7 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Имя роли в палитре для ступени приглушения. <see cref="BodyShade.None"/> роли не имеет.</summary>
         public static string TokenOf(BodyShade shade) => shade switch
         {
-            BodyShade.Warm    => "--gm-color-unit-dim-warm",
+            BodyShade.Ash     => "--gm-color-unit-dim-ash",
             BodyShade.Verdant => "--gm-color-unit-dim-verdant",
             BodyShade.Tan     => "--gm-color-unit-dim-tan",
             _                 => null,

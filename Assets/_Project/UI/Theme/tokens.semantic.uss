@@ -159,7 +159,7 @@
        Тинт умножается на готовый спрайт, поэтому это не «цвет юнита», а различитель тех, кто носит
        ОДИН арт: один из группы остаётся без тинта, остальные берут ступень отсюда. Ступеней три —
        больше на цветном арте не различить (UnitTintPolicyTests сторожит и это). */
-    --gm-color-unit-dim-warm: var(--gm-dim-warm);
+    --gm-color-unit-dim-ash: var(--gm-dim-ash);
     --gm-color-unit-dim-verdant: var(--gm-dim-verdant);
     --gm-color-unit-dim-tan: var(--gm-dim-tan);
 
