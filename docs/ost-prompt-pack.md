@@ -54,10 +54,15 @@
 
 **01-A1 · агрессивная тема — рок против медиевальной мелодии**
 ```
-dark battle score, medieval modal melody against driving rock percussion and heavy synth, open fourths
-and fifths, hard-hitting drums, bass guitar underneath, tense and desperate, 150 BPM, D dorian, no vocals
+dark battle score, melody-forward production, medieval modal melody up front, rock percussion and bass
+guitar low in the mix, heavy synth pad underneath, open fourths and fifths, tense and desperate,
+150 BPM, D dorian, no vocals
 ```
 Исключить: `taiko, war march`
+
+**Каждой партии назван её слой** — иначе модель расставит сама и вынесет вперёд то, что описано
+энергичнее. Убраны `driving` и `hard-hitting drums`: это была одна партия, описанная дважды, и громкость
+сложилась.
 
 **01-A2 · смертельная тема — соло-скрипка**
 ```

@@ -162,6 +162,19 @@ overdriven electric guitar answering with a rare solo, low cello underneath, spa
 **Дельта от v8:** один промпт разрезан на два; добавлены `driving rock percussion and heavy synth` (прямая
 формула SAO из академического разбора) и `open fourths and fifths` (её приём средневековости); синт
 разрешён; `builds in steps` убран — ступени собирает FMOD, а не Suno.
+**Вердикт по 01-A1:** «перкуссия слишком явная и громкая, она должна как и бас-гитара быть НА ФОНЕ».
+**Виновники:** место в миксе не задано ни одной партии; плюс **два указания на одну партию**
+(`driving rock percussion` и `hard-hitting drums`) сложились по громкости вместо уточнения.
+
+### v10 — 01-A1 с расстановкой по слоям микса (текущая)
+```
+dark battle score, melody-forward production, medieval modal melody up front, rock percussion and bass
+guitar low in the mix, heavy synth pad underneath, open fourths and fifths, tense and desperate,
+150 BPM, D dorian, no vocals
+```
+**Дельта от v9 (только 01-A1):** каждой партии назван слой — `up front` / `low in the mix` /
+`underneath`, плюс `melody-forward production` как общая установка. Убраны `driving` и
+`hard-hitting drums`.
 **Вердикт:** —
 | 01-C мрачно-героически | | | | | | |
 | 01-D Testard, камерная | | | | | | |
