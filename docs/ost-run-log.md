@@ -115,7 +115,7 @@ no vocals
 **Виновники:** **восемь** указаний на нежность против одного на бой; **нет низа** — отсюда грусть
 вместо мрачности; `starts intimate and grows` делает первую половину трека небоевой.
 
-### v7 — баланс сил, низ вернулся (текущая)
+### v7 — баланс сил, низ вернулся
 ```
 dark cinematic battle score, grim and desperate, clean electric guitar lead singing the melody, low
 cello ostinato underneath, insistent relentless pulse, tense strings, 140 BPM, D dorian, no vocals
@@ -124,6 +124,21 @@ cello ostinato underneath, insistent relentless pulse, tense strings, 140 BPM, D
 `lyrical phrasing`, `delicate piano`, `spacious reverb`, `starts intimate and grows` — всё, что тянуло
 в мягкость. Добавлены `dark`, `low cello ostinato`, `insistent relentless pulse`, `tense strings`.
 Нежность оставлена **только в тембре лида**. 140 BPM.
+**Вердикт:** не прогонялся — заменён после разбора боевых треков SAO.
+
+### v8 — состав по разбору SAO: скрипка и барабаны вернулись (текущая)
+```
+dark cinematic battle score, tense and desperate, violin lead beautiful and deadly, slightly overdriven
+electric guitar with rare solo, low cello ostinato and bass guitar underneath, hard-hitting drums,
+builds in steps then drops away, 150 BPM, D dorian, no vocals
+```
+**Дельта от v7:** лид сменился с чистой гитары на **скрипку** (`beautiful and deadly`); гитара стала
+**грязноватой с редким соло** и ушла на второй голос; добавлены **бас-гитара** и **бьющие барабаны**;
+`insistent relentless pulse` → `builds in steps then drops away` (ступени и паузы вместо ровного
+пульса); 140 → 150 BPM.
+**Почему:** разбор Макса вскрыл, что я пять прогонов вычёркивала **инструменты**, тогда как виновата
+была **манера**. Скрипка нужна, но «невероятно красивая и смертельная», а не поющая длинными нотами;
+барабаны нужны бьющие, а не марширующие. `solo violin` убран из Exclude.
 **Вердикт:** —
 | 01-C мрачно-героически | | | | | | |
 | 01-D Testard, камерная | | | | | | |

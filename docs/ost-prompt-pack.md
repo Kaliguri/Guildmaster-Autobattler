@@ -39,9 +39,9 @@
 **В «Исключить стили» слово `no` не пишется** — поле само означает исключение. Отрицание идёт в поле
 Стилей (`no vocals` там работает).
 
-**Исключить стили — ОДИН И ТОТ ЖЕ набор во всех блоках, он больше не меняется:**
+**Исключить стили — ОДИН И ТОТ ЖЕ набор во всех блоках:**
 ```
-solo violin, metal riff, taiko, triumphant fanfare, j-pop
+taiko, war march, triumphant fanfare, j-pop, metal riff
 ```
 Состав задаётся точно в позитиве, поэтому латать исключениями больше нечего. Канон состава по ролям —
 `tone-and-lineup.md` §КАНОН СОСТАВА.
@@ -51,12 +51,14 @@ solo violin, metal riff, taiko, triumphant fanfare, j-pop
 Текст → **Инструментал** (тумблер).
 
 ```
-dark cinematic battle score, grim and desperate, clean electric guitar lead singing the melody, low
-cello ostinato underneath, insistent relentless pulse, tense strings, 140 BPM, D dorian, no vocals
+dark cinematic battle score, tense and desperate, violin lead beautiful and deadly, slightly overdriven
+electric guitar with rare solo, low cello ostinato and bass guitar underneath, hard-hitting drums,
+builds in steps then drops away, 150 BPM, D dorian, no vocals
 ```
 
-**Баланс сил:** пять указаний на мрак и движение против одного на нежность (сам лид). Арки внутри
-боевого трека нет намеренно — боевой луп играет с любого места и обязан быть боевым сразу.
+**Состав из канона после разбора SAO:** скрипка и барабаны вернулись, гитара стала грязноватой с
+редким соло, добавлена бас-гитара. `builds in steps then drops away` — ступенчатость и паузы, без
+которых трек «не развлекает собой».
 
 **Теги арки сюда не ставятся.** Они живут в поле Lyrics, а его занимает тумблер «Инструментал» —
 включить оба нельзя, а отключить тумблер значит остаться без запрета голоса. Проверяются в 01-B, где
