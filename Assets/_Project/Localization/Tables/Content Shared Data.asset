@@ -1055,6 +1055,70 @@ MonoBehaviour:
     m_Key: effect.nightmare.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 6997959210426368
+    m_Key: relic.frostbound.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146624
+    m_Key: relic.frostbound.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146625
+    m_Key: effect.frost.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146626
+    m_Key: effect.frost.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146627
+    m_Key: effect.frost_root.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959269146628
+    m_Key: effect.frost_root.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340928
+    m_Key: effect.frost_statue.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340929
+    m_Key: effect.frost_statue.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340930
+    m_Key: effect.shatter_stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340931
+    m_Key: effect.shatter_stun.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340932
+    m_Key: effect.permafrost.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340933
+    m_Key: effect.permafrost.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340934
+    m_Key: effect.frost_heavy_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340935
+    m_Key: effect.frost_heavy_charge.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340936
+    m_Key: effect.harvest_grip.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6997959273340937
+    m_Key: effect.harvest_grip.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
