@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Guildmaster.Data.Definitions;
@@ -9,18 +10,18 @@ using UnityEngine;
 namespace Guildmaster.Tests.EditMode.Content
 {
     /// <summary>
-    /// Политика тинта тела (решение Макса 30.07.2026). Тинт — УМНОЖЕНИЕ на готовый цветной арт, поэтому
-    /// перекрасить им персонажа нельзя (синий рыцарь под оранжевым тинтом становится тёмно-серым, а не
-    /// огненным). Его единственная работа — развести юнитов, которые делят один спрайт: у своего арта тинт
-    /// остаётся White, у повторок отличается.
-    /// <para>Правило живёт в тесте, а не в комментарии: спрайт назначается в ПРЕФАБЕ, цвет — в SO, и ни одна
-    /// из двух сторон шва не видит вторую. Раньше здесь стоял дев-фолбэк «оттенок от хеша имени», и он красил
-    /// восемь юнитов цветом, который никто не выбирал.</para>
+    /// Политика цвета юнита (решения Макса 30.07.2026). Юнит хранит РОЛИ, а не цвета: оттенок свечения
+    /// (<see cref="UnitTone"/>) и ступень приглушения тела (<see cref="BodyShade"/>). Значения живут в
+    /// палитре проекта, поэтому здесь проверяется не «красиво ли», а что роли существуют и расставлены по
+    /// правилу.
+    /// <para>Правило тинта: он УМНОЖАЕТСЯ на готовый цветной арт, значит перекрасить им персонажа нельзя —
+    /// он годится ровно на то, чтобы развести юнитов, делящих один спрайт. Один из группы остаётся без
+    /// приглушения (оригинал), остальные берут ступень; у владельца своего арта приглушения нет.</para>
+    /// <para>Почему тестом, а не комментарием: спрайт назначается в ПРЕФАБЕ (у части юнитов вообще
+    /// наследуется от базового <c>UnitView</c>), роль — в SO, и ни одна сторона шва не видит вторую.</para>
     /// </summary>
     public sealed class UnitTintPolicyTests
     {
-        private const float MinChannel = 0.35f;   // ниже — тело уходит в грязь и перестаёт читаться
-
         private static List<UnitData> AllUnits() =>
             AssetDatabase.FindAssets($"t:{nameof(UnitData)}")
                 .Select(AssetDatabase.GUIDToAssetPath)
@@ -28,6 +29,15 @@ namespace Guildmaster.Tests.EditMode.Content
                 .Where(u => u != null)
                 .OrderBy(u => u.name)
                 .ToList();
+
+        private static GuildmasterPalette Palette()
+        {
+            string[] guids = AssetDatabase.FindAssets($"t:{nameof(GuildmasterPalette)}");
+            Assert.AreEqual(1, guids.Length, "Ожидается ровно один снимок палитры проекта.");
+            var palette = AssetDatabase.LoadAssetAtPath<GuildmasterPalette>(AssetDatabase.GUIDToAssetPath(guids[0]));
+            Assert.IsNotNull(palette);
+            return palette;
+        }
 
         /// <summary>
         /// Подпись арта юнита: по ней и определяется, делит ли он спрайты с кем-то ещё. Составное тело
@@ -74,90 +84,101 @@ namespace Guildmaster.Tests.EditMode.Content
             return groups;
         }
 
+        /// <summary>
+        /// Каждая роль умеет превратиться в цвет. Это единственное место, где перечисление в коде и имена
+        /// токенов в USS могут разъехаться: элемент добавили, роль в палитру не завели — и юнит на арене
+        /// светит пурпуром.
+        /// </summary>
         [Test]
-        public void Resolver_ReturnsTheAuthoredTintUntouched()
+        public void EveryRole_ExistsInThePalette()
         {
-            foreach (UnitData unit in AllUnits())
-                Assert.AreEqual(unit.Tint, unit.ResolveBodyTint(),
-                    $"{unit.name}: резолвер тинта изобретает цвет вместо заданного в ассете. " +
-                    "Играет ассет, а не код — иначе вид юнита нельзя ни выбрать, ни увидеть в инспекторе.");
+            GuildmasterPalette palette = Palette();
+
+            foreach (UnitTone tone in Enum.GetValues(typeof(UnitTone)).Cast<UnitTone>())
+            {
+                string token = UnitColorRoles.TokenOf(tone);
+                Assert.IsNotNull(token, $"оттенок {tone} не назван в UnitColorRoles.TokenOf");
+                Assert.IsTrue(palette.TryGet(token, out _),
+                    $"в палитре нет роли '{token}' (оттенок {tone}). Пересобери снимок: " +
+                    "Alebardium → Дизайн-система → Пересобрать палитру.");
+            }
+
+            foreach (BodyShade shade in Enum.GetValues(typeof(BodyShade)).Cast<BodyShade>())
+            {
+                if (shade == BodyShade.None) continue;   // «не красим» цвета не имеет и не должно
+                string token = UnitColorRoles.TokenOf(shade);
+                Assert.IsNotNull(token, $"ступень {shade} не названа в UnitColorRoles.TokenOf");
+                Assert.IsTrue(palette.TryGet(token, out _),
+                    $"в палитре нет роли '{token}' (ступень {shade}).");
+            }
+        }
+
+        /// <summary>
+        /// Ступени приглушения обязаны БЫТЬ приглушениями: тинт умножается на арт, поэтому канал выше 1
+        /// не осветлит (клампится), а слишком низкий уводит тело в грязь. Прозрачность тинтом не задаётся —
+        /// её занимает стелс.
+        /// </summary>
+        [Test]
+        public void Shades_StayWithinWhatMultiplyingCanDo()
+        {
+            const float minChannel = 0.35f;
+            GuildmasterPalette palette = Palette();
+
+            foreach (BodyShade shade in Enum.GetValues(typeof(BodyShade)).Cast<BodyShade>())
+            {
+                Color c = UnitColorRoles.Shade(palette, shade);
+                Assert.AreEqual(1f, c.a, 1e-3f, $"{shade}: alpha держим 1, прозрачность — не работа тинта.");
+                foreach ((float channel, string name) in new[] { (c.r, "r"), (c.g, "g"), (c.b, "b") })
+                {
+                    Assert.LessOrEqual(channel, 1f,
+                        $"{shade}: канал {name} = {channel} — тинт умножает, осветлить им нельзя.");
+                    Assert.GreaterOrEqual(channel, minChannel,
+                        $"{shade}: канал {name} = {channel} гасит арт в грязь. Нужна другая ОКРАСКА, " +
+                        "а не затемнение — это работа Palette Remapper.");
+                }
+            }
         }
 
         [Test]
-        public void OwnArt_IsNeverTinted()
+        public void OwnArt_IsNeverShaded()
         {
             foreach (KeyValuePair<string, List<UnitData>> group in ByArt())
             {
                 if (group.Value.Count != 1) continue;
                 UnitData unit = group.Value[0];
-                Assert.AreEqual(Color.white, unit.Tint,
-                    $"{unit.name} — единственный владелец своего арта ({group.Key}), тинт ему не нужен: " +
+                Assert.AreEqual(BodyShade.None, unit.BodyShade,
+                    $"{unit.name} — единственный владелец своего арта ({group.Key}), приглушение ему не нужно: " +
                     "разводить не с кем, а умножение только глушит краски художника.");
             }
         }
 
         [Test]
-        public void SharedArt_KeepsExactlyOneUntintedOriginal()
+        public void SharedArt_KeepsExactlyOneUnshadedOriginal()
         {
             foreach (KeyValuePair<string, List<UnitData>> group in ByArt())
             {
                 if (group.Value.Count < 2) continue;
-                UnitData[] plain = group.Value.Where(u => u.Tint == Color.white).ToArray();
+                UnitData[] plain = group.Value.Where(u => u.BodyShade == BodyShade.None).ToArray();
                 Assert.AreEqual(1, plain.Length,
                     $"Арт {group.Key} делят {group.Value.Count} юнита ({string.Join(", ", group.Value.Select(u => u.name))}), " +
-                    $"а без тинта из них {plain.Length}. Ровно один показывает арт как есть — он оригинал; " +
+                    $"а без приглушения из них {plain.Length}. Ровно один показывает арт как есть — он оригинал; " +
                     "остальные подкрашиваются, чтобы их различали на арене.");
             }
         }
 
         [Test]
-        public void SharedArt_TintsDifferFromEachOther()
+        public void SharedArt_ShadesDifferFromEachOther()
         {
             foreach (KeyValuePair<string, List<UnitData>> group in ByArt())
             {
                 if (group.Value.Count < 2) continue;
-                var seen = new Dictionary<Color, string>();
+                var seen = new Dictionary<BodyShade, string>();
                 foreach (UnitData unit in group.Value)
                 {
-                    if (seen.TryGetValue(unit.Tint, out string other))
-                        Assert.Fail($"{unit.name} и {other} делят и арт ({group.Key}), и тинт {unit.Tint} — " +
-                                    "то есть на арене неразличимы.");
-                    seen[unit.Tint] = unit.name;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Цвет эффектов задан у КАЖДОГО юнита явно. Проверка появилась вместе с White-тинтом: у
-        /// <c>ResolveVfxColor</c> незаданный (White) цвет уводит в тинт тела, а тот теперь честно бывает White —
-        /// то есть цепочка фолбэков вела бы к ровно белому эффекту, который даже не пробивает порог bloom (1.0).
-        /// Цвет эффектов — авторское решение, и его отсутствие должно падать здесь, а не тихо белить искры.
-        /// </summary>
-        [Test]
-        public void VfxColor_IsAuthoredExplicitly()
-        {
-            foreach (UnitData unit in AllUnits())
-                Assert.AreNotEqual(Color.white, unit.VfxColor,
-                    $"{unit.name}: цвет эффектов не задан. Норма — насыщенность 70–90% и яркость выше 1 " +
-                    "(HDR ловит bloom); нужен белый — берётся около-белый вроде 2.6/2.5/2.4.");
-        }
-
-        [Test]
-        public void Tint_StaysWithinWhatMultiplyingCanDo()
-        {
-            foreach (UnitData unit in AllUnits())
-            {
-                Color t = unit.Tint;
-                Assert.AreEqual(1f, t.a, 1e-3f,
-                    $"{unit.name}: прозрачность тела задаётся не тинтом (её занимает стелс) — alpha держим 1.");
-                foreach ((float channel, string name) in new[] { (t.r, "r"), (t.g, "g"), (t.b, "b") })
-                {
-                    Assert.LessOrEqual(channel, 1f,
-                        $"{unit.name}: канал {name} = {channel} — тинт умножает, осветлить им нельзя, " +
-                        "значение выше 1 просто клампится.");
-                    Assert.GreaterOrEqual(channel, MinChannel,
-                        $"{unit.name}: канал {name} = {channel} гасит арт в грязь. " +
-                        "Нужна другая ОКРАСКА, а не затемнение — это работа Palette Remapper.");
+                    if (seen.TryGetValue(unit.BodyShade, out string other))
+                        Assert.Fail($"{unit.name} и {other} делят и арт ({group.Key}), и ступень " +
+                                    $"{unit.BodyShade} — то есть на арене неразличимы.");
+                    seen[unit.BodyShade] = unit.name;
                 }
             }
         }

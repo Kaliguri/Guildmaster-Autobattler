@@ -52,6 +52,11 @@ namespace Guildmaster.Game
         [Tooltip("Классовый профиль баланса (2-й уровень стат-каскада). ТОТ ЖЕ ассет, что в CombatLifetimeScope.")]
         [SerializeField] private ClassBalanceConfig _classBalanceConfig;
 
+        [Tooltip("Снимок палитры проекта (UI/Theme/tokens.*.uss → Alebardium/Дизайн-система/Пересобрать палитру). " +
+                 "Нужен интерфейсу, чтобы карточка реликвии красила тело ТЕМ ЖЕ путём, что бой: юнит хранит " +
+                 "ступень приглушения, цвет живёт здесь. Пусто = карточка покажет арт как есть.")]
+        [SerializeField] private GuildmasterPalette _palette;
+
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<IRngService>(_ => new XorShiftRng(GenerateRootSeed()), Lifetime.Singleton);
@@ -66,6 +71,11 @@ namespace Guildmaster.Game
             // Конфиг генерации карты акта (оверхол 2026-07). Потребитель — GameFlow.
             builder.RegisterInstance(ScopeWiring.Optional(_actConfig, nameof(RootLifetimeScope), nameof(_actConfig),
                 "карта акта пойдёт по дефолтам кода, а не по ассету — правки дизайнера не применятся"));
+
+            // Палитра проекта: интерфейсу она нужна ровно за одним — цветом ступени приглушения на карточке
+            // реликвии. Без неё карточка рисует арт как нарисован, поэтому Optional, а не Require.
+            builder.RegisterInstance(ScopeWiring.Optional(_palette, nameof(RootLifetimeScope), nameof(_palette),
+                "карточка реликвии покажет тело без приглушения — в бою оно будет, на карточке нет"));
 
             // Каталог доступен обоим потребителям (FmodAudioService резолвит ключ→событие, AudioPresenter
             // строит поверх него резолвер).

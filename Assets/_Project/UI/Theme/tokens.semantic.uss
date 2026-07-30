@@ -132,6 +132,37 @@
     --gm-color-combat-hp-enemy: var(--gm-flare-rust);
     --gm-color-combat-shield: var(--gm-flare-ice);
 
+    /* --- Оттенки бойцов ---
+       Чем светит конкретный юнит: снаряд, его след, контур каста, искры, осколки. Роли названы по
+       СМЫСЛУ оттенка, а не по юниту: `UnitData` держит ссылку на роль, а «кому какая» решает дизайн
+       (gdd/10-vision/vfx-color §Ростер). Роль на каждого героя превратила бы палитру во второй реестр
+       контента, а повторять оттенок между юнитами разрешено прямо — героя от врага отличает полоса HP.
+       Здесь LDR-база; HDR-яркость накручивает CombatColorPalette множителями. */
+    --gm-color-unit-fire: var(--gm-flare-fire);
+    --gm-color-unit-gold: var(--gm-flare-honey);
+    --gm-color-unit-light: var(--gm-flare-halo);
+    --gm-color-unit-lime: var(--gm-flare-lime);
+    --gm-color-unit-grass: var(--gm-flare-grass);
+    --gm-color-unit-emerald: var(--gm-flare-emerald);
+    --gm-color-unit-wind: var(--gm-flare-cyan);
+    --gm-color-unit-frost: var(--gm-flare-azure);
+    --gm-color-unit-steel: var(--gm-flare-steel);
+    --gm-color-unit-shadow: var(--gm-flare-amethyst);
+    --gm-color-unit-venom: var(--gm-flare-venom);
+    --gm-color-unit-bog: var(--gm-flare-bog);
+    --gm-color-unit-iron: var(--gm-flare-copper);
+    --gm-color-unit-dust: var(--gm-flare-dust);
+    --gm-color-unit-neutral-warm: var(--gm-flare-tallow);
+    --gm-color-unit-neutral-cool: var(--gm-flare-chalk);
+
+    /* --- Приглушения тела ---
+       Тинт умножается на готовый спрайт, поэтому это не «цвет юнита», а различитель тех, кто носит
+       ОДИН арт: один из группы остаётся без тинта, остальные берут ступень отсюда. Ступеней три —
+       больше на цветном арте не различить (UnitTintPolicyTests сторожит и это). */
+    --gm-color-unit-dim-warm: var(--gm-dim-warm);
+    --gm-color-unit-dim-verdant: var(--gm-dim-verdant);
+    --gm-color-unit-dim-tan: var(--gm-dim-tan);
+
     /* --- Карта акта ---
        Карта живёт в мире, а не в UITK, поэтому эти роли читает не стиль, а ассет палитры
        (GuildmasterPalette.asset, собирается из этого файла). Смысл тот же, что у прочей семантики:

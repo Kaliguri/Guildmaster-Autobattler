@@ -23,38 +23,8 @@ MonoBehaviour:
   _resourceType: 1
   _visual: {fileID: 11400000, guid: d0a79ee49ef5db14183cedd745bc33d1, type: 2}
   _viewPrefab: {fileID: 6633865311930413954, guid: aad39bd62a48f57439e7c1b59fe2a62b, type: 3}
-  _tint: {r: 0.7, g: 0.95, b: 0.65, a: 1}
-  _vfxColor: {r: 0.934, g: 2, b: 0.4, a: 1}
-  _vfxPalette:
-    serializedVersion: 2
-    key0: {r: 2.254, g: 2.6, b: 2.08, a: 1}
-    key1: {r: 1.027, g: 2.2, b: 0.44, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
+  _bodyShade: 2
+  _vfxTone: 4
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackLengthMult: 1

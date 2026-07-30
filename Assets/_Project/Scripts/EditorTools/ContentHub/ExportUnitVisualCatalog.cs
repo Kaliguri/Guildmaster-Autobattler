@@ -112,6 +112,10 @@ namespace Guildmaster.ContentHub.Editor
         static List<Entry> CollectEntries()
         {
             var list = new List<Entry>();
+            // Палитра проекта — тот же снимок, что читают бой и карта: каталог обязан показывать РОВНО
+            // игровой цвет тела, иначе он врёт именно там, где на него и смотрят.
+            var palette = AssetDatabase.LoadAssetAtPath<GuildmasterPalette>(
+                "Assets/_Project/ScriptableObjects/Configs/GuildmasterPalette.asset");
             foreach (var folder in new[]
                      {
                          "Assets/_Project/ScriptableObjects/Relics",
@@ -147,8 +151,7 @@ namespace Guildmaster.ContentHub.Editor
                         Name = unit.name,
                         Kind = path.Contains("/Relics/") ? "RELIC" : "ENEMY",
                         Sprite = sprite,
-                        // Тот же резолвер, что у боя и карточки: каталог обязан показывать РОВНО игровой цвет.
-                        Tint = unit.ResolveBodyTint(),
+                        Tint = UnitColorRoles.Shade(palette, unit.BodyShade),
                         RecH = Mathf.Max(0.01f, recH),
                         RecW = Mathf.Max(0.01f, recW),
                     });

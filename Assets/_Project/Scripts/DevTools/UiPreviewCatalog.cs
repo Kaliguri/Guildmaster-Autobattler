@@ -97,7 +97,9 @@ namespace Guildmaster.DevTools
                 nameOf: r => RuName(r?.Id),
                 localize: RuValue,
                 onTake: (_, __) => { },
-                onSkip: () => { });
+                onSkip: () => { },
+                // Стенд красит тело тем же путём, что игра: ступень из данных, цвет из палитры проекта.
+                palette: LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>());
             root.Add(screen);
         }
 
@@ -151,7 +153,8 @@ namespace Guildmaster.DevTools
                 localize: RuValue,
                 lockedSlots: 3,
                 tagsOf: r => UnitTagResolver.Resolve(r, content),
-                statsOf: r => statPreview.Basic(r));
+                statsOf: r => statPreview.Basic(r),
+                palette: LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>());
             root.Add(screen);
 
             // Глобальная панель забега (app-shell): статичная для стенда, режим «Инвентарь» активен.
@@ -332,7 +335,8 @@ namespace Guildmaster.DevTools
 
             // Пересоздаём риг галереи (прошлые камеры/RT освобождаем).
             _galleryRig?.Dispose();
-            _galleryRig = new Guildmaster.UI.Components.RelicCardVisualRig();
+            _galleryRig = new Guildmaster.UI.Components.RelicCardVisualRig(
+                palette: LoadFirst<Guildmaster.Data.Definitions.GuildmasterPalette>());
 
             root.style.backgroundColor = new UnityEngine.Color(18f / 255f, 16f / 255f, 13f / 255f, 1f);
             root.style.paddingTop = 20; root.style.paddingBottom = 20;

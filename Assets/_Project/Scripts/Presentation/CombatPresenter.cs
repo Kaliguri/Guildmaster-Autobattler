@@ -476,9 +476,12 @@ namespace Guildmaster.Presentation
             view.ApplyAudio(_audio);     // хруст разлёта: вид сам знает, когда начинается shatter
             view.SetContactDustHandler(OnUnitContactDust);
 
-            // Тинт тела по персонажу (dev-различение, пока placeholder-спрайт) + подпись над HP-баром.
+            // Тинт тела: ступень приглушения различает тех, кто делит один спрайт. Плюс подпись над баром.
             view.SetTint(TintFor(in identity));
             view.SetLabel(NameFor(in identity));
+
+            // «Свой» разброс цвета — осколкам смерти: роль в цвет превращает палитра, не вид.
+            view.SetVfxSpread(VfxPaletteFor(snapshot.Id));
 
             // Цвет HP-бара по принадлежности к смотрящему (дизайн-система).
             view.SetHealthColor(_colorPalette.HealthBarColor(IsAllyOfViewer(identity.Team)));
@@ -693,13 +696,13 @@ namespace Guildmaster.Presentation
 
         /// <summary>Палитра эффектов по id — из паспорта, потому что живого юнита здесь уже нет.</summary>
         private Gradient VfxPaletteFor(int unitId) =>
-            _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
-                ? id.Definition.ResolveVfxPalette()
+            _colorPalette != null && _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
+                ? _colorPalette.UnitSpread(id.Definition.VfxTone)
                 : null;
 
         private Color VfxColorFor(int unitId) =>
-            _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
-                ? id.Definition.ResolveVfxColor()
+            _colorPalette != null && _identities.TryGetValue(unitId, out UnitIdentity id) && id.Definition != null
+                ? _colorPalette.UnitMain(id.Definition.VfxTone)
                 : Color.white;
 
         /// <summary>Contact-dust: пыль у ног при старте/стопе бега (VfxData → префаб, тумблер в feel-конфиге).</summary>
@@ -747,32 +750,41 @@ namespace Guildmaster.Presentation
         }
 
         /// <summary>
-        /// Тинт тела по персонажу. У юнита с данными — ЕДИНЫЙ резолвер <see cref="UnitData.ResolveBodyTint"/>
-        /// (тот же цвет, что рендерит карточка инвентаря); у болванчиков без данных — по стороне смотрящего.
+        /// Тинт тела по персонажу: ступень приглушения из данных, цвет — из палитры проекта (тот же путь,
+        /// которым красится карточка инвентаря). У болванчиков без данных — по стороне смотрящего: это
+        /// дев-стенд без контента, там различить своих и чужих больше нечем.
         /// </summary>
         private Color TintFor(RuntimeUnit unit) =>
             unit.Unit != null
-                ? unit.Unit.ResolveBodyTint()
+                ? BodyTintOf(unit.Unit)
                 : (IsAllyOfViewer(unit) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
 
         /// <summary>То же, но по паспорту: так вид красится, когда создаётся из кадра показа.</summary>
         private Color TintFor(in UnitIdentity identity) =>
             identity.Definition != null
-                ? identity.Definition.ResolveBodyTint()
+                ? BodyTintOf(identity.Definition)
                 : (IsAllyOfViewer(identity.Team) ? new Color(0.7f, 0.8f, 1f) : new Color(1f, 0.7f, 0.7f));
+
+        // Ступень → цвет. Без палитры не гадаем: белый значит «арт как нарисован», и это честнее пурпура,
+        // потому что тинт по умолчанию и есть «не красим» — большинство юнитов носит None.
+        private Color BodyTintOf(UnitData definition) =>
+            _colorPalette != null ? _colorPalette.BodyTint(definition.BodyShade) : Color.white;
 
         /// <summary>
         /// Цвета ЭФФЕКТОВ юнита. Их два, и они про разное: ГЛАВНЫЙ цвет — там, где цвет один (тело снаряда,
-        /// его след, контур каста), ПАЛИТРА — диапазон разброса для частиц. Держатся на <c>UnitData</c>, а не
-        /// в префабах: иначе холод криоманта и свет пастыря выглядели бы одинаково просто потому, что летят
-        /// из одного префаба.
+        /// его след, контур каста), ПАЛИТРА — диапазон разброса для частиц. Оба выводятся из ОДНОЙ роли на
+        /// <c>UnitData</c>, а не живут в префабах эффектов: иначе холод криоманта и свет пастыря выглядели бы
+        /// одинаково просто потому, что летят из одного префаба.
         /// <para>Пыль под ногами сюда НЕ входит: она принадлежит земле, а не бойцу.</para>
         /// </summary>
-        private Gradient VfxPaletteFor(RuntimeUnit unit) => unit?.Unit?.ResolveVfxPalette();
+        private Gradient VfxPaletteFor(RuntimeUnit unit) =>
+            _colorPalette != null && unit?.Unit != null ? _colorPalette.UnitSpread(unit.Unit.VfxTone) : null;
 
         /// <summary>Главный цвет эффектов юнита — для того, у чего нет ни длины, ни россыпи.</summary>
         private Color VfxColorFor(RuntimeUnit unit) =>
-            unit?.Unit != null ? unit.Unit.ResolveVfxColor() : TintFor(unit);
+            _colorPalette != null && unit?.Unit != null
+                ? _colorPalette.UnitMain(unit.Unit.VfxTone)
+                : TintFor(unit);
 
         /// <summary>
         /// Юнит на стороне смотрящего? Единственное место, где в презентере решается «свой/чужой».

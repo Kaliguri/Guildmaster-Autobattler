@@ -33,7 +33,8 @@ namespace Guildmaster.UI
             Func<string, string> localize,
             Action<RelicData, string> onTake,
             Action onSkip,
-            Action<RelicData> onCardSelectSound = null)
+            Action<RelicData> onCardSelectSound = null,
+            GuildmasterPalette palette = null)
         {
             string L(string key, string ru)
             {
@@ -59,7 +60,8 @@ namespace Guildmaster.UI
             if (takeBtn != null) takeBtn.text = L("ui.reward.take", "Взять");
 
             // Риг анимированных спрайтов карточек. Живёт, пока открыт экран (dispose при detach).
-            var rig = new RelicCardVisualRig();
+            // Палитра нужна ему за цветом ступени приглушения — тем же, которым красит бой.
+            var rig = new RelicCardVisualRig(palette: palette);
             root.RegisterCallback<DetachFromPanelEvent>(_ => rig.Dispose());
 
             RelicData chosen = null;

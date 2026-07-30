@@ -30,6 +30,10 @@ namespace Guildmaster.UI
         private readonly ILocalizationService _loc;
         private readonly IRunControl _runControl; // QA #18: «В главное меню»/«Выход» из системного меню
 
+        // Палитра проекта — единственный владелец цвета. Роутер её не читает сам: он передаёт её ригу
+        // карточек, чтобы тот красил тело той же ступенью приглушения, что бой.
+        private readonly GuildmasterPalette _palette;
+
         private VisualElement _root;
         private VisualTreeAsset _pauseUxml;
         private VisualTreeAsset _settingsUxml;
@@ -54,9 +58,11 @@ namespace Guildmaster.UI
         public MenuRouter(IInputService input, UiNavigator nav, SettingsViewModel settingsVm, LoadoutViewModel loadoutVm,
                           ILocalizationService loc, IRunControl runControl,
                           IPublisher<MainMenuVisibilityChangedEvent> mainMenuVisPub,
-                          Core.Audio.IAudioService audio)
+                          Core.Audio.IAudioService audio,
+                          GuildmasterPalette palette)
         {
             _audio = audio;
+            _palette = palette;
             _input = input;
             _nav = nav;
             _settingsVm = settingsVm;
@@ -297,7 +303,8 @@ namespace Guildmaster.UI
                 cardAttackAnimation: _settingsVm.CardAttackAnimation,
                 onRelicDrag: onRelicDrag, // QA #5: drag карточки реликвии на юнита в мире
                 tagsOf: r => _loadoutVm.ResolveTags(r),   // теги «быстрого чтения» из данных релика
-                statsOf: r => _loadoutVm.ResolveStats(r)); // базовые статы тем же каскадом, что у боя
+                statsOf: r => _loadoutVm.ResolveStats(r), // базовые статы тем же каскадом, что у боя
+                palette: _palette);                       // цвет приглушения тела — как в бою
 
             // Инвентарь = ТОЛЬКО тело; навигация (режимы) и меню — в глобальном топбаре (RunModeBar). Sheet:
             // навигатор НЕ глушит геймплей — под инвентарём живут юниты/камера (клики разводит PointerOverUI над
@@ -704,7 +711,8 @@ namespace Guildmaster.UI
                     () => { _audio?.Play("reward.skip.ui"); resolve(RewardChoiceResult.Skip); },
                     // Хук выбора карточки был заведён в экране, но никогда не прокидывался — карточка
                     // анимировалась молча.
-                    _ => _audio?.Play("reward.card_select.ui")));
+                    _ => _audio?.Play("reward.card_select.ui"),
+                    _palette));   // цвет ступени приглушения — тот же, что в бою
 
             RewardChoiceResult result = await _nav.ShowAsync(screen, req.Cancellation); // экран снят ДО колбэка (II.5); ct → закрыть при отмене (QA #37)
             req.OnResolved?.Invoke(result);

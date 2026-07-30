@@ -163,6 +163,7 @@ namespace Guildmaster.Presentation
         private Design.CombatFeelConfig _feel;          // параметры вспышки/сплющивания (из design-конфига)
         private Core.Audio.IAudioService _audio;        // голос вида: хруст разлёта на осколки
         private Color        _baseTint = Color.white;   // цвет-тинт тела (умножается на текстуру в шейдере)
+        private Gradient     _vfxSpread;                // «свой» разброс цвета: подаёт презентер, читают осколки
         private Color        _activeFlashColor = Color.white; // цвет текущей вспышки (school flash или фолбэк)
         private float        _flashAmount;               // 0..1 — сила вспышки (параметр _FlashAmount шейдера)
         private float        _flashPeak = 1f;            // пик текущей вспышки: удар бьёт в полную, лечение мягче
@@ -315,6 +316,13 @@ namespace Guildmaster.Presentation
             _baseTint = color;
             ApplyColor(); // итоговый цвет = база + вспышка + альфа инвиза (единый писатель цвета тела)
         }
+
+        /// <summary>
+        /// Подать диапазон разброса «своего» цвета: осколки павшего берут его концы. Вид цвет не
+        /// РЕЗОЛВИТ — роль юнита превращает в цвет палитра проекта, и делает это презентер; иначе показ
+        /// снова начал бы знать про токены и стал бы вторым входом за цветом.
+        /// </summary>
+        public void SetVfxSpread(Gradient spread) => _vfxSpread = spread;
 
         /// <summary>Подать design-конфиг сочности (длительности/сила/цвет вспышки и сплющивания). CombatPresenter — при спавне.</summary>
         public void ApplyFeelConfig(Design.CombatFeelConfig feel)
@@ -1568,9 +1576,8 @@ namespace Guildmaster.Presentation
                 return;
             }
 
-            // Палитра павшего — из его же данных: осколки должны быть «его» цвета.
-            Gradient palette = _definition != null ? _definition.ResolveVfxPalette() : null;
-            Body.PlayShatter(_feel, palette, () => gameObject.SetActive(false));
+            // Разброс павшего подан презентером при спавне: осколки должны быть «его» цвета.
+            Body.PlayShatter(_feel, _vfxSpread, () => gameObject.SetActive(false));
         }
 
 #if UNITY_EDITOR

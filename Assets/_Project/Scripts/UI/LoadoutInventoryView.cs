@@ -38,7 +38,8 @@ namespace Guildmaster.UI
             bool cardAttackAnimation = true,
             Action<RelicData, RelicDragPhase> onRelicDrag = null,
             Func<RelicData, IReadOnlyList<TagData>> tagsOf = null,
-            Func<RelicData, IReadOnlyList<UnitStatLine>> statsOf = null)
+            Func<RelicData, IReadOnlyList<UnitStatLine>> statsOf = null,
+            GuildmasterPalette palette = null)
         {
             string L(string key, string ru)
             {
@@ -143,7 +144,7 @@ namespace Guildmaster.UI
 
             // Риг анимированных спрайтов карточек: боевой ViewPrefab → RT. ВСЕ карты стоят статично (idle-кадр);
             // двигается ТОЛЬКО выбранный юнит — цикл idle→attack (план 10 §5). Живёт, пока открыт экран.
-            var rig = new RelicCardVisualRig();
+            var rig = new RelicCardVisualRig(palette: palette);
             root.RegisterCallback<DetachFromPanelEvent>(_ => { animLoop?.Pause(); rig.Dispose(); });
 
             // ТОЛЬКО детали + подсветка выбора. Анимацию НЕ трогает (на старте всё статично, пока не кликнули).

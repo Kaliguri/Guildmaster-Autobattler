@@ -45,22 +45,17 @@ namespace Guildmaster.Data.Definitions
                  "Сейчас всем можно прицепить единый placeholder, позже — индивидуальные. Пусто = дефолтный из презентера.")]
         [SerializeField] private GameObject _viewPrefab;
 
-        [Tooltip("Тинт тела — УМНОЖАЕТСЯ на спрайт, поэтому только затемняет и глушит: перекрасить готовый " +
-                 "цветной арт в другой цвет им нельзя (синий рыцарь от оранжевого тинта станет тёмно-серым, " +
-                 "не огненным — это работа Palette Remapper). Нужен ТОЛЬКО чтобы развести юнитов, делящих один " +
-                 "спрайт: у своего арта тинт остаётся White. White = не красим, как есть. " +
-                 "ЕДИНЫЙ источник цвета: и бой, и карточка инвентаря берут ResolveBodyTint().")]
-        [SerializeField] private Color _tint = Color.white;
+        [Tooltip("Приглушение тела: различитель тех, кто носит ОДИН спрайт. Один юнит из группы остаётся " +
+                 "None и показывает арт как есть, остальные берут ступень. Тинт умножается на готовый арт, " +
+                 "поэтому перекрасить им персонажа нельзя — это работа Palette Remapper. " +
+                 "Свой арт → всегда None (сторож — UnitTintPolicyTests).")]
+        [SerializeField] private BodyShade _bodyShade = BodyShade.None;
 
-        [Tooltip("ГЛАВНЫЙ цвет эффектов юнита — там, где разброс не нужен и нужен ровно один цвет: тело " +
-                 "снаряда, его след (он же, теряющий прозрачность к хвосту), контур каста. " +
-                 "HDR: яркость >1 ловит bloom. White = «не задан» → тинт тела.")]
-        [ColorUsage(true, true)] [SerializeField] private Color _vfxColor = Color.white;
-
-        [Tooltip("ДИАПАЗОН для разброса частиц: каждая искра берёт случайный оттенок между концами " +
-                 "градиента (жёлто-белые вразнобой, а не одинаково белые). Пусто = разброса нет, всё " +
-                 "красится главным цветом.")]
-        [GradientUsage(true)] [SerializeField] private Gradient _vfxPalette;
+        [Tooltip("Оттенок, которым юнит СВЕТИТ: снаряд, его след, контур каста, искры, осколки. Хранится " +
+                 "роль, а не цвет — значение живёт в палитре (UI/Theme/tokens.*.uss → GuildmasterPalette), " +
+                 "яркость накручивает CombatColorPalette множителями. Повторять оттенок между юнитами " +
+                 "разрешено: героя от врага отличает полоса HP. Кому какой — gdd/10-vision/vfx-color §Ростер.")]
+        [SerializeField] private UnitTone _vfxTone = UnitTone.NeutralWarm;
 
         [Header("Auto-attack shape (Phase 3)")]
         [Tooltip("Форма авто-атаки: None = одиночная цель; Line = линия перед юнитом (несколько целей, «Размашистый выпад»).")]
@@ -150,14 +145,14 @@ namespace Guildmaster.Data.Definitions
         public ResourceType ResourceType => _resourceType;
         public UnitVisual Visual => _visual;
         public GameObject ViewPrefab => _viewPrefab;
-        public Color Tint => _tint;
-
         /// <summary>
-        /// Сырое поле главного цвета эффектов: White = «не задан». Играющий цвет берётся
-        /// <see cref="ResolveVfxColor"/> — это свойство существует для валидации авторинга
-        /// (<c>UnitTintPolicyTests</c>), которая обязана видеть именно «не задан», а не результат фолбэка.
+        /// Ступень приглушения тела. Цвет из неё достаёт <c>UnitColorRoles.Shade</c> — здесь только
+        /// решение автора, потому что владелец цвета один и это палитра.
         /// </summary>
-        public Color VfxColor => _vfxColor;
+        public BodyShade BodyShade => _bodyShade;
+
+        /// <summary>Оттенок свечения юнита; цвет по роли отдаёт <c>CombatColorPalette</c>.</summary>
+        public UnitTone VfxTone => _vfxTone;
 
         public AreaShape AutoAttackShape => _autoAttackShape;
         public float AutoAttackWidth => _autoAttackWidth;
@@ -197,45 +192,9 @@ namespace Guildmaster.Data.Definitions
         /// </summary>
         public AIProfile Ai => _aiPreset != null ? _aiPreset.Profile : _ai;
 
-        /// <summary>
-        /// Итоговый цвет тела для рендера — ЕДИНЫЙ источник и для боя (<c>UnitView.SetTint</c>), и для
-        /// карточки инвентаря (<c>RelicCardVisualRig</c>), и для каталога визуалов.
-        /// <para>Тинт отдаётся КАК ЕСТЬ, White включительно: белый = «не красим». Раньше здесь стоял
-        /// дев-фолбэк «оттенок от хеша имени», и он красил восемь юнитов из семнадцати цветом, который никто
-        /// не выбирал: огненный мечник получал hue 147 (зелёный), «стандартная» болванка — 126 (тоже зелёный).
-        /// Хеш имени не знает ни цвета арта, ни того, делит ли юнит спрайт с кем-то ещё, — то есть отвечал на
-        /// вопрос, которого не задавали.</para>
-        /// </summary>
-        public Color ResolveBodyTint() => _tint;
-
-        /// <summary>
-        /// Главный цвет эффектов юнита: тело снаряда, его след, контур каста — всё, где цвет один. Не задан
-        /// (White) → тинт тела, чтобы у любого юнита эффекты были осмысленного цвета без ручной настройки.
-        /// </summary>
-        public Color ResolveVfxColor() => _vfxColor != Color.white ? _vfxColor : ResolveBodyTint();
-
-        /// <summary>
-        /// Диапазон для РАЗБРОСА частиц: искры берут случайный оттенок между концами. Палитра не задана →
-        /// одноцветный градиент из главного цвета, то есть разброса просто нет.
-        /// <para>Возвращается КЭШИРОВАННЫЙ объект: <see cref="Gradient"/> — класс, и собирать его на каждом
-        /// ударе значило бы мусорить в бою.</para>
-        /// </summary>
-        public Gradient ResolveVfxPalette()
-        {
-            if (_vfxPalette != null && _vfxPalette.colorKeys != null && _vfxPalette.colorKeys.Length > 0)
-                return _vfxPalette;
-
-            if (_flatPalette == null)
-            {
-                Color main = ResolveVfxColor();
-                _flatPalette = new Gradient();
-                _flatPalette.SetKeys(
-                    new[] { new GradientColorKey(main, 0f), new GradientColorKey(main, 1f) },
-                    new[] { new GradientAlphaKey(1f, 0f), new GradientAlphaKey(1f, 1f) });
-            }
-            return _flatPalette;
-        }
-
-        private Gradient _flatPalette;   // не сериализуется: выводится из главного цвета при первом спросе
+        // Цветов у юнита больше нет НИ ОДНОГО — только роли выше (BodyShade / VfxTone). Владелец значений
+        // один: палитра проекта (UI/Theme/tokens.*.uss → GuildmasterPalette). Резолв тинта — в
+        // UnitColorRoles.Shade, резолв свечения с HDR-множителями — в CombatColorPalette: множители это
+        // авторинг фидбэка, и в снимок палитры значения больше единицы не едут.
     }
 }

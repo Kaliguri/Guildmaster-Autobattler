@@ -33,6 +33,7 @@ namespace Guildmaster.UI.Components
         private readonly int _size;
         private readonly float _fallbackHeight;
         private readonly float _framePadding;
+        private readonly GuildmasterPalette _palette;
         private readonly Transform _root;
         private readonly List<Entry> _entries = new List<Entry>();
         private int _slot;
@@ -40,11 +41,18 @@ namespace Guildmaster.UI.Components
         /// <param name="size">Сторона квадратной RT в пикселях.</param>
         /// <param name="fallbackHeight">Высота кадра, если у юнита нет рекомендованного габарита.</param>
         /// <param name="framePadding">Запас над рекоменд-габаритом (1.2 = +20% воздуха вокруг фигуры).</param>
-        public RelicCardVisualRig(int size = 256, float fallbackHeight = 2.0f, float framePadding = 1.2f)
+        /// <param name="palette">
+        /// Снимок палитры проекта: из него берётся цвет ступени приглушения тела, чтобы карточка красила
+        /// юнита ТЕМ ЖЕ путём, что бой. Пусто — тела не красим (у большинства юнитов ступень и так None,
+        /// а гадать цвет карточке нечем).
+        /// </param>
+        public RelicCardVisualRig(int size = 256, float fallbackHeight = 2.0f, float framePadding = 1.2f,
+                                  GuildmasterPalette palette = null)
         {
             _size = size;
             _fallbackHeight = fallbackHeight;
             _framePadding = framePadding;
+            _palette = palette;
 
             var rootGo = new GameObject("RelicCardVisualRig") { hideFlags = HideFlags.HideAndDontSave };
             rootGo.transform.position = new Vector3(StageOrigin, StageOrigin, 0f);
@@ -85,10 +93,10 @@ namespace Guildmaster.UI.Components
                     entry.Animator.Play(IdleHash, 0, 0f);
                 }
 
-                // Тинт тела — тот же цвет, что в бою (единый резолвер UnitData.ResolveBodyTint). Кастовый
+                // Тинт тела — тот же путь, что в бою: ступень из данных, цвет из палитры проекта. Кастовый
                 // HitFlash-шейдер подхватывает .color лишь по per-instance пути → сперва праймим MPB (инвариант
                 // UnitView.PrimeFlashBlock), иначе тинт молча не отобразится на статичной карточке.
-                ApplyBodyTint(entry.Unit, data.ResolveBodyTint());
+                ApplyBodyTint(entry.Unit, UnitColorRoles.Shade(_palette, data.BodyShade));
             }
 
             // Камера НА этот юнит: рендерит в свою RT автоматически (URP).

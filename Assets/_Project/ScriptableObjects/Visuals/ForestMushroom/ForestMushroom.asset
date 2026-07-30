@@ -19,7 +19,7 @@ MonoBehaviour:
   _hitClip: {fileID: 7400000, guid: b614331b744b3104e967c3c3a8b308c5, type: 2}
   _skillClips:
   - {fileID: 7400000, guid: dc55f365eb4704a44b996a0bde927d0f, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 7400000, guid: dc55f365eb4704a44b996a0bde927d0f, type: 2}
+  - {fileID: 7400000, guid: dc55f365eb4704a44b996a0bde927d0f, type: 2}
+  - {fileID: 7400000, guid: dc55f365eb4704a44b996a0bde927d0f, type: 2}
   _portrait: {fileID: -654737500350741434, guid: 8fd03e71ad08c064898becb377b007d3, type: 3}
