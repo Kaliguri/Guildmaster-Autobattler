@@ -43,8 +43,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          lfs: true
+        # Без lfs: true намеренно. LFS в репозитории не настроен, а если его завести,
+        # эта строка начнёт качать LFS-объекты на КАЖДЫЙ прогон: ~69 прогонов в месяц
+        # против 1 ГБ бесплатной квоты трафика — она сгорит в первый день, и причину
+        # будут искать в сборке. Замер и альтернативы: journal 2026-07-30-lfs-does-not-pay-here.
 
       - name: Cache Library
         uses: actions/cache@v4
@@ -112,8 +114,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          lfs: true
+        # Без lfs: true намеренно. LFS в репозитории не настроен, а если его завести,
+        # эта строка начнёт качать LFS-объекты на КАЖДЫЙ прогон: ~69 прогонов в месяц
+        # против 1 ГБ бесплатной квоты трафика — она сгорит в первый день, и причину
+        # будут искать в сборке. Замер и альтернативы: journal 2026-07-30-lfs-does-not-pay-here.
 
       # The runner image ships toolchains we do not use; the project plus its
       # Library eats the headroom they leave.
