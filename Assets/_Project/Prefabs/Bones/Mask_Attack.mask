@@ -6,17 +6,17 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mask_Arms
+  m_Name: Mask_Attack
   m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: Hips
     m_Weight: 0
   - m_Path: Hips/Torso
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Hips/Torso/Body
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Hips/Torso/Head
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Hips/Torso/Arm (Left)
     m_Weight: 1
   - m_Path: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)
