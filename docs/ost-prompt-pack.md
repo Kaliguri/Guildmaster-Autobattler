@@ -94,6 +94,23 @@ Exclude: `taiko, timpani, trailer braams, gladiator epic, war march`
 **Гипотезы этого блока:** понимает ли Suno размер (`6/8`) и лад (`D dorian`) как указания, или их надо
 выражать описательно. Не понимает — переходим на `lilting`, `swaying`, `bright minor`.
 
+**01-A-g · то же с электрогитарой (решение Макса: пробуем с ней и без)**
+
+Гитара у Кадзиуры есть и именно она делает Swordland боевым — но это её выбор **поверх** каркаса, а не
+сам каркас. Поэтому гитара идёт отдельным вариантом: **одна переменная за раз**, всё остальное
+дословно как в 01-A.
+
+```
+neo-medieval fantasy battle, modal dorian melody, electric guitar lead trading the melody with solo
+violin, high wooden flute, shimmering bells, propulsive light percussion in the background, folk-song
+phrasing, lilting 6/8 groove, 150 BPM, D dorian, no vocals, airborne rather than marching
+```
+Exclude: `taiko, timpani, war march, metal riff, trailer braams`
+
+**Гитара `trading the melody`, а не просто `lead`** — иначе она заберёт тему целиком и высокий
+эльфийский верх исчезнет, то есть замер потеряет смысл. `metal riff` в Exclude по той же причине:
+гитара обязана петь, а не рифовать.
+
 **01-B · то же с женским вокализом — главный образ целиком**
 Единственный блок с голосом. Это **проверка тембра и подачи, а не языка**: фонетика конланга и
 Persona заводятся только в пакете 03, после утверждённого мотива.
