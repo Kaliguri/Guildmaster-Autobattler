@@ -1159,6 +1159,46 @@ MonoBehaviour:
     m_Key: effect.blood_exchange.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 7005400006385664
+    m_Key: relic.necromancer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328704
+    m_Key: relic.necromancer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328705
+    m_Key: enemy.skeleton_swordsman.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328706
+    m_Key: enemy.skeleton_swordsman.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328707
+    m_Key: effect.bone_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328708
+    m_Key: effect.bone_shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328709
+    m_Key: effect.bone_collector.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328710
+    m_Key: effect.bone_collector.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328711
+    m_Key: effect.skeleton_guards.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7005400048328712
+    m_Key: effect.skeleton_guards.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
