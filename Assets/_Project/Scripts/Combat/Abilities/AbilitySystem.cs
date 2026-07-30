@@ -251,6 +251,11 @@ namespace Guildmaster.Combat
             // после удара (Recovery) умение перебивает: в этом и весь выигрыш рекаста.
             if (data.DamageMultiplier > 0f && caster.Phase == AttackPhase.Windup) return false;
 
+            // Тот же закон для канала авто-атаки: незавершённый удар доигрывает, а перебивается только
+            // хвост. Канал — это удар, идущий ПРЯМО СЕЙЧАС, и каст поверх него оборвал бы уже начатую
+            // атаку, за которую кит заплатил длинным заносом.
+            if (caster.Phase == AttackPhase.Channel) return false;
+
             // Блок E (паника): при своём низком HP лечащая способность разворачивается на самого
             // кастующего (лечит себя); урон-способность просто кастуется независимо от условия.
             bool panicSelf = data.CastOverrideSelfHpPct > 0f && HpPct(caster) <= data.CastOverrideSelfHpPct;

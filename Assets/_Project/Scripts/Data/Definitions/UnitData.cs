@@ -1,3 +1,4 @@
+using System;
 using Guildmaster.Data.Stats;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -61,6 +62,12 @@ namespace Guildmaster.Data.Definitions
 
         [Tooltip("On-hit эффекты авто-атаки (§9.1): накладываются на каждую задетую цель в момент удара — мили (single/Line) и при попадании снаряда. Криомант = «Заморозка». Пусто = нет (поведение Ф1/Ф2).")]
         [SerializeField] private EffectData[] _autoAttackEffects;
+
+        [Header("Channelled auto-attack")]
+        [Tooltip("Канал авто-атаки: удар не одномоментный, а поток тиков между замахом и хвостом. " +
+                 "Duration = 0 (дефолт) — обычная атака, поле не работает вовсе. Урон и частота тиков НЕ " +
+                 "задаются здесь: тик канала — это обычный удар (AutoAttackDamage с интервалом 1/AttackSpeed).")]
+        [SerializeField] private AttackChannel _channel = AttackChannel.None;
 
         [Header("Attack while moving (Phase 3, §9.8)")]
         [Tooltip("Стрельба на ходу: авто-атака НЕ рутит движение (Следопыт). false = стоп на атаку (поведение Ф1).")]
@@ -153,6 +160,9 @@ namespace Guildmaster.Data.Definitions
         public AreaShape AutoAttackShape => _autoAttackShape;
         public float AutoAttackWidth => _autoAttackWidth;
 
+        /// <summary>Канал авто-атаки; <see cref="AttackChannel.Exists"/> = false у всех, кто бьёт обычно.</summary>
+        public AttackChannel Channel => _channel;
+
         /// <summary>
         /// Во сколько раз полоса линейной авто-атаки длиннее дальности выбора цели. 1 = полоса ровно
         /// до цели (прежнее поведение всего контента).
@@ -208,5 +218,40 @@ namespace Guildmaster.Data.Definitions
         // один: палитра проекта (UI/Theme/tokens.*.uss → GuildmasterPalette). Резолв тинта — в
         // UnitColorRoles.Shade, резолв свечения с HDR-множителями — в CombatColorPalette: множители это
         // авторинг фидбэка, и в снимок палитры значения больше единицы не едут.
+    }
+
+    /// <summary>
+    /// Канал авто-атаки: удар растянут в поток тиков урона, который идёт МЕЖДУ замахом и хвостом
+    /// (<c>AttackPhase.Channel</c>). Носитель — Десятина (кровавый поток дальней формы).
+    /// </summary>
+    /// <remarks>
+    /// <b>Здесь нет ни урона тика, ни его частоты — и это главное свойство модели</b> (решение Макса
+    /// 2026-07-30). Тик канала есть обычный удар: бьёт <c>AutoAttackDamage</c>, интервал между тиками —
+    /// <c>1 / AttackSpeed</c>, «скорость атаки = расстояние между тиками». Поэтому DPS канала считается
+    /// той же формулой, что у любого бойца, и классовый коридор из <c>ClassBalanceConfig</c> продолжает
+    /// его судить без поправок.
+    /// <para>Отдельное поле «DPS канала» было бы вторым владельцем величины, у которой владелец уже есть
+    /// (пара статов), и первый же балансный прогон их развёл бы — так уже разошлись нормы в карточках.</para>
+    /// <para><b>Чем канал платит:</b> замахом и хвостом, в которые он не бьёт вовсе. Средний DPS тем ниже
+    /// нормы, чем чаще поток срывают, — и в этом вся цена непрерывности.</para>
+    /// <para><b>Секунды, а не доли интервала атаки:</b> канал бывает длиннее интервала (в пределе — «пока
+    /// цель жива»), поэтому доля от интервала для него невыразима.</para>
+    /// </remarks>
+    [Serializable]
+    public struct AttackChannel
+    {
+        [Tooltip("Длительность потока, сек. 0 = канала у кита нет (обычная одномоментная атака).")]
+        [Min(0f)] public float DurationSeconds;
+
+        [Tooltip("Замах перед потоком, сек. 0 = штатный расчёт замаха из скорости атаки и клипа. " +
+                 "Своё число нужно потому, что штатный замах клампится интервалом атаки, а вход в канал " +
+                 "по смыслу длиннее одного интервала.")]
+        [Min(0f)] public float WindupSeconds;
+
+        /// <summary>Канал у этого кита есть (длительность задана).</summary>
+        public bool Exists => DurationSeconds > 0f;
+
+        /// <summary>Кит бьёт обычными одномоментными ударами.</summary>
+        public static AttackChannel None => new AttackChannel { DurationSeconds = 0f, WindupSeconds = 0f };
     }
 }

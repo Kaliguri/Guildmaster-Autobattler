@@ -104,6 +104,16 @@ namespace Guildmaster.Combat
         /// </summary>
         public static int WindupTicksFor(RuntimeUnit unit)
         {
+            // Канальная атака: вход в поток задан СЕКУНДАМИ и не клампится интервалом атаки. У такого
+            // кита интервал отмеряет тик ВНУТРИ канала, а не период между атаками, поэтому обычный
+            // потолок «интервал − 1» здесь не имеет смысла — он и обрезал бы длинный занос, ради
+            // которого канал вообще существует.
+            if (unit.Unit != null && unit.Unit.Channel.Exists && unit.Unit.Channel.WindupSeconds > 0f)
+            {
+                int channelWindup = RecoveryTicks(unit.Unit.Channel.WindupSeconds);
+                return channelWindup < SimConstants.MinWindupTicks ? SimConstants.MinWindupTicks : channelWindup;
+            }
+
             float attackSpeed = unit.Stats.Get(StatType.AttackSpeed);
             int intervalTicks = IntervalTicks(attackSpeed);
 

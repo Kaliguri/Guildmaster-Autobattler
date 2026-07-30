@@ -107,6 +107,11 @@ namespace Guildmaster.Combat
                 if (!unit.CanAct || unit.DisplacedTicksRemaining > 0)
                 {
                     if (unit.Phase == AttackPhase.Windup) Interrupt(unit, ctx);
+                    // Канал рвётся БЕЗ рефанда (решение Макса 2026-07-30): часть тиков урона уже прошла,
+                    // значит атака состоялась частично — обнулить кулдаун значило бы отдать её бесплатно.
+                    // Юнит доигрывает хвост, как после обычного удара: сворачивание потока он всё равно
+                    // отрабатывает, и именно этим контроль по нему и наказывает.
+                    else if (unit.Phase == AttackPhase.Channel) BreakChannel(unit);
                     else if (unit.Phase == AttackPhase.Recovery) { unit.Phase = AttackPhase.Idle; unit.RecoveryRemaining = 0; }
                     continue; // оглушён/в полёте — кулдаун не тикает (как было)
                 }
@@ -121,6 +126,14 @@ namespace Guildmaster.Combat
                 {
                     unit.WindupRemaining--;
                     if (unit.WindupRemaining <= 0) Resolve(unit, ctx);
+                    continue;
+                }
+
+                // Фаза канала: поток тиков урона между замахом и хвостом. Цифры снимаются здесь, а сам
+                // урон прилетает во второй фазе Tick вместе со всеми — двухфазность канал не отменяет.
+                if (unit.Phase == AttackPhase.Channel)
+                {
+                    TickChannel(unit, ctx);
                     continue;
                 }
 
@@ -196,7 +209,13 @@ namespace Guildmaster.Combat
         {
             float attackSpeed = unit.Stats.Get(StatType.AttackSpeed);
             int intervalTicks = AttackTiming.IntervalTicks(attackSpeed);
-            unit.AttackCooldownTicks = intervalTicks;
+
+            // Кулдаун-якорь держит период «удар → удар» равным интервалу. У канального кита интервал
+            // отмеряет тик ВНУТРИ потока, а не период между атаками, поэтому якорить им нечего: ритм
+            // целиком держат фазы (замах → канал → хвост), и следующий замах начинается сразу за хвостом.
+            // Ноль здесь, а не полный цикл: сорванный канал уже наказан потерянными тиками урона, и
+            // добавлять к этому ожидание значило бы наказать дважды за одно прерывание.
+            unit.AttackCooldownTicks = HasChannel(unit) ? 0 : intervalTicks;
 
             UnitVisual visual = unit.Unit != null ? unit.Unit.Visual : null;
             int frameCount = visual != null ? visual.AttackFrameCount : 0;
@@ -241,10 +260,95 @@ namespace Guildmaster.Combat
             // Замах кончился → хвост-восстановление (или сразу Idle, если восстановления нет). Переход
             // выполняем ДО расчёта урона: юнит «занят» бэксвингом независимо от того, попал он или вхолостую.
             unit.WindupRemaining = 0;
-            EnterRecovery(unit);
             RuntimeUnit target = unit.WindupTarget;
             unit.WindupTarget = null;
 
+            // Канальный кит вместо хвоста открывает поток: замах кончился — значит поток пошёл. Первый
+            // тик урона снимается тут же, общим путём — тик канала и есть обычный удар. Промах замаха
+            // (цель мертва/ушла) канал не открывает: держать поток не в кого.
+            bool opensChannel = HasChannel(unit) && CanHit(unit, target, ctx);
+            if (opensChannel) EnterChannel(unit, target);
+            else EnterRecovery(unit);
+
+            TryQueueHit(unit, target, ctx);
+        }
+
+        /// <summary>
+        /// Тик канала (<see cref="AttackPhase.Channel"/>): поток льётся в свою цель, пока та жива, в
+        /// радиусе и пока не вышло время. Урон снимается ровно тем же путём, что удар обычной атаки.
+        /// </summary>
+        /// <remarks>
+        /// Разрыв — без рефанда кулдауна и с доигрыванием хвоста: часть тиков урона уже прошла, атака
+        /// состоялась частично. Именно поэтому уход из радиуса и контроль ЯВЛЯЮТСЯ ценой для канального
+        /// кита, а не бесплатной перезарядкой.
+        /// </remarks>
+        private void TickChannel(RuntimeUnit unit, ICombatContext ctx)
+        {
+            RuntimeUnit target = unit.AttackChannelTarget;
+            if (!CanHit(unit, target, ctx)) { BreakChannel(unit); return; }
+
+            if (unit.AttackChannelTickRemaining > 0) unit.AttackChannelTickRemaining--;
+            if (unit.AttackChannelTickRemaining <= 0)
+            {
+                TryQueueHit(unit, target, ctx);
+                unit.AttackChannelTickRemaining = ChannelTickInterval(unit);
+            }
+
+            unit.AttackChannelRemaining--;
+            if (unit.AttackChannelRemaining <= 0) BreakChannel(unit);
+        }
+
+        /// <summary>Открыть канал: длительность и период тика — снимок на старте потока, как и замах.</summary>
+        private static void EnterChannel(RuntimeUnit unit, RuntimeUnit target)
+        {
+            unit.Phase = AttackPhase.Channel;
+            unit.AttackChannelTarget = target;
+            unit.AttackChannelRemaining = AttackTiming.RecoveryTicks(unit.AttackChannel.DurationSeconds);
+            // Первый тик урона снимается в том же тике, что открытие канала (его ставит Resolve), поэтому
+            // отсчёт до второго начинается с полного периода.
+            unit.AttackChannelTickRemaining = ChannelTickInterval(unit);
+        }
+
+        /// <summary>Погасить канал и уйти в хвост: рефанда кулдауна нет ни при разрыве, ни по времени.</summary>
+        private static void BreakChannel(RuntimeUnit unit)
+        {
+            unit.AttackChannelRemaining = 0;
+            unit.AttackChannelTickRemaining = 0;
+            unit.AttackChannelTarget = null;
+            EnterRecovery(unit);
+        }
+
+        /// <summary>
+        /// Период между тиками канала = интервал атаки. «Скорость атаки — это расстояние между тиками
+        /// урона» (формулировка Макса): при уроне тика в <c>AutoAttackDamage</c> это даёт DPS, равный
+        /// классовой норме кита, и скорость атаки скейлит его линейно, как у любого бойца.
+        /// </summary>
+        private static int ChannelTickInterval(RuntimeUnit unit)
+        {
+            int ticks = AttackTiming.IntervalTicks(unit.Stats.Get(StatType.AttackSpeed));
+            return ticks < 1 ? 1 : ticks;
+        }
+
+        /// <summary>Юнит держит канал вместо одномоментного удара — по РАНТАЙМ-снимку: канал бывает свойством стойки.</summary>
+        private static bool HasChannel(RuntimeUnit unit) => unit.AttackChannel.Exists;
+
+        /// <summary>Цель ещё поражаема: жива и в досягаемости с прощающим буфером (та же метрика, что у резолва).</summary>
+        private static bool CanHit(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)
+        {
+            if (target == null || target.IsDead) return false;
+
+            float landReach = CombatPositioning.AttackReachCenter(unit, target, ctx.Tuning)
+                              + SimConstants.AttackReachTolerance;
+            return (target.Position - unit.Position).sqrMagnitude <= landReach * landReach;
+        }
+
+        /// <summary>
+        /// Снять цифры удара по цели и поставить его в очередь прилёта (<see cref="Land"/> во второй фазе
+        /// <see cref="Tick"/>). Общий путь для одномоментного удара и для тика канала — у них нет ни одного
+        /// различия в расчёте, и разведи я их, различие однажды появилось бы само.
+        /// </summary>
+        private void TryQueueHit(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)
+        {
             // Цель пропала к удару (мертва / вне радиуса) → вхолостую, кулдаун уже потрачен на старте.
             if (target == null || target.IsDead) return;
 
@@ -252,7 +356,7 @@ namespace Guildmaster.Combat
             // Прощающий буфер (слой 1, вики «14»): цель, сдвинувшаяся за замах в пределах tolerance
             // (микро-дрожание, обычный шаг), ещё поражается; ушедшая за него (блинк/рывок) — вхолостую,
             // кулдаун уже потрачен на старте → «воу, уклонился». Замах при этом не прерывался: юнит
-            // доиграл свинг и хвост (см. EnterRecovery выше) независимо от исхода.
+            // доиграл свинг и хвост (переход фазы делает вызывающий) независимо от исхода.
             float reach = CombatPositioning.AttackReachCenter(unit, target, ctx.Tuning);
             float landReach = reach + SimConstants.AttackReachTolerance;
             if ((target.Position - unit.Position).sqrMagnitude > landReach * landReach) return;
@@ -332,7 +436,11 @@ namespace Guildmaster.Combat
                 return;
             }
 
-            if (attackType == AttackType.Melee)
+            // Канал бьёт МГНОВЕННО, даже когда кит формально дальнобойный (решение Макса 2026-07-30:
+            // «должен быть урон мгновенно»). Снаряд по своей природе дискретная посылка с временем полёта —
+            // поток из посылок перестаёт быть потоком, а «Кровавый обмен» Десятины считает урон по
+            // позиции жертвы в момент попадания, которая у летящего снаряда уже другая.
+            if (attackType == AttackType.Melee || HasChannel(unit))
             {
                 if (shape == AreaShape.Line)
                 {

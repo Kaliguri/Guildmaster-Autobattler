@@ -152,7 +152,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             bool canAttackWhileMoving = false,
             float movingAttackSpeedPenaltyPct = 0.5f,
             CreatureType creatureType = CreatureType.Living,
-            UnitClass combatClass = UnitClass.Bruiser)
+            UnitClass combatClass = UnitClass.Bruiser,
+            AttackChannel channel = default,
+            float attackRecoverySeconds = 0f)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
             Set(r, "_combatClass", combatClass);
@@ -170,6 +172,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(r, "_autoAttackEffects", autoAttackEffects ?? Array.Empty<EffectData>());
             Set(r, "_canAttackWhileMoving", canAttackWhileMoving);
             Set(r, "_movingAttackSpeedPenaltyPct", movingAttackSpeedPenaltyPct);
+            Set(r, "_channel", channel);
+            Set(r, "_attackRecoverySeconds", attackRecoverySeconds);
             return r;
         }
 
@@ -260,7 +264,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             TotalHealed += amount;
             Heals.Add((target, amount));
         }
-        public void SpawnProjectile(in ProjectileSpawn spawn) { }
+        /// <summary>Выпущенные снаряды: по ним отличается «ударил мгновенно» от «послал снаряд».</summary>
+        public readonly List<ProjectileSpawn> Projectiles = new List<ProjectileSpawn>();
+
+        public void SpawnProjectile(in ProjectileSpawn spawn) => Projectiles.Add(spawn);
 
         public int QueryUnitsInRadius(
             Vector2 center, float radius, List<RuntimeUnit> results, TargetFilter filter, int requestingTeam)
@@ -323,8 +330,13 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
             => CombatPositioning.TeleportBehind(unit, target);
 
-        public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) { }
-        public void NotifyAttackInterrupted(RuntimeUnit unit) { }
+        public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => AttackStarted++;
+
+        /// <summary>Сколько раз замах прерывался: по нему отличается «удар сорван» от «удар доигран».</summary>
+        public int AttackInterrupted;
+        public int AttackStarted;
+
+        public void NotifyAttackInterrupted(RuntimeUnit unit) => AttackInterrupted++;
 
         public IRngService Rng => _rng;
         /// <summary>

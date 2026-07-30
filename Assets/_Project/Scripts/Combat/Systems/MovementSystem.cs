@@ -76,7 +76,11 @@ namespace Guildmaster.Combat
                 // «Занят» атакой = замах ИЛИ восстановление (весь бэксвинг, вики «14»): в оба хвоста
                 // юнит либо стоит, либо (со «стрельбой на ходу») движется со штрафом. Recovery = 0 у
                 // большинства китов → фаза мгновенна, поведение как раньше; ненулевое — у стрелка/комбо.
-                bool firing            = unit.Phase == AttackPhase.Windup || unit.Phase == AttackPhase.Recovery;
+                // Канал держит юнита так же, как замах: поток льётся с места. «Стрельба на ходу» и здесь
+                // остаётся объявленным исключением кита — если однажды появится канальный кит, который
+                // умеет идти, он объявит это тем же полем, а не новой веткой.
+                bool firing            = unit.Phase == AttackPhase.Windup || unit.Phase == AttackPhase.Recovery
+                                                                          || unit.Phase == AttackPhase.Channel;
                 bool attackWhileMoving = unit.Unit != null && unit.Unit.CanAttackWhileMoving;
 
                 // Удар с разбега ДОЕЗЖАЕТ свой замах. Гейт атаки начал его за границей досягаемости именно

@@ -644,7 +644,8 @@ namespace Guildmaster.Presentation
             // ПАУЗЕ между ударами (сим Idle, рендер ещё тянет хвост-цикл).
             bool attackWhileMoving = _definition != null && _definition.CanAttackWhileMoving;
             bool simInSwing = _hasState &&
-                              (_snapshot.Phase == AttackPhase.Windup || _snapshot.Phase == AttackPhase.Recovery);
+                              (_snapshot.Phase == AttackPhase.Windup || _snapshot.Phase == AttackPhase.Recovery
+                                                                     || _snapshot.Phase == AttackPhase.Channel);
             bool attackPlaying = UnitAnimationSelector.AttackClipPlaying(
                 _attackPhase != AttackAnimPhase.None, simInSwing, attackWhileMoving, isMoving);
 
