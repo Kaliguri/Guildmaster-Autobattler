@@ -1,6 +1,6 @@
 ---
 title: "Coop - Sync Model"
-order: 5
+order: 6
 status: draft
 updated: 2026-07-30
 ---

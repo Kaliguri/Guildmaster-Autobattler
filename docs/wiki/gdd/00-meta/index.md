@@ -126,9 +126,11 @@ SORT file.name ASC
 `multiplayer.md`. Вход — [[gdd/50-modes-ux/coop/index|Coop - Overview]] (модель сессии, дом в коопе,
 карта владения кооп-фактами).
 
-- [[presence|Coop - Presence & Cursors]] — курсоры, наведение, пинги, «кто что держит».
+- [[presence|Coop - Presence & Cursors]] — пассивная видимость: курсоры, наведение, «кто что держит».
+- [[interplay|Coop - Interplay Registry]] — реестр командных интеграций: перехват из рук, рисование,
+  пинги, эмоции, печати; тест на интеграцию и предохранитель «процесс против подтверждённого».
 - [[arbiters|Coop - Arbiters & Disputes]] — голосование, кубик d6, перебросы, альтернативы кубику.
-- [[interactions|Coop - Interactions & Minigames]] — вмешательство в общее, кооп-мини-игры, занятие
+- [[minigames|Coop - Minigames & Roles]] — вмешательство в общее, кооп-мини-игры, занятие
   на время боя, роли и семи-кооп.
 - [[sync-model|Coop - Sync Model]] — что риалтайм, что «кино», что транзакция.
 - [[wagers|Coop - Wagers & Personal Currency]] — личная валюта Гильдмастера, пари на бой, косметика,
