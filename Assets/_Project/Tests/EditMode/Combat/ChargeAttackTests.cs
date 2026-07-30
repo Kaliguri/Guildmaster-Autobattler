@@ -106,11 +106,15 @@ namespace Guildmaster.Tests.EditMode.Combat
                 "Заряд покупается РАЗГОНОМ и обязан существовать ещё в беге: въездной замах стартует до прибытия.");
         }
 
+        /// <summary>
+        /// Прибытие ГАСИТ заряд (решение Макса 31.07.2026). Удар с разбега — это удар на ходу: он
+        /// покупается въездом в досягаемость, а не тем, что разгон когда-то был полным. Пока заряд
+        /// переживал остановку, юнит, добежавший и вставший, играл клип рывка стоя на месте и получал
+        /// укороченный замах — подача спорила с тем, что видно глазами.
+        /// </summary>
         [Test]
-        public void ArrivingFromSprint_KeepsTheCharge()
+        public void ArrivingFromSprint_SpendsTheCharge()
         {
-            // Контроль-регрессия к переносу взвода из прибытия в разгон: юнит, который просто добежал и
-            // встал (цель у стены, места на въезд не осталось), обязан бить с разбега как и раньше.
             SimTuning tuning = SimTuning.Default;
             var (chaser, target, units) = Scene(chaserX: -20f);
             var move = new MovementSystem();
@@ -118,7 +122,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             for (int i = 0; i < 600; i++) move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded, in tuning);
 
             Assert.IsFalse(chaser.IsSprinting, "Добежал — разбег кончился.");
-            Assert.IsTrue(chaser.ChargedAttackReady, "А заряд прибытие переживает.");
+            Assert.IsFalse(chaser.ChargedAttackReady, "И заряд кончился вместе с ним: стоящий бьёт обычным ударом.");
         }
 
         [Test]
@@ -198,17 +202,49 @@ namespace Guildmaster.Tests.EditMode.Combat
                 "И разбег на нём заморожен: упавшая скорость увела бы удар мимо расчёта гейта.");
         }
 
+        /// <summary>
+        /// Въезд полагается КАЖДОМУ подбегающему мили, а не только разогнавшемуся (решение Макса
+        /// 31.07.2026: «атака должна случаться сразу при достижении нужной дистанции»). Юнит, который не
+        /// успел набрать разбег, всё равно начинает замах за границей досягаемости — иначе он добегает,
+        /// тормозит и бьёт заметно позже того момента, в который удар выглядит заслуженным.
+        /// </summary>
         [Test]
-        public void PlainWindup_StaysRooted()
+        public void PlainRunner_AlsoStartsItsWindupOutsideReach()
         {
-            // Контроль: обычный свинг рутует, как и раньше. Въезд — исключение ровно для заряда.
             SimTuning tuning = SimTuning.Default;
-            var (chaser, target, units) = Scene(chaserX: -2.0f);
+            var (chaser, target, units) = Scene(chaserX: -3.5f);
             var move = new MovementSystem();
             var attack = new AutoAttackSystem();
             var ctx = new MockCombatContext();
 
-            // Цель рядом: юнит упирается в неё раньше, чем разгонится, и бьёт обычным ударом.
+            float reach = CombatPositioning.AttackReachCenter(chaser, target, in tuning);
+            float distAtWindupStart = -1f;
+
+            for (int i = 0; i < 400 && distAtWindupStart < 0f; i++)
+            {
+                move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded, in tuning);
+                attack.Tick(units, ctx, SimConstants.TickDelta);
+                if (chaser.IsWindingUp) distAtWindupStart = (target.Position - chaser.Position).magnitude;
+            }
+
+            Assert.That(distAtWindupStart, Is.GreaterThan(0f), "Предусловие: юнит дошёл и начал замах.");
+            Assert.IsFalse(chaser.ChargedSwing, "Предусловие: разбега он не набрал — это обычный удар.");
+            Assert.IsTrue(chaser.ChargingIn, "Обычный замах подбегающего — тоже въезд.");
+            Assert.That(distAtWindupStart, Is.GreaterThan(reach),
+                "Замах обязан стартовать ЗА границей досягаемости, чтобы удар пришёлся на вход в неё.");
+        }
+
+        [Test]
+        public void StandingUnit_StaysRooted()
+        {
+            // Контроль: свинг с места по-прежнему рутует. Въезд достаётся тому, кто ЕДЕТ, а не всякому.
+            SimTuning tuning = SimTuning.Default;
+            var (chaser, target, units) = Scene(chaserX: -1.2f);
+            var move = new MovementSystem();
+            var attack = new AutoAttackSystem();
+            var ctx = new MockCombatContext();
+
+            // Цель уже в досягаемости: ехать некуда, значит и въезда нет — обычный свинг с места.
             for (int i = 0; i < 120 && !chaser.IsWindingUp; i++)
             {
                 move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded, in tuning);
@@ -216,12 +252,13 @@ namespace Guildmaster.Tests.EditMode.Combat
             }
             Assert.IsTrue(chaser.IsWindingUp, "Предусловие: замах начат.");
             Assert.IsFalse(chaser.ChargedSwing, "И он обычный: разгона юнит не набрал.");
+            Assert.IsFalse(chaser.ChargingIn, "И не въездной: юнит уже стоял в досягаемости.");
 
             Vector2 before = chaser.Position;
             move.Tick(units, SimConstants.TickDelta, ArenaBounds.Unbounded, in tuning);
 
             Assert.That((chaser.Position - before).magnitude, Is.LessThan(1e-4f),
-                "Обычный замах по-прежнему рутует: свинг на месте — базовое поведение мили.");
+                "Свинг с места по-прежнему рутует: это базовое поведение мили.");
         }
 
         [Test]

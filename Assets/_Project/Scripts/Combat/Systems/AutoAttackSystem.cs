@@ -175,13 +175,14 @@ namespace Guildmaster.Combat
                 // чтобы кадр контакта пришёлся на въезд в неё, а не на «добежал, встал, ударил». Остаток
                 // дистанции закрывает ход (рут снят в MovementSystem на время такого замаха).
                 int windupTicks = AttackTiming.WindupTicksFor(unit);
-                if (!ChargesIntoReach(unit, target, windupTicks, ctx))
+                bool chargingIn = ChargesIntoReach(unit, target, windupTicks, ctx);
+                if (!chargingIn)
                 {
                     if (!CombatPositioning.InAttackRange(unit, target, ctx.Tuning)) continue;
                     if (!CombatPositioning.CanLandWindup(unit, target, windupTicks, ctx.Tuning)) continue;
                 }
 
-                EnterWindup(unit, target, ctx, windupTicks);
+                EnterWindup(unit, target, ctx, windupTicks, chargingIn);
             }
 
             // --- Проход 2a: блинки. Телепорт двигает тело, а из тел считается геометрия ударов, поэтому
@@ -204,8 +205,10 @@ namespace Guildmaster.Combat
 
         /// <summary>Вход в замах: рестарт кулдауна (якорь), снапшот цели, событие старта.
         /// <paramref name="windupTicks"/> уже посчитан гейтом (<see cref="AttackTiming.WindupTicksFor"/>) —
-        /// та же длина, по которой гейт предсказал попадание, без повторного расчёта/расхождения.</summary>
-        private void EnterWindup(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx, int windupTicks)
+        /// та же длина, по которой гейт предсказал попадание, без повторного расчёта/расхождения.
+        /// <paramref name="chargingIn"/> — замах начат из-за границы досягаемости и доезжает сам себя.</summary>
+        private void EnterWindup(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx, int windupTicks,
+            bool chargingIn)
         {
             float attackSpeed = unit.Stats.Get(StatType.AttackSpeed);
             int intervalTicks = AttackTiming.IntervalTicks(attackSpeed);
@@ -238,11 +241,18 @@ namespace Guildmaster.Combat
 
             unit.Phase = AttackPhase.Windup;
             unit.WindupTarget = target;
+            // Въезд держится весь замах: по нему движение снимает рут, и он же кончается вместе с фазой.
+            unit.ChargingIn = chargingIn;
+
             // Разбег тратится ЭТИМ свингом: длину замаха он уже отдал (WindupTicksFor читает заряд),
             // и следующий удар обязан быть обычным, иначе разбег стал бы постоянным режимом. Признак
             // переезжает на сам свинг — он живёт до его конца, иначе показу нечего было бы прочитать:
             // заряд гаснет в том же тике, в котором взведён, а снимок снимается после тика.
-            unit.ChargedSwing       = unit.ChargedAttackReady;
+            //
+            // Разбег требует ВЪЕЗДА, а не просто заряда: удар с разбега — это удар на ходу, и стоящий
+            // юнит не должен играть клип рывка. Тот, кто добежал и остановился, заряд уже потерял
+            // (StopSprint), так что здесь это скорее второй замок, чем первый.
+            unit.ChargedSwing       = unit.ChargedAttackReady && chargingIn;
             unit.ChargedAttackReady = false;
 
             // Взведённый множитель замаха тратится тем же свингом и по той же причине: длину он уже
@@ -264,6 +274,7 @@ namespace Guildmaster.Combat
             // Замах кончился → хвост-восстановление (или сразу Idle, если восстановления нет). Переход
             // выполняем ДО расчёта урона: юнит «занят» бэксвингом независимо от того, попал он или вхолостую.
             unit.WindupRemaining = 0;
+            unit.ChargingIn = false;   // въезд кончился вместе с замахом: дальше юнита рутует хвост
             RuntimeUnit target = unit.WindupTarget;
             unit.WindupTarget = null;
 
@@ -542,13 +553,16 @@ namespace Guildmaster.Combat
         /// момент, когда дистанции хватит для удара (см. <see cref="CombatPositioning.CanCloseIntoReach"/>).
         /// </summary>
         /// <remarks>
-        /// Только ближний бой. Стрелку въезд дал бы замах, начатый в движении на его рабочей дистанции, —
-        /// а там никакого разбега и нет: порог разбега считается от зазора сверх досягаемости именно
-        /// потому, что по сырому расстоянию стрелок «бежал бы всегда».
+        /// Въезд полагается КАЖДОМУ подбегающему, а не только разогнавшемуся (решение Макса 31.07.2026:
+        /// «атака должна случаться сразу при достижении нужной дистанции»). Пока условием стоял заряд
+        /// разбега, все остальные добегали, тормозили и лишь потом начинали замах — удар выходил на
+        /// полсекунды позже момента, в который он выглядел заслуженным.
+        /// <para>Только ближний бой. Стрелку въезд дал бы замах, начатый в движении на его рабочей
+        /// дистанции, — а там никакого сближения и нет: порог считается от зазора сверх досягаемости
+        /// именно потому, что по сырому расстоянию стрелок «бежал бы всегда».</para>
         /// </remarks>
         private static bool ChargesIntoReach(RuntimeUnit unit, RuntimeUnit target, int windupTicks, ICombatContext ctx)
         {
-            if (!unit.ChargedAttackReady) return false;
             if (unit.Unit == null || unit.AttackType != AttackType.Melee) return false;
 
             return CombatPositioning.CanCloseIntoReach(unit, target, windupTicks, ctx.Tuning);
@@ -586,6 +600,7 @@ namespace Guildmaster.Combat
             unit.WindupRemaining = 0;
             unit.RecoveryRemaining = 0;
             unit.WindupTarget = null;
+            unit.ChargingIn = false;
             unit.AttackCooldownTicks = 0;
             ctx.NotifyAttackInterrupted(unit);
         }

@@ -190,8 +190,13 @@ namespace Guildmaster.Tests.EditMode.Combat
                 "Порог считается от зазора сверх досягаемости: по сырой дистанции стрелок бежал бы всегда.");
         }
 
+        /// <summary>
+        /// Заряд гаснет вместе с разбегом, чем бы тот ни кончился, — прибытием в том числе. Удар с
+        /// разбега достаётся тому, кто ВЪЕХАЛ в досягаемость на ходу; заряд, переживающий остановку,
+        /// давал клип рывка юниту, стоящему на месте (решение Макса 31.07.2026).
+        /// </summary>
         [Test]
-        public void ArrivingFromSprint_ArmsChargedAttack()
+        public void ArrivingFromSprint_SpendsTheChargedAttack()
         {
             SimTuning tuning = SimTuning.Default;
             var chaser = Make(new Vector2(-20f, 0f), moveSpeed: 3f);
@@ -201,8 +206,8 @@ namespace Guildmaster.Tests.EditMode.Combat
             for (int i = 0; i < 600; i++) StepDistance(chaser, target, in tuning);
 
             Assert.That(chaser.IsSprinting, Is.False);
-            Assert.That(chaser.ChargedAttackReady, Is.True,
-                "Разбег, кончившийся прибытием, обязан оставить заряд на первый удар.");
+            Assert.That(chaser.ChargedAttackReady, Is.False,
+                "Разбег кончился прибытием — заряд кончился вместе с ним.");
         }
 
         [Test]
