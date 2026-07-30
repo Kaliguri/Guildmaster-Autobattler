@@ -47,11 +47,14 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
-        /// Длительность свинга в тиках = <c>min(MaxAttackAnimTicks, intervalTicks)</c>.
+        /// Длительность свинга в тиках = <c>min(потолок, intervalTicks)</c>. Потолок — либо свой у юнита
+        /// (<see cref="UnitData.AttackSwingTicks"/>), либо глобальный <see cref="SimConstants.MaxAttackAnimTicks"/>.
         /// </summary>
-        public static int AttackDurationTicks(int intervalTicks)
+        /// <param name="maxAnimTicks">Потолок юнита в тиках; <c>0</c> = глобальный дефолт.</param>
+        public static int AttackDurationTicks(int intervalTicks, int maxAnimTicks = 0)
         {
-            return intervalTicks < SimConstants.MaxAttackAnimTicks ? intervalTicks : SimConstants.MaxAttackAnimTicks;
+            int cap = maxAnimTicks > 0 ? maxAnimTicks : SimConstants.MaxAttackAnimTicks;
+            return intervalTicks < cap ? intervalTicks : cap;
         }
 
         /// <summary>
@@ -84,10 +87,12 @@ namespace Guildmaster.Combat
         /// windup, поэтому <c>windup + доигрыш = attackDurationTicks</c> ровно, без фантомного зазора.
         /// </para>
         /// </summary>
-        public static int FollowThroughTicks(int hitFrame, int frameCount, int intervalTicks, int windupTicks)
+        /// <param name="maxAnimTicks">Потолок свинга юнита в тиках; <c>0</c> = глобальный дефолт.</param>
+        public static int FollowThroughTicks(int hitFrame, int frameCount, int intervalTicks, int windupTicks,
+            int maxAnimTicks = 0)
         {
             if (frameCount <= 0 || hitFrame <= 0) return 0;
-            int tail = AttackDurationTicks(intervalTicks) - windupTicks;
+            int tail = AttackDurationTicks(intervalTicks, maxAnimTicks) - windupTicks;
             return tail < 0 ? 0 : tail;
         }
 
@@ -118,19 +123,24 @@ namespace Guildmaster.Combat
             // Доля замаха из данных важнее покадровой: у юнита без UnitVisual (скелетный риг — кадров у
             // него нет вовсе) расчёт по кадрам даёт ноль и падает на телеграф-пол, то есть замах в 3 тика
             // при интервале в полсотни. Клип при этом скрабится в это окно и летит в разы быстрее.
-            float share = unit.Unit != null ? unit.Unit.WindupShare : 0f;
-            if (share > 0f) return WindupTicksFromShare(share, intervalTicks, chargeMult);
+            // Свой потолок свинга (0 = глобальный) — из данных юнита, оба пути расчёта читают его одинаково.
+            int maxAnimTicks = unit.Unit != null ? unit.Unit.AttackSwingTicks : 0;
 
-            return WindupTicks(hitFrame, frameCount, intervalTicks, chargeMult);
+            float share = unit.Unit != null ? unit.Unit.WindupShare : 0f;
+            if (share > 0f) return WindupTicksFromShare(share, intervalTicks, chargeMult, maxAnimTicks);
+
+            return WindupTicks(hitFrame, frameCount, intervalTicks, chargeMult, maxAnimTicks);
         }
 
         /// <summary>
         /// Замах из ДОЛИ свинга (0..1) — путь для юнитов, у которых нет покадрового клипа. Кламп и
         /// множитель разбега те же, что у покадрового пути: границы у замаха одни, кем бы он ни был задан.
         /// </summary>
-        public static int WindupTicksFromShare(float share, int intervalTicks, float windupMultiplier = 1f)
+        /// <param name="maxAnimTicks">Потолок свинга юнита в тиках; <c>0</c> = глобальный дефолт.</param>
+        public static int WindupTicksFromShare(float share, int intervalTicks, float windupMultiplier = 1f,
+            int maxAnimTicks = 0)
         {
-            int durationTicks = AttackDurationTicks(intervalTicks);
+            int durationTicks = AttackDurationTicks(intervalTicks, maxAnimTicks);
             int raw = (int)Math.Round(Math.Min(1f, Math.Max(0f, share)) * durationTicks, MidpointRounding.AwayFromZero);
             return ClampWindup(raw, intervalTicks, windupMultiplier);
         }
@@ -139,7 +149,9 @@ namespace Guildmaster.Combat
         /// Множитель длины замаха для особого удара (разбег). 1 = обычный. Применяется ДО клампа, поэтому
         /// не может ни увести удар за интервал, ни опустить телеграф ниже пола.
         /// </param>
-        public static int WindupTicks(int hitFrame, int frameCount, int intervalTicks, float windupMultiplier = 1f)
+        /// <param name="maxAnimTicks">Потолок свинга юнита в тиках; <c>0</c> = глобальный дефолт.</param>
+        public static int WindupTicks(int hitFrame, int frameCount, int intervalTicks, float windupMultiplier = 1f,
+            int maxAnimTicks = 0)
         {
             int raw;
             if (frameCount <= 0 || hitFrame <= 0)
@@ -148,7 +160,7 @@ namespace Guildmaster.Combat
             }
             else
             {
-                int durationTicks = AttackDurationTicks(intervalTicks);
+                int durationTicks = AttackDurationTicks(intervalTicks, maxAnimTicks);
                 int clampedHit = hitFrame < frameCount ? hitFrame : frameCount; // hitFrame не больше числа кадров
                 raw = (clampedHit * durationTicks) / frameCount;
             }

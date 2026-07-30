@@ -207,7 +207,9 @@ namespace Guildmaster.Combat
             // Хвост-занятость = доигрыш клипа после кадра контакта (авто-масштаб со скоростью атаки) +
             // опциональный доп.хвост в секундах (сознательный «оверкоммит» для отдельных китов). Считаем
             // здесь — на старте свинга, как и windup, — чтобы бафф скорости в полёте не «расклеил» тайминг.
-            int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, windupTicks);
+            int maxAnimTicks  = unit.Unit != null ? unit.Unit.AttackSwingTicks : 0; // 0 = глобальный потолок
+            int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, windupTicks,
+                maxAnimTicks);
             int extraTail     = unit.Unit != null ? AttackTiming.RecoveryTicks(unit.Unit.AttackRecoverySeconds) : 0;
             unit.RecoveryTicks = followThrough + extraTail;
 
