@@ -106,7 +106,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
                 if (body == null) continue;                      // покадровые юниты: тело — один спрайт
 
                 var group = body.GetComponentInParent<SortingGroup>(true);
-                if (group == null && !ContainedInAnotherPrefab(go))
+                if (group == null && !IsBareRigWithoutView(go))
                     Assert.Fail($"{path}: составное тело без SortingGroup. Ордера частей станут " +
                                 "глобальными, и части разных юнитов перемешаются между собой.");
 
@@ -118,10 +118,11 @@ namespace Guildmaster.Tests.EditMode.Presentation
         }
 
         /// <summary>
-        /// Риг живёт и сам по себе — стенд анимаций пользуется им без вида, и группы там нет по замыслу.
-        /// Отличаем такой префаб по отсутствию <c>UnitView</c>: вид на арену выходит только через него.
+        /// Голый риг без вида: стенд анимаций пользуется им напрямую, и группы там нет по замыслу —
+        /// она стоит на префабе вида, который риг в себя вкладывает. Признак — отсутствие
+        /// <c>UnitView</c>: на арену вид выходит только через него.
         /// </summary>
-        private static bool ContainedInAnotherPrefab(GameObject root)
+        private static bool IsBareRigWithoutView(GameObject root)
             => root.GetComponentInChildren<Guildmaster.Presentation.UnitView>(true) == null;
 
         /// <summary>
