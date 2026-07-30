@@ -50,6 +50,14 @@ namespace Guildmaster.Combat
         void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source);
 
         /// <summary>
+        /// То же наложение, но со сроком, посчитанным по ходу боя (в секундах, &gt; 0). Нужно там, где
+        /// длительность — функция состояния цели, а не решение автора ассета: обездвиживание холодной
+        /// линии растёт от 0.5 до 1.5 секунд вместе со стаками «Изморози». Заводить под каждую точку
+        /// кривой свой ассет значило бы разложить одно число по трём файлам.
+        /// </summary>
+        void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds);
+
+        /// <summary>
         /// Сообщить презентации о сработавшей зоне удара (dev-оверлей зон, вики «13» шаг 4).
         /// Fire-and-forget — не мутирует симуляцию и не влияет на детерминизм.
         /// </summary>

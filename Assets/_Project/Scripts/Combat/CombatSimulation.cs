@@ -348,10 +348,12 @@ namespace Guildmaster.Combat
                 float splitDamage = split.HasOwnDamage ? split.OwnDamage : removed;
 
                 DealDamageCore(new DamageRequest(req.Source, req.Target, req.RawDamage - removed,
-                    req.School, req.ArmorK, req.SourceKind, req.Affinity, req.Element));
+                    req.School, req.ArmorK, req.SourceKind, req.Affinity, req.Element,
+                    subtype: req.Subtype));
                 if (!req.Target.IsDead)
                     DealDamageCore(new DamageRequest(req.Source, req.Target, splitDamage,
-                        split.School, req.ArmorK, req.SourceKind, req.Affinity, split.Element));
+                        split.School, req.ArmorK, req.SourceKind, req.Affinity, split.Element,
+                        subtype: req.Subtype));
                 return;
             }
 
@@ -370,7 +372,8 @@ namespace Guildmaster.Combat
 
             return new DamageRequest(
                 req.Source, req.Target, req.RawDamage * (1f + bonus), req.School, req.ArmorK,
-                req.SourceKind, req.Affinity, req.Element, req.Vulnerability, req.BonusFlatPen);
+                req.SourceKind, req.Affinity, req.Element, req.Vulnerability, req.BonusFlatPen,
+                req.Subtype);
         }
 
         private void DealDamageCore(in DamageRequest req)
@@ -399,7 +402,8 @@ namespace Guildmaster.Combat
             DamageRequest effective = scale == 1f
                 ? req
                 : new DamageRequest(req.Source, req.Target, req.RawDamage * scale, req.School,
-                                    req.ArmorK, req.SourceKind, req.Affinity, req.Element, vulnerability);
+                                    req.ArmorK, req.SourceKind, req.Affinity, req.Element, vulnerability,
+                                    subtype: req.Subtype);
 
             // Урон считается сразу (расчёт чист и от порядка не зависит — статы заморожены на тик),
             // а применяется реестром, когда сложатся все удары раунда. См. TickLedger.
@@ -564,6 +568,11 @@ namespace Guildmaster.Combat
         public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source)
         {
             _effectSystem.Apply(target, def, source, this);
+        }
+
+        public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+        {
+            _effectSystem.Apply(target, def, source, this, durationSeconds);
         }
 
         public void ReportAreaHit(in AreaHit hit) => OnAreaHit?.Invoke(hit);

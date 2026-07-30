@@ -42,6 +42,14 @@ namespace Guildmaster.Combat.Effects.Components
                  "Empowered = обычный заряд, стелса не касается.")]
         [SerializeField] private EffectTag _consumeTag = EffectTag.Stealth;
 
+        [Tooltip("Эффект, который усиленный удар накладывает на цель СВЕРХ обычных on-hit (Драугр вгоняет " +
+                 "лишние стаки «Изморози»). Пусто = ничего.")]
+        [SerializeField] private EffectData _bonusOnHitEffect;
+
+        [Tooltip("Сколько раз наложить бонус-эффект (для стакающихся это и есть число лишних стаков).")]
+        [Min(0)]
+        [SerializeField] private int _bonusOnHitCount = 1;
+
         [Tooltip("Конвертации статов в множитель усиления (M4). Убийца: прямая форма от AttackSpeed — " +
                  "«+0.5 к множителю за каждую 1.0 сверх базовой».")]
         [SerializeField] private Data.Stats.StatConversion[] _damageMultScalings;
@@ -56,6 +64,8 @@ namespace Guildmaster.Combat.Effects.Components
             self.EmpowerFlatPen     = _flatPen;
             self.EmpowerKnockback   = _knockbackDistance;
             self.EmpowerConsumeTag  = _consumeTag;
+            self.EmpowerBonusEffect = _bonusOnHitEffect;
+            self.EmpowerBonusCount  = _bonusOnHitCount;
             if (_blinkBehind) self.BlinkBehindOnNextAttack = true;
         }
 
@@ -67,6 +77,8 @@ namespace Guildmaster.Combat.Effects.Components
             self.EmpowerDamageMult = 0f;
             self.EmpowerFlatPen    = 0f;
             self.EmpowerKnockback  = 0f;
+            self.EmpowerBonusEffect = null;
+            self.EmpowerBonusCount  = 0;
             if (_blinkBehind) self.BlinkBehindOnNextAttack = false;
         }
     }

@@ -237,6 +237,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             public IRngService Rng => null;
 
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);
+            // Срок, посчитанный по ходу боя, заглушке безразличен — она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+                => ApplyEffect(target, def, source);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
             // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
             public void ReportAbilityCast(RuntimeUnit caster) { }

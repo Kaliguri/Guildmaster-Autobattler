@@ -374,6 +374,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             public void Heal(RuntimeUnit target, float amount, RuntimeUnit source) { }
             public void SpawnProjectile(in ProjectileSpawn spawn) { }
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) { }
+            // Срок, посчитанный по ходу боя, заглушке безразличен — она мерит факт наложения.
+            public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+                => ApplyEffect(target, def, source);
             public void ReportAreaHit(in AreaHit hit) { }
             public void Dispel(in DispelRequest req) { }
             // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.

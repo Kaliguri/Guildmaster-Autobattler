@@ -124,6 +124,15 @@ namespace Guildmaster.Combat
         public float EmpowerKnockback;
 
         /// <summary>
+        /// Эффект, который усиленная авто-атака накладывает на цель ДОПОЛНИТЕЛЬНО к своим on-hit
+        /// («каждая третья» Драугра вгоняет три стака «Изморози» вместо одного). null = ничего.
+        /// </summary>
+        public Data.Definitions.EffectData EmpowerBonusEffect;
+
+        /// <summary>Сколько раз наложить <see cref="EmpowerBonusEffect"/> (число стаков сверх обычного).</summary>
+        public int EmpowerBonusCount;
+
+        /// <summary>
         /// Сколько урона поглотили щиты С ФИЛЬТРОМ ПО ШКОЛЕ с прошлого сброса. Копит
         /// <c>SchoolShieldComponent</c>, тратит и обнуляет «Перегрузка» Антимага.
         /// </summary>

@@ -149,14 +149,20 @@ namespace Guildmaster.Combat
         /// статов источника), обрабатывает стакинг, добавляет <see cref="RuntimeEffect"/> и зовёт
         /// <c>OnApply</c> компонентов. Мгновенный эффект (BaseDuration = 0) не персистится.
         /// </summary>
-        public void Apply(RuntimeUnit target, EffectData def, RuntimeUnit source, ICombatContext combat)
+        /// <param name="durationSecondsOverride">
+        /// Срок вместо авторского, если &gt; 0 (обездвиживание холодной линии растёт со стаками). При
+        /// подкреплении уже висящего эффекта тоже учитывается — иначе рут, продлённый вторым срабатыванием,
+        /// молча вернулся бы к авторской длительности.
+        /// </param>
+        public void Apply(RuntimeUnit target, EffectData def, RuntimeUnit source, ICombatContext combat,
+            float durationSecondsOverride = 0f)
         {
             if (def == null || target == null || target.IsDead) return;
 
             RuntimeEffect existing = FindEffect(target, def);
             if (existing != null)
             {
-                ApplyStacking(existing, def, source, target, combat);
+                ApplyStacking(existing, def, source, target, combat, durationSecondsOverride);
                 OnEffectApplied?.Invoke(target, def, source);
                 return;
             }
@@ -182,7 +188,7 @@ namespace Guildmaster.Combat
                 if (initial > 1) effect.AddStacks(initial - 1);
             }
 
-            effect.SetDuration(ResolveDurationTicks(def, source, target));
+            effect.SetDuration(ResolveDurationTicks(def, source, target, durationSecondsOverride));
 
             // Снимок потенции на компонент из статов источника на момент наложения.
             for (int i = 0; i < componentCount; i++)
@@ -448,9 +454,16 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>Длительность эффекта в тиках. -1 = постоянный, 0 = мгновенный, иначе с учётом эфф-эффективностей.</summary>
-        public static int ResolveDurationTicks(EffectData def, RuntimeUnit source, RuntimeUnit target)
+        /// <param name="secondsOverride">
+        /// Длительность вместо <see cref="EffectData.BaseDuration"/>, если &gt; 0. Нужна там, где срок
+        /// считается по ходу боя, а не задан автором: обездвиживание холодной линии растёт от 0.5 до 1.5
+        /// секунд вместе со стаками «Изморози», и завести под каждую точку свой ассет значило бы разложить
+        /// одну кривую по трём файлам. Tenacity применяется к переданному сроку так же, как к авторскому.
+        /// </param>
+        public static int ResolveDurationTicks(EffectData def, RuntimeUnit source, RuntimeUnit target,
+            float secondsOverride = 0f)
         {
-            float seconds = def.BaseDuration;
+            float seconds = secondsOverride > 0f ? secondsOverride : def.BaseDuration;
             if (seconds < 0f)  return -1;
             if (seconds == 0f) return 0;
 
@@ -627,7 +640,8 @@ namespace Guildmaster.Combat
         }
 
         private void ApplyStacking(
-            RuntimeEffect existing, EffectData def, RuntimeUnit source, RuntimeUnit target, ICombatContext combat)
+            RuntimeEffect existing, EffectData def, RuntimeUnit source, RuntimeUnit target, ICombatContext combat,
+            float durationSecondsOverride = 0f)
         {
             int previousStacks = existing.Stacks;
             bool stacksChanged = false;
@@ -642,13 +656,13 @@ namespace Guildmaster.Combat
                     break;
 
                 case StackRule.Refresh:
-                    RefreshDuration(existing, def, source, target);
+                    RefreshDuration(existing, def, source, target, durationSecondsOverride);
                     RearmOneShotComponents(existing, target, source, combat);
                     break;
 
                 case StackRule.StackAndRefresh:
                     stacksChanged = TryAddStack(existing, def);
-                    RefreshDuration(existing, def, source, target);
+                    RefreshDuration(existing, def, source, target, durationSecondsOverride);
                     RearmOneShotComponents(existing, target, source, combat);
                     break;
             }
@@ -673,9 +687,10 @@ namespace Guildmaster.Combat
             return true;
         }
 
-        private static void RefreshDuration(RuntimeEffect effect, EffectData def, RuntimeUnit source, RuntimeUnit target)
+        private static void RefreshDuration(RuntimeEffect effect, EffectData def, RuntimeUnit source, RuntimeUnit target,
+            float durationSecondsOverride = 0f)
         {
-            effect.SetDuration(ResolveDurationTicks(def, source, target));
+            effect.SetDuration(ResolveDurationTicks(def, source, target, durationSecondsOverride));
         }
 
         /// <summary>

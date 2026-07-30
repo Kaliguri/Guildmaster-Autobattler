@@ -63,7 +63,10 @@ namespace Guildmaster.Combat.Effects.Components
         {
             split = default;
             if (_share <= 0f || target == null) return false;
-            if ((target.EffectTagMask & _requiredTargetTag) == EffectTag.None) return false;
+            // None = расщепляем ВСЕГДА (двуручник Драугра всегда наполовину ледяной). Иначе безусловное
+            // расщепление приходилось бы выражать фиктивным тегом, который висит на всех.
+            if (_requiredTargetTag != EffectTag.None
+                && (target.EffectTagMask & _requiredTargetTag) == EffectTag.None) return false;
 
             split = new AttackSplit(_share, _school, _element, OwnDamage(target));
             return true;

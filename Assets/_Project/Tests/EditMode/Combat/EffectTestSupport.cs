@@ -287,6 +287,10 @@ namespace Guildmaster.Tests.EditMode.Combat
         public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source)
             => _effects?.Apply(target, def, source, this);
 
+        /// <summary>Наложение со сроком, посчитанным по ходу боя (обездвиживание холодной линии).</summary>
+        public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds)
+            => _effects?.Apply(target, def, source, this, durationSeconds);
+
         public void ReportAreaHit(in AreaHit hit) { }
 
         public void Dispel(in DispelRequest req) => _effects?.Dispel(in req, this);

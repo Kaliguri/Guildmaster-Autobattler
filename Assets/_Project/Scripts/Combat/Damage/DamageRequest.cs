@@ -70,6 +70,14 @@ namespace Guildmaster.Combat
         /// </summary>
         public readonly float BonusFlatPen;
 
+        /// <summary>
+        /// Физический подтип удара (Дробящий/Режущий/Колющий) при школе <see cref="DamageSchool.Physical"/>.
+        /// Броню не делит — она одна на всю физику, — но несёт идентичность дальше: верхняя ступень
+        /// холодной линии добавляет +20% именно ДРОБЯЩЕМУ («лёд делает цель хрупкой»), а скелеты по
+        /// черновикам берут меньше от колющего.
+        /// </summary>
+        public readonly PhysicalSubtype Subtype;
+
         /// <summary>Урон стихии огня — то, что копит «Угли» и усиливается ими.</summary>
         public bool IsFire => School == DamageSchool.Magical && Element == MagicElement.Fire;
 
@@ -92,7 +100,8 @@ namespace Guildmaster.Combat
             DamageAffinity affinity = DamageAffinity.None,
             MagicElement element = MagicElement.None,
             float vulnerability = 1f,
-            float bonusFlatPen = 0f)
+            float bonusFlatPen = 0f,
+            PhysicalSubtype subtype = PhysicalSubtype.None)
         {
             Source        = source;
             Target        = target;
@@ -104,6 +113,7 @@ namespace Guildmaster.Combat
             Element       = school == DamageSchool.Magical ? element : MagicElement.None;
             Vulnerability = vulnerability;
             BonusFlatPen  = bonusFlatPen;
+            Subtype       = school == DamageSchool.Physical ? subtype : PhysicalSubtype.None;
         }
     }
 }
