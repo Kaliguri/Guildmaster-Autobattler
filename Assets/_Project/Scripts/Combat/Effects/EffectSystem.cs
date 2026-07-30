@@ -81,7 +81,17 @@ namespace Guildmaster.Combat
                     TickPeriodic(unit, eff, combat);
                     if (unit.IsDead) break;
 
-                    if (!eff.IsPermanent && eff.TickDownDuration()) Expire(unit, eff, combat);
+                    if (eff.IsPermanent) continue;
+
+                    // Порционный эффект живёт своими порциями: каждая сходит по своему сроку, а эффект
+                    // снимается, когда иссякла последняя. Общий таймер тут не владелец — он лишь копия
+                    // самой долгой порции, и снимать по нему значило бы гасить кровь, которую только что
+                    // подлили.
+                    bool over = eff.Def != null && eff.Def.Stacking == StackRule.Portions
+                        ? eff.TickDownPortions()
+                        : eff.TickDownDuration();
+
+                    if (over) Expire(unit, eff, combat);
                 }
 
                 if (!unit.IsDead) RecomputeControl(unit);
@@ -154,15 +164,19 @@ namespace Guildmaster.Combat
         /// подкреплении уже висящего эффекта тоже учитывается — иначе рут, продлённый вторым срабатыванием,
         /// молча вернулся бы к авторской длительности.
         /// </param>
+        /// <param name="potencyOverride">
+        /// Величина вместо авторской, если &gt; 0 — только для порционных эффектов
+        /// (<see cref="StackRule.Portions"/>): силу порции крови приносит удар, а не ассет.
+        /// </param>
         public void Apply(RuntimeUnit target, EffectData def, RuntimeUnit source, ICombatContext combat,
-            float durationSecondsOverride = 0f)
+            float durationSecondsOverride = 0f, float potencyOverride = 0f)
         {
             if (def == null || target == null || target.IsDead) return;
 
             RuntimeEffect existing = FindEffect(target, def);
             if (existing != null)
             {
-                ApplyStacking(existing, def, source, target, combat, durationSecondsOverride);
+                ApplyStacking(existing, def, source, target, combat, durationSecondsOverride, potencyOverride);
                 OnEffectApplied?.Invoke(target, def, source);
                 return;
             }
@@ -198,6 +212,11 @@ namespace Guildmaster.Combat
                     effect.ScaledPotency[i] = scalable.Potency.Resolve(source.Stats);
                 }
             }
+
+            // Порционный эффект рождается сразу с первой порцией: снимок ScaledPotency ему не сила, а
+            // заготовка (её читает AddPortion), и без этого вызова первое наложение не капало бы вовсе.
+            if (def.Stacking == StackRule.Portions)
+                AddPortion(effect, def, source, target, durationSecondsOverride, potencyOverride);
 
             bool instant = effect.RemainingTicks == 0;
             // Эффект встаёт в список сразу (иначе второе наложение этим же тиком завело бы дубль вместо
@@ -669,9 +688,15 @@ namespace Guildmaster.Combat
             RuntimeUnit target, RuntimeUnit source, ICombatContext combat, RuntimeEffect effect, int componentIndex,
             float dt, float share = 1f, bool liveStacks = false)
         {
-            float potency = effect.ScaledPotency != null && componentIndex < effect.ScaledPotency.Length
-                ? effect.ScaledPotency[componentIndex]
-                : 0f;
+            // Порционная модель: сила эффекта — сумма живых порций, а не снимок первого наложившего.
+            // Иначе второй кровоточащий кит раздавал бы силу первого (см. StackRule.Portions).
+            bool portioned = effect.Def != null && effect.Def.Stacking == StackRule.Portions;
+
+            float potency = portioned
+                ? effect.PortionRate
+                : effect.ScaledPotency != null && componentIndex < effect.ScaledPotency.Length
+                    ? effect.ScaledPotency[componentIndex]
+                    : 0f;
             return new EffectContext(target, source, combat, effect, potency, dt, share, liveStacks);
         }
 
@@ -697,7 +722,7 @@ namespace Guildmaster.Combat
 
         private void ApplyStacking(
             RuntimeEffect existing, EffectData def, RuntimeUnit source, RuntimeUnit target, ICombatContext combat,
-            float durationSecondsOverride = 0f)
+            float durationSecondsOverride = 0f, float potencyOverride = 0f)
         {
             int previousStacks = existing.Stacks;
             bool stacksChanged = false;
@@ -721,6 +746,12 @@ namespace Guildmaster.Combat
                     RefreshDuration(existing, def, source, target, durationSecondsOverride);
                     RearmOneShotComponents(existing, target, source, combat);
                     break;
+
+                case StackRule.Portions:
+                    // Новая порция со СВОЕЙ силой от НОВОГО источника и своим сроком. Потолка нет
+                    // намеренно (решение Макса): ограничителем служит короткий срок порции.
+                    AddPortion(existing, def, source, target, durationSecondsOverride, potencyOverride);
+                    break;
             }
 
             // Подкрепление засчитано вкладчику: по этим весам делится атрибуция периодики (реш. Макса).
@@ -730,6 +761,43 @@ namespace Guildmaster.Combat
 
             // Стак изменил число — переоценить stateful-вклад компонентов под новый Stacks.
             if (stacksChanged) Reapply(existing, previousStacks, target, combat);
+        }
+
+        /// <summary>
+        /// Добавить порцию (<see cref="StackRule.Portions"/>): её сила резолвится из статов ИСТОЧНИКА
+        /// сейчас, а не берётся из снимка первого наложившего.
+        /// </summary>
+        /// <remarks>
+        /// Потенция порционного DoT читается как <b>весь урон порции</b>, а не как урон в секунду:
+        /// автор думает «кровь несёт урон одного удара», и делит на срок уже
+        /// <see cref="RuntimeEffect.AddPortion"/>. Так смена длительности линии (3 сек → 5 сек) меняет
+        /// дробность, но не силу — ровно та же логика, по которой обычный DoT задаётся rate-ом.
+        /// </remarks>
+        private static void AddPortion(RuntimeEffect effect, EffectData def, RuntimeUnit source, RuntimeUnit target,
+            float durationSecondsOverride, float potencyOverride = 0f)
+        {
+            int ticks = ResolveDurationTicks(def, source, target, durationSecondsOverride);
+            if (ticks <= 0) return;
+
+            // Величина от накладывающего сильнее авторской: у кровотечения силу приносит удар, и она у
+            // каждой формы своя. Авторская остаётся фолбэком для крови из ассета-«как есть».
+            if (potencyOverride > 0f)
+            {
+                effect.AddPortion(potencyOverride, ticks);
+                return;
+            }
+
+            IEffectComponent[] comps = def.Components;
+            if (comps == null) return;
+
+            for (int i = 0; i < comps.Length; i++)
+            {
+                if (comps[i] is IScalablePotency scalable && source != null)
+                {
+                    effect.AddPortion(scalable.Potency.Resolve(source.Stats), ticks);
+                    return;   // порция одна на наложение: она принадлежит эффекту, а не компоненту
+                }
+            }
         }
 
         private static bool TryAddStack(RuntimeEffect effect, EffectData def)

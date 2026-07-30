@@ -166,6 +166,76 @@ namespace Guildmaster.Combat.Effects
         /// </summary>
         public float[] ScaledPotency;
 
+        // --- Порции (StackRule.Portions): у каждого наложения своя сила и свой срок ---
+
+        // Приватный список плюс глаголы ниже: «сколько сейчас капает» и «прожить тик» — это правила, а не
+        // строчки. Публичный список позволил бы посчитать сумму мимо истёкших порций или сдвинуть срок,
+        // не сдвинув вклад, — то есть завести у величины второго владельца.
+        private readonly System.Collections.Generic.List<(float Rate, int Ticks)> _portions = new();
+
+        /// <summary>
+        /// Сколько эффект капает В СЕКУНДУ прямо сейчас — сумма живых порций. Аналог
+        /// <see cref="ScaledPotency"/> для порционной модели.
+        /// </summary>
+        public float PortionRate
+        {
+            get
+            {
+                float sum = 0f;
+                for (int i = 0; i < _portions.Count; i++) sum += _portions[i].Rate;
+                return sum;
+            }
+        }
+
+        /// <summary>Число живых порций — оно же число стаков для показа и условий.</summary>
+        public int PortionCount => _portions.Count;
+
+        /// <summary>
+        /// Добавить порцию: <paramref name="totalDamage"/> — весь урон, который она нанесёт за
+        /// <paramref name="ticks"/> СИМ-тиков. Перевод «весь урон» → «урон в секунду» живёт здесь,
+        /// потому что автор порции думает «кровь несёт урон одного удара», а периодика бьёт rate-ом.
+        /// </summary>
+        public void AddPortion(float totalDamage, int ticks)
+        {
+            if (totalDamage <= 0f || ticks <= 0) return;
+
+            // Делим на СЕКУНДЫ жизни порции, не на тики: сим-тиков в секунде тридцать, и деление на них
+            // дало бы силу в тридцать раз меньше задуманной.
+            float rate = totalDamage * Core.Simulation.SimConstants.TickRate / ticks;
+            _portions.Add((rate, ticks));
+
+            // Срок эффекта = срок самой долгой живой порции: эффект висит, пока хоть одна не иссякла.
+            if (ticks > RemainingTicks) SetDuration(ticks);
+            SyncStacksToPortions();
+        }
+
+        /// <summary>
+        /// Прожить тик всем порциям и вернуть <c>true</c>, если живых не осталось. Истёкшие уходят
+        /// независимо друг от друга — в этом и весь смысл порционной модели.
+        /// </summary>
+        public bool TickDownPortions()
+        {
+            for (int i = _portions.Count - 1; i >= 0; i--)
+            {
+                var p = _portions[i];
+                if (p.Ticks <= 1) _portions.RemoveAt(i);
+                else _portions[i] = (p.Rate, p.Ticks - 1);
+            }
+
+            SyncStacksToPortions();
+            return _portions.Count == 0;
+        }
+
+        // Стаки у порционного эффекта — производная от числа порций, а не отдельный счётчик: два
+        // независимых числа об одном и том же разъехались бы на первом же истёкшем стаке.
+        private void SyncStacksToPortions()
+        {
+            int target = _portions.Count;
+            int current = Stacks;
+            if (target > current) AddStacks(target - current);
+            else if (target < current) RemoveStacks(current - target);
+        }
+
         /// <summary>
         /// Счётчик сим-тиков с прошлого срабатывания на периодический компонент (параллельно
         /// компонентам). Целочисленный — float-аккумулятор дрейфует и ломает детерминизм периодики.

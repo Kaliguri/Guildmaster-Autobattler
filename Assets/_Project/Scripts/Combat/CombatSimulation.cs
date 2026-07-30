@@ -570,6 +570,12 @@ namespace Guildmaster.Combat
             _effectSystem.Apply(target, def, source, this, durationSeconds);
         }
 
+        public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds,
+            float potency)
+        {
+            _effectSystem.Apply(target, def, source, this, durationSeconds, potency);
+        }
+
         public void ReportAreaHit(in AreaHit hit) => OnAreaHit?.Invoke(hit);
 
         public void NotifyAttackStarted(RuntimeUnit unit, RuntimeUnit target) => OnAttackStarted?.Invoke(unit, target);

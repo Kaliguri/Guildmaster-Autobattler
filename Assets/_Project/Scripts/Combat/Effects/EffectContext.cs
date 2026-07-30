@@ -77,6 +77,13 @@ namespace Guildmaster.Combat.Effects
             get
             {
                 if (Effect == null) return 1;
+
+                // Порционная модель (StackRule.Portions): вклад всех живых порций УЖЕ суммирован в
+                // Potency, поэтому множить его ещё и числом порций значило бы посчитать их дважды —
+                // три порции дали бы девятикратный урон. Правило живёт здесь, в единственном месте, где
+                // читаются стаки: разложи его по компонентам, и первый же новый DoT посчитал бы иначе.
+                if (Effect.Def != null && Effect.Def.Stacking == Data.Definitions.StackRule.Portions) return 1;
+
                 return _liveStacks ? Effect.Stacks : Effect.VisibleStacks;
             }
         }

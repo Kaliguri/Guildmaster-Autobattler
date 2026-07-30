@@ -15,9 +15,9 @@ MonoBehaviour:
   _id: effect.bleed
   _polarity: 1
   _tags: 10
-  _baseDuration: 5
-  _stacking: 3
-  _maxStacks: 10
+  _baseDuration: 3
+  _stacking: 4
+  _maxStacks: 0
   _cleanseTier: 1
   _unremovable: 0
   _stacksPerApplication: 1
@@ -41,7 +41,7 @@ MonoBehaviour:
       data:
         _interval: 1
         _damagePerSecond:
-          Base: 14
+          Base: 0
           Scalings: []
         _damageType: 4
         _damagePctTargetMaxHp: 0

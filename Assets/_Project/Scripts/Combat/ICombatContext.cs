@@ -58,6 +58,20 @@ namespace Guildmaster.Combat
         void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds);
 
         /// <summary>
+        /// Наложение с ВЕЛИЧИНОЙ, посчитанной накладывающим: <paramref name="potency"/> задаёт силу вместо
+        /// авторской из ассета. Нужно порционным эффектам
+        /// (<see cref="Data.Definitions.StackRule.Portions"/>): у кровотечения силу приносит удар, и она
+        /// у каждой формы своя — поток отдаёт кровью весь урон, выпады добавляют её сверху долей.
+        /// </summary>
+        /// <remarks>
+        /// Симметрична перегрузке со сроком выше и появилась по той же причине: величина бывает функцией
+        /// состояния носителя, а не решением автора ассета. Разложить «сколько крови пускает этот кит» по
+        /// отдельным ассетам крови значило бы развести ОДНУ линию на несколько владельцев силы, после чего
+        /// правка линии перестала бы доходить до половины носителей.
+        /// </remarks>
+        void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source, float durationSeconds, float potency);
+
+        /// <summary>
         /// Сообщить презентации о сработавшей зоне удара (dev-оверлей зон, вики «13» шаг 4).
         /// Fire-and-forget — не мутирует симуляцию и не влияет на детерминизм.
         /// </summary>
