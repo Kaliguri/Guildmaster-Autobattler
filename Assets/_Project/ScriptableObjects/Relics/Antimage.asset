@@ -1,0 +1,134 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
+  m_Name: Antimage
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
+  _id: relic.antimage
+  _combatClass: 1
+  _damageSchool: 0
+  _physicalSubtype: 1
+  _magicElement: 0
+  _affinity: 0
+  _creatureType: 0
+  _attackType: 0
+  _resourceType: 1
+  _visual: {fileID: 0}
+  _viewPrefab: {fileID: 0}
+  _bodyShade: 0
+  _vfxTone: 8
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
+  _autoAttackEffects: []
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _windupShare: 0.45
+  _chargeAttackWindupMult: 1
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
+  _stats:
+  - Stat: 8
+    Op: 3
+    Value: 0.55
+  - Stat: 9
+    Op: 3
+    Value: 1
+  - Stat: 3
+    Op: 3
+    Value: 40
+  - Stat: 4
+    Op: 3
+    Value: 80
+  - Stat: 27
+    Op: 3
+    Value: 30
+  - Stat: 7
+    Op: 3
+    Value: 109
+  _grantedEffects:
+  - {fileID: 11400000, guid: b2d4f6a8c0e35179bf3d5a7c9e1b2d46, type: 2}
+  _abilities:
+  - _id: overload
+    _effects:
+    - {fileID: 11400000, guid: c3e5a7b9d1f4628ac04e6b8da0f2c357, type: 2}
+    _selfEffects: []
+    _baseCooldown: 0
+    _resourceCost: 30
+    _targetMode: 1
+    _damageMultiplier: 0
+    _schoolOverride: 0
+    _physicalSubtypeOverride: 0
+    _magicElementOverride: 0
+    _affinityOverride: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
+    _castCondition: 0
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceDamageMult: 1
+    _displaceWidth: 1
+    _visualSlot: 0
+    _infoTags: []
+  _aiPreset: {fileID: 11400000, guid: d4f6b8c0e2a5739bd15f7c9eb1a3d468, type: 2}
+  _ai:
+    _autoAttackTargeting: 0
+    _autoAttackMode: 0
+    _targetTag: 0
+    _retreat:
+      Enabled: 0
+      FleeAtHpPct: 0.25
+      ReturnAtHpPct: 0.5
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags:
+  - {fileID: 11400000, guid: e2fb9e551b9a4a54691f1584ecec1123, type: 2}
+  - {fileID: 11400000, guid: a03c4a1e09f8d8744b487b5b280ff911, type: 2}
+  - {fileID: 11400000, guid: 3cd06ae7932fcb54589e98944be7c7cf, type: 2}
+  - {fileID: 11400000, guid: f27130fc25313104ba69d14078525aaf, type: 2}
+  - {fileID: 11400000, guid: ab815b5e6e657074ab85e622db5f22f2, type: 2}
+  _tags:
+  - antimage
+  - tank
+  - common
+  _kitPower: 0
+  _dropRarity: 1
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0
