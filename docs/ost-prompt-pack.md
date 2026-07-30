@@ -46,10 +46,11 @@
 Текст → **Инструментал** (тумблер), арка задаётся **словами в Стилях**.
 
 ```
-epic anime battle score, tender but powerful, lyrical melody over restrained percussion, warm strings
-with electric guitar lift, starts intimate and grows, 132 BPM, D dorian, no vocals
+cinematic battle score, desperate and determined, melancholic undertone, tender but powerful, lyrical
+melody over restrained percussion, warm strings with electric guitar lift, starts intimate and grows,
+132 BPM, D dorian, no vocals
 ```
-Исключить: `busy drums, taiko, war march, flute, solo violin`
+Исключить: `triumphant fanfare, bright major key, j-pop, cheerful, war march`
 
 **Почему не тегами арки.** Теги живут в поле Lyrics, а его занимает тумблер «Инструментал»: включить
 оба нельзя. Отключить тумблер ради тегов — значит остаться без единого запрета голоса, и модель
@@ -61,11 +62,11 @@ with electric guitar lift, starts intimate and grows, 132 BPM, D dorian, no voca
 Текст → **«Писать»** (не «Промпт»: тот отдаст сочинение модели, и она напишет английские слова).
 
 ```
-epic anime battle score, female soprano wordless vocalise in the lead, airy but powerful, controlled
-vibrato, close-mic breath, staccato string section ostinato, electric guitar singing over it, drum kit
-and shimmering bells, 158 BPM, D dorian, no autotune
+cinematic battle score, female soprano wordless vocalise in the lead, desperate and determined,
+melancholic undertone, airy but powerful, controlled vibrato, close-mic breath, restrained strings with
+electric guitar lift, 132 BPM, D dorian, no autotune
 ```
-Исключить: `flute, solo violin, taiko, war march, spoken word`
+Исключить: `triumphant fanfare, bright major key, j-pop, cheerful, spoken word`
 
 Текст — **на всю длину трека**, секции разделяются переносами строк. **Теги арки стоят прямо в
 заголовках секций** — здесь они проверяются заодно, поле Lyrics всё равно занято:
@@ -115,21 +116,21 @@ a-a-ia... ve-la...
 ### 01-C · тёмная краска, из которой вырастет фаза 2
 
 ```
-dark epic anime battle score, heavy and resolute, staccato low-mid strings driving hard, church organ
-underneath, electric guitar singing over it, drum kit, 152 BPM, D dorian, no intro, no vocals, weight
-without dread
+dark cinematic battle score, grim and resolute, heavy low-mid strings, church organ underneath,
+electric guitar singing over it, restrained percussion, 138 BPM, D dorian, no intro, no vocals,
+weight without dread
 ```
-Исключить: `flute, solo violin, bright bells, celesta, war march`
+Исключить: `triumphant fanfare, bright major key, bright bells, celesta, war march`
 
 ### 01-F · хор вместо солистки
 
 ```
-epic anime battle score, female choir singing wordless syllables in pairs, staccato string section
-ostinato, electric guitar singing over it, drum kit and shimmering bells, 158 BPM, D dorian, no intro,
+cinematic battle score, female choir singing wordless syllables in pairs, desperate and determined,
+melancholic undertone, restrained strings with electric guitar lift, 132 BPM, D dorian, no intro,
 resolute not frightening
 ```
 Текст → **Инструментал** (хор просим составом, не текстом).
-Исключить: `solo vocals, flute, solo violin, taiko, spoken word`
+Исключить: `solo vocals, triumphant fanfare, bright major key, j-pop, spoken word`
 
 ### Что слушать при отборе
 
