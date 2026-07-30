@@ -41,6 +41,17 @@
 **Тональность одна на весь заход — D minor.** Это не вкус, а необходимость: аранжировки следующих
 фаз растут из одного сэмпла, и разъехавшиеся тональности сделают сборку слоёв в FMOD невозможной.
 
+### Два правила заполнения полей (поправка Макса, 30.07.2026)
+
+**1. В «Исключить стили» слово `no` НЕ пишется.** Поле само означает исключение, `no trailer braams`
+внутри него — двойное отрицание. Отрицание пишется в поле **Стилей** (`no vocals` там работает),
+а Exclude принимает названия стилей как есть. Блоки ниже исправлены.
+
+**2. Запрет голоса в Exclude инструментальным блокам не нужен.** Тумблер «Инструментал» — это режим,
+а не подсказка, плюс `no vocals` уже стоит в Стилях. Двух слоёв достаточно, а короткий Exclude
+меньше рискует обеднить микс. **Гипотеза к проверке:** если голос всё равно прорвётся — возвращаем
+третий слой и знаем, что тумблеру верить нельзя.
+
 ### Шесть промптов — шесть подач одного настроения
 
 Гони по **2-3 варианта на каждый**. `[Instrumental]` в Lyrics — всюду, **кроме 01-B**.
@@ -50,7 +61,7 @@
 epic fantasy battle, resolute and driving, 138 BPM, D minor, low string ostinato, taiko and timpani,
 soaring string melody, no vocals, played with forward momentum rather than menace
 ```
-Exclude: `no voice, no singing, trailer braams, dubstep drop, chiptune`
+Exclude: `trailer braams, dubstep drop, chiptune`
 
 **01-B · то же с женским вокализом — главный образ целиком**
 Единственный блок с голосом. Это **проверка тембра и подачи, а не языка**: фонетика конланга и
@@ -68,21 +79,21 @@ Exclude: `trailer braams, dubstep drop, metal riff, chiptune, spoken word`
 dark heroic fantasy battle, heavy and resolute, 132 BPM, D minor, massive low strings and brass,
 church organ underneath, war drums, no vocals, weight without dread
 ```
-Exclude: `no voice, no singing, bright bells, high strings, celesta`
+Exclude: `bright bells, high strings, celesta`
 
 **01-D · подача Testard (Expedition 33) — камерная эпика, не оркестровый трейлер**
 ```
 cinematic chamber fantasy battle, intimate then overwhelming, 140 BPM, D minor, felt piano and
 solo violin over pulsing cellos, restrained percussion, no vocals, human and close before it grows
 ```
-Exclude: `no voice, no singing, trailer braams, brass fanfare, chiptune`
+Exclude: `trailer braams, brass fanfare, chiptune`
 
 **01-E · гитарный лид — краска Swordland**
 ```
 epic fantasy battle rock, 146 BPM, D minor, electric guitar lead singing the main melody,
 orchestral strings behind, taiko and drum kit, no vocals, triumphant drive
 ```
-Exclude: `no voice, no singing, metal riff, dubstep drop, chiptune`
+Exclude: `metal riff, dubstep drop, chiptune`
 
 **01-F · хор без солистки — проверка, не нужен ли нам хор вместо голоса**
 ```
