@@ -139,6 +139,29 @@ builds in steps then drops away, 150 BPM, D dorian, no vocals
 **Почему:** разбор Макса вскрыл, что я пять прогонов вычёркивала **инструменты**, тогда как виновата
 была **манера**. Скрипка нужна, но «невероятно красивая и смертельная», а не поющая длинными нотами;
 барабаны нужны бьющие, а не марширующие. `solo violin` убран из Exclude.
+**Вердикт:** не прогонялся — задача разрезана на две части (см. v9).
+
+### v9 — ДВЕ ТЕМЫ раздельно (текущая)
+
+Один трек больше не заказывается: требований больше двадцати, а Suno держит 6-12 тегов. Части соединяет
+FMOD.
+
+**01-A1 — агрессивная, рок против медиевальной мелодии**
+```
+dark battle score, medieval modal melody against driving rock percussion and heavy synth, open fourths
+and fifths, hard-hitting drums, bass guitar underneath, tense and desperate, 150 BPM, D dorian, no vocals
+```
+
+**01-A2 — смертельная, соло-скрипка**
+```
+solo violin outlining a modal melancholic melody, beautiful and deadly, high register, slightly
+overdriven electric guitar answering with a rare solo, low cello underneath, sparse hard drums,
+132 BPM, D dorian, no vocals
+```
+
+**Дельта от v8:** один промпт разрезан на два; добавлены `driving rock percussion and heavy synth` (прямая
+формула SAO из академического разбора) и `open fourths and fifths` (её приём средневековости); синт
+разрешён; `builds in steps` убран — ступени собирает FMOD, а не Suno.
 **Вердикт:** —
 | 01-C мрачно-героически | | | | | | |
 | 01-D Testard, камерная | | | | | | |

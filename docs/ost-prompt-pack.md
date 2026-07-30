@@ -46,23 +46,36 @@ taiko, war march, triumphant fanfare, j-pop, metal riff
 Состав задаётся точно в позитиве, поэтому латать исключениями больше нечего. Канон состава по ролям —
 `tone-and-lineup.md` §КАНОН СОСТАВА.
 
-### 01-A · инструментал: мрак снизу, бой от пульса, нежность только в лиде
+### 01-A · ДВЕ ТЕМЫ раздельно, а не один трек
 
-Текст → **Инструментал** (тумблер).
+**Почему раздельно.** Suno держит 6-12 тегов, а наших требований больше двадцати — одним промптом их не
+уложить. И не нужно: боссовая кульминация у Кадзиуры устроена как **две контрастные темы**, а у нас трек
+всё равно живёт слоями в FMOD. Гоним части, соединяет FMOD. Подробнее — `suno-prompting.md` §СТРАТЕГИЯ.
 
+Текст → **Инструментал** (тумблер) в обеих.
+
+**01-A1 · агрессивная тема — рок против медиевальной мелодии**
 ```
-dark cinematic battle score, tense and desperate, violin lead beautiful and deadly, slightly overdriven
-electric guitar with rare solo, low cello ostinato and bass guitar underneath, hard-hitting drums,
-builds in steps then drops away, 150 BPM, D dorian, no vocals
+dark battle score, medieval modal melody against driving rock percussion and heavy synth, open fourths
+and fifths, hard-hitting drums, bass guitar underneath, tense and desperate, 150 BPM, D dorian, no vocals
 ```
 
-**Состав из канона после разбора SAO:** скрипка и барабаны вернулись, гитара стала грязноватой с
-редким соло, добавлена бас-гитара. `builds in steps then drops away` — ступенчатость и паузы, без
-которых трек «не развлекает собой».
+**01-A2 · смертельная тема — соло-скрипка**
+```
+solo violin outlining a modal melancholic melody, beautiful and deadly, high register, slightly
+overdriven electric guitar answering with a rare solo, low cello underneath, sparse hard drums,
+132 BPM, D dorian, no vocals
+```
 
-**Теги арки сюда не ставятся.** Они живут в поле Lyrics, а его занимает тумблер «Инструментал» —
-включить оба нельзя, а отключить тумблер значит остаться без запрета голоса. Проверяются в 01-B, где
-текст нужен по существу.
+**Что здесь новое и откуда:** `driving rock percussion and heavy synth` — прямая формула SAO из разбора
+(рок и синт **противопоставлены** средневековой мелодии, чтобы обозначить «это внутри видеоигры»).
+`open fourths and fifths` — её приём средневековости. Синт разрешён: прежний запрет касался электронной
+подачи целиком, а не краски.
+
+**Ступени в промпт не просим.** «В 4 шага» Suno по заказу не сделает — четыре слоя в FMOD дают то же
+самое и управляются в рантайме.
+
+**Теги арки сюда не ставятся** — поле Lyrics занято тумблером «Инструментал». Проверяются в 01-B.
 
 ### 01-B · женский вокализ
 
