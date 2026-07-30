@@ -52,6 +52,7 @@ MonoBehaviour:
         _fractionOfShield: 1
         _radius: 2.5
         _school: 0
+        _subtype: 1
         _burstOnExpire: 0
         _useRemainingShield: 0
         _knockbackDistance: 0

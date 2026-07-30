@@ -41,5 +41,5 @@ MonoBehaviour:
       data:
         _boneShield: {fileID: 11400000, guid: 1b2c3d4e5f60718293a4b5c6d7e8f9a0, type: 2}
         _radius: 6
-        _summonAbilityId: summon_skeleton
+        _summonAbilityId: 
         _receiverSearchRadius: 10

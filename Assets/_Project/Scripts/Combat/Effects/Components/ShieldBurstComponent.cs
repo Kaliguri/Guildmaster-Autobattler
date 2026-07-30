@@ -31,8 +31,13 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Радиус взрыва вокруг носителя, мировые единицы.")]
         [SerializeField] private float _radius = 2f;
 
-        [Tooltip("Школа урона взрыва. Физика по умолчанию: подтип наследуется от носителя.")]
+        [Tooltip("Школа урона взрыва.")]
         [SerializeField] private DamageSchool _school = DamageSchool.Physical;
+
+        [Tooltip("Физический подтип взрыва (при школе Physical): кости разлетаются ДРОБЯЩИМ. Он важен не " +
+                 "для брони — она подтип не делит, — а для того, кто на подтип смотрит: хрупкая холодная " +
+                 "статуя получает от дробящего на 20% больше.")]
+        [SerializeField] private PhysicalSubtype _subtype = PhysicalSubtype.None;
 
         [Tooltip("Взрываться ТАКЖЕ по истечении срока щита («Водяной щит» Монаха воды: через 5 сек или при " +
                  "уничтожении). Выкл = только от пробития, как у «Собирателя костей».")]
@@ -116,7 +121,7 @@ namespace Guildmaster.Combat.Effects.Components
                 if (damage > 0f)
                     ctx.Combat.DealDamage(new DamageRequest(
                         carrier, victim, damage, _school, ctx.Combat.ArmorK,
-                        affinity: carrier.Affinity));
+                        affinity: carrier.Affinity, subtype: _subtype));
 
                 if (_victimEffect != null) ctx.Combat.ApplyEffect(victim, _victimEffect, carrier);
 
