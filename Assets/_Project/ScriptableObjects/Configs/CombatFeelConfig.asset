@@ -17,6 +17,7 @@ MonoBehaviour:
   _enableFacingFlipSquash: 1
   _enableTargetAcquireTell: 1
   _enableIdleBreath: 1
+  _palette: {fileID: 11400000, guid: f42219bf529da2c4d909a76d914ab971, type: 2}
   _enableSchoolFlash: 1
   _enableAttackAnticipation: 1
   _enableAttackerLunge: 1
@@ -39,12 +40,6 @@ MonoBehaviour:
   _targetAcquireDuration: 0.08
   _idleBreathAmplitude: 0.02
   _idleBreathPeriod: 2.2
-  _flashPhysical: {r: 1, g: 1, b: 1, a: 1}
-  _flashElemental: {r: 1, g: 0.55, b: 0.25, a: 1}
-  _flashTrue: {r: 1, g: 0.95, b: 0.55, a: 1}
-  _flashPoison: {r: 0.45, g: 1, b: 0.4, a: 1}
-  _flashLight: {r: 1, g: 0.95, b: 0.75, a: 1}
-  _flashDark: {r: 0.55, g: 0.35, b: 0.85, a: 1}
   _anticipationDistance: 0.06
   _anticipationDuration: 0.1
   _lungeDistance: 0.1
@@ -53,7 +48,6 @@ MonoBehaviour:
   _deathAnticipateDuration: 0.1
   _deathAnticipateShake: 0.06
   _numberArcGravity: 2.2
-  _healFlashColor: {r: 0.55, g: 1, b: 0.65, a: 1}
   _healFlashPeak: 0.5
   _castOutlineDuration: 0.45
   _castOutlineStrength: 0.9
@@ -62,7 +56,6 @@ MonoBehaviour:
   _lowHpPulseAmount: 0.5
   _hpBarPunchAmount: 0.08
   _hpBarPunchDuration: 0.12
-  _flashColor: {r: 1, g: 1, b: 1, a: 1}
   _flashDuration: 0.25
   _squashAmount: 0.2
   _squashDuration: 0.25
@@ -114,7 +107,7 @@ MonoBehaviour:
   _shatterTumble: 22
   _shatterUpBias: 0.35
   _shatterFlashOut: 0.12
-  _shardWhiteColor: {r: 2.6, g: 2.62, b: 2.75, a: 1}
+  _shardWhiteBrightness: 2.75
   _shardWhiteShare: 0.5
   _shatterFadePower: 0.55
   _shatterLifeVariance: 0.35
@@ -123,10 +116,9 @@ MonoBehaviour:
   _shatterLuma: 0.25
   _shatterHold: 0.05
   _shatterMinTimeScale: 0.4
-  _deathFlashColor: {r: 1.7, g: 1.7, b: 1.8, a: 1}
+  _deathFlashBrightness: 1.8
   _playDeathClip: 0
   _deathHologramDuration: 0.45
-  _hologramColor: {r: 0.3, g: 0.95, b: 1, a: 1}
   _hologramBodyAlpha: 0.45
   _hologramScanScale: 3
   _hologramScanAmount: 0.35

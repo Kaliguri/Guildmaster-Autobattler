@@ -14,6 +14,12 @@ namespace Guildmaster.Presentation.Design
     [CreateAssetMenu(menuName = "Guildmaster/Design/Combat Feel Config", fileName = "CombatFeelConfig")]
     public sealed class CombatFeelConfig : ScriptableObject
     {
+        [Header("Палитра")]
+        [Tooltip("Снимок токенов дизайн-системы: отсюда берутся ВСЕ цвета фидбэка (--gm-color-combat-*). " +
+                 "Своих Color-полей у конфига нет — он называет роли, как MapStyle и CombatColorPalette. " +
+                 "Пересобрать — Alebardium → Дизайн-система → Пересобрать палитру.")]
+        [SerializeField] private GuildmasterPalette _palette;
+
         // --- Micro Feel — единая точка выключения ---
         [Header("Micro Feel — toggles (выключи здесь = эффект мёртв везде)")]
         [Tooltip("Пыль у ног при старте/стопе бега (Vfx ContactDust на FeetPoint).")]
@@ -84,13 +90,9 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Период одного вдоха-выдоха, сек.")]
         [SerializeField] private float _idleBreathPeriod = 2.2f;
 
-        [Header("Micro Feel — school flash colors")]
-        [SerializeField] private Color _flashPhysical = Color.white;
-        [SerializeField] private Color _flashElemental = new Color(1f, 0.55f, 0.25f, 1f);
-        [SerializeField] private Color _flashTrue = new Color(1f, 0.95f, 0.55f, 1f);
-        [SerializeField] private Color _flashPoison = new Color(0.45f, 1f, 0.4f, 1f);
-        [SerializeField] private Color _flashLight = new Color(1f, 0.95f, 0.75f, 1f);
-        [SerializeField] private Color _flashDark = new Color(0.55f, 0.35f, 0.85f, 1f);
+        // Цвета вспышек по школе/сродству здесь БОЛЬШЕ НЕ ХРАНЯТСЯ: они живут в палитре проекта
+        // (--gm-color-combat-flash-*), а конфиг только называет роли. До 30.07.2026 те же шесть цветов
+        // лежали и здесь, и в токенах — совпадали ровно потому, что их никто не правил.
 
         [Header("Micro Feel — anticipation / lunge")]
         [Tooltip("Оттяг назад от цели в начале замаха, мировые ед.")]
@@ -117,8 +119,7 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private float _numberArcGravity = 2.2f;
 
         [Header("Micro Feel — heal flash")]
-        [Tooltip("Цвет вспышки при лечении.")]
-        [SerializeField] private Color _healFlashColor = new Color(0.55f, 1f, 0.65f, 1f);
+        // Цвет — роль --gm-color-combat-heal из палитры.
         [Tooltip("Сила вспышки лечения: заметно слабее удара — лечение греет, а не бьёт.")]
         [SerializeField, Range(0.1f, 1f)] private float _healFlashPeak = 0.5f;
 
@@ -143,8 +144,7 @@ namespace Guildmaster.Presentation.Design
 
         // --- Реакция на попадание (UnitView) ---
         [Header("Hit — вспышка")]
-        [Tooltip("Фолбэк-цвет вспышки, если School Flash выключен.")]
-        [SerializeField] private Color _flashColor = Color.white;
+        // Фолбэк-цвет (когда School Flash выключен) — роль --gm-color-combat-flash-neutral.
         [SerializeField] private float _flashDuration = 0.25f;
 
         [Header("Hit — сплющивание")]
@@ -210,9 +210,10 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private float _shatterUpBias = 0.6f;
         [Tooltip("За сколько секунд пересвет спадает и осколки становятся видны как угольки.")]
         [SerializeField] private float _shatterFlashOut = 0.12f;
-        [Tooltip("Цвет «около-белых» осколков (цифровой пересвет). HDR — яркость >1 ловит bloom. " +
-                 "Остальные осколки красятся палитрой ПАВШЕГО юнита из его UnitData.")]
-        [ColorUsage(true, true)] [SerializeField] private Color _shardWhiteColor = new Color(1.6f, 1.62f, 1.7f, 1f);
+        [Tooltip("Во сколько раз «около-белые» осколки ярче базы (роль --gm-color-combat-overbright). " +
+                 "Выше 1 — потому что порог bloom стоит на 1.0 и ровно белый не светится. Остальные " +
+                 "осколки красятся оттенком ПАВШЕГО юнита.")]
+        [SerializeField] private float _shardWhiteBrightness = 2.75f;
         [Tooltip("Какая доля осколков около-белая; остальные — цвета павшего.")]
         [SerializeField, Range(0f, 1f)] private float _shardWhiteShare = 0.5f;
         [Tooltip("Форма гашения: <1 — осколок держит яркость почти весь путь и тухнет в конце; 1 = линейно.")]
@@ -234,9 +235,10 @@ namespace Guildmaster.Presentation.Design
         // --- Смерть — стадия голограммы (UnitView + SH_Sprite_HitFlash) ---
         // Тело сначала теряет плотность и становится «данными», и только потом вспыхивает и рассыпается.
         // Без этой стадии юнит белел мгновенно, и раскол читался как поломка спрайта, а не как развоплощение.
-        [Tooltip("Цвет пересвета перед расколом. Отдельно от Flash Color: hit-flash обязан оставаться в " +
-                 "пределах экрана, а смерть должна ПРОБИВАТЬ порог bloom — иначе «яркий белый» просто белый.")]
-        [ColorUsage(true, true)] [SerializeField] private Color _deathFlashColor = new Color(2.5f, 2.5f, 2.6f, 1f);
+        [Tooltip("Яркость пересвета перед расколом (та же роль --gm-color-combat-overbright, что у осколков, " +
+                 "но своя сила). Отдельно от вспышки удара: hit-flash обязан оставаться в пределах экрана, " +
+                 "а смерть должна ПРОБИВАТЬ порог bloom — иначе «яркий белый» просто белый.")]
+        [SerializeField] private float _deathFlashBrightness = 1.8f;
 
         [Tooltip("Играть клип смерти (падение тела) перед голограммой. Выкл = юнит развоплощается стоя, " +
                  "на том кадре, где его достали.")]
@@ -245,8 +247,7 @@ namespace Guildmaster.Presentation.Design
         [Header("Death — стадия голограммы (перед вспышкой)")]
         [Tooltip("Длительность голограммы, сек. 0 = стадия выключена (сразу белая вспышка).")]
         [SerializeField] private float _deathHologramDuration = 0.3f;
-        [Tooltip("Цвет тела в голограмме. HDR — яркость >1 ловит bloom.")]
-        [ColorUsage(true, true)] [SerializeField] private Color _hologramColor = new Color(0.3f, 0.95f, 1f, 1f);
+        // Цвет тела в голограмме — роль --gm-color-combat-hologram (цифровой циан развоплощения).
         [Tooltip("Прозрачность тела в голограмме (контур остаётся плотным).")]
         [SerializeField, Range(0.05f, 1f)] private float _hologramBodyAlpha = 0.45f;
         [Tooltip("Шаг скан-линий в ПИКСЕЛЯХ спрайта.")]
@@ -331,7 +332,7 @@ namespace Guildmaster.Presentation.Design
         public bool  EnableGuardPose         => _enableGuardPose;
         public bool  EnableDeathShatter      => _enableDeathShatter;
 
-        public Color HealFlashColor      => _healFlashColor;
+        public Color HealFlashColor      => Role("--gm-color-combat-heal");
         public float HealFlashPeak       => _healFlashPeak;
         public float CastOutlineDuration => _castOutlineDuration;
         public float CastOutlineStrength => _castOutlineStrength;
@@ -359,7 +360,7 @@ namespace Guildmaster.Presentation.Design
         public float HpBarPunchAmount        => _hpBarPunchAmount;
         public float HpBarPunchDuration      => _hpBarPunchDuration;
 
-        public Color FlashColor       => _flashColor;
+        public Color FlashColor       => Role("--gm-color-combat-flash-neutral");
         public float FlashDuration    => _flashDuration;
         public float SquashAmount     => _squashAmount;
         public float SquashDuration   => _squashDuration;
@@ -400,7 +401,7 @@ namespace Guildmaster.Presentation.Design
         public float ShatterTumble     => _shatterTumble;
         public float ShatterUpBias     => _shatterUpBias;
         public float ShatterFlashOut   => _shatterFlashOut;
-        public Color ShardWhiteColor   => _shardWhiteColor;
+        public Color ShardWhiteColor   => Overbright(_shardWhiteBrightness);
         public float ShardWhiteShare   => _shardWhiteShare;
         public float ShatterFadePower  => _shatterFadePower;
         public float ShatterLifeVariance => _shatterLifeVariance;
@@ -410,10 +411,10 @@ namespace Guildmaster.Presentation.Design
         public float ShatterHold       => _shatterHold;
         public float ShatterMinTimeScale => _shatterMinTimeScale;
 
-        public Color DeathFlashColor       => _deathFlashColor;
+        public Color DeathFlashColor       => Overbright(_deathFlashBrightness);
         public bool  PlayDeathClip         => _playDeathClip;
         public float DeathHologramDuration => _deathHologramDuration;
-        public Color HologramColor         => _hologramColor;
+        public Color HologramColor         => Role("--gm-color-combat-hologram");
         public float HologramBodyAlpha     => _hologramBodyAlpha;
         public float HologramScanScale     => _hologramScanScale;
         public float HologramScanAmount    => _hologramScanAmount;
@@ -458,27 +459,58 @@ namespace Guildmaster.Presentation.Design
 
         /// <summary>
         /// Цвет hit-flash: сродство перекрывает школу; при выключенном School Flash — <see cref="FlashColor"/>.
+        /// Здесь выбирается РОЛЬ, значение приходит из палитры проекта.
         /// </summary>
         public Color ResolveHitFlashColor(DamageSchool school, DamageAffinity affinity)
         {
-            if (!_enableSchoolFlash) return _flashColor;
+            if (!_enableSchoolFlash) return FlashColor;
             if (affinity != DamageAffinity.None)
             {
                 return affinity switch
                 {
-                    DamageAffinity.Poison => _flashPoison,
-                    DamageAffinity.Light  => _flashLight,
-                    DamageAffinity.Dark   => _flashDark,
-                    _                     => _flashColor,
+                    DamageAffinity.Poison => Role("--gm-color-combat-flash-poison"),
+                    DamageAffinity.Light  => Role("--gm-color-combat-flash-light"),
+                    DamageAffinity.Dark   => Role("--gm-color-combat-flash-dark"),
+                    _                     => FlashColor,
                 };
             }
 
             return school switch
             {
-                DamageSchool.Magical => _flashElemental,
-                DamageSchool.True    => _flashTrue,
-                _                    => _flashPhysical,
+                DamageSchool.Magical => Role("--gm-color-combat-flash-magical"),
+                DamageSchool.True    => Role("--gm-color-combat-flash-true"),
+                _                    => Role("--gm-color-combat-flash-physical"),
             };
+        }
+
+        /// <summary>
+        /// Цвет роли из палитры проекта. Пустая ссылка или неизвестное имя — баг разводки, а не повод
+        /// подставить «похожий» цвет: фидбэк говорит игроку, ЧТО именно произошло, и неверный цвет здесь
+        /// врёт про школу урона. Поэтому — пурпур и красная строка, как в остальной презентации.
+        /// </summary>
+        private Color Role(string token)
+        {
+            if (_palette == null)
+            {
+                Debug.LogError($"[CombatFeelConfig] палитра не назначена, цвет '{token}' взять неоткуда " +
+                               $"(ассет {name}).");
+                return Color.magenta;
+            }
+
+            if (_palette.TryGet(token, out Color color)) return color;
+
+            Debug.LogError($"[CombatFeelConfig] в палитре нет роли '{token}'. Пересобери снимок: " +
+                           "Alebardium → Дизайн-система → Пересобрать палитру.");
+            return Color.magenta;
+        }
+
+        // Холодный пересвет: ОДИН оттенок из палитры, поднятый до нужной силы. Две яркости (осколки и
+        // вспышка смерти) — это два разных события, а не два цвета, поэтому в палитре они не двоятся.
+        // Альфа не множится: её читают шейдеры как прозрачность, а не как свет.
+        private Color Overbright(float brightness)
+        {
+            Color basis = Role("--gm-color-combat-overbright");
+            return new Color(basis.r * brightness, basis.g * brightness, basis.b * brightness, basis.a);
         }
     }
 }
