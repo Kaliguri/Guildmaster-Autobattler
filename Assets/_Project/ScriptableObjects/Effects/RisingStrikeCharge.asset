@@ -43,4 +43,8 @@ MonoBehaviour:
         _blinkBehind: 0
         _knockbackDistance: 2
         _consumeTag: 16384
+        _bonusOnHitEffect: {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
+        _bonusOnHitCount: 2
+        _splitShare: 0.5
+        _splitType: 11
         _damageMultScalings: []

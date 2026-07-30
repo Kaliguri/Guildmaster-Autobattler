@@ -49,7 +49,10 @@ MonoBehaviour:
         _fractionOfShield: 1
         _radius: 2.5
         _damageType: 1
+        _secondShare: 0.5
+        _secondType: 11
         _burstOnExpire: 1
         _useRemainingShield: 1
         _knockbackDistance: 2
-        _victimEffect: {fileID: 11400000, guid: d8cf4b2c31904060b5491eeb4c48053e, type: 2}
+        _victimEffect: {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
+        _victimEffectCount: 3

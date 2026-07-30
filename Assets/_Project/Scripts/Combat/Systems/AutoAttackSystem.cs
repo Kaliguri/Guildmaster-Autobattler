@@ -49,9 +49,15 @@ namespace Guildmaster.Combat
             /// <summary>Сколько раз наложить <see cref="BonusEffect"/>.</summary>
             public readonly int BonusCount;
 
+            /// <summary>Доля удара, уходящая <see cref="SplitType"/>; 0 = удар одночастный.</summary>
+            public readonly float SplitShare;
+
+            /// <summary>Тип отщеплённой половины (Лёд у «Восходящего удара»).</summary>
+            public readonly DamageType SplitType;
+
             public ResolvedHit(RuntimeUnit unit, RuntimeUnit target, float raw, float reach,
                 DamageType damageType, bool blink, float flatPen, float knockback,
-                EffectData bonusEffect, int bonusCount)
+                EffectData bonusEffect, int bonusCount, float splitShare, DamageType splitType)
             {
                 Unit       = unit;
                 Target     = target;
@@ -63,6 +69,8 @@ namespace Guildmaster.Combat
                 Knockback = knockback;
                 BonusEffect = bonusEffect;
                 BonusCount  = bonusCount;
+                SplitShare  = splitShare;
+                SplitType   = splitType;
             }
         }
 
@@ -257,6 +265,8 @@ namespace Guildmaster.Combat
             float knockback = 0f;
             EffectData bonusEffect = null;
             int bonusCount = 0;
+            float splitShare = 0f;
+            DamageType splitType = DamageType.Undefined;
             if (unit.EmpowerDamageMult > 0f)
             {
                 raw *= unit.EmpowerDamageMult;
@@ -267,8 +277,12 @@ namespace Guildmaster.Combat
                 unit.EmpowerKnockback = 0f;
                 bonusEffect = unit.EmpowerBonusEffect;
                 bonusCount  = unit.EmpowerBonusCount;
+                splitShare  = unit.EmpowerSplitShare;
+                splitType   = unit.EmpowerSplitType;
                 unit.EmpowerBonusEffect = null;
                 unit.EmpowerBonusCount  = 0;
+                unit.EmpowerSplitShare  = 0f;
+                unit.EmpowerSplitType   = DamageType.Undefined;
                 // Снимаем ИМЕННО тот эффект, который заряд выдал (у Убийцы — стелс, у периодического
                 // заряда — свой тег): жёсткий Stealth здесь срывал бы скрытность любому, кто просто
                 // взвёл усиленный удар, и наоборот оставлял бы висеть чужой заряд.
@@ -281,7 +295,7 @@ namespace Guildmaster.Combat
             unit.BlinkBehindOnNextAttack = false;
 
             _hits.Add(new ResolvedHit(unit, target, raw, reach, damageType, blink, flatPen, knockback,
-                bonusEffect, bonusCount));
+                bonusEffect, bonusCount, splitShare, splitType));
         }
 
         /// <summary>Прилёт снятого удара: урон/снаряд/хил и on-hit эффекты. Блинк уже отыгран (проход 2a).</summary>
@@ -323,7 +337,17 @@ namespace Guildmaster.Combat
                 }
                 else
                 {
-                    ctx.DealDamage(new DamageRequest(unit, target, raw, damageType, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, bonusFlatPen: hit.FlatPen));
+                    // Заряженный удар может расщепляться на два типа («Восходящий удар» Монаха воды:
+                    // половина Дробящим, половина Льдом). Два запроса, а не одна цифра с половинчатой
+                    // школой: каждая половина режется своей бронёй и будит своих потребителей.
+                    // Расщепление ПО ТЕГУ ЦЕЛИ живёт отдельно (AttackSplit у Мечника) — там условие
+                    // смотрит на цель, здесь свойство самого заряда.
+                    float splitShare = hit.SplitType != DamageType.Undefined ? hit.SplitShare : 0f;
+
+                    if (splitShare < 1f)
+                        ctx.DealDamage(new DamageRequest(unit, target, raw * (1f - splitShare), damageType, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, bonusFlatPen: hit.FlatPen));
+                    if (splitShare > 0f)
+                        ctx.DealDamage(new DamageRequest(unit, target, raw * splitShare, hit.SplitType, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, bonusFlatPen: hit.FlatPen));
                     ApplyAutoAttackOnHit(unit, target, ctx); // §9.1 (мили single)
                     ApplyEmpowerBonus(unit, target, in hit, ctx);
                     PushIfEmpowered(unit, target, in hit, ctx);

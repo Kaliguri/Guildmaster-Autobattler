@@ -152,6 +152,20 @@ namespace Guildmaster.Combat
         public int EmpowerBonusCount;
 
         /// <summary>
+        /// Доля СЛЕДУЮЩЕГО усиленного удара, уходящая типом <see cref="EmpowerSplitType"/> («Восходящий
+        /// удар» Монаха воды: половина Дробящим, половина Льдом). 0 = удар одночастный.
+        /// </summary>
+        /// <remarks>
+        /// Живёт здесь, а не в компоненте эффекта, по той же причине, что множитель урона и толчок: удар
+        /// прилетает в <c>AutoAttackSystem</c>, который про эффекты ничего не знает и читает только
+        /// взведённое состояние бойца.
+        /// </remarks>
+        public float EmpowerSplitShare;
+
+        /// <summary>Тип отщеплённой половины усиленного удара. <c>Undefined</c> = расщепления нет.</summary>
+        public DamageType EmpowerSplitType;
+
+        /// <summary>
         /// Сколько урона поглотили щиты С ФИЛЬТРОМ ПО ШКОЛЕ с прошлого сброса. Копит
         /// <c>SchoolShieldComponent</c>, тратит и обнуляет «Перегрузка» Антимага.
         /// </summary>

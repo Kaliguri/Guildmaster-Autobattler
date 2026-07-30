@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Guildmaster.Combat;
+using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Random;
@@ -310,6 +311,115 @@ namespace Guildmaster.Tests.EditMode.Combat
                 .With("_displaceDamageMult", dmgMult)
                 .With("_displaceWidth", 1.5f);
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: landing);
+        }
+
+        // ===================== Монах воды: гибрид «сталь + вода» =====================
+
+        /// <summary>
+        /// Взрыв «Водяного щита» приходит ДВУМЯ ударами разных типов и вгоняет стаки «Изморози»
+        /// (вердикт Макса 2026-07-30: 50/50 Дробящий + Лёд, три стака, своего замедления больше нет).
+        /// </summary>
+        /// <remarks>
+        /// Проверяются именно два запроса урона, а не сумма: одна цифра с «половинчатой школой» прошла бы
+        /// сумму, но половина Льдом не попала бы ни в уязвимость к льду, ни в накопление холода — то есть
+        /// связка с крио-китами молча не работала бы. Это ровно тот класс дефекта, из-за которого взрыв
+        /// костей не попадал в хрупкость статуи.
+        /// </remarks>
+        [Test]
+        public void WaterShieldBurst_LandsAsTwoTypes_AndStacksFrost()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext(effects: sys);
+            var monk   = TestUnit.Make();
+            var victim = TestUnit.Make(team: 1);
+            ctx.UnitsInWorld.Add(victim);
+
+            EffectData frost = TestEffect.Make(
+                baseDuration: -1f, stacking: StackRule.Stack, maxStacks: 20);
+
+            var shield = new ShieldComponent().With("_amount", new ScalableValue(200f));
+            var burst  = new ShieldBurstComponent()
+                .With("_fractionOfShield", 1f)
+                .With("_radius", 3f)
+                .With("_damageType", DamageType.Blunt)
+                .With("_secondShare", 0.5f)
+                .With("_secondType", DamageType.Ice)
+                .With("_victimEffect", frost)
+                .With("_victimEffectCount", 3);
+            EffectData def = TestEffect.Make(
+                baseDuration: 5f, tags: EffectTag.Shield,
+                components: new IEffectComponent[] { shield, burst });
+
+            sys.Apply(monk, def, monk, ctx);
+            Assert.AreEqual(200f, monk.CurrentShield, 1e-3f, "Щит поднялся — иначе взрыву нечего делить");
+
+            // Щит пробит — взрыв. Путь пробития и путь истечения ведут в один Burst, поэтому гибрид
+            // проверяется здесь: разойтись поведением они не могут по построению.
+            monk.CurrentShield = 0f;
+            sys.Dispatch(monk, new CombatEventData(CombatEvent.DamageTaken, monk, monk, 10f), ctx);
+
+            Assert.AreEqual(2, ctx.DamageCalls.Count, "Взрыв приходит двумя половинами, а не одной цифрой");
+            CollectionAssert.AreEquivalent(
+                new[] { DamageType.Blunt, DamageType.Ice },
+                new[] { ctx.DamageCalls[0].Type, ctx.DamageCalls[1].Type },
+                "Половины — Дробящий и Лёд");
+            Assert.AreEqual(100f, ctx.DamageCalls[0].RawDamage, 1e-3f, "Половина от щита 200");
+            Assert.AreEqual(100f, ctx.DamageCalls[1].RawDamage, 1e-3f, "Вторая половина такая же");
+
+            RuntimeEffect onVictim = victim.ActiveEffects.Find(e => e.Def == frost);
+            Assert.IsNotNull(onVictim, "Взрыв кладёт «Изморозь» на задетых");
+            Assert.AreEqual(3, onVictim.Stacks, "Три стака за взрыв — вердикт Макса, а не порция ассета");
+        }
+
+        /// <summary>
+        /// «Восходящий удар» (пассивка Монаха воды) тоже гибрид: половина урона Дробящим, половина Льдом,
+        /// плюс два стака «Изморози». Связь со льдом идёт через СПОСОБНОСТЬ, а обычная автоатака остаётся
+        /// чисто физической — иначе фон копил бы холод быстрее, чем задумано.
+        /// </summary>
+        [Test]
+        public void RisingStrike_SplitsHalfIntoIce_AndAddsTwoFrostStacks()
+        {
+            var sim = BuildSim(12UL);
+            var monk   = MakeUnit(0, team: 0, pos: Vector2.zero, aad: 100f, moveSpeed: 0f);
+            var victim = MakeUnit(1, team: 1, pos: new Vector2(1f, 0f), maxHp: 10000f, aad: 0f, moveSpeed: 0f);
+            monk.AutoAttackDamageType = DamageType.Blunt;   // посох Монаха воды
+            sim.EnqueueUnitSpawn(monk);
+            sim.EnqueueUnitSpawn(victim);
+            monk.AutoAttackTarget = victim;
+            sim.Tick(SimConstants.TickDelta);
+
+            var hits = new List<(DamageType type, float dmg)>();
+            sim.OnDamageDealt += (src, tgt, res) => { if (tgt == victim) hits.Add((res.Type, res.TotalDamage)); };
+
+            EffectData frost = TestEffect.Make(
+                baseDuration: -1f, stacking: StackRule.Stack, maxStacks: 20);
+
+            var charge = new EmpowerNextAttackComponent()
+                .With("_damageMult", 2f)
+                .With("_consumeTag", EffectTag.Empowered)
+                .With("_splitShare", 0.5f)
+                .With("_splitType", DamageType.Ice)
+                .With("_bonusOnHitEffect", frost)
+                .With("_bonusOnHitCount", 2);
+            EffectData def = TestEffect.Make(
+                baseDuration: -1f, tags: EffectTag.Empowered,
+                components: new IEffectComponent[] { charge });
+
+            sim.ApplyEffect(monk, def, monk);
+
+            // Ждём замах и прилёт заряженной автоатаки.
+            for (int i = 0; i < 40 && hits.Count < 2; i++) sim.Tick(SimConstants.TickDelta);
+
+            Assert.AreEqual(2, hits.Count, "Заряженный удар приходит двумя половинами");
+            CollectionAssert.AreEquivalent(
+                new[] { DamageType.Blunt, DamageType.Ice },
+                new[] { hits[0].type, hits[1].type },
+                "Половины — тип автоатаки и Лёд");
+            Assert.AreEqual(hits[0].dmg, hits[1].dmg, 1e-2f, "Доли равные");
+
+            RuntimeEffect onVictim = victim.ActiveEffects.Find(e => e.Def == frost);
+            Assert.IsNotNull(onVictim, "Заряженный удар кладёт «Изморозь»");
+            Assert.AreEqual(2, onVictim.Stacks, "Два стака за удар");
         }
 
         private static CombatSimulation BuildSim(ulong seed) =>

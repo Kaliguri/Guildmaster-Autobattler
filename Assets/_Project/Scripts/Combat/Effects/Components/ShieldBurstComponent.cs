@@ -43,11 +43,24 @@ namespace Guildmaster.Combat.Effects.Components
                  "пробития урона не наносит вовсе — платой был удар, а не размер.")]
         [SerializeField] private bool _useRemainingShield;
 
+        [Tooltip("Доля урона взрыва, уходящая ВТОРЫМ типом («Водяной щит»: половина Дробящим, половина " +
+                 "Льдом). 0 = взрыв одночастный.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _secondShare;
+
+        [Tooltip("Тип второй половины. Undefined при доле > 0 — дефект контента: половина улетит без типа.")]
+        [SerializeField] private DamageType _secondType = DamageType.Undefined;
+
         [Tooltip("На сколько взрыв отбрасывает задетых, мировых единиц. 0 = только урон.")]
         [SerializeField] private float _knockbackDistance;
 
-        [Tooltip("Эффект на каждого задетого взрывом (замедление у «Водяного щита»). Пусто = без эффекта.")]
+        [Tooltip("Эффект на каждого задетого взрывом («Водяной щит» вгоняет стаки «Изморози»). Пусто = без эффекта.")]
         [SerializeField] private EffectData _victimEffect;
+
+        [Tooltip("Сколько раз наложить эффект каждому задетому: у «Водяного щита» — 3 стака холода. " +
+                 "Порция самого эффекта тут не годится: она свойство ассета и одинакова для всех, кто его кладёт.")]
+        [Min(1)]
+        [SerializeField] private int _victimEffectCount = 1;
 
         public CombatEvent Events => CombatEvent.DamageTaken;
 
@@ -115,10 +128,24 @@ namespace Guildmaster.Combat.Effects.Components
                 if (victim.IsDead) continue;
 
                 if (damage > 0f)
-                    ctx.Combat.DealDamage(new DamageRequest(
-                        carrier, victim, damage, _damageType, ctx.Combat.ArmorK));
+                {
+                    // Гибрид — ДВА удара своих типов, а не одна цифра с половинчатой школой: только так
+                    // каждая половина режется своей бронёй и будит своих потребителей (половина Льдом
+                    // кладёт «Изморозь» и попадает в уязвимость к льду, половина Дробящим — в хрупкость).
+                    float secondShare = _secondType != DamageType.Undefined ? _secondShare : 0f;
 
-                if (_victimEffect != null) ctx.Combat.ApplyEffect(victim, _victimEffect, carrier);
+                    if (secondShare < 1f)
+                        ctx.Combat.DealDamage(new DamageRequest(
+                            carrier, victim, damage * (1f - secondShare), _damageType, ctx.Combat.ArmorK));
+
+                    if (secondShare > 0f)
+                        ctx.Combat.DealDamage(new DamageRequest(
+                            carrier, victim, damage * secondShare, _secondType, ctx.Combat.ArmorK));
+                }
+
+                if (_victimEffect != null)
+                    for (int n = 0; n < _victimEffectCount; n++)
+                        ctx.Combat.ApplyEffect(victim, _victimEffect, carrier);
 
                 if (_knockbackDistance > 0f)
                 {

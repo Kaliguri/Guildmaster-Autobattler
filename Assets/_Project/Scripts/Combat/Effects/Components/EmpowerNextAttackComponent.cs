@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -50,6 +50,14 @@ namespace Guildmaster.Combat.Effects.Components
         [Min(0)]
         [SerializeField] private int _bonusOnHitCount = 1;
 
+        [Tooltip("Доля усиленного удара, уходящая ДРУГИМ типом урона («Восходящий удар» Монаха воды: " +
+                 "половина Дробящим, половина Льдом). 0 = удар идёт целиком типом автоатаки.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _splitShare;
+
+        [Tooltip("Тип отщеплённой половины усиленного удара. Undefined при доле > 0 — дефект контента.")]
+        [SerializeField] private DamageType _splitType = DamageType.Undefined;
+
         [Tooltip("Конвертации статов в множитель усиления (M4). Убийца: прямая форма от AttackSpeed — " +
                  "«+0.5 к множителю за каждую 1.0 сверх базовой».")]
         [SerializeField] private Data.Stats.StatConversion[] _damageMultScalings;
@@ -66,6 +74,8 @@ namespace Guildmaster.Combat.Effects.Components
             self.EmpowerConsumeTag  = _consumeTag;
             self.EmpowerBonusEffect = _bonusOnHitEffect;
             self.EmpowerBonusCount  = _bonusOnHitCount;
+            self.EmpowerSplitShare  = _splitType != DamageType.Undefined ? _splitShare : 0f;
+            self.EmpowerSplitType   = _splitType;
             if (_blinkBehind) self.BlinkBehindOnNextAttack = true;
         }
 
@@ -79,6 +89,8 @@ namespace Guildmaster.Combat.Effects.Components
             self.EmpowerKnockback  = 0f;
             self.EmpowerBonusEffect = null;
             self.EmpowerBonusCount  = 0;
+            self.EmpowerSplitShare  = 0f;
+            self.EmpowerSplitType   = DamageType.Undefined;
             if (_blinkBehind) self.BlinkBehindOnNextAttack = false;
         }
     }
