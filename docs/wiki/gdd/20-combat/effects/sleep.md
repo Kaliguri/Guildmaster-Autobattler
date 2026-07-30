@@ -3,7 +3,8 @@ title: "Effect - Sleep"
 order: 540
 status: draft
 updated: 2026-07-29
-impl: paper
+impl: engine
+impl_note: "заведено 2026-07-30 как effect.sleep: контроль + SleepComponent (чужой удар будит и бьёт ×2, урон автора не будит) + правило агро «спящих не выбирают» в ProfileBrain"
 ---
 
 # Сон (Sleep)

@@ -4,7 +4,7 @@ order: 15
 status: needs_review
 updated: 2026-07-29
 impl: partial
-impl_note: "ассеты Frozen/ChillingTouch есть, но линия ступеней и стаки «Изморози» в коде отсутствуют; IceChainsStun остался без владельца после снятия «Ледяных оков»"
+impl_note: "линия реализована 2026-07-30 (FrostComponent + FrostStatueComponent): три ступени, интерполяция силы, Раскол, обнуление после окна. Не реализовано: хвост уязвимости к льду (+20% ещё 2 сек после окна) и скейл числа стаков от AP крио-юнита"
 asset: [Frozen, ChillingTouch, IceChainsStun]
 ---
 
