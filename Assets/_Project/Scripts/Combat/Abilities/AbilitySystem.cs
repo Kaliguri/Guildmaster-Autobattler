@@ -407,7 +407,7 @@ namespace Guildmaster.Combat
 
             // Эффекты на себя — ПОСЛЕ нагрузки: щит «Вихря» растёт от урона, который вихрь только что
             // нанёс, значит реактив обязан висеть к моменту сведения тика, но не раньше самого удара.
-            ApplySelfEffects(caster, data, ctx);
+            ApplySelfEffects(caster, data, ctx, data.RepeatSelfEffects ? repeats : 1);
 
             // Рекаст авто-атаки (M18): умение-УДАР сбрасывает таймер обычной атаки, и она выходит сразу
             // по готовности — в окне получаются два удара почти подряд. Обнуление ПОСЛЕ удара умением
@@ -759,13 +759,24 @@ namespace Guildmaster.Combat
                 ctx.ApplyEffect(target, effects[i], caster);
         }
 
-        /// <summary>Эффекты на самого кастующего — независимо от формы способности и наличия цели.</summary>
-        private static void ApplySelfEffects(RuntimeUnit caster, AbilityData data, ICombatContext ctx)
+        /// <summary>
+        /// Эффекты на самого кастующего — независимо от формы способности и наличия цели.
+        /// <paramref name="repeats"/> — сколько раз применить каждый (см. <see cref="AbilityData.RepeatSelfEffects"/>).
+        /// </summary>
+        private static void ApplySelfEffects(RuntimeUnit caster, AbilityData data, ICombatContext ctx, int repeats)
         {
             EffectData[] effects = data.SelfEffects;
             if (effects == null) return;
+            if (repeats < 1) repeats = 1;
+
+            // Порядок «эффект за эффектом, а не проход за проходом» смысла не меняет — стаки накопительные, —
+            // но держит применения одного эффекта рядом, что читаемее в логе боя.
             for (int i = 0; i < effects.Length; i++)
-                if (effects[i] != null) ctx.ApplyEffect(caster, effects[i], caster);
+            {
+                if (effects[i] == null) continue;
+                for (int shot = 0; shot < repeats; shot++)
+                    ctx.ApplyEffect(caster, effects[i], caster);
+            }
         }
 
         private static float HpPct(RuntimeUnit u)

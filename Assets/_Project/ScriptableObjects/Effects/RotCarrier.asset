@@ -41,3 +41,4 @@ MonoBehaviour:
         _bonusEffect: {fileID: 11400000, guid: 1946ad3b25cd41b5ac335ee61789adc0, type: 2}
         _autoAttacksOnly: 1
         _rearConeCos: 0.5
+        _bonusStacks: 2

@@ -163,6 +163,11 @@ namespace Guildmaster.Data.Definitions
         [Min(0)]
         [SerializeField] private int _payloadRepeatGrowth;
 
+        [Tooltip("Повторять и эффекты НА СЕБЯ столько же раз, сколько нагрузку на цель. " +
+                 "Хранитель углей = вкл: «Раздуть жар» кладёт 5 стаков союзнику и 5 себе. " +
+                 "Выкл (по умолчанию) = self-эффекты применяются один раз за каст, как щит «Стального вихря».")]
+        [SerializeField] private bool _repeatSelfEffects;
+
         [Header("Displacement (§9.9) — Монах")]
         [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. На линии полёта — урон-ядро.")]
         [SerializeField] private bool _displaces;
@@ -335,6 +340,20 @@ namespace Guildmaster.Data.Definitions
         /// </remarks>
         public int ResolvePayloadRepeats(int previousCasts)
             => PayloadRepeats + PayloadRepeatGrowth * (previousCasts < 0 ? 0 : previousCasts);
+
+        /// <summary>
+        /// Повторять ли <see cref="SelfEffects"/> столько же раз, сколько нагрузку на цель.
+        /// </summary>
+        /// <remarks>
+        /// <b>Флаг, а не второе число</b> (вердикт Макса 2026-07-30): у Хранителя углей требование звучит
+        /// как «столько же, сколько союзнику», то есть величина у обеих половин ОДНА. Отдельное
+        /// <c>_selfPayloadRepeats</c> завело бы второго владельца этой величины, и при правке залпа
+        /// половины разошлись бы молча.
+        /// <para><b>Выключено по умолчанию намеренно:</b> щит «Стального вихря» и родня — реактивы,
+        /// которые вешаются на каст РАЗ и растут от урона всей нагрузки. Повтор дал бы Копейщику пять
+        /// щитов вместо одного, то есть тихо усилил бы кита, которого никто не трогал.</para>
+        /// </remarks>
+        public bool RepeatSelfEffects => _repeatSelfEffects;
 
         public bool Displaces => _displaces;
         public float DisplaceDistance => _displaceDistance;

@@ -74,18 +74,17 @@ SORT file.name ASC
 **переносит за спину** (`_blinkBehind: 1`), «Длань жизни» Пастыря несёт диспел (`HandOfLifeCleanse`),
 а у Геоманта на автоатаке висят и `Bleed`, и `StoneCrush`.
 
-## Кодовые долги от вердиктов 2026-07-30
+## Кодовые долги от вердиктов 2026-07-30 — ЗАКРЫТЫ
 
-Четыре правки Макса **нельзя было внести данными** — нужен код (`combat-sim`):
+Четыре правки Макса не легли в данные и потребовали кода. **Сделано 2026-07-30**, каждая величина стала
+полем: `AbilityData._repeatSelfEffects` (Hearth — 5 стаков и на себя),
+`StoneTitheComponent._healShareOfTaken` (Cairn — лечение на 100% забранного, при 30% в максимум),
+`RearStrikeEffectComponent._bonusStacks` (Fang — 2 стака с тыла), `Rule.BonusPerStack` + `Rule.MaxBonus`
+в `TaggedTargetDamageBonusComponent` (Winter — +5% за стак льда до +100%). Развилки — запись
+[«Payload Repeat And Per-Stack Bonus»](../../tech/00-meta/journal/2026-07-30-payload-repeat-and-per-stack-bonus.md);
+инвариант держит тест `DataDrivenPayloadRulesTests`.
 
-| Кит | Чего просит карточка | Почему не данные |
-|---|---|---|
-| [[gdd/relics/the-hearth\|Hearth]] | 5 стаков углей **на себя** (как и на цель) | `_payloadRepeats: 5` применяется к `_effects`, но не к `_selfEffects` — нужен повтор и для self-нагрузки |
-| [[gdd/relics/the-cairn\|Cairn]] | «Голод» **исцеляет на 100% забранного** | у `StoneTitheComponent` лечения нет вовсе: он умеет только прибавлять к максимуму |
-| [[gdd/relics/the-fang\|Fang]] | удар в спину даёт **2 стака** яда | `RearStrikeEffectComponent` не принимает количество стаков |
-| [[gdd/relics/the-winter\|Winter]] | **+5% за каждый стак льда** до +100% | `TaggedTargetDamageBonusComponent` даёт плоскую прибавку по тегу (лучшее правило), а не per-stack; `_autoAttackOnly` уже снят данными |
-
-Плюс из карточек, не про числа: [[gdd/relics/the-lull|Lull]] по дизайну **не автоатакует** (в ассете
+Осталось из карточек, не про числа: [[gdd/relics/the-lull|Lull]] по дизайну **не автоатакует** (в ассете
 автоатака 130 при темпе 0.75 — снять после замера), [[gdd/relics/the-cairn|Cairn]] должен бить
 **Колющим** в ближней форме и **каналом-потоком** в дальней (в ассете один `Blunt`-снаряд),
 [[gdd/relics/the-bonewright|Bonewright]] просит **ускоряющийся в полёте** череп и **раз в 4 сек**

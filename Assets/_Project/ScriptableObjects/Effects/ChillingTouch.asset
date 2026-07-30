@@ -39,5 +39,7 @@ MonoBehaviour:
       data:
         _rules:
         - RequiredTags: 128
-          Bonus: 0.25
+          Bonus: 0
+          BonusPerStack: 0.05
+          MaxBonus: 1
         _autoAttackOnly: 0

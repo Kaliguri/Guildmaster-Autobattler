@@ -10,9 +10,10 @@ namespace Guildmaster.Combat.Effects.Components
     /// <summary>
     /// «Каменная десятина» Геоманта (карточка [[the-cairn]]): один раз в начале боя носитель забирает у
     /// союзников вокруг долю их ТЕКУЩЕГО HP и прибавляет себе половину забранного к максимуму.
-    /// <para><b>Числа:</b> <c>_tithePctCurrentHp</c> — сколько берётся с каждого союзника (0.1 = 10% его
-    /// текущего HP); <c>_keepShare</c> — какая доля забранного достаётся носителю (0.5 = половина);
-    /// <c>_radius</c> — кого достаёт десятина. Сделка невыгодна арифметически и выгодна только
+    /// <para><b>Числа:</b> <c>_tithePctCurrentHp</c> — сколько берётся с каждого союзника (0.2 = 20% его
+    /// текущего HP); <c>_keepShare</c> — доля забранного, уходящая носителю в МАКСИМУМ (0.3);
+    /// <c>_healShareOfTaken</c> — доля забранного, уходящая в ТЕКУЩЕЕ HP (1 = всё);
+    /// <c>_radius</c> — кого достаёт десятина. Сделка невыгодна арифметически по запасу и выгодна
     /// позиционно: команда переливает живучесть из тех, кого не фокусят, в того, кто дерётся.</para>
     /// <para><b>Когда срабатывает:</b> ровно один раз, на первом же тике боя.</para>
     /// </summary>
@@ -24,8 +25,11 @@ namespace Guildmaster.Combat.Effects.Components
     /// <para><b>Почему периодический компонент, а не <c>OnApply</c>.</b> Пассивки накладываются в момент
     /// сборки юнита, когда остальной отряд ещё не стоит на арене: десятина собрала бы дань с половины
     /// команды или ни с кого. Первый тик — самая ранняя точка, где мир уже собран целиком.</para>
-    /// <para><b>Прибавка к максимуму идёт вместе с лечением на ту же величину:</b> иначе носитель получил
-    /// бы пустой запас и остался бы на своём 1% HP — то есть сделка ничего бы ему не дала.</para>
+    /// <para><b>Запас и наполнение — два РАЗНЫХ числа</b> (вердикт Макса 2026-07-30). Лечение считается от
+    /// всего забранного (100%), а к максимуму уходит только <c>_keepShare</c> (30%). Одно число здесь не
+    /// работает: если лечить на долю запаса, носитель остаётся почти мёртвым и сделка ему ничего не даёт;
+    /// если поднимать запас на всё забранное, он превращается в танка чужими телами. Разведение даёт то,
+    /// что нужно: он встаёт на ноги сразу, но его потолок растёт втрое медленнее.</para>
     /// </remarks>
     [Serializable]
     public sealed class StoneTitheComponent : IPeriodicComponent
@@ -40,8 +44,12 @@ namespace Guildmaster.Combat.Effects.Components
         [Range(0f, 1f)]
         [SerializeField] private float _tithePctCurrentHp = 0.1f;
 
-        [Tooltip("Какая доля забранного достаётся носителю (0.5 = половина). Остальное просто теряется.")]
+        [Tooltip("Какая доля забранного идёт носителю В МАКСИМУМ HP (0.3 = треть). Остальное теряется.")]
         [SerializeField] private float _keepShare = 0.5f;
+
+        [Tooltip("Какая доля забранного идёт носителю в ТЕКУЩЕЕ HP (1 = лечится на всё забранное). " +
+                 "Отдельно от KeepShare: запас и наполнение — разные величины, см. remarks.")]
+        [SerializeField] private float _healShareOfTaken = 1f;
 
         [Tooltip("Радиус сбора десятины, мировые единицы. 0 = без ограничения (вся команда).")]
         [SerializeField] private float _radius = 12f;
@@ -88,17 +96,26 @@ namespace Guildmaster.Combat.Effects.Components
                 taken += toll;
             }
 
+            if (taken <= 0f) return;
+
             float gained = taken * _keepShare;
-            if (gained <= 0f) return;
-
-            self.Stats.AddModifiersFrom(eff, new[]
+            if (gained > 0f)
             {
-                new StatModifier(StatType.MaxHP, ModifierOp.Flat, gained),
-            }, deferred: false);
+                self.Stats.AddModifiersFrom(eff, new[]
+                {
+                    new StatModifier(StatType.MaxHP, ModifierOp.Flat, gained),
+                }, deferred: false);
+            }
 
-            // Запас без наполнения бесполезен: носитель стартует почти мёртвым, и вся сделка ради того,
-            // чтобы он встал на ноги. Поэтому прибавка к максимуму сразу приходит и в текущее HP.
-            self.CurrentHP += gained;
+            // Наполнение считается от ЗАБРАННОГО, а не от прибавки к максимуму: носитель стартует почти
+            // мёртвым, и сделка ради того, чтобы он встал на ноги. Клампим по максимуму — лишнее просто
+            // теряется, как и доля, не ушедшая в запас.
+            float healed = taken * _healShareOfTaken;
+            if (healed > 0f)
+            {
+                float maxHp = self.Stats.Get(StatType.MaxHP);
+                self.CurrentHP = self.CurrentHP + healed > maxHp ? maxHp : self.CurrentHP + healed;
+            }
         }
     }
 }

@@ -8,9 +8,9 @@ namespace Guildmaster.Combat.Effects.Components
     /// «Гниль» Ночного лезвия (карточка [[the-fang]]): пассивка носителя, которая за удар В ТЫЛ добавляет
     /// цели ещё один <see cref="_bonusEffect"/> — сверх того, что уже наложила авто-атака. Так удар в
     /// спину удваивает яд, а вместе с ним и шред брони, который яд несёт.
-    /// <para><b>Числа:</b> своих у компонента нет намеренно — вся сила в <see cref="_bonusEffect"/>, и
-    /// балансится она там же, где обычный яд. Второй множитель на «удар в спину» сделал бы владельцев
-    /// силы двумя.</para>
+    /// <para><b>Числа:</b> <see cref="_bonusStacks"/> — сколько РАЗ накладывается бонусный эффект (Клык = 2).
+    /// Силы у компонента нет намеренно: она вся в <see cref="_bonusEffect"/> и балансится там же, где
+    /// обычный яд. Множитель урона на «удар в спину» сделал бы владельцев силы двумя.</para>
     /// <para><b>Когда срабатывает:</b> после прямого удара носителя (авто-атака или способность, по
     /// <see cref="_autoAttacksOnly"/>), если носитель стоял в тыловом конусе цели.</para>
     /// </summary>
@@ -33,6 +33,10 @@ namespace Guildmaster.Combat.Effects.Components
         [Range(0f, 1f)]
         [SerializeField] private float _rearConeCos = 0.5f;
 
+        [Tooltip("Сколько раз наложить бонусный эффект за удар в тыл (Ночное лезвие = 2 стака яда).")]
+        [Min(1)]
+        [SerializeField] private int _bonusStacks = 1;
+
         public CombatEvent Events => CombatEvent.DamageDealt;
 
         public void OnApply(in EffectContext ctx) { }
@@ -49,7 +53,12 @@ namespace Guildmaster.Combat.Effects.Components
             if (carrier == null || victim == null || victim.IsDead) return;
             if (!CombatPositioning.IsRearAttack(carrier, victim, _rearConeCos)) return;
 
-            ctx.Combat.ApplyEffect(victim, _bonusEffect, carrier);
+            // Повторное наложение, а не «стаки одним вызовом»: сколько стаков даёт одно применение —
+            // свойство самого эффекта (StacksPerApplication), и дублировать его здесь значило бы завести
+            // второго владельца. Компонент говорит только «сколько РАЗ», а не «насколько сильно».
+            int times = _bonusStacks < 1 ? 1 : _bonusStacks;
+            for (int i = 0; i < times; i++)
+                ctx.Combat.ApplyEffect(victim, _bonusEffect, carrier);
         }
     }
 }

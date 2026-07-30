@@ -42,4 +42,5 @@ MonoBehaviour:
         _startAtHpPct: 0.01
         _tithePctCurrentHp: 0.2
         _keepShare: 0.3
+        _healShareOfTaken: 1
         _radius: 12

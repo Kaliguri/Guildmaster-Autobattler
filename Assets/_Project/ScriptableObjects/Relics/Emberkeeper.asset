@@ -94,6 +94,7 @@ MonoBehaviour:
     _summonLifetimeSeconds: 0
     _summonDiesWithSummoner: 0
     _payloadRepeats: 5
+    _repeatSelfEffects: 1
     _payloadRepeatGrowth: 0
     _displaces: 0
     _displaceDistance: 4
