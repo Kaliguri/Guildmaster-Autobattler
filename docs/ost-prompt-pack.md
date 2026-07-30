@@ -43,23 +43,18 @@
 Промпт **намеренно короткий** — шесть тегов вместо десяти: слова про энергию складываются, и трек
 уезжает в боевик. Сила берётся не из плотности, а из **арки** (теги в Lyrics) и гармонии.
 
+Текст → **Инструментал** (тумблер), арка задаётся **словами в Стилях**.
+
 ```
 epic anime battle score, tender but powerful, lyrical melody over restrained percussion, warm strings
-with electric guitar lift, 132 BPM, D dorian
+with electric guitar lift, starts intimate and grows, 132 BPM, D dorian, no vocals
 ```
 Исключить: `busy drums, taiko, war march, flute, solo violin`
 
-Текст → **«Писать»**, и туда только теги арки, без слов:
-```
-[Intro - Soft]
-[Verse - Intimate]
-[Chorus - Powerful]
-[Bridge - Quiet]
-[Final Chorus - Climactic]
-[Outro - Diminuendo]
-```
-
-Если после этого модель всё же запоёт — вернуть тумблер **Инструментал** и снять теги.
+**Почему не тегами арки.** Теги живут в поле Lyrics, а его занимает тумблер «Инструментал»: включить
+оба нельзя. Отключить тумблер ради тегов — значит остаться без единого запрета голоса, и модель
+запоёт. Поэтому **теги арки проверяются в 01-B**, где текст нужен по-настоящему, а здесь арка идёт
+словами (`starts intimate and grows`).
 
 ### 01-B · женский вокализ
 
@@ -72,47 +67,48 @@ and shimmering bells, 158 BPM, D dorian, no autotune
 ```
 Исключить: `flute, solo violin, taiko, war march, spoken word`
 
-Текст — **на всю длину трека**, секции разделяются переносами строк:
+Текст — **на всю длину трека**, секции разделяются переносами строк. **Теги арки стоят прямо в
+заголовках секций** — здесь они проверяются заодно, поле Lyrics всё равно занято:
 
 ```
-[Intro]
+[Intro - Soft]
 a-a-i-a... o-o-ve-la...
 
-[Verse]
+[Verse - Intimate]
 mia so-o-nta ve-la
 e-na do-re-a li-a-ne
 so-la mi-re-na va-ia
 o-re-na ta-li-a so
 
-[Chorus]
+[Chorus - Powerful]
 e-lun do-re-a li-a-ne
 ai-a so-o-nta ve-la
 e-lun do-re-a mi-o
 la-ia ve-so-o-na
 
-[Verse]
+[Verse - Building]
 ne-va so-li-a re-o
 mi-e-na ta-la vo-re-a
 so-o-la ni-a me-na
 e-ra li-o-ne va
 
-[Chorus]
+[Chorus - Powerful]
 e-lun do-re-a li-a-ne
 ai-a so-o-nta ve-la
 e-lun do-re-a mi-o
 la-ia ve-so-o-na
 
-[Bridge]
+[Bridge - Quiet]
 o-o-o... a-i-a...
 so-la-re-na... ve-o-na...
 
-[Chorus]
+[Final Chorus - Climactic]
 e-lun do-re-a li-a-ne
 ai-a so-o-nta ve-la
 e-lun do-re-a mi-o
 la-ia ve-so-o-na
 
-[Outro]
+[Outro - Diminuendo]
 a-a-ia... ve-la...
 ```
 
