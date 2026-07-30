@@ -1119,6 +1119,46 @@ MonoBehaviour:
     m_Key: effect.harvest_grip.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 7000417282285568
+    m_Key: relic.geomancer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417320034304
+    m_Key: relic.geomancer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228608
+    m_Key: effect.bleed.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228609
+    m_Key: effect.bleed.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228610
+    m_Key: effect.stone_crush.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228611
+    m_Key: effect.stone_crush.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228612
+    m_Key: effect.stone_tithe.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228613
+    m_Key: effect.stone_tithe.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228614
+    m_Key: effect.blood_exchange.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7000417324228615
+    m_Key: effect.blood_exchange.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
