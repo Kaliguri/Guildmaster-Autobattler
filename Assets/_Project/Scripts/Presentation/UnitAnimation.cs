@@ -30,14 +30,22 @@ namespace Guildmaster.Presentation
         /// успеть показать удар, которого уже нет. Разбег стоит НИЖЕ атаки по той же причине, по которой
         /// он гаснет в симе на замахе: юнит, начавший бить, больше не бежит.
         /// </remarks>
+        /// <param name="hasTarget">
+        /// У юнита есть цель — то есть он В БОЮ, а не отдыхает. Разводит две стойки: <c>CombatIdle</c>
+        /// (оружие наготове) и <c>Idle</c> (клинок опущен). Это НЕ вывод показа: цель назначает сим, и
+        /// показ читает её из снимка тем же способом, что и всё остальное.
+        /// <para>Спрашивать здесь <c>AttackPhase</c> было бы неверно: фаза описывает свинг, а «в бою ли
+        /// юнит» — другой вопрос. Боец, бегущий к врагу через всю арену, не машет и не отдыхает.</para>
+        /// </param>
         public static UnitAnimationState Select(bool isDead, bool attackPlaying, bool isMoving,
-            bool canAct = true, bool isSprinting = false, bool chargedAttack = false)
+            bool canAct = true, bool isSprinting = false, bool chargedAttack = false,
+            bool hasTarget = false)
         {
             if (isDead)  return UnitAnimationState.Death;
             if (!canAct) return UnitAnimationState.Stun;
             if (attackPlaying)
                 return chargedAttack ? UnitAnimationState.AttackCharge : UnitAnimationState.Attack;
-            if (!isMoving) return UnitAnimationState.Idle;
+            if (!isMoving) return hasTarget ? UnitAnimationState.CombatIdle : UnitAnimationState.Idle;
             return isSprinting ? UnitAnimationState.Sprint : UnitAnimationState.Run;
         }
 
@@ -83,6 +91,35 @@ namespace Guildmaster.Presentation
             float remaining = ticksLeft + 1f - frameAlpha;
             float progress  = 1f - remaining / totalTicks;
             return progress < 0f ? 0f : (progress > 1f ? 1f : progress);
+        }
+
+        /// <summary>
+        /// Позиция клипа свинга внутри КАНАЛА авто-атаки [0..1). Поток бьёт не один раз, а каждый свой тик,
+        /// и кадр контакта обязан прийтись на каждый из них — поэтому клип не скрабится «замах → хвост», а
+        /// крутится циклом от маркера через конец обратно к маркеру: один оборот = один период между
+        /// ударами.
+        /// <para>Пропорцию «хвост / замах» внутри оборота задаёт положение маркера в клипе, и это не
+        /// упущение: отдельных замаха и хвоста у тиков потока не существует — они есть только у канала
+        /// целиком, на входе в него и на выходе.</para>
+        /// </summary>
+        /// <param name="markerNormalized">Доля клипа до кадра контакта.</param>
+        /// <param name="ticksLeft">Тиков до следующего удара потока.</param>
+        /// <param name="periodTicks">Период между ударами потока в тиках.</param>
+        /// <param name="frameAlpha">Доля внутри показываемого тика [0..1].</param>
+        /// <remarks>
+        /// <b>Остаток берётся по модулю периода, и это не перестраховка.</b> Счётчик потока перезаряжается
+        /// В ТОМ ЖЕ тике, в котором бьёт, поэтому снимок тика удара несёт уже полный период — нуля, на
+        /// который встаёт замах (<c>WindupRemaining</c>), здесь не бывает вовсе. Без модуля этот тик
+        /// начинал бы новый оборот с нуля, и клип прыгал бы на кадр контакта, не дойдя до него последние
+        /// 1/период клипа: удар выглядел бы обрубленным ровно в момент удара.
+        /// </remarks>
+        public static float ChannelClipTime(float markerNormalized, int ticksLeft, int periodTicks,
+            float frameAlpha)
+        {
+            if (periodTicks <= 0) return markerNormalized;
+
+            float t = markerNormalized + ScrubProgress(ticksLeft % periodTicks, periodTicks, frameAlpha);
+            return t >= 1f ? t - 1f : t;
         }
     }
 }

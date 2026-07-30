@@ -58,6 +58,20 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Сколько тиков доигрыша осталось — вместе с <see cref="RecoveryTicks"/> даёт прогресс.</summary>
         public readonly int RecoveryRemaining;
 
+        /// <summary>
+        /// Период между тиками урона ВНУТРИ канала авто-атаки, тиков (0 = канала нет). По нему показ крутит
+        /// свинг циклом, чтобы кадр контакта пришёлся на каждый удар потока.
+        /// </summary>
+        /// <remarks>
+        /// Период везём числом, а не даём показу пересчитать его из <c>AttackSpeed</c>: формула
+        /// <see cref="AttackTiming.IntervalTicks"/> уже имеет владельца, и её копия на стороне показа
+        /// разъехалась бы на первом же бафе скорости — причём молча, потому что урон бы шёл правильно.
+        /// </remarks>
+        public readonly int AttackChannelTickPeriod;
+
+        /// <summary>Тиков до следующего удара внутри канала — вместе с периодом даёт фазу цикла.</summary>
+        public readonly int AttackChannelTickRemaining;
+
         /// <summary>Id текущей цели или <c>-1</c>: показ разворачивает юнита к ней. Ссылки на объект
         /// здесь нет намеренно — иначе через цель протёк бы живой сим.</summary>
         public readonly int TargetId;
@@ -109,7 +123,8 @@ namespace Guildmaster.Combat.Tape
             int attackCooldownTicks, int targetId, EffectTag effectTagMask, bool isDead,
             float attackRange = 0f, bool canAct = true, bool isDisplaced = false, bool isEmpowered = false,
             float sprintRamp = 0f, bool chargedSwing = false,
-            int recoveryTicks = 0, int recoveryRemaining = 0)
+            int recoveryTicks = 0, int recoveryRemaining = 0,
+            int attackChannelTickPeriod = 0, int attackChannelTickRemaining = 0)
         {
             Id                  = id;
             Team                = team;
@@ -136,6 +151,9 @@ namespace Guildmaster.Combat.Tape
             ChargedSwing        = chargedSwing;
             RecoveryTicks       = recoveryTicks;
             RecoveryRemaining   = recoveryRemaining;
+
+            AttackChannelTickPeriod    = attackChannelTickPeriod;
+            AttackChannelTickRemaining = attackChannelTickRemaining;
         }
 
         /// <summary>Снять состояние с живого юнита. Единственное место, где сим встречается с лентой.</summary>
@@ -167,7 +185,13 @@ namespace Guildmaster.Combat.Tape
                 unit.SprintRamp,
                 unit.ChargedSwing,
                 unit.RecoveryTicks,
-                unit.RecoveryRemaining);
+                unit.RecoveryRemaining,
+                // Период нужен только тому, у кого канал вообще есть: у остальных ноль честнее числа,
+                // которое показ мог бы принять за идущий поток.
+                unit.AttackChannel.Exists
+                    ? AttackTiming.IntervalTicks(unit.Stats.Get(StatType.AttackSpeed))
+                    : 0,
+                unit.AttackChannelTickRemaining);
         }
     }
 }

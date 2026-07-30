@@ -114,6 +114,7 @@ namespace Guildmaster.Presentation
         private static readonly int SprintHash       = Animator.StringToHash("Sprint");
         private static readonly int AttackChargeHash = Animator.StringToHash("AttackCharge");
         private static readonly int StunHash         = Animator.StringToHash("Stun");
+        private static readonly int CombatIdleHash   = Animator.StringToHash("CombatIdle");
 
         // Свинг тоже живёт СЛОЕМ — по той же причине, что и гвардия: удар это работа рук и корпуса, а не
         // всего тела целиком. Пока он занимал базовый слой, «бей на бегу» упиралось в выбор одного из двух:
@@ -213,7 +214,7 @@ namespace Guildmaster.Presentation
         // атаки — замах до кадра контакта + хвост-возврат, растянутый на «окно» до следующего замаха.
         // За счёт этого у непрерывно атакующего клип атаки лупится бесшовно в темпе скорости атаки, а
         // не мигает Attack↔Run в паузе между ударами.
-        private enum AttackAnimPhase { None, Windup, Recovery }
+        private enum AttackAnimPhase { None, Windup, Channel, Recovery }
 
         private UnitAnimationState _state = UnitAnimationState.Idle;
         private AttackAnimPhase _attackPhase;
@@ -698,7 +699,8 @@ namespace Guildmaster.Presentation
                 _isDead, attackPlaying && !SwingIsOverlay, isMoving,
                 canAct: !_hasState || _snapshot.CanAct,
                 isSprinting: _hasState && _snapshot.IsSprinting,
-                chargedAttack: _hasState && _snapshot.ChargedSwing && !SwingIsOverlay);
+                chargedAttack: _hasState && _snapshot.ChargedSwing && !SwingIsOverlay,
+                hasTarget: _hasState && _snapshot.TargetId >= 0);
             if (next != _state)
             {
                 // Шаг и разбег — один цикл в разных амплитудах, между ними ПЕРЕХОД, а не подмена: клип,
@@ -741,6 +743,7 @@ namespace Guildmaster.Presentation
             UnitAnimationState.Sprint       => SprintHash,
             UnitAnimationState.AttackCharge => AttackChargeHash,
             UnitAnimationState.Stun         => StunHash,
+            UnitAnimationState.CombatIdle   => CombatIdleHash,
             _                               => IdleHash,
         };
 
@@ -762,7 +765,7 @@ namespace Guildmaster.Presentation
             {
                 UnitAnimationState.Sprint       => RunHash,      // разбег без своего клипа — обычный бег
                 UnitAnimationState.AttackCharge => AttackHash,   // удар с разбега — обычный свинг
-                _                               => IdleHash,     // стан и прочее — стойка
+                _                               => IdleHash,     // стан, боевая стойка и прочее — покой
             };
         }
 
@@ -810,11 +813,17 @@ namespace Guildmaster.Presentation
                 return;
             }
 
+            // Поток идёт — показ следует за симом напрямую: длина канала переменная (цель может умереть,
+            // выйти из радиуса), и выводить её конец по счётчику показ не вправе.
+            if (_snapshot.Phase == AttackPhase.Channel) { _attackPhase = AttackAnimPhase.Channel; return; }
+
             switch (_attackPhase)
             {
                 case AttackAnimPhase.Windup:
-                    // Замах кончился (кадр контакта) → хвост. Его длину знает сим (RecoveryTicks): она
-                    // равна доигрышу клипа, а не остатку интервала.
+                case AttackAnimPhase.Channel:
+                    // Замах (или поток) кончился — дальше хвост. Его длину знает сим (RecoveryTicks): она
+                    // равна доигрышу клипа, а не остатку интервала. Канал приходит сюда тем же путём:
+                    // сворачивание у него общее с обычным ударом, ради чего он и сделан фазой, а не ритмом.
                     _attackPhase = AttackAnimPhase.Recovery;
                     break;
 
@@ -870,6 +879,20 @@ namespace Guildmaster.Presentation
         {
             int layer = SwingLayer;
             bool ownsSpeed = layer == 0;   // на базе скраб ведёт ход целиком; на слое ход принадлежит ногам
+
+            // Канал: удар не один, а поток, и кадр контакта обязан прийтись на КАЖДЫЙ его тик (см.
+            // ChannelClipTime — сама проекция чистая и живёт рядом с остальными).
+            if (_hasState && _snapshot.Phase == AttackPhase.Channel && _snapshot.AttackChannelTickPeriod > 0)
+            {
+                float cycle = UnitAnimationSelector.ChannelClipTime(
+                    _attackMarkerNormalized,
+                    _snapshot.AttackChannelTickRemaining,
+                    _snapshot.AttackChannelTickPeriod,
+                    _frameAlpha);
+                if (ownsSpeed) _animator.speed = 0f;
+                _animator.Play(SwingHash(), layer, cycle);
+                return;
+            }
 
             if (_attackPhase == AttackAnimPhase.Windup && _hasState && _snapshot.WindupTicks > 0)
             {
