@@ -18,6 +18,7 @@ MonoBehaviour:
   _baseDuration: 6
   _stacking: 3
   _maxStacks: 999
+  _stacksPerApplication: 1
   _cleanseTier: 1
   _unremovable: 0
   _cleansePrice:
@@ -30,21 +31,33 @@ MonoBehaviour:
   _components:
   - rid: 7815026876324511910
   - rid: 7815026876324511911
+  - rid: 5615027358498291819
   _telegraphSeconds: 0
   _icon: {fileID: 0}
   _infoTags: []
   references:
     version: 2
     RefIds:
+    - rid: 5615027358498291819
+      type: {class: PeriodicDamageComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _interval: 1
+        _damagePerSecond:
+          Base: 6
+          Scalings: []
+        _damageType: 14
+        _damagePctTargetMaxHp: 0
+        _growthPerSecond: 0
     - rid: 7815026876324511910
       type: {class: PeriodicDamageComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:
         _interval: 1
         _damagePerSecond:
-          Base: 12
+          Base: 6
           Scalings: []
         _damageType: 5
         _damagePctTargetMaxHp: 0
+        _growthPerSecond: 0
     - rid: 7815026876324511911
       type: {class: StatModifierComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
       data:

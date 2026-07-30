@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
   _id: effect.venom_seal
   _polarity: 1
-  _tags: 2
+  _tags: 2050
   _baseDuration: 3
   _stacking: 2
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 0
   _unremovable: 1
   _cleansePrice:

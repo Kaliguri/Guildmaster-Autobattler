@@ -115,6 +115,53 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         /// <summary>
+        /// Эффект, который бьёт ядовитым типом, обязан нести <see cref="EffectTag.Poison"/>. Тег и тип
+        /// отвечают на РАЗНЫЕ вопросы («висит ли яд на цели сейчас» против «чем ударили»), поэтому оба
+        /// нужны — но раз тег проставляется руками, разойтись с типом он может молча.
+        /// </summary>
+        /// <remarks>
+        /// Так и разошлась «Ядовитая печать» Клыка: била обеими половинами яда, тега не несла — и не
+        /// попадала ни в счёт уникальных ядов Друида (<c>CountUniqueTaggedAtTickStart</c>), ни под
+        /// «Взрыв спор», хотя второй источник яда заведён ровно ради этой синергии. Инвариант
+        /// кросс-файловый: ассет знает свой тип, механики спрашивают тег, и ни одна сторона шва не
+        /// видит другую. Значит держать его может только тест.
+        /// <para>Обратную сторону — «тег есть, а урона нет» — намеренно НЕ проверяем: ядовитый дебафф
+        /// без урона (задуманный анти-хил) законен и тегом заявляет себя честно.</para>
+        /// </remarks>
+        [Test]
+        public void EveryPoisonousEffect_CarriesPoisonTag()
+        {
+            var missing = new List<string>();
+
+            foreach (EffectData effect in LoadAll<EffectData>())
+            {
+                if ((effect.Tags & EffectTag.Poison) != 0) continue;
+
+                foreach (object component in Components(effect))
+                {
+                    if (component == null) continue;
+
+                    // Фильтрующим компонентам тип говорит «что ловлю», а не «чем бью»: «Кровавый обмен»
+                    // с фильтром на яд сам ядовитым не становится.
+                    string name = component.GetType().Name;
+                    if (FilteringComponents.Contains(name)) continue;
+
+                    foreach (FieldInfo field in TypeFields(component.GetType()))
+                    {
+                        if (field.FieldType != typeof(DamageType)) continue;
+                        if (!DamageTypes.IsPoison((DamageType)field.GetValue(component))) continue;
+
+                        missing.Add($"{AssetDatabase.GetAssetPath(effect)} → {name}.{field.Name}");
+                    }
+                }
+            }
+
+            Assert.IsEmpty(missing,
+                "Эти эффекты бьют ядовитым уроном, но тега Poison не несут — механики яда их не видят:\n"
+                + string.Join("\n", missing));
+        }
+
+        /// <summary>
         /// Ни один тег конкретики, который выдаёт резолвер, не остался без ассета. Иначе тип урона был
         /// бы в игре, а чип на карточке — нет, и расхождение заметил бы только игрок. Так и вышло с
         /// <see cref="DamageType.Bleed"/>: тип завели, тега не было.
