@@ -9,7 +9,7 @@ impl_note: "заведено 2026-07-30 как effect.bleed: периодиче�
 
 # Кровотечение
 
-> **Первый носитель — [[gdd/relics/the-cairn|The Cairn (Geomancer)]]** (заведён 2026-07-29). Эффекта
+> **Первый носитель — [[gdd/relics/the-tithe|The Tithe (Hemomancer)]]** (заведён 2026-07-29). Эффекта
 > в коде нет вовсе, поэтому кит целиком зависит от его реализации. (Bleed)
 
 > **[[property-reference#Класс|Класс]]:** DoT · **[[property-reference#Полярность|Полярность]]:** Debuff · **[[property-reference#Теги|Теги]]:** `DoT`, `Bleed`

@@ -273,7 +273,8 @@ namespace Guildmaster.Combat
             {
                 // Аура по союзникам всегда валидна: кастующий сам себе союзник.
             }
-            else if (data.AreaShape != AreaShape.Circle && target == null)
+            // Круг вокруг себя цели не требует; круг вокруг ЦЕЛИ — требует, иначе центру негде лечь.
+            else if ((data.AreaShape != AreaShape.Circle || data.AreaAtTarget) && target == null)
             {
                 return false;
             }
@@ -364,7 +365,8 @@ namespace Guildmaster.Combat
 
             // Цель могла выбыть за время подготовки: берём новую тем же TargetMode (решение Макса).
             // Не нашли — нагрузка не уходит в пустоту, каст обрывается; цена остаётся уплаченной.
-            bool needsTarget = !isMassTag && !isAllyAura && data.AreaShape != AreaShape.Circle;
+            bool needsTarget = !isMassTag && !isAllyAura
+                               && (data.AreaShape != AreaShape.Circle || data.AreaAtTarget);
             if (needsTarget && (target == null || target.IsDead))
             {
                 target = ResolveTarget(caster, data.TargetMode, units);
@@ -394,7 +396,7 @@ namespace Guildmaster.Combat
                 // (§10.7 «Стальной вихрь») толчок расходится от центра по всем задетым, у одиночной цели
                 // (§10.6 Монах) — это рывок самого кастующего с последующей цепью реактивов.
                 if (data.AreaShape == AreaShape.Circle)
-                    ApplyCircle(caster, data, ctx);
+                    ApplyCircle(caster, data, ctx, target);
                 else if (data.Displaces)
                     ApplyDisplace(caster, target, data, ctx);
                 else if (isAllyAura)
@@ -665,12 +667,16 @@ namespace Guildmaster.Combat
         /// идёт тем же швом, что монашье, поэтому цель, отброшенная вихрем, ведёт себя как любая другая
         /// отброшенная — включая удар о край арены и реактивы на конец полёта («интеграция с монахом»).
         /// </remarks>
-        private void ApplyCircle(RuntimeUnit caster, AbilityData data, ICombatContext ctx)
+        private void ApplyCircle(RuntimeUnit caster, AbilityData data, ICombatContext ctx, RuntimeUnit target = null)
         {
-            // Dev-оверлей зоны круга.
-            ctx.ReportAreaHit(AreaHit.Circle(caster.Position, data.AreaRadius, caster.Team));
+            // Центр круга: под ногами кастующего (Копейщик рубит вокруг себя) или под ногами цели
+            // (ледяная зона Криоманта ложится во вражеский строй, а не в собственный бэклайн).
+            Vector2 center = data.AreaAtTarget && target != null ? target.Position : caster.Position;
 
-            ctx.QueryUnitsInRadius(caster.Position, data.AreaRadius, _targets, TargetFilter.Enemies, caster.Team);
+            // Dev-оверлей зоны круга.
+            ctx.ReportAreaHit(AreaHit.Circle(center, data.AreaRadius, caster.Team));
+
+            ctx.QueryUnitsInRadius(center, data.AreaRadius, _targets, TargetFilter.Enemies, caster.Team);
 
             float dmg = AbilityDamage(caster, data);
             // Тип урона способности — её собственный, наследования от кастера нет (реформа 2026-07-30).

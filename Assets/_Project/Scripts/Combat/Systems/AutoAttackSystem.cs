@@ -142,6 +142,11 @@ namespace Guildmaster.Combat
                 // (M3). Уже занесённый замах каст не рвёт — умение его доигрывает (M18, гейт в AbilitySystem).
                 if (unit.IsCastBusy) continue;
 
+                // Кит без авто-атаки (Пожирательница снов, Барабанщик) в ритм ударов не входит вообще:
+                // ни замаха, ни хвоста. Гейт стоит ПОСЛЕ кулдауна намеренно — таймер продолжает тикать,
+                // чтобы включение режима на ходу (баф, улучшение) не давало мгновенного удара.
+                if (HasNoAutoAttack(unit)) continue;
+
                 // Готов к атаке: нужна валидная цель в радиусе. Для хил-режима «цель авто-атаки» —
                 // раненый союзник (AutoAttackTarget, пишет мозг), не враг: гейтим/снапшотим замах по нему,
                 // тогда Resolve лечит именно его (§9.2). CurrentTarget (враг) остаётся движению/отступлению.
@@ -438,6 +443,10 @@ namespace Guildmaster.Combat
         /// <summary>Хил-автоатака (Светлый пастырь): авто-атака лечит союзника вместо урона по врагу (§9.2).</summary>
         private static bool IsHealMode(RuntimeUnit unit) =>
             unit.Unit?.Ai != null && unit.Unit.Ai.AutoAttackMode == AutoAttackMode.Heal;
+
+        /// <summary>Кит без авто-атаки: весь его урон живёт в способностях (<see cref="AutoAttackMode.None"/>).</summary>
+        private static bool HasNoAutoAttack(RuntimeUnit unit) =>
+            unit.Unit?.Ai != null && unit.Unit.Ai.AutoAttackMode == AutoAttackMode.None;
 
         /// <summary>Хвост-восстановление после удара: Recovery на запланированные тики (доигрыш клипа +
         /// доп. секунды, посчитано в <see cref="EnterWindup"/>), либо сразу Idle, если хвоста нет.</summary>

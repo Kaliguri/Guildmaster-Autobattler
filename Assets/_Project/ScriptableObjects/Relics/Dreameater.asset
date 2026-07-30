@@ -101,7 +101,7 @@ MonoBehaviour:
   _aiPreset: {fileID: 11400000, guid: b3d5f7c9e1a4628d0f2c4e6b8d0a2f35, type: 2}
   _ai:
     _autoAttackTargeting: 4
-    _autoAttackMode: 0
+    _autoAttackMode: 2
     _targetTag: 32768
     _retreat:
       Enabled: 1

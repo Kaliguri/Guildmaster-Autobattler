@@ -168,6 +168,10 @@ namespace Guildmaster.Data.Definitions
                  "Выкл (по умолчанию) = self-эффекты применяются один раз за каст, как щит «Стального вихря».")]
         [SerializeField] private bool _repeatSelfEffects;
 
+        [Tooltip("Круг строится вокруг ЦЕЛИ, а не вокруг кастующего. Криомант: ледяная зона ложится там, " +
+                 "где стоит враг, а не под ноги магу второй линии. Требует цель, как обычная способность.")]
+        [SerializeField] private bool _areaAtTarget;
+
         [Header("Displacement (§9.9) — Монах")]
         [Tooltip("Отталкивает цель (Knockback) на DisplaceDistance; длительность полёта считается из дистанции. На линии полёта — урон-ядро.")]
         [SerializeField] private bool _displaces;
@@ -213,6 +217,17 @@ namespace Guildmaster.Data.Definitions
         public DamageType DamageType => _damageType;
         public AreaShape AreaShape => _areaShape;
         public float AreaRadius => _areaRadius;
+
+        /// <summary>
+        /// Круг применяется вокруг ЦЕЛИ, а не вокруг кастующего.
+        /// </summary>
+        /// <remarks>
+        /// Заведено под ледяную зону Криоманта: он дальник второй линии, и круг «вокруг себя» ложился бы
+        /// туда, где врагов нет по построению. Свободный выбор ТОЧКИ на арене (как в карточке) потребовал
+        /// бы таргетинга по точке, которого у способностей нет вовсе; позиция цели — самая близкая к
+        /// замыслу форма из тех, что выражаются данными.
+        /// </remarks>
+        public bool AreaAtTarget => _areaAtTarget;
         public float HealFlat => _healFlat;
         public float HealPctTargetMissingHp => _healPctTargetMissingHp;
 

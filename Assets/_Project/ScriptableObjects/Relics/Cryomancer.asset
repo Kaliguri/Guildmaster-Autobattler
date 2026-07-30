@@ -26,7 +26,7 @@ MonoBehaviour:
   _autoAttackWidth: 1
   _autoAttackLengthMult: 1
   _autoAttackEffects:
-  - {fileID: 11400000, guid: c18d4142e7281344fb0e88c7f19ff1ed, type: 2}
+  - {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
@@ -57,27 +57,31 @@ MonoBehaviour:
   _grantedEffects:
   - {fileID: 11400000, guid: ebaa6dc69213a1448a2e13eb9a4bd773, type: 2}
   _abilities:
-  - _id: ice_chains
+  - _id: ice_zone
     _effects:
-    - {fileID: 11400000, guid: 273ce8d37d74a884f82d3fcb0cf0560f, type: 2}
+    - {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
     _baseCooldown: 0
     _resourceCost: 40
-    _targetMode: 4
-    _damageMultiplier: 0
-    _damageType: 0
-    _areaShape: 0
-    _areaRadius: 0
+    _targetMode: 1
+    _damageMultiplier: 0.15
+    _damageType: 11
+    _areaShape: 2
+    _areaRadius: 3
+    _areaAtTarget: 1
     _healFlat: 0
     _healPctTargetMissingHp: 0
     _healEffect: {fileID: 0}
     _selfHealFraction: 1
     _castCondition: 3
     _castConditionCount: 2
-    _castConditionRadius: 0
+    _castConditionRadius: 3
     _castConditionHpPct: 0.5
     _castOverrideSelfHpPct: 0.3
-    _triggerTag: 128
-    _consumesTriggerTag: 1
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 5
+    _channelTickSeconds: 0.5
     _displaces: 0
     _displaceDistance: 4
     _displaceDamageMult: 1
