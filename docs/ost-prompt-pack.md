@@ -8,8 +8,9 @@
 |---|---|
 | прогоны, seed'ы, вердикты | `docs/ost-run-log.md` |
 | почему промпт такой и что отвергли | `docs/wiki/gdd/00-meta/journal-adr.md` |
-| правила промптинга, проверенные ушами | `.claude/skills/xgaida-x-nixi-audio/references/suno-prompting.md` |
-| замысел: закон трека, рефы, роль вокала | `.../references/voice-and-music.md` |
+| правила промптинга, проверенные ушами | `.claude/skills/xgaida-x-nixi-music/references/suno-prompting.md` |
+| целевой тон, канон состава, рефы | `.../xgaida-x-nixi-music/references/tone-and-lineup.md` |
+| тариф, права, гигиена библиотеки | `.../xgaida-x-nixi-music/references/account-and-rights.md` |
 
 Режим — **«Расширенный»** (в «Простом» нет ни Exclude, ни слайдеров).
 
@@ -43,14 +44,11 @@
 solo violin, metal riff, taiko, triumphant fanfare, j-pop
 ```
 Состав задаётся точно в позитиве, поэтому латать исключениями больше нечего. Канон состава по ролям —
-`voice-and-music.md` §КАНОН СОСТАВА.
+`tone-and-lineup.md` §КАНОН СОСТАВА.
 
-### 01-A · инструментал: нежная и сильная, сила приходит аркой
+### 01-A · инструментал: мрак снизу, бой от пульса, нежность только в лиде
 
-Промпт **намеренно короткий** — шесть тегов вместо десяти: слова про энергию складываются, и трек
-уезжает в боевик. Сила берётся не из плотности, а из **арки** (теги в Lyrics) и гармонии.
-
-Текст → **Инструментал** (тумблер), арка задаётся **словами в Стилях**.
+Текст → **Инструментал** (тумблер).
 
 ```
 dark cinematic battle score, grim and desperate, clean electric guitar lead singing the melody, low
@@ -60,10 +58,9 @@ cello ostinato underneath, insistent relentless pulse, tense strings, 140 BPM, D
 **Баланс сил:** пять указаний на мрак и движение против одного на нежность (сам лид). Арки внутри
 боевого трека нет намеренно — боевой луп играет с любого места и обязан быть боевым сразу.
 
-**Почему не тегами арки.** Теги живут в поле Lyrics, а его занимает тумблер «Инструментал»: включить
-оба нельзя. Отключить тумблер ради тегов — значит остаться без единого запрета голоса, и модель
-запоёт. Поэтому **теги арки проверяются в 01-B**, где текст нужен по-настоящему, а здесь арка идёт
-словами (`starts intimate and grows`).
+**Теги арки сюда не ставятся.** Они живут в поле Lyrics, а его занимает тумблер «Инструментал» —
+включить оба нельзя, а отключить тумблер значит остаться без запрета голоса. Проверяются в 01-B, где
+текст нужен по существу.
 
 ### 01-B · женский вокализ
 
@@ -164,7 +161,7 @@ seed — в `docs/ost-run-log.md`.
 обязано быть чем играть на карте и в таверне. Рассыпается здесь — значит это была аранжировка, а не
 тема.
 ```
-solo lute, medieval fantasy, intimate and unhurried, 76 BPM, D dorian, close-mic, dry room,
+solo lute, neo-medieval, intimate and unhurried, 76 BPM, D dorian, close-mic, dry room,
 no percussion, no vocals
 ```
 
@@ -177,7 +174,8 @@ no bright bells, no high strings
 
 **02-C · мир — карта и таверна.**
 ```
-sparse and warm fantasy, unhurried, 72 BPM, D dorian, no percussion, intimate room, no vocals
+sparse and warm neo-medieval, unhurried, 72 BPM, D dorian, delicate piano, spacious reverb,
+no percussion, no vocals
 ```
 
 **Критерий выживания:** мотив узнаётся во всех трёх и нигде не звучит чужеродно.
