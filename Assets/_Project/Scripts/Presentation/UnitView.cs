@@ -115,6 +115,23 @@ namespace Guildmaster.Presentation
         private static readonly int AttackChargeHash = Animator.StringToHash("AttackCharge");
         private static readonly int StunHash         = Animator.StringToHash("Stun");
 
+        // Свинг тоже живёт СЛОЕМ — по той же причине, что и гвардия: удар это работа рук и корпуса, а не
+        // всего тела целиком. Пока он занимал базовый слой, «бей на бегу» упиралось в выбор одного из двух:
+        // либо клип атаки (и ноги замирали посреди разбега), либо клип бега (и удара не было видно).
+        // Маска слоя — торс, голова, обе руки; ноги остаются за базой и продолжают тот шаг, что шли.
+        private const string ActionLayerName     = "Action";
+        // Таз — отдельным АДДИТИВНЫМ слоем, а не частью маски действия: override поставил бы таз в позу
+        // клипа атаки и стёр качание бега, аддитив же кладёт дельту удара ПОВЕРХ этого качания. Замер
+        // 30.07: override давал −0.022 (bob бега исчезал), аддитив — 0.038 − 0.037 = 0.001.
+        private const string ActionHipsLayerName = "ActionHips";
+
+        /// <summary>
+        /// За сколько рука уходит со слоя действия обратно в локомоцию. Вход в свинг мгновенный и это не
+        /// симметрично намеренно: кадр контакта привязан к сим-тику, и плавный въезд смазал бы начало
+        /// замаха, тогда как уходить руке некуда торопиться.
+        /// </summary>
+        private const float ActionDropSeconds = 0.12f;
+
         // Гвардия живёт СЛОЕМ, а не стейтом базы: щит поднимается поверх того, что юнит делает — бежит,
         // бьёт, стоит, — и потому не имеет права занимать собой всё тело. Маска слоя — только рука со щитом.
         private const string GuardLayerName    = "Block";
@@ -225,6 +242,12 @@ namespace Guildmaster.Presentation
         private bool  _holdHitFrame;  // финишер: держим кадр весь финальный slowmo
         private bool  _holdKeepsAttackFrame; // добивающему — именно кадр контакта; остальным — где застало
         private float _holdRemaining; // unscaled-остаток удержания
+
+        // --- Слой действия: свинг поверх ног ---
+        private int   _actionLayer     = -1;  // индекс слоя свинга; -1 = у юнита его нет (покадровый бестиарий)
+        private int   _actionHipsLayer = -1;  // аддитивный таз, синхронизированный с ним; -1 = нет
+        private float _actionWeight;          // текущий вес обоих 0..1
+        private bool  _swingCharged;          // текущий свинг — с разбега (фиксируется на входе в цикл)
 
         // --- Гвардия (телеграф барьера): поза щита, поднятая ДО того, как барьер появится ---
         private int   _guardLayer = -1;  // индекс слоя щита; -1 = у юнита его нет
@@ -380,11 +403,16 @@ namespace Guildmaster.Presentation
             // Анимация активна, если у Animator есть контроллер (клипы — в его стейтах). UnitVisual не обязателен.
             _animActive = _animator != null && _animator.runtimeAnimatorController != null;
 
-            // Слой гвардии сбрасывается ДО выхода: вид переиспользуется после чьей-то смерти, и индекс
+            // Индексы слоёв сбрасываются ДО выхода: вид переиспользуется после чьей-то смерти, и индекс
             // прошлого жильца достался бы новому — вместе с попыткой писать вес в чужой Animator.
             _guardLayer  = -1;
             _guardActive = false;
             _guardWeight = 0f;
+
+            _actionLayer     = -1;
+            _actionHipsLayer = -1;
+            _actionWeight    = 0f;
+            _swingCharged    = false;
 
             if (!_animActive)
             {
@@ -402,6 +430,17 @@ namespace Guildmaster.Presentation
             // это отсутствие контента, а не ошибка разводки (см. ResolvedHash).
             _guardLayer = _animator.GetLayerIndex(GuardLayerName);
             if (_guardLayer >= 0) _animator.SetLayerWeight(_guardLayer, 0f);
+
+            // Слой-надстройка свинга. Его отсутствие тоже законно: у семнадцати покадровых юнитов клип
+            // атаки — это весь кадр целиком, разложить его по маске нечем. Тогда свинг остаётся на базе
+            // ровно как раньше (см. SwingIsOverlay), и «бей на бегу» у них по-прежнему выбирает одно из двух.
+            _actionLayer = _animator.GetLayerIndex(ActionLayerName);
+            if (_actionLayer >= 0)
+            {
+                _animator.SetLayerWeight(_actionLayer, 0f);
+                _actionHipsLayer = _animator.GetLayerIndex(ActionHipsLayerName);
+                if (_actionHipsLayer >= 0) _animator.SetLayerWeight(_actionHipsLayer, 0f);
+            }
 
             _animator.Play(IdleHash, 0, 0f);
             _animator.speed = 1f;
@@ -650,11 +689,16 @@ namespace Guildmaster.Presentation
 
             // Разбег и удар с разбега — признаки СИМУЛЯЦИИ из снимка, а не догадка показа по скорости:
             // на дистанции одного тика прибавка в 30% неотличима от шума расталкивания.
+            //
+            // Со слоем действия база про атаку не знает ВООБЩЕ: свинг уехал наверх, и базе остаётся ровно
+            // то, чем юнит занят ногами. Именно поэтому удар с разбега больше не отменяет разбег — ноги
+            // продолжают тот же Sprint, пока руки бьют. Без слоя оба состояния по-прежнему делят базу, и
+            // атака вытесняет локомоцию, как вытесняла.
             UnitAnimationState next = UnitAnimationSelector.Select(
-                _isDead, attackPlaying, isMoving,
+                _isDead, attackPlaying && !SwingIsOverlay, isMoving,
                 canAct: !_hasState || _snapshot.CanAct,
                 isSprinting: _hasState && _snapshot.IsSprinting,
-                chargedAttack: _hasState && _snapshot.ChargedSwing);
+                chargedAttack: _hasState && _snapshot.ChargedSwing && !SwingIsOverlay);
             if (next != _state)
             {
                 // Шаг и разбег — один цикл в разных амплитудах, между ними ПЕРЕХОД, а не подмена: клип,
@@ -722,12 +766,30 @@ namespace Guildmaster.Presentation
             };
         }
 
+        /// <summary>Свинг живёт отдельным слоем поверх ног — есть ли он у этого юнита.</summary>
+        private bool SwingIsOverlay => _actionLayer >= 0;
+
+        /// <summary>Слой, на котором скрабится свинг: свой, если есть, иначе база (покадровый бестиарий).</summary>
+        private int SwingLayer => _actionLayer >= 0 ? _actionLayer : 0;
+
         // Каким стейтом СКРАБИТСЯ свинг. Удар с разбега живёт своим клипом, но тайминг у него общий с
         // обычным: замах ведёт к тому же кадру контакта, просто короче. Держать для него отдельный путь
         // скраба значило бы завести второй владелец одной формулы.
-        private int SwingHash() => ResolvedHash(_state == UnitAnimationState.AttackCharge
-            ? UnitAnimationState.AttackCharge
-            : UnitAnimationState.Attack);
+        private int SwingHash()
+        {
+            // На слое действия базового состояния для свинга больше нет — что играть, помнит признак,
+            // снятый на входе в цикл. Фолбэк тут свой: на слое рук нет стейта покоя, и общий ResolvedHash
+            // увёл бы отсутствующий клип в Idle, которого на этом слое не существует.
+            if (SwingIsOverlay)
+            {
+                int overlay = _swingCharged ? AttackChargeHash : AttackHash;
+                return _animator.HasState(_actionLayer, overlay) ? overlay : AttackHash;
+            }
+
+            return ResolvedHash(_state == UnitAnimationState.AttackCharge
+                ? UnitAnimationState.AttackCharge
+                : UnitAnimationState.Attack);
+        }
 
         // Управление фазой анимации атаки от состояния сима (вики «14»): замах → кадр контакта → хвост.
         // Замах скрабится по windup-тикам (маркер на тик урона); хвост — по остатку интервала до
@@ -738,7 +800,15 @@ namespace Guildmaster.Presentation
             if (!_hasState) return;
 
             // Идёт сим-замах → фаза замаха (покрывает и реконструкцию после load/resync без события старта).
-            if (_snapshot.IsWindingUp) { _attackPhase = AttackAnimPhase.Windup; return; }
+            if (_snapshot.IsWindingUp)
+            {
+                // Признак разбега снимаем на ВХОДЕ и держим до конца цикла: он принадлежит одному свингу, а
+                // не мгновению. Перечитывать его каждый кадр значило бы дать клипу право смениться посреди
+                // замаха — удар с разбега превратился бы в обычный на полпути к контакту.
+                if (_attackPhase != AttackAnimPhase.Windup) _swingCharged = _snapshot.ChargedSwing;
+                _attackPhase = AttackAnimPhase.Windup;
+                return;
+            }
 
             switch (_attackPhase)
             {
@@ -766,32 +836,8 @@ namespace Guildmaster.Presentation
             {
                 case UnitAnimationState.Attack:
                 case UnitAnimationState.AttackCharge:
-                    if (_attackPhase == AttackAnimPhase.Windup && _hasState && _snapshot.WindupTicks > 0)
-                    {
-                        // Замах: скрабим [0..маркер] по прогрессу windup — контакт (маркер) приходится
-                        // ровно на конец замаха = сим-тик урона.
-                        float progress = TickScrubProgress(_snapshot.WindupRemaining, _snapshot.WindupTicks);
-                        _animator.speed = 0f;
-                        _animator.Play(SwingHash(), 0, progress * _attackMarkerNormalized);
-                    }
-                    else if (_attackPhase == AttackAnimPhase.Recovery && _hasState)
-                    {
-                        // Хвост: скрабим [маркер..1] по прогрессу СВОЕГО доигрыша, а не по окну до
-                        // следующего замаха. Растягивание отменено решением Макса (30.07): быстрые киты
-                        // бьют непрерывной серией сами собой (у них доигрыш и занимает весь интервал), а
-                        // медленные обязаны отыграть удар за своё время и ВСТАТЬ — пауза и есть то, что
-                        // делает «редкий тяжёлый удар» видимым. Пока хвост тянулся по кулдауну, Защитник
-                        // 0.83 сек бесконечно медленно опускал меч, и паузы на экране не существовало.
-                        float tail = TickScrubProgress(_snapshot.RecoveryRemaining, _snapshot.RecoveryTicks);
-                        float clipT = _attackMarkerNormalized + tail * (1f - _attackMarkerNormalized);
-                        _animator.speed = 0f;
-                        _animator.Play(SwingHash(), 0, clipT);
-                    }
-                    else
-                    {
-                        // Мгновенный удар без данных тайминга — доигрываем натуральным ходом.
-                        _animator.speed = 1f;
-                    }
+                    // Базой атака бывает только у покадровых: со слоем действия сюда состояние не приходит.
+                    DriveSwingScrub();
                     break;
 
                 case UnitAnimationState.Run:
@@ -809,6 +855,75 @@ namespace Guildmaster.Presentation
                     _animator.speed = 1f;
                     break;
             }
+
+            // Надстройка идёт ПОСЛЕ базы: темп ходом владеет она (ноги привязаны к земле), а свинг своего
+            // хода не имеет вовсе — он каждый кадр ставится в позицию скрабом.
+            if (SwingIsOverlay) DriveActionLayer(dt);
+        }
+
+        /// <summary>
+        /// Скраб позы свинга по сим-тикам — общий для обоих домов (слой действия и базовый слой покадровых).
+        /// Формула одна намеренно: маркер контакта садится на тик урона, и второй её экземпляр разъехался бы
+        /// с первым молча — удар уехал бы мимо цифр только у половины бестиария.
+        /// </summary>
+        private void DriveSwingScrub()
+        {
+            int layer = SwingLayer;
+            bool ownsSpeed = layer == 0;   // на базе скраб ведёт ход целиком; на слое ход принадлежит ногам
+
+            if (_attackPhase == AttackAnimPhase.Windup && _hasState && _snapshot.WindupTicks > 0)
+            {
+                // Замах: скрабим [0..маркер] по прогрессу windup — контакт (маркер) приходится
+                // ровно на конец замаха = сим-тик урона.
+                float progress = TickScrubProgress(_snapshot.WindupRemaining, _snapshot.WindupTicks);
+                if (ownsSpeed) _animator.speed = 0f;
+                _animator.Play(SwingHash(), layer, progress * _attackMarkerNormalized);
+            }
+            else if (_attackPhase == AttackAnimPhase.Recovery && _hasState)
+            {
+                // Хвост: скрабим [маркер..1] по прогрессу СВОЕГО доигрыша, а не по окну до
+                // следующего замаха. Растягивание отменено решением Макса (30.07): быстрые киты
+                // бьют непрерывной серией сами собой (у них доигрыш и занимает весь интервал), а
+                // медленные обязаны отыграть удар за своё время и ВСТАТЬ — пауза и есть то, что
+                // делает «редкий тяжёлый удар» видимым. Пока хвост тянулся по кулдауну, Защитник
+                // 0.83 сек бесконечно медленно опускал меч, и паузы на экране не существовало.
+                float tail = TickScrubProgress(_snapshot.RecoveryRemaining, _snapshot.RecoveryTicks);
+                float clipT = _attackMarkerNormalized + tail * (1f - _attackMarkerNormalized);
+                if (ownsSpeed) _animator.speed = 0f;
+                _animator.Play(SwingHash(), layer, clipT);
+            }
+            else if (ownsSpeed)
+            {
+                // Мгновенный удар без данных тайминга — доигрываем натуральным ходом.
+                _animator.speed = 1f;
+            }
+        }
+
+        /// <summary>
+        /// Вес слоя действия за кадр: пока идёт цикл атаки — рука принадлежит удару, после — плавно
+        /// возвращается тому, что играет база. Аддитивный таз ходит тем же весом, иначе дельта удара
+        /// осталась бы на теле дольше самого удара.
+        /// </summary>
+        private void DriveActionLayer(float dt)
+        {
+            if (_attackPhase != AttackAnimPhase.None)
+            {
+                _actionWeight = 1f;   // вход мгновенный: замах обязан начаться там, где его начал сим
+                DriveSwingScrub();
+            }
+            else
+            {
+                if (_actionWeight <= 0f) return;
+                _actionWeight = Mathf.Max(0f, _actionWeight - dt / ActionDropSeconds);
+            }
+
+            ApplyActionWeight();
+        }
+
+        private void ApplyActionWeight()
+        {
+            _animator.SetLayerWeight(_actionLayer, _actionWeight);
+            if (_actionHipsLayer >= 0) _animator.SetLayerWeight(_actionHipsLayer, _actionWeight);
         }
 
         /// <summary>
@@ -895,6 +1010,10 @@ namespace Guildmaster.Presentation
         {
             if (_animActive)
             {
+                // Тот же признак и на этом входе: мгновенный удар (windup 0) в UpdateAttackPhase не заходит
+                // вовсе — фаза начинается сразу с хвоста, и клип выбрать было бы нечем.
+                if (_attackPhase == AttackAnimPhase.None && _hasState) _swingCharged = _snapshot.ChargedSwing;
+
                 if (_hasState && _snapshot.IsWindingUp && _snapshot.WindupTicks > 0)
                 {
                     _attackPhase = AttackAnimPhase.Windup;
@@ -936,7 +1055,10 @@ namespace Guildmaster.Presentation
         /// </summary>
         public void HoldHitFrame(float seconds)
         {
-            if (!_animActive || _state != UnitAnimationState.Attack) return;
+            // «Юнит сейчас в атаке» спрашиваем у ФАЗЫ, а не у базового состояния: со слоем действия база в
+            // этот момент показывает ноги (стойку или разбег), и проверка по ней отняла бы кадр контакта
+            // ровно у того, ради кого финишер и играется.
+            if (!_animActive || _attackPhase == AttackAnimPhase.None) return;
             _holdHitFrame  = true;
             _holdKeepsAttackFrame = true;
             _holdRemaining = seconds;
@@ -961,8 +1083,18 @@ namespace Guildmaster.Presentation
         private void DriveHoldHitFrame()
         {
             _animator.speed = 0f;
-            // Добивающему кадр контакта возвращаем принудительно: скраб мог уже уползти с маркера.
-            if (_holdKeepsAttackFrame) _animator.Play(SwingHash(), 0, _attackMarkerNormalized);
+            // Добивающему кадр контакта возвращаем принудительно: скраб мог уже уползти с маркера. Вес
+            // слоя при этом держим сами — обычный ход слоя сюда не доходит, и рука опустилась бы посреди
+            // застывшего момента.
+            if (_holdKeepsAttackFrame)
+            {
+                _animator.Play(SwingHash(), SwingLayer, _attackMarkerNormalized);
+                if (SwingIsOverlay)
+                {
+                    _actionWeight = 1f;
+                    ApplyActionWeight();
+                }
+            }
             _holdRemaining -= Time.unscaledDeltaTime;
             if (_holdRemaining <= 0f)
             {
@@ -981,7 +1113,21 @@ namespace Guildmaster.Presentation
 
             // Пока текущий attack-клип не доигран — ждём (юнит завершает удар и хвост естественно).
             // Удар с разбега доигрывается наравне: обрывать его на полпути к стойке — тот же провал кадра.
-            if (_state == UnitAnimationState.Attack || _state == UnitAnimationState.AttackCharge)
+            if (SwingIsOverlay)
+            {
+                if (_actionWeight > 0f)
+                {
+                    // Слой доигрывает сам (speed вернули к 1), и только потом рука отпускается — тем же
+                    // спадом, что и в бою: щелчок веса читался бы как обрыв удара.
+                    if (_animator.GetCurrentAnimatorStateInfo(_actionLayer).normalizedTime < 1f) return;
+
+                    _attackPhase  = AttackAnimPhase.None;
+                    _actionWeight = Mathf.Max(0f, _actionWeight - Time.deltaTime / ActionDropSeconds);
+                    ApplyActionWeight();
+                    if (_actionWeight > 0f) return;
+                }
+            }
+            else if (_state == UnitAnimationState.Attack || _state == UnitAnimationState.AttackCharge)
             {
                 AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(0);
                 if (info.shortNameHash == SwingHash() && info.normalizedTime < 1f) return;
@@ -1499,6 +1645,15 @@ namespace Guildmaster.Presentation
                     // застывает на кадре, где его достали, и уходит прямо в голограмму (как в референсе).
                     if (_animActive && _feel != null && _feel.PlayDeathClip)
                     {
+                        // Падение забирает тело ЦЕЛИКОМ: слой действия отпускаем сразу, иначе рука доиграет
+                        // чужой удар поверх падающего трупа. Стоп-кадру ниже гасить нечего — там поза как раз
+                        // обязана остаться той, в которой юнита достали.
+                        if (SwingIsOverlay && _actionWeight > 0f)
+                        {
+                            _actionWeight = 0f;
+                            ApplyActionWeight();
+                        }
+
                         _state = UnitAnimationState.Death;
                         _animator.Play(DeathHash, 0, 0f);
                         _animator.speed = 1f;
