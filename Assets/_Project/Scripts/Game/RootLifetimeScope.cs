@@ -135,7 +135,7 @@ namespace Guildmaster.Game
             builder.Register<LocalizationService>(Lifetime.Singleton).As<ILocalizationService>();
 
             // Персистентность: JSON-файл за швом ISaveService — наш собственный и единственный бэкенд
-            // (реш. 2026-07-26; ES3 остаётся в проекте референсом, а не реализацией).
+            // (реш. 2026-07-26).
             builder.Register<JsonFileSaveService>(Lifetime.Singleton).As<ISaveService>();
             // Второе хранилище — для данных компьютера (разрешение, режим окна, частота). Лежит вне
             // Saves/, поэтому Steam Cloud его не трогает: чужое разрешение на втором ПК в лучшем случае

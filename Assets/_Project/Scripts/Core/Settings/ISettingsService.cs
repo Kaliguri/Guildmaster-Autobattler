@@ -3,7 +3,7 @@ using System;
 namespace Guildmaster.Core.Settings
 {
     /// <summary>
-    /// Единый источник пользовательских настроек + персист (ES3) + живое применение в аудио.
+    /// Единый источник пользовательских настроек + персист (за ISaveService, ключ prefs) + живое применение в аудио.
     /// Дефолты первого запуска — из GameConfig. Настройки локальны для клиента (кооп не задевают).
     /// <para>UX: сеттеры применяют значение СРАЗУ (слышно при драге слайдера) и поднимают
     /// <see cref="Changed"/>; на диск пишет только <see cref="Save"/>. Снапшот для Cancel держит
@@ -38,10 +38,10 @@ namespace Guildmaster.Core.Settings
         /// <summary>Всегда показывать подробности в подсказках (Shift тогда временно даёт краткий вид, §II.10.4).</summary>
         void SetAlwaysDetailedTooltips(bool enabled);
 
-        /// <summary>Загрузить с диска (ES3) или взять дефолты GameConfig, затем применить в аудио.</summary>
+        /// <summary>Загрузить с диска (ключ <c>prefs</c>) или взять дефолты GameConfig, затем применить в аудио.</summary>
         void Load();
 
-        /// <summary>Сохранить текущие значения на диск (ES3).</summary>
+        /// <summary>Сохранить текущие значения на диск (ключ <c>prefs</c>).</summary>
         void Save();
 
         /// <summary>Сбросить к дефолтам GameConfig и применить (на диск НЕ пишет — это делает Save).</summary>
