@@ -47,8 +47,11 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Ближняя стойка.")]
         [SerializeField] private AttackStance _closeStance;
 
-        private const int FarStanceIndex   = 0;
-        private const int CloseStanceIndex = 1;
+        /// <summary>Индекс дальней стойки. Публичный: по нему гейтятся навыки, живущие в одной форме.</summary>
+        public const int FarStanceIndex = 0;
+
+        /// <summary>Индекс ближней стойки. См. <see cref="FarStanceIndex"/>.</summary>
+        public const int CloseStanceIndex = 1;
 
         public float Interval => _checkInterval > 0f ? _checkInterval : 0.1f;
 
