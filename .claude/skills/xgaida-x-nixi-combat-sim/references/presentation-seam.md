@@ -42,8 +42,9 @@ Audio/UI/gamefeel слушают **MessagePipe**, а не sim напрямую �
 ## Config-SO фидбэка (значения — не хардкод)
 
 Feel-параметры (hitstop, тайминги финишера, slowmo-факторы) — в
-`Presentation/Design/CombatFeelConfig.cs`; палитра — `CombatColorPalette.cs`; бёрсты —
-`PixelBurstPreset.cs`. Крутить фидбэк = править SO, не числа в коде.
+`Presentation/Design/CombatFeelConfig.cs`; палитра — `CombatColorPalette.cs`; префабные VFX —
+`Data/Definitions/VfxData.cs` (`PixelBurstPreset` удалён вместе с кодовым мешем). Крутить фидбэк =
+править SO, не числа в коде.
 
 ## Граница «моё vs Макса»
 
