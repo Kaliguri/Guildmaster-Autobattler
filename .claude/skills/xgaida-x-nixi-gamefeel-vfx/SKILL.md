@@ -30,16 +30,15 @@ global-feel, как эффект попадает на экран, какие ш
 |---|---|
 | Режиссёр значимости (global-feel: kill-slowmo, heavy-shake, финишер) | `Assets/_Project/Scripts/Game/Services/CombatFeelDirector.cs` |
 | Мост sim→presentation + per-hit фидбэк (hitstop, цифры, спавн VFX) | `Assets/_Project/Scripts/Presentation/CombatPresenter.cs` |
-| Тряска камеры за интерфейсом | `Assets/_Project/Scripts/Presentation/Camera/IScreenShake.cs`, `ScreenShake.cs`, `NullScreenShake.cs` |
-| Пул + спавн пиксельных VFX-брызгов | `Assets/_Project/Scripts/Presentation/CombatVfx.cs` |
-| Один брызг (кодовый меш, placeholder) | `Assets/_Project/Scripts/Presentation/PixelBurst.cs`, `PixelBurstMesh.cs` |
+| Тряска камеры за интерфейсом | `Assets/_Project/Scripts/Presentation/Camera/IScreenShake.cs`, `ScreenShake.cs` (Cinemachine-extension). Регистрация — `WorldLifetimeScope`; заглушки нет и не заводим |
+| Пул + спавн VFX-префабов (ключ пула — `EntityId`) | `Assets/_Project/Scripts/Presentation/CombatVfx.cs`, `PooledVfx.cs` |
+| Определение VFX (префаб, sorting, дефолт-направление) | `Assets/_Project/Scripts/Data/Definitions/VfxData.cs` — владеет `data-authoring` |
 | Разлёт спрайта на осколки при смерти | `Assets/_Project/Scripts/Presentation/DeathShatter.cs`, `ShatterMesh.cs` |
 | Всплывающие боевые цифры (урон/хил/evade) | `Assets/_Project/Scripts/Presentation/FloatingText.cs` |
 | Вспышка арены/фон | `Assets/_Project/Scripts/Presentation/CombatAreaFlash.cs` |
 | Вид юнита: вспышка/сплющивание/hitstop/death-хуки, точки-сокеты | `Assets/_Project/Scripts/Presentation/UnitView.cs`, `UnitAnimation.cs` |
-| Единый feel-конфиг (все impact-параметры + pixel-burst-пресеты) | `Assets/_Project/Scripts/Presentation/Design/CombatFeelConfig.cs` |
+| Единый feel-конфиг (impact-параметры, тумблеры `Enable*`) | `Assets/_Project/Scripts/Presentation/Design/CombatFeelConfig.cs` |
 | Палитра боевого UI | `Assets/_Project/Scripts/Presentation/Design/CombatColorPalette.cs` |
-| Пресет одного пиксель-брызга (Serializable, живёт в feel-конфиге) | `Assets/_Project/Scripts/Presentation/Design/PixelBurstPreset.cs` |
 | Боевое время (ПОТРЕБЛЯЕМ, не владеем) — slowmo/пауза/скорость | `Assets/_Project/Scripts/Game/Services/TimeScaleService.cs` → скилл `combat-sim` |
 
 **Слой (asmdef):** всё это — `Guildmaster.Presentation` (визуал-компоненты) и
@@ -63,8 +62,8 @@ global-feel, как эффект попадает на экран, какие ш
    *Почему:* префаб — единственная форма, где художник собирает эффект без кода, а код
    про эффект знает ровно одно: «заспавнить в точке». Кодовый меш плодит визуал в C#,
    который нельзя приёмить глазами и нельзя отдать художнику.
-   *Долг:* `PixelBurst`/`DeathShatter`/`CombatStatusOverlay` сейчас строятся кодом —
-   это **placeholder**, подлежащий миграции в префаб, а НЕ образец для нового VFX.
+   *Где код остаётся законно:* `DeathShatter`/`ShatterMesh` (меш режется из спрайта конкретного
+   юнита — префабом не подменить) и dev-слой `CombatStatusOverlay`. `PixelBurst*` удалён.
    Новый эффект кодовым мешем не делаем даже «на время».
    *Целевой шов* (`VfxData` SO → префаб → пул-спавнер) — см. границу с data-authoring
    ниже; пока не построен, но проектируем под него.
@@ -78,12 +77,21 @@ global-feel, как эффект попадает на экран, какие ш
    *Почему:* значимость — это политика («килл щёлкает, царапина нет»). Размажешь по
    вьюхам — потеряешь единую точку, где её крутят, и получишь slowmo на каждый тик DoT.
 
-3. **Значения и формы — из feel-SO, не хардкод.** Тайминги, факторы, цвета, кривые —
-   в `CombatFeelConfig` (+ `CombatColorPalette`, `PixelBurstPreset`). Потребители тянут
+3. **Значения и формы — из feel-SO, не хардкод.** Тайминги, факторы, кривые —
+   в `CombatFeelConfig` (+ `VfxData` для префабных эффектов). Потребители тянут
    значения ОТТУДА (`UnitView`, `CombatPresenter`, `ScreenShake`, `CombatFeelDirector`),
    а не из чисел в коде. Крутить фидбэк = править SO.
    *Почему:* джус настраивается итерациями «на глаз» — это работа Макса в инспекторе.
    Число в коде = правка кода на каждый чих баланса фидбэка и недоступно дизайнеру.
+
+   **ЦВЕТ — исключение: он живёт НЕ в feel-SO** (с 30.07.2026). Ни `CombatFeelConfig`, ни
+   `CombatColorPalette` не хранят `Color` — они называют роли `--gm-color-combat-*`, значения лежат в
+   `UI/Theme/tokens.*.uss` → снимок `GuildmasterPalette` (пересобрать: Alebardium → Дизайн-система).
+   HDR туда не едет: в палитре LDR-база, силу свечения задают числа-множители в конфиге (осколки ×2.75,
+   вспышка смерти ×1.8 — один оттенок пересвета, два события). Новый цвет фидбэка = ступень в примитивах
+   + роль в семантике + пересборка снимка + имя роли в `PaletteSnapshotTests`. Заводить `Color`-поле в
+   конфиге — прямой откат: семь таких полей уже дублировали токены и совпадали только потому, что их
+   никто не правил.
 
 4. **Presentation читает sim только через события/MessagePipe и не влияет на
    детерминизм.** Фидбэк СМОТРИТ на бой: подписка на C#-события `CombatSimulation`
@@ -166,23 +174,21 @@ global-feel, как эффект попадает на экран, какие ш
   data-authoring. **Спавн-механика** (пул, точки-сокеты, презентер, привязка к событию) —
   моя. Ровно как эффект: определение — data-authoring, поведение/спавн — здесь.
 
-## Целевой шов префаб-VFX (проектируем, пока не построен)
+## Шов префаб-VFX ПОСТРОЕН
 
-Сейчас пиксельные VFX — параметрические (`PixelBurstPreset` внутри `CombatFeelConfig`),
-меш строится кодом. Это placeholder. `CombatFeelConfig` сам это признаёт: «VFX-секция
-добавится, когда подключим партиклы (пока YAGNI)». Целевая форма — зеркало
-`UnitData.ViewPrefab`:
+Зеркало `UnitData.ViewPrefab`, и он уже работает:
 
-1. `VfxData` SO (data-authoring): `id` (`domain.name`), ссылка на VFX-префаб, дефолт-точка
-   спавна, время жизни/масштаб.
-2. Спавнер-пул (здесь): `ObjectPool<T>` на префаб, `Get`→позиционировать в мировую
-   точку-сокет→`Play`, авто-`Release` по завершению (как `CombatVfx`/`FloatingText` уже
-   делают, но с префабом вместо кодового меша).
-3. Презентер по боевому событию резолвит `VfxData` и просит спавнер проиграть в точке
-   (`ShotPoint`/`HitPoint`/`FeetPoint` на `UnitView` уже есть).
+1. **`VfxData`** SO (`Data/Definitions/`, владеет `data-authoring`): `id` (`domain.name`), ссылка на
+   префаб, sorting layer/order, `DefaultDirDeg`.
+2. **`CombatVfx`** + `PooledVfx` (здесь): пул на префаб, `Get` → позиционировать в мировую
+   точку-сокет → `Play`, авто-`Release` по завершению. **Ключ пула — `EntityId`, не `int`.**
+   Относительный order детей приходит из самого префаба, а не из кода.
+3. Презентер по боевому событию резолвит `VfxData` и просит проиграть в точке
+   (`ShotPoint`/`HitPoint`/`FeetPoint` на `UnitView`); `dirDeg = null` → `VfxData.DefaultDirDeg`.
 
-Когда дойдём до реального VFX-контента — строим этот шов, а pixel-burst-путь мигрируем на
-него. Детали и антипаттерны — `references/vfx-and-pooling.md`.
+`PixelBurst*` мигрирован и удалён. Кодом законно остаются `DeathShatter`/`ShatterMesh` (меш режется
+из спрайта конкретного юнита) и dev-слой `CombatStatusOverlay`. Детали и антипаттерны —
+`references/vfx-and-pooling.md`.
 
 ## Как я авторю фидбэк-код — ГИБРИД (файл + проверка через MCP)
 
