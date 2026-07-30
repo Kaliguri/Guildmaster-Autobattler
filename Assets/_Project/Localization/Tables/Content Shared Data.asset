@@ -855,6 +855,150 @@ MonoBehaviour:
     m_Key: effect.vortex_micro_stun.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 6901444622147584
+    m_Key: relic.arcanist.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119104
+    m_Key: relic.arcanist.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119105
+    m_Key: effect.discord.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119106
+    m_Key: effect.discord.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119107
+    m_Key: effect.phase_shift.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119108
+    m_Key: effect.phase_shift.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119109
+    m_Key: effect.phase_shift_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119110
+    m_Key: effect.phase_shift_shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119111
+    m_Key: relic.nightblade.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119112
+    m_Key: relic.nightblade.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119113
+    m_Key: effect.rot.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119114
+    m_Key: effect.rot.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119115
+    m_Key: effect.rot_carrier.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119116
+    m_Key: effect.rot_carrier.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119117
+    m_Key: effect.venom_seal.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119118
+    m_Key: effect.venom_seal.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119119
+    m_Key: relic.water_monk.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119120
+    m_Key: relic.water_monk.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119121
+    m_Key: effect.rising_strike.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119122
+    m_Key: effect.rising_strike.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119123
+    m_Key: effect.rising_strike_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119124
+    m_Key: effect.rising_strike_charge.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119125
+    m_Key: effect.water_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119126
+    m_Key: effect.water_shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119127
+    m_Key: effect.water_slow.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119128
+    m_Key: effect.water_slow.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119129
+    m_Key: relic.emberkeeper.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119130
+    m_Key: relic.emberkeeper.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119131
+    m_Key: effect.warm_ash.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119132
+    m_Key: effect.warm_ash.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119133
+    m_Key: effect.fire_ward.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119134
+    m_Key: effect.fire_ward.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119135
+    m_Key: effect.living_ember.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119136
+    m_Key: effect.living_ember.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119137
+    m_Key: effect.fan_the_flames_cleanse.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6901444643119138
+    m_Key: effect.fan_the_flames_cleanse.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
