@@ -76,7 +76,7 @@ updated: 2026-07-30
 [[guildmaster]]. Сами игроки — **Гильдмастеры** (со-мастера одной гильдии).
 
 **Фиксированные роли** (Тактик / Поддержка / Разведчик) — развилка, переехавшая сюда из
-[[gdd/00-meta/open|Meta - Open Questions]] 2026-07-30; разбор и вердикт скрайба —
+[[gdd/00-meta/open-forks|Meta - Open Forks]] 2026-07-30; разбор и вердикт скрайба —
 [[minigames|Coop - Minigames & Roles]] §Роли и семи-кооп. Роль «Арканист» снята вместе с заклинаниями
 Гильдмастера — см. [[legacy]].
 
@@ -134,7 +134,7 @@ updated: 2026-07-30
 | Бой автономен, ввода нет ни у кого | [[combat-system\|Combat - System]] |
 | Пауза боя (клавиша, смысл) | [[controls\|Modes - Controls]] |
 | Таймер фазы расстановки, «чей клик последний» | [[gdd/00-meta/roadmap\|Meta - Roadmap]] (принято 2026-07-29, не спроектировано) |
-| «Шёпот толпы»: разбор поражения, поведение в коопе | [[gdd/00-meta/open\|Meta - Open Questions]] |
+| «Шёпот толпы»: разбор поражения, поведение в коопе | [[gdd/00-meta/open-forks\|Meta - Open Forks]] |
 | Воскрешение-ритуал при перезапуске (кооп-QTE) | [[gdd/00-meta/roadmap\|Meta - Roadmap]] · дизайн — [[minigames|Coop - Minigames & Roles]] |
 | Кооп = комитет мастеров, термины «Гильдмастер»/«Капитан» | [[pitch\|Vision - Pitch]] · [[guildmaster\|Vision - Guildmaster]] · [[glossary]] |
 | Сетевая модель (host-authoritative, почему не lockstep) | **тех-вика**: [[tech/00-meta/journal/2026-06-19-host-authoritative-not-lockstep\|Journal - Host-Authoritative, Not Lockstep]] |

@@ -22,7 +22,7 @@ updated: 2026-07-29
 |---|---|
 | почему выбрали так, что отвергли, «решение Макса от…» | [[gdd/00-meta/journal-adr\|Meta - Decision Journal]] |
 | «*Реализовано <дата>: такой-то компонент*», «Чего требует от движка», расхождения с кодом | [[gdd/relics/implementation-status\|Relic - Implementation Status]] |
-| `proposed`-пометки, неутверждённые имена и числа, «класс не задан» | [[gdd/00-meta/open\|Meta - Open Questions]] |
+| `proposed`-пометки, неутверждённые имена и числа, «класс не задан» | [[gdd/00-meta/open-forks\|Meta - Open Forks]] |
 | «Баланс-флаги», что и как замерить | `docs/balance-issues.md` |
 | идея без вердикта, отложенный вариант | [[gdd/relics/draft-ideas\|инкубатор идей]] |
 
@@ -42,7 +42,7 @@ updated: 2026-07-29
 ---
 
 > Что не реализовано и чем расходится с движком — [[gdd/relics/implementation-status|Relic - Implementation Status]].
-> Неутверждённые числа и имена — [[gdd/00-meta/open|Meta - Open Questions]].
+> Неутверждённые числа и имена — [[gdd/00-meta/open-forks|Meta - Open Forks]].
 > Почему решения такие — [[gdd/00-meta/journal-adr|Meta - Decision Journal]].
 ```
 

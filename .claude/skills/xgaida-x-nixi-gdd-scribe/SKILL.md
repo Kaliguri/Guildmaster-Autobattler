@@ -31,7 +31,8 @@ Vault: `docs/wiki/` (Obsidian, публикуется Quartz на GitHub Pages).
 | Индекс ГДД (MOC, легенда статусов) | `docs/wiki/gdd/00-meta/index.md` |
 | **Журнал принятых решений (ADR)** | `docs/wiki/gdd/00-meta/journal-adr.md` |
 | Roadmap ГД (только НЕрешённое) | `docs/wiki/gdd/00-meta/roadmap.md` |
-| Открытые вопросы и черновики | `docs/wiki/gdd/00-meta/open.md` |
+| **Инбокс Макса** (его черновик, я туда не пишу) | `docs/wiki/gdd/00-meta/open.md` + архив `inbox/` |
+| Развилки без вердикта, неутверждённое, инкубатор | `docs/wiki/gdd/00-meta/open-forks.md` |
 | Глоссарий терминов (RU\|EN) | `docs/wiki/gdd/00-meta/glossary.md` |
 | Нормативный справочник тегов | `docs/wiki/gdd/roster/tag-reference.md` |
 | Легаси (снятые механики) | `docs/wiki/gdd/00-meta/legacy.md` |
@@ -95,7 +96,7 @@ Vault: `docs/wiki/` (Obsidian, публикуется Quartz на GitHub Pages).
    |---|---|
    | почему выбрали так, что отвергли, «решение Макса от…» | `00-meta/journal-adr.md` |
    | «*Реализовано <дата>*», «Чего требует от движка», расхождение с кодом | `relics/implementation-status.md`, `enemies/implementation-status.md` |
-   | неутверждённые числа и имена, `proposed`, «класс не задан», незаполненные поля | `00-meta/open.md` §2.5 |
+   | неутверждённые числа и имена, `proposed`, «класс не задан», незаполненные поля | `00-meta/open-forks.md` §2.5 |
    | «Баланс-флаги», что и как замерить | `docs/balance-issues.md` |
    | идея без вердикта, отложенный вариант | `relics/draft-ideas.md` |
 
