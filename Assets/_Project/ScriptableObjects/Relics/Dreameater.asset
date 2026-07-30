@@ -1,0 +1,137 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7cba09029dfbf4fb4a5fa3399a44f1, type: 3}
+  m_Name: Dreameater
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.RelicData
+  _id: relic.dreameater
+  _combatClass: 3
+  _damageSchool: 2
+  _physicalSubtype: 0
+  _magicElement: 0
+  _affinity: 3
+  _creatureType: 0
+  _attackType: 1
+  _resourceType: 1
+  _visual: {fileID: 0}
+  _viewPrefab: {fileID: 0}
+  _bodyShade: 0
+  _vfxTone: 15
+  _autoAttackShape: 0
+  _autoAttackWidth: 1
+  _autoAttackLengthMult: 1
+  _autoAttackEffects: []
+  _canAttackWhileMoving: 0
+  _movingAttackSpeedPenaltyPct: 0.5
+  _attackRecoverySeconds: 0
+  _windupShare: 0.35
+  _chargeAttackWindupMult: 1
+  _resourceOnHit: 0
+  _maxResourceGainPerSecond: 0
+  _stats:
+  - Stat: 8
+    Op: 3
+    Value: 0.75
+  - Stat: 9
+    Op: 3
+    Value: 7
+  - Stat: 3
+    Op: 3
+    Value: 6
+  - Stat: 4
+    Op: 3
+    Value: 14
+  - Stat: 18
+    Op: 3
+    Value: 7
+  - Stat: 27
+    Op: 3
+    Value: 50
+  - Stat: 7
+    Op: 3
+    Value: 130
+  _grantedEffects: []
+  _abilities:
+  - _id: lullaby
+    _effects:
+    - {fileID: 11400000, guid: f1b3d5a7c9e2406b8d0f2a4c6e8b0d13, type: 2}
+    - {fileID: 11400000, guid: a2c4e6b8d0f3517c9e1b3d5f7a9c1e24, type: 2}
+    _selfEffects: []
+    _baseCooldown: 0
+    _resourceCost: 50
+    _targetMode: 1
+    _damageMultiplier: 0
+    _schoolOverride: 0
+    _physicalSubtypeOverride: 0
+    _magicElementOverride: 0
+    _affinityOverride: 0
+    _areaShape: 0
+    _areaRadius: 0
+    _healFlat: 0
+    _healPctTargetMissingHp: 0
+    _healEffect: {fileID: 0}
+    _selfHealFraction: 1
+    _castCondition: 0
+    _castConditionCount: 1
+    _castConditionRadius: 0
+    _castConditionHpPct: 0.5
+    _castOverrideSelfHpPct: 0
+    _triggerTag: 0
+    _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _displaces: 0
+    _displaceDistance: 4
+    _displaceDamageMult: 1
+    _displaceWidth: 1
+    _visualSlot: 0
+    _infoTags: []
+  _aiPreset: {fileID: 11400000, guid: b3d5f7c9e1a4628d0f2c4e6b8d0a2f35, type: 2}
+  _ai:
+    _autoAttackTargeting: 4
+    _autoAttackMode: 0
+    _targetTag: 32768
+    _retreat:
+      Enabled: 1
+      FleeAtHpPct: 0.3
+      ReturnAtHpPct: 0.55
+    _kite:
+      Enabled: 0
+      FleeDist: 1.5
+      FallbackDist: 3
+    _passiveTrigger: 0
+    _passiveThresholdPct: 0.2
+  _icon: {fileID: 0}
+  _infoTags:
+  - {fileID: 11400000, guid: d8a1fea2ed170c54e92dba9f84de1058, type: 2}
+  - {fileID: 11400000, guid: 3c857d1003271c941b4b811fd8f6f8c5, type: 2}
+  - {fileID: 11400000, guid: 45145ac326802ed499c369d31aa459e2, type: 2}
+  - {fileID: 11400000, guid: 2e74f4027aac58747add95950ec06969, type: 2}
+  - {fileID: 11400000, guid: 8bf0488bf66556b44b1970f09c629b1b, type: 2}
+  _tags:
+  - dreameater
+  - controller
+  - common
+  _kitPower: 0
+  _dropRarity: 1
+  _runEffects: []
+  _altAiPresets: []
+  _canUseExtendedDeployment: 0
