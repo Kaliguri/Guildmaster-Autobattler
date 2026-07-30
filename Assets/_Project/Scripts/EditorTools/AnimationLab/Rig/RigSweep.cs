@@ -69,6 +69,13 @@ namespace Guildmaster.AnimationLab.Editor
             /// </remarks>
             public RigLayerBlend.Composition Composition;
 
+            /// <summary>
+            /// Надстройки ПОВЕРХ всего остального — гвардия и прочее, что живёт своим слоем параллельно
+            /// действию. Без них зона удара судится по телу, на котором щита нет, а в бою он там есть:
+            /// маски удара и щита обе держат левую руку, и кто из них победил — видно только вместе.
+            /// </summary>
+            public RigLayerBlend.Layer[] Layers;
+
             public int Size = 900;
             public float Padding = 1.15f;
             public int CoverageSize = 256;
@@ -225,7 +232,10 @@ namespace Guildmaster.AnimationLab.Editor
         // Один вход для всех трёх проходов рендера: геометрия, кадрирование и подложка обязаны смотреть на
         // одну и ту же позу, иначе дуга будет посчитана по одной, а нарисована поверх другой.
         static void SamplePose(GameObject unit, AnimationClip clip, float time, Options options)
-            => RigLayerBlend.SampleTraced(unit, clip, time, options.Composition);
+        {
+            RigLayerBlend.SampleTraced(unit, clip, time, options.Composition);
+            RigLayerBlend.Fold(unit, options.Layers);   // поверх готовой позы, БЕЗ пересэмпла базы
+        }
 
         public static Result Render(RigProfile profile, AnimationClip clip, Options options = null)
         {
