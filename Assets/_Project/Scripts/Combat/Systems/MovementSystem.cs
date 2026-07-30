@@ -63,14 +63,15 @@ namespace Guildmaster.Combat
                 _next[i] = unit.Position;   // по умолчанию остаёмся на месте
 
                 // Разбег гаснет вместе с любой причиной не бежать: иначе он залипает на убитом или
-                // обездвиженном, и показ считает, что тот всё ещё несётся к цели.
-                if (unit.IsDead) { unit.StopSprint(); continue; }
+                // обездвиженном, и показ считает, что тот всё ещё несётся к цели. Вместе с ним гаснет и
+                // заряд удара с разбега: сбитый с ног разгон особого удара не покупает (AbortSprint).
+                if (unit.IsDead) { unit.AbortSprint(); continue; }
 
                 // В полёте (§9.9) юнита двигает DisplacementSystem — сам он не перемещается.
-                if (unit.DisplacedTicksRemaining > 0) { unit.StopSprint(); continue; }
+                if (unit.DisplacedTicksRemaining > 0) { unit.AbortSprint(); continue; }
 
                 // Контроль (корень/обездвиживание) — стоим на месте (вики «6» §5.3).
-                if (!unit.CanMove) { unit.StopSprint(); continue; }
+                if (!unit.CanMove) { unit.AbortSprint(); continue; }
 
                 // «Занят» атакой = замах ИЛИ восстановление (весь бэксвинг, вики «14»): в оба хвоста
                 // юнит либо стоит, либо (со «стрельбой на ходу») движется со штрафом. Recovery = 0 у
@@ -78,22 +79,33 @@ namespace Guildmaster.Combat
                 bool firing            = unit.Phase == AttackPhase.Windup || unit.Phase == AttackPhase.Recovery;
                 bool attackWhileMoving = unit.Unit != null && unit.Unit.CanAttackWhileMoving;
 
+                // Удар с разбега ДОЕЗЖАЕТ свой замах. Гейт атаки начал его за границей досягаемости именно
+                // потому, что остаток дистанции закрывается ходом (CombatPositioning.CanCloseIntoReach);
+                // рут здесь оставил бы юнита замахиваться в пустоту в двух шагах от цели. Хвост (Recovery)
+                // рутуется как обычно: удар уже случился, дальше вес и остановка.
+                bool chargingIn = unit.ChargedSwing && unit.Phase == AttackPhase.Windup;
+
                 // Атака рутит юнита (свинг на месте) — КРОМЕ реликвий со «стрельбой на ходу» (§9.8):
                 // те продолжают движение со штрафом скорости.
-                if (firing && !attackWhileMoving) { unit.StopSprint(); continue; }
+                if (firing && !attackWhileMoving && !chargingIn) { unit.StopSprint(); continue; }
 
                 // Каст держит на месте так же, как авто-атака (решение Макса по Q9). Исключение объявляет
                 // сама способность (`_canMoveWhileCasting`), по образцу «Стрельбы на ходу»: «Марш»
                 // Барабанщика — канал, который идёт в движении.
-                if (unit.IsCastBusy && !CastAllowsMovement(unit)) { unit.StopSprint(); continue; }
+                if (unit.IsCastBusy && !CastAllowsMovement(unit)) { unit.AbortSprint(); continue; }
 
                 RuntimeUnit target = unit.CurrentTarget;
-                if (target == null) { unit.StopSprint(); continue; }
+                if (target == null) { unit.AbortSprint(); continue; }
 
-                UpdateSprint(unit, target, firing, in tuning);
+                // Разбег на заряженном замахе ЗАМОРАЖИВАЕТСЯ, а не пересчитывается: точку старта гейт
+                // посчитал по текущей скорости, и гистерезис, погасивший разгон на подъезде (зазор падает
+                // ниже SprintExitGap как раз в эти тики), уронил бы скорость на треть — юнит не доехал бы
+                // до досягаемости к кадру контакта и ударил вхолостую.
+                if (!chargingIn) UpdateSprint(unit, target, firing, in tuning);
 
                 float moveSpeed = unit.Stats.Get(StatType.MoveSpeed);
-                if (firing && attackWhileMoving)
+                // Штраф «стрельбы на ходу» въезду не положен по той же причине: он ломает расчёт въезда.
+                if (firing && attackWhileMoving && !chargingIn)
                     moveSpeed *= Mathf.Max(0f, 1f - unit.Unit.MovingAttackSpeedPenaltyPct); // §9.8
                 // Прибавка приходит ДОЛЕЙ разгона, а не тумблером: юнит выходит на полную скорость за то же
                 // время, за которое показ домешивает клип бега к шагу.
@@ -158,9 +170,11 @@ namespace Guildmaster.Combat
 
         private static void UpdateSprint(RuntimeUnit unit, RuntimeUnit target, bool firing, in SimTuning tuning)
         {
+            // Бросил честный подход (ушёл в кайт/побег) или стреляет на ходу — это не прибытие, а обрыв:
+            // вместе с разбегом гаснет и заряд. Врубается тот, кто добежал, а не тот, кто передумал.
             if (firing || unit.Positioning != PositioningIntent.Approach || tuning.SprintSpeedMult <= 1f)
             {
-                unit.StopSprint();
+                unit.AbortSprint();
                 return;
             }
 
@@ -173,18 +187,22 @@ namespace Guildmaster.Combat
 
             if (wants)
             {
-                // Намерение непрерывно — копим. Заряд прошлого прибытия недействителен: удар с разбега
+                // Намерение непрерывно — копим. Заряд прошлого сближения недействителен: удар с разбега
                 // принадлежит тому сближению, которым он и добыт.
                 if (unit.SprintWantTicks == 0) unit.ChargedAttackReady = false;
                 unit.SprintWantTicks++;
                 unit.SprintRamp = tuning.SprintRampAt(unit.SprintWantTicks);
+
+                // Заряд появляется, как только разгон набран ПОЛНОСТЬЮ, — ещё в беге, а не по прибытии.
+                // Взвод по прибытии не мог попасть во въездной замах: тот обязан стартовать за границей
+                // досягаемости, а прибытие — это уже её граница. Юнит, который прошёл пару шагов и упёрся
+                // в цель, по-прежнему добыл обычный удар: полного разгона у него нет.
+                if (unit.SprintRamp >= 1f) unit.ChargedAttackReady = true;
                 return;
             }
 
-            // Намерение кончилось ПРИБЫТИЕМ — и только полный разгон оставляет удар с разбега. Юнит,
-            // который прошёл пару шагов и упёрся в цель, добыл обычный удар: особый удар покупается
-            // разгоном, а не фактом, что до цели было чуть далеко.
-            if (unit.SprintRamp >= 1f) unit.ChargedAttackReady = true;
+            // Намерение кончилось ПРИБЫТИЕМ: разбег гаснет, а заряд (если разгон был полным) переживает
+            // остановку — добежавший и вставший бьёт с разбега так же, как въезжающий.
             unit.StopSprint();
         }
 
