@@ -577,6 +577,18 @@ namespace Guildmaster.Combat
             _effectSystem.Dispel(in req, this);
         }
 
+        /// <summary>
+        /// Каст объявлен: событие уходит в общую очередь, а разослать его врагам — работа дренажа
+        /// (см. <see cref="DrainEventQueue"/>). Здесь оно ставится ОДНОЙ записью, потому что состав живых
+        /// врагов должен читаться в момент доставки, а не в момент заявки.
+        /// </summary>
+        public void ReportAbilityCast(RuntimeUnit caster)
+        {
+            if (caster == null || caster.IsDead) return;
+
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.AbilityCast, caster, caster, 0f));
+        }
+
         /// <summary>Заявка на переход за спину — применяется в конце раунда, см. <see cref="ApplyPendingTeleports"/>.</summary>
         public void TeleportBehind(RuntimeUnit unit, RuntimeUnit target)
         {
@@ -874,6 +886,24 @@ namespace Guildmaster.Combat
             while (_eventQueue.Count > 0 && processed < MaxEventsPerDrain)
             {
                 CombatEventData ev = _eventQueue.Dequeue();
+
+                // Единственное широковещательное событие: на чужой каст реагирует ПРОТИВНИК, значит
+                // носителей столько, сколько живых врагов. Обход идёт по _units в порядке списка —
+                // он же порядок сборки боя, то есть детерминированный и одинаковый у обеих сторон.
+                if (ev.Type == CombatEvent.AbilityCast)
+                {
+                    RuntimeUnit caster = ev.Source;
+                    for (int i = 0; i < _units.Count; i++)
+                    {
+                        RuntimeUnit u = _units[i];
+                        if (u.IsDead || caster == null || u.Team == caster.Team) continue;
+                        _effectSystem.Dispatch(u, in ev, this);
+                    }
+
+                    processed++;
+                    continue;
+                }
+
                 RuntimeUnit carrier =
                     ev.Type == CombatEvent.DamageDealt || ev.Type == CombatEvent.Healed
                     || ev.Type == CombatEvent.UnitKilled || ev.Type == CombatEvent.EffectExpired

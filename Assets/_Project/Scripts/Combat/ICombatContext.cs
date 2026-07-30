@@ -58,6 +58,18 @@ namespace Guildmaster.Combat
         /// <summary>Снять с цели подходящие эффекты (purge/cleanse, вики «6» §5.4).</summary>
         void Dispel(in Effects.DispelRequest req);
 
+        /// <summary>
+        /// Объявить, что <paramref name="caster"/> применил активную способность: событие
+        /// <see cref="Effects.CombatEvent.AbilityCast"/> уходит всем его живым ВРАГАМ. На него реагирует
+        /// «Отражающий налёт» Антимага — он копит щит за каждое вражеское заклинание.
+        /// </summary>
+        /// <remarks>
+        /// Реакция висит на противнике, а не на кастующем, поэтому событие единственное в очереди, у
+        /// которого носитель не один. Разослать его врагам — работа очереди, а не компонента: иначе
+        /// каждый реактив сам обходил бы список юнитов, и порядок обхода стал бы частью исхода.
+        /// </remarks>
+        void ReportAbilityCast(RuntimeUnit caster);
+
         /// <summary>Принудительно сместить цель (отбрасывание/«ядро», §9.9). Исполняет DisplacementSystem.</summary>
         void Displace(in DisplaceRequest req);
 

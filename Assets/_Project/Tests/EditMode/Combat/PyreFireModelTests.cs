@@ -238,6 +238,8 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             public void ApplyEffect(RuntimeUnit target, EffectData def, RuntimeUnit source) => _effects.Apply(target, def, source, this);
             public void Dispel(in DispelRequest req) => _effects.Dispel(in req, this);
+            // Каст никто не слушает: реакцию на чужое заклинание проверяют бои, а не заглушка.
+            public void ReportAbilityCast(RuntimeUnit caster) { }
             public void Displace(in DisplaceRequest req) { }
 
             // Призывов в этом срезе нет: стаб честно отвечает «призывать нечем».

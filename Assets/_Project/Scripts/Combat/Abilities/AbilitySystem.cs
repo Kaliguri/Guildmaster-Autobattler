@@ -314,6 +314,10 @@ namespace Guildmaster.Combat
             // срабатывания значило бы разгонять залп периодом канала.
             ability.CastsThisBattle++;
 
+            // Враги узнают о касте ЗДЕСЬ, а не после применения нагрузки: Антимаг получает щит раньше,
+            // чем в него попадут, — игрок обязан видеть причину прежде следствия (карточка the-aegis).
+            ctx.ReportAbilityCast(caster);
+
             if (!data.TakesTime)
             {
                 ApplyPayload(caster, ability, plan.Target, units, ctx);
