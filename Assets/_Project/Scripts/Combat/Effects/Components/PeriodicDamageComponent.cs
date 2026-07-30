@@ -46,6 +46,11 @@ namespace Guildmaster.Combat.Effects.Components
                  "Складывается с плоским уроном выше; так DoT одинаково жалит и толстых, и тонких.")]
         [SerializeField] private float _damagePctTargetMaxHp;
 
+        [Tooltip("Прибавка к урону В СЕКУНДУ за каждую секунду, что эффект уже висит («Кошмар»: чем дольше " +
+                 "цель спит, тем больнее тик). 0 = ровный DoT. Нарастание считается от ПРОЖИТОГО времени " +
+                 "эффекта, поэтому подкрепление, обновившее длительность, сбрасывает разгон.")]
+        [SerializeField] private float _growthPerSecond;
+
         public float Interval => _interval;
         public ScalableValue Potency => _damagePerSecond;
 
@@ -60,12 +65,30 @@ namespace Guildmaster.Combat.Effects.Components
             // Share: доля вкладчика, за которого идёт этот проход. Эффект на цели один, но держать
             // его могут несколько — тогда тик прогоняется по вкладчикам, и урон каждого куска
             // засчитывается своему источнику (реш. Макса 2026-07-26). Один вкладчик → Share = 1.
-            float damage = DamagePerSecond(ctx.Potency, ctx.Target) * ctx.Dt * ctx.Stacks * ctx.Share;
+            float rate = DamagePerSecond(ctx.Potency, ctx.Target) + Growth(in ctx);
+            float damage = rate * ctx.Dt * ctx.Stacks * ctx.Share;
             if (damage <= 0f) return;
 
             // Periodic: тик DoT не будит реактивы «на удар» — горение и яд не должны запускать шипы и щиты.
             ctx.Combat.DealDamage(new DamageRequest(ctx.Source, ctx.Target, damage, _damageSchool, ctx.Combat.ArmorK,
                 sourceKind: DamageSourceKind.Periodic, affinity: _affinity, element: _magicElement));
+        }
+
+        /// <summary>
+        /// Прибавка за разгон: сколько урона в секунду добавилось к этому моменту жизни эффекта.
+        /// Считается из ПРОЖИТОГО времени (базовая длительность минус остаток), а не из счётчика
+        /// сработавших тиков — счётчик пришлось бы держать в эффекте, а stateless-компоненту его негде
+        /// хранить. Бессрочные эффекты не разгоняются: у них нет «прожитого» относительно конца.
+        /// </summary>
+        private float Growth(in EffectContext ctx)
+        {
+            if (_growthPerSecond <= 0f || ctx.Effect == null || ctx.Effect.IsPermanent) return 0f;
+
+            float total = ctx.Effect.Def != null ? ctx.Effect.Def.BaseDuration : 0f;
+            if (total <= 0f) return 0f;
+
+            float elapsed = total - ctx.Effect.RemainingTicks / (float)Core.Simulation.SimConstants.TickRate;
+            return elapsed > 0f ? elapsed * _growthPerSecond : 0f;
         }
 
         /// <summary>

@@ -70,6 +70,12 @@ namespace Guildmaster.Combat
                 // Союзный таргетинг (хил) стелс не блокирует — только выбор цели противником.
                 if (!wantAllies && (o.EffectTagMask & EffectTag.Stealth) != 0) continue;
 
+                // Сон («Колыбельная», [[the-lull]]): спящий выпадает из автовыбора ВСЕЙ команды —
+                // правило агро, а не свойство эффекта, иначе каждого кита пришлось бы настраивать
+                // руками. Исключение — тот, кто спящих ищет намеренно (демон добивает свою цель):
+                // он объявляет это профилем, предпочитая тег сна.
+                if (!wantAllies && (o.EffectTagMask & EffectTag.Sleep) != 0 && !HuntsSleepers()) continue;
+
                 float distSq = (o.Position - self.Position).sqrMagnitude;
                 float score  = Score(o, mode, distSq);
 
@@ -84,6 +90,15 @@ namespace Guildmaster.Combat
 
             return best;
         }
+
+        /// <summary>
+        /// Охотится ли носитель профиля за спящими: только если он ЯВНО предпочитает тег сна
+        /// (<see cref="TargetingMode.PreferTagged"/> + <c>TargetTag = Sleep</c>). Так исключение из общего
+        /// правила агро объявляется в данных кита, а не зашивается в код по имени реликвии.
+        /// </summary>
+        private bool HuntsSleepers() =>
+            _profile.AutoAttackTargeting == TargetingMode.PreferTagged
+            && (_profile.TargetTag & EffectTag.Sleep) != 0;
 
         // --- Score (меньше = лучше, §4.2) ---
 
