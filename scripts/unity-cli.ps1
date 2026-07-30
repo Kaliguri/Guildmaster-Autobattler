@@ -23,13 +23,32 @@ function Get-UnityProjectVersion {
     return $version
 }
 
-function Get-UnityExePath {
+function Get-UnityEditorRoot {
+    <#
+    .SYNOPSIS
+    Папка Editor установленного редактора той версии, что записана в проекте.
+
+    .DESCRIPTION
+    Единственный владелец пути к установке: кроме самого Unity.exe оттуда берётся компилятор Roslyn
+    (scripts/compile-check.ps1 собирает сборки без редактора). Два места, знающие раскладку Unity Hub,
+    разъехались бы на первом же нестандартном пути установки.
+    #>
     param([Parameter(Mandatory)][string]$ProjectPath)
 
     $version = Get-UnityProjectVersion -ProjectPath $ProjectPath
-    $exe = "C:\Program Files\Unity\Hub\Editor\$version\Editor\Unity.exe"
+    $root = "C:\Program Files\Unity\Hub\Editor\$version\Editor"
+    if (-not (Test-Path $root)) {
+        throw "Unity $version не найден: $root. Поставь эту версию через Unity Hub или поправь путь в scripts/unity-cli.ps1."
+    }
+    return $root
+}
+
+function Get-UnityExePath {
+    param([Parameter(Mandatory)][string]$ProjectPath)
+
+    $exe = Join-Path (Get-UnityEditorRoot -ProjectPath $ProjectPath) "Unity.exe"
     if (-not (Test-Path $exe)) {
-        throw "Unity $version не найден: $exe. Поставь эту версию через Unity Hub или поправь путь в scripts/unity-cli.ps1."
+        throw "Unity.exe не найден: $exe"
     }
     return $exe
 }
