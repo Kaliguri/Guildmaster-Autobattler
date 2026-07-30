@@ -41,8 +41,15 @@ namespace Guildmaster.Combat
             /// <summary>Дистанция толчка этого удара (взведена зарядом усиления); 0 = удар не толкает.</summary>
             public readonly float Knockback;
 
+            /// <summary>Эффект, который этот удар накладывает СВЕРХ обычных on-hit (взведён зарядом).</summary>
+            public readonly EffectData BonusEffect;
+
+            /// <summary>Сколько раз наложить <see cref="BonusEffect"/>.</summary>
+            public readonly int BonusCount;
+
             public ResolvedHit(RuntimeUnit unit, RuntimeUnit target, float raw, float reach,
-                DamageSchool school, DamageAffinity affinity, bool blink, float flatPen, float knockback)
+                DamageSchool school, DamageAffinity affinity, bool blink, float flatPen, float knockback,
+                EffectData bonusEffect, int bonusCount)
             {
                 Unit      = unit;
                 Target    = target;
@@ -53,6 +60,8 @@ namespace Guildmaster.Combat
                 Blink     = blink;
                 FlatPen   = flatPen;
                 Knockback = knockback;
+                BonusEffect = bonusEffect;
+                BonusCount  = bonusCount;
             }
         }
 
@@ -237,6 +246,8 @@ namespace Guildmaster.Combat
             // пробивание и снимаем баф стелса. Пробивание тратится тем же ударом, что и множитель.
             float flatPen = 0f;
             float knockback = 0f;
+            EffectData bonusEffect = null;
+            int bonusCount = 0;
             if (unit.EmpowerDamageMult > 0f)
             {
                 raw *= unit.EmpowerDamageMult;
@@ -245,6 +256,10 @@ namespace Guildmaster.Combat
                 unit.EmpowerFlatPen = 0f;
                 knockback = unit.EmpowerKnockback;
                 unit.EmpowerKnockback = 0f;
+                bonusEffect = unit.EmpowerBonusEffect;
+                bonusCount  = unit.EmpowerBonusCount;
+                unit.EmpowerBonusEffect = null;
+                unit.EmpowerBonusCount  = 0;
                 // Снимаем ИМЕННО тот эффект, который заряд выдал (у Убийцы — стелс, у периодического
                 // заряда — свой тег): жёсткий Stealth здесь срывал бы скрытность любому, кто просто
                 // взвёл усиленный удар, и наоборот оставлял бы висеть чужой заряд.
@@ -256,13 +271,17 @@ namespace Guildmaster.Combat
             bool blink = unit.BlinkBehindOnNextAttack;
             unit.BlinkBehindOnNextAttack = false;
 
-            _hits.Add(new ResolvedHit(unit, target, raw, reach, school, affinity, blink, flatPen, knockback));
+            _hits.Add(new ResolvedHit(unit, target, raw, reach, school, affinity, blink, flatPen, knockback,
+                bonusEffect, bonusCount));
         }
 
         /// <summary>Прилёт снятого удара: урон/снаряд/хил и on-hit эффекты. Блинк уже отыгран (проход 2a).</summary>
         private void Land(in ResolvedHit hit, ICombatContext ctx)
         {
             RuntimeUnit unit = hit.Unit, target = hit.Target;
+            // Подтип удара (Дробящий/Режущий/Колющий) едет вместе с уроном: верхняя ступень холодной
+            // линии добавляет +20% именно дробящему, и без подтипа она не отличит молот от кинжала.
+            PhysicalSubtype subtype = unit.Unit != null ? unit.Unit.PhysicalSubtype : PhysicalSubtype.None;
             // Между снятием цифр и прилётом обоих могли добить ударом того же тика.
             if (unit.IsDead || target.IsDead) return;
 
@@ -292,12 +311,13 @@ namespace Guildmaster.Combat
                     // Зона всегда одна и та же и растёт от ног носителя — цель может стоять в её
                     // середине, а не только на конце.
                     DealLineDamage(unit, target, hit.Reach * unit.Unit.AutoAttackLengthMult,
-                        raw, school, affinity, ctx);
+                        raw, school, affinity, subtype, ctx);
                 }
                 else
                 {
-                    ctx.DealDamage(new DamageRequest(unit, target, raw, school, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, affinity: affinity, bonusFlatPen: hit.FlatPen));
+                    ctx.DealDamage(new DamageRequest(unit, target, raw, school, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, affinity: affinity, bonusFlatPen: hit.FlatPen, subtype: subtype));
                     ApplyAutoAttackOnHit(unit, target, ctx); // §9.1 (мили single)
+                    ApplyEmpowerBonus(unit, target, in hit, ctx);
                     PushIfEmpowered(unit, target, in hit, ctx);
                 }
             }
@@ -319,13 +339,19 @@ namespace Guildmaster.Combat
         /// <summary>Наложить on-hit эффекты авто-атаки реликвии на задетую цель (§9.1, мили-путь).</summary>
         /// <summary>
         /// Толчок заряженного удара («Восходящий удар» Монаха воды): цель уезжает ОТ носителя на
-        /// взведённую зарядом дистанцию. Ядром, а не мягким сдвигом — значит работает общее правило
-        /// «толчок в стену бьёт дважды», и урон повторного удара равен урону самого выпада.
+        /// взведённую зарядом дистанцию. Обычный толчок, БЕЗ урона на линии полёта и без добивания о
+        /// стену — впечатавшись в край арены, цель просто останавливается и лежит оглушённой
+        /// (<c>WallImpactStunSeconds</c>).
         /// </summary>
         /// <remarks>
-        /// Только для ближнего single-удара. Линия и снаряд не толкают намеренно: у линии цель не одна
-        /// (кого из четверых уносить — вопрос без ответа), а у снаряда попадание случается в
-        /// <c>ProjectileSystem</c> позже и уже без снятых цифр этого удара.
+        /// <b>«Ядро» и второй удар о стену — уникальная механика Монаха вихря</b> (решение Макса
+        /// 2026-07-30), поэтому здесь передаётся нулевой урон: <c>DisplacementSystem</c> бьёт о стену
+        /// ровно тогда, когда у толчка задан свой урон, а стан выдаёт всегда. Сначала я поставила тут
+        /// ядро с уроном удара — это давало обычному киту чужую уникальность и удваивало его выпад у
+        /// любой стенки.
+        /// <para>Только для ближнего single-удара. Линия и снаряд не толкают намеренно: у линии цель не
+        /// одна (кого из четверых уносить — вопрос без ответа), а у снаряда попадание случается в
+        /// <c>ProjectileSystem</c> позже и уже без снятых цифр этого удара.</para>
         /// </remarks>
         private static void PushIfEmpowered(RuntimeUnit unit, RuntimeUnit target, in ResolvedHit hit, ICombatContext ctx)
         {
@@ -336,8 +362,21 @@ namespace Guildmaster.Combat
 
             ctx.Displace(new DisplaceRequest(
                 target, unit, away.normalized, hit.Knockback,
-                cannonball: true, damage: hit.Raw, school: hit.School, width: 1f,
+                cannonball: false, damage: 0f, school: hit.School, width: 0f,
                 affinity: hit.Affinity));
+        }
+
+        /// <summary>
+        /// Доп. наложения, взведённые зарядом усиления: «каждая третья» Драугра вгоняет в цель лишние
+        /// стаки «Изморози». Накладываем повторными вызовами, а не порцией эффекта, потому что порция —
+        /// свойство ассета и одинакова для всех, а лишние стаки принадлежат ИМЕННО заряженному удару.
+        /// </summary>
+        private static void ApplyEmpowerBonus(RuntimeUnit unit, RuntimeUnit target, in ResolvedHit hit, ICombatContext ctx)
+        {
+            if (hit.BonusEffect == null || hit.BonusCount <= 0 || target.IsDead) return;
+
+            for (int i = 0; i < hit.BonusCount; i++)
+                ctx.ApplyEffect(target, hit.BonusEffect, unit);
         }
 
         private static void ApplyAutoAttackOnHit(RuntimeUnit unit, RuntimeUnit target, ICombatContext ctx)
@@ -381,7 +420,7 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>Линейная авто-атака «Размашистый выпад»: полоса к цели, урон по всем врагам в ней.</summary>
-        private void DealLineDamage(RuntimeUnit unit, RuntimeUnit target, float length, float raw, DamageSchool school, DamageAffinity affinity, ICombatContext ctx)
+        private void DealLineDamage(RuntimeUnit unit, RuntimeUnit target, float length, float raw, DamageSchool school, DamageAffinity affinity, PhysicalSubtype subtype, ICombatContext ctx)
         {
             float width = unit.Unit.AutoAttackWidth;
             Vector2 dir = target.Position - unit.Position;
@@ -394,7 +433,7 @@ namespace Guildmaster.Combat
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итоговое состояние.
             for (int t = 0; t < _lineTargets.Count; t++)
             {
-                ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, school, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, affinity: affinity));
+                ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, school, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, affinity: affinity, subtype: subtype));
                 ApplyAutoAttackOnHit(unit, _lineTargets[t], ctx); // §9.1 (мили Line — по каждой задетой)
             }
         }
