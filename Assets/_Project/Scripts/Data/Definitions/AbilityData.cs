@@ -138,6 +138,15 @@ namespace Guildmaster.Data.Definitions
         [Min(1)]
         [SerializeField] private int _summonCount = 1;
 
+        [Tooltip("Прибавка к числу призываемых за каждый предыдущий каст В ЭТОМ БОЮ (Некромант = 1: армия " +
+                 "растёт с каждым призывом). 0 = число постоянно. Клампится SummonCountCap.")]
+        [Min(0)]
+        [SerializeField] private int _summonCountGrowth;
+
+        [Tooltip("Потолок числа призываемых за ОДИН каст при разгоне (Некромант = 3). 0 = без потолка.")]
+        [Min(0)]
+        [SerializeField] private int _summonCountCap;
+
         [Tooltip("Максимум ЖИВЫХ призывов от этой способности. Лимит достигнут — каст не идёт вовсе " +
                  "(мана и КД целы, игрок видит предел глазами). 0 = без лимита.")]
         [Min(0)]
@@ -292,8 +301,23 @@ namespace Guildmaster.Data.Definitions
         /// <summary>Кого призывает способность. null = не призывает.</summary>
         public UnitData SummonUnit => _summonUnit;
 
-        /// <summary>Сколько тел появляется за каст.</summary>
+        /// <summary>Сколько тел появляется за каст (базовое число, без разгона).</summary>
         public int SummonCount => _summonCount < 1 ? 1 : _summonCount;
+
+        /// <summary>
+        /// Сколько тел появится с учётом разгона: <paramref name="previousCasts"/> — сколько раз эта
+        /// способность уже призывала в этом бою. Клампится <c>_summonCountCap</c>, если он задан.
+        /// </summary>
+        /// <remarks>
+        /// Отдельно от <see cref="ResolvePayloadRepeats"/>, хотя арифметика та же: призыв применяется ВНЕ
+        /// цикла нагрузки (тела появляются вместе с любой формой способности), и мешать два разгона в
+        /// одно поле значило бы, что «залп из трёх стрел» случайно начнёт множить и скелетов.
+        /// </remarks>
+        public int ResolveSummonCount(int previousCasts)
+        {
+            int count = SummonCount + (_summonCountGrowth < 0 ? 0 : _summonCountGrowth) * (previousCasts < 0 ? 0 : previousCasts);
+            return _summonCountCap > 0 && count > _summonCountCap ? _summonCountCap : count;
+        }
 
         /// <summary>Максимум живых призывов от этой способности; 0 = без лимита.</summary>
         public int SummonLimit => _summonLimit;

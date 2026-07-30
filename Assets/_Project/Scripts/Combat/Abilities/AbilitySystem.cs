@@ -378,7 +378,7 @@ namespace Guildmaster.Combat
 
             // Призыв не конкурирует с формой способности: тела появляются вместе с любой нагрузкой, поэтому
             // он ДО ветвления, а не одной из ветвей.
-            if (data.Summons) ApplySummons(caster, data, ctx);
+            if (data.Summons) ApplySummons(caster, data, ability.CastsThisBattle - 1, ctx);
 
             // Залп: одна и та же нагрузка уходит несколько раз за каст, с разгоном от числа прошлых
             // кастов (Арканист — стрела за каст). Каждое применение — самостоятельный удар: свой урон и
@@ -471,14 +471,15 @@ namespace Guildmaster.Combat
         /// он боевая механика, а не заказ состава. Всё остальное про призыв (срок жизни, уход за хозяином)
         /// исполняет <see cref="SummonSystem"/>; здесь только рождение.
         /// </remarks>
-        private static void ApplySummons(RuntimeUnit caster, AbilityData data, ICombatContext ctx)
+        private static void ApplySummons(RuntimeUnit caster, AbilityData data, int previousCasts, ICombatContext ctx)
         {
             int lifetimeTicks = AttackTiming.RecoveryTicks(data.SummonLifetimeSeconds);
+            int count = data.ResolveSummonCount(previousCasts);
 
             // Шаг раскладки — от размера призывателя: крупный хозяин не должен рождать тела внутри себя.
             float step = Mathf.Max(0.6f, caster.Stats.Get(StatType.Size));
 
-            for (int i = 0; i < data.SummonCount; i++)
+            for (int i = 0; i < count; i++)
             {
                 // Веером за спиной хозяина: чередуем стороны, отступая на шаг. Формула чистая от
                 // состояния мира, поэтому одинакова у обеих команд.

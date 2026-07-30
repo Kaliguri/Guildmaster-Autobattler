@@ -896,16 +896,33 @@ namespace Guildmaster.Combat
             {
                 CombatEventData ev = _eventQueue.Dequeue();
 
-                // Единственное широковещательное событие: на чужой каст реагирует ПРОТИВНИК, значит
-                // носителей столько, сколько живых врагов. Обход идёт по _units в порядке списка —
-                // он же порядок сборки боя, то есть детерминированный и одинаковый у обеих сторон.
+                // Широковещательные события: реагирует не участник, а НАБЛЮДАТЕЛЬ, поэтому носителей
+                // столько, сколько подходящих юнитов. Обход идёт по _units в порядке списка — он же
+                // порядок сборки боя, то есть детерминированный и одинаковый у обеих сторон.
                 if (ev.Type == CombatEvent.AbilityCast)
                 {
+                    // На чужой каст реагирует ПРОТИВНИК («Отражающий налёт» Антимага).
                     RuntimeUnit caster = ev.Source;
                     for (int i = 0; i < _units.Count; i++)
                     {
                         RuntimeUnit u = _units[i];
                         if (u.IsDead || caster == null || u.Team == caster.Team) continue;
+                        _effectSystem.Dispatch(u, in ev, this);
+                    }
+
+                    processed++;
+                    continue;
+                }
+
+                // Смерть слышит вся арена: на неё реагируют не только эффекты на трупе (перенос метки),
+                // но и наблюдатели — «Собиратель костей» Некроманта смотрит, не его ли скелет упал.
+                // Труп в рассылку входит: реактивы на нём обязаны сработать так же, как раньше.
+                if (ev.Type == CombatEvent.UnitDied)
+                {
+                    for (int i = 0; i < _units.Count; i++)
+                    {
+                        RuntimeUnit u = _units[i];
+                        if (u.IsDead && !ReferenceEquals(u, ev.Target)) continue;   // мёртвым зрителям смерть не нужна
                         _effectSystem.Dispatch(u, in ev, this);
                     }
 
@@ -919,11 +936,9 @@ namespace Guildmaster.Combat
                         ? ev.Source
                         : ev.Target;
 
-                // UnitDied доставляем даже мёртвому носителю: «Метка охотника» переносится с трупа
-                // на ближайшего живого врага (§9.5). Остальные события — только живым.
-                bool allowDeadCarrier = ev.Type == CombatEvent.UnitDied;
-
-                if (carrier != null && (allowDeadCarrier || !carrier.IsDead))
+                // Смерть ушла выше своей ветвью (труп получает событие там), значит здесь остались
+                // только события живым носителям.
+                if (carrier != null && !carrier.IsDead)
                 {
                     _effectSystem.Dispatch(carrier, in ev, this);
                 }
