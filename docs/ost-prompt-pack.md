@@ -38,8 +38,10 @@
 повторяешь), BPM и тональность **плоскими тегами**, и одна-две **прозаические ремарки** вместо
 пятого синонима — v5.5 их реально отрабатывает.
 
-**Тональность одна на весь заход — D minor.** Это не вкус, а необходимость: аранжировки следующих
+**Тональный центр один на весь заход — D.** Это не вкус, а необходимость: аранжировки следующих
 фаз растут из одного сэмпла, и разъехавшиеся тональности сделают сборку слоёв в FMOD невозможной.
+**Лад при этом — переменная:** `D dorian` светлее `D minor` (6-я ступень выше) и звучит «фэнтезийно»,
+а не трагично. Центр остаётся D в обоих случаях, поэтому слои сойдутся при любом выборе.
 
 ### Два правила заполнения полей (поправка Макса, 30.07.2026)
 
@@ -57,11 +59,40 @@
 Гони по **2-3 варианта на каждый**. `[Instrumental]` в Lyrics — всюду, **кроме 01-B**.
 
 **01-A · каркас Kajiura, инструментал — эталон «решительно, а не страшно»**
+
+> **Первый прогон провалился, и провал диагностирован (30.07.2026).** Вердикт Макса: «музыка для боя
+> в Риме, гладиаторская». Виноват не Suno, а промпт: `low string ostinato`, `taiko and timpani` и
+> `resolute and driving` — это палитра оркестрового трейлера, она и даёт гладиаторов. Нужно
+> «боевое, но эльфийское, фэнтезийно-высокое».
+>
+> **Пять маркеров стиля Кадзиуры** (Jocoy & Hoffer, *Composer Kajiura Yuki and neo-medieval anime
+> soundtracks*, 2023): «modal scales, high female voices heard in pairs, high instrumental timbres,
+> folk-song-like elements, propulsive background percussion». **В прежнем промпте не было ни одного.**
+> Отсюда правки: лад вместо натурального минора, ВЕРХ вместо низа, перкуссия фоном вместо марша
+> впереди, фолковая фраза вместо оркестровой линии.
+
 ```
-epic fantasy battle, resolute and driving, 138 BPM, D minor, low string ostinato, taiko and timpani,
-soaring string melody, no vocals, played with forward momentum rather than menace
+neo-medieval fantasy battle, modal dorian melody, high wooden flute and solo violin carry the theme,
+shimmering bells, propulsive light percussion in the background, folk-song phrasing, lilting 6/8
+groove, 150 BPM, D dorian, no vocals, airborne rather than marching
 ```
-Exclude: `trailer braams, dubstep drop, chiptune`
+Exclude: `taiko, timpani, trailer braams, gladiator epic, war march`
+
+**Что именно поменялось и почему:**
+
+| Было | Стало | Причина |
+|---|---|---|
+| `low string ostinato` | `high wooden flute and solo violin` | «high instrumental timbres» — верх регистра и есть «эльфийское» |
+| `taiko and timpani` | `propulsive light percussion in the background` | перкуссия у Кадзиуры **гонит фоном**, а не марширует впереди |
+| `resolute and driving` | `airborne rather than marching` | «driving» модель читает как марш; отсюда Рим |
+| `D minor` | **`D dorian`** | тот же тональный центр D (слои сойдутся), но 6-я ступень выше — светлее и менее трагично |
+| 4/4 по умолчанию | `lilting 6/8 groove` | 4/4 — шаг строя, 6/8 — полёт. Главный ключ к «не марш» |
+| — | `shimmering bells` | её узнаваемый приём: звонкие колокольчики открывают и подсвечивают |
+| — | `folk-song phrasing` | «folk-song-like elements»: песня, а не оркестровая тема |
+| Exclude общего вида | **Exclude по диагнозу** | исключаем прямо то, что дало Рим: `taiko`, `timpani`, `war march` |
+
+**Гипотезы этого блока:** понимает ли Suno размер (`6/8`) и лад (`D dorian`) как указания, или их надо
+выражать описательно. Не понимает — переходим на `lilting`, `swaying`, `bright minor`.
 
 **01-B · то же с женским вокализом — главный образ целиком**
 Единственный блок с голосом. Это **проверка тембра и подачи, а не языка**: фонетика конланга и
