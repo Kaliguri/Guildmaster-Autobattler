@@ -78,6 +78,11 @@ namespace Guildmaster.AnimationLab.Editor
         {
             using (var w = new RigWriter(Profile()))
             {
+                // Кадр ноль — БОЕВАЯ СТОЙКА, а не поза покоя (Макс, 30.07). Юнит входит в удар из
+                // CombatIdle, где клинок уже поднят; стартуя из покоя, он сперва ронял меч вниз на 38
+                // градусов и только потом замахивался. Тот же приём, что у AttackCharge с позой бега.
+                Braced(w, 0f, Lin);
+
                 // wind-up: the whole body arrives on one key
                 w.At(0.250f).Bend("torso", -4f, Near, Out).Bend("shoulder.R", 158f, Near, Out)
                             .Bend("shoulder.L", 27f, Near, Out).Bend("knee.R", 8f, Near, Out)
@@ -132,6 +137,8 @@ namespace Guildmaster.AnimationLab.Editor
         {
             using (var w = new RigWriter(Profile()))
             {
+                Braced(w, 0f, Lin);   // вход из боевой стойки — см. Attack
+
                 // anticipation: fold the knees, drop the pelvis, blade low and forward
                 w.At(0.250f).Bend("torso", -12f, Near, Out).Bend("knee.L", 25f, Near, Out).Bend("knee.R", 27f, Near, Out)
                             .Bend("hip.L", -5f, Near, Out).Bend("hip.R", 6f, Near, Out)
@@ -178,6 +185,8 @@ namespace Guildmaster.AnimationLab.Editor
         {
             using (var w = new RigWriter(Profile()))
             {
+                Braced(w, 0f, Lin);   // вход из боевой стойки — см. Attack
+
                 // wind-up: the blade goes further back than in the vertical cut, and the weight loads onto
                 // the back leg — the deeper gather is what tells the two overheads apart at a glance
                 w.At(0.250f).Bend("torso", 7f, Near, Out).Bend("shoulder.R", 172f, Near, Out)
@@ -284,10 +293,14 @@ namespace Guildmaster.AnimationLab.Editor
                 // (−27°) и выпрямленная рука уводила щит от тела. Локоть теперь гнётся внутрь, предплечье
                 // идёт поперёк корпуса, а плечо выносится вперёд, а не вверх.
                 // ЩИТ ЗАКРЫВАЕТ СТОРОНУ ВРАГА, а не просто корпус (Макс, 30.07): противник всегда со
-                // стороны взгляда, поэтому рука обязана вынести щит ПОПЕРЁК тела, к нему. Плечо уводит
-                // щит вправо, локоть разворачивает его плоскостью — вместе они сдвигают центр щита на
-                // точку удара (x: −0.035 → 0.004) и уносят дальний край с 0.283 до 0.448.
-                w.At(0.117f).Bend("shoulder.L", 54f, Near, Out).Bend("elbow.L", 50f, Near, Out)
+                // стороны взгляда, поэтому рука обязана вынести щит ПОПЕРЁК тела, к нему.
+                //
+                // Выносит ПЛЕЧО, и только оно: перебор по сетке показал, что локоть двигает центр щита на
+                // сотые доли (0.008 против 0.011 на тридцати градусах), то есть на вынос не работает вовсе.
+                // Прежние +50 на локте не помогали, а РАЗГИБАЛИ его: у левой руки положительный сгиб идёт
+                // в переразгиб, и валидатор ловил это как hinge-inverted на 48 градусов. Локоть теперь
+                // держит мягкий сгиб в анатомическую сторону — чтобы рука не читалась палкой.
+                w.At(0.117f).Bend("shoulder.L", 54f, Near, Out).Bend("elbow.L", -15f, Near, Out)
                             .Bend("torso", -3f, Near, Out)
                             .Aim("shield", 96f, Ccw, Out);
                 HoldUntil(w, 0.334f);
@@ -295,10 +308,10 @@ namespace Guildmaster.AnimationLab.Editor
                 // Оседание, а НЕ возврат в стойку: прошлая версия уводила щит обратно к 90° к концу клипа,
                 // и рука уезжала раньше, чем кончался барьер. Опускает её вес слоя (см. UnitView.RaiseGuard),
                 // клип же обязан держать позу столько, сколько его держат.
-                w.At(0.450f).Bend("shoulder.L", 52f, Near, Soft).Bend("elbow.L", 48f, Near, Soft)
+                w.At(0.450f).Bend("shoulder.L", 52f, Near, Soft).Bend("elbow.L", -13f, Near, Soft)
                             .Bend("torso", -3f, Near, Soft)
                             .Aim("shield", 94f, Near, Soft);
-                w.At(0.600f).Bend("shoulder.L", 52f, Near, Hold).Bend("elbow.L", 48f, Near, Hold)
+                w.At(0.600f).Bend("shoulder.L", 52f, Near, Hold).Bend("elbow.L", -13f, Near, Hold)
                             .Bend("torso", -3f, Near, Hold)
                             .Aim("shield", 94f, Near, Hold);
                 return w.Write(Folder + "Block.anim", 60f, loopTime: false).ToString();
@@ -314,16 +327,79 @@ namespace Guildmaster.AnimationLab.Editor
         {
             using (var w = new RigWriter(Profile()))
             {
-                w.At(1.100f).Bend("torso", -1.5f, Near, Out).Bend("shoulder.L", -3f, Near, Out)
-                            .Bend("shoulder.R", 3f, Near, Out).Bend("head", 1.5f, Near, Out)
-                            .Bend("elbow.L", 2f, Near, Out).Bend("elbow.R", -2f, Near, Out)
+                // ОТДЫХ, а не «поза рига»: меч и щит ОПУЩЕНЫ (Макс, 30.07). Три состояния обязаны читаться
+                // с одного взгляда — отдых опущен, наготове поднято, удар бьёт. Пока Idle показывал позу
+                // покоя, клинок висел под 37 мировых градусов, и «вне боя» отличалось от «наготове» только
+                // двадцатью градусами, то есть ничем.
+                Resting(w, 0f, Lin);
+                w.At(1.100f).Bend("torso", -1.5f, Near, Out).Bend("shoulder.L", -13.5f, Near, Out)
+                            .Bend("shoulder.R", -19f, Near, Out).Bend("head", 1.5f, Near, Out)
+                            .Bend("elbow.L", -4f, Near, Out).Bend("elbow.R", -10f, Near, Out)
+                            .Aim("weapon", -22f, Near, Out).Aim("shield", 67f, Near, Out)
                             .Move("hips", new Vector2(RestHips.x, 0.026f));
-                w.At(2.600f).Bend("torso", 0f, Near, Out).Bend("shoulder.L", 0f, Near, Out)
-                            .Bend("shoulder.R", 0f, Near, Out).Bend("head", 0f, Near, Out)
-                            .Bend("elbow.L", 0f, Near, Out).Bend("elbow.R", 0f, Near, Out)
-                            .Move("hips", RestHips);
+                Resting(w, 2.600f, Out);
                 return w.Write(Folder + "Idle.anim", 60f, loopTime: true).ToString();
             }
+        }
+
+        /// <summary>
+        /// The resting pose: weapon hand hanging, blade angled down and forward, shield lowered off the
+        /// body. Written at both ends of the loop so the cycle closes on itself rather than drifting.
+        /// </summary>
+        static void Resting(RigWriter w, float time, RigWriter.Ease ease)
+        {
+            w.At(time).Bend("torso", 0f, Near, ease).Bend("head", 0f, Near, ease)
+                      .Bend("shoulder.R", -21f, Near, ease).Bend("shoulder.L", -12f, Near, ease)
+                      .Bend("elbow.R", -8f, Near, ease).Bend("elbow.L", -6f, Near, ease)
+                      .Aim("weapon", -25f, Near, ease).Aim("shield", 65f, Near, ease)
+                      .Move("hips", RestHips);
+        }
+
+        /// <summary>
+        /// Combat idle: the fourth state of the attack loop — the fighter holds his target and waits for his
+        /// window. Not <see cref="Idle"/>, which now means "outside the attack loop" and shows a knight at
+        /// rest with his blade down.
+        ///
+        /// The pose sits deliberately BETWEEN rest and the wind-up: blade already up but not yet gathered,
+        /// weight settled, feet apart, knees soft. That placement is the whole point — an attack starting
+        /// from here costs nothing and cannot pop, while the difference from Idle is legible at a glance.
+        ///
+        /// Breathing is shorter and shallower than at rest (0.9s against 1.1s, half the amplitude): a man
+        /// braced to strike breathes tighter than a man standing about. Same asymmetry though — a symmetric
+        /// loop reads as a machine.
+        /// </summary>
+        public static string CombatIdle()
+        {
+            using (var w = new RigWriter(Profile()))
+            {
+                Braced(w, 0f, Lin);
+                // Вдох: грудь и плечи поднимаются, таз идёт вверх — амплитуда вдвое меньше покойной.
+                w.At(0.900f).Bend("torso", -6.5f, Near, Soft).Bend("head", 5.5f, Near, Soft)
+                            .Bend("shoulder.R", 40f, Near, Soft).Bend("shoulder.L", 24f, Near, Soft)
+                            .Bend("elbow.R", 18f, Near, Soft).Bend("elbow.L", 26f, Near, Soft)
+                            .Bend("hip.L", -6f, Near, Soft).Bend("hip.R", 8f, Near, Soft)
+                            .Bend("knee.L", 10f, Near, Soft).Bend("knee.R", 12f, Near, Soft)
+                            .Aim("weapon", 60f, Near, Soft).Aim("shield", 90f, Near, Soft)
+                            .Move("hips", new Vector2(RestHips.x, 0.014f));
+                Braced(w, 2.000f, Soft);
+                return w.Write(Folder + "CombatIdle.anim", 60f, loopTime: true).ToString();
+            }
+        }
+
+        /// <summary>
+        /// The braced pose itself, written twice — at the top of the loop and at its end, so the cycle
+        /// closes on the same values instead of drifting. Blade forward-up at 58 world degrees: past rest,
+        /// short of the 105 the gathered blade holds.
+        /// </summary>
+        static void Braced(RigWriter w, float time, RigWriter.Ease ease)
+        {
+            w.At(time).Bend("torso", -5f, Near, ease).Bend("head", 4f, Near, ease)
+                      .Bend("shoulder.R", 38f, Near, ease).Bend("shoulder.L", 22f, Near, ease)
+                      .Bend("elbow.R", 18f, Near, ease).Bend("elbow.L", 26f, Near, ease)
+                      .Bend("hip.L", -6f, Near, ease).Bend("hip.R", 8f, Near, ease)
+                      .Bend("knee.L", 10f, Near, ease).Bend("knee.R", 12f, Near, ease)
+                      .Aim("weapon", 58f, Near, ease).Aim("shield", 88f, Near, ease)
+                      .Move("hips", new Vector2(RestHips.x, 0.008f));
         }
 
         /// <summary>
@@ -559,6 +635,7 @@ namespace Guildmaster.AnimationLab.Editor
             log.AppendLine(AttackCharge());
             log.AppendLine(Block());
             log.AppendLine(Idle());
+            log.AppendLine(CombatIdle());
             log.AppendLine(Walk());
             log.AppendLine(Sprint());
             log.AppendLine(Stun());
