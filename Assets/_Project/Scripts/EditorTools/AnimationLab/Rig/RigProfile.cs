@@ -81,6 +81,19 @@ namespace Guildmaster.AnimationLab.Editor
 
             [Tooltip("Длина предмета вдоль ориентира, в мировых юнитах. Замер.")]
             public float ItemLength;
+
+            /// <summary>
+            /// The item's transform, reached from its grip. Addressed by the slice of
+            /// <see cref="ItemPath"/> below <see cref="GripPath"/>, because the artwork sits inside a
+            /// visual container and is no longer a direct child of the grip.
+            /// </summary>
+            public Transform Resolve(Transform grip)
+            {
+                if (grip == null || string.IsNullOrEmpty(ItemPath)) return null;
+                if (string.IsNullOrEmpty(GripPath) || !ItemPath.StartsWith(GripPath + "/", System.StringComparison.Ordinal))
+                    return grip.Find(System.IO.Path.GetFileName(ItemPath));
+                return grip.Find(ItemPath.Substring(GripPath.Length + 1));
+            }
         }
 
         [Tooltip("Риг, который описывает этот профиль. Источник всех замеров.")]
@@ -145,6 +158,9 @@ namespace Guildmaster.AnimationLab.Editor
                 foreach (var node in root.GetComponentsInChildren<Transform>(includeInactive: true))
                 {
                     if (node == root) continue;
+                    // Artwork is off limits: a sprite node inside "Visual Part (Head)" is also called
+                    // "Head", and reading it as a joint produced a second, bogus 'head' entry.
+                    if (RigVisualParts.IsUnderContainer(node)) continue;
                     bool isBodyBone = System.Array.IndexOf(BodyBones, node.name) >= 0;
                     if (!node.name.StartsWith(JointPrefix, System.StringComparison.Ordinal) && !isBodyBone) continue;
 
@@ -270,18 +286,23 @@ namespace Guildmaster.AnimationLab.Editor
                 ItemPath = AnimationUtility.CalculateTransformPath(item, root),
                 OrientationName = id == "shield" ? "top" : "blade",
                 OrientationLocal = 90f,
-                CalibrationZ = NormalizeAngle(item.localEulerAngles.z),
+                // Read against the grip rather than as a local angle: the artwork lives inside a
+                // visual container now, so the calibration sits on a node ABOVE the renderer and a
+                // local read would come back a flat zero.
+                CalibrationZ = NormalizeAngle(item.eulerAngles.z - grip.eulerAngles.z),
                 GripToButt = Vector3.Distance(grip.position, butt),
                 ItemLength = Vector3.Distance(butt, tip)
             };
 
             if (grip.parent != null)
             {
-                var boneRenderer = grip.parent.GetComponent<SpriteRenderer>();
+                var boneRenderer = RigVisualParts.FindVisual(grip.parent);
                 if (boneRenderer != null && boneRenderer.sprite != null)
                 {
                     float boneHalf = boneRenderer.sprite.bounds.extents.y;
-                    var boneEnd = grip.parent.TransformPoint(new Vector3(0f, -boneHalf, 0f));
+                    // Through the renderer's own transform, so a container scaled to fit new art
+                    // moves the bone end with it instead of quietly reporting the unscaled length.
+                    var boneEnd = boneRenderer.transform.TransformPoint(new Vector3(0f, -boneHalf, 0f));
                     measured.GripToBoneEnd = Vector3.Distance(grip.position, boneEnd);
                 }
             }

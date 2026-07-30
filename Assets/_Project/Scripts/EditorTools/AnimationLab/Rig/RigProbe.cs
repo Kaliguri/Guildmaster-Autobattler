@@ -125,11 +125,11 @@ namespace Guildmaster.AnimationLab.Editor
 
                     if (grip.parent != null)
                     {
-                        var boneRenderer = grip.parent.GetComponent<SpriteRenderer>();
+                        var boneRenderer = RigVisualParts.FindVisual(grip.parent);
                         if (boneRenderer != null && boneRenderer.sprite != null)
                         {
                             float half = boneRenderer.sprite.bounds.extents.y;
-                            canvas.Dot(grip.parent.TransformPoint(new Vector3(0f, -half, 0f)), 6, BoneEndColor);
+                            canvas.Dot(boneRenderer.transform.TransformPoint(new Vector3(0f, -half, 0f)), 6, BoneEndColor);
                         }
                     }
 
@@ -166,8 +166,7 @@ namespace Guildmaster.AnimationLab.Editor
         /// </summary>
         public static float WorldOrientation(Transform grip, RigProfile.HeldItem item)
         {
-            var sprite = grip.Find(System.IO.Path.GetFileName(item.ItemPath));
-            var itemTransform = sprite != null ? sprite : grip.GetComponentInChildren<SpriteRenderer>()?.transform;
+            var itemTransform = item.Resolve(grip);
             if (itemTransform == null) return NormalizeAngle(grip.eulerAngles.z);
             return NormalizeAngle(itemTransform.eulerAngles.z + item.OrientationLocal);
         }

@@ -761,10 +761,13 @@ namespace Guildmaster.AnimationLab.Editor
             var restore = new Dictionary<SpriteRenderer, bool>(all.Length);
             foreach (var r in all) restore[r] = r.enabled;
 
+            // Matched against the BONE the renderer draws for: the artwork lives in a visual container
+            // now, and matching container names would quietly find no body at all — and report the
+            // shield as covering nothing.
             var body = new List<SpriteRenderer>();
             foreach (var r in all)
                 foreach (var name in options.CoverBodyNodes)
-                    if (r.transform.name == name) { body.Add(r); break; }
+                    if (RigVisualParts.BoneNameOf(r.transform) == name) { body.Add(r); break; }
 
             var coverNode = root.Find(coverItem.ItemPath);
             var cover = coverNode != null ? coverNode.GetComponent<SpriteRenderer>() : null;

@@ -13,6 +13,7 @@
     "Guildmaster.Guild",
     "Guildmaster.UI",
     "Guildmaster.ContentHub.Editor",
+    "Guildmaster.AnimationLab.Editor",
     "UniTask",
     "MessagePipe",
     "Unity.UI.TestFramework.Runtime",

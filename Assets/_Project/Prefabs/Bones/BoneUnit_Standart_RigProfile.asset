@@ -31,8 +31,8 @@ MonoBehaviour:
   - Id: head
     Path: Hips/Torso/Head
     RestZ: 0
-    BoneAxisLocal: -90
-    BoneLength: 0.065
+    BoneAxisLocal: 90
+    BoneLength: 0.088308156
     FlexSign: 1
     FlexLimit: 0
   - Id: shoulder.L
@@ -128,7 +128,7 @@ MonoBehaviour:
     GripPath: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
       Point (Grip)
     ItemPath: Hips/Torso/Arm (Left)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
-      Point (Grip)/Shield
+      Point (Grip)/Shield/Visual Part (Shield)/Shield
     OrientationName: top
     OrientationLocal: 90
     CalibrationZ: -24.76001
@@ -139,7 +139,7 @@ MonoBehaviour:
     GripPath: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
       Point (Grip)
     ItemPath: Hips/Torso/Arm (Right)/Rotation Point (Shoulder)/Rotation Point (Elbow)/Arm_Down/Rotation
-      Point (Grip)/Sword
+      Point (Grip)/Sword/Visual Part (Sword)/Sword
     OrientationName: blade
     OrientationLocal: 90
     CalibrationZ: -89.390015
