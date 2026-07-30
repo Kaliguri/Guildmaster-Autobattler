@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -66,17 +66,15 @@ namespace Guildmaster.Combat.Effects.Components
             if (target == null || target.IsDead) return;
 
             // Хрупкость: множители к самому удару, который сейчас прилетит.
-            if (_bluntVuln > 0f && incoming.School == DamageSchool.Physical
-                && incoming.Subtype == PhysicalSubtype.Blunt)
+            if (_bluntVuln > 0f && incoming.Type == DamageType.Blunt)
                 result.AddMultiplier(1f + _bluntVuln);
 
-            if (_iceVuln > 0f && incoming.School == DamageSchool.Magical
-                && incoming.Element == MagicElement.Ice)
+            if (_iceVuln > 0f && incoming.Type == DamageType.Ice)
                 result.AddMultiplier(1f + _iceVuln);
 
             // Раскол — только физический ПРЯМОЙ удар: доты и магия статую не колют.
             if (_shatterPctMaxHp <= 0f) return;
-            if (!incoming.IsDirectHit || incoming.School != DamageSchool.Physical) return;
+            if (!incoming.IsDirectHit || !DamageTypes.IsPhysical(incoming.Type)) return;
 
             RuntimeUnit breaker = incoming.Source;
             if (breaker == null) return;
@@ -86,7 +84,7 @@ namespace Guildmaster.Combat.Effects.Components
             float pure = target.Stats.Get(StatType.MaxHP) * _shatterPctMaxHp;
             if (pure > 0f)
                 ctx.Combat.DealDamage(new DamageRequest(
-                    breaker, target, pure, DamageSchool.True, ctx.Combat.ArmorK,
+                    breaker, target, pure, DamageType.Pure, ctx.Combat.ArmorK,
                     sourceKind: DamageSourceKind.Ability));
 
             // Статую гасим её же сроком, а не диспелом: диспел по тегу контроля унёс бы заодно чужие

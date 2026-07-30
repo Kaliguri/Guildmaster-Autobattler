@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
@@ -178,7 +178,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Assert.AreEqual(1, ctx.DamageCalls.Count, "Каждый удар стоит носителю части своего HP");
             Assert.AreSame(pyre, ctx.DamageCalls[0].Target, "Само-урон бьёт по себе");
             Assert.AreEqual(10f, ctx.DamageCalls[0].RawDamage, 1e-4f, "1% от текущего HP (1000)");
-            Assert.AreEqual(DamageSchool.True, ctx.DamageCalls[0].School, "Само-урон идёт мимо брони");
+            Assert.AreEqual(DamageType.Pure, ctx.DamageCalls[0].Type, "Само-урон идёт мимо брони");
         }
 
         [Test]
@@ -230,8 +230,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 castConditionCount: 2,
                 triggerTag: EffectTag.Poison,
                 consumesTriggerTag: true,
-                schoolOverride: DamageSchoolOverride.True,
-                affinityOverride: DamageAffinityOverride.Poison);
+                damageType: DamageType.PoisonMagical);
 
             druid.Abilities.Add(new AbilityRuntime(burst));
 
@@ -242,8 +241,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.AreEqual(2, ctx.DamageCalls.Count, "Детонируют только отравленные");
             Assert.AreEqual(250f, ctx.DamageCalls[0].RawDamage, 1e-4f, "2.5 × AutoAttackDamage");
-            Assert.AreEqual(DamageAffinity.Poison, ctx.DamageCalls[0].Affinity);
-            Assert.AreEqual(DamageSchool.True, ctx.DamageCalls[0].School);
+            Assert.AreEqual(DamageType.PoisonMagical, ctx.DamageCalls[0].Type);
 
             Assert.AreEqual(EffectTag.None, poisoned1.EffectTagMask & EffectTag.Poison, "Тег «Яд» израсходован взрывом");
         }
@@ -283,8 +281,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 healFlat: 80f,                    // лечение союзнику за ОДИН уникальный яд
                 triggerTag: EffectTag.Poison,
                 consumesTriggerTag: true,
-                schoolOverride: DamageSchoolOverride.True,
-                affinityOverride: DamageAffinityOverride.Poison);
+                damageType: DamageType.PoisonMagical);
             druid.Abilities.Add(new AbilityRuntime(burst));
 
             Assert.IsTrue(new AbilitySystem().TryCast(druid, 0, units, ctx));
@@ -318,14 +315,12 @@ namespace Guildmaster.Tests.EditMode.Combat
                 new IgnitionComponent()
                     .With("_detonateTag", EffectTag.Ember)
                     .With("_damagePerStack", 15f)
-                    .With("_school", DamageSchool.Magical)
-                    .With("_magicElement", MagicElement.Fire));
+                    .With("_damageType", DamageType.Fire));
             sys.Apply(victim, ignition, pyre, ctx);
 
             Assert.AreEqual(1, ctx.DamageCalls.Count, "Детонация наносит один удар — сумму по стакам");
             Assert.AreEqual(45f, ctx.DamageCalls[0].RawDamage, 1e-3f, "15 за стак × 3 стака");
-            Assert.AreEqual(DamageSchool.Magical, ctx.DamageCalls[0].School);
-            Assert.AreEqual(MagicElement.Fire, ctx.DamageCalls[0].Element, "Взрыв — огонь: его же усиливают «Угли»");
+            Assert.AreEqual(DamageType.Fire, ctx.DamageCalls[0].Type, "Взрыв — огонь: его же усиливают «Угли»");
             // Маска тегов тоже отложена законом видимости: снятие проявляется в конце тика, а не в
             // момент взрыва. Проводим границу второй раз — и только теперь спрашиваем про маску.
             ctx.AdvanceTick(victim);
@@ -363,12 +358,12 @@ namespace Guildmaster.Tests.EditMode.Combat
             // границу проводит CommitTickChanges, здесь — сдвиг тика у мока.
             ctx.AdvanceTick(victim);
 
-            var fire = new DamageRequest(null, victim, 100f, DamageSchool.Magical, 100f,
-                sourceKind: DamageSourceKind.Periodic, element: MagicElement.Fire);
+            var fire = new DamageRequest(null, victim, 100f, DamageType.Fire, 100f,
+                sourceKind: DamageSourceKind.Periodic);
             sys.RunPreDamage(victim, in fire, ctx);
             Assert.AreEqual(1.10f, sys.PreDamageMultiplier, 1e-4f, "10 стаков = +10% урона огнём");
 
-            var slash = new DamageRequest(null, victim, 100f, DamageSchool.Physical, 100f,
+            var slash = new DamageRequest(null, victim, 100f, DamageType.Slash, 100f,
                 sourceKind: DamageSourceKind.AutoAttack);
             sys.RunPreDamage(victim, in slash, ctx);
             Assert.AreEqual(1f, sys.PreDamageMultiplier, 1e-4f, "Не-огонь «Угли» не усиливают");

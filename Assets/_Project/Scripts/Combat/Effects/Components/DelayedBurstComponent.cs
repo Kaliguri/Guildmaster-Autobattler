@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -8,7 +8,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// <summary>
     /// Отложенный взрыв: пока эффект висит — ничего, по ИСТЕЧЕНИИ он бьёт носителя. «Ядовитая печать»
     /// Ночного лезвия (карточка [[the-fang]]): через три секунды печать детонирует двумя школами сразу.
-    /// <para><b>Числа:</b> <c>_physicalShare</c> и <c>_magicalShare</c> — доли от <c>AutoAttackDamage</c>
+    /// <para><b>Числа:</b> <c>_firstShare</c> и <c>_secondShare</c> — доли от <c>AutoAttackDamage</c>
     /// ИСТОЧНИКА (0.5 = 50% базы), каждая летит своей школой и гасится своей бронёй; ноль в доле = эта
     /// школа не участвует. Длительность до взрыва — не здесь, а у самого эффекта: это его срок жизни.</para>
     /// <para><b>Когда срабатывает:</b> ровно один раз, в момент истечения. Цель умерла раньше — печать
@@ -28,17 +28,17 @@ namespace Guildmaster.Combat.Effects.Components
     [Serializable]
     public sealed class DelayedBurstComponent : IRuntimeEffectComponent
     {
-        [Tooltip("Доля AutoAttackDamage источника, летящая ФИЗИЧЕСКОЙ школой. 0 = без физической части.")]
-        [SerializeField] private float _physicalShare = 0.5f;
+        [Tooltip("Доля AutoAttackDamage источника, летящая ПЕРВЫМ типом. 0 = без первой части.")]
+        [SerializeField] private float _firstShare = 0.5f;
 
-        [Tooltip("Доля AutoAttackDamage источника, летящая МАГИЧЕСКОЙ школой. 0 = без магической части.")]
-        [SerializeField] private float _magicalShare = 0.5f;
+        [Tooltip("Тип урона первой половины взрыва (у Ядовитой печати — Яд физический).")]
+        [SerializeField] private DamageType _firstType = DamageType.Undefined;
 
-        [Tooltip("Магический элемент магической части.")]
-        [SerializeField] private MagicElement _magicElement = MagicElement.None;
+        [Tooltip("Доля AutoAttackDamage источника, летящая ВТОРЫМ типом. 0 = взрыв одночастный.")]
+        [SerializeField] private float _secondShare = 0.5f;
 
-        [Tooltip("Сродство обеих частей (Яд у печати: она гниёт, а не просто бьёт).")]
-        [SerializeField] private DamageAffinity _affinity = DamageAffinity.Poison;
+        [Tooltip("Тип урона второй половины (у печати — Яд магический). Undefined = второй части нет.")]
+        [SerializeField] private DamageType _secondType = DamageType.Undefined;
 
         [Tooltip("Умножать урон на число стаков. Выкл = взрыв один и тот же, сколько бы печатей ни повесили.")]
         [SerializeField] private bool _scalesWithStacks;
@@ -56,15 +56,17 @@ namespace Guildmaster.Combat.Effects.Components
             if (basis <= 0f) return;
 
             // Ability, а не Periodic: детонация — прямой удар, она обязана будить шипы и щиты цели.
-            if (_physicalShare > 0f)
+            // Две половины — ДВА удара своих типов, а не одна цифра с половинчатой школой: только так
+            // каждая режется своей бронёй и будит своих потребителей.
+            if (_firstShare > 0f)
                 ctx.Combat.DealDamage(new DamageRequest(
-                    source, victim, basis * _physicalShare, DamageSchool.Physical, ctx.Combat.ArmorK,
-                    sourceKind: DamageSourceKind.Ability, affinity: _affinity));
+                    source, victim, basis * _firstShare, _firstType, ctx.Combat.ArmorK,
+                    sourceKind: DamageSourceKind.Ability));
 
-            if (_magicalShare > 0f)
+            if (_secondShare > 0f && _secondType != DamageType.Undefined)
                 ctx.Combat.DealDamage(new DamageRequest(
-                    source, victim, basis * _magicalShare, DamageSchool.Magical, ctx.Combat.ArmorK,
-                    sourceKind: DamageSourceKind.Ability, affinity: _affinity, element: _magicElement));
+                    source, victim, basis * _secondShare, _secondType, ctx.Combat.ArmorK,
+                    sourceKind: DamageSourceKind.Ability));
         }
     }
 }

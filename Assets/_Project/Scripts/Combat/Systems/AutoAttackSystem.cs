@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -32,8 +32,10 @@ namespace Guildmaster.Combat
             public readonly RuntimeUnit Target;
             public readonly float Raw;
             public readonly float Reach;
-            public readonly DamageSchool School;
-            public readonly DamageAffinity Affinity;
+
+            /// <summary>Тип урона этого удара — снят вместе с цифрами, чтобы дожить до прилёта неизменным.</summary>
+            public readonly DamageType DamageType;
+
             public readonly bool Blink;
             /// <summary>Разовое пробивание этого удара (взведено «Скрытностью») — снято вместе с цифрами.</summary>
             public readonly float FlatPen;
@@ -48,15 +50,14 @@ namespace Guildmaster.Combat
             public readonly int BonusCount;
 
             public ResolvedHit(RuntimeUnit unit, RuntimeUnit target, float raw, float reach,
-                DamageSchool school, DamageAffinity affinity, bool blink, float flatPen, float knockback,
+                DamageType damageType, bool blink, float flatPen, float knockback,
                 EffectData bonusEffect, int bonusCount)
             {
-                Unit      = unit;
-                Target    = target;
-                Raw       = raw;
-                Reach     = reach;
-                School    = school;
-                Affinity  = affinity;
+                Unit       = unit;
+                Target     = target;
+                Raw        = raw;
+                Reach      = reach;
+                DamageType = damageType;
                 Blink     = blink;
                 FlatPen   = flatPen;
                 Knockback = knockback;
@@ -144,9 +145,15 @@ namespace Guildmaster.Combat
                 // не бьём вхолостую (это только замедляло бы погоню штрафом занятости) — движение продолжает
                 // сближение (MoveApproach дожимает дистанцию), свинг стартует, лишь когда попадёт.
                 // Метрика едина с движением и сепарацией: см. CombatPositioning.AttackReachCenter.
+                // Удар с разбега — единственное исключение: он начинает замах ЗА границей досягаемости,
+                // чтобы кадр контакта пришёлся на въезд в неё, а не на «добежал, встал, ударил». Остаток
+                // дистанции закрывает ход (рут снят в MovementSystem на время такого замаха).
                 int windupTicks = AttackTiming.WindupTicksFor(unit);
-                if (!CombatPositioning.InAttackRange(unit, target, ctx.Tuning)) continue;
-                if (!CombatPositioning.CanLandWindup(unit, target, windupTicks, ctx.Tuning)) continue;
+                if (!ChargesIntoReach(unit, target, windupTicks, ctx))
+                {
+                    if (!CombatPositioning.InAttackRange(unit, target, ctx.Tuning)) continue;
+                    if (!CombatPositioning.CanLandWindup(unit, target, windupTicks, ctx.Tuning)) continue;
+                }
 
                 EnterWindup(unit, target, ctx, windupTicks);
             }
@@ -239,8 +246,10 @@ namespace Guildmaster.Combat
             GainResourceOnHit(unit, ctx);
 
             float raw = unit.Stats.Get(StatType.AutoAttackDamage);
-            DamageSchool school = unit.DamageSchool;
-            DamageAffinity affinity = unit.Affinity;
+
+            // Тип урона снимается ВМЕСТЕ с цифрами и едет до прилёта: между замахом и попаданием кит
+            // не меняется, но так удар и его тип заведомо не могут разойтись.
+            DamageType damageType = unit.AutoAttackDamageType;
 
             // §9.6 усиление следующей атаки («Скрытность»): множим урон разово, забираем разовое
             // пробивание и снимаем баф стелса. Пробивание тратится тем же ударом, что и множитель.
@@ -271,7 +280,7 @@ namespace Guildmaster.Combat
             bool blink = unit.BlinkBehindOnNextAttack;
             unit.BlinkBehindOnNextAttack = false;
 
-            _hits.Add(new ResolvedHit(unit, target, raw, reach, school, affinity, blink, flatPen, knockback,
+            _hits.Add(new ResolvedHit(unit, target, raw, reach, damageType, blink, flatPen, knockback,
                 bonusEffect, bonusCount));
         }
 
@@ -279,15 +288,14 @@ namespace Guildmaster.Combat
         private void Land(in ResolvedHit hit, ICombatContext ctx)
         {
             RuntimeUnit unit = hit.Unit, target = hit.Target;
-            // Подтип удара (Дробящий/Режущий/Колющий) едет вместе с уроном: верхняя ступень холодной
-            // линии добавляет +20% именно дробящему, и без подтипа она не отличит молот от кинжала.
-            PhysicalSubtype subtype = unit.Unit != null ? unit.Unit.PhysicalSubtype : PhysicalSubtype.None;
             // Между снятием цифр и прилётом обоих могли добить ударом того же тика.
             if (unit.IsDead || target.IsDead) return;
 
             float raw = hit.Raw;
-            DamageSchool school = hit.School;
-            DamageAffinity affinity = hit.Affinity;
+
+            // Тип урона несёт и школу брони, и идентичность удара: верхняя ступень холодной линии
+            // добавляет +20% именно Дробящему, и без типа она не отличит молот от кинжала.
+            DamageType damageType = hit.DamageType;
             AttackType attackType = unit.Unit != null ? unit.Unit.AttackType : AttackType.Melee;
             AreaShape shape = unit.Unit != null ? unit.Unit.AutoAttackShape : AreaShape.None;
 
@@ -299,7 +307,7 @@ namespace Guildmaster.Combat
                 float healRadius = unit.Stats.Get(StatType.Size) * ctx.Tuning.ProjectileHitRadiusFactor;
                 ctx.SpawnProjectile(new ProjectileSpawn(
                     unit, unit.Position, target,
-                    healSpeed, healRadius, raw, school, ctx.ArmorK, maxPierces: 0, isHeal: true));
+                    healSpeed, healRadius, raw, damageType, ctx.ArmorK, maxPierces: 0, isHeal: true));
                 return;
             }
 
@@ -311,11 +319,11 @@ namespace Guildmaster.Combat
                     // Зона всегда одна и та же и растёт от ног носителя — цель может стоять в её
                     // середине, а не только на конце.
                     DealLineDamage(unit, target, hit.Reach * unit.Unit.AutoAttackLengthMult,
-                        raw, school, affinity, subtype, ctx);
+                        raw, damageType, ctx);
                 }
                 else
                 {
-                    ctx.DealDamage(new DamageRequest(unit, target, raw, school, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, affinity: affinity, bonusFlatPen: hit.FlatPen, subtype: subtype));
+                    ctx.DealDamage(new DamageRequest(unit, target, raw, damageType, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, bonusFlatPen: hit.FlatPen));
                     ApplyAutoAttackOnHit(unit, target, ctx); // §9.1 (мили single)
                     ApplyEmpowerBonus(unit, target, in hit, ctx);
                     PushIfEmpowered(unit, target, in hit, ctx);
@@ -330,9 +338,9 @@ namespace Guildmaster.Combat
                 // On-hit эффекты (§9.1) едут на снаряде — накладываются в ProjectileSystem при попадании.
                 ctx.SpawnProjectile(new ProjectileSpawn(
                     unit, unit.Position, target,
-                    speed, collRadius, raw, school, ctx.ArmorK, pierces,
+                    speed, collRadius, raw, damageType, ctx.ArmorK, pierces,
                     onHitEffects: unit.Unit != null ? unit.Unit.AutoAttackEffects : null,
-                    isAutoAttack: true, affinity: affinity));
+                    isAutoAttack: true));
             }
         }
 
@@ -362,8 +370,7 @@ namespace Guildmaster.Combat
 
             ctx.Displace(new DisplaceRequest(
                 target, unit, away.normalized, hit.Knockback,
-                cannonball: false, damage: 0f, school: hit.School, width: 0f,
-                affinity: hit.Affinity));
+                cannonball: false, damage: 0f, damageType: hit.DamageType, width: 0f));
         }
 
         /// <summary>
@@ -385,6 +392,23 @@ namespace Guildmaster.Combat
             if (effects == null) return;
             for (int i = 0; i < effects.Length; i++)
                 if (effects[i] != null) ctx.ApplyEffect(target, effects[i], unit);
+        }
+
+        /// <summary>
+        /// Начинать ли этот замах ВЪЕЗДОМ — из-за границы досягаемости, чтобы кадр контакта пришёлся на
+        /// момент, когда дистанции хватит для удара (см. <see cref="CombatPositioning.CanCloseIntoReach"/>).
+        /// </summary>
+        /// <remarks>
+        /// Только ближний бой. Стрелку въезд дал бы замах, начатый в движении на его рабочей дистанции, —
+        /// а там никакого разбега и нет: порог разбега считается от зазора сверх досягаемости именно
+        /// потому, что по сырому расстоянию стрелок «бежал бы всегда».
+        /// </remarks>
+        private static bool ChargesIntoReach(RuntimeUnit unit, RuntimeUnit target, int windupTicks, ICombatContext ctx)
+        {
+            if (!unit.ChargedAttackReady) return false;
+            if (unit.Unit == null || unit.Unit.AttackType != AttackType.Melee) return false;
+
+            return CombatPositioning.CanCloseIntoReach(unit, target, windupTicks, ctx.Tuning);
         }
 
         /// <summary>Хил-автоатака (Светлый пастырь): авто-атака лечит союзника вместо урона по врагу (§9.2).</summary>
@@ -420,7 +444,7 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>Линейная авто-атака «Размашистый выпад»: полоса к цели, урон по всем врагам в ней.</summary>
-        private void DealLineDamage(RuntimeUnit unit, RuntimeUnit target, float length, float raw, DamageSchool school, DamageAffinity affinity, PhysicalSubtype subtype, ICombatContext ctx)
+        private void DealLineDamage(RuntimeUnit unit, RuntimeUnit target, float length, float raw, DamageType damageType, ICombatContext ctx)
         {
             float width = unit.Unit.AutoAttackWidth;
             Vector2 dir = target.Position - unit.Position;
@@ -433,7 +457,7 @@ namespace Guildmaster.Combat
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итоговое состояние.
             for (int t = 0; t < _lineTargets.Count; t++)
             {
-                ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, school, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack, affinity: affinity, subtype: subtype));
+                ctx.DealDamage(new DamageRequest(unit, _lineTargets[t], raw, damageType, ctx.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
                 ApplyAutoAttackOnHit(unit, _lineTargets[t], ctx); // §9.1 (мили Line — по каждой задетой)
             }
         }

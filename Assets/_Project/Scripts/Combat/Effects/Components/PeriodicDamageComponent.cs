@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// «в секунду × интервал», поэтому частота не меняет суммарный урон, только его дробность);
     /// <c>_damagePctTargetMaxHp</c> — добавка в долях от МАКСИМАЛЬНОГО HP цели, тоже в секунду
     /// (анти-танк; у поджога Мечника снята — процент переехал в «Угли», решение 2026-07-26/4);
-    /// <c>_damageSchool</c>/<c>_physicalSubtype</c>/<c>_magicElement</c>/<c>_affinity</c> — тип урона.</para>
+    /// <c>_damageType</c> — тип урона тика (у кровотечения — <c>Bleed</c>, у отравления — один из двух ядов).</para>
     /// <para><b>Когда срабатывает:</b> каждые <c>_interval</c> секунд, пока эффект висит. Тик DoT —
     /// не прямой удар: он не будит шипы и щиты.</para>
     /// </summary>
@@ -29,18 +29,9 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Урон В СЕКУНДУ (per-second rate). Скейлится статами источника.")]
         [SerializeField] private ScalableValue _damagePerSecond;
 
-        [Tooltip("Школа урона DoT (гасится соответствующей бронёй).")]
-        [FormerlySerializedAs("_damageType")]
-        [SerializeField] private DamageSchool _damageSchool = DamageSchool.Magical;
-
-        [Tooltip("Физ-подтип урона DoT (при школе Physical). Питает тег быстрого чтения; None = не задан.")]
-        [SerializeField] private PhysicalSubtype _physicalSubtype = PhysicalSubtype.None;
-
-        [Tooltip("Магический элемент урона DoT (при школе Magical): Огонь для «Поджога» и т.п. Питает тег; None = не задан.")]
-        [SerializeField] private MagicElement _magicElement = MagicElement.None;
-
-        [Tooltip("Сродство урона DoT: Яд для отравления (иммунна Нежить/Конструкты), Тьма/Свет — по типу существа цели.")]
-        [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
+        [Tooltip("Тип урона тика — обязателен. Кровотечение бьёт Bleed, отравление — Ядом физическим " +
+                 "или магическим (школа выводится из типа), поджог — Огнём.")]
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
         [Tooltip("Доля от МАКСИМАЛЬНОГО HP цели в секунду (0.03 = 3%/сек, «Поджог» Огненного мечника). " +
                  "Складывается с плоским уроном выше; так DoT одинаково жалит и толстых, и тонких.")]
@@ -54,8 +45,8 @@ namespace Guildmaster.Combat.Effects.Components
         public float Interval => _interval;
         public ScalableValue Potency => _damagePerSecond;
 
-        /// <summary>Тип урона этого DoT (прямые поля источника) — для агрегации тегов «быстрого чтения».</summary>
-        public DamageType DamageType => new DamageType(_damageSchool, _physicalSubtype, _magicElement, _affinity);
+        /// <summary>Тип урона этого DoT — для агрегации тегов «быстрого чтения».</summary>
+        public DamageType DamageType => _damageType;
 
         public void OnApply(in EffectContext ctx) { }
         public void OnExpire(in EffectContext ctx) { }
@@ -70,8 +61,8 @@ namespace Guildmaster.Combat.Effects.Components
             if (damage <= 0f) return;
 
             // Periodic: тик DoT не будит реактивы «на удар» — горение и яд не должны запускать шипы и щиты.
-            ctx.Combat.DealDamage(new DamageRequest(ctx.Source, ctx.Target, damage, _damageSchool, ctx.Combat.ArmorK,
-                sourceKind: DamageSourceKind.Periodic, affinity: _affinity, element: _magicElement));
+            ctx.Combat.DealDamage(new DamageRequest(ctx.Source, ctx.Target, damage, _damageType, ctx.Combat.ArmorK,
+                sourceKind: DamageSourceKind.Periodic));
         }
 
         /// <summary>

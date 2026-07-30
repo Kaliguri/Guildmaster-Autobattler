@@ -40,29 +40,27 @@ namespace Guildmaster.Data.Definitions
             // Собираем раздельно, чтобы вывести зонтики → конкретику → сродства.
             var umbrellas = new List<string>();
             var specifics = new List<string>();
-            var affinities = new List<string>();
             var dtSeen = new HashSet<string>();
 
-            void AddDamageType(in DamageType dt)
+            void AddDamageType(DamageType dt)
             {
-                AddUnique(umbrellas, dtSeen, UmbrellaTagId(dt.School));
+                if (dt == DamageType.Undefined) return;   // источник без типа тега не даёт — его чинят, а не помечают
+                AddUnique(umbrellas, dtSeen, UmbrellaTagId(DamageTypes.SchoolOf(dt)));
                 AddUnique(specifics, dtSeen, SpecificTagId(dt));
-                AddUnique(affinities, dtSeen, AffinityTagId(dt.Affinity));
             }
 
-            AddDamageType(unit.ResolveAutoAttackDamageType());
+            AddDamageType(unit.AutoAttackDamageType);
             AbilityData[] abilities = unit.Abilities;
             if (abilities != null)
                 for (int i = 0; i < abilities.Length; i++)
                 {
                     AbilityData a = abilities[i];
                     if (a == null || a.DamageMultiplier <= 0f) continue; // только наносящие прямой урон
-                    AddDamageType(a.ResolveDamageType(unit));
+                    AddDamageType(a.DamageType);
                 }
 
             for (int i = 0; i < umbrellas.Count; i++) AddById(umbrellas[i]);
             for (int i = 0; i < specifics.Count; i++) AddById(specifics[i]);
-            for (int i = 0; i < affinities.Count; i++) AddById(affinities[i]);
 
             // --- Оси 3–4: Playstyle / Mechanic (ручные) ---
             TagData[] manual = unit.InfoTags;
@@ -120,34 +118,26 @@ namespace Guildmaster.Data.Definitions
             _                     => null,
         };
 
-        private static string SpecificTagId(in DamageType dt)
+        /// <summary>
+        /// Тег конкретики — сам тип урона. Оба яда сходятся в один тег <c>tag.poison</c>: игроку важно
+        /// «травит», а не какой бронёй режется, — школу он уже прочёл в зонтике.
+        /// </summary>
+        private static string SpecificTagId(DamageType dt) => dt switch
         {
-            if (dt.School == DamageSchool.Physical)
-                return dt.PhysicalSubtype switch
-                {
-                    PhysicalSubtype.Blunt  => "tag.blunt",
-                    PhysicalSubtype.Slash  => "tag.slash",
-                    PhysicalSubtype.Pierce => "tag.pierce",
-                    _                      => null,
-                };
-            if (dt.School == DamageSchool.Magical)
-                return dt.MagicElement switch
-                {
-                    MagicElement.Fire      => "tag.fire",
-                    MagicElement.Ice       => "tag.ice",
-                    MagicElement.Lightning => "tag.lightning",
-                    MagicElement.Arcane    => "tag.arcane",
-                    _                      => null,
-                };
-            return null;
-        }
-
-        private static string AffinityTagId(DamageAffinity affinity) => affinity switch
-        {
-            DamageAffinity.Poison => "tag.poison",
-            DamageAffinity.Light  => "tag.light",
-            DamageAffinity.Dark   => "tag.dark",
-            _                     => null,
+            DamageType.Blunt          => "tag.blunt",
+            DamageType.Slash          => "tag.slash",
+            DamageType.Pierce         => "tag.pierce",
+            DamageType.Bleed          => "tag.bleed",
+            DamageType.PoisonPhysical => "tag.poison",
+            DamageType.PoisonMagical  => "tag.poison",
+            DamageType.Fire           => "tag.fire",
+            DamageType.Ice            => "tag.ice",
+            DamageType.Lightning      => "tag.lightning",
+            DamageType.Arcane         => "tag.arcane",
+            DamageType.Light          => "tag.light",
+            DamageType.Dark           => "tag.dark",
+            DamageType.Pure           => null,   // зонтик tag.pure уже сказал всё; своего оттенка у него нет
+            _                         => null,
         };
     }
 }

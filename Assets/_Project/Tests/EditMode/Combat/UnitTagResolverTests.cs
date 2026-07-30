@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using NUnit.Framework;
@@ -27,11 +27,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             // Ассасин: автоатака Physical/Pierce; ульта наносит урон с override Slash; ручные — escape+stealth.
             var ability = new AbilityData()
                 .With("_damageMultiplier", 2f)
-                .With("_physicalSubtypeOverride", PhysicalSubtypeOverride.Slash);
+                .With("_damageType", DamageType.Slash);
             var relic = ScriptableObject.CreateInstance<RelicData>()
                 .With("_combatClass", UnitClass.Assassin)
-                .With("_damageSchool", DamageSchool.Physical)
-                .With("_physicalSubtype", PhysicalSubtype.Pierce)
+                .With("_autoAttackDamageType", DamageType.Pierce)
                 .With("_abilities", new[] { ability })
                 .With("_infoTags", new[] { db.Asset("tag.stealth"), db.Asset("tag.escape") });
 
@@ -54,8 +53,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             // Криомант: РДД, автоатака Magical/Ice.
             var relic = ScriptableObject.CreateInstance<RelicData>()
                 .With("_combatClass", UnitClass.Ranged)
-                .With("_damageSchool", DamageSchool.Magical)
-                .With("_magicElement", MagicElement.Ice);
+                .With("_autoAttackDamageType", DamageType.Ice);
 
             var ids = UnitTagResolver.Resolve(relic, db).ConvertAll(t => t.Id);
             Assert.AreEqual(new[] { "tag.ranged", "tag.magical", "tag.ice" }, ids);
@@ -71,11 +69,10 @@ namespace Guildmaster.Tests.EditMode.Combat
                 Tag("tag.slash", TagCategory.DamageType));
 
             // Способность без прямого урона (DamageMultiplier 0) не добавляет DamageType-тегов.
-            var buff = new AbilityData().With("_damageMultiplier", 0f).With("_schoolOverride", DamageSchoolOverride.Magical);
+            var buff = new AbilityData().With("_damageMultiplier", 0f).With("_damageType", DamageType.Arcane);
             var relic = ScriptableObject.CreateInstance<RelicData>()
                 .With("_combatClass", UnitClass.Support)
-                .With("_damageSchool", DamageSchool.Physical)
-                .With("_physicalSubtype", PhysicalSubtype.Slash)
+                .With("_autoAttackDamageType", DamageType.Slash)
                 .With("_abilities", new[] { buff });
 
             var ids = UnitTagResolver.Resolve(relic, db).ConvertAll(t => t.Id);
@@ -89,7 +86,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var db = new FakeDb(Tag("tag.physical", TagCategory.DamageType)); // нет tag.bruiser
             var relic = ScriptableObject.CreateInstance<RelicData>()
                 .With("_combatClass", UnitClass.Bruiser)
-                .With("_damageSchool", DamageSchool.Physical);
+                .With("_autoAttackDamageType", DamageType.Slash);
 
             var ids = UnitTagResolver.Resolve(relic, db).ConvertAll(t => t.Id);
             Assert.AreEqual(new[] { "tag.physical" }, ids, "отсутствующий ассет тега пропущен, UI не падает");

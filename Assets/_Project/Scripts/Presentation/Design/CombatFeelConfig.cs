@@ -458,24 +458,31 @@ namespace Guildmaster.Presentation.Design
         public float FinisherHoldSeconds => _finisherPause + _finisherDeathDuration + _finisherShatterDuration + _finisherReturn;
 
         /// <summary>
-        /// Цвет hit-flash: сродство перекрывает школу; при выключенном School Flash — <see cref="FlashColor"/>.
-        /// Здесь выбирается РОЛЬ, значение приходит из палитры проекта.
+        /// Цвет hit-flash по типу урона: у типов со своим «вкусом» (яд, свет, тьма) он свой, у остальных —
+        /// цвет их школы. При выключенном School Flash — <see cref="FlashColor"/>. Здесь выбирается РОЛЬ,
+        /// значение приходит из палитры проекта.
         /// </summary>
-        public Color ResolveHitFlashColor(DamageSchool school, DamageAffinity affinity)
+        /// <remarks>
+        /// Оба яда светят одинаково: игрок читает «отравили», а не «отравили физически». Кровотечение
+        /// пока идёт цветом физической школы — своей роли в палитре у него нет, и заводить её должен
+        /// Макс, а не молчаливый фолбэк.
+        /// </remarks>
+        public Color ResolveHitFlashColor(DamageType type)
         {
             if (!_enableSchoolFlash) return FlashColor;
-            if (affinity != DamageAffinity.None)
+
+            switch (type)
             {
-                return affinity switch
-                {
-                    DamageAffinity.Poison => Role("--gm-color-combat-flash-poison"),
-                    DamageAffinity.Light  => Role("--gm-color-combat-flash-light"),
-                    DamageAffinity.Dark   => Role("--gm-color-combat-flash-dark"),
-                    _                     => FlashColor,
-                };
+                case DamageType.PoisonPhysical:
+                case DamageType.PoisonMagical:
+                    return Role("--gm-color-combat-flash-poison");
+                case DamageType.Light:
+                    return Role("--gm-color-combat-flash-light");
+                case DamageType.Dark:
+                    return Role("--gm-color-combat-flash-dark");
             }
 
-            return school switch
+            return DamageTypes.SchoolOf(type) switch
             {
                 DamageSchool.Magical => Role("--gm-color-combat-flash-magical"),
                 DamageSchool.True    => Role("--gm-color-combat-flash-true"),

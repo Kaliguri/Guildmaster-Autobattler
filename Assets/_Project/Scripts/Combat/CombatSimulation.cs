@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Arena;
@@ -348,12 +348,10 @@ namespace Guildmaster.Combat
                 float splitDamage = split.HasOwnDamage ? split.OwnDamage : removed;
 
                 DealDamageCore(new DamageRequest(req.Source, req.Target, req.RawDamage - removed,
-                    req.School, req.ArmorK, req.SourceKind, req.Affinity, req.Element,
-                    subtype: req.Subtype));
+                    req.Type, req.ArmorK, req.SourceKind));
                 if (!req.Target.IsDead)
                     DealDamageCore(new DamageRequest(req.Source, req.Target, splitDamage,
-                        split.School, req.ArmorK, req.SourceKind, req.Affinity, split.Element,
-                        subtype: req.Subtype));
+                        split.DamageType, req.ArmorK, req.SourceKind));
                 return;
             }
 
@@ -371,9 +369,8 @@ namespace Guildmaster.Combat
             if (bonus <= 0f) return req;
 
             return new DamageRequest(
-                req.Source, req.Target, req.RawDamage * (1f + bonus), req.School, req.ArmorK,
-                req.SourceKind, req.Affinity, req.Element, req.Vulnerability, req.BonusFlatPen,
-                req.Subtype);
+                req.Source, req.Target, req.RawDamage * (1f + bonus), req.Type, req.ArmorK,
+                req.SourceKind, req.Vulnerability, req.BonusFlatPen);
         }
 
         private void DealDamageCore(in DamageRequest req)
@@ -401,9 +398,8 @@ namespace Guildmaster.Combat
             float scale = vulnerability * overtime;
             DamageRequest effective = scale == 1f
                 ? req
-                : new DamageRequest(req.Source, req.Target, req.RawDamage * scale, req.School,
-                                    req.ArmorK, req.SourceKind, req.Affinity, req.Element, vulnerability,
-                                    subtype: req.Subtype);
+                : new DamageRequest(req.Source, req.Target, req.RawDamage * scale, req.Type,
+                                    req.ArmorK, req.SourceKind, vulnerability);
 
             // Урон считается сразу (расчёт чист и от порядка не зависит — статы заморожены на тик),
             // а применяется реестром, когда сложатся все удары раунда. См. TickLedger.
@@ -422,8 +418,8 @@ namespace Guildmaster.Combat
             // Внутренние события для реактивных компонентов (vampiric/thorns). Два события на удар:
             // DamageDealt доставляется источнику, DamageTaken — цели (вики «12» §3.4).
             if (source != null)
-                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, source, target, result.TotalDamage, Data.Definitions.EffectTag.None, result.SourceKind, result.School, result.Element));
-            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, source, target, result.TotalDamage, Data.Definitions.EffectTag.None, result.SourceKind, result.School, result.Element));
+                _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageDealt, source, target, result.TotalDamage, Data.Definitions.EffectTag.None, result.SourceKind, result.Type));
+            _eventQueue.Enqueue(new CombatEventData(CombatEvent.DamageTaken, source, target, result.TotalDamage, Data.Definitions.EffectTag.None, result.SourceKind, result.Type));
 
             // Убийство атрибутируется наибольшей доле урона (решение 2026-07-27) → доставляется УБИЙЦЕ
             // (§10.5, «Скрытность»). Реестр уже выбрал владельца — здесь только разносим.
@@ -479,8 +475,7 @@ namespace Guildmaster.Combat
                 CollisionRadius  = spawn.CollisionRadius,
                 TargetUnit       = spawn.TargetUnit,
                 RawDamage        = spawn.RawDamage,
-                School           = spawn.School,
-                Affinity         = spawn.Affinity,
+                DamageType       = spawn.DamageType,
                 ArmorK           = spawn.ArmorK,
                 PiercesRemaining = spawn.MaxPierces,
                 IsHeal           = spawn.IsHeal,
@@ -649,8 +644,7 @@ namespace Guildmaster.Combat
             if (req.Damage > 0f && req.Source != null && req.Target != null && !req.Target.IsDead
                 && !ReferenceEquals(req.Source, req.Target))
             {
-                DealDamage(new DamageRequest(req.Source, req.Target, req.Damage, req.School, ArmorK,
-                    affinity: req.Affinity));
+                DealDamage(new DamageRequest(req.Source, req.Target, req.Damage, req.DamageType, ArmorK));
             }
 
             _displacementSystem.Add(in req, in _tuning);

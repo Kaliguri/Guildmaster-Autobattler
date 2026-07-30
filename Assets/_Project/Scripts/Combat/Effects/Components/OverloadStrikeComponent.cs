@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -8,7 +8,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// «Перегрузка» Антимага (карточка [[the-aegis]]): мгновенный эффект, который бьёт цель уроном, равным
     /// ПОГЛОЩЁННОМУ щитами-по-школе урону носителя (<see cref="RuntimeUnit.AbsorbedByWard"/>) с масштабом
     /// <see cref="_scale"/>, и обнуляет счётчик.
-    /// <para><b>Числа:</b> <c>_scale</c> — доля поглощённого, уходящая в удар (0.4); <c>_school</c> —
+    /// <para><b>Числа:</b> <c>_scale</c> — доля поглощённого, уходящая в удар (0.4); <c>_damageType</c> —
     /// какой школой бьёт ответ. Своего числа урона у способности нет намеренно: она целиком функция того,
     /// сколько магии в носителя вложил противник.</para>
     /// <para><b>Когда срабатывает:</b> в момент наложения (эффект мгновенный). Стоял без магического
@@ -29,10 +29,7 @@ namespace Guildmaster.Combat.Effects.Components
         [SerializeField] private float _scale = 0.4f;
 
         [Tooltip("Школа урона ответа.")]
-        [SerializeField] private DamageSchool _school = DamageSchool.Magical;
-
-        [Tooltip("Стихия ответа при магической школе.")]
-        [SerializeField] private MagicElement _element = MagicElement.Arcane;
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
         public void OnApply(in EffectContext ctx)
         {
@@ -47,8 +44,8 @@ namespace Guildmaster.Combat.Effects.Components
             if (damage <= 0f) return;
 
             ctx.Combat.DealDamage(new DamageRequest(
-                source, victim, damage, _school, ctx.Combat.ArmorK,
-                sourceKind: DamageSourceKind.Ability, element: _element));
+                source, victim, damage, _damageType, ctx.Combat.ArmorK,
+                sourceKind: DamageSourceKind.Ability));
         }
 
         public void OnExpire(in EffectContext ctx) { }

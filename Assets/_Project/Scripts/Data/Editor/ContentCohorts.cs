@@ -58,9 +58,16 @@ namespace Guildmaster.Data.Editor
         public static List<UnitData> OfAttackType(AttackType attackType)
             => Filter(AllUnits(), u => u.AttackType == attackType);
 
-        /// <summary>Юниты по школе урона (физика или магия).</summary>
+        /// <summary>
+        /// Юниты по школе урона АВТОАТАКИ (физика или магия) — школа выводится из типа, своего поля у
+        /// юнита больше нет.
+        /// </summary>
         public static List<UnitData> OfSchool(DamageSchool school)
-            => Filter(AllUnits(), u => u.DamageSchool == school);
+            => Filter(AllUnits(), u => DamageTypes.SchoolOf(u.AutoAttackDamageType) == school);
+
+        /// <summary>Юниты по конкретному типу урона автоатаки — «все дробящие», «все ледяные».</summary>
+        public static List<UnitData> OfDamageType(DamageType damageType)
+            => Filter(AllUnits(), u => u.AutoAttackDamageType == damageType);
 
         /// <summary>Юниты по типу существа — «все гоблины», «вся нежить».</summary>
         public static List<UnitData> OfCreatureType(CreatureType creatureType)

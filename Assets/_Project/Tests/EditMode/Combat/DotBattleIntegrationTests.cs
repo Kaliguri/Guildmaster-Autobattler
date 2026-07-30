@@ -1,4 +1,4 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Random;
 using Guildmaster.Core.Simulation;
@@ -53,7 +53,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var periodic = new PeriodicDamageComponent()
                 .With("_interval", interval)
                 .With("_damagePerSecond", new ScalableValue(dps))
-                .With("_damageSchool", DamageSchool.Magical);
+                .With("_damageType", DamageType.Arcane);
             return TestEffect.Make(baseDuration: duration, tags: EffectTag.DoT, components: periodic);
         }
 

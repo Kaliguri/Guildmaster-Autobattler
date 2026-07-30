@@ -74,8 +74,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             float castOverrideSelfHpPct = 0f,
             EffectTag triggerTag = EffectTag.None,
             bool consumesTriggerTag = false,
-            DamageSchoolOverride schoolOverride = DamageSchoolOverride.Inherit,
-            DamageAffinityOverride affinityOverride = DamageAffinityOverride.Inherit,
+            DamageType damageType = DamageType.Undefined,
             float castSeconds = 0f,
             float channelSeconds = 0f,
             float channelTickSeconds = 1f,
@@ -104,8 +103,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             Set(a, "_channelSeconds", channelSeconds);
             Set(a, "_channelTickSeconds", channelTickSeconds);
             Set(a, "_canMoveWhileCasting", canMoveWhileCasting);
-            Set(a, "_schoolOverride", schoolOverride);
-            Set(a, "_affinityOverride", affinityOverride);
+            Set(a, "_damageType", damageType);
             Set(a, "_effects", effects ?? System.Array.Empty<EffectData>());
             Set(a, "_baseCooldown", cooldown);
             Set(a, "_resourceCost", cost);
@@ -141,7 +139,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData[] grantedEffects = null,
             AbilityData[] abilities = null,
             AttackType attackType = AttackType.Melee,
-            DamageSchool school = DamageSchool.Physical,
+            DamageType autoAttackDamageType = DamageType.Slash,
             AreaShape autoAttackShape = AreaShape.None,
             float autoAttackWidth = 1f,
             float resourceOnHit = 0f,
@@ -150,19 +148,17 @@ namespace Guildmaster.Tests.EditMode.Combat
             EffectData[] autoAttackEffects = null,
             bool canAttackWhileMoving = false,
             float movingAttackSpeedPenaltyPct = 0.5f,
-            DamageAffinity affinity = DamageAffinity.None,
             CreatureType creatureType = CreatureType.Living,
             UnitClass combatClass = UnitClass.Bruiser)
         {
             var r = ScriptableObject.CreateInstance<RelicData>();
             Set(r, "_combatClass", combatClass);
-            Set(r, "_affinity", affinity);
             Set(r, "_creatureType", creatureType);
             Set(r, "_stats", stats ?? Array.Empty<StatModifier>());
             Set(r, "_grantedEffects", grantedEffects ?? Array.Empty<EffectData>());
             Set(r, "_abilities", abilities ?? Array.Empty<AbilityData>());
             Set(r, "_attackType", attackType);
-            Set(r, "_damageSchool", school);
+            Set(r, "_autoAttackDamageType", autoAttackDamageType);
             Set(r, "_autoAttackShape", autoAttackShape);
             Set(r, "_autoAttackWidth", autoAttackWidth);
             Set(r, "_resourceOnHit", resourceOnHit);

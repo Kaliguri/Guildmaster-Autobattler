@@ -81,7 +81,8 @@ namespace Guildmaster.Combat
         /// <summary>Разгон начался — показ переключается на клип бега. Тот же факт, что <see cref="SprintRamp"/>.</summary>
         public bool IsSprinting => SprintRamp > 0f;
 
-        /// <summary>Сбросить разбег целиком: и набранную долю, и накопленное намерение.</summary>
+        /// <summary>Сбросить разбег целиком: и набранную долю, и накопленное намерение. Заряд удара с
+        /// разбега переживает это — так кончается ПРИБЫТИЕ, а прибывший бьёт с разбега.</summary>
         public void StopSprint()
         {
             SprintRamp      = 0f;
@@ -89,10 +90,28 @@ namespace Guildmaster.Combat
         }
 
         /// <summary>
-        /// Юнит добежал разбегом и ещё не ударил: следующий свинг — удар с разбега (свой замах из
-        /// <see cref="Data.Definitions.UnitData.ChargeAttackWindupMult"/>, свой клип у показа). Взводит
-        /// <c>MovementSystem</c> в момент, когда разбег кончился прибытием, тратит первый же замах.
-        /// Разбег, оборванный не прибытием (цель умерла, юнита обездвижили), заряда не оставляет.
+        /// Оборвать разбег НЕ прибытием (смерть, контроль, полёт, потеря цели, каст) — вместе с зарядом
+        /// удара с разбега: особый удар покупается доведённым до конца сближением.
+        /// </summary>
+        /// <remarks>
+        /// Отдельный глагол, а не флаг у <see cref="StopSprint"/>: разница между «добежал» и «сбили с
+        /// разбега» — это разница в ОДНОМ поле, и пока её выражали порядком строк, заряд взводился в
+        /// ветке прибытия. Оттуда он не мог попасть во въездной замах (тот стартует ещё в беге), поэтому
+        /// взвод переехал в разгон — и теперь гашение обязано быть явным у каждого обрыва.
+        /// </remarks>
+        public void AbortSprint()
+        {
+            StopSprint();
+            ChargedAttackReady = false;
+        }
+
+        /// <summary>
+        /// Юнит разогнался до полного разбега и ещё не ударил: следующий свинг — удар с разбега (свой замах
+        /// из <see cref="Data.Definitions.UnitData.ChargeAttackWindupMult"/>, свой клип у показа). Взводит
+        /// <c>MovementSystem</c> в момент, когда разгон набран ПОЛНОСТЬЮ (а не по прибытии: въездной замах
+        /// стартует ещё в беге, см. <c>CombatPositioning.CanCloseIntoReach</c>), тратит первый же замах.
+        /// Разбег, оборванный не прибытием (цель умерла, юнита обездвижили), заряда не оставляет —
+        /// см. <see cref="AbortSprint"/>.
         /// </summary>
         public bool ChargedAttackReady;
 
@@ -278,11 +297,12 @@ namespace Guildmaster.Combat
         /// <summary>SO «Пилот»: идентичность, перки (Фаза 2/4).</summary>
         public VesselData Vessel;
 
-        /// <summary>Школа урона кита. Без кита — физика (дефолт пайплайна).</summary>
-        public DamageSchool DamageSchool => Unit != null ? Unit.DamageSchool : DamageSchool.Physical;
-
-        /// <summary>Сродство урона кита.</summary>
-        public DamageAffinity Affinity => Unit != null ? Unit.Affinity : DamageAffinity.None;
+        /// <summary>
+        /// Тип урона АВТОАТАКИ кита. Без кита — <see cref="DamageType.Undefined"/>: подставлять физику
+        /// нельзя, иначе безкитовый юнит молча бил бы «просто физикой» — тем самым дефектом, ради
+        /// которого тип и стал обязательным (реформа 2026-07-30).
+        /// </summary>
+        public DamageType AutoAttackDamageType => Unit != null ? Unit.AutoAttackDamageType : DamageType.Undefined;
 
         // --- Эффекты (Фаза 2) ---
 

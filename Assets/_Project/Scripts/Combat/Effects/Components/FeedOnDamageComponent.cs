@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -8,7 +8,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// «Кровавый обмен» Геоманта (карточка [[the-cairn]]): носитель исцеляется на долю урона, который
     /// ЕГО подходящий источник наносит врагам в его радиусе.
     /// <para><b>Числа:</b> <c>_healShare</c> — доля урона, уходящая в лечение (0.15 = 15%);
-    /// <c>_radius</c> — насколько далеко он это чувствует; фильтры <c>_sourceKind</c> и <c>_school</c>
+    /// <c>_radius</c> — насколько далеко он это чувствует; фильтры <c>_sourceKind</c> и <c>_damageType</c>
     /// отвечают на вопрос «какой именно урон его кормит».</para>
     /// <para><b>Когда срабатывает:</b> на любом уроне по врагу, попадающем под фильтры, если враг в радиусе.
     /// Отсюда роль кита в драфте: он тем сильнее, чем больше в гильдии источников кровотечения.</para>
@@ -40,7 +40,10 @@ namespace Guildmaster.Combat.Effects.Components
         [SerializeField] private DamageSourceKind _sourceKind = DamageSourceKind.Periodic;
 
         [Tooltip("Школа урона, который кормит.")]
-        [SerializeField] private DamageSchool _school = DamageSchool.Physical;
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
+
+        [Tooltip("Кормиться всей школой этого типа, а не только самим типом.")]
+        [SerializeField] private bool _wholeSchool = true;
 
         public CombatEvent Events => CombatEvent.DamageDealt;
 
@@ -51,7 +54,8 @@ namespace Guildmaster.Combat.Effects.Components
         public void OnEvent(in EffectContext ctx, in CombatEventData e)
         {
             if (_healShare <= 0f || e.Amount <= 0f) return;
-            if (e.SourceKind != _sourceKind || e.School != _school) return;
+            if (e.SourceKind != _sourceKind) return;
+            if (!DamageTypes.Matches(_damageType, _wholeSchool, e.DamageType)) return;
 
             RuntimeUnit self = ctx.Target;
             RuntimeUnit victim = e.Target;

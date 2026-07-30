@@ -34,17 +34,16 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.ApplyEffect(victim, BurningMarker(), pyre); // цель уже горит
             sim.Tick(SimConstants.TickDelta);               // «уже горит» = с прошлого тика (закон видимости)
 
-            var hits = new System.Collections.Generic.List<(DamageSchool school, MagicElement element, float dmg)>();
-            sim.OnDamageDealt += (src, tgt, res) => hits.Add((res.School, res.Element, res.TotalDamage));
+            var hits = new System.Collections.Generic.List<(DamageType type, float dmg)>();
+            sim.OnDamageDealt += (src, tgt, res) => hits.Add((res.Type, res.TotalDamage));
 
-            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageSchool.Physical, ArmorK,
+            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageType.Slash, ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);   // удар применяется реестром в конце тика
 
             Assert.AreEqual(2, hits.Count, "Удар по горящей цели приходит двумя половинами");
-            Assert.AreEqual(DamageSchool.Physical, hits[0].school, "Первая половина — клинок");
-            Assert.AreEqual(DamageSchool.Magical, hits[1].school, "Вторая половина — огонь");
-            Assert.AreEqual(MagicElement.Fire, hits[1].element);
+            Assert.AreEqual(DamageType.Slash, hits[0].type, "Первая половина — клинок");
+            Assert.AreEqual(DamageType.Fire, hits[1].type, "Вторая половина — огонь");
             Assert.AreEqual(100f, hits[0].dmg + hits[1].dmg, 1e-3f, "Суммарный урон удара не изменился");
         }
 
@@ -63,7 +62,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             int hits = 0;
             sim.OnDamageDealt += (src, tgt, res) => hits++;
 
-            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageSchool.Physical, ArmorK,
+            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageType.Slash, ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);   // удар применяется реестром в конце тика
 
@@ -84,8 +83,8 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(pyre, IgniterPassive(), pyre);
 
-            sim.DealDamage(new DamageRequest(pyre, victim, 10f, DamageSchool.Magical, ArmorK,
-                sourceKind: DamageSourceKind.Periodic, element: MagicElement.Fire));
+            sim.DealDamage(new DamageRequest(pyre, victim, 10f, DamageType.Fire, ArmorK,
+                sourceKind: DamageSourceKind.Periodic));
             sim.Tick(SimConstants.TickDelta); // событие доставляется через очередь
 
             Assert.AreNotEqual(EffectTag.None, victim.EffectTagMask & EffectTag.Ember, "Огонь оставил уголёк");
@@ -94,7 +93,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var clean = MakeUnit(2, team: 1, pos: new Vector2(2f, 0f));
             sim.EnqueueUnitSpawn(clean);
             sim.Tick(SimConstants.TickDelta);
-            sim.DealDamage(new DamageRequest(pyre, clean, 10f, DamageSchool.Physical, ArmorK,
+            sim.DealDamage(new DamageRequest(pyre, clean, 10f, DamageType.Slash, ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);
 
@@ -146,8 +145,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             DamageResult captured = default;
             sim.OnDamageDealt += (src, tgt, res) => captured = res;
 
-            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageSchool.Magical, ArmorK,
-                element: MagicElement.Fire));
+            sim.DealDamage(new DamageRequest(pyre, victim, 100f, DamageType.Fire, ArmorK));
             sim.Tick(SimConstants.TickDelta);   // удар применяется реестром в конце тика
 
             // Десять угольков по 1% → удар сильнее на 10%, и результат обязан уметь это назвать:
@@ -186,8 +184,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             components: new SplitAttackOnTagComponent()
                 .With("_requiredTargetTag", EffectTag.Burn)
                 .With("_share", 0.5f)
-                .With("_school", DamageSchool.Magical)
-                .With("_element", MagicElement.Fire));
+                .With("_damageType", DamageType.Fire));
 
         private static EffectData IgniterPassive() => TestEffect.Make(
             baseDuration: -1f, polarity: EffectPolarity.Neutral,

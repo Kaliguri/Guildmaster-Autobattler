@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -31,13 +31,9 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Радиус взрыва вокруг носителя, мировые единицы.")]
         [SerializeField] private float _radius = 2f;
 
-        [Tooltip("Школа урона взрыва.")]
-        [SerializeField] private DamageSchool _school = DamageSchool.Physical;
-
-        [Tooltip("Физический подтип взрыва (при школе Physical): кости разлетаются ДРОБЯЩИМ. Он важен не " +
-                 "для брони — она подтип не делит, — а для того, кто на подтип смотрит: хрупкая холодная " +
-                 "статуя получает от дробящего на 20% больше.")]
-        [SerializeField] private PhysicalSubtype _subtype = PhysicalSubtype.None;
+        [Tooltip("Тип урона взрыва — обязателен: кости Некроманта разлетаются ДРОБЯЩИМ, и именно " +
+                 "поэтому попадают в +20% хрупкости ледяной статуи.")]
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
         [Tooltip("Взрываться ТАКЖЕ по истечении срока щита («Водяной щит» Монаха воды: через 5 сек или при " +
                  "уничтожении). Выкл = только от пробития, как у «Собирателя костей».")]
@@ -120,8 +116,7 @@ namespace Guildmaster.Combat.Effects.Components
 
                 if (damage > 0f)
                     ctx.Combat.DealDamage(new DamageRequest(
-                        carrier, victim, damage, _school, ctx.Combat.ArmorK,
-                        affinity: carrier.Affinity, subtype: _subtype));
+                        carrier, victim, damage, _damageType, ctx.Combat.ArmorK));
 
                 if (_victimEffect != null) ctx.Combat.ApplyEffect(victim, _victimEffect, carrier);
 
@@ -134,7 +129,7 @@ namespace Guildmaster.Combat.Effects.Components
                     // в свалке бил бы дважды каждым отброшенным.
                     ctx.Combat.Displace(new DisplaceRequest(
                         victim, carrier, away.normalized, _knockbackDistance,
-                        cannonball: false, damage: 0f, school: _school, width: 0f));
+                        cannonball: false, damage: 0f, damageType: _damageType, width: 0f));
                 }
             }
         }

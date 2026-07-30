@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -145,7 +145,7 @@ namespace Guildmaster.Combat.Effects.Components
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (result.Negated) return;
-            if (incoming.School != DamageSchool.Magical || incoming.Element != MagicElement.Ice) return;
+            if (incoming.Type != DamageType.Ice) return;
 
             // Со второй ступени промороженная цель хуже держит сам лёд. Верхнюю ступень (и её +40%
             // под оглушением) считает статуя — там же, где живёт её оглушение.

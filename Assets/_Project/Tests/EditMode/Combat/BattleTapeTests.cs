@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Tape;
 using Guildmaster.Core.Random;
@@ -98,7 +98,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var tape = new BattleTape(windowTicks: 8);
             var lethal = new DamageResult(
                 hpDamage: 50f, shieldDamage: 0f, killedTarget: true,
-                sourceKind: DamageSourceKind.AutoAttack, school: DamageSchool.Physical);
+                sourceKind: DamageSourceKind.AutoAttack, type: DamageType.Slash);
 
             tape.RecordDamage(tick: 3, sourceId: 1, targetId: 2, result: in lethal);
             tape.Record(new TapeEvent(TapeEventKind.UnitDied, 3, sourceId: 2));
@@ -155,7 +155,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var attacker = MakeUnit(id: 1, hp: 100f, team: 0);
             var victim   = MakeUnit(id: 2, hp: 100f, team: 1, pos: new Vector2(2f, 0f));
 
-            sim.DealDamage(new DamageRequest(attacker, victim, 25f, DamageSchool.True, sim.ArmorK,
+            sim.DealDamage(new DamageRequest(attacker, victim, 25f, DamageType.Pure, sim.ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);
             recorder.CaptureCurrentState();
@@ -618,9 +618,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             for (int tick = 1; tick <= 30; tick++) tape.CaptureTick(tick, units);
 
             var plain = new DamageResult(hpDamage: 10f, shieldDamage: 0f, killedTarget: false,
-                sourceKind: DamageSourceKind.AutoAttack, school: DamageSchool.Physical);
+                sourceKind: DamageSourceKind.AutoAttack, type: DamageType.Slash);
             var lethal = new DamageResult(hpDamage: 90f, shieldDamage: 0f, killedTarget: true,
-                sourceKind: DamageSourceKind.AutoAttack, school: DamageSchool.Physical);
+                sourceKind: DamageSourceKind.AutoAttack, type: DamageType.Slash);
 
             tape.RecordDamage(tick: 5,  sourceId: 2, targetId: 1, result: in plain);
             tape.RecordDamage(tick: 12, sourceId: 2, targetId: 1, result: in lethal);

@@ -18,18 +18,9 @@ namespace Guildmaster.Data.Definitions
                  "Bruiser = эталон 100%/100%.")]
         [SerializeField] private UnitClass _combatClass = UnitClass.Bruiser;
 
-        [Tooltip("Школа урона по умолчанию (гасится соответствующей бронёй). Способности могут переопределять её у себя.")]
-        [FormerlySerializedAs("_damageType")]
-        [SerializeField] private DamageSchool _damageSchool = DamageSchool.Physical;
-
-        [Tooltip("Физический подтип автоатаки (Дробящий/Режущий/Колющий) — при школе Physical. Питает тег быстрого чтения; None = не задан.")]
-        [SerializeField] private PhysicalSubtype _physicalSubtype = PhysicalSubtype.None;
-
-        [Tooltip("Магический элемент автоатаки (Огонь/Лёд/Молния/Аркана) — при школе Magical. Питает тег быстрого чтения; None = не задан.")]
-        [SerializeField] private MagicElement _magicElement = MagicElement.None;
-
-        [Tooltip("Сродство урона по умолчанию (Яд/Свет/Тьма). Бронёй не гасится — взаимодействует с типом существа цели.")]
-        [SerializeField] private DamageAffinity _affinity = DamageAffinity.None;
+        [Tooltip("Тип урона АВТОАТАКИ. Обязателен: школа брони выводится из него. У способностей свой " +
+                 "тип у каждой — наследования от юнита нет (реформа 2026-07-30).")]
+        [SerializeField] private DamageType _autoAttackDamageType = DamageType.Undefined;
 
         [Tooltip("Тип существа САМОГО юнита. Определяет, как по нему бьют сродства (Нежить иммунна к Яду, уязвима к Свету и т.д.).")]
         [SerializeField] private CreatureType _creatureType = CreatureType.Living;
@@ -132,14 +123,12 @@ namespace Guildmaster.Data.Definitions
         [SerializeField] private TagData[] _infoTags;
 
         public UnitClass CombatClass => _combatClass;
-        public DamageSchool DamageSchool => _damageSchool;
-        public PhysicalSubtype PhysicalSubtype => _physicalSubtype;
-        public MagicElement MagicElement => _magicElement;
-        public DamageAffinity Affinity => _affinity;
 
-        /// <summary>Тип урона автоатаки юнита (прямые поля источника, без override).</summary>
-        public DamageType ResolveAutoAttackDamageType()
-            => new DamageType(_damageSchool, _physicalSubtype, _magicElement, _affinity);
+        /// <summary>
+        /// Тип урона автоатаки. Школа брони — <c>DamageTypes.SchoolOf(AutoAttackDamageType)</c>;
+        /// отдельного поля школы у юнита больше нет.
+        /// </summary>
+        public DamageType AutoAttackDamageType => _autoAttackDamageType;
         public CreatureType CreatureType => _creatureType;
         public AttackType AttackType => _attackType;
         public ResourceType ResourceType => _resourceType;

@@ -38,9 +38,7 @@ namespace Guildmaster.Combat
             public readonly float Amount;
             public readonly float Mitigated;
             public readonly DamageSourceKind SourceKind;
-            public readonly DamageSchool School;
-            public readonly DamageAffinity Affinity;
-            public readonly MagicElement Element;
+            public readonly DamageType Type;
             public readonly float Vulnerability;
 
             public DamageEntry(RuntimeUnit source, float amount, float mitigated, in DamageRequest req)
@@ -49,9 +47,7 @@ namespace Guildmaster.Combat
                 Amount        = amount;
                 Mitigated     = mitigated;
                 SourceKind    = req.SourceKind;
-                School        = req.School;
-                Affinity      = req.Affinity;
-                Element       = req.Element;
+                Type          = req.Type;
                 Vulnerability = req.Vulnerability;
             }
         }
@@ -193,7 +189,7 @@ namespace Guildmaster.Combat
                     var result = new DamageResult(
                         hpDamage * share, shieldAbsorbed * share,
                         killed && ReferenceEquals(e.Source, killer),
-                        e.SourceKind, e.School, e.Affinity, e.Element, e.Vulnerability,
+                        e.SourceKind, e.Type, e.Vulnerability,
                         e.Mitigated);   // срезанное принадлежит своему удару целиком, делить его не надо
 
                     sink.OnDamageResolved(e.Source, target, in result);

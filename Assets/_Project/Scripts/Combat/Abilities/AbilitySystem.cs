@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Core.Simulation;
@@ -458,7 +458,7 @@ namespace Guildmaster.Combat
             // Рывок = смещение самого кастующего, без «ядра». Приземление (EffectExpired на себе) поднимет отбрасывание.
             ctx.Displace(new DisplaceRequest(
                 caster, caster, dashDir, dashDist,
-                cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
+                cannonball: false, damage: 0f, damageType: DamageType.Pure, width: 0f));
         }
 
         /// <summary>
@@ -565,9 +565,8 @@ namespace Guildmaster.Combat
         {
             EffectTag tag = data.TriggerTag;
             float dmg = AbilityDamage(caster, data);
-            DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
-            DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
-            PhysicalSubtype subtype = DamageCategories.Resolve(data.PhysicalSubtypeOverride, caster.Unit != null ? caster.Unit.PhysicalSubtype : PhysicalSubtype.None);
+            // Тип урона способности — её собственный, наследования от кастера нет (реформа 2026-07-30).
+            DamageType damageType = data.DamageType;
 
             // «Взрыв спор» Друида: помимо урона лечит союзников вокруг КАЖДОЙ детонированной цели за каждый
             // уникальный эффект-триггер на ней. Гейт по IsHeal+радиусу — у крио-«Оков» хила нет, они не лечат.
@@ -580,7 +579,7 @@ namespace Guildmaster.Combat
                 if ((u.EffectTagMask & tag) == 0) continue;
 
                 // Детонация: урон по каждому тегнутому врагу («Взрыв спор», «Воспламенение»). 0 = только эффекты (крио).
-                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, u, dmg, school, ctx.ArmorK, affinity: affinity, subtype: subtype));
+                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, u, dmg, damageType, ctx.ArmorK));
 
                 ApplyEffects(u, data, caster, ctx);
 
@@ -693,15 +692,14 @@ namespace Guildmaster.Combat
             ctx.QueryUnitsInRadius(caster.Position, data.AreaRadius, _targets, TargetFilter.Enemies, caster.Team);
 
             float dmg = AbilityDamage(caster, data);
-            DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
-            DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
-            PhysicalSubtype subtype = DamageCategories.Resolve(data.PhysicalSubtypeOverride, caster.Unit != null ? caster.Unit.PhysicalSubtype : PhysicalSubtype.None);
+            // Тип урона способности — её собственный, наследования от кастера нет (реформа 2026-07-30).
+            DamageType damageType = data.DamageType;
 
             // Урон по целям независим (коммутативен) — порядок из spatial hash не влияет на итог.
             for (int i = 0; i < _targets.Count; i++)
             {
                 RuntimeUnit t = _targets[i];
-                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, t, dmg, school, ctx.ArmorK, affinity: affinity, subtype: subtype));
+                if (dmg > 0f) ctx.DealDamage(new DamageRequest(caster, t, dmg, damageType, ctx.ArmorK));
                 ApplyEffects(t, data, caster, ctx);
 
                 if (data.Displaces) PushOutward(caster, t, data, ctx);
@@ -722,7 +720,7 @@ namespace Guildmaster.Combat
             // Порядок аргументов — (кого двигаем, кто двигает): толкаемый здесь ЦЕЛЬ, а не кастующий.
             ctx.Displace(new DisplaceRequest(
                 target, caster, dir, data.DisplaceDistance,
-                cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
+                cannonball: false, damage: 0f, damageType: DamageType.Pure, width: 0f));
         }
 
         private static Vector2 SafeDirection(Vector2 v) =>
@@ -741,10 +739,8 @@ namespace Guildmaster.Combat
                 float dmg = AbilityDamage(caster, data);
                 if (dmg > 0f)
                 {
-                    DamageSchool school = DamageCategories.Resolve(data.SchoolOverride, caster.DamageSchool);
-                    DamageAffinity affinity = DamageCategories.Resolve(data.AffinityOverride, caster.Affinity);
-                    PhysicalSubtype subtype = DamageCategories.Resolve(data.PhysicalSubtypeOverride, caster.Unit != null ? caster.Unit.PhysicalSubtype : PhysicalSubtype.None);
-                    ctx.DealDamage(new DamageRequest(caster, target, dmg, school, ctx.ArmorK, affinity: affinity, subtype: subtype));
+                    DamageType damageType = data.DamageType;
+                    ctx.DealDamage(new DamageRequest(caster, target, dmg, damageType, ctx.ArmorK));
                 }
             }
             ApplyEffects(target, data, caster, ctx);

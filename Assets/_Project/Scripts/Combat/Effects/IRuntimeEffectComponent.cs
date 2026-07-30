@@ -135,7 +135,7 @@ namespace Guildmaster.Combat.Effects
     /// </summary>
     public readonly struct AttackSplit
     {
-        /// <summary>Доля урона [0..1], уходящая школой <see cref="School"/>. При <see cref="HasOwnDamage"/> задаёт только, сколько СНИМАЕТСЯ с исходной школы.</summary>
+        /// <summary>Доля урона [0..1], уходящая типом <see cref="DamageType"/>. При <see cref="HasOwnDamage"/> задаёт только, сколько СНИМАЕТСЯ с исходного типа.</summary>
         public readonly float Share;
 
         /// <summary>
@@ -144,18 +144,19 @@ namespace Guildmaster.Combat.Effects
         /// </summary>
         public readonly float OwnDamage;
 
-        public readonly Data.Definitions.DamageSchool School;
-        public readonly Data.Definitions.MagicElement Element;
+        /// <summary>
+        /// Тип урона отщеплённой части — обязателен: расщепление и существует ради того, чтобы часть
+        /// удара пошла ДРУГИМ типом («Водяной щит» Монаха: половина Дробящим, половина Льдом).
+        /// </summary>
+        public readonly Data.Definitions.DamageType DamageType;
 
         public bool HasOwnDamage => OwnDamage > 0f;
 
-        public AttackSplit(float share, Data.Definitions.DamageSchool school, Data.Definitions.MagicElement element,
-            float ownDamage = 0f)
+        public AttackSplit(float share, Data.Definitions.DamageType damageType, float ownDamage = 0f)
         {
-            Share     = share < 0f ? 0f : share > 1f ? 1f : share;
-            School    = school;
-            Element   = element;
-            OwnDamage = ownDamage < 0f ? 0f : ownDamage;
+            Share      = share < 0f ? 0f : share > 1f ? 1f : share;
+            DamageType = damageType;
+            OwnDamage  = ownDamage < 0f ? 0f : ownDamage;
         }
     }
 

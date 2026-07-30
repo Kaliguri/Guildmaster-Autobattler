@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// входящий урон умножается на <c>1 − _resistPct</c>. «Раздуть жар» Хранителя углей даёт союзнику
     /// сопротивление огню — потому что сам только что навесил на него угли.
     /// <para><b>Числа:</b> <c>_resistPct</c> — сколько урона снимается (0.25 = −25%); <c>_school</c> и
-    /// <c>_element</c> — что именно гасится (<c>None</c> в стихии = вся школа целиком).</para>
+    /// <c>_wholeSchool</c> — что именно гасится (флаг = вся школа этого типа целиком).</para>
     /// <para><b>Когда срабатывает:</b> в pre-damage, до брони — это уязвимость/стойкость самой цели, а не
     /// пробивание источника. Стаки НЕ учитываются: сопротивление задаётся эффектом, а не их числом.</para>
     /// </summary>
@@ -28,11 +28,11 @@ namespace Guildmaster.Combat.Effects.Components
         [Range(0f, 1f)]
         [SerializeField] private float _resistPct = 0.25f;
 
-        [Tooltip("Школа урона, против которой работает сопротивление.")]
-        [SerializeField] private DamageSchool _school = DamageSchool.Magical;
+        [Tooltip("Тип урона, против которого работает сопротивление.")]
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
-        [Tooltip("Стихия при магической школе. None = гасится вся школа, любой стихии.")]
-        [SerializeField] private MagicElement _element = MagicElement.Fire;
+        [Tooltip("Гасить всю школу этого типа, а не только сам тип.")]
+        [SerializeField] private bool _wholeSchool;
 
         public void OnApply(in EffectContext ctx) { }
 
@@ -41,8 +41,7 @@ namespace Guildmaster.Combat.Effects.Components
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (_resistPct <= 0f || result.Negated) return;
-            if (incoming.School != _school) return;
-            if (_element != MagicElement.None && incoming.Element != _element) return;
+            if (!DamageTypes.Matches(_damageType, _wholeSchool, incoming.Type)) return;
 
             // Домножаем, а не присваиваем: два источника стойкости обязаны сложиться множителями, как и
             // две уязвимости (см. PreDamageResult.AddMultiplier).

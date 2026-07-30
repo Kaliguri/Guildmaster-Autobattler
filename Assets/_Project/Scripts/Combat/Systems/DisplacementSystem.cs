@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Arena;
 using Guildmaster.Core.Simulation;
@@ -26,8 +26,7 @@ namespace Guildmaster.Combat
             public int         TicksRemaining;
             public bool        Cannonball;
             public float       Damage;
-            public Data.Definitions.DamageSchool School;
-            public Data.Definitions.DamageAffinity Affinity;
+            public Data.Definitions.DamageType DamageType;
             public float       Width;
             public float       ChainDistance;
             public bool        WallHit; // урон об край арены добивается один раз за полёт
@@ -74,8 +73,7 @@ namespace Guildmaster.Combat
                 TicksRemaining = ticks,
                 Cannonball     = req.Cannonball,
                 Damage         = req.Damage,
-                School         = req.School,
-                Affinity       = req.Affinity,
+                DamageType     = req.DamageType,
                 Width          = req.Width * tuning.CannonballWidthMult,
                 ChainDistance  = req.ChainDistance,
             });
@@ -123,7 +121,7 @@ namespace Guildmaster.Combat
 
                     float wallDamage = a.Damage * ctx.Tuning.WallImpactDamageMult;
                     if (wallDamage > 0f)
-                        ctx.DealDamage(new DamageRequest(a.Source, u, wallDamage, a.School, ctx.ArmorK, affinity: a.Affinity));
+                        ctx.DealDamage(new DamageRequest(a.Source, u, wallDamage, a.DamageType, ctx.ArmorK));
 
                     int stunTicks = (int)(ctx.Tuning.WallImpactStunSeconds * SimConstants.TickRate + 0.5f);
                     if (stunTicks > a.TicksRemaining) a.TicksRemaining = stunTicks;
@@ -156,7 +154,7 @@ namespace Guildmaster.Combat
                 if (victim == a.Unit || victim.IsDead || a.Hit.Contains(victim)) continue;
 
                 a.Hit.Add(victim);
-                ctx.DealDamage(new DamageRequest(a.Source, victim, a.Damage, a.School, ctx.ArmorK, affinity: a.Affinity));
+                ctx.DealDamage(new DamageRequest(a.Source, victim, a.Damage, a.DamageType, ctx.ArmorK));
 
                 // §10.6: задетый «ядром» не только получает урон, но и сам слабо отбрасывается вдоль полёта.
                 // Источник — тот же (монах), поэтому конец этого цепного полёта тоже триггерит «Вихревой заход».
@@ -173,7 +171,7 @@ namespace Guildmaster.Combat
                     cdir = cdir.sqrMagnitude > 1e-6f ? cdir.normalized : fwd;
                     ctx.Displace(new DisplaceRequest(
                         victim, a.Source, cdir, a.ChainDistance,
-                        cannonball: false, damage: 0f, school: a.School, width: 0f));
+                        cannonball: false, damage: 0f, damageType: a.DamageType, width: 0f));
                 }
             }
         }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
@@ -103,7 +103,7 @@ namespace Guildmaster.Combat.Effects.Components
             // FleeSteering уводит юнита домой, поэтому маг всегда уходит ЗА строй, а не в чужой.
             ctx.Combat.Displace(new DisplaceRequest(
                 self, self, FleeSteering.HomeDir(self), _shiftDistance,
-                cannonball: false, damage: 0f, school: self.DamageSchool, width: 0f,
+                cannonball: false, damage: 0f, damageType: self.AutoAttackDamageType, width: 0f,
                 speedPerSecond: _shiftSpeedPerSecond));
         }
 

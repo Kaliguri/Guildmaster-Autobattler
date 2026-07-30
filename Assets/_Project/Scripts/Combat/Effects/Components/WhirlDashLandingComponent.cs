@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
@@ -70,7 +70,7 @@ namespace Guildmaster.Combat.Effects.Components
             float dmg = _displaceDamageMult > 0f
                 ? _displaceDamageMult * monk.Stats.Get(StatType.AutoAttackDamage)
                 : 0f;
-            DamageSchool school = monk.DamageSchool;
+            DamageType damageType = monk.AutoAttackDamageType;
 
             ctx.Combat.ReportAreaHit(AreaHit.Line(
                 victim.Position, dir.sqrMagnitude > 1e-6f ? dir.normalized : Vector2.right,
@@ -78,8 +78,7 @@ namespace Guildmaster.Combat.Effects.Components
 
             ctx.Combat.Displace(new DisplaceRequest(
                 victim, monk, dir, _displaceDistance,
-                cannonball: true, damage: dmg, school: school, width: _displaceWidth,
-                affinity: monk.Affinity,
+                cannonball: true, damage: dmg, damageType: damageType, width: _displaceWidth,
                 chainDistance: _chainDistance));
         }
 

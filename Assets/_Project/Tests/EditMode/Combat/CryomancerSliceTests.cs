@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Abilities;
 using Guildmaster.Combat.Effects.Components;
@@ -44,7 +44,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 CollisionRadius  = 0.25f,
                 TargetUnit       = enemy,
                 RawDamage        = 15f,
-                School           = DamageSchool.Physical,
+                DamageType       = DamageType.Slash,
                 OnHitEffects     = new[] { frozen },
                 IsAlive          = true,
             };
@@ -222,7 +222,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.ApplyEffect(enemy, MakeFrozen(), cryo);
             EffectSystem.CommitPending(enemy); // юниты стенда вне списка боя — маску тегов проявляем сами
 
-            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageSchool.True, sim.ArmorK,
+            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageType.Pure, sim.ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);
 
@@ -238,7 +238,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(cryo, ChillingTouch(frozenBonus: 0.25f), cryo);
 
-            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageSchool.True, sim.ArmorK,
+            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageType.Pure, sim.ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);
 
@@ -257,7 +257,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.ApplyEffect(enemy, MakeFrozen(), cryo);
             EffectSystem.CommitPending(enemy);
 
-            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageSchool.True, sim.ArmorK)); // Ability
+            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageType.Pure, sim.ArmorK)); // Ability
             sim.Tick(SimConstants.TickDelta);
 
             Assert.AreEqual(900f, enemy.CurrentHP, 1e-3f, "Урон способности прибавку не получает");
@@ -276,7 +276,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.ApplyEffect(enemy, MakeStun(), cryo);
             EffectSystem.CommitPending(enemy);
 
-            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageSchool.True, sim.ArmorK,
+            sim.DealDamage(new DamageRequest(cryo, enemy, 100f, DamageType.Pure, sim.ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);
 

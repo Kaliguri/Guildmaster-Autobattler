@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using UnityEngine;
 
@@ -25,11 +25,11 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Эффект, стак которого носитель кладёт на СЕБЯ за своё попадание.")]
         [SerializeField] private EffectData _selfEffect;
 
-        [Tooltip("Школа удара, которая считается. Magical + Fire = только собственный огонь.")]
-        [SerializeField] private DamageSchool _school = DamageSchool.Magical;
+        [Tooltip("Тип удара, который считается (Хранитель углей греется только собственным Огнём).")]
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
-        [Tooltip("Стихия удара при магической школе. None = любая стихия этой школы.")]
-        [SerializeField] private MagicElement _element = MagicElement.Fire;
+        [Tooltip("Считать всю школу этого типа, а не только сам тип.")]
+        [SerializeField] private bool _wholeSchool;
 
         [Tooltip("Только прямые удары (авто-атака и способности). Выкл = тики DoT тоже греют.")]
         [SerializeField] private bool _directHitsOnly = true;
@@ -44,8 +44,7 @@ namespace Guildmaster.Combat.Effects.Components
         {
             if (_selfEffect == null) return;
             if (_directHitsOnly && !e.IsDirectHit) return;
-            if (e.School != _school) return;
-            if (_element != MagicElement.None && e.Element != _element) return;
+            if (!DamageTypes.Matches(_damageType, _wholeSchool, e.DamageType)) return;
 
             RuntimeUnit self = ctx.Target;
             if (self == null || self.IsDead) return;

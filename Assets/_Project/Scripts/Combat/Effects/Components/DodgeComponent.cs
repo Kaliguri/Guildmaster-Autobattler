@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Core.Simulation;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
@@ -98,7 +98,7 @@ namespace Guildmaster.Combat.Effects.Components
 
             ctx.Combat.Displace(new DisplaceRequest(
                 self, self, RollDirection(self, in incoming), _rollDistance,
-                cannonball: false, damage: 0f, school: self.DamageSchool, width: 0f,
+                cannonball: false, damage: 0f, damageType: self.AutoAttackDamageType, width: 0f,
                 speedPerSecond: _rollSpeedPerSecond));
         }
 

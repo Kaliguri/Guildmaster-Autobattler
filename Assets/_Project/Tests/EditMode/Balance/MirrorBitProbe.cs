@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using Guildmaster.Balance.Editor;
 using Guildmaster.Combat;
@@ -151,7 +151,7 @@ namespace Guildmaster.Balance.Tests
 
             env.Sim.OnDamageDealt += (src, dst, res) => hits.Add(
                 $"    урон {res.TotalDamage,8:0.000} (hp {res.HpDamage:0.0} щит {res.ShieldDamage:0.0} " +
-                $"срез {res.Mitigated:0.000}) {res.SourceKind}/{res.School}/{res.Element} " +
+                $"срез {res.Mitigated:0.000}) {res.SourceKind}/{res.Type} " +
                 $"vuln={res.Vulnerability:0.000}  {Name(tracked, src)} → {Name(tracked, dst)} {Embers()}");
             env.Sim.OnHealed += (src, dst, amount) => hits.Add(
                 $"    хил  {amount,8:0.000}                                       " +

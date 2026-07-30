@@ -1,4 +1,4 @@
-using Guildmaster.Combat;
+﻿using Guildmaster.Combat;
 using Guildmaster.Combat.Effects;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Simulation;
@@ -79,7 +79,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var comp = new PeriodicDamageComponent()
                 .With("_interval", 1f)
                 .With("_damagePerSecond", new ScalableValue(10f))
-                .With("_damageSchool", DamageSchool.True);
+                .With("_damageSchool", DamageType.Pure);
             EffectData def = TestEffect.Make(baseDuration: 3f, tags: EffectTag.DoT, components: comp);
 
             sys.Apply(unit, def, unit, ctx);

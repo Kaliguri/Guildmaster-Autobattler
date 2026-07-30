@@ -21,8 +21,13 @@ namespace Guildmaster.Combat
         public readonly float        Distance;
         public readonly bool         Cannonball;
         public readonly float        Damage;
-        public readonly DamageSchool School;
-        public readonly DamageAffinity Affinity;
+
+        /// <summary>
+        /// Тип урона «ядра» и удара в стену. Обязателен наравне с любым другим источником урона:
+        /// толчок, который бьёт, — такой же источник, и его тип не выводится из толчка сам.
+        /// При <see cref="Damage"/> = 0 не читается.
+        /// </summary>
+        public readonly DamageType   DamageType;
         public readonly float        Width;
 
         /// <summary>
@@ -48,10 +53,9 @@ namespace Guildmaster.Combat
             float       distance,
             bool        cannonball,
             float       damage,
-            DamageSchool school,
+            DamageType  damageType,
             float       width,
             float       chainDistance = 0f,
-            DamageAffinity affinity = DamageAffinity.None,
             float       speedPerSecond = 0f)
         {
             Target        = target;
@@ -60,8 +64,7 @@ namespace Guildmaster.Combat
             Distance      = distance;
             Cannonball    = cannonball;
             Damage        = damage;
-            School        = school;
-            Affinity      = affinity;
+            DamageType    = damageType;
             Width          = width;
             ChainDistance  = chainDistance;
             SpeedPerSecond = speedPerSecond;

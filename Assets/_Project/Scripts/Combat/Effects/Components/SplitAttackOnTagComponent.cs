@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// горящей цели половина клинка бьёт Огнём). По умолчанию суммарный урон удара не меняется —
     /// меняется то, какой бронёй он гасится, что копит и чем усиливается.
     /// <para><b>Числа:</b> <c>_requiredTargetTag</c> — при каком теге на ЦЕЛИ расщепляем (Burn);
-    /// <c>_share</c> — какая доля удара уходит в другую школу (0.5 = половина); <c>_school</c> и
+    /// <c>_share</c> — какая доля удара уходит другим типом (0.5 = половина); <c>_damageType</c> и
     /// <c>_element</c> — во что именно (Магическая + Огонь). При ударе на 100 по горящей цели это
     /// 50 сталью и 50 огнём — вторая половина копит «Угли» и ими же усиливается.</para>
     /// <para><b>Процентная половина (Мечник, решение 2026-07-28):</b> <c>_pctTargetMaxHp</c> — доля
@@ -41,10 +41,7 @@ namespace Guildmaster.Combat.Effects.Components
         [SerializeField] private float _share = 0.5f;
 
         [Tooltip("Школа, которой уходит отщеплённая доля.")]
-        [SerializeField] private DamageSchool _school = DamageSchool.Magical;
-
-        [Tooltip("Стихия отщеплённой доли (при магической школе). Мечник = Огонь.")]
-        [SerializeField] private MagicElement _element = MagicElement.Fire;
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
         [Header("Процентная половина (0 = отщепляем долю удара, как раньше)")]
         [Tooltip("Доля МАКС. HP цели, которой бьёт отщеплённая часть вместо доли удара (0.01 = 1%).")]
@@ -68,7 +65,7 @@ namespace Guildmaster.Combat.Effects.Components
             if (_requiredTargetTag != EffectTag.None
                 && (target.EffectTagMask & _requiredTargetTag) == EffectTag.None) return false;
 
-            split = new AttackSplit(_share, _school, _element, OwnDamage(target));
+            split = new AttackSplit(_share, _damageType, OwnDamage(target));
             return true;
         }
 

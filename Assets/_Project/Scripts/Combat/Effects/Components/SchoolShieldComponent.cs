@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// запас и копит поглощённое в <see cref="RuntimeUnit.AbsorbedByWard"/>. «Отражающий налёт» Антимага
     /// (карточка [[the-aegis]]) выдаёт такой щит за каждое вражеское заклинание.
     /// <para><b>Числа:</b> <c>_amount</c> — запас поглощения, скейлится статами источника; <c>_school</c>
-    /// и <c>_element</c> — что именно он держит (<c>None</c> в стихии = вся школа). Длительность и стакинг
+    /// и <c>_wholeSchool</c> — что именно он держит (флаг = вся школа этого типа). Длительность и стакинг
     /// решает сам эффект: короткий щит гасит один залп, длинный копит.</para>
     /// <para><b>Когда срабатывает:</b> в pre-damage, до брони — как и любая стойкость самой цели.</para>
     /// </summary>
@@ -31,11 +31,12 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Запас поглощения, в единицах урона. Скейлится статами источника.")]
         [SerializeField] private ScalableValue _amount;
 
-        [Tooltip("Школа урона, которую щит держит.")]
-        [SerializeField] private DamageSchool _school = DamageSchool.Magical;
+        [Tooltip("Тип урона, который щит держит.")]
+        [SerializeField] private DamageType _damageType = DamageType.Undefined;
 
-        [Tooltip("Стихия при магической школе. None = держит всю школу, любой стихии.")]
-        [SerializeField] private MagicElement _element = MagicElement.None;
+        [Tooltip("Держать всю школу этого типа, а не только сам тип: Аркановый щит гасит любую магию, " +
+                 "Огненный вард — только Огонь.")]
+        [SerializeField] private bool _wholeSchool = true;
 
         public ScalableValue Potency => _amount;
 
@@ -60,8 +61,7 @@ namespace Guildmaster.Combat.Effects.Components
         public void OnPreDamage(in DamageRequest incoming, PreDamageResult result, in EffectContext ctx)
         {
             if (result.Negated) return;
-            if (incoming.School != _school) return;
-            if (_element != MagicElement.None && incoming.Element != _element) return;
+            if (!DamageTypes.Matches(_damageType, _wholeSchool, incoming.Type)) return;
 
             float pool = ctx.Effect.HeldShield;
             if (pool <= 0f) return;

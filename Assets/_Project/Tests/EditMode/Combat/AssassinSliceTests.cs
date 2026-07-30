@@ -71,7 +71,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.ApplyEffect(assassin, StealthPassive(), assassin);
             assassin.EmpowerDamageMult = 0f; // симулируем, что усиление уже израсходовано
 
-            sim.DealDamage(new DamageRequest(assassin, victim, 999f, DamageSchool.True, sim.ArmorK)); // смертельный удар
+            sim.DealDamage(new DamageRequest(assassin, victim, 999f, DamageType.Pure, sim.ArmorK)); // смертельный удар
             sim.Tick(SimConstants.TickDelta); // дренаж UnitKilled → рестелс: подкрепление бафа
             // Юниты этого стенда не зарегистрированы в симуляции, поэтому закон видимости
             // (CommitTickChanges по списку боя) до них не доходит — проявляем отложенное вручную.
@@ -155,7 +155,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 relic: AssassinRelic(PassiveTrigger.AnyHit));
 
             ctx.ApplyEffect(assassin, DodgePassive(maxCharges: 2, rechargeSeconds: 8f), assassin);
-            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.AutoAttack);
+            var hit = new DamageRequest(null, assassin, 30f, DamageType.Pure, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.AutoAttack);
 
             ctx.Tick = 0;
             Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx),  "1-й удар негейтнут (заряд 1)");
@@ -178,7 +178,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 relic: AssassinRelic(PassiveTrigger.AnyHit));
 
             ctx.ApplyEffect(assassin, DodgePassive(maxCharges: 2, rechargeSeconds: 8f), assassin);
-            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, CombatTestValues.ArmorK,
+            var hit = new DamageRequest(null, assassin, 30f, DamageType.Pure, CombatTestValues.ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack);
 
             ctx.Tick = 0;
@@ -202,11 +202,11 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 8f), assassin);
 
-            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
+            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageType.Pure, sim.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);   // удары применяются реестром в конце тика
             Assert.AreEqual(200f, assassin.CurrentHP, 1e-4f, "Первый удар негейтнут — HP не тронуто");
 
-            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
+            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageType.Pure, sim.ArmorK, sourceKind: DamageSourceKind.AutoAttack));
             sim.Tick(SimConstants.TickDelta);
             Assert.AreEqual(150f, assassin.CurrentHP, 1e-4f, "Заряд израсходован — второй удар проходит");
         }
@@ -224,7 +224,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             ctx.Tick = 0;
             es.Apply(assassin, dodge, assassin, ctx);
 
-            var hit = new DamageRequest(null, assassin, 30f, DamageSchool.True, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.AutoAttack);
+            var hit = new DamageRequest(null, assassin, 30f, DamageType.Pure, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.AutoAttack);
             Assert.IsTrue(es.RunPreDamage(assassin, in hit, ctx),  "Заряд израсходован на 1-м ударе");
             Assert.IsFalse(es.RunPreDamage(assassin, in hit, ctx), "Зарядов больше нет");
 
@@ -245,10 +245,10 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             ctx.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 5f), assassin);
 
-            var ability = new DamageRequest(null, assassin, 30f, DamageSchool.True, CombatTestValues.ArmorK); // isAutoAttack=false
+            var ability = new DamageRequest(null, assassin, 30f, DamageType.Pure, CombatTestValues.ArmorK); // isAutoAttack=false
             Assert.IsFalse(es.RunPreDamage(assassin, in ability, ctx), "Урон способности не уклоняется");
 
-            var auto = new DamageRequest(null, assassin, 30f, DamageSchool.True, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.AutoAttack);
+            var auto = new DamageRequest(null, assassin, 30f, DamageType.Pure, CombatTestValues.ArmorK, sourceKind: DamageSourceKind.AutoAttack);
             Assert.IsTrue(es.RunPreDamage(assassin, in auto, ctx), "Заряд был цел — автоатака уклоняется");
         }
 
@@ -267,7 +267,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 8f), assassin);
             float baseSpeed = assassin.Stats.Get(StatType.MoveSpeed);
 
-            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK,
+            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageType.Pure, sim.ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta); // перекат: 2 ед. на 12 ед/сек
 
@@ -292,7 +292,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(assassin, DodgePassive(maxCharges: 1, rechargeSeconds: 8f), assassin);
 
-            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageSchool.True, sim.ArmorK,
+            sim.DealDamage(new DamageRequest(attacker, assassin, 50f, DamageType.Pure, sim.ArmorK,
                 sourceKind: DamageSourceKind.AutoAttack));
             for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta);
 

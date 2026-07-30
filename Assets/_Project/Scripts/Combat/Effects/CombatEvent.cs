@@ -54,15 +54,20 @@ namespace Guildmaster.Combat.Effects
         /// их собственная ответка порождают новые срабатывания.</summary>
         public readonly DamageSourceKind SourceKind;
 
-        /// <summary>Урон-события: школа урона (Physical/Magical/True). Вне урон-событий — <c>True</c> по умолчанию.</summary>
-        public readonly Data.Definitions.DamageSchool School;
+        /// <summary>
+        /// Урон-события: тип урона. Одна ось вместо прежней пары «школа + стихия» (реформа
+        /// 2026-07-30) — реактив отличает огонь от прочей магии и дробящий от режущего по ней же.
+        /// Вне урон-событий — <see cref="Data.Definitions.DamageType.Undefined"/>: события «эффект
+        /// истёк» или «применена способность» типа урона не несут, и подставлять им какой-нибудь
+        /// значило бы соврать потребителю.
+        /// </summary>
+        public readonly Data.Definitions.DamageType DamageType;
 
-        /// <summary>Урон-события: стихия при магической школе. Так реактив отличает огонь от прочей магии.</summary>
-        public readonly Data.Definitions.MagicElement Element;
+        /// <summary>Школа урона события — следствие <see cref="DamageType"/>, отдельного поля нет.</summary>
+        public Data.Definitions.DamageSchool School => Data.Definitions.DamageTypes.SchoolOf(DamageType);
 
         /// <summary>Урон стихии огня: то, что копит «Угли» (карточка [[burn]]).</summary>
-        public bool IsFire => School == Data.Definitions.DamageSchool.Magical
-                           && Element == Data.Definitions.MagicElement.Fire;
+        public bool IsFire => DamageType == Data.Definitions.DamageType.Fire;
 
         /// <summary>Удар был авто-атакой (разгон «Пылающих клинков», уклонение убийцы).</summary>
         public bool IsAutoAttack => SourceKind == DamageSourceKind.AutoAttack;
@@ -76,8 +81,7 @@ namespace Guildmaster.Combat.Effects
         public CombatEventData(CombatEvent type, RuntimeUnit source, RuntimeUnit target, float amount,
                                Data.Definitions.EffectTag tags,
                                DamageSourceKind sourceKind = DamageSourceKind.Ability,
-                               Data.Definitions.DamageSchool school = Data.Definitions.DamageSchool.True,
-                               Data.Definitions.MagicElement element = Data.Definitions.MagicElement.None)
+                               Data.Definitions.DamageType damageType = Data.Definitions.DamageType.Undefined)
         {
             Type       = type;
             Source     = source;
@@ -85,8 +89,7 @@ namespace Guildmaster.Combat.Effects
             Amount     = amount;
             Tags       = tags;
             SourceKind = sourceKind;
-            School     = school;
-            Element    = element;
+            DamageType = damageType;
         }
     }
 }

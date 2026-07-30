@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Guildmaster.Combat;
 using Guildmaster.Data.Definitions;
@@ -545,7 +545,7 @@ namespace Guildmaster.Presentation
             if (_views.TryGetValue(targetId, out var view) && view != null)
             {
                 Color flash = _feel != null
-                    ? _feel.ResolveHitFlashColor(result.School, result.Affinity)
+                    ? _feel.ResolveHitFlashColor(result.Type)
                     : Color.white;
 
                 // Удар, целиком съеденный щитом, вспыхивает ЦВЕТОМ ЩИТА: иначе «пробил» и «не пробил»

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Guildmaster.Combat;
 using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Core.Arena;
@@ -31,7 +31,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var monk   = MakeUnit(0, team: 0, pos: new Vector2(-1f, 0f));
                 var target = MakeUnit(1, team: 1, pos: Vector2.zero);
                 sim.Displace(new DisplaceRequest(target, monk, new Vector2(1f, 0f),
-                    distance: 4f, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 1f));
+                    distance: 4f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
                 // Длительность полёта считается из дистанции: 4 ед. при 10 ед/с = 12 тиков (30 Гц).
                 for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta);
                 return target.Position;
@@ -52,7 +52,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var target = MakeUnit(1, team: 1, pos: Vector2.zero);
             // 6 ед. при 10 ед/с = 18 тиков полёта.
             sim.Displace(new DisplaceRequest(target, MakeUnit(0, 0, Vector2.zero), new Vector2(1f, 0f),
-                distance: 6f, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 1f));
+                distance: 6f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
 
             for (int t = 0; t < 9; t++) sim.Tick(SimConstants.TickDelta);
             Assert.Greater(target.DisplacedTicksRemaining, 0, "В полёте цель оглушена (жёсткое состояние)");
@@ -75,7 +75,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             sim.Tick(SimConstants.TickDelta); // флаш + регистрация в spatial hash
 
             sim.Displace(new DisplaceRequest(flying, monk, new Vector2(1f, 0f),
-                distance: 10f, cannonball: true, damage: 50f, school: DamageSchool.Physical, width: 2f));
+                distance: 10f, cannonball: true, damage: 50f, damageType: DamageType.Slash, width: 2f));
             for (int t = 0; t < 31; t++) sim.Tick(SimConstants.TickDelta); // 10 ед. = 30 тиков полёта
 
             Assert.Less(enemyB.CurrentHP, 200f, "«Ядро» бьёт врага источника на линии");
@@ -97,7 +97,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 var sim = BuildSim(7UL);
                 var target = MakeUnit(1, team: 1, pos: Vector2.zero, moveSpeed: 0f);
                 sim.Displace(new DisplaceRequest(target, MakeUnit(0, 0, Vector2.zero), new Vector2(1f, 0f),
-                    distance: distance, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
+                    distance: distance, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 0f));
 
                 int ticks = 0;
                 while (target.DisplacedTicksRemaining > 0 && ticks < 300)
@@ -134,7 +134,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             float hpBefore = victim.CurrentHP;
             sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
-                distance: 6f, cannonball: true, damage: 40f, school: DamageSchool.Physical, width: 1f));
+                distance: 6f, cannonball: true, damage: 40f, damageType: DamageType.Slash, width: 1f));
 
             for (int t = 0; t < 5; t++) sim.Tick(SimConstants.TickDelta);
 
@@ -164,7 +164,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(monk, VortexPassive(2f), monk);
             sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
-                distance: 4f, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 1f));
+                distance: 4f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
 
             for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta); // конец полёта (4 ед. = 12 тиков) → сигнал → телепорт+усиление тем же тиком
 
@@ -191,7 +191,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(monk, VortexPassive(2f, MicroStun(0.25f), windupMult: 0.5f), monk);
             sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
-                distance: 4f, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 1f));
+                distance: 4f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
 
             for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta);   // конец полёта → заход сработал
 
@@ -225,7 +225,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             sim.ApplyEffect(monk, VortexPassive(2f), monk);
             sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
-                distance: 4f, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 1f));
+                distance: 4f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
 
             for (int t = 0; t < 12; t++) sim.Tick(SimConstants.TickDelta);
 
@@ -260,7 +260,7 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             // Рывок монаха к цели (self-displacement) — как это делает активка «Шквальный толчок».
             sim.Displace(new DisplaceRequest(monk, monk, new Vector2(1f, 0f),
-                distance: 1f, cannonball: false, damage: 0f, school: DamageSchool.Physical, width: 0f));
+                distance: 1f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 0f));
 
             // Конец рывка → приземление → отбрасывание врага → конец отбрасывания → телепорт монаха.
             // Усиление ×2 могло быть израсходовано авто-атакой к концу прогона — трекаем максимум за прогон.
