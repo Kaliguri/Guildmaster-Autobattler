@@ -283,7 +283,11 @@ namespace Guildmaster.AnimationLab.Editor
                 // Первая версия давала 6-10% — щит стоял СБОКУ от торса, потому что локоть РАЗГИБАЛСЯ
                 // (−27°) и выпрямленная рука уводила щит от тела. Локоть теперь гнётся внутрь, предплечье
                 // идёт поперёк корпуса, а плечо выносится вперёд, а не вверх.
-                w.At(0.117f).Bend("shoulder.L", 46f, Near, Out).Bend("elbow.L", 38f, Near, Out)
+                // ЩИТ ЗАКРЫВАЕТ СТОРОНУ ВРАГА, а не просто корпус (Макс, 30.07): противник всегда со
+                // стороны взгляда, поэтому рука обязана вынести щит ПОПЕРЁК тела, к нему. Плечо уводит
+                // щит вправо, локоть разворачивает его плоскостью — вместе они сдвигают центр щита на
+                // точку удара (x: −0.035 → 0.004) и уносят дальний край с 0.283 до 0.448.
+                w.At(0.117f).Bend("shoulder.L", 54f, Near, Out).Bend("elbow.L", 50f, Near, Out)
                             .Bend("torso", -3f, Near, Out)
                             .Aim("shield", 96f, Ccw, Out);
                 HoldUntil(w, 0.334f);
@@ -291,10 +295,10 @@ namespace Guildmaster.AnimationLab.Editor
                 // Оседание, а НЕ возврат в стойку: прошлая версия уводила щит обратно к 90° к концу клипа,
                 // и рука уезжала раньше, чем кончался барьер. Опускает её вес слоя (см. UnitView.RaiseGuard),
                 // клип же обязан держать позу столько, сколько его держат.
-                w.At(0.450f).Bend("shoulder.L", 44f, Near, Soft).Bend("elbow.L", 36f, Near, Soft)
+                w.At(0.450f).Bend("shoulder.L", 52f, Near, Soft).Bend("elbow.L", 48f, Near, Soft)
                             .Bend("torso", -3f, Near, Soft)
                             .Aim("shield", 94f, Near, Soft);
-                w.At(0.600f).Bend("shoulder.L", 44f, Near, Hold).Bend("elbow.L", 36f, Near, Hold)
+                w.At(0.600f).Bend("shoulder.L", 52f, Near, Hold).Bend("elbow.L", 48f, Near, Hold)
                             .Bend("torso", -3f, Near, Hold)
                             .Aim("shield", 94f, Near, Hold);
                 return w.Write(Folder + "Block.anim", 60f, loopTime: false).ToString();
