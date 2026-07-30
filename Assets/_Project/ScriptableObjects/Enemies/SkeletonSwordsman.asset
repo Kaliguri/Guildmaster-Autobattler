@@ -39,7 +39,7 @@ MonoBehaviour:
     Value: 700
   - Stat: 8
     Op: 3
-    Value: 0.85
+    Value: 0.45
   - Stat: 9
     Op: 3
     Value: 1
