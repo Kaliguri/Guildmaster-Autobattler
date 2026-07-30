@@ -11,6 +11,13 @@ updated: 2026-07-29
 `title` по системе `<Вид> - <Тир> - <Имя>` (например `Goblins - Common - Goblin Archer`).
 Док вида — слаг вида (`goblins.md`), `title: "Species - <Name>"`.
 
+> **HARD: карточка отвечает только на «что и как работает».** Провенанс («решение Макса от…», что
+> отвергли), пометки «*Реализовано <дата>*», раздел «Чего требует от движка», баланс-флаги и
+> `proposed`-числа в карточку не пишутся. Дома: [[gdd/00-meta/journal-adr|журнал решений]],
+> [[gdd/enemies/implementation-status|Enemies - Implementation Status]],
+> [[gdd/00-meta/open|Meta - Open Questions]], `docs/balance-issues.md`. Правило и таблица-маршрутизатор
+> — [[gdd/relics/template-relic-card|шаблон карточки реликвии]] §HARD.
+
 ## Шаг 1. Общая информация
 
 - **Тип:** обычный / элита / босс.
