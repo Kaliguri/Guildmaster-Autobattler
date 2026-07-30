@@ -9,6 +9,16 @@ namespace Guildmaster.Data.Definitions
     /// сим берёт <see cref="UnitVisual.AttackFrameCount"/>/<see cref="UnitVisual.AttackHitFrame"/>,
     /// которые выводятся отсюда. <c>Animator.fireEvents=false</c> — маркеры никогда не колбэчат.
     /// </summary>
+    /// <remarks>
+    /// <b>Читается только ПЕРВЫЙ маркер, остальные молча игнорируются</b> — весь класс написан под
+    /// «свинг = один контакт». Дизайн требует иного: несколько ударов в одной анимации (Макс,
+    /// 2026-07-30), и допущение зашито ещё в четырёх местах (<c>UnitVisual</c>, <c>AttackTiming</c>,
+    /// <c>AutoAttackSystem</c>, аудит клипов). Расширять начинать отсюда: список кадров вместо первого,
+    /// позиции — в нормированном времени × длительность свинга, с раздвижкой до зазора в один тик.
+    /// Реестр звеньев, четыре вердикта Макса и правило «рефанд только пустому свингу» — вики
+    /// <c>tech/00-meta/tech-debt</c> §3.9. Инвариант «стан не ускоряет атаку» держит
+    /// <c>WindupAutoAttackTests.Stun_AfterHit_DoesNotRushNextAttack</c>.
+    /// </remarks>
     public static class ClipMarkers
     {
         public const string MarkerFunction = "Marker";
