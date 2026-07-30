@@ -33,11 +33,98 @@ v5.x задепрекейтят, библиотеку в облаке не де�
 | ~~01-A v3 (стаккато + драм-кит, 158)~~ | 1 | 60 | — | **нет** | струнные | «песня про мехов», «слишком активная», «много барабанов» |
 | ~~01-A v4 (`epic anime`, арка словами)~~ | 1 | 60 | — | **нет** | — | «слишком аниме», «добренько-яркие»; `epic` и `anime` вычеркнуты из лексикона |
 | ~~01-A v5 (две краски, состав не фиксирован)~~ | 1 | 60 | — | **ближе** | скрипка | «стало намного лучше», но «опять скрипка»: `solo violin` был вытеснен из Exclude ради борьбы с яркостью |
-| 01-A v6 канон состава, гитара лидом | 1 | 60 | | | | v5.5 |
-| 01-A v6 то же на **v5** | 2 | 60 | | | | замер модели: v5 «чище» |
+| ~~01-A v6 (канон состава, всё нежное)~~ | 1 | 60 | — | **нет** | гитара | «лирически спокойная, даже lofi», «0 мрачности, просто грусть» — годится после победы, не для боя |
+| 01-A v7 баланс сил, низ вернулся | 1 | 60 | | | | v5.5 |
+| 01-A v7 то же на **v5** | 2 | 60 | | | | замер модели: v5 «чище» |
 | 01-B женский вокализ | | | | | | v5.5 |
 
 Выводы из прогонов живут в `suno-prompting.md` §Проверено на своих прогонах — здесь только сырое.
+
+---
+
+## История промптов 01-A — полные тексты, дельты и вердикты
+
+**Ведётся по требованию Макса (30.07.2026): «не просто удаляй старые, а записывай как меняли и почему
+на память в будущем».** Старые версии не удаляются никогда: промпт, который не сработал, — это
+измерение, а не мусор.
+
+### v1 — палитра оркестрового трейлера
+```
+epic fantasy battle, resolute and driving, 138 BPM, D minor, low string ostinato, taiko and timpani,
+soaring string melody, no vocals, played with forward momentum rather than menace
+```
+**Вердикт:** «музыка для боя в Риме, гладиаторская».
+**Виновники:** `low string ostinato`, `taiko and timpani`, `resolute and driving`.
+
+### v2 — верх и лад, но легато
+```
+neo-medieval fantasy battle, modal dorian melody, high wooden flute and solo violin carry the theme,
+shimmering bells, propulsive light percussion in the background, folk-song phrasing, lilting 6/8
+groove, 150 BPM, D dorian, no vocals, airborne rather than marching
+```
+**Дельта от v1:** верх вместо низа, `D dorian` вместо `D minor`, перкуссия фоном, 6/8, тайко в Exclude.
+**Вердикт:** «слишком много дудки», «долгий разгон», «не боевая, а просто баллада»; «скрипка лишняя вот
+вообще, слишком фэнтезийно стандартный вайб».
+**Виновники:** флейта и соло-скрипка как носители темы (тянут легато), `6/8`, слово `fantasy`.
+**Вариант 2-g:** то же + `electric guitar lead trading the melody with solo violin` → **гитара
+одобрена**: «оч круто, как добавка».
+
+### v3 — стаккато и драйв
+```
+epic anime battle score, staccato string section ostinato driving the rhythm, electric guitar singing
+over it, drum kit and shimmering bells, modal dorian harmony, 158 BPM, D dorian, no intro straight
+into the main groove, no vocals, urgent from the first bar
+```
+**Дельта от v2:** стаккато вместо легато, `anime` вместо `fantasy`, `no intro`, 158 BPM.
+**Вердикт:** «песня про мехов», «слишком активная», «много барабанов».
+**Виновники:** четыре указания на энергию разом (`driving` + `drum kit` + `urgent from the first bar` +
+158 BPM).
+
+### v4 — короткий промпт и арка
+```
+epic anime battle score, tender but powerful, lyrical melody over restrained percussion, warm strings
+with electric guitar lift, starts intimate and grows, 132 BPM, D dorian, no vocals
+```
+**Дельта от v3:** десять тегов → шесть, барабаны сдержанные, 132 BPM, арка.
+**Вердикт:** «слишком аниме, слишком добренько-яркие... это НЕ хихи, эпик, всё круто».
+**Виновники:** `epic` и `anime`.
+**Попутная готча:** сокращая промпт, я срезала `no vocals` — а тумблер «Инструментал» в той схеме был
+выключен ради тегов арки. Обе защиты исчезли одновременно; поймал Макс до генерации.
+
+### v5 — две краски
+```
+cinematic battle score, desperate and determined, melancholic undertone, tender but powerful, lyrical
+melody over restrained percussion, warm strings with electric guitar lift, starts intimate and grows,
+132 BPM, D dorian, no vocals
+```
+**Дельта от v4:** `epic anime` → `cinematic`, добавлены `desperate and determined` и
+`melancholic undertone`.
+**Вердикт:** «стало намного лучше», но «опять скрипка».
+**Виновник:** `solo violin` был вытеснен из Exclude ради борьбы с яркостью — пять слотов как латки.
+
+### v6 — канон состава, гитара лидом
+```
+cinematic battle score, desperate and determined, melancholic undertone, clean electric guitar lead
+with singing sustain and gentle vibrato, lyrical phrasing, warm string section and delicate piano
+underneath, restrained low drum pulse, spacious reverb, starts intimate and grows, 132 BPM, D dorian,
+no vocals
+```
+**Дельта от v5:** состав зафиксирован по ролям, Exclude стал константой.
+**Вердикт:** «не боевая вообще, скорее лирически спокойная, даже lofi... вообще 0 мрачности, просто
+грусть». Годится для трека после победы, не для боя.
+**Виновники:** **восемь** указаний на нежность против одного на бой; **нет низа** — отсюда грусть
+вместо мрачности; `starts intimate and grows` делает первую половину трека небоевой.
+
+### v7 — баланс сил, низ вернулся (текущая)
+```
+dark cinematic battle score, grim and desperate, clean electric guitar lead singing the melody, low
+cello ostinato underneath, insistent relentless pulse, tense strings, 140 BPM, D dorian, no vocals
+```
+**Дельта от v6:** тринадцать тегов → девять. Убраны `melancholic undertone`, `gentle vibrato`,
+`lyrical phrasing`, `delicate piano`, `spacious reverb`, `starts intimate and grows` — всё, что тянуло
+в мягкость. Добавлены `dark`, `low cello ostinato`, `insistent relentless pulse`, `tense strings`.
+Нежность оставлена **только в тембре лида**. 140 BPM.
+**Вердикт:** —
 | 01-C мрачно-героически | | | | | | |
 | 01-D Testard, камерная | | | | | | |
 | 01-E гитарный лид | | | | | | |

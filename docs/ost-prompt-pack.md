@@ -53,11 +53,12 @@ solo violin, metal riff, taiko, triumphant fanfare, j-pop
 Текст → **Инструментал** (тумблер), арка задаётся **словами в Стилях**.
 
 ```
-cinematic battle score, desperate and determined, melancholic undertone, clean electric guitar lead
-with singing sustain and gentle vibrato, lyrical phrasing, warm string section and delicate piano
-underneath, restrained low drum pulse, spacious reverb, starts intimate and grows, 132 BPM, D dorian,
-no vocals
+dark cinematic battle score, grim and desperate, clean electric guitar lead singing the melody, low
+cello ostinato underneath, insistent relentless pulse, tense strings, 140 BPM, D dorian, no vocals
 ```
+
+**Баланс сил:** пять указаний на мрак и движение против одного на нежность (сам лид). Арки внутри
+боевого трека нет намеренно — боевой луп играет с любого места и обязан быть боевым сразу.
 
 **Почему не тегами арки.** Теги живут в поле Lyrics, а его занимает тумблер «Инструментал»: включить
 оба нельзя. Отключить тумблер ради тегов — значит остаться без единого запрета голоса, и модель
