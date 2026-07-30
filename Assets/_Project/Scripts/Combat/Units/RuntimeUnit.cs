@@ -328,6 +328,20 @@ namespace Guildmaster.Combat
         /// <summary>Активные эффекты на юните. Мутирует только <c>EffectSystem</c> (через pending, не во время итерации).</summary>
         public readonly List<RuntimeEffect> ActiveEffects = new List<RuntimeEffect>();
 
+        /// <summary>
+        /// Что ушло с юнита В ЭТОМ ТИКЕ: определения снятых и истёкших эффектов вместе с номером тика.
+        /// Нужно тем, кто судит «был ли эффект на НАЧАЛО тика» — из <see cref="ActiveEffects"/> снятое
+        /// исчезает немедленно, и без следа читающий увидел бы разное в зависимости от места в обходе.
+        /// </summary>
+        /// <remarks>
+        /// Оборотная сторона того же закона видимости, что уже держат <c>EffectTagMask</c> и
+        /// <c>RuntimeEffect.StacksAtTickStart</c>: наложенное в этом тике не видно, а снятое — ещё видно.
+        /// Список чистит <c>EffectSystem.CommitPending</c> на границе тика; записи прошлых тиков в нём
+        /// не задерживаются, поэтому он короткий.
+        /// </remarks>
+        public readonly List<(Data.Definitions.EffectData Def, int Tick)> EffectsRemovedThisTick =
+            new List<(Data.Definitions.EffectData, int)>();
+
         /// <summary>Битовая маска тегов активных эффектов. Обновляется при add/remove — быстрый запрос для AI (Фаза 3) и диспела.</summary>
         public EffectTag EffectTagMask;
 

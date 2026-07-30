@@ -586,7 +586,9 @@ namespace Guildmaster.Combat
                 // Хил за уникальные яды считаем ДО расхода тега (иначе Dispel их снимет и уники обнулятся).
                 if (healsPerUnique)
                 {
-                    int uniques = CountUniqueTagged(u, tag);
+                    // Счёт по НАЧАЛУ тика, а не по живому списку: иначе чужой клинз, прошедший раньше по
+                    // обходу, обкрадывает детонацию, и зеркальные стороны расходятся (см. EffectSystem).
+                    int uniques = EffectSystem.CountUniqueTaggedAtTickStart(u, tag, ctx.CurrentTick);
                     if (uniques > 0) HealAlliesAround(caster, u, data, uniques, ctx);
                 }
 
@@ -596,27 +598,6 @@ namespace Guildmaster.Combat
                         u, DispelTargetPolarity.Any, tag, dispelPower: int.MaxValue, maxCount: 0,
                         source: caster, consumesOwnTrigger: true));
             }
-        }
-
-        /// <summary>Сколько РАЗНЫХ эффектов (по <c>Def</c>) с данным тегом висит на юните. Стаки одного эффекта = 1.</summary>
-        private static int CountUniqueTagged(RuntimeUnit unit, EffectTag tag)
-        {
-            int count = 0;
-            for (int i = 0; i < unit.ActiveEffects.Count; i++)
-            {
-                RuntimeEffect e = unit.ActiveEffects[i];
-                if (e.Def == null || (e.Def.Tags & tag) == 0) continue;
-
-                // Дубли по Def не считаем: ищем этот Def среди уже пройденных.
-                bool seen = false;
-                for (int j = 0; j < i; j++)
-                {
-                    RuntimeEffect prev = unit.ActiveEffects[j];
-                    if (prev.Def == e.Def && (prev.Def.Tags & tag) != 0) { seen = true; break; }
-                }
-                if (!seen) count++;
-            }
-            return count;
         }
 
         /// <summary>

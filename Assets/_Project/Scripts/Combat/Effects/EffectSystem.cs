@@ -533,6 +533,11 @@ namespace Guildmaster.Combat
 
             unit.ActiveEffects.Remove(eff);
 
+            // След для тех, кто судит по НАЧАЛУ тика: из списка эффект исчез сейчас же, но на начало
+            // тика он на юните был. Без следа детонация «Взрыва спор» зависела бы от того, успел ли
+            // чужой клинз пройти раньше по обходу, — и зеркальные стороны расходились ровно на этом.
+            unit.EffectsRemovedThisTick.Add((eff.Def, combat?.CurrentTick ?? 0));
+
             // Единый сигнал «эффект закончился» (носитель-получатель = источник эффекта, ретрансляция в
             // CombatSimulation). Реактивы фильтруют по тегам эффекта + команде юнита. Смещение (KnockUp)
             // именно так и разводит «конец отбрасывания врага → телепорт» vs «конец рывка себя → толчок».
@@ -599,7 +604,58 @@ namespace Guildmaster.Combat
             // тиком, и результат зависит от места юнита в обходе (см. RuntimeEffect.StacksAtTickStart).
             List<RuntimeEffect> effects = unit.ActiveEffects;
             for (int i = 0; i < effects.Count; i++) effects[i].CommitStackSnapshot();
+
+            // Тик кончился — снятое в нём больше не «было на начало тика».
+            unit.EffectsRemovedThisTick.Clear();
         }
+
+        /// <summary>
+        /// Сколько РАЗНЫХ эффектов (по <c>Def</c>) с тегом <paramref name="tag"/> висело на юните на НАЧАЛО
+        /// тика. Стаки одного эффекта считаются за один.
+        /// </summary>
+        /// <remarks>
+        /// Судить по живому списку нельзя: он меняется в течение тика, и «сколько ядов на цели» начинает
+        /// зависеть от места юнита в обходе. Зеркало ловило это как расхождение на тике 543 — левый Друид
+        /// детонировал отравленного врага и лечил своих, а к ходу правого чужой клинз уже снял яд, и его
+        /// «Взрыв спор» уходил в пустоту. Поэтому считаем то же, что видел бы наблюдатель на границе тика:
+        /// эффекты, легшие РАНЬШЕ этого тика, плюс снятые В ЭТОМ тике (на начало они были).
+        /// <para>Владелец правила один — иначе каждый потребитель заведёт свою версию «был ли эффект», и
+        /// они разойдутся.</para>
+        /// </remarks>
+        /// <param name="unit">Носитель эффектов.</param>
+        /// <param name="tag">Тег, по которому считаем (Poison у «Взрыва спор»).</param>
+        /// <param name="currentTick">Текущий тик боя.</param>
+        public static int CountUniqueTaggedAtTickStart(RuntimeUnit unit, EffectTag tag, int currentTick)
+        {
+            if (unit == null) return 0;
+
+            _uniqueBuffer.Clear();
+
+            List<RuntimeEffect> effects = unit.ActiveEffects;
+            for (int i = 0; i < effects.Count; i++)
+            {
+                RuntimeEffect e = effects[i];
+                if (e.Def == null || (e.Def.Tags & tag) == 0) continue;
+                if (e.AppliedTick == currentTick) continue;      // лёг в этом тике — на начало его не было
+                if (!_uniqueBuffer.Contains(e.Def)) _uniqueBuffer.Add(e.Def);
+            }
+
+            var removed = unit.EffectsRemovedThisTick;
+            for (int i = 0; i < removed.Count; i++)
+            {
+                if (removed[i].Tick != currentTick) continue;    // след прошлого тика — не наш
+                Data.Definitions.EffectData def = removed[i].Def;
+                if (def == null || (def.Tags & tag) == 0) continue;
+                if (!_uniqueBuffer.Contains(def)) _uniqueBuffer.Add(def);
+            }
+
+            return _uniqueBuffer.Count;
+        }
+
+        // Буфер уникальных Def для счёта выше: вызов идёт из тика, вложенности нет — вложенный вызов
+        // затёр бы список внешнего, а такого пути в бою не существует (счёт не будит реактивы).
+        private static readonly List<Data.Definitions.EffectData> _uniqueBuffer =
+            new List<Data.Definitions.EffectData>(8);
 
         private static void RebuildTagMask(RuntimeUnit unit)
         {

@@ -16,6 +16,52 @@ namespace Guildmaster.Tests.EditMode.Combat
     /// </summary>
     public sealed class PoisonBurnThornsSliceTests
     {
+        // --- Закон видимости: снятое в этом тике на начало тика ещё было ---
+
+        /// <summary>
+        /// Счёт «сколько разных ядов на цели» судит по НАЧАЛУ тика: яд, снятый чужим клинзом в этом же
+        /// тике, всё ещё считается, а яд, легший в этом тике, — ещё нет.
+        /// </summary>
+        /// <remarks>
+        /// Без этого исход зависел от места юнита в обходе, и зеркало расходилось: левый Друид детонировал
+        /// отравленного врага и лечил своих, а к ходу правого чужое очищение яд уже сняло — «Взрыв спор»
+        /// уходил в пустоту (тик 543 серии 5 <c>MirrorMatchTests</c>, найдено 2026-07-30). Инвариант живёт
+        /// между <c>EffectSystem</c> и <c>AbilitySystem</c>, поэтому держать его может только тест.
+        /// </remarks>
+        [Test]
+        public void UniqueTagCount_CountsWhatWasThereAtTickStart()
+        {
+            var sys = new EffectSystem();
+            var ctx = new MockCombatContext(effects: sys);
+            var victim = TestUnit.Make(team: 1);
+
+            EffectData poisonA = TestEffect.Make(baseDuration: 10f, tags: EffectTag.Poison);
+            EffectData poisonB = TestEffect.Make(baseDuration: 10f, tags: EffectTag.Poison);
+
+            // Оба яда легли РАНЬШЕ текущего тика — только так они «висели на начало».
+            sys.Apply(victim, poisonA, null, ctx);
+            sys.Apply(victim, poisonB, null, ctx);
+            ctx.AdvanceTick(victim);
+
+            int tick = ctx.CurrentTick;
+            Assert.AreEqual(2, EffectSystem.CountUniqueTaggedAtTickStart(victim, EffectTag.Poison, tick),
+                "Два разных яда — два уникальных");
+
+            // Клинз снимает один из них ЭТИМ тиком. На начало тика он был, поэтому счёт не меняется:
+            // иначе тот, кто ходит после клинза, увидел бы другую цель, чем тот, кто ходил до.
+            sys.Dispel(new DispelRequest(victim, DispelTargetPolarity.Any, EffectTag.Poison,
+                dispelPower: int.MaxValue, maxCount: 1), ctx);
+
+            Assert.AreEqual(1, victim.ActiveEffects.Count, "В живом списке яд уже снят");
+            Assert.AreEqual(2, EffectSystem.CountUniqueTaggedAtTickStart(victim, EffectTag.Poison, tick),
+                "Снятое в этом тике на начало тика ещё было — счёт тот же");
+
+            // Граница тика пройдена — снятое перестаёт считаться.
+            ctx.AdvanceTick(victim);
+            Assert.AreEqual(1, EffectSystem.CountUniqueTaggedAtTickStart(victim, EffectTag.Poison, ctx.CurrentTick),
+                "Со следующего тика остался один яд");
+        }
+
         // --- Древень: ответка по площади от БРОНИ, только на авто-атаку ---
 
         [Test]
@@ -65,7 +111,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             var attacker = TestUnit.Make(team: 1);
             ctx.UnitsInWorld.Add(attacker);
 
-            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_damageType", DamageType.Pierce).With("_cooldownSeconds", 0.5f).With("_damageType", DamageType.Pierce);
+            var comp = new ArmorThornsComponent().With("_armorRatio", 1f).With("_radius", 3f).With("_damageType", DamageType.Pierce).With("_cooldownSeconds", 0.5f);
             sys.Apply(treant, TestEffect.Make(baseDuration: -1f, components: comp), treant, ctx);
 
             var hit = new CombatEventData(CombatEvent.DamageTaken, attacker, treant, 100f, EffectTag.None,
@@ -273,7 +319,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             effects.Apply(enemy, poisonA, druid, ctx);
             effects.Apply(enemy, poisonA, druid, ctx); // второй стак того же яда — уник не добавляет
             effects.Apply(enemy, poisonB, druid, ctx);
-            EffectSystem.CommitPending(enemy);         // яды легли тиком раньше взрыва (закон видимости)
+            // Яды должны лечь ТИКОМ РАНЬШЕ взрыва: детонация судит по началу тика, поэтому одного
+            // CommitPending мало — он проявляет отложенное, но не переводит счётчик тика.
+            ctx.AdvanceTick(enemy);
 
             AbilityData burst = TestAbility.Make(
                 mode: AbilityTargetMode.AllEnemiesWithTag,
