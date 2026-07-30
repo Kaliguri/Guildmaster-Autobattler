@@ -43,8 +43,20 @@ namespace Guildmaster.Combat.Tape
         /// <summary>Сколько тиков замаха осталось — вместе с <see cref="WindupTicks"/> даёт прогресс.</summary>
         public readonly int WindupRemaining;
 
-        /// <summary>Тики до следующей авто-атаки: показ тянет по ним хвост восстановления.</summary>
+        /// <summary>Тики до следующей авто-атаки.</summary>
         public readonly int AttackCooldownTicks;
+
+        /// <summary>Полная длительность ХВОСТА-доигрыша в тиках (0 = хвоста нет) — знаменатель его прогресса.</summary>
+        /// <remarks>
+        /// Доигрыш обязан идти по СВОЕЙ длине, а не растягиваться до следующего замаха (решение Макса,
+        /// 30.07): медленный кит отыгрывает удар за свою секунду и ЖДЁТ, и именно эта пауза делает
+        /// «редкие тяжёлые удары» видимыми. Пока показ тянул хвост по кулдауну, Защитник бесконечно
+        /// медленно опускал меч все 0.83 сек паузы, и режима «атака с окном» на экране не существовало.
+        /// </remarks>
+        public readonly int RecoveryTicks;
+
+        /// <summary>Сколько тиков доигрыша осталось — вместе с <see cref="RecoveryTicks"/> даёт прогресс.</summary>
+        public readonly int RecoveryRemaining;
 
         /// <summary>Id текущей цели или <c>-1</c>: показ разворачивает юнита к ней. Ссылки на объект
         /// здесь нет намеренно — иначе через цель протёк бы живой сим.</summary>
@@ -96,7 +108,8 @@ namespace Guildmaster.Combat.Tape
             float size, AttackPhase phase, int windupTicks, int windupRemaining,
             int attackCooldownTicks, int targetId, EffectTag effectTagMask, bool isDead,
             float attackRange = 0f, bool canAct = true, bool isDisplaced = false, bool isEmpowered = false,
-            float sprintRamp = 0f, bool chargedSwing = false)
+            float sprintRamp = 0f, bool chargedSwing = false,
+            int recoveryTicks = 0, int recoveryRemaining = 0)
         {
             Id                  = id;
             Team                = team;
@@ -121,6 +134,8 @@ namespace Guildmaster.Combat.Tape
             IsEmpowered         = isEmpowered;
             SprintRamp          = sprintRamp;
             ChargedSwing        = chargedSwing;
+            RecoveryTicks       = recoveryTicks;
+            RecoveryRemaining   = recoveryRemaining;
         }
 
         /// <summary>Снять состояние с живого юнита. Единственное место, где сим встречается с лентой.</summary>
@@ -150,7 +165,9 @@ namespace Guildmaster.Combat.Tape
                 unit.DisplacedTicksRemaining > 0,
                 unit.EmpowerDamageMult > 0f,
                 unit.SprintRamp,
-                unit.ChargedSwing);
+                unit.ChargedSwing,
+                unit.RecoveryTicks,
+                unit.RecoveryRemaining);
         }
     }
 }

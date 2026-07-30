@@ -236,7 +236,6 @@ namespace Guildmaster.Presentation
 
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
         private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
-        private int   _recoveryGapTicks = 1;    // тиков от кадра контакта до следующего замаха (снап на конце замаха) — темп хвоста
 
         /// <summary>
         /// Тело юнита за швом. Резолвится лениво, а не в <c>Awake</c>, потому что силуэт для drag-призрака
@@ -744,17 +743,17 @@ namespace Guildmaster.Presentation
             switch (_attackPhase)
             {
                 case AttackAnimPhase.Windup:
-                    // Замах кончился (кадр контакта) → хвост. Окно до следующего удара = текущий кулдаун:
-                    // на старте замаха он равнялся интервалу, за замах убыл до «интервал − замах».
-                    _recoveryGapTicks = Mathf.Max(1, _snapshot.AttackCooldownTicks);
+                    // Замах кончился (кадр контакта) → хвост. Его длину знает сим (RecoveryTicks): она
+                    // равна доигрышу клипа, а не остатку интервала.
                     _attackPhase = AttackAnimPhase.Recovery;
                     break;
 
                 case AttackAnimPhase.Recovery:
-                    // Пока тикает кулдаун — цикл атаки жив, держим хвост (в непрерывной атаке следующий
-                    // замах придёт ровно на кулдаун 0 → бесшовный луп, без провала в Run). Кулдаун истёк
-                    // без нового замаха (цель ушла/вне радиуса) → атака кончилась, возврат к локомоции.
-                    if (_snapshot.AttackCooldownTicks <= 0) _attackPhase = AttackAnimPhase.None;
+                    // Доигрыш кончается вместе с сим-фазой, а не с кулдауном. Дальше юнит ЖДЁТ своего окна,
+                    // и показывать это должно ожидание, а не бесконечно длинный возврат меча. У быстрого
+                    // кита разницы нет: там доигрыш и занимает весь интервал, поэтому серия остаётся
+                    // непрерывной сама собой.
+                    if (_snapshot.Phase != AttackPhase.Recovery) _attackPhase = AttackAnimPhase.None;
                     break;
             }
         }
@@ -777,10 +776,14 @@ namespace Guildmaster.Presentation
                     }
                     else if (_attackPhase == AttackAnimPhase.Recovery && _hasState)
                     {
-                        // Хвост: скрабим [маркер..1] по прогрессу окна до следующего замаха — клип
-                        // доигрывает ровно к старту следующего удара, цикл лупится в темпе скорости атаки.
-                        float gapProgress = TickScrubProgress(_snapshot.AttackCooldownTicks, _recoveryGapTicks);
-                        float clipT = _attackMarkerNormalized + gapProgress * (1f - _attackMarkerNormalized);
+                        // Хвост: скрабим [маркер..1] по прогрессу СВОЕГО доигрыша, а не по окну до
+                        // следующего замаха. Растягивание отменено решением Макса (30.07): быстрые киты
+                        // бьют непрерывной серией сами собой (у них доигрыш и занимает весь интервал), а
+                        // медленные обязаны отыграть удар за своё время и ВСТАТЬ — пауза и есть то, что
+                        // делает «редкий тяжёлый удар» видимым. Пока хвост тянулся по кулдауну, Защитник
+                        // 0.83 сек бесконечно медленно опускал меч, и паузы на экране не существовало.
+                        float tail = TickScrubProgress(_snapshot.RecoveryRemaining, _snapshot.RecoveryTicks);
+                        float clipT = _attackMarkerNormalized + tail * (1f - _attackMarkerNormalized);
                         _animator.speed = 0f;
                         _animator.Play(SwingHash(), 0, clipT);
                     }
@@ -898,8 +901,7 @@ namespace Guildmaster.Presentation
                 }
                 else
                 {
-                    // Мгновенный удар (windup 0): сразу хвост, окно = весь интервал (кулдаун только что взведён).
-                    _recoveryGapTicks = Mathf.Max(1, _hasState ? _snapshot.AttackCooldownTicks : 1);
+                    // Мгновенный удар (windup 0): сразу хвост — его длину даёт сим (RecoveryTicks).
                     _attackPhase = AttackAnimPhase.Recovery;
                 }
             }
