@@ -397,6 +397,7 @@ namespace Guildmaster.Presentation
             _animator.enabled = true;
 
             ResolveAttackMarker();
+            RequireSockets();
 
             // Слой-надстройка щита. Его нет у покадрового бестиария — тогда гвардия просто не играется:
             // это отсутствие контента, а не ошибка разводки (см. ResolvedHash).
@@ -406,6 +407,32 @@ namespace Guildmaster.Presentation
             _animator.Play(IdleHash, 0, 0f);
             _animator.speed = 1f;
         }
+
+        /// <summary>
+        /// Все четыре сокета обязаны быть разведены у КАЖДОГО вида — включая те, что киту как будто не
+        /// нужны: точка выстрела у ближнего бойца тоже обязательна, пусть даже в нуле (требование Макса,
+        /// 30.07). Молчать нельзя: незаданный сокет тихо падает на позицию юнита, и цифры урона, искры,
+        /// зона щита и будущий доворот прицела начинают считаться от ног — а ищется это глазами по всему бою.
+        /// </summary>
+        /// <remarks>
+        /// Это не фолбэк на внешний отказ, а дефект разводки внутри нашего же контента — по политике
+        /// фолбэков такой случай обязан кричать, а не подставлять правдоподобное значение.
+        /// </remarks>
+        private void RequireSockets()
+        {
+            string missing = null;
+            if (_feetPoint == null) missing = Join(missing, "Ноги (_feetPoint)");
+            if (_headPoint == null) missing = Join(missing, "Голова (_headPoint)");
+            if (_shotPoint == null) missing = Join(missing, "Выстрел (_shotPoint)");
+            if (_hitPoint  == null) missing = Join(missing, "Попадание (_hitPoint)");
+
+            if (missing != null)
+                Debug.LogError($"[UnitView] {name}: не разведены точки — {missing}. Стандартные точки " +
+                               "обязаны быть у ВСЕХ видов, даже если кит ими не пользуется (ближнему — " +
+                               "точка выстрела хотя бы в нуле).", this);
+        }
+
+        private static string Join(string list, string item) => list == null ? item : list + ", " + item;
 
         /// <summary>
         /// Найти долю клипа атаки до кадра контакта. По ней скрабится замах, поэтому промах здесь двигает

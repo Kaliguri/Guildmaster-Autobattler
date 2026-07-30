@@ -76,6 +76,29 @@ namespace Guildmaster.AnimationLab.Editor
             /// </summary>
             public RigLayerBlend.Layer[] Layers;
 
+            /// <summary>
+            /// Префаб ВИДА (с `UnitView` и узлом `Points`). Задан — рисуем его, а риг ищем внутри; пусто —
+            /// голый риг профиля, и тогда боевых точек в кадре нет.
+            /// </summary>
+            /// <remarks>
+            /// Риг внутри вида нельзя искать первым попавшимся `Animator`: у скелетного вида первым лежит
+            /// ВЫКЛЮЧЕННЫЙ покадровый `Body`, под которым один спрайт и ни щита, ни меча (поймано 30.07).
+            /// Ищем по пути хвата из профиля — он есть только у настоящего рига.
+            /// </remarks>
+            public GameObject ViewPrefab;
+
+            /// <summary>
+            /// Имена узлов боевых точек — тех, что обязаны быть у каждого вида. Отсутствие любой это дефект
+            /// разводки, а не настройка: гизмо ругается и отмечает её как отсутствующую.
+            /// </summary>
+            public string[] SocketNames = { "Hit Point", "Head Point", "Feet Point", "Shot Point" };
+
+            /// <summary>
+            /// По какой точке судится ПЕРЕКРЫТИЕ: щит обязан накрывать её, потому что именно туда прилетает
+            /// удар (решение Макса, 30.07 — «точку центра атаки и должны перекрывать щитом»).
+            /// </summary>
+            public string CoverAimSocket = "Hit Point";
+
             public int Size = 900;
             public float Padding = 1.15f;
             public int CoverageSize = 256;
@@ -85,6 +108,18 @@ namespace Guildmaster.AnimationLab.Editor
 
         /// <summary>What the blade is doing at a moment: gathering, cutting, or putting itself back.</summary>
         public enum Phase { Windup, Strike, Recovery }
+
+        /// <summary>
+        /// Боевая точка вида в кадре гизмо. `Missing` = у вида её нет — и это ДЕФЕКТ, а не «нет данных»:
+        /// стандартные точки обязаны быть у всех, даже те, которыми кит не пользуется (ближнему бойцу
+        /// точка выстрела нужна хотя бы в нуле).
+        /// </summary>
+        public sealed class Socket
+        {
+            public string Name;
+            public Vector3 Position;
+            public bool Missing;
+        }
 
         /// <summary>
         /// The other item in the picture. Not a second <see cref="Result"/>: it carries no phases and no
@@ -117,6 +152,15 @@ namespace Guildmaster.AnimationLab.Editor
             public float TipSpeed;
             /// <summary>Share of the body silhouette hidden behind the cover item, 0..1. NaN = not measured.</summary>
             public float Coverage = float.NaN;
+
+            /// <summary>
+            /// Накрывает ли ПЛОЩАДЬ предмета точку удара (`Hit Point`) в этот момент. Главный вопрос к
+            /// блоку: щит обязан стоять там, куда прилетит, а не там, где рука его удобно держит.
+            /// </summary>
+            public bool CoversAim;
+
+            /// <summary>Расстояние от центра площади предмета до точки удара, мировые ед. NaN = не мерялось.</summary>
+            public float AimOffset = float.NaN;
 
             /// <summary>
             /// Доля закрытой ПЕРЕДНЕЙ половины силуэта — той, что обращена к врагу. NaN = не мерялось.
@@ -163,6 +207,9 @@ namespace Guildmaster.AnimationLab.Editor
             public float StrikeStart;
             public float StrikeEnd;
 
+            /// <summary>Боевые точки вида в кадре; у отсутствующих взведён <see cref="Socket.Missing"/>.</summary>
+            public List<Socket> Sockets = new List<Socket>();
+
             public override string ToString()
             {
                 var text = new StringBuilder();
@@ -206,6 +253,35 @@ namespace Guildmaster.AnimationLab.Editor
                     if (frontMax > 0f || frontMin <= 1f)
                         text.AppendLine($"ENEMY SIDE covered: min {frontMin:P0} at {frontMinTime:F2}s, max {frontMax:P0}" +
                                         (float.IsNaN(frontAtContact) ? "" : $", at contact {frontAtContact:P0}"));
+                }
+
+                // Точка удара — главный критерий блока: щит обязан стоять там, куда прилетит.
+                int aimSamples = 0, aimCovered = 0;
+                float aimOffsetAtContact = float.NaN;
+                bool coversAtContact = false;
+                foreach (var s in Samples)
+                {
+                    if (float.IsNaN(s.AimOffset)) continue;
+                    aimSamples++;
+                    if (s.CoversAim) aimCovered++;
+                    if (ContactTime >= 0f && Mathf.Abs(s.Time - ContactTime) < 0.02f)
+                    {
+                        aimOffsetAtContact = s.AimOffset;
+                        coversAtContact = s.CoversAim;
+                    }
+                }
+                if (aimSamples > 0)
+                {
+                    text.AppendLine($"AIM POINT covered: {aimCovered / (float)aimSamples:P0} of the clip" +
+                                    (float.IsNaN(aimOffsetAtContact)
+                                        ? ""
+                                        : $"; at contact {(coversAtContact ? "YES" : "NO")}, centre off by {aimOffsetAtContact:F3}"));
+                }
+
+                foreach (var s in Sockets)
+                {
+                    if (!s.Missing) continue;
+                    text.AppendLine($"!! SOCKET MISSING: {s.Name} — точка обязана быть у каждого вида");
                 }
 
                 text.AppendLine();
@@ -253,6 +329,44 @@ namespace Guildmaster.AnimationLab.Editor
         static readonly Color CompanionPath = new Color(0.55f, 0.85f, 0.70f, 0.55f);
         static readonly Color CompanionNow  = new Color(0.75f, 1.00f, 0.85f);
 
+        // Риг ищется по пути хвата, а НЕ по первому Animator: у скелетного вида первым лежит выключенный
+        // покадровый двойник, под которым ни щита, ни меча.
+        static GameObject FindRigIn(GameObject view, string gripPath)
+        {
+            foreach (var t in view.GetComponentsInChildren<Transform>(includeInactive: true))
+                if (t.Find(gripPath) != null) return t.gameObject;
+            return null;
+        }
+
+        /// <summary>
+        /// Найти боевые точки вида и ГРОМКО сказать о каждой недостающей. Молчаливый пропуск здесь стоит
+        /// дороже всего: незаданная точка тихо падает на позицию юнита, и перекрытие щитом, цифры урона и
+        /// будущий доворот прицела начинают считаться от ног.
+        /// </summary>
+        static List<Socket> ResolveSockets(GameObject view, Options options)
+        {
+            var found = new List<Socket>();
+            if (options.SocketNames == null || options.SocketNames.Length == 0) return found;
+
+            var byName = new Dictionary<string, Transform>();
+            foreach (var t in view.GetComponentsInChildren<Transform>(includeInactive: true))
+                if (!byName.ContainsKey(t.name)) byName[t.name] = t;
+
+            string missing = null;
+            foreach (string name in options.SocketNames)
+            {
+                bool has = byName.TryGetValue(name, out Transform node);
+                found.Add(new Socket { Name = name, Position = has ? node.position : Vector3.zero, Missing = !has });
+                if (!has) missing = missing == null ? name : missing + ", " + name;
+            }
+
+            if (missing != null)
+                Debug.LogError($"[RigSweep] У '{view.name}' не разведены точки: {missing}. " +
+                               "Стандартные точки обязаны быть у ВСЕХ видов, даже неиспользуемые китом " +
+                               "(ближнему — точка выстрела хотя бы в нуле).", view);
+            return found;
+        }
+
         // Один вход для всех трёх проходов рендера: геометрия, кадрирование и подложка обязаны смотреть на
         // одну и ту же позу, иначе дуга будет посчитана по одной, а нарисована поверх другой.
         static void SamplePose(GameObject unit, AnimationClip clip, float time, Options options)
@@ -278,18 +392,36 @@ namespace Guildmaster.AnimationLab.Editor
             result.ContactTime = ContactTimeOf(clip);
 
             var scene = EditorSceneManager.NewPreviewScene();
-            GameObject unit = null, camGo = null;
+            GameObject unit = null, spawned = null, camGo = null;
             RenderTexture rt = null, coverRt = null;
             try
             {
-                unit = (GameObject)PrefabUtility.InstantiatePrefab(profile.Rig);
-                SceneManager.MoveGameObjectToScene(unit, scene);
-                unit.transform.position = Vector3.zero;
-                unit.transform.rotation = Quaternion.identity;
+                // Вид, а не голый риг, когда он задан: боевые точки (`Hit Point` и родня) живут в НЁМ,
+                // риг сидит внутри со своим масштабом, и мерить одно относительно другого можно только
+                // в общей системе координат.
+                spawned = (GameObject)PrefabUtility.InstantiatePrefab(
+                    options.ViewPrefab != null ? options.ViewPrefab : profile.Rig);
+                SceneManager.MoveGameObjectToScene(spawned, scene);
+                spawned.transform.position = Vector3.zero;
+                spawned.transform.rotation = Quaternion.identity;
+
+                unit = options.ViewPrefab != null ? FindRigIn(spawned, item.GripPath) : spawned;
+                if (unit == null)
+                    throw new System.InvalidOperationException(
+                        $"В виде '{options.ViewPrefab.name}' не нашёлся риг с путём '{item.GripPath}'. " +
+                        "Искать по первому Animator НЕЛЬЗЯ — им может оказаться выключенный покадровый.");
                 var root = unit.transform;
 
                 var grip = root.Find(item.GripPath);
                 if (grip == null) throw new System.InvalidOperationException($"Grip path not found: {item.GripPath}");
+
+                result.Sockets = ResolveSockets(spawned, options);
+
+                // Точка, по которой судится перекрытие. Её отсутствие ResolveSockets уже прокричал —
+                // здесь просто нечего мерить.
+                Socket aim = null;
+                foreach (var s in result.Sockets)
+                    if (s.Name == options.CoverAimSocket && !s.Missing) aim = s;
 
                 // Спрайт предмета: по нему строится ПЛОЩАДЬ зоны. Без него остаётся только линия хвата.
                 Transform itemNode = string.IsNullOrEmpty(item.ItemPath) ? null : root.Find(item.ItemPath);
@@ -345,6 +477,16 @@ namespace Guildmaster.AnimationLab.Editor
                         IsKey = IsKeyTime(keyTimes, times[i], 0.5f / (frameRate * Mathf.Max(1, options.SamplesPerFrame))),
                         Quad = SpriteQuad(itemSprite)
                     };
+
+                    // Главный вопрос к блоку: стоит ли предмет ТАМ, КУДА ПРИЛЕТИТ. Меряем по площади
+                    // спрайта, а не по отрезку хвата: щит — плоскость, и «накрыл» — это про площадь.
+                    if (aim != null && sample.Quad != null && sample.Quad.Length == 4)
+                    {
+                        sample.CoversAim = QuadContains(sample.Quad, aim.Position);
+                        Vector3 centre = (sample.Quad[0] + sample.Quad[1] + sample.Quad[2] + sample.Quad[3]) * 0.25f;
+                        sample.AimOffset = Vector2.Distance(centre, aim.Position);
+                    }
+
                     result.Samples.Add(sample);
 
                     foreach (var r in renderers)
@@ -444,7 +586,9 @@ namespace Guildmaster.AnimationLab.Editor
             finally
             {
                 if (camGo != null) Object.DestroyImmediate(camGo);
-                if (unit != null) Object.DestroyImmediate(unit);
+                // Удаляем то, что ИНСТАНЦИРОВАЛИ: при рендере по виду `unit` — узел внутри него, и снос
+                // одного рига оставил бы в превью-сцене висеть весь остальной вид.
+                if (spawned != null) Object.DestroyImmediate(spawned);
                 if (rt != null) { rt.Release(); Object.DestroyImmediate(rt); }
                 if (coverRt != null) { coverRt.Release(); Object.DestroyImmediate(coverRt); }
                 EditorSceneManager.ClosePreviewScene(scene);
@@ -562,6 +706,25 @@ namespace Guildmaster.AnimationLab.Editor
         /// поэтому наклон предмета сохраняется: мировой AABB рендерера дал бы прямоугольник по осям экрана,
         /// то есть соврал бы ровно в том, ради чего гизмо и рисуется.
         /// </summary>
+        /// <summary>
+        /// Лежит ли точка внутри четырёхугольника спрайта. Считаем по знакам векторных произведений на
+        /// всех четырёх рёбрах — по НАКЛОНЁННОМУ квадрату, а не по его AABB: щит в блоке почти всегда
+        /// повёрнут, и охватывающий прямоугольник соврал бы ровно в наклоне, ради которого всё и меряется.
+        /// </summary>
+        static bool QuadContains(Vector3[] quad, Vector3 point)
+        {
+            bool positive = false, negative = false;
+            for (int i = 0; i < 4; i++)
+            {
+                Vector2 a = quad[i], b = quad[(i + 1) % 4];
+                float cross = (b.x - a.x) * (point.y - a.y) - (b.y - a.y) * (point.x - a.x);
+                if (cross > 0f) positive = true;
+                if (cross < 0f) negative = true;
+                if (positive && negative) return false;
+            }
+            return true;
+        }
+
         static Vector3[] SpriteQuad(SpriteRenderer sprite)
         {
             if (sprite == null || sprite.sprite == null) return null;
