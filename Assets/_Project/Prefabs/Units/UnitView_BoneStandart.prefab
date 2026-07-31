@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: _group
       value: 
       objectReference: {fileID: 1518421295443720580}
+    - target: {fileID: 2147224240032170120, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
+      propertyPath: _shieldPart
+      value: 
+      objectReference: {fileID: 5746887161847918236}
     - target: {fileID: 6266209993068745163, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.4808364
@@ -84,9 +88,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a6bf39f70d384448bbf962f7f1a5fbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Body.SkeletalBodyVisual
---- !u!212 &3961760286532885687 stripped
+--- !u!212 &5746887161847918236 stripped
 SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 4074818886351949569, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4735357580786269482, guid: 35f963611a99c254286daf71ceff8a2e, type: 3}
   m_PrefabInstance: {fileID: 1042114705172550582}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6377194947780067965 stripped
@@ -170,7 +174,7 @@ PrefabInstance:
     - target: {fileID: 4564468086045929909, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
       propertyPath: _sprite
       value: 
-      objectReference: {fileID: 3961760286532885687}
+      objectReference: {fileID: 0}
     - target: {fileID: 4564468086045929909, guid: b4ce48cbac4d99b49a8c00ae3b721596, type: 3}
       propertyPath: _animator
       value: 

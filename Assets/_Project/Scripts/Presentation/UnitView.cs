@@ -183,6 +183,9 @@ namespace Guildmaster.Presentation
         private float        _flashPeak = 1f;            // пик текущей вспышки: удар бьёт в полную, лечение мягче
         private Vector3      _baseSpriteScale = Vector3.one; // масштаб узла сплющивания до эффекта
         private Transform    _squashTarget;              // узел, который сплющиваем (выше Animator, чтобы не затирался)
+        private float        _blockDimWeight;            // 0..1 — вес затемнения тела на блоке (твин)
+        private Color        _blockShieldColor = Color.white; // цвет щита в момент блока (палитра защиты)
+        private MotionHandle _blockDimHandle;
         private float        _hitSquashWeight;           // 0..1 — вес hit-squash (твин)
         private float        _flipSquashWeight;          // 0..1 — вес facing-flip squash
         private float        _acquireSquashWeight;       // 0..1 — вес target-acquire twitch
@@ -1253,6 +1256,16 @@ namespace Guildmaster.Presentation
             bool stealthed = _hasState && (_snapshot.EffectTagMask & EffectTag.Stealth) != 0;
             tint.a = stealthed ? 0.4f : 1f;
 
+            // Блок читается ЗАТЕМНЕНИЕМ тела, а не подсветкой щита: пересвет спорил бы со вспышкой удара,
+            // а тень вокруг оставляет щит единственным светлым местом кадра. Щит при этом держит свой цвет.
+            Color shieldTint = tint;
+            if (_blockDimWeight > 0.0001f && _feel != null)
+            {
+                float dim = Mathf.Lerp(1f, _feel.BlockBodyDim, _blockDimWeight);
+                tint = new Color(tint.r * dim, tint.g * dim, tint.b * dim, tint.a);
+                shieldTint = Color.Lerp(shieldTint, _blockShieldColor, _blockDimWeight);
+            }
+
             var state = new Body.BodyVisualState(
                 tint,
                 _flashAmount, _activeFlashColor,
@@ -1263,7 +1276,7 @@ namespace Guildmaster.Presentation
                 _feel != null ? _feel.HologramScanAmount : 0f,
                 _outlineAmount, _outlineColor);
 
-            Body.Apply(state);
+            Body.Apply(state.WithShieldTint(shieldTint));
         }
 
         /// <summary>
@@ -1284,6 +1297,29 @@ namespace Guildmaster.Presentation
             PlayHitNudge(nudgeDir);
             if (_feel != null && _feel.EnableHpBarPunch && _healthBar != null)
                 _healthBar.Punch(_feel.HpBarPunchAmount, _feel.HpBarPunchDuration);
+        }
+
+        /// <summary>
+        /// Щит поглотил удар: тело на мгновение притухает, а часть-щит остаётся в цвете защиты. Так блок
+        /// читается контрастом, а не пересветом — светлее уже некуда, вспышка удара упёрта в потолок.
+        /// </summary>
+        /// <param name="shieldColor">Цвет защиты из палитры; тело в этот момент уходит в тень.</param>
+        public void OnShieldAbsorbed(Color shieldColor)
+        {
+            if (_feel == null || !_feel.EnableBlockDim) return;
+            if (Body == null) return;
+
+            _blockShieldColor = shieldColor;
+            if (_blockDimHandle.IsActive()) _blockDimHandle.Cancel();
+
+            float seconds = Mathf.Max(0.02f, _feel.BlockDimSeconds);
+            _blockDimWeight = 1f;
+            // Время НЕ масштабируется: блок случается в hitstop, и на игровом времени тень бы там застыла.
+            _blockDimHandle = LMotion.Create(1f, 0f, seconds)
+                .WithEase(Ease.OutQuad)
+                .WithScheduler(MotionScheduler.UpdateIgnoreTimeScale)
+                .Bind(this, static (v, self) => self._blockDimWeight = v)
+                .AddTo(gameObject);
         }
 
         /// <summary>

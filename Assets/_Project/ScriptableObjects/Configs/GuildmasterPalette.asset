@@ -38,7 +38,7 @@ MonoBehaviour:
   - Token: --gm-color-border-subtle
     Color: {r: 0.49411765, g: 0.40784314, b: 0.2901961, a: 1}
   - Token: --gm-color-combat-block-flash
-    Color: {r: 1, g: 0.9490196, b: 0.54901963, a: 1}
+    Color: {r: 1, g: 0.8, b: 0.2, a: 1}
   - Token: --gm-color-combat-flash-dark
     Color: {r: 0.54901963, g: 0.34901962, b: 0.8509804, a: 1}
   - Token: --gm-color-combat-flash-light
