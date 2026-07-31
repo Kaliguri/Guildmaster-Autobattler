@@ -155,7 +155,7 @@ MonoBehaviour:
   _worldUi: {fileID: 8019541566543569921}
   _runUnitsPerSecond: 1.5
   _sprintUnitsPerSecond: 0
-  _attackClip: {fileID: 0}
+  _poseBlendSeconds: 0.13
   _onHitFeedback:
     m_PersistentCalls:
       m_Calls: []
@@ -260,7 +260,7 @@ SpriteRenderer:
   m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!1 &5585378942455852698
 GameObject:
@@ -448,6 +448,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4324052607940970878}
   - component: {fileID: 642148395158044877}
+  - component: {fileID: 7898112791441038802}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -485,6 +486,19 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &7898112791441038802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8019541566543569921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f68ee0afc646074ca2ef28e55b40338, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.ConstantScreenScale
+  _referenceOrthographicSize: 5
 --- !u!1 &8712704910842961996
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,10 @@ namespace Guildmaster.Presentation
     /// Размер/шрифт настраиваются на TMP в префабе; <b>цвет задаёт вызывающий</b>
     /// (<see cref="CombatPresenter"/> знает семантику: урон/хил), тайминг всплытия/затухания — поля ниже.
     /// Чисто презентация: сим не трогает.
+    /// <para><b>Экранный размер цифры постоянный</b> — зум камеры на неё не влияет
+    /// (решение <c>2026-07-31/69</c>): вся кинематика домножается на <see cref="ConstantScreenScale.ZoomFactor"/>.
+    /// Компонент <see cref="ConstantScreenScale"/> сюда вешать нельзя — он писал бы <c>localScale</c>
+    /// поверх поп-масштаба; здесь тот же множитель применяется изнутри.</para>
     /// </summary>
     [RequireComponent(typeof(TMP_Text))]
     public sealed class FloatingText : MonoBehaviour
@@ -29,6 +33,11 @@ namespace Guildmaster.Presentation
         [Tooltip("Боковой разлёт за жизнь, мировые ед. (± случайно) — чтобы совпавшие цифры не слипались. 0 = строго вверх.")]
         [SerializeField] private float _spreadX = 0.35f;
 
+        [Header("Компенсация зума (постоянный экранный размер)")]
+        [Tooltip("Опорный орто-размер камеры: при нём цифра видна в свой АВТОРСКИЙ размер и проходит " +
+                 "свой авторский путь. 0 = компенсации нет (цифра живёт в мире и ужимается с зумом).")]
+        [SerializeField] private float _referenceOrthographicSize = 5f;
+
         private TMP_Text _text;
         private Vector3  _startPosition;
         private Color    _baseColor;
@@ -40,6 +49,7 @@ namespace Guildmaster.Presentation
         private Vector3 _targetScale = Vector3.one; // база × множитель величины удара (куда оседает поп)
         private float   _driftX;                    // боковой разлёт этого экземпляра
         private float   _arcGravity;                // гравитация дуги (0 = строго вверх); задаёт презентер из feel
+        private Camera  _cam;                       // выход Cinemachine-Brain; для компенсации зума
 
         /// <summary>Заспавнить и проиграть цифру из префаба над мировой точкой. Префаб должен нести <see cref="FloatingText"/>.</summary>
         public static void Spawn(GameObject prefab, Transform parent, Vector3 worldPosition, string text, Color color)
@@ -85,8 +95,20 @@ namespace Guildmaster.Presentation
             _targetScale   = _baseScale * Mathf.Max(0.01f, sizeScale);
             _driftX        = _spreadX > 0f ? Random.Range(-_spreadX, _spreadX) : 0f;
 
-            // Старт попа с нуля (вырастает); без попа — сразу целевой.
-            transform.localScale = _popDuration > 0f ? Vector3.zero : _targetScale;
+            // Старт попа с нуля (вырастает); без попа — сразу целевой (с текущей компенсацией зума).
+            transform.localScale = _popDuration > 0f ? Vector3.zero : _targetScale * ZoomFactor();
+        }
+
+        /// <summary>
+        /// Множитель компенсации зума (формула — один владелец, <see cref="ConstantScreenScale"/>).
+        /// Домножается на ВСЮ кинематику цифры — масштаб, высоту всплытия, разлёт, дугу: иначе на
+        /// отдалении крупная цифра почти не двигалась бы, а вблизи улетала за экран.
+        /// </summary>
+        private float ZoomFactor()
+        {
+            if (_referenceOrthographicSize <= 0f) return 1f;
+            if (_cam == null) _cam = Camera.main;
+            return ConstantScreenScale.ZoomFactor(_cam, _referenceOrthographicSize);
         }
 
         private void Update()
@@ -94,19 +116,21 @@ namespace Guildmaster.Presentation
             if (_text == null) return;
 
             _elapsed += Time.deltaTime;
-            float t = _duration > 0f ? Mathf.Clamp01(_elapsed / _duration) : 1f;
+            float t    = _duration > 0f ? Mathf.Clamp01(_elapsed / _duration) : 1f;
+            float zoom = ZoomFactor();
 
             // Поп-масштаб на старте (OutBack — вырастает выше цели и оседает); затем держим целевой.
             if (_popDuration > 0f)
             {
                 float p = Mathf.Clamp01(_elapsed / _popDuration);
-                transform.localScale = Vector3.LerpUnclamped(Vector3.zero, _targetScale, EaseOutBack(p, _popOvershoot));
+                transform.localScale = Vector3.LerpUnclamped(Vector3.zero, _targetScale * zoom, EaseOutBack(p, _popOvershoot));
             }
+            else transform.localScale = _targetScale * zoom;
 
             // Всплытие с замедлением (ease-out cubic) + боковой разлёт + опц. гравитационная дуга.
             float eased = 1f - Mathf.Pow(1f - t, 3f);
-            float y = _floatHeight * eased - 0.5f * _arcGravity * t * t;
-            transform.position = _startPosition + new Vector3(_driftX * eased, y, 0f);
+            float y = (_floatHeight * eased - 0.5f * _arcGravity * t * t) * zoom;
+            transform.position = _startPosition + new Vector3(_driftX * eased * zoom, y, 0f);
 
             // Затухание после _fadeStart.
             Color c = _baseColor;

@@ -181,3 +181,4 @@ MonoBehaviour:
   _popDuration: 0.14
   _popOvershoot: 0.9
   _spreadX: 0.35
+  _referenceOrthographicSize: 5
