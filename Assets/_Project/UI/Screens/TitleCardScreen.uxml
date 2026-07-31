@@ -10,12 +10,15 @@
         <ui:Label name="titlecard-hint" text="" class="gm-boot__hint" picking-mode="Ignore" />
 
         <ui:VisualElement name="boot-attrib" class="gm-boot__attrib" picking-mode="Ignore">
-            <ui:VisualElement class="gm-boot__attrib-icon" picking-mode="Ignore" />
-            <ui:Label text="ALEBARDIUM" class="gm-boot__attrib-item" />
-            <ui:Label text="·" class="gm-boot__attrib-sep" />
-            <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--unity" picking-mode="Ignore" />
-            <ui:Label text="·" class="gm-boot__attrib-sep" />
-            <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--fmod" picking-mode="Ignore" />
+            <ui:VisualElement class="gm-boot__attrib-row" picking-mode="Ignore">
+                <ui:VisualElement class="gm-boot__attrib-icon" picking-mode="Ignore" />
+                <ui:Label text="Alebardium" class="gm-boot__attrib-item" />
+                <ui:Label text="·" class="gm-boot__attrib-sep" />
+                <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--unity" picking-mode="Ignore" />
+                <ui:Label text="·" class="gm-boot__attrib-sep" />
+                <ui:VisualElement class="gm-boot__attrib-logo gm-boot__attrib-logo--fmod" picking-mode="Ignore" />
+            </ui:VisualElement>
+            <ui:Label name="boot-legal" text="" class="gm-boot__legal" />
         </ui:VisualElement>
 
         <ui:VisualElement name="boot-loading" class="gm-boot__loading" picking-mode="Ignore">

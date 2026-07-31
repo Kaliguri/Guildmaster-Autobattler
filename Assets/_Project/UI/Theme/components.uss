@@ -1434,31 +1434,64 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: var(--gm-space-5);
+    bottom: var(--gm-space-4);
+    flex-direction: column;
+    align-items: center;
+}
+
+.gm-boot__attrib-row {
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
+/* В ряду атрибуций наш бренд идёт МОНОЛАЙН-ЗНАКОМ (алебарда в мазке косы), а не цветной печатью
+   приложения: рядом с чужими знаками, которые обязаны быть нейтральными, латунная иконка читалась
+   не «нашим брендом», а сбоем — единственным цветным пятном в служебной строке. Печать
+   CompanyLogo_Alebardium остаётся за пределами этой строки (иконка приложения, витрины). */
 .gm-boot__attrib-icon {
-    width: 30px;
-    height: 30px;
-    margin-right: var(--gm-space-1);
+    width: 40px;
+    height: 40px;
+    margin-right: var(--gm-space-2);
     -unity-background-scale-mode: scale-to-fit;
-    background-image: url("../../Art/Brand/CompanyLogo_Alebardium.png");
+    -unity-background-image-tint-color: var(--gm-color-brand-attrib);
+    background-image: url("../../Art/Brand/Mark_Alebardium_Mono.png");
+    opacity: 0.85;
 }
 
+/* Имя студии набрано ЖИРНЫМ САНСОМ В MIXED CASE, и оба решения — из замера соседей, а не из вкуса.
+   Вес: медианная толщина штриха к высоте у fmod 0.222, у вордмарка Unity 0.121; Fira Bold даёт ровно
+   0.222, а прежняя Regular — 0.111, из-за чего наша подпись выглядела выцветшей рядом с fmod.
+   Регистр: `Unity` набран mixed case, `fmod` — строчными, поэтому капс был единственным криком в ряду.
+   Трекинг 0.5px = 2% кегля: капс требует 5–12%, строчные — почти ничего, а прежние 3px (14%!)
+   разрывали слово на отдельные литеры. Bold берётся файлом SDF, синтетический вес снят. */
 .gm-boot__attrib-item {
+    -unity-font-definition: url("../Fonts/FiraSans-Bold SDF.asset");
+    -unity-font-style: normal;
+    font-size: var(--gm-font-sm);
+    color: var(--gm-color-brand-attrib);
+    letter-spacing: 0.5px;
+    opacity: 0.85;
+}
+
+/* Строка прав. Слова «FMOD» и «Firelight Technologies Pty Ltd.» обязаны быть В ИГРЕ по Clause 3
+   лицензии FMOD (Assets/Plugins/FMOD/LICENSE.TXT) — логотип её НЕ закрывает, поэтому удалять эту
+   строку нельзя, даже если она мешает композиции. Копирайт-нотис рядом — уже наша перестраховка.
+   Тише всего в ряду намеренно: обязана присутствовать, а не притягивать взгляд. */
+.gm-boot__legal {
     font-size: var(--gm-font-xs);
-    color: var(--gm-color-text-muted);
-    letter-spacing: 2px;
+    color: var(--gm-color-brand-attrib);
+    margin-top: var(--gm-space-1);
+    -unity-text-align: middle-center;
+    opacity: 0.35;
 }
 
 .gm-boot__attrib-sep {
-    font-size: var(--gm-font-xs);
-    color: var(--gm-color-disabled-text);
-    margin-left: var(--gm-space-2);
-    margin-right: var(--gm-space-2);
+    font-size: var(--gm-font-sm);
+    color: var(--gm-color-brand-attrib);
+    margin-left: var(--gm-space-3);
+    margin-right: var(--gm-space-3);
+    opacity: 0.5;
 }
 
 /* Чужие бренды в ряду атрибуций идут КАРТИНКОЙ, а не латунным текстом, и это юридическое, а не
@@ -1469,21 +1502,21 @@
    Приглушение — тинтом и прозрачностью, форма логотипов не трогается. */
 .gm-boot__attrib-logo {
     -unity-background-scale-mode: scale-to-fit;
-    -unity-background-image-tint-color: rgb(190, 190, 190);
-    opacity: 0.75;
+    -unity-background-image-tint-color: var(--gm-color-brand-attrib);
+    opacity: 0.85;
 }
 
 /* Размеры заданы по оптическому весу, а не по формуле: у «MADE WITH Unity» знак крупнее вордмарка,
    у fmod вордмарк во всю высоту — при равной height fmod выглядел бы больше соседа. */
 .gm-boot__attrib-logo--unity {
-    width: 93px;
-    height: 22px;
+    width: 140px;
+    height: 33px;
     background-image: url("../../Art/Brand/Logo_MadeWithUnity_White.png");
 }
 
 .gm-boot__attrib-logo--fmod {
-    width: 69px;
-    height: 18px;
+    width: 104px;
+    height: 27px;
     background-image: url("../../Art/Brand/Logo_FMOD_White.png");
 }
 

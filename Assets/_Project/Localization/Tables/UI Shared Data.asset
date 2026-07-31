@@ -435,6 +435,10 @@ MonoBehaviour:
     m_Key: ui.mainmenu.proving_grounds
     m_Metadata:
       m_Items: []
+  - m_Id: 7495534342561792
+    m_Key: ui.boot.legal
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

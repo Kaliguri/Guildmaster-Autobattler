@@ -37,6 +37,7 @@ namespace Guildmaster.UI
             var title = root.Q<Label>("titlecard-title");
             var hint = root.Q<Label>("titlecard-hint");
             var loading = root.Q<Label>("boot-loading-label");
+            var legal = root.Q<Label>("boot-legal");
             var spinner = root.Q<VisualElement>("boot-spinner");
 
             if (sealEl != null && seal != null)
@@ -45,6 +46,12 @@ namespace Guildmaster.UI
             if (title != null) title.text = L("ui.boot.title", "Happy Guildmasters");
             if (hint != null) hint.text = L("ui.boot.hint", "нажмите любую клавишу");
             if (loading != null) loading.text = L("ui.boot.loading", "Загрузка");
+            // Строка прав: «FMOD» и «Firelight Technologies Pty Ltd.» — требование Clause 3 их лицензии,
+            // логотип в ряду его не закрывает. Текст один и тот же в EN и RU: имена компаний и год не
+            // переводятся, но ключ всё равно свой — иначе строку нельзя тронуть, не тронув код.
+            if (legal != null)
+                legal.text = L("ui.boot.legal",
+                    "© 2026 Alebardium  ·  FMOD Studio by Firelight Technologies Pty Ltd.");
 
             // Спиннер: непрерывное вращение знака. Чистая презентация — крутится, пока экран на виду;
             // schedule сам умирает вместе с элементом при закрытии панели.

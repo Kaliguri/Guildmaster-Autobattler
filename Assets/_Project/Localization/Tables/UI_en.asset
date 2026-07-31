@@ -294,6 +294,11 @@ MonoBehaviour:
     m_Localized: '-'
     m_Metadata:
       m_Items: []
+  - m_Id: 7495534342561792
+    m_Localized: "\xA9 2026 Alebardium  \xB7  FMOD Studio by Firelight Technologies
+      Pty Ltd."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
