@@ -302,6 +302,7 @@
     <nav class="toc" aria-label="Разделы">
       <a href="#melee">Удар мили</a>
       <a href="#archetypes">Архетипы по типу урона</a>
+      <a href="#hybrid">Гибриды</a>
       <a href="#ranged">Дальний бой</a>
       <span class="toc-todo">Хил</span>
       <span class="toc-todo">Каст и всполохи</span>
@@ -513,6 +514,84 @@
   </section>
 
   <hr class="rule">
+
+  <hr class="rule">
+
+  <section id="hybrid">
+    <p class="eyebrow">раздел 4 · выбор за Максом</p>
+    <h2>Гибриды: четыре способа смешать два цвета</h2>
+    <p class="lede">Юнит с несколькими стихиями получает цвет на элемент, а удар вроде «огонь плюс
+      режущий» несёт два. Здесь один и тот же серп покрашен четырьмя способами — огонь и лёд взяты
+      как самая контрастная пара.</p>
+
+    <div class="stands">
+      <article class="stand">
+        <canvas id="g-along" width="480" height="330" role="img" aria-label="Градиент вдоль формы: начало огненное, конец ледяной"></canvas>
+        <div class="stand-body">
+          <p class="tag">вариант 1</p>
+          <h3>Вдоль формы</h3>
+          <p class="dim">От начала взмаха к концу проводки. Читается как процесс: удар начался одним,
+            пришёл другим.</p>
+          <ul class="facts">
+            <li><span>плюс</span><span>использует ось, которая уже есть</span></li>
+            <li><span>минус</span><span>на 4 кадрах может не прочитаться</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="g-core" width="480" height="330" role="img" aria-label="Ядро одного цвета, кайма другого"></canvas>
+        <div class="stand-body">
+          <p class="tag">вариант 2</p>
+          <h3>Ядро и кайма</h3>
+          <p class="dim">Главный элемент светит в ядре, второй — по краю. Оба цвета видны
+            одновременно в одном месте.</p>
+          <ul class="facts">
+            <li><span>плюс</span><span>читается мгновенно, годится для 4 кадров</span></li>
+            <li><span>минус</span><span>кайма тонкая — второй цвет слабее</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="g-across" width="480" height="330" role="img" aria-label="Градиент поперёк толщины"></canvas>
+        <div class="stand-body">
+          <p class="tag">вариант 3</p>
+          <h3>Поперёк толщины</h3>
+          <p class="dim">Верхняя кромка одним цветом, нижняя другим. Похоже на раскалённую сталь с
+            остывающим краем.</p>
+          <ul class="facts">
+            <li><span>плюс</span><span>оба цвета равноправны</span></li>
+            <li><span>минус</span><span>толщина мала, цвета трутся друг о друга</span></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="g-layers" width="480" height="330" role="img" aria-label="Слоями: внешний слой одного цвета, средний другого, ядро белое"></canvas>
+        <div class="stand-body">
+          <p class="tag">вариант 4</p>
+          <h3>Слоями</h3>
+          <p class="dim">Внешний слой первого цвета, средний второго, ядро всегда белое. Форма
+            остаётся одна, но расслоена.</p>
+          <ul class="facts">
+            <li><span>плюс</span><span>работает и на трёх стихиях</span></li>
+            <li><span>минус</span><span>ближе к «полосатому», чем к смеси</span></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <p class="note">
+      <b>Одно общее для всех четырёх:</b> ядро остаётся белым пересветом. Если раскрасить и его,
+      оба элемента потускнеют — самое яркое место перестанет быть самым ярким.
+      <br><br>
+      <b>Про «взять все и пусть генережка выберет»:</b> так можно, но с оговоркой. Если способ
+      смешения меняется от удара к удару, игрок не выучит язык — а язык тут и есть смысл. Разумнее
+      закрепить способ за сочетанием (огонь+режущий всегда смешивается одинаково), а процедурно
+      гонять только силу и направление градиента.
+    </p>
+  </section>
 
   <hr class="rule">
 
@@ -1146,6 +1225,91 @@
     ctx.fillRect(14, 21, 6, 6);
   }
 
+  /* ---------- гибриды: четыре способа смешать два цвета ---------- */
+  const FIRE = "255,140,64", ICE = "158,219,255";
+
+  function drawHybrid(canvas, mode) {
+    const W = 480, HH = 330;
+    const ctx = stageMini(canvas, W, HH);
+    const groundY = HH - 54, H = 170, cx = W / 2 + 20;
+    drawUnit(ctx, cx, groundY, H, -1, false);
+
+    const START = CONTACT - 2, END = CONTACT + 4;
+    if (frame < START || frame > END) { miniLabel(ctx, hybridName(mode)); return; }
+    const t = (frame - START) / (END - START);
+    const grow = Math.min(1, t / 0.3);
+    const fade = t < 0.3 ? 1 : 1 - (t - 0.3) / 0.7;
+
+    const ax = cx - H * 0.5, ay = groundY - H * 1.07;
+    const bx = cx, by = groundY - H * 0.58;
+    const salt = Math.floor(hitCounter) * 5;
+    const bow = H * 0.22, thick = H * 0.06;
+
+    // Конец формы: точка хита центральная, поэтому дуга уходит за цель.
+    const tipX = ax + (bx - ax) * 2, tipY = ay + (by - ay) * 2;
+    const ex = ax + (tipX - ax) * grow, ey = ay + (tipY - ay) * grow;
+    const mx = (ax + ex) / 2, my = (ay + ey) / 2;
+    const dx = ex - ax, dy = ey - ay;
+    const len = Math.max(1e-3, Math.hypot(dx, dy));
+    const nx = -dy / len, ny = dx / len;
+
+    function bandPath(scale) {
+      const c1x = mx + nx * bow * scale, c1y = my + ny * bow * scale;
+      const th = thick * scale;
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.quadraticCurveTo(c1x + nx * th, c1y + ny * th, ex, ey);
+      ctx.quadraticCurveTo(c1x - nx * th, c1y - ny * th, ax, ay);
+      ctx.closePath();
+    }
+
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+
+    if (mode === "along") {
+      // Градиент по хорде: от начала взмаха к концу проводки.
+      const g = ctx.createLinearGradient(ax, ay, ex, ey);
+      g.addColorStop(0, "rgba(" + FIRE + "," + (0.85 * fade).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(" + ICE + "," + (0.85 * fade).toFixed(3) + ")");
+      bandPath(1.0); ctx.fillStyle = g; ctx.fill();
+      bandPath(0.5); ctx.fillStyle = "rgba(255,255,255," + (0.9 * fade).toFixed(3) + ")"; ctx.fill();
+    }
+
+    if (mode === "core") {
+      // Кайма второго цвета, ядро первого, поверх — белый пересвет.
+      bandPath(1.0); ctx.fillStyle = "rgba(" + ICE + "," + (0.55 * fade).toFixed(3) + ")"; ctx.fill();
+      bandPath(0.7); ctx.fillStyle = "rgba(" + FIRE + "," + (0.8 * fade).toFixed(3) + ")"; ctx.fill();
+      bandPath(0.38); ctx.fillStyle = "rgba(255,255,255," + (0.92 * fade).toFixed(3) + ")"; ctx.fill();
+    }
+
+    if (mode === "across") {
+      // Градиент по нормали: одна кромка горячая, другая холодная.
+      const g = ctx.createLinearGradient(mx + nx * (bow + thick), my + ny * (bow + thick),
+                                         mx - nx * thick, my - ny * thick);
+      g.addColorStop(0, "rgba(" + FIRE + "," + (0.85 * fade).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(" + ICE + "," + (0.85 * fade).toFixed(3) + ")");
+      bandPath(1.0); ctx.fillStyle = g; ctx.fill();
+      bandPath(0.42); ctx.fillStyle = "rgba(255,255,255," + (0.88 * fade).toFixed(3) + ")"; ctx.fill();
+    }
+
+    if (mode === "layers") {
+      bandPath(1.0); ctx.fillStyle = "rgba(" + ICE + "," + (0.5 * fade).toFixed(3) + ")"; ctx.fill();
+      bandPath(0.78); ctx.fillStyle = "rgba(" + FIRE + "," + (0.62 * fade).toFixed(3) + ")"; ctx.fill();
+      bandPath(0.52); ctx.fillStyle = "rgba(" + ICE + "," + (0.7 * fade).toFixed(3) + ")"; ctx.fill();
+      bandPath(0.3); ctx.fillStyle = "rgba(255,255,255," + (0.92 * fade).toFixed(3) + ")"; ctx.fill();
+    }
+
+    ctx.globalCompositeOperation = "source-over";
+    ctx.restore();
+    miniLabel(ctx, hybridName(mode));
+  }
+
+  function hybridName(mode) {
+    return mode === "along" ? "ВДОЛЬ ФОРМЫ"
+         : mode === "core" ? "ЯДРО И КАЙМА"
+         : mode === "across" ? "ПОПЕРЁК ТОЛЩИНЫ" : "СЛОЯМИ";
+  }
+
   /* ---------- дальний бой: линия-всполох ---------- */
   function drawRanged(canvas) {
     const W = 740, HH = 420;
@@ -1376,6 +1540,8 @@
   const cPierce = document.getElementById("c-pierce");
   const cBlunt = document.getElementById("c-blunt");
   const rLine = document.getElementById("r-line");
+  const HYBRID = ["along", "core", "across", "layers"]
+    .map(function (m) { return { el: document.getElementById("g-" + m), mode: m }; });
   const cZone = document.getElementById("c-zone");
   const cTime = document.getElementById("c-timeline");
 
@@ -1390,6 +1556,7 @@
     drawArchetype(cSlash, "slash");
     drawArchetype(cPierce, "pierce");
     drawArchetype(cBlunt, "blunt");
+    for (let i = 0; i < HYBRID.length; i++) drawHybrid(HYBRID[i].el, HYBRID[i].mode);
     drawRanged(rLine);
     drawZone(cZone);
     drawTimeline(cTime);
@@ -1446,6 +1613,7 @@
     cZone._cw = 0; cTime._cw = 0;
     cSlash._cw = 0; cPierce._cw = 0; cBlunt._cw = 0;
     rLine._cw = 0;
+    HYBRID.forEach(function (h) { h.el._cw = 0; });
     render();
   });
 
