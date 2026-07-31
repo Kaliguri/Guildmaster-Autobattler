@@ -1197,6 +1197,39 @@
           крови. Лужа под ногами и след при движении.</p></div></article>
     </div>
 
+    <p class="tag" style="margin-top:1.2rem">жизнь эффекта · рождение, повтор, конец</p>
+    <p class="dim" style="max-width:68ch">
+      Шесть разных событий, которые сейчас выглядят одинаково. Носитель формы везде один — горение, — и
+      это принципиально: <b>снятие сохраняет форму и меняет только цвет</b>. Тогда видно и «что» сняли
+      (по форме), и «чем» (по цвету), ровно как у удара форма говорит КАК доставили, а цвет — ЧЕМ ударили.
+    </p>
+    <div class="stands">
+      <article class="stand"><canvas id="e-life-birth" width="260" height="220" role="img" aria-label="Наложение"></canvas>
+        <div class="stand-body"><h3>Наложился</h3><p class="dim">Всплеск формы наружу и осадка: эффекта не было,
+          стал.</p></div></article>
+      <article class="stand"><canvas id="e-life-stack" width="260" height="220" role="img" aria-label="Стак"></canvas>
+        <div class="stand-body"><h3>Стак +1</h3><p class="dim">Толчок: форма дёргается наружу и возвращается.
+          Стало <b>больше</b>.</p></div></article>
+      <article class="stand"><canvas id="e-life-refresh" width="260" height="220" role="img" aria-label="Рефреш"></canvas>
+        <div class="stand-body"><h3>Обновили срок</h3><p class="dim">Волна по телу, форма не растёт. Стало
+          <b>дольше</b>, но не сильнее.</p></div></article>
+      <article class="stand"><canvas id="e-life-cleanse" width="260" height="220" role="img" aria-label="Клинс"></canvas>
+        <div class="stand-body"><h3>Клинс</h3><p class="dim">Форма голубеет, потом тает. Голубой — цвет
+          <b>действия</b>, а не кастера: клинс Пастыря и Друида читаются одинаково.</p></div></article>
+      <article class="stand"><canvas id="e-life-dispel" width="260" height="220" role="img" aria-label="Диспел баффа"></canvas>
+        <div class="stand-body"><h3>Диспел баффа</h3><p class="dim">Темнеет и <b>срывается</b>, без таяния. С тебя
+          сняли хорошее — противоположный факт, поэтому и цвет другой.</p></div></article>
+      <article class="stand"><canvas id="e-life-expire" width="260" height="220" role="img" aria-label="Истёк"></canvas>
+        <div class="stand-body"><h3>Истёк сам</h3><p class="dim">Ровное угасание <b>в своём цвете</b>. Любая
+          перекраска сделала бы истечение событием, а оно не событие.</p></div></article>
+    </div>
+
+    <p class="dim" style="max-width:68ch">
+      «Не влез в потолок» не показываем: глухих потолков у нас почти нет — угли и гниль до 999, кровь
+      без потолка, а двадцатый стак Изморози это не отказ, а <b>переход в статую</b>. Наложение
+      сработало, просто иначе.
+    </p>
+
     <p class="tag" style="margin-top:1.2rem">кровь · четыре ПОДХОДА к показу стадий</p>
     <p class="dim" style="max-width:68ch">
       Один и тот же счётчик стадий (1→4 по кругу), четыре разных языка показа. Вопрос не «какие числа»,
@@ -2319,20 +2352,25 @@
 
   // Горение: языки ВВЕРХ от контура. Вектор и есть сообщение — вверх читается как «горит»
   // даже до того, как разобран цвет.
-  function burnFlames(ctx, x, groundY, H, level) {
+  // colorOverride — для событий жизни эффекта: снятие перекрашивает ФОРМУ, сохраняя её узнаваемой
+  // (видно, ЧТО сняли), а цвет говорит, ЧЕМ сняли. scale/alpha — толчок стака и таяние.
+  function burnFlames(ctx, x, groundY, H, level, colorOverride, scale, alphaMul) {
     if (level <= 0) return;
     const u = H / 16;
+    const col = colorOverride || ST.burn;
+    const sc = scale === undefined ? 1 : scale;
+    const am = alphaMul === undefined ? 1 : alphaMul;
     const n = Math.round(5 + level * 9);
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
     for (let i = 0; i < n; i++) {
       const ph = ((statusTick * 0.055 + jag(i, 21)) % 1);         // жизнь языка, 0..1
-      const sx = x + (jag(i, 22) - 0.5) * u * 5.4;
+      const sx = x + (jag(i, 22) - 0.5) * u * 5.4 * sc;
       const sy = groundY - u * (0.5 + jag(i, 23) * 12.5);
-      const rise = u * (1.6 + 3.6 * level) * ph;
-      const w = u * (0.30 + 0.34 * level) * (1 - ph * 0.75);
-      const a = (1 - ph) * (0.42 + 0.42 * level);
-      ctx.fillStyle = "rgba(" + ST.burn + "," + a.toFixed(3) + ")";
+      const rise = u * (1.6 + 3.6 * level) * ph * sc;
+      const w = u * (0.30 + 0.34 * level) * (1 - ph * 0.75) * sc;
+      const a = (1 - ph) * (0.42 + 0.42 * level) * am;
+      ctx.fillStyle = "rgba(" + col + "," + a.toFixed(3) + ")";
       ctx.beginPath();
       ctx.moveTo(sx - w, sy);
       ctx.quadraticCurveTo(sx - w * 0.4, sy - rise * 0.6, sx, sy - rise);
@@ -2787,6 +2825,76 @@
     ctx.font = "500 11px ui-monospace, Consolas, monospace";
     ctx.fillStyle = "rgba(147,128,94,.85)";
     ctx.fillText("ран " + cfg.cuts, 16, PH - 24);
+  }
+
+  /* ---------- жизнь эффекта: рождение, повтор, конец ---------- */
+
+  // Носитель формы во всех шести случаях один — горение: у него есть узнаваемый знак, и на нём видно,
+  // что именно происходит с формой. Событие всегда на кадре 30, чтобы стенды сравнивались.
+  const LIFE_CYCLE = 78, LIFE_AT = 30;
+  const CLEANSE_COL = "150,222,255";   // голубой: с тебя сняли ПЛОХОЕ
+  const DISPEL_COL  = "96,84,118";     // тёмный: с тебя сорвали ХОРОШЕЕ
+
+  function drawLifeCase(canvas, mode) {
+    const ctx = stageMini(canvas, PW, PH);
+    const x = PW / 2, groundY = PGY, H = PUH, u = H / 16;
+    const c = statusTick % LIFE_CYCLE;
+    const age = c - LIFE_AT;
+    const lvl = 2 / 3;
+
+    let color = null, scale = 1, alpha = 1, show = true, note = "";
+
+    switch (mode) {
+      case "birth": {
+        show = c >= LIFE_AT;
+        if (age >= 0 && age < 8) { scale = 1.7 - 0.7 * (age / 8); alpha = age / 8; note = "НАЛОЖИЛСЯ"; }
+        else note = show ? "держится" : "эффекта нет";
+        break;
+      }
+      case "stack": {                                            // толчок: форма дёрнулась наружу
+        if (age >= 0 && age < 7) { scale = 1 + 0.4 * Math.sin(Math.PI * age / 7); note = "СТАК +1"; }
+        else note = "глубина держится";
+        break;
+      }
+      case "refresh": {                                          // волна по контуру, без роста
+        note = age >= 0 && age < DOT_WAVE ? "ДЛИТЕЛЬНОСТЬ ОБНОВЛЕНА" : "тот же стак, срок сброшен";
+        break;
+      }
+      case "cleanse": {                                          // перекраска, ПОТОМ таяние
+        if (age >= 0 && age < 3) { color = CLEANSE_COL; note = "КЛИНС · форма голубеет"; }
+        else if (age >= 3 && age < 9) { color = CLEANSE_COL; alpha = 1 - (age - 3) / 6; note = "тает"; }
+        else if (age >= 9) { show = false; note = "снято"; }
+        else note = "горит";
+        break;
+      }
+      case "dispel": {                                           // темнеет и лопается, без таяния
+        if (age >= 0 && age < 3) { color = DISPEL_COL; note = "ДИСПЕЛ · форма темнеет"; }
+        else if (age >= 3 && age < 7) { color = DISPEL_COL; scale = 1 - 0.5 * ((age - 3) / 4); alpha = 1 - (age - 3) / 4; note = "срывается"; }
+        else if (age >= 7) { show = false; note = "сорвано"; }
+        else note = "бафф держится";
+        break;
+      }
+      default: {                                                 // истёк: ровное угасание в своём цвете
+        if (age >= 0 && age < 12) { alpha = 1 - age / 12; note = "истёк · гаснет"; }
+        else if (age >= 12) { show = false; note = "нет эффекта"; }
+        else note = "горит";
+        break;
+      }
+    }
+
+    const bx = statusBody(ctx, x, groundY, H, {
+      stun: false, burn: show && !color ? lvl * alpha : 0, poison: 0, frostbite: 0
+    });
+    if (show) burnFlames(ctx, bx, groundY, H, lvl, color, scale, alpha);
+    if (mode === "refresh" && age >= 0 && age < DOT_WAVE) dotWave(ctx, bx, groundY, H, ST.burn, age);
+
+    ctx.font = "500 12px ui-monospace, Consolas, monospace";
+    const hot = note === note.toUpperCase() && note.length > 3;
+    ctx.fillStyle = hot
+      ? (mode === "cleanse" ? "rgba(" + CLEANSE_COL + ",1)"
+        : mode === "dispel" ? "rgba(178,160,205,1)" : "rgba(255,220,150,1)")
+      : "rgba(147,128,94,.85)";
+    ctx.fillText(note, 16, PH - 24);
   }
 
   /* ---------- четыре ПОДХОДА к показу стадий крови ---------- */
@@ -3874,6 +3982,9 @@
   const SHIELD_CASES_UI = ["calm", "weak", "strong", "dot", "two", "three", "wrong", "stack",
                            "layer", "through", "expire", "addover", "block", "backstab"]
     .map(function (k) { return { el: document.getElementById("k-" + k), key: k }; });
+  const LIFE_CASES = ["birth", "stack", "refresh", "cleanse", "dispel", "expire"]
+    .map(function (m) { return { el: document.getElementById("e-life-" + m), mode: m }; });
+
   const BLOOD_APPROACHES = [["e-bl-drip", "drip"], ["e-bl-soak", "soak"],
                             ["e-bl-glow", "glow"], ["e-bl-pulse", "pulse"]]
     .map(function (p) { return { el: document.getElementById(p[0]), mode: p[1] }; });
@@ -3918,6 +4029,8 @@
       drawEffectPreview(EFFECT_PREVIEWS[i].el, EFFECT_PREVIEWS[i].key);
     for (let i = 0; i < BLOOD_APPROACHES.length; i++)
       drawBloodApproach(BLOOD_APPROACHES[i].el, BLOOD_APPROACHES[i].mode);
+    for (let i = 0; i < LIFE_CASES.length; i++)
+      drawLifeCase(LIFE_CASES[i].el, LIFE_CASES[i].mode);
     outFrame.textContent = String(frame).padStart(2, "0");
     const ph = phaseOf(frame);
     outPhase.textContent = ph;
@@ -4001,6 +4114,7 @@
     ZONE_CASES.forEach(function (z) { z.el._cw = 0; });
     EFFECT_PREVIEWS.forEach(function (p) { p.el._cw = 0; });
     BLOOD_APPROACHES.forEach(function (b) { b.el._cw = 0; });
+    LIFE_CASES.forEach(function (l) { l.el._cw = 0; });
     BURN_STANDS.forEach(function (b) { b.el._cw = 0; });
     render();
   });
