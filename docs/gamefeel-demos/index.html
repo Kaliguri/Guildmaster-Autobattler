@@ -1,0 +1,1123 @@
+<title>Guildmaster · Джус — как мы это видим</title>
+
+<style>
+  :root {
+    --ground: #12100D;
+    --panel: #1A130C;
+    --panel-lift: #221A11;
+    --edge: #3A2C1E;
+    --edge-soft: #2A2016;
+    --text: #E8DCC4;
+    --muted: #93805E;
+    --brass: #B8863B;
+    --brass-lift: #C69A4B;
+
+    --flare-white: #FFFFFF;
+    --flare-holo: #4DF2FF;
+    --flare-honey: #FFCC33;
+    --flare-mint: #8CFFA6;
+
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", "Consolas", "Liberation Mono", monospace;
+    --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+
+    --gap: 1.5rem;
+    --radius: 2px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1rem, 4vw, 2.5rem) 6rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  /* --- типографика --- */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 0;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5.5vw, 3.4rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0.6rem 0 0;
+    text-wrap: balance;
+  }
+
+  h2 {
+    font-size: clamp(1.25rem, 2.6vw, 1.65rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  h3 {
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
+
+  p { margin: 0; max-width: 68ch; }
+  .lede { color: #C4B393; font-size: 1.06rem; }
+  .dim { color: var(--muted); font-size: 0.92rem; }
+
+  section { display: flex; flex-direction: column; gap: 1.4rem; }
+
+  .rule {
+    height: 1px;
+    background: linear-gradient(90deg, var(--edge) 0%, var(--edge-soft) 60%, transparent 100%);
+    border: 0;
+    margin: 0;
+  }
+
+  /* --- оглавление разделов --- */
+  .toc { display: flex; flex-wrap: wrap; gap: 0.5rem 0.65rem; margin-top: 1.4rem; }
+  .toc a, .toc-todo {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--edge);
+    border-radius: var(--radius);
+    text-decoration: none;
+  }
+  .toc a { color: var(--brass-lift); border-color: var(--brass); }
+  .toc a:hover { background: rgba(184,134,59,.12); }
+  .toc a:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+  .toc-todo { color: var(--muted); border-style: dashed; opacity: .75; }
+
+  /* --- принятая связка --- */
+  .accepted { border-color: var(--brass); }
+  .accepted canvas { background: #0A0908; }
+  .stack-note {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 0.9rem;
+  }
+  .layer {
+    border: 1px solid var(--edge-soft);
+    border-left-width: 3px;
+    border-radius: var(--radius);
+    padding: 0.7rem 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .layer.primary { border-left-color: var(--flare-white); }
+  .layer.secondary { border-left-color: var(--flare-holo); }
+  .layer.hit { border-left-color: var(--flare-honey); }
+  .layer b { font-size: 0.9rem; }
+  .layer span { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); letter-spacing: .04em; }
+
+  /* --- транспорт --- */
+  .transport {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem 1.1rem;
+    padding: 0.85rem 1.1rem;
+    background: var(--panel);
+    border: 1px solid var(--edge-soft);
+    border-radius: var(--radius);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+
+  button {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text);
+    background: var(--panel-lift);
+    border: 1px solid var(--edge);
+    border-radius: var(--radius);
+    padding: 0.45rem 0.85rem;
+    cursor: pointer;
+    transition: border-color 120ms ease, color 120ms ease;
+  }
+  button:hover { border-color: var(--brass); color: var(--brass-lift); }
+  button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+  button[data-active="true"] { border-color: var(--brass); color: var(--brass-lift); }
+
+  .readout {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    display: flex;
+    gap: 1.2rem;
+    align-items: baseline;
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .readout b { color: var(--brass-lift); font-weight: 600; }
+  .phase-chip {
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--edge);
+    border-radius: var(--radius);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+  }
+
+  input[type=range] { accent-color: var(--brass); width: 190px; }
+
+  /* --- стенды --- */
+  .stands {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--gap);
+  }
+
+  .stand {
+    display: flex;
+    flex-direction: column;
+    background: var(--panel);
+    border: 1px solid var(--edge-soft);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .stand canvas { display: block; width: 100%; height: auto; background: #0C0B09; }
+
+  .stand-body { padding: 1.05rem 1.1rem 1.25rem; display: flex; flex-direction: column; gap: 0.6rem; }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .facts { display: flex; flex-direction: column; gap: 0.3rem; margin: 0.15rem 0 0; padding: 0; list-style: none; }
+  .facts li {
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    letter-spacing: 0.02em;
+    color: #B3A183;
+    display: flex;
+    gap: 0.55rem;
+  }
+  .facts li span:first-child { color: var(--muted); min-width: 6.5em; }
+
+  .verdict {
+    font-size: 0.92rem;
+    color: #C4B393;
+    border-left: 2px solid var(--edge);
+    padding-left: 0.75rem;
+  }
+  .verdict.pick { border-left-color: var(--brass); color: var(--text); }
+
+  /* --- нижние блоки --- */
+  .split {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--gap);
+    align-items: start;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--edge-soft);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.25rem 1.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .card canvas { display: block; width: 100%; height: auto; background: #0C0B09; border: 1px solid var(--edge-soft); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 0.45rem 1.1rem; }
+  .legend span {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .swatch { width: 10px; height: 10px; border-radius: 1px; display: inline-block; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+  .scroller { overflow-x: auto; }
+  th, td { text-align: left; padding: 0.5rem 0.8rem 0.5rem 0; border-bottom: 1px solid var(--edge-soft); vertical-align: top; }
+  th {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  td code { font-family: var(--mono); font-size: 0.82rem; color: var(--brass-lift); }
+
+  .note {
+    font-size: 0.88rem;
+    color: var(--muted);
+    border-top: 1px solid var(--edge-soft);
+    padding-top: 1rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Guildmaster · джус · живой стенд</p>
+    <h1>Как мы это видим</h1>
+    <p class="lede" style="margin-top:1rem">
+      Растущая презентация боевого джуса: каждое решение, принятое по эффектам, времени и камере,
+      показывается здесь в движении и на настоящем тайминге — 30 кадров в секунду, кадр 33 мс.
+      Дизайн-канон живёт в <code>docs/wiki/gdd/70-gamefeel</code>, этот стенд его показывает.
+    </p>
+    <nav class="toc" aria-label="Разделы">
+      <a href="#melee">Удар мили</a>
+      <span class="toc-todo">Хил</span>
+      <span class="toc-todo">Каст и всполохи</span>
+      <span class="toc-todo">Статусы</span>
+      <span class="toc-todo">Время и камера</span>
+    </nav>
+  </header>
+
+  <section id="melee">
+    <p class="eyebrow">раздел 1 · принято 31.07.2026</p>
+    <h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:300;margin-top:.4rem">
+      Удар мили: три способа нарисовать взмах
+    </h2>
+    <p class="lede">
+      Один и тот же удар, одна и та же анимация руки. Отличается только то, что рисует эффект —
+      и от этого зависит, читается взмах как «движение», как «траектория» или как «удар».
+      Контакт на кадре 16.
+    </p>
+  </section>
+
+  <div class="transport" role="group" aria-label="Управление показом">
+    <button id="btn-play" type="button">Пауза</button>
+    <button id="btn-prev" type="button">&#8249; кадр</button>
+    <button id="btn-next" type="button">кадр &#8250;</button>
+    <label class="tag" for="speed" style="display:flex;align-items:center;gap:.6rem">
+      темп
+      <input id="speed" type="range" min="10" max="100" value="100" step="10" aria-label="Темп показа">
+      <span id="speed-out" style="font-family:var(--mono);color:var(--text)">100%</span>
+    </label>
+    <div class="readout">
+      <span>кадр <b id="out-frame">00</b>/29</span>
+      <span id="out-phase" class="phase-chip">idle</span>
+    </div>
+  </div>
+
+  <section>
+    <div class="stands">
+
+      <article class="stand">
+        <canvas id="c-trail" width="740" height="560" role="img"
+                aria-label="Трейл: непрерывный светящийся след за кончиком клинка на всём взмахе"></canvas>
+        <div class="stand-body">
+          <p class="tag">вариант 1</p>
+          <h3>Трейл клинка</h3>
+          <p class="dim">Непрерывный след за кончиком оружия. Живёт весь взмах — от начала замаха
+            до конца возврата, тает по хвосту.</p>
+          <ul class="facts">
+            <li><span>владелец</span><span>оружие, каждый кадр</span></li>
+            <li><span>живёт</span><span>кадры 6–26 (весь свинг)</span></li>
+            <li><span>ширина</span><span>0.03 H, сужается к хвосту</span></li>
+            <li><span>инструмент</span><span>Trail / полилиния</span></li>
+          </ul>
+          <p class="verdict">Читается как <b>движение</b>. Показывает, где клинок был, но не выделяет
+            момент удара — трейл на замахе и на возврате выглядит одинаково.</p>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="c-swept" width="740" height="560" role="img"
+                aria-label="Дуга за клинком: сектор с центром в плече, заметающий пройденный угол"></canvas>
+        <div class="stand-body">
+          <p class="tag">вариант 2</p>
+          <h3>Дуга за клинком</h3>
+          <p class="dim">Сектор с центром в плече, заметающий угол, пройденный за strike-фазу.
+            Форма буквально повторяет путь оружия.</p>
+          <ul class="facts">
+            <li><span>владелец</span><span>ось вращения руки</span></li>
+            <li><span>живёт</span><span>кадры 13–20 (strike + 2)</span></li>
+            <li><span>радиус</span><span>длина руки, ≈0.9 H</span></li>
+            <li><span>инструмент</span><span>Shapes Disc, ArcType</span></li>
+          </ul>
+          <p class="verdict">Читается как <b>траектория</b>. Физично и точно, но привязана к плечу:
+            веер расходится от юнита, а не от места удара, и на пиксельном силуэте спорит с телом.</p>
+        </div>
+      </article>
+
+      <article class="stand">
+        <canvas id="c-cross" width="740" height="560" role="img"
+                aria-label="Мазок поперёк: широкий серп, отвязанный от оружия, остаётся в мире"></canvas>
+        <div class="stand-body">
+          <p class="tag">вариант 3</p>
+          <h3>Мазок поперёк</h3>
+          <p class="dim">Широкий серп поперёк направления удара. От оружия отвязан, ставится в мире
+            и остаётся на месте, пока гаснет.</p>
+          <ul class="facts">
+            <li><span>владелец</span><span>событие взмаха</span></li>
+            <li><span>живёт</span><span>кадры 14–19 (4 кадра + гас)</span></li>
+            <li><span>длина</span><span>1.2 H, толщина 0.09 H</span></li>
+            <li><span>инструмент</span><span>Shapes / шейдер</span></li>
+          </ul>
+          <p class="verdict pick">Читается как <b>удар</b>. Крупнее всех, не спорит с силуэтом,
+            видна издалека — и это подпись эталона. Моя ставка.</p>
+        </div>
+      </article>
+
+    </div>
+
+    <p class="note">
+      Все три показаны без хит-эффекта: искры, вспышка и отброс убраны намеренно, иначе разницу
+      между вариантами не разглядеть. В бою поверх любого из них ляжет ядро попадания — но только
+      если удар <em>попал</em>. Дуга принадлежит оружию, ядро — попаданию: махнул мимо, дуга есть,
+      искр нет.
+    </p>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <p class="eyebrow">вердикт</p>
+    <h2>Принято: мазок ведёт, дуга подкладывает</h2>
+    <p class="lede">Взяты оба слоя, но не на равных. У них разные центры — мазок стоит в точке
+      контакта, дуга растёт из плеча, — и при равной яркости кадр читался бы как две вспышки в разных
+      местах. Трейл отклонён: более слабое повторение дуги.</p>
+
+    <div class="split">
+      <div class="card accepted">
+        <canvas id="c-final" width="740" height="560" role="img"
+                aria-label="Принятая связка: яркий мазок в точке контакта плюс приглушённая дуга от плеча"></canvas>
+      </div>
+
+      <div class="card">
+        <h3>Три слоя одного удара</h3>
+        <div class="stack-note">
+          <div class="layer primary">
+            <b>Мазок поперёк</b>
+            <span>primary · 4 кадра · 1.2 H</span>
+            <span>белое ядро, стоит в мире</span>
+          </div>
+          <div class="layer secondary">
+            <b>Дуга за клинком</b>
+            <span>secondary · strike + 2</span>
+            <span>без ядра, прозрачна у плеча</span>
+          </div>
+          <div class="layer hit">
+            <b>Ядро и искры</b>
+            <span>только при попадании</span>
+            <span>в область корпуса, не в точку</span>
+          </div>
+        </div>
+        <p class="dim">Градиент дуги от плеча — не украшение, а условие сосуществования: без него
+          сектор залепляет тело юнита и читается как второй удар.</p>
+        <p class="dim">Форма принадлежит <b>оружию</b> и рисуется всегда, когда клинок махнул.
+          Ядро и искры принадлежат <b>попаданию</b>. Поэтому промах читается сам собой: дуга есть,
+          искр нет — а раньше он не выглядел никак, кроме слова «evade».</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <h2>Куда именно приходит удар</h2>
+    <p class="lede">Сейчас все попадания бьют в одну точку — <code>HitPoint</code> на груди цели.
+      Восемь ударов подряд дают восемь одинаковых вспышек в одном пикселе. Предложение: бить
+      в <em>область</em>, а внутри области смещаться к тому краю, откуда пришёл атакующий.</p>
+
+    <div class="split">
+      <div class="card">
+        <canvas id="c-zone" width="700" height="470" role="img"
+                aria-label="Схема: корпус цели как область попадания, точки смещаются к стороне атакующего"></canvas>
+        <div class="legend">
+          <span><i class="swatch" style="background:#4DF2FF"></i> корпус — зона попадания</span>
+          <span><i class="swatch" style="background:#FFCC33"></i> точка этого удара</span>
+          <span><i class="swatch" style="background:#93805E"></i> прошлые удары</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Как выбирается точка</h3>
+        <p class="dim">Область — прямоугольник корпуса, а не точка. Внутри неё центр тяжести
+          смещается по позиции бьющего, поэтому один и тот же враг получает по-разному в зависимости
+          от того, кто до него дотянулся.</p>
+        <div class="scroller">
+          <table>
+            <thead><tr><th>Атакующий</th><th>Откуда бьёт</th><th>Куда приходит</th></tr></thead>
+            <tbody>
+              <tr><td>Убийца</td><td>со спины</td><td>верх спины, ближе к лопаткам</td></tr>
+              <tr><td>Защитник</td><td>в лоб, вплотную</td><td>центр груди</td></tr>
+              <tr><td>Копейщик</td><td>снизу, из второй линии</td><td>низ корпуса, ближе к ногам</td></tr>
+              <tr><td>Стрелок</td><td>издалека</td><td>там, где вошёл снаряд</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="dim">Разброс внутри области берётся из детерминированного <code>IRngService</code>,
+          а не из <code>Random</code>: показ не имеет права разойтись между клиентами в кооперативе.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <h2>Что для этого нужно от анимации</h2>
+    <p class="lede">Дуга живёт на strike-фазе — на том отрезке, где клинок разогнан. Сегодня клип
+      размечен одним событием контакта; чтобы показ знал границы взмаха, нужны ещё два.</p>
+
+    <div class="card">
+      <canvas id="c-timeline" width="1080" height="230" role="img"
+              aria-label="Таймлайн клипа атаки с тремя маркерами: StrikeStart, Hit, StrikeEnd"></canvas>
+      <div class="legend">
+        <span><i class="swatch" style="background:#93805E"></i> замах</span>
+        <span><i class="swatch" style="background:#FFCC33"></i> strike — здесь живёт дуга</span>
+        <span><i class="swatch" style="background:#3A2C1E"></i> возврат</span>
+        <span><i class="swatch" style="background:#FFFFFF"></i> Hit — контакт</span>
+      </div>
+      <p class="dim" style="margin-top:.3rem">
+        Имена маркеров различаются намеренно: <code>ClipMarkers</code> считает контактами только
+        события с именем <code>Hit</code>, и маркер взмаха, названный по инерции так же, сим засчитал
+        бы за лишний удар — то есть за лишний расчёт урона. Переименование уже сделано:
+        двадцать событий в девятнадцати клипах.
+      </p>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <h2>Что решаем</h2>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Вопрос</th><th>Мой ответ</th><th>Почему</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Какая форма</td>
+            <td>мазок поперёк</td>
+            <td>читается как удар, а не как движение; не спорит с пиксельным силуэтом; подпись эталона</td>
+          </tr>
+          <tr>
+            <td>Трейл нужен отдельно</td>
+            <td>нет</td>
+            <td>ещё один постоянно светящийся слой; мазок делает ту же работу за 4 кадра</td>
+          </tr>
+          <tr>
+            <td>Где живёт</td>
+            <td>в мире, не едет за юнитом</td>
+            <td>вердикт принят; заодно даёт мазку остаться крупным, пока бьющий отходит</td>
+          </tr>
+          <tr>
+            <td>Точка попадания</td>
+            <td>область со смещением к атакующему</td>
+            <td>убирает восемь одинаковых вспышек в одном пикселе, даёт разным классам разный почерк</td>
+          </tr>
+          <tr>
+            <td>Маркеры</td>
+            <td><code>StrikeStart</code> / <code>StrikeEnd</code></td>
+            <td>границы дуги приходят из клипа, а не угадываются по доле свинга</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const FPS = 30, TOTAL = 30, CONTACT = 16;
+  const WINDUP_START = 6, STRIKE_START = 13, STRIKE_END = 19, RECOVERY_END = 27;
+
+  const COL = {
+    white: "#FFFFFF", holo: "#4DF2FF", honey: "#FFCC33", mint: "#8CFFA6",
+    brass: "#B8863B", muted: "#93805E", edge: "#3A2C1E", body: "#5A4A34", bodyLit: "#7A6544"
+  };
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let frame = 0, playing = !reduced, speed = 1, acc = 0, last = 0;
+  if (reduced) frame = CONTACT;
+
+  /* ---------- геометрия взмаха ---------- */
+  const REST = -18, BACK = -145, FOLLOW = 55;
+
+  function easeOut(t) { return 1 - Math.pow(1 - t, 2); }
+  function easeIn(t) { return t * t; }
+  function easeInOut(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+
+  // Угол руки в градусах для дробного кадра — дробного, чтобы трейл был гладким.
+  function armAngle(f) {
+    if (f < WINDUP_START) return REST;
+    if (f < STRIKE_START) {
+      const t = (f - WINDUP_START) / (STRIKE_START - WINDUP_START);
+      return REST + (BACK - REST) * easeOut(t);
+    }
+    if (f <= STRIKE_END) {
+      const t = (f - STRIKE_START) / (STRIKE_END - STRIKE_START);
+      return BACK + (FOLLOW - BACK) * easeIn(t);
+    }
+    if (f <= RECOVERY_END) {
+      const t = (f - STRIKE_END) / (RECOVERY_END - STRIKE_END);
+      return FOLLOW + (REST - FOLLOW) * easeInOut(t);
+    }
+    return REST;
+  }
+
+  function phaseOf(f) {
+    if (f < WINDUP_START) return "combat idle";
+    if (f < STRIKE_START) return "windup";
+    if (f === CONTACT) return "hit";
+    if (f <= STRIKE_END) return "strike";
+    if (f <= RECOVERY_END) return "recovery";
+    return "combat idle";
+  }
+
+  /* ---------- рисование сцены ---------- */
+  function setup(canvas) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cssW = canvas.clientWidth || canvas.width;
+    const scale = cssW / canvas.width;
+    const cssH = canvas.height * scale;
+    if (canvas._dpr !== dpr || canvas._cssW !== cssW) {
+      canvas.style.height = cssH + "px";
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(cssH * dpr);
+      canvas._dpr = dpr; canvas._cssW = cssW;
+    }
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(canvas.width / 740, 0, 0, canvas.width / 740, 0, 0);
+    return ctx;
+  }
+
+  // Схематичный юнит блоками: намёк на пиксель-арт, без претензии на арт.
+  function drawUnit(ctx, x, groundY, h, facing, lit) {
+    const u = h / 16;
+    ctx.fillStyle = lit ? COL.bodyLit : COL.body;
+    ctx.fillRect(x - u * 2, groundY - h, u * 4, u * 4.5);          // голова
+    ctx.fillRect(x - u * 2.6, groundY - h + u * 4.5, u * 5.2, u * 6.5); // корпус
+    ctx.fillRect(x - u * 2.2, groundY - u * 5, u * 1.8, u * 5);    // нога
+    ctx.fillRect(x + u * 0.5, groundY - u * 5, u * 1.8, u * 5);    // нога
+    ctx.fillStyle = "rgba(0,0,0,.35)";
+    ctx.beginPath();
+    ctx.ellipse(x, groundY + u * 0.6, u * 3.4, u * 1.1, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function shoulderOf(x, groundY, h) { return { x: x, y: groundY - h + h / 16 * 5.6 }; }
+
+  function tipAt(f, sx, sy, armLen) {
+    const a = armAngle(f) * Math.PI / 180;
+    return { x: sx + Math.cos(a) * armLen, y: sy + Math.sin(a) * armLen };
+  }
+
+  function drawArmAndBlade(ctx, sx, sy, f, armLen) {
+    const a = armAngle(f) * Math.PI / 180;
+    const hand = { x: sx + Math.cos(a) * armLen * 0.42, y: sy + Math.sin(a) * armLen * 0.42 };
+    const tip = { x: sx + Math.cos(a) * armLen, y: sy + Math.sin(a) * armLen };
+
+    ctx.lineCap = "round";
+    ctx.strokeStyle = COL.bodyLit;
+    ctx.lineWidth = 9;
+    ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(hand.x, hand.y); ctx.stroke();
+
+    ctx.strokeStyle = "#C9B591";
+    ctx.lineWidth = 6;
+    ctx.beginPath(); ctx.moveTo(hand.x, hand.y); ctx.lineTo(tip.x, tip.y); ctx.stroke();
+    return tip;
+  }
+
+  function stage(ctx, f) {
+    ctx.clearRect(0, 0, 740, 560);
+    const groundY = 420, H = 250;
+
+    // земля
+    ctx.strokeStyle = "rgba(58,44,30,.75)";
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(40, groundY + 6); ctx.lineTo(700, groundY + 6); ctx.stroke();
+
+    // подпись масштаба
+    ctx.fillStyle = "rgba(147,128,94,.65)";
+    ctx.font = "500 15px ui-monospace, Consolas, monospace";
+    ctx.fillText("H", 46, groundY - H - 10);
+    ctx.strokeStyle = "rgba(147,128,94,.35)";
+    ctx.beginPath(); ctx.moveTo(52, groundY - H); ctx.lineTo(52, groundY); ctx.stroke();
+
+    return { groundY: groundY, H: H, attacker: 250, target: 470 };
+  }
+
+  const ARM = 150;
+
+  /* ---------- вариант 1: трейл ---------- */
+  function drawTrail(canvas) {
+    const ctx = setup(canvas);
+    const s = stage(ctx, frame);
+    const sh = shoulderOf(s.attacker, s.groundY, s.H);
+
+    drawUnit(ctx, s.target, s.groundY, s.H * 0.95, -1, false);
+    drawUnit(ctx, s.attacker, s.groundY, s.H, 1, true);
+
+    // след: 10 подкадров назад, гаснет и сужается
+    const STEPS = 26, SPAN = 9;
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = STEPS; i > 0; i--) {
+      const f0 = frame - (i / STEPS) * SPAN;
+      const f1 = frame - ((i - 1) / STEPS) * SPAN;
+      if (f0 < WINDUP_START) continue;
+      const p0 = tipAt(f0, sh.x, sh.y, ARM);
+      const p1 = tipAt(f1, sh.x, sh.y, ARM);
+      const k = 1 - i / STEPS;
+      ctx.strokeStyle = "rgba(77,242,255," + (0.06 + k * 0.5).toFixed(3) + ")";
+      ctx.lineWidth = 2 + k * 7;
+      ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(p0.x, p0.y); ctx.lineTo(p1.x, p1.y); ctx.stroke();
+    }
+    ctx.globalCompositeOperation = "source-over";
+
+    drawArmAndBlade(ctx, sh.x, sh.y, frame, ARM);
+    label(ctx, "трейл: живёт весь свинг", COL.holo);
+  }
+
+  /* ---------- вариант 2: дуга за клинком ---------- */
+  function drawSwept(canvas) {
+    const ctx = setup(canvas);
+    const s = stage(ctx, frame);
+    const sh = shoulderOf(s.attacker, s.groundY, s.H);
+
+    drawUnit(ctx, s.target, s.groundY, s.H * 0.95, -1, false);
+    drawUnit(ctx, s.attacker, s.groundY, s.H, 1, true);
+
+    if (frame >= STRIKE_START && frame <= STRIKE_END + 2) {
+      const cur = Math.min(frame, STRIKE_END);
+      const a0 = armAngle(STRIKE_START) * Math.PI / 180;
+      const a1 = armAngle(cur) * Math.PI / 180;
+      const fade = frame > STRIKE_END ? 1 - (frame - STRIKE_END) / 2 : 1;
+
+      ctx.globalCompositeOperation = "lighter";
+      const grad = ctx.createRadialGradient(sh.x, sh.y, ARM * 0.45, sh.x, sh.y, ARM * 1.04);
+      grad.addColorStop(0, "rgba(77,242,255,0)");
+      grad.addColorStop(0.72, "rgba(77,242,255," + (0.30 * fade).toFixed(3) + ")");
+      grad.addColorStop(1, "rgba(255,255,255," + (0.55 * fade).toFixed(3) + ")");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(sh.x, sh.y);
+      ctx.arc(sh.x, sh.y, ARM * 1.04, a0, a1, false);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(255,255,255," + (0.75 * fade).toFixed(3) + ")";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(sh.x, sh.y, ARM * 1.04, a0, a1, false);
+      ctx.stroke();
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    drawArmAndBlade(ctx, sh.x, sh.y, frame, ARM);
+    label(ctx, "дуга: центр в плече, только strike", COL.holo);
+  }
+
+  /* ---------- вариант 3: мазок поперёк ---------- */
+  function drawCross(canvas) {
+    const ctx = setup(canvas);
+    const s = stage(ctx, frame);
+    const sh = shoulderOf(s.attacker, s.groundY, s.H);
+
+    drawUnit(ctx, s.target, s.groundY, s.H * 0.95, -1, false);
+    drawUnit(ctx, s.attacker, s.groundY, s.H, 1, true);
+
+    const START = CONTACT - 2, END = CONTACT + 3;
+    if (frame >= START && frame <= END) {
+      const t = (frame - START) / (END - START);
+      const grow = Math.min(1, t / 0.35);
+      const fade = t < 0.35 ? 1 : 1 - (t - 0.35) / 0.65;
+
+      // Мазок ставится в мире один раз — в точке контакта, и не едет за бьющим.
+      const cx = s.target - 18, cy = s.groundY - s.H * 0.62;
+      const len = s.H * 1.2 * grow, thick = s.H * 0.105 * grow;
+      const tilt = -38 * Math.PI / 180;
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(tilt);
+      ctx.globalCompositeOperation = "lighter";
+
+      // серп: две дуги, сходящиеся к остриям
+      const bow = thick * 2.6;
+      function crescent(scale, alpha, color) {
+        ctx.beginPath();
+        ctx.moveTo(-len / 2 * scale, 0);
+        ctx.quadraticCurveTo(0, -bow * scale - thick * scale, len / 2 * scale, 0);
+        ctx.quadraticCurveTo(0, -bow * scale + thick * scale, -len / 2 * scale, 0);
+        ctx.closePath();
+        ctx.fillStyle = color.replace("ALPHA", (alpha * fade).toFixed(3));
+        ctx.fill();
+      }
+      crescent(1.0, 0.42, "rgba(77,242,255,ALPHA)");
+      crescent(0.86, 0.55, "rgba(160,250,255,ALPHA)");
+      crescent(0.62, 0.9, "rgba(255,255,255,ALPHA)");
+
+      ctx.globalCompositeOperation = "source-over";
+      ctx.restore();
+    }
+
+    drawArmAndBlade(ctx, sh.x, sh.y, frame, ARM);
+    label(ctx, "мазок: 4 кадра, стоит в мире", COL.holo);
+  }
+
+  /* ---------- принятая связка: дуга (тише) + мазок (ярче) + ядро попадания ---------- */
+  function drawFinal(canvas) {
+    const ctx = setup(canvas);
+    const s = stage(ctx, frame);
+    const sh = shoulderOf(s.attacker, s.groundY, s.H);
+
+    drawUnit(ctx, s.target, s.groundY, s.H * 0.95, -1, false);
+    drawUnit(ctx, s.attacker, s.groundY, s.H, 1, true);
+
+    // secondary: дуга. Тусклее втрое и без белого ядра — иначе спорит с мазком.
+    if (frame >= STRIKE_START && frame <= STRIKE_END + 2) {
+      const cur = Math.min(frame, STRIKE_END);
+      const a0 = armAngle(STRIKE_START) * Math.PI / 180;
+      const a1 = armAngle(cur) * Math.PI / 180;
+      const fade = frame > STRIKE_END ? 1 - (frame - STRIKE_END) / 2 : 1;
+
+      ctx.globalCompositeOperation = "lighter";
+      const grad = ctx.createRadialGradient(sh.x, sh.y, ARM * 0.5, sh.x, sh.y, ARM * 1.04);
+      grad.addColorStop(0, "rgba(77,242,255,0)");
+      grad.addColorStop(0.8, "rgba(77,242,255," + (0.11 * fade).toFixed(3) + ")");
+      grad.addColorStop(1, "rgba(120,225,245," + (0.20 * fade).toFixed(3) + ")");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.moveTo(sh.x, sh.y);
+      ctx.arc(sh.x, sh.y, ARM * 1.04, a0, a1, false);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    // primary: мазок в точке контакта
+    const START = CONTACT - 2, END = CONTACT + 3;
+    const cx = s.target - 18, cy = s.groundY - s.H * 0.62;
+    if (frame >= START && frame <= END) {
+      const t = (frame - START) / (END - START);
+      const grow = Math.min(1, t / 0.35);
+      const fade = t < 0.35 ? 1 : 1 - (t - 0.35) / 0.65;
+      const len = s.H * 1.2 * grow, thick = s.H * 0.105 * grow;
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(-38 * Math.PI / 180);
+      ctx.globalCompositeOperation = "lighter";
+      const bow = thick * 2.6;
+      function crescent(scale, alpha, color) {
+        ctx.beginPath();
+        ctx.moveTo(-len / 2 * scale, 0);
+        ctx.quadraticCurveTo(0, -bow * scale - thick * scale, len / 2 * scale, 0);
+        ctx.quadraticCurveTo(0, -bow * scale + thick * scale, -len / 2 * scale, 0);
+        ctx.closePath();
+        ctx.fillStyle = color.replace("ALPHA", (alpha * fade).toFixed(3));
+        ctx.fill();
+      }
+      crescent(1.0, 0.42, "rgba(77,242,255,ALPHA)");
+      crescent(0.86, 0.55, "rgba(160,250,255,ALPHA)");
+      crescent(0.62, 0.9, "rgba(255,255,255,ALPHA)");
+      ctx.globalCompositeOperation = "source-over";
+      ctx.restore();
+    }
+
+    // ядро попадания: живёт 3 кадра от контакта и только если удар вошёл
+    if (frame >= CONTACT && frame <= CONTACT + 2) {
+      const k = 1 - (frame - CONTACT) / 3;
+      ctx.globalCompositeOperation = "lighter";
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, s.H * 0.34 * k);
+      g.addColorStop(0, "rgba(255,255,255," + (0.95 * k).toFixed(3) + ")");
+      g.addColorStop(0.45, "rgba(255,204,51," + (0.5 * k).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(255,204,51,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(cx, cy, s.H * 0.34 * k, 0, Math.PI * 2); ctx.fill();
+
+      // искры прочь от удара
+      for (let i = 0; i < 7; i++) {
+        const ang = (-30 + i * 13) * Math.PI / 180;
+        const d = s.H * (0.14 + 0.16 * (frame - CONTACT + 1)) * (0.7 + (i % 3) * 0.2);
+        const px = cx + Math.cos(ang) * d, py = cy + Math.sin(ang) * d;
+        ctx.fillStyle = "rgba(255,242,140," + (0.85 * k).toFixed(3) + ")";
+        ctx.beginPath(); ctx.arc(px, py, 3.2 * k + 1, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    drawArmAndBlade(ctx, sh.x, sh.y, frame, ARM);
+    label(ctx, "принято: мазок + дуга + ядро", COL.honey);
+  }
+
+  function label(ctx, text, color) {
+    ctx.font = "500 15px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "rgba(147,128,94,.9)";
+    ctx.fillText(text.toUpperCase(), 46, 44);
+    ctx.fillStyle = color;
+    ctx.fillRect(30, 33, 8, 8);
+  }
+
+  /* ---------- зона попадания ---------- */
+  const hits = [];
+  let lastHitFrame = -1;
+  const attackers = [
+    { name: "убийца", bias: { x: -0.34, y: -0.22 }, from: "спина" },
+    { name: "защитник", bias: { x: 0.0, y: 0.0 }, from: "лоб" },
+    { name: "копейщик", bias: { x: 0.18, y: 0.38 }, from: "снизу" },
+    { name: "стрелок", bias: { x: 0.30, y: -0.10 }, from: "издали" }
+  ];
+  let attackerIdx = 0;
+  let seed = 1337;
+  function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+
+  function drawZone(canvas) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cssW = canvas.clientWidth || canvas.width;
+    const sc = cssW / 700;
+    if (canvas._cw !== cssW) {
+      canvas.style.height = (470 * sc) + "px";
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(470 * sc * dpr);
+      canvas._cw = cssW;
+    }
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(canvas.width / 700, 0, 0, canvas.width / 700, 0, 0);
+    ctx.clearRect(0, 0, 700, 470);
+
+    const groundY = 380, H = 250, cx = 350;
+    drawUnit(ctx, cx, groundY, H, -1, false);
+
+    // область корпуса
+    const u = H / 16;
+    const box = { x: cx - u * 2.6, y: groundY - H + u * 4.5, w: u * 5.2, h: u * 6.5 };
+    ctx.strokeStyle = "rgba(77,242,255,.55)";
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(box.x, box.y, box.w, box.h);
+    ctx.setLineDash([]);
+
+    // накопленные точки
+    for (let i = 0; i < hits.length; i++) {
+      const p = hits[i];
+      const age = hits.length - i;
+      ctx.fillStyle = "rgba(147,128,94," + Math.max(0.12, 0.7 - age * 0.09).toFixed(2) + ")";
+      ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); ctx.fill();
+    }
+    // текущая
+    if (hits.length) {
+      const p = hits[hits.length - 1];
+      ctx.globalCompositeOperation = "lighter";
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 26);
+      g.addColorStop(0, "rgba(255,204,51,.95)");
+      g.addColorStop(1, "rgba(255,204,51,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 26, 0, Math.PI * 2); ctx.fill();
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "#FFFFFF";
+      ctx.beginPath(); ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // подпись атакующего
+    const a = attackers[attackerIdx];
+    ctx.font = "500 15px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "rgba(147,128,94,.9)";
+    ctx.fillText("БЬЁТ: " + a.name.toUpperCase() + "  ·  " + a.from.toUpperCase(), 30, 42);
+    ctx.fillStyle = "rgba(184,134,59,.9)";
+    ctx.fillText("ОБЛАСТЬ, А НЕ ТОЧКА", 30, 440);
+  }
+
+  function pushHit() {
+    const groundY = 380, H = 250, cx = 350, u = H / 16;
+    const box = { x: cx - u * 2.6, y: groundY - H + u * 4.5, w: u * 5.2, h: u * 6.5 };
+    const a = attackers[attackerIdx];
+    const jx = (rnd() - 0.5) * 0.55, jy = (rnd() - 0.5) * 0.55;
+    hits.push({
+      x: box.x + box.w * (0.5 + a.bias.x + jx),
+      y: box.y + box.h * (0.5 + a.bias.y + jy)
+    });
+    if (hits.length > 9) hits.shift();
+    if (hits.length % 3 === 0) attackerIdx = (attackerIdx + 1) % attackers.length;
+  }
+
+  /* ---------- таймлайн маркеров ---------- */
+  function drawTimeline(canvas) {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const cssW = canvas.clientWidth || canvas.width;
+    const sc = cssW / 1080;
+    if (canvas._cw !== cssW) {
+      canvas.style.height = (230 * sc) + "px";
+      canvas.width = Math.round(cssW * dpr);
+      canvas.height = Math.round(230 * sc * dpr);
+      canvas._cw = cssW;
+    }
+    const ctx = canvas.getContext("2d");
+    ctx.setTransform(canvas.width / 1080, 0, 0, canvas.width / 1080, 0, 0);
+    ctx.clearRect(0, 0, 1080, 230);
+
+    const x0 = 60, x1 = 1020, y = 118, h = 34;
+    const fx = function (f) { return x0 + (x1 - x0) * (f / (TOTAL - 1)); };
+
+    ctx.fillStyle = "rgba(147,128,94,.28)";
+    ctx.fillRect(x0, y, fx(STRIKE_START) - x0, h);
+    ctx.fillStyle = "rgba(255,204,51,.34)";
+    ctx.fillRect(fx(STRIKE_START), y, fx(STRIKE_END) - fx(STRIKE_START), h);
+    ctx.fillStyle = "rgba(58,44,30,.85)";
+    ctx.fillRect(fx(STRIKE_END), y, x1 - fx(STRIKE_END), h);
+
+    ctx.strokeStyle = "rgba(58,44,30,1)";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(x0, y, x1 - x0, h);
+
+    // деления кадров
+    ctx.fillStyle = "rgba(147,128,94,.35)";
+    for (let f = 0; f < TOTAL; f++) {
+      ctx.fillRect(fx(f), y + h, 1, f % 5 === 0 ? 8 : 4);
+    }
+    ctx.font = "500 13px ui-monospace, Consolas, monospace";
+    for (let f = 0; f < TOTAL; f += 5) {
+      ctx.fillStyle = "rgba(147,128,94,.7)";
+      ctx.fillText(String(f), fx(f) - 4, y + h + 26);
+    }
+
+    function marker(f, name, color, up) {
+      const x = fx(f);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(x, y - (up ? 46 : 0)); ctx.lineTo(x, y + h); ctx.stroke();
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(x, y - (up ? 46 : 0));
+      ctx.lineTo(x - 6, y - (up ? 56 : 10));
+      ctx.lineTo(x + 6, y - (up ? 56 : 10));
+      ctx.closePath(); ctx.fill();
+      ctx.font = "600 14px ui-monospace, Consolas, monospace";
+      const w = ctx.measureText(name).width;
+      ctx.fillText(name, x - w / 2, y - (up ? 66 : 20));
+    }
+
+    marker(STRIKE_START, "StrikeStart", COL.honey, false);
+    marker(CONTACT, "Hit", COL.white, true);
+    marker(STRIKE_END, "StrikeEnd", COL.honey, false);
+
+    // головка воспроизведения
+    const px = fx(frame);
+    ctx.strokeStyle = "rgba(184,134,59,.9)";
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(px, y - 8); ctx.lineTo(px, y + h + 12); ctx.stroke();
+
+    ctx.font = "500 13px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "rgba(147,128,94,.8)";
+    ctx.fillText("КЛИП АТАКИ · 30 КАДРОВ · 1.00 С", x0, 40);
+  }
+
+  /* ---------- цикл ---------- */
+  const cTrail = document.getElementById("c-trail");
+  const cSwept = document.getElementById("c-swept");
+  const cCross = document.getElementById("c-cross");
+  const cFinal = document.getElementById("c-final");
+  const cZone = document.getElementById("c-zone");
+  const cTime = document.getElementById("c-timeline");
+
+  const outFrame = document.getElementById("out-frame");
+  const outPhase = document.getElementById("out-phase");
+
+  function render() {
+    drawTrail(cTrail);
+    drawSwept(cSwept);
+    drawCross(cCross);
+    drawFinal(cFinal);
+    drawZone(cZone);
+    drawTimeline(cTime);
+    outFrame.textContent = String(frame).padStart(2, "0");
+    const ph = phaseOf(frame);
+    outPhase.textContent = ph;
+    outPhase.style.color = ph === "hit" ? COL.white : ph === "strike" ? COL.honey : COL.muted;
+    outPhase.style.borderColor = ph === "hit" ? COL.white : ph === "strike" ? COL.honey : COL.edge;
+  }
+
+  function step(ts) {
+    if (!last) last = ts;
+    const dt = ts - last;
+    last = ts;
+    if (playing) {
+      acc += dt * speed;
+      const per = 1000 / FPS;
+      while (acc >= per) {
+        acc -= per;
+        frame = (frame + 1) % TOTAL;
+        if (frame === CONTACT) { pushHit(); lastHitFrame = frame; }
+      }
+    }
+    render();
+    requestAnimationFrame(step);
+  }
+
+  const btnPlay = document.getElementById("btn-play");
+  btnPlay.textContent = playing ? "Пауза" : "Играть";
+  btnPlay.addEventListener("click", function () {
+    playing = !playing;
+    btnPlay.textContent = playing ? "Пауза" : "Играть";
+    btnPlay.dataset.active = String(!playing);
+  });
+  document.getElementById("btn-prev").addEventListener("click", function () {
+    playing = false; btnPlay.textContent = "Играть"; btnPlay.dataset.active = "true";
+    frame = (frame - 1 + TOTAL) % TOTAL; render();
+  });
+  document.getElementById("btn-next").addEventListener("click", function () {
+    playing = false; btnPlay.textContent = "Играть"; btnPlay.dataset.active = "true";
+    frame = (frame + 1) % TOTAL;
+    if (frame === CONTACT) pushHit();
+    render();
+  });
+  const speedEl = document.getElementById("speed");
+  const speedOut = document.getElementById("speed-out");
+  speedEl.addEventListener("input", function () {
+    speed = Number(speedEl.value) / 100;
+    speedOut.textContent = speedEl.value + "%";
+  });
+
+  window.addEventListener("resize", function () {
+    [cTrail, cSwept, cCross, cFinal].forEach(function (c) { c._cssW = 0; });
+    cZone._cw = 0; cTime._cw = 0;
+    render();
+  });
+
+  pushHit();
+  render();
+  requestAnimationFrame(step);
+})();
+</script>
