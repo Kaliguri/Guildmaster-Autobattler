@@ -11,7 +11,11 @@ param(
     [ValidateSet("Auto", "Direct", "Shadow")]
     [string]$Where = "Auto",
 
-    [string]$Filter
+    [string]$Filter,
+
+    # Сколько ждать освобождения теневого проекта, если в нём уже гоняет другая сессия.
+    # 0 = не ждать вовсе (упасть сразу, прежнее поведение).
+    [int]$WaitMinutes = 20
 )
 
 Set-StrictMode -Version Latest
@@ -37,9 +41,12 @@ $TargetProject = $ProjectPath
 if ($effectiveWhere -eq "Shadow") {
     Write-Host "Готовлю теневой проект (первый раз — полный импорт, это минуты)..." -ForegroundColor Cyan
     $TargetProject = Initialize-UnityShadowProject -ProjectPath $ProjectPath
+    Wait-ForShadowProject -ShadowPath $TargetProject -TimeoutMinutes $WaitMinutes
 }
 
 Write-Host "Режим запуска: $effectiveWhere ($TargetProject)" -ForegroundColor DarkGray
+
+Show-WorkingTreeWarning -ProjectPath $ProjectPath
 
 function Get-TestRunCounts {
     <#

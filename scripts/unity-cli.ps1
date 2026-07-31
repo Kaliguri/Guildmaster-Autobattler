@@ -144,6 +144,72 @@ function Initialize-UnityShadowProject {
     return $shadow
 }
 
+function Wait-ForShadowProject {
+    <#
+    .SYNOPSIS
+    Дождаться, пока теневой проект освободит другая сессия.
+
+    .DESCRIPTION
+    Теневой проект ОДИН на все сессии, и два редактора в одну Library не пускаются: второй просто не
+    стартует, а прогон заканчивается «нет результатов». Раньше это выглядело как поломка тестов, хотя
+    на деле была очередь. Теперь ждём и говорим об этом вслух.
+
+    Своего слота на сессию нет намеренно: каждая Library стоит около четырёх гигабайт и минуты первого
+    импорта, а параллельные прогоны всё равно делят процессор. Очередь дешевле.
+    #>
+    param(
+        [Parameter(Mandatory)][string]$ShadowPath,
+        [int]$TimeoutMinutes = 20
+    )
+
+    if ($TimeoutMinutes -le 0) { return }
+    if (-not (Test-UnityProjectLocked -ProjectPath $ShadowPath)) { return }
+
+    Write-Host "Теневой проект занят другой сессией — жду освобождения (до $TimeoutMinutes мин)..." -ForegroundColor Yellow
+
+    $deadline = (Get-Date).AddMinutes($TimeoutMinutes)
+    $announced = 0
+    while (Test-UnityProjectLocked -ProjectPath $ShadowPath) {
+        if ((Get-Date) -gt $deadline) {
+            throw "Теневой проект занят дольше $TimeoutMinutes мин. Прогон не запускался — соседняя сессия всё ещё гоняет тесты."
+        }
+        Start-Sleep -Seconds 5
+
+        $waited = [int]((Get-Date) - $deadline.AddMinutes(-$TimeoutMinutes)).TotalMinutes
+        if ($waited -gt $announced) {
+            $announced = $waited
+            Write-Host "  ...жду $waited мин" -ForegroundColor DarkGray
+        }
+    }
+    Write-Host "Теневой проект освободился, запускаюсь." -ForegroundColor Green
+}
+
+function Show-WorkingTreeWarning {
+    <#
+    .SYNOPSIS
+    Предупредить, что прогон видит ВСЁ рабочее дерево, а не только правки этой сессии.
+
+    .DESCRIPTION
+    Assets в теневом проекте — junction на живой репозиторий, поэтому тесты идут по дереву целиком,
+    включая незакоммиченные правки соседних сессий. Зелёный прогон означает «дерево сейчас зелёное», а
+    не «мой код зелёный»; красный — не обязательно моя вина. Печатаем масштаб, чтобы чужое падение
+    читалось как чужое.
+    #>
+    param([Parameter(Mandatory)][string]$ProjectPath)
+
+    Push-Location $ProjectPath
+    try {
+        $changed = @(git status --porcelain -- "Assets/_Project" 2>$null)
+    }
+    catch { return }
+    finally { Pop-Location }
+
+    if ($changed.Count -eq 0) { return }
+
+    $scripts = @($changed | Where-Object { $_ -like "*.cs" }).Count
+    Write-Host "В дереве $($changed.Count) изменённых файлов под Assets/_Project (из них .cs: $scripts) — прогон идёт по ним ВСЕМ, включая правки соседних сессий." -ForegroundColor DarkYellow
+}
+
 function Invoke-UnityBatch {
     <#
     .SYNOPSIS
