@@ -826,19 +826,19 @@
 
     <div class="stands">
 
-      <article class="stand">
+      <article class="stand accepted">
         <canvas id="s-steps" width="480" height="330" role="img"
                 aria-label="Горение тремя ступенями яркости"></canvas>
         <div class="stand-body">
-          <p class="tag">вариант 1</p>
+          <p class="tag">принято 31.07.2026</p>
           <h3>Три ступени</h3>
           <p class="dim">Есть / много / на пределе. Пять стаков сворачиваются в три состояния тела.</p>
           <ul class="facts">
             <li><span>различает</span><span>1-2 · 3-4 · 5</span></li>
             <li><span>точность</span><span>по Z</span></li>
           </ul>
-          <p class="verdict">Глаз надёжно берёт три ступени яркости. «Пора детонировать» — верхняя,
-            и она заметно отличается от остальных.</p>
+          <p class="verdict pick">Глаз надёжно берёт три ступени яркости. «Пора детонировать» —
+            верхняя, и она заметно отличается от остальных.</p>
         </div>
       </article>
 
@@ -876,6 +876,40 @@
         </div>
       </article>
 
+    </div>
+  </section>
+
+  <section>
+    <h2>Четвёртая ступень: пасхалка на сломе</h2>
+    <p class="lede">
+      Стак иногда уезжает туда, где балансу нечего сказать — 999 у эффекта без потолка. Это не повод
+      крутить яркость дальше: три ступени уже заняли шкалу читаемости. Вместо ступени тело меняет
+      <b>состояние</b> — перестаёт «гореть» и становится источником.
+    </p>
+
+    <div class="split">
+      <div class="card">
+        <canvas id="s-absurd" width="480" height="330" role="img"
+                aria-label="Абсурдный стак: юнит превращается в факел"></canvas>
+        <p class="dim">Число частиц НЕ растёт — работает тот же потолок, что у искр. Меняется характер:
+          языки от контура сходятся в один столб выше роста, тело уходит в силуэт внутри пересвета.</p>
+      </div>
+      <div class="card">
+        <h3>Три правила, без которых пасхалка ломает язык</h3>
+        <ul class="facts" style="gap:.55rem">
+          <li><span>порог</span><span>10× балансного потолка стака</span></li>
+          <li><span>где живёт</span><span>только у эффектов БЕЗ потолка</span></li>
+          <li><span>частицы</span><span>потолок тот же, растёт характер</span></li>
+        </ul>
+        <p class="dim" style="margin-top:.2rem">
+          Порог выводится, а не пишется числом: где стак ограничен балансом, десятикратное превышение
+          недостижимо и пасхалка просто не срабатывает. Она живёт ровно в тех местах, где игра
+          ломается по задумке.
+        </p>
+        <p class="verdict">В язык читаемости четвёртая ступень <b>не входит</b>: важную информацию на
+          неё вешать нельзя — её почти никто никогда не увидит. Свой тумблер обязателен, как у любого
+          эффекта джуса.</p>
+      </div>
     </div>
   </section>
 
@@ -2127,6 +2161,83 @@
     infoPanel(ctx, x, groundY, H, [["поджог x" + st.stacks, (6 - st.stacks * 1.0).toFixed(1) + " с", "#FF9230"]]);
   }
 
+  // Четвёртая ступень — не «ярче», а ДРУГОЕ состояние: языки сходятся в один столб, тело уходит в
+  // силуэт внутри пересвета. Число частиц держит тот же потолок, что у искр: 999 стаков не имеют
+  // права стать 999 частицами.
+  const PILLAR_EMBERS = 28;
+  function burnPillar(ctx, x, groundY, H) {
+    const u = H / 16;
+    const top = groundY - H * 2.1;
+    const sway = Math.sin(statusTick * 0.085) * u * 0.7;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+
+    const g = ctx.createLinearGradient(0, groundY, 0, top);
+    g.addColorStop(0, "rgba(255,238,196,.50)");
+    g.addColorStop(0.32, "rgba(" + ST.burn + ",.40)");
+    g.addColorStop(1, "rgba(" + ST.burn + ",0)");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.moveTo(x - u * 3.6, groundY + u);
+    ctx.quadraticCurveTo(x - u * 2.8 + sway, groundY - H * 0.9, x + sway * 1.5, top);
+    ctx.quadraticCurveTo(x + u * 2.8 + sway, groundY - H * 0.9, x + u * 3.6, groundY + u);
+    ctx.closePath(); ctx.fill();
+
+    const gc = ctx.createLinearGradient(0, groundY, 0, groundY - H * 1.35);
+    gc.addColorStop(0, "rgba(255,252,240,.55)");
+    gc.addColorStop(1, "rgba(255,236,190,0)");
+    ctx.fillStyle = gc;
+    ctx.beginPath();
+    ctx.moveTo(x - u * 1.5, groundY + u);
+    ctx.quadraticCurveTo(x - u * 1.1 + sway, groundY - H * 0.7, x + sway, groundY - H * 1.35);
+    ctx.quadraticCurveTo(x + u * 1.1 + sway, groundY - H * 0.7, x + u * 1.5, groundY + u);
+    ctx.closePath(); ctx.fill();
+
+    for (let i = 0; i < PILLAR_EMBERS; i++) {
+      const ph = (statusTick * 0.035 + jag(i, 31)) % 1;
+      const px = x + (jag(i, 32) - 0.5) * u * 5 * (0.3 + ph) + sway * ph * 2;
+      const py = groundY - u + (-H * 2.2) * ph;
+      const r = (1.9 - ph * 1.2) * (0.6 + jag(i, 33) * 0.8);
+      ctx.fillStyle = "rgba(255," + Math.round(210 - ph * 70) + ",140," + ((1 - ph) * 0.85).toFixed(3) + ")";
+      ctx.beginPath(); ctx.arc(px, py, Math.max(0.5, r), 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  function drawAbsurdStand(canvas) {
+    const W = 480, H0 = 330;
+    const ctx = stageMini(canvas, W, H0);
+    const groundY = H0 - 74, H = 156, x = 240;
+    const u = H / 16;
+
+    const bx = statusBody(ctx, x, groundY, H, { stun: false, burn: 1, poison: 0, frostbite: 0 });
+    burnPillar(ctx, bx, groundY, H);
+
+    // Тело внутри пересвета: силуэт остаётся читаемым, но перестаёт быть носителем цвета.
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    unitPath(ctx, bx, groundY, H);
+    ctx.clip();
+    const gb = ctx.createRadialGradient(bx, groundY - H * 0.5, u, bx, groundY - H * 0.5, u * 7);
+    gb.addColorStop(0, "rgba(255,246,214,.55)");
+    gb.addColorStop(1, "rgba(255,180,90,.12)");
+    ctx.fillStyle = gb;
+    ctx.fillRect(bx - u * 4, groundY - H - u, u * 8, H + u * 2);
+    ctx.restore();
+
+    ctx.font = "500 14px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "rgba(147,128,94,.9)";
+    ctx.fillText("стаков в симе", 26, H0 - 40);
+    ctx.fillStyle = "rgba(255,146,48,1)";
+    ctx.fillText("999", 158, H0 - 40);
+    ctx.fillStyle = "rgba(147,128,94,.9)";
+    ctx.fillText("видно на теле", 210, H0 - 40);
+    ctx.fillStyle = "rgba(255,220,150,1)";
+    ctx.fillText("ступень 4 · пасхалка", 342, H0 - 40);
+
+    infoPanel(ctx, x, groundY, H, [["поджог x999", "беск.", "#FF9230"]]);
+  }
+
   /* ---------- цикл ---------- */
   const cTrail = document.getElementById("c-trail");
   const cSwept = document.getElementById("c-swept");
@@ -2144,6 +2255,7 @@
   const cZone = document.getElementById("c-zone");
   const cTime = document.getElementById("c-timeline");
   const sChan = document.getElementById("s-channels");
+  const sAbsurd = document.getElementById("s-absurd");
   const BURN_STANDS = [["s-steps", "steps"], ["s-cont", "cont"], ["s-binary", "binary"]]
     .map(function (p) { return { el: document.getElementById(p[0]), mode: p[1] }; });
 
@@ -2167,6 +2279,7 @@
     drawTimeline(cTime);
     drawChannels(sChan);
     for (let i = 0; i < BURN_STANDS.length; i++) drawBurnStand(BURN_STANDS[i].el, BURN_STANDS[i].mode);
+    drawAbsurdStand(sAbsurd);
     outFrame.textContent = String(frame).padStart(2, "0");
     const ph = phaseOf(frame);
     outPhase.textContent = ph;
@@ -2244,7 +2357,7 @@
     cSlash._cw = 0; cPierce._cw = 0; cBlunt._cw = 0;
     rLine._cw = 0; hFull._cw = 0; hSparks._cw = 0; hCuts._cw = 0;
     HYBRID.forEach(function (h) { h.el._cw = 0; });
-    sChan._cw = 0;
+    sChan._cw = 0; sAbsurd._cw = 0;
     BURN_STANDS.forEach(function (b) { b.el._cw = 0; });
     render();
   });
