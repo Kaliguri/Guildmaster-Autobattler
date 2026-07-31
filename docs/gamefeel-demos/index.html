@@ -302,6 +302,7 @@
     <nav class="toc" aria-label="Разделы">
       <a href="#melee">Удар мили</a>
       <a href="#archetypes">Архетипы по типу урона</a>
+      <a href="#hit">Слои хита</a>
       <a href="#hybrid">Гибриды</a>
       <a href="#ranged">Дальний бой</a>
       <span class="toc-todo">Хил</span>
@@ -514,6 +515,42 @@
   </section>
 
   <hr class="rule">
+
+  <hr class="rule">
+
+  <section id="hit">
+    <p class="eyebrow">раздел 3 · слои хита</p>
+    <h2>Что происходит в момент попадания</h2>
+    <p class="lede">Четыре слоя на одно событие, и каждый отвечает за своё. Слева полная сборка,
+      справа — те же слои по отдельности при разном уроне: количество искр и вес порезов идут
+      пропорционально урону, с потолком.</p>
+
+    <div class="split">
+      <div class="card accepted">
+        <canvas id="h-full" width="740" height="470" role="img"
+                aria-label="Полная сборка удара: дуга на взмахе, серп, ядро, искры и порез на хите"></canvas>
+        <div class="stack-note">
+          <div class="layer secondary"><b>Дуга за клинком</b><span>стадия 1 · взмах</span><span>сектор от плеча</span></div>
+          <div class="layer primary"><b>Серп + ядро</b><span>стадия 2 · с кадра Hit</span><span>форма и вспышка</span></div>
+          <div class="layer hit"><b>Искры + порез</b><span>стадия 2</span><span>прочь и на теле</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <canvas id="h-sparks" width="520" height="300" role="img"
+                aria-label="Искры при слабом, среднем и сильном уроне"></canvas>
+        <p class="tag" style="text-align:center">искры · 5% / 15% / 35% HP</p>
+        <p class="dim">Два потока с разным поведением: быстрые уходят прочь по вектору за 0.15 с —
+          это удар; медленные падают вниз за 0.4 с — это вскрытое. Разница читается даже когда цвета
+          близки.</p>
+        <canvas id="h-cuts" width="520" height="300" role="img"
+                aria-label="Накопление порезов на теле и их заживление хилом"></canvas>
+        <p class="tag" style="text-align:center">порезы · накопление и заживление</p>
+        <p class="dim">Каждый удар пишет порез с запасом, равным снятому HP. Хил гасит яркость
+          пропорционально: порез на 1000 при лечении на 400 тускнеет на 40%. Лимит на теле — 6.</p>
+      </div>
+    </div>
+  </section>
 
   <hr class="rule">
 
@@ -748,6 +785,7 @@
 
   let frame = 0, playing = !reduced, speed = 1, acc = 0, last = 0;
   let hitCounter = 0;   // номер удара — соль процедурной формы: два удара подряд не совпадают
+  let healPhase = false; // каждый пятый цикл идёт лечение — видно, как гаснут старые порезы
   if (reduced) frame = CONTACT;
 
   /* ---------- геометрия взмаха ---------- */
@@ -1225,6 +1263,189 @@
     ctx.fillRect(14, 21, 6, 6);
   }
 
+  /* ---------- слои хита: дуга, серп, ядро, искры, порез ---------- */
+  const RED = "255,72,72";   // вскрытое — красный у всех юнитов (единая система)
+
+  // Дуга за клинком: сектор от плеча на strike-фазе. Стадия 1, до хита.
+  function bladeArc(ctx, sx, sy, radius, fade) {
+    const cur = Math.min(frame, STRIKE_END);
+    const a0 = armAngle(STRIKE_START) * Math.PI / 180;
+    const a1 = armAngle(cur) * Math.PI / 180;
+    const g = ctx.createRadialGradient(sx, sy, radius * 0.5, sx, sy, radius);
+    g.addColorStop(0, "rgba(77,242,255,0)");
+    g.addColorStop(0.8, "rgba(77,242,255," + (0.13 * fade).toFixed(3) + ")");
+    g.addColorStop(1, "rgba(150,235,250," + (0.24 * fade).toFixed(3) + ")");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.moveTo(sx, sy);
+    ctx.arc(sx, sy, radius, a0, a1, false);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Искры: два потока. Быстрые — цвет удара, прочь по вектору. Медленные — красные, вниз.
+  function sparks(ctx, x, y, dirDeg, damageFrac, ageFrames, H, salt) {
+    const count = Math.min(24, Math.round(damageFrac * 60) + 3);   // потолок: кит не должен давать стену
+    const fast = Math.round(count * 0.6);
+    const dir = dirDeg * Math.PI / 180;
+    for (let i = 0; i < count; i++) {
+      const isFast = i < fast;
+      const life = isFast ? 4.5 : 12;                 // 0.15 с и 0.4 с при 30 Гц
+      if (ageFrames > life) continue;
+      const k = 1 - ageFrames / life;
+      const spread = (jag(i, salt) - 0.5) * (isFast ? 1.1 : 2.0);
+      const a = dir + spread;
+      const speed = H * (isFast ? 0.055 : 0.025) * (0.6 + jag(i, salt + 3) * 0.8);
+      const d = speed * ageFrames;
+      const gravity = isFast ? 0 : H * 0.0022 * ageFrames * ageFrames;
+      const px = x + Math.cos(a) * d;
+      const py = y + Math.sin(a) * d + gravity;
+      const r = (isFast ? 2.6 : 2.0) * k + 0.8;
+      ctx.fillStyle = isFast
+        ? "rgba(255,242,140," + (0.9 * k).toFixed(3) + ")"
+        : "rgba(" + RED + "," + (0.85 * k).toFixed(3) + ")";
+      ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2); ctx.fill();
+    }
+  }
+
+  // Порезы — СОСТОЯНИЕ тела: место, угол, запас HP, текущая яркость.
+  const CUT_LIMIT = 6;
+  const cuts = [];
+  function addCut(damageFrac, angleDeg, salt) {
+    cuts.push({
+      ox: (jag(salt, 1) - 0.5) * 0.55,      // доли ширины корпуса
+      oy: (jag(salt, 2) - 0.5) * 0.7,
+      angle: angleDeg + (jag(salt, 3) - 0.5) * 30,
+      pool: Math.max(0.02, damageFrac),
+      bright: 1,
+      len: 0.1 + damageFrac * 0.5
+    });
+    if (cuts.length > CUT_LIMIT) cuts.shift();
+  }
+  function healCuts(amountFrac) {
+    // Гасит с головы очереди — самые старые. Пропорционально запасу, не по таймеру.
+    let left = amountFrac;
+    while (left > 0 && cuts.length > 0) {
+      const c = cuts[0];
+      const take = Math.min(left, c.pool * c.bright);
+      c.bright -= take / c.pool;
+      left -= take;
+      if (c.bright <= 0.02) cuts.shift();
+    }
+  }
+  function drawCuts(ctx, cx, groundY, H) {
+    const u = H / 16;
+    const box = { x: cx - u * 2.6, y: groundY - H + u * 4.5, w: u * 5.2, h: u * 6.5 };
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < cuts.length; i++) {
+      const c = cuts[i];
+      const x = box.x + box.w * (0.5 + c.ox), y = box.y + box.h * (0.5 + c.oy);
+      const half = H * c.len * 0.5;
+      const a = c.angle * Math.PI / 180;
+      const dx = Math.cos(a) * half, dy = Math.sin(a) * half;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = "rgba(" + RED + "," + (0.5 * c.bright).toFixed(3) + ")";
+      ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.moveTo(x - dx, y - dy); ctx.lineTo(x + dx, y + dy); ctx.stroke();
+      ctx.strokeStyle = "rgba(255,190,190," + (0.9 * c.bright).toFixed(3) + ")";
+      ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(x - dx, y - dy); ctx.lineTo(x + dx, y + dy); ctx.stroke();
+    }
+    ctx.globalCompositeOperation = "source-over";
+    ctx.restore();
+  }
+
+  // Полная сборка: обе стадии на одном стенде.
+  function drawHitFull(canvas) {
+    const W = 740, HH = 470;
+    const ctx = stageMini(canvas, W, HH);
+    const groundY = HH - 70, H = 230;
+    const attacker = 240, target = 470;
+    const sh = { x: attacker, y: groundY - H + H / 16 * 5.6 };
+
+    drawUnit(ctx, target, groundY, H * 0.95, -1, false);
+    drawUnit(ctx, attacker, groundY, H, 1, true);
+    drawCuts(ctx, target, groundY, H * 0.95);
+
+    const bx = target - 16, by = groundY - H * 0.6;
+    const dmg = 0.22;
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+
+    // Стадия 1 — дуга на взмахе.
+    if (frame >= STRIKE_START && frame <= STRIKE_END + 2) {
+      const fade = frame > STRIKE_END ? 1 - (frame - STRIKE_END) / 2 : 1;
+      bladeArc(ctx, sh.x, sh.y, ARM * 1.04, fade);
+    }
+
+    // Стадия 2 — серп, ядро, искры.
+    if (frame >= CONTACT && frame <= CONTACT + 5) {
+      const t = (frame - CONTACT) / 5;
+      const grow = Math.min(1, t / 0.28);
+      const fade = t < 0.28 ? 1 : 1 - (t - 0.28) / 0.72;
+      const a = tipAt(STRIKE_START, sh.x, sh.y, ARM);
+      const salt = Math.floor(hitCounter) * 5;
+      sickle(ctx, a.x, a.y, bx, by, {
+        bow: H * (0.2 + jag(salt, 1) * 0.08),
+        thick: H * (0.055 + jag(salt, 2) * 0.02),
+        progress: grow, fade: fade, hitAtCenter: true
+      });
+      const k = Math.max(0, 1 - t * 2);
+      if (k > 0) {
+        const g = ctx.createRadialGradient(bx, by, 0, bx, by, H * 0.3 * k);
+        g.addColorStop(0, "rgba(255,255,255," + (0.95 * k).toFixed(3) + ")");
+        g.addColorStop(0.5, "rgba(158,219,255," + (0.5 * k).toFixed(3) + ")");
+        g.addColorStop(1, "rgba(158,219,255,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(bx, by, H * 0.3 * k, 0, Math.PI * 2); ctx.fill();
+      }
+    }
+    if (frame >= CONTACT) sparks(ctx, bx, by, -18, dmg, frame - CONTACT, H, Math.floor(hitCounter) * 9);
+
+    ctx.globalCompositeOperation = "source-over";
+    ctx.restore();
+    drawArmAndBlade(ctx, sh.x, sh.y, frame, ARM);
+    miniLabel(ctx, frame < CONTACT ? "СТАДИЯ 1 · ВЗМАХ, ДУГА ЗА КЛИНКОМ" : "СТАДИЯ 2 · СЕРП, ЯДРО, ИСКРЫ, ПОРЕЗ");
+  }
+
+  // Искры при трёх уровнях урона — видно, что количество идёт пропорцией.
+  function drawSparkScale(canvas) {
+    const W = 520, HH = 300;
+    const ctx = stageMini(canvas, W, HH);
+    const ys = HH * 0.52;
+    const levels = [{ f: 0.05, x: W * 0.2, n: "5%" }, { f: 0.15, x: W * 0.5, n: "15%" }, { f: 0.35, x: W * 0.8, n: "35%" }];
+    ctx.save();
+    ctx.globalCompositeOperation = "lighter";
+    for (let i = 0; i < levels.length; i++) {
+      const L = levels[i];
+      if (frame >= CONTACT) sparks(ctx, L.x, ys, -18, L.f, frame - CONTACT, 190, Math.floor(hitCounter) * 9 + i * 31);
+    }
+    ctx.globalCompositeOperation = "source-over";
+    ctx.restore();
+    ctx.font = "500 13px ui-monospace, Consolas, monospace";
+    for (let i = 0; i < levels.length; i++) {
+      ctx.fillStyle = "rgba(147,128,94,.85)";
+      ctx.fillText(levels[i].n, levels[i].x - 12, HH - 26);
+      ctx.fillStyle = "rgba(184,134,59,.5)";
+      ctx.beginPath(); ctx.arc(levels[i].x, ys, 3, 0, Math.PI * 2); ctx.fill();
+    }
+    miniLabel(ctx, "ИСКРЫ ПРОПОРЦИОНАЛЬНО УРОНУ");
+  }
+
+  // Порезы: накопление и заживление на отдельном юните.
+  function drawCutStand(canvas) {
+    const W = 520, HH = 300;
+    const ctx = stageMini(canvas, W, HH);
+    const groundY = HH - 46, H = 190, cx = W / 2;
+    drawUnit(ctx, cx, groundY, H, -1, false);
+    drawCuts(ctx, cx, groundY, H);
+    ctx.font = "500 13px ui-monospace, Consolas, monospace";
+    ctx.fillStyle = "rgba(147,128,94,.85)";
+    ctx.fillText("ПОРЕЗОВ: " + cuts.length + " / " + CUT_LIMIT, 22, HH - 22);
+    miniLabel(ctx, healPhase ? "ХИЛ ГАСИТ СТАРЫЕ" : "УДАРЫ ПИШУТ ПОРЕЗЫ");
+  }
+
   /* ---------- гибриды: четыре способа смешать два цвета ---------- */
   const FIRE = "255,140,64", ICE = "158,219,255";
 
@@ -1540,6 +1761,9 @@
   const cPierce = document.getElementById("c-pierce");
   const cBlunt = document.getElementById("c-blunt");
   const rLine = document.getElementById("r-line");
+  const hFull = document.getElementById("h-full");
+  const hSparks = document.getElementById("h-sparks");
+  const hCuts = document.getElementById("h-cuts");
   const HYBRID = ["along", "core", "across", "layers"]
     .map(function (m) { return { el: document.getElementById("g-" + m), mode: m }; });
   const cZone = document.getElementById("c-zone");
@@ -1556,6 +1780,9 @@
     drawArchetype(cSlash, "slash");
     drawArchetype(cPierce, "pierce");
     drawArchetype(cBlunt, "blunt");
+    drawHitFull(hFull);
+    drawSparkScale(hSparks);
+    drawCutStand(hCuts);
     for (let i = 0; i < HYBRID.length; i++) drawHybrid(HYBRID[i].el, HYBRID[i].mode);
     drawRanged(rLine);
     drawZone(cZone);
@@ -1577,7 +1804,11 @@
       while (acc >= per) {
         acc -= per;
         frame = (frame + 1) % TOTAL;
-        if (frame === CONTACT) { pushHit(); lastHitFrame = frame; hitCounter++; }
+        if (frame === CONTACT) {
+          pushHit(); lastHitFrame = frame; hitCounter++;
+          healPhase = hitCounter % 5 === 4;
+          if (healPhase) healCuts(0.3); else addCut(0.22, -18, hitCounter * 13);
+        }
       }
     }
     render();
@@ -1612,7 +1843,7 @@
     [cTrail, cSwept, cCross, cFinal].forEach(function (c) { c._cssW = 0; });
     cZone._cw = 0; cTime._cw = 0;
     cSlash._cw = 0; cPierce._cw = 0; cBlunt._cw = 0;
-    rLine._cw = 0;
+    rLine._cw = 0; hFull._cw = 0; hSparks._cw = 0; hCuts._cw = 0;
     HYBRID.forEach(function (h) { h.el._cw = 0; });
     render();
   });
