@@ -57,7 +57,7 @@ $validStatus = @('draft', 'needs_review', 'ready', 'living', 'archive', 'planned
 $validImpl = @('engine', 'partial', 'paper')
 
 $validClusters = @(
-    'Meta', 'Vision', 'Combat', 'Run', 'Content', 'Modes', 'Coop', 'Roster', 'Narrative',
+    'Meta', 'Vision', 'Combat', 'Run', 'Content', 'Modes', 'Coop', 'Roster', 'Narrative', 'Gamefeel',
     'Effect', 'Item', 'Relic', 'Species', 'Faction', 'Enemies',
     'Bandits', 'Goblins', 'Golems', 'Beasts',
     'Reference', 'Explanation', 'How-to', 'Planning'

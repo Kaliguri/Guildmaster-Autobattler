@@ -1,8 +1,8 @@
 ---
-title: "Vision - Gamefeel Backlog"
-order: 20
+title: "Gamefeel - Backlog (Tactile & Time)"
+order: 40
 status: draft
-updated: 2026-07-18
+updated: 2026-07-31
 ---
 > [!note] Границы дока
 > Это **банк идей подачи**, питающий [[visual-direction|Vision - Visual Direction]] и столп

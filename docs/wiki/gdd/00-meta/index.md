@@ -72,12 +72,11 @@ SORT file.name ASC
 - [[difficulty-skill|Vision - Difficulty & Skill]] — три оси, модель рандома, правила честности.
 - [[visual-direction|Vision - Visual Direction]] — визуальный опыт и дорожная карта: стиль, пост-процесс, атмосфера, свет, переходы, gamefeel.
 - [[character-animation|Vision - Character Animation]] — скелетка: два слоя движения, три оси переиспользования, инструмент, слои Animator (план, отложено).
-- [[gdd/10-vision/vfx-color|Vision - VFX Color]] — цвет боевых эффектов: яркость щедро, насыщенность как валюта; главный цвет и палитра разброса; семьи цветов героев и врагов.
 - [[audio-subbuses|Vision - Audio Sub-buses]] — под-шины FMOD как ранний шов микса.
 
 **Бэклоги подачи** (сырые каталоги идей, питают `visual-direction`):
-[[backlog-gamefeel|Gamefeel]] · [[backlog-vfx-particles-shaders|VFX]] · [[backlog-ui-juice|UI Juice]] ·
-[[backlog-atmosphere-light-post|Свет, пост, атмосфера]] · [[backlog-audio-sfx|Audio & SFX]].
+[[backlog-ui-juice|UI Juice]] · [[backlog-atmosphere-light-post|Свет, пост, атмосфера]] ·
+[[backlog-audio-sfx|Audio & SFX]]. Джус и боевые эффекты переехали в `70-gamefeel/`.
 
 ## 20 · Бой (`20-combat/`)
 
@@ -163,6 +162,25 @@ SORT file.name ASC
 
 Владелец кластера — скилл `xgaida-x-nixi-narrative`; тексты пишет он, в ассеты локализации их кладёт
 `data-authoring`.
+
+## 70 · Джус (`70-gamefeel/`)
+
+Заведён 2026-07-31: **как бой ощущается** — эффекты, партиклы, свечение, тряска, замедление. Карта
+кластера — [[gdd/70-gamefeel/index|Gamefeel - Index]].
+
+- [[gdd/70-gamefeel/vfx-language|Gamefeel - VFX Language]] — как выглядит событие: роли-слои,
+  тайминги, масштаб в долях роста юнита, словарь боевых событий.
+- [[gdd/70-gamefeel/vfx-color|Gamefeel - VFX Color]] — чем красим: главный цвет и палитра разброса,
+  роли оттенков ростера *(переехал из `10-vision/`)*.
+- [[gdd/70-gamefeel/asset-palette|Gamefeel - Asset Palette]] — чем рисуем: какая текстура играет
+  какую роль. Не инвентарь ассетов, а назначение.
+- [[gdd/70-gamefeel/backlog-gamefeel|Gamefeel - Backlog (Tactile & Time)]] ·
+  [[gdd/70-gamefeel/backlog-vfx-particles-shaders|Gamefeel - Backlog (Particles & Shaders)]] —
+  банки идей *(переехали из `10-vision/`)*.
+
+Владелец кластера — скилл `xgaida-x-nixi-gamefeel-vfx`: джус — область, где дизайн и реализация
+неотделимы. Тактильно-временной слой (политика значимости, slowmo, реакции камеры) пока живёт в
+треке 5 [[visual-direction|Vision - Visual Direction]] и ждёт переезда сюда.
 
 ## Research (`../../research/`)
 

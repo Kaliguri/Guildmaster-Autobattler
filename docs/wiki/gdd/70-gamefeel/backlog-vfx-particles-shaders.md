@@ -1,8 +1,8 @@
 ---
-title: "Vision - VFX Backlog (Particles & Shaders)"
-order: 18
+title: "Gamefeel - Backlog (Particles & Shaders)"
+order: 50
 status: draft
-updated: 2026-07-18
+updated: 2026-07-31
 ---
 > [!note] Границы дока
 > Это **банк идей подачи**, питающий [[visual-direction|Vision - Visual Direction]] и столп

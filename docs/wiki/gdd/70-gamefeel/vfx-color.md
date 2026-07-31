@@ -1,8 +1,8 @@
 ---
-title: "Vision - VFX Color"
-order: 18
+title: "Gamefeel - VFX Color"
+order: 20
 status: ready
-updated: 2026-07-30
+updated: 2026-07-31
 ---
 
 # Цвет боевых эффектов
