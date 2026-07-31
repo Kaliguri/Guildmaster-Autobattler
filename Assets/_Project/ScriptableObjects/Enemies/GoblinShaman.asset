@@ -55,7 +55,8 @@ MonoBehaviour:
   - Stat: 18
     Op: 3
     Value: 8
-  _grantedEffects: []
+  _grantedEffects:
+  - {fileID: 11400000, guid: 23ac104ea165dda4ba283d4b7eb339ac, type: 2}
   _abilities:
   - _id: shaman_ward
     _effects: []
@@ -82,6 +83,7 @@ MonoBehaviour:
     _channelSeconds: 0
     _channelTickSeconds: 0
     _canMoveWhileCasting: 0
+    _castSource: 0
     _statScalings: []
     _summonUnit: {fileID: 0}
     _summonCount: 0

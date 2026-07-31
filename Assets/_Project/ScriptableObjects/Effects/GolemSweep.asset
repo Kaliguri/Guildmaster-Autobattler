@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
+  m_Name: GolemSweep
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
+  _id: effect.golem_sweep
+  _polarity: 2
+  _tags: 0
+  _baseDuration: -1
+  _stacking: 2
+  _maxStacks: 1
+  _stacksPerApplication: 1
+  _cleanseTier: 0
+  _unremovable: 0
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  _components:
+  - rid: 5615027378792431761
+  _telegraphSeconds: 0
+  _icon: {fileID: 0}
+  _infoTags: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5615027378792431761
+      type: {class: EmpowerNextAttackComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _damageMult: 1
+        _flatPen: 0
+        _blinkBehind: 0
+        _knockbackDistance: 0
+        _splashRadius: 2
+        _consumeTag: 0
+        _bonusOnHitEffects: []
+        _bonusOnHitCount: 1
+        _recastImmediately: 0
+        _splitShare: 0
+        _splitType: 0
+        _damageMultScalings: []

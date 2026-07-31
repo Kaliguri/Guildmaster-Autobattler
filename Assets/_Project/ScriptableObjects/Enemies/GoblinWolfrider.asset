@@ -49,7 +49,9 @@ MonoBehaviour:
   - Stat: 3
     Op: 3
     Value: 6
-  _grantedEffects: []
+  _grantedEffects:
+  - {fileID: 11400000, guid: 7d47445c415a47c4095570e4c15734be, type: 2}
+  - {fileID: 11400000, guid: f4bbe748a65d4a54a9bbd2791a5130ae, type: 2}
   _abilities: []
   _aiPreset: {fileID: 11400000, guid: d05bbe58325e0e9428c3dd746969e8ff, type: 2}
   _ai:

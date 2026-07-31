@@ -52,7 +52,8 @@ MonoBehaviour:
   - Stat: 4
     Op: 3
     Value: 0
-  _grantedEffects: []
+  _grantedEffects:
+  - {fileID: 11400000, guid: 5facc62a7dc18ce4a8e249b3b5984680, type: 2}
   _abilities:
   - _id: golem_stone_ward
     _effects: []
@@ -80,6 +81,7 @@ MonoBehaviour:
     _channelSeconds: 0
     _channelTickSeconds: 0
     _canMoveWhileCasting: 0
+    _castSource: 0
     _statScalings: []
     _summonUnit: {fileID: 0}
     _summonCount: 0

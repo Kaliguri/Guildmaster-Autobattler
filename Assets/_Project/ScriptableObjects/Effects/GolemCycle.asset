@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b70f21ddecb83b447814059b55b70944, type: 3}
+  m_Name: GolemCycle
+  m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.EffectData
+  _id: effect.golem_cycle
+  _polarity: 2
+  _tags: 0
+  _baseDuration: -1
+  _stacking: 0
+  _maxStacks: 1
+  _stacksPerApplication: 1
+  _cleanseTier: 0
+  _unremovable: 0
+  _cleansePrice:
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  - Flat: 0
+    Pct: 0
+  _components:
+  - rid: 5615027378792431763
+  _telegraphSeconds: 0
+  _icon: {fileID: 0}
+  _infoTags: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5615027378792431763
+      type: {class: AttackCycleComponent, ns: Guildmaster.Combat.Effects.Components, asm: Guildmaster.Combat}
+      data:
+        _phases:
+        - {fileID: 0}
+        - {fileID: 11400000, guid: f92242f4a16c63446a75db4ccc6a0ce2, type: 2}
+        - {fileID: 11400000, guid: fa9ff50a6d9e5ba4688dde746c8cf124, type: 2}

@@ -51,6 +51,7 @@ MonoBehaviour:
     Value: 10
   _grantedEffects:
   - {fileID: 11400000, guid: 4b954f618451de44f87a7881b5805328, type: 2}
+  - {fileID: 11400000, guid: f4bbe748a65d4a54a9bbd2791a5130ae, type: 2}
   _abilities:
   - _id: goblin_warcry
     _effects:
@@ -78,6 +79,7 @@ MonoBehaviour:
     _channelSeconds: 0
     _channelTickSeconds: 0
     _canMoveWhileCasting: 0
+    _castSource: 0
     _statScalings: []
     _summonUnit: {fileID: 0}
     _summonCount: 0
