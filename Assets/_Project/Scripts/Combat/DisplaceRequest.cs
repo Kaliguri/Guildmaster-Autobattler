@@ -46,6 +46,12 @@ namespace Guildmaster.Combat
         /// </summary>
         public readonly float        SpeedPerSecond;
 
+        /// <summary>
+        /// Процентное пробивание брони для урона этого полёта, долей: 0.5 = «ядро» и удар о стену считают
+        /// броню вдвое меньшей («Волчий разгон» наездника). 0 = броня как есть.
+        /// </summary>
+        public readonly float        PctArmorPen;
+
         public DisplaceRequest(
             RuntimeUnit target,
             RuntimeUnit source,
@@ -56,7 +62,8 @@ namespace Guildmaster.Combat
             DamageType  damageType,
             float       width,
             float       chainDistance = 0f,
-            float       speedPerSecond = 0f)
+            float       speedPerSecond = 0f,
+            float       pctArmorPen = 0f)
         {
             Target        = target;
             Source        = source;
@@ -68,6 +75,7 @@ namespace Guildmaster.Combat
             Width          = width;
             ChainDistance  = chainDistance;
             SpeedPerSecond = speedPerSecond;
+            PctArmorPen    = pctArmorPen;
         }
     }
 }

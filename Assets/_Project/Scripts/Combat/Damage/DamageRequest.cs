@@ -70,6 +70,19 @@ namespace Guildmaster.Combat
         /// </summary>
         public readonly float BonusFlatPen;
 
+        /// <summary>
+        /// Разовое ПРОЦЕНТНОЕ пробивание брони поверх статов источника, долей: 0.5 = удар считает броню
+        /// вдвое меньшей («Волчий разгон» наездника игнорирует половину защиты). Статами
+        /// <c>PhysPenPct</c>/<c>MagicPenPct</c> так не выразить — они постоянные, а это свойство удара.
+        /// </summary>
+        /// <remarks>
+        /// Процент и плоское пробивание НЕ взаимозаменяемы: процент отвечает «толстой» броне, плоское —
+        /// тонкой, и разгон, которому карточка обещает половину защиты, плоским числом выразим только
+        /// подгонкой под конкретных врагов. Складывается с процентом из статов умножением остатков
+        /// (см. <c>DamagePipeline</c>), поэтому суммарное пробивание никогда не превышает 100%.
+        /// </remarks>
+        public readonly float BonusPctPen;
+
         /// <summary>Урон стихии огня — то, что копит «Угли» и усиливается ими.</summary>
         public bool IsFire => Type == DamageType.Fire;
 
@@ -94,7 +107,8 @@ namespace Guildmaster.Combat
             float armorK,
             DamageSourceKind sourceKind = DamageSourceKind.Ability,
             float vulnerability = 1f,
-            float bonusFlatPen = 0f)
+            float bonusFlatPen = 0f,
+            float bonusPctPen = 0f)
         {
             Source        = source;
             Target        = target;
@@ -104,6 +118,7 @@ namespace Guildmaster.Combat
             SourceKind    = sourceKind;
             Vulnerability = vulnerability;
             BonusFlatPen  = bonusFlatPen;
+            BonusPctPen   = bonusPctPen;
 
             // Не фолбэк, а сигнализация: незаданный тип — дефект контента, и он должен быть слышен
             // сразу. Пайплайн отработает по физической школе (см. DamageTypes.SchoolOf), но тихо

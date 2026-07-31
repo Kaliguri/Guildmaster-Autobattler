@@ -29,6 +29,7 @@ namespace Guildmaster.Combat
             public Data.Definitions.DamageType DamageType;
             public float       Width;
             public float       ChainDistance;
+            public float       PctArmorPen;
             public bool        WallHit; // урон об край арены добивается один раз за полёт
             public readonly List<RuntimeUnit> Hit = new List<RuntimeUnit>();
         }
@@ -76,6 +77,7 @@ namespace Guildmaster.Combat
                 DamageType     = req.DamageType,
                 Width          = req.Width * tuning.CannonballWidthMult,
                 ChainDistance  = req.ChainDistance,
+                PctArmorPen    = req.PctArmorPen,
             });
 
             target.DisplacedTicksRemaining = ticks;
@@ -121,7 +123,8 @@ namespace Guildmaster.Combat
 
                     float wallDamage = a.Damage * ctx.Tuning.WallImpactDamageMult;
                     if (wallDamage > 0f)
-                        ctx.DealDamage(new DamageRequest(a.Source, u, wallDamage, a.DamageType, ctx.ArmorK));
+                        ctx.DealDamage(new DamageRequest(a.Source, u, wallDamage, a.DamageType, ctx.ArmorK,
+                            bonusPctPen: a.PctArmorPen));
 
                     int stunTicks = (int)(ctx.Tuning.WallImpactStunSeconds * SimConstants.TickRate + 0.5f);
                     if (stunTicks > a.TicksRemaining) a.TicksRemaining = stunTicks;
@@ -154,7 +157,8 @@ namespace Guildmaster.Combat
                 if (victim == a.Unit || victim.IsDead || a.Hit.Contains(victim)) continue;
 
                 a.Hit.Add(victim);
-                ctx.DealDamage(new DamageRequest(a.Source, victim, a.Damage, a.DamageType, ctx.ArmorK));
+                ctx.DealDamage(new DamageRequest(a.Source, victim, a.Damage, a.DamageType, ctx.ArmorK,
+                    bonusPctPen: a.PctArmorPen));
 
                 // §10.6: задетый «ядром» не только получает урон, но и сам слабо отбрасывается вдоль полёта.
                 // Источник — тот же (монах), поэтому конец этого цепного полёта тоже триггерит «Вихревой заход».
