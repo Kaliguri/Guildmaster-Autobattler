@@ -71,7 +71,7 @@ Defender висел `effect.spore_mend`, у правого нет. Причин�
 ### 3.9 Атака из нескольких Ударов — СДЕЛАНО 2026-07-30/31, открыты четыре следствия
 
 **Реализовано** (коммит `858cd5413`, журнал [«An Attack May Be Several
-Hits»](journal/2026-07-30-an-attack-may-be-several-hits.md)): клип размечается несколькими маркерами
+Hits»](journal/2026-07-31-an-attack-may-be-several-hits.md)): клип размечается несколькими маркерами
 `Hit`, `AttackTiming.ContactTicks` раскладывает их по тикам свинга, `AutoAttackSystem.Resolve`
 разрешает каждый контакт своим расчётом урона и своими on-hit, доля силы каждого Удара задаётся в
 `UnitData._hitDamageShares`. Рефанд кулдауна получает только пустой свинг. Первый носитель — Монах,

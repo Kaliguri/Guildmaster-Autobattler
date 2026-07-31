@@ -937,10 +937,10 @@
     drawUnit(ctx, s.target, s.groundY, s.H * 0.95, -1, false);
     drawUnit(ctx, s.attacker, s.groundY, s.H, 1, true);
 
-    const START = CONTACT - 2, END = CONTACT + 3;
+    const START = CONTACT, END = CONTACT + 5;
     if (frame >= START && frame <= END) {
       const t = (frame - START) / (END - START);
-      const grow = Math.min(1, t / 0.35);
+      const grow = Math.min(1, t / 0.28);
       const fade = t < 0.35 ? 1 : 1 - (t - 0.35) / 0.65;
 
       // A — кончик клинка на StrikeStart, B — точка хита. Обе точки в мире: серп не едет за бьющим.
@@ -979,11 +979,11 @@
 
     // Один слой: серп по A -> B. Прежняя связка «мазок + дуга от плеча» отменена — у неё было
     // два центра, и потому требовалась иерархия; здесь центр один.
-    const START = CONTACT - 2, END = CONTACT + 3;
+    const START = CONTACT, END = CONTACT + 5;
     const cx = s.target - 18, cy = s.groundY - s.H * 0.62;
     if (frame >= START && frame <= END) {
       const t = (frame - START) / (END - START);
-      const grow = Math.min(1, t / 0.35);
+      const grow = Math.min(1, t / 0.28);
       const fade = t < 0.35 ? 1 : 1 - (t - 0.35) / 0.65;
       const a = tipAt(STRIKE_START, sh.x, sh.y, ARM);
       const salt = Math.floor(hitCounter) * 5;
@@ -1100,11 +1100,11 @@
     drawUnit(ctx, cx, groundY, H, -1, false);
 
     const px = cx - 14, py = groundY - H * 0.62;
-    const START = CONTACT - 2, END = CONTACT + 4;
+    const START = CONTACT, END = CONTACT + 5;
     if (frame < START || frame > END) { archetypeLabel(ctx, kind); return; }
 
     const t = (frame - START) / (END - START);
-    const grow = Math.min(1, t / 0.3);
+    const grow = Math.min(1, t / 0.28);
     const fade = t < 0.3 ? 1 : 1 - (t - 0.3) / 0.7;
 
     // A — начало взмаха, B — точка хита. Обе точки живут в мире, серп строится между ними.
@@ -1234,10 +1234,10 @@
     const groundY = HH - 54, H = 170, cx = W / 2 + 20;
     drawUnit(ctx, cx, groundY, H, -1, false);
 
-    const START = CONTACT - 2, END = CONTACT + 4;
+    const START = CONTACT, END = CONTACT + 5;
     if (frame < START || frame > END) { miniLabel(ctx, hybridName(mode)); return; }
     const t = (frame - START) / (END - START);
-    const grow = Math.min(1, t / 0.3);
+    const grow = Math.min(1, t / 0.28);
     const fade = t < 0.3 ? 1 : 1 - (t - 0.3) / 0.7;
 
     const ax = cx - H * 0.5, ay = groundY - H * 1.07;
