@@ -30,6 +30,12 @@ Shader "Guildmaster/Sprite/HitFlash"
         _Outline ("Outline Amount", Range(0, 1)) = 0
         [HDR] _OutlineColor ("Outline Color", Color) = (1, 1, 1, 1)
 
+        // Свечение части (телеграф каста, реф SAO): оружие/конечность-источник наливается светом.
+        // Emission ПОВЕРХ тела, HDR-цвет пробивает bloom. Пишется per-instance через MPB только в ту
+        // часть, чья роль несёт приём (UnitView/Body), материал один на всех частях.
+        _GlowAmount ("Glow Amount", Range(0, 1)) = 0
+        [HDR] _GlowColor ("Glow Color", Color) = (1, 1, 1, 1)
+
         // Спрайтовая обвязка — SpriteRenderer прокидывает per-renderer, руками не трогать.
         [HideInInspector] _RendererColor ("RendererColor", Color) = (1, 1, 1, 1)
         [HideInInspector] _Flip ("Flip", Vector) = (1, 1, 1, 1)
@@ -99,6 +105,8 @@ Shader "Guildmaster/Sprite/HitFlash"
                 half   _HoloScanScale;
                 half   _HoloScanAmount;
                 half   _Outline;
+                half4  _GlowColor;
+                half   _GlowAmount;
             CBUFFER_END
 
             /// Контур по краю силуэта: там, где рядом с пикселем пустота, — граница тела. Здесь он к месту
@@ -166,6 +174,9 @@ Shader "Guildmaster/Sprite/HitFlash"
                 if (_Outline > 0.001h) mainTex = ApplyOutline(mainTex, i.uv);
                 // Вспышка: заливаем rgb к _FlashColor по силе _FlashAmount (в чистый белый может).
                 mainTex.rgb = lerp(mainTex.rgb, _FlashColor.rgb, saturate(_FlashAmount));
+                // Свечение части: emission поверх, только по телу (умножаем на alpha, иначе засветится
+                // прозрачный квад). HDR _GlowColor уводит rgb за 1.0 — bloom подхватывает свет, не арт.
+                mainTex.rgb += _GlowColor.rgb * (saturate(_GlowAmount) * mainTex.a);
                 return mainTex;
             }
             ENDHLSL
@@ -215,6 +226,8 @@ Shader "Guildmaster/Sprite/HitFlash"
                 half   _HoloScanScale;
                 half   _HoloScanAmount;
                 half   _Outline;
+                half4  _GlowColor;
+                half   _GlowAmount;
             CBUFFER_END
 
             /// Контур по краю силуэта: там, где рядом с пикселем пустота, — граница тела. Здесь он к месту
@@ -276,6 +289,9 @@ Shader "Guildmaster/Sprite/HitFlash"
             {
                 half4 mainTex = i.color * SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv);
                 mainTex.rgb = lerp(mainTex.rgb, _FlashColor.rgb, saturate(_FlashAmount));
+                // Свечение части: emission поверх, только по телу (умножаем на alpha, иначе засветится
+                // прозрачный квад). HDR _GlowColor уводит rgb за 1.0 — bloom подхватывает свет, не арт.
+                mainTex.rgb += _GlowColor.rgb * (saturate(_GlowAmount) * mainTex.a);
                 return mainTex;
             }
             ENDHLSL
