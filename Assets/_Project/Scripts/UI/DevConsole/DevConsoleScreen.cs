@@ -77,6 +77,9 @@ namespace Guildmaster.UI.DevConsole
             var help = Root.Q<Button>("console-help");
             if (help != null) help.clicked += PrintHelp;
 
+            var all = Root.Q<Button>("console-all");
+            if (all != null) all.clicked += PrintAllByGroup;
+
             var clear = Root.Q<Button>("console-clear");
             if (clear != null) clear.clicked += () => { _log?.Clear(); PrintWelcome(); };
 
@@ -126,13 +129,77 @@ namespace Guildmaster.UI.DevConsole
         {
             if (_log == null) return;
 
+            // Подсказки по клавишам ЗДЕСЬ не печатаем: они живут в подвале, на виду постоянно, и в теле
+            // лога уезжали бы вверх с первой же командой (замечание Макса 01.08).
             _log.Append(DevLogKind.Reply, $"Консоль команд. Их сейчас {_registry?.Count ?? 0}.");
             _log.Append(DevLogKind.Info,  "  battles          что можно запустить (или F3 — витрина с поиском)");
             _log.Append(DevLogKind.Info,  "  kit monk         срез одного кита против болванчиков");
             _log.Append(DevLogKind.Info,  "  spawn 4          тест-бой четверо на четверо");
             _log.Append(DevLogKind.Info,  "  restart · win    перезапустить бой · закончить победой");
             _log.Append(DevLogKind.Info,  "  sep · fx · arena группы: расталкивание, эффекты, облик арены");
-            _log.Append(DevLogKind.Info,  "Tab дополняет · ↑↓ история · «справка» — весь список · F2 — лог движка");
+        }
+
+        /// <summary>
+        /// Все команды, СГРУППИРОВАННЫЕ по подсистеме, с заголовком группы: что и для чего. Плоский
+        /// алфавитный список из тридцати пяти строк читается как телефонная книга — по нему нельзя
+        /// понять, что вообще умеет консоль.
+        /// </summary>
+        private void PrintAllByGroup()
+        {
+            if (_log == null || _registry == null) return;
+
+            IReadOnlyList<DevCommand> all = _registry.All;
+            var groups = new List<string>();
+            var byGroup = new Dictionary<string, List<DevCommand>>();
+
+            for (int i = 0; i < all.Count; i++)
+            {
+                string group = GroupOf(all[i].Name);
+                if (!byGroup.TryGetValue(group, out List<DevCommand> list))
+                {
+                    list = new List<DevCommand>();
+                    byGroup.Add(group, list);
+                    groups.Add(group);
+                }
+                list.Add(all[i]);
+            }
+
+            _log.Append(DevLogKind.Reply, $"Все команды ({all.Count}) по группам:");
+            for (int g = 0; g < groups.Count; g++)
+            {
+                _log.Append(DevLogKind.Echo, GroupTitle(groups[g]));
+                List<DevCommand> list = byGroup[groups[g]];
+                for (int i = 0; i < list.Count; i++)
+                    _log.Append(DevLogKind.Info, $"    {list[i].Usage,-34} {list[i].Summary}");
+            }
+        }
+
+        // Группа = первое слово имени до подчёркивания: sep_radius и sep_ally про одно, и в списке им
+        // место рядом. Команды без подчёркивания собираются в «прочее» — заводить им по группе на штуку
+        // значило бы получить двадцать заголовков по одной строке.
+        private static string GroupOf(string name)
+        {
+            int at = name.IndexOf('_');
+            string head = at > 0 ? name.Substring(0, at) : name;
+            switch (head)
+            {
+                case "sep": case "fx": case "arena": case "map": return head;
+                case "battle": case "battles": case "preset": case "kit": return "бои";
+                default: return "прочее";
+            }
+        }
+
+        private static string GroupTitle(string group)
+        {
+            switch (group)
+            {
+                case "бои":   return "  бои — что запустить";
+                case "sep":   return "  sep — расталкивание тел";
+                case "fx":    return "  fx — визуальные эффекты";
+                case "arena": return "  arena — облик арены";
+                case "map":   return "  map — карта акта";
+                default:      return "  прочее — состояние боя и показа";
+            }
         }
 
         /// <summary>Весь список команд с формой вызова — по кнопке «справка».</summary>
@@ -410,8 +477,12 @@ namespace Guildmaster.UI.DevConsole
         private void UpdateStatus()
         {
             if (_status == null) return;
+
+            // Три строки подвала — постоянная шпаргалка: сколько команд, чем управлять, где остальное.
             int count = _registry?.Count ?? 0;
-            _status.text = $"{count} команд · Tab дополняет · ↑↓ история";
+            _status.text = $"{count} команд · история: {_history.Count}\n" +
+                           "Tab дополняет · ↑↓ история · Enter выполняет\n" +
+                           "«все команды» — по группам · F2 лог движка · F3 бои";
         }
 
         private void SetFieldValue(string value)

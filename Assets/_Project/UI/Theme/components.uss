@@ -2811,3 +2811,109 @@
 .gm-picker__cell--kind,
 .gm-picker__cell--tier,
 .gm-picker__cell--hint { color: var(--gm-color-text-muted); }
+
+/* ============================================================================
+ * DEV-ПОЛКИ: правки по разбору Макса 01.08 — подвал, кнопки, колонки.
+ * ========================================================================== */
+
+/* Подвал держит ТРИ строки под служебное (подсказки клавиш, ответ последней команды, счётчики).
+   Фиксированная высота, а не «по контенту»: иначе полка дёргается вверх-вниз на каждой новой строке,
+   и глаз теряет и кнопки, и таблицу. */
+.gm-console__footer {
+    min-height: 84px;
+    align-items: flex-start;
+    padding-top: var(--gm-space-1);
+}
+
+.gm-console__footer-text {
+    flex-grow: 1;
+    -unity-text-align: upper-right;
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-xxs);
+    white-space: normal;
+}
+
+.gm-console__footer-buttons {
+    flex-direction: row;
+    align-items: flex-start;
+    flex-shrink: 0;
+}
+
+/* --- Кнопки полок: свой отклик вместо дефолтного светлого прямоугольника Unity ---
+   Тема Unity подсвечивает :hover заливкой почти белым и рисует свою рамку фокуса — на тёмной полке
+   это выглядит как чужой элемент. Свой отклик строим на том же языке, что вся полка: подчёркивание
+   латунью, текст ярче, никакой заливки. */
+.gm-console__tool {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: none;
+    border-width: 0;
+    border-bottom-width: var(--gm-border-1);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-xxs);
+    padding-left: var(--gm-space-1);
+    padding-right: var(--gm-space-1);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-right: var(--gm-space-1);
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    -unity-text-align: middle-center;
+    transition-duration: 0.08s;
+    transition-property: color, border-bottom-color;
+}
+
+.gm-console__tool:hover {
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--gm-color-text);
+    border-bottom-color: var(--gm-color-brass-700);
+}
+
+.gm-console__tool:active {
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--gm-color-accent);
+    border-bottom-color: var(--gm-color-accent);
+}
+
+.gm-console__tool:focus {
+    background-color: rgba(0, 0, 0, 0);
+    border-color: rgba(0, 0, 0, 0);
+    border-bottom-color: var(--gm-color-brass-700);
+}
+
+/* --- Колонки таблицы: одна ширина у шапки и у строк ---
+   Кнопка шапки несёт собственные padding/margin темы, метка строки — нет; из-за этого столбцы
+   расходились на десяток пикселей, и таблица «ехала» вправо с каждой колонкой. Обнуляем отступы у
+   обоих и держим ширину ТОЛЬКО классом колонки. */
+.gm-picker__head-cell,
+.gm-picker__row > .unity-text-element {
+    margin: 0;
+    padding-left: 0;
+    padding-right: var(--gm-space-1);
+    flex-shrink: 0;
+    -unity-text-align: middle-left;
+}
+
+.gm-picker__head-cell {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: none;
+    border-width: 0;
+}
+
+.gm-picker__head-cell:hover {
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--gm-color-text);
+}
+
+.gm-picker__head-cell:focus {
+    border-color: rgba(0, 0, 0, 0);
+}
+
+/* Ширины: последняя колонка тянется, остальные фиксированы — так строки не разъезжаются. */
+.gm-picker__cell--hint {
+    flex-shrink: 1;
+    flex-grow: 1;
+    min-width: auto;
+    max-width: none;
+}

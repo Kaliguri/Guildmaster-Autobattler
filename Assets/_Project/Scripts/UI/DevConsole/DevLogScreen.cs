@@ -131,8 +131,11 @@ namespace Guildmaster.UI.DevConsole
         private void UpdateStatus()
         {
             if (_status == null) return;
+
             int count = _log?.Count ?? 0;
-            _status.text = $"{count} из {DevConsoleLog.Capacity} строк · F2 закрывает · F1 — команды";
+            _status.text = $"{count} из {DevConsoleLog.Capacity} строк\n" +
+                           "хвост копится, пока лог открыт · старые строки вытесняются\n" +
+                           "F1 команды · F3 бои · F2 закрывает";
         }
 
         // Та же готча, что у командной консоли: до привязки к панели ScrollTo бросает NRE, а вывод

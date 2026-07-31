@@ -10,10 +10,11 @@
                        vertical-scroller-visibility="Auto" horizontal-scroller-visibility="Hidden" />
 
         <ui:VisualElement class="gm-console__footer">
-            <ui:Button name="devlog-save" text="сохранить в файл" class="gm-console__tool" />
-            <ui:Button name="devlog-clear" text="очистить" class="gm-console__tool" />
-            <ui:VisualElement class="gm-console__spacer" picking-mode="Ignore" />
-            <ui:Label name="devlog-status" text="" class="gm-console__status" picking-mode="Ignore" />
+            <ui:VisualElement class="gm-console__footer-buttons">
+                <ui:Button name="devlog-save" text="сохранить в файл" class="gm-console__tool" />
+                <ui:Button name="devlog-clear" text="очистить" class="gm-console__tool" />
+            </ui:VisualElement>
+            <ui:Label name="devlog-status" text="" class="gm-console__footer-text" picking-mode="Ignore" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

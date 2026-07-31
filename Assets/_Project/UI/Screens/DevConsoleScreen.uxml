@@ -22,10 +22,12 @@
         </ui:VisualElement>
 
         <ui:VisualElement class="gm-console__footer">
-            <ui:Button name="console-help" text="справка" class="gm-console__tool" />
-            <ui:Button name="console-clear" text="очистить" class="gm-console__tool" />
-            <ui:VisualElement class="gm-console__spacer" picking-mode="Ignore" />
-            <ui:Label name="console-status" text="" class="gm-console__status" picking-mode="Ignore" />
+            <ui:VisualElement class="gm-console__footer-buttons">
+                <ui:Button name="console-all" text="все команды" class="gm-console__tool" />
+                <ui:Button name="console-help" text="справка" class="gm-console__tool" />
+                <ui:Button name="console-clear" text="очистить" class="gm-console__tool" />
+            </ui:VisualElement>
+            <ui:Label name="console-status" text="" class="gm-console__footer-text" picking-mode="Ignore" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -53,6 +53,10 @@ namespace Guildmaster.DevTools
 
         private readonly List<Entry> _all = new List<Entry>();
         private readonly List<Entry> _shown = new List<Entry>();
+        private readonly List<VisualElement> _rowViews = new List<VisualElement>();
+
+        /// <summary>Ответ последней запущенной команды — показывается в подвале, а не только в логе.</summary>
+        private string _lastResult = string.Empty;
 
         private ScrollView _list;
         private TextField _field;
@@ -258,10 +262,18 @@ namespace Guildmaster.DevTools
             }
         }
 
+        /// <summary>Перекрасить выделение, не пересобирая строки (см. про двойной клик выше).</summary>
+        private void UpdateSelectionClasses()
+        {
+            for (int i = 0; i < _rowViews.Count; i++)
+                _rowViews[i].EnableInClassList("gm-picker__row--selected", i == _selected);
+        }
+
         private void RebuildRows()
         {
             if (_list == null) return;
             _list.Clear();
+            _rowViews.Clear();
 
             int shown = _shown.Count < MaxRows ? _shown.Count : MaxRows;
             for (int i = 0; i < shown; i++)
@@ -278,15 +290,17 @@ namespace Guildmaster.DevTools
                 row.Add(Cell(entry.Tier,    "gm-picker__cell--tier"));
                 row.Add(Cell(entry.Hint,    "gm-picker__cell--hint"));
 
-                // Один клик выбирает, двойной запускает: список пролистывают мышью и ошибочный запуск
-                // боя по касанию — не та цена, которую хочется платить за удобство.
+                // Один клик выбирает, двойной запускает. ВАЖНО: выбор НЕ пересобирает список — иначе
+                // второй клик приходит уже в новый элемент, у которого clickCount снова единица, и
+                // двойной клик не случается никогда (ровно это и было).
                 row.RegisterCallback<ClickEvent>(evt =>
                 {
                     _selected = index;
+                    UpdateSelectionClasses();
                     if (evt.clickCount >= 2) Run();
-                    else RebuildRows();
                 });
 
+                _rowViews.Add(row);
                 _list.Add(row);
             }
 
@@ -312,7 +326,12 @@ namespace Guildmaster.DevTools
         private void UpdateStatus()
         {
             if (_status == null) return;
-            _status.text = $"{_shown.Count} из {_all.Count} · ↑↓ выбор · Enter запуск · F3 закрыть";
+
+            // Три строки подвала: что нашли, чем управлять, чем кончился последний запуск.
+            string tail = string.IsNullOrEmpty(_lastResult) ? "запуска ещё не было" : _lastResult;
+            _status.text = $"найдено {_shown.Count} из {_all.Count}\n" +
+                           $"↑↓ выбор · Enter или двойной клик — запуск · Tab дописать · F3 закрыть\n" +
+                           tail;
         }
 
         // ── Клавиши ───────────────────────────────────────────────────────────────────────
@@ -366,12 +385,20 @@ namespace Guildmaster.DevTools
         {
             if (_registry == null || _shown.Count == 0) return;
 
-            DevCommandResult result = _registry.Execute(_shown[_selected].Command);
-            if (!string.IsNullOrEmpty(result.Message))
-            {
-                if (result.IsError) Debug.LogWarning($"[DevBattleBrowser] - {result.Message}");
-                else Debug.Log($"[DevBattleBrowser] - {result.Message}");
-            }
+            string command = _shown[_selected].Command;
+            DevCommandResult result = _registry.Execute(command);
+
+            // Ответ показываем ЗДЕСЬ, в подвале. Раньше он уходил только в Debug.Log — то есть в лог на
+            // F2, которого в этот момент на экране нет: со стороны выглядело как «Enter не работает»,
+            // хотя команда честно отвечала «боевой скоуп не найден».
+            _lastResult = string.IsNullOrEmpty(result.Message)
+                ? $"{command} — готово"
+                : $"{command} — {result.Message}";
+
+            if (result.IsError) Debug.LogWarning($"[DevBattleBrowser] - {_lastResult}");
+            else Debug.Log($"[DevBattleBrowser] - {_lastResult}");
+
+            UpdateStatus();
         }
 
         /// <summary>Ячейка строки: класс колонки задаёт ширину, ту же, что у подписи в шапке.</summary>
