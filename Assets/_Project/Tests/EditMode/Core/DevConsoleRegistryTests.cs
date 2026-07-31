@@ -267,6 +267,46 @@ namespace Guildmaster.Tests.EditMode.Core
             Assert.AreEqual("zzz", reg.CommonPrefix("zzz"));
         }
 
+        // ── Раскладка ─────────────────────────────────────────────────────────────────────
+
+        [Test]
+        public void Layout_CyrillicMapsByKeyPosition_NotByPhonetics()
+        {
+            Assert.AreEqual("gm_sep", KeyboardLayoutMap.ToLatin("пь_ыуз"),
+                "клавиша важнее звука: «п» даёт «g», потому что это одна и та же клавиша");
+        }
+
+        [Test]
+        public void Layout_UppercaseKeepsCase()
+        {
+            Assert.AreEqual("GM", KeyboardLayoutMap.ToLatin("ПЬ"), "верхний регистр остаётся верхним");
+        }
+
+        [Test]
+        public void Layout_LatinAndDigitsPassThrough()
+        {
+            Assert.AreEqual("gm_spawn_battle 4", KeyboardLayoutMap.ToLatin("gm_spawn_battle 4"),
+                "обычный случай — уже латиница; строка обязана вернуться той же");
+            Assert.AreEqual("0.35", KeyboardLayoutMap.ToLatin("0.35"));
+        }
+
+        [Test]
+        public void Layout_MixedInput_ConvertedPerCharacter()
+        {
+            Assert.AreEqual("gm_sep 0.35", KeyboardLayoutMap.ToLatin("пь_ыуз 0.35"),
+                "переключился посреди строки — доедет всё равно");
+        }
+
+        [Test]
+        public void Layout_TypedWithWrongLayout_ThenExecutes()
+        {
+            var reg = Registry();
+            reg.Register("gm_ping", "проверка", _ => "pong");
+
+            Assert.AreEqual("pong", reg.Execute(KeyboardLayoutMap.ToLatin("пь_зштп")).Message,
+                "набранное с забытой раскладкой доходит до команды");
+        }
+
         [Test]
         public void CommonPrefix_SingleMatch_CompletesFully()
         {

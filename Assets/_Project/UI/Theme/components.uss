@@ -2496,8 +2496,10 @@
 
 /* --- Палитра команд: список совпадений над полем ввода --- */
 
+/* Потолка по высоте нет намеренно: число строк ограничивает сам экран (MaxPaletteHits), а «max-height
+   в процентах» отличался от высоты восьми строк на несколько пикселей и держал скроллбар при четырёх
+   совпадениях из четырёх — полоса читалась как «есть что-то ещё», хотя видно было всё. */
 .gm-console__palette {
-    max-height: 30%;
     margin-bottom: var(--gm-space-0);
     border-top-width: 1px;
     border-top-color: var(--gm-color-border-subtle);
@@ -2530,9 +2532,13 @@
 
 /* --- Строка ввода --- */
 
+/* flex-shrink: 0 — не украшение: выросшая палитра отжимала строку ввода по высоте, и у глифов
+   срезались нижние выносные элементы (подчёркивания в gm_sep_radius пропадали). Место обязан
+   отдавать вывод, у которого есть скролл, а не единственное поле, куда человек смотрит. */
 .gm-console__input-row {
     flex-direction: row;
     align-items: center;
+    flex-shrink: 0;
     border-top-width: 1px;
     border-top-color: var(--gm-color-border-subtle);
     padding-top: var(--gm-space-1);
@@ -2545,9 +2551,11 @@
 
 /* Поле и ghost лежат в одной ячейке друг над другом: ghost снизу печатает дополненное имя
    приглушённым, поле сверху — прозрачным фоном поверх него. */
+/* Высота от шкалы отступов, а не «на глаз»: при 30px нижние выносные элементы (те самые подчёркивания
+   в gm_sep_radius) срезались нижней кромкой слота. */
 .gm-console__field-slot {
     flex-grow: 1;
-    height: 30px;
+    min-height: var(--gm-space-4);
 }
 
 .gm-console__ghost {
@@ -2569,17 +2577,27 @@
     margin: 0;
 }
 
+/* Тема Unity клипит содержимое поля по его рамке, и при высоте ровно по строке первым отрезается то,
+   что ниже базовой линии: хвосты «g» и «p», подчёркивания в gm_sep_radius. Диагноз добыт увеличенным
+   вырезом кадра — на общем скрине это читается как «шрифт странный», а не как обрезка. */
 .gm-console__field .unity-base-text-field__input {
     background-color: rgba(0, 0, 0, 0);
     border-width: 0;
     padding-left: 0;
     padding-right: 0;
+    padding-bottom: var(--gm-space-0);
+    overflow: visible;
     -unity-text-align: middle-left;
+}
+
+.gm-console__field .unity-text-element {
+    overflow: visible;
 }
 
 .gm-console__status {
     -unity-text-align: middle-right;
     color: var(--gm-color-text-muted);
     font-size: var(--gm-font-xxs);
+    flex-shrink: 0;
     padding-top: var(--gm-space-0);
 }

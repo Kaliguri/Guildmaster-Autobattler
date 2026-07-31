@@ -44,6 +44,9 @@ namespace Guildmaster.UI.DevConsole
 
         private int _selectedHit;
 
+        /// <summary>Вывод наполнили до привязки к панели — прокрутить, как только панель появится.</summary>
+        private bool _scrollPending;
+
         public DevConsoleScreen(VisualTreeAsset tree, DevCommandRegistry registry, DevConsoleLog log)
         {
             _tree     = tree;
@@ -75,6 +78,13 @@ namespace Guildmaster.UI.DevConsole
                 _field.RegisterCallback<KeyDownEvent>(OnKeyDown, TrickleDown.TrickleDown);
             }
 
+            Root.RegisterCallback<AttachToPanelEvent>(_ =>
+            {
+                if (!_scrollPending) return;
+                _scrollPending = false;
+                _logView?.schedule.Execute(ScrollToEnd);
+            });
+
             RebuildLog();
             UpdateStatus();
 
@@ -103,7 +113,19 @@ namespace Guildmaster.UI.DevConsole
         private void OnTyped(ChangeEvent<string> evt)
         {
             _historyCursor = -1;
-            RefreshCompletion(evt.newValue);
+
+            // Раскладка ОС нас не касается: набранное в русской раскладке переводится в латиницу по
+            // позиции клавиши, потому что все имена команд латинские (решение Макса 31.07).
+            string latin = KeyboardLayoutMap.ToLatin(evt.newValue);
+            if (!string.Equals(latin, evt.newValue) && _field != null)
+            {
+                int caret = _field.cursorIndex;
+                _field.SetValueWithoutNotify(latin);
+                _field.cursorIndex = caret;
+                _field.selectIndex = caret;
+            }
+
+            RefreshCompletion(latin);
         }
 
         private void OnKeyDown(KeyDownEvent evt)
@@ -185,8 +207,14 @@ namespace Guildmaster.UI.DevConsole
             if (_ghost != null)
             {
                 string completion = typingName ? _registry.CommonPrefix(head) : null;
-                _ghost.text = !string.IsNullOrEmpty(completion) && completion.Length > head.Length
-                    ? completion
+                bool hasTail = !string.IsNullOrEmpty(completion) && completion.Length > head.Length;
+
+                // Печатаем ТОЛЬКО хвост, отодвинув его пробелами на длину набранного. Целая строка под
+                // полем давала наложение двух текстов — символы совпадали, и ввод выглядел полужирным.
+                // Отступ пробелами точен лишь на моноширинном шрифте, и это ещё одна причина, по которой
+                // он у консоли не вкусовщина.
+                _ghost.text = hasTail
+                    ? new string(' ', head.Length) + completion.Substring(head.Length)
                     : string.Empty;
             }
 
@@ -273,9 +301,22 @@ namespace Guildmaster.UI.DevConsole
             _logView.Add(label);
         }
 
+        /// <remarks>
+        /// <b>До привязки к панели <c>ScrollTo</c> бросает NRE</b> (внутри он спрашивает у панели, можно ли
+        /// скроллить сейчас), а <see cref="Build"/> наполняет вывод ДО того, как навигатор добавит корень в
+        /// слой. Поэтому прокрутка откладывается до аттача и идёт через <c>schedule</c>: на самом аттаче
+        /// геометрия ещё не посчитана, и скролл ушёл бы в ноль.
+        /// </remarks>
         private void ScrollToEnd()
         {
             if (_logView == null || _logView.childCount == 0) return;
+
+            if (_logView.panel == null)
+            {
+                _scrollPending = true;
+                return;
+            }
+
             _logView.ScrollTo(_logView[_logView.childCount - 1]);
         }
 
