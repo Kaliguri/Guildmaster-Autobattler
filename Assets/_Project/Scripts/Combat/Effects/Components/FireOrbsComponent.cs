@@ -12,8 +12,8 @@ namespace Guildmaster.Combat.Effects.Components
     /// возвращается ОДНА сфера (4, откатываются независимо); <c>_hasteBuff</c> — ускорение, пока сферы есть
     /// (его величина и длительность живут в самом бафе); <c>_orbStrike</c> — заряд удара со сферой (множитель
     /// и радиус — в нём).</para>
-    /// <para><b>Когда срабатывает:</b> каждый тик держит состояние (взводит заряд и подновляет ускорение,
-    /// если сфера есть), а расход считает по нанесённой авто-атаке носителя.</para>
+    /// <para><b>Когда срабатывает:</b> каждый тик — берёт сферу в руку (тратит заряд и взводит удар), пока
+    /// взведённого нет, и подновляет ускорение.</para>
     /// </summary>
     /// <remarks>
     /// <b>Сферы — это заряды эффекта</b> (<c>RuntimeEffect.ArmCharges</c>): у них уже есть ровно нужная
@@ -27,7 +27,7 @@ namespace Guildmaster.Combat.Effects.Components
     /// перезаписывается, а не копится), но тогда список эффектов носителя дёргался бы 30 раз в секунду.</para>
     /// </remarks>
     [Serializable]
-    public sealed class FireOrbsComponent : IPeriodicComponent, IReactiveComponent
+    public sealed class FireOrbsComponent : IPeriodicComponent
     {
         [Tooltip("Запас сфер. Гоблин-маг = 3.")]
         [Min(1)]
@@ -45,8 +45,6 @@ namespace Guildmaster.Combat.Effects.Components
 
         public float Interval => 1f / Core.Simulation.SimConstants.TickRate;
 
-        public CombatEvent Events => CombatEvent.DamageDealt;
-
         public void OnApply(in EffectContext ctx)
         {
             ctx.Effect.ArmCharges(_orbs);
@@ -58,27 +56,25 @@ namespace Guildmaster.Combat.Effects.Components
         {
             RuntimeUnit self = ctx.Target;
             if (self == null || self.IsDead) return;
-            if (!HasReadyOrb(ctx)) return;
 
-            if (_hasteBuff != null) ctx.Combat.ApplyEffect(self, _hasteBuff, self);
+            bool armed = self.EmpowerDamageMult > 0f;
 
-            // Заряд уже взведён — второй раз не трогаем (см. remarks).
-            if (_orbStrike != null && self.EmpowerDamageMult <= 0f)
-                ctx.Combat.ApplyEffect(self, _orbStrike, self);
-        }
+            // Ускорение держится, пока сфера либо уже в руке (заряд взведён), либо готова к взятию.
+            if (_hasteBuff != null && (armed || HasReadyOrb(in ctx)))
+                ctx.Combat.ApplyEffect(self, _hasteBuff, self);
 
-        public void OnEvent(in EffectContext ctx, in CombatEventData e)
-        {
-            if (!e.IsAutoAttack) return;
+            if (_orbStrike == null || armed) return;   // заряд уже взведён — второй раз не трогаем
 
-            RuntimeUnit self = ctx.Target;
-            if (self == null || self.IsDead) return;
-
+            // Сфера тратится ЗДЕСЬ, вместе со взводом, а не по факту нанесённого удара. Так было
+            // сначала — и давало на один усиленный удар больше, чем сфер: взвод шёл до удара, а расход
+            // после него, поэтому четвёртый удар при трёх сферах всё ещё был усиленным (замер 2026-07-31).
             int recharge = Mathf.Max(1, Mathf.RoundToInt(_rechargeSeconds * Core.Simulation.SimConstants.TickRate));
-            ctx.Effect.TryConsumeCharge(ctx.Combat.CurrentTick, recharge);
+            if (!ctx.Effect.TryConsumeCharge(ctx.Combat.CurrentTick, recharge)) return;
+
+            ctx.Combat.ApplyEffect(self, _orbStrike, self);
         }
 
-        /// <summary>Есть ли сфера, готовая прямо сейчас. Смотрим, не тратя: расход считает удар, а не тик.</summary>
+        /// <summary>Есть ли сфера, готовая прямо сейчас — вопрос без расхода (нужен ускорению).</summary>
         private static bool HasReadyOrb(in EffectContext ctx)
         {
             RuntimeEffect eff = ctx.Effect;
