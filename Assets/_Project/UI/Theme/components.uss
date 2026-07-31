@@ -2422,3 +2422,164 @@
 /* Нижней панели золота у лоадаута здесь нет: золото показывает капсула ран-топбара, а
    .gm-loadout__footer/__gold остались от прежней раскладки экрана и не встречались ни в
    разметке, ни в коде (аудит 2026-07-26, волна 3). */
+
+/* ============================================================================
+ * DEV-КОНСОЛЬ (Трек К): полка сверху, modern-минимализм.
+ * Инструмент выглядит инструментом — токены наши, декора ноль: ни рамок, ни скруглений, ни теней.
+ * Единственная деталь, связывающая консоль с игрой, — латунная линия по нижней кромке.
+ * Моноширинный шрифт здесь не вкусовщина: ghost-подсказка дорисовывает остаток команды ПОД полем
+ * ввода, и совпадение символ-в-символ держится только на равной ширине глифов.
+ * ========================================================================== */
+
+.gm-console {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 45%;
+    background-color: var(--gm-color-console-surface);
+    border-bottom-width: var(--gm-border-1);
+    border-bottom-color: var(--gm-color-accent);
+    padding-top: var(--gm-space-1);
+    padding-bottom: var(--gm-space-1);
+    padding-left: var(--gm-space-2);
+    padding-right: var(--gm-space-2);
+}
+
+/* Моно на всём тексте консоли: 2 класса против 1 у ярусного правила тела → выигрывает по
+   специфичности, независимо от порядка секций в файле. */
+.gm-console .unity-text-element {
+    -unity-font-definition: url("../Fonts/FiraMono-Regular SDF.asset");
+    font-size: var(--gm-font-xs);
+    color: var(--gm-color-text);
+}
+
+/* --- Вывод --- */
+
+.gm-console__log {
+    flex-grow: 1;
+}
+
+.gm-console__log .unity-scroll-view__content-container {
+    flex-direction: column;
+}
+
+/* Строка вывода. Уровень показывает ЛЕВАЯ КРОМКА, а не заливка ряда и не точка-маркер:
+   заливка кричит на пол-экрана, а маркер требовал бы второго элемента в каждой строке
+   (в UITK нет ::before) — то есть вдвое больше элементов на двухсотстрочный буфер. */
+.gm-console__line {
+    border-left-width: var(--gm-border-1);
+    border-left-color: rgba(0, 0, 0, 0);
+    padding-left: var(--gm-space-1);
+    padding-top: 1px;
+    padding-bottom: 1px;
+    white-space: normal;
+}
+
+.gm-console__line--echo {
+    color: var(--gm-color-text-muted);
+}
+
+.gm-console__line--reply {
+    border-left-color: var(--gm-color-info);
+}
+
+.gm-console__line--warn {
+    border-left-color: var(--gm-color-warning);
+    color: var(--gm-color-warning);
+}
+
+.gm-console__line--error {
+    border-left-color: var(--gm-color-danger);
+    color: var(--gm-color-danger);
+}
+
+/* --- Палитра команд: список совпадений над полем ввода --- */
+
+.gm-console__palette {
+    max-height: 30%;
+    margin-bottom: var(--gm-space-0);
+    border-top-width: 1px;
+    border-top-color: var(--gm-color-border-subtle);
+}
+
+.gm-console__palette--hidden {
+    display: none;
+}
+
+.gm-console__hit {
+    flex-direction: row;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: var(--gm-space-1);
+}
+
+.gm-console__hit--selected {
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-console__hit-name {
+    min-width: 260px;
+    color: var(--gm-color-text);
+}
+
+.gm-console__hit-summary {
+    flex-grow: 1;
+    color: var(--gm-color-text-muted);
+}
+
+/* --- Строка ввода --- */
+
+.gm-console__input-row {
+    flex-direction: row;
+    align-items: center;
+    border-top-width: 1px;
+    border-top-color: var(--gm-color-border-subtle);
+    padding-top: var(--gm-space-1);
+}
+
+.gm-console__prompt {
+    color: var(--gm-color-accent);
+    margin-right: var(--gm-space-1);
+}
+
+/* Поле и ghost лежат в одной ячейке друг над другом: ghost снизу печатает дополненное имя
+   приглушённым, поле сверху — прозрачным фоном поверх него. */
+.gm-console__field-slot {
+    flex-grow: 1;
+    height: 30px;
+}
+
+.gm-console__ghost {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    color: var(--gm-color-text-muted);
+    -unity-text-align: middle-left;
+}
+
+.gm-console__field {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+}
+
+.gm-console__field .unity-base-text-field__input {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    -unity-text-align: middle-left;
+}
+
+.gm-console__status {
+    -unity-text-align: middle-right;
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-xxs);
+    padding-top: var(--gm-space-0);
+}

@@ -34,6 +34,7 @@ namespace Guildmaster.DevTools
             ["outcome"]      = BuildOutcome,
             ["mainmenu"]     = BuildMainMenu,
             ["titlecard"]    = BuildTitleCard,
+            ["devconsole"]   = BuildDevConsole,
             ["gallery"]      = BuildGallery,
         };
 
@@ -318,6 +319,47 @@ namespace Guildmaster.DevTools
             if (uxml == null) { AddError(root, "TitleCardScreen.uxml не найден"); return; }
             var seal = AssetDatabase.LoadAssetAtPath<UnityEngine.Sprite>("Assets/_Project/Art/Brand/AppIcon_HappyGuildmasters.png");
             root.Add(Guildmaster.UI.TitleCardScreenView.Build(uxml, seal, RuValue, () => { }));
+        }
+
+        /// <summary>
+        /// Dev-консоль (Трек К) в рабочем состоянии: пара команд в реестре, набранный префикс с открытой
+        /// палитрой и вывод всех четырёх видов строк — стенд должен показывать цвета кромок, а не пустую полку.
+        /// </summary>
+        private static void BuildDevConsole(VisualElement root)
+        {
+            var uxml = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/_Project/UI/Screens/DevConsoleScreen.uxml");
+            if (uxml == null) { AddError(root, "DevConsoleScreen.uxml не найден"); return; }
+
+            var registry = new Guildmaster.Core.DevConsole.DevCommandRegistry();
+            registry.Register("gm_sep_radius", "Радиус тела на единицу Size (live)", a => "0.45",
+                new Guildmaster.Core.DevConsole.DevParam("value", Guildmaster.Core.DevConsole.DevParamType.Float));
+            registry.Register("gm_sep_strength", "Сила расталкивания за тик (live)", a => "1.2",
+                new Guildmaster.Core.DevConsole.DevParam("value", Guildmaster.Core.DevConsole.DevParamType.Float));
+            registry.Register("gm_sep_iters", "Проходов расталкивания за тик (live)", a => "2",
+                new Guildmaster.Core.DevConsole.DevParam("value", Guildmaster.Core.DevConsole.DevParamType.Int));
+            registry.Register("gm_sep_ally", "Мягкость расталкивания своих (0..1, live)", a => "0.35",
+                new Guildmaster.Core.DevConsole.DevParam("value", Guildmaster.Core.DevConsole.DevParamType.Float));
+            registry.Register("gm_arena_swap", "Сменить облик арены с анимацией", a => null,
+                new Guildmaster.Core.DevConsole.DevParam("skinId", Guildmaster.Core.DevConsole.DevParamType.String));
+            registry.Register("gm_spawn_battle", "Запустить тест-бой N юнитов за каждую сторону", a => null,
+                new Guildmaster.Core.DevConsole.DevParam("count", Guildmaster.Core.DevConsole.DevParamType.Int, true));
+
+            var log = new Guildmaster.Core.DevConsole.DevConsoleLog();
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Info, "[BattleBootstrap] - арена собрана: 4 против 3");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Echo, "> gm_arena_swap stone");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Reply, "облик «stone» надет, переход 0.8 с");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Echo, "> gm_sep_radius");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Error, "мало аргументов. Форма: gm_sep_radius <value>");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Warn, "[AudioService] - банк 'sfx_combat' уже загружен");
+            log.Append(Guildmaster.Core.DevConsole.DevLogKind.Info, "[BattleTape] - лента: 1214 событий, показ на тике 342");
+
+            var screen = new Guildmaster.UI.DevConsole.DevConsoleScreen(uxml, registry, log);
+            screen.Build(new Guildmaster.UI.UiScreenContext(root, RuValue));
+            root.Add(screen.Root);
+
+            // Набранный префикс: палитра раскрывается, ghost дорисовывает общее продолжение.
+            var field = screen.Root.Q<TextField>("console-field");
+            if (field != null) field.value = "gm_sep";
         }
 
         private static void BuildGallery(VisualElement root)

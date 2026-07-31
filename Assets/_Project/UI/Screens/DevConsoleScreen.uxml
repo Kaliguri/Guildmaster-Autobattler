@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="console-root" class="gm-console">
+        <ui:ScrollView name="console-log" class="gm-console__log" mode="Vertical" />
+
+        <ui:ScrollView name="console-palette" class="gm-console__palette gm-console__palette--hidden" mode="Vertical" />
+
+        <ui:VisualElement name="console-input-row" class="gm-console__input-row">
+            <ui:Label text="&gt;" class="gm-console__prompt" picking-mode="Ignore" />
+
+            <ui:VisualElement name="console-field-slot" class="gm-console__field-slot">
+                <ui:Label name="console-ghost" text="" class="gm-console__ghost" picking-mode="Ignore" />
+                <ui:TextField name="console-field" class="gm-console__field" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:Label name="console-status" text="" class="gm-console__status" picking-mode="Ignore" />
+    </ui:VisualElement>
+</ui:UXML>
