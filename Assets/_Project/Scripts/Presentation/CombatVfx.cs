@@ -17,11 +17,15 @@ namespace Guildmaster.Presentation
 
         /// <summary>
         /// Заспавнить VFX. <paramref name="dirDegOverride"/> = null → <see cref="VfxData.DefaultDirDeg"/>.
-        /// <paramref name="intensity"/> множит <see cref="VfxData.Scale"/>.
         /// </summary>
+        /// <param name="sizeMultiplier">
+        /// Единственный рантайм-множитель РАЗМЕРА: сила удара. Базовый размер живёт в
+        /// <see cref="VfxData.SizeUnits"/> и здесь не дублируется — множителей размера в проекте ровно
+        /// два, и оба видны в этой строке.
+        /// </param>
         /// <param name="countScale">Множитель КОЛИЧЕСТВА частиц в бёрстах: вес удара читается частотой искр.</param>
         /// <param name="tint">Палитра владельца (<c>UnitData.ResolveVfxGradient</c>) — ДИАПАЗОН для разброса; null = как в префабе.</param>
-        public void Spawn(VfxData data, Vector3 worldPos, float? dirDegOverride = null, float intensity = 1f,
+        public void Spawn(VfxData data, Vector3 worldPos, float? dirDegOverride = null, float sizeMultiplier = 1f,
                           float countScale = 1f, Gradient tint = null)
         {
             if (data == null || data.Prefab == null) return;
@@ -33,12 +37,12 @@ namespace Guildmaster.Presentation
 
             int layerId = ResolveSortingLayerId(data.SortingLayerName);
             float dirDeg = dirDegOverride ?? data.DefaultDirDeg;
-            float scale = data.Scale * Mathf.Max(0.01f, intensity);
+            float sizeUnits = data.SizeUnits * Mathf.Max(0.01f, sizeMultiplier);
 
             ObjectPool<PooledVfx> pool = GetOrCreatePool(data.Prefab);
             PooledVfx vfx = pool.Get();
             _active.Add(vfx);
-            vfx.Play(worldPos, scale, dirDeg, layerId, data.SortingOrder, released =>
+            vfx.Play(worldPos, sizeUnits, dirDeg, layerId, data.SortingOrder, released =>
             {
                 _active.Remove(released);
                 pool.Release(released);

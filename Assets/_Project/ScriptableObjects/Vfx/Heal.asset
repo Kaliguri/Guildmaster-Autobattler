@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.VfxData
   _id: vfx.heal
   _prefab: {fileID: 4181409712942263977, guid: fae0606067aaf654b8d9d714876d3df3, type: 3}
-  _scale: 1
+  _sizeUnits: 0.432
   _sortingLayer: OverheadFX
   _sortingOrder: 0
   _defaultDirDeg: 90

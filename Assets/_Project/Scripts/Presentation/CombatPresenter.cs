@@ -603,7 +603,7 @@ namespace Guildmaster.Presentation
                     : (float?)null;
 
                 _vfx.Spawn(_feel.VfxHitSpark, anchor, sparkDir,
-                           _feel.EvaluateHitVfxIntensity(frac), _feel.EvaluateHitVfxCount(frac),
+                           _feel.EvaluateHitVfxSizeMultiplier(frac), _feel.EvaluateHitVfxCount(frac),
                            VfxPaletteFor(sourceId));   // искры — палитры бьющего
 
                 if (sourceIsMelee)

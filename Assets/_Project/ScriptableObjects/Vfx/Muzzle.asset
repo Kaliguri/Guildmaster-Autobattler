@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.VfxData
   _id: vfx.muzzle
   _prefab: {fileID: 1432045928073713348, guid: 4810b9306d143f847a4f40794acdfafa, type: 3}
-  _scale: 1
+  _sizeUnits: 0.4
   _sortingLayer: OverheadFX
   _sortingOrder: 0
   _defaultDirDeg: 0

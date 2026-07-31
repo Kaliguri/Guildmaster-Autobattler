@@ -22,6 +22,9 @@ namespace Guildmaster.Presentation
         private bool             _playing;
         private Vector3          _baseScale = Vector3.one;
         private bool             _baseScaleCaptured;
+        // Самый крупный startSize среди систем префаба — эталон, к которому приводится SizeUnits.
+        // Префабные размеры значат ПРОПОРЦИЮ (искра меньше вспышки), абсолют приходит из VfxData.
+        private float            _maxBaseStartSize;
         private System.Action<PooledVfx> _onComplete;
 
         private void Awake() => Cache();
@@ -39,7 +42,39 @@ namespace Guildmaster.Presentation
             {
                 _baseScale = transform.localScale;
                 _baseScaleCaptured = true;
+                _maxBaseStartSize = MeasureMaxStartSize();
             }
+        }
+
+        /// <summary>
+        /// Крупнейший <c>startSize</c> префаба — знаменатель пропорции. Ноль означает «частиц нет»
+        /// (эффект собран из спрайтов или мешей): тогда размер остаётся префабным, потому что приводить
+        /// к абсолюту нечего.
+        /// </summary>
+        private float MeasureMaxStartSize()
+        {
+            if (_particles == null) return 0f;
+
+            float max = 0f;
+            for (int i = 0; i < _particles.Length; i++)
+            {
+                ParticleSystem ps = _particles[i];
+                if (ps == null) continue;
+                float size = ps.main.startSize.constantMax;
+                if (size > max) max = size;
+            }
+            return max;
+        }
+
+        /// <summary>
+        /// Множитель трансформа, приводящий пропорции префаба к запрошенному размеру. Масштабируем
+        /// трансформом, а не <c>startSize</c> каждой системы: тогда вместе с частицами едут разлёт,
+        /// скорости и радиус формы — эффект становится больше целиком, а не распухает на месте.
+        /// </summary>
+        private float ResolveTransformScale(float sizeUnits)
+        {
+            if (_maxBaseStartSize <= 0f) return 1f;
+            return Mathf.Max(0.001f, sizeUnits) / _maxBaseStartSize;
         }
 
         /// <summary>
@@ -73,7 +108,12 @@ namespace Guildmaster.Presentation
         /// Проиграть в мировой точке. Sorting: <paramref name="sortingLayerId"/> +
         /// <paramref name="baseSortingOrder"/> + относительный order ребёнка из префаба.
         /// </summary>
-        public void Play(Vector3 worldPos, float scale, float dirDeg,
+        /// <param name="sizeUnits">
+        /// Размер крупнейшей частицы в МИРОВЫХ единицах (из <c>VfxData.SizeUnits</c>, помноженный на
+        /// множитель силы удара). Не безразмерный коэффициент: сколько эффект займёт на экране, видно
+        /// прямо здесь — 0.2 при юните ростом 1.6 это примерно пятнадцать пикселей в боевом кадре.
+        /// </param>
+        public void Play(Vector3 worldPos, float sizeUnits, float dirDeg,
             int sortingLayerId, int baseSortingOrder, System.Action<PooledVfx> onComplete,
             float countScale = 1f, Gradient tint = null)
         {
@@ -84,7 +124,7 @@ namespace Guildmaster.Presentation
 
             transform.position = worldPos;
             transform.rotation = Quaternion.Euler(0f, 0f, dirDeg);
-            transform.localScale = _baseScale * Mathf.Max(0.01f, scale);
+            transform.localScale = _baseScale * ResolveTransformScale(sizeUnits);
 
             ApplySorting(sortingLayerId, baseSortingOrder);
             ApplyEmissionCount(countScale);

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.VfxData
   _id: vfx.contact_dust
   _prefab: {fileID: 1090011081401552239, guid: ff9eda36dd0450942a182b41047086f3, type: 3}
-  _scale: 0.7
+  _sizeUnits: 0.158
   _sortingLayer: GroundFX
   _sortingOrder: 0
   _defaultDirDeg: 90

@@ -299,11 +299,12 @@ namespace Guildmaster.Presentation.Design
         [Tooltip("Искры лечения в HitPoint.")]
         [SerializeField] private VfxData _vfxHeal;
 
-        [Header("VFX — hit-spark intensity by damage weight")]
-        [Tooltip("Множитель scale hit-spark на лёгком ударе (доля урона → 0).")]
-        [SerializeField, Range(0.05f, 1f)] private float _vfxHitIntensityMin = 0.35f;
-        [Tooltip("Множитель scale hit-spark на тяжёлом ударе (доля ≥ HeavyHitFrac).")]
-        [SerializeField, Range(0.05f, 2f)] private float _vfxHitIntensityMax = 1f;
+        [Header("VFX — hit-spark по весу удара (МНОЖИТЕЛИ к VfxData.SizeUnits)")]
+        [Tooltip("Множитель РАЗМЕРА искр на лёгком ударе. Ниже 0.5 не опускать: базовый размер задан так, " +
+                 "чтобы искра читалась, и втрое урезанная перестаёт быть видимой в боевом кадре.")]
+        [SerializeField, Range(0.3f, 1f)] private float _vfxHitSizeMultMin = 0.7f;
+        [Tooltip("Множитель РАЗМЕРА искр на тяжёлом ударе (доля ≥ HeavyHitFrac).")]
+        [SerializeField, Range(0.3f, 2f)] private float _vfxHitSizeMultMax = 1f;
         [Tooltip("Множитель КОЛИЧЕСТВА искр на лёгком ударе. Сила удара читается частотой, а не размером.")]
         [SerializeField, Range(0.05f, 1f)] private float _vfxHitCountMin = 0.4f;
         [Tooltip("Множитель количества искр на тяжёлом ударе (доля ≥ HeavyHitFrac).")]
@@ -427,11 +428,14 @@ namespace Guildmaster.Presentation.Design
 
         public VfxData VfxCastBurst   => _vfxCastBurst;
 
-        /// <summary>Множитель scale hit-spark по доле HP-урона от MaxHP (HeavyHitFrac = полная сила).</summary>
-        public float EvaluateHitVfxIntensity(float hpDamageFrac)
+        /// <summary>
+        /// Множитель РАЗМЕРА hit-spark по доле HP-урона от MaxHP (HeavyHitFrac = полная сила).
+        /// Единственный рантайм-множитель размера эффектов; база — <c>VfxData.SizeUnits</c>.
+        /// </summary>
+        public float EvaluateHitVfxSizeMultiplier(float hpDamageFrac)
         {
             float t = Mathf.Clamp01(hpDamageFrac / Mathf.Max(1e-4f, _heavyHitFrac));
-            return Mathf.Lerp(_vfxHitIntensityMin, _vfxHitIntensityMax, t);
+            return Mathf.Lerp(_vfxHitSizeMultMin, _vfxHitSizeMultMax, t);
         }
 
         /// <summary>Множитель КОЛИЧЕСТВА искр по доле HP-урона: чем тяжелее удар, тем гуще осколки.</summary>
