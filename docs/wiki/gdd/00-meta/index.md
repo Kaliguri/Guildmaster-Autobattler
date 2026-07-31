@@ -168,6 +168,10 @@ SORT file.name ASC
 Заведён 2026-07-31: **как бой ощущается** — эффекты, партиклы, свечение, тряска, замедление. Карта
 кластера — [[gdd/70-gamefeel/index|Gamefeel - Index]].
 
+- [[gdd/70-gamefeel/toolbox|Gamefeel - Toolbox]] — опись арсенала: восемь инструментов и что каждый
+  не умеет, пять видов реакции на момент, десять зон, реестр невыбранного.
+- [[gdd/70-gamefeel/style-sao|Gamefeel - Style Reference (SAO)]] — эталон подачи: четыре
+  диегетических приёма SAO, что берём и что нет.
 - [[gdd/70-gamefeel/vfx-language|Gamefeel - VFX Language]] — как выглядит событие: роли-слои,
   тайминги, масштаб в долях роста юнита, словарь боевых событий.
 - [[gdd/70-gamefeel/time-and-camera|Gamefeel - Time & Camera]] — реакция времени и камеры на момент:
