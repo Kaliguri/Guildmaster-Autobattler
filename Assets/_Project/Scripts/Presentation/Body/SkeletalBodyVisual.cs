@@ -35,6 +35,7 @@ namespace Guildmaster.Presentation.Body
         private BodyVisualState       _lastState;
         private bool                  _effectApplied;
         private Transform[]           _partTransforms;   // кэш: позы частей опрашиваются каждый кадр силуэтом/границами
+        private PartRole[]            _partRoles;        // кэш ролей частей (метка UnitPartRole на узле) — для адресного свечения
         private bool                  _groupWarned;      // про отсутствие группы говорим один раз, а не каждый кадр
 
         /// <summary>Части тела в порядке отрисовки (только чтение — владелец порядка это компонент).</summary>
@@ -78,8 +79,16 @@ namespace Guildmaster.Presentation.Body
         private void CachePartTransforms()
         {
             _partTransforms = new Transform[_parts.Count];
+            _partRoles      = new PartRole[_parts.Count];
             for (int i = 0; i < _parts.Count; i++)
-                _partTransforms[i] = _parts[i] != null ? _parts[i].transform : null;
+            {
+                SpriteRenderer part = _parts[i];
+                _partTransforms[i] = part != null ? part.transform : null;
+                // Метка роли лежит на том же узле, что рендерер части (ставится в префабе, фаза A). Нет
+                // метки — часть обычная (Body) и на касте не светится.
+                var tag = part != null ? part.GetComponent<UnitPartRole>() : null;
+                _partRoles[i] = tag != null ? tag.Role : PartRole.Body;
+            }
         }
 
         public bool HasContent
@@ -115,6 +124,7 @@ namespace Guildmaster.Presentation.Body
                 _mpb.SetColor(BodyShaderIds.FlashColor, flashColor);
                 _mpb.SetFloat(BodyShaderIds.Holo, 0f);
                 _mpb.SetFloat(BodyShaderIds.Outline, 0f);
+                _mpb.SetFloat(BodyShaderIds.GlowAmount, 0f);
                 part.SetPropertyBlock(_mpb);
             }
             _effectApplied = false;
@@ -139,8 +149,10 @@ namespace Guildmaster.Presentation.Body
             {
                 SpriteRenderer part = _parts[i];
                 if (part == null) continue;
+                PartRole role = _partRoles != null && i < _partRoles.Length ? _partRoles[i] : PartRole.Body;
+                bool partGlows = (role & state.GlowRoles) != 0;
                 part.GetPropertyBlock(_mpb);
-                BodyShaderIds.Write(_mpb, state, part.sprite);
+                BodyShaderIds.Write(_mpb, state, part.sprite, partGlows);
                 part.SetPropertyBlock(_mpb);
             }
 

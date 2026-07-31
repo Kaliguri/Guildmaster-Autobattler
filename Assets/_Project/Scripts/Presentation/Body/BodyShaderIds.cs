@@ -18,18 +18,28 @@ namespace Guildmaster.Presentation.Body
         public static readonly int HoloTexel      = Shader.PropertyToID("_HoloTexel");
         public static readonly int Outline        = Shader.PropertyToID("_Outline");
         public static readonly int OutlineColor   = Shader.PropertyToID("_OutlineColor");
+        public static readonly int GlowAmount     = Shader.PropertyToID("_GlowAmount");
+        public static readonly int GlowColor      = Shader.PropertyToID("_GlowColor");
 
         /// <summary>
         /// Разложить состояние кадра в property block одной части. Шаг текселя считается по ТЕКСТУРЕ ЭТОЙ
         /// части: и голограмма, и контур ищут по нему край силуэта, а у составного тела части приходят с
         /// разных атласов — общий шаг дал бы контур разной толщины на руке и на мече.
+        /// <para><paramref name="partGlows"/> решает вызывающий (тело знает роль своей части): свечение
+        /// адресное, поэтому здесь оно НЕ выводится из маски — часть либо светится, либо нет.</para>
         /// </summary>
-        public static void Write(MaterialPropertyBlock mpb, in BodyVisualState state, Sprite sprite)
+        public static void Write(MaterialPropertyBlock mpb, in BodyVisualState state, Sprite sprite, bool partGlows)
         {
             mpb.SetFloat(FlashAmount, state.Flash);
             mpb.SetColor(FlashColor, state.FlashColor);
             mpb.SetFloat(Holo, state.Holo);
             mpb.SetFloat(Outline, state.Outline);
+
+            // Свечение части: сила ненулевая только если ЭТА часть в маске приёма. Не-источники получают 0
+            // явно — иначе оружие, засветившееся кадром раньше, осталось бы гореть, когда приём прошёл.
+            float glow = partGlows && state.HasGlow ? state.Glow : 0f;
+            mpb.SetFloat(GlowAmount, glow);
+            if (glow > 0.0001f) mpb.SetColor(GlowColor, state.GlowColor);
 
             bool needsTexel = state.Outline > 0.0001f || state.Holo > 0.0001f;
             if (needsTexel)

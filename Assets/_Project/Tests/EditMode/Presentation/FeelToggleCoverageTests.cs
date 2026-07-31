@@ -75,6 +75,7 @@ namespace Guildmaster.Tests.EditMode.Presentation
             // Каст
             new Entry("PlayCastOutline",    Switch.Duration, nameof(CombatFeelConfig.CastOutlineDuration)),
             new Entry("PlayCastCharge",     Switch.Duration, nameof(CombatFeelConfig.CastOutlineDuration)),
+            new Entry("PlayCastGlow",       Switch.Toggle,   nameof(CombatFeelConfig.EnableCastGlow)),
 
             // Сигналы симуляции — не джус
             new Entry("OnAttackInterrupted", Switch.NotAnEffect, "сим сообщает, что замах оборван"),

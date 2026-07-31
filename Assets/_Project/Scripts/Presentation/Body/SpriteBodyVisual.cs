@@ -39,6 +39,7 @@ namespace Guildmaster.Presentation.Body
             _mpb.SetColor(BodyShaderIds.FlashColor, flashColor);
             _mpb.SetFloat(BodyShaderIds.Holo, 0f);      // вид могли переиспользовать — голограмма не должна дожить
             _mpb.SetFloat(BodyShaderIds.Outline, 0f);
+            _mpb.SetFloat(BodyShaderIds.GlowAmount, 0f);
             _sprite.SetPropertyBlock(_mpb);
             _effectApplied = false;
             _lastState     = default;
@@ -58,7 +59,9 @@ namespace Guildmaster.Presentation.Body
 
             _mpb ??= new MaterialPropertyBlock();
             _sprite.GetPropertyBlock(_mpb);
-            BodyShaderIds.Write(_mpb, state, _sprite.sprite);
+            // Покадровое тело — один спрайт без ролей частей: у него нет отдельного оружия, поэтому на касте
+            // светится целиком (partGlows = true; сама сила приходит из state.HasGlow внутри Write).
+            BodyShaderIds.Write(_mpb, state, _sprite.sprite, partGlows: true);
             _sprite.SetPropertyBlock(_mpb);
 
             _effectApplied = active;

@@ -25,19 +25,31 @@ namespace Guildmaster.Presentation.Body
         public readonly float Outline;
         public readonly Color OutlineColor;
 
+        /// <summary>0..1 — сила свечения части-источника (<c>_GlowAmount</c>); применяется только к частям в <see cref="GlowRoles"/>.</summary>
+        public readonly float Glow;
+        /// <summary>HDR-цвет свечения (компоненты могут быть &gt;1): цвет юнита, поднятый под порог bloom.</summary>
+        public readonly Color GlowColor;
+        /// <summary>Маска ролей, которые сейчас светятся: часть светится, если её <see cref="PartRole"/> пересекается с маской.</summary>
+        public readonly PartRole GlowRoles;
+
         public BodyVisualState(Color tint, float flash, Color flashColor,
             float holo, Color holoColor, float holoAlpha, float holoScanScale, float holoScanAmount,
-            float outline, Color outlineColor)
+            float outline, Color outlineColor,
+            float glow, Color glowColor, PartRole glowRoles)
         {
             Tint = tint;
             Flash = flash; FlashColor = flashColor;
             Holo = holo; HoloColor = holoColor; HoloAlpha = holoAlpha;
             HoloScanScale = holoScanScale; HoloScanAmount = holoScanAmount;
             Outline = outline; OutlineColor = outlineColor;
+            Glow = glow; GlowColor = glowColor; GlowRoles = glowRoles;
         }
 
+        /// <summary>Светится ли хоть одна часть: сила выше нуля И есть роль в маске.</summary>
+        public bool HasGlow => Glow > 0.0001f && GlowRoles != PartRole.None;
+
         /// <summary>Нужен ли вообще property block: всё по нулям — рендерер идёт обычным путём.</summary>
-        public bool HasEffect => Flash > 0.0001f || Holo > 0.0001f || Outline > 0.0001f;
+        public bool HasEffect => Flash > 0.0001f || Holo > 0.0001f || Outline > 0.0001f || HasGlow;
 
         public bool Equals(BodyVisualState other) =>
             Tint == other.Tint &&
@@ -46,10 +58,11 @@ namespace Guildmaster.Presentation.Body
             Mathf.Approximately(HoloAlpha, other.HoloAlpha) &&
             Mathf.Approximately(HoloScanScale, other.HoloScanScale) &&
             Mathf.Approximately(HoloScanAmount, other.HoloScanAmount) &&
-            Mathf.Approximately(Outline, other.Outline) && OutlineColor == other.OutlineColor;
+            Mathf.Approximately(Outline, other.Outline) && OutlineColor == other.OutlineColor &&
+            Mathf.Approximately(Glow, other.Glow) && GlowColor == other.GlowColor && GlowRoles == other.GlowRoles;
 
         public override bool Equals(object obj) => obj is BodyVisualState s && Equals(s);
-        public override int GetHashCode() => System.HashCode.Combine(Tint, Flash, FlashColor, Holo, Outline, OutlineColor);
+        public override int GetHashCode() => System.HashCode.Combine(Tint, Flash, FlashColor, Holo, Outline, OutlineColor, Glow, GlowRoles);
     }
 
     /// <summary>

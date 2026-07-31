@@ -4,6 +4,9 @@ using Guildmaster.Data.Definitions;
 using LitMotion;
 using UnityEngine;
 using UnityEngine.Events;
+// Псевдоним: `Body` — ещё и свойство вида (IUnitBodyVisual Body), поэтому `Body.PartRole` в выражении
+// резолвится в свойство, а не в неймспейс. Алиас снимает конфликт — пишем просто `PartRole`.
+using PartRole = Guildmaster.Presentation.Body.PartRole;
 
 namespace Guildmaster.Presentation
 {
@@ -235,6 +238,15 @@ namespace Guildmaster.Presentation
         private float _outlineTotal;
         private Color _outlineColor = Color.white;  // главный цвет кастера
         private bool  _outlineCharge;      // это ПОДВОДКА к касту (растёт к концу), а не вспышка «состоялось»
+
+        // Свечение части-источника на касте (реф SAO): заряд за cast-time → пик на выпуске → спад.
+        private float _glowAmount;         // 0..1 — сила свечения (параметр _GlowAmount шейдера тела)
+        private float _glowLeft;           // остаток текущей фазы, сек
+        private float _glowChargeTotal;    // длительность заряда, сек (0 = сразу пик)
+        private float _glowReleaseTotal;   // длительность спада с пика, сек
+        private bool  _glowInCharge;       // идёт заряд (растём к пику) vs спад
+        private Color _glowColor = Color.white;              // HDR-цвет: цвет юнита × bloom-множитель
+        private PartRole _glowRoles = PartRole.None; // какие части светятся; None = не светимся
 
         private CanvasGroup _uiFadeGroup;  // контейнер world-UI: гаснет вместе с телом, а не щелчком
         private float _uiFadeLeft;
@@ -641,6 +653,7 @@ namespace Guildmaster.Presentation
             // анимации, и рука со щитом осталась бы поднятой навсегда — щит держал бы тот, кому уже нечем.
             TickGuardPose(Time.deltaTime);
             TickCastOutline();
+            TickCastGlow();
             TickWorldUiFade();
             TickContactDustCooldown();
             TickIdleBreath();
@@ -1285,7 +1298,8 @@ namespace Guildmaster.Presentation
                 _feel != null ? _feel.HologramBodyAlpha  : 1f,
                 _feel != null ? _feel.HologramScanScale  : 1f,
                 _feel != null ? _feel.HologramScanAmount : 0f,
-                _outlineAmount, _outlineColor);
+                _outlineAmount, _outlineColor,
+                _glowAmount, _glowColor, _glowRoles);
 
             Body.Apply(state);
         }
@@ -1435,6 +1449,64 @@ namespace Guildmaster.Presentation
             _outlineAmount = Mathf.Clamp01(_outlineAmount) * _feel.CastOutlineStrength;
 
             if (_outlineLeft <= 0f) _outlineAmount = 0f;
+        }
+
+        /// <summary>
+        /// Свечение части-источника на касте (реф SAO): часть в маске <paramref name="roles"/> наливается
+        /// светом за <paramref name="chargeSeconds"/> (заряд приёма) и гаснет за спад из конфига. Для
+        /// МГНОВЕННОГО приёма (пассив без каста, пульс оружия у длительного баффа) вызывающий передаёт
+        /// короткий заряд <c>CastGlowPulseRise</c> — получается всполох вместо наливающегося заряда.
+        /// </summary>
+        /// <param name="glowColor">HDR-цвет: цвет юнита, поднятый под порог bloom (резолвит презентер).</param>
+        /// <param name="roles">Какие роли частей светятся (обычно Weapon; Limb для пинка).</param>
+        /// <param name="chargeSeconds">Время заряда (cast-time из симуляции). 0 = сразу пик.</param>
+        public void PlayCastGlow(Color glowColor, PartRole roles, float chargeSeconds)
+        {
+            if (_feel == null || !_feel.EnableCastGlow || roles == PartRole.None) return;
+
+            _glowColor        = glowColor;
+            _glowRoles        = roles;
+            _glowChargeTotal  = Mathf.Max(0f, chargeSeconds);
+            _glowReleaseTotal = Mathf.Max(0.0001f, _feel.CastGlowRelease);
+            _glowInCharge     = _glowChargeTotal > 0.0001f;
+            _glowLeft         = _glowInCharge ? _glowChargeTotal : _glowReleaseTotal;
+            if (!_glowInCharge) _glowAmount = _feel.CastGlowStrength;  // без заряда — стартуем с пика и гаснем
+        }
+
+        /// <summary>Каст оборван: свечение части гаснет мгновенно — обещанного приёма не будет.</summary>
+        public void CancelCastGlow()
+        {
+            if (_glowRoles == PartRole.None) return;
+
+            _glowRoles    = PartRole.None;
+            _glowInCharge = false;
+            _glowLeft     = 0f;
+            _glowAmount   = 0f;
+        }
+
+        // Профиль свечения: заряд за cast-time (форма — кривая конфига, пик к концу) → спад с пика в ноль.
+        // Unscaled, как весь фидбэк каста. Погасли — роль сбрасывается в None, чтобы тело перестало писать glow.
+        private void TickCastGlow()
+        {
+            if (_glowRoles == PartRole.None || _feel == null) return;
+
+            _glowLeft -= Time.unscaledDeltaTime;
+
+            if (_glowInCharge)
+            {
+                float t = _glowChargeTotal > 0.0001f
+                    ? 1f - Mathf.Clamp01(_glowLeft / _glowChargeTotal)
+                    : 1f;
+                float shape = _feel.CastGlowChargeCurve != null ? _feel.CastGlowChargeCurve.Evaluate(t) : t;
+                _glowAmount = Mathf.Clamp01(shape) * _feel.CastGlowStrength;
+
+                if (_glowLeft <= 0f) { _glowInCharge = false; _glowLeft = _glowReleaseTotal; }
+                return;
+            }
+
+            float r = Mathf.Clamp01(_glowLeft / Mathf.Max(0.0001f, _glowReleaseTotal)); // 1→0
+            _glowAmount = r * _feel.CastGlowStrength;
+            if (_glowLeft <= 0f) { _glowAmount = 0f; _glowRoles = PartRole.None; }
         }
 
         /// <summary>Заморозить анимацию этого вида на unscaled-окно (локальный hitstop участника удара).</summary>
