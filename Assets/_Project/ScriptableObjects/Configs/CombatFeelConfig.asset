@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e54a454cf52a3fe4ab1208c27c42d5ac, type: 3}
   m_Name: CombatFeelConfig
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.Design.CombatFeelConfig
+  _palette: {fileID: 11400000, guid: f42219bf529da2c4d909a76d914ab971, type: 2}
   _enableContactDust: 1
   _enableHitNudge: 1
   _enableFacingFlipSquash: 1
   _enableTargetAcquireTell: 1
   _enableIdleBreath: 1
-  _palette: {fileID: 11400000, guid: f42219bf529da2c4d909a76d914ab971, type: 2}
   _enableSchoolFlash: 1
   _enableAttackAnticipation: 1
   _enableAttackerLunge: 1
@@ -48,7 +48,7 @@ MonoBehaviour:
   _deathAnticipateDuration: 0.1
   _deathAnticipateShake: 0.06
   _numberArcGravity: 2.2
-  _healFlashPeak: 0.5
+  _healFlashPeak: 1
   _castOutlineDuration: 0.45
   _castOutlineStrength: 0.9
   _lowHpThreshold: 0.25
