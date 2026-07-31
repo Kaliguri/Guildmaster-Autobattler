@@ -302,8 +302,7 @@
     <nav class="toc" aria-label="Разделы">
       <a href="#melee">Удар мили</a>
       <a href="#archetypes">Архетипы по типу урона</a>
-      <a href="#magic">Формы магии</a>
-      <a href="#through">Сквозь броню</a>
+      <a href="#ranged">Дальний бой</a>
       <span class="toc-todo">Хил</span>
       <span class="toc-todo">Каст и всполохи</span>
       <span class="toc-todo">Статусы</span>
@@ -515,162 +514,37 @@
 
   <hr class="rule">
 
-  <section id="magic">
-    <p class="eyebrow">раздел 3 · предложение, ждёт вердикта</p>
-    <h2 style="font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:300;margin-top:.4rem">
-      Формы магии: восемь типов, две оси
-    </h2>
-    <p class="lede">
-      У магии нет оружия, значит нет и следа клинка. Вместо тринадцати отдельных форм — две оси:
-      <b>куда идёт энергия</b> и <b>из чего она сделана</b>. Пересечение даёт форму, и родственные
-      типы делят её, различаясь плотностью.
-    </p>
-    <p class="note" style="border-top:0;padding-top:0">
-      <b>Все восемь нарисованы ОДНИМ цветом намеренно.</b> Цвет принадлежит бьющему юниту
-      (правило принято 30.07), поэтому тип урона он сообщать не может — вся работа лежит на форме.
-      Если формы не различаются в одном цвете, система не работает. Это и есть проверка.
-    </p>
-
-    <div class="stands">
-      <article class="stand">
-        <canvas id="m-fire" width="440" height="380" role="img" aria-label="Огонь: всплеск наружу, языки растут вверх"></canvas>
-        <div class="stand-body">
-          <p class="tag">магическая школа</p>
-          <h3>Огонь</h3>
-          <ul class="facts">
-            <li><span>энергия</span><span>наружу из точки</span></li>
-            <li><span>вещество</span><span>клубящееся</span></li>
-            <li><span>отличие</span><span>единственный растёт вверх</span></li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="stand">
-        <canvas id="m-ice" width="440" height="380" role="img" aria-label="Лёд: гранёные осколки летят к цели и замирают"></canvas>
-        <div class="stand-body">
-          <p class="tag">магическая школа</p>
-          <h3>Лёд</h3>
-          <ul class="facts">
-            <li><span>энергия</span><span>к цели гранями</span></li>
-            <li><span>вещество</span><span>гранёное</span></li>
-            <li><span>отличие</span><span>прямые острые кромки</span></li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="stand">
-        <canvas id="m-lightning" width="440" height="380" role="img" aria-label="Молния: рваная ломаная с ветвлением, два кадра"></canvas>
-        <div class="stand-body">
-          <p class="tag">магическая школа</p>
-          <h3>Молния</h3>
-          <ul class="facts">
-            <li><span>энергия</span><span>вдоль линии</span></li>
-            <li><span>вещество</span><span>рваное</span></li>
-            <li><span>отличие</span><span>2 кадра, без затухания</span></li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="stand">
-        <canvas id="m-arcane" width="440" height="380" role="img" aria-label="Аркана: правильное кольцо и многоугольник, сжимаются к цели"></canvas>
-        <div class="stand-body">
-          <p class="tag">магическая школа</p>
-          <h3>Аркана</h3>
-          <ul class="facts">
-            <li><span>энергия</span><span>внутрь к точке</span></li>
-            <li><span>вещество</span><span>гранёное, правильное</span></li>
-            <li><span>отличие</span><span>геометрия, а не природа</span></li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="stand">
-        <canvas id="m-poison" width="440" height="380" role="img" aria-label="Яд: низкое облако, оседает и живёт после удара"></canvas>
-        <div class="stand-body">
-          <p class="tag">магическая и физическая половины</p>
-          <h3>Яд</h3>
-          <ul class="facts">
-            <li><span>энергия</span><span>вокруг цели</span></li>
-            <li><span>вещество</span><span>клубящееся, низкое</span></li>
-            <li><span>отличие</span><span>единственный живёт ПОСЛЕ удара</span></li>
-          </ul>
-          <p class="verdict">Физическая половина — то же облако, но мельче и без свечения:
-            одна природа обязана выглядеть роднёй.</p>
-        </div>
-      </article>
-
-      <article class="stand">
-        <canvas id="m-light" width="440" height="380" role="img" aria-label="Свет: конус сверху, проходит сквозь силуэт"></canvas>
-        <div class="stand-body">
-          <p class="tag">чистая школа · сквозь броню</p>
-          <h3>Свет</h3>
-          <ul class="facts">
-            <li><span>энергия</span><span>сверху вниз</span></li>
-            <li><span>вещество</span><span>сплошное, мягкое</span></li>
-            <li><span>отличие</span><span>приходит извне кадра</span></li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="stand">
-        <canvas id="m-dark" width="440" height="380" role="img" aria-label="Тьма: схлопывание внутрь и обратная вспышка"></canvas>
-        <div class="stand-body">
-          <p class="tag">чистая школа · сквозь броню</p>
-          <h3>Тьма</h3>
-          <ul class="facts">
-            <li><span>энергия</span><span>внутрь, поглощение</span></li>
-            <li><span>вещество</span><span>клубящееся</span></li>
-            <li><span>отличие</span><span>обратная вспышка: вокруг светлее</span></li>
-          </ul>
-        </div>
-      </article>
-
-      <article class="stand">
-        <canvas id="m-pure" width="440" height="380" role="img" aria-label="Чистый: голая геометрия без вещества"></canvas>
-        <div class="stand-body">
-          <p class="tag">чистая школа · сквозь броню</p>
-          <h3>Чистый</h3>
-          <ul class="facts">
-            <li><span>энергия</span><span>ниоткуда</span></li>
-            <li><span>вещество</span><span>никакое</span></li>
-            <li><span>отличие</span><span>урон мимо правил — и выглядит так</span></li>
-          </ul>
-        </div>
-      </article>
-    </div>
-  </section>
-
   <hr class="rule">
 
-  <section id="through">
-    <p class="eyebrow">главное предложение раздела</p>
-    <h2>Чистая школа проходит сквозь, а не разбивается о цель</h2>
-    <p class="lede">«Идёт мимо брони» — самая ценная механика в бою, и сегодня она не видна никак.
-      Физика и магия бьются о поверхность: искры летят прочь, эффект живёт снаружи силуэта. Свет,
-      Тьма и Чистый пусть проступают <b>внутри</b> силуэта и за ним.</p>
+  <section id="ranged">
+    <p class="eyebrow">раздел 4 · принято 31.07.2026</p>
+    <h2>Дальний бой: та же система, только прямая</h2>
+    <p class="lede">Выстрелу серп не нужен — у него нет взмаха, и рисовать ему дугу значило бы
+      придумывать движение, которого не было. Ему достаточно <b>линии-всполоха</b>: та же
+      процедурная форма, что у колющего, только A и B лежат вдоль вектора снаряда. Появляется
+      <b>после попадания</b> и отвечает на один вопрос — откуда прилетело.</p>
 
     <div class="split">
-      <div class="card">
-        <canvas id="t-surface" width="520" height="420" role="img"
-                aria-label="Физика и магия: эффект снаружи силуэта, искры отскакивают"></canvas>
-        <p class="tag" style="text-align:center">о поверхность · физика и магия</p>
-        <p class="dim">Эффект живёт снаружи, искры уходят прочь от точки. Броня приняла удар.</p>
+      <div class="card accepted">
+        <canvas id="r-line" width="740" height="420" role="img"
+                aria-label="Дальний бой: снаряд летит, после попадания остаётся линия-всполох по вектору полёта"></canvas>
       </div>
       <div class="card">
-        <canvas id="t-through" width="520" height="420" role="img"
-                aria-label="Чистая школа: эффект проступает внутри силуэта"></canvas>
-        <p class="tag" style="text-align:center">сквозь силуэт · чистая школа</p>
-        <p class="dim">Эффект обрезан по телу и виден только внутри: он не встретил преграды.
-          Одна визуальная черта на три типа, и она говорит ровно то, что игроку нужно —
-          <b>броня не помогла</b>.</p>
+        <h3>Почему это то же самое</h3>
+        <p class="dim">Одна семья форм на весь бой: и мили, и дальний строятся по двум точкам с
+          прогибом. У серпа прогиб большой, у колющего почти ноль, у линии-всполоха — ноль.
+          Разница в числах, а не в коде.</p>
+        <ul class="facts">
+          <li><span>A</span><span>откуда пришёл снаряд</span></li>
+          <li><span>B</span><span>точка попадания</span></li>
+          <li><span>когда</span><span>ПОСЛЕ хита, не в полёте</span></li>
+          <li><span>прогиб</span><span>ноль — снаряд летел прямо</span></li>
+        </ul>
+        <p class="dim">Заодно закрывается вопрос «мимо брони»: у Света, Тьмы и Чистого своей формы
+          нет, но она и не нужна — по самой атаке видно, что это было. Снаряд света читается как
+          снаряд, удар света в ближнем — как один из трёх архетипов.</p>
       </div>
     </div>
-
-    <p class="note">
-      Цена решения честная: нужна обрезка эффекта по силуэту юнита, то есть маска или свой пасс
-      шейдера — самая дорогая идея в этом разделе. Дешёвая замена («просто другой цвет») не
-      сработает: цвет уже занят бьющим.
-    </p>
   </section>
 
   <hr class="rule">
@@ -794,6 +668,7 @@
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   let frame = 0, playing = !reduced, speed = 1, acc = 0, last = 0;
+  let hitCounter = 0;   // номер удара — соль процедурной формы: два удара подряд не совпадают
   if (reduced) frame = CONTACT;
 
   /* ---------- геометрия взмаха ---------- */
@@ -989,37 +864,29 @@
       const grow = Math.min(1, t / 0.35);
       const fade = t < 0.35 ? 1 : 1 - (t - 0.35) / 0.65;
 
-      // Мазок ставится в мире один раз — в точке контакта, и не едет за бьющим.
-      const cx = s.target - 18, cy = s.groundY - s.H * 0.62;
-      const len = s.H * 1.2 * grow, thick = s.H * 0.105 * grow;
-      const tilt = -38 * Math.PI / 180;
-
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(tilt);
-      ctx.globalCompositeOperation = "lighter";
-
-      // серп: две дуги, сходящиеся к остриям
-      const bow = thick * 2.6;
-      function crescent(scale, alpha, color) {
-        ctx.beginPath();
-        ctx.moveTo(-len / 2 * scale, 0);
-        ctx.quadraticCurveTo(0, -bow * scale - thick * scale, len / 2 * scale, 0);
-        ctx.quadraticCurveTo(0, -bow * scale + thick * scale, -len / 2 * scale, 0);
-        ctx.closePath();
-        ctx.fillStyle = color.replace("ALPHA", (alpha * fade).toFixed(3));
-        ctx.fill();
-      }
-      crescent(1.0, 0.42, "rgba(77,242,255,ALPHA)");
-      crescent(0.86, 0.55, "rgba(160,250,255,ALPHA)");
-      crescent(0.62, 0.9, "rgba(255,255,255,ALPHA)");
+      // A — кончик клинка на StrikeStart, B — точка хита. Обе точки в мире: серп не едет за бьющим.
+      const a = tipAt(STRIKE_START, sh.x, sh.y, ARM);
+      const bx = s.target - 18, by = s.groundY - s.H * 0.62;
+      const salt = Math.floor(hitCounter) * 5;
+      sickle(ctx, a.x, a.y, bx, by, {
+        bow: s.H * (0.2 + jag(salt, 1) * 0.08),
+        thick: s.H * (0.055 + jag(salt, 2) * 0.02),
+        progress: grow, fade: fade, hitAtCenter: true
+      });
 
       ctx.globalCompositeOperation = "source-over";
-      ctx.restore();
+      ctx.font = "600 13px ui-monospace, Consolas, monospace";
+      [[a.x, a.y, "A"], [bx, by, "B"]].forEach(function (pt) {
+        ctx.strokeStyle = "rgba(184,134,59,.75)";
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.arc(pt[0], pt[1], 6, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = "rgba(198,154,75,.95)";
+        ctx.fillText(pt[2], pt[0] - 3, pt[1] - 11);
+      });
     }
 
     drawArmAndBlade(ctx, sh.x, sh.y, frame, ARM);
-    label(ctx, "мазок: 4 кадра, стоит в мире", COL.holo);
+    label(ctx, "серп A -> B, 4 кадра", COL.holo);
   }
 
   /* ---------- принятая связка: дуга (тише) + мазок (ярче) + ядро попадания ---------- */
@@ -1031,61 +898,26 @@
     drawUnit(ctx, s.target, s.groundY, s.H * 0.95, -1, false);
     drawUnit(ctx, s.attacker, s.groundY, s.H, 1, true);
 
-    // secondary: дуга. Тусклее втрое и без белого ядра — иначе спорит с мазком.
-    if (frame >= STRIKE_START && frame <= STRIKE_END + 2) {
-      const cur = Math.min(frame, STRIKE_END);
-      const a0 = armAngle(STRIKE_START) * Math.PI / 180;
-      const a1 = armAngle(cur) * Math.PI / 180;
-      const fade = frame > STRIKE_END ? 1 - (frame - STRIKE_END) / 2 : 1;
-
-      ctx.globalCompositeOperation = "lighter";
-      const grad = ctx.createRadialGradient(sh.x, sh.y, ARM * 0.5, sh.x, sh.y, ARM * 1.04);
-      grad.addColorStop(0, "rgba(77,242,255,0)");
-      grad.addColorStop(0.8, "rgba(77,242,255," + (0.11 * fade).toFixed(3) + ")");
-      grad.addColorStop(1, "rgba(120,225,245," + (0.20 * fade).toFixed(3) + ")");
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.moveTo(sh.x, sh.y);
-      ctx.arc(sh.x, sh.y, ARM * 1.04, a0, a1, false);
-      ctx.closePath();
-      ctx.fill();
-      ctx.globalCompositeOperation = "source-over";
-    }
-
-    // primary: мазок в точке контакта
+    // Один слой: серп по A -> B. Прежняя связка «мазок + дуга от плеча» отменена — у неё было
+    // два центра, и потому требовалась иерархия; здесь центр один.
     const START = CONTACT - 2, END = CONTACT + 3;
     const cx = s.target - 18, cy = s.groundY - s.H * 0.62;
     if (frame >= START && frame <= END) {
       const t = (frame - START) / (END - START);
       const grow = Math.min(1, t / 0.35);
       const fade = t < 0.35 ? 1 : 1 - (t - 0.35) / 0.65;
-      const len = s.H * 1.2 * grow, thick = s.H * 0.105 * grow;
-
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(-38 * Math.PI / 180);
-      ctx.globalCompositeOperation = "lighter";
-      const bow = thick * 2.6;
-      function crescent(scale, alpha, color) {
-        ctx.beginPath();
-        ctx.moveTo(-len / 2 * scale, 0);
-        ctx.quadraticCurveTo(0, -bow * scale - thick * scale, len / 2 * scale, 0);
-        ctx.quadraticCurveTo(0, -bow * scale + thick * scale, -len / 2 * scale, 0);
-        ctx.closePath();
-        ctx.fillStyle = color.replace("ALPHA", (alpha * fade).toFixed(3));
-        ctx.fill();
-      }
-      crescent(1.0, 0.42, "rgba(77,242,255,ALPHA)");
-      crescent(0.86, 0.55, "rgba(160,250,255,ALPHA)");
-      crescent(0.62, 0.9, "rgba(255,255,255,ALPHA)");
-      ctx.globalCompositeOperation = "source-over";
-      ctx.restore();
+      const a = tipAt(STRIKE_START, sh.x, sh.y, ARM);
+      const salt = Math.floor(hitCounter) * 5;
+      sickle(ctx, a.x, a.y, cx, cy, {
+        bow: s.H * (0.2 + jag(salt, 1) * 0.08),
+        thick: s.H * (0.055 + jag(salt, 2) * 0.02),
+        progress: grow, fade: fade, hitAtCenter: true
+      });
     }
 
-    // ядро попадания: живёт 3 кадра от контакта и только если удар вошёл
+    // Ядро попадания: живёт 3 кадра от контакта и только если удар вошёл.
     if (frame >= CONTACT && frame <= CONTACT + 2) {
       const k = 1 - (frame - CONTACT) / 3;
-      ctx.globalCompositeOperation = "lighter";
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, s.H * 0.34 * k);
       g.addColorStop(0, "rgba(255,255,255," + (0.95 * k).toFixed(3) + ")");
       g.addColorStop(0.45, "rgba(255,204,51," + (0.5 * k).toFixed(3) + ")");
@@ -1093,19 +925,17 @@
       ctx.fillStyle = g;
       ctx.beginPath(); ctx.arc(cx, cy, s.H * 0.34 * k, 0, Math.PI * 2); ctx.fill();
 
-      // искры прочь от удара
       for (let i = 0; i < 7; i++) {
         const ang = (-30 + i * 13) * Math.PI / 180;
         const d = s.H * (0.14 + 0.16 * (frame - CONTACT + 1)) * (0.7 + (i % 3) * 0.2);
-        const px = cx + Math.cos(ang) * d, py = cy + Math.sin(ang) * d;
         ctx.fillStyle = "rgba(255,242,140," + (0.85 * k).toFixed(3) + ")";
-        ctx.beginPath(); ctx.arc(px, py, 3.2 * k + 1, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx + Math.cos(ang) * d, cy + Math.sin(ang) * d, 3.2 * k + 1, 0, Math.PI * 2); ctx.fill();
       }
-      ctx.globalCompositeOperation = "source-over";
     }
+    ctx.globalCompositeOperation = "source-over";
 
     drawArmAndBlade(ctx, sh.x, sh.y, frame, ARM);
-    label(ctx, "принято: мазок + дуга + ядро", COL.honey);
+    label(ctx, "принято: серп A -> B + ядро", COL.honey);
   }
 
   /* ---------- три архетипа: одна семья параметров ---------- */
@@ -1114,6 +944,59 @@
   function jag(i, salt) {
     const x = Math.sin(i * 12.9898 + salt * 78.233) * 43758.5453;
     return x - Math.floor(x);
+  }
+
+  /* ---------- серп по двум точкам ----------
+     A — начало взмаха (StrikeStart), B — точка хита. Дуга строится между ними с прогибом;
+     куда меч ушёл дальше, эффект не интересует. Форма процедурна: прогиб, толщина и неровность
+     берутся от номера удара, поэтому два удара подряд не дают одинаковый знак. Размер при этом
+     генератор не трогает — он несёт вес удара.                                                   */
+  function sickle(ctx, ax, ay, bx, by, opt) {
+    const bow = opt.bow, thick = opt.thick, prog = Math.max(0.02, Math.min(1, opt.progress));
+    // Где на форме лежит точка хита. У серпа и веретена она ЦЕНТРАЛЬНАЯ: клинок не встаёт в теле,
+    // он проходит насквозь, поэтому конец формы — на столько же дальше. У дробящего точка хита
+    // КОНЕЧНАЯ: булава там и остаётся, а дальше идёт звезда.
+    const tipX = opt.hitAtCenter ? ax + (bx - ax) * 2 : bx;
+    const tipY = opt.hitAtCenter ? ay + (by - ay) * 2 : by;
+    // «Прорастание» от A к концу формы.
+    const ex = ax + (tipX - ax) * prog, ey = ay + (tipY - ay) * prog;
+    const mx = (ax + ex) / 2, my = (ay + ey) / 2;
+    const dx = ex - ax, dy = ey - ay;
+    const len = Math.max(1e-3, Math.hypot(dx, dy));
+    const nx = -dy / len, ny = dx / len;          // нормаль к хорде — в неё уходит прогиб
+
+    function band(scale, alpha, color) {
+      const cx1 = mx + nx * bow * scale, cy1 = my + ny * bow * scale;
+      const t = thick * scale;
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.quadraticCurveTo(cx1 + nx * t, cy1 + ny * t, ex, ey);
+      ctx.quadraticCurveTo(cx1 - nx * t, cy1 - ny * t, ax, ay);
+      ctx.closePath();
+      ctx.fillStyle = "rgba(" + color + "," + alpha.toFixed(3) + ")";
+      ctx.fill();
+    }
+    band(1.0, 0.40 * opt.fade, "77,242,255");
+    band(0.82, 0.55 * opt.fade, "160,250,255");
+    band(0.55, 0.92 * opt.fade, "255,255,255");
+  }
+
+  // Звезда-трещина в точке B — вторая часть дробящего удара.
+  function crackStar(ctx, x, y, radius, t, fade, salt) {
+    const RAYS = 8;
+    const inner = radius * (0.05 + 0.45 * t);
+    for (let i = 0; i < RAYS; i++) {
+      const a = (i / RAYS) * Math.PI * 2 + jag(i, salt) * 0.35 - 0.17;
+      const lenK = 0.45 + jag(i, salt + 4) * 0.55;
+      const wid = (0.045 + jag(i, salt + 8) * 0.05) * (1 - t * 0.4);
+      ctx.beginPath();
+      ctx.moveTo(x + Math.cos(a - wid) * inner, y + Math.sin(a - wid) * inner);
+      ctx.lineTo(x + Math.cos(a) * radius * lenK, y + Math.sin(a) * radius * lenK);
+      ctx.lineTo(x + Math.cos(a + wid) * inner, y + Math.sin(a + wid) * inner);
+      ctx.closePath();
+      ctx.fillStyle = "rgba(255,255,255," + (0.85 * fade).toFixed(3) + ")";
+      ctx.fill();
+    }
   }
 
   function drawArchetype(canvas, kind) {
@@ -1145,66 +1028,68 @@
     const grow = Math.min(1, t / 0.3);
     const fade = t < 0.3 ? 1 : 1 - (t - 0.3) / 0.7;
 
+    // A — начало взмаха, B — точка хита. Обе точки живут в мире, серп строится между ними.
+    const ax = px - H * 0.5, ay = py - H * 0.49;   // полудлина A->B ~= 0.7 H; полная форма 1.4 H
+    const bx = px, by = py;
+    const salt = Math.floor(hitCounter) * 7 + (kind === "slash" ? 1 : kind === "pierce" ? 2 : 3);
+
     ctx.save();
-    ctx.translate(px, py);
     ctx.globalCompositeOperation = "lighter";
 
     if (kind === "slash") {
-      ctx.rotate(-38 * Math.PI / 180);
-      const len = H * 1.2 * grow, thick = H * 0.105 * grow, bow = thick * 2.6;
-      [[1.0, 0.42, "77,242,255"], [0.86, 0.55, "160,250,255"], [0.62, 0.9, "255,255,255"]]
-        .forEach(function (s) {
-          ctx.beginPath();
-          ctx.moveTo(-len / 2 * s[0], 0);
-          ctx.quadraticCurveTo(0, -bow * s[0] - thick * s[0], len / 2 * s[0], 0);
-          ctx.quadraticCurveTo(0, -bow * s[0] + thick * s[0], -len / 2 * s[0], 0);
-          ctx.closePath();
-          ctx.fillStyle = "rgba(" + s[2] + "," + (s[1] * fade).toFixed(3) + ")";
-          ctx.fill();
-        });
+      // Правило: закруглённая дуга, прогиб и толщина гуляют в коридоре.
+      sickle(ctx, ax, ay, bx, by, {
+        bow: H * (0.2 + jag(salt, 1) * 0.08),
+        thick: H * (0.055 + jag(salt, 2) * 0.02),
+        progress: grow, fade: fade, hitAtCenter: true
+      });
     }
 
     if (kind === "pierce") {
-      // Веретено идёт ВДОЛЬ вектора удара, а не поперёк: укол не заметает, он входит.
-      ctx.rotate(-8 * Math.PI / 180);
-      const len = H * 0.9 * grow;
-      [[1.0, 0.4, "77,242,255", H * 0.032], [0.7, 0.85, "255,255,255", H * 0.016]]
-        .forEach(function (s) {
-          const th = s[3] * grow;
-          ctx.beginPath();
-          ctx.moveTo(-len / 2 * s[0], 0);
-          ctx.quadraticCurveTo(0, -th, len / 2 * s[0], 0);
-          ctx.quadraticCurveTo(0, th, -len / 2 * s[0], 0);
-          ctx.closePath();
-          ctx.fillStyle = "rgba(" + s[2] + "," + (s[1] * fade).toFixed(3) + ")";
-          ctx.fill();
-        });
+      // Правило: почти прямая, узкая, ядро собрано у точки входа.
+      sickle(ctx, ax, ay, bx, by, {
+        bow: H * (0.015 + jag(salt, 1) * 0.02),
+        thick: H * (0.028 + jag(salt, 2) * 0.008),
+        progress: grow, fade: fade, hitAtCenter: true
+      });
+      if (frame >= CONTACT) {
+        const k = Math.max(0, 1 - (frame - CONTACT) / 3);
+        const g = ctx.createRadialGradient(bx, by, 0, bx, by, H * 0.16 * k);
+        g.addColorStop(0, "rgba(255,255,255," + (0.95 * k).toFixed(3) + ")");
+        g.addColorStop(1, "rgba(77,242,255,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(bx, by, H * 0.16 * k, 0, Math.PI * 2); ctx.fill();
+      }
     }
 
     if (kind === "blunt") {
-      // Звезда-трещина: лучи неравной длины, внутренний радиус растёт — лучи «рвутся» от центра.
-      const RAYS = 8;
-      const outer = H * 0.7 * grow;
-      const inner = outer * (0.05 + 0.45 * t);
-      for (let i = 0; i < RAYS; i++) {
-        const a = (i / RAYS) * Math.PI * 2 + jag(i, 3) * 0.35 - 0.17;
-        const lenK = 0.45 + jag(i, 7) * 0.55;
-        const wid = (0.045 + jag(i, 11) * 0.05) * (1 - t * 0.4);
-        const r0 = inner, r1 = outer * lenK;
-        ctx.beginPath();
-        ctx.moveTo(Math.cos(a - wid) * r0, Math.sin(a - wid) * r0);
-        ctx.lineTo(Math.cos(a) * r1, Math.sin(a) * r1);
-        ctx.lineTo(Math.cos(a + wid) * r0, Math.sin(a + wid) * r0);
-        ctx.closePath();
-        ctx.fillStyle = "rgba(255,255,255," + (0.85 * fade).toFixed(3) + ")";
-        ctx.fill();
+      // Правило двухчастное: лёгкое движение серпом плюс звезда-трещина в точке B.
+      sickle(ctx, ax + H * 0.22, ay + H * 0.22, bx, by, {
+        bow: H * (0.09 + jag(salt, 1) * 0.05),
+        thick: H * (0.048 + jag(salt, 2) * 0.018),
+        progress: grow, fade: fade * 0.55
+      });
+      if (frame >= CONTACT) {
+        const st = Math.min(1, (frame - CONTACT) / 4);
+        crackStar(ctx, bx, by, H * 0.7 * Math.min(1, 0.35 + st), st, fade, salt);
+        const g = ctx.createRadialGradient(bx, by, 0, bx, by, H * 0.34 * (1 - st * 0.5));
+        g.addColorStop(0, "rgba(160,250,255," + (0.5 * fade).toFixed(3) + ")");
+        g.addColorStop(1, "rgba(77,242,255,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(bx, by, H * 0.34, 0, Math.PI * 2); ctx.fill();
       }
-      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, outer * 0.55);
-      g.addColorStop(0, "rgba(160,250,255," + (0.5 * fade).toFixed(3) + ")");
-      g.addColorStop(1, "rgba(77,242,255,0)");
-      ctx.fillStyle = g;
-      ctx.beginPath(); ctx.arc(0, 0, outer * 0.55, 0, Math.PI * 2); ctx.fill();
     }
+
+    // Опорные точки — видно, что форма строится по ним, а не по клипу.
+    ctx.globalCompositeOperation = "source-over";
+    ctx.font = "600 13px ui-monospace, Consolas, monospace";
+    [[ax, ay, "A"], [bx, by, "B"]].forEach(function (pt) {
+      ctx.strokeStyle = "rgba(184,134,59,.8)";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(pt[0], pt[1], 6, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = "rgba(198,154,75,.95)";
+      ctx.fillText(pt[2], pt[0] - 3, pt[1] - 11);
+    });
 
     ctx.globalCompositeOperation = "source-over";
     ctx.restore();
@@ -1224,7 +1109,7 @@
   // Все восемь одним цветом: цвет принадлежит юниту, значит тип обязан читаться формой.
   const MG = "77,242,255";
 
-  function magicStage(canvas, W, H0) {
+  function stageMini(canvas, W, H0) {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const cssW = canvas.clientWidth || W;
     const sc = cssW / W;
@@ -1253,7 +1138,7 @@
     ctx.rect(x + u * 0.5, groundY - u * 5, u * 1.8, u * 5);
   }
 
-  function mgLabel(ctx, name) {
+  function miniLabel(ctx, name) {
     ctx.font = "500 13px ui-monospace, Consolas, monospace";
     ctx.fillStyle = "rgba(147,128,94,.9)";
     ctx.fillText(name, 26, 30);
@@ -1261,326 +1146,64 @@
     ctx.fillRect(14, 21, 6, 6);
   }
 
-  function drawMagic(canvas, kind) {
-    const W = 440, HH = 380;
-    const ctx = magicStage(canvas, W, HH);
-    const groundY = HH - 56, H = 200, cx = W / 2;
-    drawUnit(ctx, cx, groundY, H, -1, false);
+  /* ---------- дальний бой: линия-всполох ---------- */
+  function drawRanged(canvas) {
+    const W = 740, HH = 420;
+    const ctx = stageMini(canvas, W, HH);
+    const groundY = HH - 60, H = 200;
+    const shooter = 130, target = 600;
+    drawUnit(ctx, target, groundY, H * 0.95, -1, false);
+    drawUnit(ctx, shooter, groundY, H, 1, true);
 
-    const px = cx, py = groundY - H * 0.58;
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
+    const ax = shooter + H * 0.16, ay = groundY - H * 0.62;
+    const bx = target - 16, by = groundY - H * 0.6;
 
-    if (kind === "fire") {
-      // Наружу и ВВЕРХ: единственная форма, которая продолжает расти после контакта.
-      const A = 14, B = 26;
-      if (frame >= A && frame <= B) {
-        const t = (frame - A) / (B - A);
-        const fade = t < 0.25 ? 1 : 1 - (t - 0.25) / 0.75;
-        for (let i = 0; i < 6; i++) {
-          const off = (i - 2.5) * H * 0.075;
-          const rise = H * (0.18 + 0.62 * t) * (0.6 + jag(i, 2) * 0.7);
-          const wid = H * 0.075 * (1 - t * 0.55);
-          ctx.beginPath();
-          ctx.moveTo(px + off - wid, py);
-          ctx.quadraticCurveTo(px + off + (jag(i, 5) - 0.5) * H * 0.13, py - rise * 0.6,
-                               px + off + (jag(i, 9) - 0.5) * H * 0.1, py - rise);
-          ctx.quadraticCurveTo(px + off + (jag(i, 5) - 0.5) * H * 0.13, py - rise * 0.6,
-                               px + off + wid, py);
-          ctx.closePath();
-          ctx.fillStyle = "rgba(" + MG + "," + (0.4 * fade).toFixed(3) + ")";
-          ctx.fill();
-        }
-        const g = ctx.createRadialGradient(px, py, 0, px, py, H * 0.28);
-        g.addColorStop(0, "rgba(255,255,255," + (0.8 * fade).toFixed(3) + ")");
-        g.addColorStop(1, "rgba(" + MG + ",0)");
-        ctx.fillStyle = g;
-        ctx.beginPath(); ctx.arc(px, py, H * 0.28, 0, Math.PI * 2); ctx.fill();
-      }
-      mgLabel(ctx, "ОГОНЬ · НАРУЖУ, ВВЕРХ");
-    }
-
-    if (kind === "ice") {
-      // Грани летят К цели и замирают: прямые кромки против клубов.
-      const A = 11, B = 20;
-      if (frame >= A && frame <= B) {
-        const t = (frame - A) / (B - A);
-        const close = Math.min(1, t / 0.55);
-        const fade = t < 0.55 ? 1 : 1 - (t - 0.55) / 0.45;
-        for (let i = 0; i < 5; i++) {
-          const a = (-140 + i * 55 + jag(i, 4) * 20) * Math.PI / 180;
-          const d = H * (0.62 - 0.5 * close);
-          const len = H * (0.13 + jag(i, 6) * 0.08);
-          const w = H * 0.028;
-          const bx = px + Math.cos(a) * d, by = py + Math.sin(a) * d;
-          ctx.save();
-          ctx.translate(bx, by);
-          ctx.rotate(a);
-          ctx.beginPath();
-          ctx.moveTo(len, 0);
-          ctx.lineTo(-len * 0.4, -w);
-          ctx.lineTo(-len, 0);
-          ctx.lineTo(-len * 0.4, w);
-          ctx.closePath();
-          ctx.fillStyle = "rgba(" + MG + "," + (0.75 * fade).toFixed(3) + ")";
-          ctx.fill();
-          ctx.restore();
-        }
-        if (frame >= CONTACT && frame <= CONTACT + 2) {
-          const k = 1 - (frame - CONTACT) / 3;
-          const g = ctx.createRadialGradient(px, py, 0, px, py, H * 0.2 * k);
-          g.addColorStop(0, "rgba(255,255,255," + (0.9 * k).toFixed(3) + ")");
-          g.addColorStop(1, "rgba(" + MG + ",0)");
-          ctx.fillStyle = g;
-          ctx.beginPath(); ctx.arc(px, py, H * 0.2 * k, 0, Math.PI * 2); ctx.fill();
-        }
-      }
-      mgLabel(ctx, "ЛЁД · ГРАНИ К ЦЕЛИ");
-    }
-
-    if (kind === "lightning") {
-      // Два кадра, ноль затухания: либо есть, либо нет.
-      if (frame >= 15 && frame <= 16) {
-        const seg = 9;
-        let x = px + (jag(0, 1) - 0.5) * H * 0.1, y = py - H * 1.05;
-        ctx.lineCap = "round";
-        ctx.strokeStyle = "rgba(255,255,255,.95)";
-        ctx.lineWidth = 3.5;
-        ctx.beginPath(); ctx.moveTo(x, y);
-        const pts = [{ x: x, y: y }];
-        for (let i = 1; i <= seg; i++) {
-          const salt = frame * 13 + i;
-          x = px + (jag(salt, 2) - 0.5) * H * 0.34 * (1 - i / seg);
-          y = py - H * 1.05 + (H * 1.05) * (i / seg);
-          ctx.lineTo(x, y);
-          pts.push({ x: x, y: y });
-        }
-        ctx.stroke();
-        // ветвление
-        ctx.strokeStyle = "rgba(" + MG + ",.8)";
-        ctx.lineWidth = 2;
-        for (let b = 0; b < 3; b++) {
-          const p = pts[3 + b * 2];
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p.x + (jag(b, 8) - 0.5) * H * 0.3, p.y + H * 0.12);
-          ctx.stroke();
-        }
-        const g = ctx.createRadialGradient(px, py, 0, px, py, H * 0.3);
-        g.addColorStop(0, "rgba(255,255,255,.75)");
-        g.addColorStop(1, "rgba(" + MG + ",0)");
-        ctx.fillStyle = g;
-        ctx.beginPath(); ctx.arc(px, py, H * 0.3, 0, Math.PI * 2); ctx.fill();
-      }
-      mgLabel(ctx, "МОЛНИЯ · 2 КАДРА");
-    }
-
-    if (kind === "arcane") {
-      // Правильная геометрия, сжимающаяся к цели: нарисованное, а не природное.
-      const A = 11, B = 19;
-      if (frame >= A && frame <= B) {
-        const t = (frame - A) / (B - A);
-        const close = Math.min(1, t / 0.7);
-        const fade = t < 0.7 ? 1 : 1 - (t - 0.7) / 0.3;
-        const r = H * (0.62 - 0.44 * close);
-        ctx.strokeStyle = "rgba(" + MG + "," + (0.85 * fade).toFixed(3) + ")";
-        ctx.lineWidth = 2.5;
-        ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2); ctx.stroke();
-        ctx.strokeStyle = "rgba(255,255,255," + (0.7 * fade).toFixed(3) + ")";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        for (let i = 0; i <= 6; i++) {
-          const a = (i / 6) * Math.PI * 2 - Math.PI / 2 + t * 0.9;
-          const vx = px + Math.cos(a) * r * 0.66, vy = py + Math.sin(a) * r * 0.66;
-          if (i === 0) ctx.moveTo(vx, vy); else ctx.lineTo(vx, vy);
-        }
-        ctx.stroke();
-        if (frame >= CONTACT && frame <= CONTACT + 2) {
-          const k = 1 - (frame - CONTACT) / 3;
-          ctx.fillStyle = "rgba(255,255,255," + (0.5 * k).toFixed(3) + ")";
-          ctx.beginPath(); ctx.arc(px, py, H * 0.12 * k, 0, Math.PI * 2); ctx.fill();
-        }
-      }
-      mgLabel(ctx, "АРКАНА · ГЕОМЕТРИЯ");
-    }
-
-    if (kind === "poison") {
-      // Единственная форма, которая живёт ПОСЛЕ удара: облако оседает и остаётся.
-      const A = 15;
-      if (frame >= A) {
-        const t = Math.min(1, (frame - A) / 14);
-        const fade = t < 0.5 ? 0.9 : 0.9 * (1 - (t - 0.5) / 0.5);
-        for (let i = 0; i < 7; i++) {
-          const spread = H * (0.1 + 0.4 * t) * (0.5 + jag(i, 3));
-          const bx = px + (jag(i, 5) - 0.5) * spread * 2;
-          const by = py + H * 0.12 * t + (jag(i, 7) - 0.3) * H * 0.16 + H * 0.3 * t * 0.4;
-          const r = H * (0.075 + 0.06 * t) * (0.7 + jag(i, 11) * 0.6);
-          const g = ctx.createRadialGradient(bx, by, 0, bx, by, r);
-          g.addColorStop(0, "rgba(" + MG + "," + (0.32 * fade).toFixed(3) + ")");
-          g.addColorStop(1, "rgba(" + MG + ",0)");
-          ctx.fillStyle = g;
-          ctx.beginPath(); ctx.arc(bx, by, r, 0, Math.PI * 2); ctx.fill();
-        }
-      }
-      mgLabel(ctx, "ЯД · ЖИВЁТ ПОСЛЕ");
-    }
-
-    if (kind === "light" || kind === "dark" || kind === "pure") {
-      drawThroughForm(ctx, kind, px, py, cx, groundY, H);
-      mgLabel(ctx, kind === "light" ? "СВЕТ · СВЕРХУ, СКВОЗЬ"
-                 : kind === "dark" ? "ТЬМА · ВНУТРЬ, СКВОЗЬ"
-                 : "ЧИСТЫЙ · БЕЗ ВЕЩЕСТВА, СКВОЗЬ");
-    }
-
-    ctx.globalCompositeOperation = "source-over";
-    ctx.restore();
-
-    // Контур силуэта поверх — чтобы «сквозь» читалось как сквозь тело, а не поверх него.
-    if (kind === "light" || kind === "dark" || kind === "pure") {
-      ctx.strokeStyle = "rgba(" + MG + ",.35)";
-      ctx.lineWidth = 1.5;
-      unitPath(ctx, cx, groundY, H);
-      ctx.stroke();
-    }
-  }
-
-  // Формы чистой школы: обрезаны по силуэту — они не встретили преграды.
-  function drawThroughForm(ctx, kind, px, py, cx, groundY, H) {
-    const A = 12, B = 21;
-    if (frame < A || frame > B) return;
-    const t = (frame - A) / (B - A);
-    const fade = t < 0.4 ? 1 : 1 - (t - 0.4) / 0.6;
-
-    function paint(insideOnly) {
+    // Полёт: снаряд идёт от A к B и приходит ровно на кадре контакта.
+    const FLY_A = CONTACT - 8;
+    if (frame >= FLY_A && frame < CONTACT) {
+      const k = (frame - FLY_A) / (CONTACT - FLY_A);
+      const cxp = ax + (bx - ax) * k, cyp = ay + (by - ay) * k;
       ctx.save();
-      if (insideOnly) { unitPath(ctx, cx, groundY, H); ctx.clip(); }
-
-      if (kind === "light") {
-        const top = py - H * 1.15, half = H * 0.3 * (0.5 + t);
-        const g = ctx.createLinearGradient(0, top, 0, py + H * 0.3);
-        g.addColorStop(0, "rgba(255,255,255," + (0.5 * fade).toFixed(3) + ")");
-        g.addColorStop(0.75, "rgba(" + MG + "," + (0.45 * fade).toFixed(3) + ")");
-        g.addColorStop(1, "rgba(" + MG + ",0)");
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.moveTo(px - half * 0.45, top);
-        ctx.lineTo(px + half * 0.45, top);
-        ctx.lineTo(px + half, py + H * 0.3);
-        ctx.lineTo(px - half, py + H * 0.3);
-        ctx.closePath(); ctx.fill();
-      }
-
-      if (kind === "dark") {
-        const close = Math.min(1, t / 0.6);
-        const r = H * (0.6 - 0.46 * close);
-        for (let i = 0; i < 6; i++) {
-          const a = (i / 6) * Math.PI * 2 + t * 1.4;
-          const bx = px + Math.cos(a) * r, by = py + Math.sin(a) * r * 0.8;
-          const rr = H * 0.11 * (1 - close * 0.4);
-          const g = ctx.createRadialGradient(bx, by, 0, bx, by, rr);
-          g.addColorStop(0, "rgba(" + MG + "," + (0.5 * fade).toFixed(3) + ")");
-          g.addColorStop(1, "rgba(" + MG + ",0)");
-          ctx.fillStyle = g;
-          ctx.beginPath(); ctx.arc(bx, by, rr, 0, Math.PI * 2); ctx.fill();
-        }
-      }
-
-      if (kind === "pure") {
-        if (frame >= CONTACT && frame <= CONTACT + 4) {
-          const k = 1 - (frame - CONTACT) / 5;
-          const r = H * 0.34 * (1.15 - k * 0.5);
-          ctx.strokeStyle = "rgba(255,255,255," + (0.9 * k).toFixed(3) + ")";
-          ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2); ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(px - r, py); ctx.lineTo(px + r, py);
-          ctx.moveTo(px, py - r); ctx.lineTo(px, py + r);
-          ctx.stroke();
-        }
-      }
+      ctx.globalCompositeOperation = "lighter";
+      const g = ctx.createRadialGradient(cxp, cyp, 0, cxp, cyp, H * 0.07);
+      g.addColorStop(0, "rgba(255,255,255,.95)");
+      g.addColorStop(1, "rgba(77,242,255,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(cxp, cyp, H * 0.07, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
     }
 
-    // Слабый след снаружи (эффект существует в мире) + полная сила внутри силуэта.
-    ctx.globalAlpha = 0.22;
-    paint(false);
-    ctx.globalAlpha = 1;
-    paint(true);
-
-    // Обратная вспышка тьмы: на кадр удара фон вокруг становится светлее самой формы.
-    if (kind === "dark" && frame >= CONTACT && frame <= CONTACT + 1) {
-      const g = ctx.createRadialGradient(px, py, H * 0.1, px, py, H * 0.75);
-      g.addColorStop(0, "rgba(" + MG + ",0)");
-      g.addColorStop(0.6, "rgba(200,245,255,.20)");
-      g.addColorStop(1, "rgba(" + MG + ",0)");
-      ctx.fillStyle = g;
-      ctx.beginPath(); ctx.arc(px, py, H * 0.75, 0, Math.PI * 2); ctx.fill();
-    }
-  }
-
-  /* ---------- сквозь или о поверхность ---------- */
-  function drawThroughCompare(canvas, mode) {
-    const W = 520, HH = 420;
-    const ctx = magicStage(canvas, W, HH);
-    const groundY = HH - 56, H = 230, cx = W / 2;
-    drawUnit(ctx, cx, groundY, H, -1, false);
-
-    const px = cx, py = groundY - H * 0.6;
-    const A = CONTACT - 1, B = CONTACT + 5;
-    if (frame < A || frame > B) { mgLabel(ctx, mode === "surface" ? "О ПОВЕРХНОСТЬ" : "СКВОЗЬ СИЛУЭТ"); return; }
-    const t = (frame - A) / (B - A);
-    const fade = t < 0.3 ? 1 : 1 - (t - 0.3) / 0.7;
-
-    ctx.save();
-    ctx.globalCompositeOperation = "lighter";
-
-    if (mode === "surface") {
-      // Ядро снаружи + искры прочь: броня приняла удар.
-      const g = ctx.createRadialGradient(px, py, 0, px, py, H * 0.3 * (0.6 + t));
-      g.addColorStop(0, "rgba(255,255,255," + (0.9 * fade).toFixed(3) + ")");
-      g.addColorStop(1, "rgba(" + MG + ",0)");
-      ctx.fillStyle = g;
-      ctx.beginPath(); ctx.arc(px, py, H * 0.3 * (0.6 + t), 0, Math.PI * 2); ctx.fill();
-      for (let i = 0; i < 9; i++) {
-        const a = (-70 + i * 18 + jag(i, 3) * 14) * Math.PI / 180;
-        const d = H * (0.12 + 0.4 * t) * (0.6 + jag(i, 5) * 0.7);
-        ctx.fillStyle = "rgba(255,255,255," + (0.85 * fade).toFixed(3) + ")";
-        ctx.beginPath();
-        ctx.arc(px + Math.cos(a) * d, py + Math.sin(a) * d, 3 * fade + 1, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    } else {
-      // То же ядро, но обрезанное телом: преграды не было.
-      ctx.globalAlpha = 0.2;
-      const g0 = ctx.createRadialGradient(px, py, 0, px, py, H * 0.4);
-      g0.addColorStop(0, "rgba(" + MG + "," + (0.5 * fade).toFixed(3) + ")");
-      g0.addColorStop(1, "rgba(" + MG + ",0)");
-      ctx.fillStyle = g0;
-      ctx.beginPath(); ctx.arc(px, py, H * 0.4, 0, Math.PI * 2); ctx.fill();
-      ctx.globalAlpha = 1;
-
+    // Линия-всполох: ПОСЛЕ попадания, по вектору полёта, прогиб ноль.
+    if (frame >= CONTACT && frame <= CONTACT + 5) {
+      const t2 = (frame - CONTACT) / 5;
+      const fade = t2 < 0.25 ? 1 : 1 - (t2 - 0.25) / 0.75;
+      const salt = Math.floor(hitCounter) * 3;
       ctx.save();
-      unitPath(ctx, cx, groundY, H);
-      ctx.clip();
-      const g = ctx.createRadialGradient(px, py, 0, px, py, H * 0.45 * (0.6 + t));
-      g.addColorStop(0, "rgba(255,255,255," + (0.95 * fade).toFixed(3) + ")");
-      g.addColorStop(0.6, "rgba(" + MG + "," + (0.7 * fade).toFixed(3) + ")");
-      g.addColorStop(1, "rgba(" + MG + ",0)");
+      ctx.globalCompositeOperation = "lighter";
+      sickle(ctx, ax, ay, bx, by, {
+        bow: H * (0.004 + jag(salt, 1) * 0.012),
+        thick: H * (0.024 + jag(salt, 2) * 0.008),
+        progress: 1, fade: fade, hitAtCenter: true
+      });
+      const k = Math.max(0, 1 - t2 * 1.6);
+      const g = ctx.createRadialGradient(bx, by, 0, bx, by, H * 0.26 * k);
+      g.addColorStop(0, "rgba(255,255,255," + (0.95 * k).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(77,242,255,0)");
       ctx.fillStyle = g;
-      ctx.beginPath(); ctx.arc(px, py, H * 0.45 * (0.6 + t), 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(bx, by, H * 0.26 * k, 0, Math.PI * 2); ctx.fill();
       ctx.restore();
+
+      ctx.font = "600 13px ui-monospace, Consolas, monospace";
+      [[ax, ay, "A"], [bx, by, "B"]].forEach(function (pt) {
+        ctx.strokeStyle = "rgba(184,134,59,.75)";
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.arc(pt[0], pt[1], 6, 0, Math.PI * 2); ctx.stroke();
+        ctx.fillStyle = "rgba(198,154,75,.95)";
+        ctx.fillText(pt[2], pt[0] - 3, pt[1] - 11);
+      });
     }
 
-    ctx.globalCompositeOperation = "source-over";
-    ctx.restore();
-
-    if (mode === "through") {
-      ctx.strokeStyle = "rgba(" + MG + "," + (0.4 * fade).toFixed(3) + ")";
-      ctx.lineWidth = 1.5;
-      unitPath(ctx, cx, groundY, H);
-      ctx.stroke();
-    }
-    mgLabel(ctx, mode === "surface" ? "О ПОВЕРХНОСТЬ" : "СКВОЗЬ СИЛУЭТ");
+    miniLabel(ctx, frame < CONTACT ? "ПОЛЁТ СНАРЯДА" : "ЛИНИЯ-ВСПОЛОХ ПОСЛЕ ХИТА");
   }
 
   function label(ctx, text, color) {
@@ -1752,10 +1375,7 @@
   const cSlash = document.getElementById("c-slash");
   const cPierce = document.getElementById("c-pierce");
   const cBlunt = document.getElementById("c-blunt");
-  const MAGIC = ["fire", "ice", "lightning", "arcane", "poison", "light", "dark", "pure"]
-    .map(function (k) { return { el: document.getElementById("m-" + k), kind: k }; });
-  const tSurface = document.getElementById("t-surface");
-  const tThrough = document.getElementById("t-through");
+  const rLine = document.getElementById("r-line");
   const cZone = document.getElementById("c-zone");
   const cTime = document.getElementById("c-timeline");
 
@@ -1770,9 +1390,7 @@
     drawArchetype(cSlash, "slash");
     drawArchetype(cPierce, "pierce");
     drawArchetype(cBlunt, "blunt");
-    for (let i = 0; i < MAGIC.length; i++) drawMagic(MAGIC[i].el, MAGIC[i].kind);
-    drawThroughCompare(tSurface, "surface");
-    drawThroughCompare(tThrough, "through");
+    drawRanged(rLine);
     drawZone(cZone);
     drawTimeline(cTime);
     outFrame.textContent = String(frame).padStart(2, "0");
@@ -1792,7 +1410,7 @@
       while (acc >= per) {
         acc -= per;
         frame = (frame + 1) % TOTAL;
-        if (frame === CONTACT) { pushHit(); lastHitFrame = frame; }
+        if (frame === CONTACT) { pushHit(); lastHitFrame = frame; hitCounter++; }
       }
     }
     render();
@@ -1827,8 +1445,7 @@
     [cTrail, cSwept, cCross, cFinal].forEach(function (c) { c._cssW = 0; });
     cZone._cw = 0; cTime._cw = 0;
     cSlash._cw = 0; cPierce._cw = 0; cBlunt._cw = 0;
-    MAGIC.forEach(function (m) { m.el._cw = 0; });
-    tSurface._cw = 0; tThrough._cw = 0;
+    rLine._cw = 0;
     render();
   });
 
