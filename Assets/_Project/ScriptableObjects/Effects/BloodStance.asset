@@ -18,9 +18,9 @@ MonoBehaviour:
   _baseDuration: -1
   _stacking: 0
   _maxStacks: 1
+  _stacksPerApplication: 1
   _cleanseTier: 0
   _unremovable: 1
-  _stacksPerApplication: 1
   _cleansePrice:
   - Flat: 0
     Pct: 0
@@ -50,6 +50,7 @@ MonoBehaviour:
             WindupSeconds: 1
             RecoverySeconds: 0.7
           OnHitEffects: []
+          Targeting: 3
           Stats:
           - Stat: 9
             Op: 3
@@ -66,6 +67,7 @@ MonoBehaviour:
             RecoverySeconds: 0
           OnHitEffects:
           - {fileID: 11400000, guid: b2c3d4e5f60718293a4b5c6d7e8f9001, type: 2}
+          Targeting: 9
           Stats:
           - Stat: 9
             Op: 3

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Guildmaster.Combat.Effects.Components;
 using Guildmaster.Data.Definitions;
 using Guildmaster.Data.Stats;
 using NUnit.Framework;
@@ -77,6 +78,36 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             var ids = UnitTagResolver.Resolve(relic, db).ConvertAll(t => t.Id);
             Assert.AreEqual(new[] { "tag.support", "tag.physical", "tag.slash" }, ids, "маг-школа баффа не попадает в теги");
+            Object.DestroyImmediate(relic);
+        }
+
+        /// <summary>
+        /// Кит со стойками показывает ОБЕ формы. Инвариант кросс-слойный: типы форм живут в компоненте
+        /// эффекта (слой Combat), а собирает чипы резолвер из Data — до <see cref="IDeclaresDamageTypes"/>
+        /// он видел только тип, записанный в самом ките, и Десятина врала карточкой про половину оружия.
+        /// </summary>
+        [Test]
+        public void Resolve_StanceForms_BothTypesReachTheCard()
+        {
+            var db = new FakeDb(
+                Tag("tag.ranged", TagCategory.Role),
+                Tag("tag.physical", TagCategory.DamageType),
+                Tag("tag.bleed", TagCategory.DamageType),
+                Tag("tag.pierce", TagCategory.DamageType));
+
+            var stance = new AttackStanceComponent()
+                .With("_farStance", new AttackStanceComponent.AttackStance { DamageType = DamageType.Bleed })
+                .With("_closeStance", new AttackStanceComponent.AttackStance { DamageType = DamageType.Pierce });
+
+            EffectData stanceEffect = TestEffect.Make(baseDuration: -1f, components: stance);
+            var relic = ScriptableObject.CreateInstance<RelicData>()
+                .With("_combatClass", UnitClass.Ranged)
+                .With("_autoAttackDamageType", DamageType.Bleed)
+                .With("_grantedEffects", new[] { stanceEffect });
+
+            var ids = UnitTagResolver.Resolve(relic, db).ConvertAll(t => t.Id);
+            Assert.AreEqual(new[] { "tag.ranged", "tag.physical", "tag.bleed", "tag.pierce" }, ids,
+                "Ближняя форма колет — её тип обязан быть на карточке наравне с дальней");
             Object.DestroyImmediate(relic);
         }
 

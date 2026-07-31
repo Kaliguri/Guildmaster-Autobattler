@@ -24,12 +24,12 @@ namespace Guildmaster.Combat.Effects.Components
     /// <para><b>Форму нельзя менять посреди удара.</b> Замах, канал и хвост уже сняли свои цифры с
     /// прежней формы (тип урона едет с ударом до прилёта намеренно), поэтому смена в полёте означала бы
     /// удар, начатый одной формой и завершённый другой. Ждём <c>AttackPhase.Idle</c>.</para>
-    /// <para><b>Чего этот компонент НЕ делает:</b> не меняет фокус авто-атаки. Карточка Десятины просит
-    /// разный фокус по формам (в упор — «больше всего брони»), но фокус живёт в <c>AIProfile</c>, который
-    /// мозг читает один раз, — это отдельный шов и отдельная работа.</para>
+    /// <para><b>Фокус авто-атаки — тоже часть формы</b> (собрано 2026-07-30). Стойка кладёт его в
+    /// <c>RuntimeUnit.StanceTargeting</c>, а мозг читает оттуда, предпочитая профилю кита: профиль он
+    /// берёт один раз при сборке, и «фокус по форме» через него невыразим.</para>
     /// </remarks>
     [Serializable]
-    public sealed class AttackStanceComponent : IPeriodicComponent
+    public sealed class AttackStanceComponent : IPeriodicComponent, IDeclaresDamageTypes
     {
         [Tooltip("Дистанция до цели, ближе которой юнит уходит в ближнюю стойку (мировые единицы).")]
         [SerializeField] private float _enterCloseRange = 3f;
@@ -68,6 +68,10 @@ namespace Guildmaster.Combat.Effects.Components
         public void OnExpire(in EffectContext ctx)
         {
             ctx.Target?.Stats?.RemoveModifiersFrom(ctx.Effect, deferred: true);
+
+            // Форма ушла — вместе с ней уходит и её фокус, иначе боец без стойки продолжил бы выбирать
+            // цель по правилу формы, которой на нём больше нет.
+            if (ctx.Target != null) ctx.Target.StanceTargeting = null;
         }
 
         public void OnTick(in EffectContext ctx)
@@ -85,6 +89,19 @@ namespace Guildmaster.Combat.Effects.Components
             if (self.IsSwinging) return;
 
             Apply(self, wanted, in ctx);
+        }
+
+        /// <summary>
+        /// Обе формы объявляют свои типы урона наружу — иначе чипы на карточке показывали бы одну,
+        /// записанную в ките, и кит со стойками врал бы игроку про половину своего оружия.
+        /// </summary>
+        public void CollectDamageTypes(System.Collections.Generic.ICollection<DamageType> into)
+        {
+            if (_farStance != null && _farStance.DamageType != DamageType.Undefined)
+                into.Add(_farStance.DamageType);
+
+            if (_closeStance != null && _closeStance.DamageType != DamageType.Undefined)
+                into.Add(_closeStance.DamageType);
         }
 
         /// <summary>Какая форма нужна сейчас: гистерезис считает от ТЕКУЩЕЙ, поэтому порог зависит от неё.</summary>
@@ -113,6 +130,7 @@ namespace Guildmaster.Combat.Effects.Components
             self.AutoAttackDamageType = stance.DamageType;
             self.AutoAttackOnHit      = stance.OnHitEffects;
             self.AttackChannel        = stance.Channel;
+            self.StanceTargeting      = stance.Targeting;
 
             // Статы формы висят на ключе эффекта-стойки: снятие и наложение одной группой означает, что
             // сменить форму нельзя «наполовину». Отложенно — по закону видимости, как любой баф.
@@ -140,6 +158,10 @@ namespace Guildmaster.Combat.Effects.Components
 
             [Tooltip("On-hit эффекты этой формы.")]
             public EffectData[] OnHitEffects;
+
+            [Tooltip("Фокус авто-атаки в этой форме. Часть профиля формы, как и всё остальное: Десятина " +
+                     "вдали бьёт самого живучего (дольше кровоточит), в упор — самого бронированного.")]
+            public TargetingMode Targeting = TargetingMode.Nearest;
 
             [Tooltip("Статы формы: дальность, скорость атаки и прочее. Override задаёт значение, а не дельту.")]
             public StatModifier[] Stats;

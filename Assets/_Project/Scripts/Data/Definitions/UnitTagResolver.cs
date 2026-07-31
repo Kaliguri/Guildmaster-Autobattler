@@ -8,9 +8,10 @@ namespace Guildmaster.Data.Definitions
     /// <c>Role → DamageType → Playstyle → Mechanic</c> (ГДД <c>unit-tag-glossary</c>).
     /// <para><b>Авто-оси</b> (Role, DamageType) выводятся из данных — не дублируются руками:
     /// Role из <see cref="UnitClass"/>, DamageType из <see cref="DamageType"/> всех статических
-    /// источников урона юнита (автоатака + наносящие урон способности). Стихии/сродства, живущие
-    /// в эффектах (Burn→Fire, споры→Poison), сюда пока НЕ попадают — они в слое Combat, недоступном
-    /// UI; это осознанный задел (см. журнал рефактора модели урона).</para>
+    /// источников урона юнита: автоатака, наносящие урон способности и <b>боевые формы</b>, которые
+    /// объявляют себя через <see cref="IDeclaresDamageTypes"/>. Стихии/сродства, живущие в самих
+    /// эффектах (Burn→Fire, споры→Poison), сюда по-прежнему НЕ попадают: это урон эффекта на цели, а не
+    /// оружие носителя, и его путь в чипы — отдельная развилка.</para>
     /// <para><b>Ручные оси</b> (Playstyle, Mechanic) берутся из <see cref="UnitData.InfoTags"/>.</para>
     /// </summary>
     public static class UnitTagResolver
@@ -58,6 +59,25 @@ namespace Guildmaster.Data.Definitions
                     if (a == null || a.DamageMultiplier <= 0f) continue; // только наносящие прямой урон
                     AddDamageType(a.DamageType);
                 }
+
+            // Формы кита — тоже его оружие: боевая стойка объявляет свои типы через
+            // IDeclaresDamageTypes, иначе кит со стойками показал бы только ту форму, что записана в нём.
+            EffectData[] granted = unit.GrantedEffects;
+            if (granted != null)
+            {
+                var fromForms = new List<DamageType>();
+                for (int i = 0; i < granted.Length; i++)
+                {
+                    IEffectComponent[] components = granted[i]?.Components;
+                    if (components == null) continue;
+
+                    for (int c = 0; c < components.Length; c++)
+                        if (components[c] is IDeclaresDamageTypes declaring)
+                            declaring.CollectDamageTypes(fromForms);
+                }
+
+                for (int i = 0; i < fromForms.Count; i++) AddDamageType(fromForms[i]);
+            }
 
             for (int i = 0; i < umbrellas.Count; i++) AddById(umbrellas[i]);
             for (int i = 0; i < specifics.Count; i++) AddById(specifics[i]);

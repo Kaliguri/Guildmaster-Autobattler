@@ -96,6 +96,49 @@ namespace Guildmaster.Tests.EditMode.Combat
                 "Без цели форма не сбрасывается: следующий враг уже может стоять в лицо");
         }
 
+        /// <summary>
+        /// Фокус — часть формы, и мозг обязан читать его у формы, а не у кита: профиль он берёт один раз
+        /// при сборке, поэтому «в упор бью самого бронированного» через профиль невыразимо в принципе.
+        /// </summary>
+        [Test]
+        public void FocusFollowsTheForm_AndBeatsTheKitProfile()
+        {
+            var (unit, enemy, effects, ctx) = Scene(enemyDist: 9f);
+            Assert.AreEqual(TargetingMode.HighestHp, unit.StanceTargeting,
+                "Вдали кит ищет самого живучего — тот дольше кровоточит");
+
+            enemy.Position = new Vector2(2f, 0f);
+            TickEffects(effects, unit, ctx, seconds: 0.2f);
+            Assert.AreEqual(TargetingMode.HighestArmor, unit.StanceTargeting,
+                "В упор — самого бронированного, там окупается шред");
+
+            // Профиль кита просит «ближайшего», но форма сильнее.
+            var brain = new ProfileBrain(new AIProfile());
+            RuntimeUnit near = MakeUnit(2, team: 1, pos: new Vector2(1f, 0f));
+            RuntimeUnit armored = MakeUnit(3, team: 1, pos: new Vector2(7f, 0f));
+            armored.Stats.AddModifiersFrom("armor", new[]
+            {
+                new StatModifier(StatType.PhysArmor, ModifierOp.Flat, 80f),
+            });
+
+            brain.Decide(unit, new FakeBattleView(unit, near, armored));
+            Assert.AreSame(armored, unit.CurrentTarget,
+                "Форма переписала фокус: выбран бронированный, а не ближний");
+        }
+
+        [Test]
+        public void FormGone_FocusReturnsToTheKitProfile()
+        {
+            var (unit, enemy, effects, ctx) = Scene(enemyDist: 9f);
+            Assert.IsNotNull(unit.StanceTargeting, "Предусловие: стойка стоит");
+
+            effects.Remove(unit, unit.ActiveEffects[0], ctx);
+            EffectSystem.CommitPending(unit);
+
+            Assert.IsNull(unit.StanceTargeting,
+                "Стойки нет — нет и её фокуса, иначе боец выбирал бы цель по правилу снятой формы");
+        }
+
         /// <summary>Прогнать систему эффектов на заданное число секунд боя.</summary>
         private static void TickEffects(EffectSystem effects, RuntimeUnit unit, MockCombatContext ctx, float seconds)
         {
@@ -138,6 +181,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             Delivery   = AttackType.Ranged,
             DamageType = DamageType.Bleed,
+            Targeting  = TargetingMode.HighestHp,
             Channel    = new AttackChannel { DurationSeconds = 3f, WindupSeconds = 1f },
             Stats = new[]
             {
@@ -151,6 +195,7 @@ namespace Guildmaster.Tests.EditMode.Combat
         {
             Delivery   = AttackType.Melee,
             DamageType = DamageType.Pierce,
+            Targeting  = TargetingMode.HighestArmor,
             Channel    = AttackChannel.None,
             Stats = new[]
             {

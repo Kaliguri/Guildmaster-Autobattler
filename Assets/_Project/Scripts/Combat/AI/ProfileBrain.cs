@@ -21,7 +21,10 @@ namespace Guildmaster.Combat
 
         public void Decide(RuntimeUnit self, IBattleView view)
         {
-            TargetingMode mode = _profile.AutoAttackTargeting;
+            // Форма сильнее кита: у бойца со стойками фокус свой в каждой (Десятина вдали ищет самого
+            // живучего — дольше кровоточит, в упор самого бронированного — там окупается шред). Пусто —
+            // стоек нет или форма в выбор не вмешивается, и работает профиль кита.
+            TargetingMode mode = self.StanceTargeting ?? _profile.AutoAttackTargeting;
             bool wantAllies = TargetsAllies(mode, _profile.AutoAttackMode);
 
             RuntimeUnit target = SelectBest(self, view.Units, mode, wantAllies);
@@ -74,7 +77,7 @@ namespace Guildmaster.Combat
                 // правило агро, а не свойство эффекта, иначе каждого кита пришлось бы настраивать
                 // руками. Исключение — тот, кто спящих ищет намеренно (демон добивает свою цель):
                 // он объявляет это профилем, предпочитая тег сна.
-                if (!wantAllies && (o.EffectTagMask & EffectTag.Sleep) != 0 && !HuntsSleepers()) continue;
+                if (!wantAllies && (o.EffectTagMask & EffectTag.Sleep) != 0 && !HuntsSleepers(mode)) continue;
 
                 float distSq = (o.Position - self.Position).sqrMagnitude;
                 float score  = Score(o, mode, distSq);
@@ -96,8 +99,12 @@ namespace Guildmaster.Combat
         /// (<see cref="TargetingMode.PreferTagged"/> + <c>TargetTag = Sleep</c>). Так исключение из общего
         /// правила агро объявляется в данных кита, а не зашивается в код по имени реликвии.
         /// </summary>
-        private bool HuntsSleepers() =>
-            _profile.AutoAttackTargeting == TargetingMode.PreferTagged
+        /// <param name="mode">
+        /// ДЕЙСТВУЮЩИЙ режим, а не профильный: у бойца со стойками фокус переписывает форма, и правило
+        /// «спящих не выбираем» обязано смотреть на тот же режим, что и выбор цели.
+        /// </param>
+        private bool HuntsSleepers(TargetingMode mode) =>
+            mode == TargetingMode.PreferTagged
             && (_profile.TargetTag & EffectTag.Sleep) != 0;
 
         // --- Score (меньше = лучше, §4.2) ---
@@ -110,6 +117,7 @@ namespace Guildmaster.Combat
                 case TargetingMode.LowestHpPercent:
                 case TargetingMode.AllyLowestHpPercent: return HpPct(o);
                 case TargetingMode.HighestHp:           return -o.CurrentHP;
+                case TargetingMode.HighestArmor:        return -TotalArmor(o);
                 case TargetingMode.HighestThreat:       return -EstimatedDps(o);
                 case TargetingMode.PreferTagged:
                     // Учитываем и уже наложенный тег, и ЛЕТЯЩИЙ в цель (входящая бронь снаряда).
@@ -135,6 +143,13 @@ namespace Guildmaster.Combat
             float maxHp = u.Stats.Get(StatType.MaxHP);
             return maxHp > 0f ? u.CurrentHP / maxHp : u.CurrentHP;
         }
+
+        /// <summary>
+        /// Броня цели обеими школами разом: режим «самый бронированный» смотрит на защиту как на одно
+        /// свойство — см. <see cref="TargetingMode.HighestArmor"/>.
+        /// </summary>
+        private static float TotalArmor(RuntimeUnit u)
+            => u.Stats.Get(StatType.PhysArmor) + u.Stats.Get(StatType.MagicArmor);
 
         /// <summary>Оценочный DPS из статов — детерминированно, без истории урона (§2.1).</summary>
         private static float EstimatedDps(RuntimeUnit u)
