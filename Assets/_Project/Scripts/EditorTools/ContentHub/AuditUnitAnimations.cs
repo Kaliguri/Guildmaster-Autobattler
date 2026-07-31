@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Guildmaster.Data.Definitions;
 using UnityEditor;
 using UnityEngine;
 
@@ -77,7 +78,7 @@ namespace Guildmaster.ContentHub.Editor
                     if (slot == "Attack")
                     {
                         var ev = AnimationUtility.GetAnimationEvents(clip);
-                        var m = ev.FirstOrDefault(e => e.functionName == "Marker");
+                        var m = ev.FirstOrDefault(e => e.functionName == ClipMarkers.HitFunction);
                         hasMarker = m != null;
                         markerT = m?.time ?? -1f;
                     }

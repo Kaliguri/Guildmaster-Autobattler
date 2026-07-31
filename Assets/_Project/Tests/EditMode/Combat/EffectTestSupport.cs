@@ -220,7 +220,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             foreach (int frame in hitFrames)
             {
                 if (frame <= 0) continue;
-                events.Add(new AnimationEvent { functionName = ClipMarkers.MarkerFunction, time = frame / Fps });
+                events.Add(new AnimationEvent { functionName = ClipMarkers.HitFunction, time = frame / Fps });
             }
             if (events.Count > 0) UnityEditor.AnimationUtility.SetAnimationEvents(clip, events.ToArray());
             return clip;

@@ -65,7 +65,7 @@ namespace Guildmaster.Data.Definitions
         /// <summary>
         /// Сколько Ударов в одной Атаке: столько, сколько маркеров в клипе. <c>0</c> = разметки нет.
         /// </summary>
-        public int AttackHitCount => ClipMarkers.MarkerCount(_attackClip);
+        public int AttackHitCount => ClipMarkers.HitCount(_attackClip);
 
         /// <summary>
         /// Нормированные позиции всех контактов (0..1) в порядке ударов — дописываются в
@@ -73,6 +73,6 @@ namespace Guildmaster.Data.Definitions
         /// доли живут в клипе, а перевод в тики зависит от рантайм-скорости атаки.
         /// </summary>
         public int AttackHitPositions(System.Collections.Generic.List<float> result) =>
-            ClipMarkers.MarkerNormalizedAll(_attackClip, result);
+            ClipMarkers.HitNormalizedAll(_attackClip, result);
     }
 }

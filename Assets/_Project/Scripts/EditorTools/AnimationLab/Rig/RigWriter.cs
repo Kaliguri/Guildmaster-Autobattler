@@ -248,7 +248,7 @@ namespace Guildmaster.AnimationLab.Editor
         }
 
         /// <summary>
-        /// Adds an animation event. Attack clips carry a "Marker" event at the contact frame and the
+        /// Adds an animation event. Attack clips carry a "Hit" event at the contact frame and the
         /// combat code reads the hit timing from it, so rewriting a clip without re-adding its marker
         /// moves the hit to the last frame.
         /// </summary>

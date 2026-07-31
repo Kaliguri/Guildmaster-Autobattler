@@ -255,7 +255,7 @@ namespace Guildmaster.Presentation
         private float _guardRise = 0.1f; // за сколько щит встаёт; дальше стоп-кадр до конца окна
 
         private bool  _animActive;              // визуал с клипами подан → Animator рулит спрайтом
-        private float _attackMarkerNormalized;  // 0..1 — доля клипа атаки до маркера контакта
+        private float _attackHitNormalized;  // 0..1 — доля клипа атаки до маркера контакта (Hit)
 
         /// <summary>
         /// Тело юнита за швом. Резолвится лениво, а не в <c>Awake</c>, потому что силуэт для drag-призрака
@@ -490,19 +490,19 @@ namespace Guildmaster.Presentation
             {
                 Debug.LogError($"[UnitView] {name}: у юнита нет UnitVisual с клипом атаки — " +
                                "удар не привязан к тику урона.", this);
-                _attackMarkerNormalized = 1f;
+                _attackHitNormalized = 1f;
                 return;
             }
 
-            if (ClipMarkers.FirstMarkerTime(attack) < 0f)
+            if (ClipMarkers.FirstHitTime(attack) < 0f)
             {
                 Debug.LogError($"[UnitView] {name}: в клипе '{attack.name}' нет маркера контакта " +
-                               $"(AnimationEvent '{ClipMarkers.MarkerFunction}') — удар не привязан к тику урона.", this);
-                _attackMarkerNormalized = 1f;
+                               $"(AnimationEvent '{ClipMarkers.HitFunction}') — удар не привязан к тику урона.", this);
+                _attackHitNormalized = 1f;
                 return;
             }
 
-            _attackMarkerNormalized = ClipMarkers.MarkerNormalized(attack);
+            _attackHitNormalized = ClipMarkers.HitNormalized(attack);
         }
 
         /// <summary>
@@ -885,7 +885,7 @@ namespace Guildmaster.Presentation
             if (_hasState && _snapshot.Phase == AttackPhase.Channel && _snapshot.AttackChannelTickPeriod > 0)
             {
                 float cycle = UnitAnimationSelector.ChannelClipTime(
-                    _attackMarkerNormalized,
+                    _attackHitNormalized,
                     _snapshot.AttackChannelTickRemaining,
                     _snapshot.AttackChannelTickPeriod,
                     _frameAlpha);
@@ -900,7 +900,7 @@ namespace Guildmaster.Presentation
                 // ровно на конец замаха = сим-тик урона.
                 float progress = TickScrubProgress(_snapshot.WindupRemaining, _snapshot.WindupTicks);
                 if (ownsSpeed) _animator.speed = 0f;
-                _animator.Play(SwingHash(), layer, progress * _attackMarkerNormalized);
+                _animator.Play(SwingHash(), layer, progress * _attackHitNormalized);
             }
             else if (_attackPhase == AttackAnimPhase.Recovery && _hasState)
             {
@@ -911,7 +911,7 @@ namespace Guildmaster.Presentation
                 // делает «редкий тяжёлый удар» видимым. Пока хвост тянулся по кулдауну, Защитник
                 // 0.83 сек бесконечно медленно опускал меч, и паузы на экране не существовало.
                 float tail = TickScrubProgress(_snapshot.RecoveryRemaining, _snapshot.RecoveryTicks);
-                float clipT = _attackMarkerNormalized + tail * (1f - _attackMarkerNormalized);
+                float clipT = _attackHitNormalized + tail * (1f - _attackHitNormalized);
                 if (ownsSpeed) _animator.speed = 0f;
                 _animator.Play(SwingHash(), layer, clipT);
             }
@@ -1111,7 +1111,7 @@ namespace Guildmaster.Presentation
             // застывшего момента.
             if (_holdKeepsAttackFrame)
             {
-                _animator.Play(SwingHash(), SwingLayer, _attackMarkerNormalized);
+                _animator.Play(SwingHash(), SwingLayer, _attackHitNormalized);
                 if (SwingIsOverlay)
                 {
                     _actionWeight = 1f;

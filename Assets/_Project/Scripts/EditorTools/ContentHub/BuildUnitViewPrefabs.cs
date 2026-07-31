@@ -366,7 +366,7 @@ namespace Guildmaster.ContentHub.Editor
                 float t = (Mathf.Max(0, sprites.Length / 2)) / SampleRate;
                 AnimationUtility.SetAnimationEvents(clip, new[]
                 {
-                    new AnimationEvent { functionName = "Marker", time = t },
+                    new AnimationEvent { functionName = ClipMarkers.HitFunction, time = t },
                 });
             }
             else

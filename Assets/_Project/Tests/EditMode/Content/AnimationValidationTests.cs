@@ -68,7 +68,7 @@ namespace Guildmaster.Tests.EditMode.Content
                 if (attack == null) continue; // покрыто RequiredBaseSlotsFilled
                 string path = AssetDatabase.GetAssetPath(vis);
 
-                float t = ClipMarkers.FirstMarkerTime(attack);
+                float t = ClipMarkers.FirstHitTime(attack);
                 Assert.GreaterOrEqual(t, 0f, $"UnitVisual '{vis.name}' Attack clip has no \"Marker\" event ({path}).");
                 Assert.LessOrEqual(t, attack.length,
                     $"UnitVisual '{vis.name}' Attack marker at {t}s is past clip end {attack.length}s ({path}).");
@@ -88,7 +88,7 @@ namespace Guildmaster.Tests.EditMode.Content
             {
                 AnimationClip attack = vis.AttackClip;
                 if (attack == null) continue;
-                if (ClipMarkers.FirstMarkerTime(attack) < 0f) continue;   // отсутствие покрыто тестом выше
+                if (ClipMarkers.FirstHitTime(attack) < 0f) continue;   // отсутствие покрыто тестом выше
 
                 Assert.Greater(vis.AttackHitFrame, 0,
                     $"UnitVisual '{vis.name}': маркер контакта стоит на кадре 0 " +
@@ -108,7 +108,7 @@ namespace Guildmaster.Tests.EditMode.Content
                     AnimationClip clip = vis.SkillClip(slot);
                     if (clip == null) continue; // слот необязателен
 
-                    float t = ClipMarkers.FirstMarkerTime(clip);
+                    float t = ClipMarkers.FirstHitTime(clip);
                     Assert.GreaterOrEqual(t, 0f, $"UnitVisual '{vis.name}' Skill{slot + 1} clip has no \"Marker\" event ({path}).");
                     Assert.LessOrEqual(t, clip.length,
                         $"UnitVisual '{vis.name}' Skill{slot + 1} marker at {t}s past clip end {clip.length}s ({path}).");

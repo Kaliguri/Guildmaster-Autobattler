@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using Guildmaster.Data.Definitions;
 using UnityEditor;
 using UnityEngine;
 
@@ -115,7 +116,7 @@ namespace Guildmaster.AnimationLab.Editor
 
                 Stance(w, 1.167f);
                 // Contact where the blade crosses the torso band, not where the arm finishes.
-                w.Event("Marker", 0.467f);
+                w.Event(ClipMarkers.HitFunction, 0.467f);
                 return w.Write(Folder + "Attack.anim", 60f).ToString();
             }
         }
@@ -162,7 +163,7 @@ namespace Guildmaster.AnimationLab.Editor
 
                 Stance(w, 1.000f);
                 // Rising cuts pass the torso on the way UP, so contact is mid-arc, not at the top of it.
-                w.Event("Marker", 0.450f);
+                w.Event(ClipMarkers.HitFunction, 0.450f);
                 return w.Write(Folder + "Attack2.anim", 60f).ToString();
             }
         }
@@ -211,7 +212,7 @@ namespace Guildmaster.AnimationLab.Editor
 
                 Stance(w, 1.000f);
                 // Contact where the blade CROSSES the torso band, not where the arm finishes.
-                w.Event("Marker", 0.483f);
+                w.Event(ClipMarkers.HitFunction, 0.483f);
                 return w.Write(Folder + "Attack3.anim", 60f).ToString();
             }
         }
@@ -274,7 +275,7 @@ namespace Guildmaster.AnimationLab.Editor
                 HoldUntil(w, 0.867f);   // 8 frames of frozen impact: the ground takes the blow with him
 
                 Stance(w, 1.350f);
-                w.Event("Marker", 0.600f);
+                w.Event(ClipMarkers.HitFunction, 0.600f);
                 return w.Write(Folder + "AttackCharge.anim", 60f).ToString();
             }
         }
