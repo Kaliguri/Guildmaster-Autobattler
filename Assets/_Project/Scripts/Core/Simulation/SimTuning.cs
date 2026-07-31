@@ -73,6 +73,14 @@ namespace Guildmaster.Core.Simulation
         public readonly float SprintWalkSeconds; // сколько идёт обычным шагом, прежде чем начать разгон
         public readonly float SprintRampSeconds; // за сколько разгон набирает полную прибавку
 
+        // --- Рекаст (атака вне очереди) ---
+        // Рекаст УСКОРЯЕТ фазы, а не снимает их (решение Макса 2026-07-31): снятая фаза убирает окно, в
+        // которое противник успевает ответить, — ускоренная лишь сокращает его. Скорости две, хотя пока
+        // равны: доигрыш и замах подкручиваются под разное («отпустил оружие» против читаемости телеграфа),
+        // и одна ручка на двоих значила бы, что настроить можно только оба сразу.
+        public readonly float RecastRecoverySpeed;  // во сколько раз быстрее доигрыш ОБОРВАННОЙ атаки
+        public readonly float RecastWindupSpeed;    // во сколько раз быстрее замах удара, вышедшего по рекасту
+
         public SimTuning(
             float bodyRadiusPerSize,
             float separationStrength,
@@ -98,7 +106,9 @@ namespace Guildmaster.Core.Simulation
             float sprintEnterGap,
             float sprintExitGap,
             float sprintWalkSeconds,
-            float sprintRampSeconds)
+            float sprintRampSeconds,
+            float recastRecoverySpeed,
+            float recastWindupSpeed)
         {
             BodyRadiusPerSize         = bodyRadiusPerSize;
             SeparationStrength        = separationStrength;
@@ -125,6 +135,8 @@ namespace Guildmaster.Core.Simulation
             SprintExitGap             = sprintExitGap;
             SprintWalkSeconds         = sprintWalkSeconds;
             SprintRampSeconds         = sprintRampSeconds;
+            RecastRecoverySpeed       = recastRecoverySpeed;
+            RecastWindupSpeed         = recastWindupSpeed;
         }
 
         /// <summary>
@@ -207,6 +219,8 @@ namespace Guildmaster.Core.Simulation
             sprintEnterGap:            1f,
             sprintExitGap:             0.3f,
             sprintWalkSeconds:         1f,
-            sprintRampSeconds:         0.5f);
+            sprintRampSeconds:         0.5f,
+            recastRecoverySpeed:       2f,
+            recastWindupSpeed:         2f);
     }
 }

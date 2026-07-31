@@ -40,7 +40,9 @@ namespace Guildmaster.Tests.EditMode.Combat
             sprintEnterGap:            SimTuning.Default.SprintEnterGap,
             sprintExitGap:             SimTuning.Default.SprintExitGap,
             sprintWalkSeconds:         SimTuning.Default.SprintWalkSeconds,
-            sprintRampSeconds:         SimTuning.Default.SprintRampSeconds);
+            sprintRampSeconds:         SimTuning.Default.SprintRampSeconds,
+            recastRecoverySpeed:       SimTuning.Default.RecastRecoverySpeed,
+            recastWindupSpeed:         SimTuning.Default.RecastWindupSpeed);
 
         [Test]
         public void BeforeThreshold_NoRamp()

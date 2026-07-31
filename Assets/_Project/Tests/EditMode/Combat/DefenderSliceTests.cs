@@ -375,7 +375,6 @@ namespace Guildmaster.Tests.EditMode.Combat
             var empower = new EmpowerNextAttackComponent()
                 .With("_damageMult", 2f)
                 .With("_recastImmediately", true)
-                .With("_recastWindupMult", 1f)
                 .With("_bonusOnHitEffects", new[] { stunEffect, weakenEffect })
                 .With("_bonusOnHitCount", 1)
                 .With("_consumeTag", EffectTag.Empowered);

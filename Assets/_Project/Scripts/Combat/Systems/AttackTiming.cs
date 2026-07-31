@@ -102,7 +102,12 @@ namespace Guildmaster.Combat
         /// атаки и движение (предсказание «докрутит ли замах», <c>CombatPositioning.CanLandWindup</c>)
         /// считали ту же длину, что и <c>AutoAttackSystem.EnterWindup</c>. Пустой визуал → нижний кламп.
         /// </summary>
-        public static int WindupTicksFor(RuntimeUnit unit)
+        /// <param name="ignoreRecast">
+        /// Считать длину так, будто рекаста не было. Нужно ровно одному месту — расчёту доигрыша в
+        /// <c>AutoAttackSystem.EnterWindup</c>: хвост меряется от контакта, и без базовой длины ускоренный
+        /// замах не сократил бы свинг, а перелил бы сэкономленное в доигрыш.
+        /// </param>
+        public static int WindupTicksFor(RuntimeUnit unit, bool ignoreRecast = false)
         {
             // Канальная атака: вход в поток задан СЕКУНДАМИ и не клампится интервалом атаки. У такого
             // кита интервал отмеряет тик ВНУТРИ канала, а не период между атаками, поэтому обычный
@@ -128,7 +133,7 @@ namespace Guildmaster.Combat
 
             // Взведённое комбо перебивает разбег: удар «вне очереди» на то и заявлен, чтобы выйти быстро,
             // и если бы разбег его удлинял, весь смысл контроль-лупа пропадал бы (§10.6).
-            if (unit.NextWindupMult > 0f) chargeMult = unit.NextWindupMult;
+            if (unit.NextWindupMult > 0f && !ignoreRecast) chargeMult = unit.NextWindupMult;
 
             // Доля замаха из данных важнее покадровой: у юнита без UnitVisual (скелетный риг — кадров у
             // него нет вовсе) расчёт по кадрам даёт ноль и падает на телеграф-пол, то есть замах в 3 тика

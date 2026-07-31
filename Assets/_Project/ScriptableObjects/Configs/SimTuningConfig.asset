@@ -37,3 +37,5 @@ MonoBehaviour:
   _sprintExitGap: 0.3
   _sprintWalkSeconds: 1
   _sprintRampSeconds: 0.5
+  _recastRecoverySpeed: 2
+  _recastWindupSpeed: 2

@@ -318,25 +318,95 @@ namespace Guildmaster.Tests.EditMode.Combat
             sys.Tick(units, ctx, 0f);
             int windupLeft = attacker.WindupRemaining;
 
-            attacker.RecastAttack();
+            attacker.RecastAttack(SimTuning.Default);
 
             Assert.AreEqual(windupLeft, attacker.WindupRemaining, "Замах текущей атаки рекаст не трогает");
             Assert.AreEqual(21, attacker.WindupTicks, "Полная длина замаха тоже не меняется");
         }
 
         [Test]
-        public void Recast_CutsRecoveryOfCurrentAttack()
+        public void Recast_SpeedsUpRecoveryOfCurrentAttack_ButNeverRemovesIt()
         {
+            // Главное отличие от «обрезает» (поправка Макса 2026-07-31): хвост остаётся, просто идёт вдвое
+            // быстрее. Снятая фаза убрала бы окно чужого ответа целиком — ускоренная только сокращает его.
             var (attacker, enemy, units, ctx) = SlowScene();
             var sys = new AutoAttackSystem();
 
             TickUntilNextDamage(sys, units, ctx, 0);
             Assert.AreEqual(AttackPhase.Recovery, attacker.Phase, "Предусловие: после удара идёт хвост");
-            Assert.Greater(attacker.RecoveryRemaining, 0);
+            int fullTail = attacker.RecoveryRemaining;
+            Assert.Greater(fullTail, 1, "Предусловие: хвост длиннее тика, иначе ускорять нечего");
 
-            attacker.RecastAttack(recoveryMult: 0f);
+            attacker.RecastAttack(SimTuning.Default);
 
-            Assert.AreEqual(0, attacker.RecoveryRemaining, "Хвост снят целиком");
+            int expected = (int)System.Math.Round(fullTail / SimTuning.Default.RecastRecoverySpeed,
+                System.MidpointRounding.AwayFromZero);
+            Assert.AreEqual(expected, attacker.RecoveryRemaining, "Хвост ускорен ровно на общую константу");
+            Assert.Greater(attacker.RecoveryRemaining, 0, "Но не снят: окно ответа сокращено, а не убрано");
+        }
+
+        [Test]
+        public void Recast_DuringWindup_SpeedsUpTheRecoveryThatFollows()
+        {
+            // Второй путь ускорения: рекаст взведён, когда хвоста ещё нет. Скорость обязана дожить до входа
+            // в него — иначе рекаст в замахе (а это его обычный случай) не ускорял бы ничего.
+            var (attacker, enemy, units, ctx) = SlowScene();
+            var sys = new AutoAttackSystem();
+
+            sys.Tick(units, ctx, 0f);
+            Assert.AreEqual(AttackPhase.Windup, attacker.Phase, "Предусловие: идёт замах");
+
+            attacker.RecastAttack(SimTuning.Default);
+            Assert.AreEqual(SimTuning.Default.RecastRecoverySpeed, attacker.SwingRecoverySpeed, 0.001f,
+                "Скорость запомнена до входа в хвост");
+
+            var (plain, _, plainUnits, plainCtx) = SlowScene();
+            var plainSys = new AutoAttackSystem();
+            TickUntilNextDamage(plainSys, plainUnits, plainCtx, 0);
+            TickUntilNextDamage(sys, units, ctx, 0);
+
+            Assert.AreEqual(AttackPhase.Recovery, attacker.Phase, "После удара идёт хвост, а не пустота");
+            int expected = (int)System.Math.Round(plain.RecoveryRemaining / SimTuning.Default.RecastRecoverySpeed,
+                System.MidpointRounding.AwayFromZero);
+            Assert.AreEqual(expected, attacker.RecoveryRemaining, "Хвост вышел вдвое короче обычного");
+        }
+
+        [Test]
+        public void Recast_FasterWindup_ShortensTheSwing_DoesNotLengthenTheFollowThrough()
+        {
+            // Хвост меряется от контакта, поэтому наивная формула вернула бы весь выигрыш ускоренного
+            // замаха обратно — доигрышем той же длины. Ускорение обязано сокращать свинг целиком.
+            var (attacker, enemy, units, ctx) = SlowScene();
+            var sys = new AutoAttackSystem();
+
+            TickUntilNextDamage(sys, units, ctx, 0);
+            attacker.RecastAttack(SimTuning.Default);
+            while (attacker.Phase == AttackPhase.Recovery) sys.Tick(units, ctx, 0f);
+
+            int recastWindup = attacker.WindupTicks;
+            int recastTail   = attacker.RecoveryTicks;
+
+            var (plain, _, plainUnits, plainCtx) = SlowScene();
+            var plainSys = new AutoAttackSystem();
+            plainSys.Tick(plainUnits, plainCtx, 0f);
+
+            Assert.Less(recastWindup, plain.WindupTicks, "Замах короче — удар выходит раньше");
+            Assert.AreEqual(plain.RecoveryTicks, recastTail, "А доигрыш ровно такой же, как у обычной атаки");
+        }
+
+        [Test]
+        public void Recast_KeepsAtLeastOneTickOfRecovery()
+        {
+            // Край: короткий хвост при ускорении не должен схлопываться в ноль — фаза, у которой доигрыш
+            // есть, обязана прожить хотя бы тик, иначе «ускорение» на быстром ките молча станет снятием.
+            var (attacker, _, _, _) = SlowScene();
+
+            attacker.Phase = AttackPhase.Recovery;
+            attacker.RecoveryRemaining = 1;
+
+            attacker.RecastAttack(SimTuning.Default);
+
+            Assert.AreEqual(1, attacker.RecoveryRemaining, "Хвост в один тик ускорять некуда — он остаётся");
         }
 
         [Test]
@@ -349,7 +419,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             TickUntilNextDamage(sys, units, ctx, 0);
             Assert.Greater(attacker.AttackCooldownTicks, 0, "Предусловие: интервал ещё не вышел");
 
-            attacker.RecastAttack();
+            attacker.RecastAttack(SimTuning.Default);
 
             Assert.AreEqual(0, attacker.AttackCooldownTicks, "Ожидание интервала снято");
         }
@@ -361,10 +431,10 @@ namespace Guildmaster.Tests.EditMode.Combat
             var sys = new AutoAttackSystem();
 
             TickUntilNextDamage(sys, units, ctx, 0);
-            attacker.RecastAttack(recoveryMult: 0f, nextWindupMult: 0.5f);
+            attacker.RecastAttack(SimTuning.Default);
 
-            // Хвост снят и очередь пропущена → следующий замах начнётся сразу, уже укороченным.
-            sys.Tick(units, ctx, 0f);
+            // Хвост ускорен и очередь пропущена → дотикав его, юнит сразу входит в укороченный замах.
+            while (attacker.Phase == AttackPhase.Recovery) sys.Tick(units, ctx, 0f);
             Assert.AreEqual(AttackPhase.Windup, attacker.Phase, "Новая атака вышла вне очереди");
 
             var (plain, _, plainUnits, plainCtx) = SlowScene();
@@ -378,16 +448,16 @@ namespace Guildmaster.Tests.EditMode.Combat
         [Test]
         public void RecoveryCut_IsSpentByOneSwing()
         {
-            // Множитель хвоста принадлежит одному свингу: следующая атака получает свой доигрыш целым,
+            // Скорость хвоста принадлежит одному свингу: следующая атака доигрывает в обычном темпе,
             // иначе рекаст незаметно стал бы постоянным режимом кита.
             var (attacker, enemy, units, ctx) = SlowScene();
             var sys = new AutoAttackSystem();
 
             TickUntilNextDamage(sys, units, ctx, 0);
             int fullTail = attacker.RecoveryRemaining;
-            attacker.RecastAttack(recoveryMult: 0f);
-            Assert.AreEqual(1f, attacker.SwingRecoveryMult, 0.001f,
-                "Множитель уже потрачен: хвост этого свинга обрезан на месте");
+            attacker.RecastAttack(SimTuning.Default);
+            Assert.AreEqual(1f, attacker.SwingRecoverySpeed, 0.001f,
+                "Скорость уже потрачена: хвост этого свинга ускорен на месте");
 
             TickUntilNextDamage(sys, units, ctx, 0);   // следующая атака
             Assert.AreEqual(fullTail, attacker.RecoveryRemaining, "У новой атаки хвост обычный");

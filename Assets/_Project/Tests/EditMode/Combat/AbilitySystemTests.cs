@@ -346,8 +346,13 @@ namespace Guildmaster.Tests.EditMode.Combat
         }
 
         [Test]
-        public void Recast_ResetsTheAutoAttackTimer_AfterTheAbilityHits()
+        public void DamagingAbility_DoesNotSkipTheAttackQueue_RecastMustBeDeclared()
         {
+            // Инвариант, ради которого удалён авто-рекаст (2026-07-31): урон способности САМ ПО СЕБЕ не
+            // даёт права на удар вне очереди. Раньше право выводилось из «есть множитель урона», и его
+            // молча получали залп Арканиста, «Ледяная жатва» и «Стальной вихрь» — киты, у которых свинга
+            // нет вовсе. Теперь рекаст объявляется зарядом (EmpowerNextAttackComponent), и если этот тест
+            // однажды позеленеет наоборот — значит косвенный признак вернулся.
             var sys = new AbilitySystem();
             var ctx = new MockCombatContext();
             var caster = WithAttackDamage(TestUnit.Make());
@@ -359,30 +364,13 @@ namespace Guildmaster.Tests.EditMode.Combat
                 cost: 30f, mode: AbilityTargetMode.NearestEnemy, damageMultiplier: 2f, castSeconds: 0.2f));
 
             var units = new List<RuntimeUnit> { caster, enemy };
-            sys.Tick(units, ctx, SimConstants.TickDelta);
+            for (int i = 0; i < 7; i++) sys.Tick(units, ctx, SimConstants.TickDelta);
 
-            Assert.AreEqual(25, caster.AttackCooldownTicks, "Пока умение готовится — таймер не трогаем (Q8: после удара)");
-
-            for (int i = 0; i < 6; i++) sys.Tick(units, ctx, SimConstants.TickDelta);
-
-            Assert.AreEqual(1, ctx.DamageCalls.Count);
-            Assert.AreEqual(0, caster.AttackCooldownTicks, "Удар умением обнулил таймер — авто-атака выходит сразу");
-        }
-
-        [Test]
-        public void Recast_DoesNotApplyToNonDamagingAbilities()
-        {
-            var sys = new AbilitySystem();
-            var ctx = new MockCombatContext();
-            var caster = TestUnit.Make();
-            caster.CurrentResource     = 50f;
-            caster.AttackCooldownTicks = 25;
-            // Чистый баф на себя: ритм авто-атак он не ломает, значит и таймер не сбрасывает.
-            WithAbility(caster, TestAbility.Make(cost: 30f, mode: AbilityTargetMode.Self));
-
-            sys.Tick(new List<RuntimeUnit> { caster }, ctx, SimConstants.TickDelta);
-
-            Assert.AreEqual(25, caster.AttackCooldownTicks, "Не-ударное умение таймер атаки не трогает");
+            Assert.AreEqual(1, ctx.DamageCalls.Count, "Предусловие: умение отработало");
+            // Сам кулдаун здесь не тикает — его ведёт AutoAttackSystem, которую тест не гоняет. Ровно это
+            // и нужно проверить: умение не ТРОГАЕТ чужой таймер, ни в какую сторону.
+            Assert.AreEqual(25, caster.AttackCooldownTicks,
+                "Очередь атаки не пропущена — умение её не касается");
         }
     }
 }

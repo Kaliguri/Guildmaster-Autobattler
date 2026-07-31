@@ -34,10 +34,6 @@ namespace Guildmaster.Combat.Effects.Components
                  "Пусто = удар без фиксации, цель может уйти или ответить.")]
         [SerializeField] private EffectData _microStun;
 
-        [Tooltip("Множитель длины замаха удара в спину (M11): 0.5 = вдвое короче обычного. " +
-                 "0 = замах обычный. Это и есть «ускоренная анимация» удара вне очереди.")]
-        [SerializeField] private float _windupMult = 0.5f;
-
         public CombatEvent Events => CombatEvent.EffectExpired;
 
         public void OnApply(in EffectContext ctx) { }
@@ -73,10 +69,10 @@ namespace Guildmaster.Combat.Effects.Components
             // замах. Ударить в стан, а не в убегающую спину, — ровно то, ради чего комбо и заведено.
             if (_microStun != null) ctx.Combat.ApplyEffect(victim, _microStun, monk);
 
-            // Вне очереди — общим примитивом рекаста: хвост текущей атаки снимается, очередь пропускается,
-            // а замах удара в спину идёт укороченным. Тот же жест, что у умений-ударов (M18), поэтому и
-            // владелец у него один — RuntimeUnit.RecastAttack.
-            monk.RecastAttack(recoveryMult: 0f, nextWindupMult: _windupMult > 0f ? _windupMult : 1f);
+            // Вне очереди — общим примитивом рекаста: доигрыш текущей атаки идёт вдвое быстрее, очередь
+            // пропускается, замах удара в спину — тоже вдвое быстрее. Тот же жест, что у умений-ударов
+            // (M18), поэтому и владелец у него один — RuntimeUnit.RecastAttack, вместе с числами.
+            monk.RecastAttack(ctx.Combat.Tuning);
         }
     }
 }

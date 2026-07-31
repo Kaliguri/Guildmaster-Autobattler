@@ -43,13 +43,12 @@ MonoBehaviour:
         _flatPen: 0
         _blinkBehind: 0
         _knockbackDistance: 0
-        _consumeTag: 1024
+        _consumeTag: 16384
         _bonusOnHitEffects:
         - {fileID: 11400000, guid: 5f8a731f13f522a4090cc75dfe269d47, type: 2}
         - {fileID: 11400000, guid: 2d42622144fda1d44a4161e7148fc2c5, type: 2}
         _bonusOnHitCount: 1
         _recastImmediately: 1
-        _recastWindupMult: 1
         _splitShare: 0
         _splitType: 0
         _damageMultScalings: []

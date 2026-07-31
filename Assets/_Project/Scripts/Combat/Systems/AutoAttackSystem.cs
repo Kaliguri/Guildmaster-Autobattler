@@ -259,7 +259,17 @@ namespace Guildmaster.Combat
             int lastContact   = unit.SwingContacts.Count > 0
                 ? unit.SwingContacts[unit.SwingContacts.Count - 1]
                 : windupTicks;
-            int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, lastContact,
+
+            // Ускоренный рекастом замах СОКРАЩАЕТ свинг, а не переливает сэкономленное в доигрыш. Хвост
+            // меряется от контакта — значит по сырой формуле удар, вышедший вдвое быстрее, получил бы
+            // вдвое более длинный доигрыш, и весь выигрыш рекаста вернулся бы обратно тем же тиком.
+            // Поэтому доигрыш считаем от БАЗОВОЙ длины замаха: контакт наступает раньше, всё после него —
+            // как обычно. Поймано тестом RecoveryCut_IsSpentByOneSwing (2026-07-31).
+            int tailAnchor = lastContact;
+            if (unit.NextWindupMult > 0f)
+                tailAnchor += AttackTiming.WindupTicksFor(unit, ignoreRecast: true) - windupTicks;
+
+            int followThrough = AttackTiming.FollowThroughTicks(hitFrame, frameCount, intervalTicks, tailAnchor,
                 maxAnimTicks);
             // У канальной формы хвост свой — сворачивание потока, — и берётся из профиля канала: тот же
             // кит в ближней форме бьёт короткими выпадами, и общий хвост кита навязал бы им чужую цену.
@@ -635,14 +645,19 @@ namespace Guildmaster.Combat
         /// доп. секунды, посчитано в <see cref="EnterWindup"/>), либо сразу Idle, если хвоста нет.</summary>
         private static void EnterRecovery(RuntimeUnit unit)
         {
-            // Рекаст, взведённый ещё в замахе, обрезает именно хвост: занесённый удар доигрывает целиком,
-            // а вот доигрыш после него укорачивается (модель Макса 2026-07-31). Множитель тратится вместе
-            // со свингом — следующая атака получает свой хвост нетронутым.
-            int ticks = unit.SwingRecoveryMult >= 1f
-                ? unit.RecoveryTicks
-                : (int)global::System.Math.Round(unit.RecoveryTicks * unit.SwingRecoveryMult,
+            // Рекаст, взведённый ещё в замахе, ускоряет именно хвост: занесённый удар доигрывает целиком,
+            // а вот доигрыш после него идёт быстрее (модель Макса 2026-07-31). Скорость тратится вместе со
+            // свингом — следующая атака получает свой хвост в обычном темпе.
+            // Пол в один тик: фаза, у которой хвост вообще есть, не должна исчезать от ускорения — она
+            // короткая, но существует, и её окном пользуется чужой ответ.
+            int ticks = unit.RecoveryTicks;
+            if (unit.SwingRecoverySpeed > 1f && ticks > 0)
+            {
+                ticks = (int)global::System.Math.Round(ticks / unit.SwingRecoverySpeed,
                     global::System.MidpointRounding.AwayFromZero);
-            unit.SwingRecoveryMult = 1f;
+                if (ticks < 1) ticks = 1;
+            }
+            unit.SwingRecoverySpeed = 1f;
             if (ticks <= 0)
             {
                 unit.Phase = AttackPhase.Idle;

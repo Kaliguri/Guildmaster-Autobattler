@@ -48,7 +48,6 @@ MonoBehaviour:
         - {fileID: 11400000, guid: d1a3c5e7f9b2406d8a0c2e4f6b8d0a15, type: 2}
         _bonusOnHitCount: 2
         _recastImmediately: 0
-        _recastWindupMult: 1
         _splitShare: 0
         _splitType: 0
         _damageMultScalings: []

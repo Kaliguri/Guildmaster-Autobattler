@@ -58,7 +58,6 @@ MonoBehaviour:
         _bonusOnHitEffects: []
         _bonusOnHitCount: 1
         _recastImmediately: 1
-        _recastWindupMult: 1
         _splitShare: 0
         _splitType: 0
         _damageMultScalings:

@@ -94,6 +94,13 @@ namespace Guildmaster.Data.Definitions
         [Tooltip("За сколько секунд прибавка скорости набирается от нуля до полной. По этой же доле показ подмешивает клип бега к шагу, поэтому число правит и движение, и картинку разом.")]
         [SerializeField] private float _sprintRampSeconds = SimTuning.Default.SprintRampSeconds;
 
+        [TabGroup("Tuning", "Рекаст"), SuffixLabel("x", overlay: true), LabelText("Ускорение доигрыша")]
+        [Tooltip("Во сколько раз быстрее доигрывает атака, оборванная рекастом (2 = вдвое). Рекаст именно УСКОРЯЕТ, а не снимает фазу: снятая убрала бы окно чужого ответа целиком, ускоренная лишь сокращает его. 1 = доигрыш обычный, рекаст даёт только пропуск очереди.")]
+        [SerializeField] private float _recastRecoverySpeed = SimTuning.Default.RecastRecoverySpeed;
+        [TabGroup("Tuning", "Рекаст"), SuffixLabel("x", overlay: true), LabelText("Ускорение замаха")]
+        [Tooltip("Во сколько раз быстрее замах удара, вышедшего по рекасту (2 = вдвое). Сокращает ВЕСЬ свинг: контакт наступает раньше, доигрыш после него — обычной длины. Число отдельное от ускорения доигрыша намеренно — этим крутится читаемость телеграфа, и парированию нужно, чтобы окно осталось.")]
+        [SerializeField] private float _recastWindupSpeed = SimTuning.Default.RecastWindupSpeed;
+
         /// <summary>Снять иммутабельный снапшот для бейка на старте боя.</summary>
         public SimTuning ToSnapshot() => new SimTuning(
             _bodyRadiusPerSize,
@@ -120,6 +127,8 @@ namespace Guildmaster.Data.Definitions
             _sprintEnterGap,
             _sprintExitGap,
             _sprintWalkSeconds,
-            _sprintRampSeconds);
+            _sprintRampSeconds,
+            _recastRecoverySpeed,
+            _recastWindupSpeed);
     }
 }

@@ -190,7 +190,7 @@ namespace Guildmaster.Tests.EditMode.Combat
             monk.Phase = AttackPhase.Recovery;
             monk.RecoveryRemaining = 10;
 
-            sim.ApplyEffect(monk, VortexPassive(2f, MicroStun(0.25f), windupMult: 0.5f), monk);
+            sim.ApplyEffect(monk, VortexPassive(2f, MicroStun(0.25f)), monk);
             sim.Displace(new DisplaceRequest(victim, monk, new Vector2(1f, 0f),
                 distance: 4f, cannonball: false, damage: 0f, damageType: DamageType.Slash, width: 1f));
 
@@ -204,13 +204,16 @@ namespace Guildmaster.Tests.EditMode.Combat
 
             Assert.AreEqual(0, monk.AttackCooldownTicks, "Удар вне очереди: таймер атаки обнулён");
 
-            // Хвост предыдущего удара перебит — проверяем это по ОСТАТКУ хвоста, а не по фазе. Фазу двигает
+            // Хвост предыдущего удара ускорен — проверяем это по ОСТАТКУ хвоста, а не по фазе. Фазу двигает
             // AutoAttackSystem в своём тике, и рекаст (RuntimeUnit.RecastAttack) её намеренно не трогает:
-            // у фазы один владелец. Поэтому сразу после захода юнит формально ещё в Recovery, но с нулевым
-            // остатком — то есть ничего уже не ждёт. Проверять фазу здесь нельзя и по второй причине:
-            // дальше монах успевает провести сам удар в спину и войти в НОВЫЙ хвост, так что «не Recovery»
-            // перестаёт быть признаком успеха.
-            Assert.AreEqual(0, monk.RecoveryRemaining, "Хвост предыдущего удара перебит");
+            // у фазы один владелец. Проверять фазу здесь нельзя и по второй причине: дальше монах успевает
+            // провести сам удар в спину и войти в НОВЫЙ хвост, так что «не Recovery» перестаёт быть
+            // признаком успеха.
+            //
+            // Сравниваем с потолком, а не с точным числом: между взводом захода и этой строкой проходят
+            // тики, и остаток честно убывает. Инвариант тут — «ускорен вдвое, а не снят»: хвост из десяти
+            // тиков стал пятью и с тех пор дотикивает.
+            Assert.Less(monk.RecoveryRemaining, 10, "Хвост предыдущего удара ускорен");
             Assert.AreEqual(0.5f, monk.NextWindupMult, 1e-4f, "Замах удара в спину ускорен вдвое");
             // Проверяем ФАКТ наложения, а не производный флаг: контракт этого компонента — «повесить
             // микро-стан на цель», а превращение эффекта в CanAct принадлежит EffectSystem, и у неё
@@ -295,12 +298,11 @@ namespace Guildmaster.Tests.EditMode.Combat
 
         // ===================== Фабрики / хелперы =====================
 
-        private static EffectData VortexPassive(float mult, EffectData microStun = null, float windupMult = 0f)
+        private static EffectData VortexPassive(float mult, EffectData microStun = null)
         {
             var vortex = new VortexEntryComponent()
                 .With("_empowerMult", mult)
-                .With("_microStun", microStun)
-                .With("_windupMult", windupMult);
+                .With("_microStun", microStun);
             return TestEffect.Make(baseDuration: -1f, polarity: EffectPolarity.Neutral, components: vortex);
         }
 
@@ -406,7 +408,7 @@ namespace Guildmaster.Tests.EditMode.Combat
                 .With("_consumeTag", EffectTag.Empowered)
                 .With("_splitShare", 0.5f)
                 .With("_splitType", DamageType.Ice)
-                .With("_bonusOnHitEffect", frost)
+                .With("_bonusOnHitEffects", new[] { frost })
                 .With("_bonusOnHitCount", 2);
             EffectData def = TestEffect.Make(
                 baseDuration: -1f, tags: EffectTag.Empowered,
