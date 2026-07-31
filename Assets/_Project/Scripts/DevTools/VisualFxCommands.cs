@@ -18,14 +18,19 @@ namespace Guildmaster.DevTools
         {
             if (set == null) return;
 
-            set.Add("gm_fx", "Список визуальных эффектов и их состояние", _ => List());
-            set.Add("gm_fx_on", "Включить эффект по имени", a => On(a.GetString(0)),
-                new DevParam("id", DevParamType.String));
-            set.Add("gm_fx_off", "Выключить эффект по имени", a => Off(a.GetString(0)),
-                new DevParam("id", DevParamType.String));
-            set.Add("gm_fx_toggle", "Переключить эффект по имени", a => Toggle(a.GetString(0)),
-                new DevParam("id", DevParamType.String));
-            set.Add("gm_fx_all", "Вернуть все эффекты (как по умолчанию)", _ => All());
+            // Одна команда вместо четырёх: без аргументов — список, с id — тумблер, с явным состоянием —
+            // включить/выключить. Три отдельные fx_on/fx_off/fx_toggle отличались лишь тем, что человек и
+            // так держит в голове, набирая имя эффекта.
+            set.Add("fx", "Эффекты: без аргументов — список, с id — переключить, с on/off — задать явно",
+                a =>
+                {
+                    if (!a.Has(0)) return List();
+                    string id = a.GetString(0);
+                    return a.Has(1) ? (a.GetBool(1) ? On(id) : Off(id)) : Toggle(id);
+                },
+                new DevParam("id", DevParamType.String, true), new DevParam("on|off", DevParamType.Bool, true));
+
+            set.Add("fx_reset", "Вернуть все эффекты в исходное (всё включено)", _ => All());
         }
 
         public static string List()

@@ -44,9 +44,11 @@ namespace Guildmaster.UI
         private VisualTreeAsset _pauseUxml;
         private VisualTreeAsset _settingsUxml;
         private VisualTreeAsset _devConsoleUxml;
+        private VisualTreeAsset _devLogUxml;
 
         // Один инстанс на всю сессию: экран носит историю команд, и пересоздание стирало бы её.
         private DevConsoleScreen _devConsole;
+        private DevLogScreen _devLog;
         private VisualTreeAsset _loadoutUxml;
         private VisualTreeAsset _rewardUxml;
         private VisualTreeAsset _eventUxml;
@@ -133,9 +135,10 @@ namespace Guildmaster.UI
             VisualTreeAsset loadoutInventoryUxml = null,
             VisualTreeAsset arcanaCardUxml = null, VisualTreeAsset campUxml = null,
             VisualTreeAsset titleCardUxml = null, Sprite titleCardSeal = null,
-            VisualTreeAsset devConsoleUxml = null)
+            VisualTreeAsset devConsoleUxml = null, VisualTreeAsset devLogUxml = null)
         {
             _devConsoleUxml = devConsoleUxml;
+            _devLogUxml = devLogUxml;
             _root = screensLayer; // корень оверлеев = слой экранов (null-guard в Open*); FillRoot растягивает по нему
             _pauseUxml = pauseUxml;
             _settingsUxml = settingsUxml;
@@ -446,15 +449,69 @@ namespace Guildmaster.UI
             if (_devConsole != null && _nav.AnyScreen(s => ReferenceEquals(s, _devConsole)))
             {
                 _nav.Remove(_devConsole);
-                _log?.Detach();
                 DevConsoleVisibilityChanged?.Invoke(false);
                 return;
             }
 
-            _devConsole ??= new DevConsoleScreen(_devConsoleUxml, _registry, _log);
-            _log?.Attach();   // слушаем лог Unity, только пока консоль на экране
+            CloseDevOverlays();
+
+            // Свой буфер, НЕ общий с лог-консолью: здесь идёт разговор «спросил — ответили», и поток
+            // Debug.Log из боя затопил бы его за секунды. Логи движка живут на F2.
+            _devConsole ??= new DevConsoleScreen(_devConsoleUxml, _registry, new Core.DevConsole.DevConsoleLog());
             _nav.Push(_devConsole);
             DevConsoleVisibilityChanged?.Invoke(true);
+        }
+
+        /// <summary>
+        /// Снять все открытые dev-полки (командная консоль, лог, витрина боёв). Полки взаимоисключающи:
+        /// вторая поверх первой — это две простыни внахлёст, в которых не читается ни одна.
+        /// </summary>
+        /// <remarks>
+        /// Ищем по маркеру <see cref="IDevOverlayScreen"/>, а не по типам: витрину боёв показывает
+        /// dev-модуль, и роутер о ней ничего не знает — знать и не должен.
+        /// </remarks>
+        public void CloseDevOverlays()
+        {
+            var open = new List<UiScreen>();
+            _nav.AnyScreen(s =>
+            {
+                if (s is IDevOverlayScreen) open.Add(s);
+                return false;   // обходим весь стек, а не ищем первое совпадение
+            });
+
+            for (int i = 0; i < open.Count; i++)
+            {
+                _nav.Remove(open[i]);
+                if (ReferenceEquals(open[i], _devConsole)) DevConsoleVisibilityChanged?.Invoke(false);
+            }
+        }
+
+        /// <summary>Открыть/закрыть лог-консоль (F2): хвост сообщений движка, без строки ввода.</summary>
+        public void ToggleDevLog()
+        {
+            if (_root == null)
+            {
+                Debug.LogError("[MenuRouter] - лог-консоль: нет корня UI (роутер не инициализирован)");
+                return;
+            }
+
+            if (_devLogUxml == null)
+            {
+                Debug.LogError("[MenuRouter] - лог-консоль: не разведён UXML (поле _devLogScreen в UiRootBootstrap)");
+                return;
+            }
+
+            if (_devLog != null && _nav.AnyScreen(s => ReferenceEquals(s, _devLog)))
+            {
+                _nav.Remove(_devLog);
+                return;
+            }
+
+            CloseDevOverlays();
+
+            _devLog ??= new DevLogScreen(_devLogUxml, _log);
+            _log?.Attach();   // хвост копится, только пока его есть кому смотреть
+            _nav.Push(_devLog);
         }
 
         /// <summary>

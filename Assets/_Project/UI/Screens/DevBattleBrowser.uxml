@@ -1,0 +1,35 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="picker-root" class="gm-console gm-console--picker">
+        <ui:VisualElement class="gm-console__header">
+            <ui:Label text="Бои" class="gm-console__title" picking-mode="Ignore" />
+            <ui:VisualElement class="gm-console__spacer" picking-mode="Ignore" />
+            <ui:Label text="F1 команды · F2 лог · F3 бои" class="gm-console__keys" picking-mode="Ignore" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="picker-input-row" class="gm-console__input-row gm-console__input-row--top">
+            <ui:Label text="/" class="gm-console__prompt" picking-mode="Ignore" />
+
+            <ui:VisualElement name="picker-field-slot" class="gm-console__field-slot">
+                <ui:Label name="picker-ghost" text="" class="gm-console__ghost" picking-mode="Ignore" />
+                <ui:TextField name="picker-field" class="gm-console__field" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:VisualElement name="picker-head" class="gm-picker__row gm-picker__row--head">
+            <ui:Button name="head-command" text="команда" class="gm-picker__head-cell gm-picker__cell--command" />
+            <ui:Button name="head-kind" text="тип" class="gm-picker__head-cell gm-picker__cell--kind" />
+            <ui:Button name="head-tier" text="сложность" class="gm-picker__head-cell gm-picker__cell--tier" />
+            <ui:Button name="head-hint" text="описание" class="gm-picker__head-cell gm-picker__cell--hint" />
+        </ui:VisualElement>
+
+        <ui:ScrollView name="picker-list" class="gm-console__log" mode="Vertical"
+                       vertical-scroller-visibility="Auto" horizontal-scroller-visibility="Hidden" />
+
+        <ui:VisualElement class="gm-console__footer">
+            <ui:Button name="picker-run" text="запустить" class="gm-console__tool" />
+            <ui:Button name="picker-refresh" text="обновить список" class="gm-console__tool" />
+            <ui:VisualElement class="gm-console__spacer" picking-mode="Ignore" />
+            <ui:Label name="picker-status" text="" class="gm-console__status" picking-mode="Ignore" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

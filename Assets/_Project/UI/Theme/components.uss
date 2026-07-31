@@ -2431,12 +2431,15 @@
  * ввода, и совпадение символ-в-символ держится только на равной ширине глифов.
  * ========================================================================== */
 
+/* Полноэкранная, а не полка (решение Макса 31.07): дев-инструмент открывают, чтобы работать В НЁМ, и
+   половина экрана под кадром игры отвлекала, не давая ничего — сам кадр всё равно замер. Фон почти
+   непрозрачный по той же причине; латунная линия по нижней кромке осталась единственным украшением. */
 .gm-console {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
-    height: 45%;
+    bottom: 0;
     background-color: var(--gm-color-console-surface);
     border-bottom-width: var(--gm-border-1);
     border-bottom-color: var(--gm-color-accent);
@@ -2558,13 +2561,18 @@
     min-height: var(--gm-space-4);
 }
 
+/* Подсказка-призрак: тусклее обычного текста и ровно на его линии. Раньше она была того же веса, что
+   набранное, и читалась как уже введённый текст — то есть врала о состоянии поля. Отступы и выравнивание
+   совпадают с полем символ-в-символ: на моноширинном шрифте это и делает подсказку продолжением строки,
+   а не вторым слоем поверх неё. */
 .gm-console__ghost {
     position: absolute;
     left: 0;
     top: 0;
     right: 0;
     bottom: 0;
-    color: var(--gm-color-text-muted);
+    padding-bottom: var(--gm-space-0);
+    color: rgba(230, 220, 200, 0.28);
     -unity-text-align: middle-left;
 }
 
@@ -2601,3 +2609,205 @@
     flex-shrink: 0;
     padding-top: var(--gm-space-0);
 }
+
+/* Витрина боёв (F3) — та же полка, что консоль, но строка поиска сверху: здесь глаза идут «набрал →
+   выбрал из списка», а не «прочитал вывод → набрал». */
+/* Витрина — тоже во весь экран: искать бой удобнее в списке на всю высоту, а не в щели на треть. */
+.gm-console--picker {
+    padding-top: var(--gm-space-2);
+}
+
+.gm-console__input-row--top {
+    border-top-width: 0;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--gm-color-border-subtle);
+    padding-top: 0;
+    padding-bottom: var(--gm-space-1);
+    margin-bottom: var(--gm-space-1);
+}
+
+/* Строка витрины: тип слева чипом, id по центру, состав справа приглушённым. */
+.gm-picker__row {
+    flex-direction: row;
+    align-items: center;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: var(--gm-space-1);
+    border-left-width: var(--gm-border-1);
+    border-left-color: rgba(0, 0, 0, 0);
+}
+
+.gm-picker__row--selected {
+    background-color: var(--gm-color-hover-surface);
+    border-left-color: var(--gm-color-accent);
+}
+
+
+
+
+/* --- Скроллбар dev-полок: тонкая латунная нить вместо серого слайдера Unity ---
+   Дефолтная тема рисует широкий светлый слайдер со стрелками — на тёмной полке он читается как чужой
+   элемент чужого приложения. Стрелки убираем: колесо и перетаскивание закрывают все сценарии. */
+.gm-console .unity-scroller {
+    width: 10px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}
+
+.gm-console .unity-scroller--vertical {
+    margin-left: var(--gm-space-0);
+}
+
+.gm-console .unity-scroller .unity-base-slider {
+    margin: 0;
+    min-width: 10px;
+}
+
+.gm-console .unity-scroller .unity-base-slider__tracker {
+    background-color: rgba(255, 255, 255, 0.04);
+    border-width: 0;
+    margin: 0;
+}
+
+.gm-console .unity-scroller .unity-base-slider__dragger {
+    background-color: var(--gm-color-brass-700);
+    border-width: 0;
+    width: 6px;
+    margin-left: 2px;
+}
+
+.gm-console .unity-scroller .unity-base-slider__dragger:hover {
+    background-color: var(--gm-color-accent);
+}
+
+/* Кнопки-стрелки скроллера: место занимают, пользы не несут. */
+.gm-console .unity-scroller__low-button,
+.gm-console .unity-scroller__high-button {
+    display: none;
+}
+
+/* --- Реакция на мышь: полка кликабельна, а не только читаема --- */
+
+.gm-console__hit:hover,
+.gm-picker__row:hover {
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-console__hit,
+.gm-picker__row {
+    cursor: link;
+}
+
+/* --- Кнопки в шапке полки (очистить, сохранить, сортировка) --- */
+
+
+.gm-console__spacer {
+    flex-grow: 1;
+}
+
+.gm-console__tool {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-xxs);
+    padding-left: var(--gm-space-1);
+    padding-right: var(--gm-space-1);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin: 0;
+    -unity-text-align: middle-center;
+}
+
+.gm-console__tool:hover {
+    color: var(--gm-color-text);
+    background-color: var(--gm-color-hover-surface);
+}
+
+.gm-console__tool--active {
+    color: var(--gm-color-accent);
+}
+
+/* ============================================================================
+ * ЕДИНЫЙ КАРКАС DEV-ПОЛОК: шапка → тело → подвал. Один и тот же у командной консоли,
+ * лога и витрины боёв (требование Макса 01.08): кнопки и статус всегда в одном месте,
+ * и переключаясь между F1/F2/F3, глаз не ищет их заново.
+ * ========================================================================== */
+
+.gm-console__header {
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    padding-bottom: var(--gm-space-1);
+    margin-bottom: var(--gm-space-1);
+    border-bottom-width: 1px;
+    border-bottom-color: var(--gm-color-border-subtle);
+}
+
+.gm-console__title {
+    color: var(--gm-color-accent);
+    font-size: var(--gm-font-sm);
+    -unity-font-style: bold;
+}
+
+.gm-console__keys {
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-xxs);
+}
+
+.gm-console__footer {
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    margin-top: var(--gm-space-1);
+    padding-top: var(--gm-space-1);
+    border-top-width: 1px;
+    border-top-color: var(--gm-color-border-subtle);
+}
+
+/* Статус в подвале — не отдельная строка под ним, а правая половина той же полосы. */
+.gm-console__footer .gm-console__status {
+    padding-top: 0;
+}
+
+/* --- Шапка таблицы витрины: подписи колонок, они же кнопки сортировки --- */
+
+.gm-picker__row--head {
+    border-left-color: rgba(0, 0, 0, 0);
+    border-bottom-width: 1px;
+    border-bottom-color: var(--gm-color-border-subtle);
+    padding-bottom: var(--gm-space-0);
+    margin-bottom: var(--gm-space-0);
+}
+
+.gm-picker__row--head:hover {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.gm-picker__head-cell {
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+    color: var(--gm-color-text-muted);
+    font-size: var(--gm-font-xxs);
+    -unity-text-align: middle-left;
+}
+
+.gm-picker__head-cell:hover {
+    color: var(--gm-color-text);
+}
+
+.gm-picker__head-cell--sorted {
+    color: var(--gm-color-accent);
+}
+
+/* Колонки — одна ширина у шапки и у строк, иначе таблица «поедет» на первой же длинной строке. */
+.gm-picker__cell--command { min-width: 420px; max-width: 420px; }
+.gm-picker__cell--kind    { min-width: 140px; max-width: 140px; }
+.gm-picker__cell--tier    { min-width: 140px; max-width: 140px; }
+.gm-picker__cell--hint    { flex-grow: 1; }
+
+.gm-picker__cell--command { color: var(--gm-color-text); }
+.gm-picker__cell--kind,
+.gm-picker__cell--tier,
+.gm-picker__cell--hint { color: var(--gm-color-text-muted); }

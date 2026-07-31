@@ -63,6 +63,9 @@ namespace Guildmaster.UI
         [Tooltip("UXML dev-консоли (Трек К): полка сверху, открывается на ~ в редакторе и dev-сборке.")]
         [SerializeField] private VisualTreeAsset _devConsoleScreen;
 
+        [Tooltip("UXML лог-консоли (F2): хвост сообщений движка без строки ввода.")]
+        [SerializeField] private VisualTreeAsset _devLogScreen;
+
         [Tooltip("UXML глобальной панели забега (app-shell): режимы-навигация + HP/золото/акт/таймер/меню.")]
         [SerializeField] private VisualTreeAsset _runModeBar;
 
@@ -229,7 +232,7 @@ namespace Guildmaster.UI
             // Звук интерфейса ловится там же, на корне панели: клики и наведения всплывают до него со
             // всех экранов сразу, поэтому ни один экран не обязан знать про IAudioService.
             _uiSound?.Attach(_doc.rootVisualElement);
-            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen);
+            _router.Initialize(_layerScreens, _layerModal, _pauseScreen, _settingsScreen, _loadoutScreen, _rewardScreen, _eventScreen, _continueScreen, _shopScreen, _chestScreen, _outcomeScreen, _mainMenuScreen, _loadoutInventoryScreen, _arcanaCard, _campScreen, _titleCardScreen, _titleCardSeal, _devConsoleScreen, _devLogScreen);
             _input.MenuToggleRequested += OnMenuToggle;
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
@@ -237,6 +240,7 @@ namespace Guildmaster.UI
             // открывать ничего. Гейт стоит здесь, на ПОДПИСКЕ, а не на регистрации реестра — команды
             // регистрируют модули, и в релизной сборке им всё равно нужен адресат.
             _input.DevConsoleToggleRequested += OnDevConsoleToggle;
+            _input.DevLogToggleRequested += OnDevLogToggle;
 #endif
             // Открытие loadout по запросу из фазы расстановки (MessagePipe-событие с Data-пейлоадом).
             _openLoadoutSubscription = _openLoadoutSub?.Subscribe(req => _router.OpenLoadout(req));
@@ -690,6 +694,7 @@ namespace Guildmaster.UI
             if (_input != null) _input.MenuToggleRequested -= OnMenuToggle;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
             if (_input != null) _input.DevConsoleToggleRequested -= OnDevConsoleToggle;
+            if (_input != null) _input.DevLogToggleRequested -= OnDevLogToggle;
 #endif
             if (_router != null) _router.Changed -= RefreshShell;     // Ф4
             if (_loc != null) _loc.LocaleChanged -= RebuildTopBar;    // шов II.9.2
@@ -724,6 +729,8 @@ namespace Guildmaster.UI
         // Консоль открывается ИЗ ЛЮБОГО состояния, включая главное меню и отсутствие забега: её зовут
         // как раз тогда, когда игра куда-то не дошла. Никаких проверок RunState здесь быть не должно.
         private void OnDevConsoleToggle() => _router.ToggleDevConsole();
+
+        private void OnDevLogToggle() => _router.ToggleDevLog();
 #endif
 
         private void OnMenuToggle()

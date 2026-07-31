@@ -1,5 +1,11 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
     <ui:VisualElement name="console-root" class="gm-console">
+        <ui:VisualElement class="gm-console__header">
+            <ui:Label text="Команды" class="gm-console__title" picking-mode="Ignore" />
+            <ui:VisualElement class="gm-console__spacer" picking-mode="Ignore" />
+            <ui:Label text="F1 команды · F2 лог · F3 бои" class="gm-console__keys" picking-mode="Ignore" />
+        </ui:VisualElement>
+
         <ui:ScrollView name="console-log" class="gm-console__log" mode="Vertical"
                        vertical-scroller-visibility="Auto" horizontal-scroller-visibility="Hidden" />
 
@@ -15,6 +21,11 @@
             </ui:VisualElement>
         </ui:VisualElement>
 
-        <ui:Label name="console-status" text="" class="gm-console__status" picking-mode="Ignore" />
+        <ui:VisualElement class="gm-console__footer">
+            <ui:Button name="console-help" text="справка" class="gm-console__tool" />
+            <ui:Button name="console-clear" text="очистить" class="gm-console__tool" />
+            <ui:VisualElement class="gm-console__spacer" picking-mode="Ignore" />
+            <ui:Label name="console-status" text="" class="gm-console__status" picking-mode="Ignore" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

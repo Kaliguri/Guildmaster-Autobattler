@@ -18,7 +18,7 @@ namespace Guildmaster.UI.DevConsole
     /// приглушённым, и Tab его принимает. Точное совпадение символов держится на моноширинном шрифте —
     /// на пропорциональном ghost «уехал» бы вправо на первой же букве.</para>
     /// </remarks>
-    public sealed class DevConsoleScreen : UiScreen
+    public sealed class DevConsoleScreen : UiScreen, IDevOverlayScreen
     {
         private const string LineClass = "gm-console__line";
         private const string HiddenPaletteClass = "gm-console__palette--hidden";
@@ -72,14 +72,34 @@ namespace Guildmaster.UI.DevConsole
             _ghost   = Root.Q<Label>("console-ghost");
             _status  = Root.Q<Label>("console-status");
 
-            if (_field != null)
+            if (_field != null) _field.RegisterValueChangedCallback(OnTyped);
+
+            var help = Root.Q<Button>("console-help");
+            if (help != null) help.clicked += PrintHelp;
+
+            var clear = Root.Q<Button>("console-clear");
+            if (clear != null) clear.clicked += () => { _log?.Clear(); PrintWelcome(); };
+
+            // Клавиши ловим на КОРНЕ экрана в trickle-фазе, а не на поле. Причина: Tab и стрелки в UITK
+            // сначала превращаются в навигацию по фокусу (NavigationMoveEvent) и до обработчика на поле
+            // либо не доходят, либо доходят уже после того, как фокус уехал на соседнюю кнопку — а
+            // следующий Enter «нажимает» её. Именно так консоль запускала то, чего у неё не просили.
+            Root.RegisterCallback<KeyDownEvent>(OnKeyDown, TrickleDown.TrickleDown);
+            Root.RegisterCallback<NavigationMoveEvent>(OnNavigationMove, TrickleDown.TrickleDown);
+            Root.RegisterCallback<NavigationSubmitEvent>(evt =>
             {
-                _field.RegisterValueChangedCallback(OnTyped);
-                _field.RegisterCallback<KeyDownEvent>(OnKeyDown, TrickleDown.TrickleDown);
-            }
+                Submit();
+                evt.StopPropagation();
+                evt.PreventDefault();
+            }, TrickleDown.TrickleDown);
 
             Root.RegisterCallback<AttachToPanelEvent>(_ =>
             {
+                // Фокус ставим САМИ и через schedule. GetInitialFocus навигатора срабатывает раньше, чем
+                // панель успевает принять элемент, и поле остаётся без фокуса — тогда клавиши уходят мимо
+                // экрана, и Enter «не работает», хотя обработчик на месте.
+                _field?.schedule.Execute(() => _field.Focus());
+
                 if (!_scrollPending) return;
                 _scrollPending = false;
                 _logView?.schedule.Execute(ScrollToEnd);
@@ -93,6 +113,37 @@ namespace Guildmaster.UI.DevConsole
                 _log.Appended += OnLineAppended;
                 _log.Cleared  += RebuildLog;
             }
+
+            if (_log == null || _log.Count == 0) PrintWelcome();
+        }
+
+        /// <summary>
+        /// Первый экран консоли: что вообще можно набрать. Пустая полка с мигающим курсором честно
+        /// говорит «я готова» и совершенно не говорит, что делать дальше, — а по памяти команды помнит
+        /// только тот, кто их писал.
+        /// </summary>
+        private void PrintWelcome()
+        {
+            if (_log == null) return;
+
+            _log.Append(DevLogKind.Reply, $"Консоль команд. Их сейчас {_registry?.Count ?? 0}.");
+            _log.Append(DevLogKind.Info,  "  battles          что можно запустить (или F3 — витрина с поиском)");
+            _log.Append(DevLogKind.Info,  "  kit monk         срез одного кита против болванчиков");
+            _log.Append(DevLogKind.Info,  "  spawn 4          тест-бой четверо на четверо");
+            _log.Append(DevLogKind.Info,  "  restart · win    перезапустить бой · закончить победой");
+            _log.Append(DevLogKind.Info,  "  sep · fx · arena группы: расталкивание, эффекты, облик арены");
+            _log.Append(DevLogKind.Info,  "Tab дополняет · ↑↓ история · «справка» — весь список · F2 — лог движка");
+        }
+
+        /// <summary>Весь список команд с формой вызова — по кнопке «справка».</summary>
+        private void PrintHelp()
+        {
+            if (_log == null || _registry == null) return;
+
+            _log.Append(DevLogKind.Reply, $"Все команды ({_registry.Count}):");
+            IReadOnlyList<DevCommand> all = _registry.All;
+            for (int i = 0; i < all.Count; i++)
+                _log.Append(DevLogKind.Info, $"  {all[i].Usage}   — {all[i].Summary}");
         }
 
         /// <inheritdoc />
@@ -116,7 +167,9 @@ namespace Guildmaster.UI.DevConsole
 
             // Раскладка ОС нас не касается: набранное в русской раскладке переводится в латиницу по
             // позиции клавиши, потому что все имена команд латинские (решение Макса 31.07).
-            string latin = KeyboardLayoutMap.ToLatin(evt.newValue);
+            // Заодно выбрасываем сам символ клавиши-тогла: клавиша открывает консоль, а её литера
+            // попадала в поле первой же буквой ввода.
+            string latin = StripToggleChars(KeyboardLayoutMap.ToLatin(evt.newValue));
             if (!string.Equals(latin, evt.newValue) && _field != null)
             {
                 int caret = _field.cursorIndex;
@@ -135,24 +188,44 @@ namespace Guildmaster.UI.DevConsole
                 case KeyCode.Return:
                 case KeyCode.KeypadEnter:
                     Submit();
-                    evt.StopPropagation();
+                    Consume(evt);
                     break;
 
                 case KeyCode.Tab:
                     AcceptCompletion();
-                    evt.StopPropagation();
+                    Consume(evt);
                     break;
 
                 case KeyCode.UpArrow:
                     StepHistory(+1);
-                    evt.StopPropagation();
+                    Consume(evt);
                     break;
 
                 case KeyCode.DownArrow:
                     StepHistory(-1);
-                    evt.StopPropagation();
+                    Consume(evt);
                     break;
             }
+        }
+
+        // Tab и стрелки внутри консоли принадлежат ЕЙ, а не навигации по фокусу: уехавший фокус тут
+        // означает, что следующий Enter нажмёт постороннюю кнопку.
+        private void OnNavigationMove(NavigationMoveEvent evt)
+        {
+            if (evt.direction == NavigationMoveEvent.Direction.Next ||
+                evt.direction == NavigationMoveEvent.Direction.Previous ||
+                evt.direction == NavigationMoveEvent.Direction.Up ||
+                evt.direction == NavigationMoveEvent.Direction.Down)
+            {
+                evt.StopPropagation();
+                evt.PreventDefault();
+            }
+        }
+
+        private static void Consume(EventBase evt)
+        {
+            evt.StopPropagation();
+            evt.PreventDefault();
         }
 
         private void Submit()
@@ -171,8 +244,12 @@ namespace Guildmaster.UI.DevConsole
                 ? _registry.Execute(line)
                 : new DevCommandResult(DevCommandStatus.Failed, "реестр команд не подключён");
 
+            // Молчаливых команд не бывает: без ответа человек не понимает, дошёл ли ввод вообще.
+            // Команда, которой нечего сказать, всё равно отчитывается «готово».
             if (!string.IsNullOrEmpty(result.Message))
                 _log?.Append(result.IsError ? DevLogKind.Error : DevLogKind.Reply, result.Message);
+            else if (result.Status == DevCommandStatus.Ok)
+                _log?.Append(DevLogKind.Reply, "готово");
 
             SetFieldValue(string.Empty);
             UpdateStatus();
@@ -261,6 +338,16 @@ namespace Guildmaster.UI.DevConsole
 
                 row.Add(name);
                 row.Add(summary);
+
+                // Клик мышью подставляет имя в поле (а не запускает сразу): у команд бывают аргументы,
+                // и «выполнить по клику» отняло бы возможность их дописать.
+                string commandName = command.Name;
+                row.RegisterCallback<ClickEvent>(_ =>
+                {
+                    SetFieldValue(command.Params.Count > 0 ? commandName + " " : commandName);
+                    _field?.Focus();
+                });
+
                 _palette.Add(row);
             }
 
@@ -349,6 +436,18 @@ namespace Guildmaster.UI.DevConsole
                 case DevLogKind.Error: return "gm-console__line--error";
                 default:               return "gm-console__line--info";
             }
+        }
+
+        /// <summary>Убрать символы клавиш-тоглов, которые ОС успевает напечатать в поле при открытии.</summary>
+        private static string StripToggleChars(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            if (value.IndexOf('`') < 0 && value.IndexOf('~') < 0) return value;
+
+            var sb = new System.Text.StringBuilder(value.Length);
+            for (int i = 0; i < value.Length; i++)
+                if (value[i] != '`' && value[i] != '~') sb.Append(value[i]);
+            return sb.ToString();
         }
 
         private static string FirstWord(string value)

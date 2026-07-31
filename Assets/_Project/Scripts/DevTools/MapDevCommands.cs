@@ -21,14 +21,24 @@ namespace Guildmaster.DevTools
         {
             if (set == null) return;
 
-            set.Add("gm_map_show", "Показать карту акта (просмотр, узлы не горят)", _ => Show());
-            set.Add("gm_map_hide", "Скрыть карту акта", _ => Hide());
-            set.Add("gm_map_nodes", "Список узлов текущей карты (индекс + id)", _ => Nodes());
-            set.Add("gm_map_goto", "Проехать фишкой к узлу по ИНДЕКСУ — без выбора узла", a => GoTo(a.GetInt(0)),
-                new DevParam("index", DevParamType.Int));
-            set.Add("gm_map_goto_id", "Проехать фишкой к узлу по ID — без выбора узла", a => GoToId(a.GetString(0)),
-                new DevParam("nodeId", DevParamType.String));
-            set.Add("gm_map_reset_pawn", "Вернуть фишку на узел, где стоит отряд", _ => ResetPawn());
+            set.Add("map", "Показать карту акта (просмотр, узлы не горят)", _ => Show());
+            set.Add("map_hide", "Скрыть карту акта", _ => Hide());
+            set.Add("map_nodes", "Узлы текущей карты: индекс и id", _ => Nodes());
+
+            // Индекс и id — одна команда: раньше их разводили на map_goto/map_goto_id, хотя выбор между
+            // ними человек делает по тому, что у него под рукой, а не по смыслу действия.
+            set.Add("map_goto", "Проехать фишкой к узлу (индекс или id) — без выбора узла",
+                a =>
+                {
+                    string raw = a.GetString(0);
+                    return int.TryParse(raw, System.Globalization.NumberStyles.Integer,
+                                        System.Globalization.CultureInfo.InvariantCulture, out int index)
+                        ? GoTo(index)
+                        : GoToId(raw);
+                },
+                new DevParam("indexOrId", DevParamType.String));
+
+            set.Add("map_pawn", "Вернуть фишку на узел, где стоит отряд", _ => ResetPawn());
         }
 
         public static string Show()

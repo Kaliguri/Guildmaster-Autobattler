@@ -164,8 +164,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8063162b0910364b94740ef535afbf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.DevTools::Guildmaster.DevTools.DevEncounterPanel
-  _devPlayerRelic: {fileID: 11400000, guid: 24defa03761bf664186942ea8ae1bac5, type: 2}
-  _devPlayerPosition: {x: -5, y: 0}
 --- !u!114 &35160775
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,6 +498,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.DevTools::Guildmaster.DevTools.GuildmasterCommands
   _simTuningConfig: {fileID: 11400000, guid: 84596659d7f25a649833a4fe7640a14f, type: 2}
+  _battleBrowserUxml: {fileID: 9197481963319205126, guid: 1415736dd62518e4daea3774f8481f10, type: 3}
 --- !u!4 &1713771495
 Transform:
   m_ObjectHideFlags: 0

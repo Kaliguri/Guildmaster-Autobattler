@@ -19,14 +19,14 @@ namespace Guildmaster.DevTools
         {
             if (set == null) return;
 
-            set.Add("gm_arena_skins", "Список обликов арены (id) и какой надет сейчас", _ => Skins());
-            set.Add("gm_arena_swap", "Сменить облик арены с анимацией", a => Swap(a.GetString(0)),
+            set.Add("arena", "Облики арены: какие есть и какой надет", _ => Skins());
+            set.Add("arena_swap", "Сменить облик арены с анимацией перехода", a => Swap(a.GetString(0)),
                 new DevParam("skinId", DevParamType.String));
-            set.Add("gm_arena_rush", "Резко ускорить идущий переход (то же, что Space)", _ => Rush());
-            set.Add("gm_arena_set", "Надеть облик мгновенно, без анимации", a => Set(a.GetString(0)),
+            set.Add("arena_set", "Надеть облик мгновенно, без анимации", a => Set(a.GetString(0)),
                 new DevParam("skinId", DevParamType.String));
+            set.Add("arena_rush", "Доиграть идущий переход рывком", _ => Rush());
 #if UNITY_EDITOR
-            set.Add("gm_arena_demo", "Собрать демо-облик 'stone' из каменного тайлсета", _ => BuildDemoSkin());
+            set.Add("arena_demo", "Собрать демо-облик «stone» из каменного тайлсета", _ => BuildDemoSkin());
 #endif
         }
 

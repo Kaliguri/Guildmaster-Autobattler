@@ -31,7 +31,12 @@ namespace Guildmaster.DevTools
         private DevOverlayMode     _overlayMode; // общий режим dev-оверлеев: показ или живой сим
         private RuntimeUnitFactory _factory;
         private IInputService      _input;
+        [Tooltip("UXML витрины боёв (F3): поиск по энкаунтерам, пресетам и срезам китов.")]
+        [SerializeField] private UnityEngine.UIElements.VisualTreeAsset _battleBrowserUxml;
+
         private Guildmaster.UI.MenuRouter _menuRouter; // владелец показа консоли: у него и спрашиваем видимость
+        private Guildmaster.UI.UiNavigator _navigator; // витрину боёв показываем сами: UI-слою о боях знать незачем
+        private DevBattleBrowserScreen _battleBrowser;
         private DevCommandRegistry _registry;          // куда кладём команды
         private DevCommandSet _commands;               // свои команды + статические наборы; снимаются вместе с модулем
         private Guildmaster.Game.Flow.IBattleSession _session; // опц.: перезапуск боя забега на R (null в standalone-арене)
@@ -103,6 +108,7 @@ namespace Guildmaster.DevTools
             // некуда класть, и это не ошибка (тот же случай, что и с сессией боя выше).
             resolver.TryResolve(out _registry);
             resolver.TryResolve(out _menuRouter);
+            resolver.TryResolve(out _navigator);
             _provingGroundsSubscription = _provingGroundsChangedSub?.Subscribe(e => OnProvingGroundsChanged(e));
         }
 
@@ -111,6 +117,7 @@ namespace Guildmaster.DevTools
         private void Start()
         {
             if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged += OnConsoleVisibilityChanged;
+            if (_input != null) _input.DevBattlesToggleRequested += ToggleBattleBrowser;
 
             // Команды кладём ЗДЕСЬ, а не в Construct: реестр приходит инъекцией, но статические наборы
             // (арена/карта/эффекты) тоже надо куда-то регистрировать, а своего объекта в сцене у них нет.
@@ -134,7 +141,40 @@ namespace Guildmaster.DevTools
         {
             _provingGroundsSubscription?.Dispose();
             if (_menuRouter != null) _menuRouter.DevConsoleVisibilityChanged -= OnConsoleVisibilityChanged;
+            if (_input != null) _input.DevBattlesToggleRequested -= ToggleBattleBrowser;
             _commands?.Dispose();
+        }
+
+        /// <summary>
+        /// Показать/снять витрину боёв (F3). Экран живёт одним инстансом: в нём набранный запрос и выбор,
+        /// и пересоздание сбрасывало бы их при каждом закрытии.
+        /// </summary>
+        private void ToggleBattleBrowser()
+        {
+            if (_navigator == null || _registry == null) return;
+
+            if (_battleBrowserUxml == null)
+            {
+                Debug.LogError("[GuildmasterCommands] - витрина боёв: не разведён UXML " +
+                               "(поле _battleBrowserUxml на объекте dev-команд)", this);
+                return;
+            }
+
+            if (_battleBrowser != null && _navigator.AnyScreen(s => ReferenceEquals(s, _battleBrowser)))
+            {
+                _navigator.Remove(_battleBrowser);
+                return;
+            }
+
+            // Полки взаимоисключающи: открытая консоль уходит, иначе две простыни лягут внахлёст.
+            _menuRouter?.CloseDevOverlays();
+
+            if (_battleBrowser == null)
+                _battleBrowser = new DevBattleBrowserScreen(_battleBrowserUxml, _registry, _content);
+            else
+                _battleBrowser.Refresh();   // база могла пересобраться, пока витрина была закрыта
+
+            _navigator.Push(_battleBrowser);
         }
 
         // Консоль показана/снята — тот же смысл, что раньше несли OnActivate/OnDeactivate у QFSW.
@@ -201,84 +241,170 @@ namespace Guildmaster.DevTools
         /// </remarks>
         private void RegisterCommands(DevCommandSet set)
         {
-            set.Add("gm_rng_seed", "Зафиксировать сид боя (до старта симуляции)",
-                a => { SetRngSeed(a.GetULong(0)); return null; }, new DevParam("seed", DevParamType.Int));
+            // --- Бой: запустить, закончить, повторить ---
 
-            set.Add("gm_spawn_battle", "Запустить тест-бой N юнитов за каждую сторону",
-                a => { SpawnBattle(a.GetInt(0, 2)); return null; }, new DevParam("countPerTeam", DevParamType.Int, true));
+            set.Add("spawn", "Тест-бой: N юнитов за каждую сторону",
+                a => { SpawnBattle(a.GetInt(0, 2)); return null; }, new DevParam("perTeam", DevParamType.Int, true));
 
-            set.Add("gm_spawn_crowd", "Плотный клубок обеих команд для теста расталкивания",
+            set.Add("crowd", "Плотный клубок обеих команд — проверка расталкивания",
                 a => { SpawnCrowd(a.GetInt(0, 8)); return null; }, new DevParam("perTeam", DevParamType.Int, true));
 
-            set.Add("gm_sep", "Показать параметры расталкивания (радиус/сила/итерации)",
-                _ => { SepInfo(); return null; });
+            set.Add("kit", "Срез одного кита против болванчиков",
+                a => { SpawnKitSlice(a.GetEnum<KitSlice>(0), a.GetInt(1, 0)); return null; },
+                new DevParam("kit", DevParamType.Enum), new DevParam("enemies", DevParamType.Int, true));
 
-            set.Add("gm_sep_radius", "Радиус тела на единицу Size (live)",
-                a => { SepRadius(a.GetFloat(0)); return null; }, new DevParam("radiusPerSize", DevParamType.Float));
-
-            set.Add("gm_sep_strength", "Сила расталкивания за тик (live)",
-                a => { SepStrength(a.GetFloat(0)); return null; }, new DevParam("strength", DevParamType.Float));
-
-            set.Add("gm_sep_iters", "Проходов расталкивания за тик (live)",
-                a => { SepIters(a.GetInt(0)); return null; }, new DevParam("iterations", DevParamType.Int));
-
-            set.Add("gm_sep_ally", "Мягкость расталкивания своих (0..1, live)",
-                a => { SepAlly(a.GetFloat(0)); return null; }, new DevParam("scale", DevParamType.Float));
-
-            set.Add("gm_spawn_spearman", "Железный копейщик против кластера (срез шага 4)",
-                a => { SpawnSpearman(a.GetInt(0, 3)); return null; }, new DevParam("enemies", DevParamType.Int, true));
-
-            set.Add("gm_spawn_shepherd", "Светлый пастырь + раненые союзники (срез §10.1)",
-                a => { SpawnShepherd(a.GetInt(0, 2)); return null; }, new DevParam("allies", DevParamType.Int, true));
-
-            set.Add("gm_spawn_cryomancer", "Криомант против кластера болванчиков (срез §10.2)",
-                a => { SpawnCryomancer(a.GetInt(0, 3)); return null; }, new DevParam("enemies", DevParamType.Int, true));
-
-            set.Add("gm_spawn_defender", "Надёжный защитник против ударных болванчиков (срез §10.3)",
-                a => { SpawnDefender(a.GetInt(0, 3)); return null; }, new DevParam("enemies", DevParamType.Int, true));
-
-            set.Add("gm_spawn_ranger", "Лесной следопыт против кластера болванчиков (срез §10.4)",
-                a => { SpawnRanger(a.GetInt(0, 3)); return null; }, new DevParam("enemies", DevParamType.Int, true));
-
-            set.Add("gm_spawn_assassin", "Скрытный убийца против болванчиков (срез §10.5)",
-                a => { SpawnAssassin(a.GetInt(0, 3)); return null; }, new DevParam("enemies", DevParamType.Int, true));
-
-            set.Add("gm_spawn_monk", "Монах вихря против болванчиков (срез §10.6)",
-                a => { SpawnMonk(a.GetInt(0, 4)); return null; }, new DevParam("enemies", DevParamType.Int, true));
-
-            set.Add("gm_spawn_mirror", "Зеркальный отряд 4v4 из реальных китов",
+            set.Add("mirror", "Зеркальный отряд 4v4 из реальных китов",
                 _ => { SpawnMirror(); return null; });
 
-            set.Add("gm_spawn_bone_duel", "1×1 дуэль скелетных дев-бойцов (смоук UnitView)",
+            set.Add("bones", "1×1 дуэль скелетных дев-бойцов (смоук вида юнита)",
                 _ => { SpawnBoneDuel(); return null; });
 
-            set.Add("gm_set_hp", "Выставить HP юниту по ID",
-                a => { SetHp(a.GetInt(0), a.GetFloat(1)); return null; },
-                new DevParam("unitId", DevParamType.Int), new DevParam("hp", DevParamType.Float));
-
-            set.Add("gm_skip_battle", "Мгновенно завершить бой в пользу команды A",
+            set.Add("win", "Мгновенно завершить бой победой команды A",
                 _ => { SkipBattle(); return null; });
 
-            set.Add("gm_restart", "Перезапустить бой (перезагрузка сцены)",
-                _ => { Restart(); return null; });
-
-            set.Add("gm_restart_battle", "Перезапустить последний бой на месте",
+            set.Add("restart", "Перезапустить последний бой на месте",
                 _ => { RestartLastBattle(); return null; });
 
-            set.Add("gm_toggle_debug_draw", "Вкл/выкл debug-отрисовку боя",
-                _ => { ToggleDebugDraw(); return null; });
+            set.Add("reload", "Перезагрузить сцену целиком (жёсткий сброс)",
+                _ => { Restart(); return null; });
 
-            set.Add("gm_toggle_status", "Вкл/выкл dev-подсветку статусов юнитов (кольца)",
-                _ => { ToggleStatusOverlay(); return null; });
+            set.Add("grounds", "Уйти на Ристалище: свернуть забег и открыть площадку",
+                _ => { ProvingGrounds(); return null; });
 
-            set.Add("gm_overlay_source", "Источник dev-оверлеев: показанный кадр / живой сим",
-                _ => { ToggleOverlaySource(); return null; });
+            // --- Готовые бои из контент-БД ---
+            // Витрина на F3 не грузит бои сама, а зовёт ЭТИ команды: один путь запуска, и новый бой
+            // появляется в витрине оттого, что появился в базе, а не оттого, что кто-то её дописал.
 
-            set.Add("gm_tuning_rebake", "Пересобрать SimTuning из SO и применить к бою (бой TAINTED)",
+            set.Add("battle", "Запустить энкаунтер по id (только враги)",
+                a => LoadEncounter(a.GetString(0)), new DevParam("encounterId", DevParamType.String));
+
+            set.Add("preset", "Запустить боевой пресет по id (враги + свой ростер)",
+                a => LoadPreset(a.GetString(0)), new DevParam("presetId", DevParamType.String));
+
+            set.Add("battles", "Список доступных боёв: энкаунтеры и пресеты",
+                _ => ListBattles());
+
+            // --- Правка состояния ---
+
+            set.Add("hp", "Выставить HP юниту по id",
+                a => { SetHp(a.GetInt(0), a.GetFloat(1)); return null; },
+                new DevParam("unitId", DevParamType.Int), new DevParam("value", DevParamType.Float));
+
+            set.Add("seed", "Зафиксировать сид боя (действует до старта симуляции)",
+                a => { SetRngSeed(a.GetULong(0)); return null; }, new DevParam("seed", DevParamType.Int));
+
+            set.Add("tuning", "Перечитать SimTuning из ассета и применить к бою (бой станет TAINTED)",
                 _ => { TuningRebake(); return null; });
 
-            set.Add("gm_proving_grounds", "Уйти на Ристалище: свернуть забег и открыть площадку",
-                _ => { ProvingGrounds(); return null; });
+            // --- Расталкивание (живая правка) ---
+
+            set.Add("sep", "Показать параметры расталкивания",
+                _ => { SepInfo(); return null; });
+
+            set.Add("sep_radius", "Радиус тела на единицу Size",
+                a => { SepRadius(a.GetFloat(0)); return null; }, new DevParam("value", DevParamType.Float));
+
+            set.Add("sep_strength", "Сила расталкивания за тик",
+                a => { SepStrength(a.GetFloat(0)); return null; }, new DevParam("value", DevParamType.Float));
+
+            set.Add("sep_iters", "Проходов расталкивания за тик",
+                a => { SepIters(a.GetInt(0)); return null; }, new DevParam("count", DevParamType.Int));
+
+            set.Add("sep_ally", "Мягкость расталкивания своих (0..1)",
+                a => { SepAlly(a.GetFloat(0)); return null; }, new DevParam("scale", DevParamType.Float));
+
+            // --- Что видно на экране ---
+
+            set.Add("draw", "Вкл/выкл отладочную отрисовку боя",
+                _ => { ToggleDebugDraw(); return null; });
+
+            set.Add("rings", "Вкл/выкл кольца статусов над юнитами",
+                _ => { ToggleStatusOverlay(); return null; });
+
+            set.Add("overlay", "Источник оверлеев: показанный кадр или живой сим",
+                _ => { ToggleOverlaySource(); return null; });
+        }
+
+        // ── Готовые бои из контент-БД ────────────────────────────────────────
+
+        /// <summary>Запустить энкаунтер по id. Player-сторона пустая: это превью врагов.</summary>
+        private string LoadEncounter(string id)
+        {
+            if (_content == null) return "контент-БД недоступна";
+            if (!_content.TryGet(id, out Data.Definitions.EncounterData enc) || enc == null)
+                return $"нет энкаунтера «{id}». Список — battles";
+
+            EncounterLoader loader = LiveLoader();
+            if (loader == null) return "боевой скоуп не найден — бой запускать некуда";
+
+            loader.Load(enc, null);
+            SetLastBattle(_ => { var live = LiveLoader(); if (live != null) live.Load(enc, null); });
+            return $"энкаунтер «{id}» запущен";
+        }
+
+        /// <summary>Запустить боевой пресет по id (враги плюс собственный ростер пресета).</summary>
+        private string LoadPreset(string id)
+        {
+            if (_content == null) return "контент-БД недоступна";
+            if (!_content.TryGet(id, out Data.Definitions.BattlePresetData preset) || preset == null)
+                return $"нет пресета «{id}». Список — battles";
+
+            EncounterLoader loader = LiveLoader();
+            if (loader == null) return "боевой скоуп не найден — бой запускать некуда";
+
+            loader.LoadPreset(preset);
+            SetLastBattle(_ => { var live = LiveLoader(); if (live != null) live.LoadPreset(preset); });
+            return $"пресет «{id}» запущен";
+        }
+
+        /// <summary>Перечислить, что вообще можно запустить.</summary>
+        private string ListBattles()
+        {
+            if (_content == null) return "контент-БД недоступна";
+
+            var sb = new System.Text.StringBuilder();
+            var encounters = _content.All<Data.Definitions.EncounterData>();
+            var presets = _content.All<Data.Definitions.BattlePresetData>();
+
+            sb.AppendLine($"энкаунтеров {encounters?.Count ?? 0}, пресетов {presets?.Count ?? 0}");
+            if (encounters != null)
+                for (int i = 0; i < encounters.Count; i++) sb.AppendLine($"  battle {encounters[i].Id}");
+            if (presets != null)
+                for (int i = 0; i < presets.Count; i++) sb.AppendLine($"  preset {presets[i].Id}");
+
+            return sb.ToString();
+        }
+
+        // Загрузчик берём у ЖИВОГО боевого скоупа на каждый вызов, а не кэшируем: после F5 старый скоуп
+        // мёртв, и захваченная ссылка грузила бы бой в несуществующую арену.
+        private static EncounterLoader LiveLoader()
+        {
+            var scope = VContainer.Unity.LifetimeScope.Find<Guildmaster.Game.CombatLifetimeScope>();
+            return scope != null && scope.Container != null ? scope.Container.Resolve<EncounterLoader>() : null;
+        }
+
+        /// <summary>Кит для одиночного среза — аргумент команды <c>kit</c>.</summary>
+        /// <remarks>
+        /// Семь отдельных команд <c>gm_spawn_*</c> свёрнуты сюда (ревизия 31.07): они отличались только
+        /// китом и числом болванчиков, а в палитре занимали седьмую часть списка. Ошибка в имени теперь
+        /// сама печатает допустимые значения — искать нужную команду по памяти больше не надо.
+        /// </remarks>
+        private enum KitSlice { Spearman, Shepherd, Cryomancer, Defender, Ranger, Assassin, Monk }
+
+        // 0 = взять дефолт среза: у каждого он свой, и подставлять общий было бы враньём (пастырю нужны
+        // союзники, а не враги).
+        private void SpawnKitSlice(KitSlice kit, int count)
+        {
+            switch (kit)
+            {
+                case KitSlice.Spearman:   SpawnSpearman(count > 0 ? count : 3);   break;
+                case KitSlice.Shepherd:   SpawnShepherd(count > 0 ? count : 2);   break;
+                case KitSlice.Cryomancer: SpawnCryomancer(count > 0 ? count : 3); break;
+                case KitSlice.Defender:   SpawnDefender(count > 0 ? count : 3);   break;
+                case KitSlice.Ranger:     SpawnRanger(count > 0 ? count : 3);     break;
+                case KitSlice.Assassin:   SpawnAssassin(count > 0 ? count : 3);   break;
+                case KitSlice.Monk:       SpawnMonk(count > 0 ? count : 4);       break;
+            }
         }
 
         /// <summary>Зафиксировать сид боя для детерминизм-отладки (только до старта).</summary>
