@@ -930,8 +930,8 @@
         <div class="stand-body"><h3>Четыре одного типа</h3><p class="dim">Одна оболочка, кайма толще по ступеням.
           Четыре каймы были бы шумом без нового смысла.</p></div></article>
       <article class="stand"><canvas id="k-layer" width="320" height="280" role="img" aria-label="Пробита внешняя"></canvas>
-        <div class="stand-body"><h3>Внешняя пробита</h3><p class="dim">Лопнула, осколки по касательной — и открылась
-          следующая. Дальше бьют её.</p></div></article>
+        <div class="stand-body"><h3>Внешняя пробита</h3><p class="dim">Лопнула, осколки разлетелись прочь от юнита и погасли —
+          и открылась следующая. Дальше бьют её.</p></div></article>
       <article class="stand"><canvas id="k-through" width="320" height="280" role="img" aria-label="Пробитие насквозь"></canvas>
         <div class="stand-body"><h3>Насквозь</h3><p class="dim">Щита 20, удар 100: барьер лопнул, остаток ушёл в
           тело. Форма НЕ обрывается, порез есть.</p></div></article>
@@ -966,8 +966,8 @@
         <canvas id="b-break" width="480" height="330" role="img"
                 aria-label="Разрушение барьера: пробит ударом"></canvas>
         <p class="tag">финал 1 · разрушение</p>
-        <p class="dim">Барьер <b>сломали</b>: трещины сходятся, поверхность разлетается по касательной
-          от последнего удара. Резко, с направлением — видно, кто добил.</p>
+        <p class="dim">Барьер <b>сломали</b>: трещины сходятся, поверхность расходится кусками <b>наружу от
+          юнита</b> и быстро гаснет по прозрачности. Барьер лопается целиком, а не сдувается в сторону.</p>
       </div>
       <div class="card">
         <canvas id="b-fade" width="480" height="330" role="img"
@@ -3179,9 +3179,11 @@
 
   // Пробитие: скорлупа расходится дугами ПО УЗОРУ — узор задаёт линии разлома, поэтому осколки
   // выглядят как куски именно этой поверхности, а не как случайные обломки.
+  // Разлёт РАДИАЛЬНЫЙ — каждый кусок уходит прочь от юнита, наружу по своему углу (решение Макса
+  // 31.07.2026). Направления «в одну сторону от последнего удара» у слома нет: барьер лопается
+  // целиком, а не сдувается. Гаснут быстро, по прозрачности.
   function domeShards(ctx, kind, cx, cy, rx, ry, t, hitAng, color) {
-    const k = 1 - t;
-    const push = (hitAng + 180) * Math.PI / 180;
+    const fade = Math.pow(1 - t, 1.7);                   // быстрое угасание: скорлупы уже нет
     const pieces = 10;
     ctx.save();
     ctx.globalCompositeOperation = "lighter";
@@ -3190,11 +3192,11 @@
     for (let i = 0; i < pieces; i++) {
       const a0 = (i / pieces) * Math.PI * 2 - Math.PI / 2;
       const a1 = ((i + 1) / pieces) * Math.PI * 2 - Math.PI / 2;
-      const spin = (jag(i, 81) - 0.5) * 0.7;
-      const d = rx * 1.5 * t * (0.5 + jag(i, 82));
-      const ox = Math.cos(push + spin) * d;
-      const oy = Math.sin(push + spin) * d * (ry / rx) - ry * 0.22 * t;
-      ctx.strokeStyle = "rgba(" + color + "," + (0.85 * k).toFixed(3) + ")";
+      const mid = (a0 + a1) / 2;
+      const d = rx * 0.85 * t * (0.7 + jag(i, 82) * 0.6);
+      const ox = Math.cos(mid) * d;
+      const oy = Math.sin(mid) * d * (ry / rx);          // наружу по своему углу, с той же сплюснутостью
+      ctx.strokeStyle = "rgba(" + color + "," + (0.9 * fade).toFixed(3) + ")";
       ctx.beginPath();
       for (let s = 0; s <= 5; s++) {
         const p = domePoint(kind, cx, cy, rx, ry, a0 + (a1 - a0) * (s / 5));
@@ -3515,7 +3517,7 @@
 
     ctx.font = "500 13px ui-monospace, Consolas, monospace";
     ctx.fillStyle = c >= 30 && c < 56 ? "rgba(255,146,48,1)" : "rgba(147,128,94,.9)";
-    ctx.fillText(c < 30 ? "трещин 4 · держится" : c < 56 ? "ПРОБИТ · осколки по касательной" : "барьера нет",
+    ctx.fillText(c < 30 ? "трещин 4 · держится" : c < 56 ? "ПРОБИТ · осколки прочь от юнита" : "барьера нет",
                  26, H0 - 34);
   }
 
