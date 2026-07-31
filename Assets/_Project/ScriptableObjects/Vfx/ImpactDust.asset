@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.VfxData
   _id: vfx.impact_dust
   _prefab: {fileID: 2777693814452142093, guid: fe737758b8b05b24a9f44b45d1157d81, type: 3}
-  _sizeUnits: 0.44
+  _sizeUnits: 0.66
   _sortingLayer: GroundFX
   _sortingOrder: 0
   _defaultDirDeg: 90

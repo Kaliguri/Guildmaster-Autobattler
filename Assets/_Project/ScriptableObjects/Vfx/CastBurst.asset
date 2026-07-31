@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Guildmaster.Data::Guildmaster.Data.Definitions.VfxData
   _id: vfx.cast_burst
   _prefab: {fileID: 6452839437047546574, guid: 37101befa45f2e44d9abb5cc82008137, type: 3}
-  _sizeUnits: 0.69
+  _sizeUnits: 1.035
   _sortingLayer: OverheadFX
   _sortingOrder: 0
   _defaultDirDeg: 0
