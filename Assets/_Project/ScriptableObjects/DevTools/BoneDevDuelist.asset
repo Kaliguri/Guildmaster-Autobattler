@@ -20,16 +20,21 @@ MonoBehaviour:
   _resourceType: 1
   _visual: {fileID: 0}
   _viewPrefab: {fileID: 8715034697537984562, guid: cd42c7a258093ac4691913f833656755, type: 3}
-  _bodyShade: 0
+  _bodyShade: 1
   _vfxTone: 1
   _autoAttackShape: 0
   _autoAttackWidth: 1
   _autoAttackLengthMult: 1
   _autoAttackEffects: []
+  _channel:
+    DurationSeconds: 0
+    WindupSeconds: 0
+    RecoverySeconds: 0
   _canAttackWhileMoving: 0
   _movingAttackSpeedPenaltyPct: 0.5
   _attackRecoverySeconds: 0
   _windupShare: 0.45
+  _attackSwingTicks: 0
   _chargeAttackWindupMult: 1.3
   _resourceOnHit: 0
   _maxResourceGainPerSecond: 0
@@ -62,6 +67,7 @@ MonoBehaviour:
     _effects:
     - {fileID: 11400000, guid: 5f8a731f13f522a4090cc75dfe269d47, type: 2}
     - {fileID: 11400000, guid: 2d42622144fda1d44a4161e7148fc2c5, type: 2}
+    _selfEffects: []
     _baseCooldown: 0
     _resourceCost: 50
     _targetMode: 1
@@ -80,6 +86,22 @@ MonoBehaviour:
     _castOverrideSelfHpPct: 0.3
     _triggerTag: 0
     _consumesTriggerTag: 0
+    _castSeconds: 0
+    _channelSeconds: 0
+    _channelTickSeconds: 1
+    _canMoveWhileCasting: 0
+    _statScalings: []
+    _summonUnit: {fileID: 0}
+    _summonCount: 1
+    _summonCountGrowth: 0
+    _summonCountCap: 0
+    _summonLimit: 3
+    _summonLifetimeSeconds: 0
+    _summonDiesWithSummoner: 0
+    _payloadRepeats: 1
+    _payloadRepeatGrowth: 0
+    _repeatSelfEffects: 0
+    _areaAtTarget: 0
     _displaces: 0
     _displaceDistance: 4
     _displaceDamageMult: 1
