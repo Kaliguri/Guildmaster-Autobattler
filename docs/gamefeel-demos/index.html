@@ -1206,9 +1206,12 @@
       <article class="stand"><canvas id="e-bl-drip" width="260" height="220" role="img" aria-label="Подход: капли и струйки"></canvas>
         <div class="stand-body"><h3>A · Капли и струйки</h3><p class="dim">Растёт темп капания, потом добавляются
           подтёки, на четвёртой — лужа под ногами.</p></div></article>
-      <article class="stand"><canvas id="e-bl-soak" width="260" height="220" role="img" aria-label="Подход: пропитывание"></canvas>
-        <div class="stand-body"><h3>B · Пропитывание</h3><p class="dim">Тело краснеет снизу вверх — он буквально
-          залит своей кровью. Капель мало, работает площадь.</p></div></article>
+      <article class="stand accepted"><canvas id="e-bl-soak" width="260" height="220" role="img" aria-label="Подход: пропитывание"></canvas>
+        <div class="stand-body"><p class="tag">принято 01.08.2026</p><h3>B · Пропитывание</h3>
+          <p class="dim">Тело краснеет снизу вверх — он залит своей кровью. Подтон намеренно слабый:
+            <b>не съедает силуэт, просто чуть красит</b>.</p>
+          <p class="verdict pick">Работает площадью, а не мелкой графикой, поэтому читается и в свалке из
+            восьми тел. Силуэт при этом остаётся носителем класса и оружия.</p></div></article>
       <article class="stand"><canvas id="e-bl-glow" width="260" height="220" role="img" aria-label="Подход: свечение ран"></canvas>
         <div class="stand-body"><h3>C · Свечение ран</h3><p class="dim">Число ран не меняется — разгораются сами
           порезы, от тусклых до раскалённых.</p></div></article>
@@ -2871,13 +2874,15 @@
 
     } else if (mode === "soak") {
       statusBody(ctx, x, groundY, H, { stun: false, burn: 0, poison: 0, frostbite: 0 });
-      ctx.save();                                               // тело краснеет снизу вверх
+      // Принято 2026-08-01. Подтон намеренно СЛАБЫЙ: «не съедает силуэт, просто чуть красит».
+      // Плотная заливка забивала бы силуэт, а он несёт класс и оружие — то есть более важный факт.
+      ctx.save();
       ctx.globalCompositeOperation = "source-over";
       unitPath(ctx, x, groundY, H); ctx.clip();
       const top = groundY - H * (0.15 + 0.72 * k);
       const g = ctx.createLinearGradient(0, groundY, 0, top);
-      g.addColorStop(0, "rgba(140,20,20,.85)");
-      g.addColorStop(1, "rgba(140,20,20,0)");
+      g.addColorStop(0, "rgba(150,26,26," + (0.24 + 0.26 * k).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(150,26,26,0)");
       ctx.fillStyle = g;
       ctx.fillRect(x - u * 4, top, u * 8, groundY - top + u);
       ctx.restore();
