@@ -29,8 +29,15 @@
 [CmdletBinding()]
 param(
     [string]$Since = '',
-    [int]$MinLength = 25,
-    [switch]$Fix
+    # 40 символов и шесть слов — порог, ниже которого «цитата» почти всегда не речь Макса,
+    # а термин или моя формулировка в кавычках («весь ростер на одном экране»). На коротких
+    # фразах сопоставление к тому же ловит случайные совпадения в чужих репликах.
+    [int]$MinLength = 40,
+    [int]$MinWords = 6,
+    [switch]$Fix,
+    # Выгрузить цитаты без найденного источника в TSV (файл, секция, полный текст цитаты).
+    # Нужно для разбора: в консольном отчёте цитаты обрезаны, а искать надо по полному тексту.
+    [string]$OrphansTo = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -154,6 +161,28 @@ $injected = 'Base directory for this skill:', '<task-notification>', '<local-com
 
 foreach ($f in (Get-ChildItem $archive -Recurse -Filter *.jsonl -File)) {
     foreach ($line in [IO.File]::ReadLines($f.FullName)) {
+
+        # Сообщение, отправленное в очередь (Макс пишет, пока идёт работа), лежит НЕ в
+        # user-записи, а в attachment с типом queued_command и текстом в поле prompt.
+        # Пока эти записи не читались, 33 дословные цитаты выглядели как выдуманные мной —
+        # проверка чуть не обвинила журнал в том, чего в нём не было.
+        if ($line.Contains('"queued_command"')) {
+            try { $q = $line | ConvertFrom-Json } catch { continue }
+            $qp = $q.attachment.prompt
+            if ($qp) {
+                $qPlain = Get-Plain ($qp -replace '(?s)<system-reminder>.*?</system-reminder>', '')
+                if ($qPlain.Length -ge 20) {
+                    $turns.Add([pscustomobject]@{
+                            Plain  = $qPlain
+                            Search = Get-SearchForm $qPlain
+                            Words  = Get-Words $qPlain
+                            Date   = if ($q.timestamp) { ([datetime]$q.timestamp).ToLocalTime().ToString('yyyy-MM-dd') } else { '' }
+                        })
+                }
+            }
+            continue
+        }
+
         if (-not $line.Contains('"type":"user"')) { continue }
         if ($line.Contains('"tool_result"')) { continue }
         try { $o = $line | ConvertFrom-Json } catch { continue }
@@ -278,6 +307,7 @@ foreach ($src in $sources) {
         foreach ($m in $quoteRx.Matches($sec)) {
             $quote = Get-Plain $m.Groups[1].Value
             if ($quote.Length -lt $MinLength) { continue }
+            if ((Get-Words $quote).Count -lt $MinWords) { continue }
             if (-not (Test-IsClaimedQuote $sec $m.Index)) { continue }
             $checked++
 
@@ -361,6 +391,12 @@ if ($noSource) {
         Write-Host ("  [{0}] «{1}»" -f $p.Date, ($p.Quote.Substring(0, [Math]::Min(100, $p.Quote.Length))))
     }
     Write-Host ''
+}
+
+if ($OrphansTo) {
+    $rows = foreach ($p in $noSource) { "{0}`t{1}`t{2}" -f $p.File, ($p.Section -replace "`t", ' '), $p.Quote }
+    [IO.File]::WriteAllLines($OrphansTo, @($rows), [Text.UTF8Encoding]::new($false))
+    Write-Host ("Сироты выгружены: {0} строк -> {1}" -f @($rows).Count, $OrphansTo) -ForegroundColor DarkGray
 }
 
 if ($problems.Count -eq 0) {
