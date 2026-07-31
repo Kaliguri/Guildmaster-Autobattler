@@ -31,11 +31,6 @@ namespace Guildmaster.Presentation.Body
                  "внутренний порядок частей. Пусто — берётся с этого объекта или из родителей.")]
         [SerializeField] private SortingGroup _group;
 
-        [Tooltip("Часть-щит, если она у тела есть. Нужна ровно для блока: в момент, когда щит сработал, " +
-                 "остальное тело притухает, а щит держит свой цвет — так он и читается, без пересвета. " +
-                 "Пусто = у тела щита нет, эффект блока просто не играет.")]
-        [SerializeField] private SpriteRenderer _shieldPart;
-
         private MaterialPropertyBlock _mpb;
         private BodyVisualState       _lastState;
         private bool                  _effectApplied;
@@ -129,13 +124,10 @@ namespace Guildmaster.Presentation.Body
         public void Apply(in BodyVisualState state)
         {
             // Тинт и альфа инвиза — каждой части: полупрозрачным должно стать тело, а не грудь.
-            // Щит — исключение и единственное: он красится своим цветом, чтобы на блоке остаться ярким,
-            // пока остальное тело притухает. В обычном кадре оба цвета совпадают, и разницы нет.
             for (int i = 0; i < _parts.Count; i++)
             {
                 SpriteRenderer part = _parts[i];
-                if (part == null) continue;
-                part.color = part == _shieldPart ? state.ShieldTint : state.Tint;
+                if (part != null) part.color = state.Tint;
             }
 
             bool active = state.HasEffect;

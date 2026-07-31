@@ -61,7 +61,6 @@ namespace Guildmaster.Tests.EditMode.Presentation
             new Entry("OnHealed",           Switch.Toggle, nameof(CombatFeelConfig.EnableHealFlash)),
             new Entry("ShowTelegraph",      Switch.Toggle, nameof(CombatFeelConfig.EnableTelegraphFlash)),
             new Entry("RaiseGuard",         Switch.Toggle, nameof(CombatFeelConfig.EnableGuardPose)),
-            new Entry("OnShieldAbsorbed",   Switch.Toggle, nameof(CombatFeelConfig.EnableBlockDim)),
             new Entry("OnAttackStarted",    Switch.Toggle, nameof(CombatFeelConfig.EnableAttackAnticipation)),
             new Entry("OnAttackLunge",      Switch.Toggle, nameof(CombatFeelConfig.EnableAttackerLunge)),
 

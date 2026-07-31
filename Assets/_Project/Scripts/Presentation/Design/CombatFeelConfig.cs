@@ -60,18 +60,8 @@ namespace Guildmaster.Presentation.Design
         [SerializeField] private bool _enableTelegraphFlash = true;
         [Tooltip("Поза гвардии: щит поднимается ДО появления барьера, слоем поверх бега или свинга.")]
         [SerializeField] private bool _enableGuardPose = true;
-        [Tooltip("Блок: тело на мгновение уходит в тень, щит остаётся в цвете защиты. Контраст вместо " +
-                 "пересвета — светлее вспышки удара уже некуда.")]
-        [SerializeField] private bool _enableBlockDim = true;
         [Tooltip("Разлёт тела на осколки в конце смерти. Выключено — тело просто исчезает.")]
         [SerializeField] private bool _enableDeathShatter = true;
-
-        [Header("Micro Feel — блок: тело в тень, щит в цвете")]
-        [Tooltip("До какой доли яркости падает тело в момент блока. 1 = не темнеет, 0.4 = темнеет более " +
-                 "чем вдвое. Щит этого затемнения не получает — на том и держится контраст.")]
-        [SerializeField, Range(0.2f, 1f)] private float _blockBodyDim = 0.45f;
-        [Tooltip("Сколько живёт затемнение блока, сек. Короче вспышки удара: это акцент, а не состояние.")]
-        [SerializeField, Range(0.05f, 0.6f)] private float _blockDimSeconds = 0.18f;
 
         [Header("Micro Feel — contact dust")]
         [Tooltip("Минимальный интервал между пылью на одном юните, сек.")]
@@ -341,13 +331,6 @@ namespace Guildmaster.Presentation.Design
         public bool  EnableHitSquash         => _enableHitSquash;
         public bool  EnableTelegraphFlash    => _enableTelegraphFlash;
         public bool  EnableGuardPose         => _enableGuardPose;
-        public bool  EnableBlockDim          => _enableBlockDim;
-
-        /// <summary>До какой доли яркости падает тело на блоке (0.4 = темнеет более чем вдвое).</summary>
-        public float BlockBodyDim            => _blockBodyDim;
-
-        /// <summary>Сколько живёт затемнение блока, сек.</summary>
-        public float BlockDimSeconds         => _blockDimSeconds;
         public bool  EnableDeathShatter      => _enableDeathShatter;
 
         public Color HealFlashColor      => Role("--gm-color-combat-heal");
