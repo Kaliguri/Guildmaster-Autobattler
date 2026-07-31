@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Guildmaster.Presentation::Guildmaster.Presentation.PooledVfx
   _maxLifetime: 0.7
-  _usePrefabSorting: 1
 --- !u!1 &6027269811147457902
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,8 +334,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.18
-      minScalar: 0.126
+      scalar: 0.43200004
+      minScalar: 0.30240002
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -1093,15 +1092,6 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0.4
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 0.2
           value: 1
           inSlope: 0
           outSlope: 0
@@ -1110,8 +1100,17 @@ ParticleSystem:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
+          time: 0.45
+          value: 0.75
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
           time: 1
-          value: 0.2
+          value: 0.25
           inSlope: 0
           outSlope: 0
           tangentMode: 0
@@ -5238,8 +5237,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.07
-      minScalar: 0.049
+      scalar: 0.16800001
+      minScalar: 0.1176
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5996,15 +5995,6 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 0.4
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-          weightedMode: 0
-          inWeight: 0
-          outWeight: 0
-        - serializedVersion: 3
-          time: 0.2
           value: 1
           inSlope: 0
           outSlope: 0
@@ -6013,8 +6003,17 @@ ParticleSystem:
           inWeight: 0
           outWeight: 0
         - serializedVersion: 3
+          time: 0.45
+          value: 0.75
+          inSlope: 0
+          outSlope: 0
+          tangentMode: 0
+          weightedMode: 0
+          inWeight: 0
+          outWeight: 0
+        - serializedVersion: 3
           time: 1
-          value: 0.2
+          value: 0.25
           inSlope: 0
           outSlope: 0
           tangentMode: 0
