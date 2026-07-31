@@ -274,6 +274,9 @@ function Test-IsClaimedQuote {
     param([string]$Section, [int]$Index)
     $from = [Math]::Max(0, $Index - 140)
     $before = $Section.Substring($from, $Index - $from).ToLower()
+    # Пометка «дословник не сверен» снимает претензию на дословность: запись честно говорит,
+    # что это формулировка по смыслу. Проверять её нечего — источника нет и не обещано.
+    if ($before.Contains('не сверен')) { return $false }
     foreach ($m in $quoteMarkers) { if ($before.Contains($m)) { return $true } }
     return $false
 }
