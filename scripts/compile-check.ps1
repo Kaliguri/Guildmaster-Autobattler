@@ -169,6 +169,67 @@ function Get-ChangedAssemblies {
     return @($hit)
 }
 
+function Test-AssemblyStale {
+    <#
+    .SYNOPSIS
+    Устарел ли артефакт сборки, собранный редактором: есть ли .cs новее его .ref.dll.
+
+    .DESCRIPTION
+    Ссылки внутри .rsp указывают на артефакты Bee, а их пишет только Unity. При выключенном Auto Refresh
+    и параллельных сессиях чужая правка соседней сборки в них не попадает — и проверка падает с ошибкой,
+    которой в дереве нет (ровно это случилось 2026-07-31 с UnitSnapshot.IsSwinging). Поэтому устаревшие
+    зависимости добираются в сборку сами.
+    #>
+    param([Parameter(Mandatory)][string]$Name, [Parameter(Mandatory)][string]$DagDir,
+          [Parameter(Mandatory)][hashtable]$Map)
+
+    if (-not $Map.ContainsKey($Name)) { return $false }
+
+    $artifact = Join-Path $DagDir "$Name.ref.dll"
+    if (-not (Test-Path $artifact)) { return $true }   # артефакта нет вовсе — считаем устаревшим
+
+    $artifactTime = (Get-Item $artifact).LastWriteTimeUtc
+    foreach ($src in (Get-AssemblySources -Dir $Map[$Name].Dir)) {
+        if ((Get-Item -LiteralPath $src).LastWriteTimeUtc -gt $artifactTime) { return $true }
+    }
+    return $false
+}
+
+function Add-StaleDependencies {
+    <#
+    .SYNOPSIS
+    Дополняет список целей теми зависимостями (транзитивно), чьи артефакты устарели.
+    #>
+    param([Parameter(Mandatory)][string[]]$Targets, [Parameter(Mandatory)][string]$DagDir,
+          [Parameter(Mandatory)][hashtable]$Map)
+
+    $result = [System.Collections.Generic.HashSet[string]]::new()
+    foreach ($t in $Targets) { [void]$result.Add($t) }
+
+    $queue = [System.Collections.Generic.Queue[string]]::new()
+    foreach ($t in $Targets) { $queue.Enqueue($t) }
+
+    $added = [System.Collections.Generic.List[string]]::new()
+    while ($queue.Count -gt 0) {
+        $name = $queue.Dequeue()
+        if (-not $Map.ContainsKey($name)) { continue }
+
+        foreach ($ref in $Map[$name].References) {
+            if ($result.Contains($ref)) { continue }
+            if (-not (Test-AssemblyStale -Name $ref -DagDir $DagDir -Map $Map)) { continue }
+
+            [void]$result.Add($ref)
+            $added.Add($ref)
+            $queue.Enqueue($ref)
+        }
+    }
+
+    if ($added.Count -gt 0) {
+        Write-Host "Добраны устаревшие зависимости (правил кто-то другой, редактор их не пересобирал): $($added -join ', ')" -ForegroundColor DarkYellow
+    }
+    return @($result)
+}
+
 function Get-BuildOrder {
     <#
     .SYNOPSIS
@@ -342,6 +403,7 @@ foreach ($t in $targets) {
     if (-not $map.ContainsKey($t)) { throw "Сборка '$t' не найдена среди asmdef проекта." }
 }
 
+$targets = Add-StaleDependencies -Targets $targets -DagDir $dagDir -Map $map
 $order = Get-BuildOrder -Targets $targets -Map $map
 $outDir = Join-Path $env:LOCALAPPDATA "Guildmaster-CompileCheck"   # вне репозитория: артефакты Unity не трогаем
 New-Item -ItemType Directory -Force -Path $outDir | Out-Null
