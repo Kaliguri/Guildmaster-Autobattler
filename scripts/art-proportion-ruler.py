@@ -21,6 +21,7 @@
 
 from __future__ import annotations
 
+import argparse
 import re
 import sys
 from pathlib import Path
@@ -242,17 +243,25 @@ def dashed_col(draw: ImageDraw.ImageDraw, x: int, y0: int, y1: int, color,
             draw.point((x, y + d), fill=color)
 
 
-def render(t: dict, tight: bool) -> Image.Image:
-    """Прозрачный PNG-слой с линейкой. tight --- ровно по фигуре."""
+def render(t: dict, tight: bool = True, size: int | None = None,
+           sole: int | None = None, axis: int | None = None) -> Image.Image:
+    """Прозрачный PNG-слой с линейкой.
+
+    tight --- канвас ровно по фигуре, иначе сборочный. size, sole и axis
+    перекрывают раскладку под чужой файл: size --- сторона канваса,
+    sole --- отступ подошвы от НИЗА канваса, axis ---x оси симметрии
+    (в чужом файле фигура редко стоит по центру канвы).
+    """
     figure = t["figure"]
-    size = figure if tight else t["canvas"]
+    if size is None:
+        size = figure if tight else t["canvas"]
     # Запас сборочного канваса делится пополам: снизу под тень и стойку,
     # сверху под замах и древко. Это раскладка слоя, а не канонное число.
-    pad = 0 if tight else (size - figure) // 2
+    pad = sole if sole is not None else (0 if tight else (size - figure) // 2)
 
     img = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
-    center = size // 2
+    center = size // 2 if axis is None else axis
 
     for h, _label, color, solid in levels(t):
         y = size - 1 - pad - h
@@ -361,11 +370,19 @@ def render_legend(t: dict, zoom: int = 6) -> Image.Image:
     return img
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     # Консоль Windows по умолчанию не UTF-8, а сообщения об ошибках здесь
     # русские: без этого разбор сетки жалуется кракозябрами.
     for stream in (sys.stdout, sys.stderr):
         stream.reconfigure(encoding="utf-8", errors="replace")
+
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument("--tier", type=int, help="рост фигуры: линейка только этого тира")
+    parser.add_argument("--size", type=int, help="сторона канваса под чужой файл")
+    parser.add_argument("--sole", type=int, help="отступ подошвы от низа канваса")
+    parser.add_argument("--axis", type=int, help="x оси симметрии на чужой канве")
+    parser.add_argument("--name", help="имя выходного файла для режима --size")
+    args = parser.parse_args(argv)
 
     repo = Path(__file__).resolve().parent.parent
     try:
@@ -374,9 +391,30 @@ def main() -> int:
         print(f"сетка не прочитана: {error}", file=sys.stderr)
         return 1
 
+    if args.tier is not None and args.tier not in grid:
+        print(f"тира {args.tier} в сетке нет, есть {sorted(grid)}", file=sys.stderr)
+        return 1
+
     out = repo / OUT_DIR
     out.mkdir(parents=True, exist_ok=True)
+
+    # Разовая линейка под чужой файл: своя канва и своя высота подошвы.
+    if args.size is not None:
+        if args.tier is None:
+            print("--size требует --tier: без него неясен рост фигуры", file=sys.stderr)
+            return 1
+        t = grid[args.tier]
+        sole = args.sole if args.sole is not None else (args.size - t["figure"]) // 2
+        img = render(t, size=args.size, sole=sole, axis=args.axis)
+        name = args.name or f"ruler-{args.tier}-on-{args.size}.png"
+        img.save(out / name)
+        print(f"{name}  {img.width}x{img.height}, подошва в {sole} px от низа, "
+              f"ось x={args.axis if args.axis is not None else args.size // 2}")
+        return 0
+
     for tier, t in sorted(grid.items()):
+        if args.tier is not None and tier != args.tier:
+            continue
         for name, img in (
             (f"ruler-{tier}-tight.png", render(t, tight=True)),
             (f"ruler-{tier}-canvas.png", render(t, tight=False)),
