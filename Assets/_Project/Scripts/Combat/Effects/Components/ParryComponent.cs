@@ -63,6 +63,10 @@ namespace Guildmaster.Combat.Effects.Components
         [Tooltip("Разгон, если парировал того, у кого дальность больше своей: догнать копейщика. Пусто = нет.")]
         [SerializeField] private EffectData _outrangedHaste;
 
+        [Tooltip("Награда носителю за само парирование, без условий: щит разбойника-дуэлянта (200 на 3 сек). " +
+                 "Пусто = награды нет. В отличие от разгона, не спрашивает, кого именно парировал.")]
+        [SerializeField] private EffectData _onParryReward;
+
         [NonSerialized] private readonly List<RuntimeUnit> _aimers = new List<RuntimeUnit>();
 
         public void OnApply(in EffectContext ctx)
@@ -112,6 +116,10 @@ namespace Guildmaster.Combat.Effects.Components
             // Удар-триггер гасится тут же — как щит Блока встаёт под тот же удар, ради которого поднялся.
             result.Negated = true;
             ctx.Combat.ApplyEffect(self, _parryWindow, self);
+
+            // Награда за парирование — сразу с окном, а не по факту ответного удара: отбил он уже здесь,
+            // а ответ ему могут сорвать станом, и тогда щит пропадал бы вместе с чужим контролем.
+            if (_onParryReward != null) ctx.Combat.ApplyEffect(self, _onParryReward, self);
 
             StunAimers(self, in ctx);
             Riposte(self, in incoming, in ctx);
